@@ -25,4 +25,10 @@ Gem::Specification.new do |spec|
   spec.bindir        = "exe"
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
+  spec.add_dependency 'unicode2latex'
+  spec.add_dependency 'asciimath2unitsml'
+  spec.add_dependency 'omml2mathml'
+  spec.add_dependency 'mathml2asciimath'
+  # spec.add_dependency 'html2asciimath', git: 'git@github.com:plurimath/html2asciimath.git'
+  spec.add_dependency 'latexmath'
 end
