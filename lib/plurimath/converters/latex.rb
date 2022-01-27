@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
-# Asciimath
-class Asciimath
+require 'latexmath'
+# Latex
+class Latex
   attr_accessor :text
 
   def initialize(str)
@@ -9,7 +10,7 @@ class Asciimath
   end
 
   def to_mathml
-    response = Asciimath2UnitsML::Conv.new.Asciimath2UnitsML(text)
-    MathMl.new(response)
+    response = Latexmath.parse(text).to_mathml
+    Mathml.new(response)
   end
 end

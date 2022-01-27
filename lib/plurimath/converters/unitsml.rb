@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-# MathMl
-class MathMl
+# Unitsml
+class Unitsml
   attr_accessor :text
 
-  def initialize(str)
-    @text = str
+  def initialize(text)
+    @text = text
   end
 end

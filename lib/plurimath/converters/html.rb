@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require 'html2asciimath'
 # Html
 class Html
   attr_accessor :text
@@ -8,8 +9,8 @@ class Html
     @text = str
   end
 
-  def to_mathml
+  def to_asciimath
     response = HTML2AsciiMath.convert(text)
-    MathMl.new(response)
+    Asciimath.new(response)
   end
 end

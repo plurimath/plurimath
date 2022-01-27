@@ -29,6 +29,5 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'asciimath2unitsml'
   spec.add_dependency 'omml2mathml'
   spec.add_dependency 'mathml2asciimath'
-  # spec.add_dependency 'html2asciimath', git: 'git@github.com:plurimath/html2asciimath.git'
   spec.add_dependency 'latexmath'
 end
