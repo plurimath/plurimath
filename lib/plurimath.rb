@@ -2,4 +2,4 @@
 
 require 'bundler/setup'
 require_relative 'plurimath/version'
-require_relative 'plurimath/converter'
+require_relative 'plurimath/plurimath'
