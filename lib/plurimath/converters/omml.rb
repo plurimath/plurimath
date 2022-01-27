@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
-# Mathml
-class Mathml
+require 'omml2mathml'
+# Omml
+class Omml
   attr_accessor :text
 
   def initialize(str)
@@ -9,7 +10,7 @@ class Mathml
   end
 
   def to_mathml
-    response = MathML2AsciiMath.m2a(text)
-    MathMl.new(response)
+    response = Omml2Mathml.convert(text)
+    Mathml.new(response)
   end
 end

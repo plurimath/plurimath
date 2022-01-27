@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require 'unicode2latex'
 # Unicode
 class Unicode
   attr_accessor :text
@@ -8,8 +9,8 @@ class Unicode
     @text = str
   end
 
-  def to_mathml
+  def to_latex
     response = Unicode2LaTeX.unicode2latex(text)
-    MathMl.new(response)
+    Latex.new(response)
   end
 end
