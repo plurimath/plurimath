@@ -15,12 +15,15 @@ module Plurimath
 
   def parse(str, type: nil)
     raise_error! unless (type.is_a?(Symbol) || type.is_a?(String)) && VALID_TYPES.include?(type.to_s)
-    object = Object.const_get(type.capitalize.to_s)
-    object.new(str)
+
+    klass = Object.const_get(type.capitalize.to_s)
+    klass.new(str)
   end
 
+  private
+
   def raise_error!
-    throw Error.new('Type is not valid, please enter string or symbol')
+    raise Error.new('Type is not valid, please enter string or symbol')
   end
 
   module_function :parse, :raise_error!
