@@ -7,14 +7,14 @@ require_relative 'converters/mathml'
 require_relative 'converters/html'
 require_relative 'converters/latex'
 require_relative 'converters/unitsml'
-# Impletemented converter gems
+# Implemented converter gems
 module Plurimath
   class Error < StandardError; end
 
   VALID_TYPES = %w[unicode asciimath omml mathml html latex].freeze
 
-  def parse(str, type: nil)
-    raise_error! unless (type.is_a?(Symbol) || type.is_a?(String)) && VALID_TYPES.include?(type.to_s)
+  def parse(str, type:)
+    raise_error! unless valid_type?(type)
 
     klass = Object.const_get(type.capitalize.to_s)
     klass.new(str)
@@ -23,8 +23,12 @@ module Plurimath
   private
 
   def raise_error!
-    raise Error.new('Type is not valid, please enter string or symbol')
+    raise Plurimath::Error, Error.new('Type is not valid, please enter string or symbol')
   end
 
-  module_function :parse, :raise_error!
+  def valid_type?(type)
+    (type.is_a?(Symbol) || type.is_a?(String)) && VALID_TYPES.include?(type.to_s)
+  end
+
+  module_function :parse, :raise_error!, :valid_type?
 end
