@@ -19,30 +19,58 @@ RSpec.describe Plurimath do
     asciimath: {
       "rspec": ["#{
         <<~OUTPUT
-        <?xml version=\"1.0\"?>\n<math xmlns=\"http://www.w3.org/1998/Math/MathML\">
-          <mi>r</mi>\n  <mi>s</mi>\n  <mi>p</mi>\n  <mi>e</mi>\n  <mi>c</mi>\n</math>
+          <?xml version=\"1.0\"?>
+          <math xmlns=\"http://www.w3.org/1998/Math/MathML\">
+            <mi>r</mi>
+            <mi>s</mi>
+            <mi>p</mi>
+            <mi>e</mi>
+            <mi>c</mi>
+          </math>
         OUTPUT
         }", :to_unitsml]
     },
     omml: {
       "test.html": ["#{
         <<~OUTPUT
-        <?xml version=\"1.0\"?>\n<!DOCTYPE html>\n<html xmlns:m=\"http://schemas.microsoft.com/office/2004/12/omml\">
-        <head>\n  <meta charset=\"utf-8\"/>\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"/>
-          <title>Test</title>\n</head>\n<body>\n  <h3>Rspec test case in progress</h3>\n</body>\n</html>
+          <?xml version=\"1.0\"?>
+          <!DOCTYPE html>
+          <html xmlns:m=\"http://schemas.microsoft.com/office/2004/12/omml\">
+          <head>
+            <meta charset=\"utf-8\"/>
+            <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"/>
+            <title>Test</title>
+          </head>
+          <body>
+            <h3>Rspec test case in progress</h3>
+          </body>
+          </html>
         OUTPUT
       }", :to_mathml]
     },
     mathml: {
-      "<cn> 0 </cn>": ["<math xmlns=\"http://www.w3.org/1998/Math/MathML\"><cn> 0 </cn></math>", :to_asciimath]
+      "<cn> 0 </cn>": ["#{
+        <<~OUTPUT.gsub("\n", '').gsub('  ', '')
+          <math xmlns=\"http://www.w3.org/1998/Math/MathML\">
+            <cn> 0 </cn>
+          </math>
+        OUTPUT
+      }", :to_asciimath]
     },
     html: {
       "<h3>rspec</h3>": ["\"rspec\"", :to_asciimath]
     },
     latex: {
-      "rspec": ["#{<<~OUTPUT.gsub("\n", '')
-        <math xmlns=\"http://www.w3.org/1998/Math/MathML\" display=\"block\"><mrow><mi>&#x00072;</mi><mi>&#x00073;
-        </mi><mi>&#x00070;</mi><mi>&#x00065;</mi><mi>&#x00063;</mi></mrow></math>
+      "rspec": ["#{<<~OUTPUT.gsub("\n", '').gsub('  ', '')
+          <math xmlns=\"http://www.w3.org/1998/Math/MathML\" display=\"block\">
+            <mrow>
+              <mi>&#x00072;</mi>
+              <mi>&#x00073;</mi>
+              <mi>&#x00070;</mi>
+              <mi>&#x00065;</mi>
+              <mi>&#x00063;</mi>
+            </mrow>
+          </math>
         OUTPUT
       }",
         :to_mathml
