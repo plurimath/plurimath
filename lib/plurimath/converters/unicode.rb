@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'unicode2latex'
+# This class is responsible for converting Unicode expressions to Latex.
 # @example
 # text = 'M =
 #   \begin{bmatrix}
