@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
 require 'html2asciimath'
-# Html
+# @example
+#   html_string = "<h3>rspec</h3>"
+#   HTML2AsciiMath.convert(html_string) # => "\"rspec\""
 class Html
   attr_accessor :text
 

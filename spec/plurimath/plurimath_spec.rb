@@ -18,13 +18,16 @@ RSpec.describe Plurimath do
     },
     asciimath: {
       "rspec": [
-        "<?xml version=\"1.0\"?>\n<math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n  <mi>r</mi>\n  <mi>s</mi>\n  <mi>p</mi>\n  <mi>e</mi>\n  <mi>c</mi>\n</math>\n",
+        "<?xml version=\"1.0\"?>\n<math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n  "\
+        "<mi>r</mi>\n  <mi>s</mi>\n  <mi>p</mi>\n  <mi>e</mi>\n  <mi>c</mi>\n</math>\n",
        :to_unitsml
       ]
     },
     omml: {
       "test.html": [
-        "<?xml version=\"1.0\"?>\n<!DOCTYPE html>\n<html xmlns:m=\"http://schemas.microsoft.com/office/2004/12/omml\">\n<head>\n  <meta charset=\"utf-8\"/>\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"/>\n  <title>Test</title>\n</head>\n<body>\n  <h3>Rspec test case in progress</h3>\n</body>\n</html>\n",
+        "<?xml version=\"1.0\"?>\n<!DOCTYPE html>\n<html xmlns:m=\"http://schemas.microsoft.com/office/2004/12/omml\">\n"\
+        "<head>\n  <meta charset=\"utf-8\"/>\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"/>\n  "\
+        "<title>Test</title>\n</head>\n<body>\n  <h3>Rspec test case in progress</h3>\n</body>\n</html>\n",
         :to_mathml
       ]
     },
@@ -36,7 +39,8 @@ RSpec.describe Plurimath do
     },
     latex: {
       "rspec": [
-        "<math xmlns=\"http://www.w3.org/1998/Math/MathML\" display=\"block\"><mrow><mi>&#x00072;</mi><mi>&#x00073;</mi><mi>&#x00070;</mi><mi>&#x00065;</mi><mi>&#x00063;</mi></mrow></math>",
+        "<math xmlns=\"http://www.w3.org/1998/Math/MathML\" display=\"block\"><mrow><mi>&#x00072;</mi><mi>&#x00073;"\
+        "</mi><mi>&#x00070;</mi><mi>&#x00065;</mi><mi>&#x00063;</mi></mrow></math>",
         :to_mathml
       ]
     }
