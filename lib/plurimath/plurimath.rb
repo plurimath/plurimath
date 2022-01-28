@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-
 require_relative 'converters/unicode'
 require_relative 'converters/asciimath'
 require_relative 'converters/omml'
@@ -11,12 +10,19 @@ require_relative 'converters/unitsml'
 module Plurimath
   class Error < StandardError; end
 
-  VALID_TYPES = %w[unicode asciimath omml mathml html latex].freeze
+  VALID_TYPES = {
+    unicode: Unicode,
+    asciimath: Asciimath,
+    omml: Omml,
+    mathml: Mathml,
+    html: Html,
+    latex: Latex
+  }.freeze
 
   def parse(str, type:)
     raise_error! unless valid_type?(type)
 
-    klass = Object.const_get(type.capitalize.to_s)
+    klass = VALID_TYPES[type.to_sym]
     klass.new(str)
   end
 
@@ -27,7 +33,7 @@ module Plurimath
   end
 
   def valid_type?(type)
-    (type.is_a?(Symbol) || type.is_a?(String)) && VALID_TYPES.include?(type.to_s)
+    (type.is_a?(Symbol) || type.is_a?(String)) && VALID_TYPES.include?(type.to_sym)
   end
 
   module_function :parse, :raise_error!, :valid_type?
