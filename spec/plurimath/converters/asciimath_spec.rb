@@ -13,7 +13,12 @@ RSpec.describe Asciimath do
   it 'converts asciimath to unitsml' do
     converted_str = <<~OUTPUT
                     <?xml version=\"1.0\"?>\n<math xmlns=\"http://www.w3.org/1998/Math/MathML\">
-                      <mi>r</mi>\n  <mi>s</mi>\n  <mi>p</mi>\n  <mi>e</mi>\n  <mi>c</mi>\n</math>
+                      <mi>r</mi>
+                      <mi>s</mi>
+                      <mi>p</mi>
+                      <mi>e</mi>
+                      <mi>c</mi>
+                    </math>
                     OUTPUT
     expect(Asciimath.new('rspec').to_unitsml.text).to eql(converted_str)
   end

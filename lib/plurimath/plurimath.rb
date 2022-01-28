@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require_relative 'converters/unicode'
 require_relative 'converters/asciimath'
 require_relative 'converters/omml'
@@ -33,7 +34,7 @@ module Plurimath
   end
 
   def valid_type?(type)
-    (type.is_a?(Symbol) || type.is_a?(String)) && VALID_TYPES.include?(type.to_sym)
+    (type.is_a?(Symbol) || type.is_a?(String)) && VALID_TYPES.key?(type.to_sym)
   end
 
   module_function :parse, :raise_error!, :valid_type?
