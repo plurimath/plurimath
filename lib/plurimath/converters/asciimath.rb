@@ -4,9 +4,16 @@ require 'asciimath2unitsml'
 # This class is responsible for converting Asciimath expressions to UnitsMl.
 # @example
 # html_string = "example"
-# Asciimath2UnitsML::Conv.new.Asciimath2UnitsML(html_string) # =>
-# "<?xml version=\"1.0\"?>\n<math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n  <mi>e</mi>\n
-# <mi>x</mi>\n  <mi>a</mi>\n  <mi>m</mi>\n  <mi>p</mi>\n  <mo>&#x2264;</mo>\n</math>\n"
+# Asciimath.new(html_string).to_unitsml # =>
+# <?xml version=\"1.0\"?>
+# <math xmlns=\"http://www.w3.org/1998/Math/MathML\">
+#   <mi>e</mi>
+#   <mi>x</mi>
+#   <mi>a</mi>
+#   <mi>m</mi>
+#   <mi>p</mi>
+#   <mo>&#x2264;</mo>
+# </math>
 class Asciimath
   attr_accessor :text
 

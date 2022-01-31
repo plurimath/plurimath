@@ -4,7 +4,7 @@ require 'html2asciimath'
 # This class is responsible for converting Html expressions to Asciimath.
 # @example
 # html_string = "<h3>example</h3>"
-# HTML2AsciiMath.convert(html_string) # => "\"example\""
+# Html.new(html_string).to_asciimath # => "\"example\""
 class Html
   attr_accessor :text
 

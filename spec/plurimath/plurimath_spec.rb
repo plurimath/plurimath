@@ -49,30 +49,14 @@ RSpec.describe Plurimath do
       }", :to_mathml]
     },
     mathml: {
-      "<cn> 0 </cn>": ["#{
-        <<~OUTPUT.gsub("\n", '').gsub('  ', '')
-          <math xmlns=\"http://www.w3.org/1998/Math/MathML\">
-            <cn> 0 </cn>
-          </math>
-        OUTPUT
-      }", :to_asciimath]
+      "<cn> 0 </cn>": ["<math xmlns=\"http://www.w3.org/1998/Math/MathML\"><cn> 0 </cn></math>", :to_asciimath]
     },
     html: {
       "<h3>rspec</h3>": ["\"rspec\"", :to_asciimath]
     },
     latex: {
-      "rspec": ["#{<<~OUTPUT.gsub("\n", '').gsub('  ', '')
-          <math xmlns=\"http://www.w3.org/1998/Math/MathML\" display=\"block\">
-            <mrow>
-              <mi>&#x00072;</mi>
-              <mi>&#x00073;</mi>
-              <mi>&#x00070;</mi>
-              <mi>&#x00065;</mi>
-              <mi>&#x00063;</mi>
-            </mrow>
-          </math>
-        OUTPUT
-      }",
+      "rspec": ["<math xmlns=\"http://www.w3.org/1998/Math/MathML\" display=\"block\"><mrow><mi>&#x00072;</mi>"\
+        "<mi>&#x00073;</mi><mi>&#x00070;</mi><mi>&#x00065;</mi><mi>&#x00063;</mi></mrow></math>",
         :to_mathml
       ]
     }

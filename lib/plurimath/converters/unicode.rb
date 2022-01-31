@@ -9,8 +9,7 @@ require 'unicode2latex'
 #   -\sin φ_0 \cos λ_0 & -\sin φ_0 \sin λ_0 & \cos φ_0 \\
 #   \cos φ_0 \cos λ_0 & \cos φ_0 \sin λ_0 & \sin φ_0
 #   \end{bmatrix}'
-# unicode = Unicode2LaTeX.unicode2latex(text)
-# unicode # =>
+# unicode = Unicode.new(text).to_latex # =>
 # 'M =
 #   \begin{bmatrix}
 #   -\sin \lambda_0 & \cos \lambda_0 & 0 \\
