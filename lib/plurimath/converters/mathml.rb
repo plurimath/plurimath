@@ -4,8 +4,10 @@ require 'mathml2asciimath'
 # This class is responsible for converting Mathml expressions to asciimath.
 # @example
 # html_string = "<o>example</o>"
-# MathML2AsciiMath.m2a(html_string) # =>
-# <math xmlns=\"http://www.w3.org/1998/Math/MathML\"><o>example</o></math>
+# Mathml.new(html_string).to_asciimath # =>
+# <math xmlns=\"http://www.w3.org/1998/Math/MathML\">
+#   <o>example</o>
+# </math>
 class Mathml
   attr_accessor :text
 

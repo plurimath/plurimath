@@ -17,7 +17,7 @@ RSpec.describe Mathml do
     expect(Mathml.new(raw_text)).to be_a(Mathml)
   end
 
-  it 'returns Mathml instance' do
+  it 'returns Asciimath instance' do
     raw_text = <<~OUTPUT
       <math xmlns='http://www.w3.org/1998/Math/MathML'>
         <matrix>
@@ -28,11 +28,11 @@ RSpec.describe Mathml do
           </matrixrow>
         </matrix>
       </math>
-   OUTPUT
+    OUTPUT
     expect(Mathml.new(raw_text).to_asciimath).to be_a(Asciimath)
   end
 
-  it 'converts Mathml to mathml' do
+  it 'converts mathml to asciimath' do
     raw_text = <<~OUTPUT
       <math xmlns='http://www.w3.org/1998/Math/MathML'>
         <matrix>

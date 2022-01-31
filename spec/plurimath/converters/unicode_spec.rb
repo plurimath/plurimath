@@ -23,13 +23,12 @@ RSpec.describe Unicode do
   end
 
   it 'converts Unicode to latex' do
-    converted_str = <<~OUTPUT.strip
-      M =\n                   \\begin{bmatrix}
-                          -\\sin \\lambda_0 & \\cos \\lambda_0 & 0 \\
-                          -\\sin \\varphi_0 \\cos \\lambda_0 & -\\sin \\varphi_0 \\sin \\lambda_0 & \\cos \\varphi_0 \\
-                          \\cos \\varphi_0 \\cos \\lambda_0 & \\cos \\varphi_0 \\sin \\lambda_0 & \\sin \\varphi_0
-                         \\end{bmatrix}
-    OUTPUT
+    converted_str = "M =
+                   \\begin{bmatrix}
+                    -\\sin \\lambda_0 & \\cos \\lambda_0 & 0 \\
+                    -\\sin \\varphi_0 \\cos \\lambda_0 & -\\sin \\varphi_0 \\sin \\lambda_0 & \\cos \\varphi_0 \\
+                    \\cos \\varphi_0 \\cos \\lambda_0 & \\cos \\varphi_0 \\sin \\lambda_0 & \\sin \\varphi_0
+                   \\end{bmatrix}"
     raw_text = 'M =
                    \begin{bmatrix}
                     -\sin λ_0 & \cos λ_0 & 0 \\
