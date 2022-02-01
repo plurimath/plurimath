@@ -30,4 +30,5 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'omml2mathml'
   spec.add_dependency 'mathml2asciimath'
   spec.add_dependency 'latexmath'
+  spec.add_dependency 'html2asciimath'
 end
