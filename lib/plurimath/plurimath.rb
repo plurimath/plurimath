@@ -7,6 +7,7 @@ require_relative 'converters/mathml'
 require_relative 'converters/html'
 require_relative 'converters/latex'
 require_relative 'converters/unitsml'
+require_relative 'converters/formula'
 # Implemented converter gems
 module Plurimath
   class Error < StandardError; end
@@ -20,11 +21,12 @@ module Plurimath
     latex: Latex
   }.freeze
 
-  def parse(str, type:)
+  def parse(str, type)
     raise_error! unless valid_type?(type)
 
     klass = VALID_TYPES[type.to_sym]
-    klass.new(str)
+    new_object = klass.new(str)
+    Formula.new(new_object)
   end
 
   private
