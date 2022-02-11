@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 module Plurimath
-  module Math
-    # Sin Class
-    class Sin
+  module AsciimathParser
+    # Tan Class
+    class Tan
       attr_accessor :angle
 
       def initialize(angle)
