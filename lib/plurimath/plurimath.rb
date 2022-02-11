@@ -21,11 +21,11 @@ module Plurimath
     latex: Latex
   }.freeze
 
-  def parse(str, type)
+  def parse(text, type)
     raise_error! unless valid_type?(type)
 
     klass = VALID_TYPES[type.to_sym]
-    klass.new(str).to_formula
+    klass.new(text).to_formula
   end
 
   private

@@ -6,8 +6,8 @@ module Plurimath
   class Asciimath
     attr_accessor :text
 
-    def initialize(str)
-      @text = str
+    def initialize(text)
+      @text = text
     end
 
     def to_formula
