@@ -2,72 +2,18 @@ require_relative '../../lib/plurimath/plurimath'
 
 RSpec.describe Plurimath do
 
-  testing_record = {
-    unicode: {
-      'M =
-        \begin{bmatrix}
-        -\sin λ_0 & \cos λ_0 & 0 \\
-        -\sin φ_0 \cos λ_0 & -\sin φ_0 \sin λ_0 & \cos φ_0 \\
-        \cos φ_0 \cos λ_0 & \cos φ_0 \sin λ_0 & \sin φ_0
-        \end{bmatrix}': ['M =
-        \begin{bmatrix}
-        -\sin \lambda_0 & \cos \lambda_0 & 0 \\
-        -\sin \varphi_0 \cos \lambda_0 & -\sin \varphi_0 \sin \lambda_0 & \cos \varphi_0 \\
-        \cos \varphi_0 \cos \lambda_0 & \cos \varphi_0 \sin \lambda_0 & \sin \varphi_0
-        \end{bmatrix}', :to_latex]
-    },
-    asciimath: {
-      "rspec": ["#{
-        <<~OUTPUT
-          <?xml version=\"1.0\"?>
-          <math xmlns=\"http://www.w3.org/1998/Math/MathML\">
-            <mi>r</mi>
-            <mi>s</mi>
-            <mi>p</mi>
-            <mi>e</mi>
-            <mi>c</mi>
-          </math>
-        OUTPUT
-        }", :to_unitsml]
-    },
-    omml: {
-      "test.html": ["#{
-        <<~OUTPUT
-          <?xml version=\"1.0\"?>
-          <!DOCTYPE html>
-          <html xmlns:m=\"http://schemas.microsoft.com/office/2004/12/omml\">
-          <head>
-            <meta charset=\"utf-8\"/>
-            <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"/>
-            <title>Test</title>
-          </head>
-          <body>
-            <h3>Rspec test case in progress</h3>
-          </body>
-          </html>
-        OUTPUT
-      }", :to_mathml]
-    },
-    mathml: {
-      "<cn> 0 </cn>": ["<math xmlns=\"http://www.w3.org/1998/Math/MathML\"><cn> 0 </cn></math>", :to_asciimath]
-    },
-    html: {
-      "<h3>rspec</h3>": ["\"rspec\"", :to_asciimath]
-    },
-    latex: {
-      "rspec": ["<math xmlns=\"http://www.w3.org/1998/Math/MathML\" display=\"block\"><mrow><mi>&#x00072;</mi>"\
-        "<mi>&#x00073;</mi><mi>&#x00070;</mi><mi>&#x00065;</mi><mi>&#x00063;</mi></mrow></math>",
-        :to_mathml
-      ]
-    }
+  test_record = {
+    unicode: 'unicode',
+    asciimath: 'asciimath',
+    omml: 'omml',
+    mathml: 'mathml',
+    html: 'html',
+    latex: 'latex'
   }
 
   it 'Converts all entries successfully' do
-    testing_record.each do |type, record|
-      raw = record.keys[0].to_s
-      converted = record.values.flatten[0]
-      method_name = record.values.flatten[1]
-      expect(Plurimath.parse(raw, type: type).send(method_name).text).to eql(converted)
+    test_record.each do |type, record|
+      expect(Plurimath.parse(record, type).text).to eql(record)
     end
   end
 
