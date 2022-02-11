@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
-require_relative 'converters/unicode'
-require_relative 'converters/asciimath'
-require_relative 'converters/omml'
-require_relative 'converters/mathml'
-require_relative 'converters/html'
-require_relative 'converters/latex'
-require_relative 'converters/unitsml'
-require_relative 'converters/formula'
+require_relative 'unicode'
+require_relative 'asciimath'
+require_relative 'omml'
+require_relative 'mathml'
+require_relative 'html'
+require_relative 'latex'
+require_relative 'unitsml'
+require_relative 'formula'
 # Implemented converter gems
 module Plurimath
   class Error < StandardError; end

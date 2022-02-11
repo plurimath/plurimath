@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Plurimath
-  module Math
+  module AsciimathParser
     # Number Class
     class Number
       attr_accessor :value

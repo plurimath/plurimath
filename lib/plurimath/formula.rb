@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require_relative 'asciimath/parser'
 module Plurimath
   # Formula Class
   class Formula
