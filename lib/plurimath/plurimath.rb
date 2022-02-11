@@ -25,8 +25,7 @@ module Plurimath
     raise_error! unless valid_type?(type)
 
     klass = VALID_TYPES[type.to_sym]
-    new_object = klass.new(str)
-    Formula.new(new_object)
+    klass.new(str).to_formula
   end
 
   private
