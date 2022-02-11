@@ -3,12 +3,12 @@ require_relative '../../../lib/plurimath/asciimath_parser'
 RSpec.describe Plurimath::AsciimathParser::Number do
 
   it 'returns instance of Number' do
-    number = Plurimath::AsciimathParser::Number.new('number')
+    number = Plurimath::AsciimathParser::Number.new(100)
     expect(number).to be_a(Plurimath::AsciimathParser::Number)
   end
 
   it 'initializes Number object' do
-    number = Plurimath::AsciimathParser::Number.new('number')
-    expect(number.value).to eql('number')
+    number = Plurimath::AsciimathParser::Number.new(100)
+    expect(number.value).to eql(100)
   end
 end
