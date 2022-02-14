@@ -1,4 +1,4 @@
-require_relative '../../lib/plurimath/plurimath'
+require_relative '../../lib/plurimath/math'
 
 RSpec.describe Plurimath::Html do
 
