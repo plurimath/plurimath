@@ -5,7 +5,6 @@ require_relative "asciimath/number"
 require_relative "asciimath/symbol"
 require_relative "asciimath/variable"
 module Plurimath
-  # Asciimath Class
   class Asciimath
     attr_accessor :text
 

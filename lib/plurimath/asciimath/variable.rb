@@ -2,7 +2,6 @@
 
 module Plurimath
   class Asciimath
-    # Variable Class
     class Variable
       attr_accessor :value
 

@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 module Plurimath
-  # Mathml Class
   class Mathml
     attr_accessor :text
 

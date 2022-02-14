@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 module Plurimath
-  # Latex Class
   class Latex
     attr_accessor :text
 

@@ -3,7 +3,6 @@
 module Plurimath
   class Asciimath
     module Function
-      # Tan Class
       class Tan
         attr_accessor :angle
 

@@ -3,7 +3,6 @@
 module Plurimath
   class Asciimath
     module Function
-      # Cos Class
       class Cos
         attr_accessor :angle
 

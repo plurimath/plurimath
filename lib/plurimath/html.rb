@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 module Plurimath
-  # HTML Class
   class Html
     attr_accessor :text
 
