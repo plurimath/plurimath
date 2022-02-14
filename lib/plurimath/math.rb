@@ -9,7 +9,6 @@ require_relative "latex"
 require_relative "unitsml"
 require_relative "math/formula"
 module Plurimath
-  # Implemented converter gems
   module Math
     class Error < StandardError; end
 

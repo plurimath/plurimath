@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 module Plurimath
-  # Unicode Class
   class Unicode
     attr_accessor :text
 

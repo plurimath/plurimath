@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 module Plurimath
-  # Omml Class
   class Omml
     attr_accessor :text
 

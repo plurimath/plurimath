@@ -2,7 +2,6 @@
 
 module Plurimath
   module Math
-    # Formula Class
     class Formula
       attr_accessor :text
 

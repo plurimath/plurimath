@@ -3,7 +3,6 @@
 module Plurimath
   class Asciimath
     module Function
-      # Sin Class
       class Sin
         attr_accessor :angle
 
