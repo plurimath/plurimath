@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Plurimath
-  module AsciimathParser
+  class Asciimath
     # Symbol Class
     class Symbol
       attr_accessor :value
