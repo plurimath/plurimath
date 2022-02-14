@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-require_relative "asciimath/function/sin"
-require_relative "asciimath/function/tan"
-require_relative "asciimath/function/cos"
+require_relative "asciimath/function"
 require_relative "asciimath/number"
 require_relative "asciimath/symbol"
 require_relative "asciimath/variable"
