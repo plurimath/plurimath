@@ -1,3 +1,3 @@
-require_relative "function/sin"
-require_relative "function/tan"
-require_relative "function/cos"
+require_relative "../math/function/sin"
+require_relative "../math/function/tan"
+require_relative "../math/function/cos"
