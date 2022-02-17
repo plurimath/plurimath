@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 module Plurimath
-  class Asciimath
+  module Math
     module Function
-      class Tan
+      class Cos
         attr_accessor :angle
 
         def initialize(angle)
