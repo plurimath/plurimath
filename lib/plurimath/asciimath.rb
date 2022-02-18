@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-require_relative "asciimath/function"
-require_relative "asciimath/number"
-require_relative "asciimath/symbol"
-require_relative "asciimath/variable"
+require_relative "math/function"
+require_relative "math/number"
+require_relative "math/symbol"
+require_relative "math/variable"
 module Plurimath
   class Asciimath
     attr_accessor :text
