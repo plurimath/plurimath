@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 module Plurimath
-  class Asciimath
-    class Variable
+  module Math
+    class Number
       attr_accessor :value
 
       def initialize(value)
