@@ -3,10 +3,10 @@
 module Plurimath
   module Math
     class Formula
-      attr_accessor :text
+      attr_accessor :value
 
-      def initialize(text)
-        @text = text
+      def initialize(value = [])
+        @value = value
       end
     end
   end
