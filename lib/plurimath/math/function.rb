@@ -1,3 +1,3 @@
-require_relative "function/sin"
-require_relative "function/tan"
-require_relative "function/cos"
+Dir[File.join(__dir__, "function/*.rb")].each do |file|
+  require_relative file.gsub(".rb", "")
+end
