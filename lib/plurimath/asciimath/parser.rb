@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Plurimath
-  module Math
+  class Asciimath
     class Parser
       attr_accessor :text
 
@@ -19,39 +19,70 @@ module Plurimath
 
       def parse
         @nodes = []
+        klass = Plurimath::Math::Formula.new
         until @text.eos?
           @text.scan(WHITESPACE)
           tok = token
           @nodes << tok
         end
-        klass = Plurimath::Math::Formula
         @nodes.each_with_index do |node, ind|
-          organizing(node, ind)
+          klass.value << intermediate_parse(node, ind)
         end
+        klass
       end
 
-      def organizing(node, ind)
-        node_klass = node.values.last
+      def intermediate_parse(node, ind)
+        return if node.nil?
+
         @nodes.delete_at(ind)
-        formula_klass = Plurimath::Math::Formula
-        if node_klass.to_s.include? "Function"
-          if is_function(@nodes.first) || is_function(@nodes.first(2).last)
-            child_node = organizing(node, 0)
-          elsif is_symbol(@nodes.first)
-            child_node = organizing(node, 0)
-          end
-          node_klass.new(child_node)
+        formula_klass = Plurimath::Math::Formula.new
+        if function?(node)
+          underscore_parse(formula_klass)
+          parenthesis_parse(formula_klass)
+          node.values.last.new(formula_klass)
         else
-          node_klass.new(node.first.first)
+          node.values.last.new(node.first.first)
         end
       end
 
-      def is_function(node)
-        node.first.last.to_s.include?('Function') unless node.nil?
+      def underscore_parse(formula_klass)
+        if symbol?(new_node) && new_node.key?("_")
+          child_node = intermediate_parse(new_node, 0)
+          formula_klass.value << child_node
+        end
       end
 
-      def is_symbol(node)
-        node.first.last.to_s.include?('Symbol') unless node.nil?
+      def parenthesis_parse(formula_klass)
+        if symbol?(new_node) && new_node.key?("(")
+          until_closing_paren(formula_klass)
+        end
+      end
+
+      def new_node
+        @nodes.first
+      end
+
+      def until_closing_paren(klass)
+        next_node = new_node
+        until new_node.nil?
+          child_node = intermediate_parse(next_node, 0)
+          klass.value << child_node
+          break if check_paren(next_node)
+
+          next_node = new_node
+        end
+      end
+
+      def check_paren(node)
+        node.first.first == ")"
+      end
+
+      def function?(node)
+        node.first.last.to_s.include?("Function") unless node.nil?
+      end
+
+      def symbol?(node)
+        node.first.last.to_s.include?("Symbol") unless node.nil?
       end
 
       def token
@@ -96,9 +127,9 @@ module Plurimath
           type = symbols_and_classes[str.to_sym]
           case type
           when :class
-            { "#{str}" => initial_object(str) }
+            { str => initial_object(str) }
           when :symbol
-            { "#{str}" => Symbol }
+            { str => Plurimath::Math::Symbol }
           else
             read_quoted_text
           end
@@ -114,7 +145,7 @@ module Plurimath
 
       def read_number
         read_value(NUMBER) do |number|
-          { "#{number}": Number }
+          { "#{number}" => Plurimath::Math::Number }
         end
       end
 
@@ -392,7 +423,6 @@ module Plurimath
           frac: :class,
           root: :class,
           sqrt: :class,
-          power: :class,
           text: :class,
           abs: :class,
           bar: :class,
@@ -417,8 +447,11 @@ module Plurimath
           mathfrak: :class,
           mathsf: :class,
           mathtt: :class,
-          "^": :class,
-          "/": :class,
+          "^": :symbol,
+          "/": :symbol,
+          sum: :class,
+          prod: :class,
+          _: :symbol,
         }
       end
     end

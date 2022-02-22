@@ -9,6 +9,6 @@ RSpec.describe Plurimath::Math::Formula do
 
   it 'returns Formula instance' do
     formula = Plurimath::Math::Formula.new('1 + 2')
-    expect(formula.text).to eql('1 + 2')
+    expect(formula.value).to eql('1 + 2')
   end
 end

@@ -3,12 +3,13 @@
 module Plurimath
   module Math
     module Function
-      class Power
-        attr_accessor :base, :exponent
+      class Prod
+        attr_accessor :base, :exponent, :content
 
-        def initialize(base, exponent)
+        def initialize(base = nil, exponent = nil, content = nil)
           @base = base
           @exponent = exponent
+          @content = content
         end
       end
     end
