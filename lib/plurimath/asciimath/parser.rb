@@ -9,6 +9,7 @@ module Plurimath
       NUMBER = /[0-9]+(?:\.[0-9]+)?/.freeze
       QUOTED_TEXT = /"[^"]*"/.freeze
       TEX_TEXT = /text\([^)]*\)/.freeze
+      PARENTHESES = { "(" => ")", "{" => "}", "[" => "]" }.freeze
 
       def initialize(text)
         @text = text
@@ -22,11 +23,10 @@ module Plurimath
         klass = Plurimath::Math::Formula.new
         until @text.eos?
           @text.scan(WHITESPACE)
-          tok = token
-          @nodes << tok
+          @nodes << token
         end
-        @nodes.each_with_index do |node, ind|
-          klass.value << intermediate_parse(node, ind)
+        while node = new_node
+          klass.value << intermediate_parse(node, @nodes.index(node))
         end
         klass
       end
@@ -37,23 +37,46 @@ module Plurimath
         @nodes.delete_at(ind)
         formula_klass = Plurimath::Math::Formula.new
         if function?(node)
-          underscore_parse(formula_klass)
-          parenthesis_parse(formula_klass)
-          node.values.last.new(formula_klass)
+          function_parse(node, formula_klass)
         else
           node.values.last.new(node.first.first)
         end
       end
 
+      def function_parse(node, formula_klass)
+        underscore_parse(formula_klass)
+        parenthesis_parse(formula_klass)
+        if ["sum", "prod"].include?(node.first.first)
+          exponent = sum_prod_exponent
+          node.values.last.new(formula_klass, exponent)
+        else
+          node.values.last.new(formula_klass)
+        end
+      end
+
+      def sum_prod_exponent
+        if new_node.key?("^")
+          @nodes.delete_at(0)
+          return if closing_paren?(node_keys(new_node), PARENTHESES.values)
+
+          intermediate_parse(new_node, 0)
+        end
+      end
+
       def underscore_parse(formula_klass)
-        if symbol?(new_node) && new_node.key?("_")
-          child_node = intermediate_parse(new_node, 0)
-          formula_klass.value << child_node
+        if new_node.key?("_")
+          @nodes.delete_at(0)
+          if opening_paren?(node_keys(new_node), PARENTHESES.keys)
+            parenthesis_parse(formula_klass)
+          else
+            child_node = intermediate_parse(new_node, 0)
+            formula_klass.value << child_node
+          end
         end
       end
 
       def parenthesis_parse(formula_klass)
-        if symbol?(new_node) && new_node.key?("(")
+        if opening_paren?(node_keys(new_node), PARENTHESES.keys)
           until_closing_paren(formula_klass)
         end
       end
@@ -62,19 +85,28 @@ module Plurimath
         @nodes.first
       end
 
-      def until_closing_paren(klass)
-        next_node = new_node
-        until new_node.nil?
-          child_node = intermediate_parse(next_node, 0)
-          klass.value << child_node
-          break if check_paren(next_node)
+      def node_keys(node)
+        node.first.first
+      end
 
+      def until_closing_paren(klass, next_node = new_node)
+        until new_node.nil?
+          klass.value << intermediate_parse(next_node, 0)
+          break if closing_paren?(node_keys(next_node), PARENTHESES.values)
+
+          if opening_paren?(node_keys(new_node), PARENTHESES.keys)
+            until_closing_paren(klass)
+          end
           next_node = new_node
         end
       end
 
-      def check_paren(node)
-        node.first.first == ")"
+      def closing_paren?(node, parens)
+        parens.include? node
+      end
+
+      def opening_paren?(node, parens)
+        parens.include?(node)
       end
 
       def function?(node)
@@ -90,14 +122,18 @@ module Plurimath
         when '"'
           read_quoted_text
         when "t"
-          case @text.peek(5)
-          when "text("
-            read_tex_text
-          else
-            read_symbols
-          end
+          read_text
         when "-", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"
-          read_number || read_symbol
+          read_number || read_symbols
+        else
+          read_symbols
+        end
+      end
+
+      def read_text
+        case @text.peek(5)
+        when "text("
+          read_tex_text
         else
           read_symbols
         end
@@ -109,13 +145,13 @@ module Plurimath
 
       def read_tex_text
         read_value(TEX_TEXT) do |text|
-          { "#{text[5..-2]}": initial_object("text") }
+          { text[5..-2] => Plurimath::Math::Symbol }
         end
       end
 
       def read_quoted_text
         read_value(QUOTED_TEXT) do |text|
-          { "#{text[1..-2]}": initial_object("text") }
+          { text[1..-2] => Plurimath::Math::Symbol }
         end
       end
 
@@ -125,14 +161,8 @@ module Plurimath
           symbol_or_string(str)
           @text.pos = position + str.length
           type = symbols_and_classes[str.to_sym]
-          case type
-          when :class
-            { str => initial_object(str) }
-          when :symbol
-            { str => Plurimath::Math::Symbol }
-          else
-            read_quoted_text
-          end
+          value = type == :class ? initial_object(str) : Plurimath::Math::Symbol
+          { str => value }
         end
       end
 
@@ -145,7 +175,7 @@ module Plurimath
 
       def read_number
         read_value(NUMBER) do |number|
-          { "#{number}" => Plurimath::Math::Number }
+          { number => Plurimath::Math::Number }
         end
       end
 
@@ -391,6 +421,9 @@ module Plurimath
           approx: :symbol,
           prop: :symbol,
           propto: :symbol,
+          "^": :symbol,
+          "/": :symbol,
+          _: :symbol,
           sin: :class,
           tan: :class,
           cos: :class,
@@ -447,11 +480,8 @@ module Plurimath
           mathfrak: :class,
           mathsf: :class,
           mathtt: :class,
-          "^": :symbol,
-          "/": :symbol,
           sum: :class,
           prod: :class,
-          _: :symbol,
         }
       end
     end
