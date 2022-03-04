@@ -19,19 +19,15 @@ module Plurimath
       end
 
       def parse
-        @nodes = []
+        create_nodes
         klass = Plurimath::Math::Formula.new
-        until @text.eos?
-          @text.scan(WHITESPACE)
-          @nodes << token
-        end
         while node = new_node
-          klass.value << intermediate_parse(node, @nodes.index(node))
+          klass.value << intermediate_parse(node)
         end
         klass
       end
 
-      def intermediate_parse(node, ind)
+      def intermediate_parse(node, ind = 0)
         return if node.nil?
 
         @nodes.delete_at(ind)
@@ -39,74 +35,111 @@ module Plurimath
         if function?(node)
           function_parse(node, formula_klass)
         else
-          node.values.last.new(node.first.first)
+          node.values.last.new(node_keys(node))
         end
       end
 
       def function_parse(node, formula_klass)
-        underscore_parse(formula_klass)
-        parenthesis_parse(formula_klass)
-        if ["sum", "prod"].include?(node.first.first)
-          exponent = sum_prod_exponent
-          node.values.last.new(formula_klass, exponent)
+        if new_node.key?("_")
+          underscore_parse(formula_klass)
+        end
+        if opening_paren?(node_keys(new_node))
+          until_close_paren(formula_klass)
+        end
+        number_parse(formula_klass)
+        finalize_node(node, formula_klass)
+      end
+
+      def number_parse(klass)
+        if new_node&.first&.last == Plurimath::Math::Number
+          klass.value << new_node.first.last.new(node_keys(new_node))
+          @nodes.delete_at(0)
+        end
+      end
+
+      def finalize_node(node, formula_klass)
+        new_node_key = node_keys(node)
+        functions_arr = ["frac", "color", "mod", "overset", "root", "underset"]
+        if ["sum", "prod", "log"].include?(new_node_key)
+          node.values.last.new(formula_klass, sum_prod_exponent)
+        elsif functions_arr.include?(new_node_key)
+          node.first.last.new(formula_klass, dual_value_function)
         else
           node.values.last.new(formula_klass)
         end
       end
 
-      def sum_prod_exponent
-        if new_node.key?("^")
-          @nodes.delete_at(0)
-          return if closing_paren?(node_keys(new_node), PARENTHESES.values)
+      def dual_value_function
+        return nil if new_node.nil?
 
-          intermediate_parse(new_node, 0)
+        formula_klass = Plurimath::Math::Formula.new
+        if opening_paren?(node_keys(new_node))
+          until_close_paren(formula_klass)
+        else
+          return if closing_paren?(node_keys(new_node))
+
+          formula_klass.value << intermediate_parse(new_node)
         end
+        formula_klass
       end
 
-      def underscore_parse(formula_klass)
-        if new_node.key?("_")
+      def sum_prod_exponent
+        if new_node&.key?("^")
           @nodes.delete_at(0)
-          if opening_paren?(node_keys(new_node), PARENTHESES.keys)
-            parenthesis_parse(formula_klass)
+          if opening_paren?(node_keys(new_node))
+            formula_klass = Plurimath::Math::Formula.new
+            until_close_paren(formula_klass)
+            formula_klass
           else
-            child_node = intermediate_parse(new_node, 0)
-            formula_klass.value << child_node
+            intermediate_parse(new_node)
           end
         end
       end
 
-      def parenthesis_parse(formula_klass)
-        if opening_paren?(node_keys(new_node), PARENTHESES.keys)
-          until_closing_paren(formula_klass)
+      def underscore_parse(formula_klass)
+        @nodes.delete_at(0)
+        if opening_paren?(node_keys(new_node))
+          until_close_paren(formula_klass)
+        else
+          child_node = intermediate_parse(new_node)
+          formula_klass.value << child_node
         end
       end
 
-      def new_node
-        @nodes.first
+      def new_node(nodes = @nodes)
+        nodes.first
       end
 
       def node_keys(node)
-        node.first.first
+        node&.first&.first
       end
 
-      def until_closing_paren(klass, next_node = new_node)
+      def until_close_paren(klass, next_node = new_node)
         until new_node.nil?
-          klass.value << intermediate_parse(next_node, 0)
-          break if closing_paren?(node_keys(next_node), PARENTHESES.values)
+          klass.value << intermediate_parse(next_node)
+          break if closing_paren?(node_keys(next_node))
 
-          if opening_paren?(node_keys(new_node), PARENTHESES.keys)
-            until_closing_paren(klass)
+          if opening_paren?(node_keys(new_node))
+            until_close_paren(klass)
           end
           next_node = new_node
         end
       end
 
-      def closing_paren?(node, parens)
+      def closing_paren?(node, parens = paren_values)
         parens.include? node
       end
 
-      def opening_paren?(node, parens)
+      def opening_paren?(node, parens = paren_keys)
         parens.include?(node)
+      end
+
+      def paren_values
+        PARENTHESES.values
+      end
+
+      def paren_keys
+        PARENTHESES.keys
       end
 
       def function?(node)
@@ -185,6 +218,14 @@ module Plurimath
           yield str
         else
           str
+        end
+      end
+
+      def create_nodes
+        @nodes = []
+        until @text.eos?
+          @text.scan(WHITESPACE)
+          @nodes << token
         end
       end
 
