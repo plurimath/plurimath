@@ -20,7 +20,7 @@ module Plurimath
 
       def parse
         create_nodes
-        klass = Plurimath::Math::Formula.new
+        klass = formula_class
         while node = new_node
           klass.value << intermediate_parse(node)
         end
@@ -31,7 +31,7 @@ module Plurimath
         return if node.nil?
 
         delete_node_at(ind)
-        formula_klass = Plurimath::Math::Formula.new
+        formula_klass = formula_class
         if function?(node)
           function_parse(node, formula_klass)
         else
@@ -42,9 +42,6 @@ module Plurimath
       end
 
       def function_parse(node, formula_klass)
-        if new_node.key?("_")
-          underscore_parse(formula_klass)
-        end
         if opening_paren?(node_key)
           until_close_paren(formula_klass)
         end
@@ -64,7 +61,7 @@ module Plurimath
         functions_arr = ["frac", "color", "mod", "overset", "root", "underset"]
         node_class = node_value(node)
         if ["sum", "prod", "log"].include?(new_node_key)
-          node_class.new(klass, sum_prod_exponent)
+          sum_prod_or_log(node, klass)
         elsif functions_arr.include?(new_node_key)
           node_class.new(klass, dual_value_function)
         else
@@ -81,10 +78,18 @@ module Plurimath
         end
       end
 
+      def sum_prod_or_log(node, klass)
+        if node_key(node) == "log"
+          node_value(node).new(base_parser, sum_prod_exponent)
+        else
+          node_value(node).new(base_parser, sum_prod_exponent, klass)
+        end
+      end
+
       def dual_value_function
         return nil if new_node.nil?
 
-        formula_klass = Plurimath::Math::Formula.new
+        formula_klass = formula_class
         if opening_paren?(node_key)
           until_close_paren(formula_klass)
         else
@@ -98,17 +103,19 @@ module Plurimath
       def sum_prod_exponent
         if new_node&.key?("^")
           delete_node_at
+          formula_klass = formula_class
           if opening_paren?(node_key)
-            formula_klass = Plurimath::Math::Formula.new
             until_close_paren(formula_klass)
-            formula_klass
           else
-            intermediate_parse(new_node)
+            formula_klass.value << intermediate_parse(new_node)
           end
+          formula_klass
         end
       end
 
-      def underscore_parse(formula_klass)
+      def base_parser(formula_klass = formula_class)
+        return unless new_node&.key?("_")
+
         delete_node_at
         if opening_paren?(node_key)
           until_close_paren(formula_klass)
@@ -116,11 +123,12 @@ module Plurimath
           child_node = intermediate_parse(new_node)
           formula_klass.value << child_node
         end
+        formula_klass
       end
 
       def mod_function_parse(dividend, node = new_node)
         delete_node_at
-        formula_klass = Plurimath::Math::Formula.new
+        formula_klass = formula_class
         if opening_paren?(node_key)
           until_close_paren(formula_klass)
         else
@@ -184,6 +192,10 @@ module Plurimath
 
       def text?(node)
         node_value(node).to_s.include?("Text") unless node.nil?
+      end
+
+      def formula_class
+        Plurimath::Math::Formula.new
       end
 
       def token

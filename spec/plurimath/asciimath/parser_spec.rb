@@ -66,7 +66,7 @@ RSpec.describe Plurimath::Asciimath::Parser do
     expect(sum_value[1].value).to eql("theta")
     expect(sum_value[2].value).to eql(")")
     # sum formula exponent value
-    expect(sin_value[1].exponent.value).to eql("3")
+    expect(sin_value[1].exponent.value[0].value).to eql("3")
   end
 
   it "returns instance of Sin Formula against the string" do
@@ -75,7 +75,7 @@ RSpec.describe Plurimath::Asciimath::Parser do
     sin = asciimath.value.first
     sin_value = sin.angle.value
     sum_value = sin_value[1].base.value
-    expo_sin_value = sin_value[1].exponent.angle.value
+    expo_sin_value = sin_value[1].exponent.value[0].angle.value
     # sin formula object
     expect(sin.class).to eql(Plurimath::Math::Function::Sin)
     expect(sin_value[0].value).to eq("(")
@@ -97,7 +97,7 @@ RSpec.describe Plurimath::Asciimath::Parser do
     sin = asciimath.value.first
     sin_value = sin.angle.value
     sum_value = sin_value[1].base.value
-    expo_sin_value = sin_value[1].exponent.angle.value
+    expo_sin_value = sin_value[1].exponent.value[0].angle.value
     # sin formula object
     expect(sin.class).to eql(Plurimath::Math::Function::Sin)
     expect(sin_value[0].value).to eq("(")
@@ -132,7 +132,7 @@ RSpec.describe Plurimath::Asciimath::Parser do
     expect(sum_value[2].value).to eq("=")
     expect(sum_value[3].value).to eq("1")
     expect(sum_value[4].value).to eq(")")
-    expect(sum.exponent.value).to eq("n")
+    expect(sum.exponent.value[0].value).to eq("n")
     expect(asciimath.value[1].value).to eq("i")
     expect(asciimath.value[2].value).to eq("^")
     expect(asciimath.value[3].value).to eq("3")
@@ -175,7 +175,7 @@ RSpec.describe Plurimath::Asciimath::Parser do
     expect(divisor_value[0].value).to eq("{")
     expect(divisor_value[1].value).to eq("3")
     expect(divisor_value[2].value).to eq("}")
-    expect(sum.exponent.value).to eq("33")
+    expect(sum.exponent.value[0].value).to eq("33")
   end
 
   it "returns instance of Frac Formula against the string" do
@@ -195,7 +195,7 @@ RSpec.describe Plurimath::Asciimath::Parser do
     expect(dividend_value[1].value).to eq("13")
     expect(dividend_value[2].value).to eq("}")
     expect(sum_value[3].divisor).to be_nil
-    expect(sum.exponent.value).to eq("33")
+    expect(sum.exponent.value[0].value).to eq("33")
   end
 
   it "returns instance of Color Formula against the string" do
@@ -218,7 +218,7 @@ RSpec.describe Plurimath::Asciimath::Parser do
     expect(color_value[0].value).to eq("{")
     expect(color_value[1].value).to eq("3")
     expect(color_value[2].value).to eq("}")
-    expect(sum.exponent.value).to eq("33")
+    expect(sum.exponent.value[0].value).to eq("33")
   end
 
   it "returns instance of Color Formula against the string" do
@@ -238,7 +238,7 @@ RSpec.describe Plurimath::Asciimath::Parser do
     expect(color_value[1].string).to eq("blue")
     expect(color_value[2].value).to eq("}")
     expect(sum_value[3].value).to be_nil
-    expect(sum.exponent.value).to eq("33")
+    expect(sum.exponent.value[0].value).to eq("33")
   end
 
   it "returns instance of Formula against the string without formula" do
@@ -302,7 +302,7 @@ RSpec.describe Plurimath::Asciimath::Parser do
   end
 
   it "returns instance of Log Formula against the string" do
-    asciimath = init_spec_resp('log(1+2+3+4)^("4 terms")')
+    asciimath = init_spec_resp('log_(1+2+3+4)^("4 terms")')
     # initializing common used values in respective named variables
     log_base_value = asciimath.value[0].base.value
     log_exponent_value = asciimath.value[0].exponent.value
@@ -326,7 +326,7 @@ RSpec.describe Plurimath::Asciimath::Parser do
   end
 
   it "returns instance of Log Formula against the string" do
-    asciimath = init_spec_resp('log(1+2+3+4)')
+    asciimath = init_spec_resp('log_(1+2+3+4)')
     # initializing common used values in respective named variables
     log_base_value = asciimath.value[0].base.value
     formula_value = asciimath.value
