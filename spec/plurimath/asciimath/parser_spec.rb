@@ -235,13 +235,13 @@ RSpec.describe Plurimath::Asciimath::Parser do
     # color formula
     expect(sum_value[3].class).to eq(Plurimath::Math::Function::Color)
     expect(color_value[0].value).to eq("{")
-    expect(color_value[1].value).to eq("blue")
+    expect(color_value[1].string).to eq("blue")
     expect(color_value[2].value).to eq("}")
     expect(sum_value[3].value).to be_nil
     expect(sum.exponent.value).to eq("33")
   end
 
-  it "returns instance of Formula against the string" do
+  it "returns instance of Formula against the string without formula" do
     asciimath = init_spec_resp("int_0^1 f(x)dx")
     # initializing common used values in respective named variables
     formula = asciimath.value
@@ -279,8 +279,26 @@ RSpec.describe Plurimath::Asciimath::Parser do
     # formula object
     expect(formula_value[1].value).to eq('^')
     expect(formula_value[2].value).to eq('(')
-    expect(formula_value[3].value).to eq('4 terms')
+    expect(formula_value[3].string).to eq('4 terms')
     expect(formula_value[4].value).to eq(')')
+  end
+
+  it "returns instance of Obrace Formula against the string" do
+    asciimath = init_spec_resp('obrace(1+2+3+4)')
+    # initializing common used values in respective named variables
+    obrace_value = asciimath.value[0].value.value
+    formula_value = asciimath.value
+    # obrace formula object
+    expect(asciimath.value[0].class).to eql(Plurimath::Math::Function::Obrace)
+    expect(obrace_value[0].value).to eq("(")
+    expect(obrace_value[1].value).to eq("1")
+    expect(obrace_value[2].value).to eq("+")
+    expect(obrace_value[3].value).to eq("2")
+    expect(obrace_value[4].value).to eq("+")
+    expect(obrace_value[5].value).to eq("3")
+    expect(obrace_value[6].value).to eq("+")
+    expect(obrace_value[7].value).to eq("4")
+    expect(obrace_value[8].value).to eq(")")
   end
 
   it "returns instance of Log Formula against the string" do
@@ -303,7 +321,7 @@ RSpec.describe Plurimath::Asciimath::Parser do
     expect(log_base_value[8].value).to eq(")")
     # log exponent value
     expect(log_exponent_value[0].value).to eq("(")
-    expect(log_exponent_value[1].value).to eq("4 terms")
+    expect(log_exponent_value[1].string).to eq("4 terms")
     expect(log_exponent_value[2].value).to eq(")")
   end
 
@@ -428,6 +446,40 @@ RSpec.describe Plurimath::Asciimath::Parser do
     expect(overset_number_value[2].value).to eq(")")
   end
 
+  it "returns instance of Mod Formula against the string" do
+    asciimath = init_spec_resp('12mod1234(i)')
+    # initializing common used values in respective named variables
+    formula_object = asciimath.value
+    # mod formula object
+    expect(formula_object[0].class).to eql(Plurimath::Math::Function::Mod)
+    # mod object value
+    expect(formula_object[0].dividend.value).to eq("12")
+    expect(formula_object[0].divisor.value[0].value).to eq("1234")
+    # formula values
+    expect(formula_object[1].value).to eq("(")
+    expect(formula_object[2].value).to eq("i")
+    expect(formula_object[3].value).to eq(")")
+  end
+
+  it "returns instance of Mod Formula against the string" do
+    asciimath = init_spec_resp('12mod(1234)(i)')
+    # initializing common used values in respective named variables
+    formula_object = asciimath.value
+    divisor_value = formula_object[0].divisor.value
+    # mod formula object
+    expect(formula_object[0].class).to eql(Plurimath::Math::Function::Mod)
+    # mod dividend value
+    expect(formula_object[0].dividend.value).to eq("12")
+    # mod divisor value
+    expect(divisor_value[0].value).to eq("(")
+    expect(divisor_value[1].value).to eq("1234")
+    expect(divisor_value[2].value).to eq(")")
+    # formula object values
+    expect(formula_object[1].value).to eq("(")
+    expect(formula_object[2].value).to eq("i")
+    expect(formula_object[3].value).to eq(")")
+  end
+
   it "initializes Plurimath::Asciimath Cos object" do
     asciimath = Plurimath::Asciimath.new("cos(2)")
     expect(asciimath.text).to eql("cos(2)")
@@ -437,5 +489,5 @@ end
 # initializing string for parsing and calling asciimath's parser method
 def init_spec_resp(equation)
   text = StringScanner.new(equation)
-  asciimath = Plurimath::Asciimath::Parser.new(text).parse
+  Plurimath::Asciimath::Parser.new(text).parse
 end
