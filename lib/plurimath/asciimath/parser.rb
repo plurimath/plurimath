@@ -50,7 +50,7 @@ module Plurimath
       end
 
       def number_parse(klass)
-        if number?(new_node)
+        if number?
           klass.value << node_value.new(node_key)
           delete_node_at
         end
@@ -178,11 +178,7 @@ module Plurimath
         node_value(node).to_s.include?("Function") unless node.nil?
       end
 
-      def symbol?(node)
-        node_value(node).to_s.include?("Symbol") unless node.nil?
-      end
-
-      def number?(node)
+      def number?(node = new_node)
         node_value(node).to_s.include?("Number") unless node.nil?
       end
 
@@ -218,10 +214,6 @@ module Plurimath
 
       def delete_node_at(ind = 0)
         @nodes.delete_at(ind)
-      end
-
-      def class_or_symbol
-        symbols_and_classes[symbol_or_string(@text.rest.delete("(")).to_sym]
       end
 
       def read_tex_text
