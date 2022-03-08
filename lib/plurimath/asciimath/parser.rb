@@ -79,11 +79,8 @@ module Plurimath
       end
 
       def sum_prod_or_log(node, klass)
-        if node_key(node) == "log"
-          node_value(node).new(base_parser, sum_prod_exponent)
-        else
-          node_value(node).new(base_parser, sum_prod_exponent, klass)
-        end
+        sum_prod_exponent(klass)
+        node_value(node).new(base_parser, sum_prod_exponent, klass)
       end
 
       def dual_value_function
@@ -100,10 +97,9 @@ module Plurimath
         formula_klass
       end
 
-      def sum_prod_exponent
+      def sum_prod_exponent(formula_klass = formula_class)
         if new_node&.key?("^")
           delete_node_at
-          formula_klass = formula_class
           if opening_paren?(node_key)
             until_close_paren(formula_klass)
           else

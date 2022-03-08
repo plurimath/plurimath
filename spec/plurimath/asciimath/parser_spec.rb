@@ -1,5 +1,4 @@
 require_relative "../../../lib/plurimath/math"
-require "byebug"
 require "strscan"
 
 RSpec.describe Plurimath::Asciimath::Parser do
@@ -14,6 +13,18 @@ RSpec.describe Plurimath::Asciimath::Parser do
     expect(cos_value[0].value).to eq("(")
     expect(cos_value[1].value).to eq("2")
     expect(cos_value[2].value).to eq(")")
+  end
+
+  it "returns instance of Sum formula against the string" do
+    asciimath = init_spec_resp("sum(2)")
+    # initializing common used values in respective named variables
+    sum = asciimath.value.first
+    sum_value = sum.content.value
+    # sum formula
+    expect(sum.class).to eql(Plurimath::Math::Function::Sum)
+    expect(sum_value[0].value).to eq("(")
+    expect(sum_value[1].value).to eq("2")
+    expect(sum_value[2].value).to eq(")")
   end
 
   it "returns instance of Sin Formula against the string" do
