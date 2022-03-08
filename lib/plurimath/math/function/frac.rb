@@ -10,6 +10,10 @@ module Plurimath
           @dividend = dividend
           @divisor = divisor
         end
+
+        def to_asciimath
+          "frac#{dividend&.to_asciimath}#{divisor&.to_asciimath}"
+        end
       end
     end
   end

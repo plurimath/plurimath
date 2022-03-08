@@ -27,6 +27,70 @@ RSpec.describe Plurimath::Asciimath::Parser do
     expect(sum_value[2].value).to eq(")")
   end
 
+  it "returns instance of Prod formula against the string" do
+    asciimath = init_spec_resp("prod(2)")
+    # initializing common used values in respective named variables
+    prod = asciimath.value.first
+    prod_value = prod.content.value
+    # prod formula
+    expect(prod.class).to eql(Plurimath::Math::Function::Prod)
+    expect(prod_value[0].value).to eq("(")
+    expect(prod_value[1].value).to eq("2")
+    expect(prod_value[2].value).to eq(")")
+  end
+
+  it "returns instance of Prod formula against the string" do
+    asciimath = init_spec_resp("prod_(2)^3")
+    # initializing common used values in respective named variables
+    prod = asciimath.value.first
+    prod_base_value = prod.base.value
+    # prod formula
+    expect(prod.class).to eql(Plurimath::Math::Function::Prod)
+    expect(prod_base_value[0].value).to eq("(")
+    expect(prod_base_value[1].value).to eq("2")
+    expect(prod_base_value[2].value).to eq(")")
+    expect(prod.exponent.value[0].value).to eq("3")
+  end
+
+  it "returns instance of Ceil formula against the string" do
+    asciimath = init_spec_resp("ceil(2)")
+    # initializing common used values in respective named variables
+    ceil = asciimath.value.first
+    ceil_base_value = ceil.value.value
+    # ceil formula
+    expect(ceil.class).to eql(Plurimath::Math::Function::Ceil)
+    expect(ceil_base_value[0].value).to eq("(")
+    expect(ceil_base_value[1].value).to eq("2")
+    expect(ceil_base_value[2].value).to eq(")")
+  end
+
+  it "returns instance of Ceil formula against the string" do
+    asciimath = init_spec_resp("ceil_(2)^34")
+    # initializing common used values in respective named variables
+    ceil = asciimath.value.first
+    # ceil formula
+    expect(ceil.class).to eql(Plurimath::Math::Function::Ceil)
+    expect(ceil.value.value[0]).to be_nil
+    expect(asciimath.value[1].value).to eq("_")
+    expect(asciimath.value[2].value).to eq("(")
+    expect(asciimath.value[3].value).to eq("2")
+    expect(asciimath.value[4].value).to eq(")")
+    expect(asciimath.value[5].value).to eq("^")
+    expect(asciimath.value[6].value).to eq("34")
+  end
+
+  it "returns instance of Det formula against the string" do
+    asciimath = init_spec_resp("det(2)")
+    # initializing common used values in respective named variables
+    det = asciimath.value.first
+    det_value = det.scalar.value
+    # det formula
+    expect(det.class).to eql(Plurimath::Math::Function::Det)
+    expect(det_value[0].value).to eq("(")
+    expect(det_value[1].value).to eq("2")
+    expect(det_value[2].value).to eq(")")
+  end
+
   it "returns instance of Sin Formula against the string" do
     asciimath = init_spec_resp("sin(cos{theta})")
     # initializing common used values in respective named variables

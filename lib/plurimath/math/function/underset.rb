@@ -10,6 +10,10 @@ module Plurimath
           @value = value
           @symbol = symbol
         end
+
+        def to_asciimath
+          "underset#{value&.to_asciimath}#{symbol&.to_asciimath}"
+        end
       end
     end
   end

@@ -10,6 +10,10 @@ module Plurimath
           @color = color
           @value = value
         end
+
+        def to_asciimath
+          "color#{color&.to_asciimath}#{value&.to_asciimath}"
+        end
       end
     end
   end

@@ -8,6 +8,14 @@ module Plurimath
       def initialize(value = [])
         @value = value
       end
+
+      def to_asciimath
+        entities = ""
+        value.each do |entity|
+          entities += entity.to_asciimath
+        end
+        entities
+      end
     end
   end
 end

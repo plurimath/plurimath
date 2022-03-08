@@ -9,6 +9,10 @@ module Plurimath
         def initialize(scalar)
           @scalar = scalar
         end
+
+        def to_asciimath
+          "det#{scalar&.to_asciimath}"
+        end
       end
     end
   end

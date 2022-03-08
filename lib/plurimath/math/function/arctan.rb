@@ -9,6 +9,10 @@ module Plurimath
         def initialize(angle)
           @angle = angle
         end
+
+        def to_asciimath
+          "arctan#{angle&.to_asciimath}"
+        end
       end
     end
   end

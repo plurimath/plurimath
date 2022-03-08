@@ -9,6 +9,10 @@ module Plurimath
         def initialize(string)
           @string = string
         end
+
+        def to_asciimath
+          "text(#{string})"
+        end
       end
     end
   end

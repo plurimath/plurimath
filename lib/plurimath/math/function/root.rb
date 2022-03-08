@@ -10,6 +10,10 @@ module Plurimath
           @index = index
           @number = number
         end
+
+        def to_asciimath
+          "root#{index&.to_asciimath}#{number&.to_asciimath}"
+        end
       end
     end
   end

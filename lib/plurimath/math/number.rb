@@ -8,6 +8,10 @@ module Plurimath
       def initialize(value)
         @value = value
       end
+
+      def to_asciimath
+        value
+      end
     end
   end
 end

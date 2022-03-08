@@ -9,6 +9,10 @@ module Plurimath
         def initialize(dimensions)
           @dimensions = dimensions
         end
+
+        def to_asciimath
+          "dim#{dimensions&.to_asciimath}"
+        end
       end
     end
   end

@@ -9,6 +9,10 @@ module Plurimath
         def initialize(values = [])
           @values = values
         end
+
+        def to_asciimath
+          "max#{values&.to_asciimath}"
+        end
       end
     end
   end

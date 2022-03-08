@@ -9,6 +9,10 @@ module Plurimath
         def initialize(exponent)
           @exponent = exponent
         end
+
+        def to_asciimath
+          "exp#{exponent&.to_asciimath}"
+        end
       end
     end
   end

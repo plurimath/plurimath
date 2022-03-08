@@ -9,6 +9,10 @@ module Plurimath
         def initialize(number)
           @number = number
         end
+
+        def to_asciimath
+          "sqrt#{number&.to_asciimath}"
+        end
       end
     end
   end
