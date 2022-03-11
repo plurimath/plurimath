@@ -6,7 +6,7 @@ module Plurimath
       class Max
         attr_accessor :values
 
-        def initialize(values = [])
+        def initialize(values)
           @values = values
         end
 
