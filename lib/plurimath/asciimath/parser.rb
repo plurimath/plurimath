@@ -1,193 +1,152 @@
 # frozen_string_literal: true
 
+require_relative "constants"
 module Plurimath
   class Asciimath
     class Parser
       attr_accessor :text
 
-      WHITESPACE = /\s+/.freeze
-      NUMBER = /[0-9]+(?:\.[0-9]+)?/.freeze
-      QUOTED_TEXT = /"[^"]*"/.freeze
-      TEX_TEXT = /text\([^)]*\)/.freeze
-      PARENTHESES = { "(" => ")", "{" => "}", "[" => "]" }.freeze
-
       def initialize(text)
         @text = text
-        @symbols = symbols_and_classes.keys
+        @symbols = Constants::SYMBOLS_AND_CLASSES.keys
         lookahead = @symbols.map(&:length).max
         @symbol_regexp = /((?:\\[\s0-9]|[^\s0-9]){1,#{lookahead}})/
       end
 
       def parse
         create_nodes
-        klass = formula_class
-        while node = new_node
-          klass.value << intermediate_parse(node)
+        formula = Plurimath::Math::Formula.new
+        while current_node = @nodes.first
+          formula.value << intermediate_parse(current_node)
         end
-        klass
+        formula
       end
 
-      def intermediate_parse(node, ind = 0)
-        return if node.nil?
+      def intermediate_parse(current_node, ind = 0)
+        return if current_node.nil?
 
-        delete_node_at(ind)
-        formula_klass = formula_class
-        if function?(node)
-          function_parse(node, formula_klass)
+        @nodes.delete_at(ind)
+        formula = Plurimath::Math::Formula.new
+        if function?(current_node)
+          function_parse(current_node, formula)
         else
-          final_node = node_value(node).new(node_key(node))
-          final_node = mod_function_parse(final_node) if node_key == "mod"
-          final_node
+          node_object = current_node&.first&.last.new(current_node&.first&.first)
+          node_object = mod_function_parse(node_object) if @nodes&.first&.first&.first == "mod"
+          node_object
         end
       end
 
-      def function_parse(node, formula_klass)
-        if opening_paren?(node_key)
-          until_close_paren(formula_klass)
+      def function_parse(current_node, formula)
+        if Constants::PARENTHESES.key?(@nodes&.first&.first&.first)
+          parse_until_closing_parenthesis(formula)
         end
-        number_parse(formula_klass)
-        finalize_node(node, formula_klass)
+        parse_number(formula)
+        finalize_node(current_node, formula)
       end
 
-      def number_parse(klass)
+      def parse_number(formula)
         if number?
-          klass.value << node_value.new(node_key)
-          delete_node_at
+          current_node = @nodes.delete_at(0)
+          formula.value << current_node.first&.last.new(current_node.first&.first)
         end
       end
 
-      def finalize_node(node, klass)
-        new_node_key = node_key(node)
+      def finalize_node(current_node, formula)
         functions_arr = ["frac", "color", "mod", "overset", "root", "underset"]
-        node_class = node_value(node)
-        if ["sum", "prod", "log"].include?(new_node_key)
-          sum_prod_or_log(node, klass)
-        elsif functions_arr.include?(new_node_key)
-          node_class.new(klass, dual_value_function)
+        node_class = current_node&.first&.last
+        if ["sum", "prod", "log"].include?(current_node&.first&.first)
+          exponent_parser(formula)
+          current_node&.first&.last.new(base_parser, exponent_parser, formula)
+        elsif functions_arr.include?(current_node&.first&.first)
+          node_class.new(formula, dual_param_function)
         else
-          text_or_symbol_class(node, klass)
+          text_or_symbol_class(current_node, formula)
         end
       end
 
-      def text_or_symbol_class(node, klass)
-        node_class = node_value(node)
-        if text?(node)
-          node_class.new(node_key(node))
+      def text_or_symbol_class(current_node, formula)
+        node_class = current_node&.first&.last
+        if text?(current_node)
+          node_class.new(current_node&.first&.first)
         else
-          node_class.new(klass)
+          node_class.new(formula)
         end
       end
 
-      def sum_prod_or_log(node, klass)
-        sum_prod_exponent(klass)
-        node_value(node).new(base_parser, sum_prod_exponent, klass)
-      end
+      def dual_param_function
+        return nil if @nodes&.first&.nil?
 
-      def dual_value_function
-        return nil if new_node.nil?
-
-        formula_klass = formula_class
-        if opening_paren?(node_key)
-          until_close_paren(formula_klass)
+        formula = Plurimath::Math::Formula.new
+        if Constants::PARENTHESES.key?(@nodes&.first&.first&.first)
+          parse_until_closing_parenthesis(formula)
         else
-          return if closing_paren?(node_key)
+          return if Constants::PARENTHESES.value?(@nodes&.first&.first&.first)
 
-          formula_klass.value << intermediate_parse(new_node)
+          formula.value << intermediate_parse(@nodes.first)
         end
-        formula_klass
+        formula
       end
 
-      def sum_prod_exponent(formula_klass = formula_class)
-        if new_node&.key?("^")
-          delete_node_at
-          if opening_paren?(node_key)
-            until_close_paren(formula_klass)
+      def exponent_parser(formula = Plurimath::Math::Formula.new)
+        if @nodes.first&.key?("^")
+          @nodes.delete_at(0)
+          if Constants::PARENTHESES.key?(@nodes&.first&.first&.first)
+            parse_until_closing_parenthesis(formula)
           else
-            formula_klass.value << intermediate_parse(new_node)
+            formula.value << intermediate_parse(@nodes.first)
           end
-          formula_klass
+          formula
         end
       end
 
-      def base_parser(formula_klass = formula_class)
-        return unless new_node&.key?("_")
+      def base_parser
+        return unless @nodes.first&.key?("_")
 
-        delete_node_at
-        if opening_paren?(node_key)
-          until_close_paren(formula_klass)
+        formula = Plurimath::Math::Formula.new
+        @nodes.delete_at(0)
+        if Constants::PARENTHESES.key?(@nodes&.first&.first&.first)
+          parse_until_closing_parenthesis(formula)
         else
-          child_node = intermediate_parse(new_node)
-          formula_klass.value << child_node
+          child_node = intermediate_parse(@nodes.first)
+          formula.value << child_node
         end
-        formula_klass
+        formula
       end
 
-      def mod_function_parse(dividend, node = new_node)
-        delete_node_at
-        formula_klass = formula_class
-        if opening_paren?(node_key)
-          until_close_paren(formula_klass)
+      def mod_function_parse(dividend, current_node = @nodes.first)
+        @nodes.delete_at(0)
+        formula = Plurimath::Math::Formula.new
+        if Constants::PARENTHESES.key?(@nodes&.first&.first&.first)
+          parse_until_closing_parenthesis(formula)
         else
-          child_node = intermediate_parse(new_node)
-          formula_klass.value << child_node
+          child_node = intermediate_parse(@nodes.first)
+          formula.value << child_node
         end
-        node_value(node).new(dividend, formula_klass)
+        current_node&.first&.last.new(dividend, formula)
       end
 
-      def new_node(nodes = @nodes)
-        nodes.first
-      end
+      def parse_until_closing_parenthesis(formula, next_node = @nodes.first)
+        until @nodes.first.nil?
+          formula.value << intermediate_parse(next_node)
+          break if Constants::PARENTHESES.value?(next_node&.first&.first)
 
-      def node_key(node = new_node)
-        node&.first&.first
-      end
-
-      def node_value(node = new_node)
-        node&.first&.last
-      end
-
-      def until_close_paren(klass, next_node = new_node)
-        until new_node.nil?
-          klass.value << intermediate_parse(next_node)
-          break if closing_paren?(node_key(next_node))
-
-          if opening_paren?(node_key)
-            until_close_paren(klass)
+          if Constants::PARENTHESES.key?(@nodes&.first&.first&.first)
+            parse_until_closing_parenthesis(formula)
           end
-          next_node = new_node
+          next_node = @nodes.first
         end
       end
 
-      def closing_paren?(node, parens = paren_values)
-        parens.include? node
+      def function?(current_node)
+        current_node&.first&.last.to_s.include?("Function") unless current_node.nil?
       end
 
-      def opening_paren?(node, parens = paren_keys)
-        parens.include?(node)
+      def number?(current_node = @nodes.first)
+        current_node&.first&.last.to_s.include?("Number") unless current_node.nil?
       end
 
-      def paren_values
-        PARENTHESES.values
-      end
-
-      def paren_keys
-        PARENTHESES.keys
-      end
-
-      def function?(node)
-        node_value(node).to_s.include?("Function") unless node.nil?
-      end
-
-      def number?(node = new_node)
-        node_value(node).to_s.include?("Number") unless node.nil?
-      end
-
-      def text?(node)
-        node_value(node).to_s.include?("Text") unless node.nil?
-      end
-
-      def formula_class
-        Plurimath::Math::Formula.new
+      def text?(current_node)
+        current_node&.first&.last.to_s.include?("Text") unless current_node.nil?
       end
 
       def token
@@ -212,18 +171,14 @@ module Plurimath
         end
       end
 
-      def delete_node_at(ind = 0)
-        @nodes.delete_at(ind)
-      end
-
       def read_tex_text
-        read_value(TEX_TEXT) do |text|
+        read_value(Constants::TEX_TEXT) do |text|
           { text[5..-2] => Plurimath::Math::Function::Text }
         end
       end
 
       def read_quoted_text
-        read_value(QUOTED_TEXT) do |text|
+        read_value(Constants::QUOTED_TEXT) do |text|
           { text[1..-2] => Plurimath::Math::Function::Text }
         end
       end
@@ -233,7 +188,7 @@ module Plurimath
         read_value(@symbol_regexp) do |str|
           symbol_or_string(str)
           @text.pos = position + str.length
-          type = symbols_and_classes[str.to_sym]
+          type = Constants::SYMBOLS_AND_CLASSES[str.to_sym]
           value = type == :class ? initial_object(str) : Plurimath::Math::Symbol
           { str => value }
         end
@@ -247,7 +202,7 @@ module Plurimath
       end
 
       def read_number
-        read_value(NUMBER) do |number|
+        read_value(Constants::NUMBER) do |number|
           { number => Plurimath::Math::Number }
         end
       end
@@ -264,306 +219,13 @@ module Plurimath
       def create_nodes
         @nodes = []
         until @text.eos?
-          @text.scan(WHITESPACE)
+          @text.scan(Constants::WHITESPACES)
           @nodes << token
         end
       end
 
-      def initial_object(klass)
-        Object.const_get("Plurimath::Math::Function::#{klass.capitalize}")
-      end
-
-      def symbols_and_classes
-        {
-          "+": :symbol,
-          "-": :symbol,
-          "*": :symbol,
-          cdot: :symbol,
-          "**": :symbol,
-          ast: :symbol,
-          "***": :symbol,
-          star: :symbol,
-          "//": :symbol,
-          "\\\\": :symbol,
-          backslash: :symbol,
-          setminus: :symbol,
-          xx: :symbol,
-          times: :symbol,
-          "-:": :symbol,
-          div: :symbol,
-          "|><": :symbol,
-          ltimes: :symbol,
-          "><|": :symbol,
-          rtimes: :symbol,
-          "|><|": :symbol,
-          bowtie: :symbol,
-          "@": :symbol,
-          circ: :symbol,
-          "o+": :symbol,
-          oplus: :symbol,
-          ox: :symbol,
-          otimes: :symbol,
-          "o.": :symbol,
-          odot: :symbol,
-          "^^": :symbol,
-          wedge: :symbol,
-          "^^^": :symbol,
-          bigwedge: :symbol,
-          vv: :symbol,
-          vee: :symbol,
-          vvv: :symbol,
-          bigvee: :symbol,
-          nn: :symbol,
-          cap: :symbol,
-          nnn: :symbol,
-          bigcap: :symbol,
-          uu: :symbol,
-          cup: :symbol,
-          uuu: :symbol,
-          bigcup: :symbol,
-          and: :symbol,
-          or: :symbol,
-          not: :symbol,
-          neg: :symbol,
-          "=>": :symbol,
-          implies: :symbol,
-          if: :symbol,
-          "<=>": :symbol,
-          iff: :symbol,
-          AA: :symbol,
-          forall: :symbol,
-          EE: :symbol,
-          exists: :symbol,
-          "_|_": :symbol,
-          bot: :symbol,
-          TT: :symbol,
-          top: :symbol,
-          "|--": :symbol,
-          vdash: :symbol,
-          "|==": :symbol,
-          models: :symbol,
-          uarr: :symbol,
-          uparrow: :symbol,
-          darr: :symbol,
-          downarrow: :symbol,
-          rarr: :symbol,
-          rightarrow: :symbol,
-          "->": :symbol,
-          to: :symbol,
-          ">->": :symbol,
-          rightarrowtail: :symbol,
-          "->>": :symbol,
-          twoheadrightarrow: :symbol,
-          ">->>": :symbol,
-          twoheadrightarrowtail: :symbol,
-          "|->": :symbol,
-          mapsto: :symbol,
-          larr: :symbol,
-          leftarrow: :symbol,
-          harr: :symbol,
-          leftrightarrow: :symbol,
-          rArr: :symbol,
-          Rightarrow: :symbol,
-          lArr: :symbol,
-          Leftarrow: :symbol,
-          hArr: :symbol,
-          Leftrightarrow: :symbol,
-          alpha: :symbol,
-          beta: :symbol,
-          gamma: :symbol,
-          delta: :symbol,
-          epsilon: :symbol,
-          varepsilon: :symbol,
-          zeta: :symbol,
-          eta: :symbol,
-          theta: :symbol,
-          vartheta: :symbol,
-          iota: :symbol,
-          kappa: :symbol,
-          lambda: :symbol,
-          mu: :symbol,
-          nu: :symbol,
-          xi: :symbol,
-          pi: :symbol,
-          rho: :symbol,
-          sigma: :symbol,
-          tau: :symbol,
-          upsilon: :symbol,
-          phi: :symbol,
-          varphi: :symbol,
-          chi: :symbol,
-          psi: :symbol,
-          omega: :symbol,
-          Omega: :symbol,
-          Psi: :symbol,
-          Phi: :symbol,
-          Sigma: :symbol,
-          Pi: :symbol,
-          Xi: :symbol,
-          Lambda: :symbol,
-          Theta: :symbol,
-          Delta: :symbol,
-          Gamma: :symbol,
-          int: :symbol,
-          oint: :symbol,
-          del: :symbol,
-          partial: :symbol,
-          grad: :symbol,
-          nabla: :symbol,
-          "+-": :symbol,
-          pm: :symbol,
-          "O/": :symbol,
-          emptyset: :symbol,
-          oo: :symbol,
-          infty: :symbol,
-          aleph: :symbol,
-          ":.": :symbol,
-          therefore: :symbol,
-          ":'": :symbol,
-          because: :symbol,
-          "|...|": :symbol,
-          "|ldots|": :symbol,
-          "|cdots|": :symbol,
-          vdots: :symbol,
-          ddots: :symbol,
-          "|\\ |": :symbol,
-          "|quad|": :symbol,
-          "/_": :symbol,
-          angle: :symbol,
-          frown: :symbol,
-          "/_\\": :symbol,
-          triangle: :symbol,
-          diamond: :symbol,
-          square: :symbol,
-          "|__": :symbol,
-          lfloor: :symbol,
-          "__|": :symbol,
-          rfloor: :symbol,
-          "|~": :symbol,
-          lceiling: :symbol,
-          "~|": :symbol,
-          rceiling: :symbol,
-          CC: :symbol,
-          NN: :symbol,
-          QQ: :symbol,
-          RR: :symbol,
-          ZZ: :symbol,
-          "(": :symbol,
-          ")": :symbol,
-          "[": :symbol,
-          "]": :symbol,
-          "{": :symbol,
-          "}": :symbol,
-          "(:": :symbol,
-          ":)": :symbol,
-          "<<": :symbol,
-          ">>": :symbol,
-          "{: x )": :symbol,
-          "( x :}": :symbol,
-          "=": :symbol,
-          "!=": :symbol,
-          ne: :symbol,
-          "<": :symbol,
-          lt: :symbol,
-          ">": :symbol,
-          gt: :symbol,
-          "<=": :symbol,
-          le: :symbol,
-          ">=": :symbol,
-          ge: :symbol,
-          mlt: :symbol,
-          ll: :symbol,
-          mgt: :symbol,
-          gg: :symbol,
-          "-<": :symbol,
-          prec: :symbol,
-          "-<=": :symbol,
-          preceq: :symbol,
-          ">-": :symbol,
-          succ: :symbol,
-          ">-=": :symbol,
-          succeq: :symbol,
-          in: :symbol,
-          "!in": :symbol,
-          notin: :symbol,
-          sub: :symbol,
-          subset: :symbol,
-          sup: :symbol,
-          supset: :symbol,
-          sube: :symbol,
-          subseteq: :symbol,
-          supe: :symbol,
-          supseteq: :symbol,
-          "-=": :symbol,
-          equiv: :symbol,
-          "~=": :symbol,
-          cong: :symbol,
-          "~~": :symbol,
-          approx: :symbol,
-          prop: :symbol,
-          propto: :symbol,
-          "^": :symbol,
-          "/": :symbol,
-          _: :symbol,
-          sin: :class,
-          tan: :class,
-          cos: :class,
-          arccos: :class,
-          arcsin: :class,
-          arctan: :class,
-          cosh: :class,
-          cot: :class,
-          coth: :class,
-          csc: :class,
-          csch: :class,
-          det: :class,
-          dim: :class,
-          exp: :class,
-          f: :class,
-          g: :class,
-          gcd: :class,
-          glb: :class,
-          lcm: :class,
-          ln: :class,
-          log: :class,
-          lub: :class,
-          max: :class,
-          min: :class,
-          mod: :class,
-          sec: :class,
-          sech: :class,
-          sinh: :class,
-          tanh: :class,
-          frac: :class,
-          root: :class,
-          sqrt: :class,
-          text: :class,
-          abs: :class,
-          bar: :class,
-          cancel: :class,
-          ceil: :class,
-          color: :class,
-          ddot: :class,
-          dot: :class,
-          floor: :class,
-          hat: :class,
-          norm: :class,
-          obrace: :class,
-          overset: :class,
-          tilde: :class,
-          ubrace: :class,
-          ul: :class,
-          underset: :class,
-          vec: :class,
-          mathbb: :class,
-          mathbf: :class,
-          mathcal: :class,
-          mathfrak: :class,
-          mathsf: :class,
-          mathtt: :class,
-          sum: :class,
-          prod: :class,
-        }
+      def initial_object(formula)
+        Object.const_get("Plurimath::Math::Function::#{formula.capitalize}")
       end
     end
   end
