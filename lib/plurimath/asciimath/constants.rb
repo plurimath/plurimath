@@ -8,7 +8,7 @@ module Plurimath
       QUOTED_TEXT = /"[^"]*"/.freeze
       TEX_TEXT = /text\([^)]*\)/.freeze
       PARENTHESES = { "(" => ")", "{" => "}", "[" => "]" }.freeze
-      SYMBOLS_AND_CLASSES = {
+      SYMBOLS = {
         "+": :symbol,
         "-": :symbol,
         "*": :symbol,
@@ -182,14 +182,6 @@ module Plurimath
         QQ: :symbol,
         RR: :symbol,
         ZZ: :symbol,
-        "(": :symbol,
-        ")": :symbol,
-        "[": :symbol,
-        "]": :symbol,
-        "{": :symbol,
-        "}": :symbol,
-        "(:": :symbol,
-        ":)": :symbol,
         "<<": :symbol,
         ">>": :symbol,
         "{: x )": :symbol,
@@ -236,9 +228,9 @@ module Plurimath
         approx: :symbol,
         prop: :symbol,
         propto: :symbol,
-        "^": :symbol,
         "/": :symbol,
-        _: :symbol,
+      }
+      UNARY_CLASSES = {
         sin: :class,
         tan: :class,
         cos: :class,
@@ -259,35 +251,28 @@ module Plurimath
         glb: :class,
         lcm: :class,
         ln: :class,
-        log: :class,
         lub: :class,
         max: :class,
         min: :class,
-        mod: :class,
         sec: :class,
         sech: :class,
         sinh: :class,
         tanh: :class,
-        frac: :class,
-        root: :class,
         sqrt: :class,
         text: :class,
         abs: :class,
         bar: :class,
         cancel: :class,
         ceil: :class,
-        color: :class,
         ddot: :class,
         dot: :class,
         floor: :class,
         hat: :class,
         norm: :class,
         obrace: :class,
-        overset: :class,
         tilde: :class,
         ubrace: :class,
         ul: :class,
-        underset: :class,
         vec: :class,
         mathbb: :class,
         mathbf: :class,
@@ -295,10 +280,34 @@ module Plurimath
         mathfrak: :class,
         mathsf: :class,
         mathtt: :class,
+      }
+      BINARY_CLASSES = {
+        overset: :class,
+        mod: :class,
+        root: :class,
+        underset: :class,
+        color: :class,
+        frac: :class,
+        stackrel: :class,
         sum: :class,
         prod: :class,
+        log: :class,
       }
-
+      LPAREN = {
+        '(': :left_paren,
+        '{': :left_paren,
+        '(:': :left_paren,
+        '[': :left_paren,
+        '{:': :left_paren,
+      }
+      RPAREN = {
+        ')': :right_paren,
+        '}': :right_paren,
+        ']': :right_paren,
+        ':)': :right_paren,
+        ':}': :right_paren,
+      }
+      SYMBOLS_AND_CLASSES = SYMBOLS.merge(UNARY_CLASSES).merge(BINARY_CLASSES).merge(LPAREN).merge(RPAREN)
       end
     end
   end

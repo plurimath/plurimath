@@ -1,231 +1,163 @@
 # frozen_string_literal: true
 
+require "parslet"
+require "parslet/convenience"
 require_relative "constants"
 module Plurimath
   class Asciimath
+    class MiniT < Parslet::Transform
+      rule(number: simple(:number)) { Plurimath::Math::Number.new(number) }
+      Constants::SYMBOLS.each do |sy_cl|
+        rule("#{sy_cl[0]}": simple(:function)) { Plurimath::Math::Symbol.new(sy_cl[0].to_s) }
+      end
+      Constants::UNARY_CLASSES.each do |sy_cl|
+        rule("#{sy_cl[0]}": simple(:function), intermediate_exp: simple(:int_exp)) {
+          Object.const_get("Plurimath::Math::Function::#{function.to_s.capitalize}").new(int_exp)
+        }
+      end
+      Constants::BINARY_CLASSES.each do |sy_cl|
+        rule("#{sy_cl[0]}": simple(:function), intermediate_exp: simple(:int_exp)) {
+          Object.const_get("Plurimath::Math::Function::#{function.to_s.capitalize}").new(int_exp)
+        }
+      end
+
+      # rule(sin: simple(:sin), intermediate_exp: simple(:express)) { Plurimath::Math::Function::Sin.new(express) }
+      # rule(cos: simple(:cos), intermediate_exp: simple(:express)) {
+      #  Plurimath::Math::Function::Cos.new(express)
+      # }
+      rule(unary: simple(:unary)) { unary }
+      rule("(": simple(:left_paren), expr: simple(:expr), ")": simple(:right_paren)) {
+        lp = Plurimath::Math::Symbol.new(left_paren.to_s)
+        exp = expr
+        rp = Plurimath::Math::Symbol.new(right_paren.to_s)
+        Plurimath::Math::Formula.new([lp, exp, rp])
+      }
+      rule("{": simple(:left_paren), expr: simple(:expr), "}": simple(:right_paren)) {
+        lp = Plurimath::Math::Symbol.new(left_paren.to_s)
+        exp = expr
+        rp = Plurimath::Math::Symbol.new(right_paren.to_s)
+        Plurimath::Math::Formula.new([lp, exp, rp])
+      }
+      rule(power_base: subtree(:power_base)) {
+        new_klass = nil
+        base = []
+        exponent = []
+        power_base.each do |key, value|
+          if key == :"^"
+            base = exponent
+            exponent = []
+            next
+          end
+
+          next if :_ == key
+
+          if Constants::SYMBOLS_AND_CLASSES[key.to_sym] == :class
+            new_klass = Object.const_get("Plurimath::Math::Function::#{key.to_s.capitalize}")
+          elsif value.kind_of? Slice
+            exponent << Plurimath::Math::Symbol.new(value.to_s)
+          else
+            exponent << value
+          end
+        end
+        new_klass.new(base, exponent)
+      }
+      rule(power: subtree(:power)) {
+        new_klass = nil
+        exponent = []
+        power.each do |key, value|
+          next if key == :"^"
+
+          if Constants::SYMBOLS_AND_CLASSES[key.to_sym] == :class
+            new_klass = Object.const_get("Plurimath::Math::Function::#{key.to_s.capitalize}")
+          elsif value.kind_of? Slice
+            exponent << Plurimath::Math::Symbol.new(value.to_s)
+          else
+            exponent << value
+          end
+        end
+        new_klass.new(exponent)
+      }
+      rule(base: subtree(:base)) {
+        new_klass = nil
+        new_symbols = []
+        base.each do |key, value|
+          next if key == :_
+
+          if Constants::SYMBOLS_AND_CLASSES[key.to_sym] == :class
+            new_klass = Object.const_get("Plurimath::Math::Function::#{key.to_s.capitalize}")
+          elsif value.kind_of? Slice
+            new_symbols << Plurimath::Math::Symbol.new(value.to_s)
+          else
+            new_symbols << value
+          end
+        end
+        new_klass.new(new_symbols) unless new_klass.nil?
+      }
+      rule(symbol: subtree(:symbol)) { Plurimath::Math::Symbol.new(symbol.to_s) }
+      rule(intermediate_exp: subtree(:intermediate_exp)) { intermediate_exp }
+      rule(sequance: simple(:sequance), expr: simple(:expr)) {
+        unless sequance.is_a?(Plurimath::Math::Symbol) || sequance.is_a?(Plurimath::Math::Number)
+          sequance.new(expr)
+        else
+          [sequance, expr]
+        end
+      }
+      rule(sequance: subtree(:sequance)) { sequance }
+      rule(expr: subtree(:expr)) { expr }
+    end
+
+    class MiniP < Parslet::Parser
+      rule(:symbols) {
+        Constants::SYMBOLS.reduce do |expression, exp_string|
+          expression = str(expression[0]).as(expression[0]) if expression.is_a?(Array)
+          expression.send(:|, str(exp_string[0]).as(exp_string[0]))
+        end
+      }
+      rule(:symbol_text_or_integer) { symbols | unary | binary | match['a-zA-Z'].as(:symbol) | match('[0-9]').repeat(1).as(:number) }
+      rule(:unary) {
+        Constants::UNARY_CLASSES.reduce do |expression, exp_string|
+          expression = str(expression[0]).as(expression[0]) if expression.is_a?(Array)
+          expression.send(:|, str(exp_string[0]).as(exp_string[0]))
+        end
+      }
+      rule(:binary) {
+        Constants::BINARY_CLASSES.reduce do |expression, exp_string|
+          expression = str(expression[0]).as(expression[0]) if expression.is_a?(Array)
+          expression.send(:|, str(exp_string[0]).as(exp_string[0]))
+        end
+      }
+      rule(:lparen) {
+        Constants::LPAREN.reduce do |expression, exp_string|
+          expression = str(expression[0]).as(expression[0]) if expression.is_a?(Array)
+          expression.send(:|, str(exp_string[0]).as(exp_string[0]))
+        end
+      }
+      rule(:rparen) {
+        Constants::RPAREN.reduce do |expression, exp_string|
+          expression = str(expression[0]).as(expression[0]) if expression.is_a?(Array)
+          expression.send(:|, str(exp_string[0]).as(exp_string[0]))
+        end
+      }
+      rule(:sequance) { (lparen >> expression >> rparen).as(:intermediate_exp) | (unary >> sequance).as(:unary) | (binary >> sequance >> sequance).as(:binary) | symbol_text_or_integer }
+      rule(:power) { str('^').as(:'^') }
+      rule(:base) { str('_').as(:'_') }
+      rule(:iteration) { (sequance >> base >> sequance >> power >> sequance).as(:power_base) | (sequance >> base >> sequance).as(:base) | (sequance >> power >> sequance).as(:power) | sequance.as(:sequance) }
+      rule(:expression) { (iteration >> expression).as(:expr) | (iteration >> str('/').as(:'/') >> iteration).as(:expr) | iteration.as(:expr) }
+      rule(:conclude) { expression }
+      root :conclude
+    end
+
     class Parser
       attr_accessor :text
 
       def initialize(text)
-        @text = text
-        @symbols = Constants::SYMBOLS_AND_CLASSES.keys
-        lookahead = @symbols.map(&:length).max
-        @symbol_regexp = /((?:\\[\s0-9]|[^\s0-9]){1,#{lookahead}})/
+        @text = text.string.gsub(' ', '')
       end
 
       def parse
-        create_nodes
-        formula = Plurimath::Math::Formula.new
-        while current_node = @nodes.first
-          formula.value << intermediate_parse(current_node)
-        end
-        formula
-      end
-
-      def intermediate_parse(current_node, ind = 0)
-        return if current_node.nil?
-
-        @nodes.delete_at(ind)
-        formula = Plurimath::Math::Formula.new
-        if function?(current_node)
-          function_parse(current_node, formula)
-        else
-          node_object = current_node&.first&.last.new(current_node&.first&.first)
-          node_object = mod_function_parse(node_object) if @nodes&.first&.first&.first == "mod"
-          node_object
-        end
-      end
-
-      def function_parse(current_node, formula)
-        if Constants::PARENTHESES.key?(@nodes&.first&.first&.first)
-          parse_until_closing_parenthesis(formula)
-        end
-        parse_number(formula)
-        finalize_node(current_node, formula)
-      end
-
-      def parse_number(formula)
-        if number?
-          current_node = @nodes.delete_at(0)
-          formula.value << current_node.first&.last.new(current_node.first&.first)
-        end
-      end
-
-      def finalize_node(current_node, formula)
-        functions_arr = ["frac", "color", "mod", "overset", "root", "underset"]
-        node_class = current_node&.first&.last
-        if ["sum", "prod", "log"].include?(current_node&.first&.first)
-          exponent_parser(formula)
-          current_node&.first&.last.new(base_parser, exponent_parser, formula)
-        elsif functions_arr.include?(current_node&.first&.first)
-          node_class.new(formula, dual_param_function)
-        else
-          text_or_symbol_class(current_node, formula)
-        end
-      end
-
-      def text_or_symbol_class(current_node, formula)
-        node_class = current_node&.first&.last
-        if text?(current_node)
-          node_class.new(current_node&.first&.first)
-        else
-          node_class.new(formula)
-        end
-      end
-
-      def dual_param_function
-        return nil if @nodes&.first&.nil?
-
-        formula = Plurimath::Math::Formula.new
-        if Constants::PARENTHESES.key?(@nodes&.first&.first&.first)
-          parse_until_closing_parenthesis(formula)
-        else
-          return if Constants::PARENTHESES.value?(@nodes&.first&.first&.first)
-
-          formula.value << intermediate_parse(@nodes.first)
-        end
-        formula
-      end
-
-      def exponent_parser(formula = Plurimath::Math::Formula.new)
-        if @nodes.first&.key?("^")
-          @nodes.delete_at(0)
-          if Constants::PARENTHESES.key?(@nodes&.first&.first&.first)
-            parse_until_closing_parenthesis(formula)
-          else
-            formula.value << intermediate_parse(@nodes.first)
-          end
-          formula
-        end
-      end
-
-      def base_parser
-        return unless @nodes.first&.key?("_")
-
-        formula = Plurimath::Math::Formula.new
-        @nodes.delete_at(0)
-        if Constants::PARENTHESES.key?(@nodes&.first&.first&.first)
-          parse_until_closing_parenthesis(formula)
-        else
-          child_node = intermediate_parse(@nodes.first)
-          formula.value << child_node
-        end
-        formula
-      end
-
-      def mod_function_parse(dividend, current_node = @nodes.first)
-        @nodes.delete_at(0)
-        formula = Plurimath::Math::Formula.new
-        if Constants::PARENTHESES.key?(@nodes&.first&.first&.first)
-          parse_until_closing_parenthesis(formula)
-        else
-          child_node = intermediate_parse(@nodes.first)
-          formula.value << child_node
-        end
-        current_node&.first&.last.new(dividend, formula)
-      end
-
-      def parse_until_closing_parenthesis(formula, next_node = @nodes.first)
-        until @nodes.first.nil?
-          formula.value << intermediate_parse(next_node)
-          break if Constants::PARENTHESES.value?(next_node&.first&.first)
-
-          if Constants::PARENTHESES.key?(@nodes&.first&.first&.first)
-            parse_until_closing_parenthesis(formula)
-          end
-          next_node = @nodes.first
-        end
-      end
-
-      def function?(current_node)
-        current_node&.first&.last.to_s.include?("Function") unless current_node.nil?
-      end
-
-      def number?(current_node = @nodes.first)
-        current_node&.first&.last.to_s.include?("Number") unless current_node.nil?
-      end
-
-      def text?(current_node)
-        current_node&.first&.last.to_s.include?("Text") unless current_node.nil?
-      end
-
-      def token
-        case @text.peek(1)
-        when '"'
-          read_quoted_text
-        when "t"
-          read_text
-        when "-", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"
-          read_number || read_symbols
-        else
-          read_symbols
-        end
-      end
-
-      def read_text
-        case @text.peek(5)
-        when "text("
-          read_tex_text
-        else
-          read_symbols
-        end
-      end
-
-      def read_tex_text
-        read_value(Constants::TEX_TEXT) do |text|
-          { text[5..-2] => Plurimath::Math::Function::Text }
-        end
-      end
-
-      def read_quoted_text
-        read_value(Constants::QUOTED_TEXT) do |text|
-          { text[1..-2] => Plurimath::Math::Function::Text }
-        end
-      end
-
-      def read_symbols
-        position = @text.pos
-        read_value(@symbol_regexp) do |str|
-          symbol_or_string(str)
-          @text.pos = position + str.length
-          type = Constants::SYMBOLS_AND_CLASSES[str.to_sym]
-          value = type == :class ? initial_object(str) : Plurimath::Math::Symbol
-          { str => value }
-        end
-      end
-
-      def symbol_or_string(str)
-        until str.length == 1 || @symbols.include?(str.to_sym)
-          str.chop!
-        end
-        str
-      end
-
-      def read_number
-        read_value(Constants::NUMBER) do |number|
-          { number => Plurimath::Math::Number }
-        end
-      end
-
-      def read_value(regex)
-        str = @text.scan(regex)
-        if str && block_given?
-          yield str
-        else
-          str
-        end
-      end
-
-      def create_nodes
-        @nodes = []
-        until @text.eos?
-          @text.scan(Constants::WHITESPACES)
-          @nodes << token
-        end
-      end
-
-      def initial_object(formula)
-        Object.const_get("Plurimath::Math::Function::#{formula.capitalize}")
+        @new_nodes = MiniP.new.parse_with_debug(text)
+        tree_t = Plurimath::Asciimath::MiniT.new.apply(@new_nodes)
+        Plurimath::Math::Formula.new([tree_t])
       end
     end
   end

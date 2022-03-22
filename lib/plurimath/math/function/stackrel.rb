@@ -3,7 +3,7 @@
 module Plurimath
   module Math
     module Function
-      class Power
+      class Stackrel
         attr_accessor :base, :exponent
 
         def initialize(base, exponent)

@@ -4,12 +4,11 @@ module Plurimath
   module Math
     module Function
       class Sum
-        attr_accessor :base, :exponent, :content
+        attr_accessor :base, :exponent
 
-        def initialize(base = nil, exponent = nil, content = nil)
+        def initialize(base = nil, exponent = nil)
           @base = base
           @exponent = exponent
-          @content = content
         end
         alias :value :base
       end

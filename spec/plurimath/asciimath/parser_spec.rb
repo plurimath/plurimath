@@ -19,7 +19,7 @@ RSpec.describe Plurimath::Asciimath::Parser do
     asciimath = init_spec_resp("sum(2)")
     # initializing common used values in respective named variables
     sum = asciimath.value.first
-    sum_value = sum.content.value
+    sum_value = sum.base.value
     # sum formula
     expect(sum.class).to eql(Plurimath::Math::Function::Sum)
     expect(sum_value[0].value).to eq("(")
@@ -49,7 +49,7 @@ RSpec.describe Plurimath::Asciimath::Parser do
     # initializing common used values in respective named variables
     sin = asciimath.value.first
     sin_value = sin.angle.value
-    sum_value = sin_value[1].base.value
+    sum_value = sin_value[1].base[0].value
     # sin formula object
     expect(sin.class).to eql(Plurimath::Math::Function::Sin)
     expect(sin_value[0].value).to eq("(")
@@ -66,7 +66,7 @@ RSpec.describe Plurimath::Asciimath::Parser do
     # initializing common used values in respective named variables
     sin = asciimath.value.first
     sin_value = sin.angle.value
-    sum_value = sin_value[1].base.value
+    sum_value = sin_value[1].base[0].value
     # sin formula object
     expect(sin.class).to eql(Plurimath::Math::Function::Sin)
     expect(sin_value[0].value).to eq("(")
@@ -77,7 +77,7 @@ RSpec.describe Plurimath::Asciimath::Parser do
     expect(sum_value[1].value).to eql("theta")
     expect(sum_value[2].value).to eql(")")
     # sum formula exponent value
-    expect(sin_value[1].exponent.value[0].value).to eql("3")
+    expect(sin_value[1].exponent[0].value).to eql("3")
   end
 
   it "returns instance of Sin Formula against the string" do
@@ -85,17 +85,17 @@ RSpec.describe Plurimath::Asciimath::Parser do
     # initializing common used values in respective named variables
     sin = asciimath.value.first
     sin_value = sin.angle.value
-    sum_value = sin_value[1].base.value
-    expo_sin_value = sin_value[1].exponent.value[0].angle.value
+    sum_value = sin_value[1].base[0]
+    expo_sin_value = sin_value[1].exponent[0].angle.value
     # sin formula object
     expect(sin.class).to eql(Plurimath::Math::Function::Sin)
     expect(sin_value[0].value).to eq("(")
     expect(sin_value[1].class).to eql(Plurimath::Math::Function::Sum)
     expect(sin_value[2].value).to eq(")")
     # sin => sum formula object
-    expect(sum_value[0].value).to eql("(")
-    expect(sum_value[1].value).to eql("theta")
-    expect(sum_value[2].value).to eql(")")
+    expect(sum_value.value[0].value).to eql("(")
+    expect(sum_value.value[1].value).to eql("theta")
+    expect(sum_value.value[2].value).to eql(")")
     # sin => sum => sin formula object
     expect(expo_sin_value[0].value).to eql("(")
     expect(expo_sin_value[1].value).to eql("theta")
@@ -103,9 +103,10 @@ RSpec.describe Plurimath::Asciimath::Parser do
   end
 
   it "returns instance of Sin Formula against the string" do
-    asciimath = init_spec_resp("sin(sum_(theta)^sin(cong)) = {1+1}")
+    asciimath = init_spec_resp("sin(sum_(theta)^sin(cong))=[1+1]")
     # initializing common used values in respective named variables
     sin = asciimath.value.first
+    # debugger
     sin_value = sin.angle.value
     sum_value = sin_value[1].base.value
     expo_sin_value = sin_value[1].exponent.value[0].angle.value
@@ -131,7 +132,7 @@ RSpec.describe Plurimath::Asciimath::Parser do
   end
 
   it "returns instance of Sum Formula against the string" do
-    asciimath = init_spec_resp("sum_(i=1)^n i^3=sin((n(n+1))/2)^2")
+    asciimath = init_spec_resp("sum_(i=1)^ni^3=sin((n(n+1))/2)^2")
     # initializing common used values in respective named variables
     sum = asciimath.value.first
     sum_value = sum.base.value
@@ -253,7 +254,7 @@ RSpec.describe Plurimath::Asciimath::Parser do
   end
 
   it "returns instance of Formula against the string without formula" do
-    asciimath = init_spec_resp("int_0^1 f(x)dx")
+    asciimath = init_spec_resp("int_0^1f(x)dx")
     # initializing common used values in respective named variables
     formula = asciimath.value
     f_value = formula[5].value.value
