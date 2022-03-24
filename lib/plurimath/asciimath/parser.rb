@@ -21,10 +21,6 @@ module Plurimath
         }
       end
 
-      # rule(sin: simple(:sin), intermediate_exp: simple(:express)) { Plurimath::Math::Function::Sin.new(express) }
-      # rule(cos: simple(:cos), intermediate_exp: simple(:express)) {
-      #  Plurimath::Math::Function::Cos.new(express)
-      # }
       rule(unary: simple(:unary)) { unary }
       rule("(": simple(:left_paren), expr: simple(:expr), ")": simple(:right_paren)) {
         lp = Plurimath::Math::Symbol.new(left_paren.to_s)
