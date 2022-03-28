@@ -10,7 +10,10 @@ module Plurimath
           @base = base
           @exponent = exponent
         end
-        alias :value :base
+
+        def ==(object)
+          object.base == base && object.exponent == exponent
+        end
       end
     end
   end

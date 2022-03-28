@@ -10,6 +10,10 @@ module Plurimath
           @dividend = dividend
           @divisor = divisor
         end
+
+        def ==(object)
+          object.dividend == dividend && object.divisor == divisor
+        end
       end
     end
   end

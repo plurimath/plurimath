@@ -10,6 +10,10 @@ module Plurimath
           @index = index
           @number = number
         end
+
+        def ==(object)
+          object.index == index && object.number == number
+        end
       end
     end
   end

@@ -9,6 +9,10 @@ module Plurimath
         def initialize(scalar)
           @scalar = scalar
         end
+
+        def ==(object)
+          object == scalar
+        end
       end
     end
   end

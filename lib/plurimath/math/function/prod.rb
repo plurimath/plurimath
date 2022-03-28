@@ -10,6 +10,10 @@ module Plurimath
           @base = base
           @exponent = exponent
         end
+
+        def ==(object)
+          object.base == base && object.exponent
+        end
       end
     end
   end

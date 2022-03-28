@@ -9,6 +9,10 @@ module Plurimath
         def initialize(values = [])
           @values = values
         end
+
+        def ==(object)
+          object == values
+        end
       end
     end
   end

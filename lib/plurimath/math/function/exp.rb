@@ -9,6 +9,10 @@ module Plurimath
         def initialize(exponent)
           @exponent = exponent
         end
+
+        def ==(object)
+          object == exponent
+        end
       end
     end
   end

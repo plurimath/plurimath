@@ -9,6 +9,10 @@ module Plurimath
         def initialize(text)
           @text = text
         end
+
+        def ==(object)
+          object == text
+        end
       end
     end
   end

@@ -9,6 +9,10 @@ module Plurimath
         def initialize(number)
           @number = number
         end
+
+        def ==(object)
+          object == number
+        end
       end
     end
   end

@@ -10,6 +10,10 @@ module Plurimath
           @value = value
           @symbol = symbol
         end
+
+        def ==(object)
+          object.value == value && object.symbol == symbol
+        end
       end
     end
   end

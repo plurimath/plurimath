@@ -9,6 +9,10 @@ module Plurimath
         def initialize(angle)
           @angle = angle
         end
+
+        def ==(object)
+          object == angle
+        end
       end
     end
   end

@@ -9,6 +9,10 @@ module Plurimath
         def initialize(dimensions)
           @dimensions = dimensions
         end
+
+        def ==(object)
+          object == dimensions
+        end
       end
     end
   end

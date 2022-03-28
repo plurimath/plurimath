@@ -6,7 +6,11 @@ module Plurimath
       attr_accessor :value
 
       def initialize(value = [])
-        @value = value
+        @value = value.is_a?(Array) ? value : [value]
+      end
+
+      def ==(object)
+        object == value
       end
     end
   end
