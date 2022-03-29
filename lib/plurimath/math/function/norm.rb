@@ -13,6 +13,10 @@ module Plurimath
         def to_asciimath
           "norm#{value&.to_asciimath}"
         end
+
+        def ==(object)
+          object == value
+        end
       end
     end
   end

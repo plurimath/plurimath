@@ -4,12 +4,15 @@ module Plurimath
   module Math
     module Function
       class Log
-        attr_accessor :base, :exponent, :content
+        attr_accessor :base, :exponent
 
-        def initialize(base, exponent, content)
+        def initialize(base = nil, exponent = nil)
           @base = base
           @exponent = exponent
-          @content = content
+        end
+
+        def ==(object)
+          object.base == base && object.exponent == exponent
         end
 
         def to_asciimath

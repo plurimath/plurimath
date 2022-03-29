@@ -13,6 +13,10 @@ module Plurimath
         def to_asciimath
           "dim#{dimensions&.to_asciimath}"
         end
+
+        def ==(object)
+          object == dimensions
+        end
       end
     end
   end

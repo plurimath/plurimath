@@ -14,6 +14,10 @@ module Plurimath
         def to_asciimath
           "root#{index&.to_asciimath}#{number&.to_asciimath}"
         end
+
+        def ==(object)
+          object.index == index && object.number == number
+        end
       end
     end
   end

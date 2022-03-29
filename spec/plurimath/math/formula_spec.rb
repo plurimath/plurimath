@@ -9,7 +9,7 @@ RSpec.describe Plurimath::Math::Formula do
 
   it 'returns Formula instance' do
     formula = Plurimath::Math::Formula.new('1 + 2')
-    expect(formula.value).to eql('1 + 2')
+    expect(formula.value).to eql(['1 + 2'])
   end
 
   it 'converts formula back to Asciimath string for cos function' do

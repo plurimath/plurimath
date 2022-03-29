@@ -13,6 +13,10 @@ module Plurimath
         def to_asciimath
           "exp#{exponent&.to_asciimath}"
         end
+
+        def ==(object)
+          object == exponent
+        end
       end
     end
   end

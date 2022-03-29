@@ -13,6 +13,10 @@ module Plurimath
         def to_asciimath
           "gcd#{values&.to_asciimath}"
         end
+
+        def ==(object)
+          object == values
+        end
       end
     end
   end

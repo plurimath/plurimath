@@ -13,6 +13,10 @@ module Plurimath
         def to_asciimath
           "mathtt#{text&.to_asciimath}"
         end
+
+        def ==(object)
+          object == text
+        end
       end
     end
   end

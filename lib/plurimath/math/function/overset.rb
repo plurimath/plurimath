@@ -14,6 +14,10 @@ module Plurimath
         def to_asciimath
           "overset#{value&.to_asciimath}#{symbol&.to_asciimath}"
         end
+
+        def ==(object)
+          object.value == value && object.symbol == symbol
+        end
       end
     end
   end

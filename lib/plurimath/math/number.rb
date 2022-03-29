@@ -12,6 +12,10 @@ module Plurimath
       def to_asciimath
         value
       end
+
+      def ==(object)
+        object.value == value
+      end
     end
   end
 end

@@ -6,13 +6,17 @@ module Plurimath
       class Underset
         attr_accessor :value, :symbol
 
-        def initialize(value, symbol)
+        def initialize(value = nil, symbol = nil)
           @value = value
           @symbol = symbol
         end
 
         def to_asciimath
           "underset#{value&.to_asciimath}#{symbol&.to_asciimath}"
+        end
+
+        def ==(object)
+          object.value == value && object.symbol == symbol
         end
       end
     end

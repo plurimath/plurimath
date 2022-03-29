@@ -4,12 +4,11 @@ module Plurimath
   module Math
     module Function
       class Sum
-        attr_accessor :base, :exponent, :content
+        attr_accessor :base, :exponent
 
-        def initialize(base = nil, exponent = nil, content = nil)
+        def initialize(base = nil, exponent = nil)
           @base = base
           @exponent = exponent
-          @content = content
         end
 
         def to_asciimath
@@ -26,6 +25,10 @@ module Plurimath
 
         def exponent_to_s
           "^#{exponent.to_asciimath}" unless exponent.nil?
+        end
+
+        def ==(object)
+          object.base == base && object.exponent == exponent
         end
       end
     end

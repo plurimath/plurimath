@@ -13,6 +13,10 @@ module Plurimath
         def to_asciimath
           "sqrt#{number&.to_asciimath}"
         end
+
+        def ==(object)
+          object == number
+        end
       end
     end
   end

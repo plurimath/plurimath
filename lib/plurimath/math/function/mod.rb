@@ -14,6 +14,10 @@ module Plurimath
         def to_asciimath
           "#{dividend&.to_asciimath}mod#{divisor&.to_asciimath}"
         end
+
+        def ==(object)
+          object.dividend == dividend && object.divisor == divisor
+        end
       end
     end
   end

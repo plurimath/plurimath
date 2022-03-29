@@ -13,6 +13,10 @@ module Plurimath
         def to_asciimath
           "sec#{angle&.to_asciimath}"
         end
+
+        def ==(object)
+          object == angle
+        end
       end
     end
   end

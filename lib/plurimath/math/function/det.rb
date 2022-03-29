@@ -13,6 +13,10 @@ module Plurimath
         def to_asciimath
           "det#{scalar&.to_asciimath}"
         end
+
+        def ==(object)
+          object == scalar
+        end
       end
     end
   end
