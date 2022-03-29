@@ -3,7 +3,6 @@
 module Plurimath
   class Asciimath
     class Transform < Parslet::Transform
-      rule(mod: simple(:mod))                 { mod }
       rule(expr: simple(:expr))               { expr }
       rule(base: simple(:base))               { base }
       rule(expr: sequence(:expr))             { expr }
@@ -13,7 +12,6 @@ module Plurimath
       rule(binary: simple(:binary))           { binary }
       rule(sequance: simple(:sequance))       { sequance }
       rule(power_base: simple(:power_base))   { power_base }
-      rule(power_base: sequence(:power_base)) { power_base }
 
       rule(intermediate_exp: simple(:intermediate_exp)) do
         intermediate_exp
@@ -33,10 +31,6 @@ module Plurimath
 
       rule(text: simple(:text)) do
         Plurimath::Math::Function::Text.new(text.to_s)
-      end
-
-      rule(power_base: simple(:power_base), expr: simple(:expr)) do
-        [power_base, expr]
       end
 
       rule(power_base: simple(:power_base), expr: sequence(:expr)) do
@@ -121,44 +115,10 @@ module Plurimath
           ]
         end
       end
-      Constants::UNARY_CLASSES.each do |unary_class|
-        rule(unary_class => simple(:function),
-             intermediate_exp: simple(:int_exp)) do
-          Transform.get_class(function).new(int_exp)
-        end
-      end
 
       Constants::BINARY_CLASSES.each do |binary_class|
         rule(binary_class => simple(:function)) do
           Transform.get_class(function)
-        end
-
-        rule(
-          binary_class => simple(:function),
-          _: simple(:under_score),
-          intermediate_exp: simple(:int_exp),
-          "^": simple(:power),
-          number: simple(:number),
-        ) do
-          Transform.get_class(function).new(
-            int_exp,
-            Plurimath::Math::Number.new(number.to_s),
-          )
-        end
-
-        rule(binary_class => simple(:function), _: simple(:under_score),
-             intermediate_exp: simple(:int_exp),
-             "^": simple(:power), symbol: simple(:symbol)) do
-          Transform.get_class(function).new(
-            int_exp,
-            Plurimath::Math::Symbol.new(symbol.to_s),
-          )
-        end
-
-        rule(binary_class => simple(:function), _: simple(:under_score),
-             intermediate_exp: simple(:int_exp),
-             "^": simple(:power), unary: simple(:unary)) do
-          Transform.get_class(function).new(int_exp, unary)
         end
 
         rule(binary_class => simple(:function), _: simple(:under_score),
@@ -191,6 +151,11 @@ module Plurimath
           )
         end
 
+        rule(binary_class => simple(:function), _: simple(:under_score),
+             unary: simple(:unary)) do
+          Transform.get_class(function).new(unary, nil)
+        end
+
         rule(binary_class => simple(:function), "^": simple(:power),
              number: simple(:number)) do
           Transform.get_class(function).new(
@@ -211,20 +176,39 @@ module Plurimath
              exponent: simple(:exponent)) do
           Transform.get_class(function).new(base, exponent)
         end
+
+        Constants::UNARY_CLASSES.each do |unary_class|
+          rule(unary_class => simple(:function),
+               intermediate_exp: simple(:int_exp)) do
+            Transform.get_class(function).new(int_exp)
+          end
+
+          rule(unary_class => simple(:function),
+               symbol: simple(:new_symbol)) do
+            symbol = Plurimath::Math::Symbol.new(new_symbol.to_s)
+            Transform.get_class(function).new(symbol)
+          end
+
+          rule(unary_class => simple(:function),
+               number: simple(:new_number)) do
+            number = Plurimath::Math::Number.new(new_number.to_s)
+            Transform.get_class(function).new(number)
+          end
+
+          rule(binary_class => simple(:function),
+               _: simple(:base),
+               unary_class => simple(:unary)) do
+            unary_class = Transform.get_class(unary)
+            Transform.get_class(binary_class).new(unary_class, nil)
+          end
+        end
       end
       Constants::LPAREN.each do |lparen|
         Constants::RPAREN.each do |rparen|
-          rule(lparen => simple(:left_paren), expr: simple(:expr),
-               rparen => simple(:right_paren)) do
-            exp = [expr]
-            exp.flatten!
-            Plurimath::Math::Formula.new(exp)
-          end
-
           rule(lparen => simple(:left_paren), expr: subtree(:expr),
                rparen => simple(:right_paren)) do
-            exp = [expr]
-            exp.flatten!
+            exp = expr
+            exp = [exp] unless exp.is_a? Array
             Plurimath::Math::Formula.new(exp)
           end
         end

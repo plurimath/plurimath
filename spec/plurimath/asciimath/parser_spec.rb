@@ -10,9 +10,9 @@ RSpec.describe Plurimath::Asciimath::Parser do
       it "returns Cos formula" do
         expected_value = Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Cos.new(
-            Plurimath::Math::Formula.new(
-              [Plurimath::Math::Number.new("2")]
-            )
+            Plurimath::Math::Formula.new([
+              Plurimath::Math::Number.new("2")
+            ])
           )]
         )
         expect(formula).to eq(expected_value)
@@ -24,7 +24,9 @@ RSpec.describe Plurimath::Asciimath::Parser do
       it "returns Cos Formula" do
         expected_value = Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Sum.new(
-            Plurimath::Math::Formula.new([Plurimath::Math::Number.new("2")])
+            Plurimath::Math::Formula.new([
+              Plurimath::Math::Number.new("2")
+            ])
           )
         ])
         expect(formula).to eq(expected_value)
@@ -491,6 +493,126 @@ RSpec.describe Plurimath::Asciimath::Parser do
           Plurimath::Math::Formula.new([
             Plurimath::Math::Symbol.new("i"),
           ])
+        ])
+        expect(formula).to eq(expected_value)
+      end
+    end
+
+    context "when contains sum function with exponent only number" do
+      let(:string) { 'sum^(theta)' }
+      it "returns sum formula" do
+        expected_value = Plurimath::Math::Formula.new([
+          Plurimath::Math::Function::Sum.new(
+            nil,
+            Plurimath::Math::Formula.new([
+              Plurimath::Math::Symbol.new("theta")
+            ]),
+          )
+        ])
+        expect(formula).to eq(expected_value)
+      end
+    end
+
+    context "when contains sum function with base only number" do
+      let(:string) { 'sum_3' }
+      it "returns sum formula" do
+        expected_value = Plurimath::Math::Formula.new([
+          Plurimath::Math::Function::Sum.new(
+            Plurimath::Math::Number.new("3"),
+            nil,
+          )
+        ])
+        expect(formula).to eq(expected_value)
+      end
+    end
+
+    context "when contains sum function with exponent only number" do
+      let(:string) { 'sum^3' }
+      it "returns sum formula" do
+        expected_value = Plurimath::Math::Formula.new([
+          Plurimath::Math::Function::Sum.new(
+            nil,
+            Plurimath::Math::Number.new("3"),
+          )
+        ])
+        expect(formula).to eq(expected_value)
+      end
+    end
+
+    context "when contains sum function with base only symbol" do
+      let(:string) { 'sum_i' }
+      it "returns sum formula" do
+        expected_value = Plurimath::Math::Formula.new([
+          Plurimath::Math::Function::Sum.new(
+            Plurimath::Math::Symbol.new("i"),
+            nil,
+          )
+        ])
+        expect(formula).to eq(expected_value)
+      end
+    end
+
+    context "when contains sum function with base only unary class arg number" do
+      let(:string) { 'sum_sin114' }
+      it "returns sum formula" do
+        expected_value = Plurimath::Math::Formula.new([
+          Plurimath::Math::Function::Sum.new(
+            Plurimath::Math::Function::Sin.new(
+              Plurimath::Math::Number.new("114")
+            ),
+            nil,
+          )
+        ])
+        expect(formula).to eq(expected_value)
+      end
+    end
+
+    context "when contains sum function with base only unary class arg symbol" do
+      let(:string) { 'sum_sini' }
+      it "returns sum formula" do
+        expected_value = Plurimath::Math::Formula.new([
+          Plurimath::Math::Function::Sum.new(
+            Plurimath::Math::Function::Sin.new(
+              Plurimath::Math::Symbol.new("i")
+            ),
+            nil,
+          )
+        ])
+        expect(formula).to eq(expected_value)
+      end
+    end
+
+    context "when contains sum function with base only unary class no arg" do
+      let(:string) { 'sum_sin' }
+      it "returns sum formula" do
+        expected_value = Plurimath::Math::Formula.new([
+          Plurimath::Math::Function::Sum.new(
+            Plurimath::Math::Function::Sin,
+            nil,
+          )
+        ])
+        expect(formula).to eq(expected_value)
+      end
+    end
+
+    context "when contains sum function only" do
+      let(:string) { 'sum' }
+      it "returns sum formula" do
+        expected_value = Plurimath::Math::Formula.new([
+          Plurimath::Math::Function::Sum
+        ])
+        expect(formula).to eq(expected_value)
+      end
+    end
+
+    context "when contains sum function only exponent symbol" do
+      let(:string) { 'sum^w' }
+      it "returns sum formula" do
+        expected_value = Plurimath::Math::Formula.new([
+          Plurimath::Math::Function::Sum.new(
+            nil,
+            Plurimath::Math::Symbol.new("w"),
+          )
         ])
         expect(formula).to eq(expected_value)
       end
