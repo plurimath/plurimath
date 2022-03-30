@@ -1,4 +1,3 @@
-require "byebug"
 require_relative "../../../lib/plurimath/math"
 
 RSpec.describe Plurimath::Asciimath::Parser do
