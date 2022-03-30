@@ -1,18 +1,16 @@
 # frozen_string_literal: true
 
+require_relative "binary_function"
+
 module Plurimath
   module Math
     module Function
-      class Overset
+      class Overset < BinaryFunction
         attr_accessor :value, :symbol
 
-        def initialize(value, symbol)
+        def initialize(value = nil, symbol = nil)
           @value = value
           @symbol = symbol
-        end
-
-        def ==(object)
-          object.value == value && object.symbol == symbol
         end
       end
     end

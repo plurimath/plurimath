@@ -1,17 +1,15 @@
 # frozen_string_literal: true
 
+require_relative "unary_function"
+
 module Plurimath
   module Math
     module Function
-      class Lcm
-        attr_accessor :values
+      class Lcm < UnaryFunction
+        attr_accessor :value
 
-        def initialize(values = [])
-          @values = values
-        end
-
-        def ==(object)
-          object == values
+        def initialize(value = nil)
+          @value = value
         end
       end
     end

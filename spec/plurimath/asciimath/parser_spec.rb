@@ -1,3 +1,4 @@
+require "byebug"
 require_relative "../../../lib/plurimath/math"
 
 RSpec.describe Plurimath::Asciimath::Parser do
@@ -587,7 +588,7 @@ RSpec.describe Plurimath::Asciimath::Parser do
       it "returns sum formula" do
         expected_value = Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Sum.new(
-            Plurimath::Math::Function::Sin,
+            Plurimath::Math::Function::Sin.new,
             nil,
           )
         ])
@@ -599,7 +600,7 @@ RSpec.describe Plurimath::Asciimath::Parser do
       let(:string) { 'sum' }
       it "returns sum formula" do
         expected_value = Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Sum
+          Plurimath::Math::Function::Sum.new
         ])
         expect(formula).to eq(expected_value)
       end
@@ -613,6 +614,30 @@ RSpec.describe Plurimath::Asciimath::Parser do
             nil,
             Plurimath::Math::Symbol.new("w"),
           )
+        ])
+        expect(formula).to eq(expected_value)
+      end
+    end
+
+    context "when contains obrace function" do
+      let(:string) { 'obrace(1+2+3+4)^text(4 terms)' }
+      it "returns obrace formula" do
+        expected_value = Plurimath::Math::Formula.new([
+          Plurimath::Math::Function::Obrace.new(
+            Plurimath::Math::Formula.new([
+              Plurimath::Math::Number.new("1"),
+              Plurimath::Math::Symbol.new("+"),
+              Plurimath::Math::Number.new("2"),
+              Plurimath::Math::Symbol.new("+"),
+              Plurimath::Math::Number.new("3"),
+              Plurimath::Math::Symbol.new("+"),
+              Plurimath::Math::Number.new("4"),
+            ])
+          ),
+          Plurimath::Math::Symbol.new("^"),
+          Plurimath::Math::Formula.new([
+            Plurimath::Math::Function::Text.new("4 terms")
+          ]),
         ])
         expect(formula).to eq(expected_value)
       end

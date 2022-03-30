@@ -1,17 +1,15 @@
 # frozen_string_literal: true
 
+require_relative "unary_function"
+
 module Plurimath
   module Math
     module Function
-      class Exp
+      class Exp < UnaryFunction
         attr_accessor :exponent
 
-        def initialize(exponent)
+        def initialize(exponent = nil)
           @exponent = exponent
-        end
-
-        def ==(object)
-          object == exponent
         end
       end
     end

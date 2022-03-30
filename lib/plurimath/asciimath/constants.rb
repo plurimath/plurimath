@@ -3,57 +3,312 @@
 module Plurimath
   class Asciimath
     class Constants
+      PARENTHESIS = {
+        "(": ")",
+        "(:": ":)",
+        "{": "}",
+        "{:": ":}",
+        "[": "]",
+      }.freeze
       SYMBOLS = %i[
-        ~~ approx prop propto /
-        uparrow darr downarrow rarr
-        + - * cdot ** ast ***
-        xx times -: div |>< ltimes
-        o+ oplus ox otimes o. odot
-        forall EE exists _|_ bot TT
-        star // \\\\ backslash setminus
-        ^^ wedge ^^^ bigwedge vv vee
-        vvv bigvee nn cap nnn bigcap
-        leftrightarrow rArr Rightarrow lArr
-        top |-- vdash |== models uarr
-        ><| rtimes |><| bowtie @ circ
-        uu cup uuu bigcup and or not
-        neg => implies if <=> iff AA
-        rightarrow -> to >-> rightarrowtail
-        del partial grad nabla +- pm O/
-        ->> twoheadrightarrow twoheadrightarrowtail
-        |-> >->> mapsto larr leftarrow harr
-        Leftarrow hArr Leftrightarrow alpha beta
-        Xi Lambda Theta Delta Gamma int oint
-        gamma delta epsilon varepsilon zeta eta
-        theta vartheta iota kappa lambda mu nu
-        because |...| |ldots| |cdots| vdots ddots
-        lceiling ~| rceiling CC NN QQ RR ZZ
-        << >> "{:x)" "(x:}" = != ne < lt
-        chi psi omega Omega Psi Phi Sigma Pi
-        emptyset oo infty aleph :. therefore ":'"
-        diamond square |__ lfloor __| rfloor |~
-        > gt <= le >= ge mlt ll mgt gg
-        subseteq supe supseteq -= equiv ~= cong
-        -< prec -<= preceq >- succ >-= succeq
-        xi pi rho sigma tau upsilon phi varphi
-        "|\\ |" |quad| /_ angle frown /_\\ triangle
-        in !in notin sub subset sup supset sube
+        twoheadrightarrowtail
+        twoheadrightarrow
+        rightarrowtail
+        Leftrightarrow
+        leftrightarrow
+        varepsilon
+        Rightarrow
+        rightarrow
+        Leftarrow
+        leftarrow
+        backslash
+        downarrow
+        therefore
+        triangle
+        vartheta
+        bigwedge
+        rceiling
+        lceiling
+        setminus
+        supseteq
+        subseteq
+        emptyset
+        "|\\ |"
+        upsilon
+        diamond
+        uparrow
+        implies
+        partial
+        epsilon
+        because
+        |cdots|
+        |ldots|
+        bigcap
+        bigvee
+        propto
+        approx
+        exists
+        forall
+        otimes
+        ltimes
+        bowtie
+        rtimes
+        models
+        mapsto
+        bigcup
+        lambda
+        Lambda
+        "(x:}"
+        "{:x)"
+        succeq
+        preceq
+        varphi
+        rfloor
+        lfloor
+        square
+        |quad|
+        supset
+        subset
+        vdash
+        times
+        wedge
+        oplus
+        alpha
+        nabla
+        delta
+        theta
+        gamma
+        Gamma
+        Delta
+        Theta
+        kappa
+        ddots
+        vdots
+        |...|
+        equiv
+        Sigma
+        Omega
+        omega
+        aleph
+        infty
+        sigma
+        frown
+        notin
+        angle
+        succ
+        prec
+        cong
+        \\\\
+        star
+        odot
+        cdot
+        rarr
+        darr
+        prop
+        lArr
+        rArr
+        uarr
+        beta
+        hArr
+        harr
+        larr
+        grad
+        circ
+        >->>
+        zeta
+        oint
+        iota
+        /_\\
+        sube
+        sup
+        sub
+        !in
+        int
+        eta
+        top
+        |><|
+        __|
+        |__
+        ":'"
+        Phi
+        supe
+        Psi
+        psi
+        chi
+        >-=
+        -<=
+        mgt
+        mlt
+        ><|
+        |==
+        |--
+        vvv
+        vee
+        nnn
+        cap
+        ^^^
+        div
+        ast
+        bot
+        del
+        and
+        neg
+        not
+        uuu
+        cup
+        iff
+        phi
+        rho
+        tau
+        |->
+        >->
+        <=>
+        ->>
+        ^^
+        nn
+        vv
+        TT
+        EE
+        ox
+        xx
+        o+
+        o.
+        |><
+        _|_
+        ***
+        **
+        -:
+        ~~
+        //
+        pm
+        O/
+        ->
+        =>
+        +-
+        to
+        Xi
+        AA
+        if
+        uu
+        or
+        lt
+        ne
+        nu
+        mu
+        ZZ
+        RR
+        QQ
+        NN
+        CC
+        >>
+        <<
+        ~|
+        !=
+        >-
+        -<
+        ~=
+        -=
+        pi
+        xi
+        oo
+        Pi
+        :.
+        gg
+        ll
+        ge
+        >=
+        le
+        <=
+        gt
+        |~
+        in
+        /_
+        >
+        @
+        /
+        *
+        -
+        <
+        =
+        +
       ].freeze
       UNARY_CLASSES = %i[
-        sin tan cos arccos arcsin arctan
-        exp f g gcd glb lcm ln lub
-        cosh cot coth csc csch det dim
-        max min sec sech sinh tanh sqrt
-        text abs bar cancel ceil ddot dot
-        floor hat norm obrace tilde ubrace mathsf
-        ul vec mathbb mathbf mathcal mathfrak mathtt
+        mathfrak
+        mathcal
+        arccos
+        arcsin
+        arctan
+        mathsf
+        mathbb
+        mathbf
+        mathtt
+        ubrace
+        obrace
+        cancel
+        tilde
+        floor
+        ceil
+        ddot
+        coth
+        csch
+        sech
+        sinh
+        tanh
+        cosh
+        sqrt
+        norm
+        text
+        sec
+        sin
+        tan
+        cos
+        exp
+        gcd
+        glb
+        lcm
+        lub
+        cot
+        csc
+        det
+        dim
+        max
+        min
+        abs
+        bar
+        dot
+        hat
+        vec
+        ul
+        ln
+        f
+        g
       ].freeze
       BINARY_CLASSES = %i[
-        overset mod root underset color
-        frac stackrel sum prod log
+        underset
+        stackrel
+        overset
+        color
+        prod
+        frac
+        root
+        sum
+        mod
+        log
       ].freeze
-      RPAREN = %i[) } ) \] :}].freeze
-      LPAREN = %i[( { (: \[ {:].freeze
+      RPAREN = %i[
+        )
+        }
+        :)
+        \]
+        :}
+      ].freeze
+      LPAREN = %i[
+        (
+        {
+        (:
+        \[
+        {:
+      ].freeze
       CLASSES = UNARY_CLASSES + BINARY_CLASSES
     end
   end

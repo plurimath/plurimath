@@ -1,17 +1,15 @@
 # frozen_string_literal: true
 
+require_relative "unary_function"
+
 module Plurimath
   module Math
     module Function
-      class Det
+      class Det < UnaryFunction
         attr_accessor :scalar
 
-        def initialize(scalar)
+        def initialize(scalar = nil)
           @scalar = scalar
-        end
-
-        def ==(object)
-          object == scalar
         end
       end
     end

@@ -1,17 +1,15 @@
 # frozen_string_literal: true
 
+require_relative "unary_function"
+
 module Plurimath
   module Math
     module Function
-      class Ddot
+      class Ddot < UnaryFunction
         attr_accessor :value
 
-        def initialize(value)
+        def initialize(value = nil)
           @value = value
-        end
-
-        def ==(object)
-          object == value
         end
       end
     end

@@ -12,6 +12,7 @@ module Plurimath
       rule(binary: simple(:binary))           { binary }
       rule(sequance: simple(:sequance))       { sequance }
       rule(power_base: simple(:power_base))   { power_base }
+      rule(base: sequence(:base), expr: simple(:exp)) { base + [exp] }
 
       rule(intermediate_exp: simple(:intermediate_exp)) do
         intermediate_exp
@@ -72,6 +73,15 @@ module Plurimath
         ]
       end
 
+      rule(unary: simple(:unary), "^": simple(:exponent),
+           text: simple(:text)) do
+        [
+          unary,
+          Plurimath::Math::Symbol.new(exponent.to_s),
+          text,
+        ]
+      end
+
       rule(symbol: simple(:symbol), "^": simple(:exponent),
            number: simple(:number)) do
         [
@@ -84,6 +94,15 @@ module Plurimath
       rule(binary: simple(:function), "^": simple(:exponent),
            number: simple(:number)) do
         Transform.get_class(function.class).new(nil, int_exp)
+      end
+
+      rule(binary: simple(:function), "^": simple(:exponent),
+           intermediate_exp: simple(:int_exp)) do
+        [
+          function,
+          Plurimath::Math::Symbol.new("^"),
+          int_exp,
+        ]
       end
 
       Constants::SYMBOLS.each do |symbol|
@@ -118,7 +137,7 @@ module Plurimath
 
       Constants::BINARY_CLASSES.each do |binary_class|
         rule(binary_class => simple(:function)) do
-          Transform.get_class(function)
+          Transform.get_class(function).new
         end
 
         rule(binary_class => simple(:function), _: simple(:under_score),
@@ -184,6 +203,16 @@ module Plurimath
           end
 
           rule(unary_class => simple(:function),
+               _: simple(:under_score),
+               intermediate_exp: simple(:int_exp)) do
+            [
+              Transform.get_class(function).new,
+              Plurimath::Math::Symbol.new("_"),
+              int_exp,
+            ]
+          end
+
+          rule(unary_class => simple(:function),
                symbol: simple(:new_symbol)) do
             symbol = Plurimath::Math::Symbol.new(new_symbol.to_s)
             Transform.get_class(function).new(symbol)
@@ -198,7 +227,7 @@ module Plurimath
           rule(binary_class => simple(:function),
                _: simple(:base),
                unary_class => simple(:unary)) do
-            unary_class = Transform.get_class(unary)
+            unary_class = Transform.get_class(unary).new
             Transform.get_class(binary_class).new(unary_class, nil)
           end
         end
@@ -211,15 +240,14 @@ module Plurimath
             exp = [exp] unless exp.is_a? Array
             Plurimath::Math::Formula.new(exp)
           end
+          rule(lparen => simple(:left_paren), quoted_text: simple(:string),
+               rparen => simple(:right_paren)) do
+            string = Transform.get_class("text").new(self.string)
+            Plurimath::Math::Formula.new([string])
+          end
         end
       end
-      rule(sequance: simple(:sequance), expr: simple(:expr)) do
-        if sequance.is_a?(Math::Symbol) || sequance.is_a?(Math::Number)
-          [sequance, expr]
-        else
-          sequance.new(expr)
-        end
-      end
+      rule(sequance: simple(:sequance), expr: simple(:exp)) { [sequance, exp] }
 
       def self.get_class(text)
         Object.const_get("Plurimath::Math::Function::#{text.to_s.capitalize}")

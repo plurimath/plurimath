@@ -9,6 +9,6 @@ RSpec.describe Plurimath::Math::Function::Min do
 
   it 'initializes Min object' do
     min = Plurimath::Math::Function::Min.new([70, 3])
-    expect(min.values).to eql([70, 3])
+    expect(min.value).to eql([70, 3])
   end
 end
