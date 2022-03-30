@@ -1,21 +1,15 @@
 # frozen_string_literal: true
 
+require_relative "unary_function"
+
 module Plurimath
   module Math
     module Function
-      class Tilde
+      class Tilde < UnaryFunction
         attr_accessor :value
 
-        def initialize(value)
+        def initialize(value = nil)
           @value = value
-        end
-
-        def to_asciimath
-          "tilde#{value&.to_asciimath}"
-        end
-
-        def ==(object)
-          object == value
         end
       end
     end

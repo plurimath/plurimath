@@ -1,21 +1,15 @@
 # frozen_string_literal: true
 
+require_relative "unary_function"
+
 module Plurimath
   module Math
     module Function
-      class Sin
+      class Sin < UnaryFunction
         attr_accessor :angle
 
-        def initialize(angle)
+        def initialize(angle = nil)
           @angle = angle
-        end
-
-        def to_asciimath
-          "sin#{angle&.to_asciimath}"
-        end
-
-        def ==(object)
-          object == angle
         end
       end
     end

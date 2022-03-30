@@ -12,7 +12,7 @@ module Plurimath
       rule(:unary_functions) { arr_to_expression(Constants::UNARY_CLASSES) }
       rule(:binary_functions) { arr_to_expression(Constants::BINARY_CLASSES) }
       rule(:quoted_text) do
-        str('"') >> match("[a-zA-Z0-9 ]").repeat.as(:text) >> str('"')
+        str('"') >> match("[^\"]").repeat.as(:text) >> str('"')
       end
       rule(:expression) do
         (iteration >> expression).as(:expr) |
@@ -21,14 +21,19 @@ module Plurimath
       end
       rule(:symbol_text_or_integer) do
         symbols | binary_functions | unary_functions |
+          quoted_text |
           match["a-zA-Z"].as(:symbol) |
-          match("[0-9]").repeat(1).as(:number) |
-          quoted_text
+          match("[0-9]").repeat(1).as(:number)
       end
       rule(:sequance) do
         (lparen >> expression >> rparen).as(:intermediate_exp) |
           (binary_functions >> sequance.as(:base) >>
             sequance.maybe.as(:exponent)).as(:binary) |
+          (str("text") >> lparen.capture(:paren) >>
+            dynamic do |_sour, context|
+              rparen = Constants::PARENTHESIS[context.captures[:paren].keys[0]]
+              match("[^#{rparen}]").repeat.as(:quoted_text)
+            end >> rparen).as(:text) |
           (unary_functions >> sequance).as(:unary) |
           symbol_text_or_integer
       end
@@ -44,7 +49,6 @@ module Plurimath
       end
       rule(:conclude) { expression }
       root :conclude
-
       def arr_to_expression(arr)
         arr.reduce do |expr, exp_string|
           expr = str(expr).as(expr) if expr.is_a?(Symbol)

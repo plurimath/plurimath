@@ -10,7 +10,7 @@ module Plurimath
       end
 
       def ==(object)
-        object == value
+        object.value == value
       end
 
       def to_asciimath

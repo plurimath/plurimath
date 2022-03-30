@@ -9,6 +9,6 @@ RSpec.describe Plurimath::Math::Function::Max do
 
   it 'initializes Max object' do
     max = Plurimath::Math::Function::Max.new([70, 4])
-    expect(max.values).to eql([70, 4])
+    expect(max.value).to eql([70, 4])
   end
 end

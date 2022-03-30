@@ -14,7 +14,7 @@ module Plurimath
       end
 
       def ==(object)
-        object == value
+        object.value == value
       end
     end
   end

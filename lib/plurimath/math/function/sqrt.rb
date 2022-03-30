@@ -1,21 +1,15 @@
 # frozen_string_literal: true
 
+require_relative "unary_function"
+
 module Plurimath
   module Math
     module Function
-      class Sqrt
+      class Sqrt < UnaryFunction
         attr_accessor :number
 
-        def initialize(number)
+        def initialize(number = nil)
           @number = number
-        end
-
-        def to_asciimath
-          "sqrt#{number&.to_asciimath}"
-        end
-
-        def ==(object)
-          object == number
         end
       end
     end

@@ -1,22 +1,16 @@
 # frozen_string_literal: true
 
+require_relative "binary_function"
+
 module Plurimath
   module Math
     module Function
-      class Mod
+      class Mod < BinaryFunction
         attr_accessor :dividend, :divisor
 
-        def initialize(dividend, divisor)
+        def initialize(dividend = nil, divisor = nil)
           @dividend = dividend
           @divisor = divisor
-        end
-
-        def to_asciimath
-          "#{dividend&.to_asciimath}mod#{divisor&.to_asciimath}"
-        end
-
-        def ==(object)
-          object.dividend == dividend && object.divisor == divisor
         end
       end
     end

@@ -9,6 +9,6 @@ RSpec.describe Plurimath::Math::Function::Lcm do
 
   it 'initializes Lcm object' do
     lcm = Plurimath::Math::Function::Lcm.new([70, 45])
-    expect(lcm.values).to eql([70, 45])
+    expect(lcm.value).to eql([70, 45])
   end
 end
