@@ -9,7 +9,7 @@ RSpec.describe Plurimath::Math::Function::Frac do
 
   it 'initializes Frac object' do
     frac = Plurimath::Math::Function::Frac.new(7, 4)
-    expect(frac.dividend).to eql(7)
-    expect(frac.divisor).to eql(4)
+    expect(frac.parameter_one).to eql(7)
+    expect(frac.parameter_two).to eql(4)
   end
 end

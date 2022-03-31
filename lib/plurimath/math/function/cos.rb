@@ -6,11 +6,6 @@ module Plurimath
   module Math
     module Function
       class Cos < UnaryFunction
-        attr_accessor :angle
-
-        def initialize(angle = nil)
-          @angle = angle
-        end
       end
     end
   end

@@ -6,12 +6,6 @@ module Plurimath
   module Math
     module Function
       class Stackrel < BinaryFunction
-        attr_accessor :base, :exponent
-
-        def initialize(base = nil, exponent = nil)
-          @base = base
-          @exponent = exponent
-        end
       end
     end
   end

@@ -9,7 +9,6 @@ RSpec.describe Plurimath::Math::Function::Dot do
 
   it 'initializes Dot object' do
     dot = Plurimath::Math::Function::Dot.new('70')
-    expect(dot.value).to eql('70')
+    expect(dot.parameter_one).to eql('70')
   end
 end
-

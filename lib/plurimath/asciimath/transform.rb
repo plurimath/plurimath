@@ -31,7 +31,7 @@ module Plurimath
       end
 
       rule(text: simple(:text)) do
-        Plurimath::Math::Function::Text.new(text.to_s)
+        text.is_a?(Slice) ? Transform.get_class("text").new(text.to_s) : text
       end
 
       rule(power_base: simple(:power_base), expr: sequence(:expr)) do
@@ -78,7 +78,7 @@ module Plurimath
         [
           unary,
           Plurimath::Math::Symbol.new(exponent.to_s),
-          text,
+          text.is_a?(Slice) ? Transform.get_class("text").new(text.to_s) : text,
         ]
       end
 
@@ -196,6 +196,23 @@ module Plurimath
           Transform.get_class(function).new(base, exponent)
         end
 
+        rule(binary: simple(:function), "^": simple(:exponent),
+             text: simple(:text)) do
+          [
+            function,
+            Plurimath::Math::Symbol.new("^"),
+            text.is_a?(Slice) ? Transform.get_class("text").new(text.to_s) : text,
+          ]
+        end
+
+        rule(binary: simple(:function), "^": simple(:exponent),
+             unary: simple(:unary)) do
+          [
+            function,
+            Plurimath::Math::Symbol.new("^"),
+            unary,
+          ]
+        end
         Constants::UNARY_CLASSES.each do |unary_class|
           rule(unary_class => simple(:function),
                intermediate_exp: simple(:int_exp)) do
@@ -226,6 +243,13 @@ module Plurimath
 
           rule(binary_class => simple(:function),
                _: simple(:base),
+               unary_class => simple(:unary)) do
+            unary_class = Transform.get_class(unary).new
+            Transform.get_class(binary_class).new(unary_class, nil)
+          end
+
+          rule(binary_class => simple(:function),
+               "^": simple(:base),
                unary_class => simple(:unary)) do
             unary_class = Transform.get_class(unary).new
             Transform.get_class(binary_class).new(unary_class, nil)

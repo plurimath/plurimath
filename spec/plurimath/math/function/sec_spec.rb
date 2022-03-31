@@ -9,6 +9,6 @@ RSpec.describe Plurimath::Math::Function::Sec do
 
   it 'initializes Sec object' do
     sec = Plurimath::Math::Function::Sec.new('70')
-    expect(sec.angle).to eql('70')
+    expect(sec.parameter_one).to eql('70')
   end
 end

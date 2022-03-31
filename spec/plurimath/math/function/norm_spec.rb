@@ -9,6 +9,6 @@ RSpec.describe Plurimath::Math::Function::Norm do
 
   it 'initializes Norm object' do
     norm = Plurimath::Math::Function::Norm.new('70')
-    expect(norm.value).to eql('70')
+    expect(norm.parameter_one).to eql('70')
   end
 end

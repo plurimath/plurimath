@@ -9,7 +9,6 @@ RSpec.describe Plurimath::Math::Function::Arctan do
 
   it 'initializes Arctan object' do
     arctan = Plurimath::Math::Function::Arctan.new('70')
-    expect(arctan.angle).to eql('70')
+    expect(arctan.parameter_one).to eql('70')
   end
 end
-

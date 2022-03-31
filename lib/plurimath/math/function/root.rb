@@ -6,12 +6,6 @@ module Plurimath
   module Math
     module Function
       class Root < BinaryFunction
-        attr_accessor :index, :number
-
-        def initialize(index = nil, number = nil)
-          @index = index
-          @number = number
-        end
       end
     end
   end

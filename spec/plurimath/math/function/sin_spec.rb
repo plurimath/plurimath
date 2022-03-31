@@ -9,7 +9,6 @@ RSpec.describe Plurimath::Math::Function::Sin do
 
   it 'initializes Sin object' do
     sin = Plurimath::Math::Function::Sin.new('70')
-    expect(sin.angle).to eql('70')
+    expect(sin.parameter_one).to eql('70')
   end
 end
-

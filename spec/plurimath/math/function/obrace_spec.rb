@@ -9,6 +9,6 @@ RSpec.describe Plurimath::Math::Function::Obrace do
 
   it 'initializes Obrace object' do
     obrace = Plurimath::Math::Function::Obrace.new('70')
-    expect(obrace.value).to eql('70')
+    expect(obrace.parameter_one).to eql('70')
   end
 end

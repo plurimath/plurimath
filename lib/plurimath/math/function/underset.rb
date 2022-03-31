@@ -6,12 +6,6 @@ module Plurimath
   module Math
     module Function
       class Underset < BinaryFunction
-        attr_accessor :value, :symbol
-
-        def initialize(value = nil, symbol = nil)
-          @value = value
-          @symbol = symbol
-        end
       end
     end
   end

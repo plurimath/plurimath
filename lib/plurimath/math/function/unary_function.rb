@@ -4,12 +4,14 @@ module Plurimath
   module Math
     module Function
       class UnaryFunction
-        def ==(object)
-          object.parameter_value == parameter_value
+        attr_accessor :parameter_one
+
+        def initialize(parameter_one = nil)
+          @parameter_one = parameter_one
         end
 
-        def parameter_value
-          instance_variable_get(instance_variables[0])
+        def ==(object)
+          object.parameter_one == parameter_one
         end
       end
     end

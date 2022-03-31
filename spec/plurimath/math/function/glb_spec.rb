@@ -9,6 +9,6 @@ RSpec.describe Plurimath::Math::Function::Glb do
 
   it 'initializes Glb object' do
     glb = Plurimath::Math::Function::Glb.new([70, 45])
-    expect(glb.value).to eql([70, 45])
+    expect(glb.parameter_one).to eql([70, 45])
   end
 end
