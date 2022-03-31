@@ -6,12 +6,6 @@ module Plurimath
   module Math
     module Function
       class Mod < BinaryFunction
-        attr_accessor :dividend, :divisor
-
-        def initialize(dividend = nil, divisor = nil)
-          @dividend = dividend
-          @divisor = divisor
-        end
       end
     end
   end

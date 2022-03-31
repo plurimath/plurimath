@@ -9,6 +9,6 @@ RSpec.describe Plurimath::Math::Function::Ceil do
 
   it 'initializes Ceil object' do
     ceil = Plurimath::Math::Function::Ceil.new(70.4)
-    expect(ceil.value).to eql(70.4)
+    expect(ceil.parameter_one).to eql(70.4)
   end
 end

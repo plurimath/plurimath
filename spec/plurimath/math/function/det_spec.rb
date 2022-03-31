@@ -9,6 +9,6 @@ RSpec.describe Plurimath::Math::Function::Det do
 
   it 'initializes Det object' do
     det = Plurimath::Math::Function::Det.new('ad-bc')
-    expect(det.scalar).to eql('ad-bc')
+    expect(det.parameter_one).to eql('ad-bc')
   end
 end

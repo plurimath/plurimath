@@ -9,6 +9,6 @@ RSpec.describe Plurimath::Math::Function::Hat do
 
   it 'initializes Hat object' do
     hat = Plurimath::Math::Function::Hat.new('70')
-    expect(hat.value).to eql('70')
+    expect(hat.parameter_one).to eql('70')
   end
 end

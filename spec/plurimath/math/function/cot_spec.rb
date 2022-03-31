@@ -9,6 +9,6 @@ RSpec.describe Plurimath::Math::Function::Cot do
 
   it 'initializes Cot object' do
     cot = Plurimath::Math::Function::Cot.new('70')
-    expect(cot.angle).to eql('70')
+    expect(cot.parameter_one).to eql('70')
   end
 end

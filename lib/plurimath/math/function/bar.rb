@@ -6,11 +6,6 @@ module Plurimath
   module Math
     module Function
       class Bar < UnaryFunction
-        attr_accessor :value
-
-        def initialize(value = nil)
-          @value = value
-        end
       end
     end
   end

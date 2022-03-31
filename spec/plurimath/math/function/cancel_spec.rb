@@ -9,7 +9,6 @@ RSpec.describe Plurimath::Math::Function::Cancel do
 
   it 'initializes Cancel object' do
     cancel = Plurimath::Math::Function::Cancel.new('70')
-    expect(cancel.value).to eql('70')
+    expect(cancel.parameter_one).to eql('70')
   end
 end
-

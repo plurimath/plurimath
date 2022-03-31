@@ -6,11 +6,6 @@ module Plurimath
   module Math
     module Function
       class Mathtt < UnaryFunction
-        attr_accessor :text
-
-        def initialize(text = nil)
-          @text = text
-        end
       end
     end
   end

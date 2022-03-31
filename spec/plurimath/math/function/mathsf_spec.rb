@@ -9,6 +9,6 @@ RSpec.describe Plurimath::Math::Function::Mathsf do
 
   it 'initializes Mathsf object' do
     mathsf = Plurimath::Math::Function::Mathsf.new("AaBbCc")
-    expect(mathsf.text).to eql("AaBbCc")
+    expect(mathsf.parameter_one).to eql("AaBbCc")
   end
 end

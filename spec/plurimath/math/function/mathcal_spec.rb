@@ -9,6 +9,6 @@ RSpec.describe Plurimath::Math::Function::Mathcal do
 
   it 'initializes Mathcal object' do
     mathcal = Plurimath::Math::Function::Mathcal.new("AaBbCc")
-    expect(mathcal.text).to eql("AaBbCc")
+    expect(mathcal.parameter_one).to eql("AaBbCc")
   end
 end

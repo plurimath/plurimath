@@ -641,5 +641,76 @@ RSpec.describe Plurimath::Asciimath::Parser do
         expect(formula).to eq(expected_value)
       end
     end
+
+    context "when contains log function with abs function" do
+      let(:string) { 'log(1+2+3+4)^abs(theta)' }
+      it "returns log formula" do
+        expected_value = Plurimath::Math::Formula.new([
+          Plurimath::Math::Function::Log.new(
+            Plurimath::Math::Formula.new([
+              Plurimath::Math::Number.new("1"),
+              Plurimath::Math::Symbol.new("+"),
+              Plurimath::Math::Number.new("2"),
+              Plurimath::Math::Symbol.new("+"),
+              Plurimath::Math::Number.new("3"),
+              Plurimath::Math::Symbol.new("+"),
+              Plurimath::Math::Number.new("4"),
+            ])
+          ),
+          Plurimath::Math::Symbol.new("^"),
+          Plurimath::Math::Function::Abs.new(
+            Plurimath::Math::Formula.new([
+              Plurimath::Math::Symbol.new("theta")
+            ])
+          )
+        ])
+        expect(formula).to eq(expected_value)
+      end
+    end
+    context "when contains log function" do
+      let(:string) { 'log(1+2+3+4)^"theta"' }
+      it "returns log formula" do
+        expected_value = Plurimath::Math::Formula.new([
+          Plurimath::Math::Function::Log.new(
+            Plurimath::Math::Formula.new([
+              Plurimath::Math::Number.new("1"),
+              Plurimath::Math::Symbol.new("+"),
+              Plurimath::Math::Number.new("2"),
+              Plurimath::Math::Symbol.new("+"),
+              Plurimath::Math::Number.new("3"),
+              Plurimath::Math::Symbol.new("+"),
+              Plurimath::Math::Number.new("4"),
+            ])
+          ),
+          Plurimath::Math::Symbol.new("^"),
+          Plurimath::Math::Function::Text.new("theta"),
+        ])
+        expect(formula).to eq(expected_value)
+      end
+    end
+
+    context "when contains log function" do
+      let(:string) { 'log(1+2+3+4)^text("theta")' }
+      it "returns log formula" do
+        expected_value = Plurimath::Math::Formula.new([
+          Plurimath::Math::Function::Log.new(
+            Plurimath::Math::Formula.new([
+              Plurimath::Math::Number.new("1"),
+              Plurimath::Math::Symbol.new("+"),
+              Plurimath::Math::Number.new("2"),
+              Plurimath::Math::Symbol.new("+"),
+              Plurimath::Math::Number.new("3"),
+              Plurimath::Math::Symbol.new("+"),
+              Plurimath::Math::Number.new("4"),
+            ])
+          ),
+          Plurimath::Math::Symbol.new("^"),
+          Plurimath::Math::Formula.new([
+            Plurimath::Math::Function::Text.new("\"theta\"")
+          ]),
+        ])
+        expect(formula).to eq(expected_value)
+      end
+    end
   end
 end

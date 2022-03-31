@@ -6,11 +6,6 @@ module Plurimath
   module Math
     module Function
       class Det < UnaryFunction
-        attr_accessor :scalar
-
-        def initialize(scalar = nil)
-          @scalar = scalar
-        end
       end
     end
   end

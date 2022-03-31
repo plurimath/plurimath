@@ -9,6 +9,6 @@ RSpec.describe Plurimath::Math::Function::Lub do
 
   it 'initializes Lub object' do
     lub = Plurimath::Math::Function::Lub.new([70, 3])
-    expect(lub.value).to eql([70, 3])
+    expect(lub.parameter_one).to eql([70, 3])
   end
 end

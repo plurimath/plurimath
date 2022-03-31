@@ -9,7 +9,7 @@ RSpec.describe Plurimath::Math::Function::Underset do
 
   it 'initializes Underset object' do
     underset = Plurimath::Math::Function::Underset.new('70', '=')
-    expect(underset.value).to eql('70')
-    expect(underset.symbol).to eql('=')
+    expect(underset.parameter_one).to eql('70')
+    expect(underset.parameter_two).to eql('=')
   end
 end

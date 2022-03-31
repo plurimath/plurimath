@@ -9,6 +9,6 @@ RSpec.describe Plurimath::Math::Function::Text do
 
   it 'initializes Text object' do
     text = Plurimath::Math::Function::Text.new('Hello')
-    expect(text.string).to eql('Hello')
+    expect(text.parameter_one).to eql('Hello')
   end
 end

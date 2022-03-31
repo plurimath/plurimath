@@ -9,6 +9,6 @@ RSpec.describe Plurimath::Math::Function::Arccos do
 
   it 'initializes Arccos object' do
     arccos = Plurimath::Math::Function::Arccos.new('70')
-    expect(arccos.angle).to eql('70')
+    expect(arccos.parameter_one).to eql('70')
   end
 end

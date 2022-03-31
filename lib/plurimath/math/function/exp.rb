@@ -6,11 +6,6 @@ module Plurimath
   module Math
     module Function
       class Exp < UnaryFunction
-        attr_accessor :exponent
-
-        def initialize(exponent = nil)
-          @exponent = exponent
-        end
       end
     end
   end

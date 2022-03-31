@@ -9,6 +9,6 @@ RSpec.describe Plurimath::Math::Function::Csch do
 
   it 'initializes Csch object' do
     csch = Plurimath::Math::Function::Csch.new('70')
-    expect(csch.angle).to eql('70')
+    expect(csch.parameter_one).to eql('70')
   end
 end

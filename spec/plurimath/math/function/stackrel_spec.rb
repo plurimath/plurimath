@@ -9,7 +9,7 @@ RSpec.describe Plurimath::Math::Function::Stackrel do
 
   it 'initializes Stackrel object' do
     stackrel = Plurimath::Math::Function::Stackrel.new(70, 7)
-    expect(stackrel.base).to eql(70)
-    expect(stackrel.exponent).to eql(7)
+    expect(stackrel.parameter_one).to eql(70)
+    expect(stackrel.parameter_two).to eql(7)
   end
 end

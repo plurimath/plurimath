@@ -9,7 +9,6 @@ RSpec.describe Plurimath::Math::Function::Bar do
 
   it 'initializes Bar object' do
     bar = Plurimath::Math::Function::Bar.new('70')
-    expect(bar.value).to eql('70')
+    expect(bar.parameter_one).to eql('70')
   end
 end
-

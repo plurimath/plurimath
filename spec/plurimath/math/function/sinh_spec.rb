@@ -9,6 +9,6 @@ RSpec.describe Plurimath::Math::Function::Sinh do
 
   it 'initializes Sinh object' do
     sinh = Plurimath::Math::Function::Sinh.new('70')
-    expect(sinh.angle).to eql('70')
+    expect(sinh.parameter_one).to eql('70')
   end
 end

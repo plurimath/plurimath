@@ -9,7 +9,6 @@ RSpec.describe Plurimath::Math::Function::Arcsin do
 
   it 'initializes Arcsin object' do
     arcsin = Plurimath::Math::Function::Arcsin.new('70')
-    expect(arcsin.angle).to eql('70')
+    expect(arcsin.parameter_one).to eql('70')
   end
 end
-

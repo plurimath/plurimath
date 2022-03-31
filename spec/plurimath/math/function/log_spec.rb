@@ -9,7 +9,7 @@ RSpec.describe Plurimath::Math::Function::Log do
 
   it 'initializes Log object' do
     log = Plurimath::Math::Function::Log.new(70, 3)
-    expect(log.base).to eql(70)
-    expect(log.exponent).to eql(3)
+    expect(log.parameter_one).to eql(70)
+    expect(log.parameter_two).to eql(3)
   end
 end
