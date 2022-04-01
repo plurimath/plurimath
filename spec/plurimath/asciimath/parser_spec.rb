@@ -766,5 +766,98 @@ RSpec.describe Plurimath::Asciimath::Parser do
         expect(formula).to eq(expected_value)
       end
     end
+
+    context "when contains sum function" do
+      let(:string) { "sum_(i=1)^ni^3=sin((n(n+1))/2)^2" }
+      it "returns sum formula" do
+        expected_value = Plurimath::Math::Formula.new([
+          Plurimath::Math::Function::Sum.new(
+            Plurimath::Math::Formula.new([
+              Plurimath::Math::Symbol.new("i"),
+              Plurimath::Math::Symbol.new("="),
+              Plurimath::Math::Number.new("1"),
+            ]),
+            Plurimath::Math::Symbol.new("n"),
+          ),
+          Plurimath::Math::Symbol.new("i"),
+          Plurimath::Math::Symbol.new("^"),
+          Plurimath::Math::Symbol.new("3"),
+          Plurimath::Math::Symbol.new("="),
+          Plurimath::Math::Function::Sin.new(
+            Plurimath::Math::Formula.new([
+              Plurimath::Math::Formula.new([
+                Plurimath::Math::Symbol.new("n"),
+                Plurimath::Math::Formula.new([
+                  Plurimath::Math::Symbol.new("n"),
+                  Plurimath::Math::Symbol.new("+"),
+                  Plurimath::Math::Number.new("1"),
+                ])
+              ]),
+              Plurimath::Math::Symbol.new("/"),
+              Plurimath::Math::Number.new("2"),
+            ]),
+          ),
+          Plurimath::Math::Symbol.new("^"),
+          Plurimath::Math::Number.new("2"),
+        ])
+        expect(formula).to eq(expected_value)
+      end
+    end
+
+    context "when contains int function" do
+      let(:string) { "int_0^1 f(x)dx" }
+      it "returns int formula" do
+        expected_value = Plurimath::Math::Formula.new([
+          Plurimath::Math::Function::Int.new(
+            Plurimath::Math::Number.new("0"),
+            Plurimath::Math::Number.new("1"),
+          ),
+          Plurimath::Math::Formula.new([
+            Plurimath::Math::Function::F.new(
+              Plurimath::Math::Symbol.new("x")
+            ),
+            Plurimath::Math::Symbol.new("d"),
+            Plurimath::Math::Symbol.new("x"),
+          ])
+        ])
+        expect(formula).to eq(expected_value)
+      end
+    end
+
+    context "when contains log function" do
+      let(:string) { "log(1+2+3+4)^(\"4 terms\")" }
+      it "returns log formula" do
+        expected_value = Plurimath::Math::Formula.new([
+          Plurimath::Math::Function::Log.new(
+            Plurimath::Math::Formula.new([
+              Plurimath::Math::Number.new("1"),
+              Plurimath::Math::Symbol.new("+"),
+              Plurimath::Math::Number.new("2"),
+              Plurimath::Math::Symbol.new("+"),
+              Plurimath::Math::Number.new("3"),
+              Plurimath::Math::Symbol.new("+"),
+              Plurimath::Math::Number.new("4"),
+            ])
+          ),
+          Plurimath::Math::Symbol.new("^"),
+          Plurimath::Math::Function::Text.new("4 terms"),
+        ])
+        expect(formula).to eq(expected_value)
+      end
+    end
+
+    context "when contains prod function" do
+      let(:string) { "prod_(theta) (i)" }
+      it "returns prod formula" do
+        expected_value = Plurimath::Math::Formula.new([
+          Plurimath::Math::Function::Prod.new(
+            Plurimath::Math::Symbol.new("theta"),
+            nil,
+          ),
+          Plurimath::Math::Symbol.new("i"),
+        ])
+        expect(formula).to eq(expected_value)
+      end
+    end
   end
 end
