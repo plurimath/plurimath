@@ -116,14 +116,12 @@ module Plurimath
         circ
         >->>
         zeta
-        oint
         iota
         /_\\
         sube
         sup
         sub
         !in
-        int
         eta
         top
         |><|
@@ -291,25 +289,12 @@ module Plurimath
         prod
         frac
         root
+        oint
+        int
         sum
         mod
         log
       ].freeze
-      RPAREN = %i[
-        )
-        }
-        :)
-        \]
-        :}
-      ].freeze
-      LPAREN = %i[
-        (
-        {
-        (:
-        \[
-        {:
-      ].freeze
-      CLASSES = UNARY_CLASSES + BINARY_CLASSES
     end
   end
 end

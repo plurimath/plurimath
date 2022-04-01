@@ -15,6 +15,8 @@ module Plurimath
       def parse
         new_nodes = Parse.new.parse(text)
         tree_t = Plurimath::Asciimath::Transform.new.apply(new_nodes)
+        return tree_t if tree_t.is_a?(Plurimath::Math::Formula)
+
         Plurimath::Math::Formula.new(tree_t)
       end
     end
