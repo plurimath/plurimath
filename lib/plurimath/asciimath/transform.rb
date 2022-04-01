@@ -24,6 +24,10 @@ module Plurimath
         power + [expr]
       end
 
+      rule(power: sequence(:power), expr: sequence(:expr)) do
+        power + expr
+      end
+
       rule(number: simple(:number)) do
         Plurimath::Math::Number.new(number.to_s)
       end
@@ -36,8 +40,17 @@ module Plurimath
         text.is_a?(Slice) ? Transform.get_class("text").new(text.to_s) : text
       end
 
+      rule(base: simple(:base),
+           expr: simple(:expr)) do
+        [base, expr]
+      end
+
       rule(power_base: simple(:power_base), expr: sequence(:expr)) do
         expr.insert(0, power_base)
+      end
+
+      rule(power_base: simple(:power_base), expr: simple(:expr)) do
+        [power_base, expr]
       end
 
       rule(power_base: sequence(:power_base), expr: simple(:expr)) do
@@ -90,6 +103,16 @@ module Plurimath
           Plurimath::Math::Symbol.new(symbol.to_s),
           Plurimath::Math::Symbol.new(exponent.to_s),
           Plurimath::Math::Number.new(number.to_s),
+        ]
+      end
+
+      rule(binary: simple(:binary),
+           "^": simple(:under_score),
+           intermediate_exp: simple(:int_exp)) do
+        [
+          binary,
+          Plurimath::Math::Symbol.new("^"),
+          int_exp,
         ]
       end
 

@@ -13,11 +13,11 @@ module Plurimath
       end
 
       def parse
-        new_nodes = Parse.new.parse(text)
-        tree_t = Plurimath::Asciimath::Transform.new.apply(new_nodes)
-        return tree_t if tree_t.is_a?(Plurimath::Math::Formula)
+        nodes = Parse.new.parse(text)
+        transformed_tree = Plurimath::Asciimath::Transform.new.apply(nodes)
+        return transformed_tree if transformed_tree.is_a?(Plurimath::Math::Formula)
 
-        Plurimath::Math::Formula.new(tree_t)
+        Plurimath::Math::Formula.new(transformed_tree)
       end
     end
   end
