@@ -14,11 +14,7 @@ module Plurimath
       end
 
       def to_asciimath
-        entities = ""
-        value.each do |entity|
-          entities += entity.to_asciimath
-        end
-        entities
+        value.map(&:to_asciimath).join("")
       end
     end
   end

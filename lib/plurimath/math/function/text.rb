@@ -6,6 +6,9 @@ module Plurimath
   module Math
     module Function
       class Text < UnaryFunction
+        def to_asciimath
+          "\"#{parameter_one}\""
+        end
       end
     end
   end
