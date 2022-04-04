@@ -1,31 +1,15 @@
 # frozen_string_literal: true
 
+require_relative "binary_function"
+
 module Plurimath
   module Math
     module Function
-      class Sum
-        attr_accessor :base, :exponent, :content
-
-        def initialize(base = nil, exponent = nil, content = nil)
-          @base = base
-          @exponent = exponent
-          @content = content
-        end
-
+      class Sum < BinaryFunction
         def to_asciimath
-          "sum#{sum_content.empty? ? content.to_asciimath : sum_content}"
-        end
-
-        def sum_content
-          "#{base_to_s}#{exponent_to_s}"
-        end
-
-        def base_to_s
-          "_#{base.to_asciimath}" unless base.nil?
-        end
-
-        def exponent_to_s
-          "^#{exponent.to_asciimath}" unless exponent.nil?
+          first_value = "_(#{parameter_one.to_asciimath})" if parameter_one
+          second_value = "^(#{parameter_two.to_asciimath})" if parameter_two
+          "sum#{first_value}#{second_value}"
         end
       end
     end

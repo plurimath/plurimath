@@ -1,31 +1,15 @@
 # frozen_string_literal: true
 
+require_relative "binary_function"
+
 module Plurimath
   module Math
     module Function
-      class Log
-        attr_accessor :base, :exponent, :content
-
-        def initialize(base, exponent, content)
-          @base = base
-          @exponent = exponent
-          @content = content
-        end
-
+      class Log < BinaryFunction
         def to_asciimath
-          "log#{log_content.empty? ? content&.to_asciimath : log_content}"
-        end
-
-        def log_content
-          "#{base_to_s}#{exponent_to_s}"
-        end
-
-        def base_to_s
-          "_#{base&.to_asciimath}" unless base.nil?
-        end
-
-        def exponent_to_s
-          "^#{exponent&.to_asciimath}" unless exponent.nil?
+          first_value = "_(#{parameter_one.to_asciimath})" if parameter_one
+          second_value = "^(#{parameter_two.to_asciimath})" if parameter_two
+          "log#{first_value}#{second_value}"
         end
       end
     end

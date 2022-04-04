@@ -9,6 +9,6 @@ RSpec.describe Plurimath::Math::Function::Vec do
 
   it 'initializes Vec object' do
     vec = Plurimath::Math::Function::Vec.new('70')
-    expect(vec.value).to eql('70')
+    expect(vec.parameter_one).to eql('70')
   end
 end

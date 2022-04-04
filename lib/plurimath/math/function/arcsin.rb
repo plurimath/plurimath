@@ -1,18 +1,11 @@
 # frozen_string_literal: true
 
+require_relative "unary_function"
+
 module Plurimath
   module Math
     module Function
-      class Arcsin
-        attr_accessor :angle
-
-        def initialize(angle)
-          @angle = angle
-        end
-
-        def to_asciimath
-          "arcsin#{angle&.to_asciimath}"
-        end
+      class Arcsin < UnaryFunction
       end
     end
   end

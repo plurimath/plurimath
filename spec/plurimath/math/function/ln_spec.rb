@@ -9,6 +9,6 @@ RSpec.describe Plurimath::Math::Function::Ln do
 
   it 'initializes Ln object' do
     ln = Plurimath::Math::Function::Ln.new(70)
-    expect(ln.exponent).to eql(70)
+    expect(ln.parameter_one).to eql(70)
   end
 end

@@ -1,18 +1,11 @@
 # frozen_string_literal: true
 
+require_relative "unary_function"
+
 module Plurimath
   module Math
     module Function
-      class Max
-        attr_accessor :values
-
-        def initialize(values = [])
-          @values = values
-        end
-
-        def to_asciimath
-          "max#{values&.to_asciimath}"
-        end
+      class Max < UnaryFunction
       end
     end
   end

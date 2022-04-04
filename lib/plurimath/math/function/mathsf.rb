@@ -1,18 +1,11 @@
 # frozen_string_literal: true
 
+require_relative "unary_function"
+
 module Plurimath
   module Math
     module Function
-      class Mathsf
-        attr_accessor :text
-
-        def initialize(text)
-          @text = text
-        end
-
-        def to_asciimath
-          "mathsf#{text&.to_asciimath}"
-        end
+      class Mathsf < UnaryFunction
       end
     end
   end

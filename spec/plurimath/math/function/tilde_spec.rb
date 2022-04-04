@@ -9,6 +9,6 @@ RSpec.describe Plurimath::Math::Function::Tilde do
 
   it 'initializes Tilde object' do
     tilde = Plurimath::Math::Function::Tilde.new('70')
-    expect(tilde.value).to eql('70')
+    expect(tilde.parameter_one).to eql('70')
   end
 end

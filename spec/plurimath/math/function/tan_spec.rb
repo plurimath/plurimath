@@ -9,7 +9,6 @@ RSpec.describe Plurimath::Math::Function::Tan do
 
   it 'initializes Tan object' do
     tan = Plurimath::Math::Function::Tan.new('70')
-    expect(tan.angle).to eql('70')
+    expect(tan.parameter_one).to eql('70')
   end
 end
-

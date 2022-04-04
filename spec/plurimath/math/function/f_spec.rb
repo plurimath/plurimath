@@ -9,6 +9,6 @@ RSpec.describe Plurimath::Math::Function::F do
 
   it 'initializes F object' do
     f = Plurimath::Math::Function::F.new('70')
-    expect(f.value).to eql('70')
+    expect(f.parameter_one).to eql('70')
   end
 end

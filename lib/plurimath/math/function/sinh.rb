@@ -1,18 +1,11 @@
 # frozen_string_literal: true
 
+require_relative "unary_function"
+
 module Plurimath
   module Math
     module Function
-      class Sinh
-        attr_accessor :angle
-
-        def initialize(angle)
-          @angle = angle
-        end
-
-        def to_asciimath
-          "sinh#{angle&.to_asciimath}"
-        end
+      class Sinh < UnaryFunction
       end
     end
   end

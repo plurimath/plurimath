@@ -1,18 +1,11 @@
 # frozen_string_literal: true
 
+require_relative "unary_function"
+
 module Plurimath
   module Math
     module Function
-      class Floor
-        attr_accessor :value
-
-        def initialize(value)
-          @value = value
-        end
-
-        def to_asciimath
-          "floor#{value&.to_asciimath}"
-        end
+      class Floor < UnaryFunction
       end
     end
   end

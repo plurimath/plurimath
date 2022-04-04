@@ -1,18 +1,11 @@
 # frozen_string_literal: true
 
+require_relative "unary_function"
+
 module Plurimath
   module Math
     module Function
-      class Csch
-        attr_accessor :angle
-
-        def initialize(angle)
-          @angle = angle
-        end
-
-        def to_asciimath
-          "csch#{angle&.to_asciimath}"
-        end
+      class Csch < UnaryFunction
       end
     end
   end

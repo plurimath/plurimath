@@ -1,18 +1,11 @@
 # frozen_string_literal: true
 
+require_relative "unary_function"
+
 module Plurimath
   module Math
     module Function
-      class Det
-        attr_accessor :scalar
-
-        def initialize(scalar)
-          @scalar = scalar
-        end
-
-        def to_asciimath
-          "det#{scalar&.to_asciimath}"
-        end
+      class Det < UnaryFunction
       end
     end
   end

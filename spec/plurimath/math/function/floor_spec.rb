@@ -9,6 +9,6 @@ RSpec.describe Plurimath::Math::Function::Floor do
 
   it 'initializes Floor object' do
     floor = Plurimath::Math::Function::Floor.new(70.3)
-    expect(floor.value).to eql(70.3)
+    expect(floor.parameter_one).to eql(70.3)
   end
 end

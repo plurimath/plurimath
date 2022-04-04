@@ -1,19 +1,11 @@
 # frozen_string_literal: true
 
+require_relative "binary_function"
+
 module Plurimath
   module Math
     module Function
-      class Overset
-        attr_accessor :value, :symbol
-
-        def initialize(value, symbol)
-          @value = value
-          @symbol = symbol
-        end
-
-        def to_asciimath
-          "overset#{value&.to_asciimath}#{symbol&.to_asciimath}"
-        end
+      class Overset < BinaryFunction
       end
     end
   end

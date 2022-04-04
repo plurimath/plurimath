@@ -9,6 +9,6 @@ RSpec.describe Plurimath::Math::Function::Coth do
 
   it 'initializes Coth object' do
     coth = Plurimath::Math::Function::Coth.new('70')
-    expect(coth.angle).to eql('70')
+    expect(coth.parameter_one).to eql('70')
   end
 end

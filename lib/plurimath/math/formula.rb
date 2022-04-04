@@ -6,15 +6,15 @@ module Plurimath
       attr_accessor :value
 
       def initialize(value = [])
-        @value = value
+        @value = value.is_a?(Array) ? value : [value]
+      end
+
+      def ==(object)
+        object.value == value
       end
 
       def to_asciimath
-        entities = ""
-        value.each do |entity|
-          entities += entity.to_asciimath
-        end
-        entities
+        value.map(&:to_asciimath).join("")
       end
     end
   end

@@ -9,7 +9,6 @@ RSpec.describe Plurimath::Math::Function::Abs do
 
   it 'initializes Abs object' do
     abs = Plurimath::Math::Function::Abs.new('70')
-    expect(abs.value).to eql('70')
+    expect(abs.parameter_one).to eql('70')
   end
 end
-

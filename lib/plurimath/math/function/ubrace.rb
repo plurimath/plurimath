@@ -1,18 +1,11 @@
 # frozen_string_literal: true
 
+require_relative "unary_function"
+
 module Plurimath
   module Math
     module Function
-      class Ubrace
-        attr_accessor :value
-
-        def initialize(value)
-          @value = value
-        end
-
-        def to_asciimath
-          "ubrace#{value&.to_asciimath}"
-        end
+      class Ubrace < UnaryFunction
       end
     end
   end
