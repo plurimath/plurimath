@@ -41,20 +41,20 @@ module Plurimath
         match("[0-9]").repeat(1).as(:number)
       end
 
-      rule(:sequance) do
+      rule(:sequence) do
         (lparen >> expression >> rparen).as(:intermediate_exp) |
-        (binary_functions >> sequance.as(:base) >> sequance.maybe.as(:exponent)).as(:binary) |
+        (binary_functions >> sequence.as(:base) >> sequence.maybe.as(:exponent)).as(:binary) |
         (str("text") >> lparen.capture(:paren) >> read_text >> rparen) |
-        (unary_functions >> sequance).as(:unary) |
+        (unary_functions >> sequence).as(:unary) |
         symbol_text_or_integer
       end
 
       rule(:iteration) do
-        (sequance.as(:dividend) >> str("mod").as(:mod) >> sequance.as(:divisor)).as(:mod) |
-        (sequance >> base >> sequance.as(:base) >> power >> sequance.as(:exponent)).as(:power_base) |
-        (sequance >> base >> sequance).as(:base) |
-        (sequance >> power >> sequance).as(:power) |
-        sequance.as(:sequance) |
+        (sequence.as(:dividend) >> str("mod").as(:mod) >> sequence.as(:divisor)).as(:mod) |
+        (sequence >> base >> sequence.as(:base) >> power >> sequence.as(:exponent)).as(:power_base) |
+        (sequence >> base >> sequence).as(:base) |
+        (sequence >> power >> sequence).as(:power) |
+        sequence.as(:sequence) |
         str(" ")
       end
 

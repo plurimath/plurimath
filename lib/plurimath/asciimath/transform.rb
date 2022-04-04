@@ -10,7 +10,7 @@ module Plurimath
       rule(unary: simple(:unary))                     { unary }
       rule(power: sequence(:power))                   { power }
       rule(binary: simple(:binary))                   { binary }
-      rule(sequance: simple(:sequance))               { sequance }
+      rule(sequence: simple(:sequence))               { sequence }
       rule(power_base: simple(:power_base))           { power_base }
       rule(intermediate_exp: simple(:int_exp))        { int_exp }
       rule(mod: simple(:mod), expr: simple(:expr))    { [mod, expr] }
@@ -61,8 +61,8 @@ module Plurimath
         power_base + expr
       end
 
-      rule(sequance: simple(:sequance), expr: sequence(:expr)) do
-        expr.insert(0, sequance)
+      rule(sequence: simple(:sequence), expr: sequence(:expr)) do
+        expr.insert(0, sequence)
       end
 
       rule(dividend: simple(:dividend), mod: simple(:mod),
@@ -284,7 +284,7 @@ module Plurimath
         end
       end
 
-      rule(sequance: simple(:sequance), expr: simple(:exp)) { [sequance, exp] }
+      rule(sequence: simple(:sequence), expr: simple(:exp)) { [sequence, exp] }
 
       def self.get_class(text)
         Object.const_get("Plurimath::Math::Function::#{text.to_s.capitalize}")
