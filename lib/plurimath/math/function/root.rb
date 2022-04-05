@@ -1,15 +1,11 @@
 # frozen_string_literal: true
 
+require_relative "binary_function"
+
 module Plurimath
   module Math
     module Function
-      class Root
-        attr_accessor :index, :number
-
-        def initialize(index, number)
-          @index = index
-          @number = number
-        end
+      class Root < BinaryFunction
       end
     end
   end

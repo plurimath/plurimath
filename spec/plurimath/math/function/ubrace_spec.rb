@@ -9,6 +9,6 @@ RSpec.describe Plurimath::Math::Function::Ubrace do
 
   it 'initializes Ubrace object' do
     ubrace = Plurimath::Math::Function::Ubrace.new('70')
-    expect(ubrace.value).to eql('70')
+    expect(ubrace.parameter_one).to eql('70')
   end
 end

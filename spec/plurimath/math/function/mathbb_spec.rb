@@ -9,6 +9,6 @@ RSpec.describe Plurimath::Math::Function::Mathbb do
 
   it 'initializes Mathbb object' do
     mathbb = Plurimath::Math::Function::Mathbb.new("AaBbCc")
-    expect(mathbb.text).to eql("AaBbCc")
+    expect(mathbb.parameter_one).to eql("AaBbCc")
   end
 end

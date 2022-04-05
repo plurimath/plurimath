@@ -1,14 +1,11 @@
 # frozen_string_literal: true
 
+require_relative "unary_function"
+
 module Plurimath
   module Math
     module Function
-      class Cos
-        attr_accessor :angle
-
-        def initialize(angle)
-          @angle = angle
-        end
+      class Cos < UnaryFunction
       end
     end
   end

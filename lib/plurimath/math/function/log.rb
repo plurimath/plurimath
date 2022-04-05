@@ -1,15 +1,11 @@
 # frozen_string_literal: true
 
+require_relative "binary_function"
+
 module Plurimath
   module Math
     module Function
-      class Log
-        attr_accessor :base, :exponent
-
-        def initialize(base, exponent)
-          @base = base
-          @exponent = exponent
-        end
+      class Log < BinaryFunction
       end
     end
   end

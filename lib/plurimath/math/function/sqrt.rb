@@ -1,14 +1,11 @@
 # frozen_string_literal: true
 
+require_relative "unary_function"
+
 module Plurimath
   module Math
     module Function
-      class Sqrt
-        attr_accessor :number
-
-        def initialize(number)
-          @number = number
-        end
+      class Sqrt < UnaryFunction
       end
     end
   end

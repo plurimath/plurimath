@@ -9,6 +9,6 @@ RSpec.describe Plurimath::Math::Function::Dim do
 
   it 'initializes Dim object' do
     dim = Plurimath::Math::Function::Dim.new('Q')
-    expect(dim.dimensions).to eql('Q')
+    expect(dim.parameter_one).to eql('Q')
   end
 end

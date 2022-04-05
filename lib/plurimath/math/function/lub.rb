@@ -1,14 +1,11 @@
 # frozen_string_literal: true
 
+require_relative "unary_function"
+
 module Plurimath
   module Math
     module Function
-      class Lub
-        attr_accessor :values
-
-        def initialize(values = [])
-          @values = values
-        end
+      class Lub < UnaryFunction
       end
     end
   end

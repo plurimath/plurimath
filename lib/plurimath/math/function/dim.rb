@@ -1,14 +1,11 @@
 # frozen_string_literal: true
 
+require_relative "unary_function"
+
 module Plurimath
   module Math
     module Function
-      class Dim
-        attr_accessor :dimensions
-
-        def initialize(dimensions)
-          @dimensions = dimensions
-        end
+      class Dim < UnaryFunction
       end
     end
   end

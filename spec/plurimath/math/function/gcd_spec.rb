@@ -9,6 +9,6 @@ RSpec.describe Plurimath::Math::Function::Gcd do
 
   it 'initializes Gcd object' do
     gcd = Plurimath::Math::Function::Gcd.new([70, 40])
-    expect(gcd.values).to eql([70, 40])
+    expect(gcd.parameter_one).to eql([70, 40])
   end
 end

@@ -1,15 +1,11 @@
 # frozen_string_literal: true
 
+require_relative "binary_function"
+
 module Plurimath
   module Math
     module Function
-      class Color
-        attr_accessor :color, :value
-
-        def initialize(color, value)
-          @color = color
-          @value = value
-        end
+      class Color < BinaryFunction
       end
     end
   end

@@ -9,7 +9,7 @@ RSpec.describe Plurimath::Math::Function::Color do
 
   it 'initializes Color object' do
     color = Plurimath::Math::Function::Color.new('red', '70')
-    expect(color.color).to eql('red')
-    expect(color.value).to eql('70')
+    expect(color.parameter_one).to eql('red')
+    expect(color.parameter_two).to eql('70')
   end
 end

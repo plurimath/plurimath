@@ -9,6 +9,6 @@ RSpec.describe Plurimath::Math::Function::Tanh do
 
   it 'initializes Tanh object' do
     tanh = Plurimath::Math::Function::Tanh.new('70')
-    expect(tanh.angle).to eql('70')
+    expect(tanh.parameter_one).to eql('70')
   end
 end

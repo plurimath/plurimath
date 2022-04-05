@@ -9,7 +9,7 @@ RSpec.describe Plurimath::Math::Function::Overset do
 
   it 'initializes Overset object' do
     overset = Plurimath::Math::Function::Overset.new('70', '=')
-    expect(overset.value).to eql('70')
-    expect(overset.symbol).to eql('=')
+    expect(overset.parameter_one).to eql('70')
+    expect(overset.parameter_two).to eql('=')
   end
 end

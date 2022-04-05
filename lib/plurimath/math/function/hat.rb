@@ -1,14 +1,11 @@
 # frozen_string_literal: true
 
+require_relative "unary_function"
+
 module Plurimath
   module Math
     module Function
-      class Hat
-        attr_accessor :value
-
-        def initialize(value)
-          @value = value
-        end
+      class Hat < UnaryFunction
       end
     end
   end

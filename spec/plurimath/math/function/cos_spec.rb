@@ -9,7 +9,6 @@ RSpec.describe Plurimath::Math::Function::Cos do
 
   it 'initializes Cos object' do
     cos = Plurimath::Math::Function::Cos.new('70')
-    expect(cos.angle).to eql('70')
+    expect(cos.parameter_one).to eql('70')
   end
 end
-

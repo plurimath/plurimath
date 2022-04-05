@@ -1,15 +1,11 @@
 # frozen_string_literal: true
 
+require_relative "binary_function"
+
 module Plurimath
   module Math
     module Function
-      class Mod
-        attr_accessor :dividend, :divisor
-
-        def initialize(dividend, divisor)
-          @dividend = dividend
-          @divisor = divisor
-        end
+      class Mod < BinaryFunction
       end
     end
   end

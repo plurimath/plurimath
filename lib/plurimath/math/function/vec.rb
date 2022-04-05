@@ -1,14 +1,11 @@
 # frozen_string_literal: true
 
+require_relative "unary_function"
+
 module Plurimath
   module Math
     module Function
-      class Vec
-        attr_accessor :value
-
-        def initialize(value)
-          @value = value
-        end
+      class Vec < UnaryFunction
       end
     end
   end

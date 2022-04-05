@@ -8,6 +8,10 @@ module Plurimath
       def initialize(sym)
         @value = sym
       end
+
+      def ==(object)
+        object.value == value
+      end
     end
   end
 end

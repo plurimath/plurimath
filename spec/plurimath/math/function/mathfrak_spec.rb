@@ -9,6 +9,6 @@ RSpec.describe Plurimath::Math::Function::Mathfrak do
 
   it 'initializes Mathfrak object' do
     mathfrak = Plurimath::Math::Function::Mathfrak.new("AaBbCc")
-    expect(mathfrak.text).to eql("AaBbCc")
+    expect(mathfrak.parameter_one).to eql("AaBbCc")
   end
 end
