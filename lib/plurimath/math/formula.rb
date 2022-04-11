@@ -12,6 +12,10 @@ module Plurimath
       def ==(object)
         object.value == value
       end
+
+      def to_asciimath
+        value.map(&:to_asciimath).join("")
+      end
     end
   end
 end
