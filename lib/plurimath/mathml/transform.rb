@@ -3,22 +3,28 @@
 module Plurimath
   class Mathml
     class Transform < Parslet::Transform
-      rule(tag: simple(:tag))             { tag }
-      rule(tag: sequence(:tag))           { tag }
-      rule(text: simple(:text))           { Plurimath::Math::Symbol.new(text.to_s) }
-      rule(class: simple(:string))        { Transform.get_class(string).new }
-      rule(number: simple(:number))       { Plurimath::Math::Number.new(number.to_s) }
+      rule(tag: simple(:tag))       { tag }
+      rule(tag: sequence(:tag))     { tag }
+      rule(text: simple(:text))     { Plurimath::Math::Symbol.new(text.to_s) }
+      rule(class: simple(:string))  { Transform.get_class(string).new }
+      rule(number: simple(:number)) { Plurimath::Math::Number.new(number.to_s) }
       rule(tag: sequence(:tag), sequence: simple(:sequence)) { tag + [sequence] }
       rule(tag: simple(:tag), sequence: sequence(:sequence)) { [tag] + sequence }
       rule(tag: sequence(:tag), sequence: sequence(:sequence)) { tag + sequence }
 
       rule(quoted_text: simple(:quoted_text)) do
         text = quoted_text.to_s
-        Constants::UNICODE_SYMBOLS.each { |code, string| text.gsub!(code.to_s, string) }
+        Constants::UNICODE_SYMBOLS.each do |code, string|
+          text.gsub!(code.to_s, string)
+        end
         Plurimath::Math::Function::Text.new(text)
       end
 
-      rule(tag: sequence(:tag), sequence: sequence(:sequence), iteration: simple(:iteration)) do
+      rule(
+        tag: sequence(:tag),
+        sequence: sequence(:sequence),
+        iteration: simple(:iteration),
+      ) do
         new_arr = []
         new_arr = new_arr + tag unless tag.compact.empty?
         new_arr = new_arr + sequence unless sequence.compact.empty?
@@ -26,11 +32,19 @@ module Plurimath
         new_arr
       end
 
-      rule(tag: sequence(:tag), sequence: simple(:sequence), iteration: simple(:iteration)) do
-        Plurimath::Math::Formula.new( tag + [sequence] )
+      rule(
+        tag: sequence(:tag),
+        sequence: simple(:sequence),
+        iteration: simple(:iteration),
+      ) do
+        Plurimath::Math::Formula.new(tag + [sequence])
       end
 
-      rule(tag: simple(:tag), sequence: simple(:sequence), iteration: simple(:iteration)) do
+      rule(
+        tag: simple(:tag),
+        sequence: simple(:sequence),
+        iteration: simple(:iteration),
+      ) do
         [tag, sequence]
       end
 
@@ -65,11 +79,18 @@ module Plurimath
       end
 
       rule(name: simple(:name), value: simple(:value)) do
-        Plurimath::Math::Symbol.new(value.to_s) if [ "open", "close", "mathcolor" ].include?(name.to_s)
+        if ["open", "close", "mathcolor"].include?(name.to_s)
+          Plurimath::Math::Symbol.new(value.to_s)
+        end
       end
 
-      rule(tag: simple(:tag), sequence: sequence(:sequence), iteration: simple(:iteration)) do
-        if Constants::BINARY_CLASSES.include?(tag.to_s.split("::").last.downcase.to_sym)
+      rule(
+        tag: simple(:tag),
+        sequence: sequence(:sequence),
+        iteration: simple(:iteration),
+      ) do
+        tag_str = tag.to_s.split("::").last.downcase.to_sym
+        if Constants::BINARY_CLASSES.include?(tag_str)
           tag.new(sequence.first, sequence.last)
         else
           new_arr = sequence.compact
@@ -79,8 +100,12 @@ module Plurimath
         end
       end
 
-      rule(open: simple(:open_tag), attributes: sequence(:attributes),
-        iteration: sequence(:iteration), close: simple(:close_tag)) do
+      rule(
+        open: simple(:open_tag),
+        attributes: sequence(:attributes),
+        iteration: sequence(:iteration),
+        close: simple(:close_tag),
+      ) do
         Transform.raise_error!(open_tag, close_tag) unless open_tag == close_tag
         if open_tag == "mrow"
           Plurimath::Math::Formula.new(iteration)
@@ -121,9 +146,18 @@ module Plurimath
         end
       end
 
-      rule(open: simple(:open_tag), attributes: sequence(:attributes), iteration: simple(:iteration), close: simple(:close_tag)) do
+      rule(
+        open: simple(:open_tag),
+        attributes: sequence(:attributes),
+        iteration: simple(:iteration),
+        close: simple(:close_tag),
+      ) do
         Transform.raise_error!(open_tag, close_tag) unless open_tag == close_tag
-        iteration.to_s.include?("Function") ? iteration : [iteration.to_s.empty? ? nil : iteration]
+        if iteration.to_s.include?("Function")
+          iteration
+        else
+          [iteration.to_s.empty? ? nil : iteration]
+        end
       end
 
       def self.get_class(text)
@@ -132,7 +166,8 @@ module Plurimath
 
       def self.raise_error!(open_tag, close_tag)
         message = "Please check your input."\
-                  " Opening tag is \"#{open_tag}\" and closing tag is \"#{close_tag}\""
+                  " Opening tag is \"#{open_tag}\""\
+                  "and closing tag is \"#{close_tag}\""
         raise Plurimath::Math::Error.new(message)
       end
     end

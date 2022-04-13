@@ -4,19 +4,19 @@ require "parslet"
 module Plurimath
   class Mathml
     class Parse < Parslet::Parser
-      rule(:parse_record) {
+      rule(:parse_record) do
         parse_class.as(:class) |
-        parse_symbols.as(:symbol) |
-        match["a-zA-Z"].as(:text) |
-        match(/[0-9]/).repeat(1).as(:number) |
-        str("")
-      }
+          parse_symbols.as(:symbol) |
+          match["a-zA-Z"].as(:text) |
+          match(/[0-9]/).repeat(1).as(:number) |
+          str("")
+      end
 
       rule(:tag) { (parse_tag(:open) >> iteration.as(:iteration) >> parse_tag(:close)).as(:tag) | parse_text_tag.as(:tag) }
 
-      rule(:sequence) { tag >> sequence.as(:sequence) | tag }
+      rule(:sequence) { (tag >> sequence.as(:sequence)) | tag }
 
-      rule(:iteration) { sequence >> iteration.as(:iteration) | parse_record }
+      rule(:iteration) { (sequence >> iteration.as(:iteration)) | parse_record }
 
       rule(:expression) { parse_tag(:open) >> iteration.as(:iteration) >> parse_tag(:close) }
 
@@ -45,15 +45,13 @@ module Plurimath
       end
 
       def attributes
-        (
-         match["a-zA-Z"].repeat.as(:name) >>
-         str("=") >> quoted_string
-        ).repeat
+        (match["a-zA-Z"].repeat.as(:name) >>
+          str("=") >> quoted_string).repeat
       end
 
       def quoted_string
-        str('"') >> match("[^\"]").repeat.as(:value) >> str('"') |
-        str("'") >> match("[^\']").repeat.as(:value) >> str("'")
+        (str('"') >> match("[^\"]").repeat.as(:value) >> str('"')) |
+          (str("'") >> match("[^\']").repeat.as(:value) >> str("'"))
       end
 
       def tags(value)
