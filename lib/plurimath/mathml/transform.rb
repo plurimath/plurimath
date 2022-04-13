@@ -81,6 +81,8 @@ module Plurimath
       rule(name: simple(:name), value: simple(:value)) do
         if ["open", "close", "mathcolor"].include?(name.to_s)
           Plurimath::Math::Symbol.new(value.to_s)
+        elsif name.to_s == "mathvariant"
+          value.to_s
         end
       end
 
@@ -140,7 +142,12 @@ module Plurimath
           iteration.insert(0, attributes[0])
           iteration << attributes[1]
         elsif open_tag == "mstyle" && !attributes.compact.empty?
-          Plurimath::Math::Function::Color.new(attributes[0], iteration[0])
+          if ["fraktur", "sans-serif", "monospace", "script", "double-struck", "bold"].include?(attributes.compact.last)
+            math_class = Constants::FONT_CLASSES[attributes.compact.last.to_sym]
+            math_class.new(iteration.last)
+          else
+            Plurimath::Math::Function::Color.new(attributes[0], iteration[0])
+          end
         else
           iteration
         end

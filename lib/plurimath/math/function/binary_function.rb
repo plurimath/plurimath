@@ -22,7 +22,8 @@ module Plurimath
         end
 
         def ==(object)
-          object.parameter_one == parameter_one &&
+          object.class == self.class &&
+            object.parameter_one == parameter_one &&
             object.parameter_two == parameter_two
         end
       end

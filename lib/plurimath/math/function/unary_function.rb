@@ -11,7 +11,8 @@ module Plurimath
         end
 
         def ==(object)
-          object.parameter_one == parameter_one
+          object.class == self.class &&
+            object.parameter_one == parameter_one
         end
 
         def to_asciimath
