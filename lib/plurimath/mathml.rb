@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require "strscan"
 require_relative "math"
 module Plurimath
   class Mathml
@@ -11,9 +10,7 @@ module Plurimath
     end
 
     def to_formula
-      # TODO: Will be implemented soon
-      string = StringScanner.new(@text)
-      @text = Plurimath::Mathml::Parser.new(string).parse
+      Plurimath::Mathml::Parser.new(text).parse
     end
   end
 end
