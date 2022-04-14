@@ -174,7 +174,7 @@ module Plurimath
       def self.raise_error!(open_tag, close_tag)
         message = "Please check your input."\
                   " Opening tag is \"#{open_tag}\""\
-                  "and closing tag is \"#{close_tag}\""
+                  " and closing tag is \"#{close_tag}\""
         raise Plurimath::Math::Error.new(message)
       end
     end
