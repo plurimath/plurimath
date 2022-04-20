@@ -15,7 +15,7 @@ module Plurimath
       rule(quoted_text: simple(:quoted_text)) do
         text = quoted_text.to_s
         Constants::UNICODE_SYMBOLS.each do |code, string|
-          text.gsub!(code.to_s, string)
+          text.gsub!(code.to_s, "unicode[:#{string}]")
         end
         Plurimath::Math::Function::Text.new(text)
       end
@@ -73,14 +73,18 @@ module Plurimath
         decoded_symbol = Constants::UNICODE_SYMBOLS[symbol.to_sym]
         if Constants::CLASSES.include?(decoded_symbol)
           Transform.get_class(decoded_symbol).new
+        elsif decoded_symbol.nil? && Constants::SYMBOLS[symbol.to_sym]
+          Plurimath::Math::Symbol.new(Constants::SYMBOLS[symbol.to_sym])
         else
           Plurimath::Math::Symbol.new(decoded_symbol)
         end
       end
 
       rule(name: simple(:name), value: simple(:value)) do
-        if ["open", "close", "mathcolor"].include?(name.to_s)
+        if ["open", "close"].include?(name.to_s)
           Plurimath::Math::Symbol.new(value.to_s)
+        elsif "mathcolor" == name.to_s
+          Plurimath::Math::Function::Color.new(Plurimath::Math::Symbol.new(value.to_s))
         elsif name.to_s == "mathvariant"
           value.to_s
         end
@@ -109,6 +113,7 @@ module Plurimath
         close: simple(:close_tag),
       ) do
         Transform.raise_error!(open_tag, close_tag) unless open_tag == close_tag
+
         if open_tag == "mrow"
           Plurimath::Math::Formula.new(iteration)
         elsif open_tag == "munder"
@@ -142,12 +147,13 @@ module Plurimath
         elsif open_tag == "mfenced"
           iteration.insert(0, attributes[0])
           iteration << attributes[1]
+        elsif attributes.first.is_a?(Plurimath::Math::Function::Color)
+          attributes.first.parameter_two = iteration.first
+          attributes.first
         elsif open_tag == "mstyle" && !attributes.compact.empty?
-          if ["fraktur", "sans-serif", "monospace", "script", "double-struck", "bold"].include?(attributes.compact.last)
+          if Constants::FONT_CLASSES.key?(attributes.compact.last.to_sym)
             math_class = Constants::FONT_CLASSES[attributes.compact.last.to_sym]
             math_class.new(iteration.last)
-          else
-            Plurimath::Math::Function::Color.new(attributes[0], iteration[0])
           end
         else
           iteration
@@ -161,6 +167,7 @@ module Plurimath
         close: simple(:close_tag),
       ) do
         Transform.raise_error!(open_tag, close_tag) unless open_tag == close_tag
+
         if iteration.to_s.include?("Function")
           iteration
         else

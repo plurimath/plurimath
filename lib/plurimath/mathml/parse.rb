@@ -6,6 +6,7 @@ module Plurimath
     class Parse < Parslet::Parser
       rule(:parse_record) do
         parse_class.as(:class) |
+          parse_unicode_symbols.as(:symbol) |
           parse_symbols.as(:symbol) |
           match["a-zA-Z"].as(:text) |
           match(/[0-9]/).repeat(1).as(:number) |
@@ -29,8 +30,15 @@ module Plurimath
         end
       end
 
-      def parse_symbols
+      def parse_unicode_symbols
         Constants::UNICODE_SYMBOLS.keys.reduce do |expr, tag|
+          expr = str(expr) if expr.is_a?(Symbol)
+          expr | str(tag)
+        end
+      end
+
+      def parse_symbols
+        Constants::SYMBOLS.keys.reduce do |expr, tag|
           expr = str(expr) if expr.is_a?(Symbol)
           expr | str(tag)
         end

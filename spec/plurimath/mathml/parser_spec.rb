@@ -323,14 +323,32 @@ RSpec.describe Plurimath::Mathml::Parser do
       <<~MATHML
         <math xmlns='http://www.w3.org/1998/Math/MathML'>
           <mstyle displaystyle='true'>
-            <mtext>sinsumsom&#x393;</mtext>
+            <mtext>sinsumsom&#x393;gamma</mtext>
           </mstyle>
         </math>
       MATHML
     }
     it "returns formula of text" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Function::Text.new("sinsumsomGamma"),
+        Plurimath::Math::Function::Text.new("sinsumsomunicode[:Gamma]gamma"),
+      ])
+      expect(formula).to eq(expected_value)
+    end
+  end
+
+  context "contains mathml string of simple text formula multiple unicodes" do
+    let(:exp) {
+      <<~MATHML
+        <math xmlns='http://www.w3.org/1998/Math/MathML'>
+          <mstyle displaystyle='true'>
+            <mtext>sinsumsom&#x393;&#x3B3;</mtext>
+          </mstyle>
+        </math>
+      MATHML
+    }
+    it "returns formula of text" do
+      expected_value = Plurimath::Math::Formula.new([
+        Plurimath::Math::Function::Text.new("sinsumsomunicode[:Gamma]unicode[:gamma]"),
       ])
       expect(formula).to eq(expected_value)
     end
@@ -1348,7 +1366,7 @@ RSpec.describe Plurimath::Mathml::Parser do
   context "contains mathml string of mathfrak formula" do
     let(:exp) {
       <<~MATHML
-        <math xmlns="http://www.w3.org/1998/Math/MathML">
+        <math xmlns='http://www.w3.org/1998/Math/MathML'>
           <mstyle displaystyle="true">
             <mstyle mathvariant="fraktur">
               <mrow>
@@ -1378,7 +1396,7 @@ RSpec.describe Plurimath::Mathml::Parser do
   context "contains mathml string of Mathsf formula" do
     let(:exp) {
       <<~MATHML
-        <math xmlns="http://www.w3.org/1998/Math/MathML">
+        <math xmlns='http://www.w3.org/1998/Math/MathML'>
           <mstyle displaystyle="true">
             <mstyle mathvariant="sans-serif">
               <mrow>
@@ -1408,7 +1426,7 @@ RSpec.describe Plurimath::Mathml::Parser do
   context "contains mathml string of Mathtt formula" do
     let(:exp) {
       <<~MATHML
-        <math xmlns="http://www.w3.org/1998/Math/MathML">
+        <math xmlns='http://www.w3.org/1998/Math/MathML'>
           <mstyle displaystyle="true">
             <mstyle mathvariant="monospace">
               <mrow>
@@ -1438,7 +1456,7 @@ RSpec.describe Plurimath::Mathml::Parser do
   context "contains mathml string of Mathcal formula" do
     let(:exp) {
       <<~MATHML
-        <math xmlns="http://www.w3.org/1998/Math/MathML">
+        <math xmlns='http://www.w3.org/1998/Math/MathML'>
           <mstyle displaystyle="true">
             <mstyle mathvariant="script">
               <mrow>
@@ -1468,7 +1486,7 @@ RSpec.describe Plurimath::Mathml::Parser do
   context "contains mathml string of Mathbb formula" do
     let(:exp) {
       <<~MATHML
-        <math xmlns="http://www.w3.org/1998/Math/MathML">
+        <math xmlns='http://www.w3.org/1998/Math/MathML'>
           <mstyle displaystyle="true">
             <mstyle mathvariant="double-struck">
               <mrow>
@@ -1498,7 +1516,7 @@ RSpec.describe Plurimath::Mathml::Parser do
   context "contains mathml string of Mathbf formula" do
     let(:exp) {
       <<~MATHML
-        <math xmlns="http://www.w3.org/1998/Math/MathML">
+        <math xmlns='http://www.w3.org/1998/Math/MathML'>
           <mstyle displaystyle="true">
             <mstyle mathvariant="bold">
               <mrow>

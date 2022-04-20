@@ -144,6 +144,8 @@ module Plurimath
         "&#x2751;": "square",
         "&#x23DE;": "obrace",
         "&#x23DF;": "ubrace",
+      }.freeze
+      SYMBOLS = {
         "|": "|",
         "/": "//",
         "\\": "\\\\",
@@ -282,12 +284,12 @@ module Plurimath
         log
       ].freeze
       FONT_CLASSES = {
-        "fraktur": Plurimath::Math::Function::Mathfrak,
+        fraktur: Plurimath::Math::Function::Mathfrak,
         "sans-serif": Plurimath::Math::Function::Mathsf,
-        "monospace": Plurimath::Math::Function::Mathtt,
-        "script": Plurimath::Math::Function::Mathcal,
+        monospace: Plurimath::Math::Function::Mathtt,
+        script: Plurimath::Math::Function::Mathcal,
         "double-struck": Plurimath::Math::Function::Mathbb,
-        "bold": Plurimath::Math::Function::Mathbf,
+        bold: Plurimath::Math::Function::Mathbf,
       }.freeze
     end
   end
