@@ -127,11 +127,12 @@ module Plurimath
           else
             Plurimath::Math::Function::Overset.new(iteration[1], iteration[0])
           end
-        elsif ["msub", "msup"].include?(open_tag.to_s)
-          symbol = Plurimath::Math::Symbol.new(open_tag == "msub" ? "_" : "^")
-          iteration.insert(1, symbol)
+        elsif open_tag == "msup"
+          Plurimath::Math::Function::Power.new(iteration[0], iteration[1])
+        elsif open_tag == "msub"
+          Plurimath::Math::Function::Base.new(iteration[0], iteration[1])
         elsif open_tag == "msubsup"
-          Plurimath::Math::Function::Subsup.new(iteration[0], iteration[1], iteration[2])
+          Plurimath::Math::Function::PowerBase.new(iteration[0], iteration[1], iteration[2])
         elsif open_tag == "mfrac"
           Plurimath::Math::Function::Frac.new(iteration.first, iteration.last)
         elsif open_tag == "msqrt"

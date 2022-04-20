@@ -3,7 +3,7 @@
 module Plurimath
   module Math
     module Function
-      class Subsup
+      class PowerBase
         attr_accessor :parameter_one, :parameter_two, :parameter_three
 
         def initialize(parameter_one = nil, parameter_two = nil, parameter_three = nil)

@@ -166,11 +166,12 @@ RSpec.describe Plurimath::Mathml::Parser do
     it "returns formula of sin" do
       expected_value = Plurimath::Math::Formula.new([
         Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Sin.new,
-          Plurimath::Math::Symbol.new("_"),
-          Plurimath::Math::Formula.new([
-            Plurimath::Math::Function::Sum.new
-          ])
+          Plurimath::Math::Function::Base.new(
+            Plurimath::Math::Function::Sin.new,
+            Plurimath::Math::Formula.new([
+              Plurimath::Math::Function::Sum.new
+            ])
+          )
         ])
       ])
       expect(formula).to eq(expected_value)
@@ -198,11 +199,12 @@ RSpec.describe Plurimath::Mathml::Parser do
     it "returns formula of sin" do
       expected_value = Plurimath::Math::Formula.new([
         Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Sin.new,
-          Plurimath::Math::Symbol.new("^"),
-          Plurimath::Math::Formula.new([
-            Plurimath::Math::Function::Sum.new
-          ])
+          Plurimath::Math::Function::Power.new(
+            Plurimath::Math::Function::Sin.new,
+            Plurimath::Math::Formula.new([
+              Plurimath::Math::Function::Sum.new
+            ])
+          )
         ])
       ])
       expect(formula).to eq(expected_value)
@@ -236,7 +238,7 @@ RSpec.describe Plurimath::Mathml::Parser do
       expected_value = Plurimath::Math::Formula.new([
         Plurimath::Math::Formula.new([
           Plurimath::Math::Formula.new([
-            Plurimath::Math::Function::Subsup.new(
+            Plurimath::Math::Function::PowerBase.new(
               Plurimath::Math::Function::Sin.new,
               Plurimath::Math::Formula.new([
                 Plurimath::Math::Function::Prod.new
@@ -289,9 +291,10 @@ RSpec.describe Plurimath::Mathml::Parser do
             Plurimath::Math::Symbol.new("n"),
           )
         ]),
-        Plurimath::Math::Symbol.new("i"),
-        Plurimath::Math::Symbol.new("^"),
-        Plurimath::Math::Number.new("3"),
+        Plurimath::Math::Function::Power.new(
+          Plurimath::Math::Symbol.new("i"),
+          Plurimath::Math::Number.new("3"),
+        )
       ])
       expect(formula).to eq(expected_value)
     end
@@ -391,29 +394,31 @@ RSpec.describe Plurimath::Mathml::Parser do
             Plurimath::Math::Symbol.new("n"),
           ),
         ]),
-        Plurimath::Math::Symbol.new("i"),
-        Plurimath::Math::Symbol.new("^"),
-        Plurimath::Math::Number.new("3"),
+        Plurimath::Math::Function::Power.new(
+          Plurimath::Math::Symbol.new("i"),
+          Plurimath::Math::Number.new("3"),
+        ),
         Plurimath::Math::Symbol.new("="),
-        Plurimath::Math::Formula.new([
-          Plurimath::Math::Symbol.new("("),
-          Plurimath::Math::Function::Frac.new(
-            Plurimath::Math::Formula.new([
-              Plurimath::Math::Symbol.new("n"),
+        Plurimath::Math::Function::Power.new(
+          Plurimath::Math::Formula.new([
+            Plurimath::Math::Symbol.new("("),
+            Plurimath::Math::Function::Frac.new(
               Plurimath::Math::Formula.new([
-                Plurimath::Math::Symbol.new("("),
                 Plurimath::Math::Symbol.new("n"),
-                Plurimath::Math::Symbol.new("+"),
-                Plurimath::Math::Symbol.new("1"),
-                Plurimath::Math::Symbol.new(")"),
+                Plurimath::Math::Formula.new([
+                  Plurimath::Math::Symbol.new("("),
+                  Plurimath::Math::Symbol.new("n"),
+                  Plurimath::Math::Symbol.new("+"),
+                  Plurimath::Math::Symbol.new("1"),
+                  Plurimath::Math::Symbol.new(")"),
+                ]),
               ]),
-            ]),
-            Plurimath::Math::Number.new("2"),
-          ),
-          Plurimath::Math::Symbol.new(")"),
-        ]),
-        Plurimath::Math::Symbol.new("^"),
-        Plurimath::Math::Number.new("2"),
+              Plurimath::Math::Number.new("2"),
+            ),
+            Plurimath::Math::Symbol.new(")"),
+          ]),
+          Plurimath::Math::Number.new("2"),
+        )
       ])
       expect(formula).to eq(expected_value)
     end
@@ -592,7 +597,7 @@ RSpec.describe Plurimath::Mathml::Parser do
       expected_value = Plurimath::Math::Formula.new([
         Plurimath::Math::Formula.new([
           Plurimath::Math::Formula.new([
-            Plurimath::Math::Function::Subsup.new(
+            Plurimath::Math::Function::PowerBase.new(
               Plurimath::Math::Function::Log.new,
               Plurimath::Math::Formula.new([
                 Plurimath::Math::Number.new("1"),
@@ -753,7 +758,7 @@ RSpec.describe Plurimath::Mathml::Parser do
       expected_value = Plurimath::Math::Formula.new([
         Plurimath::Math::Formula.new([
           Plurimath::Math::Formula.new([
-            Plurimath::Math::Function::Subsup.new(
+            Plurimath::Math::Function::PowerBase.new(
               Plurimath::Math::Symbol.new("a"),
               Plurimath::Math::Formula.new([
                 Plurimath::Math::Number.new("1"),
@@ -870,7 +875,7 @@ RSpec.describe Plurimath::Mathml::Parser do
       expected_value = Plurimath::Math::Formula.new([
         Plurimath::Math::Formula.new([
           Plurimath::Math::Formula.new([
-            Plurimath::Math::Function::Subsup.new(
+            Plurimath::Math::Function::PowerBase.new(
               Plurimath::Math::Symbol.new("a"),
               Plurimath::Math::Formula.new([
                 Plurimath::Math::Symbol.new("{"),
@@ -927,7 +932,7 @@ RSpec.describe Plurimath::Mathml::Parser do
     it "returns formula of int and f" do
       expected_value = Plurimath::Math::Formula.new([
         Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Subsup.new(
+          Plurimath::Math::Function::PowerBase.new(
             Plurimath::Math::Function::Int.new,
             Plurimath::Math::Number.new("0"),
             Plurimath::Math::Number.new("1"),
@@ -986,26 +991,27 @@ RSpec.describe Plurimath::Mathml::Parser do
     it "returns formula of log and text" do
       expected_value = Plurimath::Math::Formula.new([
         Plurimath::Math::Formula.new([
-          Plurimath::Math::Formula.new([
-            Plurimath::Math::Function::Log.new,
+          Plurimath::Math::Function::Power.new(
             Plurimath::Math::Formula.new([
-              Plurimath::Math::Symbol.new("("),
-              Plurimath::Math::Number.new("1"),
-              Plurimath::Math::Symbol.new("+"),
-              Plurimath::Math::Number.new("2"),
-              Plurimath::Math::Symbol.new("+"),
-              Plurimath::Math::Number.new("3"),
-              Plurimath::Math::Symbol.new("+"),
-              Plurimath::Math::Number.new("4"),
-              Plurimath::Math::Symbol.new(")"),
-            ])
-          ]),
-          Plurimath::Math::Symbol.new("^"),
-          Plurimath::Math::Formula.new([
+              Plurimath::Math::Function::Log.new,
+              Plurimath::Math::Formula.new([
+                Plurimath::Math::Symbol.new("("),
+                Plurimath::Math::Number.new("1"),
+                Plurimath::Math::Symbol.new("+"),
+                Plurimath::Math::Number.new("2"),
+                Plurimath::Math::Symbol.new("+"),
+                Plurimath::Math::Number.new("3"),
+                Plurimath::Math::Symbol.new("+"),
+                Plurimath::Math::Number.new("4"),
+                Plurimath::Math::Symbol.new(")"),
+              ])
+            ]),
             Plurimath::Math::Formula.new([
-              Plurimath::Math::Function::Text.new("4terms")
-            ])
-          ]),
+              Plurimath::Math::Formula.new([
+                Plurimath::Math::Function::Text.new("4terms")
+              ])
+            ]),
+          )
         ]),
       ])
       expect(formula).to eq(expected_value)
@@ -1262,33 +1268,35 @@ RSpec.describe Plurimath::Mathml::Parser do
       expected_value = Plurimath::Math::Formula.new([
         Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Underover.new(
-          Plurimath::Math::Function::Sum.new,
-          Plurimath::Math::Formula.new([
-            Plurimath::Math::Symbol.new("i"),
-            Plurimath::Math::Symbol.new("="),
-            Plurimath::Math::Number.new("1"),
-          ]),
-          Plurimath::Math::Symbol.new("n"),
-        ),
+            Plurimath::Math::Function::Sum.new,
+            Plurimath::Math::Formula.new([
+              Plurimath::Math::Symbol.new("i"),
+              Plurimath::Math::Symbol.new("="),
+              Plurimath::Math::Number.new("1"),
+            ]),
+            Plurimath::Math::Symbol.new("n"),
+          ),
         ]),
-        Plurimath::Math::Symbol.new("i"),
-        Plurimath::Math::Symbol.new("^"),
-        Plurimath::Math::Number.new("3"),
+        Plurimath::Math::Function::Power.new(
+          Plurimath::Math::Symbol.new("i"),
+          Plurimath::Math::Number.new("3"),
+        ),
         Plurimath::Math::Symbol.new("="),
         Plurimath::Math::Formula.new([
-          Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Sin.new,
+          Plurimath::Math::Function::Power.new(
             Plurimath::Math::Formula.new([
-              Plurimath::Math::Symbol.new("("),
-              Plurimath::Math::Function::Frac.new(
-                Plurimath::Math::Symbol.new("n"),
-                Plurimath::Math::Number.new("2"),
-              ),
-              Plurimath::Math::Symbol.new(")"),
-            ])
-          ]),
-          Plurimath::Math::Symbol.new("^"),
-          Plurimath::Math::Number.new("2"),
+              Plurimath::Math::Function::Sin.new,
+              Plurimath::Math::Formula.new([
+                Plurimath::Math::Symbol.new("("),
+                Plurimath::Math::Function::Frac.new(
+                  Plurimath::Math::Symbol.new("n"),
+                  Plurimath::Math::Number.new("2"),
+                ),
+                Plurimath::Math::Symbol.new(")"),
+              ])
+            ]),
+            Plurimath::Math::Number.new("2"),
+          )
         ])
       ])
       expect(formula).to eq(expected_value)
