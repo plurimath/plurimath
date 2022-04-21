@@ -84,7 +84,7 @@ module Plurimath
         if ["open", "close"].include?(name.to_s)
           Plurimath::Math::Symbol.new(value.to_s)
         elsif "mathcolor" == name.to_s
-          Plurimath::Math::Function::Color.new(Plurimath::Math::Symbol.new(value.to_s))
+          Plurimath::Math::Function::Color.new(value.to_s)
         elsif name.to_s == "mathvariant"
           value.to_s
         end

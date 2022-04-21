@@ -1177,8 +1177,7 @@ RSpec.describe Plurimath::Mathml::Parser do
             Plurimath::Math::Formula.new([
               Plurimath::Math::Symbol.new("i"),
               Plurimath::Math::Symbol.new("="),
-              Plurimath::Math::Function::Color.new(
-                Plurimath::Math::Symbol.new("blue"),
+              Plurimath::Math::Function::Color.new("blue",
                 Plurimath::Math::Formula.new([
                   Plurimath::Math::Symbol.new("!=")
                 ]),
