@@ -7,7 +7,7 @@ module Plurimath
     module Function
       class Td < UnaryFunction
         def to_asciimath
-          "[#{parameter_one.to_asciimath(",")}]"
+          "[#{parameter_one.map(&:to_asciimath).join(",")}]"
         end
       end
     end

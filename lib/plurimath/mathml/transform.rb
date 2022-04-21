@@ -145,20 +145,13 @@ module Plurimath
         elsif open_tag == "mroot"
           Plurimath::Math::Function::Root.new(iteration[0], iteration[1])
         elsif open_tag == "mfenced"
-          iteration.insert(0, attributes[0])
-          iteration << attributes[1]
+          Plurimath::Math::Function::Fenced.new(attributes[0], iteration, attributes[1])
         elsif open_tag == "mtable"
-          Plurimath::Math::Function::Table.new(
-            Plurimath::Math::Formula.new(iteration)
-          )
+          Plurimath::Math::Function::Table.new(iteration)
         elsif open_tag == "mtr"
-          Plurimath::Math::Function::Tr.new(
-            Plurimath::Math::Formula.new(iteration)
-          )
+          Plurimath::Math::Function::Tr.new(iteration)
         elsif open_tag == "mtd"
-          Plurimath::Math::Function::Td.new(
-            Plurimath::Math::Formula.new(iteration)
-          )
+          Plurimath::Math::Function::Td.new(iteration)
         elsif attributes.first.is_a?(Plurimath::Math::Function::Color)
           attributes.first.parameter_two = iteration.first
           attributes.first
