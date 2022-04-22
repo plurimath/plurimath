@@ -2,7 +2,7 @@ require_relative "../../../lib/plurimath/mathml"
 
 RSpec.describe Plurimath::Mathml::Parse do
 
-  subject(:formula) { Plurimath::Mathml::Parse.new.parse_with_debug(exp.gsub("\n", "").gsub(" ", "")) }
+  subject(:formula) { Plurimath::Mathml::Parse.new.parse(exp.gsub("\n", "").gsub(" ", "")) }
 
   context "contains mathml string of sin formula" do
     let(:exp) {

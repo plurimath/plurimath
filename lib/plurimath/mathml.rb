@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require_relative "math"
 module Plurimath
   class Mathml
     attr_accessor :text
@@ -10,7 +9,7 @@ module Plurimath
     end
 
     def to_formula
-      Plurimath::Mathml::Parser.new(text).parse
+      # TODO: Will be implemented soon
     end
   end
 end
