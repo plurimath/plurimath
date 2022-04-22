@@ -28,10 +28,6 @@ module Plurimath
             object.parameter_two == parameter_two &&
             object.parameter_three == parameter_three
         end
-
-        def to_mathml_without_math_tag
-
-        end
       end
     end
   end
