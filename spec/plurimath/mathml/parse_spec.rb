@@ -1,4 +1,6 @@
-require_relative "../../../lib/plurimath/mathml"
+require_relative "../../../lib/plurimath/math"
+require_relative "../../../lib/plurimath/mathml/parse"
+require_relative "../../../lib/plurimath/mathml/constants"
 
 RSpec.describe Plurimath::Mathml::Parse do
 
