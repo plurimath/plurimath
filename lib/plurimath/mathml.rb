@@ -9,7 +9,7 @@ module Plurimath
     end
 
     def to_formula
-      # TODO: Will be implemented soon
+      Plurimath::Mathml::Parser.new(text).parse
     end
   end
 end
