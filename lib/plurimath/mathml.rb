@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require_relative "math"
 module Plurimath
   class Mathml
     attr_accessor :text
