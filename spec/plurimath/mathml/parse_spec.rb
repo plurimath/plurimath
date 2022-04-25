@@ -66,7 +66,7 @@ RSpec.describe Plurimath::Mathml::Parse do
         <math xmlns='http://www.w3.org/1998/Math/MathML'>
           <mrow>
             <msub>
-              <mi>x</mi>
+              <mi>xyz</mi>
               <mi>s</mi>
             </msub>
           </mrow>
@@ -75,7 +75,7 @@ RSpec.describe Plurimath::Mathml::Parse do
     }
     it "should match values" do
       iteration = formula[:iteration][:tag][:iteration][:tag][:iteration]
-      expect(iteration[:tag][:iteration][:text]).to eq("x")
+      expect(iteration[:tag][:iteration][:text]).to eq("xyz")
       expect(iteration[:sequence][:tag][:iteration][:text]).to eq("s")
     end
   end
