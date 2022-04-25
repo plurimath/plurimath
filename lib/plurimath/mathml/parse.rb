@@ -5,9 +5,9 @@ module Plurimath
   class Mathml
     class Parse < Parslet::Parser
       rule(:parse_record) do
-        parse_class.as(:class) |
-          parse_unicode_symbols.as(:symbol) |
-          parse_symbols.as(:symbol) |
+        array_to_expression(Constants::CLASSES, String).as(:class) |
+          array_to_expression(Constants::UNICODE_SYMBOLS.keys, Symbol).as(:symbol) |
+          array_to_expression(Constants::SYMBOLS.keys, Symbol).as(:symbol) |
           match["a-zA-Z"].as(:text) |
           match(/[0-9]/).repeat(1).as(:number) |
           str("")
@@ -23,31 +23,23 @@ module Plurimath
 
       root :expression
 
-      def parse_class
-        Constants::CLASSES.reduce do |expr, tag|
-          expr = str(expr) if expr.is_a?(String)
-          expr | str(tag)
+      def array_to_expression(array, type, name = nil)
+        array.reduce do |expr, tag|
+          expr = str_to_expression(expr, name) if expr.is_a?(type)
+          expr | str_to_expression(tag, name)
         end
       end
 
-      def parse_unicode_symbols
-        Constants::UNICODE_SYMBOLS.keys.reduce do |expr, tag|
-          expr = str(expr) if expr.is_a?(Symbol)
-          expr | str(tag)
-        end
-      end
+      def str_to_expression(string, name)
+        return str(string) if name.nil?
 
-      def parse_symbols
-        Constants::SYMBOLS.keys.reduce do |expr, tag|
-          expr = str(expr) if expr.is_a?(Symbol)
-          expr | str(tag)
-        end
+        str(string).as(name)
       end
 
       def parse_tag(opts)
         tag = str("<")
         tag = tag >> str("/") if opts == :close
-        tag = tag >> tags(opts)
+        tag = tag >> array_to_expression(Constants::TAGS, Symbol, opts)
         tag = tag >> attributes.as(:attributes) if opts == :open
         tag >> str(">")
       end
@@ -60,13 +52,6 @@ module Plurimath
       def quoted_string
         (str('"') >> match("[^\"]").repeat.as(:value) >> str('"')) |
           (str("'") >> match("[^\']").repeat.as(:value) >> str("'"))
-      end
-
-      def tags(value)
-        Constants::TAGS.reduce do |expr, tag|
-          expr = str(expr).as(value) if expr.is_a?(Symbol)
-          expr | str(tag).as(value)
-        end
       end
 
       def parse_text_tag

@@ -6,111 +6,33 @@ RSpec.describe Plurimath::Mathml::Parse do
 
   subject(:formula) { Plurimath::Mathml::Parse.new.parse(exp.gsub("\n", "").gsub(" ", "")) }
 
-  context "contains mathml string of sin formula" do
-    let(:exp) {
-      <<~MATHML
-        <math xmlns='http://www.w3.org/1998/Math/MathML'>
-          <mstyle displaystyle='true'>
-            <mrow>
-              <mi>sin</mi>
-              <mrow>
-                <mo>(</mo>
-                <mn>1</mn>
-                <mo>)</mo>
-              </mrow>
-            </mrow>
-          </mstyle>
-        </math>
-      MATHML
-    }
-    it "returns formula of sin from mathml string" do
-      expected_value = {
-                        :open=>"math",
-                        :attributes=>[{:name=>"xmlns", :value=>"http://www.w3.org/1998/Math/MathML"}],
-                        :iteration=>
-                        {:tag=>
-                          {:open=>"mstyle",
-                           :attributes=>[{:name=>"displaystyle", :value=>"true"}],
-                           :iteration=>
-                            {:tag=>
-                              {:open=>"mrow",
-                               :attributes=>[],
-                               :iteration=>
-                                {:tag=>{:open=>"mi", :attributes=>[], :iteration=>{:class=>"sin"}, :close=>"mi"},
-                                 :sequence=>
-                                  {:tag=>
-                                    {:open=>"mrow",
-                                     :attributes=>[],
-                                     :iteration=>
-                                      {:tag=>{:open=>"mo", :attributes=>[], :iteration=>{:symbol=>"("}, :close=>"mo"},
-                                       :sequence=>
-                                        {:tag=>{:open=>"mn", :attributes=>[], :iteration=>{:number=>"1"}, :close=>"mn"},
-                                         :sequence=>{:tag=>{:open=>"mo", :attributes=>[], :iteration=>{:symbol=>")"}, :close=>"mo"}}},
-                                       :iteration=>""},
-                                     :close=>"mrow"}},
-                                 :iteration=>""},
-                               :close=>"mrow"},
-                             :iteration=>""},
-                           :close=>"mstyle"},
-                         :iteration=>""},
-                        :close=>"math"
-                      }
-      expect(formula).to eq(expected_value)
+  context "contains opening and closing tag" do
+    let (:exp) { "<math xmlns='http://www.w3.org/1998/Math/MathML'></math>" }
+
+    it "matches open and close tag" do
+      expect(formula[:open]).to eq("math")
+      expect(formula[:close]).to eq("math")
+    end
+
+    it "matches attributes" do
+      expect(formula[:attributes].first[:name]).to eq("xmlns")
+      expect(formula[:attributes].last[:value]).to eq("http://www.w3.org/1998/Math/MathML")
     end
   end
 
-  context "contains mathml string of sum and prod formula" do
-    let(:exp) {
-      <<~MATHML
-        <math xmlns='http://www.w3.org/1998/Math/MathML'>
-          <mstyle displaystyle='true'>
-            <munderover>
-              <mo>&#x2211;</mo>
-              <mrow>
-                <mo>(</mo>
-                <mo>&#x220f;</mo>
-                <mo>)</mo>
-              </mrow>
-              <mo>&#x22c1;</mo>
-            </munderover>
-          </mstyle>
-        </math>
-      MATHML
-    }
-    it "returns formula of sum and prod" do
-      expected_value = {
-                        :open=>"math",
-                        :attributes=>[{:name=>"xmlns", :value=>"http://www.w3.org/1998/Math/MathML"}],
-                        :iteration=>
-                        {:tag=>
-                          {:open=>"mstyle",
-                           :attributes=>[{:name=>"displaystyle", :value=>"true"}],
-                           :iteration=>
-                            {:tag=>
-                              {:open=>"munderover",
-                               :attributes=>[],
-                               :iteration=>
-                                {:tag=>{:open=>"mo", :attributes=>[], :iteration=>{:symbol=>"&#x2211;"}, :close=>"mo"},
-                                 :sequence=>
-                                  {:tag=>
-                                    {:open=>"mrow",
-                                     :attributes=>[],
-                                     :iteration=>
-                                      {:tag=>{:open=>"mo", :attributes=>[], :iteration=>{:symbol=>"("}, :close=>"mo"},
-                                       :sequence=>
-                                        {:tag=>{:open=>"mo", :attributes=>[], :iteration=>{:symbol=>"&#x220f;"}, :close=>"mo"},
-                                         :sequence=>{:tag=>{:open=>"mo", :attributes=>[], :iteration=>{:symbol=>")"}, :close=>"mo"}}},
-                                       :iteration=>""},
-                                     :close=>"mrow"},
-                                   :sequence=>{:tag=>{:open=>"mo", :attributes=>[], :iteration=>{:symbol=>"&#x22c1;"}, :close=>"mo"}}},
-                                 :iteration=>""},
-                               :close=>"munderover"},
-                             :iteration=>""},
-                           :close=>"mstyle"},
-                         :iteration=>""},
-                        :close=>"math"
-                      }
-      expect(formula).to eq(expected_value)
+  context "contains multiple tags without attributes" do
+    let(:exp) { "<math><mstyle></mstyle></math>" }
+
+    it "matches mathml attributes values" do
+      expect(formula[:open]).to eq("math")
+      expect(formula[:iteration][:tag][:open]).to eq("mstyle")
+      expect(formula[:iteration][:tag][:close]).to eq("mstyle")
+      expect(formula[:close]).to eq("math")
+    end
+
+    it "should match empty array for attributes" do
+      expect(formula[:attributes]).to eq([])
+      expect(formula[:iteration][:tag][:attributes]).to eq([])
     end
   end
 
@@ -118,49 +40,43 @@ RSpec.describe Plurimath::Mathml::Parse do
     let(:exp) {
       <<~MATHML
         <math xmlns='http://www.w3.org/1998/Math/MathML'>
-          <mstyle displaystyle='true'>
+          <munderover>
+            <mo>&#x2211;</mo>
             <mrow>
-              <munderover>
-                <mo>&#x2211;</mo>
-                <mi>x</mi>
-                <mi>s</mi>
-              </munderover>
+              <mo>1</mo>
             </mrow>
-          </mstyle>
+            <mo>&#x22c1;</mo>
+          </munderover>
         </math>
       MATHML
     }
+
     it "returns formula of sum and prod" do
-      expected_value = {
-                        :open=>"math",
-                        :attributes=>[{:name=>"xmlns", :value=>"http://www.w3.org/1998/Math/MathML"}],
-                        :iteration=>
-                        {:tag=>
-                          {:open=>"mstyle",
-                           :attributes=>[{:name=>"displaystyle", :value=>"true"}],
-                           :iteration=>
-                            {:tag=>
-                              {:open=>"mrow",
-                               :attributes=>[],
-                               :iteration=>
-                                {:tag=>
-                                  {:open=>"munderover",
-                                   :attributes=>[],
-                                   :iteration=>
-                                    {:tag=>{:open=>"mo", :attributes=>[], :iteration=>{:symbol=>"&#x2211;"}, :close=>"mo"},
-                                     :sequence=>
-                                      {:tag=>{:open=>"mi", :attributes=>[], :iteration=>{:text=>"x"}, :close=>"mi"},
-                                       :sequence=>{:tag=>{:open=>"mi", :attributes=>[], :iteration=>{:text=>"s"}, :close=>"mi"}}},
-                                     :iteration=>""},
-                                   :close=>"munderover"},
-                                 :iteration=>""},
-                               :close=>"mrow"},
-                             :iteration=>""},
-                           :close=>"mstyle"},
-                         :iteration=>""},
-                        :close=>"math"
-                      }
-      expect(formula).to eq(expected_value)
+      iteration = formula[:iteration][:tag][:iteration]
+      sequence = iteration[:sequence]
+      expect(iteration[:tag][:iteration][:symbol]).to eq("&#x2211;")
+      expect(sequence[:tag][:iteration][:tag][:iteration][:number]).to eq("1")
+      expect(sequence[:sequence][:tag][:iteration][:symbol]).to eq("&#x22c1;")
+    end
+  end
+
+  context "contains mathml string of sub tag" do
+    let(:exp) {
+      <<~MATHML
+        <math xmlns='http://www.w3.org/1998/Math/MathML'>
+          <mrow>
+            <msub>
+              <mi>x</mi>
+              <mi>s</mi>
+            </msub>
+          </mrow>
+        </math>
+      MATHML
+    }
+    it "should match values" do
+      iteration = formula[:iteration][:tag][:iteration][:tag][:iteration]
+      expect(iteration[:tag][:iteration][:text]).to eq("x")
+      expect(iteration[:sequence][:tag][:iteration][:text]).to eq("s")
     end
   end
 end
