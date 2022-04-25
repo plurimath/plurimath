@@ -5,9 +5,9 @@ module Plurimath
   class Mathml
     class Parse < Parslet::Parser
       rule(:parse_record) do
-        array_to_expression(Constants::CLASSES, String).as(:class) |
-          array_to_expression(Constants::UNICODE_SYMBOLS.keys, Symbol).as(:symbol) |
-          array_to_expression(Constants::SYMBOLS.keys, Symbol).as(:symbol) |
+        array_to_expression(Constants::CLASSES).as(:class) |
+          array_to_expression(Constants::UNICODE_SYMBOLS.keys).as(:symbol) |
+          array_to_expression(Constants::SYMBOLS.keys).as(:symbol) |
           match["a-zA-Z"].repeat(1).as(:text) |
           match(/[0-9]/).repeat(1).as(:number) |
           str("")
@@ -23,9 +23,10 @@ module Plurimath
 
       root :expression
 
-      def array_to_expression(array, type, name = nil)
+      def array_to_expression(array, name = nil)
+        initial_type = array.first.class
         array.reduce do |expr, tag|
-          expr = str_to_expression(expr, name) if expr.is_a?(type)
+          expr = str_to_expression(expr, name) if expr.is_a?(initial_type)
           expr | str_to_expression(tag, name)
         end
       end
@@ -39,7 +40,7 @@ module Plurimath
       def parse_tag(opts)
         tag = str("<")
         tag = tag >> str("/") if opts == :close
-        tag = tag >> array_to_expression(Constants::TAGS, Symbol, opts)
+        tag = tag >> array_to_expression(Constants::TAGS, opts)
         tag = tag >> attributes.as(:attributes) if opts == :open
         tag >> str(">")
       end
