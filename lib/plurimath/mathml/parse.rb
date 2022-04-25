@@ -8,7 +8,7 @@ module Plurimath
         array_to_expression(Constants::CLASSES, String).as(:class) |
           array_to_expression(Constants::UNICODE_SYMBOLS.keys, Symbol).as(:symbol) |
           array_to_expression(Constants::SYMBOLS.keys, Symbol).as(:symbol) |
-          match["a-zA-Z"].as(:text) |
+          match["a-zA-Z"].repeat(1).as(:text) |
           match(/[0-9]/).repeat(1).as(:number) |
           str("")
       end
