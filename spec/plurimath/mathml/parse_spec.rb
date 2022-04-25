@@ -16,7 +16,7 @@ RSpec.describe Plurimath::Mathml::Parse do
 
     it "matches attributes" do
       expect(formula[:attributes].first[:name]).to eq("xmlns")
-      expect(formula[:attributes].last[:value]).to eq("http://www.w3.org/1998/Math/MathML")
+      expect(formula[:attributes].first[:value]).to eq("http://www.w3.org/1998/Math/MathML")
     end
   end
 
