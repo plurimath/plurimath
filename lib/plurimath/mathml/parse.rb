@@ -37,6 +37,13 @@ module Plurimath
         str(string).as(name)
       end
 
+      def parse_symbols
+        Constants::SYMBOLS.keys.reduce do |expr, tag|
+          expr = str(expr) if expr.is_a?(Symbol)
+          expr | str(tag)
+        end
+      end
+
       def parse_tag(opts)
         tag = str("<")
         tag = tag >> str("/") if opts == :close
