@@ -11,6 +11,10 @@ module Plurimath
           second_value = "_#{parameter_two.to_asciimath}" if parameter_two
           "#{first_value}#{second_value}"
         end
+
+        def to_mathml_without_math_tag
+          "<msub>#{parameter_one.to_mathml_without_math_tag}#{parameter_two.to_mathml_without_math_tag}</msub>"
+        end
       end
     end
   end
