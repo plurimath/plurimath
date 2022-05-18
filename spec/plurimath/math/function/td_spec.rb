@@ -26,7 +26,7 @@ RSpec.describe Plurimath::Math::Function::Td do
       let(:first) { Plurimath::Math::Symbol.new("theta") }
 
       it 'matches epxected value of Td' do
-        expect(td).to eq("[theta]")
+        expect(td).to eq("theta")
       end
 
       it "doesn't match epxected value of Td" do
