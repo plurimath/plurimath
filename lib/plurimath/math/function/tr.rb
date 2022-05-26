@@ -9,6 +9,10 @@ module Plurimath
         def to_asciimath
           "[#{parameter_one.map(&:to_asciimath).join(',')}]"
         end
+
+        def to_mathml_without_math_tag
+          "<mtr>#{parameter_one.map(&:to_mathml_without_math_tag).join}</mtr>"
+        end
       end
     end
   end

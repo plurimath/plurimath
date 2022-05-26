@@ -2,6 +2,26 @@ require_relative '../../../lib/plurimath/math'
 
 RSpec.describe Plurimath::Math::Formula do
 
+  describe ".==" do
+    subject(:formula) { Plurimath::Math::Formula.new(exp) }
+
+    context "contains simple string" do
+      let(:exp) { "theta" }
+      expected_value = Plurimath::Math::Formula.new("theta")
+      it "returns true" do
+        expect(formula == expected_value).to be_truthy
+      end
+    end
+
+    context "contains simple string" do
+      let(:exp) { "Theta" }
+      expected_value = Plurimath::Math::Formula.new("theta")
+      it "returns false" do
+        expect(formula == expected_value).to be_falsey
+      end
+    end
+  end
+
   describe ".to_asciimath" do
     subject(:formula) { Plurimath::Asciimath::Parser.new(exp).parse.to_asciimath }
 

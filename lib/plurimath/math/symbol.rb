@@ -16,6 +16,14 @@ module Plurimath
       def to_asciimath
         value
       end
+
+      def to_mathml_without_math_tag
+        "<mo>#{mathml_symbol_value}</mo>"
+      end
+
+      def mathml_symbol_value
+        Mathml::Constants::UNICODE_SYMBOLS.invert[value] || value
+      end
     end
   end
 end
