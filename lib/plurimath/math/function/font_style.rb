@@ -25,7 +25,7 @@ module Plurimath
           if Asciimath::Constants::FONT_STYLES.include?(parameter_two.to_sym)
             "#{parameter_two}(#{parameter_one.to_asciimath})"
           else
-            parameter_two.to_asciimath
+            parameter_one.to_asciimath
           end
         end
 

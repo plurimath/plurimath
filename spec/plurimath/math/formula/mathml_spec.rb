@@ -123,9 +123,9 @@ RSpec.describe Plurimath::Math::Formula do
           <math xmlns='http://www.w3.org/1998/Math/MathML'>
             <mstyle displaystyle='true'>
               <msub>
-              <mi>sin</mi>
-              <mo>&#x2211;</mo>
-            </msub>
+                <mi>sin</mi>
+                <mo>&#x2211;</mo>
+              </msub>
             </mstyle>
           </math>
         MATHML
@@ -162,14 +162,14 @@ RSpec.describe Plurimath::Math::Formula do
       let(:exp) {
         Plurimath::Math::Formula.new([
           Plurimath::Math::Function::PowerBase.new(
-                Plurimath::Math::Function::Sin.new,
-                Plurimath::Math::Formula.new([
-                  Plurimath::Math::Function::Prod.new
-                ]),
-                Plurimath::Math::Formula.new([
-                  Plurimath::Math::Function::Sum.new
-                ])
-              )
+            Plurimath::Math::Function::Sin.new,
+            Plurimath::Math::Formula.new([
+              Plurimath::Math::Function::Prod.new
+            ]),
+            Plurimath::Math::Formula.new([
+              Plurimath::Math::Function::Sum.new
+            ])
+          )
         ])
       }
       it "returns formula of sin" do
@@ -456,10 +456,10 @@ RSpec.describe Plurimath::Math::Formula do
       let(:exp) {
         Plurimath::Math::Formula.new([
           Plurimath::Math::Function::PowerBase.new(
-                Plurimath::Math::Function::Log.new,
-                Plurimath::Math::Number.new("4"),
-                Plurimath::Math::Function::Text.new("4terms"),
-              )
+            Plurimath::Math::Function::Log.new,
+            Plurimath::Math::Number.new("4"),
+            Plurimath::Math::Function::Text.new("4terms"),
+          )
         ])
       }
       it "returns formula of log and text" do
@@ -468,10 +468,10 @@ RSpec.describe Plurimath::Math::Formula do
           <math xmlns='http://www.w3.org/1998/Math/MathML'>
             <mstyle displaystyle='true'>
               <msubsup>
-                    <mo>log</mo>
-                    <mn>4</mn>
-                    <mtext>4 terms</mtext>
-                  </msubsup>
+                <mo>log</mo>
+                <mn>4</mn>
+                <mtext>4 terms</mtext>
+              </msubsup>
             </mstyle>
           </math>
         MATHML
@@ -661,16 +661,16 @@ RSpec.describe Plurimath::Math::Formula do
           <math xmlns='http://www.w3.org/1998/Math/MathML'>
             <mstyle displaystyle='true'>
               <munderover>
-                  <mo>&#x2211;</mo>
-                  <mrow>
-                    <mo>i</mo>
-                    <mo>=</mo>
-                    <mstyle mathcolor='blue'>
-                      <mo>&#x2260;</mo>
-                    </mstyle>
-                  </mrow>
-                  <mn>33</mn>
-                </munderover>
+                <mo>&#x2211;</mo>
+                <mrow>
+                  <mo>i</mo>
+                  <mo>=</mo>
+                  <mstyle mathcolor='blue'>
+                    <mo>&#x2260;</mo>
+                  </mstyle>
+                </mrow>
+                <mn>33</mn>
+              </munderover>
             </mstyle>
           </math>
         MATHML
