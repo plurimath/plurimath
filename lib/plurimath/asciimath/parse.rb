@@ -12,6 +12,8 @@ module Plurimath
 
       rule(:unary_functions) { arr_to_expression(Constants::UNARY_CLASSES) }
 
+      rule(:font_style) { arr_to_expression(Constants::FONT_STYLES, :fonts) }
+
       rule(:binary_functions) { arr_to_expression(Constants::BINARY_CLASSES) }
 
       rule(:lparen) do
@@ -34,41 +36,42 @@ module Plurimath
 
       rule(:symbol_text_or_integer) do
         binary_functions |
-        unary_functions |
-        symbols |
-        quoted_text |
-        match["a-zA-Z"].as(:symbol) |
-        match("[0-9]").repeat(1).as(:number)
+          unary_functions |
+          symbols |
+          quoted_text |
+          match["a-zA-Z"].as(:symbol) |
+          match("[0-9]").repeat(1).as(:number)
       end
 
       rule(:sequence) do
         (lparen >> expression >> rparen).as(:intermediate_exp) |
-        (binary_functions >> sequence.as(:base) >> sequence.maybe.as(:exponent)).as(:binary) |
-        (str("text") >> lparen.capture(:paren) >> read_text >> rparen) |
-        (unary_functions >> sequence).as(:unary) |
-        symbol_text_or_integer
+          (binary_functions >> sequence.as(:base) >> sequence.maybe.as(:exponent)).as(:binary) |
+          (str("text") >> lparen.capture(:paren) >> read_text >> rparen) |
+          (unary_functions >> sequence).as(:unary) |
+          (font_style >> sequence).as(:fonts) |
+          symbol_text_or_integer
       end
 
       rule(:iteration) do
         (sequence.as(:dividend) >> str("mod").as(:mod) >> sequence.as(:divisor)).as(:mod) |
-        (sequence >> base >> sequence.as(:base) >> power >> sequence.as(:exponent)).as(:power_base) |
-        (sequence >> base >> sequence).as(:base) |
-        (sequence >> power >> sequence).as(:power) |
-        sequence.as(:sequence) |
-        str(" ")
+          (sequence >> base >> sequence.as(:base) >> power >> sequence.as(:exponent)).as(:power_base) |
+          (sequence >> base >> sequence).as(:base) |
+          (sequence >> power >> sequence).as(:power) |
+          sequence.as(:sequence) |
+          str(" ")
       end
 
       rule(:expression) do
         (iteration >> expression).as(:expr) |
-        (iteration >> str("/").as(:/) >> iteration).as(:expr) |
-        str("")
+          (iteration >> str("/").as(:/) >> iteration).as(:expr) |
+          str("")
       end
 
       root :expression
 
       def arr_to_expression(arr, name = nil)
         arr.reduce do |expression, expr_string|
-          expression = str(expression).as(expression) if expression.is_a?(Symbol)
+          expression = str(expression).as(name || expression) if expression.is_a?(Symbol)
           expression | str(expr_string).as(name || expr_string)
         end
       end

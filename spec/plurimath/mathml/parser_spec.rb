@@ -866,8 +866,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     }
     it "returns formula of mathfrak" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Function::Mathfrak.new(
+        Plurimath::Math::Function::FontStyle.new(
           Plurimath::Math::Function::F.new,
+          "fraktur",
         )
       ])
       expect(formula).to eq(expected_value)
@@ -886,8 +887,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     }
     it "returns formula of Mathsf" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Function::Mathsf.new(
+        Plurimath::Math::Function::FontStyle.new(
           Plurimath::Math::Function::F.new,
+          "sans-serif",
         )
       ])
       expect(formula).to eq(expected_value)
@@ -906,8 +908,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     }
     it "returns formula of Mathtt" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Function::Mathtt.new(
+        Plurimath::Math::Function::FontStyle.new(
           Plurimath::Math::Function::F.new,
+          "monospace",
         )
       ])
       expect(formula).to eq(expected_value)
@@ -926,8 +929,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     }
     it "returns formula of Mathcal" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Function::Mathcal.new(
+        Plurimath::Math::Function::FontStyle.new(
           Plurimath::Math::Function::F.new,
+          "script",
         )
       ])
       expect(formula).to eq(expected_value)
@@ -946,8 +950,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     }
     it "returns formula of Mathbb" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Function::Mathbb.new(
+        Plurimath::Math::Function::FontStyle.new(
           Plurimath::Math::Symbol.new("s"),
+          "double-struck",
         )
       ])
       expect(formula).to eq(expected_value)
@@ -966,8 +971,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     }
     it "returns formula of Mathbf" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Function::Mathbf.new(
+        Plurimath::Math::Function::FontStyle.new(
           Plurimath::Math::Symbol.new("d"),
+          "bold",
         )
       ])
       expect(formula).to eq(expected_value)

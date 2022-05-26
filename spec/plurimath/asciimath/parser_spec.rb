@@ -859,5 +859,47 @@ RSpec.describe Plurimath::Asciimath::Parser do
         expect(formula).to eq(expected_value)
       end
     end
+
+    context "when contains mathfrak fontstyle without parenthesis" do
+      let(:string) { "mathfrak\"theta\" (i)" }
+      it "returns prod formula" do
+        expected_value = Plurimath::Math::Formula.new([
+          Plurimath::Math::Function::FontStyle.new(
+            Plurimath::Math::Function::Text.new("theta"),
+            "mathfrak",
+          ),
+          Plurimath::Math::Symbol.new("i"),
+        ])
+        expect(formula).to eq(expected_value)
+      end
+    end
+
+    context "when contains mathbb fontstyle with parenthesis" do
+      let(:string) { "mathbb(\"theta\") (i)" }
+      it "returns prod formula" do
+        expected_value = Plurimath::Math::Formula.new([
+          Plurimath::Math::Function::FontStyle.new(
+            Plurimath::Math::Function::Text.new("theta"),
+            "mathbb",
+          ),
+          Plurimath::Math::Symbol.new("i"),
+        ])
+        expect(formula).to eq(expected_value)
+      end
+    end
+
+    context "when contains cc fontstyle with symbol" do
+      let(:string) { "cc(theta) (i)" }
+      it "returns prod formula" do
+        expected_value = Plurimath::Math::Formula.new([
+          Plurimath::Math::Function::FontStyle.new(
+            Plurimath::Math::Symbol.new("theta"),
+            "cc",
+          ),
+          Plurimath::Math::Symbol.new("i"),
+        ])
+        expect(formula).to eq(expected_value)
+      end
+    end
   end
 end

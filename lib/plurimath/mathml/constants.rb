@@ -282,14 +282,14 @@ module Plurimath
         mod
         log
       ].freeze
-      FONT_CLASSES = {
-        fraktur: Plurimath::Math::Function::Mathfrak,
-        "sans-serif": Plurimath::Math::Function::Mathsf,
-        monospace: Plurimath::Math::Function::Mathtt,
-        script: Plurimath::Math::Function::Mathcal,
-        "double-struck": Plurimath::Math::Function::Mathbb,
-        bold: Plurimath::Math::Function::Mathbf,
-      }.freeze
+      FONT_CLASSES = %i[
+        fraktur
+        sans-serif
+        monospace
+        script
+        double-struck
+        bold
+      ].freeze
     end
   end
 end

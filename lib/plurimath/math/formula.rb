@@ -14,7 +14,25 @@ module Plurimath
       end
 
       def to_asciimath
-        value.map(&:to_asciimath).join("")
+        value.map(&:to_asciimath).join
+      end
+
+      def to_mathml
+        <<~MATHML
+          <math xmlns='http://www.w3.org/1998/Math/MathML'>
+            <mstyle displaystyle='true'>
+              #{mathml_content}
+            </mstyle>
+          </math>
+        MATHML
+      end
+
+      def to_mathml_without_math_tag
+        "<mrow>#{mathml_content}</mrow>"
+      end
+
+      def mathml_content
+        value.map(&:to_mathml_without_math_tag).join
       end
     end
   end

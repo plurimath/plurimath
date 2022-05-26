@@ -12,7 +12,7 @@ module Plurimath
         end
 
         def to_asciimath
-          "#{self.class.name.split('::').last.downcase}#{value_to_asciimath}"
+          "#{class_name}#{value_to_asciimath}"
         end
 
         def value_to_asciimath
@@ -22,8 +22,24 @@ module Plurimath
         end
 
         def ==(object)
-          object.parameter_one == parameter_one &&
+          object.class == self.class &&
+            object.parameter_one == parameter_one &&
             object.parameter_two == parameter_two
+        end
+
+        def to_mathml_without_math_tag
+          first_value = parameter_one.to_mathml_without_math_tag if parameter_one
+          second_value = parameter_two.to_mathml_without_math_tag if parameter_two
+          third_value = invert_unicode_symbols.empty? ? class_name : invert_unicode_symbols
+          "<mo>#{third_value}</mo>#{first_value}#{second_value}"
+        end
+
+        def invert_unicode_symbols
+          Mathml::Constants::UNICODE_SYMBOLS.invert[class_name].to_s
+        end
+
+        def class_name
+          self.class.name.split("::").last.downcase
         end
       end
     end

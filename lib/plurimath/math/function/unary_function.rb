@@ -11,15 +11,24 @@ module Plurimath
         end
 
         def ==(object)
-          object.parameter_one == parameter_one
+          object.class == self.class &&
+            object.parameter_one == parameter_one
         end
 
         def to_asciimath
-          "#{self.class.name.split('::').last.downcase}#{value_to_asciimath}"
+          "#{class_name}#{value_to_asciimath}"
         end
 
         def value_to_asciimath
           "(#{parameter_one.to_asciimath})" unless parameter_one.nil?
+        end
+
+        def to_mathml_without_math_tag
+          "<mi>#{class_name}</mi>"
+        end
+
+        def class_name
+          self.class.name.split("::").last.downcase
         end
       end
     end

@@ -16,6 +16,10 @@ module Plurimath
       def to_asciimath
         value
       end
+
+      def to_mathml_without_math_tag
+        "<mn>#{value}</mn>"
+      end
     end
   end
 end
