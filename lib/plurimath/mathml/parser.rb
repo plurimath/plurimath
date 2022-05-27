@@ -3,7 +3,6 @@
 require_relative "parse"
 require_relative "constants"
 require_relative "transform"
-require "parslet/convenience"
 module Plurimath
   class Mathml
     class Parser
@@ -14,7 +13,7 @@ module Plurimath
       end
 
       def parse
-        tree_t = Plurimath::Mathml::Parse.new.parse_with_debug(text)
+        tree_t = Plurimath::Mathml::Parse.new.parse(text)
         formula = Plurimath::Mathml::Transform.new.apply(tree_t)
         formula = [formula] unless formula.is_a?(Array) || formula.nil?
         return if formula.nil?

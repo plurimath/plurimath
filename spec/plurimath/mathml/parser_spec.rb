@@ -736,8 +736,7 @@ RSpec.describe Plurimath::Mathml::Parser do
           Plurimath::Math::Formula.new([
             Plurimath::Math::Symbol.new("i"),
             Plurimath::Math::Symbol.new("="),
-            Plurimath::Math::Function::Color.new(
-              Plurimath::Math::Symbol.new("blue"),
+            Plurimath::Math::Function::Color.new("blue",
               Plurimath::Math::Symbol.new("!="),
             )
           ]),
@@ -866,8 +865,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     }
     it "returns formula of mathfrak" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Function::Mathfrak.new(
+        Plurimath::Math::Function::FontStyle.new(
           Plurimath::Math::Function::F.new,
+          "fraktur",
         )
       ])
       expect(formula).to eq(expected_value)
@@ -886,8 +886,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     }
     it "returns formula of Mathsf" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Function::Mathsf.new(
+        Plurimath::Math::Function::FontStyle.new(
           Plurimath::Math::Function::F.new,
+          "sans-serif",
         )
       ])
       expect(formula).to eq(expected_value)
@@ -906,8 +907,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     }
     it "returns formula of Mathtt" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Function::Mathtt.new(
+        Plurimath::Math::Function::FontStyle.new(
           Plurimath::Math::Function::F.new,
+          "monospace",
         )
       ])
       expect(formula).to eq(expected_value)
@@ -926,8 +928,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     }
     it "returns formula of Mathcal" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Function::Mathcal.new(
+        Plurimath::Math::Function::FontStyle.new(
           Plurimath::Math::Function::F.new,
+          "script",
         )
       ])
       expect(formula).to eq(expected_value)
@@ -946,8 +949,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     }
     it "returns formula of Mathbb" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Function::Mathbb.new(
+        Plurimath::Math::Function::FontStyle.new(
           Plurimath::Math::Symbol.new("s"),
+          "double-struck",
         )
       ])
       expect(formula).to eq(expected_value)
@@ -966,188 +970,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     }
     it "returns formula of Mathbf" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Function::Mathbf.new(
+        Plurimath::Math::Function::FontStyle.new(
           Plurimath::Math::Symbol.new("d"),
-        )
-      ])
-      expect(formula).to eq(expected_value)
-    end
-  end
-
-  context "contains mathml string of mathfrak formula" do
-    let(:exp) {
-      <<~MATHML
-        <math xmlns='http://www.w3.org/1998/Math/MathML'>
-          <mstyle displaystyle="true">
-            <mstyle mathvariant="fraktur">
-              <mrow>
-                <mi>s</mi>
-                <mi>d</mi>
-                <mi>f</mi>
-              </mrow>
-            </mstyle>
-          </mstyle>
-        </math>
-      MATHML
-    }
-    it "returns formula of mathfrak" do
-      expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Function::Mathfrak.new(
-          Plurimath::Math::Formula.new([
-            Plurimath::Math::Symbol.new("s"),
-            Plurimath::Math::Symbol.new("d"),
-            Plurimath::Math::Function::F.new,
-          ])
-        )
-      ])
-      expect(formula).to eq(expected_value)
-    end
-  end
-
-  context "contains mathml string of Mathsf formula" do
-    let(:exp) {
-      <<~MATHML
-        <math xmlns='http://www.w3.org/1998/Math/MathML'>
-          <mstyle displaystyle="true">
-            <mstyle mathvariant="sans-serif">
-              <mrow>
-                <mi>s</mi>
-                <mi>d</mi>
-                <mi>f</mi>
-              </mrow>
-            </mstyle>
-          </mstyle>
-        </math>
-      MATHML
-    }
-    it "returns formula of Mathsf" do
-      expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Function::Mathsf.new(
-          Plurimath::Math::Formula.new([
-            Plurimath::Math::Symbol.new("s"),
-            Plurimath::Math::Symbol.new("d"),
-            Plurimath::Math::Function::F.new,
-          ])
-        )
-      ])
-      expect(formula).to eq(expected_value)
-    end
-  end
-
-  context "contains mathml string of Mathtt formula" do
-    let(:exp) {
-      <<~MATHML
-        <math xmlns='http://www.w3.org/1998/Math/MathML'>
-          <mstyle displaystyle="true">
-            <mstyle mathvariant="monospace">
-              <mrow>
-                <mi>s</mi>
-                <mi>d</mi>
-                <mi>f</mi>
-              </mrow>
-            </mstyle>
-          </mstyle>
-        </math>
-      MATHML
-    }
-    it "returns formula of Mathtt" do
-      expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Function::Mathtt.new(
-          Plurimath::Math::Formula.new([
-            Plurimath::Math::Symbol.new("s"),
-            Plurimath::Math::Symbol.new("d"),
-            Plurimath::Math::Function::F.new,
-          ])
-        )
-      ])
-      expect(formula).to eq(expected_value)
-    end
-  end
-
-  context "contains mathml string of Mathcal formula" do
-    let(:exp) {
-      <<~MATHML
-        <math xmlns='http://www.w3.org/1998/Math/MathML'>
-          <mstyle displaystyle="true">
-            <mstyle mathvariant="script">
-              <mrow>
-                <mi>s</mi>
-                <mi>d</mi>
-                <mi>f</mi>
-              </mrow>
-            </mstyle>
-          </mstyle>
-        </math>
-      MATHML
-    }
-    it "returns formula of Mathcal" do
-      expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Function::Mathcal.new(
-          Plurimath::Math::Formula.new([
-            Plurimath::Math::Symbol.new("s"),
-            Plurimath::Math::Symbol.new("d"),
-            Plurimath::Math::Function::F.new,
-          ])
-        )
-      ])
-      expect(formula).to eq(expected_value)
-    end
-  end
-
-  context "contains mathml string of Mathbb formula" do
-    let(:exp) {
-      <<~MATHML
-        <math xmlns='http://www.w3.org/1998/Math/MathML'>
-          <mstyle displaystyle="true">
-            <mstyle mathvariant="double-struck">
-              <mrow>
-                <mi>s</mi>
-                <mi>d</mi>
-                <mi>f</mi>
-              </mrow>
-            </mstyle>
-          </mstyle>
-        </math>
-      MATHML
-    }
-    it "returns formula of Mathbb" do
-      expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Function::Mathbb.new(
-          Plurimath::Math::Formula.new([
-            Plurimath::Math::Symbol.new("s"),
-            Plurimath::Math::Symbol.new("d"),
-            Plurimath::Math::Function::F.new,
-          ])
-        )
-      ])
-      expect(formula).to eq(expected_value)
-    end
-  end
-
-  context "contains mathml string of Mathbf formula" do
-    let(:exp) {
-      <<~MATHML
-        <math xmlns='http://www.w3.org/1998/Math/MathML'>
-          <mstyle displaystyle="true">
-            <mstyle mathvariant="bold">
-              <mrow>
-                <mi>s</mi>
-                <mi>d</mi>
-                <mi>f</mi>
-              </mrow>
-            </mstyle>
-          </mstyle>
-        </math>
-      MATHML
-    }
-    it "returns formula of Mathbf" do
-      expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Function::Mathbf.new(
-          Plurimath::Math::Formula.new([
-            Plurimath::Math::Symbol.new("s"),
-            Plurimath::Math::Symbol.new("d"),
-            Plurimath::Math::Function::F.new,
-          ])
+          "bold",
         )
       ])
       expect(formula).to eq(expected_value)

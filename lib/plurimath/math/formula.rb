@@ -14,7 +14,7 @@ module Plurimath
       end
 
       def to_asciimath
-        value.map(&:to_asciimath).join("")
+        value.map(&:to_asciimath).join
       end
 
       def to_mathml

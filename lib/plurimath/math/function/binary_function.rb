@@ -30,7 +30,12 @@ module Plurimath
         def to_mathml_without_math_tag
           first_value = parameter_one.to_mathml_without_math_tag if parameter_one
           second_value = parameter_two.to_mathml_without_math_tag if parameter_two
-          "<mo>#{Mathml::Constants::UNICODE_SYMBOLS.invert[class_name].to_s.empty? ? class_name : Mathml::Constants::UNICODE_SYMBOLS.invert[class_name].to_s}</mo>#{first_value}#{second_value}"
+          third_value = invert_unicode_symbols.empty? ? class_name : invert_unicode_symbols
+          "<mo>#{third_value}</mo>#{first_value}#{second_value}"
+        end
+
+        def invert_unicode_symbols
+          Mathml::Constants::UNICODE_SYMBOLS.invert[class_name].to_s
         end
 
         def class_name

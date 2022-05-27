@@ -84,7 +84,7 @@ module Plurimath
         if ["open", "close"].include?(name.to_s)
           Plurimath::Math::Symbol.new(value.to_s)
         elsif name.to_s == "mathcolor"
-          Plurimath::Math::Function::Color.new(Plurimath::Math::Symbol.new(value.to_s))
+          Plurimath::Math::Function::Color.new(value.to_s)
         elsif name.to_s == "mathvariant"
           value.to_s
         end
@@ -156,9 +156,9 @@ module Plurimath
           attributes.first.parameter_two = iteration.first
           attributes.first
         elsif open_tag == "mstyle" && !attributes.compact.empty?
-          if Constants::FONT_CLASSES.key?(attributes.compact.last.to_sym)
-            math_class = Constants::FONT_CLASSES[attributes.compact.last.to_sym]
-            math_class.new(iteration.last)
+          font_type = attributes.compact.last.to_sym
+          if Constants::FONT_CLASSES.include?(font_type)
+            Math::Function::FontStyle.new(iteration.last, font_type.to_s)
           end
         else
           iteration

@@ -30,7 +30,11 @@ module Plurimath
           first_value  = parameter_one.to_mathml_without_math_tag if parameter_one
           second_value = parameter_two.to_mathml_without_math_tag if parameter_two
           third_value  = parameter_three.to_mathml_without_math_tag if parameter_three
-          "<m#{self.class.name.split("::").last.downcase}>#{first_value}#{second_value}#{third_value}</m#{self.class.name.split("::").last.downcase}>"
+          "<m#{class_name}>#{first_value}#{second_value}#{third_value}</m#{class_name}>"
+        end
+
+        def class_name
+          self.class.name.split("::").last.downcase
         end
       end
     end

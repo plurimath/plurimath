@@ -6,6 +6,7 @@ module Plurimath
       rule(expr: simple(:expr))                       { expr }
       rule(base: simple(:base))                       { base }
       rule(base: sequence(:base))                     { base }
+      rule(fonts: simple(:fonts))                     { fonts }
       rule(power: simple(:power))                     { power }
       rule(unary: simple(:unary))                     { unary }
       rule(power: sequence(:power))                   { power }
@@ -43,6 +44,15 @@ module Plurimath
       rule(base: simple(:base),
            expr: simple(:expr)) do
         [base, expr]
+      end
+
+      rule(fonts: simple(:font_style), intermediate_exp: simple(:int_exp)) do
+        Plurimath::Math::Function::FontStyle.new(int_exp, font_style.to_s)
+      end
+
+      rule(fonts: simple(:font_style), text: simple(:text)) do
+        parameter_one = Plurimath::Math::Function::Text.new(text.to_s)
+        Plurimath::Math::Function::FontStyle.new(parameter_one, font_style.to_s)
       end
 
       rule(power_base: simple(:power_base), expr: sequence(:expr)) do

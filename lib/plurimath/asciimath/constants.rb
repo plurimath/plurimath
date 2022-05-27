@@ -231,15 +231,9 @@ module Plurimath
         +
       ].freeze
       UNARY_CLASSES = %i[
-        mathfrak
-        mathcal
         arccos
         arcsin
         arctan
-        mathsf
-        mathbb
-        mathbf
-        mathtt
         ubrace
         obrace
         cancel
@@ -294,6 +288,20 @@ module Plurimath
         sum
         mod
         log
+      ].freeze
+      FONT_STYLES = %i[
+        mathfrak
+        mathcal
+        mathbb
+        mathsf
+        mathtt
+        mathbf
+        bbb
+        bb
+        fr
+        cc
+        sf
+        tt
       ].freeze
     end
   end
