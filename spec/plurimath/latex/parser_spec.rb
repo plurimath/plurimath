@@ -785,7 +785,6 @@ RSpec.describe Plurimath::Latex::Parser do
             "mathrm",
           )
         ])
-        formula.to_asciimath
         expect(formula).to eq(expected_value)
       end
     end
