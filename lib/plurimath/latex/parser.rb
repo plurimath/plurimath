@@ -15,8 +15,7 @@ module Plurimath
       def parse
         tree_t = Plurimath::Latex::Parse.new.parse(text)
         formula = Plurimath::Latex::Transform.new.apply(tree_t)
-        formula = [formula] unless formula.is_a?(Array) || formula.nil?
-        return if formula.nil?
+        formula = [formula] unless formula.is_a?(Array)
 
         Plurimath::Math::Formula.new(formula)
       end
