@@ -5,6 +5,7 @@ module Plurimath
     class Constants
       UNARY_CLASSES = %w[
         overline
+        substack
         arccos
         arcsin
         arctan
@@ -40,6 +41,7 @@ module Plurimath
         "vmatrix" => "|",
         "Vmatrix" => "norm[",
         "matrix" => nil,
+        "split" => nil,
         "array" => nil,
       }.freeze
       SYMBOLS = %w[
@@ -1837,6 +1839,7 @@ module Plurimath
         Pi
         Xi
         pm
+        :
       ].freeze
       OPERATORS = %w[
         :
@@ -1861,6 +1864,7 @@ module Plurimath
         !
       ].freeze
       FONT_STYLES = %w[
+        bf
         Bbb
         mtt
         mbf
@@ -1890,6 +1894,7 @@ module Plurimath
         "[" => "]",
         "{" => "}",
         "(" => ")",
+        "\\{" => "\\}",
       }.freeze
       BINARY_CLASSES = %w[
         stackrel
@@ -1919,6 +1924,39 @@ module Plurimath
         seven
         eight
         nine
+      ].freeze
+      MATH_OPERATORS = %w[
+        liminf
+        arctan
+        arcsin
+        limsup
+        tanh
+        coth
+        cosh
+        sinh
+        int
+        sin
+        max
+        dim
+        arg
+        tan
+        sec
+        log
+        lim
+        hom
+        det
+        cot
+        sup
+        gcd
+        deg
+        min
+        ker
+        exp
+        csc
+        cos
+        Pr
+        ln
+        lg
       ].freeze
     end
   end

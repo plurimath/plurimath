@@ -22,6 +22,10 @@ module Plurimath
           Mathml::Constants::UNICODE_SYMBOLS.invert[unicode] ||
             Mathml::Constants::SYMBOLS.invert[unicode]
         end
+
+        def to_latex
+          parameter_one
+        end
       end
     end
   end

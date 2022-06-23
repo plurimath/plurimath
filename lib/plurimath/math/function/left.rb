@@ -13,6 +13,10 @@ module Plurimath
         def value_to_asciimath
           "(#{parameter_one.to_asciimath}right)" if parameter_one
         end
+
+        def to_latex
+          "\\left(#{parameter_one&.to_latex}\\right)"
+        end
       end
     end
   end

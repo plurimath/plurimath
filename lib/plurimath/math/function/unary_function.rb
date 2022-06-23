@@ -27,6 +27,11 @@ module Plurimath
           "<mi>#{class_name}</mi>"
         end
 
+        def to_latex
+          first_value = "{#{parameter_one.to_latex}}" if parameter_one
+          "\\#{class_name}#{first_value}"
+        end
+
         def class_name
           self.class.name.split("::").last.downcase
         end

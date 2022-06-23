@@ -13,6 +13,12 @@ module Plurimath
         def to_mathml_without_math_tag
           "<mtr>#{parameter_one.map(&:to_mathml_without_math_tag).join}</mtr>"
         end
+
+        def to_latex
+          parameter_one.reject do |td|
+            td if td.is_a?(Symbol) && td.value == "|"
+          end.map(&:to_latex).join("&")
+        end
       end
     end
   end

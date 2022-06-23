@@ -4,21 +4,28 @@ require "parslet"
 module Plurimath
   class Latex
     class Parse < Parslet::Parser
-      rule(:base)        { str("_") }
-      rule(:power)       { str("^") }
-      rule(:slash)       { str("\\") }
-      rule(:array_args)  { str("{") >> expression >> str("}") }
-      rule(:ending)      { slash >> str("end") >> intermediate_exp }
-      rule(:begining)    { slash >> str("begin") >> intermediate_exp }
-      rule(:lparen)      { arr_to_expression(Constants::PARENTHESIS.keys, :lparen) }
-      rule(:environment) { arr_to_expression(Constants::ENVIRONMENTS.keys, :environment) }
-      rule(:rparen)      { arr_to_expression(Constants::PARENTHESIS.values, :rparen) }
-      rule(:subscript)   { intermediate_exp >> base >> intermediate_exp.as(:subscript) }
-      rule(:supscript)   { intermediate_exp >> power >> intermediate_exp.as(:supscript) }
-      rule(:binary)      { slash >> arr_to_expression(Constants::BINARY_CLASSES, :binary) }
-      rule(:under_over)  { slash >> arr_to_expression(Constants::UNDEROVER_CLASSES, :binary) }
-      rule(:left_right)  { str("\\left") >> lparen >> expression >> str("\\right") >> rparen }
-      rule(:unary)       { slash >> arr_to_expression(Constants::UNARY_CLASSES, :unary) >> intermediate_exp.as(:first_value) }
+      rule(:base)           { str("_") }
+      rule(:power)          { str("^") }
+      rule(:slash)          { str("\\") }
+      rule(:double_slash)   { str("\\\\").as("\\\\") }
+      rule(:array_args)     { str("{") >> expression >> str("}") }
+      rule(:ending)         { slash >> str("end") >> intermediate_exp }
+      rule(:begining)       { slash >> str("begin") >> intermediate_exp }
+      rule(:lparen)         { arr_to_expression(Constants::PARENTHESIS.keys, :lparen) }
+      rule(:rparen)         { arr_to_expression(Constants::PARENTHESIS.values, :rparen) }
+      rule(:subscript)      { intermediate_exp >> base >> intermediate_exp.as(:subscript) }
+      rule(:supscript)      { intermediate_exp >> power >> intermediate_exp.as(:supscript) }
+      rule(:environment)    { arr_to_expression(Constants::ENVIRONMENTS.keys, :environment) }
+      rule(:binary)         { slash >> arr_to_expression(Constants::BINARY_CLASSES, :binary) }
+      rule(:under_over)     { slash >> arr_to_expression(Constants::UNDEROVER_CLASSES, :binary) }
+      rule(:left_right)     { str("\\left") >> lparen >> expression >> str("\\right") >> rparen }
+      rule(:math_operators) { slash >> arr_to_expression(Constants::MATH_OPERATORS, :unary_functions) >> str("\\limits") }
+      rule(:unary)          { slash >> arr_to_expression(Constants::UNARY_CLASSES, :unary) >> intermediate_exp.as(:first_value) }
+
+      rule(:limits) do
+        math_operators >> base >> intermediate_exp.as(:base) >> power >> intermediate_exp.as(:power) |
+          math_operators >> power >> intermediate_exp.as(:power) >> base >> intermediate_exp.as(:base)
+      end
 
       rule(:symbol_class_commands) do
         (slash >> arr_to_expression(Constants::SYMBOLS, :symbols)) |
@@ -36,7 +43,7 @@ module Plurimath
         symbol_class_commands |
           match["a-zA-Z"].repeat(1).as(:text) |
           match(/\d+(\.[0-9]+)|\d/).repeat(1).as(:number) |
-          str("\\\\").as("\\\\")
+          double_slash
       end
 
       rule(:intermediate_exp) do
@@ -62,8 +69,10 @@ module Plurimath
       end
 
       rule(:sequence) do
-        left_right.as(:left_right) |
+        limits.as(:limits) |
+          left_right.as(:left_right) |
           (slash >> str("mbox") >> lparen.capture(:paren) >> read_text >> rparen).as(:unary_functions) |
+          (slash >> str("substack").as(:substack) >> lparen >> expression.as(:substack_value) >> rparen) |
           (begining.as(:begining) >> array_args.as(:args) >> expression.as(:table_data) >> ending.as(:ending)).as(:environment) |
           (begining.as(:begining) >> expression.as(:table_data) >> ending.as(:ending)).as(:environment) |
           (slash >> environment >> intermediate_exp).as(:table_data) |

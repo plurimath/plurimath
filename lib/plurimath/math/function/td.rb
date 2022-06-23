@@ -17,6 +17,10 @@ module Plurimath
         def to_mathml_without_math_tag
           "<mtd>#{parameter_one.map(&:to_mathml_without_math_tag).join}</mtd>"
         end
+
+        def to_latex
+          parameter_one.map(&:to_latex).join
+        end
       end
     end
   end

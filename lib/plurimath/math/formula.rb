@@ -34,6 +34,10 @@ module Plurimath
       def mathml_content
         value.map(&:to_mathml_without_math_tag).join
       end
+
+      def to_latex
+        value.map(&:to_latex).join
+      end
     end
   end
 end

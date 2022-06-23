@@ -17,6 +17,13 @@ module Plurimath
           second_value = parameter_two.to_mathml_without_math_tag
           "<msup>#{first_value}#{second_value}</msup>"
         end
+
+        def to_latex
+          first_value = parameter_one.to_latex if parameter_one
+          first_value  = "{#{first_value}}" if parameter_one.is_a?(Math::Formula)
+          second_value = parameter_two.to_latex
+          "#{first_value}^{#{second_value}}"
+        end
       end
     end
   end

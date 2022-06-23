@@ -259,24 +259,30 @@ RSpec.describe Plurimath::Latex::Parser do
       }
       it "returns formula" do
         expected_value = Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Table.new([
-            Plurimath::Math::Function::Tr.new([
-              Plurimath::Math::Function::Td.new([
-                Plurimath::Math::Formula.new([
-                  Plurimath::Math::Number.new("3"),
-                  Plurimath::Math::Function::Text.new("x"),
-                  Plurimath::Math::Symbol.new("-"),
-                  Plurimath::Math::Number.new("5"),
-                  Plurimath::Math::Function::Text.new("y"),
-                  Plurimath::Math::Symbol.new("+"),
-                  Plurimath::Math::Number.new("4"),
-                  Plurimath::Math::Function::Text.new("z"),
-                  Plurimath::Math::Symbol.new("="),
-                  Plurimath::Math::Number.new("0"),
+          Plurimath::Math::Function::Table.new(
+            [
+              Plurimath::Math::Function::Tr.new([
+                  Plurimath::Math::Function::Td.new([
+                    Plurimath::Math::Formula.new([
+                      Plurimath::Math::Number.new("3"),
+                      Plurimath::Math::Function::Text.new("x"),
+                      Plurimath::Math::Symbol.new("-"),
+                      Plurimath::Math::Number.new("5"),
+                      Plurimath::Math::Function::Text.new("y"),
+                      Plurimath::Math::Symbol.new("+"),
+                      Plurimath::Math::Number.new("4"),
+                      Plurimath::Math::Function::Text.new("z"),
+                      Plurimath::Math::Symbol.new("="),
+                      Plurimath::Math::Number.new("0"),
+                    ])
+                  ])
                 ])
-              ])
-            ])
-          ])
+            ],
+            nil,
+            [
+              Plurimath::Math::Function::Text.new("l"),
+            ]
+          )
         ])
         expect(formula).to eq(expected_value)
       end
@@ -290,25 +296,30 @@ RSpec.describe Plurimath::Latex::Parser do
       }
       it "returns formula" do
         expected_value = Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Table.new([
-            Plurimath::Math::Function::Tr.new([
-              Plurimath::Math::Function::Td.new([
-                Plurimath::Math::Formula.new([
-                  Plurimath::Math::Number.new("3"),
-                  Plurimath::Math::Function::Text.new("x"),
-                  Plurimath::Math::Symbol.new("-"),
-                  Plurimath::Math::Number.new("5"),
-                  Plurimath::Math::Function::Text.new("y"),
-                  Plurimath::Math::Symbol.new("+"),
-                  Plurimath::Math::Number.new("4"),
-                  Plurimath::Math::Function::Text.new("z"),
-                  Plurimath::Math::Symbol.new("="),
-                  Plurimath::Math::Number.new("0"),
+          Plurimath::Math::Function::Table.new(
+            [
+              Plurimath::Math::Function::Tr.new([
+                Plurimath::Math::Function::Td.new([
+                  Plurimath::Math::Formula.new([
+                    Plurimath::Math::Number.new("3"),
+                    Plurimath::Math::Function::Text.new("x"),
+                    Plurimath::Math::Symbol.new("-"),
+                    Plurimath::Math::Number.new("5"),
+                    Plurimath::Math::Function::Text.new("y"),
+                    Plurimath::Math::Symbol.new("+"),
+                    Plurimath::Math::Number.new("4"),
+                    Plurimath::Math::Function::Text.new("z"),
+                    Plurimath::Math::Symbol.new("="),
+                    Plurimath::Math::Number.new("0"),
+                  ]),
                 ]),
-              ]),
+              ])
+            ],
+            nil,
+            [
               Plurimath::Math::Symbol.new("|"),
-            ])
-          ])
+            ]
+          )
         ])
         expect(formula).to eq(expected_value)
       end
@@ -541,27 +552,33 @@ RSpec.describe Plurimath::Latex::Parser do
       }
       it "returns formula" do
         expected_value = Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Table.new([
-            Plurimath::Math::Function::Tr.new([
-              Plurimath::Math::Function::Td.new([
-                Plurimath::Math::Number.new("1"),
+          Plurimath::Math::Function::Table.new(
+            [
+              Plurimath::Math::Function::Tr.new([
+                Plurimath::Math::Function::Td.new([
+                  Plurimath::Math::Number.new("1"),
+                ]),
+                Plurimath::Math::Function::Td.new([
+                  Plurimath::Math::Number.new("2"),
+                  Plurimath::Math::Symbol.new("hline"),
+                ]),
               ]),
+              Plurimath::Math::Function::Tr.new([
+                Plurimath::Math::Function::Td.new([
+                  Plurimath::Math::Number.new("3"),
+                ]),
+                Plurimath::Math::Function::Td.new([
+                  Plurimath::Math::Number.new("4"),
+                ]),
+              ]),
+            ],
+            nil,
+            [
+              Plurimath::Math::Function::Text.new("c"),
               Plurimath::Math::Symbol.new("|"),
-              Plurimath::Math::Function::Td.new([
-                Plurimath::Math::Number.new("2"),
-                Plurimath::Math::Symbol.new("hline"),
-              ]),
-            ]),
-            Plurimath::Math::Function::Tr.new([
-              Plurimath::Math::Function::Td.new([
-                Plurimath::Math::Number.new("3"),
-              ]),
-              Plurimath::Math::Symbol.new("|"),
-              Plurimath::Math::Function::Td.new([
-                Plurimath::Math::Number.new("4"),
-              ]),
-            ]),
-          ])
+              Plurimath::Math::Function::Text.new("r"),
+            ]
+          )
         ])
         expect(formula).to eq(expected_value)
       end
@@ -671,24 +688,30 @@ RSpec.describe Plurimath::Latex::Parser do
       it "returns formula" do
         expected_value = Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Left.new(
-            Plurimath::Math::Function::Table.new([
-              Plurimath::Math::Function::Tr.new([
-                Plurimath::Math::Function::Td.new([
-                  Plurimath::Math::Function::Base.new(
-                    Plurimath::Math::Function::Text.new("V"),
-                    Plurimath::Math::Function::Text.new("x"),
-                  ),
-                ])
-              ]),
-              Plurimath::Math::Function::Tr.new([
-                Plurimath::Math::Function::Td.new([
-                  Plurimath::Math::Function::Base.new(
-                    Plurimath::Math::Function::Text.new("V"),
-                    Plurimath::Math::Function::Text.new("y"),
-                  ),
-                ])
-              ]),
-            ])
+            Plurimath::Math::Function::Table.new(
+              [
+                Plurimath::Math::Function::Tr.new([
+                  Plurimath::Math::Function::Td.new([
+                    Plurimath::Math::Function::Base.new(
+                      Plurimath::Math::Function::Text.new("V"),
+                      Plurimath::Math::Function::Text.new("x"),
+                    ),
+                  ])
+                ]),
+                Plurimath::Math::Function::Tr.new([
+                  Plurimath::Math::Function::Td.new([
+                    Plurimath::Math::Function::Base.new(
+                      Plurimath::Math::Function::Text.new("V"),
+                      Plurimath::Math::Function::Text.new("y"),
+                    ),
+                  ])
+                ]),
+              ],
+              nil,
+              [
+                Plurimath::Math::Function::Text.new("c"),
+              ]
+            )
           )
         ])
         expect(formula).to eq(expected_value)
