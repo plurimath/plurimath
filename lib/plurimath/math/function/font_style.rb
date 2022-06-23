@@ -34,6 +34,11 @@ module Plurimath
           first_value = parameter_one.to_mathml_without_math_tag
           "<mstyle mathvariant='#{type}'>#{first_value}</mstyle>"
         end
+
+        def to_latex
+          first_value = parameter_one.to_latex if parameter_one
+          "\\#{parameter_two}{#{first_value}}"
+        end
       end
     end
   end

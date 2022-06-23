@@ -24,6 +24,11 @@ module Plurimath
       def mathml_symbol_value
         Mathml::Constants::UNICODE_SYMBOLS.invert[value] || value
       end
+
+      def to_latex
+        symbols = Latex::Constants::SYMBOLS
+        symbols.include?(value) ? "\\#{value}" : value
+      end
     end
   end
 end

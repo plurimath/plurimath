@@ -38,6 +38,12 @@ module Plurimath
           Mathml::Constants::UNICODE_SYMBOLS.invert[class_name].to_s
         end
 
+        def to_latex
+          first_value = "{#{parameter_one.to_latex}}" if parameter_one
+          second_value = "{#{parameter_two.to_latex}}" if parameter_two
+          "\\#{class_name}#{first_value}#{second_value}"
+        end
+
         def class_name
           self.class.name.split("::").last.downcase
         end

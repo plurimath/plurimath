@@ -20,6 +20,10 @@ module Plurimath
       def to_mathml_without_math_tag
         "<mn>#{value}</mn>"
       end
+
+      def to_latex
+        value
+      end
     end
   end
 end

@@ -10,7 +10,10 @@ module Plurimath
       rule(symbols: simple(:sym))    { Math::Symbol.new(sym.to_s) }
       rule(operant: simple(:oper))   { Math::Symbol.new(oper.to_s) }
       rule(ending: simple(:ending))  { nil }
-      rule(binary: simple(:binary))  { binary }
+      rule(limits: simple(:limits))  { limits }
+      rule(binary: simple(:binary)) do
+        binary.is_a?(Slice) ? Transform.get_class(binary == "over" ? "overset" : binary).new : binary
+      end
       rule("\\\\" => simple(:slash)) { Math::Symbol.new(slash.to_s) }
 
       rule(unary_functions: simple(:unary))    { unary }
@@ -72,6 +75,16 @@ module Plurimath
         [sequence] + expr
       end
 
+      rule(unary_functions: simple(:unary),
+           base: simple(:base),
+           power: simple(:power)) do
+        Plurimath::Math::Function::Limits.new(
+          Transform.get_class(unary).new,
+          base,
+          power,
+        )
+      end
+
       rule(lparen: simple(:lparen),
            text: simple(:text),
            rparen: simple(:rparen)) do
@@ -82,6 +95,26 @@ module Plurimath
            symbols: simple(:symbol),
            rparen: simple(:rparen)) do
         Math::Symbol.new(symbol.to_s)
+      end
+
+      rule(substack: simple(:substack),
+           lparen: simple(:lparen),
+           substack_value: sequence(:value),
+           rparen: simple(:rparen)) do
+        first_value = []
+        until value.nil?
+          if value.first.is_a?(Plurimath::Math::Symbol) &&
+             value.first.value == "\\\\"
+            value.delete_at(0)
+            break;
+          else
+            first_value << value.delete_at(0)
+          end
+        end
+        Transform.get_class(substack).new(
+          Math::Formula.new(first_value),
+          Math::Formula.new(value)
+        )
       end
 
       rule(lparen: simple(:lparen),
@@ -181,13 +214,9 @@ module Plurimath
            args: simple(:args),
            table_data: simple(:table_data),
            ending: simple(:ending)) do
-        separator = Transform.separator(args)
         table_value = Transform.organize_table([table_data])
-        begining.parameter_one = if separator
-                                   Transform.inserting_at(table_value, args, 1)
-                                 else
-                                   table_value
-                                 end
+        begining.parameter_one = table_value
+        begining.parameter_three = [args]
         begining
       end
 
@@ -195,14 +224,9 @@ module Plurimath
            args: sequence(:args),
            table_data: sequence(:table_data),
            ending: simple(:ending)) do
-        separator = args.find { |arg| Transform.separator(arg) }
-        insert_at = args.index(separator)
         table_value = Transform.organize_table(table_data)
-        begining.parameter_one = if separator
-                                   Transform.inserting_at(table_value, separator, insert_at)
-                                 else
-                                   table_value
-                                 end
+        begining.parameter_one = table_value
+        begining.parameter_three = args
         begining
       end
 
@@ -210,13 +234,9 @@ module Plurimath
            args: simple(:args),
            table_data: sequence(:table_data),
            ending: simple(:ending)) do
-        separator = Transform.separator(args)
         table_value = Transform.organize_table(table_data)
-        begining.parameter_one = if separator
-                                   Transform.inserting_at(table_value, args, 1)
-                                 else
-                                   table_value
-                                 end
+        begining.parameter_one = table_value
+        begining.parameter_three = [args]
         begining
       end
 
@@ -241,6 +261,14 @@ module Plurimath
         Math::Function::Power.new(formula, supscript)
       end
 
+      rule(lparen: simple(:lparen),
+           expression: simple(:expr),
+           rparen: simple(:rparen),
+           subscript: simple(:subscript)) do
+        formula = Math::Formula.new(expr)
+        Math::Function::Base.new(formula, subscript)
+      end
+
       class << self
         def organize_table(array, table = [], table_data = [], table_row = [])
           array.each do |data|
@@ -259,16 +287,6 @@ module Plurimath
           table_row << Math::Function::Td.new(table_data) if table_data
           table << Math::Function::Tr.new(table_row) unless table_row.empty?
           table
-        end
-
-        def inserting_at(table_array, separator, index)
-          table_array.each do |tr|
-            tr.parameter_one.insert(index, separator)
-          end
-        end
-
-        def separator(arg)
-          arg.is_a?(Math::Symbol) && arg.value == "|"
         end
 
         def get_class(text)

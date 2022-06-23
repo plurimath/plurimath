@@ -11,6 +11,12 @@ module Plurimath
           second_value = parameter_two.to_mathml_without_math_tag if parameter_two
           "<mstyle mathcolor='#{first_value}'>#{second_value}</mstyle>"
         end
+
+        def to_latex
+          first_value = parameter_one.to_latex if parameter_one
+          second_value = parameter_two.to_latex if parameter_two
+          "\\#{class_name}{#{first_value}}#{second_value}"
+        end
       end
     end
   end
