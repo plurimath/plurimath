@@ -7,7 +7,11 @@ module Plurimath
     module Function
       class Td < UnaryFunction
         def to_asciimath
-          "[#{parameter_one.map(&:to_asciimath).join(',')}]"
+          if parameter_one.length > 1
+            "[#{parameter_one.map(&:to_asciimath).join(',')}]"
+          else
+            "#{parameter_one.map(&:to_asciimath).join(',')}"
+          end
         end
 
         def to_mathml_without_math_tag
