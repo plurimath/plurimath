@@ -9,7 +9,7 @@ module Plurimath
       attr_accessor :text
 
       def initialize(text)
-        @text = text.gsub(" ", "").gsub("\n", "")
+        @text = text.gsub(/\s/, "")
       end
 
       def parse

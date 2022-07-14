@@ -7,7 +7,6 @@ module Plurimath
       rule(:base)           { str("_") }
       rule(:power)          { str("^") }
       rule(:slash)          { str("\\") }
-      rule(:double_slash)   { str("\\\\").as("\\\\") }
       rule(:array_args)     { str("{") >> expression >> str("}") }
       rule(:ending)         { slash >> str("end") >> intermediate_exp }
       rule(:begining)       { slash >> str("begin") >> intermediate_exp }
@@ -15,12 +14,12 @@ module Plurimath
       rule(:rparen)         { arr_to_expression(Constants::PARENTHESIS.values, :rparen) }
       rule(:subscript)      { intermediate_exp >> base >> intermediate_exp.as(:subscript) }
       rule(:supscript)      { intermediate_exp >> power >> intermediate_exp.as(:supscript) }
-      rule(:environment)    { arr_to_expression(Constants::ENVIRONMENTS.keys, :environment) }
+      rule(:unary)          { slash >> arr_to_expression(Constants::UNARY_CLASSES, :unary) }
+      rule(:environment)    { arr_to_expression(Constants::MATRICES.keys, :environment) }
       rule(:binary)         { slash >> arr_to_expression(Constants::BINARY_CLASSES, :binary) }
       rule(:under_over)     { slash >> arr_to_expression(Constants::UNDEROVER_CLASSES, :binary) }
-      rule(:left_right)     { str("\\left") >> lparen >> expression >> str("\\right") >> rparen }
       rule(:math_operators) { slash >> arr_to_expression(Constants::MATH_OPERATORS, :unary_functions) >> str("\\limits") }
-      rule(:unary)          { slash >> arr_to_expression(Constants::UNARY_CLASSES, :unary) >> intermediate_exp.as(:first_value) }
+      rule(:left_right)     { str("\\left").as(:left) >> lparen >> expression.as(:expression) >> str("\\right").as(:right) >> rparen }
 
       rule(:limits) do
         math_operators >> base >> intermediate_exp.as(:base) >> power >> intermediate_exp.as(:power) |
@@ -28,22 +27,24 @@ module Plurimath
       end
 
       rule(:symbol_class_commands) do
-        (slash >> arr_to_expression(Constants::SYMBOLS, :symbols)) |
+        (slash >> arr_to_expression(Constants::SYMBOLS.keys, :symbols)) |
+          (unary >> intermediate_exp.as(:first_value)).as(:unary_functions) |
           unary.as(:unary_functions) |
           binary |
           under_over |
           environment |
-          (slash >> arr_to_expression(Constants::FONT_STYLES, :fonts) >> expression.as(:intermediate_exp)) |
           arr_to_expression(Constants::OPERATORS, :operant) |
+          arr_to_expression(Constants::NUMERIC_VALUES, :numeric_values) |
           (slash >> arr_to_expression(Constants::POWER_BASE_CLASSES, :binary)) |
-          arr_to_expression(Constants::NUMERIC_VALUES, :numeric_values)
+          (slash >> arr_to_expression(Constants::FONT_STYLES, :fonts) >> (binary_functions | intermediate_exp).as(:intermediate_exp))
       end
 
       rule(:symbol_text_or_integer) do
         symbol_class_commands |
           match["a-zA-Z"].repeat(1).as(:text) |
+          (str('"') >> match("[^\"]").repeat >> str('"')).as(:text) |
           match(/\d+(\.[0-9]+)|\d/).repeat(1).as(:number) |
-          double_slash
+          str("\\\\").as("\\\\")
       end
 
       rule(:intermediate_exp) do
@@ -70,7 +71,12 @@ module Plurimath
 
       rule(:sequence) do
         limits.as(:limits) |
+          left_right.as(:left_right) >> power >> intermediate_exp.as(:supscript) |
+          left_right.as(:left_right) >> base >> intermediate_exp.as(:subscript) |
           left_right.as(:left_right) |
+          over_class.as(:over) >> power >> intermediate_exp.as(:supscript) |
+          over_class.as(:over) >> base >> intermediate_exp.as(:subscript) |
+          over_class.as(:over) |
           (slash >> str("mbox") >> lparen.capture(:paren) >> read_text >> rparen).as(:unary_functions) |
           (slash >> str("substack").as(:substack) >> lparen >> expression.as(:substack_value) >> rparen) |
           (begining.as(:begining) >> array_args.as(:args) >> expression.as(:table_data) >> ending.as(:ending)).as(:environment) |
@@ -81,6 +87,17 @@ module Plurimath
           intermediate_exp
       end
 
+      rule(:left_right_over) do
+        str("\\left").as(:left) >> lparen >> expression.repeat.as(:dividend) >> str("\\over") >> expression.repeat.as(:divisor) >> str("\\right").as(:right) >> rparen
+      end
+
+      rule(:over_class) do
+        str("{") >> expression.repeat.as(:dividend) >> str("\\over") >> expression.repeat.as(:divisor) >> str("}") |
+          (left_right_over.as(:left_right).as(:power) >> power >> intermediate_exp) |
+          (left_right_over.as(:left_right).as(:base) >> base >> intermediate_exp) |
+          left_right_over.as(:left_right)
+      end
+
       rule(:iteration) { (sequence.as(:sequence) >> expression.as(:expression)) | sequence }
 
       rule(:expression) { (iteration >> expression) | iteration }
@@ -88,8 +105,9 @@ module Plurimath
       root :expression
 
       def arr_to_expression(array, name = nil)
+        type = array.first.class
         array.reduce do |expression, expr_string|
-          expression = str(expression).as(name || expression.to_sym) if expression.is_a?(String)
+          expression = str(expression).as(name || expression.to_sym) if expression.is_a?(type)
           expression | str(expr_string).as(name || expr_string.to_sym)
         end
       end
@@ -97,7 +115,7 @@ module Plurimath
       def read_text
         dynamic do |_sour, context|
           rparen = Constants::PARENTHESIS[context.captures[:paren][:lparen].to_s]
-          match("[^#{rparen}]").repeat.as(:text)
+          match("[^#{rparen}]").repeat.as(:mbox)
         end
       end
     end

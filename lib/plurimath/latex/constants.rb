@@ -11,10 +11,13 @@ module Plurimath
         arctan
         limsup
         liminf
+        tilde
         sinh
         coth
         tanh
         cosh
+        hat
+        vec
         tan
         cos
         cot
@@ -31,1864 +34,1876 @@ module Plurimath
         hom
         sup
         ker
+        bar
         lg
         ln
       ].freeze
-      ENVIRONMENTS = {
-        "pmatrix" => "(",
-        "bmatrix" => "[",
-        "Bmatrix" => "{",
-        "vmatrix" => "|",
-        "Vmatrix" => "norm[",
-        "matrix" => nil,
-        "split" => nil,
-        "array" => nil,
+      SYMBOLS = {
+        barleftarrowrightarrowba: "&#x21B9;",
+        rightarrowshortleftarrow: "&#x2942;",
+        leftarrowshortrightarrow: "&#x2943;",
+        shortrightarrowleftarrow: "&#x2944;",
+        leftrightharpoondowndown: "&#x2950;",
+        smallblacktriangleright: "&#x25B8;",
+        invwhiteupperhalfcircle: "&#x25DA;",
+        invwhitelowerhalfcircle: "&#x25DB;",
+        concavediamondtickright: "&#x27E3;",
+        nvtwoheadrightarrowtail: "&#x2917;",
+        nVtwoheadrightarrowtail: "&#x2918;",
+        updownharpoonrightright: "&#x294F;",
+        updownharpoonsleftright: "&#x296E;",
+        downupharpoonsleftright: "&#x296F;",
+        leftrightarrowtriangle: "&#x21FF;",
+        smallblacktriangleleft: "&#x25C2;",
+        blackcircleulquadwhite: "&#x25D5;",
+        concavediamondtickleft: "&#x27E2;",
+        leftrightharpoonupdown: "&#x294A;",
+        leftrightharpoondownup: "&#x294B;",
+        updownharpoonrightleft: "&#x294C;",
+        updownharpoonleftright: "&#x294D;",
+        downtrianglerightblack: "&#x29E9;",
+        partialmeetcontraction: "&#x2AA3;",
+        nvtwoheadleftarrowtail: "&#x2B3C;",
+        nVtwoheadleftarrowtail: "&#x2B3D;",
+        underrightharpoondown: "&#x20EC;",
+        barovernorthwestarrow: "&#x21B8;",
+        rangledownzigzagarrow: "&#x237C;",
+        circlebottomhalfblack: "&#x25D2;",
+        twoheadrightarrowtail: "&#x2916;",
+        updownharpoonleftleft: "&#x2951;",
+        downharpoonsleftright: "&#x2965;",
+        leftrightharpoonsdown: "&#x2967;",
+        rightleftharpoonsdown: "&#x2969;",
+        downtriangleleftblack: "&#x29E8;",
+        blackdiamonddownarrow: "&#x29EA;",
+        closedvarcupsmashprod: "&#x2A50;",
+        underleftharpoondown: "&#x20ED;",
+        CapitalDifferentialD: "&#x2145;",
+        bigblacktriangledown: "&#x25BC;",
+        circlerighthalfblack: "&#x25D1;",
+        blackrighthalfcircle: "&#x25D7;",
+        blackcircledrightdot: "&#x2688;",
+        whiteinwhitetriangle: "&#x27C1;",
+        whitesquaretickright: "&#x27E5;",
+        barrightarrowdiamond: "&#x2920;",
+        downrightcurvedarrow: "&#x2935;",
+        rightdowncurvedarrow: "&#x2937;",
+        curvearrowrightminus: "&#x293C;",
+        leftrightarrowcircle: "&#x2948;",
+        twoheaduparrowcircle: "&#x2949;",
+        leftrightharpoonupup: "&#x294E;",
+        leftrightharpoondown: "&#x2950;",
+        dashrightharpoondown: "&#x296D;",
+        blackcircledownarrow: "&#x29ED;",
+        NestedGreaterGreater: "&#x2AA2;",
+        twoheadleftarrowtail: "&#x2B3B;",
+        rightarrowbackapprox: "&#x2B48;",
+        leftrightsquigarrow: "&#x21AD;",
+        whitearrowupfrombar: "&#x21EA;",
+        blockthreeqtrshaded: "&#x2593;",
+        blackinwhitediamond: "&#x25C8;",
+        circlelefthalfblack: "&#x25D0;",
+        blacklefthalfcircle: "&#x25D6;",
+        blackcircledtwodots: "&#x2689;",
+        whitesquaretickleft: "&#x27E4;",
+        longrightsquigarrow: "&#x27FF;",
+        nvtwoheadrightarrow: "&#x2900;",
+        nVtwoheadrightarrow: "&#x2901;",
+        diamondleftarrowbar: "&#x291F;",
+        leftdowncurvedarrow: "&#x2936;",
+        downharpoonrightbar: "&#x2955;",
+        rightharpoondownbar: "&#x2957;",
+        bardownharpoonright: "&#x295D;",
+        barrightharpoondown: "&#x295F;",
+        upharpoonsleftright: "&#x2963;",
+        rightharpoonsupdown: "&#x2964;",
+        leftrightharpoonsup: "&#x2966;",
+        rightleftharpoonsup: "&#x2968;",
+        dashleftharpoondown: "&#x296B;",
+        twoheadleftdbkarrow: "&#x2B37;",
+        leftarrowbackapprox: "&#x2B42;",
+        rightharpoonaccent: "&#x20D1;",
+        overleftrightarrow: "&#x20E1;",
+        acwopencirclearrow: "&#x21BA;",
+        upharpoonrightdown: "&#x21C2;",
+        circleonrightarrow: "&#x21F4;",
+        rightarrowtriangle: "&#x21FE;",
+        PrecedesSlantEqual: "&#x227C;",
+        SucceedsSlantEqual: "&#x227D;",
+        measuredrightangle: "&#x22BE;",
+        blackinwhitesquare: "&#x25A3;",
+        parallelogramblack: "&#x25B0;",
+        bigblacktriangleup: "&#x25B2;",
+        blacktriangleright: "&#x25B6;",
+        smalltriangleright: "&#x25B9;",
+        circletophalfblack: "&#x25D3;",
+        inversewhitecircle: "&#x25D9;",
+        trianglerightblack: "&#x25EE;",
+        longleftrightarrow: "&#x27F7;",
+        Longleftrightarrow: "&#x27FA;",
+        curvearrowleftplus: "&#x293D;",
+        ccwundercurvearrow: "&#x293F;",
+        leftrightharpoonup: "&#x294E;",
+        rightupdownharpoon: "&#x294F;",
+        RightDownVectorBar: "&#x2955;",
+        barleftharpoondown: "&#x2956;",
+        DownRightVectorBar: "&#x2957;",
+        downharpoonleftbar: "&#x2959;",
+        RightDownTeeVector: "&#x295D;",
+        leftharpoondownbar: "&#x295E;",
+        DownRightTeeVector: "&#x295F;",
+        bardownharpoonleft: "&#x2961;",
+        leftharpoonsupdown: "&#x2962;",
+        rightrightharpoons: "&#x2964;",
+        rightharpoonupdash: "&#x296C;",
+        circledwhitebullet: "&#x29BE;",
+        errbarblackdiamond: "&#x29F1;",
+        longleftsquigarrow: "&#x2B33;",
+        nvtwoheadleftarrow: "&#x2B34;",
+        nVtwoheadleftarrow: "&#x2B35;",
+        bsimilarrightarrow: "&#x2B47;",
+        rightarrowbsimilar: "&#x2B4C;",
+        rightpentagonblack: "&#x2B53;",
+        leftharpoonaccent: "&#x20D0;",
+        twoheadrightarrow: "&#x21A0;",
+        cwopencirclearrow: "&#x21BB;",
+        upharpoonleftdown: "&#x21C3;",
+        leftrightharpoons: "&#x21CB;",
+        rightleftharpoons: "&#x21CC;",
+        leftarrowtriangle: "&#x21FD;",
+        kernelcontraction: "&#x223B;",
+        vardoublebarwedge: "&#x2306;",
+        varhexagonlrbonds: "&#x232C;",
+        varcarriagereturn: "&#x23CE;",
+        blackpointerright: "&#x25BA;",
+        whitepointerright: "&#x25BB;",
+        blacktriangledown: "&#x25BE;",
+        smalltriangledown: "&#x25BF;",
+        blacktriangleleft: "&#x25C0;",
+        smalltriangleleft: "&#x25C3;",
+        circleurquadblack: "&#x25D4;",
+        triangleleftblack: "&#x25ED;",
+        acwgapcirclearrow: "&#x27F2;",
+        rightarrowonoplus: "&#x27F4;",
+        rightarrowdiamond: "&#x291E;",
+        uprightcurvearrow: "&#x2934;",
+        cwundercurvearrow: "&#x293E;",
+        leftupdownharpoon: "&#x2951;",
+        rightharpoonupbar: "&#x2953;",
+        barupharpoonright: "&#x2954;",
+        DownLeftVectorBar: "&#x2956;",
+        LeftDownVectorBar: "&#x2959;",
+        barrightharpoonup: "&#x295B;",
+        upharpoonrightbar: "&#x295C;",
+        DownLeftTeeVector: "&#x295E;",
+        LeftDownTeeVector: "&#x2961;",
+        leftharpoonupdash: "&#x296A;",
+        similarrightarrow: "&#x2972;",
+        rightarrowsimilar: "&#x2974;",
+        measuredangleleft: "&#x299B;",
+        errbarblacksquare: "&#x29EF;",
+        errbarblackcircle: "&#x29F3;",
+        diamondrightblack: "&#x2B17;",
+        circleonleftarrow: "&#x2B30;",
+        bsimilarleftarrow: "&#x2B41;",
+        leftarrowbsimilar: "&#x2B4B;",
+        twoheadleftarrow: "&#x219E;",
+        twoheaddownarrow: "&#x21A1;",
+        circlearrowright: "&#x21BB;",
+        rightharpoondown: "&#x21C1;",
+        downharpoonright: "&#x21C2;",
+        uparrowdownarrow: "&#x21C5;",
+        rightrightarrows: "&#x21C9;",
+        downarrowuparrow: "&#x21F5;",
+        rightthreearrows: "&#x21F6;",
+        nvleftrightarrow: "&#x21F9;",
+        nVleftrightarrow: "&#x21FC;",
+        varointclockwise: "&#x2232;",
+        ointctrclockwise: "&#x2233;",
+        vartriangleright: "&#x22B3;",
+        multimapdotbothA: "&#x22B6;",
+        multimapdotbothB: "&#x22B7;",
+        NotRightTriangle: "&#x22EB;",
+        ntrianglerighteq: "&#x22ED;",
+        APLrightarrowbox: "&#x2348;",
+        blackpointerleft: "&#x25C4;",
+        whitepointerleft: "&#x25C5;",
+        squarerightblack: "&#x25E8;",
+        cwgapcirclearrow: "&#x27F3;",
+        nvLeftrightarrow: "&#x2904;",
+        nvrightarrowtail: "&#x2914;",
+        nVrightarrowtail: "&#x2915;",
+        diamondleftarrow: "&#x291D;",
+        rightcurvedarrow: "&#x2933;",
+        acwunderarcarrow: "&#x293B;",
+        leftrightharpoon: "&#x294A;",
+        rightleftharpoon: "&#x294B;",
+        barleftharpoonup: "&#x2952;",
+        RightUpVectorBar: "&#x2954;",
+        barupharpoonleft: "&#x2958;",
+        leftharpoonupbar: "&#x295A;",
+        RightUpTeeVector: "&#x295C;",
+        upharpoonleftbar: "&#x2960;",
+        leftleftharpoons: "&#x2962;",
+        downdownharpoons: "&#x2965;",
+        uprevequilibrium: "&#x296F;",
+        leftarrowsimilar: "&#x2973;",
+        rightarrowapprox: "&#x2975;",
+        sphericalangleup: "&#x29A1;",
+        RightTriangleBar: "&#x29D0;",
+        diamondleftblack: "&#x2B16;",
+        leftarrowonoplus: "&#x2B32;",
+        rightarrowsupset: "&#x2B44;",
+        similarleftarrow: "&#x2B49;",
+        enleadertwodots: "&#x2025;",
+        unicodeellipsis: "&#x2026;",
+        enclosetriangle: "&#x20E4;",
+        widebridgeabove: "&#x20E9;",
+        underrightarrow: "&#x20EF;",
+        nleftrightarrow: "&#x21AE;",
+        downzigzagarrow: "&#x21AF;",
+        curvearrowright: "&#x21B7;",
+        circlearrowleft: "&#x21BA;",
+        leftharpoondown: "&#x21BD;",
+        upharpoonleftup: "&#x21BF;",
+        downharpoonleft: "&#x21C3;",
+        rightleftarrows: "&#x21C4;",
+        leftrightarrows: "&#x21C6;",
+        nLeftrightarrow: "&#x21CE;",
+        rightsquigarrow: "&#x21DD;",
+        rightwhitearrow: "&#x21E8;",
+        NotGreaterTilde: "&#x2275;",
+        vartriangleleft: "&#x22B2;",
+        trianglerighteq: "&#x22B5;",
+        rightthreetimes: "&#x22CC;",
+        NotLeftTriangle: "&#x22EA;",
+        ntrianglelefteq: "&#x22EC;",
+        APLnotbackslash: "&#x2340;",
+        APLleftarrowbox: "&#x2347;",
+        APLdownarrowbox: "&#x2357;",
+        blockhalfshaded: "&#x2592;",
+        squarecrossfill: "&#x25A9;",
+        hrectangleblack: "&#x25AC;",
+        vrectangleblack: "&#x25AE;",
+        blacktriangleup: "&#x25B4;",
+        smalltriangleup: "&#x25B5;",
+        bigtriangledown: "&#x25BD;",
+        lrblacktriangle: "&#x25E2;",
+        llblacktriangle: "&#x25E3;",
+        ulblacktriangle: "&#x25E4;",
+        urblacktriangle: "&#x25E5;",
+        squareleftblack: "&#x25E7;",
+        circledrightdot: "&#x2686;",
+        downarrowbarred: "&#x2908;",
+        cwrightarcarrow: "&#x2938;",
+        acwleftarcarrow: "&#x2939;",
+        acwoverarcarrow: "&#x293A;",
+        LeftUpVectorBar: "&#x2958;",
+        LeftUpTeeVector: "&#x2960;",
+        rightbarharpoon: "&#x296C;",
+        barrightharpoon: "&#x296D;",
+        equalrightarrow: "&#x2971;",
+        leftarrowsubset: "&#x297A;",
+        measanglerutone: "&#x29A8;",
+        measanglelutonw: "&#x29A9;",
+        measanglerdtose: "&#x29AA;",
+        measangleldtosw: "&#x29AB;",
+        measangleurtone: "&#x29AC;",
+        measangleultonw: "&#x29AD;",
+        measangledrtose: "&#x29AE;",
+        measangledltosw: "&#x29AF;",
+        circledparallel: "&#x29B7;",
+        uparrowoncircle: "&#x29BD;",
+        LeftTriangleBar: "&#x29CF;",
+        circledownarrow: "&#x29EC;",
+        bigtriangleleft: "&#x2A1E;",
+        diamondtopblack: "&#x2B18;",
+        diamondbotblack: "&#x2B19;",
+        varhexagonblack: "&#x2B22;",
+        leftthreearrows: "&#x2B31;",
+        twoheadmapsfrom: "&#x2B36;",
+        nvleftarrowtail: "&#x2B39;",
+        nVleftarrowtail: "&#x2B3A;",
+        leftcurvedarrow: "&#x2B3F;",
+        leftarrowapprox: "&#x2B4A;",
+        enclosediamond: "&#x20DF;",
+        underleftarrow: "&#x20EE;",
+        leftrightarrow: "&#x2194;",
+        rightwavearrow: "&#x219D;",
+        twoheaduparrow: "&#x219F;",
+        rightarrowtail: "&#x21A3;",
+        updownarrowbar: "&#x21A8;",
+        hookrightarrow: "&#x21AA;",
+        looparrowright: "&#x21AC;",
+        carriagereturn: "&#x21B5;",
+        curvearrowleft: "&#x21B6;",
+        upharpoonright: "&#x21BE;",
+        rightharpoonup: "&#x21C0;",
+        rightleftarrow: "&#x21C4;",
+        leftleftarrows: "&#x21C7;",
+        downdownarrows: "&#x21CA;",
+        revequilibrium: "&#x21CB;",
+        Leftrightarrow: "&#x21D4;",
+        leftsquigarrow: "&#x21DC;",
+        dashrightarrow: "&#x21E2;",
+        rightdasharrow: "&#x21E2;",
+        leftwhitearrow: "&#x21E6;",
+        downwhitearrow: "&#x21E9;",
+        sphericalangle: "&#x2222;",
+        NotGreaterLess: "&#x2279;",
+        trianglelefteq: "&#x22B4;",
+        leftthreetimes: "&#x22CB;",
+        ntriangleright: "&#x22EB;",
+        APLboxquestion: "&#x2370;",
+        lparenextender: "&#x239C;",
+        rparenextender: "&#x239F;",
+        lbrackextender: "&#x23A2;",
+        rbrackextender: "&#x23A5;",
+        vbraceextender: "&#x23AA;",
+        harrowextender: "&#x23AF;",
+        blockrighthalf: "&#x2590;",
+        blockqtrshaded: "&#x2591;",
+        squarenwsefill: "&#x25A7;",
+        squareneswfill: "&#x25A8;",
+        mdlgblkdiamond: "&#x25C6;",
+        mdlgwhtdiamond: "&#x25C7;",
+        mdlgwhtlozenge: "&#x25CA;",
+        circlevertfill: "&#x25CD;",
+        vardiamondsuit: "&#x2666;",
+        circledtwodots: "&#x2687;",
+        rightouterjoin: "&#x27D6;",
+        concavediamond: "&#x27E1;",
+        longrightarrow: "&#x27F6;",
+        Longrightarrow: "&#x27F9;",
+        longmappedfrom: "&#x27FB;",
+        Longmappedfrom: "&#x27FD;",
+        fdiagovnearrow: "&#x292F;",
+        rdiagovsearrow: "&#x2930;",
+        acwcirclearrow: "&#x2940;",
+        rightarrowplus: "&#x2945;",
+        RightVectorBar: "&#x2953;",
+        RightTeeVector: "&#x295B;",
+        leftbarharpoon: "&#x296A;",
+        barleftharpoon: "&#x296B;",
+        updownharpoons: "&#x296E;",
+        downupharpoons: "&#x296F;",
+        rightanglemdot: "&#x299D;",
+        triangleserifs: "&#x29CD;",
+        blackhourglass: "&#x29D7;",
+        mdlgblklozenge: "&#x29EB;",
+        bigslopedwedge: "&#x2A58;",
+        doublebarwedge: "&#x2A5E;",
+        wedgedoublebar: "&#x2A60;",
+        NestedLessLess: "&#x2AA1;",
+        squaretopblack: "&#x2B12;",
+        squarebotblack: "&#x2B13;",
+        equalleftarrow: "&#x2B40;",
+        ocommatopright: "&#x315;",
+        overleftarrow: "&#x20D6;",
+        enclosecircle: "&#x20DD;",
+        enclosesquare: "&#x20DE;",
+        threeunderdot: "&#x20E8;",
+        sansLmirrored: "&#x2143;",
+        DifferentialD: "&#x2146;",
+        leftwavearrow: "&#x219C;",
+        leftarrowtail: "&#x21A2;",
+        hookleftarrow: "&#x21A9;",
+        looparrowleft: "&#x21AB;",
+        leftharpoonup: "&#x21BC;",
+        upharpoonleft: "&#x21BF;",
+        dashleftarrow: "&#x21E0;",
+        leftdasharrow: "&#x21E0;",
+        downdasharrow: "&#x21E3;",
+        RightArrowBar: "&#x21E5;",
+        rightarrowbar: "&#x21E5;",
+        smallsetminus: "&#x2216;",
+        vysmwhtcircle: "&#x2218;",
+        vysmblkcircle: "&#x2219;",
+        measuredangle: "&#x2221;",
+        wasytherefore: "&#x2234;",
+        dotsminusdots: "&#x223A;",
+        fallingdotseq: "&#x2252;",
+        PrecedesTilde: "&#x227E;",
+        SucceedsTilde: "&#x227F;",
+        varlrtriangle: "&#x22BF;",
+        divideontimes: "&#x22C7;",
+        equalparallel: "&#x22D5;",
+        ntriangleleft: "&#x22EA;",
+        APLuparrowbox: "&#x2350;",
+        APLboxupcaret: "&#x2353;",
+        bdtriplevdash: "&#x2506;",
+        blocklefthalf: "&#x258C;",
+        mdlgblksquare: "&#x25A0;",
+        mdlgwhtsquare: "&#x25A1;",
+        parallelogram: "&#x25B1;",
+        bigtriangleup: "&#x25B3;",
+        blacktriangle: "&#x25B4;",
+        triangleright: "&#x25B7;",
+        mdlgwhtcircle: "&#x25CB;",
+        mdlgblkcircle: "&#x25CF;",
+        inversebullet: "&#x25D8;",
+        topsemicircle: "&#x25E0;",
+        botsemicircle: "&#x25E1;",
+        squareulblack: "&#x25E9;",
+        squarelrblack: "&#x25EA;",
+        mdsmwhtsquare: "&#x25FD;",
+        mdsmblksquare: "&#x25FE;",
+        sixteenthnote: "&#x266C;",
+        Hermaphrodite: "&#x26A5;",
+        mdsmwhtcircle: "&#x26AC;",
+        draftingarrow: "&#x279B;",
+        leftouterjoin: "&#x27D5;",
+        fullouterjoin: "&#x27D7;",
+        longleftarrow: "&#x27F5;",
+        Longleftarrow: "&#x27F8;",
+        twoheadmapsto: "&#x2905;",
+        uparrowbarred: "&#x2909;",
+        rightdotarrow: "&#x2911;",
+        cwcirclearrow: "&#x2941;",
+        leftarrowplus: "&#x2946;",
+        LeftVectorBar: "&#x2952;",
+        LeftTeeVector: "&#x295A;",
+        upequilibrium: "&#x296E;",
+        leftarrowless: "&#x2977;",
+        rightfishtail: "&#x297D;",
+        mdsmblkcircle: "&#x2981;",
+        llparenthesis: "&#x2987;",
+        rrparenthesis: "&#x2988;",
+        rightanglesqr: "&#x299C;",
+        wideangledown: "&#x29A6;",
+        emptysetocirc: "&#x29B2;",
+        emptysetoarrl: "&#x29B4;",
+        circledbslash: "&#x29B8;",
+        circledbullet: "&#x29BF;",
+        errbardiamond: "&#x29F0;",
+        triangleminus: "&#x2A3A;",
+        triangletimes: "&#x2A3B;",
+        shortlefttack: "&#x2ADE;",
+        shortdowntack: "&#x2ADF;",
+        threedotcolon: "&#x2AF6;",
+        biginterleave: "&#x2AFC;",
+        bigtalloblong: "&#x2AFF;",
+        squareurblack: "&#x2B14;",
+        squarellblack: "&#x2B15;",
+        vysmblksquare: "&#x2B1D;",
+        vysmwhtsquare: "&#x2B1E;",
+        pentagonblack: "&#x2B1F;",
+        rightarrowgtr: "&#x2B43;",
+        rightpentagon: "&#x2B54;",
+        upbackepsilon: "&#x3F6;",
+        hyphenbullet: "&#x2043;",
+        PropertyLine: "&#x214A;",
+        updownarrows: "&#x21C5;",
+        LeftArrowBar: "&#x21E4;",
+        barleftarrow: "&#x21E4;",
+        upwhitearrow: "&#x21E7;",
+        downuparrows: "&#x21F5;",
+        nvrightarrow: "&#x21F8;",
+        nVrightarrow: "&#x21FB;",
+        intclockwise: "&#x2231;",
+        cntclockoint: "&#x2233;",
+        risingdotseq: "&#x2253;",
+        NotLessTilde: "&#x2274;",
+        varsubsetneq: "&#x228A;",
+        cupleftarrow: "&#x228C;",
+        circledequal: "&#x229C;",
+        hermitmatrix: "&#x22B9;",
+        smwhtdiamond: "&#x22C4;",
+        npreccurlyeq: "&#x22E0;",
+        nsucccurlyeq: "&#x22E1;",
+        unicodecdots: "&#x22EF;",
+        notbackslash: "&#x2340;",
+        underbracket: "&#x23B5;",
+        blocklowhalf: "&#x2584;",
+        squarehvfill: "&#x25A6;",
+        triangledown: "&#x25BF;",
+        triangleleft: "&#x25C1;",
+        Diamondblack: "&#x25C6;",
+        dottedcircle: "&#x25CC;",
+        trianglecdot: "&#x25EC;",
+        squareulquad: "&#x25F0;",
+        squarellquad: "&#x25F1;",
+        squarelrquad: "&#x25F2;",
+        squareurquad: "&#x25F3;",
+        circleulquad: "&#x25F4;",
+        circlellquad: "&#x25F5;",
+        circlelrquad: "&#x25F6;",
+        circleurquad: "&#x25F7;",
+        bigwhitestar: "&#x2606;",
+        invsmileface: "&#x263B;",
+        varspadesuit: "&#x2664;",
+        varheartsuit: "&#x2665;",
+        dingasterisk: "&#x273D;",
+        longdivision: "&#x27CC;",
+        lozengeminus: "&#x27E0;",
+        longmapsfrom: "&#x27FB;",
+        Longmapsfrom: "&#x27FD;",
+        nvRightarrow: "&#x2903;",
+        rightbkarrow: "&#x290D;",
+        leftdbkarrow: "&#x290E;",
+        DownArrowBar: "&#x2913;",
+        downarrowbar: "&#x2913;",
+        rightdbltail: "&#x291C;",
+        rdiagovfdiag: "&#x292B;",
+        fdiagovrdiag: "&#x292C;",
+        upupharpoons: "&#x2963;",
+        leftfishtail: "&#x297C;",
+        downfishtail: "&#x297F;",
+        lbrackultick: "&#x298D;",
+        rbracklrtick: "&#x298E;",
+        lbracklltick: "&#x298F;",
+        rbrackurtick: "&#x2990;",
+        revangleubar: "&#x29A5;",
+        emptysetobar: "&#x29B1;",
+        emptysetoarr: "&#x29B3;",
+        odotslashdot: "&#x29BC;",
+        ogreaterthan: "&#x29C1;",
+        triangleodot: "&#x29CA;",
+        triangleubar: "&#x29CB;",
+        multimapboth: "&#x29DF;",
+        lrtriangleeq: "&#x29E1;",
+        blacklozenge: "&#x29EB;",
+        errbarsquare: "&#x29EE;",
+        errbarcircle: "&#x29F2;",
+        triangleplus: "&#x2A39;",
+        closedvarcup: "&#x2A4C;",
+        closedvarcap: "&#x2A4D;",
+        wedgeonwedge: "&#x2A55;",
+        bigslopedvee: "&#x2A57;",
+        wedgemidvert: "&#x2A5A;",
+        doublebarvee: "&#x2A62;",
+        veedoublebar: "&#x2A63;",
+        eqqslantless: "&#x2A9B;",
+        subsetapprox: "&#x2AC9;",
+        supsetapprox: "&#x2ACA;",
+        dottedsquare: "&#x2B1A;",
+        hexagonblack: "&#x2B23;",
+        mdblkdiamond: "&#x2B25;",
+        mdwhtdiamond: "&#x2B26;",
+        mdblklozenge: "&#x2B27;",
+        mdwhtlozenge: "&#x2B28;",
+        smblkdiamond: "&#x2B29;",
+        smblklozenge: "&#x2B2A;",
+        smwhtlozenge: "&#x2B2B;",
+        leftdotarrow: "&#x2B38;",
+        medwhitestar: "&#x2B50;",
+        medblackstar: "&#x2B51;",
+        oturnedcomma: "&#x312;",
+        upvarepsilon: "&#x3F5;",
+        mathsterling: "&#xA3;",
+        smblkcircle: "&#x2022;",
+        backtrprime: "&#x2037;",
+        caretinsert: "&#x2038;",
+        vertoverlay: "&#x20D2;",
+        asteraccent: "&#x20F0;",
+        Planckconst: "&#x210E;",
+        sansLturned: "&#x2142;",
+        ExponetialE: "&#x2147;",
+        updownarrow: "&#x2195;",
+        nrightarrow: "&#x219B;",
+        restriction: "&#x21BE;",
+        equilibrium: "&#x21CC;",
+        nRightarrow: "&#x21CF;",
+        Updownarrow: "&#x21D5;",
+        Rrightarrow: "&#x21DB;",
+        nHdownarrow: "&#x21DF;",
+        updasharrow: "&#x21E1;",
+        nvleftarrow: "&#x21F7;",
+        nVleftarrow: "&#x21FA;",
+        approxident: "&#x224B;",
+        corresponds: "&#x2259;",
+        GreaterLess: "&#x2277;",
+        preccurlyeq: "&#x227C;",
+        succcurlyeq: "&#x227D;",
+        circledcirc: "&#x229A;",
+        circleddash: "&#x229D;",
+        curlyeqprec: "&#x22DE;",
+        curlyeqsucc: "&#x22DF;",
+        nsqsubseteq: "&#x22E2;",
+        nsqsupseteq: "&#x22E3;",
+        sqsubsetneq: "&#x22E4;",
+        sqsupsetneq: "&#x22E5;",
+        varisinobar: "&#x22F6;",
+        varbarwedge: "&#x2305;",
+        wasylozenge: "&#x2311;",
+        APLnotslash: "&#x233F;",
+        invdiameter: "&#x2349;",
+        intextender: "&#x23AE;",
+        overbracket: "&#x23B4;",
+        blockuphalf: "&#x2580;",
+        squarehfill: "&#x25A4;",
+        squarevfill: "&#x25A5;",
+        smblksquare: "&#x25AA;",
+        smwhtsquare: "&#x25AB;",
+        vartriangle: "&#x25B5;",
+        RIGHTcircle: "&#x25D1;",
+        RIGHTCIRCLE: "&#x25D7;",
+        smwhtcircle: "&#x25E6;",
+        lgwhtcircle: "&#x25EF;",
+        mdwhtsquare: "&#x25FB;",
+        blacksquare: "&#x25FC;",
+        mdblksquare: "&#x25FC;",
+        blacksmiley: "&#x263B;",
+        sagittarius: "&#x2650;",
+        capricornus: "&#x2651;",
+        diamondsuit: "&#x2662;",
+        varclubsuit: "&#x2667;",
+        quarternote: "&#x2669;",
+        mdwhtcircle: "&#x26AA;",
+        mdblkcircle: "&#x26AB;",
+        ballotcheck: "&#x2713;",
+        circledstar: "&#x272A;",
+        arrowbullet: "&#x27A2;",
+        threedangle: "&#x27C0;",
+        diamondcdot: "&#x27D0;",
+        multimapinv: "&#x27DC;",
+        nvLeftarrow: "&#x2902;",
+        leftbkarrow: "&#x290C;",
+        leftdbltail: "&#x291B;",
+        seovnearrow: "&#x292D;",
+        neovsearrow: "&#x292E;",
+        neovnwarrow: "&#x2931;",
+        nwovnearrow: "&#x2932;",
+        rightarrowx: "&#x2947;",
+        wideangleup: "&#x29A7;",
+        revemptyset: "&#x29B0;",
+        circledvert: "&#x29B6;",
+        circledless: "&#x29C0;",
+        gleichstark: "&#x29E6;",
+        ruledelayed: "&#x29F4;",
+        lcurvyangle: "&#x29FC;",
+        rcurvyangle: "&#x29FD;",
+        otimeslhrim: "&#x2A34;",
+        otimesrhrim: "&#x2A35;",
+        midbarwedge: "&#x2A5C;",
+        simminussim: "&#x2A6C;",
+        eqslantless: "&#x2A95;",
+        eqqslantgtr: "&#x2A9C;",
+        precnapprox: "&#x2AB9;",
+        succnapprox: "&#x2ABA;",
+        shortuptack: "&#x2AE0;",
+        lgblksquare: "&#x2B1B;",
+        lgwhtsquare: "&#x2B1C;",
+        lgblkcircle: "&#x2B24;",
+        blkhorzoval: "&#x2B2C;",
+        whthorzoval: "&#x2B2D;",
+        blkvertoval: "&#x2B2E;",
+        whtvertoval: "&#x2B2F;",
+        RRightarrow: "&#x2B46;",
+        smwhitestar: "&#x2B52;",
+        backepsilon: "&#x3F6;",
+        varepsilon: "&#x03B5;",
+        wideutilde: "&#x330;",
+        upvartheta: "&#x3D1;",
+        upoldKoppa: "&#x3D8;",
+        upoldkoppa: "&#x3D9;",
+        upvarkappa: "&#x3F0;",
+        upvarTheta: "&#x3F4;",
+        upvarsigma: "&#x3C2;",
+        octothorpe: "&#x23;",
+        mathdollar: "&#x24;",
+        twolowline: "&#x2017;",
+        backdprime: "&#x2036;",
+        Eulerconst: "&#x2107;",
+        turnediota: "&#x2129;",
+        rightarrow: "&#x2192;",
+        nleftarrow: "&#x219A;",
+        mappedfrom: "&#x21A4;",
+        upuparrows: "&#x21C8;",
+        nLeftarrow: "&#x21CD;",
+        Rightarrow: "&#x21D2;",
+        Lleftarrow: "&#x21DA;",
+        complement: "&#x2201;",
+        varnothing: "&#x2205;",
+        fourthroot: "&#x221C;",
+        rightangle: "&#x221F;",
+        Proportion: "&#x2237;",
+        sqsubseteq: "&#x2291;",
+        sqsupseteq: "&#x2292;",
+        circledast: "&#x229B;",
+        curlywedge: "&#x22CF;",
+        conictaper: "&#x2332;",
+        APLcomment: "&#x235D;",
+        lparenuend: "&#x239B;",
+        lparenlend: "&#x239D;",
+        rparenuend: "&#x239E;",
+        rparenlend: "&#x23A0;",
+        lbrackuend: "&#x23A1;",
+        lbracklend: "&#x23A3;",
+        rbrackuend: "&#x23A4;",
+        rbracklend: "&#x23A6;",
+        lbraceuend: "&#x23A7;",
+        lbracelend: "&#x23A9;",
+        rbraceuend: "&#x23AB;",
+        rbracelend: "&#x23AD;",
+        lmoustache: "&#x23B0;",
+        rmoustache: "&#x23B1;",
+        sqrtbottom: "&#x23B7;",
+        underparen: "&#x23DD;",
+        underbrace: "&#x23DF;",
+        hrectangle: "&#x25AD;",
+        vrectangle: "&#x25AF;",
+        LEFTcircle: "&#x25D0;",
+        LEFTCIRCLE: "&#x25D6;",
+        ultriangle: "&#x25F8;",
+        urtriangle: "&#x25F9;",
+        lltriangle: "&#x25FA;",
+        lrtriangle: "&#x25FF;",
+        CheckedBox: "&#x2611;",
+        pointright: "&#x261E;",
+        vardiamond: "&#x2666;",
+        eighthnote: "&#x266A;",
+        subsetcirc: "&#x27C3;",
+        supsetcirc: "&#x27C4;",
+        Diamonddot: "&#x27D0;",
+        DDownarrow: "&#x27F1;",
+        longmapsto: "&#x27FC;",
+        Longmapsto: "&#x27FE;",
+        Mappedfrom: "&#x2906;",
+        Ddownarrow: "&#x290B;",
+        UpArrowBar: "&#x2912;",
+        baruparrow: "&#x2912;",
+        rightimply: "&#x2970;",
+        upfishtail: "&#x297E;",
+        lbrackubar: "&#x298B;",
+        rbrackubar: "&#x298C;",
+        lparenless: "&#x2993;",
+        Rparenless: "&#x2996;",
+        lblkbrbrak: "&#x2997;",
+        rblkbrbrak: "&#x2998;",
+        circlehbar: "&#x29B5;",
+        circledgtr: "&#x29C1;",
+        doubleplus: "&#x29FA;",
+        tripleplus: "&#x29FB;",
+        plussubtwo: "&#x2A27;",
+        commaminus: "&#x2A29;",
+        minusfdots: "&#x2A2B;",
+        minusrdots: "&#x2A2C;",
+        opluslhrim: "&#x2A2D;",
+        oplusrhrim: "&#x2A2E;",
+        smashtimes: "&#x2A33;",
+        cupovercap: "&#x2A46;",
+        capovercup: "&#x2A47;",
+        veeonwedge: "&#x2A59;",
+        veemidvert: "&#x2A5B;",
+        equivVvert: "&#x2A69;",
+        lessapprox: "&#x2A85;",
+        lesseqqgtr: "&#x2A8B;",
+        gtreqqless: "&#x2A8C;",
+        eqslantgtr: "&#x2A96;",
+        rightslice: "&#x2AA7;",
+        precapprox: "&#x2AB7;",
+        succapprox: "&#x2AB8;",
+        subsetplus: "&#x2ABF;",
+        supsetplus: "&#x2AC0;",
+        subsetneqq: "&#x2ACB;",
+        supsetneqq: "&#x2ACC;",
+        interleave: "&#x2AF4;",
+        talloblong: "&#x2AFE;",
+        varhexagon: "&#x2B21;",
+        leftarrowx: "&#x2B3E;",
+        LLeftarrow: "&#x2B45;",
+        postalmark: "&#x3012;",
+        underline: "&#x332;",
+        upEpsilon: "&#x395;",
+        upOmicron: "&#x39F;",
+        upUpsilon: "&#x3A5;",
+        upepsilon: "&#x3B5;",
+        upomicron: "&#x3BF;",
+        upupsilon: "&#x3C5;",
+        upvarbeta: "&#x3D0;",
+        upDigamma: "&#x3DC;",
+        updigamma: "&#x3DD;",
+        ampersand: "&#x26;",
+        mathslash: "&#x2F;",
+        mathcolon: "&#x3A;",
+        semicolon: "&#x3B;",
+        backslash: "&#x5C;",
+        backprime: "&#x2035;",
+        tieconcat: "&#x2040;",
+        fracslash: "&#x2044;",
+        Angstroem: "&#x212B;",
+        leftarrow: "&#x2190;",
+        downarrow: "&#x2193;",
+        lightning: "&#x21AF;",
+        rightturn: "&#x21BB;",
+        Leftarrow: "&#x21D0;",
+        Downarrow: "&#x21D3;",
+        nHuparrow: "&#x21DE;",
+        dasharrow: "&#x21E2;",
+        partialup: "&#x2202;",
+        increment: "&#x2206;",
+        nparallel: "&#x2226;",
+        clockoint: "&#x2232;",
+        therefore: "&#x2234;",
+        mathratio: "&#x2236;",
+        dashcolon: "&#x2239;",
+        triangleq: "&#x225C;",
+        nleqslant: "&#x2270;",
+        ngeqslant: "&#x2271;",
+        nsubseteq: "&#x2288;",
+        nsupseteq: "&#x2289;",
+        subsetneq: "&#x228A;",
+        supsetneq: "&#x228B;",
+        backsimeq: "&#x22CD;",
+        pitchfork: "&#x22D4;",
+        lesseqgtr: "&#x22DA;",
+        gtreqless: "&#x22DB;",
+        varniobar: "&#x22FD;",
+        bagmember: "&#x22FF;",
+        sqlozenge: "&#x2311;",
+        turnednot: "&#x2319;",
+        intbottom: "&#x2321;",
+        lbracemid: "&#x23A8;",
+        rbracemid: "&#x23AC;",
+        sumbottom: "&#x23B3;",
+        lvboxline: "&#x23B8;",
+        rvboxline: "&#x23B9;",
+        overparen: "&#x23DC;",
+        wideparen: "&#x23DC;",
+        overbrace: "&#x23DE;",
+        trapezium: "&#x23E2;",
+        accurrent: "&#x23E6;",
+        blockfull: "&#x2588;",
+        radiation: "&#x2622;",
+        biohazard: "&#x2623;",
+        smileface: "&#x263A;",
+        rightmoon: "&#x263D;",
+        spadesuit: "&#x2660;",
+        heartsuit: "&#x2661;",
+        medbullet: "&#x26AB;",
+        checkmark: "&#x2713;",
+        DashVDash: "&#x27DA;",
+        dashVdash: "&#x27DB;",
+        vlongdash: "&#x27DD;",
+        longdashv: "&#x27DE;",
+        llbracket: "&#x27E6;",
+        rrbracket: "&#x27E7;",
+        impliedby: "&#x27F8;",
+        righttail: "&#x291A;",
+        nwsearrow: "&#x2921;",
+        neswarrow: "&#x2922;",
+        hknwarrow: "&#x2923;",
+        hknearrow: "&#x2924;",
+        typecolon: "&#x2982;",
+        langledot: "&#x2991;",
+        rangledot: "&#x2992;",
+        rparengtr: "&#x2994;",
+        Lparengtr: "&#x2995;",
+        fourvdots: "&#x2999;",
+        turnangle: "&#x29A2;",
+        angleubar: "&#x29A4;",
+        olessthan: "&#x29C0;",
+        boxbslash: "&#x29C5;",
+        boxcircle: "&#x29C7;",
+        triangles: "&#x29CC;",
+        hourglass: "&#x29D6;",
+        bigotimes: "&#x2A02;",
+        bigcupdot: "&#x2A03;",
+        conjquant: "&#x2A07;",
+        disjquant: "&#x2A08;",
+        modtwosum: "&#x2A0A;",
+        otimeshat: "&#x2A36;",
+        cupbarcap: "&#x2A48;",
+        capbarcup: "&#x2A49;",
+        wedgeodot: "&#x2A51;",
+        midbarvee: "&#x2A5D;",
+        varveebar: "&#x2A61;",
+        equivVert: "&#x2A68;",
+        hatapprox: "&#x2A6F;",
+        approxeqq: "&#x2A70;",
+        gtrapprox: "&#x2A86;",
+        leftslice: "&#x2AA6;",
+        subsetdot: "&#x2ABD;",
+        supsetdot: "&#x2ABE;",
+        subseteqq: "&#x2AC5;",
+        supseteqq: "&#x2AC6;",
+        leqqslant: "&#x2AF9;",
+        geqqslant: "&#x2AFA;",
+        horizbar: "&#x2015;",
+        Question: "&#x2047;",
+        medspace: "&#x205F;",
+        Angstrom: "&#x212B;",
+        ComplexI: "&#x2148;",
+        ComplexJ: "&#x2149;",
+        mapsfrom: "&#x21A4;",
+        MapsDown: "&#x21A7;",
+        mapsdown: "&#x21A7;",
+        linefeed: "&#x21B4;",
+        leftturn: "&#x21BA;",
+        divslash: "&#x2215;",
+        cuberoot: "&#x221B;",
+        parallel: "&#x2225;",
+        dotminus: "&#x2238;",
+        invlazys: "&#x223E;",
+        sinewave: "&#x223F;",
+        approxeq: "&#x224A;",
+        backcong: "&#x224C;",
+        dotequal: "&#x2250;",
+        doteqdot: "&#x2251;",
+        coloneqq: "&#x2254;",
+        eqqcolon: "&#x2255;",
+        notasymp: "&#x226D;",
+        nlesssim: "&#x2274;",
+        nlessgtr: "&#x2278;",
+        ngtrless: "&#x2279;",
+        subseteq: "&#x2286;",
+        supseteq: "&#x2287;",
+        sqsubset: "&#x228F;",
+        sqsupset: "&#x2290;",
+        boxminus: "&#x229F;",
+        boxtimes: "&#x22A0;",
+        multimap: "&#x22B8;",
+        intercal: "&#x22BA;",
+        barwedge: "&#x22BC;",
+        bigwedge: "&#x22C0;",
+        curlyvee: "&#x22CE;",
+        precnsim: "&#x22E8;",
+        succnsim: "&#x22E9;",
+        varisins: "&#x22F3;",
+        isinobar: "&#x22F7;",
+        diameter: "&#x2300;",
+        profline: "&#x2312;",
+        profsurf: "&#x2313;",
+        viewdata: "&#x2317;",
+        ulcorner: "&#x231C;",
+        urcorner: "&#x231D;",
+        llcorner: "&#x231E;",
+        lrcorner: "&#x231F;",
+        notslash: "&#x233F;",
+        APLinput: "&#x235E;",
+        bbrktbrk: "&#x23B6;",
+        elinters: "&#x23E7;",
+        triangle: "&#x25B3;",
+        bullseye: "&#x25CE;",
+        astrosun: "&#x2609;",
+        steaming: "&#x2615;",
+        leftmoon: "&#x263E;",
+        varEarth: "&#x2641;",
+        aquarius: "&#x2652;",
+        clubsuit: "&#x2663;",
+        varspade: "&#x2664;",
+        varheart: "&#x2665;",
+        twonotes: "&#x266B;",
+        acidfree: "&#x267E;",
+        bsolhsub: "&#x27C8;",
+        wedgedot: "&#x27D1;",
+        pullback: "&#x27D3;",
+        UUparrow: "&#x27F0;",
+        Mapsfrom: "&#x2906;",
+        Uuparrow: "&#x290A;",
+        drbkarow: "&#x2910;",
+        lefttail: "&#x2919;",
+        hksearow: "&#x2925;",
+        hkswarow: "&#x2926;",
+        strictfi: "&#x297C;",
+        strictif: "&#x297D;",
+        revangle: "&#x29A3;",
+        boxslash: "&#x29C4;",
+        boxonbox: "&#x29C9;",
+        rtriltri: "&#x29CE;",
+        lfbowtie: "&#x29D1;",
+        rfbowtie: "&#x29D2;",
+        lvzigzag: "&#x29D8;",
+        rvzigzag: "&#x29D9;",
+        Lvzigzag: "&#x29DA;",
+        Rvzigzag: "&#x29DB;",
+        tieinfty: "&#x29DD;",
+        smeparsl: "&#x29E4;",
+        eqvparsl: "&#x29E5;",
+        setminus: "&#x29F5;",
+        bigoplus: "&#x2A01;",
+        biguplus: "&#x2A04;",
+        bigsqcap: "&#x2A05;",
+        bigsqcup: "&#x2A06;",
+        bigtimes: "&#x2A09;",
+        cirfnint: "&#x2A10;",
+        rppolint: "&#x2A12;",
+        scpolint: "&#x2A13;",
+        pointint: "&#x2A15;",
+        intlarhk: "&#x2A17;",
+        zproject: "&#x2A21;",
+        ringplus: "&#x2A22;",
+        plustrif: "&#x2A28;",
+        minusdot: "&#x2A2A;",
+        vectimes: "&#x2A2F;",
+        dottimes: "&#x2A30;",
+        timesbar: "&#x2A31;",
+        intprodr: "&#x2A3D;",
+        capwedge: "&#x2A44;",
+        veeonvee: "&#x2A56;",
+        wedgebar: "&#x2A5F;",
+        dotequiv: "&#x2A67;",
+        simrdots: "&#x2A6B;",
+        Coloneqq: "&#x2A74;",
+        leqslant: "&#x2A7D;",
+        geqslant: "&#x2A7E;",
+        lesdotor: "&#x2A83;",
+        gesdotol: "&#x2A84;",
+        lnapprox: "&#x2A89;",
+        gnapprox: "&#x2A8A;",
+        precneqq: "&#x2AB5;",
+        succneqq: "&#x2AB6;",
+        forksnot: "&#x2ADD;",
+        varVdash: "&#x2AE6;",
+        pentagon: "&#x2B20;",
+        mathring: "&#x30A;",
+        underbar: "&#x331;",
+        upLambda: "&#x39B;",
+        uplambda: "&#x3BB;",
+        varsigma: "&#x3C2;",
+        upvarphi: "&#x3C6;",
+        vartheta: "&#x3D1;",
+        upStigma: "&#x3DA;",
+        upstigma: "&#x3DB;",
+        varkappa: "&#x3F0;",
+        upvarrho: "&#x3F1;",
+        question: "&#x3F;",
+        mathcent: "&#xA2;",
+        sterling: "&#xA3;",
+        circledR: "&#xAE;",
+        ddagger: "&#x2021;",
+        trprime: "&#x2034;",
+        closure: "&#x2050;",
+        annuity: "&#x20E7;",
+        uparrow: "&#x2191;",
+        nwarrow: "&#x2196;",
+        nearrow: "&#x2197;",
+        searrow: "&#x2198;",
+        swarrow: "&#x2199;",
+        Uparrow: "&#x21D1;",
+        Nwarrow: "&#x21D6;",
+        Nearrow: "&#x21D7;",
+        Searrow: "&#x21D8;",
+        Swarrow: "&#x21D9;",
+        partial: "&#x2202;",
+        nexists: "&#x2204;",
+        smallin: "&#x220A;",
+        smallni: "&#x220D;",
+        dotplus: "&#x2214;",
+        dbloint: "&#x222F;",
+        because: "&#x2235;",
+        eqcolon: "&#x2239;",
+        backsim: "&#x223D;",
+        simneqq: "&#x2246;",
+        napprox: "&#x2249;",
+        coloneq: "&#x2254;",
+        varsdef: "&#x225C;",
+        questeq: "&#x225F;",
+        between: "&#x226C;",
+        lesssim: "&#x2272;",
+        ngtrsim: "&#x2275;",
+        lessgtr: "&#x2276;",
+        gtrless: "&#x2277;",
+        precsim: "&#x227E;",
+        succsim: "&#x227F;",
+        nsubset: "&#x2284;",
+        nsupset: "&#x2285;",
+        boxplus: "&#x229E;",
+        imageof: "&#x22B7;",
+        diamond: "&#x22C4;",
+        lrtimes: "&#x22C8;",
+        lessdot: "&#x22D6;",
+        npreceq: "&#x22E0;",
+        nsucceq: "&#x22E1;",
+        isindot: "&#x22F5;",
+        hexagon: "&#x2394;",
+        obrbrak: "&#x23E0;",
+        ubrbrak: "&#x23E1;",
+        benzenr: "&#x23E3;",
+        squoval: "&#x25A2;",
+        Diamond: "&#x25C7;",
+        fisheye: "&#x25C9;",
+        lozenge: "&#x25CA;",
+        bigstar: "&#x2605;",
+        yinyang: "&#x262F;",
+        frownie: "&#x2639;",
+        sadface: "&#x2639;",
+        mercury: "&#x263F;",
+        Mercury: "&#x263F;",
+        jupiter: "&#x2643;",
+        Jupiter: "&#x2643;",
+        neptune: "&#x2646;",
+        Neptune: "&#x2646;",
+        scorpio: "&#x264F;",
+        Scorpio: "&#x264F;",
+        varclub: "&#x2667;",
+        natural: "&#x266E;",
+        recycle: "&#x267B;",
+        diceiii: "&#x2682;",
+        warning: "&#x26A0;",
+        medcirc: "&#x26AA;",
+        ballotx: "&#x2717;",
+        maltese: "&#x2720;",
+        varstar: "&#x2736;",
+        lbrbrak: "&#x2772;",
+        rbrbrak: "&#x2773;",
+        suphsol: "&#x27C9;",
+        pushout: "&#x27D4;",
+        Lbrbrak: "&#x27EC;",
+        Rbrbrak: "&#x27ED;",
+        implies: "&#x27F9;",
+        dbkarow: "&#x290F;",
+        leadsto: "&#x2933;",
+        subrarr: "&#x2979;",
+        suplarr: "&#x297B;",
+        llangle: "&#x2989;",
+        rrangle: "&#x298A;",
+        vzigzag: "&#x299A;",
+        obslash: "&#x29B8;",
+        olcross: "&#x29BB;",
+        cirscir: "&#x29C2;",
+        boxdiag: "&#x29C4;",
+        fbowtie: "&#x29D3;",
+        lftimes: "&#x29D4;",
+        rftimes: "&#x29D5;",
+        nvinfty: "&#x29DE;",
+        dualmap: "&#x29DF;",
+        shuffle: "&#x29E2;",
+        thermod: "&#x29E7;",
+        rsolbar: "&#x29F7;",
+        bigodot: "&#x2A00;",
+        varprod: "&#x2A09;",
+        npolint: "&#x2A14;",
+        project: "&#x2A21;",
+        plushat: "&#x2A23;",
+        simplus: "&#x2A24;",
+        plusdot: "&#x2A25;",
+        plussim: "&#x2A26;",
+        intprod: "&#x2A3C;",
+        twocups: "&#x2A4A;",
+        twocaps: "&#x2A4B;",
+        veeodot: "&#x2A52;",
+        congdot: "&#x2A6D;",
+        eqqplus: "&#x2A71;",
+        pluseqq: "&#x2A72;",
+        Coloneq: "&#x2A74;",
+        ddotseq: "&#x2A77;",
+        equivDD: "&#x2A78;",
+        ltquest: "&#x2A7B;",
+        gtquest: "&#x2A7C;",
+        lesdoto: "&#x2A81;",
+        gesdoto: "&#x2A82;",
+        eqqless: "&#x2A99;",
+        simless: "&#x2A9D;",
+        bumpeqq: "&#x2AAE;",
+        precneq: "&#x2AB1;",
+        succneq: "&#x2AB2;",
+        preceqq: "&#x2AB3;",
+        succeqq: "&#x2AB4;",
+        llcurly: "&#x2ABB;",
+        ggcurly: "&#x2ABC;",
+        submult: "&#x2AC1;",
+        supmult: "&#x2AC2;",
+        subedot: "&#x2AC3;",
+        supedot: "&#x2AC4;",
+        lsqhook: "&#x2ACD;",
+        rsqhook: "&#x2ACE;",
+        suphsub: "&#x2AD7;",
+        supdsub: "&#x2AD8;",
+        topfork: "&#x2ADA;",
+        revnmid: "&#x2AEE;",
+        nhVvert: "&#x2AF5;",
+        lllnest: "&#x2AF7;",
+        gggnest: "&#x2AF8;",
+        trslash: "&#x2AFB;",
+        hzigzag: "&#x3030;",
+        overbar: "&#x305;",
+        upAlpha: "&#x391;",
+        upGamma: "&#x393;",
+        upDelta: "&#x394;",
+        upTheta: "&#x398;",
+        upKappa: "&#x39A;",
+        upSigma: "&#x3A3;",
+        Upsilon: "&#x3A5;",
+        upOmega: "&#x3A9;",
+        upalpha: "&#x3B1;",
+        upgamma: "&#x3B3;",
+        updelta: "&#x3B4;",
+        uptheta: "&#x3B8;",
+        upkappa: "&#x3BA;",
+        upsigma: "&#x3C3;",
+        upsilon: "&#x3C5;",
+        upomega: "&#x3C9;",
+        varbeta: "&#x3D0;",
+        upvarpi: "&#x3D6;",
+        Digamma: "&#x3DC;",
+        digamma: "&#x3DD;",
+        upKoppa: "&#x3DE;",
+        upkoppa: "&#x3DF;",
+        upSampi: "&#x3E0;",
+        upsampi: "&#x3E1;",
+        epsilon: "&#x3F5;",
+        percent: "&#x25;",
+        greater: "&#x3E;",
+        sptilde: "&#x7E;",
+        matheth: "&#xF0;",
+        dagger: "&#x2020;",
+        bullet: "&#x2022;",
+        second: "&#x2033;",
+        dprime: "&#x2033;",
+        Exclam: "&#x203C;",
+        fourth: "&#x2057;",
+        qprime: "&#x2057;",
+        ddddot: "&#x20DC;",
+        hslash: "&#x210F;",
+        daleth: "&#x2138;",
+        invamp: "&#x214B;",
+        MapsUp: "&#x21A5;",
+        mapsup: "&#x21A5;",
+        mapsto: "&#x21A6;",
+        forall: "&#x2200;",
+        exists: "&#x2203;",
+        coprod: "&#x2210;",
+        propto: "&#x221D;",
+        oiiint: "&#x2230;",
+        nsimeq: "&#x2244;",
+        approx: "&#x2248;",
+        Bumpeq: "&#x224E;",
+        bumpeq: "&#x224F;",
+        eqcirc: "&#x2256;",
+        circeq: "&#x2257;",
+        wedgeq: "&#x2259;",
+        stareq: "&#x225B;",
+        measeq: "&#x225E;",
+        nequiv: "&#x2262;",
+        nasymp: "&#x226D;",
+        apprle: "&#x2272;",
+        gtrsim: "&#x2273;",
+        apprge: "&#x2273;",
+        subset: "&#x2282;",
+        supset: "&#x2283;",
+        cupdot: "&#x228D;",
+        ominus: "&#x2296;",
+        otimes: "&#x2297;",
+        oslash: "&#x2298;",
+        boxdot: "&#x22A1;",
+        assert: "&#x22A6;",
+        models: "&#x22A7;",
+        Vvdash: "&#x22AA;",
+        nvdash: "&#x22AC;",
+        nvDash: "&#x22AD;",
+        nVdash: "&#x22AE;",
+        nVDash: "&#x22AF;",
+        prurel: "&#x22B0;",
+        scurel: "&#x22B1;",
+        origof: "&#x22B6;",
+        veebar: "&#x22BB;",
+        barvee: "&#x22BD;",
+        bigvee: "&#x22C1;",
+        bigcap: "&#x22C2;",
+        bigcup: "&#x22C3;",
+        bowtie: "&#x22C8;",
+        ltimes: "&#x22C9;",
+        rtimes: "&#x22CA;",
+        Subset: "&#x22D0;",
+        Supset: "&#x22D1;",
+        gtrdot: "&#x22D7;",
+        eqless: "&#x22DC;",
+        nunlhd: "&#x22EC;",
+        nunrhd: "&#x22ED;",
+        iddots: "&#x22F0;",
+        isinvb: "&#x22F8;",
+        varnis: "&#x22FB;",
+        niobar: "&#x22FE;",
+        lfloor: "&#x230A;",
+        rfloor: "&#x230B;",
+        invneg: "&#x2310;",
+        invnot: "&#x2310;",
+        inttop: "&#x2320;",
+        topbot: "&#x2336;",
+        APLinv: "&#x2339;",
+        APLlog: "&#x235F;",
+        sumtop: "&#x23B2;",
+        Circle: "&#x25CB;",
+        CIRCLE: "&#x25CF;",
+        boxbar: "&#x25EB;",
+        square: "&#x25FB;",
+        Square: "&#x2610;",
+        danger: "&#x2621;",
+        smiley: "&#x263A;",
+        female: "&#x2640;",
+        saturn: "&#x2644;",
+        Saturn: "&#x2644;",
+        uranus: "&#x2645;",
+        Uranus: "&#x2645;",
+        taurus: "&#x2649;",
+        Taurus: "&#x2649;",
+        gemini: "&#x264A;",
+        Gemini: "&#x264A;",
+        cancer: "&#x264B;",
+        pisces: "&#x2653;",
+        diceii: "&#x2681;",
+        diceiv: "&#x2683;",
+        dicevi: "&#x2685;",
+        anchor: "&#x2693;",
+        swords: "&#x2694;",
+        neuter: "&#x26B2;",
+        pencil: "&#x270E;",
+        veedot: "&#x27C7;",
+        bigbot: "&#x27D8;",
+        bigtop: "&#x27D9;",
+        cirbot: "&#x27DF;",
+        lBrack: "&#x27E6;",
+        Lbrack: "&#x27E6;",
+        rBrack: "&#x27E7;",
+        Rbrack: "&#x27E7;",
+        langle: "&#x27E8;",
+        rangle: "&#x27E9;",
+        lAngle: "&#x27EA;",
+        rAngle: "&#x27EB;",
+        lgroup: "&#x27EE;",
+        rgroup: "&#x27EF;",
+        Mapsto: "&#x2907;",
+        ltlarr: "&#x2976;",
+        gtrarr: "&#x2978;",
+        lBrace: "&#x2983;",
+        rBrace: "&#x2984;",
+        Lparen: "&#x2985;",
+        lParen: "&#x2985;",
+        Rparen: "&#x2986;",
+        rParen: "&#x2986;",
+        angles: "&#x299E;",
+        angdnr: "&#x299F;",
+        gtlpar: "&#x29A0;",
+        boxast: "&#x29C6;",
+        boxbox: "&#x29C8;",
+        ltrivb: "&#x29CF;",
+        vbrtri: "&#x29D0;",
+        iinfin: "&#x29DC;",
+        laplac: "&#x29E0;",
+        eparsl: "&#x29E3;",
+        tminus: "&#x29FF;",
+        sumint: "&#x2A0B;",
+        iiiint: "&#x2A0C;",
+        intbar: "&#x2A0D;",
+        intBar: "&#x2A0E;",
+        sqrint: "&#x2A16;",
+        intcap: "&#x2A19;",
+        intcup: "&#x2A1A;",
+        lowint: "&#x2A1C;",
+        btimes: "&#x2A32;",
+        Otimes: "&#x2A37;",
+        capdot: "&#x2A40;",
+        uminus: "&#x2A41;",
+        barcup: "&#x2A42;",
+        barcap: "&#x2A43;",
+        cupvee: "&#x2A45;",
+        dotsim: "&#x2A6A;",
+        eqqsim: "&#x2A73;",
+        eqeqeq: "&#x2A76;",
+        lesdot: "&#x2A7F;",
+        gesdot: "&#x2A80;",
+        lesges: "&#x2A93;",
+        gesles: "&#x2A94;",
+        elsdot: "&#x2A97;",
+        egsdot: "&#x2A98;",
+        eqqgtr: "&#x2A9A;",
+        simgtr: "&#x2A9E;",
+        preceq: "&#x2AAF;",
+        succeq: "&#x2AB0;",
+        subsim: "&#x2AC7;",
+        supsim: "&#x2AC8;",
+        subsup: "&#x2AD3;",
+        supsub: "&#x2AD4;",
+        subsub: "&#x2AD5;",
+        supsup: "&#x2AD6;",
+        vDdash: "&#x2AE2;",
+        cirmid: "&#x2AEF;",
+        midcir: "&#x2AF0;",
+        topcir: "&#x2AF1;",
+        parsim: "&#x2AF3;",
+        sslash: "&#x2AFD;",
+        ovhook: "&#x309;",
+        candra: "&#x310;",
+        droang: "&#x31A;",
+        utilde: "&#x330;",
+        upBeta: "&#x392;",
+        upZeta: "&#x396;",
+        upIota: "&#x399;",
+        Lambda: "&#x39B;",
+        upbeta: "&#x3B2;",
+        upzeta: "&#x3B6;",
+        upiota: "&#x3B9;",
+        lambda: "&#x3BB;",
+        varphi: "&#x3C6;",
+        Stigma: "&#x3DA;",
+        stigma: "&#x3DB;",
+        varrho: "&#x3F1;",
+        exclam: "&#x21;",
+        lparen: "&#x28;",
+        rparen: "&#x29;",
+        period: "&#x2E;",
+        atsign: "&#x40;",
+        lbrack: "&#x5B;",
+        rbrack: "&#x5D;",
+        lbrace: "&#x7B;",
+        rbrace: "&#x7D;",
+        pounds: "&#xA3;",
+        spddot: "&#xA8;",
+        qquad: "&#xA0;&#xA0;&#xA0;&#xA0;",
+        ldots: "&#x2026;",
+        prime: "&#x2032;",
+        third: "&#x2034;",
+        dddot: "&#x20DB;",
+        DDDot: "&#x20DB;",
+        Euler: "&#x2107;",
+        tcohm: "&#x2126;",
+        aleph: "&#x2135;",
+        gimel: "&#x2137;",
+        upand: "&#x214B;",
+        nabla: "&#x2207;",
+        notin: "&#x2209;",
+        notni: "&#x220C;",
+        minus: "&#x2212;",
+        slash: "&#x2215;",
+        infty: "&#x221E;",
+        angle: "&#x2220;",
+        wedge: "&#x2227;",
+        iiint: "&#x222D;",
+        oiint: "&#x222F;",
+        Colon: "&#x2237;",
+        eqsim: "&#x2242;",
+        simeq: "&#x2243;",
+        nsime: "&#x2244;",
+        ncong: "&#x2247;",
+        asymp: "&#x224D;",
+        doteq: "&#x2250;",
+        Doteq: "&#x2251;",
+        arceq: "&#x2258;",
+        veeeq: "&#x225A;",
+        eqdef: "&#x225D;",
+        equiv: "&#x2261;",
+        Equiv: "&#x2263;",
+        lneqq: "&#x2268;",
+        gneqq: "&#x2269;",
+        nless: "&#x226E;",
+        nprec: "&#x2280;",
+        nsucc: "&#x2281;",
+        uplus: "&#x228E;",
+        sqcap: "&#x2293;",
+        sqcup: "&#x2294;",
+        oplus: "&#x2295;",
+        vdash: "&#x22A2;",
+        dashv: "&#x22A3;",
+        vDash: "&#x22A8;",
+        Vdash: "&#x22A9;",
+        VDash: "&#x22AB;",
+        unlhd: "&#x22B4;",
+        unrhd: "&#x22B5;",
+        eqgtr: "&#x22DD;",
+        lnsim: "&#x22E6;",
+        gnsim: "&#x22E7;",
+        vdots: "&#x22EE;",
+        cdots: "&#x22EF;",
+        adots: "&#x22F0;",
+        ddots: "&#x22F1;",
+        disin: "&#x22F2;",
+        isins: "&#x22F4;",
+        barin: "&#x22F6;",
+        isinE: "&#x22F9;",
+        house: "&#x2302;",
+        lceil: "&#x2308;",
+        rceil: "&#x2309;",
+        frown: "&#x2322;",
+        smile: "&#x2323;",
+        strns: "&#x23E4;",
+        fltns: "&#x23E5;",
+        ularc: "&#x25DC;",
+        urarc: "&#x25DD;",
+        lrarc: "&#x25DE;",
+        llarc: "&#x25DF;",
+        skull: "&#x2620;",
+        Venus: "&#x2640;",
+        earth: "&#x2641;",
+        pluto: "&#x2647;",
+        Pluto: "&#x2647;",
+        aries: "&#x2648;",
+        Aries: "&#x2648;",
+        virgo: "&#x264D;",
+        libra: "&#x264E;",
+        Libra: "&#x264E;",
+        sharp: "&#x266F;",
+        dicei: "&#x2680;",
+        dicev: "&#x2684;",
+        psurj: "&#x2900;",
+        Vvert: "&#x2980;",
+        lblot: "&#x2989;",
+        rblot: "&#x298A;",
+        operp: "&#x29B9;",
+        zhide: "&#x29F9;",
+        xbsol: "&#x29F9;",
+        tplus: "&#x29FE;",
+        awint: "&#x2A11;",
+        sqint: "&#x2A16;",
+        upint: "&#x2A1B;",
+        zpipe: "&#x2A20;",
+        amalg: "&#x2A3F;",
+        Sqcap: "&#x2A4E;",
+        Sqcup: "&#x2A4F;",
+        Wedge: "&#x2A53;",
+        ndres: "&#x2A64;",
+        nrres: "&#x2A65;",
+        eqdot: "&#x2A66;",
+        asteq: "&#x2A6E;",
+        Equal: "&#x2A75;",
+        ltcir: "&#x2A79;",
+        gtcir: "&#x2A7A;",
+        lsime: "&#x2A8D;",
+        gsime: "&#x2A8E;",
+        lsimg: "&#x2A8F;",
+        gsiml: "&#x2A90;",
+        simlE: "&#x2A9F;",
+        simgE: "&#x2AA0;",
+        lescc: "&#x2AA8;",
+        gescc: "&#x2AA9;",
+        csube: "&#x2AD1;",
+        csupe: "&#x2AD2;",
+        forkv: "&#x2AD9;",
+        forks: "&#x2ADC;",
+        perps: "&#x2AE1;",
+        dashV: "&#x2AE3;",
+        Dashv: "&#x2AE4;",
+        DashV: "&#x2AE5;",
+        vBarv: "&#x2AE9;",
+        nhpar: "&#x2AF2;",
+        hline: "&#x23AF;",
+        imath: "&#x131;",
+        jmath: "&#x237;",
+        grave: "&#x300;",
+        acute: "&#x301;",
+        breve: "&#x306;",
+        ocirc: "&#x30A;",
+        check: "&#x30C;",
+        Gamma: "&#x393;",
+        Delta: "&#x394;",
+        upEta: "&#x397;",
+        Theta: "&#x398;",
+        upRho: "&#x3A1;",
+        Sigma: "&#x3A3;",
+        upTau: "&#x3A4;",
+        upPhi: "&#x3A6;",
+        upChi: "&#x3A7;",
+        upPsi: "&#x3A8;",
+        Omega: "&#x3A9;",
+        alpha: "&#x3B1;",
+        gamma: "&#x3B3;",
+        delta: "&#x3B4;",
+        upeta: "&#x3B7;",
+        theta: "&#x3B8;",
+        kappa: "&#x3BA;",
+        uprho: "&#x3C1;",
+        sigma: "&#x3C3;",
+        uptau: "&#x3C4;",
+        upchi: "&#x3C7;",
+        uppsi: "&#x3C8;",
+        omega: "&#x3C9;",
+        upphi: "&#x3D5;",
+        varpi: "&#x3D6;",
+        Qoppa: "&#x3D8;",
+        Koppa: "&#x3D8;",
+        qoppa: "&#x3D9;",
+        koppa: "&#x3D9;",
+        Sampi: "&#x3E0;",
+        sampi: "&#x3E1;",
+        comma: "&#x2C;",
+        colon: "&#x3A;",
+        equal: "&#x3D;",
+        sphat: "&#x5E;",
+        Micro: "&#xB5;",
+        cdotp: "&#xB7;",
+        times: "&#xD7;",
+        quad: "&#x2001;",
+        Vert: "&#x2016;",
+        euro: "&#x20AC;",
+        lvec: "&#x20D0;",
+        LVec: "&#x20D6;",
+        Finv: "&#x2132;",
+        beth: "&#x2136;",
+        Game: "&#x2141;",
+        gets: "&#x2190;",
+        tsur: "&#x21A0;",
+        tinj: "&#x21A3;",
+        dlsh: "&#x21B2;",
+        Ldsh: "&#x21B2;",
+        drsh: "&#x21B3;",
+        Rdsh: "&#x21B3;",
+        pfun: "&#x21F8;",
+        ffun: "&#x21FB;",
+        nexi: "&#x2204;",
+        owns: "&#x220B;",
+        circ: "&#x2218;",
+        nmid: "&#x2224;",
+        land: "&#x2227;",
+        iint: "&#x222C;",
+        oint: "&#x222E;",
+        nsim: "&#x2241;",
+        cong: "&#x2245;",
+        sdef: "&#x2259;",
+        leqq: "&#x2266;",
+        geqq: "&#x2267;",
+        ngtr: "&#x226F;",
+        nleq: "&#x2270;",
+        ngeq: "&#x2271;",
+        prec: "&#x227A;",
+        succ: "&#x227B;",
+        buni: "&#x228E;",
+        odot: "&#x2299;",
+        dint: "&#x22C2;",
+        duni: "&#x22C3;",
+        cdot: "&#x22C5;",
+        star: "&#x22C6;",
+        hash: "&#x22D5;",
+        nisd: "&#x22FA;",
+        obar: "&#x233D;",
+        rres: "&#x25B7;",
+        dres: "&#x25C1;",
+        XBox: "&#x2612;",
+        male: "&#x2642;",
+        Mars: "&#x2642;",
+        flat: "&#x266D;",
+        perp: "&#x27C2;",
+        Lbag: "&#x27C5;",
+        lbag: "&#x27C5;",
+        Rbag: "&#x27C6;",
+        rbag: "&#x27C6;",
+        upin: "&#x27D2;",
+        lang: "&#x27EA;",
+        rang: "&#x27EB;",
+        psur: "&#x2900;",
+        pinj: "&#x2914;",
+        finj: "&#x2915;",
+        tona: "&#x2927;",
+        toea: "&#x2928;",
+        tosa: "&#x2929;",
+        towa: "&#x292A;",
+        VERT: "&#x2980;",
+        spot: "&#x2981;",
+        limg: "&#x2987;",
+        rimg: "&#x2988;",
+        obot: "&#x29BA;",
+        cirE: "&#x29C3;",
+        dsol: "&#x29F6;",
+        xsol: "&#x29F8;",
+        hide: "&#x29F9;",
+        fint: "&#x2A0F;",
+        intx: "&#x2A18;",
+        Join: "&#x2A1D;",
+        zcmp: "&#x2A1F;",
+        semi: "&#x2A1F;",
+        odiv: "&#x2A38;",
+        fcmp: "&#x2A3E;",
+        comp: "&#x2A3E;",
+        dsub: "&#x2A64;",
+        rsub: "&#x2A65;",
+        eqeq: "&#x2A75;",
+        Same: "&#x2A76;",
+        lneq: "&#x2A87;",
+        gneq: "&#x2A88;",
+        ltcc: "&#x2AA6;",
+        gtcc: "&#x2AA7;",
+        smte: "&#x2AAC;",
+        late: "&#x2AAD;",
+        Prec: "&#x2ABB;",
+        Succ: "&#x2ABC;",
+        csub: "&#x2ACF;",
+        csup: "&#x2AD0;",
+        mlcp: "&#x2ADB;",
+        Barv: "&#x2AE7;",
+        vBar: "&#x2AE8;",
+        barV: "&#x2AEA;",
+        Vbar: "&#x2AEB;",
+        Perp: "&#x2AEB;",
+        bNot: "&#x2AED;",
+        Zbar: "&#x1B5;",
+        ddot: "&#x308;",
+        DDot: "&#x308;",
+        ring: "&#x30A;",
+        upMu: "&#x39C;",
+        upNu: "&#x39D;",
+        upXi: "&#x39E;",
+        upPi: "&#x3A0;",
+        beta: "&#x3B2;",
+        zeta: "&#x3B6;",
+        iota: "&#x3B9;",
+        upmu: "&#x3BC;",
+        upnu: "&#x3BD;",
+        upxi: "&#x3BE;",
+        uppi: "&#x3C0;",
+        plus: "&#x2B;",
+        less: "&#x3C;",
+        vert: "&#x7C;",
+        cent: "&#xA2;",
+        lnot: "&#xAC;",
+        tcmu: "&#xB5;",
+        cat: "&#x2040;",
+        Vec: "&#x20D7;",
+        ell: "&#x2113;",
+        mho: "&#x2127;",
+        Mho: "&#x2127;",
+        Yup: "&#x2144;",
+        rel: "&#x2194;",
+        Lsh: "&#x21B0;",
+        Rsh: "&#x21B1;",
+        exi: "&#x2203;",
+        nin: "&#x2209;",
+        nni: "&#x220C;",
+        QED: "&#x220E;",
+        ast: "&#x2217;",
+        mid: "&#x2223;",
+        vee: "&#x2228;",
+        lor: "&#x2228;",
+        cap: "&#x2229;",
+        cup: "&#x222A;",
+        int: "&#x222B;",
+        sim: "&#x223C;",
+        neq: "&#x2260;",
+        leq: "&#x2264;",
+        geq: "&#x2265;",
+        top: "&#x22A4;",
+        bot: "&#x22A5;",
+        Cap: "&#x22D2;",
+        Cup: "&#x22D3;",
+        lll: "&#x22D8;",
+        ggg: "&#x22D9;",
+        nis: "&#x22FC;",
+        RHD: "&#x25B6;",
+        rhd: "&#x25B7;",
+        LHD: "&#x25C0;",
+        lhd: "&#x25C1;",
+        Sun: "&#x2609;",
+        sun: "&#x263C;",
+        leo: "&#x264C;",
+        Leo: "&#x264C;",
+        iff: "&#x27FA;",
+        bij: "&#x2916;",
+        Vee: "&#x2A54;",
+        lgE: "&#x2A91;",
+        glE: "&#x2A92;",
+        glj: "&#x2AA4;",
+        gla: "&#x2AA5;",
+        smt: "&#x2AAA;",
+        lat: "&#x2AAB;",
+        Top: "&#x2AEA;",
+        Bot: "&#x2AEB;",
+        Not: "&#x2AEC;",
+        dot: "&#x307;",
+        Dot: "&#x307;",
+        not: "&#x338;",
+        Phi: "&#x3A6;",
+        Psi: "&#x3A8;",
+        eta: "&#x3B7;",
+        rho: "&#x3C1;",
+        tau: "&#x3C4;",
+        chi: "&#x3C7;",
+        psi: "&#x3C8;",
+        phi: "&#x3D5;",
+        yen: "&#xA5;",
+        neg: "&#xAC;",
+        eth: "&#xF0;",
+        div: "&#xF7;",
+        Xi: "&#x39E;",
+        Im: "&#x2111;",
+        wp: "&#x2118;",
+        Re: "&#x211C;",
+        DD: "&#x2145;",
+        dd: "&#x2146;",
+        ee: "&#x2147;",
+        ii: "&#x2148;",
+        jj: "&#x2149;",
+        to: "&#x2192;",
+        in: "&#x2208;",
+        ni: "&#x220B;",
+        mp: "&#x2213;",
+        AC: "&#x223F;",
+        wr: "&#x2240;",
+        ne: "&#x2260;",
+        le: "&#x2264;",
+        ge: "&#x2265;",
+        ll: "&#x226A;",
+        gg: "&#x226B;",
+        Lt: "&#x2AA1;",
+        Gt: "&#x2AA2;",
+        Pi: "&#x3A0;",
+        mu: "&#x3BC;",
+        nu: "&#x3BD;",
+        xi: "&#x3BE;",
+        pi: "&#x3C0;",
+        pm: "&#xB1;",
+        "-": "&#x2212;",
+        "'": "&#x0027;",
+        "!": "&#x21;",
+        "#": "&#x23;",
+        "$": "&#x24;",
+        "%": "&#x25;",
+        "&": "&#x26;",
+        "*": "&#x2A;",
+        "+": "&#x2B;",
+        ",": "&#x2C;",
+        ".": "&#x2E;",
+        "/": "&#x2F;",
+        ":": "&#x3A;",
+        ";": "&#x3B;",
+        "<": "&#x3C;",
+        "=": "&#x3D;",
+        ">": "&#x3E;",
+        "?": "&#x3F;",
+        "@": "&#x40;",
+        "|": "&#x7C;",
+        _: "&#x5F;",
       }.freeze
-      SYMBOLS = %w[
-        leftrightharpoondowndown
-        shortrightarrowleftarrow
-        leftarrowshortrightarrow
-        rightarrowshortleftarrow
-        barleftarrowrightarrowba
-        downupharpoonsleftright
-        updownharpoonsleftright
-        updownharpoonrightright
-        nVtwoheadrightarrowtail
-        nvtwoheadrightarrowtail
-        concavediamondtickright
-        invwhitelowerhalfcircle
-        invwhiteupperhalfcircle
-        smallblacktriangleright
-        nVtwoheadleftarrowtail
-        nvtwoheadleftarrowtail
-        partialmeetcontraction
-        downtrianglerightblack
-        updownharpoonleftright
-        updownharpoonrightleft
-        leftrightharpoondownup
-        leftrightharpoonupdown
-        concavediamondtickleft
-        blackcircleulquadwhite
-        smallblacktriangleleft
-        leftrightarrowtriangle
-        closedvarcupsmashprod
-        blackdiamonddownarrow
-        downtriangleleftblack
-        rightleftharpoonsdown
-        leftrightharpoonsdown
-        downharpoonsleftright
-        updownharpoonleftleft
-        twoheadrightarrowtail
-        circlebottomhalfblack
-        rangledownzigzagarrow
-        barovernorthwestarrow
-        underrightharpoondown
-        rightarrowbackapprox
-        twoheadleftarrowtail
-        NestedGreaterGreater
-        blackcircledownarrow
-        dashrightharpoondown
-        leftrightharpoondown
-        leftrightharpoonupup
-        twoheaduparrowcircle
-        leftrightarrowcircle
-        curvearrowrightminus
-        rightdowncurvedarrow
-        downrightcurvedarrow
-        barrightarrowdiamond
-        whitesquaretickright
-        whiteinwhitetriangle
-        blackcircledrightdot
-        blackrighthalfcircle
-        circlerighthalfblack
-        bigblacktriangledown
-        CapitalDifferentialD
-        underleftharpoondown
-        leftarrowbackapprox
-        twoheadleftdbkarrow
-        dashleftharpoondown
-        rightleftharpoonsup
-        leftrightharpoonsup
-        rightharpoonsupdown
-        upharpoonsleftright
-        barrightharpoondown
-        bardownharpoonright
-        rightharpoondownbar
-        downharpoonrightbar
-        leftdowncurvedarrow
-        diamondleftarrowbar
-        nVtwoheadrightarrow
-        nvtwoheadrightarrow
-        longrightsquigarrow
-        whitesquaretickleft
-        blackcircledtwodots
-        blacklefthalfcircle
-        circlelefthalfblack
-        blackinwhitediamond
-        blockthreeqtrshaded
-        whitearrowupfrombar
-        leftrightsquigarrow
-        rightpentagonblack
-        bsimilarrightarrow
-        rightarrowbsimilar
-        nVtwoheadleftarrow
-        nvtwoheadleftarrow
-        longleftsquigarrow
-        errbarblackdiamond
-        circledwhitebullet
-        rightharpoonupdash
-        rightrightharpoons
-        leftharpoonsupdown
-        bardownharpoonleft
-        DownRightTeeVector
-        leftharpoondownbar
-        RightDownTeeVector
-        downharpoonleftbar
-        DownRightVectorBar
-        barleftharpoondown
-        RightDownVectorBar
-        rightupdownharpoon
-        leftrightharpoonup
-        ccwundercurvearrow
-        curvearrowleftplus
-        Longleftrightarrow
-        longleftrightarrow
-        trianglerightblack
-        inversewhitecircle
-        circletophalfblack
-        smalltriangleright
-        blacktriangleright
-        bigblacktriangleup
-        parallelogramblack
-        blackinwhitesquare
-        measuredrightangle
-        SucceedsSlantEqual
-        PrecedesSlantEqual
-        rightarrowtriangle
-        circleonrightarrow
-        upharpoonrightdown
-        acwopencirclearrow
-        overleftrightarrow
-        rightharpoonaccent
-        bsimilarleftarrow
-        leftarrowbsimilar
-        circleonleftarrow
-        diamondrightblack
-        errbarblackcircle
-        errbarblacksquare
-        measuredangleleft
-        rightarrowsimilar
-        similarrightarrow
-        leftharpoonupdash
-        LeftDownTeeVector
-        DownLeftTeeVector
-        upharpoonrightbar
-        barrightharpoonup
-        LeftDownVectorBar
-        DownLeftVectorBar
-        barupharpoonright
-        rightharpoonupbar
-        leftupdownharpoon
-        cwundercurvearrow
-        uprightcurvearrow
-        rightarrowdiamond
-        rightarrowonoplus
-        acwgapcirclearrow
-        triangleleftblack
-        circleurquadblack
-        smalltriangleleft
-        blacktriangleleft
-        smalltriangledown
-        blacktriangledown
-        whitepointerright
-        blackpointerright
-        varcarriagereturn
-        varhexagonlrbonds
-        vardoublebarwedge
-        kernelcontraction
-        leftarrowtriangle
-        rightleftharpoons
-        leftrightharpoons
-        upharpoonleftdown
-        cwopencirclearrow
-        twoheadrightarrow
-        leftharpoonaccent
-        similarleftarrow
-        rightarrowsupset
-        leftarrowonoplus
-        diamondleftblack
-        RightTriangleBar
-        sphericalangleup
-        rightarrowapprox
-        leftarrowsimilar
-        uprevequilibrium
-        downdownharpoons
-        leftleftharpoons
-        upharpoonleftbar
-        RightUpTeeVector
-        leftharpoonupbar
-        barupharpoonleft
-        RightUpVectorBar
-        barleftharpoonup
-        rightleftharpoon
-        leftrightharpoon
-        acwunderarcarrow
-        rightcurvedarrow
-        diamondleftarrow
-        nVrightarrowtail
-        nvrightarrowtail
-        nvLeftrightarrow
-        cwgapcirclearrow
-        squarerightblack
-        whitepointerleft
-        blackpointerleft
-        APLrightarrowbox
-        ntrianglerighteq
-        NotRightTriangle
-        multimapdotbothB
-        multimapdotbothA
-        vartriangleright
-        ointctrclockwise
-        varointclockwise
-        nVleftrightarrow
-        nvleftrightarrow
-        rightthreearrows
-        downarrowuparrow
-        rightrightarrows
-        uparrowdownarrow
-        downharpoonright
-        rightharpoondown
-        circlearrowright
-        twoheaddownarrow
-        twoheadleftarrow
-        leftarrowapprox
-        leftcurvedarrow
-        nVleftarrowtail
-        nvleftarrowtail
-        twoheadmapsfrom
-        leftthreearrows
-        varhexagonblack
-        diamondbotblack
-        diamondtopblack
-        bigtriangleleft
-        circledownarrow
-        LeftTriangleBar
-        uparrowoncircle
-        circledparallel
-        measangledltosw
-        measangledrtose
-        measangleultonw
-        measangleurtone
-        measangleldtosw
-        measanglerdtose
-        measanglelutonw
-        measanglerutone
-        leftarrowsubset
-        equalrightarrow
-        barrightharpoon
-        rightbarharpoon
-        LeftUpTeeVector
-        LeftUpVectorBar
-        acwoverarcarrow
-        acwleftarcarrow
-        cwrightarcarrow
-        downarrowbarred
-        circledrightdot
-        squareleftblack
-        urblacktriangle
-        ulblacktriangle
-        llblacktriangle
-        lrblacktriangle
-        bigtriangledown
-        smalltriangleup
-        blacktriangleup
-        vrectangleblack
-        hrectangleblack
-        squarecrossfill
-        blockhalfshaded
-        APLdownarrowbox
-        APLleftarrowbox
-        APLnotbackslash
-        ntrianglelefteq
-        NotLeftTriangle
-        rightthreetimes
-        trianglerighteq
-        vartriangleleft
-        NotGreaterTilde
-        rightwhitearrow
-        rightsquigarrow
-        nLeftrightarrow
-        leftrightarrows
-        rightleftarrows
-        downharpoonleft
-        upharpoonleftup
-        leftharpoondown
-        circlearrowleft
-        curvearrowright
-        downzigzagarrow
-        nleftrightarrow
-        underrightarrow
-        widebridgeabove
-        enclosetriangle
-        unicodeellipsis
-        enleadertwodots
-        equalleftarrow
-        squarebotblack
-        squaretopblack
-        NestedLessLess
-        wedgedoublebar
-        doublebarwedge
-        bigslopedwedge
-        mdlgblklozenge
-        blackhourglass
-        triangleserifs
-        rightanglemdot
-        downupharpoons
-        updownharpoons
-        barleftharpoon
-        leftbarharpoon
-        RightTeeVector
-        RightVectorBar
-        rightarrowplus
-        acwcirclearrow
-        rdiagovsearrow
-        fdiagovnearrow
-        Longmappedfrom
-        longmappedfrom
-        Longrightarrow
-        longrightarrow
-        concavediamond
-        rightouterjoin
-        circledtwodots
-        vardiamondsuit
-        circlevertfill
-        mdlgwhtlozenge
-        mdlgwhtdiamond
-        mdlgblkdiamond
-        squareneswfill
-        squarenwsefill
-        blockqtrshaded
-        blockrighthalf
-        harrowextender
-        vbraceextender
-        rbrackextender
-        lbrackextender
-        rparenextender
-        lparenextender
-        APLboxquestion
-        ntriangleright
-        leftthreetimes
-        trianglelefteq
-        NotGreaterLess
-        sphericalangle
-        downwhitearrow
-        leftwhitearrow
-        rightdasharrow
-        dashrightarrow
-        leftsquigarrow
-        Leftrightarrow
-        revequilibrium
-        downdownarrows
-        leftleftarrows
-        rightleftarrow
-        rightharpoonup
-        upharpoonright
-        curvearrowleft
-        carriagereturn
-        looparrowright
-        hookrightarrow
-        updownarrowbar
-        rightarrowtail
-        twoheaduparrow
-        rightwavearrow
-        leftrightarrow
-        underleftarrow
-        enclosediamond
-        ocommatopright
-        rightpentagon
-        rightarrowgtr
-        pentagonblack
-        vysmwhtsquare
-        vysmblksquare
-        squarellblack
-        squareurblack
-        bigtalloblong
-        biginterleave
-        threedotcolon
-        shortdowntack
-        shortlefttack
-        triangletimes
-        triangleminus
-        errbardiamond
-        circledbullet
-        circledbslash
-        emptysetoarrl
-        emptysetocirc
-        wideangledown
-        rightanglesqr
-        rrparenthesis
-        llparenthesis
-        mdsmblkcircle
-        rightfishtail
-        leftarrowless
-        upequilibrium
-        LeftTeeVector
-        LeftVectorBar
-        leftarrowplus
-        cwcirclearrow
-        rightdotarrow
-        uparrowbarred
-        twoheadmapsto
-        Longleftarrow
-        longleftarrow
-        fullouterjoin
-        leftouterjoin
-        draftingarrow
-        mdsmwhtcircle
-        Hermaphrodite
-        sixteenthnote
-        mdsmblksquare
-        mdsmwhtsquare
-        squarelrblack
-        squareulblack
-        botsemicircle
-        topsemicircle
-        inversebullet
-        mdlgblkcircle
-        mdlgwhtcircle
-        triangleright
-        blacktriangle
-        bigtriangleup
-        parallelogram
-        mdlgwhtsquare
-        mdlgblksquare
-        blocklefthalf
-        bdtriplevdash
-        APLboxupcaret
-        APLuparrowbox
-        ntriangleleft
-        equalparallel
-        divideontimes
-        varlrtriangle
-        SucceedsTilde
-        PrecedesTilde
-        fallingdotseq
-        dotsminusdots
-        wasytherefore
-        measuredangle
-        vysmblkcircle
-        vysmwhtcircle
-        smallsetminus
-        rightarrowbar
-        RightArrowBar
-        downdasharrow
-        leftdasharrow
-        dashleftarrow
-        upharpoonleft
-        leftharpoonup
-        looparrowleft
-        hookleftarrow
-        leftarrowtail
-        leftwavearrow
-        DifferentialD
-        sansLmirrored
-        threeunderdot
-        enclosesquare
-        enclosecircle
-        overleftarrow
-        upbackepsilon
-        medblackstar
-        medwhitestar
-        leftdotarrow
-        smwhtlozenge
-        smblklozenge
-        smblkdiamond
-        mdwhtlozenge
-        mdblklozenge
-        mdwhtdiamond
-        mdblkdiamond
-        hexagonblack
-        dottedsquare
-        supsetapprox
-        subsetapprox
-        eqqslantless
-        veedoublebar
-        doublebarvee
-        wedgemidvert
-        bigslopedvee
-        wedgeonwedge
-        closedvarcap
-        closedvarcup
-        triangleplus
-        errbarcircle
-        errbarsquare
-        blacklozenge
-        lrtriangleeq
-        multimapboth
-        triangleubar
-        triangleodot
-        ogreaterthan
-        odotslashdot
-        emptysetoarr
-        emptysetobar
-        revangleubar
-        rbrackurtick
-        lbracklltick
-        rbracklrtick
-        lbrackultick
-        downfishtail
-        leftfishtail
-        upupharpoons
-        fdiagovrdiag
-        rdiagovfdiag
-        rightdbltail
-        downarrowbar
-        DownArrowBar
-        leftdbkarrow
-        rightbkarrow
-        nvRightarrow
-        Longmapsfrom
-        longmapsfrom
-        lozengeminus
-        longdivision
-        dingasterisk
-        varheartsuit
-        varspadesuit
-        invsmileface
-        bigwhitestar
-        circleurquad
-        circlelrquad
-        circlellquad
-        circleulquad
-        squareurquad
-        squarelrquad
-        squarellquad
-        squareulquad
-        trianglecdot
-        dottedcircle
-        Diamondblack
-        triangleleft
-        triangledown
-        squarehvfill
-        blocklowhalf
-        underbracket
-        notbackslash
-        unicodecdots
-        nsucccurlyeq
-        npreccurlyeq
-        smwhtdiamond
-        hermitmatrix
-        circledequal
-        cupleftarrow
-        varsubsetneq
-        NotLessTilde
-        risingdotseq
-        cntclockoint
-        intclockwise
-        nVrightarrow
-        nvrightarrow
-        downuparrows
-        upwhitearrow
-        barleftarrow
-        LeftArrowBar
-        updownarrows
-        PropertyLine
-        hyphenbullet
-        upvarepsilon
-        oturnedcomma
-        mathsterling
-        RRightarrow
-        smwhitestar
-        whtvertoval
-        blkvertoval
-        whthorzoval
-        blkhorzoval
-        lgblkcircle
-        lgwhtsquare
-        lgblksquare
-        shortuptack
-        succnapprox
-        precnapprox
-        eqqslantgtr
-        eqslantless
-        simminussim
-        midbarwedge
-        otimesrhrim
-        otimeslhrim
-        rcurvyangle
-        lcurvyangle
-        ruledelayed
-        gleichstark
-        circledless
-        circledvert
-        revemptyset
-        wideangleup
-        rightarrowx
-        nwovnearrow
-        neovnwarrow
-        neovsearrow
-        seovnearrow
-        leftdbltail
-        leftbkarrow
-        nvLeftarrow
-        multimapinv
-        diamondcdot
-        threedangle
-        arrowbullet
-        circledstar
-        ballotcheck
-        mdblkcircle
-        mdwhtcircle
-        quarternote
-        varclubsuit
-        diamondsuit
-        capricornus
-        sagittarius
-        blacksmiley
-        mdblksquare
-        blacksquare
-        mdwhtsquare
-        lgwhtcircle
-        smwhtcircle
-        RIGHTCIRCLE
-        RIGHTcircle
-        vartriangle
-        smwhtsquare
-        smblksquare
-        squarevfill
-        squarehfill
-        blockuphalf
-        overbracket
-        intextender
-        invdiameter
-        APLnotslash
-        wasylozenge
-        varbarwedge
-        varisinobar
-        sqsupsetneq
-        sqsubsetneq
-        nsqsupseteq
-        nsqsubseteq
-        curlyeqsucc
-        curlyeqprec
-        circleddash
-        circledcirc
-        succcurlyeq
-        preccurlyeq
-        GreaterLess
-        corresponds
-        approxident
-        nVleftarrow
-        nvleftarrow
-        updasharrow
-        nHdownarrow
-        Rrightarrow
-        Updownarrow
-        nRightarrow
-        equilibrium
-        restriction
-        nrightarrow
-        updownarrow
-        ExponetialE
-        sansLturned
-        Planckconst
-        asteraccent
-        vertoverlay
-        caretinsert
-        backtrprime
-        smblkcircle
-        backepsilon
-        postalmark
-        LLeftarrow
-        leftarrowx
-        varhexagon
-        talloblong
-        interleave
-        supsetneqq
-        subsetneqq
-        supsetplus
-        subsetplus
-        succapprox
-        precapprox
-        rightslice
-        eqslantgtr
-        gtreqqless
-        lesseqqgtr
-        lessapprox
-        equivVvert
-        veemidvert
-        veeonwedge
-        capovercup
-        cupovercap
-        smashtimes
-        oplusrhrim
-        opluslhrim
-        minusrdots
-        minusfdots
-        commaminus
-        plussubtwo
-        tripleplus
-        doubleplus
-        circledgtr
-        circlehbar
-        rblkbrbrak
-        lblkbrbrak
-        Rparenless
-        lparenless
-        rbrackubar
-        lbrackubar
-        upfishtail
-        rightimply
-        baruparrow
-        UpArrowBar
-        Ddownarrow
-        Mappedfrom
-        Longmapsto
-        longmapsto
-        DDownarrow
-        Diamonddot
-        supsetcirc
-        subsetcirc
-        eighthnote
-        vardiamond
-        pointright
-        CheckedBox
-        lrtriangle
-        lltriangle
-        urtriangle
-        ultriangle
-        LEFTCIRCLE
-        LEFTcircle
-        vrectangle
-        hrectangle
-        underbrace
-        underparen
-        rmoustache
-        lmoustache
-        rbracelend
-        rbraceuend
-        lbracelend
-        lbraceuend
-        rbracklend
-        rbrackuend
-        lbracklend
-        lbrackuend
-        rparenlend
-        rparenuend
-        lparenlend
-        lparenuend
-        APLcomment
-        conictaper
-        curlywedge
-        circledast
-        sqsupseteq
-        sqsubseteq
-        Proportion
-        rightangle
-        fourthroot
-        varnothing
-        complement
-        Lleftarrow
-        Rightarrow
-        nLeftarrow
-        upuparrows
-        mappedfrom
-        nleftarrow
-        rightarrow
-        turnediota
-        Eulerconst
-        backdprime
-        twolowline
-        upvarTheta
-        upvarkappa
-        upoldkoppa
-        upoldKoppa
-        upvartheta
-        upvarsigma
-        varepsilon
-        wideutilde
-        mathdollar
-        octothorpe
-        geqqslant
-        leqqslant
-        supseteqq
-        subseteqq
-        supsetdot
-        subsetdot
-        leftslice
-        gtrapprox
-        approxeqq
-        hatapprox
-        equivVert
-        varveebar
-        midbarvee
-        wedgeodot
-        capbarcup
-        cupbarcap
-        otimeshat
-        modtwosum
-        disjquant
-        conjquant
-        bigcupdot
-        bigotimes
-        hourglass
-        triangles
-        boxcircle
-        boxbslash
-        olessthan
-        angleubar
-        turnangle
-        fourvdots
-        Lparengtr
-        rparengtr
-        rangledot
-        langledot
-        typecolon
-        hknearrow
-        hknwarrow
-        neswarrow
-        nwsearrow
-        righttail
-        impliedby
-        rrbracket
-        llbracket
-        longdashv
-        vlongdash
-        dashVdash
-        DashVDash
-        checkmark
-        medbullet
-        heartsuit
-        spadesuit
-        rightmoon
-        smileface
-        biohazard
-        radiation
-        blockfull
-        accurrent
-        trapezium
-        overbrace
-        wideparen
-        overparen
-        rvboxline
-        lvboxline
-        sumbottom
-        rbracemid
-        lbracemid
-        intbottom
-        turnednot
-        sqlozenge
-        bagmember
-        varniobar
-        gtreqless
-        lesseqgtr
-        pitchfork
-        backsimeq
-        supsetneq
-        subsetneq
-        nsupseteq
-        nsubseteq
-        ngeqslant
-        nleqslant
-        triangleq
-        dashcolon
-        mathratio
-        therefore
-        clockoint
-        nparallel
-        increment
-        partialup
-        dasharrow
-        nHuparrow
-        Downarrow
-        Leftarrow
-        rightturn
-        lightning
-        downarrow
-        leftarrow
-        Angstroem
-        fracslash
-        tieconcat
-        backprime
-        updigamma
-        upDigamma
-        upvarbeta
-        upupsilon
-        upomicron
-        upepsilon
-        upUpsilon
-        upOmicron
-        upEpsilon
-        underline
-        backslash
-        semicolon
-        mathcolon
-        mathslash
-        ampersand
-        pentagon
-        varVdash
-        forksnot
-        succneqq
-        precneqq
-        gnapprox
-        lnapprox
-        gesdotol
-        lesdotor
-        geqslant
-        leqslant
-        Coloneqq
-        simrdots
-        dotequiv
-        wedgebar
-        veeonvee
-        capwedge
-        intprodr
-        timesbar
-        dottimes
-        vectimes
-        minusdot
-        plustrif
-        ringplus
-        zproject
-        intlarhk
-        pointint
-        scpolint
-        rppolint
-        cirfnint
-        bigtimes
-        bigsqcup
-        bigsqcap
-        biguplus
-        bigoplus
-        setminus
-        eqvparsl
-        smeparsl
-        tieinfty
-        Rvzigzag
-        Lvzigzag
-        rvzigzag
-        lvzigzag
-        rfbowtie
-        lfbowtie
-        rtriltri
-        boxonbox
-        boxslash
-        revangle
-        strictif
-        strictfi
-        hkswarow
-        hksearow
-        lefttail
-        drbkarow
-        Uuparrow
-        Mapsfrom
-        UUparrow
-        pullback
-        wedgedot
-        bsolhsub
-        acidfree
-        twonotes
-        varheart
-        varspade
-        clubsuit
-        aquarius
-        varEarth
-        leftmoon
-        steaming
-        astrosun
-        bullseye
-        triangle
-        elinters
-        bbrktbrk
-        APLinput
-        notslash
-        lrcorner
-        llcorner
-        urcorner
-        ulcorner
-        viewdata
-        profsurf
-        profline
-        diameter
-        isinobar
-        varisins
-        succnsim
-        precnsim
-        curlyvee
-        bigwedge
-        barwedge
-        intercal
-        multimap
-        boxtimes
-        boxminus
-        sqsupset
-        sqsubset
-        supseteq
-        subseteq
-        ngtrless
-        nlessgtr
-        nlesssim
-        notasymp
-        eqqcolon
-        coloneqq
-        doteqdot
-        dotequal
-        backcong
-        approxeq
-        sinewave
-        invlazys
-        dotminus
-        parallel
-        cuberoot
-        divslash
-        leftturn
-        linefeed
-        mapsdown
-        MapsDown
-        mapsfrom
-        ComplexJ
-        ComplexI
-        Angstrom
-        medspace
-        Question
-        horizbar
-        upvarrho
-        varkappa
-        upstigma
-        upStigma
-        vartheta
-        upvarphi
-        varsigma
-        uplambda
-        upLambda
-        underbar
-        mathring
-        circledR
-        sterling
-        mathcent
-        question
-        hzigzag
-        trslash
-        gggnest
-        lllnest
-        nhVvert
-        revnmid
-        topfork
-        supdsub
-        suphsub
-        rsqhook
-        lsqhook
-        supedot
-        subedot
-        supmult
-        submult
-        ggcurly
-        llcurly
-        succeqq
-        preceqq
-        succneq
-        precneq
-        bumpeqq
-        simless
-        eqqless
-        gesdoto
-        lesdoto
-        gtquest
-        ltquest
-        equivDD
-        ddotseq
-        Coloneq
-        pluseqq
-        eqqplus
-        congdot
-        veeodot
-        twocaps
-        twocups
-        intprod
-        plussim
-        plusdot
-        simplus
-        plushat
-        project
-        npolint
-        varprod
-        bigodot
-        rsolbar
-        thermod
-        shuffle
-        dualmap
-        nvinfty
-        rftimes
-        lftimes
-        fbowtie
-        boxdiag
-        cirscir
-        olcross
-        obslash
-        vzigzag
-        rrangle
-        llangle
-        suplarr
-        subrarr
-        leadsto
-        dbkarow
-        implies
-        Rbrbrak
-        Lbrbrak
-        pushout
-        suphsol
-        rbrbrak
-        lbrbrak
-        varstar
-        maltese
-        ballotx
-        medcirc
-        warning
-        diceiii
-        recycle
-        natural
-        varclub
-        Scorpio
-        scorpio
-        Neptune
-        neptune
-        Jupiter
-        jupiter
-        Mercury
-        mercury
-        sadface
-        frownie
-        yinyang
-        bigstar
-        lozenge
-        fisheye
-        Diamond
-        squoval
-        benzenr
-        ubrbrak
-        obrbrak
-        hexagon
-        isindot
-        nsucceq
-        npreceq
-        lessdot
-        lrtimes
-        diamond
-        imageof
-        boxplus
-        nsupset
-        nsubset
-        succsim
-        precsim
-        gtrless
-        lessgtr
-        ngtrsim
-        lesssim
-        between
-        questeq
-        varsdef
-        coloneq
-        napprox
-        simneqq
-        backsim
-        eqcolon
-        because
-        dbloint
-        dotplus
-        smallni
-        smallin
-        nexists
-        partial
-        Swarrow
-        Searrow
-        Nearrow
-        Nwarrow
-        Uparrow
-        swarrow
-        searrow
-        nearrow
-        nwarrow
-        uparrow
-        annuity
-        closure
-        trprime
-        ddagger
-        epsilon
-        upsampi
-        upSampi
-        upkoppa
-        upKoppa
-        digamma
-        Digamma
-        upvarpi
-        varbeta
-        upomega
-        upsilon
-        upsigma
-        upkappa
-        uptheta
-        updelta
-        upgamma
-        upalpha
-        upOmega
-        Upsilon
-        upSigma
-        upKappa
-        upTheta
-        upDelta
-        upGamma
-        upAlpha
-        overbar
-        matheth
-        sptilde
-        greater
-        percent
-        sslash
-        parsim
-        topcir
-        midcir
-        cirmid
-        vDdash
-        supsup
-        subsub
-        supsub
-        subsup
-        supsim
-        subsim
-        succeq
-        preceq
-        simgtr
-        eqqgtr
-        egsdot
-        elsdot
-        gesles
-        lesges
-        gesdot
-        lesdot
-        eqeqeq
-        eqqsim
-        dotsim
-        cupvee
-        barcap
-        barcup
-        uminus
-        capdot
-        Otimes
-        btimes
-        lowint
-        intcup
-        intcap
-        sqrint
-        intBar
-        intbar
-        iiiint
-        sumint
-        tminus
-        eparsl
-        laplac
-        iinfin
-        vbrtri
-        ltrivb
-        boxbox
-        boxast
-        gtlpar
-        angdnr
-        angles
-        rParen
-        Rparen
-        lParen
-        Lparen
-        rBrace
-        lBrace
-        gtrarr
-        ltlarr
-        Mapsto
-        rgroup
-        lgroup
-        rAngle
-        lAngle
-        rangle
-        langle
-        Rbrack
-        rBrack
-        Lbrack
-        lBrack
-        cirbot
-        bigtop
-        bigbot
-        veedot
-        pencil
-        neuter
-        swords
-        anchor
-        dicevi
-        diceiv
-        diceii
-        pisces
-        cancer
-        Gemini
-        gemini
-        Taurus
-        taurus
-        Uranus
-        uranus
-        Saturn
-        saturn
-        female
-        smiley
-        danger
-        Square
-        square
-        boxbar
-        CIRCLE
-        Circle
-        sumtop
-        APLlog
-        APLinv
-        topbot
-        inttop
-        invnot
-        invneg
-        rfloor
-        lfloor
-        niobar
-        varnis
-        isinvb
-        iddots
-        nunrhd
-        nunlhd
-        eqless
-        gtrdot
-        Supset
-        Subset
-        rtimes
-        ltimes
-        bowtie
-        bigcup
-        bigcap
-        bigvee
-        barvee
-        veebar
-        origof
-        scurel
-        prurel
-        nVDash
-        nVdash
-        nvDash
-        nvdash
-        Vvdash
-        models
-        assert
-        boxdot
-        oslash
-        otimes
-        ominus
-        cupdot
-        supset
-        subset
-        apprge
-        gtrsim
-        apprle
-        nasymp
-        nequiv
-        measeq
-        stareq
-        wedgeq
-        circeq
-        eqcirc
-        bumpeq
-        Bumpeq
-        approx
-        nsimeq
-        oiiint
-        propto
-        coprod
-        exists
-        forall
-        mapsto
-        mapsup
-        MapsUp
-        invamp
-        daleth
-        hslash
-        ddddot
-        qprime
-        fourth
-        Exclam
-        dprime
-        second
-        bullet
-        dagger
-        varrho
-        stigma
-        Stigma
-        varphi
-        lambda
-        upiota
-        upzeta
-        upbeta
-        Lambda
-        upIota
-        upZeta
-        upBeta
-        utilde
-        droang
-        candra
-        ovhook
-        spddot
-        pounds
-        rbrace
-        lbrace
-        rbrack
-        lbrack
-        atsign
-        period
-        rparen
-        lparen
-        exclam
-        nhpar
-        vBarv
-        DashV
-        Dashv
-        dashV
-        perps
-        forks
-        forkv
-        csupe
-        csube
-        gescc
-        lescc
-        simgE
-        simlE
-        gsiml
-        lsimg
-        gsime
-        lsime
-        gtcir
-        ltcir
-        Equal
-        asteq
-        eqdot
-        nrres
-        ndres
-        Wedge
-        Sqcup
-        Sqcap
-        amalg
-        zpipe
-        upint
-        sqint
-        awint
-        tplus
-        xbsol
-        zhide
-        operp
-        rblot
-        lblot
-        Vvert
-        psurj
-        dicev
-        dicei
-        sharp
-        Libra
-        libra
-        virgo
-        Aries
-        aries
-        Pluto
-        pluto
-        earth
-        Venus
-        skull
-        llarc
-        lrarc
-        urarc
-        ularc
-        fltns
-        strns
-        smile
-        frown
-        rceil
-        lceil
-        house
-        isinE
-        barin
-        isins
-        disin
-        ddots
-        adots
-        cdots
-        vdots
-        gnsim
-        lnsim
-        eqgtr
-        unrhd
-        unlhd
-        VDash
-        Vdash
-        vDash
-        dashv
-        vdash
-        oplus
-        sqcup
-        sqcap
-        uplus
-        nsucc
-        nprec
-        nless
-        gneqq
-        lneqq
-        Equiv
-        equiv
-        eqdef
-        veeeq
-        arceq
-        Doteq
-        doteq
-        asymp
-        ncong
-        nsime
-        simeq
-        eqsim
-        Colon
-        oiint
-        iiint
-        wedge
-        angle
-        infty
-        slash
-        minus
-        notni
-        notin
-        nabla
-        upand
-        gimel
-        aleph
-        tcohm
-        Euler
-        DDDot
-        dddot
-        third
-        prime
-        ldots
-        sampi
-        Sampi
-        koppa
-        qoppa
-        Koppa
-        Qoppa
-        varpi
-        upphi
-        omega
-        uppsi
-        upchi
-        uptau
-        sigma
-        uprho
-        kappa
-        theta
-        upeta
-        delta
-        gamma
-        alpha
-        Omega
-        upPsi
-        upChi
-        upPhi
-        upTau
-        Sigma
-        upRho
-        Theta
-        upEta
-        Delta
-        Gamma
-        check
-        ocirc
-        breve
-        times
-        tilde
-        acute
-        grave
-        jmath
-        imath
-        cdotp
-        Micro
-        sphat
-        equal
-        colon
-        comma
-        hline
-        bNot
-        Perp
-        Vbar
-        barV
-        vBar
-        Barv
-        mlcp
-        csup
-        csub
-        Succ
-        Prec
-        late
-        smte
-        gtcc
-        ltcc
-        gneq
-        lneq
-        Same
-        eqeq
-        rsub
-        dsub
-        comp
-        fcmp
-        odiv
-        semi
-        zcmp
-        Join
-        intx
-        fint
-        hide
-        xsol
-        dsol
-        cirE
-        obot
-        rimg
-        limg
-        spot
-        VERT
-        towa
-        tosa
-        toea
-        tona
-        finj
-        pinj
-        psur
-        rang
-        lang
-        upin
-        rbag
-        Rbag
-        lbag
-        Lbag
-        perp
-        flat
-        Mars
-        male
-        XBox
-        dres
-        rres
-        obar
-        nisd
-        hash
-        star
-        cdot
-        duni
-        dint
-        odot
-        buni
-        succ
-        prec
-        ngeq
-        nleq
-        ngtr
-        geqq
-        leqq
-        sdef
-        cong
-        nsim
-        oint
-        iint
-        land
-        nmid
-        circ
-        owns
-        nexi
-        ffun
-        pfun
-        Rdsh
-        drsh
-        Ldsh
-        dlsh
-        tinj
-        tsur
-        gets
-        Game
-        beth
-        Finv
-        LVec
-        lvec
-        euro
-        Vert
-        quad
-        uppi
-        upxi
-        upnu
-        upmu
-        iota
-        zeta
-        beta
-        upPi
-        upXi
-        upNu
-        upMu
-        ring
-        DDot
-        ddot
-        Zbar
-        tcmu
-        lnot
-        cent
-        vert
-        less
-        plus
-        Not
-        Bot
-        Top
-        lat
-        smt
-        gla
-        glj
-        glE
-        lgE
-        Vee
-        bij
-        iff
-        Leo
-        leo
-        sun
-        Sun
-        lhd
-        LHD
-        rhd
-        RHD
-        nis
-        ggg
-        lll
-        Cup
-        Cap
-        bot
-        top
-        geq
-        leq
-        neq
-        sim
-        int
-        cup
-        cap
-        lor
-        vee
-        mid
-        ast
-        QED
-        nni
-        nin
-        exi
-        Rsh
-        Lsh
-        rel
-        Yup
-        Mho
-        mho
-        ell
-        Vec
-        vec
-        cat
-        phi
-        psi
-        chi
-        tau
-        rho
-        eta
-        Psi
-        Phi
-        not
-        Dot
-        dot
-        hat
-        bar
-        div
-        eth
-        neg
-        yen
-        \/
-        Gt
-        Lt
-        gg
-        ll
-        ge
-        le
-        ne
-        wr
-        AC
-        mp
-        ni
-        in
-        to
-        jj
-        ii
-        ee
-        dd
-        DD
-        Re
-        wp
-        Im
-        pi
-        xi
-        nu
-        mu
-        Pi
-        Xi
-        pm
-        :
-      ].freeze
       OPERATORS = %w[
-        :
-        -
-        :
-        |
-        _
-        @
-        ?
-        >
-        =
-        <
-        ;
-        .
+        !
+        #
+        $
+        %
+        &
+        '
+        *
         +
         ,
-        *
-        #
-        &
-        %
-        $
-        !
+        -
+        .
+        /
+        :
+        ;
+        <
+        =
+        >
+        ?
+        @
+        _
+        |
       ].freeze
       FONT_STYLES = %w[
-        bf
-        Bbb
-        mtt
-        mbf
-        mit
-        mscr
-        msans
-        mbfit
-        mfrak
-        mathit
-        mathsf
-        mathrm
-        mathtt
-        mathbb
-        mathbf
-        mathds
-        mbfsans
-        mathcal
-        mathfrak
-        mathbfit
-        mathsfbf
-        mathsfit
-        mathbold
-        mbfitsans
+        displaystyle
         mathsfbfit
+        mbfitsans
+        mathbold
+        mathsfit
+        mathsfbf
+        mathbfit
+        mathfrak
+        mathcal
+        mbfsans
+        mathds
+        mathbf
+        mathbb
+        mathtt
+        mathrm
+        mathsf
+        mathit
+        textrm
+        mfrak
+        mbfit
+        msans
+        mscr
+        mit
+        mbf
+        mtt
+        Bbb
+        rm
+        bf
       ].freeze
       PARENTHESIS = {
         "[" => "]",
@@ -1896,22 +1911,24 @@ module Plurimath
         "(" => ")",
         "\\{" => "\\}",
       }.freeze
+      MATRICES = {
+        multline: nil,
+        Vmatrix: "norm[",
+        vmatrix: "|",
+        pmatrix: "(",
+        Bmatrix: "{",
+        bmatrix: "[",
+        matrix: nil,
+        split: nil,
+        align: nil,
+        array: nil,
+      }.freeze
       BINARY_CLASSES = %w[
         stackrel
         binom
+        color
         frac
         lim
-      ].freeze
-      UNDEROVER_CLASSES = %w[
-        over
-        bmod
-        pmod
-      ].freeze
-      POWER_BASE_CLASSES = %w[
-        prod
-        sum
-        inf
-        log
       ].freeze
       NUMERIC_VALUES = %w[
         zero
@@ -1957,6 +1974,16 @@ module Plurimath
         Pr
         ln
         lg
+      ].freeze
+      UNDEROVER_CLASSES = %w[
+        bmod
+        pmod
+      ].freeze
+      POWER_BASE_CLASSES = %w[
+        prod
+        sum
+        inf
+        log
       ].freeze
     end
   end
