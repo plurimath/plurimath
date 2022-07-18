@@ -27,7 +27,7 @@ module Plurimath
 
       def to_latex
         symbols = Latex::Constants::SYMBOLS
-        symbols.include?(value) ? "\\#{value}" : value
+        symbols.invert.key?(value) ? "\\#{symbols.invert[value].to_s}" : value
       end
     end
   end

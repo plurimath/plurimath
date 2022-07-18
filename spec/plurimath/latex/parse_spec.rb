@@ -56,11 +56,12 @@ RSpec.describe Plurimath::Latex::Parse do
       }
       it "returns parsed tree" do
         left_right = formula[:left_right]
+        expression = left_right[:expression]
 
         expect(left_right[:lparen]).to eq("(")
-        expect(left_right[:sequence][:symbols]).to eq("beta")
-        expect(left_right[:expression][:sequence][:symbols]).to eq("slash")
-        expect(left_right[:expression][:expression][:expression][:text]).to eq("t")
+        expect(expression[:sequence][:symbols]).to eq("beta")
+        expect(left_right[:expression][:expression][:sequence][:symbols]).to eq("slash")
+        expect(left_right[:expression][:expression][:expression][:expression][:text]).to eq("t")
         expect(left_right[:rparen]).to eq(")")
       end
     end
@@ -76,7 +77,7 @@ RSpec.describe Plurimath::Latex::Parse do
 
         expect(formula[:binary][:sqrt]).to eq("sqrt")
         expect(binary[:sqrt]).to eq("sqrt")
-        expect(binary[:intermediate_exp][:expression][:sequence][:left_right][:sequence][:text]).to eq("t")
+        expect(binary[:intermediate_exp][:expression][:sequence][:left_right][:expression][:sequence][:text]).to eq("t")
         expect(binary[:intermediate_exp][:expression][:expression][:text]).to eq("v")
       end
     end
@@ -198,13 +199,12 @@ RSpec.describe Plurimath::Latex::Parse do
     context "contains simple use of over" do
       let(:string) {
         <<~LATEX
-          1 \\over 2
+          {1 \\over 2}
         LATEX
       }
       it "returns parsed tree" do
-        expect(formula[:under_over][:first_value][:number]).to eq("1")
-        expect(formula[:under_over][:binary]).to eq("over")
-        expect(formula[:under_over][:second_value][:number]).to eq("2")
+        expect(formula[:over][:dividend].first[:number]).to eq("1")
+        expect(formula[:over][:divisor].first[:number]).to eq("2")
       end
     end
 
@@ -435,7 +435,7 @@ RSpec.describe Plurimath::Latex::Parse do
       end
     end
 
-    context "contains lim with subscript and f" do
+    context "contains array environment with simple equation" do
       let(:string) {
         <<~LATEX
           \\left( \\begin{array}{c}
@@ -444,7 +444,7 @@ RSpec.describe Plurimath::Latex::Parse do
         LATEX
       }
       it "returns parsed tree" do
-        environment = formula[:left_right][:environment]
+        environment = formula[:left_right][:expression][:environment]
         sequence = environment[:table_data][:sequence]
         expression = environment[:table_data][:expression][:expression]
 
@@ -465,7 +465,130 @@ RSpec.describe Plurimath::Latex::Parse do
         LATEX
       }
       it "returns formula" do
-        expect(formula[:unary_functions][:text]).to eq("a+b")
+        expect(formula[:unary_functions][:mbox]).to eq("a+b")
+      end
+    end
+
+    context "contains complex base equation" do
+      let(:string) {
+        <<~LATEX
+          \\vec{F} = F_x \\hat{e}_x + F_y \\hat{e}_y + F_z
+          \\hat{e}_z = \\int \\vec{f} \\ ,dA,
+        LATEX
+      }
+      it "returns formula" do
+        vec = formula[:sequence][:unary_functions]
+        base = formula[:expression][:expression][:sequence][:base]
+
+        expect(vec[:unary]).to eq("vec")
+        expect(vec[:first_value][:expression][:text]).to eq("F")
+        expect(formula[:expression][:sequence][:operant]).to eq("=")
+        expect(base[:text]).to eq("F")
+        expect(base[:subscript][:text]).to eq("x")
+      end
+    end
+
+    context "contains second complex base equation" do
+      let(:string) {
+        <<~LATEX
+          \\vec{M} = M_x \\hat{e}_x + M_y \\hat{e}_y + M_z
+          \\hat{e}_z = \\int (\\vec{r} - \\vec{r}_0) \\times \\vec{f} \\,dA.
+        LATEX
+      }
+      it "returns formula" do
+        vec = formula[:sequence][:unary_functions]
+        base = formula[:expression][:expression][:sequence][:base]
+        hat = formula[:expression][:expression][:expression][:sequence][:base][:unary_functions]
+
+        expect(vec[:unary]).to eq("vec")
+        expect(vec[:first_value][:expression][:text]).to eq("M")
+        expect(formula[:expression][:sequence][:operant]).to eq("=")
+        expect(base[:text]).to eq("M")
+        expect(base[:subscript][:text]).to eq("x")
+        expect(hat[:unary]).to eq("hat")
+        expect(hat[:first_value][:expression][:text]).to eq("e")
+      end
+    end
+
+    context "contains third complex base equation" do
+      let(:string) {
+        <<~LATEX
+          L = \\vec{F} \\cdot \\hat{L}  \\qquad
+          D = \\vec{F} \\cdot \\hat{D}
+        LATEX
+      }
+      it "returns formula" do
+        expression = formula[:expression][:expression]
+        unary_function = expression[:sequence][:unary_functions]
+
+        expect(formula[:sequence][:text]).to eq("L")
+        expect(formula[:expression][:sequence][:operant]).to eq("=")
+        expect(unary_function[:unary]).to eq("vec")
+        expect(unary_function[:first_value][:expression][:text]).to eq("F")
+        expect(expression[:expression][:sequence][:symbols]).to eq("cdot")
+      end
+    end
+
+    context "contains fourth complex base equation" do
+      let(:string) {
+        <<~LATEX
+          \\vec{M} = M_\\xi \\hat{e}_{\\xi} + M_\\eta \\hat{e}_{\\eta} + M_\\zeta
+          \\hat{e}_{\\zeta} = \\int (\\vec{r} - \\vec{r}_0) \\times \\vec{f} \\,dA.
+        LATEX
+      }
+      it "returns formula" do
+        expression = formula[:expression][:expression]
+        unary_function = expression[:sequence][:base]
+
+        expect(formula[:sequence][:unary_functions][:unary]).to eq("vec")
+        expect(formula[:sequence][:unary_functions][:first_value][:expression][:text]).to eq("M")
+        expect(formula[:expression][:sequence][:operant]).to eq("=")
+        expect(unary_function[:text]).to eq("M")
+        expect(unary_function[:subscript][:symbols]).to eq("xi")
+      end
+    end
+
+    context "contains fifth complex split environment" do
+      let(:string) {
+        <<~LATEX
+          \\begin{split}
+            C_L &= {L \\over {1\\over2} \\rho_\\textrm{ref} q_\\textrm{ref}^2 S} \\\\ \\\\
+            C_D &= {D \\over {1\\over2} \\rho_\\textrm{ref} q_\\textrm{ref}^2 S} \\\\ \\\\
+            \\vec{C}_M &= {\\beta \\vec{M} \\over {1\\over2} \\rho_\\textrm{ref} q_\\textrm{ref}^2 c_\\textrm{ref} S_\\textrm{ref}},
+          \\end{split}
+        LATEX
+      }
+      it "returns formula" do
+        environment = formula[:environment]
+        table_data = environment[:table_data]
+
+        expect(environment[:begining][:expression][:environment]).to eq("split")
+        expect(table_data[:sequence][:base][:text]).to eq("C")
+        expect(table_data[:sequence][:base][:subscript][:text]).to eq("L")
+        expect(table_data[:expression][:sequence][:operant]).to eq("&")
+        expect(environment[:ending][:expression][:environment]).to eq("split")
+      end
+    end
+
+    context "contains sixth complex equation" do
+      let(:string) {
+        <<~LATEX
+          c_l = {L' \\over {1\\over2} \\rho_\\textrm{ref} q_\\textrm{ref}^2 c_\\textrm{ref}} \\qquad
+          c_d = {D' \\over {1\\over2} \\rho_\\textrm{ref} q_\\textrm{ref}^2 c_\\textrm{ref}} \\qquad
+          \\vec{c}_m = {\\vec{M}' \\over {1\\over2} \\rho_\\textrm{ref} q_\\textrm{ref}^2 c_\\textrm{ref}^2},
+        LATEX
+      }
+      it "returns formula" do
+        over = formula[:expression][:expression][:sequence][:over]
+        divisor = over[:divisor][0]
+
+        expect(formula[:sequence][:base][:text]).to eq("c")
+        expect(formula[:sequence][:base][:subscript][:text]).to eq("l")
+        expect(formula[:expression][:sequence][:operant]).to eq("=")
+        expect(over[:dividend][0][:sequence][:text]).to eq("L")
+        expect(over[:dividend][0][:expression][:operant]).to eq("'")
+        expect(divisor[:sequence][:over][:dividend][0][:number]).to eq("1")
+        expect(divisor[:sequence][:over][:divisor][0][:number]).to eq("2")
       end
     end
   end

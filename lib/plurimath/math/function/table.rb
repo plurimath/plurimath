@@ -33,7 +33,7 @@ module Plurimath
         end
 
         def latex_environment
-          matrices_hash = Latex::Constants::ENVIRONMENTS
+          matrices_hash = Latex::Constants::MATRICES
           matrices_hash.invert[parameter_two] if matrices_hash.value?(parameter_two)
         end
       end
