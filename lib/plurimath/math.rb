@@ -14,6 +14,7 @@ require_relative "math/symbol"
 require_relative "asciimath/parser"
 require_relative "mathml/parser"
 require_relative "latex/parser"
+require_relative "html/parser"
 module Plurimath
   module Math
     class Error < StandardError; end
