@@ -36,6 +36,11 @@ module Plurimath
           matrices_hash = Latex::Constants::MATRICES
           matrices_hash.invert[parameter_two] if matrices_hash.value?(parameter_two)
         end
+
+        def to_html
+          first_value = parameter_one.map(&:to_html).join
+          "<table>#{first_value}</table>"
+        end
       end
     end
   end

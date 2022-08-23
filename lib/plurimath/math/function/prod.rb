@@ -17,6 +17,12 @@ module Plurimath
           second_value = "^{#{parameter_two.to_latex}}" if parameter_two
           "\\prod#{first_value}#{second_value}"
         end
+
+        def to_html
+          first_value = "<sub>#{parameter_one.to_latex}</sub>" if parameter_one
+          second_value = "<sup>#{parameter_two.to_latex}</sup>" if parameter_two
+          "<i>&prod;</i>#{first_value}#{second_value}"
+        end
       end
     end
   end

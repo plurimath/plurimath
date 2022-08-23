@@ -17,6 +17,12 @@ module Plurimath
           second_value = "^{#{parameter_two.to_latex}}" if parameter_two
           "\\sum#{first_value}#{second_value}"
         end
+
+        def to_html
+          first_value = "<sub>#{parameter_one.to_html}</sub>" if parameter_one
+          second_value = "<sup>#{parameter_two.to_html}</sup>" if parameter_two
+          "<i>&sum;</i>#{first_value}#{second_value}"
+        end
       end
     end
   end

@@ -44,6 +44,12 @@ module Plurimath
           "\\#{class_name}#{first_value}#{second_value}"
         end
 
+        def to_html
+          first_value = "<i>#{parameter_one.to_latex}</i>" if parameter_one
+          second_value = "<i>#{parameter_two.to_latex}</i>" if parameter_two
+          "<i>#{class_name}</i>#{first_value}#{second_value}"
+        end
+
         def class_name
           self.class.name.split("::").last.downcase
         end
