@@ -21,6 +21,11 @@ module Plurimath
         def to_latex
           parameter_one.map(&:to_latex).join
         end
+
+        def to_html
+          first_value = parameter_one.map(&:to_html).join
+          "<td>#{first_value}</td>"
+        end
       end
     end
   end

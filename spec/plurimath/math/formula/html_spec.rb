@@ -1,36 +1,24 @@
-require_relative "../../../lib/plurimath/math"
+require_relative '../../../../lib/plurimath/math'
 
-RSpec.describe Plurimath::Html::Parser do
-
-  describe ".parse" do
-    subject(:formula) {
-      described_class.new(string.gsub(/\s/, "")).parse
-    }
+RSpec.describe Plurimath::Math::Formula do
+  describe ".to_latex" do
+    subject(:formula) { exp.to_html.gsub(/\s/, "") }
 
     context "basic parse rules for single character tag" do
-      let(:string) { "<i>&sum;</i>" }
-      it "returns abstract parsed tree" do
-        expected_value = Plurimath::Math::Formula.new([
+      let(:exp) do
+        Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Sum.new
         ])
-        expect(formula).to eq(expected_value)
       end
-    end
-
-    context "basic parse rules for multiple character tag" do
-      let(:string) { "<div>&sum;</div>" }
       it "returns abstract parsed tree" do
-        expected_value = Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Sum.new
-        ])
+        expected_value = "<i>&sum;</i>"
         expect(formula).to eq(expected_value)
       end
     end
 
     context "contains sum with sub and sup values" do
-      let(:string) { "&sum;<sub>d</sub><sup>prod</sup>" }
-      it "returns abstract parsed tree" do
-        expected_value = Plurimath::Math::Formula.new([
+      let(:exp) do
+        Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Sum.new(
             Plurimath::Math::Function::Text.new("d"),
             Plurimath::Math::Formula.new([
@@ -41,27 +29,31 @@ RSpec.describe Plurimath::Html::Parser do
             ])
           )
         ])
+      end
+      it "returns abstract parsed tree" do
+        expected_value = "<i>&sum;</i><sub>d</sub><sup>prod</sup>"
         expect(formula).to eq(expected_value)
       end
     end
 
     context "contains sub tag" do
-      let(:string) { "<div>&sum;<sub>&prod;</sub></div>" }
-      it "returns abstract parsed tree" do
-        expected_value = Plurimath::Math::Formula.new([
+      let(:exp) do
+        Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Sum.new(
             Plurimath::Math::Function::Prod.new,
             nil
           )
         ])
+      end
+      it "returns abstract parsed tree" do
+        expected_value = "<i>&sum;</i><sub><i>&prod;</i></sub>"
         expect(formula).to eq(expected_value)
       end
     end
 
     context "contains sub and sup tag" do
-      let(:string) { "<div>&sum;<sub>&prod;</sub><sup>prod</sup></div>" }
-      it "returns abstract parsed tree" do
-        expected_value = Plurimath::Math::Formula.new([
+      let(:exp) do
+        Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Sum.new(
             Plurimath::Math::Function::Prod.new,
             Plurimath::Math::Formula.new([
@@ -72,22 +64,16 @@ RSpec.describe Plurimath::Html::Parser do
             ])
           )
         ])
+      end
+      it "returns abstract parsed tree" do
+        expected_value = "<i>&sum;</i><sub><i>&prod;</i></sub><sup>prod</sup>"
         expect(formula).to eq(expected_value)
       end
     end
 
     context "contains complex sub and sup tag" do
-      let(:string) {
-        <<~HTML
-          <div>
-            some
-            <sup><span>(</span><span>S</span><span>)</span></sup>
-            <sub>g</sub>
-          </div>
-        HTML
-      }
-      it "returns abstract parsed tree" do
-        expected_value = Plurimath::Math::Formula.new([
+      let(:exp) do
+        Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Text.new("s"),
           Plurimath::Math::Function::Text.new("o"),
           Plurimath::Math::Function::Text.new("m"),
@@ -101,14 +87,22 @@ RSpec.describe Plurimath::Html::Parser do
             ]),
           )
         ])
-        expect(formula).to eq(expected_value)
+      end
+      it "returns abstract parsed tree" do
+        expected_value =
+        <<~HTML
+          som
+          <i>e</i>
+          <sub><i>g</i></sub>
+          <sup>(S)</sup>
+        HTML
+        expect(formula).to eq(expected_value.gsub(/\s/, ""))
       end
     end
 
     context "contains HTML math example #1" do
-      let(:string) { "abs(3)" }
-      it "returns abstract parsed tree" do
-        expected_value = Plurimath::Math::Formula.new([
+      let(:exp) do
+        Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Abs.new(
             Plurimath::Math::Formula.new([
               Plurimath::Math::Symbol.new("("),
@@ -117,14 +111,16 @@ RSpec.describe Plurimath::Html::Parser do
             ])
           )
         ])
+      end
+      it "returns abstract parsed tree" do
+        expected_value = "<i>abs</i><i>(3)</i>"
         expect(formula).to eq(expected_value)
       end
     end
 
     context "contains HTML math example #2" do
-      let(:string) { "abc[0]" }
-      it "returns abstract parsed tree" do
-        expected_value = Plurimath::Math::Formula.new([
+      let(:exp) do
+        Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Text.new("a"),
           Plurimath::Math::Function::Text.new("b"),
           Plurimath::Math::Formula.new([
@@ -136,14 +132,16 @@ RSpec.describe Plurimath::Html::Parser do
             ])
           ])
         ])
+      end
+      it "returns abstract parsed tree" do
+        expected_value = "abc[0]"
         expect(formula).to eq(expected_value)
       end
     end
 
     context "contains HTML math example #3" do
-      let(:string) { "abc{0}" }
-      it "returns abstract parsed tree" do
-        expected_value = Plurimath::Math::Formula.new([
+      let(:exp) do
+        Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Text.new("a"),
           Plurimath::Math::Function::Text.new("b"),
           Plurimath::Math::Formula.new([
@@ -155,14 +153,16 @@ RSpec.describe Plurimath::Html::Parser do
             ])
           ])
         ])
+      end
+      it "returns abstract parsed tree" do
+        expected_value = "abc{0}"
         expect(formula).to eq(expected_value)
       end
     end
 
     context "contains HTML math example #4" do
-      let(:string) { "abc(weatever text [and things])" }
-      it "returns abstract parsed tree" do
-        expected_value = Plurimath::Math::Formula.new([
+      let(:exp) do
+        Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Text.new("a"),
           Plurimath::Math::Function::Text.new("b"),
           Plurimath::Math::Formula.new([
@@ -201,14 +201,16 @@ RSpec.describe Plurimath::Html::Parser do
             ])
           ])
         ])
+      end
+      it "returns abstract parsed tree" do
+        expected_value = "abc(weatevertext[andthin<i>g</i><i>s</i>])"
         expect(formula).to eq(expected_value)
       end
     end
 
     context "contains HTML math example #5" do
-      let(:string) { "ϑ(t)" }
-      it "returns abstract parsed tree" do
-        expected_value = Plurimath::Math::Formula.new([
+      let(:exp) do
+        Plurimath::Math::Formula.new([
           Plurimath::Math::Symbol.new("ϑ"),
           Plurimath::Math::Formula.new([
             Plurimath::Math::Symbol.new("("),
@@ -216,79 +218,91 @@ RSpec.describe Plurimath::Html::Parser do
             Plurimath::Math::Symbol.new(")")
           ])
         ])
+      end
+      it "returns abstract parsed tree" do
+        expected_value = "ϑ(t)"
         expect(formula).to eq(expected_value)
       end
     end
 
     context "contains HTML math example #6" do
-      let(:string) { "<i>a</i><sup>2</sup>" }
-      it "returns abstract parsed tree" do
-        expected_value = Plurimath::Math::Formula.new([
+      let(:exp) do
+        Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Power.new(
             Plurimath::Math::Function::Text.new("a"),
             Plurimath::Math::Number.new("2")
           )
         ])
+      end
+      it "returns abstract parsed tree" do
+        expected_value = "<i>a</i><sup>2</sup>"
         expect(formula).to eq(expected_value)
       end
     end
 
     context "contains HTML math example #7" do
-      let(:string) { "<i>a</i><sub>2</sub>" }
-      it "returns abstract parsed tree" do
-        expected_value = Plurimath::Math::Formula.new([
+      let(:exp) do
+        Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Base.new(
             Plurimath::Math::Function::Text.new("a"),
             Plurimath::Math::Number.new("2")
           )
         ])
+      end
+      it "returns abstract parsed tree" do
+        expected_value = "<i>a</i><sub>2</sub>"
         expect(formula).to eq(expected_value)
       end
     end
 
     context "contains HTML math example #8" do
-      let(:string) { "<i>a</i><sup><i>n</i></sup>" }
-      it "returns abstract parsed tree" do
-        expected_value = Plurimath::Math::Formula.new([
+      let(:exp) do
+        Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Power.new(
             Plurimath::Math::Function::Text.new("a"),
             Plurimath::Math::Function::Text.new("n")
           )
         ])
+      end
+      it "returns abstract parsed tree" do
+        expected_value = "<i>a</i><sup>n</sup>"
         expect(formula).to eq(expected_value)
       end
     end
 
     context "contains HTML math example #9" do
-      let(:string) { "<i>a</i><sub><i>n</i></sub>" }
-      it "returns abstract parsed tree" do
-        expected_value = Plurimath::Math::Formula.new([
+      let(:exp) do
+        Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Base.new(
             Plurimath::Math::Function::Text.new("a"),
             Plurimath::Math::Function::Text.new("n")
           )
         ])
+      end
+      it "returns abstract parsed tree" do
+        expected_value = "<i>a</i><sub>n</sub>"
         expect(formula).to eq(expected_value)
       end
     end
 
     context "contains HTML math example #10" do
-      let(:string) { "2<sup>3</sup>" }
-      it "returns abstract parsed tree" do
-        expected_value = Plurimath::Math::Formula.new([
+      let(:exp) do
+        Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Power.new(
             Plurimath::Math::Number.new("2"),
             Plurimath::Math::Number.new("3")
           )
         ])
+      end
+      it "returns abstract parsed tree" do
+        expected_value = "<i>2</i><sup>3</sup>"
         expect(formula).to eq(expected_value)
       end
     end
 
     context "contains HTML math example #11" do
-      let(:string) { "2<sup>3+4</sup>" }
-      it "returns abstract parsed tree" do
-        expected_value = Plurimath::Math::Formula.new([
+      let(:exp) do
+        Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Power.new(
             Plurimath::Math::Number.new("2"),
             Plurimath::Math::Formula.new([
@@ -298,14 +312,16 @@ RSpec.describe Plurimath::Html::Parser do
             ])
           )
         ])
+      end
+      it "returns abstract parsed tree" do
+        expected_value = "<i>2</i><sup>3+4</sup>"
         expect(formula).to eq(expected_value)
       end
     end
 
     context "contains HTML math example #12" do
-      let(:string) { "2<sub>3+4</sub>" }
-      it "returns abstract parsed tree" do
-        expected_value = Plurimath::Math::Formula.new([
+      let(:exp) do
+        Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Base.new(
             Plurimath::Math::Number.new("2"),
             Plurimath::Math::Formula.new([
@@ -315,14 +331,16 @@ RSpec.describe Plurimath::Html::Parser do
             ])
           )
         ])
+      end
+      it "returns abstract parsed tree" do
+        expected_value = "<i>2</i><sub>3+4</sub>"
         expect(formula).to eq(expected_value)
       end
     end
 
     context "contains HTML math example #13" do
-      let(:string) { "<i>a</i><sub><i>b</i>+2</sub>" }
-      it "returns abstract parsed tree" do
-        expected_value = Plurimath::Math::Formula.new([
+      let(:exp) do
+        Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Base.new(
             Plurimath::Math::Function::Text.new("a"),
             Plurimath::Math::Formula.new([
@@ -332,14 +350,16 @@ RSpec.describe Plurimath::Html::Parser do
             ])
           )
         ])
+      end
+      it "returns abstract parsed tree" do
+        expected_value = "<i>a</i><sub>b+2</sub>"
         expect(formula).to eq(expected_value)
       end
     end
 
     context "contains HTML math example #14" do
-      let(:string) { "<i>a</i><sup>-2</sup>" }
-      it "returns abstract parsed tree" do
-        expected_value = Plurimath::Math::Formula.new([
+      let(:exp) do
+        Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Power.new(
             Plurimath::Math::Function::Text.new("a"),
             Plurimath::Math::Formula.new([
@@ -348,14 +368,16 @@ RSpec.describe Plurimath::Html::Parser do
             ])
           )
         ])
+      end
+      it "returns abstract parsed tree" do
+        expected_value = "<i>a</i><sup>-2</sup>"
         expect(formula).to eq(expected_value)
       end
     end
 
     context "contains HTML math example #15" do
-      let(:string) { "<i>a</i><sub>-2</sub>" }
-      it "returns abstract parsed tree" do
-        expected_value = Plurimath::Math::Formula.new([
+      let(:exp) do
+        Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Base.new(
             Plurimath::Math::Function::Text.new("a"),
             Plurimath::Math::Formula.new([
@@ -364,14 +386,16 @@ RSpec.describe Plurimath::Html::Parser do
             ])
           )
         ])
+      end
+      it "returns abstract parsed tree" do
+        expected_value = "<i>a</i><sub>-2</sub>"
         expect(formula).to eq(expected_value)
       end
     end
 
     context "contains HTML math example #16" do
-      let(:string) { "<i>a</i><sup>-<i>n</i></sup>" }
-      it "returns abstract parsed tree" do
-        expected_value = Plurimath::Math::Formula.new([
+      let(:exp) do
+        Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Power.new(
             Plurimath::Math::Function::Text.new("a"),
             Plurimath::Math::Formula.new([
@@ -380,14 +404,16 @@ RSpec.describe Plurimath::Html::Parser do
             ])
           )
         ])
+      end
+      it "returns abstract parsed tree" do
+        expected_value = "<i>a</i><sup>-n</sup>"
         expect(formula).to eq(expected_value)
       end
     end
 
     context "contains HTML math example #17" do
-      let(:string) { "<i>a</i><sub>-<i>n</i></sub>" }
-      it "returns abstract parsed tree" do
-        expected_value = Plurimath::Math::Formula.new([
+      let(:exp) do
+        Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Base.new(
             Plurimath::Math::Function::Text.new("a"),
             Plurimath::Math::Formula.new([
@@ -396,38 +422,32 @@ RSpec.describe Plurimath::Html::Parser do
             ])
           )
         ])
+      end
+      it "returns abstract parsed tree" do
+        expected_value = "<i>a</i><sub>-n</sub>"
         expect(formula).to eq(expected_value)
       end
     end
 
     context "contains HTML math example #18" do
-      let(:string) { "<i>a</i><sub><i>n</i></sub><sup>2</sup>" }
-      it "returns abstract parsed tree" do
-        expected_value = Plurimath::Math::Formula.new([
+      let(:exp) do
+        Plurimath::Math::Formula.new([
           Plurimath::Math::Function::PowerBase.new(
             Plurimath::Math::Function::Text.new("a"),
             Plurimath::Math::Function::Text.new("n"),
             Plurimath::Math::Number.new("2"),
           )
         ])
+      end
+      it "returns abstract parsed tree" do
+        expected_value = "<i>a</i><sub>n</sub><sup>2</sup>"
         expect(formula).to eq(expected_value)
       end
     end
 
     context "contains HTML math example #19" do
-      let(:string) do
-        <<~HTML
-          <i>a</i>
-          <sub>
-            <i>n+1</i>
-          </sub>
-          <sup>
-            <i>b</i>+<i>c</i>
-          </sup>
-        HTML
-      end
-      it "returns abstract parsed tree" do
-        expected_value = Plurimath::Math::Formula.new([
+      let(:exp) do
+        Plurimath::Math::Formula.new([
           Plurimath::Math::Function::PowerBase.new(
             Plurimath::Math::Function::Text.new("a"),
             Plurimath::Math::Formula.new([
@@ -442,14 +462,25 @@ RSpec.describe Plurimath::Html::Parser do
             ]),
           )
         ])
-        expect(formula).to eq(expected_value)
+      end
+      it "returns abstract parsed tree" do
+        expected_value =
+        <<~HTML
+          <i>a</i>
+          <sub>
+            n+1
+          </sub>
+          <sup>
+            b+c
+          </sup>
+        HTML
+        expect(formula).to eq(expected_value.gsub(/\s/, ""))
       end
     end
 
     context "contains HTML math example #20" do
-      let(:string) { "<i>f</i>(<i>x</x>)" }
-      it "returns abstract parsed tree" do
-        expected_value = Plurimath::Math::Formula.new([
+      let(:exp) do
+        Plurimath::Math::Formula.new([
           Plurimath::Math::Function::F.new(
             Plurimath::Math::Formula.new([
               Plurimath::Math::Symbol.new("("),
@@ -458,14 +489,16 @@ RSpec.describe Plurimath::Html::Parser do
             ])
           )
         ])
+      end
+      it "returns abstract parsed tree" do
+        expected_value = "<i>f</i><i>(x)</i>"
         expect(formula).to eq(expected_value)
       end
     end
 
     context "contains HTML math example #21" do
-      let(:string) { "<i>f</i>(<i>g</i>(<i>x</x>))" }
-      it "returns abstract parsed tree" do
-        expected_value = Plurimath::Math::Formula.new([
+      let(:exp) do
+        Plurimath::Math::Formula.new([
           Plurimath::Math::Function::F.new(
             Plurimath::Math::Formula.new([
               Plurimath::Math::Symbol.new("("),
@@ -480,14 +513,16 @@ RSpec.describe Plurimath::Html::Parser do
             ])
           )
         ])
+      end
+      it "returns abstract parsed tree" do
+        expected_value = "<i>f</i><i>(<i>g</i><i>(x)</i>)</i>"
         expect(formula).to eq(expected_value)
       end
     end
 
     context "contains HTML math example #22" do
-      let(:string) { "f&sum;(<i>n</i>)(<i>2</i>)" }
-      it "returns abstract parsed tree" do
-        expected_value = Plurimath::Math::Formula.new([
+      let(:exp) do
+        Plurimath::Math::Formula.new([
           Plurimath::Math::Formula.new([
             Plurimath::Math::Function::F.new(
               Plurimath::Math::Function::Sum.new
@@ -504,14 +539,16 @@ RSpec.describe Plurimath::Html::Parser do
             Plurimath::Math::Symbol.new(")")
           ])
         ])
+      end
+      it "returns abstract parsed tree" do
+        expected_value = "<i>f</i><i><i>&sum;</i></i>(n)(2)"
         expect(formula).to eq(expected_value)
       end
     end
 
     context "contains HTML math example #23" do
-      let(:string) { "fib(<i>n</i>)" }
-      it "returns abstract parsed tree" do
-        expected_value = Plurimath::Math::Formula.new([
+      let(:exp) do
+        Plurimath::Math::Formula.new([
           Plurimath::Math::Function::F.new(
             Plurimath::Math::Function::Text.new("i")
           ),
@@ -524,14 +561,16 @@ RSpec.describe Plurimath::Html::Parser do
             ])
           ])
         ])
+      end
+      it "returns abstract parsed tree" do
+        expected_value = "<i>f</i><i>i</i>b(n)"
         expect(formula).to eq(expected_value)
       end
     end
 
     context "contains HTML math example #24" do
-      let(:string) { "<i>f</i><sub>max</sub>" }
-      it "returns abstract parsed tree" do
-        expected_value = Plurimath::Math::Formula.new([
+      let(:exp) do
+        Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Base.new(
             Plurimath::Math::Function::F.new,
             Plurimath::Math::Formula.new([
@@ -541,58 +580,68 @@ RSpec.describe Plurimath::Html::Parser do
             ])
           )
         ])
+      end
+      it "returns abstract parsed tree" do
+        expected_value = "<i><i>f</i></i><sub>max</sub>"
         expect(formula).to eq(expected_value)
       end
     end
 
     context "contains HTML math example #25" do
-      let(:string) { "<i>&omega;</i>" }
-      it "returns abstract parsed tree" do
-        expected_value = Plurimath::Math::Formula.new([
+      let(:exp) do
+        Plurimath::Math::Formula.new([
           Plurimath::Math::Symbol.new("&omega;")
         ])
+      end
+      it "returns abstract parsed tree" do
+        expected_value = "&omega;"
         expect(formula).to eq(expected_value)
       end
     end
 
     context "contains HTML math example #26" do
-      let(:string) { "<i>&Omega;</i>" }
-      it "returns abstract parsed tree" do
-        expected_value = Plurimath::Math::Formula.new([
+      let(:exp) do
+        Plurimath::Math::Formula.new([
           Plurimath::Math::Symbol.new("&Omega;")
         ])
+      end
+      it "returns abstract parsed tree" do
+        expected_value = "&Omega;"
         expect(formula).to eq(expected_value)
       end
     end
 
     context "contains HTML math example #27" do
-      let(:string) { "αβγ" }
-      it "returns abstract parsed tree" do
-        expected_value = Plurimath::Math::Formula.new([
+      let(:exp) do
+        Plurimath::Math::Formula.new([
           Plurimath::Math::Symbol.new("α"),
           Plurimath::Math::Symbol.new("β"),
           Plurimath::Math::Symbol.new("γ")
         ])
+      end
+      it "returns abstract parsed tree" do
+        expected_value = "αβγ"
         expect(formula).to eq(expected_value)
       end
     end
 
     context "contains HTML math example #28" do
-      let(:string) { "абг" }
-      it "returns abstract parsed tree" do
-        expected_value = Plurimath::Math::Formula.new([
+      let(:exp) do
+        Plurimath::Math::Formula.new([
           Plurimath::Math::Symbol.new("а"),
           Plurimath::Math::Symbol.new("б"),
           Plurimath::Math::Symbol.new("г")
         ])
+      end
+      it "returns abstract parsed tree" do
+        expected_value = "абг"
         expect(formula).to eq(expected_value)
       end
     end
 
     context "contains HTML math example #29" do
-      let(:string) { "<i>f</i><sup>-1</sup>(<i>x</x>)" }
-      it "returns abstract parsed tree" do
-        expected_value = Plurimath::Math::Formula.new([
+      let(:exp) do
+        Plurimath::Math::Formula.new([
           Plurimath::Math::Function::F.new(
             Plurimath::Math::Formula.new([
               Plurimath::Math::Symbol.new("-"),
@@ -605,26 +654,30 @@ RSpec.describe Plurimath::Html::Parser do
             Plurimath::Math::Symbol.new(")")
           ])
         ])
+      end
+      it "returns abstract parsed tree" do
+        expected_value = "<i>f</i><i>-1</i>(x)"
         expect(formula).to eq(expected_value)
       end
     end
 
     context "contains HTML math example #30" do
-      let(:string) { "<sub>sth</sub>" }
-      it "returns abstract parsed tree" do
-        expected_value = Plurimath::Math::Formula.new([
+      let(:exp) do
+        Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Text.new("s"),
           Plurimath::Math::Function::Text.new("t"),
           Plurimath::Math::Function::Text.new("h")
         ])
+      end
+      it "returns abstract parsed tree" do
+        expected_value = "sth"
         expect(formula).to eq(expected_value)
       end
     end
 
     context "contains HTML math example #31" do
-      let(:string) { "root(<i>sth</i>)" }
-      it "returns abstract parsed tree" do
-        expected_value = Plurimath::Math::Formula.new([
+      let(:exp) do
+        Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Text.new("r"),
           Plurimath::Math::Function::Text.new("o"),
           Plurimath::Math::Function::Text.new("o"),
@@ -641,14 +694,16 @@ RSpec.describe Plurimath::Html::Parser do
             ])
           ])
         ])
+      end
+      it "returns abstract parsed tree" do
+        expected_value = "root(sth)"
         expect(formula).to eq(expected_value)
       end
     end
 
     context "contains HTML math example #32" do
-      let(:string) { "<table><tr><td>Something</td></tr></table>" }
-      it "returns abstract parsed tree" do
-        expected_value = Plurimath::Math::Formula.new([
+      let(:exp) do
+        Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Table.new([
             Plurimath::Math::Function::Tr.new([
               Plurimath::Math::Function::Td.new([
@@ -665,31 +720,16 @@ RSpec.describe Plurimath::Html::Parser do
             ])
           ])
         ])
+      end
+      it "returns abstract parsed tree" do
+        expected_value = "<table><tr><td>Somethin<i>g</i></td></tr></table>"
         expect(formula).to eq(expected_value)
       end
     end
 
     context "contains HTML math example #33" do
-      let(:string) do
-        <<~HTML
-          <table>
-            <tr>
-              <td>4</td>
-            </tr>
-            <tr>
-              <td>3</td>
-            </tr>
-            <tr>
-              <td>2</td>
-            </tr>
-            <tr>
-              <td>1</td>
-            </tr>
-          </table>
-        HTML
-      end
-      it "returns abstract parsed tree" do
-        expected_value = Plurimath::Math::Formula.new([
+      let(:exp) do
+        Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Table.new([
             Plurimath::Math::Function::Tr.new([
               Plurimath::Math::Function::Td.new([
@@ -713,31 +753,32 @@ RSpec.describe Plurimath::Html::Parser do
             ])
           ])
         ])
-        expect(formula).to eq(expected_value)
+      end
+      it "returns abstract parsed tree" do
+        expected_value =
+        <<~HTML
+          <table>
+            <tr>
+              <td>4</td>
+            </tr>
+            <tr>
+              <td>3</td>
+            </tr>
+            <tr>
+              <td>2</td>
+            </tr>
+            <tr>
+              <td>1</td>
+            </tr>
+          </table>
+        HTML
+        expect(formula).to eq(expected_value.gsub(/\s/, ""))
       end
     end
 
     context "contains HTML math example #34" do
-      let(:string) do
-        <<~HTML
-          <table>
-            <tr>
-              <td>so</td>
-            </tr>
-            <tr>
-              <td>es</td>
-            </tr>
-            <tr>
-              <td>&sum;</td>
-            </tr>
-            <tr>
-              <td>&prod;</td>
-            </tr>
-          </table>
-        HTML
-      end
-      it "returns abstract parsed tree" do
-        expected_value = Plurimath::Math::Formula.new([
+      let(:exp) do
+        Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Table.new([
             Plurimath::Math::Function::Tr.new([
               Plurimath::Math::Function::Td.new([
@@ -763,14 +804,32 @@ RSpec.describe Plurimath::Html::Parser do
             ])
           ])
         ])
-        expect(formula).to eq(expected_value)
+      end
+      it "returns abstract parsed tree" do
+        expected_value =
+        <<~HTML
+          <table>
+            <tr>
+              <td>so</td>
+            </tr>
+            <tr>
+              <td>es</td>
+            </tr>
+            <tr>
+              <td><i>&sum;</i></td>
+            </tr>
+            <tr>
+              <td><i>&prod;</i></td>
+            </tr>
+          </table>
+        HTML
+        expect(formula).to eq(expected_value.gsub(/\s/, ""))
       end
     end
 
     context "contains HTML math example #35" do
-      let(:string) { "&sum;<sub>drop</sub><sup>prod</sup>" }
-      it "returns abstract parsed tree" do
-        expected_value = Plurimath::Math::Formula.new([
+      let(:exp) do
+        Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Sum.new(
             Plurimath::Math::Formula.new([
               Plurimath::Math::Function::Text.new("d"),
@@ -786,14 +845,16 @@ RSpec.describe Plurimath::Html::Parser do
             ])
           )
         ])
+      end
+      it "returns abstract parsed tree" do
+        expected_value = "<i>&sum;</i><sub>drop</sub><sup>prod</sup>"
         expect(formula).to eq(expected_value)
       end
     end
 
     context "contains HTML math example #36" do
-      let(:string) { "&sum;<sub>drop</sub><sup>p</sup>" }
-      it "returns abstract parsed tree" do
-        expected_value = Plurimath::Math::Formula.new([
+      let(:exp) do
+        Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Sum.new(
             Plurimath::Math::Formula.new([
               Plurimath::Math::Function::Text.new("d"),
@@ -804,27 +865,31 @@ RSpec.describe Plurimath::Html::Parser do
             Plurimath::Math::Function::Text.new("p")
           )
         ])
+      end
+      it "returns abstract parsed tree" do
+        expected_value = "<i>&sum;</i><sub>drop</sub><sup>p</sup>"
         expect(formula).to eq(expected_value)
       end
     end
 
     context "contains HTML math example #37" do
-      let(:string) { "&sum;<sup>p</sup>" }
-      it "returns abstract parsed tree" do
-        expected_value = Plurimath::Math::Formula.new([
+      let(:exp) do
+        Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Sum.new(
             nil,
             Plurimath::Math::Function::Text.new("p")
           )
         ])
+      end
+      it "returns abstract parsed tree" do
+        expected_value = "<i>&sum;</i><sup>p</sup>"
         expect(formula).to eq(expected_value)
       end
     end
 
     context "contains HTML math example #38" do
-      let(:string) { "&sum;<sup>prod</sup>" }
-      it "returns abstract parsed tree" do
-        expected_value = Plurimath::Math::Formula.new([
+      let(:exp) do
+        Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Sum.new(
             nil,
             Plurimath::Math::Formula.new([
@@ -835,14 +900,16 @@ RSpec.describe Plurimath::Html::Parser do
             ])
           )
         ])
+      end
+      it "returns abstract parsed tree" do
+        expected_value = "<i>&sum;</i><sup>prod</sup>"
         expect(formula).to eq(expected_value)
       end
     end
 
     context "contains HTML math example #39" do
-      let(:string) { "&sum;<sub>prod</sub>" }
-      it "returns abstract parsed tree" do
-        expected_value = Plurimath::Math::Formula.new([
+      let(:exp) do
+        Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Sum.new(
             Plurimath::Math::Formula.new([
               Plurimath::Math::Function::Text.new("p"),
@@ -852,54 +919,62 @@ RSpec.describe Plurimath::Html::Parser do
             ])
           )
         ])
+      end
+      it "returns abstract parsed tree" do
+        expected_value = "<i>&sum;</i><sub>prod</sub>"
         expect(formula).to eq(expected_value)
       end
     end
 
     context "contains HTML math example #40" do
-      let(:string) { "2<sub>3</sub>" }
-      it "returns abstract parsed tree" do
-        expected_value = Plurimath::Math::Formula.new([
+      let(:exp) do
+        Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Base.new(
             Plurimath::Math::Number.new("2"),
             Plurimath::Math::Number.new("3")
           )
         ])
+      end
+      it "returns abstract parsed tree" do
+        expected_value = "<i>2</i><sub>3</sub>"
         expect(formula).to eq(expected_value)
       end
     end
 
     context "contains HTML math example #41" do
-      let(:string) { "&sum;<sub>3</sub><sup>5</sup>" }
-      it "returns abstract parsed tree" do
-        expected_value = Plurimath::Math::Formula.new([
+      let(:exp) do
+        Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Sum.new(
             Plurimath::Math::Number.new("3"),
             Plurimath::Math::Number.new("5")
           )
         ])
+      end
+      it "returns abstract parsed tree" do
+        expected_value = "<i>&sum;</i><sub>3</sub><sup>5</sup>"
         expect(formula).to eq(expected_value)
       end
     end
 
     context "contains HTML math example #42" do
-      let(:string) { "2<sub>3</sub><sup>5</sup>" }
-      it "returns abstract parsed tree" do
-        expected_value = Plurimath::Math::Formula.new([
+      let(:exp) do
+        Plurimath::Math::Formula.new([
           Plurimath::Math::Function::PowerBase.new(
             Plurimath::Math::Number.new("2"),
             Plurimath::Math::Number.new("3"),
             Plurimath::Math::Number.new("5"),
           )
         ])
+      end
+      it "returns abstract parsed tree" do
+        expected_value = "<i>2</i><sub>3</sub><sup>5</sup>"
         expect(formula).to eq(expected_value)
       end
     end
 
     context "contains HTML math example #43" do
-      let(:string) { "2<sub>so</sub><sup>we</sup>" }
-      it "returns abstract parsed tree" do
-        expected_value = Plurimath::Math::Formula.new([
+      let(:exp) do
+        Plurimath::Math::Formula.new([
           Plurimath::Math::Function::PowerBase.new(
             Plurimath::Math::Number.new("2"),
             Plurimath::Math::Formula.new([
@@ -912,14 +987,16 @@ RSpec.describe Plurimath::Html::Parser do
             ]),
           )
         ])
+      end
+      it "returns abstract parsed tree" do
+        expected_value = "<i>2</i><sub>so</sub><sup>we</sup>"
         expect(formula).to eq(expected_value)
       end
     end
 
     context "contains HTML math example #44" do
-      let(:string) { "2<sub>s</sub><sup>we</sup>" }
-      it "returns abstract parsed tree" do
-        expected_value = Plurimath::Math::Formula.new([
+      let(:exp) do
+        Plurimath::Math::Formula.new([
           Plurimath::Math::Function::PowerBase.new(
             Plurimath::Math::Number.new("2"),
             Plurimath::Math::Function::Text.new("s"),
@@ -929,14 +1006,16 @@ RSpec.describe Plurimath::Html::Parser do
             ]),
           )
         ])
+      end
+      it "returns abstract parsed tree" do
+        expected_value = "<i>2</i><sub>s</sub><sup>we</sup>"
         expect(formula).to eq(expected_value)
       end
     end
 
     context "contains HTML math example #45" do
-      let(:string) { "2<sub>so</sub><sup>w</sup>" }
-      it "returns abstract parsed tree" do
-        expected_value = Plurimath::Math::Formula.new([
+      let(:exp) do
+        Plurimath::Math::Formula.new([
           Plurimath::Math::Function::PowerBase.new(
             Plurimath::Math::Number.new("2"),
             Plurimath::Math::Formula.new([
@@ -946,14 +1025,16 @@ RSpec.describe Plurimath::Html::Parser do
             Plurimath::Math::Function::Text.new("w"),
           )
         ])
+      end
+      it "returns abstract parsed tree" do
+        expected_value = "<i>2</i><sub>so</sub><sup>w</sup>"
         expect(formula).to eq(expected_value)
       end
     end
 
     context "contains HTML math example #46" do
-      let(:string) { "s<sub>so</sub><sup>w</sup>" }
-      it "returns abstract parsed tree" do
-        expected_value = Plurimath::Math::Formula.new([
+      let(:exp) do
+        Plurimath::Math::Formula.new([
           Plurimath::Math::Function::PowerBase.new(
             Plurimath::Math::Function::Text.new("s"),
             Plurimath::Math::Formula.new([
@@ -963,14 +1044,16 @@ RSpec.describe Plurimath::Html::Parser do
             Plurimath::Math::Function::Text.new("w"),
           )
         ])
+      end
+      it "returns abstract parsed tree" do
+        expected_value = "<i>s</i><sub>so</sub><sup>w</sup>"
         expect(formula).to eq(expected_value)
       end
     end
 
     context "contains HTML math example #47" do
-      let(:string) { "s<sub>so</sub><sup>we</sup>" }
-      it "returns abstract parsed tree" do
-        expected_value = Plurimath::Math::Formula.new([
+      let(:exp) do
+        Plurimath::Math::Formula.new([
           Plurimath::Math::Function::PowerBase.new(
             Plurimath::Math::Function::Text.new("s"),
             Plurimath::Math::Formula.new([
@@ -983,14 +1066,16 @@ RSpec.describe Plurimath::Html::Parser do
             ]),
           )
         ])
+      end
+      it "returns abstract parsed tree" do
+        expected_value = "<i>s</i><sub>so</sub><sup>we</sup>"
         expect(formula).to eq(expected_value)
       end
     end
 
     context "contains HTML math example #48" do
-      let(:string) { "s<sub>s</sub><sup>we</sup>" }
-      it "returns abstract parsed tree" do
-        expected_value = Plurimath::Math::Formula.new([
+      let(:exp) do
+        Plurimath::Math::Formula.new([
           Plurimath::Math::Function::PowerBase.new(
             Plurimath::Math::Function::Text.new("s"),
             Plurimath::Math::Function::Text.new("s"),
@@ -1000,14 +1085,16 @@ RSpec.describe Plurimath::Html::Parser do
             ]),
           )
         ])
+      end
+      it "returns abstract parsed tree" do
+        expected_value = "<i>s</i><sub>s</sub><sup>we</sup>"
         expect(formula).to eq(expected_value)
       end
     end
 
     context "contains HTML math example #49" do
-      let(:string) { "<i>lim</i>(3)(e)" }
-      it "returns abstract parsed tree" do
-        expected_value = Plurimath::Math::Formula.new([
+      let(:exp) do
+        Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Lim.new(
             Plurimath::Math::Formula.new([
               Plurimath::Math::Symbol.new("("),
@@ -1021,14 +1108,16 @@ RSpec.describe Plurimath::Html::Parser do
             ])
           )
         ])
+      end
+      it "returns abstract parsed tree" do
+        expected_value = "<i>lim</i><i>(3)</i><i>(e)</i>"
         expect(formula).to eq(expected_value)
       end
     end
 
     context "contains HTML math example #50" do
-      let(:string) { "<i>lim</i>(3e)(em)" }
-      it "returns abstract parsed tree" do
-        expected_value = Plurimath::Math::Formula.new([
+      let(:exp) do
+        Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Lim.new(
             Plurimath::Math::Formula.new([
               Plurimath::Math::Symbol.new("("),
@@ -1044,14 +1133,16 @@ RSpec.describe Plurimath::Html::Parser do
             ])
           )
         ])
+      end
+      it "returns abstract parsed tree" do
+        expected_value = "<i>lim</i><i>(3e)</i><i>(em)</i>"
         expect(formula).to eq(expected_value)
       end
     end
 
     context "contains HTML math example #51" do
-      let(:string) { "<i>lim</i>(3am)(rest)" }
-      it "returns abstract parsed tree" do
-        expected_value = Plurimath::Math::Formula.new([
+      let(:exp) do
+        Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Lim.new(
             Plurimath::Math::Formula.new([
               Plurimath::Math::Symbol.new("("),
@@ -1070,53 +1161,61 @@ RSpec.describe Plurimath::Html::Parser do
             ])
           )
         ])
+      end
+      it "returns abstract parsed tree" do
+        expected_value = "<i>lim</i><i>(3am)</i><i>(rest)</i>"
         expect(formula).to eq(expected_value)
       end
     end
 
     context "contains HTML math example #52" do
-      let(:string) { "<i>log</i><sub>3</sub><sup>e</sup>" }
-      it "returns abstract parsed tree" do
-        expected_value = Plurimath::Math::Formula.new([
+      let(:exp) do
+        Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Log.new(
             Plurimath::Math::Number.new("3"),
             Plurimath::Math::Function::Text.new("e")
           )
         ])
+      end
+      it "returns abstract parsed tree" do
+        expected_value = "<i>log</i><sub>3</sub><sup>e</sup>"
         expect(formula).to eq(expected_value)
       end
     end
 
     context "contains HTML math example #53" do
-      let(:string) { "2<i>mod</i>e" }
-      it "returns abstract parsed tree" do
-        expected_value = Plurimath::Math::Formula.new([
+      let(:exp) do
+        Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Mod.new(
             Plurimath::Math::Number.new("2"),
             Plurimath::Math::Function::Text.new("e")
           )
         ])
+      end
+      it "returns abstract parsed tree" do
+        expected_value = "<i>2</i><i>mod</i><i>e</i>"
         expect(formula).to eq(expected_value)
       end
     end
 
     context "contains HTML math example #54" do
-      let(:string) { "<i>2</i><i>mod</i><i>e</i>" }
-      it "returns abstract parsed tree" do
-        expected_value = Plurimath::Math::Formula.new([
+      let(:exp) do
+        Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Mod.new(
             Plurimath::Math::Number.new("2"),
             Plurimath::Math::Function::Text.new("e")
           )
         ])
+      end
+      it "returns abstract parsed tree" do
+        expected_value = "<i>2</i><i>mod</i><i>e</i>"
         expect(formula).to eq(expected_value)
       end
     end
 
     context "contains HTML math example #55" do
-      let(:string) { "<i>2a</i><i>mod</i><i>em</i>" }
-      it "returns abstract parsed tree" do
-        expected_value = Plurimath::Math::Formula.new([
+      let(:exp) do
+        Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Mod.new(
             Plurimath::Math::Formula.new([
               Plurimath::Math::Number.new("2"),
@@ -1128,14 +1227,16 @@ RSpec.describe Plurimath::Html::Parser do
             ])
           )
         ])
+      end
+      it "returns abstract parsed tree" do
+        expected_value = "<i>2a</i><i>mod</i><i>em</i>"
         expect(formula).to eq(expected_value)
       end
     end
 
     context "contains HTML math example #56" do
-      let(:string) { "2a<i>mod</i>em" }
-      it "returns abstract parsed tree" do
-        expected_value = Plurimath::Math::Formula.new([
+      let(:exp) do
+        Plurimath::Math::Formula.new([
           Plurimath::Math::Number.new("2"),
           Plurimath::Math::Function::Mod.new(
             Plurimath::Math::Function::Text.new("a"),
@@ -1143,14 +1244,29 @@ RSpec.describe Plurimath::Html::Parser do
           ),
           Plurimath::Math::Function::Text.new("m")
         ])
+      end
+      it "returns abstract parsed tree" do
+        expected_value = "2<i>a</i><i>mod</i><i>e</i>m"
         expect(formula).to eq(expected_value)
       end
     end
 
-    context "should fail when a tag is not closed" do
-      let(:string) { "<sup>sth" }
+    context "contains HTML math example #57" do
+      let(:exp) do
+        Plurimath::Math::Formula.new([
+          Plurimath::Math::Function::Underover.new(
+            Plurimath::Math::Formula.new([
+              Plurimath::Math::Function::Text.new("A"),
+              Plurimath::Math::Number.new("1"),
+            ]),
+            Plurimath::Math::Symbol.new("ϑ"),
+            Plurimath::Math::Symbol.new("&"),
+          )
+        ])
+      end
       it "returns abstract parsed tree" do
-        expect{formula}.to raise_error(Parslet::ParseFailed)
+        expected_value = "<i>A1</i><i>ϑ</i><i>&</i>"
+        expect(formula).to eq(expected_value)
       end
     end
   end

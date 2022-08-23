@@ -38,6 +38,10 @@ module Plurimath
       def to_latex
         value.map(&:to_latex).join
       end
+
+      def to_html
+        value.map(&:to_html).join
+      end
     end
   end
 end

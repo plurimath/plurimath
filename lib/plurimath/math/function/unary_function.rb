@@ -32,6 +32,11 @@ module Plurimath
           "\\#{class_name}#{first_value}"
         end
 
+        def to_html
+          first_value = "<i>#{parameter_one.to_html}</i>" if parameter_one
+          "<i>#{class_name}</i>#{first_value}"
+        end
+
         def class_name
           self.class.name.split("::").last.downcase
         end

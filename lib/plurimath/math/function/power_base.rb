@@ -20,6 +20,13 @@ module Plurimath
           first_value  = "{#{first_value}}" if parameter_one.is_a?(Math::Formula)
           "#{first_value}_{#{second_value}}^{#{third_value}}"
         end
+
+        def to_html
+          first_value  = "<i>#{parameter_one.to_html}</i>"
+          second_value = "<sub>#{parameter_two.to_html}</sub>"
+          third_value  = "<sup>#{parameter_three.to_html}</sup>"
+          "#{first_value}#{second_value}#{third_value}"
+        end
       end
     end
   end

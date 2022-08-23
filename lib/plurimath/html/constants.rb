@@ -41,6 +41,7 @@ module Plurimath
         "&prod;": :prod,
         "&sum;": :sum,
         log: :log,
+        lim: :lim,
         "∏": :prod,
         "∑": :sum,
       }.freeze

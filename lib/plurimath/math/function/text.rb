@@ -26,6 +26,10 @@ module Plurimath
         def to_latex
           parameter_one
         end
+
+        def to_html
+          parameter_one
+        end
       end
     end
   end
