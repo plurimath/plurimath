@@ -3,6 +3,7 @@ require_relative "../../../lib/plurimath/math"
 RSpec.describe Plurimath::Html::Parser do
 
   describe ".parse" do
+
     subject(:formula) {
       described_class.new(string.gsub(/\s/, "")).parse
     }

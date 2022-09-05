@@ -14,7 +14,11 @@ module Plurimath
       end
 
       def to_asciimath
-        value
+        if Asciimath::Constants::SYMBOLS[value.to_sym].nil?
+          value
+        else
+          Asciimath::Constants::SYMBOLS[value.to_sym].to_s
+        end
       end
 
       def to_mathml_without_math_tag
@@ -32,6 +36,10 @@ module Plurimath
 
       def to_html
         value
+      end
+
+      def class_name
+        self.class.name.split("::").last.downcase
       end
     end
   end

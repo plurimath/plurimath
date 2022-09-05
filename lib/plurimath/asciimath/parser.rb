@@ -14,10 +14,11 @@ module Plurimath
 
       def parse
         nodes = Parse.new.parse(text)
-        transformed_tree = Plurimath::Asciimath::Transform.new.apply(nodes)
-        return transformed_tree if transformed_tree.is_a?(Plurimath::Math::Formula)
+        nodes = JSON.parse(nodes.to_json, symbolize_names: true)
+        transformed_tree = Transform.new.apply(nodes)
+        return transformed_tree if transformed_tree.is_a?(Math::Formula)
 
-        Plurimath::Math::Formula.new(transformed_tree)
+        Math::Formula.new(transformed_tree)
       end
     end
   end

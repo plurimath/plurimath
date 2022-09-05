@@ -382,36 +382,36 @@ RSpec.describe Plurimath::Latex::Parser do
         expected_value = Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Table::Matrix.new(
             [
-            Plurimath::Math::Function::Tr.new([
-              Plurimath::Math::Function::Td.new([
-                Plurimath::Math::Function::Base.new(
-                  Plurimath::Math::Function::Text.new("a"),
-                  Plurimath::Math::Number.new("1"),
-                )
+              Plurimath::Math::Function::Tr.new([
+                Plurimath::Math::Function::Td.new([
+                  Plurimath::Math::Function::Base.new(
+                    Plurimath::Math::Function::Text.new("a"),
+                    Plurimath::Math::Number.new("1"),
+                  )
+                ]),
+                Plurimath::Math::Function::Td.new([
+                  Plurimath::Math::Function::Base.new(
+                    Plurimath::Math::Function::Text.new("b"),
+                    Plurimath::Math::Number.new("2"),
+                  )
+                ]),
               ]),
-              Plurimath::Math::Function::Td.new([
-                Plurimath::Math::Function::Base.new(
-                  Plurimath::Math::Function::Text.new("b"),
-                  Plurimath::Math::Number.new("2"),
-                )
+              Plurimath::Math::Function::Tr.new([
+                Plurimath::Math::Function::Td.new([
+                  Plurimath::Math::Function::Base.new(
+                    Plurimath::Math::Function::Text.new("c"),
+                    Plurimath::Math::Number.new("1"),
+                  )
+                ]),
+                Plurimath::Math::Function::Td.new([
+                  Plurimath::Math::Function::Base.new(
+                    Plurimath::Math::Function::Text.new("d"),
+                    Plurimath::Math::Number.new("2"),
+                  )
+                ]),
               ]),
-            ]),
-            Plurimath::Math::Function::Tr.new([
-              Plurimath::Math::Function::Td.new([
-                Plurimath::Math::Function::Base.new(
-                  Plurimath::Math::Function::Text.new("c"),
-                  Plurimath::Math::Number.new("1"),
-                )
-              ]),
-              Plurimath::Math::Function::Td.new([
-                Plurimath::Math::Function::Base.new(
-                  Plurimath::Math::Function::Text.new("d"),
-                  Plurimath::Math::Number.new("2"),
-                )
-              ]),
-            ]),
           ],
-            nil,
+            "(",
             ")",
           )
         ])
@@ -555,8 +555,8 @@ RSpec.describe Plurimath::Latex::Parser do
                 ]),
               ]),
             ],
-            "{",
-            "}",
+            "[",
+            "]",
           )
         ])
         expect(formula).to eq(expected_value)
@@ -591,8 +591,8 @@ RSpec.describe Plurimath::Latex::Parser do
                 ]),
               ]),
             ],
-            "{",
-            "}",
+            "[",
+            "]",
           )
         ])
         expect(formula).to eq(expected_value)
@@ -697,7 +697,8 @@ RSpec.describe Plurimath::Latex::Parser do
                 ])
               ])
             ],
-            "norm["
+            "|",
+            "|",
           )
         ])
         expect(formula).to eq(expected_value)
@@ -1422,7 +1423,7 @@ RSpec.describe Plurimath::Latex::Parser do
                 ])
               ])
             ],
-            nil,
+            "[",
             "]",
           )
         ])
@@ -5291,7 +5292,7 @@ RSpec.describe Plurimath::Latex::Parser do
                 ])
               ])
             ],
-            nil,
+            "[",
             "]",
           )
         ])
@@ -9330,7 +9331,6 @@ RSpec.describe Plurimath::Latex::Parser do
         LATEX
       }
       it "returns formula" do
-        # binding.pry
         expected_value = Plurimath::Math::Formula.new([
           Plurimath::Math::Symbol.new("-"),
           Plurimath::Math::Symbol.new("&#x3C1;"),

@@ -541,18 +541,19 @@ RSpec.describe Plurimath::Mathml::Parser do
       <<~MATHML
         <math xmlns='http://www.w3.org/1998/Math/MathML'>
           <msubsup>
-                  <mo>a</mo>
-                  <mfenced open='{' close='}'>
-                    <mtable>
-                      <mtr>
-                        <mtd>
-                          <mn>1</mn>
-                        </mtd>
-                      </mtr>
-                    </mtable>
-                  </mfenced>
-                  <mtext>4 terms</mtext>
-                </msubsup>
+            <mo>a</mo>
+            <mfenced open='{' close='}'>
+              <mtable>
+                <mtr>
+                  <mtd>
+                    <mn>1</mn>
+                    <mn>1</mn>
+                  </mtd>
+                </mtr>
+              </mtable>
+            </mfenced>
+            <mtext>4 terms</mtext>
+          </msubsup>
         </math>
       MATHML
     }
@@ -566,6 +567,7 @@ RSpec.describe Plurimath::Mathml::Parser do
               Plurimath::Math::Function::Table.new([
                 Plurimath::Math::Function::Tr.new([
                   Plurimath::Math::Function::Td.new([
+                    Plurimath::Math::Number.new("1"),
                     Plurimath::Math::Number.new("1"),
                   ])
                 ]),
@@ -704,6 +706,27 @@ RSpec.describe Plurimath::Mathml::Parser do
     it "returns formula of ubrace" do
       expected_value = Plurimath::Math::Formula.new([
         Plurimath::Math::Function::Ubrace.new(
+          Plurimath::Math::Number.new("4"),
+        )
+      ])
+      expect(formula).to eq(expected_value)
+    end
+  end
+
+  context "contains mathml string of obrace formula" do
+    let(:exp) {
+      <<~MATHML
+        <math xmlns='http://www.w3.org/1998/Math/MathML'>
+          <munder>
+            <mn>4</mn>
+            <mo>&#x23DE;</mo>
+          </munder>
+        </math>
+      MATHML
+    }
+    it "returns formula of obrace" do
+      expected_value = Plurimath::Math::Formula.new([
+        Plurimath::Math::Function::Obrace.new(
           Plurimath::Math::Number.new("4"),
         )
       ])
@@ -974,6 +997,50 @@ RSpec.describe Plurimath::Mathml::Parser do
           Plurimath::Math::Symbol.new("d"),
           "bold",
         )
+      ])
+      expect(formula).to eq(expected_value)
+    end
+  end
+
+  context "contains mathml string of Mathbf formula" do
+    let(:exp) {
+      <<~MATHML
+        <math xmlns='http://www.w3.org/1998/Math/MathML'>
+          <msgroup>
+            <mi>33</mi>
+            <mtext>dd</mtext>0
+          </msgroup>
+        </math>
+      MATHML
+    }
+    it "returns formula of Mathbf" do
+      expected_value = Plurimath::Math::Formula.new([
+        Plurimath::Math::Formula.new([
+          Plurimath::Math::Number.new("33"),
+          Plurimath::Math::Function::Text.new("dd"),
+          Plurimath::Math::Number.new("0")
+        ])
+      ])
+      expect(formula).to eq(expected_value)
+    end
+  end
+
+  context "contains mathml string of Mathbf formula" do
+    let(:exp) {
+      <<~MATHML
+        <math xmlns='http://www.w3.org/1998/Math/MathML'>
+          <msgroup>
+            <mi>33</mi>
+            <mi>dd</mi>0
+          </msgroup>
+        </math>
+      MATHML
+    }
+    it "returns formula of Mathbf" do
+      expected_value = Plurimath::Math::Formula.new([
+        Plurimath::Math::Number.new("33"),
+        Plurimath::Math::Symbol.new("dd"),
+        Plurimath::Math::Number.new("0")
       ])
       expect(formula).to eq(expected_value)
     end

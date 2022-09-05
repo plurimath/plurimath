@@ -7,7 +7,7 @@ module Plurimath
     module Function
       class Table
         class Matrix < Table
-          def initialize(parameter_one,
+          def initialize(parameter_one = [],
                          parameter_two = "(",
                          parameter_three = ")")
             super

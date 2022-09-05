@@ -1,5 +1,9 @@
 # frozen_string_literal: true
 
+require "simplecov"
+SimpleCov.start
+require "pry"
+require_relative "utility"
 require_relative "unicode"
 require_relative "asciimath"
 require_relative "omml"
@@ -20,12 +24,13 @@ module Plurimath
     class Error < StandardError; end
 
     VALID_TYPES = {
-      unicode: Unicode,
-      asciimath: Asciimath,
       omml: Omml,
-      mathml: Mathml,
       html: Html,
       latex: Latex,
+      mathml: Mathml,
+      unitsml: Unitsml,
+      unicode: Unicode,
+      asciimath: Asciimath,
     }.freeze
 
     def parse(text, type)

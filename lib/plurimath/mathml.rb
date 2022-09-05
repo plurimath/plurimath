@@ -10,7 +10,7 @@ module Plurimath
     end
 
     def to_formula
-      Plurimath::Mathml::Parser.new(text).parse
+      Parser.new(text).parse
     end
   end
 end

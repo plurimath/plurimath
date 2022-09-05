@@ -2,22 +2,23 @@ require_relative '../../lib/plurimath/math'
 
 RSpec.describe Plurimath::Html do
 
-  describe ".to_formula" do
-    subject(:formula) { Plurimath::Html.new(string.gsub(/\s/, "")).to_html }
+  describe ".initialize" do
+    subject(:formula) { described_class.new(string.gsub(/\s/, "")) }
 
-    it 'matches the class object' do
-      html = Plurimath::Html.new('<h4> 1 + 3 </h4>')
-      expect(html).to be_a(Plurimath::Html)
-    end
+    context "matches class naem and text" do
+      let(:string) { '<h4> 1 + 3 </h4>' }
+      it 'matches the class object' do
+        expect(formula).to be_a(Plurimath::Html)
+      end
 
-    it 'contains passed html string' do
-      html = Plurimath::Html.new('<h4> 1 + 3 </h4>')
-      expect(html.text).to eql('<h4> 1 + 3 </h4>')
+      it 'contains passed html string' do
+        expect(formula.text).to eq(string.gsub(/\s/, ""))
+      end
     end
   end
 
   describe ".to_formula" do
-    subject(:formula) { Plurimath::Html.new(string.gsub(/\s/, "")).to_formula }
+    subject(:formula) { described_class.new(string.gsub(/\s/, "")).to_formula }
 
     context "contains basic simple html math equation and" do
       let(:string) { '<h4> 1 + 3 </h4>' }

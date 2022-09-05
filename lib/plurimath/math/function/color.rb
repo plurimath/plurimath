@@ -7,14 +7,14 @@ module Plurimath
     module Function
       class Color < BinaryFunction
         def to_mathml_without_math_tag
-          first_value = parameter_one.value if parameter_one
-          second_value = parameter_two.to_mathml_without_math_tag if parameter_two
+          first_value = parameter_one&.value
+          second_value = parameter_two&.to_mathml_without_math_tag
           "<mstyle mathcolor='#{first_value}'>#{second_value}</mstyle>"
         end
 
         def to_latex
-          first_value = parameter_one.to_latex if parameter_one
-          second_value = parameter_two.to_latex if parameter_two
+          first_value = parameter_one&.to_latex
+          second_value = parameter_two&.to_latex
           "\\#{class_name}{#{first_value}}#{second_value}"
         end
       end

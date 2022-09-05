@@ -290,38 +290,6 @@ module Plurimath
         double-struck
         bold
       ].freeze
-      FONT_TYPES = {
-        :bb=>"bold",
-        :fr=>"fraktur",
-        :cc=>"script",
-        :sf=>"sans-serif",
-        :tt=>"monospace",
-        :mbf=>"bold",
-        :mit=>"italic",
-        :mtt=>"monospace",
-        :Bbb=>"double-struck",
-        :bbb=>"double-struck",
-        :mscr=>"mathbb",
-        :mfrak=>"fraktur",
-        :msans=>"sans-serif",
-        :mbfit=>"bold italic",
-        :mathbf=>"bold",
-        :mathit=>"italic",
-        :mathds=>"mathbb",
-        :mathrm=>"mathrm",
-        :mathtt=>"monospace",
-        :mathsf=>"sans-serif",
-        :mathbb=>"double-struck",
-        :mbfsans=>"bold sans-serif",
-        :mathcal=>"script",
-        :mathbold=>"bold",
-        :mathfrak=>"fraktur",
-        :mathbfit=>"bold italic",
-        :mathsfbf=>"sans-serif bold",
-        :mathsfit=>"sans-serif italic",
-        :mbfitsans=>"bold italic sans-serif",
-        :mathsfbfit=>"sans-serif bold italic",
-      }.freeze
     end
   end
 end

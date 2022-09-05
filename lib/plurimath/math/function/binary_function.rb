@@ -28,14 +28,13 @@ module Plurimath
         end
 
         def to_mathml_without_math_tag
-          first_value = parameter_one.to_mathml_without_math_tag if parameter_one
-          second_value = parameter_two.to_mathml_without_math_tag if parameter_two
-          third_value = invert_unicode_symbols.empty? ? class_name : invert_unicode_symbols
-          "<mo>#{third_value}</mo>#{first_value}#{second_value}"
+          first_value = parameter_one&.to_mathml_without_math_tag
+          second_value = parameter_two&.to_mathml_without_math_tag
+          "<mo>#{invert_unicode_symbols}</mo>#{first_value}#{second_value}"
         end
 
         def invert_unicode_symbols
-          Mathml::Constants::UNICODE_SYMBOLS.invert[class_name].to_s
+          Mathml::Constants::UNICODE_SYMBOLS.invert[class_name] || class_name
         end
 
         def to_latex

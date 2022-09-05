@@ -1228,7 +1228,7 @@ RSpec.describe Plurimath::Math::Formula do
                   Plurimath::Math::Symbol.new("&#x22EF;"),
                 ]),
                 Plurimath::Math::Function::Td.new([
-                  Plurimath::Math::Function::Text.new("mbox{degreeoffreedom1,node1}")
+                  Plurimath::Math::Function::Text.new("\\mbox{degreeoffreedom1,node1}")
                 ]),
               ]),
               Plurimath::Math::Function::Tr.new([
@@ -1240,7 +1240,7 @@ RSpec.describe Plurimath::Math::Formula do
                   Plurimath::Math::Symbol.new("&#x22EF;"),
                 ]),
                 Plurimath::Math::Function::Td.new([
-                  Plurimath::Math::Function::Text.new("mbox{degreeoffreedom2,node2}")
+                  Plurimath::Math::Function::Text.new("\\mbox{degreeoffreedom2,node2}")
                 ]),
               ]),
             ],
@@ -1253,7 +1253,7 @@ RSpec.describe Plurimath::Math::Formula do
         ])
       }
       it "returns formula of sin from Latex string" do
-        expected_value = "\\begin{array}{ab}\\cdots&mbox{degreeoffreedom1,node1}\\\\&\\\\\\cdots&mbox{degreeoffreedom2,node2}\\end{array}"
+        expected_value = "\\begin{array}{ab}\\cdots&degreeoffreedom1,node1\\\\&\\\\\\cdots&degreeoffreedom2,node2\\end{array}"
         expect(formula).to eq(expected_value)
       end
     end
@@ -2982,7 +2982,7 @@ RSpec.describe Plurimath::Math::Formula do
               & & & d_{1212} &
               d_{1223} &
               d_{1231} \\\\
-              & \\mbox{symmetric} & & &
+              & symmetric & & &
               d_{2323} &
               d_{2331} \\\\
               & & & & & d_{3131}
@@ -3419,7 +3419,7 @@ RSpec.describe Plurimath::Math::Formula do
                 \\displaystyle{\\frac{1}{G_{12}}} &
                 0 &
                 0 \\\\3mm &
-                \\mbox{symmetric} & & &
+                symmetric & & &
                 \\displaystyle{\\frac{1}{G_{23}}} &
                 \\displaystyle{\\frac{\\nu_{23,31}}{G_{31}}} \\\\
                 3mm & & & & &
@@ -3604,7 +3604,7 @@ RSpec.describe Plurimath::Math::Formula do
                     ])
                   ]),
                   Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::Text.new("\\mbox{symmetric}")
+                    Plurimath::Math::Function::Text.new("symmetric")
                   ]),
                   Plurimath::Math::Function::Td.new([]),
                   Plurimath::Math::Function::Td.new([]),
@@ -3685,7 +3685,7 @@ RSpec.describe Plurimath::Math::Formula do
               0 &
               0 \\\\
               3mm &
-              \\mbox{symmetric} & & &
+              symmetric & & &
               \\displaystyle{\\frac{1}{G_{23}}} &
               0 \\\\
               3mm & & & & &
@@ -3987,7 +3987,7 @@ RSpec.describe Plurimath::Math::Formula do
               0 &
               0 \\\\
               3mm &
-              \\mbox{symmetric} & & &
+              symmetric & & &
               \\displaystyle{\\frac{1}{G_{tt}}} &
               0 \\\\
               3mm & & & & &
@@ -4253,7 +4253,7 @@ RSpec.describe Plurimath::Math::Formula do
               0 &
               0 \\\\
               3mm &
-              \\mbox{symmetric} & & &
+              symmetric & & &
               \\displaystyle{\\frac{1}{G_{tt}}} &
               0 \\\\
               3mm & & & & &
@@ -4482,7 +4482,7 @@ RSpec.describe Plurimath::Math::Formula do
               0 &
               0 \\\\
               3mm &
-              \\mbox{symmetric} & & &
+              symmetric & & &
               \\displaystyle{\\frac{1}{G}} &
               0 \\\\
               3mm & & & & &
@@ -4832,7 +4832,7 @@ RSpec.describe Plurimath::Math::Formula do
               & & & d_{1212} &
               d_{1223} &
               d_{1231} \\\\
-              & \\mbox{symmetric} &
+              & symmetric &
               & & d_{2323} &
               d_{2331} \\\\
               & & & & & d_{3131}
@@ -8830,12 +8830,12 @@ RSpec.describe Plurimath::Math::Formula do
             \\begin{array}{cc}
               & \\\\
               \\cdots &
-              \\mbox{degree of freedom 1, node 1} \\\\
+              degree of freedom 1, node 1 \\\\
               & \\\\
               & \\\\
               & \\\\
               \\cdots &
-              \\mbox{degree of freedom 2, node 2}
+              degree of freedom 2, node 2
             \\end{array} \\\\
             & \\\\
             \\begin{array}{cccccc}
@@ -8843,15 +8843,16 @@ RSpec.describe Plurimath::Math::Formula do
             \\end{array}
             & \\\\
             \\begin{array}{cccc}
-              & \\mbox{degree of} &
-              \\mbox{degree of} & \\\\
-              & \\mbox{freedom 1,} &
-              \\mbox{freedom 2,} & \\\\
-              & \\mbox{node 1} &
-              \\mbox{node 2} &
+              & degree of &
+              degree of & \\\\
+              & freedom 1, &
+              freedom 2, & \\\\
+              & node 1 &
+              node 2 &
             \\end{array} &
           \\end{array}
         LATEX
+        # binding.pry
         expect(formula).to eq(expected_value.gsub(/\s/, ""))
       end
     end
@@ -11414,6 +11415,545 @@ RSpec.describe Plurimath::Math::Formula do
       it "returns formula" do
         expected_value = "vecqxxhats=0"
         expect(formula).to eq(expected_value)
+      end
+    end
+
+    context "contains latex equation #163" do
+      let(:exp) {
+        Plurimath::Math::Formula.new([
+          Plurimath::Math::Function::Color.new(
+            Plurimath::Math::Function::Text.new("blue"),
+            Plurimath::Math::Function::Text.new("something")
+          )
+        ])
+      }
+      it "returns formula" do
+        expected_value = "\\color{blue}something"
+        expect(formula).to eq(expected_value)
+      end
+    end
+
+    context "contains latex equation #164" do
+      let(:exp) {
+        Plurimath::Math::Formula.new([
+          Plurimath::Math::Function::Text.new("c"),
+          Plurimath::Math::Symbol.new("="),
+          Plurimath::Math::Formula.new([
+            Plurimath::Math::Function::Left.new("["),
+            Plurimath::Math::Function::Table::Multline.new([
+              Plurimath::Math::Function::Tr.new([
+                Plurimath::Math::Function::Td.new([
+                  Plurimath::Math::Formula.new([
+                    Plurimath::Math::Function::FontStyle.new(
+                      Plurimath::Math::Symbol.new("-"),
+                      "displaystyle"
+                    ),
+                    Plurimath::Math::Function::Frac.new(
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Function::Power.new(
+                          Plurimath::Math::Symbol.new("&#x2202;"),
+                          Plurimath::Math::Number.new("2")
+                        ),
+                        Plurimath::Math::Function::Text.new("w")
+                      ]),
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Symbol.new("&#x2202;"),
+                        Plurimath::Math::Function::Power.new(
+                          Plurimath::Math::Function::Text.new("x"),
+                          Plurimath::Math::Number.new("2")
+                        )
+                      ])
+                    )
+                  ])
+                ]),
+                Plurimath::Math::Function::Td.new([
+                  Plurimath::Math::Formula.new([
+                    Plurimath::Math::Function::FontStyle.new(
+                      Plurimath::Math::Symbol.new("-"),
+                      "displaystyle"
+                    ),
+                    Plurimath::Math::Function::Frac.new(
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Function::Power.new(
+                          Plurimath::Math::Symbol.new("&#x2202;"),
+                          Plurimath::Math::Number.new("2")
+                        ),
+                        Plurimath::Math::Function::Text.new("w")
+                      ]),
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Symbol.new("&#x2202;"),
+                        Plurimath::Math::Function::Text.new("x"),
+                        Plurimath::Math::Symbol.new("&#x2202;"),
+                        Plurimath::Math::Function::Text.new("y")
+                      ])
+                    )
+                  ])
+                ])
+              ]),
+              Plurimath::Math::Function::Tr.new([
+                Plurimath::Math::Function::Td.new([
+                  Plurimath::Math::Formula.new([
+                    Plurimath::Math::Number.new("2"),
+                    Plurimath::Math::Function::Text.new("mm")
+                  ]),
+                  Plurimath::Math::Formula.new([
+                    Plurimath::Math::Function::FontStyle.new(
+                      Plurimath::Math::Symbol.new("-"),
+                      "displaystyle"
+                    ),
+                    Plurimath::Math::Function::Frac.new(
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Function::Power.new(
+                          Plurimath::Math::Symbol.new("&#x2202;"),
+                          Plurimath::Math::Number.new("2")
+                        ),
+                        Plurimath::Math::Function::Text.new("w")
+                      ]),
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Symbol.new("&#x2202;"),
+                        Plurimath::Math::Function::Text.new("x"),
+                        Plurimath::Math::Symbol.new("&#x2202;"),
+                        Plurimath::Math::Function::Text.new("y")
+                      ])
+                    )
+                  ])
+                ]),
+                Plurimath::Math::Function::Td.new([
+                  Plurimath::Math::Formula.new([
+                    Plurimath::Math::Function::FontStyle.new(
+                      Plurimath::Math::Symbol.new("-"),
+                      "displaystyle"
+                    ),
+                    Plurimath::Math::Function::Frac.new(
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Function::Power.new(
+                          Plurimath::Math::Symbol.new("&#x2202;"),
+                          Plurimath::Math::Number.new("2")
+                        ),
+                        Plurimath::Math::Function::Text.new("w")
+                      ]),
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Symbol.new("&#x2202;"),
+                        Plurimath::Math::Function::Power.new(
+                          Plurimath::Math::Function::Text.new("y"),
+                          Plurimath::Math::Number.new("2")
+                        )
+                      ])
+                    )
+                  ])
+                ])
+              ])
+            ]),
+            Plurimath::Math::Function::Right.new("]")
+          ])
+        ])
+      }
+      it "returns formula" do
+        expected_value =
+        <<~LATEX
+          c = \\left[
+                \\begin{multline}
+                  \\displaystyle{-} \\frac{\\partial^{2} w}{\\partial x^{2}} &
+                  \\displaystyle{-} \\frac{\\partial^{2} w}{\\partial x \\partial y} \\\\
+                  2mm\\displaystyle{-} \\frac{\\partial^{2} w}{\\partial x \\partial y}  &
+                  \\displaystyle{-} \\frac{\\partial^{2} w}{\\partial y^{2}}
+                \\end{multline}
+              \\right]
+        LATEX
+        expect(formula).to eq(expected_value.gsub(/\s/, ""))
+      end
+    end
+
+    context "contains latex equation #165" do
+      let(:exp) {
+        Plurimath::Math::Formula.new([
+          Plurimath::Math::Function::Text.new("c"),
+          Plurimath::Math::Symbol.new("="),
+          Plurimath::Math::Formula.new([
+            Plurimath::Math::Function::Left.new("["),
+            Plurimath::Math::Function::Table::Align.new([
+              Plurimath::Math::Function::Tr.new([
+                Plurimath::Math::Function::Td.new([
+                  Plurimath::Math::Formula.new([
+                    Plurimath::Math::Function::FontStyle.new(
+                      Plurimath::Math::Symbol.new("-"),
+                      "displaystyle"
+                    ),
+                    Plurimath::Math::Function::Frac.new(
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Function::Power.new(
+                          Plurimath::Math::Symbol.new("&#x2202;"),
+                          Plurimath::Math::Number.new("2")
+                        ),
+                        Plurimath::Math::Function::Text.new("w")
+                      ]),
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Symbol.new("&#x2202;"),
+                        Plurimath::Math::Function::Power.new(
+                          Plurimath::Math::Function::Text.new("x"),
+                          Plurimath::Math::Number.new("2")
+                        )
+                      ])
+                    )
+                  ])
+                ]),
+                Plurimath::Math::Function::Td.new([
+                  Plurimath::Math::Formula.new([
+                    Plurimath::Math::Function::FontStyle.new(
+                      Plurimath::Math::Symbol.new("-"),
+                      "displaystyle"
+                    ),
+                    Plurimath::Math::Function::Frac.new(
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Function::Power.new(
+                          Plurimath::Math::Symbol.new("&#x2202;"),
+                          Plurimath::Math::Number.new("2")
+                        ),
+                        Plurimath::Math::Function::Text.new("w")
+                      ]),
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Symbol.new("&#x2202;"),
+                        Plurimath::Math::Function::Text.new("x"),
+                        Plurimath::Math::Symbol.new("&#x2202;"),
+                        Plurimath::Math::Function::Text.new("y")
+                      ])
+                    )
+                  ])
+                ])
+              ]),
+              Plurimath::Math::Function::Tr.new([
+                Plurimath::Math::Function::Td.new([
+                  Plurimath::Math::Formula.new([
+                    Plurimath::Math::Number.new("2"),
+                    Plurimath::Math::Function::Text.new("mm")
+                  ]),
+                  Plurimath::Math::Formula.new([
+                    Plurimath::Math::Function::FontStyle.new(
+                      Plurimath::Math::Symbol.new("-"),
+                      "displaystyle"
+                    ),
+                    Plurimath::Math::Function::Frac.new(
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Function::Power.new(
+                          Plurimath::Math::Symbol.new("&#x2202;"),
+                          Plurimath::Math::Number.new("2")
+                        ),
+                        Plurimath::Math::Function::Text.new("w")
+                      ]),
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Symbol.new("&#x2202;"),
+                        Plurimath::Math::Function::Text.new("x"),
+                        Plurimath::Math::Symbol.new("&#x2202;"),
+                        Plurimath::Math::Function::Text.new("y")
+                      ])
+                    )
+                  ])
+                ]),
+                Plurimath::Math::Function::Td.new([
+                  Plurimath::Math::Formula.new([
+                    Plurimath::Math::Function::FontStyle.new(
+                      Plurimath::Math::Symbol.new("-"),
+                      "displaystyle"
+                    ),
+                    Plurimath::Math::Function::Frac.new(
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Function::Power.new(
+                          Plurimath::Math::Symbol.new("&#x2202;"),
+                          Plurimath::Math::Number.new("2")
+                        ),
+                        Plurimath::Math::Function::Text.new("w")
+                      ]),
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Symbol.new("&#x2202;"),
+                        Plurimath::Math::Function::Power.new(
+                          Plurimath::Math::Function::Text.new("y"),
+                          Plurimath::Math::Number.new("2")
+                        )
+                      ])
+                    )
+                  ])
+                ])
+              ])
+            ]),
+            Plurimath::Math::Function::Right.new("]")
+          ])
+        ])
+      }
+      it "returns formula" do
+        expected_value =
+        <<~LATEX
+          c = \\left[
+                \\begin{align}
+                  \\displaystyle{-} \\frac{\\partial^{2} w}{\\partial x^{2}} &
+                  \\displaystyle{-} \\frac{\\partial^{2} w}{\\partial x \\partial y} \\\\
+                  2mm\\displaystyle{-} \\frac{\\partial^{2} w}{\\partial x \\partial y}  &
+                  \\displaystyle{-} \\frac{\\partial^{2} w}{\\partial y^{2}}
+                \\end{align}
+              \\right]
+        LATEX
+        expect(formula).to eq(expected_value.gsub(/\s/, ""))
+      end
+    end
+
+    context "contains latex equation #166" do
+      let(:exp) {
+        Plurimath::Math::Formula.new([
+          Plurimath::Math::Function::Text.new("c"),
+          Plurimath::Math::Symbol.new("="),
+          Plurimath::Math::Formula.new([
+            Plurimath::Math::Function::Left.new("["),
+            Plurimath::Math::Function::Table::Matrix.new([
+              Plurimath::Math::Function::Tr.new([
+                Plurimath::Math::Function::Td.new([
+                  Plurimath::Math::Formula.new([
+                    Plurimath::Math::Function::FontStyle.new(
+                      Plurimath::Math::Symbol.new("-"),
+                      "displaystyle"
+                    ),
+                    Plurimath::Math::Function::Frac.new(
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Function::Power.new(
+                          Plurimath::Math::Symbol.new("&#x2202;"),
+                          Plurimath::Math::Number.new("2")
+                        ),
+                        Plurimath::Math::Function::Text.new("w")
+                      ]),
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Symbol.new("&#x2202;"),
+                        Plurimath::Math::Function::Power.new(
+                          Plurimath::Math::Function::Text.new("x"),
+                          Plurimath::Math::Number.new("2")
+                        )
+                      ])
+                    )
+                  ])
+                ]),
+                Plurimath::Math::Function::Td.new([
+                  Plurimath::Math::Formula.new([
+                    Plurimath::Math::Function::FontStyle.new(
+                      Plurimath::Math::Symbol.new("-"),
+                      "displaystyle"
+                    ),
+                    Plurimath::Math::Function::Frac.new(
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Function::Power.new(
+                          Plurimath::Math::Symbol.new("&#x2202;"),
+                          Plurimath::Math::Number.new("2")
+                        ),
+                        Plurimath::Math::Function::Text.new("w")
+                      ]),
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Symbol.new("&#x2202;"),
+                        Plurimath::Math::Function::Text.new("x"),
+                        Plurimath::Math::Symbol.new("&#x2202;"),
+                        Plurimath::Math::Function::Text.new("y")
+                      ])
+                    )
+                  ])
+                ])
+              ]),
+              Plurimath::Math::Function::Tr.new([
+                Plurimath::Math::Function::Td.new([
+                  Plurimath::Math::Formula.new([
+                    Plurimath::Math::Number.new("2"),
+                    Plurimath::Math::Function::Text.new("mm")
+                  ]),
+                  Plurimath::Math::Formula.new([
+                    Plurimath::Math::Function::FontStyle.new(
+                      Plurimath::Math::Symbol.new("-"),
+                      "displaystyle"
+                    ),
+                    Plurimath::Math::Function::Frac.new(
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Function::Power.new(
+                          Plurimath::Math::Symbol.new("&#x2202;"),
+                          Plurimath::Math::Number.new("2")
+                        ),
+                        Plurimath::Math::Function::Text.new("w")
+                      ]),
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Symbol.new("&#x2202;"),
+                        Plurimath::Math::Function::Text.new("x"),
+                        Plurimath::Math::Symbol.new("&#x2202;"),
+                        Plurimath::Math::Function::Text.new("y")
+                      ])
+                    )
+                  ])
+                ]),
+                Plurimath::Math::Function::Td.new([
+                  Plurimath::Math::Formula.new([
+                    Plurimath::Math::Function::FontStyle.new(
+                      Plurimath::Math::Symbol.new("-"),
+                      "displaystyle"
+                    ),
+                    Plurimath::Math::Function::Frac.new(
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Function::Power.new(
+                          Plurimath::Math::Symbol.new("&#x2202;"),
+                          Plurimath::Math::Number.new("2")
+                        ),
+                        Plurimath::Math::Function::Text.new("w")
+                      ]),
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Symbol.new("&#x2202;"),
+                        Plurimath::Math::Function::Power.new(
+                          Plurimath::Math::Function::Text.new("y"),
+                          Plurimath::Math::Number.new("2")
+                        )
+                      ])
+                    )
+                  ])
+                ])
+              ])
+            ]),
+            Plurimath::Math::Function::Right.new("]")
+          ])
+        ])
+      }
+      it "returns formula" do
+        expected_value =
+        <<~LATEX
+          c = \\left[
+                \\begin{matrix}
+                  \\displaystyle{-} \\frac{\\partial^{2} w}{\\partial x^{2}} &
+                  \\displaystyle{-} \\frac{\\partial^{2} w}{\\partial x \\partial y} \\\\
+                  2mm\\displaystyle{-} \\frac{\\partial^{2} w}{\\partial x \\partial y}  &
+                  \\displaystyle{-} \\frac{\\partial^{2} w}{\\partial y^{2}}
+                \\end{matrix}
+              \\right]
+        LATEX
+        expect(formula).to eq(expected_value.gsub(/\s/, ""))
+      end
+    end
+
+    context "contains latex equation #167" do
+      let(:exp) {
+        Plurimath::Math::Formula.new([
+          Plurimath::Math::Function::Text.new("c"),
+          Plurimath::Math::Symbol.new("="),
+          Plurimath::Math::Formula.new([
+            Plurimath::Math::Function::Left.new("["),
+            Plurimath::Math::Function::Table::Vmatrix.new([
+              Plurimath::Math::Function::Tr.new([
+                Plurimath::Math::Function::Td.new([
+                  Plurimath::Math::Formula.new([
+                    Plurimath::Math::Function::FontStyle.new(
+                      Plurimath::Math::Symbol.new("-"),
+                      "displaystyle"
+                    ),
+                    Plurimath::Math::Function::Frac.new(
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Function::Power.new(
+                          Plurimath::Math::Symbol.new("&#x2202;"),
+                          Plurimath::Math::Number.new("2")
+                        ),
+                        Plurimath::Math::Function::Text.new("w")
+                      ]),
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Symbol.new("&#x2202;"),
+                        Plurimath::Math::Function::Power.new(
+                          Plurimath::Math::Function::Text.new("x"),
+                          Plurimath::Math::Number.new("2")
+                        )
+                      ])
+                    )
+                  ])
+                ]),
+                Plurimath::Math::Function::Td.new([
+                  Plurimath::Math::Formula.new([
+                    Plurimath::Math::Function::FontStyle.new(
+                      Plurimath::Math::Symbol.new("-"),
+                      "displaystyle"
+                    ),
+                    Plurimath::Math::Function::Frac.new(
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Function::Power.new(
+                          Plurimath::Math::Symbol.new("&#x2202;"),
+                          Plurimath::Math::Number.new("2")
+                        ),
+                        Plurimath::Math::Function::Text.new("w")
+                      ]),
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Symbol.new("&#x2202;"),
+                        Plurimath::Math::Function::Text.new("x"),
+                        Plurimath::Math::Symbol.new("&#x2202;"),
+                        Plurimath::Math::Function::Text.new("y")
+                      ])
+                    )
+                  ])
+                ])
+              ]),
+              Plurimath::Math::Function::Tr.new([
+                Plurimath::Math::Function::Td.new([
+                  Plurimath::Math::Formula.new([
+                    Plurimath::Math::Number.new("2"),
+                    Plurimath::Math::Function::Text.new("mm")
+                  ]),
+                  Plurimath::Math::Formula.new([
+                    Plurimath::Math::Function::FontStyle.new(
+                      Plurimath::Math::Symbol.new("-"),
+                      "displaystyle"
+                    ),
+                    Plurimath::Math::Function::Frac.new(
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Function::Power.new(
+                          Plurimath::Math::Symbol.new("&#x2202;"),
+                          Plurimath::Math::Number.new("2")
+                        ),
+                        Plurimath::Math::Function::Text.new("w")
+                      ]),
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Symbol.new("&#x2202;"),
+                        Plurimath::Math::Function::Text.new("x"),
+                        Plurimath::Math::Symbol.new("&#x2202;"),
+                        Plurimath::Math::Function::Text.new("y")
+                      ])
+                    )
+                  ])
+                ]),
+                Plurimath::Math::Function::Td.new([
+                  Plurimath::Math::Formula.new([
+                    Plurimath::Math::Function::FontStyle.new(
+                      Plurimath::Math::Symbol.new("-"),
+                      "displaystyle"
+                    ),
+                    Plurimath::Math::Function::Frac.new(
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Function::Power.new(
+                          Plurimath::Math::Symbol.new("&#x2202;"),
+                          Plurimath::Math::Number.new("2")
+                        ),
+                        Plurimath::Math::Function::Text.new("w")
+                      ]),
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Symbol.new("&#x2202;"),
+                        Plurimath::Math::Function::Power.new(
+                          Plurimath::Math::Function::Text.new("y"),
+                          Plurimath::Math::Number.new("2")
+                        )
+                      ])
+                    )
+                  ])
+                ])
+              ])
+            ]),
+            Plurimath::Math::Function::Right.new("]")
+          ])
+        ])
+      }
+      it "returns formula" do
+        expected_value =
+        <<~LATEX
+          c = \\left[
+                \\begin{vmatrix}
+                  \\displaystyle{-} \\frac{\\partial^{2} w}{\\partial x^{2}} &
+                  \\displaystyle{-} \\frac{\\partial^{2} w}{\\partial x \\partial y} \\\\
+                  2mm\\displaystyle{-} \\frac{\\partial^{2} w}{\\partial x \\partial y}  &
+                  \\displaystyle{-} \\frac{\\partial^{2} w}{\\partial y^{2}}
+                \\end{vmatrix}
+              \\right]
+        LATEX
+        expect(formula).to eq(expected_value.gsub(/\s/, ""))
       end
     end
   end

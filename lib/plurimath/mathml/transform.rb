@@ -5,19 +5,19 @@ module Plurimath
     class Transform < Parslet::Transform
       rule(tag: simple(:tag))       { tag }
       rule(tag: sequence(:tag))     { tag }
-      rule(text: simple(:text))     { Plurimath::Math::Symbol.new(text.to_s) }
-      rule(class: simple(:string))  { Transform.get_class(string).new }
-      rule(number: simple(:number)) { Plurimath::Math::Number.new(number.to_s) }
-      rule(tag: sequence(:tag), sequence: simple(:sequence)) { tag + [sequence] }
-      rule(tag: simple(:tag), sequence: sequence(:sequence)) { [tag] + sequence }
-      rule(tag: sequence(:tag), sequence: sequence(:sequence)) { tag + sequence }
+      rule(text: simple(:text))     { Math::Symbol.new(text.to_s) }
+      rule(class: simple(:string))  { Utility.get_class(string).new }
+      rule(number: simple(:number)) { Math::Number.new(number.to_s) }
+      rule(tag: sequence(:tag), sequence: simple(:sequenc)) { tag + [sequenc] }
+      rule(tag: simple(:tag), sequence: sequence(:sequenc)) { [tag] + sequenc }
+      rule(tag: sequence(:tag), sequence: sequence(:sequenc)) { tag + sequenc }
 
       rule(quoted_text: simple(:quoted_text)) do
         text = quoted_text.to_s
         Constants::UNICODE_SYMBOLS.each do |code, string|
           text.gsub!(code.to_s, "unicode[:#{string}]")
         end
-        Plurimath::Math::Function::Text.new(text)
+        Math::Function::Text.new(text)
       end
 
       rule(
@@ -37,7 +37,7 @@ module Plurimath
         sequence: simple(:sequence),
         iteration: simple(:iteration),
       ) do
-        Plurimath::Math::Formula.new(tag + [sequence])
+        Math::Formula.new(tag + [sequence, iteration])
       end
 
       rule(
@@ -45,7 +45,7 @@ module Plurimath
         sequence: simple(:sequence),
         iteration: simple(:iteration),
       ) do
-        [tag, sequence]
+        iteration.size.zero? ? [tag, sequence] : [tag, sequence, iteration]
       end
 
       rule(tag: sequence(:tag), iteration: simple(:iteration)) do
@@ -72,19 +72,19 @@ module Plurimath
       rule(symbol: simple(:symbol)) do
         decoded_symbol = Constants::UNICODE_SYMBOLS[symbol.to_sym]
         if Constants::CLASSES.include?(decoded_symbol)
-          [Transform.get_class(decoded_symbol).new]
+          [Utility.get_class(decoded_symbol).new]
         elsif decoded_symbol.nil? && Constants::SYMBOLS[symbol.to_sym]
-          Plurimath::Math::Symbol.new(Constants::SYMBOLS[symbol.to_sym])
+          Math::Symbol.new(Constants::SYMBOLS[symbol.to_sym])
         else
-          Plurimath::Math::Symbol.new(decoded_symbol)
+          Math::Symbol.new(decoded_symbol)
         end
       end
 
       rule(name: simple(:name), value: simple(:value)) do
         if ["open", "close"].include?(name.to_s)
-          Plurimath::Math::Symbol.new(value.to_s)
+          Math::Symbol.new(value.to_s)
         elsif name.to_s == "mathcolor"
-          Plurimath::Math::Function::Color.new(value.to_s)
+          Math::Function::Color.new(value.to_s)
         elsif name.to_s == "mathvariant"
           value.to_s
         end
@@ -95,15 +95,10 @@ module Plurimath
         sequence: sequence(:sequence),
         iteration: simple(:iteration),
       ) do
-        tag_str = tag.to_s.split("::").last.downcase.to_sym
-        if Constants::BINARY_CLASSES.include?(tag_str)
-          tag.new(sequence.first, sequence.last)
-        else
-          new_arr = sequence.compact
-          new_arr = [tag] + new_arr unless tag.nil?
-          new_arr << iteration unless iteration.to_s.empty?
-          new_arr
-        end
+        new_arr = sequence.compact
+        new_arr = [tag] + new_arr unless tag.nil?
+        new_arr << iteration unless iteration.to_s.empty?
+        new_arr
       end
 
       rule(
@@ -112,47 +107,53 @@ module Plurimath
         iteration: sequence(:iteration),
         close: simple(:close_tag),
       ) do
-        Transform.raise_error!(open_tag, close_tag) unless open_tag == close_tag
+        Utility.raise_error!(open_tag, close_tag) unless open_tag == close_tag
 
         if open_tag == "mrow"
-          Plurimath::Math::Formula.new(iteration)
+          Math::Formula.new(iteration)
         elsif open_tag == "munder"
-          if Transform.get_class("obrace") == iteration.last.class
+          if iteration.last.class_name == "obrace"
             iteration.last.parameter_one = iteration.first
             iteration.last
           else
-            Plurimath::Math::Function::Underset.new(iteration[1], iteration[0])
+            Math::Function::Underset.new(iteration[1], iteration[0])
           end
         elsif open_tag == "munderover"
-          Plurimath::Math::Function::Underover.new(iteration[0], iteration[1], iteration[2])
+          Utility.get_class(open_tag.delete_prefix("m")).new(
+            iteration[0],
+            iteration[1],
+            iteration[2],
+          )
         elsif open_tag == "mover"
-          if Transform.get_class("ubrace") == iteration.last.class
+          if iteration.last.class_name == "ubrace"
             iteration.last.parameter_one = iteration.first
             iteration.last
           else
-            Plurimath::Math::Function::Overset.new(iteration[1], iteration[0])
+            Math::Function::Overset.new(iteration[1], iteration[0])
           end
-        elsif open_tag == "msup"
-          Plurimath::Math::Function::Power.new(iteration[0], iteration[1])
-        elsif open_tag == "msub"
-          Plurimath::Math::Function::Base.new(iteration[0], iteration[1])
+        elsif ["msub", "msup"].include?(open_tag)
+          tag = (open_tag == "msup" ? "power" : "base")
+          Utility.get_class(tag).new(iteration[0], iteration[1])
         elsif open_tag == "msubsup"
-          Plurimath::Math::Function::PowerBase.new(iteration[0], iteration[1], iteration[2])
+          Math::Function::PowerBase.new(iteration[0],
+                                        iteration[1],
+                                        iteration[2])
         elsif open_tag == "mfrac"
-          Plurimath::Math::Function::Frac.new(iteration.first, iteration.last)
+          Math::Function::Frac.new(iteration.first, iteration.last)
         elsif open_tag == "msqrt"
-          Plurimath::Math::Function::Sqrt.new(iteration.first)
+          Math::Function::Sqrt.new(iteration.first)
         elsif open_tag == "mroot"
-          Plurimath::Math::Function::Root.new(iteration[0], iteration[1])
+          Math::Function::Root.new(iteration[0], iteration[1])
         elsif open_tag == "mfenced"
-          Plurimath::Math::Function::Fenced.new(attributes[0], iteration, attributes[1])
-        elsif open_tag == "mtable"
-          Plurimath::Math::Function::Table.new(iteration)
-        elsif open_tag == "mtr"
-          Plurimath::Math::Function::Tr.new(iteration)
-        elsif open_tag == "mtd"
-          Plurimath::Math::Function::Td.new(iteration)
-        elsif attributes.first.is_a?(Plurimath::Math::Function::Color)
+          Math::Function::Fenced.new(
+            attributes[0],
+            iteration,
+            attributes[1],
+          )
+        elsif ["mtr", "mtd", "mtable"].include?(open_tag)
+          tag = open_tag.delete_prefix("m")
+          Utility.get_class(tag).new(iteration)
+        elsif attributes.first.is_a?(Math::Function::Color)
           attributes.first.parameter_two = iteration.first
           attributes.first
         elsif open_tag == "mstyle" && !attributes.compact.empty?
@@ -171,24 +172,13 @@ module Plurimath
         iteration: simple(:iteration),
         close: simple(:close_tag),
       ) do
-        Transform.raise_error!(open_tag, close_tag) unless open_tag == close_tag
+        Utility.raise_error!(open_tag, close_tag) unless open_tag == close_tag
 
         if iteration.to_s.include?("Function")
           iteration
         else
           [iteration.to_s.empty? ? nil : iteration]
         end
-      end
-
-      def self.get_class(text)
-        Object.const_get("Plurimath::Math::Function::#{text.to_s.capitalize}")
-      end
-
-      def self.raise_error!(open_tag, close_tag)
-        message = "Please check your input."\
-                  " Opening tag is \"#{open_tag}\""\
-                  " and closing tag is \"#{close_tag}\""
-        raise Plurimath::Math::Error.new(message)
       end
     end
   end
