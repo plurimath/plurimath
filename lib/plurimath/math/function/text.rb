@@ -38,6 +38,10 @@ module Plurimath
             end
           end
         end
+
+        def to_html
+          parameter_one
+        end
       end
     end
   end
