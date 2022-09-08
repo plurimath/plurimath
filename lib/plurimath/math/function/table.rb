@@ -21,7 +21,8 @@ module Plurimath
 
         def to_mathml_without_math_tag
           table_value = parameter_one.map(&:to_mathml_without_math_tag).join
-          if Latex::Constants::PARENTHESIS.key?(parameter_two) || parameter_two == "|"
+          parenthesis = Latex::Constants::PARENTHESIS
+          if parenthesis.key?(parameter_two) || parameter_two == "|"
             "<mfenced open='#{parameter_two}' close='#{parameter_three}'>"\
               "<mtable>#{table_value}</mtable></mfenced>"
           elsif parameter_two == "norm["
@@ -34,10 +35,7 @@ module Plurimath
         def to_latex
           first_value = parameter_one&.map(&:to_latex)&.join("\\\\")
           environment = latex_environment
-          divider     = "{#{parameter_three&.map(&:to_latex)&.join}}" if environment == "array"
-          "\\begin{#{environment}}"\
-            "#{divider}#{first_value}"\
-            "\\end{#{environment}}"
+          "\\begin{#{environment}}#{first_value}\\end{#{environment}}"
         end
 
         def latex_environment

@@ -5,17 +5,27 @@ module Plurimath
     class Transform < Parslet::Transform
       rule(tag: simple(:tag))       { tag }
       rule(tag: sequence(:tag))     { tag }
-      rule(text: simple(:text))     { Math::Symbol.new(text.to_s) }
+      rule(text: simple(:text))     { Math::Symbol.new(text) }
       rule(class: simple(:string))  { Utility.get_class(string).new }
-      rule(number: simple(:number)) { Math::Number.new(number.to_s) }
-      rule(tag: sequence(:tag), sequence: simple(:sequenc)) { tag + [sequenc] }
-      rule(tag: simple(:tag), sequence: sequence(:sequenc)) { [tag] + sequenc }
-      rule(tag: sequence(:tag), sequence: sequence(:sequenc)) { tag + sequenc }
+      rule(number: simple(:number)) { Math::Number.new(number) }
+
+      rule(tag: sequence(:tag), sequence: simple(:sequence)) do
+        tag + [sequence]
+      end
+
+      rule(tag: simple(:tag), sequence: sequence(:sequence)) do
+        [tag] + sequence
+      end
+
+      rule(tag: sequence(:tag), sequence: sequence(:sequence)) do
+        tag + sequence
+      end
 
       rule(quoted_text: simple(:quoted_text)) do
-        text = quoted_text.to_s
-        Constants::UNICODE_SYMBOLS.each do |code, string|
-          text.gsub!(code.to_s, "unicode[:#{string}]")
+        text = quoted_text
+        symbols = Constants::UNICODE_SYMBOLS.transform_keys(&:to_s)
+        symbols.each do |code, string|
+          text.gsub!(code, "unicode[:#{string}]")
         end
         Math::Function::Text.new(text)
       end
@@ -81,12 +91,12 @@ module Plurimath
       end
 
       rule(name: simple(:name), value: simple(:value)) do
-        if ["open", "close"].include?(name.to_s)
-          Math::Symbol.new(value.to_s)
-        elsif name.to_s == "mathcolor"
-          Math::Function::Color.new(value.to_s)
-        elsif name.to_s == "mathvariant"
-          value.to_s
+        if ["open", "close"].include?(name)
+          Math::Symbol.new(value)
+        elsif name == "mathcolor"
+          Math::Function::Color.new(value)
+        elsif name == "mathvariant"
+          value
         end
       end
 
@@ -157,9 +167,14 @@ module Plurimath
           attributes.first.parameter_two = iteration.first
           attributes.first
         elsif open_tag == "mstyle" && !attributes.compact.empty?
-          font_type = attributes.compact.last.to_sym
-          if Constants::FONT_CLASSES.include?(font_type)
-            Math::Function::FontStyle.new(iteration.last, font_type.to_s)
+          font_type = attributes.compact.last
+          if Utility::FONT_STYLES.key?(font_type.to_sym)
+            Utility::FONT_STYLES[font_type.to_sym].new(
+              iteration.last,
+              font_type,
+            )
+          else
+            Math::Function::FontStyle.new(iteration.last, font_type)
           end
         else
           iteration

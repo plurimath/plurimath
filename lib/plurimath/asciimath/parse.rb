@@ -8,13 +8,14 @@ module Plurimath
       rule(:base)  { str("_").as(:_) }
       rule(:power) { str("^").as(:^) }
       rule(:comma) { (str(",") >> space) | str(",") }
-      rule(:symbols) { arr_to_expression(Constants::SYMBOLS.values, :symbol) }
+
+      rule(:symbols)    { arr_to_expression(Constants::SYMBOLS.keys, :symbol) }
       rule(:font_style) { arr_to_expression(Constants::FONT_STYLES, :fonts) }
-      rule(:unary_functions) { arr_to_expression(Constants::UNARY_CLASSES) }
+
+      rule(:unary_functions)  { arr_to_expression(Constants::UNARY_CLASSES) }
       rule(:binary_functions) { arr_to_expression(Constants::BINARY_CLASSES) }
 
-      rule(:left_right_open_paren) { str("(") | str("[") }
-
+      rule(:left_right_open_paren)  { str("(") | str("[") }
       rule(:left_right_close_paren) { str(")") | str("]") }
 
       rule(:left_right) do

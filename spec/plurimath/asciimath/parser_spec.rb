@@ -932,7 +932,7 @@ RSpec.describe Plurimath::Asciimath::Parser do
 
       it "returns prod formula" do
         expected_value = Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::FontStyle.new(
+          Plurimath::Math::Function::FontStyle::Fraktur.new(
             Plurimath::Math::Function::Text.new("theta"),
             "mathfrak",
           ),
@@ -947,7 +947,7 @@ RSpec.describe Plurimath::Asciimath::Parser do
 
       it "returns prod formula" do
         expected_value = Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::FontStyle.new(
+          Plurimath::Math::Function::FontStyle::DoubleStruck.new(
             Plurimath::Math::Function::Text.new("theta"),
             "mathbb",
           ),
@@ -962,7 +962,7 @@ RSpec.describe Plurimath::Asciimath::Parser do
 
       it "returns prod formula" do
         expected_value = Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::FontStyle.new(
+          Plurimath::Math::Function::FontStyle::Script.new(
             Plurimath::Math::Symbol.new("theta"),
             "cc",
           ),

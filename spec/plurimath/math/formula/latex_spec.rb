@@ -8852,7 +8852,6 @@ RSpec.describe Plurimath::Math::Formula do
             \\end{array} &
           \\end{array}
         LATEX
-        # binding.pry
         expect(formula).to eq(expected_value.gsub(/\s/, ""))
       end
     end

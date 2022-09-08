@@ -828,5 +828,35 @@ RSpec.describe Plurimath::Math::Formula do
         expect(formula).to eq(expected_value.gsub(/\s/, ""))
       end
     end
+
+    context "contains mathml string bold text" do
+      let(:exp) {
+        Plurimath::Math::Formula.new([
+          Plurimath::Math::Function::Root.new(
+            Plurimath::Math::Function::Text.new("Some"),
+            Plurimath::Math::Function::FontStyle::Bold.new(
+              Plurimath::Math::Function::Text.new("thing"),
+              "bold",
+            )
+          )
+        ])
+      }
+      it "returns string of bold text" do
+        expected_value =
+        <<~MATHML
+          <math xmlns='http://www.w3.org/1998/Math/MathML' display='block'>
+            <mstyle displaystyle='true'>
+              <mroot>
+                <mtext>Some</mtext>
+                <mstyle mathvariant='bold'>
+                  <mtext>thing</mtext>
+                </mstyle>
+              </mroot>
+            </mstyle>
+          </math>
+        MATHML
+        expect(formula).to eq(expected_value.gsub(/\s/, ""))
+      end
+    end
   end
 end

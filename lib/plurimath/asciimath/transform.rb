@@ -82,7 +82,7 @@ module Plurimath
 
       rule(fonts: simple(:font_style),
            intermediate_exp: simple(:int_exp)) do
-        Math::Function::FontStyle.new(
+        Utility::FONT_STYLES[font_style.to_sym].new(
           int_exp,
           font_style,
         )
@@ -90,7 +90,7 @@ module Plurimath
 
       rule(fonts: simple(:font_style),
            text: simple(:text)) do
-        Math::Function::FontStyle.new(
+        Utility::FONT_STYLES[font_style.to_sym].new(
           Math::Function::Text.new(text),
           font_style,
         )

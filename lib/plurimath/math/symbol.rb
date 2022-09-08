@@ -14,11 +14,8 @@ module Plurimath
       end
 
       def to_asciimath
-        if Asciimath::Constants::SYMBOLS[value.to_sym].nil?
-          value
-        else
-          Asciimath::Constants::SYMBOLS[value.to_sym].to_s
-        end
+        symbol = Asciimath::Constants::SYMBOLS.invert[value.to_sym].to_s
+        symbol.empty? ? value : symbol
       end
 
       def to_mathml_without_math_tag
@@ -30,8 +27,8 @@ module Plurimath
       end
 
       def to_latex
-        symbols = Latex::Constants::SYMBOLS
-        symbols.invert.key?(value) ? "\\#{symbols.invert[value]}" : value
+        symbols = Latex::Constants::SYMBOLS.invert
+        symbols.key?(value) ? "\\#{symbols[value]}" : value
       end
 
       def to_html

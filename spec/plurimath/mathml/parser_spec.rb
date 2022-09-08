@@ -888,7 +888,7 @@ RSpec.describe Plurimath::Mathml::Parser do
     }
     it "returns formula of mathfrak" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Function::FontStyle.new(
+        Plurimath::Math::Function::FontStyle::Fraktur.new(
           Plurimath::Math::Function::F.new,
           "fraktur",
         )
@@ -909,7 +909,7 @@ RSpec.describe Plurimath::Mathml::Parser do
     }
     it "returns formula of Mathsf" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Function::FontStyle.new(
+        Plurimath::Math::Function::FontStyle::SansSerif.new(
           Plurimath::Math::Function::F.new,
           "sans-serif",
         )
@@ -930,7 +930,7 @@ RSpec.describe Plurimath::Mathml::Parser do
     }
     it "returns formula of Mathtt" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Function::FontStyle.new(
+        Plurimath::Math::Function::FontStyle::Monospace.new(
           Plurimath::Math::Function::F.new,
           "monospace",
         )
@@ -951,7 +951,7 @@ RSpec.describe Plurimath::Mathml::Parser do
     }
     it "returns formula of Mathcal" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Function::FontStyle.new(
+        Plurimath::Math::Function::FontStyle::Script.new(
           Plurimath::Math::Function::F.new,
           "script",
         )
@@ -972,7 +972,7 @@ RSpec.describe Plurimath::Mathml::Parser do
     }
     it "returns formula of Mathbb" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Function::FontStyle.new(
+        Plurimath::Math::Function::FontStyle::DoubleStruck.new(
           Plurimath::Math::Symbol.new("s"),
           "double-struck",
         )
@@ -993,9 +993,30 @@ RSpec.describe Plurimath::Mathml::Parser do
     }
     it "returns formula of Mathbf" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Function::FontStyle.new(
+        Plurimath::Math::Function::FontStyle::Bold.new(
           Plurimath::Math::Symbol.new("d"),
           "bold",
+        )
+      ])
+      expect(formula).to eq(expected_value)
+    end
+  end
+
+  context "contains mathml string of random string as font style asci formula" do
+    let(:exp) {
+      <<~MATHML
+        <math xmlns='http://www.w3.org/1998/Math/MathML'>
+          <mstyle mathvariant="asci">
+            <mi>d</mi>
+          </mstyle>
+        </math>
+      MATHML
+    }
+    it "returns FontStyle with second value asci" do
+      expected_value = Plurimath::Math::Formula.new([
+        Plurimath::Math::Function::FontStyle.new(
+          Plurimath::Math::Symbol.new("d"),
+          "asci",
         )
       ])
       expect(formula).to eq(expected_value)

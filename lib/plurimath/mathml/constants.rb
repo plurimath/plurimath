@@ -283,11 +283,11 @@ module Plurimath
         log
       ].freeze
       FONT_CLASSES = %i[
-        fraktur
+        double-struck
         sans-serif
         monospace
+        fraktur
         script
-        double-struck
         bold
       ].freeze
     end

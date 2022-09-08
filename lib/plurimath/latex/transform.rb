@@ -161,10 +161,17 @@ module Plurimath
 
       rule(fonts: simple(:fonts),
            intermediate_exp: simple(:int_exp)) do
-        Math::Function::FontStyle.new(
-          int_exp,
-          fonts,
-        )
+        if Utility::FONT_STYLES[fonts.to_sym]
+          Utility::FONT_STYLES[fonts.to_sym].new(
+            int_exp,
+            fonts,
+          )
+        else
+          Math::Function::FontStyle.new(
+            int_exp,
+            fonts,
+          )
+        end
       end
 
       rule(number: simple(:number),
@@ -226,12 +233,40 @@ module Plurimath
       rule(fonts: simple(:fonts),
            intermediate_exp: simple(:int_exp),
            supscript: simple(:supscript)) do
+        font_style = if Utility::FONT_STYLES[fonts.to_sym].nil?
+                       Math::Function::FontStyle.new(
+                         int_exp,
+                         fonts,
+                       )
+                     else
+                       Utility::FONT_STYLES[fonts.to_sym].new(
+                         int_exp,
+                         fonts,
+                       )
+                     end
         Math::Function::Power.new(
-          Math::Function::FontStyle.new(
-            int_exp,
-            fonts,
-          ),
+          font_style,
           supscript,
+        )
+      end
+
+      rule(fonts: simple(:fonts),
+           intermediate_exp: simple(:int_exp),
+           subscript: simple(:subscript)) do
+        font_style = if Utility::FONT_STYLES[fonts.to_sym].nil?
+                       Math::Function::FontStyle.new(
+                         int_exp,
+                         fonts,
+                       )
+                     else
+                       Utility::FONT_STYLES[fonts.to_sym].new(
+                         int_exp,
+                         fonts,
+                       )
+                     end
+        Math::Function::Base.new(
+          font_style,
+          subscript,
         )
       end
 
@@ -287,6 +322,16 @@ module Plurimath
         Math::Function::Power.new(
           Math::Formula.new(expr),
           supscript,
+        )
+      end
+
+      rule(lparen: simple(:lparen),
+           expression: simple(:expr),
+           rparen: simple(:rparen),
+           subscript: simple(:subscript)) do
+        Math::Function::Base.new(
+          Math::Formula.new(expr),
+          subscript,
         )
       end
 

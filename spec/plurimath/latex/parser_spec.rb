@@ -4060,7 +4060,7 @@ RSpec.describe Plurimath::Latex::Parser do
         expect(formula).to eq(expected_value)
       end
     end
-# set counting numbers
+    # set counting numbers
 
     context "contains latex equation #29" do
       let(:string) {
@@ -6636,7 +6636,7 @@ RSpec.describe Plurimath::Latex::Parser do
           Plurimath::Math::Function::Text.new("B"),
           Plurimath::Math::Symbol.new("'"),
           Plurimath::Math::Symbol.new("&#x3A;"),
-          Plurimath::Math::Function::FontStyle.new(
+          Plurimath::Math::Function::FontStyle::Bold.new(
             Plurimath::Math::Function::Text.new("u"),
             "bf"
           )
@@ -6665,7 +6665,7 @@ RSpec.describe Plurimath::Latex::Parser do
           Plurimath::Math::Symbol.new("&#x3A;"),
           Plurimath::Math::Function::Power.new(
             Plurimath::Math::Formula.new([
-              Plurimath::Math::Function::FontStyle.new(
+              Plurimath::Math::Function::FontStyle::Bold.new(
                 Plurimath::Math::Function::Text.new("u"),
                 "bf"
               )
@@ -6694,7 +6694,7 @@ RSpec.describe Plurimath::Latex::Parser do
           Plurimath::Math::Symbol.new("&#x3A;"),
           Plurimath::Math::Function::Text.new("ds"),
           Plurimath::Math::Symbol.new("&#x3B;"),
-          Plurimath::Math::Function::FontStyle.new(
+          Plurimath::Math::Function::FontStyle::Bold.new(
             Plurimath::Math::Function::Text.new("u"),
             "bf"
           )
@@ -6733,7 +6733,7 @@ RSpec.describe Plurimath::Latex::Parser do
           Plurimath::Math::Symbol.new("="),
           Plurimath::Math::Function::Text.new("B"),
           Plurimath::Math::Symbol.new("&#x3A;"),
-          Plurimath::Math::Function::FontStyle.new(
+          Plurimath::Math::Function::FontStyle::Bold.new(
             Plurimath::Math::Function::Text.new("u"),
             "bf"
           )
@@ -6761,7 +6761,7 @@ RSpec.describe Plurimath::Latex::Parser do
           Plurimath::Math::Symbol.new("&#x3A;"),
           Plurimath::Math::Function::Power.new(
             Plurimath::Math::Formula.new([
-              Plurimath::Math::Function::FontStyle.new(
+              Plurimath::Math::Function::FontStyle::Bold.new(
                 Plurimath::Math::Function::Text.new("u"),
                 "bf"
               )
@@ -6792,7 +6792,7 @@ RSpec.describe Plurimath::Latex::Parser do
           Plurimath::Math::Symbol.new("&#x3A;"),
           Plurimath::Math::Function::Text.new("ds"),
           Plurimath::Math::Symbol.new("&#x3B;"),
-          Plurimath::Math::Function::FontStyle.new(
+          Plurimath::Math::Function::FontStyle::Bold.new(
             Plurimath::Math::Function::Text.new("u"),
             "bf"
           )
@@ -7711,30 +7711,30 @@ RSpec.describe Plurimath::Latex::Parser do
       }
       it "returns formula" do
         expected_value = Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::FontStyle.new(
+          Plurimath::Math::Function::FontStyle::Bold.new(
             Plurimath::Math::Function::Text.new("y"),
             "bf"
           ),
           Plurimath::Math::Symbol.new("&#x22C5;"),
-          Plurimath::Math::Function::FontStyle.new(
+          Plurimath::Math::Function::FontStyle::Bold.new(
             Plurimath::Math::Function::Text.new("d"),
             "bf"
           ),
           Plurimath::Math::Symbol.new(">"),
-          Plurimath::Math::Function::FontStyle.new(
+          Plurimath::Math::Function::FontStyle::Bold.new(
             Plurimath::Math::Function::Text.new("tolerance"),
             "bf"
           ),
           Plurimath::Math::Symbol.new("&#x2C;"),
           Plurimath::Math::Symbol.new("|"),
-          Plurimath::Math::Function::FontStyle.new(
+          Plurimath::Math::Function::FontStyle::Bold.new(
             Plurimath::Math::Function::Text.new("y"),
             "bf"
           ),
           Plurimath::Math::Symbol.new("|"),
           Plurimath::Math::Symbol.new("&#x2C;"),
           Plurimath::Math::Symbol.new("|"),
-          Plurimath::Math::Function::FontStyle.new(
+          Plurimath::Math::Function::FontStyle::Bold.new(
             Plurimath::Math::Function::Text.new("d"),
             "bf"
           ),
@@ -7752,18 +7752,18 @@ RSpec.describe Plurimath::Latex::Parser do
       }
       it "returns formula" do
         expected_value = Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::FontStyle.new(
+          Plurimath::Math::Function::FontStyle::Bold.new(
             Plurimath::Math::Function::Text.new("z"),
             "bf"
           ),
           Plurimath::Math::Symbol.new("="),
           Plurimath::Math::Symbol.new("&#x27E8;"),
-          Plurimath::Math::Function::FontStyle.new(
+          Plurimath::Math::Function::FontStyle::Bold.new(
             Plurimath::Math::Function::Text.new("x"),
             "bf"
           ),
           Plurimath::Math::Symbol.new("&#xD7;"),
-          Plurimath::Math::Function::FontStyle.new(
+          Plurimath::Math::Function::FontStyle::Bold.new(
             Plurimath::Math::Function::Text.new("d"),
             "bf"
           ),
@@ -7781,30 +7781,30 @@ RSpec.describe Plurimath::Latex::Parser do
       }
       it "returns formula" do
         expected_value = Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::FontStyle.new(
+          Plurimath::Math::Function::FontStyle::Bold.new(
             Plurimath::Math::Function::Text.new("x"),
             "bf"
           ),
           Plurimath::Math::Symbol.new("&#x22C5;"),
-          Plurimath::Math::Function::FontStyle.new(
+          Plurimath::Math::Function::FontStyle::Bold.new(
             Plurimath::Math::Function::Text.new("X"),
             "bf"
           ),
           Plurimath::Math::Symbol.new(">"),
-          Plurimath::Math::Function::FontStyle.new(
+          Plurimath::Math::Function::FontStyle::Bold.new(
             Plurimath::Math::Function::Text.new("tolerance"),
             "bf"
           ),
           Plurimath::Math::Symbol.new("&#x2C;"),
           Plurimath::Math::Symbol.new("|"),
-          Plurimath::Math::Function::FontStyle.new(
+          Plurimath::Math::Function::FontStyle::Bold.new(
             Plurimath::Math::Function::Text.new("x"),
             "bf"
           ),
           Plurimath::Math::Symbol.new("|"),
           Plurimath::Math::Symbol.new("&#x2C;"),
           Plurimath::Math::Symbol.new("|"),
-          Plurimath::Math::Function::FontStyle.new(
+          Plurimath::Math::Function::FontStyle::Bold.new(
             Plurimath::Math::Function::Text.new("X"),
             "bf"
           ),
@@ -8000,7 +8000,7 @@ RSpec.describe Plurimath::Latex::Parser do
       }
       it "returns formula" do
         expected_value = Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::FontStyle.new(
+          Plurimath::Math::Function::FontStyle::Bold.new(
             Plurimath::Math::Function::Power.new(
               Plurimath::Math::Function::Text.new("x"),
               Plurimath::Math::Symbol.new("&#x2032;")
@@ -8009,12 +8009,12 @@ RSpec.describe Plurimath::Latex::Parser do
           ),
           Plurimath::Math::Symbol.new("="),
           Plurimath::Math::Symbol.new("&#x27E8;"),
-          Plurimath::Math::Function::FontStyle.new(
+          Plurimath::Math::Function::FontStyle::Bold.new(
             Plurimath::Math::Symbol.new("&#x3B7;"),
             "bf"
           ),
           Plurimath::Math::Symbol.new("&#xD7;"),
-          Plurimath::Math::Function::FontStyle.new(
+          Plurimath::Math::Function::FontStyle::Bold.new(
             Plurimath::Math::Symbol.new("&#x3B6;"),
             "bf"
           ),
@@ -8032,7 +8032,7 @@ RSpec.describe Plurimath::Latex::Parser do
       }
       it "returns formula" do
         expected_value = Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::FontStyle.new(
+          Plurimath::Math::Function::FontStyle::Bold.new(
             Plurimath::Math::Function::Power.new(
               Plurimath::Math::Function::Text.new("z"),
               Plurimath::Math::Symbol.new("&#x2032;")
@@ -8040,7 +8040,7 @@ RSpec.describe Plurimath::Latex::Parser do
             "bf"
           ),
           Plurimath::Math::Symbol.new("="),
-          Plurimath::Math::Function::FontStyle.new(
+          Plurimath::Math::Function::FontStyle::Bold.new(
             Plurimath::Math::Symbol.new("&#x3B6;"),
             "bf"
           )
@@ -8052,28 +8052,28 @@ RSpec.describe Plurimath::Latex::Parser do
     context "contains latex equation #93" do
       let(:string) {
         <<~LATEX
-          \\bf{z^\\prime} = \\langle \\bf{\\xi} \\times \\bf{\\eta} \\rangle
+          \\mathtt{z^\\prime} = \\langle \\bf{\\xi} \\times \\mathsf{\\eta} \\rangle
         LATEX
       }
       it "returns formula" do
         expected_value = Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::FontStyle.new(
+          Plurimath::Math::Function::FontStyle::Monospace.new(
             Plurimath::Math::Function::Power.new(
               Plurimath::Math::Function::Text.new("z"),
               Plurimath::Math::Symbol.new("&#x2032;")
             ),
-            "bf"
+            "mathtt"
           ),
           Plurimath::Math::Symbol.new("="),
           Plurimath::Math::Symbol.new("&#x27E8;"),
-          Plurimath::Math::Function::FontStyle.new(
+          Plurimath::Math::Function::FontStyle::Bold.new(
             Plurimath::Math::Symbol.new("&#x3BE;"),
             "bf"
           ),
           Plurimath::Math::Symbol.new("&#xD7;"),
-          Plurimath::Math::Function::FontStyle.new(
+          Plurimath::Math::Function::FontStyle::SansSerif.new(
             Plurimath::Math::Symbol.new("&#x3B7;"),
-            "bf"
+            "mathsf"
           ),
           Plurimath::Math::Symbol.new("&#x27E9;")
         ])
@@ -8089,7 +8089,7 @@ RSpec.describe Plurimath::Latex::Parser do
       }
       it "returns formula" do
         expected_value = Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::FontStyle.new(
+          Plurimath::Math::Function::FontStyle::Bold.new(
             Plurimath::Math::Function::Power.new(
               Plurimath::Math::Function::Text.new("y"),
               Plurimath::Math::Symbol.new("&#x2032;")
@@ -8097,7 +8097,7 @@ RSpec.describe Plurimath::Latex::Parser do
             "bf"
           ),
           Plurimath::Math::Symbol.new("="),
-          Plurimath::Math::Function::FontStyle.new(
+          Plurimath::Math::Function::FontStyle::Bold.new(
             Plurimath::Math::Symbol.new("&#x3B7;"),
             "bf"
           )
@@ -8114,7 +8114,7 @@ RSpec.describe Plurimath::Latex::Parser do
       }
       it "returns formula" do
         expected_value = Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::FontStyle.new(
+          Plurimath::Math::Function::FontStyle::Bold.new(
             Plurimath::Math::Function::Power.new(
               Plurimath::Math::Function::Text.new("y"),
               Plurimath::Math::Symbol.new("&#x2032;")
@@ -8123,12 +8123,12 @@ RSpec.describe Plurimath::Latex::Parser do
           ),
           Plurimath::Math::Symbol.new("="),
           Plurimath::Math::Symbol.new("&#x27E8;"),
-          Plurimath::Math::Function::FontStyle.new(
+          Plurimath::Math::Function::FontStyle::Bold.new(
             Plurimath::Math::Symbol.new("&#x3B6;"),
             "bf"
           ),
           Plurimath::Math::Symbol.new("&#xD7;"),
-          Plurimath::Math::Function::FontStyle.new(
+          Plurimath::Math::Function::FontStyle::Bold.new(
             Plurimath::Math::Symbol.new("&#x3BE;"),
             "bf"
           ),
@@ -8146,7 +8146,7 @@ RSpec.describe Plurimath::Latex::Parser do
       }
       it "returns formula" do
         expected_value = Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::FontStyle.new(
+          Plurimath::Math::Function::FontStyle::Bold.new(
             Plurimath::Math::Function::Power.new(
               Plurimath::Math::Function::Text.new("x"),
               Plurimath::Math::Symbol.new("&#x2032;")
@@ -8154,7 +8154,7 @@ RSpec.describe Plurimath::Latex::Parser do
             "bf"
           ),
           Plurimath::Math::Symbol.new("="),
-          Plurimath::Math::Function::FontStyle.new(
+          Plurimath::Math::Function::FontStyle::Bold.new(
             Plurimath::Math::Symbol.new("&#x3BE;"),
             "bf"
           )
@@ -9963,7 +9963,7 @@ RSpec.describe Plurimath::Latex::Parser do
             ")",
           ),
           Plurimath::Math::Symbol.new("="),
-          Plurimath::Math::Function::FontStyle.new(
+          Plurimath::Math::Function::FontStyle::Bold.new(
             Plurimath::Math::Function::Text.new("T"),
             "bf"
           ),
@@ -10086,7 +10086,7 @@ RSpec.describe Plurimath::Latex::Parser do
     context "contains latex equation #147" do
       let(:string) {
         <<~LATEX
-          f =    {\\bf F}^{t}  \\:
+          f = {\\bf F}^{t} \\:
           \\left(
             \\begin{array}{c}
               n_y \\\\
@@ -10101,7 +10101,7 @@ RSpec.describe Plurimath::Latex::Parser do
           Plurimath::Math::Symbol.new("="),
           Plurimath::Math::Function::Power.new(
             Plurimath::Math::Formula.new([
-              Plurimath::Math::Function::FontStyle.new(
+              Plurimath::Math::Function::FontStyle::Bold.new(
                 Plurimath::Math::Function::Text.new("F"),
                 "bf",
               )
@@ -10155,7 +10155,7 @@ RSpec.describe Plurimath::Latex::Parser do
           Plurimath::Math::Symbol.new("="),
           Plurimath::Math::Function::Power.new(
             Plurimath::Math::Formula.new([
-              Plurimath::Math::Function::FontStyle.new(
+              Plurimath::Math::Function::FontStyle::Bold.new(
                 Plurimath::Math::Function::Text.new("M"),
                 "bf"
               )
@@ -10209,7 +10209,7 @@ RSpec.describe Plurimath::Latex::Parser do
       }
       it "returns formula" do
         expected_value = Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::FontStyle.new(
+          Plurimath::Math::Function::FontStyle::Bold.new(
             Plurimath::Math::Function::Text.new("c"),
             "bf"
           ),
@@ -10358,7 +10358,7 @@ RSpec.describe Plurimath::Latex::Parser do
     context "contains latex equation #151" do
       let(:string) {
         <<~LATEX
-          f =  \\bf{F}^{t}  \\:
+          f = \\bf{F}^{t} \\:
           \\left(
             \\begin{array}{c}
               n_x \\\\
@@ -10372,7 +10372,7 @@ RSpec.describe Plurimath::Latex::Parser do
           Plurimath::Math::Function::Text.new("f"),
           Plurimath::Math::Symbol.new("="),
           Plurimath::Math::Function::Power.new(
-            Plurimath::Math::Function::FontStyle.new(
+            Plurimath::Math::Function::FontStyle::Bold.new(
               Plurimath::Math::Function::Text.new("F"),
               "bf"
             ),
@@ -11051,6 +11051,125 @@ RSpec.describe Plurimath::Latex::Parser do
           Plurimath::Math::Function::Text.new("vecqxxhats"),
           Plurimath::Math::Symbol.new("="),
           Plurimath::Math::Number.new("0")
+        ])
+        expect(formula).to eq(expected_value)
+      end
+    end
+
+    context "contains latex equation #163" do
+      let(:string) {
+        <<~LATEX
+          \\mathsf{y_\\prime} = \\mathtt{F}
+          {\\mathtt F}^{t} {\\mathtt F}_{t}
+        LATEX
+      }
+      it "returns formula" do
+        expected_value = Plurimath::Math::Formula.new([
+          Plurimath::Math::Function::FontStyle::SansSerif.new(
+            Plurimath::Math::Function::Base.new(
+              Plurimath::Math::Function::Text.new("y"),
+              Plurimath::Math::Symbol.new("&#x2032;")
+            ),
+            "mathsf"
+          ),
+          Plurimath::Math::Symbol.new("="),
+          Plurimath::Math::Function::FontStyle::Monospace.new(
+            Plurimath::Math::Function::Text.new("F"),
+            "mathtt"
+          ),
+          Plurimath::Math::Function::Power.new(
+            Plurimath::Math::Formula.new([
+              Plurimath::Math::Function::FontStyle::Monospace.new(
+                Plurimath::Math::Function::Text.new("F"),
+                "mathtt"
+              )
+            ]),
+            Plurimath::Math::Function::Text.new("t")
+          ),
+          Plurimath::Math::Function::Base.new(
+            Plurimath::Math::Formula.new([
+              Plurimath::Math::Function::FontStyle::Monospace.new(
+                Plurimath::Math::Function::Text.new("F"),
+                "mathtt"
+              )
+            ]),
+            Plurimath::Math::Function::Text.new("t")
+          )
+        ])
+        expect(formula).to eq(expected_value)
+      end
+    end
+
+    context "contains latex equation #164" do
+      let(:string) {
+        <<~LATEX
+          f = \\bf{F}_{t} \\:
+          \\mbfit{F}^{t} \\:
+          \\mathrm{F}_{t} \\:
+          \\left(
+            \\begin{array}{c}
+              n_x \\\\
+              n_y
+            \\end{array}
+          \\right)
+        LATEX
+      }
+      it "returns formula" do
+        expected_value = Plurimath::Math::Formula.new([
+          Plurimath::Math::Function::Text.new("f"),
+          Plurimath::Math::Symbol.new("="),
+          Plurimath::Math::Function::Base.new(
+            Plurimath::Math::Function::FontStyle::Bold.new(
+              Plurimath::Math::Function::Text.new("F"),
+              "bf"
+            ),
+            Plurimath::Math::Function::Text.new("t")
+          ),
+          Plurimath::Math::Symbol.new("&#x3A;"),
+          Plurimath::Math::Function::Power.new(
+            Plurimath::Math::Function::FontStyle.new(
+              Plurimath::Math::Function::Text.new("F"),
+              "mbfit"
+            ),
+            Plurimath::Math::Function::Text.new("t")
+          ),
+          Plurimath::Math::Symbol.new("&#x3A;"),
+          Plurimath::Math::Function::Base.new(
+            Plurimath::Math::Function::FontStyle.new(
+              Plurimath::Math::Function::Text.new("F"),
+              "mathrm"
+            ),
+            Plurimath::Math::Function::Text.new("t")
+          ),
+          Plurimath::Math::Symbol.new("&#x3A;"),
+          Plurimath::Math::Formula.new([
+            Plurimath::Math::Function::Left.new("("),
+            Plurimath::Math::Function::Table::Array.new(
+              [
+                Plurimath::Math::Function::Tr.new([
+                  Plurimath::Math::Function::Td.new([
+                    Plurimath::Math::Function::Base.new(
+                      Plurimath::Math::Function::Text.new("n"),
+                      Plurimath::Math::Function::Text.new("x")
+                    )
+                  ])
+                ]),
+                Plurimath::Math::Function::Tr.new([
+                  Plurimath::Math::Function::Td.new([
+                    Plurimath::Math::Function::Base.new(
+                      Plurimath::Math::Function::Text.new("n"),
+                      Plurimath::Math::Function::Text.new("y")
+                    )
+                  ])
+                ])
+              ],
+              nil,
+              [
+                Plurimath::Math::Function::Text.new("c")
+              ],
+            ),
+            Plurimath::Math::Function::Right.new(")")
+          ])
         ])
         expect(formula).to eq(expected_value)
       end

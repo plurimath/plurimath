@@ -1,9 +1,5 @@
 # frozen_string_literal: true
 
-require "simplecov"
-SimpleCov.start
-require "pry"
-require_relative "utility"
 require_relative "unicode"
 require_relative "asciimath"
 require_relative "omml"
@@ -19,6 +15,7 @@ require_relative "asciimath/parser"
 require_relative "mathml/parser"
 require_relative "latex/parser"
 require_relative "html/parser"
+require_relative "utility"
 module Plurimath
   module Math
     class Error < StandardError; end

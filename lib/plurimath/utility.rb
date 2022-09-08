@@ -2,6 +2,28 @@
 
 module Plurimath
   class Utility
+    FONT_STYLES = {
+      "double-struck": Math::Function::FontStyle::DoubleStruck,
+      "sans-serif": Math::Function::FontStyle::SansSerif,
+      monospace: Math::Function::FontStyle::Monospace,
+      mathfrak: Math::Function::FontStyle::Fraktur,
+      mathcal: Math::Function::FontStyle::Script,
+      fraktur: Math::Function::FontStyle::Fraktur,
+      mathtt: Math::Function::FontStyle::Monospace,
+      mathbb: Math::Function::FontStyle::DoubleStruck,
+      script: Math::Function::FontStyle::Script,
+      mathsf: Math::Function::FontStyle::SansSerif,
+      mathbf: Math::Function::FontStyle::Bold,
+      bold: Math::Function::FontStyle::Bold,
+      bbb: Math::Function::FontStyle::DoubleStruck,
+      bf: Math::Function::FontStyle::Bold,
+      sf: Math::Function::FontStyle::SansSerif,
+      tt: Math::Function::FontStyle::Monospace,
+      fr: Math::Function::FontStyle::Fraktur,
+      cc: Math::Function::FontStyle::Script,
+      bb: Math::Function::FontStyle::Bold,
+    }.freeze
+
     class << self
       def organize_table(array, table = [], table_data = [], table_row = [])
         table_separator = ["&", "\\\\"].freeze
