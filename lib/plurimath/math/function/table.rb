@@ -48,11 +48,6 @@ module Plurimath
           first_value = parameter_one.map(&:to_html).join
           "<table>#{first_value}</table>"
         end
-
-        def to_html
-          first_value = parameter_one.map(&:to_html).join
-          "<table>#{first_value}</table>"
-        end
       end
     end
   end
