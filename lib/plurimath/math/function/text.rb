@@ -7,15 +7,11 @@ module Plurimath
     module Function
       class Text < UnaryFunction
         def to_asciimath
-          "\"#{parameter_one}\""
+          "\"#{parse_text('asciimath') || parameter_one}\""
         end
 
         def to_mathml_without_math_tag
-          regex_exp = %r{unicode\[:(?<unicode>\w{1,})\]}
-          parameter_one.gsub!(regex_exp) do |_text|
-            symbol_value(Regexp.last_match[:unicode]).to_s
-          end
-          "<mtext>#{parameter_one}</mtext>"
+          "<mtext>#{parse_text('mathml') || parameter_one}</mtext>"
         end
 
         def symbol_value(unicode)
@@ -24,11 +20,23 @@ module Plurimath
         end
 
         def to_latex
-          parameter_one
+          parse_text("latex") || parameter_one
         end
 
         def to_html
-          parameter_one
+          parse_text("html") || parameter_one
+        end
+
+        def parse_text(lang)
+          regex = %r{\\mbox\{(?<mbox>.{1,})\}|unicode\[:(?<unicode>\w{1,})\]}
+          parameter_one.gsub!(regex) do |_text|
+            last_match = Regexp.last_match
+            if ["mathml", "html"].include?(lang)
+              symbol_value(last_match[:unicode]) || last_match[:mbox]
+            else
+              last_match[:unicode] || last_match[:mbox]
+            end
+          end
         end
       end
     end

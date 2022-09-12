@@ -13,11 +13,12 @@ module Plurimath
       end
 
       def parse
-        tree_t = Plurimath::Latex::Parse.new.parse(text)
-        formula = Plurimath::Latex::Transform.new.apply(tree_t)
+        tree_t = Latex::Parse.new.parse(text)
+        tree_t = JSON.parse(tree_t.to_json, symbolize_names: true)
+        formula = Latex::Transform.new.apply(tree_t)
         formula = [formula] unless formula.is_a?(Array)
 
-        Plurimath::Math::Formula.new(formula)
+        Math::Formula.new(formula)
       end
     end
   end

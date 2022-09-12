@@ -7,13 +7,14 @@ module Plurimath
     module Function
       class Root < BinaryFunction
         def to_mathml_without_math_tag
-          first_value = parameter_one.to_mathml_without_math_tag if parameter_one
-          "<root>#{first_value}</root>"
+          first_value = parameter_one&.to_mathml_without_math_tag
+          second_value = parameter_two&.to_mathml_without_math_tag
+          "<mroot>#{first_value}#{second_value}</mroot>"
         end
 
         def to_latex
-          first_value = parameter_one.to_latex if parameter_one
-          second_value = parameter_two.to_latex if parameter_two
+          first_value = parameter_one&.to_latex
+          second_value = parameter_two&.to_latex
           "\\sqrt[#{first_value}]{#{second_value}}"
         end
       end

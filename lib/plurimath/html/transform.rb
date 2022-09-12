@@ -4,7 +4,7 @@ module Plurimath
   class Html
     class Transform < Parslet::Transform
       rule(text: simple(:text))     { Math::Function::Text.new(text) }
-      rule(unary: simple(:unary))   { Transform.get_class(unary).new }
+      rule(unary: simple(:unary))   { Utility.get_class(unary).new }
       rule(symbol: simple(:symbol)) { Math::Symbol.new(symbol) }
       rule(number: simple(:number)) { Math::Number.new(number) }
 
@@ -26,7 +26,7 @@ module Plurimath
       end
 
       rule(sum_prod: simple(:sum_prod)) do
-        Transform.get_class(
+        Utility.get_class(
           Constants::SUB_SUP_CLASSES[sum_prod.to_sym],
         ).new
       end
@@ -48,22 +48,36 @@ module Plurimath
 
       rule(tr_value: simple(:tr_value),
            expression: simple(:expr)) do
-        [Math::Function::Tr.new([tr_value]), expr]
+        [
+          Math::Function::Tr.new([tr_value]),
+          expr,
+        ]
       end
 
       rule(tr_value: simple(:tr_value),
            expression: sequence(:expr)) do
-        expr.insert(0, Math::Function::Tr.new([tr_value]))
+        expr.insert(
+          0,
+          Math::Function::Tr.new([tr_value]),
+        )
       end
 
       rule(unary_function: simple(:unary_function),
            sequence: simple(:sequence)) do
-        Math::Formula.new([unary_function, sequence])
+        Math::Formula.new(
+          [
+            unary_function,
+            sequence,
+          ],
+        )
       end
 
       rule(text: simple(:text),
            expression: simple(:expr)) do
-        [Math::Function::Text.new(text), expr]
+        [
+          Math::Function::Text.new(text),
+          expr,
+        ]
       end
 
       rule(text: simple(:text),
@@ -73,7 +87,10 @@ module Plurimath
 
       rule(symbol: simple(:symbol),
            expression: simple(:expr)) do
-        [Math::Symbol.new(symbol), expr]
+        [
+          Math::Symbol.new(symbol),
+          expr,
+        ]
       end
 
       rule(symbol: simple(:symbol),
@@ -88,7 +105,10 @@ module Plurimath
 
       rule(number: simple(:number),
            expression: simple(:expr)) do
-        [Math::Number.new(number), expr]
+        [
+          Math::Number.new(number),
+          expr,
+        ]
       end
 
       rule(text: simple(:text),
@@ -103,7 +123,7 @@ module Plurimath
 
       rule(unary: simple(:unary),
            first_value: simple(:first_value)) do
-        Transform.get_class(unary).new(first_value)
+        Utility.get_class(unary).new(first_value)
       end
 
       rule(symbol: simple(:symbol),
@@ -116,7 +136,7 @@ module Plurimath
 
       rule(sub_sup: simple(:sub_sup),
            sub_value: simple(:sub_value)) do
-        if Transform.sub_sup_method?(sub_sup)
+        if Utility.sub_sup_method?(sub_sup)
           sub_sup.parameter_one = sub_value
           sub_sup
         else
@@ -129,7 +149,7 @@ module Plurimath
 
       rule(sub_sup: simple(:sub_sup),
            sub_value: sequence(:sub_value)) do
-        if Transform.sub_sup_method?(sub_sup)
+        if Utility.sub_sup_method?(sub_sup)
           sub_sup.parameter_one = Math::Formula.new(sub_value)
           sub_sup
         else
@@ -142,7 +162,7 @@ module Plurimath
 
       rule(sub_sup: simple(:sub_sup),
            sup_value: simple(:sup_value)) do
-        if Transform.sub_sup_method?(sub_sup)
+        if Utility.sub_sup_method?(sub_sup)
           sub_sup.parameter_two = sup_value
           sub_sup
         else
@@ -155,7 +175,7 @@ module Plurimath
 
       rule(sub_sup: simple(:sub_sup),
            sup_value: sequence(:sup_value)) do
-        if Transform.sub_sup_method?(sub_sup)
+        if Utility.sub_sup_method?(sub_sup)
           sub_sup.parameter_two = Math::Formula.new(sup_value)
           sub_sup
         else
@@ -169,7 +189,7 @@ module Plurimath
       rule(sub_sup: simple(:sub_sup),
            sub_value: simple(:sub_value),
            sup_value: simple(:sup_value)) do
-        if Transform.sub_sup_method?(sub_sup)
+        if Utility.sub_sup_method?(sub_sup)
           sub_sup.parameter_one = sub_value
           sub_sup.parameter_two = sup_value
           sub_sup
@@ -185,7 +205,7 @@ module Plurimath
       rule(sub_sup: simple(:sub_sup),
            sub_value: simple(:sub_value),
            sup_value: sequence(:sup_value)) do
-        if Transform.sub_sup_method?(sub_sup)
+        if Utility.sub_sup_method?(sub_sup)
           sub_sup.parameter_one = sub_value
           sub_sup.parameter_two = Math::Formula.new(sup_value)
           sub_sup
@@ -201,7 +221,7 @@ module Plurimath
       rule(sub_sup: simple(:sub_sup),
            sub_value: sequence(:sub_value),
            sup_value: simple(:sup_value)) do
-        if Transform.sub_sup_method?(sub_sup)
+        if Utility.sub_sup_method?(sub_sup)
           sub_sup.parameter_one = Math::Formula.new(sub_value)
           sub_sup.parameter_two = sup_value
           sub_sup
@@ -217,7 +237,7 @@ module Plurimath
       rule(sub_sup: simple(:sub_sup),
            sub_value: sequence(:sub_value),
            sup_value: sequence(:sup_value)) do
-        if Transform.sub_sup_method?(sub_sup)
+        if Utility.sub_sup_method?(sub_sup)
           sub_sup.parameter_one = Math::Formula.new(sub_value)
           sub_sup.parameter_two = Math::Formula.new(sup_value)
           sub_sup
@@ -283,7 +303,7 @@ module Plurimath
       rule(binary: simple(:binary),
            first_value: simple(:first_value),
            second_value: simple(:second_value)) do
-        Transform.get_class(binary).new(first_value, second_value)
+        Utility.get_class(binary).new(first_value, second_value)
       end
 
       rule(lparen: simple(:lparen),
@@ -337,22 +357,6 @@ module Plurimath
             expression
           ) << Math::Symbol.new(rparen),
         )
-      end
-
-      class << self
-        def sub_sup_method?(sub_sup)
-          if sub_sup.methods.include?(:class_name)
-            Constants::SUB_SUP_CLASSES.value?(
-              sub_sup.class_name.to_sym,
-            )
-          end
-        end
-
-        def get_class(text)
-          Object.const_get(
-            "Plurimath::Math::Function::#{text.capitalize}",
-          )
-        end
       end
     end
   end

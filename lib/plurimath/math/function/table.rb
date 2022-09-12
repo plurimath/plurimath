@@ -6,6 +6,12 @@ module Plurimath
   module Math
     module Function
       class Table < TernaryFunction
+        def initialize(parameter_one = nil,
+                       parameter_two = nil,
+                       parameter_three = nil)
+          super
+        end
+
         def to_asciimath
           first_value  = parameter_one.map(&:to_asciimath).join(",")
           second_value = parameter_two.nil? ? "[" : parameter_two
@@ -15,7 +21,8 @@ module Plurimath
 
         def to_mathml_without_math_tag
           table_value = parameter_one.map(&:to_mathml_without_math_tag).join
-          if Latex::Constants::PARENTHESIS.key?(parameter_two) || parameter_two == "|"
+          parenthesis = Latex::Constants::PARENTHESIS
+          if parenthesis.key?(parameter_two) || parameter_two == "|"
             "<mfenced open='#{parameter_two}' close='#{parameter_three}'>"\
               "<mtable>#{table_value}</mtable></mfenced>"
           elsif parameter_two == "norm["
@@ -28,13 +35,13 @@ module Plurimath
         def to_latex
           first_value = parameter_one&.map(&:to_latex)&.join("\\\\")
           environment = latex_environment
-          divider     = "{#{parameter_three&.map(&:to_latex).join}}" if environment == "array"
-          "\\begin{#{environment}}#{divider}#{first_value}\\end{#{environment}}"
+          "\\begin{#{environment}}#{first_value}\\end{#{environment}}"
         end
 
         def latex_environment
           matrices_hash = Latex::Constants::MATRICES
-          matrices_hash.invert[parameter_two] if matrices_hash.value?(parameter_two)
+          matric_value  = matrices_hash.value?(parameter_two)
+          matrices_hash.invert[parameter_two] if matric_value
         end
 
         def to_html

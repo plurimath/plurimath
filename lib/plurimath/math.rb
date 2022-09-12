@@ -15,17 +15,19 @@ require_relative "asciimath/parser"
 require_relative "mathml/parser"
 require_relative "latex/parser"
 require_relative "html/parser"
+require_relative "utility"
 module Plurimath
   module Math
     class Error < StandardError; end
 
     VALID_TYPES = {
-      unicode: Unicode,
-      asciimath: Asciimath,
       omml: Omml,
-      mathml: Mathml,
       html: Html,
       latex: Latex,
+      mathml: Mathml,
+      unitsml: Unitsml,
+      unicode: Unicode,
+      asciimath: Asciimath,
     }.freeze
 
     def parse(text, type)

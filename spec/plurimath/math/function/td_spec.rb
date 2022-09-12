@@ -20,17 +20,31 @@ RSpec.describe Plurimath::Math::Function::Td do
   end
 
   describe ".to_asciimath" do
-    subject(:td) { Plurimath::Math::Function::Td.new([first]).to_asciimath }
+    subject(:single_value_td) { Plurimath::Math::Function::Td.new([first]).to_asciimath }
+    subject(:double_value_td) { Plurimath::Math::Function::Td.new([first, second]).to_asciimath }
 
     context "returns instance of Td" do
       let(:first) { Plurimath::Math::Symbol.new("theta") }
 
       it 'matches epxected value of Td' do
-        expect(td).to eq("theta")
+        expect(single_value_td).to eq("theta")
       end
 
       it "doesn't match epxected value of Td" do
-        expect(td).not_to eq("[Theta]")
+        expect(single_value_td).not_to eq("[Theta]")
+      end
+    end
+
+    context "returns instance of Td" do
+      let(:first) { Plurimath::Math::Symbol.new("theta") }
+      let(:second) { Plurimath::Math::Symbol.new("Theta") }
+
+      it 'matches epxected value of Td' do
+        expect(double_value_td).to eq("[theta,Theta]")
+      end
+
+      it "doesn't match epxected value of Td" do
+        expect(double_value_td).not_to eq("[Theta]")
       end
     end
   end

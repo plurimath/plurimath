@@ -16,7 +16,7 @@ module Plurimath
 
         def to_latex
           parameter_one.reject do |td|
-            td if td.is_a?(Symbol) && td.value == "|"
+            td if td.is_a?(Math::Symbol) && td.value == "|"
           end.map(&:to_latex).join("&")
         end
 

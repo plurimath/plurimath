@@ -7,5 +7,9 @@ module Plurimath
     def initialize(text)
       @text = text
     end
+
+    def to_formula
+      # TODO: Will be implemented soon
+    end
   end
 end

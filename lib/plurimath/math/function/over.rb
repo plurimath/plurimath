@@ -13,14 +13,14 @@ module Plurimath
         end
 
         def to_mathml_without_math_tag
-          first_value = parameter_one.to_mathml_without_math_tag if parameter_one
-          two_value = parameter_two.to_mathml_without_math_tag if parameter_two
+          first_value = parameter_one&.to_mathml_without_math_tag
+          two_value = parameter_two&.to_mathml_without_math_tag
           "<mover>#{first_value}#{two_value}</mover>"
         end
 
         def to_latex
-          first_value = parameter_one.to_latex if parameter_one
-          two_value = parameter_two.to_latex if parameter_two
+          first_value = parameter_one&.to_latex
+          two_value = parameter_two&.to_latex
           "{#{first_value} \\over #{two_value}}"
         end
       end

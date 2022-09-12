@@ -7,8 +7,8 @@ module Plurimath
     module Function
       class Overset < BinaryFunction
         def to_mathml_without_math_tag
-          first_value = parameter_one.to_mathml_without_math_tag if parameter_one
-          second_value = parameter_two.to_mathml_without_math_tag if parameter_two
+          first_value = parameter_one&.to_mathml_without_math_tag
+          second_value = parameter_two&.to_mathml_without_math_tag
           "<mover>#{second_value}#{first_value}</mover>"
         end
 

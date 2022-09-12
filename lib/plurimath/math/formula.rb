@@ -19,7 +19,7 @@ module Plurimath
 
       def to_mathml
         <<~MATHML
-          <math xmlns='http://www.w3.org/1998/Math/MathML'>
+          <math xmlns='http://www.w3.org/1998/Math/MathML' display='block'>
             <mstyle displaystyle='true'>
               #{mathml_content}
             </mstyle>

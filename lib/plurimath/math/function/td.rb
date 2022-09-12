@@ -10,7 +10,7 @@ module Plurimath
           if parameter_one.length > 1
             "[#{parameter_one.map(&:to_asciimath).join(',')}]"
           else
-            "#{parameter_one.map(&:to_asciimath).join(',')}"
+            parameter_one.map(&:to_asciimath).join(",")
           end
         end
 

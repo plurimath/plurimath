@@ -20,7 +20,7 @@ module Plurimath
 
         def to_latex
           first_value  = parameter_one.to_latex if parameter_one
-          first_value  = "{#{first_value}}" if parameter_one.is_a?(Math::Formula)
+          first_value  = "{#{first_value}}" if parameter_one.is_a?(Formula)
           second_value = parameter_two.to_latex if parameter_two
           "#{first_value}_{#{second_value}}"
         end

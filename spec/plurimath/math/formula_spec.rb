@@ -2,22 +2,42 @@ require_relative '../../../lib/plurimath/math'
 
 RSpec.describe Plurimath::Math::Formula do
 
-  describe ".==" do
-    subject(:formula) { Plurimath::Math::Formula.new(exp) }
+  describe ".initialize" do
+    subject(:formula) { described_class.new(exp) }
 
     context "contains simple string" do
       let(:exp) { "theta" }
-      expected_value = Plurimath::Math::Formula.new("theta")
       it "returns true" do
-        expect(formula == expected_value).to be_truthy
+        expected_value = described_class.new("theta")
+        expect(formula).to eq(expected_value)
       end
     end
 
     context "contains simple string" do
       let(:exp) { "Theta" }
-      expected_value = Plurimath::Math::Formula.new("theta")
+      expected_value = described_class.new("theta")
       it "returns false" do
-        expect(formula == expected_value).to be_falsey
+        expect(formula).to_not eq(expected_value)
+      end
+    end
+  end
+
+  describe ".==" do
+    subject(:formula) { described_class.new(exp) }
+
+    context "contains simple string" do
+      let(:exp) { "theta" }
+      it "returns true" do
+        expected_value = described_class.new("theta")
+        expect(formula).to eq(expected_value)
+      end
+    end
+
+    context "contains simple string" do
+      let(:exp) { "Theta" }
+      it "returns false" do
+        expected_value = described_class.new("theta")
+        expect(formula).to_not eq(expected_value)
       end
     end
   end
@@ -27,14 +47,14 @@ RSpec.describe Plurimath::Math::Formula do
 
     context "contains string" do
       it 'returns Formula object' do
-        formula = Plurimath::Math::Formula.new('1 + 2')
+        formula = described_class.new('1 + 2')
         expect(formula).to be_a(Plurimath::Math::Formula)
       end
     end
 
     context "contains string" do
       it 'returns Formula object' do
-        formula = Plurimath::Math::Formula.new('1 + 2')
+        formula = described_class.new('1 + 2')
         expect(formula.value).to eql(['1 + 2'])
       end
     end
@@ -764,6 +784,103 @@ RSpec.describe Plurimath::Math::Formula do
       let(:exp) { "vec(theta) (i)" }
       it 'converts formula back to Asciimath string for vec function' do
         expect(formula).to eql('vec(theta)i')
+      end
+    end
+
+    context "contains table formula string" do
+      let(:exp) { "([1,3], [1,3], [1,3])" }
+      it 'converts formula back to Asciimath string for vec function' do
+        expect(formula).to eql('([1,3],[1,3],[1,3])')
+      end
+    end
+
+    context "contains left right with table string" do
+      let(:exp) { "left([1,3], [1,3], [1,3]right)" }
+      it 'converts formula back to Asciimath string for vec function' do
+        expect(formula).to eql('left([1,3],[1,3],[1,3]right)')
+      end
+    end
+  end
+
+  describe ".to_mathml" do
+    subject(:formula) { described_class.new(exp).to_mathml }
+
+    context "contains left right with table string" do
+      let(:exp) do
+        Plurimath::Math::Formula.new([
+          Plurimath::Math::Function::Left.new("("),
+          Plurimath::Math::Function::Table.new(
+            [
+              Plurimath::Math::Function::Tr.new([
+                Plurimath::Math::Function::Td.new([
+                  Plurimath::Math::Number.new("1")
+                ]),
+                Plurimath::Math::Function::Td.new([
+                  Plurimath::Math::Number.new("3")
+                ])
+              ]),
+              Plurimath::Math::Function::Tr.new([
+                Plurimath::Math::Function::Td.new([
+                  Plurimath::Math::Number.new("1")
+                ]),
+                Plurimath::Math::Function::Td.new([
+                  Plurimath::Math::Number.new("3")
+                ])
+              ]),
+              Plurimath::Math::Function::Tr.new([
+                Plurimath::Math::Function::Td.new([
+                  Plurimath::Math::Number.new("1")
+                ]),
+                Plurimath::Math::Function::Td.new([
+                  Plurimath::Math::Number.new("3")
+                ])
+              ])
+            ],
+            "",
+            "",
+          ),
+          Plurimath::Math::Function::Right.new(")")
+        ])
+      end
+      it 'converts formula back to Asciimath string for vec function' do
+        expected_value =
+        <<~MATHML.gsub(/\s/, "")
+          <math xmlns='http://www.w3.org/1998/Math/MathML' display='block'>
+            <mstyle displaystyle='true'>
+              <mrow>
+                <mi>left</mi>
+                <mtable>
+                  <mtr>
+                    <mtd>
+                      <mn>1</mn>
+                    </mtd>
+                    <mtd>
+                      <mn>3</mn>
+                    </mtd>
+                  </mtr>
+                  <mtr>
+                    <mtd>
+                      <mn>1</mn>
+                    </mtd>
+                    <mtd>
+                      <mn>3</mn>
+                    </mtd>
+                  </mtr>
+                  <mtr>
+                    <mtd>
+                      <mn>1</mn>
+                    </mtd>
+                    <mtd>
+                      <mn>3</mn>
+                    </mtd>
+                  </mtr>
+                </mtable>
+                <mi>)</mi>
+              </mrow>
+            </mstyle>
+          </math>
+        MATHML
+        expect(formula.gsub(/\s/, "")).to eql(expected_value)
       end
     end
   end

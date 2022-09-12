@@ -28,6 +28,10 @@ module Plurimath
       def to_html
         value
       end
+
+      def class_name
+        self.class.name.split("::").last.downcase
+      end
     end
   end
 end

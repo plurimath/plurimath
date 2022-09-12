@@ -2,7 +2,7 @@ require_relative '../../../../lib/plurimath/math'
 
 RSpec.describe Plurimath::Math::Formula do
   describe ".to_mathml" do
-    subject(:formula) { exp.to_mathml.gsub("\n", "").gsub(" ", "") }
+    subject(:formula) { exp.to_mathml.gsub(/\s/, "") }
 
     context "contains mathml string of sin formula" do
       let(:exp) {
@@ -14,14 +14,14 @@ RSpec.describe Plurimath::Math::Formula do
       it "returns formula of sin from mathml string" do
         expected_value =
         <<~MATHML
-          <math xmlns='http://www.w3.org/1998/Math/MathML'>
+          <math xmlns='http://www.w3.org/1998/Math/MathML' display='block'>
             <mstyle displaystyle='true'>
               <mi>sin</mi>
               <mn>1</mn>
             </mstyle>
           </math>
         MATHML
-        expect(formula).to eq(expected_value.gsub("\n", "").gsub(" ", ""))
+        expect(formula).to eq(expected_value.gsub(/\s/, ""))
       end
     end
 
@@ -38,7 +38,7 @@ RSpec.describe Plurimath::Math::Formula do
       it "returns formula of sum and prod" do
         expected_value =
         <<~MATHML
-          <math xmlns='http://www.w3.org/1998/Math/MathML'>
+          <math xmlns='http://www.w3.org/1998/Math/MathML' display='block'>
             <mstyle displaystyle='true'>
               <munderover>
                 <mo>&#x2211;</mo>
@@ -48,7 +48,7 @@ RSpec.describe Plurimath::Math::Formula do
             </mstyle>
           </math>
         MATHML
-        expect(formula).to eq(expected_value.gsub("\n", "").gsub(" ", ""))
+        expect(formula).to eq(expected_value.gsub(/\s/, ""))
       end
     end
 
@@ -65,7 +65,7 @@ RSpec.describe Plurimath::Math::Formula do
       it "returns formula of sum and prod" do
         expected_value =
         <<~MATHML
-          <math xmlns='http://www.w3.org/1998/Math/MathML'>
+          <math xmlns='http://www.w3.org/1998/Math/MathML' display='block'>
             <mstyle displaystyle='true'>
               <munderover>
                 <mo>&#x2211;</mo>
@@ -75,7 +75,7 @@ RSpec.describe Plurimath::Math::Formula do
             </mstyle>
           </math>
         MATHML
-        expect(formula).to eq(expected_value.gsub("\n", "").gsub(" ", ""))
+        expect(formula).to eq(expected_value.gsub(/\s/, ""))
       end
     end
 
@@ -93,7 +93,7 @@ RSpec.describe Plurimath::Math::Formula do
       it "returns formula of sum" do
         expected_value =
         <<~MATHML
-          <math xmlns='http://www.w3.org/1998/Math/MathML'>
+          <math xmlns='http://www.w3.org/1998/Math/MathML' display='block'>
             <mstyle displaystyle='true'>
               <munderover>
                 <mo>&#x2211;</mo>
@@ -104,7 +104,7 @@ RSpec.describe Plurimath::Math::Formula do
             </mstyle>
           </math>
         MATHML
-        expect(formula).to eq(expected_value.gsub("\n", "").gsub(" ", ""))
+        expect(formula).to eq(expected_value.gsub(/\s/, ""))
       end
     end
 
@@ -120,7 +120,7 @@ RSpec.describe Plurimath::Math::Formula do
       it "returns formula of sin" do
         expected_value =
         <<~MATHML
-          <math xmlns='http://www.w3.org/1998/Math/MathML'>
+          <math xmlns='http://www.w3.org/1998/Math/MathML' display='block'>
             <mstyle displaystyle='true'>
               <msub>
                 <mi>sin</mi>
@@ -129,7 +129,7 @@ RSpec.describe Plurimath::Math::Formula do
             </mstyle>
           </math>
         MATHML
-        expect(formula).to eq(expected_value.gsub("\n", "").gsub(" ", ""))
+        expect(formula).to eq(expected_value.gsub(/\s/, ""))
       end
     end
 
@@ -145,7 +145,7 @@ RSpec.describe Plurimath::Math::Formula do
       it "returns formula of sin" do
         expected_value =
         <<~MATHML
-          <math xmlns='http://www.w3.org/1998/Math/MathML'>
+          <math xmlns='http://www.w3.org/1998/Math/MathML' display='block'>
             <mstyle displaystyle='true'>
               <msup>
                 <mi>sin</mi>
@@ -154,7 +154,7 @@ RSpec.describe Plurimath::Math::Formula do
             </mstyle>
           </math>
         MATHML
-        expect(formula).to eq(expected_value.gsub("\n", "").gsub(" ", ""))
+        expect(formula).to eq(expected_value.gsub(/\s/, ""))
       end
     end
 
@@ -175,7 +175,7 @@ RSpec.describe Plurimath::Math::Formula do
       it "returns formula of sin" do
         expected_value =
         <<~MATHML
-          <math xmlns='http://www.w3.org/1998/Math/MathML'>
+          <math xmlns='http://www.w3.org/1998/Math/MathML' display='block'>
             <mstyle displaystyle='true'>
               <msubsup>
                 <mi>sin</mi>
@@ -189,7 +189,7 @@ RSpec.describe Plurimath::Math::Formula do
             </mstyle>
           </math>
         MATHML
-        expect(formula).to eq(expected_value.gsub("\n", "").gsub(" ", ""))
+        expect(formula).to eq(expected_value.gsub(/\s/, ""))
       end
     end
 
@@ -210,7 +210,7 @@ RSpec.describe Plurimath::Math::Formula do
       it "returns formula of sum" do
         expected_value =
         <<~MATHML
-          <math xmlns='http://www.w3.org/1998/Math/MathML'>
+          <math xmlns='http://www.w3.org/1998/Math/MathML' display='block'>
             <mstyle displaystyle='true'>
               <munderover>
                 <mo>&#x2211;</mo>
@@ -224,7 +224,7 @@ RSpec.describe Plurimath::Math::Formula do
             </mstyle>
           </math>
         MATHML
-        expect(formula).to eq(expected_value.gsub("\n", "").gsub(" ", ""))
+        expect(formula).to eq(expected_value.gsub(/\s/, ""))
       end
     end
 
@@ -237,13 +237,13 @@ RSpec.describe Plurimath::Math::Formula do
       it "returns formula of sin" do
         expected_value =
         <<~MATHML
-          <math xmlns='http://www.w3.org/1998/Math/MathML'>
+          <math xmlns='http://www.w3.org/1998/Math/MathML' display='block'>
             <mstyle displaystyle='true'>
               <mi>sin</mi>
             </mstyle>
           </math>
         MATHML
-        expect(formula).to eq(expected_value.gsub("\n", "").gsub(" ", ""))
+        expect(formula).to eq(expected_value.gsub(/\s/, ""))
       end
     end
 
@@ -256,13 +256,13 @@ RSpec.describe Plurimath::Math::Formula do
       it "returns formula of text" do
         expected_value =
         <<~MATHML
-          <math xmlns='http://www.w3.org/1998/Math/MathML'>
+          <math xmlns='http://www.w3.org/1998/Math/MathML' display='block'>
             <mstyle displaystyle='true'>
               <mtext>sinsumsom&#x393;gamma</mtext>
             </mstyle>
           </math>
         MATHML
-        expect(formula).to eq(expected_value.gsub("\n", "").gsub(" ", ""))
+        expect(formula).to eq(expected_value.gsub(/\s/, ""))
       end
     end
 
@@ -275,13 +275,13 @@ RSpec.describe Plurimath::Math::Formula do
       it "returns formula of text" do
         expected_value =
         <<~MATHML
-          <math xmlns='http://www.w3.org/1998/Math/MathML'>
+          <math xmlns='http://www.w3.org/1998/Math/MathML' display='block'>
             <mstyle displaystyle='true'>
               <mtext>sinsumsom&#x393;&#x3B3;</mtext>
             </mstyle>
           </math>
         MATHML
-        expect(formula).to eq(expected_value.gsub("\n", "").gsub(" ", ""))
+        expect(formula).to eq(expected_value.gsub(/\s/, ""))
       end
     end
 
@@ -313,7 +313,7 @@ RSpec.describe Plurimath::Math::Formula do
       it "returns formula of sum and frac" do
         expected_value =
         <<~MATHML
-          <math xmlns='http://www.w3.org/1998/Math/MathML'>
+          <math xmlns='http://www.w3.org/1998/Math/MathML' display='block'>
             <mstyle displaystyle='true'>
               <munderover>
                 <mo>&#x2211;</mo>
@@ -338,7 +338,7 @@ RSpec.describe Plurimath::Math::Formula do
             </mstyle>
           </math>
         MATHML
-        expect(formula).to eq(expected_value.gsub("\n", "").gsub(" ", ""))
+        expect(formula).to eq(expected_value.gsub(/\s/, ""))
       end
     end
 
@@ -355,7 +355,7 @@ RSpec.describe Plurimath::Math::Formula do
       it "returns formula of sum" do
         expected_value =
         <<~MATHML
-          <math xmlns='http://www.w3.org/1998/Math/MathML'>
+          <math xmlns='http://www.w3.org/1998/Math/MathML' display='block'>
             <mstyle displaystyle='true'>
               <mi>sin</mi>
               <mover>
@@ -365,7 +365,7 @@ RSpec.describe Plurimath::Math::Formula do
             </mstyle>
           </math>
         MATHML
-        expect(formula).to eq(expected_value.gsub("\n", "").gsub(" ", ""))
+        expect(formula).to eq(expected_value.gsub(/\s/, ""))
       end
     end
 
@@ -381,7 +381,7 @@ RSpec.describe Plurimath::Math::Formula do
       it "returns formula of sum" do
         expected_value =
         <<~MATHML
-          <math xmlns='http://www.w3.org/1998/Math/MathML'>
+          <math xmlns='http://www.w3.org/1998/Math/MathML' display='block'>
             <mstyle displaystyle='true'>
               <mover>
                 <mo>&#x2211;</mo>
@@ -390,7 +390,7 @@ RSpec.describe Plurimath::Math::Formula do
             </mstyle>
           </math>
         MATHML
-        expect(formula).to eq(expected_value.gsub("\n", "").gsub(" ", ""))
+        expect(formula).to eq(expected_value.gsub(/\s/, ""))
       end
     end
 
@@ -406,7 +406,7 @@ RSpec.describe Plurimath::Math::Formula do
       it "returns formula of sum" do
         expected_value =
         <<~MATHML
-          <math xmlns='http://www.w3.org/1998/Math/MathML'>
+          <math xmlns='http://www.w3.org/1998/Math/MathML' display='block'>
             <mstyle displaystyle='true'>
               <mover>
                 <mo>&#x2211;</mo>
@@ -415,7 +415,7 @@ RSpec.describe Plurimath::Math::Formula do
             </mstyle>
           </math>
         MATHML
-        expect(formula).to eq(expected_value.gsub("\n", "").gsub(" ", ""))
+        expect(formula).to eq(expected_value.gsub(/\s/, ""))
       end
     end
 
@@ -435,7 +435,7 @@ RSpec.describe Plurimath::Math::Formula do
       it "returns formula of sum" do
         expected_value =
         <<~MATHML
-          <math xmlns='http://www.w3.org/1998/Math/MathML'>
+          <math xmlns='http://www.w3.org/1998/Math/MathML' display='block'>
             <mstyle displaystyle='true'>
               <munderover>
                 <mo>&#x2211;</mo>
@@ -448,7 +448,7 @@ RSpec.describe Plurimath::Math::Formula do
             </mstyle>
           </math>
         MATHML
-        expect(formula).to eq(expected_value.gsub("\n", "").gsub(" ", ""))
+        expect(formula).to eq(expected_value.gsub(/\s/, ""))
       end
     end
 
@@ -465,7 +465,7 @@ RSpec.describe Plurimath::Math::Formula do
       it "returns formula of log and text" do
         expected_value =
         <<~MATHML
-          <math xmlns='http://www.w3.org/1998/Math/MathML'>
+          <math xmlns='http://www.w3.org/1998/Math/MathML' display='block'>
             <mstyle displaystyle='true'>
               <msubsup>
                 <mo>log</mo>
@@ -475,7 +475,7 @@ RSpec.describe Plurimath::Math::Formula do
             </mstyle>
           </math>
         MATHML
-        expect(formula).to eq(expected_value.gsub("\n", "").gsub(" ", ""))
+        expect(formula).to eq(expected_value.gsub(/\s/, ""))
       end
     end
 
@@ -491,7 +491,7 @@ RSpec.describe Plurimath::Math::Formula do
       it "returns formula of symbol" do
         expected_value =
         <<~MATHML
-          <math xmlns='http://www.w3.org/1998/Math/MathML'>
+          <math xmlns='http://www.w3.org/1998/Math/MathML' display='block'>
             <mstyle displaystyle='true'>
               <mover>
                 <mo>i</mo>
@@ -500,7 +500,7 @@ RSpec.describe Plurimath::Math::Formula do
             </mstyle>
           </math>
         MATHML
-        expect(formula).to eq(expected_value.gsub("\n", "").gsub(" ", ""))
+        expect(formula).to eq(expected_value.gsub(/\s/, ""))
       end
     end
 
@@ -516,7 +516,7 @@ RSpec.describe Plurimath::Math::Formula do
       it "returns formula of mod" do
         expected_value =
         <<~MATHML
-          <math xmlns='http://www.w3.org/1998/Math/MathML'>
+          <math xmlns='http://www.w3.org/1998/Math/MathML' display='block'>
             <mstyle displaystyle='true'>
               <mn>12</mn>
               <mo>mod</mo>
@@ -525,7 +525,7 @@ RSpec.describe Plurimath::Math::Formula do
             </mstyle>
           </math>
         MATHML
-        expect(formula).to eq(expected_value.gsub("\n", "").gsub(" ", ""))
+        expect(formula).to eq(expected_value.gsub(/\s/, ""))
       end
     end
 
@@ -548,7 +548,7 @@ RSpec.describe Plurimath::Math::Formula do
       it "returns formula of symbols and text" do
         expected_value =
         <<~MATHML
-          <math xmlns='http://www.w3.org/1998/Math/MathML'>
+          <math xmlns='http://www.w3.org/1998/Math/MathML' display='block'>
             <mstyle displaystyle='true'>
               <msubsup>
                 <mo>a</mo>
@@ -564,7 +564,93 @@ RSpec.describe Plurimath::Math::Formula do
             </mstyle>
           </math>
         MATHML
-        expect(formula).to eq(expected_value.gsub("\n", "").gsub(" ", ""))
+        expect(formula).to eq(expected_value.gsub(/\s/, ""))
+      end
+    end
+
+    context "contains mathml string of table with norm" do
+      let(:exp) {
+        Plurimath::Math::Formula.new([
+          Plurimath::Math::Function::PowerBase.new(
+            Plurimath::Math::Symbol.new("a"),
+            Plurimath::Math::Function::Table.new(
+              [
+                Plurimath::Math::Function::Tr.new([
+                  Plurimath::Math::Function::Td.new([
+                    Plurimath::Math::Number.new("1"),
+                  ])
+                ]),
+              ],
+              "norm["
+            ),
+            Plurimath::Math::Function::Text.new("4terms"),
+          )
+        ])
+      }
+      it "returns formula of symbols and text" do
+        expected_value =
+        <<~MATHML
+          <math xmlns='http://www.w3.org/1998/Math/MathML' display='block'>
+            <mstyle displaystyle='true'>
+              <msubsup>
+                <mo>a</mo>
+                <mo>&#x2225;</mo>
+                <mtr>
+                  <mtd>
+                    <mn>1</mn>
+                  </mtd>
+                </mtr>
+                <mo>&#x2225;</mo>
+                <mtext>4 terms</mtext>
+              </msubsup>
+            </mstyle>
+          </math>
+        MATHML
+        expect(formula).to eq(expected_value.gsub(/\s/, ""))
+      end
+    end
+
+    context "contains mathml string of table with opening bracket" do
+      let(:exp) {
+        Plurimath::Math::Formula.new([
+          Plurimath::Math::Function::PowerBase.new(
+            Plurimath::Math::Symbol.new("a"),
+            Plurimath::Math::Function::Table.new(
+              [
+                Plurimath::Math::Function::Tr.new([
+                  Plurimath::Math::Function::Td.new([
+                    Plurimath::Math::Number.new("1"),
+                  ])
+                ]),
+              ],
+              "["
+            ),
+            Plurimath::Math::Function::Text.new("4terms"),
+          )
+        ])
+      }
+      it "returns formula of symbols and text" do
+        expected_value =
+        <<~MATHML
+          <math xmlns='http://www.w3.org/1998/Math/MathML'display='block'>
+            <mstyle displaystyle='true'>
+              <msubsup>
+                <mo>a</mo>
+                <mfenced open='[' close=''>
+                  <mtable>
+                    <mtr>
+                      <mtd>
+                        <mn>1</mn>
+                      </mtd>
+                    </mtr>
+                  </mtable>
+                </mfenced>
+                <mtext>4terms</mtext>
+              </msubsup>
+            </mstyle>
+          </math>
+        MATHML
+        expect(formula).to eq(expected_value.gsub(/\s/, ""))
       end
     end
 
@@ -579,7 +665,7 @@ RSpec.describe Plurimath::Math::Formula do
       it "returns formula of sqrt" do
         expected_value =
         <<~MATHML
-          <math xmlns='http://www.w3.org/1998/Math/MathML'>
+          <math xmlns='http://www.w3.org/1998/Math/MathML' display='block'>
             <mstyle displaystyle='true'>
               <msqrt>
                 <mo>&#x2211;</mo>
@@ -587,7 +673,7 @@ RSpec.describe Plurimath::Math::Formula do
             </mstyle>
           </math>
         MATHML
-        expect(formula).to eq(expected_value.gsub("\n", "").gsub(" ", ""))
+        expect(formula).to eq(expected_value.gsub(/\s/, ""))
       end
     end
 
@@ -616,7 +702,7 @@ RSpec.describe Plurimath::Math::Formula do
       it "returns formula of symbol" do
         expected_value =
         <<~MATHML
-          <math xmlns='http://www.w3.org/1998/Math/MathML'>
+          <math xmlns='http://www.w3.org/1998/Math/MathML' display='block'>
             <mstyle displaystyle='true'>
               <msubsup>
                 <mo>a</mo>
@@ -634,7 +720,7 @@ RSpec.describe Plurimath::Math::Formula do
             </mstyle>
           </math>
         MATHML
-        expect(formula).to eq(expected_value.gsub("\n", "").gsub(" ", ""))
+        expect(formula).to eq(expected_value.gsub(/\s/, ""))
       end
     end
 
@@ -658,7 +744,7 @@ RSpec.describe Plurimath::Math::Formula do
       it "returns formula of sum and ne" do
         expected_value =
         <<~MATHML
-          <math xmlns='http://www.w3.org/1998/Math/MathML'>
+          <math xmlns='http://www.w3.org/1998/Math/MathML' display='block'>
             <mstyle displaystyle='true'>
               <munderover>
                 <mo>&#x2211;</mo>
@@ -674,7 +760,7 @@ RSpec.describe Plurimath::Math::Formula do
             </mstyle>
           </math>
         MATHML
-        expect(formula).to eq(expected_value.gsub("\n", "").gsub(" ", ""))
+        expect(formula).to eq(expected_value.gsub(/\s/, ""))
       end
     end
 
@@ -698,7 +784,7 @@ RSpec.describe Plurimath::Math::Formula do
       it "returns formula of sum and ne" do
         expected_value =
         <<~MATHML
-          <math xmlns='http://www.w3.org/1998/Math/MathML'>
+          <math xmlns='http://www.w3.org/1998/Math/MathML' display='block'>
             <mstyle displaystyle='true'>
               <munderover>
                 <mo>&#x2211;</mo>
@@ -714,7 +800,62 @@ RSpec.describe Plurimath::Math::Formula do
             </mstyle>
           </math>
         MATHML
-        expect(formula).to eq(expected_value.gsub("\n", "").gsub(" ", ""))
+        expect(formula).to eq(expected_value.gsub(/\s/, ""))
+      end
+    end
+
+    context "contains mathml string of sum ne and longer text formula" do
+      let(:exp) {
+        Plurimath::Math::Formula.new([
+          Plurimath::Math::Function::Root.new(
+            Plurimath::Math::Function::Text.new("Some"),
+            Plurimath::Math::Function::Text.new("thing"),
+          )
+        ])
+      }
+      it "returns formula of sum and ne" do
+        expected_value =
+        <<~MATHML
+          <math xmlns='http://www.w3.org/1998/Math/MathML' display='block'>
+            <mstyle displaystyle='true'>
+              <mroot>
+                <mtext>Some</mtext>
+                <mtext>thing</mtext>
+              </mroot>
+            </mstyle>
+          </math>
+        MATHML
+        expect(formula).to eq(expected_value.gsub(/\s/, ""))
+      end
+    end
+
+    context "contains mathml string bold text" do
+      let(:exp) {
+        Plurimath::Math::Formula.new([
+          Plurimath::Math::Function::Root.new(
+            Plurimath::Math::Function::Text.new("Some"),
+            Plurimath::Math::Function::FontStyle::Bold.new(
+              Plurimath::Math::Function::Text.new("thing"),
+              "bold",
+            )
+          )
+        ])
+      }
+      it "returns string of bold text" do
+        expected_value =
+        <<~MATHML
+          <math xmlns='http://www.w3.org/1998/Math/MathML' display='block'>
+            <mstyle displaystyle='true'>
+              <mroot>
+                <mtext>Some</mtext>
+                <mstyle mathvariant='bold'>
+                  <mtext>thing</mtext>
+                </mstyle>
+              </mroot>
+            </mstyle>
+          </math>
+        MATHML
+        expect(formula).to eq(expected_value.gsub(/\s/, ""))
       end
     end
   end

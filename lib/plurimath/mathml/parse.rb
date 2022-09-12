@@ -13,13 +13,18 @@ module Plurimath
           str("")
       end
 
-      rule(:tag) { (parse_tag(:open) >> iteration.as(:iteration) >> parse_tag(:close)).as(:tag) | parse_text_tag.as(:tag) }
+      rule(:tag) do
+        (parse_tag(:open) >> iteration.as(:iteration) >> parse_tag(:close)).as(:tag) |
+          parse_text_tag.as(:tag)
+      end
 
       rule(:sequence) { (tag >> sequence.as(:sequence)) | tag }
 
       rule(:iteration) { (sequence >> iteration.as(:iteration)) | parse_record }
 
-      rule(:expression) { parse_tag(:open) >> iteration.as(:iteration) >> parse_tag(:close) }
+      rule(:expression) do
+        parse_tag(:open) >> iteration.as(:iteration) >> parse_tag(:close)
+      end
 
       root :expression
 
