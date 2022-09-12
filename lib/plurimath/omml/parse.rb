@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require "parslet"
-require "parslet/convenience"
 module Plurimath
   class Omml
     class Parse < Parslet::Parser
