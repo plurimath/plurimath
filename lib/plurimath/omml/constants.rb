@@ -121,9 +121,7 @@ module Plurimath
         i
         m
         e
-        d
       ].freeze
-
       SUB_SUP_TAG = %w[
         sSubSup
         func
@@ -134,6 +132,22 @@ module Plurimath
         acc
         rad
         f
+        d
+      ].freeze
+      UNARY_FUNCTIONS = %w[
+        arcsin
+        arctan
+        arccos
+        coth
+        tanh
+        sinh
+        cosh
+        tan
+        cos
+        cot
+        csc
+        sin
+        sec
       ].freeze
       UNARY_FUNCTIONS = %w[
         arcsin

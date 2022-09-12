@@ -42,6 +42,10 @@ module Plurimath
       def to_html
         value.map(&:to_html).join
       end
+
+      def class_name
+        "formula"
+      end
     end
   end
 end
