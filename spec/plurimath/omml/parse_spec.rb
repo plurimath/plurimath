@@ -5,7 +5,7 @@ require_relative "../../../lib/plurimath/omml/constants"
 RSpec.describe Plurimath::Omml::Parse do
 
   subject(:formula) do
-    described_class.new.parse_with_debug(
+    described_class.new.parse(
       File.read(file_name).gsub(/\s/, "")
     )
   end
