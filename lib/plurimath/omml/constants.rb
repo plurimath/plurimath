@@ -48,7 +48,6 @@ module Plurimath
         subHide
         vertJc
         transp
-        sPrePr
         sSupPr
         sSubPr
         sepChr
@@ -67,6 +66,7 @@ module Plurimath
         begChr
         baseJc
         alnScr
+        sPrePr
         radPr
         preSp
         phant
@@ -84,7 +84,6 @@ module Plurimath
         type
         sPre
         show
-        nary
         mcPr
         mcJc
         grow
@@ -95,7 +94,6 @@ module Plurimath
         scr
         rSp
         rPr
-        rad
         sup
         sub
         pos
@@ -130,8 +128,11 @@ module Plurimath
 
       SUB_SUP_TAG = %w[
         sSubSup
+        sPre
         sSup
         sSub
+        nary
+        rad
         f
       ].freeze
     end
