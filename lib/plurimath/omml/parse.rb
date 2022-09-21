@@ -1,86 +1,133 @@
 # frozen_string_literal: true
 
-require "parslet"
 module Plurimath
   class Omml
-    class Parse < Parslet::Parser
-      rule(:sequence)  { (iteration >> iteration) | iteration }
-      rule(:iteration) { (expression >> expression) | expression | number_text }
+    class Parse
+      attr_accessor :value
 
-      rule(:open_sub_sup)  { parse_tag(:open, Constants::SUB_SUP_TAG) }
-      rule(:close_sub_sup) { parse_tag(:close, Constants::SUB_SUP_TAG) }
-
-      rule(:attributes) do
-        (attribute.as(:name) >> str("=") >> quoted_string).repeat
+      def initialize(text)
+        @value = Ox.parse(text)
       end
 
-      rule(:sub_sup_tags) do
-        (open_sub_sup >> tag.as(:fonts) >> sub_sup_values >> close_sub_sup)
+      def parse(elements = value)
+        return if elements.nil?
+
+        element_value = nil
+        elements.each do |element|
+          new_elements = if element.is_a?(Ox::Element) && element.nodes
+                           if element.name == "m:r"
+                             if element&.nodes&.last&.name&.include?("sub")
+                               Math::Function::Base.new(
+                                 parse(element.nodes[1]),
+                                 parse(element.nodes[2]),
+                               )
+                             else
+                               parse_nodes(element)
+                             end
+                           elsif tag_name(element) == "limLoc"
+                             element_value || Math::Symbol.new("∫")
+                           elsif tag_name(element) == "chr"
+                             Math::Symbol.new(
+                               CGI.unescape(
+                                 element.attributes[:"m:val"],
+                               ),
+                             )
+                           else
+                             parse_nodes(element)
+                           end
+                         else
+                           parse_nodes(element)
+                         end
+          element_value = new_elements unless new_elements.nil?
+        end
+        element_value
       end
 
-      rule(:attribute) do
-        (match["a-zA-Z"].repeat >> str(":") >> match["a-zA-Z0-9"].repeat) |
-          match["a-zA-Z0-9"].repeat
-      end
-
-      rule(:number_text) do
-        match["0-9"].repeat(1).as(:number) |
-          match["a-zA-Z"].as(:text).repeat |
-          match("[^a-zA-Z]")
-      end
-
-      rule(:tag) do
-        omission_tag |
-          (parse_tag(:open) >> sequence.as(:iteration) >> parse_tag(:close)) |
-          (parse_tag(:open) >> parse_tag(:close))
-      end
-
-      rule(:sub_sup_values) do
-        (tag.as(:first_value) >> tag.as(:second_value) >> tag.as(:third_value)) |
-          (tag.as(:first_value) >> tag.as(:second_value)) |
-          tag.as(:first_value)
-      end
-
-      rule(:expression) do
-        sub_sup_tags |
-          (tag >> sequence.as(:sequence)) |
-          tag
-      end
-
-      root :expression
-
-      def array_to_expression(array, name = nil)
-        initial_type = array.first.class
-        array.reduce do |expr, tag|
-          expr = str_to_expression(expr, name) if expr.is_a?(initial_type)
-          expr | str_to_expression(tag, name)
+      def parse_nodes(element = nil)
+        tag_name = tag_name(element)
+        if Constants::TAGS.include?(tag_name)
+          parse(element.nodes)
+        elsif Constants::SUB_SUP_TAG.include?(tag_name)
+          first_value  = parse(element.nodes[1])
+          second_value = parse(element.nodes[2])
+          if tag_name == "nary"
+            parse_nary_tag(element)
+          elsif ["ssubsup", "spre"].include?(tag_name.downcase)
+            tag_class(tag_name).new(
+              first_value,
+              second_value,
+              parse(element.nodes[3]),
+            )
+          elsif tag_name.casecmp("rad").zero?
+            if first_value
+              Math::Function::Root.new(first_value, second_value)
+            else
+              Math::Function::Sqrt.new(second_value)
+            end
+          else
+            tag_class(tag_name).new(first_value, second_value)
+          end
+        else
+          Math::Number.new(element)
         end
       end
 
-      def str_to_expression(string, name)
-        return str(string) if name.nil?
-
-        str(string).as(name)
+      def parse_nary_tag(element)
+        fonts_value  = parse(element.nodes[0])
+        first_value  = parse(element.nodes[1])
+        second_value = parse(element.nodes[2])
+        third_value  = parse(element.nodes[3])
+        if first_value.nil? && second_value.nil?
+          Plurimath::Math::Formula.new(
+            [
+              fonts_value,
+              Plurimath::Math::Formula.new(
+                [
+                  third_value,
+                ],
+              ),
+            ],
+          )
+        else
+          limloc = element.nodes[0].locate("m:limLoc")
+          nary_class = if limloc && limloc.first["m:val"] == "subSup"
+                         Math::Function::PowerBase
+                       else
+                         Math::Function::Underover
+                       end
+          Math::Formula.new(
+            [
+              nary_class.new(
+                fonts_value,
+                first_value,
+                second_value,
+              ),
+              Math::Formula.new(
+                [
+                  third_value,
+                ],
+              ),
+            ],
+          )
+        end
       end
 
-      def quoted_string
-        (str('"') >> match("[^\"]").repeat.as(:value) >> str('"')) |
-          (str("'") >> match("[^\']").repeat.as(:value) >> str("'"))
+      def tag_class(tag_name)
+        if tag_name == "f"
+          Math::Function::Frac
+        elsif ["sSup", "sup"].include?(tag_name)
+          Math::Function::Power
+        elsif ["sSubSup", "sPre"].include?(tag_name)
+          Math::Function::PowerBase
+        end
       end
 
-      def omission_tag
-        tag = str("<w:") | str("<m:")
-        tag = tag >> array_to_expression(Constants::TAGS, :omission)
-        tag = tag >> attributes.as(:attributes)
-        tag >> str("/>")
-      end
-
-      def parse_tag(opts, tags = Constants::TAGS)
-        tag = str("<w:") | str("<m:") if opts == :open
-        tag = str("</w:") | str("</m:") if opts == :close
-        tag = tag >> array_to_expression(tags, opts)
-        tag = tag >> attributes.as(:attributes) if opts == :open
-        tag >> str(">")
+      def tag_name(node)
+        if node.is_a?(String)
+          node
+        else
+          node&.value&.gsub(/[a-zA-Z]{1,}:/, "")
+        end
       end
     end
   end

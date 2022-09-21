@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require "ox"
 require_relative "unicode"
 require_relative "asciimath"
 require_relative "omml"

@@ -4,6 +4,7 @@ module Plurimath
   class Omml
     class Constants
       TAGS = %w[
+        lastRenderedPageBreak
         oMathParaPr
         borderBoxPr
         wrapIndent
@@ -82,12 +83,10 @@ module Plurimath
         argPr
         accPr
         type
-        sPre
         show
         mcPr
         mcJc
         grow
-        func
         diff
         sty
         shp
@@ -114,7 +113,6 @@ module Plurimath
         box
         bar
         aln
-        acc
         mr
         mc
         jc
@@ -128,12 +126,29 @@ module Plurimath
 
       SUB_SUP_TAG = %w[
         sSubSup
+        func
         sPre
         sSup
         sSub
         nary
+        acc
         rad
         f
+      ].freeze
+      UNARY_FUNCTIONS = %w[
+        arcsin
+        arctan
+        arccos
+        coth
+        tanh
+        sinh
+        cosh
+        tan
+        cos
+        cot
+        csc
+        sin
+        sec
       ].freeze
     end
   end
