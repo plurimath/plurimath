@@ -2,31 +2,21 @@ require_relative "../../../lib/plurimath/math"
 require_relative "../../../lib/plurimath/omml/parse"
 require_relative "../../../lib/plurimath/omml/constants"
 
-RSpec.describe Plurimath::Omml::Parse do
+RSpec.describe Plurimath::Omml do
 
-  subject(:formula) do
-    described_class.new.parse(
-      File.read(file_name).gsub(/\s/, "")
-    )
-  end
+  subject(:formula) { described_class.new(File.read(file_name)).to_formula }
 
   context "contains #001.omml" do
     let(:file_name) { "spec/plurimath/fixtures/001.omml" }
 
     it "matches open and close tag" do
-      f_tag          = formula[:iteration]
-      f_first_value  = f_tag[:first_value][:iteration][:iteration][:sequence][:iteration]
-      f_second_value = f_tag[:second_value][:iteration][:iteration][:sequence][:iteration]
-
-      expect(formula[:open]).to eq("oMath")
-      expect(formula[:attributes].count).to eq(18)
-      expect(formula[:attributes][10][:name]).to eq("xmlns:w10")
-      expect(formula[:attributes][11][:name]).to eq("xmlns:w")
-      expect(f_tag[:open]).to eq("f")
-      expect(f_first_value[:number]).to eq("1")
-      expect(f_second_value[:number]).to eq("2")
-      expect(f_tag[:close]).to eq("f")
-      expect(formula[:close]).to eq("oMath")
+      expected_value = Plurimath::Math::Formula.new([
+        Plurimath::Math::Function::Frac.new(
+          Plurimath::Math::Number.new("1"),
+          Plurimath::Math::Number.new("2"),
+        )
+      ])
+      expect(formula).to eq(expected_value)
     end
   end
 
@@ -34,16 +24,13 @@ RSpec.describe Plurimath::Omml::Parse do
     let(:file_name) { "spec/plurimath/fixtures/002.omml" }
 
     it "matches open and close tag" do
-      f_tag = formula[:iteration][:iteration]
-      f_first_value = f_tag[:first_value][:iteration][:iteration][:sequence][:iteration]
-      f_second_value = f_tag[:second_value][:iteration][:iteration][:sequence][:iteration]
-
-      expect(formula[:open]).to eq("oMathPara")
-      expect(f_tag[:open]).to eq("f")
-      expect(f_first_value[:number]).to eq("1")
-      expect(f_second_value[:number]).to eq("2")
-      expect(f_tag[:close]).to eq("f")
-      expect(formula[:close]).to eq("oMathPara")
+      expected_value = Plurimath::Math::Formula.new([
+        Plurimath::Math::Function::Frac.new(
+          Plurimath::Math::Number.new("1"),
+          Plurimath::Math::Number.new("2"),
+        )
+      ])
+      expect(formula).to eq(expected_value)
     end
   end
 
@@ -51,14 +38,13 @@ RSpec.describe Plurimath::Omml::Parse do
     let(:file_name) { "spec/plurimath/fixtures/003.omml" }
 
     it "matches open and close tag" do
-      f_tag = formula[:iteration][:iteration]
-      f_first_value = f_tag[:first_value][:iteration][:iteration][:sequence][:iteration]
-      f_second_value = f_tag[:second_value][:iteration][:iteration][:sequence][:iteration]
-
-      expect(f_tag[:open]).to eq("f")
-      expect(f_first_value[:number]).to eq("1")
-      expect(f_second_value[:number]).to eq("2")
-      expect(f_tag[:close]).to eq("f")
+      expected_value = Plurimath::Math::Formula.new([
+        Plurimath::Math::Function::Frac.new(
+          Plurimath::Math::Number.new("1"),
+          Plurimath::Math::Number.new("2"),
+        )
+      ])
+      expect(formula).to eq(expected_value)
     end
   end
 
@@ -66,12 +52,13 @@ RSpec.describe Plurimath::Omml::Parse do
     let(:file_name) { "spec/plurimath/fixtures/004.omml" }
 
     it "matches open and close tag" do
-      f_tag = formula[:iteration][:iteration][:iteration][:sequence][:iteration][:sequence]
-
-      expect(f_tag[:open]).to eq("f")
-      expect(f_tag[:first_value][:iteration][:iteration][:sequence][:iteration][:number]).to eq("1")
-      expect(f_tag[:second_value][:iteration][:iteration][:sequence][:iteration][:number]).to eq("2")
-      expect(f_tag[:close]).to eq("f")
+      expected_value = Plurimath::Math::Formula.new([
+        Plurimath::Math::Function::Frac.new(
+          Plurimath::Math::Number.new("1"),
+          Plurimath::Math::Number.new("2"),
+        )
+      ])
+      expect(formula).to eq(expected_value)
     end
   end
 
@@ -79,12 +66,13 @@ RSpec.describe Plurimath::Omml::Parse do
     let(:file_name) { "spec/plurimath/fixtures/005.omml" }
 
     it "matches open and close tag" do
-      sup_tag = formula[:iteration][:iteration]
-
-      expect(sup_tag[:open]).to eq("sSup")
-      expect(sup_tag[:first_value][:iteration][:iteration][:sequence][:iteration][:number]).to eq("1")
-      expect(sup_tag[:second_value][:iteration][:iteration][:sequence][:iteration][:number]).to eq("2")
-      expect(sup_tag[:close]).to eq("sSup")
+      expected_value = Plurimath::Math::Formula.new([
+        Plurimath::Math::Function::Power.new(
+          Plurimath::Math::Number.new("1"),
+          Plurimath::Math::Number.new("2"),
+        )
+      ])
+      expect(formula).to eq(expected_value)
     end
   end
 
@@ -92,16 +80,13 @@ RSpec.describe Plurimath::Omml::Parse do
     let(:file_name) { "spec/plurimath/fixtures/006.omml" }
 
     it "matches open and close tag" do
-      sub_tag = formula[:iteration][:iteration][:iteration][:sequence][:sequence]
-
-      expect(formula[:open]).to eq("oMathPara")
-      expect(formula[:attributes].count).to eq(18)
-      expect(formula[:attributes][10][:name]).to eq("xmlns:w15")
-      expect(formula[:attributes][11][:name]).to eq("xmlns:wne")
-      expect(sub_tag[:open]).to eq("sub")
-      expect(sub_tag[:iteration][:iteration][:sequence][:iteration][:number]).to eq("2")
-      expect(sub_tag[:close]).to eq("sub")
-      expect(formula[:close]).to eq("oMathPara")
+      expected_value = Plurimath::Math::Formula.new([
+        Plurimath::Math::Function::Base.new(
+          Plurimath::Math::Number.new("1"),
+          Plurimath::Math::Number.new("2"),
+        )
+      ])
+      expect(formula).to eq(expected_value)
     end
   end
 
@@ -109,18 +94,14 @@ RSpec.describe Plurimath::Omml::Parse do
     let(:file_name) { "spec/plurimath/fixtures/007.omml" }
 
     it "matches open and close tag" do
-      sub_sup_tag = formula[:iteration][:iteration]
-
-      expect(formula[:open]).to eq("oMathPara")
-      expect(formula[:attributes].count).to eq(18)
-      expect(formula[:attributes][10][:name]).to eq("xmlns:w15")
-      expect(formula[:attributes][11][:name]).to eq("xmlns:wne")
-      expect(sub_sup_tag[:open]).to eq("sSubSup")
-      expect(sub_sup_tag[:first_value][:iteration][:iteration][:sequence][:iteration][:number]).to eq("1")
-      expect(sub_sup_tag[:second_value][:iteration][:iteration][:sequence][:iteration][:number]).to eq("3")
-      expect(sub_sup_tag[:third_value][:iteration][:iteration][:sequence][:iteration][:number]).to eq("2")
-      expect(sub_sup_tag[:close]).to eq("sSubSup")
-      expect(formula[:close]).to eq("oMathPara")
+      expected_value = Plurimath::Math::Formula.new([
+        Plurimath::Math::Function::PowerBase.new(
+          Plurimath::Math::Number.new("1"),
+          Plurimath::Math::Number.new("3"),
+          Plurimath::Math::Number.new("2"),
+        )
+      ])
+      expect(formula).to eq(expected_value)
     end
   end
 
@@ -128,13 +109,14 @@ RSpec.describe Plurimath::Omml::Parse do
     let(:file_name) { "spec/plurimath/fixtures/008.omml" }
 
     it "matches open and close tag" do
-      spre_tag = formula[:iteration][:iteration]
-
-      expect(spre_tag[:open]).to eq("sPre")
-      expect(spre_tag[:first_value][:iteration][:iteration][:sequence][:iteration][:number]).to eq("3")
-      expect(spre_tag[:second_value][:iteration][:iteration][:sequence][:iteration][:number]).to eq("1")
-      expect(spre_tag[:third_value][:iteration][:iteration][:sequence][:iteration][:number]).to eq("2")
-      expect(spre_tag[:close]).to eq("sPre")
+      expected_value = Plurimath::Math::Formula.new([
+        Plurimath::Math::Function::PowerBase.new(
+          Plurimath::Math::Number.new("3"),
+          Plurimath::Math::Number.new("1"),
+          Plurimath::Math::Number.new("2"),
+        )
+      ])
+      expect(formula).to eq(expected_value)
     end
   end
 
@@ -142,14 +124,12 @@ RSpec.describe Plurimath::Omml::Parse do
     let(:file_name) { "spec/plurimath/fixtures/009.omml" }
 
     it "matches open and close tag" do
-      sqrt_tag = formula[:iteration][:iteration]
-
-      expect(sqrt_tag[:open]).to eq("rad")
-      expect(sqrt_tag[:fonts][:open]).to eq("radPr")
-      expect(sqrt_tag[:fonts][:close]).to eq("radPr")
-      expect(sqrt_tag[:first_value][:omission]).to eq("deg")
-      expect(sqrt_tag[:second_value][:iteration][:iteration][:sequence][:iteration][:number]).to eq("1")
-      expect(sqrt_tag[:close]).to eq("rad")
+      expected_value = Plurimath::Math::Formula.new([
+        Plurimath::Math::Function::Sqrt.new(
+          Plurimath::Math::Number.new("1")
+        )
+      ])
+      expect(formula).to eq(expected_value)
     end
   end
 
@@ -157,12 +137,13 @@ RSpec.describe Plurimath::Omml::Parse do
     let(:file_name) { "spec/plurimath/fixtures/010.omml" }
 
     it "matches open and close tag" do
-      sqrt_tag = formula[:iteration][:iteration]
-
-      expect(sqrt_tag[:open]).to eq("rad")
-      expect(sqrt_tag[:first_value][:iteration][:iteration][:sequence][:iteration][:number]).to eq("2")
-      expect(sqrt_tag[:second_value][:iteration][:iteration][:sequence][:iteration][:number]).to eq("1")
-      expect(sqrt_tag[:close]).to eq("rad")
+      expected_value = Plurimath::Math::Formula.new([
+        Plurimath::Math::Function::Root.new(
+          Plurimath::Math::Number.new("2"),
+          Plurimath::Math::Number.new("1"),
+        )
+      ])
+      expect(formula).to eq(expected_value)
     end
   end
 
@@ -170,12 +151,13 @@ RSpec.describe Plurimath::Omml::Parse do
     let(:file_name) { "spec/plurimath/fixtures/011.omml" }
 
     it "matches open and close tag" do
-      sqrt_tag = formula[:iteration][:iteration]
-
-      expect(sqrt_tag[:open]).to eq("rad")
-      expect(sqrt_tag[:first_value][:iteration][:iteration][:sequence][:iteration][:number]).to eq("2")
-      expect(sqrt_tag[:second_value][:iteration][:iteration][:sequence][:iteration][:number]).to eq("3")
-      expect(sqrt_tag[:close]).to eq("rad")
+      expected_value = Plurimath::Math::Formula.new([
+        Plurimath::Math::Function::Root.new(
+          Plurimath::Math::Number.new("2"),
+          Plurimath::Math::Number.new("3"),
+        )
+      ])
+      expect(formula).to eq(expected_value)
     end
   end
 
@@ -183,12 +165,13 @@ RSpec.describe Plurimath::Omml::Parse do
     let(:file_name) { "spec/plurimath/fixtures/012.omml" }
 
     it "matches open and close tag" do
-      sqrt_tag = formula[:iteration][:iteration]
-
-      expect(sqrt_tag[:open]).to eq("rad")
-      expect(sqrt_tag[:first_value][:iteration][:iteration][:sequence][:iteration][:number]).to eq("3")
-      expect(sqrt_tag[:second_value][:iteration][:iteration][:sequence][:iteration][:number]).to eq("1")
-      expect(sqrt_tag[:close]).to eq("rad")
+      expected_value = Plurimath::Math::Formula.new([
+        Plurimath::Math::Function::Root.new(
+          Plurimath::Math::Number.new("3"),
+          Plurimath::Math::Number.new("1"),
+        )
+      ])
+      expect(formula).to eq(expected_value)
     end
   end
 
@@ -196,13 +179,15 @@ RSpec.describe Plurimath::Omml::Parse do
     let(:file_name) { "spec/plurimath/fixtures/013.omml" }
 
     it "matches open and close tag" do
-      nary_tag = formula[:iteration][:iteration]
-
-      expect(nary_tag[:open]).to eq("nary")
-      expect(nary_tag[:first_value][:omission]).to eq("sub")
-      expect(nary_tag[:second_value][:omission]).to eq("sup")
-      expect(nary_tag[:third_value][:iteration][:iteration][:sequence][:iteration][:number]).to eq("1")
-      expect(nary_tag[:close]).to eq("nary")
+      expected_value = Plurimath::Math::Formula.new([
+        Plurimath::Math::Formula.new([
+          Plurimath::Math::Symbol.new("∫"),
+          Plurimath::Math::Formula.new([
+            Plurimath::Math::Number.new("1"),
+          ])
+        ])
+      ])
+      expect(formula).to eq(expected_value)
     end
   end
 
@@ -210,13 +195,19 @@ RSpec.describe Plurimath::Omml::Parse do
     let(:file_name) { "spec/plurimath/fixtures/014.omml" }
 
     it "matches open and close tag" do
-      nary_tag = formula[:iteration][:iteration]
-
-      expect(nary_tag[:open]).to eq("nary")
-      expect(nary_tag[:first_value][:iteration][:iteration][:sequence][:iteration][:number]).to eq("2")
-      expect(nary_tag[:second_value][:iteration][:iteration][:sequence][:iteration][:number]).to eq("1")
-      expect(nary_tag[:third_value][:iteration][:iteration][:sequence][:iteration][:number]).to eq("3")
-      expect(nary_tag[:close]).to eq("nary")
+      expected_value = Plurimath::Math::Formula.new([
+        Plurimath::Math::Formula.new([
+          Plurimath::Math::Function::PowerBase.new(
+            Plurimath::Math::Symbol.new("∫"),
+            Plurimath::Math::Number.new("2"),
+            Plurimath::Math::Number.new("1"),
+          ),
+          Plurimath::Math::Formula.new([
+            Plurimath::Math::Number.new("3"),
+          ])
+        ])
+      ])
+      expect(formula).to eq(expected_value)
     end
   end
 
@@ -224,13 +215,19 @@ RSpec.describe Plurimath::Omml::Parse do
     let(:file_name) { "spec/plurimath/fixtures/015.omml" }
 
     it "matches open and close tag" do
-      nary_tag = formula[:iteration][:iteration]
-
-      expect(nary_tag[:open]).to eq("nary")
-      expect(nary_tag[:first_value][:iteration][:iteration][:sequence][:iteration][:number]).to eq("2")
-      expect(nary_tag[:second_value][:iteration][:iteration][:sequence][:iteration][:number]).to eq("1")
-      expect(nary_tag[:third_value][:iteration][:iteration][:sequence][:iteration][:number]).to eq("3")
-      expect(nary_tag[:close]).to eq("nary")
+      expected_value = Plurimath::Math::Formula.new([
+        Plurimath::Math::Formula.new([
+          Plurimath::Math::Function::Underover.new(
+            Plurimath::Math::Symbol.new("∫"),
+            Plurimath::Math::Number.new("2"),
+            Plurimath::Math::Number.new("1"),
+          ),
+          Plurimath::Math::Formula.new([
+            Plurimath::Math::Number.new("3"),
+          ])
+        ])
+      ])
+      expect(formula).to eq(expected_value)
     end
   end
 
@@ -238,13 +235,15 @@ RSpec.describe Plurimath::Omml::Parse do
     let(:file_name) { "spec/plurimath/fixtures/016.omml" }
 
     it "matches open and close tag" do
-      nary_tag = formula[:iteration][:iteration]
-
-      expect(nary_tag[:open]).to eq("nary")
-      expect(nary_tag[:first_value][:omission]).to eq("sub")
-      expect(nary_tag[:second_value][:omission]).to eq("sup")
-      expect(nary_tag[:third_value][:iteration][:iteration][:sequence][:iteration][:number]).to eq("1")
-      expect(nary_tag[:close]).to eq("nary")
+      expected_value = Plurimath::Math::Formula.new([
+        Plurimath::Math::Formula.new([
+          Plurimath::Math::Symbol.new("∬"),
+          Plurimath::Math::Formula.new([
+            Plurimath::Math::Number.new("1"),
+          ])
+        ])
+      ])
+      expect(formula).to eq(expected_value)
     end
   end
 
@@ -252,13 +251,19 @@ RSpec.describe Plurimath::Omml::Parse do
     let(:file_name) { "spec/plurimath/fixtures/017.omml" }
 
     it "matches open and close tag" do
-      nary_tag = formula[:iteration][:iteration]
-
-      expect(nary_tag[:open]).to eq("nary")
-      expect(nary_tag[:first_value][:iteration][:iteration][:sequence][:iteration][:number]).to eq("2")
-      expect(nary_tag[:second_value][:iteration][:iteration][:sequence][:iteration][:number]).to eq("1")
-      expect(nary_tag[:third_value][:iteration][:iteration][:sequence][:iteration][:number]).to eq("3")
-      expect(nary_tag[:close]).to eq("nary")
+      expected_value = Plurimath::Math::Formula.new([
+        Plurimath::Math::Formula.new([
+          Plurimath::Math::Function::PowerBase.new(
+            Plurimath::Math::Symbol.new("∬"),
+            Plurimath::Math::Number.new("2"),
+            Plurimath::Math::Number.new("1"),
+          ),
+          Plurimath::Math::Formula.new([
+            Plurimath::Math::Number.new("3")
+          ])
+        ])
+      ])
+      expect(formula).to eq(expected_value)
     end
   end
 
@@ -266,13 +271,19 @@ RSpec.describe Plurimath::Omml::Parse do
     let(:file_name) { "spec/plurimath/fixtures/018.omml" }
 
     it "matches open and close tag" do
-      nary_tag = formula[:iteration][:iteration]
-
-      expect(nary_tag[:open]).to eq("nary")
-      expect(nary_tag[:first_value][:iteration][:iteration][:sequence][:iteration][:number]).to eq("2")
-      expect(nary_tag[:second_value][:iteration][:iteration][:sequence][:iteration][:number]).to eq("1")
-      expect(nary_tag[:third_value][:iteration][:iteration][:sequence][:iteration][:number]).to eq("3")
-      expect(nary_tag[:close]).to eq("nary")
+      expected_value = Plurimath::Math::Formula.new([
+        Plurimath::Math::Formula.new([
+          Plurimath::Math::Function::Underover.new(
+            Plurimath::Math::Symbol.new("∬"),
+            Plurimath::Math::Number.new("2"),
+            Plurimath::Math::Number.new("1"),
+          ),
+          Plurimath::Math::Formula.new([
+            Plurimath::Math::Number.new("3")
+          ])
+        ])
+      ])
+      expect(formula).to eq(expected_value)
     end
   end
 
@@ -280,13 +291,15 @@ RSpec.describe Plurimath::Omml::Parse do
     let(:file_name) { "spec/plurimath/fixtures/019.omml" }
 
     it "matches open and close tag" do
-      nary_tag = formula[:iteration][:iteration]
-
-      expect(nary_tag[:open]).to eq("nary")
-      expect(nary_tag[:first_value][:omission]).to eq("sub")
-      expect(nary_tag[:second_value][:omission]).to eq("sup")
-      expect(nary_tag[:third_value][:iteration][:iteration][:sequence][:iteration][:number]).to eq("1")
-      expect(nary_tag[:close]).to eq("nary")
+      expected_value = Plurimath::Math::Formula.new([
+        Plurimath::Math::Formula.new([
+          Plurimath::Math::Symbol.new("∭"),
+          Plurimath::Math::Formula.new([
+            Plurimath::Math::Number.new("1")
+          ])
+        ])
+      ])
+      expect(formula).to eq(expected_value)
     end
   end
 
@@ -294,13 +307,19 @@ RSpec.describe Plurimath::Omml::Parse do
     let(:file_name) { "spec/plurimath/fixtures/020.omml" }
 
     it "matches open and close tag" do
-      nary_tag = formula[:iteration][:iteration]
-
-      expect(nary_tag[:open]).to eq("nary")
-      expect(nary_tag[:first_value][:iteration][:iteration][:sequence][:iteration][:number]).to eq("2")
-      expect(nary_tag[:second_value][:iteration][:iteration][:sequence][:iteration][:number]).to eq("1")
-      expect(nary_tag[:third_value][:iteration][:iteration][:sequence][:iteration][:number]).to eq("3")
-      expect(nary_tag[:close]).to eq("nary")
+      expected_value = Plurimath::Math::Formula.new([
+        Plurimath::Math::Formula.new([
+          Plurimath::Math::Function::PowerBase.new(
+            Plurimath::Math::Symbol.new("∭"),
+            Plurimath::Math::Number.new("2"),
+            Plurimath::Math::Number.new("1"),
+          ),
+          Plurimath::Math::Formula.new([
+            Plurimath::Math::Number.new("3")
+          ])
+        ])
+      ])
+      expect(formula).to eq(expected_value)
     end
   end
 
@@ -308,13 +327,19 @@ RSpec.describe Plurimath::Omml::Parse do
     let(:file_name) { "spec/plurimath/fixtures/021.omml" }
 
     it "matches open and close tag" do
-      nary_tag = formula[:iteration][:iteration]
-
-      expect(nary_tag[:open]).to eq("nary")
-      expect(nary_tag[:first_value][:iteration][:iteration][:sequence][:iteration][:number]).to eq("2")
-      expect(nary_tag[:second_value][:iteration][:iteration][:sequence][:iteration][:number]).to eq("1")
-      expect(nary_tag[:third_value][:iteration][:iteration][:sequence][:iteration][:number]).to eq("3")
-      expect(nary_tag[:close]).to eq("nary")
+      expected_value = Plurimath::Math::Formula.new([
+        Plurimath::Math::Formula.new([
+          Plurimath::Math::Function::Underover.new(
+            Plurimath::Math::Symbol.new("∭"),
+            Plurimath::Math::Number.new("2"),
+            Plurimath::Math::Number.new("1"),
+          ),
+          Plurimath::Math::Formula.new([
+            Plurimath::Math::Number.new("3")
+          ])
+        ])
+      ])
+      expect(formula).to eq(expected_value)
     end
   end
 
@@ -322,13 +347,15 @@ RSpec.describe Plurimath::Omml::Parse do
     let(:file_name) { "spec/plurimath/fixtures/022.omml" }
 
     it "matches open and close tag" do
-      nary_tag = formula[:iteration][:iteration]
-
-      expect(nary_tag[:open]).to eq("nary")
-      expect(nary_tag[:first_value][:omission]).to eq("sub")
-      expect(nary_tag[:second_value][:omission]).to eq("sup")
-      expect(nary_tag[:third_value][:iteration][:iteration][:sequence][:iteration][:number]).to eq("1")
-      expect(nary_tag[:close]).to eq("nary")
+      expected_value = Plurimath::Math::Formula.new([
+        Plurimath::Math::Formula.new([
+          Plurimath::Math::Symbol.new("∮"),
+          Plurimath::Math::Formula.new([
+            Plurimath::Math::Number.new("1")
+          ])
+        ])
+      ])
+      expect(formula).to eq(expected_value)
     end
   end
 
@@ -336,13 +363,19 @@ RSpec.describe Plurimath::Omml::Parse do
     let(:file_name) { "spec/plurimath/fixtures/023.omml" }
 
     it "matches open and close tag" do
-      nary_tag = formula[:iteration][:iteration]
-
-      expect(nary_tag[:open]).to eq("nary")
-      expect(nary_tag[:first_value][:iteration][:iteration][:sequence][:iteration][:number]).to eq("2")
-      expect(nary_tag[:second_value][:iteration][:iteration][:sequence][:iteration][:number]).to eq("1")
-      expect(nary_tag[:third_value][:iteration][:iteration][:sequence][:iteration][:number]).to eq("3")
-      expect(nary_tag[:close]).to eq("nary")
+      expected_value = Plurimath::Math::Formula.new([
+        Plurimath::Math::Formula.new([
+          Plurimath::Math::Function::PowerBase.new(
+            Plurimath::Math::Symbol.new("∮"),
+            Plurimath::Math::Number.new("2"),
+            Plurimath::Math::Number.new("1"),
+          ),
+          Plurimath::Math::Formula.new([
+            Plurimath::Math::Number.new("3")
+          ])
+        ])
+      ])
+      expect(formula).to eq(expected_value)
     end
   end
 
@@ -350,13 +383,19 @@ RSpec.describe Plurimath::Omml::Parse do
     let(:file_name) { "spec/plurimath/fixtures/024.omml" }
 
     it "matches open and close tag" do
-      nary_tag = formula[:iteration][:iteration]
-
-      expect(nary_tag[:open]).to eq("nary")
-      expect(nary_tag[:first_value][:iteration][:iteration][:sequence][:iteration][:number]).to eq("2")
-      expect(nary_tag[:second_value][:iteration][:iteration][:sequence][:iteration][:number]).to eq("1")
-      expect(nary_tag[:third_value][:iteration][:iteration][:sequence][:iteration][:number]).to eq("3")
-      expect(nary_tag[:close]).to eq("nary")
+      expected_value = Plurimath::Math::Formula.new([
+        Plurimath::Math::Formula.new([
+          Plurimath::Math::Function::Underover.new(
+            Plurimath::Math::Symbol.new("∮"),
+            Plurimath::Math::Number.new("2"),
+            Plurimath::Math::Number.new("1"),
+          ),
+          Plurimath::Math::Formula.new([
+            Plurimath::Math::Number.new("3")
+          ])
+        ])
+      ])
+      expect(formula).to eq(expected_value)
     end
   end
 
@@ -364,13 +403,15 @@ RSpec.describe Plurimath::Omml::Parse do
     let(:file_name) { "spec/plurimath/fixtures/025.omml" }
 
     it "matches open and close tag" do
-      nary_tag = formula[:iteration][:iteration]
-
-      expect(nary_tag[:open]).to eq("nary")
-      expect(nary_tag[:first_value][:omission]).to eq("sub")
-      expect(nary_tag[:second_value][:omission]).to eq("sup")
-      expect(nary_tag[:third_value][:iteration][:iteration][:sequence][:iteration][:number]).to eq("1")
-      expect(nary_tag[:close]).to eq("nary")
+      expected_value = Plurimath::Math::Formula.new([
+        Plurimath::Math::Formula.new([
+          Plurimath::Math::Symbol.new("∯"),
+            Plurimath::Math::Formula.new([
+              Plurimath::Math::Number.new("1")
+          ])
+        ])
+      ])
+      expect(formula).to eq(expected_value)
     end
   end
 
@@ -378,13 +419,19 @@ RSpec.describe Plurimath::Omml::Parse do
     let(:file_name) { "spec/plurimath/fixtures/026.omml" }
 
     it "matches open and close tag" do
-      nary_tag = formula[:iteration][:iteration]
-
-      expect(nary_tag[:open]).to eq("nary")
-      expect(nary_tag[:first_value][:iteration][:iteration][:sequence][:iteration][:number]).to eq("2")
-      expect(nary_tag[:second_value][:iteration][:iteration][:sequence][:iteration][:number]).to eq("1")
-      expect(nary_tag[:third_value][:iteration][:iteration][:sequence][:iteration][:number]).to eq("3")
-      expect(nary_tag[:close]).to eq("nary")
+      expected_value = Plurimath::Math::Formula.new([
+        Plurimath::Math::Formula.new([
+          Plurimath::Math::Function::PowerBase.new(
+            Plurimath::Math::Symbol.new("∯"),
+            Plurimath::Math::Number.new("2"),
+            Plurimath::Math::Number.new("1"),
+          ),
+          Plurimath::Math::Formula.new([
+            Plurimath::Math::Number.new("3")
+          ])
+        ])
+      ])
+      expect(formula).to eq(expected_value)
     end
   end
 
@@ -392,13 +439,19 @@ RSpec.describe Plurimath::Omml::Parse do
     let(:file_name) { "spec/plurimath/fixtures/027.omml" }
 
     it "matches open and close tag" do
-      nary_tag = formula[:iteration][:iteration]
-
-      expect(nary_tag[:open]).to eq("nary")
-      expect(nary_tag[:first_value][:iteration][:iteration][:sequence][:iteration][:number]).to eq("2")
-      expect(nary_tag[:second_value][:iteration][:iteration][:sequence][:iteration][:number]).to eq("1")
-      expect(nary_tag[:third_value][:iteration][:iteration][:sequence][:iteration][:number]).to eq("3")
-      expect(nary_tag[:close]).to eq("nary")
+      expected_value = Plurimath::Math::Formula.new([
+        Plurimath::Math::Formula.new([
+          Plurimath::Math::Function::Underover.new(
+            Plurimath::Math::Symbol.new("∯"),
+            Plurimath::Math::Number.new("2"),
+            Plurimath::Math::Number.new("1"),
+          ),
+          Plurimath::Math::Formula.new([
+            Plurimath::Math::Number.new("3")
+          ])
+        ])
+      ])
+      expect(formula).to eq(expected_value)
     end
   end
 
@@ -406,13 +459,15 @@ RSpec.describe Plurimath::Omml::Parse do
     let(:file_name) { "spec/plurimath/fixtures/028.omml" }
 
     it "matches open and close tag" do
-      nary_tag = formula[:iteration][:iteration]
-
-      expect(nary_tag[:open]).to eq("nary")
-      expect(nary_tag[:first_value][:omission]).to eq("sub")
-      expect(nary_tag[:second_value][:omission]).to eq("sup")
-      expect(nary_tag[:third_value][:iteration][:iteration][:sequence][:iteration][:number]).to eq("1")
-      expect(nary_tag[:close]).to eq("nary")
+      expected_value = Plurimath::Math::Formula.new([
+        Plurimath::Math::Formula.new([
+          Plurimath::Math::Symbol.new("∰"),
+          Plurimath::Math::Formula.new([
+            Plurimath::Math::Number.new("1")
+          ])
+        ])
+      ])
+      expect(formula).to eq(expected_value)
     end
   end
 
@@ -420,13 +475,19 @@ RSpec.describe Plurimath::Omml::Parse do
     let(:file_name) { "spec/plurimath/fixtures/029.omml" }
 
     it "matches open and close tag" do
-      nary_tag = formula[:iteration][:iteration]
-
-      expect(nary_tag[:open]).to eq("nary")
-      expect(nary_tag[:first_value][:iteration][:iteration][:sequence][:iteration][:number]).to eq("2")
-      expect(nary_tag[:second_value][:iteration][:iteration][:sequence][:iteration][:number]).to eq("1")
-      expect(nary_tag[:third_value][:iteration][:iteration][:sequence][:iteration][:number]).to eq("3")
-      expect(nary_tag[:close]).to eq("nary")
+      expected_value = Plurimath::Math::Formula.new([
+        Plurimath::Math::Formula.new([
+          Plurimath::Math::Function::PowerBase.new(
+            Plurimath::Math::Symbol.new("∰"),
+            Plurimath::Math::Number.new("2"),
+            Plurimath::Math::Number.new("1"),
+          ),
+          Plurimath::Math::Formula.new([
+            Plurimath::Math::Number.new("3")
+          ])
+        ])
+      ])
+      expect(formula).to eq(expected_value)
     end
   end
 
@@ -434,13 +495,19 @@ RSpec.describe Plurimath::Omml::Parse do
     let(:file_name) { "spec/plurimath/fixtures/030.omml" }
 
     it "matches open and close tag" do
-      nary_tag = formula[:iteration][:iteration]
-
-      expect(nary_tag[:open]).to eq("nary")
-      expect(nary_tag[:first_value][:iteration][:iteration][:sequence][:iteration][:number]).to eq("1")
-      expect(nary_tag[:second_value][:iteration][:iteration][:sequence][:iteration][:number]).to eq("2")
-      expect(nary_tag[:third_value][:iteration][:iteration][:sequence][:iteration][:number]).to eq("3")
-      expect(nary_tag[:close]).to eq("nary")
+      expected_value = Plurimath::Math::Formula.new([
+        Plurimath::Math::Formula.new([
+          Plurimath::Math::Function::Underover.new(
+            Plurimath::Math::Symbol.new("∰"),
+            Plurimath::Math::Number.new("1"),
+            Plurimath::Math::Number.new("2"),
+          ),
+          Plurimath::Math::Formula.new([
+            Plurimath::Math::Number.new("3")
+          ])
+        ])
+      ])
+      expect(formula).to eq(expected_value)
     end
   end
 
@@ -448,10 +515,10 @@ RSpec.describe Plurimath::Omml::Parse do
     let(:file_name) { "spec/plurimath/fixtures/031.omml" }
 
     it "matches open and close tag" do
-      iteration = formula[:iteration][:iteration][:iteration][:sequence][:iteration]
-
-      expect(iteration[:iteration][:sequence][:iteration][0][:text]).to eq("d")
-      expect(iteration[:iteration][:sequence][:iteration][1][:text]).to eq("x")
+      expected_value = Plurimath::Math::Formula.new([
+        Plurimath::Math::Number.new("dx")
+      ])
+      expect(formula).to eq(expected_value)
     end
   end
 
@@ -459,10 +526,10 @@ RSpec.describe Plurimath::Omml::Parse do
     let(:file_name) { "spec/plurimath/fixtures/032.omml" }
 
     it "matches open and close tag" do
-      iteration = formula[:iteration][:iteration][:iteration][:sequence][:iteration]
-
-      expect(iteration[:iteration][:sequence][:iteration][0][:text]).to eq("d")
-      expect(iteration[:iteration][:sequence][:iteration][1][:text]).to eq("y")
+      expected_value = Plurimath::Math::Formula.new([
+        Plurimath::Math::Number.new("dy")
+      ])
+      expect(formula).to eq(expected_value)
     end
   end
 end
