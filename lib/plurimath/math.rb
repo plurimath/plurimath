@@ -16,6 +16,7 @@ require_relative "asciimath/parser"
 require_relative "mathml/parser"
 require_relative "latex/parser"
 require_relative "html/parser"
+require_relative "omml/parser"
 require_relative "utility"
 module Plurimath
   module Math

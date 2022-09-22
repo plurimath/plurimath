@@ -1,10 +1,12 @@
 require_relative "../../../lib/plurimath/math"
-require_relative "../../../lib/plurimath/omml/parse"
+require_relative "../../../lib/plurimath/omml/parser"
 require_relative "../../../lib/plurimath/omml/constants"
 
-RSpec.describe Plurimath::Omml do
+RSpec.describe Plurimath::Omml::Parser do
 
-  subject(:formula) { described_class.new(File.read(file_name)).to_formula }
+  subject(:formula) do
+    described_class.new(File.read(file_name)).parse
+  end
 
   context "contains #001.omml" do
     let(:file_name) { "spec/plurimath/fixtures/001.omml" }
@@ -110,10 +112,10 @@ RSpec.describe Plurimath::Omml do
 
     it "matches open and close tag" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Function::PowerBase.new(
+        Plurimath::Math::Function::Multiscript.new(
+          Plurimath::Math::Number.new("2"),
           Plurimath::Math::Number.new("3"),
           Plurimath::Math::Number.new("1"),
-          Plurimath::Math::Number.new("2"),
         )
       ])
       expect(formula).to eq(expected_value)
@@ -406,8 +408,8 @@ RSpec.describe Plurimath::Omml do
       expected_value = Plurimath::Math::Formula.new([
         Plurimath::Math::Formula.new([
           Plurimath::Math::Symbol.new("∯"),
-            Plurimath::Math::Formula.new([
-              Plurimath::Math::Number.new("1")
+          Plurimath::Math::Formula.new([
+            Plurimath::Math::Number.new("1")
           ])
         ])
       ])
@@ -516,7 +518,7 @@ RSpec.describe Plurimath::Omml do
 
     it "matches open and close tag" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Number.new("dx")
+        Plurimath::Math::Function::Text.new("dx"),
       ])
       expect(formula).to eq(expected_value)
     end
@@ -527,7 +529,7 @@ RSpec.describe Plurimath::Omml do
 
     it "matches open and close tag" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Number.new("dy")
+        Plurimath::Math::Function::Text.new("dy"),
       ])
       expect(formula).to eq(expected_value)
     end
