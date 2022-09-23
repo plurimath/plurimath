@@ -149,21 +149,6 @@ module Plurimath
         sin
         sec
       ].freeze
-      UNARY_FUNCTIONS = %w[
-        arcsin
-        arctan
-        arccos
-        coth
-        tanh
-        sinh
-        cosh
-        tan
-        cos
-        cot
-        csc
-        sin
-        sec
-      ].freeze
     end
   end
 end
