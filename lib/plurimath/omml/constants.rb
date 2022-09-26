@@ -23,7 +23,6 @@ module Plurimath
         limUppPr
         limLowPr
         hideLeft
-        groupChr
         zeroWid
         zeroAsc
         strikeV
@@ -117,12 +116,12 @@ module Plurimath
         mc
         jc
         t
-        r
         i
         m
         e
       ].freeze
       SUB_SUP_TAG = %w[
+        groupChr
         sSubSup
         func
         sPre
@@ -132,6 +131,7 @@ module Plurimath
         acc
         rad
         f
+        r
         d
       ].freeze
       UNARY_FUNCTIONS = %w[

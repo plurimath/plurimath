@@ -838,10 +838,14 @@ RSpec.describe Plurimath::Omml::Parser do
             nil,
           ),
           Plurimath::Math::Formula.new([
-            Plurimath::Math::Formula.new([
-              Plurimath::Math::Function::Text.new("P"),
-              Plurimath::Math::Function::Text.new("i,j")
-            ])
+            Plurimath::Math::Function::Text.new("P"),
+            Plurimath::Math::Function::Fenced.new(
+              nil,
+              [
+                Plurimath::Math::Function::Text.new("i,j"),
+              ],
+              nil,
+            ),
           ])
         ])
       ])
@@ -887,17 +891,15 @@ RSpec.describe Plurimath::Omml::Parser do
             Plurimath::Math::Function::Fenced.new(
               nil,
               [
-                Plurimath::Math::Formula.new([
-                  Plurimath::Math::Function::Base.new(
-                    Plurimath::Math::Function::Text.new("X"),
-                    Plurimath::Math::Function::Text.new("n")
-                  ),
-                  Plurimath::Math::Symbol.new("∩"),
-                  Plurimath::Math::Function::Base.new(
-                    Plurimath::Math::Function::Text.new("Y"),
-                    Plurimath::Math::Function::Text.new("n")
-                  )
-                ]),
+                Plurimath::Math::Function::Base.new(
+                  Plurimath::Math::Function::Text.new("X"),
+                  Plurimath::Math::Function::Text.new("n")
+                ),
+                Plurimath::Math::Symbol.new("∩"),
+                Plurimath::Math::Function::Base.new(
+                  Plurimath::Math::Function::Text.new("Y"),
+                  Plurimath::Math::Function::Text.new("n")
+                )
               ],
               nil,
             )
@@ -933,7 +935,7 @@ RSpec.describe Plurimath::Omml::Parser do
         Plurimath::Math::Function::Fenced.new(
           Plurimath::Math::Symbol.new("["),
           [
-            Plurimath::Math::Symbol.new("2"),
+            Plurimath::Math::Number.new("2"),
           ],
           Plurimath::Math::Symbol.new("]"),
         )
@@ -1124,6 +1126,852 @@ RSpec.describe Plurimath::Omml::Parser do
           Plurimath::Math::Symbol.new("2"),
         ],
         nil,
+        )
+      ])
+      expect(formula).to eq(expected_value)
+    end
+  end
+
+  context "contains #063.omml" do
+    let(:file_name) { "spec/plurimath/fixtures/063.omml" }
+
+    it "matches open and close tag" do
+      expected_value = Plurimath::Math::Formula.new([
+        Plurimath::Math::Function::Fenced.new(
+          Plurimath::Math::Symbol.new("{"),
+          [
+            Plurimath::Math::Number.new("3"),
+            Plurimath::Math::Number.new("4"),
+          ],
+          Plurimath::Math::Symbol.new("}"),
+        )
+      ])
+      expect(formula).to eq(expected_value)
+    end
+  end
+
+  context "contains #064.omml" do
+    let(:file_name) { "spec/plurimath/fixtures/064.omml" }
+
+    it "matches open and close tag" do
+      expected_value = Plurimath::Math::Formula.new([
+        Plurimath::Math::Function::Fenced.new(
+          Plurimath::Math::Symbol.new("⟨"),
+          [
+            Plurimath::Math::Number.new("5"),
+            Plurimath::Math::Number.new("6"),
+          ],
+          Plurimath::Math::Symbol.new("⟩"),
+        )
+      ])
+      expect(formula).to eq(expected_value)
+    end
+  end
+
+  context "contains #065.omml" do
+    let(:file_name) { "spec/plurimath/fixtures/065.omml" }
+
+    it "matches open and close tag" do
+      expected_value = Plurimath::Math::Formula.new([
+        Plurimath::Math::Function::Fenced.new(
+          Plurimath::Math::Symbol.new("⟨"),
+          [
+            Plurimath::Math::Number.new("7"),
+            Plurimath::Math::Number.new("8"),
+            Plurimath::Math::Number.new("9"),
+          ],
+          Plurimath::Math::Symbol.new("⟩"),
+        )
+      ])
+      expect(formula).to eq(expected_value)
+    end
+  end
+
+  context "contains #066.omml" do
+    let(:file_name) { "spec/plurimath/fixtures/066.omml" }
+
+    it "matches open and close tag" do
+      expected_value = Plurimath::Math::Formula.new([
+        Plurimath::Math::Function::Fenced.new(
+          Plurimath::Math::Symbol.new("{"),
+          [
+            Plurimath::Math::Function::Table.new(
+              [
+                Plurimath::Math::Function::Tr.new([
+                  Plurimath::Math::Function::Td.new([
+                    Plurimath::Math::Number.new("1"),
+                  ])
+                ]),
+                Plurimath::Math::Function::Tr.new([
+                  Plurimath::Math::Function::Td.new([
+                    Plurimath::Math::Number.new("2"),
+                  ])
+                ])
+              ],
+              nil,
+              nil,
+            )
+          ],
+          Plurimath::Math::Symbol.new(""),
+        )
+      ])
+      expect(formula).to eq(expected_value)
+    end
+  end
+
+  context "contains #067.omml" do
+    let(:file_name) { "spec/plurimath/fixtures/067.omml" }
+
+    it "matches open and close tag" do
+      expected_value = Plurimath::Math::Formula.new([
+        Plurimath::Math::Function::Fenced.new(
+          Plurimath::Math::Symbol.new("{"),
+          [
+            Plurimath::Math::Function::Table.new(
+              [
+                Plurimath::Math::Function::Tr.new([
+                  Plurimath::Math::Function::Td.new([
+                    Plurimath::Math::Number.new("1")
+                  ])
+                ]),
+                Plurimath::Math::Function::Tr.new([
+                  Plurimath::Math::Function::Td.new([
+                    Plurimath::Math::Number.new("2")
+                  ])
+                ]),
+                Plurimath::Math::Function::Tr.new([
+                  Plurimath::Math::Function::Td.new([
+                    Plurimath::Math::Number.new("3")
+                  ])
+                ])
+              ],
+              nil,
+              nil
+            )
+          ],
+          Plurimath::Math::Symbol.new(""),
+        )
+      ])
+      expect(formula).to eq(expected_value)
+    end
+  end
+
+  context "contains #068.omml" do
+    let(:file_name) { "spec/plurimath/fixtures/068.omml" }
+
+    it "matches open and close tag" do
+      expected_value = Plurimath::Math::Formula.new([
+        Plurimath::Math::Function::Frac.new(
+          Plurimath::Math::Function::Text.new("a"),
+          Plurimath::Math::Function::Text.new("b"),
+        )
+      ])
+      expect(formula).to eq(expected_value)
+    end
+  end
+
+  context "contains #069.omml" do
+    let(:file_name) { "spec/plurimath/fixtures/069.omml" }
+
+    it "matches open and close tag" do
+      expected_value = Plurimath::Math::Formula.new([
+        Plurimath::Math::Function::Fenced.new(
+          nil,
+          [
+            Plurimath::Math::Function::Frac.new(
+              Plurimath::Math::Function::Text.new("n"),
+              Plurimath::Math::Function::Text.new("m"),
+            )
+          ],
+          nil,
+        )
+      ])
+      expect(formula).to eq(expected_value)
+    end
+  end
+
+  context "contains #070.omml" do
+    let(:file_name) { "spec/plurimath/fixtures/070.omml" }
+
+    it "matches open and close tag" do
+      expected_value = Plurimath::Math::Formula.new([
+        Plurimath::Math::Function::Text.new("f"),
+        Plurimath::Math::Function::Fenced.new(
+          nil,
+          [
+            Plurimath::Math::Function::Text.new("x")
+          ],
+          nil,
+        ),
+        Plurimath::Math::Symbol.new("="),
+        Plurimath::Math::Function::Fenced.new(
+          Plurimath::Math::Symbol.new("{"),
+          [
+            Plurimath::Math::Function::Table.new(
+              [
+                Plurimath::Math::Function::Tr.new([
+                  Plurimath::Math::Function::Td.new([
+                    Plurimath::Math::Function::Text.new("-x, &x<0")
+                  ])
+                ]),
+                Plurimath::Math::Function::Tr.new([
+                  Plurimath::Math::Function::Td.new([
+                    Plurimath::Math::Function::Text.new("x, &x≥0")
+                  ])
+                ])
+              ],
+              nil,
+              nil,
+            )
+          ],
+          Plurimath::Math::Symbol.new(""),
+        )
+      ])
+      expect(formula).to eq(expected_value)
+    end
+  end
+
+  context "contains #071.omml" do
+    let(:file_name) { "spec/plurimath/fixtures/071.omml" }
+
+    it "matches open and close tag" do
+      expected_value = Plurimath::Math::Formula.new([
+        Plurimath::Math::Function::Fenced.new(
+          nil,
+          [
+            Plurimath::Math::Function::Frac.new(
+              Plurimath::Math::Function::Text.new("n"),
+              Plurimath::Math::Function::Text.new("k"),
+            )
+          ],
+          nil,
+        )
+      ])
+      expect(formula).to eq(expected_value)
+    end
+  end
+
+  context "contains #072.omml" do
+    let(:file_name) { "spec/plurimath/fixtures/072.omml" }
+
+    it "matches open and close tag" do
+      expected_value = Plurimath::Math::Formula.new([
+        Plurimath::Math::Function::Fenced.new(
+          Plurimath::Math::Symbol.new("⟨"),
+          [
+            Plurimath::Math::Function::Frac.new(
+              Plurimath::Math::Function::Text.new("n"),
+              Plurimath::Math::Function::Text.new("k"),
+            )
+          ],
+          Plurimath::Math::Symbol.new("⟩"),
+        )
+      ])
+      expect(formula).to eq(expected_value)
+    end
+  end
+
+  context "contains #073.omml" do
+    let(:file_name) { "spec/plurimath/fixtures/073.omml" }
+
+    it "matches open and close tag" do
+      expected_value = Plurimath::Math::Formula.new([
+        Plurimath::Math::Function::Sin.new(
+          Plurimath::Math::Function::Text.new("x")
+        )
+      ])
+      expect(formula).to eq(expected_value)
+    end
+  end
+
+  context "contains #074.omml" do
+    let(:file_name) { "spec/plurimath/fixtures/074.omml" }
+
+    it "matches open and close tag" do
+      expected_value = Plurimath::Math::Formula.new([
+        Plurimath::Math::Function::Cos.new(
+          Plurimath::Math::Function::Text.new("x")
+        )
+      ])
+      expect(formula).to eq(expected_value)
+    end
+  end
+
+  context "contains #075.omml" do
+    let(:file_name) { "spec/plurimath/fixtures/075.omml" }
+
+    it "matches open and close tag" do
+      expected_value = Plurimath::Math::Formula.new([
+        Plurimath::Math::Function::Tan.new(
+          Plurimath::Math::Function::Text.new("x")
+        )
+      ])
+      expect(formula).to eq(expected_value)
+    end
+  end
+
+  context "contains #076.omml" do
+    let(:file_name) { "spec/plurimath/fixtures/076.omml" }
+
+    it "matches open and close tag" do
+      expected_value = Plurimath::Math::Formula.new([
+        Plurimath::Math::Function::Csc.new(
+          Plurimath::Math::Function::Text.new("x")
+        )
+      ])
+      expect(formula).to eq(expected_value)
+    end
+  end
+
+  context "contains #077.omml" do
+    let(:file_name) { "spec/plurimath/fixtures/077.omml" }
+
+    it "matches open and close tag" do
+      expected_value = Plurimath::Math::Formula.new([
+        Plurimath::Math::Function::Sec.new(
+          Plurimath::Math::Function::Text.new("x")
+        )
+      ])
+      expect(formula).to eq(expected_value)
+    end
+  end
+
+  context "contains #078.omml" do
+    let(:file_name) { "spec/plurimath/fixtures/078.omml" }
+
+    it "matches open and close tag" do
+      expected_value = Plurimath::Math::Formula.new([
+        Plurimath::Math::Function::Cot.new(
+          Plurimath::Math::Function::Text.new("x")
+        )
+      ])
+      expect(formula).to eq(expected_value)
+    end
+  end
+
+  context "contains #079.omml" do
+    let(:file_name) { "spec/plurimath/fixtures/079.omml" }
+
+    it "matches open and close tag" do
+      expected_value = Plurimath::Math::Formula.new([
+        Plurimath::Math::Formula.new([
+          Plurimath::Math::Function::Power.new(
+            Plurimath::Math::Function::Text.new("sin"),
+            Plurimath::Math::Symbol.new("-1")
+          ),
+          Plurimath::Math::Function::Text.new("x")
+        ])
+      ])
+      expect(formula).to eq(expected_value)
+    end
+  end
+
+  context "contains #080.omml" do
+    let(:file_name) { "spec/plurimath/fixtures/080.omml" }
+
+    it "matches open and close tag" do
+      expected_value = Plurimath::Math::Formula.new([
+        Plurimath::Math::Formula.new([
+          Plurimath::Math::Function::Power.new(
+            Plurimath::Math::Function::Text.new("cos"),
+            Plurimath::Math::Symbol.new("-1")
+          ),
+          Plurimath::Math::Function::Text.new("x")
+        ])
+      ])
+      expect(formula).to eq(expected_value)
+    end
+  end
+
+  context "contains #081.omml" do
+    let(:file_name) { "spec/plurimath/fixtures/081.omml" }
+
+    it "matches open and close tag" do
+      expected_value = Plurimath::Math::Formula.new([
+        Plurimath::Math::Formula.new([
+          Plurimath::Math::Function::Power.new(
+            Plurimath::Math::Function::Text.new("tan"),
+            Plurimath::Math::Symbol.new("-1")
+          ),
+          Plurimath::Math::Function::Text.new("x")
+        ])
+      ])
+      expect(formula).to eq(expected_value)
+    end
+  end
+
+  context "contains #082.omml" do
+    let(:file_name) { "spec/plurimath/fixtures/082.omml" }
+
+    it "matches open and close tag" do
+      expected_value = Plurimath::Math::Formula.new([
+        Plurimath::Math::Formula.new([
+          Plurimath::Math::Function::Power.new(
+            Plurimath::Math::Function::Text.new("csc"),
+            Plurimath::Math::Symbol.new("-1")
+          ),
+          Plurimath::Math::Function::Text.new("x")
+        ])
+      ])
+      expect(formula).to eq(expected_value)
+    end
+  end
+
+  context "contains #083.omml" do
+    let(:file_name) { "spec/plurimath/fixtures/083.omml" }
+
+    it "matches open and close tag" do
+      expected_value = Plurimath::Math::Formula.new([
+        Plurimath::Math::Formula.new([
+          Plurimath::Math::Function::Power.new(
+            Plurimath::Math::Function::Text.new("sec"),
+            Plurimath::Math::Symbol.new("-1")
+          ),
+          Plurimath::Math::Function::Text.new("x")
+        ])
+      ])
+      expect(formula).to eq(expected_value)
+    end
+  end
+
+  context "contains #084.omml" do
+    let(:file_name) { "spec/plurimath/fixtures/084.omml" }
+
+    it "matches open and close tag" do
+      expected_value = Plurimath::Math::Formula.new([
+        Plurimath::Math::Formula.new([
+          Plurimath::Math::Function::Power.new(
+            Plurimath::Math::Function::Text.new("cot"),
+            Plurimath::Math::Symbol.new("-1")
+          ),
+          Plurimath::Math::Function::Text.new("x")
+        ])
+      ])
+      expect(formula).to eq(expected_value)
+    end
+  end
+
+  context "contains #085.omml" do
+    let(:file_name) { "spec/plurimath/fixtures/085.omml" }
+
+    it "matches open and close tag" do
+      expected_value = Plurimath::Math::Formula.new([
+        Plurimath::Math::Function::Sinh.new(
+          Plurimath::Math::Function::Text.new("x")
+        ),
+      ])
+      expect(formula).to eq(expected_value)
+    end
+  end
+
+  context "contains #086.omml" do
+    let(:file_name) { "spec/plurimath/fixtures/086.omml" }
+
+    it "matches open and close tag" do
+      expected_value = Plurimath::Math::Formula.new([
+        Plurimath::Math::Function::Cosh.new(
+          Plurimath::Math::Function::Text.new("x")
+        ),
+      ])
+      expect(formula).to eq(expected_value)
+    end
+  end
+
+  context "contains #087.omml" do
+    let(:file_name) { "spec/plurimath/fixtures/087.omml" }
+
+    it "matches open and close tag" do
+      expected_value = Plurimath::Math::Formula.new([
+        Plurimath::Math::Function::Tanh.new(
+          Plurimath::Math::Function::Text.new("x")
+        ),
+      ])
+      expect(formula).to eq(expected_value)
+    end
+  end
+
+  context "contains #088.omml" do
+    let(:file_name) { "spec/plurimath/fixtures/088.omml" }
+
+    it "matches open and close tag" do
+      expected_value = Plurimath::Math::Formula.new([
+        Plurimath::Math::Function::Csch.new(
+          Plurimath::Math::Function::Text.new("x")
+        ),
+      ])
+      expect(formula).to eq(expected_value)
+    end
+  end
+
+  context "contains #089.omml" do
+    let(:file_name) { "spec/plurimath/fixtures/089.omml" }
+
+    it "matches open and close tag" do
+      expected_value = Plurimath::Math::Formula.new([
+        Plurimath::Math::Function::Sech.new(
+          Plurimath::Math::Function::Text.new("x")
+        ),
+      ])
+      expect(formula).to eq(expected_value)
+    end
+  end
+
+  context "contains #090.omml" do
+    let(:file_name) { "spec/plurimath/fixtures/090.omml" }
+
+    it "matches open and close tag" do
+      expected_value = Plurimath::Math::Formula.new([
+        Plurimath::Math::Function::Coth.new(
+          Plurimath::Math::Function::Text.new("x")
+        ),
+      ])
+      expect(formula).to eq(expected_value)
+    end
+  end
+
+  context "contains #091.omml" do
+    let(:file_name) { "spec/plurimath/fixtures/091.omml" }
+
+    it "matches open and close tag" do
+      expected_value = Plurimath::Math::Formula.new([
+        Plurimath::Math::Formula.new([
+          Plurimath::Math::Function::Power.new(
+            Plurimath::Math::Function::Text.new("sinh"),
+            Plurimath::Math::Symbol.new("-1")
+          ),
+          Plurimath::Math::Function::Text.new("x")
+        ])
+      ])
+      expect(formula).to eq(expected_value)
+    end
+  end
+
+  context "contains #092.omml" do
+    let(:file_name) { "spec/plurimath/fixtures/092.omml" }
+
+    it "matches open and close tag" do
+      expected_value = Plurimath::Math::Formula.new([
+        Plurimath::Math::Formula.new([
+          Plurimath::Math::Function::Power.new(
+            Plurimath::Math::Function::Text.new("cosh"),
+            Plurimath::Math::Symbol.new("-1")
+          ),
+          Plurimath::Math::Function::Text.new("x")
+        ])
+      ])
+      expect(formula).to eq(expected_value)
+    end
+  end
+
+  context "contains #093.omml" do
+    let(:file_name) { "spec/plurimath/fixtures/093.omml" }
+
+    it "matches open and close tag" do
+      expected_value = Plurimath::Math::Formula.new([
+        Plurimath::Math::Formula.new([
+          Plurimath::Math::Function::Power.new(
+            Plurimath::Math::Function::Text.new("tanh"),
+            Plurimath::Math::Symbol.new("-1")
+          ),
+          Plurimath::Math::Function::Text.new("x")
+        ])
+      ])
+      expect(formula).to eq(expected_value)
+    end
+  end
+
+  context "contains #094.omml" do
+    let(:file_name) { "spec/plurimath/fixtures/094.omml" }
+
+    it "matches open and close tag" do
+      expected_value = Plurimath::Math::Formula.new([
+        Plurimath::Math::Formula.new([
+          Plurimath::Math::Function::Power.new(
+            Plurimath::Math::Function::Text.new("csch"),
+            Plurimath::Math::Symbol.new("-1")
+          ),
+          Plurimath::Math::Function::Text.new("x")
+        ])
+      ])
+      expect(formula).to eq(expected_value)
+    end
+  end
+
+  context "contains #095.omml" do
+    let(:file_name) { "spec/plurimath/fixtures/095.omml" }
+
+    it "matches open and close tag" do
+      expected_value = Plurimath::Math::Formula.new([
+        Plurimath::Math::Formula.new([
+          Plurimath::Math::Function::Power.new(
+            Plurimath::Math::Function::Text.new("sech"),
+            Plurimath::Math::Symbol.new("-1")
+          ),
+          Plurimath::Math::Function::Text.new("x")
+        ])
+      ])
+      expect(formula).to eq(expected_value)
+    end
+  end
+
+  context "contains #096.omml" do
+    let(:file_name) { "spec/plurimath/fixtures/096.omml" }
+
+    it "matches open and close tag" do
+      expected_value = Plurimath::Math::Formula.new([
+        Plurimath::Math::Formula.new([
+          Plurimath::Math::Function::Power.new(
+            Plurimath::Math::Function::Text.new("coth"),
+            Plurimath::Math::Symbol.new("-1")
+          ),
+          Plurimath::Math::Function::Text.new("x")
+        ])
+      ])
+      expect(formula).to eq(expected_value)
+    end
+  end
+
+  context "contains #097.omml" do
+    let(:file_name) { "spec/plurimath/fixtures/097.omml" }
+
+    it "matches open and close tag" do
+      expected_value = Plurimath::Math::Formula.new([
+        Plurimath::Math::Function::Sin.new(
+          Plurimath::Math::Symbol.new("θ")
+        )
+      ])
+      expect(formula).to eq(expected_value)
+    end
+  end
+
+  context "contains #098.omml" do
+    let(:file_name) { "spec/plurimath/fixtures/098.omml" }
+
+    it "matches open and close tag" do
+      expected_value = Plurimath::Math::Formula.new([
+        Plurimath::Math::Function::Cos.new(
+          Plurimath::Math::Function::Text.new("2x")
+        )
+      ])
+      expect(formula).to eq(expected_value)
+    end
+  end
+
+  context "contains #099.omml" do
+    let(:file_name) { "spec/plurimath/fixtures/099.omml" }
+
+    it "matches open and close tag" do
+      expected_value = Plurimath::Math::Formula.new([
+        Plurimath::Math::Function::Tan.new(
+          Plurimath::Math::Symbol.new("θ")
+        ),
+        Plurimath::Math::Symbol.new("="),
+        Plurimath::Math::Function::Frac.new(
+          Plurimath::Math::Function::Sin.new(
+            Plurimath::Math::Symbol.new("θ")
+          ),
+          Plurimath::Math::Function::Cos.new(
+            Plurimath::Math::Symbol.new("θ")
+          )
+        )
+      ])
+      expect(formula).to eq(expected_value)
+    end
+  end
+
+  context "contains #100.omml" do
+    let(:file_name) { "spec/plurimath/fixtures/100.omml" }
+
+    it "matches open and close tag" do
+      expected_value = Plurimath::Math::Formula.new([
+        Plurimath::Math::Function::Overset.new(
+          Plurimath::Math::Function::Text.new("a"),
+          Plurimath::Math::Symbol.new("̇"),
+        )
+      ])
+      expect(formula).to eq(expected_value)
+    end
+  end
+
+  context "contains #101.omml" do
+    let(:file_name) { "spec/plurimath/fixtures/101.omml" }
+
+    it "matches open and close tag" do
+      expected_value = Plurimath::Math::Formula.new([
+        Plurimath::Math::Function::Overset.new(
+          Plurimath::Math::Function::Text.new("a"),
+          Plurimath::Math::Symbol.new("̈"),
+        )
+      ])
+      expect(formula).to eq(expected_value)
+    end
+  end
+
+  context "contains #102.omml" do
+    let(:file_name) { "spec/plurimath/fixtures/102.omml" }
+
+    it "matches open and close tag" do
+      expected_value = Plurimath::Math::Formula.new([
+        Plurimath::Math::Function::Overset.new(
+          Plurimath::Math::Function::Text.new("a"),
+          Plurimath::Math::Symbol.new("⃛"),
+        )
+      ])
+      expect(formula).to eq(expected_value)
+    end
+  end
+
+  context "contains #103.omml" do
+    let(:file_name) { "spec/plurimath/fixtures/103.omml" }
+
+    it "matches open and close tag" do
+      expected_value = Plurimath::Math::Formula.new([
+        Plurimath::Math::Function::Overset.new(
+          Plurimath::Math::Function::Text.new("a"),
+          Plurimath::Math::Symbol.new("^"),
+        )
+      ])
+      expect(formula).to eq(expected_value)
+    end
+  end
+
+  context "contains #104.omml" do
+    let(:file_name) { "spec/plurimath/fixtures/104.omml" }
+
+    it "matches open and close tag" do
+      expected_value = Plurimath::Math::Formula.new([
+        Plurimath::Math::Function::Overset.new(
+          Plurimath::Math::Function::Text.new("b"),
+          Plurimath::Math::Symbol.new("̌"),
+        )
+      ])
+      expect(formula).to eq(expected_value)
+    end
+  end
+
+  context "contains #105.omml" do
+    let(:file_name) { "spec/plurimath/fixtures/105.omml" }
+
+    it "matches open and close tag" do
+      expected_value = Plurimath::Math::Formula.new([
+        Plurimath::Math::Function::Overset.new(
+          Plurimath::Math::Function::Text.new("b"),
+          Plurimath::Math::Symbol.new("́"),
+        )
+      ])
+      expect(formula).to eq(expected_value)
+    end
+  end
+
+  context "contains #106.omml" do
+    let(:file_name) { "spec/plurimath/fixtures/106.omml" }
+
+    it "matches open and close tag" do
+      expected_value = Plurimath::Math::Formula.new([
+        Plurimath::Math::Function::Overset.new(
+          Plurimath::Math::Function::Text.new("b"),
+          Plurimath::Math::Symbol.new("̀"),
+        )
+      ])
+      expect(formula).to eq(expected_value)
+    end
+  end
+
+  context "contains #107.omml" do
+    let(:file_name) { "spec/plurimath/fixtures/107.omml" }
+
+    it "matches open and close tag" do
+      expected_value = Plurimath::Math::Formula.new([
+        Plurimath::Math::Function::Overset.new(
+          Plurimath::Math::Function::Text.new("b"),
+          Plurimath::Math::Symbol.new("̆"),
+        )
+      ])
+      expect(formula).to eq(expected_value)
+    end
+  end
+
+  context "contains #108.omml" do
+    let(:file_name) { "spec/plurimath/fixtures/108.omml" }
+
+    it "matches open and close tag" do
+      expected_value = Plurimath::Math::Formula.new([
+        Plurimath::Math::Function::Overset.new(
+          Plurimath::Math::Function::Text.new("c"),
+          Plurimath::Math::Symbol.new("̃"),
+        )
+      ])
+      expect(formula).to eq(expected_value)
+    end
+  end
+
+  context "contains #109.omml" do
+    let(:file_name) { "spec/plurimath/fixtures/109.omml" }
+
+    it "matches open and close tag" do
+      expected_value = Plurimath::Math::Formula.new([
+        Plurimath::Math::Function::Overset.new(
+          Plurimath::Math::Function::Text.new("c"),
+          Plurimath::Math::Symbol.new("̅"),
+        )
+      ])
+      expect(formula).to eq(expected_value)
+    end
+  end
+
+  context "contains #110.omml" do
+    let(:file_name) { "spec/plurimath/fixtures/110.omml" }
+
+    it "matches open and close tag" do
+      expected_value = Plurimath::Math::Formula.new([
+        Plurimath::Math::Function::Overset.new(
+          Plurimath::Math::Function::Text.new("c"),
+          Plurimath::Math::Symbol.new("̿"),
+        )
+      ])
+      expect(formula).to eq(expected_value)
+    end
+  end
+
+  context "contains #111.omml" do
+    let(:file_name) { "spec/plurimath/fixtures/111.omml" }
+
+    it "matches open and close tag" do
+      expected_value = Plurimath::Math::Formula.new([
+        Plurimath::Math::Function::Overset.new(
+          Plurimath::Math::Function::Text.new("c"),
+          Plurimath::Math::Symbol.new("⏞"),
+        )
+      ])
+      expect(formula).to eq(expected_value)
+    end
+  end
+
+  context "contains #112.omml" do
+    let(:file_name) { "spec/plurimath/fixtures/112.omml" }
+
+    it "matches open and close tag" do
+      expected_value = Plurimath::Math::Formula.new([
+        Plurimath::Math::Function::Underset.new(
+          Plurimath::Math::Symbol.new("⏟"),
+          Plurimath::Math::Function::Text.new("d"),
+        )
+      ])
+      expect(formula).to eq(expected_value)
+    end
+  end
+
+  context "contains #113.omml" do
+    let(:file_name) { "spec/plurimath/fixtures/113.omml" }
+
+    it "matches open and close tag" do
+      expected_value = Plurimath::Math::Formula.new([
+        Plurimath::Math::Function::Overset.new(
+          Plurimath::Math::Function::Overset.new(
+            Plurimath::Math::Function::Text.new("e"),
+            Plurimath::Math::Symbol.new("⏞")
+          ),
+          Plurimath::Math::Function::Text.new("d"),
         )
       ])
       expect(formula).to eq(expected_value)

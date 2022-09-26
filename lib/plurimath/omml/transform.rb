@@ -4,82 +4,79 @@ require "parslet"
 module Plurimath
   class Omml
     class Transform < Parslet::Transform
-      rule(r: simple(:r)) { r }
-      rule(f: simple(:f)) { f }
-      rule(d: simple(:d)) { Math::Function::Fenced.new(nil, [d], nil) }
-      rule(val: simple(:val)) { val }
-      rule(box: simple(:box)) { box }
-      rule(rPr: simple(:rpr)) { nil }
-      rule(rad: simple(:rad)) { rad }
+      rule(e: subtree(:e))  { e.flatten.compact }
+      rule(r: subtree(:r))  { r.is_a?(Array) ? r.flatten.compact : r }
+      rule(i: sequence(:i)) { i.empty? ? nil : i }
+      rule(t: sequence(:t)) { Transform.text_classes(t) }
+      rule(rad: simple(:rad))  { rad }
+      rule(acc: simple(:acc))  { acc }
+      rule(sty: simple(:sty))  { nil }
+      rule(val: simple(:val))  { val }
+      rule(rPr: subtree(:rpr)) { rpr }
+      rule(fPr: subtree(:fpr)) { fpr }
+      rule(num: subtree(:num)) { num }
+      rule(den: subtree(:den)) { den }
+      rule(sSup: simple(:sup)) { sup }
       rule(sSub: simple(:sub)) { sub }
-      rule(eqArr: simple(:arr)) { arr }
-      rule(nary: simple(:nary)) { nary }
-      rule(sSup: simple(:sSup)) { sSup }
-      rule(sPre: simple(:sPre)) { sPre }
-      rule(ctrlPr: simple(:ctrlPr)) { nil }
-      rule(argSz: sequence(:argsz)) { nil }
-      rule(rFonts: sequence(:fonts)) { nil }
+      rule(box: subtree(:box)) { box.flatten.compact }
+      rule(lim: sequence(:lim))   { lim.flatten.compact }
+      rule(nary: simple(:nary))   { nary }
+      rule(sPre: simple(:sPre))   { sPre }
+      rule(func: simple(:func))   { func }
+      rule(argPr: subtree(:arg))  { nil }
+      rule(boxPr: subtree(:box))  { nil }
+      rule(argSz: simple(:argsz)) { nil }
+      rule(oMath: subtree(:math)) { math }
+      rule(oMath: sequence(:math))    { math }
+      rule(rFonts: simple(:fonts))    { nil }
+      rule(limLoc: simple(:limLoc))   { limLoc }
+      rule(begChr: simple(:begChr))   { Math::Symbol.new(begChr) }
+      rule(endChr: simple(:endChr))   { Math::Symbol.new(endChr) }
+      rule(limLoc: subtree(:limLoc))  { limLoc }
+      rule(limUppPr: subtree(:limUppPr))  { limUppPr.flatten.compact }
+      rule(ctrlPr: subtree(:ctrlpr))  { ctrlpr.flatten.compact }
       rule(sSubSup: simple(:sSubSup)) { sSubSup }
-      rule(oMathPara: subtree(:omath)) { omath.drop(1) }
-      rule(rPr: simple(:rpr), i: simple(:i)) { nil }
-      rule(dPr: simple(:dpr), e: simple(:e)) { e }
-      rule(dPr: simple(:dpr), e: sequence(:e)) { e }
-      rule(boxPr: simple(:boxpr), e: simple(:e)) { e }
-      rule(argPr: simple(:argPr), f: simple(:f)) { f }
-      rule(rFonts: sequence(:fonts), i: simple(:i)) { nil }
-      rule(type: sequence(:type), ctrlPr: simple(:ctrl)) { nil }
-      rule(ascii: simple(:ascii), hAnsi: simple(:hansi)) { nil }
-      rule(diff: sequence(:diff), ctrlPr: simple(:ctrl)) { nil }
-      rule(limLoc: sequence(:limloc), ctrlPr: simple(:ctrl)) { limloc }
-      rule(degHide: sequence(:degHide), ctrlPr: simple(:ctrl)) { nil }
+      rule(degHide: simple(:degHide)) { [] }
+      rule(subHide: simple(:subHide)) { [] }
+      rule(supHide: simple(:supHide)) { [] }
+      rule(eqArrPr: subtree(:eqarrpr))    { eqarrpr.  flatten.compact }
+      rule(groupChr: simple(:groupChr))   { groupChr }
+      rule(sequence: subtree(:sequence))  { sequence.flatten.compact }
+      rule(sequence: sequence(:sequence)) { sequence.flatten.compact }
 
-      rule(oMath: subtree(:omath)) do
-        omath.is_a?(Array) ? omath.drop(1) : omath
+      rule(f: subtree(:f)) do
+        Math::Function::Frac.new(
+          Transform.filter_values(f[1]),
+          Transform.filter_values(f[2]),
+        )
       end
 
-      rule(d: sequence(:d)) do
-        open_paren = d.shift if d.first.class_name == "symbol"
-        close_paren = d.pop if d.last.class_name == "symbol"
+      rule(d: subtree(:d)) do
+        if d.is_a?(Array)
+          open_paren  = d.shift if d.first.class_name == "symbol"
+          close_paren = d.pop if d.last.class_name == "symbol"
+          fenced = d.flatten.compact
+        else
+          fenced = [d]
+        end
         Math::Function::Fenced.new(
           open_paren,
-          d,
+          fenced,
           close_paren,
         )
       end
 
-      rule(dPr: sequence(:dpr),
-           e: simple(:e)) do
-        [
-          dpr[0],
-          e,
-          dpr[1],
-        ]
-      end
-
-      rule(sSub: sequence(:sub), r: simple(:r)) do
-        [
-          Math::Formula.new(
-            sub.insert(1, r),
-          ),
-        ]
-      end
-
-      rule(rPr: simple(:rpr), t: subtree(:t)) do
-        Math::Function::Text.new(t.last)
-      end
-
-      rule(r: simple(:r), d: simple(:d)) do
-        Math::Formula.new(
-          [
-            r,
-            d,
-          ],
+      rule(limUpp: subtree(:limUpp)) do
+        lim_values = limUpp.flatten.compact
+        Math::Function::Overset.new(
+          lim_values[0],
+          lim_values[1],
         )
       end
 
-      rule(eqArrPr: simple(:aqArrPr), e: sequence(:e)) do
+      rule(eqArr: subtree(:eqArr)) do
         table_value = []
-        e.each do |value|
+        eqArr.flatten.compact.each do |value|
           table_value << Math::Function::Tr.new(
             [
               Math::Function::Td.new(
@@ -93,123 +90,189 @@ module Plurimath
         Math::Function::Table.new(table_value)
       end
 
-      rule(rPr: simple(:rpr),
-           t: simple(:text)) do
-        if text.scan(/[[:digit:]]/).length == text.length
-          Math::Number.new(text)
-        elsif text.match?(/[[:alpha:]]/)
-          Math::Function::Text.new(text)
-        else
-          Math::Symbol.new(text)
-        end
+      rule(ascii: simple(:ascii),
+           hAnsi: simple(:hansi)) do
+        nil
       end
 
-      rule(radPr: simple(:rad),
-           deg: simple(:deg),
-           e: simple(:e)) do
-        if deg.nil?
-          Math::Function::Sqrt.new(e)
-        else
-          Math::Function::Root.new(deg, e)
-        end
+      rule(rPr: sequence(:rpr),
+           t: sequence(:t)) do
+        Transform.text_classes(t)
       end
 
-      rule(fPr: simple(:fpr), num: simple(:num), den: simple(:den)) do
-        Math::Function::Frac.new(num, den)
-      end
-
-      rule(sSupPr: simple(:sSuppr), e: simple(:e), sup: simple(:power)) do
-        Math::Function::Power.new(e, power)
-      end
-
-      rule(sSubPr: simple(:sSubpr), e: simple(:e), sub: simple(:base)) do
-        Math::Function::Base.new(e, base)
-      end
-
-      rule(chr: sequence(:chr),
-           ctrlPr: simple(:ctrl)) do
-        [nil] + chr
-      end
-
-      rule(chr: sequence(:chr),
-           limLoc: sequence(:limloc),
-           ctrlPr: simple(:ctrl)) do
-        limloc + chr
-      end
-
-      rule(begChr: sequence(:begChr),
-           endChr: sequence(:endChr),
-           ctrlPr: simple(:ctrl)) do
-        [
-          Math::Symbol.new(begChr.first),
-          Math::Symbol.new(endChr.first),
-        ]
-      end
-
-      rule(chr: sequence(:chr),
-           supHide: sequence(:supHide),
-           ctrlPr: simple(:ctrl)) do
-        [nil] + chr
-      end
-
-      rule(chr: sequence(:chr),
-           limLoc: sequence(:limloc),
-           supHide: sequence(:sup),
-           ctrlPr: simple(:ctrl)) do
-        limloc + chr
-      end
-
-      rule(limLoc: sequence(:limloc),
-           subHide: sequence(:sub),
-           supHide: sequence(:sup),
-           ctrlPr: simple(:ctrl)) do
-        limloc
-      end
-
-      rule(chr: sequence(:chr),
-           limLoc: sequence(:limloc),
-           subHide: sequence(:sub),
-           supHide: sequence(:sup),
-           ctrlPr: simple(:ctrl)) do
-        limloc + chr
-      end
-
-      rule(naryPr: sequence(:naryPr),
-           sub: simple(:base),
-           sup: simple(:power),
-           e: simple(:e)) do
-        fonts = Plurimath::Math::Symbol.new(naryPr[1] || "∫")
-        first_value = if base.nil? && power.nil?
-                        fonts
-                      elsif naryPr.first == "undOvr"
-                        Math::Function::Underover.new(fonts, base, power)
-                      else
-                        Math::Function::PowerBase.new(fonts, base, power)
-                      end
-        Math::Formula.new(
-          [
-            first_value,
-            Math::Formula.new(
-              [
-                e,
-              ],
+      rule(groupChrPr: subtree(:groupChrPr),
+           e: sequence(:e)) do
+        value = groupChrPr.flatten.compact
+        attrs = value.find{ |a| a.key?(:pos) }
+        if attrs && attrs.values.include?("top")
+          Math::Function::Overset.new(
+            Transform.filter_values(e),
+            Math::Symbol.new(
+              groupChrPr.find{ |a| a.key?(:chr) }[:chr],
             ),
-          ],
+          )
+        elsif value.empty?
+          Math::Function::Underset.new(
+            Math::Symbol.new("⏟"),
+            Transform.filter_values(e),
+          )
+        end
+      end
+
+      rule(accPr: subtree(:accpr),
+           e: sequence(:e)) do
+        first_value  = Transform.filter_values(e)
+        second_value = if accpr.flatten.compact.empty?
+                        Math::Symbol.new("^")
+                      else
+                        first = accpr.find{ |a| a.key?(:chr) }[:chr]
+                        Transform.text_classes(first)
+                      end
+        Math::Function::Overset.new(
+          first_value,
+          second_value,
         )
       end
 
-      rule(sSubSupPr: simple(:sSubSuppr),
-           e: simple(:e),
-           sub: simple(:base),
-           sup: simple(:power)) do
-        Math::Function::PowerBase.new(e, base, power)
+      rule(rPr: sequence(:rpr),
+           lastRenderedPageBreak: sequence(:lastRenderedPageBreak),
+           t: sequence(:t)) do
+        Transform.text_classes(t)
       end
 
-      rule(sPrePr: simple(:sPrePr),
-           e: simple(:e),
-           sub: simple(:base),
-           sup: simple(:power)) do
-        Math::Function::Multiscript.new(e, base, power)
+      rule(dPr: subtree(:dpr),
+           e: sequence(:e)) do
+        if !dpr.flatten.compact.length.zero?
+          dpr.flatten.compact.insert(1, e)
+        else
+          e
+        end
+      end
+
+      rule(fPr: subtree(:fpr),
+           num: subtree(:num),
+           den: subtree(:den)) do
+        [fpr, num, den]
+      end
+
+      rule(funcPr: subtree(:funcpr),
+           fName: subtree(:fName),
+           e: subtree(:e)) do
+        if fName.first.is_a?(Math::Function::Text)
+          unary_class = Utility.get_class(fName.first.parameter_one)
+          unary_class.new(Transform.filter_values(e))
+        else
+          Math::Formula.new(fName + e)
+        end
+      end
+
+      rule(sSupPr: subtree(:sSuppr),
+           e: subtree(:e),
+           sup: subtree(:sup)) do
+        Math::Function::Power.new(
+          Transform.filter_values(e),
+          Transform.filter_values(sup),
+        )
+      end
+
+      rule(sSubPr: subtree(:sSuppr),
+           e: subtree(:e),
+           sub: subtree(:sub)) do
+        Math::Function::Base.new(
+          Transform.filter_values(e),
+          Transform.filter_values(sub),
+        )
+      end
+
+      rule(radPr: subtree(:radpr),
+           deg: sequence(:deg),
+           e: sequence(:e)) do
+        if deg.empty?
+          Math::Function::Sqrt.new(
+            Transform.filter_values(e),
+          )
+        else
+          Math::Function::Root.new(
+            Transform.filter_values(deg),
+            Transform.filter_values(e),
+          )
+        end
+      end
+
+      rule(sPrePr: subtree(:sPrepr),
+           sub: sequence(:sub),
+           sup: sequence(:sup),
+           e: sequence(:e)) do
+        Math::Function::Multiscript.new(
+          Transform.filter_values(e),
+          Transform.filter_values(sub),
+          Transform.filter_values(sup),
+        )
+      end
+
+      rule(sSubSupPr: subtree(:sSubSuppr),
+           e: subtree(:e),
+           sub: subtree(:sub),
+           sup: subtree(:sup)) do
+        Math::Function::PowerBase.new(
+          Transform.filter_values(e),
+          Transform.filter_values(sub),
+          Transform.filter_values(sup),
+        )
+      end
+
+      rule(naryPr: subtree(:narypr),
+           sub: sequence(:sub),
+           sup: sequence(:sup),
+           e: sequence(:e),
+         ) do
+        nary   = narypr&.flatten&.compact
+        values = nary.find{|a| a.is_a?(Hash) }
+        fonts  = Math::Symbol.new(values ? nary.delete(values)[:chr] : "∫")
+        limloc = Transform.filter_values(nary)
+        nary_class = if limloc == "undOvr"
+                       Math::Function::Underover
+                     else
+                       Math::Function::PowerBase
+                     end
+        first_formula = if sub.empty? && sup.empty?
+                          fonts
+                        else
+                          nary_class.new(
+                            fonts,
+                            Transform.filter_values(sub),
+                            Transform.filter_values(sup),
+                          )
+                        end
+        Transform.parse_nary_tag(first_formula, e)
+      end
+
+      class << self
+        def filter_values(value)
+          compact_value = value.flatten.compact
+          if compact_value.length > 1
+            Math::Formula.new(compact_value)
+          else
+            compact_value.first
+          end
+        end
+
+        def text_classes(text)
+          text = filter_values(text) unless text.is_a?(String)
+          if text.scan(/[[:digit:]]/).length == text.length
+            Math::Number.new(text)
+          elsif text.match?(/[a-zA-Z]/)
+            Math::Function::Text.new(text)
+          else
+            Math::Symbol.new(text)
+          end
+        end
+
+        def parse_nary_tag(first_formula, e)
+          Math::Formula.new(
+            [first_formula, Math::Formula.new(e)],
+          )
+        end
       end
     end
   end
