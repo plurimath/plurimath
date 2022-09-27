@@ -33,14 +33,14 @@ module Plurimath
       rule(begChr: simple(:begChr))   { Math::Symbol.new(begChr) }
       rule(endChr: simple(:endChr))   { Math::Symbol.new(endChr) }
       rule(limLoc: subtree(:limLoc))  { limLoc }
-      rule(limUppPr: subtree(:limUppPr))  { limUppPr.flatten.compact }
       rule(ctrlPr: subtree(:ctrlpr))  { ctrlpr.flatten.compact }
       rule(sSubSup: simple(:sSubSup)) { sSubSup }
       rule(degHide: simple(:degHide)) { [] }
       rule(subHide: simple(:subHide)) { [] }
       rule(supHide: simple(:supHide)) { [] }
-      rule(eqArrPr: subtree(:eqarrpr))    { eqarrpr.  flatten.compact }
+      rule(eqArrPr: subtree(:eqarrpr))    { eqarrpr.flatten.compact }
       rule(groupChr: simple(:groupChr))   { groupChr }
+      rule(limUppPr: subtree(:limUppPr))  { limUppPr.flatten.compact }
       rule(sequence: subtree(:sequence))  { sequence.flatten.compact }
       rule(sequence: sequence(:sequence)) { sequence.flatten.compact }
 
@@ -103,12 +103,12 @@ module Plurimath
       rule(groupChrPr: subtree(:groupChrPr),
            e: sequence(:e)) do
         value = groupChrPr.flatten.compact
-        attrs = value.find{ |a| a.key?(:pos) }
-        if attrs && attrs.values.include?("top")
+        attrs = value.find { |a| a.key?(:pos) }
+        if attrs&.value?("top")
           Math::Function::Overset.new(
             Transform.filter_values(e),
             Math::Symbol.new(
-              groupChrPr.find{ |a| a.key?(:chr) }[:chr],
+              groupChrPr.find { |a| a.key?(:chr) }[:chr],
             ),
           )
         elsif value.empty?
@@ -123,11 +123,11 @@ module Plurimath
            e: sequence(:e)) do
         first_value  = Transform.filter_values(e)
         second_value = if accpr.flatten.compact.empty?
-                        Math::Symbol.new("^")
-                      else
-                        first = accpr.find{ |a| a.key?(:chr) }[:chr]
-                        Transform.text_classes(first)
-                      end
+                         Math::Symbol.new("^")
+                       else
+                         first = accpr.find { |a| a.key?(:chr) }[:chr]
+                         Transform.text_classes(first)
+                       end
         Math::Function::Overset.new(
           first_value,
           second_value,
@@ -142,10 +142,10 @@ module Plurimath
 
       rule(dPr: subtree(:dpr),
            e: sequence(:e)) do
-        if !dpr.flatten.compact.length.zero?
-          dpr.flatten.compact.insert(1, e)
-        else
+        if dpr.flatten.compact.length.zero?
           e
+        else
+          dpr.flatten.compact.insert(1, e)
         end
       end
 
@@ -224,10 +224,9 @@ module Plurimath
       rule(naryPr: subtree(:narypr),
            sub: sequence(:sub),
            sup: sequence(:sup),
-           e: sequence(:e),
-         ) do
+           e: sequence(:e)) do
         nary   = narypr&.flatten&.compact
-        values = nary.find{|a| a.is_a?(Hash) }
+        values = nary.find { |a| a.is_a?(Hash) }
         fonts  = Math::Symbol.new(values ? nary.delete(values)[:chr] : "∫")
         limloc = Transform.filter_values(nary)
         nary_class = if limloc == "undOvr"
@@ -268,9 +267,9 @@ module Plurimath
           end
         end
 
-        def parse_nary_tag(first_formula, e)
+        def parse_nary_tag(first_value, second_value)
           Math::Formula.new(
-            [first_formula, Math::Formula.new(e)],
+            [first_value, Math::Formula.new(second_value)],
           )
         end
       end
