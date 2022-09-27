@@ -16,7 +16,6 @@ module Plurimath
         oMathPara
         hideRight
         brkBinSub
-        borderBox
         sSubSupPr
         zeroDesc
         mathFont
@@ -55,7 +54,6 @@ module Plurimath
         naryPr
         mathPr
         limUpp
-        limLow
         rFonts
         limLoc
         intLim
@@ -110,7 +108,6 @@ module Plurimath
         cGp
         brk
         box
-        bar
         aln
         mr
         mc
@@ -121,8 +118,10 @@ module Plurimath
         e
       ].freeze
       SUB_SUP_TAG = %w[
+        borderBox
         groupChr
         sSubSup
+        limLow
         func
         sPre
         sSup
@@ -130,6 +129,7 @@ module Plurimath
         nary
         acc
         rad
+        bar
         f
         r
         d

@@ -7,29 +7,39 @@ module Plurimath
       rule(e: subtree(:e))  { e.flatten.compact }
       rule(r: subtree(:r))  { r.is_a?(Array) ? r.flatten.compact : r }
       rule(i: sequence(:i)) { i.empty? ? nil : i }
-      rule(t: sequence(:t)) { Transform.text_classes(t) }
+      rule(t: sequence(:t)) { Utility.text_classes(t) }
+      rule(mc: sequence(:mc))  { nil }
+      rule(bar: simple(:bar))  { bar }
       rule(rad: simple(:rad))  { rad }
       rule(acc: simple(:acc))  { acc }
       rule(sty: simple(:sty))  { nil }
       rule(val: simple(:val))  { val }
+      rule(pos: simple(:pos))  { pos }
       rule(rPr: subtree(:rpr)) { rpr }
       rule(fPr: subtree(:fpr)) { fpr }
       rule(num: subtree(:num)) { num }
       rule(den: subtree(:den)) { den }
+      rule(mPr: subtree(:mPr)) { nil }
       rule(sSup: simple(:sup)) { sup }
       rule(sSub: simple(:sub)) { sub }
       rule(box: subtree(:box)) { box.flatten.compact }
+      rule(nor: sequence(:nor))   { nil }
+      rule(mcs: sequence(:mcs))   { nil }
       rule(lim: sequence(:lim))   { lim.flatten.compact }
       rule(nary: simple(:nary))   { nary }
       rule(sPre: simple(:sPre))   { sPre }
       rule(func: simple(:func))   { func }
+      rule(mcJc: simple(:mcJc))   { nil }
       rule(argPr: subtree(:arg))  { nil }
       rule(boxPr: subtree(:box))  { nil }
+      rule(mcPr: sequence(:mcPr)) { nil }
+      rule(count: simple(:count)) { nil }
       rule(argSz: simple(:argsz)) { nil }
       rule(oMath: subtree(:math)) { math }
       rule(oMath: sequence(:math))    { math }
       rule(rFonts: simple(:fonts))    { nil }
       rule(limLoc: simple(:limLoc))   { limLoc }
+      rule(limLow: simple(:limLow))   { limLow }
       rule(begChr: simple(:begChr))   { Math::Symbol.new(begChr) }
       rule(endChr: simple(:endChr))   { Math::Symbol.new(endChr) }
       rule(limLoc: subtree(:limLoc))  { limLoc }
@@ -42,22 +52,36 @@ module Plurimath
       rule(groupChr: simple(:groupChr))   { groupChr }
       rule(limUppPr: subtree(:limUppPr))  { limUppPr.flatten.compact }
       rule(sequence: subtree(:sequence))  { sequence.flatten.compact }
+      rule(borderBox: simple(:borderBox)) { borderBox }
       rule(sequence: sequence(:sequence)) { sequence.flatten.compact }
 
-      rule(f: subtree(:f)) do
-        Math::Function::Frac.new(
-          Transform.filter_values(f[1]),
-          Transform.filter_values(f[2]),
+      rule(m: sequence(:m)) do
+        Math::Function::Table.new(
+          m.flatten.compact,
         )
       end
 
-      rule(d: subtree(:d)) do
+      rule(f: subtree(:f)) do
+        Math::Function::Frac.new(
+          Utility.filter_values(f[1]),
+          Utility.filter_values(f[2]),
+        )
+      end
+
+      rule(mr: subtree(:mr)) do
+        row = []
+        mr.flatten.compact.each do |td|
+          row << Math::Function::Td.new([td])
+        end
+        Math::Function::Tr.new(row)
+      end
+
+      rule(d: subtree(:data)) do
+        d = data.flatten.compact
         if d.is_a?(Array)
           open_paren  = d.shift if d.first.class_name == "symbol"
           close_paren = d.pop if d.last.class_name == "symbol"
           fenced = d.flatten.compact
-        else
-          fenced = [d]
         end
         Math::Function::Fenced.new(
           open_paren,
@@ -95,38 +119,70 @@ module Plurimath
         nil
       end
 
+      rule(ascii: simple(:ascii),
+           eastAsiaTheme: simple(:eastAsiaTheme),
+           hAnsi: simple(:hansi)) do
+        nil
+      end
+
+      rule(ascii: simple(:ascii),
+           eastAsia: simple(:eastAsia),
+           hAnsi: simple(:hansi),
+           cs: simple(:cs)) do
+        nil
+      end
+
       rule(rPr: sequence(:rpr),
            t: sequence(:t)) do
-        Transform.text_classes(t)
+        Utility.text_classes(t)
+      end
+
+      rule(barPr: subtree(:barpr),
+           e: sequence(:e)) do
+        if barpr&.flatten&.compact&.include?("top")
+          Math::Function::Bar.new(
+            Utility.filter_values(e)
+          )
+        else
+          Math::Function::Ul.new(
+            Utility.filter_values(e)
+          )
+        end
+      end
+
+      rule(borderBoxPr: subtree(:borderBoxpr),
+           e: sequence(:e)) do
+        Math::Function::Menclose.new(
+          "longdiv",
+          Utility.filter_values(e),
+        )
       end
 
       rule(groupChrPr: subtree(:groupChrPr),
            e: sequence(:e)) do
-        value = groupChrPr.flatten.compact
-        attrs = value.find { |a| a.key?(:pos) }
-        if attrs&.value?("top")
+        value        = groupChrPr.flatten.compact
+        symbol_value = value.find { |a| a.key?(:chr) }
+        if value&.include?("top")
           Math::Function::Overset.new(
-            Transform.filter_values(e),
-            Math::Symbol.new(
-              groupChrPr.find { |a| a.key?(:chr) }[:chr],
-            ),
+            Utility.filter_values(e),
+            Math::Symbol.new(symbol_value ? symbol_value[:chr] : ""),
           )
-        elsif value.empty?
+        else
           Math::Function::Underset.new(
-            Math::Symbol.new("⏟"),
-            Transform.filter_values(e),
+            Math::Symbol.new(symbol_value ? symbol_value[:chr] : "⏟"),
+            Utility.filter_values(e),
           )
         end
       end
 
       rule(accPr: subtree(:accpr),
            e: sequence(:e)) do
-        first_value  = Transform.filter_values(e)
+        first_value  = Utility.filter_values(e)
         second_value = if accpr.flatten.compact.empty?
                          Math::Symbol.new("^")
                        else
                          first = accpr.find { |a| a.key?(:chr) }[:chr]
-                         Transform.text_classes(first)
+                         Utility.text_classes(first)
                        end
         Math::Function::Overset.new(
           first_value,
@@ -137,7 +193,16 @@ module Plurimath
       rule(rPr: sequence(:rpr),
            lastRenderedPageBreak: sequence(:lastRenderedPageBreak),
            t: sequence(:t)) do
-        Transform.text_classes(t)
+        Utility.text_classes(t)
+      end
+
+      rule(limLowPr: subtree(:limLowpr),
+           e: sequence(:e),
+           lim: sequence(:lim)) do
+        Math::Function::Underset.new(
+          Utility.filter_values(lim),
+          Utility.filter_values(e),
+        )
       end
 
       rule(dPr: subtree(:dpr),
@@ -160,7 +225,7 @@ module Plurimath
            e: subtree(:e)) do
         if fName.first.is_a?(Math::Function::Text)
           unary_class = Utility.get_class(fName.first.parameter_one)
-          unary_class.new(Transform.filter_values(e))
+          unary_class.new(Utility.filter_values(e))
         else
           Math::Formula.new(fName + e)
         end
@@ -170,8 +235,8 @@ module Plurimath
            e: subtree(:e),
            sup: subtree(:sup)) do
         Math::Function::Power.new(
-          Transform.filter_values(e),
-          Transform.filter_values(sup),
+          Utility.filter_values(e),
+          Utility.filter_values(sup),
         )
       end
 
@@ -179,8 +244,8 @@ module Plurimath
            e: subtree(:e),
            sub: subtree(:sub)) do
         Math::Function::Base.new(
-          Transform.filter_values(e),
-          Transform.filter_values(sub),
+          Utility.filter_values(e),
+          Utility.filter_values(sub),
         )
       end
 
@@ -189,12 +254,12 @@ module Plurimath
            e: sequence(:e)) do
         if deg.empty?
           Math::Function::Sqrt.new(
-            Transform.filter_values(e),
+            Utility.filter_values(e),
           )
         else
           Math::Function::Root.new(
-            Transform.filter_values(deg),
-            Transform.filter_values(e),
+            Utility.filter_values(deg),
+            Utility.filter_values(e),
           )
         end
       end
@@ -204,9 +269,9 @@ module Plurimath
            sup: sequence(:sup),
            e: sequence(:e)) do
         Math::Function::Multiscript.new(
-          Transform.filter_values(e),
-          Transform.filter_values(sub),
-          Transform.filter_values(sup),
+          Utility.filter_values(e),
+          Utility.filter_values(sub),
+          Utility.filter_values(sup),
         )
       end
 
@@ -215,9 +280,9 @@ module Plurimath
            sub: subtree(:sub),
            sup: subtree(:sup)) do
         Math::Function::PowerBase.new(
-          Transform.filter_values(e),
-          Transform.filter_values(sub),
-          Transform.filter_values(sup),
+          Utility.filter_values(e),
+          Utility.filter_values(sub),
+          Utility.filter_values(sup),
         )
       end
 
@@ -228,7 +293,7 @@ module Plurimath
         nary   = narypr&.flatten&.compact
         values = nary.find { |a| a.is_a?(Hash) }
         fonts  = Math::Symbol.new(values ? nary.delete(values)[:chr] : "∫")
-        limloc = Transform.filter_values(nary)
+        limloc = Utility.filter_values(nary)
         nary_class = if limloc == "undOvr"
                        Math::Function::Underover
                      else
@@ -239,39 +304,11 @@ module Plurimath
                         else
                           nary_class.new(
                             fonts,
-                            Transform.filter_values(sub),
-                            Transform.filter_values(sup),
+                            Utility.filter_values(sub),
+                            Utility.filter_values(sup),
                           )
                         end
-        Transform.parse_nary_tag(first_formula, e)
-      end
-
-      class << self
-        def filter_values(value)
-          compact_value = value.flatten.compact
-          if compact_value.length > 1
-            Math::Formula.new(compact_value)
-          else
-            compact_value.first
-          end
-        end
-
-        def text_classes(text)
-          text = filter_values(text) unless text.is_a?(String)
-          if text.scan(/[[:digit:]]/).length == text.length
-            Math::Number.new(text)
-          elsif text.match?(/[a-zA-Z]/)
-            Math::Function::Text.new(text)
-          else
-            Math::Symbol.new(text)
-          end
-        end
-
-        def parse_nary_tag(first_value, second_value)
-          Math::Formula.new(
-            [first_value, Math::Formula.new(second_value)],
-          )
-        end
+        Utility.parse_nary_tag(first_formula, e)
       end
     end
   end
