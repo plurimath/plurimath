@@ -1,0 +1,95 @@
+= Plurimath
+This gem implements a mechanism of conversion between Math languages mentioned below.
+
+1. **AsciiMath** **(<<asciimath-support>>)**
+2. **MathML** **(<<mathml-support>>)**
+3. **Latex** **(<<latex-support>>)**
+
+== Installation
+
+Add this line to your application's Gemfile:
+
+```ruby
+gem "plurimath"
+```
+And then execute:
+```shell
+
+    $ bundle install
+```
+Or install it yourself as:
+```shell
+    $ gem install plurimath
+```
+
+== Usage
+
+Pass the string you want to convert and Math type of the string provided, which will give you **Plurimath::Math::Formula** object as output, Let's see some examples below.
+
+=== Conversion Examples
+
+==== Asciimath Formula Example
+[source, ruby]
+----
+asciimath = "sin(1)"
+formula = Plurimath::Math.parse(asciimath, :asciimath)
+----
+==== MathML Formula Example
+[source, ruby]
+----
+mathml = <<~MATHML
+              <math xmlns='http://www.w3.org/1998/Math/MathML'>
+                <mstyle displaystyle='true'>
+                  <mi>sin</mi>
+                  <mn>1</mn>
+                </mstyle>
+              </math>
+            MATHML
+formula = Plurimath::Math.parse(mathml, "mathml")
+----
+==== Latex Formula Example
+[source, ruby]
+----
+latex = "\\sin{1}"
+formula = Plurimath::Math.parse(latex, "latex")
+----
+---
+Since we have the object of **Plurimath::Formula**,We can generate **AsciiMath**, **MathMl** or **Latex** string from the formula object,All we have to do is call conversion function on formula object, see examples below.
+
+==== AsciiMath Output conversion
+[source, ruby]
+----
+formula.to_asciimath
+> sin(1)
+----
+==== Latex Output conversion
+[source, ruby]
+----
+formula.to_latex
+> \\sin1
+----
+==== MathML Output conversion
+[source, ruby]
+----
+formula.to_mathml
+> <math xmlns='http://www.w3.org/1998/Math/MathML'>
+>   <mstyle displaystyle='true'>
+>     <mi>sin</mi>
+>     <mn>1</mn>
+>   </mstyle>
+> </math>
+----
+
+[[asciimath-support]]
+=== Asciimath Support
+--
+include::AsciiMath-Supported-Data.adoc[]
+--
+
+--
+include::MathML-Supported-Data.adoc[]
+--
+
+--
+include::Latex-Supported-Data.adoc[]
+--

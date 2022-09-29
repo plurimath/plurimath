@@ -47,7 +47,7 @@ module Plurimath
     end
 
     def valid_type?(type)
-      (type.is_a?(Symbol) || type.is_a?(String)) &&
+      (type.is_a?(::Symbol) || type.is_a?(String)) &&
         VALID_TYPES.key?(type.to_sym)
     end
 
