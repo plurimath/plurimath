@@ -1,9 +1,10 @@
 = Plurimath
+
 This gem implements a mechanism of conversion between Math languages mentioned below.
 
-1. **AsciiMath** **(<<asciimath-support>>)**
-2. **MathML** **(<<mathml-support>>)**
-3. **Latex** **(<<latex-support>>)**
+1. **AsciiMath**
+2. **MathML** 
+3. **Latex** 
 
 == Installation
 
@@ -79,9 +80,7 @@ formula.to_mathml
 >   </mstyle>
 > </math>
 ----
-
-[[asciimath-support]]
-=== Asciimath Support
+=== Supported Content
 --
 include::AsciiMath-Supported-Data.adoc[]
 --
