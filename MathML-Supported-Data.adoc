@@ -1,0 +1,270 @@
+=== MathML Support
+
+==== Classes
+|===
+| Functions | Fonts
+
+| stackrel  | double-struck
+| underset  | sans-serif
+| mathfrak  | monospace
+| mathcal   | fraktur
+| overset   | script
+| cancel    | bold
+| obrace    | 
+| ubrace    | 
+| mathtt    | 
+| mathbf    | 
+| mathbb    | 
+| mathsf    | 
+| arctan    | 
+| arcsin    | 
+| arccos    | 
+| color     | 
+| floor     | 
+| tilde     | 
+| prod      | 
+| text      | 
+| norm      | 
+| sqrt      | 
+| cosh      | 
+| tanh      | 
+| sinh      | 
+| sech      | 
+| csch      | 
+| coth      | 
+| ddot      | 
+| ceil      | 
+| oint      | 
+| root      | 
+| frac      | 
+| log       | 
+| mod       | 
+| vec       | 
+| hat       | 
+| dot       | 
+| bar       | 
+| abs       | 
+| min       | 
+| max       | 
+| dim       | 
+| det       | 
+| csc       | 
+| cot       | 
+| lub       | 
+| lcm       | 
+| glb       | 
+| gcd       | 
+| exp       | 
+| sum       | 
+| cos       | 
+| tan       | 
+| sin       | 
+| int       | 
+| sec       | 
+| ln        | 
+| ul        | 
+| g         | 
+| f         |
+|===
+
+==== Tags
+** annotation_xml
+** annotation-xml
+** mmultiscripts
+** maligngroup
+** munderover
+** annotation
+** malignmark
+** semantics
+** mscarries
+** menclose
+** mlongdiv
+** mphantom
+** mfenced
+** msgroup
+** maction
+** mpadded
+** msubsup
+** mscarry
+** msline
+** mspace
+** mstack
+** mstyle
+** mtable
+** munder
+** merror
+** msqrt
+** mroot
+** msrow
+** mover
+** mfrac
+** math
+** mrow
+** msub
+** msup
+** mtd
+** mtr
+** mn
+** mo
+** mi
+** ms
+
+==== Unicodes
+** \&#x3B1;
+** \&#x3B2;
+** \&#x3B3;
+** \&#x393;
+** \&#x3B4;
+** \&#x394;
+** \&#x2206;
+** \&#x3B5;
+** \&#x25b;
+** \&#x3B6;
+** \&#x3B7;
+** \&#x3B8;
+** \&#x398;
+** \&#x3D1;
+** \&#x3B9;
+** \&#x3BA;
+** \&#x3BB;
+** \&#x39B;
+** \&#x3BC;
+** \&#x3BD;
+** \&#x3BE;
+** \&#x39E;
+** \&#x3C0;
+** \&#x3A0;
+** \&#x3C1;
+** \&#x3C2;
+** \&#x3C3;
+** \&#x3A3;
+** \&#x3C4;
+** \&#x3C5;
+** \&#x3C6;
+** \&#x3A6;
+** \&#x3D5;
+** \&#x3C7;
+** \&#x3C8;
+** \&#x3A8;
+** \&#x3C9;
+** \&#x3A9;
+** \&#x22C5;
+** \&#x2219;
+** \&#xB7;
+** \&#x2217;
+** \&#x22C6;
+** \&#xD7;
+** \&#x22C9;
+** \&#x22CA;
+** \&#x22C8;
+** \&#xF7;
+** \&#x2218;
+** \&#x2295;
+** \&#x2A01;
+** \&#x2297;
+** \&#x2299;
+** \&#x2211;
+** \&#x220F;
+** \&#x220f;
+** \&#x2227;
+** \&#x22C0;
+** \&#x2228;
+** \&#x22c1;
+** \&#x2229;
+** \&#x22C2;
+** \&#x222A;
+** \&#x22C3;
+** \&#x2260;
+** \&#x2264;
+** \&#x2265;
+** \&#x227A;
+** \&#x227B;
+** \&#x2AAF;
+** \&#x2AB0;
+** \&#x2208;
+** \&#x2209;
+** \&#x2282;
+** \&#x2283;
+** \&#x2286;
+** \&#x2287;
+** \&#x2261;
+** \&#x2245;
+** \&#x2248;
+** \&#x221D;
+** \&#xAC;
+** \&#x2200;
+** \&#x2203;
+** \&#x22A5;
+** \&#x22A4;
+** \&#x22A2;
+** \&#x22A8;
+** \&#x2329;
+** \&#x232A;
+** \&#x27E8;
+** \&#x27E9;
+** \&#x222B;
+** \&#x222E;
+** \&#x2202;
+** \&#x2207;
+** \&#xB1;
+** \&#x2205;
+** \&#x221E;
+** \&#x2135;
+** \&#x2234;
+** \&#x2235;
+** \&#x2220;
+** \&#x25B3;
+** \&#x2032;
+** \&#xA0;&#xA0;
+** \&#xA0;&#xA0;&#xA0;&#xA0;
+** \&#x2322;
+** \&#x22EF;
+** \&#x22EE;
+** \&#x22F1;
+** \&#x22C4;
+** \&#x25A1;
+** \&#x230A;
+** \&#x230B;
+** \&#x2308;
+** \&#x2309;
+** \&#x2102;
+** \&#x2115;
+** \&#x211A;
+** \&#x211D;
+** \&#x2124;
+** \&#x2191;
+** \&#x2193;
+** \&#x2190;
+** \&#x2194;
+** \&#x21D2;
+** \&#x21D0;
+** \&#x21D4;
+** \&#x2192;
+** \&#x21A3;
+** \&#x21A0;
+** \&#x2916;
+** \&#x21A6;
+** \&#x2026;
+** \&#x2212;
+** \&#x2061;
+** \&#x23DE;
+** \&#x23DF;
+
+=== Symbols
+** |
+** /
+** \
+** ~
+** (
+** )
+** (:
+** :)
+** {
+** }
+** {:
+** :}
+** ]
+** [
+** =
+** +
+** -
