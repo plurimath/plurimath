@@ -68,6 +68,34 @@ module Plurimath
                   " and closing tag is \"#{close_tag}\""
         raise Math::Error.new(message)
       end
+
+      def filter_values(value)
+        compact_value = value.flatten.compact
+        if compact_value.length > 1
+          Math::Formula.new(compact_value)
+        else
+          compact_value.first
+        end
+      end
+
+      def text_classes(text)
+        return nil if text.empty?
+
+        text = filter_values(text) unless text.is_a?(String)
+        if text.scan(/[[:digit:]]/).length == text.length
+          Math::Number.new(text)
+        elsif text.match?(/[a-zA-Z]/)
+          Math::Function::Text.new(text)
+        else
+          Math::Symbol.new(text)
+        end
+      end
+
+      def parse_nary_tag(first_value, second_value)
+        Math::Formula.new(
+          [first_value, Math::Formula.new(second_value)],
+        )
+      end
     end
   end
 end
