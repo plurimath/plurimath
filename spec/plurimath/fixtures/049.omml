@@ -3,6 +3,7 @@
     <m:nary>
       <m:naryPr>
         <m:chr m:val="⋃"/>
+        <m:limLoc m:val="subSup"/>
         <m:ctrlPr>
           <w:rPr>
             <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
@@ -63,12 +64,16 @@
                 </m:r>
               </m:sub>
             </m:sSub>
+          </m:e>
+          <m:e>
             <m:r>
               <w:rPr>
                 <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
               </w:rPr>
               <m:t>∩</m:t>
             </m:r>
+          </m:e>
+          <m:e>
             <m:sSub>
               <m:sSubPr>
                 <m:ctrlPr>

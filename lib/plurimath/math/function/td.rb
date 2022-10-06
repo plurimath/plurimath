@@ -26,6 +26,14 @@ module Plurimath
           first_value = parameter_one.map(&:to_html).join
           "<td>#{first_value}</td>"
         end
+
+        def to_omml_without_math_tag
+          me = Utility.omml_element("m:e")
+          Utility.update_nodes(
+            me,
+            parameter_one.map(&:to_omml_without_math_tag),
+          )
+        end
       end
     end
   end

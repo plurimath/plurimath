@@ -10,35 +10,35 @@
         </m:ctrlPr>
       </m:limUppPr>
       <m:e>
-        <m:groupChr>
-          <m:groupChrPr>
-            <m:chr m:val="⏞"/>
-            <m:pos m:val="top"/>
-            <m:vertJc m:val="bot"/>
-            <m:ctrlPr>
-              <w:rPr>
-                <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
-                <w:i/>
-              </w:rPr>
-            </m:ctrlPr>
-          </m:groupChrPr>
-          <m:e>
-            <m:r>
-              <w:rPr>
-                <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
-              </w:rPr>
-              <m:t>e</m:t>
-            </m:r>
-          </m:e>
-        </m:groupChr>
-      </m:e>
-      <m:lim>
         <m:r>
           <w:rPr>
             <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
           </w:rPr>
           <m:t>d</m:t>
         </m:r>
+      </m:e>
+      <m:lim>
+        <m:limLow>
+          <m:limLowPr>
+            <m:ctrlPr>
+              <w:rPr>
+                <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
+                <w:i/>
+              </w:rPr>
+            </m:ctrlPr>
+          </m:limLowPr>
+          <m:e>
+            <m:t>⏞</m:t>
+          </m:e>
+          <m:lim>
+            <m:r>
+              <w:rPr>
+                <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
+              </w:rPr>
+              <m:t>e</m:t>
+            </m:r>
+          </m:lim>
+        </m:limLow>
       </m:lim>
     </m:limUpp>
   </m:oMath>

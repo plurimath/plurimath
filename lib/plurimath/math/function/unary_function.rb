@@ -42,6 +42,27 @@ module Plurimath
           "<i>#{class_name}</i>#{first_value}"
         end
 
+        def to_omml_without_math_tag
+          func   = Utility.omml_element("m:func")
+          funcpr = Utility.omml_element("m:funcPr")
+          funcpr << Utility.pr_element("m:ctrl", true)
+          fname  = Utility.omml_element("m:fName")
+          mr  = Utility.omml_element("m:r")
+          rpr = Utility.rpr_element
+          mt  = Utility.omml_element("m:t") << class_name
+          fname << Utility.update_nodes(mr, [rpr, mt])
+          first_value = parameter_one.to_omml_without_math_tag
+          me = Utility.omml_element("m:e") << first_value
+          Utility.update_nodes(
+            func,
+            [
+              funcpr,
+              fname,
+              me,
+            ],
+          )
+        end
+
         def class_name
           self.class.name.split("::").last.downcase
         end

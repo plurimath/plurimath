@@ -23,6 +23,39 @@ module Plurimath
           second_value = "<sup>#{parameter_two.to_html}</sup>" if parameter_two
           "<i>log</i>#{first_value}#{second_value}"
         end
+
+        def to_omml_without_math_tag
+          func   = Utility.omml_element("m:func")
+          funcpr = Utility.omml_element("m:funcPr")
+          funcpr << Utility.pr_element("m:ctrl", true)
+          fname  = Utility.omml_element("m:fName")
+          mr     = Utility.omml_element("m:r")
+          rpr    = Utility.rpr_element
+          mt     = Utility.omml_element("m:t") << class_name
+          fname << Utility.update_nodes(mr, [rpr, mt])
+          log_values = [first_value, second_value].flatten.compact
+          Utility.update_nodes(
+            func,
+            [
+              funcpr,
+              fname,
+            ] + log_values,
+          )
+        end
+
+        def first_value
+          return nil if parameter_one.nil?
+
+          first_value = parameter_one.to_omml_without_math_tag
+          me = Utility.omml_element("m:e") << first_value
+        end
+
+        def second_value
+          return nil if parameter_two.nil?
+
+          second_value = parameter_two.to_omml_without_math_tag
+          me = Utility.omml_element("m:e") << second_value
+        end
       end
     end
   end

@@ -14,9 +14,10 @@ module Plurimath
       def parse
         nodes = Ox.load(text, strip_namespace: true)
         @hash = { sequence: parse_nodes(nodes.nodes) }
+        nodes = JSON.parse(@hash.to_json, symbolize_names: true)
         Math::Formula.new(
           Transform.new.apply(
-            JSON.parse(@hash.to_json, symbolize_names: true),
+            nodes,
           ),
         )
       end
@@ -26,25 +27,16 @@ module Plurimath
           if node.is_a?(String)
             node
           elsif !node.attributes.empty?
-            { node.name => node.attributes }
-          elsif Constants::SUB_SUP_TAG.include?(node.name)
-            { node.name => sub_sup_hash(node.nodes) }
+            {
+              node.name => {
+                attributes: node.attributes,
+                value: parse_nodes(node.nodes),
+              },
+            }
           else
             { node.name => parse_nodes(node.nodes) }
           end
         end
-      end
-
-      def sub_sup_hash(nodes)
-        new_hash = {}
-        nodes.map do |node|
-          if new_hash.key?(node.name)
-            new_hash[node.name] += parse_nodes(node.nodes)
-          else
-            new_hash[node.name] = parse_nodes(node.nodes)
-          end
-        end
-        new_hash
       end
     end
   end

@@ -3,7 +3,6 @@
     <m:d>
       <m:dPr>
         <m:begChr m:val="{"/>
-        <m:endChr m:val=""/>
         <m:ctrlPr>
           <w:rPr>
             <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>

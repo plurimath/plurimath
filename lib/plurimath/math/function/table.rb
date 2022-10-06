@@ -48,6 +48,45 @@ module Plurimath
           first_value = parameter_one.map(&:to_html).join
           "<table>#{first_value}</table>"
         end
+
+        def to_omml_without_math_tag
+          if parameter_one.map { |d| d.parameter_one.length == 1 }.all?
+            single_td_table
+          else
+            multiple_td_table
+          end
+        end
+
+        def single_td_table
+          eqarr    = Utility.omml_element("m:eqArr")
+          eqarrpr  = Utility.omml_element("m:eqArrPr")
+          eqarrpr  << Utility.pr_element("m:ctrl", true)
+          eqarr    << eqarrpr
+          tr_value = parameter_one.map(&:to_omml_without_math_tag)
+          Utility.update_nodes(
+            eqarr,
+            tr_value.flatten.compact,
+          )
+        end
+
+        def multiple_td_table
+          count  = { "m:val": parameter_one&.first&.parameter_one&.count }
+          mcjc   = { "m:val": "center" }
+          mm     = Utility.omml_element("m:m")
+          mpr    = Utility.omml_element("m:mpr")
+          mcs    = Utility.omml_element("m:mcs", true)
+          mc     = Utility.omml_element("m:mc", true)
+          mcpr   = Utility.pr_element("m:mcPr", true)
+          mcount = Utility.omml_element("m:count", count)
+          mcjc   = Utility.omml_element("m:mcJc", mcjc)
+          ctrlpr = Utility.pr_element("m:ctrl", true)
+          Utility.update_nodes(mcpr, [mcount, mcjc])
+          mcs      << mc << mcpr
+          mpr      << mcs
+          mpr      << ctrlpr
+          mm_value = parameter_one.map(&:to_omml_without_math_tag)
+          Utility.update_nodes(mm, mm_value)
+        end
       end
     end
   end

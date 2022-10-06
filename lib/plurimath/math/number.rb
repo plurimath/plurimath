@@ -29,6 +29,10 @@ module Plurimath
         value
       end
 
+      def to_omml_without_math_tag
+        Utility.omml_element("m:t") << value
+      end
+
       def class_name
         self.class.name.split("::").last.downcase
       end
