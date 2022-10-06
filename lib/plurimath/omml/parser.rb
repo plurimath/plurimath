@@ -8,7 +8,7 @@ module Plurimath
       attr_accessor :text
 
       def initialize(text)
-        @text = CGI.unescape(text)
+        @text = text
       end
 
       def parse
