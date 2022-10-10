@@ -10,6 +10,7 @@ module Plurimath
       rule(unary: simple(:unary))   { Utility.get_class(unary).new }
       rule(operant: simple(:oper))  { Math::Symbol.new(oper) }
       rule("\\\\": simple(:slash))  { Math::Symbol.new(slash) }
+      rule(symbol: simple(:symbol)) { Math::Symbol.new(symbol) }
       rule(limits: simple(:limits)) { limits }
 
       rule(unary_functions: simple(:unary)) { unary }

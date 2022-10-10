@@ -29,7 +29,7 @@ module Plurimath
         table_separator = ["&", "\\\\"].freeze
         array.each do |data|
           if data.is_a?(Math::Symbol) && table_separator.include?(data.value)
-            table_row << Math::Function::Td.new(table_data)
+            table_row << Math::Function::Td.new(filter_table_data(table_data))
             table_data = []
             if data.value == "\\\\"
               table << Math::Function::Tr.new(table_row.flatten)
@@ -42,6 +42,20 @@ module Plurimath
         table_row << Math::Function::Td.new(table_data) if table_data
         table << Math::Function::Tr.new(table_row) unless table_row.empty?
         table
+      end
+
+      def filter_table_data(table_data)
+        table_data.each_with_index do |object, ind|
+          if object.is_a?(Math::Symbol) && object.value == "-"
+            table_data[ind] = Math::Formula.new(
+              [
+                object,
+                table_data.delete_at(ind.next),
+              ],
+            )
+          end
+        end
+        table_data
       end
 
       def get_table_class(text)

@@ -143,6 +143,9 @@ module Plurimath
         "&#x2061;": "",
         "&#x23DE;": "obrace",
         "&#x23DF;": "ubrace",
+        "&#x26;": "&",
+        "&#x3e;": ">",
+        "&#x3c;": "<",
       }.freeze
       SYMBOLS = {
         "|": "|",

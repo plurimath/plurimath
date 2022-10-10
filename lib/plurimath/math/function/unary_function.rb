@@ -24,7 +24,12 @@ module Plurimath
         end
 
         def to_mathml_without_math_tag
-          "<mi>#{class_name}</mi>"
+          <<~LATEX
+            <mrow>
+              <mo>#{class_name}</mo>
+              #{parameter_one&.to_mathml_without_math_tag}
+            </mrow>
+          LATEX
         end
 
         def to_latex

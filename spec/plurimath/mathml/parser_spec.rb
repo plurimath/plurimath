@@ -1067,6 +1067,28 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
   end
 
+  context "contains mathml string of Mathbf formula" do
+    let(:exp) {
+      <<~MATHML
+        <math xmlns='http://www.w3.org/1998/Math/MathML'>
+          <msgroup>
+            <mi>n</mi>
+            <mi>&#x3c;</mi>
+            <mn>1</mn>
+          </msgroup>
+        </math>
+      MATHML
+    }
+    it "returns formula of Mathbf" do
+      expected_value = Plurimath::Math::Formula.new([
+        Plurimath::Math::Symbol.new("n"),
+        Plurimath::Math::Symbol.new("<"),
+        Plurimath::Math::Number.new("1")
+      ])
+      expect(formula).to eq(expected_value)
+    end
+  end
+
   context "contains mathml string of unmacthing closing tag" do
     let(:exp) {
       <<~MATHML

@@ -106,7 +106,7 @@ module Plurimath
 
       rule(:symbol_text_or_integer) do
         symbol_class_commands |
-          match["a-zA-Z"].repeat(1).as(:text) |
+          match["a-zA-Z"].as(:symbols) |
           (str('"') >> match("[^\"]").repeat >> str('"')).as(:text) |
           match(/\d+(\.[0-9]+)|\d/).repeat(1).as(:number) |
           str("\\\\").as("\\\\")
