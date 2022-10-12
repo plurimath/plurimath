@@ -25,8 +25,8 @@ RSpec.describe Plurimath::Latex do
       it 'returns parsed Latex to Formula' do
         expected_value = Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Cos.new(
-            Plurimath::Math::Number.new("45")
-          )
+            Plurimath::Math::Number.new("45"),
+          ),
         ])
         expect(formula).to eq(expected_value)
       end

@@ -16,7 +16,9 @@ RSpec.describe Plurimath::Math::Formula do
         <<~MATHML
           <math xmlns='http://www.w3.org/1998/Math/MathML' display='block'>
             <mstyle displaystyle='true'>
-              <mi>sin</mi>
+              <mrow>
+                <mo>sin</mo>
+              </mrow>
               <mn>1</mn>
             </mstyle>
           </math>
@@ -69,8 +71,8 @@ RSpec.describe Plurimath::Math::Formula do
             <mstyle displaystyle='true'>
               <munderover>
                 <mo>&#x2211;</mo>
-                <mo>x</mo>
-                <mo>s</mo>
+                <mi>x</mi>
+                <mi>s</mi>
               </munderover>
             </mstyle>
           </math>
@@ -97,8 +99,8 @@ RSpec.describe Plurimath::Math::Formula do
             <mstyle displaystyle='true'>
               <munderover>
                 <mo>&#x2211;</mo>
-                <mo>x</mo>
-                <mo>w</mo>
+                <mi>x</mi>
+                <mi>w</mi>
               </munderover>
               <mtext>something</mtext>
             </mstyle>
@@ -123,7 +125,9 @@ RSpec.describe Plurimath::Math::Formula do
           <math xmlns='http://www.w3.org/1998/Math/MathML' display='block'>
             <mstyle displaystyle='true'>
               <msub>
-                <mi>sin</mi>
+                <mrow>
+                  <mo>sin</mo>
+                </mrow>
                 <mo>&#x2211;</mo>
               </msub>
             </mstyle>
@@ -148,7 +152,9 @@ RSpec.describe Plurimath::Math::Formula do
           <math xmlns='http://www.w3.org/1998/Math/MathML' display='block'>
             <mstyle displaystyle='true'>
               <msup>
-                <mi>sin</mi>
+                <mrow>
+                  <mo>sin</mo>
+                </mrow>
                 <mo>&#x2211;</mo>
               </msup>
             </mstyle>
@@ -178,7 +184,9 @@ RSpec.describe Plurimath::Math::Formula do
           <math xmlns='http://www.w3.org/1998/Math/MathML' display='block'>
             <mstyle displaystyle='true'>
               <msubsup>
-                <mi>sin</mi>
+                <mrow>
+                  <mo>sin</mo>
+                </mrow>
                 <mrow>
                   <mo>&#x220f;</mo>
                 </mrow>
@@ -214,11 +222,11 @@ RSpec.describe Plurimath::Math::Formula do
             <mstyle displaystyle='true'>
               <munderover>
                 <mo>&#x2211;</mo>
-                <mo>i</mo>
-                <mo>n</mo>
+                <mi>i</mi>
+                <mi>n</mi>
               </munderover>
               <msup>
-                <mo>i</mo>
+                <mi>i</mi>
                 <mn>3</mn>
               </msup>
             </mstyle>
@@ -239,7 +247,9 @@ RSpec.describe Plurimath::Math::Formula do
         <<~MATHML
           <math xmlns='http://www.w3.org/1998/Math/MathML' display='block'>
             <mstyle displaystyle='true'>
-              <mi>sin</mi>
+              <mrow>
+                <mo>sin</mo>
+              </mrow>
             </mstyle>
           </math>
         MATHML
@@ -318,17 +328,17 @@ RSpec.describe Plurimath::Math::Formula do
               <munderover>
                 <mo>&#x2211;</mo>
                 <mn>1</mn>
-                <mo>n</mo>
+                <mi>n</mi>
               </munderover>
               <msup>
-                <mo>i</mo>
+                <mi>i</mi>
                 <mn>3</mn>
               </msup>
-              <mo>=</mo>
+              <mi>=</mi>
               <msup>
                 <mfrac>
                   <mrow>
-                    <mo>n</mo>
+                    <mi>n</mi>
                     <mn>1</mn>
                   </mrow>
                   <mn>2</mn>
@@ -357,7 +367,9 @@ RSpec.describe Plurimath::Math::Formula do
         <<~MATHML
           <math xmlns='http://www.w3.org/1998/Math/MathML' display='block'>
             <mstyle displaystyle='true'>
-              <mi>sin</mi>
+              <mrow>
+                <mo>sin</mo>
+              </mrow>
               <mover>
                 <mo>&#x2211;</mo>
                 <mo>&#x3B8;</mo>
@@ -494,7 +506,7 @@ RSpec.describe Plurimath::Math::Formula do
           <math xmlns='http://www.w3.org/1998/Math/MathML' display='block'>
             <mstyle displaystyle='true'>
               <mover>
-                <mo>i</mo>
+                <mi>i</mi>
                 <mn>1234</mn>
               </mover>
             </mstyle>
@@ -521,7 +533,7 @@ RSpec.describe Plurimath::Math::Formula do
               <mn>12</mn>
               <mo>mod</mo>
               <mn>1234</mn>
-              <mo>i</mo>
+              <mi>i</mi>
             </mstyle>
           </math>
         MATHML
@@ -551,7 +563,7 @@ RSpec.describe Plurimath::Math::Formula do
           <math xmlns='http://www.w3.org/1998/Math/MathML' display='block'>
             <mstyle displaystyle='true'>
               <msubsup>
-                <mo>a</mo>
+                <mi>a</mi>
                 <mtable>
                   <mtr>
                     <mtd>
@@ -593,7 +605,7 @@ RSpec.describe Plurimath::Math::Formula do
           <math xmlns='http://www.w3.org/1998/Math/MathML' display='block'>
             <mstyle displaystyle='true'>
               <msubsup>
-                <mo>a</mo>
+                <mi>a</mi>
                 <mo>&#x2225;</mo>
                 <mtr>
                   <mtd>
@@ -635,7 +647,7 @@ RSpec.describe Plurimath::Math::Formula do
           <math xmlns='http://www.w3.org/1998/Math/MathML'display='block'>
             <mstyle displaystyle='true'>
               <msubsup>
-                <mo>a</mo>
+                <mi>a</mi>
                 <mfenced open='[' close=''>
                   <mtable>
                     <mtr>
@@ -705,7 +717,7 @@ RSpec.describe Plurimath::Math::Formula do
           <math xmlns='http://www.w3.org/1998/Math/MathML' display='block'>
             <mstyle displaystyle='true'>
               <msubsup>
-                <mo>a</mo>
+                <mi>a</mi>
                 <mfenced open='{' close='}'>
                   <mtable>
                     <mtr>
@@ -749,8 +761,8 @@ RSpec.describe Plurimath::Math::Formula do
               <munderover>
                 <mo>&#x2211;</mo>
                 <mrow>
-                  <mo>i</mo>
-                  <mo>=</mo>
+                  <mi>i</mi>
+                  <mi>=</mi>
                   <mstyle mathcolor='blue'>
                     <mo>&#x2260;</mo>
                   </mstyle>
@@ -789,13 +801,13 @@ RSpec.describe Plurimath::Math::Formula do
               <munderover>
                 <mo>&#x2211;</mo>
                 <mrow>
-                  <mo>i</mo>
-                  <mo>=</mo>
+                  <mi>i</mi>
+                  <mi>=</mi>
                   <mstyle mathcolor='blue'>
                     <mo>&#x2260;</mo>
                   </mstyle>
                 </mrow>
-                <mo>something</mo>
+                <mi>something</mi>
               </munderover>
             </mstyle>
           </math>
@@ -852,6 +864,29 @@ RSpec.describe Plurimath::Math::Formula do
                   <mtext>thing</mtext>
                 </mstyle>
               </mroot>
+            </mstyle>
+          </math>
+        MATHML
+        expect(formula).to eq(expected_value.gsub(/\s/, ""))
+      end
+    end
+
+    context "contains mathml string bold text" do
+      let(:exp) {
+        Plurimath::Math::Formula.new([
+          Plurimath::Math::Symbol.new("n"),
+          Plurimath::Math::Symbol.new("<"),
+          Plurimath::Math::Number.new("1")
+        ])
+      }
+      it "returns string of bold text" do
+        expected_value =
+        <<~MATHML
+          <math xmlns='http://www.w3.org/1998/Math/MathML' display='block'>
+            <mstyle displaystyle='true'>
+              <mi>n</mi>
+              <mo>&#x3c;</mo>
+              <mn>1</mn>
             </mstyle>
           </math>
         MATHML

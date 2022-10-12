@@ -16,8 +16,8 @@ RSpec.describe Plurimath::Latex::Parse do
         LATEX
       }
       it "returns abstract parsed tree" do
+        unary    = formula[:expression][:unary_functions]
         sequence = formula[:sequence]
-        unary = formula[:expression][:unary_functions]
 
         expect(sequence[:lparen]).to eq("{")
         expect(sequence[:expression][:number]).to eq("3")
@@ -39,10 +39,10 @@ RSpec.describe Plurimath::Latex::Parse do
         expression = formula[:expression]
 
         expect(formula[:lparen]).to eq("{")
-        expect(expression[:sequence][:text]).to eq("a")
+        expect(expression[:sequence][:symbols]).to eq("a")
         expect(expression[:expression][:sequence][:operant]).to eq("+")
         expect(expression[:expression][:expression][:lparen]).to eq("{")
-        expect(expression[:expression][:expression][:expression][:text]).to eq("b")
+        expect(expression[:expression][:expression][:expression][:symbols]).to eq("b")
         expect(expression[:expression][:expression][:rparen]).to eq("}")
         expect(formula[:rparen]).to eq("}")
       end
@@ -61,7 +61,7 @@ RSpec.describe Plurimath::Latex::Parse do
         expect(left_right[:lparen]).to eq("(")
         expect(expression[:sequence][:symbols]).to eq("beta")
         expect(left_right[:expression][:expression][:sequence][:symbols]).to eq("slash")
-        expect(left_right[:expression][:expression][:expression][:expression][:text]).to eq("t")
+        expect(left_right[:expression][:expression][:expression][:expression][:symbols]).to eq("t")
         expect(left_right[:rparen]).to eq(")")
       end
     end
@@ -77,8 +77,8 @@ RSpec.describe Plurimath::Latex::Parse do
 
         expect(formula[:binary][:sqrt]).to eq("sqrt")
         expect(binary[:sqrt]).to eq("sqrt")
-        expect(binary[:intermediate_exp][:expression][:sequence][:left_right][:expression][:sequence][:text]).to eq("t")
-        expect(binary[:intermediate_exp][:expression][:expression][:text]).to eq("v")
+        expect(binary[:intermediate_exp][:expression][:sequence][:left_right][:expression][:sequence][:symbols]).to eq("t")
+        expect(binary[:intermediate_exp][:expression][:expression][:symbols]).to eq("v")
       end
     end
 
@@ -90,7 +90,7 @@ RSpec.describe Plurimath::Latex::Parse do
       }
       it "returns parsed tree" do
         expect(formula[:unary_functions][:unary]).to eq("overline")
-        expect(formula[:unary_functions][:first_value][:expression][:text]).to eq("v")
+        expect(formula[:unary_functions][:first_value][:expression][:symbols]).to eq("v")
       end
     end
 
@@ -118,7 +118,7 @@ RSpec.describe Plurimath::Latex::Parse do
         expression = binary[:subscript][:expression]
 
         expect(binary[:binary]).to eq("sum")
-        expect(expression[:sequence][:text]).to eq("n")
+        expect(expression[:sequence][:symbols]).to eq("n")
         expect(expression[:expression][:sequence][:operant]).to eq("=")
         expect(expression[:expression][:expression][:number]).to eq("1")
         expect(binary[:supscript][:expression][:symbols]).to eq("infty")
@@ -136,7 +136,7 @@ RSpec.describe Plurimath::Latex::Parse do
 
         expect(power_base[:binary]).to eq("prod")
         expect(power_base[:supscript][:expression][:symbols]).to eq("infty")
-        expect(power_base[:subscript][:expression][:sequence][:text]).to eq("n")
+        expect(power_base[:subscript][:expression][:sequence][:symbols]).to eq("n")
         expect(power_base[:subscript][:expression][:expression][:sequence][:operant]).to eq("=")
         expect(power_base[:subscript][:expression][:expression][:expression][:number]).to eq("1")
       end
@@ -149,9 +149,9 @@ RSpec.describe Plurimath::Latex::Parse do
         LATEX
       }
       it "returns parsed tree" do
-        expect(formula[:under_over][:first_value][:expression][:text]).to eq("a")
+        expect(formula[:under_over][:first_value][:expression][:symbols]).to eq("a")
         expect(formula[:under_over][:binary]).to eq("bmod")
-        expect(formula[:under_over][:second_value][:expression][:text]).to eq("b")
+        expect(formula[:under_over][:second_value][:expression][:symbols]).to eq("b")
       end
     end
 
@@ -162,9 +162,9 @@ RSpec.describe Plurimath::Latex::Parse do
         LATEX
       }
       it "returns parsed tree" do
-        expect(formula[:under_over][:first_value][:expression][:text]).to eq("a")
+        expect(formula[:under_over][:first_value][:expression][:symbols]).to eq("a")
         expect(formula[:under_over][:binary]).to eq("pmod")
-        expect(formula[:under_over][:second_value][:expression][:text]).to eq("b")
+        expect(formula[:under_over][:second_value][:expression][:symbols]).to eq("b")
       end
     end
 
@@ -176,7 +176,7 @@ RSpec.describe Plurimath::Latex::Parse do
       }
       it "returns parsed tree" do
         expect(formula[:sequence][:number]).to eq("3")
-        expect(formula[:expression][:sequence][:text]).to eq("x")
+        expect(formula[:expression][:sequence][:symbols]).to eq("x")
         expect(formula[:expression][:expression][:sequence][:operant]).to eq("-")
       end
     end
@@ -190,7 +190,7 @@ RSpec.describe Plurimath::Latex::Parse do
       it "returns parsed tree" do
         expression = formula[:expression]
         expect(formula[:sequence][:number]).to eq("3")
-        expect(expression[:sequence][:text]).to eq("x")
+        expect(expression[:sequence][:symbols]).to eq("x")
         expect(expression[:expression][:sequence][:operant]).to eq("*")
         expect(expression[:expression][:expression][:number]).to eq("2")
       end
@@ -220,7 +220,7 @@ RSpec.describe Plurimath::Latex::Parse do
         ending = environment[:ending]
 
         expect(opening[:expression][:environment]).to eq("array")
-        expect(environment[:args][:text]).to eq("l")
+        expect(environment[:args][:symbols]).to eq("l")
         expect(ending[:expression][:environment]).to eq("array")
       end
     end
@@ -238,7 +238,7 @@ RSpec.describe Plurimath::Latex::Parse do
         base = table_data[:sequence][:base]
 
         expect(begining[:expression][:environment]).to eq("matrix")
-        expect(base[:text]).to eq("a")
+        expect(base[:symbols]).to eq("a")
         expect(base[:subscript][:expression][:number]).to eq("1")
         expect(table_data[:expression][:sequence][:operant]).to eq("&")
         expect(table_data[:expression][:expression][:expression]["\\\\"]).to eq("\\\\")
@@ -271,9 +271,9 @@ RSpec.describe Plurimath::Latex::Parse do
 
         expect(table_data[:environment]).to eq("matrix")
         expect(table_data[:lparen]).to eq("{")
-        expect(table_data[:expression][:sequence][:text]).to eq("a")
+        expect(table_data[:expression][:sequence][:symbols]).to eq("a")
         expect(table_data[:expression][:expression][:sequence][:operant]).to eq("&")
-        expect(table_data[:expression][:expression][:expression][:text]).to eq("b")
+        expect(table_data[:expression][:expression][:expression][:symbols]).to eq("b")
       end
     end
 
@@ -288,9 +288,9 @@ RSpec.describe Plurimath::Latex::Parse do
         table_data = environment[:table_data]
 
         expect(environment[:begining][:expression][:environment]).to eq("matrix")
-        expect(table_data[:sequence][:text]).to eq("a")
+        expect(table_data[:sequence][:symbols]).to eq("a")
         expect(table_data[:expression][:sequence][:operant]).to eq("&")
-        expect(table_data[:expression][:expression][:text]).to eq("b")
+        expect(table_data[:expression][:expression][:symbols]).to eq("b")
         expect(environment[:ending][:expression][:environment]).to eq("matrix")
       end
     end
@@ -308,9 +308,9 @@ RSpec.describe Plurimath::Latex::Parse do
 
         expect(environment[:begining][:expression][:environment]).to eq("Bmatrix")
         expect(table_data[:sequence][:operant]).to eq("-")
-        expect(table_data[:expression][:sequence][:text]).to eq("a")
+        expect(table_data[:expression][:sequence][:symbols]).to eq("a")
         expect(expression[:sequence][:operant]).to eq("&")
-        expect(expression[:expression][:sequence][:text]).to eq("b")
+        expect(expression[:expression][:sequence][:symbols]).to eq("b")
         expect(environment[:ending][:expression][:environment]).to eq("Bmatrix")
       end
     end
@@ -325,7 +325,7 @@ RSpec.describe Plurimath::Latex::Parse do
         environment = formula[:environment]
 
         expect(environment[:begining][:expression][:environment]).to eq("pmatrix")
-        expect(environment[:table_data][:sequence][:text]).to eq("a")
+        expect(environment[:table_data][:sequence][:symbols]).to eq("a")
         expect(environment[:ending][:expression][:environment]).to eq("pmatrix")
       end
     end
@@ -343,9 +343,9 @@ RSpec.describe Plurimath::Latex::Parse do
         table_data = environment[:table_data]
 
         expect(environment[:begining][:expression][:environment]).to eq("array")
-        expect(environment[:args][:sequence][:text]).to eq("c")
+        expect(environment[:args][:sequence][:symbols]).to eq("c")
         expect(environment[:args][:expression][:sequence][:operant]).to eq("|")
-        expect(environment[:args][:expression][:expression][:text]).to eq("r")
+        expect(environment[:args][:expression][:expression][:symbols]).to eq("r")
         expect(table_data[:expression][:expression][:expression][:sequence][:symbols]).to eq("hline")
         expect(environment[:ending][:expression][:environment]).to eq("array")
       end
@@ -366,7 +366,7 @@ RSpec.describe Plurimath::Latex::Parse do
         expression = base[:subscript][:expression]
 
         expect(environment[:begining][:expression][:environment]).to eq("bmatrix")
-        expect(base[:text]).to eq("a")
+        expect(base[:symbols]).to eq("a")
         expect(expression[:sequence][:number]).to eq("1")
         expect(expression[:expression][:sequence][:operant]).to eq(",")
         expect(expression[:expression][:expression][:number]).to eq("2")
@@ -407,10 +407,11 @@ RSpec.describe Plurimath::Latex::Parse do
       it "returns parsed tree" do
         base = formula[:sequence][:base]
         expression = formula[:expression]
+
         expect(base[:binary]).to eq("log")
         expect(base[:subscript][:number]).to eq("2")
         expect(expression[:lparen]).to eq("{")
-        expect(expression[:expression][:text]).to eq("x")
+        expect(expression[:expression][:symbols]).to eq("x")
         expect(expression[:rparen]).to eq("}")
       end
     end
@@ -426,12 +427,12 @@ RSpec.describe Plurimath::Latex::Parse do
         expression = binary[:subscript][:expression][:expression]
 
         expect(binary[:binary]).to eq("lim")
-        expect(binary[:subscript][:expression][:sequence][:text]).to eq("x")
+        expect(binary[:subscript][:expression][:sequence][:symbols]).to eq("x")
         expect(expression[:sequence][:symbols]).to eq("to")
         expect(expression[:expression][:sequence][:operant]).to eq("+")
         expect(expression[:expression][:expression][:symbols]).to eq("infty")
-        expect(formula[:expression][:sequence][:text]).to eq("f")
-        expect(formula[:expression][:expression][:expression][:text]).to eq("x")
+        expect(formula[:expression][:sequence][:symbols]).to eq("f")
+        expect(formula[:expression][:expression][:expression][:symbols]).to eq("x")
       end
     end
 
@@ -450,11 +451,11 @@ RSpec.describe Plurimath::Latex::Parse do
 
         expect(formula[:left_right][:lparen]).to eq("(")
         expect(environment[:begining][:expression][:environment]).to eq("array")
-        expect(environment[:args][:text]).to eq("c")
-        expect(sequence[:base][:text]).to eq("V")
-        expect(sequence[:base][:subscript][:text]).to eq("x")
-        expect(expression[:base][:text]).to eq("V")
-        expect(expression[:base][:subscript][:text]).to eq("y")
+        expect(environment[:args][:symbols]).to eq("c")
+        expect(sequence[:base][:symbols]).to eq("V")
+        expect(sequence[:base][:subscript][:symbols]).to eq("x")
+        expect(expression[:base][:symbols]).to eq("V")
+        expect(expression[:base][:subscript][:symbols]).to eq("y")
       end
     end
 
@@ -481,10 +482,10 @@ RSpec.describe Plurimath::Latex::Parse do
         base = formula[:expression][:expression][:sequence][:base]
 
         expect(vec[:unary]).to eq("vec")
-        expect(vec[:first_value][:expression][:text]).to eq("F")
+        expect(vec[:first_value][:expression][:symbols]).to eq("F")
         expect(formula[:expression][:sequence][:operant]).to eq("=")
-        expect(base[:text]).to eq("F")
-        expect(base[:subscript][:text]).to eq("x")
+        expect(base[:symbols]).to eq("F")
+        expect(base[:subscript][:symbols]).to eq("x")
       end
     end
 
@@ -501,12 +502,12 @@ RSpec.describe Plurimath::Latex::Parse do
         hat = formula[:expression][:expression][:expression][:sequence][:base][:unary_functions]
 
         expect(vec[:unary]).to eq("vec")
-        expect(vec[:first_value][:expression][:text]).to eq("M")
+        expect(vec[:first_value][:expression][:symbols]).to eq("M")
         expect(formula[:expression][:sequence][:operant]).to eq("=")
-        expect(base[:text]).to eq("M")
-        expect(base[:subscript][:text]).to eq("x")
+        expect(base[:symbols]).to eq("M")
+        expect(base[:subscript][:symbols]).to eq("x")
         expect(hat[:unary]).to eq("hat")
-        expect(hat[:first_value][:expression][:text]).to eq("e")
+        expect(hat[:first_value][:expression][:symbols]).to eq("e")
       end
     end
 
@@ -521,10 +522,10 @@ RSpec.describe Plurimath::Latex::Parse do
         expression = formula[:expression][:expression]
         unary_function = expression[:sequence][:unary_functions]
 
-        expect(formula[:sequence][:text]).to eq("L")
+        expect(formula[:sequence][:symbols]).to eq("L")
         expect(formula[:expression][:sequence][:operant]).to eq("=")
         expect(unary_function[:unary]).to eq("vec")
-        expect(unary_function[:first_value][:expression][:text]).to eq("F")
+        expect(unary_function[:first_value][:expression][:symbols]).to eq("F")
         expect(expression[:expression][:sequence][:symbols]).to eq("cdot")
       end
     end
@@ -541,9 +542,9 @@ RSpec.describe Plurimath::Latex::Parse do
         unary_function = expression[:sequence][:base]
 
         expect(formula[:sequence][:unary_functions][:unary]).to eq("vec")
-        expect(formula[:sequence][:unary_functions][:first_value][:expression][:text]).to eq("M")
+        expect(formula[:sequence][:unary_functions][:first_value][:expression][:symbols]).to eq("M")
         expect(formula[:expression][:sequence][:operant]).to eq("=")
-        expect(unary_function[:text]).to eq("M")
+        expect(unary_function[:symbols]).to eq("M")
         expect(unary_function[:subscript][:symbols]).to eq("xi")
       end
     end
@@ -563,8 +564,8 @@ RSpec.describe Plurimath::Latex::Parse do
         table_data = environment[:table_data]
 
         expect(environment[:begining][:expression][:environment]).to eq("split")
-        expect(table_data[:sequence][:base][:text]).to eq("C")
-        expect(table_data[:sequence][:base][:subscript][:text]).to eq("L")
+        expect(table_data[:sequence][:base][:symbols]).to eq("C")
+        expect(table_data[:sequence][:base][:subscript][:symbols]).to eq("L")
         expect(table_data[:expression][:sequence][:operant]).to eq("&")
         expect(environment[:ending][:expression][:environment]).to eq("split")
       end
@@ -582,10 +583,10 @@ RSpec.describe Plurimath::Latex::Parse do
         over = formula[:expression][:expression][:sequence][:over]
         divisor = over[:divisor][0]
 
-        expect(formula[:sequence][:base][:text]).to eq("c")
-        expect(formula[:sequence][:base][:subscript][:text]).to eq("l")
+        expect(formula[:sequence][:base][:symbols]).to eq("c")
+        expect(formula[:sequence][:base][:subscript][:symbols]).to eq("l")
         expect(formula[:expression][:sequence][:operant]).to eq("=")
-        expect(over[:dividend][0][:sequence][:text]).to eq("L")
+        expect(over[:dividend][0][:sequence][:symbols]).to eq("L")
         expect(over[:dividend][0][:expression][:operant]).to eq("'")
         expect(divisor[:sequence][:over][:dividend][0][:number]).to eq("1")
         expect(divisor[:sequence][:over][:divisor][0][:number]).to eq("2")

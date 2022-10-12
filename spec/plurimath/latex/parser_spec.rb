@@ -15,7 +15,7 @@ RSpec.describe Plurimath::Latex::Parser do
         expected_value = Plurimath::Math::Formula.new([
           Plurimath::Math::Number.new("3"),
           Plurimath::Math::Function::Cos.new(
-            Plurimath::Math::Symbol.new("&#x3B2;")
+            Plurimath::Math::Symbol.new("&#x3B2;"),
           )
         ])
         expect(formula).to eq(expected_value)
@@ -31,9 +31,9 @@ RSpec.describe Plurimath::Latex::Parser do
       it "returns formula" do
         expected_value = Plurimath::Math::Formula.new([
           Plurimath::Math::Formula.new([
-            Plurimath::Math::Function::Text.new("a"),
+            Plurimath::Math::Symbol.new("a"),
             Plurimath::Math::Symbol.new("+"),
-            Plurimath::Math::Function::Text.new("b"),
+            Plurimath::Math::Symbol.new("b"),
           ])
         ])
         expect(formula).to eq(expected_value)
@@ -53,7 +53,7 @@ RSpec.describe Plurimath::Latex::Parser do
             Plurimath::Math::Formula.new([
               Plurimath::Math::Symbol.new("&#x3B2;"),
               Plurimath::Math::Symbol.new("&#x2215;"),
-              Plurimath::Math::Function::Text.new("t"),
+              Plurimath::Math::Symbol.new("t"),
             ]),
             Plurimath::Math::Function::Right.new(")"),
           ]),
@@ -76,12 +76,12 @@ RSpec.describe Plurimath::Latex::Parser do
                 Plurimath::Math::Formula.new([
                   Plurimath::Math::Function::Left.new("("),
                   Plurimath::Math::Formula.new([
-                    Plurimath::Math::Function::Text.new("t"),
+                    Plurimath::Math::Symbol.new("t"),
                     Plurimath::Math::Number.new("3"),
                   ]),
                   Plurimath::Math::Function::Right.new(")"),
                 ]),
-                Plurimath::Math::Function::Text.new("v"),
+                Plurimath::Math::Symbol.new("v"),
               ])
             )
           )
@@ -99,7 +99,7 @@ RSpec.describe Plurimath::Latex::Parser do
       it "returns formula" do
         expected_value = Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Bar.new(
-            Plurimath::Math::Function::Text.new("v")
+            Plurimath::Math::Symbol.new("v")
           )
         ])
         expect(formula).to eq(expected_value)
@@ -168,7 +168,7 @@ RSpec.describe Plurimath::Latex::Parser do
         expected_value = Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Sum.new(
             Plurimath::Math::Formula.new([
-              Plurimath::Math::Function::Text.new("n"),
+              Plurimath::Math::Symbol.new("n"),
               Plurimath::Math::Symbol.new("="),
               Plurimath::Math::Number.new("1"),
             ]),
@@ -189,7 +189,7 @@ RSpec.describe Plurimath::Latex::Parser do
         expected_value = Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Prod.new(
             Plurimath::Math::Formula.new([
-              Plurimath::Math::Function::Text.new("n"),
+              Plurimath::Math::Symbol.new("n"),
               Plurimath::Math::Symbol.new("="),
               Plurimath::Math::Number.new("1"),
             ]),
@@ -209,8 +209,8 @@ RSpec.describe Plurimath::Latex::Parser do
       it "returns formula" do
         expected_value = Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Mod.new(
-            Plurimath::Math::Function::Text.new("a"),
-            Plurimath::Math::Function::Text.new("b"),
+            Plurimath::Math::Symbol.new("a"),
+            Plurimath::Math::Symbol.new("b"),
           )
         ])
         expect(formula).to eq(expected_value)
@@ -226,8 +226,8 @@ RSpec.describe Plurimath::Latex::Parser do
       it "returns formula" do
         expected_value = Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Mod.new(
-            Plurimath::Math::Function::Text.new("c"),
-            Plurimath::Math::Function::Text.new("d"),
+            Plurimath::Math::Symbol.new("c"),
+            Plurimath::Math::Symbol.new("d"),
           )
         ])
         expect(formula).to eq(expected_value)
@@ -243,13 +243,13 @@ RSpec.describe Plurimath::Latex::Parser do
       it "returns formula" do
         expected_value = Plurimath::Math::Formula.new([
           Plurimath::Math::Number.new("3"),
-          Plurimath::Math::Function::Text.new("x"),
+          Plurimath::Math::Symbol.new("x"),
           Plurimath::Math::Symbol.new("-"),
           Plurimath::Math::Number.new("5"),
-          Plurimath::Math::Function::Text.new("y"),
+          Plurimath::Math::Symbol.new("y"),
           Plurimath::Math::Symbol.new("+"),
           Plurimath::Math::Number.new("4"),
-          Plurimath::Math::Function::Text.new("z"),
+          Plurimath::Math::Symbol.new("z"),
           Plurimath::Math::Symbol.new("="),
           Plurimath::Math::Number.new("0"),
         ])
@@ -266,7 +266,7 @@ RSpec.describe Plurimath::Latex::Parser do
       it "returns formula" do
         expected_value = Plurimath::Math::Formula.new([
           Plurimath::Math::Number.new("3"),
-          Plurimath::Math::Function::Text.new("x"),
+          Plurimath::Math::Symbol.new("x"),
           Plurimath::Math::Symbol.new("*"),
           Plurimath::Math::Number.new("2"),
         ])
@@ -309,13 +309,13 @@ RSpec.describe Plurimath::Latex::Parser do
                 Plurimath::Math::Function::Td.new([
                   Plurimath::Math::Formula.new([
                     Plurimath::Math::Number.new("3"),
-                    Plurimath::Math::Function::Text.new("x"),
+                    Plurimath::Math::Symbol.new("x"),
                     Plurimath::Math::Symbol.new("-"),
                     Plurimath::Math::Number.new("5"),
-                    Plurimath::Math::Function::Text.new("y"),
+                    Plurimath::Math::Symbol.new("y"),
                     Plurimath::Math::Symbol.new("+"),
                     Plurimath::Math::Number.new("4"),
-                    Plurimath::Math::Function::Text.new("z"),
+                    Plurimath::Math::Symbol.new("z"),
                     Plurimath::Math::Symbol.new("="),
                     Plurimath::Math::Number.new("0"),
                   ])
@@ -324,7 +324,7 @@ RSpec.describe Plurimath::Latex::Parser do
             ],
             nil,
             [
-              Plurimath::Math::Function::Text.new("l"),
+              Plurimath::Math::Symbol.new("l"),
             ]
           )
         ])
@@ -346,13 +346,13 @@ RSpec.describe Plurimath::Latex::Parser do
                 Plurimath::Math::Function::Td.new([
                   Plurimath::Math::Formula.new([
                     Plurimath::Math::Number.new("3"),
-                    Plurimath::Math::Function::Text.new("x"),
+                    Plurimath::Math::Symbol.new("x"),
                     Plurimath::Math::Symbol.new("-"),
                     Plurimath::Math::Number.new("5"),
-                    Plurimath::Math::Function::Text.new("y"),
+                    Plurimath::Math::Symbol.new("y"),
                     Plurimath::Math::Symbol.new("+"),
                     Plurimath::Math::Number.new("4"),
-                    Plurimath::Math::Function::Text.new("z"),
+                    Plurimath::Math::Symbol.new("z"),
                     Plurimath::Math::Symbol.new("="),
                     Plurimath::Math::Number.new("0"),
                   ]),
@@ -385,13 +385,13 @@ RSpec.describe Plurimath::Latex::Parser do
               Plurimath::Math::Function::Tr.new([
                 Plurimath::Math::Function::Td.new([
                   Plurimath::Math::Function::Base.new(
-                    Plurimath::Math::Function::Text.new("a"),
+                    Plurimath::Math::Symbol.new("a"),
                     Plurimath::Math::Number.new("1"),
                   )
                 ]),
                 Plurimath::Math::Function::Td.new([
                   Plurimath::Math::Function::Base.new(
-                    Plurimath::Math::Function::Text.new("b"),
+                    Plurimath::Math::Symbol.new("b"),
                     Plurimath::Math::Number.new("2"),
                   )
                 ]),
@@ -399,13 +399,13 @@ RSpec.describe Plurimath::Latex::Parser do
               Plurimath::Math::Function::Tr.new([
                 Plurimath::Math::Function::Td.new([
                   Plurimath::Math::Function::Base.new(
-                    Plurimath::Math::Function::Text.new("c"),
+                    Plurimath::Math::Symbol.new("c"),
                     Plurimath::Math::Number.new("1"),
                   )
                 ]),
                 Plurimath::Math::Function::Td.new([
                   Plurimath::Math::Function::Base.new(
-                    Plurimath::Math::Function::Text.new("d"),
+                    Plurimath::Math::Symbol.new("d"),
                     Plurimath::Math::Number.new("2"),
                   )
                 ]),
@@ -453,10 +453,10 @@ RSpec.describe Plurimath::Latex::Parser do
           Plurimath::Math::Function::Table.new([
             Plurimath::Math::Function::Tr.new([
               Plurimath::Math::Function::Td.new([
-                Plurimath::Math::Function::Text.new("a"),
+                Plurimath::Math::Symbol.new("a"),
               ]),
               Plurimath::Math::Function::Td.new([
-                Plurimath::Math::Function::Text.new("b"),
+                Plurimath::Math::Symbol.new("b"),
               ]),
             ])
           ])
@@ -477,18 +477,18 @@ RSpec.describe Plurimath::Latex::Parser do
             [
               Plurimath::Math::Function::Tr.new([
                 Plurimath::Math::Function::Td.new([
-                  Plurimath::Math::Function::Text.new("a"),
+                  Plurimath::Math::Symbol.new("a"),
                 ]),
                 Plurimath::Math::Function::Td.new([
-                  Plurimath::Math::Function::Text.new("b"),
+                  Plurimath::Math::Symbol.new("b"),
                 ]),
               ]),
               Plurimath::Math::Function::Tr.new([
                 Plurimath::Math::Function::Td.new([
-                  Plurimath::Math::Function::Text.new("c"),
+                  Plurimath::Math::Symbol.new("c"),
                 ]),
                 Plurimath::Math::Function::Td.new([
-                  Plurimath::Math::Function::Text.new("d"),
+                  Plurimath::Math::Symbol.new("d"),
                 ]),
               ]),
             ],
@@ -512,10 +512,10 @@ RSpec.describe Plurimath::Latex::Parser do
             [
               Plurimath::Math::Function::Tr.new([
                 Plurimath::Math::Function::Td.new([
-                  Plurimath::Math::Function::Text.new("a")
+                  Plurimath::Math::Symbol.new("a")
                 ]),
                 Plurimath::Math::Function::Td.new([
-                  Plurimath::Math::Function::Text.new("b")
+                  Plurimath::Math::Symbol.new("b")
                 ]),
               ])
             ],
@@ -539,19 +539,21 @@ RSpec.describe Plurimath::Latex::Parser do
             [
               Plurimath::Math::Function::Tr.new([
                 Plurimath::Math::Function::Td.new([
-                  Plurimath::Math::Symbol.new("-"),
-                  Plurimath::Math::Function::Text.new("a"),
+                  Plurimath::Math::Formula.new([
+                    Plurimath::Math::Symbol.new("-"),
+                    Plurimath::Math::Symbol.new("a"),
+                  ]),
                 ]),
                 Plurimath::Math::Function::Td.new([
-                  Plurimath::Math::Function::Text.new("b"),
+                  Plurimath::Math::Symbol.new("b"),
                 ]),
               ]),
               Plurimath::Math::Function::Tr.new([
                 Plurimath::Math::Function::Td.new([
-                  Plurimath::Math::Function::Text.new("c"),
+                  Plurimath::Math::Symbol.new("c"),
                 ]),
                 Plurimath::Math::Function::Td.new([
-                  Plurimath::Math::Function::Text.new("d"),
+                  Plurimath::Math::Symbol.new("d"),
                 ]),
               ]),
             ],
@@ -575,19 +577,21 @@ RSpec.describe Plurimath::Latex::Parser do
             [
               Plurimath::Math::Function::Tr.new([
                 Plurimath::Math::Function::Td.new([
-                  Plurimath::Math::Symbol.new("-"),
-                  Plurimath::Math::Function::Text.new("a"),
+                  Plurimath::Math::Formula.new([
+                    Plurimath::Math::Symbol.new("-"),
+                    Plurimath::Math::Symbol.new("a"),
+                  ]),
                 ]),
                 Plurimath::Math::Function::Td.new([
-                  Plurimath::Math::Function::Text.new("b"),
+                  Plurimath::Math::Symbol.new("b"),
                 ]),
               ]),
               Plurimath::Math::Function::Tr.new([
                 Plurimath::Math::Function::Td.new([
-                  Plurimath::Math::Function::Text.new("c"),
+                  Plurimath::Math::Symbol.new("c"),
                 ]),
                 Plurimath::Math::Function::Td.new([
-                  Plurimath::Math::Function::Text.new("d"),
+                  Plurimath::Math::Symbol.new("d"),
                 ]),
               ]),
             ],
@@ -611,10 +615,10 @@ RSpec.describe Plurimath::Latex::Parser do
             [
               Plurimath::Math::Function::Tr.new([
                 Plurimath::Math::Function::Td.new([
-                  Plurimath::Math::Function::Text.new("a"),
+                  Plurimath::Math::Symbol.new("a"),
                 ]),
                 Plurimath::Math::Function::Td.new([
-                  Plurimath::Math::Function::Text.new("b"),
+                  Plurimath::Math::Symbol.new("b"),
                 ]),
               ])
             ],
@@ -658,9 +662,9 @@ RSpec.describe Plurimath::Latex::Parser do
             ],
             nil,
             [
-              Plurimath::Math::Function::Text.new("c"),
+              Plurimath::Math::Symbol.new("c"),
               Plurimath::Math::Symbol.new("|"),
-              Plurimath::Math::Function::Text.new("r"),
+              Plurimath::Math::Symbol.new("r"),
             ]
           )
         ])
@@ -731,9 +735,9 @@ RSpec.describe Plurimath::Latex::Parser do
       it "returns formula" do
         expected_value = Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Log.new(
-            Plurimath::Math::Number.new("2")
+            Plurimath::Math::Number.new("2"),
           ),
-          Plurimath::Math::Function::Text.new("x"),
+          Plurimath::Math::Symbol.new("x"),
         ])
         expect(formula).to eq(expected_value)
       end
@@ -749,14 +753,14 @@ RSpec.describe Plurimath::Latex::Parser do
         expected_value = Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Lim.new(
             Plurimath::Math::Formula.new([
-              Plurimath::Math::Function::Text.new("x"),
+              Plurimath::Math::Symbol.new("x"),
               Plurimath::Math::Symbol.new("&#x2192;"),
               Plurimath::Math::Symbol.new("+"),
               Plurimath::Math::Symbol.new("&#x221E;"),
             ]),
           ),
-          Plurimath::Math::Function::Text.new("f"),
-          Plurimath::Math::Function::Text.new("x"),
+          Plurimath::Math::Symbol.new("f"),
+          Plurimath::Math::Symbol.new("x"),
         ])
         expect(formula).to eq(expected_value)
       end
@@ -779,23 +783,23 @@ RSpec.describe Plurimath::Latex::Parser do
                 Plurimath::Math::Function::Tr.new([
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Function::Text.new("V"),
-                      Plurimath::Math::Function::Text.new("x"),
+                      Plurimath::Math::Symbol.new("V"),
+                      Plurimath::Math::Symbol.new("x"),
                     ),
                   ])
                 ]),
                 Plurimath::Math::Function::Tr.new([
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Function::Text.new("V"),
-                      Plurimath::Math::Function::Text.new("y"),
+                      Plurimath::Math::Symbol.new("V"),
+                      Plurimath::Math::Symbol.new("y"),
                     ),
                   ])
                 ]),
               ],
               nil,
               [
-                Plurimath::Math::Function::Text.new("c")
+                Plurimath::Math::Symbol.new("c")
               ]
             ),
             Plurimath::Math::Function::Right.new(")"),
@@ -844,7 +848,7 @@ RSpec.describe Plurimath::Latex::Parser do
       }
       it "returns formula" do
         expected_value = Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Text.new("a"),
+          Plurimath::Math::Symbol.new("a"),
           Plurimath::Math::Symbol.new(">"),
           Plurimath::Math::Number.new("2"),
         ])
@@ -860,7 +864,7 @@ RSpec.describe Plurimath::Latex::Parser do
       }
       it "returns formula" do
         expected_value = Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Text.new("a"),
+          Plurimath::Math::Symbol.new("a"),
           Plurimath::Math::Symbol.new("<"),
           Plurimath::Math::Number.new("2"),
         ])
@@ -888,7 +892,7 @@ RSpec.describe Plurimath::Latex::Parser do
         expected_value = Plurimath::Math::Formula.new([
           Plurimath::Math::Function::FontStyle.new(
             Plurimath::Math::Formula.new([
-              Plurimath::Math::Function::Text.new("R"),
+              Plurimath::Math::Symbol.new("R"),
               Plurimath::Math::Number.new("1"),
               Plurimath::Math::Symbol.new("&#x3B2;"),
             ]),
@@ -911,11 +915,15 @@ RSpec.describe Plurimath::Latex::Parser do
             Plurimath::Math::Formula.new([
               Plurimath::Math::Function::Left.new("("),
               Plurimath::Math::Function::Frac.new(
-                Plurimath::Math::Function::Text.new("T"),
+                Plurimath::Math::Symbol.new("T"),
                 Plurimath::Math::Function::Base.new(
-                  Plurimath::Math::Function::Text.new("T"),
+                  Plurimath::Math::Symbol.new("T"),
                   Plurimath::Math::Function::FontStyle.new(
-                    Plurimath::Math::Function::Text.new("ref"),
+                    Plurimath::Math::Formula.new([
+                      Plurimath::Math::Symbol.new("r"),
+                      Plurimath::Math::Symbol.new("e"),
+                      Plurimath::Math::Symbol.new("f"),
+                    ]),
                     "textrm"
                   ),
                 ),
@@ -998,48 +1006,49 @@ RSpec.describe Plurimath::Latex::Parser do
       it "returns formula" do
         expected_value = Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Vec.new(
-            Plurimath::Math::Function::Text.new("F")
+            Plurimath::Math::Symbol.new("F")
           ),
           Plurimath::Math::Symbol.new("="),
           Plurimath::Math::Function::Base.new(
-            Plurimath::Math::Function::Text.new("F"),
-            Plurimath::Math::Function::Text.new("x"),
+            Plurimath::Math::Symbol.new("F"),
+            Plurimath::Math::Symbol.new("x"),
           ),
           Plurimath::Math::Function::Base.new(
             Plurimath::Math::Function::Hat.new(
-              Plurimath::Math::Function::Text.new("e"),
+              Plurimath::Math::Symbol.new("e"),
             ),
-            Plurimath::Math::Function::Text.new("x"),
+            Plurimath::Math::Symbol.new("x"),
           ),
           Plurimath::Math::Symbol.new("+"),
           Plurimath::Math::Function::Base.new(
-            Plurimath::Math::Function::Text.new("F"),
-            Plurimath::Math::Function::Text.new("y"),
+            Plurimath::Math::Symbol.new("F"),
+            Plurimath::Math::Symbol.new("y"),
           ),
           Plurimath::Math::Function::Base.new(
             Plurimath::Math::Function::Hat.new(
-              Plurimath::Math::Function::Text.new("e"),
+              Plurimath::Math::Symbol.new("e"),
             ),
-            Plurimath::Math::Function::Text.new("y"),
+            Plurimath::Math::Symbol.new("y"),
           ),
           Plurimath::Math::Symbol.new("+"),
           Plurimath::Math::Function::Base.new(
-            Plurimath::Math::Function::Text.new("F"),
-            Plurimath::Math::Function::Text.new("z"),
+            Plurimath::Math::Symbol.new("F"),
+            Plurimath::Math::Symbol.new("z"),
           ),
           Plurimath::Math::Function::Base.new(
             Plurimath::Math::Function::Hat.new(
-              Plurimath::Math::Function::Text.new("e"),
+              Plurimath::Math::Symbol.new("e"),
             ),
-            Plurimath::Math::Function::Text.new("z"),
+            Plurimath::Math::Symbol.new("z"),
           ),
           Plurimath::Math::Symbol.new("="),
           Plurimath::Math::Symbol.new("&#x222B;"),
           Plurimath::Math::Function::Vec.new(
-            Plurimath::Math::Function::Text.new("f")
+            Plurimath::Math::Symbol.new("f")
           ),
           Plurimath::Math::Symbol.new("&#x2C;"),
-          Plurimath::Math::Function::Text.new("dA"),
+          Plurimath::Math::Symbol.new("d"),
+          Plurimath::Math::Symbol.new("A"),
           Plurimath::Math::Symbol.new(","),
         ])
         expect(formula).to eq(expected_value)
@@ -1055,61 +1064,62 @@ RSpec.describe Plurimath::Latex::Parser do
       it "returns formula" do
         expected_value = Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Vec.new(
-            Plurimath::Math::Function::Text.new("M")
+            Plurimath::Math::Symbol.new("M")
           ),
           Plurimath::Math::Symbol.new("="),
           Plurimath::Math::Function::Base.new(
-            Plurimath::Math::Function::Text.new("M"),
-            Plurimath::Math::Function::Text.new("x"),
+            Plurimath::Math::Symbol.new("M"),
+            Plurimath::Math::Symbol.new("x"),
           ),
           Plurimath::Math::Function::Base.new(
             Plurimath::Math::Function::Hat.new(
-              Plurimath::Math::Function::Text.new("e"),
+              Plurimath::Math::Symbol.new("e"),
             ),
-            Plurimath::Math::Function::Text.new("x"),
+            Plurimath::Math::Symbol.new("x"),
           ),
           Plurimath::Math::Symbol.new("+"),
           Plurimath::Math::Function::Base.new(
-            Plurimath::Math::Function::Text.new("M"),
-            Plurimath::Math::Function::Text.new("y"),
+            Plurimath::Math::Symbol.new("M"),
+            Plurimath::Math::Symbol.new("y"),
           ),
           Plurimath::Math::Function::Base.new(
             Plurimath::Math::Function::Hat.new(
-              Plurimath::Math::Function::Text.new("e"),
+              Plurimath::Math::Symbol.new("e"),
             ),
-            Plurimath::Math::Function::Text.new("y"),
+            Plurimath::Math::Symbol.new("y"),
           ),
           Plurimath::Math::Symbol.new("+"),
           Plurimath::Math::Function::Base.new(
-            Plurimath::Math::Function::Text.new("M"),
-            Plurimath::Math::Function::Text.new("z"),
+            Plurimath::Math::Symbol.new("M"),
+            Plurimath::Math::Symbol.new("z"),
           ),
           Plurimath::Math::Function::Base.new(
             Plurimath::Math::Function::Hat.new(
-              Plurimath::Math::Function::Text.new("e"),
+              Plurimath::Math::Symbol.new("e"),
             ),
-            Plurimath::Math::Function::Text.new("z"),
+            Plurimath::Math::Symbol.new("z"),
           ),
           Plurimath::Math::Symbol.new("="),
           Plurimath::Math::Symbol.new("&#x222B;"),
           Plurimath::Math::Formula.new([
             Plurimath::Math::Function::Vec.new(
-              Plurimath::Math::Function::Text.new("r"),
+              Plurimath::Math::Symbol.new("r"),
             ),
             Plurimath::Math::Symbol.new("-"),
             Plurimath::Math::Function::Base.new(
               Plurimath::Math::Function::Vec.new(
-                Plurimath::Math::Function::Text.new("r"),
+                Plurimath::Math::Symbol.new("r"),
               ),
               Plurimath::Math::Number.new("0"),
             )
           ]),
           Plurimath::Math::Symbol.new("&#xD7;"),
           Plurimath::Math::Function::Vec.new(
-            Plurimath::Math::Function::Text.new("f"),
+            Plurimath::Math::Symbol.new("f"),
           ),
           Plurimath::Math::Symbol.new("&#x2C;"),
-          Plurimath::Math::Function::Text.new("dA"),
+          Plurimath::Math::Symbol.new("d"),
+          Plurimath::Math::Symbol.new("A"),
           Plurimath::Math::Symbol.new("."),
         ])
         expect(formula).to eq(expected_value)
@@ -1124,24 +1134,24 @@ RSpec.describe Plurimath::Latex::Parser do
       }
       it "returns formula" do
         expected_value = Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Text.new("L"),
+          Plurimath::Math::Symbol.new("L"),
           Plurimath::Math::Symbol.new("="),
           Plurimath::Math::Function::Vec.new(
-            Plurimath::Math::Function::Text.new("F")
+            Plurimath::Math::Symbol.new("F")
           ),
           Plurimath::Math::Symbol.new("&#x22C5;"),
           Plurimath::Math::Function::Hat.new(
-            Plurimath::Math::Function::Text.new("L"),
+            Plurimath::Math::Symbol.new("L"),
           ),
           Plurimath::Math::Symbol.new("&#xA0;&#xA0;&#xA0;&#xA0;"),
-          Plurimath::Math::Function::Text.new("D"),
+          Plurimath::Math::Symbol.new("D"),
           Plurimath::Math::Symbol.new("="),
           Plurimath::Math::Function::Vec.new(
-            Plurimath::Math::Function::Text.new("F"),
+            Plurimath::Math::Symbol.new("F"),
           ),
           Plurimath::Math::Symbol.new("&#x22C5;"),
           Plurimath::Math::Function::Hat.new(
-            Plurimath::Math::Function::Text.new("D"),
+            Plurimath::Math::Symbol.new("D"),
           ),
         ])
         expect(formula).to eq(expected_value)
@@ -1156,28 +1166,28 @@ RSpec.describe Plurimath::Latex::Parser do
       }
       it "returns formula" do
         expected_value = Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Text.new("L"),
+          Plurimath::Math::Symbol.new("L"),
           Plurimath::Math::Symbol.new("="),
           Plurimath::Math::Function::Vec.new(
-            Plurimath::Math::Function::Text.new("F")
+            Plurimath::Math::Symbol.new("F")
           ),
           Plurimath::Math::Symbol.new("&#x22C5;"),
           Plurimath::Math::Function::Base.new(
             Plurimath::Math::Function::Hat.new(
-              Plurimath::Math::Function::Text.new("e"),
+              Plurimath::Math::Symbol.new("e"),
             ),
             Plurimath::Math::Symbol.new("&#x3B7;"),
           ),
           Plurimath::Math::Symbol.new("&#xA0;&#xA0;&#xA0;&#xA0;"),
-          Plurimath::Math::Function::Text.new("D"),
+          Plurimath::Math::Symbol.new("D"),
           Plurimath::Math::Symbol.new("="),
           Plurimath::Math::Function::Vec.new(
-            Plurimath::Math::Function::Text.new("F"),
+            Plurimath::Math::Symbol.new("F"),
           ),
           Plurimath::Math::Symbol.new("&#x22C5;"),
           Plurimath::Math::Function::Base.new(
             Plurimath::Math::Function::Hat.new(
-              Plurimath::Math::Function::Text.new("e"),
+              Plurimath::Math::Symbol.new("e"),
             ),
             Plurimath::Math::Symbol.new("&#x3BE;")
           )
@@ -1196,38 +1206,38 @@ RSpec.describe Plurimath::Latex::Parser do
       it "returns formula" do
         expected_value = Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Vec.new(
-            Plurimath::Math::Function::Text.new("M"),
+            Plurimath::Math::Symbol.new("M"),
           ),
           Plurimath::Math::Symbol.new("="),
           Plurimath::Math::Function::Base.new(
-            Plurimath::Math::Function::Text.new("M"),
+            Plurimath::Math::Symbol.new("M"),
             Plurimath::Math::Symbol.new("&#x3BE;"),
           ),
           Plurimath::Math::Function::Base.new(
             Plurimath::Math::Function::Hat.new(
-              Plurimath::Math::Function::Text.new("e")
+              Plurimath::Math::Symbol.new("e")
             ),
             Plurimath::Math::Symbol.new("&#x3BE;")
           ),
           Plurimath::Math::Symbol.new("+"),
           Plurimath::Math::Function::Base.new(
-            Plurimath::Math::Function::Text.new("M"),
+            Plurimath::Math::Symbol.new("M"),
             Plurimath::Math::Symbol.new("&#x3B7;"),
           ),
           Plurimath::Math::Function::Base.new(
             Plurimath::Math::Function::Hat.new(
-              Plurimath::Math::Function::Text.new("e"),
+              Plurimath::Math::Symbol.new("e"),
             ),
             Plurimath::Math::Symbol.new("&#x3B7;"),
           ),
           Plurimath::Math::Symbol.new("+"),
           Plurimath::Math::Function::Base.new(
-            Plurimath::Math::Function::Text.new("M"),
+            Plurimath::Math::Symbol.new("M"),
             Plurimath::Math::Symbol.new("&#x3B6;"),
           ),
           Plurimath::Math::Function::Base.new(
             Plurimath::Math::Function::Hat.new(
-              Plurimath::Math::Function::Text.new("e"),
+              Plurimath::Math::Symbol.new("e"),
             ),
             Plurimath::Math::Symbol.new("&#x3B6;"),
           ),
@@ -1235,22 +1245,23 @@ RSpec.describe Plurimath::Latex::Parser do
           Plurimath::Math::Symbol.new("&#x222B;"),
           Plurimath::Math::Formula.new([
             Plurimath::Math::Function::Vec.new(
-              Plurimath::Math::Function::Text.new("r")
+              Plurimath::Math::Symbol.new("r")
             ),
             Plurimath::Math::Symbol.new("-"),
             Plurimath::Math::Function::Base.new(
               Plurimath::Math::Function::Vec.new(
-                Plurimath::Math::Function::Text.new("r"),
+                Plurimath::Math::Symbol.new("r"),
               ),
               Plurimath::Math::Number.new("0"),
             ),
           ]),
           Plurimath::Math::Symbol.new("&#xD7;"),
           Plurimath::Math::Function::Vec.new(
-            Plurimath::Math::Function::Text.new("f")
+            Plurimath::Math::Symbol.new("f")
           ),
           Plurimath::Math::Symbol.new("&#x2C;"),
-          Plurimath::Math::Function::Text.new("dA"),
+          Plurimath::Math::Symbol.new("d"),
+          Plurimath::Math::Symbol.new("A"),
           Plurimath::Math::Symbol.new(".")
         ])
         expect(formula).to eq(expected_value)
@@ -1274,15 +1285,15 @@ RSpec.describe Plurimath::Latex::Parser do
               Plurimath::Math::Function::Tr.new([
                 Plurimath::Math::Function::Td.new([
                   Plurimath::Math::Function::Base.new(
-                    Plurimath::Math::Function::Text.new("C"),
-                    Plurimath::Math::Function::Text.new("L")
+                    Plurimath::Math::Symbol.new("C"),
+                    Plurimath::Math::Symbol.new("L")
                   )
                 ]),
                 Plurimath::Math::Function::Td.new([
                   Plurimath::Math::Symbol.new("="),
                   Plurimath::Math::Function::Over.new(
                     Plurimath::Math::Formula.new([
-                      Plurimath::Math::Function::Text.new("L")
+                      Plurimath::Math::Symbol.new("L")
                     ]),
                     Plurimath::Math::Formula.new([
                       Plurimath::Math::Function::Over.new(
@@ -1296,19 +1307,27 @@ RSpec.describe Plurimath::Latex::Parser do
                       Plurimath::Math::Function::Base.new(
                         Plurimath::Math::Symbol.new("&#x3C1;"),
                         Plurimath::Math::Function::FontStyle.new(
-                          Plurimath::Math::Function::Text.new("ref"),
+                          Plurimath::Math::Formula.new([
+                            Plurimath::Math::Symbol.new("r"),
+                            Plurimath::Math::Symbol.new("e"),
+                            Plurimath::Math::Symbol.new("f"),
+                          ]),
                           "textrm"
                         )
                       ),
                       Plurimath::Math::Function::PowerBase.new(
-                        Plurimath::Math::Function::Text.new("q"),
+                        Plurimath::Math::Symbol.new("q"),
                         Plurimath::Math::Function::FontStyle.new(
-                          Plurimath::Math::Function::Text.new("ref"),
+                          Plurimath::Math::Formula.new([
+                            Plurimath::Math::Symbol.new("r"),
+                            Plurimath::Math::Symbol.new("e"),
+                            Plurimath::Math::Symbol.new("f"),
+                          ]),
                           "textrm"
                         ),
                         Plurimath::Math::Number.new("2"),
                       ),
-                      Plurimath::Math::Function::Text.new("S")
+                      Plurimath::Math::Symbol.new("S")
                     ])
                   )
                 ])
@@ -1319,15 +1338,15 @@ RSpec.describe Plurimath::Latex::Parser do
               Plurimath::Math::Function::Tr.new([
                 Plurimath::Math::Function::Td.new([
                   Plurimath::Math::Function::Base.new(
-                    Plurimath::Math::Function::Text.new("C"),
-                    Plurimath::Math::Function::Text.new("D")
+                    Plurimath::Math::Symbol.new("C"),
+                    Plurimath::Math::Symbol.new("D")
                   )
                 ]),
                 Plurimath::Math::Function::Td.new([
                   Plurimath::Math::Symbol.new("="),
                   Plurimath::Math::Function::Over.new(
                     Plurimath::Math::Formula.new([
-                      Plurimath::Math::Function::Text.new("D")
+                      Plurimath::Math::Symbol.new("D")
                     ]),
                     Plurimath::Math::Formula.new([
                       Plurimath::Math::Function::Over.new(
@@ -1341,19 +1360,27 @@ RSpec.describe Plurimath::Latex::Parser do
                       Plurimath::Math::Function::Base.new(
                         Plurimath::Math::Symbol.new("&#x3C1;"),
                         Plurimath::Math::Function::FontStyle.new(
-                          Plurimath::Math::Function::Text.new("ref"),
+                          Plurimath::Math::Formula.new([
+                            Plurimath::Math::Symbol.new("r"),
+                            Plurimath::Math::Symbol.new("e"),
+                            Plurimath::Math::Symbol.new("f"),
+                          ]),
                           "textrm"
                         )
                       ),
                       Plurimath::Math::Function::PowerBase.new(
-                        Plurimath::Math::Function::Text.new("q"),
+                        Plurimath::Math::Symbol.new("q"),
                         Plurimath::Math::Function::FontStyle.new(
-                          Plurimath::Math::Function::Text.new("ref"),
+                          Plurimath::Math::Formula.new([
+                            Plurimath::Math::Symbol.new("r"),
+                            Plurimath::Math::Symbol.new("e"),
+                            Plurimath::Math::Symbol.new("f"),
+                          ]),
                           "textrm"
                         ),
                         Plurimath::Math::Number.new("2"),
                       ),
-                      Plurimath::Math::Function::Text.new("S")
+                      Plurimath::Math::Symbol.new("S")
                     ])
                   )
                 ])
@@ -1365,9 +1392,9 @@ RSpec.describe Plurimath::Latex::Parser do
                 Plurimath::Math::Function::Td.new([
                   Plurimath::Math::Function::Base.new(
                     Plurimath::Math::Function::Vec.new(
-                      Plurimath::Math::Function::Text.new("C")
+                      Plurimath::Math::Symbol.new("C")
                     ),
-                    Plurimath::Math::Function::Text.new("M")
+                    Plurimath::Math::Symbol.new("M")
                   )
                 ]),
                 Plurimath::Math::Function::Td.new([
@@ -1376,7 +1403,7 @@ RSpec.describe Plurimath::Latex::Parser do
                     Plurimath::Math::Formula.new([
                       Plurimath::Math::Symbol.new("&#x3B2;"),
                       Plurimath::Math::Function::Vec.new(
-                        Plurimath::Math::Function::Text.new("M")
+                        Plurimath::Math::Symbol.new("M")
                       )
                     ]),
                     Plurimath::Math::Formula.new([
@@ -1391,29 +1418,45 @@ RSpec.describe Plurimath::Latex::Parser do
                       Plurimath::Math::Function::Base.new(
                         Plurimath::Math::Symbol.new("&#x3C1;"),
                         Plurimath::Math::Function::FontStyle.new(
-                          Plurimath::Math::Function::Text.new("ref"),
+                          Plurimath::Math::Formula.new([
+                            Plurimath::Math::Symbol.new("r"),
+                            Plurimath::Math::Symbol.new("e"),
+                            Plurimath::Math::Symbol.new("f"),
+                          ]),
                           "textrm"
                         )
                       ),
                       Plurimath::Math::Function::PowerBase.new(
-                        Plurimath::Math::Function::Text.new("q"),
+                        Plurimath::Math::Symbol.new("q"),
                         Plurimath::Math::Function::FontStyle.new(
-                          Plurimath::Math::Function::Text.new("ref"),
+                          Plurimath::Math::Formula.new([
+                            Plurimath::Math::Symbol.new("r"),
+                            Plurimath::Math::Symbol.new("e"),
+                            Plurimath::Math::Symbol.new("f"),
+                          ]),
                           "textrm"
                         ),
                         Plurimath::Math::Number.new("2"),
                       ),
                       Plurimath::Math::Function::Base.new(
-                        Plurimath::Math::Function::Text.new("c"),
+                        Plurimath::Math::Symbol.new("c"),
                         Plurimath::Math::Function::FontStyle.new(
-                          Plurimath::Math::Function::Text.new("ref"),
+                          Plurimath::Math::Formula.new([
+                            Plurimath::Math::Symbol.new("r"),
+                            Plurimath::Math::Symbol.new("e"),
+                            Plurimath::Math::Symbol.new("f"),
+                          ]),
                           "textrm"
                         )
                       ),
                       Plurimath::Math::Function::Base.new(
-                        Plurimath::Math::Function::Text.new("S"),
+                        Plurimath::Math::Symbol.new("S"),
                         Plurimath::Math::Function::FontStyle.new(
-                          Plurimath::Math::Function::Text.new("ref"),
+                          Plurimath::Math::Formula.new([
+                            Plurimath::Math::Symbol.new("r"),
+                            Plurimath::Math::Symbol.new("e"),
+                            Plurimath::Math::Symbol.new("f"),
+                          ]),
                           "textrm"
                         )
                       )
@@ -1442,13 +1485,13 @@ RSpec.describe Plurimath::Latex::Parser do
       it "returns formula" do
         expected_value = Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Base.new(
-            Plurimath::Math::Function::Text.new("c"),
-            Plurimath::Math::Function::Text.new("l"),
+            Plurimath::Math::Symbol.new("c"),
+            Plurimath::Math::Symbol.new("l"),
           ),
           Plurimath::Math::Symbol.new("="),
           Plurimath::Math::Function::Over.new(
             Plurimath::Math::Formula.new([
-              Plurimath::Math::Function::Text.new("L"),
+              Plurimath::Math::Symbol.new("L"),
               Plurimath::Math::Symbol.new("'"),
             ]),
             Plurimath::Math::Formula.new([
@@ -1463,22 +1506,34 @@ RSpec.describe Plurimath::Latex::Parser do
               Plurimath::Math::Function::Base.new(
                 Plurimath::Math::Symbol.new("&#x3C1;"),
                 Plurimath::Math::Function::FontStyle.new(
-                  Plurimath::Math::Function::Text.new("ref"),
+                  Plurimath::Math::Formula.new([
+                    Plurimath::Math::Symbol.new("r"),
+                    Plurimath::Math::Symbol.new("e"),
+                    Plurimath::Math::Symbol.new("f"),
+                  ]),
                   "textrm"
                 )
               ),
               Plurimath::Math::Function::PowerBase.new(
-                Plurimath::Math::Function::Text.new("q"),
+                Plurimath::Math::Symbol.new("q"),
                 Plurimath::Math::Function::FontStyle.new(
-                  Plurimath::Math::Function::Text.new("ref"),
+                  Plurimath::Math::Formula.new([
+                    Plurimath::Math::Symbol.new("r"),
+                    Plurimath::Math::Symbol.new("e"),
+                    Plurimath::Math::Symbol.new("f"),
+                  ]),
                   "textrm"
                 ),
                 Plurimath::Math::Number.new("2"),
               ),
               Plurimath::Math::Function::Base.new(
-                Plurimath::Math::Function::Text.new("c"),
+                Plurimath::Math::Symbol.new("c"),
                 Plurimath::Math::Function::FontStyle.new(
-                  Plurimath::Math::Function::Text.new("ref"),
+                  Plurimath::Math::Formula.new([
+                    Plurimath::Math::Symbol.new("r"),
+                    Plurimath::Math::Symbol.new("e"),
+                    Plurimath::Math::Symbol.new("f"),
+                  ]),
                   "textrm"
                 )
               ),
@@ -1486,13 +1541,13 @@ RSpec.describe Plurimath::Latex::Parser do
           ),
           Plurimath::Math::Symbol.new("&#xA0;&#xA0;&#xA0;&#xA0;"),
           Plurimath::Math::Function::Base.new(
-            Plurimath::Math::Function::Text.new("c"),
-            Plurimath::Math::Function::Text.new("d"),
+            Plurimath::Math::Symbol.new("c"),
+            Plurimath::Math::Symbol.new("d"),
           ),
           Plurimath::Math::Symbol.new("="),
           Plurimath::Math::Function::Over.new(
             Plurimath::Math::Formula.new([
-              Plurimath::Math::Function::Text.new("D"),
+              Plurimath::Math::Symbol.new("D"),
               Plurimath::Math::Symbol.new("'")
             ]),
             Plurimath::Math::Formula.new([
@@ -1507,22 +1562,34 @@ RSpec.describe Plurimath::Latex::Parser do
               Plurimath::Math::Function::Base.new(
                 Plurimath::Math::Symbol.new("&#x3C1;"),
                 Plurimath::Math::Function::FontStyle.new(
-                  Plurimath::Math::Function::Text.new("ref"),
+                  Plurimath::Math::Formula.new([
+                    Plurimath::Math::Symbol.new("r"),
+                    Plurimath::Math::Symbol.new("e"),
+                    Plurimath::Math::Symbol.new("f"),
+                  ]),
                   "textrm"
                 )
               ),
               Plurimath::Math::Function::PowerBase.new(
-                Plurimath::Math::Function::Text.new("q"),
+                Plurimath::Math::Symbol.new("q"),
                 Plurimath::Math::Function::FontStyle.new(
-                  Plurimath::Math::Function::Text.new("ref"),
+                  Plurimath::Math::Formula.new([
+                    Plurimath::Math::Symbol.new("r"),
+                    Plurimath::Math::Symbol.new("e"),
+                    Plurimath::Math::Symbol.new("f"),
+                  ]),
                   "textrm"
                 ),
                 Plurimath::Math::Number.new("2"),
               ),
               Plurimath::Math::Function::Base.new(
-                Plurimath::Math::Function::Text.new("c"),
+                Plurimath::Math::Symbol.new("c"),
                 Plurimath::Math::Function::FontStyle.new(
-                  Plurimath::Math::Function::Text.new("ref"),
+                  Plurimath::Math::Formula.new([
+                    Plurimath::Math::Symbol.new("r"),
+                    Plurimath::Math::Symbol.new("e"),
+                    Plurimath::Math::Symbol.new("f"),
+                  ]),
                   "textrm"
                 )
               ),
@@ -1531,15 +1598,15 @@ RSpec.describe Plurimath::Latex::Parser do
           Plurimath::Math::Symbol.new("&#xA0;&#xA0;&#xA0;&#xA0;"),
           Plurimath::Math::Function::Base.new(
             Plurimath::Math::Function::Vec.new(
-              Plurimath::Math::Function::Text.new("c")
+              Plurimath::Math::Symbol.new("c")
             ),
-            Plurimath::Math::Function::Text.new("m")
+            Plurimath::Math::Symbol.new("m")
           ),
           Plurimath::Math::Symbol.new("="),
           Plurimath::Math::Function::Over.new(
             Plurimath::Math::Formula.new([
               Plurimath::Math::Function::Vec.new(
-                Plurimath::Math::Function::Text.new("M")
+                Plurimath::Math::Symbol.new("M")
               ),
               Plurimath::Math::Symbol.new("'")
             ]),
@@ -1555,22 +1622,34 @@ RSpec.describe Plurimath::Latex::Parser do
               Plurimath::Math::Function::Base.new(
                 Plurimath::Math::Symbol.new("&#x3C1;"),
                 Plurimath::Math::Function::FontStyle.new(
-                  Plurimath::Math::Function::Text.new("ref"),
+                  Plurimath::Math::Formula.new([
+                    Plurimath::Math::Symbol.new("r"),
+                    Plurimath::Math::Symbol.new("e"),
+                    Plurimath::Math::Symbol.new("f"),
+                  ]),
                   "textrm"
                 ),
               ),
               Plurimath::Math::Function::PowerBase.new(
-                Plurimath::Math::Function::Text.new("q"),
+                Plurimath::Math::Symbol.new("q"),
                 Plurimath::Math::Function::FontStyle.new(
-                  Plurimath::Math::Function::Text.new("ref"),
+                  Plurimath::Math::Formula.new([
+                    Plurimath::Math::Symbol.new("r"),
+                    Plurimath::Math::Symbol.new("e"),
+                    Plurimath::Math::Symbol.new("f"),
+                  ]),
                   "textrm"
                 ),
                 Plurimath::Math::Number.new("2")
               ),
               Plurimath::Math::Function::PowerBase.new(
-                Plurimath::Math::Function::Text.new("c"),
+                Plurimath::Math::Symbol.new("c"),
                 Plurimath::Math::Function::FontStyle.new(
-                  Plurimath::Math::Function::Text.new("ref"),
+                  Plurimath::Math::Formula.new([
+                    Plurimath::Math::Symbol.new("r"),
+                    Plurimath::Math::Symbol.new("e"),
+                    Plurimath::Math::Symbol.new("f"),
+                  ]),
                   "textrm"
                 ),
                 Plurimath::Math::Number.new("2")
@@ -1591,12 +1670,16 @@ RSpec.describe Plurimath::Latex::Parser do
       }
       it "returns formula" do
         expected_value = Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Text.new("k"),
+          Plurimath::Math::Symbol.new("k"),
           Plurimath::Math::Symbol.new("="),
           Plurimath::Math::Function::Base.new(
-            Plurimath::Math::Function::Text.new("k"),
+            Plurimath::Math::Symbol.new("k"),
             Plurimath::Math::Function::FontStyle.new(
-              Plurimath::Math::Function::Text.new("ref"),
+              Plurimath::Math::Formula.new([
+                Plurimath::Math::Symbol.new("r"),
+                Plurimath::Math::Symbol.new("e"),
+                Plurimath::Math::Symbol.new("f"),
+              ]),
               "textrm"
             ),
           ),
@@ -1604,11 +1687,15 @@ RSpec.describe Plurimath::Latex::Parser do
             Plurimath::Math::Formula.new([
               Plurimath::Math::Function::Left.new("("),
               Plurimath::Math::Function::Frac.new(
-                Plurimath::Math::Function::Text.new("T"),
+                Plurimath::Math::Symbol.new("T"),
                 Plurimath::Math::Function::Base.new(
-                  Plurimath::Math::Function::Text.new("T"),
+                  Plurimath::Math::Symbol.new("T"),
                   Plurimath::Math::Function::FontStyle.new(
-                    Plurimath::Math::Function::Text.new("ref"),
+                    Plurimath::Math::Formula.new([
+                      Plurimath::Math::Symbol.new("r"),
+                      Plurimath::Math::Symbol.new("e"),
+                      Plurimath::Math::Symbol.new("f"),
+                    ]),
                     "textrm"
                   ),
                 ),
@@ -1624,24 +1711,28 @@ RSpec.describe Plurimath::Latex::Parser do
           Plurimath::Math::Function::Frac.new(
             Plurimath::Math::Formula.new([
               Plurimath::Math::Function::Base.new(
-                Plurimath::Math::Function::Text.new("T"),
+                Plurimath::Math::Symbol.new("T"),
                 Plurimath::Math::Function::FontStyle.new(
-                  Plurimath::Math::Function::Text.new("ref"),
+                  Plurimath::Math::Formula.new([
+                    Plurimath::Math::Symbol.new("r"),
+                    Plurimath::Math::Symbol.new("e"),
+                    Plurimath::Math::Symbol.new("f"),
+                  ]),
                   "textrm"
                 ),
               ),
               Plurimath::Math::Symbol.new("+"),
               Plurimath::Math::Function::Base.new(
-                Plurimath::Math::Function::Text.new("T"),
-                Plurimath::Math::Function::Text.new("s"),
+                Plurimath::Math::Symbol.new("T"),
+                Plurimath::Math::Symbol.new("s"),
               ),
             ]),
             Plurimath::Math::Formula.new([
-              Plurimath::Math::Function::Text.new("T"),
+              Plurimath::Math::Symbol.new("T"),
               Plurimath::Math::Symbol.new("+"),
               Plurimath::Math::Function::Base.new(
-                Plurimath::Math::Function::Text.new("T"),
-                Plurimath::Math::Function::Text.new("s"),
+                Plurimath::Math::Symbol.new("T"),
+                Plurimath::Math::Symbol.new("s"),
               )
             ]),
           ),
@@ -1665,21 +1756,22 @@ RSpec.describe Plurimath::Latex::Parser do
           Plurimath::Math::Symbol.new("-"),
           Plurimath::Math::Function::Bar.new(
             Plurimath::Math::Formula.new([
-              Plurimath::Math::Function::Text.new("u"),
+              Plurimath::Math::Symbol.new("u"),
               Plurimath::Math::Function::Base.new(
                 Plurimath::Math::Symbol.new("'"),
-                Plurimath::Math::Function::Text.new("iu"),
+                Plurimath::Math::Symbol.new("i"),
               ),
+              Plurimath::Math::Symbol.new("u"),
               Plurimath::Math::Function::Base.new(
                 Plurimath::Math::Symbol.new("'"),
-                Plurimath::Math::Function::Text.new("j"),
+                Plurimath::Math::Symbol.new("j"),
               ),
             ])
           ),
           Plurimath::Math::Symbol.new("="),
           Plurimath::Math::Function::Base.new(
             Plurimath::Math::Symbol.new("&#x3BD;"),
-            Plurimath::Math::Function::Text.new("t"),
+            Plurimath::Math::Symbol.new("t"),
           ),
           Plurimath::Math::Formula.new([
             Plurimath::Math::Function::Left.new("("),
@@ -1688,15 +1780,15 @@ RSpec.describe Plurimath::Latex::Parser do
                 Plurimath::Math::Formula.new([
                   Plurimath::Math::Symbol.new("&#x2202;"),
                   Plurimath::Math::Function::Base.new(
-                    Plurimath::Math::Function::Text.new("u"),
-                    Plurimath::Math::Function::Text.new("i"),
+                    Plurimath::Math::Symbol.new("u"),
+                    Plurimath::Math::Symbol.new("i"),
                   ),
                 ]),
                 Plurimath::Math::Formula.new([
                   Plurimath::Math::Symbol.new("&#x2202;"),
                   Plurimath::Math::Function::Base.new(
-                    Plurimath::Math::Function::Text.new("x"),
-                    Plurimath::Math::Function::Text.new("j"),
+                    Plurimath::Math::Symbol.new("x"),
+                    Plurimath::Math::Symbol.new("j"),
                   ),
                 ]),
               ),
@@ -1705,15 +1797,15 @@ RSpec.describe Plurimath::Latex::Parser do
                 Plurimath::Math::Formula.new([
                   Plurimath::Math::Symbol.new("&#x2202;"),
                   Plurimath::Math::Function::Base.new(
-                    Plurimath::Math::Function::Text.new("u"),
-                    Plurimath::Math::Function::Text.new("j"),
+                    Plurimath::Math::Symbol.new("u"),
+                    Plurimath::Math::Symbol.new("j"),
                   ),
                 ]),
                 Plurimath::Math::Formula.new([
                   Plurimath::Math::Symbol.new("&#x2202;"),
                   Plurimath::Math::Function::Base.new(
-                    Plurimath::Math::Function::Text.new("x"),
-                    Plurimath::Math::Function::Text.new("i"),
+                    Plurimath::Math::Symbol.new("x"),
+                    Plurimath::Math::Symbol.new("i"),
                   ),
                 ]),
               ),
@@ -1738,7 +1830,11 @@ RSpec.describe Plurimath::Latex::Parser do
           Plurimath::Math::Function::Base.new(
             Plurimath::Math::Symbol.new("&#x3BC;"),
             Plurimath::Math::Function::FontStyle.new(
-              Plurimath::Math::Function::Text.new("ref"),
+              Plurimath::Math::Formula.new([
+                Plurimath::Math::Symbol.new("r"),
+                Plurimath::Math::Symbol.new("e"),
+                Plurimath::Math::Symbol.new("f"),
+              ]),
               "textrm",
             ),
           ),
@@ -1746,18 +1842,22 @@ RSpec.describe Plurimath::Latex::Parser do
             Plurimath::Math::Formula.new([
               Plurimath::Math::Function::Left.new("("),
               Plurimath::Math::Function::Frac.new(
-                Plurimath::Math::Function::Text.new("T"),
+                Plurimath::Math::Symbol.new("T"),
                 Plurimath::Math::Function::Base.new(
-                  Plurimath::Math::Function::Text.new("T"),
+                  Plurimath::Math::Symbol.new("T"),
                   Plurimath::Math::Function::FontStyle.new(
-                    Plurimath::Math::Function::Text.new("ref"),
+                    Plurimath::Math::Formula.new([
+                      Plurimath::Math::Symbol.new("r"),
+                      Plurimath::Math::Symbol.new("e"),
+                      Plurimath::Math::Symbol.new("f"),
+                    ]),
                     "textrm",
                   ),
                 ),
               ),
               Plurimath::Math::Function::Right.new(")"),
             ]),
-            Plurimath::Math::Function::Text.new("n"),
+            Plurimath::Math::Symbol.new("n"),
           ),
           Plurimath::Math::Symbol.new("."),
         ])
@@ -1779,7 +1879,11 @@ RSpec.describe Plurimath::Latex::Parser do
           Plurimath::Math::Function::Base.new(
             Plurimath::Math::Symbol.new("&#x3BC;"),
             Plurimath::Math::Function::FontStyle.new(
-              Plurimath::Math::Function::Text.new("ref"),
+              Plurimath::Math::Formula.new([
+                Plurimath::Math::Symbol.new("r"),
+                Plurimath::Math::Symbol.new("e"),
+                Plurimath::Math::Symbol.new("f"),
+              ]),
               "textrm",
             ),
           ),
@@ -1787,11 +1891,15 @@ RSpec.describe Plurimath::Latex::Parser do
             Plurimath::Math::Formula.new([
               Plurimath::Math::Function::Left.new("("),
               Plurimath::Math::Function::Frac.new(
-                Plurimath::Math::Function::Text.new("T"),
+                Plurimath::Math::Symbol.new("T"),
                 Plurimath::Math::Function::Base.new(
-                  Plurimath::Math::Function::Text.new("T"),
+                  Plurimath::Math::Symbol.new("T"),
                   Plurimath::Math::Function::FontStyle.new(
-                    Plurimath::Math::Function::Text.new("ref"),
+                    Plurimath::Math::Formula.new([
+                      Plurimath::Math::Symbol.new("r"),
+                      Plurimath::Math::Symbol.new("e"),
+                      Plurimath::Math::Symbol.new("f"),
+                    ]),
                     "textrm",
                   ),
                 ),
@@ -1807,24 +1915,28 @@ RSpec.describe Plurimath::Latex::Parser do
           Plurimath::Math::Function::Frac.new(
             Plurimath::Math::Formula.new([
               Plurimath::Math::Function::Base.new(
-                Plurimath::Math::Function::Text.new("T"),
+                Plurimath::Math::Symbol.new("T"),
                 Plurimath::Math::Function::FontStyle.new(
-                  Plurimath::Math::Function::Text.new("ref"),
+                  Plurimath::Math::Formula.new([
+                    Plurimath::Math::Symbol.new("r"),
+                    Plurimath::Math::Symbol.new("e"),
+                    Plurimath::Math::Symbol.new("f"),
+                  ]),
                   "textrm",
                 ),
               ),
               Plurimath::Math::Symbol.new("+"),
               Plurimath::Math::Function::Base.new(
-                Plurimath::Math::Function::Text.new("T"),
-                Plurimath::Math::Function::Text.new("s"),
+                Plurimath::Math::Symbol.new("T"),
+                Plurimath::Math::Symbol.new("s"),
               ),
             ]),
             Plurimath::Math::Formula.new([
-              Plurimath::Math::Function::Text.new("T"),
+              Plurimath::Math::Symbol.new("T"),
               Plurimath::Math::Symbol.new("+"),
               Plurimath::Math::Function::Base.new(
-                Plurimath::Math::Function::Text.new("T"),
-                Plurimath::Math::Function::Text.new("s"),
+                Plurimath::Math::Symbol.new("T"),
+                Plurimath::Math::Symbol.new("s"),
               ),
             ]),
           ),
@@ -1845,33 +1957,40 @@ RSpec.describe Plurimath::Latex::Parser do
           Plurimath::Math::Symbol.new("$"),
           Plurimath::Math::Symbol.new("$"),
           Plurimath::Math::Function::Base.new(
-            Plurimath::Math::Function::Text.new("f"),
-            Plurimath::Math::Function::Text.new("i"),
+            Plurimath::Math::Symbol.new("f"),
+            Plurimath::Math::Symbol.new("i"),
           ),
           Plurimath::Math::Symbol.new("="),
           Plurimath::Math::Function::Sum.new(
             Plurimath::Math::Formula.new([
-              Plurimath::Math::Function::Text.new("j"),
+              Plurimath::Math::Symbol.new("j"),
               Plurimath::Math::Symbol.new("="),
               Plurimath::Math::Number.new("1"),
             ]),
             Plurimath::Math::Number.new("2"),
           ),
           Plurimath::Math::Function::Base.new(
-            Plurimath::Math::Function::Text.new("s"),
-            Plurimath::Math::Function::Text.new("ij"),
+            Plurimath::Math::Symbol.new("s"),
+            Plurimath::Math::Formula.new([
+              Plurimath::Math::Symbol.new("i"),
+              Plurimath::Math::Symbol.new("j"),
+            ]),
           ),
           Plurimath::Math::Function::Base.new(
-            Plurimath::Math::Function::Text.new("n"),
-            Plurimath::Math::Function::Text.new("j"),
+            Plurimath::Math::Symbol.new("n"),
+            Plurimath::Math::Symbol.new("j"),
           ),
           Plurimath::Math::Symbol.new("&#x3B;"),
-          Plurimath::Math::Function::FontStyle.new(
-            Plurimath::Math::Function::Text.new("for"),
-            "rm",
-          ),
+          Plurimath::Math::Formula.new([
+            Plurimath::Math::Function::FontStyle.new(
+              Plurimath::Math::Symbol.new("f"),
+              "rm",
+            ),
+            Plurimath::Math::Symbol.new("o"),
+            Plurimath::Math::Symbol.new("r"),
+          ]),
           Plurimath::Math::Symbol.new("&#x3B;"),
-          Plurimath::Math::Function::Text.new("i"),
+          Plurimath::Math::Symbol.new("i"),
           Plurimath::Math::Symbol.new("="),
           Plurimath::Math::Number.new("1"),
           Plurimath::Math::Symbol.new(","),
@@ -1892,33 +2011,40 @@ RSpec.describe Plurimath::Latex::Parser do
       it "returns formula" do
         expected_value = Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Base.new(
-            Plurimath::Math::Function::Text.new("f"),
-            Plurimath::Math::Function::Text.new("i"),
+            Plurimath::Math::Symbol.new("f"),
+            Plurimath::Math::Symbol.new("i"),
           ),
           Plurimath::Math::Symbol.new("="),
           Plurimath::Math::Function::Sum.new(
             Plurimath::Math::Formula.new([
-              Plurimath::Math::Function::Text.new("j"),
+              Plurimath::Math::Symbol.new("j"),
               Plurimath::Math::Symbol.new("="),
               Plurimath::Math::Number.new("1"),
             ]),
             Plurimath::Math::Number.new("3"),
           ),
           Plurimath::Math::Function::Base.new(
-            Plurimath::Math::Function::Text.new("s"),
-            Plurimath::Math::Function::Text.new("ij"),
+            Plurimath::Math::Symbol.new("s"),
+            Plurimath::Math::Formula.new([
+              Plurimath::Math::Symbol.new("i"),
+              Plurimath::Math::Symbol.new("j"),
+            ]),
           ),
           Plurimath::Math::Function::Base.new(
-            Plurimath::Math::Function::Text.new("n"),
-            Plurimath::Math::Function::Text.new("j"),
+            Plurimath::Math::Symbol.new("n"),
+            Plurimath::Math::Symbol.new("j"),
           ),
           Plurimath::Math::Symbol.new("&#x3B;"),
-          Plurimath::Math::Function::FontStyle.new(
-            Plurimath::Math::Function::Text.new("for"),
-            "rm",
-          ),
+          Plurimath::Math::Formula.new([
+            Plurimath::Math::Function::FontStyle.new(
+              Plurimath::Math::Symbol.new("f"),
+              "rm",
+            ),
+            Plurimath::Math::Symbol.new("o"),
+            Plurimath::Math::Symbol.new("r"),
+          ]),
           Plurimath::Math::Symbol.new("&#x3B;"),
-          Plurimath::Math::Function::Text.new("i"),
+          Plurimath::Math::Symbol.new("i"),
           Plurimath::Math::Symbol.new("="),
           Plurimath::Math::Number.new("1"),
           Plurimath::Math::Symbol.new(","),
@@ -1948,7 +2074,7 @@ RSpec.describe Plurimath::Latex::Parser do
               [
               Plurimath::Math::Function::Tr.new([
                 Plurimath::Math::Function::Td.new([
-                  Plurimath::Math::Function::Text.new("s"),
+                  Plurimath::Math::Symbol.new("s"),
                 ]),
                 Plurimath::Math::Function::Td.new([
                   Plurimath::Math::Number.new("0"),
@@ -1962,7 +2088,7 @@ RSpec.describe Plurimath::Latex::Parser do
                   Plurimath::Math::Number.new("0"),
                 ]),
                 Plurimath::Math::Function::Td.new([
-                  Plurimath::Math::Function::Text.new("s"),
+                  Plurimath::Math::Symbol.new("s"),
                 ]),
                 Plurimath::Math::Function::Td.new([
                   Plurimath::Math::Number.new("0"),
@@ -1976,13 +2102,15 @@ RSpec.describe Plurimath::Latex::Parser do
                   Plurimath::Math::Number.new("0"),
                 ]),
                 Plurimath::Math::Function::Td.new([
-                  Plurimath::Math::Function::Text.new("s"),
+                  Plurimath::Math::Symbol.new("s"),
                 ]),
               ]),
             ],
               nil,
               [
-                Plurimath::Math::Function::Text.new("ccc")
+                Plurimath::Math::Symbol.new("c"),
+                Plurimath::Math::Symbol.new("c"),
+                Plurimath::Math::Symbol.new("c"),
               ]
             ),
             Plurimath::Math::Function::Right.new(")"),
@@ -2013,7 +2141,7 @@ RSpec.describe Plurimath::Latex::Parser do
               Plurimath::Math::Function::Tr.new([
                 Plurimath::Math::Function::Td.new([
                   Plurimath::Math::Function::Base.new(
-                    Plurimath::Math::Function::Text.new("s"),
+                    Plurimath::Math::Symbol.new("s"),
                     Plurimath::Math::Number.new("11"),
                   ),
                 ]),
@@ -2030,7 +2158,7 @@ RSpec.describe Plurimath::Latex::Parser do
                 ]),
                 Plurimath::Math::Function::Td.new([
                   Plurimath::Math::Function::Base.new(
-                    Plurimath::Math::Function::Text.new("s"),
+                    Plurimath::Math::Symbol.new("s"),
                     Plurimath::Math::Number.new("22"),
                   ),
                 ]),
@@ -2047,7 +2175,7 @@ RSpec.describe Plurimath::Latex::Parser do
                 ]),
                 Plurimath::Math::Function::Td.new([
                   Plurimath::Math::Function::Base.new(
-                    Plurimath::Math::Function::Text.new("s"),
+                    Plurimath::Math::Symbol.new("s"),
                     Plurimath::Math::Number.new("33"),
                   ),
                 ]),
@@ -2055,7 +2183,9 @@ RSpec.describe Plurimath::Latex::Parser do
             ],
               nil,
               [
-                Plurimath::Math::Function::Text.new("ccc")
+                Plurimath::Math::Symbol.new("c"),
+                Plurimath::Math::Symbol.new("c"),
+                Plurimath::Math::Symbol.new("c"),
               ]
             ),
             Plurimath::Math::Function::Right.new(")"),
@@ -2075,13 +2205,16 @@ RSpec.describe Plurimath::Latex::Parser do
       it "returns formula" do
         expected_value = Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Base.new(
-            Plurimath::Math::Function::Text.new("s"),
-            Plurimath::Math::Function::Text.new("ij"),
+            Plurimath::Math::Symbol.new("s"),
+            Plurimath::Math::Formula.new([
+              Plurimath::Math::Symbol.new("i"),
+              Plurimath::Math::Symbol.new("j"),
+            ]),
           ),
           Plurimath::Math::Symbol.new("="),
           Plurimath::Math::Function::Sum.new(
             Plurimath::Math::Formula.new([
-              Plurimath::Math::Function::Text.new("k"),
+              Plurimath::Math::Symbol.new("k"),
               Plurimath::Math::Symbol.new("="),
               Plurimath::Math::Number.new("1"),
             ]),
@@ -2089,38 +2222,54 @@ RSpec.describe Plurimath::Latex::Parser do
           ),
           Plurimath::Math::Function::Sum.new(
             Plurimath::Math::Formula.new([
-              Plurimath::Math::Function::Text.new("l"),
+              Plurimath::Math::Symbol.new("l"),
               Plurimath::Math::Symbol.new("="),
               Plurimath::Math::Number.new("1"),
             ]),
             Plurimath::Math::Number.new("2"),
           ),
           Plurimath::Math::Function::Base.new(
-            Plurimath::Math::Function::Text.new("d"),
-            Plurimath::Math::Function::Text.new("ijkl"),
+            Plurimath::Math::Symbol.new("d"),
+            Plurimath::Math::Formula.new([
+              Plurimath::Math::Symbol.new("i"),
+              Plurimath::Math::Symbol.new("j"),
+              Plurimath::Math::Symbol.new("k"),
+              Plurimath::Math::Symbol.new("l"),
+            ])
           ),
           Plurimath::Math::Function::Base.new(
-            Plurimath::Math::Function::Text.new("e"),
-            Plurimath::Math::Function::Text.new("kl"),
+            Plurimath::Math::Symbol.new("e"),
+            Plurimath::Math::Formula.new([
+              Plurimath::Math::Symbol.new("k"),
+              Plurimath::Math::Symbol.new("l"),
+            ]),
           ),
           Plurimath::Math::Symbol.new("&#x3B;"),
-          Plurimath::Math::Function::FontStyle.new(
-            Plurimath::Math::Function::Text.new("for"),
-            "rm",
-          ),
+          Plurimath::Math::Formula.new([
+            Plurimath::Math::Function::FontStyle.new(
+              Plurimath::Math::Symbol.new("f"),
+              "rm",
+            ),
+            Plurimath::Math::Symbol.new("o"),
+            Plurimath::Math::Symbol.new("r"),
+          ]),
           Plurimath::Math::Symbol.new("&#x3B;"),
-          Plurimath::Math::Function::Text.new("i"),
+          Plurimath::Math::Symbol.new("i"),
           Plurimath::Math::Symbol.new("="),
           Plurimath::Math::Number.new("1"),
           Plurimath::Math::Symbol.new(","),
           Plurimath::Math::Number.new("2"),
           Plurimath::Math::Symbol.new("&#x3B;"),
-          Plurimath::Math::Function::FontStyle.new(
-            Plurimath::Math::Function::Text.new("and"),
-            "rm",
-          ),
+          Plurimath::Math::Formula.new([
+            Plurimath::Math::Function::FontStyle.new(
+              Plurimath::Math::Symbol.new("a"),
+              "rm",
+            ),
+            Plurimath::Math::Symbol.new("n"),
+            Plurimath::Math::Symbol.new("d"),
+          ]),
           Plurimath::Math::Symbol.new("&#x3B;"),
-          Plurimath::Math::Function::Text.new("j"),
+          Plurimath::Math::Symbol.new("j"),
           Plurimath::Math::Symbol.new("="),
           Plurimath::Math::Number.new("1"),
           Plurimath::Math::Symbol.new(","),
@@ -2154,7 +2303,7 @@ RSpec.describe Plurimath::Latex::Parser do
                 Plurimath::Math::Function::Tr.new([
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Function::Text.new("s"),
+                      Plurimath::Math::Symbol.new("s"),
                       Plurimath::Math::Number.new("11"),
                     ),
                   ]),
@@ -2162,7 +2311,7 @@ RSpec.describe Plurimath::Latex::Parser do
                 Plurimath::Math::Function::Tr.new([
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Function::Text.new("s"),
+                      Plurimath::Math::Symbol.new("s"),
                       Plurimath::Math::Number.new("22"),
                     ),
                   ]),
@@ -2170,7 +2319,7 @@ RSpec.describe Plurimath::Latex::Parser do
                 Plurimath::Math::Function::Tr.new([
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Function::Text.new("s"),
+                      Plurimath::Math::Symbol.new("s"),
                       Plurimath::Math::Number.new("33"),
                     ),
                   ]),
@@ -2178,7 +2327,7 @@ RSpec.describe Plurimath::Latex::Parser do
                 Plurimath::Math::Function::Tr.new([
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Function::Text.new("s"),
+                      Plurimath::Math::Symbol.new("s"),
                       Plurimath::Math::Number.new("12"),
                     ),
                   ]),
@@ -2186,7 +2335,7 @@ RSpec.describe Plurimath::Latex::Parser do
                 Plurimath::Math::Function::Tr.new([
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Function::Text.new("s"),
+                      Plurimath::Math::Symbol.new("s"),
                       Plurimath::Math::Number.new("23"),
                     ),
                   ]),
@@ -2194,7 +2343,7 @@ RSpec.describe Plurimath::Latex::Parser do
                 Plurimath::Math::Function::Tr.new([
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Function::Text.new("s"),
+                      Plurimath::Math::Symbol.new("s"),
                       Plurimath::Math::Number.new("31"),
                     ),
                   ]),
@@ -2202,7 +2351,7 @@ RSpec.describe Plurimath::Latex::Parser do
               ],
               nil,
               [
-                Plurimath::Math::Function::Text.new("c")
+                Plurimath::Math::Symbol.new("c")
               ]
             ),
             Plurimath::Math::Function::Right.new(")"),
@@ -2252,37 +2401,37 @@ RSpec.describe Plurimath::Latex::Parser do
                 Plurimath::Math::Function::Tr.new([
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Function::Text.new("d"),
+                      Plurimath::Math::Symbol.new("d"),
                       Plurimath::Math::Number.new("1111")
                     )
                   ]),
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Function::Text.new("d"),
+                      Plurimath::Math::Symbol.new("d"),
                       Plurimath::Math::Number.new("1122")
                     )
                   ]),
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Function::Text.new("d"),
+                      Plurimath::Math::Symbol.new("d"),
                       Plurimath::Math::Number.new("1133")
                     )
                   ]),
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Function::Text.new("d"),
+                      Plurimath::Math::Symbol.new("d"),
                       Plurimath::Math::Number.new("1112")
                     )
                   ]),
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Function::Text.new("d"),
+                      Plurimath::Math::Symbol.new("d"),
                       Plurimath::Math::Number.new("1123")
                     )
                   ]),
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Function::Text.new("d"),
+                      Plurimath::Math::Symbol.new("d"),
                       Plurimath::Math::Number.new("1131")
                     )
                   ])
@@ -2291,31 +2440,31 @@ RSpec.describe Plurimath::Latex::Parser do
                   Plurimath::Math::Function::Td.new([]),
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Function::Text.new("d"),
+                      Plurimath::Math::Symbol.new("d"),
                       Plurimath::Math::Number.new("2222")
                     )
                   ]),
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Function::Text.new("d"),
+                      Plurimath::Math::Symbol.new("d"),
                       Plurimath::Math::Number.new("2233")
                     )
                   ]),
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Function::Text.new("d"),
+                      Plurimath::Math::Symbol.new("d"),
                       Plurimath::Math::Number.new("2212")
                     )
                   ]),
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Function::Text.new("d"),
+                      Plurimath::Math::Symbol.new("d"),
                       Plurimath::Math::Number.new("2223")
                     )
                   ]),
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Function::Text.new("d"),
+                      Plurimath::Math::Symbol.new("d"),
                       Plurimath::Math::Number.new("2231")
                     )
                   ])
@@ -2325,25 +2474,25 @@ RSpec.describe Plurimath::Latex::Parser do
                   Plurimath::Math::Function::Td.new([]),
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Function::Text.new("d"),
+                      Plurimath::Math::Symbol.new("d"),
                       Plurimath::Math::Number.new("3333")
                     )
                   ]),
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Function::Text.new("d"),
+                      Plurimath::Math::Symbol.new("d"),
                       Plurimath::Math::Number.new("3312")
                     )
                   ]),
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Function::Text.new("d"),
+                      Plurimath::Math::Symbol.new("d"),
                       Plurimath::Math::Number.new("3323")
                     )
                   ]),
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Function::Text.new("d"),
+                      Plurimath::Math::Symbol.new("d"),
                       Plurimath::Math::Number.new("3331")
                     )
                   ])
@@ -2354,19 +2503,19 @@ RSpec.describe Plurimath::Latex::Parser do
                   Plurimath::Math::Function::Td.new([]),
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Function::Text.new("d"),
+                      Plurimath::Math::Symbol.new("d"),
                       Plurimath::Math::Number.new("1212")
                     )
                   ]),
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Function::Text.new("d"),
+                      Plurimath::Math::Symbol.new("d"),
                       Plurimath::Math::Number.new("1223")
                     )
                   ]),
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Function::Text.new("d"),
+                      Plurimath::Math::Symbol.new("d"),
                       Plurimath::Math::Number.new("1231")
                     )
                   ])
@@ -2380,13 +2529,13 @@ RSpec.describe Plurimath::Latex::Parser do
                   Plurimath::Math::Function::Td.new([]),
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Function::Text.new("d"),
+                      Plurimath::Math::Symbol.new("d"),
                       Plurimath::Math::Number.new("2323")
                     )
                   ]),
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Function::Text.new("d"),
+                      Plurimath::Math::Symbol.new("d"),
                       Plurimath::Math::Number.new("2331")
                     )
                   ])
@@ -2399,7 +2548,7 @@ RSpec.describe Plurimath::Latex::Parser do
                   Plurimath::Math::Function::Td.new([]),
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Function::Text.new("d"),
+                      Plurimath::Math::Symbol.new("d"),
                       Plurimath::Math::Number.new("3131")
                     )
                   ])
@@ -2407,7 +2556,12 @@ RSpec.describe Plurimath::Latex::Parser do
               ],
               nil,
               [
-                Plurimath::Math::Function::Text.new("cccccc")
+                Plurimath::Math::Symbol.new("c"),
+                Plurimath::Math::Symbol.new("c"),
+                Plurimath::Math::Symbol.new("c"),
+                Plurimath::Math::Symbol.new("c"),
+                Plurimath::Math::Symbol.new("c"),
+                Plurimath::Math::Symbol.new("c"),
               ],
             ),
             Plurimath::Math::Function::Right.new(")")
@@ -2430,12 +2584,15 @@ RSpec.describe Plurimath::Latex::Parser do
           Plurimath::Math::Symbol.new("&#x394;"),
           Plurimath::Math::Function::Base.new(
             Plurimath::Math::Symbol.new("&#x3C3;"),
-            Plurimath::Math::Function::Text.new("ij"),
+            Plurimath::Math::Formula.new([
+              Plurimath::Math::Symbol.new("i"),
+              Plurimath::Math::Symbol.new("j"),
+            ]),
           ),
           Plurimath::Math::Symbol.new("="),
           Plurimath::Math::Function::Sum.new(
             Plurimath::Math::Formula.new([
-              Plurimath::Math::Function::Text.new("k"),
+              Plurimath::Math::Symbol.new("k"),
               Plurimath::Math::Symbol.new("="),
               Plurimath::Math::Number.new("1"),
             ]),
@@ -2443,55 +2600,77 @@ RSpec.describe Plurimath::Latex::Parser do
           ),
           Plurimath::Math::Function::Sum.new(
             Plurimath::Math::Formula.new([
-              Plurimath::Math::Function::Text.new("l"),
+              Plurimath::Math::Symbol.new("l"),
               Plurimath::Math::Symbol.new("="),
               Plurimath::Math::Number.new("1"),
             ]),
-            Plurimath::Math::Number.new("3")
+            Plurimath::Math::Number.new("3"),
           ),
           Plurimath::Math::Function::Base.new(
-            Plurimath::Math::Function::Text.new("d"),
-            Plurimath::Math::Function::Text.new("ijkl"),
+            Plurimath::Math::Symbol.new("d"),
+            Plurimath::Math::Formula.new([
+              Plurimath::Math::Symbol.new("i"),
+              Plurimath::Math::Symbol.new("j"),
+              Plurimath::Math::Symbol.new("k"),
+              Plurimath::Math::Symbol.new("l"),
+            ]),
           ),
           Plurimath::Math::Formula.new([
             Plurimath::Math::Symbol.new("&#x394;"),
             Plurimath::Math::Function::Base.new(
               Plurimath::Math::Symbol.new("&#x03B5;"),
-              Plurimath::Math::Function::Text.new("kl")
+              Plurimath::Math::Formula.new([
+                Plurimath::Math::Symbol.new("k"),
+                Plurimath::Math::Symbol.new("l"),
+              ]),
             ),
             Plurimath::Math::Symbol.new("-"),
             Plurimath::Math::Function::Base.new(
               Plurimath::Math::Symbol.new("&#x3B1;"),
-              Plurimath::Math::Function::Text.new("kl")
+              Plurimath::Math::Formula.new([
+                Plurimath::Math::Symbol.new("k"),
+                Plurimath::Math::Symbol.new("l"),
+              ]),
             ),
             Plurimath::Math::Symbol.new("&#x394;"),
-            Plurimath::Math::Function::Text.new("T"),
+            Plurimath::Math::Symbol.new("T"),
             Plurimath::Math::Symbol.new("-"),
             Plurimath::Math::Function::Base.new(
               Plurimath::Math::Symbol.new("&#x3B2;"),
-              Plurimath::Math::Function::Text.new("kl")
+              Plurimath::Math::Formula.new([
+                Plurimath::Math::Symbol.new("k"),
+                Plurimath::Math::Symbol.new("l"),
+              ]),
             ),
             Plurimath::Math::Symbol.new("&#x394;"),
-            Plurimath::Math::Function::Text.new("M")
+            Plurimath::Math::Symbol.new("M")
           ]),
           Plurimath::Math::Symbol.new("&#x3B;"),
-          Plurimath::Math::Function::FontStyle.new(
-            Plurimath::Math::Function::Text.new("for"),
-            "rm"
-          ),
+          Plurimath::Math::Formula.new([
+            Plurimath::Math::Function::FontStyle.new(
+              Plurimath::Math::Symbol.new("f"),
+              "rm"
+            ),
+            Plurimath::Math::Symbol.new("o"),
+            Plurimath::Math::Symbol.new("r"),
+          ]),
           Plurimath::Math::Symbol.new("&#x3B;"),
-          Plurimath::Math::Function::Text.new("i"),
+          Plurimath::Math::Symbol.new("i"),
           Plurimath::Math::Symbol.new("="),
           Plurimath::Math::Number.new("1"),
           Plurimath::Math::Symbol.new(","),
           Plurimath::Math::Number.new("3"),
           Plurimath::Math::Symbol.new("&#x3B;"),
-          Plurimath::Math::Function::FontStyle.new(
-            Plurimath::Math::Function::Text.new("and"),
-            "rm"
-          ),
+          Plurimath::Math::Formula.new([
+            Plurimath::Math::Function::FontStyle.new(
+              Plurimath::Math::Symbol.new("a"),
+              "rm"
+            ),
+            Plurimath::Math::Symbol.new("n"),
+            Plurimath::Math::Symbol.new("d"),
+          ]),
           Plurimath::Math::Symbol.new("&#x3B;"),
-          Plurimath::Math::Function::Text.new("j"),
+          Plurimath::Math::Symbol.new("j"),
           Plurimath::Math::Symbol.new("="),
           Plurimath::Math::Number.new("1"),
           Plurimath::Math::Symbol.new(","),
@@ -2509,11 +2688,11 @@ RSpec.describe Plurimath::Latex::Parser do
       }
       it "returns formula" do
         expected_value = Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Text.new("G"),
+          Plurimath::Math::Symbol.new("G"),
           Plurimath::Math::Symbol.new("="),
           Plurimath::Math::Function::FontStyle.new(
             Plurimath::Math::Function::Frac.new(
-              Plurimath::Math::Function::Text.new("E"),
+              Plurimath::Math::Symbol.new("E"),
               Plurimath::Math::Formula.new([
                 Plurimath::Math::Number.new("2"),
                 Plurimath::Math::Formula.new([
@@ -2574,7 +2753,7 @@ RSpec.describe Plurimath::Latex::Parser do
                       Plurimath::Math::Function::Frac.new(
                         Plurimath::Math::Number.new("1"),
                         Plurimath::Math::Function::Base.new(
-                          Plurimath::Math::Function::Text.new("E"),
+                          Plurimath::Math::Symbol.new("E"),
                           Plurimath::Math::Number.new("11")
                         )
                       ),
@@ -2582,36 +2761,40 @@ RSpec.describe Plurimath::Latex::Parser do
                     )
                   ]),
                   Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Symbol.new("-"),
-                    Plurimath::Math::Function::FontStyle.new(
-                      Plurimath::Math::Function::Frac.new(
-                        Plurimath::Math::Function::Base.new(
-                          Plurimath::Math::Symbol.new("&#x3BD;"),
-                          Plurimath::Math::Number.new("12")
+                    Plurimath::Math::Formula.new([
+                      Plurimath::Math::Symbol.new("-"),
+                      Plurimath::Math::Function::FontStyle.new(
+                        Plurimath::Math::Function::Frac.new(
+                          Plurimath::Math::Function::Base.new(
+                            Plurimath::Math::Symbol.new("&#x3BD;"),
+                            Plurimath::Math::Number.new("12")
+                          ),
+                          Plurimath::Math::Function::Base.new(
+                            Plurimath::Math::Symbol.new("E"),
+                            Plurimath::Math::Number.new("22")
+                          ),
                         ),
-                        Plurimath::Math::Function::Base.new(
-                          Plurimath::Math::Function::Text.new("E"),
-                          Plurimath::Math::Number.new("22")
-                        ),
+                        "displaystyle"
                       ),
-                      "displaystyle"
-                    )
+                    ])
                   ]),
                   Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Symbol.new("-"),
-                    Plurimath::Math::Function::FontStyle.new(
-                      Plurimath::Math::Function::Frac.new(
-                        Plurimath::Math::Function::Base.new(
-                          Plurimath::Math::Symbol.new("&#x3BD;"),
-                          Plurimath::Math::Number.new("13")
+                    Plurimath::Math::Formula.new([
+                      Plurimath::Math::Symbol.new("-"),
+                      Plurimath::Math::Function::FontStyle.new(
+                        Plurimath::Math::Function::Frac.new(
+                          Plurimath::Math::Function::Base.new(
+                            Plurimath::Math::Symbol.new("&#x3BD;"),
+                            Plurimath::Math::Number.new("13")
+                          ),
+                          Plurimath::Math::Function::Base.new(
+                            Plurimath::Math::Symbol.new("E"),
+                            Plurimath::Math::Number.new("33")
+                          )
                         ),
-                        Plurimath::Math::Function::Base.new(
-                          Plurimath::Math::Function::Text.new("E"),
-                          Plurimath::Math::Number.new("33")
-                        )
+                        "displaystyle"
                       ),
-                      "displaystyle"
-                    )
+                    ])
                   ]),
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Function::FontStyle.new(
@@ -2625,7 +2808,7 @@ RSpec.describe Plurimath::Latex::Parser do
                           ])
                         ),
                         Plurimath::Math::Function::Base.new(
-                          Plurimath::Math::Function::Text.new("G"),
+                          Plurimath::Math::Symbol.new("G"),
                           Plurimath::Math::Number.new("12")
                         )
                       ),
@@ -2643,7 +2826,8 @@ RSpec.describe Plurimath::Latex::Parser do
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Formula.new([
                       Plurimath::Math::Number.new("3"),
-                      Plurimath::Math::Function::Text.new("mm")
+                      Plurimath::Math::Symbol.new("m"),
+                      Plurimath::Math::Symbol.new("m"),
                     ])
                   ]),
                   Plurimath::Math::Function::Td.new([
@@ -2651,7 +2835,7 @@ RSpec.describe Plurimath::Latex::Parser do
                       Plurimath::Math::Function::Frac.new(
                         Plurimath::Math::Number.new("1"),
                         Plurimath::Math::Function::Base.new(
-                          Plurimath::Math::Function::Text.new("E"),
+                          Plurimath::Math::Symbol.new("E"),
                           Plurimath::Math::Number.new("22")
                         )
                       ),
@@ -2659,20 +2843,22 @@ RSpec.describe Plurimath::Latex::Parser do
                     )
                   ]),
                   Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Symbol.new("-"),
-                    Plurimath::Math::Function::FontStyle.new(
-                      Plurimath::Math::Function::Frac.new(
-                        Plurimath::Math::Function::Base.new(
-                          Plurimath::Math::Symbol.new("&#x3BD;"),
-                          Plurimath::Math::Number.new("23")
+                    Plurimath::Math::Formula.new([
+                      Plurimath::Math::Symbol.new("-"),
+                      Plurimath::Math::Function::FontStyle.new(
+                        Plurimath::Math::Function::Frac.new(
+                          Plurimath::Math::Function::Base.new(
+                            Plurimath::Math::Symbol.new("&#x3BD;"),
+                            Plurimath::Math::Number.new("23")
+                          ),
+                          Plurimath::Math::Function::Base.new(
+                            Plurimath::Math::Symbol.new("E"),
+                            Plurimath::Math::Number.new("22")
+                          )
                         ),
-                        Plurimath::Math::Function::Base.new(
-                          Plurimath::Math::Function::Text.new("E"),
-                          Plurimath::Math::Number.new("22")
-                        )
+                        "displaystyle"
                       ),
-                      "displaystyle"
-                    )
+                    ])
                   ]),
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Function::FontStyle.new(
@@ -2686,7 +2872,7 @@ RSpec.describe Plurimath::Latex::Parser do
                           ])
                         ),
                         Plurimath::Math::Function::Base.new(
-                          Plurimath::Math::Function::Text.new("G"),
+                          Plurimath::Math::Symbol.new("G"),
                           Plurimath::Math::Number.new("12")
                         )
                       ),
@@ -2704,7 +2890,8 @@ RSpec.describe Plurimath::Latex::Parser do
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Formula.new([
                       Plurimath::Math::Number.new("3"),
-                      Plurimath::Math::Function::Text.new("mm")
+                      Plurimath::Math::Symbol.new("m"),
+                      Plurimath::Math::Symbol.new("m"),
                     ])
                   ]),
                   Plurimath::Math::Function::Td.new([]),
@@ -2713,7 +2900,7 @@ RSpec.describe Plurimath::Latex::Parser do
                       Plurimath::Math::Function::Frac.new(
                         Plurimath::Math::Number.new("1"),
                         Plurimath::Math::Function::Base.new(
-                          Plurimath::Math::Function::Text.new("E"),
+                          Plurimath::Math::Symbol.new("E"),
                           Plurimath::Math::Number.new("33")
                         )
                       ),
@@ -2732,7 +2919,7 @@ RSpec.describe Plurimath::Latex::Parser do
                           ])
                         ),
                         Plurimath::Math::Function::Base.new(
-                          Plurimath::Math::Function::Text.new("G"),
+                          Plurimath::Math::Symbol.new("G"),
                           Plurimath::Math::Number.new("12")
                         )
                       ),
@@ -2750,7 +2937,8 @@ RSpec.describe Plurimath::Latex::Parser do
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Formula.new([
                       Plurimath::Math::Number.new("3"),
-                      Plurimath::Math::Function::Text.new("mm")
+                      Plurimath::Math::Symbol.new("m"),
+                      Plurimath::Math::Symbol.new("m"),
                     ])
                   ]),
                   Plurimath::Math::Function::Td.new([]),
@@ -2760,7 +2948,7 @@ RSpec.describe Plurimath::Latex::Parser do
                       Plurimath::Math::Function::Frac.new(
                         Plurimath::Math::Number.new("1"),
                         Plurimath::Math::Function::Base.new(
-                          Plurimath::Math::Function::Text.new("G"),
+                          Plurimath::Math::Symbol.new("G"),
                           Plurimath::Math::Number.new("12")
                         )
                       ),
@@ -2778,7 +2966,8 @@ RSpec.describe Plurimath::Latex::Parser do
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Formula.new([
                       Plurimath::Math::Number.new("3"),
-                      Plurimath::Math::Function::Text.new("mm")
+                      Plurimath::Math::Symbol.new("m"),
+                      Plurimath::Math::Symbol.new("m"),
                     ])
                   ]),
                   Plurimath::Math::Function::Td.new([
@@ -2791,7 +2980,7 @@ RSpec.describe Plurimath::Latex::Parser do
                       Plurimath::Math::Function::Frac.new(
                         Plurimath::Math::Number.new("1"),
                         Plurimath::Math::Function::Base.new(
-                          Plurimath::Math::Function::Text.new("G"),
+                          Plurimath::Math::Symbol.new("G"),
                           Plurimath::Math::Number.new("23")
                         )
                       ),
@@ -2810,7 +2999,7 @@ RSpec.describe Plurimath::Latex::Parser do
                           ])
                         ),
                         Plurimath::Math::Function::Base.new(
-                          Plurimath::Math::Function::Text.new("G"),
+                          Plurimath::Math::Symbol.new("G"),
                           Plurimath::Math::Number.new("31")
                         )
                       ),
@@ -2822,7 +3011,8 @@ RSpec.describe Plurimath::Latex::Parser do
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Formula.new([
                       Plurimath::Math::Number.new("3"),
-                      Plurimath::Math::Function::Text.new("mm")
+                      Plurimath::Math::Symbol.new("m"),
+                      Plurimath::Math::Symbol.new("m"),
                     ])
                   ]),
                   Plurimath::Math::Function::Td.new([]),
@@ -2834,7 +3024,7 @@ RSpec.describe Plurimath::Latex::Parser do
                       Plurimath::Math::Function::Frac.new(
                         Plurimath::Math::Number.new("1"),
                         Plurimath::Math::Function::Base.new(
-                          Plurimath::Math::Function::Text.new("G"),
+                          Plurimath::Math::Symbol.new("G"),
                           Plurimath::Math::Number.new("31")
                         )
                       ),
@@ -2845,7 +3035,12 @@ RSpec.describe Plurimath::Latex::Parser do
               ],
               nil,
               [
-                Plurimath::Math::Function::Text.new("cccccc")
+                Plurimath::Math::Symbol.new("c"),
+                Plurimath::Math::Symbol.new("c"),
+                Plurimath::Math::Symbol.new("c"),
+                Plurimath::Math::Symbol.new("c"),
+                Plurimath::Math::Symbol.new("c"),
+                Plurimath::Math::Symbol.new("c"),
               ]
             ),
             Plurimath::Math::Function::Right.new(")")
@@ -2903,7 +3098,7 @@ RSpec.describe Plurimath::Latex::Parser do
                       Plurimath::Math::Function::Frac.new(
                         Plurimath::Math::Number.new("1"),
                         Plurimath::Math::Function::Base.new(
-                          Plurimath::Math::Function::Text.new("E"),
+                          Plurimath::Math::Symbol.new("E"),
                           Plurimath::Math::Number.new("11")
                         )
                       ),
@@ -2911,15 +3106,65 @@ RSpec.describe Plurimath::Latex::Parser do
                     )
                   ]),
                   Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Symbol.new("-"),
+                    Plurimath::Math::Formula.new([
+                      Plurimath::Math::Symbol.new("-"),
+                      Plurimath::Math::Function::FontStyle.new(
+                        Plurimath::Math::Function::Frac.new(
+                          Plurimath::Math::Function::Base.new(
+                            Plurimath::Math::Symbol.new("&#x3BD;"),
+                            Plurimath::Math::Number.new("12")
+                          ),
+                          Plurimath::Math::Function::Base.new(
+                            Plurimath::Math::Symbol.new("E"),
+                            Plurimath::Math::Number.new("22")
+                          )
+                        ),
+                        "displaystyle"
+                      ),
+                    ])
+                  ]),
+                  Plurimath::Math::Function::Td.new([
+                    Plurimath::Math::Formula.new([
+                      Plurimath::Math::Symbol.new("-"),
+                      Plurimath::Math::Function::FontStyle.new(
+                        Plurimath::Math::Function::Frac.new(
+                          Plurimath::Math::Function::Base.new(
+                            Plurimath::Math::Symbol.new("&#x3BD;"),
+                            Plurimath::Math::Number.new("13")
+                          ),
+                          Plurimath::Math::Function::Base.new(
+                            Plurimath::Math::Symbol.new("E"),
+                            Plurimath::Math::Number.new("33")
+                          )
+                        ),
+                        "displaystyle"
+                      )
+                    ])
+                  ]),
+                  Plurimath::Math::Function::Td.new([
+                    Plurimath::Math::Number.new("0")
+                  ]),
+                  Plurimath::Math::Function::Td.new([
+                    Plurimath::Math::Number.new("0")
+                  ]),
+                  Plurimath::Math::Function::Td.new([
+                    Plurimath::Math::Number.new("0")
+                  ])
+                ]),
+                Plurimath::Math::Function::Tr.new([
+                  Plurimath::Math::Function::Td.new([
+                    Plurimath::Math::Formula.new([
+                      Plurimath::Math::Number.new("3"),
+                      Plurimath::Math::Symbol.new("m"),
+                      Plurimath::Math::Symbol.new("m"),
+                    ])
+                  ]),
+                  Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Function::FontStyle.new(
                       Plurimath::Math::Function::Frac.new(
+                        Plurimath::Math::Number.new("1"),
                         Plurimath::Math::Function::Base.new(
-                          Plurimath::Math::Symbol.new("&#x3BD;"),
-                          Plurimath::Math::Number.new("12")
-                        ),
-                        Plurimath::Math::Function::Base.new(
-                          Plurimath::Math::Function::Text.new("E"),
+                          Plurimath::Math::Symbol.new("E"),
                           Plurimath::Math::Number.new("22")
                         )
                       ),
@@ -2927,15 +3172,48 @@ RSpec.describe Plurimath::Latex::Parser do
                     )
                   ]),
                   Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Symbol.new("-"),
-                    Plurimath::Math::Function::FontStyle.new(
-                      Plurimath::Math::Function::Frac.new(
-                        Plurimath::Math::Function::Base.new(
-                          Plurimath::Math::Symbol.new("&#x3BD;"),
-                          Plurimath::Math::Number.new("13")
+                    Plurimath::Math::Formula.new([
+                      Plurimath::Math::Symbol.new("-"),
+                      Plurimath::Math::Function::FontStyle.new(
+                        Plurimath::Math::Function::Frac.new(
+                          Plurimath::Math::Function::Base.new(
+                            Plurimath::Math::Symbol.new("&#x3BD;"),
+                            Plurimath::Math::Number.new("23")
+                          ),
+                          Plurimath::Math::Function::Base.new(
+                            Plurimath::Math::Symbol.new("E"),
+                            Plurimath::Math::Number.new("33")
+                          )
                         ),
+                        "displaystyle"
+                      ),
+                    ])
+                  ]),
+                  Plurimath::Math::Function::Td.new([
+                    Plurimath::Math::Number.new("0")
+                  ]),
+                  Plurimath::Math::Function::Td.new([
+                    Plurimath::Math::Number.new("0")
+                  ]),
+                  Plurimath::Math::Function::Td.new([
+                    Plurimath::Math::Number.new("0")
+                  ])
+                ]),
+                Plurimath::Math::Function::Tr.new([
+                  Plurimath::Math::Function::Td.new([
+                    Plurimath::Math::Formula.new([
+                      Plurimath::Math::Number.new("3"),
+                      Plurimath::Math::Symbol.new("m"),
+                      Plurimath::Math::Symbol.new("m"),
+                    ])
+                  ]),
+                  Plurimath::Math::Function::Td.new([]),
+                  Plurimath::Math::Function::Td.new([
+                    Plurimath::Math::Function::FontStyle.new(
+                      Plurimath::Math::Function::Frac.new(
+                        Plurimath::Math::Number.new("1"),
                         Plurimath::Math::Function::Base.new(
-                          Plurimath::Math::Function::Text.new("E"),
+                          Plurimath::Math::Symbol.new("E"),
                           Plurimath::Math::Number.new("33")
                         )
                       ),
@@ -2956,82 +3234,8 @@ RSpec.describe Plurimath::Latex::Parser do
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Formula.new([
                       Plurimath::Math::Number.new("3"),
-                      Plurimath::Math::Function::Text.new("mm")
-                    ])
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::FontStyle.new(
-                      Plurimath::Math::Function::Frac.new(
-                        Plurimath::Math::Number.new("1"),
-                        Plurimath::Math::Function::Base.new(
-                          Plurimath::Math::Function::Text.new("E"),
-                          Plurimath::Math::Number.new("22")
-                        )
-                      ),
-                      "displaystyle"
-                    )
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Symbol.new("-"),
-                    Plurimath::Math::Function::FontStyle.new(
-                      Plurimath::Math::Function::Frac.new(
-                        Plurimath::Math::Function::Base.new(
-                          Plurimath::Math::Symbol.new("&#x3BD;"),
-                          Plurimath::Math::Number.new("23")
-                        ),
-                        Plurimath::Math::Function::Base.new(
-                          Plurimath::Math::Function::Text.new("E"),
-                          Plurimath::Math::Number.new("33")
-                        )
-                      ),
-                      "displaystyle"
-                    )
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Number.new("0")
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Number.new("0")
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Number.new("0")
-                  ])
-                ]),
-                Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Formula.new([
-                      Plurimath::Math::Number.new("3"),
-                      Plurimath::Math::Function::Text.new("mm")
-                    ])
-                  ]),
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::FontStyle.new(
-                      Plurimath::Math::Function::Frac.new(
-                        Plurimath::Math::Number.new("1"),
-                        Plurimath::Math::Function::Base.new(
-                          Plurimath::Math::Function::Text.new("E"),
-                          Plurimath::Math::Number.new("33")
-                        )
-                      ),
-                      "displaystyle"
-                    )
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Number.new("0")
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Number.new("0")
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Number.new("0")
-                  ])
-                ]),
-                Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Formula.new([
-                      Plurimath::Math::Number.new("3"),
-                      Plurimath::Math::Function::Text.new("mm")
+                      Plurimath::Math::Symbol.new("m"),
+                      Plurimath::Math::Symbol.new("m"),
                     ])
                   ]),
                   Plurimath::Math::Function::Td.new([]),
@@ -3041,7 +3245,7 @@ RSpec.describe Plurimath::Latex::Parser do
                       Plurimath::Math::Function::Frac.new(
                         Plurimath::Math::Number.new("1"),
                         Plurimath::Math::Function::Base.new(
-                          Plurimath::Math::Function::Text.new("G"),
+                          Plurimath::Math::Symbol.new("G"),
                           Plurimath::Math::Number.new("12")
                         )
                       ),
@@ -3059,7 +3263,8 @@ RSpec.describe Plurimath::Latex::Parser do
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Formula.new([
                       Plurimath::Math::Number.new("3"),
-                      Plurimath::Math::Function::Text.new("mm")
+                      Plurimath::Math::Symbol.new("m"),
+                      Plurimath::Math::Symbol.new("m"),
                     ])
                   ]),
                   Plurimath::Math::Function::Td.new([
@@ -3072,7 +3277,7 @@ RSpec.describe Plurimath::Latex::Parser do
                       Plurimath::Math::Function::Frac.new(
                         Plurimath::Math::Number.new("1"),
                         Plurimath::Math::Function::Base.new(
-                          Plurimath::Math::Function::Text.new("G"),
+                          Plurimath::Math::Symbol.new("G"),
                           Plurimath::Math::Number.new("23")
                         )
                       ),
@@ -3087,7 +3292,8 @@ RSpec.describe Plurimath::Latex::Parser do
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Formula.new([
                       Plurimath::Math::Number.new("3"),
-                      Plurimath::Math::Function::Text.new("mm")
+                      Plurimath::Math::Symbol.new("m"),
+                      Plurimath::Math::Symbol.new("m"),
                     ])
                   ]),
                   Plurimath::Math::Function::Td.new([]),
@@ -3099,7 +3305,7 @@ RSpec.describe Plurimath::Latex::Parser do
                       Plurimath::Math::Function::Frac.new(
                         Plurimath::Math::Number.new("1"),
                         Plurimath::Math::Function::Base.new(
-                          Plurimath::Math::Function::Text.new("G"),
+                          Plurimath::Math::Symbol.new("G"),
                           Plurimath::Math::Number.new("31")
                         )
                       ),
@@ -3110,7 +3316,12 @@ RSpec.describe Plurimath::Latex::Parser do
               ],
               nil,
               [
-                Plurimath::Math::Function::Text.new("cccccc")
+                Plurimath::Math::Symbol.new("c"),
+                Plurimath::Math::Symbol.new("c"),
+                Plurimath::Math::Symbol.new("c"),
+                Plurimath::Math::Symbol.new("c"),
+                Plurimath::Math::Symbol.new("c"),
+                Plurimath::Math::Symbol.new("c"),
               ]
             ),
             Plurimath::Math::Function::Right.new(")"),
@@ -3129,15 +3340,21 @@ RSpec.describe Plurimath::Latex::Parser do
       it "returns formula" do
         expected_value = Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Base.new(
-            Plurimath::Math::Function::Text.new("G"),
-            Plurimath::Math::Function::Text.new("tt")
+            Plurimath::Math::Symbol.new("G"),
+            Plurimath::Math::Formula.new([
+              Plurimath::Math::Symbol.new("t"),
+              Plurimath::Math::Symbol.new("t"),
+            ])
           ),
           Plurimath::Math::Symbol.new("="),
           Plurimath::Math::Function::FontStyle.new(
             Plurimath::Math::Function::Frac.new(
               Plurimath::Math::Function::Base.new(
-                Plurimath::Math::Function::Text.new("E"),
-                Plurimath::Math::Function::Text.new("tt")
+                Plurimath::Math::Symbol.new("E"),
+                Plurimath::Math::Formula.new([
+                  Plurimath::Math::Symbol.new("t"),
+                  Plurimath::Math::Symbol.new("t"),
+                ])
               ),
               Plurimath::Math::Formula.new([
                 Plurimath::Math::Number.new("2"),
@@ -3146,7 +3363,10 @@ RSpec.describe Plurimath::Latex::Parser do
                   Plurimath::Math::Symbol.new("+"),
                   Plurimath::Math::Function::Base.new(
                     Plurimath::Math::Symbol.new("&#x3BD;"),
-                    Plurimath::Math::Function::Text.new("tt")
+                    Plurimath::Math::Formula.new([
+                      Plurimath::Math::Symbol.new("t"),
+                      Plurimath::Math::Symbol.new("t"),
+                    ])
                   )
                 ])
               ])
@@ -3206,44 +3426,63 @@ RSpec.describe Plurimath::Latex::Parser do
                       Plurimath::Math::Function::Frac.new(
                         Plurimath::Math::Number.new("1"),
                         Plurimath::Math::Function::Base.new(
-                          Plurimath::Math::Function::Text.new("E"),
-                          Plurimath::Math::Function::Text.new("ll")
+                          Plurimath::Math::Symbol.new("E"),
+                          Plurimath::Math::Formula.new([
+                            Plurimath::Math::Symbol.new("l"),
+                            Plurimath::Math::Symbol.new("l"),
+                          ]),
                         )
                       ),
                       "displaystyle"
                     )
                   ]),
                   Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Symbol.new("-"),
-                    Plurimath::Math::Function::FontStyle.new(
-                      Plurimath::Math::Function::Frac.new(
-                        Plurimath::Math::Function::Base.new(
-                          Plurimath::Math::Symbol.new("&#x3BD;"),
-                          Plurimath::Math::Function::Text.new("tl")
+                    Plurimath::Math::Formula.new([
+                      Plurimath::Math::Symbol.new("-"),
+                      Plurimath::Math::Function::FontStyle.new(
+                        Plurimath::Math::Function::Frac.new(
+                          Plurimath::Math::Function::Base.new(
+                            Plurimath::Math::Symbol.new("&#x3BD;"),
+                            Plurimath::Math::Formula.new([
+                              Plurimath::Math::Symbol.new("t"),
+                              Plurimath::Math::Symbol.new("l"),
+                            ])
+                          ),
+                          Plurimath::Math::Function::Base.new(
+                            Plurimath::Math::Symbol.new("E"),
+                            Plurimath::Math::Formula.new([
+                              Plurimath::Math::Symbol.new("t"),
+                              Plurimath::Math::Symbol.new("t"),
+                            ])
+                          )
                         ),
-                        Plurimath::Math::Function::Base.new(
-                          Plurimath::Math::Function::Text.new("E"),
-                          Plurimath::Math::Function::Text.new("tt")
-                        )
-                      ),
-                      "displaystyle"
-                    )
+                        "displaystyle"
+                      )
+                    ])
                   ]),
                   Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Symbol.new("-"),
-                    Plurimath::Math::Function::FontStyle.new(
-                      Plurimath::Math::Function::Frac.new(
-                        Plurimath::Math::Function::Base.new(
-                          Plurimath::Math::Symbol.new("&#x3BD;"),
-                          Plurimath::Math::Function::Text.new("tl")
+                    Plurimath::Math::Formula.new([
+                      Plurimath::Math::Symbol.new("-"),
+                      Plurimath::Math::Function::FontStyle.new(
+                        Plurimath::Math::Function::Frac.new(
+                          Plurimath::Math::Function::Base.new(
+                            Plurimath::Math::Symbol.new("&#x3BD;"),
+                            Plurimath::Math::Formula.new([
+                              Plurimath::Math::Symbol.new("t"),
+                              Plurimath::Math::Symbol.new("l"),
+                            ])
+                          ),
+                          Plurimath::Math::Function::Base.new(
+                            Plurimath::Math::Symbol.new("E"),
+                            Plurimath::Math::Formula.new([
+                              Plurimath::Math::Symbol.new("t"),
+                              Plurimath::Math::Symbol.new("t"),
+                            ])
+                          )
                         ),
-                        Plurimath::Math::Function::Base.new(
-                          Plurimath::Math::Function::Text.new("E"),
-                          Plurimath::Math::Function::Text.new("tt")
-                        )
-                      ),
-                      "displaystyle"
-                    )
+                        "displaystyle"
+                      )
+                    ])
                   ]),
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Number.new("0")
@@ -3259,7 +3498,8 @@ RSpec.describe Plurimath::Latex::Parser do
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Formula.new([
                       Plurimath::Math::Number.new("3"),
-                      Plurimath::Math::Function::Text.new("mm")
+                      Plurimath::Math::Symbol.new("m"),
+                      Plurimath::Math::Symbol.new("m"),
                     ])
                   ]),
                   Plurimath::Math::Function::Td.new([
@@ -3267,28 +3507,39 @@ RSpec.describe Plurimath::Latex::Parser do
                       Plurimath::Math::Function::Frac.new(
                         Plurimath::Math::Number.new("1"),
                         Plurimath::Math::Function::Base.new(
-                          Plurimath::Math::Function::Text.new("E"),
-                          Plurimath::Math::Function::Text.new("tt")
+                          Plurimath::Math::Symbol.new("E"),
+                          Plurimath::Math::Formula.new([
+                            Plurimath::Math::Symbol.new("t"),
+                            Plurimath::Math::Symbol.new("t"),
+                          ])
                         )
                       ),
                       "displaystyle"
                     )
                   ]),
                   Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Symbol.new("-"),
-                    Plurimath::Math::Function::FontStyle.new(
-                      Plurimath::Math::Function::Frac.new(
-                        Plurimath::Math::Function::Base.new(
-                          Plurimath::Math::Symbol.new("&#x3BD;"),
-                          Plurimath::Math::Function::Text.new("tt")
+                    Plurimath::Math::Formula.new([
+                      Plurimath::Math::Symbol.new("-"),
+                      Plurimath::Math::Function::FontStyle.new(
+                        Plurimath::Math::Function::Frac.new(
+                          Plurimath::Math::Function::Base.new(
+                            Plurimath::Math::Symbol.new("&#x3BD;"),
+                            Plurimath::Math::Formula.new([
+                              Plurimath::Math::Symbol.new("t"),
+                              Plurimath::Math::Symbol.new("t"),
+                            ])
+                          ),
+                          Plurimath::Math::Function::Base.new(
+                            Plurimath::Math::Symbol.new("E"),
+                            Plurimath::Math::Formula.new([
+                              Plurimath::Math::Symbol.new("t"),
+                              Plurimath::Math::Symbol.new("t"),
+                            ])
+                          )
                         ),
-                        Plurimath::Math::Function::Base.new(
-                          Plurimath::Math::Function::Text.new("E"),
-                          Plurimath::Math::Function::Text.new("tt")
-                        )
-                      ),
-                      "displaystyle"
-                    )
+                        "displaystyle"
+                      )
+                    ])
                   ]),
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Number.new("0")
@@ -3304,7 +3555,8 @@ RSpec.describe Plurimath::Latex::Parser do
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Formula.new([
                       Plurimath::Math::Number.new("3"),
-                      Plurimath::Math::Function::Text.new("mm")
+                      Plurimath::Math::Symbol.new("m"),
+                      Plurimath::Math::Symbol.new("m"),
                     ])
                   ]),
                   Plurimath::Math::Function::Td.new([]),
@@ -3313,8 +3565,11 @@ RSpec.describe Plurimath::Latex::Parser do
                       Plurimath::Math::Function::Frac.new(
                         Plurimath::Math::Number.new("1"),
                         Plurimath::Math::Function::Base.new(
-                          Plurimath::Math::Function::Text.new("E"),
-                          Plurimath::Math::Function::Text.new("tt")
+                          Plurimath::Math::Symbol.new("E"),
+                          Plurimath::Math::Formula.new([
+                            Plurimath::Math::Symbol.new("t"),
+                            Plurimath::Math::Symbol.new("t"),
+                          ])
                         )
                       ),
                       "displaystyle"
@@ -3334,7 +3589,8 @@ RSpec.describe Plurimath::Latex::Parser do
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Formula.new([
                       Plurimath::Math::Number.new("3"),
-                      Plurimath::Math::Function::Text.new("mm")
+                      Plurimath::Math::Symbol.new("m"),
+                      Plurimath::Math::Symbol.new("m"),
                     ])
                   ]),
                   Plurimath::Math::Function::Td.new([]),
@@ -3344,8 +3600,11 @@ RSpec.describe Plurimath::Latex::Parser do
                       Plurimath::Math::Function::Frac.new(
                         Plurimath::Math::Number.new("1"),
                         Plurimath::Math::Function::Base.new(
-                          Plurimath::Math::Function::Text.new("G"),
-                          Plurimath::Math::Function::Text.new("lt")
+                          Plurimath::Math::Symbol.new("G"),
+                          Plurimath::Math::Formula.new([
+                            Plurimath::Math::Symbol.new("l"),
+                            Plurimath::Math::Symbol.new("t"),
+                          ])
                         )
                       ),
                       "displaystyle"
@@ -3362,7 +3621,8 @@ RSpec.describe Plurimath::Latex::Parser do
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Formula.new([
                       Plurimath::Math::Number.new("3"),
-                      Plurimath::Math::Function::Text.new("mm")
+                      Plurimath::Math::Symbol.new("m"),
+                      Plurimath::Math::Symbol.new("m"),
                     ])
                   ]),
                   Plurimath::Math::Function::Td.new([
@@ -3375,8 +3635,11 @@ RSpec.describe Plurimath::Latex::Parser do
                       Plurimath::Math::Function::Frac.new(
                         Plurimath::Math::Number.new("1"),
                         Plurimath::Math::Function::Base.new(
-                          Plurimath::Math::Function::Text.new("G"),
-                          Plurimath::Math::Function::Text.new("tt")
+                          Plurimath::Math::Symbol.new("G"),
+                          Plurimath::Math::Formula.new([
+                            Plurimath::Math::Symbol.new("t"),
+                            Plurimath::Math::Symbol.new("t"),
+                          ])
                         )
                       ),
                       "displaystyle"
@@ -3390,7 +3653,8 @@ RSpec.describe Plurimath::Latex::Parser do
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Formula.new([
                       Plurimath::Math::Number.new("3"),
-                      Plurimath::Math::Function::Text.new("mm")
+                      Plurimath::Math::Symbol.new("m"),
+                      Plurimath::Math::Symbol.new("m"),
                     ])
                   ]),
                   Plurimath::Math::Function::Td.new([]),
@@ -3402,8 +3666,11 @@ RSpec.describe Plurimath::Latex::Parser do
                       Plurimath::Math::Function::Frac.new(
                         Plurimath::Math::Number.new("1"),
                         Plurimath::Math::Function::Base.new(
-                          Plurimath::Math::Function::Text.new("G"),
-                          Plurimath::Math::Function::Text.new("lt")
+                          Plurimath::Math::Symbol.new("G"),
+                          Plurimath::Math::Formula.new([
+                            Plurimath::Math::Symbol.new("l"),
+                            Plurimath::Math::Symbol.new("t"),
+                          ])
                         )
                       ),
                       "displaystyle"
@@ -3413,8 +3680,13 @@ RSpec.describe Plurimath::Latex::Parser do
               ],
               nil,
               [
-                  Plurimath::Math::Function::Text.new("cccccc")
-                ]
+                Plurimath::Math::Symbol.new("c"),
+                Plurimath::Math::Symbol.new("c"),
+                Plurimath::Math::Symbol.new("c"),
+                Plurimath::Math::Symbol.new("c"),
+                Plurimath::Math::Symbol.new("c"),
+                Plurimath::Math::Symbol.new("c"),
+              ]
             ),
             Plurimath::Math::Function::Right.new(")")
           ])
@@ -3471,44 +3743,63 @@ RSpec.describe Plurimath::Latex::Parser do
                       Plurimath::Math::Function::Frac.new(
                         Plurimath::Math::Number.new("1"),
                         Plurimath::Math::Function::Base.new(
-                          Plurimath::Math::Function::Text.new("E"),
-                          Plurimath::Math::Function::Text.new("ll")
+                          Plurimath::Math::Symbol.new("E"),
+                          Plurimath::Math::Formula.new([
+                            Plurimath::Math::Symbol.new("l"),
+                            Plurimath::Math::Symbol.new("l"),
+                          ])
                         )
                       ),
                       "displaystyle"
                     )
                   ]),
                   Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Symbol.new("-"),
-                    Plurimath::Math::Function::FontStyle.new(
-                      Plurimath::Math::Function::Frac.new(
-                        Plurimath::Math::Function::Base.new(
-                          Plurimath::Math::Symbol.new("&#x3BD;"),
-                          Plurimath::Math::Function::Text.new("tl")
+                    Plurimath::Math::Formula.new([
+                      Plurimath::Math::Symbol.new("-"),
+                      Plurimath::Math::Function::FontStyle.new(
+                        Plurimath::Math::Function::Frac.new(
+                          Plurimath::Math::Function::Base.new(
+                            Plurimath::Math::Symbol.new("&#x3BD;"),
+                            Plurimath::Math::Formula.new([
+                              Plurimath::Math::Symbol.new("t"),
+                              Plurimath::Math::Symbol.new("l"),
+                            ])
+                          ),
+                          Plurimath::Math::Function::Base.new(
+                            Plurimath::Math::Symbol.new("E"),
+                            Plurimath::Math::Formula.new([
+                              Plurimath::Math::Symbol.new("t"),
+                              Plurimath::Math::Symbol.new("t"),
+                            ])
+                          )
                         ),
-                        Plurimath::Math::Function::Base.new(
-                          Plurimath::Math::Function::Text.new("E"),
-                          Plurimath::Math::Function::Text.new("tt")
-                        )
-                      ),
-                      "displaystyle"
-                    )
+                        "displaystyle"
+                      )
+                    ])
                   ]),
                   Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Symbol.new("-"),
-                    Plurimath::Math::Function::FontStyle.new(
-                      Plurimath::Math::Function::Frac.new(
-                        Plurimath::Math::Function::Base.new(
-                          Plurimath::Math::Symbol.new("&#x3BD;"),
-                          Plurimath::Math::Function::Text.new("tl")
+                    Plurimath::Math::Formula.new([
+                      Plurimath::Math::Symbol.new("-"),
+                      Plurimath::Math::Function::FontStyle.new(
+                        Plurimath::Math::Function::Frac.new(
+                          Plurimath::Math::Function::Base.new(
+                            Plurimath::Math::Symbol.new("&#x3BD;"),
+                            Plurimath::Math::Formula.new([
+                              Plurimath::Math::Symbol.new("t"),
+                              Plurimath::Math::Symbol.new("l"),
+                            ])
+                          ),
+                          Plurimath::Math::Function::Base.new(
+                            Plurimath::Math::Symbol.new("E"),
+                            Plurimath::Math::Formula.new([
+                              Plurimath::Math::Symbol.new("t"),
+                              Plurimath::Math::Symbol.new("t"),
+                            ])
+                          )
                         ),
-                        Plurimath::Math::Function::Base.new(
-                          Plurimath::Math::Function::Text.new("E"),
-                          Plurimath::Math::Function::Text.new("tt")
-                        )
-                      ),
-                      "displaystyle"
-                    )
+                        "displaystyle"
+                      )
+                    ])
                   ]),
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Number.new("0")
@@ -3524,7 +3815,8 @@ RSpec.describe Plurimath::Latex::Parser do
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Formula.new([
                       Plurimath::Math::Number.new("3"),
-                      Plurimath::Math::Function::Text.new("mm")
+                      Plurimath::Math::Symbol.new("m"),
+                      Plurimath::Math::Symbol.new("m"),
                     ])
                   ]),
                   Plurimath::Math::Function::Td.new([
@@ -3532,28 +3824,39 @@ RSpec.describe Plurimath::Latex::Parser do
                       Plurimath::Math::Function::Frac.new(
                         Plurimath::Math::Number.new("1"),
                         Plurimath::Math::Function::Base.new(
-                          Plurimath::Math::Function::Text.new("E"),
-                          Plurimath::Math::Function::Text.new("tt")
+                          Plurimath::Math::Symbol.new("E"),
+                          Plurimath::Math::Formula.new([
+                            Plurimath::Math::Symbol.new("t"),
+                            Plurimath::Math::Symbol.new("t"),
+                          ])
                         )
                       ),
                       "displaystyle"
                     )
                   ]),
                   Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Symbol.new("-"),
-                    Plurimath::Math::Function::FontStyle.new(
-                      Plurimath::Math::Function::Frac.new(
-                        Plurimath::Math::Function::Base.new(
-                          Plurimath::Math::Symbol.new("&#x3BD;"),
-                          Plurimath::Math::Function::Text.new("tt")
+                    Plurimath::Math::Formula.new([
+                      Plurimath::Math::Symbol.new("-"),
+                      Plurimath::Math::Function::FontStyle.new(
+                        Plurimath::Math::Function::Frac.new(
+                          Plurimath::Math::Function::Base.new(
+                            Plurimath::Math::Symbol.new("&#x3BD;"),
+                            Plurimath::Math::Formula.new([
+                              Plurimath::Math::Symbol.new("t"),
+                              Plurimath::Math::Symbol.new("t"),
+                            ])
+                          ),
+                          Plurimath::Math::Function::Base.new(
+                            Plurimath::Math::Symbol.new("E"),
+                            Plurimath::Math::Formula.new([
+                              Plurimath::Math::Symbol.new("t"),
+                              Plurimath::Math::Symbol.new("t"),
+                            ])
+                          )
                         ),
-                        Plurimath::Math::Function::Base.new(
-                          Plurimath::Math::Function::Text.new("E"),
-                          Plurimath::Math::Function::Text.new("tt")
-                        )
-                      ),
-                      "displaystyle"
-                    )
+                        "displaystyle"
+                      )
+                    ])
                   ]),
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Number.new("0")
@@ -3569,7 +3872,8 @@ RSpec.describe Plurimath::Latex::Parser do
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Formula.new([
                       Plurimath::Math::Number.new("3"),
-                      Plurimath::Math::Function::Text.new("mm")
+                      Plurimath::Math::Symbol.new("m"),
+                      Plurimath::Math::Symbol.new("m"),
                     ])
                   ]),
                   Plurimath::Math::Function::Td.new([]),
@@ -3578,8 +3882,11 @@ RSpec.describe Plurimath::Latex::Parser do
                       Plurimath::Math::Function::Frac.new(
                         Plurimath::Math::Number.new("1"),
                         Plurimath::Math::Function::Base.new(
-                          Plurimath::Math::Function::Text.new("E"),
-                          Plurimath::Math::Function::Text.new("tt")
+                          Plurimath::Math::Symbol.new("E"),
+                          Plurimath::Math::Formula.new([
+                            Plurimath::Math::Symbol.new("t"),
+                            Plurimath::Math::Symbol.new("t"),
+                          ])
                         )
                       ),
                       "displaystyle"
@@ -3599,7 +3906,8 @@ RSpec.describe Plurimath::Latex::Parser do
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Formula.new([
                       Plurimath::Math::Number.new("3"),
-                      Plurimath::Math::Function::Text.new("mm")
+                      Plurimath::Math::Symbol.new("m"),
+                      Plurimath::Math::Symbol.new("m"),
                     ])
                   ]),
                   Plurimath::Math::Function::Td.new([]),
@@ -3609,8 +3917,11 @@ RSpec.describe Plurimath::Latex::Parser do
                       Plurimath::Math::Function::Frac.new(
                         Plurimath::Math::Number.new("1"),
                         Plurimath::Math::Function::Base.new(
-                          Plurimath::Math::Function::Text.new("G"),
-                          Plurimath::Math::Function::Text.new("lt")
+                          Plurimath::Math::Symbol.new("G"),
+                          Plurimath::Math::Formula.new([
+                            Plurimath::Math::Symbol.new("l"),
+                            Plurimath::Math::Symbol.new("t"),
+                          ])
                         )
                       ),
                       "displaystyle"
@@ -3627,7 +3938,8 @@ RSpec.describe Plurimath::Latex::Parser do
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Formula.new([
                       Plurimath::Math::Number.new("3"),
-                      Plurimath::Math::Function::Text.new("mm")
+                      Plurimath::Math::Symbol.new("m"),
+                      Plurimath::Math::Symbol.new("m"),
                     ])
                   ]),
                   Plurimath::Math::Function::Td.new([
@@ -3640,8 +3952,11 @@ RSpec.describe Plurimath::Latex::Parser do
                       Plurimath::Math::Function::Frac.new(
                         Plurimath::Math::Number.new("1"),
                         Plurimath::Math::Function::Base.new(
-                          Plurimath::Math::Function::Text.new("G"),
-                          Plurimath::Math::Function::Text.new("tt")
+                          Plurimath::Math::Symbol.new("G"),
+                          Plurimath::Math::Formula.new([
+                            Plurimath::Math::Symbol.new("t"),
+                            Plurimath::Math::Symbol.new("t"),
+                          ])
                         )
                       ),
                       "displaystyle"
@@ -3655,7 +3970,8 @@ RSpec.describe Plurimath::Latex::Parser do
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Formula.new([
                       Plurimath::Math::Number.new("3"),
-                      Plurimath::Math::Function::Text.new("mm")
+                      Plurimath::Math::Symbol.new("m"),
+                      Plurimath::Math::Symbol.new("m"),
                     ])
                   ]),
                   Plurimath::Math::Function::Td.new([]),
@@ -3667,8 +3983,11 @@ RSpec.describe Plurimath::Latex::Parser do
                       Plurimath::Math::Function::Frac.new(
                         Plurimath::Math::Number.new("1"),
                         Plurimath::Math::Function::Base.new(
-                          Plurimath::Math::Function::Text.new("G"),
-                          Plurimath::Math::Function::Text.new("lt")
+                          Plurimath::Math::Symbol.new("G"),
+                          Plurimath::Math::Formula.new([
+                            Plurimath::Math::Symbol.new("l"),
+                            Plurimath::Math::Symbol.new("t"),
+                          ])
                         )
                       ),
                       "displaystyle"
@@ -3678,7 +3997,12 @@ RSpec.describe Plurimath::Latex::Parser do
               ],
               nil,
               [
-                Plurimath::Math::Function::Text.new("cccccc")
+                Plurimath::Math::Symbol.new("c"),
+                Plurimath::Math::Symbol.new("c"),
+                Plurimath::Math::Symbol.new("c"),
+                Plurimath::Math::Symbol.new("c"),
+                Plurimath::Math::Symbol.new("c"),
+                Plurimath::Math::Symbol.new("c"),
               ]
             ),
             Plurimath::Math::Function::Right.new(")")
@@ -3734,30 +4058,34 @@ RSpec.describe Plurimath::Latex::Parser do
                     Plurimath::Math::Function::FontStyle.new(
                       Plurimath::Math::Function::Frac.new(
                         Plurimath::Math::Number.new("1"),
-                        Plurimath::Math::Function::Text.new("E")
+                        Plurimath::Math::Symbol.new("E")
                       ),
                       "displaystyle"
                     )
                   ]),
                   Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Symbol.new("-"),
-                    Plurimath::Math::Function::FontStyle.new(
-                      Plurimath::Math::Function::Frac.new(
-                        Plurimath::Math::Symbol.new("&#x3BD;"),
-                        Plurimath::Math::Function::Text.new("E")
-                      ),
-                      "displaystyle"
-                    )
+                    Plurimath::Math::Formula.new([
+                      Plurimath::Math::Symbol.new("-"),
+                      Plurimath::Math::Function::FontStyle.new(
+                        Plurimath::Math::Function::Frac.new(
+                          Plurimath::Math::Symbol.new("&#x3BD;"),
+                          Plurimath::Math::Symbol.new("E")
+                        ),
+                        "displaystyle"
+                      )
+                    ])
                   ]),
                   Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Symbol.new("-"),
-                    Plurimath::Math::Function::FontStyle.new(
-                      Plurimath::Math::Function::Frac.new(
-                        Plurimath::Math::Symbol.new("&#x3BD;"),
-                        Plurimath::Math::Function::Text.new("E")
-                      ),
-                      "displaystyle"
-                    )
+                    Plurimath::Math::Formula.new([
+                      Plurimath::Math::Symbol.new("-"),
+                      Plurimath::Math::Function::FontStyle.new(
+                        Plurimath::Math::Function::Frac.new(
+                          Plurimath::Math::Symbol.new("&#x3BD;"),
+                          Plurimath::Math::Symbol.new("E")
+                        ),
+                        "displaystyle"
+                      )
+                    ])
                   ]),
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Number.new("0")
@@ -3773,27 +4101,30 @@ RSpec.describe Plurimath::Latex::Parser do
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Formula.new([
                       Plurimath::Math::Number.new("3"),
-                      Plurimath::Math::Function::Text.new("mm")
+                      Plurimath::Math::Symbol.new("m"),
+                      Plurimath::Math::Symbol.new("m"),
                     ])
                   ]),
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Function::FontStyle.new(
                       Plurimath::Math::Function::Frac.new(
                         Plurimath::Math::Number.new("1"),
-                        Plurimath::Math::Function::Text.new("E")
+                        Plurimath::Math::Symbol.new("E")
                       ),
                       "displaystyle"
                     )
                   ]),
                   Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Symbol.new("-"),
-                    Plurimath::Math::Function::FontStyle.new(
-                      Plurimath::Math::Function::Frac.new(
-                        Plurimath::Math::Symbol.new("&#x3BD;"),
-                        Plurimath::Math::Function::Text.new("E")
-                      ),
-                      "displaystyle"
-                    )
+                    Plurimath::Math::Formula.new([
+                      Plurimath::Math::Symbol.new("-"),
+                      Plurimath::Math::Function::FontStyle.new(
+                        Plurimath::Math::Function::Frac.new(
+                          Plurimath::Math::Symbol.new("&#x3BD;"),
+                          Plurimath::Math::Symbol.new("E")
+                        ),
+                        "displaystyle"
+                      )
+                    ])
                   ]),
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Number.new("0")
@@ -3809,7 +4140,8 @@ RSpec.describe Plurimath::Latex::Parser do
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Formula.new([
                       Plurimath::Math::Number.new("3"),
-                      Plurimath::Math::Function::Text.new("mm")
+                      Plurimath::Math::Symbol.new("m"),
+                      Plurimath::Math::Symbol.new("m"),
                     ])
                   ]),
                   Plurimath::Math::Function::Td.new([]),
@@ -3817,7 +4149,7 @@ RSpec.describe Plurimath::Latex::Parser do
                     Plurimath::Math::Function::FontStyle.new(
                       Plurimath::Math::Function::Frac.new(
                         Plurimath::Math::Number.new("1"),
-                        Plurimath::Math::Function::Text.new("E")
+                        Plurimath::Math::Symbol.new("E")
                       ),
                       "displaystyle"
                     )
@@ -3836,7 +4168,8 @@ RSpec.describe Plurimath::Latex::Parser do
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Formula.new([
                       Plurimath::Math::Number.new("3"),
-                      Plurimath::Math::Function::Text.new("mm")
+                      Plurimath::Math::Symbol.new("m"),
+                      Plurimath::Math::Symbol.new("m"),
                     ])
                   ]),
                   Plurimath::Math::Function::Td.new([]),
@@ -3845,7 +4178,7 @@ RSpec.describe Plurimath::Latex::Parser do
                     Plurimath::Math::Function::FontStyle.new(
                       Plurimath::Math::Function::Frac.new(
                         Plurimath::Math::Number.new("1"),
-                        Plurimath::Math::Function::Text.new("G")
+                        Plurimath::Math::Symbol.new("G")
                       ),
                       "displaystyle"
                     )
@@ -3861,7 +4194,8 @@ RSpec.describe Plurimath::Latex::Parser do
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Formula.new([
                       Plurimath::Math::Number.new("3"),
-                      Plurimath::Math::Function::Text.new("mm")
+                      Plurimath::Math::Symbol.new("m"),
+                      Plurimath::Math::Symbol.new("m"),
                     ])
                   ]),
                   Plurimath::Math::Function::Td.new([
@@ -3873,7 +4207,7 @@ RSpec.describe Plurimath::Latex::Parser do
                     Plurimath::Math::Function::FontStyle.new(
                       Plurimath::Math::Function::Frac.new(
                         Plurimath::Math::Number.new("1"),
-                        Plurimath::Math::Function::Text.new("G")
+                        Plurimath::Math::Symbol.new("G")
                       ),
                       "displaystyle"
                     )
@@ -3886,7 +4220,8 @@ RSpec.describe Plurimath::Latex::Parser do
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Formula.new([
                       Plurimath::Math::Number.new("3"),
-                      Plurimath::Math::Function::Text.new("mm")
+                      Plurimath::Math::Symbol.new("m"),
+                      Plurimath::Math::Symbol.new("m"),
                     ])
                   ]),
                   Plurimath::Math::Function::Td.new([]),
@@ -3897,7 +4232,7 @@ RSpec.describe Plurimath::Latex::Parser do
                     Plurimath::Math::Function::FontStyle.new(
                       Plurimath::Math::Function::Frac.new(
                         Plurimath::Math::Number.new("1"),
-                        Plurimath::Math::Function::Text.new("G")
+                        Plurimath::Math::Symbol.new("G")
                       ),
                       "displaystyle"
                     )
@@ -3906,7 +4241,12 @@ RSpec.describe Plurimath::Latex::Parser do
               ],
               nil,
               [
-                Plurimath::Math::Function::Text.new("cccccc")
+                Plurimath::Math::Symbol.new("c"),
+                Plurimath::Math::Symbol.new("c"),
+                Plurimath::Math::Symbol.new("c"),
+                Plurimath::Math::Symbol.new("c"),
+                Plurimath::Math::Symbol.new("c"),
+                Plurimath::Math::Symbol.new("c"),
               ],
             ),
             Plurimath::Math::Function::Right.new(")")
@@ -3991,7 +4331,7 @@ RSpec.describe Plurimath::Latex::Parser do
               ],
               nil,
               [
-                Plurimath::Math::Function::Text.new("c")
+                Plurimath::Math::Symbol.new("c")
               ],
             ),
             Plurimath::Math::Function::Right.new(")"),
@@ -4011,47 +4351,54 @@ RSpec.describe Plurimath::Latex::Parser do
       it "returns formula" do
         expected_value = Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Base.new(
-            Plurimath::Math::Function::Text.new("S"),
-            Plurimath::Math::Function::Text.new("i")
+            Plurimath::Math::Symbol.new("S"),
+            Plurimath::Math::Symbol.new("i")
           ),
           Plurimath::Math::Symbol.new("="),
           Plurimath::Math::Function::Sum.new(
             Plurimath::Math::Formula.new([
-              Plurimath::Math::Function::Text.new("j"),
+              Plurimath::Math::Symbol.new("j"),
               Plurimath::Math::Symbol.new("="),
               Plurimath::Math::Number.new("1")
             ]),
             Plurimath::Math::Number.new("6")
           ),
           Plurimath::Math::Function::Base.new(
-            Plurimath::Math::Function::Text.new("D"),
-            Plurimath::Math::Function::Text.new("ij")
+            Plurimath::Math::Symbol.new("D"),
+            Plurimath::Math::Formula.new([
+              Plurimath::Math::Symbol.new("i"),
+              Plurimath::Math::Symbol.new("j"),
+            ])
           ),
           Plurimath::Math::Formula.new([
             Plurimath::Math::Function::Base.new(
-              Plurimath::Math::Function::Text.new("E"),
-              Plurimath::Math::Function::Text.new("j")
+              Plurimath::Math::Symbol.new("E"),
+              Plurimath::Math::Symbol.new("j")
             ),
             Plurimath::Math::Symbol.new("-"),
             Plurimath::Math::Function::PowerBase.new(
-              Plurimath::Math::Function::Text.new("E"),
-              Plurimath::Math::Function::Text.new("j"),
-              Plurimath::Math::Function::Text.new("T"),
+              Plurimath::Math::Symbol.new("E"),
+              Plurimath::Math::Symbol.new("j"),
+              Plurimath::Math::Symbol.new("T"),
             ),
             Plurimath::Math::Symbol.new("-"),
             Plurimath::Math::Function::PowerBase.new(
-              Plurimath::Math::Function::Text.new("E"),
-              Plurimath::Math::Function::Text.new("j"),
-              Plurimath::Math::Function::Text.new("M"),
+              Plurimath::Math::Symbol.new("E"),
+              Plurimath::Math::Symbol.new("j"),
+              Plurimath::Math::Symbol.new("M"),
             )
           ]),
           Plurimath::Math::Symbol.new("&#x3B;"),
-          Plurimath::Math::Function::FontStyle.new(
-            Plurimath::Math::Function::Text.new("for"),
-            "rm"
-          ),
+          Plurimath::Math::Formula.new([
+            Plurimath::Math::Function::FontStyle.new(
+              Plurimath::Math::Symbol.new("f"),
+              "rm"
+            ),
+            Plurimath::Math::Symbol.new("o"),
+            Plurimath::Math::Symbol.new("r"),
+          ]),
           Plurimath::Math::Symbol.new("&#x3B;"),
-          Plurimath::Math::Function::Text.new("i"),
+          Plurimath::Math::Symbol.new("i"),
           Plurimath::Math::Symbol.new("="),
           Plurimath::Math::Number.new("1"),
           Plurimath::Math::Symbol.new(","),
@@ -4102,37 +4449,37 @@ RSpec.describe Plurimath::Latex::Parser do
                 Plurimath::Math::Function::Tr.new([
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Function::Text.new("d"),
+                      Plurimath::Math::Symbol.new("d"),
                       Plurimath::Math::Number.new("1111")
                     )
                   ]),
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Function::Text.new("d"),
+                      Plurimath::Math::Symbol.new("d"),
                       Plurimath::Math::Number.new("1122")
                     )
                   ]),
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Function::Text.new("d"),
+                      Plurimath::Math::Symbol.new("d"),
                       Plurimath::Math::Number.new("1133")
                     )
                   ]),
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Function::Text.new("d"),
+                      Plurimath::Math::Symbol.new("d"),
                       Plurimath::Math::Number.new("1112")
                     )
                   ]),
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Function::Text.new("d"),
+                      Plurimath::Math::Symbol.new("d"),
                       Plurimath::Math::Number.new("1123")
                     )
                   ]),
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Function::Text.new("d"),
+                      Plurimath::Math::Symbol.new("d"),
                       Plurimath::Math::Number.new("1131")
                     )
                   ])
@@ -4141,31 +4488,31 @@ RSpec.describe Plurimath::Latex::Parser do
                   Plurimath::Math::Function::Td.new([]),
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Function::Text.new("d"),
+                      Plurimath::Math::Symbol.new("d"),
                       Plurimath::Math::Number.new("2222")
                     )
                   ]),
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Function::Text.new("d"),
+                      Plurimath::Math::Symbol.new("d"),
                       Plurimath::Math::Number.new("2233")
                     )
                   ]),
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Function::Text.new("d"),
+                      Plurimath::Math::Symbol.new("d"),
                       Plurimath::Math::Number.new("2212")
                     )
                   ]),
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Function::Text.new("d"),
+                      Plurimath::Math::Symbol.new("d"),
                       Plurimath::Math::Number.new("2223")
                     )
                   ]),
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Function::Text.new("d"),
+                      Plurimath::Math::Symbol.new("d"),
                       Plurimath::Math::Number.new("2231")
                     )
                   ])
@@ -4175,25 +4522,25 @@ RSpec.describe Plurimath::Latex::Parser do
                   Plurimath::Math::Function::Td.new([]),
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Function::Text.new("d"),
+                      Plurimath::Math::Symbol.new("d"),
                       Plurimath::Math::Number.new("3333")
                     )
                   ]),
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Function::Text.new("d"),
+                      Plurimath::Math::Symbol.new("d"),
                       Plurimath::Math::Number.new("3312")
                     )
                   ]),
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Function::Text.new("d"),
+                      Plurimath::Math::Symbol.new("d"),
                       Plurimath::Math::Number.new("3323")
                     )
                   ]),
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Function::Text.new("d"),
+                      Plurimath::Math::Symbol.new("d"),
                       Plurimath::Math::Number.new("3331")
                     )
                   ])
@@ -4204,19 +4551,19 @@ RSpec.describe Plurimath::Latex::Parser do
                   Plurimath::Math::Function::Td.new([]),
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Function::Text.new("d"),
+                      Plurimath::Math::Symbol.new("d"),
                       Plurimath::Math::Number.new("1212")
                     )
                   ]),
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Function::Text.new("d"),
+                      Plurimath::Math::Symbol.new("d"),
                       Plurimath::Math::Number.new("1223")
                     )
                   ]),
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Function::Text.new("d"),
+                      Plurimath::Math::Symbol.new("d"),
                       Plurimath::Math::Number.new("1231")
                     )
                   ])
@@ -4230,13 +4577,13 @@ RSpec.describe Plurimath::Latex::Parser do
                   Plurimath::Math::Function::Td.new([]),
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Function::Text.new("d"),
+                      Plurimath::Math::Symbol.new("d"),
                       Plurimath::Math::Number.new("2323")
                     )
                   ]),
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Function::Text.new("d"),
+                      Plurimath::Math::Symbol.new("d"),
                       Plurimath::Math::Number.new("2331")
                     )
                   ])
@@ -4249,7 +4596,7 @@ RSpec.describe Plurimath::Latex::Parser do
                   Plurimath::Math::Function::Td.new([]),
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Function::Text.new("d"),
+                      Plurimath::Math::Symbol.new("d"),
                       Plurimath::Math::Number.new("3131")
                     )
                   ])
@@ -4257,7 +4604,12 @@ RSpec.describe Plurimath::Latex::Parser do
               ],
               nil,
               [
-                Plurimath::Math::Function::Text.new("cccccc")
+                Plurimath::Math::Symbol.new("c"),
+                Plurimath::Math::Symbol.new("c"),
+                Plurimath::Math::Symbol.new("c"),
+                Plurimath::Math::Symbol.new("c"),
+                Plurimath::Math::Symbol.new("c"),
+                Plurimath::Math::Symbol.new("c"),
               ],
             ),
             Plurimath::Math::Function::Right.new(")")
@@ -4291,7 +4643,7 @@ RSpec.describe Plurimath::Latex::Parser do
                 Plurimath::Math::Function::Tr.new([
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Function::Text.new("s"),
+                      Plurimath::Math::Symbol.new("s"),
                       Plurimath::Math::Number.new("11")
                     )
                   ])
@@ -4299,7 +4651,7 @@ RSpec.describe Plurimath::Latex::Parser do
                 Plurimath::Math::Function::Tr.new([
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Function::Text.new("s"),
+                      Plurimath::Math::Symbol.new("s"),
                       Plurimath::Math::Number.new("22")
                     )
                   ])
@@ -4307,7 +4659,7 @@ RSpec.describe Plurimath::Latex::Parser do
                 Plurimath::Math::Function::Tr.new([
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Function::Text.new("s"),
+                      Plurimath::Math::Symbol.new("s"),
                       Plurimath::Math::Number.new("33")
                     )
                   ])
@@ -4315,7 +4667,7 @@ RSpec.describe Plurimath::Latex::Parser do
                 Plurimath::Math::Function::Tr.new([
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Function::Text.new("s"),
+                      Plurimath::Math::Symbol.new("s"),
                       Plurimath::Math::Number.new("12")
                     )
                   ])
@@ -4323,7 +4675,7 @@ RSpec.describe Plurimath::Latex::Parser do
                 Plurimath::Math::Function::Tr.new([
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Function::Text.new("s"),
+                      Plurimath::Math::Symbol.new("s"),
                       Plurimath::Math::Number.new("23")
                     )
                   ])
@@ -4331,7 +4683,7 @@ RSpec.describe Plurimath::Latex::Parser do
                 Plurimath::Math::Function::Tr.new([
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Function::Text.new("s"),
+                      Plurimath::Math::Symbol.new("s"),
                       Plurimath::Math::Number.new("31")
                     )
                   ])
@@ -4339,7 +4691,7 @@ RSpec.describe Plurimath::Latex::Parser do
               ],
               nil,
               [
-                Plurimath::Math::Function::Text.new("c")
+                Plurimath::Math::Symbol.new("c")
               ],
             ),
             Plurimath::Math::Function::Right.new(")")
@@ -4359,13 +4711,16 @@ RSpec.describe Plurimath::Latex::Parser do
       it "returns formula" do
         expected_value = Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Base.new(
-            Plurimath::Math::Function::Text.new("s"),
-            Plurimath::Math::Function::Text.new("ij")
+            Plurimath::Math::Symbol.new("s"),
+            Plurimath::Math::Formula.new([
+              Plurimath::Math::Symbol.new("i"),
+              Plurimath::Math::Symbol.new("j"),
+            ]),
           ),
           Plurimath::Math::Symbol.new("="),
           Plurimath::Math::Function::Sum.new(
             Plurimath::Math::Formula.new([
-              Plurimath::Math::Function::Text.new("k"),
+              Plurimath::Math::Symbol.new("k"),
               Plurimath::Math::Symbol.new("="),
               Plurimath::Math::Number.new("1")
             ]),
@@ -4373,38 +4728,54 @@ RSpec.describe Plurimath::Latex::Parser do
           ),
           Plurimath::Math::Function::Sum.new(
             Plurimath::Math::Formula.new([
-              Plurimath::Math::Function::Text.new("l"),
+              Plurimath::Math::Symbol.new("l"),
               Plurimath::Math::Symbol.new("="),
               Plurimath::Math::Number.new("1")
             ]),
             Plurimath::Math::Number.new("3")
           ),
           Plurimath::Math::Function::Base.new(
-            Plurimath::Math::Function::Text.new("d"),
-            Plurimath::Math::Function::Text.new("ijkl")
+            Plurimath::Math::Symbol.new("d"),
+            Plurimath::Math::Formula.new([
+              Plurimath::Math::Symbol.new("i"),
+              Plurimath::Math::Symbol.new("j"),
+              Plurimath::Math::Symbol.new("k"),
+              Plurimath::Math::Symbol.new("l"),
+            ])
           ),
           Plurimath::Math::Function::Base.new(
-            Plurimath::Math::Function::Text.new("e"),
-            Plurimath::Math::Function::Text.new("kl")
+            Plurimath::Math::Symbol.new("e"),
+            Plurimath::Math::Formula.new([
+              Plurimath::Math::Symbol.new("k"),
+              Plurimath::Math::Symbol.new("l"),
+            ])
           ),
           Plurimath::Math::Symbol.new("&#x3B;"),
-          Plurimath::Math::Function::FontStyle.new(
-            Plurimath::Math::Function::Text.new("for"),
-            "rm"
-          ),
+          Plurimath::Math::Formula.new([
+            Plurimath::Math::Function::FontStyle.new(
+              Plurimath::Math::Symbol.new("f"),
+              "rm"
+            ),
+            Plurimath::Math::Symbol.new("o"),
+            Plurimath::Math::Symbol.new("r"),
+          ]),
           Plurimath::Math::Symbol.new("&#x3B;"),
-          Plurimath::Math::Function::Text.new("i"),
+          Plurimath::Math::Symbol.new("i"),
           Plurimath::Math::Symbol.new("="),
           Plurimath::Math::Number.new("1"),
           Plurimath::Math::Symbol.new(","),
           Plurimath::Math::Number.new("3"),
           Plurimath::Math::Symbol.new("&#x3B;"),
-          Plurimath::Math::Function::FontStyle.new(
-            Plurimath::Math::Function::Text.new("and"),
-            "rm"
-          ),
+          Plurimath::Math::Formula.new([
+            Plurimath::Math::Function::FontStyle.new(
+              Plurimath::Math::Symbol.new("a"),
+              "rm"
+            ),
+            Plurimath::Math::Symbol.new("n"),
+            Plurimath::Math::Symbol.new("d"),
+          ]),
           Plurimath::Math::Symbol.new("&#x3B;"),
-          Plurimath::Math::Function::Text.new("j"),
+          Plurimath::Math::Symbol.new("j"),
           Plurimath::Math::Symbol.new("="),
           Plurimath::Math::Number.new("1"),
           Plurimath::Math::Symbol.new(","),
@@ -4424,13 +4795,16 @@ RSpec.describe Plurimath::Latex::Parser do
       it "returns formula" do
         expected_value = Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Base.new(
-            Plurimath::Math::Function::Text.new("s"),
-            Plurimath::Math::Function::Text.new("ij")
+            Plurimath::Math::Symbol.new("s"),
+            Plurimath::Math::Formula.new([
+              Plurimath::Math::Symbol.new("i"),
+              Plurimath::Math::Symbol.new("j"),
+            ])
           ),
           Plurimath::Math::Symbol.new("="),
           Plurimath::Math::Function::Sum.new(
             Plurimath::Math::Formula.new([
-              Plurimath::Math::Function::Text.new("k"),
+              Plurimath::Math::Symbol.new("k"),
               Plurimath::Math::Symbol.new("="),
               Plurimath::Math::Number.new("1")
             ]),
@@ -4438,38 +4812,54 @@ RSpec.describe Plurimath::Latex::Parser do
           ),
           Plurimath::Math::Function::Sum.new(
             Plurimath::Math::Formula.new([
-              Plurimath::Math::Function::Text.new("l"),
+              Plurimath::Math::Symbol.new("l"),
               Plurimath::Math::Symbol.new("="),
               Plurimath::Math::Number.new("1")
             ]),
             Plurimath::Math::Number.new("2")
           ),
           Plurimath::Math::Function::Base.new(
-            Plurimath::Math::Function::Text.new("d"),
-            Plurimath::Math::Function::Text.new("ijkl")
+            Plurimath::Math::Symbol.new("d"),
+            Plurimath::Math::Formula.new([
+              Plurimath::Math::Symbol.new("i"),
+              Plurimath::Math::Symbol.new("j"),
+              Plurimath::Math::Symbol.new("k"),
+              Plurimath::Math::Symbol.new("l"),
+            ]),
           ),
           Plurimath::Math::Function::Base.new(
-            Plurimath::Math::Function::Text.new("e"),
-            Plurimath::Math::Function::Text.new("kl")
+            Plurimath::Math::Symbol.new("e"),
+            Plurimath::Math::Formula.new([
+              Plurimath::Math::Symbol.new("k"),
+              Plurimath::Math::Symbol.new("l"),
+            ])
           ),
           Plurimath::Math::Symbol.new("&#x3B;"),
-          Plurimath::Math::Function::FontStyle.new(
-            Plurimath::Math::Function::Text.new("for"),
-            "rm"
-          ),
+          Plurimath::Math::Formula.new([
+            Plurimath::Math::Function::FontStyle.new(
+              Plurimath::Math::Symbol.new("f"),
+              "rm"
+            ),
+            Plurimath::Math::Symbol.new("o"),
+            Plurimath::Math::Symbol.new("r"),
+          ]),
           Plurimath::Math::Symbol.new("&#x3B;"),
-          Plurimath::Math::Function::Text.new("i"),
+          Plurimath::Math::Symbol.new("i"),
           Plurimath::Math::Symbol.new("="),
           Plurimath::Math::Number.new("1"),
           Plurimath::Math::Symbol.new(","),
           Plurimath::Math::Number.new("2"),
           Plurimath::Math::Symbol.new("&#x3B;"),
-          Plurimath::Math::Function::FontStyle.new(
-            Plurimath::Math::Function::Text.new("and"),
-            "rm"
-          ),
+          Plurimath::Math::Formula.new([
+            Plurimath::Math::Function::FontStyle.new(
+              Plurimath::Math::Symbol.new("a"),
+              "rm"
+            ),
+            Plurimath::Math::Symbol.new("n"),
+            Plurimath::Math::Symbol.new("d"),
+          ]),
           Plurimath::Math::Symbol.new("&#x3B;"),
-          Plurimath::Math::Function::Text.new("j"),
+          Plurimath::Math::Symbol.new("j"),
           Plurimath::Math::Symbol.new("="),
           Plurimath::Math::Number.new("1"),
           Plurimath::Math::Symbol.new(","),
@@ -4506,7 +4896,7 @@ RSpec.describe Plurimath::Latex::Parser do
                 Plurimath::Math::Function::Tr.new([
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Function::Text.new("s"),
+                      Plurimath::Math::Symbol.new("s"),
                       Plurimath::Math::Number.new("11")
                     )
                   ]),
@@ -4523,7 +4913,7 @@ RSpec.describe Plurimath::Latex::Parser do
                   ]),
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Function::Text.new("s"),
+                      Plurimath::Math::Symbol.new("s"),
                       Plurimath::Math::Number.new("22")
                     )
                   ]),
@@ -4540,7 +4930,7 @@ RSpec.describe Plurimath::Latex::Parser do
                   ]),
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Function::Text.new("s"),
+                      Plurimath::Math::Symbol.new("s"),
                       Plurimath::Math::Number.new("33")
                     )
                   ])
@@ -4548,7 +4938,9 @@ RSpec.describe Plurimath::Latex::Parser do
               ],
               nil,
               [
-                Plurimath::Math::Function::Text.new("ccc")
+                Plurimath::Math::Symbol.new("c"),
+                Plurimath::Math::Symbol.new("c"),
+                Plurimath::Math::Symbol.new("c"),
               ],
             ),
             Plurimath::Math::Function::Right.new(")")
@@ -4570,9 +4962,9 @@ RSpec.describe Plurimath::Latex::Parser do
           Plurimath::Math::Symbol.new("&#x3C1;"),
           Plurimath::Math::Function::Bar.new(
             Plurimath::Math::Formula.new([
-              Plurimath::Math::Function::Text.new("w"),
+              Plurimath::Math::Symbol.new("w"),
               Plurimath::Math::Symbol.new("'"),
-              Plurimath::Math::Function::Text.new("w"),
+              Plurimath::Math::Symbol.new("w"),
               Plurimath::Math::Symbol.new("'")
             ])
           )
@@ -4599,7 +4991,7 @@ RSpec.describe Plurimath::Latex::Parser do
           ),
           Plurimath::Math::Symbol.new("&#x3C1;"),
           Plurimath::Math::Function::Power.new(
-            Plurimath::Math::Function::Text.new("q"),
+            Plurimath::Math::Symbol.new("q"),
             Plurimath::Math::Number.new("2")
           )
         ])
@@ -4624,23 +5016,23 @@ RSpec.describe Plurimath::Latex::Parser do
               Plurimath::Math::Function::Tr.new([
                 Plurimath::Math::Function::Td.new([
                   Plurimath::Math::Function::Tilde.new(
-                    Plurimath::Math::Function::Text.new("x"),
+                    Plurimath::Math::Symbol.new("x"),
                   ),
                   Plurimath::Math::Symbol.new("="),
-                  Plurimath::Math::Function::Text.new("x"),
+                  Plurimath::Math::Symbol.new("x"),
                   Plurimath::Math::Symbol.new("/"),
-                  Plurimath::Math::Function::Text.new("L"),
+                  Plurimath::Math::Symbol.new("L"),
                   Plurimath::Math::Symbol.new(",")
                 ]),
                 Plurimath::Math::Function::Td.new([
                   Plurimath::Math::Function::Tilde.new(
-                    Plurimath::Math::Function::Text.new("u"),
+                    Plurimath::Math::Symbol.new("u"),
                   ),
                   Plurimath::Math::Symbol.new("="),
-                  Plurimath::Math::Function::Text.new("u"),
+                  Plurimath::Math::Symbol.new("u"),
                   Plurimath::Math::Symbol.new("/"),
                   Plurimath::Math::Function::Base.new(
-                    Plurimath::Math::Function::Text.new("c"),
+                    Plurimath::Math::Symbol.new("c"),
                     Plurimath::Math::Symbol.new("&#x221E;")
                   ),
                   Plurimath::Math::Symbol.new(",")
@@ -4662,33 +5054,33 @@ RSpec.describe Plurimath::Latex::Parser do
               Plurimath::Math::Function::Tr.new([
                 Plurimath::Math::Function::Td.new([
                   Plurimath::Math::Function::Tilde.new(
-                    Plurimath::Math::Function::Text.new("y"),
+                    Plurimath::Math::Symbol.new("y"),
                   ),
                   Plurimath::Math::Symbol.new("="),
-                  Plurimath::Math::Function::Text.new("y"),
+                  Plurimath::Math::Symbol.new("y"),
                   Plurimath::Math::Symbol.new("/"),
-                  Plurimath::Math::Function::Text.new("L"),
+                  Plurimath::Math::Symbol.new("L"),
                   Plurimath::Math::Symbol.new(",")
                 ]),
                 Plurimath::Math::Function::Td.new([
                   Plurimath::Math::Function::Tilde.new(
-                    Plurimath::Math::Function::Text.new("v"),
+                    Plurimath::Math::Symbol.new("v"),
                   ),
                   Plurimath::Math::Symbol.new("="),
-                  Plurimath::Math::Function::Text.new("v"),
+                  Plurimath::Math::Symbol.new("v"),
                   Plurimath::Math::Symbol.new("/"),
                   Plurimath::Math::Function::Base.new(
-                    Plurimath::Math::Function::Text.new("c"),
+                    Plurimath::Math::Symbol.new("c"),
                     Plurimath::Math::Symbol.new("&#x221E;")
                   ),
                   Plurimath::Math::Symbol.new(",")
                 ]),
                 Plurimath::Math::Function::Td.new([
                   Plurimath::Math::Function::Tilde.new(
-                    Plurimath::Math::Function::Text.new("p"),
+                    Plurimath::Math::Symbol.new("p"),
                   ),
                   Plurimath::Math::Symbol.new("="),
-                  Plurimath::Math::Function::Text.new("p"),
+                  Plurimath::Math::Symbol.new("p"),
                   Plurimath::Math::Symbol.new("/"),
                   Plurimath::Math::Formula.new([
                     Plurimath::Math::Function::Base.new(
@@ -4696,7 +5088,7 @@ RSpec.describe Plurimath::Latex::Parser do
                       Plurimath::Math::Symbol.new("&#x221E;")
                     ),
                     Plurimath::Math::Function::PowerBase.new(
-                      Plurimath::Math::Function::Text.new("c"),
+                      Plurimath::Math::Symbol.new("c"),
                       Plurimath::Math::Symbol.new("&#x221E;"),
                       Plurimath::Math::Number.new("2"),
                     )
@@ -4707,24 +5099,24 @@ RSpec.describe Plurimath::Latex::Parser do
               Plurimath::Math::Function::Tr.new([
                 Plurimath::Math::Function::Td.new([
                   Plurimath::Math::Function::Tilde.new(
-                    Plurimath::Math::Function::Text.new("z"),
+                    Plurimath::Math::Symbol.new("z"),
                   ),
                   Plurimath::Math::Symbol.new("="),
-                  Plurimath::Math::Function::Text.new("z"),
+                  Plurimath::Math::Symbol.new("z"),
                   Plurimath::Math::Symbol.new("/"),
-                  Plurimath::Math::Function::Text.new("L"),
+                  Plurimath::Math::Symbol.new("L"),
                   Plurimath::Math::Symbol.new(","),
                   Plurimath::Math::Symbol.new("&#x2001;")
                 ]),
                 Plurimath::Math::Function::Td.new([
                   Plurimath::Math::Function::Tilde.new(
-                    Plurimath::Math::Function::Text.new("w"),
+                    Plurimath::Math::Symbol.new("w"),
                   ),
                   Plurimath::Math::Symbol.new("="),
-                  Plurimath::Math::Function::Text.new("w"),
+                  Plurimath::Math::Symbol.new("w"),
                   Plurimath::Math::Symbol.new("/"),
                   Plurimath::Math::Function::Base.new(
-                    Plurimath::Math::Function::Text.new("c"),
+                    Plurimath::Math::Symbol.new("c"),
                     Plurimath::Math::Symbol.new("&#x221E;")
                   ),
                   Plurimath::Math::Symbol.new(","),
@@ -4747,7 +5139,9 @@ RSpec.describe Plurimath::Latex::Parser do
             ],
             nil,
             [
-              Plurimath::Math::Function::Text.new("ccc")
+              Plurimath::Math::Symbol.new("c"),
+              Plurimath::Math::Symbol.new("c"),
+              Plurimath::Math::Symbol.new("c"),
             ],
           )
         ])
@@ -4765,23 +5159,23 @@ RSpec.describe Plurimath::Latex::Parser do
       }
       it "returns formula" do
         expected_value = Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Text.new("x"),
+          Plurimath::Math::Symbol.new("x"),
           Plurimath::Math::Symbol.new("'"),
           Plurimath::Math::Symbol.new("="),
-          Plurimath::Math::Function::Text.new("x"),
+          Plurimath::Math::Symbol.new("x"),
           Plurimath::Math::Symbol.new("/"),
-          Plurimath::Math::Function::Text.new("L"),
+          Plurimath::Math::Symbol.new("L"),
           Plurimath::Math::Symbol.new(","),
           Plurimath::Math::Symbol.new("&"),
-          Plurimath::Math::Function::Text.new("u"),
+          Plurimath::Math::Symbol.new("u"),
           Plurimath::Math::Symbol.new("'"),
           Plurimath::Math::Symbol.new("="),
-          Plurimath::Math::Function::Text.new("u"),
+          Plurimath::Math::Symbol.new("u"),
           Plurimath::Math::Symbol.new("/"),
           Plurimath::Math::Formula.new([
-            Plurimath::Math::Function::Text.new("L"),
+            Plurimath::Math::Symbol.new("L"),
             Plurimath::Math::Symbol.new("/"),
-            Plurimath::Math::Function::Text.new("T")
+            Plurimath::Math::Symbol.new("T")
           ]),
           Plurimath::Math::Symbol.new(","),
           Plurimath::Math::Symbol.new("&"),
@@ -4791,68 +5185,71 @@ RSpec.describe Plurimath::Latex::Parser do
           Plurimath::Math::Symbol.new("&#x3C1;"),
           Plurimath::Math::Symbol.new("/"),
           Plurimath::Math::Formula.new([
-            Plurimath::Math::Function::Text.new("M"),
+            Plurimath::Math::Symbol.new("M"),
             Plurimath::Math::Symbol.new("/"),
             Plurimath::Math::Function::Power.new(
-              Plurimath::Math::Function::Text.new("L"),
+              Plurimath::Math::Symbol.new("L"),
               Plurimath::Math::Number.new("3")
             )
           ]),
           Plurimath::Math::Symbol.new(","),
           Plurimath::Math::Symbol.new("\\\\"),
-          Plurimath::Math::Function::Text.new("y"),
+          Plurimath::Math::Symbol.new("y"),
           Plurimath::Math::Symbol.new("'"),
           Plurimath::Math::Symbol.new("="),
-          Plurimath::Math::Function::Text.new("y"),
+          Plurimath::Math::Symbol.new("y"),
           Plurimath::Math::Symbol.new("/"),
-          Plurimath::Math::Function::Text.new("L"),
+          Plurimath::Math::Symbol.new("L"),
           Plurimath::Math::Symbol.new(","),
           Plurimath::Math::Symbol.new("&"),
-          Plurimath::Math::Function::Text.new("v"),
+          Plurimath::Math::Symbol.new("v"),
           Plurimath::Math::Symbol.new("'"),
           Plurimath::Math::Symbol.new("="),
-          Plurimath::Math::Function::Text.new("v"),
+          Plurimath::Math::Symbol.new("v"),
           Plurimath::Math::Symbol.new("/"),
           Plurimath::Math::Formula.new([
-            Plurimath::Math::Function::Text.new("L"),
+            Plurimath::Math::Symbol.new("L"),
             Plurimath::Math::Symbol.new("/"),
-            Plurimath::Math::Function::Text.new("T")
+            Plurimath::Math::Symbol.new("T")
           ]),
           Plurimath::Math::Symbol.new(","),
           Plurimath::Math::Symbol.new("&"),
-          Plurimath::Math::Function::Text.new("p"),
+          Plurimath::Math::Symbol.new("p"),
           Plurimath::Math::Symbol.new("'"),
           Plurimath::Math::Symbol.new("="),
-          Plurimath::Math::Function::Text.new("p"),
+          Plurimath::Math::Symbol.new("p"),
           Plurimath::Math::Symbol.new("/"),
           Plurimath::Math::Formula.new([
-            Plurimath::Math::Function::Text.new("M"),
+            Plurimath::Math::Symbol.new("M"),
             Plurimath::Math::Symbol.new("/"),
-            Plurimath::Math::Function::Power.new(
-              Plurimath::Math::Function::Text.new("LT"),
-              Plurimath::Math::Number.new("2")
-            )
+            Plurimath::Math::Formula.new([
+              Plurimath::Math::Symbol.new("L"),
+              Plurimath::Math::Function::Power.new(
+                Plurimath::Math::Symbol.new("T"),
+                Plurimath::Math::Number.new("2")
+              )
+            ])
           ]),
           Plurimath::Math::Symbol.new(","),
           Plurimath::Math::Symbol.new("\\\\"),
-          Plurimath::Math::Function::Text.new("z"),
+          Plurimath::Math::Symbol.new("z"),
           Plurimath::Math::Symbol.new("'"),
           Plurimath::Math::Symbol.new("="),
-          Plurimath::Math::Function::Text.new("z"),
+          Plurimath::Math::Symbol.new("z"),
           Plurimath::Math::Symbol.new("/"),
-          Plurimath::Math::Function::Text.new("L"),
+          Plurimath::Math::Symbol.new("L"),
           Plurimath::Math::Symbol.new(","),
           Plurimath::Math::Symbol.new("&#x2001;"),
           Plurimath::Math::Symbol.new("&"),
-          Plurimath::Math::Function::Text.new("w"),
+          Plurimath::Math::Symbol.new("w"),
           Plurimath::Math::Symbol.new("'"),
           Plurimath::Math::Symbol.new("="),
-          Plurimath::Math::Function::Text.new("w"),
+          Plurimath::Math::Symbol.new("w"),
           Plurimath::Math::Symbol.new("/"),
           Plurimath::Math::Formula.new([
-            Plurimath::Math::Function::Text.new("L"),
+            Plurimath::Math::Symbol.new("L"),
             Plurimath::Math::Symbol.new("/"),
-            Plurimath::Math::Function::Text.new("T")
+            Plurimath::Math::Symbol.new("T")
           ]),
           Plurimath::Math::Symbol.new(","),
           Plurimath::Math::Symbol.new("&#x2001;"),
@@ -4863,9 +5260,12 @@ RSpec.describe Plurimath::Latex::Parser do
           Plurimath::Math::Symbol.new("&#x3BC;"),
           Plurimath::Math::Symbol.new("/"),
           Plurimath::Math::Formula.new([
-            Plurimath::Math::Function::Text.new("M"),
+            Plurimath::Math::Symbol.new("M"),
             Plurimath::Math::Symbol.new("/"),
-            Plurimath::Math::Function::Text.new("LT")
+            Plurimath::Math::Formula.new([
+              Plurimath::Math::Symbol.new("L"),
+              Plurimath::Math::Symbol.new("T"),
+            ])
           ]),
           Plurimath::Math::Symbol.new(",")
         ])
@@ -4889,48 +5289,64 @@ RSpec.describe Plurimath::Latex::Parser do
             [
               Plurimath::Math::Function::Tr.new([
                 Plurimath::Math::Function::Td.new([
-                  Plurimath::Math::Function::Text.new("x"),
+                  Plurimath::Math::Symbol.new("x"),
                   Plurimath::Math::Function::Base.new(
                     Plurimath::Math::Symbol.new("'"),
                     Plurimath::Math::Function::FontStyle.new(
-                      Plurimath::Math::Function::Text.new("ref"),
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Symbol.new("r"),
+                        Plurimath::Math::Symbol.new("e"),
+                        Plurimath::Math::Symbol.new("f"),
+                      ]),
                       "textrm"
                     )
                   ),
                   Plurimath::Math::Symbol.new("="),
                   Plurimath::Math::Function::Base.new(
-                    Plurimath::Math::Function::Text.new("x"),
+                    Plurimath::Math::Symbol.new("x"),
                     Plurimath::Math::Function::FontStyle.new(
-                      Plurimath::Math::Function::Text.new("ref"),
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Symbol.new("r"),
+                        Plurimath::Math::Symbol.new("e"),
+                        Plurimath::Math::Symbol.new("f"),
+                      ]),
                       "textrm"
                     )
                   ),
                   Plurimath::Math::Symbol.new("/"),
-                  Plurimath::Math::Function::Text.new("L"),
+                  Plurimath::Math::Symbol.new("L"),
                   Plurimath::Math::Symbol.new(",")
                 ]),
                 Plurimath::Math::Function::Td.new([
-                  Plurimath::Math::Function::Text.new("u"),
+                  Plurimath::Math::Symbol.new("u"),
                   Plurimath::Math::Function::Base.new(
                     Plurimath::Math::Symbol.new("'"),
                     Plurimath::Math::Function::FontStyle.new(
-                      Plurimath::Math::Function::Text.new("ref"),
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Symbol.new("r"),
+                        Plurimath::Math::Symbol.new("e"),
+                        Plurimath::Math::Symbol.new("f"),
+                      ]),
                       "textrm"
                     )
                   ),
                   Plurimath::Math::Symbol.new("="),
                   Plurimath::Math::Function::Base.new(
-                    Plurimath::Math::Function::Text.new("u"),
+                    Plurimath::Math::Symbol.new("u"),
                     Plurimath::Math::Function::FontStyle.new(
-                      Plurimath::Math::Function::Text.new("ref"),
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Symbol.new("r"),
+                        Plurimath::Math::Symbol.new("e"),
+                        Plurimath::Math::Symbol.new("f"),
+                      ]),
                       "textrm"
                     )
                   ),
                   Plurimath::Math::Symbol.new("/"),
                   Plurimath::Math::Formula.new([
-                    Plurimath::Math::Function::Text.new("L"),
+                    Plurimath::Math::Symbol.new("L"),
                     Plurimath::Math::Symbol.new("/"),
-                    Plurimath::Math::Function::Text.new("T")
+                    Plurimath::Math::Symbol.new("T")
                   ]),
                   Plurimath::Math::Symbol.new(",")
                 ]),
@@ -4939,7 +5355,11 @@ RSpec.describe Plurimath::Latex::Parser do
                   Plurimath::Math::Function::Base.new(
                     Plurimath::Math::Symbol.new("'"),
                     Plurimath::Math::Function::FontStyle.new(
-                      Plurimath::Math::Function::Text.new("ref"),
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Symbol.new("r"),
+                        Plurimath::Math::Symbol.new("e"),
+                        Plurimath::Math::Symbol.new("f"),
+                      ]),
                       "textrm"
                     )
                   ),
@@ -4947,16 +5367,20 @@ RSpec.describe Plurimath::Latex::Parser do
                   Plurimath::Math::Function::Base.new(
                     Plurimath::Math::Symbol.new("&#x3C1;"),
                     Plurimath::Math::Function::FontStyle.new(
-                      Plurimath::Math::Function::Text.new("ref"),
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Symbol.new("r"),
+                        Plurimath::Math::Symbol.new("e"),
+                        Plurimath::Math::Symbol.new("f"),
+                      ]),
                       "textrm"
                     )
                   ),
                   Plurimath::Math::Symbol.new("/"),
                   Plurimath::Math::Formula.new([
-                    Plurimath::Math::Function::Text.new("M"),
+                    Plurimath::Math::Symbol.new("M"),
                     Plurimath::Math::Symbol.new("/"),
                     Plurimath::Math::Function::Power.new(
-                      Plurimath::Math::Function::Text.new("L"),
+                      Plurimath::Math::Symbol.new("L"),
                       Plurimath::Math::Number.new("3")
                     )
                   ]),
@@ -4965,124 +5389,167 @@ RSpec.describe Plurimath::Latex::Parser do
               ]),
               Plurimath::Math::Function::Tr.new([
                 Plurimath::Math::Function::Td.new([
-                  Plurimath::Math::Function::Text.new("y"),
+                  Plurimath::Math::Symbol.new("y"),
                   Plurimath::Math::Function::Base.new(
                     Plurimath::Math::Symbol.new("'"),
                     Plurimath::Math::Function::FontStyle.new(
-                      Plurimath::Math::Function::Text.new("ref"),
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Symbol.new("r"),
+                        Plurimath::Math::Symbol.new("e"),
+                        Plurimath::Math::Symbol.new("f"),
+                      ]),
                       "textrm"
                     )
                   ),
                   Plurimath::Math::Symbol.new("="),
                   Plurimath::Math::Function::Base.new(
-                    Plurimath::Math::Function::Text.new("y"),
+                    Plurimath::Math::Symbol.new("y"),
                     Plurimath::Math::Function::FontStyle.new(
-                      Plurimath::Math::Function::Text.new("ref"),
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Symbol.new("r"),
+                        Plurimath::Math::Symbol.new("e"),
+                        Plurimath::Math::Symbol.new("f"),
+                      ]),
                       "textrm"
                     )
                   ),
                   Plurimath::Math::Symbol.new("/"),
-                  Plurimath::Math::Function::Text.new("L"),
+                  Plurimath::Math::Symbol.new("L"),
                   Plurimath::Math::Symbol.new(",")
                 ]),
                 Plurimath::Math::Function::Td.new([
-                  Plurimath::Math::Function::Text.new("v"),
+                  Plurimath::Math::Symbol.new("v"),
                   Plurimath::Math::Function::Base.new(
                     Plurimath::Math::Symbol.new("'"),
                     Plurimath::Math::Function::FontStyle.new(
-                      Plurimath::Math::Function::Text.new("ref"),
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Symbol.new("r"),
+                        Plurimath::Math::Symbol.new("e"),
+                        Plurimath::Math::Symbol.new("f"),
+                      ]),
                       "textrm"
                     )
                   ),
                   Plurimath::Math::Symbol.new("="),
                   Plurimath::Math::Function::Base.new(
-                    Plurimath::Math::Function::Text.new("v"),
+                    Plurimath::Math::Symbol.new("v"),
                     Plurimath::Math::Function::FontStyle.new(
-                      Plurimath::Math::Function::Text.new("ref"),
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Symbol.new("r"),
+                        Plurimath::Math::Symbol.new("e"),
+                        Plurimath::Math::Symbol.new("f"),
+                      ]),
                       "textrm"
                     )
                   ),
                   Plurimath::Math::Symbol.new("/"),
                   Plurimath::Math::Formula.new([
-                    Plurimath::Math::Function::Text.new("L"),
+                    Plurimath::Math::Symbol.new("L"),
                     Plurimath::Math::Symbol.new("/"),
-                    Plurimath::Math::Function::Text.new("T")
+                    Plurimath::Math::Symbol.new("T")
                   ]),
                   Plurimath::Math::Symbol.new(",")
                 ]),
                 Plurimath::Math::Function::Td.new([
-                  Plurimath::Math::Function::Text.new("p"),
+                  Plurimath::Math::Symbol.new("p"),
                   Plurimath::Math::Function::Base.new(
                     Plurimath::Math::Symbol.new("'"),
                     Plurimath::Math::Function::FontStyle.new(
-                      Plurimath::Math::Function::Text.new("ref"),
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Symbol.new("r"),
+                        Plurimath::Math::Symbol.new("e"),
+                        Plurimath::Math::Symbol.new("f"),
+                      ]),
                       "textrm"
                     )
                   ),
                   Plurimath::Math::Symbol.new("="),
                   Plurimath::Math::Function::Base.new(
-                    Plurimath::Math::Function::Text.new("p"),
+                    Plurimath::Math::Symbol.new("p"),
                     Plurimath::Math::Function::FontStyle.new(
-                      Plurimath::Math::Function::Text.new("ref"),
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Symbol.new("r"),
+                        Plurimath::Math::Symbol.new("e"),
+                        Plurimath::Math::Symbol.new("f"),
+                      ]),
                       "textrm"
                     )
                   ),
                   Plurimath::Math::Symbol.new("/"),
                   Plurimath::Math::Formula.new([
-                    Plurimath::Math::Function::Text.new("M"),
+                    Plurimath::Math::Symbol.new("M"),
                     Plurimath::Math::Symbol.new("/"),
-                    Plurimath::Math::Function::Power.new(
-                      Plurimath::Math::Function::Text.new("LT"),
-                      Plurimath::Math::Number.new("2")
-                    )
+                    Plurimath::Math::Formula.new([
+                      Plurimath::Math::Symbol.new("L"),
+                      Plurimath::Math::Function::Power.new(
+                        Plurimath::Math::Symbol.new("T"),
+                        Plurimath::Math::Number.new("2")
+                      )
+                    ])
                   ])
                 ])
               ]),
               Plurimath::Math::Function::Tr.new([
                 Plurimath::Math::Function::Td.new([
-                  Plurimath::Math::Function::Text.new("z"),
+                  Plurimath::Math::Symbol.new("z"),
                   Plurimath::Math::Function::Base.new(
                     Plurimath::Math::Symbol.new("'"),
                     Plurimath::Math::Function::FontStyle.new(
-                      Plurimath::Math::Function::Text.new("ref"),
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Symbol.new("r"),
+                        Plurimath::Math::Symbol.new("e"),
+                        Plurimath::Math::Symbol.new("f"),
+                      ]),
                       "textrm"
                     )
                   ),
                   Plurimath::Math::Symbol.new("="),
                   Plurimath::Math::Function::Base.new(
-                    Plurimath::Math::Function::Text.new("z"),
+                    Plurimath::Math::Symbol.new("z"),
                     Plurimath::Math::Function::FontStyle.new(
-                      Plurimath::Math::Function::Text.new("ref"),
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Symbol.new("r"),
+                        Plurimath::Math::Symbol.new("e"),
+                        Plurimath::Math::Symbol.new("f"),
+                      ]),
                       "textrm"
                     )
                   ),
                   Plurimath::Math::Symbol.new("/"),
-                  Plurimath::Math::Function::Text.new("L"),
+                  Plurimath::Math::Symbol.new("L"),
                   Plurimath::Math::Symbol.new(","),
                   Plurimath::Math::Symbol.new("&#x2001;")
                 ]),
                 Plurimath::Math::Function::Td.new([
-                  Plurimath::Math::Function::Text.new("w"),
+                  Plurimath::Math::Symbol.new("w"),
                   Plurimath::Math::Function::Base.new(
                     Plurimath::Math::Symbol.new("'"),
                     Plurimath::Math::Function::FontStyle.new(
-                      Plurimath::Math::Function::Text.new("ref"),
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Symbol.new("r"),
+                        Plurimath::Math::Symbol.new("e"),
+                        Plurimath::Math::Symbol.new("f"),
+                      ]),
                       "textrm"
                     )
                   ),
                   Plurimath::Math::Symbol.new("="),
                   Plurimath::Math::Function::Base.new(
-                    Plurimath::Math::Function::Text.new("w"),
+                    Plurimath::Math::Symbol.new("w"),
                     Plurimath::Math::Function::FontStyle.new(
-                      Plurimath::Math::Function::Text.new("ref"),
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Symbol.new("r"),
+                        Plurimath::Math::Symbol.new("e"),
+                        Plurimath::Math::Symbol.new("f"),
+                      ]),
                       "textrm"
                     )
                   ),
                   Plurimath::Math::Symbol.new("/"),
                   Plurimath::Math::Formula.new([
-                    Plurimath::Math::Function::Text.new("L"),
+                    Plurimath::Math::Symbol.new("L"),
                     Plurimath::Math::Symbol.new("/"),
-                    Plurimath::Math::Function::Text.new("T")
+                    Plurimath::Math::Symbol.new("T")
                   ]),
                   Plurimath::Math::Symbol.new(","),
                   Plurimath::Math::Symbol.new("&#x2001;")
@@ -5092,7 +5559,11 @@ RSpec.describe Plurimath::Latex::Parser do
                   Plurimath::Math::Function::Base.new(
                     Plurimath::Math::Symbol.new("'"),
                     Plurimath::Math::Function::FontStyle.new(
-                      Plurimath::Math::Function::Text.new("ref"),
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Symbol.new("r"),
+                        Plurimath::Math::Symbol.new("e"),
+                        Plurimath::Math::Symbol.new("f"),
+                      ]),
                       "textrm"
                     )
                   ),
@@ -5100,15 +5571,22 @@ RSpec.describe Plurimath::Latex::Parser do
                   Plurimath::Math::Function::Base.new(
                     Plurimath::Math::Symbol.new("&#x3BC;"),
                     Plurimath::Math::Function::FontStyle.new(
-                      Plurimath::Math::Function::Text.new("ref"),
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Symbol.new("r"),
+                        Plurimath::Math::Symbol.new("e"),
+                        Plurimath::Math::Symbol.new("f"),
+                      ]),
                       "textrm"
                     )
                   ),
                   Plurimath::Math::Symbol.new("/"),
                   Plurimath::Math::Formula.new([
-                    Plurimath::Math::Function::Text.new("M"),
+                    Plurimath::Math::Symbol.new("M"),
                     Plurimath::Math::Symbol.new("/"),
-                    Plurimath::Math::Function::Text.new("LT")
+                    Plurimath::Math::Formula.new([
+                      Plurimath::Math::Symbol.new("L"),
+                      Plurimath::Math::Symbol.new("T"),
+                    ])
                   ]),
                   Plurimath::Math::Symbol.new(".")
                 ])
@@ -5116,7 +5594,9 @@ RSpec.describe Plurimath::Latex::Parser do
             ],
             nil,
             [
-              Plurimath::Math::Function::Text.new("ccc")
+              Plurimath::Math::Symbol.new("c"),
+              Plurimath::Math::Symbol.new("c"),
+              Plurimath::Math::Symbol.new("c"),
             ],
           )
         ])
@@ -5140,32 +5620,48 @@ RSpec.describe Plurimath::Latex::Parser do
             [
               Plurimath::Math::Function::Tr.new([
                 Plurimath::Math::Function::Td.new([
-                  Plurimath::Math::Function::Text.new("p"),
+                  Plurimath::Math::Symbol.new("p"),
                   Plurimath::Math::Symbol.new("'"),
                   Plurimath::Math::Function::Base.new(
                     Plurimath::Math::Symbol.new("'"),
-                    Plurimath::Math::Function::Text.new("ijk")
+                    Plurimath::Math::Formula.new([
+                      Plurimath::Math::Symbol.new("i"),
+                      Plurimath::Math::Symbol.new("j"),
+                      Plurimath::Math::Symbol.new("k"),
+                    ])
                   )
                 ]),
                 Plurimath::Math::Function::Td.new([
                   Plurimath::Math::Symbol.new("&#x2261;"),
                   Plurimath::Math::Function::Base.new(
-                    Plurimath::Math::Function::Text.new("p"),
-                    Plurimath::Math::Function::Text.new("ijk")
+                    Plurimath::Math::Symbol.new("p"),
+                    Plurimath::Math::Formula.new([
+                      Plurimath::Math::Symbol.new("i"),
+                      Plurimath::Math::Symbol.new("j"),
+                      Plurimath::Math::Symbol.new("k"),
+                    ])
                   ),
                   Plurimath::Math::Symbol.new("/"),
                   Plurimath::Math::Formula.new([
                     Plurimath::Math::Function::Base.new(
                       Plurimath::Math::Symbol.new("&#x3C1;"),
                       Plurimath::Math::Function::FontStyle.new(
-                        Plurimath::Math::Function::Text.new("ref"),
+                        Plurimath::Math::Formula.new([
+                          Plurimath::Math::Symbol.new("r"),
+                          Plurimath::Math::Symbol.new("e"),
+                          Plurimath::Math::Symbol.new("f"),
+                        ]),
                         "textrm"
                       )
                     ),
                     Plurimath::Math::Function::PowerBase.new(
-                      Plurimath::Math::Function::Text.new("c"),
+                      Plurimath::Math::Symbol.new("c"),
                       Plurimath::Math::Function::FontStyle.new(
-                        Plurimath::Math::Function::Text.new("ref"),
+                        Plurimath::Math::Formula.new([
+                          Plurimath::Math::Symbol.new("r"),
+                          Plurimath::Math::Symbol.new("e"),
+                          Plurimath::Math::Symbol.new("f"),
+                        ]),
                         "textrm"
                       ),
                       Plurimath::Math::Number.new("2")
@@ -5174,7 +5670,8 @@ RSpec.describe Plurimath::Latex::Parser do
                   Plurimath::Math::Formula.new([
                     Plurimath::Math::Symbol.new("."),
                     Plurimath::Math::Number.new("02"),
-                    Plurimath::Math::Function::Text.new("in")
+                    Plurimath::Math::Symbol.new("i"),
+                    Plurimath::Math::Symbol.new("n"),
                   ])
                 ])
               ]),
@@ -5192,25 +5689,32 @@ RSpec.describe Plurimath::Latex::Parser do
                   Plurimath::Math::Function::Over.new(
                     Plurimath::Math::Formula.new([
                       Plurimath::Math::Function::Base.new(
-                        Plurimath::Math::Function::Text.new("p"),
-                        Plurimath::Math::Function::Text.new("ijk")
+                        Plurimath::Math::Symbol.new("p"),
+                        Plurimath::Math::Formula.new([
+                      Plurimath::Math::Symbol.new("i"),
+                      Plurimath::Math::Symbol.new("j"),
+                      Plurimath::Math::Symbol.new("k"),
+                    ])
                       )
                     ]),
                     Plurimath::Math::Formula.new([
-                      Plurimath::Math::Function::Text.new("M"),
+                      Plurimath::Math::Symbol.new("M"),
                       Plurimath::Math::Symbol.new("/"),
-                      Plurimath::Math::Function::Power.new(
-                        Plurimath::Math::Function::Text.new("LT"),
-                        Plurimath::Math::Number.new("2")
-                      )
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Symbol.new("L"),
+                        Plurimath::Math::Function::Power.new(
+                          Plurimath::Math::Symbol.new("T"),
+                          Plurimath::Math::Number.new("2")
+                        )
+                      ])
                     ])
                   ),
                   Plurimath::Math::Function::Over.new(
                     Plurimath::Math::Formula.new([
-                      Plurimath::Math::Function::Text.new("M"),
+                      Plurimath::Math::Symbol.new("M"),
                       Plurimath::Math::Symbol.new("/"),
                       Plurimath::Math::Function::Power.new(
-                        Plurimath::Math::Function::Text.new("L"),
+                        Plurimath::Math::Symbol.new("L"),
                         Plurimath::Math::Number.new("3")
                       )
                     ]),
@@ -5218,7 +5722,11 @@ RSpec.describe Plurimath::Latex::Parser do
                       Plurimath::Math::Function::Base.new(
                         Plurimath::Math::Symbol.new("&#x3C1;"),
                         Plurimath::Math::Function::FontStyle.new(
-                          Plurimath::Math::Function::Text.new("ref"),
+                          Plurimath::Math::Formula.new([
+                            Plurimath::Math::Symbol.new("r"),
+                            Plurimath::Math::Symbol.new("e"),
+                            Plurimath::Math::Symbol.new("f"),
+                          ]),
                           "textrm"
                         )
                       )
@@ -5229,15 +5737,19 @@ RSpec.describe Plurimath::Latex::Parser do
                       Plurimath::Math::Function::Left.new("["),
                       Plurimath::Math::Function::Over.new(
                         Plurimath::Math::Formula.new([
-                          Plurimath::Math::Function::Text.new("L"),
+                          Plurimath::Math::Symbol.new("L"),
                           Plurimath::Math::Symbol.new("/"),
-                          Plurimath::Math::Function::Text.new("T")
+                          Plurimath::Math::Symbol.new("T")
                         ]),
                         Plurimath::Math::Formula.new([
                           Plurimath::Math::Function::Base.new(
-                            Plurimath::Math::Function::Text.new("c"),
+                            Plurimath::Math::Symbol.new("c"),
                             Plurimath::Math::Function::FontStyle.new(
-                              Plurimath::Math::Function::Text.new("ref"),
+                              Plurimath::Math::Formula.new([
+                                Plurimath::Math::Symbol.new("r"),
+                                Plurimath::Math::Symbol.new("e"),
+                                Plurimath::Math::Symbol.new("f"),
+                              ]),
                               "textrm"
                             )
                           )
@@ -5260,10 +5772,14 @@ RSpec.describe Plurimath::Latex::Parser do
                   ),
                   Plurimath::Math::Formula.new,
                   Plurimath::Math::Symbol.new("="),
-                  Plurimath::Math::Function::Text.new("p"),
+                  Plurimath::Math::Symbol.new("p"),
                   Plurimath::Math::Function::Base.new(
                     Plurimath::Math::Symbol.new("'"),
-                    Plurimath::Math::Function::Text.new("ijk")
+                    Plurimath::Math::Formula.new([
+                      Plurimath::Math::Symbol.new("i"),
+                      Plurimath::Math::Symbol.new("j"),
+                      Plurimath::Math::Symbol.new("k"),
+                    ])
                   ),
                   Plurimath::Math::Symbol.new("/"),
                   Plurimath::Math::Formula.new([
@@ -5271,17 +5787,25 @@ RSpec.describe Plurimath::Latex::Parser do
                     Plurimath::Math::Function::Base.new(
                       Plurimath::Math::Symbol.new("'"),
                       Plurimath::Math::Function::FontStyle.new(
-                        Plurimath::Math::Function::Text.new("ref"),
+                        Plurimath::Math::Formula.new([
+                          Plurimath::Math::Symbol.new("r"),
+                          Plurimath::Math::Symbol.new("e"),
+                          Plurimath::Math::Symbol.new("f"),
+                        ]),
                         "textrm"
                       )
                     ),
                     Plurimath::Math::Function::Power.new(
                       Plurimath::Math::Formula.new([
-                        Plurimath::Math::Function::Text.new("c"),
+                        Plurimath::Math::Symbol.new("c"),
                         Plurimath::Math::Function::Base.new(
                           Plurimath::Math::Symbol.new("'"),
                           Plurimath::Math::Function::FontStyle.new(
-                            Plurimath::Math::Function::Text.new("ref"),
+                            Plurimath::Math::Formula.new([
+                              Plurimath::Math::Symbol.new("r"),
+                              Plurimath::Math::Symbol.new("e"),
+                              Plurimath::Math::Symbol.new("f"),
+                            ]),
                             "textrm"
                           )
                         )
@@ -5318,34 +5842,50 @@ RSpec.describe Plurimath::Latex::Parser do
                 Plurimath::Math::Function::Td.new([
                   Plurimath::Math::Function::Base.new(
                     Plurimath::Math::Function::Tilde.new(
-                          Plurimath::Math::Function::Text.new("x")
-                        ),
-                    Plurimath::Math::Function::Text.new("ijk")
+                      Plurimath::Math::Symbol.new("x")
+                    ),
+                    Plurimath::Math::Formula.new([
+                      Plurimath::Math::Symbol.new("i"),
+                      Plurimath::Math::Symbol.new("j"),
+                      Plurimath::Math::Symbol.new("k"),
+                    ])
                   ),
                   Plurimath::Math::Symbol.new("="),
                   Plurimath::Math::Function::Base.new(
-                    Plurimath::Math::Function::Text.new("x"),
-                    Plurimath::Math::Function::Text.new("ijk")
+                    Plurimath::Math::Symbol.new("x"),
+                    Plurimath::Math::Formula.new([
+                      Plurimath::Math::Symbol.new("i"),
+                      Plurimath::Math::Symbol.new("j"),
+                      Plurimath::Math::Symbol.new("k"),
+                    ])
                   ),
                   Plurimath::Math::Symbol.new("/"),
-                  Plurimath::Math::Function::Text.new("L"),
+                  Plurimath::Math::Symbol.new("L"),
                   Plurimath::Math::Symbol.new(",")
                 ]),
                 Plurimath::Math::Function::Td.new([
                   Plurimath::Math::Function::Base.new(
                     Plurimath::Math::Function::Tilde.new(
-                      Plurimath::Math::Function::Text.new("u")
+                      Plurimath::Math::Symbol.new("u")
                     ),
-                    Plurimath::Math::Function::Text.new("ijk")
+                    Plurimath::Math::Formula.new([
+                      Plurimath::Math::Symbol.new("i"),
+                      Plurimath::Math::Symbol.new("j"),
+                      Plurimath::Math::Symbol.new("k"),
+                    ])
                   ),
                   Plurimath::Math::Symbol.new("="),
                   Plurimath::Math::Function::Base.new(
-                    Plurimath::Math::Function::Text.new("u"),
-                    Plurimath::Math::Function::Text.new("ijk")
+                    Plurimath::Math::Symbol.new("u"),
+                    Plurimath::Math::Formula.new([
+                      Plurimath::Math::Symbol.new("i"),
+                      Plurimath::Math::Symbol.new("j"),
+                      Plurimath::Math::Symbol.new("k"),
+                    ])
                   ),
                   Plurimath::Math::Symbol.new("/"),
                   Plurimath::Math::Function::Base.new(
-                    Plurimath::Math::Function::Text.new("c"),
+                    Plurimath::Math::Symbol.new("c"),
                     Plurimath::Math::Symbol.new("&#x221E;")
                   ),
                   Plurimath::Math::Symbol.new(",")
@@ -5355,12 +5895,20 @@ RSpec.describe Plurimath::Latex::Parser do
                     Plurimath::Math::Function::Tilde.new(
                       Plurimath::Math::Symbol.new("&#x3C1;")
                     ),
-                    Plurimath::Math::Function::Text.new("ijk")
+                    Plurimath::Math::Formula.new([
+                      Plurimath::Math::Symbol.new("i"),
+                      Plurimath::Math::Symbol.new("j"),
+                      Plurimath::Math::Symbol.new("k"),
+                    ])
                   ),
                   Plurimath::Math::Symbol.new("="),
                   Plurimath::Math::Function::Base.new(
                     Plurimath::Math::Symbol.new("&#x3C1;"),
-                    Plurimath::Math::Function::Text.new("ijk")
+                    Plurimath::Math::Formula.new([
+                      Plurimath::Math::Symbol.new("i"),
+                      Plurimath::Math::Symbol.new("j"),
+                      Plurimath::Math::Symbol.new("k"),
+                    ])
                   ),
                   Plurimath::Math::Symbol.new("/"),
                   Plurimath::Math::Function::Base.new(
@@ -5374,34 +5922,50 @@ RSpec.describe Plurimath::Latex::Parser do
                 Plurimath::Math::Function::Td.new([
                   Plurimath::Math::Function::Base.new(
                     Plurimath::Math::Function::Tilde.new(
-                      Plurimath::Math::Function::Text.new("y")
+                      Plurimath::Math::Symbol.new("y")
                     ),
-                    Plurimath::Math::Function::Text.new("ijk")
+                    Plurimath::Math::Formula.new([
+                      Plurimath::Math::Symbol.new("i"),
+                      Plurimath::Math::Symbol.new("j"),
+                      Plurimath::Math::Symbol.new("k"),
+                    ])
                   ),
                   Plurimath::Math::Symbol.new("="),
                   Plurimath::Math::Function::Base.new(
-                    Plurimath::Math::Function::Text.new("y"),
-                    Plurimath::Math::Function::Text.new("ijk")
+                    Plurimath::Math::Symbol.new("y"),
+                    Plurimath::Math::Formula.new([
+                      Plurimath::Math::Symbol.new("i"),
+                      Plurimath::Math::Symbol.new("j"),
+                      Plurimath::Math::Symbol.new("k"),
+                    ])
                   ),
                   Plurimath::Math::Symbol.new("/"),
-                  Plurimath::Math::Function::Text.new("L"),
+                  Plurimath::Math::Symbol.new("L"),
                   Plurimath::Math::Symbol.new(",")
                 ]),
                 Plurimath::Math::Function::Td.new([
                   Plurimath::Math::Function::Base.new(
                     Plurimath::Math::Function::Tilde.new(
-                      Plurimath::Math::Function::Text.new("v")
+                      Plurimath::Math::Symbol.new("v")
                     ),
-                    Plurimath::Math::Function::Text.new("ijk")
+                    Plurimath::Math::Formula.new([
+                      Plurimath::Math::Symbol.new("i"),
+                      Plurimath::Math::Symbol.new("j"),
+                      Plurimath::Math::Symbol.new("k"),
+                    ])
                   ),
                   Plurimath::Math::Symbol.new("="),
                   Plurimath::Math::Function::Base.new(
-                    Plurimath::Math::Function::Text.new("v"),
-                    Plurimath::Math::Function::Text.new("ijk")
+                    Plurimath::Math::Symbol.new("v"),
+                    Plurimath::Math::Formula.new([
+                      Plurimath::Math::Symbol.new("i"),
+                      Plurimath::Math::Symbol.new("j"),
+                      Plurimath::Math::Symbol.new("k"),
+                    ])
                   ),
                   Plurimath::Math::Symbol.new("/"),
                   Plurimath::Math::Function::Base.new(
-                    Plurimath::Math::Function::Text.new("c"),
+                    Plurimath::Math::Symbol.new("c"),
                     Plurimath::Math::Symbol.new("&#x221E;")
                   ),
                   Plurimath::Math::Symbol.new(",")
@@ -5409,14 +5973,22 @@ RSpec.describe Plurimath::Latex::Parser do
                 Plurimath::Math::Function::Td.new([
                   Plurimath::Math::Function::Base.new(
                     Plurimath::Math::Function::Tilde.new(
-                      Plurimath::Math::Function::Text.new("p")
+                      Plurimath::Math::Symbol.new("p")
                     ),
-                    Plurimath::Math::Function::Text.new("ijk")
+                    Plurimath::Math::Formula.new([
+                      Plurimath::Math::Symbol.new("i"),
+                      Plurimath::Math::Symbol.new("j"),
+                      Plurimath::Math::Symbol.new("k"),
+                    ])
                   ),
                   Plurimath::Math::Symbol.new("="),
                   Plurimath::Math::Function::Base.new(
-                    Plurimath::Math::Function::Text.new("p"),
-                    Plurimath::Math::Function::Text.new("ijk")
+                    Plurimath::Math::Symbol.new("p"),
+                    Plurimath::Math::Formula.new([
+                      Plurimath::Math::Symbol.new("i"),
+                      Plurimath::Math::Symbol.new("j"),
+                      Plurimath::Math::Symbol.new("k"),
+                    ])
                   ),
                   Plurimath::Math::Symbol.new("/"),
                   Plurimath::Math::Formula.new([
@@ -5425,7 +5997,7 @@ RSpec.describe Plurimath::Latex::Parser do
                       Plurimath::Math::Symbol.new("&#x221E;")
                     ),
                     Plurimath::Math::Function::PowerBase.new(
-                      Plurimath::Math::Function::Text.new("c"),
+                      Plurimath::Math::Symbol.new("c"),
                       Plurimath::Math::Symbol.new("&#x221E;"),
                       Plurimath::Math::Number.new("2"),
                     )
@@ -5434,7 +6006,8 @@ RSpec.describe Plurimath::Latex::Parser do
                   Plurimath::Math::Formula.new([
                     Plurimath::Math::Symbol.new("."),
                     Plurimath::Math::Number.new("02"),
-                    Plurimath::Math::Function::Text.new("in")
+                    Plurimath::Math::Symbol.new("i"),
+                    Plurimath::Math::Symbol.new("n"),
                   ])
                 ])
               ]),
@@ -5442,34 +6015,50 @@ RSpec.describe Plurimath::Latex::Parser do
                 Plurimath::Math::Function::Td.new([
                   Plurimath::Math::Function::Base.new(
                     Plurimath::Math::Function::Tilde.new(
-                      Plurimath::Math::Function::Text.new("z")
+                      Plurimath::Math::Symbol.new("z")
                     ),
-                    Plurimath::Math::Function::Text.new("ijk")
+                    Plurimath::Math::Formula.new([
+                      Plurimath::Math::Symbol.new("i"),
+                      Plurimath::Math::Symbol.new("j"),
+                      Plurimath::Math::Symbol.new("k"),
+                    ])
                   ),
                   Plurimath::Math::Symbol.new("="),
                   Plurimath::Math::Function::Base.new(
-                    Plurimath::Math::Function::Text.new("z"),
-                    Plurimath::Math::Function::Text.new("ijk")
+                    Plurimath::Math::Symbol.new("z"),
+                    Plurimath::Math::Formula.new([
+                      Plurimath::Math::Symbol.new("i"),
+                      Plurimath::Math::Symbol.new("j"),
+                      Plurimath::Math::Symbol.new("k"),
+                    ])
                   ),
                   Plurimath::Math::Symbol.new("/"),
-                  Plurimath::Math::Function::Text.new("L"),
+                  Plurimath::Math::Symbol.new("L"),
                   Plurimath::Math::Symbol.new(",")
                 ]),
                 Plurimath::Math::Function::Td.new([
                   Plurimath::Math::Function::Base.new(
                     Plurimath::Math::Function::Tilde.new(
-                      Plurimath::Math::Function::Text.new("w")
+                      Plurimath::Math::Symbol.new("w")
                     ),
-                    Plurimath::Math::Function::Text.new("ijk")
+                    Plurimath::Math::Formula.new([
+                      Plurimath::Math::Symbol.new("i"),
+                      Plurimath::Math::Symbol.new("j"),
+                      Plurimath::Math::Symbol.new("k"),
+                    ])
                   ),
                   Plurimath::Math::Symbol.new("="),
                   Plurimath::Math::Function::Base.new(
-                    Plurimath::Math::Function::Text.new("w"),
-                    Plurimath::Math::Function::Text.new("ijk")
+                    Plurimath::Math::Symbol.new("w"),
+                    Plurimath::Math::Formula.new([
+                      Plurimath::Math::Symbol.new("i"),
+                      Plurimath::Math::Symbol.new("j"),
+                      Plurimath::Math::Symbol.new("k"),
+                    ])
                   ),
                   Plurimath::Math::Symbol.new("/"),
                   Plurimath::Math::Function::Base.new(
-                    Plurimath::Math::Function::Text.new("c"),
+                    Plurimath::Math::Symbol.new("c"),
                     Plurimath::Math::Symbol.new("&#x221E;")
                   ),
                   Plurimath::Math::Symbol.new(",")
@@ -5481,12 +6070,20 @@ RSpec.describe Plurimath::Latex::Parser do
                         Plurimath::Math::Symbol.new("&#x3BC;")
                       )
                     ),
-                    Plurimath::Math::Function::Text.new("ijk")
+                    Plurimath::Math::Formula.new([
+                      Plurimath::Math::Symbol.new("i"),
+                      Plurimath::Math::Symbol.new("j"),
+                      Plurimath::Math::Symbol.new("k"),
+                    ])
                   ),
                   Plurimath::Math::Symbol.new("="),
                   Plurimath::Math::Function::Base.new(
                     Plurimath::Math::Symbol.new("&#x3BC;"),
-                    Plurimath::Math::Function::Text.new("ijk")
+                    Plurimath::Math::Formula.new([
+                      Plurimath::Math::Symbol.new("i"),
+                      Plurimath::Math::Symbol.new("j"),
+                      Plurimath::Math::Symbol.new("k"),
+                    ])
                   ),
                   Plurimath::Math::Symbol.new("/"),
                   Plurimath::Math::Formula.new([
@@ -5495,10 +6092,10 @@ RSpec.describe Plurimath::Latex::Parser do
                       Plurimath::Math::Symbol.new("&#x221E;")
                     ),
                     Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Function::Text.new("c"),
+                      Plurimath::Math::Symbol.new("c"),
                       Plurimath::Math::Symbol.new("&#x221E;")
                     ),
-                    Plurimath::Math::Function::Text.new("L")
+                    Plurimath::Math::Symbol.new("L")
                   ]),
                   Plurimath::Math::Symbol.new(",")
                 ])
@@ -5506,7 +6103,9 @@ RSpec.describe Plurimath::Latex::Parser do
             ],
             nil,
             [
-              Plurimath::Math::Function::Text.new("ccc")
+              Plurimath::Math::Symbol.new("c"),
+              Plurimath::Math::Symbol.new("c"),
+              Plurimath::Math::Symbol.new("c"),
             ],
           )
         ])
@@ -5532,18 +6131,18 @@ RSpec.describe Plurimath::Latex::Parser do
                 Plurimath::Math::Function::Td.new([
                   Plurimath::Math::Function::Base.new(
                     Plurimath::Math::Function::Tilde.new(
-                      Plurimath::Math::Function::Text.new("u")
+                      Plurimath::Math::Symbol.new("u")
                     ),
                     Plurimath::Math::Symbol.new("&#x221E;")
                   ),
                   Plurimath::Math::Symbol.new("="),
                   Plurimath::Math::Function::Base.new(
-                    Plurimath::Math::Function::Text.new("u"),
+                    Plurimath::Math::Symbol.new("u"),
                     Plurimath::Math::Symbol.new("&#x221E;")
                   ),
                   Plurimath::Math::Symbol.new("/"),
                   Plurimath::Math::Function::Base.new(
-                    Plurimath::Math::Function::Text.new("c"),
+                    Plurimath::Math::Symbol.new("c"),
                     Plurimath::Math::Symbol.new("&#x221E;")
                   ),
                   Plurimath::Math::Symbol.new(","),
@@ -5575,18 +6174,18 @@ RSpec.describe Plurimath::Latex::Parser do
                 Plurimath::Math::Function::Td.new([
                   Plurimath::Math::Function::Base.new(
                     Plurimath::Math::Function::Tilde.new(
-                      Plurimath::Math::Function::Text.new("v")
+                      Plurimath::Math::Symbol.new("v")
                     ),
                     Plurimath::Math::Symbol.new("&#x221E;")
                   ),
                   Plurimath::Math::Symbol.new("="),
                   Plurimath::Math::Function::Base.new(
-                    Plurimath::Math::Function::Text.new("v"),
+                    Plurimath::Math::Symbol.new("v"),
                     Plurimath::Math::Symbol.new("&#x221E;")
                   ),
                   Plurimath::Math::Symbol.new("/"),
                   Plurimath::Math::Function::Base.new(
-                    Plurimath::Math::Function::Text.new("c"),
+                    Plurimath::Math::Symbol.new("c"),
                     Plurimath::Math::Symbol.new("&#x221E;")
                   ),
                   Plurimath::Math::Symbol.new(",")
@@ -5594,13 +6193,13 @@ RSpec.describe Plurimath::Latex::Parser do
                 Plurimath::Math::Function::Td.new([
                   Plurimath::Math::Function::Base.new(
                     Plurimath::Math::Function::Tilde.new(
-                      Plurimath::Math::Function::Text.new("p")
+                      Plurimath::Math::Symbol.new("p")
                     ),
                     Plurimath::Math::Symbol.new("&#x221E;")
                   ),
                   Plurimath::Math::Symbol.new("="),
                   Plurimath::Math::Function::Base.new(
-                    Plurimath::Math::Function::Text.new("p"),
+                    Plurimath::Math::Symbol.new("p"),
                     Plurimath::Math::Symbol.new("&#x221E;")
                   ),
                   Plurimath::Math::Symbol.new("/"),
@@ -5610,7 +6209,7 @@ RSpec.describe Plurimath::Latex::Parser do
                       Plurimath::Math::Symbol.new("&#x221E;")
                     ),
                     Plurimath::Math::Function::PowerBase.new(
-                      Plurimath::Math::Function::Text.new("c"),
+                      Plurimath::Math::Symbol.new("c"),
                       Plurimath::Math::Symbol.new("&#x221E;"),
                       Plurimath::Math::Number.new("2"),
                     )
@@ -5623,7 +6222,8 @@ RSpec.describe Plurimath::Latex::Parser do
                   Plurimath::Math::Formula.new([
                     Plurimath::Math::Symbol.new("."),
                     Plurimath::Math::Number.new("02"),
-                    Plurimath::Math::Function::Text.new("in")
+                    Plurimath::Math::Symbol.new("i"),
+                    Plurimath::Math::Symbol.new("n"),
                   ])
                 ])
               ]),
@@ -5631,18 +6231,18 @@ RSpec.describe Plurimath::Latex::Parser do
                 Plurimath::Math::Function::Td.new([
                   Plurimath::Math::Function::Base.new(
                     Plurimath::Math::Function::Tilde.new(
-                      Plurimath::Math::Function::Text.new("w")
+                      Plurimath::Math::Symbol.new("w")
                     ),
                     Plurimath::Math::Symbol.new("&#x221E;")
                   ),
                   Plurimath::Math::Symbol.new("="),
                   Plurimath::Math::Function::Base.new(
-                    Plurimath::Math::Function::Text.new("w"),
+                    Plurimath::Math::Symbol.new("w"),
                     Plurimath::Math::Symbol.new("&#x221E;")
                   ),
                   Plurimath::Math::Symbol.new("/"),
                   Plurimath::Math::Function::Base.new(
-                    Plurimath::Math::Function::Text.new("c"),
+                    Plurimath::Math::Symbol.new("c"),
                     Plurimath::Math::Symbol.new("&#x221E;")
                   ),
                   Plurimath::Math::Symbol.new(",")
@@ -5668,24 +6268,28 @@ RSpec.describe Plurimath::Latex::Parser do
                       Plurimath::Math::Symbol.new("&#x221E;")
                     ),
                     Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Function::Text.new("c"),
+                      Plurimath::Math::Symbol.new("c"),
                       Plurimath::Math::Symbol.new("&#x221E;")
                     ),
-                    Plurimath::Math::Function::Text.new("L")
+                    Plurimath::Math::Symbol.new("L")
                   ]),
                   Plurimath::Math::Symbol.new("&#x223C;"),
-                  Plurimath::Math::Function::Text.new("O"),
+                  Plurimath::Math::Symbol.new("O"),
                   Plurimath::Math::Formula.new([
                     Plurimath::Math::Number.new("1"),
                     Plurimath::Math::Symbol.new("/"),
-                    Plurimath::Math::Function::Text.new("Re")
+                    Plurimath::Math::Symbol.new("R"),
+                    Plurimath::Math::Symbol.new("e"),
                   ]),
                   Plurimath::Math::Symbol.new(",")
                 ])
               ])
             ],
             nil,
-            [Plurimath::Math::Function::Text.new("cc")],
+            [
+              Plurimath::Math::Symbol.new("c"),
+              Plurimath::Math::Symbol.new("c"),
+            ],
           )
         ])
         expect(formula).to eq(expected_value)
@@ -5701,18 +6305,22 @@ RSpec.describe Plurimath::Latex::Parser do
       it "returns formula" do
         expected_value = Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Base.new(
-            Plurimath::Math::Function::Text.new("c"),
-            Plurimath::Math::Function::Text.new("p")
+            Plurimath::Math::Symbol.new("c"),
+            Plurimath::Math::Symbol.new("p")
           ),
           Plurimath::Math::Symbol.new("="),
           Plurimath::Math::Function::Over.new(
             Plurimath::Math::Formula.new([
-              Plurimath::Math::Function::Text.new("p"),
+              Plurimath::Math::Symbol.new("p"),
               Plurimath::Math::Symbol.new("-"),
               Plurimath::Math::Function::Base.new(
-                Plurimath::Math::Function::Text.new("p"),
+                Plurimath::Math::Symbol.new("p"),
                 Plurimath::Math::Function::FontStyle.new(
-                  Plurimath::Math::Function::Text.new("ref"),
+                  Plurimath::Math::Formula.new([
+                    Plurimath::Math::Symbol.new("r"),
+                    Plurimath::Math::Symbol.new("e"),
+                    Plurimath::Math::Symbol.new("f"),
+                  ]),
                   "textrm"
                 )
               )
@@ -5729,14 +6337,22 @@ RSpec.describe Plurimath::Latex::Parser do
               Plurimath::Math::Function::Base.new(
                 Plurimath::Math::Symbol.new("&#x3C1;"),
                 Plurimath::Math::Function::FontStyle.new(
-                  Plurimath::Math::Function::Text.new("ref"),
+                  Plurimath::Math::Formula.new([
+                    Plurimath::Math::Symbol.new("r"),
+                    Plurimath::Math::Symbol.new("e"),
+                    Plurimath::Math::Symbol.new("f"),
+                  ]),
                   "textrm"
                 )
               ),
               Plurimath::Math::Function::PowerBase.new(
-                Plurimath::Math::Function::Text.new("q"),
+                Plurimath::Math::Symbol.new("q"),
                 Plurimath::Math::Function::FontStyle.new(
-                  Plurimath::Math::Function::Text.new("ref"),
+                  Plurimath::Math::Formula.new([
+                    Plurimath::Math::Symbol.new("r"),
+                    Plurimath::Math::Symbol.new("e"),
+                    Plurimath::Math::Symbol.new("f"),
+                  ]),
                   "textrm"
                 ),
                 Plurimath::Math::Number.new("2")
@@ -5759,9 +6375,9 @@ RSpec.describe Plurimath::Latex::Parser do
         expected_value = Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Base.new(
             Plurimath::Math::Function::Vec.new(
-              Plurimath::Math::Function::Text.new("c")
+              Plurimath::Math::Symbol.new("c")
             ),
-            Plurimath::Math::Function::Text.new("f")
+            Plurimath::Math::Symbol.new("f")
           ),
           Plurimath::Math::Symbol.new("="),
           Plurimath::Math::Function::Over.new(
@@ -5782,14 +6398,22 @@ RSpec.describe Plurimath::Latex::Parser do
               Plurimath::Math::Function::Base.new(
                 Plurimath::Math::Symbol.new("&#x3C1;"),
                 Plurimath::Math::Function::FontStyle.new(
-                  Plurimath::Math::Function::Text.new("ref"),
+                  Plurimath::Math::Formula.new([
+                    Plurimath::Math::Symbol.new("r"),
+                    Plurimath::Math::Symbol.new("e"),
+                    Plurimath::Math::Symbol.new("f"),
+                  ]),
                   "textrm"
                 )
               ),
               Plurimath::Math::Function::PowerBase.new(
-                Plurimath::Math::Function::Text.new("q"),
+                Plurimath::Math::Symbol.new("q"),
                 Plurimath::Math::Function::FontStyle.new(
-                  Plurimath::Math::Function::Text.new("ref"),
+                  Plurimath::Math::Formula.new([
+                    Plurimath::Math::Symbol.new("r"),
+                    Plurimath::Math::Symbol.new("e"),
+                    Plurimath::Math::Symbol.new("f"),
+                  ]),
                   "textrm"
                 ),
                 Plurimath::Math::Number.new("2")
@@ -5820,17 +6444,17 @@ RSpec.describe Plurimath::Latex::Parser do
           ),
           Plurimath::Math::Formula.new([
             Plurimath::Math::Function::Power.new(
-              Plurimath::Math::Function::Text.new("u"),
+              Plurimath::Math::Symbol.new("u"),
               Plurimath::Math::Number.new("2")
             ),
             Plurimath::Math::Symbol.new("+"),
             Plurimath::Math::Function::Power.new(
-              Plurimath::Math::Function::Text.new("v"),
+              Plurimath::Math::Symbol.new("v"),
               Plurimath::Math::Number.new("2")
             ),
             Plurimath::Math::Symbol.new("+"),
             Plurimath::Math::Function::Power.new(
-              Plurimath::Math::Function::Text.new("w"),
+              Plurimath::Math::Symbol.new("w"),
               Plurimath::Math::Number.new("2")
             )
           ]),
@@ -5844,7 +6468,7 @@ RSpec.describe Plurimath::Latex::Parser do
             ])
           ),
           Plurimath::Math::Function::Power.new(
-            Plurimath::Math::Function::Text.new("q"),
+            Plurimath::Math::Symbol.new("q"),
             Plurimath::Math::Number.new("2")
           )
         ])
@@ -5863,11 +6487,11 @@ RSpec.describe Plurimath::Latex::Parser do
       }
       it "returns formula" do
         expected_value = Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Text.new("T"),
+          Plurimath::Math::Symbol.new("T"),
           Plurimath::Math::Symbol.new("="),
-          Plurimath::Math::Function::Text.new("G"),
+          Plurimath::Math::Symbol.new("G"),
           Plurimath::Math::Symbol.new("&#x3A;"),
-          Plurimath::Math::Function::Text.new("J"),
+          Plurimath::Math::Symbol.new("J"),
           Plurimath::Math::Symbol.new("&#x3A;"),
           Plurimath::Math::Function::Frac.new(
             Plurimath::Math::Formula.new([
@@ -5876,11 +6500,11 @@ RSpec.describe Plurimath::Latex::Parser do
             ]),
             Plurimath::Math::Formula.new([
               Plurimath::Math::Symbol.new("&#x2202;"),
-              Plurimath::Math::Function::Text.new("x")
+              Plurimath::Math::Symbol.new("x")
             ])
           ),
           Plurimath::Math::Symbol.new("-"),
-          Plurimath::Math::Function::Text.new("E"),
+          Plurimath::Math::Symbol.new("E"),
           Plurimath::Math::Symbol.new("&#x3A;"),
           Plurimath::Math::Function::Frac.new(
             Plurimath::Math::Function::Power.new(
@@ -5890,15 +6514,15 @@ RSpec.describe Plurimath::Latex::Parser do
             Plurimath::Math::Formula.new([
               Plurimath::Math::Symbol.new("&#x2202;"),
               Plurimath::Math::Function::Power.new(
-                Plurimath::Math::Function::Text.new("x"),
+                Plurimath::Math::Symbol.new("x"),
                 Plurimath::Math::Number.new("2")
               )
             ])
           ),
           Plurimath::Math::Formula.new([
             Plurimath::Math::Function::Base.new(
-              Plurimath::Math::Function::Text.new("C"),
-              Plurimath::Math::Function::Text.new("w")
+              Plurimath::Math::Symbol.new("C"),
+              Plurimath::Math::Symbol.new("w")
             ),
             Plurimath::Math::Symbol.new("&#x3A;"),
             Plurimath::Math::Function::Frac.new(
@@ -5908,7 +6532,7 @@ RSpec.describe Plurimath::Latex::Parser do
               ]),
               Plurimath::Math::Formula.new([
                 Plurimath::Math::Symbol.new("&#x2202;"),
-                Plurimath::Math::Function::Text.new("x")
+                Plurimath::Math::Symbol.new("x")
               ])
             )
           ])
@@ -5932,16 +6556,16 @@ RSpec.describe Plurimath::Latex::Parser do
             ]),
             Plurimath::Math::Formula.new([
               Plurimath::Math::Symbol.new("&#x394;"),
-              Plurimath::Math::Function::Text.new("L")
+              Plurimath::Math::Symbol.new("L")
             ])
           ),
           Plurimath::Math::Symbol.new("="),
           Plurimath::Math::Function::Frac.new(
-            Plurimath::Math::Function::Text.new("T"),
+            Plurimath::Math::Symbol.new("T"),
             Plurimath::Math::Formula.new([
-              Plurimath::Math::Function::Text.new("J"),
+              Plurimath::Math::Symbol.new("J"),
               Plurimath::Math::Symbol.new("&#x3A;"),
-              Plurimath::Math::Function::Text.new("G")
+              Plurimath::Math::Symbol.new("G")
             ])
           )
         ])
@@ -5957,17 +6581,17 @@ RSpec.describe Plurimath::Latex::Parser do
       }
       it "returns formula" do
         expected_value = Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Text.new("V"),
+          Plurimath::Math::Symbol.new("V"),
           Plurimath::Math::Symbol.new("="),
           Plurimath::Math::Function::Frac.new(
             Plurimath::Math::Number.new("1"),
             Plurimath::Math::Number.new("2")
           ),
           Plurimath::Math::Symbol.new("&#x3A;"),
-          Plurimath::Math::Function::Text.new("k"),
+          Plurimath::Math::Symbol.new("k"),
           Plurimath::Math::Symbol.new("&#x3A;"),
           Plurimath::Math::Function::Power.new(
-            Plurimath::Math::Function::Text.new("d"),
+            Plurimath::Math::Symbol.new("d"),
             Plurimath::Math::Number.new("2")
           )
         ])
@@ -5989,11 +6613,11 @@ RSpec.describe Plurimath::Latex::Parser do
       it "returns formula" do
         expected_value = Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Base.new(
-            Plurimath::Math::Function::Text.new("D"),
-            Plurimath::Math::Function::Text.new("s")
+            Plurimath::Math::Symbol.new("D"),
+            Plurimath::Math::Symbol.new("s")
           ),
           Plurimath::Math::Symbol.new("="),
-          Plurimath::Math::Function::Text.new("G"),
+          Plurimath::Math::Symbol.new("G"),
           Plurimath::Math::Symbol.new("&#x3A;"),
           Plurimath::Math::Formula.new([
             Plurimath::Math::Function::Left.new("("),
@@ -6018,7 +6642,8 @@ RSpec.describe Plurimath::Latex::Parser do
               ],
               nil,
               [
-                Plurimath::Math::Function::Text.new("cc")
+                Plurimath::Math::Symbol.new("c"),
+                Plurimath::Math::Symbol.new("c"),
               ],
             ),
             Plurimath::Math::Function::Right.new(")")
@@ -6053,36 +6678,36 @@ RSpec.describe Plurimath::Latex::Parser do
                 Plurimath::Math::Function::Tr.new([
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Function::Text.new("V"),
-                      Plurimath::Math::Function::Text.new("x")
+                      Plurimath::Math::Symbol.new("V"),
+                      Plurimath::Math::Symbol.new("x")
                     )
                   ])
                 ]),
                 Plurimath::Math::Function::Tr.new([
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Function::Text.new("V"),
-                      Plurimath::Math::Function::Text.new("y")
+                      Plurimath::Math::Symbol.new("V"),
+                      Plurimath::Math::Symbol.new("y")
                     )
                   ])
                 ])
               ],
               nil,
               [
-                Plurimath::Math::Function::Text.new("c")
+                Plurimath::Math::Symbol.new("c")
               ],
             ),
             Plurimath::Math::Function::Right.new(")")
           ]),
           Plurimath::Math::Symbol.new("="),
           Plurimath::Math::Function::Base.new(
-            Plurimath::Math::Function::Text.new("h"),
-            Plurimath::Math::Function::Text.new("s")
+            Plurimath::Math::Symbol.new("h"),
+            Plurimath::Math::Symbol.new("s")
           ),
           Plurimath::Math::Symbol.new("&#x3A;"),
           Plurimath::Math::Function::Base.new(
-            Plurimath::Math::Function::Text.new("D"),
-            Plurimath::Math::Function::Text.new("s")
+            Plurimath::Math::Symbol.new("D"),
+            Plurimath::Math::Symbol.new("s")
           ),
           Plurimath::Math::Symbol.new("&#x3A;"),
           Plurimath::Math::Formula.new([
@@ -6093,7 +6718,10 @@ RSpec.describe Plurimath::Latex::Parser do
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Function::Base.new(
                       Plurimath::Math::Symbol.new("&#x03B5;"),
-                      Plurimath::Math::Function::Text.new("xz")
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Symbol.new("x"),
+                        Plurimath::Math::Symbol.new("z"),
+                      ])
                     )
                   ])
                 ]),
@@ -6101,14 +6729,17 @@ RSpec.describe Plurimath::Latex::Parser do
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Function::Base.new(
                       Plurimath::Math::Symbol.new("&#x03B5;"),
-                      Plurimath::Math::Function::Text.new("yz")
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Symbol.new("y"),
+                        Plurimath::Math::Symbol.new("z"),
+                      ])
                     )
                   ])
                 ])
               ],
               nil,
               [
-                Plurimath::Math::Function::Text.new("c")
+                Plurimath::Math::Symbol.new("c")
               ],
             ),
             Plurimath::Math::Function::Right.new(")")
@@ -6133,7 +6764,7 @@ RSpec.describe Plurimath::Latex::Parser do
       }
       it "returns formula" do
         expected_value = Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Text.new("D"),
+          Plurimath::Math::Symbol.new("D"),
           Plurimath::Math::Symbol.new("'"),
           Plurimath::Math::Symbol.new("="),
           Plurimath::Math::Formula.new([
@@ -6143,26 +6774,32 @@ RSpec.describe Plurimath::Latex::Parser do
                 Plurimath::Math::Function::Tr.new([
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Function::Text.new("h"),
-                      Plurimath::Math::Function::Text.new("m")
+                      Plurimath::Math::Symbol.new("h"),
+                      Plurimath::Math::Symbol.new("m")
                     ),
                     Plurimath::Math::Symbol.new("&#x2C;"),
                     Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Function::Text.new("D"),
-                      Plurimath::Math::Function::Text.new("mm")
+                      Plurimath::Math::Symbol.new("D"),
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Symbol.new("m"),
+                        Plurimath::Math::Symbol.new("m"),
+                      ])
                     )
                   ]),
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Function::Text.new("h"),
-                      Plurimath::Math::Function::Text.new("b")
+                      Plurimath::Math::Symbol.new("h"),
+                      Plurimath::Math::Symbol.new("b")
                     ),
                     Plurimath::Math::Symbol.new("&#x2C;"),
-                    Plurimath::Math::Function::Text.new("p"),
+                    Plurimath::Math::Symbol.new("p"),
                     Plurimath::Math::Symbol.new("&#x2C;"),
                     Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Function::Text.new("D"),
-                      Plurimath::Math::Function::Text.new("mc")
+                      Plurimath::Math::Symbol.new("D"),
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Symbol.new("m"),
+                        Plurimath::Math::Symbol.new("c"),
+                      ])
                     )
                   ])
                 ]),
@@ -6170,18 +6807,22 @@ RSpec.describe Plurimath::Latex::Parser do
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Formula.new([
                       Plurimath::Math::Number.new("2"),
-                      Plurimath::Math::Function::Text.new("mm")
+                      Plurimath::Math::Symbol.new("m"),
+                      Plurimath::Math::Symbol.new("m"),
                     ]),
                     Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Function::Text.new("h"),
-                      Plurimath::Math::Function::Text.new("b")
+                      Plurimath::Math::Symbol.new("h"),
+                      Plurimath::Math::Symbol.new("b")
                     ),
                     Plurimath::Math::Symbol.new("&#x2C;"),
-                    Plurimath::Math::Function::Text.new("p"),
+                    Plurimath::Math::Symbol.new("p"),
                     Plurimath::Math::Symbol.new("&#x2C;"),
                     Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Function::Text.new("D"),
-                      Plurimath::Math::Function::Text.new("mc")
+                      Plurimath::Math::Symbol.new("D"),
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Symbol.new("m"),
+                        Plurimath::Math::Symbol.new("c"),
+                      ])
                     )
                   ]),
                   Plurimath::Math::Function::Td.new([
@@ -6193,18 +6834,18 @@ RSpec.describe Plurimath::Latex::Parser do
                             Plurimath::Math::Number.new("12")
                           ),
                           Plurimath::Math::Function::PowerBase.new(
-                            Plurimath::Math::Function::Text.new("h"),
-                            Plurimath::Math::Function::Text.new("b"),
+                            Plurimath::Math::Symbol.new("h"),
+                            Plurimath::Math::Symbol.new("b"),
                             Plurimath::Math::Number.new("3"),
                           ),
                           Plurimath::Math::Symbol.new("+"),
                           Plurimath::Math::Function::Base.new(
-                            Plurimath::Math::Function::Text.new("h"),
-                            Plurimath::Math::Function::Text.new("b")
+                            Plurimath::Math::Symbol.new("h"),
+                            Plurimath::Math::Symbol.new("b")
                           ),
                           Plurimath::Math::Symbol.new("&#x2C;"),
                           Plurimath::Math::Function::Power.new(
-                            Plurimath::Math::Function::Text.new("p"),
+                            Plurimath::Math::Symbol.new("p"),
                             Plurimath::Math::Number.new("2")
                           )
                         ]),
@@ -6212,8 +6853,11 @@ RSpec.describe Plurimath::Latex::Parser do
                       ),
                       Plurimath::Math::Symbol.new("&#x2C;"),
                       Plurimath::Math::Function::Base.new(
-                        Plurimath::Math::Function::Text.new("D"),
-                        Plurimath::Math::Function::Text.new("mb")
+                        Plurimath::Math::Symbol.new("D"),
+                        Plurimath::Math::Formula.new([
+                          Plurimath::Math::Symbol.new("m"),
+                          Plurimath::Math::Symbol.new("b"),
+                        ])
                       )
                     ])
                   ])
@@ -6221,7 +6865,8 @@ RSpec.describe Plurimath::Latex::Parser do
               ],
               nil,
               [
-                Plurimath::Math::Function::Text.new("cc")
+                Plurimath::Math::Symbol.new("c"),
+                Plurimath::Math::Symbol.new("c"),
               ],
             ),
             Plurimath::Math::Function::Right.new(")")
@@ -6253,12 +6898,12 @@ RSpec.describe Plurimath::Latex::Parser do
       it "returns formula" do
         expected_value = Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Base.new(
-            Plurimath::Math::Function::Text.new("D"),
-            Plurimath::Math::Function::Text.new("m")
+            Plurimath::Math::Symbol.new("D"),
+            Plurimath::Math::Symbol.new("m")
           ),
           Plurimath::Math::Symbol.new("="),
           Plurimath::Math::Function::Frac.new(
-            Plurimath::Math::Function::Text.new("E"),
+            Plurimath::Math::Symbol.new("E"),
             Plurimath::Math::Formula.new([
               Plurimath::Math::Number.new("1"),
               Plurimath::Math::Symbol.new("-"),
@@ -6288,7 +6933,8 @@ RSpec.describe Plurimath::Latex::Parser do
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Formula.new([
                       Plurimath::Math::Number.new("2"),
-                      Plurimath::Math::Function::Text.new("mm")
+                      Plurimath::Math::Symbol.new("m"),
+                      Plurimath::Math::Symbol.new("m"),
                     ]),
                     Plurimath::Math::Symbol.new("&#x3BD;")
                   ]),
@@ -6303,7 +6949,8 @@ RSpec.describe Plurimath::Latex::Parser do
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Formula.new([
                       Plurimath::Math::Number.new("2"),
-                      Plurimath::Math::Function::Text.new("mm")
+                      Plurimath::Math::Symbol.new("m"),
+                      Plurimath::Math::Symbol.new("m"),
                     ]),
                     Plurimath::Math::Number.new("0")
                   ]),
@@ -6327,7 +6974,9 @@ RSpec.describe Plurimath::Latex::Parser do
               ],
               nil,
               [
-                Plurimath::Math::Function::Text.new("ccc")
+                Plurimath::Math::Symbol.new("c"),
+                Plurimath::Math::Symbol.new("c"),
+                Plurimath::Math::Symbol.new("c"),
               ],
             ),
             Plurimath::Math::Function::Right.new(")")
@@ -6352,7 +7001,7 @@ RSpec.describe Plurimath::Latex::Parser do
       }
       it "returns formula" do
         expected_value = Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Text.new("D"),
+          Plurimath::Math::Symbol.new("D"),
           Plurimath::Math::Symbol.new("'"),
           Plurimath::Math::Symbol.new("="),
           Plurimath::Math::Formula.new([
@@ -6361,21 +7010,21 @@ RSpec.describe Plurimath::Latex::Parser do
               [
                 Plurimath::Math::Function::Tr.new([
                   Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::Text.new("h"),
+                    Plurimath::Math::Symbol.new("h"),
                     Plurimath::Math::Symbol.new("&#x2C;"),
                     Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Function::Text.new("D"),
-                      Plurimath::Math::Function::Text.new("m")
+                      Plurimath::Math::Symbol.new("D"),
+                      Plurimath::Math::Symbol.new("m")
                     )
                   ]),
                   Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::Text.new("h"),
+                    Plurimath::Math::Symbol.new("h"),
                     Plurimath::Math::Symbol.new("&#x2C;"),
-                    Plurimath::Math::Function::Text.new("p"),
+                    Plurimath::Math::Symbol.new("p"),
                     Plurimath::Math::Symbol.new("&#x2C;"),
                     Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Function::Text.new("D"),
-                      Plurimath::Math::Function::Text.new("m")
+                      Plurimath::Math::Symbol.new("D"),
+                      Plurimath::Math::Symbol.new("m")
                     )
                   ])
                 ]),
@@ -6383,15 +7032,16 @@ RSpec.describe Plurimath::Latex::Parser do
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Formula.new([
                       Plurimath::Math::Number.new("2"),
-                      Plurimath::Math::Function::Text.new("mm")
+                      Plurimath::Math::Symbol.new("m"),
+                      Plurimath::Math::Symbol.new("m"),
                     ]),
-                    Plurimath::Math::Function::Text.new("h"),
+                    Plurimath::Math::Symbol.new("h"),
                     Plurimath::Math::Symbol.new("&#x2C;"),
-                    Plurimath::Math::Function::Text.new("p"),
+                    Plurimath::Math::Symbol.new("p"),
                     Plurimath::Math::Symbol.new("&#x2C;"),
                     Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Function::Text.new("D"),
-                      Plurimath::Math::Function::Text.new("m")
+                      Plurimath::Math::Symbol.new("D"),
+                      Plurimath::Math::Symbol.new("m")
                     )
                   ]),
                   Plurimath::Math::Function::Td.new([
@@ -6403,14 +7053,14 @@ RSpec.describe Plurimath::Latex::Parser do
                             Plurimath::Math::Number.new("12")
                           ),
                           Plurimath::Math::Function::Power.new(
-                            Plurimath::Math::Function::Text.new("h"),
+                            Plurimath::Math::Symbol.new("h"),
                             Plurimath::Math::Number.new("3")
                           ),
                           Plurimath::Math::Symbol.new("+"),
-                          Plurimath::Math::Function::Text.new("h"),
+                          Plurimath::Math::Symbol.new("h"),
                           Plurimath::Math::Symbol.new("&#x2C;"),
                           Plurimath::Math::Function::Power.new(
-                            Plurimath::Math::Function::Text.new("p"),
+                            Plurimath::Math::Symbol.new("p"),
                             Plurimath::Math::Number.new("2")
                           )
                         ]),
@@ -6418,8 +7068,8 @@ RSpec.describe Plurimath::Latex::Parser do
                       ),
                       Plurimath::Math::Symbol.new("&#x2C;"),
                       Plurimath::Math::Function::Base.new(
-                        Plurimath::Math::Function::Text.new("D"),
-                        Plurimath::Math::Function::Text.new("m")
+                        Plurimath::Math::Symbol.new("D"),
+                        Plurimath::Math::Symbol.new("m")
                       )
                     ])
                   ])
@@ -6427,7 +7077,8 @@ RSpec.describe Plurimath::Latex::Parser do
               ],
               nil,
               [
-                Plurimath::Math::Function::Text.new("cc")
+                Plurimath::Math::Symbol.new("c"),
+                Plurimath::Math::Symbol.new("c"),
               ],
             ),
             Plurimath::Math::Function::Right.new(")")
@@ -6462,7 +7113,10 @@ RSpec.describe Plurimath::Latex::Parser do
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Function::Base.new(
                       Plurimath::Math::Symbol.new("&#x03B5;"),
-                      Plurimath::Math::Function::Text.new("xx")
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Symbol.new("x"),
+                        Plurimath::Math::Symbol.new("x"),
+                      ])
                     )
                   ])
                 ]),
@@ -6470,7 +7124,10 @@ RSpec.describe Plurimath::Latex::Parser do
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Function::Base.new(
                       Plurimath::Math::Symbol.new("&#x03B5;"),
-                      Plurimath::Math::Function::Text.new("yy")
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Symbol.new("y"),
+                        Plurimath::Math::Symbol.new("y"),
+                      ])
                     )
                   ])
                 ]),
@@ -6478,7 +7135,10 @@ RSpec.describe Plurimath::Latex::Parser do
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Function::Base.new(
                       Plurimath::Math::Symbol.new("&#x3B3;"),
-                      Plurimath::Math::Function::Text.new("xy")
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Symbol.new("x"),
+                        Plurimath::Math::Symbol.new("y"),
+                      ])
                     )
                   ])
                 ]),
@@ -6486,7 +7146,10 @@ RSpec.describe Plurimath::Latex::Parser do
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Function::Base.new(
                       Plurimath::Math::Symbol.new("&#x3C7;"),
-                      Plurimath::Math::Function::Text.new("xx")
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Symbol.new("x"),
+                        Plurimath::Math::Symbol.new("x"),
+                      ])
                     )
                   ])
                 ]),
@@ -6494,7 +7157,10 @@ RSpec.describe Plurimath::Latex::Parser do
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Function::Base.new(
                       Plurimath::Math::Symbol.new("&#x3C7;"),
-                      Plurimath::Math::Function::Text.new("yy")
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Symbol.new("y"),
+                        Plurimath::Math::Symbol.new("y"),
+                      ])
                     )
                   ])
                 ]),
@@ -6502,14 +7168,17 @@ RSpec.describe Plurimath::Latex::Parser do
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Function::Base.new(
                       Plurimath::Math::Symbol.new("&#x3C4;"),
-                      Plurimath::Math::Function::Text.new("xy")
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Symbol.new("x"),
+                        Plurimath::Math::Symbol.new("y"),
+                      ])
                     )
                   ])
                 ])
               ],
               nil,
               [
-                Plurimath::Math::Function::Text.new("c")
+                Plurimath::Math::Symbol.new("c")
               ],
             ),
             Plurimath::Math::Function::Right.new(")")
@@ -6543,55 +7212,73 @@ RSpec.describe Plurimath::Latex::Parser do
                 Plurimath::Math::Function::Tr.new([
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Function::Text.new("N"),
-                      Plurimath::Math::Function::Text.new("yy")
+                      Plurimath::Math::Symbol.new("N"),
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Symbol.new("y"),
+                        Plurimath::Math::Symbol.new("y"),
+                      ])
                     )
                   ])
                 ]),
                 Plurimath::Math::Function::Tr.new([
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Function::Text.new("N"),
-                      Plurimath::Math::Function::Text.new("xx")
+                      Plurimath::Math::Symbol.new("N"),
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Symbol.new("x"),
+                        Plurimath::Math::Symbol.new("x"),
+                      ])
                     )
                   ])
                 ]),
                 Plurimath::Math::Function::Tr.new([
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Function::Text.new("N"),
-                      Plurimath::Math::Function::Text.new("xy")
+                      Plurimath::Math::Symbol.new("N"),
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Symbol.new("x"),
+                        Plurimath::Math::Symbol.new("y"),
+                      ])
                     )
                   ])
                 ]),
                 Plurimath::Math::Function::Tr.new([
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Function::Text.new("M"),
-                      Plurimath::Math::Function::Text.new("xx")
+                      Plurimath::Math::Symbol.new("M"),
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Symbol.new("x"),
+                        Plurimath::Math::Symbol.new("x"),
+                      ])
                     )
                   ])
                 ]),
                 Plurimath::Math::Function::Tr.new([
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Function::Text.new("M"),
-                      Plurimath::Math::Function::Text.new("yy")
+                      Plurimath::Math::Symbol.new("M"),
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Symbol.new("y"),
+                        Plurimath::Math::Symbol.new("y"),
+                      ])
                     )
                   ])
                 ]),
                 Plurimath::Math::Function::Tr.new([
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Function::Text.new("M"),
-                      Plurimath::Math::Function::Text.new("xy")
+                      Plurimath::Math::Symbol.new("M"),
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Symbol.new("x"),
+                        Plurimath::Math::Symbol.new("y"),
+                      ])
                     )
                   ])
                 ])
               ],
               nil,
               [
-                Plurimath::Math::Function::Text.new("c")
+                Plurimath::Math::Symbol.new("c")
               ],
             ),
             Plurimath::Math::Function::Right.new(")")
@@ -6612,7 +7299,7 @@ RSpec.describe Plurimath::Latex::Parser do
           Plurimath::Math::Symbol.new("&#x3C3;"),
           Plurimath::Math::Symbol.new("'"),
           Plurimath::Math::Symbol.new("="),
-          Plurimath::Math::Function::Text.new("D"),
+          Plurimath::Math::Symbol.new("D"),
           Plurimath::Math::Symbol.new("'"),
           Plurimath::Math::Symbol.new("&#x3A;"),
           Plurimath::Math::Symbol.new("&#x03B5;"),
@@ -6633,11 +7320,11 @@ RSpec.describe Plurimath::Latex::Parser do
           Plurimath::Math::Symbol.new("&#x03B5;"),
           Plurimath::Math::Symbol.new("'"),
           Plurimath::Math::Symbol.new("="),
-          Plurimath::Math::Function::Text.new("B"),
+          Plurimath::Math::Symbol.new("B"),
           Plurimath::Math::Symbol.new("'"),
           Plurimath::Math::Symbol.new("&#x3A;"),
           Plurimath::Math::Function::FontStyle::Bold.new(
-            Plurimath::Math::Function::Text.new("u"),
+            Plurimath::Math::Symbol.new("u"),
             "bf"
           )
         ])
@@ -6656,7 +7343,7 @@ RSpec.describe Plurimath::Latex::Parser do
       }
       it "returns formula" do
         expected_value = Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Text.new("V"),
+          Plurimath::Math::Symbol.new("V"),
           Plurimath::Math::Symbol.new("="),
           Plurimath::Math::Function::Frac.new(
             Plurimath::Math::Number.new("1"),
@@ -6666,36 +7353,45 @@ RSpec.describe Plurimath::Latex::Parser do
           Plurimath::Math::Function::Power.new(
             Plurimath::Math::Formula.new([
               Plurimath::Math::Function::FontStyle::Bold.new(
-                Plurimath::Math::Function::Text.new("u"),
+                Plurimath::Math::Symbol.new("u"),
                 "bf"
               )
             ]),
-            Plurimath::Math::Function::Text.new("t")
+            Plurimath::Math::Symbol.new("t")
           ),
           Plurimath::Math::Symbol.new("&#x3A;"),
           Plurimath::Math::Function::Base.new(
             Plurimath::Math::Symbol.new("&#x222B;"),
-            Plurimath::Math::Function::Text.new("surface")
+            Plurimath::Math::Formula.new([
+              Plurimath::Math::Symbol.new("s"),
+              Plurimath::Math::Symbol.new("u"),
+              Plurimath::Math::Symbol.new("r"),
+              Plurimath::Math::Symbol.new("f"),
+              Plurimath::Math::Symbol.new("a"),
+              Plurimath::Math::Symbol.new("c"),
+              Plurimath::Math::Symbol.new("e"),
+            ])
           ),
           Plurimath::Math::Symbol.new("&#x3A;"),
           Plurimath::Math::Function::Power.new(
             Plurimath::Math::Formula.new([
-              Plurimath::Math::Function::Text.new("B"),
+              Plurimath::Math::Symbol.new("B"),
               Plurimath::Math::Symbol.new("'")
             ]),
-            Plurimath::Math::Function::Text.new("t")
+            Plurimath::Math::Symbol.new("t")
           ),
           Plurimath::Math::Symbol.new("&#x3A;"),
-          Plurimath::Math::Function::Text.new("D"),
+          Plurimath::Math::Symbol.new("D"),
           Plurimath::Math::Symbol.new("'"),
           Plurimath::Math::Symbol.new("&#x3A;"),
-          Plurimath::Math::Function::Text.new("B"),
+          Plurimath::Math::Symbol.new("B"),
           Plurimath::Math::Symbol.new("'"),
           Plurimath::Math::Symbol.new("&#x3A;"),
-          Plurimath::Math::Function::Text.new("ds"),
+          Plurimath::Math::Symbol.new("d"),
+          Plurimath::Math::Symbol.new("s"),
           Plurimath::Math::Symbol.new("&#x3B;"),
           Plurimath::Math::Function::FontStyle::Bold.new(
-            Plurimath::Math::Function::Text.new("u"),
+            Plurimath::Math::Symbol.new("u"),
             "bf"
           )
         ])
@@ -6713,7 +7409,7 @@ RSpec.describe Plurimath::Latex::Parser do
         expected_value = Plurimath::Math::Formula.new([
           Plurimath::Math::Symbol.new("&#x3C3;"),
           Plurimath::Math::Symbol.new("="),
-          Plurimath::Math::Function::Text.new("D"),
+          Plurimath::Math::Symbol.new("D"),
           Plurimath::Math::Symbol.new("&#x3A;"),
           Plurimath::Math::Symbol.new("&#x03B5;")
         ])
@@ -6731,10 +7427,10 @@ RSpec.describe Plurimath::Latex::Parser do
         expected_value = Plurimath::Math::Formula.new([
           Plurimath::Math::Symbol.new("&#x03B5;"),
           Plurimath::Math::Symbol.new("="),
-          Plurimath::Math::Function::Text.new("B"),
+          Plurimath::Math::Symbol.new("B"),
           Plurimath::Math::Symbol.new("&#x3A;"),
           Plurimath::Math::Function::FontStyle::Bold.new(
-            Plurimath::Math::Function::Text.new("u"),
+            Plurimath::Math::Symbol.new("u"),
             "bf"
           )
         ])
@@ -6752,7 +7448,7 @@ RSpec.describe Plurimath::Latex::Parser do
       }
       it "returns formula" do
         expected_value = Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Text.new("V"),
+          Plurimath::Math::Symbol.new("V"),
           Plurimath::Math::Symbol.new("="),
           Plurimath::Math::Function::Frac.new(
             Plurimath::Math::Number.new("1"),
@@ -6762,38 +7458,58 @@ RSpec.describe Plurimath::Latex::Parser do
           Plurimath::Math::Function::Power.new(
             Plurimath::Math::Formula.new([
               Plurimath::Math::Function::FontStyle::Bold.new(
-                Plurimath::Math::Function::Text.new("u"),
+                Plurimath::Math::Symbol.new("u"),
                 "bf"
               )
             ]),
-            Plurimath::Math::Function::Text.new("t")
+            Plurimath::Math::Symbol.new("t")
           ),
           Plurimath::Math::Symbol.new("&#x3A;"),
           Plurimath::Math::Function::Base.new(
             Plurimath::Math::Symbol.new("&#x222B;"),
-            Plurimath::Math::Function::Text.new("surface")
+            Plurimath::Math::Formula.new([
+              Plurimath::Math::Symbol.new("s"),
+              Plurimath::Math::Symbol.new("u"),
+              Plurimath::Math::Symbol.new("r"),
+              Plurimath::Math::Symbol.new("f"),
+              Plurimath::Math::Symbol.new("a"),
+              Plurimath::Math::Symbol.new("c"),
+              Plurimath::Math::Symbol.new("e"),
+            ]),
           ),
           Plurimath::Math::Symbol.new("&#x3A;"),
           Plurimath::Math::Function::Base.new(
             Plurimath::Math::Symbol.new("&#x222B;"),
-            Plurimath::Math::Function::Text.new("thickness")
+            Plurimath::Math::Formula.new([
+              Plurimath::Math::Symbol.new("t"),
+              Plurimath::Math::Symbol.new("h"),
+              Plurimath::Math::Symbol.new("i"),
+              Plurimath::Math::Symbol.new("c"),
+              Plurimath::Math::Symbol.new("k"),
+              Plurimath::Math::Symbol.new("n"),
+              Plurimath::Math::Symbol.new("e"),
+              Plurimath::Math::Symbol.new("s"),
+              Plurimath::Math::Symbol.new("s"),
+            ]),
           ),
           Plurimath::Math::Symbol.new("&#x3A;"),
           Plurimath::Math::Function::Power.new(
-            Plurimath::Math::Function::Text.new("B"),
-            Plurimath::Math::Function::Text.new("t")
+            Plurimath::Math::Symbol.new("B"),
+            Plurimath::Math::Symbol.new("t")
           ),
           Plurimath::Math::Symbol.new("&#x3A;"),
-          Plurimath::Math::Function::Text.new("D"),
+          Plurimath::Math::Symbol.new("D"),
           Plurimath::Math::Symbol.new("&#x3A;"),
-          Plurimath::Math::Function::Text.new("B"),
+          Plurimath::Math::Symbol.new("B"),
           Plurimath::Math::Symbol.new("&#x3A;"),
-          Plurimath::Math::Function::Text.new("dt"),
+          Plurimath::Math::Symbol.new("d"),
+          Plurimath::Math::Symbol.new("t"),
           Plurimath::Math::Symbol.new("&#x3A;"),
-          Plurimath::Math::Function::Text.new("ds"),
+          Plurimath::Math::Symbol.new("d"),
+          Plurimath::Math::Symbol.new("s"),
           Plurimath::Math::Symbol.new("&#x3B;"),
           Plurimath::Math::Function::FontStyle::Bold.new(
-            Plurimath::Math::Function::Text.new("u"),
+            Plurimath::Math::Symbol.new("u"),
             "bf"
           )
         ])
@@ -6826,11 +7542,11 @@ RSpec.describe Plurimath::Latex::Parser do
                         Plurimath::Math::Function::Frac.new(
                           Plurimath::Math::Formula.new([
                             Plurimath::Math::Symbol.new("&#x2202;"),
-                            Plurimath::Math::Function::Text.new("w")
+                            Plurimath::Math::Symbol.new("w")
                           ]),
                           Plurimath::Math::Formula.new([
                             Plurimath::Math::Symbol.new("&#x2202;"),
-                            Plurimath::Math::Function::Text.new("x")
+                            Plurimath::Math::Symbol.new("x")
                           ])
                         ),
                         "displaystyle"
@@ -6839,11 +7555,11 @@ RSpec.describe Plurimath::Latex::Parser do
                       Plurimath::Math::Function::Frac.new(
                         Plurimath::Math::Formula.new([
                           Plurimath::Math::Symbol.new("&#x2202;"),
-                          Plurimath::Math::Function::Text.new("u")
+                          Plurimath::Math::Symbol.new("u")
                         ]),
                         Plurimath::Math::Formula.new([
                           Plurimath::Math::Symbol.new("&#x2202;"),
-                          Plurimath::Math::Function::Text.new("z")
+                          Plurimath::Math::Symbol.new("z")
                         ])
                       )
                     ])
@@ -6853,18 +7569,19 @@ RSpec.describe Plurimath::Latex::Parser do
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Formula.new([
                       Plurimath::Math::Number.new("3"),
-                      Plurimath::Math::Function::Text.new("mm")
+                      Plurimath::Math::Symbol.new("m"),
+                      Plurimath::Math::Symbol.new("m"),
                     ]),
                     Plurimath::Math::Formula.new([
                       Plurimath::Math::Function::FontStyle.new(
                         Plurimath::Math::Function::Frac.new(
                           Plurimath::Math::Formula.new([
                             Plurimath::Math::Symbol.new("&#x2202;"),
-                            Plurimath::Math::Function::Text.new("w")
+                            Plurimath::Math::Symbol.new("w")
                           ]),
                           Plurimath::Math::Formula.new([
                             Plurimath::Math::Symbol.new("&#x2202;"),
-                            Plurimath::Math::Function::Text.new("y")
+                            Plurimath::Math::Symbol.new("y")
                           ])
                         ),
                         "displaystyle"
@@ -6873,11 +7590,11 @@ RSpec.describe Plurimath::Latex::Parser do
                       Plurimath::Math::Function::Frac.new(
                         Plurimath::Math::Formula.new([
                           Plurimath::Math::Symbol.new("&#x2202;"),
-                          Plurimath::Math::Function::Text.new("v")
+                          Plurimath::Math::Symbol.new("v")
                         ]),
                         Plurimath::Math::Formula.new([
                           Plurimath::Math::Symbol.new("&#x2202;"),
-                          Plurimath::Math::Function::Text.new("z")
+                          Plurimath::Math::Symbol.new("z")
                         ])
                       )
                     ])
@@ -6886,7 +7603,7 @@ RSpec.describe Plurimath::Latex::Parser do
               ],
               nil,
               [
-                Plurimath::Math::Function::Text.new("c")
+                Plurimath::Math::Symbol.new("c")
               ],
             ),
             Plurimath::Math::Function::Right.new(")")
@@ -6906,27 +7623,30 @@ RSpec.describe Plurimath::Latex::Parser do
         expected_value = Plurimath::Math::Formula.new([
           Plurimath::Math::Symbol.new("&#x394;"),
           Plurimath::Math::Function::Base.new(
-            Plurimath::Math::Function::Text.new("F"),
-            Plurimath::Math::Function::Text.new("i")
+            Plurimath::Math::Symbol.new("F"),
+            Plurimath::Math::Symbol.new("i")
           ),
           Plurimath::Math::Symbol.new("="),
           Plurimath::Math::Function::Sum.new(
             Plurimath::Math::Formula.new([
-              Plurimath::Math::Function::Text.new("j"),
+              Plurimath::Math::Symbol.new("j"),
               Plurimath::Math::Symbol.new("="),
               Plurimath::Math::Number.new("1")
             ]),
             Plurimath::Math::Number.new("2")
           ),
           Plurimath::Math::Function::Base.new(
-            Plurimath::Math::Function::Text.new("s"),
-            Plurimath::Math::Function::Text.new("ij")
+            Plurimath::Math::Symbol.new("s"),
+            Plurimath::Math::Formula.new([
+              Plurimath::Math::Symbol.new("i"),
+              Plurimath::Math::Symbol.new("j"),
+            ]),
           ),
           Plurimath::Math::Symbol.new("&#x3A;"),
           Plurimath::Math::Symbol.new("&#x394;"),
           Plurimath::Math::Function::Base.new(
             Plurimath::Math::Symbol.new("&#x03B5;"),
-            Plurimath::Math::Function::Text.new("j")
+            Plurimath::Math::Symbol.new("j")
           )
         ])
         expect(formula).to eq(expected_value)
@@ -6943,13 +7663,16 @@ RSpec.describe Plurimath::Latex::Parser do
         expected_value = Plurimath::Math::Formula.new([
           Plurimath::Math::Symbol.new("&#x394;"),
           Plurimath::Math::Function::Base.new(
-            Plurimath::Math::Function::Text.new("N"),
-            Plurimath::Math::Function::Text.new("ij")
+            Plurimath::Math::Symbol.new("N"),
+            Plurimath::Math::Formula.new([
+              Plurimath::Math::Symbol.new("i"),
+              Plurimath::Math::Symbol.new("j"),
+            ]),
           ),
           Plurimath::Math::Symbol.new("="),
           Plurimath::Math::Function::Sum.new(
             Plurimath::Math::Formula.new([
-              Plurimath::Math::Function::Text.new("k"),
+              Plurimath::Math::Symbol.new("k"),
               Plurimath::Math::Symbol.new("="),
               Plurimath::Math::Number.new("1")
             ]),
@@ -6957,21 +7680,29 @@ RSpec.describe Plurimath::Latex::Parser do
           ),
           Plurimath::Math::Function::Sum.new(
             Plurimath::Math::Formula.new([
-              Plurimath::Math::Function::Text.new("l"),
+              Plurimath::Math::Symbol.new("l"),
               Plurimath::Math::Symbol.new("="),
               Plurimath::Math::Number.new("1")
             ]),
             Plurimath::Math::Number.new("2")
           ),
           Plurimath::Math::Function::Base.new(
-            Plurimath::Math::Function::Text.new("d"),
-            Plurimath::Math::Function::Text.new("ijkl")
+            Plurimath::Math::Symbol.new("d"),
+            Plurimath::Math::Formula.new([
+              Plurimath::Math::Symbol.new("i"),
+              Plurimath::Math::Symbol.new("j"),
+              Plurimath::Math::Symbol.new("k"),
+              Plurimath::Math::Symbol.new("l"),
+            ]),
           ),
           Plurimath::Math::Symbol.new("&#x3A;"),
           Plurimath::Math::Symbol.new("&#x394;"),
           Plurimath::Math::Function::Base.new(
-            Plurimath::Math::Function::Text.new("c"),
-            Plurimath::Math::Function::Text.new("kl")
+            Plurimath::Math::Symbol.new("c"),
+            Plurimath::Math::Formula.new([
+              Plurimath::Math::Symbol.new("k"),
+              Plurimath::Math::Symbol.new("l"),
+            ]),
           )
         ])
         expect(formula).to eq(expected_value)
@@ -7010,12 +7741,12 @@ RSpec.describe Plurimath::Latex::Parser do
                             Plurimath::Math::Symbol.new("&#x2202;"),
                             Plurimath::Math::Number.new("2")
                           ),
-                          Plurimath::Math::Function::Text.new("w")
+                          Plurimath::Math::Symbol.new("w")
                         ]),
                         Plurimath::Math::Formula.new([
                           Plurimath::Math::Symbol.new("&#x2202;"),
                           Plurimath::Math::Function::Power.new(
-                            Plurimath::Math::Function::Text.new("x"),
+                            Plurimath::Math::Symbol.new("x"),
                             Plurimath::Math::Number.new("2")
                           )
                         ])
@@ -7034,13 +7765,13 @@ RSpec.describe Plurimath::Latex::Parser do
                             Plurimath::Math::Symbol.new("&#x2202;"),
                             Plurimath::Math::Number.new("2")
                           ),
-                          Plurimath::Math::Function::Text.new("w")
+                          Plurimath::Math::Symbol.new("w")
                         ]),
                         Plurimath::Math::Formula.new([
                           Plurimath::Math::Symbol.new("&#x2202;"),
-                          Plurimath::Math::Function::Text.new("x"),
+                          Plurimath::Math::Symbol.new("x"),
                           Plurimath::Math::Symbol.new("&#x2202;"),
-                          Plurimath::Math::Function::Text.new("y")
+                          Plurimath::Math::Symbol.new("y")
                         ])
                       )
                     ])
@@ -7050,7 +7781,8 @@ RSpec.describe Plurimath::Latex::Parser do
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Formula.new([
                       Plurimath::Math::Number.new("3"),
-                      Plurimath::Math::Function::Text.new("mm")
+                      Plurimath::Math::Symbol.new("m"),
+                      Plurimath::Math::Symbol.new("m"),
                     ]),
                     Plurimath::Math::Formula.new([
                       Plurimath::Math::Function::FontStyle.new(
@@ -7063,13 +7795,13 @@ RSpec.describe Plurimath::Latex::Parser do
                             Plurimath::Math::Symbol.new("&#x2202;"),
                             Plurimath::Math::Number.new("2")
                           ),
-                          Plurimath::Math::Function::Text.new("w")
+                          Plurimath::Math::Symbol.new("w")
                         ]),
                         Plurimath::Math::Formula.new([
                           Plurimath::Math::Symbol.new("&#x2202;"),
-                          Plurimath::Math::Function::Text.new("x"),
+                          Plurimath::Math::Symbol.new("x"),
                           Plurimath::Math::Symbol.new("&#x2202;"),
-                          Plurimath::Math::Function::Text.new("y")
+                          Plurimath::Math::Symbol.new("y")
                         ])
                       )
                     ])
@@ -7086,12 +7818,12 @@ RSpec.describe Plurimath::Latex::Parser do
                             Plurimath::Math::Symbol.new("&#x2202;"),
                             Plurimath::Math::Number.new("2")
                           ),
-                          Plurimath::Math::Function::Text.new("w")
+                          Plurimath::Math::Symbol.new("w")
                         ]),
                         Plurimath::Math::Formula.new([
                           Plurimath::Math::Symbol.new("&#x2202;"),
                           Plurimath::Math::Function::Power.new(
-                            Plurimath::Math::Function::Text.new("y"),
+                            Plurimath::Math::Symbol.new("y"),
                             Plurimath::Math::Number.new("2")
                           )
                         ])
@@ -7102,7 +7834,8 @@ RSpec.describe Plurimath::Latex::Parser do
               ],
               nil,
               [
-                Plurimath::Math::Function::Text.new("cc")
+                Plurimath::Math::Symbol.new("c"),
+                Plurimath::Math::Symbol.new("c"),
               ],
             ),
             Plurimath::Math::Function::Right.new(")")
@@ -7122,13 +7855,16 @@ RSpec.describe Plurimath::Latex::Parser do
         expected_value = Plurimath::Math::Formula.new([
           Plurimath::Math::Symbol.new("&#x394;"),
           Plurimath::Math::Function::Base.new(
-            Plurimath::Math::Function::Text.new("D"),
-            Plurimath::Math::Function::Text.new("ij")
+            Plurimath::Math::Symbol.new("D"),
+            Plurimath::Math::Formula.new([
+              Plurimath::Math::Symbol.new("i"),
+              Plurimath::Math::Symbol.new("j"),
+            ]),
           ),
           Plurimath::Math::Symbol.new("="),
           Plurimath::Math::Function::Sum.new(
             Plurimath::Math::Formula.new([
-              Plurimath::Math::Function::Text.new("k"),
+              Plurimath::Math::Symbol.new("k"),
               Plurimath::Math::Symbol.new("="),
               Plurimath::Math::Number.new("1")
             ]),
@@ -7136,21 +7872,29 @@ RSpec.describe Plurimath::Latex::Parser do
           ),
           Plurimath::Math::Function::Sum.new(
             Plurimath::Math::Formula.new([
-              Plurimath::Math::Function::Text.new("l"),
+              Plurimath::Math::Symbol.new("l"),
               Plurimath::Math::Symbol.new("="),
               Plurimath::Math::Number.new("1")
             ]),
             Plurimath::Math::Number.new("2")
           ),
           Plurimath::Math::Function::Base.new(
-            Plurimath::Math::Function::Text.new("d"),
-            Plurimath::Math::Function::Text.new("ijkl")
+            Plurimath::Math::Symbol.new("d"),
+            Plurimath::Math::Formula.new([
+              Plurimath::Math::Symbol.new("i"),
+              Plurimath::Math::Symbol.new("j"),
+              Plurimath::Math::Symbol.new("k"),
+              Plurimath::Math::Symbol.new("l"),
+            ]),
           ),
           Plurimath::Math::Symbol.new("&#x3A;"),
           Plurimath::Math::Symbol.new("&#x394;"),
           Plurimath::Math::Function::Base.new(
-            Plurimath::Math::Function::Text.new("c"),
-            Plurimath::Math::Function::Text.new("kl")
+            Plurimath::Math::Symbol.new("c"),
+            Plurimath::Math::Formula.new([
+              Plurimath::Math::Symbol.new("k"),
+              Plurimath::Math::Symbol.new("l"),
+            ]),
           )
         ])
         expect(formula).to eq(expected_value)
@@ -7172,7 +7916,7 @@ RSpec.describe Plurimath::Latex::Parser do
       }
       it "returns formula" do
         expected_value = Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Text.new("J"),
+          Plurimath::Math::Symbol.new("J"),
           Plurimath::Math::Symbol.new("="),
           Plurimath::Math::Formula.new([
             Plurimath::Math::Function::Left.new("("),
@@ -7184,11 +7928,11 @@ RSpec.describe Plurimath::Latex::Parser do
                       Plurimath::Math::Function::Frac.new(
                         Plurimath::Math::Formula.new([
                           Plurimath::Math::Symbol.new("&#x2202;"),
-                          Plurimath::Math::Function::Text.new("u")
+                          Plurimath::Math::Symbol.new("u")
                         ]),
                         Plurimath::Math::Formula.new([
                           Plurimath::Math::Symbol.new("&#x2202;"),
-                          Plurimath::Math::Function::Text.new("x")
+                          Plurimath::Math::Symbol.new("x")
                         ])
                       ),
                       "displaystyle"
@@ -7199,11 +7943,11 @@ RSpec.describe Plurimath::Latex::Parser do
                       Plurimath::Math::Function::Frac.new(
                         Plurimath::Math::Formula.new([
                           Plurimath::Math::Symbol.new("&#x2202;"),
-                          Plurimath::Math::Function::Text.new("v")
+                          Plurimath::Math::Symbol.new("v")
                         ]),
                         Plurimath::Math::Formula.new([
                           Plurimath::Math::Symbol.new("&#x2202;"),
-                          Plurimath::Math::Function::Text.new("x")
+                          Plurimath::Math::Symbol.new("x")
                         ])
                       ),
                       "displaystyle"
@@ -7214,17 +7958,18 @@ RSpec.describe Plurimath::Latex::Parser do
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Formula.new([
                       Plurimath::Math::Number.new("3"),
-                      Plurimath::Math::Function::Text.new("mm")
+                      Plurimath::Math::Symbol.new("m"),
+                      Plurimath::Math::Symbol.new("m"),
                     ]),
                     Plurimath::Math::Function::FontStyle.new(
                       Plurimath::Math::Function::Frac.new(
                         Plurimath::Math::Formula.new([
                           Plurimath::Math::Symbol.new("&#x2202;"),
-                          Plurimath::Math::Function::Text.new("u")
+                          Plurimath::Math::Symbol.new("u")
                         ]),
                         Plurimath::Math::Formula.new([
                           Plurimath::Math::Symbol.new("&#x2202;"),
-                          Plurimath::Math::Function::Text.new("y")
+                          Plurimath::Math::Symbol.new("y")
                         ])
                       ),
                       "displaystyle"
@@ -7235,11 +7980,11 @@ RSpec.describe Plurimath::Latex::Parser do
                       Plurimath::Math::Function::Frac.new(
                         Plurimath::Math::Formula.new([
                           Plurimath::Math::Symbol.new("&#x2202;"),
-                          Plurimath::Math::Function::Text.new("v")
+                          Plurimath::Math::Symbol.new("v")
                         ]),
                         Plurimath::Math::Formula.new([
                           Plurimath::Math::Symbol.new("&#x2202;"),
-                          Plurimath::Math::Function::Text.new("y")
+                          Plurimath::Math::Symbol.new("y")
                         ])
                       ),
                       "displaystyle"
@@ -7249,7 +7994,8 @@ RSpec.describe Plurimath::Latex::Parser do
               ],
               nil,
               [
-                Plurimath::Math::Function::Text.new("cc")
+                Plurimath::Math::Symbol.new("c"),
+                Plurimath::Math::Symbol.new("c"),
               ],
             ),
             Plurimath::Math::Function::Right.new(")")
@@ -7274,11 +8020,11 @@ RSpec.describe Plurimath::Latex::Parser do
             Plurimath::Math::Number.new("2")
           ),
           Plurimath::Math::Formula.new([
-            Plurimath::Math::Function::Text.new("J"),
+            Plurimath::Math::Symbol.new("J"),
             Plurimath::Math::Symbol.new("+"),
             Plurimath::Math::Function::Power.new(
-              Plurimath::Math::Function::Text.new("J"),
-              Plurimath::Math::Function::Text.new("t")
+              Plurimath::Math::Symbol.new("J"),
+              Plurimath::Math::Symbol.new("t")
             )
           ])
         ])
@@ -7296,13 +8042,16 @@ RSpec.describe Plurimath::Latex::Parser do
         expected_value = Plurimath::Math::Formula.new([
           Plurimath::Math::Symbol.new("&#x394;"),
           Plurimath::Math::Function::Base.new(
-            Plurimath::Math::Function::Text.new("N"),
-            Plurimath::Math::Function::Text.new("ij")
+            Plurimath::Math::Symbol.new("N"),
+            Plurimath::Math::Formula.new([
+              Plurimath::Math::Symbol.new("i"),
+              Plurimath::Math::Symbol.new("j"),
+            ]),
           ),
           Plurimath::Math::Symbol.new("="),
           Plurimath::Math::Function::Sum.new(
             Plurimath::Math::Formula.new([
-              Plurimath::Math::Function::Text.new("k"),
+              Plurimath::Math::Symbol.new("k"),
               Plurimath::Math::Symbol.new("="),
               Plurimath::Math::Number.new("1")
             ]),
@@ -7310,21 +8059,29 @@ RSpec.describe Plurimath::Latex::Parser do
           ),
           Plurimath::Math::Function::Sum.new(
             Plurimath::Math::Formula.new([
-              Plurimath::Math::Function::Text.new("l"),
+              Plurimath::Math::Symbol.new("l"),
               Plurimath::Math::Symbol.new("="),
               Plurimath::Math::Number.new("1")
             ]),
             Plurimath::Math::Number.new("2")
           ),
           Plurimath::Math::Function::Base.new(
-            Plurimath::Math::Function::Text.new("d"),
-            Plurimath::Math::Function::Text.new("ijkl")
+            Plurimath::Math::Symbol.new("d"),
+            Plurimath::Math::Formula.new([
+              Plurimath::Math::Symbol.new("i"),
+              Plurimath::Math::Symbol.new("j"),
+              Plurimath::Math::Symbol.new("k"),
+              Plurimath::Math::Symbol.new("l"),
+            ]),
           ),
           Plurimath::Math::Symbol.new("&#x3A;"),
           Plurimath::Math::Symbol.new("&#x394;"),
           Plurimath::Math::Function::Base.new(
             Plurimath::Math::Symbol.new("&#x03B5;"),
-            Plurimath::Math::Function::Text.new("kl")
+            Plurimath::Math::Formula.new([
+              Plurimath::Math::Symbol.new("k"),
+              Plurimath::Math::Symbol.new("l"),
+            ]),
           )
         ])
         expect(formula).to eq(expected_value)
@@ -7342,17 +8099,23 @@ RSpec.describe Plurimath::Latex::Parser do
           Plurimath::Math::Symbol.new("&#x394;"),
           Plurimath::Math::Function::Base.new(
             Plurimath::Math::Symbol.new("&#x03B5;"),
-            Plurimath::Math::Function::Text.new("ij")
+            Plurimath::Math::Formula.new([
+              Plurimath::Math::Symbol.new("i"),
+              Plurimath::Math::Symbol.new("j"),
+            ])
           ),
           Plurimath::Math::Symbol.new("="),
           Plurimath::Math::Function::Base.new(
             Plurimath::Math::Symbol.new("&#x3B2;"),
-            Plurimath::Math::Function::Text.new("ij")
+            Plurimath::Math::Formula.new([
+              Plurimath::Math::Symbol.new("i"),
+              Plurimath::Math::Symbol.new("j"),
+            ])
           ),
-          Plurimath::Math::Function::Text.new("M"),
+          Plurimath::Math::Symbol.new("M"),
           Plurimath::Math::Symbol.new("&#x3A;"),
           Plurimath::Math::Symbol.new("&#x394;"),
-          Plurimath::Math::Function::Text.new("M")
+          Plurimath::Math::Symbol.new("M")
         ])
         expect(formula).to eq(expected_value)
       end
@@ -7368,22 +8131,28 @@ RSpec.describe Plurimath::Latex::Parser do
         expected_value = Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Base.new(
             Plurimath::Math::Symbol.new("&#x03B5;"),
-            Plurimath::Math::Function::Text.new("ij")
+            Plurimath::Math::Formula.new([
+              Plurimath::Math::Symbol.new("i"),
+              Plurimath::Math::Symbol.new("j"),
+            ])
           ),
           Plurimath::Math::Symbol.new("="),
           Plurimath::Math::Function::Base.new(
             Plurimath::Math::Symbol.new("&#x3B1;"),
-            Plurimath::Math::Function::Text.new("ij")
+            Plurimath::Math::Formula.new([
+              Plurimath::Math::Symbol.new("i"),
+              Plurimath::Math::Symbol.new("j"),
+            ])
           ),
           Plurimath::Math::Symbol.new("&#x3A;"),
           Plurimath::Math::Formula.new([
-            Plurimath::Math::Function::Text.new("T"),
+            Plurimath::Math::Symbol.new("T"),
             Plurimath::Math::Symbol.new("&#x3A;"),
             Plurimath::Math::Symbol.new("-"),
             Plurimath::Math::Symbol.new("&#x3A;"),
             Plurimath::Math::Function::Base.new(
-              Plurimath::Math::Function::Text.new("T"),
-              Plurimath::Math::Function::Text.new("o")
+              Plurimath::Math::Symbol.new("T"),
+              Plurimath::Math::Symbol.new("o")
             )
           ])
         ])
@@ -7402,17 +8171,23 @@ RSpec.describe Plurimath::Latex::Parser do
           Plurimath::Math::Symbol.new("&#x394;"),
           Plurimath::Math::Function::Base.new(
             Plurimath::Math::Symbol.new("&#x03B5;"),
-            Plurimath::Math::Function::Text.new("ij")
+            Plurimath::Math::Formula.new([
+              Plurimath::Math::Symbol.new("i"),
+              Plurimath::Math::Symbol.new("j"),
+            ])
           ),
           Plurimath::Math::Symbol.new("="),
           Plurimath::Math::Function::Base.new(
             Plurimath::Math::Symbol.new("&#x3B1;"),
-            Plurimath::Math::Function::Text.new("ij")
+            Plurimath::Math::Formula.new([
+              Plurimath::Math::Symbol.new("i"),
+              Plurimath::Math::Symbol.new("j"),
+            ])
           ),
-          Plurimath::Math::Function::Text.new("T"),
+          Plurimath::Math::Symbol.new("T"),
           Plurimath::Math::Symbol.new("&#x3A;"),
           Plurimath::Math::Symbol.new("&#x394;"),
-          Plurimath::Math::Function::Text.new("T")
+          Plurimath::Math::Symbol.new("T")
         ])
         expect(formula).to eq(expected_value)
       end
@@ -7429,12 +8204,15 @@ RSpec.describe Plurimath::Latex::Parser do
           Plurimath::Math::Symbol.new("&#x394;"),
           Plurimath::Math::Function::Base.new(
             Plurimath::Math::Symbol.new("&#x3C3;"),
-            Plurimath::Math::Function::Text.new("ij")
+            Plurimath::Math::Formula.new([
+              Plurimath::Math::Symbol.new("i"),
+              Plurimath::Math::Symbol.new("j"),
+            ]),
           ),
           Plurimath::Math::Symbol.new("="),
           Plurimath::Math::Function::Sum.new(
             Plurimath::Math::Formula.new([
-              Plurimath::Math::Function::Text.new("k"),
+              Plurimath::Math::Symbol.new("k"),
               Plurimath::Math::Symbol.new("="),
               Plurimath::Math::Number.new("1")
             ]),
@@ -7442,21 +8220,29 @@ RSpec.describe Plurimath::Latex::Parser do
           ),
           Plurimath::Math::Function::Sum.new(
             Plurimath::Math::Formula.new([
-              Plurimath::Math::Function::Text.new("l"),
+              Plurimath::Math::Symbol.new("l"),
               Plurimath::Math::Symbol.new("="),
               Plurimath::Math::Number.new("1")
             ]),
             Plurimath::Math::Number.new("3")
           ),
           Plurimath::Math::Function::Base.new(
-            Plurimath::Math::Function::Text.new("d"),
-            Plurimath::Math::Function::Text.new("ijkl")
+            Plurimath::Math::Symbol.new("d"),
+            Plurimath::Math::Formula.new([
+              Plurimath::Math::Symbol.new("i"),
+              Plurimath::Math::Symbol.new("j"),
+              Plurimath::Math::Symbol.new("k"),
+              Plurimath::Math::Symbol.new("l"),
+            ]),
           ),
           Plurimath::Math::Symbol.new("&#x3A;"),
           Plurimath::Math::Symbol.new("&#x394;"),
           Plurimath::Math::Function::Base.new(
             Plurimath::Math::Symbol.new("&#x03B5;"),
-            Plurimath::Math::Function::Text.new("kl")
+            Plurimath::Math::Formula.new([
+              Plurimath::Math::Symbol.new("k"),
+              Plurimath::Math::Symbol.new("l"),
+            ]),
           )
         ])
         expect(formula).to eq(expected_value)
@@ -7472,34 +8258,40 @@ RSpec.describe Plurimath::Latex::Parser do
       it "returns formula" do
         expected_value = Plurimath::Math::Formula.new([
           Plurimath::Math::Function::PowerBase.new(
-            Plurimath::Math::Function::Text.new("Q"),
-            Plurimath::Math::Function::Text.new("i"),
-            Plurimath::Math::Function::Text.new("s"),
+            Plurimath::Math::Symbol.new("Q"),
+            Plurimath::Math::Symbol.new("i"),
+            Plurimath::Math::Symbol.new("s"),
           ),
           Plurimath::Math::Symbol.new("="),
           Plurimath::Math::Function::Sum.new(
             Plurimath::Math::Formula.new([
-              Plurimath::Math::Function::Text.new("j"),
+              Plurimath::Math::Symbol.new("j"),
               Plurimath::Math::Symbol.new("="),
               Plurimath::Math::Number.new("1")
             ]),
-            Plurimath::Math::Function::Text.new("m")
+            Plurimath::Math::Symbol.new("m")
           ),
           Plurimath::Math::Symbol.new("&#x3A;"),
           Plurimath::Math::Function::Base.new(
-            Plurimath::Math::Function::Text.new("s"),
-            Plurimath::Math::Function::Text.new("ji")
+            Plurimath::Math::Symbol.new("s"),
+            Plurimath::Math::Formula.new([
+              Plurimath::Math::Symbol.new("j"),
+              Plurimath::Math::Symbol.new("i"),
+            ])
           ),
           Plurimath::Math::Symbol.new("&#x3A;"),
           Plurimath::Math::Function::PowerBase.new(
-            Plurimath::Math::Function::Text.new("w"),
-            Plurimath::Math::Function::Text.new("j"),
-            Plurimath::Math::Function::Text.new("s"),
+            Plurimath::Math::Symbol.new("w"),
+            Plurimath::Math::Symbol.new("j"),
+            Plurimath::Math::Symbol.new("s"),
           ),
           Plurimath::Math::Symbol.new("&#x3A;"),
           Plurimath::Math::Function::Base.new(
-            Plurimath::Math::Function::Text.new("q"),
-            Plurimath::Math::Function::Text.new("ji")
+            Plurimath::Math::Symbol.new("q"),
+            Plurimath::Math::Formula.new([
+              Plurimath::Math::Symbol.new("j"),
+              Plurimath::Math::Symbol.new("i"),
+            ])
           )
         ])
         expect(formula).to eq(expected_value)
@@ -7514,32 +8306,32 @@ RSpec.describe Plurimath::Latex::Parser do
       }
       it "returns formula" do
         expected_value = Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Text.new("Q"),
+          Plurimath::Math::Symbol.new("Q"),
           Plurimath::Math::Symbol.new("="),
           Plurimath::Math::Function::Sum.new(
             Plurimath::Math::Formula.new([
-              Plurimath::Math::Function::Text.new("i"),
+              Plurimath::Math::Symbol.new("i"),
               Plurimath::Math::Symbol.new("="),
               Plurimath::Math::Number.new("1")
             ]),
-            Plurimath::Math::Function::Text.new("n")
+            Plurimath::Math::Symbol.new("n")
           ),
           Plurimath::Math::Symbol.new("&#x3A;"),
           Plurimath::Math::Function::Base.new(
-            Plurimath::Math::Function::Text.new("j"),
-            Plurimath::Math::Function::Text.new("i")
+            Plurimath::Math::Symbol.new("j"),
+            Plurimath::Math::Symbol.new("i")
           ),
           Plurimath::Math::Symbol.new("&#x3A;"),
           Plurimath::Math::Function::PowerBase.new(
-            Plurimath::Math::Function::Text.new("w"),
-            Plurimath::Math::Function::Text.new("i"),
-            Plurimath::Math::Function::Text.new("f"),
+            Plurimath::Math::Symbol.new("w"),
+            Plurimath::Math::Symbol.new("i"),
+            Plurimath::Math::Symbol.new("f"),
           ),
           Plurimath::Math::Symbol.new("&#x3A;"),
           Plurimath::Math::Function::PowerBase.new(
-            Plurimath::Math::Function::Text.new("Q"),
-            Plurimath::Math::Function::Text.new("i"),
-            Plurimath::Math::Function::Text.new("s"),
+            Plurimath::Math::Symbol.new("Q"),
+            Plurimath::Math::Symbol.new("i"),
+            Plurimath::Math::Symbol.new("s"),
           )
         ])
         expect(formula).to eq(expected_value)
@@ -7555,29 +8347,32 @@ RSpec.describe Plurimath::Latex::Parser do
       it "returns formula" do
         expected_value = Plurimath::Math::Formula.new([
           Plurimath::Math::Function::PowerBase.new(
-            Plurimath::Math::Function::Text.new("Q"),
-            Plurimath::Math::Function::Text.new("i"),
-            Plurimath::Math::Function::Text.new("s"),
+            Plurimath::Math::Symbol.new("Q"),
+            Plurimath::Math::Symbol.new("i"),
+            Plurimath::Math::Symbol.new("s"),
           ),
           Plurimath::Math::Symbol.new("="),
           Plurimath::Math::Function::Sum.new(
             Plurimath::Math::Formula.new([
-              Plurimath::Math::Function::Text.new("j"),
+              Plurimath::Math::Symbol.new("j"),
               Plurimath::Math::Symbol.new("="),
               Plurimath::Math::Number.new("1")
             ]),
-            Plurimath::Math::Function::Text.new("m")
+            Plurimath::Math::Symbol.new("m")
           ),
           Plurimath::Math::Symbol.new("&#x3A;"),
           Plurimath::Math::Function::PowerBase.new(
-            Plurimath::Math::Function::Text.new("w"),
-            Plurimath::Math::Function::Text.new("j"),
-            Plurimath::Math::Function::Text.new("s"),
+            Plurimath::Math::Symbol.new("w"),
+            Plurimath::Math::Symbol.new("j"),
+            Plurimath::Math::Symbol.new("s"),
           ),
           Plurimath::Math::Symbol.new("&#x3A;"),
           Plurimath::Math::Function::Base.new(
-            Plurimath::Math::Function::Text.new("q"),
-            Plurimath::Math::Function::Text.new("ji")
+            Plurimath::Math::Symbol.new("q"),
+            Plurimath::Math::Formula.new([
+              Plurimath::Math::Symbol.new("j"),
+              Plurimath::Math::Symbol.new("i"),
+            ])
           )
         ])
         expect(formula).to eq(expected_value)
@@ -7592,30 +8387,30 @@ RSpec.describe Plurimath::Latex::Parser do
       }
       it "returns formula" do
         expected_value = Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Text.new("Q"),
+          Plurimath::Math::Symbol.new("Q"),
           Plurimath::Math::Symbol.new("="),
           Plurimath::Math::Function::Sum.new(
             Plurimath::Math::Formula.new([
-              Plurimath::Math::Function::Text.new("i"),
+              Plurimath::Math::Symbol.new("i"),
               Plurimath::Math::Symbol.new("="),
               Plurimath::Math::Number.new("1")
             ]),
-            Plurimath::Math::Function::Text.new("n")
+            Plurimath::Math::Symbol.new("n")
           ),
           Plurimath::Math::Symbol.new("&#x3A;"),
           Plurimath::Math::Function::Base.new(
-            Plurimath::Math::Function::Text.new("s"),
-            Plurimath::Math::Function::Text.new("i")
+            Plurimath::Math::Symbol.new("s"),
+            Plurimath::Math::Symbol.new("i")
           ),
           Plurimath::Math::Symbol.new("&#x3A;"),
           Plurimath::Math::Function::Base.new(
-            Plurimath::Math::Function::Text.new("w"),
-            Plurimath::Math::Function::Text.new("i")
+            Plurimath::Math::Symbol.new("w"),
+            Plurimath::Math::Symbol.new("i")
           ),
           Plurimath::Math::Symbol.new("&#x3A;"),
           Plurimath::Math::Function::Base.new(
-            Plurimath::Math::Function::Text.new("q"),
-            Plurimath::Math::Function::Text.new("i")
+            Plurimath::Math::Symbol.new("q"),
+            Plurimath::Math::Symbol.new("i")
           )
         ])
         expect(formula).to eq(expected_value)
@@ -7630,35 +8425,35 @@ RSpec.describe Plurimath::Latex::Parser do
       }
       it "returns formula" do
         expected_value = Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Text.new("Q"),
+          Plurimath::Math::Symbol.new("Q"),
           Plurimath::Math::Symbol.new("="),
           Plurimath::Math::Function::Sum.new(
             Plurimath::Math::Formula.new([
-              Plurimath::Math::Function::Text.new("i"),
+              Plurimath::Math::Symbol.new("i"),
               Plurimath::Math::Symbol.new("="),
               Plurimath::Math::Number.new("1")
             ]),
-            Plurimath::Math::Function::Text.new("n")
+            Plurimath::Math::Symbol.new("n")
           ),
           Plurimath::Math::Symbol.new("&#x3A;"),
           Plurimath::Math::Function::Base.new(
-            Plurimath::Math::Function::Text.new("s"),
-            Plurimath::Math::Function::Text.new("i")
+            Plurimath::Math::Symbol.new("s"),
+            Plurimath::Math::Symbol.new("i")
           ),
           Plurimath::Math::Symbol.new("&#x3A;"),
           Plurimath::Math::Function::Base.new(
-            Plurimath::Math::Function::Text.new("j"),
-            Plurimath::Math::Function::Text.new("i")
+            Plurimath::Math::Symbol.new("j"),
+            Plurimath::Math::Symbol.new("i")
           ),
           Plurimath::Math::Symbol.new("&#x3A;"),
           Plurimath::Math::Function::Base.new(
-            Plurimath::Math::Function::Text.new("w"),
-            Plurimath::Math::Function::Text.new("i")
+            Plurimath::Math::Symbol.new("w"),
+            Plurimath::Math::Symbol.new("i")
           ),
           Plurimath::Math::Symbol.new("&#x3A;"),
           Plurimath::Math::Function::Base.new(
-            Plurimath::Math::Function::Text.new("q"),
-            Plurimath::Math::Function::Text.new("i")
+            Plurimath::Math::Symbol.new("q"),
+            Plurimath::Math::Symbol.new("i")
           )
         ])
         expect(formula).to eq(expected_value)
@@ -7673,30 +8468,30 @@ RSpec.describe Plurimath::Latex::Parser do
       }
       it "returns formula" do
         expected_value = Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Text.new("Q"),
+          Plurimath::Math::Symbol.new("Q"),
           Plurimath::Math::Symbol.new("="),
           Plurimath::Math::Function::Sum.new(
             Plurimath::Math::Formula.new([
-              Plurimath::Math::Function::Text.new("i"),
+              Plurimath::Math::Symbol.new("i"),
               Plurimath::Math::Symbol.new("="),
               Plurimath::Math::Number.new("1")
             ]),
-            Plurimath::Math::Function::Text.new("n")
+            Plurimath::Math::Symbol.new("n")
           ),
           Plurimath::Math::Symbol.new("&#x3A;"),
           Plurimath::Math::Function::Base.new(
-            Plurimath::Math::Function::Text.new("j"),
-            Plurimath::Math::Function::Text.new("i")
+            Plurimath::Math::Symbol.new("j"),
+            Plurimath::Math::Symbol.new("i")
           ),
           Plurimath::Math::Symbol.new("&#x3A;"),
           Plurimath::Math::Function::Base.new(
-            Plurimath::Math::Function::Text.new("w"),
-            Plurimath::Math::Function::Text.new("i")
+            Plurimath::Math::Symbol.new("w"),
+            Plurimath::Math::Symbol.new("i")
           ),
           Plurimath::Math::Symbol.new("&#x3A;"),
           Plurimath::Math::Function::Base.new(
-            Plurimath::Math::Function::Text.new("q"),
-            Plurimath::Math::Function::Text.new("i")
+            Plurimath::Math::Symbol.new("q"),
+            Plurimath::Math::Symbol.new("i")
           )
         ])
         expect(formula).to eq(expected_value)
@@ -7712,30 +8507,40 @@ RSpec.describe Plurimath::Latex::Parser do
       it "returns formula" do
         expected_value = Plurimath::Math::Formula.new([
           Plurimath::Math::Function::FontStyle::Bold.new(
-            Plurimath::Math::Function::Text.new("y"),
+            Plurimath::Math::Symbol.new("y"),
             "bf"
           ),
           Plurimath::Math::Symbol.new("&#x22C5;"),
           Plurimath::Math::Function::FontStyle::Bold.new(
-            Plurimath::Math::Function::Text.new("d"),
+            Plurimath::Math::Symbol.new("d"),
             "bf"
           ),
           Plurimath::Math::Symbol.new(">"),
           Plurimath::Math::Function::FontStyle::Bold.new(
-            Plurimath::Math::Function::Text.new("tolerance"),
+            Plurimath::Math::Formula.new([
+              Plurimath::Math::Symbol.new("t"),
+              Plurimath::Math::Symbol.new("o"),
+              Plurimath::Math::Symbol.new("l"),
+              Plurimath::Math::Symbol.new("e"),
+              Plurimath::Math::Symbol.new("r"),
+              Plurimath::Math::Symbol.new("a"),
+              Plurimath::Math::Symbol.new("n"),
+              Plurimath::Math::Symbol.new("c"),
+              Plurimath::Math::Symbol.new("e"),
+            ]),
             "bf"
           ),
           Plurimath::Math::Symbol.new("&#x2C;"),
           Plurimath::Math::Symbol.new("|"),
           Plurimath::Math::Function::FontStyle::Bold.new(
-            Plurimath::Math::Function::Text.new("y"),
+            Plurimath::Math::Symbol.new("y"),
             "bf"
           ),
           Plurimath::Math::Symbol.new("|"),
           Plurimath::Math::Symbol.new("&#x2C;"),
           Plurimath::Math::Symbol.new("|"),
           Plurimath::Math::Function::FontStyle::Bold.new(
-            Plurimath::Math::Function::Text.new("d"),
+            Plurimath::Math::Symbol.new("d"),
             "bf"
           ),
           Plurimath::Math::Symbol.new("|")
@@ -7753,18 +8558,18 @@ RSpec.describe Plurimath::Latex::Parser do
       it "returns formula" do
         expected_value = Plurimath::Math::Formula.new([
           Plurimath::Math::Function::FontStyle::Bold.new(
-            Plurimath::Math::Function::Text.new("z"),
+            Plurimath::Math::Symbol.new("z"),
             "bf"
           ),
           Plurimath::Math::Symbol.new("="),
           Plurimath::Math::Symbol.new("&#x27E8;"),
           Plurimath::Math::Function::FontStyle::Bold.new(
-            Plurimath::Math::Function::Text.new("x"),
+            Plurimath::Math::Symbol.new("x"),
             "bf"
           ),
           Plurimath::Math::Symbol.new("&#xD7;"),
           Plurimath::Math::Function::FontStyle::Bold.new(
-            Plurimath::Math::Function::Text.new("d"),
+            Plurimath::Math::Symbol.new("d"),
             "bf"
           ),
           Plurimath::Math::Symbol.new("&#x27E9;")
@@ -7782,30 +8587,40 @@ RSpec.describe Plurimath::Latex::Parser do
       it "returns formula" do
         expected_value = Plurimath::Math::Formula.new([
           Plurimath::Math::Function::FontStyle::Bold.new(
-            Plurimath::Math::Function::Text.new("x"),
+            Plurimath::Math::Symbol.new("x"),
             "bf"
           ),
           Plurimath::Math::Symbol.new("&#x22C5;"),
           Plurimath::Math::Function::FontStyle::Bold.new(
-            Plurimath::Math::Function::Text.new("X"),
+            Plurimath::Math::Symbol.new("X"),
             "bf"
           ),
           Plurimath::Math::Symbol.new(">"),
           Plurimath::Math::Function::FontStyle::Bold.new(
-            Plurimath::Math::Function::Text.new("tolerance"),
+            Plurimath::Math::Formula.new([
+              Plurimath::Math::Symbol.new("t"),
+              Plurimath::Math::Symbol.new("o"),
+              Plurimath::Math::Symbol.new("l"),
+              Plurimath::Math::Symbol.new("e"),
+              Plurimath::Math::Symbol.new("r"),
+              Plurimath::Math::Symbol.new("a"),
+              Plurimath::Math::Symbol.new("n"),
+              Plurimath::Math::Symbol.new("c"),
+              Plurimath::Math::Symbol.new("e"),
+            ]),
             "bf"
           ),
           Plurimath::Math::Symbol.new("&#x2C;"),
           Plurimath::Math::Symbol.new("|"),
           Plurimath::Math::Function::FontStyle::Bold.new(
-            Plurimath::Math::Function::Text.new("x"),
+            Plurimath::Math::Symbol.new("x"),
             "bf"
           ),
           Plurimath::Math::Symbol.new("|"),
           Plurimath::Math::Symbol.new("&#x2C;"),
           Plurimath::Math::Symbol.new("|"),
           Plurimath::Math::Function::FontStyle::Bold.new(
-            Plurimath::Math::Function::Text.new("X"),
+            Plurimath::Math::Symbol.new("X"),
             "bf"
           ),
           Plurimath::Math::Symbol.new("|")
@@ -7822,11 +8637,14 @@ RSpec.describe Plurimath::Latex::Parser do
       }
       it "returns formula" do
         expected_value = Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Text.new("z"),
+          Plurimath::Math::Symbol.new("z"),
           Plurimath::Math::Symbol.new("="),
           Plurimath::Math::Symbol.new("<"),
           Plurimath::Math::Symbol.new("<"),
-          Plurimath::Math::Function::Text.new("xxxY"),
+          Plurimath::Math::Symbol.new("x"),
+          Plurimath::Math::Symbol.new("x"),
+          Plurimath::Math::Symbol.new("x"),
+          Plurimath::Math::Symbol.new("Y"),
           Plurimath::Math::Symbol.new(">"),
           Plurimath::Math::Symbol.new(">")
         ])
@@ -7842,9 +8660,9 @@ RSpec.describe Plurimath::Latex::Parser do
       }
       it "returns formula" do
         expected_value = Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Text.new("x"),
+          Plurimath::Math::Symbol.new("x"),
           Plurimath::Math::Symbol.new("*"),
-          Plurimath::Math::Function::Text.new("X"),
+          Plurimath::Math::Symbol.new("X"),
           Plurimath::Math::Symbol.new(">"),
           Plurimath::Math::Number.new("0")
         ])
@@ -7860,9 +8678,9 @@ RSpec.describe Plurimath::Latex::Parser do
       }
       it "returns formula" do
         expected_value = Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Text.new("x"),
+          Plurimath::Math::Symbol.new("x"),
           Plurimath::Math::Symbol.new("*"),
-          Plurimath::Math::Function::Text.new("X"),
+          Plurimath::Math::Symbol.new("X"),
           Plurimath::Math::Symbol.new(">"),
           Plurimath::Math::Number.new("0")
         ])
@@ -7878,9 +8696,9 @@ RSpec.describe Plurimath::Latex::Parser do
       }
       it "returns formula" do
         expected_value = Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Text.new("x"),
+          Plurimath::Math::Symbol.new("x"),
           Plurimath::Math::Symbol.new("*"),
-          Plurimath::Math::Function::Text.new("X"),
+          Plurimath::Math::Symbol.new("X"),
           Plurimath::Math::Symbol.new(">"),
           Plurimath::Math::Number.new("0")
         ])
@@ -7896,16 +8714,16 @@ RSpec.describe Plurimath::Latex::Parser do
       }
       it "returns formula" do
         expected_value = Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Text.new("d"),
+          Plurimath::Math::Symbol.new("d"),
           Plurimath::Math::Symbol.new("*"),
-          Plurimath::Math::Function::Text.new("x"),
+          Plurimath::Math::Symbol.new("x"),
           Plurimath::Math::Symbol.new(">"),
           Plurimath::Math::Function::Text.new("\"tolerance\""),
           Plurimath::Math::Symbol.new("|"),
-          Plurimath::Math::Function::Text.new("d"),
+          Plurimath::Math::Symbol.new("d"),
           Plurimath::Math::Symbol.new("|"),
           Plurimath::Math::Symbol.new("|"),
-          Plurimath::Math::Function::Text.new("x"),
+          Plurimath::Math::Symbol.new("x"),
           Plurimath::Math::Symbol.new("|")
         ])
         expect(formula).to eq(expected_value)
@@ -7920,9 +8738,9 @@ RSpec.describe Plurimath::Latex::Parser do
       }
       it "returns formula" do
         expected_value = Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Text.new("z"),
+          Plurimath::Math::Symbol.new("z"),
           Plurimath::Math::Symbol.new("*"),
-          Plurimath::Math::Function::Text.new("d"),
+          Plurimath::Math::Symbol.new("d"),
           Plurimath::Math::Symbol.new(">"),
           Plurimath::Math::Number.new("0")
         ])
@@ -7938,16 +8756,16 @@ RSpec.describe Plurimath::Latex::Parser do
       }
       it "returns formula" do
         expected_value = Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Text.new("z"),
+          Plurimath::Math::Symbol.new("z"),
           Plurimath::Math::Symbol.new("*"),
-          Plurimath::Math::Function::Text.new("Z"),
+          Plurimath::Math::Symbol.new("Z"),
           Plurimath::Math::Symbol.new(">"),
           Plurimath::Math::Function::Text.new("\"tolerance\""),
           Plurimath::Math::Symbol.new("|"),
-          Plurimath::Math::Function::Text.new("z"),
+          Plurimath::Math::Symbol.new("z"),
           Plurimath::Math::Symbol.new("|"),
           Plurimath::Math::Symbol.new("|"),
-          Plurimath::Math::Function::Text.new("Z"),
+          Plurimath::Math::Symbol.new("Z"),
           Plurimath::Math::Symbol.new("|")
         ])
         expect(formula).to eq(expected_value)
@@ -7962,11 +8780,14 @@ RSpec.describe Plurimath::Latex::Parser do
       }
       it "returns formula" do
         expected_value = Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Text.new("y"),
+          Plurimath::Math::Symbol.new("y"),
           Plurimath::Math::Symbol.new("="),
           Plurimath::Math::Symbol.new("<"),
           Plurimath::Math::Symbol.new("<"),
-          Plurimath::Math::Function::Text.new("zxxX"),
+          Plurimath::Math::Symbol.new("z"),
+          Plurimath::Math::Symbol.new("x"),
+          Plurimath::Math::Symbol.new("x"),
+          Plurimath::Math::Symbol.new("X"),
           Plurimath::Math::Symbol.new(">"),
           Plurimath::Math::Symbol.new(">")
         ])
@@ -7982,9 +8803,9 @@ RSpec.describe Plurimath::Latex::Parser do
       }
       it "returns formula" do
         expected_value = Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Text.new("z"),
+          Plurimath::Math::Symbol.new("z"),
           Plurimath::Math::Symbol.new("*"),
-          Plurimath::Math::Function::Text.new("Z"),
+          Plurimath::Math::Symbol.new("Z"),
           Plurimath::Math::Symbol.new(">"),
           Plurimath::Math::Number.new("0")
         ])
@@ -8002,7 +8823,7 @@ RSpec.describe Plurimath::Latex::Parser do
         expected_value = Plurimath::Math::Formula.new([
           Plurimath::Math::Function::FontStyle::Bold.new(
             Plurimath::Math::Function::Power.new(
-              Plurimath::Math::Function::Text.new("x"),
+              Plurimath::Math::Symbol.new("x"),
               Plurimath::Math::Symbol.new("&#x2032;")
             ),
             "bf"
@@ -8034,7 +8855,7 @@ RSpec.describe Plurimath::Latex::Parser do
         expected_value = Plurimath::Math::Formula.new([
           Plurimath::Math::Function::FontStyle::Bold.new(
             Plurimath::Math::Function::Power.new(
-              Plurimath::Math::Function::Text.new("z"),
+              Plurimath::Math::Symbol.new("z"),
               Plurimath::Math::Symbol.new("&#x2032;")
             ),
             "bf"
@@ -8059,7 +8880,7 @@ RSpec.describe Plurimath::Latex::Parser do
         expected_value = Plurimath::Math::Formula.new([
           Plurimath::Math::Function::FontStyle::Monospace.new(
             Plurimath::Math::Function::Power.new(
-              Plurimath::Math::Function::Text.new("z"),
+              Plurimath::Math::Symbol.new("z"),
               Plurimath::Math::Symbol.new("&#x2032;")
             ),
             "mathtt"
@@ -8091,7 +8912,7 @@ RSpec.describe Plurimath::Latex::Parser do
         expected_value = Plurimath::Math::Formula.new([
           Plurimath::Math::Function::FontStyle::Bold.new(
             Plurimath::Math::Function::Power.new(
-              Plurimath::Math::Function::Text.new("y"),
+              Plurimath::Math::Symbol.new("y"),
               Plurimath::Math::Symbol.new("&#x2032;")
             ),
             "bf"
@@ -8116,7 +8937,7 @@ RSpec.describe Plurimath::Latex::Parser do
         expected_value = Plurimath::Math::Formula.new([
           Plurimath::Math::Function::FontStyle::Bold.new(
             Plurimath::Math::Function::Power.new(
-              Plurimath::Math::Function::Text.new("y"),
+              Plurimath::Math::Symbol.new("y"),
               Plurimath::Math::Symbol.new("&#x2032;")
             ),
             "bf"
@@ -8148,7 +8969,7 @@ RSpec.describe Plurimath::Latex::Parser do
         expected_value = Plurimath::Math::Formula.new([
           Plurimath::Math::Function::FontStyle::Bold.new(
             Plurimath::Math::Function::Power.new(
-              Plurimath::Math::Function::Text.new("x"),
+              Plurimath::Math::Symbol.new("x"),
               Plurimath::Math::Symbol.new("&#x2032;")
             ),
             "bf"
@@ -8226,14 +9047,16 @@ RSpec.describe Plurimath::Latex::Parser do
                           Plurimath::Math::Function::Td.new([]),
                           Plurimath::Math::Function::Td.new([
                             Plurimath::Math::Symbol.new("+"),
-                            Plurimath::Math::Function::Text.new("k")
+                            Plurimath::Math::Symbol.new("k")
                           ]),
                           Plurimath::Math::Function::Td.new([]),
                           Plurimath::Math::Function::Td.new([]),
                           Plurimath::Math::Function::Td.new([]),
                           Plurimath::Math::Function::Td.new([
-                            Plurimath::Math::Symbol.new("-"),
-                            Plurimath::Math::Function::Text.new("k")
+                            Plurimath::Math::Formula.new([
+                              Plurimath::Math::Symbol.new("-"),
+                              Plurimath::Math::Symbol.new("k")
+                            ])
                           ])
                         ]),
                         Plurimath::Math::Function::Tr.new([
@@ -8266,21 +9089,29 @@ RSpec.describe Plurimath::Latex::Parser do
                         Plurimath::Math::Function::Tr.new([
                           Plurimath::Math::Function::Td.new([]),
                           Plurimath::Math::Function::Td.new([
-                            Plurimath::Math::Symbol.new("-"),
-                            Plurimath::Math::Function::Text.new("k")
+                            Plurimath::Math::Formula.new([
+                              Plurimath::Math::Symbol.new("-"),
+                              Plurimath::Math::Symbol.new("k")
+                            ])
                           ]),
                           Plurimath::Math::Function::Td.new([]),
                           Plurimath::Math::Function::Td.new([]),
                           Plurimath::Math::Function::Td.new([]),
                           Plurimath::Math::Function::Td.new([
                             Plurimath::Math::Symbol.new("+"),
-                            Plurimath::Math::Function::Text.new("k")
+                            Plurimath::Math::Symbol.new("k")
                           ])
                         ])
                       ],
                       nil,
                       [
-                        Plurimath::Math::Function::Text.new("ccccccc")
+                        Plurimath::Math::Symbol.new("c"),
+                        Plurimath::Math::Symbol.new("c"),
+                        Plurimath::Math::Symbol.new("c"),
+                        Plurimath::Math::Symbol.new("c"),
+                        Plurimath::Math::Symbol.new("c"),
+                        Plurimath::Math::Symbol.new("c"),
+                        Plurimath::Math::Symbol.new("c"),
                       ],
                     ),
                     Plurimath::Math::Function::Right.new(")")
@@ -8324,7 +9155,8 @@ RSpec.describe Plurimath::Latex::Parser do
                     ],
                     nil,
                     [
-                      Plurimath::Math::Function::Text.new("cc")
+                      Plurimath::Math::Symbol.new("c"),
+                      Plurimath::Math::Symbol.new("c"),
                     ],
                   )
                 ])
@@ -8352,7 +9184,12 @@ RSpec.describe Plurimath::Latex::Parser do
                     ],
                     nil,
                     [
-                      Plurimath::Math::Function::Text.new("cccccc")
+                      Plurimath::Math::Symbol.new("c"),
+                      Plurimath::Math::Symbol.new("c"),
+                      Plurimath::Math::Symbol.new("c"),
+                      Plurimath::Math::Symbol.new("c"),
+                      Plurimath::Math::Symbol.new("c"),
+                      Plurimath::Math::Symbol.new("c"),
                     ],
                   )
                 ]),
@@ -8395,7 +9232,10 @@ RSpec.describe Plurimath::Latex::Parser do
                     ],
                     nil,
                     [
-                      Plurimath::Math::Function::Text.new("cccc")
+                      Plurimath::Math::Symbol.new("c"),
+                      Plurimath::Math::Symbol.new("c"),
+                      Plurimath::Math::Symbol.new("c"),
+                      Plurimath::Math::Symbol.new("c"),
                     ],
                   )
                 ]),
@@ -8403,7 +9243,10 @@ RSpec.describe Plurimath::Latex::Parser do
               ])
             ],
             nil,
-            [Plurimath::Math::Function::Text.new("cc")],
+            [
+              Plurimath::Math::Symbol.new("c"),
+              Plurimath::Math::Symbol.new("c"),
+            ],
           )
         ])
         expect(formula).to eq(expected_value)
@@ -8433,9 +9276,10 @@ RSpec.describe Plurimath::Latex::Parser do
               [
                 Plurimath::Math::Function::Tr.new([
                   Plurimath::Math::Function::Td.new([
+                    Plurimath::Math::Symbol.new("d"),
                     Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Function::Text.new("dt"),
-                      Plurimath::Math::Function::Text.new("x")
+                      Plurimath::Math::Symbol.new("t"),
+                      Plurimath::Math::Symbol.new("x")
                     )
                   ]),
                   Plurimath::Math::Function::Td.new([]),
@@ -8447,9 +9291,10 @@ RSpec.describe Plurimath::Latex::Parser do
                 Plurimath::Math::Function::Tr.new([
                   Plurimath::Math::Function::Td.new([]),
                   Plurimath::Math::Function::Td.new([
+                    Plurimath::Math::Symbol.new("d"),
                     Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Function::Text.new("dt"),
-                      Plurimath::Math::Function::Text.new("y")
+                      Plurimath::Math::Symbol.new("t"),
+                      Plurimath::Math::Symbol.new("y")
                     )
                   ]),
                   Plurimath::Math::Function::Td.new([]),
@@ -8461,9 +9306,10 @@ RSpec.describe Plurimath::Latex::Parser do
                   Plurimath::Math::Function::Td.new([]),
                   Plurimath::Math::Function::Td.new([]),
                   Plurimath::Math::Function::Td.new([
+                    Plurimath::Math::Symbol.new("d"),
                     Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Function::Text.new("dt"),
-                      Plurimath::Math::Function::Text.new("z")
+                      Plurimath::Math::Symbol.new("t"),
+                      Plurimath::Math::Symbol.new("z")
                     )
                   ]),
                   Plurimath::Math::Function::Td.new([]),
@@ -8475,9 +9321,10 @@ RSpec.describe Plurimath::Latex::Parser do
                   Plurimath::Math::Function::Td.new([]),
                   Plurimath::Math::Function::Td.new([]),
                   Plurimath::Math::Function::Td.new([
+                    Plurimath::Math::Symbol.new("d"),
                     Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Function::Text.new("dr"),
-                      Plurimath::Math::Function::Text.new("x")
+                      Plurimath::Math::Symbol.new("r"),
+                      Plurimath::Math::Symbol.new("x")
                     )
                   ]),
                   Plurimath::Math::Function::Td.new([]),
@@ -8489,9 +9336,10 @@ RSpec.describe Plurimath::Latex::Parser do
                   Plurimath::Math::Function::Td.new([]),
                   Plurimath::Math::Function::Td.new([]),
                   Plurimath::Math::Function::Td.new([
+                    Plurimath::Math::Symbol.new("d"),
                     Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Function::Text.new("dr"),
-                      Plurimath::Math::Function::Text.new("y")
+                      Plurimath::Math::Symbol.new("r"),
+                      Plurimath::Math::Symbol.new("y")
                     )
                   ]),
                   Plurimath::Math::Function::Td.new([])
@@ -8503,16 +9351,22 @@ RSpec.describe Plurimath::Latex::Parser do
                   Plurimath::Math::Function::Td.new([]),
                   Plurimath::Math::Function::Td.new([]),
                   Plurimath::Math::Function::Td.new([
+                    Plurimath::Math::Symbol.new("d"),
                     Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Function::Text.new("dr"),
-                      Plurimath::Math::Function::Text.new("z")
+                      Plurimath::Math::Symbol.new("r"),
+                      Plurimath::Math::Symbol.new("z")
                     )
                   ])
                 ])
               ],
               nil,
               [
-                Plurimath::Math::Function::Text.new("cccccc")
+                Plurimath::Math::Symbol.new("c"),
+                Plurimath::Math::Symbol.new("c"),
+                Plurimath::Math::Symbol.new("c"),
+                Plurimath::Math::Symbol.new("c"),
+                Plurimath::Math::Symbol.new("c"),
+                Plurimath::Math::Symbol.new("c"),
               ],
             ),
             Plurimath::Math::Function::Right.new(")")
@@ -8545,9 +9399,10 @@ RSpec.describe Plurimath::Latex::Parser do
               [
                 Plurimath::Math::Function::Tr.new([
                   Plurimath::Math::Function::Td.new([
+                    Plurimath::Math::Symbol.new("k"),
                     Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Function::Text.new("kt"),
-                      Plurimath::Math::Function::Text.new("x")
+                      Plurimath::Math::Symbol.new("t"),
+                      Plurimath::Math::Symbol.new("x"),
                     )
                   ]),
                   Plurimath::Math::Function::Td.new([]),
@@ -8559,9 +9414,10 @@ RSpec.describe Plurimath::Latex::Parser do
                 Plurimath::Math::Function::Tr.new([
                   Plurimath::Math::Function::Td.new([]),
                   Plurimath::Math::Function::Td.new([
+                    Plurimath::Math::Symbol.new("k"),
                     Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Function::Text.new("kt"),
-                      Plurimath::Math::Function::Text.new("y")
+                      Plurimath::Math::Symbol.new("t"),
+                      Plurimath::Math::Symbol.new("y"),
                     )
                   ]),
                   Plurimath::Math::Function::Td.new([]),
@@ -8573,9 +9429,10 @@ RSpec.describe Plurimath::Latex::Parser do
                   Plurimath::Math::Function::Td.new([]),
                   Plurimath::Math::Function::Td.new([]),
                   Plurimath::Math::Function::Td.new([
+                    Plurimath::Math::Symbol.new("k"),
                     Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Function::Text.new("kt"),
-                      Plurimath::Math::Function::Text.new("z")
+                      Plurimath::Math::Symbol.new("t"),
+                      Plurimath::Math::Symbol.new("z"),
                     )
                   ]),
                   Plurimath::Math::Function::Td.new([]),
@@ -8587,9 +9444,10 @@ RSpec.describe Plurimath::Latex::Parser do
                   Plurimath::Math::Function::Td.new([]),
                   Plurimath::Math::Function::Td.new([]),
                   Plurimath::Math::Function::Td.new([
+                    Plurimath::Math::Symbol.new("k"),
                     Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Function::Text.new("kr"),
-                      Plurimath::Math::Function::Text.new("x")
+                      Plurimath::Math::Symbol.new("r"),
+                      Plurimath::Math::Symbol.new("x"),
                     )
                   ]),
                   Plurimath::Math::Function::Td.new([]),
@@ -8601,12 +9459,13 @@ RSpec.describe Plurimath::Latex::Parser do
                   Plurimath::Math::Function::Td.new([]),
                   Plurimath::Math::Function::Td.new([]),
                   Plurimath::Math::Function::Td.new([
+                    Plurimath::Math::Symbol.new("k"),
                     Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Function::Text.new("kr"),
-                      Plurimath::Math::Function::Text.new("y")
+                      Plurimath::Math::Symbol.new("r"),
+                      Plurimath::Math::Symbol.new("y"),
                     )
                   ]),
-                  Plurimath::Math::Function::Td.new([])
+                  Plurimath::Math::Function::Td.new([]),
                 ]),
                 Plurimath::Math::Function::Tr.new([
                   Plurimath::Math::Function::Td.new([]),
@@ -8615,16 +9474,22 @@ RSpec.describe Plurimath::Latex::Parser do
                   Plurimath::Math::Function::Td.new([]),
                   Plurimath::Math::Function::Td.new([]),
                   Plurimath::Math::Function::Td.new([
+                    Plurimath::Math::Symbol.new("k"),
                     Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Function::Text.new("kr"),
-                      Plurimath::Math::Function::Text.new("z")
+                      Plurimath::Math::Symbol.new("r"),
+                      Plurimath::Math::Symbol.new("z"),
                     )
                   ])
                 ])
               ],
               nil,
               [
-                Plurimath::Math::Function::Text.new("cccccc")
+                Plurimath::Math::Symbol.new("c"),
+                Plurimath::Math::Symbol.new("c"),
+                Plurimath::Math::Symbol.new("c"),
+                Plurimath::Math::Symbol.new("c"),
+                Plurimath::Math::Symbol.new("c"),
+                Plurimath::Math::Symbol.new("c"),
               ],
             ),
             Plurimath::Math::Function::Right.new(")")
@@ -8664,8 +9529,8 @@ RSpec.describe Plurimath::Latex::Parser do
                 Plurimath::Math::Function::Tr.new([
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Function::Text.new("m"),
-                      Plurimath::Math::Function::Text.new("x")
+                      Plurimath::Math::Symbol.new("m"),
+                      Plurimath::Math::Symbol.new("x")
                     )
                   ]),
                   Plurimath::Math::Function::Td.new([]),
@@ -8678,8 +9543,8 @@ RSpec.describe Plurimath::Latex::Parser do
                   Plurimath::Math::Function::Td.new([]),
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Function::Text.new("m"),
-                      Plurimath::Math::Function::Text.new("y")
+                      Plurimath::Math::Symbol.new("m"),
+                      Plurimath::Math::Symbol.new("y")
                     )
                   ]),
                   Plurimath::Math::Function::Td.new([]),
@@ -8692,8 +9557,8 @@ RSpec.describe Plurimath::Latex::Parser do
                   Plurimath::Math::Function::Td.new([]),
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Function::Text.new("m"),
-                      Plurimath::Math::Function::Text.new("z")
+                      Plurimath::Math::Symbol.new("m"),
+                      Plurimath::Math::Symbol.new("z")
                     )
                   ]),
                   Plurimath::Math::Function::Td.new([]),
@@ -8706,20 +9571,29 @@ RSpec.describe Plurimath::Latex::Parser do
                   Plurimath::Math::Function::Td.new([]),
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Function::Text.new("i"),
-                      Plurimath::Math::Function::Text.new("xx")
+                      Plurimath::Math::Symbol.new("i"),
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Symbol.new("x"),
+                        Plurimath::Math::Symbol.new("x"),
+                      ]),
                     )
                   ]),
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Function::Text.new("i"),
-                      Plurimath::Math::Function::Text.new("xy")
+                      Plurimath::Math::Symbol.new("i"),
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Symbol.new("x"),
+                        Plurimath::Math::Symbol.new("y"),
+                      ]),
                     )
                   ]),
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Function::Text.new("i"),
-                      Plurimath::Math::Function::Text.new("xz")
+                      Plurimath::Math::Symbol.new("i"),
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Symbol.new("x"),
+                        Plurimath::Math::Symbol.new("z"),
+                      ]),
                     )
                   ])
                 ]),
@@ -8729,20 +9603,29 @@ RSpec.describe Plurimath::Latex::Parser do
                   Plurimath::Math::Function::Td.new([]),
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Function::Text.new("i"),
-                      Plurimath::Math::Function::Text.new("xy")
+                      Plurimath::Math::Symbol.new("i"),
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Symbol.new("x"),
+                        Plurimath::Math::Symbol.new("y"),
+                      ]),
                     )
                   ]),
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Function::Text.new("i"),
-                      Plurimath::Math::Function::Text.new("yy")
+                      Plurimath::Math::Symbol.new("i"),
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Symbol.new("y"),
+                        Plurimath::Math::Symbol.new("y"),
+                      ])
                     )
                   ]),
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Function::Text.new("i"),
-                      Plurimath::Math::Function::Text.new("yz")
+                      Plurimath::Math::Symbol.new("i"),
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Symbol.new("y"),
+                        Plurimath::Math::Symbol.new("z"),
+                      ])
                     )
                   ])
                 ]),
@@ -8752,27 +9635,41 @@ RSpec.describe Plurimath::Latex::Parser do
                   Plurimath::Math::Function::Td.new([]),
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Function::Text.new("i"),
-                      Plurimath::Math::Function::Text.new("xz")
+                      Plurimath::Math::Symbol.new("i"),
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Symbol.new("x"),
+                        Plurimath::Math::Symbol.new("z"),
+                      ]),
                     )
                   ]),
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Function::Text.new("i"),
-                      Plurimath::Math::Function::Text.new("yz")
+                      Plurimath::Math::Symbol.new("i"),
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Symbol.new("y"),
+                        Plurimath::Math::Symbol.new("z"),
+                      ])
                     )
                   ]),
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Function::Text.new("i"),
-                      Plurimath::Math::Function::Text.new("zz")
+                      Plurimath::Math::Symbol.new("i"),
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Symbol.new("z"),
+                        Plurimath::Math::Symbol.new("z"),
+                      ])
                     )
                   ])
                 ])
               ],
               nil,
               [
-                Plurimath::Math::Function::Text.new("cccccc")
+                Plurimath::Math::Symbol.new("c"),
+                Plurimath::Math::Symbol.new("c"),
+                Plurimath::Math::Symbol.new("c"),
+                Plurimath::Math::Symbol.new("c"),
+                Plurimath::Math::Symbol.new("c"),
+                Plurimath::Math::Symbol.new("c"),
               ],
             ),
             Plurimath::Math::Function::Right.new(")")
@@ -8790,9 +9687,14 @@ RSpec.describe Plurimath::Latex::Parser do
       }
       it "returns formula" do
         expected_value = Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Text.new("bbf"),
+          Plurimath::Math::Symbol.new("b"),
+          Plurimath::Math::Symbol.new("b"),
+          Plurimath::Math::Symbol.new("f"),
           Plurimath::Math::Symbol.new("="),
-          Plurimath::Math::Function::Text.new("Mbba")
+          Plurimath::Math::Symbol.new("M"),
+          Plurimath::Math::Symbol.new("b"),
+          Plurimath::Math::Symbol.new("b"),
+          Plurimath::Math::Symbol.new("a"),
         ])
         expect(formula).to eq(expected_value)
       end
@@ -8806,9 +9708,14 @@ RSpec.describe Plurimath::Latex::Parser do
       }
       it "returns formula" do
         expected_value = Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Text.new("bbf"),
+          Plurimath::Math::Symbol.new("b"),
+          Plurimath::Math::Symbol.new("b"),
+          Plurimath::Math::Symbol.new("f"),
           Plurimath::Math::Symbol.new("="),
-          Plurimath::Math::Function::Text.new("Dbbv")
+          Plurimath::Math::Symbol.new("D"),
+          Plurimath::Math::Symbol.new("b"),
+          Plurimath::Math::Symbol.new("b"),
+          Plurimath::Math::Symbol.new("v"),
         ])
         expect(formula).to eq(expected_value)
       end
@@ -8822,9 +9729,14 @@ RSpec.describe Plurimath::Latex::Parser do
       }
       it "returns formula" do
         expected_value = Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Text.new("bbf"),
+          Plurimath::Math::Symbol.new("b"),
+          Plurimath::Math::Symbol.new("b"),
+          Plurimath::Math::Symbol.new("f"),
           Plurimath::Math::Symbol.new("="),
-          Plurimath::Math::Function::Text.new("Kbbd")
+          Plurimath::Math::Symbol.new("K"),
+          Plurimath::Math::Symbol.new("b"),
+          Plurimath::Math::Symbol.new("b"),
+          Plurimath::Math::Symbol.new("d"),
         ])
         expect(formula).to eq(expected_value)
       end
@@ -8869,7 +9781,11 @@ RSpec.describe Plurimath::Latex::Parser do
               Plurimath::Math::Number.new("0"),
               Plurimath::Math::Symbol.new(","),
               Plurimath::Math::Symbol.new(","),
-              Plurimath::Math::Function::Text.new("ddots"),
+              Plurimath::Math::Symbol.new("d"),
+              Plurimath::Math::Symbol.new("d"),
+              Plurimath::Math::Symbol.new("o"),
+              Plurimath::Math::Symbol.new("t"),
+              Plurimath::Math::Symbol.new("s"),
               Plurimath::Math::Symbol.new(",")
             ]),
             Plurimath::Math::Symbol.new(","),
@@ -8878,7 +9794,7 @@ RSpec.describe Plurimath::Latex::Parser do
               Plurimath::Math::Symbol.new(","),
               Plurimath::Math::Symbol.new(","),
               Plurimath::Math::Symbol.new(","),
-              Plurimath::Math::Function::Text.new("n")
+              Plurimath::Math::Symbol.new("n")
             ])
           ])
         ])
@@ -8909,7 +9825,7 @@ RSpec.describe Plurimath::Latex::Parser do
             Plurimath::Math::Formula.new([
               Plurimath::Math::Number.new("2"),
               Plurimath::Math::Symbol.new(","),
-              Plurimath::Math::Function::Text.new("n"),
+              Plurimath::Math::Symbol.new("n"),
               Plurimath::Math::Symbol.new("+"),
               Plurimath::Math::Number.new("1"),
               Plurimath::Math::Symbol.new(","),
@@ -8922,12 +9838,12 @@ RSpec.describe Plurimath::Latex::Parser do
             Plurimath::Math::Formula.new([
               Plurimath::Math::Number.new("3"),
               Plurimath::Math::Symbol.new(","),
-              Plurimath::Math::Function::Text.new("n"),
+              Plurimath::Math::Symbol.new("n"),
               Plurimath::Math::Symbol.new("+"),
               Plurimath::Math::Number.new("2"),
               Plurimath::Math::Symbol.new(","),
               Plurimath::Math::Number.new("2"),
-              Plurimath::Math::Function::Text.new("n"),
+              Plurimath::Math::Symbol.new("n"),
               Plurimath::Math::Symbol.new(","),
               Plurimath::Math::Symbol.new(","),
               Plurimath::Math::Symbol.new(","),
@@ -8942,7 +9858,7 @@ RSpec.describe Plurimath::Latex::Parser do
               Plurimath::Math::Symbol.new("*"),
               Plurimath::Math::Symbol.new(","),
               Plurimath::Math::Number.new("3"),
-              Plurimath::Math::Function::Text.new("n"),
+              Plurimath::Math::Symbol.new("n"),
               Plurimath::Math::Symbol.new("-"),
               Plurimath::Math::Number.new("2"),
               Plurimath::Math::Symbol.new(","),
@@ -8980,15 +9896,15 @@ RSpec.describe Plurimath::Latex::Parser do
             ]),
             Plurimath::Math::Symbol.new(","),
             Plurimath::Math::Formula.new([
-              Plurimath::Math::Function::Text.new("n"),
+              Plurimath::Math::Symbol.new("n"),
               Plurimath::Math::Symbol.new(","),
               Plurimath::Math::Number.new("2"),
-              Plurimath::Math::Function::Text.new("n"),
+              Plurimath::Math::Symbol.new("n"),
               Plurimath::Math::Symbol.new("-"),
               Plurimath::Math::Number.new("1"),
               Plurimath::Math::Symbol.new(","),
               Plurimath::Math::Number.new("3"),
-              Plurimath::Math::Function::Text.new("n"),
+              Plurimath::Math::Symbol.new("n"),
               Plurimath::Math::Symbol.new("-"),
               Plurimath::Math::Number.new("3"),
               Plurimath::Math::Symbol.new(","),
@@ -8998,9 +9914,9 @@ RSpec.describe Plurimath::Latex::Parser do
               Plurimath::Math::Symbol.new(","),
               Plurimath::Math::Symbol.new("*"),
               Plurimath::Math::Symbol.new(","),
-              Plurimath::Math::Function::Text.new("n"),
+              Plurimath::Math::Symbol.new("n"),
               Plurimath::Math::Formula.new([
-                Plurimath::Math::Function::Text.new("n"),
+                Plurimath::Math::Symbol.new("n"),
                 Plurimath::Math::Symbol.new("+"),
                 Plurimath::Math::Number.new("1")
               ]),
@@ -9024,10 +9940,10 @@ RSpec.describe Plurimath::Latex::Parser do
       it "returns formula" do
         expected_value = Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Tilde.new(
-            Plurimath::Math::Function::Text.new("s"),
+            Plurimath::Math::Symbol.new("s"),
           ),
           Plurimath::Math::Symbol.new("="),
-          Plurimath::Math::Function::Text.new("p"),
+          Plurimath::Math::Symbol.new("p"),
           Plurimath::Math::Symbol.new("/"),
           Plurimath::Math::Function::Power.new(
             Plurimath::Math::Symbol.new("&#x3C1;"),
@@ -9047,31 +9963,31 @@ RSpec.describe Plurimath::Latex::Parser do
       it "returns formula" do
         expected_value = Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Vec.new(
-            Plurimath::Math::Function::Text.new("q")
+            Plurimath::Math::Symbol.new("q")
           ),
           Plurimath::Math::Symbol.new("="),
-          Plurimath::Math::Function::Text.new("u"),
+          Plurimath::Math::Symbol.new("u"),
           Plurimath::Math::Function::Base.new(
             Plurimath::Math::Function::Hat.new(
-              Plurimath::Math::Function::Text.new("e")
+              Plurimath::Math::Symbol.new("e")
             ),
-            Plurimath::Math::Function::Text.new("x")
+            Plurimath::Math::Symbol.new("x")
           ),
           Plurimath::Math::Symbol.new("+"),
-          Plurimath::Math::Function::Text.new("v"),
+          Plurimath::Math::Symbol.new("v"),
           Plurimath::Math::Function::Base.new(
             Plurimath::Math::Function::Hat.new(
-              Plurimath::Math::Function::Text.new("e")
+              Plurimath::Math::Symbol.new("e")
             ),
-            Plurimath::Math::Function::Text.new("y")
+            Plurimath::Math::Symbol.new("y")
           ),
           Plurimath::Math::Symbol.new("+"),
-          Plurimath::Math::Function::Text.new("w"),
+          Plurimath::Math::Symbol.new("w"),
           Plurimath::Math::Function::Base.new(
             Plurimath::Math::Function::Hat.new(
-              Plurimath::Math::Function::Text.new("e")
+              Plurimath::Math::Symbol.new("e")
             ),
-            Plurimath::Math::Function::Text.new("z")
+            Plurimath::Math::Symbol.new("z")
           )
         ])
         expect(formula).to eq(expected_value)
@@ -9086,16 +10002,16 @@ RSpec.describe Plurimath::Latex::Parser do
       }
       it "returns formula" do
         expected_value = Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Text.new("q"),
+          Plurimath::Math::Symbol.new("q"),
           Plurimath::Math::Symbol.new("="),
           Plurimath::Math::Function::Sqrt.new(
             Plurimath::Math::Formula.new([
               Plurimath::Math::Function::Vec.new(
-                Plurimath::Math::Function::Text.new("q")
+                Plurimath::Math::Symbol.new("q")
               ),
               Plurimath::Math::Symbol.new("&#x22C5;"),
               Plurimath::Math::Function::Vec.new(
-                Plurimath::Math::Function::Text.new("q")
+                Plurimath::Math::Symbol.new("q")
               )
             ])
           )
@@ -9114,34 +10030,34 @@ RSpec.describe Plurimath::Latex::Parser do
         expected_value = Plurimath::Math::Formula.new([
           Plurimath::Math::Symbol.new("&#x3C1;"),
           Plurimath::Math::Function::Vec.new(
-            Plurimath::Math::Function::Text.new("q")
+            Plurimath::Math::Symbol.new("q")
           ),
           Plurimath::Math::Symbol.new("="),
           Plurimath::Math::Symbol.new("&#x3C1;"),
-          Plurimath::Math::Function::Text.new("u"),
+          Plurimath::Math::Symbol.new("u"),
           Plurimath::Math::Function::Base.new(
             Plurimath::Math::Function::Hat.new(
-              Plurimath::Math::Function::Text.new("e")
+              Plurimath::Math::Symbol.new("e")
             ),
-            Plurimath::Math::Function::Text.new("x")
+            Plurimath::Math::Symbol.new("x")
           ),
           Plurimath::Math::Symbol.new("+"),
           Plurimath::Math::Symbol.new("&#x3C1;"),
-          Plurimath::Math::Function::Text.new("v"),
+          Plurimath::Math::Symbol.new("v"),
           Plurimath::Math::Function::Base.new(
             Plurimath::Math::Function::Hat.new(
-              Plurimath::Math::Function::Text.new("e")
+              Plurimath::Math::Symbol.new("e")
             ),
-            Plurimath::Math::Function::Text.new("y")
+            Plurimath::Math::Symbol.new("y")
           ),
           Plurimath::Math::Symbol.new("+"),
           Plurimath::Math::Symbol.new("&#x3C1;"),
-          Plurimath::Math::Function::Text.new("w"),
+          Plurimath::Math::Symbol.new("w"),
           Plurimath::Math::Function::Base.new(
             Plurimath::Math::Function::Hat.new(
-              Plurimath::Math::Function::Text.new("e")
+              Plurimath::Math::Symbol.new("e")
             ),
-            Plurimath::Math::Function::Text.new("z")
+            Plurimath::Math::Symbol.new("z")
           )
         ])
         expect(formula).to eq(expected_value)
@@ -9158,7 +10074,7 @@ RSpec.describe Plurimath::Latex::Parser do
         expected_value = Plurimath::Math::Formula.new([
           Plurimath::Math::Symbol.new("&#x3C1;"),
           Plurimath::Math::Function::Base.new(
-            Plurimath::Math::Function::Text.new("e"),
+            Plurimath::Math::Symbol.new("e"),
             Plurimath::Math::Number.new("0")
           )
         ])
@@ -9204,7 +10120,7 @@ RSpec.describe Plurimath::Latex::Parser do
         expected_value = Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Bar.new(
             Plurimath::Math::Function::Bar.new(
-              Plurimath::Math::Function::Text.new("S")
+              Plurimath::Math::Symbol.new("S")
             ),
           ),
         ])
@@ -9240,27 +10156,27 @@ RSpec.describe Plurimath::Latex::Parser do
         expected_value = Plurimath::Math::Formula.new([
           Plurimath::Math::Formula.new([
             Plurimath::Math::Function::Base.new(
-              Plurimath::Math::Function::Text.new("x"),
+              Plurimath::Math::Symbol.new("x"),
               Plurimath::Math::Number.new("1")
             ),
             Plurimath::Math::Symbol.new(","),
             Plurimath::Math::Function::Base.new(
-              Plurimath::Math::Function::Text.new("x"),
+              Plurimath::Math::Symbol.new("x"),
               Plurimath::Math::Number.new("2")
             ),
             Plurimath::Math::Symbol.new(","),
             Plurimath::Math::Function::Base.new(
-              Plurimath::Math::Function::Text.new("x"),
+              Plurimath::Math::Symbol.new("x"),
               Plurimath::Math::Number.new("3")
             )
           ]),
           Plurimath::Math::Symbol.new("="),
           Plurimath::Math::Formula.new([
-            Plurimath::Math::Function::Text.new("x"),
+            Plurimath::Math::Symbol.new("x"),
             Plurimath::Math::Symbol.new(","),
-            Plurimath::Math::Function::Text.new("y"),
+            Plurimath::Math::Symbol.new("y"),
             Plurimath::Math::Symbol.new(","),
-            Plurimath::Math::Function::Text.new("z")
+            Plurimath::Math::Symbol.new("z")
           ])
         ])
         expect(formula).to eq(expected_value)
@@ -9277,27 +10193,27 @@ RSpec.describe Plurimath::Latex::Parser do
         expected_value = Plurimath::Math::Formula.new([
           Plurimath::Math::Formula.new([
             Plurimath::Math::Function::Base.new(
-              Plurimath::Math::Function::Text.new("u"),
+              Plurimath::Math::Symbol.new("u"),
               Plurimath::Math::Number.new("1")
             ),
             Plurimath::Math::Symbol.new(","),
             Plurimath::Math::Function::Base.new(
-              Plurimath::Math::Function::Text.new("u"),
+              Plurimath::Math::Symbol.new("u"),
               Plurimath::Math::Number.new("2")
             ),
             Plurimath::Math::Symbol.new(","),
             Plurimath::Math::Function::Base.new(
-              Plurimath::Math::Function::Text.new("u"),
+              Plurimath::Math::Symbol.new("u"),
               Plurimath::Math::Number.new("3")
             )
           ]),
           Plurimath::Math::Symbol.new("="),
           Plurimath::Math::Formula.new([
-            Plurimath::Math::Function::Text.new("u"),
+            Plurimath::Math::Symbol.new("u"),
             Plurimath::Math::Symbol.new(","),
-            Plurimath::Math::Function::Text.new("v"),
+            Plurimath::Math::Symbol.new("v"),
             Plurimath::Math::Symbol.new(","),
-            Plurimath::Math::Function::Text.new("w")
+            Plurimath::Math::Symbol.new("w")
           ])
         ])
         expect(formula).to eq(expected_value)
@@ -9336,9 +10252,9 @@ RSpec.describe Plurimath::Latex::Parser do
           Plurimath::Math::Symbol.new("&#x3C1;"),
           Plurimath::Math::Function::Bar.new(
             Plurimath::Math::Formula.new([
-              Plurimath::Math::Function::Text.new("u"),
+              Plurimath::Math::Symbol.new("u"),
               Plurimath::Math::Symbol.new("'"),
-              Plurimath::Math::Function::Text.new("e"),
+              Plurimath::Math::Symbol.new("e"),
               Plurimath::Math::Symbol.new("'")
             ])
           )
@@ -9357,16 +10273,16 @@ RSpec.describe Plurimath::Latex::Parser do
         expected_value = Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Bar.new(
             Plurimath::Math::Formula.new([
-              Plurimath::Math::Function::Text.new("u"),
+              Plurimath::Math::Symbol.new("u"),
               Plurimath::Math::Symbol.new("'"),
-              Plurimath::Math::Function::Text.new("v"),
+              Plurimath::Math::Symbol.new("v"),
               Plurimath::Math::Symbol.new("'")
             ])
           ),
           Plurimath::Math::Symbol.new("="),
           Plurimath::Math::Function::Base.new(
             Plurimath::Math::Symbol.new("&#x3BD;"),
-            Plurimath::Math::Function::Text.new("t")
+            Plurimath::Math::Symbol.new("t")
           ),
           Plurimath::Math::Formula.new([
             Plurimath::Math::Function::Left.new("("),
@@ -9374,22 +10290,22 @@ RSpec.describe Plurimath::Latex::Parser do
               Plurimath::Math::Function::Frac.new(
                 Plurimath::Math::Formula.new([
                   Plurimath::Math::Symbol.new("&#x2202;"),
-                  Plurimath::Math::Function::Text.new("u")
+                  Plurimath::Math::Symbol.new("u")
                 ]),
                 Plurimath::Math::Formula.new([
                   Plurimath::Math::Symbol.new("&#x2202;"),
-                  Plurimath::Math::Function::Text.new("y")
+                  Plurimath::Math::Symbol.new("y")
                 ])
               ),
               Plurimath::Math::Symbol.new("+"),
               Plurimath::Math::Function::Frac.new(
                 Plurimath::Math::Formula.new([
                   Plurimath::Math::Symbol.new("&#x2202;"),
-                  Plurimath::Math::Function::Text.new("v")
+                  Plurimath::Math::Symbol.new("v")
                 ]),
                 Plurimath::Math::Formula.new([
                   Plurimath::Math::Symbol.new("&#x2202;"),
-                  Plurimath::Math::Function::Text.new("x")
+                  Plurimath::Math::Symbol.new("x")
                 ])
               )
             ]),
@@ -9410,7 +10326,7 @@ RSpec.describe Plurimath::Latex::Parser do
         expected_value = Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Base.new(
             Plurimath::Math::Symbol.new("&#x3BD;"),
-            Plurimath::Math::Function::Text.new("t")
+            Plurimath::Math::Symbol.new("t")
           )
         ])
         expect(formula).to eq(expected_value)
@@ -9439,7 +10355,7 @@ RSpec.describe Plurimath::Latex::Parser do
       }
       it "returns formula" do
         expected_value = Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Text.new("k"),
+          Plurimath::Math::Symbol.new("k"),
           Plurimath::Math::Symbol.new("="),
           Plurimath::Math::Function::Over.new(
             Plurimath::Math::Formula.new([
@@ -9452,27 +10368,27 @@ RSpec.describe Plurimath::Latex::Parser do
           Plurimath::Math::Formula.new([
             Plurimath::Math::Function::Bar.new(
               Plurimath::Math::Formula.new([
-                Plurimath::Math::Function::Text.new("u"),
+                Plurimath::Math::Symbol.new("u"),
                 Plurimath::Math::Symbol.new("'"),
-                Plurimath::Math::Function::Text.new("u"),
+                Plurimath::Math::Symbol.new("u"),
                 Plurimath::Math::Symbol.new("'")
               ])
             ),
             Plurimath::Math::Symbol.new("+"),
             Plurimath::Math::Function::Bar.new(
               Plurimath::Math::Formula.new([
-                Plurimath::Math::Function::Text.new("v"),
+                Plurimath::Math::Symbol.new("v"),
                 Plurimath::Math::Symbol.new("'"),
-                Plurimath::Math::Function::Text.new("v"),
+                Plurimath::Math::Symbol.new("v"),
                 Plurimath::Math::Symbol.new("'")
               ])
             ),
             Plurimath::Math::Symbol.new("+"),
             Plurimath::Math::Function::Bar.new(
               Plurimath::Math::Formula.new([
-                Plurimath::Math::Function::Text.new("w"),
+                Plurimath::Math::Symbol.new("w"),
                 Plurimath::Math::Symbol.new("'"),
-                Plurimath::Math::Function::Text.new("w"),
+                Plurimath::Math::Symbol.new("w"),
                 Plurimath::Math::Symbol.new("'")
               ])
             )
@@ -9494,7 +10410,7 @@ RSpec.describe Plurimath::Latex::Parser do
           Plurimath::Math::Symbol.new("&#x3D5;"),
           Plurimath::Math::Symbol.new("="),
           Plurimath::Math::Function::Vec.new(
-            Plurimath::Math::Function::Text.new("q")
+            Plurimath::Math::Symbol.new("q")
           )
         ])
         expect(formula).to eq(expected_value)
@@ -9514,7 +10430,7 @@ RSpec.describe Plurimath::Latex::Parser do
           Plurimath::Math::Symbol.new("&#x3C8;"),
           Plurimath::Math::Symbol.new("="),
           Plurimath::Math::Function::Vec.new(
-            Plurimath::Math::Function::Text.new("q")
+            Plurimath::Math::Symbol.new("q")
           )
         ])
         expect(formula).to eq(expected_value)
@@ -9546,17 +10462,17 @@ RSpec.describe Plurimath::Latex::Parser do
       }
       it "returns formula" do
         expected_value = Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Text.new("u"),
+          Plurimath::Math::Symbol.new("u"),
           Plurimath::Math::Symbol.new("="),
           Plurimath::Math::Function::Vec.new(
-            Plurimath::Math::Function::Text.new("q")
+            Plurimath::Math::Symbol.new("q")
           ),
           Plurimath::Math::Symbol.new("&#x22C5;"),
           Plurimath::Math::Function::Base.new(
             Plurimath::Math::Function::Hat.new(
-              Plurimath::Math::Function::Text.new("e")
+              Plurimath::Math::Symbol.new("e")
             ),
-            Plurimath::Math::Function::Text.new("x")
+            Plurimath::Math::Symbol.new("x")
           )
         ])
         expect(formula).to eq(expected_value)
@@ -9571,17 +10487,17 @@ RSpec.describe Plurimath::Latex::Parser do
       }
       it "returns formula" do
         expected_value = Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Text.new("v"),
+          Plurimath::Math::Symbol.new("v"),
           Plurimath::Math::Symbol.new("="),
           Plurimath::Math::Function::Vec.new(
-            Plurimath::Math::Function::Text.new("q")
+            Plurimath::Math::Symbol.new("q")
           ),
           Plurimath::Math::Symbol.new("&#x22C5;"),
           Plurimath::Math::Function::Base.new(
             Plurimath::Math::Function::Hat.new(
-              Plurimath::Math::Function::Text.new("e")
+              Plurimath::Math::Symbol.new("e")
             ),
-            Plurimath::Math::Function::Text.new("y")
+            Plurimath::Math::Symbol.new("y")
           )
         ])
         expect(formula).to eq(expected_value)
@@ -9596,17 +10512,17 @@ RSpec.describe Plurimath::Latex::Parser do
       }
       it "returns formula" do
         expected_value = Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Text.new("w"),
+          Plurimath::Math::Symbol.new("w"),
           Plurimath::Math::Symbol.new("="),
           Plurimath::Math::Function::Vec.new(
-            Plurimath::Math::Function::Text.new("q")
+            Plurimath::Math::Symbol.new("q")
           ),
           Plurimath::Math::Symbol.new("&#x22C5;"),
           Plurimath::Math::Function::Base.new(
             Plurimath::Math::Function::Hat.new(
-              Plurimath::Math::Function::Text.new("e")
+              Plurimath::Math::Symbol.new("e")
             ),
-            Plurimath::Math::Function::Text.new("z")
+            Plurimath::Math::Symbol.new("z")
           )
         ])
         expect(formula).to eq(expected_value)
@@ -9622,14 +10538,14 @@ RSpec.describe Plurimath::Latex::Parser do
       it "returns formula" do
         expected_value = Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Vec.new(
-            Plurimath::Math::Function::Text.new("q")
+            Plurimath::Math::Symbol.new("q")
           ),
           Plurimath::Math::Symbol.new("&#x22C5;"),
           Plurimath::Math::Function::Base.new(
             Plurimath::Math::Function::Hat.new(
-              Plurimath::Math::Function::Text.new("e")
+              Plurimath::Math::Symbol.new("e")
             ),
-            Plurimath::Math::Function::Text.new("r")
+            Plurimath::Math::Symbol.new("r")
           )
         ])
         expect(formula).to eq(expected_value)
@@ -9659,12 +10575,12 @@ RSpec.describe Plurimath::Latex::Parser do
       it "returns formula" do
         expected_value = Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Vec.new(
-            Plurimath::Math::Function::Text.new("q")
+            Plurimath::Math::Symbol.new("q")
           ),
           Plurimath::Math::Symbol.new("&#x22C5;"),
           Plurimath::Math::Function::Base.new(
             Plurimath::Math::Function::Hat.new(
-              Plurimath::Math::Function::Text.new("e")
+              Plurimath::Math::Symbol.new("e")
             ),
             Plurimath::Math::Symbol.new("&#x3B8;")
           )
@@ -9696,12 +10612,12 @@ RSpec.describe Plurimath::Latex::Parser do
       it "returns formula" do
         expected_value = Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Vec.new(
-            Plurimath::Math::Function::Text.new("q")
+            Plurimath::Math::Symbol.new("q")
           ),
           Plurimath::Math::Symbol.new("&#x22C5;"),
           Plurimath::Math::Function::Base.new(
             Plurimath::Math::Function::Hat.new(
-              Plurimath::Math::Function::Text.new("e")
+              Plurimath::Math::Symbol.new("e")
             ),
             Plurimath::Math::Symbol.new("&#x3D5;")
           )
@@ -9719,11 +10635,11 @@ RSpec.describe Plurimath::Latex::Parser do
       it "returns formula" do
         expected_value = Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Vec.new(
-            Plurimath::Math::Function::Text.new("q")
+            Plurimath::Math::Symbol.new("q")
           ),
           Plurimath::Math::Symbol.new("&#x22C5;"),
           Plurimath::Math::Function::Hat.new(
-            Plurimath::Math::Function::Text.new("n")
+            Plurimath::Math::Symbol.new("n")
           )
         ])
         expect(formula).to eq(expected_value)
@@ -9739,7 +10655,7 @@ RSpec.describe Plurimath::Latex::Parser do
       it "returns formula" do
         expected_value = Plurimath::Math::Formula.new([
           Plurimath::Math::Symbol.new("&#x3C1;"),
-          Plurimath::Math::Function::Text.new("u")
+          Plurimath::Math::Symbol.new("u")
         ])
         expect(formula).to eq(expected_value)
       end
@@ -9755,18 +10671,18 @@ RSpec.describe Plurimath::Latex::Parser do
         expected_value = Plurimath::Math::Formula.new([
           Plurimath::Math::Formula.new([
             Plurimath::Math::Function::Vec.new(
-              Plurimath::Math::Function::Text.new("q")
+              Plurimath::Math::Symbol.new("q")
             ),
             Plurimath::Math::Symbol.new("&#x22C5;"),
             Plurimath::Math::Function::Base.new(
               Plurimath::Math::Function::Hat.new(
-                Plurimath::Math::Function::Text.new("e")
+                Plurimath::Math::Symbol.new("e")
               ),
-              Plurimath::Math::Function::Text.new("x")
+              Plurimath::Math::Symbol.new("x")
             )
           ]),
           Plurimath::Math::Symbol.new("/"),
-          Plurimath::Math::Function::Text.new("q")
+          Plurimath::Math::Symbol.new("q")
         ])
         expect(formula).to eq(expected_value)
       end
@@ -9782,18 +10698,18 @@ RSpec.describe Plurimath::Latex::Parser do
         expected_value = Plurimath::Math::Formula.new([
           Plurimath::Math::Formula.new([
             Plurimath::Math::Function::Vec.new(
-              Plurimath::Math::Function::Text.new("q")
+              Plurimath::Math::Symbol.new("q")
             ),
             Plurimath::Math::Symbol.new("&#x22C5;"),
             Plurimath::Math::Function::Base.new(
               Plurimath::Math::Function::Hat.new(
-                Plurimath::Math::Function::Text.new("e")
+                Plurimath::Math::Symbol.new("e")
               ),
-              Plurimath::Math::Function::Text.new("y")
+              Plurimath::Math::Symbol.new("y")
             )
           ]),
           Plurimath::Math::Symbol.new("/"),
-          Plurimath::Math::Function::Text.new("q")
+          Plurimath::Math::Symbol.new("q")
         ])
         expect(formula).to eq(expected_value)
       end
@@ -9809,18 +10725,18 @@ RSpec.describe Plurimath::Latex::Parser do
         expected_value = Plurimath::Math::Formula.new([
           Plurimath::Math::Formula.new([
             Plurimath::Math::Function::Vec.new(
-              Plurimath::Math::Function::Text.new("q")
+              Plurimath::Math::Symbol.new("q")
             ),
             Plurimath::Math::Symbol.new("&#x22C5;"),
             Plurimath::Math::Function::Base.new(
               Plurimath::Math::Function::Hat.new(
-                Plurimath::Math::Function::Text.new("e")
+                Plurimath::Math::Symbol.new("e")
               ),
-              Plurimath::Math::Function::Text.new("z")
+              Plurimath::Math::Symbol.new("z")
             )
           ]),
           Plurimath::Math::Symbol.new("/"),
-          Plurimath::Math::Function::Text.new("q")
+          Plurimath::Math::Symbol.new("q")
         ])
         expect(formula).to eq(expected_value)
       end
@@ -9836,11 +10752,11 @@ RSpec.describe Plurimath::Latex::Parser do
         expected_value = Plurimath::Math::Formula.new([
           Plurimath::Math::Symbol.new("&#x3C1;"),
           Plurimath::Math::Function::Vec.new(
-            Plurimath::Math::Function::Text.new("q")
+            Plurimath::Math::Symbol.new("q")
           ),
           Plurimath::Math::Symbol.new("&#x22C5;"),
           Plurimath::Math::Function::Hat.new(
-            Plurimath::Math::Function::Text.new("n")
+            Plurimath::Math::Symbol.new("n")
           )
         ])
         expect(formula).to eq(expected_value)
@@ -9873,16 +10789,16 @@ RSpec.describe Plurimath::Latex::Parser do
       }
       it "returns formula" do
         expected_value = Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Text.new("R"),
+          Plurimath::Math::Symbol.new("R"),
           Plurimath::Math::Symbol.new("="),
           Plurimath::Math::Function::Base.new(
-            Plurimath::Math::Function::Text.new("c"),
-            Plurimath::Math::Function::Text.new("p")
+            Plurimath::Math::Symbol.new("c"),
+            Plurimath::Math::Symbol.new("p")
           ),
           Plurimath::Math::Symbol.new("-"),
           Plurimath::Math::Function::Base.new(
-            Plurimath::Math::Function::Text.new("c"),
-            Plurimath::Math::Function::Text.new("v")
+            Plurimath::Math::Symbol.new("c"),
+            Plurimath::Math::Symbol.new("v")
           )
         ])
         expect(formula).to eq(expected_value)
@@ -9900,9 +10816,9 @@ RSpec.describe Plurimath::Latex::Parser do
           Plurimath::Math::Symbol.new("&#x3C1;"),
           Plurimath::Math::Function::Bar.new(
             Plurimath::Math::Formula.new([
-                Plurimath::Math::Function::Text.new("u"),
+                Plurimath::Math::Symbol.new("u"),
                 Plurimath::Math::Symbol.new("'"),
-                Plurimath::Math::Function::Text.new("u"),
+                Plurimath::Math::Symbol.new("u"),
                 Plurimath::Math::Symbol.new("'")
               ])
           )
@@ -9932,7 +10848,7 @@ RSpec.describe Plurimath::Latex::Parser do
                 Plurimath::Math::Function::Td.new([
                   Plurimath::Math::Function::Base.new(
                     Plurimath::Math::Function::Hat.new(
-                      Plurimath::Math::Function::Text.new("e")
+                      Plurimath::Math::Symbol.new("e")
                     ),
                     Plurimath::Math::Symbol.new("&#x3BE;")
                   )
@@ -9942,7 +10858,7 @@ RSpec.describe Plurimath::Latex::Parser do
                 Plurimath::Math::Function::Td.new([
                   Plurimath::Math::Function::Base.new(
                     Plurimath::Math::Function::Hat.new(
-                      Plurimath::Math::Function::Text.new("e")
+                      Plurimath::Math::Symbol.new("e")
                     ),
                     Plurimath::Math::Symbol.new("&#x3B7;")
                   )
@@ -9952,7 +10868,7 @@ RSpec.describe Plurimath::Latex::Parser do
                 Plurimath::Math::Function::Td.new([
                   Plurimath::Math::Function::Base.new(
                     Plurimath::Math::Function::Hat.new(
-                      Plurimath::Math::Function::Text.new("e")
+                      Plurimath::Math::Symbol.new("e")
                     ),
                     Plurimath::Math::Symbol.new("&#x3B6;")
                   )
@@ -9964,7 +10880,7 @@ RSpec.describe Plurimath::Latex::Parser do
           ),
           Plurimath::Math::Symbol.new("="),
           Plurimath::Math::Function::FontStyle::Bold.new(
-            Plurimath::Math::Function::Text.new("T"),
+            Plurimath::Math::Symbol.new("T"),
             "bf"
           ),
           Plurimath::Math::Function::Table::Pmatrix.new(
@@ -9973,9 +10889,9 @@ RSpec.describe Plurimath::Latex::Parser do
                 Plurimath::Math::Function::Td.new([
                   Plurimath::Math::Function::Base.new(
                     Plurimath::Math::Function::Hat.new(
-                      Plurimath::Math::Function::Text.new("e")
+                      Plurimath::Math::Symbol.new("e")
                     ),
-                    Plurimath::Math::Function::Text.new("x")
+                    Plurimath::Math::Symbol.new("x")
                   )
                 ])
               ]),
@@ -9983,9 +10899,9 @@ RSpec.describe Plurimath::Latex::Parser do
                 Plurimath::Math::Function::Td.new([
                   Plurimath::Math::Function::Base.new(
                     Plurimath::Math::Function::Hat.new(
-                      Plurimath::Math::Function::Text.new("e")
+                      Plurimath::Math::Symbol.new("e")
                     ),
-                    Plurimath::Math::Function::Text.new("y")
+                    Plurimath::Math::Symbol.new("y")
                   )
                 ])
               ]),
@@ -9993,9 +10909,9 @@ RSpec.describe Plurimath::Latex::Parser do
                 Plurimath::Math::Function::Td.new([
                   Plurimath::Math::Function::Base.new(
                     Plurimath::Math::Function::Hat.new(
-                      Plurimath::Math::Function::Text.new("e")
+                      Plurimath::Math::Symbol.new("e")
                     ),
-                    Plurimath::Math::Function::Text.new("z")
+                    Plurimath::Math::Symbol.new("z")
                   )
                 ])
               ])
@@ -10023,11 +10939,11 @@ RSpec.describe Plurimath::Latex::Parser do
           Plurimath::Math::Function::Frac.new(
             Plurimath::Math::Formula.new([
               Plurimath::Math::Symbol.new("&#x2202;"),
-              Plurimath::Math::Function::Text.new("u")
+              Plurimath::Math::Symbol.new("u")
             ]),
             Plurimath::Math::Formula.new([
               Plurimath::Math::Symbol.new("&#x2202;"),
-              Plurimath::Math::Function::Text.new("x")
+              Plurimath::Math::Symbol.new("x")
             ])
           )
         ])
@@ -10052,7 +10968,7 @@ RSpec.describe Plurimath::Latex::Parser do
             ]),
             Plurimath::Math::Formula.new([
               Plurimath::Math::Symbol.new("&#x2202;"),
-              Plurimath::Math::Function::Text.new("x")
+              Plurimath::Math::Symbol.new("x")
             ])
           )
         ])
@@ -10075,7 +10991,7 @@ RSpec.describe Plurimath::Latex::Parser do
             ]),
             Plurimath::Math::Formula.new([
               Plurimath::Math::Symbol.new("&#x2202;"),
-              Plurimath::Math::Function::Text.new("z")
+              Plurimath::Math::Symbol.new("z")
             ])
           )
         ])
@@ -10097,16 +11013,16 @@ RSpec.describe Plurimath::Latex::Parser do
       }
       it "returns formula" do
         expected_value = Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Text.new("f"),
+          Plurimath::Math::Symbol.new("f"),
           Plurimath::Math::Symbol.new("="),
           Plurimath::Math::Function::Power.new(
             Plurimath::Math::Formula.new([
               Plurimath::Math::Function::FontStyle::Bold.new(
-                Plurimath::Math::Function::Text.new("F"),
+                Plurimath::Math::Symbol.new("F"),
                 "bf",
               )
             ]),
-            Plurimath::Math::Function::Text.new("t")
+            Plurimath::Math::Symbol.new("t")
           ),
           Plurimath::Math::Symbol.new("&#x3A;"),
           Plurimath::Math::Formula.new([
@@ -10116,23 +11032,23 @@ RSpec.describe Plurimath::Latex::Parser do
                 Plurimath::Math::Function::Tr.new([
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Function::Text.new("n"),
-                      Plurimath::Math::Function::Text.new("y")
+                      Plurimath::Math::Symbol.new("n"),
+                      Plurimath::Math::Symbol.new("y")
                     )
                   ])
                 ]),
                 Plurimath::Math::Function::Tr.new([
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Function::Text.new("n"),
-                      Plurimath::Math::Function::Text.new("z")
+                      Plurimath::Math::Symbol.new("n"),
+                      Plurimath::Math::Symbol.new("z")
                     )
                   ])
                 ])
               ],
               nil,
               [
-                Plurimath::Math::Function::Text.new("c")
+                Plurimath::Math::Symbol.new("c")
               ],
             ),
             Plurimath::Math::Function::Right.new(")")
@@ -10151,16 +11067,16 @@ RSpec.describe Plurimath::Latex::Parser do
       }
       it "returns formula" do
         expected_value = Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Text.new("m"),
+          Plurimath::Math::Symbol.new("m"),
           Plurimath::Math::Symbol.new("="),
           Plurimath::Math::Function::Power.new(
             Plurimath::Math::Formula.new([
               Plurimath::Math::Function::FontStyle::Bold.new(
-                Plurimath::Math::Function::Text.new("M"),
+                Plurimath::Math::Symbol.new("M"),
                 "bf"
               )
             ]),
-            Plurimath::Math::Function::Text.new("t")
+            Plurimath::Math::Symbol.new("t")
           ),
           Plurimath::Math::Symbol.new("&#x3A;"),
           Plurimath::Math::Formula.new([
@@ -10170,23 +11086,23 @@ RSpec.describe Plurimath::Latex::Parser do
                 Plurimath::Math::Function::Tr.new([
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Function::Text.new("n"),
-                      Plurimath::Math::Function::Text.new("y")
+                      Plurimath::Math::Symbol.new("n"),
+                      Plurimath::Math::Symbol.new("y")
                     )
                   ])
                 ]),
                 Plurimath::Math::Function::Tr.new([
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Function::Text.new("n"),
-                      Plurimath::Math::Function::Text.new("z")
+                      Plurimath::Math::Symbol.new("n"),
+                      Plurimath::Math::Symbol.new("z")
                     )
                   ])
                 ])
               ],
               nil,
               [
-                Plurimath::Math::Function::Text.new("c")
+                Plurimath::Math::Symbol.new("c")
               ],
             ),
             Plurimath::Math::Function::Right.new(")")
@@ -10210,7 +11126,7 @@ RSpec.describe Plurimath::Latex::Parser do
       it "returns formula" do
         expected_value = Plurimath::Math::Formula.new([
           Plurimath::Math::Function::FontStyle::Bold.new(
-            Plurimath::Math::Function::Text.new("c"),
+            Plurimath::Math::Symbol.new("c"),
             "bf"
           ),
           Plurimath::Math::Symbol.new("="),
@@ -10231,12 +11147,12 @@ RSpec.describe Plurimath::Latex::Parser do
                             Plurimath::Math::Symbol.new("&#x2202;"),
                             Plurimath::Math::Number.new("2")
                           ),
-                          Plurimath::Math::Function::Text.new("v")
+                          Plurimath::Math::Symbol.new("v")
                         ]),
                         Plurimath::Math::Formula.new([
                           Plurimath::Math::Symbol.new("&#x2202;"),
                           Plurimath::Math::Function::Power.new(
-                            Plurimath::Math::Function::Text.new("x"),
+                            Plurimath::Math::Symbol.new("x"),
                             Plurimath::Math::Number.new("2")
                           )
                         ])
@@ -10248,7 +11164,8 @@ RSpec.describe Plurimath::Latex::Parser do
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Formula.new([
                       Plurimath::Math::Number.new("2"),
-                      Plurimath::Math::Function::Text.new("mm")
+                      Plurimath::Math::Symbol.new("m"),
+                      Plurimath::Math::Symbol.new("m"),
                     ]),
                     Plurimath::Math::Formula.new([
                       Plurimath::Math::Function::FontStyle.new(
@@ -10261,12 +11178,12 @@ RSpec.describe Plurimath::Latex::Parser do
                             Plurimath::Math::Symbol.new("&#x2202;"),
                             Plurimath::Math::Number.new("2")
                           ),
-                          Plurimath::Math::Function::Text.new("w")
+                          Plurimath::Math::Symbol.new("w")
                         ]),
                         Plurimath::Math::Formula.new([
                           Plurimath::Math::Symbol.new("&#x2202;"),
                           Plurimath::Math::Function::Power.new(
-                            Plurimath::Math::Function::Text.new("x"),
+                            Plurimath::Math::Symbol.new("x"),
                             Plurimath::Math::Number.new("2")
                           )
                         ])
@@ -10277,7 +11194,7 @@ RSpec.describe Plurimath::Latex::Parser do
               ],
               nil,
               [
-                Plurimath::Math::Function::Text.new("c")
+                Plurimath::Math::Symbol.new("c")
               ],
             ),
             Plurimath::Math::Function::Right.new(")")
@@ -10314,7 +11231,7 @@ RSpec.describe Plurimath::Latex::Parser do
                         ]),
                         Plurimath::Math::Formula.new([
                           Plurimath::Math::Symbol.new("&#x2202;"),
-                          Plurimath::Math::Function::Text.new("y")
+                          Plurimath::Math::Symbol.new("y")
                         ])
                       ),
                       "displaystyle"
@@ -10325,7 +11242,8 @@ RSpec.describe Plurimath::Latex::Parser do
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Formula.new([
                       Plurimath::Math::Number.new("3"),
-                      Plurimath::Math::Function::Text.new("mm")
+                      Plurimath::Math::Symbol.new("m"),
+                      Plurimath::Math::Symbol.new("m"),
                     ]),
                     Plurimath::Math::Function::FontStyle.new(
                       Plurimath::Math::Function::Frac.new(
@@ -10335,7 +11253,7 @@ RSpec.describe Plurimath::Latex::Parser do
                         ]),
                         Plurimath::Math::Formula.new([
                           Plurimath::Math::Symbol.new("&#x2202;"),
-                          Plurimath::Math::Function::Text.new("z")
+                          Plurimath::Math::Symbol.new("z")
                         ])
                       ),
                       "displaystyle"
@@ -10345,7 +11263,7 @@ RSpec.describe Plurimath::Latex::Parser do
               ],
               nil,
               [
-                Plurimath::Math::Function::Text.new("c")
+                Plurimath::Math::Symbol.new("c")
               ],
             ),
             Plurimath::Math::Function::Right.new(")")
@@ -10369,14 +11287,14 @@ RSpec.describe Plurimath::Latex::Parser do
       }
       it "returns formula" do
         expected_value = Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Text.new("f"),
+          Plurimath::Math::Symbol.new("f"),
           Plurimath::Math::Symbol.new("="),
           Plurimath::Math::Function::Power.new(
             Plurimath::Math::Function::FontStyle::Bold.new(
-              Plurimath::Math::Function::Text.new("F"),
+              Plurimath::Math::Symbol.new("F"),
               "bf"
             ),
-            Plurimath::Math::Function::Text.new("t")
+            Plurimath::Math::Symbol.new("t")
           ),
           Plurimath::Math::Symbol.new("&#x3A;"),
           Plurimath::Math::Formula.new([
@@ -10386,23 +11304,23 @@ RSpec.describe Plurimath::Latex::Parser do
                 Plurimath::Math::Function::Tr.new([
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Function::Text.new("n"),
-                      Plurimath::Math::Function::Text.new("x")
+                      Plurimath::Math::Symbol.new("n"),
+                      Plurimath::Math::Symbol.new("x")
                     )
                   ])
                 ]),
                 Plurimath::Math::Function::Tr.new([
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Function::Text.new("n"),
-                      Plurimath::Math::Function::Text.new("y")
+                      Plurimath::Math::Symbol.new("n"),
+                      Plurimath::Math::Symbol.new("y")
                     )
                   ])
                 ])
               ],
               nil,
               [
-                Plurimath::Math::Function::Text.new("c")
+                Plurimath::Math::Symbol.new("c")
               ],
             ),
             Plurimath::Math::Function::Right.new(")")
@@ -10440,11 +11358,11 @@ RSpec.describe Plurimath::Latex::Parser do
                         Plurimath::Math::Function::Frac.new(
                           Plurimath::Math::Formula.new([
                             Plurimath::Math::Symbol.new("&#x2202;"),
-                            Plurimath::Math::Function::Text.new("w")
+                            Plurimath::Math::Symbol.new("w")
                           ]),
                           Plurimath::Math::Formula.new([
                             Plurimath::Math::Symbol.new("&#x2202;"),
-                            Plurimath::Math::Function::Text.new("x")
+                            Plurimath::Math::Symbol.new("x")
                           ])
                         ),
                         "displaystyle"
@@ -10453,11 +11371,11 @@ RSpec.describe Plurimath::Latex::Parser do
                       Plurimath::Math::Function::Frac.new(
                         Plurimath::Math::Formula.new([
                           Plurimath::Math::Symbol.new("&#x2202;"),
-                          Plurimath::Math::Function::Text.new("u")
+                          Plurimath::Math::Symbol.new("u")
                         ]),
                         Plurimath::Math::Formula.new([
                           Plurimath::Math::Symbol.new("&#x2202;"),
-                          Plurimath::Math::Function::Text.new("z")
+                          Plurimath::Math::Symbol.new("z")
                         ])
                       )
                     ])
@@ -10467,18 +11385,19 @@ RSpec.describe Plurimath::Latex::Parser do
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Formula.new([
                       Plurimath::Math::Number.new("2"),
-                      Plurimath::Math::Function::Text.new("mm")
+                      Plurimath::Math::Symbol.new("m"),
+                      Plurimath::Math::Symbol.new("m"),
                     ]),
                     Plurimath::Math::Formula.new([
                       Plurimath::Math::Function::FontStyle.new(
                         Plurimath::Math::Function::Frac.new(
                           Plurimath::Math::Formula.new([
                             Plurimath::Math::Symbol.new("&#x2202;"),
-                            Plurimath::Math::Function::Text.new("w")
+                            Plurimath::Math::Symbol.new("w")
                           ]),
                           Plurimath::Math::Formula.new([
                             Plurimath::Math::Symbol.new("&#x2202;"),
-                            Plurimath::Math::Function::Text.new("y")
+                            Plurimath::Math::Symbol.new("y")
                           ])
                         ),
                         "displaystyle"
@@ -10487,11 +11406,11 @@ RSpec.describe Plurimath::Latex::Parser do
                       Plurimath::Math::Function::Frac.new(
                         Plurimath::Math::Formula.new([
                           Plurimath::Math::Symbol.new("&#x2202;"),
-                          Plurimath::Math::Function::Text.new("v")
+                          Plurimath::Math::Symbol.new("v")
                         ]),
                         Plurimath::Math::Formula.new([
                           Plurimath::Math::Symbol.new("&#x2202;"),
-                          Plurimath::Math::Function::Text.new("z")
+                          Plurimath::Math::Symbol.new("z")
                         ])
                       )
                     ])
@@ -10500,7 +11419,7 @@ RSpec.describe Plurimath::Latex::Parser do
               ],
               nil,
               [
-                  Plurimath::Math::Function::Text.new("c")
+                  Plurimath::Math::Symbol.new("c")
                 ],
             ),
             Plurimath::Math::Function::Right.new(")")
@@ -10537,11 +11456,11 @@ RSpec.describe Plurimath::Latex::Parser do
                       Plurimath::Math::Function::Frac.new(
                         Plurimath::Math::Formula.new([
                           Plurimath::Math::Symbol.new("&#x2202;"),
-                          Plurimath::Math::Function::Text.new("u")
+                          Plurimath::Math::Symbol.new("u")
                         ]),
                         Plurimath::Math::Formula.new([
                           Plurimath::Math::Symbol.new("&#x2202;"),
-                          Plurimath::Math::Function::Text.new("x")
+                          Plurimath::Math::Symbol.new("x")
                         ])
                       ),
                       "displaystyle"
@@ -10552,11 +11471,11 @@ RSpec.describe Plurimath::Latex::Parser do
                       Plurimath::Math::Function::Frac.new(
                         Plurimath::Math::Formula.new([
                           Plurimath::Math::Symbol.new("&#x2202;"),
-                          Plurimath::Math::Function::Text.new("u")
+                          Plurimath::Math::Symbol.new("u")
                         ]),
                         Plurimath::Math::Formula.new([
                           Plurimath::Math::Symbol.new("&#x2202;"),
-                          Plurimath::Math::Function::Text.new("y")
+                          Plurimath::Math::Symbol.new("y")
                         ])
                       ),
                       "displaystyle"
@@ -10567,17 +11486,18 @@ RSpec.describe Plurimath::Latex::Parser do
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Formula.new([
                       Plurimath::Math::Number.new("2"),
-                      Plurimath::Math::Function::Text.new("mm")
+                      Plurimath::Math::Symbol.new("m"),
+                      Plurimath::Math::Symbol.new("m"),
                     ]),
                     Plurimath::Math::Function::FontStyle.new(
                       Plurimath::Math::Function::Frac.new(
                         Plurimath::Math::Formula.new([
                           Plurimath::Math::Symbol.new("&#x2202;"),
-                          Plurimath::Math::Function::Text.new("v")
+                          Plurimath::Math::Symbol.new("v")
                         ]),
                         Plurimath::Math::Formula.new([
                           Plurimath::Math::Symbol.new("&#x2202;"),
-                          Plurimath::Math::Function::Text.new("x")
+                          Plurimath::Math::Symbol.new("x")
                         ])
                       ),
                       "displaystyle"
@@ -10588,11 +11508,11 @@ RSpec.describe Plurimath::Latex::Parser do
                       Plurimath::Math::Function::Frac.new(
                         Plurimath::Math::Formula.new([
                           Plurimath::Math::Symbol.new("&#x2202;"),
-                          Plurimath::Math::Function::Text.new("v")
+                          Plurimath::Math::Symbol.new("v")
                         ]),
                         Plurimath::Math::Formula.new([
                           Plurimath::Math::Symbol.new("&#x2202;"),
-                          Plurimath::Math::Function::Text.new("y")
+                          Plurimath::Math::Symbol.new("y")
                         ])
                       ),
                       "displaystyle"
@@ -10602,7 +11522,8 @@ RSpec.describe Plurimath::Latex::Parser do
               ],
               nil,
               [
-                Plurimath::Math::Function::Text.new("cc")
+                Plurimath::Math::Symbol.new("c"),
+                Plurimath::Math::Symbol.new("c"),
               ],
             ),
             Plurimath::Math::Function::Right.new(")")
@@ -10627,7 +11548,7 @@ RSpec.describe Plurimath::Latex::Parser do
       }
       it "returns formula" do
         expected_value = Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Text.new("c"),
+          Plurimath::Math::Symbol.new("c"),
           Plurimath::Math::Symbol.new("="),
           Plurimath::Math::Formula.new([
             Plurimath::Math::Function::Left.new("("),
@@ -10646,12 +11567,12 @@ RSpec.describe Plurimath::Latex::Parser do
                             Plurimath::Math::Symbol.new("&#x2202;"),
                             Plurimath::Math::Number.new("2")
                           ),
-                          Plurimath::Math::Function::Text.new("w")
+                          Plurimath::Math::Symbol.new("w")
                         ]),
                         Plurimath::Math::Formula.new([
                           Plurimath::Math::Symbol.new("&#x2202;"),
                           Plurimath::Math::Function::Power.new(
-                            Plurimath::Math::Function::Text.new("x"),
+                            Plurimath::Math::Symbol.new("x"),
                             Plurimath::Math::Number.new("2")
                           )
                         ])
@@ -10670,13 +11591,13 @@ RSpec.describe Plurimath::Latex::Parser do
                             Plurimath::Math::Symbol.new("&#x2202;"),
                             Plurimath::Math::Number.new("2")
                           ),
-                          Plurimath::Math::Function::Text.new("w")
+                          Plurimath::Math::Symbol.new("w")
                         ]),
                         Plurimath::Math::Formula.new([
                           Plurimath::Math::Symbol.new("&#x2202;"),
-                          Plurimath::Math::Function::Text.new("x"),
+                          Plurimath::Math::Symbol.new("x"),
                           Plurimath::Math::Symbol.new("&#x2202;"),
-                          Plurimath::Math::Function::Text.new("y")
+                          Plurimath::Math::Symbol.new("y")
                         ])
                       )
                     ])
@@ -10686,7 +11607,8 @@ RSpec.describe Plurimath::Latex::Parser do
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Formula.new([
                       Plurimath::Math::Number.new("2"),
-                      Plurimath::Math::Function::Text.new("mm")
+                      Plurimath::Math::Symbol.new("m"),
+                      Plurimath::Math::Symbol.new("m"),
                     ]),
                     Plurimath::Math::Formula.new([
                       Plurimath::Math::Function::FontStyle.new(
@@ -10699,13 +11621,13 @@ RSpec.describe Plurimath::Latex::Parser do
                             Plurimath::Math::Symbol.new("&#x2202;"),
                             Plurimath::Math::Number.new("2")
                           ),
-                          Plurimath::Math::Function::Text.new("w")
+                          Plurimath::Math::Symbol.new("w")
                         ]),
                         Plurimath::Math::Formula.new([
                           Plurimath::Math::Symbol.new("&#x2202;"),
-                          Plurimath::Math::Function::Text.new("x"),
+                          Plurimath::Math::Symbol.new("x"),
                           Plurimath::Math::Symbol.new("&#x2202;"),
-                          Plurimath::Math::Function::Text.new("y")
+                          Plurimath::Math::Symbol.new("y")
                         ])
                       )
                     ])
@@ -10722,12 +11644,12 @@ RSpec.describe Plurimath::Latex::Parser do
                             Plurimath::Math::Symbol.new("&#x2202;"),
                             Plurimath::Math::Number.new("2")
                           ),
-                          Plurimath::Math::Function::Text.new("w")
+                          Plurimath::Math::Symbol.new("w")
                         ]),
                         Plurimath::Math::Formula.new([
                           Plurimath::Math::Symbol.new("&#x2202;"),
                           Plurimath::Math::Function::Power.new(
-                            Plurimath::Math::Function::Text.new("y"),
+                            Plurimath::Math::Symbol.new("y"),
                             Plurimath::Math::Number.new("2")
                           )
                         ])
@@ -10738,7 +11660,8 @@ RSpec.describe Plurimath::Latex::Parser do
               ],
               nil,
               [
-                Plurimath::Math::Function::Text.new("cc")
+                Plurimath::Math::Symbol.new("c"),
+                Plurimath::Math::Symbol.new("c"),
               ],
             ),
             Plurimath::Math::Function::Right.new(")")
@@ -10762,8 +11685,11 @@ RSpec.describe Plurimath::Latex::Parser do
         expected_value = Plurimath::Math::Formula.new([
           Plurimath::Math::Function::PowerBase.new(
             Plurimath::Math::Symbol.new("&#x03B5;"),
-            Plurimath::Math::Function::Text.new("ij"),
-            Plurimath::Math::Function::Text.new("E"),
+            Plurimath::Math::Formula.new([
+              Plurimath::Math::Symbol.new("i"),
+              Plurimath::Math::Symbol.new("j"),
+            ]),
+            Plurimath::Math::Symbol.new("E"),
           ),
           Plurimath::Math::Symbol.new("="),
           Plurimath::Math::Number.new("1"),
@@ -10776,15 +11702,15 @@ RSpec.describe Plurimath::Latex::Parser do
                 Plurimath::Math::Formula.new([
                   Plurimath::Math::Symbol.new("&#x2202;"),
                   Plurimath::Math::Function::Base.new(
-                    Plurimath::Math::Function::Text.new("v"),
-                    Plurimath::Math::Function::Text.new("i")
+                    Plurimath::Math::Symbol.new("v"),
+                    Plurimath::Math::Symbol.new("i")
                   )
                 ]),
                 Plurimath::Math::Formula.new([
                   Plurimath::Math::Symbol.new("&#x2202;"),
                   Plurimath::Math::Function::Base.new(
-                    Plurimath::Math::Function::Text.new("x"),
-                    Plurimath::Math::Function::Text.new("j")
+                    Plurimath::Math::Symbol.new("x"),
+                    Plurimath::Math::Symbol.new("j")
                   )
                 ])
               ),
@@ -10793,15 +11719,15 @@ RSpec.describe Plurimath::Latex::Parser do
                 Plurimath::Math::Formula.new([
                   Plurimath::Math::Symbol.new("&#x2202;"),
                   Plurimath::Math::Function::Base.new(
-                    Plurimath::Math::Function::Text.new("v"),
-                    Plurimath::Math::Function::Text.new("j")
+                    Plurimath::Math::Symbol.new("v"),
+                    Plurimath::Math::Symbol.new("j")
                   )
                 ]),
                 Plurimath::Math::Formula.new([
                   Plurimath::Math::Symbol.new("&#x2202;"),
                   Plurimath::Math::Function::Base.new(
-                    Plurimath::Math::Function::Text.new("x"),
-                    Plurimath::Math::Function::Text.new("i")
+                    Plurimath::Math::Symbol.new("x"),
+                    Plurimath::Math::Symbol.new("i")
                   )
                 ])
               )
@@ -10823,19 +11749,25 @@ RSpec.describe Plurimath::Latex::Parser do
         expected_value = Plurimath::Math::Formula.new([
           Plurimath::Math::Function::PowerBase.new(
             Plurimath::Math::Symbol.new("&#x03B5;"),
-            Plurimath::Math::Function::Text.new("ij"),
-            Plurimath::Math::Function::Text.new("T"),
+            Plurimath::Math::Formula.new([
+              Plurimath::Math::Symbol.new("i"),
+              Plurimath::Math::Symbol.new("j"),
+            ]),
+            Plurimath::Math::Symbol.new("T"),
           ),
           Plurimath::Math::Symbol.new("="),
           Plurimath::Math::Function::Base.new(
             Plurimath::Math::Symbol.new("&#x3B1;"),
-            Plurimath::Math::Function::Text.new("ij")
+            Plurimath::Math::Formula.new([
+              Plurimath::Math::Symbol.new("i"),
+              Plurimath::Math::Symbol.new("j"),
+            ]),
           ),
           Plurimath::Math::Formula.new([
-            Plurimath::Math::Function::Text.new("T"),
+            Plurimath::Math::Symbol.new("T"),
             Plurimath::Math::Symbol.new("-"),
             Plurimath::Math::Function::Base.new(
-              Plurimath::Math::Function::Text.new("T"),
+              Plurimath::Math::Symbol.new("T"),
               Plurimath::Math::Number.new("0")
             )
           ])
@@ -10854,19 +11786,28 @@ RSpec.describe Plurimath::Latex::Parser do
         expected_value = Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Base.new(
             Plurimath::Math::Symbol.new("&#x03B5;"),
-            Plurimath::Math::Function::Text.new("ij")
+            Plurimath::Math::Formula.new([
+              Plurimath::Math::Symbol.new("i"),
+              Plurimath::Math::Symbol.new("j"),
+            ]),
           ),
           Plurimath::Math::Symbol.new("="),
           Plurimath::Math::Function::PowerBase.new(
             Plurimath::Math::Symbol.new("&#x03B5;"),
-            Plurimath::Math::Function::Text.new("ij"),
-            Plurimath::Math::Function::Text.new("E"),
+            Plurimath::Math::Formula.new([
+              Plurimath::Math::Symbol.new("i"),
+              Plurimath::Math::Symbol.new("j"),
+            ]),
+            Plurimath::Math::Symbol.new("E"),
           ),
           Plurimath::Math::Symbol.new("+"),
           Plurimath::Math::Function::PowerBase.new(
             Plurimath::Math::Symbol.new("&#x03B5;"),
-            Plurimath::Math::Function::Text.new("ij"),
-            Plurimath::Math::Function::Text.new("T"),
+            Plurimath::Math::Formula.new([
+              Plurimath::Math::Symbol.new("i"),
+              Plurimath::Math::Symbol.new("j"),
+            ]),
+            Plurimath::Math::Symbol.new("T"),
           )
         ])
         expect(formula).to eq(expected_value)
@@ -10882,24 +11823,30 @@ RSpec.describe Plurimath::Latex::Parser do
       it "returns formula" do
         expected_value = Plurimath::Math::Formula.new([
           Plurimath::Math::Symbol.new("&#x394;"),
-          Plurimath::Math::Function::Text.new("v"),
+          Plurimath::Math::Symbol.new("v"),
           Plurimath::Math::Symbol.new("="),
           Plurimath::Math::Function::Sum.new(
-            Plurimath::Math::Function::Text.new("i"),
+            Plurimath::Math::Symbol.new("i"),
             nil
           ),
           Plurimath::Math::Function::Sum.new(
-            Plurimath::Math::Function::Text.new("j"),
+            Plurimath::Math::Symbol.new("j"),
             nil
           ),
           Plurimath::Math::Function::Base.new(
             Plurimath::Math::Symbol.new("&#x3C3;"),
-            Plurimath::Math::Function::Text.new("ij")
+            Plurimath::Math::Formula.new([
+              Plurimath::Math::Symbol.new("i"),
+              Plurimath::Math::Symbol.new("j"),
+            ]),
           ),
           Plurimath::Math::Symbol.new("&#x394;"),
           Plurimath::Math::Function::Base.new(
             Plurimath::Math::Symbol.new("&#x03B5;"),
-            Plurimath::Math::Function::Text.new("ij")
+            Plurimath::Math::Formula.new([
+              Plurimath::Math::Symbol.new("i"),
+              Plurimath::Math::Symbol.new("j"),
+            ]),
           )
         ])
         expect(formula).to eq(expected_value)
@@ -10915,18 +11862,18 @@ RSpec.describe Plurimath::Latex::Parser do
       it "returns formula" do
         expected_value = Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Base.new(
-            Plurimath::Math::Function::Text.new("a"),
-            Plurimath::Math::Function::Text.new("i")
+            Plurimath::Math::Symbol.new("a"),
+            Plurimath::Math::Symbol.new("i")
           ),
           Plurimath::Math::Symbol.new("&#x22C5;"),
           Plurimath::Math::Function::Base.new(
-            Plurimath::Math::Function::Text.new("x"),
-            Plurimath::Math::Function::Text.new("i")
+            Plurimath::Math::Symbol.new("x"),
+            Plurimath::Math::Symbol.new("i")
           ),
           Plurimath::Math::Symbol.new("="),
           Plurimath::Math::Function::Base.new(
-            Plurimath::Math::Function::Text.new("b"),
-            Plurimath::Math::Function::Text.new("i")
+            Plurimath::Math::Symbol.new("b"),
+            Plurimath::Math::Symbol.new("i")
           )
         ])
         expect(formula).to eq(expected_value)
@@ -10943,29 +11890,29 @@ RSpec.describe Plurimath::Latex::Parser do
         expected_value = Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Sum.new(
             Plurimath::Math::Formula.new([
-              Plurimath::Math::Function::Text.new("i"),
+              Plurimath::Math::Symbol.new("i"),
               Plurimath::Math::Symbol.new("="),
               Plurimath::Math::Number.new("1")
             ]),
-            Plurimath::Math::Function::Text.new("n")
+            Plurimath::Math::Symbol.new("n")
           ),
           Plurimath::Math::Formula.new([
             Plurimath::Math::Function::Left.new("("),
             Plurimath::Math::Formula.new([
               Plurimath::Math::Function::Base.new(
-                Plurimath::Math::Function::Text.new("a"),
-                Plurimath::Math::Function::Text.new("i")
+                Plurimath::Math::Symbol.new("a"),
+                Plurimath::Math::Symbol.new("i")
               ),
               Plurimath::Math::Symbol.new("&#x22C5;"),
               Plurimath::Math::Function::Base.new(
-                Plurimath::Math::Function::Text.new("x"),
-                Plurimath::Math::Function::Text.new("i")
+                Plurimath::Math::Symbol.new("x"),
+                Plurimath::Math::Symbol.new("i")
               )
             ]),
             Plurimath::Math::Function::Right.new(")")
           ]),
           Plurimath::Math::Symbol.new("="),
-          Plurimath::Math::Function::Text.new("b")
+          Plurimath::Math::Symbol.new("b")
         ])
         expect(formula).to eq(expected_value)
       end
@@ -10992,20 +11939,20 @@ RSpec.describe Plurimath::Latex::Parser do
                 Plurimath::Math::Symbol.new("&#x2202;"),
                 Plurimath::Math::Formula.new([
                   Plurimath::Math::Symbol.new("&#x2202;"),
-                  Plurimath::Math::Function::Text.new("t")
+                  Plurimath::Math::Symbol.new("t")
                 ])
               ),
               Plurimath::Math::Symbol.new("+"),
               Plurimath::Math::Formula.new([
-                Plurimath::Math::Function::Text.new("u"),
+                Plurimath::Math::Symbol.new("u"),
                 Plurimath::Math::Symbol.new("&#xB1;"),
-                Plurimath::Math::Function::Text.new("c")
+                Plurimath::Math::Symbol.new("c")
               ]),
               Plurimath::Math::Function::Frac.new(
                 Plurimath::Math::Symbol.new("&#x2202;"),
                 Plurimath::Math::Formula.new([
                   Plurimath::Math::Symbol.new("&#x2202;"),
-                  Plurimath::Math::Function::Text.new("x")
+                  Plurimath::Math::Symbol.new("x")
                 ])
               )
             ]),
@@ -11014,7 +11961,7 @@ RSpec.describe Plurimath::Latex::Parser do
           Plurimath::Math::Formula.new([
             Plurimath::Math::Function::Left.new("("),
             Plurimath::Math::Formula.new([
-              Plurimath::Math::Function::Text.new("u"),
+              Plurimath::Math::Symbol.new("u"),
               Plurimath::Math::Symbol.new("&#xB1;"),
               Plurimath::Math::Function::Over.new(
                 Plurimath::Math::Formula.new([
@@ -11028,7 +11975,7 @@ RSpec.describe Plurimath::Latex::Parser do
                   ])
                 ])
               ),
-              Plurimath::Math::Function::Text.new("c")
+              Plurimath::Math::Symbol.new("c")
             ]),
             Plurimath::Math::Function::Right.new(")")
           ]),
@@ -11048,7 +11995,16 @@ RSpec.describe Plurimath::Latex::Parser do
       }
       it "returns formula" do
         expected_value = Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Text.new("vecqxxhats"),
+          Plurimath::Math::Symbol.new("v"),
+          Plurimath::Math::Symbol.new("e"),
+          Plurimath::Math::Symbol.new("c"),
+          Plurimath::Math::Symbol.new("q"),
+          Plurimath::Math::Symbol.new("x"),
+          Plurimath::Math::Symbol.new("x"),
+          Plurimath::Math::Symbol.new("h"),
+          Plurimath::Math::Symbol.new("a"),
+          Plurimath::Math::Symbol.new("t"),
+          Plurimath::Math::Symbol.new("s"),
           Plurimath::Math::Symbol.new("="),
           Plurimath::Math::Number.new("0")
         ])
@@ -11067,33 +12023,33 @@ RSpec.describe Plurimath::Latex::Parser do
         expected_value = Plurimath::Math::Formula.new([
           Plurimath::Math::Function::FontStyle::SansSerif.new(
             Plurimath::Math::Function::Base.new(
-              Plurimath::Math::Function::Text.new("y"),
+              Plurimath::Math::Symbol.new("y"),
               Plurimath::Math::Symbol.new("&#x2032;")
             ),
             "mathsf"
           ),
           Plurimath::Math::Symbol.new("="),
           Plurimath::Math::Function::FontStyle::Monospace.new(
-            Plurimath::Math::Function::Text.new("F"),
+            Plurimath::Math::Symbol.new("F"),
             "mathtt"
           ),
           Plurimath::Math::Function::Power.new(
             Plurimath::Math::Formula.new([
               Plurimath::Math::Function::FontStyle::Monospace.new(
-                Plurimath::Math::Function::Text.new("F"),
+                Plurimath::Math::Symbol.new("F"),
                 "mathtt"
               )
             ]),
-            Plurimath::Math::Function::Text.new("t")
+            Plurimath::Math::Symbol.new("t")
           ),
           Plurimath::Math::Function::Base.new(
             Plurimath::Math::Formula.new([
               Plurimath::Math::Function::FontStyle::Monospace.new(
-                Plurimath::Math::Function::Text.new("F"),
+                Plurimath::Math::Symbol.new("F"),
                 "mathtt"
               )
             ]),
-            Plurimath::Math::Function::Text.new("t")
+            Plurimath::Math::Symbol.new("t")
           )
         ])
         expect(formula).to eq(expected_value)
@@ -11116,30 +12072,30 @@ RSpec.describe Plurimath::Latex::Parser do
       }
       it "returns formula" do
         expected_value = Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Text.new("f"),
+          Plurimath::Math::Symbol.new("f"),
           Plurimath::Math::Symbol.new("="),
           Plurimath::Math::Function::Base.new(
             Plurimath::Math::Function::FontStyle::Bold.new(
-              Plurimath::Math::Function::Text.new("F"),
+              Plurimath::Math::Symbol.new("F"),
               "bf"
             ),
-            Plurimath::Math::Function::Text.new("t")
+            Plurimath::Math::Symbol.new("t")
           ),
           Plurimath::Math::Symbol.new("&#x3A;"),
           Plurimath::Math::Function::Power.new(
             Plurimath::Math::Function::FontStyle.new(
-              Plurimath::Math::Function::Text.new("F"),
+              Plurimath::Math::Symbol.new("F"),
               "mbfit"
             ),
-            Plurimath::Math::Function::Text.new("t")
+            Plurimath::Math::Symbol.new("t")
           ),
           Plurimath::Math::Symbol.new("&#x3A;"),
           Plurimath::Math::Function::Base.new(
             Plurimath::Math::Function::FontStyle.new(
-              Plurimath::Math::Function::Text.new("F"),
+              Plurimath::Math::Symbol.new("F"),
               "mathrm"
             ),
-            Plurimath::Math::Function::Text.new("t")
+            Plurimath::Math::Symbol.new("t")
           ),
           Plurimath::Math::Symbol.new("&#x3A;"),
           Plurimath::Math::Formula.new([
@@ -11149,27 +12105,175 @@ RSpec.describe Plurimath::Latex::Parser do
                 Plurimath::Math::Function::Tr.new([
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Function::Text.new("n"),
-                      Plurimath::Math::Function::Text.new("x")
+                      Plurimath::Math::Symbol.new("n"),
+                      Plurimath::Math::Symbol.new("x")
                     )
                   ])
                 ]),
                 Plurimath::Math::Function::Tr.new([
                   Plurimath::Math::Function::Td.new([
                     Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Function::Text.new("n"),
-                      Plurimath::Math::Function::Text.new("y")
+                      Plurimath::Math::Symbol.new("n"),
+                      Plurimath::Math::Symbol.new("y")
                     )
                   ])
                 ])
               ],
               nil,
               [
-                Plurimath::Math::Function::Text.new("c")
+                Plurimath::Math::Symbol.new("c")
               ],
             ),
             Plurimath::Math::Function::Right.new(")")
           ])
+        ])
+        expect(formula).to eq(expected_value)
+      end
+    end
+
+    context "contains latex equation #165" do
+      let(:string) {
+        <<~LATEX
+          M =
+            \\begin{bmatrix}
+              -\\sin \\lambda_0 & \\cos \\lambda_0 & 0 \\\\
+              -\\sin \\varphi_0 \\cos \\lambda_0 & -\\sin \\varphi_0 \\sin \\lambda_0 & \\cos \\varphi_0 \\\\
+              \\cos \\varphi_0 \\cos \\lambda_0 & \\cos \\varphi_0 \\sin \\lambda_0 & \\sin \\varphi_0
+            \\end{bmatrix}
+        LATEX
+      }
+      it "returns formula" do
+        expected_value = Plurimath::Math::Formula.new([
+          Plurimath::Math::Symbol.new("M"),
+          Plurimath::Math::Symbol.new("="),
+          Plurimath::Math::Function::Table::Bmatrix.new(
+            [
+              Plurimath::Math::Function::Tr.new([
+                Plurimath::Math::Function::Td.new([
+                  Plurimath::Math::Formula.new([
+                    Plurimath::Math::Symbol.new("-"),
+                    Plurimath::Math::Function::Base.new(
+                      Plurimath::Math::Function::Sin.new(
+                        Plurimath::Math::Symbol.new("&#x3BB;"),
+                      ),
+                      Plurimath::Math::Number.new("0")
+                    )
+                  ]),
+                ]),
+                Plurimath::Math::Function::Td.new([
+                  Plurimath::Math::Function::Base.new(
+                    Plurimath::Math::Function::Cos.new(
+                      Plurimath::Math::Symbol.new("&#x3BB;"),
+                    ),
+                    Plurimath::Math::Number.new("0")
+                  )
+                ]),
+                Plurimath::Math::Function::Td.new([
+                  Plurimath::Math::Number.new("0")
+                ])
+              ]),
+              Plurimath::Math::Function::Tr.new([
+                Plurimath::Math::Function::Td.new([
+                  Plurimath::Math::Formula.new([
+                    Plurimath::Math::Symbol.new("-"),
+                    Plurimath::Math::Function::Base.new(
+                      Plurimath::Math::Function::Sin.new(
+                        Plurimath::Math::Symbol.new("&#x3C6;"),
+                      ),
+                      Plurimath::Math::Number.new("0")
+                    ),
+                  ]),
+                  Plurimath::Math::Function::Base.new(
+                    Plurimath::Math::Function::Cos.new(
+                      Plurimath::Math::Symbol.new("&#x3BB;"),
+                    ),
+                    Plurimath::Math::Number.new("0")
+                  )
+                ]),
+                Plurimath::Math::Function::Td.new([
+                  Plurimath::Math::Formula.new([
+                    Plurimath::Math::Symbol.new("-"),
+                    Plurimath::Math::Function::Base.new(
+                      Plurimath::Math::Function::Sin.new(
+                        Plurimath::Math::Symbol.new("&#x3C6;"),
+                      ),
+                      Plurimath::Math::Number.new("0")
+                    ),
+                  ]),
+                  Plurimath::Math::Function::Base.new(
+                    Plurimath::Math::Function::Sin.new(
+                      Plurimath::Math::Symbol.new("&#x3BB;"),
+                    ),
+                    Plurimath::Math::Number.new("0")
+                  )
+                ]),
+                Plurimath::Math::Function::Td.new([
+                  Plurimath::Math::Function::Base.new(
+                    Plurimath::Math::Function::Cos.new(
+                      Plurimath::Math::Symbol.new("&#x3C6;"),
+                    ),
+                    Plurimath::Math::Number.new("0")
+                  )
+                ])
+              ]),
+              Plurimath::Math::Function::Tr.new([
+                Plurimath::Math::Function::Td.new([
+                  Plurimath::Math::Function::Base.new(
+                    Plurimath::Math::Function::Cos.new(
+                      Plurimath::Math::Symbol.new("&#x3C6;"),
+                    ),
+                    Plurimath::Math::Number.new("0")
+                  ),
+                  Plurimath::Math::Function::Base.new(
+                    Plurimath::Math::Function::Cos.new(
+                      Plurimath::Math::Symbol.new("&#x3BB;"),
+                    ),
+                    Plurimath::Math::Number.new("0")
+                  )
+                ]),
+                Plurimath::Math::Function::Td.new([
+                  Plurimath::Math::Function::Base.new(
+                    Plurimath::Math::Function::Cos.new(
+                      Plurimath::Math::Symbol.new("&#x3C6;"),
+                    ),
+                    Plurimath::Math::Number.new("0")
+                  ),
+                  Plurimath::Math::Function::Base.new(
+                    Plurimath::Math::Function::Sin.new(
+                      Plurimath::Math::Symbol.new("&#x3BB;"),
+                    ),
+                    Plurimath::Math::Number.new("0")
+                  )
+                ]),
+                Plurimath::Math::Function::Td.new([
+                  Plurimath::Math::Function::Base.new(
+                    Plurimath::Math::Function::Sin.new(
+                      Plurimath::Math::Symbol.new("&#x3C6;"),
+                    ),
+                    Plurimath::Math::Number.new("0")
+                  )
+                ])
+              ])
+            ],
+            "[",
+            "]",
+          )
+        ])
+        expect(formula).to eq(expected_value)
+      end
+    end
+
+    context "contains latex equation #166" do
+      let(:string) {
+        <<~LATEX
+          n < 1
+        LATEX
+      }
+      it "returns formula" do
+        expected_value = Plurimath::Math::Formula.new([
+          Plurimath::Math::Symbol.new("n"),
+          Plurimath::Math::Symbol.new("<"),
+          Plurimath::Math::Number.new("1"),
         ])
         expect(formula).to eq(expected_value)
       end

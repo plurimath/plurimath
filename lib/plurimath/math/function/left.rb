@@ -10,6 +10,10 @@ module Plurimath
           "left#{parameter_one}"
         end
 
+        def to_mathml_without_math_tag
+          "<mi>#{parameter_one}</mi>"
+        end
+
         def to_latex
           prefix = "\\" if parameter_one == "{"
           "\\left#{prefix}#{parameter_one}"

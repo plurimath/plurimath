@@ -141,11 +141,11 @@ module Plurimath
            e: sequence(:e)) do
         if barpr&.flatten&.compact&.include?("top")
           Math::Function::Bar.new(
-            Utility.filter_values(e)
+            Utility.filter_values(e),
           )
         else
           Math::Function::Ul.new(
-            Utility.filter_values(e)
+            Utility.filter_values(e),
           )
         end
       end

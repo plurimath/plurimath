@@ -19,11 +19,12 @@ module Plurimath
       end
 
       def to_mathml_without_math_tag
-        "<mo>#{mathml_symbol_value}</mo>"
-      end
-
-      def mathml_symbol_value
-        Mathml::Constants::UNICODE_SYMBOLS.invert[value] || value
+        unicode_symbols = Mathml::Constants::UNICODE_SYMBOLS.invert
+        if unicode_symbols[value]
+          "<mo>#{unicode_symbols[value]}</mo>"
+        else
+          "<mi>#{value}</mi>"
+        end
       end
 
       def to_latex
