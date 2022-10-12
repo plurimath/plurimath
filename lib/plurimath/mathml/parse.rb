@@ -9,7 +9,7 @@ module Plurimath
           array_to_expression(Constants::UNICODE_SYMBOLS.keys).as(:symbol) |
           array_to_expression(Constants::SYMBOLS.keys).as(:symbol) |
           match["a-zA-Z"].repeat(1).as(:text) |
-          match(/[0-9]/).repeat(1).as(:number) |
+          match(/[0-9,.]/).repeat(1).as(:number) |
           str("")
       end
 
