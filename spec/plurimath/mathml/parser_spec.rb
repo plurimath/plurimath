@@ -1095,7 +1095,6 @@ RSpec.describe Plurimath::Mathml::Parser do
         <math xmlns='http://www.w3.org/1998/Math/MathML'>
           <msgroup>
             <mn>1.4</mn>
-            <mn>1.4.5</mn>
           </msgroup>
         </math>
       MATHML
@@ -1103,7 +1102,6 @@ RSpec.describe Plurimath::Mathml::Parser do
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
         Plurimath::Math::Number.new("1.4"),
-        Plurimath::Math::Number.new("1.4.5"),
       ])
       expect(formula).to eq(expected_value)
     end
@@ -1115,7 +1113,6 @@ RSpec.describe Plurimath::Mathml::Parser do
         <math xmlns='http://www.w3.org/1998/Math/MathML'>
           <msgroup>
             <mn>1,4</mn>
-            <mn>1,4,5</mn>
           </msgroup>
         </math>
       MATHML
@@ -1123,11 +1120,51 @@ RSpec.describe Plurimath::Mathml::Parser do
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
         Plurimath::Math::Number.new("1,4"),
-        Plurimath::Math::Number.new("1,4,5"),
       ])
       expect(formula).to eq(expected_value)
     end
   end
+
+  context "contains mathml string of comma decimal values only" do
+    let(:exp) {
+      <<~MATHML
+        <math>
+          <msub>
+            <mrow>
+              <mover accent="true">
+                <mrow>
+                  <mi>e</mi>
+                </mrow>
+                <mo>^</mo>
+              </mover>
+            </mrow>
+            <mrow>
+              <mi>r</mi>
+            </mrow>
+          </msub>
+        </math>
+      MATHML
+    }
+    it "returns formula of decimal values" do
+      expected_value = Plurimath::Math::Formula.new([
+        Plurimath::Math::Function::Base.new(
+          Plurimath::Math::Formula.new([
+            Plurimath::Math::Function::Overset.new(
+              Plurimath::Math::Symbol.new("^"),
+              Plurimath::Math::Formula.new([
+                Plurimath::Math::Symbol.new("e")
+              ])
+            )
+          ]),
+          Plurimath::Math::Formula.new([
+            Plurimath::Math::Symbol.new("r")
+          ])
+        )
+      ])
+      expect(formula).to eq(expected_value)
+    end
+  end
+
   context "contains mathml string of unmacthing closing tag" do
     let(:exp) {
       <<~MATHML

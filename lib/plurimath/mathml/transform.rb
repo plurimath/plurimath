@@ -85,6 +85,8 @@ module Plurimath
           [Utility.get_class(decoded_symbol).new]
         elsif decoded_symbol.nil? && Constants::SYMBOLS[symbol.to_sym]
           Math::Symbol.new(Constants::SYMBOLS[symbol.to_sym])
+        elsif decoded_symbol.nil?
+          Math::Symbol.new(symbol)
         else
           Math::Symbol.new(decoded_symbol)
         end
