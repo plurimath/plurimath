@@ -32,14 +32,14 @@ module Plurimath
         end
 
         def to_omml_without_math_tag
-          ssub_element  = Utility.omml_element("m:sSub")
-          subpr_element = Utility.omml_element("m:sSubPr")
-          e_element     = Utility.omml_element("m:e")
-          sub_element   = Utility.omml_element("m:sub")
+          ssub_element  = Utility.omml_element("sSub", namespace: "m")
+          subpr_element = Utility.omml_element("sSubPr", namespace: "m")
+          e_element     = Utility.omml_element("e", namespace: "m")
+          sub_element   = Utility.omml_element("sub", namespace: "m")
           Utility.update_nodes(
             ssub_element,
             [
-              subpr_element << Utility.pr_element("m:ctrl", true),
+              subpr_element << Utility.pr_element("ctrl", true, namespace: "m"),
               e_element << parameter_one.to_omml_without_math_tag,
               sub_element << parameter_two.to_omml_without_math_tag,
             ],

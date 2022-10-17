@@ -20,7 +20,7 @@ module Plurimath
 
         def to_omml_without_math_tag
           first_value  = if parameter_one.is_a?(Math::Symbol)
-                           mt = Utility.omml_element("m:t")
+                           mt = Utility.omml_element("t", namespace: "m")
                            mt << parameter_one.to_omml_without_math_tag
                          else
                            parameter_one.to_omml_without_math_tag
@@ -30,11 +30,11 @@ module Plurimath
                          else
                            parameter_two.to_omml_without_math_tag
                          end
-          limupp   = Utility.omml_element("m:limUpp")
-          limupppr = Utility.omml_element("m:limUppPr")
-          limupppr << Utility.pr_element("m:ctrl", true)
-          me = Utility.omml_element("m:e") << first_value
-          lim = Utility.omml_element("m:lim") << second_value
+          limupp   = Utility.omml_element("limUpp", namespace: "m")
+          limupppr = Utility.omml_element("limUppPr", namespace: "m")
+          limupppr << Utility.pr_element("ctrl", true, namespace: "m")
+          me = Utility.omml_element("e", namespace: "m") << first_value
+          lim = Utility.omml_element("lim", namespace: "m") << second_value
           Utility.update_nodes(
             limupp,
             [

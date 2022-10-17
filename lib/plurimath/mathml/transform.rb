@@ -9,6 +9,10 @@ module Plurimath
       rule(class: simple(:string))  { Utility.get_class(string).new }
       rule(number: simple(:number)) { Math::Number.new(number) }
 
+      rule(quoted_text: sequence(:quoted_text)) do
+        Math::Function::Text.new("".dup)
+      end
+
       rule(tag: sequence(:tag), sequence: simple(:sequence)) do
         tag + [sequence]
       end
@@ -44,12 +48,35 @@ module Plurimath
 
       rule(
         tag: sequence(:tag),
+        sequence: sequence(:sequence),
+        iteration: sequence(:iteration),
+      ) do
+        new_arr = []
+        new_arr += tag unless tag.compact.empty?
+        new_arr += sequence unless sequence.compact.empty?
+        new_arr += iteration unless iteration.compact.empty?
+        new_arr
+      end
+
+      rule(
+        tag: sequence(:tag),
         sequence: simple(:sequence),
         iteration: simple(:iteration),
       ) do
         new_arr = tag
         new_arr << sequence unless sequence.to_s.empty?
         new_arr << iteration unless iteration.to_s.empty?
+        Math::Formula.new(new_arr)
+      end
+
+      rule(
+        tag: sequence(:tag),
+        sequence: simple(:sequence),
+        iteration: sequence(:iteration),
+      ) do
+        new_arr = tag
+        new_arr << sequence unless sequence.to_s.empty?
+        new_arr += iteration unless iteration.compact.empty?
         Math::Formula.new(new_arr)
       end
 

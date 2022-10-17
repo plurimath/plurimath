@@ -30,7 +30,7 @@ module Plurimath
       end
 
       def to_omml_without_math_tag
-        Utility.omml_element("m:t") << value
+        Utility.omml_element("t", namespace: "m") << value
       end
 
       def class_name

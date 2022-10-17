@@ -19,20 +19,20 @@ module Plurimath
         end
 
         def to_omml_without_math_tag
-          <<~OMML
-            <m:limUpp>
-              <m:limUppPr>
-                <m:ctrlPr>
-                  <w:rPr>
-                    <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
-                    <w:i/>
-                  </w:rPr>
-                </m:ctrlPr>
-              </m:limUppPr>
-              <m:e>#{parameter_one.to_omml_without_math_tag}</m:e>
-              <m:lim>#{parameter_two.to_omml_without_math_tag}</m:lim>
-            </m:limUpp>
-          OMML
+          limupp = Utility.omml_element("limUpp", namespace: "m")
+          limpr = Utility.omml_element("limUppPr", namespace: "m")
+          limpr << Utility.pr_element("ctrl", namespace: "m")
+          e_tag = Utility.omml_element("e", namespace: "m")
+          e_tag << parameter_one.to_omml_without_math_tag
+          lim = Utility.omml_element("lim", namespace: "m")
+          lim << parameter_two.to_omml_without_math_tag
+          Utility.update_nodes(
+            limupp,
+            [
+              e_tag,
+              lim,
+            ],
+          )
         end
       end
     end

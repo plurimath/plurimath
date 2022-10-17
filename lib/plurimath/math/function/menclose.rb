@@ -7,10 +7,10 @@ module Plurimath
     module Function
       class Menclose < BinaryFunction
         def to_omml_without_math_tag
-          borderbox = Utility.omml_element("m:borderBox")
-          borderpr = Utility.omml_element("m:borderBoxPr")
-          borderpr << Utility.pr_element("m:ctrl", true)
-          me = Utility.omml_element("m:e")
+          borderbox = Utility.omml_element("borderBox", namespace: "m")
+          borderpr = Utility.omml_element("borderBoxPr", namespace: "m")
+          borderpr << Utility.pr_element("ctrl", true, namespace: "m")
+          me = Utility.omml_element("e", namespace: "m")
           me << parameter_two.to_omml_without_math_tag
           Utility.update_nodes(
             borderbox,

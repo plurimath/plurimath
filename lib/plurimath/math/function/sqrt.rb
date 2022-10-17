@@ -12,15 +12,19 @@ module Plurimath
         end
 
         def to_omml_without_math_tag
-          rad_element = Utility.omml_element("m:rad")
-          pr_element  = Utility.omml_element("m:radPr")
-          pr_element << Utility.omml_element("m:degHide", { "m:val": "1" })
-          e_element   = Utility.omml_element("m:e")
+          rad_element = Utility.omml_element("rad", namespace: "m")
+          pr_element = Utility.omml_element("radPr", namespace: "m")
+          pr_element << Utility.omml_element(
+            "degHide",
+            namespace: "m",
+            attributes: { "m:val": "1" },
+          )
+          e_element = Utility.omml_element("e", namespace: "m")
           Utility.update_nodes(
             rad_element,
             [
-              pr_element << Utility.pr_element("m:ctrl", true),
-              Utility.omml_element("m:deg"),
+              pr_element << Utility.pr_element("ctrl", true, namespace: "m"),
+              Utility.omml_element("deg", namespace: "m"),
               e_element << parameter_one.to_omml_without_math_tag,
             ],
           )
