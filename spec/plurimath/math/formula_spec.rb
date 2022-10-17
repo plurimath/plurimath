@@ -800,6 +800,23 @@ RSpec.describe Plurimath::Math::Formula do
         expect(formula).to eql('left([1,3],[1,3],[1,3]right)')
       end
     end
+
+    context "contains Plurimath Formula" do
+      let(:exp) do
+        Plurimath::Math::Formula.new([
+          Plurimath::Math::Formula.new([
+            Plurimath::Math::Symbol.new("Δ"),
+            Plurimath::Math::Formula.new([
+              Plurimath::Math::Symbol.new("ν")
+            ])
+          ])
+        ])
+      end
+      it 'converts from formula to asciimath string' do
+        expected_value = "Δν"
+        expect(exp.to_asciimath).to eq(expected_value)
+      end
+    end
   end
 
   describe ".to_mathml" do

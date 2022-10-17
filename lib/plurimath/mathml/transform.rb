@@ -47,7 +47,10 @@ module Plurimath
         sequence: simple(:sequence),
         iteration: simple(:iteration),
       ) do
-        Math::Formula.new(tag + [sequence, iteration])
+        new_arr = tag
+        new_arr << sequence unless sequence.to_s.empty?
+        new_arr << iteration unless iteration.to_s.empty?
+        Math::Formula.new(new_arr)
       end
 
       rule(
