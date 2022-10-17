@@ -4,7 +4,6 @@
       <w:rPr>
         <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
       </w:rPr>
-      <w:lastRenderedPageBreak/>
       <m:t>f</m:t>
     </m:r>
     <m:d>
@@ -34,7 +33,6 @@
     <m:d>
       <m:dPr>
         <m:begChr m:val="{"/>
-        <m:endChr m:val=""/>
         <m:ctrlPr>
           <w:rPr>
             <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
@@ -65,7 +63,7 @@
               <w:rPr>
                 <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
               </w:rPr>
-              <m:t>x,  &amp;x≥0</m:t>
+              <m:t>x,  &amp;x&ge;0</m:t>
             </m:r>
           </m:e>
         </m:eqArr>

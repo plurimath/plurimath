@@ -15,7 +15,7 @@
           <w:rPr>
             <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
           </w:rPr>
-          <m:t>x⊕y</m:t>
+          <m:t>x&oplus;y</m:t>
         </m:r>
       </m:e>
     </m:bar>

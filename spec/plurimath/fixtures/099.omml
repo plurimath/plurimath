@@ -11,9 +11,6 @@
       </m:funcPr>
       <m:fName>
         <m:r>
-          <m:rPr>
-            <m:sty m:val="p"/>
-          </m:rPr>
           <w:rPr>
             <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
           </w:rPr>
@@ -56,9 +53,6 @@
           </m:funcPr>
           <m:fName>
             <m:r>
-              <m:rPr>
-                <m:sty m:val="p"/>
-              </m:rPr>
               <w:rPr>
                 <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
               </w:rPr>
@@ -87,9 +81,6 @@
           </m:funcPr>
           <m:fName>
             <m:r>
-              <m:rPr>
-                <m:sty m:val="p"/>
-              </m:rPr>
               <w:rPr>
                 <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
               </w:rPr>

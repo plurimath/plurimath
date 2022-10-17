@@ -83,7 +83,37 @@ module Plurimath
         raise Math::Error.new(message)
       end
 
+      def omml_element(node, attributes = [])
+        element = Ox::Element.new(node)
+        attributes.each do |attr_key, attr_value|
+          element[attr_key] = attr_value
+        end
+        element
+      end
+
+      def rpr_element(wi_tag: false)
+        rpr_element = omml_element("w:rPr")
+        attributes = {
+          "w:ascii": "Cambria Math",
+          "w:hAnsi": "Cambria Math",
+        }
+        rpr_element << omml_element("w:rFonts", attributes)
+        rpr_element << omml_element("w:i") if wi_tag
+        rpr_element
+      end
+
+      def update_nodes(element, nodes)
+        nodes.each { |node| element << node }
+        element
+      end
+
+      def pr_element(main_tag, wi_tag)
+        omml_element("#{main_tag}Pr") << rpr_element(wi_tag: wi_tag)
+      end
+
       def filter_values(value)
+        return value unless value.is_a?(Array)
+
         compact_value = value.flatten.compact
         if compact_value.length > 1
           Math::Formula.new(compact_value)
@@ -105,10 +135,41 @@ module Plurimath
         end
       end
 
-      def parse_nary_tag(first_value, second_value)
-        Math::Formula.new(
-          [first_value, Math::Formula.new(second_value)],
+      def nary_fonts(nary)
+        narypr = nary.first.flatten.compact
+        fonts  = narypr.any?(Hash) ? narypr.first[:chr] : "∫"
+        subsup = if narypr.any?("undOvr")
+                   Math::Function::Underover
+                 else
+                   Math::Function::PowerBase
+                 end
+        subsup.new(
+          Math::Symbol.new(fonts),
+          nary[1],
+          nary[2],
         )
+      end
+
+      def find_class_name(object)
+        new_object = case object
+                     when Math::Function::Text
+                       object.parameter_one
+                     when Math::Formula
+                       object.value.first.parameter_one
+                     end
+        get_class(new_object) unless new_object.nil?
+      end
+
+      def find_pos_chr(fonts_array, key)
+        fonts_array.find { |d| d.is_a?(Hash) && d[key] }
+      end
+
+      def nested_formula_object(array)
+        if array.length > 1
+          Math::Formula.new(array)
+        else
+          array.first
+        end
       end
     end
   end

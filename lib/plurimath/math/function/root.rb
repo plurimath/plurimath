@@ -17,6 +17,22 @@ module Plurimath
           second_value = parameter_two&.to_latex
           "\\sqrt[#{first_value}]{#{second_value}}"
         end
+
+        def to_omml_without_math_tag
+          rad_element = Utility.omml_element("m:rad")
+          pr_element  = Utility.omml_element("m:radPr")
+          deg_element = Utility.omml_element("m:deg")
+          e_element   = Utility.omml_element("m:e")
+          Utility.update_nodes(
+            rad_element,
+            [
+              pr_element  << Utility.pr_element("m:ctrl", true),
+              deg_element << parameter_two.to_omml_without_math_tag,
+              e_element   << parameter_one.to_omml_without_math_tag,
+            ],
+          )
+          rad_element
+        end
       end
     end
   end

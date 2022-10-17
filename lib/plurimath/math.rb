@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require "ox"
 require_relative "unicode"
 require_relative "asciimath"
 require_relative "omml"
@@ -18,6 +17,9 @@ require_relative "latex/parser"
 require_relative "html/parser"
 require_relative "omml/parser"
 require_relative "utility"
+require "ox"
+Ox.default_options = { encoding: "UTF-8" }
+
 module Plurimath
   module Math
     class Error < StandardError; end

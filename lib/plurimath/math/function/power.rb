@@ -30,6 +30,22 @@ module Plurimath
           second_value = "<sup>#{parameter_two.to_html}</sup>" if parameter_two
           "#{first_value}#{second_value}"
         end
+
+        def to_omml_without_math_tag
+          ssup_element  = Utility.omml_element("m:sSup")
+          suppr_element = Utility.omml_element("m:sSupPr")
+          e_element     = Utility.omml_element("m:e")
+          sup_element   = Utility.omml_element("m:sup")
+          Utility.update_nodes(
+            ssup_element,
+            [
+              suppr_element << Utility.pr_element("m:ctrl", true),
+              e_element << parameter_one.to_omml_without_math_tag,
+              sup_element << parameter_two.to_omml_without_math_tag,
+            ],
+          )
+          ssup_element
+        end
       end
     end
   end

@@ -3,6 +3,7 @@
     <m:nary>
       <m:naryPr>
         <m:chr m:val="∏"/>
+        <m:limLoc m:val="subSup"/>
         <m:ctrlPr>
           <w:rPr>
             <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
@@ -27,32 +28,34 @@
         </m:r>
       </m:sup>
       <m:e>
-        <m:sSub>
-          <m:sSubPr>
-            <m:ctrlPr>
-              <w:rPr>
-                <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
-                <w:i/>
-              </w:rPr>
-            </m:ctrlPr>
-          </m:sSubPr>
-          <m:e>
-            <m:r>
-              <w:rPr>
-                <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
-              </w:rPr>
-              <m:t>A</m:t>
-            </m:r>
-          </m:e>
-          <m:sub>
-            <m:r>
-              <w:rPr>
-                <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
-              </w:rPr>
-              <m:t>k</m:t>
-            </m:r>
-          </m:sub>
-        </m:sSub>
+        <m:r>
+          <m:sSub>
+            <m:sSubPr>
+              <m:ctrlPr>
+                <w:rPr>
+                  <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
+                  <w:i/>
+                </w:rPr>
+              </m:ctrlPr>
+            </m:sSubPr>
+            <m:e>
+              <m:r>
+                <w:rPr>
+                  <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
+                </w:rPr>
+                <m:t>A</m:t>
+              </m:r>
+            </m:e>
+            <m:sub>
+              <m:r>
+                <w:rPr>
+                  <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
+                </w:rPr>
+                <m:t>k</m:t>
+              </m:r>
+            </m:sub>
+          </m:sSub>
+        </m:r>
       </m:e>
     </m:nary>
   </m:oMath>

@@ -12,7 +12,6 @@
       <m:e>
         <m:f>
           <m:fPr>
-            <m:type m:val="noBar"/>
             <m:ctrlPr>
               <w:rPr>
                 <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>

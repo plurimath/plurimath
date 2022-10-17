@@ -3,6 +3,7 @@
     <m:nary>
       <m:naryPr>
         <m:chr m:val="∑"/>
+        <m:limLoc m:val="subSup"/>
         <m:ctrlPr>
           <w:rPr>
             <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
