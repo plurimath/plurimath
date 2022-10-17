@@ -1165,6 +1165,31 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
   end
 
+
+  context "contains mathml string of comma decimal values only" do
+    let(:exp) {
+      <<~MATHML
+        <math>
+          <mo>Δ</mo>
+          <mrow>
+            <mi>ν</mi>
+          </mrow>
+        </math>
+      MATHML
+    }
+    it "returns formula of decimal values" do
+      expected_value = Plurimath::Math::Formula.new([
+        Plurimath::Math::Formula.new([
+          Plurimath::Math::Symbol.new("Δ"),
+          Plurimath::Math::Formula.new([
+            Plurimath::Math::Symbol.new("ν")
+          ])
+        ])
+      ])
+      expect(formula).to eq(expected_value)
+    end
+  end
+
   context "contains mathml string of unmacthing closing tag" do
     let(:exp) {
       <<~MATHML
