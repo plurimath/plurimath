@@ -55,7 +55,7 @@ module Plurimath
           symbols |
           quoted_text |
           match["a-zA-Z"].as(:symbol) |
-          match("[0-9]").repeat(1).as(:number)
+          match("[0-9.]").repeat(1).as(:number)
       end
 
       rule(:table) do

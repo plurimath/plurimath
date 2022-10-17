@@ -1141,5 +1141,103 @@ RSpec.describe Plurimath::Asciimath::Parser do
         expect(formula).to eq(expected_value)
       end
     end
+
+    context "when contains simple decimal" do
+      let(:string) { "0.1" }
+
+      it "returns formula" do
+        expected_value = Plurimath::Math::Formula.new([
+          Plurimath::Math::Number.new("0.1")
+        ])
+        expect(formula).to eq(expected_value)
+      end
+    end
+
+    context "when contains comma sepearted numeric value" do
+      let(:string) { "0,1" }
+
+      it "returns formula" do
+        expected_value = Plurimath::Math::Formula.new([
+          Plurimath::Math::Number.new("0"),
+          Plurimath::Math::Symbol.new(","),
+          Plurimath::Math::Number.new("1"),
+        ])
+        expect(formula).to eq(expected_value)
+      end
+    end
+
+    context "when contains numeric value" do
+      let(:string) { ".1" }
+
+      it "returns formula" do
+        expected_value = Plurimath::Math::Formula.new([
+          Plurimath::Math::Number.new(".1"),
+        ])
+        expect(formula).to eq(expected_value)
+      end
+    end
+
+    context "when contains comma numeric value" do
+      let(:string) { ",1" }
+
+      it "returns formula" do
+        expected_value = Plurimath::Math::Formula.new([
+          Plurimath::Math::Symbol.new(","),
+          Plurimath::Math::Number.new("1"),
+        ])
+        expect(formula).to eq(expected_value)
+      end
+    end
+
+    context "when contains nagative decimal value" do
+      let(:string) { "-0.1" }
+
+      it "returns formula" do
+        expected_value = Plurimath::Math::Formula.new([
+          Plurimath::Math::Symbol.new("-"),
+          Plurimath::Math::Number.new("0.1"),
+        ])
+        expect(formula).to eq(expected_value)
+      end
+    end
+
+    context "when contains nagative comma seperated value" do
+      let(:string) { "-0,1" }
+
+      it "returns formula" do
+        expected_value = Plurimath::Math::Formula.new([
+          Plurimath::Math::Symbol.new("-"),
+          Plurimath::Math::Number.new("0"),
+          Plurimath::Math::Symbol.new(","),
+          Plurimath::Math::Number.new("1"),
+        ])
+        expect(formula).to eq(expected_value)
+      end
+    end
+
+    context "when contains nagative value" do
+      let(:string) { "-.1" }
+
+      it "returns formula" do
+        expected_value = Plurimath::Math::Formula.new([
+          Plurimath::Math::Symbol.new("-"),
+          Plurimath::Math::Number.new(".1"),
+        ])
+        expect(formula).to eq(expected_value)
+      end
+    end
+
+    context "when contains nagative comma value" do
+      let(:string) { "-,1" }
+
+      it "returns formula" do
+        expected_value = Plurimath::Math::Formula.new([
+          Plurimath::Math::Symbol.new("-"),
+          Plurimath::Math::Symbol.new(","),
+          Plurimath::Math::Number.new("1"),
+        ])
+        expect(formula).to eq(expected_value)
+      end
+    end
   end
 end
