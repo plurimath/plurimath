@@ -4,13 +4,16 @@ require "parslet"
 module Plurimath
   class Mathml
     class Parse < Parslet::Parser
+      rule(:text) { match["a-zA-Z"].repeat(1).as(:text) }
+      rule(:symbol) { match(/[^<]/).repeat(1).as(:symbol) }
+      rule(:number) { match(/[0-9,.]/).repeat(1).as(:number) }
+      rule(:symbol_text_or_integer) { text | number | symbol }
+
       rule(:parse_record) do
         array_to_expression(Constants::CLASSES).as(:class) |
           array_to_expression(Constants::UNICODE_SYMBOLS.keys).as(:symbol) |
           array_to_expression(Constants::SYMBOLS.keys).as(:symbol) |
-          match["a-zA-Z"].repeat(1).as(:text) |
-          match(/[0-9,.]/).repeat(1).as(:number) |
-          match(/[^<]/).repeat(1).as(:symbol) |
+          symbol_text_or_integer.repeat(1) |
           str("")
       end
 
@@ -62,7 +65,8 @@ module Plurimath
       end
 
       def parse_text_tag
-        str("<mtext>") >> match("[^<]").repeat.as(:quoted_text) >> str("</mtext>")
+        (str("<mtext>") >> match("[^<]").repeat.as(:quoted_text) >> str("</mtext>")) |
+          (str("<mtext/>") >> str("").as(:quoted_text))
       end
     end
   end

@@ -54,8 +54,9 @@ RSpec.describe Plurimath::Mathml::Parse do
     it "returns formula of sum and prod" do
       iteration = formula[:iteration][:tag][:iteration]
       sequence = iteration[:sequence]
+
       expect(iteration[:tag][:iteration][:symbol]).to eq("&#x2211;")
-      expect(sequence[:tag][:iteration][:tag][:iteration][:number]).to eq("1")
+      expect(sequence[:tag][:iteration][:tag][:iteration][0][:number]).to eq("1")
       expect(sequence[:sequence][:tag][:iteration][:symbol]).to eq("&#x22c1;")
     end
   end
@@ -75,8 +76,9 @@ RSpec.describe Plurimath::Mathml::Parse do
     }
     it "should match values" do
       iteration = formula[:iteration][:tag][:iteration][:tag][:iteration]
-      expect(iteration[:tag][:iteration][:text]).to eq("xyz")
-      expect(iteration[:sequence][:tag][:iteration][:text]).to eq("s")
+
+      expect(iteration[:tag][:iteration][0][:text]).to eq("xyz")
+      expect(iteration[:sequence][:tag][:iteration][0][:text]).to eq("s")
     end
   end
 end
