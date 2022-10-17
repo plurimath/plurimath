@@ -37,7 +37,7 @@ module Plurimath
 
         def parse_text(lang)
           html_value = first_value(lang)
-          html_value.gsub!(PARSER_REGEX) do |_text|
+          html_value&.gsub!(PARSER_REGEX) do |_text|
             last_match = Regexp.last_match
             if ["mathml", "html"].include?(lang)
               symbol_value(last_match[:unicode]) || last_match[:mbox]

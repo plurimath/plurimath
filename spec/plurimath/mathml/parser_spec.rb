@@ -1165,6 +1165,49 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
   end
 
+  context "contains mathml empty text tag with slash" do
+    let(:exp) {
+      <<~MATHML
+        <math xmlns='http://www.w3.org/1998/Math/MathML'>
+          <msup>
+            <mtext/>
+            <mn>12</mn>
+          </msup>
+        </math>
+      MATHML
+    }
+    it "returns formula of decimal values" do
+      expected_value = Plurimath::Math::Formula.new([
+        Plurimath::Math::Function::Power.new(
+          Plurimath::Math::Function::Text.new(""),
+          Plurimath::Math::Number.new("12"),
+        )
+      ])
+      expect(formula).to eq(expected_value)
+    end
+  end
+
+  context "contains mathml empty text tag" do
+    let(:exp) {
+      <<~MATHML
+        <math xmlns='http://www.w3.org/1998/Math/MathML'>
+          <msup>
+            <mtext></mtext>
+            <mn>12</mn>
+          </msup>
+        </math>
+      MATHML
+    }
+    it "returns formula of decimal values" do
+      expected_value = Plurimath::Math::Formula.new([
+        Plurimath::Math::Function::Power.new(
+          Plurimath::Math::Function::Text.new(""),
+          Plurimath::Math::Number.new("12"),
+        )
+      ])
+      expect(formula).to eq(expected_value)
+    end
+  end
 
   context "contains mathml string of comma decimal values only" do
     let(:exp) {
@@ -1184,6 +1227,27 @@ RSpec.describe Plurimath::Mathml::Parser do
           Plurimath::Math::Formula.new([
             Plurimath::Math::Symbol.new("ν")
           ])
+        ])
+      ])
+      expect(formula).to eq(expected_value)
+    end
+  end
+
+  context "contains mathml string of comma decimal values only" do
+    let(:exp) {
+      <<~MATHML
+        <math>
+          <mrow xref="U_GOhm">
+            <mi mathvariant="normal">GΩ</mi>
+          </mrow>
+        </math>
+      MATHML
+    }
+    it "returns formula of decimal values" do
+      expected_value = Plurimath::Math::Formula.new([
+        Plurimath::Math::Formula.new([
+          Plurimath::Math::Symbol.new("G"),
+          Plurimath::Math::Symbol.new("Ω")
         ])
       ])
       expect(formula).to eq(expected_value)
