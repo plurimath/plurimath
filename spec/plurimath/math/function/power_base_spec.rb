@@ -30,11 +30,11 @@ RSpec.describe Plurimath::Math::Function::PowerBase do
       let(:third) { Plurimath::Math::Symbol.new("square") }
 
       it 'returns asciimath string' do
-        expect(power_base).to eq("sum_(Theta)^(square)")
+        expect(power_base).to eq("sum_Theta^square")
       end
 
       it 'not returns asciimath string' do
-        expect(power_base).not_to eq("sum_(theta)^square")
+        expect(power_base).not_to eq("sum_theta^square")
       end
     end
   end

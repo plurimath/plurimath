@@ -4,6 +4,8 @@ module Plurimath
   class Asciimath
     class Constants
       TABLE_PARENTHESIS = {
+        "(:": ":)",
+        "{:": ":}",
         "[": "]",
         "{": "}",
         "(": ")",
@@ -162,6 +164,7 @@ module Plurimath
         "/_": :"&#x2220;",
         "+-": :"&#xB1;",
         "-:": :"&#xF7;",
+        "\\": :"\\",
         sup: :"&#x2283;",
         sub: :"&#x2282;",
         top: :"&#x22A4;",
@@ -194,7 +197,12 @@ module Plurimath
         "=": :"=",
         "+": :"+",
         "/": :"/",
-        ",": :"&#x2c;",
+        "'": :"'",
+        ":": :":",
+        "!": :"!",
+        "~": :"~",
+        "|": :"|",
+        "%": :"%",
         nn: :"&#x2229;",
         vv: :"&#x2228;",
         TT: :"&#x22A4;",
@@ -273,15 +281,9 @@ module Plurimath
         underset
         stackrel
         overset
-        color
-        prod
         frac
         root
-        oint
-        int
-        sum
         mod
-        log
       ].freeze
       FONT_STYLES = %i[
         mathfrak
@@ -296,6 +298,14 @@ module Plurimath
         cc
         sf
         tt
+      ].freeze
+      SUB_SUP_CLASSES = %w[
+        prod
+        oint
+        lim
+        sum
+        log
+        int
       ].freeze
     end
   end

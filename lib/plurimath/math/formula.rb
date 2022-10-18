@@ -3,10 +3,11 @@
 module Plurimath
   module Math
     class Formula
-      attr_accessor :value
+      attr_accessor :value, :wrapped
 
-      def initialize(value = [])
+      def initialize(value = [], wrapped = false)
         @value = value.is_a?(Array) ? value : [value]
+        @wrapped = wrapped
       end
 
       def ==(object)
@@ -14,7 +15,11 @@ module Plurimath
       end
 
       def to_asciimath
-        value.map(&:to_asciimath).join
+        if wrapped
+          "(#{value.map(&:to_asciimath).join})"
+        else
+          value.map(&:to_asciimath).join
+        end
       end
 
       def to_mathml

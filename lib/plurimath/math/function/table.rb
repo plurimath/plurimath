@@ -13,22 +13,31 @@ module Plurimath
         end
 
         def to_asciimath
-          first_value  = parameter_one.map(&:to_asciimath).join(",")
-          second_value = parameter_two.nil? ? "[" : parameter_two
-          third_value  = parameter_three.nil? ? "]" : parameter_three
-          "#{second_value}#{first_value}#{third_value}"
+          first_value = parameter_one.map(&:to_asciimath).join(",")
+          left_paren  = parameter_two.nil? ? "[" : parameter_two
+          right_paren = parameter_three.nil? ? "]" : parameter_three
+          "#{left_paren}#{first_value}#{right_paren}"
         end
 
         def to_mathml_without_math_tag
           table_value = parameter_one.map(&:to_mathml_without_math_tag).join
           parenthesis = Latex::Constants::PARENTHESIS
+          column_lines = []
+          parameter_one.first.parameter_one.each_with_index do |td, i|
+            if td&.parameter_one&.first.is_a?(Plurimath::Math::Symbol) && td.parameter_one.first.value == "|"
+              column_lines[i - 1] = "solid"
+            else
+              column_lines << "none"
+            end
+          end
+          columnlines_attrs = "columnlines=\"#{column_lines.join(' ')}\"" if column_lines.include?("solid")
+          table_tag = "<mtable #{columnlines_attrs}>#{table_value}</mtable>"
           if parenthesis.key?(parameter_two) || parameter_two == "|"
-            "<mfenced open='#{parameter_two}' close='#{parameter_three}'>"\
-              "<mtable>#{table_value}</mtable></mfenced>"
+            "<mfenced open='#{parameter_two}' close='#{parameter_three}'>#{table_tag}</mfenced>"
           elsif parameter_two == "norm["
-            "<mo>&#x2225;</mo>#{table_value}<mo>&#x2225;</mo>"
+            "<mrow><mo>&#x2225;</mo>#{table_tag}<mo>&#x2225;</mo></mrow>"
           else
-            "<mtable>#{table_value}</mtable>"
+            table_tag
           end
         end
 

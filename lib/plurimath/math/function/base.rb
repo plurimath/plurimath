@@ -8,7 +8,7 @@ module Plurimath
       class Base < BinaryFunction
         def to_asciimath
           first_value = parameter_one.to_asciimath if parameter_one
-          second_value = "_#{parameter_two.to_asciimath}" if parameter_two
+          second_value = "_#{wrapped(parameter_two)}" if parameter_two
           "#{first_value}#{second_value}"
         end
 

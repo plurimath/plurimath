@@ -24,7 +24,9 @@ RSpec.describe Plurimath::Asciimath do
       it 'returns parsed Asciimath to Formula' do
         expected_value = Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Cos.new(
-            Plurimath::Math::Number.new("2")
+            Plurimath::Math::Formula.new([
+              Plurimath::Math::Number.new("2"),
+            ])
           )
         ])
         expect(formula).to eq(expected_value)

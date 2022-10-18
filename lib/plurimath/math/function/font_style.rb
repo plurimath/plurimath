@@ -7,7 +7,7 @@ module Plurimath
     module Function
       class FontStyle < BinaryFunction
         def to_asciimath
-          "#{parameter_two}(#{parameter_one.to_asciimath})"
+          "#{parameter_two}#{parameter_one.to_asciimath}"
         end
 
         def to_mathml_without_math_tag

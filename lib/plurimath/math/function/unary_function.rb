@@ -20,7 +20,10 @@ module Plurimath
         end
 
         def value_to_asciimath
-          "(#{parameter_one.to_asciimath})" unless parameter_one.nil?
+          if parameter_one
+            string = parameter_one.to_asciimath
+            parameter_one.is_a?(Math::Formula) ? string : "(#{string})"
+          end
         end
 
         def to_mathml_without_math_tag
