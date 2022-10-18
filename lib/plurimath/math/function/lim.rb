@@ -7,8 +7,8 @@ module Plurimath
     module Function
       class Lim < BinaryFunction
         def to_asciimath
-          first_value = "_(#{parameter_one.to_asciimath})" if parameter_one
-          second_value = "^(#{parameter_two.to_asciimath})" if parameter_two
+          first_value = "_#{parameter_one.to_asciimath}" if parameter_one
+          second_value = "^#{parameter_two.to_asciimath}" if parameter_two
           "lim#{first_value}#{second_value}"
         end
 

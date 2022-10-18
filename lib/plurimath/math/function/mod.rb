@@ -7,8 +7,8 @@ module Plurimath
     module Function
       class Mod < BinaryFunction
         def to_asciimath
-          first_value = "(#{parameter_one.to_asciimath})" if parameter_one
-          second_value = "(#{parameter_two.to_asciimath})" if parameter_two
+          first_value = parameter_one.to_asciimath if parameter_one
+          second_value = parameter_two.to_asciimath if parameter_two
           "#{first_value}mod#{second_value}"
         end
 

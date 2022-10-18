@@ -606,13 +606,17 @@ RSpec.describe Plurimath::Math::Formula do
             <mstyle displaystyle='true'>
               <msubsup>
                 <mi>a</mi>
-                <mo>&#x2225;</mo>
-                <mtr>
-                  <mtd>
-                    <mn>1</mn>
-                  </mtd>
-                </mtr>
-                <mo>&#x2225;</mo>
+                <mrow>
+                  <mo>&#x2225;</mo>
+                  <mtable>
+                    <mtr>
+                      <mtd>
+                        <mn>1</mn>
+                      </mtd>
+                    </mtr>
+                  </mtable>
+                  <mo>&#x2225;</mo>
+                </mrow>
                 <mtext>4 terms</mtext>
               </msubsup>
             </mstyle>

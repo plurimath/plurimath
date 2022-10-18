@@ -179,6 +179,14 @@ module Plurimath
           array.first
         end
       end
+
+      def td_value(td_object)
+        if td_object.is_a?(String) && td_object.empty?
+          Math::Function::Text.new(nil)
+        else
+          td_object
+        end
+      end
     end
   end
 end

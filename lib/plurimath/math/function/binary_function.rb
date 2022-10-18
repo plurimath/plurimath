@@ -16,9 +16,13 @@ module Plurimath
         end
 
         def value_to_asciimath
-          first_value = "(#{parameter_one.to_asciimath})" if parameter_one
-          second_value = "(#{parameter_two.to_asciimath})" if parameter_two
-          "#{first_value}#{second_value}"
+          "#{wrapped(parameter_one)}#{wrapped(parameter_two)}"
+        end
+
+        def wrapped(field)
+          return "" unless field
+
+          field.is_a?(Math::Formula) ? field.to_asciimath : "(#{field.to_asciimath})"
         end
 
         def ==(object)

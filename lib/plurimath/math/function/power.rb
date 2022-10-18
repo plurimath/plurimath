@@ -7,8 +7,8 @@ module Plurimath
     module Function
       class Power < BinaryFunction
         def to_asciimath
-          first_value = parameter_one.to_asciimath if parameter_one
-          second_value = "^#{parameter_two.to_asciimath}" if parameter_two
+          first_value  = parameter_one.to_asciimath if parameter_one
+          second_value = "^#{wrapped(parameter_two)}" if parameter_two
           "#{first_value}#{second_value}"
         end
 

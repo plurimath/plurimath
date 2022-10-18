@@ -16,8 +16,8 @@ module Plurimath
 
         def to_asciimath
           first_value = parameter_one&.to_asciimath
-          second_value = "_(#{parameter_two.to_asciimath})" if parameter_two
-          third_value = "^(#{parameter_three.to_asciimath})" if parameter_three
+          second_value = "_#{parameter_two.to_asciimath}" if parameter_two
+          third_value = "^#{parameter_three.to_asciimath}" if parameter_three
           "#{first_value}#{second_value}#{third_value}"
         end
 
