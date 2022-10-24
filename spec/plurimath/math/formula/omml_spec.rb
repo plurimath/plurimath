@@ -1312,5 +1312,507 @@ RSpec.describe Plurimath::Math::Formula do
         expect(formula).to eq(expected_value.gsub(/\s/, ""))
       end
     end
+
+    context "contains #131.omml" do
+      let(:file_name) { "spec/plurimath/fixtures/131.omml" }
+      let(:exp) { ExpectedValues::EX_131 }
+
+      it "matches open and close tag" do
+        expected_value = File.read(file_name)
+        expect(formula).to eq(expected_value.gsub(/\s/, ""))
+      end
+    end
+
+    context "contains #132.omml" do
+      let(:file_name) { "spec/plurimath/fixtures/132.omml" }
+      let(:exp) { ExpectedValues::EX_132 }
+
+      it "matches open and close tag" do
+        expected_value = File.read(file_name)
+        expect(formula).to eq(expected_value.gsub(/\s/, ""))
+      end
+    end
+
+    context "contains #133.omml" do
+      let(:file_name) { "spec/plurimath/fixtures/133.omml" }
+      let(:exp) { ExpectedValues::EX_133 }
+
+      it "matches open and close tag" do
+        expected_value = File.read(file_name)
+        expect(formula).to eq(expected_value.gsub(/\s/, ""))
+      end
+    end
+
+    context "contains #134.omml" do
+      let(:file_name) { "spec/plurimath/fixtures/134.omml" }
+      let(:exp) { ExpectedValues::EX_134 }
+
+      it "matches open and close tag" do
+        expected_value = File.read(file_name)
+        expect(formula).to eq(expected_value.gsub(/\s/, ""))
+      end
+    end
+
+    context "contains #135.omml" do
+      let(:file_name) { "spec/plurimath/fixtures/135.omml" }
+      let(:exp) { ExpectedValues::EX_135 }
+
+      it "matches open and close tag" do
+        expected_value = File.read(file_name)
+        expect(formula).to eq(expected_value.gsub(/\s/, ""))
+      end
+    end
+
+    context "contains #136.omml" do
+      let(:file_name) { "spec/plurimath/fixtures/136.omml" }
+      let(:exp) { ExpectedValues::EX_136 }
+
+      it "matches open and close tag" do
+        expected_value = File.read(file_name)
+        expect(formula).to eq(expected_value.gsub(/\s/, ""))
+      end
+    end
+
+    context "contains #137.omml" do
+      let(:file_name) { "spec/plurimath/fixtures/137.omml" }
+      let(:exp) { ExpectedValues::EX_137 }
+
+      it "matches open and close tag" do
+        expected_value = File.read(file_name)
+        expect(formula).to eq(expected_value.gsub(/\s/, ""))
+      end
+    end
+
+    context "contains #138.omml" do
+      let(:file_name) { "spec/plurimath/fixtures/138.omml" }
+      let(:exp) { ExpectedValues::EX_138 }
+
+      it "matches open and close tag" do
+        expected_value = File.read(file_name)
+        expect(formula).to eq(expected_value.gsub(/\s/, ""))
+      end
+    end
+
+    context "contains #139.omml" do
+      let(:file_name) { "spec/plurimath/fixtures/139.omml" }
+      let(:exp) { ExpectedValues::EX_139 }
+
+      it "matches open and close tag" do
+        expected_value = File.read(file_name)
+        expect(formula).to eq(expected_value.gsub(/\s/, ""))
+      end
+    end
+
+    context "contains #140.omml" do
+      let(:file_name) { "spec/plurimath/fixtures/140.omml" }
+      let(:exp) { ExpectedValues::EX_140 }
+
+      it "matches open and close tag" do
+        expected_value = File.read(file_name)
+        expect(formula).to eq(expected_value.gsub(/\s/, ""))
+      end
+    end
+
+    context "contains #141.omml" do
+      let(:file_name) { "spec/plurimath/fixtures/141.omml" }
+      let(:exp) { ExpectedValues::EX_141 }
+
+      it "matches open and close tag" do
+        expected_value = File.read(file_name)
+        expect(formula).to eq(expected_value.gsub(/\s/, ""))
+      end
+    end
+
+    context "contains #142.omml" do
+      let(:file_name) { "spec/plurimath/fixtures/142.omml" }
+      let(:exp) { ExpectedValues::EX_142 }
+
+      it "matches open and close tag" do
+        expected_value = File.read(file_name)
+        expect(formula).to eq(expected_value.gsub(/\s/, ""))
+      end
+    end
+
+    context "contains #143.omml" do
+      let(:file_name) { "spec/plurimath/fixtures/143.omml" }
+      let(:exp) { ExpectedValues::EX_143 }
+
+      it "matches open and close tag" do
+        expected_value = File.read(file_name)
+        expect(formula).to eq(expected_value.gsub(/\s/, ""))
+      end
+    end
+
+    context "contains #144.omml" do
+      let(:file_name) { "spec/plurimath/fixtures/144.omml" }
+      let(:exp) { ExpectedValues::EX_144 }
+
+      it "matches open and close tag" do
+        expected_value = File.read(file_name)
+        expect(formula).to eq(expected_value.gsub(/\s/, ""))
+      end
+    end
+
+    context "contains #145.omml" do
+      let(:file_name) { "spec/plurimath/fixtures/145.omml" }
+      let(:exp) { ExpectedValues::EX_145 }
+
+      it "matches open and close tag" do
+        expected_value = File.read(file_name)
+        expect(formula).to eq(expected_value.gsub(/\s/, ""))
+      end
+    end
+
+    context "contains #146.omml" do
+      let(:file_name) { "spec/plurimath/fixtures/146.omml" }
+      let(:exp) { ExpectedValues::EX_146 }
+
+      it "matches open and close tag" do
+        expected_value = File.read(file_name)
+        expect(formula).to eq(expected_value.gsub(/\s/, ""))
+      end
+    end
+
+    context "contains #147.omml" do
+      let(:file_name) { "spec/plurimath/fixtures/147.omml" }
+      let(:exp) { ExpectedValues::EX_147 }
+
+      it "matches open and close tag" do
+        expected_value = File.read(file_name)
+        expect(formula).to eq(expected_value.gsub(/\s/, ""))
+      end
+    end
+
+    context "contains #148.omml" do
+      let(:file_name) { "spec/plurimath/fixtures/148.omml" }
+      let(:exp) { ExpectedValues::EX_148 }
+
+      it "matches open and close tag" do
+        expected_value = File.read(file_name)
+        expect(formula).to eq(expected_value.gsub(/\s/, ""))
+      end
+    end
+
+    context "contains #149.omml" do
+      let(:file_name) { "spec/plurimath/fixtures/149.omml" }
+      let(:exp) { ExpectedValues::EX_149 }
+
+      it "matches open and close tag" do
+        expected_value = File.read(file_name)
+        expect(formula).to eq(expected_value.gsub(/\s/, ""))
+      end
+    end
+
+    context "contains #150.omml" do
+      let(:file_name) { "spec/plurimath/fixtures/150.omml" }
+      let(:exp) { ExpectedValues::EX_150 }
+
+      it "matches open and close tag" do
+        expected_value = File.read(file_name)
+        expect(formula).to eq(expected_value.gsub(/\s/, ""))
+      end
+    end
+
+    context "contains #151.omml" do
+      let(:file_name) { "spec/plurimath/fixtures/151.omml" }
+      let(:exp) { ExpectedValues::EX_151 }
+
+      it "matches open and close tag" do
+        expected_value = File.read(file_name)
+        expect(formula).to eq(expected_value.gsub(/\s/, ""))
+      end
+    end
+
+    context "contains #152.omml" do
+      let(:file_name) { "spec/plurimath/fixtures/152.omml" }
+      let(:exp) { ExpectedValues::EX_152 }
+
+      it "matches open and close tag" do
+        expected_value = File.read(file_name)
+        expect(formula).to eq(expected_value.gsub(/\s/, ""))
+      end
+    end
+
+    context "contains #153.omml" do
+      let(:file_name) { "spec/plurimath/fixtures/153.omml" }
+      let(:exp) { ExpectedValues::EX_153 }
+
+      it "matches open and close tag" do
+        expected_value = File.read(file_name)
+        expect(formula).to eq(expected_value.gsub(/\s/, ""))
+      end
+    end
+
+    context "contains #154.omml" do
+      let(:file_name) { "spec/plurimath/fixtures/154.omml" }
+      let(:exp) { ExpectedValues::EX_154 }
+
+      it "matches open and close tag" do
+        expected_value = File.read(file_name)
+        expect(formula).to eq(expected_value.gsub(/\s/, ""))
+      end
+    end
+
+    context "contains #155.omml" do
+      let(:file_name) { "spec/plurimath/fixtures/155.omml" }
+      let(:exp) { ExpectedValues::EX_155 }
+
+      it "matches open and close tag" do
+        expected_value = File.read(file_name)
+        expect(formula).to eq(expected_value.gsub(/\s/, ""))
+      end
+    end
+
+    context "contains #156.omml" do
+      let(:file_name) { "spec/plurimath/fixtures/156.omml" }
+      let(:exp) { ExpectedValues::EX_156 }
+
+      it "matches open and close tag" do
+        expected_value = File.read(file_name)
+        expect(formula).to eq(expected_value.gsub(/\s/, ""))
+      end
+    end
+
+    context "contains #157.omml" do
+      let(:file_name) { "spec/plurimath/fixtures/157.omml" }
+      let(:exp) { ExpectedValues::EX_157 }
+
+      it "matches open and close tag" do
+        expected_value = File.read(file_name)
+        expect(formula).to eq(expected_value.gsub(/\s/, ""))
+      end
+    end
+
+    context "contains #158.omml" do
+      let(:file_name) { "spec/plurimath/fixtures/158.omml" }
+      let(:exp) { ExpectedValues::EX_158 }
+
+      it "matches open and close tag" do
+        expected_value = File.read(file_name)
+        expect(formula).to eq(expected_value.gsub(/\s/, ""))
+      end
+    end
+
+    context "contains #159.omml" do
+      let(:file_name) { "spec/plurimath/fixtures/159.omml" }
+      let(:exp) { ExpectedValues::EX_159 }
+
+      it "matches open and close tag" do
+        expected_value = File.read(file_name)
+        expect(formula).to eq(expected_value.gsub(/\s/, ""))
+      end
+    end
+
+    context "contains #160.omml" do
+      let(:file_name) { "spec/plurimath/fixtures/160.omml" }
+      let(:exp) { ExpectedValues::EX_160 }
+
+      it "matches open and close tag" do
+        expected_value = File.read(file_name)
+        expect(formula).to eq(expected_value.gsub(/\s/, ""))
+      end
+    end
+
+    context "contains #161.omml" do
+      let(:file_name) { "spec/plurimath/fixtures/161.omml" }
+      let(:exp) { ExpectedValues::EX_161 }
+
+      it "matches open and close tag" do
+        expected_value = File.read(file_name)
+        expect(formula).to eq(expected_value.gsub(/\s/, ""))
+      end
+    end
+
+    context "contains #162.omml" do
+      let(:file_name) { "spec/plurimath/fixtures/162.omml" }
+      let(:exp) { ExpectedValues::EX_162 }
+
+      it "matches open and close tag" do
+        expected_value = File.read(file_name)
+        expect(formula).to eq(expected_value.gsub(/\s/, ""))
+      end
+    end
+
+    context "contains #163.omml" do
+      let(:file_name) { "spec/plurimath/fixtures/163.omml" }
+      let(:exp) { ExpectedValues::EX_163 }
+
+      it "matches open and close tag" do
+        expected_value = File.read(file_name)
+        expect(formula).to eq(expected_value.gsub(/\s/, ""))
+      end
+    end
+
+    context "contains #164.omml" do
+      let(:file_name) { "spec/plurimath/fixtures/164.omml" }
+      let(:exp) { ExpectedValues::EX_164 }
+
+      it "matches open and close tag" do
+        expected_value = File.read(file_name)
+        expect(formula).to eq(expected_value.gsub(/\s/, ""))
+      end
+    end
+
+    context "contains #165.omml" do
+      let(:file_name) { "spec/plurimath/fixtures/165.omml" }
+      let(:exp) { ExpectedValues::EX_165 }
+
+      it "matches open and close tag" do
+        expected_value = File.read(file_name)
+        expect(formula).to eq(expected_value.gsub(/\s/, ""))
+      end
+    end
+
+    context "contains #166.omml" do
+      let(:file_name) { "spec/plurimath/fixtures/166.omml" }
+      let(:exp) { ExpectedValues::EX_166 }
+
+      it "matches open and close tag" do
+        expected_value = File.read(file_name)
+        expect(formula).to eq(expected_value.gsub(/\s/, ""))
+      end
+    end
+
+    context "contains #167.omml" do
+      let(:file_name) { "spec/plurimath/fixtures/167.omml" }
+      let(:exp) { ExpectedValues::EX_167 }
+
+      it "matches open and close tag" do
+        expected_value = File.read(file_name)
+        expect(formula).to eq(expected_value.gsub(/\s/, ""))
+      end
+    end
+
+    context "contains #168.omml" do
+      let(:file_name) { "spec/plurimath/fixtures/168.omml" }
+      let(:exp) { ExpectedValues::EX_168 }
+
+      it "matches open and close tag" do
+        expected_value = File.read(file_name)
+        expect(formula).to eq(expected_value.gsub(/\s/, ""))
+      end
+    end
+
+    context "contains #169.omml" do
+      let(:file_name) { "spec/plurimath/fixtures/169.omml" }
+      let(:exp) { ExpectedValues::EX_169 }
+
+      it "matches open and close tag" do
+        expected_value = File.read(file_name)
+        expect(formula).to eq(expected_value.gsub(/\s/, ""))
+      end
+    end
+
+    context "contains #170.omml" do
+      let(:file_name) { "spec/plurimath/fixtures/170.omml" }
+      let(:exp) { ExpectedValues::EX_170 }
+
+      it "matches open and close tag" do
+        expected_value = File.read(file_name)
+        expect(formula).to eq(expected_value.gsub(/\s/, ""))
+      end
+    end
+
+    context "contains #171.omml" do
+      let(:file_name) { "spec/plurimath/fixtures/171.omml" }
+      let(:exp) { ExpectedValues::EX_171 }
+
+      it "matches open and close tag" do
+        expected_value = File.read(file_name)
+        expect(formula).to eq(expected_value.gsub(/\s/, ""))
+      end
+    end
+
+    context "contains #172.omml" do
+      let(:file_name) { "spec/plurimath/fixtures/172.omml" }
+      let(:exp) { ExpectedValues::EX_172 }
+
+      it "matches open and close tag" do
+        expected_value = File.read(file_name)
+        expect(formula).to eq(expected_value.gsub(/\s/, ""))
+      end
+    end
+
+    context "contains #173.omml" do
+      let(:file_name) { "spec/plurimath/fixtures/173.omml" }
+      let(:exp) { ExpectedValues::EX_173 }
+
+      it "matches open and close tag" do
+        expected_value = File.read(file_name)
+        expect(formula).to eq(expected_value.gsub(/\s/, ""))
+      end
+    end
+
+    context "contains #174.omml" do
+      let(:file_name) { "spec/plurimath/fixtures/174.omml" }
+      let(:exp) { ExpectedValues::EX_174 }
+
+      it "matches open and close tag" do
+        expected_value = File.read(file_name)
+        expect(formula).to eq(expected_value.gsub(/\s/, ""))
+      end
+    end
+
+    context "contains #175.omml" do
+      let(:file_name) { "spec/plurimath/fixtures/175.omml" }
+      let(:exp) { ExpectedValues::EX_175 }
+
+      it "matches open and close tag" do
+        expected_value = File.read(file_name)
+        expect(formula).to eq(expected_value.gsub(/\s/, ""))
+      end
+    end
+
+    context "contains #176.omml" do
+      let(:file_name) { "spec/plurimath/fixtures/176.omml" }
+      let(:exp) { ExpectedValues::EX_176 }
+
+      it "matches open and close tag" do
+        expected_value = File.read(file_name)
+        expect(formula).to eq(expected_value.gsub(/\s/, ""))
+      end
+    end
+
+    context "contains #177.omml" do
+      let(:file_name) { "spec/plurimath/fixtures/177.omml" }
+      let(:exp) { ExpectedValues::EX_177 }
+
+      it "matches open and close tag" do
+        expected_value = File.read(file_name)
+        expect(formula).to eq(expected_value.gsub(/\s/, ""))
+      end
+    end
+
+    context "contains #178.omml" do
+      let(:file_name) { "spec/plurimath/fixtures/178.omml" }
+      let(:exp) do
+        Plurimath::Math::Formula.new([
+          Plurimath::Math::Function::Limits.new(
+            Plurimath::Math::Function::Int.new,
+            Plurimath::Math::Number.new("0"),
+            Plurimath::Math::Function::PowerBase.new(
+              Plurimath::Math::Symbol.new("&#x3C0;"),
+              Plurimath::Math::Number.new("2221"),
+              Plurimath::Math::Symbol.new("&#x2221;"),
+            ),
+          )
+        ])
+      end
+
+      it "matches open and close tag" do
+        expected_value = File.read(file_name)
+        expect(entities.decode(formula)).to eq(expected_value.gsub(/\s/, ""))
+      end
+    end
+
+    context "contains #issue-158.omml" do
+      let(:file_name) { "spec/plurimath/fixtures/issue-158.omml" }
+      let(:exp) { ExpectedValues::EXIssue158 }
+
+      it "matches open and close tag" do
+        expected_value = File.read(file_name)
+        expect(formula).to eq(expected_value.gsub(/\s/, ""))
+      end
+    end
   end
 end

@@ -83,8 +83,8 @@ module Plurimath
         raise Math::Error.new(message)
       end
 
-      def omml_element(node, attributes = [])
-        element = Ox::Element.new(node)
+      def omml_element(node, attributes: [], namespace: "")
+        element = Ox::Element.new("#{namespace}:#{node}")
         attributes.each do |attr_key, attr_value|
           element[attr_key] = attr_value
         end
@@ -92,13 +92,17 @@ module Plurimath
       end
 
       def rpr_element(wi_tag: false)
-        rpr_element = omml_element("w:rPr")
+        rpr_element = omml_element("rPr", namespace: "w")
         attributes = {
           "w:ascii": "Cambria Math",
           "w:hAnsi": "Cambria Math",
         }
-        rpr_element << omml_element("w:rFonts", attributes)
-        rpr_element << omml_element("w:i") if wi_tag
+        rpr_element << omml_element(
+          "rFonts",
+          namespace: "w",
+          attributes: attributes,
+        )
+        rpr_element << omml_element("i", namespace: "w") if wi_tag
         rpr_element
       end
 
@@ -107,8 +111,12 @@ module Plurimath
         element
       end
 
-      def pr_element(main_tag, wi_tag)
-        omml_element("#{main_tag}Pr") << rpr_element(wi_tag: wi_tag)
+      def pr_element(main_tag, wi_tag, namespace: "")
+        tag_name = "#{main_tag}Pr"
+        omml_element(
+          tag_name,
+          namespace: namespace,
+        ) << rpr_element(wi_tag: wi_tag)
       end
 
       def filter_values(value)

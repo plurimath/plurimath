@@ -14,17 +14,17 @@ module Plurimath
 
         def to_omml_without_math_tag
           first_value  = if parameter_one.is_a?(Math::Symbol)
-                           mt = Utility.omml_element("m:t")
+                           mt = Utility.omml_element("t", namespace: "m")
                            mt << parameter_one.to_omml_without_math_tag
                          else
                            parameter_one.to_omml_without_math_tag
                          end
           second_value = parameter_two.to_omml_without_math_tag
-          limlow   = Utility.omml_element("m:limLow")
-          limlowpr = Utility.omml_element("m:limLowPr")
-          limlowpr << Utility.pr_element("m:ctrl", true)
-          me = Utility.omml_element("m:e") << first_value
-          lim = Utility.omml_element("m:lim") << second_value
+          limlow   = Utility.omml_element("limLow", namespace: "m")
+          limlowpr = Utility.omml_element("limLowPr", namespace: "m")
+          limlowpr << Utility.pr_element("ctrl", true, namespace: "m")
+          me = Utility.omml_element("e", namespace: "m") << first_value
+          lim = Utility.omml_element("lim", namespace: "m") << second_value
           Utility.update_nodes(
             limlow,
             [

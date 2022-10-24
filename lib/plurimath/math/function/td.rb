@@ -28,7 +28,7 @@ module Plurimath
         end
 
         def to_omml_without_math_tag
-          me = Utility.omml_element("m:e")
+          me = Utility.omml_element("e", namespace: "m")
           Utility.update_nodes(
             me,
             parameter_one.map(&:to_omml_without_math_tag),

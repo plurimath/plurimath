@@ -43,6 +43,14 @@ module Plurimath
           first_value + second_value + third_value
         end
 
+        def to_omml_without_math_tag
+          r_tag = Utility.omml_element("r", namespace: "m")
+          r_tag << parameter_one.to_omml_without_math_tag if parameter_one
+          r_tag << parameter_two.to_omml_without_math_tag if parameter_two
+          r_tag << parameter_three.to_omml_without_math_tag if parameter_three
+          r_tag
+        end
+
         def class_name
           self.class.name.split("::").last.downcase
         end

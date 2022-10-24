@@ -6,25 +6,12 @@
       </w:rPr>
       <m:t>a</m:t>
     </m:r>
-    <m:box>
-      <m:boxPr>
-        <m:opEmu m:val="1"/>
-        <m:ctrlPr>
-          <w:rPr>
-            <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
-            <w:i/>
-          </w:rPr>
-        </m:ctrlPr>
-      </m:boxPr>
-      <m:e>
-        <m:r>
-          <w:rPr>
-            <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
-          </w:rPr>
-          <m:t>+=</m:t>
-        </m:r>
-      </m:e>
-    </m:box>
+    <m:r>
+      <w:rPr>
+        <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
+      </w:rPr>
+      <m:t>+=</m:t>
+    </m:r>
     <m:r>
       <w:rPr>
         <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>

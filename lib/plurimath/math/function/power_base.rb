@@ -29,11 +29,11 @@ module Plurimath
         end
 
         def omml_nary_tag
-          narypr = Utility.omml_element("m:naryPr")
+          narypr = Utility.omml_element("naryPr", namespace: "m")
           chr_value(narypr)
-          narypr << Utility.omml_element("m:limLoc", { "m:val": "subSup" })
+          narypr << Utility.omml_element("limLoc", namespace: "m", attributes: { "m:val": "subSup" })
           hide_tags(narypr)
-          narypr << Utility.pr_element("m:ctrl", true)
+          narypr << Utility.pr_element("ctrl", true, namespace: "m")
           [
             narypr,
             sub_element,
@@ -45,13 +45,13 @@ module Plurimath
           first_value = parameter_one.to_omml_without_math_tag
           return narypr if first_value == "∫"
 
-          narypr << Utility.omml_element("m:chr", { "m:val": first_value })
+          narypr << Utility.omml_element("chr", namespace: "m", attributes: { "m:val": first_value })
         end
 
         def to_omml_without_math_tag
-          ssubsup   = Utility.omml_element("m:sSubSup")
-          ssubsuppr = Utility.omml_element("m:sSubSupPr")
-          ssubsuppr << hide_tags(Utility.pr_element("m:ctrl", true))
+          ssubsup   = Utility.omml_element("sSubSup", namespace: "m")
+          ssubsuppr = Utility.omml_element("sSubSupPr", namespace: "m")
+          ssubsuppr << hide_tags(Utility.pr_element("ctrl", true, namespace: "m"))
           Utility.update_nodes(
             ssubsup,
             [
@@ -64,7 +64,7 @@ module Plurimath
         end
 
         def e_element
-          elemnet = Utility.omml_element("m:e")
+          elemnet = Utility.omml_element("e", namespace: "m")
           if parameter_one
             elemnet << parameter_one&.to_omml_without_math_tag
           else
@@ -73,7 +73,7 @@ module Plurimath
         end
 
         def sub_element
-          elemnet = Utility.omml_element("m:sub")
+          elemnet = Utility.omml_element("sub", namespace: "m")
           if parameter_two
             elemnet << parameter_two&.to_omml_without_math_tag
           else
@@ -82,7 +82,7 @@ module Plurimath
         end
 
         def sup_element
-          elemnet = Utility.omml_element("m:sup")
+          elemnet = Utility.omml_element("sup", namespace: "m")
           if parameter_three
             elemnet << parameter_three&.to_omml_without_math_tag
           else
@@ -92,8 +92,8 @@ module Plurimath
 
         def hide_tags(nar)
           attr = { "m:val": "1" }
-          nar << Utility.omml_element("m:subHide", attr) if parameter_two.nil?
-          nar << Utility.omml_element("m:supHide", attr) if parameter_three.nil?
+          nar << Utility.omml_element("subHide", namespace: "m", attributes: attr) if parameter_two.nil?
+          nar << Utility.omml_element("supHide", namespace: "m", attributes: attr) if parameter_three.nil?
           nar
         end
       end

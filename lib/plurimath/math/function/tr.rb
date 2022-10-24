@@ -30,7 +30,7 @@ module Plurimath
           if parameter_one.count.eql?(1)
             omml_content
           else
-            mr = Utility.omml_element("m:mr")
+            mr = Utility.omml_element("mr", namespace: "m")
             Utility.update_nodes(
               mr,
               omml_content,

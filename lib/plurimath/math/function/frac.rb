@@ -19,14 +19,14 @@ module Plurimath
         end
 
         def to_omml_without_math_tag
-          f_element   = Utility.omml_element("m:f")
-          fpr_element = Utility.omml_element("m:fPr")
-          num_element = Utility.omml_element("m:num")
-          den_element = Utility.omml_element("m:den")
+          f_element   = Utility.omml_element("f", namespace: "m")
+          fpr_element = Utility.omml_element("fPr", namespace: "m")
+          num_element = Utility.omml_element("num", namespace: "m")
+          den_element = Utility.omml_element("den", namespace: "m")
           Utility.update_nodes(
             f_element,
             [
-              fpr_element << Utility.pr_element("m:ctrl", true),
+              fpr_element << Utility.pr_element("ctrl", true, namespace: "m"),
               num_element << parameter_one.to_omml_without_math_tag,
               den_element << parameter_two.to_omml_without_math_tag,
             ],

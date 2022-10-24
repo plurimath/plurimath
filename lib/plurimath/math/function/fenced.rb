@@ -23,11 +23,11 @@ module Plurimath
         end
 
         def to_omml_without_math_tag
-          d = Utility.omml_element("m:d")
-          dpr = Utility.omml_element("m:dPr")
+          d = Utility.omml_element("d", namespace: "m")
+          dpr = Utility.omml_element("dPr", namespace: "m")
           first_value(dpr)
           third_value(dpr)
-          dpr << Utility.pr_element("m:ctrl", true)
+          dpr << Utility.pr_element("ctrl", true, namespace: "m")
           Utility.update_nodes(
             d,
             [dpr] + second_value,
@@ -37,35 +37,44 @@ module Plurimath
         def second_value
           class_names = ["number", "symbol"].freeze
           parameter_two.map do |object|
-            e_tag = Utility.omml_element("m:e")
-            if class_names.include?(object.class_name)
-              e_tag << fenced_omml_value(object)
-            else
-              e_tag << object.to_omml_without_math_tag
-            end
+            e_tag = Utility.omml_element("e", namespace: "m")
+            e_tag << if class_names.include?(object.class_name)
+                       fenced_omml_value(object)
+                     else
+                       object.to_omml_without_math_tag
+                     end
           end
         end
 
         def fenced_omml_value(object)
-          <<~OMML
-            <m:r>
-              <m:t>#{object.value}</m:t>
-            </m:r>
-          OMML
+          r_tag = Utility.omml_element("r", namespace: "m")
+          t_tag = Utility.omml_element("t", namespace: "m")
+          t_tag << object.value
+          r_tag << t_tag
         end
 
         def first_value(dpr)
           first_value = parameter_one&.value
           return dpr if first_value.nil? || first_value.empty?
 
-          dpr << Utility.omml_element("m:begChr", { "m:val": first_value })
+          attributes = { "m:val": first_value }
+          dpr << Utility.omml_element(
+            "begChr",
+            namespace: "m",
+            attributes: attributes,
+          )
         end
 
         def third_value(dpr)
           third_value = parameter_three&.value
           return dpr if third_value.nil? || third_value.empty?
 
-          dpr << Utility.omml_element("m:endChr", { "m:val": third_value })
+          attributes = { "m:val": third_value }
+          dpr << Utility.omml_element(
+            "endChr",
+            namespace: "m",
+            attributes: attributes,
+          )
         end
       end
     end

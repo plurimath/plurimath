@@ -58,9 +58,9 @@ module Plurimath
         end
 
         def single_td_table
-          eqarr    = Utility.omml_element("m:eqArr")
-          eqarrpr  = Utility.omml_element("m:eqArrPr")
-          eqarrpr  << Utility.pr_element("m:ctrl", true)
+          eqarr    = Utility.omml_element("eqArr", namespace: "m")
+          eqarrpr  = Utility.omml_element("eqArrPr", namespace: "m")
+          eqarrpr  << Utility.pr_element("ctrl", true, namespace: "m")
           eqarr    << eqarrpr
           tr_value = parameter_one.map(&:to_omml_without_math_tag)
           Utility.update_nodes(
@@ -72,20 +72,29 @@ module Plurimath
         def multiple_td_table
           count  = { "m:val": parameter_one&.first&.parameter_one&.count }
           mcjc   = { "m:val": "center" }
-          mm     = Utility.omml_element("m:m")
-          mpr    = Utility.omml_element("m:mpr")
-          mcs    = Utility.omml_element("m:mcs", true)
-          mc     = Utility.omml_element("m:mc", true)
-          mcpr   = Utility.pr_element("m:mcPr", true)
-          mcount = Utility.omml_element("m:count", count)
-          mcjc   = Utility.omml_element("m:mcJc", mcjc)
-          ctrlpr = Utility.pr_element("m:ctrl", true)
+          mm     = Utility.omml_element("m", namespace: "m")
+          mpr    = Utility.omml_element("mpr", namespace: "m")
+          mcs    = Utility.omml_element("mcs", namespace: "m")
+          mc     = Utility.omml_element("mc", namespace: "m")
+          mcpr   = Utility.omml_element("mcPr", namespace: "m")
+          mcount = Utility.omml_element(
+            "count",
+            namespace: "m",
+            attributes: count,
+          )
+          mcjc = Utility.omml_element(
+            "mcJc",
+            namespace: "m",
+            attributes: mcjc,
+          )
+          ctrlpr = Utility.pr_element("ctrl", true, namespace: "m")
           Utility.update_nodes(mcpr, [mcount, mcjc])
-          mcs      << mc << mcpr
-          mpr      << mcs
-          mpr      << ctrlpr
+          mc  << mcpr
+          mcs << mc
+          mpr << mcs
+          mpr << ctrlpr
           mm_value = parameter_one.map(&:to_omml_without_math_tag)
-          Utility.update_nodes(mm, mm_value)
+          Utility.update_nodes(mm, mm_value.insert(0, mpr))
         end
       end
     end

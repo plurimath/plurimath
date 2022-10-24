@@ -64,8 +64,8 @@ module Plurimath
           "xmlns:wpi": "http://schemas.microsoft.com/office/word/2010/wordprocessingInk",
           "xmlns:wps": "http://schemas.microsoft.com/office/word/2010/wordprocessingShape",
         }
-        para_element = Utility.omml_element("m:oMathPara", attributes)
-        math_element = Utility.omml_element("m:oMath")
+        para_element = Utility.omml_element("oMathPara", attributes: attributes, namespace: "m")
+        math_element = Utility.omml_element("oMath", namespace: "m")
         Utility.update_nodes(math_element, omml_content)
         para_element << math_element
         Ox.dump(para_element)
@@ -74,7 +74,7 @@ module Plurimath
       def omml_content
         value.map do |object|
           if object.is_a?(Symbol)
-            mt = Utility.omml_element("m:t")
+            mt = Utility.omml_element("t", namespace: "m")
             mt << object.value
           else
             object.to_omml_without_math_tag
@@ -88,15 +88,15 @@ module Plurimath
         )
           nary_tag
         else
-          r_element = Utility.omml_element("m:r")
-          r_element << Utility.rpr_element if ['symbol', 'number', 'text'].include?(value.first.class_name)
+          r_element = Utility.omml_element("r", namespace: "m")
+          r_element << Utility.rpr_element if ["symbol", "number", "text"].include?(value.first.class_name)
           Utility.update_nodes(r_element, omml_content)
         end
       end
 
       def nary_tag
-        nary_tag = Utility.omml_element("m:nary")
-        e_tag    = Utility.omml_element("m:e")
+        nary_tag = Utility.omml_element("nary", namespace: "m")
+        e_tag    = Utility.omml_element("e", namespace: "m")
         e_tag   << value&.last&.to_omml_without_math_tag
         Utility.update_nodes(
           nary_tag,

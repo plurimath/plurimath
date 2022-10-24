@@ -12,3 +12,5 @@ RSpec.configure do |config|
     c.syntax = :expect
   end
 end
+
+Ox.default_options = { encoding: "UTF-8" }

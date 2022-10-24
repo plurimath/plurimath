@@ -7,10 +7,10 @@ module Plurimath
     module Function
       class Ul < UnaryFunction
         def to_omml_without_math_tag
-          bar    = Utility.omml_element("m:bar")
-          barpr  = Utility.omml_element("m:barPr")
-          barpr << Utility.pr_element("m:ctrl", true)
-          me = Utility.omml_element("m:e")
+          bar    = Utility.omml_element("bar", namespace: "m")
+          barpr  = Utility.omml_element("barPr", namespace: "m")
+          barpr << Utility.pr_element("ctrl", true, namespace: "m")
+          me = Utility.omml_element("e", namespace: "m")
           me << parameter_one.to_omml_without_math_tag
           Utility.update_nodes(
             bar,

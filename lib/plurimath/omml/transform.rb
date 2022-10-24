@@ -7,34 +7,35 @@ module Plurimath
       rule(t: simple(:t))   { Utility.text_classes(t) }
       rule(e: subtree(:e))  { e.flatten.compact }
       rule(i: sequence(:i)) { i }
-      rule(t: sequence(:t)) { Utility.text_classes(t) }
       rule(e: sequence(:e)) { e.flatten.compact }
 
-      rule(val: simple(:val))   { val }
-      rule(dPr: subtree(:dpr))  { dpr }
-      rule(num: subtree(:num))  { num }
-      rule(den: subtree(:den))  { den }
-      rule(rPr: subtree(:rPr))  { nil }
-      rule(fPr: subtree(:fPr))  { nil }
-      rule(mPr: subtree(:mPr))  { nil }
-      rule(box: subtree(:box))  { box.flatten.compact }
-      rule(lim: sequence(:lim)) { Utility.filter_values(lim) }
-      rule(deg: sequence(:deg)) { Utility.filter_values(deg) }
-      rule(sub: sequence(:sub)) { Utility.filter_values(sub) }
-      rule(sup: sequence(:sup)) { Utility.filter_values(sup) }
+      rule(val: simple(:val))    { val }
+      rule(dPr: subtree(:dpr))   { dpr }
+      rule(num: subtree(:num))   { num }
+      rule(den: subtree(:den))   { den }
+      rule(rPr: subtree(:rPr))   { nil }
+      rule(fPr: subtree(:fPr))   { nil }
+      rule(mpr: subtree(:mpr))   { nil }
+      rule(mPr: subtree(:mPr))   { nil }
+      rule(box: subtree(:box))   { box.flatten.compact }
+      rule(deg: sequence(:deg))  { Utility.filter_values(deg) }
+      rule(sub: sequence(:sub))  { Utility.filter_values(sub) }
+      rule(sup: sequence(:sup))  { Utility.filter_values(sup) }
+      rule(boxPr: subtree(:box)) { nil }
+      rule(argPr: subtree(:arg)) { nil }
+      rule(accPr: subtree(:acc)) { acc.flatten.compact }
 
-      rule(boxPr: subtree(:box))   { nil }
-      rule(sSubPr: subtree(:arg))  { nil }
-      rule(space: simple(:space))  { space }
-      rule(radPr: subtree(:radpr)) { nil }
-      rule(barPr: subtree(:barpr)) { barpr }
-      rule(oMath: subtree(:omath)) { omath.flatten.compact }
-      rule(fName: subtree(:fname)) { fname }
+      rule(sSubPr: subtree(:arg))   { nil }
+      rule(space: simple(:space))   { space }
+      rule(radPr: subtree(:radpr))  { nil }
+      rule(barPr: subtree(:barpr))  { barpr }
+      rule(oMath: subtree(:omath))  { omath.flatten.compact }
+      rule(fName: subtree(:fname))  { fname }
+      rule(oMath: sequence(:omath)) { omath }
+      rule(limLoc: simple(:limLoc)) { limLoc }
+      rule(begChr: simple(:begChr)) { Math::Symbol.new(begChr) }
+      rule(endChr: simple(:endChr)) { Math::Symbol.new(endChr) }
 
-      rule(oMath: sequence(:omath))    { omath }
-      rule(limLoc: simple(:limLoc))    { limLoc }
-      rule(begChr: simple(:begChr))    { Math::Symbol.new(begChr) }
-      rule(endChr: simple(:endChr))    { Math::Symbol.new(endChr) }
       rule(rFonts: subtree(:rFonts))   { nil }
       rule(sSupPr: subtree(:ssuppr))   { nil }
       rule(sPrePr: subtree(:sprepr))   { nil }
@@ -54,6 +55,7 @@ module Plurimath
 
       rule(groupChrPr: subtree(:groupchrpr))   { groupchrpr }
       rule(borderBoxPr: subtree(:borderBoxpr)) { nil }
+      rule(lastRenderedPageBreak: sequence(:break)) { nil }
 
       rule(f: subtree(:f)) do
         Math::Function::Frac.new(
@@ -74,6 +76,14 @@ module Plurimath
         )
       end
 
+      rule(t: sequence(:t)) do
+        if t.empty?
+          Math::Function::Text.new
+        else
+          Utility.text_classes(t)
+        end
+      end
+
       rule(d: subtree(:data)) do
         fenced       = data.flatten.compact
         open_paren   = fenced.shift if fenced.first.class_name == "symbol"
@@ -88,10 +98,30 @@ module Plurimath
 
       rule(mr: subtree(:mr)) do
         row = []
-        mr.flatten.compact.each do |td|
-          row << Math::Function::Td.new([td])
+        mr.each do |td|
+          row << Math::Function::Td.new(
+            td.is_a?(Array) ? td : [td],
+          )
         end
         Math::Function::Tr.new(row)
+      end
+
+      rule(lim: sequence(:lim)) do
+        if lim.any?(String)
+          Utility.text_classes(lim)
+        else
+          Utility.filter_values(lim)
+        end
+      end
+
+      rule(acc: subtree(:acc)) do
+        acc_value = acc.flatten.compact
+        chr = Utility.find_pos_chr(acc_value, :chr)
+        chr_value = chr ? chr[:chr] : "^"
+        Math::Function::Overset.new(
+          Math::Symbol.new(chr_value),
+          Utility.filter_values(acc.last),
+        )
       end
 
       rule(func: subtree(:func)) do
@@ -121,13 +151,13 @@ module Plurimath
         chr = Utility.find_pos_chr(chr_pos, :chr)
         if pos&.value?("top")
           Math::Function::Overset.new(
-            Utility.filter_values(groupchr[1]),
             Math::Symbol.new(chr ? chr[:chr] : ""),
+            Utility.filter_values(groupchr[1]),
           )
         else
           Math::Function::Underset.new(
-            Utility.filter_values(groupchr[1]),
             Math::Symbol.new(chr ? chr[:chr] : "⏟"),
+            Utility.filter_values(groupchr[1]),
           )
         end
       end
@@ -215,13 +245,12 @@ module Plurimath
 
       rule(eqArr: subtree(:eqArr)) do
         table_value = []
-        eqArr.flatten.compact.each do |value|
+        eqArr.delete_at(0)
+        eqArr.each do |value|
           table_value << Math::Function::Tr.new(
             [
               Math::Function::Td.new(
-                [
-                  value,
-                ],
+                value.is_a?(Array) ? value : [value],
               ),
             ],
           )
