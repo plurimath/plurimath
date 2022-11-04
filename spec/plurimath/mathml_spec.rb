@@ -25,9 +25,7 @@ RSpec.describe Plurimath::Mathml do
 
       it 'returns Mathml string' do
         expected_value = Plurimath::Math::Formula.new([
-          Plurimath::Math::Formula.new([
-            Plurimath::Math::Number.new("2")
-          ])
+          Plurimath::Math::Number.new("2")
         ])
         expect(formula).to eq(expected_value)
       end

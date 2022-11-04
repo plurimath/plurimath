@@ -3,229 +3,282 @@
 module Plurimath
   class Mathml
     class Transform < Parslet::Transform
-      rule(tag: simple(:tag))       { tag }
-      rule(tag: sequence(:tag))     { tag }
-      rule(text: simple(:text))     { Math::Symbol.new(text) }
-      rule(class: simple(:string))  { Utility.get_class(string).new }
-      rule(number: simple(:number)) { Math::Number.new(number) }
+      rule(mi: simple(:mi))         { mi }
+      rule(mo: simple(:mo))         { mo }
+      rule(mo: sequence(:mo))       { Utility.mathml_unary_classes(mo) }
+      rule(xref: simple(:xref))     { nil }
+      rule(mtd: sequence(:mtd))     { Math::Function::Td.new(mtd) }
+      rule(mtr: sequence(:mtr))     { Math::Function::Tr.new(mtr) }
+      rule(accent: simple(:acc))    { nil }
+      rule(none: sequence(:none))   { nil }
+      rule(maxsize: simple(:att))   { nil }
+      rule(minsize: simple(:att))   { nil }
+      rule(notation: simple(:att))  { Math::Function::Menclose.new(att) }
+      rule(msqrt: sequence(:sqrt))  { Math::Function::Sqrt.new(sqrt.first) }
+      rule(mstyle: simple(:mstyle)) { mstyle }
+      rule(mtable: simple(:mtable)) { mtable }
+      rule(msline: sequence(:line)) { Math::Function::Msline.new }
+      rule(value: sequence(:value)) { Utility.filter_values(value) }
 
-      rule(quoted_text: sequence(:quoted_text)) do
-        Math::Function::Text.new("".dup)
+      rule(mspace: sequence(:space))    { nil }
+      rule(mstyle: sequence(:mstyle))   { mstyle }
+      rule(mfenced: simple(:mfenced))   { mfenced }
+      rule(mtable: sequence(:mtable))   { Math::Function::Table.new(mtable) }
+      rule(mscarry: sequence(:scarry))  { nil }
+      rule(displaystyle: simple(:att))  { nil }
+      rule(menclose: simple(:enclose))  { enclose }
+      rule(mlabeledtr: sequence(:mtr))  { Math::Function::Tr.new(mtr) }
+      rule(mpadded: sequence(:padded))  { Utility.filter_values(padded) }
+      rule(malignmark: sequence(:mark)) { nil }
+      rule(maligngroup: sequence(:att)) { nil }
+      rule(mprescripts: sequence(:att)) { "mprescripts" }
+      rule(columnlines: simple(:lines)) { lines }
+
+      rule(mphantom: sequence(:phantom)) do
+        Math::Function::Phantom.new(phantom)
       end
 
-      rule(tag: sequence(:tag), sequence: simple(:sequence)) do
-        tag + [sequence]
+      rule(mn: sequence(:mn)) do
+        Math::Number.new(
+          Utility.string_to_html_entity(
+            mn.join,
+          ),
+        )
       end
 
-      rule(tag: simple(:tag), sequence: sequence(:sequence)) do
-        [tag] + sequence
+      rule(mathvariant: simple(:variant)) do
+        Utility::FONT_STYLES[variant.to_sym]&.new(nil, variant)
       end
 
-      rule(tag: sequence(:tag), sequence: sequence(:sequence)) do
-        tag + sequence
+      rule(mi: sequence(:mi)) do
+        mi.any?(String) ? Utility.mathml_unary_classes(mi) : mi
       end
 
-      rule(quoted_text: simple(:quoted_text)) do
-        text = quoted_text
-        symbols = Constants::UNICODE_SYMBOLS.transform_keys(&:to_s)
+      rule(open: simple(:lparen)) do
+        Math::Function::Fenced.new(Math::Symbol.new(lparen))
+      end
+
+      rule(msgroup: sequence(:group)) do
+        if group.any?(String)
+          group.each_with_index do |object, ind|
+            group[ind] = Utility.text_classes(object) if object.is_a?(String)
+          end
+        end
+        Math::Function::Msgroup.new(group.flatten.compact)
+      end
+
+      rule(mlongdiv: sequence(:long)) do
+        Math::Function::Longdiv.new(long.flatten.compact)
+      end
+
+      rule(menclose: sequence(:close)) do
+        Math::Function::Menclose.new(
+          nil,
+          Utility.filter_values(close),
+        )
+      end
+
+      rule(mroot: sequence(:mroot)) do
+        Math::Function::Root.new(
+          mroot[0],
+          mroot[1],
+        )
+      end
+
+      rule(merror: sequence(:merror)) do
+        Math::Function::Merror.new(
+          merror[0],
+          merror[1],
+        )
+      end
+
+      rule(mfrac: sequence(:mfrac)) do
+        Math::Function::Frac.new(
+          mfrac[0],
+          mfrac[1],
+        )
+      end
+
+      rule(mfraction: sequence(:mfrac)) do
+        Math::Function::Frac.new(
+          mfrac[0],
+          mfrac[1],
+        )
+      end
+
+      rule(msub: sequence(:msub)) do
+        Math::Function::Base.new(
+          msub[0],
+          msub[1],
+        )
+      end
+
+      rule(msup: sequence(:msup)) do
+        Math::Function::Power.new(
+          msup[0],
+          msup[1],
+        )
+      end
+
+      rule(msubsup: sequence(:msubsup)) do
+        Math::Function::PowerBase.new(
+          msubsup[0],
+          msubsup[1],
+          msubsup[2],
+        )
+      end
+
+      rule(munderover: sequence(:function)) do
+        Math::Function::Underover.new(
+          function[0],
+          function[1],
+          function[2],
+        )
+      end
+
+      rule(mrow: subtree(:mrow)) do
+        if mrow.any?(String)
+          mrow.each_with_index do |object, ind|
+            mrow[ind] = Utility.mathml_unary_classes([object]) if object.is_a?(String)
+          end
+        end
+        Math::Formula.new(mrow.flatten.compact)
+      end
+
+      rule(msrow: sequence(:msrow)) do
+        Math::Formula.new(
+          msrow.flatten.compact,
+          true,
+        )
+      end
+
+      rule(mstack: sequence(:stack)) do
+        Math::Function::Stackrel.new(
+          Utility.filter_values(stack),
+        )
+      end
+
+      rule(mover: sequence(:mover)) do
+        if ["ubrace", "obrace"].any?(mover.last.class_name)
+          mover.last.parameter_one = mover.shift if mover.length > 1
+          mover.last
+        else
+          Math::Function::Overset.new(
+            mover[1],
+            mover[0],
+          )
+        end
+      end
+
+      rule(munder: sequence(:munder)) do
+        if munder.any?(String)
+          munder.each_with_index do |object, ind|
+            munder[ind] = Utility.mathml_unary_classes([object]) if object.is_a?(String)
+          end
+        end
+        if ["ubrace", "obrace"].any?(munder.last.class_name)
+          munder.last.parameter_one = munder.shift if munder.length > 1
+          munder.last
+        else
+          Math::Function::Underset.new(
+            munder[1],
+            munder[0],
+          )
+        end
+      end
+
+      rule(mscarries: sequence(:scarries)) do
+        Math::Function::Scarries.new(
+          Utility.filter_values(scarries),
+        )
+      end
+
+      rule(mtext: sequence(:mtext)) do
+        entities = HTMLEntities.new
+        symbols  = Constants::UNICODE_SYMBOLS.transform_keys(&:to_s)
+        text     = entities.encode(mtext.first, :hexadecimal)
         symbols.each do |code, string|
-          text.gsub!(code, "unicode[:#{string}]")
+          text.gsub!(code.downcase, "unicode[:#{string}]")
         end
         Math::Function::Text.new(text)
       end
 
-      rule(
-        tag: sequence(:tag),
-        sequence: sequence(:sequence),
-        iteration: simple(:iteration),
-      ) do
-        new_arr = []
-        new_arr = new_arr + tag unless tag.compact.empty?
-        new_arr = new_arr + sequence unless sequence.compact.empty?
-        new_arr << iteration unless iteration.to_s.empty?
-        new_arr
-      end
-
-      rule(
-        tag: sequence(:tag),
-        sequence: sequence(:sequence),
-        iteration: sequence(:iteration),
-      ) do
-        new_arr = []
-        new_arr += tag unless tag.compact.empty?
-        new_arr += sequence unless sequence.compact.empty?
-        new_arr += iteration unless iteration.compact.empty?
-        new_arr
-      end
-
-      rule(
-        tag: sequence(:tag),
-        sequence: simple(:sequence),
-        iteration: simple(:iteration),
-      ) do
-        new_arr = tag
-        new_arr << sequence unless sequence.to_s.empty?
-        new_arr << iteration unless iteration.to_s.empty?
-        Math::Formula.new(new_arr)
-      end
-
-      rule(
-        tag: sequence(:tag),
-        sequence: simple(:sequence),
-        iteration: sequence(:iteration),
-      ) do
-        new_arr = tag
-        new_arr << sequence unless sequence.to_s.empty?
-        new_arr += iteration unless iteration.compact.empty?
-        Math::Formula.new(new_arr)
-      end
-
-      rule(
-        tag: simple(:tag),
-        sequence: simple(:sequence),
-        iteration: simple(:iteration),
-      ) do
-        iteration.size.zero? ? [tag, sequence] : [tag, sequence, iteration]
-      end
-
-      rule(tag: sequence(:tag), iteration: simple(:iteration)) do
-        new_arr = []
-        new_arr = tag unless tag.compact.empty?
-        new_arr << iteration unless iteration.to_s.empty?
-        new_arr
-      end
-
-      rule(tag: simple(:tag), sequence: simple(:sequence)) do
-        new_arr = []
-        new_arr << tag unless tag.nil?
-        new_arr << sequence unless sequence.nil?
-        new_arr
-      end
-
-      rule(tag: simple(:tag), iteration: simple(:iteration)) do
-        new_arr = []
-        new_arr << tag unless tag.to_s.empty?
-        new_arr << iteration unless iteration.to_s.empty?
-        new_arr
-      end
-
-      rule(symbol: simple(:symbol)) do
-        decoded_symbol = Constants::UNICODE_SYMBOLS[symbol.to_sym]
-        if Constants::CLASSES.include?(decoded_symbol)
-          [Utility.get_class(decoded_symbol).new]
-        elsif decoded_symbol.nil? && Constants::SYMBOLS[symbol.to_sym]
-          Math::Symbol.new(Constants::SYMBOLS[symbol.to_sym])
-        elsif decoded_symbol.nil?
-          Math::Symbol.new(symbol)
-        else
-          Math::Symbol.new(decoded_symbol)
+      rule(ms: sequence(:ms)) do
+        entities = HTMLEntities.new
+        symbols  = Constants::UNICODE_SYMBOLS.transform_keys(&:to_s)
+        text     = entities.encode(ms.first, :hexadecimal)
+        symbols.each do |code, string|
+          text.gsub!(code.downcase, "unicode[:#{string}]")
         end
+        Math::Function::Text.new(text)
       end
 
-      rule(name: simple(:name), value: simple(:value)) do
-        if ["open", "close"].include?(name)
-          Math::Symbol.new(value)
-        elsif name == "mathcolor"
-          Math::Function::Color.new(value)
-        elsif name == "mathvariant"
-          value
-        end
+      rule(mfenced: sequence(:fenced)) do
+        Math::Function::Fenced.new(
+          Math::Symbol.new("("),
+          fenced,
+          Math::Symbol.new(")"),
+        )
       end
 
-      rule(
-        tag: simple(:tag),
-        sequence: sequence(:sequence),
-        iteration: simple(:iteration),
-      ) do
-        new_arr = sequence.compact
-        new_arr = [tag] + new_arr unless tag.nil?
-        new_arr << iteration unless iteration.to_s.empty?
-        new_arr
+      rule(mmultiscripts: subtree(:script)) do
+        multi = Utility.multiscript(script.compact)
+        prescripts = multi[1]
+        Math::Function::Multiscript.new(
+          multi[0],
+          (prescripts[0] if prescripts),
+          (prescripts[1] if prescripts),
+        )
       end
 
-      rule(
-        open: simple(:open_tag),
-        attributes: sequence(:attributes),
-        iteration: sequence(:iteration),
-        close: simple(:close_tag),
-      ) do
-        Utility.raise_error!(open_tag, close_tag) unless open_tag == close_tag
+      rule(mathcolor: simple(:color)) do
+        Math::Function::Color.new(
+          Math::Function::Text.new(color),
+        )
+      end
 
-        if open_tag == "mrow"
-          Math::Formula.new(iteration)
-        elsif open_tag == "munder"
-          if iteration.last.class_name == "obrace"
-            iteration.last.parameter_one = iteration.first
-            iteration.last
-          else
-            Math::Function::Underset.new(iteration[1], iteration[0])
-          end
-        elsif open_tag == "munderover"
-          Utility.get_class(open_tag.delete_prefix("m")).new(
-            iteration[0],
-            iteration[1],
-            iteration[2],
+      rule(open: simple(:lparen),
+           close: simple(:rparen)) do
+        Math::Function::Fenced.new(
+          Math::Symbol.new(lparen),
+          nil,
+          Math::Symbol.new(rparen),
+        )
+      end
+
+      rule(mathcolor: simple(:color),
+           mathvariant: simple(:variant)) do
+        variant_class = Utility::FONT_STYLES[variant.to_sym]
+        if variant_class
+          Math::Function::Color.new(
+            Math::Function::Text.new(
+              color,
+            ),
+            variant_class.new(
+              nil,
+              variant,
+            ),
           )
-        elsif open_tag == "mover"
-          if iteration.last.class_name == "ubrace"
-            iteration.last.parameter_one = iteration.first
-            iteration.last
-          else
-            Math::Function::Overset.new(iteration[1], iteration[0])
-          end
-        elsif ["msub", "msup"].include?(open_tag)
-          tag = (open_tag == "msup" ? "power" : "base")
-          Utility.get_class(tag).new(iteration[0], iteration[1])
-        elsif open_tag == "msubsup"
-          Math::Function::PowerBase.new(iteration[0],
-                                        iteration[1],
-                                        iteration[2])
-        elsif open_tag == "mfrac"
-          Math::Function::Frac.new(iteration.first, iteration.last)
-        elsif open_tag == "msqrt"
-          Math::Function::Sqrt.new(iteration.first)
-        elsif open_tag == "mroot"
-          Math::Function::Root.new(iteration[0], iteration[1])
-        elsif open_tag == "mfenced"
-          Math::Function::Fenced.new(
-            attributes[0],
-            iteration,
-            attributes[1],
-          )
-        elsif ["mtr", "mtd", "mtable"].include?(open_tag)
-          tag = open_tag.delete_prefix("m")
-          Utility.get_class(tag).new(iteration)
-        elsif attributes.first.is_a?(Math::Function::Color)
-          attributes.first.parameter_two = iteration.first
-          attributes.first
-        elsif open_tag == "mstyle" && !attributes.compact.empty?
-          font_type = attributes.compact.last
-          if Utility::FONT_STYLES.key?(font_type.to_sym)
-            Utility::FONT_STYLES[font_type.to_sym].new(
-              iteration.last,
-              font_type,
-            )
-          else
-            Math::Function::FontStyle.new(iteration.last, font_type)
-          end
         else
-          iteration
+          Math::Function::Color.new(
+            Math::Function::Text.new(
+              color,
+            ),
+          )
         end
       end
 
-      rule(
-        open: simple(:open_tag),
-        attributes: sequence(:attributes),
-        iteration: simple(:iteration),
-        close: simple(:close_tag),
-      ) do
-        Utility.raise_error!(open_tag, close_tag) unless open_tag == close_tag
+      rule(attributes: simple(:attrs),
+           value: subtree(:value)) do
+        Utility.join_attr_value(attrs, value.flatten)
+      end
 
-        if iteration.to_s.include?("Function")
-          iteration
-        else
-          [iteration.to_s.empty? ? nil : iteration]
-        end
+      rule(attributes: subtree(:attrs),
+           value: sequence(:value)) do
+        Utility.join_attr_value(
+          attrs.is_a?(Hash) ? nil : attrs,
+          value.flatten,
+        )
       end
     end
   end
