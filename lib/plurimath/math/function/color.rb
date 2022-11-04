@@ -13,7 +13,7 @@ module Plurimath
         end
 
         def to_mathml_without_math_tag
-          first_value = parameter_one&.value
+          first_value = parameter_one&.parameter_one
           second_value = parameter_two&.to_mathml_without_math_tag
           "<mstyle mathcolor='#{first_value}'>#{second_value}</mstyle>"
         end

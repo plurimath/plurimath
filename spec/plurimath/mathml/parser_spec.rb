@@ -220,7 +220,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     }
     it "returns formula of sin" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Function::Sin.new,
+        Plurimath::Math::Formula.new([
+          Plurimath::Math::Function::Sin.new,
+        ])
       ])
       expect(formula).to eq(expected_value)
     end
@@ -429,7 +431,7 @@ RSpec.describe Plurimath::Mathml::Parser do
         Plurimath::Math::Function::PowerBase.new(
           Plurimath::Math::Function::Log.new,
           Plurimath::Math::Number.new("4"),
-          Plurimath::Math::Function::Text.new("4terms"),
+          Plurimath::Math::Function::Text.new("4 terms"),
         )
       ])
       expect(formula).to eq(expected_value)
@@ -509,7 +511,7 @@ RSpec.describe Plurimath::Mathml::Parser do
               ])
             ]),
           ]),
-          Plurimath::Math::Function::Text.new("4terms")
+          Plurimath::Math::Function::Text.new("4 terms")
         )
       ])
       expect(formula).to eq(expected_value)
@@ -536,14 +538,63 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
   end
 
-  context "contains mathml string of symbol (using mfenced tag) formula" do
+  context "contains mathml mfenced tag and solid columnlines for table formula" do
     let(:exp) {
       <<~MATHML
         <math xmlns='http://www.w3.org/1998/Math/MathML'>
           <msubsup>
             <mo>a</mo>
             <mfenced open='{' close='}'>
-              <mtable>
+              <mtable columnlines="solid">
+                <mtr>
+                  <mtd>
+                    <mn>1</mn>
+                    <mn>1</mn>
+                  </mtd>
+                </mtr>
+              </mtable>
+            </mfenced>
+            <mtext>4 terms</mtext>
+          </msubsup>
+        </math>
+      MATHML
+    }
+    it "returns formula of symbol" do
+      expected_value = Plurimath::Math::Formula.new([
+        Plurimath::Math::Function::PowerBase.new(
+          Plurimath::Math::Symbol.new("a"),
+          Plurimath::Math::Function::Fenced.new(
+            Plurimath::Math::Symbol.new("{"),
+            [
+              Plurimath::Math::Function::Table.new([
+                Plurimath::Math::Function::Tr.new([
+                  Plurimath::Math::Function::Td.new([
+                    Plurimath::Math::Number.new("1"),
+                    Plurimath::Math::Number.new("1"),
+                  ]),
+                  Plurimath::Math::Function::Td.new([
+                    Plurimath::Math::Symbol.new("|"),
+                  ]),
+                ]),
+              ]),
+            ],
+            Plurimath::Math::Symbol.new("}"),
+          ),
+          Plurimath::Math::Function::Text.new("4 terms"),
+        )
+      ])
+      expect(formula).to eq(expected_value)
+    end
+  end
+
+  context "contains mathml mfenced tag and solid columnlines for table formula" do
+    let(:exp) {
+      <<~MATHML
+        <math xmlns='http://www.w3.org/1998/Math/MathML'>
+          <msubsup>
+            <mo>a</mo>
+            <mfenced open='{' close='}'>
+              <mtable columnlines="none">
                 <mtr>
                   <mtd>
                     <mn>1</mn>
@@ -575,7 +626,7 @@ RSpec.describe Plurimath::Mathml::Parser do
             ],
             Plurimath::Math::Symbol.new("}"),
           ),
-          Plurimath::Math::Function::Text.new("4terms"),
+          Plurimath::Math::Function::Text.new("4 terms"),
         )
       ])
       expect(formula).to eq(expected_value)
@@ -638,7 +689,7 @@ RSpec.describe Plurimath::Mathml::Parser do
             Plurimath::Math::Number.new("4"),
           ]),
           Plurimath::Math::Formula.new([
-            Plurimath::Math::Function::Text.new("4terms")
+            Plurimath::Math::Function::Text.new("4 terms")
           ]),
         )
       ])
@@ -759,7 +810,8 @@ RSpec.describe Plurimath::Mathml::Parser do
           Plurimath::Math::Formula.new([
             Plurimath::Math::Symbol.new("i"),
             Plurimath::Math::Symbol.new("="),
-            Plurimath::Math::Function::Color.new("blue",
+            Plurimath::Math::Function::Color.new(
+              Plurimath::Math::Function::Text.new("blue"),
               Plurimath::Math::Symbol.new("!="),
             )
           ]),
@@ -1002,11 +1054,11 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
   end
 
-  context "contains mathml string of random string as font style asci formula" do
+  context "contains mathml string of random string as font style fraktur formula" do
     let(:exp) {
       <<~MATHML
         <math xmlns='http://www.w3.org/1998/Math/MathML'>
-          <mstyle mathvariant="asci">
+          <mstyle mathcolor="red" mathvariant="fraktur">
             <mi>d</mi>
           </mstyle>
         </math>
@@ -1014,9 +1066,33 @@ RSpec.describe Plurimath::Mathml::Parser do
     }
     it "returns FontStyle with second value asci" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Function::FontStyle.new(
+        Plurimath::Math::Function::Color.new(
+          Plurimath::Math::Function::Text.new("red"),
+          Plurimath::Math::Function::FontStyle::Fraktur.new(
+            Plurimath::Math::Symbol.new("d"),
+            "fraktur",
+          )
+        )
+      ])
+      expect(formula).to eq(expected_value)
+    end
+  end
+
+  context "contains mathml string of random string as font style asci formula" do
+    let(:exp) {
+      <<~MATHML
+        <math xmlns='http://www.w3.org/1998/Math/MathML'>
+          <mstyle mathcolor="red" mathvariant="asci">
+            <mi>d</mi>
+          </mstyle>
+        </math>
+      MATHML
+    }
+    it "returns FontStyle with second value asci" do
+      expected_value = Plurimath::Math::Formula.new([
+        Plurimath::Math::Function::Color.new(
+          Plurimath::Math::Function::Text.new("red"),
           Plurimath::Math::Symbol.new("d"),
-          "asci",
         )
       ])
       expect(formula).to eq(expected_value)
@@ -1036,10 +1112,10 @@ RSpec.describe Plurimath::Mathml::Parser do
     }
     it "returns formula of Mathbf" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Formula.new([
+        Plurimath::Math::Function::Msgroup.new([
           Plurimath::Math::Number.new("33"),
           Plurimath::Math::Function::Text.new("dd"),
-          Plurimath::Math::Number.new("0")
+          Plurimath::Math::Number.new("0\n  "),
         ])
       ])
       expect(formula).to eq(expected_value)
@@ -1059,9 +1135,11 @@ RSpec.describe Plurimath::Mathml::Parser do
     }
     it "returns formula of Mathbf" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Number.new("33"),
-        Plurimath::Math::Symbol.new("dd"),
-        Plurimath::Math::Number.new("0")
+        Plurimath::Math::Function::Msgroup.new([
+          Plurimath::Math::Number.new("33"),
+          Plurimath::Math::Symbol.new("dd"),
+          Plurimath::Math::Number.new("0\n  ")
+        ])
       ])
       expect(formula).to eq(expected_value)
     end
@@ -1081,9 +1159,11 @@ RSpec.describe Plurimath::Mathml::Parser do
     }
     it "returns formula of Mathbf" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Symbol.new("n"),
-        Plurimath::Math::Symbol.new("<"),
-        Plurimath::Math::Number.new("1")
+        Plurimath::Math::Function::Msgroup.new([
+          Plurimath::Math::Symbol.new("n"),
+          Plurimath::Math::Symbol.new("<"),
+          Plurimath::Math::Number.new("1")
+        ])
       ])
       expect(formula).to eq(expected_value)
     end
@@ -1101,7 +1181,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     }
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Number.new("1.4"),
+        Plurimath::Math::Function::Msgroup.new([
+          Plurimath::Math::Number.new("1.4"),
+        ])
       ])
       expect(formula).to eq(expected_value)
     end
@@ -1119,7 +1201,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     }
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Number.new("1,4"),
+        Plurimath::Math::Function::Msgroup.new([
+          Plurimath::Math::Number.new("1,4"),
+        ])
       ])
       expect(formula).to eq(expected_value)
     end
@@ -1222,11 +1306,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     }
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
+        Plurimath::Math::Symbol.new("Delta"),
         Plurimath::Math::Formula.new([
-          Plurimath::Math::Symbol.new("Δ"),
-          Plurimath::Math::Formula.new([
-            Plurimath::Math::Symbol.new("ν")
-          ])
+          Plurimath::Math::Symbol.new("nu")
         ])
       ])
       expect(formula).to eq(expected_value)
@@ -1246,25 +1328,109 @@ RSpec.describe Plurimath::Mathml::Parser do
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
         Plurimath::Math::Formula.new([
-          Plurimath::Math::Symbol.new("G"),
-          Plurimath::Math::Symbol.new("Ω")
+          Plurimath::Math::Symbol.new("G&#x2126;")
         ])
       ])
       expect(formula).to eq(expected_value)
     end
   end
 
-  context "contains mathml string of unmacthing closing tag" do
+  context "contains mathml string from issue #89 Exp #1" do
     let(:exp) {
       <<~MATHML
-        <math xmlns='http://www.w3.org/1998/Math/MathML'>
-          <mstyle displaystyle='true'>
-          </menclose>
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <msub>
+            <mrow>
+              <mstyle mathvariant="italic">
+                <mi>D</mi>
+              </mstyle>
+            </mrow>
+            <mrow>
+              <mi>i</mi>
+            </mrow>
+          </msub>
+          <mo>=</mo>
+          <msub>
+            <mrow>
+              <mi>x</mi>
+            </mrow>
+            <mrow>
+              <mi>i</mi>
+            </mrow>
+          </msub>
+          <mo>−</mo>
+          <msub>
+            <mrow>
+              <mi>x</mi>
+            </mrow>
+            <mrow>
+              <mrow>
+                <mi mathvariant="normal">S</mi>
+                <mi mathvariant="normal">R</mi>
+                <mi mathvariant="normal">P</mi>
+                <mn>27</mn>
+              </mrow>
+            </mrow>
+          </msub>
         </math>
       MATHML
     }
-    it "returns formula of sum" do
-      expect{formula}.to raise_error(Plurimath::Math::Error)
+    it "returns formula of decimal values" do
+      expected_value = Plurimath::Math::Formula.new([
+        Plurimath::Math::Function::Base.new(
+          Plurimath::Math::Formula.new([
+            Plurimath::Math::Symbol.new("D")
+          ]),
+          Plurimath::Math::Formula.new([
+            Plurimath::Math::Symbol.new("i")
+          ])
+        ),
+        Plurimath::Math::Symbol.new("="),
+        Plurimath::Math::Function::Base.new(
+          Plurimath::Math::Formula.new([
+            Plurimath::Math::Symbol.new("x")
+          ]),
+          Plurimath::Math::Formula.new([
+            Plurimath::Math::Symbol.new("i")
+          ])
+        ),
+        Plurimath::Math::Symbol.new("-"),
+        Plurimath::Math::Function::Base.new(
+          Plurimath::Math::Formula.new([
+            Plurimath::Math::Symbol.new("x")
+          ]),
+          Plurimath::Math::Formula.new([
+            Plurimath::Math::Formula.new([
+              Plurimath::Math::Symbol.new("S"),
+              Plurimath::Math::Symbol.new("R"),
+              Plurimath::Math::Symbol.new("P"),
+              Plurimath::Math::Number.new("27")
+            ])
+          ])
+        )
+      ])
+      expect(formula).to eq(expected_value)
+    end
+  end
+
+  context "contains mathml string from issue #89 Exp #2" do
+    let(:exp) {
+      <<~MATHML
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <mstyle mathcolor="#ff0000">
+            <mtext>Assigned value</mtext>
+          </mstyle>
+        </math>
+      MATHML
+    }
+    it "returns formula of decimal values" do
+      expected_value = Plurimath::Math::Formula.new([
+        Plurimath::Math::Function::Color.new(
+          Plurimath::Math::Function::Text.new("#ff0000"),
+          Plurimath::Math::Function::Text.new("Assigned value")
+        )
+      ])
+      expect(formula).to eq(expected_value)
     end
   end
 end

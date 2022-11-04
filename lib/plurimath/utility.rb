@@ -119,12 +119,12 @@ module Plurimath
         ) << rpr_element(wi_tag: wi_tag)
       end
 
-      def filter_values(value)
+      def filter_values(value, wrapped: false)
         return value unless value.is_a?(Array)
 
         compact_value = value.flatten.compact
         if compact_value.length > 1
-          Math::Formula.new(compact_value)
+          Math::Formula.new(compact_value, wrapped)
         else
           compact_value.first
         end
@@ -185,6 +185,91 @@ module Plurimath
           Math::Function::Text.new(nil)
         else
           td_object
+        end
+      end
+
+      def mathml_unary_classes(text_array)
+        return [] if text_array.empty?
+
+        compacted = text_array.compact
+        string = if compacted.count == 1
+                   compacted.first
+                 else
+                   compacted.join
+                 end
+        return string unless string.is_a?(String)
+
+        unicode = string_to_html_entity(string)
+        symbol  = Mathml::Constants::UNICODE_SYMBOLS[unicode.strip.to_sym]
+        if Mathml::Constants::CLASSES.include?(symbol&.strip)
+          get_class(symbol.strip).new
+        elsif Mathml::Constants::CLASSES.any?(string&.strip)
+          get_class(string.strip).new
+        else
+          Math::Symbol.new(symbol.nil? ? unicode : symbol)
+        end
+      end
+
+      def string_to_html_entity(string)
+        entities = HTMLEntities.new
+        entities.encode(string, :hexadecimal)
+      end
+
+      def table_separator(separator, value)
+        solid_none = separator.split
+        sep_symbol = Math::Function::Td.new([Math::Symbol.new("|")])
+        solid_none.each_with_index do |sep, ind|
+          next unless sep == "solid"
+
+          value.map { |val| val.parameter_one.insert((ind + 1), sep_symbol) }
+        end
+        value
+      end
+
+      def join_attr_value(attrs, value)
+        if value.any?(String)
+          new_value = mathml_unary_classes(value)
+          array_value = new_value.is_a?(Array) ? new_value : [new_value]
+          attrs.nil? ? array_value : join_attr_value(attrs, array_value)
+        elsif attrs.nil?
+          value
+        elsif attrs.is_a?(Math::Function::Menclose)
+          attrs.parameter_two = filter_values(value)
+          attrs
+        elsif attrs.is_a?(Math::Function::Fenced)
+          attrs.parameter_two = value
+          attrs
+        elsif attrs.is_a?(Math::Function::FontStyle)
+          attrs.parameter_one = nested_formula_object(value)
+          attrs
+        elsif attrs.is_a?(Math::Function::Color)
+          color_value = nested_formula_object(value)
+          if attrs.parameter_two
+            attrs.parameter_two.parameter_one = color_value
+          else
+            attrs.parameter_two = color_value
+          end
+          attrs
+        elsif ["solid", "none"].include?(attrs.downcase)
+          table_separator(attrs, value)
+        end
+      end
+
+      def multiscript(values)
+        values.slice_before("mprescripts").map do |value|
+          base_value   = value.shift
+          part_val     = value.partition.with_index { |_, i| i.even? }
+          first_value  = part_val[0].empty? ? nil : filter_values(part_val[0])
+          second_value = part_val[1].empty? ? nil : filter_values(part_val[1])
+          if base_value.is_a?(String) && base_value.include?("mprescripts")
+            [first_value, second_value]
+          else
+            Math::Function::PowerBase.new(
+              base_value,
+              first_value,
+              second_value,
+            )
+          end
         end
       end
     end

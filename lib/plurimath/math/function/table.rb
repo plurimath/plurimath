@@ -30,8 +30,8 @@ module Plurimath
               column_lines << "none"
             end
           end
-          columnlines_attrs = "columnlines=\"#{column_lines.join(' ')}\"" if column_lines.include?("solid")
-          table_tag = "<mtable #{columnlines_attrs}>#{table_value}</mtable>"
+          columnlines_attrs = " columnlines=\"#{column_lines.join(' ')}\"" if column_lines.include?("solid")
+          table_tag = "<mtable#{columnlines_attrs}>#{table_value}</mtable>"
           if parenthesis.key?(parameter_two) || parameter_two == "|"
             "<mfenced open='#{parameter_two}' close='#{parameter_three}'>#{table_tag}</mfenced>"
           elsif parameter_two == "norm["

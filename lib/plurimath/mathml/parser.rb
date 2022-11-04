@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require_relative "parse"
 require_relative "constants"
 require_relative "transform"
 module Plurimath
@@ -9,17 +8,34 @@ module Plurimath
       attr_accessor :text
 
       def initialize(text)
-        @text = text.gsub(/\s/, "")
+        @text = text
       end
 
       def parse
-        tree_t = Plurimath::Mathml::Parse.new.parse(text)
-        tree_t = JSON.parse(tree_t.to_json, symbolize_names: true)
-        formula = Plurimath::Mathml::Transform.new.apply(tree_t)
-        formula = [formula] unless formula.is_a?(Array) || formula.nil?
-        return if formula.nil?
+        ox_nodes = Ox.load(text, strip_namespace: true).nodes
+        nodes = parse_nodes(ox_nodes)
+        Math::Formula.new(
+          Transform.new.apply(nodes).flatten.compact,
+        )
+      end
 
-        Plurimath::Math::Formula.new(formula)
+      def parse_nodes(nodes)
+        nodes.map do |node|
+          next if node.is_a?(Ox::Comment)
+
+          if node.is_a?(String)
+            node
+          elsif !node.attributes.empty?
+            {
+              node.name.to_sym => {
+                attributes: node.attributes.transform_keys(&:to_sym),
+                value: parse_nodes(node.nodes),
+              },
+            }
+          else
+            { node.name.to_sym => parse_nodes(node.nodes) }
+          end
+        end
       end
     end
   end

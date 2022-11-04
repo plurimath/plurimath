@@ -287,7 +287,7 @@ RSpec.describe Plurimath::Math::Formula do
         <<~MATHML
           <math xmlns='http://www.w3.org/1998/Math/MathML' display='block'>
             <mstyle displaystyle='true'>
-              <mtext>sinsumsom&#x393;&#x3B3;</mtext>
+              <mtext>sinsumsom&#x393;&#x3b3;</mtext>
             </mstyle>
           </math>
         MATHML
@@ -372,7 +372,7 @@ RSpec.describe Plurimath::Math::Formula do
               </mrow>
               <mover>
                 <mo>&#x2211;</mo>
-                <mo>&#x3B8;</mo>
+                <mo>&#x3b8;</mo>
               </mover>
             </mstyle>
           </math>
@@ -453,7 +453,7 @@ RSpec.describe Plurimath::Math::Formula do
                 <mo>&#x2211;</mo>
                 <mfrac>
                   <mn>12</mn>
-                  <mo>&#x25A1;</mo>
+                  <mo>&#x25a1;</mo>
                 </mfrac>
                 <mn>33</mn>
               </munderover>
@@ -749,7 +749,7 @@ RSpec.describe Plurimath::Math::Formula do
               Plurimath::Math::Symbol.new("i"),
               Plurimath::Math::Symbol.new("="),
               Plurimath::Math::Function::Color.new(
-                Plurimath::Math::Symbol.new("blue"),
+                Plurimath::Math::Function::Text.new("blue"),
                 Plurimath::Math::Symbol.new("!="),
               )
             ]),
@@ -789,7 +789,7 @@ RSpec.describe Plurimath::Math::Formula do
               Plurimath::Math::Symbol.new("i"),
               Plurimath::Math::Symbol.new("="),
               Plurimath::Math::Function::Color.new(
-                Plurimath::Math::Symbol.new("blue"),
+                Plurimath::Math::Function::Text.new("blue"),
                 Plurimath::Math::Symbol.new("!="),
               )
             ]),
