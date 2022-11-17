@@ -11955,5 +11955,34 @@ RSpec.describe Plurimath::Math::Formula do
         expect(formula).to eq(expected_value.gsub(/\s/, ""))
       end
     end
+
+    context "contains latex equation #168" do
+      let(:exp) {
+        Plurimath::Math::Formula.new([
+          Plurimath::Math::Function::PowerBase.new(
+            Plurimath::Math::Symbol.new("a"),
+            Plurimath::Math::Function::Fenced.new(
+              Plurimath::Math::Symbol.new("{"),
+              [
+                Plurimath::Math::Function::Table.new([
+                  Plurimath::Math::Function::Tr.new([
+                    Plurimath::Math::Function::Td.new([
+                      Plurimath::Math::Number.new("1"),
+                      Plurimath::Math::Number.new("1"),
+                    ])
+                  ]),
+                ]),
+              ],
+              Plurimath::Math::Symbol.new("}"),
+            ),
+            Plurimath::Math::Function::Text.new("4terms"),
+          )
+        ])
+      }
+      it "returns formula" do
+        expected_value = "a_{{\\begin{array}11\\end{array}}}^{4terms}"
+        expect(formula).to eq(expected_value.gsub(/\s/, ""))
+      end
+    end
   end
 end
