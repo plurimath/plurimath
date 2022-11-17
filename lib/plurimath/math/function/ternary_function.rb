@@ -36,6 +36,13 @@ module Plurimath
           "<m#{class_name}>#{body_value}</m#{class_name}>"
         end
 
+        def to_latex
+          first_value  = parameter_one&.to_latex
+          second_value = parameter_two&.to_latex
+          third_value  = parameter_three&.to_latex
+          "#{first_value}#{second_value}#{third_value}"
+        end
+
         def to_html
           first_value  = "<i>#{parameter_one.to_html}</i>" if parameter_one
           second_value = "<i>#{parameter_two.to_html}</i>" if parameter_two
