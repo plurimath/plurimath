@@ -20,25 +20,41 @@ module Plurimath
         end
 
         def to_mathml_without_math_tag
-          table_value = parameter_one.map(&:to_mathml_without_math_tag).join
+          table_value = parameter_one.map(&:to_mathml_without_math_tag)
           parenthesis = Latex::Constants::PARENTHESIS
+          table_tag   = Utility.omml_element("mtable", attributes: table_columnlines_attribute)
+          Utility.update_nodes(table_tag, table_value)
+          if parenthesis.key?(parameter_two) || parameter_two == "|"
+            Utility.omml_element(
+              "mfenced",
+              attributes: { open: parameter_two, close: parameter_three },
+            ) << table_tag
+          elsif parameter_two == "norm["
+            row_tag = Utility.omml_element("mrow")
+            mo_tag  = Utility.omml_element("mo") << "&#x2225;"
+            Utility.update_nodes(
+              row_tag,
+              [
+                mo_tag,
+                table_tag,
+                mo_tag,
+              ],
+            )
+          else
+            table_tag
+          end
+        end
+
+        def table_columnlines_attribute
           column_lines = []
           parameter_one.first.parameter_one.each_with_index do |td, i|
-            if td&.parameter_one&.first.is_a?(Plurimath::Math::Symbol) && td.parameter_one.first.value == "|"
+            if td.parameter_one.find { |obj| obj.is_a?(Symbol) && obj.value == "|" }
               column_lines[i - 1] = "solid"
             else
               column_lines << "none"
             end
           end
-          columnlines_attrs = " columnlines=\"#{column_lines.join(' ')}\"" if column_lines.include?("solid")
-          table_tag = "<mtable#{columnlines_attrs}>#{table_value}</mtable>"
-          if parenthesis.key?(parameter_two) || parameter_two == "|"
-            "<mfenced open='#{parameter_two}' close='#{parameter_three}'>#{table_tag}</mfenced>"
-          elsif parameter_two == "norm["
-            "<mrow><mo>&#x2225;</mo>#{table_tag}<mo>&#x2225;</mo></mrow>"
-          else
-            table_tag
-          end
+          column_lines.include?("solid") ? { columnlines: column_lines.join(' ') } : {}
         end
 
         def to_latex

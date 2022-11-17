@@ -11,7 +11,7 @@ module Plurimath
         end
 
         def to_mathml_without_math_tag
-          "<mi>#{parameter_one}</mi>"
+          Utility.omml_element("mi") << parameter_one
         end
 
         def to_latex

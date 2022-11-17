@@ -32,9 +32,18 @@ module Plurimath
         end
 
         def to_mathml_without_math_tag
-          first_value = parameter_one&.to_mathml_without_math_tag
-          second_value = parameter_two&.to_mathml_without_math_tag
-          "<mo>#{invert_unicode_symbols}</mo>#{first_value}#{second_value}"
+          mrow_tag = Utility.omml_element("mrow")
+          mo_tag = Utility.omml_element("mo") << invert_unicode_symbols.to_s
+          first_value = parameter_one&.to_mathml_without_math_tag if parameter_one
+          second_value = parameter_two&.to_mathml_without_math_tag if parameter_two
+          Utility.update_nodes(
+            mrow_tag,
+            [
+              mo_tag,
+              first_value,
+              second_value,
+            ],
+          )
         end
 
         def invert_unicode_symbols

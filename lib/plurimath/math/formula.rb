@@ -23,21 +23,23 @@ module Plurimath
       end
 
       def to_mathml
-        <<~MATHML
-          <math xmlns='http://www.w3.org/1998/Math/MathML' display='block'>
-            <mstyle displaystyle='true'>
-              #{mathml_content}
-            </mstyle>
-          </math>
-        MATHML
+        math  = Utility.omml_element("math", attributes: { xmlns: 'http://www.w3.org/1998/Math/MathML', display: 'block' })
+        style = Utility.omml_element("mstyle", attributes: { displaystyle: 'true' })
+        Utility.update_nodes(style, mathml_content)
+        Utility.update_nodes(math, [style])
+        Ox.dump(math, indent: 2)
+          .gsub("&amp;", "&")
       end
 
       def to_mathml_without_math_tag
-        "<mrow>#{mathml_content}</mrow>"
+        Utility.update_nodes(
+          Utility.omml_element("mrow"),
+          mathml_content,
+        )
       end
 
       def mathml_content
-        value.map(&:to_mathml_without_math_tag).join
+        value.map(&:to_mathml_without_math_tag)
       end
 
       def to_latex

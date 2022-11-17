@@ -32,8 +32,15 @@ module Plurimath
           first_value  = parameter_one&.to_mathml_without_math_tag
           second_value = parameter_two&.to_mathml_without_math_tag
           third_value  = parameter_three&.to_mathml_without_math_tag
-          body_value   = "#{first_value}#{second_value}#{third_value}"
-          "<m#{class_name}>#{body_value}</m#{class_name}>"
+          class_tag = Utility.omml_element("m#{class_name}")
+          Utility.update_nodes(
+            class_tag,
+            [
+              first_value,
+              second_value,
+              third_value,
+            ],
+          )
         end
 
         def to_latex

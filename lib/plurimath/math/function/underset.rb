@@ -9,7 +9,13 @@ module Plurimath
         def to_mathml_without_math_tag
           first_value = parameter_one&.to_mathml_without_math_tag
           second_value = parameter_two&.to_mathml_without_math_tag
-          "<munder>#{second_value}#{first_value}</munder>"
+          Utility.update_nodes(
+            Utility.omml_element("munder"),
+            [
+              second_value,
+              first_value,
+            ],
+          )
         end
 
         def to_omml_without_math_tag

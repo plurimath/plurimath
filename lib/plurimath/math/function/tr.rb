@@ -11,7 +11,10 @@ module Plurimath
         end
 
         def to_mathml_without_math_tag
-          "<mtr>#{parameter_one.map(&:to_mathml_without_math_tag).join}</mtr>"
+          Utility.update_nodes(
+            Utility.omml_element("mtr"),
+            parameter_one.map(&:to_mathml_without_math_tag).compact,
+          )
         end
 
         def to_latex

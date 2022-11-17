@@ -13,9 +13,15 @@ module Plurimath
         end
 
         def to_mathml_without_math_tag
-          first_value = parameter_one&.parameter_one
+          first_value  = parameter_one&.parameter_one
           second_value = parameter_two&.to_mathml_without_math_tag
-          "<mstyle mathcolor='#{first_value}'>#{second_value}</mstyle>"
+          Utility.update_nodes(
+            Utility.omml_element(
+              "mstyle",
+              attributes: { mathcolor: first_value },
+            ),
+            [second_value],
+          )
         end
 
         def to_latex

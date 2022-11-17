@@ -862,8 +862,8 @@ RSpec.describe Plurimath::Math::Formula do
       it 'converts formula back to Asciimath string for vec function' do
         expected_value =
         <<~MATHML.gsub(/\s/, "")
-          <math xmlns='http://www.w3.org/1998/Math/MathML' display='block'>
-            <mstyle displaystyle='true'>
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
               <mrow>
                 <mi>(</mi>
                 <mtable>

@@ -13,9 +13,16 @@ module Plurimath
         end
 
         def to_mathml_without_math_tag
-          first_value = parameter_one&.to_mathml_without_math_tag
-          two_value = parameter_two&.to_mathml_without_math_tag
-          "<mfrac>#{first_value}#{two_value}</mfrac>"
+          frac_tag     = Utility.omml_element("mfrac")
+          first_value  = parameter_one&.to_mathml_without_math_tag
+          second_value = parameter_two&.to_mathml_without_math_tag
+          Utility.update_nodes(
+            frac_tag,
+            [
+              first_value,
+              second_value,
+            ].flatten,
+          )
         end
 
         def to_latex

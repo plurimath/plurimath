@@ -1,4 +1,4 @@
-require_relative '../../../../lib/plurimath/math'
+require_relative "../../../../lib/plurimath/math"
 
 RSpec.describe Plurimath::Math::Formula do
   describe ".to_mathml" do
@@ -14,8 +14,8 @@ RSpec.describe Plurimath::Math::Formula do
       it "returns formula of sin from mathml string" do
         expected_value =
         <<~MATHML
-          <math xmlns='http://www.w3.org/1998/Math/MathML' display='block'>
-            <mstyle displaystyle='true'>
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
               <mrow>
                 <mo>sin</mo>
               </mrow>
@@ -40,11 +40,15 @@ RSpec.describe Plurimath::Math::Formula do
       it "returns formula of sum and prod" do
         expected_value =
         <<~MATHML
-          <math xmlns='http://www.w3.org/1998/Math/MathML' display='block'>
-            <mstyle displaystyle='true'>
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
               <munderover>
-                <mo>&#x2211;</mo>
-                <mo>&#x220f;</mo>
+                <mrow>
+                  <mo>&#x2211;</mo>
+                </mrow>
+                <mrow>
+                  <mo>&#x220f;</mo>
+                </mrow>
                 <mo>&#x22c1;</mo>
               </munderover>
             </mstyle>
@@ -67,10 +71,12 @@ RSpec.describe Plurimath::Math::Formula do
       it "returns formula of sum and prod" do
         expected_value =
         <<~MATHML
-          <math xmlns='http://www.w3.org/1998/Math/MathML' display='block'>
-            <mstyle displaystyle='true'>
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
               <munderover>
-                <mo>&#x2211;</mo>
+                <mrow>
+                  <mo>&#x2211;</mo>
+                </mrow>
                 <mi>x</mi>
                 <mi>s</mi>
               </munderover>
@@ -95,10 +101,12 @@ RSpec.describe Plurimath::Math::Formula do
       it "returns formula of sum" do
         expected_value =
         <<~MATHML
-          <math xmlns='http://www.w3.org/1998/Math/MathML' display='block'>
-            <mstyle displaystyle='true'>
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
               <munderover>
-                <mo>&#x2211;</mo>
+                <mrow>
+                  <mo>&#x2211;</mo>
+                </mrow>
                 <mi>x</mi>
                 <mi>w</mi>
               </munderover>
@@ -122,13 +130,15 @@ RSpec.describe Plurimath::Math::Formula do
       it "returns formula of sin" do
         expected_value =
         <<~MATHML
-          <math xmlns='http://www.w3.org/1998/Math/MathML' display='block'>
-            <mstyle displaystyle='true'>
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
               <msub>
                 <mrow>
                   <mo>sin</mo>
                 </mrow>
-                <mo>&#x2211;</mo>
+                <mrow>
+                  <mo>&#x2211;</mo>
+                </mrow>
               </msub>
             </mstyle>
           </math>
@@ -149,13 +159,15 @@ RSpec.describe Plurimath::Math::Formula do
       it "returns formula of sin" do
         expected_value =
         <<~MATHML
-          <math xmlns='http://www.w3.org/1998/Math/MathML' display='block'>
-            <mstyle displaystyle='true'>
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
               <msup>
                 <mrow>
                   <mo>sin</mo>
                 </mrow>
-                <mo>&#x2211;</mo>
+                <mrow>
+                  <mo>&#x2211;</mo>
+                </mrow>
               </msup>
             </mstyle>
           </math>
@@ -181,17 +193,21 @@ RSpec.describe Plurimath::Math::Formula do
       it "returns formula of sin" do
         expected_value =
         <<~MATHML
-          <math xmlns='http://www.w3.org/1998/Math/MathML' display='block'>
-            <mstyle displaystyle='true'>
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
               <msubsup>
                 <mrow>
                   <mo>sin</mo>
                 </mrow>
                 <mrow>
-                  <mo>&#x220f;</mo>
+                  <mrow>
+                    <mo>&#x220f;</mo>
+                  </mrow>
                 </mrow>
                 <mrow>
-                  <mo>&#x2211;</mo>
+                  <mrow>
+                    <mo>&#x2211;</mo>
+                  </mrow>
                 </mrow>
               </msubsup>
             </mstyle>
@@ -218,10 +234,12 @@ RSpec.describe Plurimath::Math::Formula do
       it "returns formula of sum" do
         expected_value =
         <<~MATHML
-          <math xmlns='http://www.w3.org/1998/Math/MathML' display='block'>
-            <mstyle displaystyle='true'>
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
               <munderover>
-                <mo>&#x2211;</mo>
+                <mrow>
+                  <mo>&#x2211;</mo>
+                </mrow>
                 <mi>i</mi>
                 <mi>n</mi>
               </munderover>
@@ -245,8 +263,8 @@ RSpec.describe Plurimath::Math::Formula do
       it "returns formula of sin" do
         expected_value =
         <<~MATHML
-          <math xmlns='http://www.w3.org/1998/Math/MathML' display='block'>
-            <mstyle displaystyle='true'>
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
               <mrow>
                 <mo>sin</mo>
               </mrow>
@@ -266,8 +284,8 @@ RSpec.describe Plurimath::Math::Formula do
       it "returns formula of text" do
         expected_value =
         <<~MATHML
-          <math xmlns='http://www.w3.org/1998/Math/MathML' display='block'>
-            <mstyle displaystyle='true'>
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
               <mtext>sinsumsom&#x393;gamma</mtext>
             </mstyle>
           </math>
@@ -285,8 +303,8 @@ RSpec.describe Plurimath::Math::Formula do
       it "returns formula of text" do
         expected_value =
         <<~MATHML
-          <math xmlns='http://www.w3.org/1998/Math/MathML' display='block'>
-            <mstyle displaystyle='true'>
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
               <mtext>sinsumsom&#x393;&#x3b3;</mtext>
             </mstyle>
           </math>
@@ -323,10 +341,12 @@ RSpec.describe Plurimath::Math::Formula do
       it "returns formula of sum and frac" do
         expected_value =
         <<~MATHML
-          <math xmlns='http://www.w3.org/1998/Math/MathML' display='block'>
-            <mstyle displaystyle='true'>
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
               <munderover>
-                <mo>&#x2211;</mo>
+                <mrow>
+                  <mo>&#x2211;</mo>
+                </mrow>
                 <mn>1</mn>
                 <mi>n</mi>
               </munderover>
@@ -365,13 +385,15 @@ RSpec.describe Plurimath::Math::Formula do
       it "returns formula of sum" do
         expected_value =
         <<~MATHML
-          <math xmlns='http://www.w3.org/1998/Math/MathML' display='block'>
-            <mstyle displaystyle='true'>
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
               <mrow>
                 <mo>sin</mo>
               </mrow>
               <mover>
-                <mo>&#x2211;</mo>
+                <mrow>
+                  <mo>&#x2211;</mo>
+                </mrow>
                 <mo>&#x3b8;</mo>
               </mover>
             </mstyle>
@@ -393,10 +415,12 @@ RSpec.describe Plurimath::Math::Formula do
       it "returns formula of sum" do
         expected_value =
         <<~MATHML
-          <math xmlns='http://www.w3.org/1998/Math/MathML' display='block'>
-            <mstyle displaystyle='true'>
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
               <mover>
-                <mo>&#x2211;</mo>
+                <mrow>
+                  <mo>&#x2211;</mo>
+                </mrow>
                 <mn>3</mn>
               </mover>
             </mstyle>
@@ -418,10 +442,12 @@ RSpec.describe Plurimath::Math::Formula do
       it "returns formula of sum" do
         expected_value =
         <<~MATHML
-          <math xmlns='http://www.w3.org/1998/Math/MathML' display='block'>
-            <mstyle displaystyle='true'>
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
               <mover>
-                <mo>&#x2211;</mo>
+                <mrow>
+                  <mo>&#x2211;</mo>
+                </mrow>
                 <mo>&#x398;</mo>
               </mover>
             </mstyle>
@@ -447,10 +473,12 @@ RSpec.describe Plurimath::Math::Formula do
       it "returns formula of sum" do
         expected_value =
         <<~MATHML
-          <math xmlns='http://www.w3.org/1998/Math/MathML' display='block'>
-            <mstyle displaystyle='true'>
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
               <munderover>
-                <mo>&#x2211;</mo>
+                <mrow>
+                  <mo>&#x2211;</mo>
+                </mrow>
                 <mfrac>
                   <mn>12</mn>
                   <mo>&#x25a1;</mo>
@@ -477,10 +505,12 @@ RSpec.describe Plurimath::Math::Formula do
       it "returns formula of log and text" do
         expected_value =
         <<~MATHML
-          <math xmlns='http://www.w3.org/1998/Math/MathML' display='block'>
-            <mstyle displaystyle='true'>
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
               <msubsup>
-                <mo>log</mo>
+                <mrow>
+                  <mo>log</mo>
+                </mrow>
                 <mn>4</mn>
                 <mtext>4 terms</mtext>
               </msubsup>
@@ -503,8 +533,8 @@ RSpec.describe Plurimath::Math::Formula do
       it "returns formula of symbol" do
         expected_value =
         <<~MATHML
-          <math xmlns='http://www.w3.org/1998/Math/MathML' display='block'>
-            <mstyle displaystyle='true'>
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
               <mover>
                 <mi>i</mi>
                 <mn>1234</mn>
@@ -528,10 +558,12 @@ RSpec.describe Plurimath::Math::Formula do
       it "returns formula of mod" do
         expected_value =
         <<~MATHML
-          <math xmlns='http://www.w3.org/1998/Math/MathML' display='block'>
-            <mstyle displaystyle='true'>
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
               <mn>12</mn>
-              <mo>mod</mo>
+              <mrow>
+                <mo>mod</mo>
+              </mrow>
               <mn>1234</mn>
               <mi>i</mi>
             </mstyle>
@@ -560,8 +592,8 @@ RSpec.describe Plurimath::Math::Formula do
       it "returns formula of symbols and text" do
         expected_value =
         <<~MATHML
-          <math xmlns='http://www.w3.org/1998/Math/MathML' display='block'>
-            <mstyle displaystyle='true'>
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
               <msubsup>
                 <mi>a</mi>
                 <mtable>
@@ -602,8 +634,8 @@ RSpec.describe Plurimath::Math::Formula do
       it "returns formula of symbols and text" do
         expected_value =
         <<~MATHML
-          <math xmlns='http://www.w3.org/1998/Math/MathML' display='block'>
-            <mstyle displaystyle='true'>
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
               <msubsup>
                 <mi>a</mi>
                 <mrow>
@@ -648,11 +680,11 @@ RSpec.describe Plurimath::Math::Formula do
       it "returns formula of symbols and text" do
         expected_value =
         <<~MATHML
-          <math xmlns='http://www.w3.org/1998/Math/MathML'display='block'>
-            <mstyle displaystyle='true'>
+          <math xmlns="http://www.w3.org/1998/Math/MathML"display="block">
+            <mstyle displaystyle="true">
               <msubsup>
                 <mi>a</mi>
-                <mfenced open='[' close=''>
+                <mfenced open="[" close="">
                   <mtable>
                     <mtr>
                       <mtd>
@@ -681,8 +713,8 @@ RSpec.describe Plurimath::Math::Formula do
       it "returns formula of sqrt" do
         expected_value =
         <<~MATHML
-          <math xmlns='http://www.w3.org/1998/Math/MathML' display='block'>
-            <mstyle displaystyle='true'>
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
               <msqrt>
                 <mo>&#x2211;</mo>
               </msqrt>
@@ -718,11 +750,11 @@ RSpec.describe Plurimath::Math::Formula do
       it "returns formula of symbol" do
         expected_value =
         <<~MATHML
-          <math xmlns='http://www.w3.org/1998/Math/MathML' display='block'>
-            <mstyle displaystyle='true'>
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
               <msubsup>
                 <mi>a</mi>
-                <mfenced open='{' close='}'>
+                <mfenced open="{" close="}">
                   <mtable>
                     <mtr>
                       <mtd>
@@ -760,14 +792,16 @@ RSpec.describe Plurimath::Math::Formula do
       it "returns formula of sum and ne" do
         expected_value =
         <<~MATHML
-          <math xmlns='http://www.w3.org/1998/Math/MathML' display='block'>
-            <mstyle displaystyle='true'>
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
               <munderover>
-                <mo>&#x2211;</mo>
+                <mrow>
+                  <mo>&#x2211;</mo>
+                </mrow>
                 <mrow>
                   <mi>i</mi>
                   <mi>=</mi>
-                  <mstyle mathcolor='blue'>
+                  <mstyle mathcolor="blue">
                     <mo>&#x2260;</mo>
                   </mstyle>
                 </mrow>
@@ -800,14 +834,16 @@ RSpec.describe Plurimath::Math::Formula do
       it "returns formula of sum and ne" do
         expected_value =
         <<~MATHML
-          <math xmlns='http://www.w3.org/1998/Math/MathML' display='block'>
-            <mstyle displaystyle='true'>
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
               <munderover>
-                <mo>&#x2211;</mo>
+                <mrow>
+                  <mo>&#x2211;</mo>
+                </mrow>
                 <mrow>
                   <mi>i</mi>
                   <mi>=</mi>
-                  <mstyle mathcolor='blue'>
+                  <mstyle mathcolor="blue">
                     <mo>&#x2260;</mo>
                   </mstyle>
                 </mrow>
@@ -832,8 +868,8 @@ RSpec.describe Plurimath::Math::Formula do
       it "returns formula of sum and ne" do
         expected_value =
         <<~MATHML
-          <math xmlns='http://www.w3.org/1998/Math/MathML' display='block'>
-            <mstyle displaystyle='true'>
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
               <mroot>
                 <mtext>Some</mtext>
                 <mtext>thing</mtext>
@@ -860,11 +896,11 @@ RSpec.describe Plurimath::Math::Formula do
       it "returns string of bold text" do
         expected_value =
         <<~MATHML
-          <math xmlns='http://www.w3.org/1998/Math/MathML' display='block'>
-            <mstyle displaystyle='true'>
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
               <mroot>
                 <mtext>Some</mtext>
-                <mstyle mathvariant='bold'>
+                <mstyle mathvariant="bold">
                   <mtext>thing</mtext>
                 </mstyle>
               </mroot>
@@ -886,8 +922,8 @@ RSpec.describe Plurimath::Math::Formula do
       it "returns string of bold text" do
         expected_value =
         <<~MATHML
-          <math xmlns='http://www.w3.org/1998/Math/MathML' display='block'>
-            <mstyle displaystyle='true'>
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
               <mi>n</mi>
               <mo>&#x3c;</mo>
               <mn>1</mn>
