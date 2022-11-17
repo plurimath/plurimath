@@ -14,7 +14,8 @@ module Plurimath
         end
 
         def to_mathml_without_math_tag
-          "<mtext>#{parse_text('mathml') || parameter_one}</mtext>"
+          text = Utility.omml_element("mtext")
+          text << (parse_text('mathml') || parameter_one) if parameter_one
         end
 
         def symbol_value(unicode)
@@ -36,7 +37,7 @@ module Plurimath
         end
 
         def parse_text(lang)
-          html_value = first_value(lang)
+          html_value = first_value(lang).dup
           html_value&.gsub!(PARSER_REGEX) do |_text|
             last_match = Regexp.last_match
             if ["mathml", "html"].include?(lang)

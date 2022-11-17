@@ -9,7 +9,13 @@ module Plurimath
         def to_mathml_without_math_tag
           first_value = parameter_one&.to_mathml_without_math_tag
           second_value = parameter_two&.to_mathml_without_math_tag
-          "<mroot>#{first_value}#{second_value}</mroot>"
+          Utility.update_nodes(
+            Utility.omml_element("mroot"),
+            [
+              first_value,
+              second_value,
+            ],
+          )
         end
 
         def to_latex

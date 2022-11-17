@@ -12,7 +12,13 @@ module Plurimath
 
         def to_mathml_without_math_tag
           first_value = parameter_one.to_mathml_without_math_tag
-          "<mstyle mathvariant='#{parameter_two}'>#{first_value}</mstyle>"
+          Utility.update_nodes(
+            Utility.omml_element(
+              "mstyle",
+              attributes: { mathvariant: parameter_two }
+            ),
+            [first_value],
+          )
         end
 
         def to_latex

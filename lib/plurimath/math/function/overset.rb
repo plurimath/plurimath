@@ -9,7 +9,14 @@ module Plurimath
         def to_mathml_without_math_tag
           first_value = parameter_one&.to_mathml_without_math_tag
           second_value = parameter_two&.to_mathml_without_math_tag
-          "<mover>#{second_value}#{first_value}</mover>"
+          over_tag = Utility.omml_element("mover")
+          Utility.update_nodes(
+            over_tag,
+            [
+              second_value,
+              first_value,
+            ],
+          )
         end
 
         def to_latex

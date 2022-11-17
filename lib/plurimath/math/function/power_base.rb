@@ -7,10 +7,18 @@ module Plurimath
     module Function
       class PowerBase < TernaryFunction
         def to_mathml_without_math_tag
+          subsup_tag   = Utility.omml_element("msubsup")
           first_value  = parameter_one&.to_mathml_without_math_tag
           second_value = parameter_two&.to_mathml_without_math_tag
           third_value  = parameter_three&.to_mathml_without_math_tag
-          "<msubsup>#{first_value}#{second_value}#{third_value}</msubsup>"
+          Utility.update_nodes(
+            subsup_tag,
+            [
+              first_value,
+              second_value,
+              third_value,
+            ],
+          )
         end
 
         def to_latex

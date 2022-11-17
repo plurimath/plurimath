@@ -14,16 +14,16 @@ module Plurimath
       end
 
       def to_asciimath
-        symbol = Asciimath::Constants::SYMBOLS.invert[value.to_sym].to_s
+        symbol = Asciimath::Constants::SYMBOLS.invert[value.strip.to_sym].to_s
         symbol.empty? ? value : symbol
       end
 
       def to_mathml_without_math_tag
         unicode_symbols = Mathml::Constants::UNICODE_SYMBOLS.invert
         if unicode_symbols[value]
-          "<mo>#{unicode_symbols[value]}</mo>"
+          Utility.omml_element("mo") << unicode_symbols[value].to_s
         else
-          "<mi>#{value}</mi>"
+          Utility.omml_element("mi") << value
         end
       end
 

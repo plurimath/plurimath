@@ -27,12 +27,10 @@ module Plurimath
         end
 
         def to_mathml_without_math_tag
-          <<~LATEX
-            <mrow>
-              <mo>#{class_name}</mo>
-              #{parameter_one&.to_mathml_without_math_tag}
-            </mrow>
-          LATEX
+          row_tag   = Utility.omml_element("mrow")
+          row_value = Utility.omml_element("mo") << class_name
+          row_value << parameter_one&.to_mathml_without_math_tag if parameter_one
+          Utility.update_nodes(row_tag, [row_value])
         end
 
         def to_latex

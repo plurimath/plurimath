@@ -13,9 +13,16 @@ module Plurimath
         end
 
         def to_mathml_without_math_tag
-          first_value = parameter_one.to_mathml_without_math_tag
+          sub_tag      = Utility.omml_element("msub")
+          first_value  = parameter_one.to_mathml_without_math_tag
           second_value = parameter_two.to_mathml_without_math_tag
-          "<msub>#{first_value}#{second_value}</msub>"
+          Utility.update_nodes(
+            sub_tag,
+            [
+              first_value,
+              second_value,
+            ],
+          )
         end
 
         def to_latex

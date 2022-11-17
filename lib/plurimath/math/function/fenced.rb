@@ -15,11 +15,15 @@ module Plurimath
 
         def to_mathml_without_math_tag
           first_value  = parameter_one&.value
-          second_value = parameter_two&.map(&:to_mathml_without_math_tag)&.join
+          second_value = parameter_two&.map(&:to_mathml_without_math_tag)
           third_value  = parameter_three&.value
-          "<mfenced open='#{first_value}' close='#{third_value}'>"\
-            "#{second_value}"\
-            "</mfenced>"
+          Utility.update_nodes(
+            Utility.omml_element(
+              "mfenced",
+              attributes: { open: first_value, close: third_value },
+            ),
+            second_value,
+          )
         end
 
         def to_omml_without_math_tag

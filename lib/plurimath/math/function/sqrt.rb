@@ -7,8 +7,10 @@ module Plurimath
     module Function
       class Sqrt < UnaryFunction
         def to_mathml_without_math_tag
-          first_value = parameter_one&.to_mathml_without_math_tag
-          "<msqrt>#{first_value}</msqrt>"
+          Utility.update_nodes(
+            Utility.omml_element("msqrt"),
+            parameter_one&.to_mathml_without_math_tag,
+          )
         end
 
         def to_omml_without_math_tag

@@ -18,7 +18,7 @@ module Plurimath
       end
 
       def to_mathml_without_math_tag
-        "<mn>#{value}</mn>"
+        Utility.omml_element("mn") << value
       end
 
       def to_latex

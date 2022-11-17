@@ -84,7 +84,9 @@ module Plurimath
       end
 
       def omml_element(node, attributes: [], namespace: "")
-        element = Ox::Element.new("#{namespace}:#{node}")
+        namespace = "#{namespace}:" unless namespace.empty?
+
+        element = Ox::Element.new("#{namespace}#{node}")
         attributes.each do |attr_key, attr_value|
           element[attr_key] = attr_value
         end
@@ -107,7 +109,7 @@ module Plurimath
       end
 
       def update_nodes(element, nodes)
-        nodes.each { |node| element << node }
+        nodes.each { |node| element << node unless node.nil? }
         element
       end
 

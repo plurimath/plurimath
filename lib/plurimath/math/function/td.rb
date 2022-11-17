@@ -17,7 +17,10 @@ module Plurimath
         def to_mathml_without_math_tag
           return "" if parameter_one.first.is_a?(Math::Symbol) && parameter_one.first.value == "|"
 
-          "<mtd>#{parameter_one.map(&:to_mathml_without_math_tag).join}</mtd>"
+          Utility.update_nodes(
+            Utility.omml_element("mtd"),
+            parameter_one.map(&:to_mathml_without_math_tag),
+          )
         end
 
         def to_latex

@@ -8,7 +8,13 @@ module Plurimath
       class Vec < UnaryFunction
         def to_mathml_without_math_tag
           first_value = parameter_one&.to_mathml_without_math_tag
-          "<mover>#{first_value}<mo>&#x20D1;</mo></mover>"
+          Utility.update_nodes(
+            Utility.omml_element("mover"),
+            [
+              first_value,
+              Utility.omml_element("mo") << "&#x20D1;",
+            ],
+          )
         end
       end
     end
