@@ -203,21 +203,21 @@ module Plurimath
         )
       end
 
-      rule(text: simple(:text),
-           subscript: simple(:subscript)) do
-        Math::Function::Base.new(
-          Math::Function::Text.new(text),
-          subscript,
-        )
-      end
+      # rule(text: simple(:text),
+      #      subscript: simple(:subscript)) do
+      #   Math::Function::Base.new(
+      #     Math::Function::Text.new(text),
+      #     subscript,
+      #   )
+      # end
 
-      rule(text: simple(:text),
-           supscript: simple(:supscript)) do
-        Math::Function::Power.new(
-          Math::Function::Text.new(text),
-          supscript,
-        )
-      end
+      # rule(text: simple(:text),
+      #      supscript: simple(:supscript)) do
+      #   Math::Function::Power.new(
+      #     Math::Function::Text.new(text),
+      #     supscript,
+      #   )
+      # end
 
       rule(unary: simple(:unary),
            first_value: simple(:first_value)) do
@@ -350,15 +350,15 @@ module Plurimath
         Utility.get_class(binary).new(subscript)
       end
 
-      rule(text: simple(:text),
-           subscript: simple(:subscript),
-           supscript: simple(:supscript)) do
-        Math::Function::PowerBase.new(
-          Math::Function::Text.new(text),
-          subscript,
-          supscript,
-        )
-      end
+      # rule(text: simple(:text),
+      #      subscript: simple(:subscript),
+      #      supscript: simple(:supscript)) do
+      #   Math::Function::PowerBase.new(
+      #     Math::Function::Text.new(text),
+      #     subscript,
+      #     supscript,
+      #   )
+      # end
 
       rule(symbols: simple(:sym),
            subscript: simple(:subscript),
