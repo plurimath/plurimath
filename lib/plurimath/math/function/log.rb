@@ -25,13 +25,13 @@ module Plurimath
         end
 
         def to_omml_without_math_tag
-          func   = Utility.omml_element("func", namespace: "m")
-          funcpr = Utility.omml_element("funcPr", namespace: "m")
+          func   = Utility.ox_element("func", namespace: "m")
+          funcpr = Utility.ox_element("funcPr", namespace: "m")
           funcpr << Utility.pr_element("ctrl", true, namespace: "m")
-          fname  = Utility.omml_element("fName", namespace: "m")
-          mr     = Utility.omml_element("r", namespace: "m")
+          fname  = Utility.ox_element("fName", namespace: "m")
+          mr     = Utility.ox_element("r", namespace: "m")
           rpr    = Utility.rpr_element
-          mt     = Utility.omml_element("t", namespace: "m") << class_name
+          mt     = Utility.ox_element("t", namespace: "m") << class_name
           fname << Utility.update_nodes(mr, [rpr, mt])
           log_values = [first_value, second_value].flatten.compact
           Utility.update_nodes(
@@ -47,14 +47,14 @@ module Plurimath
           return nil if parameter_one.nil?
 
           first_value = parameter_one.to_omml_without_math_tag
-          Utility.omml_element("e", namespace: "m") << first_value
+          Utility.ox_element("e", namespace: "m") << first_value
         end
 
         def second_value
           return nil if parameter_two.nil?
 
           second_value = parameter_two.to_omml_without_math_tag
-          Utility.omml_element("e", namespace: "m") << second_value
+          Utility.ox_element("e", namespace: "m") << second_value
         end
       end
     end

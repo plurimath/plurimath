@@ -1674,7 +1674,7 @@ module ExpectedValues
           Plurimath::Math::Function::Text.new("lim")
         ]),
         Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Text.new("n&rarr;&infin;"),
+          Plurimath::Math::Function::Text.new("n→∞"),
         ]),
       ),
       Plurimath::Math::Function::Power.new(
@@ -1708,7 +1708,7 @@ module ExpectedValues
           Plurimath::Math::Function::Text.new("max")
         ]),
         Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Text.new("0&le;x&le;1"),
+          Plurimath::Math::Function::Text.new("0≤x≤1"),
         ]),
       ),
       Plurimath::Math::Formula.new([
@@ -2695,7 +2695,7 @@ module ExpectedValues
             Plurimath::Math::Function::Tr.new([
               Plurimath::Math::Function::Td.new([
                 Plurimath::Math::Formula.new([
-                  Plurimath::Math::Function::Text.new("E,  &amp;")
+                  Plurimath::Math::Function::Text.new("E,  &")
                 ]),
                 Plurimath::Math::Formula.new([
                   Plurimath::Math::Function::Text.new("if ")
@@ -2709,7 +2709,7 @@ module ExpectedValues
                   ])
                 ),
                 Plurimath::Math::Formula.new([
-                  Plurimath::Math::Function::Text.new("&lt;S")
+                  Plurimath::Math::Function::Text.new("<S")
                 ])
               ])
             ]),
@@ -2771,7 +2771,7 @@ module ExpectedValues
                   nil,
                 ),
                 Plurimath::Math::Formula.new([
-                  Plurimath::Math::Function::Text.new("E,  &amp;")
+                  Plurimath::Math::Function::Text.new("E,  &")
                 ]),
                 Plurimath::Math::Formula.new([
                   Plurimath::Math::Function::Text.new("otherwise")

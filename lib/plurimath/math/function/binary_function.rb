@@ -32,8 +32,8 @@ module Plurimath
         end
 
         def to_mathml_without_math_tag
-          mrow_tag = Utility.omml_element("mrow")
-          mo_tag = Utility.omml_element("mo") << invert_unicode_symbols.to_s
+          mrow_tag = Utility.ox_element("mrow")
+          mo_tag = Utility.ox_element("mo") << invert_unicode_symbols.to_s
           first_value = parameter_one&.to_mathml_without_math_tag if parameter_one
           second_value = parameter_two&.to_mathml_without_math_tag if parameter_two
           Utility.update_nodes(
@@ -63,7 +63,7 @@ module Plurimath
         end
 
         def to_omml_without_math_tag
-          r_tag = Utility.omml_element("r", namespace: "m")
+          r_tag = Utility.ox_element("r", namespace: "m")
           r_tag << parameter_one.to_omml_without_math_tag if parameter_one
           r_tag << parameter_two.to_omml_without_math_tag if parameter_two
           r_tag

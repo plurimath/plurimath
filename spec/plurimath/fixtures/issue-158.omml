@@ -63,7 +63,7 @@
               <w:rPr>
                 <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
               </w:rPr>
-              <m:t>,  &amp;</m:t>
+              <m:t>,  &</m:t>
             </m:r>
             <m:r>
               <w:rPr>
@@ -115,7 +115,7 @@
               <w:rPr>
                 <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
               </w:rPr>
-              <m:t>E,  &amp;amp;</m:t>
+              <m:t>E,  &amp;</m:t>
             </m:r>
             <m:r>
               <w:rPr>
@@ -153,7 +153,7 @@
               <w:rPr>
                 <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
               </w:rPr>
-              <m:t>&amp;lt;S</m:t>
+              <m:t>&lt;S</m:t>
             </m:r>
           </m:e>
           <m:e>
@@ -319,7 +319,7 @@
               <w:rPr>
                 <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
               </w:rPr>
-              <m:t>E,  &amp;amp;</m:t>
+              <m:t>E,  &amp;</m:t>
             </m:r>
             <m:r>
               <w:rPr>

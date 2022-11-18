@@ -22,16 +22,16 @@ module Plurimath
         def to_mathml_without_math_tag
           table_value = parameter_one.map(&:to_mathml_without_math_tag)
           parenthesis = Latex::Constants::PARENTHESIS
-          table_tag   = Utility.omml_element("mtable", attributes: table_columnlines_attribute)
+          table_tag   = Utility.ox_element("mtable", attributes: table_columnlines_attribute)
           Utility.update_nodes(table_tag, table_value)
           if parenthesis.key?(parameter_two) || parameter_two == "|"
-            Utility.omml_element(
+            Utility.ox_element(
               "mfenced",
               attributes: { open: parameter_two, close: parameter_three },
             ) << table_tag
           elsif parameter_two == "norm["
-            row_tag = Utility.omml_element("mrow")
-            mo_tag  = Utility.omml_element("mo") << "&#x2225;"
+            row_tag = Utility.ox_element("mrow")
+            mo_tag  = Utility.ox_element("mo") << "&#x2225;"
             Utility.update_nodes(
               row_tag,
               [
@@ -83,8 +83,8 @@ module Plurimath
         end
 
         def single_td_table
-          eqarr    = Utility.omml_element("eqArr", namespace: "m")
-          eqarrpr  = Utility.omml_element("eqArrPr", namespace: "m")
+          eqarr    = Utility.ox_element("eqArr", namespace: "m")
+          eqarrpr  = Utility.ox_element("eqArrPr", namespace: "m")
           eqarrpr  << Utility.pr_element("ctrl", true, namespace: "m")
           eqarr    << eqarrpr
           tr_value = parameter_one.map(&:to_omml_without_math_tag)
@@ -97,17 +97,17 @@ module Plurimath
         def multiple_td_table
           count  = { "m:val": parameter_one&.first&.parameter_one&.count }
           mcjc   = { "m:val": "center" }
-          mm     = Utility.omml_element("m", namespace: "m")
-          mpr    = Utility.omml_element("mpr", namespace: "m")
-          mcs    = Utility.omml_element("mcs", namespace: "m")
-          mc     = Utility.omml_element("mc", namespace: "m")
-          mcpr   = Utility.omml_element("mcPr", namespace: "m")
-          mcount = Utility.omml_element(
+          mm     = Utility.ox_element("m", namespace: "m")
+          mpr    = Utility.ox_element("mpr", namespace: "m")
+          mcs    = Utility.ox_element("mcs", namespace: "m")
+          mc     = Utility.ox_element("mc", namespace: "m")
+          mcpr   = Utility.ox_element("mcPr", namespace: "m")
+          mcount = Utility.ox_element(
             "count",
             namespace: "m",
             attributes: count,
           )
-          mcjc = Utility.omml_element(
+          mcjc = Utility.ox_element(
             "mcJc",
             namespace: "m",
             attributes: mcjc,

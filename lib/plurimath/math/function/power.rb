@@ -13,7 +13,7 @@ module Plurimath
         end
 
         def to_mathml_without_math_tag
-          sup_tag      = Utility.omml_element("msup")
+          sup_tag      = Utility.ox_element("msup")
           first_value  = parameter_one.to_mathml_without_math_tag
           second_value = parameter_two.to_mathml_without_math_tag
           Utility.update_nodes(
@@ -39,10 +39,10 @@ module Plurimath
         end
 
         def to_omml_without_math_tag
-          ssup_element  = Utility.omml_element("sSup", namespace: "m")
-          suppr_element = Utility.omml_element("sSupPr", namespace: "m")
-          e_element     = Utility.omml_element("e", namespace: "m")
-          sup_element   = Utility.omml_element("sup", namespace: "m")
+          ssup_element  = Utility.ox_element("sSup", namespace: "m")
+          suppr_element = Utility.ox_element("sSupPr", namespace: "m")
+          e_element     = Utility.ox_element("e", namespace: "m")
+          sup_element   = Utility.ox_element("sup", namespace: "m")
           Utility.update_nodes(
             ssup_element,
             [

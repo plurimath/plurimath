@@ -10,7 +10,7 @@ module Plurimath
           first_value = parameter_one&.to_mathml_without_math_tag
           second_value = parameter_two&.to_mathml_without_math_tag
           Utility.update_nodes(
-            Utility.omml_element("mroot"),
+            Utility.ox_element("mroot"),
             [
               first_value,
               second_value,
@@ -25,10 +25,10 @@ module Plurimath
         end
 
         def to_omml_without_math_tag
-          rad_element = Utility.omml_element("rad", namespace: "m")
-          pr_element  = Utility.omml_element("radPr", namespace: "m")
-          deg_element = Utility.omml_element("deg", namespace: "m")
-          e_element   = Utility.omml_element("e", namespace: "m")
+          rad_element = Utility.ox_element("rad", namespace: "m")
+          pr_element  = Utility.ox_element("radPr", namespace: "m")
+          deg_element = Utility.ox_element("deg", namespace: "m")
+          e_element   = Utility.ox_element("e", namespace: "m")
           Utility.update_nodes(
             rad_element,
             [

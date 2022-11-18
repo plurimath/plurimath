@@ -14,7 +14,7 @@ module Plurimath
         end
 
         def to_mathml_without_math_tag
-          text = Utility.omml_element("mtext")
+          text = Utility.ox_element("mtext")
           text << (parse_text('mathml') || parameter_one) if parameter_one
         end
 
@@ -32,7 +32,7 @@ module Plurimath
         end
 
         def to_omml_without_math_tag
-          text = Utility.omml_element("t", namespace: "m")
+          text = Utility.ox_element("t", namespace: "m")
           text << (parse_text("omml") || parameter_one)
         end
 

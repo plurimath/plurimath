@@ -5,7 +5,6 @@ require_relative "../../fixtures/expected_values"
 RSpec.describe Plurimath::Math::Formula do
   describe ".to_omml" do
     subject(:formula) { exp.to_omml.gsub(/\s/, "") }
-    subject(:entities) { HTMLEntities.new }
 
     context "contains #001.omml" do
       let(:file_name) { "spec/plurimath/fixtures/001.omml" }
@@ -333,9 +332,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(
-          entities.decode(formula)
-        ).to eq(expected_value.gsub(/\s/, ""))
+        expect(formula).to eq(expected_value.gsub(/\s/, ""))
       end
     end
 
@@ -385,7 +382,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(entities.decode(formula)).to eq(expected_value.gsub(/\s/, ""))
+        expect(formula).to eq(expected_value.gsub(/\s/, ""))
       end
     end
 
@@ -475,9 +472,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(
-          entities.decode(formula)
-        ).to eq(expected_value.gsub(/\s/, ""))
+        expect(formula).to eq(expected_value.gsub(/\s/, ""))
       end
     end
 
@@ -707,9 +702,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(
-          entities.decode(formula)
-        ).to eq(expected_value.gsub(/\s/, ""))
+        expect(formula).to eq(expected_value.gsub(/\s/, ""))
       end
     end
 
@@ -1269,7 +1262,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(entities.decode(formula)).to eq(expected_value.gsub(/\s/, ""))
+        expect(formula).to eq(expected_value.gsub(/\s/, ""))
       end
     end
 
@@ -1289,7 +1282,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(entities.decode(formula)).to eq(expected_value.gsub(/\s/, ""))
+        expect(formula).to eq(expected_value.gsub(/\s/, ""))
       end
     end
 
@@ -1801,7 +1794,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(entities.decode(formula)).to eq(expected_value.gsub(/\s/, ""))
+        expect(formula).to eq(expected_value.gsub(/\s/, ""))
       end
     end
 

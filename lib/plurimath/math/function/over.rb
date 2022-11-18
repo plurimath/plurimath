@@ -13,7 +13,7 @@ module Plurimath
         end
 
         def to_mathml_without_math_tag
-          mover_tag    = Utility.omml_element("mover")
+          mover_tag    = Utility.ox_element("mover")
           first_value  = parameter_one&.to_mathml_without_math_tag
           second_value = parameter_two&.to_mathml_without_math_tag
           Utility.update_nodes(

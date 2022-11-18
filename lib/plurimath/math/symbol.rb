@@ -21,9 +21,9 @@ module Plurimath
       def to_mathml_without_math_tag
         unicode_symbols = Mathml::Constants::UNICODE_SYMBOLS.invert
         if unicode_symbols[value]
-          Utility.omml_element("mo") << unicode_symbols[value].to_s
+          Utility.ox_element("mo") << unicode_symbols[value].to_s
         else
-          Utility.omml_element("mi") << value
+          Utility.ox_element("mi") << value
         end
       end
 

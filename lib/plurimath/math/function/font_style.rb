@@ -13,7 +13,7 @@ module Plurimath
         def to_mathml_without_math_tag
           first_value = parameter_one.to_mathml_without_math_tag
           Utility.update_nodes(
-            Utility.omml_element(
+            Utility.ox_element(
               "mstyle",
               attributes: { mathvariant: parameter_two }
             ),

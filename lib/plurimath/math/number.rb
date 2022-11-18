@@ -18,7 +18,7 @@ module Plurimath
       end
 
       def to_mathml_without_math_tag
-        Utility.omml_element("mn") << value
+        Utility.ox_element("mn") << value
       end
 
       def to_latex
@@ -30,7 +30,7 @@ module Plurimath
       end
 
       def to_omml_without_math_tag
-        Utility.omml_element("t", namespace: "m") << value
+        Utility.ox_element("t", namespace: "m") << value
       end
 
       def class_name
