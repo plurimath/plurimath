@@ -10,7 +10,7 @@ module Plurimath
           first_value = parameter_one&.to_mathml_without_math_tag
           second_value = parameter_two&.to_mathml_without_math_tag
           Utility.update_nodes(
-            Utility.omml_element("munder"),
+            Utility.ox_element("munder"),
             [
               second_value,
               first_value,
@@ -20,17 +20,17 @@ module Plurimath
 
         def to_omml_without_math_tag
           first_value  = if parameter_one.is_a?(Math::Symbol)
-                           mt = Utility.omml_element("t", namespace: "m")
+                           mt = Utility.ox_element("t", namespace: "m")
                            mt << parameter_one.to_omml_without_math_tag
                          else
                            parameter_one.to_omml_without_math_tag
                          end
           second_value = parameter_two.to_omml_without_math_tag
-          limlow   = Utility.omml_element("limLow", namespace: "m")
-          limlowpr = Utility.omml_element("limLowPr", namespace: "m")
+          limlow   = Utility.ox_element("limLow", namespace: "m")
+          limlowpr = Utility.ox_element("limLowPr", namespace: "m")
           limlowpr << Utility.pr_element("ctrl", true, namespace: "m")
-          me = Utility.omml_element("e", namespace: "m") << first_value
-          lim = Utility.omml_element("lim", namespace: "m") << second_value
+          me = Utility.ox_element("e", namespace: "m") << first_value
+          lim = Utility.ox_element("lim", namespace: "m") << second_value
           Utility.update_nodes(
             limlow,
             [

@@ -9,10 +9,10 @@ module Plurimath
         def to_mathml_without_math_tag
           first_value = parameter_one&.to_mathml_without_math_tag
           Utility.update_nodes(
-            Utility.omml_element("mover"),
+            Utility.ox_element("mover"),
             [
               first_value,
-              Utility.omml_element("mo") << "&#x20D1;",
+              Utility.ox_element("mo") << "&#x20D1;",
             ],
           )
         end

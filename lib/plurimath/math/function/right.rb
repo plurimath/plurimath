@@ -11,7 +11,7 @@ module Plurimath
         end
 
         def to_mathml_without_math_tag
-          Utility.omml_element("mi") << parameter_one
+          Utility.ox_element("mi") << parameter_one
         end
 
         def to_latex

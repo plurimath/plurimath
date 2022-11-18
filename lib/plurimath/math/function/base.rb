@@ -13,7 +13,7 @@ module Plurimath
         end
 
         def to_mathml_without_math_tag
-          sub_tag      = Utility.omml_element("msub")
+          sub_tag      = Utility.ox_element("msub")
           first_value  = parameter_one.to_mathml_without_math_tag
           second_value = parameter_two.to_mathml_without_math_tag
           Utility.update_nodes(
@@ -39,10 +39,10 @@ module Plurimath
         end
 
         def to_omml_without_math_tag
-          ssub_element  = Utility.omml_element("sSub", namespace: "m")
-          subpr_element = Utility.omml_element("sSubPr", namespace: "m")
-          e_element     = Utility.omml_element("e", namespace: "m")
-          sub_element   = Utility.omml_element("sub", namespace: "m")
+          ssub_element  = Utility.ox_element("sSub", namespace: "m")
+          subpr_element = Utility.ox_element("sSubPr", namespace: "m")
+          e_element     = Utility.ox_element("e", namespace: "m")
+          sub_element   = Utility.ox_element("sub", namespace: "m")
           Utility.update_nodes(
             ssub_element,
             [

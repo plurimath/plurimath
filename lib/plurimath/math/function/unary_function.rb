@@ -27,10 +27,10 @@ module Plurimath
         end
 
         def to_mathml_without_math_tag
-          row_tag   = Utility.omml_element("mrow")
-          row_value = Utility.omml_element("mo") << class_name
-          row_value << parameter_one&.to_mathml_without_math_tag if parameter_one
-          Utility.update_nodes(row_tag, [row_value])
+          row_tag   = Utility.ox_element("mrow")
+          row_value = Utility.ox_element("mo") << class_name
+          first_value = parameter_one&.to_mathml_without_math_tag if parameter_one
+          Utility.update_nodes(row_tag, [row_value, first_value])
         end
 
         def to_latex
@@ -44,16 +44,16 @@ module Plurimath
         end
 
         def to_omml_without_math_tag
-          func   = Utility.omml_element("func", namespace: "m")
-          funcpr = Utility.omml_element("funcPr", namespace: "m")
+          func   = Utility.ox_element("func", namespace: "m")
+          funcpr = Utility.ox_element("funcPr", namespace: "m")
           funcpr << Utility.pr_element("ctrl", true, namespace: "m")
-          fname  = Utility.omml_element("fName", namespace: "m")
-          mr  = Utility.omml_element("r", namespace: "m")
+          fname  = Utility.ox_element("fName", namespace: "m")
+          mr  = Utility.ox_element("r", namespace: "m")
           rpr = Utility.rpr_element
-          mt  = Utility.omml_element("t", namespace: "m") << class_name
+          mt  = Utility.ox_element("t", namespace: "m") << class_name
           fname << Utility.update_nodes(mr, [rpr, mt])
           first_value = parameter_one.to_omml_without_math_tag
-          me = Utility.omml_element("e", namespace: "m") << first_value
+          me = Utility.ox_element("e", namespace: "m") << first_value
           Utility.update_nodes(
             func,
             [

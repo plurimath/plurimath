@@ -12,7 +12,7 @@ module Plurimath
 
         def to_mathml_without_math_tag
           Utility.update_nodes(
-            Utility.omml_element("mtr"),
+            Utility.ox_element("mtr"),
             parameter_one.map(&:to_mathml_without_math_tag).compact,
           )
         end
@@ -33,7 +33,7 @@ module Plurimath
           if parameter_one.count.eql?(1)
             omml_content
           else
-            mr = Utility.omml_element("mr", namespace: "m")
+            mr = Utility.ox_element("mr", namespace: "m")
             Utility.update_nodes(
               mr,
               omml_content,

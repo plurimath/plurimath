@@ -16,7 +16,7 @@ module Plurimath
           first_value  = parameter_one&.parameter_one
           second_value = parameter_two&.to_mathml_without_math_tag
           Utility.update_nodes(
-            Utility.omml_element(
+            Utility.ox_element(
               "mstyle",
               attributes: { mathcolor: first_value },
             ),

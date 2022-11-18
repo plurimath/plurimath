@@ -13,7 +13,7 @@ module Plurimath
         end
 
         def to_mathml_without_math_tag
-          frac_tag     = Utility.omml_element("mfrac")
+          frac_tag     = Utility.ox_element("mfrac")
           first_value  = parameter_one&.to_mathml_without_math_tag
           second_value = parameter_two&.to_mathml_without_math_tag
           Utility.update_nodes(
@@ -32,10 +32,10 @@ module Plurimath
         end
 
         def to_omml_without_math_tag
-          f_element   = Utility.omml_element("f", namespace: "m")
-          fpr_element = Utility.omml_element("fPr", namespace: "m")
-          num_element = Utility.omml_element("num", namespace: "m")
-          den_element = Utility.omml_element("den", namespace: "m")
+          f_element   = Utility.ox_element("f", namespace: "m")
+          fpr_element = Utility.ox_element("fPr", namespace: "m")
+          num_element = Utility.ox_element("num", namespace: "m")
+          den_element = Utility.ox_element("den", namespace: "m")
           Utility.update_nodes(
             f_element,
             [

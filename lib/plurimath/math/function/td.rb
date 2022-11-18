@@ -18,7 +18,7 @@ module Plurimath
           return "" if parameter_one.first.is_a?(Math::Symbol) && parameter_one.first.value == "|"
 
           Utility.update_nodes(
-            Utility.omml_element("mtd"),
+            Utility.ox_element("mtd"),
             parameter_one.map(&:to_mathml_without_math_tag),
           )
         end
@@ -33,7 +33,7 @@ module Plurimath
         end
 
         def to_omml_without_math_tag
-          me = Utility.omml_element("e", namespace: "m")
+          me = Utility.ox_element("e", namespace: "m")
           Utility.update_nodes(
             me,
             parameter_one.map(&:to_omml_without_math_tag),

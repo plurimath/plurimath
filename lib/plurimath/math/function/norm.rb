@@ -8,9 +8,9 @@ module Plurimath
       class Norm < UnaryFunction
         def to_mathml_without_math_tag
           first_value = parameter_one&.to_mathml_without_math_tag
-          norm = Utility.omml_element("mo") << "&#x2225;"
+          norm = Utility.ox_element("mo") << "&#x2225;"
           Utility.update_nodes(
-            Utility.omml_element("mrow"),
+            Utility.ox_element("mrow"),
             [
               norm,
               first_value,

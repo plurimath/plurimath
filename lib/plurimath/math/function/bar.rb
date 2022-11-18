@@ -12,21 +12,24 @@ module Plurimath
         end
 
         def to_omml_without_math_tag
-          attrs  = { "m:val": "top" }
-          bar    = Utility.omml_element("bar", namespace: "m")
-          barpr  = Utility.omml_element("barPr", namespace: "m")
-          pos    = Utility.omml_element("pos", namespace: "m", attributes: attrs)
-          ctrlpr = Utility.pr_element("ctrl", true, namespace: "m")
-          Utility.update_nodes(barpr, [pos, ctrlpr])
-          me = Utility.omml_element("e", namespace: "m")
+          bar = Utility.ox_element("bar", namespace: "m")
+          me  = Utility.ox_element("e", namespace: "m")
           me << parameter_one.to_omml_without_math_tag
           Utility.update_nodes(
             bar,
             [
-              barpr,
+              bar_pr,
               me,
             ],
           )
+        end
+
+        def bar_pr
+          attrs = { "m:val": "top" }
+          barpr = Utility.ox_element("barPr", namespace: "m")
+          pos   = Utility.ox_element("pos", namespace: "m", attributes: attrs)
+          ctrlp = Utility.pr_element("ctrl", true, namespace: "m")
+          Utility.update_nodes(barpr, [pos, ctrlp])
         end
       end
     end

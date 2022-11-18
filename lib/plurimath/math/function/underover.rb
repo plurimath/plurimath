@@ -7,10 +7,10 @@ module Plurimath
     module Function
       class Underover < TernaryFunction
         def omml_nary_tag
-          pr = Utility.omml_element("naryPr", namespace: "m")
-          sub = Utility.omml_element("sub", namespace: "m")
+          pr = Utility.ox_element("naryPr", namespace: "m")
+          sub = Utility.ox_element("sub", namespace: "m")
           sub << parameter_two&.to_omml_without_math_tag if parameter_two
-          sup = Utility.omml_element("sup", namespace: "m")
+          sup = Utility.ox_element("sup", namespace: "m")
           sup << parameter_three&.to_omml_without_math_tag if parameter_three
           [pr_element_value(pr), sub, sup]
         end
@@ -18,7 +18,7 @@ module Plurimath
         def hidden_sub_tag(pr_element)
           return true unless parameter_two.nil?
 
-          pr_element << Utility.omml_element(
+          pr_element << Utility.ox_element(
             "subHide",
             namespace: "m",
             attributes: { "m:val": 1 },
@@ -28,7 +28,7 @@ module Plurimath
         def hidden_sup_tag(pr_element)
           return true unless parameter_three.nil?
 
-          pr_element << Utility.omml_element(
+          pr_element << Utility.ox_element(
             "supHide",
             namespace: "m",
             attributes: { "m:val": 1 },
@@ -37,7 +37,7 @@ module Plurimath
 
         def pr_element_value(pr_element)
           first_value(pr_element)
-          pr_element << Utility.omml_element(
+          pr_element << Utility.ox_element(
             "limLoc",
             namespace: "m",
             attributes: { "m:val": "undOvr" },
@@ -50,7 +50,7 @@ module Plurimath
         def first_value(pr_element)
           first_value = parameter_one.to_omml_without_math_tag
           unless first_value == "∫"
-            pr_element << Utility.omml_element(
+            pr_element << Utility.ox_element(
               "chr",
               namespace: "m",
               attributes: { "m:val": first_value },

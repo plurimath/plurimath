@@ -32,7 +32,7 @@ module Plurimath
           first_value  = parameter_one&.to_mathml_without_math_tag
           second_value = parameter_two&.to_mathml_without_math_tag
           third_value  = parameter_three&.to_mathml_without_math_tag
-          class_tag = Utility.omml_element("m#{class_name}")
+          class_tag = Utility.ox_element("m#{class_name}")
           Utility.update_nodes(
             class_tag,
             [
@@ -58,7 +58,7 @@ module Plurimath
         end
 
         def to_omml_without_math_tag
-          r_tag = Utility.omml_element("r", namespace: "m")
+          r_tag = Utility.ox_element("r", namespace: "m")
           r_tag << parameter_one.to_omml_without_math_tag if parameter_one
           r_tag << parameter_two.to_omml_without_math_tag if parameter_two
           r_tag << parameter_three.to_omml_without_math_tag if parameter_three

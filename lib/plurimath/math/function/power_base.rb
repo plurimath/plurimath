@@ -7,7 +7,7 @@ module Plurimath
     module Function
       class PowerBase < TernaryFunction
         def to_mathml_without_math_tag
-          subsup_tag   = Utility.omml_element("msubsup")
+          subsup_tag   = Utility.ox_element("msubsup")
           first_value  = parameter_one&.to_mathml_without_math_tag
           second_value = parameter_two&.to_mathml_without_math_tag
           third_value  = parameter_three&.to_mathml_without_math_tag
@@ -37,9 +37,13 @@ module Plurimath
         end
 
         def omml_nary_tag
-          narypr = Utility.omml_element("naryPr", namespace: "m")
+          narypr = Utility.ox_element("naryPr", namespace: "m")
           chr_value(narypr)
-          narypr << Utility.omml_element("limLoc", namespace: "m", attributes: { "m:val": "subSup" })
+          narypr << Utility.ox_element(
+            "limLoc",
+            namespace: "m",
+            attributes: { "m:val": "subSup" },
+          )
           hide_tags(narypr)
           narypr << Utility.pr_element("ctrl", true, namespace: "m")
           [
@@ -53,13 +57,19 @@ module Plurimath
           first_value = parameter_one.to_omml_without_math_tag
           return narypr if first_value == "∫"
 
-          narypr << Utility.omml_element("chr", namespace: "m", attributes: { "m:val": first_value })
+          narypr << Utility.ox_element(
+            "chr",
+            namespace: "m",
+            attributes: { "m:val": first_value },
+          )
         end
 
         def to_omml_without_math_tag
-          ssubsup   = Utility.omml_element("sSubSup", namespace: "m")
-          ssubsuppr = Utility.omml_element("sSubSupPr", namespace: "m")
-          ssubsuppr << hide_tags(Utility.pr_element("ctrl", true, namespace: "m"))
+          ssubsup   = Utility.ox_element("sSubSup", namespace: "m")
+          ssubsuppr = Utility.ox_element("sSubSupPr", namespace: "m")
+          ssubsuppr << hide_tags(
+            Utility.pr_element("ctrl", true, namespace: "m"),
+          )
           Utility.update_nodes(
             ssubsup,
             [
@@ -72,7 +82,7 @@ module Plurimath
         end
 
         def e_element
-          elemnet = Utility.omml_element("e", namespace: "m")
+          elemnet = Utility.ox_element("e", namespace: "m")
           if parameter_one
             elemnet << parameter_one&.to_omml_without_math_tag
           else
@@ -81,7 +91,7 @@ module Plurimath
         end
 
         def sub_element
-          elemnet = Utility.omml_element("sub", namespace: "m")
+          elemnet = Utility.ox_element("sub", namespace: "m")
           if parameter_two
             elemnet << parameter_two&.to_omml_without_math_tag
           else
@@ -90,7 +100,7 @@ module Plurimath
         end
 
         def sup_element
-          elemnet = Utility.omml_element("sup", namespace: "m")
+          elemnet = Utility.ox_element("sup", namespace: "m")
           if parameter_three
             elemnet << parameter_three&.to_omml_without_math_tag
           else
@@ -100,8 +110,20 @@ module Plurimath
 
         def hide_tags(nar)
           attr = { "m:val": "1" }
-          nar << Utility.omml_element("subHide", namespace: "m", attributes: attr) if parameter_two.nil?
-          nar << Utility.omml_element("supHide", namespace: "m", attributes: attr) if parameter_three.nil?
+          if parameter_two.nil?
+            nar << Utility.ox_element(
+              "subHide",
+              namespace: "m",
+              attributes: attr,
+            )
+          end
+          if parameter_three.nil?
+            nar << Utility.ox_element(
+              "supHide",
+              namespace: "m",
+              attributes: attr,
+            )
+          end
           nar
         end
       end

@@ -23,8 +23,8 @@ module Plurimath
       end
 
       def to_mathml
-        math  = Utility.omml_element("math", attributes: { xmlns: 'http://www.w3.org/1998/Math/MathML', display: 'block' })
-        style = Utility.omml_element("mstyle", attributes: { displaystyle: 'true' })
+        math  = Utility.ox_element("math", attributes: { xmlns: 'http://www.w3.org/1998/Math/MathML', display: 'block' })
+        style = Utility.ox_element("mstyle", attributes: { displaystyle: 'true' })
         Utility.update_nodes(style, mathml_content)
         Utility.update_nodes(math, [style])
         Ox.dump(math, indent: 2)
@@ -33,7 +33,7 @@ module Plurimath
 
       def to_mathml_without_math_tag
         Utility.update_nodes(
-          Utility.omml_element("mrow"),
+          Utility.ox_element("mrow"),
           mathml_content,
         )
       end
@@ -71,17 +71,18 @@ module Plurimath
           "xmlns:wpi": "http://schemas.microsoft.com/office/word/2010/wordprocessingInk",
           "xmlns:wps": "http://schemas.microsoft.com/office/word/2010/wordprocessingShape",
         }
-        para_element = Utility.omml_element("oMathPara", attributes: attributes, namespace: "m")
-        math_element = Utility.omml_element("oMath", namespace: "m")
+        para_element = Utility.ox_element("oMathPara", attributes: attributes, namespace: "m")
+        math_element = Utility.ox_element("oMath", namespace: "m")
         Utility.update_nodes(math_element, omml_content)
         para_element << math_element
-        Ox.dump(para_element)
+        Ox.dump(para_element, indent: 2)
+          .gsub("&amp;", "&")
       end
 
       def omml_content
         value.map do |object|
           if object.is_a?(Symbol)
-            mt = Utility.omml_element("t", namespace: "m")
+            mt = Utility.ox_element("t", namespace: "m")
             mt << object.value
           else
             object.to_omml_without_math_tag
@@ -95,15 +96,15 @@ module Plurimath
         )
           nary_tag
         else
-          r_element = Utility.omml_element("r", namespace: "m")
+          r_element = Utility.ox_element("r", namespace: "m")
           r_element << Utility.rpr_element if ["symbol", "number", "text"].include?(value.first.class_name)
           Utility.update_nodes(r_element, omml_content)
         end
       end
 
       def nary_tag
-        nary_tag = Utility.omml_element("nary", namespace: "m")
-        e_tag    = Utility.omml_element("e", namespace: "m")
+        nary_tag = Utility.ox_element("nary", namespace: "m")
+        e_tag    = Utility.ox_element("e", namespace: "m")
         e_tag   << value&.last&.to_omml_without_math_tag
         Utility.update_nodes(
           nary_tag,

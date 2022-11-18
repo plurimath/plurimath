@@ -23,7 +23,7 @@
             <w:rPr>
               <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
             </w:rPr>
-            <m:t>n&amp;rarr;&amp;infin;</m:t>
+            <m:t>n&rarr;&infin;</m:t>
           </m:r>
         </m:lim>
       </m:limLow>
