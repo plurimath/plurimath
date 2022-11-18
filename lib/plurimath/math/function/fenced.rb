@@ -26,6 +26,12 @@ module Plurimath
           )
         end
 
+        def to_latex
+          open_paren   = parameter_one ? parameter_one.to_latex : "("
+          fenced_value = parameter_two&.map(&:to_latex)&.join
+          close_paren  = parameter_three ? parameter_three.to_latex : ")"
+          "#{open_paren}#{fenced_value}#{close_paren}"
+        end
         def to_omml_without_math_tag
           d = Utility.omml_element("d", namespace: "m")
           dpr = Utility.omml_element("dPr", namespace: "m")
