@@ -16,8 +16,10 @@ module Plurimath
         coth
         tanh
         cosh
+        ddot
         hat
         vec
+        dot
         tan
         cos
         cot
@@ -1894,6 +1896,7 @@ module Plurimath
         mathsf
         mathit
         textrm
+        textbf
         mfrak
         mbfit
         msans

@@ -9,7 +9,15 @@ module Plurimath
       attr_accessor :text
 
       def initialize(text)
-        @text = text.gsub(/\s/, "")
+        enti = HTMLEntities.new
+        text = enti.encode(enti.decode(text), :hexadecimal)
+        text = text
+          .gsub(/((?<!\\) )|\n+/, "")
+          .gsub(/\\\\ /, "\\\\\\\\")
+          .gsub(/&#x26;/, "&")
+          .gsub(/&#x22;/, "\"")
+          .gsub(/&#xa;/, "")
+        @text = text
       end
 
       def parse

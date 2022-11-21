@@ -24,7 +24,8 @@ module Plurimath
         end
 
         def to_latex
-          parse_text("latex") || parameter_one
+          text_value = parse_text("latex") || parameter_one
+          text_value&.gsub(" ", "\\ ")
         end
 
         def to_html

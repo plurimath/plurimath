@@ -92,8 +92,9 @@ module Plurimath
       end
 
       rule(:symbol_class_commands) do
-        (slash >> symbols) |
-          (unary >> intermediate_exp.as(:first_value)).as(:unary_functions) |
+        (unary >> intermediate_exp.as(:first_value)).as(:unary_functions) |
+          (str("&#x") >> match["0-9a-fA-F"].repeat >> str(";")).as(:unicode_symbols) |
+          (slash >> symbols) |
           unary.as(:unary_functions) |
           binary |
           under_over |
@@ -109,7 +110,8 @@ module Plurimath
           match["a-zA-Z"].as(:symbols) |
           (str('"') >> match("[^\"]").repeat >> str('"')).as(:text) |
           match(/\d+(\.[0-9]+)|\d/).repeat(1).as(:number) |
-          str("\\\\").as("\\\\")
+          str("\\\\").as("\\\\") |
+          str("\\ ").as(:space)
       end
 
       rule(:intermediate_exp) do
@@ -145,6 +147,8 @@ module Plurimath
           (begining >> array_args >> expression.as(:table_data) >> ending).as(:environment) |
           (begining >> expression.as(:table_data) >> ending).as(:environment) |
           (slash >> environment >> intermediate_exp).as(:table_data) |
+          (binary_functions.as(:binary_functions) >> power >> sequence.as(:supscript)).as(:power) |
+          (binary_functions.as(:binary_functions) >> base >> sequence.as(:subscript)).as(:base) |
           power_base |
           binary_functions |
           intermediate_exp
@@ -170,7 +174,8 @@ module Plurimath
       end
 
       rule(:iteration) do
-        (sequence.as(:sequence) >> expression.as(:expression)) | sequence
+        (sequence.as(:sequence) >> expression.as(:expression)) |
+          sequence
       end
 
       rule(:expression) { (iteration >> expression) | iteration }
