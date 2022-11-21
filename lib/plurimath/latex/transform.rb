@@ -8,6 +8,7 @@ module Plurimath
       rule(number: simple(:num))    { Math::Number.new(num) }
       rule(power: simple(:power))   { power }
       rule(unary: simple(:unary))   { Utility.get_class(unary).new }
+      rule(space: simple(:space))   { Math::Function::Text.new(" ") }
       rule(operant: simple(:oper))  { Math::Symbol.new(oper) }
       rule("\\\\": simple(:slash))  { Math::Symbol.new(slash) }
       rule(symbol: simple(:symbol)) { Math::Symbol.new(symbol) }
@@ -23,6 +24,10 @@ module Plurimath
 
       rule(text: simple(:text)) do
         Math::Function::Text.new(text)
+      end
+
+      rule(unicode_symbols: simple(:unicode)) do
+        Math::Unicode.new(unicode)
       end
 
       rule(binary: simple(:binary)) do
@@ -144,7 +149,7 @@ module Plurimath
 
       rule(sequence: simple(:sequence),
            expression: simple(:expr)) do
-        [sequence, expr]
+        [sequence, expr].compact
       end
 
       rule(sequence: simple(:sequence),
@@ -157,6 +162,22 @@ module Plurimath
         Math::Function::Base.new(
           unary,
           subscript,
+        )
+      end
+
+      rule(binary_functions: simple(:unary),
+           subscript: simple(:subscript)) do
+        Math::Function::Base.new(
+          unary,
+          subscript,
+        )
+      end
+
+      rule(binary_functions: simple(:unary),
+           supscript: simple(:supscript)) do
+        Math::Function::Power.new(
+          unary,
+          supscript,
         )
       end
 
@@ -199,6 +220,22 @@ module Plurimath
           Math::Symbol.new(
             Constants::SYMBOLS[sym.to_sym] || sym,
           ),
+          supscript,
+        )
+      end
+
+      rule(unicode_symbols: simple(:sym),
+           subscript: simple(:subscript)) do
+        Math::Function::Base.new(
+          Math::Unicode.new(sym),
+          subscript,
+        )
+      end
+
+      rule(unicode_symbols: simple(:sym),
+           supscript: simple(:supscript)) do
+        Math::Function::Power.new(
+          Math::Unicode.new(sym),
           supscript,
         )
       end
@@ -289,6 +326,12 @@ module Plurimath
       end
 
       rule(lparen: simple(:lparen),
+           unicode_symbols: simple(:sym),
+           rparen: simple(:rparen)) do
+        Math::Unicode.new(sym)
+      end
+
+      rule(lparen: simple(:lparen),
            expression: simple(:expr),
            rparen: simple(:rparen)) do
         expr
@@ -341,6 +384,16 @@ module Plurimath
           Math::Symbol.new(
             Constants::SYMBOLS[sym.to_sym] || sym,
           ),
+          subscript,
+          supscript,
+        )
+      end
+
+      rule(unicode_symbols: simple(:sym),
+           subscript: simple(:subscript),
+           supscript: simple(:supscript)) do
+        Math::Function::PowerBase.new(
+          Math::Unicode.new(sym),
           subscript,
           supscript,
         )

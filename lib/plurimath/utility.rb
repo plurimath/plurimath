@@ -14,6 +14,7 @@ module Plurimath
       script: Math::Function::FontStyle::Script,
       mathsf: Math::Function::FontStyle::SansSerif,
       mathbf: Math::Function::FontStyle::Bold,
+      textbf: Math::Function::FontStyle::Bold,
       bold: Math::Function::FontStyle::Bold,
       bbb: Math::Function::FontStyle::DoubleStruck,
       bf: Math::Function::FontStyle::Bold,
