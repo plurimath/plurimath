@@ -4,6 +4,7 @@ require "parslet"
 module Plurimath
   class Asciimath
     class Parse < Parslet::Parser
+      rule(:td)     { expression.as(:td) }
       rule(:base)   { str("_") }
       rule(:space)  { str(" ") }
       rule(:power)  { str("^") }
@@ -14,10 +15,6 @@ module Plurimath
       rule(:left_right_close_paren) { str(")") | str("]") }
       rule(:color_left_parenthesis) { str("(") | str("[") | str("{") }
       rule(:color_right_parenthesis) { str(")") | str("]") | str("}") }
-
-      rule(:symbols) do
-        arr_to_expression(Constants::SYMBOLS.keys, :symbol)
-      end
 
       rule(:binary_classes) do
         arr_to_expression(Constants::BINARY_CLASSES, :binary_class)
@@ -89,11 +86,6 @@ module Plurimath
           (left_right_open_paren.as(:open_tr) >> td.as(:tds_list) >> left_right_close_paren).as(:table_row)
       end
 
-      rule(:td) do
-        (expression.as(:td) >> comma >> td.as(:tds)) |
-          expression.as(:td)
-      end
-
       rule(:color_value) do
         (color_left_parenthesis.capture(:paren) >> read_text.as(:text) >> color_right_parenthesis.maybe) |
           iteration |
@@ -108,6 +100,7 @@ module Plurimath
 
       rule(:iteration) do
         table.as(:table) |
+          comma.as(:comma) |
           (sequence.as(:dividend) >> str("mod").as(:mod) >> sequence.as(:divisor)).as(:mod) |
           (str("color").as(:binary_class) >> color_value.as(:base_value).maybe >> iteration.as(:power_value).maybe) |
           (power_base_rules >> power_base) |
@@ -129,13 +122,8 @@ module Plurimath
       def arr_to_expression(arr, name = nil)
         type = arr.first.class
         arr.reduce do |expression, expr_string|
-          as_value = if name.nil?
-                       expr_string.is_a?(type) ? expr_string : expression
-                     else
-                       name
-                     end
-          expression = str(expression).as(as_value) if expression.is_a?(type)
-          expression | str(expr_string).as(as_value)
+          expression = str(expression).as(name) if expression.is_a?(type)
+          expression | str(expr_string).as(name)
         end
       end
 
@@ -171,8 +159,6 @@ module Plurimath
           (first_value.as(:unary_class) >> space.maybe >> sequence.maybe).as(:unary)
         when :fonts
           first_value.as(:fonts_class) >> space.maybe >> sequence.as(:fonts_value)
-        else
-          first_value
         end
       end
     end

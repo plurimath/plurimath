@@ -35,7 +35,7 @@ RSpec.describe Plurimath::Mathml::Parser do
       expected_value = Plurimath::Math::Formula.new([
         Plurimath::Math::Function::Power.new(
           Plurimath::Math::Symbol.new("x"),
-          Plurimath::Math::Symbol.new("'"),
+          Plurimath::Math::Symbol.new("&#x2032;"),
         )
       ])
       expect(formula).to eq(expected_value)

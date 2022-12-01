@@ -11,6 +11,10 @@ module Plurimath
                          parameter_two = "script")
             super
           end
+
+          def to_asciimath
+            "mathcal#{wrapped(parameter_one)}"
+          end
         end
       end
     end

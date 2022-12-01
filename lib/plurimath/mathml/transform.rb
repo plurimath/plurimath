@@ -9,6 +9,7 @@ module Plurimath
       rule(xref: simple(:xref))     { nil }
       rule(mtd: sequence(:mtd))     { Math::Function::Td.new(mtd) }
       rule(mtr: sequence(:mtr))     { Math::Function::Tr.new(mtr) }
+      rule(math: subtree(:math))    { Utility.filter_values(math.flatten.compact) }
       rule(accent: simple(:acc))    { nil }
       rule(none: sequence(:none))   { nil }
       rule(maxsize: simple(:att))   { nil }

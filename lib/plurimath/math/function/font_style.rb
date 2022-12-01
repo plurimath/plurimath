@@ -15,10 +15,14 @@ module Plurimath
           Utility.update_nodes(
             Utility.ox_element(
               "mstyle",
-              attributes: { mathvariant: parameter_two }
+              attributes: { mathvariant: parameter_two },
             ),
             [first_value],
           )
+        end
+
+        def to_html
+          "<i>#{parameter_two}</i>#{parameter_one.to_html}"
         end
 
         def to_latex

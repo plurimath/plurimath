@@ -41,7 +41,7 @@ RSpec.describe Plurimath::Mathml::Parser do
         Plurimath::Math::Function::Underover.new(
           Plurimath::Math::Function::Sum.new,
           Plurimath::Math::Function::Prod.new,
-          Plurimath::Math::Symbol.new("vvv"),
+          Plurimath::Math::Symbol.new("&#x22c1;"),
         )
       ])
       expect(formula).to eq(expected_value)
@@ -324,7 +324,7 @@ RSpec.describe Plurimath::Mathml::Parser do
       expected_value = Plurimath::Math::Formula.new([
         Plurimath::Math::Function::Sin.new,
         Plurimath::Math::Function::Overset.new(
-          Plurimath::Math::Symbol.new("theta"),
+          Plurimath::Math::Symbol.new("&#x3b8;"),
           Plurimath::Math::Function::Sum.new,
         ),
       ])
@@ -368,7 +368,7 @@ RSpec.describe Plurimath::Mathml::Parser do
     it "returns formula of sum" do
       expected_value = Plurimath::Math::Formula.new([
         Plurimath::Math::Function::Overset.new(
-          Plurimath::Math::Number.new("Theta"),
+          Plurimath::Math::Number.new("&#x398;"),
           Plurimath::Math::Function::Sum.new,
         )
       ])
@@ -404,7 +404,7 @@ RSpec.describe Plurimath::Mathml::Parser do
             Plurimath::Math::Symbol.new("="),
             Plurimath::Math::Function::Frac.new(
               Plurimath::Math::Number.new("12"),
-              Plurimath::Math::Symbol.new("square")
+              Plurimath::Math::Symbol.new("&#x25a1;")
             ),
           ]),
           Plurimath::Math::Number.new("33"),
@@ -712,7 +712,7 @@ RSpec.describe Plurimath::Mathml::Parser do
     it "returns formula of prod and theta" do
       expected_value = Plurimath::Math::Formula.new([
         Plurimath::Math::Function::Underset.new(
-          Plurimath::Math::Symbol.new("theta"),
+          Plurimath::Math::Symbol.new("&#x3b8;"),
           Plurimath::Math::Function::Prod.new,
         ),
         Plurimath::Math::Symbol.new("i"),
@@ -735,7 +735,7 @@ RSpec.describe Plurimath::Mathml::Parser do
     it "returns formula of root and theta" do
       expected_value = Plurimath::Math::Formula.new([
         Plurimath::Math::Function::Root.new(
-          Plurimath::Math::Symbol.new("theta"),
+          Plurimath::Math::Symbol.new("&#x3b8;"),
           Plurimath::Math::Symbol.new("x"),
         )
       ])
@@ -812,7 +812,7 @@ RSpec.describe Plurimath::Mathml::Parser do
             Plurimath::Math::Symbol.new("="),
             Plurimath::Math::Function::Color.new(
               Plurimath::Math::Function::Text.new("blue"),
-              Plurimath::Math::Symbol.new("!="),
+              Plurimath::Math::Symbol.new("&#x2260;"),
             )
           ]),
           Plurimath::Math::Number.new("33"),
@@ -1161,7 +1161,7 @@ RSpec.describe Plurimath::Mathml::Parser do
       expected_value = Plurimath::Math::Formula.new([
         Plurimath::Math::Function::Msgroup.new([
           Plurimath::Math::Symbol.new("n"),
-          Plurimath::Math::Symbol.new("<"),
+          Plurimath::Math::Symbol.new("&#x3c;"),
           Plurimath::Math::Number.new("1")
         ])
       ])
@@ -1306,9 +1306,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     }
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Symbol.new("Delta"),
+        Plurimath::Math::Symbol.new("&#x394;"),
         Plurimath::Math::Formula.new([
-          Plurimath::Math::Symbol.new("nu")
+          Plurimath::Math::Symbol.new("&#x3bd;")
         ])
       ])
       expect(formula).to eq(expected_value)
@@ -1394,7 +1394,7 @@ RSpec.describe Plurimath::Mathml::Parser do
             Plurimath::Math::Symbol.new("i")
           ])
         ),
-        Plurimath::Math::Symbol.new("-"),
+        Plurimath::Math::Symbol.new("&#x2212;"),
         Plurimath::Math::Function::Base.new(
           Plurimath::Math::Formula.new([
             Plurimath::Math::Symbol.new("x")

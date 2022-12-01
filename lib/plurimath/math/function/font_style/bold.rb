@@ -11,6 +11,14 @@ module Plurimath
                          parameter_two = "bold")
             super
           end
+
+          def to_asciimath
+            "mathbf#{wrapped(parameter_one)}"
+          end
+
+          def to_latex
+            "\\mathbf{#{super}}"
+          end
         end
       end
     end

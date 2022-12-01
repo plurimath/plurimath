@@ -7,9 +7,8 @@ module Plurimath
     module Function
       class Color < BinaryFunction
         def to_asciimath
-          first_value  = parameter_one.parameter_one if parameter_one
-          second_value = parameter_two.to_asciimath if parameter_two
-          "color(#{first_value})#{second_value}"
+          first_value = parameter_one.parameter_one if parameter_one
+          "color(#{first_value})#{wrapped(parameter_two)}"
         end
 
         def to_mathml_without_math_tag

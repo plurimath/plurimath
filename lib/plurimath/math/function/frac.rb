@@ -7,9 +7,7 @@ module Plurimath
     module Function
       class Frac < BinaryFunction
         def to_asciimath
-          first_value = parameter_one.to_asciimath if parameter_one
-          second_value = parameter_two.to_asciimath if parameter_two
-          "frac#{first_value}#{second_value}"
+          "frac#{wrapped(parameter_one)}#{wrapped(parameter_two)}"
         end
 
         def to_mathml_without_math_tag

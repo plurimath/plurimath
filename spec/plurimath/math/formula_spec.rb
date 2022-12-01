@@ -643,7 +643,7 @@ RSpec.describe Plurimath::Math::Formula do
     context "contains mathfrak formula string" do
       let(:exp) { "mathfrak(theta)(i)" }
       it 'converts formula back to Asciimath string for mathfrak function' do
-        expect(formula).to eql('mathfrak(theta)(i)')
+        expect(formula).to eql('fr(theta)(i)')
       end
     end
 

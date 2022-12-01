@@ -40,7 +40,7 @@ RSpec.describe Plurimath::Math::Function::Td do
       let(:second) { Plurimath::Math::Symbol.new("Theta") }
 
       it 'matches epxected value of Td' do
-        expect(double_value_td).to eq("[theta,Theta]")
+        expect(double_value_td).to eq("thetaTheta")
       end
 
       it "doesn't match epxected value of Td" do
