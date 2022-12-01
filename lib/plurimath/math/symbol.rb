@@ -15,7 +15,11 @@ module Plurimath
 
       def to_asciimath
         symbol = Asciimath::Constants::SYMBOLS.invert[value.strip.to_sym].to_s
-        symbol.empty? ? value : symbol
+        if value.match(/&#x[0-9a-fA-F]/) && symbol.empty?
+          Latex::Constants::SYMBOLS.invert[value]
+        else
+          symbol.empty? ? value : symbol
+        end
       end
 
       def to_mathml_without_math_tag
