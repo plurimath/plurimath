@@ -11,6 +11,10 @@ module Plurimath
                          parameter_two = "fraktur")
             super
           end
+
+          def to_asciimath
+            "fr#{wrapped(parameter_one)}"
+          end
         end
       end
     end

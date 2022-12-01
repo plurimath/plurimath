@@ -11,6 +11,10 @@ module Plurimath
                          parameter_two = "double-struck")
             super
           end
+
+          def to_asciimath
+            "mathbb#{wrapped(parameter_one)}"
+          end
         end
       end
     end

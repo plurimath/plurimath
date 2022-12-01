@@ -26,12 +26,20 @@ module Plurimath
           )
         end
 
+        def to_html
+          first_value  = parameter_one.to_html
+          second_value = parameter_two.map(&:to_html).join
+          third_value  = parameter_three.to_html
+          "<i>#{first_value}</i>#{second_value}<i>#{third_value}</i>"
+        end
+
         def to_latex
           open_paren   = parameter_one ? parameter_one.to_latex : "("
           fenced_value = parameter_two&.map(&:to_latex)&.join
           close_paren  = parameter_three ? parameter_three.to_latex : ")"
           "#{open_paren}#{fenced_value}#{close_paren}"
         end
+
         def to_omml_without_math_tag
           d = Utility.ox_element("d", namespace: "m")
           dpr = Utility.ox_element("dPr", namespace: "m")

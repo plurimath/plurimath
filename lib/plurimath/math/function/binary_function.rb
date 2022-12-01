@@ -57,8 +57,8 @@ module Plurimath
         end
 
         def to_html
-          first_value = "<i>#{parameter_one.to_latex}</i>" if parameter_one
-          second_value = "<i>#{parameter_two.to_latex}</i>" if parameter_two
+          first_value = "<i>#{parameter_one.to_html}</i>" if parameter_one
+          second_value = "<i>#{parameter_two.to_html}</i>" if parameter_two
           "<i>#{class_name}</i>#{first_value}#{second_value}"
         end
 

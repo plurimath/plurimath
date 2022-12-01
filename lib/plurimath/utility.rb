@@ -182,6 +182,21 @@ module Plurimath
         end
       end
 
+      def td_values(objects)
+        sliced = objects.slice_when { |object, _| comma(object) }
+        tds = sliced.map do |slice|
+          Math::Function::Td.new(
+            slice.delete_if { |d| comma(d) },
+          )
+        end
+        tds << Math::Function::Td.new([]) if comma(objects.last)
+        tds
+      end
+
+      def comma(object)
+        object.is_a?(Math::Symbol) && object.value.include?(",")
+      end
+
       def td_value(td_object)
         if td_object.is_a?(String) && td_object.empty?
           Math::Function::Text.new(nil)
@@ -208,7 +223,7 @@ module Plurimath
         elsif Mathml::Constants::CLASSES.any?(string&.strip)
           get_class(string.strip).new
         else
-          Math::Symbol.new(symbol.nil? ? unicode : symbol)
+          Math::Symbol.new(unicode)
         end
       end
 

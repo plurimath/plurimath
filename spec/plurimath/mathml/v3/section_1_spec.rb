@@ -53,7 +53,7 @@ RSpec.describe Plurimath::Mathml::Parser do
               Plurimath::Math::Symbol.new("-"),
               Plurimath::Math::Symbol.new("b")
             ]),
-            Plurimath::Math::Symbol.new("+-"),
+            Plurimath::Math::Symbol.new("&#xb1;"),
             Plurimath::Math::Function::Sqrt.new(
               Plurimath::Math::Formula.new([
                 Plurimath::Math::Function::Power.new(

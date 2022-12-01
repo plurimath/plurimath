@@ -38,7 +38,7 @@ module Plurimath
       end
 
       rule(expr: sequence(:expr)) do
-        Math::Formula.new(expr)
+        expr
       end
 
       rule(power_value: simple(:power_value)) do
@@ -47,6 +47,10 @@ module Plurimath
 
       rule(base_value: simple(:base_value)) do
         base_value
+      end
+
+      rule(comma: simple(:comma)) do
+        Math::Symbol.new(comma)
       end
 
       rule(sequence: simple(:sequence),
@@ -62,33 +66,36 @@ module Plurimath
         [table_row, expr]
       end
 
-      rule(td: simple(:td),
-           tds: simple(:tds)) do
-        [
-          Math::Function::Td.new([Utility.td_value(td)]),
-          tds,
-        ]
+      rule(comma: simple(:comma),
+           expr: simple(:expr)) do
+        [Math::Symbol.new(comma), expr]
       end
 
-      rule(td: simple(:td),
-           tds: sequence(:tds)) do
-        [
-          Math::Function::Td.new([Utility.td_value(td)]),
-        ] + tds
+      rule(comma: simple(:comma),
+           expr: sequence(:expr)) do
+        expr.insert(0, Math::Symbol.new(comma))
       end
 
       rule(td: simple(:td)) do
-        Math::Function::Td.new([Utility.td_value(td)])
+        Math::Function::Td.new(
+          [
+            Utility.td_value(td),
+          ],
+        )
       end
 
-      rule(open_tr: simple(:tr),
-           tds_list: sequence(:tds_list)) do
-        Math::Function::Tr.new(tds_list)
+      rule(td: sequence(:td)) do
+        Utility.td_values(td)
       end
 
       rule(open_tr: simple(:tr),
            tds_list: simple(:tds_list)) do
         Math::Function::Tr.new([tds_list])
+      end
+
+      rule(open_tr: simple(:tr),
+           tds_list: sequence(:tds_list)) do
+        Math::Function::Tr.new(tds_list)
       end
 
       rule(fonts_class: simple(:font_style),
@@ -206,6 +213,18 @@ module Plurimath
         ]
       end
 
+      rule(binary_class: simple(:function),
+           base_value: simple(:base),
+           power_value: simple(:power),
+           expr: sequence(:expr)) do
+        [
+          Utility.get_class(function).new(
+            base,
+            power,
+          ),
+        ] + expr
+      end
+
       rule(unary_class: simple(:function),
            intermediate_exp: simple(:int_exp)) do
         Utility.get_class(function).new(int_exp)
@@ -286,7 +305,33 @@ module Plurimath
           expr.wrapped = true
           expr
         else
-          Math::Formula.new([expr], true)
+          form_value = if expr.is_a?(String)
+                         Utility.get_class("text").new(expr)
+                         expr.empty? ? [] : [expr]
+                       else
+                         expr
+                       end
+          Math::Formula.new(form_value, true)
+        end
+      end
+
+      rule(lparen: simple(:lparen),
+           expr: sequence(:expr),
+           rparen: simple(:rparen)) do
+        if expr.is_a?(Math::Formula)
+          expr.wrapped = true
+          expr
+        else
+          form_value = []
+          expr.map do |exp|
+            form_value << if exp.is_a?(String)
+                            Utility.get_class("text").new(exp)
+                            exp.empty? ? [] : [exp]
+                          else
+                            exp
+                          end
+          end
+          Math::Formula.new(form_value, true)
         end
       end
 

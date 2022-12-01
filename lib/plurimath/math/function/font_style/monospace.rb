@@ -11,6 +11,10 @@ module Plurimath
                          parameter_two = "monospace")
             super
           end
+
+          def to_asciimath
+            "mathtt#{wrapped(parameter_one)}"
+          end
         end
       end
     end

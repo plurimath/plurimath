@@ -11,6 +11,10 @@ module Plurimath
                          parameter_two = "sans-serif")
             super
           end
+
+          def to_asciimath
+            "mathsf#{wrapped(parameter_one)}"
+          end
         end
       end
     end
