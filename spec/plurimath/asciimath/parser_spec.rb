@@ -47,6 +47,31 @@ RSpec.describe Plurimath::Asciimath::Parser do
       end
     end
 
+    context "when contains simple comma separated string" do
+      let(:string) { "(a,a)" }
+
+      it "returns Cos formula" do
+        expected_value = Plurimath::Math::Formula.new([
+          Plurimath::Math::Symbol.new("a"),
+          Plurimath::Math::Symbol.new(","),
+          Plurimath::Math::Symbol.new("a"),
+        ])
+        expect(formula).to eq(expected_value)
+      end
+    end
+
+    context "when contains simple comma and alphabet string" do
+      let(:string) { "a," }
+
+      it "returns Cos formula" do
+        expected_value = Plurimath::Math::Formula.new([
+          Plurimath::Math::Symbol.new("a"),
+          Plurimath::Math::Symbol.new(","),
+        ])
+        expect(formula).to eq(expected_value)
+      end
+    end
+
     context "when contains Cos function string" do
       let(:string) { "cos(2)" }
 
@@ -3199,6 +3224,231 @@ RSpec.describe Plurimath::Asciimath::Parser do
             Plurimath::Math::Formula.new([
               Plurimath::Math::Function::Text.new("Adjustment to texture space"),
             ])
+          )
+        ])
+        expect(formula).to eq(expected_value)
+      end
+    end
+
+    context "when contains long comma separated string" do
+      let(:string) do
+        <<~ASCIIMATH
+          (
+            2, 2, 3, 1, 3, 2, 3, 2, 1, 3, 1, 1, 2, 3, 1,
+            1, 2, 2, 2, 3, 3, 2, 3, 2, 3, 1, 2, 2, 3, 3,
+            2, 2, 2, 1, 3, 3, 3, 2, 3, 2, 1, 3, 2, 3, 1,
+            2, 2, 3, 1, 1, 3, 2, 3, 2, 3, 1, 2, 2, 3, 3,
+            2, 2, 2, 1, 3, 3, 3, 2, 3, 2, 1, 2, 2, 3, 3,
+            3, 2, 3, 2, 1, 2, 2, 2, 1, 3, 3, 3, 2, 3, 2,
+            1, 3, 2, 3, 1, 2, 2, 3, 1, 1
+          )
+        ASCIIMATH
+      end
+      it "returns formula" do
+        expected_value = Plurimath::Math::Formula.new([
+          Plurimath::Math::Formula.new(
+            [
+              Plurimath::Math::Number.new("2"),
+              Plurimath::Math::Symbol.new(", "),
+              Plurimath::Math::Number.new("2"),
+              Plurimath::Math::Symbol.new(", "),
+              Plurimath::Math::Number.new("3"),
+              Plurimath::Math::Symbol.new(", "),
+              Plurimath::Math::Number.new("1"),
+              Plurimath::Math::Symbol.new(", "),
+              Plurimath::Math::Number.new("3"),
+              Plurimath::Math::Symbol.new(", "),
+              Plurimath::Math::Number.new("2"),
+              Plurimath::Math::Symbol.new(", "),
+              Plurimath::Math::Number.new("3"),
+              Plurimath::Math::Symbol.new(", "),
+              Plurimath::Math::Number.new("2"),
+              Plurimath::Math::Symbol.new(", "),
+              Plurimath::Math::Number.new("1"),
+              Plurimath::Math::Symbol.new(", "),
+              Plurimath::Math::Number.new("3"),
+              Plurimath::Math::Symbol.new(", "),
+              Plurimath::Math::Number.new("1"),
+              Plurimath::Math::Symbol.new(", "),
+              Plurimath::Math::Number.new("1"),
+              Plurimath::Math::Symbol.new(", "),
+              Plurimath::Math::Number.new("2"),
+              Plurimath::Math::Symbol.new(", "),
+              Plurimath::Math::Number.new("3"),
+              Plurimath::Math::Symbol.new(", "),
+              Plurimath::Math::Number.new("1"),
+              Plurimath::Math::Symbol.new(",\n"),
+              Plurimath::Math::Number.new("1"),
+              Plurimath::Math::Symbol.new(", "),
+              Plurimath::Math::Number.new("2"),
+              Plurimath::Math::Symbol.new(", "),
+              Plurimath::Math::Number.new("2"),
+              Plurimath::Math::Symbol.new(", "),
+              Plurimath::Math::Number.new("2"),
+              Plurimath::Math::Symbol.new(", "),
+              Plurimath::Math::Number.new("3"),
+              Plurimath::Math::Symbol.new(", "),
+              Plurimath::Math::Number.new("3"),
+              Plurimath::Math::Symbol.new(", "),
+              Plurimath::Math::Number.new("2"),
+              Plurimath::Math::Symbol.new(", "),
+              Plurimath::Math::Number.new("3"),
+              Plurimath::Math::Symbol.new(", "),
+              Plurimath::Math::Number.new("2"),
+              Plurimath::Math::Symbol.new(", "),
+              Plurimath::Math::Number.new("3"),
+              Plurimath::Math::Symbol.new(", "),
+              Plurimath::Math::Number.new("1"),
+              Plurimath::Math::Symbol.new(", "),
+              Plurimath::Math::Number.new("2"),
+              Plurimath::Math::Symbol.new(", "),
+              Plurimath::Math::Number.new("2"),
+              Plurimath::Math::Symbol.new(", "),
+              Plurimath::Math::Number.new("3"),
+              Plurimath::Math::Symbol.new(", "),
+              Plurimath::Math::Number.new("3"),
+              Plurimath::Math::Symbol.new(",\n"),
+              Plurimath::Math::Number.new("2"),
+              Plurimath::Math::Symbol.new(", "),
+              Plurimath::Math::Number.new("2"),
+              Plurimath::Math::Symbol.new(", "),
+              Plurimath::Math::Number.new("2"),
+              Plurimath::Math::Symbol.new(", "),
+              Plurimath::Math::Number.new("1"),
+              Plurimath::Math::Symbol.new(", "),
+              Plurimath::Math::Number.new("3"),
+              Plurimath::Math::Symbol.new(", "),
+              Plurimath::Math::Number.new("3"),
+              Plurimath::Math::Symbol.new(", "),
+              Plurimath::Math::Number.new("3"),
+              Plurimath::Math::Symbol.new(", "),
+              Plurimath::Math::Number.new("2"),
+              Plurimath::Math::Symbol.new(", "),
+              Plurimath::Math::Number.new("3"),
+              Plurimath::Math::Symbol.new(", "),
+              Plurimath::Math::Number.new("2"),
+              Plurimath::Math::Symbol.new(", "),
+              Plurimath::Math::Number.new("1"),
+              Plurimath::Math::Symbol.new(", "),
+              Plurimath::Math::Number.new("3"),
+              Plurimath::Math::Symbol.new(", "),
+              Plurimath::Math::Number.new("2"),
+              Plurimath::Math::Symbol.new(", "),
+              Plurimath::Math::Number.new("3"),
+              Plurimath::Math::Symbol.new(", "),
+              Plurimath::Math::Number.new("1"),
+              Plurimath::Math::Symbol.new(",\n"),
+              Plurimath::Math::Number.new("2"),
+              Plurimath::Math::Symbol.new(", "),
+              Plurimath::Math::Number.new("2"),
+              Plurimath::Math::Symbol.new(", "),
+              Plurimath::Math::Number.new("3"),
+              Plurimath::Math::Symbol.new(", "),
+              Plurimath::Math::Number.new("1"),
+              Plurimath::Math::Symbol.new(", "),
+              Plurimath::Math::Number.new("1"),
+              Plurimath::Math::Symbol.new(", "),
+              Plurimath::Math::Number.new("3"),
+              Plurimath::Math::Symbol.new(", "),
+              Plurimath::Math::Number.new("2"),
+              Plurimath::Math::Symbol.new(", "),
+              Plurimath::Math::Number.new("3"),
+              Plurimath::Math::Symbol.new(", "),
+              Plurimath::Math::Number.new("2"),
+              Plurimath::Math::Symbol.new(", "),
+              Plurimath::Math::Number.new("3"),
+              Plurimath::Math::Symbol.new(", "),
+              Plurimath::Math::Number.new("1"),
+              Plurimath::Math::Symbol.new(", "),
+              Plurimath::Math::Number.new("2"),
+              Plurimath::Math::Symbol.new(", "),
+              Plurimath::Math::Number.new("2"),
+              Plurimath::Math::Symbol.new(", "),
+              Plurimath::Math::Number.new("3"),
+              Plurimath::Math::Symbol.new(", "),
+              Plurimath::Math::Number.new("3"),
+              Plurimath::Math::Symbol.new(",\n"),
+              Plurimath::Math::Number.new("2"),
+              Plurimath::Math::Symbol.new(", "),
+              Plurimath::Math::Number.new("2"),
+              Plurimath::Math::Symbol.new(", "),
+              Plurimath::Math::Number.new("2"),
+              Plurimath::Math::Symbol.new(", "),
+              Plurimath::Math::Number.new("1"),
+              Plurimath::Math::Symbol.new(", "),
+              Plurimath::Math::Number.new("3"),
+              Plurimath::Math::Symbol.new(", "),
+              Plurimath::Math::Number.new("3"),
+              Plurimath::Math::Symbol.new(", "),
+              Plurimath::Math::Number.new("3"),
+              Plurimath::Math::Symbol.new(", "),
+              Plurimath::Math::Number.new("2"),
+              Plurimath::Math::Symbol.new(", "),
+              Plurimath::Math::Number.new("3"),
+              Plurimath::Math::Symbol.new(", "),
+              Plurimath::Math::Number.new("2"),
+              Plurimath::Math::Symbol.new(", "),
+              Plurimath::Math::Number.new("1"),
+              Plurimath::Math::Symbol.new(", "),
+              Plurimath::Math::Number.new("2"),
+              Plurimath::Math::Symbol.new(", "),
+              Plurimath::Math::Number.new("2"),
+              Plurimath::Math::Symbol.new(", "),
+              Plurimath::Math::Number.new("3"),
+              Plurimath::Math::Symbol.new(", "),
+              Plurimath::Math::Number.new("3"),
+              Plurimath::Math::Symbol.new(",\n"),
+              Plurimath::Math::Number.new("3"),
+              Plurimath::Math::Symbol.new(", "),
+              Plurimath::Math::Number.new("2"),
+              Plurimath::Math::Symbol.new(", "),
+              Plurimath::Math::Number.new("3"),
+              Plurimath::Math::Symbol.new(", "),
+              Plurimath::Math::Number.new("2"),
+              Plurimath::Math::Symbol.new(", "),
+              Plurimath::Math::Number.new("1"),
+              Plurimath::Math::Symbol.new(", "),
+              Plurimath::Math::Number.new("2"),
+              Plurimath::Math::Symbol.new(", "),
+              Plurimath::Math::Number.new("2"),
+              Plurimath::Math::Symbol.new(", "),
+              Plurimath::Math::Number.new("2"),
+              Plurimath::Math::Symbol.new(", "),
+              Plurimath::Math::Number.new("1"),
+              Plurimath::Math::Symbol.new(", "),
+              Plurimath::Math::Number.new("3"),
+              Plurimath::Math::Symbol.new(", "),
+              Plurimath::Math::Number.new("3"),
+              Plurimath::Math::Symbol.new(", "),
+              Plurimath::Math::Number.new("3"),
+              Plurimath::Math::Symbol.new(", "),
+              Plurimath::Math::Number.new("2"),
+              Plurimath::Math::Symbol.new(", "),
+              Plurimath::Math::Number.new("3"),
+              Plurimath::Math::Symbol.new(", "),
+              Plurimath::Math::Number.new("2"),
+              Plurimath::Math::Symbol.new(",\n"),
+              Plurimath::Math::Number.new("1"),
+              Plurimath::Math::Symbol.new(", "),
+              Plurimath::Math::Number.new("3"),
+              Plurimath::Math::Symbol.new(", "),
+              Plurimath::Math::Number.new("2"),
+              Plurimath::Math::Symbol.new(", "),
+              Plurimath::Math::Number.new("3"),
+              Plurimath::Math::Symbol.new(", "),
+              Plurimath::Math::Number.new("1"),
+              Plurimath::Math::Symbol.new(", "),
+              Plurimath::Math::Number.new("2"),
+              Plurimath::Math::Symbol.new(", "),
+              Plurimath::Math::Number.new("2"),
+              Plurimath::Math::Symbol.new(", "),
+              Plurimath::Math::Number.new("3"),
+              Plurimath::Math::Symbol.new(", "),
+              Plurimath::Math::Number.new("1"),
+              Plurimath::Math::Symbol.new(", "),
+              Plurimath::Math::Number.new("1")
+            ],
+            true
           )
         ])
         expect(formula).to eq(expected_value)

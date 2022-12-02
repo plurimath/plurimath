@@ -801,7 +801,7 @@ RSpec.describe Plurimath::Math::Formula do
       end
     end
 
-    context "contains Plurimath Formula" do
+    context "contains Plurimath Formula #1" do
       let(:exp) do
         Plurimath::Math::Formula.new([
           Plurimath::Math::Formula.new([
@@ -814,6 +814,23 @@ RSpec.describe Plurimath::Math::Formula do
       end
       it 'converts from formula to asciimath string' do
         expected_value = "Δν"
+        expect(exp.to_asciimath).to eq(expected_value)
+      end
+    end
+
+    context "contains Plurimath Formula #2" do
+      let(:exp) do
+        Plurimath::Math::Formula.new([
+          Plurimath::Math::Formula.new([
+            Plurimath::Math::Symbol.new("&#x2215;"),
+            Plurimath::Math::Formula.new([
+              Plurimath::Math::Symbol.new("&#x3bd;")
+            ])
+          ])
+        ])
+      end
+      it 'converts from formula to asciimath string' do
+        expected_value = "slashnu"
         expect(exp.to_asciimath).to eq(expected_value)
       end
     end
