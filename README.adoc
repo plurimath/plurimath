@@ -63,6 +63,9 @@ Since we have the object of **Plurimath::Formula**,We can generate **AsciiMath**
 formula.to_asciimath
 > sin(1)
 ----
+==== Note:
+====== Asciimath doesn't support link:Latex-Symbols-Support.adoc[following symbols] but Latex does.So from Latex to Asciimath conversion we are returning latex's supported symbols if it's not supported in Asciimath.
+
 ==== Latex Output conversion
 [source, ruby]
 ----
