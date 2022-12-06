@@ -97,7 +97,7 @@ RSpec.describe Plurimath::Math::Formula do
     context "contains csc formula string with sum power base" do
       let(:exp) { "csc(sum_(theta)^sin(cong)) = {1+1}" }
       it 'converts formula back to Asciimath string for csc function' do
-        expect(formula).to eql("csc(sum_(theta)^sin(cong))=(1+1)")
+        expect(formula).to eql("csc(sum_(theta)^sin(~=))=(1+1)")
       end
     end
 

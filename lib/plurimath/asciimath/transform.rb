@@ -3,9 +3,12 @@
 module Plurimath
   class Asciimath
     class Transform < Parslet::Transform
-      rule(expr: simple(:expr))   { expr }
-      rule(unary: simple(:unary)) { unary }
-      rule(table: simple(:table)) { table }
+      rule(expr: simple(:expr))     { expr }
+      rule(expr: sequence(:expr))   { expr }
+      rule(unary: simple(:unary))   { unary }
+      rule(table: simple(:table))   { table }
+      rule(comma: simple(:comma))   { Math::Symbol.new(comma) }
+      rule(number: simple(:number)) { Math::Number.new(number) }
 
       rule(sequence: simple(:sequence))     { sequence }
       rule(table_row: simple(:table_row))   { table_row }
@@ -26,24 +29,18 @@ module Plurimath
         Utility.get_class(binary).new
       end
 
-      rule(number: simple(:number)) do
-        Math::Number.new(number)
-      end
-
       rule(comma_separated: subtree(:comma_separated)) do
         comma_separated.flatten
       end
 
       rule(symbol: simple(:symbol)) do
-        Math::Symbol.new(symbol)
+        Math::Symbol.new(
+          (Constants::SYMBOLS[symbol.to_sym] || symbol).to_s,
+        )
       end
 
       rule(text: simple(:text)) do
         text.is_a?(String) ? Utility.get_class("text").new(text) : text
-      end
-
-      rule(expr: sequence(:expr)) do
-        expr
       end
 
       rule(power_value: simple(:power_value)) do
@@ -52,10 +49,6 @@ module Plurimath
 
       rule(base_value: simple(:base_value)) do
         base_value
-      end
-
-      rule(comma: simple(:comma)) do
-        Math::Symbol.new(comma)
       end
 
       rule(sequence: simple(:sequence),
@@ -73,7 +66,10 @@ module Plurimath
 
       rule(comma: simple(:comma),
            expr: simple(:expr)) do
-        [Math::Symbol.new(comma), expr]
+        [
+          Math::Symbol.new(comma),
+          expr,
+        ]
       end
 
       rule(comma: simple(:comma),
@@ -178,7 +174,9 @@ module Plurimath
       rule(symbol: simple(:symbol),
            power: simple(:power)) do
         Math::Function::Power.new(
-          Math::Symbol.new(symbol),
+          Math::Symbol.new(
+            (Constants::SYMBOLS[symbol.to_sym] || symbol).to_s,
+          ),
           power,
         )
       end
@@ -186,7 +184,9 @@ module Plurimath
       rule(symbol: simple(:symbol),
            base: simple(:base)) do
         Math::Function::Base.new(
-          Math::Symbol.new(symbol),
+          Math::Symbol.new(
+            (Constants::SYMBOLS[symbol.to_sym] || symbol).to_s,
+          ),
           base,
         )
       end
@@ -246,9 +246,11 @@ module Plurimath
       end
 
       rule(unary_class: simple(:function),
-           symbol: simple(:new_symbol)) do
-        symbol = Math::Symbol.new(new_symbol)
-        Utility.get_class(function).new(symbol)
+           symbol: simple(:symbol)) do
+        symbol_object = Math::Symbol.new(
+          (Constants::SYMBOLS[symbol.to_sym] || symbol).to_s,
+        )
+        Utility.get_class(function).new(symbol_object)
       end
 
       rule(unary_class: simple(:function),
@@ -315,7 +317,9 @@ module Plurimath
            base_value: simple(:base),
            power_value: simple(:power)) do
         Math::Function::PowerBase.new(
-          Math::Symbol.new(symbol),
+          Math::Symbol.new(
+            (Constants::SYMBOLS[symbol.to_sym] || symbol).to_s,
+          ),
           base,
           power,
         )
