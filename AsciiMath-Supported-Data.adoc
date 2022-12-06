@@ -70,8 +70,10 @@ Classes
 | ul        |
 | g         |
 | f         |
+|===
+
 --
-=== Symbols
+* Symbols
 
 ** twoheadrightarrowtail
 ** twoheadrightarrow
