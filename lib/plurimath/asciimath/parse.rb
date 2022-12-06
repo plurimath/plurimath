@@ -6,14 +6,14 @@ module Plurimath
     class Parse < Parslet::Parser
       rule(:td)     { expression.as(:td) }
       rule(:base)   { str("_") }
-      rule(:space)  { str(" ") }
       rule(:power)  { str("^") }
-      rule(:comma)  { (str(",") >> space) | str(",") }
+      rule(:space)  { match(/\s+/) }
+      rule(:comma)  { (str(",") >> space.maybe) }
       rule(:number) { match("[0-9.]").repeat(1).as(:number) }
 
-      rule(:left_right_open_paren)  { str("(") | str("[") }
-      rule(:left_right_close_paren) { str(")") | str("]") }
-      rule(:color_left_parenthesis) { str("(") | str("[") | str("{") }
+      rule(:left_right_open_paren)   { str("(") | str("[") }
+      rule(:left_right_close_paren)  { str(")") | str("]") }
+      rule(:color_left_parenthesis)  { str("(") | str("[") | str("{") }
       rule(:color_right_parenthesis) { str(")") | str("]") | str("}") }
 
       rule(:binary_classes) do
@@ -59,6 +59,7 @@ module Plurimath
         sub_sup_classes |
           binary_classes |
           unary_binary_or_symbols |
+          (match(/[0-9]/).as(:number) >> comma.as(:comma)).repeat(1).as(:comma_separated) |
           quoted_text |
           match["a-zA-Z"].as(:symbol) |
           number

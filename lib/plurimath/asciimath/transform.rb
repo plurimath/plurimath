@@ -9,6 +9,7 @@ module Plurimath
 
       rule(sequence: simple(:sequence))     { sequence }
       rule(table_row: simple(:table_row))   { table_row }
+      rule(sequence: sequence(:sequence))   { sequence }
       rule(power_base: simple(:power_base)) { power_base }
       rule(left_right: simple(:left_right)) { left_right }
       rule(table_left: simple(:table_left)) { table_left }
@@ -27,6 +28,10 @@ module Plurimath
 
       rule(number: simple(:number)) do
         Math::Number.new(number)
+      end
+
+      rule(comma_separated: subtree(:comma_separated)) do
+        comma_separated.flatten
       end
 
       rule(symbol: simple(:symbol)) do
@@ -137,6 +142,16 @@ module Plurimath
         expr.insert(0, sequence)
       end
 
+      rule(sequence: sequence(:sequence),
+           expr: simple(:expr)) do
+        sequence << expr
+      end
+
+      rule(sequence: sequence(:sequence),
+           expr: sequence(:expr)) do
+        sequence + expr
+      end
+
       rule(unary: simple(:unary),
            power: simple(:power)) do
         Math::Function::Power.new(
@@ -242,6 +257,14 @@ module Plurimath
         Utility.get_class(function).new(number)
       end
 
+      rule(number: simple(:number),
+           comma: simple(:comma)) do
+        [
+          Math::Number.new(number),
+          Math::Symbol.new(comma),
+        ]
+      end
+
       rule(table: simple(:table),
            expr: sequence(:expr)) do
         Math::Formula.new([table] + expr)
@@ -301,38 +324,19 @@ module Plurimath
       rule(lparen: simple(:lparen),
            expr: simple(:expr),
            rparen: simple(:rparen)) do
-        if expr.is_a?(Math::Formula)
-          expr.wrapped = true
-          expr
-        else
-          form_value = if expr.is_a?(String)
-                         Utility.get_class("text").new(expr)
-                         expr.empty? ? [] : [expr]
-                       else
-                         expr
-                       end
-          Math::Formula.new(form_value, true)
-        end
+        form_value = if expr.is_a?(String)
+                       Utility.get_class("text").new(expr)
+                       expr.empty? ? [] : [expr]
+                     else
+                       expr
+                     end
+        Math::Formula.new(form_value, true)
       end
 
       rule(lparen: simple(:lparen),
            expr: sequence(:expr),
            rparen: simple(:rparen)) do
-        if expr.is_a?(Math::Formula)
-          expr.wrapped = true
-          expr
-        else
-          form_value = []
-          expr.map do |exp|
-            form_value << if exp.is_a?(String)
-                            Utility.get_class("text").new(exp)
-                            exp.empty? ? [] : [exp]
-                          else
-                            exp
-                          end
-          end
-          Math::Formula.new(form_value, true)
-        end
+        Math::Formula.new(expr, true)
       end
 
       rule(table_left: simple(:table_left),
