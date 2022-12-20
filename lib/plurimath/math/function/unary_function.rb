@@ -16,30 +16,57 @@ module Plurimath
         end
 
         def to_asciimath
-          "#{class_name}#{value_to_asciimath}"
+          value = "(#{asciimath_value})" if parameter_one
+          "#{class_name}#{value}"
         end
 
-        def value_to_asciimath
-          if parameter_one
-            string = parameter_one.to_asciimath
-            parameter_one.is_a?(Math::Formula) ? string : "(#{string})"
+        def asciimath_value
+          return "" unless parameter_one
+
+          case parameter_one
+          when Array
+            parameter_one.compact.map(&:to_asciimath).join
+          else
+            parameter_one.to_asciimath
           end
         end
 
         def to_mathml_without_math_tag
-          row_tag   = Utility.ox_element("mrow")
-          row_value = Utility.ox_element("mo") << class_name
-          first_value = parameter_one&.to_mathml_without_math_tag if parameter_one
-          Utility.update_nodes(row_tag, [row_value, first_value])
+          row_tag = Utility.ox_element("mrow")
+          new_arr = [Utility.ox_element("mo") << class_name]
+          new_arr += mathml_value if parameter_one
+          Utility.update_nodes(row_tag, new_arr)
+        end
+
+        def mathml_value
+          case parameter_one
+          when Array
+            parameter_one.compact.map(&:to_mathml_without_math_tag)
+          else
+            Array(parameter_one.to_mathml_without_math_tag)
+          end
         end
 
         def to_latex
-          first_value = "{#{parameter_one.to_latex}}" if parameter_one
+          first_value = "{#{latex_value}}" if parameter_one
           "\\#{class_name}#{first_value}"
         end
 
+        def latex_value
+          case parameter_one
+          when Array
+            parameter_one.compact.map(&:to_latex).join
+          else
+            parameter_one.to_latex
+          end
+        end
+
         def to_html
-          first_value = "<i>#{parameter_one.to_html}</i>" if parameter_one
+          first_value = if parameter_one.is_a?(Array)
+                          "<i>#{parameter_one.map(&:to_html).join}</i>"
+                        elsif parameter_one
+                          "<i>#{parameter_one.to_html}</i>"
+                        end
           "<i>#{class_name}</i>#{first_value}"
         end
 
@@ -52,8 +79,8 @@ module Plurimath
           rpr = Utility.rpr_element
           mt  = Utility.ox_element("t", namespace: "m") << class_name
           fname << Utility.update_nodes(mr, [rpr, mt])
-          first_value = parameter_one.to_omml_without_math_tag
-          me = Utility.ox_element("e", namespace: "m") << first_value
+          first_value = parameter_one.to_omml_without_math_tag if parameter_one
+          me = Utility.ox_element("e", namespace: "m") << first_value if first_value
           Utility.update_nodes(
             func,
             [

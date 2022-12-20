@@ -754,7 +754,8 @@ RSpec.describe Plurimath::Math::Formula do
             <mstyle displaystyle="true">
               <msubsup>
                 <mi>a</mi>
-                <mfenced open="{" close="}">
+                <mrow>
+                  <mo>{</mo>
                   <mtable>
                     <mtr>
                       <mtd>
@@ -762,7 +763,8 @@ RSpec.describe Plurimath::Math::Formula do
                       </mtd>
                     </mtr>
                   </mtable>
-                </mfenced>
+                  <mo>}</mo>
+                </mrow>
                 <mtext>4 terms</mtext>
               </msubsup>
             </mstyle>

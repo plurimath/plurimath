@@ -15,9 +15,9 @@ module Plurimath
         end
 
         def to_asciimath
-          first_value = parameter_one&.to_asciimath
-          second_value = "_#{parameter_two.to_asciimath}" if parameter_two
-          third_value = "^#{parameter_three.to_asciimath}" if parameter_three
+          first_value = parameter_one.to_asciimath if parameter_one
+          second_value = "_#{wrapped(parameter_two)}" if parameter_two
+          third_value = "^#{wrapped(parameter_three)}" if parameter_three
           "#{first_value}#{second_value}#{third_value}"
         end
 
@@ -54,7 +54,7 @@ module Plurimath
           first_value  = "<i>#{parameter_one.to_html}</i>" if parameter_one
           second_value = "<i>#{parameter_two.to_html}</i>" if parameter_two
           third_value = "<i>#{parameter_three.to_html}</i>" if parameter_three
-          first_value + second_value + third_value
+          "#{first_value}#{second_value}#{third_value}"
         end
 
         def to_omml_without_math_tag
@@ -67,6 +67,13 @@ module Plurimath
 
         def class_name
           self.class.name.split("::").last.downcase
+        end
+
+        def wrapped(field)
+          return "" unless field
+
+          value = field.to_asciimath
+          field.is_a?(Math::Formula) ? "(#{value})" : value
         end
       end
     end

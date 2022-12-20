@@ -9,7 +9,6 @@ module Plurimath
       rule(xref: simple(:xref))     { nil }
       rule(mtd: sequence(:mtd))     { Math::Function::Td.new(mtd) }
       rule(mtr: sequence(:mtr))     { Math::Function::Tr.new(mtr) }
-      rule(math: subtree(:math))    { Utility.filter_values(math.flatten.compact) }
       rule(accent: simple(:acc))    { nil }
       rule(none: sequence(:none))   { nil }
       rule(maxsize: simple(:att))   { nil }
@@ -22,7 +21,7 @@ module Plurimath
       rule(value: sequence(:value)) { Utility.filter_values(value) }
 
       rule(mspace: sequence(:space))    { nil }
-      rule(mstyle: sequence(:mstyle))   { mstyle }
+      rule(mstyle: sequence(:mstyle))   { Utility.filter_values(mstyle) }
       rule(mfenced: simple(:mfenced))   { mfenced }
       rule(mtable: sequence(:mtable))   { Math::Function::Table.new(mtable) }
       rule(mscarry: sequence(:scarry))  { nil }
@@ -34,6 +33,12 @@ module Plurimath
       rule(maligngroup: sequence(:att)) { nil }
       rule(mprescripts: sequence(:att)) { "mprescripts" }
       rule(columnlines: simple(:lines)) { lines }
+
+      rule(math: subtree(:math)) do
+        Utility.filter_values(
+          math.flatten.compact,
+        )
+      end
 
       rule(mphantom: sequence(:phantom)) do
         Math::Function::Phantom.new(phantom)
@@ -147,10 +152,7 @@ module Plurimath
       end
 
       rule(msrow: sequence(:msrow)) do
-        Math::Formula.new(
-          msrow.flatten.compact,
-          true,
-        )
+        Math::Formula.new(msrow.flatten.compact)
       end
 
       rule(mstack: sequence(:stack)) do

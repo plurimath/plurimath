@@ -8,29 +8,26 @@ module Plurimath
       class Fenced < TernaryFunction
         def to_asciimath
           first_value  = parameter_one ? parameter_one.to_asciimath : "("
-          second_value = parameter_two&.map(&:to_asciimath)&.join(",")
+          second_value = parameter_two.map(&:to_asciimath)&.join if parameter_two
           third_value  = parameter_three ? parameter_three.to_asciimath : ")"
           "#{first_value}#{second_value}#{third_value}"
         end
 
         def to_mathml_without_math_tag
-          first_value  = parameter_one&.value
-          second_value = parameter_two&.map(&:to_mathml_without_math_tag)
-          third_value  = parameter_three&.value
+          first_value = Utility.ox_element("mo") << (parameter_one&.value || "")
+          second_value = parameter_two&.map(&:to_mathml_without_math_tag) || []
+          third_value = Utility.ox_element("mo") << (parameter_three&.value || "")
           Utility.update_nodes(
-            Utility.ox_element(
-              "mfenced",
-              attributes: { open: first_value, close: third_value },
-            ),
-            second_value,
+            Utility.ox_element("mrow"),
+            (second_value.insert(0, first_value) << third_value),
           )
         end
 
         def to_html
-          first_value  = parameter_one.to_html
-          second_value = parameter_two.map(&:to_html).join
-          third_value  = parameter_three.to_html
-          "<i>#{first_value}</i>#{second_value}<i>#{third_value}</i>"
+          first_value  = "<i>#{parameter_one.to_html}</i>" if parameter_one
+          second_value = parameter_two.map(&:to_html).join if parameter_two
+          third_value  = "<i>#{parameter_three.to_html}</i>" if parameter_three
+          "#{first_value}#{second_value}#{third_value}"
         end
 
         def to_latex

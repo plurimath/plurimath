@@ -3,11 +3,10 @@
 module Plurimath
   module Math
     class Formula
-      attr_accessor :value, :wrapped
+      attr_accessor :value
 
-      def initialize(value = [], wrapped = false)
+      def initialize(value = [])
         @value = value.is_a?(Array) ? value : [value]
-        @wrapped = wrapped
       end
 
       def ==(object)
@@ -15,20 +14,20 @@ module Plurimath
       end
 
       def to_asciimath
-        if wrapped
-          "(#{value.map(&:to_asciimath).join})"
-        else
-          value.map(&:to_asciimath).join
-        end
+        value.map(&:to_asciimath).join
       end
 
       def to_mathml
-        math  = Utility.ox_element("math", attributes: { xmlns: 'http://www.w3.org/1998/Math/MathML', display: 'block' })
-        style = Utility.ox_element("mstyle", attributes: { displaystyle: 'true' })
+        math_attrs = {
+          xmlns: "http://www.w3.org/1998/Math/MathML",
+          display: "block",
+        }
+        style_attrs = { displaystyle: "true" }
+        math  = Utility.ox_element("math", attributes: math_attrs)
+        style = Utility.ox_element("mstyle", attributes: style_attrs)
         Utility.update_nodes(style, mathml_content)
         Utility.update_nodes(math, [style])
-        Ox.dump(math, indent: 2)
-          .gsub("&amp;", "&")
+        Ox.dump(math, indent: 2).gsub("&amp;", "&")
       end
 
       def to_mathml_without_math_tag
@@ -50,8 +49,8 @@ module Plurimath
         value.map(&:to_html).join
       end
 
-      def to_omml
-        attributes = {
+      def omml_math_attrs
+        {
           "xmlns:m": "http://schemas.openxmlformats.org/officeDocument/2006/math",
           "xmlns:mc": "http://schemas.openxmlformats.org/markup-compatibility/2006",
           "xmlns:mo": "http://schemas.microsoft.com/office/mac/office/2008/main",
@@ -71,12 +70,18 @@ module Plurimath
           "xmlns:wpi": "http://schemas.microsoft.com/office/word/2010/wordprocessingInk",
           "xmlns:wps": "http://schemas.microsoft.com/office/word/2010/wordprocessingShape",
         }
-        para_element = Utility.ox_element("oMathPara", attributes: attributes, namespace: "m")
+      end
+
+      def to_omml
+        para_element = Utility.ox_element(
+          "oMathPara",
+          attributes: omml_math_attrs,
+          namespace: "m",
+        )
         math_element = Utility.ox_element("oMath", namespace: "m")
         Utility.update_nodes(math_element, omml_content)
         para_element << math_element
-        Ox.dump(para_element, indent: 2)
-          .gsub("&amp;", "&")
+        Ox.dump(para_element, indent: 2).gsub("&amp;", "&")
       end
 
       def omml_content

@@ -14,6 +14,8 @@ module Plurimath
       end
 
       def to_asciimath
+        return "" if value.nil?
+
         symbol = Asciimath::Constants::SYMBOLS.invert[value.strip.to_sym].to_s
         if value.match(/&#x[0-9a-fA-F]/) && symbol.empty?
           Latex::Constants::SYMBOLS.invert[value]

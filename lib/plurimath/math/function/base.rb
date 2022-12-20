@@ -13,16 +13,11 @@ module Plurimath
         end
 
         def to_mathml_without_math_tag
-          sub_tag      = Utility.ox_element("msub")
-          first_value  = parameter_one.to_mathml_without_math_tag
-          second_value = parameter_two.to_mathml_without_math_tag
-          Utility.update_nodes(
-            sub_tag,
-            [
-              first_value,
-              second_value,
-            ],
-          )
+          sub_tag = Utility.ox_element("msub")
+          new_arr = []
+          new_arr << parameter_one.to_mathml_without_math_tag if parameter_one
+          new_arr << parameter_two.to_mathml_without_math_tag if parameter_two
+          Utility.update_nodes(sub_tag, new_arr)
         end
 
         def to_latex

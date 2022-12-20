@@ -27,7 +27,7 @@ RSpec.describe Plurimath::Math::Function::Lim do
 
     context "contains base and exponent values" do
       it "matches with asciimath string" do
-        expect(lim.to_asciimath).to eq("lim_70^20")
+        expect(lim.to_asciimath).to eq("lim_(70)^(20)")
       end
     end
   end

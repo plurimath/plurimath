@@ -7,7 +7,7 @@ module Plurimath
   module Math
     module Function
       class Text < UnaryFunction
-        PARSER_REGEX = %r{\\mbox\{(?<mbox>.{1,})\}|unicode\[:(?<unicode>\w{1,})\]}.freeze
+        PARSER_REGEX = %r{unicode\[:(?<unicode>\w{1,})\]}.freeze
 
         def to_asciimath
           "\"#{parse_text('asciimath') || parameter_one}\""
@@ -15,7 +15,7 @@ module Plurimath
 
         def to_mathml_without_math_tag
           text = Utility.ox_element("mtext")
-          text << (parse_text('mathml') || parameter_one) if parameter_one
+          text << (parse_text("mathml") || parameter_one) if parameter_one
         end
 
         def symbol_value(unicode)
@@ -42,9 +42,9 @@ module Plurimath
           html_value&.gsub!(PARSER_REGEX) do |_text|
             last_match = Regexp.last_match
             if ["mathml", "html"].include?(lang)
-              symbol_value(last_match[:unicode]) || last_match[:mbox]
+              symbol_value(last_match[:unicode])
             else
-              last_match[:unicode] || last_match[:mbox]
+              last_match[:unicode]
             end
           end
           html_value

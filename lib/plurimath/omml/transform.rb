@@ -164,6 +164,9 @@ module Plurimath
 
       rule(sSubSup: subtree(:sSubSup)) do
         subsup = sSubSup.flatten.compact
+        subsup.each_with_index do |object, ind|
+          subsup[ind] = Utility.mathml_unary_classes([object]) if object.is_a?(String)
+        end
         Math::Function::PowerBase.new(
           subsup[0],
           subsup[1],

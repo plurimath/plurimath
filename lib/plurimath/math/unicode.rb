@@ -3,7 +3,6 @@
 module Plurimath
   module Math
     class Unicode < Symbol
-
       def to_asciimath
         decode
       end

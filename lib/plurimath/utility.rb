@@ -17,6 +17,7 @@ module Plurimath
       textbf: Math::Function::FontStyle::Bold,
       bold: Math::Function::FontStyle::Bold,
       bbb: Math::Function::FontStyle::DoubleStruck,
+      cal: Math::Function::FontStyle::Script,
       bf: Math::Function::FontStyle::Bold,
       sf: Math::Function::FontStyle::SansSerif,
       tt: Math::Function::FontStyle::Monospace,
@@ -96,10 +97,7 @@ module Plurimath
 
       def rpr_element(wi_tag: false)
         rpr_element = ox_element("rPr", namespace: "w")
-        attributes = {
-          "w:ascii": "Cambria Math",
-          "w:hAnsi": "Cambria Math",
-        }
+        attributes = { "w:ascii": "Cambria Math", "w:hAnsi": "Cambria Math" }
         rpr_element << ox_element(
           "rFonts",
           namespace: "w",
@@ -110,7 +108,7 @@ module Plurimath
       end
 
       def update_nodes(element, nodes)
-        nodes.each { |node| element << node unless node.nil? }
+        nodes&.each { |node| element << node unless node.nil? }
         element
       end
 
@@ -122,12 +120,12 @@ module Plurimath
         ) << rpr_element(wi_tag: wi_tag)
       end
 
-      def filter_values(value, wrapped: false)
+      def filter_values(value)
         return value unless value.is_a?(Array)
 
         compact_value = value.flatten.compact
         if compact_value.length > 1
-          Math::Formula.new(compact_value, wrapped)
+          Math::Formula.new(compact_value)
         else
           compact_value.first
         end
@@ -247,7 +245,7 @@ module Plurimath
       def join_attr_value(attrs, value)
         if value.any?(String)
           new_value = mathml_unary_classes(value)
-          array_value = new_value.is_a?(Array) ? new_value : [new_value]
+          array_value = Array(new_value)
           attrs.nil? ? array_value : join_attr_value(attrs, array_value)
         elsif attrs.nil?
           value
@@ -289,6 +287,28 @@ module Plurimath
             )
           end
         end
+      end
+
+      def unfenced_value(object)
+        case object
+        when Math::Function::Fenced
+          value = filter_values(object.parameter_two)
+          unfenced_value(value)
+        when Array
+          filter_values(object)
+        else
+          object
+        end
+      end
+
+      def table_td(object)
+        new_object = case object
+                     when Math::Function::Td
+                       object
+                     else
+                       Math::Function::Td.new([object])
+                     end
+        Array(new_object)
       end
     end
   end
