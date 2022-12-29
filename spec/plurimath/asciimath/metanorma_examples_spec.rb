@@ -1,5 +1,7 @@
 require_relative "../../../lib/plurimath/math"
 
+# These examples originate from https://github.com/metanorma/metanorma-standoc
+
 RSpec.describe Plurimath::Asciimath::Parser do
 
   describe ".parse" do
