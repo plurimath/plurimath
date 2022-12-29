@@ -165,15 +165,23 @@ module Plurimath
         )
       end
 
-      rule(binary_functions: simple(:unary),
+      rule(binary_functions: simple(:binary),
            subscript: simple(:subscript)) do
         Math::Function::Base.new(
-          unary,
+          binary,
           subscript,
         )
       end
 
-      rule(binary_functions: simple(:unary),
+      rule(binary_functions: simple(:binary),
+           supscript: simple(:supscript)) do
+        Math::Function::Power.new(
+          binary,
+          supscript,
+        )
+      end
+
+      rule(unary_functions: simple(:unary),
            supscript: simple(:supscript)) do
         Math::Function::Power.new(
           unary,
@@ -201,6 +209,14 @@ module Plurimath
         Math::Function::Base.new(
           Math::Number.new(number),
           subscript,
+        )
+      end
+
+      rule(number: simple(:number),
+           supscript: simple(:supscript)) do
+        Math::Function::Power.new(
+          Math::Number.new(number),
+          supscript,
         )
       end
 
@@ -312,23 +328,11 @@ module Plurimath
       end
 
       rule(lparen: simple(:lparen),
-           mbox: simple(:mbox),
-           rparen: simple(:rparen)) do
-        Math::Function::Text.new("\\mbox{#{mbox}}")
-      end
-
-      rule(lparen: simple(:lparen),
            symbols: simple(:sym),
            rparen: simple(:rparen)) do
         Math::Symbol.new(
           Constants::SYMBOLS[sym.to_sym] || sym,
         )
-      end
-
-      rule(lparen: simple(:lparen),
-           unicode_symbols: simple(:sym),
-           rparen: simple(:rparen)) do
-        Math::Unicode.new(sym)
       end
 
       rule(lparen: simple(:lparen),
@@ -341,6 +345,17 @@ module Plurimath
            expression: sequence(:expr),
            rparen: simple(:rparen)) do
         Math::Formula.new(expr)
+      end
+
+      rule(rule: simple(:rule),
+           first_value: simple(:first_value),
+           second_value: simple(:second_value),
+           third_value: simple(:third_value)) do
+        Math::Function::Rule.new(
+          first_value,
+          second_value,
+          third_value,
+        )
       end
 
       rule(lparen: simple(:lparen),
@@ -405,8 +420,12 @@ module Plurimath
         if binary == "binom"
           Math::Function::Table.new(
             [
-              Math::Function::Tr.new([first_value]),
-              Math::Function::Tr.new([second_value]),
+              Math::Function::Tr.new(
+                Utility.table_td(first_value),
+              ),
+              Math::Function::Tr.new(
+                Utility.table_td(second_value),
+              ),
             ],
             "(",
             ")",

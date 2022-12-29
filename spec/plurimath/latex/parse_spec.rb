@@ -466,7 +466,12 @@ RSpec.describe Plurimath::Latex::Parse do
         LATEX
       }
       it "returns formula" do
-        expect(formula[:unary_functions][:mbox]).to eq("a+b")
+        first_value = formula[:unary_functions][:first_value][:expression]
+
+        expect(formula[:unary_functions][:unary]).to eq("mbox")
+        expect(first_value[:sequence][:symbols]).to eq("a")
+        expect(first_value[:expression][:sequence][:operant]).to eq("+")
+        expect(first_value[:expression][:expression][:symbols]).to eq("b")
       end
     end
 

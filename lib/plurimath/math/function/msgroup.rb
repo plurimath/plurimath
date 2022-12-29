@@ -22,7 +22,7 @@ module Plurimath
         end
 
         def to_html
-          "<i>#{parameter_one.map(&:to_html)}</i>"
+          "<i>#{parameter_one.map(&:to_html).join}</i>"
         end
       end
     end

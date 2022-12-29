@@ -83,70 +83,70 @@ RSpec.describe Plurimath::Math::Formula do
     context "contains sin formula string with sum power base" do
       let(:exp) { "sin(sum_(theta)^3)" }
       it 'converts formula back to Asciimath string for sin function' do
-        expect(formula).to eql("sin(sum_(theta)^3)")
+        expect(formula).to eql("sin(sum_(theta)^(3))")
       end
     end
 
     context "contains sinh formula string with sum power base" do
       let(:exp) { "sinh(sum_(theta)^sin(theta))" }
       it 'converts formula back to Asciimath string for sinh function' do
-        expect(formula).to eql("sinh(sum_(theta)^sin(theta))")
+        expect(formula).to eql("sinh(sum_(theta)^(sin(theta)))")
       end
     end
 
     context "contains csc formula string with sum power base" do
       let(:exp) { "csc(sum_(theta)^sin(cong)) = {1+1}" }
       it 'converts formula back to Asciimath string for csc function' do
-        expect(formula).to eql("csc(sum_(theta)^sin(~=))=(1+1)")
+        expect(formula).to eql("csc(sum_(theta)^(sin(~=)))={1+1}")
       end
     end
 
     context "contains int formula string with sum power base" do
       let(:exp) { "int_(i=1)^ni^3=sin((n(n+1))/2)^2" }
       it 'converts formula back to Asciimath string for int function' do
-        expect(formula).to eql("int_(i=1)^ni^(3)=sin((n(n+1))/2)^(2)")
+        expect(formula).to eql("int_(i=1)^(n)i^(3)=sin(frac(n(n+1))(2))^(2)")
       end
     end
 
     context "contains sum formula string with sum power base" do
       let(:exp) { "sum_(i=frac{1}{3})^33" }
       it 'converts formula back to Asciimath string for sum function' do
-        expect(formula).to eql("sum_(i=frac(1)(3))^33")
+        expect(formula).to eql("sum_(i=frac(1)(3))^(33)")
       end
     end
 
     context "contains sum formula string with frac power base" do
       let(:exp) { "sum_(i=frac{13})^33" }
       it 'converts formula back to Asciimath string for sum function' do
-        expect(formula).to eql("sum_(i=frac(13))^33")
+        expect(formula).to eql("sum_(i=frac(13))^(33)")
       end
     end
 
     context "contains sum formula string with color green" do
       let(:exp) { "sum_(i=color{green}{3})^33" }
       it 'converts formula back to Asciimath string for color function' do
-        expect(formula).to eql("sum_(i=color(green)(3))^33")
+        expect(formula).to eql("sum_(i=color(\"green\")(3))^(33)")
       end
     end
 
     context "contains sum formula string with color and text power base" do
       let(:exp) { "sum_(i=color{text(blue)})^33" }
       it 'converts formula back to Asciimath string for color function' do
-        expect(formula).to eql('sum_(i=color(text(blue)))^33')
+        expect(formula).to eql("sum_(i=color(\"text(blue)\"))^(33)")
       end
     end
 
     context "contains sum formula string with color power number base" do
       let(:exp) { "sum_(i=color{\"blue\"})^33" }
       it 'converts formula back to Asciimath string for color function' do
-        expect(formula).to eql('sum_(i=color("blue"))^33')
+        expect(formula).to eql('sum_(i=color(""blue""))^(33)')
       end
     end
 
     context "contains int formula string with color power base" do
       let(:exp) { "int_0^1 f(x)dx" }
       it 'converts formula back to Asciimath string for simple text' do
-        expect(formula).to eql('int_0^1f(x)dx')
+        expect(formula).to eql('int_(0)^(1)f(x)dx')
       end
     end
 
@@ -160,7 +160,7 @@ RSpec.describe Plurimath::Math::Formula do
     context "contains obrace formula string with text" do
       let(:exp) { "obrace(1+2+3+4)^text(4 terms)" }
       it 'converts formula back to Asciimath string for obrace function' do
-        expect(formula).to eql('obrace(1+2+3+4)^("4 terms")')
+        expect(formula).to eql("obrace(1+2+3+4)^(\"4 terms\")")
       end
     end
 
@@ -237,7 +237,7 @@ RSpec.describe Plurimath::Math::Formula do
     context "contains mod formula string" do
       let(:exp) { "12mod1234(i)" }
       it 'converts formula back to Asciimath string for mod function' do
-        expect(formula).to eql('12mod1234(i)')
+        expect(formula).to eql('(12)mod(1234)(i)')
       end
     end
 
@@ -251,7 +251,7 @@ RSpec.describe Plurimath::Math::Formula do
     context "contains mod formula string with sin" do
       let(:exp) { "12mod(sin(theta))(i)" }
       it 'converts formula back to Asciimath string for mod function' do
-        expect(formula).to eql('12mod(sin(theta))(i)')
+        expect(formula).to eql('(12)mod(sin(theta))(i)')
       end
     end
 

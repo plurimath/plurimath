@@ -1253,7 +1253,7 @@ RSpec.describe Plurimath::Math::Formula do
         ])
       }
       it "returns formula of sin from Latex string" do
-        expected_value = "\\begin{array}{ab}\\cdots&degreeoffreedom1,node1\\\\&\\\\\\cdots&degreeoffreedom2,node2\\end{array}"
+        expected_value = "\\begin{array}{ab}\\cdots&\\mbox{degreeoffreedom1,node1}\\\\&\\\\\\cdots&\\mbox{degreeoffreedom2,node2}\\end{array}"
         expect(formula).to eq(expected_value)
       end
     end
@@ -2982,7 +2982,7 @@ RSpec.describe Plurimath::Math::Formula do
               & & & d_{1212} &
               d_{1223} &
               d_{1231} \\\\
-              & symmetric & & &
+              & \\mbox{symmetric} & & &
               d_{2323} &
               d_{2331} \\\\
               & & & & & d_{3131}
@@ -3419,7 +3419,7 @@ RSpec.describe Plurimath::Math::Formula do
                 \\displaystyle{\\frac{1}{G_{12}}} &
                 0 &
                 0 \\\\3mm &
-                symmetric & & &
+                \\mbox{symmetric} & & &
                 \\displaystyle{\\frac{1}{G_{23}}} &
                 \\displaystyle{\\frac{\\nu_{23,31}}{G_{31}}} \\\\
                 3mm & & & & &
@@ -3987,7 +3987,7 @@ RSpec.describe Plurimath::Math::Formula do
               0 &
               0 \\\\
               3mm &
-              symmetric & & &
+              \\mbox{symmetric} & & &
               \\displaystyle{\\frac{1}{G_{tt}}} &
               0 \\\\
               3mm & & & & &
@@ -4253,7 +4253,7 @@ RSpec.describe Plurimath::Math::Formula do
               0 &
               0 \\\\
               3mm &
-              symmetric & & &
+              \\mbox{symmetric} & & &
               \\displaystyle{\\frac{1}{G_{tt}}} &
               0 \\\\
               3mm & & & & &
@@ -4482,7 +4482,7 @@ RSpec.describe Plurimath::Math::Formula do
               0 &
               0 \\\\
               3mm &
-              symmetric & & &
+              \\mbox{symmetric} & & &
               \\displaystyle{\\frac{1}{G}} &
               0 \\\\
               3mm & & & & &
@@ -4832,7 +4832,7 @@ RSpec.describe Plurimath::Math::Formula do
               & & & d_{1212} &
               d_{1223} &
               d_{1231} \\\\
-              & symmetric &
+              & \\mbox{symmetric} &
               & & d_{2323} &
               d_{2331} \\\\
               & & & & & d_{3131}
@@ -8830,12 +8830,12 @@ RSpec.describe Plurimath::Math::Formula do
             \\begin{array}{cc}
               & \\\\
               \\cdots &
-              degree of freedom 1, node 1 \\\\
+              \\mbox{degree of freedom 1, node 1} \\\\
               & \\\\
               & \\\\
               & \\\\
               \\cdots &
-              degree of freedom 2, node 2
+              \\mbox{degree of freedom 2, node 2}
             \\end{array} \\\\
             & \\\\
             \\begin{array}{cccccc}
@@ -8843,12 +8843,12 @@ RSpec.describe Plurimath::Math::Formula do
             \\end{array}
             & \\\\
             \\begin{array}{cccc}
-              & degree of &
-              degree of & \\\\
-              & freedom 1, &
-              freedom 2, & \\\\
-              & node 1 &
-              node 2 &
+              & \\mbox{degree of} &
+              \\mbox{degree of} & \\\\
+              & \\mbox{freedom 1,} &
+              \\mbox{freedom 2,} & \\\\
+              & \\mbox{node 1} &
+              \\mbox{node 2} &
             \\end{array} &
           \\end{array}
         LATEX

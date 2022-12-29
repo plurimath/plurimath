@@ -14,6 +14,10 @@ module Plurimath
           Utility.ox_element("mi") << parameter_one
         end
 
+        def to_html
+          "<i>#{parameter_one}</i>"
+        end
+
         def to_latex
           prefix = "\\" if parameter_one == "}"
           "\\right#{prefix}#{parameter_one}"

@@ -7,32 +7,29 @@ module Plurimath
     module Function
       class PowerBase < TernaryFunction
         def to_mathml_without_math_tag
-          subsup_tag   = Utility.ox_element("msubsup")
-          first_value  = parameter_one&.to_mathml_without_math_tag
-          second_value = parameter_two&.to_mathml_without_math_tag
-          third_value  = parameter_three&.to_mathml_without_math_tag
+          subsup_tag = Utility.ox_element("msubsup")
+          new_arr = []
+          new_arr << parameter_one.to_mathml_without_math_tag if parameter_one
+          new_arr << parameter_two.to_mathml_without_math_tag if parameter_two
+          new_arr << parameter_three.to_mathml_without_math_tag if parameter_three
           Utility.update_nodes(
             subsup_tag,
-            [
-              first_value,
-              second_value,
-              third_value,
-            ],
+            new_arr,
           )
         end
 
         def to_latex
-          first_value  = parameter_one&.to_latex
-          second_value = parameter_two&.to_latex
-          third_value  = parameter_three&.to_latex
+          first_value  = parameter_one.to_latex if parameter_one
+          second_value = parameter_two.to_latex if parameter_two
+          third_value  = parameter_three.to_latex if parameter_three
           first_value  = "{#{first_value}}" if parameter_one.is_a?(Formula)
           "#{first_value}_{#{second_value}}^{#{third_value}}"
         end
 
         def to_html
-          first_value  = "<i>#{parameter_one.to_html}</i>"
-          second_value = "<sub>#{parameter_two.to_html}</sub>"
-          third_value  = "<sup>#{parameter_three.to_html}</sup>"
+          first_value  = "<i>#{parameter_one.to_html}</i>" if parameter_one
+          second_value = "<sub>#{parameter_two.to_html}</sub>" if parameter_two
+          third_value  = "<sup>#{parameter_three.to_html}</sup>" if parameter_three
           "#{first_value}#{second_value}#{third_value}"
         end
 

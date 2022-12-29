@@ -1,289 +1,306 @@
-Parenthesis
---
+= AsciiMath symbols
+
+== Parenthesis
+
 |===
 | Open | Close
 
-| (:   | :)
-| {:   | :}
-| (    | )
-| {    | }
-| [    | ]
-| \|   | \|
-|===
-Classes
---
-|===
-| Functions | Fonts
-
-| stackrel  | mathfrak
-| underset  | mathcal
-| overset   | mathbb
-| cancel    | mathsf
-| obrace    | mathtt
-| ubrace    | mathbf
-| arctan    | bbb
-| arcsin    | bb
-| arccos    | fr
-| color     | cc
-| floor     | sf
-| tilde     | tt
-| oint      |
-| root      |
-| frac      |
-| prod      |
-| text      |
-| norm      |
-| sqrt      |
-| cosh      |
-| tanh      |
-| sinh      |
-| sech      |
-| csch      |
-| coth      |
-| ddot      |
-| ceil      |
-| log       |
-| mod       |
-| sum       |
-| int       |
-| vec       |
-| hat       |
-| dot       |
-| bar       |
-| abs       |
-| min       |
-| max       |
-| dim       |
-| det       |
-| csc       |
-| cot       |
-| lub       |
-| lcm       |
-| glb       |
-| gcd       |
-| exp       |
-| cos       |
-| tan       |
-| sin       |
-| sec       |
-| ln        |
-| ul        |
-| g         |
-| f         |
+| `(:`   | `:)`
+| `{:`   | `:}`
+| `(`    | `)`
+| `{`    | `}`
+| `[`    | `]`
+| `\|`   | `\|`
 |===
 
---
-* Symbols
 
-** twoheadrightarrowtail
-** twoheadrightarrow
-** rightarrowtail
-** Leftrightarrow
-** leftrightarrow
-** Rightarrow
-** rightarrow
-** varepsilon
-** Leftarrow
-** leftarrow
-** downarrow
-** therefore
-** backslash
-** setminus
-** triangle
-** bigwedge
-** rceiling
-** lceiling
-** supseteq
-** subseteq
-** vartheta
-** emptyset
-** diamond
-** uparrow
-** implies
-** partial
-** because
-** upsilon
-** epsilon
-** bigcap
-** bigvee
-** propto
-** approx
-** exists
-** forall
-** otimes
-** ltimes
-** bowtie
-** rtimes
-** models
-** mapsto
-** bigcup
-** succeq
-** preceq
-** rfloor
-** lfloor
-** square
-** supset
-** subset
-** lambda
-** Lambda
-** varphi
-** >\->>
-** kappa
-** Delta
-** delta
-** gamma
-** Gamma
-** Theta
-** theta
-** alpha
-** aleph
-** infty
-** equiv
-** frown
-** notin
-** angle
-** cdots
-** vdash
-** wedge
-** oplus
-** nabla
-** ddots
-** vdots
-** Sigma
-** Omega
-** omega
-** sigma
-** times
-** ldots
-** \<\=>
-** -\<=
-** \^^^
-** |\->
-** >\->
-** \->>
-** \_|_
-** \***
-** |><|
-** quad
-** star
-** odot
-** cdot
-** rarr
-** darr
-** prop
-** lArr
-** rArr
-** uarr
-** hArr
-** harr
-** larr
-** grad
-** circ
-** sube
-** supe
-** succ
-** prec
-** cong
-** beta
-** zeta
-** iota
-** !in
-** sup
-** sub
-** top
-** vvv
-** vee
-** nnn
-** cap
-** ast
-** bot
-** del
-** uuu
-** cup
-** iff
-** eta
-** Phi
-** Psi
-** psi
-** chi
-** phi
-** rho
-** tau
-** div
-** neg
-** not
-** /_\
-** \->
-** >-=
-** ><|
-** |==
-** |--
-** __|
-** |__
-** |><
-** \=>
-** \<=
-** nn
-** vv
-** TT
-** EE
-** ox
-** to
-** AA
-** uu
-** ne
-** ZZ
-** RR
-** QQ
-** NN
-** CC
-** oo
-** ge
-** le
-** in
-** nu
-** mu
-** pi
-** Pi
-** xi
-** Xi
-** xx
-** pm
-** gt
-** lt
-** :'
-** ^^
-** o+
-** o.
-** **
-** ~~
-** O/
-** >>
-** <<
-** ~|
-** !=
-** >-
-** -<
-** ~=
-** -=
-** :.
-** >=
-** |~
-** /_
-** +-
-** -:
-** @
-** *
-** <
-** >
-** -
-** =
-** +
-** /
-** ,
-** .
-** ;
-** &
-** ?
-** $
-** #
+== Classes
+
+=== Fonts
+
+* `mathfrak`
+* `mathcal`
+* `mathbb`
+* `mathsf`
+* `mathtt`
+* `mathbf`
+* `bbb`
+* `bb`
+* `fr`
+* `cc`
+* `sf`
+* `tt`
+
+=== Functions
+
+* `stackrel`
+* `underset`
+* `overset`
+* `cancel`
+* `obrace`
+* `ubrace`
+* `arctan`
+* `arcsin`
+* `arccos`
+* `color`
+* `floor`
+* `tilde`
+* `oint`
+* `root`
+* `frac`
+* `prod`
+* `text`
+* `norm`
+* `sqrt`
+* `cosh`
+* `tanh`
+* `sinh`
+* `sech`
+* `csch`
+* `coth`
+* `ddot`
+* `ceil`
+* `log`
+* `mod`
+* `sum`
+* `int`
+* `vec`
+* `hat`
+* `dot`
+* `bar`
+* `abs`
+* `min`
+* `max`
+* `dim`
+* `det`
+* `csc`
+* `cot`
+* `lub`
+* `lcm`
+* `glb`
+* `gcd`
+* `exp`
+* `cos`
+* `tan`
+* `sin`
+* `sec`
+* `ln`
+* `ul`
+* `g`
+* `f`
+
+
+== Symbols
+
+* `twoheadrightarrowtail`
+* `twoheadrightarrow`
+* `rightarrowtail`
+* `Leftrightarrow`
+* `leftrightarrow`
+* `Rightarrow`
+* `rightarrow`
+* `varepsilon`
+* `Leftarrow`
+* `leftarrow`
+* `downarrow`
+* `therefore`
+* `backslash`
+* `setminus`
+* `triangle`
+* `bigwedge`
+* `rceiling`
+* `lceiling`
+* `supseteq`
+* `subseteq`
+* `vartheta`
+* `emptyset`
+* `diamond`
+* `uparrow`
+* `implies`
+* `partial`
+* `because`
+* `upsilon`
+* `epsilon`
+* `bigcap`
+* `bigvee`
+* `propto`
+* `approx`
+* `exists`
+* `forall`
+* `otimes`
+* `ltimes`
+* `bowtie`
+* `rtimes`
+* `models`
+* `mapsto`
+* `bigcup`
+* `succeq`
+* `preceq`
+* `rfloor`
+* `lfloor`
+* `square`
+* `supset`
+* `subset`
+* `lambda`
+* `Lambda`
+* `varphi`
+* `>\->>`
+* `kappa`
+* `Delta`
+* `delta`
+* `gamma`
+* `Gamma`
+* `Theta`
+* `theta`
+* `alpha`
+* `aleph`
+* `infty`
+* `equiv`
+* `frown`
+* `notin`
+* `angle`
+* `cdots`
+* `vdash`
+* `wedge`
+* `oplus`
+* `nabla`
+* `ddots`
+* `vdots`
+* `Sigma`
+* `Omega`
+* `omega`
+* `sigma`
+* `times`
+* `ldots`
+* `\<\=>`
+* `-\<=`
+* `\^^^`
+* `|\->`
+* `>\->`
+* `\->>`
+* `\_|_`
+* `\***`
+* `|><|`
+* `quad`
+* `star`
+* `odot`
+* `cdot`
+* `rarr`
+* `darr`
+* `prop`
+* `lArr`
+* `rArr`
+* `uarr`
+* `hArr`
+* `harr`
+* `larr`
+* `grad`
+* `circ`
+* `sube`
+* `supe`
+* `succ`
+* `prec`
+* `cong`
+* `beta`
+* `zeta`
+* `iota`
+* `!in`
+* `sup`
+* `sub`
+* `top`
+* `vvv`
+* `vee`
+* `nnn`
+* `cap`
+* `ast`
+* `bot`
+* `del`
+* `uuu`
+* `cup`
+* `iff`
+* `eta`
+* `Phi`
+* `Psi`
+* `psi`
+* `chi`
+* `phi`
+* `rho`
+* `tau`
+* `div`
+* `neg`
+* `not`
+* `/_\`
+* `\->`
+* `>-=`
+* `><|`
+* `|==`
+* `|--`
+* `__|`
+* `|__`
+* `|><`
+* `\=>`
+* `\<=`
+* `nn`
+* `vv`
+* `TT`
+* `EE`
+* `ox`
+* `to`
+* `AA`
+* `uu`
+* `ne`
+* `ZZ`
+* `RR`
+* `QQ`
+* `NN`
+* `CC`
+* `oo`
+* `ge`
+* `le`
+* `in`
+* `nu`
+* `mu`
+* `pi`
+* `Pi`
+* `xi`
+* `Xi`
+* `xx`
+* `pm`
+* `gt`
+* `lt`
+* `:'`
+* `^^`
+* `o+`
+* `o.`
+* `**`
+* `~~`
+* `O/`
+* `>>`
+* `<<`
+* `~|`
+* `!=`
+* `>-`
+* `-<`
+* `~=`
+* `-=`
+* `:.`
+* `>=`
+* `|~`
+* `/_`
+* `+-`
+* `-:`
+* `@`
+* `*`
+* `<`
+* `>`
+* `-`
+* `=`
+* `+`
+* `/`
+* `,`
+* `.`
+* `;`
+* `&`
+* `?`
+* `$`
+* `#`

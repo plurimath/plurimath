@@ -7,8 +7,8 @@ module Plurimath
     module Function
       class Over < BinaryFunction
         def to_asciimath
-          first_value = parameter_one.to_asciimath if parameter_one
-          second_value = parameter_two.to_asciimath if parameter_two
+          first_value = wrapped(parameter_one)
+          second_value = wrapped(parameter_two)
           "overset#{first_value}#{second_value}"
         end
 

@@ -20,9 +20,9 @@ module Plurimath
         end
 
         def to_mathml_without_math_tag
-          table_value = parameter_one.map(&:to_mathml_without_math_tag)
+          table_value = parameter_one&.map(&:to_mathml_without_math_tag)
           parenthesis = Latex::Constants::PARENTHESIS
-          table_tag   = Utility.ox_element("mtable", attributes: table_columnlines_attribute)
+          table_tag = Utility.ox_element("mtable", attributes: table_attribute)
           Utility.update_nodes(table_tag, table_value)
           if parenthesis.key?(parameter_two) || parameter_two == "|"
             Utility.ox_element(
@@ -45,7 +45,7 @@ module Plurimath
           end
         end
 
-        def table_columnlines_attribute
+        def table_attribute
           column_lines = []
           parameter_one.first.parameter_one.each_with_index do |td, i|
             if td.parameter_one.find { |obj| obj.is_a?(Symbol) && obj.value == "|" }
@@ -54,7 +54,7 @@ module Plurimath
               column_lines << "none"
             end
           end
-          column_lines.include?("solid") ? { columnlines: column_lines.join(' ') } : {}
+          column_lines.include?("solid") ? { columnlines: column_lines.join(" ") } : {}
         end
 
         def to_latex

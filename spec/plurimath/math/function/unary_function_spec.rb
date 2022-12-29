@@ -23,38 +23,6 @@ RSpec.describe Plurimath::Math::Function::UnaryFunction do
     end
   end
 
-  describe ".value_to_asciimath" do
-    subject(:formula) { Plurimath::Math::Function::UnaryFunction.new(first_value) }
-
-    context "contains sum fuction" do
-      let(:first_value) { Plurimath::Math::Function::Sum.new }
-      it "returns asciimath string" do
-        expect(formula.value_to_asciimath).to eq("(sum)")
-      end
-    end
-
-    context "contains a sum fuction" do
-      let(:first_value) { Plurimath::Math::Function::Sum.new }
-      it "returns asciimath string" do
-        expect(formula.value_to_asciimath).to eq("(sum)")
-      end
-    end
-
-    context "contains nil" do
-      let(:first_value) { nil }
-      it "returns asciimath string" do
-        expect(formula.value_to_asciimath).to be_nil
-      end
-    end
-
-    context "contains nil value" do
-      let(:first_value) { nil }
-      it "returns nil" do
-        expect(formula.value_to_asciimath).to be_nil
-      end
-    end
-  end
-
   describe ".==" do
     subject(:formula) { Plurimath::Math::Function::UnaryFunction.new(first_value) }
 

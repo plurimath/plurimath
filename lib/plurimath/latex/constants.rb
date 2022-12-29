@@ -17,6 +17,7 @@ module Plurimath
         tanh
         cosh
         ddot
+        mbox
         hat
         vec
         dot
@@ -1901,6 +1902,7 @@ module Plurimath
         mbfit
         msans
         mscr
+        cal
         mit
         mbf
         mtt

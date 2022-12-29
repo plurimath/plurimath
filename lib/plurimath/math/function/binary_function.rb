@@ -22,7 +22,7 @@ module Plurimath
         def wrapped(field)
           return "" unless field
 
-          field.is_a?(Math::Formula) ? field.to_asciimath : "(#{field.to_asciimath})"
+          "(#{field.to_asciimath})"
         end
 
         def ==(object)

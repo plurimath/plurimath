@@ -1,7 +1,6 @@
 require_relative "../../../lib/plurimath/math"
 require_relative "../fixtures/expected_values.rb"
 require_relative "../../../lib/plurimath/omml/parser"
-require_relative "../../../lib/plurimath/omml/constants"
 
 RSpec.describe Plurimath::Omml::Parser do
 

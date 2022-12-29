@@ -11,6 +11,7 @@ module Plurimath
       rule(:comma)  { (str(",") >> space.maybe) }
       rule(:number) { match("[0-9.]").repeat(1).as(:number) }
 
+      rule(:controversial_symbols)   { power_base | expression }
       rule(:left_right_open_paren)   { str("(") | str("[") }
       rule(:left_right_close_paren)  { str(")") | str("]") }
       rule(:color_left_parenthesis)  { str("(") | str("[") | str("{") }
@@ -58,17 +59,20 @@ module Plurimath
       rule(:symbol_text_or_integer) do
         sub_sup_classes |
           binary_classes |
-          unary_binary_or_symbols |
+          unary_fonts_or_symbols |
           (match(/[0-9]/).as(:number) >> comma.as(:comma)).repeat(1).as(:comma_separated) |
           quoted_text |
           match["a-zA-Z"].as(:symbol) |
+          match(/[^\[{(\\\/@;:.,'"|\]})0-9a-zA-Z\-><$%^&*_=+!`~\s?]/).as(:symbol) |
           number
       end
 
       rule(:power_base) do
         (base >> space.maybe >> sequence.as(:base_value) >> power >> space.maybe >> sequence.as(:power_value)) |
-          (base >> space.maybe >> sequence.as(:base_value)).as(:base) |
-          (power >> space.maybe >> sequence.as(:power_value)).as(:power)
+          (space.maybe >> base >> space.maybe >> sequence.as(:base_value)).as(:base) |
+          (space.maybe >> power >> space.maybe >> sequence.as(:power_value)).as(:power) |
+          (space.maybe >> base >> space.maybe >> (power.as(:symbol)).as(:base_value)).as(:base) |
+          (space.maybe >> power >> space.maybe >> (base.as(:symbol)).as(:power_value)).as(:power)
       end
 
       rule(:power_base_rules) do
@@ -88,21 +92,23 @@ module Plurimath
       end
 
       rule(:color_value) do
-        (color_left_parenthesis.capture(:paren) >> read_text.as(:text) >> color_right_parenthesis.maybe) |
-          iteration |
+        (color_left_parenthesis.capture(:paren).as(:lparen) >> read_text.as(:text).as(:color) >> color_right_parenthesis.maybe.as(:rparen)).as(:intermediate_exp) |
+          expression |
           read_text.as(:text)
       end
 
       rule(:sequence) do
         (lparen.as(:lparen) >> expression.maybe.as(:expr) >> rparen.maybe.as(:rparen)).as(:intermediate_exp) |
-          (str("text") >> lparen.capture(:paren) >> read_text.as(:text) >> rparen.maybe) |
+          (str("text") >> lparen.capture(:paren).as(:lparen) >> read_text.as(:text) >> rparen.maybe.as(:rparen)).as(:intermediate_exp) |
           symbol_text_or_integer
       end
 
       rule(:iteration) do
         table.as(:table) |
           comma.as(:comma) |
-          (sequence.as(:dividend) >> str("mod").as(:mod) >> sequence.as(:divisor)).as(:mod) |
+          (sequence.as(:dividend) >> space.maybe >> str("mod").as(:mod) >> space.maybe >> iteration.as(:divisor)).as(:mod) |
+          (sequence.as(:sequence) >> space.maybe >> str("//").as(:symbol)) |
+          (sequence.as(:numerator) >> space.maybe >> str("/") >> space.maybe >> sequence.as(:denominator)).as(:frac) |
           (str("color").as(:binary_class) >> color_value.as(:base_value).maybe >> iteration.as(:power_value).maybe) |
           (power_base_rules >> power_base) |
           power_base_rules |
@@ -112,10 +118,13 @@ module Plurimath
 
       rule(:expression) do
         left_right.as(:left_right) |
-          (iteration >> expression).as(:expr) |
-          (iteration >> str("/").as(:/) >> iteration).as(:expr) |
-          str("_").as(:symbol) |
-          str("")
+          (iteration >> space.maybe >> expression).as(:expr) |
+          (base.as(:symbol) >> expression.maybe).as(:expr) |
+          (power.as(:symbol) >> expression.maybe).as(:expr) |
+          str("") |
+          (rparen.as(:rparen) >> space.maybe >> controversial_symbols >> comma.as(:comma).maybe >> expression).repeat(1).as(:expr) |
+          (power.as(:symbol) >> space.maybe >> expression).as(:expr) |
+          comma.as(:comma).maybe
       end
 
       root :expression
@@ -135,7 +144,7 @@ module Plurimath
         end
       end
 
-      def unary_binary_or_symbols
+      def unary_fonts_or_symbols
         unsorted_hash = Constants::UNARY_CLASSES.each_with_object({}) { |d, i| i[d] = :unary_class }
         unsorted_hash = Constants::SYMBOLS.each_with_object(unsorted_hash) { |d, i| i[d.first] = :symbol }
         unsorted_hash = Constants::FONT_STYLES.each_with_object(unsorted_hash) { |d, i| i[d] = :fonts }

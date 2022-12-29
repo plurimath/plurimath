@@ -136,13 +136,13 @@ module Plurimath
 
       rule(:sequence) do
         limits.as(:limits) |
+          (slash >> str("rule").as(:rule) >> sqrt_arg.maybe.as(:first_value) >> intermediate_exp.maybe.as(:second_value) >> intermediate_exp.maybe.as(:third_value)).as(:binary) |
           (left_right.as(:left_right) >> power >> intermediate_exp.as(:supscript)) |
           (left_right.as(:left_right) >> base >> intermediate_exp.as(:subscript)) |
           left_right.as(:left_right) |
           (over_class >> power >> intermediate_exp.as(:supscript)) |
           (over_class >> base >> intermediate_exp.as(:subscript)) |
           over_class |
-          (slash >> str("mbox") >> lparen.capture(:paren) >> read_text >> rparen).as(:unary_functions) |
           (slash >> str("substack").as(:substack) >> lparen >> expression.as(:substack_value) >> rparen) |
           (begining >> array_args >> expression.as(:table_data) >> ending).as(:environment) |
           (begining >> expression.as(:table_data) >> ending).as(:environment) |
@@ -188,14 +188,6 @@ module Plurimath
           name = name || expr_string.to_sym || expression.to_sym
           expression = str(expression).as(name) if expression.is_a?(type)
           expression | str(expr_string).as(name)
-        end
-      end
-
-      def read_text
-        dynamic do |_sour, context|
-          lparen = context.captures[:paren][:lparen].to_s
-          rparen = Constants::PARENTHESIS[lparen]
-          match("[^#{rparen}]").repeat.as(:mbox)
         end
       end
     end
