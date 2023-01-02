@@ -21,6 +21,10 @@ module Plurimath
           )
         end
 
+        def to_omml_without_math_tag
+          parameter_one.to_omml_without_math_tag
+        end
+
         def to_html
           "<i>#{parameter_two}</i>#{parameter_one.to_html}"
         end

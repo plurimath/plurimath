@@ -97,12 +97,12 @@ module Plurimath
 
       def to_omml_without_math_tag
         if value.length == 2 && ["underover", "powerbase"].include?(
-          value.first.class_name,
+          value&.first&.class_name,
         )
           nary_tag
         else
           r_element = Utility.ox_element("r", namespace: "m")
-          r_element << Utility.rpr_element if ["symbol", "number", "text"].include?(value.first.class_name)
+          r_element << Utility.rpr_element if ["symbol", "number", "text"].include?(value&.first&.class_name)
           Utility.update_nodes(r_element, omml_content)
         end
       end

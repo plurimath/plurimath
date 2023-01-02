@@ -9,14 +9,13 @@ module Plurimath
         class Vmatrix < Table
           def initialize(parameter_one,
                          parameter_two = "|",
-                         parameter_three = "|")
+                         parameter_three = [])
             parameter_three = nil if parameter_two == "norm["
             super
           end
 
           def to_latex
-            first_value = parameter_one&.map(&:to_latex)&.join("\\\\")
-            "\\begin{vmatrix}#{first_value}\\end{vmatrix}"
+            "\\begin#{opening}#{latex_content}\\end#{ending}"
           end
         end
       end

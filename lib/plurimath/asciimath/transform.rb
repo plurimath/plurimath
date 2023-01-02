@@ -243,7 +243,7 @@ module Plurimath
       end
 
       rule(td: sequence(:td)) do
-        Utility.td_values(td)
+        Utility.td_values(td, ",")
       end
 
       rule(open_tr: simple(:tr),

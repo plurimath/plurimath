@@ -64,9 +64,17 @@ module Plurimath
 
         def to_omml_without_math_tag
           r_tag = Utility.ox_element("r", namespace: "m")
-          r_tag << parameter_one.to_omml_without_math_tag if parameter_one
-          r_tag << parameter_two.to_omml_without_math_tag if parameter_two
+          update_row_tag(r_tag, parameter_one) if parameter_one
+          update_row_tag(r_tag, parameter_two) if parameter_two
           r_tag
+        end
+
+        def update_row_tag(tag, field)
+          first_value = field.to_omml_without_math_tag
+          Utility.update_nodes(
+            tag,
+            first_value.is_a?(Array) ? first_value : [first_value],
+          )
         end
 
         def class_name

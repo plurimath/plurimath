@@ -13,7 +13,7 @@ module Plurimath
 
         def base_value
           field = parameter_one
-          field.is_a?(Math::Formula) ? "(#{field.to_asciimath})" : field.to_asciimath
+          field.is_a?(Math::Formula) ? wrapped(field) : field.to_asciimath
         end
 
         def to_mathml_without_math_tag
@@ -45,14 +45,16 @@ module Plurimath
         def to_omml_without_math_tag
           ssup_element  = Utility.ox_element("sSup", namespace: "m")
           suppr_element = Utility.ox_element("sSupPr", namespace: "m")
-          e_element     = Utility.ox_element("e", namespace: "m")
           sup_element   = Utility.ox_element("sup", namespace: "m")
+          e_element     = Utility.ox_element("e", namespace: "m")
+          e_element << parameter_one.to_omml_without_math_tag if parameter_one
+          sup_element << parameter_two.to_omml_without_math_tag if parameter_two
           Utility.update_nodes(
             ssup_element,
             [
               suppr_element << Utility.pr_element("ctrl", true, namespace: "m"),
-              e_element << parameter_one.to_omml_without_math_tag,
-              sup_element << parameter_two.to_omml_without_math_tag,
+              e_element,
+              sup_element,
             ],
           )
           ssup_element

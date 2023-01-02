@@ -3,16 +3,20 @@
 module Plurimath
   class Latex
     class Transform < Parslet::Transform
-      rule(base: simple(:base))     { base }
-      rule(over: simple(:over))     { over }
-      rule(number: simple(:num))    { Math::Number.new(num) }
-      rule(power: simple(:power))   { power }
-      rule(unary: simple(:unary))   { Utility.get_class(unary).new }
-      rule(space: simple(:space))   { Math::Function::Text.new(" ") }
-      rule(operant: simple(:oper))  { Math::Symbol.new(oper) }
-      rule("\\\\": simple(:slash))  { Math::Symbol.new(slash) }
-      rule(symbol: simple(:symbol)) { Math::Symbol.new(symbol) }
-      rule(limits: simple(:limits)) { limits }
+      rule(base: simple(:base))       { base }
+      rule(over: simple(:over))       { over }
+      rule(number: simple(:num))      { Math::Number.new(num) }
+      rule(power: simple(:power))     { power }
+      rule(unary: simple(:unary))     { Utility.get_class(unary).new }
+      rule(space: simple(:space))     { Math::Function::Text.new(" ") }
+      rule(operant: simple(:oper))    { Math::Symbol.new(oper) }
+      rule(symbol: simple(:symbol))   { Math::Symbol.new(symbol) }
+      rule(lparen: simple(:lparen))   { Math::Symbol.new(lparen) }
+      rule(rparen: simple(:rparen))   { Math::Symbol.new(rparen) }
+      rule(limits: simple(:limits))   { limits }
+      rule("\\\\" => simple(:slash))  { Math::Symbol.new(slash) }
+      rule(expression: simple(:expr)) { expr }
+      rule(environment: simple(:env)) { env }
 
       rule(unary_functions: simple(:unary)) { unary }
       rule(left_right: simple(:left_right)) { left_right }
@@ -20,7 +24,9 @@ module Plurimath
       rule(power_base: simple(:power_base)) { power_base }
       rule(table_data: simple(:table_data)) { table_data }
 
-      rule(environment: simple(:environment)) { environment }
+      rule(numeric_values: simple(:value)) do
+        Math::Symbol.new(value)
+      end
 
       rule(text: simple(:text)) do
         Math::Function::Text.new(text)
@@ -31,18 +37,22 @@ module Plurimath
       end
 
       rule(binary: simple(:binary)) do
-        binary.is_a?(String) ? Math::Function::Text.new(binary) : binary
+        binary.is_a?(Parslet::Slice) ? Utility.get_class(binary).new : binary
       end
 
       rule(symbols: simple(:sym)) do
-        Math::Symbol.new(
-          Constants::SYMBOLS[sym.to_sym] || sym,
-        )
+        if sym.is_a?(Parslet::Slice)
+          Math::Symbol.new(
+            Constants::UNICODE_SYMBOLS[sym.to_sym] || sym,
+          )
+        else
+          sym
+        end
       end
 
       rule(lparen: simple(:lparen),
            rparen: simple(:rparen)) do
-        Math::Formula.new
+        []
       end
 
       rule(left_right: simple(:left_right),
@@ -77,6 +87,34 @@ module Plurimath
 
       rule(left: simple(:left),
            lparen: simple(:lparen),
+           right: simple(:right)) do
+        Math::Formula.new(
+          [
+            Math::Function::Left.new(lparen),
+            Math::Function::Right.new,
+          ],
+        )
+      end
+
+      rule(left: simple(:left),
+           lparen: simple(:lparen),
+           right: simple(:right),
+           rparen: simple(:rparen)) do
+        Math::Formula.new(
+          [
+            Math::Function::Left.new(lparen),
+            Math::Function::Right.new(rparen),
+          ],
+        )
+      end
+
+      rule(left: simple(:left),
+           lparen: simple(:lparen)) do
+        Math::Function::Left.new(lparen)
+      end
+
+      rule(left: simple(:left),
+           lparen: simple(:lparen),
            expression: simple(:expr),
            right: simple(:right),
            rparen: simple(:rparen)) do
@@ -97,18 +135,54 @@ module Plurimath
         )
       end
 
+      rule(power: simple(:power),
+           expression: simple(:expr)) do
+        Math::Function::Power.new(
+          power,
+          expr,
+        )
+      end
+
+      rule(base: simple(:base),
+           expression: simple(:expr)) do
+        Math::Function::Base.new(
+          base,
+          expr,
+        )
+      end
+
+      rule(base: simple(:base),
+           expression: sequence(:expr)) do
+        Math::Function::Base.new(
+          base,
+          Utility.filter_values(expr),
+        )
+      end
+
+      rule(power: simple(:power),
+           expression: sequence(:expr)) do
+        Math::Function::Power.new(
+          power,
+          Utility.filter_values(expr),
+        )
+      end
+
       rule(left: simple(:left),
            lparen: simple(:lparen),
            dividend: subtree(:dividend),
-           divisor: sequence(:divisor),
+           divisor: subtree(:divisor),
            right: simple(:right),
            rparen: simple(:rparen)) do
         Math::Formula.new(
           [
             Math::Function::Left.new(lparen),
             Math::Function::Over.new(
-              Math::Formula.new(dividend.flatten),
-              Math::Formula.new(divisor),
+              Math::Formula.new(
+                Array(dividend).flatten,
+              ),
+              Math::Formula.new(
+                Array(divisor).flatten,
+              ),
             ),
             Math::Function::Right.new(rparen),
           ],
@@ -118,8 +192,12 @@ module Plurimath
       rule(dividend: subtree(:dividend),
            divisor: subtree(:divisor)) do
         Math::Function::Over.new(
-          Math::Formula.new(dividend.flatten),
-          Math::Formula.new(divisor.flatten),
+          Math::Formula.new(
+            Array(dividend).flatten,
+          ),
+          Math::Formula.new(
+            Array(divisor).flatten,
+          ),
         )
       end
 
@@ -159,16 +237,13 @@ module Plurimath
 
       rule(unary_functions: simple(:unary),
            subscript: simple(:subscript)) do
+        unary_function = if unary.is_a?(Parslet::Slice)
+                           Utility.get_class(unary).new
+                         else
+                           unary
+                         end
         Math::Function::Base.new(
-          unary,
-          subscript,
-        )
-      end
-
-      rule(binary_functions: simple(:binary),
-           subscript: simple(:subscript)) do
-        Math::Function::Base.new(
-          binary,
+          unary_function,
           subscript,
         )
       end
@@ -194,12 +269,12 @@ module Plurimath
         if Utility::FONT_STYLES[fonts.to_sym]
           Utility::FONT_STYLES[fonts.to_sym].new(
             int_exp,
-            fonts,
+            fonts.to_s,
           )
         else
           Math::Function::FontStyle.new(
             int_exp,
-            fonts,
+            fonts.to_s,
           )
         end
       end
@@ -224,8 +299,16 @@ module Plurimath
            subscript: simple(:subscript)) do
         Math::Function::Base.new(
           Math::Symbol.new(
-            Constants::SYMBOLS[sym.to_sym] || sym,
+            Constants::UNICODE_SYMBOLS[sym.to_sym] || sym,
           ),
+          subscript,
+        )
+      end
+
+      rule(numeric_values: simple(:value),
+           subscript: simple(:subscript)) do
+        Math::Function::Base.new(
+          Math::Symbol.new(value),
           subscript,
         )
       end
@@ -234,7 +317,7 @@ module Plurimath
            supscript: simple(:supscript)) do
         Math::Function::Power.new(
           Math::Symbol.new(
-            Constants::SYMBOLS[sym.to_sym] || sym,
+            Constants::UNICODE_SYMBOLS[sym.to_sym] || sym,
           ),
           supscript,
         )
@@ -252,6 +335,14 @@ module Plurimath
            supscript: simple(:supscript)) do
         Math::Function::Power.new(
           Math::Unicode.new(sym),
+          supscript,
+        )
+      end
+
+      rule(numeric_values: simple(:value),
+           supscript: simple(:supscript)) do
+        Math::Function::Power.new(
+          Math::Symbol.new(value),
           supscript,
         )
       end
@@ -274,12 +365,12 @@ module Plurimath
         font_style = if Utility::FONT_STYLES[fonts.to_sym].nil?
                        Math::Function::FontStyle.new(
                          int_exp,
-                         fonts,
+                         fonts.to_s,
                        )
                      else
                        Utility::FONT_STYLES[fonts.to_sym].new(
                          int_exp,
-                         fonts,
+                         fonts.to_s,
                        )
                      end
         Math::Function::Power.new(
@@ -294,12 +385,12 @@ module Plurimath
         font_style = if Utility::FONT_STYLES[fonts.to_sym].nil?
                        Math::Function::FontStyle.new(
                          int_exp,
-                         fonts,
+                         fonts.to_s,
                        )
                      else
                        Utility::FONT_STYLES[fonts.to_sym].new(
                          int_exp,
-                         fonts,
+                         fonts.to_s,
                        )
                      end
         Math::Function::Base.new(
@@ -311,8 +402,20 @@ module Plurimath
       rule(root: simple(:root),
            first_value: simple(:first_value),
            second_value: simple(:second_value)) do
+        second = second_value.nil? ? Math::Formula.new : second_value
         Math::Function::Root.new(
           first_value,
+          second,
+        )
+      end
+
+      rule(root: simple(:root),
+           first_value: sequence(:first_value),
+           second_value: simple(:second_value)) do
+        first = Utility.filter_values(first_value)
+        first = first.nil? ? Math::Formula.new : first
+        Math::Function::Root.new(
+          first,
           second_value,
         )
       end
@@ -328,22 +431,12 @@ module Plurimath
       end
 
       rule(lparen: simple(:lparen),
-           symbols: simple(:sym),
-           rparen: simple(:rparen)) do
-        Math::Symbol.new(
-          Constants::SYMBOLS[sym.to_sym] || sym,
-        )
-      end
-
-      rule(lparen: simple(:lparen),
-           expression: simple(:expr),
-           rparen: simple(:rparen)) do
-        expr
-      end
-
-      rule(lparen: simple(:lparen),
            expression: sequence(:expr),
            rparen: simple(:rparen)) do
+        Math::Formula.new(expr)
+      end
+
+      rule(expression: sequence(:expr)) do
         Math::Formula.new(expr)
       end
 
@@ -358,23 +451,35 @@ module Plurimath
         )
       end
 
-      rule(lparen: simple(:lparen),
-           expression: simple(:expr),
-           rparen: simple(:rparen),
+      rule(expression: simple(:expression),
+           subscript: simple(:subscript)) do
+        Math::Function::Base.new(
+          expression,
+          subscript,
+        )
+      end
+
+      rule(rparen: simple(:rparen),
            supscript: simple(:supscript)) do
         Math::Function::Power.new(
-          Math::Formula.new(expr),
+          Math::Symbol.new(rparen),
           supscript,
         )
       end
 
-      rule(lparen: simple(:lparen),
-           expression: simple(:expr),
-           rparen: simple(:rparen),
-           subscript: simple(:subscript)) do
-        Math::Function::Base.new(
-          Math::Formula.new(expr),
-          subscript,
+      rule(expression: simple(:expr),
+           supscript: simple(:supscript)) do
+        Math::Function::Power.new(
+          expr,
+          supscript,
+        )
+      end
+
+      rule(expression: sequence(:expr),
+           supscript: simple(:supscript)) do
+        Math::Function::Power.new(
+          Utility.filter_values(expr),
+          supscript,
         )
       end
 
@@ -389,7 +494,14 @@ module Plurimath
 
       rule(binary: simple(:binary),
            subscript: simple(:subscript)) do
-        Utility.get_class(binary).new(subscript)
+        if binary.is_a?(Parslet::Slice)
+          Utility.get_class(binary).new(subscript)
+        else
+          Math::Function::Base.new(
+            binary,
+            subscript,
+          )
+        end
       end
 
       rule(symbols: simple(:sym),
@@ -397,7 +509,7 @@ module Plurimath
            supscript: simple(:supscript)) do
         Math::Function::PowerBase.new(
           Math::Symbol.new(
-            Constants::SYMBOLS[sym.to_sym] || sym,
+            Constants::UNICODE_SYMBOLS[sym.to_sym] || sym,
           ),
           subscript,
           supscript,
@@ -432,7 +544,7 @@ module Plurimath
           )
         else
           Utility.get_class(
-            binary.include?("mod") ? "mod" : binary,
+            binary.to_s.include?("mod") ? "mod" : binary,
           ).new(
             first_value,
             second_value,
@@ -440,65 +552,117 @@ module Plurimath
         end
       end
 
-      rule(begining: simple(:begining),
+      rule(environment: simple(:environment),
            table_data: sequence(:table_data),
            ending: simple(:ending)) do
-        Utility.get_table_class(begining).new(
-          Utility.organize_table(table_data),
+        Utility.get_table_class(environment).new(
+          Utility.organize_table(table_data).first,
+          Constants::MATRICES[environment.to_sym],
+          [],
         )
       end
 
-      rule(begining: simple(:begining),
+      rule(environment: simple(:environment),
            args: simple(:args),
            table_data: simple(:table_data),
            ending: simple(:ending)) do
-        Utility.get_table_class(begining).new(
-          Utility.organize_table([table_data]),
+        Utility.get_table_class(environment).new(
+          Utility.organize_table([table_data]).first,
           nil,
           [args],
         )
       end
 
-      rule(begining: simple(:begining),
+      rule(environment: simple(:environment),
+           table_data: simple(:table_data),
+           ending: simple(:ending)) do
+        Utility.get_table_class(environment).new(
+          Utility.organize_table([table_data]).first,
+          Constants::MATRICES[environment.to_sym],
+          [],
+        )
+      end
+
+      rule(environment: simple(:environment),
            args: sequence(:args),
            table_data: sequence(:table_data),
            ending: simple(:ending)) do
-        Utility.get_table_class(begining).new(
-          Utility.organize_table(table_data),
+        Utility.get_table_class(environment).new(
+          Utility.organize_table(table_data).first,
           nil,
           args,
         )
       end
 
-      rule(begining: simple(:begining),
+      rule(environment: simple(:environment),
            args: simple(:args),
            table_data: sequence(:table_data),
            ending: simple(:ending)) do
-        Utility.get_table_class(begining).new(
-          Utility.organize_table(table_data),
+        Utility.get_table_class(environment).new(
+          Utility.organize_table(table_data).first,
           nil,
           [args],
         )
       end
 
-      rule(environment: simple(:env),
-           lparen: simple(:lparen),
-           expression: sequence(:expr),
-           rparen: simple(:rparen)) do
-        left_paren = Constants::MATRICES[env.to_sym]
-        Math::Function::Table.new(
-          Utility.organize_table(expr),
-          left_paren,
-          Constants::PARENTHESIS[left_paren],
+      rule(environment: simple(:environment),
+           asterisk: simple(:asterisk),
+           options: simple(:options),
+           table_data: sequence(:table_data),
+           ending: simple(:ending)) do
+        third_value = options ? [options] : []
+        table = Utility.organize_table(
+          table_data,
+          column_align: third_value,
+        )
+        third_value = table.last ? [Math::Symbol.new(table.last)] : []
+        Utility.get_table_class(environment).new(
+          table.first,
+          Constants::MATRICES[environment.to_sym],
+          third_value,
         )
       end
 
-      rule(lparen: simple(:lparen),
-           expression: sequence(:expr),
-           rparen: simple(:rparen),
-           supscript: simple(:supscript)) do
-        formula = Math::Formula.new(expr)
-        Math::Function::Power.new(formula, supscript)
+      rule(environment: simple(:environment),
+           asterisk: simple(:asterisk),
+           table_data: sequence(:table_data),
+           ending: simple(:ending)) do
+        Utility.get_table_class(environment).new(
+          Utility.organize_table(table_data).first,
+          Constants::MATRICES[environment.to_sym],
+          [],
+        )
+      end
+
+      rule(environment: simple(:env),
+           expression: simple(:expr)) do
+        expression = expr.nil? ? [] : [expr]
+        Utility.get_table_class(env).new(
+          Utility.organize_table(expression).first,
+          Constants::MATRICES[env.to_sym],
+          [],
+        )
+      end
+
+      rule(environment: simple(:env),
+           expression: sequence(:expr)) do
+        expression = expr.compact
+        Utility.get_table_class(env).new(
+          Utility.organize_table(expression).first,
+          Constants::MATRICES[env.to_sym],
+          [],
+        )
+      end
+
+      rule(substack: simple(:substack),
+           expression: sequence(:value)) do
+        tds = Utility.td_values(value, "\\\\")
+
+        substack_values = tds.map { |td| Math::Function::Tr.new([td]) }
+        Math::Function::Substack.new(
+          substack_values.shift,
+          substack_values.shift,
+        )
       end
     end
   end

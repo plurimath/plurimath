@@ -21,9 +21,8 @@ module Plurimath
       end
 
       def parse
-        tree_t = Latex::Parse.new.parse(text)
-        tree_t = JSON.parse(tree_t.to_json, symbolize_names: true)
-        formula = Latex::Transform.new.apply(tree_t)
+        tree_t = Parse.new.parse(text)
+        formula = Transform.new.apply(tree_t)
         formula = [formula] unless formula.is_a?(Array)
 
         Math::Formula.new(formula)

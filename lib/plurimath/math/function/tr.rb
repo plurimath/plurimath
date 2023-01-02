@@ -29,7 +29,7 @@ module Plurimath
         end
 
         def to_omml_without_math_tag
-          omml_content = parameter_one.map(&:to_omml_without_math_tag)
+          omml_content = parameter_one&.map(&:to_omml_without_math_tag)
           if parameter_one.count.eql?(1)
             omml_content
           else

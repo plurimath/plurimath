@@ -23,9 +23,9 @@ module Plurimath
           limpr = Utility.ox_element("limUppPr", namespace: "m")
           limpr << Utility.pr_element("ctrl", namespace: "m")
           e_tag = Utility.ox_element("e", namespace: "m")
-          e_tag << parameter_one.to_omml_without_math_tag
+          e_tag << parameter_one&.to_omml_without_math_tag
           lim = Utility.ox_element("lim", namespace: "m")
-          lim << parameter_two.to_omml_without_math_tag
+          lim << parameter_two&.to_omml_without_math_tag if parameter_two
           Utility.update_nodes(
             limupp,
             [

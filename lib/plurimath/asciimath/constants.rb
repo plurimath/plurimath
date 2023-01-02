@@ -317,6 +317,20 @@ module Plurimath
         log
         int
       ].freeze
+
+      class << self
+        def precompile_constants
+          @values ||=
+            named_hash(UNARY_CLASSES, :unary_class)
+              .merge(named_hash(SYMBOLS.keys, :symbol))
+              .merge(named_hash(FONT_STYLES, :fonts))
+          @values.sort_by { |v, _| -v.length }.to_h
+        end
+
+        def named_hash(hash_or_array, name_key)
+          hash_or_array.each_with_object({}) { |d, i| i[d] = name_key }
+        end
+      end
     end
   end
 end

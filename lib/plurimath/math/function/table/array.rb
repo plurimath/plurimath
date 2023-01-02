@@ -9,14 +9,13 @@ module Plurimath
         class Array < Table
           def initialize(parameter_one = [],
                          parameter_two = "[",
-                         parameter_three = "]")
+                         parameter_three = [])
             super
           end
 
           def to_latex
-            divider     = "{#{parameter_three.map(&:to_latex).join}}"
-            first_value = parameter_one&.map(&:to_latex)&.join("\\\\")
-            "\\begin{array}#{divider}#{first_value}\\end{array}"
+            divider = parameter_three&.map(&:to_latex)&.join
+            "\\begin{array}{#{divider}}#{latex_content}\\end{array}"
           end
         end
       end

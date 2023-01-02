@@ -21,6 +21,13 @@ module Plurimath
           )
         end
 
+        def to_omml_without_math_tag
+          Utility.update_nodes(
+            Utility.ox_element("msgroup"),
+            parameter_one&.map(&:to_omml_without_math_tag),
+          )
+        end
+
         def to_html
           "<i>#{parameter_one.map(&:to_html).join}</i>"
         end

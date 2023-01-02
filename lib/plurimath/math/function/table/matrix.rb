@@ -9,13 +9,12 @@ module Plurimath
         class Matrix < Table
           def initialize(parameter_one = [],
                          parameter_two = "(",
-                         parameter_three = ")")
+                         parameter_three = [])
             super
           end
 
           def to_latex
-            first_value = parameter_one&.map(&:to_latex)&.join("\\\\")
-            "\\begin{matrix}#{first_value}\\end{matrix}"
+            "\\begin#{opening}#{latex_content}\\end#{ending}"
           end
         end
       end

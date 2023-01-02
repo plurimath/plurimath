@@ -9,13 +9,12 @@ module Plurimath
         class Split < Table
           def initialize(parameter_one,
                          parameter_two = "[",
-                         parameter_three = "]")
+                         parameter_three = [])
             super
           end
 
           def to_latex
-            first_value = parameter_one&.map(&:to_latex)&.join("\\\\")
-            "\\begin{split}#{first_value}\\end{split}"
+            "\\begin#{opening}#{latex_content}\\end#{ending}"
           end
         end
       end
