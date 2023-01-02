@@ -25,13 +25,22 @@ module Plurimath
       cc: Math::Function::FontStyle::Script,
       bb: Math::Function::FontStyle::Bold,
     }.freeze
+    ALIGNMENT_LETTERS = {
+      r: "right",
+      l: "left",
+      c: "center",
+    }.freeze
 
     class << self
-      def organize_table(array, table = [], table_data = [], table_row = [])
-        table_separator = ["&", "\\\\"].freeze
+      def organize_table(array, table = [], table_data = [], table_row = [], column_align: nil)
+        td_value = organize_td(array, column_align) if column_align
+        table_separators = ["&", "\\\\"].freeze
         array.each do |data|
-          if data.is_a?(Math::Symbol) && table_separator.include?(data.value)
-            table_row << Math::Function::Td.new(filter_table_data(table_data))
+          if data.is_a?(Math::Symbol) && table_separators.include?(data.value)
+            table_row << Math::Function::Td.new(
+              filter_table_data(table_data).compact,
+              ALIGNMENT_LETTERS[td_value&.to_sym],
+            )
             table_data = []
             if data.value == "\\\\"
               table << Math::Function::Tr.new(table_row.flatten)
@@ -41,19 +50,29 @@ module Plurimath
             table_data << data
           end
         end
-        table_row << Math::Function::Td.new(table_data) if table_data
+        if table_data
+          table_row << Math::Function::Td.new(
+            table_data.compact,
+            ALIGNMENT_LETTERS[td_value&.to_sym],
+          )
+        end
         table << Math::Function::Tr.new(table_row) unless table_row.empty?
-        table
+        [table, td_value]
+      end
+
+      def organize_td(table_data, column_align)
+        if ALIGNMENT_LETTERS.include?(column_align.first.value.to_sym)
+          align = column_align.shift.value
+        end
+        table_data.insert(0, *column_align)
+        align
       end
 
       def filter_table_data(table_data)
         table_data.each_with_index do |object, ind|
-          if object.is_a?(Math::Symbol) && object.value == "-"
+          if symbol_value(object, "-")
             table_data[ind] = Math::Formula.new(
-              [
-                object,
-                table_data.delete_at(ind.next),
-              ],
+              [object, table_data.delete_at(ind.next)],
             )
           end
         end
@@ -62,7 +81,7 @@ module Plurimath
 
       def get_table_class(text)
         Object.const_get(
-          "Plurimath::Math::Function::Table::#{text.capitalize}",
+          "Plurimath::Math::Function::Table::#{text.to_s.capitalize}",
         )
       end
 
@@ -73,23 +92,17 @@ module Plurimath
       end
 
       def get_class(text)
+        text = text.to_s.split("_").map(&:capitalize).join
         Object.const_get(
-          "Plurimath::Math::Function::#{text.capitalize}",
+          "Plurimath::Math::Function::#{text}",
         )
-      end
-
-      def raise_error!(open_tag, close_tag)
-        message = "Please check your input."\
-                  " Opening tag is \"#{open_tag}\""\
-                  " and closing tag is \"#{close_tag}\""
-        raise Math::Error.new(message)
       end
 
       def ox_element(node, attributes: [], namespace: "")
         namespace = "#{namespace}:" unless namespace.empty?
 
         element = Ox::Element.new("#{namespace}#{node}")
-        attributes.each do |attr_key, attr_value|
+        attributes&.each do |attr_key, attr_value|
           element[attr_key] = attr_value
         end
         element
@@ -120,14 +133,14 @@ module Plurimath
         ) << rpr_element(wi_tag: wi_tag)
       end
 
-      def filter_values(value)
-        return value unless value.is_a?(Array)
+      def filter_values(array)
+        return array unless array.is_a?(Array)
 
-        compact_value = value.flatten.compact
-        if compact_value.length > 1
-          Math::Formula.new(compact_value)
+        array = array.flatten.compact
+        if array.length > 1
+          Math::Formula.new(array)
         else
-          compact_value.first
+          array.first
         end
       end
 
@@ -146,26 +159,16 @@ module Plurimath
 
       def nary_fonts(nary)
         narypr = nary.first.flatten.compact
-        fonts  = narypr.any?(Hash) ? narypr.first[:chr] : "∫"
-        subsup = if narypr.any?("undOvr")
-                   Math::Function::Underover
-                 else
-                   Math::Function::PowerBase
-                 end
-        subsup.new(
-          Math::Symbol.new(fonts),
+        subsup = narypr.any?("undOvr") ? "underover" : "power_base"
+        get_class(subsup).new(
+          Math::Symbol.new(narypr.any?(Hash) ? narypr.first[:chr] : "∫"),
           nary[1],
           nary[2],
         )
       end
 
       def find_class_name(object)
-        new_object = case object
-                     when Math::Function::Text
-                       object.parameter_one
-                     when Math::Formula
-                       object.value.first.parameter_one
-                     end
+        new_object = object.value.first.parameter_one if Math::Formula
         get_class(new_object) unless new_object.nil?
       end
 
@@ -173,27 +176,19 @@ module Plurimath
         fonts_array.find { |d| d.is_a?(Hash) && d[key] }
       end
 
-      def nested_formula_object(array)
-        if array.length > 1
-          Math::Formula.new(array)
-        else
-          array.first
-        end
-      end
-
-      def td_values(objects)
-        sliced = objects.slice_when { |object, _| comma(object) }
+      def td_values(objects, slicer)
+        sliced = objects.slice_when { |object, _| symbol_value(object, slicer) }
         tds = sliced.map do |slice|
           Math::Function::Td.new(
-            slice.delete_if { |d| comma(d) },
+            slice.delete_if { |d| symbol_value(d, slicer) }.compact,
           )
         end
-        tds << Math::Function::Td.new([]) if comma(objects.last)
+        tds << Math::Function::Td.new([]) if symbol_value(objects.last, slicer)
         tds
       end
 
-      def comma(object)
-        object.is_a?(Math::Symbol) && object.value.include?(",")
+      def symbol_value(object, value)
+        object.is_a?(Math::Symbol) && object.value.include?(value)
       end
 
       def td_value(td_object)
@@ -215,11 +210,12 @@ module Plurimath
                  end
         return string unless string.is_a?(String)
 
+        classes = Mathml::Constants::CLASSES
         unicode = string_to_html_entity(string)
         symbol  = Mathml::Constants::UNICODE_SYMBOLS[unicode.strip.to_sym]
-        if Mathml::Constants::CLASSES.include?(symbol&.strip)
+        if classes.include?(symbol&.strip)
           get_class(symbol.strip).new
-        elsif Mathml::Constants::CLASSES.any?(string&.strip)
+        elsif classes.any?(string&.strip)
           get_class(string.strip).new
         else
           Math::Symbol.new(unicode)
@@ -232,9 +228,8 @@ module Plurimath
       end
 
       def table_separator(separator, value)
-        solid_none = separator.split
         sep_symbol = Math::Function::Td.new([Math::Symbol.new("|")])
-        solid_none.each_with_index do |sep, ind|
+        separator&.split&.each_with_index do |sep, ind|
           next unless sep == "solid"
 
           value.map { |val| val.parameter_one.insert((ind + 1), sep_symbol) }
@@ -256,10 +251,10 @@ module Plurimath
           attrs.parameter_two = value
           attrs
         elsif attrs.is_a?(Math::Function::FontStyle)
-          attrs.parameter_one = nested_formula_object(value)
+          attrs.parameter_one = filter_values(value)
           attrs
         elsif attrs.is_a?(Math::Function::Color)
-          color_value = nested_formula_object(value)
+          color_value = filter_values(value)
           if attrs.parameter_two
             attrs.parameter_two.parameter_one = color_value
           else
@@ -277,7 +272,7 @@ module Plurimath
           part_val     = value.partition.with_index { |_, i| i.even? }
           first_value  = part_val[0].empty? ? nil : filter_values(part_val[0])
           second_value = part_val[1].empty? ? nil : filter_values(part_val[1])
-          if base_value.is_a?(String) && base_value.include?("mprescripts")
+          if base_value.to_s.include?("mprescripts")
             [first_value, second_value]
           else
             Math::Function::PowerBase.new(

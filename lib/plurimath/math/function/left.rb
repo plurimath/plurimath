@@ -11,7 +11,15 @@ module Plurimath
         end
 
         def to_mathml_without_math_tag
-          Utility.ox_element("mi") << parameter_one
+          mi = Utility.ox_element("mi")
+          mi << parameter_one if parameter_one
+          mi
+        end
+
+        def to_omml_without_math_tag
+          mt = Utility.ox_element("m:t")
+          mt << parameter_one if parameter_one
+          mt
         end
 
         def to_html

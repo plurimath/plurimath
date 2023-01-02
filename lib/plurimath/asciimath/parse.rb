@@ -59,7 +59,7 @@ module Plurimath
       rule(:symbol_text_or_integer) do
         sub_sup_classes |
           binary_classes |
-          unary_fonts_or_symbols |
+          hash_to_expression(Constants.precompile_constants) |
           (match(/[0-9]/).as(:number) >> comma.as(:comma)).repeat(1).as(:comma_separated) |
           quoted_text |
           match["a-zA-Z"].as(:symbol) |
@@ -144,17 +144,9 @@ module Plurimath
         end
       end
 
-      def unary_fonts_or_symbols
-        unsorted_hash = Constants::UNARY_CLASSES.each_with_object({}) { |d, i| i[d] = :unary_class }
-        unsorted_hash = Constants::SYMBOLS.each_with_object(unsorted_hash) { |d, i| i[d.first] = :symbol }
-        unsorted_hash = Constants::FONT_STYLES.each_with_object(unsorted_hash) { |d, i| i[d] = :fonts }
-        sorted_hash   = unsorted_hash.sort_by { |v, _| -v.length }.to_h
-        hash_to_expression(sorted_hash)
-      end
-
       def hash_to_expression(arr)
         type = arr.first.class
-        arr.reduce do |expression, expr_string|
+        @@expression ||= arr.reduce do |expression, expr_string|
           expression = dynamic_parser_rules(expression) if expression.is_a?(type)
           expression | dynamic_parser_rules(expr_string)
         end

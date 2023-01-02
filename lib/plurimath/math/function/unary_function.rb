@@ -7,6 +7,7 @@ module Plurimath
         attr_accessor :parameter_one
 
         def initialize(parameter_one = nil)
+          parameter_one  = parameter_one.to_s if parameter_one.is_a?(Parslet::Slice)
           @parameter_one = parameter_one
         end
 
@@ -79,8 +80,8 @@ module Plurimath
           rpr = Utility.rpr_element
           mt  = Utility.ox_element("t", namespace: "m") << class_name
           fname << Utility.update_nodes(mr, [rpr, mt])
-          first_value = parameter_one.to_omml_without_math_tag if parameter_one
-          me = Utility.ox_element("e", namespace: "m") << first_value if first_value
+          me = Utility.ox_element("e", namespace: "m")
+          Utility.update_nodes(me, omml_value) if parameter_one
           Utility.update_nodes(
             func,
             [
@@ -89,6 +90,15 @@ module Plurimath
               me,
             ],
           )
+        end
+
+        def omml_value
+          case parameter_one
+          when Array
+            parameter_one.compact.map(&:to_omml_without_math_tag)
+          else
+            Array(parameter_one.to_omml_without_math_tag)
+          end
         end
 
         def class_name

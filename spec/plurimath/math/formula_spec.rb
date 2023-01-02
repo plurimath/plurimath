@@ -47,15 +47,15 @@ RSpec.describe Plurimath::Math::Formula do
 
     context "contains string" do
       it 'returns Formula object' do
-        formula = described_class.new('1 + 2')
-        expect(formula).to be_a(Plurimath::Math::Formula)
+        expected_value = described_class.new('1 + 2')
+        expect(expected_value).to be_a(Plurimath::Math::Formula)
       end
     end
 
     context "contains string" do
       it 'returns Formula object' do
-        formula = described_class.new('1 + 2')
-        expect(formula.value).to eql(['1 + 2'])
+        expected_value = described_class.new('1 + 2')
+        expect(expected_value.value).to eql(['1 + 2'])
       end
     end
 

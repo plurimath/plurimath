@@ -1,7 +1,7 @@
 require_relative '../../../../lib/plurimath/math'
 
 RSpec.describe Plurimath::Math::Formula do
-  describe ".to_latex" do
+  describe ".to_html" do
     subject(:formula) { exp.to_html.gsub(/\s/, "") }
 
     context "basic parse rules for single character tag" do

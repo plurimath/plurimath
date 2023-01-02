@@ -24,16 +24,16 @@ module Plurimath
         end
 
         def to_html
-          first_value  = "<i>#{parameter_one.to_html}</i>" if parameter_one
+          first_value  = "<i>#{parameter_one.value}</i>" if parameter_one
           second_value = parameter_two.map(&:to_html).join if parameter_two
-          third_value  = "<i>#{parameter_three.to_html}</i>" if parameter_three
+          third_value  = "<i>#{parameter_three.value}</i>" if parameter_three
           "#{first_value}#{second_value}#{third_value}"
         end
 
         def to_latex
-          open_paren   = parameter_one ? parameter_one.to_latex : "("
+          open_paren   = parameter_one ? parameter_one.value : "("
           fenced_value = parameter_two&.map(&:to_latex)&.join
-          close_paren  = parameter_three ? parameter_three.to_latex : ")"
+          close_paren  = parameter_three ? parameter_three.value : ")"
           "#{open_paren}#{fenced_value}#{close_paren}"
         end
 

@@ -2,11 +2,11 @@
 
 module Plurimath
   module Math
-    class Symbol
+    class Symbol < Base
       attr_accessor :value
 
       def initialize(sym)
-        @value = sym
+        @value = super
       end
 
       def ==(object)
@@ -18,7 +18,7 @@ module Plurimath
 
         symbol = Asciimath::Constants::SYMBOLS.invert[value.strip.to_sym].to_s
         if value.match(/&#x[0-9a-fA-F]/) && symbol.empty?
-          Latex::Constants::SYMBOLS.invert[value]
+          Latex::Constants::UNICODE_SYMBOLS.invert[value]
         else
           symbol.empty? ? value : symbol
         end
@@ -34,7 +34,10 @@ module Plurimath
       end
 
       def to_latex
-        symbols = Latex::Constants::SYMBOLS.invert
+        symbols = Latex::Constants::UNICODE_SYMBOLS.invert
+        paren   = Latex::Constants::PARENTHESIS.flatten
+        return "\\#{value}" if paren.include?(value)
+
         symbols.key?(value) ? "\\#{symbols[value]}" : value
       end
 
