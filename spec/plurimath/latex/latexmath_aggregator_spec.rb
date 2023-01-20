@@ -1,3 +1,4 @@
+require_relative "../../spec_helper"
 require_relative "../../../lib/plurimath/math"
 
 RSpec.describe Plurimath::Latex::Parser do
@@ -745,7 +746,7 @@ RSpec.describe Plurimath::Latex::Parser do
       let(:string) { "\\mathrm{...}" }
       it "returns formula" do
         expected_value = Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::FontStyle.new(
+          Plurimath::Math::Function::FontStyle::Normal.new(
             Plurimath::Math::Formula.new([
               Plurimath::Math::Symbol.new("."),
               Plurimath::Math::Symbol.new("."),
@@ -1306,7 +1307,7 @@ RSpec.describe Plurimath::Latex::Parser do
       it "returns formula" do
         expected_value = Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Limits.new(
-            Plurimath::Math::Function::Int.new,
+            Plurimath::Math::Symbol.new("&#x222b;"),
             Plurimath::Math::Number.new("0"),
             Plurimath::Math::Symbol.new("&#x3c0;")
           )
@@ -1348,7 +1349,7 @@ RSpec.describe Plurimath::Latex::Parser do
       let(:string) { "\\mathrm{AA}" }
       it "returns formula" do
         expected_value = Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::FontStyle.new(
+          Plurimath::Math::Function::FontStyle::Normal.new(
             Plurimath::Math::Formula.new([
               Plurimath::Math::Symbol.new("A"),
               Plurimath::Math::Symbol.new("A")

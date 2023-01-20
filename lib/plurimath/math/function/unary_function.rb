@@ -17,49 +17,25 @@ module Plurimath
         end
 
         def to_asciimath
-          value = "(#{asciimath_value})" if parameter_one
+          value = if Utility::UNARY_CLASSES.any?(class_name)
+                    asciimath_value
+                  elsif parameter_one
+                    "(#{asciimath_value})"
+                  end
           "#{class_name}#{value}"
-        end
-
-        def asciimath_value
-          return "" unless parameter_one
-
-          case parameter_one
-          when Array
-            parameter_one.compact.map(&:to_asciimath).join
-          else
-            parameter_one.to_asciimath
-          end
         end
 
         def to_mathml_without_math_tag
           row_tag = Utility.ox_element("mrow")
-          new_arr = [Utility.ox_element("mo") << class_name]
+          tag_name = Utility::UNARY_CLASSES.include?(class_name) ? "mi" : "mo"
+          new_arr = [Utility.ox_element(tag_name) << class_name]
           new_arr += mathml_value if parameter_one
           Utility.update_nodes(row_tag, new_arr)
-        end
-
-        def mathml_value
-          case parameter_one
-          when Array
-            parameter_one.compact.map(&:to_mathml_without_math_tag)
-          else
-            Array(parameter_one.to_mathml_without_math_tag)
-          end
         end
 
         def to_latex
           first_value = "{#{latex_value}}" if parameter_one
           "\\#{class_name}#{first_value}"
-        end
-
-        def latex_value
-          case parameter_one
-          when Array
-            parameter_one.compact.map(&:to_latex).join
-          else
-            parameter_one.to_latex
-          end
         end
 
         def to_html
@@ -92,17 +68,50 @@ module Plurimath
           )
         end
 
-        def omml_value
+        def class_name
+          self.class.name.split("::").last.downcase
+        end
+
+        protected
+
+        def asciimath_value
+          return "" unless parameter_one
+
           case parameter_one
           when Array
-            parameter_one.compact.map(&:to_omml_without_math_tag)
+            parameter_one.compact.map(&:to_asciimath).join
           else
-            Array(parameter_one.to_omml_without_math_tag)
+            parameter_one.to_asciimath
           end
         end
 
-        def class_name
-          self.class.name.split("::").last.downcase
+        def mathml_value
+          case parameter_one
+          when Array
+            parameter_one.compact.map(&:to_mathml_without_math_tag)
+          else
+            Array(parameter_one&.to_mathml_without_math_tag)
+          end
+        end
+
+        def latex_value
+          if parameter_one.is_a?(Array)
+            return parameter_one&.compact&.map(&:to_latex)&.join(" ")
+          end
+
+          parameter_one&.to_latex
+        end
+
+        def omml_value
+          if parameter_one.is_a?(Array)
+            return parameter_one.compact.map(&:to_omml_without_math_tag)
+          end
+
+          first_value = parameter_one.to_omml_without_math_tag
+          if parameter_one.is_a?(Symbol)
+            first_value = Utility.ox_element("t", namespace: "m") << first_value
+          end
+          Array(first_value)
         end
       end
     end

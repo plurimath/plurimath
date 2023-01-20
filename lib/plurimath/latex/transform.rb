@@ -264,6 +264,16 @@ module Plurimath
         )
       end
 
+      rule(unary_functions: simple(:unary),
+           subscript: simple(:subscript),
+           supscript: simple(:supscript)) do
+        Math::Function::PowerBase.new(
+          unary,
+          subscript,
+          supscript,
+        )
+      end
+
       rule(fonts: simple(:fonts),
            intermediate_exp: simple(:int_exp)) do
         if Utility::FONT_STYLES[fonts.to_sym]
@@ -420,11 +430,11 @@ module Plurimath
         )
       end
 
-      rule(unary_functions: simple(:unary),
+      rule(first_value: simple(:first_value),
            base: simple(:base),
            power: simple(:power)) do
         Math::Function::Limits.new(
-          Utility.get_class(unary).new,
+          first_value,
           base,
           power,
         )
@@ -550,6 +560,17 @@ module Plurimath
             second_value,
           )
         end
+      end
+
+      rule(underover: simple(:function),
+           first_value: simple(:first),
+           subscript: simple(:subscript),
+           supscript: simple(:supscript)) do
+        Math::Function::PowerBase.new(
+          Utility.get_class(function).new(first),
+          subscript,
+          supscript,
+        )
       end
 
       rule(environment: simple(:environment),

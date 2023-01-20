@@ -9,7 +9,7 @@ module Plurimath
         class Split < Table
           def initialize(parameter_one,
                          parameter_two = "[",
-                         parameter_three = [])
+                         parameter_three = "]")
             super
           end
 

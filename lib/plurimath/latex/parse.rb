@@ -55,7 +55,7 @@ module Plurimath
       end
 
       rule(:math_operators) do
-        slash >> math_operators_classes >> str("\\limits")
+        symbol_text_or_integer.as(:first_value) >> str("\\limits")
       end
 
       rule(:sqrt_arg) do
@@ -78,6 +78,7 @@ module Plurimath
 
       rule(:symbol_text_or_integer) do
         symbol_class_commands |
+          (slash >> math_operators_classes) |
           match["a-zA-Z"].as(:symbols) |
           (str('"') >> match("[^\"]").repeat >> str('"')).as(:text) |
           match(/\d+(\.[0-9]+)|\d/).repeat(1).as(:number) |
@@ -149,10 +150,6 @@ module Plurimath
         ).as(:over)
       end
 
-      rule(:overset) do
-        (iteration.as(:dividend) >> str("\\over") >> iteration.as(:divisor))
-      end
-
       rule(:iteration) do
         (sequence.as(:sequence) >> expression.as(:expression)) |
           sequence
@@ -161,7 +158,7 @@ module Plurimath
       rule(:expression) do
         (iteration >> expression) |
           iteration |
-          (overset >> expression.repeat)
+          ((iteration.as(:dividend) >> str("\\over") >> iteration.as(:divisor)) >> expression.repeat)
       end
 
       root :expression
@@ -192,11 +189,14 @@ module Plurimath
         when :unary
           unary_rules(first_value)
         when :fonts
-          ((slashed_value(first_value, :fonts)) >> (binary_functions | intermediate_exp).as(:intermediate_exp))
+          (slashed_value(first_value, :fonts) >> (binary_functions | intermediate_exp).as(:intermediate_exp))
         when :power_base
-          (slashed_value(first_value, :binary) >> base >> intermediate_exp.as(:subscript).maybe >> power >> intermediate_exp.as(:supscript).maybe).as(:power_base) |
-            (slashed_value(first_value, :binary) >> power >> intermediate_exp.as(:supscript).maybe >> base >> intermediate_exp.as(:subscript).maybe).as(:power_base) |
+          (slashed_value(first_value, :binary) >> dynamic_power_base).as(:power_base) |
             (slashed_value(first_value, :binary))
+        when :underover
+          (slashed_value(first_value, :underover) >> dynamic_power_base) |
+            (slashed_value(first_value, :underover) >> intermediate_exp.maybe.as(:first_value) >> dynamic_power_base) |
+            (slashed_value(first_value, :underover))
         when :binary
           (slashed_value(first_value, :binary) >> intermediate_exp.as(:first_value) >> intermediate_exp.as(:second_value)).as(:binary)
         end
@@ -207,12 +207,12 @@ module Plurimath
       end
 
       def unary_rules(first_value)
-        (slashed_value(first_value, :unary_functions) >> unary_power_base) |
+        (slashed_value(first_value, :unary_functions) >> dynamic_power_base) |
           (slashed_value(first_value, :unary) >> intermediate_exp.as(:first_value)).as(:unary_functions) |
           (slashed_value(first_value, :unary))
       end
 
-      def unary_power_base
+      def dynamic_power_base
         (base >> intermediate_exp.as(:subscript) >> power >> intermediate_exp.as(:supscript)) |
           (power >> intermediate_exp.as(:supscript) >> base >> intermediate_exp.as(:subscript)) |
           (power >> intermediate_exp.as(:supscript)) |

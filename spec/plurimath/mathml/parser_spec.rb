@@ -1,4 +1,4 @@
-require_relative "../../../lib/plurimath/mathml"
+require_relative "../../../spec/spec_helper"
 
 RSpec.describe Plurimath::Mathml::Parser do
 
@@ -737,8 +737,8 @@ RSpec.describe Plurimath::Mathml::Parser do
     it "returns formula of root and theta" do
       expected_value = Plurimath::Math::Formula.new([
         Plurimath::Math::Function::Root.new(
-          Plurimath::Math::Symbol.new("&#x3b8;"),
           Plurimath::Math::Symbol.new("x"),
+          Plurimath::Math::Symbol.new("&#x3b8;"),
         )
       ])
       expect(formula).to eq(expected_value)
@@ -1330,7 +1330,10 @@ RSpec.describe Plurimath::Mathml::Parser do
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
         Plurimath::Math::Formula.new([
-          Plurimath::Math::Symbol.new("G&#x2126;")
+          Plurimath::Math::Function::FontStyle::Normal.new(
+            Plurimath::Math::Symbol.new("G&#x2126;"),
+            "normal",
+          )
         ])
       ])
       expect(formula).to eq(expected_value)
@@ -1403,11 +1406,20 @@ RSpec.describe Plurimath::Mathml::Parser do
           ]),
           Plurimath::Math::Formula.new([
             Plurimath::Math::Formula.new([
-              Plurimath::Math::Symbol.new("S"),
-              Plurimath::Math::Symbol.new("R"),
-              Plurimath::Math::Symbol.new("P"),
-              Plurimath::Math::Number.new("27")
-            ])
+              Plurimath::Math::Function::FontStyle::Normal.new(
+                Plurimath::Math::Symbol.new("S"),
+                "normal",
+              ),
+              Plurimath::Math::Function::FontStyle::Normal.new(
+                Plurimath::Math::Symbol.new("R"),
+                "normal",
+              ),
+              Plurimath::Math::Function::FontStyle::Normal.new(
+                Plurimath::Math::Symbol.new("P"),
+                "normal",
+              ),
+              Plurimath::Math::Number.new("27"),
+            ]),
           ])
         )
       ])

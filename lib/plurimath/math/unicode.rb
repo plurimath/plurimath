@@ -3,16 +3,8 @@
 module Plurimath
   module Math
     class Unicode < Symbol
-      def to_asciimath
-        decode
-      end
-
-      def to_latex
-        decode
-      end
-
-      def decode
-        HTMLEntities.new.decode(value)
+      def to_mathml_without_math_tag
+        Utility.ox_element("mo") << value
       end
     end
   end

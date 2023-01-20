@@ -1,12 +1,12 @@
-require_relative '../../../../lib/plurimath/math'
+require_relative '../../../../spec/spec_helper'
 
 RSpec.describe Plurimath::Math::Function::Td do
 
   describe ".initialize" do
-    subject(:td) { Plurimath::Math::Function::Td.new(first) }
+    subject(:td) { Plurimath::Math::Function::Td.new(first_value) }
 
     context "initialize Td object" do
-      let(:first) { "70" }
+      let(:first_value) { "70" }
 
       it 'returns instance of Td' do
         expect(td).to be_a(Plurimath::Math::Function::Td)
@@ -20,31 +20,165 @@ RSpec.describe Plurimath::Math::Function::Td do
   end
 
   describe ".to_asciimath" do
-    subject(:single_value_td) { Plurimath::Math::Function::Td.new([first]).to_asciimath }
-    subject(:double_value_td) { Plurimath::Math::Function::Td.new([first, second]).to_asciimath }
+    subject(:formula) { described_class.new([first_value]).to_asciimath }
 
-    context "returns instance of Td" do
-      let(:first) { Plurimath::Math::Symbol.new("theta") }
+    context "contains Symbol as value" do
+      let(:first_value) { Plurimath::Math::Symbol.new("n") }
 
-      it 'matches epxected value of Td' do
-        expect(single_value_td).to eq("theta")
-      end
-
-      it "doesn't match epxected value of Td" do
-        expect(single_value_td).not_to eq("[Theta]")
+      it "returns asciimath string" do
+        expect(formula).to eq("n")
       end
     end
 
-    context "returns instance of Td" do
-      let(:first) { Plurimath::Math::Symbol.new("theta") }
-      let(:second) { Plurimath::Math::Symbol.new("Theta") }
+    context "contains Number as value" do
+      let(:first_value) { Plurimath::Math::Number.new("70") }
 
-      it 'matches epxected value of Td' do
-        expect(double_value_td).to eq("thetaTheta")
+      it "returns asciimath string" do
+        expect(formula).to eq("70")
+      end
+    end
+
+    context "contains Formula as value" do
+      let(:first_value) do
+        Plurimath::Math::Formula.new([
+          Plurimath::Math::Function::Sum.new(
+            Plurimath::Math::Symbol.new("&"),
+            Plurimath::Math::Function::Text.new("so"),
+          )
+        ])
+      end
+      it "returns asciimath string" do
+        expect(formula).to eq("sum_(&)^(\"so\")")
+      end
+    end
+  end
+
+  describe ".to_mathml" do
+    subject(:formula) do
+      Ox.dump(
+        described_class.new([first_value]).
+          to_mathml_without_math_tag,
+        indent: 2,
+      ).gsub("&amp;", "&")
+    end
+
+    context "contains Symbol as value" do
+      let(:first_value) { Plurimath::Math::Symbol.new("n") }
+
+      it "returns mathml string" do
+        expected_value = <<~MATHML
+          <mtd>
+            <mi>n</mi>
+          </mtd>
+        MATHML
+        expect(formula).to be_equivalent_to(expected_value)
+      end
+    end
+
+    context "contains Number as value" do
+      let(:first_value) { Plurimath::Math::Number.new("70") }
+
+      it "returns mathml string" do
+        expected_value = <<~MATHML
+          <mtd>
+            <mn>70</mn>
+          </mtd>
+        MATHML
+        expect(formula).to be_equivalent_to(expected_value)
+      end
+    end
+
+    context "contains Formula as value" do
+      let(:first_value) do
+        Plurimath::Math::Formula.new([
+          Plurimath::Math::Function::Sum.new(
+            Plurimath::Math::Symbol.new("&"),
+            Plurimath::Math::Function::Text.new("so"),
+          )
+        ])
       end
 
-      it "doesn't match epxected value of Td" do
-        expect(double_value_td).not_to eq("[Theta]")
+      it "returns mathml string" do
+        expected_value = <<~MATHML
+          <mtd>
+            <mrow>
+              <munderover>
+                <mo>&#x2211;</mo>
+                <mo>&#x26;</mo>
+                <mtext>so</mtext>
+              </munderover>
+            </mrow>
+          </mtd>
+        MATHML
+        expect(formula).to be_equivalent_to(expected_value)
+      end
+    end
+  end
+
+  describe ".to_latex" do
+    subject(:formula) { described_class.new([first_value]).to_latex }
+
+    context "contains Symbol as value" do
+      let(:first_value) { Plurimath::Math::Symbol.new("n") }
+
+      it "returns mathml string" do
+        expect(formula).to eql("n")
+      end
+    end
+
+    context "contains Number as value" do
+      let(:first_value) { Plurimath::Math::Number.new("70") }
+
+      it "returns mathml string" do
+        expect(formula).to eql("70")
+      end
+    end
+
+    context "contains Formula as value" do
+      let(:first_value) do
+        Plurimath::Math::Formula.new([
+          Plurimath::Math::Function::Sum.new(
+            Plurimath::Math::Symbol.new("&"),
+            Plurimath::Math::Function::Text.new("so"),
+          )
+        ])
+      end
+      it "returns mathml string" do
+        expect(formula).to eql("\\sum_{&}^{\\text{so}}")
+      end
+    end
+  end
+
+  describe ".to_html" do
+    subject(:formula) { described_class.new([first_value]).to_html }
+
+    context "contains Symbol as value" do
+      let(:first_value) { Plurimath::Math::Symbol.new("n") }
+
+      it "returns mathml string" do
+        expect(formula).to eql("<td>n</td>")
+      end
+    end
+
+    context "contains Number as value" do
+      let(:first_value) { Plurimath::Math::Number.new("70") }
+
+      it "returns mathml string" do
+        expect(formula).to eql("<td>70</td>")
+      end
+    end
+
+    context "contains Formula as value" do
+      let(:first_value) do
+        Plurimath::Math::Formula.new([
+          Plurimath::Math::Function::Sum.new(
+            Plurimath::Math::Symbol.new("&"),
+            Plurimath::Math::Function::Text.new("so"),
+          )
+        ])
+      end
+      it "returns mathml string" do
+        expect(formula).to eql("<td><i>&sum;</i><sub>&</sub><sup>so</sup></td>")
       end
     end
   end

@@ -6,23 +6,27 @@ module Plurimath
       "double-struck": Math::Function::FontStyle::DoubleStruck,
       "sans-serif": Math::Function::FontStyle::SansSerif,
       monospace: Math::Function::FontStyle::Monospace,
+      fraktur: Math::Function::FontStyle::Fraktur,
+      script: Math::Function::FontStyle::Script,
+      normal: Math::Function::FontStyle::Normal,
+      bold: Math::Function::FontStyle::Bold,
       mathfrak: Math::Function::FontStyle::Fraktur,
       mathcal: Math::Function::FontStyle::Script,
-      fraktur: Math::Function::FontStyle::Fraktur,
-      mathtt: Math::Function::FontStyle::Monospace,
       mathbb: Math::Function::FontStyle::DoubleStruck,
-      script: Math::Function::FontStyle::Script,
+      mathtt: Math::Function::FontStyle::Monospace,
       mathsf: Math::Function::FontStyle::SansSerif,
+      mathrm: Math::Function::FontStyle::Normal,
       mathbf: Math::Function::FontStyle::Bold,
       textbf: Math::Function::FontStyle::Bold,
-      bold: Math::Function::FontStyle::Bold,
       bbb: Math::Function::FontStyle::DoubleStruck,
       cal: Math::Function::FontStyle::Script,
       bf: Math::Function::FontStyle::Bold,
       sf: Math::Function::FontStyle::SansSerif,
       tt: Math::Function::FontStyle::Monospace,
       fr: Math::Function::FontStyle::Fraktur,
+      rm: Math::Function::FontStyle::Normal,
       cc: Math::Function::FontStyle::Script,
+      ii: Math::Function::FontStyle::Italic,
       bb: Math::Function::FontStyle::Bold,
     }.freeze
     ALIGNMENT_LETTERS = {
@@ -30,6 +34,38 @@ module Plurimath
       l: "left",
       c: "center",
     }.freeze
+    UNARY_CLASSES = %w[
+      arccos
+      arcsin
+      arctan
+      right
+      sech
+      sinh
+      tanh
+      cosh
+      coth
+      csch
+      left
+      max
+      min
+      sec
+      sin
+      deg
+      det
+      dim
+      exp
+      gcd
+      glb
+      lub
+      tan
+      cos
+      cot
+      csc
+      ln
+      lg
+      f
+      g
+    ].freeze
 
     class << self
       def organize_table(array, table = [], table_data = [], table_row = [], column_align: nil)
@@ -46,9 +82,9 @@ module Plurimath
               table << Math::Function::Tr.new(table_row.flatten)
               table_row = []
             end
-          else
-            table_data << data
+            next
           end
+          table_data << data
         end
         if table_data
           table_row << Math::Function::Td.new(
@@ -138,10 +174,10 @@ module Plurimath
 
         array = array.flatten.compact
         if array.length > 1
-          Math::Formula.new(array)
-        else
-          array.first
+          return Math::Formula.new(array)
         end
+
+        array.first
       end
 
       def text_classes(text)
@@ -168,7 +204,7 @@ module Plurimath
       end
 
       def find_class_name(object)
-        new_object = object.value.first.parameter_one if Math::Formula
+        new_object = object.value.first.parameter_one if object.is_a?(Math::Formula)
         get_class(new_object) unless new_object.nil?
       end
 
@@ -193,10 +229,10 @@ module Plurimath
 
       def td_value(td_object)
         if td_object.is_a?(String) && td_object.empty?
-          Math::Function::Text.new(nil)
-        else
-          td_object
+          return Math::Function::Text.new(nil)
         end
+
+        td_object
       end
 
       def mathml_unary_classes(text_array)
@@ -229,10 +265,14 @@ module Plurimath
 
       def table_separator(separator, value)
         sep_symbol = Math::Function::Td.new([Math::Symbol.new("|")])
-        separator&.split&.each_with_index do |sep, ind|
+        separator&.each_with_index do |sep, ind|
           next unless sep == "solid"
 
-          value.map { |val| val.parameter_one.insert((ind + 1), sep_symbol) }
+          value.map do |val|
+            val.parameter_one.insert((ind + 1), sep_symbol)
+            (val.parameter_one[val.parameter_one.index(nil)] = Math::Function::Td.new([])) rescue nil
+            val
+          end
         end
         value
       end
@@ -261,8 +301,8 @@ module Plurimath
             attrs.parameter_two = color_value
           end
           attrs
-        elsif ["solid", "none"].include?(attrs.downcase)
-          table_separator(attrs, value)
+        elsif ["solid", "none"].include?(attrs.split.first.downcase)
+          table_separator(attrs.split, value)
         end
       end
 
@@ -296,6 +336,15 @@ module Plurimath
         end
       end
 
+      def frac_values(object)
+        case object
+        when Math::Formula
+          object.value.any? { |d| symbol_value(d, ",") }
+        when Array
+          object.any? { |d| symbol_value(d, ",") }
+        end
+      end
+
       def table_td(object)
         new_object = case object
                      when Math::Function::Td
@@ -304,6 +353,15 @@ module Plurimath
                        Math::Function::Td.new([object])
                      end
         Array(new_object)
+      end
+
+      def symbol_object(value)
+        value = case value
+                when "ℒ" then "{:"
+                when "ℛ" then ":}"
+                else value
+                end
+        Math::Symbol.new(value)
       end
     end
   end

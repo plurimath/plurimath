@@ -14,9 +14,9 @@ module Plurimath
       rule(maxsize: simple(:att))   { nil }
       rule(minsize: simple(:att))   { nil }
       rule(notation: simple(:att))  { Math::Function::Menclose.new(att) }
+      rule(mtable: simple(:table))  { table }
       rule(msqrt: sequence(:sqrt))  { Math::Function::Sqrt.new(sqrt.first) }
       rule(mstyle: simple(:mstyle)) { mstyle }
-      rule(mtable: simple(:mtable)) { mtable }
       rule(msline: sequence(:line)) { Math::Function::Msline.new }
       rule(value: sequence(:value)) { Utility.filter_values(value) }
 
@@ -86,8 +86,8 @@ module Plurimath
 
       rule(mroot: sequence(:mroot)) do
         Math::Function::Root.new(
-          mroot[0],
           mroot[1],
+          mroot[0],
         )
       end
 
@@ -135,11 +135,19 @@ module Plurimath
       end
 
       rule(munderover: sequence(:function)) do
-        Math::Function::Underover.new(
-          function[0],
-          function[1],
-          function[2],
-        )
+        binary_function = Plurimath::Math::Function::BinaryFunction
+        base_class = function[0]&.value&.first if function[0].is_a?(Math::Formula)
+        if base_class&.class&.ancestors&.include?(binary_function)
+          base_class.parameter_one = function[1]
+          base_class.parameter_two = function[2]
+          base_class
+        else
+          Math::Function::Underover.new(
+            function[0],
+            function[1],
+            function[2],
+          )
+        end
       end
 
       rule(mrow: subtree(:mrow)) do

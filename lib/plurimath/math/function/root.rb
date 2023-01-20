@@ -12,8 +12,8 @@ module Plurimath
           Utility.update_nodes(
             Utility.ox_element("mroot"),
             [
-              first_value,
               second_value,
+              first_value,
             ],
           )
         end

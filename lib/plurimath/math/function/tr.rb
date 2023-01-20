@@ -7,7 +7,7 @@ module Plurimath
     module Function
       class Tr < UnaryFunction
         def to_asciimath
-          "[#{parameter_one.map(&:to_asciimath).join(',')}]"
+          "[#{parameter_one.map(&:to_asciimath).join(', ')}]"
         end
 
         def to_mathml_without_math_tag
@@ -19,8 +19,8 @@ module Plurimath
 
         def to_latex
           parameter_one.reject do |td|
-            td if td.is_a?(Math::Symbol) && td.value == "|"
-          end.map(&:to_latex).join("&")
+            td if Utility.symbol_value(td, "|") || Utility.symbol_value(td.parameter_one.first, "|")
+          end.map(&:to_latex).join(" & ")
         end
 
         def to_html

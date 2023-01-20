@@ -13,7 +13,22 @@ module Plurimath
           end
 
           def to_asciimath
-            "mathtt#{wrapped(parameter_one)}"
+            "mathtt(#{parameter_one.to_asciimath})"
+          end
+
+          def to_latex
+            first_value = parameter_one.to_latex if parameter_one
+            "\\mathtt{#{first_value}}"
+          end
+
+          def to_mathml_without_math_tag
+            Utility.update_nodes(
+              Utility.ox_element(
+                "mstyle",
+                attributes: { mathvariant: "monospace" },
+              ),
+              [parameter_one.to_mathml_without_math_tag],
+            )
           end
         end
       end

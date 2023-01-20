@@ -9,7 +9,7 @@ module Plurimath
         class Vmatrix < Table
           def initialize(parameter_one,
                          parameter_two = "|",
-                         parameter_three = [])
+                         parameter_three = "|")
             parameter_three = nil if parameter_two == "norm["
             super
           end
