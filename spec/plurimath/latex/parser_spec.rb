@@ -298,26 +298,27 @@ RSpec.describe Plurimath::Latex::Parser do
           Plurimath::Math::Function::Table::Array.new(
             [
               Plurimath::Math::Function::Tr.new([
-                Plurimath::Math::Function::Td.new([
-                  Plurimath::Math::Formula.new([
-                    Plurimath::Math::Number.new("3"),
-                    Plurimath::Math::Symbol.new("x"),
-                    Plurimath::Math::Symbol.new("-"),
-                    Plurimath::Math::Number.new("5"),
-                    Plurimath::Math::Symbol.new("y"),
-                    Plurimath::Math::Symbol.new("+"),
-                    Plurimath::Math::Number.new("4"),
-                    Plurimath::Math::Symbol.new("z"),
-                    Plurimath::Math::Symbol.new("="),
-                    Plurimath::Math::Number.new("0"),
-                  ])
-                ])
+                Plurimath::Math::Function::Td.new(
+                  [
+                    Plurimath::Math::Formula.new([
+                      Plurimath::Math::Number.new("3"),
+                      Plurimath::Math::Symbol.new("x"),
+                      Plurimath::Math::Symbol.new("-"),
+                      Plurimath::Math::Number.new("5"),
+                      Plurimath::Math::Symbol.new("y"),
+                      Plurimath::Math::Symbol.new("+"),
+                      Plurimath::Math::Number.new("4"),
+                      Plurimath::Math::Symbol.new("z"),
+                      Plurimath::Math::Symbol.new("="),
+                      Plurimath::Math::Number.new("0"),
+                    ])
+                  ],
+                  { columnalign: "left" },
+                )
               ])
             ],
             nil,
-            [
-              Plurimath::Math::Symbol.new("l"),
-            ]
+            nil,
           )
         ])
         expect(formula).to eq(expected_value)
@@ -336,6 +337,9 @@ RSpec.describe Plurimath::Latex::Parser do
             [
               Plurimath::Math::Function::Tr.new([
                 Plurimath::Math::Function::Td.new([
+                  Plurimath::Math::Symbol.new("|"),
+                ]),
+                Plurimath::Math::Function::Td.new([
                   Plurimath::Math::Formula.new([
                     Plurimath::Math::Number.new("3"),
                     Plurimath::Math::Symbol.new("x"),
@@ -352,9 +356,7 @@ RSpec.describe Plurimath::Latex::Parser do
               ])
             ],
             nil,
-            [
-              Plurimath::Math::Symbol.new("|"),
-            ]
+            nil,
           )
         ])
         expect(formula).to eq(expected_value)
@@ -404,7 +406,7 @@ RSpec.describe Plurimath::Latex::Parser do
               ]),
             ],
             nil,
-            [],
+            nil,
           )
         ])
         expect(formula).to eq(expected_value)
@@ -451,17 +453,20 @@ RSpec.describe Plurimath::Latex::Parser do
           Plurimath::Math::Function::Table::Matrix.new(
             [
               Plurimath::Math::Function::Tr.new([
-                Plurimath::Math::Function::Td.new([
-                  Plurimath::Math::Symbol.new("a"),
-                ]),
-                Plurimath::Math::Function::Td.new([
-                  Plurimath::Math::Symbol.new("b"),
-                ]),
-              ])
+                Plurimath::Math::Function::Td.new(
+                  [Plurimath::Math::Symbol.new("a")],
+                  nil
+                ),
+                Plurimath::Math::Function::Td.new(
+                  [Plurimath::Math::Symbol.new("b")],
+                  nil
+                ),
+              ]),
             ],
             nil,
-            [],
-          )
+            nil,
+            {}
+          ),
         ])
         expect(formula).to eq(expected_value)
       end
@@ -495,7 +500,7 @@ RSpec.describe Plurimath::Latex::Parser do
               ]),
             ],
             "{",
-            [],
+            "}",
           )
         ])
         expect(formula).to eq(expected_value)
@@ -522,7 +527,7 @@ RSpec.describe Plurimath::Latex::Parser do
               ])
             ],
             "|",
-            [],
+            "|",
           )
         ])
         expect(formula).to eq(expected_value)
@@ -560,7 +565,7 @@ RSpec.describe Plurimath::Latex::Parser do
               ]),
             ],
             "{",
-            [],
+            "}",
           )
         ])
         expect(formula).to eq(expected_value)
@@ -598,7 +603,7 @@ RSpec.describe Plurimath::Latex::Parser do
               ]),
             ],
             "{",
-            [],
+            "}",
           )
         ])
         expect(formula).to eq(expected_value)
@@ -625,7 +630,7 @@ RSpec.describe Plurimath::Latex::Parser do
               ])
             ],
             "(",
-            [],
+            ")",
           )
         ])
         expect(formula).to eq(expected_value)
@@ -645,29 +650,44 @@ RSpec.describe Plurimath::Latex::Parser do
           Plurimath::Math::Function::Table::Array.new(
             [
               Plurimath::Math::Function::Tr.new([
+                Plurimath::Math::Function::Td.new(
+                  [
+                    Plurimath::Math::Number.new("1"),
+                  ],
+                  { columnalign: "center" },
+                ),
                 Plurimath::Math::Function::Td.new([
-                  Plurimath::Math::Number.new("1"),
+                  Plurimath::Math::Symbol.new("|")
                 ]),
-                Plurimath::Math::Function::Td.new([
-                  Plurimath::Math::Number.new("2"),
-                  Plurimath::Math::Symbol.new("&#x23af;"),
-                ]),
+                Plurimath::Math::Function::Td.new(
+                  [
+                    Plurimath::Math::Number.new("2"),
+                    Plurimath::Math::Symbol.new("&#x23af;"),
+                  ],
+                  { columnalign: "right" },
+                ),
               ]),
               Plurimath::Math::Function::Tr.new([
+                Plurimath::Math::Function::Td.new(
+                  [
+                    Plurimath::Math::Number.new("3"),
+                  ],
+                  { columnalign: "center" }
+                ),
                 Plurimath::Math::Function::Td.new([
-                  Plurimath::Math::Number.new("3"),
+                  Plurimath::Math::Symbol.new("|")
                 ]),
-                Plurimath::Math::Function::Td.new([
-                  Plurimath::Math::Number.new("4"),
-                ]),
+                Plurimath::Math::Function::Td.new(
+                  [
+                    Plurimath::Math::Number.new("4"),
+                  ],
+                  { columnalign: "right" },
+                ),
               ]),
             ],
             nil,
-            [
-              Plurimath::Math::Symbol.new("c"),
-              Plurimath::Math::Symbol.new("|"),
-              Plurimath::Math::Symbol.new("r"),
-            ]
+            nil,
+            {}
           )
         ])
         expect(formula).to eq(expected_value)
@@ -706,7 +726,7 @@ RSpec.describe Plurimath::Latex::Parser do
               ])
             ],
             "norm[",
-            [],
+            "]",
           )
         ])
         expect(formula).to eq(expected_value)
@@ -789,29 +809,34 @@ RSpec.describe Plurimath::Latex::Parser do
             Plurimath::Math::Function::Table::Array.new(
               [
                 Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Symbol.new("V"),
-                      Plurimath::Math::Symbol.new("x"),
-                    ),
-                  ])
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::Base.new(
+                        Plurimath::Math::Symbol.new("V"),
+                        Plurimath::Math::Symbol.new("x")
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
                 ]),
                 Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Symbol.new("V"),
-                      Plurimath::Math::Symbol.new("y"),
-                    ),
-                  ])
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::Base.new(
+                        Plurimath::Math::Symbol.new("V"),
+                        Plurimath::Math::Symbol.new("y")
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
                 ]),
               ],
               nil,
-              [
-                Plurimath::Math::Symbol.new("c")
-              ]
+              nil,
+              {}
             ),
             Plurimath::Math::Function::Right.new(")"),
-          ])
+          ]),
         ])
         expect(formula).to eq(expected_value)
       end
@@ -932,15 +957,15 @@ RSpec.describe Plurimath::Latex::Parser do
                 Plurimath::Math::Symbol.new("T"),
                 Plurimath::Math::Function::Base.new(
                   Plurimath::Math::Symbol.new("T"),
-                  Plurimath::Math::Function::FontStyle.new(
+                  Plurimath::Math::Function::FontStyle::Normal.new(
                     Plurimath::Math::Formula.new([
                       Plurimath::Math::Symbol.new("r"),
                       Plurimath::Math::Symbol.new("e"),
                       Plurimath::Math::Symbol.new("f"),
                     ]),
                     "textrm"
-                  ),
-                ),
+                  )
+                )
               ),
               Plurimath::Math::Function::Right.new(")"),
             ]),
@@ -948,7 +973,7 @@ RSpec.describe Plurimath::Latex::Parser do
               Plurimath::Math::Number.new("3"),
               Plurimath::Math::Symbol.new("/"),
               Plurimath::Math::Number.new("2"),
-            ]),
+            ])
           ),
         ])
         expect(formula).to eq(expected_value)
@@ -1298,192 +1323,207 @@ RSpec.describe Plurimath::Latex::Parser do
           Plurimath::Math::Function::Table::Split.new(
             [
               Plurimath::Math::Function::Tr.new([
-                Plurimath::Math::Function::Td.new([
-                  Plurimath::Math::Function::Base.new(
-                    Plurimath::Math::Symbol.new("C"),
-                    Plurimath::Math::Symbol.new("L")
-                  )
-                ]),
-                Plurimath::Math::Function::Td.new([
-                  Plurimath::Math::Symbol.new("="),
-                  Plurimath::Math::Function::Over.new(
-                    Plurimath::Math::Formula.new([
+                Plurimath::Math::Function::Td.new(
+                  [
+                    Plurimath::Math::Function::Base.new(
+                      Plurimath::Math::Symbol.new("C"),
                       Plurimath::Math::Symbol.new("L")
-                    ]),
-                    Plurimath::Math::Formula.new([
-                      Plurimath::Math::Function::Over.new(
-                        Plurimath::Math::Formula.new([
-                          Plurimath::Math::Number.new("1")
-                        ]),
-                        Plurimath::Math::Formula.new([
-                          Plurimath::Math::Number.new("2")
-                        ])
-                      ),
-                      Plurimath::Math::Function::Base.new(
-                        Plurimath::Math::Symbol.new("&#x3c1;"),
-                        Plurimath::Math::Function::FontStyle.new(
-                          Plurimath::Math::Formula.new([
-                            Plurimath::Math::Symbol.new("r"),
-                            Plurimath::Math::Symbol.new("e"),
-                            Plurimath::Math::Symbol.new("f"),
-                          ]),
-                          "textrm"
-                        )
-                      ),
-                      Plurimath::Math::Function::PowerBase.new(
-                        Plurimath::Math::Symbol.new("q"),
-                        Plurimath::Math::Function::FontStyle.new(
-                          Plurimath::Math::Formula.new([
-                            Plurimath::Math::Symbol.new("r"),
-                            Plurimath::Math::Symbol.new("e"),
-                            Plurimath::Math::Symbol.new("f"),
-                          ]),
-                          "textrm"
-                        ),
-                        Plurimath::Math::Number.new("2"),
-                      ),
-                      Plurimath::Math::Symbol.new("S")
-                    ])
-                  )
-                ])
-              ]),
-              Plurimath::Math::Function::Tr.new([
-                Plurimath::Math::Function::Td.new([])
-              ]),
-              Plurimath::Math::Function::Tr.new([
-                Plurimath::Math::Function::Td.new([
-                  Plurimath::Math::Function::Base.new(
-                    Plurimath::Math::Symbol.new("C"),
-                    Plurimath::Math::Symbol.new("D")
-                  )
-                ]),
-                Plurimath::Math::Function::Td.new([
-                  Plurimath::Math::Symbol.new("="),
-                  Plurimath::Math::Function::Over.new(
-                    Plurimath::Math::Formula.new([
-                      Plurimath::Math::Symbol.new("D")
-                    ]),
-                    Plurimath::Math::Formula.new([
-                      Plurimath::Math::Function::Over.new(
-                        Plurimath::Math::Formula.new([
-                          Plurimath::Math::Number.new("1")
-                        ]),
-                        Plurimath::Math::Formula.new([
-                          Plurimath::Math::Number.new("2")
-                        ])
-                      ),
-                      Plurimath::Math::Function::Base.new(
-                        Plurimath::Math::Symbol.new("&#x3c1;"),
-                        Plurimath::Math::Function::FontStyle.new(
-                          Plurimath::Math::Formula.new([
-                            Plurimath::Math::Symbol.new("r"),
-                            Plurimath::Math::Symbol.new("e"),
-                            Plurimath::Math::Symbol.new("f"),
-                          ]),
-                          "textrm"
-                        )
-                      ),
-                      Plurimath::Math::Function::PowerBase.new(
-                        Plurimath::Math::Symbol.new("q"),
-                        Plurimath::Math::Function::FontStyle.new(
-                          Plurimath::Math::Formula.new([
-                            Plurimath::Math::Symbol.new("r"),
-                            Plurimath::Math::Symbol.new("e"),
-                            Plurimath::Math::Symbol.new("f"),
-                          ]),
-                          "textrm"
-                        ),
-                        Plurimath::Math::Number.new("2"),
-                      ),
-                      Plurimath::Math::Symbol.new("S")
-                    ])
-                  )
-                ])
-              ]),
-              Plurimath::Math::Function::Tr.new([
-                Plurimath::Math::Function::Td.new([])
-              ]),
-              Plurimath::Math::Function::Tr.new([
-                Plurimath::Math::Function::Td.new([
-                  Plurimath::Math::Function::Base.new(
-                    Plurimath::Math::Function::Vec.new(
-                      Plurimath::Math::Symbol.new("C")
                     ),
-                    Plurimath::Math::Symbol.new("M")
-                  )
-                ]),
-                Plurimath::Math::Function::Td.new([
-                  Plurimath::Math::Symbol.new("="),
-                  Plurimath::Math::Function::Over.new(
-                    Plurimath::Math::Formula.new([
-                      Plurimath::Math::Symbol.new("&#x3b2;"),
-                      Plurimath::Math::Function::Vec.new(
-                        Plurimath::Math::Symbol.new("M")
-                      )
-                    ]),
-                    Plurimath::Math::Formula.new([
-                      Plurimath::Math::Function::Over.new(
-                        Plurimath::Math::Formula.new([
-                          Plurimath::Math::Number.new("1")
-                        ]),
-                        Plurimath::Math::Formula.new([
-                          Plurimath::Math::Number.new("2")
-                        ])
-                      ),
-                      Plurimath::Math::Function::Base.new(
-                        Plurimath::Math::Symbol.new("&#x3c1;"),
-                        Plurimath::Math::Function::FontStyle.new(
+                  ],
+                  nil
+                ),
+                Plurimath::Math::Function::Td.new(
+                  [
+                    Plurimath::Math::Symbol.new("="),
+                    Plurimath::Math::Function::Over.new(
+                      Plurimath::Math::Formula.new([Plurimath::Math::Symbol.new("L")]),
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Function::Over.new(
                           Plurimath::Math::Formula.new([
-                            Plurimath::Math::Symbol.new("r"),
-                            Plurimath::Math::Symbol.new("e"),
-                            Plurimath::Math::Symbol.new("f"),
+                            Plurimath::Math::Number.new("1"),
                           ]),
-                          "textrm"
-                        )
-                      ),
-                      Plurimath::Math::Function::PowerBase.new(
-                        Plurimath::Math::Symbol.new("q"),
-                        Plurimath::Math::Function::FontStyle.new(
                           Plurimath::Math::Formula.new([
-                            Plurimath::Math::Symbol.new("r"),
-                            Plurimath::Math::Symbol.new("e"),
-                            Plurimath::Math::Symbol.new("f"),
-                          ]),
-                          "textrm"
+                            Plurimath::Math::Number.new("2"),
+                          ])
                         ),
-                        Plurimath::Math::Number.new("2"),
-                      ),
-                      Plurimath::Math::Function::Base.new(
-                        Plurimath::Math::Symbol.new("c"),
-                        Plurimath::Math::Function::FontStyle.new(
-                          Plurimath::Math::Formula.new([
-                            Plurimath::Math::Symbol.new("r"),
-                            Plurimath::Math::Symbol.new("e"),
-                            Plurimath::Math::Symbol.new("f"),
-                          ]),
-                          "textrm"
-                        )
-                      ),
-                      Plurimath::Math::Function::Base.new(
+                        Plurimath::Math::Function::Base.new(
+                          Plurimath::Math::Symbol.new("&#x3c1;"),
+                          Plurimath::Math::Function::FontStyle::Normal.new(
+                            Plurimath::Math::Formula.new([
+                              Plurimath::Math::Symbol.new("r"),
+                              Plurimath::Math::Symbol.new("e"),
+                              Plurimath::Math::Symbol.new("f"),
+                            ]),
+                            "textrm"
+                          )
+                        ),
+                        Plurimath::Math::Function::PowerBase.new(
+                          Plurimath::Math::Symbol.new("q"),
+                          Plurimath::Math::Function::FontStyle::Normal.new(
+                            Plurimath::Math::Formula.new([
+                              Plurimath::Math::Symbol.new("r"),
+                              Plurimath::Math::Symbol.new("e"),
+                              Plurimath::Math::Symbol.new("f"),
+                            ]),
+                            "textrm"
+                          ),
+                          Plurimath::Math::Number.new("2")
+                        ),
                         Plurimath::Math::Symbol.new("S"),
-                        Plurimath::Math::Function::FontStyle.new(
+                      ])
+                    ),
+                  ],
+                  nil
+                ),
+              ]),
+              Plurimath::Math::Function::Tr.new([
+                Plurimath::Math::Function::Td.new([], nil),
+              ]),
+              Plurimath::Math::Function::Tr.new([
+                Plurimath::Math::Function::Td.new(
+                  [
+                    Plurimath::Math::Function::Base.new(
+                      Plurimath::Math::Symbol.new("C"),
+                      Plurimath::Math::Symbol.new("D")
+                    ),
+                  ],
+                  nil
+                ),
+                Plurimath::Math::Function::Td.new(
+                  [
+                    Plurimath::Math::Symbol.new("="),
+                    Plurimath::Math::Function::Over.new(
+                      Plurimath::Math::Formula.new([Plurimath::Math::Symbol.new("D")]),
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Function::Over.new(
                           Plurimath::Math::Formula.new([
-                            Plurimath::Math::Symbol.new("r"),
-                            Plurimath::Math::Symbol.new("e"),
-                            Plurimath::Math::Symbol.new("f"),
+                            Plurimath::Math::Number.new("1"),
                           ]),
-                          "textrm"
-                        )
-                      )
-                    ])
-                  ),
-                  Plurimath::Math::Symbol.new(",")
-                ])
-              ])
+                          Plurimath::Math::Formula.new([
+                            Plurimath::Math::Number.new("2"),
+                          ])
+                        ),
+                        Plurimath::Math::Function::Base.new(
+                          Plurimath::Math::Symbol.new("&#x3c1;"),
+                          Plurimath::Math::Function::FontStyle::Normal.new(
+                            Plurimath::Math::Formula.new([
+                              Plurimath::Math::Symbol.new("r"),
+                              Plurimath::Math::Symbol.new("e"),
+                              Plurimath::Math::Symbol.new("f"),
+                            ]),
+                            "textrm"
+                          )
+                        ),
+                        Plurimath::Math::Function::PowerBase.new(
+                          Plurimath::Math::Symbol.new("q"),
+                          Plurimath::Math::Function::FontStyle::Normal.new(
+                            Plurimath::Math::Formula.new([
+                              Plurimath::Math::Symbol.new("r"),
+                              Plurimath::Math::Symbol.new("e"),
+                              Plurimath::Math::Symbol.new("f"),
+                            ]),
+                            "textrm"
+                          ),
+                          Plurimath::Math::Number.new("2")
+                        ),
+                        Plurimath::Math::Symbol.new("S"),
+                      ])
+                    ),
+                  ],
+                  nil
+                ),
+              ]),
+              Plurimath::Math::Function::Tr.new([
+                Plurimath::Math::Function::Td.new([], nil),
+              ]),
+              Plurimath::Math::Function::Tr.new([
+                Plurimath::Math::Function::Td.new(
+                  [
+                    Plurimath::Math::Function::Base.new(
+                      Plurimath::Math::Function::Vec.new(
+                        Plurimath::Math::Symbol.new("C")
+                      ),
+                      Plurimath::Math::Symbol.new("M")
+                    ),
+                  ],
+                  nil
+                ),
+                Plurimath::Math::Function::Td.new(
+                  [
+                    Plurimath::Math::Symbol.new("="),
+                    Plurimath::Math::Function::Over.new(
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Symbol.new("&#x3b2;"),
+                        Plurimath::Math::Function::Vec.new(
+                          Plurimath::Math::Symbol.new("M")
+                        ),
+                      ]),
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Function::Over.new(
+                          Plurimath::Math::Formula.new([
+                            Plurimath::Math::Number.new("1"),
+                          ]),
+                          Plurimath::Math::Formula.new([
+                            Plurimath::Math::Number.new("2"),
+                          ])
+                        ),
+                        Plurimath::Math::Function::Base.new(
+                          Plurimath::Math::Symbol.new("&#x3c1;"),
+                          Plurimath::Math::Function::FontStyle::Normal.new(
+                            Plurimath::Math::Formula.new([
+                              Plurimath::Math::Symbol.new("r"),
+                              Plurimath::Math::Symbol.new("e"),
+                              Plurimath::Math::Symbol.new("f"),
+                            ]),
+                            "textrm"
+                          )
+                        ),
+                        Plurimath::Math::Function::PowerBase.new(
+                          Plurimath::Math::Symbol.new("q"),
+                          Plurimath::Math::Function::FontStyle::Normal.new(
+                            Plurimath::Math::Formula.new([
+                              Plurimath::Math::Symbol.new("r"),
+                              Plurimath::Math::Symbol.new("e"),
+                              Plurimath::Math::Symbol.new("f"),
+                            ]),
+                            "textrm"
+                          ),
+                          Plurimath::Math::Number.new("2")
+                        ),
+                        Plurimath::Math::Function::Base.new(
+                          Plurimath::Math::Symbol.new("c"),
+                          Plurimath::Math::Function::FontStyle::Normal.new(
+                            Plurimath::Math::Formula.new([
+                              Plurimath::Math::Symbol.new("r"),
+                              Plurimath::Math::Symbol.new("e"),
+                              Plurimath::Math::Symbol.new("f"),
+                            ]),
+                            "textrm"
+                          )
+                        ),
+                        Plurimath::Math::Function::Base.new(
+                          Plurimath::Math::Symbol.new("S"),
+                          Plurimath::Math::Function::FontStyle::Normal.new(
+                            Plurimath::Math::Formula.new([
+                              Plurimath::Math::Symbol.new("r"),
+                              Plurimath::Math::Symbol.new("e"),
+                              Plurimath::Math::Symbol.new("f"),
+                            ]),
+                            "textrm"
+                          )
+                        ),
+                      ])
+                    ),
+                    Plurimath::Math::Symbol.new(","),
+                  ],
+                  nil
+                ),
+              ]),
             ],
             nil,
-            [],
-          )
+            nil,
+            {}
+          ),
         ])
         expect(formula).to eq(expected_value)
       end
@@ -1501,7 +1541,7 @@ RSpec.describe Plurimath::Latex::Parser do
         expected_value = Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Base.new(
             Plurimath::Math::Symbol.new("c"),
-            Plurimath::Math::Symbol.new("l"),
+            Plurimath::Math::Symbol.new("l")
           ),
           Plurimath::Math::Symbol.new("="),
           Plurimath::Math::Function::Over.new(
@@ -1511,16 +1551,12 @@ RSpec.describe Plurimath::Latex::Parser do
             ]),
             Plurimath::Math::Formula.new([
               Plurimath::Math::Function::Over.new(
-                Plurimath::Math::Formula.new([
-                  Plurimath::Math::Number.new("1")
-                ]),
-                Plurimath::Math::Formula.new([
-                  Plurimath::Math::Number.new("2")
-                ]),
+                Plurimath::Math::Formula.new([Plurimath::Math::Number.new("1")]),
+                Plurimath::Math::Formula.new([Plurimath::Math::Number.new("2")])
               ),
               Plurimath::Math::Function::Base.new(
                 Plurimath::Math::Symbol.new("&#x3c1;"),
-                Plurimath::Math::Function::FontStyle.new(
+                Plurimath::Math::Function::FontStyle::Normal.new(
                   Plurimath::Math::Formula.new([
                     Plurimath::Math::Symbol.new("r"),
                     Plurimath::Math::Symbol.new("e"),
@@ -1531,7 +1567,7 @@ RSpec.describe Plurimath::Latex::Parser do
               ),
               Plurimath::Math::Function::PowerBase.new(
                 Plurimath::Math::Symbol.new("q"),
-                Plurimath::Math::Function::FontStyle.new(
+                Plurimath::Math::Function::FontStyle::Normal.new(
                   Plurimath::Math::Formula.new([
                     Plurimath::Math::Symbol.new("r"),
                     Plurimath::Math::Symbol.new("e"),
@@ -1539,11 +1575,11 @@ RSpec.describe Plurimath::Latex::Parser do
                   ]),
                   "textrm"
                 ),
-                Plurimath::Math::Number.new("2"),
+                Plurimath::Math::Number.new("2")
               ),
               Plurimath::Math::Function::Base.new(
                 Plurimath::Math::Symbol.new("c"),
-                Plurimath::Math::Function::FontStyle.new(
+                Plurimath::Math::Function::FontStyle::Normal.new(
                   Plurimath::Math::Formula.new([
                     Plurimath::Math::Symbol.new("r"),
                     Plurimath::Math::Symbol.new("e"),
@@ -1557,26 +1593,22 @@ RSpec.describe Plurimath::Latex::Parser do
           Plurimath::Math::Symbol.new("&#xa0;&#xa0;&#xa0;&#xa0;"),
           Plurimath::Math::Function::Base.new(
             Plurimath::Math::Symbol.new("c"),
-            Plurimath::Math::Symbol.new("d"),
+            Plurimath::Math::Symbol.new("d")
           ),
           Plurimath::Math::Symbol.new("="),
           Plurimath::Math::Function::Over.new(
             Plurimath::Math::Formula.new([
               Plurimath::Math::Symbol.new("D"),
-              Plurimath::Math::Unicode.new("&#x27;")
+              Plurimath::Math::Unicode.new("&#x27;"),
             ]),
             Plurimath::Math::Formula.new([
               Plurimath::Math::Function::Over.new(
-                Plurimath::Math::Formula.new([
-                  Plurimath::Math::Number.new("1")
-                ]),
-                Plurimath::Math::Formula.new([
-                  Plurimath::Math::Number.new("2")
-                ]),
+                Plurimath::Math::Formula.new([Plurimath::Math::Number.new("1")]),
+                Plurimath::Math::Formula.new([Plurimath::Math::Number.new("2")])
               ),
               Plurimath::Math::Function::Base.new(
                 Plurimath::Math::Symbol.new("&#x3c1;"),
-                Plurimath::Math::Function::FontStyle.new(
+                Plurimath::Math::Function::FontStyle::Normal.new(
                   Plurimath::Math::Formula.new([
                     Plurimath::Math::Symbol.new("r"),
                     Plurimath::Math::Symbol.new("e"),
@@ -1587,7 +1619,7 @@ RSpec.describe Plurimath::Latex::Parser do
               ),
               Plurimath::Math::Function::PowerBase.new(
                 Plurimath::Math::Symbol.new("q"),
-                Plurimath::Math::Function::FontStyle.new(
+                Plurimath::Math::Function::FontStyle::Normal.new(
                   Plurimath::Math::Formula.new([
                     Plurimath::Math::Symbol.new("r"),
                     Plurimath::Math::Symbol.new("e"),
@@ -1595,11 +1627,11 @@ RSpec.describe Plurimath::Latex::Parser do
                   ]),
                   "textrm"
                 ),
-                Plurimath::Math::Number.new("2"),
+                Plurimath::Math::Number.new("2")
               ),
               Plurimath::Math::Function::Base.new(
                 Plurimath::Math::Symbol.new("c"),
-                Plurimath::Math::Function::FontStyle.new(
+                Plurimath::Math::Function::FontStyle::Normal.new(
                   Plurimath::Math::Formula.new([
                     Plurimath::Math::Symbol.new("r"),
                     Plurimath::Math::Symbol.new("e"),
@@ -1612,42 +1644,34 @@ RSpec.describe Plurimath::Latex::Parser do
           ),
           Plurimath::Math::Symbol.new("&#xa0;&#xa0;&#xa0;&#xa0;"),
           Plurimath::Math::Function::Base.new(
-            Plurimath::Math::Function::Vec.new(
-              Plurimath::Math::Symbol.new("c")
-            ),
+            Plurimath::Math::Function::Vec.new(Plurimath::Math::Symbol.new("c")),
             Plurimath::Math::Symbol.new("m")
           ),
           Plurimath::Math::Symbol.new("="),
           Plurimath::Math::Function::Over.new(
             Plurimath::Math::Formula.new([
-              Plurimath::Math::Function::Vec.new(
-                Plurimath::Math::Symbol.new("M")
-              ),
-              Plurimath::Math::Unicode.new("&#x27;")
+              Plurimath::Math::Function::Vec.new(Plurimath::Math::Symbol.new("M")),
+              Plurimath::Math::Unicode.new("&#x27;"),
             ]),
             Plurimath::Math::Formula.new([
               Plurimath::Math::Function::Over.new(
-                Plurimath::Math::Formula.new([
-                  Plurimath::Math::Number.new("1")
-                ]),
-                Plurimath::Math::Formula.new([
-                  Plurimath::Math::Number.new("2")
-                ]),
+                Plurimath::Math::Formula.new([Plurimath::Math::Number.new("1")]),
+                Plurimath::Math::Formula.new([Plurimath::Math::Number.new("2")])
               ),
               Plurimath::Math::Function::Base.new(
                 Plurimath::Math::Symbol.new("&#x3c1;"),
-                Plurimath::Math::Function::FontStyle.new(
+                Plurimath::Math::Function::FontStyle::Normal.new(
                   Plurimath::Math::Formula.new([
                     Plurimath::Math::Symbol.new("r"),
                     Plurimath::Math::Symbol.new("e"),
                     Plurimath::Math::Symbol.new("f"),
                   ]),
                   "textrm"
-                ),
+                )
               ),
               Plurimath::Math::Function::PowerBase.new(
                 Plurimath::Math::Symbol.new("q"),
-                Plurimath::Math::Function::FontStyle.new(
+                Plurimath::Math::Function::FontStyle::Normal.new(
                   Plurimath::Math::Formula.new([
                     Plurimath::Math::Symbol.new("r"),
                     Plurimath::Math::Symbol.new("e"),
@@ -1659,7 +1683,7 @@ RSpec.describe Plurimath::Latex::Parser do
               ),
               Plurimath::Math::Function::PowerBase.new(
                 Plurimath::Math::Symbol.new("c"),
-                Plurimath::Math::Function::FontStyle.new(
+                Plurimath::Math::Function::FontStyle::Normal.new(
                   Plurimath::Math::Formula.new([
                     Plurimath::Math::Symbol.new("r"),
                     Plurimath::Math::Symbol.new("e"),
@@ -1669,9 +1693,9 @@ RSpec.describe Plurimath::Latex::Parser do
                 ),
                 Plurimath::Math::Number.new("2")
               ),
-            ]),
+            ])
           ),
-          Plurimath::Math::Symbol.new(",")
+          Plurimath::Math::Symbol.new(","),
         ])
         expect(formula).to eq(expected_value)
       end
@@ -1689,14 +1713,14 @@ RSpec.describe Plurimath::Latex::Parser do
           Plurimath::Math::Symbol.new("="),
           Plurimath::Math::Function::Base.new(
             Plurimath::Math::Symbol.new("k"),
-            Plurimath::Math::Function::FontStyle.new(
+            Plurimath::Math::Function::FontStyle::Normal.new(
               Plurimath::Math::Formula.new([
                 Plurimath::Math::Symbol.new("r"),
                 Plurimath::Math::Symbol.new("e"),
                 Plurimath::Math::Symbol.new("f"),
               ]),
               "textrm"
-            ),
+            )
           ),
           Plurimath::Math::Function::Power.new(
             Plurimath::Math::Formula.new([
@@ -1705,15 +1729,15 @@ RSpec.describe Plurimath::Latex::Parser do
                 Plurimath::Math::Symbol.new("T"),
                 Plurimath::Math::Function::Base.new(
                   Plurimath::Math::Symbol.new("T"),
-                  Plurimath::Math::Function::FontStyle.new(
+                  Plurimath::Math::Function::FontStyle::Normal.new(
                     Plurimath::Math::Formula.new([
                       Plurimath::Math::Symbol.new("r"),
                       Plurimath::Math::Symbol.new("e"),
                       Plurimath::Math::Symbol.new("f"),
                     ]),
                     "textrm"
-                  ),
-                ),
+                  )
+                )
               ),
               Plurimath::Math::Function::Right.new(")"),
             ]),
@@ -1721,25 +1745,25 @@ RSpec.describe Plurimath::Latex::Parser do
               Plurimath::Math::Number.new("3"),
               Plurimath::Math::Symbol.new("/"),
               Plurimath::Math::Number.new("2"),
-            ]),
+            ])
           ),
           Plurimath::Math::Function::Frac.new(
             Plurimath::Math::Formula.new([
               Plurimath::Math::Function::Base.new(
                 Plurimath::Math::Symbol.new("T"),
-                Plurimath::Math::Function::FontStyle.new(
+                Plurimath::Math::Function::FontStyle::Normal.new(
                   Plurimath::Math::Formula.new([
                     Plurimath::Math::Symbol.new("r"),
                     Plurimath::Math::Symbol.new("e"),
                     Plurimath::Math::Symbol.new("f"),
                   ]),
                   "textrm"
-                ),
+                )
               ),
               Plurimath::Math::Symbol.new("+"),
               Plurimath::Math::Function::Base.new(
                 Plurimath::Math::Symbol.new("T"),
-                Plurimath::Math::Symbol.new("s"),
+                Plurimath::Math::Symbol.new("s")
               ),
             ]),
             Plurimath::Math::Formula.new([
@@ -1747,9 +1771,9 @@ RSpec.describe Plurimath::Latex::Parser do
               Plurimath::Math::Symbol.new("+"),
               Plurimath::Math::Function::Base.new(
                 Plurimath::Math::Symbol.new("T"),
-                Plurimath::Math::Symbol.new("s"),
-              )
-            ]),
+                Plurimath::Math::Symbol.new("s")
+              ),
+            ])
           ),
           Plurimath::Math::Symbol.new(","),
         ])
@@ -1844,14 +1868,14 @@ RSpec.describe Plurimath::Latex::Parser do
           Plurimath::Math::Symbol.new("="),
           Plurimath::Math::Function::Base.new(
             Plurimath::Math::Symbol.new("&#x3bc;"),
-            Plurimath::Math::Function::FontStyle.new(
+            Plurimath::Math::Function::FontStyle::Normal.new(
               Plurimath::Math::Formula.new([
                 Plurimath::Math::Symbol.new("r"),
                 Plurimath::Math::Symbol.new("e"),
                 Plurimath::Math::Symbol.new("f"),
               ]),
-              "textrm",
-            ),
+              "textrm"
+            )
           ),
           Plurimath::Math::Function::Power.new(
             Plurimath::Math::Formula.new([
@@ -1860,19 +1884,19 @@ RSpec.describe Plurimath::Latex::Parser do
                 Plurimath::Math::Symbol.new("T"),
                 Plurimath::Math::Function::Base.new(
                   Plurimath::Math::Symbol.new("T"),
-                  Plurimath::Math::Function::FontStyle.new(
+                  Plurimath::Math::Function::FontStyle::Normal.new(
                     Plurimath::Math::Formula.new([
                       Plurimath::Math::Symbol.new("r"),
                       Plurimath::Math::Symbol.new("e"),
                       Plurimath::Math::Symbol.new("f"),
                     ]),
-                    "textrm",
-                  ),
-                ),
+                    "textrm"
+                  )
+                )
               ),
               Plurimath::Math::Function::Right.new(")"),
             ]),
-            Plurimath::Math::Symbol.new("n"),
+            Plurimath::Math::Symbol.new("n")
           ),
           Plurimath::Math::Symbol.new("."),
         ])
@@ -1893,14 +1917,14 @@ RSpec.describe Plurimath::Latex::Parser do
           Plurimath::Math::Symbol.new("="),
           Plurimath::Math::Function::Base.new(
             Plurimath::Math::Symbol.new("&#x3bc;"),
-            Plurimath::Math::Function::FontStyle.new(
+            Plurimath::Math::Function::FontStyle::Normal.new(
               Plurimath::Math::Formula.new([
                 Plurimath::Math::Symbol.new("r"),
                 Plurimath::Math::Symbol.new("e"),
                 Plurimath::Math::Symbol.new("f"),
               ]),
-              "textrm",
-            ),
+              "textrm"
+            )
           ),
           Plurimath::Math::Function::Power.new(
             Plurimath::Math::Formula.new([
@@ -1909,15 +1933,15 @@ RSpec.describe Plurimath::Latex::Parser do
                 Plurimath::Math::Symbol.new("T"),
                 Plurimath::Math::Function::Base.new(
                   Plurimath::Math::Symbol.new("T"),
-                  Plurimath::Math::Function::FontStyle.new(
+                  Plurimath::Math::Function::FontStyle::Normal.new(
                     Plurimath::Math::Formula.new([
                       Plurimath::Math::Symbol.new("r"),
                       Plurimath::Math::Symbol.new("e"),
                       Plurimath::Math::Symbol.new("f"),
                     ]),
-                    "textrm",
-                  ),
-                ),
+                    "textrm"
+                  )
+                )
               ),
               Plurimath::Math::Function::Right.new(")"),
             ]),
@@ -1925,25 +1949,25 @@ RSpec.describe Plurimath::Latex::Parser do
               Plurimath::Math::Number.new("3"),
               Plurimath::Math::Symbol.new("/"),
               Plurimath::Math::Number.new("2"),
-            ]),
+            ])
           ),
           Plurimath::Math::Function::Frac.new(
             Plurimath::Math::Formula.new([
               Plurimath::Math::Function::Base.new(
                 Plurimath::Math::Symbol.new("T"),
-                Plurimath::Math::Function::FontStyle.new(
+                Plurimath::Math::Function::FontStyle::Normal.new(
                   Plurimath::Math::Formula.new([
                     Plurimath::Math::Symbol.new("r"),
                     Plurimath::Math::Symbol.new("e"),
                     Plurimath::Math::Symbol.new("f"),
                   ]),
-                  "textrm",
-                ),
+                  "textrm"
+                )
               ),
               Plurimath::Math::Symbol.new("+"),
               Plurimath::Math::Function::Base.new(
                 Plurimath::Math::Symbol.new("T"),
-                Plurimath::Math::Symbol.new("s"),
+                Plurimath::Math::Symbol.new("s")
               ),
             ]),
             Plurimath::Math::Formula.new([
@@ -1951,9 +1975,9 @@ RSpec.describe Plurimath::Latex::Parser do
               Plurimath::Math::Symbol.new("+"),
               Plurimath::Math::Function::Base.new(
                 Plurimath::Math::Symbol.new("T"),
-                Plurimath::Math::Symbol.new("s"),
+                Plurimath::Math::Symbol.new("s")
               ),
-            ]),
+            ])
           ),
           Plurimath::Math::Symbol.new(","),
         ])
@@ -2087,49 +2111,55 @@ RSpec.describe Plurimath::Latex::Parser do
             Plurimath::Math::Function::Left.new("("),
             Plurimath::Math::Function::Table::Array.new(
               [
-              Plurimath::Math::Function::Tr.new([
-                Plurimath::Math::Function::Td.new([
-                  Plurimath::Math::Symbol.new("s"),
+                Plurimath::Math::Function::Tr.new([
+                  Plurimath::Math::Function::Td.new(
+                    [Plurimath::Math::Symbol.new("s")],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [Plurimath::Math::Number.new("0")],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [Plurimath::Math::Number.new("0")],
+                    { columnalign: "center" }
+                  ),
                 ]),
-                Plurimath::Math::Function::Td.new([
-                  Plurimath::Math::Number.new("0"),
+                Plurimath::Math::Function::Tr.new([
+                  Plurimath::Math::Function::Td.new(
+                    [Plurimath::Math::Number.new("0")],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [Plurimath::Math::Symbol.new("s")],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [Plurimath::Math::Number.new("0")],
+                    { columnalign: "center" }
+                  ),
                 ]),
-                Plurimath::Math::Function::Td.new([
-                  Plurimath::Math::Number.new("0"),
+                Plurimath::Math::Function::Tr.new([
+                  Plurimath::Math::Function::Td.new(
+                    [Plurimath::Math::Number.new("0")],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [Plurimath::Math::Number.new("0")],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [Plurimath::Math::Symbol.new("s")],
+                    { columnalign: "center" }
+                  ),
                 ]),
-              ]),
-              Plurimath::Math::Function::Tr.new([
-                Plurimath::Math::Function::Td.new([
-                  Plurimath::Math::Number.new("0"),
-                ]),
-                Plurimath::Math::Function::Td.new([
-                  Plurimath::Math::Symbol.new("s"),
-                ]),
-                Plurimath::Math::Function::Td.new([
-                  Plurimath::Math::Number.new("0"),
-                ]),
-              ]),
-              Plurimath::Math::Function::Tr.new([
-                Plurimath::Math::Function::Td.new([
-                  Plurimath::Math::Number.new("0"),
-                ]),
-                Plurimath::Math::Function::Td.new([
-                  Plurimath::Math::Number.new("0"),
-                ]),
-                Plurimath::Math::Function::Td.new([
-                  Plurimath::Math::Symbol.new("s"),
-                ]),
-              ]),
-            ],
+              ],
               nil,
-              [
-                Plurimath::Math::Symbol.new("c"),
-                Plurimath::Math::Symbol.new("c"),
-                Plurimath::Math::Symbol.new("c"),
-              ]
+              nil,
+              {}
             ),
             Plurimath::Math::Function::Right.new(")"),
-          ])
+          ]),
         ])
         expect(formula).to eq(expected_value)
       end
@@ -2153,58 +2183,70 @@ RSpec.describe Plurimath::Latex::Parser do
             Plurimath::Math::Function::Left.new("("),
             Plurimath::Math::Function::Table::Array.new(
               [
-              Plurimath::Math::Function::Tr.new([
-                Plurimath::Math::Function::Td.new([
-                  Plurimath::Math::Function::Base.new(
-                    Plurimath::Math::Symbol.new("s"),
-                    Plurimath::Math::Number.new("11"),
+                Plurimath::Math::Function::Tr.new([
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::Base.new(
+                        Plurimath::Math::Symbol.new("s"),
+                        Plurimath::Math::Number.new("11")
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [Plurimath::Math::Number.new("0")],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [Plurimath::Math::Number.new("0")],
+                    { columnalign: "center" }
                   ),
                 ]),
-                Plurimath::Math::Function::Td.new([
-                  Plurimath::Math::Number.new("0"),
-                ]),
-                Plurimath::Math::Function::Td.new([
-                  Plurimath::Math::Number.new("0"),
-                ]),
-              ]),
-              Plurimath::Math::Function::Tr.new([
-                Plurimath::Math::Function::Td.new([
-                  Plurimath::Math::Number.new("0"),
-                ]),
-                Plurimath::Math::Function::Td.new([
-                  Plurimath::Math::Function::Base.new(
-                    Plurimath::Math::Symbol.new("s"),
-                    Plurimath::Math::Number.new("22"),
+                Plurimath::Math::Function::Tr.new([
+                  Plurimath::Math::Function::Td.new(
+                    [Plurimath::Math::Number.new("0")],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::Base.new(
+                        Plurimath::Math::Symbol.new("s"),
+                        Plurimath::Math::Number.new("22")
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [Plurimath::Math::Number.new("0")],
+                    { columnalign: "center" }
                   ),
                 ]),
-                Plurimath::Math::Function::Td.new([
-                  Plurimath::Math::Number.new("0"),
-                ]),
-              ]),
-              Plurimath::Math::Function::Tr.new([
-                Plurimath::Math::Function::Td.new([
-                  Plurimath::Math::Number.new("0"),
-                ]),
-                Plurimath::Math::Function::Td.new([
-                  Plurimath::Math::Number.new("0"),
-                ]),
-                Plurimath::Math::Function::Td.new([
-                  Plurimath::Math::Function::Base.new(
-                    Plurimath::Math::Symbol.new("s"),
-                    Plurimath::Math::Number.new("33"),
+                Plurimath::Math::Function::Tr.new([
+                  Plurimath::Math::Function::Td.new(
+                    [Plurimath::Math::Number.new("0")],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [Plurimath::Math::Number.new("0")],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::Base.new(
+                        Plurimath::Math::Symbol.new("s"),
+                        Plurimath::Math::Number.new("33")
+                      ),
+                    ],
+                    { columnalign: "center" }
                   ),
                 ]),
-              ]),
-            ],
+              ],
               nil,
-              [
-                Plurimath::Math::Symbol.new("c"),
-                Plurimath::Math::Symbol.new("c"),
-                Plurimath::Math::Symbol.new("c"),
-              ]
+              nil,
+              {}
             ),
             Plurimath::Math::Function::Right.new(")"),
-          ])
+          ]),
         ])
         expect(formula).to eq(expected_value)
       end
@@ -2316,58 +2358,75 @@ RSpec.describe Plurimath::Latex::Parser do
             Plurimath::Math::Function::Table::Array.new(
               [
                 Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Symbol.new("s"),
-                      Plurimath::Math::Number.new("11"),
-                    ),
-                  ]),
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::Base.new(
+                        Plurimath::Math::Symbol.new("s"),
+                        Plurimath::Math::Number.new("11")
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
                 ]),
                 Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Symbol.new("s"),
-                      Plurimath::Math::Number.new("22"),
-                    ),
-                  ]),
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::Base.new(
+                        Plurimath::Math::Symbol.new("s"),
+                        Plurimath::Math::Number.new("22")
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
                 ]),
                 Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Symbol.new("s"),
-                      Plurimath::Math::Number.new("33"),
-                    ),
-                  ]),
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::Base.new(
+                        Plurimath::Math::Symbol.new("s"),
+                        Plurimath::Math::Number.new("33")
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
                 ]),
                 Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Symbol.new("s"),
-                      Plurimath::Math::Number.new("12"),
-                    ),
-                  ]),
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::Base.new(
+                        Plurimath::Math::Symbol.new("s"),
+                        Plurimath::Math::Number.new("12")
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
                 ]),
                 Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Symbol.new("s"),
-                      Plurimath::Math::Number.new("23"),
-                    ),
-                  ]),
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::Base.new(
+                        Plurimath::Math::Symbol.new("s"),
+                        Plurimath::Math::Number.new("23")
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
                 ]),
                 Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Symbol.new("s"),
-                      Plurimath::Math::Number.new("31"),
-                    ),
-                  ]),
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::Base.new(
+                        Plurimath::Math::Symbol.new("s"),
+                        Plurimath::Math::Number.new("31")
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
                 ]),
               ],
               nil,
-              [
-                Plurimath::Math::Symbol.new("c")
-              ]
+              nil,
+              {}
             ),
             Plurimath::Math::Function::Right.new(")"),
           ]),
@@ -2414,185 +2473,245 @@ RSpec.describe Plurimath::Latex::Parser do
             Plurimath::Math::Function::Table::Array.new(
               [
                 Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Symbol.new("d"),
-                      Plurimath::Math::Number.new("1111")
-                    )
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Symbol.new("d"),
-                      Plurimath::Math::Number.new("1122")
-                    )
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Symbol.new("d"),
-                      Plurimath::Math::Number.new("1133")
-                    )
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Symbol.new("d"),
-                      Plurimath::Math::Number.new("1112")
-                    )
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Symbol.new("d"),
-                      Plurimath::Math::Number.new("1123")
-                    )
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Symbol.new("d"),
-                      Plurimath::Math::Number.new("1131")
-                    )
-                  ])
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::Base.new(
+                        Plurimath::Math::Symbol.new("d"),
+                        Plurimath::Math::Number.new("1111")
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::Base.new(
+                        Plurimath::Math::Symbol.new("d"),
+                        Plurimath::Math::Number.new("1122")
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::Base.new(
+                        Plurimath::Math::Symbol.new("d"),
+                        Plurimath::Math::Number.new("1133")
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::Base.new(
+                        Plurimath::Math::Symbol.new("d"),
+                        Plurimath::Math::Number.new("1112")
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::Base.new(
+                        Plurimath::Math::Symbol.new("d"),
+                        Plurimath::Math::Number.new("1123")
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::Base.new(
+                        Plurimath::Math::Symbol.new("d"),
+                        Plurimath::Math::Number.new("1131")
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
                 ]),
                 Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Symbol.new("d"),
-                      Plurimath::Math::Number.new("2222")
-                    )
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Symbol.new("d"),
-                      Plurimath::Math::Number.new("2233")
-                    )
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Symbol.new("d"),
-                      Plurimath::Math::Number.new("2212")
-                    )
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Symbol.new("d"),
-                      Plurimath::Math::Number.new("2223")
-                    )
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Symbol.new("d"),
-                      Plurimath::Math::Number.new("2231")
-                    )
-                  ])
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::Base.new(
+                        Plurimath::Math::Symbol.new("d"),
+                        Plurimath::Math::Number.new("2222")
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::Base.new(
+                        Plurimath::Math::Symbol.new("d"),
+                        Plurimath::Math::Number.new("2233")
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::Base.new(
+                        Plurimath::Math::Symbol.new("d"),
+                        Plurimath::Math::Number.new("2212")
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::Base.new(
+                        Plurimath::Math::Symbol.new("d"),
+                        Plurimath::Math::Number.new("2223")
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::Base.new(
+                        Plurimath::Math::Symbol.new("d"),
+                        Plurimath::Math::Number.new("2231")
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
                 ]),
                 Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Symbol.new("d"),
-                      Plurimath::Math::Number.new("3333")
-                    )
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Symbol.new("d"),
-                      Plurimath::Math::Number.new("3312")
-                    )
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Symbol.new("d"),
-                      Plurimath::Math::Number.new("3323")
-                    )
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Symbol.new("d"),
-                      Plurimath::Math::Number.new("3331")
-                    )
-                  ])
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::Base.new(
+                        Plurimath::Math::Symbol.new("d"),
+                        Plurimath::Math::Number.new("3333")
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::Base.new(
+                        Plurimath::Math::Symbol.new("d"),
+                        Plurimath::Math::Number.new("3312")
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::Base.new(
+                        Plurimath::Math::Symbol.new("d"),
+                        Plurimath::Math::Number.new("3323")
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::Base.new(
+                        Plurimath::Math::Symbol.new("d"),
+                        Plurimath::Math::Number.new("3331")
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
                 ]),
                 Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Symbol.new("d"),
-                      Plurimath::Math::Number.new("1212")
-                    )
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Symbol.new("d"),
-                      Plurimath::Math::Number.new("1223")
-                    )
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Symbol.new("d"),
-                      Plurimath::Math::Number.new("1231")
-                    )
-                  ])
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::Base.new(
+                        Plurimath::Math::Symbol.new("d"),
+                        Plurimath::Math::Number.new("1212")
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::Base.new(
+                        Plurimath::Math::Symbol.new("d"),
+                        Plurimath::Math::Number.new("1223")
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::Base.new(
+                        Plurimath::Math::Symbol.new("d"),
+                        Plurimath::Math::Number.new("1231")
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
                 ]),
                 Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::Mbox.new(
-                      Plurimath::Math::Formula.new([
-                        Plurimath::Math::Symbol.new("s"),
-                        Plurimath::Math::Symbol.new("y"),
-                        Plurimath::Math::Symbol.new("m"),
-                        Plurimath::Math::Symbol.new("m"),
-                        Plurimath::Math::Symbol.new("e"),
-                        Plurimath::Math::Symbol.new("t"),
-                        Plurimath::Math::Symbol.new("r"),
-                        Plurimath::Math::Symbol.new("i"),
-                        Plurimath::Math::Symbol.new("c"),
-                      ])
-                    )
-                  ]),
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Symbol.new("d"),
-                      Plurimath::Math::Number.new("2323")
-                    )
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Symbol.new("d"),
-                      Plurimath::Math::Number.new("2331")
-                    )
-                  ])
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::Mbox.new(
+                        Plurimath::Math::Formula.new([
+                          Plurimath::Math::Symbol.new("s"),
+                          Plurimath::Math::Symbol.new("y"),
+                          Plurimath::Math::Symbol.new("m"),
+                          Plurimath::Math::Symbol.new("m"),
+                          Plurimath::Math::Symbol.new("e"),
+                          Plurimath::Math::Symbol.new("t"),
+                          Plurimath::Math::Symbol.new("r"),
+                          Plurimath::Math::Symbol.new("i"),
+                          Plurimath::Math::Symbol.new("c"),
+                        ])
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::Base.new(
+                        Plurimath::Math::Symbol.new("d"),
+                        Plurimath::Math::Number.new("2323")
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::Base.new(
+                        Plurimath::Math::Symbol.new("d"),
+                        Plurimath::Math::Number.new("2331")
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
                 ]),
                 Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Symbol.new("d"),
-                      Plurimath::Math::Number.new("3131")
-                    )
-                  ])
-                ])
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::Base.new(
+                        Plurimath::Math::Symbol.new("d"),
+                        Plurimath::Math::Number.new("3131")
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                ]),
               ],
               nil,
-              [
-                Plurimath::Math::Symbol.new("c"),
-                Plurimath::Math::Symbol.new("c"),
-                Plurimath::Math::Symbol.new("c"),
-                Plurimath::Math::Symbol.new("c"),
-                Plurimath::Math::Symbol.new("c"),
-                Plurimath::Math::Symbol.new("c"),
-              ],
+              nil,
+              {}
             ),
-            Plurimath::Math::Function::Right.new(")")
-          ])
+            Plurimath::Math::Function::Right.new(")"),
+          ]),
         ])
         expect(formula).to eq(expected_value)
       end
@@ -2775,315 +2894,374 @@ RSpec.describe Plurimath::Latex::Parser do
             Plurimath::Math::Function::Table::Array.new(
               [
                 Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::FontStyle.new(
-                      Plurimath::Math::Function::Frac.new(
-                        Plurimath::Math::Number.new("1"),
-                        Plurimath::Math::Function::Base.new(
-                          Plurimath::Math::Symbol.new("E"),
-                          Plurimath::Math::Number.new("11")
-                        )
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::FontStyle.new(
+                        Plurimath::Math::Function::Frac.new(
+                          Plurimath::Math::Number.new("1"),
+                          Plurimath::Math::Function::Base.new(
+                            Plurimath::Math::Symbol.new("E"),
+                            Plurimath::Math::Number.new("11")
+                          )
+                        ),
+                        "displaystyle"
                       ),
-                      "displaystyle"
-                    )
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Formula.new([
-                      Plurimath::Math::Symbol.new("-"),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Symbol.new("-"),
+                        Plurimath::Math::Function::FontStyle.new(
+                          Plurimath::Math::Function::Frac.new(
+                            Plurimath::Math::Function::Base.new(
+                              Plurimath::Math::Symbol.new("&#x3bd;"),
+                              Plurimath::Math::Number.new("12")
+                            ),
+                            Plurimath::Math::Function::Base.new(
+                              Plurimath::Math::Symbol.new("E"),
+                              Plurimath::Math::Number.new("22")
+                            )
+                          ),
+                          "displaystyle"
+                        ),
+                      ]),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Symbol.new("-"),
+                        Plurimath::Math::Function::FontStyle.new(
+                          Plurimath::Math::Function::Frac.new(
+                            Plurimath::Math::Function::Base.new(
+                              Plurimath::Math::Symbol.new("&#x3bd;"),
+                              Plurimath::Math::Number.new("13")
+                            ),
+                            Plurimath::Math::Function::Base.new(
+                              Plurimath::Math::Symbol.new("E"),
+                              Plurimath::Math::Number.new("33")
+                            )
+                          ),
+                          "displaystyle"
+                        ),
+                      ]),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [
                       Plurimath::Math::Function::FontStyle.new(
                         Plurimath::Math::Function::Frac.new(
                           Plurimath::Math::Function::Base.new(
                             Plurimath::Math::Symbol.new("&#x3bd;"),
-                            Plurimath::Math::Number.new("12")
+                            Plurimath::Math::Formula.new([
+                              Plurimath::Math::Number.new("1"),
+                              Plurimath::Math::Symbol.new(","),
+                              Plurimath::Math::Number.new("12"),
+                            ])
                           ),
+                          Plurimath::Math::Function::Base.new(
+                            Plurimath::Math::Symbol.new("G"),
+                            Plurimath::Math::Number.new("12")
+                          )
+                        ),
+                        "displaystyle"
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [Plurimath::Math::Number.new("0")],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [Plurimath::Math::Number.new("0")],
+                    { columnalign: "center" }
+                  ),
+                ]),
+                Plurimath::Math::Function::Tr.new([
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Symbol.new("["),
+                      Plurimath::Math::Number.new("3"),
+                      Plurimath::Math::Symbol.new("m"),
+                      Plurimath::Math::Symbol.new("m"),
+                      Plurimath::Math::Symbol.new("]"),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::FontStyle.new(
+                        Plurimath::Math::Function::Frac.new(
+                          Plurimath::Math::Number.new("1"),
                           Plurimath::Math::Function::Base.new(
                             Plurimath::Math::Symbol.new("E"),
                             Plurimath::Math::Number.new("22")
                           )
                         ),
                         "displaystyle"
-                      )
-                    ])
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Formula.new([
-                      Plurimath::Math::Symbol.new("-"),
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Symbol.new("-"),
+                        Plurimath::Math::Function::FontStyle.new(
+                          Plurimath::Math::Function::Frac.new(
+                            Plurimath::Math::Function::Base.new(
+                              Plurimath::Math::Symbol.new("&#x3bd;"),
+                              Plurimath::Math::Number.new("23")
+                            ),
+                            Plurimath::Math::Function::Base.new(
+                              Plurimath::Math::Symbol.new("E"),
+                              Plurimath::Math::Number.new("22")
+                            )
+                          ),
+                          "displaystyle"
+                        ),
+                      ]),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [
                       Plurimath::Math::Function::FontStyle.new(
                         Plurimath::Math::Function::Frac.new(
                           Plurimath::Math::Function::Base.new(
                             Plurimath::Math::Symbol.new("&#x3bd;"),
-                            Plurimath::Math::Number.new("13")
+                            Plurimath::Math::Formula.new([
+                              Plurimath::Math::Number.new("2"),
+                              Plurimath::Math::Symbol.new(","),
+                              Plurimath::Math::Number.new("12"),
+                            ])
                           ),
+                          Plurimath::Math::Function::Base.new(
+                            Plurimath::Math::Symbol.new("G"),
+                            Plurimath::Math::Number.new("12")
+                          )
+                        ),
+                        "displaystyle"
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [Plurimath::Math::Number.new("0")],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [Plurimath::Math::Number.new("0")],
+                    { columnalign: "center" }
+                  ),
+                ]),
+                Plurimath::Math::Function::Tr.new([
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Symbol.new("["),
+                      Plurimath::Math::Number.new("3"),
+                      Plurimath::Math::Symbol.new("m"),
+                      Plurimath::Math::Symbol.new("m"),
+                      Plurimath::Math::Symbol.new("]"),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::FontStyle.new(
+                        Plurimath::Math::Function::Frac.new(
+                          Plurimath::Math::Number.new("1"),
                           Plurimath::Math::Function::Base.new(
                             Plurimath::Math::Symbol.new("E"),
                             Plurimath::Math::Number.new("33")
                           )
                         ),
                         "displaystyle"
-                      )
-                    ])
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::FontStyle.new(
-                      Plurimath::Math::Function::Frac.new(
-                        Plurimath::Math::Function::Base.new(
-                          Plurimath::Math::Symbol.new("&#x3bd;"),
-                          Plurimath::Math::Formula.new([
-                            Plurimath::Math::Number.new("1"),
-                            Plurimath::Math::Symbol.new(","),
-                            Plurimath::Math::Number.new("12")
-                          ])
-                        ),
-                        Plurimath::Math::Function::Base.new(
-                          Plurimath::Math::Symbol.new("G"),
-                          Plurimath::Math::Number.new("12")
-                        )
                       ),
-                      "displaystyle"
-                    )
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Number.new("0")
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Number.new("0")
-                  ])
-                ]),
-                Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Symbol.new("["),
-                    Plurimath::Math::Number.new("3"),
-                    Plurimath::Math::Symbol.new("m"),
-                    Plurimath::Math::Symbol.new("m"),
-                    Plurimath::Math::Symbol.new("]")
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::FontStyle.new(
-                      Plurimath::Math::Function::Frac.new(
-                        Plurimath::Math::Number.new("1"),
-                        Plurimath::Math::Function::Base.new(
-                          Plurimath::Math::Symbol.new("E"),
-                          Plurimath::Math::Number.new("22")
-                        )
-                      ),
-                      "displaystyle"
-                    )
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Formula.new([
-                      Plurimath::Math::Symbol.new("-"),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [
                       Plurimath::Math::Function::FontStyle.new(
                         Plurimath::Math::Function::Frac.new(
                           Plurimath::Math::Function::Base.new(
                             Plurimath::Math::Symbol.new("&#x3bd;"),
-                            Plurimath::Math::Number.new("23")
+                            Plurimath::Math::Formula.new([
+                              Plurimath::Math::Number.new("3"),
+                              Plurimath::Math::Symbol.new(","),
+                              Plurimath::Math::Number.new("12"),
+                            ])
                           ),
                           Plurimath::Math::Function::Base.new(
-                            Plurimath::Math::Symbol.new("E"),
-                            Plurimath::Math::Number.new("22")
+                            Plurimath::Math::Symbol.new("G"),
+                            Plurimath::Math::Number.new("12")
                           )
                         ),
                         "displaystyle"
-                      )
-                    ])
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::FontStyle.new(
-                      Plurimath::Math::Function::Frac.new(
-                        Plurimath::Math::Function::Base.new(
-                          Plurimath::Math::Symbol.new("&#x3bd;"),
-                          Plurimath::Math::Formula.new([
-                            Plurimath::Math::Number.new("2"),
-                            Plurimath::Math::Symbol.new(","),
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [Plurimath::Math::Number.new("0")],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [Plurimath::Math::Number.new("0")],
+                    { columnalign: "center" }
+                  ),
+                ]),
+                Plurimath::Math::Function::Tr.new([
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Symbol.new("["),
+                      Plurimath::Math::Number.new("3"),
+                      Plurimath::Math::Symbol.new("m"),
+                      Plurimath::Math::Symbol.new("m"),
+                      Plurimath::Math::Symbol.new("]"),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::FontStyle.new(
+                        Plurimath::Math::Function::Frac.new(
+                          Plurimath::Math::Number.new("1"),
+                          Plurimath::Math::Function::Base.new(
+                            Plurimath::Math::Symbol.new("G"),
                             Plurimath::Math::Number.new("12")
-                          ])
+                          )
                         ),
-                        Plurimath::Math::Function::Base.new(
-                          Plurimath::Math::Symbol.new("G"),
-                          Plurimath::Math::Number.new("12")
-                        )
+                        "displaystyle"
                       ),
-                      "displaystyle"
-                    )
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Number.new("0")
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Number.new("0")
-                  ])
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [Plurimath::Math::Number.new("0")],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [Plurimath::Math::Number.new("0")],
+                    { columnalign: "center" }
+                  ),
                 ]),
                 Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Symbol.new("["),
-                    Plurimath::Math::Number.new("3"),
-                    Plurimath::Math::Symbol.new("m"),
-                    Plurimath::Math::Symbol.new("m"),
-                    Plurimath::Math::Symbol.new("]")
-                  ]),
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::FontStyle.new(
-                      Plurimath::Math::Function::Frac.new(
-                        Plurimath::Math::Number.new("1"),
-                        Plurimath::Math::Function::Base.new(
-                          Plurimath::Math::Symbol.new("E"),
-                          Plurimath::Math::Number.new("33")
-                        )
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Symbol.new("["),
+                      Plurimath::Math::Number.new("3"),
+                      Plurimath::Math::Symbol.new("m"),
+                      Plurimath::Math::Symbol.new("m"),
+                      Plurimath::Math::Symbol.new("]"),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::Mbox.new(
+                        Plurimath::Math::Formula.new([
+                          Plurimath::Math::Symbol.new("s"),
+                          Plurimath::Math::Symbol.new("y"),
+                          Plurimath::Math::Symbol.new("m"),
+                          Plurimath::Math::Symbol.new("m"),
+                          Plurimath::Math::Symbol.new("e"),
+                          Plurimath::Math::Symbol.new("t"),
+                          Plurimath::Math::Symbol.new("r"),
+                          Plurimath::Math::Symbol.new("i"),
+                          Plurimath::Math::Symbol.new("c"),
+                        ])
                       ),
-                      "displaystyle"
-                    )
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::FontStyle.new(
-                      Plurimath::Math::Function::Frac.new(
-                        Plurimath::Math::Function::Base.new(
-                          Plurimath::Math::Symbol.new("&#x3bd;"),
-                          Plurimath::Math::Formula.new([
-                            Plurimath::Math::Number.new("3"),
-                            Plurimath::Math::Symbol.new(","),
-                            Plurimath::Math::Number.new("12")
-                          ])
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::FontStyle.new(
+                        Plurimath::Math::Function::Frac.new(
+                          Plurimath::Math::Number.new("1"),
+                          Plurimath::Math::Function::Base.new(
+                            Plurimath::Math::Symbol.new("G"),
+                            Plurimath::Math::Number.new("23")
+                          )
                         ),
-                        Plurimath::Math::Function::Base.new(
-                          Plurimath::Math::Symbol.new("G"),
-                          Plurimath::Math::Number.new("12")
-                        )
+                        "displaystyle"
                       ),
-                      "displaystyle"
-                    )
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Number.new("0")
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Number.new("0")
-                  ])
-                ]),
-                Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Symbol.new("["),
-                    Plurimath::Math::Number.new("3"),
-                    Plurimath::Math::Symbol.new("m"),
-                    Plurimath::Math::Symbol.new("m"),
-                    Plurimath::Math::Symbol.new("]")
-                  ]),
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::FontStyle.new(
-                      Plurimath::Math::Function::Frac.new(
-                        Plurimath::Math::Number.new("1"),
-                        Plurimath::Math::Function::Base.new(
-                          Plurimath::Math::Symbol.new("G"),
-                          Plurimath::Math::Number.new("12")
-                        )
-                      ),
-                      "displaystyle"
-                    )
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Number.new("0")
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Number.new("0")
-                  ])
-                ]),
-                Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Symbol.new("["),
-                    Plurimath::Math::Number.new("3"),
-                    Plurimath::Math::Symbol.new("m"),
-                    Plurimath::Math::Symbol.new("m"),
-                    Plurimath::Math::Symbol.new("]")
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::Mbox.new(
-                      Plurimath::Math::Formula.new([
-                        Plurimath::Math::Symbol.new("s"),
-                        Plurimath::Math::Symbol.new("y"),
-                        Plurimath::Math::Symbol.new("m"),
-                        Plurimath::Math::Symbol.new("m"),
-                        Plurimath::Math::Symbol.new("e"),
-                        Plurimath::Math::Symbol.new("t"),
-                        Plurimath::Math::Symbol.new("r"),
-                        Plurimath::Math::Symbol.new("i"),
-                        Plurimath::Math::Symbol.new("c")
-                      ])
-                    )
-                  ]),
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::FontStyle.new(
-                      Plurimath::Math::Function::Frac.new(
-                        Plurimath::Math::Number.new("1"),
-                        Plurimath::Math::Function::Base.new(
-                          Plurimath::Math::Symbol.new("G"),
-                          Plurimath::Math::Number.new("23")
-                        )
-                      ),
-                      "displaystyle"
-                    )
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::FontStyle.new(
-                      Plurimath::Math::Function::Frac.new(
-                        Plurimath::Math::Function::Base.new(
-                          Plurimath::Math::Symbol.new("&#x3bd;"),
-                          Plurimath::Math::Formula.new([
-                            Plurimath::Math::Number.new("23"),
-                            Plurimath::Math::Symbol.new(","),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::FontStyle.new(
+                        Plurimath::Math::Function::Frac.new(
+                          Plurimath::Math::Function::Base.new(
+                            Plurimath::Math::Symbol.new("&#x3bd;"),
+                            Plurimath::Math::Formula.new([
+                              Plurimath::Math::Number.new("23"),
+                              Plurimath::Math::Symbol.new(","),
+                              Plurimath::Math::Number.new("31"),
+                            ])
+                          ),
+                          Plurimath::Math::Function::Base.new(
+                            Plurimath::Math::Symbol.new("G"),
                             Plurimath::Math::Number.new("31")
-                          ])
+                          )
                         ),
-                        Plurimath::Math::Function::Base.new(
-                          Plurimath::Math::Symbol.new("G"),
-                          Plurimath::Math::Number.new("31")
-                        )
+                        "displaystyle"
                       ),
-                      "displaystyle"
-                    )
-                  ])
+                    ],
+                    { columnalign: "center" }
+                  ),
                 ]),
                 Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Symbol.new("["),
-                    Plurimath::Math::Number.new("3"),
-                    Plurimath::Math::Symbol.new("m"),
-                    Plurimath::Math::Symbol.new("m"),
-                    Plurimath::Math::Symbol.new("]")
-                  ]),
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::FontStyle.new(
-                      Plurimath::Math::Function::Frac.new(
-                        Plurimath::Math::Number.new("1"),
-                        Plurimath::Math::Function::Base.new(
-                          Plurimath::Math::Symbol.new("G"),
-                          Plurimath::Math::Number.new("31")
-                        )
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Symbol.new("["),
+                      Plurimath::Math::Number.new("3"),
+                      Plurimath::Math::Symbol.new("m"),
+                      Plurimath::Math::Symbol.new("m"),
+                      Plurimath::Math::Symbol.new("]"),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::FontStyle.new(
+                        Plurimath::Math::Function::Frac.new(
+                          Plurimath::Math::Number.new("1"),
+                          Plurimath::Math::Function::Base.new(
+                            Plurimath::Math::Symbol.new("G"),
+                            Plurimath::Math::Number.new("31")
+                          )
+                        ),
+                        "displaystyle"
                       ),
-                      "displaystyle"
-                    )
-                  ])
-                ])
+                    ],
+                    { columnalign: "center" }
+                  ),
+                ]),
               ],
               nil,
-              [
-                Plurimath::Math::Symbol.new("c"),
-                Plurimath::Math::Symbol.new("c"),
-                Plurimath::Math::Symbol.new("c"),
-                Plurimath::Math::Symbol.new("c"),
-                Plurimath::Math::Symbol.new("c"),
-                Plurimath::Math::Symbol.new("c")
-              ]
+              nil,
+              {}
             ),
-            Plurimath::Math::Function::Right.new(")")
-          ])
+            Plurimath::Math::Function::Right.new(")"),
+          ]),
         ])
         expect(formula).to eq(expected_value)
       end
@@ -3132,251 +3310,302 @@ RSpec.describe Plurimath::Latex::Parser do
             Plurimath::Math::Function::Table::Array.new(
               [
                 Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::FontStyle.new(
-                      Plurimath::Math::Function::Frac.new(
-                        Plurimath::Math::Number.new("1"),
-                        Plurimath::Math::Function::Base.new(
-                          Plurimath::Math::Symbol.new("E"),
-                          Plurimath::Math::Number.new("11")
-                        )
-                      ),
-                      "displaystyle"
-                    )
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Formula.new([
-                      Plurimath::Math::Symbol.new("-"),
+                  Plurimath::Math::Function::Td.new(
+                    [
                       Plurimath::Math::Function::FontStyle.new(
                         Plurimath::Math::Function::Frac.new(
+                          Plurimath::Math::Number.new("1"),
                           Plurimath::Math::Function::Base.new(
-                            Plurimath::Math::Symbol.new("&#x3bd;"),
-                            Plurimath::Math::Number.new("12")
+                            Plurimath::Math::Symbol.new("E"),
+                            Plurimath::Math::Number.new("11")
+                          )
+                        ),
+                        "displaystyle"
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Symbol.new("-"),
+                        Plurimath::Math::Function::FontStyle.new(
+                          Plurimath::Math::Function::Frac.new(
+                            Plurimath::Math::Function::Base.new(
+                              Plurimath::Math::Symbol.new("&#x3bd;"),
+                              Plurimath::Math::Number.new("12")
+                            ),
+                            Plurimath::Math::Function::Base.new(
+                              Plurimath::Math::Symbol.new("E"),
+                              Plurimath::Math::Number.new("22")
+                            )
                           ),
+                          "displaystyle"
+                        ),
+                      ]),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Symbol.new("-"),
+                        Plurimath::Math::Function::FontStyle.new(
+                          Plurimath::Math::Function::Frac.new(
+                            Plurimath::Math::Function::Base.new(
+                              Plurimath::Math::Symbol.new("&#x3bd;"),
+                              Plurimath::Math::Number.new("13")
+                            ),
+                            Plurimath::Math::Function::Base.new(
+                              Plurimath::Math::Symbol.new("E"),
+                              Plurimath::Math::Number.new("33")
+                            )
+                          ),
+                          "displaystyle"
+                        ),
+                      ]),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [Plurimath::Math::Number.new("0")],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [Plurimath::Math::Number.new("0")],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [Plurimath::Math::Number.new("0")],
+                    { columnalign: "center" }
+                  ),
+                ]),
+                Plurimath::Math::Function::Tr.new([
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Symbol.new("["),
+                      Plurimath::Math::Number.new("3"),
+                      Plurimath::Math::Symbol.new("m"),
+                      Plurimath::Math::Symbol.new("m"),
+                      Plurimath::Math::Symbol.new("]"),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::FontStyle.new(
+                        Plurimath::Math::Function::Frac.new(
+                          Plurimath::Math::Number.new("1"),
                           Plurimath::Math::Function::Base.new(
                             Plurimath::Math::Symbol.new("E"),
                             Plurimath::Math::Number.new("22")
                           )
                         ),
                         "displaystyle"
-                      )
-                    ])
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Formula.new([
-                      Plurimath::Math::Symbol.new("-"),
-                      Plurimath::Math::Function::FontStyle.new(
-                        Plurimath::Math::Function::Frac.new(
-                          Plurimath::Math::Function::Base.new(
-                            Plurimath::Math::Symbol.new("&#x3bd;"),
-                            Plurimath::Math::Number.new("13")
-                          ),
-                          Plurimath::Math::Function::Base.new(
-                            Plurimath::Math::Symbol.new("E"),
-                            Plurimath::Math::Number.new("33")
-                          )
-                        ),
-                        "displaystyle"
-                      )
-                    ])
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Number.new("0")
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Number.new("0")
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Number.new("0")
-                  ])
-                ]),
-                Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Symbol.new("["),
-                    Plurimath::Math::Number.new("3"),
-                    Plurimath::Math::Symbol.new("m"),
-                    Plurimath::Math::Symbol.new("m"),
-                    Plurimath::Math::Symbol.new("]")
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::FontStyle.new(
-                      Plurimath::Math::Function::Frac.new(
-                        Plurimath::Math::Number.new("1"),
-                        Plurimath::Math::Function::Base.new(
-                          Plurimath::Math::Symbol.new("E"),
-                          Plurimath::Math::Number.new("22")
-                        )
                       ),
-                      "displaystyle"
-                    )
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Formula.new([
-                      Plurimath::Math::Symbol.new("-"),
-                      Plurimath::Math::Function::FontStyle.new(
-                        Plurimath::Math::Function::Frac.new(
-                          Plurimath::Math::Function::Base.new(
-                            Plurimath::Math::Symbol.new("&#x3bd;"),
-                            Plurimath::Math::Number.new("23")
-                          ),
-                          Plurimath::Math::Function::Base.new(
-                            Plurimath::Math::Symbol.new("E"),
-                            Plurimath::Math::Number.new("33")
-                          )
-                        ),
-                        "displaystyle"
-                      )
-                    ])
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Number.new("0")
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Number.new("0")
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Number.new("0")
-                  ])
-                ]),
-                Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Symbol.new("["),
-                    Plurimath::Math::Number.new("3"),
-                    Plurimath::Math::Symbol.new("m"),
-                    Plurimath::Math::Symbol.new("m"),
-                    Plurimath::Math::Symbol.new("]")
-                  ]),
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::FontStyle.new(
-                      Plurimath::Math::Function::Frac.new(
-                        Plurimath::Math::Number.new("1"),
-                        Plurimath::Math::Function::Base.new(
-                          Plurimath::Math::Symbol.new("E"),
-                          Plurimath::Math::Number.new("33")
-                        )
-                      ),
-                      "displaystyle"
-                    )
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Number.new("0")
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Number.new("0")
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Number.new("0")
-                  ])
-                ]),
-                Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Symbol.new("["),
-                    Plurimath::Math::Number.new("3"),
-                    Plurimath::Math::Symbol.new("m"),
-                    Plurimath::Math::Symbol.new("m"),
-                    Plurimath::Math::Symbol.new("]")
-                  ]),
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::FontStyle.new(
-                      Plurimath::Math::Function::Frac.new(
-                        Plurimath::Math::Number.new("1"),
-                        Plurimath::Math::Function::Base.new(
-                          Plurimath::Math::Symbol.new("G"),
-                          Plurimath::Math::Number.new("12")
-                        )
-                      ),
-                      "displaystyle"
-                    )
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Number.new("0")
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Number.new("0")
-                  ])
-                ]),
-                Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Symbol.new("["),
-                    Plurimath::Math::Number.new("3"),
-                    Plurimath::Math::Symbol.new("m"),
-                    Plurimath::Math::Symbol.new("m"),
-                    Plurimath::Math::Symbol.new("]")
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::Mbox.new(
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [
                       Plurimath::Math::Formula.new([
-                        Plurimath::Math::Symbol.new("s"),
-                        Plurimath::Math::Symbol.new("y"),
-                        Plurimath::Math::Symbol.new("m"),
-                        Plurimath::Math::Symbol.new("m"),
-                        Plurimath::Math::Symbol.new("e"),
-                        Plurimath::Math::Symbol.new("t"),
-                        Plurimath::Math::Symbol.new("r"),
-                        Plurimath::Math::Symbol.new("i"),
-                        Plurimath::Math::Symbol.new("c")
-                      ])
-                    )
-                  ]),
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::FontStyle.new(
-                      Plurimath::Math::Function::Frac.new(
-                        Plurimath::Math::Number.new("1"),
-                        Plurimath::Math::Function::Base.new(
-                          Plurimath::Math::Symbol.new("G"),
-                          Plurimath::Math::Number.new("23")
-                        )
-                      ),
-                      "displaystyle"
-                    )
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Number.new("0")
-                  ])
+                        Plurimath::Math::Symbol.new("-"),
+                        Plurimath::Math::Function::FontStyle.new(
+                          Plurimath::Math::Function::Frac.new(
+                            Plurimath::Math::Function::Base.new(
+                              Plurimath::Math::Symbol.new("&#x3bd;"),
+                              Plurimath::Math::Number.new("23")
+                            ),
+                            Plurimath::Math::Function::Base.new(
+                              Plurimath::Math::Symbol.new("E"),
+                              Plurimath::Math::Number.new("33")
+                            )
+                          ),
+                          "displaystyle"
+                        ),
+                      ]),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [Plurimath::Math::Number.new("0")],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [Plurimath::Math::Number.new("0")],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [Plurimath::Math::Number.new("0")],
+                    { columnalign: "center" }
+                  ),
                 ]),
                 Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Symbol.new("["),
-                    Plurimath::Math::Number.new("3"),
-                    Plurimath::Math::Symbol.new("m"),
-                    Plurimath::Math::Symbol.new("m"),
-                    Plurimath::Math::Symbol.new("]")
-                  ]),
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::FontStyle.new(
-                      Plurimath::Math::Function::Frac.new(
-                        Plurimath::Math::Number.new("1"),
-                        Plurimath::Math::Function::Base.new(
-                          Plurimath::Math::Symbol.new("G"),
-                          Plurimath::Math::Number.new("31")
-                        )
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Symbol.new("["),
+                      Plurimath::Math::Number.new("3"),
+                      Plurimath::Math::Symbol.new("m"),
+                      Plurimath::Math::Symbol.new("m"),
+                      Plurimath::Math::Symbol.new("]"),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::FontStyle.new(
+                        Plurimath::Math::Function::Frac.new(
+                          Plurimath::Math::Number.new("1"),
+                          Plurimath::Math::Function::Base.new(
+                            Plurimath::Math::Symbol.new("E"),
+                            Plurimath::Math::Number.new("33")
+                          )
+                        ),
+                        "displaystyle"
                       ),
-                      "displaystyle"
-                    )
-                  ])
-                ])
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [Plurimath::Math::Number.new("0")],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [Plurimath::Math::Number.new("0")],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [Plurimath::Math::Number.new("0")],
+                    { columnalign: "center" }
+                  ),
+                ]),
+                Plurimath::Math::Function::Tr.new([
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Symbol.new("["),
+                      Plurimath::Math::Number.new("3"),
+                      Plurimath::Math::Symbol.new("m"),
+                      Plurimath::Math::Symbol.new("m"),
+                      Plurimath::Math::Symbol.new("]"),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::FontStyle.new(
+                        Plurimath::Math::Function::Frac.new(
+                          Plurimath::Math::Number.new("1"),
+                          Plurimath::Math::Function::Base.new(
+                            Plurimath::Math::Symbol.new("G"),
+                            Plurimath::Math::Number.new("12")
+                          )
+                        ),
+                        "displaystyle"
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [Plurimath::Math::Number.new("0")],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [Plurimath::Math::Number.new("0")],
+                    { columnalign: "center" }
+                  ),
+                ]),
+                Plurimath::Math::Function::Tr.new([
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Symbol.new("["),
+                      Plurimath::Math::Number.new("3"),
+                      Plurimath::Math::Symbol.new("m"),
+                      Plurimath::Math::Symbol.new("m"),
+                      Plurimath::Math::Symbol.new("]"),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::Mbox.new(
+                        Plurimath::Math::Formula.new([
+                          Plurimath::Math::Symbol.new("s"),
+                          Plurimath::Math::Symbol.new("y"),
+                          Plurimath::Math::Symbol.new("m"),
+                          Plurimath::Math::Symbol.new("m"),
+                          Plurimath::Math::Symbol.new("e"),
+                          Plurimath::Math::Symbol.new("t"),
+                          Plurimath::Math::Symbol.new("r"),
+                          Plurimath::Math::Symbol.new("i"),
+                          Plurimath::Math::Symbol.new("c"),
+                        ])
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::FontStyle.new(
+                        Plurimath::Math::Function::Frac.new(
+                          Plurimath::Math::Number.new("1"),
+                          Plurimath::Math::Function::Base.new(
+                            Plurimath::Math::Symbol.new("G"),
+                            Plurimath::Math::Number.new("23")
+                          )
+                        ),
+                        "displaystyle"
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [Plurimath::Math::Number.new("0")],
+                    { columnalign: "center" }
+                  ),
+                ]),
+                Plurimath::Math::Function::Tr.new([
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Symbol.new("["),
+                      Plurimath::Math::Number.new("3"),
+                      Plurimath::Math::Symbol.new("m"),
+                      Plurimath::Math::Symbol.new("m"),
+                      Plurimath::Math::Symbol.new("]"),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::FontStyle.new(
+                        Plurimath::Math::Function::Frac.new(
+                          Plurimath::Math::Number.new("1"),
+                          Plurimath::Math::Function::Base.new(
+                            Plurimath::Math::Symbol.new("G"),
+                            Plurimath::Math::Number.new("31")
+                          )
+                        ),
+                        "displaystyle"
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                ]),
               ],
               nil,
-              [
-                Plurimath::Math::Symbol.new("c"),
-                Plurimath::Math::Symbol.new("c"),
-                Plurimath::Math::Symbol.new("c"),
-                Plurimath::Math::Symbol.new("c"),
-                Plurimath::Math::Symbol.new("c"),
-                Plurimath::Math::Symbol.new("c")
-              ]
+              nil,
+              {}
             ),
-            Plurimath::Math::Function::Right.new(")")
-          ])
+            Plurimath::Math::Function::Right.new(")"),
+          ]),
         ])
         expect(formula).to eq(expected_value)
       end
@@ -3472,287 +3701,338 @@ RSpec.describe Plurimath::Latex::Parser do
             Plurimath::Math::Function::Table::Array.new(
               [
                 Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::FontStyle.new(
-                      Plurimath::Math::Function::Frac.new(
-                        Plurimath::Math::Number.new("1"),
-                        Plurimath::Math::Function::Base.new(
-                          Plurimath::Math::Symbol.new("E"),
-                          Plurimath::Math::Formula.new([
-                            Plurimath::Math::Symbol.new("l"),
-                            Plurimath::Math::Symbol.new("l")
-                          ])
-                        )
-                      ),
-                      "displaystyle"
-                    )
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Formula.new([
-                      Plurimath::Math::Symbol.new("-"),
+                  Plurimath::Math::Function::Td.new(
+                    [
                       Plurimath::Math::Function::FontStyle.new(
                         Plurimath::Math::Function::Frac.new(
-                          Plurimath::Math::Function::Base.new(
-                            Plurimath::Math::Symbol.new("&#x3bd;"),
-                            Plurimath::Math::Formula.new([
-                              Plurimath::Math::Symbol.new("t"),
-                              Plurimath::Math::Symbol.new("l")
-                            ])
-                          ),
+                          Plurimath::Math::Number.new("1"),
                           Plurimath::Math::Function::Base.new(
                             Plurimath::Math::Symbol.new("E"),
                             Plurimath::Math::Formula.new([
-                              Plurimath::Math::Symbol.new("t"),
-                              Plurimath::Math::Symbol.new("t")
+                              Plurimath::Math::Symbol.new("l"),
+                              Plurimath::Math::Symbol.new("l"),
                             ])
                           )
                         ),
                         "displaystyle"
-                      )
-                    ])
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Formula.new([
-                      Plurimath::Math::Symbol.new("-"),
-                      Plurimath::Math::Function::FontStyle.new(
-                        Plurimath::Math::Function::Frac.new(
-                          Plurimath::Math::Function::Base.new(
-                            Plurimath::Math::Symbol.new("&#x3bd;"),
-                            Plurimath::Math::Formula.new([
-                              Plurimath::Math::Symbol.new("t"),
-                              Plurimath::Math::Symbol.new("l")
-                            ])
-                          ),
-                          Plurimath::Math::Function::Base.new(
-                            Plurimath::Math::Symbol.new("E"),
-                            Plurimath::Math::Formula.new([
-                              Plurimath::Math::Symbol.new("t"),
-                              Plurimath::Math::Symbol.new("t")
-                            ])
-                          )
-                        ),
-                        "displaystyle"
-                      )
-                    ])
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Number.new("0")
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Number.new("0")
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Number.new("0")
-                  ])
-                ]),
-                Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Symbol.new("["),
-                    Plurimath::Math::Number.new("3"),
-                    Plurimath::Math::Symbol.new("m"),
-                    Plurimath::Math::Symbol.new("m"),
-                    Plurimath::Math::Symbol.new("]")
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::FontStyle.new(
-                      Plurimath::Math::Function::Frac.new(
-                        Plurimath::Math::Number.new("1"),
-                        Plurimath::Math::Function::Base.new(
-                          Plurimath::Math::Symbol.new("E"),
-                          Plurimath::Math::Formula.new([
-                            Plurimath::Math::Symbol.new("t"),
-                            Plurimath::Math::Symbol.new("t")
-                          ])
-                        )
                       ),
-                      "displaystyle"
-                    )
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Formula.new([
-                      Plurimath::Math::Symbol.new("-"),
-                      Plurimath::Math::Function::FontStyle.new(
-                        Plurimath::Math::Function::Frac.new(
-                          Plurimath::Math::Function::Base.new(
-                            Plurimath::Math::Symbol.new("&#x3bd;"),
-                            Plurimath::Math::Formula.new([
-                              Plurimath::Math::Symbol.new("t"),
-                              Plurimath::Math::Symbol.new("t")
-                            ])
-                          ),
-                          Plurimath::Math::Function::Base.new(
-                            Plurimath::Math::Symbol.new("E"),
-                            Plurimath::Math::Formula.new([
-                              Plurimath::Math::Symbol.new("t"),
-                              Plurimath::Math::Symbol.new("t")
-                            ])
-                          )
-                        ),
-                        "displaystyle"
-                      )
-                    ])
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Number.new("0")
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Number.new("0")
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Number.new("0")
-                  ])
-                ]),
-                Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Symbol.new("["),
-                    Plurimath::Math::Number.new("3"),
-                    Plurimath::Math::Symbol.new("m"),
-                    Plurimath::Math::Symbol.new("m"),
-                    Plurimath::Math::Symbol.new("]")
-                  ]),
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::FontStyle.new(
-                      Plurimath::Math::Function::Frac.new(
-                        Plurimath::Math::Number.new("1"),
-                        Plurimath::Math::Function::Base.new(
-                          Plurimath::Math::Symbol.new("E"),
-                          Plurimath::Math::Formula.new([
-                            Plurimath::Math::Symbol.new("t"),
-                            Plurimath::Math::Symbol.new("t")
-                          ])
-                        )
-                      ),
-                      "displaystyle"
-                    )
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Number.new("0")
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Number.new("0")
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Number.new("0")
-                  ])
-                ]),
-                Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Symbol.new("["),
-                    Plurimath::Math::Number.new("3"),
-                    Plurimath::Math::Symbol.new("m"),
-                    Plurimath::Math::Symbol.new("m"),
-                    Plurimath::Math::Symbol.new("]")
-                  ]),
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::FontStyle.new(
-                      Plurimath::Math::Function::Frac.new(
-                        Plurimath::Math::Number.new("1"),
-                        Plurimath::Math::Function::Base.new(
-                          Plurimath::Math::Symbol.new("G"),
-                          Plurimath::Math::Formula.new([
-                            Plurimath::Math::Symbol.new("l"),
-                            Plurimath::Math::Symbol.new("t")
-                          ])
-                        )
-                      ),
-                      "displaystyle"
-                    )
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Number.new("0")
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Number.new("0")
-                  ])
-                ]),
-                Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Symbol.new("["),
-                    Plurimath::Math::Number.new("3"),
-                    Plurimath::Math::Symbol.new("m"),
-                    Plurimath::Math::Symbol.new("m"),
-                    Plurimath::Math::Symbol.new("]")
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::Mbox.new(
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [
                       Plurimath::Math::Formula.new([
-                        Plurimath::Math::Symbol.new("s"),
-                        Plurimath::Math::Symbol.new("y"),
-                        Plurimath::Math::Symbol.new("m"),
-                        Plurimath::Math::Symbol.new("m"),
-                        Plurimath::Math::Symbol.new("e"),
-                        Plurimath::Math::Symbol.new("t"),
-                        Plurimath::Math::Symbol.new("r"),
-                        Plurimath::Math::Symbol.new("i"),
-                        Plurimath::Math::Symbol.new("c")
-                      ])
-                    )
-                  ]),
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::FontStyle.new(
-                      Plurimath::Math::Function::Frac.new(
-                        Plurimath::Math::Number.new("1"),
-                        Plurimath::Math::Function::Base.new(
-                          Plurimath::Math::Symbol.new("G"),
-                          Plurimath::Math::Formula.new([
-                            Plurimath::Math::Symbol.new("t"),
-                            Plurimath::Math::Symbol.new("t")
-                          ])
-                        )
-                      ),
-                      "displaystyle"
-                    )
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Number.new("0")
-                  ])
+                        Plurimath::Math::Symbol.new("-"),
+                        Plurimath::Math::Function::FontStyle.new(
+                          Plurimath::Math::Function::Frac.new(
+                            Plurimath::Math::Function::Base.new(
+                              Plurimath::Math::Symbol.new("&#x3bd;"),
+                              Plurimath::Math::Formula.new([
+                                Plurimath::Math::Symbol.new("t"),
+                                Plurimath::Math::Symbol.new("l"),
+                              ])
+                            ),
+                            Plurimath::Math::Function::Base.new(
+                              Plurimath::Math::Symbol.new("E"),
+                              Plurimath::Math::Formula.new([
+                                Plurimath::Math::Symbol.new("t"),
+                                Plurimath::Math::Symbol.new("t"),
+                              ])
+                            )
+                          ),
+                          "displaystyle"
+                        ),
+                      ]),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Symbol.new("-"),
+                        Plurimath::Math::Function::FontStyle.new(
+                          Plurimath::Math::Function::Frac.new(
+                            Plurimath::Math::Function::Base.new(
+                              Plurimath::Math::Symbol.new("&#x3bd;"),
+                              Plurimath::Math::Formula.new([
+                                Plurimath::Math::Symbol.new("t"),
+                                Plurimath::Math::Symbol.new("l"),
+                              ])
+                            ),
+                            Plurimath::Math::Function::Base.new(
+                              Plurimath::Math::Symbol.new("E"),
+                              Plurimath::Math::Formula.new([
+                                Plurimath::Math::Symbol.new("t"),
+                                Plurimath::Math::Symbol.new("t"),
+                              ])
+                            )
+                          ),
+                          "displaystyle"
+                        ),
+                      ]),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [Plurimath::Math::Number.new("0")],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [Plurimath::Math::Number.new("0")],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [Plurimath::Math::Number.new("0")],
+                    { columnalign: "center" }
+                  ),
                 ]),
                 Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Symbol.new("["),
-                    Plurimath::Math::Number.new("3"),
-                    Plurimath::Math::Symbol.new("m"),
-                    Plurimath::Math::Symbol.new("m"),
-                    Plurimath::Math::Symbol.new("]")
-                  ]),
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::FontStyle.new(
-                      Plurimath::Math::Function::Frac.new(
-                        Plurimath::Math::Number.new("1"),
-                        Plurimath::Math::Function::Base.new(
-                          Plurimath::Math::Symbol.new("G"),
-                          Plurimath::Math::Formula.new([
-                            Plurimath::Math::Symbol.new("l"),
-                            Plurimath::Math::Symbol.new("t")
-                          ])
-                        )
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Symbol.new("["),
+                      Plurimath::Math::Number.new("3"),
+                      Plurimath::Math::Symbol.new("m"),
+                      Plurimath::Math::Symbol.new("m"),
+                      Plurimath::Math::Symbol.new("]"),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::FontStyle.new(
+                        Plurimath::Math::Function::Frac.new(
+                          Plurimath::Math::Number.new("1"),
+                          Plurimath::Math::Function::Base.new(
+                            Plurimath::Math::Symbol.new("E"),
+                            Plurimath::Math::Formula.new([
+                              Plurimath::Math::Symbol.new("t"),
+                              Plurimath::Math::Symbol.new("t"),
+                            ])
+                          )
+                        ),
+                        "displaystyle"
                       ),
-                      "displaystyle"
-                    )
-                  ])
-                ])
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Symbol.new("-"),
+                        Plurimath::Math::Function::FontStyle.new(
+                          Plurimath::Math::Function::Frac.new(
+                            Plurimath::Math::Function::Base.new(
+                              Plurimath::Math::Symbol.new("&#x3bd;"),
+                              Plurimath::Math::Formula.new([
+                                Plurimath::Math::Symbol.new("t"),
+                                Plurimath::Math::Symbol.new("t"),
+                              ])
+                            ),
+                            Plurimath::Math::Function::Base.new(
+                              Plurimath::Math::Symbol.new("E"),
+                              Plurimath::Math::Formula.new([
+                                Plurimath::Math::Symbol.new("t"),
+                                Plurimath::Math::Symbol.new("t"),
+                              ])
+                            )
+                          ),
+                          "displaystyle"
+                        ),
+                      ]),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [Plurimath::Math::Number.new("0")],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [Plurimath::Math::Number.new("0")],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [Plurimath::Math::Number.new("0")],
+                    { columnalign: "center" }
+                  ),
+                ]),
+                Plurimath::Math::Function::Tr.new([
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Symbol.new("["),
+                      Plurimath::Math::Number.new("3"),
+                      Plurimath::Math::Symbol.new("m"),
+                      Plurimath::Math::Symbol.new("m"),
+                      Plurimath::Math::Symbol.new("]"),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::FontStyle.new(
+                        Plurimath::Math::Function::Frac.new(
+                          Plurimath::Math::Number.new("1"),
+                          Plurimath::Math::Function::Base.new(
+                            Plurimath::Math::Symbol.new("E"),
+                            Plurimath::Math::Formula.new([
+                              Plurimath::Math::Symbol.new("t"),
+                              Plurimath::Math::Symbol.new("t"),
+                            ])
+                          )
+                        ),
+                        "displaystyle"
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [Plurimath::Math::Number.new("0")],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [Plurimath::Math::Number.new("0")],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [Plurimath::Math::Number.new("0")],
+                    { columnalign: "center" }
+                  ),
+                ]),
+                Plurimath::Math::Function::Tr.new([
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Symbol.new("["),
+                      Plurimath::Math::Number.new("3"),
+                      Plurimath::Math::Symbol.new("m"),
+                      Plurimath::Math::Symbol.new("m"),
+                      Plurimath::Math::Symbol.new("]"),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::FontStyle.new(
+                        Plurimath::Math::Function::Frac.new(
+                          Plurimath::Math::Number.new("1"),
+                          Plurimath::Math::Function::Base.new(
+                            Plurimath::Math::Symbol.new("G"),
+                            Plurimath::Math::Formula.new([
+                              Plurimath::Math::Symbol.new("l"),
+                              Plurimath::Math::Symbol.new("t"),
+                            ])
+                          )
+                        ),
+                        "displaystyle"
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [Plurimath::Math::Number.new("0")],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [Plurimath::Math::Number.new("0")],
+                    { columnalign: "center" }
+                  ),
+                ]),
+                Plurimath::Math::Function::Tr.new([
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Symbol.new("["),
+                      Plurimath::Math::Number.new("3"),
+                      Plurimath::Math::Symbol.new("m"),
+                      Plurimath::Math::Symbol.new("m"),
+                      Plurimath::Math::Symbol.new("]"),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::Mbox.new(
+                        Plurimath::Math::Formula.new([
+                          Plurimath::Math::Symbol.new("s"),
+                          Plurimath::Math::Symbol.new("y"),
+                          Plurimath::Math::Symbol.new("m"),
+                          Plurimath::Math::Symbol.new("m"),
+                          Plurimath::Math::Symbol.new("e"),
+                          Plurimath::Math::Symbol.new("t"),
+                          Plurimath::Math::Symbol.new("r"),
+                          Plurimath::Math::Symbol.new("i"),
+                          Plurimath::Math::Symbol.new("c"),
+                        ])
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::FontStyle.new(
+                        Plurimath::Math::Function::Frac.new(
+                          Plurimath::Math::Number.new("1"),
+                          Plurimath::Math::Function::Base.new(
+                            Plurimath::Math::Symbol.new("G"),
+                            Plurimath::Math::Formula.new([
+                              Plurimath::Math::Symbol.new("t"),
+                              Plurimath::Math::Symbol.new("t"),
+                            ])
+                          )
+                        ),
+                        "displaystyle"
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [Plurimath::Math::Number.new("0")],
+                    { columnalign: "center" }
+                  ),
+                ]),
+                Plurimath::Math::Function::Tr.new([
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Symbol.new("["),
+                      Plurimath::Math::Number.new("3"),
+                      Plurimath::Math::Symbol.new("m"),
+                      Plurimath::Math::Symbol.new("m"),
+                      Plurimath::Math::Symbol.new("]"),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::FontStyle.new(
+                        Plurimath::Math::Function::Frac.new(
+                          Plurimath::Math::Number.new("1"),
+                          Plurimath::Math::Function::Base.new(
+                            Plurimath::Math::Symbol.new("G"),
+                            Plurimath::Math::Formula.new([
+                              Plurimath::Math::Symbol.new("l"),
+                              Plurimath::Math::Symbol.new("t"),
+                            ])
+                          )
+                        ),
+                        "displaystyle"
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                ]),
               ],
               nil,
-              [
-                Plurimath::Math::Symbol.new("c"),
-                Plurimath::Math::Symbol.new("c"),
-                Plurimath::Math::Symbol.new("c"),
-                Plurimath::Math::Symbol.new("c"),
-                Plurimath::Math::Symbol.new("c"),
-                Plurimath::Math::Symbol.new("c")
-              ]
+              nil,
+              {}
             ),
-            Plurimath::Math::Function::Right.new(")")
-          ])
+            Plurimath::Math::Function::Right.new(")"),
+          ]),
         ])
         expect(formula).to eq(expected_value)
       end
@@ -3801,287 +4081,338 @@ RSpec.describe Plurimath::Latex::Parser do
             Plurimath::Math::Function::Table::Array.new(
               [
                 Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::FontStyle.new(
-                      Plurimath::Math::Function::Frac.new(
-                        Plurimath::Math::Number.new("1"),
-                        Plurimath::Math::Function::Base.new(
-                          Plurimath::Math::Symbol.new("E"),
-                          Plurimath::Math::Formula.new([
-                            Plurimath::Math::Symbol.new("l"),
-                            Plurimath::Math::Symbol.new("l")
-                          ])
-                        )
-                      ),
-                      "displaystyle"
-                    )
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Formula.new([
-                      Plurimath::Math::Symbol.new("-"),
+                  Plurimath::Math::Function::Td.new(
+                    [
                       Plurimath::Math::Function::FontStyle.new(
                         Plurimath::Math::Function::Frac.new(
-                          Plurimath::Math::Function::Base.new(
-                            Plurimath::Math::Symbol.new("&#x3bd;"),
-                            Plurimath::Math::Formula.new([
-                              Plurimath::Math::Symbol.new("t"),
-                              Plurimath::Math::Symbol.new("l")
-                            ])
-                          ),
+                          Plurimath::Math::Number.new("1"),
                           Plurimath::Math::Function::Base.new(
                             Plurimath::Math::Symbol.new("E"),
                             Plurimath::Math::Formula.new([
-                              Plurimath::Math::Symbol.new("t"),
-                              Plurimath::Math::Symbol.new("t")
+                              Plurimath::Math::Symbol.new("l"),
+                              Plurimath::Math::Symbol.new("l"),
                             ])
                           )
                         ),
                         "displaystyle"
-                      )
-                    ])
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Formula.new([
-                      Plurimath::Math::Symbol.new("-"),
-                      Plurimath::Math::Function::FontStyle.new(
-                        Plurimath::Math::Function::Frac.new(
-                          Plurimath::Math::Function::Base.new(
-                            Plurimath::Math::Symbol.new("&#x3bd;"),
-                            Plurimath::Math::Formula.new([
-                              Plurimath::Math::Symbol.new("t"),
-                              Plurimath::Math::Symbol.new("l")
-                            ])
-                          ),
-                          Plurimath::Math::Function::Base.new(
-                            Plurimath::Math::Symbol.new("E"),
-                            Plurimath::Math::Formula.new([
-                              Plurimath::Math::Symbol.new("t"),
-                              Plurimath::Math::Symbol.new("t")
-                            ])
-                          )
-                        ),
-                        "displaystyle"
-                      )
-                    ])
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Number.new("0")
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Number.new("0")
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Number.new("0")
-                  ])
-                ]),
-                Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Symbol.new("["),
-                    Plurimath::Math::Number.new("3"),
-                    Plurimath::Math::Symbol.new("m"),
-                    Plurimath::Math::Symbol.new("m"),
-                    Plurimath::Math::Symbol.new("]")
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::FontStyle.new(
-                      Plurimath::Math::Function::Frac.new(
-                        Plurimath::Math::Number.new("1"),
-                        Plurimath::Math::Function::Base.new(
-                          Plurimath::Math::Symbol.new("E"),
-                          Plurimath::Math::Formula.new([
-                            Plurimath::Math::Symbol.new("t"),
-                            Plurimath::Math::Symbol.new("t")
-                          ])
-                        )
                       ),
-                      "displaystyle"
-                    )
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Formula.new([
-                      Plurimath::Math::Symbol.new("-"),
-                      Plurimath::Math::Function::FontStyle.new(
-                        Plurimath::Math::Function::Frac.new(
-                          Plurimath::Math::Function::Base.new(
-                            Plurimath::Math::Symbol.new("&#x3bd;"),
-                            Plurimath::Math::Formula.new([
-                              Plurimath::Math::Symbol.new("t"),
-                              Plurimath::Math::Symbol.new("t")
-                            ])
-                          ),
-                          Plurimath::Math::Function::Base.new(
-                            Plurimath::Math::Symbol.new("E"),
-                            Plurimath::Math::Formula.new([
-                              Plurimath::Math::Symbol.new("t"),
-                              Plurimath::Math::Symbol.new("t")
-                            ])
-                          )
-                        ),
-                        "displaystyle"
-                      )
-                    ])
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Number.new("0")
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Number.new("0")
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Number.new("0")
-                  ])
-                ]),
-                Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Symbol.new("["),
-                    Plurimath::Math::Number.new("3"),
-                    Plurimath::Math::Symbol.new("m"),
-                    Plurimath::Math::Symbol.new("m"),
-                    Plurimath::Math::Symbol.new("]")
-                  ]),
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::FontStyle.new(
-                      Plurimath::Math::Function::Frac.new(
-                        Plurimath::Math::Number.new("1"),
-                        Plurimath::Math::Function::Base.new(
-                          Plurimath::Math::Symbol.new("E"),
-                          Plurimath::Math::Formula.new([
-                            Plurimath::Math::Symbol.new("t"),
-                            Plurimath::Math::Symbol.new("t")
-                          ])
-                        )
-                      ),
-                      "displaystyle"
-                    )
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Number.new("0")
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Number.new("0")
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Number.new("0")
-                  ])
-                ]),
-                Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Symbol.new("["),
-                    Plurimath::Math::Number.new("3"),
-                    Plurimath::Math::Symbol.new("m"),
-                    Plurimath::Math::Symbol.new("m"),
-                    Plurimath::Math::Symbol.new("]")
-                  ]),
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::FontStyle.new(
-                      Plurimath::Math::Function::Frac.new(
-                        Plurimath::Math::Number.new("1"),
-                        Plurimath::Math::Function::Base.new(
-                          Plurimath::Math::Symbol.new("G"),
-                          Plurimath::Math::Formula.new([
-                            Plurimath::Math::Symbol.new("l"),
-                            Plurimath::Math::Symbol.new("t")
-                          ])
-                        )
-                      ),
-                      "displaystyle"
-                    )
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Number.new("0")
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Number.new("0")
-                  ])
-                ]),
-                Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Symbol.new("["),
-                    Plurimath::Math::Number.new("3"),
-                    Plurimath::Math::Symbol.new("m"),
-                    Plurimath::Math::Symbol.new("m"),
-                    Plurimath::Math::Symbol.new("]")
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::Mbox.new(
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [
                       Plurimath::Math::Formula.new([
-                        Plurimath::Math::Symbol.new("s"),
-                        Plurimath::Math::Symbol.new("y"),
-                        Plurimath::Math::Symbol.new("m"),
-                        Plurimath::Math::Symbol.new("m"),
-                        Plurimath::Math::Symbol.new("e"),
-                        Plurimath::Math::Symbol.new("t"),
-                        Plurimath::Math::Symbol.new("r"),
-                        Plurimath::Math::Symbol.new("i"),
-                        Plurimath::Math::Symbol.new("c")
-                      ])
-                    )
-                  ]),
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::FontStyle.new(
-                      Plurimath::Math::Function::Frac.new(
-                        Plurimath::Math::Number.new("1"),
-                        Plurimath::Math::Function::Base.new(
-                          Plurimath::Math::Symbol.new("G"),
-                          Plurimath::Math::Formula.new([
-                            Plurimath::Math::Symbol.new("t"),
-                            Plurimath::Math::Symbol.new("t")
-                          ])
-                        )
-                      ),
-                      "displaystyle"
-                    )
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Number.new("0")
-                  ])
+                        Plurimath::Math::Symbol.new("-"),
+                        Plurimath::Math::Function::FontStyle.new(
+                          Plurimath::Math::Function::Frac.new(
+                            Plurimath::Math::Function::Base.new(
+                              Plurimath::Math::Symbol.new("&#x3bd;"),
+                              Plurimath::Math::Formula.new([
+                                Plurimath::Math::Symbol.new("t"),
+                                Plurimath::Math::Symbol.new("l"),
+                              ])
+                            ),
+                            Plurimath::Math::Function::Base.new(
+                              Plurimath::Math::Symbol.new("E"),
+                              Plurimath::Math::Formula.new([
+                                Plurimath::Math::Symbol.new("t"),
+                                Plurimath::Math::Symbol.new("t"),
+                              ])
+                            )
+                          ),
+                          "displaystyle"
+                        ),
+                      ]),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Symbol.new("-"),
+                        Plurimath::Math::Function::FontStyle.new(
+                          Plurimath::Math::Function::Frac.new(
+                            Plurimath::Math::Function::Base.new(
+                              Plurimath::Math::Symbol.new("&#x3bd;"),
+                              Plurimath::Math::Formula.new([
+                                Plurimath::Math::Symbol.new("t"),
+                                Plurimath::Math::Symbol.new("l"),
+                              ])
+                            ),
+                            Plurimath::Math::Function::Base.new(
+                              Plurimath::Math::Symbol.new("E"),
+                              Plurimath::Math::Formula.new([
+                                Plurimath::Math::Symbol.new("t"),
+                                Plurimath::Math::Symbol.new("t"),
+                              ])
+                            )
+                          ),
+                          "displaystyle"
+                        ),
+                      ]),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [Plurimath::Math::Number.new("0")],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [Plurimath::Math::Number.new("0")],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [Plurimath::Math::Number.new("0")],
+                    { columnalign: "center" }
+                  ),
                 ]),
                 Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Symbol.new("["),
-                    Plurimath::Math::Number.new("3"),
-                    Plurimath::Math::Symbol.new("m"),
-                    Plurimath::Math::Symbol.new("m"),
-                    Plurimath::Math::Symbol.new("]")
-                  ]),
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::FontStyle.new(
-                      Plurimath::Math::Function::Frac.new(
-                        Plurimath::Math::Number.new("1"),
-                        Plurimath::Math::Function::Base.new(
-                          Plurimath::Math::Symbol.new("G"),
-                          Plurimath::Math::Formula.new([
-                            Plurimath::Math::Symbol.new("l"),
-                            Plurimath::Math::Symbol.new("t")
-                          ])
-                        )
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Symbol.new("["),
+                      Plurimath::Math::Number.new("3"),
+                      Plurimath::Math::Symbol.new("m"),
+                      Plurimath::Math::Symbol.new("m"),
+                      Plurimath::Math::Symbol.new("]"),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::FontStyle.new(
+                        Plurimath::Math::Function::Frac.new(
+                          Plurimath::Math::Number.new("1"),
+                          Plurimath::Math::Function::Base.new(
+                            Plurimath::Math::Symbol.new("E"),
+                            Plurimath::Math::Formula.new([
+                              Plurimath::Math::Symbol.new("t"),
+                              Plurimath::Math::Symbol.new("t"),
+                            ])
+                          )
+                        ),
+                        "displaystyle"
                       ),
-                      "displaystyle"
-                    )
-                  ])
-                ])
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Symbol.new("-"),
+                        Plurimath::Math::Function::FontStyle.new(
+                          Plurimath::Math::Function::Frac.new(
+                            Plurimath::Math::Function::Base.new(
+                              Plurimath::Math::Symbol.new("&#x3bd;"),
+                              Plurimath::Math::Formula.new([
+                                Plurimath::Math::Symbol.new("t"),
+                                Plurimath::Math::Symbol.new("t"),
+                              ])
+                            ),
+                            Plurimath::Math::Function::Base.new(
+                              Plurimath::Math::Symbol.new("E"),
+                              Plurimath::Math::Formula.new([
+                                Plurimath::Math::Symbol.new("t"),
+                                Plurimath::Math::Symbol.new("t"),
+                              ])
+                            )
+                          ),
+                          "displaystyle"
+                        ),
+                      ]),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [Plurimath::Math::Number.new("0")],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [Plurimath::Math::Number.new("0")],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [Plurimath::Math::Number.new("0")],
+                    { columnalign: "center" }
+                  ),
+                ]),
+                Plurimath::Math::Function::Tr.new([
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Symbol.new("["),
+                      Plurimath::Math::Number.new("3"),
+                      Plurimath::Math::Symbol.new("m"),
+                      Plurimath::Math::Symbol.new("m"),
+                      Plurimath::Math::Symbol.new("]"),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::FontStyle.new(
+                        Plurimath::Math::Function::Frac.new(
+                          Plurimath::Math::Number.new("1"),
+                          Plurimath::Math::Function::Base.new(
+                            Plurimath::Math::Symbol.new("E"),
+                            Plurimath::Math::Formula.new([
+                              Plurimath::Math::Symbol.new("t"),
+                              Plurimath::Math::Symbol.new("t"),
+                            ])
+                          )
+                        ),
+                        "displaystyle"
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [Plurimath::Math::Number.new("0")],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [Plurimath::Math::Number.new("0")],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [Plurimath::Math::Number.new("0")],
+                    { columnalign: "center" }
+                  ),
+                ]),
+                Plurimath::Math::Function::Tr.new([
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Symbol.new("["),
+                      Plurimath::Math::Number.new("3"),
+                      Plurimath::Math::Symbol.new("m"),
+                      Plurimath::Math::Symbol.new("m"),
+                      Plurimath::Math::Symbol.new("]"),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::FontStyle.new(
+                        Plurimath::Math::Function::Frac.new(
+                          Plurimath::Math::Number.new("1"),
+                          Plurimath::Math::Function::Base.new(
+                            Plurimath::Math::Symbol.new("G"),
+                            Plurimath::Math::Formula.new([
+                              Plurimath::Math::Symbol.new("l"),
+                              Plurimath::Math::Symbol.new("t"),
+                            ])
+                          )
+                        ),
+                        "displaystyle"
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [Plurimath::Math::Number.new("0")],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [Plurimath::Math::Number.new("0")],
+                    { columnalign: "center" }
+                  ),
+                ]),
+                Plurimath::Math::Function::Tr.new([
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Symbol.new("["),
+                      Plurimath::Math::Number.new("3"),
+                      Plurimath::Math::Symbol.new("m"),
+                      Plurimath::Math::Symbol.new("m"),
+                      Plurimath::Math::Symbol.new("]"),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::Mbox.new(
+                        Plurimath::Math::Formula.new([
+                          Plurimath::Math::Symbol.new("s"),
+                          Plurimath::Math::Symbol.new("y"),
+                          Plurimath::Math::Symbol.new("m"),
+                          Plurimath::Math::Symbol.new("m"),
+                          Plurimath::Math::Symbol.new("e"),
+                          Plurimath::Math::Symbol.new("t"),
+                          Plurimath::Math::Symbol.new("r"),
+                          Plurimath::Math::Symbol.new("i"),
+                          Plurimath::Math::Symbol.new("c"),
+                        ])
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::FontStyle.new(
+                        Plurimath::Math::Function::Frac.new(
+                          Plurimath::Math::Number.new("1"),
+                          Plurimath::Math::Function::Base.new(
+                            Plurimath::Math::Symbol.new("G"),
+                            Plurimath::Math::Formula.new([
+                              Plurimath::Math::Symbol.new("t"),
+                              Plurimath::Math::Symbol.new("t"),
+                            ])
+                          )
+                        ),
+                        "displaystyle"
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [Plurimath::Math::Number.new("0")],
+                    { columnalign: "center" }
+                  ),
+                ]),
+                Plurimath::Math::Function::Tr.new([
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Symbol.new("["),
+                      Plurimath::Math::Number.new("3"),
+                      Plurimath::Math::Symbol.new("m"),
+                      Plurimath::Math::Symbol.new("m"),
+                      Plurimath::Math::Symbol.new("]"),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::FontStyle.new(
+                        Plurimath::Math::Function::Frac.new(
+                          Plurimath::Math::Number.new("1"),
+                          Plurimath::Math::Function::Base.new(
+                            Plurimath::Math::Symbol.new("G"),
+                            Plurimath::Math::Formula.new([
+                              Plurimath::Math::Symbol.new("l"),
+                              Plurimath::Math::Symbol.new("t"),
+                            ])
+                          )
+                        ),
+                        "displaystyle"
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                ]),
               ],
               nil,
-              [
-                Plurimath::Math::Symbol.new("c"),
-                Plurimath::Math::Symbol.new("c"),
-                Plurimath::Math::Symbol.new("c"),
-                Plurimath::Math::Symbol.new("c"),
-                Plurimath::Math::Symbol.new("c"),
-                Plurimath::Math::Symbol.new("c")
-              ]
+              nil,
+              {}
             ),
-            Plurimath::Math::Function::Right.new(")")
-          ])
+            Plurimath::Math::Function::Right.new(")"),
+          ]),
         ])
         expect(formula).to eq(expected_value)
       end
@@ -4129,215 +4460,266 @@ RSpec.describe Plurimath::Latex::Parser do
             Plurimath::Math::Function::Table::Array.new(
               [
                 Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::FontStyle.new(
-                      Plurimath::Math::Function::Frac.new(
-                        Plurimath::Math::Number.new("1"),
-                        Plurimath::Math::Symbol.new("E")
-                      ),
-                      "displaystyle"
-                    )
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Formula.new([
-                      Plurimath::Math::Symbol.new("-"),
+                  Plurimath::Math::Function::Td.new(
+                    [
                       Plurimath::Math::Function::FontStyle.new(
                         Plurimath::Math::Function::Frac.new(
-                          Plurimath::Math::Symbol.new("&#x3bd;"),
+                          Plurimath::Math::Number.new("1"),
                           Plurimath::Math::Symbol.new("E")
                         ),
                         "displaystyle"
-                      )
-                    ])
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Formula.new([
-                      Plurimath::Math::Symbol.new("-"),
-                      Plurimath::Math::Function::FontStyle.new(
-                        Plurimath::Math::Function::Frac.new(
-                          Plurimath::Math::Symbol.new("&#x3bd;"),
-                          Plurimath::Math::Symbol.new("E")
-                        ),
-                        "displaystyle"
-                      )
-                    ])
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Number.new("0")
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Number.new("0")
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Number.new("0")
-                  ])
-                ]),
-                Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Symbol.new("["),
-                    Plurimath::Math::Number.new("3"),
-                    Plurimath::Math::Symbol.new("m"),
-                    Plurimath::Math::Symbol.new("m"),
-                    Plurimath::Math::Symbol.new("]")
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::FontStyle.new(
-                      Plurimath::Math::Function::Frac.new(
-                        Plurimath::Math::Number.new("1"),
-                        Plurimath::Math::Symbol.new("E")
                       ),
-                      "displaystyle"
-                    )
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Formula.new([
-                      Plurimath::Math::Symbol.new("-"),
-                      Plurimath::Math::Function::FontStyle.new(
-                        Plurimath::Math::Function::Frac.new(
-                          Plurimath::Math::Symbol.new("&#x3bd;"),
-                          Plurimath::Math::Symbol.new("E")
-                        ),
-                        "displaystyle"
-                      )
-                    ])
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Number.new("0")
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Number.new("0")
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Number.new("0")
-                  ])
-                ]),
-                Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Symbol.new("["),
-                    Plurimath::Math::Number.new("3"),
-                    Plurimath::Math::Symbol.new("m"),
-                    Plurimath::Math::Symbol.new("m"),
-                    Plurimath::Math::Symbol.new("]")
-                  ]),
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::FontStyle.new(
-                      Plurimath::Math::Function::Frac.new(
-                        Plurimath::Math::Number.new("1"),
-                        Plurimath::Math::Symbol.new("E")
-                      ),
-                      "displaystyle"
-                    )
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Number.new("0")
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Number.new("0")
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Number.new("0")
-                  ])
-                ]),
-                Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Symbol.new("["),
-                    Plurimath::Math::Number.new("3"),
-                    Plurimath::Math::Symbol.new("m"),
-                    Plurimath::Math::Symbol.new("m"),
-                    Plurimath::Math::Symbol.new("]")
-                  ]),
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::FontStyle.new(
-                      Plurimath::Math::Function::Frac.new(
-                        Plurimath::Math::Number.new("1"),
-                        Plurimath::Math::Symbol.new("G")
-                      ),
-                      "displaystyle"
-                    )
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Number.new("0")
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Number.new("0")
-                  ])
-                ]),
-                Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Symbol.new("["),
-                    Plurimath::Math::Number.new("3"),
-                    Plurimath::Math::Symbol.new("m"),
-                    Plurimath::Math::Symbol.new("m"),
-                    Plurimath::Math::Symbol.new("]")
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::Mbox.new(
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [
                       Plurimath::Math::Formula.new([
-                        Plurimath::Math::Symbol.new("s"),
-                        Plurimath::Math::Symbol.new("y"),
-                        Plurimath::Math::Symbol.new("m"),
-                        Plurimath::Math::Symbol.new("m"),
-                        Plurimath::Math::Symbol.new("e"),
-                        Plurimath::Math::Symbol.new("t"),
-                        Plurimath::Math::Symbol.new("r"),
-                        Plurimath::Math::Symbol.new("i"),
-                        Plurimath::Math::Symbol.new("c")
-                      ])
-                    )
-                  ]),
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::FontStyle.new(
-                      Plurimath::Math::Function::Frac.new(
-                        Plurimath::Math::Number.new("1"),
-                        Plurimath::Math::Symbol.new("G")
-                      ),
-                      "displaystyle"
-                    )
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Number.new("0")
-                  ])
+                        Plurimath::Math::Symbol.new("-"),
+                        Plurimath::Math::Function::FontStyle.new(
+                          Plurimath::Math::Function::Frac.new(
+                            Plurimath::Math::Symbol.new("&#x3bd;"),
+                            Plurimath::Math::Symbol.new("E")
+                          ),
+                          "displaystyle"
+                        ),
+                      ]),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Symbol.new("-"),
+                        Plurimath::Math::Function::FontStyle.new(
+                          Plurimath::Math::Function::Frac.new(
+                            Plurimath::Math::Symbol.new("&#x3bd;"),
+                            Plurimath::Math::Symbol.new("E")
+                          ),
+                          "displaystyle"
+                        ),
+                      ]),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [Plurimath::Math::Number.new("0")],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [Plurimath::Math::Number.new("0")],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [Plurimath::Math::Number.new("0")],
+                    { columnalign: "center" }
+                  ),
                 ]),
                 Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Symbol.new("["),
-                    Plurimath::Math::Number.new("3"),
-                    Plurimath::Math::Symbol.new("m"),
-                    Plurimath::Math::Symbol.new("m"),
-                    Plurimath::Math::Symbol.new("]")
-                  ]),
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::FontStyle.new(
-                      Plurimath::Math::Function::Frac.new(
-                        Plurimath::Math::Number.new("1"),
-                        Plurimath::Math::Symbol.new("G")
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Symbol.new("["),
+                      Plurimath::Math::Number.new("3"),
+                      Plurimath::Math::Symbol.new("m"),
+                      Plurimath::Math::Symbol.new("m"),
+                      Plurimath::Math::Symbol.new("]"),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::FontStyle.new(
+                        Plurimath::Math::Function::Frac.new(
+                          Plurimath::Math::Number.new("1"),
+                          Plurimath::Math::Symbol.new("E")
+                        ),
+                        "displaystyle"
                       ),
-                      "displaystyle"
-                    )
-                  ])
-                ])
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Symbol.new("-"),
+                        Plurimath::Math::Function::FontStyle.new(
+                          Plurimath::Math::Function::Frac.new(
+                            Plurimath::Math::Symbol.new("&#x3bd;"),
+                            Plurimath::Math::Symbol.new("E")
+                          ),
+                          "displaystyle"
+                        ),
+                      ]),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [Plurimath::Math::Number.new("0")],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [Plurimath::Math::Number.new("0")],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [Plurimath::Math::Number.new("0")],
+                    { columnalign: "center" }
+                  ),
+                ]),
+                Plurimath::Math::Function::Tr.new([
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Symbol.new("["),
+                      Plurimath::Math::Number.new("3"),
+                      Plurimath::Math::Symbol.new("m"),
+                      Plurimath::Math::Symbol.new("m"),
+                      Plurimath::Math::Symbol.new("]"),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::FontStyle.new(
+                        Plurimath::Math::Function::Frac.new(
+                          Plurimath::Math::Number.new("1"),
+                          Plurimath::Math::Symbol.new("E")
+                        ),
+                        "displaystyle"
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [Plurimath::Math::Number.new("0")],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [Plurimath::Math::Number.new("0")],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [Plurimath::Math::Number.new("0")],
+                    { columnalign: "center" }
+                  ),
+                ]),
+                Plurimath::Math::Function::Tr.new([
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Symbol.new("["),
+                      Plurimath::Math::Number.new("3"),
+                      Plurimath::Math::Symbol.new("m"),
+                      Plurimath::Math::Symbol.new("m"),
+                      Plurimath::Math::Symbol.new("]"),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::FontStyle.new(
+                        Plurimath::Math::Function::Frac.new(
+                          Plurimath::Math::Number.new("1"),
+                          Plurimath::Math::Symbol.new("G")
+                        ),
+                        "displaystyle"
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [Plurimath::Math::Number.new("0")],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [Plurimath::Math::Number.new("0")],
+                    { columnalign: "center" }
+                  ),
+                ]),
+                Plurimath::Math::Function::Tr.new([
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Symbol.new("["),
+                      Plurimath::Math::Number.new("3"),
+                      Plurimath::Math::Symbol.new("m"),
+                      Plurimath::Math::Symbol.new("m"),
+                      Plurimath::Math::Symbol.new("]"),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::Mbox.new(
+                        Plurimath::Math::Formula.new([
+                          Plurimath::Math::Symbol.new("s"),
+                          Plurimath::Math::Symbol.new("y"),
+                          Plurimath::Math::Symbol.new("m"),
+                          Plurimath::Math::Symbol.new("m"),
+                          Plurimath::Math::Symbol.new("e"),
+                          Plurimath::Math::Symbol.new("t"),
+                          Plurimath::Math::Symbol.new("r"),
+                          Plurimath::Math::Symbol.new("i"),
+                          Plurimath::Math::Symbol.new("c"),
+                        ])
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::FontStyle.new(
+                        Plurimath::Math::Function::Frac.new(
+                          Plurimath::Math::Number.new("1"),
+                          Plurimath::Math::Symbol.new("G")
+                        ),
+                        "displaystyle"
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [Plurimath::Math::Number.new("0")],
+                    { columnalign: "center" }
+                  ),
+                ]),
+                Plurimath::Math::Function::Tr.new([
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Symbol.new("["),
+                      Plurimath::Math::Number.new("3"),
+                      Plurimath::Math::Symbol.new("m"),
+                      Plurimath::Math::Symbol.new("m"),
+                      Plurimath::Math::Symbol.new("]"),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::FontStyle.new(
+                        Plurimath::Math::Function::Frac.new(
+                          Plurimath::Math::Number.new("1"),
+                          Plurimath::Math::Symbol.new("G")
+                        ),
+                        "displaystyle"
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                ]),
               ],
               nil,
-              [
-                Plurimath::Math::Symbol.new("c"),
-                Plurimath::Math::Symbol.new("c"),
-                Plurimath::Math::Symbol.new("c"),
-                Plurimath::Math::Symbol.new("c"),
-                Plurimath::Math::Symbol.new("c"),
-                Plurimath::Math::Symbol.new("c")
-              ]
+              nil,
+              {}
             ),
-            Plurimath::Math::Function::Right.new(")")
-          ])
+            Plurimath::Math::Function::Right.new(")"),
+          ]),
         ])
         expect(formula).to eq(expected_value)
       end
@@ -4365,64 +4747,81 @@ RSpec.describe Plurimath::Latex::Parser do
             Plurimath::Math::Function::Table::Array.new(
               [
                 Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Symbol.new("&#x03b5;"),
-                      Plurimath::Math::Number.new("11")
-                    )
-                  ])
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::Base.new(
+                        Plurimath::Math::Symbol.new("&#x03b5;"),
+                        Plurimath::Math::Number.new("11")
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
                 ]),
                 Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Symbol.new("&#x03b5;"),
-                      Plurimath::Math::Number.new("22")
-                    )
-                  ])
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::Base.new(
+                        Plurimath::Math::Symbol.new("&#x03b5;"),
+                        Plurimath::Math::Number.new("22")
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
                 ]),
                 Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Symbol.new("&#x03b5;"),
-                      Plurimath::Math::Number.new("33")
-                    )
-                  ])
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::Base.new(
+                        Plurimath::Math::Symbol.new("&#x03b5;"),
+                        Plurimath::Math::Number.new("33")
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
                 ]),
                 Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Number.new("2"),
-                    Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Symbol.new("&#x03b5;"),
-                      Plurimath::Math::Number.new("12")
-                    )
-                  ])
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Number.new("2"),
+                      Plurimath::Math::Function::Base.new(
+                        Plurimath::Math::Symbol.new("&#x03b5;"),
+                        Plurimath::Math::Number.new("12")
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
                 ]),
                 Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Number.new("2"),
-                    Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Symbol.new("&#x03b5;"),
-                      Plurimath::Math::Number.new("23")
-                    )
-                  ])
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Number.new("2"),
+                      Plurimath::Math::Function::Base.new(
+                        Plurimath::Math::Symbol.new("&#x03b5;"),
+                        Plurimath::Math::Number.new("23")
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
                 ]),
                 Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Number.new("2"),
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Number.new("2"),
                       Plurimath::Math::Function::Base.new(
                         Plurimath::Math::Symbol.new("&#x03b5;"),
                         Plurimath::Math::Number.new("31")
-                      )
-                    ])
-                ])
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                ]),
               ],
               nil,
-              [
-                Plurimath::Math::Symbol.new("c")
-              ],
+              nil,
+              {}
             ),
             Plurimath::Math::Function::Right.new(")"),
-          ])
+          ]),
         ])
         expect(formula).to eq(expected_value)
       end
@@ -4534,185 +4933,245 @@ RSpec.describe Plurimath::Latex::Parser do
             Plurimath::Math::Function::Table::Array.new(
               [
                 Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Symbol.new("d"),
-                      Plurimath::Math::Number.new("1111")
-                    )
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Symbol.new("d"),
-                      Plurimath::Math::Number.new("1122")
-                    )
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Symbol.new("d"),
-                      Plurimath::Math::Number.new("1133")
-                    )
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Symbol.new("d"),
-                      Plurimath::Math::Number.new("1112")
-                    )
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Symbol.new("d"),
-                      Plurimath::Math::Number.new("1123")
-                    )
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Symbol.new("d"),
-                      Plurimath::Math::Number.new("1131")
-                    )
-                  ])
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::Base.new(
+                        Plurimath::Math::Symbol.new("d"),
+                        Plurimath::Math::Number.new("1111")
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::Base.new(
+                        Plurimath::Math::Symbol.new("d"),
+                        Plurimath::Math::Number.new("1122")
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::Base.new(
+                        Plurimath::Math::Symbol.new("d"),
+                        Plurimath::Math::Number.new("1133")
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::Base.new(
+                        Plurimath::Math::Symbol.new("d"),
+                        Plurimath::Math::Number.new("1112")
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::Base.new(
+                        Plurimath::Math::Symbol.new("d"),
+                        Plurimath::Math::Number.new("1123")
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::Base.new(
+                        Plurimath::Math::Symbol.new("d"),
+                        Plurimath::Math::Number.new("1131")
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
                 ]),
                 Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Symbol.new("d"),
-                      Plurimath::Math::Number.new("2222")
-                    )
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Symbol.new("d"),
-                      Plurimath::Math::Number.new("2233")
-                    )
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Symbol.new("d"),
-                      Plurimath::Math::Number.new("2212")
-                    )
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Symbol.new("d"),
-                      Plurimath::Math::Number.new("2223")
-                    )
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Symbol.new("d"),
-                      Plurimath::Math::Number.new("2231")
-                    )
-                  ])
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::Base.new(
+                        Plurimath::Math::Symbol.new("d"),
+                        Plurimath::Math::Number.new("2222")
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::Base.new(
+                        Plurimath::Math::Symbol.new("d"),
+                        Plurimath::Math::Number.new("2233")
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::Base.new(
+                        Plurimath::Math::Symbol.new("d"),
+                        Plurimath::Math::Number.new("2212")
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::Base.new(
+                        Plurimath::Math::Symbol.new("d"),
+                        Plurimath::Math::Number.new("2223")
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::Base.new(
+                        Plurimath::Math::Symbol.new("d"),
+                        Plurimath::Math::Number.new("2231")
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
                 ]),
                 Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Symbol.new("d"),
-                      Plurimath::Math::Number.new("3333")
-                    )
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Symbol.new("d"),
-                      Plurimath::Math::Number.new("3312")
-                    )
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Symbol.new("d"),
-                      Plurimath::Math::Number.new("3323")
-                    )
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Symbol.new("d"),
-                      Plurimath::Math::Number.new("3331")
-                    )
-                  ])
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::Base.new(
+                        Plurimath::Math::Symbol.new("d"),
+                        Plurimath::Math::Number.new("3333")
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::Base.new(
+                        Plurimath::Math::Symbol.new("d"),
+                        Plurimath::Math::Number.new("3312")
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::Base.new(
+                        Plurimath::Math::Symbol.new("d"),
+                        Plurimath::Math::Number.new("3323")
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::Base.new(
+                        Plurimath::Math::Symbol.new("d"),
+                        Plurimath::Math::Number.new("3331")
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
                 ]),
                 Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Symbol.new("d"),
-                      Plurimath::Math::Number.new("1212")
-                    )
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Symbol.new("d"),
-                      Plurimath::Math::Number.new("1223")
-                    )
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Symbol.new("d"),
-                      Plurimath::Math::Number.new("1231")
-                    )
-                  ])
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::Base.new(
+                        Plurimath::Math::Symbol.new("d"),
+                        Plurimath::Math::Number.new("1212")
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::Base.new(
+                        Plurimath::Math::Symbol.new("d"),
+                        Plurimath::Math::Number.new("1223")
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::Base.new(
+                        Plurimath::Math::Symbol.new("d"),
+                        Plurimath::Math::Number.new("1231")
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
                 ]),
                 Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::Mbox.new(
-                      Plurimath::Math::Formula.new([
-                        Plurimath::Math::Symbol.new("s"),
-                        Plurimath::Math::Symbol.new("y"),
-                        Plurimath::Math::Symbol.new("m"),
-                        Plurimath::Math::Symbol.new("m"),
-                        Plurimath::Math::Symbol.new("e"),
-                        Plurimath::Math::Symbol.new("t"),
-                        Plurimath::Math::Symbol.new("r"),
-                        Plurimath::Math::Symbol.new("i"),
-                        Plurimath::Math::Symbol.new("c"),
-                      ])
-                    )
-                  ]),
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Symbol.new("d"),
-                      Plurimath::Math::Number.new("2323")
-                    )
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Symbol.new("d"),
-                      Plurimath::Math::Number.new("2331")
-                    )
-                  ])
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::Mbox.new(
+                        Plurimath::Math::Formula.new([
+                          Plurimath::Math::Symbol.new("s"),
+                          Plurimath::Math::Symbol.new("y"),
+                          Plurimath::Math::Symbol.new("m"),
+                          Plurimath::Math::Symbol.new("m"),
+                          Plurimath::Math::Symbol.new("e"),
+                          Plurimath::Math::Symbol.new("t"),
+                          Plurimath::Math::Symbol.new("r"),
+                          Plurimath::Math::Symbol.new("i"),
+                          Plurimath::Math::Symbol.new("c"),
+                        ])
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::Base.new(
+                        Plurimath::Math::Symbol.new("d"),
+                        Plurimath::Math::Number.new("2323")
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::Base.new(
+                        Plurimath::Math::Symbol.new("d"),
+                        Plurimath::Math::Number.new("2331")
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
                 ]),
                 Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Symbol.new("d"),
-                      Plurimath::Math::Number.new("3131")
-                    )
-                  ])
-                ])
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::Base.new(
+                        Plurimath::Math::Symbol.new("d"),
+                        Plurimath::Math::Number.new("3131")
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                ]),
               ],
               nil,
-              [
-                Plurimath::Math::Symbol.new("c"),
-                Plurimath::Math::Symbol.new("c"),
-                Plurimath::Math::Symbol.new("c"),
-                Plurimath::Math::Symbol.new("c"),
-                Plurimath::Math::Symbol.new("c"),
-                Plurimath::Math::Symbol.new("c"),
-              ],
+              nil,
+              {}
             ),
-            Plurimath::Math::Function::Right.new(")")
-          ])
+            Plurimath::Math::Function::Right.new(")"),
+          ]),
         ])
         expect(formula).to eq(expected_value)
       end
@@ -4740,61 +5199,78 @@ RSpec.describe Plurimath::Latex::Parser do
             Plurimath::Math::Function::Table::Array.new(
               [
                 Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Symbol.new("s"),
-                      Plurimath::Math::Number.new("11")
-                    )
-                  ])
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::Base.new(
+                        Plurimath::Math::Symbol.new("s"),
+                        Plurimath::Math::Number.new("11")
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
                 ]),
                 Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Symbol.new("s"),
-                      Plurimath::Math::Number.new("22")
-                    )
-                  ])
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::Base.new(
+                        Plurimath::Math::Symbol.new("s"),
+                        Plurimath::Math::Number.new("22")
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
                 ]),
                 Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Symbol.new("s"),
-                      Plurimath::Math::Number.new("33")
-                    )
-                  ])
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::Base.new(
+                        Plurimath::Math::Symbol.new("s"),
+                        Plurimath::Math::Number.new("33")
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
                 ]),
                 Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Symbol.new("s"),
-                      Plurimath::Math::Number.new("12")
-                    )
-                  ])
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::Base.new(
+                        Plurimath::Math::Symbol.new("s"),
+                        Plurimath::Math::Number.new("12")
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
                 ]),
                 Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Symbol.new("s"),
-                      Plurimath::Math::Number.new("23")
-                    )
-                  ])
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::Base.new(
+                        Plurimath::Math::Symbol.new("s"),
+                        Plurimath::Math::Number.new("23")
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
                 ]),
                 Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Symbol.new("s"),
-                      Plurimath::Math::Number.new("31")
-                    )
-                  ])
-                ])
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::Base.new(
+                        Plurimath::Math::Symbol.new("s"),
+                        Plurimath::Math::Number.new("31")
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                ]),
               ],
               nil,
-              [
-                Plurimath::Math::Symbol.new("c")
-              ],
+              nil,
+              {}
             ),
-            Plurimath::Math::Function::Right.new(")")
-          ])
+            Plurimath::Math::Function::Right.new(")"),
+          ]),
         ])
         expect(formula).to eq(expected_value)
       end
@@ -4993,57 +5469,69 @@ RSpec.describe Plurimath::Latex::Parser do
             Plurimath::Math::Function::Table::Array.new(
               [
                 Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Symbol.new("s"),
-                      Plurimath::Math::Number.new("11")
-                    )
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Number.new("0")
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Number.new("0")
-                  ])
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::Base.new(
+                        Plurimath::Math::Symbol.new("s"),
+                        Plurimath::Math::Number.new("11")
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [Plurimath::Math::Number.new("0")],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [Plurimath::Math::Number.new("0")],
+                    { columnalign: "center" }
+                  ),
                 ]),
                 Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Number.new("0")
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Symbol.new("s"),
-                      Plurimath::Math::Number.new("22")
-                    )
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Number.new("0")
-                  ])
+                  Plurimath::Math::Function::Td.new(
+                    [Plurimath::Math::Number.new("0")],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::Base.new(
+                        Plurimath::Math::Symbol.new("s"),
+                        Plurimath::Math::Number.new("22")
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [Plurimath::Math::Number.new("0")],
+                    { columnalign: "center" }
+                  ),
                 ]),
                 Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Number.new("0")
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Number.new("0")
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Symbol.new("s"),
-                      Plurimath::Math::Number.new("33")
-                    )
-                  ])
-                ])
+                  Plurimath::Math::Function::Td.new(
+                    [Plurimath::Math::Number.new("0")],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [Plurimath::Math::Number.new("0")],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::Base.new(
+                        Plurimath::Math::Symbol.new("s"),
+                        Plurimath::Math::Number.new("33")
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                ]),
               ],
               nil,
-              [
-                Plurimath::Math::Symbol.new("c"),
-                Plurimath::Math::Symbol.new("c"),
-                Plurimath::Math::Symbol.new("c"),
-              ],
+              nil,
+              {}
             ),
-            Plurimath::Math::Function::Right.new(")")
-          ])
+            Plurimath::Math::Function::Right.new(")"),
+          ]),
         ])
         expect(formula).to eq(expected_value)
       end
@@ -5113,136 +5601,160 @@ RSpec.describe Plurimath::Latex::Parser do
           Plurimath::Math::Function::Table::Array.new(
             [
               Plurimath::Math::Function::Tr.new([
-                Plurimath::Math::Function::Td.new([
-                  Plurimath::Math::Function::Tilde.new(
-                    Plurimath::Math::Symbol.new("x")
-                  ),
-                  Plurimath::Math::Symbol.new("="),
-                  Plurimath::Math::Symbol.new("x"),
-                  Plurimath::Math::Symbol.new("/"),
-                  Plurimath::Math::Symbol.new("L"),
-                  Plurimath::Math::Symbol.new(",")
-                ]),
-                Plurimath::Math::Function::Td.new([
-                  Plurimath::Math::Function::Tilde.new(
-                    Plurimath::Math::Symbol.new("u")
-                  ),
-                  Plurimath::Math::Symbol.new("="),
-                  Plurimath::Math::Symbol.new("u"),
-                  Plurimath::Math::Symbol.new("/"),
-                  Plurimath::Math::Function::Base.new(
-                    Plurimath::Math::Symbol.new("c"),
-                    Plurimath::Math::Symbol.new("&#x221e;")
-                  ),
-                  Plurimath::Math::Symbol.new(",")
-                ]),
-                Plurimath::Math::Function::Td.new([
-                  Plurimath::Math::Function::Tilde.new(
-                    Plurimath::Math::Symbol.new("&#x3c1;")
-                  ),
-                  Plurimath::Math::Symbol.new("="),
-                  Plurimath::Math::Symbol.new("&#x3c1;"),
-                  Plurimath::Math::Symbol.new("/"),
-                  Plurimath::Math::Function::Base.new(
+                Plurimath::Math::Function::Td.new(
+                  [
+                    Plurimath::Math::Function::Tilde.new(
+                      Plurimath::Math::Symbol.new("x")
+                    ),
+                    Plurimath::Math::Symbol.new("="),
+                    Plurimath::Math::Symbol.new("x"),
+                    Plurimath::Math::Symbol.new("/"),
+                    Plurimath::Math::Symbol.new("L"),
+                    Plurimath::Math::Symbol.new(","),
+                  ],
+                  { columnalign: "center" }
+                ),
+                Plurimath::Math::Function::Td.new(
+                  [
+                    Plurimath::Math::Function::Tilde.new(
+                      Plurimath::Math::Symbol.new("u")
+                    ),
+                    Plurimath::Math::Symbol.new("="),
+                    Plurimath::Math::Symbol.new("u"),
+                    Plurimath::Math::Symbol.new("/"),
+                    Plurimath::Math::Function::Base.new(
+                      Plurimath::Math::Symbol.new("c"),
+                      Plurimath::Math::Symbol.new("&#x221e;")
+                    ),
+                    Plurimath::Math::Symbol.new(","),
+                  ],
+                  { columnalign: "center" }
+                ),
+                Plurimath::Math::Function::Td.new(
+                  [
+                    Plurimath::Math::Function::Tilde.new(
+                      Plurimath::Math::Symbol.new("&#x3c1;")
+                    ),
+                    Plurimath::Math::Symbol.new("="),
                     Plurimath::Math::Symbol.new("&#x3c1;"),
-                    Plurimath::Math::Symbol.new("&#x221e;")
-                  ),
-                  Plurimath::Math::Symbol.new(",")
-                ])
+                    Plurimath::Math::Symbol.new("/"),
+                    Plurimath::Math::Function::Base.new(
+                      Plurimath::Math::Symbol.new("&#x3c1;"),
+                      Plurimath::Math::Symbol.new("&#x221e;")
+                    ),
+                    Plurimath::Math::Symbol.new(","),
+                  ],
+                  { columnalign: "center" }
+                ),
               ]),
               Plurimath::Math::Function::Tr.new([
-                Plurimath::Math::Function::Td.new([
-                  Plurimath::Math::Function::Tilde.new(
-                    Plurimath::Math::Symbol.new("y")
-                  ),
-                  Plurimath::Math::Symbol.new("="),
-                  Plurimath::Math::Symbol.new("y"),
-                  Plurimath::Math::Symbol.new("/"),
-                  Plurimath::Math::Symbol.new("L"),
-                  Plurimath::Math::Symbol.new(",")
-                ]),
-                Plurimath::Math::Function::Td.new([
-                  Plurimath::Math::Function::Tilde.new(
-                    Plurimath::Math::Symbol.new("v")
-                  ),
-                  Plurimath::Math::Symbol.new("="),
-                  Plurimath::Math::Symbol.new("v"),
-                  Plurimath::Math::Symbol.new("/"),
-                  Plurimath::Math::Function::Base.new(
-                    Plurimath::Math::Symbol.new("c"),
-                    Plurimath::Math::Symbol.new("&#x221e;")
-                  ),
-                  Plurimath::Math::Symbol.new(",")
-                ]),
-                Plurimath::Math::Function::Td.new([
-                  Plurimath::Math::Function::Tilde.new(
-                    Plurimath::Math::Symbol.new("p")
-                  ),
-                  Plurimath::Math::Symbol.new("="),
-                  Plurimath::Math::Symbol.new("p"),
-                  Plurimath::Math::Symbol.new("/"),
-                  Plurimath::Math::Symbol.new("("),
-                  Plurimath::Math::Function::Base.new(
-                    Plurimath::Math::Symbol.new("&#x3c1;"),
-                    Plurimath::Math::Symbol.new("&#x221e;")
-                  ),
-                  Plurimath::Math::Function::PowerBase.new(
-                    Plurimath::Math::Symbol.new("c"),
-                    Plurimath::Math::Symbol.new("&#x221e;"),
-                    Plurimath::Math::Number.new("2")
-                  ),
-                  Plurimath::Math::Symbol.new(")"),
-                  Plurimath::Math::Symbol.new(",")
-                ])
+                Plurimath::Math::Function::Td.new(
+                  [
+                    Plurimath::Math::Function::Tilde.new(
+                      Plurimath::Math::Symbol.new("y")
+                    ),
+                    Plurimath::Math::Symbol.new("="),
+                    Plurimath::Math::Symbol.new("y"),
+                    Plurimath::Math::Symbol.new("/"),
+                    Plurimath::Math::Symbol.new("L"),
+                    Plurimath::Math::Symbol.new(","),
+                  ],
+                  { columnalign: "center" }
+                ),
+                Plurimath::Math::Function::Td.new(
+                  [
+                    Plurimath::Math::Function::Tilde.new(
+                      Plurimath::Math::Symbol.new("v")
+                    ),
+                    Plurimath::Math::Symbol.new("="),
+                    Plurimath::Math::Symbol.new("v"),
+                    Plurimath::Math::Symbol.new("/"),
+                    Plurimath::Math::Function::Base.new(
+                      Plurimath::Math::Symbol.new("c"),
+                      Plurimath::Math::Symbol.new("&#x221e;")
+                    ),
+                    Plurimath::Math::Symbol.new(","),
+                  ],
+                  { columnalign: "center" }
+                ),
+                Plurimath::Math::Function::Td.new(
+                  [
+                    Plurimath::Math::Function::Tilde.new(
+                      Plurimath::Math::Symbol.new("p")
+                    ),
+                    Plurimath::Math::Symbol.new("="),
+                    Plurimath::Math::Symbol.new("p"),
+                    Plurimath::Math::Symbol.new("/"),
+                    Plurimath::Math::Symbol.new("("),
+                    Plurimath::Math::Function::Base.new(
+                      Plurimath::Math::Symbol.new("&#x3c1;"),
+                      Plurimath::Math::Symbol.new("&#x221e;")
+                    ),
+                    Plurimath::Math::Function::PowerBase.new(
+                      Plurimath::Math::Symbol.new("c"),
+                      Plurimath::Math::Symbol.new("&#x221e;"),
+                      Plurimath::Math::Number.new("2")
+                    ),
+                    Plurimath::Math::Symbol.new(")"),
+                    Plurimath::Math::Symbol.new(","),
+                  ],
+                  { columnalign: "center" }
+                ),
               ]),
               Plurimath::Math::Function::Tr.new([
-                Plurimath::Math::Function::Td.new([
-                  Plurimath::Math::Function::Tilde.new(
-                    Plurimath::Math::Symbol.new("z")
-                  ),
-                  Plurimath::Math::Symbol.new("="),
-                  Plurimath::Math::Symbol.new("z"),
-                  Plurimath::Math::Symbol.new("/"),
-                  Plurimath::Math::Symbol.new("L"),
-                  Plurimath::Math::Symbol.new(","),
-                  Plurimath::Math::Symbol.new("&#x2001;")
-                ]),
-                Plurimath::Math::Function::Td.new([
-                  Plurimath::Math::Function::Tilde.new(
-                    Plurimath::Math::Symbol.new("w")
-                  ),
-                  Plurimath::Math::Symbol.new("="),
-                  Plurimath::Math::Symbol.new("w"),
-                  Plurimath::Math::Symbol.new("/"),
-                  Plurimath::Math::Function::Base.new(
-                    Plurimath::Math::Symbol.new("c"),
-                    Plurimath::Math::Symbol.new("&#x221e;")
-                  ),
-                  Plurimath::Math::Symbol.new(","),
-                  Plurimath::Math::Symbol.new("&#x2001;")
-                ]),
-                Plurimath::Math::Function::Td.new([
-                  Plurimath::Math::Function::Tilde.new(
-                    Plurimath::Math::Symbol.new("&#x3bc;")
-                  ),
-                  Plurimath::Math::Symbol.new("="),
-                  Plurimath::Math::Symbol.new("&#x3bc;"),
-                  Plurimath::Math::Symbol.new("/"),
-                  Plurimath::Math::Function::Base.new(
+                Plurimath::Math::Function::Td.new(
+                  [
+                    Plurimath::Math::Function::Tilde.new(
+                      Plurimath::Math::Symbol.new("z")
+                    ),
+                    Plurimath::Math::Symbol.new("="),
+                    Plurimath::Math::Symbol.new("z"),
+                    Plurimath::Math::Symbol.new("/"),
+                    Plurimath::Math::Symbol.new("L"),
+                    Plurimath::Math::Symbol.new(","),
+                    Plurimath::Math::Symbol.new("&#x2001;"),
+                  ],
+                  { columnalign: "center" }
+                ),
+                Plurimath::Math::Function::Td.new(
+                  [
+                    Plurimath::Math::Function::Tilde.new(
+                      Plurimath::Math::Symbol.new("w")
+                    ),
+                    Plurimath::Math::Symbol.new("="),
+                    Plurimath::Math::Symbol.new("w"),
+                    Plurimath::Math::Symbol.new("/"),
+                    Plurimath::Math::Function::Base.new(
+                      Plurimath::Math::Symbol.new("c"),
+                      Plurimath::Math::Symbol.new("&#x221e;")
+                    ),
+                    Plurimath::Math::Symbol.new(","),
+                    Plurimath::Math::Symbol.new("&#x2001;"),
+                  ],
+                  { columnalign: "center" }
+                ),
+                Plurimath::Math::Function::Td.new(
+                  [
+                    Plurimath::Math::Function::Tilde.new(
+                      Plurimath::Math::Symbol.new("&#x3bc;")
+                    ),
+                    Plurimath::Math::Symbol.new("="),
                     Plurimath::Math::Symbol.new("&#x3bc;"),
-                    Plurimath::Math::Symbol.new("&#x221e;")
-                  ),
-                  Plurimath::Math::Symbol.new(",")
-                ])
-              ])
+                    Plurimath::Math::Symbol.new("/"),
+                    Plurimath::Math::Function::Base.new(
+                      Plurimath::Math::Symbol.new("&#x3bc;"),
+                      Plurimath::Math::Symbol.new("&#x221e;")
+                    ),
+                    Plurimath::Math::Symbol.new(","),
+                  ],
+                  { columnalign: "center" }
+                ),
+              ]),
             ],
             nil,
-            [
-              Plurimath::Math::Symbol.new("c"),
-              Plurimath::Math::Symbol.new("c"),
-              Plurimath::Math::Symbol.new("c")
-            ]
-          )
+            nil,
+            {}
+          ),
         ])
         expect(formula).to eq(expected_value)
       end
@@ -5387,317 +5899,341 @@ RSpec.describe Plurimath::Latex::Parser do
           Plurimath::Math::Function::Table::Array.new(
             [
               Plurimath::Math::Function::Tr.new([
-                Plurimath::Math::Function::Td.new([
-                  Plurimath::Math::Symbol.new("x"),
-                  Plurimath::Math::Function::Base.new(
-                    Plurimath::Math::Unicode.new("&#x27;"),
-                    Plurimath::Math::Function::FontStyle.new(
-                      Plurimath::Math::Formula.new([
-                        Plurimath::Math::Symbol.new("r"),
-                        Plurimath::Math::Symbol.new("e"),
-                        Plurimath::Math::Symbol.new("f")
-                      ]),
-                      "textrm"
-                    )
-                  ),
-                  Plurimath::Math::Symbol.new("="),
-                  Plurimath::Math::Function::Base.new(
+                Plurimath::Math::Function::Td.new(
+                  [
                     Plurimath::Math::Symbol.new("x"),
-                    Plurimath::Math::Function::FontStyle.new(
-                      Plurimath::Math::Formula.new([
-                        Plurimath::Math::Symbol.new("r"),
-                        Plurimath::Math::Symbol.new("e"),
-                        Plurimath::Math::Symbol.new("f")
-                      ]),
-                      "textrm"
-                    )
-                  ),
-                  Plurimath::Math::Symbol.new("/"),
-                  Plurimath::Math::Symbol.new("L"),
-                  Plurimath::Math::Symbol.new(",")
-                ]),
-                Plurimath::Math::Function::Td.new([
-                  Plurimath::Math::Symbol.new("u"),
-                  Plurimath::Math::Function::Base.new(
-                    Plurimath::Math::Unicode.new("&#x27;"),
-                    Plurimath::Math::Function::FontStyle.new(
-                      Plurimath::Math::Formula.new([
-                        Plurimath::Math::Symbol.new("r"),
-                        Plurimath::Math::Symbol.new("e"),
-                        Plurimath::Math::Symbol.new("f")
-                      ]),
-                      "textrm"
-                    )
-                  ),
-                  Plurimath::Math::Symbol.new("="),
-                  Plurimath::Math::Function::Base.new(
-                    Plurimath::Math::Symbol.new("u"),
-                    Plurimath::Math::Function::FontStyle.new(
-                      Plurimath::Math::Formula.new([
-                        Plurimath::Math::Symbol.new("r"),
-                        Plurimath::Math::Symbol.new("e"),
-                        Plurimath::Math::Symbol.new("f")
-                      ]),
-                      "textrm"
-                    )
-                  ),
-                  Plurimath::Math::Symbol.new("/"),
-                  Plurimath::Math::Symbol.new("("),
-                  Plurimath::Math::Symbol.new("L"),
-                  Plurimath::Math::Symbol.new("/"),
-                  Plurimath::Math::Symbol.new("T"),
-                  Plurimath::Math::Symbol.new(")"),
-                  Plurimath::Math::Symbol.new(",")
-                ]),
-                Plurimath::Math::Function::Td.new([
-                  Plurimath::Math::Symbol.new("&#x3c1;"),
-                  Plurimath::Math::Function::Base.new(
-                    Plurimath::Math::Unicode.new("&#x27;"),
-                    Plurimath::Math::Function::FontStyle.new(
-                      Plurimath::Math::Formula.new([
-                        Plurimath::Math::Symbol.new("r"),
-                        Plurimath::Math::Symbol.new("e"),
-                        Plurimath::Math::Symbol.new("f")
-                      ]),
-                      "textrm"
-                    )
-                  ),
-                  Plurimath::Math::Symbol.new("="),
-                  Plurimath::Math::Function::Base.new(
-                    Plurimath::Math::Symbol.new("&#x3c1;"),
-                    Plurimath::Math::Function::FontStyle.new(
-                      Plurimath::Math::Formula.new([
-                        Plurimath::Math::Symbol.new("r"),
-                        Plurimath::Math::Symbol.new("e"),
-                        Plurimath::Math::Symbol.new("f")
-                      ]),
-                      "textrm"
-                    )
-                  ),
-                  Plurimath::Math::Symbol.new("/"),
-                  Plurimath::Math::Symbol.new("("),
-                  Plurimath::Math::Symbol.new("M"),
-                  Plurimath::Math::Symbol.new("/"),
-                  Plurimath::Math::Function::Power.new(
+                    Plurimath::Math::Function::Base.new(
+                      Plurimath::Math::Unicode.new("&#x27;"),
+                      Plurimath::Math::Function::FontStyle::Normal.new(
+                        Plurimath::Math::Formula.new([
+                          Plurimath::Math::Symbol.new("r"),
+                          Plurimath::Math::Symbol.new("e"),
+                          Plurimath::Math::Symbol.new("f"),
+                        ]),
+                        "textrm"
+                      )
+                    ),
+                    Plurimath::Math::Symbol.new("="),
+                    Plurimath::Math::Function::Base.new(
+                      Plurimath::Math::Symbol.new("x"),
+                      Plurimath::Math::Function::FontStyle::Normal.new(
+                        Plurimath::Math::Formula.new([
+                          Plurimath::Math::Symbol.new("r"),
+                          Plurimath::Math::Symbol.new("e"),
+                          Plurimath::Math::Symbol.new("f"),
+                        ]),
+                        "textrm"
+                      )
+                    ),
+                    Plurimath::Math::Symbol.new("/"),
                     Plurimath::Math::Symbol.new("L"),
-                    Plurimath::Math::Number.new("3")
-                  ),
-                  Plurimath::Math::Symbol.new(")"),
-                  Plurimath::Math::Symbol.new(",")
-                ])
-              ]),
-              Plurimath::Math::Function::Tr.new([
-                Plurimath::Math::Function::Td.new([
-                  Plurimath::Math::Symbol.new("y"),
-                  Plurimath::Math::Function::Base.new(
-                    Plurimath::Math::Unicode.new("&#x27;"),
-                    Plurimath::Math::Function::FontStyle.new(
-                      Plurimath::Math::Formula.new([
-                        Plurimath::Math::Symbol.new("r"),
-                        Plurimath::Math::Symbol.new("e"),
-                        Plurimath::Math::Symbol.new("f")
-                      ]),
-                      "textrm"
-                    )
-                  ),
-                  Plurimath::Math::Symbol.new("="),
-                  Plurimath::Math::Function::Base.new(
-                    Plurimath::Math::Symbol.new("y"),
-                    Plurimath::Math::Function::FontStyle.new(
-                      Plurimath::Math::Formula.new([
-                        Plurimath::Math::Symbol.new("r"),
-                        Plurimath::Math::Symbol.new("e"),
-                        Plurimath::Math::Symbol.new("f")
-                      ]),
-                      "textrm"
-                    )
-                  ),
-                  Plurimath::Math::Symbol.new("/"),
-                  Plurimath::Math::Symbol.new("L"),
-                  Plurimath::Math::Symbol.new(",")
-                ]),
-                Plurimath::Math::Function::Td.new([
-                  Plurimath::Math::Symbol.new("v"),
-                  Plurimath::Math::Function::Base.new(
-                    Plurimath::Math::Unicode.new("&#x27;"),
-                    Plurimath::Math::Function::FontStyle.new(
-                      Plurimath::Math::Formula.new([
-                        Plurimath::Math::Symbol.new("r"),
-                        Plurimath::Math::Symbol.new("e"),
-                        Plurimath::Math::Symbol.new("f")
-                      ]),
-                      "textrm"
-                    )
-                  ),
-                  Plurimath::Math::Symbol.new("="),
-                  Plurimath::Math::Function::Base.new(
-                    Plurimath::Math::Symbol.new("v"),
-                    Plurimath::Math::Function::FontStyle.new(
-                      Plurimath::Math::Formula.new([
-                        Plurimath::Math::Symbol.new("r"),
-                        Plurimath::Math::Symbol.new("e"),
-                        Plurimath::Math::Symbol.new("f")
-                      ]),
-                      "textrm"
-                    )
-                  ),
-                  Plurimath::Math::Symbol.new("/"),
-                  Plurimath::Math::Symbol.new("("),
-                  Plurimath::Math::Symbol.new("L"),
-                  Plurimath::Math::Symbol.new("/"),
-                  Plurimath::Math::Symbol.new("T"),
-                  Plurimath::Math::Symbol.new(")"),
-                  Plurimath::Math::Symbol.new(",")
-                ]),
-                Plurimath::Math::Function::Td.new([
-                  Plurimath::Math::Symbol.new("p"),
-                  Plurimath::Math::Function::Base.new(
-                    Plurimath::Math::Unicode.new("&#x27;"),
-                    Plurimath::Math::Function::FontStyle.new(
-                      Plurimath::Math::Formula.new([
-                        Plurimath::Math::Symbol.new("r"),
-                        Plurimath::Math::Symbol.new("e"),
-                        Plurimath::Math::Symbol.new("f")
-                      ]),
-                      "textrm"
-                    )
-                  ),
-                  Plurimath::Math::Symbol.new("="),
-                  Plurimath::Math::Function::Base.new(
-                    Plurimath::Math::Symbol.new("p"),
-                    Plurimath::Math::Function::FontStyle.new(
-                      Plurimath::Math::Formula.new([
-                        Plurimath::Math::Symbol.new("r"),
-                        Plurimath::Math::Symbol.new("e"),
-                        Plurimath::Math::Symbol.new("f")
-                      ]),
-                      "textrm"
-                    )
-                  ),
-                  Plurimath::Math::Symbol.new("/"),
-                  Plurimath::Math::Symbol.new("("),
-                  Plurimath::Math::Symbol.new("M"),
-                  Plurimath::Math::Symbol.new("/"),
-                  Plurimath::Math::Symbol.new("("),
-                  Plurimath::Math::Symbol.new("L"),
-                  Plurimath::Math::Function::Power.new(
+                    Plurimath::Math::Symbol.new(","),
+                  ],
+                  { columnalign: "center" }
+                ),
+                Plurimath::Math::Function::Td.new(
+                  [
+                    Plurimath::Math::Symbol.new("u"),
+                    Plurimath::Math::Function::Base.new(
+                      Plurimath::Math::Unicode.new("&#x27;"),
+                      Plurimath::Math::Function::FontStyle::Normal.new(
+                        Plurimath::Math::Formula.new([
+                          Plurimath::Math::Symbol.new("r"),
+                          Plurimath::Math::Symbol.new("e"),
+                          Plurimath::Math::Symbol.new("f"),
+                        ]),
+                        "textrm"
+                      )
+                    ),
+                    Plurimath::Math::Symbol.new("="),
+                    Plurimath::Math::Function::Base.new(
+                      Plurimath::Math::Symbol.new("u"),
+                      Plurimath::Math::Function::FontStyle::Normal.new(
+                        Plurimath::Math::Formula.new([
+                          Plurimath::Math::Symbol.new("r"),
+                          Plurimath::Math::Symbol.new("e"),
+                          Plurimath::Math::Symbol.new("f"),
+                        ]),
+                        "textrm"
+                      )
+                    ),
+                    Plurimath::Math::Symbol.new("/"),
+                    Plurimath::Math::Symbol.new("("),
+                    Plurimath::Math::Symbol.new("L"),
+                    Plurimath::Math::Symbol.new("/"),
                     Plurimath::Math::Symbol.new("T"),
-                    Plurimath::Math::Number.new("2")
-                  ),
-                  Plurimath::Math::Symbol.new(")"),
-                  Plurimath::Math::Symbol.new(")")
-                ])
+                    Plurimath::Math::Symbol.new(")"),
+                    Plurimath::Math::Symbol.new(","),
+                  ],
+                  { columnalign: "center" }
+                ),
+                Plurimath::Math::Function::Td.new(
+                  [
+                    Plurimath::Math::Symbol.new("&#x3c1;"),
+                    Plurimath::Math::Function::Base.new(
+                      Plurimath::Math::Unicode.new("&#x27;"),
+                      Plurimath::Math::Function::FontStyle::Normal.new(
+                        Plurimath::Math::Formula.new([
+                          Plurimath::Math::Symbol.new("r"),
+                          Plurimath::Math::Symbol.new("e"),
+                          Plurimath::Math::Symbol.new("f"),
+                        ]),
+                        "textrm"
+                      )
+                    ),
+                    Plurimath::Math::Symbol.new("="),
+                    Plurimath::Math::Function::Base.new(
+                      Plurimath::Math::Symbol.new("&#x3c1;"),
+                      Plurimath::Math::Function::FontStyle::Normal.new(
+                        Plurimath::Math::Formula.new([
+                          Plurimath::Math::Symbol.new("r"),
+                          Plurimath::Math::Symbol.new("e"),
+                          Plurimath::Math::Symbol.new("f"),
+                        ]),
+                        "textrm"
+                      )
+                    ),
+                    Plurimath::Math::Symbol.new("/"),
+                    Plurimath::Math::Symbol.new("("),
+                    Plurimath::Math::Symbol.new("M"),
+                    Plurimath::Math::Symbol.new("/"),
+                    Plurimath::Math::Function::Power.new(
+                      Plurimath::Math::Symbol.new("L"),
+                      Plurimath::Math::Number.new("3")
+                    ),
+                    Plurimath::Math::Symbol.new(")"),
+                    Plurimath::Math::Symbol.new(","),
+                  ],
+                  { columnalign: "center" }
+                ),
               ]),
               Plurimath::Math::Function::Tr.new([
-                Plurimath::Math::Function::Td.new([
-                  Plurimath::Math::Symbol.new("z"),
-                  Plurimath::Math::Function::Base.new(
-                    Plurimath::Math::Unicode.new("&#x27;"),
-                    Plurimath::Math::Function::FontStyle.new(
-                      Plurimath::Math::Formula.new([
-                        Plurimath::Math::Symbol.new("r"),
-                        Plurimath::Math::Symbol.new("e"),
-                        Plurimath::Math::Symbol.new("f")
-                      ]),
-                      "textrm"
-                    )
-                  ),
-                  Plurimath::Math::Symbol.new("="),
-                  Plurimath::Math::Function::Base.new(
+                Plurimath::Math::Function::Td.new(
+                  [
+                    Plurimath::Math::Symbol.new("y"),
+                    Plurimath::Math::Function::Base.new(
+                      Plurimath::Math::Unicode.new("&#x27;"),
+                      Plurimath::Math::Function::FontStyle::Normal.new(
+                        Plurimath::Math::Formula.new([
+                          Plurimath::Math::Symbol.new("r"),
+                          Plurimath::Math::Symbol.new("e"),
+                          Plurimath::Math::Symbol.new("f"),
+                        ]),
+                        "textrm"
+                      )
+                    ),
+                    Plurimath::Math::Symbol.new("="),
+                    Plurimath::Math::Function::Base.new(
+                      Plurimath::Math::Symbol.new("y"),
+                      Plurimath::Math::Function::FontStyle::Normal.new(
+                        Plurimath::Math::Formula.new([
+                          Plurimath::Math::Symbol.new("r"),
+                          Plurimath::Math::Symbol.new("e"),
+                          Plurimath::Math::Symbol.new("f"),
+                        ]),
+                        "textrm"
+                      )
+                    ),
+                    Plurimath::Math::Symbol.new("/"),
+                    Plurimath::Math::Symbol.new("L"),
+                    Plurimath::Math::Symbol.new(","),
+                  ],
+                  { columnalign: "center" }
+                ),
+                Plurimath::Math::Function::Td.new(
+                  [
+                    Plurimath::Math::Symbol.new("v"),
+                    Plurimath::Math::Function::Base.new(
+                      Plurimath::Math::Unicode.new("&#x27;"),
+                      Plurimath::Math::Function::FontStyle::Normal.new(
+                        Plurimath::Math::Formula.new([
+                          Plurimath::Math::Symbol.new("r"),
+                          Plurimath::Math::Symbol.new("e"),
+                          Plurimath::Math::Symbol.new("f"),
+                        ]),
+                        "textrm"
+                      )
+                    ),
+                    Plurimath::Math::Symbol.new("="),
+                    Plurimath::Math::Function::Base.new(
+                      Plurimath::Math::Symbol.new("v"),
+                      Plurimath::Math::Function::FontStyle::Normal.new(
+                        Plurimath::Math::Formula.new([
+                          Plurimath::Math::Symbol.new("r"),
+                          Plurimath::Math::Symbol.new("e"),
+                          Plurimath::Math::Symbol.new("f"),
+                        ]),
+                        "textrm"
+                      )
+                    ),
+                    Plurimath::Math::Symbol.new("/"),
+                    Plurimath::Math::Symbol.new("("),
+                    Plurimath::Math::Symbol.new("L"),
+                    Plurimath::Math::Symbol.new("/"),
+                    Plurimath::Math::Symbol.new("T"),
+                    Plurimath::Math::Symbol.new(")"),
+                    Plurimath::Math::Symbol.new(","),
+                  ],
+                  { columnalign: "center" }
+                ),
+                Plurimath::Math::Function::Td.new(
+                  [
+                    Plurimath::Math::Symbol.new("p"),
+                    Plurimath::Math::Function::Base.new(
+                      Plurimath::Math::Unicode.new("&#x27;"),
+                      Plurimath::Math::Function::FontStyle::Normal.new(
+                        Plurimath::Math::Formula.new([
+                          Plurimath::Math::Symbol.new("r"),
+                          Plurimath::Math::Symbol.new("e"),
+                          Plurimath::Math::Symbol.new("f"),
+                        ]),
+                        "textrm"
+                      )
+                    ),
+                    Plurimath::Math::Symbol.new("="),
+                    Plurimath::Math::Function::Base.new(
+                      Plurimath::Math::Symbol.new("p"),
+                      Plurimath::Math::Function::FontStyle::Normal.new(
+                        Plurimath::Math::Formula.new([
+                          Plurimath::Math::Symbol.new("r"),
+                          Plurimath::Math::Symbol.new("e"),
+                          Plurimath::Math::Symbol.new("f"),
+                        ]),
+                        "textrm"
+                      )
+                    ),
+                    Plurimath::Math::Symbol.new("/"),
+                    Plurimath::Math::Symbol.new("("),
+                    Plurimath::Math::Symbol.new("M"),
+                    Plurimath::Math::Symbol.new("/"),
+                    Plurimath::Math::Symbol.new("("),
+                    Plurimath::Math::Symbol.new("L"),
+                    Plurimath::Math::Function::Power.new(
+                      Plurimath::Math::Symbol.new("T"),
+                      Plurimath::Math::Number.new("2")
+                    ),
+                    Plurimath::Math::Symbol.new(")"),
+                    Plurimath::Math::Symbol.new(")"),
+                  ],
+                  { columnalign: "center" }
+                ),
+              ]),
+              Plurimath::Math::Function::Tr.new([
+                Plurimath::Math::Function::Td.new(
+                  [
                     Plurimath::Math::Symbol.new("z"),
-                    Plurimath::Math::Function::FontStyle.new(
-                      Plurimath::Math::Formula.new([
-                        Plurimath::Math::Symbol.new("r"),
-                        Plurimath::Math::Symbol.new("e"),
-                        Plurimath::Math::Symbol.new("f")
-                      ]),
-                      "textrm"
-                    )
-                  ),
-                  Plurimath::Math::Symbol.new("/"),
-                  Plurimath::Math::Symbol.new("L"),
-                  Plurimath::Math::Symbol.new(","),
-                  Plurimath::Math::Symbol.new("&#x2001;")
-                ]),
-                Plurimath::Math::Function::Td.new([
-                  Plurimath::Math::Symbol.new("w"),
-                  Plurimath::Math::Function::Base.new(
-                    Plurimath::Math::Unicode.new("&#x27;"),
-                    Plurimath::Math::Function::FontStyle.new(
-                      Plurimath::Math::Formula.new([
-                        Plurimath::Math::Symbol.new("r"),
-                        Plurimath::Math::Symbol.new("e"),
-                        Plurimath::Math::Symbol.new("f")
-                      ]),
-                      "textrm"
-                    )
-                  ),
-                  Plurimath::Math::Symbol.new("="),
-                  Plurimath::Math::Function::Base.new(
+                    Plurimath::Math::Function::Base.new(
+                      Plurimath::Math::Unicode.new("&#x27;"),
+                      Plurimath::Math::Function::FontStyle::Normal.new(
+                        Plurimath::Math::Formula.new([
+                          Plurimath::Math::Symbol.new("r"),
+                          Plurimath::Math::Symbol.new("e"),
+                          Plurimath::Math::Symbol.new("f"),
+                        ]),
+                        "textrm"
+                      )
+                    ),
+                    Plurimath::Math::Symbol.new("="),
+                    Plurimath::Math::Function::Base.new(
+                      Plurimath::Math::Symbol.new("z"),
+                      Plurimath::Math::Function::FontStyle::Normal.new(
+                        Plurimath::Math::Formula.new([
+                          Plurimath::Math::Symbol.new("r"),
+                          Plurimath::Math::Symbol.new("e"),
+                          Plurimath::Math::Symbol.new("f"),
+                        ]),
+                        "textrm"
+                      )
+                    ),
+                    Plurimath::Math::Symbol.new("/"),
+                    Plurimath::Math::Symbol.new("L"),
+                    Plurimath::Math::Symbol.new(","),
+                    Plurimath::Math::Symbol.new("&#x2001;"),
+                  ],
+                  { columnalign: "center" }
+                ),
+                Plurimath::Math::Function::Td.new(
+                  [
                     Plurimath::Math::Symbol.new("w"),
-                    Plurimath::Math::Function::FontStyle.new(
-                      Plurimath::Math::Formula.new([
-                        Plurimath::Math::Symbol.new("r"),
-                        Plurimath::Math::Symbol.new("e"),
-                        Plurimath::Math::Symbol.new("f")
-                      ]),
-                      "textrm"
-                    )
-                  ),
-                  Plurimath::Math::Symbol.new("/"),
-                  Plurimath::Math::Symbol.new("("),
-                  Plurimath::Math::Symbol.new("L"),
-                  Plurimath::Math::Symbol.new("/"),
-                  Plurimath::Math::Symbol.new("T"),
-                  Plurimath::Math::Symbol.new(")"),
-                  Plurimath::Math::Symbol.new(","),
-                  Plurimath::Math::Symbol.new("&#x2001;")
-                ]),
-                Plurimath::Math::Function::Td.new([
-                  Plurimath::Math::Symbol.new("&#x3bc;"),
-                  Plurimath::Math::Function::Base.new(
-                    Plurimath::Math::Unicode.new("&#x27;"),
-                    Plurimath::Math::Function::FontStyle.new(
-                      Plurimath::Math::Formula.new([
-                        Plurimath::Math::Symbol.new("r"),
-                        Plurimath::Math::Symbol.new("e"),
-                        Plurimath::Math::Symbol.new("f")
-                      ]),
-                      "textrm"
-                    )
-                  ),
-                  Plurimath::Math::Symbol.new("="),
-                  Plurimath::Math::Function::Base.new(
+                    Plurimath::Math::Function::Base.new(
+                      Plurimath::Math::Unicode.new("&#x27;"),
+                      Plurimath::Math::Function::FontStyle::Normal.new(
+                        Plurimath::Math::Formula.new([
+                          Plurimath::Math::Symbol.new("r"),
+                          Plurimath::Math::Symbol.new("e"),
+                          Plurimath::Math::Symbol.new("f"),
+                        ]),
+                        "textrm"
+                      )
+                    ),
+                    Plurimath::Math::Symbol.new("="),
+                    Plurimath::Math::Function::Base.new(
+                      Plurimath::Math::Symbol.new("w"),
+                      Plurimath::Math::Function::FontStyle::Normal.new(
+                        Plurimath::Math::Formula.new([
+                          Plurimath::Math::Symbol.new("r"),
+                          Plurimath::Math::Symbol.new("e"),
+                          Plurimath::Math::Symbol.new("f"),
+                        ]),
+                        "textrm"
+                      )
+                    ),
+                    Plurimath::Math::Symbol.new("/"),
+                    Plurimath::Math::Symbol.new("("),
+                    Plurimath::Math::Symbol.new("L"),
+                    Plurimath::Math::Symbol.new("/"),
+                    Plurimath::Math::Symbol.new("T"),
+                    Plurimath::Math::Symbol.new(")"),
+                    Plurimath::Math::Symbol.new(","),
+                    Plurimath::Math::Symbol.new("&#x2001;"),
+                  ],
+                  { columnalign: "center" }
+                ),
+                Plurimath::Math::Function::Td.new(
+                  [
                     Plurimath::Math::Symbol.new("&#x3bc;"),
-                    Plurimath::Math::Function::FontStyle.new(
-                      Plurimath::Math::Formula.new([
-                        Plurimath::Math::Symbol.new("r"),
-                        Plurimath::Math::Symbol.new("e"),
-                        Plurimath::Math::Symbol.new("f")
-                      ]),
-                      "textrm"
-                    )
-                  ),
-                  Plurimath::Math::Symbol.new("/"),
-                  Plurimath::Math::Symbol.new("("),
-                  Plurimath::Math::Symbol.new("M"),
-                  Plurimath::Math::Symbol.new("/"),
-                  Plurimath::Math::Symbol.new("("),
-                  Plurimath::Math::Symbol.new("L"),
-                  Plurimath::Math::Symbol.new("T"),
-                  Plurimath::Math::Symbol.new(")"),
-                  Plurimath::Math::Symbol.new(")"),
-                  Plurimath::Math::Symbol.new(".")
-                ])
-              ])
+                    Plurimath::Math::Function::Base.new(
+                      Plurimath::Math::Unicode.new("&#x27;"),
+                      Plurimath::Math::Function::FontStyle::Normal.new(
+                        Plurimath::Math::Formula.new([
+                          Plurimath::Math::Symbol.new("r"),
+                          Plurimath::Math::Symbol.new("e"),
+                          Plurimath::Math::Symbol.new("f"),
+                        ]),
+                        "textrm"
+                      )
+                    ),
+                    Plurimath::Math::Symbol.new("="),
+                    Plurimath::Math::Function::Base.new(
+                      Plurimath::Math::Symbol.new("&#x3bc;"),
+                      Plurimath::Math::Function::FontStyle::Normal.new(
+                        Plurimath::Math::Formula.new([
+                          Plurimath::Math::Symbol.new("r"),
+                          Plurimath::Math::Symbol.new("e"),
+                          Plurimath::Math::Symbol.new("f"),
+                        ]),
+                        "textrm"
+                      )
+                    ),
+                    Plurimath::Math::Symbol.new("/"),
+                    Plurimath::Math::Symbol.new("("),
+                    Plurimath::Math::Symbol.new("M"),
+                    Plurimath::Math::Symbol.new("/"),
+                    Plurimath::Math::Symbol.new("("),
+                    Plurimath::Math::Symbol.new("L"),
+                    Plurimath::Math::Symbol.new("T"),
+                    Plurimath::Math::Symbol.new(")"),
+                    Plurimath::Math::Symbol.new(")"),
+                    Plurimath::Math::Symbol.new("."),
+                  ],
+                  { columnalign: "center" }
+                ),
+              ]),
             ],
             nil,
-            [
-              Plurimath::Math::Symbol.new("c"),
-              Plurimath::Math::Symbol.new("c"),
-              Plurimath::Math::Symbol.new("c")
-            ]
-          )
+            nil,
+            {}
+          ),
         ])
         expect(formula).to eq(expected_value)
       end
@@ -5718,204 +6254,217 @@ RSpec.describe Plurimath::Latex::Parser do
           Plurimath::Math::Function::Table::Split.new(
             [
               Plurimath::Math::Function::Tr.new([
-                Plurimath::Math::Function::Td.new([
-                  Plurimath::Math::Symbol.new("p"),
-                  Plurimath::Math::Unicode.new("&#x27;"),
-                  Plurimath::Math::Function::Base.new(
-                    Plurimath::Math::Unicode.new("&#x27;"),
-                    Plurimath::Math::Formula.new([
-                      Plurimath::Math::Symbol.new("i"),
-                      Plurimath::Math::Symbol.new("j"),
-                      Plurimath::Math::Symbol.new("k")
-                    ])
-                  )
-                ]),
-                Plurimath::Math::Function::Td.new([
-                  Plurimath::Math::Symbol.new("&#x2261;"),
-                  Plurimath::Math::Function::Base.new(
+                Plurimath::Math::Function::Td.new(
+                  [
                     Plurimath::Math::Symbol.new("p"),
-                    Plurimath::Math::Formula.new([
-                      Plurimath::Math::Symbol.new("i"),
-                      Plurimath::Math::Symbol.new("j"),
-                      Plurimath::Math::Symbol.new("k")
-                    ])
-                  ),
-                  Plurimath::Math::Symbol.new("/"),
-                  Plurimath::Math::Symbol.new("("),
-                  Plurimath::Math::Function::Base.new(
-                    Plurimath::Math::Symbol.new("&#x3c1;"),
-                    Plurimath::Math::Function::FontStyle.new(
+                    Plurimath::Math::Unicode.new("&#x27;"),
+                    Plurimath::Math::Function::Base.new(
+                      Plurimath::Math::Unicode.new("&#x27;"),
                       Plurimath::Math::Formula.new([
-                        Plurimath::Math::Symbol.new("r"),
-                        Plurimath::Math::Symbol.new("e"),
-                        Plurimath::Math::Symbol.new("f")
-                      ]),
-                      "textrm"
-                    )
-                  ),
-                  Plurimath::Math::Function::PowerBase.new(
-                    Plurimath::Math::Symbol.new("c"),
-                    Plurimath::Math::Function::FontStyle.new(
-                      Plurimath::Math::Formula.new([
-                        Plurimath::Math::Symbol.new("r"),
-                        Plurimath::Math::Symbol.new("e"),
-                        Plurimath::Math::Symbol.new("f")
-                      ]),
-                      "textrm"
+                        Plurimath::Math::Symbol.new("i"),
+                        Plurimath::Math::Symbol.new("j"),
+                        Plurimath::Math::Symbol.new("k"),
+                      ])
                     ),
-                    Plurimath::Math::Number.new("2")
-                  ),
-                  Plurimath::Math::Symbol.new(")"),
-                  Plurimath::Math::Symbol.new("["),
-                  Plurimath::Math::Symbol.new("."),
-                  Plurimath::Math::Number.new("02"),
-                  Plurimath::Math::Symbol.new("i"),
-                  Plurimath::Math::Symbol.new("n"),
-                  Plurimath::Math::Symbol.new("]")
-                ])
-              ]),
-              Plurimath::Math::Function::Tr.new([
-                Plurimath::Math::Function::Td.new([])
-              ]),
-              Plurimath::Math::Function::Tr.new([
-                Plurimath::Math::Function::Td.new([
-                  Plurimath::Math::Function::FontStyle.new(
-                    Plurimath::Math::Symbol.new("&"),
-                    "displaystyle"
-                  ),
-                  Plurimath::Math::Symbol.new("="),
-                  Plurimath::Math::Function::Over.new(
-                    Plurimath::Math::Formula.new([
-                      Plurimath::Math::Function::Base.new(
-                        Plurimath::Math::Symbol.new("p"),
+                  ],
+                  nil
+                ),
+                Plurimath::Math::Function::Td.new(
+                  [
+                    Plurimath::Math::Symbol.new("&#x2261;"),
+                    Plurimath::Math::Function::Base.new(
+                      Plurimath::Math::Symbol.new("p"),
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Symbol.new("i"),
+                        Plurimath::Math::Symbol.new("j"),
+                        Plurimath::Math::Symbol.new("k"),
+                      ])
+                    ),
+                    Plurimath::Math::Symbol.new("/"),
+                    Plurimath::Math::Symbol.new("("),
+                    Plurimath::Math::Function::Base.new(
+                      Plurimath::Math::Symbol.new("&#x3c1;"),
+                      Plurimath::Math::Function::FontStyle::Normal.new(
                         Plurimath::Math::Formula.new([
-                          Plurimath::Math::Symbol.new("i"),
-                          Plurimath::Math::Symbol.new("j"),
-                          Plurimath::Math::Symbol.new("k")
-                        ])
-                      )
-                    ]),
-                    Plurimath::Math::Formula.new([
-                      Plurimath::Math::Symbol.new("M"),
-                      Plurimath::Math::Symbol.new("/"),
-                      Plurimath::Math::Symbol.new("("),
-                      Plurimath::Math::Symbol.new("L"),
-                      Plurimath::Math::Function::Power.new(
-                        Plurimath::Math::Symbol.new("T"),
-                        Plurimath::Math::Number.new("2")
-                      ),
-                      Plurimath::Math::Symbol.new(")")
-                    ])
-                  ),
-                  Plurimath::Math::Function::Over.new(
-                    Plurimath::Math::Formula.new([
-                      Plurimath::Math::Symbol.new("M"),
-                      Plurimath::Math::Symbol.new("/"),
-                      Plurimath::Math::Function::Power.new(
-                        Plurimath::Math::Symbol.new("L"),
-                        Plurimath::Math::Number.new("3")
-                      )
-                    ]),
-                    Plurimath::Math::Formula.new([
-                      Plurimath::Math::Function::Base.new(
-                        Plurimath::Math::Symbol.new("&#x3c1;"),
-                        Plurimath::Math::Function::FontStyle.new(
-                          Plurimath::Math::Formula.new([
-                            Plurimath::Math::Symbol.new("r"),
-                            Plurimath::Math::Symbol.new("e"),
-                            Plurimath::Math::Symbol.new("f")
-                          ]),
-                          "textrm"
-                        )
-                      )
-                    ])
-                  ),
-                  Plurimath::Math::Function::Power.new(
-                    Plurimath::Math::Formula.new([
-                      Plurimath::Math::Function::Left.new("["),
-                      Plurimath::Math::Function::Over.new(
-                        Plurimath::Math::Formula.new([
-                          Plurimath::Math::Symbol.new("L"),
-                          Plurimath::Math::Symbol.new("/"),
-                          Plurimath::Math::Symbol.new("T")
+                          Plurimath::Math::Symbol.new("r"),
+                          Plurimath::Math::Symbol.new("e"),
+                          Plurimath::Math::Symbol.new("f"),
                         ]),
+                        "textrm"
+                      )
+                    ),
+                    Plurimath::Math::Function::PowerBase.new(
+                      Plurimath::Math::Symbol.new("c"),
+                      Plurimath::Math::Function::FontStyle::Normal.new(
                         Plurimath::Math::Formula.new([
-                          Plurimath::Math::Function::Base.new(
-                            Plurimath::Math::Symbol.new("c"),
-                            Plurimath::Math::Function::FontStyle.new(
-                              Plurimath::Math::Formula.new([
-                                Plurimath::Math::Symbol.new("r"),
-                                Plurimath::Math::Symbol.new("e"),
-                                Plurimath::Math::Symbol.new("f")
-                              ]),
-                              "textrm"
-                            )
-                          )
-                        ])
+                          Plurimath::Math::Symbol.new("r"),
+                          Plurimath::Math::Symbol.new("e"),
+                          Plurimath::Math::Symbol.new("f"),
+                        ]),
+                        "textrm"
                       ),
-                      Plurimath::Math::Function::Right.new("]")
-                    ]),
-                    Plurimath::Math::Number.new("2")
-                  )
-                ])
-              ]),
-              Plurimath::Math::Function::Tr.new([
-                Plurimath::Math::Function::Td.new([])
-              ]),
-              Plurimath::Math::Function::Tr.new([
-                Plurimath::Math::Function::Td.new([
-                  Plurimath::Math::Function::FontStyle.new(
-                    Plurimath::Math::Symbol.new("&"),
-                    "displaystyle"
-                  ),
-                  Plurimath::Math::Symbol.new("="),
-                  Plurimath::Math::Symbol.new("p"),
-                  Plurimath::Math::Function::Base.new(
-                    Plurimath::Math::Unicode.new("&#x27;"),
-                    Plurimath::Math::Formula.new([
-                      Plurimath::Math::Symbol.new("i"),
-                      Plurimath::Math::Symbol.new("j"),
-                      Plurimath::Math::Symbol.new("k")
-                    ])
-                  ),
-                  Plurimath::Math::Symbol.new("/"),
-                  Plurimath::Math::Symbol.new("("),
-                  Plurimath::Math::Symbol.new("&#x3c1;"),
-                  Plurimath::Math::Function::Base.new(
-                    Plurimath::Math::Unicode.new("&#x27;"),
-                    Plurimath::Math::Function::FontStyle.new(
-                      Plurimath::Math::Formula.new([
-                        Plurimath::Math::Symbol.new("r"),
-                        Plurimath::Math::Symbol.new("e"),
-                        Plurimath::Math::Symbol.new("f")
-                      ]),
-                      "textrm"
-                    )
-                  ),
-                  Plurimath::Math::Symbol.new("("),
-                  Plurimath::Math::Symbol.new("c"),
-                  Plurimath::Math::Function::Base.new(
-                    Plurimath::Math::Unicode.new("&#x27;"),
-                    Plurimath::Math::Function::FontStyle.new(
-                      Plurimath::Math::Formula.new([
-                        Plurimath::Math::Symbol.new("r"),
-                        Plurimath::Math::Symbol.new("e"),
-                        Plurimath::Math::Symbol.new("f")
-                      ]),
-                      "textrm"
-                    )
-                  ),
-                  Plurimath::Math::Function::Power.new(
+                      Plurimath::Math::Number.new("2")
+                    ),
                     Plurimath::Math::Symbol.new(")"),
-                    Plurimath::Math::Number.new("2")
-                  ),
-                  Plurimath::Math::Symbol.new(")")
-                ])
-              ])
+                    Plurimath::Math::Symbol.new("["),
+                    Plurimath::Math::Symbol.new("."),
+                    Plurimath::Math::Number.new("02"),
+                    Plurimath::Math::Symbol.new("i"),
+                    Plurimath::Math::Symbol.new("n"),
+                    Plurimath::Math::Symbol.new("]"),
+                  ],
+                  nil
+                ),
+              ]),
+              Plurimath::Math::Function::Tr.new([
+                Plurimath::Math::Function::Td.new([], nil),
+              ]),
+              Plurimath::Math::Function::Tr.new([
+                Plurimath::Math::Function::Td.new(
+                  [
+                    Plurimath::Math::Function::FontStyle.new(
+                      Plurimath::Math::Symbol.new("&"),
+                      "displaystyle"
+                    ),
+                    Plurimath::Math::Symbol.new("="),
+                    Plurimath::Math::Function::Over.new(
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Function::Base.new(
+                          Plurimath::Math::Symbol.new("p"),
+                          Plurimath::Math::Formula.new([
+                            Plurimath::Math::Symbol.new("i"),
+                            Plurimath::Math::Symbol.new("j"),
+                            Plurimath::Math::Symbol.new("k"),
+                          ])
+                        ),
+                      ]),
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Symbol.new("M"),
+                        Plurimath::Math::Symbol.new("/"),
+                        Plurimath::Math::Symbol.new("("),
+                        Plurimath::Math::Symbol.new("L"),
+                        Plurimath::Math::Function::Power.new(
+                          Plurimath::Math::Symbol.new("T"),
+                          Plurimath::Math::Number.new("2")
+                        ),
+                        Plurimath::Math::Symbol.new(")"),
+                      ])
+                    ),
+                    Plurimath::Math::Function::Over.new(
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Symbol.new("M"),
+                        Plurimath::Math::Symbol.new("/"),
+                        Plurimath::Math::Function::Power.new(
+                          Plurimath::Math::Symbol.new("L"),
+                          Plurimath::Math::Number.new("3")
+                        ),
+                      ]),
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Function::Base.new(
+                          Plurimath::Math::Symbol.new("&#x3c1;"),
+                          Plurimath::Math::Function::FontStyle::Normal.new(
+                            Plurimath::Math::Formula.new([
+                              Plurimath::Math::Symbol.new("r"),
+                              Plurimath::Math::Symbol.new("e"),
+                              Plurimath::Math::Symbol.new("f"),
+                            ]),
+                            "textrm"
+                          )
+                        ),
+                      ])
+                    ),
+                    Plurimath::Math::Function::Power.new(
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Function::Left.new("["),
+                        Plurimath::Math::Function::Over.new(
+                          Plurimath::Math::Formula.new([
+                            Plurimath::Math::Symbol.new("L"),
+                            Plurimath::Math::Symbol.new("/"),
+                            Plurimath::Math::Symbol.new("T"),
+                          ]),
+                          Plurimath::Math::Formula.new([
+                            Plurimath::Math::Function::Base.new(
+                              Plurimath::Math::Symbol.new("c"),
+                              Plurimath::Math::Function::FontStyle::Normal.new(
+                                Plurimath::Math::Formula.new([
+                                  Plurimath::Math::Symbol.new("r"),
+                                  Plurimath::Math::Symbol.new("e"),
+                                  Plurimath::Math::Symbol.new("f"),
+                                ]),
+                                "textrm"
+                              )
+                            ),
+                          ])
+                        ),
+                        Plurimath::Math::Function::Right.new("]"),
+                      ]),
+                      Plurimath::Math::Number.new("2")
+                    ),
+                  ],
+                  nil
+                ),
+              ]),
+              Plurimath::Math::Function::Tr.new([
+                Plurimath::Math::Function::Td.new([], nil),
+              ]),
+              Plurimath::Math::Function::Tr.new([
+                Plurimath::Math::Function::Td.new(
+                  [
+                    Plurimath::Math::Function::FontStyle.new(
+                      Plurimath::Math::Symbol.new("&"),
+                      "displaystyle"
+                    ),
+                    Plurimath::Math::Symbol.new("="),
+                    Plurimath::Math::Symbol.new("p"),
+                    Plurimath::Math::Function::Base.new(
+                      Plurimath::Math::Unicode.new("&#x27;"),
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Symbol.new("i"),
+                        Plurimath::Math::Symbol.new("j"),
+                        Plurimath::Math::Symbol.new("k"),
+                      ])
+                    ),
+                    Plurimath::Math::Symbol.new("/"),
+                    Plurimath::Math::Symbol.new("("),
+                    Plurimath::Math::Symbol.new("&#x3c1;"),
+                    Plurimath::Math::Function::Base.new(
+                      Plurimath::Math::Unicode.new("&#x27;"),
+                      Plurimath::Math::Function::FontStyle::Normal.new(
+                        Plurimath::Math::Formula.new([
+                          Plurimath::Math::Symbol.new("r"),
+                          Plurimath::Math::Symbol.new("e"),
+                          Plurimath::Math::Symbol.new("f"),
+                        ]),
+                        "textrm"
+                      )
+                    ),
+                    Plurimath::Math::Symbol.new("("),
+                    Plurimath::Math::Symbol.new("c"),
+                    Plurimath::Math::Function::Base.new(
+                      Plurimath::Math::Unicode.new("&#x27;"),
+                      Plurimath::Math::Function::FontStyle::Normal.new(
+                        Plurimath::Math::Formula.new([
+                          Plurimath::Math::Symbol.new("r"),
+                          Plurimath::Math::Symbol.new("e"),
+                          Plurimath::Math::Symbol.new("f"),
+                        ]),
+                        "textrm"
+                      )
+                    ),
+                    Plurimath::Math::Function::Power.new(
+                      Plurimath::Math::Symbol.new(")"),
+                      Plurimath::Math::Number.new("2")
+                    ),
+                    Plurimath::Math::Symbol.new(")"),
+                  ],
+                  nil
+                ),
+              ]),
             ],
             nil,
-            []
-          )
+            nil,
+            {}
+          ),
         ])
         expect(formula).to eq(expected_value)
       end
@@ -5936,275 +6485,299 @@ RSpec.describe Plurimath::Latex::Parser do
           Plurimath::Math::Function::Table::Array.new(
             [
               Plurimath::Math::Function::Tr.new([
-                Plurimath::Math::Function::Td.new([
-                  Plurimath::Math::Function::Base.new(
-                    Plurimath::Math::Function::Tilde.new(
-                      Plurimath::Math::Symbol.new("x")
-                    ),
-                    Plurimath::Math::Formula.new([
-                      Plurimath::Math::Symbol.new("i"),
-                      Plurimath::Math::Symbol.new("j"),
-                      Plurimath::Math::Symbol.new("k")
-                    ])
-                  ),
-                  Plurimath::Math::Symbol.new("="),
-                  Plurimath::Math::Function::Base.new(
-                    Plurimath::Math::Symbol.new("x"),
-                    Plurimath::Math::Formula.new([
-                      Plurimath::Math::Symbol.new("i"),
-                      Plurimath::Math::Symbol.new("j"),
-                      Plurimath::Math::Symbol.new("k")
-                    ])
-                  ),
-                  Plurimath::Math::Symbol.new("/"),
-                  Plurimath::Math::Symbol.new("L"),
-                  Plurimath::Math::Symbol.new(",")
-                ]),
-                Plurimath::Math::Function::Td.new([
-                  Plurimath::Math::Function::Base.new(
-                    Plurimath::Math::Function::Tilde.new(
-                      Plurimath::Math::Symbol.new("u")
-                    ),
-                    Plurimath::Math::Formula.new([
-                      Plurimath::Math::Symbol.new("i"),
-                      Plurimath::Math::Symbol.new("j"),
-                      Plurimath::Math::Symbol.new("k")
-                    ])
-                  ),
-                  Plurimath::Math::Symbol.new("="),
-                  Plurimath::Math::Function::Base.new(
-                    Plurimath::Math::Symbol.new("u"),
-                    Plurimath::Math::Formula.new([
-                      Plurimath::Math::Symbol.new("i"),
-                      Plurimath::Math::Symbol.new("j"),
-                      Plurimath::Math::Symbol.new("k")
-                    ])
-                  ),
-                  Plurimath::Math::Symbol.new("/"),
-                  Plurimath::Math::Function::Base.new(
-                    Plurimath::Math::Symbol.new("c"),
-                    Plurimath::Math::Symbol.new("&#x221e;")
-                  ),
-                  Plurimath::Math::Symbol.new(",")
-                ]),
-                Plurimath::Math::Function::Td.new([
-                  Plurimath::Math::Function::Base.new(
-                    Plurimath::Math::Function::Tilde.new(
-                      Plurimath::Math::Symbol.new("&#x3c1;")
-                    ),
-                    Plurimath::Math::Formula.new([
-                      Plurimath::Math::Symbol.new("i"),
-                      Plurimath::Math::Symbol.new("j"),
-                      Plurimath::Math::Symbol.new("k")
-                    ])
-                  ),
-                  Plurimath::Math::Symbol.new("="),
-                  Plurimath::Math::Function::Base.new(
-                    Plurimath::Math::Symbol.new("&#x3c1;"),
-                    Plurimath::Math::Formula.new([
-                      Plurimath::Math::Symbol.new("i"),
-                      Plurimath::Math::Symbol.new("j"),
-                      Plurimath::Math::Symbol.new("k")
-                    ])
-                  ),
-                  Plurimath::Math::Symbol.new("/"),
-                  Plurimath::Math::Function::Base.new(
-                    Plurimath::Math::Symbol.new("&#x3c1;"),
-                    Plurimath::Math::Symbol.new("&#x221e;")
-                  ),
-                  Plurimath::Math::Symbol.new(",")
-                ])
-              ]),
-              Plurimath::Math::Function::Tr.new([
-                Plurimath::Math::Function::Td.new([
-                  Plurimath::Math::Function::Base.new(
-                    Plurimath::Math::Function::Tilde.new(
-                      Plurimath::Math::Symbol.new("y")
-                    ),
-                    Plurimath::Math::Formula.new([
-                      Plurimath::Math::Symbol.new("i"),
-                      Plurimath::Math::Symbol.new("j"),
-                      Plurimath::Math::Symbol.new("k")
-                    ])
-                  ),
-                  Plurimath::Math::Symbol.new("="),
-                  Plurimath::Math::Function::Base.new(
-                    Plurimath::Math::Symbol.new("y"),
-                    Plurimath::Math::Formula.new([
-                      Plurimath::Math::Symbol.new("i"),
-                      Plurimath::Math::Symbol.new("j"),
-                      Plurimath::Math::Symbol.new("k")
-                    ])
-                  ),
-                  Plurimath::Math::Symbol.new("/"),
-                  Plurimath::Math::Symbol.new("L"),
-                  Plurimath::Math::Symbol.new(",")
-                ]),
-                Plurimath::Math::Function::Td.new([
-                  Plurimath::Math::Function::Base.new(
-                    Plurimath::Math::Function::Tilde.new(
-                      Plurimath::Math::Symbol.new("v")
-                    ),
-                    Plurimath::Math::Formula.new([
-                      Plurimath::Math::Symbol.new("i"),
-                      Plurimath::Math::Symbol.new("j"),
-                      Plurimath::Math::Symbol.new("k")
-                    ])
-                  ),
-                  Plurimath::Math::Symbol.new("="),
-                  Plurimath::Math::Function::Base.new(
-                    Plurimath::Math::Symbol.new("v"),
-                    Plurimath::Math::Formula.new([
-                      Plurimath::Math::Symbol.new("i"),
-                      Plurimath::Math::Symbol.new("j"),
-                      Plurimath::Math::Symbol.new("k")
-                    ])
-                  ),
-                  Plurimath::Math::Symbol.new("/"),
-                  Plurimath::Math::Function::Base.new(
-                    Plurimath::Math::Symbol.new("c"),
-                    Plurimath::Math::Symbol.new("&#x221e;")
-                  ),
-                  Plurimath::Math::Symbol.new(",")
-                ]),
-                Plurimath::Math::Function::Td.new([
-                  Plurimath::Math::Function::Base.new(
-                    Plurimath::Math::Function::Tilde.new(
-                      Plurimath::Math::Symbol.new("p")
-                    ),
-                    Plurimath::Math::Formula.new([
-                      Plurimath::Math::Symbol.new("i"),
-                      Plurimath::Math::Symbol.new("j"),
-                      Plurimath::Math::Symbol.new("k")
-                    ])
-                  ),
-                  Plurimath::Math::Symbol.new("="),
-                  Plurimath::Math::Function::Base.new(
-                    Plurimath::Math::Symbol.new("p"),
-                    Plurimath::Math::Formula.new([
-                      Plurimath::Math::Symbol.new("i"),
-                      Plurimath::Math::Symbol.new("j"),
-                      Plurimath::Math::Symbol.new("k")
-                    ])
-                  ),
-                  Plurimath::Math::Symbol.new("/"),
-                  Plurimath::Math::Symbol.new("("),
-                  Plurimath::Math::Function::Base.new(
-                    Plurimath::Math::Symbol.new("&#x3c1;"),
-                    Plurimath::Math::Symbol.new("&#x221e;")
-                  ),
-                  Plurimath::Math::Function::PowerBase.new(
-                    Plurimath::Math::Symbol.new("c"),
-                    Plurimath::Math::Symbol.new("&#x221e;"),
-                    Plurimath::Math::Number.new("2")
-                  ),
-                  Plurimath::Math::Symbol.new(")"),
-                  Plurimath::Math::Symbol.new(","),
-                  Plurimath::Math::Symbol.new("["),
-                  Plurimath::Math::Symbol.new("."),
-                  Plurimath::Math::Number.new("02"),
-                  Plurimath::Math::Symbol.new("i"),
-                  Plurimath::Math::Symbol.new("n"),
-                  Plurimath::Math::Symbol.new("]")
-                ])
-              ]),
-              Plurimath::Math::Function::Tr.new([
-                Plurimath::Math::Function::Td.new([
-                  Plurimath::Math::Function::Base.new(
-                    Plurimath::Math::Function::Tilde.new(
-                      Plurimath::Math::Symbol.new("z")
-                    ),
-                    Plurimath::Math::Formula.new([
-                      Plurimath::Math::Symbol.new("i"),
-                      Plurimath::Math::Symbol.new("j"),
-                      Plurimath::Math::Symbol.new("k")
-                    ])
-                  ),
-                  Plurimath::Math::Symbol.new("="),
-                  Plurimath::Math::Function::Base.new(
-                    Plurimath::Math::Symbol.new("z"),
-                    Plurimath::Math::Formula.new([
-                      Plurimath::Math::Symbol.new("i"),
-                      Plurimath::Math::Symbol.new("j"),
-                      Plurimath::Math::Symbol.new("k")
-                    ])
-                  ),
-                  Plurimath::Math::Symbol.new("/"),
-                  Plurimath::Math::Symbol.new("L"),
-                  Plurimath::Math::Symbol.new(",")
-                ]),
-                Plurimath::Math::Function::Td.new([
-                  Plurimath::Math::Function::Base.new(
-                    Plurimath::Math::Function::Tilde.new(
-                      Plurimath::Math::Symbol.new("w")
-                    ),
-                    Plurimath::Math::Formula.new([
-                      Plurimath::Math::Symbol.new("i"),
-                      Plurimath::Math::Symbol.new("j"),
-                      Plurimath::Math::Symbol.new("k")
-                    ])
-                  ),
-                  Plurimath::Math::Symbol.new("="),
-                  Plurimath::Math::Function::Base.new(
-                    Plurimath::Math::Symbol.new("w"),
-                    Plurimath::Math::Formula.new([
-                      Plurimath::Math::Symbol.new("i"),
-                      Plurimath::Math::Symbol.new("j"),
-                      Plurimath::Math::Symbol.new("k")
-                    ])
-                  ),
-                  Plurimath::Math::Symbol.new("/"),
-                  Plurimath::Math::Function::Base.new(
-                    Plurimath::Math::Symbol.new("c"),
-                    Plurimath::Math::Symbol.new("&#x221e;")
-                  ),
-                  Plurimath::Math::Symbol.new(",")
-                ]),
-                Plurimath::Math::Function::Td.new([
-                  Plurimath::Math::Function::Base.new(
-                    Plurimath::Math::Function::Tilde.new(
+                Plurimath::Math::Function::Td.new(
+                  [
+                    Plurimath::Math::Function::Base.new(
                       Plurimath::Math::Function::Tilde.new(
-                        Plurimath::Math::Symbol.new("&#x3bc;")
-                      )
+                        Plurimath::Math::Symbol.new("x")
+                      ),
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Symbol.new("i"),
+                        Plurimath::Math::Symbol.new("j"),
+                        Plurimath::Math::Symbol.new("k"),
+                      ])
                     ),
-                    Plurimath::Math::Formula.new([
-                      Plurimath::Math::Symbol.new("i"),
-                      Plurimath::Math::Symbol.new("j"),
-                      Plurimath::Math::Symbol.new("k")
-                    ])
-                  ),
-                  Plurimath::Math::Symbol.new("="),
-                  Plurimath::Math::Function::Base.new(
-                    Plurimath::Math::Symbol.new("&#x3bc;"),
-                    Plurimath::Math::Formula.new([
-                      Plurimath::Math::Symbol.new("i"),
-                      Plurimath::Math::Symbol.new("j"),
-                      Plurimath::Math::Symbol.new("k")
-                    ])
-                  ),
-                  Plurimath::Math::Symbol.new("/"),
-                  Plurimath::Math::Symbol.new("("),
-                  Plurimath::Math::Function::Base.new(
-                    Plurimath::Math::Symbol.new("&#x3c1;"),
-                    Plurimath::Math::Symbol.new("&#x221e;")
-                  ),
-                  Plurimath::Math::Function::Base.new(
-                    Plurimath::Math::Symbol.new("c"),
-                    Plurimath::Math::Symbol.new("&#x221e;")
-                  ),
-                  Plurimath::Math::Symbol.new("L"),
-                  Plurimath::Math::Symbol.new(")"),
-                  Plurimath::Math::Symbol.new(",")
-                ])
-              ])
+                    Plurimath::Math::Symbol.new("="),
+                    Plurimath::Math::Function::Base.new(
+                      Plurimath::Math::Symbol.new("x"),
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Symbol.new("i"),
+                        Plurimath::Math::Symbol.new("j"),
+                        Plurimath::Math::Symbol.new("k"),
+                      ])
+                    ),
+                    Plurimath::Math::Symbol.new("/"),
+                    Plurimath::Math::Symbol.new("L"),
+                    Plurimath::Math::Symbol.new(","),
+                  ],
+                  { columnalign: "center" }
+                ),
+                Plurimath::Math::Function::Td.new(
+                  [
+                    Plurimath::Math::Function::Base.new(
+                      Plurimath::Math::Function::Tilde.new(
+                        Plurimath::Math::Symbol.new("u")
+                      ),
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Symbol.new("i"),
+                        Plurimath::Math::Symbol.new("j"),
+                        Plurimath::Math::Symbol.new("k"),
+                      ])
+                    ),
+                    Plurimath::Math::Symbol.new("="),
+                    Plurimath::Math::Function::Base.new(
+                      Plurimath::Math::Symbol.new("u"),
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Symbol.new("i"),
+                        Plurimath::Math::Symbol.new("j"),
+                        Plurimath::Math::Symbol.new("k"),
+                      ])
+                    ),
+                    Plurimath::Math::Symbol.new("/"),
+                    Plurimath::Math::Function::Base.new(
+                      Plurimath::Math::Symbol.new("c"),
+                      Plurimath::Math::Symbol.new("&#x221e;")
+                    ),
+                    Plurimath::Math::Symbol.new(","),
+                  ],
+                  { columnalign: "center" }
+                ),
+                Plurimath::Math::Function::Td.new(
+                  [
+                    Plurimath::Math::Function::Base.new(
+                      Plurimath::Math::Function::Tilde.new(
+                        Plurimath::Math::Symbol.new("&#x3c1;")
+                      ),
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Symbol.new("i"),
+                        Plurimath::Math::Symbol.new("j"),
+                        Plurimath::Math::Symbol.new("k"),
+                      ])
+                    ),
+                    Plurimath::Math::Symbol.new("="),
+                    Plurimath::Math::Function::Base.new(
+                      Plurimath::Math::Symbol.new("&#x3c1;"),
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Symbol.new("i"),
+                        Plurimath::Math::Symbol.new("j"),
+                        Plurimath::Math::Symbol.new("k"),
+                      ])
+                    ),
+                    Plurimath::Math::Symbol.new("/"),
+                    Plurimath::Math::Function::Base.new(
+                      Plurimath::Math::Symbol.new("&#x3c1;"),
+                      Plurimath::Math::Symbol.new("&#x221e;")
+                    ),
+                    Plurimath::Math::Symbol.new(","),
+                  ],
+                  { columnalign: "center" }
+                ),
+              ]),
+              Plurimath::Math::Function::Tr.new([
+                Plurimath::Math::Function::Td.new(
+                  [
+                    Plurimath::Math::Function::Base.new(
+                      Plurimath::Math::Function::Tilde.new(
+                        Plurimath::Math::Symbol.new("y")
+                      ),
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Symbol.new("i"),
+                        Plurimath::Math::Symbol.new("j"),
+                        Plurimath::Math::Symbol.new("k"),
+                      ])
+                    ),
+                    Plurimath::Math::Symbol.new("="),
+                    Plurimath::Math::Function::Base.new(
+                      Plurimath::Math::Symbol.new("y"),
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Symbol.new("i"),
+                        Plurimath::Math::Symbol.new("j"),
+                        Plurimath::Math::Symbol.new("k"),
+                      ])
+                    ),
+                    Plurimath::Math::Symbol.new("/"),
+                    Plurimath::Math::Symbol.new("L"),
+                    Plurimath::Math::Symbol.new(","),
+                  ],
+                  { columnalign: "center" }
+                ),
+                Plurimath::Math::Function::Td.new(
+                  [
+                    Plurimath::Math::Function::Base.new(
+                      Plurimath::Math::Function::Tilde.new(
+                        Plurimath::Math::Symbol.new("v")
+                      ),
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Symbol.new("i"),
+                        Plurimath::Math::Symbol.new("j"),
+                        Plurimath::Math::Symbol.new("k"),
+                      ])
+                    ),
+                    Plurimath::Math::Symbol.new("="),
+                    Plurimath::Math::Function::Base.new(
+                      Plurimath::Math::Symbol.new("v"),
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Symbol.new("i"),
+                        Plurimath::Math::Symbol.new("j"),
+                        Plurimath::Math::Symbol.new("k"),
+                      ])
+                    ),
+                    Plurimath::Math::Symbol.new("/"),
+                    Plurimath::Math::Function::Base.new(
+                      Plurimath::Math::Symbol.new("c"),
+                      Plurimath::Math::Symbol.new("&#x221e;")
+                    ),
+                    Plurimath::Math::Symbol.new(","),
+                  ],
+                  { columnalign: "center" }
+                ),
+                Plurimath::Math::Function::Td.new(
+                  [
+                    Plurimath::Math::Function::Base.new(
+                      Plurimath::Math::Function::Tilde.new(
+                        Plurimath::Math::Symbol.new("p")
+                      ),
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Symbol.new("i"),
+                        Plurimath::Math::Symbol.new("j"),
+                        Plurimath::Math::Symbol.new("k"),
+                      ])
+                    ),
+                    Plurimath::Math::Symbol.new("="),
+                    Plurimath::Math::Function::Base.new(
+                      Plurimath::Math::Symbol.new("p"),
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Symbol.new("i"),
+                        Plurimath::Math::Symbol.new("j"),
+                        Plurimath::Math::Symbol.new("k"),
+                      ])
+                    ),
+                    Plurimath::Math::Symbol.new("/"),
+                    Plurimath::Math::Symbol.new("("),
+                    Plurimath::Math::Function::Base.new(
+                      Plurimath::Math::Symbol.new("&#x3c1;"),
+                      Plurimath::Math::Symbol.new("&#x221e;")
+                    ),
+                    Plurimath::Math::Function::PowerBase.new(
+                      Plurimath::Math::Symbol.new("c"),
+                      Plurimath::Math::Symbol.new("&#x221e;"),
+                      Plurimath::Math::Number.new("2")
+                    ),
+                    Plurimath::Math::Symbol.new(")"),
+                    Plurimath::Math::Symbol.new(","),
+                    Plurimath::Math::Symbol.new("["),
+                    Plurimath::Math::Symbol.new("."),
+                    Plurimath::Math::Number.new("02"),
+                    Plurimath::Math::Symbol.new("i"),
+                    Plurimath::Math::Symbol.new("n"),
+                    Plurimath::Math::Symbol.new("]"),
+                  ],
+                  { columnalign: "center" }
+                ),
+              ]),
+              Plurimath::Math::Function::Tr.new([
+                Plurimath::Math::Function::Td.new(
+                  [
+                    Plurimath::Math::Function::Base.new(
+                      Plurimath::Math::Function::Tilde.new(
+                        Plurimath::Math::Symbol.new("z")
+                      ),
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Symbol.new("i"),
+                        Plurimath::Math::Symbol.new("j"),
+                        Plurimath::Math::Symbol.new("k"),
+                      ])
+                    ),
+                    Plurimath::Math::Symbol.new("="),
+                    Plurimath::Math::Function::Base.new(
+                      Plurimath::Math::Symbol.new("z"),
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Symbol.new("i"),
+                        Plurimath::Math::Symbol.new("j"),
+                        Plurimath::Math::Symbol.new("k"),
+                      ])
+                    ),
+                    Plurimath::Math::Symbol.new("/"),
+                    Plurimath::Math::Symbol.new("L"),
+                    Plurimath::Math::Symbol.new(","),
+                  ],
+                  { columnalign: "center" }
+                ),
+                Plurimath::Math::Function::Td.new(
+                  [
+                    Plurimath::Math::Function::Base.new(
+                      Plurimath::Math::Function::Tilde.new(
+                        Plurimath::Math::Symbol.new("w")
+                      ),
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Symbol.new("i"),
+                        Plurimath::Math::Symbol.new("j"),
+                        Plurimath::Math::Symbol.new("k"),
+                      ])
+                    ),
+                    Plurimath::Math::Symbol.new("="),
+                    Plurimath::Math::Function::Base.new(
+                      Plurimath::Math::Symbol.new("w"),
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Symbol.new("i"),
+                        Plurimath::Math::Symbol.new("j"),
+                        Plurimath::Math::Symbol.new("k"),
+                      ])
+                    ),
+                    Plurimath::Math::Symbol.new("/"),
+                    Plurimath::Math::Function::Base.new(
+                      Plurimath::Math::Symbol.new("c"),
+                      Plurimath::Math::Symbol.new("&#x221e;")
+                    ),
+                    Plurimath::Math::Symbol.new(","),
+                  ],
+                  { columnalign: "center" }
+                ),
+                Plurimath::Math::Function::Td.new(
+                  [
+                    Plurimath::Math::Function::Base.new(
+                      Plurimath::Math::Function::Tilde.new(
+                        Plurimath::Math::Function::Tilde.new(
+                          Plurimath::Math::Symbol.new("&#x3bc;")
+                        )
+                      ),
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Symbol.new("i"),
+                        Plurimath::Math::Symbol.new("j"),
+                        Plurimath::Math::Symbol.new("k"),
+                      ])
+                    ),
+                    Plurimath::Math::Symbol.new("="),
+                    Plurimath::Math::Function::Base.new(
+                      Plurimath::Math::Symbol.new("&#x3bc;"),
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Symbol.new("i"),
+                        Plurimath::Math::Symbol.new("j"),
+                        Plurimath::Math::Symbol.new("k"),
+                      ])
+                    ),
+                    Plurimath::Math::Symbol.new("/"),
+                    Plurimath::Math::Symbol.new("("),
+                    Plurimath::Math::Function::Base.new(
+                      Plurimath::Math::Symbol.new("&#x3c1;"),
+                      Plurimath::Math::Symbol.new("&#x221e;")
+                    ),
+                    Plurimath::Math::Function::Base.new(
+                      Plurimath::Math::Symbol.new("c"),
+                      Plurimath::Math::Symbol.new("&#x221e;")
+                    ),
+                    Plurimath::Math::Symbol.new("L"),
+                    Plurimath::Math::Symbol.new(")"),
+                    Plurimath::Math::Symbol.new(","),
+                  ],
+                  { columnalign: "center" }
+                ),
+              ]),
             ],
             nil,
-            [
-              Plurimath::Math::Symbol.new("c"),
-              Plurimath::Math::Symbol.new("c"),
-              Plurimath::Math::Symbol.new("c")
-            ]
-          )
+            nil,
+            {}
+          ),
         ])
         expect(formula).to eq(expected_value)
       end
@@ -6225,169 +6798,185 @@ RSpec.describe Plurimath::Latex::Parser do
           Plurimath::Math::Function::Table::Array.new(
             [
               Plurimath::Math::Function::Tr.new([
-                Plurimath::Math::Function::Td.new([
-                  Plurimath::Math::Function::Base.new(
-                    Plurimath::Math::Function::Tilde.new(
-                      Plurimath::Math::Symbol.new("u")
-                    ),
-                    Plurimath::Math::Symbol.new("&#x221e;")
-                  ),
-                  Plurimath::Math::Symbol.new("="),
-                  Plurimath::Math::Function::Base.new(
-                    Plurimath::Math::Symbol.new("u"),
-                    Plurimath::Math::Symbol.new("&#x221e;")
-                  ),
-                  Plurimath::Math::Symbol.new("/"),
-                  Plurimath::Math::Function::Base.new(
-                    Plurimath::Math::Symbol.new("c"),
-                    Plurimath::Math::Symbol.new("&#x221e;")
-                  ),
-                  Plurimath::Math::Symbol.new(","),
-                  Plurimath::Math::Symbol.new("&#x2001;")
-                ]),
-                Plurimath::Math::Function::Td.new([
-                  Plurimath::Math::Function::Base.new(
-                    Plurimath::Math::Function::Tilde.new(
-                      Plurimath::Math::Symbol.new("&#x3c1;")
-                    ),
-                    Plurimath::Math::Symbol.new("&#x221e;")
-                  ),
-                  Plurimath::Math::Symbol.new("="),
-                  Plurimath::Math::Function::Base.new(
-                    Plurimath::Math::Symbol.new("&#x3c1;"),
-                    Plurimath::Math::Symbol.new("&#x221e;")
-                  ),
-                  Plurimath::Math::Symbol.new("/"),
-                  Plurimath::Math::Function::Base.new(
-                    Plurimath::Math::Symbol.new("&#x3c1;"),
-                    Plurimath::Math::Symbol.new("&#x221e;")
-                  ),
-                  Plurimath::Math::Symbol.new("="),
-                  Plurimath::Math::Number.new("1"),
-                  Plurimath::Math::Symbol.new(",")
-                ])
-              ]),
-              Plurimath::Math::Function::Tr.new([
-                Plurimath::Math::Function::Td.new([
-                  Plurimath::Math::Function::Base.new(
-                    Plurimath::Math::Function::Tilde.new(
-                      Plurimath::Math::Symbol.new("v")
-                    ),
-                    Plurimath::Math::Symbol.new("&#x221e;")
-                  ),
-                  Plurimath::Math::Symbol.new("="),
-                  Plurimath::Math::Function::Base.new(
-                    Plurimath::Math::Symbol.new("v"),
-                    Plurimath::Math::Symbol.new("&#x221e;")
-                  ),
-                  Plurimath::Math::Symbol.new("/"),
-                  Plurimath::Math::Function::Base.new(
-                    Plurimath::Math::Symbol.new("c"),
-                    Plurimath::Math::Symbol.new("&#x221e;")
-                  ),
-                  Plurimath::Math::Symbol.new(",")
-                ]),
-                Plurimath::Math::Function::Td.new([
-                  Plurimath::Math::Function::Base.new(
-                    Plurimath::Math::Function::Tilde.new(
-                      Plurimath::Math::Symbol.new("p")
-                    ),
-                    Plurimath::Math::Symbol.new("&#x221e;")
-                  ),
-                  Plurimath::Math::Symbol.new("="),
-                  Plurimath::Math::Function::Base.new(
-                    Plurimath::Math::Symbol.new("p"),
-                    Plurimath::Math::Symbol.new("&#x221e;")
-                  ),
-                  Plurimath::Math::Symbol.new("/"),
-                  Plurimath::Math::Symbol.new("("),
-                  Plurimath::Math::Function::Base.new(
-                    Plurimath::Math::Symbol.new("&#x3c1;"),
-                    Plurimath::Math::Symbol.new("&#x221e;")
-                  ),
-                  Plurimath::Math::Function::PowerBase.new(
-                    Plurimath::Math::Symbol.new("c"),
-                    Plurimath::Math::Symbol.new("&#x221e;"),
-                    Plurimath::Math::Number.new("2")
-                  ),
-                  Plurimath::Math::Symbol.new(")"),
-                  Plurimath::Math::Symbol.new("="),
-                  Plurimath::Math::Number.new("1"),
-                  Plurimath::Math::Symbol.new("/"),
-                  Plurimath::Math::Symbol.new("&#x3b3;"),
-                  Plurimath::Math::Symbol.new(","),
-                  Plurimath::Math::Symbol.new("["),
-                  Plurimath::Math::Symbol.new("."),
-                  Plurimath::Math::Number.new("02"),
-                  Plurimath::Math::Symbol.new("i"),
-                  Plurimath::Math::Symbol.new("n"),
-                  Plurimath::Math::Symbol.new("]")
-                ])
-              ]),
-              Plurimath::Math::Function::Tr.new([
-                Plurimath::Math::Function::Td.new([
-                  Plurimath::Math::Function::Base.new(
-                    Plurimath::Math::Function::Tilde.new(
-                      Plurimath::Math::Symbol.new("w")
-                    ),
-                    Plurimath::Math::Symbol.new("&#x221e;")
-                  ),
-                  Plurimath::Math::Symbol.new("="),
-                  Plurimath::Math::Function::Base.new(
-                    Plurimath::Math::Symbol.new("w"),
-                    Plurimath::Math::Symbol.new("&#x221e;")
-                  ),
-                  Plurimath::Math::Symbol.new("/"),
-                  Plurimath::Math::Function::Base.new(
-                    Plurimath::Math::Symbol.new("c"),
-                    Plurimath::Math::Symbol.new("&#x221e;")
-                  ),
-                  Plurimath::Math::Symbol.new(",")
-                ]),
-                Plurimath::Math::Function::Td.new([
-                  Plurimath::Math::Function::Base.new(
-                    Plurimath::Math::Function::Tilde.new(
+                Plurimath::Math::Function::Td.new(
+                  [
+                    Plurimath::Math::Function::Base.new(
                       Plurimath::Math::Function::Tilde.new(
-                        Plurimath::Math::Symbol.new("&#x3bc;")
-                      )
+                        Plurimath::Math::Symbol.new("u")
+                      ),
+                      Plurimath::Math::Symbol.new("&#x221e;")
                     ),
-                    Plurimath::Math::Symbol.new("&#x221e;")
-                  ),
-                  Plurimath::Math::Symbol.new("="),
-                  Plurimath::Math::Function::Base.new(
-                    Plurimath::Math::Symbol.new("&#x3bc;"),
-                    Plurimath::Math::Symbol.new("&#x221e;")
-                  ),
-                  Plurimath::Math::Symbol.new("/"),
-                  Plurimath::Math::Symbol.new("("),
-                  Plurimath::Math::Function::Base.new(
-                    Plurimath::Math::Symbol.new("&#x3c1;"),
-                    Plurimath::Math::Symbol.new("&#x221e;")
-                  ),
-                  Plurimath::Math::Function::Base.new(
-                    Plurimath::Math::Symbol.new("c"),
-                    Plurimath::Math::Symbol.new("&#x221e;")
-                  ),
-                  Plurimath::Math::Symbol.new("L"),
-                  Plurimath::Math::Symbol.new(")"),
-                  Plurimath::Math::Symbol.new("&#x223c;"),
-                  Plurimath::Math::Symbol.new("O"),
-                  Plurimath::Math::Symbol.new("("),
-                  Plurimath::Math::Number.new("1"),
-                  Plurimath::Math::Symbol.new("/"),
-                  Plurimath::Math::Symbol.new("R"),
-                  Plurimath::Math::Symbol.new("e"),
-                  Plurimath::Math::Symbol.new(")"),
-                  Plurimath::Math::Symbol.new(",")
-                ])
-              ])
+                    Plurimath::Math::Symbol.new("="),
+                    Plurimath::Math::Function::Base.new(
+                      Plurimath::Math::Symbol.new("u"),
+                      Plurimath::Math::Symbol.new("&#x221e;")
+                    ),
+                    Plurimath::Math::Symbol.new("/"),
+                    Plurimath::Math::Function::Base.new(
+                      Plurimath::Math::Symbol.new("c"),
+                      Plurimath::Math::Symbol.new("&#x221e;")
+                    ),
+                    Plurimath::Math::Symbol.new(","),
+                    Plurimath::Math::Symbol.new("&#x2001;"),
+                  ],
+                  { columnalign: "center" }
+                ),
+                Plurimath::Math::Function::Td.new(
+                  [
+                    Plurimath::Math::Function::Base.new(
+                      Plurimath::Math::Function::Tilde.new(
+                        Plurimath::Math::Symbol.new("&#x3c1;")
+                      ),
+                      Plurimath::Math::Symbol.new("&#x221e;")
+                    ),
+                    Plurimath::Math::Symbol.new("="),
+                    Plurimath::Math::Function::Base.new(
+                      Plurimath::Math::Symbol.new("&#x3c1;"),
+                      Plurimath::Math::Symbol.new("&#x221e;")
+                    ),
+                    Plurimath::Math::Symbol.new("/"),
+                    Plurimath::Math::Function::Base.new(
+                      Plurimath::Math::Symbol.new("&#x3c1;"),
+                      Plurimath::Math::Symbol.new("&#x221e;")
+                    ),
+                    Plurimath::Math::Symbol.new("="),
+                    Plurimath::Math::Number.new("1"),
+                    Plurimath::Math::Symbol.new(","),
+                  ],
+                  { columnalign: "center" }
+                ),
+              ]),
+              Plurimath::Math::Function::Tr.new([
+                Plurimath::Math::Function::Td.new(
+                  [
+                    Plurimath::Math::Function::Base.new(
+                      Plurimath::Math::Function::Tilde.new(
+                        Plurimath::Math::Symbol.new("v")
+                      ),
+                      Plurimath::Math::Symbol.new("&#x221e;")
+                    ),
+                    Plurimath::Math::Symbol.new("="),
+                    Plurimath::Math::Function::Base.new(
+                      Plurimath::Math::Symbol.new("v"),
+                      Plurimath::Math::Symbol.new("&#x221e;")
+                    ),
+                    Plurimath::Math::Symbol.new("/"),
+                    Plurimath::Math::Function::Base.new(
+                      Plurimath::Math::Symbol.new("c"),
+                      Plurimath::Math::Symbol.new("&#x221e;")
+                    ),
+                    Plurimath::Math::Symbol.new(","),
+                  ],
+                  { columnalign: "center" }
+                ),
+                Plurimath::Math::Function::Td.new(
+                  [
+                    Plurimath::Math::Function::Base.new(
+                      Plurimath::Math::Function::Tilde.new(
+                        Plurimath::Math::Symbol.new("p")
+                      ),
+                      Plurimath::Math::Symbol.new("&#x221e;")
+                    ),
+                    Plurimath::Math::Symbol.new("="),
+                    Plurimath::Math::Function::Base.new(
+                      Plurimath::Math::Symbol.new("p"),
+                      Plurimath::Math::Symbol.new("&#x221e;")
+                    ),
+                    Plurimath::Math::Symbol.new("/"),
+                    Plurimath::Math::Symbol.new("("),
+                    Plurimath::Math::Function::Base.new(
+                      Plurimath::Math::Symbol.new("&#x3c1;"),
+                      Plurimath::Math::Symbol.new("&#x221e;")
+                    ),
+                    Plurimath::Math::Function::PowerBase.new(
+                      Plurimath::Math::Symbol.new("c"),
+                      Plurimath::Math::Symbol.new("&#x221e;"),
+                      Plurimath::Math::Number.new("2")
+                    ),
+                    Plurimath::Math::Symbol.new(")"),
+                    Plurimath::Math::Symbol.new("="),
+                    Plurimath::Math::Number.new("1"),
+                    Plurimath::Math::Symbol.new("/"),
+                    Plurimath::Math::Symbol.new("&#x3b3;"),
+                    Plurimath::Math::Symbol.new(","),
+                    Plurimath::Math::Symbol.new("["),
+                    Plurimath::Math::Symbol.new("."),
+                    Plurimath::Math::Number.new("02"),
+                    Plurimath::Math::Symbol.new("i"),
+                    Plurimath::Math::Symbol.new("n"),
+                    Plurimath::Math::Symbol.new("]"),
+                  ],
+                  { columnalign: "center" }
+                ),
+              ]),
+              Plurimath::Math::Function::Tr.new([
+                Plurimath::Math::Function::Td.new(
+                  [
+                    Plurimath::Math::Function::Base.new(
+                      Plurimath::Math::Function::Tilde.new(
+                        Plurimath::Math::Symbol.new("w")
+                      ),
+                      Plurimath::Math::Symbol.new("&#x221e;")
+                    ),
+                    Plurimath::Math::Symbol.new("="),
+                    Plurimath::Math::Function::Base.new(
+                      Plurimath::Math::Symbol.new("w"),
+                      Plurimath::Math::Symbol.new("&#x221e;")
+                    ),
+                    Plurimath::Math::Symbol.new("/"),
+                    Plurimath::Math::Function::Base.new(
+                      Plurimath::Math::Symbol.new("c"),
+                      Plurimath::Math::Symbol.new("&#x221e;")
+                    ),
+                    Plurimath::Math::Symbol.new(","),
+                  ],
+                  { columnalign: "center" }
+                ),
+                Plurimath::Math::Function::Td.new(
+                  [
+                    Plurimath::Math::Function::Base.new(
+                      Plurimath::Math::Function::Tilde.new(
+                        Plurimath::Math::Function::Tilde.new(
+                          Plurimath::Math::Symbol.new("&#x3bc;")
+                        )
+                      ),
+                      Plurimath::Math::Symbol.new("&#x221e;")
+                    ),
+                    Plurimath::Math::Symbol.new("="),
+                    Plurimath::Math::Function::Base.new(
+                      Plurimath::Math::Symbol.new("&#x3bc;"),
+                      Plurimath::Math::Symbol.new("&#x221e;")
+                    ),
+                    Plurimath::Math::Symbol.new("/"),
+                    Plurimath::Math::Symbol.new("("),
+                    Plurimath::Math::Function::Base.new(
+                      Plurimath::Math::Symbol.new("&#x3c1;"),
+                      Plurimath::Math::Symbol.new("&#x221e;")
+                    ),
+                    Plurimath::Math::Function::Base.new(
+                      Plurimath::Math::Symbol.new("c"),
+                      Plurimath::Math::Symbol.new("&#x221e;")
+                    ),
+                    Plurimath::Math::Symbol.new("L"),
+                    Plurimath::Math::Symbol.new(")"),
+                    Plurimath::Math::Symbol.new("&#x223c;"),
+                    Plurimath::Math::Symbol.new("O"),
+                    Plurimath::Math::Symbol.new("("),
+                    Plurimath::Math::Number.new("1"),
+                    Plurimath::Math::Symbol.new("/"),
+                    Plurimath::Math::Symbol.new("R"),
+                    Plurimath::Math::Symbol.new("e"),
+                    Plurimath::Math::Symbol.new(")"),
+                    Plurimath::Math::Symbol.new(","),
+                  ],
+                  { columnalign: "center" }
+                ),
+              ]),
             ],
             nil,
-            [
-              Plurimath::Math::Symbol.new("c"),
-              Plurimath::Math::Symbol.new("c")
-            ]
-          )
+            nil,
+            {}
+          ),
         ])
         expect(formula).to eq(expected_value)
       end
@@ -6412,7 +7001,7 @@ RSpec.describe Plurimath::Latex::Parser do
               Plurimath::Math::Symbol.new("-"),
               Plurimath::Math::Function::Base.new(
                 Plurimath::Math::Symbol.new("p"),
-                Plurimath::Math::Function::FontStyle.new(
+                Plurimath::Math::Function::FontStyle::Normal.new(
                   Plurimath::Math::Formula.new([
                     Plurimath::Math::Symbol.new("r"),
                     Plurimath::Math::Symbol.new("e"),
@@ -6420,20 +7009,16 @@ RSpec.describe Plurimath::Latex::Parser do
                   ]),
                   "textrm"
                 )
-              )
+              ),
             ]),
             Plurimath::Math::Formula.new([
               Plurimath::Math::Function::Over.new(
-                Plurimath::Math::Formula.new([
-                  Plurimath::Math::Number.new("1")
-                ]),
-                Plurimath::Math::Formula.new([
-                  Plurimath::Math::Number.new("2")
-                ])
+                Plurimath::Math::Formula.new([Plurimath::Math::Number.new("1")]),
+                Plurimath::Math::Formula.new([Plurimath::Math::Number.new("2")])
               ),
               Plurimath::Math::Function::Base.new(
                 Plurimath::Math::Symbol.new("&#x3c1;"),
-                Plurimath::Math::Function::FontStyle.new(
+                Plurimath::Math::Function::FontStyle::Normal.new(
                   Plurimath::Math::Formula.new([
                     Plurimath::Math::Symbol.new("r"),
                     Plurimath::Math::Symbol.new("e"),
@@ -6444,7 +7029,7 @@ RSpec.describe Plurimath::Latex::Parser do
               ),
               Plurimath::Math::Function::PowerBase.new(
                 Plurimath::Math::Symbol.new("q"),
-                Plurimath::Math::Function::FontStyle.new(
+                Plurimath::Math::Function::FontStyle::Normal.new(
                   Plurimath::Math::Formula.new([
                     Plurimath::Math::Symbol.new("r"),
                     Plurimath::Math::Symbol.new("e"),
@@ -6453,10 +7038,10 @@ RSpec.describe Plurimath::Latex::Parser do
                   "textrm"
                 ),
                 Plurimath::Math::Number.new("2")
-              )
+              ),
             ])
           ),
-          Plurimath::Math::Symbol.new(",")
+          Plurimath::Math::Symbol.new(","),
         ])
         expect(formula).to eq(expected_value)
       end
@@ -6471,9 +7056,7 @@ RSpec.describe Plurimath::Latex::Parser do
       it "returns formula" do
         expected_value = Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Base.new(
-            Plurimath::Math::Function::Vec.new(
-              Plurimath::Math::Symbol.new("c")
-            ),
+            Plurimath::Math::Function::Vec.new(Plurimath::Math::Symbol.new("c")),
             Plurimath::Math::Symbol.new("f")
           ),
           Plurimath::Math::Symbol.new("="),
@@ -6481,20 +7064,16 @@ RSpec.describe Plurimath::Latex::Parser do
             Plurimath::Math::Formula.new([
               Plurimath::Math::Function::Vec.new(
                 Plurimath::Math::Symbol.new("&#x3c4;")
-              )
+              ),
             ]),
             Plurimath::Math::Formula.new([
               Plurimath::Math::Function::Over.new(
-                Plurimath::Math::Formula.new([
-                  Plurimath::Math::Number.new("1")
-                ]),
-                Plurimath::Math::Formula.new([
-                  Plurimath::Math::Number.new("2")
-                ])
+                Plurimath::Math::Formula.new([Plurimath::Math::Number.new("1")]),
+                Plurimath::Math::Formula.new([Plurimath::Math::Number.new("2")])
               ),
               Plurimath::Math::Function::Base.new(
                 Plurimath::Math::Symbol.new("&#x3c1;"),
-                Plurimath::Math::Function::FontStyle.new(
+                Plurimath::Math::Function::FontStyle::Normal.new(
                   Plurimath::Math::Formula.new([
                     Plurimath::Math::Symbol.new("r"),
                     Plurimath::Math::Symbol.new("e"),
@@ -6505,7 +7084,7 @@ RSpec.describe Plurimath::Latex::Parser do
               ),
               Plurimath::Math::Function::PowerBase.new(
                 Plurimath::Math::Symbol.new("q"),
-                Plurimath::Math::Function::FontStyle.new(
+                Plurimath::Math::Function::FontStyle::Normal.new(
                   Plurimath::Math::Formula.new([
                     Plurimath::Math::Symbol.new("r"),
                     Plurimath::Math::Symbol.new("e"),
@@ -6514,10 +7093,10 @@ RSpec.describe Plurimath::Latex::Parser do
                   "textrm"
                 ),
                 Plurimath::Math::Number.new("2")
-              )
+              ),
             ])
           ),
-          Plurimath::Math::Symbol.new(",")
+          Plurimath::Math::Symbol.new(","),
         ])
         expect(formula).to eq(expected_value)
       end
@@ -6721,30 +7300,32 @@ RSpec.describe Plurimath::Latex::Parser do
             Plurimath::Math::Function::Table::Array.new(
               [
                 Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Number.new("1")
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Number.new("0")
-                  ])
+                  Plurimath::Math::Function::Td.new(
+                    [Plurimath::Math::Number.new("1")],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [Plurimath::Math::Number.new("0")],
+                    { columnalign: "center" }
+                  ),
                 ]),
                 Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Number.new("0")
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Number.new("1")
-                  ])
-                ])
+                  Plurimath::Math::Function::Td.new(
+                    [Plurimath::Math::Number.new("0")],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [Plurimath::Math::Number.new("1")],
+                    { columnalign: "center" }
+                  ),
+                ]),
               ],
               nil,
-              [
-                Plurimath::Math::Symbol.new("c"),
-                Plurimath::Math::Symbol.new("c"),
-              ],
+              nil,
+              {}
             ),
-            Plurimath::Math::Function::Right.new(")")
-          ])
+            Plurimath::Math::Function::Right.new(")"),
+          ]),
         ])
         expect(formula).to eq(expected_value)
       end
@@ -6773,28 +7354,33 @@ RSpec.describe Plurimath::Latex::Parser do
             Plurimath::Math::Function::Table::Array.new(
               [
                 Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Symbol.new("V"),
-                      Plurimath::Math::Symbol.new("x")
-                    )
-                  ])
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::Base.new(
+                        Plurimath::Math::Symbol.new("V"),
+                        Plurimath::Math::Symbol.new("x")
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
                 ]),
                 Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Symbol.new("V"),
-                      Plurimath::Math::Symbol.new("y")
-                    )
-                  ])
-                ])
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::Base.new(
+                        Plurimath::Math::Symbol.new("V"),
+                        Plurimath::Math::Symbol.new("y")
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                ]),
               ],
               nil,
-              [
-                Plurimath::Math::Symbol.new("c")
-              ],
+              nil,
+              {}
             ),
-            Plurimath::Math::Function::Right.new(")")
+            Plurimath::Math::Function::Right.new(")"),
           ]),
           Plurimath::Math::Symbol.new("="),
           Plurimath::Math::Function::Base.new(
@@ -6812,35 +7398,40 @@ RSpec.describe Plurimath::Latex::Parser do
             Plurimath::Math::Function::Table::Array.new(
               [
                 Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Symbol.new("&#x03b5;"),
-                      Plurimath::Math::Formula.new([
-                        Plurimath::Math::Symbol.new("x"),
-                        Plurimath::Math::Symbol.new("z"),
-                      ])
-                    )
-                  ])
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::Base.new(
+                        Plurimath::Math::Symbol.new("&#x03b5;"),
+                        Plurimath::Math::Formula.new([
+                          Plurimath::Math::Symbol.new("x"),
+                          Plurimath::Math::Symbol.new("z"),
+                        ])
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
                 ]),
                 Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Symbol.new("&#x03b5;"),
-                      Plurimath::Math::Formula.new([
-                        Plurimath::Math::Symbol.new("y"),
-                        Plurimath::Math::Symbol.new("z"),
-                      ])
-                    )
-                  ])
-                ])
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::Base.new(
+                        Plurimath::Math::Symbol.new("&#x03b5;"),
+                        Plurimath::Math::Formula.new([
+                          Plurimath::Math::Symbol.new("y"),
+                          Plurimath::Math::Symbol.new("z"),
+                        ])
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                ]),
               ],
               nil,
-              [
-                Plurimath::Math::Symbol.new("c")
-              ],
+              nil,
+              {}
             ),
-            Plurimath::Math::Function::Right.new(")")
-          ])
+            Plurimath::Math::Function::Right.new(")"),
+          ]),
         ])
         expect(formula).to eq(expected_value)
       end
@@ -6869,105 +7460,115 @@ RSpec.describe Plurimath::Latex::Parser do
             Plurimath::Math::Function::Table::Array.new(
               [
                 Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Symbol.new("h"),
-                      Plurimath::Math::Symbol.new("m")
-                    ),
-                    Plurimath::Math::Symbol.new("&#x2c;"),
-                    Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Symbol.new("D"),
-                      Plurimath::Math::Formula.new([
-                        Plurimath::Math::Symbol.new("m"),
-                        Plurimath::Math::Symbol.new("m")
-                      ])
-                    )
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Symbol.new("h"),
-                      Plurimath::Math::Symbol.new("b")
-                    ),
-                    Plurimath::Math::Symbol.new("&#x2c;"),
-                    Plurimath::Math::Symbol.new("p"),
-                    Plurimath::Math::Symbol.new("&#x2c;"),
-                    Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Symbol.new("D"),
-                      Plurimath::Math::Formula.new([
-                        Plurimath::Math::Symbol.new("m"),
-                        Plurimath::Math::Symbol.new("c")
-                      ])
-                    )
-                  ])
-                ]),
-                Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Symbol.new("["),
-                    Plurimath::Math::Number.new("2"),
-                    Plurimath::Math::Symbol.new("m"),
-                    Plurimath::Math::Symbol.new("m"),
-                    Plurimath::Math::Symbol.new("]"),
-                    Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Symbol.new("h"),
-                      Plurimath::Math::Symbol.new("b")
-                    ),
-                    Plurimath::Math::Symbol.new("&#x2c;"),
-                    Plurimath::Math::Symbol.new("p"),
-                    Plurimath::Math::Symbol.new("&#x2c;"),
-                    Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Symbol.new("D"),
-                      Plurimath::Math::Formula.new([
-                        Plurimath::Math::Symbol.new("m"),
-                        Plurimath::Math::Symbol.new("c")
-                      ])
-                    )
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Formula.new([
-                      Plurimath::Math::Function::FontStyle.new(
-                        Plurimath::Math::Symbol.new("("),
-                        "displaystyle"
-                      ),
-                      Plurimath::Math::Function::Frac.new(
-                        Plurimath::Math::Number.new("1"),
-                        Plurimath::Math::Number.new("12")
-                      ),
-                      Plurimath::Math::Function::PowerBase.new(
-                        Plurimath::Math::Symbol.new("h"),
-                        Plurimath::Math::Symbol.new("b"),
-                        Plurimath::Math::Number.new("3")
-                      ),
-                      Plurimath::Math::Symbol.new("+"),
+                  Plurimath::Math::Function::Td.new(
+                    [
                       Plurimath::Math::Function::Base.new(
                         Plurimath::Math::Symbol.new("h"),
-                        Plurimath::Math::Symbol.new("b")
+                        Plurimath::Math::Symbol.new("m")
                       ),
-                      Plurimath::Math::Symbol.new("&#x2c;"),
-                      Plurimath::Math::Function::Power.new(
-                        Plurimath::Math::Symbol.new("p"),
-                        Plurimath::Math::Number.new("2")
-                      ),
-                      Plurimath::Math::Symbol.new(")"),
                       Plurimath::Math::Symbol.new("&#x2c;"),
                       Plurimath::Math::Function::Base.new(
                         Plurimath::Math::Symbol.new("D"),
                         Plurimath::Math::Formula.new([
                           Plurimath::Math::Symbol.new("m"),
-                          Plurimath::Math::Symbol.new("b")
+                          Plurimath::Math::Symbol.new("m"),
                         ])
-                      )
-                    ])
-                  ])
-                ])
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::Base.new(
+                        Plurimath::Math::Symbol.new("h"),
+                        Plurimath::Math::Symbol.new("b")
+                      ),
+                      Plurimath::Math::Symbol.new("&#x2c;"),
+                      Plurimath::Math::Symbol.new("p"),
+                      Plurimath::Math::Symbol.new("&#x2c;"),
+                      Plurimath::Math::Function::Base.new(
+                        Plurimath::Math::Symbol.new("D"),
+                        Plurimath::Math::Formula.new([
+                          Plurimath::Math::Symbol.new("m"),
+                          Plurimath::Math::Symbol.new("c"),
+                        ])
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                ]),
+                Plurimath::Math::Function::Tr.new([
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Symbol.new("["),
+                      Plurimath::Math::Number.new("2"),
+                      Plurimath::Math::Symbol.new("m"),
+                      Plurimath::Math::Symbol.new("m"),
+                      Plurimath::Math::Symbol.new("]"),
+                      Plurimath::Math::Function::Base.new(
+                        Plurimath::Math::Symbol.new("h"),
+                        Plurimath::Math::Symbol.new("b")
+                      ),
+                      Plurimath::Math::Symbol.new("&#x2c;"),
+                      Plurimath::Math::Symbol.new("p"),
+                      Plurimath::Math::Symbol.new("&#x2c;"),
+                      Plurimath::Math::Function::Base.new(
+                        Plurimath::Math::Symbol.new("D"),
+                        Plurimath::Math::Formula.new([
+                          Plurimath::Math::Symbol.new("m"),
+                          Plurimath::Math::Symbol.new("c"),
+                        ])
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Function::FontStyle.new(
+                          Plurimath::Math::Symbol.new("("),
+                          "displaystyle"
+                        ),
+                        Plurimath::Math::Function::Frac.new(
+                          Plurimath::Math::Number.new("1"),
+                          Plurimath::Math::Number.new("12")
+                        ),
+                        Plurimath::Math::Function::PowerBase.new(
+                          Plurimath::Math::Symbol.new("h"),
+                          Plurimath::Math::Symbol.new("b"),
+                          Plurimath::Math::Number.new("3")
+                        ),
+                        Plurimath::Math::Symbol.new("+"),
+                        Plurimath::Math::Function::Base.new(
+                          Plurimath::Math::Symbol.new("h"),
+                          Plurimath::Math::Symbol.new("b")
+                        ),
+                        Plurimath::Math::Symbol.new("&#x2c;"),
+                        Plurimath::Math::Function::Power.new(
+                          Plurimath::Math::Symbol.new("p"),
+                          Plurimath::Math::Number.new("2")
+                        ),
+                        Plurimath::Math::Symbol.new(")"),
+                        Plurimath::Math::Symbol.new("&#x2c;"),
+                        Plurimath::Math::Function::Base.new(
+                          Plurimath::Math::Symbol.new("D"),
+                          Plurimath::Math::Formula.new([
+                            Plurimath::Math::Symbol.new("m"),
+                            Plurimath::Math::Symbol.new("b"),
+                          ])
+                        ),
+                      ]),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                ]),
               ],
               nil,
-              [
-                Plurimath::Math::Symbol.new("c"),
-                Plurimath::Math::Symbol.new("c")
-              ]
+              nil,
+              {}
             ),
-            Plurimath::Math::Function::Right.new(")")
-          ])
+            Plurimath::Math::Function::Right.new(")"),
+          ]),
         ])
         expect(formula).to eq(expected_value)
       end
@@ -6993,70 +7594,83 @@ RSpec.describe Plurimath::Latex::Parser do
         LATEX
       }
       it "returns formula" do
-          expected_value = Plurimath::Math::Formula.new([
-            Plurimath::Math::Function::Base.new(
-              Plurimath::Math::Symbol.new("D"),
-              Plurimath::Math::Symbol.new("m")
-            ),
-            Plurimath::Math::Symbol.new("="),
-            Plurimath::Math::Function::Frac.new(
-              Plurimath::Math::Symbol.new("E"),
-              Plurimath::Math::Formula.new([
-                Plurimath::Math::Symbol.new("("),
-                Plurimath::Math::Number.new("1"),
-                Plurimath::Math::Symbol.new("-"),
-                Plurimath::Math::Function::Power.new(
-                  Plurimath::Math::Symbol.new("&#x3bd;"),
-                  Plurimath::Math::Number.new("2")
-                ),
-                Plurimath::Math::Symbol.new(")")
-              ])
-            ),
-            Plurimath::Math::Symbol.new("&#x3a;"),
+        expected_value = Plurimath::Math::Formula.new([
+          Plurimath::Math::Function::Base.new(
+            Plurimath::Math::Symbol.new("D"),
+            Plurimath::Math::Symbol.new("m")
+          ),
+          Plurimath::Math::Symbol.new("="),
+          Plurimath::Math::Function::Frac.new(
+            Plurimath::Math::Symbol.new("E"),
             Plurimath::Math::Formula.new([
-              Plurimath::Math::Function::Left.new("("),
-              Plurimath::Math::Function::Table::Array.new(
-                [
-                  Plurimath::Math::Function::Tr.new([
-                    Plurimath::Math::Function::Td.new([
-                      Plurimath::Math::Number.new("1")
-                    ]),
-                    Plurimath::Math::Function::Td.new([
-                      Plurimath::Math::Symbol.new("&#x3bd;")
-                    ]),
-                    Plurimath::Math::Function::Td.new([
-                      Plurimath::Math::Number.new("0")
-                    ])
-                  ]),
-                  Plurimath::Math::Function::Tr.new([
-                    Plurimath::Math::Function::Td.new([
+              Plurimath::Math::Symbol.new("("),
+              Plurimath::Math::Number.new("1"),
+              Plurimath::Math::Symbol.new("-"),
+              Plurimath::Math::Function::Power.new(
+                Plurimath::Math::Symbol.new("&#x3bd;"),
+                Plurimath::Math::Number.new("2")
+              ),
+              Plurimath::Math::Symbol.new(")"),
+            ])
+          ),
+          Plurimath::Math::Symbol.new("&#x3a;"),
+          Plurimath::Math::Formula.new([
+            Plurimath::Math::Function::Left.new("("),
+            Plurimath::Math::Function::Table::Array.new(
+              [
+                Plurimath::Math::Function::Tr.new([
+                  Plurimath::Math::Function::Td.new(
+                    [Plurimath::Math::Number.new("1")],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [Plurimath::Math::Symbol.new("&#x3bd;")],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [Plurimath::Math::Number.new("0")],
+                    { columnalign: "center" }
+                  ),
+                ]),
+                Plurimath::Math::Function::Tr.new([
+                  Plurimath::Math::Function::Td.new(
+                    [
                       Plurimath::Math::Symbol.new("["),
                       Plurimath::Math::Number.new("2"),
                       Plurimath::Math::Symbol.new("m"),
                       Plurimath::Math::Symbol.new("m"),
                       Plurimath::Math::Symbol.new("]"),
-                      Plurimath::Math::Symbol.new("&#x3bd;")
-                    ]),
-                    Plurimath::Math::Function::Td.new([
-                      Plurimath::Math::Number.new("1")
-                    ]),
-                    Plurimath::Math::Function::Td.new([
-                      Plurimath::Math::Number.new("0")
-                    ])
-                  ]),
-                  Plurimath::Math::Function::Tr.new([
-                    Plurimath::Math::Function::Td.new([
+                      Plurimath::Math::Symbol.new("&#x3bd;"),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [Plurimath::Math::Number.new("1")],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [Plurimath::Math::Number.new("0")],
+                    { columnalign: "center" }
+                  ),
+                ]),
+                Plurimath::Math::Function::Tr.new([
+                  Plurimath::Math::Function::Td.new(
+                    [
                       Plurimath::Math::Symbol.new("["),
                       Plurimath::Math::Number.new("2"),
                       Plurimath::Math::Symbol.new("m"),
                       Plurimath::Math::Symbol.new("m"),
                       Plurimath::Math::Symbol.new("]"),
-                      Plurimath::Math::Number.new("0")
-                    ]),
-                    Plurimath::Math::Function::Td.new([
-                      Plurimath::Math::Number.new("0")
-                    ]),
-                    Plurimath::Math::Function::Td.new([
+                      Plurimath::Math::Number.new("0"),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [Plurimath::Math::Number.new("0")],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [
                       Plurimath::Math::Function::FontStyle.new(
                         Plurimath::Math::Function::Frac.new(
                           Plurimath::Math::Formula.new([
@@ -7064,25 +7678,24 @@ RSpec.describe Plurimath::Latex::Parser do
                             Plurimath::Math::Number.new("1"),
                             Plurimath::Math::Symbol.new("-"),
                             Plurimath::Math::Symbol.new("&#x3bd;"),
-                            Plurimath::Math::Symbol.new(")")
+                            Plurimath::Math::Symbol.new(")"),
                           ]),
                           Plurimath::Math::Number.new("2")
                         ),
                         "displaystyle"
-                      )
-                    ])
-                  ])
-                ],
-                nil,
-                [
-                  Plurimath::Math::Symbol.new("c"),
-                  Plurimath::Math::Symbol.new("c"),
-                  Plurimath::Math::Symbol.new("c")
-                ]
-              ),
-              Plurimath::Math::Function::Right.new(")")
-            ])
-          ])
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                ]),
+              ],
+              nil,
+              nil,
+              {}
+            ),
+            Plurimath::Math::Function::Right.new(")"),
+          ]),
+        ])
         expect(formula).to eq(expected_value)
       end
     end
@@ -7110,80 +7723,90 @@ RSpec.describe Plurimath::Latex::Parser do
             Plurimath::Math::Function::Table::Array.new(
               [
                 Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Symbol.new("h"),
-                    Plurimath::Math::Symbol.new("&#x2c;"),
-                    Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Symbol.new("D"),
-                      Plurimath::Math::Symbol.new("m")
-                    )
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Symbol.new("h"),
-                    Plurimath::Math::Symbol.new("&#x2c;"),
-                    Plurimath::Math::Symbol.new("p"),
-                    Plurimath::Math::Symbol.new("&#x2c;"),
-                    Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Symbol.new("D"),
-                      Plurimath::Math::Symbol.new("m")
-                    )
-                  ])
-                ]),
-                Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Symbol.new("["),
-                    Plurimath::Math::Number.new("2"),
-                    Plurimath::Math::Symbol.new("m"),
-                    Plurimath::Math::Symbol.new("m"),
-                    Plurimath::Math::Symbol.new("]"),
-                    Plurimath::Math::Symbol.new("h"),
-                    Plurimath::Math::Symbol.new("&#x2c;"),
-                    Plurimath::Math::Symbol.new("p"),
-                    Plurimath::Math::Symbol.new("&#x2c;"),
-                    Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Symbol.new("D"),
-                      Plurimath::Math::Symbol.new("m")
-                    )
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Formula.new([
-                      Plurimath::Math::Function::FontStyle.new(
-                        Plurimath::Math::Symbol.new("("),
-                        "displaystyle"
-                      ),
-                      Plurimath::Math::Function::Frac.new(
-                        Plurimath::Math::Number.new("1"),
-                        Plurimath::Math::Number.new("12")
-                      ),
-                      Plurimath::Math::Function::Power.new(
-                        Plurimath::Math::Symbol.new("h"),
-                        Plurimath::Math::Number.new("3")
-                      ),
-                      Plurimath::Math::Symbol.new("+"),
+                  Plurimath::Math::Function::Td.new(
+                    [
                       Plurimath::Math::Symbol.new("h"),
-                      Plurimath::Math::Symbol.new("&#x2c;"),
-                      Plurimath::Math::Function::Power.new(
-                        Plurimath::Math::Symbol.new("p"),
-                        Plurimath::Math::Number.new("2")
-                      ),
-                      Plurimath::Math::Symbol.new(")"),
                       Plurimath::Math::Symbol.new("&#x2c;"),
                       Plurimath::Math::Function::Base.new(
                         Plurimath::Math::Symbol.new("D"),
                         Plurimath::Math::Symbol.new("m")
-                      )
-                    ])
-                  ])
-                ])
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Symbol.new("h"),
+                      Plurimath::Math::Symbol.new("&#x2c;"),
+                      Plurimath::Math::Symbol.new("p"),
+                      Plurimath::Math::Symbol.new("&#x2c;"),
+                      Plurimath::Math::Function::Base.new(
+                        Plurimath::Math::Symbol.new("D"),
+                        Plurimath::Math::Symbol.new("m")
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                ]),
+                Plurimath::Math::Function::Tr.new([
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Symbol.new("["),
+                      Plurimath::Math::Number.new("2"),
+                      Plurimath::Math::Symbol.new("m"),
+                      Plurimath::Math::Symbol.new("m"),
+                      Plurimath::Math::Symbol.new("]"),
+                      Plurimath::Math::Symbol.new("h"),
+                      Plurimath::Math::Symbol.new("&#x2c;"),
+                      Plurimath::Math::Symbol.new("p"),
+                      Plurimath::Math::Symbol.new("&#x2c;"),
+                      Plurimath::Math::Function::Base.new(
+                        Plurimath::Math::Symbol.new("D"),
+                        Plurimath::Math::Symbol.new("m")
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Function::FontStyle.new(
+                          Plurimath::Math::Symbol.new("("),
+                          "displaystyle"
+                        ),
+                        Plurimath::Math::Function::Frac.new(
+                          Plurimath::Math::Number.new("1"),
+                          Plurimath::Math::Number.new("12")
+                        ),
+                        Plurimath::Math::Function::Power.new(
+                          Plurimath::Math::Symbol.new("h"),
+                          Plurimath::Math::Number.new("3")
+                        ),
+                        Plurimath::Math::Symbol.new("+"),
+                        Plurimath::Math::Symbol.new("h"),
+                        Plurimath::Math::Symbol.new("&#x2c;"),
+                        Plurimath::Math::Function::Power.new(
+                          Plurimath::Math::Symbol.new("p"),
+                          Plurimath::Math::Number.new("2")
+                        ),
+                        Plurimath::Math::Symbol.new(")"),
+                        Plurimath::Math::Symbol.new("&#x2c;"),
+                        Plurimath::Math::Function::Base.new(
+                          Plurimath::Math::Symbol.new("D"),
+                          Plurimath::Math::Symbol.new("m")
+                        ),
+                      ]),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                ]),
               ],
               nil,
-              [
-                Plurimath::Math::Symbol.new("c"),
-                Plurimath::Math::Symbol.new("c")
-              ]
+              nil,
+              {}
             ),
-            Plurimath::Math::Function::Right.new(")")
-          ])
+            Plurimath::Math::Function::Right.new(")"),
+          ]),
         ])
         expect(formula).to eq(expected_value)
       end
@@ -7211,79 +7834,96 @@ RSpec.describe Plurimath::Latex::Parser do
             Plurimath::Math::Function::Table::Array.new(
               [
                 Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Symbol.new("&#x03b5;"),
-                      Plurimath::Math::Formula.new([
-                        Plurimath::Math::Symbol.new("x"),
-                        Plurimath::Math::Symbol.new("x"),
-                      ])
-                    )
-                  ])
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::Base.new(
+                        Plurimath::Math::Symbol.new("&#x03b5;"),
+                        Plurimath::Math::Formula.new([
+                          Plurimath::Math::Symbol.new("x"),
+                          Plurimath::Math::Symbol.new("x"),
+                        ])
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
                 ]),
                 Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Symbol.new("&#x03b5;"),
-                      Plurimath::Math::Formula.new([
-                        Plurimath::Math::Symbol.new("y"),
-                        Plurimath::Math::Symbol.new("y"),
-                      ])
-                    )
-                  ])
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::Base.new(
+                        Plurimath::Math::Symbol.new("&#x03b5;"),
+                        Plurimath::Math::Formula.new([
+                          Plurimath::Math::Symbol.new("y"),
+                          Plurimath::Math::Symbol.new("y"),
+                        ])
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
                 ]),
                 Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Symbol.new("&#x3b3;"),
-                      Plurimath::Math::Formula.new([
-                        Plurimath::Math::Symbol.new("x"),
-                        Plurimath::Math::Symbol.new("y"),
-                      ])
-                    )
-                  ])
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::Base.new(
+                        Plurimath::Math::Symbol.new("&#x3b3;"),
+                        Plurimath::Math::Formula.new([
+                          Plurimath::Math::Symbol.new("x"),
+                          Plurimath::Math::Symbol.new("y"),
+                        ])
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
                 ]),
                 Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Symbol.new("&#x3c7;"),
-                      Plurimath::Math::Formula.new([
-                        Plurimath::Math::Symbol.new("x"),
-                        Plurimath::Math::Symbol.new("x"),
-                      ])
-                    )
-                  ])
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::Base.new(
+                        Plurimath::Math::Symbol.new("&#x3c7;"),
+                        Plurimath::Math::Formula.new([
+                          Plurimath::Math::Symbol.new("x"),
+                          Plurimath::Math::Symbol.new("x"),
+                        ])
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
                 ]),
                 Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Symbol.new("&#x3c7;"),
-                      Plurimath::Math::Formula.new([
-                        Plurimath::Math::Symbol.new("y"),
-                        Plurimath::Math::Symbol.new("y"),
-                      ])
-                    )
-                  ])
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::Base.new(
+                        Plurimath::Math::Symbol.new("&#x3c7;"),
+                        Plurimath::Math::Formula.new([
+                          Plurimath::Math::Symbol.new("y"),
+                          Plurimath::Math::Symbol.new("y"),
+                        ])
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
                 ]),
                 Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Symbol.new("&#x3c4;"),
-                      Plurimath::Math::Formula.new([
-                        Plurimath::Math::Symbol.new("x"),
-                        Plurimath::Math::Symbol.new("y"),
-                      ])
-                    )
-                  ])
-                ])
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::Base.new(
+                        Plurimath::Math::Symbol.new("&#x3c4;"),
+                        Plurimath::Math::Formula.new([
+                          Plurimath::Math::Symbol.new("x"),
+                          Plurimath::Math::Symbol.new("y"),
+                        ])
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                ]),
               ],
               nil,
-              [
-                Plurimath::Math::Symbol.new("c")
-              ],
+              nil,
+              {}
             ),
-            Plurimath::Math::Function::Right.new(")")
-          ])
+            Plurimath::Math::Function::Right.new(")"),
+          ]),
         ])
         expect(formula).to eq(expected_value)
       end
@@ -7311,79 +7951,96 @@ RSpec.describe Plurimath::Latex::Parser do
             Plurimath::Math::Function::Table::Array.new(
               [
                 Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Symbol.new("N"),
-                      Plurimath::Math::Formula.new([
-                        Plurimath::Math::Symbol.new("y"),
-                        Plurimath::Math::Symbol.new("y"),
-                      ])
-                    )
-                  ])
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::Base.new(
+                        Plurimath::Math::Symbol.new("N"),
+                        Plurimath::Math::Formula.new([
+                          Plurimath::Math::Symbol.new("y"),
+                          Plurimath::Math::Symbol.new("y"),
+                        ])
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
                 ]),
                 Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Symbol.new("N"),
-                      Plurimath::Math::Formula.new([
-                        Plurimath::Math::Symbol.new("x"),
-                        Plurimath::Math::Symbol.new("x"),
-                      ])
-                    )
-                  ])
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::Base.new(
+                        Plurimath::Math::Symbol.new("N"),
+                        Plurimath::Math::Formula.new([
+                          Plurimath::Math::Symbol.new("x"),
+                          Plurimath::Math::Symbol.new("x"),
+                        ])
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
                 ]),
                 Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Symbol.new("N"),
-                      Plurimath::Math::Formula.new([
-                        Plurimath::Math::Symbol.new("x"),
-                        Plurimath::Math::Symbol.new("y"),
-                      ])
-                    )
-                  ])
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::Base.new(
+                        Plurimath::Math::Symbol.new("N"),
+                        Plurimath::Math::Formula.new([
+                          Plurimath::Math::Symbol.new("x"),
+                          Plurimath::Math::Symbol.new("y"),
+                        ])
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
                 ]),
                 Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Symbol.new("M"),
-                      Plurimath::Math::Formula.new([
-                        Plurimath::Math::Symbol.new("x"),
-                        Plurimath::Math::Symbol.new("x"),
-                      ])
-                    )
-                  ])
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::Base.new(
+                        Plurimath::Math::Symbol.new("M"),
+                        Plurimath::Math::Formula.new([
+                          Plurimath::Math::Symbol.new("x"),
+                          Plurimath::Math::Symbol.new("x"),
+                        ])
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
                 ]),
                 Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Symbol.new("M"),
-                      Plurimath::Math::Formula.new([
-                        Plurimath::Math::Symbol.new("y"),
-                        Plurimath::Math::Symbol.new("y"),
-                      ])
-                    )
-                  ])
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::Base.new(
+                        Plurimath::Math::Symbol.new("M"),
+                        Plurimath::Math::Formula.new([
+                          Plurimath::Math::Symbol.new("y"),
+                          Plurimath::Math::Symbol.new("y"),
+                        ])
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
                 ]),
                 Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Symbol.new("M"),
-                      Plurimath::Math::Formula.new([
-                        Plurimath::Math::Symbol.new("x"),
-                        Plurimath::Math::Symbol.new("y"),
-                      ])
-                    )
-                  ])
-                ])
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::Base.new(
+                        Plurimath::Math::Symbol.new("M"),
+                        Plurimath::Math::Formula.new([
+                          Plurimath::Math::Symbol.new("x"),
+                          Plurimath::Math::Symbol.new("y"),
+                        ])
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                ]),
               ],
               nil,
-              [
-                Plurimath::Math::Symbol.new("c")
-              ],
+              nil,
+              {}
             ),
-            Plurimath::Math::Function::Right.new(")")
-          ])
+            Plurimath::Math::Function::Right.new(")"),
+          ]),
         ])
         expect(formula).to eq(expected_value)
       end
@@ -7633,78 +8290,83 @@ RSpec.describe Plurimath::Latex::Parser do
             Plurimath::Math::Function::Table::Array.new(
               [
                 Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Formula.new([
-                      Plurimath::Math::Function::FontStyle.new(
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Function::FontStyle.new(
+                          Plurimath::Math::Function::Frac.new(
+                            Plurimath::Math::Formula.new([
+                              Plurimath::Math::Symbol.new("&#x2202;"),
+                              Plurimath::Math::Symbol.new("w"),
+                            ]),
+                            Plurimath::Math::Formula.new([
+                              Plurimath::Math::Symbol.new("&#x2202;"),
+                              Plurimath::Math::Symbol.new("x"),
+                            ])
+                          ),
+                          "displaystyle"
+                        ),
+                        Plurimath::Math::Symbol.new("+"),
                         Plurimath::Math::Function::Frac.new(
                           Plurimath::Math::Formula.new([
                             Plurimath::Math::Symbol.new("&#x2202;"),
-                            Plurimath::Math::Symbol.new("w")
+                            Plurimath::Math::Symbol.new("u"),
                           ]),
                           Plurimath::Math::Formula.new([
                             Plurimath::Math::Symbol.new("&#x2202;"),
-                            Plurimath::Math::Symbol.new("x")
+                            Plurimath::Math::Symbol.new("z"),
                           ])
                         ),
-                        "displaystyle"
-                      ),
-                      Plurimath::Math::Symbol.new("+"),
-                      Plurimath::Math::Function::Frac.new(
-                        Plurimath::Math::Formula.new([
-                          Plurimath::Math::Symbol.new("&#x2202;"),
-                          Plurimath::Math::Symbol.new("u")
-                        ]),
-                        Plurimath::Math::Formula.new([
-                          Plurimath::Math::Symbol.new("&#x2202;"),
-                          Plurimath::Math::Symbol.new("z")
-                        ])
-                      )
-                    ])
-                  ])
+                      ]),
+                    ],
+                    { columnalign: "center" }
+                  ),
                 ]),
                 Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Symbol.new("["),
-                    Plurimath::Math::Number.new("3"),
-                    Plurimath::Math::Symbol.new("m"),
-                    Plurimath::Math::Symbol.new("m"),
-                    Plurimath::Math::Symbol.new("]"),
-                    Plurimath::Math::Formula.new([
-                      Plurimath::Math::Function::FontStyle.new(
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Symbol.new("["),
+                      Plurimath::Math::Number.new("3"),
+                      Plurimath::Math::Symbol.new("m"),
+                      Plurimath::Math::Symbol.new("m"),
+                      Plurimath::Math::Symbol.new("]"),
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Function::FontStyle.new(
+                          Plurimath::Math::Function::Frac.new(
+                            Plurimath::Math::Formula.new([
+                              Plurimath::Math::Symbol.new("&#x2202;"),
+                              Plurimath::Math::Symbol.new("w"),
+                            ]),
+                            Plurimath::Math::Formula.new([
+                              Plurimath::Math::Symbol.new("&#x2202;"),
+                              Plurimath::Math::Symbol.new("y"),
+                            ])
+                          ),
+                          "displaystyle"
+                        ),
+                        Plurimath::Math::Symbol.new("+"),
                         Plurimath::Math::Function::Frac.new(
                           Plurimath::Math::Formula.new([
                             Plurimath::Math::Symbol.new("&#x2202;"),
-                            Plurimath::Math::Symbol.new("w")
+                            Plurimath::Math::Symbol.new("v"),
                           ]),
                           Plurimath::Math::Formula.new([
                             Plurimath::Math::Symbol.new("&#x2202;"),
-                            Plurimath::Math::Symbol.new("y")
+                            Plurimath::Math::Symbol.new("z"),
                           ])
                         ),
-                        "displaystyle"
-                      ),
-                      Plurimath::Math::Symbol.new("+"),
-                      Plurimath::Math::Function::Frac.new(
-                        Plurimath::Math::Formula.new([
-                          Plurimath::Math::Symbol.new("&#x2202;"),
-                          Plurimath::Math::Symbol.new("v")
-                        ]),
-                        Plurimath::Math::Formula.new([
-                          Plurimath::Math::Symbol.new("&#x2202;"),
-                          Plurimath::Math::Symbol.new("z")
-                        ])
-                      )
-                    ])
-                  ])
-                ])
+                      ]),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                ]),
               ],
               nil,
-              [
-                Plurimath::Math::Symbol.new("c")
-              ]
+              nil,
+              {}
             ),
-            Plurimath::Math::Function::Right.new(")")
-          ])
+            Plurimath::Math::Function::Right.new(")"),
+          ]),
         ])
         expect(formula).to eq(expected_value)
       end
@@ -7826,117 +8488,127 @@ RSpec.describe Plurimath::Latex::Parser do
             Plurimath::Math::Function::Table::Array.new(
               [
                 Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Formula.new([
-                      Plurimath::Math::Function::FontStyle.new(
-                        Plurimath::Math::Symbol.new("-"),
-                        "displaystyle"
-                      ),
-                      Plurimath::Math::Function::Frac.new(
-                        Plurimath::Math::Formula.new([
-                          Plurimath::Math::Function::Power.new(
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Function::FontStyle.new(
+                          Plurimath::Math::Symbol.new("-"),
+                          "displaystyle"
+                        ),
+                        Plurimath::Math::Function::Frac.new(
+                          Plurimath::Math::Formula.new([
+                            Plurimath::Math::Function::Power.new(
+                              Plurimath::Math::Symbol.new("&#x2202;"),
+                              Plurimath::Math::Number.new("2")
+                            ),
+                            Plurimath::Math::Symbol.new("w"),
+                          ]),
+                          Plurimath::Math::Formula.new([
                             Plurimath::Math::Symbol.new("&#x2202;"),
-                            Plurimath::Math::Number.new("2")
-                          ),
-                          Plurimath::Math::Symbol.new("w")
-                        ]),
-                        Plurimath::Math::Formula.new([
-                          Plurimath::Math::Symbol.new("&#x2202;"),
-                          Plurimath::Math::Function::Power.new(
+                            Plurimath::Math::Function::Power.new(
+                              Plurimath::Math::Symbol.new("x"),
+                              Plurimath::Math::Number.new("2")
+                            ),
+                          ])
+                        ),
+                      ]),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Function::FontStyle.new(
+                          Plurimath::Math::Symbol.new("-"),
+                          "displaystyle"
+                        ),
+                        Plurimath::Math::Function::Frac.new(
+                          Plurimath::Math::Formula.new([
+                            Plurimath::Math::Function::Power.new(
+                              Plurimath::Math::Symbol.new("&#x2202;"),
+                              Plurimath::Math::Number.new("2")
+                            ),
+                            Plurimath::Math::Symbol.new("w"),
+                          ]),
+                          Plurimath::Math::Formula.new([
+                            Plurimath::Math::Symbol.new("&#x2202;"),
                             Plurimath::Math::Symbol.new("x"),
-                            Plurimath::Math::Number.new("2")
-                          )
-                        ])
-                      )
-                    ])
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Formula.new([
-                      Plurimath::Math::Function::FontStyle.new(
-                        Plurimath::Math::Symbol.new("-"),
-                        "displaystyle"
-                      ),
-                      Plurimath::Math::Function::Frac.new(
-                        Plurimath::Math::Formula.new([
-                          Plurimath::Math::Function::Power.new(
                             Plurimath::Math::Symbol.new("&#x2202;"),
-                            Plurimath::Math::Number.new("2")
-                          ),
-                          Plurimath::Math::Symbol.new("w")
-                        ]),
-                        Plurimath::Math::Formula.new([
-                          Plurimath::Math::Symbol.new("&#x2202;"),
-                          Plurimath::Math::Symbol.new("x"),
-                          Plurimath::Math::Symbol.new("&#x2202;"),
-                          Plurimath::Math::Symbol.new("y")
-                        ])
-                      )
-                    ])
-                  ])
+                            Plurimath::Math::Symbol.new("y"),
+                          ])
+                        ),
+                      ]),
+                    ],
+                    { columnalign: "center" }
+                  ),
                 ]),
                 Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Symbol.new("["),
-                    Plurimath::Math::Number.new("3"),
-                    Plurimath::Math::Symbol.new("m"),
-                    Plurimath::Math::Symbol.new("m"),
-                    Plurimath::Math::Symbol.new("]"),
-                    Plurimath::Math::Formula.new([
-                      Plurimath::Math::Function::FontStyle.new(
-                        Plurimath::Math::Symbol.new("-"),
-                        "displaystyle"
-                      ),
-                      Plurimath::Math::Function::Frac.new(
-                        Plurimath::Math::Formula.new([
-                          Plurimath::Math::Function::Power.new(
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Symbol.new("["),
+                      Plurimath::Math::Number.new("3"),
+                      Plurimath::Math::Symbol.new("m"),
+                      Plurimath::Math::Symbol.new("m"),
+                      Plurimath::Math::Symbol.new("]"),
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Function::FontStyle.new(
+                          Plurimath::Math::Symbol.new("-"),
+                          "displaystyle"
+                        ),
+                        Plurimath::Math::Function::Frac.new(
+                          Plurimath::Math::Formula.new([
+                            Plurimath::Math::Function::Power.new(
+                              Plurimath::Math::Symbol.new("&#x2202;"),
+                              Plurimath::Math::Number.new("2")
+                            ),
+                            Plurimath::Math::Symbol.new("w"),
+                          ]),
+                          Plurimath::Math::Formula.new([
                             Plurimath::Math::Symbol.new("&#x2202;"),
-                            Plurimath::Math::Number.new("2")
-                          ),
-                          Plurimath::Math::Symbol.new("w")
-                        ]),
-                        Plurimath::Math::Formula.new([
-                          Plurimath::Math::Symbol.new("&#x2202;"),
-                          Plurimath::Math::Symbol.new("x"),
-                          Plurimath::Math::Symbol.new("&#x2202;"),
-                          Plurimath::Math::Symbol.new("y")
-                        ])
-                      )
-                    ])
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Formula.new([
-                      Plurimath::Math::Function::FontStyle.new(
-                        Plurimath::Math::Symbol.new("-"),
-                        "displaystyle"
-                      ),
-                      Plurimath::Math::Function::Frac.new(
-                        Plurimath::Math::Formula.new([
-                          Plurimath::Math::Function::Power.new(
+                            Plurimath::Math::Symbol.new("x"),
                             Plurimath::Math::Symbol.new("&#x2202;"),
-                            Plurimath::Math::Number.new("2")
-                          ),
-                          Plurimath::Math::Symbol.new("w")
-                        ]),
-                        Plurimath::Math::Formula.new([
-                          Plurimath::Math::Symbol.new("&#x2202;"),
-                          Plurimath::Math::Function::Power.new(
                             Plurimath::Math::Symbol.new("y"),
-                            Plurimath::Math::Number.new("2")
-                          )
-                        ])
-                      )
-                    ])
-                  ])
-                ])
+                          ])
+                        ),
+                      ]),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Function::FontStyle.new(
+                          Plurimath::Math::Symbol.new("-"),
+                          "displaystyle"
+                        ),
+                        Plurimath::Math::Function::Frac.new(
+                          Plurimath::Math::Formula.new([
+                            Plurimath::Math::Function::Power.new(
+                              Plurimath::Math::Symbol.new("&#x2202;"),
+                              Plurimath::Math::Number.new("2")
+                            ),
+                            Plurimath::Math::Symbol.new("w"),
+                          ]),
+                          Plurimath::Math::Formula.new([
+                            Plurimath::Math::Symbol.new("&#x2202;"),
+                            Plurimath::Math::Function::Power.new(
+                              Plurimath::Math::Symbol.new("y"),
+                              Plurimath::Math::Number.new("2")
+                            ),
+                          ])
+                        ),
+                      ]),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                ]),
               ],
               nil,
-              [
-                Plurimath::Math::Symbol.new("c"),
-                Plurimath::Math::Symbol.new("c")
-              ]
+              nil,
+              {}
             ),
-            Plurimath::Math::Function::Right.new(")")
-          ])
+            Plurimath::Math::Function::Right.new(")"),
+          ]),
         ])
         expect(formula).to eq(expected_value)
       end
@@ -8020,83 +8692,93 @@ RSpec.describe Plurimath::Latex::Parser do
             Plurimath::Math::Function::Table::Array.new(
               [
                 Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::FontStyle.new(
-                      Plurimath::Math::Function::Frac.new(
-                        Plurimath::Math::Formula.new([
-                          Plurimath::Math::Symbol.new("&#x2202;"),
-                          Plurimath::Math::Symbol.new("u")
-                        ]),
-                        Plurimath::Math::Formula.new([
-                          Plurimath::Math::Symbol.new("&#x2202;"),
-                          Plurimath::Math::Symbol.new("x")
-                        ])
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::FontStyle.new(
+                        Plurimath::Math::Function::Frac.new(
+                          Plurimath::Math::Formula.new([
+                            Plurimath::Math::Symbol.new("&#x2202;"),
+                            Plurimath::Math::Symbol.new("u"),
+                          ]),
+                          Plurimath::Math::Formula.new([
+                            Plurimath::Math::Symbol.new("&#x2202;"),
+                            Plurimath::Math::Symbol.new("x"),
+                          ])
+                        ),
+                        "displaystyle"
                       ),
-                      "displaystyle"
-                    )
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::FontStyle.new(
-                      Plurimath::Math::Function::Frac.new(
-                        Plurimath::Math::Formula.new([
-                          Plurimath::Math::Symbol.new("&#x2202;"),
-                          Plurimath::Math::Symbol.new("v")
-                        ]),
-                        Plurimath::Math::Formula.new([
-                          Plurimath::Math::Symbol.new("&#x2202;"),
-                          Plurimath::Math::Symbol.new("x")
-                        ])
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::FontStyle.new(
+                        Plurimath::Math::Function::Frac.new(
+                          Plurimath::Math::Formula.new([
+                            Plurimath::Math::Symbol.new("&#x2202;"),
+                            Plurimath::Math::Symbol.new("v"),
+                          ]),
+                          Plurimath::Math::Formula.new([
+                            Plurimath::Math::Symbol.new("&#x2202;"),
+                            Plurimath::Math::Symbol.new("x"),
+                          ])
+                        ),
+                        "displaystyle"
                       ),
-                      "displaystyle"
-                    )
-                  ])
+                    ],
+                    { columnalign: "center" }
+                  ),
                 ]),
                 Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Symbol.new("["),
-                    Plurimath::Math::Number.new("3"),
-                    Plurimath::Math::Symbol.new("m"),
-                    Plurimath::Math::Symbol.new("m"),
-                    Plurimath::Math::Symbol.new("]"),
-                    Plurimath::Math::Function::FontStyle.new(
-                      Plurimath::Math::Function::Frac.new(
-                        Plurimath::Math::Formula.new([
-                          Plurimath::Math::Symbol.new("&#x2202;"),
-                          Plurimath::Math::Symbol.new("u")
-                        ]),
-                        Plurimath::Math::Formula.new([
-                          Plurimath::Math::Symbol.new("&#x2202;"),
-                          Plurimath::Math::Symbol.new("y")
-                        ])
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Symbol.new("["),
+                      Plurimath::Math::Number.new("3"),
+                      Plurimath::Math::Symbol.new("m"),
+                      Plurimath::Math::Symbol.new("m"),
+                      Plurimath::Math::Symbol.new("]"),
+                      Plurimath::Math::Function::FontStyle.new(
+                        Plurimath::Math::Function::Frac.new(
+                          Plurimath::Math::Formula.new([
+                            Plurimath::Math::Symbol.new("&#x2202;"),
+                            Plurimath::Math::Symbol.new("u"),
+                          ]),
+                          Plurimath::Math::Formula.new([
+                            Plurimath::Math::Symbol.new("&#x2202;"),
+                            Plurimath::Math::Symbol.new("y"),
+                          ])
+                        ),
+                        "displaystyle"
                       ),
-                      "displaystyle"
-                    )
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::FontStyle.new(
-                      Plurimath::Math::Function::Frac.new(
-                        Plurimath::Math::Formula.new([
-                          Plurimath::Math::Symbol.new("&#x2202;"),
-                          Plurimath::Math::Symbol.new("v")
-                        ]),
-                        Plurimath::Math::Formula.new([
-                          Plurimath::Math::Symbol.new("&#x2202;"),
-                          Plurimath::Math::Symbol.new("y")
-                        ])
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::FontStyle.new(
+                        Plurimath::Math::Function::Frac.new(
+                          Plurimath::Math::Formula.new([
+                            Plurimath::Math::Symbol.new("&#x2202;"),
+                            Plurimath::Math::Symbol.new("v"),
+                          ]),
+                          Plurimath::Math::Formula.new([
+                            Plurimath::Math::Symbol.new("&#x2202;"),
+                            Plurimath::Math::Symbol.new("y"),
+                          ])
+                        ),
+                        "displaystyle"
                       ),
-                      "displaystyle"
-                    )
-                  ])
-                ])
+                    ],
+                    { columnalign: "center" }
+                  ),
+                ]),
               ],
               nil,
-              [
-                Plurimath::Math::Symbol.new("c"),
-                Plurimath::Math::Symbol.new("c")
-              ]
+              nil,
+              {}
             ),
-            Plurimath::Math::Function::Right.new(")")
-          ])
+            Plurimath::Math::Function::Right.new(")"),
+          ]),
         ])
         expect(formula).to eq(expected_value)
       end
@@ -9130,337 +9812,476 @@ RSpec.describe Plurimath::Latex::Parser do
           Plurimath::Math::Function::Table::Array.new(
             [
               Plurimath::Math::Function::Tr.new([
-                Plurimath::Math::Function::Td.new([
-                  Plurimath::Math::Formula.new([
-                    Plurimath::Math::Function::Left.new("("),
+                Plurimath::Math::Function::Td.new(
+                  [
+                    Plurimath::Math::Formula.new([
+                      Plurimath::Math::Function::Left.new("("),
+                      Plurimath::Math::Function::Table::Array.new(
+                        [
+                          Plurimath::Math::Function::Tr.new([
+                            Plurimath::Math::Function::Td.new([], {
+                              columnalign: "center",
+                            }),
+                            Plurimath::Math::Function::Td.new([], {
+                              columnalign: "center",
+                            }),
+                            Plurimath::Math::Function::Td.new([], {
+                              columnalign: "center",
+                            }),
+                            Plurimath::Math::Function::Td.new([], {
+                              columnalign: "center",
+                            }),
+                            Plurimath::Math::Function::Td.new([], {
+                              columnalign: "center",
+                            }),
+                            Plurimath::Math::Function::Td.new([], {
+                              columnalign: "center",
+                            }),
+                            Plurimath::Math::Function::Td.new([], {
+                              columnalign: "center",
+                            }),
+                          ]),
+                          Plurimath::Math::Function::Tr.new([
+                            Plurimath::Math::Function::Td.new([], {
+                              columnalign: "center",
+                            }),
+                            Plurimath::Math::Function::Td.new(
+                              [
+                                Plurimath::Math::Symbol.new("+"),
+                                Plurimath::Math::Symbol.new("k"),
+                              ],
+                              { columnalign: "center" }
+                            ),
+                            Plurimath::Math::Function::Td.new([], {
+                              columnalign: "center",
+                            }),
+                            Plurimath::Math::Function::Td.new([], {
+                              columnalign: "center",
+                            }),
+                            Plurimath::Math::Function::Td.new([], {
+                              columnalign: "center",
+                            }),
+                            Plurimath::Math::Function::Td.new(
+                              [
+                                Plurimath::Math::Formula.new([
+                                  Plurimath::Math::Symbol.new("-"),
+                                  Plurimath::Math::Symbol.new("k"),
+                                ]),
+                              ],
+                              { columnalign: "center" }
+                            ),
+                          ]),
+                          Plurimath::Math::Function::Tr.new([
+                            Plurimath::Math::Function::Td.new([], {
+                              columnalign: "center",
+                            }),
+                            Plurimath::Math::Function::Td.new([], {
+                              columnalign: "center",
+                            }),
+                            Plurimath::Math::Function::Td.new([], {
+                              columnalign: "center",
+                            }),
+                            Plurimath::Math::Function::Td.new([], {
+                              columnalign: "center",
+                            }),
+                            Plurimath::Math::Function::Td.new([], {
+                              columnalign: "center",
+                            }),
+                            Plurimath::Math::Function::Td.new([], {
+                              columnalign: "center",
+                            }),
+                            Plurimath::Math::Function::Td.new([], {
+                              columnalign: "center",
+                            }),
+                          ]),
+                          Plurimath::Math::Function::Tr.new([
+                            Plurimath::Math::Function::Td.new([], {
+                              columnalign: "center",
+                            }),
+                            Plurimath::Math::Function::Td.new([], {
+                              columnalign: "center",
+                            }),
+                            Plurimath::Math::Function::Td.new([], {
+                              columnalign: "center",
+                            }),
+                            Plurimath::Math::Function::Td.new([], {
+                              columnalign: "center",
+                            }),
+                            Plurimath::Math::Function::Td.new([], {
+                              columnalign: "center",
+                            }),
+                            Plurimath::Math::Function::Td.new([], {
+                              columnalign: "center",
+                            }),
+                            Plurimath::Math::Function::Td.new([], {
+                              columnalign: "center",
+                            }),
+                          ]),
+                          Plurimath::Math::Function::Tr.new([
+                            Plurimath::Math::Function::Td.new([], {
+                              columnalign: "center",
+                            }),
+                            Plurimath::Math::Function::Td.new([], {
+                              columnalign: "center",
+                            }),
+                            Plurimath::Math::Function::Td.new([], {
+                              columnalign: "center",
+                            }),
+                            Plurimath::Math::Function::Td.new([], {
+                              columnalign: "center",
+                            }),
+                            Plurimath::Math::Function::Td.new([], {
+                              columnalign: "center",
+                            }),
+                            Plurimath::Math::Function::Td.new([], {
+                              columnalign: "center",
+                            }),
+                            Plurimath::Math::Function::Td.new([], {
+                              columnalign: "center",
+                            }),
+                          ]),
+                          Plurimath::Math::Function::Tr.new([
+                            Plurimath::Math::Function::Td.new([], {
+                              columnalign: "center",
+                            }),
+                            Plurimath::Math::Function::Td.new(
+                              [
+                                Plurimath::Math::Formula.new([
+                                  Plurimath::Math::Symbol.new("-"),
+                                  Plurimath::Math::Symbol.new("k"),
+                                ]),
+                              ],
+                              { columnalign: "center" }
+                            ),
+                            Plurimath::Math::Function::Td.new([], {
+                              columnalign: "center",
+                            }),
+                            Plurimath::Math::Function::Td.new([], {
+                              columnalign: "center",
+                            }),
+                            Plurimath::Math::Function::Td.new([], {
+                              columnalign: "center",
+                            }),
+                            Plurimath::Math::Function::Td.new(
+                              [
+                                Plurimath::Math::Symbol.new("+"),
+                                Plurimath::Math::Symbol.new("k"),
+                              ],
+                              { columnalign: "center" }
+                            ),
+                          ]),
+                        ],
+                        nil,
+                        nil,
+                        {}
+                      ),
+                      Plurimath::Math::Function::Right.new(")"),
+                    ]),
+                  ],
+                  { columnalign: "center" }
+                ),
+                Plurimath::Math::Function::Td.new(
+                  [
                     Plurimath::Math::Function::Table::Array.new(
                       [
                         Plurimath::Math::Function::Tr.new([
-                          Plurimath::Math::Function::Td.new([]),
-                          Plurimath::Math::Function::Td.new([]),
-                          Plurimath::Math::Function::Td.new([]),
-                          Plurimath::Math::Function::Td.new([]),
-                          Plurimath::Math::Function::Td.new([]),
-                          Plurimath::Math::Function::Td.new([]),
-                          Plurimath::Math::Function::Td.new([])
+                          Plurimath::Math::Function::Td.new([], {
+                            columnalign: "center",
+                          }),
+                          Plurimath::Math::Function::Td.new([], {
+                            columnalign: "center",
+                          }),
                         ]),
                         Plurimath::Math::Function::Tr.new([
-                          Plurimath::Math::Function::Td.new([]),
-                          Plurimath::Math::Function::Td.new([
-                            Plurimath::Math::Symbol.new("+"),
-                            Plurimath::Math::Symbol.new("k")
-                          ]),
-                          Plurimath::Math::Function::Td.new([]),
-                          Plurimath::Math::Function::Td.new([]),
-                          Plurimath::Math::Function::Td.new([]),
-                          Plurimath::Math::Function::Td.new([
-                            Plurimath::Math::Formula.new([
-                              Plurimath::Math::Symbol.new("-"),
-                              Plurimath::Math::Symbol.new("k")
-                            ])
-                          ])
+                          Plurimath::Math::Function::Td.new(
+                            [Plurimath::Math::Symbol.new("&#x22ef;")],
+                            { columnalign: "center" }
+                          ),
+                          Plurimath::Math::Function::Td.new(
+                            [
+                              Plurimath::Math::Function::Mbox.new(
+                                Plurimath::Math::Formula.new([
+                                  Plurimath::Math::Symbol.new("d"),
+                                  Plurimath::Math::Symbol.new("e"),
+                                  Plurimath::Math::Symbol.new("g"),
+                                  Plurimath::Math::Symbol.new("r"),
+                                  Plurimath::Math::Symbol.new("e"),
+                                  Plurimath::Math::Symbol.new("e"),
+                                  Plurimath::Math::Symbol.new("o"),
+                                  Plurimath::Math::Symbol.new("f"),
+                                  Plurimath::Math::Symbol.new("f"),
+                                  Plurimath::Math::Symbol.new("r"),
+                                  Plurimath::Math::Symbol.new("e"),
+                                  Plurimath::Math::Symbol.new("e"),
+                                  Plurimath::Math::Symbol.new("d"),
+                                  Plurimath::Math::Symbol.new("o"),
+                                  Plurimath::Math::Symbol.new("m"),
+                                  Plurimath::Math::Number.new("1"),
+                                  Plurimath::Math::Symbol.new(","),
+                                  Plurimath::Math::Symbol.new("n"),
+                                  Plurimath::Math::Symbol.new("o"),
+                                  Plurimath::Math::Symbol.new("d"),
+                                  Plurimath::Math::Symbol.new("e"),
+                                  Plurimath::Math::Number.new("1"),
+                                ])
+                              ),
+                            ],
+                            { columnalign: "center" }
+                          ),
                         ]),
                         Plurimath::Math::Function::Tr.new([
-                          Plurimath::Math::Function::Td.new([]),
-                          Plurimath::Math::Function::Td.new([]),
-                          Plurimath::Math::Function::Td.new([]),
-                          Plurimath::Math::Function::Td.new([]),
-                          Plurimath::Math::Function::Td.new([]),
-                          Plurimath::Math::Function::Td.new([]),
-                          Plurimath::Math::Function::Td.new([])
+                          Plurimath::Math::Function::Td.new([], {
+                            columnalign: "center",
+                          }),
+                          Plurimath::Math::Function::Td.new([], {
+                            columnalign: "center",
+                          }),
                         ]),
                         Plurimath::Math::Function::Tr.new([
-                          Plurimath::Math::Function::Td.new([]),
-                          Plurimath::Math::Function::Td.new([]),
-                          Plurimath::Math::Function::Td.new([]),
-                          Plurimath::Math::Function::Td.new([]),
-                          Plurimath::Math::Function::Td.new([]),
-                          Plurimath::Math::Function::Td.new([]),
-                          Plurimath::Math::Function::Td.new([])
+                          Plurimath::Math::Function::Td.new([], {
+                            columnalign: "center",
+                          }),
+                          Plurimath::Math::Function::Td.new([], {
+                            columnalign: "center",
+                          }),
                         ]),
                         Plurimath::Math::Function::Tr.new([
-                          Plurimath::Math::Function::Td.new([]),
-                          Plurimath::Math::Function::Td.new([]),
-                          Plurimath::Math::Function::Td.new([]),
-                          Plurimath::Math::Function::Td.new([]),
-                          Plurimath::Math::Function::Td.new([]),
-                          Plurimath::Math::Function::Td.new([]),
-                          Plurimath::Math::Function::Td.new([])
+                          Plurimath::Math::Function::Td.new([], {
+                            columnalign: "center",
+                          }),
+                          Plurimath::Math::Function::Td.new([], {
+                            columnalign: "center",
+                          }),
                         ]),
                         Plurimath::Math::Function::Tr.new([
-                          Plurimath::Math::Function::Td.new([]),
-                          Plurimath::Math::Function::Td.new([
-                            Plurimath::Math::Formula.new([
-                              Plurimath::Math::Symbol.new("-"),
-                              Plurimath::Math::Symbol.new("k")
-                            ])
-                          ]),
-                          Plurimath::Math::Function::Td.new([]),
-                          Plurimath::Math::Function::Td.new([]),
-                          Plurimath::Math::Function::Td.new([]),
-                          Plurimath::Math::Function::Td.new([
-                            Plurimath::Math::Symbol.new("+"),
-                            Plurimath::Math::Symbol.new("k")
-                          ])
-                        ])
+                          Plurimath::Math::Function::Td.new(
+                            [Plurimath::Math::Symbol.new("&#x22ef;")],
+                            { columnalign: "center" }
+                          ),
+                          Plurimath::Math::Function::Td.new(
+                            [
+                              Plurimath::Math::Function::Mbox.new(
+                                Plurimath::Math::Formula.new([
+                                  Plurimath::Math::Symbol.new("d"),
+                                  Plurimath::Math::Symbol.new("e"),
+                                  Plurimath::Math::Symbol.new("g"),
+                                  Plurimath::Math::Symbol.new("r"),
+                                  Plurimath::Math::Symbol.new("e"),
+                                  Plurimath::Math::Symbol.new("e"),
+                                  Plurimath::Math::Symbol.new("o"),
+                                  Plurimath::Math::Symbol.new("f"),
+                                  Plurimath::Math::Symbol.new("f"),
+                                  Plurimath::Math::Symbol.new("r"),
+                                  Plurimath::Math::Symbol.new("e"),
+                                  Plurimath::Math::Symbol.new("e"),
+                                  Plurimath::Math::Symbol.new("d"),
+                                  Plurimath::Math::Symbol.new("o"),
+                                  Plurimath::Math::Symbol.new("m"),
+                                  Plurimath::Math::Number.new("2"),
+                                  Plurimath::Math::Symbol.new(","),
+                                  Plurimath::Math::Symbol.new("n"),
+                                  Plurimath::Math::Symbol.new("o"),
+                                  Plurimath::Math::Symbol.new("d"),
+                                  Plurimath::Math::Symbol.new("e"),
+                                  Plurimath::Math::Number.new("2"),
+                                ])
+                              ),
+                            ],
+                            { columnalign: "center" }
+                          ),
+                        ]),
                       ],
                       nil,
-                      [
-                        Plurimath::Math::Symbol.new("c"),
-                        Plurimath::Math::Symbol.new("c"),
-                        Plurimath::Math::Symbol.new("c"),
-                        Plurimath::Math::Symbol.new("c"),
-                        Plurimath::Math::Symbol.new("c"),
-                        Plurimath::Math::Symbol.new("c"),
-                        Plurimath::Math::Symbol.new("c"),
-                      ],
+                      nil,
+                      {}
                     ),
-                    Plurimath::Math::Function::Right.new(")")
-                  ])
-                ]),
-                Plurimath::Math::Function::Td.new([
-                  Plurimath::Math::Function::Table::Array.new(
-                    [
-                      Plurimath::Math::Function::Tr.new([
-                        Plurimath::Math::Function::Td.new([]),
-                        Plurimath::Math::Function::Td.new([])
-                      ]),
-                      Plurimath::Math::Function::Tr.new([
-                        Plurimath::Math::Function::Td.new([
-                          Plurimath::Math::Symbol.new("&#x22ef;")
-                        ]),
-                        Plurimath::Math::Function::Td.new([
-                          Plurimath::Math::Function::Mbox.new(
-                            Plurimath::Math::Formula.new([
-                              Plurimath::Math::Symbol.new("d"),
-                              Plurimath::Math::Symbol.new("e"),
-                              Plurimath::Math::Symbol.new("g"),
-                              Plurimath::Math::Symbol.new("r"),
-                              Plurimath::Math::Symbol.new("e"),
-                              Plurimath::Math::Symbol.new("e"),
-                              Plurimath::Math::Symbol.new("o"),
-                              Plurimath::Math::Symbol.new("f"),
-                              Plurimath::Math::Symbol.new("f"),
-                              Plurimath::Math::Symbol.new("r"),
-                              Plurimath::Math::Symbol.new("e"),
-                              Plurimath::Math::Symbol.new("e"),
-                              Plurimath::Math::Symbol.new("d"),
-                              Plurimath::Math::Symbol.new("o"),
-                              Plurimath::Math::Symbol.new("m"),
-                              Plurimath::Math::Number.new("1"),
-                              Plurimath::Math::Symbol.new(","),
-                              Plurimath::Math::Symbol.new("n"),
-                              Plurimath::Math::Symbol.new("o"),
-                              Plurimath::Math::Symbol.new("d"),
-                              Plurimath::Math::Symbol.new("e"),
-                              Plurimath::Math::Number.new("1"),
-                            ])
-                          )
-                        ])
-                      ]),
-                      Plurimath::Math::Function::Tr.new([
-                        Plurimath::Math::Function::Td.new([]),
-                        Plurimath::Math::Function::Td.new([])
-                      ]),
-                      Plurimath::Math::Function::Tr.new([
-                        Plurimath::Math::Function::Td.new([]),
-                        Plurimath::Math::Function::Td.new([])
-                      ]),
-                      Plurimath::Math::Function::Tr.new([
-                        Plurimath::Math::Function::Td.new([]),
-                        Plurimath::Math::Function::Td.new([])
-                      ]),
-                      Plurimath::Math::Function::Tr.new([
-                        Plurimath::Math::Function::Td.new([
-                          Plurimath::Math::Symbol.new("&#x22ef;")
-                        ]),
-                        Plurimath::Math::Function::Td.new([
-                          Plurimath::Math::Function::Mbox.new(
-                            Plurimath::Math::Formula.new([
-                              Plurimath::Math::Symbol.new("d"),
-                              Plurimath::Math::Symbol.new("e"),
-                              Plurimath::Math::Symbol.new("g"),
-                              Plurimath::Math::Symbol.new("r"),
-                              Plurimath::Math::Symbol.new("e"),
-                              Plurimath::Math::Symbol.new("e"),
-                              Plurimath::Math::Symbol.new("o"),
-                              Plurimath::Math::Symbol.new("f"),
-                              Plurimath::Math::Symbol.new("f"),
-                              Plurimath::Math::Symbol.new("r"),
-                              Plurimath::Math::Symbol.new("e"),
-                              Plurimath::Math::Symbol.new("e"),
-                              Plurimath::Math::Symbol.new("d"),
-                              Plurimath::Math::Symbol.new("o"),
-                              Plurimath::Math::Symbol.new("m"),
-                              Plurimath::Math::Number.new("2"),
-                              Plurimath::Math::Symbol.new(","),
-                              Plurimath::Math::Symbol.new("n"),
-                              Plurimath::Math::Symbol.new("o"),
-                              Plurimath::Math::Symbol.new("d"),
-                              Plurimath::Math::Symbol.new("e"),
-                              Plurimath::Math::Number.new("2"),
-                            ])
-                          )
-                        ])
-                      ])
-                    ],
-                    nil,
-                    [
-                      Plurimath::Math::Symbol.new("c"),
-                      Plurimath::Math::Symbol.new("c"),
-                    ],
-                  )
-                ])
+                  ],
+                  { columnalign: "center" }
+                ),
               ]),
               Plurimath::Math::Function::Tr.new([
-                Plurimath::Math::Function::Td.new([]),
-                Plurimath::Math::Function::Td.new([])
+                Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
               ]),
               Plurimath::Math::Function::Tr.new([
-                Plurimath::Math::Function::Td.new([
-                  Plurimath::Math::Function::Table::Array.new(
-                    [
-                      Plurimath::Math::Function::Tr.new([
-                        Plurimath::Math::Function::Td.new([
-                          Plurimath::Math::Symbol.new("&#x22ee;")
+                Plurimath::Math::Function::Td.new(
+                  [
+                    Plurimath::Math::Function::Table::Array.new(
+                      [
+                        Plurimath::Math::Function::Tr.new([
+                          Plurimath::Math::Function::Td.new(
+                            [Plurimath::Math::Symbol.new("&#x22ee;")],
+                            { columnalign: "center" }
+                          ),
+                          Plurimath::Math::Function::Td.new([], {
+                            columnalign: "center",
+                          }),
+                          Plurimath::Math::Function::Td.new([], {
+                            columnalign: "center",
+                          }),
+                          Plurimath::Math::Function::Td.new([], {
+                            columnalign: "center",
+                          }),
+                          Plurimath::Math::Function::Td.new([], {
+                            columnalign: "center",
+                          }),
+                          Plurimath::Math::Function::Td.new(
+                            [Plurimath::Math::Symbol.new("&#x22ee;")],
+                            { columnalign: "center" }
+                          ),
                         ]),
-                        Plurimath::Math::Function::Td.new([]),
-                        Plurimath::Math::Function::Td.new([]),
-                        Plurimath::Math::Function::Td.new([]),
-                        Plurimath::Math::Function::Td.new([]),
-                        Plurimath::Math::Function::Td.new([
-                          Plurimath::Math::Symbol.new("&#x22ee;")
-                        ])
-                      ])
-                    ],
-                    nil,
-                    [
-                      Plurimath::Math::Symbol.new("c"),
-                      Plurimath::Math::Symbol.new("c"),
-                      Plurimath::Math::Symbol.new("c"),
-                      Plurimath::Math::Symbol.new("c"),
-                      Plurimath::Math::Symbol.new("c"),
-                      Plurimath::Math::Symbol.new("c"),
-                    ],
-                  )
-                ]),
-                Plurimath::Math::Function::Td.new([])
+                      ],
+                      nil,
+                      nil,
+                      {}
+                    ),
+                  ],
+                  { columnalign: "center" }
+                ),
+                Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
               ]),
               Plurimath::Math::Function::Tr.new([
-                Plurimath::Math::Function::Td.new([
-                  Plurimath::Math::Function::Table::Array.new(
-                    [
-                      Plurimath::Math::Function::Tr.new([
-                        Plurimath::Math::Function::Td.new([]),
-                        Plurimath::Math::Function::Td.new([
-                          Plurimath::Math::Function::Mbox.new(
-                            Plurimath::Math::Formula.new([
-                              Plurimath::Math::Symbol.new("d"),
-                              Plurimath::Math::Symbol.new("e"),
-                              Plurimath::Math::Symbol.new("g"),
-                              Plurimath::Math::Symbol.new("r"),
-                              Plurimath::Math::Symbol.new("e"),
-                              Plurimath::Math::Symbol.new("e"),
-                              Plurimath::Math::Symbol.new("o"),
-                              Plurimath::Math::Symbol.new("f"),
-                            ])
-                          )
+                Plurimath::Math::Function::Td.new(
+                  [
+                    Plurimath::Math::Function::Table::Array.new(
+                      [
+                        Plurimath::Math::Function::Tr.new([
+                          Plurimath::Math::Function::Td.new([], {
+                            columnalign: "center",
+                          }),
+                          Plurimath::Math::Function::Td.new(
+                            [
+                              Plurimath::Math::Function::Mbox.new(
+                                Plurimath::Math::Formula.new([
+                                  Plurimath::Math::Symbol.new("d"),
+                                  Plurimath::Math::Symbol.new("e"),
+                                  Plurimath::Math::Symbol.new("g"),
+                                  Plurimath::Math::Symbol.new("r"),
+                                  Plurimath::Math::Symbol.new("e"),
+                                  Plurimath::Math::Symbol.new("e"),
+                                  Plurimath::Math::Symbol.new("o"),
+                                  Plurimath::Math::Symbol.new("f"),
+                                ])
+                              ),
+                            ],
+                            { columnalign: "center" }
+                          ),
+                          Plurimath::Math::Function::Td.new(
+                            [
+                              Plurimath::Math::Function::Mbox.new(
+                                Plurimath::Math::Formula.new([
+                                  Plurimath::Math::Symbol.new("d"),
+                                  Plurimath::Math::Symbol.new("e"),
+                                  Plurimath::Math::Symbol.new("g"),
+                                  Plurimath::Math::Symbol.new("r"),
+                                  Plurimath::Math::Symbol.new("e"),
+                                  Plurimath::Math::Symbol.new("e"),
+                                  Plurimath::Math::Symbol.new("o"),
+                                  Plurimath::Math::Symbol.new("f"),
+                                ])
+                              ),
+                            ],
+                            { columnalign: "center" }
+                          ),
+                          Plurimath::Math::Function::Td.new([], {
+                            columnalign: "center",
+                          }),
                         ]),
-                        Plurimath::Math::Function::Td.new([
-                          Plurimath::Math::Function::Mbox.new(
-                            Plurimath::Math::Formula.new([
-                              Plurimath::Math::Symbol.new("d"),
-                              Plurimath::Math::Symbol.new("e"),
-                              Plurimath::Math::Symbol.new("g"),
-                              Plurimath::Math::Symbol.new("r"),
-                              Plurimath::Math::Symbol.new("e"),
-                              Plurimath::Math::Symbol.new("e"),
-                              Plurimath::Math::Symbol.new("o"),
-                              Plurimath::Math::Symbol.new("f"),
-                            ])
-                          )
+                        Plurimath::Math::Function::Tr.new([
+                          Plurimath::Math::Function::Td.new([], {
+                            columnalign: "center",
+                          }),
+                          Plurimath::Math::Function::Td.new(
+                            [
+                              Plurimath::Math::Function::Mbox.new(
+                                Plurimath::Math::Formula.new([
+                                  Plurimath::Math::Symbol.new("f"),
+                                  Plurimath::Math::Symbol.new("r"),
+                                  Plurimath::Math::Symbol.new("e"),
+                                  Plurimath::Math::Symbol.new("e"),
+                                  Plurimath::Math::Symbol.new("d"),
+                                  Plurimath::Math::Symbol.new("o"),
+                                  Plurimath::Math::Symbol.new("m"),
+                                  Plurimath::Math::Number.new("1"),
+                                  Plurimath::Math::Symbol.new(","),
+                                ])
+                              ),
+                            ],
+                            { columnalign: "center" }
+                          ),
+                          Plurimath::Math::Function::Td.new(
+                            [
+                              Plurimath::Math::Function::Mbox.new(
+                                Plurimath::Math::Formula.new([
+                                  Plurimath::Math::Symbol.new("f"),
+                                  Plurimath::Math::Symbol.new("r"),
+                                  Plurimath::Math::Symbol.new("e"),
+                                  Plurimath::Math::Symbol.new("e"),
+                                  Plurimath::Math::Symbol.new("d"),
+                                  Plurimath::Math::Symbol.new("o"),
+                                  Plurimath::Math::Symbol.new("m"),
+                                  Plurimath::Math::Number.new("2"),
+                                  Plurimath::Math::Symbol.new(","),
+                                ])
+                              ),
+                            ],
+                            { columnalign: "center" }
+                          ),
+                          Plurimath::Math::Function::Td.new([], {
+                            columnalign: "center",
+                          }),
                         ]),
-                        Plurimath::Math::Function::Td.new([])
-                      ]),
-                      Plurimath::Math::Function::Tr.new([
-                        Plurimath::Math::Function::Td.new([]),
-                        Plurimath::Math::Function::Td.new([
-                          Plurimath::Math::Function::Mbox.new(
-                            Plurimath::Math::Formula.new([
-                              Plurimath::Math::Symbol.new("f"),
-                              Plurimath::Math::Symbol.new("r"),
-                              Plurimath::Math::Symbol.new("e"),
-                              Plurimath::Math::Symbol.new("e"),
-                              Plurimath::Math::Symbol.new("d"),
-                              Plurimath::Math::Symbol.new("o"),
-                              Plurimath::Math::Symbol.new("m"),
-                              Plurimath::Math::Number.new("1"),
-                              Plurimath::Math::Symbol.new(","),
-                            ])
-                          )
+                        Plurimath::Math::Function::Tr.new([
+                          Plurimath::Math::Function::Td.new([], {
+                            columnalign: "center",
+                          }),
+                          Plurimath::Math::Function::Td.new(
+                            [
+                              Plurimath::Math::Function::Mbox.new(
+                                Plurimath::Math::Formula.new([
+                                  Plurimath::Math::Symbol.new("n"),
+                                  Plurimath::Math::Symbol.new("o"),
+                                  Plurimath::Math::Symbol.new("d"),
+                                  Plurimath::Math::Symbol.new("e"),
+                                  Plurimath::Math::Number.new("1"),
+                                ])
+                              ),
+                            ],
+                            { columnalign: "center" }
+                          ),
+                          Plurimath::Math::Function::Td.new(
+                            [
+                              Plurimath::Math::Function::Mbox.new(
+                                Plurimath::Math::Formula.new([
+                                  Plurimath::Math::Symbol.new("n"),
+                                  Plurimath::Math::Symbol.new("o"),
+                                  Plurimath::Math::Symbol.new("d"),
+                                  Plurimath::Math::Symbol.new("e"),
+                                  Plurimath::Math::Number.new("2"),
+                                ])
+                              ),
+                            ],
+                            { columnalign: "center" }
+                          ),
+                          Plurimath::Math::Function::Td.new([], {
+                            columnalign: "center",
+                          }),
                         ]),
-                        Plurimath::Math::Function::Td.new([
-                          Plurimath::Math::Function::Mbox.new(
-                            Plurimath::Math::Formula.new([
-                              Plurimath::Math::Symbol.new("f"),
-                              Plurimath::Math::Symbol.new("r"),
-                              Plurimath::Math::Symbol.new("e"),
-                              Plurimath::Math::Symbol.new("e"),
-                              Plurimath::Math::Symbol.new("d"),
-                              Plurimath::Math::Symbol.new("o"),
-                              Plurimath::Math::Symbol.new("m"),
-                              Plurimath::Math::Number.new("2"),
-                              Plurimath::Math::Symbol.new(","),
-                            ])
-                          )
-                        ]),
-                        Plurimath::Math::Function::Td.new([])
-                      ]),
-                      Plurimath::Math::Function::Tr.new([
-                        Plurimath::Math::Function::Td.new([]),
-                        Plurimath::Math::Function::Td.new([
-                          Plurimath::Math::Function::Mbox.new(
-                            Plurimath::Math::Formula.new([
-                              Plurimath::Math::Symbol.new("n"),
-                              Plurimath::Math::Symbol.new("o"),
-                              Plurimath::Math::Symbol.new("d"),
-                              Plurimath::Math::Symbol.new("e"),
-                              Plurimath::Math::Number.new("1"),
-                            ])
-                          )
-                        ]),
-                        Plurimath::Math::Function::Td.new([
-                          Plurimath::Math::Function::Mbox.new(
-                            Plurimath::Math::Formula.new([
-                              Plurimath::Math::Symbol.new("n"),
-                              Plurimath::Math::Symbol.new("o"),
-                              Plurimath::Math::Symbol.new("d"),
-                              Plurimath::Math::Symbol.new("e"),
-                              Plurimath::Math::Number.new("2"),
-                            ])
-                          )
-                        ]),
-                        Plurimath::Math::Function::Td.new([])
-                      ])
-                    ],
-                    nil,
-                    [
-                      Plurimath::Math::Symbol.new("c"),
-                      Plurimath::Math::Symbol.new("c"),
-                      Plurimath::Math::Symbol.new("c"),
-                      Plurimath::Math::Symbol.new("c"),
-                    ],
-                  )
-                ]),
-                Plurimath::Math::Function::Td.new([])
-              ])
+                      ],
+                      nil,
+                      nil,
+                      {}
+                    ),
+                  ],
+                  { columnalign: "center" }
+                ),
+                Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+              ]),
             ],
             nil,
-            [
-              Plurimath::Math::Symbol.new("c"),
-              Plurimath::Math::Symbol.new("c"),
-            ],
-          )
+            nil,
+            {}
+          ),
         ])
         expect(formula).to eq(expected_value)
       end
@@ -9488,102 +10309,114 @@ RSpec.describe Plurimath::Latex::Parser do
             Plurimath::Math::Function::Table::Array.new(
               [
                 Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Symbol.new("d"),
-                    Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Symbol.new("t"),
-                      Plurimath::Math::Symbol.new("x")
-                    )
-                  ]),
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([])
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Symbol.new("d"),
+                      Plurimath::Math::Function::Base.new(
+                        Plurimath::Math::Symbol.new("t"),
+                        Plurimath::Math::Symbol.new("x")
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
                 ]),
                 Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Symbol.new("d"),
-                    Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Symbol.new("t"),
-                      Plurimath::Math::Symbol.new("y")
-                    )
-                  ]),
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([])
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Symbol.new("d"),
+                      Plurimath::Math::Function::Base.new(
+                        Plurimath::Math::Symbol.new("t"),
+                        Plurimath::Math::Symbol.new("y")
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
                 ]),
                 Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Symbol.new("d"),
-                    Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Symbol.new("t"),
-                      Plurimath::Math::Symbol.new("z")
-                    )
-                  ]),
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([])
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Symbol.new("d"),
+                      Plurimath::Math::Function::Base.new(
+                        Plurimath::Math::Symbol.new("t"),
+                        Plurimath::Math::Symbol.new("z")
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
                 ]),
                 Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Symbol.new("d"),
-                    Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Symbol.new("r"),
-                      Plurimath::Math::Symbol.new("x")
-                    )
-                  ]),
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([])
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Symbol.new("d"),
+                      Plurimath::Math::Function::Base.new(
+                        Plurimath::Math::Symbol.new("r"),
+                        Plurimath::Math::Symbol.new("x")
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
                 ]),
                 Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Symbol.new("d"),
-                    Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Symbol.new("r"),
-                      Plurimath::Math::Symbol.new("y")
-                    )
-                  ]),
-                  Plurimath::Math::Function::Td.new([])
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Symbol.new("d"),
+                      Plurimath::Math::Function::Base.new(
+                        Plurimath::Math::Symbol.new("r"),
+                        Plurimath::Math::Symbol.new("y")
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
                 ]),
                 Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Symbol.new("d"),
-                    Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Symbol.new("r"),
-                      Plurimath::Math::Symbol.new("z")
-                    )
-                  ])
-                ])
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Symbol.new("d"),
+                      Plurimath::Math::Function::Base.new(
+                        Plurimath::Math::Symbol.new("r"),
+                        Plurimath::Math::Symbol.new("z")
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                ]),
               ],
               nil,
-              [
-                Plurimath::Math::Symbol.new("c"),
-                Plurimath::Math::Symbol.new("c"),
-                Plurimath::Math::Symbol.new("c"),
-                Plurimath::Math::Symbol.new("c"),
-                Plurimath::Math::Symbol.new("c"),
-                Plurimath::Math::Symbol.new("c"),
-              ],
+              nil,
+              {}
             ),
-            Plurimath::Math::Function::Right.new(")")
-          ])
+            Plurimath::Math::Function::Right.new(")"),
+          ]),
         ])
         expect(formula).to eq(expected_value)
       end
@@ -9611,102 +10444,114 @@ RSpec.describe Plurimath::Latex::Parser do
             Plurimath::Math::Function::Table::Array.new(
               [
                 Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Symbol.new("k"),
-                    Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Symbol.new("t"),
-                      Plurimath::Math::Symbol.new("x"),
-                    )
-                  ]),
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([])
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Symbol.new("k"),
+                      Plurimath::Math::Function::Base.new(
+                        Plurimath::Math::Symbol.new("t"),
+                        Plurimath::Math::Symbol.new("x")
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
                 ]),
                 Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Symbol.new("k"),
-                    Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Symbol.new("t"),
-                      Plurimath::Math::Symbol.new("y"),
-                    )
-                  ]),
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([])
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Symbol.new("k"),
+                      Plurimath::Math::Function::Base.new(
+                        Plurimath::Math::Symbol.new("t"),
+                        Plurimath::Math::Symbol.new("y")
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
                 ]),
                 Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Symbol.new("k"),
-                    Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Symbol.new("t"),
-                      Plurimath::Math::Symbol.new("z"),
-                    )
-                  ]),
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([])
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Symbol.new("k"),
+                      Plurimath::Math::Function::Base.new(
+                        Plurimath::Math::Symbol.new("t"),
+                        Plurimath::Math::Symbol.new("z")
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
                 ]),
                 Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Symbol.new("k"),
-                    Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Symbol.new("r"),
-                      Plurimath::Math::Symbol.new("x"),
-                    )
-                  ]),
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([])
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Symbol.new("k"),
+                      Plurimath::Math::Function::Base.new(
+                        Plurimath::Math::Symbol.new("r"),
+                        Plurimath::Math::Symbol.new("x")
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
                 ]),
                 Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Symbol.new("k"),
-                    Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Symbol.new("r"),
-                      Plurimath::Math::Symbol.new("y"),
-                    )
-                  ]),
-                  Plurimath::Math::Function::Td.new([]),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Symbol.new("k"),
+                      Plurimath::Math::Function::Base.new(
+                        Plurimath::Math::Symbol.new("r"),
+                        Plurimath::Math::Symbol.new("y")
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
                 ]),
                 Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Symbol.new("k"),
-                    Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Symbol.new("r"),
-                      Plurimath::Math::Symbol.new("z"),
-                    )
-                  ])
-                ])
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Symbol.new("k"),
+                      Plurimath::Math::Function::Base.new(
+                        Plurimath::Math::Symbol.new("r"),
+                        Plurimath::Math::Symbol.new("z")
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                ]),
               ],
               nil,
-              [
-                Plurimath::Math::Symbol.new("c"),
-                Plurimath::Math::Symbol.new("c"),
-                Plurimath::Math::Symbol.new("c"),
-                Plurimath::Math::Symbol.new("c"),
-                Plurimath::Math::Symbol.new("c"),
-                Plurimath::Math::Symbol.new("c"),
-              ],
+              nil,
+              {}
             ),
-            Plurimath::Math::Function::Right.new(")")
-          ])
+            Plurimath::Math::Function::Right.new(")"),
+          ]),
         ])
         expect(formula).to eq(expected_value)
       end
@@ -9740,153 +10585,183 @@ RSpec.describe Plurimath::Latex::Parser do
             Plurimath::Math::Function::Table::Array.new(
               [
                 Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Symbol.new("m"),
-                      Plurimath::Math::Symbol.new("x")
-                    )
-                  ]),
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([])
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::Base.new(
+                        Plurimath::Math::Symbol.new("m"),
+                        Plurimath::Math::Symbol.new("x")
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
                 ]),
                 Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Symbol.new("m"),
-                      Plurimath::Math::Symbol.new("y")
-                    )
-                  ]),
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([])
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::Base.new(
+                        Plurimath::Math::Symbol.new("m"),
+                        Plurimath::Math::Symbol.new("y")
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
                 ]),
                 Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Symbol.new("m"),
-                      Plurimath::Math::Symbol.new("z")
-                    )
-                  ]),
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([])
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::Base.new(
+                        Plurimath::Math::Symbol.new("m"),
+                        Plurimath::Math::Symbol.new("z")
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
                 ]),
                 Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Symbol.new("i"),
-                      Plurimath::Math::Formula.new([
-                        Plurimath::Math::Symbol.new("x"),
-                        Plurimath::Math::Symbol.new("x"),
-                      ]),
-                    )
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Symbol.new("i"),
-                      Plurimath::Math::Formula.new([
-                        Plurimath::Math::Symbol.new("x"),
-                        Plurimath::Math::Symbol.new("y"),
-                      ]),
-                    )
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Symbol.new("i"),
-                      Plurimath::Math::Formula.new([
-                        Plurimath::Math::Symbol.new("x"),
-                        Plurimath::Math::Symbol.new("z"),
-                      ]),
-                    )
-                  ])
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::Base.new(
+                        Plurimath::Math::Symbol.new("i"),
+                        Plurimath::Math::Formula.new([
+                          Plurimath::Math::Symbol.new("x"),
+                          Plurimath::Math::Symbol.new("x"),
+                        ])
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::Base.new(
+                        Plurimath::Math::Symbol.new("i"),
+                        Plurimath::Math::Formula.new([
+                          Plurimath::Math::Symbol.new("x"),
+                          Plurimath::Math::Symbol.new("y"),
+                        ])
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::Base.new(
+                        Plurimath::Math::Symbol.new("i"),
+                        Plurimath::Math::Formula.new([
+                          Plurimath::Math::Symbol.new("x"),
+                          Plurimath::Math::Symbol.new("z"),
+                        ])
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
                 ]),
                 Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Symbol.new("i"),
-                      Plurimath::Math::Formula.new([
-                        Plurimath::Math::Symbol.new("x"),
-                        Plurimath::Math::Symbol.new("y"),
-                      ]),
-                    )
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Symbol.new("i"),
-                      Plurimath::Math::Formula.new([
-                        Plurimath::Math::Symbol.new("y"),
-                        Plurimath::Math::Symbol.new("y"),
-                      ])
-                    )
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Symbol.new("i"),
-                      Plurimath::Math::Formula.new([
-                        Plurimath::Math::Symbol.new("y"),
-                        Plurimath::Math::Symbol.new("z"),
-                      ])
-                    )
-                  ])
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::Base.new(
+                        Plurimath::Math::Symbol.new("i"),
+                        Plurimath::Math::Formula.new([
+                          Plurimath::Math::Symbol.new("x"),
+                          Plurimath::Math::Symbol.new("y"),
+                        ])
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::Base.new(
+                        Plurimath::Math::Symbol.new("i"),
+                        Plurimath::Math::Formula.new([
+                          Plurimath::Math::Symbol.new("y"),
+                          Plurimath::Math::Symbol.new("y"),
+                        ])
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::Base.new(
+                        Plurimath::Math::Symbol.new("i"),
+                        Plurimath::Math::Formula.new([
+                          Plurimath::Math::Symbol.new("y"),
+                          Plurimath::Math::Symbol.new("z"),
+                        ])
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
                 ]),
                 Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Symbol.new("i"),
-                      Plurimath::Math::Formula.new([
-                        Plurimath::Math::Symbol.new("x"),
-                        Plurimath::Math::Symbol.new("z"),
-                      ]),
-                    )
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Symbol.new("i"),
-                      Plurimath::Math::Formula.new([
-                        Plurimath::Math::Symbol.new("y"),
-                        Plurimath::Math::Symbol.new("z"),
-                      ])
-                    )
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Symbol.new("i"),
-                      Plurimath::Math::Formula.new([
-                        Plurimath::Math::Symbol.new("z"),
-                        Plurimath::Math::Symbol.new("z"),
-                      ])
-                    )
-                  ])
-                ])
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::Base.new(
+                        Plurimath::Math::Symbol.new("i"),
+                        Plurimath::Math::Formula.new([
+                          Plurimath::Math::Symbol.new("x"),
+                          Plurimath::Math::Symbol.new("z"),
+                        ])
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::Base.new(
+                        Plurimath::Math::Symbol.new("i"),
+                        Plurimath::Math::Formula.new([
+                          Plurimath::Math::Symbol.new("y"),
+                          Plurimath::Math::Symbol.new("z"),
+                        ])
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::Base.new(
+                        Plurimath::Math::Symbol.new("i"),
+                        Plurimath::Math::Formula.new([
+                          Plurimath::Math::Symbol.new("z"),
+                          Plurimath::Math::Symbol.new("z"),
+                        ])
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                ]),
               ],
               nil,
-              [
-                Plurimath::Math::Symbol.new("c"),
-                Plurimath::Math::Symbol.new("c"),
-                Plurimath::Math::Symbol.new("c"),
-                Plurimath::Math::Symbol.new("c"),
-                Plurimath::Math::Symbol.new("c"),
-                Plurimath::Math::Symbol.new("c"),
-              ],
+              nil,
+              {}
             ),
-            Plurimath::Math::Function::Right.new(")")
-          ])
+            Plurimath::Math::Function::Right.new(")"),
+          ]),
         ])
         expect(formula).to eq(expected_value)
       end
@@ -11091,7 +11966,7 @@ RSpec.describe Plurimath::Latex::Parser do
               ])
             ],
             "(",
-            [],
+            ")",
           ),
           Plurimath::Math::Symbol.new("="),
           Plurimath::Math::Function::FontStyle::Bold.new(
@@ -11132,7 +12007,7 @@ RSpec.describe Plurimath::Latex::Parser do
               ])
             ],
             "(",
-            [],
+            ")",
           ),
           Plurimath::Math::Symbol.new(",")
         ])
@@ -11233,7 +12108,7 @@ RSpec.describe Plurimath::Latex::Parser do
           Plurimath::Math::Function::Power.new(
             Plurimath::Math::Function::FontStyle::Bold.new(
               Plurimath::Math::Symbol.new("F"),
-              "bf",
+              "bf"
             ),
             Plurimath::Math::Symbol.new("t")
           ),
@@ -11243,29 +12118,34 @@ RSpec.describe Plurimath::Latex::Parser do
             Plurimath::Math::Function::Table::Array.new(
               [
                 Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Symbol.new("n"),
-                      Plurimath::Math::Symbol.new("y")
-                    )
-                  ])
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::Base.new(
+                        Plurimath::Math::Symbol.new("n"),
+                        Plurimath::Math::Symbol.new("y")
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
                 ]),
                 Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Symbol.new("n"),
-                      Plurimath::Math::Symbol.new("z")
-                    )
-                  ])
-                ])
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::Base.new(
+                        Plurimath::Math::Symbol.new("n"),
+                        Plurimath::Math::Symbol.new("z")
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                ]),
               ],
               nil,
-              [
-                Plurimath::Math::Symbol.new("c")
-              ],
+              nil,
+              {}
             ),
-            Plurimath::Math::Function::Right.new(")")
-          ])
+            Plurimath::Math::Function::Right.new(")"),
+          ]),
         ])
         expect(formula).to eq(expected_value)
       end
@@ -11295,29 +12175,34 @@ RSpec.describe Plurimath::Latex::Parser do
             Plurimath::Math::Function::Table::Array.new(
               [
                 Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Symbol.new("n"),
-                      Plurimath::Math::Symbol.new("y")
-                    )
-                  ])
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::Base.new(
+                        Plurimath::Math::Symbol.new("n"),
+                        Plurimath::Math::Symbol.new("y")
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
                 ]),
                 Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Symbol.new("n"),
-                      Plurimath::Math::Symbol.new("z")
-                    )
-                  ])
-                ])
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::Base.new(
+                        Plurimath::Math::Symbol.new("n"),
+                        Plurimath::Math::Symbol.new("z")
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                ]),
               ],
               nil,
-              [
-                Plurimath::Math::Symbol.new("c")
-              ],
+              nil,
+              {}
             ),
-            Plurimath::Math::Function::Right.new(")")
-          ])
+            Plurimath::Math::Function::Right.new(")"),
+          ]),
         ])
         expect(formula).to eq(expected_value)
       end
@@ -11346,70 +12231,75 @@ RSpec.describe Plurimath::Latex::Parser do
             Plurimath::Math::Function::Table::Array.new(
               [
                 Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Formula.new([
-                      Plurimath::Math::Function::FontStyle.new(
-                        Plurimath::Math::Symbol.new("-"),
-                        "displaystyle"
-                      ),
-                      Plurimath::Math::Function::Frac.new(
-                        Plurimath::Math::Formula.new([
-                          Plurimath::Math::Function::Power.new(
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Function::FontStyle.new(
+                          Plurimath::Math::Symbol.new("-"),
+                          "displaystyle"
+                        ),
+                        Plurimath::Math::Function::Frac.new(
+                          Plurimath::Math::Formula.new([
+                            Plurimath::Math::Function::Power.new(
+                              Plurimath::Math::Symbol.new("&#x2202;"),
+                              Plurimath::Math::Number.new("2")
+                            ),
+                            Plurimath::Math::Symbol.new("v"),
+                          ]),
+                          Plurimath::Math::Formula.new([
                             Plurimath::Math::Symbol.new("&#x2202;"),
-                            Plurimath::Math::Number.new("2")
-                          ),
-                          Plurimath::Math::Symbol.new("v")
-                        ]),
-                        Plurimath::Math::Formula.new([
-                          Plurimath::Math::Symbol.new("&#x2202;"),
-                          Plurimath::Math::Function::Power.new(
-                            Plurimath::Math::Symbol.new("x"),
-                            Plurimath::Math::Number.new("2")
-                          )
-                        ])
-                      )
-                    ])
-                  ])
+                            Plurimath::Math::Function::Power.new(
+                              Plurimath::Math::Symbol.new("x"),
+                              Plurimath::Math::Number.new("2")
+                            ),
+                          ])
+                        ),
+                      ]),
+                    ],
+                    { columnalign: "center" }
+                  ),
                 ]),
                 Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Symbol.new("["),
-                    Plurimath::Math::Number.new("2"),
-                    Plurimath::Math::Symbol.new("m"),
-                    Plurimath::Math::Symbol.new("m"),
-                    Plurimath::Math::Symbol.new("]"),
-                    Plurimath::Math::Formula.new([
-                      Plurimath::Math::Function::FontStyle.new(
-                        Plurimath::Math::Symbol.new("-"),
-                        "displaystyle"
-                      ),
-                      Plurimath::Math::Function::Frac.new(
-                        Plurimath::Math::Formula.new([
-                          Plurimath::Math::Function::Power.new(
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Symbol.new("["),
+                      Plurimath::Math::Number.new("2"),
+                      Plurimath::Math::Symbol.new("m"),
+                      Plurimath::Math::Symbol.new("m"),
+                      Plurimath::Math::Symbol.new("]"),
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Function::FontStyle.new(
+                          Plurimath::Math::Symbol.new("-"),
+                          "displaystyle"
+                        ),
+                        Plurimath::Math::Function::Frac.new(
+                          Plurimath::Math::Formula.new([
+                            Plurimath::Math::Function::Power.new(
+                              Plurimath::Math::Symbol.new("&#x2202;"),
+                              Plurimath::Math::Number.new("2")
+                            ),
+                            Plurimath::Math::Symbol.new("w"),
+                          ]),
+                          Plurimath::Math::Formula.new([
                             Plurimath::Math::Symbol.new("&#x2202;"),
-                            Plurimath::Math::Number.new("2")
-                          ),
-                          Plurimath::Math::Symbol.new("w")
-                        ]),
-                        Plurimath::Math::Formula.new([
-                          Plurimath::Math::Symbol.new("&#x2202;"),
-                          Plurimath::Math::Function::Power.new(
-                            Plurimath::Math::Symbol.new("x"),
-                            Plurimath::Math::Number.new("2")
-                          )
-                        ])
-                      )
-                    ])
-                  ])
-                ])
+                            Plurimath::Math::Function::Power.new(
+                              Plurimath::Math::Symbol.new("x"),
+                              Plurimath::Math::Number.new("2")
+                            ),
+                          ])
+                        ),
+                      ]),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                ]),
               ],
               nil,
-              [
-                Plurimath::Math::Symbol.new("c")
-              ]
+              nil,
+              {}
             ),
-            Plurimath::Math::Function::Right.new(")")
-          ])
+            Plurimath::Math::Function::Right.new(")"),
+          ]),
         ])
         expect(formula).to eq(expected_value)
       end
@@ -11433,52 +12323,57 @@ RSpec.describe Plurimath::Latex::Parser do
             Plurimath::Math::Function::Table::Array.new(
               [
                 Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::FontStyle.new(
-                      Plurimath::Math::Function::Frac.new(
-                        Plurimath::Math::Formula.new([
-                          Plurimath::Math::Symbol.new("&#x2202;"),
-                          Plurimath::Math::Symbol.new("&#x3b8;")
-                        ]),
-                        Plurimath::Math::Formula.new([
-                          Plurimath::Math::Symbol.new("&#x2202;"),
-                          Plurimath::Math::Symbol.new("y")
-                        ])
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::FontStyle.new(
+                        Plurimath::Math::Function::Frac.new(
+                          Plurimath::Math::Formula.new([
+                            Plurimath::Math::Symbol.new("&#x2202;"),
+                            Plurimath::Math::Symbol.new("&#x3b8;"),
+                          ]),
+                          Plurimath::Math::Formula.new([
+                            Plurimath::Math::Symbol.new("&#x2202;"),
+                            Plurimath::Math::Symbol.new("y"),
+                          ])
+                        ),
+                        "displaystyle"
                       ),
-                      "displaystyle"
-                    )
-                  ])
+                    ],
+                    { columnalign: "center" }
+                  ),
                 ]),
                 Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Symbol.new("["),
-                    Plurimath::Math::Number.new("3"),
-                    Plurimath::Math::Symbol.new("m"),
-                    Plurimath::Math::Symbol.new("m"),
-                    Plurimath::Math::Symbol.new("]"),
-                    Plurimath::Math::Function::FontStyle.new(
-                      Plurimath::Math::Function::Frac.new(
-                        Plurimath::Math::Formula.new([
-                          Plurimath::Math::Symbol.new("&#x2202;"),
-                          Plurimath::Math::Symbol.new("&#x3b8;")
-                        ]),
-                        Plurimath::Math::Formula.new([
-                          Plurimath::Math::Symbol.new("&#x2202;"),
-                          Plurimath::Math::Symbol.new("z")
-                        ])
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Symbol.new("["),
+                      Plurimath::Math::Number.new("3"),
+                      Plurimath::Math::Symbol.new("m"),
+                      Plurimath::Math::Symbol.new("m"),
+                      Plurimath::Math::Symbol.new("]"),
+                      Plurimath::Math::Function::FontStyle.new(
+                        Plurimath::Math::Function::Frac.new(
+                          Plurimath::Math::Formula.new([
+                            Plurimath::Math::Symbol.new("&#x2202;"),
+                            Plurimath::Math::Symbol.new("&#x3b8;"),
+                          ]),
+                          Plurimath::Math::Formula.new([
+                            Plurimath::Math::Symbol.new("&#x2202;"),
+                            Plurimath::Math::Symbol.new("z"),
+                          ])
+                        ),
+                        "displaystyle"
                       ),
-                      "displaystyle"
-                    )
-                  ])
-                ])
+                    ],
+                    { columnalign: "center" }
+                  ),
+                ]),
               ],
               nil,
-              [
-                Plurimath::Math::Symbol.new("c")
-              ]
+              nil,
+              {}
             ),
-            Plurimath::Math::Function::Right.new(")")
-          ])
+            Plurimath::Math::Function::Right.new(")"),
+          ]),
         ])
         expect(formula).to eq(expected_value)
       end
@@ -11513,29 +12408,34 @@ RSpec.describe Plurimath::Latex::Parser do
             Plurimath::Math::Function::Table::Array.new(
               [
                 Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Symbol.new("n"),
-                      Plurimath::Math::Symbol.new("x")
-                    )
-                  ])
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::Base.new(
+                        Plurimath::Math::Symbol.new("n"),
+                        Plurimath::Math::Symbol.new("x")
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
                 ]),
                 Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Symbol.new("n"),
-                      Plurimath::Math::Symbol.new("y")
-                    )
-                  ])
-                ])
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::Base.new(
+                        Plurimath::Math::Symbol.new("n"),
+                        Plurimath::Math::Symbol.new("y")
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                ]),
               ],
               nil,
-              [
-                Plurimath::Math::Symbol.new("c")
-              ],
+              nil,
+              {}
             ),
-            Plurimath::Math::Function::Right.new(")")
-          ])
+            Plurimath::Math::Function::Right.new(")"),
+          ]),
         ])
         expect(formula).to eq(expected_value)
       end
@@ -11563,78 +12463,83 @@ RSpec.describe Plurimath::Latex::Parser do
             Plurimath::Math::Function::Table::Array.new(
               [
                 Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Formula.new([
-                      Plurimath::Math::Function::FontStyle.new(
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Function::FontStyle.new(
+                          Plurimath::Math::Function::Frac.new(
+                            Plurimath::Math::Formula.new([
+                              Plurimath::Math::Symbol.new("&#x2202;"),
+                              Plurimath::Math::Symbol.new("w"),
+                            ]),
+                            Plurimath::Math::Formula.new([
+                              Plurimath::Math::Symbol.new("&#x2202;"),
+                              Plurimath::Math::Symbol.new("x"),
+                            ])
+                          ),
+                          "displaystyle"
+                        ),
+                        Plurimath::Math::Symbol.new("+"),
                         Plurimath::Math::Function::Frac.new(
                           Plurimath::Math::Formula.new([
                             Plurimath::Math::Symbol.new("&#x2202;"),
-                            Plurimath::Math::Symbol.new("w")
+                            Plurimath::Math::Symbol.new("u"),
                           ]),
                           Plurimath::Math::Formula.new([
                             Plurimath::Math::Symbol.new("&#x2202;"),
-                            Plurimath::Math::Symbol.new("x")
+                            Plurimath::Math::Symbol.new("z"),
                           ])
                         ),
-                        "displaystyle"
-                      ),
-                      Plurimath::Math::Symbol.new("+"),
-                      Plurimath::Math::Function::Frac.new(
-                        Plurimath::Math::Formula.new([
-                          Plurimath::Math::Symbol.new("&#x2202;"),
-                          Plurimath::Math::Symbol.new("u")
-                        ]),
-                        Plurimath::Math::Formula.new([
-                          Plurimath::Math::Symbol.new("&#x2202;"),
-                          Plurimath::Math::Symbol.new("z")
-                        ])
-                      )
-                    ])
-                  ])
+                      ]),
+                    ],
+                    { columnalign: "center" }
+                  ),
                 ]),
                 Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Symbol.new("["),
-                    Plurimath::Math::Number.new("2"),
-                    Plurimath::Math::Symbol.new("m"),
-                    Plurimath::Math::Symbol.new("m"),
-                    Plurimath::Math::Symbol.new("]"),
-                    Plurimath::Math::Formula.new([
-                      Plurimath::Math::Function::FontStyle.new(
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Symbol.new("["),
+                      Plurimath::Math::Number.new("2"),
+                      Plurimath::Math::Symbol.new("m"),
+                      Plurimath::Math::Symbol.new("m"),
+                      Plurimath::Math::Symbol.new("]"),
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Function::FontStyle.new(
+                          Plurimath::Math::Function::Frac.new(
+                            Plurimath::Math::Formula.new([
+                              Plurimath::Math::Symbol.new("&#x2202;"),
+                              Plurimath::Math::Symbol.new("w"),
+                            ]),
+                            Plurimath::Math::Formula.new([
+                              Plurimath::Math::Symbol.new("&#x2202;"),
+                              Plurimath::Math::Symbol.new("y"),
+                            ])
+                          ),
+                          "displaystyle"
+                        ),
+                        Plurimath::Math::Symbol.new("+"),
                         Plurimath::Math::Function::Frac.new(
                           Plurimath::Math::Formula.new([
                             Plurimath::Math::Symbol.new("&#x2202;"),
-                            Plurimath::Math::Symbol.new("w")
+                            Plurimath::Math::Symbol.new("v"),
                           ]),
                           Plurimath::Math::Formula.new([
                             Plurimath::Math::Symbol.new("&#x2202;"),
-                            Plurimath::Math::Symbol.new("y")
+                            Plurimath::Math::Symbol.new("z"),
                           ])
                         ),
-                        "displaystyle"
-                      ),
-                      Plurimath::Math::Symbol.new("+"),
-                      Plurimath::Math::Function::Frac.new(
-                        Plurimath::Math::Formula.new([
-                          Plurimath::Math::Symbol.new("&#x2202;"),
-                          Plurimath::Math::Symbol.new("v")
-                        ]),
-                        Plurimath::Math::Formula.new([
-                          Plurimath::Math::Symbol.new("&#x2202;"),
-                          Plurimath::Math::Symbol.new("z")
-                        ])
-                      )
-                    ])
-                  ])
-                ])
+                      ]),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                ]),
               ],
               nil,
-              [
-                Plurimath::Math::Symbol.new("c")
-              ]
+              nil,
+              {}
             ),
-            Plurimath::Math::Function::Right.new(")")
-          ])
+            Plurimath::Math::Function::Right.new(")"),
+          ]),
         ])
         expect(formula).to eq(expected_value)
       end
@@ -11662,83 +12567,93 @@ RSpec.describe Plurimath::Latex::Parser do
             Plurimath::Math::Function::Table::Array.new(
               [
                 Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::FontStyle.new(
-                      Plurimath::Math::Function::Frac.new(
-                        Plurimath::Math::Formula.new([
-                          Plurimath::Math::Symbol.new("&#x2202;"),
-                          Plurimath::Math::Symbol.new("u")
-                        ]),
-                        Plurimath::Math::Formula.new([
-                          Plurimath::Math::Symbol.new("&#x2202;"),
-                          Plurimath::Math::Symbol.new("x")
-                        ])
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::FontStyle.new(
+                        Plurimath::Math::Function::Frac.new(
+                          Plurimath::Math::Formula.new([
+                            Plurimath::Math::Symbol.new("&#x2202;"),
+                            Plurimath::Math::Symbol.new("u"),
+                          ]),
+                          Plurimath::Math::Formula.new([
+                            Plurimath::Math::Symbol.new("&#x2202;"),
+                            Plurimath::Math::Symbol.new("x"),
+                          ])
+                        ),
+                        "displaystyle"
                       ),
-                      "displaystyle"
-                    )
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::FontStyle.new(
-                      Plurimath::Math::Function::Frac.new(
-                        Plurimath::Math::Formula.new([
-                          Plurimath::Math::Symbol.new("&#x2202;"),
-                          Plurimath::Math::Symbol.new("u")
-                        ]),
-                        Plurimath::Math::Formula.new([
-                          Plurimath::Math::Symbol.new("&#x2202;"),
-                          Plurimath::Math::Symbol.new("y")
-                        ])
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::FontStyle.new(
+                        Plurimath::Math::Function::Frac.new(
+                          Plurimath::Math::Formula.new([
+                            Plurimath::Math::Symbol.new("&#x2202;"),
+                            Plurimath::Math::Symbol.new("u"),
+                          ]),
+                          Plurimath::Math::Formula.new([
+                            Plurimath::Math::Symbol.new("&#x2202;"),
+                            Plurimath::Math::Symbol.new("y"),
+                          ])
+                        ),
+                        "displaystyle"
                       ),
-                      "displaystyle"
-                    )
-                  ])
+                    ],
+                    { columnalign: "center" }
+                  ),
                 ]),
                 Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Symbol.new("["),
-                    Plurimath::Math::Number.new("2"),
-                    Plurimath::Math::Symbol.new("m"),
-                    Plurimath::Math::Symbol.new("m"),
-                    Plurimath::Math::Symbol.new("]"),
-                    Plurimath::Math::Function::FontStyle.new(
-                      Plurimath::Math::Function::Frac.new(
-                        Plurimath::Math::Formula.new([
-                          Plurimath::Math::Symbol.new("&#x2202;"),
-                          Plurimath::Math::Symbol.new("v")
-                        ]),
-                        Plurimath::Math::Formula.new([
-                          Plurimath::Math::Symbol.new("&#x2202;"),
-                          Plurimath::Math::Symbol.new("x")
-                        ])
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Symbol.new("["),
+                      Plurimath::Math::Number.new("2"),
+                      Plurimath::Math::Symbol.new("m"),
+                      Plurimath::Math::Symbol.new("m"),
+                      Plurimath::Math::Symbol.new("]"),
+                      Plurimath::Math::Function::FontStyle.new(
+                        Plurimath::Math::Function::Frac.new(
+                          Plurimath::Math::Formula.new([
+                            Plurimath::Math::Symbol.new("&#x2202;"),
+                            Plurimath::Math::Symbol.new("v"),
+                          ]),
+                          Plurimath::Math::Formula.new([
+                            Plurimath::Math::Symbol.new("&#x2202;"),
+                            Plurimath::Math::Symbol.new("x"),
+                          ])
+                        ),
+                        "displaystyle"
                       ),
-                      "displaystyle"
-                    )
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::FontStyle.new(
-                      Plurimath::Math::Function::Frac.new(
-                        Plurimath::Math::Formula.new([
-                          Plurimath::Math::Symbol.new("&#x2202;"),
-                          Plurimath::Math::Symbol.new("v")
-                        ]),
-                        Plurimath::Math::Formula.new([
-                          Plurimath::Math::Symbol.new("&#x2202;"),
-                          Plurimath::Math::Symbol.new("y")
-                        ])
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::FontStyle.new(
+                        Plurimath::Math::Function::Frac.new(
+                          Plurimath::Math::Formula.new([
+                            Plurimath::Math::Symbol.new("&#x2202;"),
+                            Plurimath::Math::Symbol.new("v"),
+                          ]),
+                          Plurimath::Math::Formula.new([
+                            Plurimath::Math::Symbol.new("&#x2202;"),
+                            Plurimath::Math::Symbol.new("y"),
+                          ])
+                        ),
+                        "displaystyle"
                       ),
-                      "displaystyle"
-                    )
-                  ])
-                ])
+                    ],
+                    { columnalign: "center" }
+                  ),
+                ]),
               ],
               nil,
-              [
-                Plurimath::Math::Symbol.new("c"),
-                Plurimath::Math::Symbol.new("c")
-              ]
+              nil,
+              {}
             ),
-            Plurimath::Math::Function::Right.new(")")
-          ])
+            Plurimath::Math::Function::Right.new(")"),
+          ]),
         ])
         expect(formula).to eq(expected_value)
       end
@@ -11766,117 +12681,127 @@ RSpec.describe Plurimath::Latex::Parser do
             Plurimath::Math::Function::Table::Array.new(
               [
                 Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Formula.new([
-                      Plurimath::Math::Function::FontStyle.new(
-                        Plurimath::Math::Symbol.new("-"),
-                        "displaystyle"
-                      ),
-                      Plurimath::Math::Function::Frac.new(
-                        Plurimath::Math::Formula.new([
-                          Plurimath::Math::Function::Power.new(
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Function::FontStyle.new(
+                          Plurimath::Math::Symbol.new("-"),
+                          "displaystyle"
+                        ),
+                        Plurimath::Math::Function::Frac.new(
+                          Plurimath::Math::Formula.new([
+                            Plurimath::Math::Function::Power.new(
+                              Plurimath::Math::Symbol.new("&#x2202;"),
+                              Plurimath::Math::Number.new("2")
+                            ),
+                            Plurimath::Math::Symbol.new("w"),
+                          ]),
+                          Plurimath::Math::Formula.new([
                             Plurimath::Math::Symbol.new("&#x2202;"),
-                            Plurimath::Math::Number.new("2")
-                          ),
-                          Plurimath::Math::Symbol.new("w")
-                        ]),
-                        Plurimath::Math::Formula.new([
-                          Plurimath::Math::Symbol.new("&#x2202;"),
-                          Plurimath::Math::Function::Power.new(
+                            Plurimath::Math::Function::Power.new(
+                              Plurimath::Math::Symbol.new("x"),
+                              Plurimath::Math::Number.new("2")
+                            ),
+                          ])
+                        ),
+                      ]),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Function::FontStyle.new(
+                          Plurimath::Math::Symbol.new("-"),
+                          "displaystyle"
+                        ),
+                        Plurimath::Math::Function::Frac.new(
+                          Plurimath::Math::Formula.new([
+                            Plurimath::Math::Function::Power.new(
+                              Plurimath::Math::Symbol.new("&#x2202;"),
+                              Plurimath::Math::Number.new("2")
+                            ),
+                            Plurimath::Math::Symbol.new("w"),
+                          ]),
+                          Plurimath::Math::Formula.new([
+                            Plurimath::Math::Symbol.new("&#x2202;"),
                             Plurimath::Math::Symbol.new("x"),
-                            Plurimath::Math::Number.new("2")
-                          )
-                        ])
-                      )
-                    ])
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Formula.new([
-                      Plurimath::Math::Function::FontStyle.new(
-                        Plurimath::Math::Symbol.new("-"),
-                        "displaystyle"
-                      ),
-                      Plurimath::Math::Function::Frac.new(
-                        Plurimath::Math::Formula.new([
-                          Plurimath::Math::Function::Power.new(
                             Plurimath::Math::Symbol.new("&#x2202;"),
-                            Plurimath::Math::Number.new("2")
-                          ),
-                          Plurimath::Math::Symbol.new("w")
-                        ]),
-                        Plurimath::Math::Formula.new([
-                          Plurimath::Math::Symbol.new("&#x2202;"),
-                          Plurimath::Math::Symbol.new("x"),
-                          Plurimath::Math::Symbol.new("&#x2202;"),
-                          Plurimath::Math::Symbol.new("y")
-                        ])
-                      )
-                    ])
-                  ])
+                            Plurimath::Math::Symbol.new("y"),
+                          ])
+                        ),
+                      ]),
+                    ],
+                    { columnalign: "center" }
+                  ),
                 ]),
                 Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Symbol.new("["),
-                    Plurimath::Math::Number.new("2"),
-                    Plurimath::Math::Symbol.new("m"),
-                    Plurimath::Math::Symbol.new("m"),
-                    Plurimath::Math::Symbol.new("]"),
-                    Plurimath::Math::Formula.new([
-                      Plurimath::Math::Function::FontStyle.new(
-                        Plurimath::Math::Symbol.new("-"),
-                        "displaystyle"
-                      ),
-                      Plurimath::Math::Function::Frac.new(
-                        Plurimath::Math::Formula.new([
-                          Plurimath::Math::Function::Power.new(
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Symbol.new("["),
+                      Plurimath::Math::Number.new("2"),
+                      Plurimath::Math::Symbol.new("m"),
+                      Plurimath::Math::Symbol.new("m"),
+                      Plurimath::Math::Symbol.new("]"),
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Function::FontStyle.new(
+                          Plurimath::Math::Symbol.new("-"),
+                          "displaystyle"
+                        ),
+                        Plurimath::Math::Function::Frac.new(
+                          Plurimath::Math::Formula.new([
+                            Plurimath::Math::Function::Power.new(
+                              Plurimath::Math::Symbol.new("&#x2202;"),
+                              Plurimath::Math::Number.new("2")
+                            ),
+                            Plurimath::Math::Symbol.new("w"),
+                          ]),
+                          Plurimath::Math::Formula.new([
                             Plurimath::Math::Symbol.new("&#x2202;"),
-                            Plurimath::Math::Number.new("2")
-                          ),
-                          Plurimath::Math::Symbol.new("w")
-                        ]),
-                        Plurimath::Math::Formula.new([
-                          Plurimath::Math::Symbol.new("&#x2202;"),
-                          Plurimath::Math::Symbol.new("x"),
-                          Plurimath::Math::Symbol.new("&#x2202;"),
-                          Plurimath::Math::Symbol.new("y")
-                        ])
-                      )
-                    ])
-                  ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Formula.new([
-                      Plurimath::Math::Function::FontStyle.new(
-                        Plurimath::Math::Symbol.new("-"),
-                        "displaystyle"
-                      ),
-                      Plurimath::Math::Function::Frac.new(
-                        Plurimath::Math::Formula.new([
-                          Plurimath::Math::Function::Power.new(
+                            Plurimath::Math::Symbol.new("x"),
                             Plurimath::Math::Symbol.new("&#x2202;"),
-                            Plurimath::Math::Number.new("2")
-                          ),
-                          Plurimath::Math::Symbol.new("w")
-                        ]),
-                        Plurimath::Math::Formula.new([
-                          Plurimath::Math::Symbol.new("&#x2202;"),
-                          Plurimath::Math::Function::Power.new(
                             Plurimath::Math::Symbol.new("y"),
-                            Plurimath::Math::Number.new("2")
-                          )
-                        ])
-                      )
-                    ])
-                  ])
-                ])
+                          ])
+                        ),
+                      ]),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Formula.new([
+                        Plurimath::Math::Function::FontStyle.new(
+                          Plurimath::Math::Symbol.new("-"),
+                          "displaystyle"
+                        ),
+                        Plurimath::Math::Function::Frac.new(
+                          Plurimath::Math::Formula.new([
+                            Plurimath::Math::Function::Power.new(
+                              Plurimath::Math::Symbol.new("&#x2202;"),
+                              Plurimath::Math::Number.new("2")
+                            ),
+                            Plurimath::Math::Symbol.new("w"),
+                          ]),
+                          Plurimath::Math::Formula.new([
+                            Plurimath::Math::Symbol.new("&#x2202;"),
+                            Plurimath::Math::Function::Power.new(
+                              Plurimath::Math::Symbol.new("y"),
+                              Plurimath::Math::Number.new("2")
+                            ),
+                          ])
+                        ),
+                      ]),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                ]),
               ],
               nil,
-              [
-                Plurimath::Math::Symbol.new("c"),
-                Plurimath::Math::Symbol.new("c")
-              ]
+              nil,
+              {}
             ),
-            Plurimath::Math::Function::Right.new(")")
-          ])
+            Plurimath::Math::Function::Right.new(")"),
+          ]),
         ])
         expect(formula).to eq(expected_value)
       end
@@ -12310,29 +13235,34 @@ RSpec.describe Plurimath::Latex::Parser do
             Plurimath::Math::Function::Table::Array.new(
               [
                 Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Symbol.new("n"),
-                      Plurimath::Math::Symbol.new("x")
-                    )
-                  ])
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::Base.new(
+                        Plurimath::Math::Symbol.new("n"),
+                        Plurimath::Math::Symbol.new("x")
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
                 ]),
                 Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Function::Base.new(
-                      Plurimath::Math::Symbol.new("n"),
-                      Plurimath::Math::Symbol.new("y")
-                    )
-                  ])
-                ])
+                  Plurimath::Math::Function::Td.new(
+                    [
+                      Plurimath::Math::Function::Base.new(
+                        Plurimath::Math::Symbol.new("n"),
+                        Plurimath::Math::Symbol.new("y")
+                      ),
+                    ],
+                    { columnalign: "center" }
+                  ),
+                ]),
               ],
               nil,
-              [
-                Plurimath::Math::Symbol.new("c")
-              ],
+              nil,
+              {}
             ),
-            Plurimath::Math::Function::Right.new(")")
-          ])
+            Plurimath::Math::Function::Right.new(")"),
+          ]),
         ])
         expect(formula).to eq(expected_value)
       end
@@ -12463,7 +13393,7 @@ RSpec.describe Plurimath::Latex::Parser do
               ])
             ],
             "[",
-            [],
+            "]",
           )
         ])
         expect(formula).to eq(expected_value)
@@ -12611,7 +13541,7 @@ RSpec.describe Plurimath::Latex::Parser do
               ])
             ],
             "[",
-            [],
+            "]",
           )
         ])
         expect(formula).to eq(expected_value)

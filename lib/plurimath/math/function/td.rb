@@ -13,7 +13,7 @@ module Plurimath
         def to_mathml_without_math_tag
           return "" if Utility.symbol_value(parameter_one.first, "|")
 
-          td_attribute = { columnalign: parameter_two } if parameter_two
+          td_attribute = parameter_two if parameter_two&.any?
 
           Utility.update_nodes(
             Utility.ox_element("mtd", attributes: td_attribute),

@@ -12,7 +12,7 @@ module Plurimath
 
         def to_mathml_without_math_tag
           mo = Utility.ox_element("mo")
-          mo << parameter_one if parameter_one
+          mo << right_paren if parameter_one
           mo
         end
 
@@ -29,6 +29,14 @@ module Plurimath
         def to_latex
           prefix = "\\" if parameter_one == "}"
           "\\right #{prefix}#{parameter_one}"
+        end
+
+        protected
+
+        def right_paren
+          return "}" if parameter_one == "\\}"
+
+          parameter_one
         end
       end
     end

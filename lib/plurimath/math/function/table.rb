@@ -5,19 +5,33 @@ require_relative "ternary_function"
 module Plurimath
   module Math
     module Function
-      class Table < TernaryFunction
-        def initialize(parameter_one = nil,
-                       parameter_two = nil,
-                       parameter_three = nil)
-          super
+      class Table
+        attr_accessor :value, :open_paren, :close_paren, :options
+
+        def initialize(value = nil,
+                       open_paren = nil,
+                       close_paren = nil,
+                       options = {})
+          @value = value
+          @open_paren = open_paren
+          @close_paren = close_paren
+          @options = options
+        end
+
+        def ==(object)
+          object.class == self.class &&
+            object.value == value &&
+            object.options == options &&
+            object.open_paren == open_paren &&
+            object.close_paren == close_paren
         end
 
         def to_asciimath
           parenthesis = Asciimath::Constants::TABLE_PARENTHESIS
-          first_value = parameter_one.map(&:to_asciimath).join(", ")
-          third_value = parameter_three.is_a?(::Array) || parameter_three.nil?
-          lparen = parameter_two.nil? ? "[" : parameter_two
-          rparen = third_value ? parenthesis[lparen.to_sym] : parameter_three
+          first_value = value.map(&:to_asciimath).join(", ")
+          third_value = close_paren.is_a?(::Array) || close_paren.nil?
+          lparen = open_paren.nil? ? "[" : open_paren
+          rparen = third_value ? parenthesis[lparen.to_sym] : close_paren
           "#{lparen}#{first_value}#{rparen}"
         end
 
@@ -25,45 +39,48 @@ module Plurimath
           table_tag = Utility.ox_element("mtable", attributes: table_attribute)
           Utility.update_nodes(
             table_tag,
-            parameter_one&.map(&:to_mathml_without_math_tag),
+            value&.map(&:to_mathml_without_math_tag),
           )
-          return norm_table(table_tag) if parameter_two == "norm["
+          return norm_table(table_tag) if open_paren == "norm["
 
-          if present?(parameter_two) || present?(parameter_three)
-            attributes = {
-              open: mathml_parenthesis(parameter_two),
-              close: mathml_parenthesis(parameter_three),
-            }
-            Utility.ox_element("mfenced", attributes: attributes) << table_tag
-          else
-            table_tag
+          if present?(open_paren) || present?(close_paren)
+            first_paren = Utility.ox_element("mo") << mathml_parenthesis(open_paren)
+            second_paren = Utility.ox_element("mo") << mathml_parenthesis(close_paren)
+            mrow_tag = Utility.ox_element("mrow")
+            return Utility.update_nodes(mrow_tag, [first_paren, table_tag, second_paren])
           end
+
+          table_tag
         end
 
         def to_latex
-          if parameter_two == "norm["
+          if open_paren == "norm["
             return "\\begin{Vmatrix}#{latex_content}\\end{Vmatrix}"
           end
 
-          separator = "{#{table_attribute(:latex)}}" if environment.include?("array")
-          left_paren = latex_parenthesis(parameter_two) || "."
-          right_paren = latex_parenthesis(parameter_three) || "."
+          separator = "{#{table_attribute(:latex)}}" if environment&.include?("array")
+          left_paren = latex_parenthesis(open_paren) || "."
+          right_paren = latex_parenthesis(close_paren) || "."
           left = "\\left #{left_paren}\\begin{matrix}"
           right = "\\end{matrix}\\right #{right_paren}"
           "#{left}#{separator}#{latex_content}#{right}"
         end
 
         def to_html
-          first_value = parameter_one.map(&:to_html).join
+          first_value = value.map(&:to_html).join
           "<table>#{first_value}</table>"
         end
 
         def to_omml_without_math_tag
-          if parameter_one.map { |d| d.parameter_one.length == 1 }.all?
+          if value.map { |d| d.parameter_one.length == 1 }.all?
             single_td_table
           else
             multiple_td_table
           end
+        end
+
+        def class_name
+          self.class.name.split("::").last.downcase
         end
 
         protected
@@ -75,7 +92,7 @@ module Plurimath
         def mathml_parenthesis(field)
           return "" if field&.include?(":")
 
-          field
+          present?(field) ? field : ""
         end
 
         def latex_parenthesis(field)
@@ -87,52 +104,62 @@ module Plurimath
         end
 
         def table_attribute(type = :mathml)
-          column_lines = []
-          parameter_one.first.parameter_one.each_with_index do |td, i|
-            if td.parameter_one.find { |obj| Utility.symbol_value(obj, "|") }
-              column_lines[i - 1] = "solid"
-            else
-              column_lines << "none"
-            end
-          end
+          column_string = column_lines
           case type
           when :mathml
-            column_lines.include?("solid") ? { columnlines: column_lines.join(" ") } : {}
+            mathml_attrs(column_string)
           when :latex
-            column_lines.insert(0, "none") if column_lines.include?("solid")
-            column_lines&.map { |d| d == "solid" ? "|" : "a" }&.join
+            column_string.insert(0, "none") if column_string.include?("solid")
+            column_string&.map { |d| d == "solid" ? "|" : "a" }&.join
           end
+        end
+
+        def column_lines
+          columns_array = []
+          value.first.parameter_one.each_with_index do |td, i|
+            if td.parameter_one.find { |obj| Utility.symbol_value(obj, "|") }
+              columns_array.empty? ? columns_array = ["solid"] : columns_array[i - 1] = "solid"
+            else
+              columns_array << "none"
+            end
+          end
+          columns_array
+        end
+
+        def mathml_attrs(column_strings)
+          args = options&.dup&.reject { |arg| arg.to_s == "asterisk" }
+          args[:columnlines] = column_strings.join(" ") if column_strings.include?("solid")
+          args
         end
 
         def latex_content
-          parameter_one&.map(&:to_latex)&.join(" \\\\ ")
+          value&.map(&:to_latex)&.join(" \\\\ ")
         end
 
         def matrix_class
-          if parameter_two
-            return Latex::Constants::MATRICES.invert[parameter_two]
-          end
-
-          class_name
-        end
-
-        def matrix?
-          parameter_three.nil? || (parameter_three.is_a?(::Array) && !parameter_three.empty?)
+          matrix = if open_paren
+                     Latex::Constants::MATRICES.invert[open_paren]
+                   else
+                     class_name
+                   end
+          options&.key?(:asterisk) ? "{#{matrix}*}" : "{#{matrix}}"
         end
 
         def opening
-          args = parameter_three.map(&:to_latex).join if matrix?
-          matrix? && args ? "{#{matrix_class}*}[#{args}]" : "{#{matrix_class}}"
+          "#{matrix_class}#{latex_columnalign}"
         end
 
-        def ending
-          matrix? ? "{#{matrix_class}*}" : "{#{matrix_class}}"
+        def latex_columnalign
+          return "" unless Hash(options)[:asterisk]
+
+          columnalign = Hash(value&.first&.parameter_one&.first&.parameter_two)[:columnalign]
+          "[#{Utility::ALIGNMENT_LETTERS.invert[columnalign]}]"
         end
 
         def environment
           matrices_hash = Latex::Constants::MATRICES
-          matric_value  = matrices_hash.value?(parameter_two)
-          matrices_hash.invert[parameter_two].to_s if matric_value
+          matric_value  = matrices_hash.value?(open_paren)
+          matrices_hash.invert[open_paren].to_s if matric_value
         end
 
         def single_td_table
@@ -140,12 +167,12 @@ module Plurimath
           eqarrpr  = Utility.ox_element("eqArrPr", namespace: "m")
           eqarrpr  << Utility.pr_element("ctrl", true, namespace: "m")
           eqarr    << eqarrpr
-          tr_value = parameter_one.map(&:to_omml_without_math_tag).flatten
+          tr_value = value.map(&:to_omml_without_math_tag).flatten
           Utility.update_nodes(eqarr, tr_value.compact)
         end
 
         def multiple_td_table
-          count  = { "m:val": parameter_one&.first&.parameter_one&.count }
+          count  = { "m:val": value&.first&.parameter_one&.count }
           mcjc   = { "m:val": "center" }
           mm     = Utility.ox_element("m", namespace: "m")
           mpr    = Utility.ox_element("mpr", namespace: "m")
@@ -168,7 +195,7 @@ module Plurimath
           mcs << mc
           mpr << mcs
           mpr << ctrlpr
-          mm_value = parameter_one&.map(&:to_omml_without_math_tag)
+          mm_value = value&.map(&:to_omml_without_math_tag)
           Utility.update_nodes(mm, mm_value.insert(0, mpr).flatten)
         end
 

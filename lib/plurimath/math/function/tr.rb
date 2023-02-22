@@ -11,9 +11,12 @@ module Plurimath
         end
 
         def to_mathml_without_math_tag
+          first_value = parameter_one.dup
+          row_lines = first_value.first.parameter_one
+          row_lines.shift if Utility.symbol_value(row_lines.first, "&#x23af;")
           Utility.update_nodes(
             Utility.ox_element("mtr"),
-            parameter_one.map(&:to_mathml_without_math_tag).compact,
+            first_value.map(&:to_mathml_without_math_tag).compact,
           )
         end
 

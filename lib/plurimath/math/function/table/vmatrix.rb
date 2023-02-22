@@ -7,15 +7,15 @@ module Plurimath
     module Function
       class Table
         class Vmatrix < Table
-          def initialize(parameter_one,
-                         parameter_two = "|",
-                         parameter_three = "|")
-            parameter_three = nil if parameter_two == "norm["
+          def initialize(value,
+                         open_paren = "|",
+                         close_paren = "|",
+                         options = {})
             super
           end
 
           def to_latex
-            "\\begin#{opening}#{latex_content}\\end#{ending}"
+            "\\begin#{opening}#{latex_content}\\end#{matrix_class}"
           end
         end
       end

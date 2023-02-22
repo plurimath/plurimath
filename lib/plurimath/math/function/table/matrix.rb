@@ -7,14 +7,23 @@ module Plurimath
     module Function
       class Table
         class Matrix < Table
-          def initialize(parameter_one = [],
-                         parameter_two = "(",
-                         parameter_three = ")")
+          def initialize(value = [],
+                         open_paren = "(",
+                         close_paren = ")",
+                         options = {})
             super
           end
 
           def to_latex
-            "\\begin#{opening}#{latex_content}\\end#{ending}"
+            "\\begin#{opening}#{latex_content}\\end#{matrix_class}"
+          end
+
+          def to_mathml_without_math_tag
+            table_tag = Utility.ox_element("mtable", attributes: table_attribute)
+            Utility.update_nodes(
+              table_tag,
+              value&.map(&:to_mathml_without_math_tag),
+            )
           end
         end
       end

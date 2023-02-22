@@ -78,12 +78,18 @@ RSpec.describe Plurimath::Math::Function::Tr do
     end
 
     context "contains Symbol as value" do
-      let(:first_value) { Plurimath::Math::Symbol.new("n") }
+      let(:first_value) do
+        Plurimath::Math::Function::Td.new([
+          Plurimath::Math::Symbol.new("n")
+        ])
+      end
 
       it "returns mathml string" do
         expected_value = <<~MATHML
           <mtr>
-            <mi>n</mi>
+            <mtd>
+              <mi>n</mi>
+            </mtd>
           </mtr>
         MATHML
         expect(formula).to be_equivalent_to(expected_value)
@@ -91,12 +97,18 @@ RSpec.describe Plurimath::Math::Function::Tr do
     end
 
     context "contains Number as value" do
-      let(:first_value) { Plurimath::Math::Number.new("70") }
+      let(:first_value) do
+        Plurimath::Math::Function::Td.new([
+          Plurimath::Math::Number.new("70")
+        ])
+      end
 
       it "returns mathml string" do
         expected_value = <<~MATHML
           <mtr>
-            <mn>70</mn>
+            <mtd>
+              <mn>70</mn>
+            </mtd>
           </mtr>
         MATHML
         expect(formula).to be_equivalent_to(expected_value)
@@ -105,23 +117,27 @@ RSpec.describe Plurimath::Math::Function::Tr do
 
     context "contains Formula as value" do
       let(:first_value) do
-        Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Sum.new(
-            Plurimath::Math::Symbol.new("&"),
-            Plurimath::Math::Function::Text.new("so"),
-          )
+        Plurimath::Math::Function::Td.new([
+          Plurimath::Math::Formula.new([
+            Plurimath::Math::Function::Sum.new(
+              Plurimath::Math::Symbol.new("&"),
+              Plurimath::Math::Function::Text.new("so"),
+            )
+          ])
         ])
       end
       it "returns mathml string" do
         expected_value = <<~MATHML
           <mtr>
-            <mrow>
-              <munderover>
-                <mo>&#x2211;</mo>
-                <mo>&#x26;</mo>
-                <mtext>so</mtext>
-              </munderover>
-            </mrow>
+            <mtd>
+              <mrow>
+                <munderover>
+                  <mo>&#x2211;</mo>
+                  <mo>&#x26;</mo>
+                  <mtext>so</mtext>
+                </munderover>
+              </mrow>
+            </mtd>
           </mtr>
         MATHML
         expect(formula).to be_equivalent_to(expected_value)

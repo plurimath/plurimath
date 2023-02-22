@@ -95,7 +95,7 @@ RSpec.describe Plurimath::Math::Function::Log do
             <mrow>
               <munderover>
                 <mo>&#x220f;</mo>
-                <mo>&#x26;</mo>
+                <mo>&amp;</mo>
                 <mtext>so</mtext>
               </munderover>
             </mrow>
@@ -146,14 +146,14 @@ RSpec.describe Plurimath::Math::Function::Log do
             <mrow>
               <munderover>
                 <mo>&#x2211;</mo>
-                <mo>&#x26;</mo>
+                <mo>&amp;</mo>
                 <mtext>so</mtext>
               </munderover>
             </mrow>
             <mrow>
               <munderover>
                 <mo>&#x220f;</mo>
-                <mo>&#x26;</mo>
+                <mo>&amp;</mo>
                 <mtext>so</mtext>
               </munderover>
             </mrow>

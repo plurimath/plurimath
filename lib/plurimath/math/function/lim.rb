@@ -19,15 +19,20 @@ module Plurimath
         end
 
         def to_mathml_without_math_tag
-          munderover  = Utility.ox_element("munderover")
           first_value = (Utility.ox_element("mo") << "lim")
           if parameter_one || parameter_two
-            value_array = []
+            value_array = [first_value]
             value_array << parameter_one&.to_mathml_without_math_tag
             value_array << parameter_two&.to_mathml_without_math_tag
+            tag_name = if parameter_two && parameter_one
+                         "underover"
+                       else
+                         parameter_one ? "under" : "over"
+                       end
+            munderover_tag = Utility.ox_element("m#{tag_name}")
             Utility.update_nodes(
-              munderover,
-              value_array.insert(0, first_value),
+              munderover_tag,
+              value_array,
             )
           else
             first_value

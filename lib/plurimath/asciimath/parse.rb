@@ -53,7 +53,7 @@ module Plurimath
 
       rule(:left_right) do
         (str("left") >> left_right_open_paren.as(:left) >> iteration.as(:left_right_value) >> str("right") >> left_right_close_paren.as(:right)) |
-          (table.as(:numerator) >> space.maybe >> match(/(?<!\/)\/(?!\/)/) >> space.maybe >> iteration.as(:denominator)).as(:frac) |
+          ((table.as(:numerator) >> space.maybe >> match(/(?<!\/)\/(?!\/)/) >> space.maybe >> iteration.as(:denominator)).as(:frac) >> expression) |
           (table.as(:table) >> expression.maybe)
       end
 

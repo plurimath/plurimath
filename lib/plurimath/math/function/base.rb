@@ -13,7 +13,8 @@ module Plurimath
         end
 
         def to_mathml_without_math_tag
-          tag_name = (["ubrace", "obrace"].include?(parameter_one&.class_name) ? "under" : "sub")
+          under_classes = ["ubrace", "obrace"] + Utility::UNARY_CLASSES
+          tag_name = (under_classes.include?(parameter_one&.class_name) ? "under" : "sub")
           sub_tag = Utility.ox_element("m#{tag_name}")
           mathml_value = []
           mathml_value << parameter_one&.to_mathml_without_math_tag

@@ -576,10 +576,12 @@ module Plurimath
       rule(environment: simple(:environment),
            table_data: sequence(:table_data),
            ending: simple(:ending)) do
+        open_paren = Constants::MATRICES[environment.to_sym]
         Utility.get_table_class(environment).new(
-          Utility.organize_table(table_data).first,
-          Constants::MATRICES[environment.to_sym],
-          [],
+          Utility.organize_table(table_data),
+          open_paren,
+          Constants::MATRICES_PARENTHESIS[open_paren&.to_sym]&.to_s,
+          {},
         )
       end
 
@@ -587,20 +589,28 @@ module Plurimath
            args: simple(:args),
            table_data: simple(:table_data),
            ending: simple(:ending)) do
+        third_value = args ? [args] : []
+        open_paren = Constants::MATRICES[environment.to_sym]
+        table = Utility.organize_table(
+          [table_data],
+          column_align: third_value,
+        )
         Utility.get_table_class(environment).new(
-          Utility.organize_table([table_data]).first,
-          nil,
-          [args],
+          table,
+          open_paren,
+          Constants::MATRICES_PARENTHESIS[open_paren&.to_sym]&.to_s,
+          Utility.table_options(table),
         )
       end
 
       rule(environment: simple(:environment),
            table_data: simple(:table_data),
            ending: simple(:ending)) do
+        open_paren = Constants::MATRICES[environment.to_sym]
         Utility.get_table_class(environment).new(
-          Utility.organize_table([table_data]).first,
-          Constants::MATRICES[environment.to_sym],
-          [],
+          Utility.organize_table([table_data]),
+          open_paren,
+          Constants::MATRICES_PARENTHESIS[open_paren&.to_sym]&.to_s,
         )
       end
 
@@ -608,10 +618,13 @@ module Plurimath
            args: sequence(:args),
            table_data: sequence(:table_data),
            ending: simple(:ending)) do
+        open_paren = Constants::MATRICES[environment.to_sym]
+        table = Utility.organize_table(table_data, column_align: args)
         Utility.get_table_class(environment).new(
-          Utility.organize_table(table_data).first,
-          nil,
-          args,
+          table,
+          open_paren,
+          Constants::MATRICES_PARENTHESIS[open_paren&.to_sym]&.to_s,
+          Utility.table_options(table),
         )
       end
 
@@ -619,10 +632,14 @@ module Plurimath
            args: simple(:args),
            table_data: sequence(:table_data),
            ending: simple(:ending)) do
+        third_value = args ? [args] : []
+        open_paren = Constants::MATRICES[environment.to_sym]
+        table = Utility.organize_table(table_data, column_align: third_value)
         Utility.get_table_class(environment).new(
-          Utility.organize_table(table_data).first,
-          nil,
-          [args],
+          table,
+          open_paren,
+          Constants::MATRICES_PARENTHESIS[open_paren&.to_sym]&.to_s,
+          Utility.table_options(table),
         )
       end
 
@@ -632,15 +649,17 @@ module Plurimath
            table_data: sequence(:table_data),
            ending: simple(:ending)) do
         third_value = options ? [options] : []
+        open_paren = Constants::MATRICES[environment.to_sym]
         table = Utility.organize_table(
           table_data,
           column_align: third_value,
+          options: true,
         )
-        third_value = table.last ? [Math::Symbol.new(table.last)] : []
         Utility.get_table_class(environment).new(
-          table.first,
-          Constants::MATRICES[environment.to_sym],
-          third_value,
+          table,
+          open_paren,
+          Constants::MATRICES_PARENTHESIS[open_paren&.to_sym]&.to_s,
+          { asterisk: true },
         )
       end
 
@@ -648,30 +667,34 @@ module Plurimath
            asterisk: simple(:asterisk),
            table_data: sequence(:table_data),
            ending: simple(:ending)) do
+        open_paren = Constants::MATRICES[environment.to_sym]
         Utility.get_table_class(environment).new(
-          Utility.organize_table(table_data).first,
-          Constants::MATRICES[environment.to_sym],
-          [],
+          Utility.organize_table(table_data),
+          open_paren,
+          Constants::MATRICES_PARENTHESIS[open_paren&.to_sym]&.to_s,
+          { asterisk: true },
         )
       end
 
       rule(environment: simple(:env),
            expression: simple(:expr)) do
-        expression = expr.nil? ? [] : [expr]
+        open_paren = Constants::MATRICES[env.to_sym]
         Utility.get_table_class(env).new(
-          Utility.organize_table(expression).first,
-          Constants::MATRICES[env.to_sym],
-          [],
+          Utility.organize_table(expr.nil? ? [] : [expr]),
+          open_paren,
+          Constants::MATRICES_PARENTHESIS[open_paren&.to_sym]&.to_s,
+          {},
         )
       end
 
       rule(environment: simple(:env),
            expression: sequence(:expr)) do
-        expression = expr.compact
+        open_paren = Constants::MATRICES[env.to_sym]
         Utility.get_table_class(env).new(
-          Utility.organize_table(expression).first,
-          Constants::MATRICES[env.to_sym],
-          [],
+          Utility.organize_table(expr.compact),
+          open_paren,
+          Constants::MATRICES_PARENTHESIS[open_paren&.to_sym]&.to_s,
+          {},
         )
       end
 

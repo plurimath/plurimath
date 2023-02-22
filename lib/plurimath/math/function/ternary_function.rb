@@ -90,9 +90,9 @@ module Plurimath
 
         def ascii_wrap(field)
           asciimath = field.to_asciimath
+          return latex if ["obrace", "ubrace"].include?(field.class_name)
+
           case field
-          when ["obrace", "ubrace"].include?(field.class_name)
-            asciimath
           when Formula || field.class.name.include?("Function")
             "(#{asciimath})"
           else
@@ -102,9 +102,9 @@ module Plurimath
 
         def latex_wrap(field)
           latex = field.to_latex
+          return latex if ["obrace", "ubrace"].include?(field.class_name)
+
           case field
-          when ["obrace", "ubrace"].include?(field.class_name)
-            latex
           when Formula || field.class.name.include?("Function")
             "{#{latex}}"
           else

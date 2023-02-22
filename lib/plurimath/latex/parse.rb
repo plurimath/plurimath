@@ -131,14 +131,12 @@ module Plurimath
 
       rule(:left_right) do
         (
-         str("\\left").as(:left) >>
-         lparen.maybe >>
+         str("\\left").as(:left) >> lparen.maybe >>
          (
            (expression.repeat.as(:dividend) >> str("\\over") >> expression.repeat.as(:divisor)) |
            expression.as(:expression).maybe
          ) >>
-         str("\\right").as(:right).maybe >>
-         rparen.maybe
+         str("\\right").as(:right).maybe >> (rparen | str(".").maybe)
        )
       end
 
