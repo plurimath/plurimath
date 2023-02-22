@@ -84,13 +84,13 @@ formula.to_mathml
 ----
 === Supported Content
 --
-include::AsciiMath-Supported-Data.adoc[]
+link:AsciiMath-Supported-Data.adoc[AsciiMath Supported Data, target="_blank"]
 --
 
 --
-include::MathML-Supported-Data.adoc[]
+link:MathML-Supported-Data.adoc[MathML Supported Data, target="_blank"]
 --
 
 --
-include::Latex-Supported-Data.adoc[]
+link:Latex-Supported-Data.adoc[Latex Supported Data, target="_blank"]
 --
