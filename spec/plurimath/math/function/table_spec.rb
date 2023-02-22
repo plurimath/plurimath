@@ -13,9 +13,10 @@ RSpec.describe Plurimath::Math::Function::Table do
       end
 
       it 'initializes Table object' do
-        expect(table.parameter_one).to eql(['70'])
-        expect(table.parameter_two).to eql('{')
-        expect(table.parameter_three).to eql('}')
+        expect(table.value).to eql(['70'])
+        expect(table.open_paren).to eql('{')
+        expect(table.close_paren).to eql('}')
+        expect(table.options).to eql({})
       end
     end
   end

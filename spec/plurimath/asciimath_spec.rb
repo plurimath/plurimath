@@ -702,7 +702,8 @@ RSpec.describe Plurimath::Asciimath do
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
-              <mfenced open="[" close="]">
+              <mrow>
+                <mo>[</mo>
                 <mtable>
                   <mtr>
                     <mtd>
@@ -729,7 +730,8 @@ RSpec.describe Plurimath::Asciimath do
                     </mtd>
                   </mtr>
                 </mtable>
-              </mfenced>
+                <mo>]</mo>
+              </mrow>
               <mrow>
                 <mo>(</mo>
                 <munderover>
@@ -1086,7 +1088,8 @@ RSpec.describe Plurimath::Asciimath do
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
-              <mfenced open="(" close=")">
+              <mrow>
+                <mo>(</mo>
                 <mtable>
                   <mtr>
                     <mtd>
@@ -1099,7 +1102,8 @@ RSpec.describe Plurimath::Asciimath do
                     </mtd>
                   </mtr>
                 </mtable>
-              </mfenced>
+                <mo>)</mo>
+              </mrow>
             </mstyle>
           </math>
         MATHML
@@ -1118,7 +1122,8 @@ RSpec.describe Plurimath::Asciimath do
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
-              <mfenced open="|" close="|">
+              <mrow>
+                <mo>|</mo>
                 <mtable>
                   <mtr>
                     <mtd>
@@ -1137,7 +1142,8 @@ RSpec.describe Plurimath::Asciimath do
                     </mtd>
                   </mtr>
                 </mtable>
-              </mfenced>
+                <mo>|</mo>
+              </mrow>
               <mo>=</mo>
               <mi>a</mi>
               <mi>d</mi>
@@ -1162,7 +1168,8 @@ RSpec.describe Plurimath::Asciimath do
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
-              <mfenced open="(" close=")">
+              <mrow>
+                <mo>(</mo>
                 <mtable>
                   <mtr>
                     <mtd>
@@ -1219,7 +1226,8 @@ RSpec.describe Plurimath::Asciimath do
                     </mtd>
                   </mtr>
                 </mtable>
-              </mfenced>
+                <mo>)</mo>
+              </mrow>
             </mstyle>
           </math>
         MATHML
@@ -1357,7 +1365,8 @@ RSpec.describe Plurimath::Asciimath do
                 <mi>i</mi>
               </msub>
               <mo>=</mo>
-              <mfenced close="" open="{">
+              <mrow>
+                <mo></mo>
                 <mtable>
                   <mtr>
                     <mtd>
@@ -1404,7 +1413,8 @@ RSpec.describe Plurimath::Asciimath do
                     </mtd>
                   </mtr>
                 </mtable>
-              </mfenced>
+                <mo>{</mo>
+              </mrow>
             </mstyle>
           </math>
         MATHML
@@ -1574,7 +1584,8 @@ RSpec.describe Plurimath::Asciimath do
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
-              <mfenced open="[" close="]">
+              <mrow>
+                <mo>[</mo>
                 <mtable>
                   <mtr>
                     <mtd>
@@ -1607,7 +1618,8 @@ RSpec.describe Plurimath::Asciimath do
                     </mtd>
                   </mtr>
                 </mtable>
-              </mfenced>
+                <mo>]</mo>
+              </mrow>
             </mstyle>
           </math>
         MATHML
@@ -1628,7 +1640,8 @@ RSpec.describe Plurimath::Asciimath do
             <mstyle displaystyle="true">
               <munder>
                 <munder>
-                  <mfenced open="(" close=")">
+                  <mrow>
+                    <mo>(</mo>
                     <mtable>
                       <mtr>
                         <mtd>
@@ -1647,7 +1660,8 @@ RSpec.describe Plurimath::Asciimath do
                         </mtd>
                       </mtr>
                     </mtable>
-                  </mfenced>
+                    <mo>)</mo>
+                  </mrow>
                   <mo>&#x23df;</mo>
                 </munder>
                 <mtext>Adjustment to texture space</mtext>
@@ -1972,7 +1986,8 @@ RSpec.describe Plurimath::Asciimath do
                 <mrow>
                   <mo>(</mo>
                   <mfrac>
-                    <mfenced open="(" close=")">
+                    <mrow>
+                      <mo>(</mo>
                       <mtable>
                         <mtr>
                           <mtd>
@@ -1989,7 +2004,8 @@ RSpec.describe Plurimath::Asciimath do
                           </mtd>
                         </mtr>
                       </mtable>
-                    </mfenced>
+                      <mo>)</mo>
+                    </mrow>
                     <mrow>
                       <mrow>
                         <mo>(</mo>
@@ -2210,7 +2226,8 @@ RSpec.describe Plurimath::Asciimath do
                 </mrow>
               </mrow>
               <mo>=</mo>
-              <mfenced open="{" close="">
+              <mrow>
+                <mo>{</mo>
                 <mtable>
                   <mtr>
                     <mtd>
@@ -2223,7 +2240,8 @@ RSpec.describe Plurimath::Asciimath do
                       <mi>r</mi>
                     </mtd>
                     <mtd>
-                      <mfenced open="{" close="">
+                      <mrow>
+                        <mo>{</mo>
                         <mtable>
                           <mtr>
                             <mtd>
@@ -2271,7 +2289,8 @@ RSpec.describe Plurimath::Asciimath do
                             </mtd>
                           </mtr>
                         </mtable>
-                      </mfenced>
+                        <mo></mo>
+                      </mrow>
                     </mtd>
                   </mtr>
                   <mtr>
@@ -2282,7 +2301,8 @@ RSpec.describe Plurimath::Asciimath do
                       <mtext></mtext>
                     </mtd>
                     <mtd>
-                      <mfenced open="{" close="">
+                      <mrow>
+                        <mo>{</mo>
                         <mtable>
                           <mtr>
                             <mtd>
@@ -2380,7 +2400,8 @@ RSpec.describe Plurimath::Asciimath do
                             </mtd>
                           </mtr>
                         </mtable>
-                      </mfenced>
+                        <mo></mo>
+                      </mrow>
                     </mtd>
                   </mtr>
                   <mtr>
@@ -2527,7 +2548,8 @@ RSpec.describe Plurimath::Asciimath do
                     </mtd>
                   </mtr>
                 </mtable>
-              </mfenced>
+                <mo></mo>
+              </mrow>
             </mstyle>
           </math>
         MATHML
@@ -2553,7 +2575,8 @@ RSpec.describe Plurimath::Asciimath do
                 <mo>&#xaf;</mo>
               </munder>
               <mo>=</mo>
-              <mfenced open="[" close="]">
+              <mrow>
+                <mo>[</mo>
                 <mtable>
                   <mtr>
                     <mtd>
@@ -2638,7 +2661,8 @@ RSpec.describe Plurimath::Asciimath do
                     <mtd/>
                   </mtr>
                 </mtable>
-              </mfenced>
+                <mo>]</mo>
+              </mrow>
             </mstyle>
           </math>
         MATHML
@@ -3512,7 +3536,8 @@ RSpec.describe Plurimath::Asciimath do
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
-              <mfenced open="[" close="]">
+              <mrow>
+                <mo>[</mo>
                 <mtable>
                   <mtr>
                     <mtd>
@@ -3531,11 +3556,13 @@ RSpec.describe Plurimath::Asciimath do
                     </mtd>
                   </mtr>
                 </mtable>
-              </mfenced>
+                <mo>]</mo>
+              </mrow>
               <mo>, </mo>
               <mtext> </mtext>
               <mrow>
-                <mfenced open="[" close="]">
+                <mrow>
+                  <mo>[</mo>
                   <mtable>
                     <mtr>
                       <mtd>
@@ -3612,7 +3639,8 @@ RSpec.describe Plurimath::Asciimath do
                       </mtd>
                     </mtr>
                   </mtable>
-                </mfenced>
+                  <mo>]</mo>
+                </mrow>
                 <mo>&#xb7;</mo>
               </mrow>
             </mstyle>

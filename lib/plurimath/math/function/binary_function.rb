@@ -81,16 +81,13 @@ module Plurimath
         end
 
         def validate_function_formula(field)
+          unary_classes = (Utility::UNARY_CLASSES + ["obrace", "ubrace", "hat"])
           if field.is_a?(Formula)
-            field.value.any?(Left) || field.value.any?(Right) ? false : true
-          elsif ["obrace", "ubrace", "hat"].include?(field.class_name)
+            !(field.value.any?(Left) || field.value.any?(Right))
+          elsif unary_classes.include?(field.class_name)
             false
-          elsif Utility::UNARY_CLASSES.include?(field.class_name) || field.is_a?(FontStyle)
-            false
-          elsif field.class.name.include?("Function")
-            field.is_a?(Text) ? false : true
-          else
-            false
+          elsif field.class.name.include?("Function") || field.is_a?(FontStyle)
+            !field.is_a?(Text)
           end
         end
 

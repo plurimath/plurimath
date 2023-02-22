@@ -7,14 +7,15 @@ module Plurimath
     module Function
       class Table
         class Multline < Table
-          def initialize(parameter_one,
-                         parameter_two = "[",
-                         parameter_three = "]")
+          def initialize(value,
+                         open_paren = "[",
+                         close_paren = "]",
+                         options = {})
             super
           end
 
           def to_latex
-            "\\begin#{opening}#{latex_content}\\end#{ending}"
+            "\\begin#{opening}#{latex_content}\\end#{matrix_class}"
           end
         end
       end

@@ -19,6 +19,7 @@ module Plurimath
       rule(left_right: simple(:left_right)) { left_right }
       rule(table_left: simple(:table_left)) { table_left }
 
+      rule(left_right: sequence(:left_right))      { left_right }
       rule(power_base: sequence(:power_base))      { power_base }
       rule(table_right: simple(:table_right))      { table_right }
       rule(intermediate_exp: simple(:int_exp))     { int_exp }
@@ -124,6 +125,12 @@ module Plurimath
         new_arr = [sequence]
         new_arr << left_right unless left_right.to_s.strip.empty?
         new_arr
+      end
+
+      rule(sequence: simple(:sequence),
+           left_right: sequence(:left_right)) do
+        left_right.insert(0, sequence)
+        left_right
       end
 
       rule(table_row: simple(:table_row),

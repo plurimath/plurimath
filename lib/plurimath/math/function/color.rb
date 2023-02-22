@@ -7,7 +7,7 @@ module Plurimath
     module Function
       class Color < BinaryFunction
         def to_asciimath
-          first_value = "(#{parameter_one&.to_asciimath.gsub(/\s/, "")})"
+          first_value = "(#{parameter_one&.to_asciimath&.gsub(/\s/, '')})"
           second_value = "(#{parameter_two&.to_asciimath})"
           "color#{first_value}#{second_value}"
         end
@@ -16,14 +16,14 @@ module Plurimath
           Utility.update_nodes(
             Utility.ox_element(
               "mstyle",
-              attributes: { mathcolor: parameter_one&.to_asciimath.gsub(/\s/, "")&.gsub(/"/, "") },
+              attributes: { mathcolor: parameter_one&.to_asciimath&.gsub(/\s/, "")&.gsub(/"/, "") },
             ),
             [parameter_two&.to_mathml_without_math_tag],
           )
         end
 
         def to_latex
-          first_value = parameter_one&.to_asciimath.gsub(/\s/, "")
+          first_value = parameter_one&.to_asciimath&.gsub(/\s/, "")
           second_value = parameter_two&.to_latex
           "{\\#{class_name}{#{first_value}} #{second_value}}"
         end

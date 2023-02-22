@@ -16,6 +16,7 @@ module Plurimath
       mathtt: Math::Function::FontStyle::Monospace,
       mathsf: Math::Function::FontStyle::SansSerif,
       mathrm: Math::Function::FontStyle::Normal,
+      textrm: Math::Function::FontStyle::Normal,
       mathbf: Math::Function::FontStyle::Bold,
       textbf: Math::Function::FontStyle::Bold,
       bbb: Math::Function::FontStyle::DoubleStruck,
@@ -30,9 +31,9 @@ module Plurimath
       bb: Math::Function::FontStyle::Bold,
     }.freeze
     ALIGNMENT_LETTERS = {
+      c: "center",
       r: "right",
       l: "left",
-      c: "center",
     }.freeze
     UNARY_CLASSES = %w[
       arccos
@@ -68,40 +69,65 @@ module Plurimath
     ].freeze
 
     class << self
-      def organize_table(array, table = [], table_data = [], table_row = [], column_align: nil)
-        td_value = organize_td(array, column_align) if column_align
+      def organize_table(array, column_align: nil, options: nil)
+        table = []
+        table_data = []
+        table_row = []
         table_separators = ["&", "\\\\"].freeze
+        organize_options(array, column_align) if options
+        string_columns = column_align&.map(&:value)
         array.each do |data|
           if data.is_a?(Math::Symbol) && table_separators.include?(data.value)
-            table_row << Math::Function::Td.new(
-              filter_table_data(table_data).compact,
-              ALIGNMENT_LETTERS[td_value&.to_sym],
-            )
+            table_row << Math::Function::Td.new(filter_table_data(table_data).compact)
             table_data = []
             if data.value == "\\\\"
-              table << Math::Function::Tr.new(table_row.flatten)
+              organize_tds(table_row.flatten, string_columns.dup, options)
+              table << Math::Function::Tr.new(table_row)
               table_row = []
             end
             next
           end
           table_data << data
         end
-        if table_data
-          table_row << Math::Function::Td.new(
-            table_data.compact,
-            ALIGNMENT_LETTERS[td_value&.to_sym],
-          )
+        table_row << Math::Function::Td.new(table_data.compact) if table_data
+        unless table_row.nil? || table_row.empty?
+          organize_tds(table_row.flatten, string_columns.dup, options)
+          table << Math::Function::Tr.new(table_row)
         end
-        table << Math::Function::Tr.new(table_row) unless table_row.empty?
-        [table, td_value]
+        table_separator(string_columns, table, symbol: "|") unless column_align.nil? || column_align.empty?
+        table
       end
 
-      def organize_td(table_data, column_align)
-        if ALIGNMENT_LETTERS.include?(column_align.first.value.to_sym)
-          align = column_align.shift.value
-        end
+      def organize_options(table_data, column_align)
+        return column_align if column_align.length <= 1
+
+        align = [column_align&.shift]
         table_data.insert(0, *column_align)
         align
+      end
+
+      def table_options(table_data)
+        rowline = ""
+        table_data.map do |tr|
+          if symbol_value(tr&.parameter_one&.first&.parameter_one&.first, "&#x23af;")
+            rowline += "solid "
+          else
+            rowline += "none "
+          end
+        end
+        options = { rowline: rowline.strip } if rowline.include?("solid")
+        options || {}
+      end
+
+      def organize_tds(tr_array, column_align, options)
+        return tr_array if column_align.nil? || column_align.empty?
+
+        column_align.reject! { |string| string == "|" }
+        column_align = column_align * tr_array.length if options
+        tr_array.map.with_index do |td, ind|
+          columnalign = ALIGNMENT_LETTERS[column_align[ind]&.to_sym]
+          td.parameter_two = { columnalign: columnalign } if columnalign
+        end
       end
 
       def filter_table_data(table_data)
@@ -263,13 +289,14 @@ module Plurimath
         entities.encode(string, :hexadecimal)
       end
 
-      def table_separator(separator, value)
+      def table_separator(separator, value, symbol: "solid")
         sep_symbol = Math::Function::Td.new([Math::Symbol.new("|")])
         separator&.each_with_index do |sep, ind|
-          next unless sep == "solid"
+          next unless sep == symbol
 
           value.map do |val|
-            val.parameter_one.insert((ind + 1), sep_symbol)
+            val.parameter_one.insert((ind + 1), sep_symbol) if symbol == "solid"
+            val.parameter_one.insert(ind, sep_symbol) if symbol == "|"
             (val.parameter_one[val.parameter_one.index(nil)] = Math::Function::Td.new([])) rescue nil
             val
           end

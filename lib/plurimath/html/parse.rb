@@ -76,7 +76,7 @@ module Plurimath
           (str("&") >> match["a-zA-Z0-9"].repeat(2) >> str(";")).as(:symbol) |
           match["0-9"].as(:number) |
           match["a-zA-Z"].as(:text) |
-          match["^0-9a-zA-Z<>\/(){}\\[\\]"].as(:symbol)
+          match["^0-9a-zA-Z<>/(){}\\[\\]"].as(:symbol)
       end
 
       rule(:intermediate_exp) do

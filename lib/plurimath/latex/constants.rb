@@ -3715,6 +3715,13 @@ module Plurimath
         "(" => ")",
         "\\{" => "\\}",
       }.freeze
+      MATRICES_PARENTHESIS = {
+        "norm[": :"]",
+        "|": :"|",
+        "(": :")",
+        "{": :"}",
+        "[": :"]",
+      }.freeze
       MATRICES = {
         multline: nil,
         Vmatrix: "norm[",
