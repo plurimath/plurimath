@@ -7,11 +7,11 @@ module Plurimath
     module Function
       class FontStyle < BinaryFunction
         def to_asciimath
-          "#{parameter_two}#{wrapped(parameter_one)}"
+          parameter_one&.to_asciimath
         end
 
         def to_mathml_without_math_tag
-          first_value = parameter_one.to_mathml_without_math_tag
+          first_value = parameter_one&.to_mathml_without_math_tag
           Utility.update_nodes(
             Utility.ox_element(
               "mstyle",
@@ -21,13 +21,16 @@ module Plurimath
           )
         end
 
+        def to_omml_without_math_tag
+          parameter_one&.to_omml_without_math_tag
+        end
+
         def to_html
-          "<i>#{parameter_two}</i>#{parameter_one.to_html}"
+          parameter_one&.to_html
         end
 
         def to_latex
-          first_value = parameter_one.to_latex if parameter_one
-          "\\#{parameter_two}{#{first_value}}"
+          parameter_one&.to_latex
         end
       end
     end

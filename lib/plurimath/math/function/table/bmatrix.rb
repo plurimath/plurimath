@@ -14,10 +14,7 @@ module Plurimath
           end
 
           def to_latex
-            first_value = parameter_one&.map(&:to_latex)&.join("\\\\")
-            matrices    = Latex::Constants::MATRICES.invert
-            environment = matrices[parameter_two].to_s
-            "\\begin{#{environment}}#{first_value}\\end{#{environment}}"
+            "\\begin#{opening}#{latex_content}\\end#{ending}"
           end
         end
       end

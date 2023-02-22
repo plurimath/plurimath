@@ -10,11 +10,13 @@ module Plurimath
 
       def initialize(text)
         @text = text
+                  &.gsub(/(\|:|:\|)/, "|")
+                  &.gsub(/(\{:)/, "ℒ")
+                  &.gsub(/(:\})/, "ℛ")
       end
 
       def parse
         nodes = Parse.new.parse(text)
-        nodes = JSON.parse(nodes.to_json, symbolize_names: true)
         transformed_tree = Transform.new.apply(nodes)
         return transformed_tree if transformed_tree.is_a?(Math::Formula)
 

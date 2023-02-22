@@ -13,8 +13,8 @@ module Plurimath
         end
 
         def to_latex
-          first_value = "_{#{parameter_one.to_latex}}" if parameter_one
-          second_value = "^{#{parameter_two.to_latex}}" if parameter_two
+          first_value = "_#{latex_wrapped(parameter_one)}" if parameter_one
+          second_value = "^#{latex_wrapped(parameter_two)}" if parameter_two
           "\\log#{first_value}#{second_value}"
         end
 
@@ -42,6 +42,24 @@ module Plurimath
             ] + log_values,
           )
         end
+
+        def to_mathml_without_math_tag
+          subsup_tag = Utility.ox_element("msubsup")
+          first_value = (Utility.ox_element("mi") << "log")
+          if parameter_one || parameter_two
+            new_arr = [first_value]
+            new_arr << parameter_one&.to_mathml_without_math_tag
+            new_arr << parameter_two&.to_mathml_without_math_tag
+            Utility.update_nodes(
+              subsup_tag,
+              new_arr,
+            )
+          else
+            first_value
+          end
+        end
+
+        protected
 
         def first_value
           return nil if parameter_one.nil?

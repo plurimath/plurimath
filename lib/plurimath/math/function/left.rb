@@ -11,7 +11,15 @@ module Plurimath
         end
 
         def to_mathml_without_math_tag
-          Utility.ox_element("mi") << parameter_one
+          mo = Utility.ox_element("mo")
+          mo << parameter_one if parameter_one
+          mo
+        end
+
+        def to_omml_without_math_tag
+          mt = Utility.ox_element("m:t")
+          mt << parameter_one if parameter_one
+          mt
         end
 
         def to_html
@@ -20,7 +28,7 @@ module Plurimath
 
         def to_latex
           prefix = "\\" if parameter_one == "{"
-          "\\left#{prefix}#{parameter_one}"
+          "\\left #{prefix}#{parameter_one}"
         end
       end
     end

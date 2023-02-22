@@ -8,15 +8,14 @@ module Plurimath
       class Fenced < TernaryFunction
         def to_asciimath
           first_value  = parameter_one ? parameter_one.to_asciimath : "("
-          second_value = parameter_two.map(&:to_asciimath)&.join if parameter_two
           third_value  = parameter_three ? parameter_three.to_asciimath : ")"
-          "#{first_value}#{second_value}#{third_value}"
+          "#{first_value}#{parameter_two&.map(&:to_asciimath)&.join(' ')}#{third_value}"
         end
 
         def to_mathml_without_math_tag
-          first_value = Utility.ox_element("mo") << (parameter_one&.value || "")
+          first_value = Utility.ox_element("mo") << (mathml_paren(parameter_one) || "")
           second_value = parameter_two&.map(&:to_mathml_without_math_tag) || []
-          third_value = Utility.ox_element("mo") << (parameter_three&.value || "")
+          third_value = Utility.ox_element("mo") << (mathml_paren(parameter_three) || "")
           Utility.update_nodes(
             Utility.ox_element("mrow"),
             (second_value.insert(0, first_value) << third_value),
@@ -24,17 +23,19 @@ module Plurimath
         end
 
         def to_html
-          first_value  = "<i>#{parameter_one.to_html}</i>" if parameter_one
+          first_value  = "<i>#{parameter_one.value}</i>" if parameter_one
           second_value = parameter_two.map(&:to_html).join if parameter_two
-          third_value  = "<i>#{parameter_three.to_html}</i>" if parameter_three
+          third_value  = "<i>#{parameter_three.value}</i>" if parameter_three
           "#{first_value}#{second_value}#{third_value}"
         end
 
         def to_latex
-          open_paren   = parameter_one ? parameter_one.to_latex : "("
-          fenced_value = parameter_two&.map(&:to_latex)&.join
-          close_paren  = parameter_three ? parameter_three.to_latex : ")"
-          "#{open_paren}#{fenced_value}#{close_paren}"
+          open_paren   = parameter_one ? parameter_one.value : "("
+          fenced_value = parameter_two&.map(&:to_latex)&.join(" ")
+          close_paren  = parameter_three ? parameter_three.value : ")"
+          first_value  = latex_paren(open_paren, false)
+          second_value = latex_paren(close_paren, true)
+          "#{first_value}#{fenced_value}#{second_value}"
         end
 
         def to_omml_without_math_tag
@@ -48,6 +49,8 @@ module Plurimath
             [dpr] + second_value,
           )
         end
+
+        protected
 
         def second_value
           class_names = ["number", "symbol"].freeze
@@ -90,6 +93,20 @@ module Plurimath
             namespace: "m",
             attributes: attributes,
           )
+        end
+
+        def latex_paren(paren, right)
+          paren_side = right ? "\\right" : "\\left"
+          return "#{paren_side} ." if paren.include?(":")
+
+          paren = %w[{ }].include?(paren) ? "\\#{paren}" : paren
+          " #{paren_side} #{paren} "
+        end
+
+        def mathml_paren(field)
+          return "" if field.value.include?(":")
+
+          field.value
         end
       end
     end

@@ -1,4 +1,4 @@
-require_relative "../../../../lib/plurimath/mathml"
+require_relative "../../../../spec/spec_helper"
 
 RSpec.describe Plurimath::Mathml::Parser do
 
@@ -1438,8 +1438,8 @@ RSpec.describe Plurimath::Mathml::Parser do
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
         Plurimath::Math::Function::Root.new(
+          Plurimath::Math::Symbol.new("n"),
           Plurimath::Math::Symbol.new("a"),
-          Plurimath::Math::Symbol.new("n")
         )
       ])
       expect(formula).to eq(expected_value)

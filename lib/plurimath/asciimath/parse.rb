@@ -9,7 +9,11 @@ module Plurimath
       rule(:power)  { str("^") }
       rule(:space)  { match(/\s+/) }
       rule(:comma)  { (str(",") >> space.maybe) }
-      rule(:number) { match("[0-9.]").repeat(1).as(:number) }
+      rule(:number) do
+        (match("[0-9]").repeat(1) >> str(".") >> match("[0-9]").repeat(1)).as(:number) |
+          match("[0-9]").repeat(1).as(:number) |
+          str(".").as(:symbol)
+      end
 
       rule(:controversial_symbols)   { power_base | expression }
       rule(:left_right_open_paren)   { str("(") | str("[") }
@@ -49,6 +53,7 @@ module Plurimath
 
       rule(:left_right) do
         (str("left") >> left_right_open_paren.as(:left) >> iteration.as(:left_right_value) >> str("right") >> left_right_close_paren.as(:right)) |
+          (table.as(:numerator) >> space.maybe >> match(/(?<!\/)\/(?!\/)/) >> space.maybe >> iteration.as(:denominator)).as(:frac) |
           (table.as(:table) >> expression.maybe)
       end
 
@@ -59,9 +64,10 @@ module Plurimath
       rule(:symbol_text_or_integer) do
         sub_sup_classes |
           binary_classes |
-          unary_fonts_or_symbols |
+          hash_to_expression(Constants.precompile_constants) |
           (match(/[0-9]/).as(:number) >> comma.as(:comma)).repeat(1).as(:comma_separated) |
           quoted_text |
+          (str("d").as(:d) >> str("x").as(:x)).as(:intermediate_exp) |
           match["a-zA-Z"].as(:symbol) |
           match(/[^\[{(\\\/@;:.,'"|\]})0-9a-zA-Z\-><$%^&*_=+!`~\s?]/).as(:symbol) |
           number
@@ -71,18 +77,22 @@ module Plurimath
         (base >> space.maybe >> sequence.as(:base_value) >> power >> space.maybe >> sequence.as(:power_value)) |
           (space.maybe >> base >> space.maybe >> sequence.as(:base_value)).as(:base) |
           (space.maybe >> power >> space.maybe >> sequence.as(:power_value)).as(:power) |
-          (space.maybe >> base >> space.maybe >> (power.as(:symbol)).as(:base_value)).as(:base) |
-          (space.maybe >> power >> space.maybe >> (base.as(:symbol)).as(:power_value)).as(:power)
+          (space.maybe >> base >> space.maybe >> power.as(:symbol).as(:base_value)).as(:base) |
+          (space.maybe >> power >> space.maybe >> base.as(:symbol).as(:power_value)).as(:power)
       end
 
       rule(:power_base_rules) do
         (sub_sup_classes >> power_base).as(:power_base) |
           (binary_classes >> space.maybe >> sequence.as(:base_value).maybe >> space.maybe >> sequence.as(:power_value).maybe).as(:power_base) |
-          (sequence >> power_base).as(:power_base)
+          (sequence.as(:power_base) >> power_base).as(:power_base)
       end
 
       rule(:table) do
         (open_table.as(:table_left) >> tr >> close_table.as(:table_right)) |
+          (open_table.as(:table_left) >> tr >> str("}").as(:table_right)) |
+          (str("norm").as(:norm) >> open_table.as(:table_left) >> tr >> close_table.as(:table_right)) |
+          (str("{").as(:table_left) >> tr >> close_table.as(:table_right)) |
+          (str("|").as(:table_left) >> tr >> str("|").as(:table_right)) |
           (str("left") >> left_right_open_paren.as(:left) >> tr >> str("right") >> left_right_close_paren.as(:right))
       end
 
@@ -92,24 +102,34 @@ module Plurimath
       end
 
       rule(:color_value) do
-        (color_left_parenthesis.capture(:paren).as(:lparen) >> read_text.as(:text).as(:color) >> color_right_parenthesis.maybe.as(:rparen)).as(:intermediate_exp) |
-          expression |
-          read_text.as(:text)
+        (color_left_parenthesis.capture(:paren).as(:lparen) >> expression.as(:rgb_color) >> color_right_parenthesis.maybe.as(:rparen)).as(:intermediate_exp) |
+          iteration
       end
 
       rule(:sequence) do
-        (lparen.as(:lparen) >> expression.maybe.as(:expr) >> rparen.maybe.as(:rparen)).as(:intermediate_exp) |
+        (lparen.as(:lparen) >> space.maybe >> expression.maybe.as(:expr) >> space.maybe >> rparen.maybe.as(:rparen)).as(:intermediate_exp) |
           (str("text") >> lparen.capture(:paren).as(:lparen) >> read_text.as(:text) >> rparen.maybe.as(:rparen)).as(:intermediate_exp) |
           symbol_text_or_integer
+      end
+
+      rule(:frac) do
+        (sequence.as(:numerator) >> space.maybe >> match(/(?<!\/)\/(?!\/)/) >> space.maybe >> iteration.as(:denominator)).as(:frac) |
+          ((power_base_rules | power_base).as(:numerator) >> match(/(?<!\/)\/(?!\/)/) >> iteration.as(:denominator)).as(:frac)
+      end
+
+      rule(:mod) do
+        (sequence.as(:dividend) >> space.maybe >> str("mod").as(:mod) >> space.maybe >> iteration.as(:divisor)).as(:mod) |
+          ((power_base_rules >> power_base).as(:dividend) >> space.maybe >> str("mod").as(:mod) >> space.maybe >> iteration.as(:divisor)).as(:mod) |
+          (power_base_rules.as(:dividend) >> space.maybe >> str("mod").as(:mod) >> space.maybe >> iteration.as(:divisor)).as(:mod)
       end
 
       rule(:iteration) do
         table.as(:table) |
           comma.as(:comma) |
-          (sequence.as(:dividend) >> space.maybe >> str("mod").as(:mod) >> space.maybe >> iteration.as(:divisor)).as(:mod) |
+          mod |
           (sequence.as(:sequence) >> space.maybe >> str("//").as(:symbol)) |
-          (sequence.as(:numerator) >> space.maybe >> str("/") >> space.maybe >> sequence.as(:denominator)).as(:frac) |
-          (str("color").as(:binary_class) >> color_value.as(:base_value).maybe >> iteration.as(:power_value).maybe) |
+          (str("color") >> color_value.as(:color) >> sequence.as(:color_value)) |
+          frac |
           (power_base_rules >> power_base) |
           power_base_rules |
           sequence.as(:sequence) |
@@ -144,17 +164,9 @@ module Plurimath
         end
       end
 
-      def unary_fonts_or_symbols
-        unsorted_hash = Constants::UNARY_CLASSES.each_with_object({}) { |d, i| i[d] = :unary_class }
-        unsorted_hash = Constants::SYMBOLS.each_with_object(unsorted_hash) { |d, i| i[d.first] = :symbol }
-        unsorted_hash = Constants::FONT_STYLES.each_with_object(unsorted_hash) { |d, i| i[d] = :fonts }
-        sorted_hash   = unsorted_hash.sort_by { |v, _| -v.length }.to_h
-        hash_to_expression(sorted_hash)
-      end
-
       def hash_to_expression(arr)
         type = arr.first.class
-        arr.reduce do |expression, expr_string|
+        @@expression ||= arr.reduce do |expression, expr_string|
           expression = dynamic_parser_rules(expression) if expression.is_a?(type)
           expression | dynamic_parser_rules(expr_string)
         end
@@ -163,12 +175,10 @@ module Plurimath
       def dynamic_parser_rules(expr)
         first_value = str(expr.first.to_s)
         case expr.last
-        when :symbol
-          first_value.as(:symbol)
-        when :unary_class
-          (first_value.as(:unary_class) >> space.maybe >> sequence.maybe).as(:unary)
-        when :fonts
-          first_value.as(:fonts_class) >> space.maybe >> sequence.as(:fonts_value)
+        when :symbol then first_value.as(:symbol)
+        when :unary_class then (first_value.as(:unary_class) >> space.maybe >> sequence.maybe).as(:unary)
+        when :fonts then first_value.as(:fonts_class) >> space.maybe >> sequence.as(:fonts_value)
+        when :special_fonts then first_value.as(:bold_fonts)
         end
       end
     end

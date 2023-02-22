@@ -12,7 +12,7 @@ module Plurimath
             Utility.ox_element("mover"),
             [
               first_value,
-              Utility.ox_element("mo") << "&#x20D1;",
+              Utility.ox_element("mo") << "&#x2192;",
             ],
           )
         end

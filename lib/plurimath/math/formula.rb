@@ -14,7 +14,7 @@ module Plurimath
       end
 
       def to_asciimath
-        value.map(&:to_asciimath).join
+        value.map(&:to_asciimath).join(" ")
       end
 
       def to_mathml
@@ -42,11 +42,11 @@ module Plurimath
       end
 
       def to_latex
-        value.map(&:to_latex).join
+        value.map(&:to_latex).join(" ")
       end
 
       def to_html
-        value.map(&:to_html).join
+        value.map(&:to_html).join(" ")
       end
 
       def omml_math_attrs
@@ -97,12 +97,12 @@ module Plurimath
 
       def to_omml_without_math_tag
         if value.length == 2 && ["underover", "powerbase"].include?(
-          value.first.class_name,
+          value&.first&.class_name,
         )
           nary_tag
         else
           r_element = Utility.ox_element("r", namespace: "m")
-          r_element << Utility.rpr_element if ["symbol", "number", "text"].include?(value.first.class_name)
+          r_element << Utility.rpr_element if ["symbol", "number", "text"].include?(value&.first&.class_name)
           Utility.update_nodes(r_element, omml_content)
         end
       end
@@ -121,7 +121,7 @@ module Plurimath
       end
 
       def class_name
-        "formula"
+        self.class.name.split("::").last.downcase
       end
     end
   end

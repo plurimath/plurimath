@@ -7,15 +7,30 @@ module Plurimath
     module Function
       class Mod < BinaryFunction
         def to_asciimath
-          first_value = wrapped(parameter_one)
-          second_value = wrapped(parameter_two)
-          "#{first_value}mod#{second_value}"
+          first_value = parameter_one.to_asciimath
+          second_value = parameter_two.to_asciimath
+          "#{first_value} mod #{second_value}"
+        end
+
+        def to_mathml_without_math_tag
+          mrow_tag = Utility.ox_element("mrow")
+          mo_tag = Utility.ox_element("mi") << "mod"
+          first_value = parameter_one&.to_mathml_without_math_tag if parameter_one
+          second_value = parameter_two&.to_mathml_without_math_tag if parameter_two
+          Utility.update_nodes(
+            mrow_tag,
+            [
+              first_value,
+              mo_tag,
+              second_value,
+            ],
+          )
         end
 
         def to_latex
           first_value = "{#{parameter_one.to_latex}}" if parameter_one
           second_value = "{#{parameter_two.to_latex}}" if parameter_two
-          "#{first_value}\\pmod#{second_value}"
+          "#{first_value} \\mod #{second_value}"
         end
 
         def to_html

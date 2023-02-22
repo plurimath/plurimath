@@ -6,26 +6,26 @@ module Plurimath
   module Math
     module Function
       class FontStyle
-        class Script < FontStyle
+        class Normal < FontStyle
           def initialize(parameter_one,
-                         parameter_two = "script")
+                         parameter_two = "rm")
             super
           end
 
           def to_asciimath
-            "mathcal(#{parameter_one.to_asciimath})"
+            "rm(#{parameter_one.to_asciimath})"
           end
 
           def to_latex
             first_value = parameter_one.to_latex if parameter_one
-            "\\mathcal{#{first_value}}"
+            "\\mathrm{#{first_value}}"
           end
 
           def to_mathml_without_math_tag
             Utility.update_nodes(
               Utility.ox_element(
                 "mstyle",
-                attributes: { mathvariant: "script" },
+                attributes: { mathvariant: "normal" },
               ),
               [parameter_one.to_mathml_without_math_tag],
             )

@@ -18,14 +18,9 @@ module Plurimath
           text << (parse_text("mathml") || parameter_one) if parameter_one
         end
 
-        def symbol_value(unicode)
-          Mathml::Constants::UNICODE_SYMBOLS.invert[unicode] ||
-            Mathml::Constants::SYMBOLS.invert[unicode]
-        end
-
         def to_latex
           text_value = parse_text("latex") || parameter_one
-          text_value&.gsub(" ", "\\ ")
+          "\\text{#{text_value}}"
         end
 
         def to_html
@@ -35,6 +30,13 @@ module Plurimath
         def to_omml_without_math_tag
           text = Utility.ox_element("t", namespace: "m")
           text << (parse_text("omml") || parameter_one)
+        end
+
+        protected
+
+        def symbol_value(unicode)
+          Mathml::Constants::UNICODE_SYMBOLS.invert[unicode] ||
+            Mathml::Constants::SYMBOLS.invert[unicode]
         end
 
         def parse_text(lang)

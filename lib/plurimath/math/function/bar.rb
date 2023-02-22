@@ -8,7 +8,18 @@ module Plurimath
       class Bar < UnaryFunction
         def to_latex
           first_value = "{#{parameter_one.to_latex}}" if parameter_one
-          "\\bar#{first_value}"
+          "\\overline#{first_value}"
+        end
+
+        def to_mathml_without_math_tag
+          first_value = parameter_one&.to_mathml_without_math_tag
+          Utility.update_nodes(
+            Utility.ox_element("mover"),
+            [
+              first_value,
+              Utility.ox_element("mo") << "&#xaf;",
+            ],
+          )
         end
 
         def to_omml_without_math_tag
@@ -23,6 +34,8 @@ module Plurimath
             ],
           )
         end
+
+        protected
 
         def bar_pr
           attrs = { "m:val": "top" }

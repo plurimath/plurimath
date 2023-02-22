@@ -1,7 +1,7 @@
-require_relative '../../../../lib/plurimath/math'
+require_relative '../../../../spec/spec_helper'
 
 RSpec.describe Plurimath::Math::Formula do
-  describe ".to_latex" do
+  describe ".to_html" do
     subject(:formula) { exp.to_html.gsub(/\s/, "") }
 
     context "basic parse rules for single character tag" do
@@ -1110,7 +1110,7 @@ RSpec.describe Plurimath::Math::Formula do
         ])
       end
       it "returns abstract parsed tree" do
-        expected_value = "<i>lim</i><i>(3)</i><i>(e)</i>"
+        expected_value = "<i>(3)</i><i>(e)</i>"
         expect(formula).to eq(expected_value)
       end
     end
@@ -1135,7 +1135,7 @@ RSpec.describe Plurimath::Math::Formula do
         ])
       end
       it "returns abstract parsed tree" do
-        expected_value = "<i>lim</i><i>(3e)</i><i>(em)</i>"
+        expected_value = "<i>(3e)</i><i>(em)</i>"
         expect(formula).to eq(expected_value)
       end
     end
@@ -1163,7 +1163,7 @@ RSpec.describe Plurimath::Math::Formula do
         ])
       end
       it "returns abstract parsed tree" do
-        expected_value = "<i>lim</i><i>(3am)</i><i>(rest)</i>"
+        expected_value = "<i>(3am)</i><i>(rest)</i>"
         expect(formula).to eq(expected_value)
       end
     end

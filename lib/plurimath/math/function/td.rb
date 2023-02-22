@@ -1,26 +1,30 @@
 # frozen_string_literal: true
 
-require_relative "unary_function"
+require_relative "binary_function"
 
 module Plurimath
   module Math
     module Function
-      class Td < UnaryFunction
+      class Td < BinaryFunction
         def to_asciimath
-          parameter_one.map(&:to_asciimath).join
+          parameter_one.map(&:to_asciimath).join(" ")
         end
 
         def to_mathml_without_math_tag
-          return "" if parameter_one.first.is_a?(Math::Symbol) && parameter_one.first.value == "|"
+          return "" if Utility.symbol_value(parameter_one.first, "|")
+
+          td_attribute = { columnalign: parameter_two } if parameter_two
 
           Utility.update_nodes(
-            Utility.ox_element("mtd"),
+            Utility.ox_element("mtd", attributes: td_attribute),
             parameter_one.map(&:to_mathml_without_math_tag),
           )
         end
 
         def to_latex
-          parameter_one.map(&:to_latex).join
+          return "" if Utility.symbol_value(parameter_one.first, "|")
+
+          parameter_one.map(&:to_latex).join(" ")
         end
 
         def to_html
@@ -32,7 +36,7 @@ module Plurimath
           me = Utility.ox_element("e", namespace: "m")
           Utility.update_nodes(
             me,
-            parameter_one.map(&:to_omml_without_math_tag),
+            parameter_one&.map(&:to_omml_without_math_tag),
           )
         end
       end

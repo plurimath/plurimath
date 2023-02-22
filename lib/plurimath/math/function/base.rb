@@ -13,11 +13,12 @@ module Plurimath
         end
 
         def to_mathml_without_math_tag
-          sub_tag = Utility.ox_element("msub")
-          new_arr = []
-          new_arr << parameter_one.to_mathml_without_math_tag if parameter_one
-          new_arr << parameter_two.to_mathml_without_math_tag if parameter_two
-          Utility.update_nodes(sub_tag, new_arr)
+          tag_name = (["ubrace", "obrace"].include?(parameter_one&.class_name) ? "under" : "sub")
+          sub_tag = Utility.ox_element("m#{tag_name}")
+          mathml_value = []
+          mathml_value << parameter_one&.to_mathml_without_math_tag
+          mathml_value << parameter_two&.to_mathml_without_math_tag if parameter_two
+          Utility.update_nodes(sub_tag, mathml_value)
         end
 
         def to_latex
@@ -38,12 +39,13 @@ module Plurimath
           subpr_element = Utility.ox_element("sSubPr", namespace: "m")
           e_element     = Utility.ox_element("e", namespace: "m")
           sub_element   = Utility.ox_element("sub", namespace: "m")
+          sub_element << parameter_two.to_omml_without_math_tag if parameter_two
           Utility.update_nodes(
             ssub_element,
             [
               subpr_element << Utility.pr_element("ctrl", true, namespace: "m"),
               e_element << parameter_one.to_omml_without_math_tag,
-              sub_element << parameter_two.to_omml_without_math_tag,
+              sub_element,
             ],
           )
           ssub_element

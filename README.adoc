@@ -15,28 +15,27 @@ gem "plurimath"
 ```
 And then execute:
 ```shell
-
-    $ bundle install
+ $ bundle install
 ```
 Or install it yourself as:
 ```shell
-    $ gem install plurimath
+ $ gem install plurimath
 ```
 
 == Usage
 
 Pass the string you want to convert and Math type of the string provided, which will give you **Plurimath::Math::Formula** object as output, Let's see some examples below.
 
-=== Conversion Examples
+=== *Conversion Examples*
 
-==== Asciimath Formula Example
-[source, ruby]
+===== Asciimath Formula Example
+[source, ruby, indent=2]
 ----
 asciimath = "sin(1)"
 formula = Plurimath::Math.parse(asciimath, :asciimath)
 ----
-==== MathML Formula Example
-[source, ruby]
+===== MathML Formula Example
+[source, ruby, indent=2]
 ----
 mathml = <<~MATHML
               <math xmlns='http://www.w3.org/1998/Math/MathML'>
@@ -48,8 +47,8 @@ mathml = <<~MATHML
             MATHML
 formula = Plurimath::Math.parse(mathml, "mathml")
 ----
-==== Latex Formula Example
-[source, ruby]
+===== Latex Formula Example
+[source, ruby, indent=2]
 ----
 latex = "\\sin{1}"
 formula = Plurimath::Math.parse(latex, "latex")
@@ -57,23 +56,23 @@ formula = Plurimath::Math.parse(latex, "latex")
 ---
 Since we have the object of **Plurimath::Formula**,We can generate **AsciiMath**, **MathMl** or **Latex** string from the formula object,All we have to do is call conversion function on formula object, see examples below.
 
-==== AsciiMath Output conversion
-[source, ruby]
+===== AsciiMath Output conversion
+[source, ruby, indent=2]
 ----
 formula.to_asciimath
 > sin(1)
 ----
-==== Note:
-====== Asciimath doesn't support link:Latex-Symbols-Support.adoc[following symbols] but Latex does.So from Latex to Asciimath conversion we are returning latex's supported symbols if it's not supported in Asciimath.
+*Note:*
+ Asciimath doesn't support link:AsciiMath-Supported-Data.adoc#symbols-inherited-from-latex[*following symbols*] but Latex does.So from Latex to Asciimath conversion we are returning latex's supported symbols if it's not supported in Asciimath.
 
-==== Latex Output conversion
-[source, ruby]
+===== Latex Output conversion
+[source, ruby, indent=2]
 ----
 formula.to_latex
 > \\sin1
 ----
-==== MathML Output conversion
-[source, ruby]
+===== MathML Output conversion
+[source, ruby, indent=2]
 ----
 formula.to_mathml
 > <math xmlns='http://www.w3.org/1998/Math/MathML'>
@@ -85,13 +84,13 @@ formula.to_mathml
 ----
 === Supported Content
 --
-include::AsciiMath-Supported-Data.adoc[]
+link:AsciiMath-Supported-Data.adoc[AsciiMath Supported Data, target="_blank"]
 --
 
 --
-include::MathML-Supported-Data.adoc[]
+link:MathML-Supported-Data.adoc[MathML Supported Data, target="_blank"]
 --
 
 --
-include::Latex-Supported-Data.adoc[]
+link:Latex-Supported-Data.adoc[Latex Supported Data, target="_blank"]
 --

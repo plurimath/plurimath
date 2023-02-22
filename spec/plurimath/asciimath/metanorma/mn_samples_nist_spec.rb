@@ -1,4 +1,4 @@
-require_relative "../../../../lib/plurimath/math"
+require_relative "../../../../spec/spec_helper"
 
 # These examples originate from https://github.com/metanorma/mn-samples-nist
 
@@ -50,13 +50,7 @@ RSpec.describe Plurimath::Asciimath::Parser do
           Plurimath::Math::Function::Fenced.new(
             Plurimath::Math::Symbol.new("("),
             [
-              Plurimath::Math::Function::Fenced.new(
-                Plurimath::Math::Symbol.new("("),
-                [
-                  Plurimath::Math::Function::Text.new("Key")
-                ],
-                Plurimath::Math::Symbol.new(")")
-              ),
+              Plurimath::Math::Function::Text.new("Key"),
               Plurimath::Math::Symbol.new(", "),
               Plurimath::Math::Symbol.new("V"),
               Plurimath::Math::Symbol.new("⊕"),

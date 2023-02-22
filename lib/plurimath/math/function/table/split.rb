@@ -14,8 +14,7 @@ module Plurimath
           end
 
           def to_latex
-            first_value = parameter_one&.map(&:to_latex)&.join("\\\\")
-            "\\begin{split}#{first_value}\\end{split}"
+            "\\begin#{opening}#{latex_content}\\end#{ending}"
           end
         end
       end

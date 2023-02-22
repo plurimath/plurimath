@@ -6,6 +6,15 @@ module Plurimath
   module Math
     module Function
       class Limits < TernaryFunction
+        def to_mathml_without_math_tag
+          underover = Utility.ox_element("munderover")
+          value_array = []
+          value_array << parameter_one&.to_mathml_without_math_tag
+          value_array << parameter_two&.to_mathml_without_math_tag
+          value_array << parameter_three&.to_mathml_without_math_tag
+          Utility.update_nodes(underover, value_array)
+        end
+
         def to_latex
           first_value  = parameter_one&.to_latex
           second_value = "{#{parameter_two.to_latex}}" if parameter_two

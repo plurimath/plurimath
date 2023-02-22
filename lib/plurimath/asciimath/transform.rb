@@ -7,8 +7,9 @@ module Plurimath
       rule(frac: simple(:frac))     { frac }
       rule(unary: simple(:unary))   { unary }
       rule(table: simple(:table))   { table }
-      rule(comma: simple(:comma))   { Math::Symbol.new(comma) }
-      rule(rparen: simple(:rparen)) { Math::Symbol.new(rparen) }
+      rule(comma: simple(:comma))   { Utility.symbol_object(comma) }
+      rule(unary: sequence(:unary)) { Utility.filter_values(unary) }
+      rule(rparen: simple(:rparen)) { Utility.symbol_object(rparen) }
       rule(number: simple(:number)) { Math::Number.new(number) }
 
       rule(sequence: simple(:sequence))     { sequence }
@@ -18,10 +19,18 @@ module Plurimath
       rule(left_right: simple(:left_right)) { left_right }
       rule(table_left: simple(:table_left)) { table_left }
 
+      rule(power_base: sequence(:power_base))      { power_base }
       rule(table_right: simple(:table_right))      { table_right }
       rule(intermediate_exp: simple(:int_exp))     { int_exp }
       rule(power_value: sequence(:power_value))    { power_value }
       rule(mod: simple(:mod), expr: simple(:expr)) { [mod, expr] }
+
+      rule(bold_fonts: simple(:font)) do
+        Math::Function::FontStyle::DoubleStruck.new(
+          Utility.symbol_object(font.to_s[0]),
+          "mathbf",
+        )
+      end
 
       rule(unary_class: simple(:unary)) do
         Utility.get_class(unary).new
@@ -36,7 +45,7 @@ module Plurimath
       end
 
       rule(symbol: simple(:symbol)) do
-        Math::Symbol.new(
+        Utility.symbol_object(
           (Constants::SYMBOLS[symbol.to_sym] || symbol).to_s,
         )
       end
@@ -51,7 +60,7 @@ module Plurimath
       end
 
       rule(text: simple(:text)) do
-        text.is_a?(String) ? Utility.get_class("text").new(text) : text
+        text.is_a?(Slice) ? Utility.get_class("text").new(text) : text
       end
 
       rule(text: sequence(:text)) do
@@ -72,18 +81,42 @@ module Plurimath
 
       rule(numerator: simple(:numerator),
            denominator: simple(:denominator)) do
-        Math::Function::Frac.new(
-          Utility.unfenced_value(numerator),
-          Utility.unfenced_value(denominator),
+        new_arr = []
+        first_value = numerator.value.shift if Utility.frac_values(numerator)
+        new_arr << first_value
+        first_value = Utility.unfenced_value(numerator)
+        second_value = denominator.value.pop if Utility.frac_values(denominator)
+        new_arr << second_value
+        second_value = Utility.unfenced_value(denominator)
+        frac = Math::Function::Frac.new(
+          first_value,
+          second_value,
         )
+        if new_arr.compact.empty?
+          frac
+        else
+          Math::Formula.new(new_arr.insert(1, frac).compact)
+        end
       end
 
       rule(numerator: simple(:numerator),
            denominator: sequence(:denominator)) do
-        Math::Function::Frac.new(
-          Utility.unfenced_value(numerator),
-          Utility.unfenced_value(denominator),
+        new_arr = []
+        first_value = numerator.value.shift if Utility.frac_values(numerator)
+        new_arr << first_value
+        first_value = Utility.unfenced_value(numerator)
+        second_value = denominator.pop if Utility.frac_values(denominator)
+        new_arr << second_value
+        second_value = Utility.unfenced_value(denominator)
+        frac = Math::Function::Frac.new(
+          first_value,
+          second_value,
         )
+        if new_arr.compact.empty?
+          frac
+        else
+          Math::Formula.new(new_arr.insert(1, frac).compact)
+        end
       end
 
       rule(sequence: simple(:sequence),
@@ -107,33 +140,33 @@ module Plurimath
 
       rule(comma: simple(:comma),
            expr: simple(:expr)) do
-        new_arr = [Math::Symbol.new(comma)]
+        new_arr = [Utility.symbol_object(comma)]
         new_arr << expr unless expr.to_s.strip.empty?
         new_arr
       end
 
       rule(comma: simple(:comma),
            expr: sequence(:expr)) do
-        expr.flatten.compact.insert(0, Math::Symbol.new(comma))
+        expr.flatten.compact.insert(0, Utility.symbol_object(comma))
       end
 
       rule(rparen: simple(:rparen),
            expr: simple(:expr)) do
         [
-          Math::Symbol.new(rparen),
+          Utility.symbol_object(rparen),
           expr,
         ]
       end
 
       rule(rparen: simple(:rparen),
            expr: sequence(:expr)) do
-        expr.flatten.compact.insert(0, Math::Symbol.new(rparen))
+        expr.flatten.compact.insert(0, Utility.symbol_object(rparen))
       end
 
       rule(rparen: simple(:rparen),
            power: simple(:power)) do
         Math::Function::Power.new(
-          Math::Symbol.new(rparen),
+          Utility.symbol_object(rparen),
           Utility.unfenced_value(power),
         )
       end
@@ -142,7 +175,7 @@ module Plurimath
            power: simple(:power),
            expr: simple(:expr)) do
         power_object = Math::Function::Power.new(
-          Math::Symbol.new(rparen),
+          Utility.symbol_object(rparen),
           Utility.unfenced_value(power),
         )
         new_arr = [power_object]
@@ -151,9 +184,21 @@ module Plurimath
       end
 
       rule(rparen: simple(:rparen),
+           power: simple(:power),
+           expr: sequence(:expr)) do
+        power_object = Math::Function::Power.new(
+          Utility.symbol_object(rparen),
+          Utility.unfenced_value(power),
+        )
+        new_arr = [power_object]
+        new_arr += expr
+        new_arr
+      end
+
+      rule(rparen: simple(:rparen),
            base: simple(:base)) do
         Math::Function::Base.new(
-          Math::Symbol.new(rparen),
+          Utility.symbol_object(rparen),
           Utility.unfenced_value(base),
         )
       end
@@ -162,7 +207,7 @@ module Plurimath
            base: simple(:base),
            expr: simple(:expr)) do
         base_object = Math::Function::Base.new(
-          Math::Symbol.new(rparen),
+          Utility.symbol_object(rparen),
           Utility.unfenced_value(base),
         )
         new_arr = [base_object]
@@ -175,10 +220,10 @@ module Plurimath
            comma: simple(:comma)) do
         [
           Math::Function::Power.new(
-            Math::Symbol.new(rparen),
+            Utility.symbol_object(rparen),
             Utility.unfenced_value(power),
           ),
-          Math::Symbol.new(comma),
+          Utility.symbol_object(comma),
         ]
       end
 
@@ -187,12 +232,12 @@ module Plurimath
            comma: simple(:comma),
            expr: simple(:expr)) do
         exponent = Math::Function::Power.new(
-          Math::Symbol.new(rparen),
+          Utility.symbol_object(rparen),
           Utility.unfenced_value(power),
         )
         new_arr = [
           exponent,
-          Math::Symbol.new(comma),
+          Utility.symbol_object(comma),
         ]
         new_arr << expr unless expr.to_s.strip.empty?
         new_arr
@@ -203,12 +248,12 @@ module Plurimath
            comma: simple(:comma),
            expr: sequence(:expr)) do
         exponent = Math::Function::Power.new(
-          Math::Symbol.new(rparen),
+          Utility.symbol_object(rparen),
           Utility.unfenced_value(power),
         )
         new_arr = [
           exponent,
-          Math::Symbol.new(comma),
+          Utility.symbol_object(comma),
         ]
         new_arr += expr
         new_arr
@@ -219,17 +264,17 @@ module Plurimath
            comma: simple(:comma)) do
         [
           Math::Function::Base.new(
-            Math::Symbol.new(rparen),
+            Utility.symbol_object(rparen),
             Utility.unfenced_value(base),
           ),
-          Math::Symbol.new(comma),
+          Utility.symbol_object(comma),
         ]
       end
 
       rule(comma: simple(:comma),
            left_right: simple(:left_right)) do
         [
-          Math::Symbol.new(comma),
+          Utility.symbol_object(comma),
           left_right,
         ]
       end
@@ -243,7 +288,7 @@ module Plurimath
       end
 
       rule(td: sequence(:td)) do
-        Utility.td_values(td)
+        Utility.td_values(td, ",")
       end
 
       rule(open_tr: simple(:tr),
@@ -260,7 +305,7 @@ module Plurimath
            fonts_value: simple(:fonts_value)) do
         Utility::FONT_STYLES[font_style.to_sym].new(
           Utility.unfenced_value(fonts_value),
-          font_style,
+          font_style.to_s,
         )
       end
 
@@ -269,10 +314,10 @@ module Plurimath
            power: simple(:power)) do
         font_object = Utility::FONT_STYLES[font_style.to_sym].new(
           Utility.unfenced_value(fonts_value),
-          font_style,
+          font_style.to_s,
         )
         Math::Function::Power.new(
-          Utility.unfenced_value(font_object),
+          font_object,
           Utility.unfenced_value(power),
         )
       end
@@ -282,11 +327,14 @@ module Plurimath
            fonts_value: simple(:fonts_value)) do
         font_object = Utility::FONT_STYLES[font_style.to_sym].new(
           Utility.unfenced_value(fonts_value),
-          font_style,
+          font_style.to_s,
         )
-        Utility.get_class(function).new(
-          Utility.unfenced_value(font_object),
-        )
+        first_value = if Utility::UNARY_CLASSES.include?(function)
+                        font_object
+                      else
+                        Utility.unfenced_value(font_object)
+                      end
+        Utility.get_class(function).new(first_value)
       end
 
       rule(fonts_class: simple(:font_style),
@@ -294,7 +342,7 @@ module Plurimath
            base: simple(:base)) do
         font_object = Utility::FONT_STYLES[font_style.to_sym].new(
           Utility.unfenced_value(fonts_value),
-          font_style,
+          font_style.to_s,
         )
         Math::Function::Base.new(
           Utility.unfenced_value(font_object),
@@ -331,6 +379,50 @@ module Plurimath
         new_arr
       end
 
+      rule(sequence: simple(:sequence),
+           frac: simple(:frac)) do
+        new_arr = [sequence]
+        new_arr << frac unless frac.to_s.strip.empty?
+        new_arr
+      end
+
+      rule(sequence: simple(:sequence),
+           base: simple(:base)) do
+        Math::Function::Base.new(
+          sequence,
+          Utility.unfenced_value(base),
+        )
+      end
+
+      rule(power_base: simple(:power_base),
+           power: simple(:power)) do
+        Math::Function::Power.new(
+          power_base,
+          Utility.unfenced_value(power),
+        )
+      end
+
+      rule(power_base: simple(:power_base),
+           power: sequence(:power)) do
+        first_value = power.shift if Utility.frac_values(power)
+        power_object = Math::Function::Power.new(power_base, first_value)
+        if power.empty?
+          power_object
+        else
+          [power_object] + power
+        end
+      end
+
+      rule(sequence: simple(:sequence),
+           symbol: simple(:symbol)) do
+        symbol_object = Utility.symbol_object(
+          (Constants::SYMBOLS[symbol.to_sym] || symbol).to_s,
+        )
+        new_arr = [sequence]
+        new_arr << symbol_object unless symbol.to_s.strip.empty?
+        new_arr
+      end
+
       rule(power_base: simple(:power_base),
            left_right: simple(:left_right)) do
         new_arr = [power_base]
@@ -341,7 +433,7 @@ module Plurimath
       rule(power_base: simple(:power_base),
            power: simple(:power)) do
         Math::Function::Power.new(
-          Utility.unfenced_value(power_base),
+          power_base,
           Utility.unfenced_value(power),
         )
       end
@@ -350,7 +442,7 @@ module Plurimath
            power: simple(:power),
            expr: sequence(:expr)) do
         power_object = Math::Function::Power.new(
-          Utility.unfenced_value(power_base),
+          power_base,
           Utility.unfenced_value(power),
         )
         Math::Formula.new(
@@ -393,6 +485,38 @@ module Plurimath
 
       rule(power_base: simple(:power_base),
            base_value: simple(:base_value),
+           power_value: simple(:power_value)) do
+        Math::Function::PowerBase.new(
+          Utility.unfenced_value(power_base),
+          Utility.unfenced_value(base_value),
+          Utility.unfenced_value(power_value),
+        )
+      end
+
+      rule(power_base: simple(:power_base),
+           base_value: simple(:base_value),
+           power_value: sequence(:power_value)) do
+        first_value = power_value
+        first_value = power_value.shift if Utility.frac_values(power_value)
+        power_base_object = Math::Function::PowerBase.new(
+          Utility.unfenced_value(power_base),
+          Utility.unfenced_value(base_value),
+          Utility.filter_values(first_value),
+        )
+        if power_value.empty?
+          power_base_object
+        else
+          Math::Formula.new(
+            power_value.insert(
+              0,
+              power_base_object,
+            ),
+          )
+        end
+      end
+
+      rule(power_base: simple(:power_base),
+           base_value: simple(:base_value),
            power_value: simple(:power_value),
            expr: sequence(:expr)) do
         power_base_object = Math::Function::PowerBase.new(
@@ -409,7 +533,7 @@ module Plurimath
            base_value: simple(:base_value),
            power_value: simple(:power_value)) do
         Math::Function::PowerBase.new(
-          Math::Symbol.new(rparen),
+          Utility.symbol_object(rparen),
           Utility.unfenced_value(base_value),
           Utility.unfenced_value(power_value),
         )
@@ -420,7 +544,7 @@ module Plurimath
            power_value: simple(:power_value),
            expr: simple(:expr)) do
         power_base = Math::Function::PowerBase.new(
-          Math::Symbol.new(rparen),
+          Utility.symbol_object(rparen),
           Utility.unfenced_value(base_value),
           Utility.unfenced_value(power_value),
         )
@@ -434,7 +558,7 @@ module Plurimath
            power_value: simple(:power_value),
            expr: simple(:expr)) do
         power_base = Math::Function::PowerBase.new(
-          Math::Symbol.new(rparen),
+          Utility.symbol_object(rparen),
           Utility.unfenced_value(base_value),
           Utility.unfenced_value(power_value),
         )
@@ -448,7 +572,7 @@ module Plurimath
            power_value: simple(:power_value),
            expr: sequence(:expr)) do
         power_base = Math::Function::PowerBase.new(
-          Math::Symbol.new(rparen),
+          Utility.symbol_object(rparen),
           Utility.unfenced_value(base_value),
           Utility.unfenced_value(power_value),
         )
@@ -460,7 +584,7 @@ module Plurimath
            power_value: simple(:power_value),
            expr: sequence(:expr)) do
         power_base = Math::Function::PowerBase.new(
-          Math::Symbol.new(rparen),
+          Utility.symbol_object(rparen),
           Utility.unfenced_value(base_value),
           Utility.unfenced_value(power_value),
         )
@@ -472,9 +596,9 @@ module Plurimath
            power_value: simple(:power_value),
            comma: simple(:comma),
            expr: sequence(:expr)) do
-        coma = Math::Symbol.new(comma)
+        coma = Utility.symbol_object(comma)
         power_base = Math::Function::PowerBase.new(
-          Math::Symbol.new(rparen),
+          Utility.symbol_object(rparen),
           Utility.unfenced_value(base_value),
           Utility.unfenced_value(power_value),
         )
@@ -488,9 +612,9 @@ module Plurimath
            power_value: simple(:power_value),
            comma: simple(:comma),
            expr: sequence(:expr)) do
-        coma = Math::Symbol.new(comma)
+        coma = Utility.symbol_object(comma)
         power_base = Math::Function::PowerBase.new(
-          Math::Symbol.new(rparen),
+          Utility.symbol_object(rparen),
           Utility.unfenced_value(base_value),
           Utility.unfenced_value(power_value),
         )
@@ -502,7 +626,7 @@ module Plurimath
       rule(intermediate_exp: simple(:int_exp),
            power: simple(:power)) do
         Math::Function::Power.new(
-          Utility.unfenced_value(int_exp),
+          int_exp,
           Utility.unfenced_value(power),
         )
       end
@@ -510,7 +634,7 @@ module Plurimath
       rule(intermediate_exp: simple(:int_exp),
            power: sequence(:power)) do
         Math::Function::Power.new(
-          Utility.unfenced_value(int_exp),
+          int_exp,
           Utility.unfenced_value(power),
         )
       end
@@ -528,6 +652,18 @@ module Plurimath
         new_arr = [power_base]
         new_arr << expr unless expr.to_s.strip.empty?
         new_arr
+      end
+
+      rule(power_base: sequence(:power_base),
+           expr: simple(:expr)) do
+        new_arr = power_base
+        new_arr << expr unless expr.to_s.strip.empty?
+        new_arr
+      end
+
+      rule(power_base: sequence(:power_base),
+           expr: sequence(:expr)) do
+        power_base + expr
       end
 
       rule(sequence: simple(:sequence),
@@ -557,7 +693,7 @@ module Plurimath
       rule(unary: simple(:unary),
            power: simple(:power)) do
         Math::Function::Power.new(
-          Utility.unfenced_value(unary),
+          unary,
           Utility.unfenced_value(power),
         )
       end
@@ -565,7 +701,7 @@ module Plurimath
       rule(unary: simple(:unary),
            base: simple(:base)) do
         Math::Function::Base.new(
-          Utility.unfenced_value(unary),
+          unary,
           Utility.unfenced_value(base),
         )
       end
@@ -588,10 +724,20 @@ module Plurimath
         new_arr
       end
 
+      rule(d: simple(:d),
+           x: simple(:x)) do
+        Math::Formula.new(
+          [
+            Utility.symbol_object(d),
+            Utility.symbol_object(x),
+          ],
+        )
+      end
+
       rule(symbol: simple(:symbol),
            power: simple(:power)) do
         Math::Function::Power.new(
-          Math::Symbol.new(
+          Utility.symbol_object(
             (Constants::SYMBOLS[symbol.to_sym] || symbol).to_s,
           ),
           Utility.unfenced_value(power),
@@ -601,7 +747,7 @@ module Plurimath
       rule(symbol: simple(:symbol),
            power: sequence(:power)) do
         Math::Function::Power.new(
-          Math::Symbol.new(
+          Utility.symbol_object(
             (Constants::SYMBOLS[symbol.to_sym] || symbol).to_s,
           ),
           Utility.unfenced_value(power),
@@ -610,7 +756,7 @@ module Plurimath
 
       rule(symbol: simple(:sym),
            expr: sequence(:expr)) do
-        symbol = Math::Symbol.new(
+        symbol = Utility.symbol_object(
           (Constants::SYMBOLS[sym.to_sym] || sym).to_s,
         )
         expr.flatten.compact.insert(0, symbol)
@@ -618,7 +764,7 @@ module Plurimath
 
       rule(symbol: simple(:sym),
            expr: simple(:expr)) do
-        symbol = Math::Symbol.new(
+        symbol = Utility.symbol_object(
           (Constants::SYMBOLS[sym.to_sym] || sym).to_s,
         )
         [symbol, expr]
@@ -627,10 +773,10 @@ module Plurimath
       rule(symbol: simple(:symbol),
            base: simple(:base)) do
         Math::Function::Base.new(
-          Math::Symbol.new(
+          Utility.symbol_object(
             (Constants::SYMBOLS[symbol.to_sym] || symbol).to_s,
           ),
-          base,
+          Utility.unfenced_value(base),
         )
       end
 
@@ -652,7 +798,7 @@ module Plurimath
       rule(sequence: simple(:sequence),
            symbol: simple(:sym),
            expr: simple(:expr)) do
-        symbol = Math::Symbol.new(
+        symbol = Utility.symbol_object(
           (Constants::SYMBOLS[sym.to_sym] || sym).to_s,
         )
         [sequence, symbol, expr]
@@ -661,7 +807,7 @@ module Plurimath
       rule(sequence: simple(:sequence),
            symbol: simple(:sym),
            expr: sequence(:expr)) do
-        symbol = Math::Symbol.new(
+        symbol = Utility.symbol_object(
           (Constants::SYMBOLS[sym.to_sym] || sym).to_s,
         )
         new_arr = [sequence, symbol]
@@ -705,14 +851,17 @@ module Plurimath
 
       rule(unary_class: simple(:function),
            intermediate_exp: simple(:int_exp)) do
-        Utility.get_class(function).new(
-          Utility.unfenced_value(int_exp),
-        )
+        first_value = if Utility::UNARY_CLASSES.include?(function)
+                        int_exp
+                      else
+                        Utility.unfenced_value(int_exp)
+                      end
+        Utility.get_class(function).new(first_value)
       end
 
       rule(unary_class: simple(:function),
            symbol: simple(:symbol)) do
-        symbol_object = Math::Symbol.new(
+        symbol_object = Utility.symbol_object(
           (Constants::SYMBOLS[symbol.to_sym] || symbol).to_s,
         )
         Utility.get_class(function).new(symbol_object)
@@ -726,16 +875,19 @@ module Plurimath
 
       rule(unary_class: simple(:function),
            unary: simple(:unary)) do
-        Utility.get_class(function).new(
-          Utility.unfenced_value(unary),
-        )
+        first_value = if Utility::UNARY_CLASSES.include?(function)
+                        unary
+                      else
+                        Utility.unfenced_value(unary)
+                      end
+        Utility.get_class(function).new(first_value)
       end
 
       rule(unary_class: simple(:function),
            binary_class: simple(:binary_class)) do
         [
-          Utility.get_class(function),
-          Utility.get_class(binary_class),
+          Utility.get_class(function).new,
+          Utility.get_class(binary_class).new,
         ]
       end
 
@@ -750,7 +902,7 @@ module Plurimath
            comma: simple(:comma)) do
         [
           Math::Number.new(number),
-          Math::Symbol.new(comma),
+          Utility.symbol_object(comma),
         ]
       end
 
@@ -830,8 +982,8 @@ module Plurimath
            mod: simple(:mod),
            divisor: simple(:divisor)) do
         Math::Function::Mod.new(
-          Utility.unfenced_value(dividend),
-          Utility.unfenced_value(divisor),
+          dividend,
+          divisor,
         )
       end
 
@@ -859,7 +1011,7 @@ module Plurimath
            base_value: simple(:base),
            power_value: simple(:power)) do
         Math::Function::PowerBase.new(
-          Utility.unfenced_value(unary),
+          unary,
           Utility.unfenced_value(base),
           Utility.unfenced_value(power),
         )
@@ -880,7 +1032,7 @@ module Plurimath
            base_value: simple(:base),
            power_value: simple(:power)) do
         Math::Function::PowerBase.new(
-          Utility.unfenced_value(int_exp),
+          int_exp,
           Utility.unfenced_value(base),
           Utility.unfenced_value(power),
         )
@@ -890,7 +1042,7 @@ module Plurimath
            base_value: simple(:base),
            power_value: sequence(:power)) do
         Math::Function::PowerBase.new(
-          Utility.unfenced_value(int_exp),
+          int_exp,
           Utility.unfenced_value(base),
           Utility.filter_values(power),
         )
@@ -900,7 +1052,7 @@ module Plurimath
            base_value: simple(:base),
            power_value: simple(:power)) do
         Math::Function::PowerBase.new(
-          Math::Symbol.new(
+          Utility.symbol_object(
             (Constants::SYMBOLS[symbol.to_sym] || symbol).to_s,
           ),
           Utility.unfenced_value(base),
@@ -911,7 +1063,7 @@ module Plurimath
       rule(symbol: simple(:symbol),
            base_value: simple(:base),
            power_value: sequence(:power)) do
-        symbol_object = Math::Symbol.new(
+        symbol_object = Utility.symbol_object(
           (Constants::SYMBOLS[symbol.to_sym] || symbol).to_s,
         )
         Math::Function::PowerBase.new(
@@ -924,17 +1076,21 @@ module Plurimath
       rule(lparen: simple(:lparen),
            expr: simple(:expr),
            rparen: simple(:rparen)) do
-        form_value  = if expr.is_a?(String)
-                        expr.empty? ? nil : [expr]
+        form_value  = if expr.is_a?(Slice)
+                        expr.to_s.empty? ? nil : [expr]
                       else
                         [expr]
                       end
         right_paren = rparen.to_s.empty? ? "" : rparen
-        Math::Function::Fenced.new(
-          Math::Symbol.new(lparen),
-          form_value&.flatten&.compact,
-          Math::Symbol.new(right_paren),
-        )
+        if expr.is_a?(Math::Function::Text)
+          expr
+        else
+          Math::Function::Fenced.new(
+            Utility.symbol_object(lparen),
+            form_value&.flatten&.compact,
+            Utility.symbol_object(right_paren),
+          )
+        end
       end
 
       rule(lparen: simple(:lparen),
@@ -942,35 +1098,65 @@ module Plurimath
            rparen: simple(:rparen)) do
         right_paren = rparen.to_s.empty? ? "" : rparen
         Math::Function::Fenced.new(
-          Math::Symbol.new(lparen),
+          Utility.symbol_object(lparen),
           expr.flatten.compact,
-          Math::Symbol.new(right_paren),
+          Utility.symbol_object(right_paren),
         )
       end
 
       rule(lparen: simple(:lparen),
            text: simple(:text),
            rparen: simple(:rparen)) do
-        right_paren = rparen.to_s.empty? ? "" : rparen
-        Math::Function::Fenced.new(
-          Math::Symbol.new(lparen),
-          [
-            Math::Function::Text.new(text),
-          ],
-          Math::Symbol.new(right_paren),
-        )
+        Math::Function::Text.new(text)
       end
 
       rule(lparen: simple(:lparen),
-           color: simple(:color),
+           rgb_color: sequence(:color),
            rparen: simple(:rparen)) do
-        right_paren = rparen.to_s.empty? ? "" : rparen
-        Math::Function::Fenced.new(
-          Math::Symbol.new(lparen),
-          [
-            color,
-          ],
-          Math::Symbol.new(right_paren),
+        Math::Formula.new(color)
+      end
+
+      rule(lparen: simple(:lparen),
+           rgb_color: simple(:color),
+           rparen: simple(:rparen)) do
+        Math::Formula.new(color)
+      end
+
+      rule(color: sequence(:color),
+           color_value: sequence(:color_value)) do
+        Utility.symbol_object(color)
+      end
+
+      rule(color: simple(:color),
+           color_value: simple(:value),
+           expr: simple(:expr)) do
+        color_object = Math::Function::Color.new(
+          color,
+          Utility.unfenced_value(value),
+        )
+        [color_object, expr]
+      end
+
+      rule(color: simple(:color),
+           color_value: simple(:value),
+           expr: sequence(:expr)) do
+        color_object = Math::Function::Color.new(
+          color,
+          Utility.unfenced_value(value),
+        )
+        expr.insert(0, color_object)
+      end
+
+      rule(color: simple(:color),
+           color_value: simple(:color_value)) do
+        first_value = if color.is_a?(Math::Function::Text)
+                        Utility.symbol_object(color.parameter_one)
+                      else
+                        color
+                      end
+        Math::Function::Color.new(
+          first_value,
+          Utility.unfenced_value(color_value),
         )
       end
 
@@ -981,8 +1167,8 @@ module Plurimath
           [
             table_row,
           ],
-          table_left,
-          table_right,
+          Utility.symbol_object(table_left).value,
+          Utility.symbol_object(table_right).value,
         )
       end
 
@@ -994,9 +1180,22 @@ module Plurimath
         new_arr << expr unless expr.to_s.strip.empty?
         Math::Function::Table.new(
           new_arr,
-          table_left,
-          table_right,
+          Utility.symbol_object(table_left).value,
+          Utility.symbol_object(table_right).value,
         )
+      end
+
+      rule(norm: simple(:function),
+           table_left: simple(:table_left),
+           table_row: simple(:table_row),
+           expr: simple(:expr),
+           table_right: simple(:table_right)) do
+        table = Math::Function::Table.new(
+          [table_row, expr],
+          Utility.symbol_object(table_left).value,
+          Utility.symbol_object(table_right).value,
+        )
+        Math::Function::Norm.new(table)
       end
 
       rule(table_left: simple(:table_left),
@@ -1005,8 +1204,8 @@ module Plurimath
            table_right: simple(:table_right)) do
         Math::Function::Table.new(
           expr.flatten.compact.insert(0, table_row),
-          table_left,
-          table_right,
+          Utility.symbol_object(table_left).value,
+          Utility.symbol_object(table_right).value,
         )
       end
 
@@ -1014,16 +1213,10 @@ module Plurimath
            table_row: simple(:table_row),
            expr: sequence(:expr),
            right: simple(:right)) do
-        Math::Formula.new(
-          [
-            Math::Function::Left.new(left),
-            Math::Function::Table.new(
-              expr.flatten.compact.insert(0, table_row),
-              "",
-              "",
-            ),
-            Math::Function::Right.new(right),
-          ],
+        Math::Function::Table.new(
+          expr.flatten.compact.insert(0, table_row),
+          Utility.symbol_object(left).value,
+          Utility.symbol_object(right).value,
         )
       end
     end

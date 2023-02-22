@@ -1,4 +1,4 @@
-require_relative '../../../../lib/plurimath/asciimath'
+require_relative '../../../../spec/spec_helper'
 
 RSpec.describe Plurimath::Math::Function::Left do
 
@@ -38,7 +38,7 @@ RSpec.describe Plurimath::Math::Function::Left do
       let(:string) { "(" }
 
       it 'returns instance of Left' do
-        expect(left).to eq("\\left(")
+        expect(left).to eq("\\left (")
       end
     end
 
@@ -46,7 +46,69 @@ RSpec.describe Plurimath::Math::Function::Left do
       let(:string) { "{" }
 
       it 'returns instance of Left' do
-        expect(left).to eq("\\left\\{")
+        expect(left).to eq("\\left \\{")
+      end
+    end
+  end
+
+  describe ".to_mathml" do
+    subject(:formula) do
+      Ox.dump(
+        described_class.new(first_value).
+          to_mathml_without_math_tag,
+        indent: 2,
+      ).gsub("&amp;", "&")
+    end
+
+    context "contains Symbol as value" do
+      let(:first_value) { "(" }
+
+      it "returns mathml string" do
+        expect(formula).to be_equivalent_to("<mo>(</mo>")
+      end
+    end
+
+    context "contains Number as value" do
+      let(:first_value) { "{" }
+
+      it "returns mathml string" do
+        expect(formula).to be_equivalent_to("<mo>{</mo>")
+      end
+    end
+
+    context "contains Formula as value" do
+      let(:first_value) { "[" }
+
+      it "returns mathml string" do
+        expect(formula).to be_equivalent_to("<mo>[</mo>")
+      end
+    end
+  end
+
+  describe ".to_html" do
+    subject(:formula) { described_class.new(first_value).to_html }
+
+    context "contains Symbol as value" do
+      let(:first_value) { "(" }
+
+      it "returns mathml string" do
+        expect(formula).to eql("<i>(</i>")
+      end
+    end
+
+    context "contains Number as value" do
+      let(:first_value) { "{" }
+
+      it "returns mathml string" do
+        expect(formula).to eql("<i>{</i>")
+      end
+    end
+
+    context "contains Formula as value" do
+      let(:first_value) { "[" }
+
+      it "returns mathml string" do
+        expect(formula).to eql("<i>[</i>")
       end
     end
   end

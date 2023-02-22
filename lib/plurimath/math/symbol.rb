@@ -2,11 +2,11 @@
 
 module Plurimath
   module Math
-    class Symbol
+    class Symbol < Base
       attr_accessor :value
 
       def initialize(sym)
-        @value = sym
+        @value = super
       end
 
       def ==(object)
@@ -16,26 +16,42 @@ module Plurimath
       def to_asciimath
         return "" if value.nil?
 
-        symbol = Asciimath::Constants::SYMBOLS.invert[value.strip.to_sym].to_s
-        if value.match(/&#x[0-9a-fA-F]/) && symbol.empty?
-          Latex::Constants::SYMBOLS.invert[value]
-        else
-          symbol.empty? ? value : symbol
+        symbol = Asciimath::Constants::SYMBOLS.invert[value.strip.to_sym]
+        unicodes = Latex::Constants::UNICODE_SYMBOLS.invert
+        if value.match?(/&#x[0-9\w]+;/) && symbol.nil? && unicodes[value]
+          return unicodes[value].to_s
         end
+
+        symbol ? symbol.to_s : value
       end
 
       def to_mathml_without_math_tag
-        unicode_symbols = Mathml::Constants::UNICODE_SYMBOLS.invert
-        if unicode_symbols[value]
-          Utility.ox_element("mo") << unicode_symbols[value].to_s
-        else
-          Utility.ox_element("mi") << value
+        mi_tag = Utility.ox_element("mi")
+        return mi_tag if ["{:", ":}"].include?(value)
+
+        unicodes = Mathml::Constants::UNICODE_SYMBOLS
+        unicode = unicodes.invert[value]
+        if operator?(unicode) || unicode
+          mo_value = (unicodes[value] || unicode || value).to_s
+          return Utility.ox_element("mo") << mo_value
         end
+
+        mi_tag << value
       end
 
       def to_latex
-        symbols = Latex::Constants::SYMBOLS.invert
-        symbols.key?(value) ? "\\#{symbols[value]}" : value
+        returned = specific_values
+        return returned if returned
+
+        special_char = %w[&#x26; &#x23;]
+        symbols = Latex::Constants::UNICODE_SYMBOLS.invert
+
+        symbol = symbols[value]
+        if Latex::Constants::SYMBOLS[symbol] == :operant
+          special_char.include?(value) ? "\\#{symbol}" : symbol
+        else
+          symbols.key?(value) ? "\\#{symbol}" : value
+        end
       end
 
       def to_html
@@ -46,8 +62,20 @@ module Plurimath
         value
       end
 
-      def class_name
-        self.class.name.split("::").last.downcase
+      private
+
+      def operator?(unicode)
+        Mathml::Constants::OPERATORS.any? do |d|
+          [unicode.to_s, value.strip].include?(d)
+        end
+      end
+
+      def specific_values
+        return "" if ["{:", ":}"].include?(value)
+
+        return "\\#{value}" if ["{", "}"].include?(value) || value == "_"
+
+        return "\\operatorname{if}" if value == "if"
       end
     end
   end

@@ -2,11 +2,11 @@
 
 module Plurimath
   module Math
-    class Number
+    class Number < Base
       attr_accessor :value
 
       def initialize(value)
-        @value = value
+        @value = super
       end
 
       def ==(object)
@@ -31,10 +31,6 @@ module Plurimath
 
       def to_omml_without_math_tag
         Utility.ox_element("t", namespace: "m") << value
-      end
-
-      def class_name
-        self.class.name.split("::").last.downcase
       end
     end
   end
