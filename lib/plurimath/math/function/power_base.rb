@@ -7,11 +7,12 @@ module Plurimath
     module Function
       class PowerBase < TernaryFunction
         def to_mathml_without_math_tag
-          subsup_tag = Utility.ox_element("msubsup")
+          tag_name = (["ubrace", "obrace"].include?(parameter_one&.class_name) ? "underover" : "subsup")
+          subsup_tag = Utility.ox_element("m#{tag_name}")
           new_arr = []
-          new_arr << parameter_one.to_mathml_without_math_tag if parameter_one
-          new_arr << parameter_two.to_mathml_without_math_tag if parameter_two
-          new_arr << parameter_three.to_mathml_without_math_tag if parameter_three
+          new_arr << parameter_one.to_mathml_without_math_tag
+          new_arr << parameter_two&.to_mathml_without_math_tag
+          new_arr << parameter_three&.to_mathml_without_math_tag
           Utility.update_nodes(
             subsup_tag,
             new_arr,
@@ -22,7 +23,6 @@ module Plurimath
           first_value  = parameter_one.to_latex if parameter_one
           second_value = parameter_two.to_latex if parameter_two
           third_value  = parameter_three.to_latex if parameter_three
-          first_value  = "{#{first_value}}" if parameter_one.is_a?(Formula)
           "#{first_value}_{#{second_value}}^{#{third_value}}"
         end
 
@@ -50,17 +50,6 @@ module Plurimath
           ]
         end
 
-        def chr_value(narypr)
-          first_value = parameter_one.to_omml_without_math_tag
-          return narypr if first_value == "∫"
-
-          narypr << Utility.ox_element(
-            "chr",
-            namespace: "m",
-            attributes: { "m:val": first_value },
-          )
-        end
-
         def to_omml_without_math_tag
           ssubsup   = Utility.ox_element("sSubSup", namespace: "m")
           ssubsuppr = Utility.ox_element("sSubSupPr", namespace: "m")
@@ -75,6 +64,19 @@ module Plurimath
               sub_element,
               sup_element,
             ],
+          )
+        end
+
+        protected
+
+        def chr_value(narypr)
+          first_value = parameter_one.to_omml_without_math_tag
+          return narypr if first_value == "∫"
+
+          narypr << Utility.ox_element(
+            "chr",
+            namespace: "m",
+            attributes: { "m:val": first_value },
           )
         end
 

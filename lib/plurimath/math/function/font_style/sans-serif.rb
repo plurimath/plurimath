@@ -13,7 +13,22 @@ module Plurimath
           end
 
           def to_asciimath
-            "mathsf#{wrapped(parameter_one)}"
+            "mathsf(#{parameter_one.to_asciimath})"
+          end
+
+          def to_latex
+            first_value = parameter_one.to_latex if parameter_one
+            "\\mathsf{#{first_value}}"
+          end
+
+          def to_mathml_without_math_tag
+            Utility.update_nodes(
+              Utility.ox_element(
+                "mstyle",
+                attributes: { mathvariant: "sans-serif" },
+              ),
+              [parameter_one.to_mathml_without_math_tag],
+            )
           end
         end
       end

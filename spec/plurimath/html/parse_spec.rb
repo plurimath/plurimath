@@ -1,6 +1,4 @@
-require_relative "../../../lib/plurimath/math"
-require_relative "../../../lib/plurimath/html/parse"
-require_relative "../../../lib/plurimath/html/constants"
+require_relative "../../../spec/spec_helper"
 
 RSpec.describe Plurimath::Html::Parse do
 
@@ -805,6 +803,7 @@ RSpec.describe Plurimath::Html::Parse do
 
     context "should fail when a tag is not closed" do
       let(:string) { "<sup>sth" }
+
       it "returns abstract parsed tree" do
         expect{formula}.to raise_error(Parslet::ParseFailed)
       end

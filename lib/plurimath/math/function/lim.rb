@@ -18,6 +18,22 @@ module Plurimath
           "\\#{class_name}#{first_value}#{second_value}"
         end
 
+        def to_mathml_without_math_tag
+          munderover  = Utility.ox_element("munderover")
+          first_value = (Utility.ox_element("mo") << "lim")
+          if parameter_one || parameter_two
+            value_array = []
+            value_array << parameter_one&.to_mathml_without_math_tag
+            value_array << parameter_two&.to_mathml_without_math_tag
+            Utility.update_nodes(
+              munderover,
+              value_array.insert(0, first_value),
+            )
+          else
+            first_value
+          end
+        end
+
         def to_omml_without_math_tag
           limupp = Utility.ox_element("limUpp", namespace: "m")
           limpr = Utility.ox_element("limUppPr", namespace: "m")

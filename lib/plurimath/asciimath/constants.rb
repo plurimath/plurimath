@@ -5,16 +5,13 @@ module Plurimath
     class Constants
       TABLE_PARENTHESIS = {
         "(:": ":)",
-        "{:": ":}",
-        "|:": ":|",
+        "ℒ": "ℛ",
         "[": "]",
-        "{": "}",
         "(": ")",
-        "|": "|",
       }.freeze
       PARENTHESIS = {
         "(:": ":)",
-        "{:": ":}",
+        "ℒ": "ℛ",
         "(": ")",
         "{": "}",
         "[": "]",
@@ -72,6 +69,8 @@ module Plurimath
         lambda: :"&#x3bb;",
         Lambda: :"&#x39b;",
         varphi: :"&#x3c6;",
+        rangle: :"&#x232a;",
+        langle: :"&#x2329;",
         ">->>": :"&#x2916;",
         "/_\\": :"&#x25b3;",
         "|><|": :"&#x22c8;",
@@ -120,6 +119,8 @@ module Plurimath
         "***": :"&#x22c6;",
         "<=>": :"&#x21d4;",
         "...": :"&#x2026;",
+        "(:": :"&#x2329;",
+        ":)": :"&#x232a;",
         quad: :"&#x2001;",
         star: :"&#x22c6;",
         odot: :"&#x2299;",
@@ -167,6 +168,7 @@ module Plurimath
         "/_": :"&#x2220;",
         "+-": :"&#xb1;",
         "-:": :"&#xf7;",
+        "\\ ": :"&#xa0;",
         "\\": :"\\",
         "//": :/,
         sup: :"&#x2283;",
@@ -193,26 +195,26 @@ module Plurimath
         div: :"&#xf7;",
         neg: :"&#xac;",
         not: :"&#xac;",
+        "*": :"&#x22c5;",
         "@": :"&#x40;",
         "<": :"&#x3c;",
         ">": :"&#x3e;",
-        "=": :"&#x3d;",
-        "+": :"&#x2b;",
         "/": :"&#x2f;",
         ":": :"&#x3a;",
         "!": :"&#x21;",
         ",": :"&#x2c;",
         ";": :"&#x3b;",
-        "&": :"&#x26;",
         "?": :"&#x3f;",
         "$": :"&#x24;",
-        "#": :"&#x23;",
         "~": :"&#x7e;",
         "|": :"&#x7c;",
         "%": :"&#x25;",
-        "*": :"&#x22c5;",
-        "-": :"&#x2212;",
-        "'": :"&#x2032;",
+        "'": :"&#x27;",
+        "&": :"&#x26;",
+        "#": :"&#x23;",
+        "=": :"=",
+        "-": :"-",
+        "+": :"+",
         nn: :"&#x2229;",
         vv: :"&#x2228;",
         TT: :"&#x22a4;",
@@ -222,11 +224,6 @@ module Plurimath
         AA: :"&#x2200;",
         uu: :"&#x222a;",
         ne: :"&#x2260;",
-        ZZ: :"&#x2124;",
-        RR: :"&#x211d;",
-        QQ: :"&#x211a;",
-        NN: :"&#x2115;",
-        CC: :"&#x2102;",
         oo: :"&#x221e;",
         ge: :"&#x2265;",
         le: :"&#x2264;",
@@ -240,9 +237,12 @@ module Plurimath
         xx: :"&#xd7;",
         pm: :"&#xb1;",
         gt: :"&#x3e;",
-        lt: :"&#x3c;;",
+        lt: :"&#x3c;",
+        if: :if,
       }.freeze
       UNARY_CLASSES = %i[
+        underbrace
+        overbrace
         underline
         arccos
         arcsin
@@ -304,10 +304,12 @@ module Plurimath
         mathbf
         bbb
         bb
+        rm
         fr
         cc
         sf
         tt
+        ii
       ].freeze
       SUB_SUP_CLASSES = %w[
         prod
@@ -317,6 +319,13 @@ module Plurimath
         log
         int
       ].freeze
+      SPECIAL_BOLD_ALPHABETS = %w[
+        ZZ
+        RR
+        QQ
+        NN
+        CC
+      ].freeze
 
       class << self
         def precompile_constants
@@ -324,6 +333,7 @@ module Plurimath
             named_hash(UNARY_CLASSES, :unary_class)
               .merge(named_hash(SYMBOLS.keys, :symbol))
               .merge(named_hash(FONT_STYLES, :fonts))
+              .merge(named_hash(SPECIAL_BOLD_ALPHABETS, :special_fonts))
           @values.sort_by { |v, _| -v.length }.to_h
         end
 

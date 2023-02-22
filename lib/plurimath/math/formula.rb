@@ -14,7 +14,7 @@ module Plurimath
       end
 
       def to_asciimath
-        value.map(&:to_asciimath).join
+        value.map(&:to_asciimath).join(" ")
       end
 
       def to_mathml
@@ -42,11 +42,11 @@ module Plurimath
       end
 
       def to_latex
-        value.map(&:to_latex).join
+        value.map(&:to_latex).join(" ")
       end
 
       def to_html
-        value.map(&:to_html).join
+        value.map(&:to_html).join(" ")
       end
 
       def omml_math_attrs
@@ -121,7 +121,7 @@ module Plurimath
       end
 
       def class_name
-        "formula"
+        self.class.name.split("::").last.downcase
       end
     end
   end

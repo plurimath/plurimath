@@ -1,4 +1,4 @@
-require_relative '../../../../lib/plurimath/asciimath'
+require_relative '../../../../lib/plurimath/math'
 
 RSpec.describe Plurimath::Math::Function::BinaryFunction do
 
@@ -21,42 +21,6 @@ RSpec.describe Plurimath::Math::Function::BinaryFunction do
       let(:second_value) { Plurimath::Math::Symbol.new("theta") }
       it "returns asciimath string" do
         expect(formula.to_asciimath).to eq("binaryfunction(sum)(theta)")
-      end
-    end
-  end
-
-  describe ".value_to_asciimath" do
-    subject(:formula) { Plurimath::Math::Function::BinaryFunction.new(first_value, second_value) }
-
-    context "contains a symbol and sum fuction" do
-      let(:first_value) { Plurimath::Math::Function::Sum.new }
-      let(:second_value) { Plurimath::Math::Symbol.new("theta") }
-      it "returns asciimath string" do
-        expect(formula.value_to_asciimath).to eq("(sum)(theta)")
-      end
-    end
-
-    context "contains a fuction only" do
-      let(:first_value) { Plurimath::Math::Function::Sum.new }
-      let(:second_value) { nil }
-      it "returns asciimath string" do
-        expect(formula.value_to_asciimath).to eq("(sum)")
-      end
-    end
-
-    context "contains a symbol" do
-      let(:first_value) { nil }
-      let(:second_value) { Plurimath::Math::Symbol.new("theta") }
-      it "returns asciimath string" do
-        expect(formula.value_to_asciimath).to eq("(theta)")
-      end
-    end
-
-    context "contains nil values" do
-      let(:first_value) { nil }
-      let(:second_value) { nil }
-      it "returns empty string" do
-        expect(formula.value_to_asciimath).to eq("")
       end
     end
   end

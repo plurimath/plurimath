@@ -1,15 +1,17 @@
-require_relative '../../../../lib/plurimath/asciimath'
+require_relative '../../../../spec/spec_helper'
 
 RSpec.describe Plurimath::Math::Function::UnaryFunction do
 
-  it 'returns instance of UnaryFunction' do
-    unary_function = Plurimath::Math::Function::UnaryFunction.new("sum")
-    expect(unary_function).to be_a(Plurimath::Math::Function::UnaryFunction)
-  end
+  describe ".initialize" do
+      it 'returns instance of UnaryFunction' do
+        unary_function = Plurimath::Math::Function::UnaryFunction.new("sum")
+        expect(unary_function).to be_a(Plurimath::Math::Function::UnaryFunction)
+      end
 
-  it 'initializes UnaryFunction object' do
-    unary_function = Plurimath::Math::Function::UnaryFunction.new("sum")
-    expect(unary_function.parameter_one).to eql("sum")
+      it 'initializes UnaryFunction object' do
+      unary_function = Plurimath::Math::Function::UnaryFunction.new("sum")
+      expect(unary_function.parameter_one).to eql("sum")
+    end
   end
 
   describe ".to_asciimath" do

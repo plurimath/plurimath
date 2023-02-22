@@ -1637,6 +1637,8 @@
 * `Micro`
 * `cdotp`
 * `times`
+* `lVert`
+* `rVert`
 * `quad`
 * `Vert`
 * `euro`

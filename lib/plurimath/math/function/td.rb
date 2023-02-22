@@ -7,7 +7,7 @@ module Plurimath
     module Function
       class Td < BinaryFunction
         def to_asciimath
-          parameter_one.map(&:to_asciimath).join
+          parameter_one.map(&:to_asciimath).join(" ")
         end
 
         def to_mathml_without_math_tag
@@ -22,7 +22,9 @@ module Plurimath
         end
 
         def to_latex
-          parameter_one.map(&:to_latex).join
+          return "" if Utility.symbol_value(parameter_one.first, "|")
+
+          parameter_one.map(&:to_latex).join(" ")
         end
 
         def to_html

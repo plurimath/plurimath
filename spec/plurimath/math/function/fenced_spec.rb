@@ -1,4 +1,4 @@
-require_relative '../../../../lib/plurimath/asciimath'
+require_relative '../../../../spec/spec_helper'
 
 RSpec.describe Plurimath::Math::Function::Fenced do
 
@@ -23,45 +23,205 @@ RSpec.describe Plurimath::Math::Function::Fenced do
   end
 
   describe ".to_asciimath" do
-    subject(:fenced) { Plurimath::Math::Function::Fenced.new(first, second, third).to_asciimath }
+    subject(:formula) { described_class.new(first_value, second_value, third_value).to_asciimath }
 
-    context "contains fenced object with default braces" do
-      let(:first) { Plurimath::Math::Symbol.new("(") }
-      let(:second) { [Plurimath::Math::Function::Sum.new] }
-      let(:third) { Plurimath::Math::Symbol.new(")") }
+    context "contains Symbol as value" do
+      let(:first_value) { Plurimath::Math::Symbol.new("(") }
+      let(:second_value) { [Plurimath::Math::Symbol.new("n")] }
+      let(:third_value) { Plurimath::Math::Symbol.new(")") }
+
       it "returns asciimath string" do
-        expected_value = "(sum)"
-        expect(fenced).to eq(expected_value)
+        expect(formula).to eq("(n)")
       end
     end
 
-    context "contains fenced object with curly braces" do
-      let(:first) { Plurimath::Math::Symbol.new("{") }
-      let(:second) { [Plurimath::Math::Function::Sum.new] }
-      let(:third) { Plurimath::Math::Symbol.new("}") }
+    context "contains Number as value" do
+      let(:first_value) { Plurimath::Math::Number.new("{") }
+      let(:second_value) { [Plurimath::Math::Number.new("70")] }
+      let(:third_value) { Plurimath::Math::Number.new("}") }
+
       it "returns asciimath string" do
-        expected_value = "{sum}"
-        expect(fenced).to eq(expected_value)
+        expect(formula).to eq("{70}")
       end
     end
 
-    context "contains fenced object with single curly braces" do
-      let(:first) { nil }
-      let(:second) { [Plurimath::Math::Function::Sum.new] }
-      let(:third) { Plurimath::Math::Symbol.new("}") }
-      it "matches with expected value" do
-        expected_value = "(sum}"
-        expect(fenced).to eq(expected_value)
+    context "contains Formula as value" do
+      let(:first_value) { Plurimath::Math::Symbol.new("[") }
+      let(:second_value) do
+          [
+            Plurimath::Math::Formula.new([
+              Plurimath::Math::Function::Sum.new(
+                Plurimath::Math::Symbol.new("&"),
+                Plurimath::Math::Function::Text.new("so"),
+              )
+            ])
+          ]
+      end
+      let(:third_value) { Plurimath::Math::Symbol.new("]") }
+      it "returns asciimath string" do
+        expect(formula).to eq("[sum_(&)^(\"so\")]")
+      end
+    end
+  end
+
+  describe ".to_mathml" do
+    subject(:formula) do
+      Ox.dump(
+        described_class.new(first_value, second_value, third_value).
+          to_mathml_without_math_tag,
+        indent: 2,
+      ).gsub("&amp;", "&")
+    end
+
+    context "contains Symbol as value" do
+      let(:first_value) { Plurimath::Math::Symbol.new("(") }
+      let(:second_value) { [Plurimath::Math::Symbol.new("n")] }
+      let(:third_value) { Plurimath::Math::Symbol.new(")") }
+
+      it "returns mathml string" do
+        expected_value = <<~MATHML
+          <mrow>
+            <mo>(</mo>
+            <mi>n</mi>
+            <mo>)</mo>
+          </mrow>
+        MATHML
+        expect(formula).to be_equivalent_to(expected_value)
       end
     end
 
-    context "contains fenced object with curly braces" do
-      let(:first) { Plurimath::Math::Symbol.new("{") }
-      let(:second) { [Plurimath::Math::Function::Sum.new] }
-      let(:third) { nil }
-      it "does not match" do
-        expected_value = "{sum"
-        expect(fenced).not_to eq(expected_value)
+    context "contains Number as value" do
+      let(:first_value) { Plurimath::Math::Symbol.new("(") }
+      let(:second_value) { [Plurimath::Math::Number.new("70")] }
+      let(:third_value) { Plurimath::Math::Symbol.new(")") }
+
+      it "returns mathml string" do
+        expected_value = <<~MATHML
+          <mrow>
+            <mo>(</mo>
+            <mn>70</mn>
+            <mo>)</mo>
+          </mrow>
+        MATHML
+        expect(formula).to be_equivalent_to(expected_value)
+      end
+    end
+
+    context "contains Formula as value" do
+      let(:first_value) { Plurimath::Math::Symbol.new("(") }
+      let(:second_value) do
+        [
+          Plurimath::Math::Formula.new([
+            Plurimath::Math::Function::Sum.new(
+              Plurimath::Math::Symbol.new("&"),
+              Plurimath::Math::Function::Text.new("so"),
+            )
+          ])
+        ]
+      end
+      let(:third_value) { Plurimath::Math::Symbol.new(")") }
+
+      it "returns mathml string" do
+        expected_value = <<~MATHML
+          <mrow>
+            <mo>(</mo>
+            <mrow>
+              <munderover>
+                <mo>&#x2211;</mo>
+                <mo>&#x26;</mo>
+                <mtext>so</mtext>
+              </munderover>
+            </mrow>
+            <mo>)</mo>
+          </mrow>
+        MATHML
+        expect(formula).to be_equivalent_to(expected_value)
+      end
+    end
+  end
+
+  describe ".to_latex" do
+    subject(:formula) { described_class.new(first_value, second_value, third_value).to_latex }
+
+    context "contains Symbol as value" do
+      let(:first_value) { Plurimath::Math::Symbol.new("(") }
+      let(:second_value) { [Plurimath::Math::Symbol.new("n")] }
+      let(:third_value) { Plurimath::Math::Symbol.new(")") }
+
+      it "returns mathml string" do
+        expect(formula).to eql(" \\left ( n \\right ) ")
+      end
+    end
+
+    context "contains Number as value" do
+      let(:first_value) { Plurimath::Math::Symbol.new("{") }
+      let(:second_value) { [Plurimath::Math::Number.new("70")] }
+      let(:third_value) { Plurimath::Math::Symbol.new("}") }
+
+      it "returns mathml string" do
+        expect(formula).to eql(" \\left \\{ 70 \\right \\} ")
+      end
+    end
+
+    context "contains Formula as value" do
+      let(:first_value) { Plurimath::Math::Symbol.new("[") }
+      let(:second_value) do
+        [
+          Plurimath::Math::Formula.new([
+            Plurimath::Math::Function::Sum.new(
+              Plurimath::Math::Symbol.new("&"),
+              Plurimath::Math::Function::Text.new("so"),
+            )
+          ])
+        ]
+      end
+      let(:third_value) { Plurimath::Math::Symbol.new("]") }
+
+      it "returns mathml string" do
+        expect(formula).to eql(" \\left [ \\sum_{&}^{\\text{so}} \\right ] ")
+      end
+    end
+  end
+
+  describe ".to_html" do
+    subject(:formula) { described_class.new(first_value, second_value, third_value).to_html }
+
+    context "contains Symbol as value" do
+      let(:first_value) { Plurimath::Math::Symbol.new("(") }
+      let(:second_value) { [Plurimath::Math::Symbol.new("n")] }
+      let(:third_value) { Plurimath::Math::Symbol.new(")") }
+
+      it "returns mathml string" do
+        expect(formula).to eql("<i>(</i>n<i>)</i>")
+      end
+    end
+
+    context "contains Number as value" do
+      let(:first_value) { Plurimath::Math::Symbol.new("[") }
+      let(:second_value) { [Plurimath::Math::Number.new("70")] }
+      let(:third_value) { Plurimath::Math::Symbol.new("]") }
+
+      it "returns mathml string" do
+        expect(formula).to eql("<i>[</i>70<i>]</i>")
+      end
+    end
+
+    context "contains Formula as value" do
+      let(:first_value) { Plurimath::Math::Symbol.new("{") }
+      let(:second_value) do
+        [
+          Plurimath::Math::Formula.new([
+            Plurimath::Math::Function::Sum.new(
+              Plurimath::Math::Symbol.new("&"),
+              Plurimath::Math::Function::Text.new("so"),
+            )
+          ])
+        ]
+      end
+      let(:third_value) { Plurimath::Math::Symbol.new("}") }
+
+      it "returns mathml string" do
+        expect(formula).to eql("<i>{</i><i>&sum;</i><sub>&</sub><sup>so</sup><i>}</i>")
       end
     end
   end

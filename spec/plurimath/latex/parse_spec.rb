@@ -1,6 +1,4 @@
-require_relative "../../../lib/plurimath/math"
-require_relative "../../../lib/plurimath/latex/parse"
-require_relative "../../../lib/plurimath/latex/constants"
+require_relative "../../../spec/spec_helper"
 
 RSpec.describe Plurimath::Latex::Parse do
 
@@ -395,11 +393,11 @@ RSpec.describe Plurimath::Latex::Parse do
         LATEX
       }
       it "returns parsed tree" do
-        base = formula[:sequence][:base]
+        log = formula[:sequence][:power_base]
         expression = formula[:expression]
 
-        expect(base[:binary]).to eq("log")
-        expect(base[:subscript][:number]).to eq("2")
+        expect(log[:binary]).to eq("log")
+        expect(log[:subscript][:number]).to eq("2")
         expect(expression[:expression][:symbols]).to eq("x")
       end
     end
@@ -411,7 +409,7 @@ RSpec.describe Plurimath::Latex::Parse do
         LATEX
       }
       it "returns parsed tree" do
-        binary = formula[:sequence][:base]
+        binary = formula[:sequence][:power_base]
         expression = binary[:subscript][:expression][:expression]
 
         expect(binary[:binary]).to eq("lim")

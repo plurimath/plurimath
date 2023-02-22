@@ -1,8 +1,8 @@
-require_relative "../../../../lib/plurimath/math"
+require "./spec/spec_helper"
 
 RSpec.describe Plurimath::Math::Formula do
   describe ".to_mathml" do
-    subject(:formula) { exp.to_mathml.gsub(/\s/, "") }
+    subject(:formula) { exp.to_mathml }
 
     context "contains mathml string of sin formula" do
       let(:exp) {
@@ -17,13 +17,13 @@ RSpec.describe Plurimath::Math::Formula do
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
               <mrow>
-                <mo>sin</mo>
+                <mi>sin</mi>
               </mrow>
               <mn>1</mn>
             </mstyle>
           </math>
         MATHML
-        expect(formula).to eq(expected_value.gsub(/\s/, ""))
+        expect(formula).to be_equivalent_to(expected_value)
       end
     end
 
@@ -43,18 +43,14 @@ RSpec.describe Plurimath::Math::Formula do
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
               <munderover>
-                <mrow>
-                  <mo>&#x2211;</mo>
-                </mrow>
-                <mrow>
-                  <mo>&#x220f;</mo>
-                </mrow>
+                <mo>&#x2211;</mo>
+                <mo>&#x220f;</mo>
                 <mo>&#x22c1;</mo>
               </munderover>
             </mstyle>
           </math>
         MATHML
-        expect(formula).to eq(expected_value.gsub(/\s/, ""))
+        expect(formula).to be_equivalent_to(expected_value)
       end
     end
 
@@ -74,16 +70,14 @@ RSpec.describe Plurimath::Math::Formula do
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
               <munderover>
-                <mrow>
-                  <mo>&#x2211;</mo>
-                </mrow>
+                <mo>&#x2211;</mo>
                 <mi>x</mi>
                 <mi>s</mi>
               </munderover>
             </mstyle>
           </math>
         MATHML
-        expect(formula).to eq(expected_value.gsub(/\s/, ""))
+        expect(formula).to be_equivalent_to(expected_value)
       end
     end
 
@@ -104,9 +98,7 @@ RSpec.describe Plurimath::Math::Formula do
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
               <munderover>
-                <mrow>
-                  <mo>&#x2211;</mo>
-                </mrow>
+                <mo>&#x2211;</mo>
                 <mi>x</mi>
                 <mi>w</mi>
               </munderover>
@@ -114,7 +106,7 @@ RSpec.describe Plurimath::Math::Formula do
             </mstyle>
           </math>
         MATHML
-        expect(formula).to eq(expected_value.gsub(/\s/, ""))
+        expect(formula).to be_equivalent_to(expected_value)
       end
     end
 
@@ -134,16 +126,14 @@ RSpec.describe Plurimath::Math::Formula do
             <mstyle displaystyle="true">
               <msub>
                 <mrow>
-                  <mo>sin</mo>
+                  <mi>sin</mi>
                 </mrow>
-                <mrow>
-                  <mo>&#x2211;</mo>
-                </mrow>
+                <mo>&#x2211;</mo>
               </msub>
             </mstyle>
           </math>
         MATHML
-        expect(formula).to eq(expected_value.gsub(/\s/, ""))
+        expect(formula).to be_equivalent_to(expected_value)
       end
     end
 
@@ -163,16 +153,14 @@ RSpec.describe Plurimath::Math::Formula do
             <mstyle displaystyle="true">
               <msup>
                 <mrow>
-                  <mo>sin</mo>
+                  <mi>sin</mi>
                 </mrow>
-                <mrow>
-                  <mo>&#x2211;</mo>
-                </mrow>
+                <mo>&#x2211;</mo>
               </msup>
             </mstyle>
           </math>
         MATHML
-        expect(formula).to eq(expected_value.gsub(/\s/, ""))
+        expect(formula).to be_equivalent_to(expected_value)
       end
     end
 
@@ -197,23 +185,19 @@ RSpec.describe Plurimath::Math::Formula do
             <mstyle displaystyle="true">
               <msubsup>
                 <mrow>
-                  <mo>sin</mo>
+                  <mi>sin</mi>
                 </mrow>
                 <mrow>
-                  <mrow>
-                    <mo>&#x220f;</mo>
-                  </mrow>
+                  <mo>&#x220f;</mo>
                 </mrow>
                 <mrow>
-                  <mrow>
-                    <mo>&#x2211;</mo>
-                  </mrow>
+                  <mo>&#x2211;</mo>
                 </mrow>
               </msubsup>
             </mstyle>
           </math>
         MATHML
-        expect(formula).to eq(expected_value.gsub(/\s/, ""))
+        expect(formula).to be_equivalent_to(expected_value)
       end
     end
 
@@ -237,9 +221,7 @@ RSpec.describe Plurimath::Math::Formula do
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
               <munderover>
-                <mrow>
-                  <mo>&#x2211;</mo>
-                </mrow>
+                <mo>&#x2211;</mo>
                 <mi>i</mi>
                 <mi>n</mi>
               </munderover>
@@ -250,7 +232,7 @@ RSpec.describe Plurimath::Math::Formula do
             </mstyle>
           </math>
         MATHML
-        expect(formula).to eq(expected_value.gsub(/\s/, ""))
+        expect(formula).to be_equivalent_to(expected_value)
       end
     end
 
@@ -266,12 +248,12 @@ RSpec.describe Plurimath::Math::Formula do
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
               <mrow>
-                <mo>sin</mo>
+                <mi>sin</mi>
               </mrow>
             </mstyle>
           </math>
         MATHML
-        expect(formula).to eq(expected_value.gsub(/\s/, ""))
+        expect(formula).to be_equivalent_to(expected_value)
       end
     end
 
@@ -290,7 +272,7 @@ RSpec.describe Plurimath::Math::Formula do
             </mstyle>
           </math>
         MATHML
-        expect(formula).to eq(expected_value.gsub(/\s/, ""))
+        expect(formula).to be_equivalent_to(expected_value)
       end
     end
 
@@ -309,7 +291,7 @@ RSpec.describe Plurimath::Math::Formula do
             </mstyle>
           </math>
         MATHML
-        expect(formula).to eq(expected_value.gsub(/\s/, ""))
+        expect(formula).to be_equivalent_to(expected_value)
       end
     end
 
@@ -344,9 +326,7 @@ RSpec.describe Plurimath::Math::Formula do
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
               <munderover>
-                <mrow>
-                  <mo>&#x2211;</mo>
-                </mrow>
+                <mo>&#x2211;</mo>
                 <mn>1</mn>
                 <mi>n</mi>
               </munderover>
@@ -354,7 +334,7 @@ RSpec.describe Plurimath::Math::Formula do
                 <mi>i</mi>
                 <mn>3</mn>
               </msup>
-              <mi>=</mi>
+              <mo>=</mo>
               <msup>
                 <mfrac>
                   <mrow>
@@ -368,7 +348,7 @@ RSpec.describe Plurimath::Math::Formula do
             </mstyle>
           </math>
         MATHML
-        expect(formula).to eq(expected_value.gsub(/\s/, ""))
+        expect(formula).to be_equivalent_to(expected_value)
       end
     end
 
@@ -388,18 +368,16 @@ RSpec.describe Plurimath::Math::Formula do
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
               <mrow>
-                <mo>sin</mo>
+                <mi>sin</mi>
               </mrow>
               <mover>
-                <mrow>
-                  <mo>&#x2211;</mo>
-                </mrow>
+                <mo>&#x2211;</mo>
                 <mo>&#x3b8;</mo>
               </mover>
             </mstyle>
           </math>
         MATHML
-        expect(formula).to eq(expected_value.gsub(/\s/, ""))
+        expect(formula).to be_equivalent_to(expected_value)
       end
     end
 
@@ -418,15 +396,13 @@ RSpec.describe Plurimath::Math::Formula do
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
               <mover>
-                <mrow>
-                  <mo>&#x2211;</mo>
-                </mrow>
+                <mo>&#x2211;</mo>
                 <mn>3</mn>
               </mover>
             </mstyle>
           </math>
         MATHML
-        expect(formula).to eq(expected_value.gsub(/\s/, ""))
+        expect(formula).to be_equivalent_to(expected_value)
       end
     end
 
@@ -445,15 +421,13 @@ RSpec.describe Plurimath::Math::Formula do
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
               <mover>
-                <mrow>
-                  <mo>&#x2211;</mo>
-                </mrow>
+                <mo>&#x2211;</mo>
                 <mo>&#x398;</mo>
               </mover>
             </mstyle>
           </math>
         MATHML
-        expect(formula).to eq(expected_value.gsub(/\s/, ""))
+        expect(formula).to be_equivalent_to(expected_value)
       end
     end
 
@@ -476,9 +450,7 @@ RSpec.describe Plurimath::Math::Formula do
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
               <munderover>
-                <mrow>
-                  <mo>&#x2211;</mo>
-                </mrow>
+                <mo>&#x2211;</mo>
                 <mfrac>
                   <mn>12</mn>
                   <mo>&#x25a1;</mo>
@@ -488,7 +460,7 @@ RSpec.describe Plurimath::Math::Formula do
             </mstyle>
           </math>
         MATHML
-        expect(formula).to eq(expected_value.gsub(/\s/, ""))
+        expect(formula).to be_equivalent_to(expected_value)
       end
     end
 
@@ -508,16 +480,14 @@ RSpec.describe Plurimath::Math::Formula do
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
               <msubsup>
-                <mrow>
-                  <mo>log</mo>
-                </mrow>
+                <mi>log</mi>
                 <mn>4</mn>
-                <mtext>4 terms</mtext>
+                <mtext>4terms</mtext>
               </msubsup>
             </mstyle>
           </math>
         MATHML
-        expect(formula).to eq(expected_value.gsub(/\s/, ""))
+        expect(formula).to be_equivalent_to(expected_value)
       end
     end
 
@@ -542,7 +512,7 @@ RSpec.describe Plurimath::Math::Formula do
             </mstyle>
           </math>
         MATHML
-        expect(formula).to eq(expected_value.gsub(/\s/, ""))
+        expect(formula).to be_equivalent_to(expected_value)
       end
     end
 
@@ -562,14 +532,14 @@ RSpec.describe Plurimath::Math::Formula do
             <mstyle displaystyle="true">
               <mn>12</mn>
               <mrow>
-                <mo>mod</mo>
+                <mi>mod</mi>
               </mrow>
               <mn>1234</mn>
               <mi>i</mi>
             </mstyle>
           </math>
         MATHML
-        expect(formula).to eq(expected_value.gsub(/\s/, ""))
+        expect(formula).to be_equivalent_to(expected_value)
       end
     end
 
@@ -603,12 +573,12 @@ RSpec.describe Plurimath::Math::Formula do
                     </mtd>
                   </mtr>
                 </mtable>
-                <mtext>4 terms</mtext>
+                <mtext>4terms</mtext>
               </msubsup>
             </mstyle>
           </math>
         MATHML
-        expect(formula).to eq(expected_value.gsub(/\s/, ""))
+        expect(formula).to be_equivalent_to(expected_value)
       end
     end
 
@@ -649,12 +619,12 @@ RSpec.describe Plurimath::Math::Formula do
                   </mtable>
                   <mo>&#x2225;</mo>
                 </mrow>
-                <mtext>4 terms</mtext>
+                <mtext>4terms</mtext>
               </msubsup>
             </mstyle>
           </math>
         MATHML
-        expect(formula).to eq(expected_value.gsub(/\s/, ""))
+        expect(formula).to be_equivalent_to(expected_value)
       end
     end
 
@@ -680,7 +650,7 @@ RSpec.describe Plurimath::Math::Formula do
       it "returns formula of symbols and text" do
         expected_value =
         <<~MATHML
-          <math xmlns="http://www.w3.org/1998/Math/MathML"display="block">
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
               <msubsup>
                 <mi>a</mi>
@@ -698,7 +668,7 @@ RSpec.describe Plurimath::Math::Formula do
             </mstyle>
           </math>
         MATHML
-        expect(formula).to eq(expected_value.gsub(/\s/, ""))
+        expect(formula).to be_equivalent_to(expected_value)
       end
     end
 
@@ -721,7 +691,7 @@ RSpec.describe Plurimath::Math::Formula do
             </mstyle>
           </math>
         MATHML
-        expect(formula).to eq(expected_value.gsub(/\s/, ""))
+        expect(formula).to be_equivalent_to(expected_value)
       end
     end
 
@@ -765,12 +735,12 @@ RSpec.describe Plurimath::Math::Formula do
                   </mtable>
                   <mo>}</mo>
                 </mrow>
-                <mtext>4 terms</mtext>
+                <mtext>4terms</mtext>
               </msubsup>
             </mstyle>
           </math>
         MATHML
-        expect(formula).to eq(expected_value.gsub(/\s/, ""))
+        expect(formula).to be_equivalent_to(expected_value)
       end
     end
 
@@ -797,12 +767,10 @@ RSpec.describe Plurimath::Math::Formula do
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
               <munderover>
-                <mrow>
-                  <mo>&#x2211;</mo>
-                </mrow>
+                <mo>&#x2211;</mo>
                 <mrow>
                   <mi>i</mi>
-                  <mi>=</mi>
+                  <mo>=</mo>
                   <mstyle mathcolor="blue">
                     <mo>&#x2260;</mo>
                   </mstyle>
@@ -812,7 +780,7 @@ RSpec.describe Plurimath::Math::Formula do
             </mstyle>
           </math>
         MATHML
-        expect(formula).to eq(expected_value.gsub(/\s/, ""))
+        expect(formula).to be_equivalent_to(expected_value)
       end
     end
 
@@ -839,12 +807,10 @@ RSpec.describe Plurimath::Math::Formula do
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
               <munderover>
-                <mrow>
-                  <mo>&#x2211;</mo>
-                </mrow>
+                <mo>&#x2211;</mo>
                 <mrow>
                   <mi>i</mi>
-                  <mi>=</mi>
+                  <mo>=</mo>
                   <mstyle mathcolor="blue">
                     <mo>&#x2260;</mo>
                   </mstyle>
@@ -854,7 +820,7 @@ RSpec.describe Plurimath::Math::Formula do
             </mstyle>
           </math>
         MATHML
-        expect(formula).to eq(expected_value.gsub(/\s/, ""))
+        expect(formula).to be_equivalent_to(expected_value)
       end
     end
 
@@ -879,7 +845,7 @@ RSpec.describe Plurimath::Math::Formula do
             </mstyle>
           </math>
         MATHML
-        expect(formula).to eq(expected_value.gsub(/\s/, ""))
+        expect(formula).to be_equivalent_to(expected_value)
       end
     end
 
@@ -909,7 +875,7 @@ RSpec.describe Plurimath::Math::Formula do
             </mstyle>
           </math>
         MATHML
-        expect(formula).to eq(expected_value.gsub(/\s/, ""))
+        expect(formula).to be_equivalent_to(expected_value)
       end
     end
 
@@ -927,12 +893,12 @@ RSpec.describe Plurimath::Math::Formula do
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
               <mi>n</mi>
-              <mo>&#x3c;</mo>
+              <mo>&lt;</mo>
               <mn>1</mn>
             </mstyle>
           </math>
         MATHML
-        expect(formula).to eq(expected_value.gsub(/\s/, ""))
+        expect(formula).to be_equivalent_to(expected_value)
       end
     end
   end

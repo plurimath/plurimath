@@ -8,30 +8,19 @@ module Plurimath
       class Power < BinaryFunction
         def to_asciimath
           second_value = "^#{wrapped(parameter_two)}" if parameter_two
-          "#{base_value}#{second_value}"
-        end
-
-        def base_value
-          field = parameter_one
-          field.is_a?(Math::Formula) ? wrapped(field) : field.to_asciimath
+          "#{parameter_one.to_asciimath}#{second_value}"
         end
 
         def to_mathml_without_math_tag
-          sup_tag      = Utility.ox_element("msup")
-          first_value  = parameter_one&.to_mathml_without_math_tag
-          second_value = parameter_two&.to_mathml_without_math_tag
-          Utility.update_nodes(
-            sup_tag,
-            [
-              first_value,
-              second_value,
-            ],
-          )
+          tag_name = (["ubrace", "obrace"].include?(parameter_one&.class_name) ? "over" : "sup")
+          sup_tag = Utility.ox_element("m#{tag_name}")
+          mathml_value = [parameter_one.to_mathml_without_math_tag]
+          mathml_value << parameter_two&.to_mathml_without_math_tag
+          Utility.update_nodes(sup_tag, mathml_value)
         end
 
         def to_latex
-          first_value = parameter_one.to_latex if parameter_one
-          first_value  = "{#{first_value}}" if parameter_one.is_a?(Formula)
+          first_value  = parameter_one.to_latex
           second_value = parameter_two.to_latex if parameter_two
           "#{first_value}^{#{second_value}}"
         end

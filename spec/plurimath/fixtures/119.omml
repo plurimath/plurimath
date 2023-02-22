@@ -17,7 +17,9 @@
           <m:t>e</m:t>
         </m:r>
       </m:e>
-      <m:lim>⃑</m:lim>
+      <m:lim>
+        <m:t>⃑</m:t>
+      </m:lim>
     </m:limUpp>
   </m:oMath>
 </m:oMathPara>

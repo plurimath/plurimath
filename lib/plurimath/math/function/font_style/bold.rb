@@ -13,11 +13,22 @@ module Plurimath
           end
 
           def to_asciimath
-            "mathbf#{wrapped(parameter_one)}"
+            "mathbf(#{parameter_one.to_asciimath})"
           end
 
           def to_latex
-            "\\mathbf{#{super}}"
+            first_value = parameter_one.to_latex if parameter_one
+            "\\mathbf{#{first_value}}"
+          end
+
+          def to_mathml_without_math_tag
+            Utility.update_nodes(
+              Utility.ox_element(
+                "mstyle",
+                attributes: { mathvariant: "bold" },
+              ),
+              [parameter_one.to_mathml_without_math_tag],
+            )
           end
         end
       end

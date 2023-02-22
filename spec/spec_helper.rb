@@ -1,5 +1,7 @@
 require "bundler/setup"
 require "plurimath"
+require "rspec/matchers"
+require "equivalent-xml/rspec_matchers"
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
