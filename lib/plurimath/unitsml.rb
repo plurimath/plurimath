@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require_relative "math"
 module Plurimath
   class Unitsml
     attr_accessor :text
@@ -9,7 +10,7 @@ module Plurimath
     end
 
     def to_formula
-      # TODO: Will be implemented soon
+      Parser.new(text).parse
     end
   end
 end

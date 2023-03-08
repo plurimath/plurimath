@@ -18,6 +18,7 @@ require_relative "mathml/parser"
 require_relative "latex/parser"
 require_relative "html/parser"
 require_relative "omml/parser"
+require_relative "unitsml/parser"
 require_relative "utility"
 require "ox"
 Ox.default_options = { encoding: "UTF-8" }

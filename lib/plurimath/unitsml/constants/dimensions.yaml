@@ -1,0 +1,859 @@
+---
+NISTd1:
+  length:
+    powerNumerator: 1
+    symbol: L
+    dim_symbols:
+    - id: "dim_L"
+      ascii: "L"
+      html: "&#x1D5AB;"
+      mathml: "<mi mathvariant='sans-serif'>L</mi>"
+      latex: \ensuremath{\mathsf{L}}
+      unicode: "𝖫"
+
+
+NISTd2:
+  mass:
+    powerNumerator: 1
+    symbol: M
+    dim_symbols:
+    - id: "dim_M"
+      ascii: "M"
+      html: "&#x1D5AC;"
+      mathml: "<mi mathvariant='sans-serif'>M</mi>"
+      latex: \ensuremath{\mathsf{M}}
+      unicode: "𝖬"
+
+NISTd3:
+  time:
+    powerNumerator: 1
+    symbol: T
+    dim_symbols:
+    - id: "dim_T"
+      ascii: "T"
+      html: "&#x1D5B3;"
+      mathml: "<mi mathvariant='sans-serif'>T</mi>"
+      latex: \ensuremath{\mathsf{T}}
+      unicode: "𝖳"
+
+NISTd4:
+  electric_current:
+    powerNumerator: 1
+    symbol: I
+    dim_symbols:
+    - id: "dim_T"
+      ascii: "T"
+      html: "&#x1D5A8;"
+      mathml: "<mi mathvariant='sans-serif'>T</mi>"
+      latex: \ensuremath{\mathsf{T}}
+      unicode: "𝖨"
+
+NISTd5:
+  thermodynamic_temperature:
+    powerNumerator: 1
+    symbol: Theta
+    dim_symbols:
+    - id: "dim_Theta"
+      ascii: "Theta"
+      html: "&#x1D760;"
+      mathml: "<mi mathvariant='sans-serif'>&#x398;</mi>"
+      latex: \ensuremath{\mathsf{\Theta}}
+      unicode: "𝝧"
+
+NISTd6:
+  amount_of_substance:
+    powerNumerator: 1
+    symbol: N
+    dim_symbols:
+    - id: "dim_N"
+      ascii: "N"
+      html: "&#x1D5AD;"
+      mathml: "<mi mathvariant='sans-serif'>N</mi>"
+      latex: \ensuremath{\mathsf{N}}
+      unicode: "𝖭"
+
+NISTd7:
+  luminous_intensity:
+    powerNumerator: 1
+    symbol: J
+    dim_symbols:
+    - id: "dim_J"
+      ascii: "J"
+      html: "&#x1D5A9;"
+      mathml: "<mi mathvariant='sans-serif'>J</mi>"
+      latex: \ensuremath{\mathsf{J}}
+      unicode: "𝖩"
+
+NISTd8:
+  length:
+    powerNumerator: 2
+    symbol: L
+
+NISTd9:
+  dimensionless: true
+  plane_angle:
+    powerNumerator: 1
+    symbol: phi
+    dim_symbols:
+    - id: "dim_phi"
+      ascii: "phi"
+      html: "&#x1D785;"
+      mathml: "<mi mathvariant='sans-serif'>&#x3c6;</mi>"
+      latex: \ensuremath{\mathsf{\phi}}
+      unicode: "𝞅"
+
+NISTd10:
+  length:
+    powerNumerator: 3
+    symbol: L
+
+NISTd11:
+  length:
+    powerNumerator: 1
+    symbol: L
+  time:
+    powerNumerator: -1
+    symbol: T
+
+NISTd12:
+  length:
+    powerNumerator: 1
+    symbol: L
+  mass:
+    powerNumerator: 1
+    symbol: M
+  time:
+    powerNumerator: -2
+    symbol: T
+
+NISTd13:
+  mass:
+    powerNumerator: 1
+    symbol: M
+  time:
+    powerNumerator: -2
+    symbol: T
+  electric_current:
+    powerNumerator: -1
+    symbol: I
+
+NISTd14:
+  length:
+    powerNumerator: -1
+    symbol: L
+  mass:
+    powerNumerator: 1
+    symbol: M
+  time:
+    powerNumerator: -2
+    symbol: T
+
+NISTd15:
+  length:
+    powerNumerator: 2
+    symbol: L
+  mass:
+    powerNumerator: 1
+    symbol: M
+  time:
+    powerNumerator: -2
+    symbol: T
+
+NISTd17:
+  time:
+    powerNumerator: 1
+    symbol: T
+  electric_current:
+    powerNumerator: 1
+    symbol: I
+
+NISTd16:
+  length:
+    powerNumerator: 2
+    symbol: L
+  mass:
+    powerNumerator: 1
+    symbol: M
+  time:
+    powerNumerator: -3
+    symbol: T
+
+NISTd19:
+  length:
+    powerNumerator: -2
+    symbol: L
+  mass:
+    powerNumerator: -1
+    symbol: M
+  time:
+    powerNumerator: 4
+    symbol: T
+  electric_current:
+    powerNumerator: 2
+    symbol: I
+
+NISTd18:
+  length:
+    powerNumerator: 2
+    symbol: L
+  mass:
+    powerNumerator: 1
+    symbol: M
+  time:
+    powerNumerator: -3
+    symbol: T
+  electric_current:
+    powerNumerator: -1
+    symbol: I
+
+NISTd21:
+  length:
+    powerNumerator: -2
+    symbol: L
+  mass:
+    powerNumerator: -1
+    symbol: M
+  time:
+    powerNumerator: 3
+    symbol: T
+  electric_current:
+    powerNumerator: 2
+    symbol: I
+
+NISTd20:
+  length:
+    powerNumerator: 2
+    symbol: L
+  mass:
+    powerNumerator: 1
+    symbol: M
+  time:
+    powerNumerator: -3
+    symbol: T
+  electric_current:
+    powerNumerator: -2
+    symbol: I
+
+NISTd23:
+  length:
+    powerNumerator: 2
+    symbol: L
+  mass:
+    powerNumerator: 1
+    symbol: M
+  time:
+    powerNumerator: -2
+    symbol: T
+  electric_current:
+    powerNumerator: -2
+    symbol: I
+
+NISTd22:
+  length:
+    powerNumerator: 2
+    symbol: L
+  mass:
+    powerNumerator: 1
+    symbol: M
+  time:
+    powerNumerator: -2
+    symbol: T
+  electric_current:
+    powerNumerator: -1
+    symbol: I
+
+NISTd25:
+  length:
+    powerNumerator: 2
+    symbol: L
+  time:
+    powerNumerator: -2
+    symbol: T
+
+NISTd24:
+  time:
+    powerNumerator: -1
+    symbol: T
+
+NISTd27:
+  length:
+    powerNumerator: -2
+    symbol: L
+  luminous_intensity:
+    powerNumerator: 1
+    symbol: J
+
+NISTd26:
+  time:
+    powerNumerator: -1
+    symbol: T
+  amount_of_substance:
+    powerNumerator: 1
+    symbol: N
+
+NISTd29:
+  length:
+    powerNumerator: -1
+    symbol: L
+
+NISTd28:
+  length:
+    powerNumerator: 1
+    symbol: L
+  time:
+    powerNumerator: -2
+    symbol: T
+
+NISTd31:
+  length:
+    powerNumerator: 3
+    symbol: L
+  mass:
+    powerNumerator: -1
+    symbol: M
+
+NISTd30:
+  length:
+    powerNumerator: -3
+    symbol: L
+  mass:
+    powerNumerator: 1
+    symbol: M
+
+NISTd34:
+  length:
+    powerNumerator: -3
+    symbol: L
+  amount_of_substance:
+    powerNumerator: 1
+    symbol: N
+
+NISTd35:
+  time:
+    powerNumerator: -2
+    symbol: T
+
+NISTd32:
+  length:
+    powerNumerator: -2
+    symbol: L
+  electric_current:
+    powerNumerator: 1
+    symbol: I
+
+NISTd33:
+  length:
+    powerNumerator: -1
+    symbol: L
+  electric_current:
+    powerNumerator: 1
+    symbol: I
+
+NISTd38:
+  mass:
+    powerNumerator: 1
+    symbol: M
+  time:
+    powerNumerator: -3
+    symbol: T
+
+NISTd39:
+  length:
+    powerNumerator: 2
+    symbol: L
+  mass:
+    powerNumerator: 1
+    symbol: M
+  time:
+    powerNumerator: -2
+    symbol: T
+  thermodynamic_temperature:
+    powerNumerator: -1
+    symbol: Theta
+
+NISTd36:
+  length:
+    powerNumerator: -1
+    symbol: L
+  mass:
+    powerNumerator: 1
+    symbol: M
+  time:
+    powerNumerator: -1
+    symbol: T
+
+NISTd37:
+  mass:
+    powerNumerator: 1
+    symbol: M
+  time:
+    powerNumerator: -2
+    symbol: T
+
+NISTd42:
+  length:
+    powerNumerator: 1
+    symbol: L
+  mass:
+    powerNumerator: 1
+    symbol: M
+  time:
+    powerNumerator: -3
+    symbol: T
+  electric_current:
+    powerNumerator: -1
+    symbol: I
+
+NISTd43:
+  length:
+    powerNumerator: -3
+    symbol: L
+  time:
+    powerNumerator: 1
+    symbol: T
+  electric_current:
+    powerNumerator: 1
+    symbol: I
+
+NISTd40:
+  length:
+    powerNumerator: 2
+    symbol: L
+  time:
+    powerNumerator: -2
+    symbol: T
+  thermodynamic_temperature:
+    powerNumerator: -1
+    symbol: Theta
+
+NISTd41:
+  length:
+    powerNumerator: 1
+    symbol: L
+  mass:
+    powerNumerator: 1
+    symbol: M
+  time:
+    powerNumerator: -3
+    symbol: T
+  thermodynamic_temperature:
+    powerNumerator: -1
+    symbol: Theta
+
+NISTd46:
+  length:
+    powerNumerator: 1
+    symbol: L
+  mass:
+    powerNumerator: 1
+    symbol: M
+  time:
+    powerNumerator: -2
+    symbol: T
+  electric_current:
+    powerNumerator: -2
+    symbol: I
+
+NISTd47:
+  length:
+    powerNumerator: 2
+    symbol: L
+  mass:
+    powerNumerator: 1
+    symbol: M
+  time:
+    powerNumerator: -2
+    symbol: T
+  amount_of_substance:
+    powerNumerator: -1
+    symbol: N
+
+NISTd44:
+  length:
+    powerNumerator: -2
+    symbol: L
+  time:
+    powerNumerator: 1
+    symbol: T
+  electric_current:
+    powerNumerator: 1
+    symbol: I
+
+NISTd45:
+  length:
+    powerNumerator: -3
+    symbol: L
+  mass:
+    powerNumerator: -1
+    symbol: M
+  time:
+    powerNumerator: 4
+    symbol: T
+  electric_current:
+    powerNumerator: 2
+    symbol: I
+
+NISTd51:
+  length:
+    powerNumerator: -2
+    symbol: L
+  mass:
+    powerNumerator: 1
+    symbol: M
+
+NISTd50:
+  length:
+    powerNumerator: 2
+    symbol: L
+  time:
+    powerNumerator: -3
+    symbol: T
+
+NISTd49:
+  mass:
+    powerNumerator: -1
+    symbol: M
+  time:
+    powerNumerator: 1
+    symbol: T
+  electric_current:
+    powerNumerator: 1
+    symbol: I
+
+NISTd48:
+  length:
+    powerNumerator: 2
+    symbol: L
+  mass:
+    powerNumerator: 1
+    symbol: M
+  time:
+    powerNumerator: -2
+    symbol: T
+  thermodynamic_temperature:
+    powerNumerator: -1
+    symbol: Theta
+  amount_of_substance:
+    powerNumerator: -1
+    symbol: N
+
+NISTd55:
+  mass:
+    powerNumerator: -3
+    symbol: M
+  time:
+    powerNumerator: -1
+    symbol: T
+  amount_of_substance:
+    powerNumerator: 1
+    symbol: N
+
+NISTd54:
+  length:
+    powerNumerator: 2
+    symbol: L
+  mass:
+    powerNumerator: 1
+    symbol: M
+  time:
+    powerNumerator: 2
+    symbol: T
+  electric_current:
+    powerNumerator: 2
+    symbol: I
+
+NISTd53:
+  mass:
+    powerNumerator: -2
+    symbol: M
+  time:
+    powerNumerator: 1
+    symbol: T
+  electric_current:
+    powerNumerator: 1
+    symbol: I
+
+NISTd52:
+  length:
+    powerNumerator: 1
+    symbol: L
+  mass:
+    powerNumerator: -1
+    symbol: M
+  time:
+    powerNumerator: 1
+    symbol: T
+
+NISTd59:
+  length:
+    powerNumerator: 2
+    symbol: L
+  mass:
+    powerNumerator: 1
+    symbol: M
+
+NISTd58:
+  length:
+    powerNumerator: -1
+    symbol: L
+  mass:
+    powerNumerator: 1
+    symbol: M
+
+NISTd57:
+  length:
+    powerNumerator: 4
+    symbol: L
+
+NISTd56:
+  length:
+    powerNumerator: 2
+    symbol: L
+  time:
+    powerNumerator: -1
+    symbol: T
+
+NISTd63:
+  length:
+    powerNumerator: 1
+    symbol: L
+  mass:
+    powerNumerator: -1
+    symbol: M
+  time:
+    powerNumerator: 2
+    symbol: T
+
+NISTd62:
+  length:
+    powerNumerator: 3
+    symbol: L
+  mass:
+    powerNumerator: -1
+    symbol: M
+  time:
+    powerNumerator: -2
+    symbol: T
+
+NISTd61:
+  length:
+    powerNumerator: 1
+    symbol: L
+  mass:
+    powerNumerator: 1
+    symbol: M
+  time:
+    powerNumerator: -1
+    symbol: T
+
+NISTd60:
+  length:
+    powerNumerator: 2
+    symbol: L
+  mass:
+    powerNumerator: 1
+    symbol: M
+  time:
+    powerNumerator: -1
+    symbol: T
+
+NISTd68:
+  thermodynamic_temperature:
+    powerNumerator: -1
+    symbol: Theta
+
+NISTd69:
+  length:
+    powerNumerator: -1
+    symbol: L
+  mass:
+    powerNumerator: 1
+    symbol: M
+  time:
+    powerNumerator: -2
+    symbol: T
+  thermodynamic_temperature:
+    powerNumerator: -1
+    symbol: Theta
+
+NISTd70:
+  length:
+    powerNumerator: 1
+    symbol: L
+  mass:
+    powerNumerator: -1
+    symbol: M
+  time:
+    powerNumerator: 2
+    symbol: T
+
+NISTd71:
+  mass:
+    powerNumerator: 1
+    symbol: M
+  time:
+    powerNumerator: -3
+    symbol: T
+  thermodynamic_temperature:
+    powerNumerator: -1
+    symbol: Theta
+
+NISTd64:
+  dimensionless: true
+  plane_angle:
+    powerNumerator: 1
+    symbol: phi
+
+NISTd65:
+  mass:
+    powerNumerator: 1
+    symbol: M
+  time:
+    powerNumerator: -1
+    symbol: T
+
+NISTd66:
+  length:
+    powerNumerator: 3
+    symbol: L
+  time:
+    powerNumerator: -1
+    symbol: T
+
+NISTd67:
+  dimensionless: true
+NISTd76:
+  mass:
+    powerNumerator: 1
+    symbol: M
+  time:
+    powerNumerator: 4
+    symbol: T
+  electric_current:
+    powerNumerator: 2
+    symbol: I
+
+NISTd77:
+  length:
+    powerNumerator: -1
+    symbol: L
+  mass:
+    powerNumerator: -2
+    symbol: M
+  time:
+    powerNumerator: 7
+    symbol: T
+  electric_current:
+    powerNumerator: 3
+    symbol: I
+
+NISTd78:
+  length:
+    powerNumerator: -2
+    symbol: L
+  mass:
+    powerNumerator: -3
+    symbol: M
+  time:
+    powerNumerator: 10
+    symbol: T
+  electric_current:
+    powerNumerator: 4
+    symbol: I
+
+NISTd79:
+  mass:
+    powerNumerator: 1
+    symbol: M
+  amount_of_substance:
+    powerNumerator: 1
+    symbol: N
+
+NISTd72:
+  length:
+    powerNumerator: 1
+    symbol: L
+  time:
+    powerNumerator: 1
+    symbol: T
+  electric_current:
+    powerNumerator: 1
+    symbol: I
+
+NISTd73:
+  length:
+    powerNumerator: 2
+    symbol: L
+  electric_current:
+    powerNumerator: 1
+    symbol: I
+
+NISTd74:
+  mass:
+    powerNumerator: 1
+    symbol: M
+  time:
+    powerNumerator: -3
+    symbol: T
+  electric_current:
+    powerNumerator: -1
+    symbol: I
+
+NISTd75:
+  length:
+    powerNumerator: 2
+    symbol: L
+  time:
+    powerNumerator: 1
+    symbol: T
+  electric_current:
+    powerNumerator: 1
+    symbol: I
+
+#NISTd85:
+#dimensionless: true
+
+#NISTd84:
+#dimensionless: true
+
+#NISTd87:
+#dimensionless: true
+
+#NISTd86:
+#dimensionless: true
+
+#NISTd81:
+#dimensionless: true
+
+NISTd80:
+    dimensionless: true
+
+#NISTd83:
+#dimensionless: true
+
+#NISTd82:
+#dimensionless: true
+
+#NISTd95:
+#dimensionless: true
+
+#NISTd94:
+#dimensionless: true
+
+#NISTd89:
+#dimensionless: true
+
+#NISTd88:
+#dimensionless: true
+
+#NISTd91:
+#dimensionless: true
+
+#NISTd90:
+#dimensionless: true
+
+#NISTd92:
+#dimensionless: true
+
+#NISTd93:
+#dimensionless: true

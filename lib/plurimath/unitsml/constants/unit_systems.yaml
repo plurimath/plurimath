@@ -1,0 +1,16 @@
+---
+- id: SI_base
+  name: SI
+  acceptable: true
+- id: SI_derived_special
+  name: SI
+  acceptable: true
+- id: SI_derived_non-special
+  name: SI
+  acceptable: true
+- id: non-SI_acceptable
+  name: non-SI
+  acceptable: true
+- id: non-SI_not_acceptable
+  name: non-SI
+  acceptable: false
