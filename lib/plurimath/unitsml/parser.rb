@@ -13,9 +13,15 @@ module Plurimath
       end
 
       def parse
+        raise_error! if text.nil?
+
         nodes = Parse.new.parse(text)
         transformed_tree = Transform.new.apply(nodes)
         Math::Formula.new(transformed_tree)
+      end
+
+      def raise_error!
+        raise Plurimath::Math::Error, Math::Error.new("Input invalid".red)
       end
     end
   end
