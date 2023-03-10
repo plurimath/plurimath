@@ -2,6 +2,9 @@
 
 require_relative "parse"
 require_relative "transform"
+require_relative "function/unit"
+require_relative "function/prefix"
+require_relative "function/dimension"
 module Plurimath
   class Unitsml
     class Parser

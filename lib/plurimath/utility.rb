@@ -390,6 +390,28 @@ module Plurimath
                 end
         Math::Symbol.new(value)
       end
+
+      def unit(hash)
+        fields = hash[:fields]
+        Unitsml::Function::Unit.new(
+          units_hash[:id],
+          hash["name"],
+          hash["symbol"],
+          hash["base"],
+          hash["power"],
+        )
+      end
+
+      def prefix(hash)
+        fields = hash[:fields]
+        Unitsml::Function::Prefix.new(
+          hash[:id],
+          fields["name"],
+          fields["symbol"],
+          fields["base"],
+          fields["power"],
+        )
+      end
     end
   end
 end
