@@ -28,16 +28,24 @@ module Plurimath
           @@dimensions ||= dimensions_hash
         end
 
+        def quantities
+          @@quantities ||= quantities_hash
+        end
+
         def units_hash
-          @@units_hash ||= unit_ids(load_yaml("units"))
+          @@units_hash ||= units_ids(load_yaml("units"))
         end
 
         def prefixes_hash
-          @@prefixes_hash ||= prefix_ids(load_yaml("prefixes"))
+          @@prefixes_hash ||= prefixs_ids(load_yaml("prefixes"))
         end
 
         def dimensions_hash
           @@dimensions_hash ||= dimensions_ids(load_yaml("dimensions"))
+        end
+
+        def quantities_hash
+          @@quantities_hash ||= load_yaml("quantities")
         end
 
         def get_saved_value(variable_name)
@@ -59,19 +67,29 @@ module Plurimath
             .include?(variable_name.to_sym)
         end
 
-        def unit_ids(hash, symbols = {})
-          hash.each do |key, value|
+        def units_ids(unit_hash, symbols = {})
+          unit_hash.each do |key, value|
             value["unit_symbols"]&.each do |symbol|
-              symbols[symbol["id"]] = { key => value } unless symbol["id"]&.empty?
+              symbols[symbol["id"]] = { id: key, fields: value } unless symbol["id"]&.empty?
             end
           end
           symbols
         end
 
-        def prefix_ids(prefixes, hash = {})
-          prefixes.map do |key, value|
-            symbol = value.dig("symbol", "ascii")
+        def prefixs_ids(prefixe_hash, hash = {})
+          prefixe_hash&.map do |key, value|
+            symbol = value&.dig("symbol", "ascii")
             hash[symbol] = { id: key, fields: value } unless symbol&.empty?
+          end
+          hash
+        end
+
+        def dimensions_ids(dimension_hash, hash = {})
+          dimension_hash.each do |key, value|
+            value.each do |k, v|
+              id = v["dim_symbols"]&.map{|symbol| symbol["id"] } unless v == true
+              hash[id] = { id: key, fields: value }
+            end
           end
           hash
         end

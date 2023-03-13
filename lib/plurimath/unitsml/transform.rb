@@ -9,7 +9,7 @@ module Plurimath
         Math::Formula.new(
           [
             Utility.prefix(Unitsdb.prefixes_hash[prefix.to_s]),
-            Utility.unit(Unitsdb.units_hash[prefix.to_s]),
+            Utility.unit(Unitsdb.units_hash[unit.to_s]),
           ],
         )
       end
@@ -20,13 +20,19 @@ module Plurimath
            sequence: simple(:sequence)) do
         Math::Formula.new(
           [
-            Utility.prefix(Unitsdb.prefixes_hash[prefix.to_s]),
-            Utility.unit(Unitsdb.units_hash[prefix.to_s]),
+            Utility.prefix(
+              Unitsdb.prefixes_hash[prefix.to_s],
+            ),
+            Utility.unit(
+              Unitsdb.units_hash[unit.to_s],
+            ),
             Function::Extender.new(extender.to_s),
             sequence,
           ],
         )
       end
+
+      rule(units: simple(:unit)) { Utility.unit(Unitsdb.units_hash[unit.to_s]) }
     end
   end
 end

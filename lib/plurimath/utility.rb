@@ -394,11 +394,15 @@ module Plurimath
       def unit(hash)
         fields = hash[:fields]
         Unitsml::Function::Unit.new(
-          units_hash[:id],
-          hash["name"],
-          hash["symbol"],
-          hash["base"],
-          hash["power"],
+          hash[:id],
+          fields["dimensions_url"],
+          fields["short"],
+          fields["root"],
+          fields["unit_system"],
+          fields["unit_name"],
+          fields["unit_symbols"],
+          fields["root_units"],
+          fields["quantity_reference"],
         )
       end
 
