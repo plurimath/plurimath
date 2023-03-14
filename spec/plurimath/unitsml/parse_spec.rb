@@ -58,8 +58,7 @@ RSpec.describe Plurimath::Unitsml::Parse do
     let(:exp) { "unitsml(kg)" }
 
     it "returns formula of sin from Unitsml string" do
-      expect(formula[:prefixes]).to eq("k")
-      expect(formula[:units]).to eq("g")
+      expect(formula[:units]).to eq("kg")
     end
   end
 
@@ -84,8 +83,7 @@ RSpec.describe Plurimath::Unitsml::Parse do
     let(:exp) { "unitsml(kg)" }
 
     it "returns formula of sin from Unitsml string" do
-      expect(formula[:prefixes]).to eq("k")
-      expect(formula[:units]).to eq("g")
+      expect(formula[:units]).to eq("kg")
     end
   end
 
@@ -111,8 +109,7 @@ RSpec.describe Plurimath::Unitsml::Parse do
     it "returns formula of sin from Unitsml string" do
       sequence = formula[:sequence]
 
-      expect(formula[:prefixes]).to eq("k")
-      expect(formula[:units]).to eq("g")
+      expect(formula[:units]).to eq("kg")
       expect(formula[:extender]).to eq("*")
       expect(sequence[:units]).to eq("s")
       expect(sequence[:integer]).to eq("-2")
@@ -123,13 +120,7 @@ RSpec.describe Plurimath::Unitsml::Parse do
     let(:exp) { "unitsml(K/(kg*m))" }
 
     it "returns formula of sin from Unitsml string" do
-      # sequence = formula[:sequence]
-
-      # expect(formula[:units]).to eq("K")
-      # expect(formula[:extender]).to eq("/")
-      # expect(formula[:units]).to eq("g")
-      # expect(sequence[:units]).to eq("s")
-      # expect(sequence[:integer]).to eq("-2")
+      # Parser changes required
     end
   end
 
@@ -145,8 +136,7 @@ RSpec.describe Plurimath::Unitsml::Parse do
     let(:exp) { "unitsml(mbar)" }
 
     it "returns formula of sin from Unitsml string" do
-      expect(formula[:prefixes]).to eq("m")
-      expect(formula[:units]).to eq("bar")
+      expect(formula[:units]).to eq("mbar")
     end
   end
 
@@ -225,8 +215,7 @@ RSpec.describe Plurimath::Unitsml::Parse do
 
       expect(formula[:units]).to eq("J")
       expect(formula[:extender]).to eq("/")
-      expect(sequence[:prefixes]).to eq("k")
-      expect(sequence[:units]).to eq("g")
+      expect(sequence[:units]).to eq("kg")
       expect(sequence[:extender]).to eq("*")
       expect(sequence[:sequence][:units]).to eq("K")
     end
@@ -256,8 +245,7 @@ RSpec.describe Plurimath::Unitsml::Parse do
     it "returns formula of sin from Unitsml string" do
       sequence = formula[:sequence]
 
-      expect(formula[:prefixes]).to eq("k")
-      expect(formula[:units]).to eq("g")
+      expect(formula[:units]).to eq("kg")
       expect(formula[:extender]).to eq("*")
       expect(sequence[:units]).to eq("s")
       expect(sequence[:integer]).to eq("-2")
@@ -283,13 +271,50 @@ RSpec.describe Plurimath::Unitsml::Parse do
     let(:exp) { "unitsml(m, quantity: NISTq103)" }
 
     it "returns formula of sin from Unitsml string" do
-      # sequence = formula[:sequence]
+      # Parser changes required
+    end
+  end
 
-      # expect(formula[:prefixes]).to eq("k")
-      # expect(formula[:units]).to eq("g")
-      # expect(formula[:extender]).to eq("*")
-      # expect(sequence[:units]).to eq("s")
-      # expect(sequence[:integer]).to eq("-2")
+  context "contains Unitsml #30 example" do
+    let(:exp) { "unitsml(cal_th/cm^2, name: langley)" }
+
+    it "returns formula of sin from Unitsml string" do
+      # Parser changes required
+    end
+  end
+
+  context "contains Unitsml #31 example" do
+    let(:exp) { "unitsml(m, symbol: La)" }
+
+    it "returns formula of sin from Unitsml string" do
+      # Parser changes required
+    end
+  end
+
+  context "contains Unitsml #32 example" do
+    let(:exp) { "unitsml(cm*s^-2, symbol: cm cdot s^-2)" }
+
+    it "returns formula of sin from Unitsml string" do
+      # Parser changes required
+    end
+  end
+
+  context "contains Unitsml #33 example" do
+    let(:exp) { "unitsml(cm*s^-2, multiplier: xx)" }
+
+    it "returns formula of sin from Unitsml string" do
+      # Parser changes required
+    end
+  end
+
+  context "contains Unitsml #34 example" do
+    let(:exp) { "unitsml(dim_Theta*dim_L^2)" }
+
+    it "returns formula of sin from Unitsml string" do
+      expect(formula[:dimensions]).to eq("dim_Theta")
+      expect(formula[:extender]).to eq("*")
+      expect(formula[:sequence][:dimensions]).to eq("dim_L")
+      expect(formula[:sequence][:integer]).to eq("2")
     end
   end
 end
