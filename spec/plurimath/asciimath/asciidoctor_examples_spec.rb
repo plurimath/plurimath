@@ -196,7 +196,7 @@ RSpec.describe Plurimath::Asciimath::Parser do
       it "returns formula" do
         expected_value = Plurimath::Math::Formula.new([
           Plurimath::Math::Function::F.new(
-            Plurimath::Math::Symbol.new("&#x27;")
+            Plurimath::Math::Symbol.new("&#x2032;")
           ),
           Plurimath::Math::Function::Fenced.new(
             Plurimath::Math::Symbol.new("("),
@@ -993,7 +993,7 @@ RSpec.describe Plurimath::Asciimath::Parser do
         expected_value = Plurimath::Math::Formula.new([
           Plurimath::Math::Symbol.new("s"),
           Plurimath::Math::Function::Base.new(
-            Plurimath::Math::Symbol.new("&#x27;"),
+            Plurimath::Math::Symbol.new("&#x2032;"),
             Plurimath::Math::Symbol.new("i")
           ),
           Plurimath::Math::Symbol.new("="),
@@ -1059,7 +1059,7 @@ RSpec.describe Plurimath::Asciimath::Parser do
         expected_value = Plurimath::Math::Formula.new([
           Plurimath::Math::Symbol.new("s"),
           Plurimath::Math::Function::Base.new(
-            Plurimath::Math::Symbol.new("&#x27;"),
+            Plurimath::Math::Symbol.new("&#x2032;"),
             Plurimath::Math::Symbol.new("i")
           ),
           Plurimath::Math::Symbol.new("="),
