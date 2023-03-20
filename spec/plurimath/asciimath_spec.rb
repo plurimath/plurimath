@@ -3712,5 +3712,64 @@ RSpec.describe Plurimath::Asciimath do
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
+
+    context "contains example #63" do
+      let(:string) { "f'(x) = dy/dx" }
+
+      it 'returns parsed Asciimath to Formula' do
+        latex = "f\\prime  \\left ( x \\right )  = d \\frac{y}{d x}"
+        asciimath = "f' (x) = d frac(y)(d x)"
+        mathml = <<~MATHML
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
+              <mrow>
+                <mi>f</mi>
+                <mo>&#x2032;</mo>
+              </mrow>
+              <mrow>
+                <mo>(</mo>
+                <mi>x</mi>
+                <mo>)</mo>
+              </mrow>
+              <mo>=</mo>
+              <mi>d</mi>
+              <mfrac>
+                <mi>y</mi>
+                <mrow>
+                  <mi>d</mi>
+                  <mi>x</mi>
+                </mrow>
+              </mfrac>
+            </mstyle>
+          </math>
+        MATHML
+        expect(formula.to_latex).to eql(latex)
+        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_asciimath).to eql(asciimath)
+      end
+    end
+
+    context "contains example #64" do
+      let(:string) { "bar X'" }
+
+      it 'returns parsed Asciimath to Formula' do
+        latex = "\\overline{X} \\prime"
+        asciimath = "bar(X) '"
+        mathml = <<~MATHML
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
+              <mover>
+                <mi>X</mi>
+                <mo>&#xaf;</mo>
+              </mover>
+              <mo>&#x2032;</mo>
+            </mstyle>
+          </math>
+        MATHML
+        expect(formula.to_latex).to eql(latex)
+        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_asciimath).to eql(asciimath)
+      end
+    end
   end
 end
