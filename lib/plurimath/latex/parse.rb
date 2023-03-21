@@ -77,10 +77,10 @@ module Plurimath
       end
 
       rule(:symbol_text_or_integer) do
-        symbol_class_commands |
+        str('"').as(:symbol) |
+          symbol_class_commands |
           (slash >> math_operators_classes) |
           match["a-zA-Z"].as(:symbols) |
-          (str('"') >> match("[^\"]").repeat >> str('"')).as(:text) |
           match(/\d+(\.[0-9]+)|\d/).repeat(1).as(:number) |
           str("\\\\").as("\\\\") |
           (slash >> (lparen | rparen).as(:symbols)) |

@@ -1701,7 +1701,6 @@ module Plurimath
         lnot: "&#xac;",
         tcmu: "&#xb5;",
         "\ ": "&#xa0;",
-        '"': "&#x22;",
         cat: "&#x2040;",
         Vec: "&#x20d7;",
         ell: "&#x2113;",
