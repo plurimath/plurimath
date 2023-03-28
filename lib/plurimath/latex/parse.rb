@@ -82,7 +82,7 @@ module Plurimath
           (slash >> math_operators_classes) |
           match["a-zA-Z"].as(:symbols) |
           match(/\d+(\.[0-9]+)|\d/).repeat(1).as(:number) |
-          str("\\\\").as("\\\\") |
+          str("\\\\").as("\\\\") >> match(/\s/).repeat |
           (slash >> (lparen | rparen).as(:symbols)) |
           lparen |
           str("\\ ").as(:space)
