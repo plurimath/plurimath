@@ -16,6 +16,7 @@ module Plurimath
           .gsub(/\\\\ /, "\\\\\\\\")
           .gsub(/&#x26;/, "&")
           .gsub(/&#x22;/, "\"")
+          .gsub(/(?<!\\\\)\\&#xa;/, "\\ ")
           .gsub(/&#xa;/, "")
         @text = text
       end
