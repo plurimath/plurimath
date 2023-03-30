@@ -6,13 +6,9 @@ module Plurimath
       rule(mi: simple(:mi))         { mi }
       rule(mo: simple(:mo))         { mo }
       rule(mo: sequence(:mo))       { Utility.mathml_unary_classes(mo) }
-      rule(xref: simple(:xref))     { nil }
       rule(mtd: sequence(:mtd))     { Math::Function::Td.new(mtd) }
       rule(mtr: sequence(:mtr))     { Math::Function::Tr.new(mtr) }
-      rule(accent: simple(:acc))    { nil }
       rule(none: sequence(:none))   { nil }
-      rule(maxsize: simple(:att))   { nil }
-      rule(minsize: simple(:att))   { nil }
       rule(notation: simple(:att))  { Math::Function::Menclose.new(att) }
       rule(mtable: simple(:table))  { table }
       rule(msqrt: sequence(:sqrt))  { Math::Function::Sqrt.new(sqrt.first) }
@@ -25,7 +21,6 @@ module Plurimath
       rule(mfenced: simple(:mfenced))   { mfenced }
       rule(mtable: sequence(:mtable))   { Math::Function::Table.new(mtable) }
       rule(mscarry: sequence(:scarry))  { nil }
-      rule(displaystyle: simple(:att))  { nil }
       rule(menclose: simple(:enclose))  { enclose }
       rule(mlabeledtr: sequence(:mtr))  { Math::Function::Tr.new(mtr) }
       rule(mpadded: sequence(:padded))  { Utility.filter_values(padded) }
@@ -204,10 +199,10 @@ module Plurimath
         )
       end
 
-      rule(mtext: sequence(:mtext)) do
+      rule(mtext: subtree(:mtext)) do
         entities = HTMLEntities.new
         symbols  = Constants::UNICODE_SYMBOLS.transform_keys(&:to_s)
-        text     = entities.encode(mtext.first, :hexadecimal)
+        text     = entities.encode(mtext.flatten.join, :hexadecimal)
         symbols.each do |code, string|
           text.gsub!(code.downcase, "unicode[:#{string}]")
         end
@@ -227,7 +222,7 @@ module Plurimath
       rule(mfenced: sequence(:fenced)) do
         Math::Function::Fenced.new(
           Math::Symbol.new("("),
-          fenced,
+          fenced.compact,
           Math::Symbol.new(")"),
         )
       end
@@ -281,14 +276,21 @@ module Plurimath
 
       rule(attributes: simple(:attrs),
            value: subtree(:value)) do
-        Utility.join_attr_value(attrs, value.flatten)
+        Utility.join_attr_value(attrs, value&.flatten&.compact)
+      end
+
+      rule(semantics: subtree(:value)) do
+        Math::Function::Semantics.new(
+          value.shift,
+          value,
+        )
       end
 
       rule(attributes: subtree(:attrs),
            value: sequence(:value)) do
         Utility.join_attr_value(
           attrs.is_a?(Hash) ? nil : attrs,
-          value.flatten,
+          value&.flatten.compact,
         )
       end
     end
