@@ -660,8 +660,8 @@ RSpec.describe Plurimath::Mathml::Parser do
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
         Plurimath::Math::Function::Text.new(" Theorem 1: "),
-        Plurimath::Math::Function::Text.new(" &#x2009;"),
-        Plurimath::Math::Function::Text.new(" &#x205f;&#x200a;"),
+        Plurimath::Math::Function::Text.new(" &#x2009; "),
+        Plurimath::Math::Function::Text.new(" &#x205f;&#x200a;&#x205f;&#x200a; "),
         Plurimath::Math::Function::Text.new(" /* a comment */ ")
       ])
       expect(formula).to eq(expected_value)
@@ -1616,7 +1616,7 @@ RSpec.describe Plurimath::Mathml::Parser do
               Plurimath::Math::Symbol.new(" z ")
             ])
           ),
-          Plurimath::Math::Function::Text.new("&#xa0;"),
+          Plurimath::Math::Function::Text.new("&#xa0;versus&#xa0;"),
           Plurimath::Math::Function::Ubrace.new(
             Plurimath::Math::Formula.new([
               Plurimath::Math::Symbol.new(" x "),
@@ -1657,7 +1657,7 @@ RSpec.describe Plurimath::Mathml::Parser do
             Plurimath::Math::Symbol.new(" ^ "),
             Plurimath::Math::Symbol.new(" x ")
           ),
-          Plurimath::Math::Function::Text.new("&#xa0;"),
+          Plurimath::Math::Function::Text.new("&#xa0;versus&#xa0;"),
           Plurimath::Math::Function::Overset.new(
             Plurimath::Math::Symbol.new(" ^ "),
             Plurimath::Math::Symbol.new(" x ")
@@ -1710,7 +1710,7 @@ RSpec.describe Plurimath::Mathml::Parser do
               Plurimath::Math::Symbol.new(" z ")
             ])
           ),
-          Plurimath::Math::Function::Text.new("&#xa0;"),
+          Plurimath::Math::Function::Text.new("&#xa0;versus&#xa0;"),
           Plurimath::Math::Function::Obrace.new(
             Plurimath::Math::Formula.new([
               Plurimath::Math::Symbol.new(" x "),
@@ -1758,7 +1758,7 @@ RSpec.describe Plurimath::Mathml::Parser do
               Plurimath::Math::Function::Int.new
             )
           ),
-          Plurimath::Math::Function::Text.new("&#xa0;"),
+          Plurimath::Math::Function::Text.new("&#xa0;versus&#xa0;"),
           Plurimath::Math::Function::Underover.new(
             Plurimath::Math::Function::Int.new,
             Plurimath::Math::Symbol.new(" 0 "),

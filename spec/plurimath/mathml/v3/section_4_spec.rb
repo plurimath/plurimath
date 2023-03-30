@@ -980,7 +980,7 @@ RSpec.describe Plurimath::Mathml::Parser do
                   ])
                 ]),
                 Plurimath::Math::Function::Td.new([
-                  Plurimath::Math::Function::Text.new("&#xa0;")
+                  Plurimath::Math::Function::Text.new("&#xa0; if &#xa0;")
                 ]),
                 Plurimath::Math::Function::Td.new([
                   Plurimath::Math::Formula.new([
@@ -995,7 +995,7 @@ RSpec.describe Plurimath::Mathml::Parser do
                   Plurimath::Math::Number.new("0")
                 ]),
                 Plurimath::Math::Function::Td.new([
-                  Plurimath::Math::Function::Text.new("&#xa0;")
+                  Plurimath::Math::Function::Text.new("&#xa0; if &#xa0;")
                 ]),
                 Plurimath::Math::Function::Td.new([
                   Plurimath::Math::Formula.new([
@@ -1010,7 +1010,7 @@ RSpec.describe Plurimath::Mathml::Parser do
                   Plurimath::Math::Symbol.new("x")
                 ]),
                 Plurimath::Math::Function::Td.new([
-                  Plurimath::Math::Function::Text.new("&#xa0;")
+                  Plurimath::Math::Function::Text.new("&#xa0; if &#xa0;")
                 ]),
                 Plurimath::Math::Function::Td.new([
                   Plurimath::Math::Formula.new([

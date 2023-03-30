@@ -6,6 +6,7 @@ module Plurimath
   class Mathml
     class Parser
       attr_accessor :text
+      SUPPORTED_ATTRIBUTES = %w[columnlines mathvariant mathcolor notation close open].freeze
 
       def initialize(text)
         @text = text
@@ -28,7 +29,7 @@ module Plurimath
           elsif !node.attributes.empty?
             {
               node.name.to_sym => {
-                attributes: node.attributes.transform_keys(&:to_sym),
+                attributes: validate_attributes(node.attributes),
                 value: parse_nodes(node.nodes),
               },
             }
@@ -36,6 +37,11 @@ module Plurimath
             { node.name.to_sym => parse_nodes(node.nodes) }
           end
         end
+      end
+
+      def validate_attributes(attributes)
+        attributes&.select! { |key, _| SUPPORTED_ATTRIBUTES.include?(key&.to_s) }
+        attributes&.transform_keys(&:to_sym) if attributes&.any?
       end
     end
   end

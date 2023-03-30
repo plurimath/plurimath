@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Mathml::Parser do
     }
     it "returns formula of sin from mathml string" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Function::Text.new("&#xa0;"),
+        Plurimath::Math::Function::Text.new("&#xa0;Theorem &#xa0;1:"),
       ])
       expect(formula).to eq(expected_value)
     end

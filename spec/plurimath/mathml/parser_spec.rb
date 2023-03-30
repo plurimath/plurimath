@@ -1340,6 +1340,288 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
   end
 
+  context "contains mathml string from metanorma/mn-samples-bipm" do
+    let(:exp) {
+      <<~MATHML
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <mathml:mstyle scriptminsize="6pt">
+            <msub>
+              <mrow>
+                <mstyle mathvariant="italic">
+                  <mi>T</mi>
+                </mstyle>
+              </mrow>
+              <mrow>
+                <mn>90</mn>
+              </mrow>
+            </msub>
+            <mo stretchy="false" lspace="0.1em" rspace="0em">/</mo>
+            <mrow xref="U_NISTu5">
+              <mi mathvariant="normal">K</mi>
+            </mrow>
+            <mo>=</mo>
+            <msub>
+              <mrow>
+                <mstyle mathvariant="italic">
+                  <mi>A</mi>
+                </mstyle>
+              </mrow>
+              <mrow>
+                <mn>0</mn>
+              </mrow>
+            </msub>
+            <mo>+</mo>
+            <munderover>
+              <mrow>
+                <mo>∑</mo>
+              </mrow>
+              <mrow>
+                <mrow>
+                  <mi>i</mi>
+                  <mo>=</mo>
+                  <mn>1</mn>
+                </mrow>
+              </mrow>
+              <mrow>
+                <mn>9</mn>
+              </mrow>
+            </munderover>
+            <msub>
+              <mrow>
+                <mstyle mathvariant="italic">
+                  <mi>A</mi>
+                </mstyle>
+              </mrow>
+              <mrow>
+                <mi>i</mi>
+              </mrow>
+            </msub>
+            <msup>
+              <mrow>
+                <mfenced open="[" close="]" separators="">
+                  <mathml:mspace width="-0.15em"/>
+                  <mrow>
+                    <mfenced open="(" close=")" separators="">
+                      <mathml:mspace width="-0.15em"/>
+                      <mrow>
+                        <mi>ln</mi>
+                        <mathml:mo rspace="-0.35em"/>
+                        <mfenced open="(" close=")" separators="">
+                          <mathml:mspace width="-0.15em"/>
+                          <mrow>
+                            <mi>p</mi>
+                            <mo stretchy="false" lspace="0em" rspace="0em">/</mo>
+                            <mrow xref="U_NISTu12">
+                              <mi mathvariant="normal">Pa</mi>
+                            </mrow>
+                          </mrow>
+                          <mathml:mspace width="-0.1em"/>
+                        </mfenced>
+                        <mo>—</mo>
+                        <mstyle mathvariant="italic">
+                          <mi>B</mi>
+                        </mstyle>
+                      </mrow>
+                      <mathml:mspace width="-0.1em"/>
+                    </mfenced>
+                    <mo stretchy="false" lspace="0em" rspace="0em">/</mo>
+                    <mstyle mathvariant="italic">
+                      <mi>C</mi>
+                    </mstyle>
+                  </mrow>
+                  <mathml:mspace width="-0.1em"/>
+                </mfenced>
+              </mrow>
+              <mrow>
+                <mi>i</mi>
+              </mrow>
+            </msup>
+            <mo>.</mo>
+          </mathml:mstyle>
+        </math>
+      MATHML
+    }
+    it "returns formula of decimal values" do
+      expected_value = Plurimath::Math::Formula.new([
+        Plurimath::Math::Formula.new([
+          Plurimath::Math::Function::Base.new(
+            Plurimath::Math::Formula.new([
+              Plurimath::Math::Symbol.new("T")
+            ]),
+            Plurimath::Math::Formula.new([
+              Plurimath::Math::Number.new("90")
+            ])
+          ),
+          Plurimath::Math::Symbol.new("/"),
+          Plurimath::Math::Formula.new([
+            Plurimath::Math::Function::FontStyle::Normal.new(
+              Plurimath::Math::Symbol.new("K"),
+              "normal"
+            )
+          ]),
+          Plurimath::Math::Symbol.new("="),
+          Plurimath::Math::Function::Base.new(
+            Plurimath::Math::Formula.new([
+              Plurimath::Math::Symbol.new("A")
+            ]),
+            Plurimath::Math::Formula.new([
+              Plurimath::Math::Number.new("0")
+            ])
+          ),
+          Plurimath::Math::Symbol.new("+"),
+          Plurimath::Math::Function::Sum.new(
+            Plurimath::Math::Formula.new([
+              Plurimath::Math::Formula.new([
+                Plurimath::Math::Symbol.new("i"),
+                Plurimath::Math::Symbol.new("="),
+                Plurimath::Math::Number.new("1")
+              ])
+            ]),
+            Plurimath::Math::Formula.new([
+              Plurimath::Math::Number.new("9")
+            ])
+          ),
+          Plurimath::Math::Function::Base.new(
+            Plurimath::Math::Formula.new([
+              Plurimath::Math::Symbol.new("A")
+            ]),
+            Plurimath::Math::Formula.new([
+              Plurimath::Math::Symbol.new("i")
+            ])
+          ),
+          Plurimath::Math::Function::Power.new(
+            Plurimath::Math::Formula.new([
+              Plurimath::Math::Function::Fenced.new(
+                Plurimath::Math::Symbol.new("["),
+                [
+                  Plurimath::Math::Formula.new([
+                    Plurimath::Math::Function::Fenced.new(
+                      Plurimath::Math::Symbol.new("("),
+                      [
+                        Plurimath::Math::Formula.new([
+                          Plurimath::Math::Function::Ln.new,
+                          Plurimath::Math::Function::Fenced.new(
+                            Plurimath::Math::Symbol.new("("),
+                            [
+                              Plurimath::Math::Formula.new([
+                                Plurimath::Math::Symbol.new("p"),
+                                Plurimath::Math::Symbol.new("/"),
+                                Plurimath::Math::Formula.new([
+                                  Plurimath::Math::Function::FontStyle::Normal.new(
+                                    Plurimath::Math::Symbol.new("Pa"),
+                                    "normal"
+                                  )
+                                ])
+                              ])
+                            ],
+                            Plurimath::Math::Symbol.new(")")
+                          ),
+                          Plurimath::Math::Symbol.new("&#x2014;"),
+                          Plurimath::Math::Symbol.new("B")
+                        ])
+                      ],
+                      Plurimath::Math::Symbol.new(")")
+                    ),
+                    Plurimath::Math::Symbol.new("/"),
+                    Plurimath::Math::Symbol.new("C")
+                  ])
+                ],
+                Plurimath::Math::Symbol.new("]")
+              )
+            ]),
+            Plurimath::Math::Formula.new([
+              Plurimath::Math::Symbol.new("i")
+            ])
+          ),
+          Plurimath::Math::Symbol.new(".")
+        ])
+      ])
+      expect(formula).to eq(expected_value)
+    end
+  end
+
+  context "contains mathml string from metanorma/mn-samples-bipm" do
+    let(:exp) {
+      <<~MATHML
+        <math>
+          <semantics>
+            <mrow>
+            <mstyle displaystyle='true'>
+              <mrow>
+                <msubsup>
+                  <mo>∫</mo>
+                  <mrow>
+                    <msub>
+                      <mi>t</mi>
+                      <mn>2</mn>
+                      </msub>
+                    </mrow>
+                    <mrow>
+                      <msub>
+                        <mi>t</mi>
+                        <mn>1</mn>
+                      </msub>
+                    </mrow>
+                  </msubsup>
+                  <mrow>
+                    <mi>f</mi>
+                    <mo stretchy='false'>(</mo>
+                    <mi>t</mi>
+                    <mo stretchy='false'>)</mo>
+                    <mo>d</mo>
+                    <mi>t</mi>
+                  </mrow>
+                </mrow>
+              </mstyle>
+            </mrow>
+            <annotation encoding='MathType-MTEF'>MathType@MTEF@5@5@+= feaagKart1ev2aaatCvAUfeBSjuyZL2yd9gzLbvyNv2CaerbbjxAHX garuavP1wzZbItLDhis9wBH5garmWu51MyVXgarqqtubsr4rNCHbGe aGqipG0dh9qqWrVepG0dbbL8F4rqqrVepeea0xe9LqFf0xc9q8qqaq Fn0lXdHiVcFbIOFHK8Feea0dXdar=Jb9hs0dXdHuk9fr=xfr=xfrpe WZqaaeaaciWacmGadaGadeaabaGaaqaaaOqaamaapedabaGaamOzai aacIcacaWG0bGaaiykaKqzaeGaaiizaOGaamiDaaWcbaGaamiDamaa BaaameaacaaIYaaabeaaaSqaaiaadshadaWgaaadbaGaaGymaaqaba aaniabgUIiYdaaaa@40DD@ </annotation>
+          </semantics>
+        </math>
+      MATHML
+    }
+    it "returns formula of decimal values" do
+      expected_value = Plurimath::Math::Formula.new([
+        Plurimath::Math::Function::Semantics.new(
+          Plurimath::Math::Formula.new([
+            Plurimath::Math::Formula.new([
+              Plurimath::Math::Function::PowerBase.new(
+                Plurimath::Math::Function::Int.new,
+                Plurimath::Math::Formula.new([
+                  Plurimath::Math::Function::Base.new(
+                    Plurimath::Math::Symbol.new("t"),
+                    Plurimath::Math::Number.new("2")
+                  )
+                ]),
+                Plurimath::Math::Formula.new([
+                  Plurimath::Math::Function::Base.new(
+                    Plurimath::Math::Symbol.new("t"),
+                    Plurimath::Math::Number.new("1")
+                  )
+                ])
+              ),
+              Plurimath::Math::Formula.new([
+                Plurimath::Math::Function::F.new,
+                Plurimath::Math::Symbol.new("("),
+                Plurimath::Math::Symbol.new("t"),
+                Plurimath::Math::Symbol.new(")"),
+                Plurimath::Math::Symbol.new("d"),
+                Plurimath::Math::Symbol.new("t")
+              ])
+            ])
+          ]),
+          [
+            {
+              annotation: [
+                Plurimath::Math::Symbol.new("MathType@MTEF@5@5@+= feaagKart1ev2aaatCvAUfeBSjuyZL2yd9gzLbvyNv2CaerbbjxAHX garuavP1wzZbItLDhis9wBH5garmWu51MyVXgarqqtubsr4rNCHbGe aGqipG0dh9qqWrVepG0dbbL8F4rqqrVepeea0xe9LqFf0xc9q8qqaq Fn0lXdHiVcFbIOFHK8Feea0dXdar=Jb9hs0dXdHuk9fr=xfr=xfrpe WZqaaeaaciWacmGadaGadeaabaGaaqaaaOqaamaapedabaGaamOzai aacIcacaWG0bGaaiykaKqzaeGaaiizaOGaamiDaaWcbaGaamiDamaa BaaameaacaaIYaaabeaaaSqaaiaadshadaWgaaadbaGaaGymaaqaba aaniabgUIiYdaaaa@40DD@ ")
+              ]
+            }
+          ]
+        )
+      ])
+      expect(formula).to eq(expected_value)
+    end
+  end
+
   context "contains mathml string from issue #89 Exp #1" do
     let(:exp) {
       <<~MATHML

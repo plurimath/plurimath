@@ -315,7 +315,7 @@ module Plurimath
           attrs.parameter_two = filter_values(value)
           attrs
         elsif attrs.is_a?(Math::Function::Fenced)
-          attrs.parameter_two = value
+          attrs.parameter_two = value.compact
           attrs
         elsif attrs.is_a?(Math::Function::FontStyle)
           attrs.parameter_one = filter_values(value)
