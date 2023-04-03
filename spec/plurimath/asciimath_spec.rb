@@ -3771,5 +3771,26 @@ RSpec.describe Plurimath::Asciimath do
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
+
+    context "contains example #65" do
+      let(:string) { "y\"a" }
+
+      it 'returns parsed Asciimath to Formula' do
+        latex = "y \\text{} a"
+        asciimath = "y \"\" a"
+        mathml = <<~MATHML
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
+              <mi>y</mi>
+              <mtext></mtext>
+              <mi>a</mi>
+            </mstyle>
+          </math>
+        MATHML
+        expect(formula.to_latex).to eql(latex)
+        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_asciimath).to eql(asciimath)
+      end
+    end
   end
 end
