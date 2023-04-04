@@ -58,7 +58,8 @@ module Plurimath
       end
 
       rule(:quoted_text) do
-        str('"') >> match("[^\"]").repeat.as(:text) >> str('"')
+        str('"') >> match("[^\"]").repeat.as(:text) >> str('"') |
+          str('"') >> str("").as(:text)
       end
 
       rule(:symbol_text_or_integer) do
