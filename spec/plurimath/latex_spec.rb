@@ -2187,5 +2187,83 @@ RSpec.describe Plurimath::Latex do
         expect(formula.to_mathml).to be_equivalent_to(mathml)
       end
     end
+
+    context "contains example #44" do
+      let(:string) do
+        <<~LATEX
+          V = \\frac{1}{2} \\: {\\bf u}^t \\:
+            \\int_{\\text{surface}} \\: \\int_{thickness} \\: B^t \\: D \\: B \\: dt \\: ds
+               \\; {\\bf u}
+        LATEX
+      end
+
+      it 'returns parsed Latex to MathML' do
+        mathml = <<~MATHML
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
+              <mi>V</mi>
+              <mo>=</mo>
+              <mfrac>
+                <mn>1</mn>
+                <mn>2</mn>
+              </mfrac>
+              <mo>&#x3a;</mo>
+              <msup>
+                <mstyle mathvariant="bold">
+                  <mi>u</mi>
+                </mstyle>
+                <mi>t</mi>
+              </msup>
+              <mo>&#x3a;</mo>
+              <msub>
+                <mo>&#x222b;</mo>
+                <mtext>surface</mtext>
+              </msub>
+              <mo>&#x3a;</mo>
+              <msub>
+                <mo>&#x222b;</mo>
+                <mrow>
+                  <mi>t</mi>
+                  <mi>h</mi>
+                  <mi>i</mi>
+                  <mi>c</mi>
+                  <mi>k</mi>
+                  <mi>n</mi>
+                  <mi>e</mi>
+                  <mi>s</mi>
+                  <mi>s</mi>
+                </mrow>
+              </msub>
+              <mo>&#x3a;</mo>
+              <msup>
+                <mi>B</mi>
+                <mi>t</mi>
+              </msup>
+              <mo>&#x3a;</mo>
+              <mi>D</mi>
+              <mo>&#x3a;</mo>
+              <mi>B</mi>
+              <mo>&#x3a;</mo>
+              <mi>d</mi>
+              <mi>t</mi>
+              <mo>&#x3a;</mo>
+              <mi>d</mi>
+              <mi>s</mi>
+              <mo>&#x3b;</mo>
+              <mstyle mathvariant="bold">
+                <mi>u</mi>
+              </mstyle>
+            </mstyle>
+          </math>
+        MATHML
+        latex = <<~LATEX
+          V = \\frac{1}{2} : \\mathbf{u}^{t} :
+            \\int_{\\text{surface}} : \\int_{t h i c k n e s s} : B^{t} : D : B : d t : d s
+            ; \\mathbf{u}
+        LATEX
+        expect(formula.to_latex.gsub(/\s+/, "")).to eql(latex.gsub(/\s+/, ""))
+        expect(formula.to_mathml).to be_equivalent_to(mathml)
+      end
+    end
   end
 end

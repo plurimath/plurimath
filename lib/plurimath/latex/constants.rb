@@ -3561,7 +3561,7 @@ module Plurimath
         cosh: :unary,
         ddot: :unary,
         mbox: :unary,
-        text: :unary,
+        text: :text,
         '"': :symbols,
         sum: :power_base,
         inf: :power_base,

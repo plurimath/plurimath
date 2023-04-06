@@ -357,6 +357,11 @@ module Plurimath
         )
       end
 
+      rule(text: simple(:text),
+           first_value: simple(:first_value)) do
+        Math::Function::Text.new(first_value)
+      end
+
       rule(unary: simple(:unary),
            first_value: simple(:first_value)) do
         Utility.get_class(
