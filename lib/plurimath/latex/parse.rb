@@ -197,6 +197,8 @@ module Plurimath
             (slashed_value(first_value, :underover))
         when :binary
           (slashed_value(first_value, :binary) >> intermediate_exp.as(:first_value) >> intermediate_exp.as(:second_value)).as(:binary)
+        when :text
+          (slashed_value(first_value, :text) >> (str("{") >> (match("[^\}]").repeat).as(:first_value) >> str("}")))
         end
       end
 
