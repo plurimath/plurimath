@@ -1716,7 +1716,7 @@ RSpec.describe Plurimath::Asciimath do
                 </msup>
                 <mn>9</mn>
               </mfrac>
-              <mo>&#xb7;</mo>
+              <mo>&#x2e;</mo>
             </mstyle>
           </math>
         MATHML
@@ -3111,7 +3111,7 @@ RSpec.describe Plurimath::Asciimath do
                       </msub>
                       <mo>)</mo>
                     </mrow>
-                    <mo>&#xb7;</mo>
+                    <mo>&#x2e;</mo>
                     <mo>)</mo>
                   </mrow>
                   <mi/>
@@ -3641,7 +3641,7 @@ RSpec.describe Plurimath::Asciimath do
                   </mtable>
                   <mo>]</mo>
                 </mrow>
-                <mo>&#xb7;</mo>
+                <mo>&#x2e;</mo>
               </mrow>
             </mstyle>
           </math>

@@ -3171,7 +3171,7 @@ RSpec.describe Plurimath::Mathml::Parser do
       expected_value = Plurimath::Math::Formula.new([
         Plurimath::Math::Formula.new([
           Plurimath::Math::Symbol.new("&#x2207;"),
-          Plurimath::Math::Function::Dot.new,
+          Plurimath::Math::Symbol.new("&#x22c5;"),
           Plurimath::Math::Symbol.new("E")
         ])
       ])

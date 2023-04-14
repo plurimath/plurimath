@@ -825,9 +825,9 @@ RSpec.describe Plurimath::Latex do
             <mstyle displaystyle="true">
               <mstyle mathvariant="normal">
                 <mrow>
-                  <mo>&#xb7;</mo>
-                  <mo>&#xb7;</mo>
-                  <mo>&#xb7;</mo>
+                  <mo>&#x2e;</mo>
+                  <mo>&#x2e;</mo>
+                  <mo>&#x2e;</mo>
                 </mrow>
               </mstyle>
             </mstyle>
