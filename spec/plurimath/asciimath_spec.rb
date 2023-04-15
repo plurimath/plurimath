@@ -3792,5 +3792,35 @@ RSpec.describe Plurimath::Asciimath do
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
+
+    context "contains example #66" do
+      let(:string) { 'text()^2"S"_(1//2)' }
+
+      it 'returns parsed Asciimath to Formula' do
+        latex = "\\text{}^{2} \\text{S}_{1 / 2}"
+        asciimath = '""^(2) "S"_(1 // 2)'
+        mathml = <<~MATHML
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
+              <msup>
+                <mtext></mtext>
+                <mn>2</mn>
+              </msup>
+              <msub>
+                <mtext>S</mtext>
+                <mrow>
+                  <mn>1</mn>
+                  <mo>/</mo>
+                  <mn>2</mn>
+                </mrow>
+              </msub>
+            </mstyle>
+          </math>
+        MATHML
+        expect(formula.to_latex).to eql(latex)
+        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_asciimath).to eql(asciimath)
+      end
+    end
   end
 end

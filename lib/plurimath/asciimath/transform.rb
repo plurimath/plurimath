@@ -1118,6 +1118,12 @@ module Plurimath
       end
 
       rule(lparen: simple(:lparen),
+           text: sequence(:text),
+           rparen: simple(:rparen)) do
+        Math::Function::Text.new(text.flatten.compact.join)
+      end
+
+      rule(lparen: simple(:lparen),
            rgb_color: sequence(:color),
            rparen: simple(:rparen)) do
         Math::Formula.new(color)
