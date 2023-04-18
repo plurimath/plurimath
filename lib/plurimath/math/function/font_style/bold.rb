@@ -13,12 +13,11 @@ module Plurimath
           end
 
           def to_asciimath
-            "mathbf(#{parameter_one.to_asciimath})"
+            "mathbf(#{parameter_one&.to_asciimath})"
           end
 
           def to_latex
-            first_value = parameter_one.to_latex if parameter_one
-            "\\mathbf{#{first_value}}"
+            "\\mathbf{#{parameter_one&.to_latex}}"
           end
 
           def to_mathml_without_math_tag
@@ -27,7 +26,7 @@ module Plurimath
                 "mstyle",
                 attributes: { mathvariant: "bold" },
               ),
-              [parameter_one.to_mathml_without_math_tag],
+              [parameter_one&.to_mathml_without_math_tag],
             )
           end
         end
