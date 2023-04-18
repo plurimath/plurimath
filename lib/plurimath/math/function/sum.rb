@@ -48,16 +48,15 @@ module Plurimath
         def to_omml_without_math_tag
           limupp   = Utility.ox_element("limLow", namespace: "m")
           limupppr = Utility.ox_element("limUppPr", namespace: "m")
-          sum << Utility.pr_element("e", true, namespace: "m")
-          me = (Utility.ox_element("e", namespace: "m") << omml_first_value)
-          lim = (Utility.ox_element("lim", namespace: "m") << omml_second_value)
+          me = (Utility.ox_element("e", namespace: "m") << omml_first_value) if parameter_one
+          lim = (Utility.ox_element("lim", namespace: "m") << omml_second_value) if parameter_two
           Utility.update_nodes(limupp, [limupppr, me, lim])
         end
 
         protected
 
         def omml_first_value
-          return parameter_one.to_omml_without_math_tag unless parameter_one.is_a?(Math::Symbol)
+          return parameter_one&.to_omml_without_math_tag unless parameter_one&.is_a?(Math::Symbol)
 
           mt = Utility.ox_element("t", namespace: "m")
           mt << parameter_one.to_omml_without_math_tag if parameter_one
@@ -65,7 +64,7 @@ module Plurimath
         end
 
         def omml_second_value
-          return parameter_two.to_omml_without_math_tag unless parameter_two.is_a?(Math::Symbol)
+          return parameter_two&.to_omml_without_math_tag unless parameter_two&.is_a?(Math::Symbol)
 
           mt = Utility.ox_element("t", namespace: "m")
           mt << parameter_two.to_omml_without_math_tag if parameter_two

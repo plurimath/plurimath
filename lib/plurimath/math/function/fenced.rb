@@ -46,7 +46,7 @@ module Plurimath
           dpr << Utility.pr_element("ctrl", true, namespace: "m")
           Utility.update_nodes(
             d,
-            [dpr] + second_value,
+            [dpr] + Array(second_value),
           )
         end
 
@@ -54,12 +54,12 @@ module Plurimath
 
         def second_value
           class_names = ["number", "symbol"].freeze
-          parameter_two.map do |object|
+          parameter_two&.map do |object|
             e_tag = Utility.ox_element("e", namespace: "m")
             e_tag << if class_names.include?(object.class_name)
                        fenced_omml_value(object)
                      else
-                       object.to_omml_without_math_tag
+                       object&.to_omml_without_math_tag
                      end
           end
         end
@@ -67,7 +67,7 @@ module Plurimath
         def fenced_omml_value(object)
           r_tag = Utility.ox_element("r", namespace: "m")
           t_tag = Utility.ox_element("t", namespace: "m")
-          t_tag << object.value
+          t_tag << object&.value
           r_tag << t_tag
         end
 
@@ -97,16 +97,16 @@ module Plurimath
 
         def latex_paren(paren, right)
           paren_side = right ? "\\right" : "\\left"
-          return "#{paren_side} ." if paren.include?(":")
+          return "#{paren_side} ." if paren&.include?(":")
 
           paren = %w[{ }].include?(paren) ? "\\#{paren}" : paren
           " #{paren_side} #{paren} "
         end
 
         def mathml_paren(field)
-          return "" if field.value.include?(":")
+          return "" if field&.value&.include?(":")
 
-          field.value
+          field&.value
         end
       end
     end
