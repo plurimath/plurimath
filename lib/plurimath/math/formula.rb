@@ -42,11 +42,11 @@ module Plurimath
       end
 
       def to_latex
-        value.map(&:to_latex).join(" ")
+        value&.map(&:to_latex)&.join(" ")
       end
 
       def to_html
-        value.map(&:to_html).join(" ")
+        value&.map(&:to_html)&.join(" ")
       end
 
       def omml_math_attrs

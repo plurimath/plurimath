@@ -187,7 +187,7 @@ module Plurimath
         element
       end
 
-      def pr_element(main_tag, wi_tag, namespace: "")
+      def pr_element(main_tag, wi_tag = false, namespace: "")
         tag_name = "#{main_tag}Pr"
         ox_element(
           tag_name,
