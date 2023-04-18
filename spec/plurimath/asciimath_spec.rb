@@ -3855,5 +3855,38 @@ RSpec.describe Plurimath::Asciimath do
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
+
+    context "contains example #68" do
+      let(:string) { 'bb(ii(A)) + bb(ii(B)) = bb(ii()' }
+
+      it 'returns parsed Asciimath to Formula' do
+        latex = "\\mathbf{\\mathit{A}} + \\mathbf{\\mathit{B}} = \\mathbf{\\mathit{}}"
+        asciimath = 'mathbf(ii(A)) + mathbf(ii(B)) = mathbf(ii())'
+        mathml = <<~MATHML
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
+              <mstyle mathvariant="bold">
+                <mstyle mathvariant="italic">
+                  <mi>A</mi>
+                </mstyle>
+              </mstyle>
+              <mo>+</mo>
+              <mstyle mathvariant="bold">
+                <mstyle mathvariant="italic">
+                  <mi>B</mi>
+                </mstyle>
+              </mstyle>
+              <mo>=</mo>
+              <mstyle mathvariant="bold">
+                <mstyle mathvariant="italic"/>
+              </mstyle>
+            </mstyle>
+          </math>
+        MATHML
+        expect(formula.to_latex).to eql(latex)
+        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_asciimath).to eql(asciimath)
+      end
+    end
   end
 end

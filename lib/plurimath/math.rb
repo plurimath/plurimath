@@ -41,6 +41,14 @@ module Plurimath
 
       klass = VALID_TYPES[type.to_sym]
       klass.new(text).to_formula
+    rescue => ee
+      message = <<~MESSAGE
+        An error occurred while processing the input. Please check your input to ensure it is valid or open an issue on Github If you believe the input is correct.
+        ---- INPUT START ----
+          #{text}
+        ---- INPUT END ----
+      MESSAGE
+      raise Math::Error.new(message), cause: nil
     end
 
     private
