@@ -124,12 +124,12 @@ RSpec.describe Plurimath::Math::Formula do
         <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
-              <munder>
+              <msub>
                 <mrow>
                   <mi>sin</mi>
                 </mrow>
                 <mo>&#x2211;</mo>
-              </munder>
+              </msub>
             </mstyle>
           </math>
         MATHML

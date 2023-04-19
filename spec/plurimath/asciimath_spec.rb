@@ -3888,5 +3888,101 @@ RSpec.describe Plurimath::Asciimath do
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
+
+    context "contains example #69" do
+      let(:string) { 'f_(199"Hg") = 1128575290808154.8 "unitsml(Hz)"' }
+
+      it 'returns parsed Asciimath to Formula' do
+        latex = 'f_{199 \\text{Hg}} = 1128575290808154.8 \\text{unitsml(Hz)}'
+        asciimath = 'f_(199 "Hg") = 1128575290808154.8 "unitsml(Hz)"'
+        mathml = <<~MATHML
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
+              <msub>
+                <mrow>
+                  <mi>f</mi>
+                </mrow>
+                <mrow>
+                  <mn>199</mn>
+                  <mtext>Hg</mtext>
+                </mrow>
+              </msub>
+              <mo>=</mo>
+              <mn>1128575290808154.8</mn>
+              <mtext>unitsml(Hz)</mtext>
+            </mstyle>
+          </math>
+        MATHML
+        expect(formula.to_latex).to eql(latex)
+        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_asciimath).to eql(asciimath)
+      end
+    end
+
+    context "contains example #70" do
+      let(:string) { 'n_"S"("X") = m_"S" // ii(M)("X"), " and " ii(M)(""X"") = ii(A)_"r"("X") "unitsml(g/mol)"' }
+
+      it 'returns parsed Asciimath to Formula' do
+        latex = 'n_{\text{S}}  \left ( \text{X} \right )  = m_{\text{S}} / \mathit{M}  \left ( \text{X} \right )  ,  \text{ and } \mathit{M}  \left ( \text{} X \text{} \right )  = \mathit{A}_{\text{r}}  \left ( \text{X} \right )  \text{unitsml(g/mol)}'
+        asciimath = 'n_("S") ("X") = m_("S") // ii(M) ("X") ,  " and " ii(M) ("" X "") = ii(A)_("r") ("X") "unitsml(g/mol)"'
+        mathml = <<~MATHML
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
+              <msub>
+                <mi>n</mi>
+                <mtext>S</mtext>
+              </msub>
+              <mrow>
+                <mo>(</mo>
+                <mtext>X</mtext>
+                <mo>)</mo>
+              </mrow>
+              <mo>=</mo>
+              <msub>
+                <mi>m</mi>
+                <mtext>S</mtext>
+              </msub>
+              <mo>/</mo>
+              <mstyle mathvariant="italic">
+                <mi>M</mi>
+              </mstyle>
+              <mrow>
+                <mo>(</mo>
+                <mtext>X</mtext>
+                <mo>)</mo>
+              </mrow>
+              <mo>, </mo>
+              <mtext> and </mtext>
+              <mstyle mathvariant="italic">
+                <mi>M</mi>
+              </mstyle>
+              <mrow>
+                <mo>(</mo>
+                <mtext></mtext>
+                <mi>X</mi>
+                <mtext></mtext>
+                <mo>)</mo>
+              </mrow>
+              <mo>=</mo>
+              <msub>
+                <mstyle mathvariant="italic">
+                  <mi>A</mi>
+                </mstyle>
+                <mtext>r</mtext>
+              </msub>
+              <mrow>
+                <mo>(</mo>
+                <mtext>X</mtext>
+                <mo>)</mo>
+              </mrow>
+              <mtext>unitsml(g/mol)</mtext>
+            </mstyle>
+          </math>
+        MATHML
+        expect(formula.to_latex).to eql(latex)
+        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_asciimath).to eql(asciimath)
+      end
+    end
   end
 end
