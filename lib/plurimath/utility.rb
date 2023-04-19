@@ -67,6 +67,13 @@ module Plurimath
       f
       g
     ].freeze
+    MUNDER_CLASSES = %w[
+      ubrace
+      obrace
+      right
+      max
+      min
+    ].freeze
 
     class << self
       def organize_table(array, column_align: nil, options: nil)

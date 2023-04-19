@@ -370,7 +370,11 @@ RSpec.describe Plurimath::Asciimath::Parser do
               Plurimath::Math::Symbol.new("l"),
               Plurimath::Math::Symbol.new("o"),
               Plurimath::Math::Symbol.new("r"),
-              Plurimath::Math::Function::Text.new("blue"),
+              Plurimath::Math::Function::Fenced.new(
+                Plurimath::Math::Symbol.new("{"),
+                [Plurimath::Math::Function::Text.new("blue")],
+                Plurimath::Math::Symbol.new("}"),
+              )
             ]),
             Plurimath::Math::Number.new("33")
           )

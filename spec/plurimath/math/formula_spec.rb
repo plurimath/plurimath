@@ -146,7 +146,7 @@ RSpec.describe Plurimath::Math::Formula do
       let(:exp) { "sum_(i=color{text(blue)})^33" }
 
       it 'converts formula back to Asciimath string for color function' do
-        expect(formula).to eql("sum_(i = c o l o r \"blue\")^(33)")
+        expect(formula).to eql("sum_(i = c o l o r {\"blue\"})^(33)")
       end
     end
 
@@ -154,7 +154,7 @@ RSpec.describe Plurimath::Math::Formula do
       let(:exp) { "sum_(i=color{\"blue\"})^33" }
 
       it 'converts formula back to Asciimath string for color function' do
-        expect(formula).to eql('sum_(i = c o l o r "blue")^(33)')
+        expect(formula).to eql('sum_(i = c o l o r {"blue"})^(33)')
       end
     end
 

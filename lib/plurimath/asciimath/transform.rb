@@ -1089,15 +1089,11 @@ module Plurimath
                         [expr]
                       end
         right_paren = rparen.to_s.empty? ? "" : rparen
-        if expr.is_a?(Math::Function::Text)
-          expr
-        else
-          Math::Function::Fenced.new(
-            Utility.symbol_object(lparen),
-            form_value&.flatten&.compact,
-            Utility.symbol_object(right_paren),
-          )
-        end
+        Math::Function::Fenced.new(
+          Utility.symbol_object(lparen),
+          form_value&.flatten&.compact,
+          Utility.symbol_object(right_paren),
+        )
       end
 
       rule(lparen: simple(:lparen),

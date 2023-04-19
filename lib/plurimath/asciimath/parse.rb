@@ -109,7 +109,7 @@ module Plurimath
 
       rule(:sequence) do
         (lparen.as(:lparen) >> space.maybe >> expression.maybe.as(:expr) >> space.maybe >> rparen.maybe.as(:rparen)).as(:intermediate_exp) |
-          (str("text") >> lparen.capture(:paren).as(:lparen) >> read_text.as(:text) >> rparen.maybe.as(:rparen)).as(:intermediate_exp) |
+          (str("text") >> lparen.capture(:paren) >> read_text.as(:text) >> rparen.maybe).as(:intermediate_exp) |
           symbol_text_or_integer
       end
 
