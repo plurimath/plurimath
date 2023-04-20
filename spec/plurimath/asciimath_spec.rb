@@ -3984,5 +3984,39 @@ RSpec.describe Plurimath::Asciimath do
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
+
+    context "contains example #71" do
+      let(:string) { 'abs(e) @ ceil(x) circ ddot(m)' }
+
+      it 'returns parsed Asciimath to Formula' do
+        latex = '\abs{e} \circ {\lceil x \rceil} \circ \ddot{m}'
+        asciimath = 'abs(e) @ ceil(x) @ ddot(m)'
+        mathml = <<~MATHML
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
+              <mrow>
+                <mo>|</mo>
+                <mi>e</mi>
+                <mo>|</mo>
+              </mrow>
+              <mi>&#x2218;</mi>
+              <mrow>
+                <mo>&#x2308;</mo>
+                <mi>x</mi>
+                <mo>&#x2309;</mo>
+              </mrow>
+              <mi>&#x2218;</mi>
+              <mover accent="true">
+                <mi>m</mi>
+                <mo>..</mo>
+              </mover>
+            </mstyle>
+          </math>
+        MATHML
+        expect(formula.to_latex).to eql(latex)
+        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_asciimath).to eql(asciimath)
+      end
+    end
   end
 end

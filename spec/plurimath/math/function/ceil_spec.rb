@@ -62,10 +62,10 @@ RSpec.describe Plurimath::Math::Function::Ceil do
 
       it "returns mathml string" do
         expected_value = <<~MATHML
-
           <mrow>
-            <mo>ceil</mo>
+            <mo>&#x2308;</mo>
             <mi>n</mi>
+            <mo>&#x2309;</mo>
           </mrow>
         MATHML
         expect(formula).to be_equivalent_to(expected_value)
@@ -78,8 +78,9 @@ RSpec.describe Plurimath::Math::Function::Ceil do
       it "returns mathml string" do
         expected_value = <<~MATHML
           <mrow>
-            <mo>ceil</mo>
+            <mo>&#x2308;</mo>
             <mn>70</mn>
+            <mo>&#x2309;</mo>
           </mrow>
         MATHML
         expect(formula).to be_equivalent_to(expected_value)
@@ -98,7 +99,7 @@ RSpec.describe Plurimath::Math::Function::Ceil do
       it "returns mathml string" do
         expected_value = <<~MATHML
           <mrow>
-            <mo>ceil</mo>
+            <mo>&#x2308;</mo>
             <mrow>
               <munderover>
                 <mo>&#x2211;</mo>
@@ -106,6 +107,7 @@ RSpec.describe Plurimath::Math::Function::Ceil do
                 <mtext>so</mtext>
               </munderover>
             </mrow>
+            <mo>&#x2309;</mo>
           </mrow>
         MATHML
         expect(formula).to be_equivalent_to(expected_value)
