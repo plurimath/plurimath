@@ -103,12 +103,12 @@ module Plurimath
         end
 
         def omml_value
-          if parameter_one.is_a?(Array)
-            return parameter_one.compact.map(&:to_omml_without_math_tag)
+          if parameter_one&.is_a?(Array)
+            return parameter_one&.compact.map(&:to_omml_without_math_tag)
           end
 
-          first_value = parameter_one.to_omml_without_math_tag
-          if parameter_one.is_a?(Symbol)
+          first_value = parameter_one&.to_omml_without_math_tag
+          if parameter_one&.is_a?(Symbol)
             first_value = Utility.ox_element("t", namespace: "m") << first_value
           end
           Array(first_value)

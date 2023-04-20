@@ -71,10 +71,10 @@ RSpec.describe Plurimath::Math::Function::Abs do
 
       it "returns mathml string" do
         expected_value = <<~MATHML
-
           <mrow>
-            <mo>abs</mo>
+            <mo>|</mo>
             <mi>n</mi>
+            <mo>|</mo>
           </mrow>
         MATHML
         expect(formula).to be_equivalent_to(expected_value)
@@ -87,8 +87,9 @@ RSpec.describe Plurimath::Math::Function::Abs do
       it "returns mathml string" do
         expected_value = <<~MATHML
           <mrow>
-            <mo>abs</mo>
+            <mo>|</mo>
             <mn>70</mn>
+            <mo>|</mo>
           </mrow>
         MATHML
         expect(formula).to be_equivalent_to(expected_value)
@@ -107,14 +108,15 @@ RSpec.describe Plurimath::Math::Function::Abs do
       it "returns mathml string" do
         expected_value = <<~MATHML
           <mrow>
-            <mo>abs</mo>
+            <mo>|</mo>
             <mrow>
               <munderover>
                 <mo>&#x2211;</mo>
-                <mo>&#x26;</mo>
+                <mo>&amp;</mo>
                 <mtext>so</mtext>
               </munderover>
             </mrow>
+            <mo>|</mo>
           </mrow>
         MATHML
         expect(formula).to be_equivalent_to(expected_value)
