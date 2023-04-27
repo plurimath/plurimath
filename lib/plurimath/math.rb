@@ -24,7 +24,8 @@ Ox.default_options = { encoding: "UTF-8" }
 
 module Plurimath
   module Math
-    class Error < StandardError; end
+    class ParseError < StandardError; end
+    class InvalidTypeError < TypeError; end
 
     VALID_TYPES = {
       omml: Omml,
@@ -37,25 +38,39 @@ module Plurimath
     }.freeze
 
     def parse(text, type)
-      raise_error! unless valid_type?(type)
+      type_error! unless valid_type?(type)
 
-      klass = VALID_TYPES[type.to_sym]
-      klass.new(text).to_formula
-    rescue => ee
-      message = <<~MESSAGE
-        An error occurred while processing the input. Please check your input to ensure it is valid or open an issue on Github If you believe the input is correct.
-        ---- INPUT START ----
-          #{text}
-        ---- INPUT END ----
-      MESSAGE
-      raise Math::Error.new(message), cause: nil
+      begin
+        klass = klass_from_type(type)
+        klass.new(text).to_formula
+      rescue => ee
+        parse_error!(text, type.to_sym)
+      end
     end
 
     private
 
-    def raise_error!
-      raise Plurimath::Math::Error, Error.new("Type is not valid, "\
-                                              "please enter string or symbol")
+    def klass_from_type(type_string_or_sym)
+      VALID_TYPES[type_string_or_sym.to_sym]
+    end
+
+    def parse_error!(text, type)
+      message = <<~MESSAGE
+        [plurimath] Error: Failed to parse the following formula with type `#{type}`.
+        [plurimath] Please first manually validate the formula.
+        [plurimath] If this is a bug, please report the formula at our issue tracker at:
+        [plurimath] https://github.com/plurimath/plurimath/issues
+        ---- FORMULA BEGIN ----
+        #{text}
+        ---- FORMULA END ----
+      MESSAGE
+      raise ParseError.new(message), cause: nil
+    end
+
+    def type_error!
+      raise InvalidTypeError.new(
+        "`type` must be one of: `#{VALID_TYPES.keys.join('`, `')}`"
+      )
     end
 
     def valid_type?(type)
@@ -63,6 +78,6 @@ module Plurimath
         VALID_TYPES.key?(type.to_sym)
     end
 
-    module_function :parse, :raise_error!, :valid_type?
+    module_function :parse, :klass_from_type, :parse_error!, :type_error!, :valid_type?
   end
 end
