@@ -208,7 +208,7 @@ module Plurimath
 
       def unary_rules(first_value)
         (slashed_value(first_value, :unary_functions) >> dynamic_power_base) |
-          (slashed_value(first_value, :unary) >> intermediate_exp.as(:first_value)).as(:unary_functions) |
+          (slashed_value(first_value, :unary) >> (left_right | intermediate_exp).as(:first_value)).as(:unary_functions) |
           (slashed_value(first_value, :unary))
       end
 

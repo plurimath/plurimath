@@ -2265,5 +2265,105 @@ RSpec.describe Plurimath::Latex do
         expect(formula.to_mathml).to be_equivalent_to(mathml)
       end
     end
+
+    context "contains example #45" do
+      let(:string) do
+        <<~LATEX
+            \\[out_k = \\frac{1}{s}\\left(k == 0 ? 1 : \\sqrt{2}\\right)\\sum_{n = 0}^{s - 1}{in_{n} \\cdot \\cos\\left( \\frac{\\pi k}{s}\\left( n + \\frac{1}{2} \\right) \\right)}\\]
+        LATEX
+      end
+
+      it 'returns parsed Latex to MathML' do
+        mathml = <<~MATHML
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
+              <mo>[</mo>
+              <mi>o</mi>
+              <mi>u</mi>
+              <msub>
+                <mi>t</mi>
+                <mi>k</mi>
+              </msub>
+              <mo>=</mo>
+              <mfrac>
+                <mn>1</mn>
+                <mi>s</mi>
+              </mfrac>
+              <mrow>
+                <mo>(</mo>
+                <mrow>
+                  <mi>k</mi>
+                  <mo>=</mo>
+                  <mo>=</mo>
+                  <mn>0</mn>
+                  <mi>?</mi>
+                  <mn>1</mn>
+                  <mo>:</mo>
+                  <msqrt>
+                    <mn>2</mn>
+                  </msqrt>
+                </mrow>
+                <mo>)</mo>
+              </mrow>
+              <munderover>
+                <mo>&#x2211;</mo>
+                <mrow>
+                  <mi>n</mi>
+                  <mo>=</mo>
+                  <mn>0</mn>
+                </mrow>
+                <mrow>
+                  <mi>s</mi>
+                  <mo>&#x2212;</mo>
+                  <mn>1</mn>
+                </mrow>
+              </munderover>
+              <mrow>
+                <mi>i</mi>
+                <msub>
+                  <mi>n</mi>
+                  <mi>n</mi>
+                </msub>
+                <mo>&#x22c5;</mo>
+                <mrow>
+                  <mi>cos</mi>
+                  <mrow>
+                    <mo>(</mo>
+                    <mrow>
+                      <mfrac>
+                        <mrow>
+                          <mi>&#x3c0;</mi>
+                          <mi>k</mi>
+                        </mrow>
+                        <mi>s</mi>
+                      </mfrac>
+                      <mrow>
+                        <mo>(</mo>
+                        <mrow>
+                          <mi>n</mi>
+                          <mo>+</mo>
+                          <mfrac>
+                            <mn>1</mn>
+                            <mn>2</mn>
+                          </mfrac>
+                        </mrow>
+                        <mo>)</mo>
+                      </mrow>
+                    </mrow>
+                    <mo>)</mo>
+                  </mrow>
+                </mrow>
+              </mrow>
+              <mo>]</mo>
+            </mstyle>
+          </math>
+        MATHML
+        latex = <<~LATEX
+          [out_{k} = \\frac{1}{s}\\left(k == 0 ? 1 : \\sqrt{2}\\right)\\sum_{n = 0}^{s - 1}in_{n} \\cdot \\cos{\\left( \\frac{\\pi k}{s}\\left( n + \\frac{1}{2} \\right) \\right)}]
+        LATEX
+        expect(formula.to_latex.gsub(/\s+/, "")).to eql(latex.gsub(/\s+/, ""))
+        expect(formula.to_mathml).to be_equivalent_to(mathml)
+      end
+    end
   end
 end
