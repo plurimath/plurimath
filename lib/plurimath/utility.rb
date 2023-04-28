@@ -364,8 +364,7 @@ module Plurimath
       def unfenced_value(object)
         case object
         when Math::Function::Fenced
-          value = filter_values(object.parameter_two)
-          unfenced_value(value)
+          filter_values(object.parameter_two)
         when Array
           filter_values(object)
         else

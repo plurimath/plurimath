@@ -352,7 +352,7 @@ module Plurimath
           font_style.to_s,
         )
         Math::Function::Base.new(
-          Utility.unfenced_value(font_object),
+          font_object,
           Utility.unfenced_value(base),
         )
       end
@@ -460,7 +460,7 @@ module Plurimath
       rule(power_base: simple(:power_base),
            base: simple(:base)) do
         Math::Function::Base.new(
-          Utility.unfenced_value(power_base),
+          power_base,
           Utility.unfenced_value(base),
         )
       end
@@ -469,7 +469,7 @@ module Plurimath
            base: simple(:base),
            expr: sequence(:expr)) do
         base_object = Math::Function::Base.new(
-          Utility.unfenced_value(power_base),
+          power_base,
           Utility.unfenced_value(base),
         )
         Math::Formula.new(
@@ -481,7 +481,7 @@ module Plurimath
            base: simple(:base),
            expr: simple(:expr)) do
         base_object = Math::Function::Base.new(
-          Utility.unfenced_value(power_base),
+          power_base,
           Utility.unfenced_value(base),
         )
         formula_array = [base_object]
@@ -494,7 +494,7 @@ module Plurimath
            base_value: simple(:base_value),
            power_value: simple(:power_value)) do
         Math::Function::PowerBase.new(
-          Utility.unfenced_value(power_base),
+          power_base,
           Utility.unfenced_value(base_value),
           Utility.unfenced_value(power_value),
         )
@@ -506,7 +506,7 @@ module Plurimath
         first_value = power_value
         first_value = power_value.shift if Utility.frac_values(power_value)
         power_base_object = Math::Function::PowerBase.new(
-          Utility.unfenced_value(power_base),
+          power_base,
           Utility.unfenced_value(base_value),
           Utility.filter_values(first_value),
         )
@@ -527,7 +527,7 @@ module Plurimath
            power_value: simple(:power_value),
            expr: sequence(:expr)) do
         power_base_object = Math::Function::PowerBase.new(
-          Utility.unfenced_value(power_base),
+          power_base,
           Utility.unfenced_value(base_value),
           Utility.unfenced_value(power_value),
         )
@@ -649,7 +649,7 @@ module Plurimath
       rule(intermediate_exp: simple(:int_exp),
            base: simple(:base)) do
         Math::Function::Base.new(
-          Utility.unfenced_value(int_exp),
+          int_exp,
           Utility.unfenced_value(base),
         )
       end

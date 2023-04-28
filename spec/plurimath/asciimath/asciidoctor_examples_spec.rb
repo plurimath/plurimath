@@ -308,16 +308,20 @@ RSpec.describe Plurimath::Asciimath::Parser do
           ]),
           Plurimath::Math::Symbol.new("="),
           Plurimath::Math::Function::PowerBase.new(
-            Plurimath::Math::Formula.new([
-              Plurimath::Math::Symbol.new("F"),
-              Plurimath::Math::Function::Fenced.new(
-                Plurimath::Math::Symbol.new("("),
-                [
-                  Plurimath::Math::Symbol.new("x")
-                ],
-                Plurimath::Math::Symbol.new(")")
-              )
-            ]),
+            Plurimath::Math::Function::Fenced.new(
+              Plurimath::Math::Symbol.new("["),
+              [
+                Plurimath::Math::Symbol.new("F"),
+                Plurimath::Math::Function::Fenced.new(
+                  Plurimath::Math::Symbol.new("("),
+                  [
+                    Plurimath::Math::Symbol.new("x")
+                  ],
+                  Plurimath::Math::Symbol.new(")")
+                ),
+              ],
+              Plurimath::Math::Symbol.new("]"),
+            ),
             Plurimath::Math::Symbol.new("a"),
             Plurimath::Math::Symbol.new("b")
           ),
