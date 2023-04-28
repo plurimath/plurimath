@@ -4016,5 +4016,128 @@ RSpec.describe Plurimath::Asciimath do
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
+
+    context "contains example #72" do
+      let(:string) { 'g @ f' }
+
+      it 'returns parsed Asciimath to Formula' do
+        latex = 'g\circ f'
+        asciimath = 'g@ f'
+        mathml = <<~MATHML
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
+              <mrow>
+                <mi>g</mi>
+                <mi>&#x2218;</mi>
+              </mrow>
+              <mrow>
+                <mi>f</mi>
+              </mrow>
+            </mstyle>
+          </math>
+        MATHML
+        expect(formula.to_latex).to eql(latex)
+        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_asciimath).to eql(asciimath)
+      end
+    end
+
+    context "contains example #73" do
+      let(:string) { 'abs(A)' }
+
+      it 'returns parsed Asciimath to Formula' do
+        latex = '\abs{A}'
+        asciimath = 'abs(A)'
+        mathml = <<~MATHML
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
+              <mrow>
+                <mo>|</mo>
+                <mi>A</mi>
+                <mo>|</mo>
+              </mrow>
+            </mstyle>
+          </math>
+        MATHML
+        expect(formula.to_latex).to eql(latex)
+        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_asciimath).to eql(asciimath)
+      end
+    end
+
+    context "contains example #74" do
+      let(:string) { 'ceil(x)' }
+
+      it 'returns parsed Asciimath to Formula' do
+        latex = '{\lceil x \rceil}'
+        asciimath = 'ceil(x)'
+        mathml = <<~MATHML
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
+              <mrow>
+                <mo>&#x2308;</mo>
+                <mi>x</mi>
+                <mo>&#x2309;</mo>
+              </mrow>
+            </mstyle>
+          </math>
+        MATHML
+        expect(formula.to_latex).to eql(latex)
+        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_asciimath).to eql(asciimath)
+      end
+    end
+
+    context "contains example #75" do
+      let(:string) { 'ddot x' }
+
+      it 'returns parsed Asciimath to Formula' do
+        latex = '\ddot{x}'
+        asciimath = 'ddot(x)'
+        mathml = <<~MATHML
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
+              <mover accent="true">
+                <mi>x</mi>
+                <mo>..</mo>
+              </mover>
+            </mstyle>
+          </math>
+        MATHML
+        expect(formula.to_latex).to eql(latex)
+        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_asciimath).to eql(asciimath)
+      end
+    end
+
+    context "contains example #76" do
+      let(:string) { '{x_i | i in I}' }
+
+      it 'returns parsed Asciimath to Formula' do
+        latex = ' \left \{ x_{i} | i \in I \right \} '
+        asciimath = '{x_(i) | i in I}'
+        mathml = <<~MATHML
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
+              <mrow>
+                <mo>{</mo>
+                <msub>
+                  <mi>x</mi>
+                  <mi>i</mi>
+                </msub>
+                <mo>&#x7c;</mo>
+                <mi>i</mi>
+                <mo>&#x2208;</mo>
+                <mi>I</mi>
+                <mo>}</mo>
+              </mrow>
+            </mstyle>
+          </math>
+        MATHML
+        expect(formula.to_latex).to eql(latex)
+        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_asciimath).to eql(asciimath)
+      end
+    end
   end
 end
