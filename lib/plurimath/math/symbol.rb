@@ -31,7 +31,7 @@ module Plurimath
 
         unicodes = Mathml::Constants::UNICODE_SYMBOLS
         unicode = unicodes.invert[value]
-        if operator?(unicode) || unicode
+        if operator?(unicode) || unicode || explicit_checks(unicode)
           mo_value = (unicodes[value] || unicode || value).to_s
           return Utility.ox_element("mo") << mo_value
         end
@@ -68,6 +68,10 @@ module Plurimath
         Mathml::Constants::OPERATORS.any? do |d|
           [unicode.to_s, value.strip].include?(d)
         end
+      end
+
+      def explicit_checks(unicode)
+        return true if [unicode, value].any?{|v| ["∣", "|"].include?(v) }
       end
 
       def specific_values

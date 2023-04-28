@@ -674,31 +674,39 @@ RSpec.describe Plurimath::Asciimath::Parser do
           ),
           Plurimath::Math::Symbol.new("="),
           Plurimath::Math::Function::Frac.new(
-            Plurimath::Math::Formula.new([
-              Plurimath::Math::Function::FontStyle::Italic.new(
-                Plurimath::Math::Symbol.new("W"),
-                "ii"
-              ),
-              Plurimath::Math::Symbol.new("-"),
-              Plurimath::Math::Function::Base.new(
+            Plurimath::Math::Function::Fenced.new(
+              Plurimath::Math::Symbol.new("("),
+              [
                 Plurimath::Math::Function::FontStyle::Italic.new(
                   Plurimath::Math::Symbol.new("W"),
                   "ii"
                 ),
-                Plurimath::Math::Function::Text.new("Ga")
-              )
-            ]),
-            Plurimath::Math::Formula.new([
-              Plurimath::Math::Number.new("1"),
-              Plurimath::Math::Symbol.new("-"),
-              Plurimath::Math::Function::Base.new(
-                Plurimath::Math::Function::FontStyle::Italic.new(
-                  Plurimath::Math::Symbol.new("W"),
-                  "ii"
+                Plurimath::Math::Symbol.new("-"),
+                Plurimath::Math::Function::Base.new(
+                  Plurimath::Math::Function::FontStyle::Italic.new(
+                    Plurimath::Math::Symbol.new("W"),
+                    "ii"
+                  ),
+                  Plurimath::Math::Function::Text.new("Ga")
                 ),
-                Plurimath::Math::Function::Text.new("Ga")
-              )
-            ])
+              ],
+              Plurimath::Math::Symbol.new(")"),
+            ),
+            Plurimath::Math::Function::Fenced.new(
+              Plurimath::Math::Symbol.new("("),
+              [
+                Plurimath::Math::Number.new("1"),
+                Plurimath::Math::Symbol.new("-"),
+                Plurimath::Math::Function::Base.new(
+                  Plurimath::Math::Function::FontStyle::Italic.new(
+                    Plurimath::Math::Symbol.new("W"),
+                    "ii"
+                  ),
+                  Plurimath::Math::Function::Text.new("Ga")
+                )
+              ],
+              Plurimath::Math::Symbol.new(")"),
+            )
           )
         ])
         expect(formula).to eq(expected_value)
