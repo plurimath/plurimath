@@ -4139,5 +4139,63 @@ RSpec.describe Plurimath::Asciimath do
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
+
+    context "contains example #77" do
+      let(:string) { '"H"_nu^((1))(z)' }
+
+      it 'returns parsed Asciimath to Formula' do
+        latex = '\text{H}_{\nu}^{ \left ( 1 \right ) }  \left ( z \right ) '
+        asciimath = '"H"_(nu)^((1)) (z)'
+        mathml = <<~MATHML
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
+              <msubsup>
+                <mtext>H</mtext>
+                <mi>&#x3bd;</mi>
+                <mrow>
+                  <mo>(</mo>
+                  <mn>1</mn>
+                  <mo>)</mo>
+                </mrow>
+              </msubsup>
+              <mrow>
+                <mo>(</mo>
+                <mi>z</mi>
+                <mo>)</mo>
+              </mrow>
+            </mstyle>
+          </math>
+        MATHML
+        expect(formula.to_latex).to eql(latex)
+        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_asciimath).to eql(asciimath)
+      end
+    end
+
+    context "contains example #78" do
+      let(:string) { '(a)_n' }
+
+      it 'returns parsed Asciimath to Formula' do
+        latex = ' \left ( a \right ) _{n}'
+        asciimath = '(a)_(n)'
+        mathml = <<~MATHML
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
+              <msub>
+                <mrow>
+                  <mo>(</mo>
+                  <mi>a</mi>
+                  <mo>)</mo>
+                </mrow>
+                <mi>n</mi>
+              </msub>
+            </mstyle>
+          </math>
+        MATHML
+        expect(formula.to_latex).to eql(latex)
+        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_asciimath).to eql(asciimath)
+      end
+    end
   end
 end
