@@ -190,10 +190,7 @@ module Plurimath
       end
 
       def update_nodes(element, nodes)
-        nodes&.each do |node|
-          update_nodes(element, node) if node.is_a?(Array)
-          element << node unless node.nil? || node.is_a?(Array)
-        end
+        nodes&.each { |node| element << node unless node.nil? || node.is_a?(Array) }
         element
       end
 
