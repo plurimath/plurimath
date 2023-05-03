@@ -56,7 +56,7 @@ module Plurimath
         protected
 
         def omml_first_value
-          return parameter_one&.to_omml_without_math_tag unless parameter_one&.is_a?(Math::Symbol)
+          return parameter_one&.to_omml_without_math_tag unless parameter_one.is_a?(Math::Symbol)
 
           mt = Utility.ox_element("t", namespace: "m")
           mt << parameter_one.to_omml_without_math_tag if parameter_one
@@ -64,7 +64,7 @@ module Plurimath
         end
 
         def omml_second_value
-          return parameter_two&.to_omml_without_math_tag unless parameter_two&.is_a?(Math::Symbol)
+          return parameter_two&.to_omml_without_math_tag unless parameter_two.is_a?(Math::Symbol)
 
           mt = Utility.ox_element("t", namespace: "m")
           mt << parameter_two.to_omml_without_math_tag if parameter_two

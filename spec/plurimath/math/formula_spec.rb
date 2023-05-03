@@ -990,36 +990,34 @@ RSpec.describe Plurimath::Math::Formula do
         <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
-              <mrow>
-                <mo>(</mo>
-                <mtable>
-                  <mtr>
-                    <mtd>
-                      <mn>1</mn>
-                    </mtd>
-                    <mtd>
-                      <mn>3</mn>
-                    </mtd>
-                  </mtr>
-                  <mtr>
-                    <mtd>
-                      <mn>1</mn>
-                    </mtd>
-                    <mtd>
-                      <mn>3</mn>
-                    </mtd>
-                  </mtr>
-                  <mtr>
-                    <mtd>
-                      <mn>1</mn>
-                    </mtd>
-                    <mtd>
-                      <mn>3</mn>
-                    </mtd>
-                  </mtr>
-                </mtable>
-                <mo>)</mo>
-              </mrow>
+              <mo>(</mo>
+              <mtable>
+                <mtr>
+                  <mtd>
+                    <mn>1</mn>
+                  </mtd>
+                  <mtd>
+                    <mn>3</mn>
+                  </mtd>
+                </mtr>
+                <mtr>
+                  <mtd>
+                    <mn>1</mn>
+                  </mtd>
+                  <mtd>
+                    <mn>3</mn>
+                  </mtd>
+                </mtr>
+                <mtr>
+                  <mtd>
+                    <mn>1</mn>
+                  </mtd>
+                  <mtd>
+                    <mn>3</mn>
+                  </mtd>
+                </mtr>
+              </mtable>
+              <mo>)</mo>
             </mstyle>
           </math>
         MATHML

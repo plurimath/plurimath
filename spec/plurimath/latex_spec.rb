@@ -118,10 +118,8 @@ RSpec.describe Plurimath::Latex do
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
-              <mrow>
-                <mo>{</mo>
-                <mo/>
-              </mrow>
+              <mo>{</mo>
+              <mo/>
             </mstyle>
           </math>
         MATHML
@@ -178,66 +176,64 @@ RSpec.describe Plurimath::Latex do
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
-              <mrow>
-                <mo>{</mo>
-                <mtable columnlines="solid none">
-                  <mtr>
-                    <mtd columnalign="left">
-                      <mrow>
-                        <mn>3</mn>
-                        <mi>x</mi>
-                        <mo>&#x2212;</mo>
-                        <mn>5</mn>
-                        <mi>y</mi>
-                        <mo>+</mo>
-                        <mn>4</mn>
-                        <mi>z</mi>
-                        <mo>=</mo>
-                        <mn>0</mn>
-                      </mrow>
-                    </mtd>
-                    <mtd columnalign="center">
-                      <mi>d</mi>
-                    </mtd>
-                  </mtr>
-                  <mtr>
-                    <mtd columnalign="left">
-                      <mrow>
-                        <mi>x</mi>
-                        <mo>&#x2212;</mo>
-                        <mi>y</mi>
-                        <mo>+</mo>
-                        <mn>8</mn>
-                        <mi>z</mi>
-                        <mo>=</mo>
-                        <mn>0</mn>
-                      </mrow>
-                    </mtd>
-                    <mtd columnalign="center">
-                      <mi>e</mi>
-                    </mtd>
-                  </mtr>
-                  <mtr>
-                    <mtd columnalign="left">
-                      <mrow>
-                        <mn>2</mn>
-                        <mi>x</mi>
-                        <mo>&#x2212;</mo>
-                        <mn>6</mn>
-                        <mi>y</mi>
-                        <mo>+</mo>
-                        <mi>z</mi>
-                        <mo>=</mo>
-                        <mn>0</mn>
-                      </mrow>
-                    </mtd>
-                    <mtd columnalign="center">
-                      <mi>c</mi>
-                    </mtd>
-                  </mtr>
-                </mtable>
-                <mo>}</mo>
-              </mrow>
+              <mo>{</mo>
+              <mtable columnlines="solid none">
+                <mtr>
+                  <mtd columnalign="left">
+                    <mrow>
+                      <mn>3</mn>
+                      <mi>x</mi>
+                      <mo>&#x2212;</mo>
+                      <mn>5</mn>
+                      <mi>y</mi>
+                      <mo>+</mo>
+                      <mn>4</mn>
+                      <mi>z</mi>
+                      <mo>=</mo>
+                      <mn>0</mn>
+                    </mrow>
+                  </mtd>
+                  <mtd columnalign="center">
+                    <mi>d</mi>
+                  </mtd>
+                </mtr>
+                <mtr>
+                  <mtd columnalign="left">
+                    <mrow>
+                      <mi>x</mi>
+                      <mo>&#x2212;</mo>
+                      <mi>y</mi>
+                      <mo>+</mo>
+                      <mn>8</mn>
+                      <mi>z</mi>
+                      <mo>=</mo>
+                      <mn>0</mn>
+                    </mrow>
+                  </mtd>
+                  <mtd columnalign="center">
+                    <mi>e</mi>
+                  </mtd>
+                </mtr>
+                <mtr>
+                  <mtd columnalign="left">
+                    <mrow>
+                      <mn>2</mn>
+                      <mi>x</mi>
+                      <mo>&#x2212;</mo>
+                      <mn>6</mn>
+                      <mi>y</mi>
+                      <mo>+</mo>
+                      <mi>z</mi>
+                      <mo>=</mo>
+                      <mn>0</mn>
+                    </mrow>
+                  </mtd>
+                  <mtd columnalign="center">
+                    <mi>c</mi>
+                  </mtd>
+                </mtr>
+              </mtable>
+              <mo>}</mo>
             </mstyle>
           </math>
         MATHML
@@ -858,17 +854,15 @@ RSpec.describe Plurimath::Latex do
                   <mfrac>
                     <mrow>
                       <mn>123</mn>
+                      <mo>(</mo>
                       <mrow>
-                        <mo>(</mo>
-                        <mrow>
-                          <msqrt>
-                            <mi>x</mi>
-                          </msqrt>
-                          <mo>+</mo>
-                          <mn>5</mn>
-                        </mrow>
-                        <mo>)</mo>
+                        <msqrt>
+                          <mi>x</mi>
+                        </msqrt>
+                        <mo>+</mo>
+                        <mn>5</mn>
                       </mrow>
+                      <mo>)</mo>
                     </mrow>
                     <mrow>
                       <mi>x</mi>
@@ -899,14 +893,12 @@ RSpec.describe Plurimath::Latex do
               <msqrt>
                 <msqrt>
                   <mrow>
-                    <mrow>
-                      <mo>(</mo>
-                      <msup>
-                        <mi>x</mi>
-                        <mn>3</mn>
-                      </msup>
-                      <mo>)</mo>
-                    </mrow>
+                    <mo>(</mo>
+                    <msup>
+                      <mi>x</mi>
+                      <mn>3</mn>
+                    </msup>
+                    <mo>)</mo>
                     <mo>+</mo>
                     <mi>v</mi>
                   </mrow>
@@ -928,11 +920,9 @@ RSpec.describe Plurimath::Latex do
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
-              <mrow>
-                <mo>(</mo>
-                <mi>x</mi>
-                <mo>)</mo>
-              </mrow>
+              <mo>(</mo>
+              <mi>x</mi>
+              <mo>)</mo>
               <mn>5</mn>
             </mstyle>
           </math>
@@ -1044,68 +1034,66 @@ RSpec.describe Plurimath::Latex do
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
-              <mrow>
-                <mo>[</mo>
-                <mtable>
-                  <mtr>
-                    <mtd>
-                      <mn>1</mn>
-                    </mtd>
-                    <mtd>
-                      <mn>0</mn>
-                    </mtd>
-                    <mtd>
-                      <mn>0</mn>
-                    </mtd>
-                    <mtd>
-                      <mn>0</mn>
-                    </mtd>
-                  </mtr>
-                  <mtr>
-                    <mtd>
-                      <mn>0</mn>
-                    </mtd>
-                    <mtd>
-                      <mn>1</mn>
-                    </mtd>
-                    <mtd>
-                      <mn>0</mn>
-                    </mtd>
-                    <mtd>
-                      <mn>0</mn>
-                    </mtd>
-                  </mtr>
-                  <mtr>
-                    <mtd>
-                      <mn>0</mn>
-                    </mtd>
-                    <mtd>
-                      <mn>0</mn>
-                    </mtd>
-                    <mtd>
-                      <mn>1</mn>
-                    </mtd>
-                    <mtd>
-                      <mn>0</mn>
-                    </mtd>
-                  </mtr>
-                  <mtr>
-                    <mtd>
-                      <mn>0</mn>
-                    </mtd>
-                    <mtd>
-                      <mn>0</mn>
-                    </mtd>
-                    <mtd>
-                      <mn>0</mn>
-                    </mtd>
-                    <mtd>
-                      <mn>1</mn>
-                    </mtd>
-                  </mtr>
-                </mtable>
-                <mo>]</mo>
-              </mrow>
+              <mo>[</mo>
+              <mtable>
+                <mtr>
+                  <mtd>
+                    <mn>1</mn>
+                  </mtd>
+                  <mtd>
+                    <mn>0</mn>
+                  </mtd>
+                  <mtd>
+                    <mn>0</mn>
+                  </mtd>
+                  <mtd>
+                    <mn>0</mn>
+                  </mtd>
+                </mtr>
+                <mtr>
+                  <mtd>
+                    <mn>0</mn>
+                  </mtd>
+                  <mtd>
+                    <mn>1</mn>
+                  </mtd>
+                  <mtd>
+                    <mn>0</mn>
+                  </mtd>
+                  <mtd>
+                    <mn>0</mn>
+                  </mtd>
+                </mtr>
+                <mtr>
+                  <mtd>
+                    <mn>0</mn>
+                  </mtd>
+                  <mtd>
+                    <mn>0</mn>
+                  </mtd>
+                  <mtd>
+                    <mn>1</mn>
+                  </mtd>
+                  <mtd>
+                    <mn>0</mn>
+                  </mtd>
+                </mtr>
+                <mtr>
+                  <mtd>
+                    <mn>0</mn>
+                  </mtd>
+                  <mtd>
+                    <mn>0</mn>
+                  </mtd>
+                  <mtd>
+                    <mn>0</mn>
+                  </mtd>
+                  <mtd>
+                    <mn>1</mn>
+                  </mtd>
+                </mtr>
+              </mtable>
+              <mo>]</mo>
             </mstyle>
           </math>
         MATHML
@@ -1145,9 +1133,51 @@ RSpec.describe Plurimath::Latex do
                   </msup>
                 </msup>
               </msup>
+              <mo>(</mo>
               <mrow>
+                <msup>
+                  <mi>x</mi>
+                  <msup>
+                    <mi>x</mi>
+                    <mi>x</mi>
+                  </msup>
+                </msup>
                 <mo>(</mo>
                 <mrow>
+                  <msup>
+                    <mi>x</mi>
+                    <mi>x</mi>
+                  </msup>
+                  <mo>(</mo>
+                  <mrow>
+                    <mi>log</mi>
+                    <mo>(</mo>
+                    <mi>x</mi>
+                    <mo>)</mo>
+                    <mo>+</mo>
+                    <mn>1</mn>
+                  </mrow>
+                  <mo>)</mo>
+                  <mi>log</mi>
+                  <mo>(</mo>
+                  <mi>x</mi>
+                  <mo>)</mo>
+                  <mo>+</mo>
+                  <mfrac>
+                    <msup>
+                      <mi>x</mi>
+                      <mi>x</mi>
+                    </msup>
+                    <mi>x</mi>
+                  </mfrac>
+                </mrow>
+                <mo>)</mo>
+                <mi>log</mi>
+                <mo>(</mo>
+                <mi>x</mi>
+                <mo>)</mo>
+                <mo>+</mo>
+                <mfrac>
                   <msup>
                     <mi>x</mi>
                     <msup>
@@ -1155,64 +1185,10 @@ RSpec.describe Plurimath::Latex do
                       <mi>x</mi>
                     </msup>
                   </msup>
-                  <mrow>
-                    <mo>(</mo>
-                    <mrow>
-                      <msup>
-                        <mi>x</mi>
-                        <mi>x</mi>
-                      </msup>
-                      <mrow>
-                        <mo>(</mo>
-                        <mrow>
-                          <mi>log</mi>
-                          <mrow>
-                            <mo>(</mo>
-                            <mi>x</mi>
-                            <mo>)</mo>
-                          </mrow>
-                          <mo>+</mo>
-                          <mn>1</mn>
-                        </mrow>
-                        <mo>)</mo>
-                      </mrow>
-                      <mi>log</mi>
-                      <mrow>
-                        <mo>(</mo>
-                        <mi>x</mi>
-                        <mo>)</mo>
-                      </mrow>
-                      <mo>+</mo>
-                      <mfrac>
-                        <msup>
-                          <mi>x</mi>
-                          <mi>x</mi>
-                        </msup>
-                        <mi>x</mi>
-                      </mfrac>
-                    </mrow>
-                    <mo>)</mo>
-                  </mrow>
-                  <mi>log</mi>
-                  <mrow>
-                    <mo>(</mo>
-                    <mi>x</mi>
-                    <mo>)</mo>
-                  </mrow>
-                  <mo>+</mo>
-                  <mfrac>
-                    <msup>
-                      <mi>x</mi>
-                      <msup>
-                        <mi>x</mi>
-                        <mi>x</mi>
-                      </msup>
-                    </msup>
-                    <mi>x</mi>
-                  </mfrac>
-                </mrow>
-                <mo>)</mo>
+                  <mi>x</mi>
+                </mfrac>
               </mrow>
+              <mo>)</mo>
             </mstyle>
           </math>
         MATHML
@@ -1657,80 +1633,78 @@ RSpec.describe Plurimath::Latex do
               <mtable>
                 <mtr>
                   <mtd columnalign="center">
-                    <mrow>
-                      <mo>(</mo>
-                      <mtable>
-                        <mtr>
-                          <mtd columnalign="center"/>
-                          <mtd columnalign="center"/>
-                          <mtd columnalign="center"/>
-                          <mtd columnalign="center"/>
-                          <mtd columnalign="center"/>
-                          <mtd columnalign="center"/>
-                          <mtd columnalign="center"/>
-                        </mtr>
-                        <mtr>
-                          <mtd columnalign="center"/>
-                          <mtd columnalign="center">
-                            <mo>+</mo>
+                    <mo>(</mo>
+                    <mtable>
+                      <mtr>
+                        <mtd columnalign="center"/>
+                        <mtd columnalign="center"/>
+                        <mtd columnalign="center"/>
+                        <mtd columnalign="center"/>
+                        <mtd columnalign="center"/>
+                        <mtd columnalign="center"/>
+                        <mtd columnalign="center"/>
+                      </mtr>
+                      <mtr>
+                        <mtd columnalign="center"/>
+                        <mtd columnalign="center">
+                          <mo>+</mo>
+                          <mi>k</mi>
+                        </mtd>
+                        <mtd columnalign="center"/>
+                        <mtd columnalign="center"/>
+                        <mtd columnalign="center"/>
+                        <mtd columnalign="center">
+                          <mrow>
+                            <mo>&#x2212;</mo>
                             <mi>k</mi>
-                          </mtd>
-                          <mtd columnalign="center"/>
-                          <mtd columnalign="center"/>
-                          <mtd columnalign="center"/>
-                          <mtd columnalign="center">
-                            <mrow>
-                              <mo>&#x2212;</mo>
-                              <mi>k</mi>
-                            </mrow>
-                          </mtd>
-                        </mtr>
-                        <mtr>
-                          <mtd columnalign="center"/>
-                          <mtd columnalign="center"/>
-                          <mtd columnalign="center"/>
-                          <mtd columnalign="center"/>
-                          <mtd columnalign="center"/>
-                          <mtd columnalign="center"/>
-                          <mtd columnalign="center"/>
-                        </mtr>
-                        <mtr>
-                          <mtd columnalign="center"/>
-                          <mtd columnalign="center"/>
-                          <mtd columnalign="center"/>
-                          <mtd columnalign="center"/>
-                          <mtd columnalign="center"/>
-                          <mtd columnalign="center"/>
-                          <mtd columnalign="center"/>
-                        </mtr>
-                        <mtr>
-                          <mtd columnalign="center"/>
-                          <mtd columnalign="center"/>
-                          <mtd columnalign="center"/>
-                          <mtd columnalign="center"/>
-                          <mtd columnalign="center"/>
-                          <mtd columnalign="center"/>
-                          <mtd columnalign="center"/>
-                        </mtr>
-                        <mtr>
-                          <mtd columnalign="center"/>
-                          <mtd columnalign="center">
-                            <mrow>
-                              <mo>&#x2212;</mo>
-                              <mi>k</mi>
-                            </mrow>
-                          </mtd>
-                          <mtd columnalign="center"/>
-                          <mtd columnalign="center"/>
-                          <mtd columnalign="center"/>
-                          <mtd columnalign="center">
-                            <mo>+</mo>
+                          </mrow>
+                        </mtd>
+                      </mtr>
+                      <mtr>
+                        <mtd columnalign="center"/>
+                        <mtd columnalign="center"/>
+                        <mtd columnalign="center"/>
+                        <mtd columnalign="center"/>
+                        <mtd columnalign="center"/>
+                        <mtd columnalign="center"/>
+                        <mtd columnalign="center"/>
+                      </mtr>
+                      <mtr>
+                        <mtd columnalign="center"/>
+                        <mtd columnalign="center"/>
+                        <mtd columnalign="center"/>
+                        <mtd columnalign="center"/>
+                        <mtd columnalign="center"/>
+                        <mtd columnalign="center"/>
+                        <mtd columnalign="center"/>
+                      </mtr>
+                      <mtr>
+                        <mtd columnalign="center"/>
+                        <mtd columnalign="center"/>
+                        <mtd columnalign="center"/>
+                        <mtd columnalign="center"/>
+                        <mtd columnalign="center"/>
+                        <mtd columnalign="center"/>
+                        <mtd columnalign="center"/>
+                      </mtr>
+                      <mtr>
+                        <mtd columnalign="center"/>
+                        <mtd columnalign="center">
+                          <mrow>
+                            <mo>&#x2212;</mo>
                             <mi>k</mi>
-                          </mtd>
-                        </mtr>
-                      </mtable>
-                      <mo>)</mo>
-                    </mrow>
+                          </mrow>
+                        </mtd>
+                        <mtd columnalign="center"/>
+                        <mtd columnalign="center"/>
+                        <mtd columnalign="center"/>
+                        <mtd columnalign="center">
+                          <mo>+</mo>
+                          <mi>k</mi>
+                        </mtd>
+                      </mtr>
+                    </mtable>
+                    <mo>)</mo>
                   </mtd>
                   <mtd columnalign="center">
                     <mtable>
@@ -2289,22 +2263,20 @@ RSpec.describe Plurimath::Latex do
                 <mn>1</mn>
                 <mi>s</mi>
               </mfrac>
+              <mo>(</mo>
               <mrow>
-                <mo>(</mo>
-                <mrow>
-                  <mi>k</mi>
-                  <mo>=</mo>
-                  <mo>=</mo>
-                  <mn>0</mn>
-                  <mi>?</mi>
-                  <mn>1</mn>
-                  <mo>:</mo>
-                  <msqrt>
-                    <mn>2</mn>
-                  </msqrt>
-                </mrow>
-                <mo>)</mo>
+                <mi>k</mi>
+                <mo>=</mo>
+                <mo>=</mo>
+                <mn>0</mn>
+                <mi>?</mi>
+                <mn>1</mn>
+                <mo>:</mo>
+                <msqrt>
+                  <mn>2</mn>
+                </msqrt>
               </mrow>
+              <mo>)</mo>
               <munderover>
                 <mo>&#x2211;</mo>
                 <mrow>
@@ -2337,18 +2309,16 @@ RSpec.describe Plurimath::Latex do
                         </mrow>
                         <mi>s</mi>
                       </mfrac>
+                      <mo>(</mo>
                       <mrow>
-                        <mo>(</mo>
-                        <mrow>
-                          <mi>n</mi>
-                          <mo>+</mo>
-                          <mfrac>
-                            <mn>1</mn>
-                            <mn>2</mn>
-                          </mfrac>
-                        </mrow>
-                        <mo>)</mo>
+                        <mi>n</mi>
+                        <mo>+</mo>
+                        <mfrac>
+                          <mn>1</mn>
+                          <mn>2</mn>
+                        </mfrac>
                       </mrow>
+                      <mo>)</mo>
                     </mrow>
                     <mo>)</mo>
                   </mrow>
