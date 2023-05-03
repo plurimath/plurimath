@@ -403,9 +403,8 @@ module Plurimath
 
       def validate_left_right(fields = [])
         fields.each do |field|
-          if field.is_a?(Math::Formula)
-            wrapper = field.value.first.is_a?(Math::Function::Left) ? "wrap" : nil
-            field.left_right_wrapper = wrapper
+          if field.is_a?(Math::Formula) && field.value.first.is_a?(Math::Function::Left)
+            field.left_right_wrapper = true
           end
         end
       end

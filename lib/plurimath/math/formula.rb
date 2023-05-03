@@ -5,9 +5,9 @@ module Plurimath
     class Formula
       attr_accessor :value, :left_right_wrapper
 
-      def initialize(value = [], left_right_wrapper = nil)
+      def initialize(value = [], left_right_wrapper = true)
         @value = value.is_a?(Array) ? value : [value]
-        left_right_wrapper = "no-wrap" if @value.first.is_a?(Function::Left)
+        left_right_wrapper = false if @value.first.is_a?(Function::Left)
         @left_right_wrapper = left_right_wrapper
       end
 
@@ -34,7 +34,7 @@ module Plurimath
       end
 
       def to_mathml_without_math_tag
-        return mathml_content unless ["wrap", nil].include?(left_right_wrapper)
+        return mathml_content unless left_right_wrapper
 
         Utility.update_nodes(
           Utility.ox_element("mrow"),
