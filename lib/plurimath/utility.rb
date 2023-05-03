@@ -190,7 +190,10 @@ module Plurimath
       end
 
       def update_nodes(element, nodes)
-        nodes&.each { |node| element << node unless node.nil? || node.is_a?(Array) }
+        nodes&.each do |node|
+          next update_nodes(element, node) if node.is_a?(Array)
+          element << node unless node.nil?
+        end
         element
       end
 
@@ -396,6 +399,15 @@ module Plurimath
                 else value
                 end
         Math::Symbol.new(value)
+      end
+
+      def validate_left_right(fields = [])
+        fields.each do |field|
+          if field.is_a?(Math::Formula)
+            wrapper = field.value.first.is_a?(Math::Function::Left) ? "wrap" : nil
+            field.left_right_wrapper = wrapper
+          end
+        end
       end
     end
   end

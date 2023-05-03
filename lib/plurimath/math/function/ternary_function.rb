@@ -12,6 +12,7 @@ module Plurimath
           @parameter_one = parameter_one
           @parameter_two = parameter_two
           @parameter_three = parameter_three
+          Utility.validate_left_right([parameter_one, parameter_two, parameter_three])
         end
 
         def to_asciimath

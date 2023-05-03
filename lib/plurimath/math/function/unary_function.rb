@@ -9,6 +9,7 @@ module Plurimath
         def initialize(parameter_one = nil)
           parameter_one  = parameter_one.to_s if parameter_one.is_a?(Parslet::Slice)
           @parameter_one = parameter_one
+          Utility.validate_left_right([parameter_one])
         end
 
         def ==(object)
@@ -103,12 +104,12 @@ module Plurimath
         end
 
         def omml_value
-          if parameter_one&.is_a?(Array)
-            return parameter_one&.compact.map(&:to_omml_without_math_tag)
+          if parameter_one.is_a?(Array)
+            return parameter_one&.compact&.map(&:to_omml_without_math_tag)
           end
 
           first_value = parameter_one&.to_omml_without_math_tag
-          if parameter_one&.is_a?(Symbol)
+          if parameter_one.is_a?(Symbol)
             first_value = Utility.ox_element("t", namespace: "m") << first_value
           end
           Array(first_value)

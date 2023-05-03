@@ -732,15 +732,13 @@ RSpec.describe Plurimath::Asciimath do
                 </mtable>
                 <mo>]</mo>
               </mrow>
-              <mrow>
-                <mo>(</mo>
-                <munderover>
-                  <mo>&#x2211;</mo>
-                  <mo>&#x220f;</mo>
-                  <mi>&#x3c3;</mi>
-                </munderover>
-                <mo>)</mo>
-              </mrow>
+              <mo>(</mo>
+              <munderover>
+                <mo>&#x2211;</mo>
+                <mo>&#x220f;</mo>
+                <mi>&#x3c3;</mi>
+              </munderover>
+              <mo>)</mo>
             </mstyle>
           </math>
         MATHML
