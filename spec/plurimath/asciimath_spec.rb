@@ -4197,5 +4197,27 @@ RSpec.describe Plurimath::Asciimath do
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
+
+    context "contains example #79" do
+      let(:string) { 'tilde(x)' }
+
+      it 'returns parsed Asciimath to Formula' do
+        latex = '\tilde{x}'
+        asciimath = 'tilde(x)'
+        mathml = <<~MATHML
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
+              <mover>
+                <mi>x</mi>
+                <mo>~</mo>
+              </mover>
+            </mstyle>
+          </math>
+        MATHML
+        expect(formula.to_latex).to eql(latex)
+        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_asciimath).to eql(asciimath)
+      end
+    end
   end
 end
