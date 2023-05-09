@@ -62,11 +62,10 @@ RSpec.describe Plurimath::Math::Function::Tilde do
 
       it "returns mathml string" do
         expected_value = <<~MATHML
-
-          <mrow>
-            <mo>tilde</mo>
+          <mover>
             <mi>n</mi>
-          </mrow>
+            <mo>~</mo>
+          </mover>
         MATHML
         expect(formula).to be_equivalent_to(expected_value)
       end
@@ -77,10 +76,10 @@ RSpec.describe Plurimath::Math::Function::Tilde do
 
       it "returns mathml string" do
         expected_value = <<~MATHML
-          <mrow>
-            <mo>tilde</mo>
+          <mover>
             <mn>70</mn>
-          </mrow>
+            <mo>~</mo>
+          </mover>
         MATHML
         expect(formula).to be_equivalent_to(expected_value)
       end
@@ -97,16 +96,16 @@ RSpec.describe Plurimath::Math::Function::Tilde do
       end
       it "returns mathml string" do
         expected_value = <<~MATHML
-          <mrow>
-            <mo>tilde</mo>
+          <mover>
             <mrow>
               <munderover>
                 <mo>&#x2211;</mo>
-                <mo>&#x26;</mo>
+                <mo>&amp;</mo>
                 <mtext>so</mtext>
               </munderover>
             </mrow>
-          </mrow>
+            <mo>~</mo>
+          </mover>
         MATHML
         expect(formula).to be_equivalent_to(expected_value)
       end
