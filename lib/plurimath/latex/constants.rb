@@ -3715,6 +3715,8 @@ module Plurimath
       PARENTHESIS = {
         "[" => "]",
         "(" => ")",
+        "\\(" => "\\)",
+        "\\[" => "\\]",
         "\\{" => "\\}",
       }.freeze
       MATRICES_PARENTHESIS = {
@@ -3783,6 +3785,50 @@ module Plurimath
         bmod
         pmod
       ].freeze
+      LEFT_RIGHT_PARENTHESIS = {
+        "\\backslash": "&#x5c;",
+        "\\langle": "&#x27e8;",
+        "\\rangle": "&#x27e9;",
+        "\\lfloor": "&#x230a;",
+        "\\rfloor": "&#x230b;",
+        "\\lceil": "&#x2308;",
+        "\\rceil": "&#x2309;",
+        "\\lbrace": "&#x7b;",
+        "\\rbrace": "&#x7d;",
+        "\\lbrack": "&#x5b;",
+        "\\rbrack": "&#x5d;",
+        "\\Vert": "&#x2016;",
+        "\\vert": "&#x7c;",
+        "\\|": "&#x2016;",
+        "\\}": "}",
+        "\\{": "{",
+        "(": "(",
+        ")": ")",
+        "<": "<",
+        ">": ">",
+        "/": "/",
+        "|": "|",
+        "[": "[",
+        "]": "]",
+      }.freeze
+      SLASHED_SYMBOLS = %w[
+        backslash
+        langle
+        rangle
+        lfloor
+        rfloor
+        lbrace
+        rbrace
+        lbrack
+        rbrack
+        lceil
+        rceil
+        Vert
+        vert
+        |
+        }
+        {
+      ]
     end
   end
 end

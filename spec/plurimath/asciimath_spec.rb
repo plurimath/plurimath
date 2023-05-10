@@ -24,7 +24,7 @@ RSpec.describe Plurimath::Asciimath do
       let(:string) { 'cos(2)' }
 
       it 'returns parsed Asciimath to Formula' do
-        latex = '\cos{ \left ( 2 \right ) }'
+        latex = '\cos{( 2 )}'
         asciimath = 'cos(2)'
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
@@ -50,7 +50,7 @@ RSpec.describe Plurimath::Asciimath do
       let(:string) { 'sum_(i=1)^n i^3=((n(n+1))/2)^2' }
 
       it 'returns parsed Asciimath to Formula' do
-        latex = '\sum_{i = 1}^{n} i^{3} =  \left ( \frac{n  \left ( n + 1 \right ) }{2} \right ) ^{2}'
+        latex = '\sum_{i = 1}^{n} i^{3} = ( \frac{n ( n + 1 )}{2} )^{2}'
         asciimath = 'sum_(i = 1)^(n) i^(3) = (frac(n (n + 1))(2))^(2)'
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
@@ -102,7 +102,7 @@ RSpec.describe Plurimath::Asciimath do
       let(:string) { 'unitsml(V*s//A,symbol:V cdot s//A)' }
 
       it 'returns parsed Asciimath to Formula' do
-        latex = 'u n i t s m l  \left ( V \\cdot s / A , s y m b o l : V \\cdot s / A \right ) '
+        latex = 'u n i t s m l ( V \\cdot s / A , s y m b o l : V \\cdot s / A )'
         asciimath = 'u n i t s m l (V * s // A , s y m b o l : V * s // A)'
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
@@ -208,7 +208,7 @@ RSpec.describe Plurimath::Asciimath do
       let(:string) { 'int_0^1f(x)dx' }
 
       it 'returns parsed Asciimath to Formula' do
-        latex = '\int_{0}^{1} f \left ( x \right )  d x'
+        latex = '\int_{0}^{1} f( x ) d x'
         asciimath = 'int_(0)^(1) f(x) d x'
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
@@ -472,7 +472,7 @@ RSpec.describe Plurimath::Asciimath do
       let(:string) { '12mod1234(i)' }
 
       it 'returns parsed Asciimath to Formula' do
-        latex = '{12} \mod {1234}  \left ( i \right ) '
+        latex = '{12} \mod {1234} ( i )'
         asciimath = '12 mod 1234 (i)'
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
@@ -522,7 +522,7 @@ RSpec.describe Plurimath::Asciimath do
       let(:string) { 'log(1+2+3+4)^text("theta")' }
 
       it 'returns parsed Asciimath to Formula' do
-        latex = '\log  \left ( 1 + 2 + 3 + 4 \right ) ^{\text{"theta"}}'
+        latex = '\log ( 1 + 2 + 3 + 4 )^{\text{"theta"}}'
         asciimath = 'log (1 + 2 + 3 + 4)^(""theta"")'
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
@@ -555,7 +555,7 @@ RSpec.describe Plurimath::Asciimath do
       let(:string) { 'sum_(i=1)^ni^3=sin((n(n+1))/2)^2' }
 
       it 'returns parsed Asciimath to Formula' do
-        latex = '\sum_{i = 1}^{n} i^{3} = \sin{ \left ( \frac{n  \left ( n + 1 \right ) }{2} \right ) }^{2}'
+        latex = '\sum_{i = 1}^{n} i^{3} = \sin{( \frac{n ( n + 1 )}{2} )}^{2}'
         asciimath = 'sum_(i = 1)^(n) i^(3) = sin(frac(n (n + 1))(2))^(2)'
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
@@ -610,7 +610,7 @@ RSpec.describe Plurimath::Asciimath do
       let(:string) { 'int_0^1 f(x)dx' }
 
       it 'returns parsed Asciimath to Formula' do
-        latex = '\int_{0}^{1} f \left ( x \right )  d x'
+        latex = '\int_{0}^{1} f( x ) d x'
         asciimath = 'int_(0)^(1) f(x) d x'
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
@@ -645,7 +645,7 @@ RSpec.describe Plurimath::Asciimath do
       let(:string) { 'mathfrak"theta" (i)' }
 
       it 'returns parsed Asciimath to Formula' do
-        latex = '\mathfrak{\text{theta}}  \left ( i \right ) '
+        latex = '\mathfrak{\text{theta}} ( i )'
         asciimath = 'mathfrak("theta") (i)'
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
@@ -671,7 +671,7 @@ RSpec.describe Plurimath::Asciimath do
       let(:string) { 'mathbb("theta") (i)' }
 
       it 'returns parsed Asciimath to Formula' do
-        latex = '\mathbb{\text{theta}}  \left ( i \right ) '
+        latex = '\mathbb{\text{theta}} ( i )'
         asciimath = 'mathbb("theta") (i)'
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
@@ -849,7 +849,7 @@ RSpec.describe Plurimath::Asciimath do
       let(:string) { 'underset(_)(hat A)(^) = hat A exp j vartheta_0' }
 
       it 'returns parsed Asciimath to Formula' do
-        latex = '\underset{\_}{\hat{A}}  \left ( ^ \right )  = \hat{A} \exp{j} \vartheta_{0}'
+        latex = '\underset{\_}{\hat{A}} ( ^ ) = \hat{A} \exp{j} \vartheta_{0}'
         asciimath = 'underset(_)(hat(A)) (^) = hat(A) expj vartheta_(0)'
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
@@ -998,7 +998,7 @@ RSpec.describe Plurimath::Asciimath do
       let(:string) { 'd/dx [x^n] = nx^(n - 1)' }
 
       it 'returns parsed Asciimath to Formula' do
-        latex = '\frac{d}{d x}  \left [ x^{n} \right ]  = n x^{n - 1}'
+        latex = '\frac{d}{d x} [ x^{n} ] = n x^{n - 1}'
         asciimath = 'frac(d)(d x) [x^(n)] = n x^(n - 1)'
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
@@ -1544,7 +1544,7 @@ RSpec.describe Plurimath::Asciimath do
       let(:string) { '{ x\ : \ x in A ^^ x in B }' }
 
       it 'returns parsed Asciimath to Formula' do
-        latex = ' \left \{ x \  : \  x \in A \land x \in B \right \} '
+        latex = '\\{ x \\  : \\  x \\in A \\land x \\in B \\}'
         asciimath = '{x \  : \  x in A ^^ x in B}'
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
@@ -1677,7 +1677,7 @@ RSpec.describe Plurimath::Asciimath do
       let(:string) { 'ii(V)(ii(X)) = (b-a)^2/12 + d^2/9.' }
 
       it 'returns parsed Asciimath to Formula' do
-        latex = '\mathit{V}  \left ( \mathit{X} \right )  = \frac{ \left ( b - a \right ) ^{2}}{12} + \frac{d^{2}}{9} .'
+        latex = '\mathit{V} ( \mathit{X} ) = \frac{( b - a )^{2}}{12} + \frac{d^{2}}{9} .'
         asciimath = 'ii(V) (ii(X)) = frac((b - a)^(2))(12) + frac(d^(2))(9) .'
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
@@ -1786,7 +1786,7 @@ RSpec.describe Plurimath::Asciimath do
       let(:string) { 'u(w_("cal")) = w_("cal") *sqrt([(u(m_("stock")))/m_("stock")]^2 +[(u(b_("stock")))/b_("stock")]^2 +[(u(w_("stock")))/w_("stock")]^2 +[(u(m_("sol")))/m_("sol")]^2 +[(u(b_("sol")))/b_("sol")]^2 +2*[(u(ii(V)))/ii(V)]^2)' }
 
       it 'returns parsed Asciimath to Formula' do
-        latex = 'u  \left ( w_{\text{cal}} \right )  = w_{\text{cal}} \cdot \sqrt{ \left [ \frac{u  \left ( m_{\text{stock}} \right ) }{m_{\text{stock}}} \right ] ^{2} +  \left [ \frac{u  \left ( b_{\text{stock}} \right ) }{b_{\text{stock}}} \right ] ^{2} +  \left [ \frac{u  \left ( w_{\text{stock}} \right ) }{w_{\text{stock}}} \right ] ^{2} +  \left [ \frac{u  \left ( m_{\text{sol}} \right ) }{m_{\text{sol}}} \right ] ^{2} +  \left [ \frac{u  \left ( b_{\text{sol}} \right ) }{b_{\text{sol}}} \right ] ^{2} + 2 \cdot  \left [ \frac{u  \left ( \mathit{V} \right ) }{\mathit{V}} \right ] ^{2}}'
+        latex = 'u ( w_{\text{cal}} ) = w_{\text{cal}} \cdot \sqrt{[ \frac{u ( m_{\text{stock}} )}{m_{\text{stock}}} ]^{2} + [ \frac{u ( b_{\text{stock}} )}{b_{\text{stock}}} ]^{2} + [ \frac{u ( w_{\text{stock}} )}{w_{\text{stock}}} ]^{2} + [ \frac{u ( m_{\text{sol}} )}{m_{\text{sol}}} ]^{2} + [ \frac{u ( b_{\text{sol}} )}{b_{\text{sol}}} ]^{2} + 2 \cdot [ \frac{u ( \mathit{V} )}{\mathit{V}} ]^{2}}'
         asciimath = 'u (w_("cal")) = w_("cal") * sqrt([frac(u (m_("stock")))(m_("stock"))]^(2) + [frac(u (b_("stock")))(b_("stock"))]^(2) + [frac(u (w_("stock")))(w_("stock"))]^(2) + [frac(u (m_("sol")))(m_("sol"))]^(2) + [frac(u (b_("sol")))(b_("sol"))]^(2) + 2 * [frac(u (ii(V)))(ii(V))]^(2))'
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
@@ -1972,7 +1972,7 @@ RSpec.describe Plurimath::Asciimath do
       let(:string) { '1 "unitsml(A)" = ( ((4pi xx 10^(-7)))/((9192631770)(299792458)(1)) )^(1/2) ( (Delta ii(nu)_("Cs")cm_(cc K))/(ii(mu)_0) )^(1/2) = 6.789687... xx 10^(-13) ((Delta ii(nu)_("Cs")c m_(cc K))/(ii(mu)_0))^(1/2)' }
 
       it 'returns parsed Asciimath to Formula' do
-        latex = '1 \text{unitsml(A)} =  \left ( \frac{\left (\begin{matrix}4 \pi \times 10^{- 7}\end{matrix}\right )}{ \left ( 9192631770 \right )   \left ( 299792458 \right )   \left ( 1 \right ) } \right ) ^{\frac{1}{2}}  \left ( \frac{\Delta \mathit{\nu}_{\text{Cs}} c m_{\mathcal{K}}}{\mathit{\mu}_{0}} \right ) ^{\frac{1}{2}} = 6.789687 \ldots \times 10^{- 13}  \left ( \frac{\Delta \mathit{\nu}_{\text{Cs}} c m_{\mathcal{K}}}{\mathit{\mu}_{0}} \right ) ^{\frac{1}{2}}'
+        latex = '1 \text{unitsml(A)} = ( \frac{\left (\begin{matrix}4 \pi \times 10^{- 7}\end{matrix}\right )}{( 9192631770 ) ( 299792458 ) ( 1 )} )^{\frac{1}{2}} ( \frac{\Delta \mathit{\nu}_{\text{Cs}} c m_{\mathcal{K}}}{\mathit{\mu}_{0}} )^{\frac{1}{2}} = 6.789687 \ldots \times 10^{- 13} ( \frac{\Delta \mathit{\nu}_{\text{Cs}} c m_{\mathcal{K}}}{\mathit{\mu}_{0}} )^{\frac{1}{2}}'
         asciimath = '1 "unitsml(A)" = (frac(([4 pi xx 10^(- 7)]))((9192631770) (299792458) (1)))^(frac(1)(2)) (frac(Delta ii(nu)_("Cs") c m_(mathcal(K)))(ii(mu)_(0)))^(frac(1)(2)) = 6.789687 ... xx 10^(- 13) (frac(Delta ii(nu)_("Cs") c m_(mathcal(K)))(ii(mu)_(0)))^(frac(1)(2))'
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
@@ -2121,7 +2121,7 @@ RSpec.describe Plurimath::Asciimath do
       let(:string) { '""_rZZ_n = sum_(j=1)^n (-1)^j j^r, " with " r = 1,2,...,' }
 
       it 'returns parsed Asciimath to Formula' do
-        latex = '\text{}_{r} \mathbb{Z}_{n} = \sum_{j = 1}^{n}  \left ( - 1 \right ) ^{j} j^{r} ,  \text{ with } r = 1 , 2 , \ldots ,'
+        latex = '\text{}_{r} \mathbb{Z}_{n} = \sum_{j = 1}^{n} ( - 1 )^{j} j^{r} ,  \text{ with } r = 1 , 2 , \ldots ,'
         asciimath = '""_(r) mathbb(Z)_(n) = sum_(j = 1)^(n) (- 1)^(j) j^(r) ,  " with " r = 1 , 2 , ... ,'
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
@@ -2182,7 +2182,7 @@ RSpec.describe Plurimath::Asciimath do
       let(:string) { '(ii(T)_1+ii(T)_2-a_1-a_2)*f(t) = {(0,pour,{(0&#x3c;t&#x3c;a_(-)),("ou "t&#x3e;ii(T)_(-)+a_2):}),(1,"''",{(a_(-)&#x3c;t&#x3c;a_+","),(ii(T)_1-a_1&#x3c;t&#x3c;ii(T)_(-)),("ou "ii(T)_1&#x3c;t&#x3c;ii(T)_(-)+a_2):}),(2,"''",a_+&#x3c;t&#x3c;ii(T)_1-a_1),((ii(T)_3-ii(T)_(-)+a_1)*delta(t-ii(T)_1),pour,t=ii(T)_1),((ii(T)_1-ii(T)_4)*delta(t-ii(T)_2),"''",t=ii(T)_2","):}' }
 
       it 'returns parsed Asciimath to Formula' do
-        latex = ' \left ( \mathit{T}_{1} + \mathit{T}_{2} - a_{1} - a_{2} \right )  \cdot f \left ( t \right )  = \left \{\begin{matrix}0 & p o u r & \left \{\begin{matrix}0 \& \# x 3 c ; t \& \# x 3 c ; a_{-} \\\\ \text{ou } t \& \# x 3 e ; \mathit{T}_{-} + a_{2}\end{matrix}\right  . \\\\ 1 & \text{} & \left \{\begin{matrix}a_{-} \& \# x 3 c ; t \& \# x 3 c ; a_{+} \text{,} \\\\ \mathit{T}_{1} - a_{1} \& \# x 3 c ; t \& \# x 3 c ; \mathit{T}_{-} \\\\ \text{ou } \mathit{T}_{1} \& \# x 3 c ; t \& \# x 3 c ; \mathit{T}_{-} + a_{2}\end{matrix}\right  . \\\\ 2 & \text{} & a_{+} \& \# x 3 c ; t \& \# x 3 c ; \mathit{T}_{1} - a_{1} \\\\  \left ( \mathit{T}_{3} - \mathit{T}_{-} + a_{1} \right )  \cdot \delta  \left ( t - \mathit{T}_{1} \right )  & p o u r & t = \mathit{T}_{1} \\\\  \left ( \mathit{T}_{1} - \mathit{T}_{4} \right )  \cdot \delta  \left ( t - \mathit{T}_{2} \right )  & \text{} & t = \mathit{T}_{2} \text{,}\end{matrix}\right  .'
+        latex = '( \mathit{T}_{1} + \mathit{T}_{2} - a_{1} - a_{2} ) \cdot f( t ) = \left \{\begin{matrix}0 & p o u r & \left \{\begin{matrix}0 \& \# x 3 c ; t \& \# x 3 c ; a_{-} \\\\ \text{ou } t \& \# x 3 e ; \mathit{T}_{-} + a_{2}\end{matrix}\right  . \\\\ 1 & \text{} & \left \{\begin{matrix}a_{-} \& \# x 3 c ; t \& \# x 3 c ; a_{+} \text{,} \\\\ \mathit{T}_{1} - a_{1} \& \# x 3 c ; t \& \# x 3 c ; \mathit{T}_{-} \\\\ \text{ou } \mathit{T}_{1} \& \# x 3 c ; t \& \# x 3 c ; \mathit{T}_{-} + a_{2}\end{matrix}\right  . \\\\ 2 & \text{} & a_{+} \& \# x 3 c ; t \& \# x 3 c ; \mathit{T}_{1} - a_{1} \\\\ ( \mathit{T}_{3} - \mathit{T}_{-} + a_{1} ) \cdot \delta ( t - \mathit{T}_{1} ) & p o u r & t = \mathit{T}_{1} \\\\ ( \mathit{T}_{1} - \mathit{T}_{4} ) \cdot \delta ( t - \mathit{T}_{2} ) & \text{} & t = \mathit{T}_{2} \text{,}\end{matrix}\right  .'
         asciimath = '(ii(T)_(1) + ii(T)_(2) - a_(1) - a_(2)) * f(t) = {[0, p o u r, {[0 & # x 3 c ; t & # x 3 c ; a_(-)], ["ou " t & # x 3 e ; ii(T)_(-) + a_(2)]:}], [1, "", {[a_(-) & # x 3 c ; t & # x 3 c ; a_(+) ","], [ii(T)_(1) - a_(1) & # x 3 c ; t & # x 3 c ; ii(T)_(-)], ["ou " ii(T)_(1) & # x 3 c ; t & # x 3 c ; ii(T)_(-) + a_(2)]:}], [2, "", a_(+) & # x 3 c ; t & # x 3 c ; ii(T)_(1) - a_(1)], [(ii(T)_(3) - ii(T)_(-) + a_(1)) * delta (t - ii(T)_(1)), p o u r, t = ii(T)_(1)], [(ii(T)_(1) - ii(T)_(4)) * delta (t - ii(T)_(2)), "", t = ii(T)_(2) ","]:}'
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
@@ -2674,7 +2674,7 @@ RSpec.describe Plurimath::Asciimath do
       let(:string) { 'H_s(z)=(1-A(ztext(/)overset(~)(gamma)))/(1-A(ztext(/)overset(~)(gamma)))(1+mu z^(-1)), text( with ) 0&#x3c;overset(~)(gamma)_1&#x3c;overset(~)(gamma)_2&#x3c;=1' }
 
       it 'returns parsed Asciimath to Formula' do
-        latex = 'H_{s}  \left ( z \right )  = \frac{1 - A  \left ( z \text{/} \overset{\sptilde}{\gamma} \right ) }{1 - A  \left ( z \text{/} \overset{\sptilde}{\gamma} \right ) }  \left ( 1 + \mu z^{- 1} \right )  ,  \text{ with } 0 \& \# x 3 c ; \overset{\sptilde}{\gamma}_{1} \& \# x 3 c ; \overset{\sptilde}{\gamma}_{2} \& \# x 3 c ; = 1'
+        latex = 'H_{s} ( z ) = \frac{1 - A ( z \text{/} \overset{\sptilde}{\gamma} )}{1 - A ( z \text{/} \overset{\sptilde}{\gamma} )} ( 1 + \mu z^{- 1} ) ,  \text{ with } 0 \& \# x 3 c ; \overset{\sptilde}{\gamma}_{1} \& \# x 3 c ; \overset{\sptilde}{\gamma}_{2} \& \# x 3 c ; = 1'
         asciimath = 'H_(s) (z) = frac(1 - A (z "/" overset(~)(gamma)))(1 - A (z "/" overset(~)(gamma))) (1 + mu z^(- 1)) ,  " with " 0 & # x 3 c ; overset(~)(gamma)_(1) & # x 3 c ; overset(~)(gamma)_(2) & # x 3 c ; = 1'
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
@@ -2789,7 +2789,7 @@ RSpec.describe Plurimath::Asciimath do
       let(:string) { '&lt; &lt; mode, &lt; s(ag) &gt; &gt;, s' }
 
       it 'returns parsed Asciimath to Formula' do
-        latex = '\& < ; \& < {;} \mod {e} ,  \& < ; s  \left ( a g \right )  \& > ; \& > ; ,  s'
+        latex = '\& < ; \& < {;} \mod {e} ,  \& < ; s ( a g ) \& > ; \& > ; ,  s'
         asciimath = '& lt ; & lt ; mod e ,  & lt ; s (a g) & gt ; & gt ; ,  s'
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
@@ -2838,7 +2838,7 @@ RSpec.describe Plurimath::Asciimath do
       let(:string) { '{:(u^2(delta y), = {:[({partial f}/{partial ii(X)_1})^2 u^2(x_1) +({partial f}/{partial ii(X)_2})^2 u^2(x_2) +2 {partial f}/{partial ii(X)_1} {partial f}/{partial ii(X)_2} r(x_1,x_2)u(x_1)u(x_2)]|_{bb(X)=bb(x)}),(" ",= 4x_1^2 u^2 (x_1) + 4x_2^2 u^2 (x_2) + 8r(x_1,x_2) x_1 x_2 u(x_1) u(x_2).):}' }
 
       it 'returns parsed Asciimath to Formula' do
-        latex = '\left . \left ( u^{2}  \left ( \delta y \right )  ,  = \left . \left [  \left ( \frac{\partial f}{\partial \mathit{X}_{1}} \right ) ^{2} u^{2}  \left ( x_{1} \right )  +  \left ( \frac{\partial f}{\partial \mathit{X}_{2}} \right ) ^{2} u^{2}  \left ( x_{2} \right )  + 2 \frac{\partial f}{\partial \mathit{X}_{1}} \frac{\partial f}{\partial \mathit{X}_{2}} r  \left ( x_{1 ,} x_{2} \right )  u  \left ( x_{1} \right )  u  \left ( x_{2} \right )  \right ]  |_{\mathbf{X} = \mathbf{x}} \right )  ,  \left ( \text{ } , = 4 x_{1}^{2} u^{2}  \left ( x_{1} \right )  + 4 x_{2}^{2} u^{2}  \left ( x_{2} \right )  + 8 r  \left ( x_{1 ,} x_{2} \right )  x_{1} x_{2} u  \left ( x_{1} \right )  u  \left ( x_{2} \right )  . \right )   \right   \right  '
+        latex = '{: ( u^{2} ( \delta y ) ,  = {: [ ( \frac{\partial f}{\partial \mathit{X}_{1}} )^{2} u^{2} ( x_{1} ) + ( \frac{\partial f}{\partial \mathit{X}_{2}} )^{2} u^{2} ( x_{2} ) + 2 \frac{\partial f}{\partial \mathit{X}_{1}} \frac{\partial f}{\partial \mathit{X}_{2}} r ( x_{1 ,} x_{2} ) u ( x_{1} ) u ( x_{2} ) ] |_{\mathbf{X} = \mathbf{x}} ) , ( \text{ } , = 4 x_{1}^{2} u^{2} ( x_{1} ) + 4 x_{2}^{2} u^{2} ( x_{2} ) + 8 r ( x_{1 ,} x_{2} ) x_{1} x_{2} u ( x_{1} ) u ( x_{2} ) . )   '
         asciimath = '{:(u^(2) (delta y) ,  = {:[(frac(del f)(del ii(X)_(1)))^(2) u^(2) (x_(1)) + (frac(del f)(del ii(X)_(2)))^(2) u^(2) (x_(2)) + 2 frac(del f)(del ii(X)_(1)) frac(del f)(del ii(X)_(2)) r (x_(1 ,) x_(2)) u (x_(1)) u (x_(2))] |_(mathbf(X) = mathbf(x))) , (" " , = 4 x_(1)^(2) u^(2) (x_(1)) + 4 x_(2)^(2) u^(2) (x_(2)) + 8 r (x_(1 ,) x_(2)) x_(1) x_(2) u (x_(1)) u (x_(2)) .) :}'
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
@@ -3130,7 +3130,7 @@ RSpec.describe Plurimath::Asciimath do
       let(:string) { 'u^2(delta y) = {:[({partial f}/{partial ii(X)_1})^2 u^2(x_1) + ({partial f}/{partial ii(X)_2})^2]|_{bb(X)=bb(x)} = 4 x_1^2 u^2 (x_1) + 4 x_2^2 u^2 (x_2),' }
 
       it 'returns parsed Asciimath to Formula' do
-        latex = 'u^{2}  \left ( \delta y \right )  = \left . \left [  \left ( \frac{\partial f}{\partial \mathit{X}_{1}} \right ) ^{2} u^{2}  \left ( x_{1} \right )  +  \left ( \frac{\partial f}{\partial \mathit{X}_{2}} \right ) ^{2} \right ]  |_{\mathbf{X} = \mathbf{x}} = 4 x_{1}^{2} u^{2}  \left ( x_{1} \right )  + 4 x_{2}^{2} u^{2}  \left ( x_{2} \right )  , \right  '
+        latex = 'u^{2} ( \delta y ) = {: [ ( \frac{\partial f}{\partial \mathit{X}_{1}} )^{2} u^{2} ( x_{1} ) + ( \frac{\partial f}{\partial \mathit{X}_{2}} )^{2} ] |_{\mathbf{X} = \mathbf{x}} = 4 x_{1}^{2} u^{2} ( x_{1} ) + 4 x_{2}^{2} u^{2} ( x_{2} ) , '
         asciimath = 'u^(2) (delta y) = {:[(frac(del f)(del ii(X)_(1)))^(2) u^(2) (x_(1)) + (frac(del f)(del ii(X)_(2)))^(2)] |_(mathbf(X) = mathbf(x)) = 4 x_(1)^(2) u^(2) (x_(1)) + 4 x_(2)^(2) u^(2) (x_(2)) ,'
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
@@ -3279,7 +3279,7 @@ RSpec.describe Plurimath::Asciimath do
       let(:string) { 'lambda_1 = {|:(b_1 - a_1) - (b_2 - a_2):|}/2, " " " " lambda_2 = {b - a}/2,' }
 
       it 'returns parsed Asciimath to Formula' do
-        latex = '\lambda_{1} = \frac{|  \left ( b_{1} - a_{1} \right )  -  \left ( b_{2} - a_{2} \right )  |}{2} ,  \text{ } \text{ } \lambda_{2} = \frac{b - a}{2} ,'
+        latex = '\lambda_{1} = \frac{| ( b_{1} - a_{1} ) - ( b_{2} - a_{2} ) |}{2} ,  \text{ } \text{ } \lambda_{2} = \frac{b - a}{2} ,'
         asciimath = 'lambda_(1) = frac(| (b_(1) - a_(1)) - (b_(2) - a_(2)) |)(2) ,  " " " " lambda_(2) = frac(b - a)(2) ,'
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
@@ -3357,7 +3357,7 @@ RSpec.describe Plurimath::Asciimath do
       let(:string) { 'ii(E)(ii(X)) = {a + b}/2, "    " ii(V)(ii(X)) = {(b - a)^2}/12' }
 
       it 'returns parsed Asciimath to Formula' do
-        latex = '\mathit{E}  \left ( \mathit{X} \right )  = \frac{a + b}{2} ,  \text{    } \mathit{V}  \left ( \mathit{X} \right )  = \frac{ \left ( b - a \right ) ^{2}}{12}'
+        latex = '\mathit{E} ( \mathit{X} ) = \frac{a + b}{2} ,  \text{    } \mathit{V} ( \mathit{X} ) = \frac{( b - a )^{2}}{12}'
         asciimath = 'ii(E) (ii(X)) = frac(a + b)(2) ,  "    " ii(V) (ii(X)) = frac((b - a)^(2))(12)'
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
@@ -3422,7 +3422,7 @@ RSpec.describe Plurimath::Asciimath do
       let(:string) { 'i_j = (a_j xx i_j) mod d_j' }
 
       it 'returns parsed Asciimath to Formula' do
-        latex = 'i_{j} = { \left ( a_{j} \times i_{j} \right ) } \mod {d_{j}}'
+        latex = 'i_{j} = {( a_{j} \times i_{j} )} \mod {d_{j}}'
         asciimath = 'i_(j) = (a_(j) xx i_(j)) mod d_(j)'
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
@@ -3465,7 +3465,7 @@ RSpec.describe Plurimath::Asciimath do
       let(:string) { 'i_j = a_j xx (i_j mod b_j) - c_j xx floor(i_j//b_j)' }
 
       it 'returns parsed Asciimath to Formula' do
-        latex = 'i_{j} = a_{j} \times  \left ( {i_{j}} \mod {b_{j}} \right )  - c_{j} \times \lfloor i_{j} / b_{j} \rfloor'
+        latex = 'i_{j} = a_{j} \times ( {i_{j}} \mod {b_{j}} ) - c_{j} \times \lfloor i_{j} / b_{j} \rfloor'
         asciimath = 'i_(j) = a_(j) xx (i_(j) mod b_(j)) - c_(j) xx floor(i_(j) // b_(j))'
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
@@ -3529,7 +3529,7 @@ RSpec.describe Plurimath::Asciimath do
       let(:string) { '[(x_1),(x_2)], " " [(u^2(x_1),ru(x_1)u(x_2)),(ru(x_1)u(x_2),u^2(x_2))].' }
 
       it 'returns parsed Asciimath to Formula' do
-        latex = '\left [\begin{matrix}x_{1} \\\\ x_{2}\end{matrix}\right ] ,  \text{ } \left [\begin{matrix}u^{2}  \left ( x_{1} \right )  & r u  \left ( x_{1} \right )  u  \left ( x_{2} \right )  \\\\ r u  \left ( x_{1} \right )  u  \left ( x_{2} \right )  & u^{2}  \left ( x_{2} \right ) \end{matrix}\right ] .'
+        latex = '\left [\begin{matrix}x_{1} \\\\ x_{2}\end{matrix}\right ] ,  \text{ } \left [\begin{matrix}u^{2} ( x_{1} ) & r u ( x_{1} ) u ( x_{2} ) \\\\ r u ( x_{1} ) u ( x_{2} ) & u^{2} ( x_{2} )\end{matrix}\right ] .'
         asciimath = '[[x_(1)], [x_(2)]] ,  " " [[u^(2) (x_(1)), r u (x_(1)) u (x_(2))], [r u (x_(1)) u (x_(2)), u^(2) (x_(2))]] .'
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
@@ -3654,7 +3654,7 @@ RSpec.describe Plurimath::Asciimath do
       let(:string) { '1 + (ii(rho)_a - ii(rho)_a_0 )(1//ii(rho)_W - 1//ii(rho)_R)' }
 
       it 'returns parsed Asciimath to Formula' do
-        latex = '1 +  \left ( \mathit{\rho}_{a} - \mathit{\rho}_{a}_{0} \right )   \left ( 1 / \mathit{\rho}_{W} - 1 / \mathit{\rho}_{R} \right ) '
+        latex = '1 + ( \mathit{\rho}_{a} - \mathit{\rho}_{a}_{0} ) ( 1 / \mathit{\rho}_{W} - 1 / \mathit{\rho}_{R} )'
         asciimath = '1 + (ii(rho)_(a) - ii(rho)_(a)_(0)) (1 // ii(rho)_(W) - 1 // ii(rho)_(R))'
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
@@ -3715,7 +3715,7 @@ RSpec.describe Plurimath::Asciimath do
       let(:string) { "f'(x) = dy/dx" }
 
       it 'returns parsed Asciimath to Formula' do
-        latex = "f\\prime  \\left ( x \\right )  = d \\frac{y}{d x}"
+        latex = "f\\prime ( x ) = d \\frac{y}{d x}"
         asciimath = "f' (x) = d frac(y)(d x)"
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
@@ -3921,7 +3921,7 @@ RSpec.describe Plurimath::Asciimath do
       let(:string) { 'n_"S"("X") = m_"S" // ii(M)("X"), " and " ii(M)(""X"") = ii(A)_"r"("X") "unitsml(g/mol)"' }
 
       it 'returns parsed Asciimath to Formula' do
-        latex = 'n_{\text{S}}  \left ( \text{X} \right )  = m_{\text{S}} / \mathit{M}  \left ( \text{X} \right )  ,  \text{ and } \mathit{M}  \left ( \text{} X \text{} \right )  = \mathit{A}_{\text{r}}  \left ( \text{X} \right )  \text{unitsml(g/mol)}'
+        latex = 'n_{\text{S}} ( \text{X} ) = m_{\text{S}} / \mathit{M} ( \text{X} ) ,  \text{ and } \mathit{M} ( \text{} X \text{} ) = \mathit{A}_{\text{r}} ( \text{X} ) \text{unitsml(g/mol)}'
         asciimath = 'n_("S") ("X") = m_("S") // ii(M) ("X") ,  " and " ii(M) ("" X "") = ii(A)_("r") ("X") "unitsml(g/mol)"'
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
@@ -4114,7 +4114,7 @@ RSpec.describe Plurimath::Asciimath do
       let(:string) { '{x_i | i in I}' }
 
       it 'returns parsed Asciimath to Formula' do
-        latex = ' \left \{ x_{i} | i \in I \right \} '
+        latex = '\{ x_{i} | i \in I \}'
         asciimath = '{x_(i) | i in I}'
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
@@ -4144,7 +4144,7 @@ RSpec.describe Plurimath::Asciimath do
       let(:string) { '"H"_nu^((1))(z)' }
 
       it 'returns parsed Asciimath to Formula' do
-        latex = '\text{H}_{\nu}^{ \left ( 1 \right ) }  \left ( z \right ) '
+        latex = '\text{H}_{\nu}^{( 1 )} ( z )'
         asciimath = '"H"_(nu)^((1)) (z)'
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
@@ -4176,7 +4176,7 @@ RSpec.describe Plurimath::Asciimath do
       let(:string) { '(a)_n' }
 
       it 'returns parsed Asciimath to Formula' do
-        latex = ' \left ( a \right ) _{n}'
+        latex = '( a )_{n}'
         asciimath = '(a)_(n)'
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">

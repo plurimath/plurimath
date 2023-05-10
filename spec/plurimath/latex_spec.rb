@@ -123,7 +123,7 @@ RSpec.describe Plurimath::Latex do
             </mstyle>
           </math>
         MATHML
-        latex = "\\left \\{ \\right"
+        latex = "\\left \\{ \\right ."
         expect(formula.to_latex).to be_equivalent_to(latex)
         expect(formula.to_mathml).to be_equivalent_to(mathml)
       end
@@ -607,15 +607,15 @@ RSpec.describe Plurimath::Latex do
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
               <msqrt>
-                <mrow>
-                  <mo>(</mo>
-                  <mo>&#x2212;</mo>
-                  <mn>25</mn>
-                  <msup>
+                <msup>
+                  <mrow>
+                    <mo>(</mo>
+                    <mo>&#x2212;</mo>
+                    <mn>25</mn>
                     <mo>)</mo>
-                    <mn>2</mn>
-                  </msup>
-                </mrow>
+                  </mrow>
+                  <mn>2</mn>
+                </msup>
               </msqrt>
               <mo>=</mo>
               <mo>&#xb1;</mo>
@@ -1346,9 +1346,11 @@ RSpec.describe Plurimath::Latex do
                 </mrow>
               </munder>
               <mi>f</mi>
-              <mo>(</mo>
-              <mi>x</mi>
-              <mo>)</mo>
+              <mrow>
+                <mo>(</mo>
+                <mi>x</mi>
+                <mo>)</mo>
+              </mrow>
             </mstyle>
           </math>
         MATHML
@@ -1374,9 +1376,11 @@ RSpec.describe Plurimath::Latex do
                 </mrow>
               </munder>
               <mi>f</mi>
-              <mo>(</mo>
-              <mi>x</mi>
-              <mo>)</mo>
+              <mrow>
+                <mo>(</mo>
+                <mi>x</mi>
+                <mo>)</mo>
+              </mrow>
             </mstyle>
           </math>
         MATHML
@@ -1404,9 +1408,11 @@ RSpec.describe Plurimath::Latex do
                 </mrow>
               </msub>
               <mi>f</mi>
-              <mo>(</mo>
-              <mi>x</mi>
-              <mo>)</mo>
+              <mrow>
+                <mo>(</mo>
+                <mi>x</mi>
+                <mo>)</mo>
+              </mrow>
             </mstyle>
           </math>
         MATHML
@@ -1430,21 +1436,25 @@ RSpec.describe Plurimath::Latex do
                 <mrow>
                   <mi>x</mi>
                   <mo>&#x2208;</mo>
-                  <mo>[</mo>
-                  <mi>a</mi>
-                  <mo>,</mo>
-                  <mi>b</mi>
-                  <mo>]</mo>
+                  <mrow>
+                    <mo>\\[</mo>
+                    <mi>a</mi>
+                    <mo>,</mo>
+                    <mi>b</mi>
+                    <mo>\\]</mo>
+                  </mrow>
                 </mrow>
               </munder>
               <mi>f</mi>
-              <mo>(</mo>
-              <mi>x</mi>
-              <mo>)</mo>
+              <mrow>
+                <mo>(</mo>
+                <mi>x</mi>
+                <mo>)</mo>
+              </mrow>
             </mstyle>
           </math>
         MATHML
-        latex = "\\max_{x \\in [ a , b ]} f ( x )"
+        latex = "\\max_{x \\in \\[ a , b \\]} f ( x )"
         expect(formula.to_latex).to eql(latex)
         expect(formula.to_mathml).to be_equivalent_to(mathml)
       end
@@ -1464,21 +1474,25 @@ RSpec.describe Plurimath::Latex do
                 <mrow>
                   <mi>x</mi>
                   <mo>&#x2208;</mo>
-                  <mo>[</mo>
-                  <mi>&#x3b1;</mi>
-                  <mo>,</mo>
-                  <mi>&#x3b2;</mi>
-                  <mo>]</mo>
+                  <mrow>
+                    <mo>\\[</mo>
+                    <mi>&#x3b1;</mi>
+                    <mo>,</mo>
+                    <mi>&#x3b2;</mi>
+                    <mo>\\]</mo>
+                  </mrow>
                 </mrow>
               </munder>
               <mi>f</mi>
-              <mo>(</mo>
-              <mi>x</mi>
-              <mo>)</mo>
+              <mrow>
+                <mo>(</mo>
+                <mi>x</mi>
+                <mo>)</mo>
+              </mrow>
             </mstyle>
           </math>
         MATHML
-        latex = "\\min_{x \\in [ \\alpha , \\beta ]} f ( x )"
+        latex = "\\min_{x \\in \\[ \\alpha , \\beta \\]} f ( x )"
         expect(formula.to_latex).to eql(latex)
         expect(formula.to_mathml).to be_equivalent_to(mathml)
       end
@@ -1571,18 +1585,22 @@ RSpec.describe Plurimath::Latex do
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
-              <mo>(</mo>
-              <mn>1</mn>
-              <mo>+</mo>
-              <mo>(</mo>
-              <mi>x</mi>
-              <mo>&#x2212;</mo>
-              <mi>y</mi>
-              <msup>
+              <mrow>
+                <mo>(</mo>
+                <mn>1</mn>
+                <mo>+</mo>
+                <msup>
+                  <mrow>
+                    <mo>(</mo>
+                    <mi>x</mi>
+                    <mo>&#x2212;</mo>
+                    <mi>y</mi>
+                    <mo>)</mo>
+                  </mrow>
+                  <mn>2</mn>
+                </msup>
                 <mo>)</mo>
-                <mn>2</mn>
-              </msup>
-              <mo>)</mo>
+              </mrow>
             </mstyle>
           </math>
         MATHML
@@ -2251,57 +2269,156 @@ RSpec.describe Plurimath::Latex do
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
-              <mo>[</mo>
-              <mi>o</mi>
-              <mi>u</mi>
-              <msub>
-                <mi>t</mi>
-                <mi>k</mi>
-              </msub>
-              <mo>=</mo>
-              <mfrac>
-                <mn>1</mn>
-                <mi>s</mi>
-              </mfrac>
-              <mo>(</mo>
               <mrow>
-                <mi>k</mi>
+                <mo>\\[</mo>
+                <mi>o</mi>
+                <mi>u</mi>
+                <msub>
+                  <mi>t</mi>
+                  <mi>k</mi>
+                </msub>
                 <mo>=</mo>
-                <mo>=</mo>
-                <mn>0</mn>
-                <mi>?</mi>
-                <mn>1</mn>
-                <mo>:</mo>
-                <msqrt>
-                  <mn>2</mn>
-                </msqrt>
-              </mrow>
-              <mo>)</mo>
-              <munderover>
-                <mo>&#x2211;</mo>
+                <mfrac>
+                  <mn>1</mn>
+                  <mi>s</mi>
+                </mfrac>
+                <mo>(</mo>
                 <mrow>
-                  <mi>n</mi>
+                  <mi>k</mi>
+                  <mo>=</mo>
                   <mo>=</mo>
                   <mn>0</mn>
-                </mrow>
-                <mrow>
-                  <mi>s</mi>
-                  <mo>&#x2212;</mo>
+                  <mi>?</mi>
                   <mn>1</mn>
+                  <mo>:</mo>
+                  <msqrt>
+                    <mn>2</mn>
+                  </msqrt>
                 </mrow>
-              </munderover>
-              <mrow>
-                <mi>i</mi>
-                <msub>
-                  <mi>n</mi>
-                  <mi>n</mi>
-                </msub>
-                <mo>&#x22c5;</mo>
-                <mrow>
-                  <mi>cos</mi>
+                <mo>)</mo>
+                <munderover>
+                  <mo>&#x2211;</mo>
                   <mrow>
-                    <mo>(</mo>
+                    <mi>n</mi>
+                    <mo>=</mo>
+                    <mn>0</mn>
+                  </mrow>
+                  <mrow>
+                    <mi>s</mi>
+                    <mo>&#x2212;</mo>
+                    <mn>1</mn>
+                  </mrow>
+                </munderover>
+                <mrow>
+                  <mi>i</mi>
+                  <msub>
+                    <mi>n</mi>
+                    <mi>n</mi>
+                  </msub>
+                  <mo>&#x22c5;</mo>
+                  <mrow>
+                    <mi>cos</mi>
                     <mrow>
+                      <mo>(</mo>
+                      <mrow>
+                        <mfrac>
+                          <mrow>
+                            <mi>&#x3c0;</mi>
+                            <mi>k</mi>
+                          </mrow>
+                          <mi>s</mi>
+                        </mfrac>
+                        <mo>(</mo>
+                        <mrow>
+                          <mi>n</mi>
+                          <mo>+</mo>
+                          <mfrac>
+                            <mn>1</mn>
+                            <mn>2</mn>
+                          </mfrac>
+                        </mrow>
+                        <mo>)</mo>
+                      </mrow>
+                      <mo>)</mo>
+                    </mrow>
+                  </mrow>
+                </mrow>
+                <mo>\\]</mo>
+              </mrow>
+            </mstyle>
+          </math>
+        MATHML
+        latex = <<~LATEX
+          \\[out_{k} = \\frac{1}{s}\\left(k == 0 ? 1 : \\sqrt{2}\\right)\\sum_{n = 0}^{s - 1}in_{n} \\cdot \\cos{\\left( \\frac{\\pi k}{s}\\left( n + \\frac{1}{2} \\right) \\right)}\\]
+        LATEX
+        expect(formula.to_latex.gsub(/\s+/, "")).to eql(latex.gsub(/\s+/, ""))
+        expect(formula.to_mathml).to be_equivalent_to(mathml)
+      end
+    end
+
+    context "contains example #46" do
+      let(:string) do
+        <<~LATEX
+          \\[out_k = \\frac{1}{s} (k == 0 ? 1 : \\sqrt{2}) \\sum_{n = 0}^{s - 1}{in_{n} \\cdot
+            \\cos( \\frac{\\pi k}{s} ( n + \\frac{1}{2} ) )}\\]
+        LATEX
+      end
+
+      it 'returns parsed Latex to MathML' do
+        mathml = <<~MATHML
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
+              <mrow>
+                <mo>\\[</mo>
+                <mi>o</mi>
+                <mi>u</mi>
+                <msub>
+                  <mi>t</mi>
+                  <mi>k</mi>
+                </msub>
+                <mo>=</mo>
+                <mfrac>
+                  <mn>1</mn>
+                  <mi>s</mi>
+                </mfrac>
+                <mrow>
+                  <mo>(</mo>
+                  <mi>k</mi>
+                  <mo>=</mo>
+                  <mo>=</mo>
+                  <mn>0</mn>
+                  <mi>?</mi>
+                  <mn>1</mn>
+                  <mo>:</mo>
+                  <msqrt>
+                    <mn>2</mn>
+                  </msqrt>
+                  <mo>)</mo>
+                </mrow>
+                <munderover>
+                  <mo>&#x2211;</mo>
+                  <mrow>
+                    <mi>n</mi>
+                    <mo>=</mo>
+                    <mn>0</mn>
+                  </mrow>
+                  <mrow>
+                    <mi>s</mi>
+                    <mo>&#x2212;</mo>
+                    <mn>1</mn>
+                  </mrow>
+                </munderover>
+                <mrow>
+                  <mi>i</mi>
+                  <msub>
+                    <mi>n</mi>
+                    <mi>n</mi>
+                  </msub>
+                  <mo>&#x22c5;</mo>
+                  <mrow>
+                    <mi>cos</mi>
+                    <mrow>
+                      <mo>(</mo>
                       <mfrac>
                         <mrow>
                           <mi>&#x3c0;</mi>
@@ -2309,27 +2426,27 @@ RSpec.describe Plurimath::Latex do
                         </mrow>
                         <mi>s</mi>
                       </mfrac>
-                      <mo>(</mo>
                       <mrow>
+                        <mo>(</mo>
                         <mi>n</mi>
                         <mo>+</mo>
                         <mfrac>
                           <mn>1</mn>
                           <mn>2</mn>
                         </mfrac>
+                        <mo>)</mo>
                       </mrow>
                       <mo>)</mo>
                     </mrow>
-                    <mo>)</mo>
                   </mrow>
                 </mrow>
+                <mo>\\]</mo>
               </mrow>
-              <mo>]</mo>
             </mstyle>
           </math>
         MATHML
         latex = <<~LATEX
-          [out_{k} = \\frac{1}{s}\\left(k == 0 ? 1 : \\sqrt{2}\\right)\\sum_{n = 0}^{s - 1}in_{n} \\cdot \\cos{\\left( \\frac{\\pi k}{s}\\left( n + \\frac{1}{2} \\right) \\right)}]
+          \\[out_{k} = \\frac{1}{s}(k == 0 ? 1 : \\sqrt{2})\\sum_{n = 0}^{s - 1}in_{n} \\cdot \\cos{( \\frac{\\pi k}{s}( n + \\frac{1}{2} ) )}\\]
         LATEX
         expect(formula.to_latex.gsub(/\s+/, "")).to eql(latex.gsub(/\s+/, ""))
         expect(formula.to_mathml).to be_equivalent_to(mathml)

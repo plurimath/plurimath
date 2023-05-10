@@ -27,8 +27,7 @@ module Plurimath
         end
 
         def to_latex
-          prefix = "\\" if parameter_one == "{"
-          "\\left #{prefix}#{parameter_one}"
+          "\\left #{Latex::Constants::LEFT_RIGHT_PARENTHESIS.invert[parameter_one] || "."}"
         end
 
         protected

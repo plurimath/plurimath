@@ -24,6 +24,8 @@ module Plurimath
       rule(power_base: simple(:power_base)) { power_base }
       rule(table_data: simple(:table_data)) { table_data }
 
+      rule(intermediate_exp: simple(:int_exp)) { int_exp }
+
       rule(numeric_values: simple(:value)) do
         Math::Symbol.new(value)
       end
@@ -72,57 +74,107 @@ module Plurimath
       end
 
       rule(left: simple(:left),
-           lparen: simple(:lparen),
+           left_paren: simple(:lparen),
            expression: sequence(:expr),
            right: simple(:right),
-           rparen: simple(:rparen)) do
+           right_paren: simple(:rparen)) do
         Math::Formula.new(
           [
-            Math::Function::Left.new(lparen),
+            Utility.left_right_objects(lparen, "left"),
             Math::Formula.new(expr),
-            Math::Function::Right.new(rparen),
+            Utility.left_right_objects(rparen, "right"),
           ],
         )
       end
 
       rule(left: simple(:left),
-           lparen: simple(:lparen),
+           left_paren: simple(:lparen),
+           expression: sequence(:expr),
            right: simple(:right)) do
         Math::Formula.new(
           [
-            Math::Function::Left.new(lparen),
+            Utility.left_right_objects(lparen, "left"),
+            Math::Formula.new(expr),
             Math::Function::Right.new,
           ],
         )
       end
 
       rule(left: simple(:left),
-           lparen: simple(:lparen),
-           right: simple(:right),
-           rparen: simple(:rparen)) do
+           left_paren: simple(:lparen),
+           expression: simple(:expr),
+           right: simple(:right)) do
         Math::Formula.new(
           [
-            Math::Function::Left.new(lparen),
-            Math::Function::Right.new(rparen),
+            Utility.left_right_objects(lparen, "left"),
+            expr,
+            Math::Function::Right.new,
           ],
         )
       end
 
       rule(left: simple(:left),
-           lparen: simple(:lparen)) do
-        Math::Function::Left.new(lparen)
+           left_paren: simple(:lparen),
+           right: simple(:right)) do
+        Math::Formula.new(
+          [
+            Utility.left_right_objects(lparen, "left"),
+            Math::Function::Right.new,
+          ],
+        )
       end
 
       rule(left: simple(:left),
-           lparen: simple(:lparen),
-           expression: simple(:expr),
+           left_paren: simple(:lparen),
            right: simple(:right),
-           rparen: simple(:rparen)) do
+           right_paren: simple(:rparen)) do
         Math::Formula.new(
           [
-            Math::Function::Left.new(lparen),
+            Utility.left_right_objects(lparen, "left"),
+            Utility.left_right_objects(rparen, "right"),
+          ],
+        )
+      end
+
+      rule(left: simple(:left),
+           left_paren: simple(:lparen)) do
+        Utility.left_right_objects(lparen, "left")
+      end
+
+      rule(left: simple(:left),
+           left_paren: simple(:lparen),
+           expression: simple(:expr),
+           right: simple(:right),
+           right_paren: simple(:rparen)) do
+        Math::Formula.new(
+          [
+            Utility.left_right_objects(lparen, "left"),
             expr,
-            Math::Function::Right.new(rparen),
+            Utility.left_right_objects(rparen, "right"),
+          ],
+        )
+      end
+
+      rule(left: simple(:left),
+           expression: simple(:expr),
+           right: simple(:right)) do
+        Math::Formula.new(
+          [
+            Math::Function::Left.new,
+            expr,
+            Math::Function::Right.new,
+          ],
+        )
+      end
+
+      rule(left: simple(:left),
+           expression: sequence(:expr),
+           right: simple(:right)) do
+        Math::Formula.new(
+          [
+            Math::Function::Left.new,
+            Math::Formula.new(expr),
+            Math::Function::Right.new,
           ],
         )
       end
@@ -168,14 +220,14 @@ module Plurimath
       end
 
       rule(left: simple(:left),
-           lparen: simple(:lparen),
+           left_paren: simple(:lparen),
            dividend: subtree(:dividend),
            divisor: subtree(:divisor),
            right: simple(:right),
-           rparen: simple(:rparen)) do
+           right_paren: simple(:rparen)) do
         Math::Formula.new(
           [
-            Math::Function::Left.new(lparen),
+            Utility.left_right_objects(lparen, "left"),
             Math::Function::Over.new(
               Math::Formula.new(
                 Array(dividend).flatten,
@@ -184,7 +236,7 @@ module Plurimath
                 Array(divisor).flatten,
               ),
             ),
-            Math::Function::Right.new(rparen),
+            Utility.left_right_objects(rparen, "right"),
           ],
         )
       end
@@ -333,6 +385,14 @@ module Plurimath
         )
       end
 
+      rule(intermediate_exp: simple(:int_exp),
+           supscript: simple(:supscript)) do
+        Math::Function::Power.new(
+          int_exp,
+          supscript,
+        )
+      end
+
       rule(unicode_symbols: simple(:sym),
            subscript: simple(:subscript)) do
         Math::Function::Base.new(
@@ -449,6 +509,26 @@ module Plurimath
            expression: sequence(:expr),
            rparen: simple(:rparen)) do
         Math::Formula.new(expr)
+      end
+
+      rule(left_paren: simple(:lparen),
+           expression: simple(:expr),
+           right_paren: simple(:rparen)) do
+        Math::Function::Fenced.new(
+          lparen,
+          [expr],
+          rparen,
+        )
+      end
+
+      rule(left_paren: simple(:lparen),
+           expression: sequence(:expr),
+           right_paren: simple(:rparen)) do
+        Math::Function::Fenced.new(
+          lparen,
+          expr,
+          rparen,
+        )
       end
 
       rule(expression: sequence(:expr)) do
