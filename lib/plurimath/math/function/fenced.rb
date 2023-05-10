@@ -35,7 +35,7 @@ module Plurimath
           close_paren  = parameter_three ? parameter_three.value : ")"
           first_value  = latex_paren(open_paren, false)
           second_value = latex_paren(close_paren, true)
-          "#{first_value}#{fenced_value}#{second_value}"
+          "#{first_value} #{fenced_value} #{second_value}"
         end
 
         def to_omml_without_math_tag
@@ -96,11 +96,10 @@ module Plurimath
         end
 
         def latex_paren(paren, right)
-          paren_side = right ? "\\right" : "\\left"
-          return "#{paren_side} ." if paren&.include?(":")
+          return "" if paren.nil? || paren.empty?
 
           paren = %w[{ }].include?(paren) ? "\\#{paren}" : paren
-          " #{paren_side} #{paren} "
+          "#{paren}"
         end
 
         def mathml_paren(field)

@@ -13301,7 +13301,7 @@ RSpec.describe Plurimath::Math::Formula do
           )
         ])
       }
-      let(:expected_value) { "a_{\\left\\{\\left.\\begin{matrix}{a}11\\end{matrix}\\right.\\right\\}}^{4terms}" }
+      let(:expected_value) { "a_{\\{\\left.\\begin{matrix}{a}11\\end{matrix}\\right.\\}}^{4terms}" }
       it "returns formula" do
         expect(formula).to eq(expected_value.gsub(/\s/, ""))
       end

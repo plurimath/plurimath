@@ -42,6 +42,14 @@ module Plurimath
         arr_to_expression(Constants::PARENTHESIS.values, :rparen)
       end
 
+      rule(:left_parens) do
+        arr_to_expression(Constants::LEFT_RIGHT_PARENTHESIS.keys, :left_paren)
+      end
+
+      rule(:right_parens) do
+        arr_to_expression(Constants::LEFT_RIGHT_PARENTHESIS.keys, :right_paren)
+      end
+
       rule(:environment) do
         arr_to_expression(Constants::MATRICES.keys, :environment)
       end
@@ -83,13 +91,12 @@ module Plurimath
           match["a-zA-Z"].as(:symbols) |
           match(/\d+(\.[0-9]+)|\d/).repeat(1).as(:number) |
           str("\\\\").as("\\\\") >> match(/\s/).repeat |
-          (slash >> (lparen | rparen).as(:symbols)) |
-          lparen |
           str("\\ ").as(:space)
       end
 
       rule(:intermediate_exp) do
-        (str("{") >> expression.maybe.as(:expression) >> str("}")) |
+        (lparen.as(:left_paren) >> expression.maybe.as(:expression) >> rparen.as(:right_paren)).as(:intermediate_exp) |
+          (str("{") >> expression.maybe.as(:expression) >> str("}")) |
           symbol_text_or_integer
       end
 
@@ -123,20 +130,19 @@ module Plurimath
           (begining >> expression.as(:table_data) >> ending).as(:environment) |
           (slash >> environment >> intermediate_exp).as(:table_data) |
           power_base |
-          (rparen >> (base >> sequence.as(:subscript)).maybe >> power >> sequence.as(:supscript)).as(:power_base) |
-          (rparen >> (power >> sequence.as(:supscript)) >> base >> sequence.as(:subscript)).as(:power_base) |
-          rparen |
           intermediate_exp
       end
 
       rule(:left_right) do
         (
-         str("\\left").as(:left) >> lparen.maybe >>
+          str("\\left").as(:left) >> (left_parens | str(".").maybe) >>
+          (
+            (expression.repeat.as(:dividend) >> str("\\over") >> expression.repeat.as(:divisor)) |
+            expression.as(:expression).maybe
+          ) >>
          (
-           (expression.repeat.as(:dividend) >> str("\\over") >> expression.repeat.as(:divisor)) |
-           expression.as(:expression).maybe
-         ) >>
-         str("\\right").as(:right).maybe >> (rparen | str(".").maybe)
+           str("\\right").as(:right).maybe >> (right_parens | str(".").maybe)
+         )
        )
       end
 
@@ -149,14 +155,14 @@ module Plurimath
       end
 
       rule(:iteration) do
-        (sequence.as(:sequence) >> expression.as(:expression)) |
-          sequence
+        (sequence.as(:sequence) >> iteration.as(:expression)) |
+          sequence >> expression.maybe
       end
 
       rule(:expression) do
         (iteration >> expression) |
           iteration |
-          ((iteration.as(:dividend) >> str("\\over") >> iteration.as(:divisor)) >> expression.repeat)
+          ((iteration.as(:dividend) >> str("\\over") >> iteration.as(:divisor)) >> expression.maybe)
       end
 
       root :expression
@@ -208,8 +214,9 @@ module Plurimath
 
       def unary_rules(first_value)
         (slashed_value(first_value, :unary_functions) >> dynamic_power_base) |
-          (slashed_value(first_value, :unary) >> (left_right | intermediate_exp).as(:first_value)).as(:unary_functions) |
-          (slashed_value(first_value, :unary))
+          (slashed_value(first_value, :unary) >> left_right.as(:first_value)).as(:unary_functions) |
+          (slashed_value(first_value, :unary) >> intermediate_exp.as(:first_value)).as(:unary_functions) |
+          slashed_value(first_value, :unary)
       end
 
       def dynamic_power_base

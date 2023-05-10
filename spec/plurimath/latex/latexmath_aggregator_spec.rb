@@ -52,7 +52,7 @@ RSpec.describe Plurimath::Latex::Parser do
       it "returns formula" do
         expected_value = Plurimath::Math::Formula.new([
           Plurimath::Math::Formula.new([
-            Plurimath::Math::Function::Left.new("\\{"),
+            Plurimath::Math::Function::Left.new("{"),
             Plurimath::Math::Function::Right.new
           ]),
         ])
@@ -103,7 +103,7 @@ RSpec.describe Plurimath::Latex::Parser do
       it "returns formula" do
         expected_value = Plurimath::Math::Formula.new([
           Plurimath::Math::Formula.new([
-            Plurimath::Math::Function::Left.new("\\{"),
+            Plurimath::Math::Function::Left.new("{"),
             Plurimath::Math::Function::Table::Array.new(
               [
                 Plurimath::Math::Function::Tr.new([
@@ -164,7 +164,7 @@ RSpec.describe Plurimath::Latex::Parser do
               nil,
               nil,
             ),
-            Plurimath::Math::Function::Right.new("\\}")
+            Plurimath::Math::Function::Right.new("}")
           ])
         ])
         expect(formula).to eq(expected_value)
@@ -565,15 +565,17 @@ RSpec.describe Plurimath::Latex::Parser do
       it "returns formula" do
         expected_value = Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Sqrt.new(
-            Plurimath::Math::Formula.new([
-              Plurimath::Math::Symbol.new("("),
-              Plurimath::Math::Symbol.new("-"),
-              Plurimath::Math::Number.new("25"),
-              Plurimath::Math::Function::Power.new(
+            Plurimath::Math::Function::Power.new(
+              Plurimath::Math::Function::Fenced.new(
+                Plurimath::Math::Symbol.new("("),
+                [
+                  Plurimath::Math::Symbol.new("-"),
+                  Plurimath::Math::Number.new("25"),
+                ],
                 Plurimath::Math::Symbol.new(")"),
-                Plurimath::Math::Number.new("2")
-              )
-            ]),
+              ),
+              Plurimath::Math::Number.new("2"),
+            )
           ),
           Plurimath::Math::Symbol.new("="),
           Plurimath::Math::Symbol.new("&#xb1;"),
@@ -1269,9 +1271,13 @@ RSpec.describe Plurimath::Latex::Parser do
             ])
           ),
           Plurimath::Math::Symbol.new("f"),
-          Plurimath::Math::Symbol.new("("),
-          Plurimath::Math::Symbol.new("x"),
-          Plurimath::Math::Symbol.new(")"),
+          Plurimath::Math::Function::Fenced.new(
+            Plurimath::Math::Symbol.new("("),
+            [
+              Plurimath::Math::Symbol.new("x"),
+            ],
+            Plurimath::Math::Symbol.new(")"),
+          )
         ])
         expect(formula).to eq(expected_value)
       end
@@ -1289,9 +1295,13 @@ RSpec.describe Plurimath::Latex::Parser do
             ])
           ),
           Plurimath::Math::Symbol.new("f"),
-          Plurimath::Math::Symbol.new("("),
-          Plurimath::Math::Symbol.new("x"),
-          Plurimath::Math::Symbol.new(")"),
+          Plurimath::Math::Function::Fenced.new(
+            Plurimath::Math::Symbol.new("("),
+            [
+              Plurimath::Math::Symbol.new("x"),
+            ],
+            Plurimath::Math::Symbol.new(")"),
+          )
         ])
         expect(formula).to eq(expected_value)
       end
@@ -1313,9 +1323,13 @@ RSpec.describe Plurimath::Latex::Parser do
             ])
           ),
           Plurimath::Math::Symbol.new("f"),
-          Plurimath::Math::Symbol.new("("),
-          Plurimath::Math::Symbol.new("x"),
-          Plurimath::Math::Symbol.new(")"),
+          Plurimath::Math::Function::Fenced.new(
+            Plurimath::Math::Symbol.new("("),
+            [
+              Plurimath::Math::Symbol.new("x"),
+            ],
+            Plurimath::Math::Symbol.new(")"),
+          ),
         ])
         expect(formula).to eq(expected_value)
       end
@@ -1330,17 +1344,25 @@ RSpec.describe Plurimath::Latex::Parser do
             Plurimath::Math::Formula.new([
               Plurimath::Math::Symbol.new("x"),
               Plurimath::Math::Symbol.new("&#x2208;"),
-              Plurimath::Math::Symbol.new("["),
-              Plurimath::Math::Symbol.new("a"),
-              Plurimath::Math::Symbol.new(","),
-              Plurimath::Math::Symbol.new("b"),
-              Plurimath::Math::Symbol.new("]")
+              Plurimath::Math::Function::Fenced.new(
+                Plurimath::Math::Symbol.new("\\["),
+                [
+                  Plurimath::Math::Symbol.new("a"),
+                  Plurimath::Math::Symbol.new(","),
+                  Plurimath::Math::Symbol.new("b"),
+                ],
+                Plurimath::Math::Symbol.new("\\]")
+              )
             ])
           ),
           Plurimath::Math::Symbol.new("f"),
-          Plurimath::Math::Symbol.new("("),
-          Plurimath::Math::Symbol.new("x"),
-          Plurimath::Math::Symbol.new(")"),
+          Plurimath::Math::Function::Fenced.new(
+            Plurimath::Math::Symbol.new("("),
+            [
+              Plurimath::Math::Symbol.new("x"),
+            ],
+            Plurimath::Math::Symbol.new(")"),
+          )
         ])
         expect(formula).to eq(expected_value)
       end
@@ -1355,17 +1377,25 @@ RSpec.describe Plurimath::Latex::Parser do
             Plurimath::Math::Formula.new([
               Plurimath::Math::Symbol.new("x"),
               Plurimath::Math::Symbol.new("&#x2208;"),
-              Plurimath::Math::Symbol.new("["),
-              Plurimath::Math::Symbol.new("&#x3b1;"),
-              Plurimath::Math::Symbol.new(","),
-              Plurimath::Math::Symbol.new("&#x3b2;"),
-              Plurimath::Math::Symbol.new("]")
+              Plurimath::Math::Function::Fenced.new(
+                Plurimath::Math::Symbol.new("\\["),
+                [
+                  Plurimath::Math::Symbol.new("&#x3b1;"),
+                  Plurimath::Math::Symbol.new(","),
+                  Plurimath::Math::Symbol.new("&#x3b2;"),
+                ],
+                Plurimath::Math::Symbol.new("\\]"),
+              )
             ])
           ),
           Plurimath::Math::Symbol.new("f"),
-          Plurimath::Math::Symbol.new("("),
-          Plurimath::Math::Symbol.new("x"),
-          Plurimath::Math::Symbol.new(")"),
+          Plurimath::Math::Function::Fenced.new(
+            Plurimath::Math::Symbol.new("("),
+            [
+              Plurimath::Math::Symbol.new("x"),
+            ],
+            Plurimath::Math::Symbol.new(")"),
+          )
         ])
         expect(formula).to eq(expected_value)
       end
@@ -1434,18 +1464,26 @@ RSpec.describe Plurimath::Latex::Parser do
       let(:string) { "(1+(x-y)^{2})" }
       it "returns formula" do
         expected_value = Plurimath::Math::Formula.new([
-          Plurimath::Math::Symbol.new("("),
-          Plurimath::Math::Number.new("1"),
-          Plurimath::Math::Symbol.new("+"),
-          Plurimath::Math::Symbol.new("("),
-          Plurimath::Math::Symbol.new("x"),
-          Plurimath::Math::Symbol.new("-"),
-          Plurimath::Math::Symbol.new("y"),
-          Plurimath::Math::Function::Power.new(
+          Plurimath::Math::Function::Fenced.new(
+            Plurimath::Math::Symbol.new("("),
+            [
+              Plurimath::Math::Number.new("1"),
+              Plurimath::Math::Symbol.new("+"),
+              Plurimath::Math::Function::Power.new(
+                Plurimath::Math::Function::Fenced.new(
+                  Plurimath::Math::Symbol.new("("),
+                  [
+                    Plurimath::Math::Symbol.new("x"),
+                    Plurimath::Math::Symbol.new("-"),
+                    Plurimath::Math::Symbol.new("y")
+                  ],
+                  Plurimath::Math::Symbol.new(")"),
+                ),
+                Plurimath::Math::Number.new("2"),
+              ),
+            ],
             Plurimath::Math::Symbol.new(")"),
-            Plurimath::Math::Number.new("2"),
-          ),
-          Plurimath::Math::Symbol.new(")"),
+          )
         ])
         expect(formula).to eq(expected_value)
       end

@@ -149,7 +149,7 @@ RSpec.describe Plurimath::Math::Function::Fenced do
       let(:third_value) { Plurimath::Math::Symbol.new(")") }
 
       it "returns mathml string" do
-        expect(formula).to eql(" \\left ( n \\right ) ")
+        expect(formula).to eql("( n )")
       end
     end
 
@@ -159,7 +159,7 @@ RSpec.describe Plurimath::Math::Function::Fenced do
       let(:third_value) { Plurimath::Math::Symbol.new("}") }
 
       it "returns mathml string" do
-        expect(formula).to eql(" \\left \\{ 70 \\right \\} ")
+        expect(formula).to eql("\\{ 70 \\}")
       end
     end
 
@@ -178,7 +178,7 @@ RSpec.describe Plurimath::Math::Function::Fenced do
       let(:third_value) { Plurimath::Math::Symbol.new("]") }
 
       it "returns mathml string" do
-        expect(formula).to eql(" \\left [ \\sum_{&}^{\\text{so}} \\right ] ")
+        expect(formula).to eql("[ \\sum_{&}^{\\text{so}} ]")
       end
     end
   end

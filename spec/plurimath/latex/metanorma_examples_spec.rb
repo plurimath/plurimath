@@ -214,9 +214,13 @@ RSpec.describe Plurimath::Latex::Parser do
             Plurimath::Math::Symbol.new("I"),
             Plurimath::Math::Symbol.new("p")
           ),
-          Plurimath::Math::Symbol.new("("),
-          Plurimath::Math::Symbol.new("z"),
-          Plurimath::Math::Symbol.new(")"),
+          Plurimath::Math::Function::Fenced.new(
+            Plurimath::Math::Symbol.new("("),
+            [
+              Plurimath::Math::Symbol.new("z"),
+            ],
+            Plurimath::Math::Symbol.new(")"),
+          ),
           Plurimath::Math::Symbol.new("="),
           Plurimath::Math::Symbol.new("K"),
           Plurimath::Math::Symbol.new("+"),

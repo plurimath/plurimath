@@ -407,6 +407,15 @@ module Plurimath
           end
         end
       end
+
+      def left_right_objects(paren, function)
+        paren = if paren.to_s.match?(/\\{|\\}/)
+                  paren.to_s.gsub(/\\/, "")
+                else
+                  Latex::Constants::LEFT_RIGHT_PARENTHESIS[paren.to_sym]
+                end
+        get_class(function).new(paren)
+      end
     end
   end
 end
