@@ -2180,7 +2180,7 @@ RSpec.describe Plurimath::Latex do
       end
     end
 
-    context "contains example #44" do
+    context "contains example #45" do
       let(:string) do
         <<~LATEX
           V = \\frac{1}{2} \\: {\\bf u}^t \\:
@@ -2258,7 +2258,7 @@ RSpec.describe Plurimath::Latex do
       end
     end
 
-    context "contains example #45" do
+    context "contains example #46" do
       let(:string) do
         <<~LATEX
             \\[out_k = \\frac{1}{s}\\left(k == 0 ? 1 : \\sqrt{2}\\right)\\sum_{n = 0}^{s - 1}{in_{n} \\cdot \\cos\\left( \\frac{\\pi k}{s}\\left( n + \\frac{1}{2} \\right) \\right)}\\]
@@ -2356,7 +2356,7 @@ RSpec.describe Plurimath::Latex do
       end
     end
 
-    context "contains example #46" do
+    context "contains example #47" do
       let(:string) do
         <<~LATEX
           \\[out_k = \\frac{1}{s} (k == 0 ? 1 : \\sqrt{2}) \\sum_{n = 0}^{s - 1}{in_{n} \\cdot
