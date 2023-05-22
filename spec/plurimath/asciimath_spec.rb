@@ -3464,7 +3464,7 @@ RSpec.describe Plurimath::Asciimath do
       let(:string) { 'i_j = a_j xx (i_j mod b_j) - c_j xx floor(i_j//b_j)' }
 
       it 'returns parsed Asciimath to Formula' do
-        latex = 'i_{j} = a_{j} \times ( {i_{j}} \mod {b_{j}} ) - c_{j} \times \lfloor i_{j} / b_{j} \rfloor'
+        latex = 'i_{j} = a_{j} \times ( {i_{j}} \mod {b_{j}} ) - c_{j} \times {\lfloor i_{j} / b_{j} \rfloor}'
         asciimath = 'i_(j) = a_(j) xx (i_(j) mod b_(j)) - c_(j) xx floor(i_(j) // b_(j))'
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">

@@ -44,6 +44,34 @@ module Plurimath
             [mr]
           end
         end
+
+        def to_asciimath_math_zone(spacing, last = false, indent = true)
+          [
+            "#{spacing}\"tr\" function apply\n",
+            Formula.new(parameter_one).to_asciimath_math_zone(gsub_spacing(spacing, last)),
+          ]
+        end
+
+        def to_latex_math_zone(spacing, last = false, indent = true)
+          [
+            "#{spacing}\"tr\" function apply\n",
+            Formula.new(parameter_one).to_latex_math_zone(gsub_spacing(spacing, last), last, indent),
+          ]
+        end
+
+        def to_mathml_math_zone(spacing, last = false, indent = true)
+          [
+            "#{spacing}\"tr\" function apply\n",
+            Formula.new(parameter_one).to_mathml_math_zone(gsub_spacing(spacing, last), last, indent),
+          ]
+        end
+
+        def to_omml_math_zone(spacing, last = false, indent = true, display_style:)
+          [
+            "#{spacing}\"tr\" function apply\n",
+            Formula.new(parameter_one).to_omml_math_zone(gsub_spacing(spacing, last), last, indent, display_style: display_style),
+          ]
+        end
       end
     end
   end

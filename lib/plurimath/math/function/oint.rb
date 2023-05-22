@@ -6,6 +6,12 @@ module Plurimath
   module Math
     module Function
       class Oint < TernaryFunction
+        FUNCTION = {
+          name: "contour integral",
+          first_value: "subscript",
+          second_value: "supscript",
+        }
+
         def to_asciimath
           first_value = "_#{wrapped(parameter_one)}" if parameter_one
           second_value = "^#{wrapped(parameter_two)}" if parameter_two

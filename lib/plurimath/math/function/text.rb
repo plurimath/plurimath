@@ -43,6 +43,26 @@ module Plurimath
           false
         end
 
+        def to_asciimath_math_zone(spacing, last = false, indent = true)
+          "#{spacing}#{to_asciimath} text\n"
+        end
+
+        def to_latex_math_zone(spacing, last = false, indent = true)
+          "#{spacing}#{to_asciimath} text\n"
+        end
+
+        def to_mathml_math_zone(spacing, last = false, indent = true)
+          "#{spacing}\"#{dump_mathml(self)}\" text\n"
+        end
+
+        def to_omml_math_zone(spacing, last = false, indent = true, display_style:)
+          "#{spacing}\"#{dump_omml(self, display_style)}\" text\n"
+        end
+
+        def value
+          parameter_one
+        end
+
         protected
 
         def symbol_value(unicode)

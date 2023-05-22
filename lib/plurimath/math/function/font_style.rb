@@ -59,6 +59,51 @@ module Plurimath
           )
           [r_tag]
         end
+
+        def to_asciimath_math_zone(spacing, last = false, _indent = true)
+          new_spacing = gsub_spacing(spacing, last)
+          new_arr = [
+            "#{spacing}\"#{to_asciimath}\" function apply\n",
+            "#{new_spacing}|_ \"#{parameter_two}\" font family\n",
+          ]
+          ascii_fields_to_print(parameter_one, { spacing: new_spacing, field_name: "argument", additional_space: "|  |_ " , array: new_arr })
+          new_arr
+        end
+
+        def to_latex_math_zone(spacing, last = false, _indent = true)
+          new_spacing = gsub_spacing(spacing, last)
+          new_arr = [
+            "#{spacing}\"#{to_latex}\" function apply\n",
+            "#{new_spacing}|_ \"#{parameter_two}\" font family\n",
+          ]
+          latex_fields_to_print(parameter_one, { spacing: new_spacing, field_name: "argument", additional_space: "|  |_ " , array: new_arr })
+          new_arr
+        end
+
+        def to_mathml_math_zone(spacing, last = false, _indent = true)
+          new_spacing = gsub_spacing(spacing, last)
+          new_arr = [
+            "#{spacing}\"#{dump_mathml(self)}\" function apply\n",
+            "#{new_spacing}|_ \"#{omml_and_mathml_font_family}\" font family\n",
+          ]
+          mathml_fields_to_print(parameter_one, { spacing: new_spacing, field_name: "argument", additional_space: "|  |_ ", array: new_arr })
+          new_arr
+        end
+
+        def to_omml_math_zone(spacing, last = false, _indent = true, display_style:)
+          new_spacing = gsub_spacing(spacing, last)
+          new_arr = [
+            "#{spacing}\"#{dump_omml(self, display_style)}\" function apply\n",
+            "#{new_spacing}|_ \"#{omml_and_mathml_font_family}\" font family\n",
+          ]
+          omml_fields_to_print(parameter_one, { spacing: new_spacing, field_name: "argument", additional_space: "|  |_ ", array: new_arr, display_style: display_style })
+          new_arr
+        end
+
+        def omml_and_mathml_font_family
+          fonts = Utility::FONT_STYLES.select { |_font, font_class| font_class == self.class }.keys.map(&:to_s)
+          Omml::Parser::SUPPORTED_FONTS.values.find { |value| fonts.include?(value) }
+        end
       end
     end
   end

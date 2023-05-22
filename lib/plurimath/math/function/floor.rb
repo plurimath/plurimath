@@ -7,7 +7,7 @@ module Plurimath
     module Function
       class Floor < UnaryFunction
         def to_latex
-          "\\lfloor #{parameter_one.to_latex} \\rfloor"
+          "{\\lfloor #{parameter_one.to_latex} \\rfloor}"
         end
 
         def to_mathml_without_math_tag

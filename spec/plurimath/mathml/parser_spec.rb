@@ -1513,14 +1513,14 @@ RSpec.describe Plurimath::Mathml::Parser do
         <math>
           <semantics>
             <mrow>
-            <mstyle displaystyle='true'>
-              <mrow>
-                <msubsup>
-                  <mo>∫</mo>
-                  <mrow>
-                    <msub>
-                      <mi>t</mi>
-                      <mn>2</mn>
+              <mstyle displaystyle='true'>
+                <mrow>
+                  <msubsup>
+                    <mo>∫</mo>
+                    <mrow>
+                      <msub>
+                        <mi>t</mi>
+                        <mn>2</mn>
                       </msub>
                     </mrow>
                     <mrow>

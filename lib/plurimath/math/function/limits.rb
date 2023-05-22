@@ -6,6 +6,13 @@ module Plurimath
   module Math
     module Function
       class Limits < TernaryFunction
+        FUNCTION = {
+          name: "function apply",
+          first_value: "base",
+          second_value: "subscript",
+          third_value: "supscript",
+        }.freeze
+
         def to_mathml_without_math_tag
           underover = Utility.ox_element("munderover")
           value_array = []

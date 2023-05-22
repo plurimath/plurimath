@@ -6,6 +6,12 @@ module Plurimath
   module Math
     module Function
       class Root < BinaryFunction
+        FUNCTION = {
+          name: "root",
+          first_value: "radicand",
+          second_value: "index",
+        }.freeze
+
         def to_mathml_without_math_tag
           first_value = parameter_one&.to_mathml_without_math_tag
           second_value = parameter_two&.to_mathml_without_math_tag

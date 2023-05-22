@@ -6,6 +6,12 @@ module Plurimath
   module Math
     module Function
       class Frac < BinaryFunction
+        FUNCTION = {
+          name: "fraction",
+          first_value: "numerator",
+          second_value: "denominator",
+        }.freeze
+
         def to_asciimath
           first_value = "(#{parameter_one&.to_asciimath})" if parameter_one
           second_value = "(#{parameter_two&.to_asciimath})" if parameter_two

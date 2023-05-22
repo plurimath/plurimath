@@ -6,6 +6,12 @@ module Plurimath
   module Math
     module Function
       class Base < BinaryFunction
+        FUNCTION = {
+          name: "subscript",
+          first_value: "base",
+          second_value: "script",
+        }.freeze
+
         def to_asciimath
           first_value = parameter_one.to_asciimath if parameter_one
           second_value = "_#{wrapped(parameter_two)}" if parameter_two
@@ -16,8 +22,8 @@ module Plurimath
           tag_name = (Utility::MUNDER_CLASSES.include?(parameter_one&.class_name) ? "under" : "sub")
           sub_tag = Utility.ox_element("m#{tag_name}")
           mathml_value = []
-          mathml_value << parameter_one&.to_mathml_without_math_tag
-          mathml_value << parameter_two&.to_mathml_without_math_tag if parameter_two
+          mathml_value << validate_mathml_fields(parameter_one)
+          mathml_value << validate_mathml_fields(parameter_two)
           Utility.update_nodes(sub_tag, mathml_value)
         end
 

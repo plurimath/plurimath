@@ -6,6 +6,12 @@ module Plurimath
   module Math
     module Function
       class Mod < BinaryFunction
+        FUNCTION = {
+          name: "mod",
+          first_value: "base",
+          second_value: "argument",
+        }
+
         def to_asciimath
           first_value = parameter_one&.to_asciimath
           second_value = parameter_two&.to_asciimath

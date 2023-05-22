@@ -123,7 +123,7 @@ RSpec.describe Plurimath::Math::Function::Floor do
       let(:first_value) { Plurimath::Math::Symbol.new("n") }
 
       it "returns mathml string" do
-        expect(formula).to eql("\\lfloor n \\rfloor")
+        expect(formula).to eql("{\\lfloor n \\rfloor}")
       end
     end
 
@@ -131,7 +131,7 @@ RSpec.describe Plurimath::Math::Function::Floor do
       let(:first_value) { Plurimath::Math::Number.new("70") }
 
       it "returns mathml string" do
-        expect(formula).to eql("\\lfloor 70 \\rfloor")
+        expect(formula).to eql("{\\lfloor 70 \\rfloor}")
       end
     end
 
@@ -145,7 +145,7 @@ RSpec.describe Plurimath::Math::Function::Floor do
         ])
       end
       it "returns mathml string" do
-        expect(formula).to eql("\\lfloor \\sum_{&}^{\\text{so}} \\rfloor")
+        expect(formula).to eql("{\\lfloor \\sum_{&}^{\\text{so}} \\rfloor}")
       end
     end
   end

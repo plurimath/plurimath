@@ -6,6 +6,12 @@ module Plurimath
   module Math
     module Function
       class Power < BinaryFunction
+        FUNCTION = {
+          name: "superscript",
+          first_value: "base",
+          second_value: "script",
+        }.freeze
+
         def to_asciimath
           second_value = "^#{wrapped(parameter_two)}" if parameter_two
           "#{parameter_one.to_asciimath}#{second_value}"
@@ -14,8 +20,8 @@ module Plurimath
         def to_mathml_without_math_tag
           tag_name = (["ubrace", "obrace"].include?(parameter_one&.class_name) ? "over" : "sup")
           sup_tag = Utility.ox_element("m#{tag_name}")
-          mathml_value = [parameter_one.to_mathml_without_math_tag]
-          mathml_value << parameter_two&.to_mathml_without_math_tag
+          mathml_value = [validate_mathml_fields(parameter_one)]
+          mathml_value << validate_mathml_fields(parameter_two)
           Utility.update_nodes(sup_tag, mathml_value)
         end
 

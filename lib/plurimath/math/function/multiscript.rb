@@ -5,6 +5,13 @@ module Plurimath
   module Math
     module Function
       class Multiscript < TernaryFunction
+        FUNCTION = {
+          name: "multiscript",
+          first_value: "base",
+          second_value: "subscript",
+          third_value: "supscript",
+        }.freeze
+
         def to_omml_without_math_tag(display_style)
           pre_element = Utility.ox_element("sPre", namespace: "m")
           pr_element  = Utility.ox_element("sPrePr", namespace: "m")

@@ -6,6 +6,12 @@ module Plurimath
   module Math
     module Function
       class Stackrel < BinaryFunction
+        FUNCTION = {
+          name: "stackrel",
+          first_value: "above",
+          second_value: "below",
+        }.freeze
+
         def to_asciimath
           first_value  = wrapped(parameter_one)
           second_value = wrapped(parameter_two)

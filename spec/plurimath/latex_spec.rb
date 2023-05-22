@@ -964,6 +964,7 @@ RSpec.describe Plurimath::Latex do
             <mstyle displaystyle="true">
               <msub>
                 <mn>1</mn>
+                <mi/>
               </msub>
             </mstyle>
           </math>
@@ -2697,7 +2698,7 @@ RSpec.describe Plurimath::Latex do
     context "contains text with empty and string value and base value, power base value of font style example #56" do
       let(:string) do
         <<~LATEX
-          \\text{}_{d} \\text{d}_{d} \\mathfrak{d}_d^w 100_d^w \\text{}
+          \\text{}_{d} \\text{d}_{d} \\mathfrak{d}_d^w 100_d^w \\text{} \\text{SO}_{4}^{2 -}
         LATEX
       end
 
@@ -2726,11 +2727,19 @@ RSpec.describe Plurimath::Latex do
                 <mi>w</mi>
               </msubsup>
               <mtext></mtext>
+              <msubsup>
+                <mtext>SO</mtext>
+                <mn>4</mn>
+                <mrow>
+                  <mn>2</mn>
+                  <mo>&#x2212;</mo>
+                </mrow>
+              </msubsup>
             </mstyle>
           </math>
         MATHML
-        latex = "\\text{}_{d} \\text{d}_{d} \\mathfrak{d}_{d}^{w} 100_{d}^{w} \\text{}"
-        asciimath = "\"\"_(d) \"d\"_(d) mathfrak(d)_(d)^(w) 100_(d)^(w) \"\""
+        latex = "\\text{}_{d} \\text{d}_{d} \\mathfrak{d}_{d}^{w} 100_{d}^{w} \\text{} \\text{SO}_{4}^{2 -}"
+        asciimath = "\"\"_(d) \"d\"_(d) mathfrak(d)_(d)^(w) 100_(d)^(w) \"\" \"SO\"_(4)^(2 -)"
         expect(formula.to_asciimath).to eql(asciimath)
         expect(formula.to_latex.gsub(/\s+/, "")).to eql(latex.gsub(/\s+/, ""))
         expect(formula.to_mathml).to be_equivalent_to(mathml)

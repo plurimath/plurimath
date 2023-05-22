@@ -63,9 +63,7 @@ module Plurimath
       end
 
       def insert_t_tag(_display_style)
-        r_tag = Utility.ox_element("r", namespace: "m")
-        r_tag << (Utility.ox_element("t", namespace: "m") << value)
-        [r_tag]
+        [(Utility.ox_element("r", namespace: "m") << t_tag)]
       end
 
       def tag_name
@@ -81,7 +79,7 @@ module Plurimath
       end
 
       def font_style_t_tag(_display_style)
-        Utility.ox_element("t", namespace: "m") << value
+        t_tag
       end
 
       def nary_attr_value
@@ -90,6 +88,14 @@ module Plurimath
 
       def validate_function_formula
         false
+      end
+
+      def omml_nodes(display_style)
+        Array(t_tag)
+      end
+
+      def t_tag
+        Utility.ox_element("t", namespace: "m") << value
       end
 
       private

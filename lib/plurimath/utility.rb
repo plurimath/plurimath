@@ -91,6 +91,12 @@ module Plurimath
       "{": "}",
       "[": "]",
     }.freeze
+    TEXT_CLASSES = %w[
+      unicode
+      symbol
+      number
+      text
+    ].freeze
 
     class << self
       def organize_table(array, column_align: nil, options: nil)
@@ -249,12 +255,14 @@ module Plurimath
 
       def nary_fonts(nary)
         narypr  = nary.first.flatten.compact
-        subsup  = narypr.any?("undOvr") ? "underover" : "power_base"
+        subsup  = narypr.any?("undOvr") ? "undOvr" : "subSup"
         unicode = narypr.any?(Hash) ? narypr.first[:chr] : "∫"
-        get_class(subsup).new(
+        Math::Function::Nary.new(
           Math::Symbol.new(string_to_html_entity(unicode)),
-          nary[1],
-          nary[2],
+          filter_values(nary[1]),
+          filter_values(nary[2]),
+          filter_values(nary[3]),
+          { type: subsup }
         )
       end
 
@@ -469,12 +477,7 @@ module Plurimath
       def mrow_left_right(mrow = [])
         object = mrow.first
         !(
-          (
-            (
-              object.is_a?(Math::Function::TernaryFunction) && object.any_value_exist?
-            ) &&
-            (mrow.length <= 2)
-          ) ||
+          ((object.is_a?(Math::Function::TernaryFunction) && object.any_value_exist?) && (mrow.length <= 2)) ||
           (object.is_a?(Math::Function::UnaryFunction) && mrow.length == 1)
         )
       end
@@ -563,6 +566,37 @@ module Plurimath
             )
           end
         end
+      end
+
+      def validate_math_zone(object)
+        return false unless object
+
+        if object.is_a?(Math::Formula)
+          filter_math_zone_values(object.value).find do |d|
+            !d.is_a?(Math::Function::Text)
+          end
+        else
+          !TEXT_CLASSES.include?(object.class_name)
+        end
+      end
+
+      def filter_math_zone_values(value)
+        return [] if value&.empty?
+
+        new_arr = []
+        temp_array = []
+        skip_index = nil
+        value.each_with_index do |obj, index|
+          object = obj.dup
+          next if index == skip_index
+          next temp_array << object.value if TEXT_CLASSES.include?(object.class_name)
+
+          new_arr << Math::Function::Text.new(temp_array.join(" ")) if temp_array.any?
+          temp_array = []
+          new_arr << object
+        end
+        new_arr << Math::Function::Text.new(temp_array.join(" ")) if temp_array.any?
+        new_arr
       end
     end
   end

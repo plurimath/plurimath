@@ -6,6 +6,13 @@ module Plurimath
   module Math
     module Function
       class Int < TernaryFunction
+        FUNCTION = {
+          name: "integral",
+          first_value: "lower limit",
+          second_value: "upper limit",
+          third_value: "integrand"
+        }
+
         def to_asciimath
           first_value = "_#{wrapped(parameter_one)}" if parameter_one
           second_value = "^#{wrapped(parameter_two)}" if parameter_two

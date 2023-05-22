@@ -6,12 +6,19 @@ module Plurimath
   module Math
     module Function
       class PowerBase < TernaryFunction
+        FUNCTION = {
+          name: "subsup",
+          first_value: "base",
+          second_value: "subscript",
+          third_value: "supscript",
+        }.freeze
+
         def to_mathml_without_math_tag
           subsup_tag = Utility.ox_element("m#{parameter_one.tag_name}")
           new_arr = []
-          new_arr << parameter_one.to_mathml_without_math_tag
-          new_arr << parameter_two&.to_mathml_without_math_tag
-          new_arr << parameter_three&.to_mathml_without_math_tag
+          new_arr << validate_mathml_fields(parameter_one)
+          new_arr << validate_mathml_fields(parameter_two)
+          new_arr << validate_mathml_fields(parameter_three)
           Utility.update_nodes(subsup_tag, new_arr)
         end
 
@@ -27,23 +34,6 @@ module Plurimath
           second_value = "<sub>#{parameter_two.to_html}</sub>" if parameter_two
           third_value  = "<sup>#{parameter_three.to_html}</sup>" if parameter_three
           "#{first_value}#{second_value}#{third_value}"
-        end
-
-        def omml_nary_tag(display_style)
-          narypr = Utility.ox_element("naryPr", namespace: "m")
-          chr_value(narypr)
-          narypr << Utility.ox_element(
-            "limLoc",
-            namespace: "m",
-            attributes: { "m:val": parameter_one.omml_tag_name },
-          )
-          hide_tags(narypr)
-          narypr << Utility.pr_element("ctrl", true, namespace: "m")
-          [
-            narypr,
-            omml_parameter(parameter_two, display_style, tag_name: "sub"),
-            omml_parameter(parameter_three, display_style, tag_name: "sup"),
-          ]
         end
 
         def to_omml_without_math_tag(display_style)
@@ -67,17 +57,6 @@ module Plurimath
         end
 
         protected
-
-        def chr_value(narypr)
-          first_value = Utility.html_entity_to_unicode(parameter_one&.nary_attr_value)
-          return narypr if first_value == "∫"
-
-          narypr << Utility.ox_element(
-            "chr",
-            namespace: "m",
-            attributes: { "m:val": first_value },
-          )
-        end
 
         def hide_tags(nar)
           attr = { "m:val": "1" }

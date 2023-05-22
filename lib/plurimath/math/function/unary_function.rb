@@ -75,10 +75,54 @@ module Plurimath
           [func]
         end
 
+        def to_asciimath_math_zone(spacing, last = false, _indent = true)
+          new_spacing = gsub_spacing(spacing, last)
+          new_arr = [
+            "#{spacing}\"#{to_asciimath}\" function apply\n",
+            "#{new_spacing}|_ \"#{class_name}\" function name\n",
+          ]
+          ascii_fields_to_print(parameter_one, { spacing: new_spacing, field_name: "argument", additional_space: "   |_ " , array: new_arr })
+          new_arr
+        end
+
+        def to_latex_math_zone(spacing, last = false, _indent = true)
+          new_spacing = gsub_spacing(spacing, last)
+          new_arr = [
+            "#{spacing}\"#{to_latex}\" function apply\n",
+            "#{new_spacing}|_ \"#{class_name}\" function name\n",
+          ]
+          latex_fields_to_print(parameter_one, { spacing: new_spacing, field_name: "argument", additional_space: "   |_ " , array: new_arr })
+          new_arr
+        end
+
+        def to_mathml_math_zone(spacing, last = false, _indent = true)
+          new_spacing = gsub_spacing(spacing, last)
+          new_arr = [
+            "#{spacing}\"#{dump_mathml(self)}\" function apply\n",
+            "#{new_spacing}|_ \"#{class_name}\" function name\n",
+          ]
+          mathml_fields_to_print(parameter_one, { spacing: new_spacing, field_name: "argument", additional_space: "   |_ ", array: new_arr })
+          new_arr
+        end
+
+        def to_omml_math_zone(spacing, last = false, _indent = true, display_style:)
+          new_spacing = gsub_spacing(spacing, last)
+          new_arr = [
+            "#{spacing}\"#{dump_omml(self, display_style)}\" function apply\n",
+            "#{new_spacing}|_ \"#{class_name}\" function name\n",
+          ]
+          omml_fields_to_print(parameter_one, { spacing: new_spacing, field_name: "argument", additional_space: "   |_ ", array: new_arr, display_style: display_style })
+          new_arr
+        end
+
         protected
 
         def invert_unicode_symbols
           Mathml::Constants::UNICODE_SYMBOLS.invert[class_name] || class_name
+        end
+
+        def gsub_spacing(spacing, last)
+          spacing.gsub(/\|\_/, last ? "  " : "| ")
         end
 
         def asciimath_value
@@ -115,6 +159,10 @@ module Plurimath
           end
 
           Array(parameter_one&.insert_t_tag(display_style))
+        end
+
+        def latex_paren
+          Latex::Constants::LEFT_RIGHT_PARENTHESIS.invert[parameter_one] || '.'
         end
       end
     end

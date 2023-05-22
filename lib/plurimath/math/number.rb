@@ -30,16 +30,20 @@ module Plurimath
       end
 
       def to_omml_without_math_tag(_display_style)
-        [(Utility.ox_element("t", namespace: "m") << value)]
+        [t_tag]
       end
 
       def insert_t_tag(_display_style)
-        r_tag = Utility.ox_element("r", namespace: "m")
-        r_tag << (Utility.ox_element("t", namespace: "m") << value)
-        [r_tag]
+        [
+          (Utility.ox_element("r", namespace: "m") << t_tag),
+        ]
       end
 
       def font_style_t_tag(_display_style)
+        t_tag
+      end
+
+      def t_tag
         Utility.ox_element("t", namespace: "m") << value
       end
 
