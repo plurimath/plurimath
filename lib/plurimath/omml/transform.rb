@@ -98,11 +98,17 @@ module Plurimath
         open_paren   = fenced.shift if fenced&.first&.class_name == "symbol"
         close_paren  = fenced.shift if fenced&.first&.class_name == "symbol"
         fenced_value = fenced.compact
-        Math::Function::Fenced.new(
-          open_paren,
-          fenced_value,
-          close_paren,
-        )
+        if fenced_value.length == 1 && fenced_value.first.is_a?(Math::Function::Table)
+          fenced_value.first.open_paren = open_paren&.value
+          fenced_value.first.close_paren = close_paren&.value
+          fenced_value
+        else
+          Math::Function::Fenced.new(
+            open_paren,
+            fenced_value,
+            close_paren,
+          )
+        end
       end
 
       rule(dPr: subtree(:dpr)) do
@@ -176,12 +182,7 @@ module Plurimath
           ternary_class.parameter_three = Utility.filter_values(nary[3])
           ternary_class
         else
-          Math::Formula.new(
-            [
-              Utility.nary_fonts(nary),
-              Utility.filter_values(nary[3]),
-            ],
-          )
+          Utility.nary_fonts(nary)
         end
       end
 

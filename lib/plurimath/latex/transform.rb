@@ -516,7 +516,7 @@ module Plurimath
 
       rule(text: simple(:text),
            first_value: sequence(:first_value),
-           subscript: simple(:subscript),) do
+           subscript: simple(:subscript)) do
         Math::Function::Base.new(
           Math::Function::Text.new(first_value.join),
           subscript,
@@ -525,10 +525,21 @@ module Plurimath
 
       rule(text: simple(:text),
            first_value: simple(:first_value),
-           subscript: simple(:subscript),) do
+           subscript: simple(:subscript)) do
         Math::Function::Base.new(
           Math::Function::Text.new(first_value),
           subscript,
+        )
+      end
+
+      rule(text: simple(:text),
+           first_value: simple(:first_value),
+           subscript: simple(:subscript),
+           supscript: simple(:supscript)) do
+        Math::Function::PowerBase.new(
+          Math::Function::Text.new(first_value),
+          subscript,
+          supscript,
         )
       end
 
@@ -786,6 +797,17 @@ module Plurimath
             second_value,
           )
         end
+      end
+
+      rule(binary: simple(:binary),
+           first_value: simple(:first_value),
+           second_value: sequence(:second_value)) do
+        Utility.get_class(
+          binary.to_s.include?("mod") ? "mod" : binary,
+        ).new(
+          first_value,
+          Utility.filter_values(second_value),
+        )
       end
 
       rule(underover: simple(:function),

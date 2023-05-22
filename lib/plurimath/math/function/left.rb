@@ -30,11 +30,29 @@ module Plurimath
         end
 
         def to_latex
-          "\\left #{Latex::Constants::LEFT_RIGHT_PARENTHESIS.invert[parameter_one] || '.'}"
+          "\\left #{latex_paren}"
         end
 
         def validate_function_formula
           false
+        end
+
+        def to_asciimath_math_zone(spacing = "", _last = false, _indent = true)
+          "#{spacing}\"#{latex_paren}\" left\n"
+        end
+
+        def to_latex_math_zone(spacing = "", _last = false, _indent = true)
+          "#{spacing}\"#{latex_paren}\" left\n"
+        end
+
+        def to_mathml_math_zone(spacing = "", _last = false, _indent = true)
+          mo_tag = (Utility.ox_element("mo") << left_paren)
+          "#{spacing}\"#{dump_ox_nodes(mo_tag).gsub(/\s+/, "")}\" left\n"
+        end
+
+        def to_omml_math_zone(spacing = "", _last = false, _indent = true, display_style:)
+          t_tag = (Utility.ox_element("t", namespace: "m") << left_paren)
+          "#{spacing}\"#{dump_ox_nodes(t_tag).gsub(/\s+/, "")}\" left\n"
         end
 
         protected

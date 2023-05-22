@@ -59,6 +59,50 @@ module Plurimath
           !(parameter_one.nil? && parameter_two.nil? && parameter_three.nil?)
         end
 
+        def to_asciimath_math_zone(spacing, last = false, indent = true)
+          parameters = self.class::FUNCTION
+          new_spacing = gsub_spacing(spacing, last)
+          new_arr = ["#{spacing}\"#{to_asciimath}\" #{parameters[:name]}\n"]
+          ascii_fields_to_print(parameter_one, { spacing: new_spacing, field_name: parameters[:first_value], additional_space: "|  |_ ", array: new_arr })
+          ascii_fields_to_print(parameter_two, { spacing: new_spacing, field_name: parameters[:second_value], additional_space: "  |_ ", array: new_arr })
+          ascii_fields_to_print(parameter_three, { spacing: new_spacing, field_name: parameters[:third_value], additional_space: "   |_ ", array: new_arr })
+          new_arr
+        end
+
+        def to_latex_math_zone(spacing, last = false, indent = true)
+          parameters = self.class::FUNCTION
+          new_spacing = gsub_spacing(spacing, last)
+          new_arr = ["#{spacing}\"#{to_latex}\" #{parameters[:name]}\n"]
+          latex_fields_to_print(parameter_one, { spacing: new_spacing, field_name: parameters[:first_value], additional_space: "|  |_ ", array: new_arr })
+          latex_fields_to_print(parameter_two, { spacing: new_spacing, field_name: parameters[:second_value], additional_space: "  |_ ", array: new_arr })
+          latex_fields_to_print(parameter_three, { spacing: new_spacing, field_name: parameters[:third_value], additional_space: "   |_ ", array: new_arr })
+          new_arr
+        end
+
+        def to_mathml_math_zone(spacing, last = false, indent = true)
+          parameters = self.class::FUNCTION
+          new_spacing = gsub_spacing(spacing, last)
+          new_arr = ["#{spacing}\"#{dump_mathml(self)}\" #{parameters[:name]}\n"]
+          mathml_fields_to_print(parameter_one, { spacing: new_spacing, field_name: parameters[:first_value], additional_space: "|  |_ ", array: new_arr })
+          mathml_fields_to_print(parameter_two, { spacing: new_spacing, field_name: parameters[:second_value], additional_space: "  |_ ", array: new_arr })
+          mathml_fields_to_print(parameter_three, { spacing: new_spacing, field_name: parameters[:third_value], additional_space: "   |_ ", array: new_arr })
+          new_arr
+        end
+
+        def to_omml_math_zone(spacing, last = false, indent = true, display_style:)
+          parameters = self.class::FUNCTION
+          new_spacing = gsub_spacing(spacing, last)
+          new_arr = ["#{spacing}\"#{dump_omml(self, display_style)}\" #{parameters[:name]}\n"]
+          omml_fields_to_print(parameter_one, { spacing: new_spacing, field_name: parameters[:first_value], additional_space: "|  |_ ", array: new_arr, display_style: display_style })
+          omml_fields_to_print(parameter_two, { spacing: new_spacing, field_name: parameters[:second_value], additional_space: "  |_ ", array: new_arr, display_style: display_style })
+          omml_fields_to_print(parameter_three, { spacing: new_spacing, field_name: parameters[:third_value], additional_space: "   |_ ", array: new_arr, display_style: display_style })
+          new_arr
+        end
+
+        def any_value_exist?
+          !(parameter_one.nil? || parameter_two.nil? || parameter_three.nil?)
+        end
+
         protected
 
         def latex_wrapped(field)
@@ -67,6 +111,10 @@ module Plurimath
           else
             "{#{field.to_latex}}"
           end
+        end
+
+        def gsub_spacing(spacing, last)
+          spacing.gsub(/\|\_/, last ? "  " : "| ")
         end
 
         def invert_unicode_symbols

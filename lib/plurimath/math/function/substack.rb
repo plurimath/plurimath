@@ -6,6 +6,12 @@ module Plurimath
   module Math
     module Function
       class Substack < BinaryFunction
+        FUNCTION = {
+          name: "substack",
+          first_value: "above",
+          second_value: "below",
+        }.freeze
+
         def to_latex
           first_value  = parameter_one.to_latex if parameter_one
           second_value = "\\\\#{parameter_two.to_latex}" if parameter_two

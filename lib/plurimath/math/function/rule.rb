@@ -5,6 +5,13 @@ module Plurimath
   module Math
     module Function
       class Rule < TernaryFunction
+        FUNCTION = {
+          name: "rule",
+          first_value: "first argument",
+          second_value: "second argument",
+          third_value: "third argument",
+        }.freeze
+
         def to_asciimath
           ""
         end

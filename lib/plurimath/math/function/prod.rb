@@ -6,6 +6,12 @@ module Plurimath
   module Math
     module Function
       class Prod < TernaryFunction
+        FUNCTION = {
+          name: "prod",
+          first_value: "subscript",
+          second_value: "supscript",
+        }.freeze
+
         def to_asciimath
           first_value = "_#{wrapped(parameter_one)}" if parameter_one
           second_value = "^#{wrapped(parameter_two)}" if parameter_two
@@ -55,24 +61,19 @@ module Plurimath
         end
 
         def to_omml_without_math_tag(display_style)
-          if all_values_exist?
-            nary = Utility.ox_element("nary", namespace: "m")
-            Utility.update_nodes(
-              nary,
-              [
-                narypr("∏"),
-                omml_parameter(parameter_one, display_style, tag_name: "sub"),
-                omml_parameter(parameter_two, display_style, tag_name: "sup"),
-                omml_parameter(parameter_three, display_style, tag_name: "e"),
-              ],
-            )
-            [nary]
-          else
-            r_tag = Utility.ox_element("r", namespace: "m")
-            t_tag = Utility.ox_element("t", namespace: "m")
-            r_tag << (t_tag << "&#x220f;")
-            [r_tag]
-          end
+          return r_element("&#x220f;", rpr_tag: false) unless all_values_exist?
+
+          nary = Utility.ox_element("nary", namespace: "m")
+          Utility.update_nodes(
+            nary,
+            [
+              narypr("∏"),
+              omml_parameter(parameter_one, display_style, tag_name: "sub"),
+              omml_parameter(parameter_two, display_style, tag_name: "sup"),
+              omml_parameter(parameter_three, display_style, tag_name: "e"),
+            ],
+          )
+          [nary]
         end
 
         def nary_attr_value

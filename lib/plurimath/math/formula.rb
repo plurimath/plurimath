@@ -4,6 +4,12 @@ module Plurimath
   module Math
     class Formula < Core
       attr_accessor :value, :left_right_wrapper, :displaystyle, :input_string
+      MATH_ZONE_TYPES = %i[
+        omml
+        latex
+        mathml
+        asciimath
+      ].freeze
 
       def initialize(
         value = [],
@@ -110,20 +116,54 @@ module Plurimath
       end
 
       def to_omml_without_math_tag(display_style)
-        return nary_tag(display_style) if nary_tag_able?(display_style)
-
         omml_content(display_style)
       end
 
-      def nary_tag(display_style)
-        nary_element = Utility.ox_element("nary", namespace: "m")
-        e_tag    = Utility.ox_element("e", namespace: "m")
-        Utility.update_nodes(e_tag, value.last.insert_t_tag(display_style))
-        Utility.update_nodes(
-          nary_element,
-          (value.first.omml_nary_tag(display_style) << e_tag),
-        )
-        [nary_element]
+      def to_display(type = nil)
+        return type_error! unless MATH_ZONE_TYPES.include?(type.downcase.to_sym)
+
+        math_zone = case type
+                    when :asciimath
+                      "  |_ \"#{to_asciimath}\"\n#{to_asciimath_math_zone("     ").join}"
+                    when :latex
+                      "  |_ \"#{to_latex}\"\n#{to_latex_math_zone("     ").join}"
+                    when :mathml
+                      "  |_ \"#{to_mathml.gsub(/\n\s*/, "")}\"\n#{to_mathml_math_zone("     ").join}"
+                    when :omml
+                      "  |_ \"#{to_omml.gsub(/\n\s*/, "")}\"\n#{to_omml_math_zone("     ", display_style: displaystyle).join}"
+                    end
+        <<~MATHZONE.sub(/\n$/, "")
+        |_ Math zone
+        #{math_zone}
+        MATHZONE
+      end
+
+      def to_asciimath_math_zone(spacing = "", last = false, indent = true)
+        filtered_values(value).map.with_index(1) do |object, index|
+          last = index == @values.length
+          object.to_asciimath_math_zone(new_space(spacing, indent), last)
+        end
+      end
+
+      def to_latex_math_zone(spacing = "", last = false, indent = true)
+        filtered_values(value).map.with_index(1) do |object, index|
+          last = index == @values.length
+          object.to_latex_math_zone(new_space(spacing, indent), last)
+        end
+      end
+
+      def to_mathml_math_zone(spacing = "", last = false, indent = true)
+        filtered_values(value).map.with_index(1) do |object, index|
+          last = index == @values.length
+          object.to_mathml_math_zone(new_space(spacing, indent), last)
+        end
+      end
+
+      def to_omml_math_zone(spacing = "", last = false, indent = true, display_style:)
+        filtered_values(value).map.with_index(1) do |object, index|
+          last = index == @values.length
+          object.to_omml_math_zone(new_space(spacing, indent), last, display_style: display_style)
+        end
       end
 
       def extract_class_from_text
@@ -136,16 +176,6 @@ module Plurimath
         value.first.nary_attr_value
       end
 
-      def nary_tag_able?(display_style)
-        value.length == 2 &&
-          ["underover", "powerbase"].include?(value&.first&.class_name) &&
-          !value.first.parameter_one.is_a?(Function::FontStyle) &&
-          (
-            value&.first&.parameter_one&.to_omml_without_math_tag(display_style)&.length == 1 ||
-            value&.first&.parameter_one.to_omml_without_math_tag(display_style).match?(/^&#x\w*\d*;$/)
-          )
-      end
-
       def validate_function_formula
         (value.none?(Function::Left) || value.none?(Function::Right))
       end
@@ -154,6 +184,18 @@ module Plurimath
 
       def boolean_display_style(display_style = displaystyle)
         YAML.load(display_style.to_s)
+      end
+
+      def new_space(spacing, indent)
+        if value.any? { |val| val.class_name == "left" && value.any? { |val| val.class_name == "right" } }
+          return spacing
+        end
+
+        (indent && wrapable?(spacing)) ? spacing + "|_ " : spacing
+      end
+
+      def wrapable?(spacing)
+        left_right_wrapper && !spacing.end_with?("|_ ")
       end
 
       def parse_error!(type)

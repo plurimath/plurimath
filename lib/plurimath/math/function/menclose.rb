@@ -6,6 +6,12 @@ module Plurimath
   module Math
     module Function
       class Menclose < BinaryFunction
+        FUNCTION = {
+          name: "enclosure",
+          first_value: "enclosure type",
+          second_value: "expression",
+        }.freeze
+
         def to_asciimath
           parameter_two&.to_asciimath
         end

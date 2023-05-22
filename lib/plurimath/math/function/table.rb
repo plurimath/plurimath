@@ -70,14 +70,51 @@ module Plurimath
         end
 
         def to_omml_without_math_tag(display_style)
-          if value.map { |d| d.parameter_one.length == 1 }.all?
-            single_td_table(display_style)
-          else
-            fenced_table(multiple_td_table(display_style))
-          end
+          ox_table = if value.map { |d| d.parameter_one.length == 1 }.all?
+                       single_td_table(display_style)
+                     else
+                       multiple_td_table(display_style)
+                     end
+          fenced_table(ox_table)
+        end
+
+        def to_asciimath_math_zone(spacing, last = false, indent = true)
+          [
+            "#{spacing}\"table\" function apply\n",
+            Formula.new(value).to_asciimath_math_zone(gsub_spacing(spacing, last), last, indent),
+          ]
+        end
+
+        def to_latex_math_zone(spacing, last = false, indent = true)
+          [
+            "#{spacing}\"table\" function apply\n",
+            Formula.new(value).to_latex_math_zone(gsub_spacing(spacing, last), last, indent),
+          ]
+        end
+
+        def to_mathml_math_zone(spacing, last = false, indent = true)
+          [
+            "#{spacing}\"table\" function apply\n",
+            Formula.new(value).to_mathml_math_zone(gsub_spacing(spacing, last), last, indent),
+          ]
+        end
+
+        def to_omml_math_zone(spacing, last = false, indent = true, display_style:)
+          [
+            "#{spacing}\"table\" function apply\n",
+            Formula.new(value).to_omml_math_zone(gsub_spacing(spacing, last), last, indent, display_style: display_style),
+          ]
+        end
+
+        def class_name
+          self.class.name.split("::").last.downcase
         end
 
         protected
+
+        def gsub_spacing(spacing, last)
+          spacing.gsub(/\|\_/, last ? "  " : "| ")
+        end
 
         def present?(field)
           !(field.nil? || field.empty?)
@@ -215,7 +252,7 @@ module Plurimath
         end
 
         def fenced_table(ox_table)
-          return ox_table unless open_paren && close_paren
+          return ox_table unless open_paren || close_paren
 
           d_node = Utility.ox_element("d", namespace: "m")
           e_node = Utility.ox_element("e", namespace: "m")
@@ -225,22 +262,26 @@ module Plurimath
         end
 
         def mdpr_node
-          begchr = Utility.ox_element("begChr", namespace: "m")
-          begchr.attributes["m:val"] = paren(open_paren)
-          endchr = Utility.ox_element("endChr", namespace: "m")
-          endchr.attributes["m:val"] = paren(close_paren)
           sepchr = Utility.ox_element("sepChr", attributes: { "m:val": "" }, namespace: "m")
           mgrow  = Utility.ox_element("grow", namespace: "m")
           mdpr = Utility.ox_element("dPr", namespace: "m")
-          Utility.update_nodes(
-            mdpr,
-            [
-              begchr,
-              endchr,
-              sepchr,
-              mgrow,
-            ],
-          )
+          Utility.update_nodes(mdpr, [begchr, endchr, sepchr, mgrow])
+        end
+
+        def begchr
+          return unless open_paren
+
+          begchr = Utility.ox_element("begChr", namespace: "m")
+          begchr.attributes["m:val"] = paren(open_paren)
+          begchr
+        end
+
+        def endchr
+          return unless close_paren
+
+          endchr = Utility.ox_element("endChr", namespace: "m")
+          endchr.attributes["m:val"] = paren(close_paren)
+          endchr
         end
 
         def paren(parenthesis)

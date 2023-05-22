@@ -72,7 +72,7 @@ module Plurimath
 
     def type_error!
       raise InvalidTypeError.new(
-        "`type` must be one of: `#{VALID_TYPES.keys.join('`, `')}`"
+        "`type` must be one of: `#{VALID_TYPES.keys.join('`, `')}`",
       )
     end
 

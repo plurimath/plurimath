@@ -6,6 +6,12 @@ module Plurimath
   module Math
     module Function
       class Underset < BinaryFunction
+        FUNCTION = {
+          name: "underscript",
+          first_value: "underscript value",
+          second_value: "base expression",
+        }.freeze
+
         def to_mathml_without_math_tag
           first_value = parameter_one&.to_mathml_without_math_tag
           second_value = parameter_two&.to_mathml_without_math_tag

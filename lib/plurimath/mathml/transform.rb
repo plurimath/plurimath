@@ -88,8 +88,7 @@ module Plurimath
 
       rule(merror: sequence(:merror)) do
         Math::Function::Merror.new(
-          merror[0],
-          merror[1],
+          Utility.filter_values(merror),
         )
       end
 

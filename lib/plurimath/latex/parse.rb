@@ -4,11 +4,18 @@ require "parslet"
 module Plurimath
   class Latex
     class Parse < Parslet::Parser
-      rule(:base)       { str("_") }
-      rule(:power)      { str("^") }
-      rule(:slash)      { str("\\") }
-      rule(:under_over) { slash >> underover_classes }
-      rule(:array_args) { (str("{") >> expression.as(:args) >> str("}")) }
+      rule(:base)          { str("_") }
+      rule(:power)         { str("^") }
+      rule(:slash)         { str("\\") }
+      rule(:under_over)    { slash >> underover_classes }
+      rule(:array_args)    { (str("{") >> expression.as(:args) >> str("}")) }
+      rule(:array_begin)   { (str("\\begin{") >> str("array").as(:environment) >> str("}")) }
+      rule(:optional_args) { (str("[") >> intermediate_exp.maybe.as(:options) >> str("]")).maybe }
+
+      rule(:color) do
+        (str("{") >> (str("}").absent? >> any).repeat.as(:symbol) >> str("}")) |
+          any.as(:symbol)
+      end
 
       rule(:optional_args) do
         (str("[") >> intermediate_exp.maybe.as(:options) >> str("]")).maybe
@@ -16,11 +23,7 @@ module Plurimath
 
       rule(:begining) do
         (slash >> str("begin") >> (str("{") >> symbol_text_or_integer >> str("*").as(:asterisk) >> str("}")) >> optional_args.maybe) |
-        (slash >> str("begin") >> (str("{") >> symbol_text_or_integer >> str("}")))
-      end
-
-      rule(:array_begin) do
-        (str("\\begin{") >> str("array").as(:environment) >> str("}"))
+          (slash >> str("begin") >> (str("{") >> symbol_text_or_integer >> str("}")))
       end
 
       rule(:ending) do
@@ -123,7 +126,8 @@ module Plurimath
       rule(:binary_functions) do
         (intermediate_exp.as(:first_value) >> under_over >> intermediate_exp.as(:second_value)).as(:under_over) |
           (slash >> str("sqrt").as(:root) >> sqrt_arg.as(:first_value) >> intermediate_exp.as(:second_value)).as(:binary) |
-          (slash >> str("sqrt").as(:sqrt) >> intermediate_exp.as(:intermediate_exp)).as(:binary)
+          (slash >> str("sqrt").as(:sqrt) >> intermediate_exp.as(:intermediate_exp)).as(:binary) |
+          (color_rules)
       end
 
       rule(:sequence) do
@@ -241,6 +245,11 @@ module Plurimath
           (power >> intermediate_exp.as(:supscript) >> base >> intermediate_exp.as(:subscript)) |
           (power >> intermediate_exp.as(:supscript)) |
           (base >> intermediate_exp.as(:subscript))
+      end
+
+      def color_rules
+        (str("{") >> slash >> str("color").as(:binary) >> color.as(:first_value) >> (sequence >> iteration.maybe).as(:second_value).maybe >> str("}")) |
+          (slash >> str("color").as(:binary) >> color.as(:first_value) >> expression.as(:second_value).maybe)
       end
     end
   end

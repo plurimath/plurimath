@@ -329,11 +329,13 @@ RSpec.describe Plurimath::Mathml::Parser do
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
         Plurimath::Math::Function::Merror.new(
-          Plurimath::Math::Function::Text.new("DivisionByZero:&#xa0;"),
-          Plurimath::Math::Function::Frac.new(
-            Plurimath::Math::Symbol.new("x"),
-            Plurimath::Math::Number.new("0")
-          )
+          Plurimath::Math::Formula.new([
+            Plurimath::Math::Function::Text.new("DivisionByZero:&#xa0;"),
+            Plurimath::Math::Function::Frac.new(
+              Plurimath::Math::Symbol.new("x"),
+              Plurimath::Math::Number.new("0")
+            )
+          ]),
         )
       ])
       expect(formula).to eq(expected_value)

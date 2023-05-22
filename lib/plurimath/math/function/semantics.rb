@@ -6,6 +6,12 @@ module Plurimath
   module Math
     module Function
       class Semantics < BinaryFunction
+        FUNCTION = {
+          name: "semantics",
+          first_value: "first argument",
+          second_value: "second argument",
+        }.freeze
+
         def to_mathml_without_math_tag
           first_value = parameter_one&.to_mathml_without_math_tag
           second_value = other_tags(parameter_two)

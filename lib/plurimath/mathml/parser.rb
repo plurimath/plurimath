@@ -47,7 +47,7 @@ module Plurimath
       end
 
       def validate_attributes(attributes)
-        attributes&.select! { |key, _| SUPPORTED_ATTRS.include?(key&.to_s) }
+        attributes&.select! { |key, _| SUPPORTED_ATTRS.include?(key.to_s) }
         attributes&.transform_keys(&:to_sym) if attributes&.any?
       end
 

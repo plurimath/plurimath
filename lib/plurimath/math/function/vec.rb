@@ -37,6 +37,46 @@ module Plurimath
           end
         end
 
+        def to_asciimath_math_zone(spacing, last = false, _indent = true)
+          new_spacing = gsub_spacing(spacing, last)
+          new_arr = [
+            "#{spacing}\"#{to_asciimath}\" function apply\n",
+            "#{new_spacing}|_ \"#{class_name}\" function name\n",
+          ]
+          ascii_fields_to_print(parameter_one, { spacing: new_spacing, field_name: "supscript", additional_space: "|  |_ " , array: new_arr })
+          new_arr
+        end
+
+        def to_latex_math_zone(spacing, last = false, _indent = true)
+          new_spacing = gsub_spacing(spacing, last)
+          new_arr = [
+            "#{spacing}\"#{to_latex}\" function apply\n",
+            "#{new_spacing}|_ \"#{class_name}\" function name\n",
+          ]
+          latex_fields_to_print(parameter_one, { spacing: new_spacing, field_name: "supscript", additional_space: "|  |_ " , array: new_arr })
+          new_arr
+        end
+
+        def to_mathml_math_zone(spacing, last = false, _indent = true)
+          new_spacing = gsub_spacing(spacing, last)
+          new_arr = [
+            "#{spacing}\"#{dump_mathml(self)}\" overset\n",
+            "#{new_spacing}|_ \"<mo>&#x2192;</mo>\" base\n",
+          ]
+          mathml_fields_to_print(parameter_one, { spacing: new_spacing, field_name: "supscript", additional_space: "|  |_ ", array: new_arr })
+          new_arr
+        end
+
+        def to_omml_math_zone(spacing, last = false, _indent = true, display_style:)
+          new_spacing = gsub_spacing(spacing, last)
+          new_arr = [
+            "#{spacing}\"#{dump_omml(self, display_style)}\" overset\n",
+            "#{new_spacing}|_ \"<m:t>&#x2192;</m:t>\" base\n",
+          ]
+          omml_fields_to_print(parameter_one, { spacing: new_spacing, field_name: "supscript", additional_space: "|  |_ ", array: new_arr, display_style: display_style })
+          new_arr
+        end
+
         protected
 
         def acc_tag(display_style)

@@ -6,6 +6,12 @@ module Plurimath
   module Math
     module Function
       class Over < BinaryFunction
+        FUNCTION = {
+          name: "over",
+          first_value: "numerator",
+          second_value: "denominator",
+        }.freeze
+
         def to_asciimath
           first_value = wrapped(parameter_one)
           second_value = wrapped(parameter_two)

@@ -64,7 +64,47 @@ module Plurimath
           !(parameter_one.nil? && parameter_two.nil?)
         end
 
+        def to_asciimath_math_zone(spacing, last = false, _indent = true)
+          parameters = self.class::FUNCTION
+          new_spacing = gsub_spacing(spacing, last)
+          new_arr = ["#{spacing}\"#{to_asciimath}\" #{parameters[:name]}\n"]
+          ascii_fields_to_print(parameter_one, { spacing: new_spacing, field_name: parameters[:first_value], additional_space: "|  |_ " , array: new_arr })
+          ascii_fields_to_print(parameter_two, { spacing: new_spacing, field_name: parameters[:second_value], additional_space: "   |_ " , array: new_arr })
+          new_arr
+        end
+
+        def to_latex_math_zone(spacing, last = false, _indent = true)
+          parameters = self.class::FUNCTION
+          new_spacing = gsub_spacing(spacing, last)
+          new_arr = ["#{spacing}\"#{to_latex}\" #{parameters[:name]}\n"]
+          latex_fields_to_print(parameter_one, { spacing: new_spacing, field_name: parameters[:first_value], additional_space: "|  |_ " , array: new_arr })
+          latex_fields_to_print(parameter_two, { spacing: new_spacing, field_name: parameters[:second_value], additional_space: "   |_ " , array: new_arr })
+          new_arr
+        end
+
+        def to_mathml_math_zone(spacing, last = false, _indent = true)
+          parameters = self.class::FUNCTION
+          new_spacing = gsub_spacing(spacing, last)
+          new_arr = ["#{spacing}\"#{dump_mathml(self)}\" #{parameters[:name]}\n"]
+          mathml_fields_to_print(parameter_one, { spacing: new_spacing, field_name: parameters[:first_value], additional_space: "|  |_ ", array: new_arr })
+          mathml_fields_to_print(parameter_two, { spacing: new_spacing, field_name: parameters[:second_value], additional_space: "  |_ ", array: new_arr })
+          new_arr
+        end
+
+        def to_omml_math_zone(spacing, last = false, _indent = true, display_style:)
+          parameters = self.class::FUNCTION
+          new_spacing = gsub_spacing(spacing, last)
+          new_arr = ["#{spacing}\"#{dump_omml(self, display_style)}\" #{parameters[:name]}\n"]
+          omml_fields_to_print(parameter_one, { spacing: new_spacing, field_name: parameters[:first_value], additional_space: "|  |_ ", array: new_arr, display_style: display_style })
+          omml_fields_to_print(parameter_two, { spacing: new_spacing, field_name: parameters[:second_value], additional_space: "  |_ ", array: new_arr, display_style: display_style })
+          new_arr
+        end
+
         protected
+
+        def gsub_spacing(spacing, last)
+          spacing.gsub(/\|\_/, last ? "  " : "| ")
+        end
 
         def latex_wrapped(field)
           if field.validate_function_formula

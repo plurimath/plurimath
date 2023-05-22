@@ -6,6 +6,12 @@ module Plurimath
   module Math
     module Function
       class Lim < BinaryFunction
+        FUNCTION = {
+          name: "limit",
+          first_value: "limit subscript",
+          second_value: "limit supscript",
+        }.freeze
+
         def to_asciimath
           first_value = "_#{wrapped(parameter_one)}" if parameter_one
           second_value = "^#{wrapped(parameter_two)}" if parameter_two
