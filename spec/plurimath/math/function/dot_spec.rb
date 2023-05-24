@@ -62,11 +62,10 @@ RSpec.describe Plurimath::Math::Function::Dot do
 
       it "returns mathml string" do
         expected_value = <<~MATHML
-
-          <mrow>
-            <mo>dot</mo>
+          <mover>
             <mi>n</mi>
-          </mrow>
+            <mo>.</mo>
+          </mover>
         MATHML
         expect(formula).to be_equivalent_to(expected_value)
       end
@@ -77,10 +76,10 @@ RSpec.describe Plurimath::Math::Function::Dot do
 
       it "returns mathml string" do
         expected_value = <<~MATHML
-          <mrow>
-            <mo>dot</mo>
+          <mover>
             <mn>70</mn>
-          </mrow>
+            <mo>.</mo>
+          </mover>
         MATHML
         expect(formula).to be_equivalent_to(expected_value)
       end
@@ -97,8 +96,7 @@ RSpec.describe Plurimath::Math::Function::Dot do
       end
       it "returns mathml string" do
         expected_value = <<~MATHML
-          <mrow>
-            <mo>dot</mo>
+          <mover>
             <mrow>
               <munderover>
                 <mo>&#x2211;</mo>
@@ -106,7 +104,8 @@ RSpec.describe Plurimath::Math::Function::Dot do
                 <mtext>so</mtext>
               </munderover>
             </mrow>
-          </mrow>
+            <mo>.</mo>
+          </mover>
         MATHML
         expect(formula).to be_equivalent_to(expected_value)
       end

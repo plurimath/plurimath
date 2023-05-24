@@ -2452,5 +2452,119 @@ RSpec.describe Plurimath::Latex do
         expect(formula.to_mathml).to be_equivalent_to(mathml)
       end
     end
+
+    context "contains power base values for unary function example #48" do
+      let(:string) do
+        <<~LATEX
+          \\sin_d^e
+        LATEX
+      end
+
+      it 'returns parsed Latex to MathML' do
+        mathml = <<~MATHML
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
+              <msubsup>
+                <mrow>
+                  <mi>sin</mi>
+                </mrow>
+                <mi>d</mi>
+                <mi>e</mi>
+              </msubsup>
+            </mstyle>
+          </math>
+        MATHML
+        latex = <<~LATEX
+          \\sin_{d}^{e}
+        LATEX
+        expect(formula.to_latex.gsub(/\s+/, "")).to eql(latex.gsub(/\s+/, ""))
+        expect(formula.to_mathml).to be_equivalent_to(mathml)
+      end
+    end
+
+    context "contains power values for unary function example #49" do
+      let(:string) do
+        <<~LATEX
+          \\sin^e
+        LATEX
+      end
+
+      it 'returns parsed Latex to MathML' do
+        mathml = <<~MATHML
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
+              <msup>
+                <mrow>
+                  <mi>sin</mi>
+                </mrow>
+                <mi>e</mi>
+              </msup>
+            </mstyle>
+          </math>
+        MATHML
+        latex = <<~LATEX
+          \\sin^{e}
+        LATEX
+        expect(formula.to_latex.gsub(/\s+/, "")).to eql(latex.gsub(/\s+/, ""))
+        expect(formula.to_mathml).to be_equivalent_to(mathml)
+      end
+    end
+
+    context "contains power values for unary function example #50" do
+      let(:string) do
+        <<~LATEX
+          \\left. sin_e \\right .
+        LATEX
+      end
+
+      it 'returns parsed Latex to MathML' do
+        mathml = <<~MATHML
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
+              <mo/>
+              <mrow>
+                <mi>s</mi>
+                <mi>i</mi>
+                <msub>
+                  <mi>n</mi>
+                  <mi>e</mi>
+                </msub>
+              </mrow>
+              <mo/>
+            </mstyle>
+          </math>
+        MATHML
+        latex = <<~LATEX
+          \\left . s i n_{e} \\right .
+        LATEX
+        expect(formula.to_latex.gsub(/\s+/, "")).to eql(latex.gsub(/\s+/, ""))
+        expect(formula.to_mathml).to be_equivalent_to(mathml)
+      end
+    end
+
+    context "contains power values for unary function example #51" do
+      let(:string) do
+        <<~LATEX
+          \\left. e \\right .
+        LATEX
+      end
+
+      it 'returns parsed Latex to MathML' do
+        mathml = <<~MATHML
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
+              <mo/>
+              <mi>e</mi>
+              <mo/>
+            </mstyle>
+          </math>
+        MATHML
+        latex = <<~LATEX
+          \\left . e \\right .
+        LATEX
+        expect(formula.to_latex.gsub(/\s+/, "")).to eql(latex.gsub(/\s+/, ""))
+        expect(formula.to_mathml).to be_equivalent_to(mathml)
+      end
+    end
   end
 end

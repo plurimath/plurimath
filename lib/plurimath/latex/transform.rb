@@ -310,8 +310,13 @@ module Plurimath
 
       rule(unary_functions: simple(:unary),
            supscript: simple(:supscript)) do
+        unary_function = if unary.is_a?(Parslet::Slice)
+                           Utility.get_class(unary).new
+                         else
+                           unary
+                         end
         Math::Function::Power.new(
-          unary,
+          unary_function,
           supscript,
         )
       end
@@ -319,8 +324,13 @@ module Plurimath
       rule(unary_functions: simple(:unary),
            subscript: simple(:subscript),
            supscript: simple(:supscript)) do
+        unary_function = if unary.is_a?(Parslet::Slice)
+                           Utility.get_class(unary).new
+                         else
+                           unary
+                         end
         Math::Function::PowerBase.new(
-          unary,
+          unary_function,
           subscript,
           supscript,
         )
@@ -551,14 +561,6 @@ module Plurimath
         Math::Function::Base.new(
           expression,
           subscript,
-        )
-      end
-
-      rule(rparen: simple(:rparen),
-           supscript: simple(:supscript)) do
-        Math::Function::Power.new(
-          Math::Symbol.new(rparen),
-          supscript,
         )
       end
 
