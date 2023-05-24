@@ -14179,5 +14179,53 @@ RSpec.describe Plurimath::Latex::Parser do
         expect(formula).to eq(expected_value)
       end
     end
+
+    context "contains latex equation #173" do
+      let(:string) {
+        <<~LATEX
+          a_i = \\lambda ^ i \\hat{a}_i
+        LATEX
+      }
+      it "returns formula" do
+        expected_value = Plurimath::Math::Formula.new([
+          Plurimath::Math::Function::Base.new(
+            Plurimath::Math::Symbol.new("a"),
+            Plurimath::Math::Symbol.new("i")
+          ),
+          Plurimath::Math::Symbol.new("="),
+          Plurimath::Math::Function::Power.new(
+            Plurimath::Math::Symbol.new("&#x3bb;"),
+            Plurimath::Math::Symbol.new("i")
+          ),
+          Plurimath::Math::Function::Base.new(
+            Plurimath::Math::Function::Hat.new(
+              Plurimath::Math::Symbol.new("a"),
+            ),
+            Plurimath::Math::Symbol.new("i")
+          )
+        ])
+        expect(formula).to eq(expected_value)
+      end
+    end
+
+    context "contains latex equation unary function with power and base values #174" do
+      let(:string) {
+        <<~LATEX
+          \\sin{10}_{d}^{e}
+        LATEX
+      }
+      it "returns formula" do
+        expected_value = Plurimath::Math::Formula.new([
+          Plurimath::Math::Function::PowerBase.new(
+            Plurimath::Math::Function::Sin.new(
+              Plurimath::Math::Number.new("10"),
+            ),
+            Plurimath::Math::Symbol.new("d"),
+            Plurimath::Math::Symbol.new("e"),
+          )
+        ])
+        expect(formula).to eq(expected_value)
+      end
+    end
   end
 end

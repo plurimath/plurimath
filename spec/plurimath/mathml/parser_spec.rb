@@ -1729,4 +1729,73 @@ RSpec.describe Plurimath::Mathml::Parser do
       expect(formula).to eq(expected_value)
     end
   end
+
+  context "contains metanorma mathml string Exp #1" do
+    let(:exp) {
+      <<~MATHML
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <mathml:mstyle scriptminsize="6pt">
+            <msub>
+              <mrow>
+                <mstyle mathvariant="italic">
+                  <mi>W</mi>
+                </mstyle>
+              </mrow>
+              <mrow>
+                <mi>t</mi>
+              </mrow>
+            </msub>
+            <mathml:mo rspace="-0.35em"/>
+            <mfenced open="(" close=")" separators="">
+              <mathml:mspace width="-0.15em"/>
+              <mrow>
+                <msub>
+                  <mrow>
+                    <mstyle mathvariant="italic">
+                      <mi>T</mi>
+                    </mstyle>
+                  </mrow>
+                  <mrow>
+                    <mn>90</mn>
+                  </mrow>
+                </msub>
+              </mrow>
+              <mathml:mspace width="-0.1em"/>
+            </mfenced>
+          </mathml:mstyle>
+        </math>
+      MATHML
+    }
+    it "returns formula of decimal values" do
+      expected_value = Plurimath::Math::Formula.new([
+        Plurimath::Math::Formula.new([
+          Plurimath::Math::Function::Base.new(
+            Plurimath::Math::Formula.new([
+              Plurimath::Math::Symbol.new("W")
+            ]),
+            Plurimath::Math::Formula.new([
+              Plurimath::Math::Symbol.new("t")
+            ])
+          ),
+          Plurimath::Math::Function::Fenced.new(
+            Plurimath::Math::Symbol.new("("),
+            [
+              Plurimath::Math::Formula.new([
+                Plurimath::Math::Function::Base.new(
+                  Plurimath::Math::Formula.new([
+                    Plurimath::Math::Symbol.new("T")
+                  ]),
+                  Plurimath::Math::Formula.new([
+                    Plurimath::Math::Number.new("90")
+                  ])
+                )
+              ])
+            ],
+            Plurimath::Math::Symbol.new(")"),
+          )
+        ])
+      ])
+      expect(formula).to eq(expected_value)
+    end
+  end
 end
