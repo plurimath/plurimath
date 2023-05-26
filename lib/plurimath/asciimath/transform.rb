@@ -615,17 +615,6 @@ module Plurimath
         )
       end
 
-      rule(binary_class: simple(:function),
-           base_value: sequence(:base)) do
-        binary = Utility.get_class(function).new(
-          Utility.unfenced_value(base.shift),
-          Utility.unfenced_value(base.shift),
-        )
-        new_arr = [binary]
-        new_arr += base.flatten.compact unless base.empty?
-        new_arr
-      end
-
       rule(d: simple(:d),
            x: simple(:x)) do
         Math::Formula.new(
@@ -633,52 +622,6 @@ module Plurimath
             Utility.symbol_object(d),
             Utility.symbol_object(x),
           ],
-        )
-      end
-
-      rule(symbol: simple(:symbol),
-           power: simple(:power)) do
-        Math::Function::Power.new(
-          Utility.symbol_object(
-            (Constants::SYMBOLS[symbol.to_sym] || symbol).to_s,
-          ),
-          Utility.unfenced_value(power),
-        )
-      end
-
-      rule(symbol: simple(:symbol),
-           power: sequence(:power)) do
-        Math::Function::Power.new(
-          Utility.symbol_object(
-            (Constants::SYMBOLS[symbol.to_sym] || symbol).to_s,
-          ),
-          Utility.unfenced_value(power),
-        )
-      end
-
-      rule(symbol: simple(:sym),
-           expr: sequence(:expr)) do
-        symbol = Utility.symbol_object(
-          (Constants::SYMBOLS[sym.to_sym] || sym).to_s,
-        )
-        expr.flatten.compact.insert(0, symbol)
-      end
-
-      rule(symbol: simple(:sym),
-           expr: simple(:expr)) do
-        symbol = Utility.symbol_object(
-          (Constants::SYMBOLS[sym.to_sym] || sym).to_s,
-        )
-        [symbol, expr]
-      end
-
-      rule(symbol: simple(:symbol),
-           base: simple(:base)) do
-        Math::Function::Base.new(
-          Utility.symbol_object(
-            (Constants::SYMBOLS[symbol.to_sym] || symbol).to_s,
-          ),
-          Utility.unfenced_value(base),
         )
       end
 
@@ -813,92 +756,6 @@ module Plurimath
         Math::Function::Mod.new(
           dividend,
           divisor,
-        )
-      end
-
-      rule(text: simple(:text),
-           base_value: simple(:base),
-           power_value: simple(:power)) do
-        Math::Function::PowerBase.new(
-          Math::Function::Text.new(text),
-          Utility.unfenced_value(base),
-          Utility.unfenced_value(power),
-        )
-      end
-
-      rule(number: simple(:number),
-           base_value: simple(:base),
-           power_value: simple(:power)) do
-        Math::Function::PowerBase.new(
-          Math::Number.new(number),
-          Utility.unfenced_value(base),
-          Utility.unfenced_value(power),
-        )
-      end
-
-      rule(unary: simple(:unary),
-           base_value: simple(:base),
-           power_value: simple(:power)) do
-        Math::Function::PowerBase.new(
-          unary,
-          Utility.unfenced_value(base),
-          Utility.unfenced_value(power),
-        )
-      end
-
-      rule(unary: sequence(:unary),
-           base_value: simple(:base),
-           power_value: simple(:power)) do
-        unary.first.new(
-          unary.last.new(
-            Utility.unfenced_value(base),
-            Utility.unfenced_value(power),
-          ),
-        )
-      end
-
-      rule(intermediate_exp: simple(:int_exp),
-           base_value: simple(:base),
-           power_value: simple(:power)) do
-        Math::Function::PowerBase.new(
-          int_exp,
-          Utility.unfenced_value(base),
-          Utility.unfenced_value(power),
-        )
-      end
-
-      rule(intermediate_exp: simple(:int_exp),
-           base_value: simple(:base),
-           power_value: sequence(:power)) do
-        Math::Function::PowerBase.new(
-          int_exp,
-          Utility.unfenced_value(base),
-          Utility.filter_values(power),
-        )
-      end
-
-      rule(symbol: simple(:symbol),
-           base_value: simple(:base),
-           power_value: simple(:power)) do
-        Math::Function::PowerBase.new(
-          Utility.symbol_object(
-            (Constants::SYMBOLS[symbol.to_sym] || symbol).to_s,
-          ),
-          Utility.unfenced_value(base),
-          Utility.unfenced_value(power),
-        )
-      end
-
-      rule(symbol: simple(:symbol),
-           base_value: simple(:base),
-           power_value: sequence(:power)) do
-        symbol_object = Utility.symbol_object(
-          (Constants::SYMBOLS[symbol.to_sym] || symbol).to_s,
-        )
-        Math::Function::PowerBase.new(
-          symbol_object,
-          Utility.unfenced_value(base),
-          Utility.filter_values(power),
         )
       end
 

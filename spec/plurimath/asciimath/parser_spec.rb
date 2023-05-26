@@ -1683,5 +1683,28 @@ RSpec.describe Plurimath::Asciimath::Parser do
         expect(formula).to eq(expected_value)
       end
     end
+
+    context "when contains example extracted from metanorma/site #3" do
+      let(:string) { "hat ii(V)_(\"cal\",i)" }
+
+      it "returns formula" do
+        expected_value = Plurimath::Math::Formula.new([
+          Plurimath::Math::Function::Base.new(
+            Plurimath::Math::Function::Hat.new(
+              Plurimath::Math::Function::FontStyle::Italic.new(
+                Plurimath::Math::Symbol.new("V"),
+                "ii"
+              ),
+            ),
+            Plurimath::Math::Formula.new([
+              Plurimath::Math::Function::Text.new("cal"),
+              Plurimath::Math::Symbol.new(","),
+              Plurimath::Math::Symbol.new("i")
+            ])
+          )
+        ])
+        expect(formula).to eq(expected_value)
+      end
+    end
   end
 end
