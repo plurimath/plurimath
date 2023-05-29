@@ -70,7 +70,7 @@ module Plurimath
           quoted_text |
           (str("d").as(:d) >> str("x").as(:x)).as(:intermediate_exp) |
           match["a-zA-Z"].as(:symbol) |
-          match(/[^\[{(\\\/@;:.,'"|\]})0-9a-zA-Z\-><$%^&*_=+!`~\s?]/).as(:symbol) |
+          match(/[^\[{(\\\/@;:.,'"|\]})0-9a-zA-Z\-><$%^&*_=+!`~\s?ℒℛ]/).as(:symbol) |
           number
       end
 
