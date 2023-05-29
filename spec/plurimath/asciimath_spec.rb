@@ -1,6 +1,7 @@
-require_relative '../../spec/spec_helper'
+require_relative "../../spec/spec_helper"
 
 RSpec.describe Plurimath::Asciimath do
+
   describe ".initialize" do
     subject(:asciimath) { Plurimath::Asciimath.new(string) }
 
@@ -2838,8 +2839,8 @@ RSpec.describe Plurimath::Asciimath do
       let(:string) { '{:(u^2(delta y), = {:[({partial f}/{partial ii(X)_1})^2 u^2(x_1) +({partial f}/{partial ii(X)_2})^2 u^2(x_2) +2 {partial f}/{partial ii(X)_1} {partial f}/{partial ii(X)_2} r(x_1,x_2)u(x_1)u(x_2)]|_{bb(X)=bb(x)}),(" ",= 4x_1^2 u^2 (x_1) + 4x_2^2 u^2 (x_2) + 8r(x_1,x_2) x_1 x_2 u(x_1) u(x_2).):}' }
 
       it 'returns parsed Asciimath to Formula' do
-        latex = '{: ( u^{2} ( \delta y ) ,  = {: [ ( \frac{\partial f}{\partial \mathit{X}_{1}} )^{2} u^{2} ( x_{1} ) + ( \frac{\partial f}{\partial \mathit{X}_{2}} )^{2} u^{2} ( x_{2} ) + 2 \frac{\partial f}{\partial \mathit{X}_{1}} \frac{\partial f}{\partial \mathit{X}_{2}} r ( x_{1 ,} x_{2} ) u ( x_{1} ) u ( x_{2} ) ] |_{\mathbf{X} = \mathbf{x}} ) , ( \text{ } , = 4 x_{1}^{2} u^{2} ( x_{1} ) + 4 x_{2}^{2} u^{2} ( x_{2} ) + 8 r ( x_{1 ,} x_{2} ) x_{1} x_{2} u ( x_{1} ) u ( x_{2} ) . )   '
-        asciimath = '{:(u^(2) (delta y) ,  = {:[(frac(del f)(del ii(X)_(1)))^(2) u^(2) (x_(1)) + (frac(del f)(del ii(X)_(2)))^(2) u^(2) (x_(2)) + 2 frac(del f)(del ii(X)_(1)) frac(del f)(del ii(X)_(2)) r (x_(1 ,) x_(2)) u (x_(1)) u (x_(2))] |_(mathbf(X) = mathbf(x))) , (" " , = 4 x_(1)^(2) u^(2) (x_(1)) + 4 x_(2)^(2) u^(2) (x_(2)) + 8 r (x_(1 ,) x_(2)) x_(1) x_(2) u (x_(1)) u (x_(2)) .) :}'
+        latex = '{: ( u^{2} ( \delta y ) ,  = {: [ ( \frac{\partial f}{\partial \mathit{X}_{1}} )^{2} u^{2} ( x_{1} ) + ( \frac{\partial f}{\partial \mathit{X}_{2}} )^{2} u^{2} ( x_{2} ) + 2 \frac{\partial f}{\partial \mathit{X}_{1}} \frac{\partial f}{\partial \mathit{X}_{2}} r ( x_{1} , x_{2} ) u ( x_{1} ) u ( x_{2} ) ] |_{\mathbf{X} = \mathbf{x}} ) , ( \text{ } , = 4 x_{1}^{2} u^{2} ( x_{1} ) + 4 x_{2}^{2} u^{2} ( x_{2} ) + 8 r ( x_{1} , x_{2} ) x_{1} x_{2} u ( x_{1} ) u ( x_{2} ) . ) :} '
+        asciimath = '{:(u^(2) (delta y) ,  = {:[(frac(del f)(del ii(X)_(1)))^(2) u^(2) (x_(1)) + (frac(del f)(del ii(X)_(2)))^(2) u^(2) (x_(2)) + 2 frac(del f)(del ii(X)_(1)) frac(del f)(del ii(X)_(2)) r (x_(1) , x_(2)) u (x_(1)) u (x_(2))] |_(mathbf(X) = mathbf(x))) , (" " , = 4 x_(1)^(2) u^(2) (x_(1)) + 4 x_(2)^(2) u^(2) (x_(2)) + 8 r (x_(1) , x_(2)) x_(1) x_(2) u (x_(1)) u (x_(2)) .):}'
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -2977,11 +2978,9 @@ RSpec.describe Plurimath::Asciimath do
                         <mo>(</mo>
                         <msub>
                           <mi>x</mi>
-                          <mrow>
-                            <mn>1</mn>
-                            <mo>,</mo>
-                          </mrow>
+                          <mn>1</mn>
                         </msub>
+                        <mo>,</mo>
                         <msub>
                           <mi>x</mi>
                           <mn>2</mn>
@@ -3072,11 +3071,9 @@ RSpec.describe Plurimath::Asciimath do
                       <mo>(</mo>
                       <msub>
                         <mi>x</mi>
-                        <mrow>
-                          <mn>1</mn>
-                          <mo>,</mo>
-                        </mrow>
+                        <mn>1</mn>
                       </msub>
+                      <mo>,</mo>
                       <msub>
                         <mi>x</mi>
                         <mn>2</mn>
@@ -3112,7 +3109,6 @@ RSpec.describe Plurimath::Asciimath do
                     <mo>&#x2e;</mo>
                     <mo>)</mo>
                   </mrow>
-                  <mi/>
                   <mo></mo>
                 </mrow>
                 <mo></mo>
@@ -4400,6 +4396,317 @@ RSpec.describe Plurimath::Asciimath do
                 <mi>x</mi>
                 <mo>.</mo>
               </mover>
+            </mstyle>
+          </math>
+        MATHML
+        expect(formula.to_latex).to eql(latex)
+        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_asciimath).to eql(asciimath)
+      end
+    end
+
+    context "contains dot with random value example #88" do
+      let(:string) do
+        <<~ASCIIMATH
+          bb(C_X)^{(1)} =
+          [(1 + A theta_1 + B theta_1^2, R_0 theta_1,R_0 theta_1^2,-r_1),
+          (vdots,vdots,vdots,vdots),
+          (1 + A theta_{10} + B theta_{10}^2, R_0 theta_{10}, R_0 theta_{10}^2, -r_{10})]
+        ASCIIMATH
+      end
+
+      it 'returns parsed Asciimath to Formula' do
+        latex = '\mathbf{C_{X}}^{( 1 )} = \left [\begin{matrix}1 + A \theta_{1} + B \theta_{1}^{2} & R_{0} \theta_{1} & R_{0} \theta_{1}^{2} & - r_{1} \\\\ \vdots & \vdots & \vdots & \vdots \\\\ 1 + A \theta_{10} + B \theta_{10}^{2} & R_{0} \theta_{10} & R_{0} \theta_{10}^{2} & - r_{10}\end{matrix}\right ]'
+        asciimath = 'mathbf(C_(X))^((1)) = [[1 + A theta_(1) + B theta_(1)^(2), R_(0) theta_(1), R_(0) theta_(1)^(2), - r_(1)], [vdots, vdots, vdots, vdots], [1 + A theta_(10) + B theta_(10)^(2), R_(0) theta_(10), R_(0) theta_(10)^(2), - r_(10)]]'
+        mathml = <<~MATHML
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
+              <msup>
+                <mstyle mathvariant="bold">
+                  <msub>
+                    <mi>C</mi>
+                    <mi>X</mi>
+                  </msub>
+                </mstyle>
+                <mrow>
+                  <mo>(</mo>
+                  <mn>1</mn>
+                  <mo>)</mo>
+                </mrow>
+              </msup>
+              <mo>=</mo>
+              <mrow>
+                <mrow>
+                  <mo>[</mo>
+                  <mtable>
+                    <mtr>
+                      <mtd>
+                        <mn>1</mn>
+                        <mo>+</mo>
+                        <mi>A</mi>
+                        <msub>
+                          <mi>&#x3b8;</mi>
+                          <mn>1</mn>
+                        </msub>
+                        <mo>+</mo>
+                        <mi>B</mi>
+                        <msubsup>
+                          <mi>&#x3b8;</mi>
+                          <mn>1</mn>
+                          <mn>2</mn>
+                        </msubsup>
+                      </mtd>
+                      <mtd>
+                        <msub>
+                          <mi>R</mi>
+                          <mn>0</mn>
+                        </msub>
+                        <msub>
+                          <mi>&#x3b8;</mi>
+                          <mn>1</mn>
+                        </msub>
+                      </mtd>
+                      <mtd>
+                        <msub>
+                          <mi>R</mi>
+                          <mn>0</mn>
+                        </msub>
+                        <msubsup>
+                          <mi>&#x3b8;</mi>
+                          <mn>1</mn>
+                          <mn>2</mn>
+                        </msubsup>
+                      </mtd>
+                      <mtd>
+                        <mo>&#x2212;</mo>
+                        <msub>
+                          <mi>r</mi>
+                          <mn>1</mn>
+                        </msub>
+                      </mtd>
+                    </mtr>
+                    <mtr>
+                      <mtd>
+                        <mo>&#x22ee;</mo>
+                      </mtd>
+                      <mtd>
+                        <mo>&#x22ee;</mo>
+                      </mtd>
+                      <mtd>
+                        <mo>&#x22ee;</mo>
+                      </mtd>
+                      <mtd>
+                        <mo>&#x22ee;</mo>
+                      </mtd>
+                    </mtr>
+                    <mtr>
+                      <mtd>
+                        <mn>1</mn>
+                        <mo>+</mo>
+                        <mi>A</mi>
+                        <msub>
+                          <mi>&#x3b8;</mi>
+                          <mn>10</mn>
+                        </msub>
+                        <mo>+</mo>
+                        <mi>B</mi>
+                        <msubsup>
+                          <mi>&#x3b8;</mi>
+                          <mn>10</mn>
+                          <mn>2</mn>
+                        </msubsup>
+                      </mtd>
+                      <mtd>
+                        <msub>
+                          <mi>R</mi>
+                          <mn>0</mn>
+                        </msub>
+                        <msub>
+                          <mi>&#x3b8;</mi>
+                          <mn>10</mn>
+                        </msub>
+                      </mtd>
+                      <mtd>
+                        <msub>
+                          <mi>R</mi>
+                          <mn>0</mn>
+                        </msub>
+                        <msubsup>
+                          <mi>&#x3b8;</mi>
+                          <mn>10</mn>
+                          <mn>2</mn>
+                        </msubsup>
+                      </mtd>
+                      <mtd>
+                        <mo>&#x2212;</mo>
+                        <msub>
+                          <mi>r</mi>
+                          <mn>10</mn>
+                        </msub>
+                      </mtd>
+                    </mtr>
+                  </mtable>
+                  <mo>]</mo>
+                </mrow>
+              </mrow>
+            </mstyle>
+          </math>
+        MATHML
+        expect(formula.to_latex).to eql(latex)
+        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_asciimath).to eql(asciimath)
+      end
+    end
+
+    context "contains dot with random value example #89" do
+      let(:string) { '[(cos{:y_2:},sin y_2),(-(sin y_2)//y_1,(cos y_2)//y_1)] .' }
+
+      it 'returns parsed Asciimath to Formula' do
+        latex = '\left [\begin{matrix}\cos{{: y_{2} :}} & \sin{y}_{2} \\\\ - ( \sin{y}_{2} ) / y_{1} & ( \cos{y}_{2} ) / y_{1}\end{matrix}\right ] .'
+        asciimath = '[[cos{:y_(2):}, siny_(2)], [- (siny_(2)) // y_(1), (cosy_(2)) // y_(1)]] .'
+        mathml = <<~MATHML
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
+              <mrow>
+                <mo>[</mo>
+                <mtable>
+                  <mtr>
+                    <mtd>
+                      <mrow>
+                        <mi>cos</mi>
+                        <mrow>
+                          <mo></mo>
+                          <msub>
+                            <mi>y</mi>
+                            <mn>2</mn>
+                          </msub>
+                          <mo></mo>
+                        </mrow>
+                      </mrow>
+                    </mtd>
+                    <mtd>
+                      <msub>
+                        <mrow>
+                          <mi>sin</mi>
+                          <mi>y</mi>
+                        </mrow>
+                        <mn>2</mn>
+                      </msub>
+                    </mtd>
+                  </mtr>
+                  <mtr>
+                    <mtd>
+                      <mo>&#x2212;</mo>
+                      <mrow>
+                        <mo>(</mo>
+                        <msub>
+                          <mrow>
+                            <mi>sin</mi>
+                            <mi>y</mi>
+                          </mrow>
+                          <mn>2</mn>
+                        </msub>
+                        <mo>)</mo>
+                      </mrow>
+                      <mo>/</mo>
+                      <msub>
+                        <mi>y</mi>
+                        <mn>1</mn>
+                      </msub>
+                    </mtd>
+                    <mtd>
+                      <mrow>
+                        <mo>(</mo>
+                        <msub>
+                          <mrow>
+                            <mi>cos</mi>
+                            <mi>y</mi>
+                          </mrow>
+                          <mn>2</mn>
+                        </msub>
+                        <mo>)</mo>
+                      </mrow>
+                      <mo>/</mo>
+                      <msub>
+                        <mi>y</mi>
+                        <mn>1</mn>
+                      </msub>
+                    </mtd>
+                  </mtr>
+                </mtable>
+                <mo>]</mo>
+              </mrow>
+              <mo>&#x2e;</mo>
+            </mstyle>
+          </math>
+        MATHML
+        expect(formula.to_latex).to eql(latex)
+        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_asciimath).to eql(asciimath)
+      end
+    end
+
+    context "contains dot with random value example #90" do
+      let(:string) { "f (\"a\"_{28},\" P(54) 8-4\") - f (\"a\"_{16},\" R(127) 11-5\"{^(127)ii(I)_2}) = -42.99(4) \"unitsml(MHz)\"" }
+
+      it 'returns parsed Asciimath to Formula' do
+        latex = 'f( \text{a}_{28} , \text{ P(54) 8-4} ) - f( \text{a}_{16} , \text{ R(127) 11-5} \{ ^ ( 127 ) \mathit{I}_{2} \} ) = - 42.99 ( 4 ) \text{unitsml(MHz)}'
+        asciimath = "f(\"a\"_(28) , \" P(54) 8-4\") - f(\"a\"_(16) , \" R(127) 11-5\" {^ (127) ii(I)_(2)}) = - 42.99 (4) \"unitsml(MHz)\""
+        mathml = <<~MATHML
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
+              <mrow>
+                <mi>f</mi>
+                <mrow>
+                  <mo>(</mo>
+                  <msub>
+                    <mtext>a</mtext>
+                    <mn>28</mn>
+                  </msub>
+                  <mo>,</mo>
+                  <mtext> P(54) 8-4</mtext>
+                  <mo>)</mo>
+                </mrow>
+              </mrow>
+              <mo>&#x2212;</mo>
+              <mrow>
+                <mi>f</mi>
+                <mrow>
+                  <mo>(</mo>
+                  <msub>
+                    <mtext>a</mtext>
+                    <mn>16</mn>
+                  </msub>
+                  <mo>,</mo>
+                  <mtext> R(127) 11-5</mtext>
+                  <mrow>
+                    <mo>{</mo>
+                    <mo>^</mo>
+                    <mrow>
+                      <mo>(</mo>
+                      <mn>127</mn>
+                      <mo>)</mo>
+                    </mrow>
+                    <msub>
+                      <mstyle mathvariant="italic">
+                        <mi>I</mi>
+                      </mstyle>
+                      <mn>2</mn>
+                    </msub>
+                    <mo>}</mo>
+                  </mrow>
+                  <mo>)</mo>
+                </mrow>
+              </mrow>
+              <mo>=</mo>
+              <mo>&#x2212;</mo>
+              <mn>42.99</mn>
+              <mrow>
+                <mo>(</mo>
+                <mn>4</mn>
+                <mo>)</mo>
+              </mrow>
+              <mtext>unitsml(MHz)</mtext>
             </mstyle>
           </math>
         MATHML

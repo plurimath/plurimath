@@ -151,6 +151,11 @@ module Plurimath
         expr.flatten.compact.insert(0, Utility.symbol_object(comma))
       end
 
+      rule(symbol: simple(:symbol),
+           expr: sequence(:expr)) do
+        expr.flatten.compact.insert(0, Utility.symbol_object(symbol))
+      end
+
       rule(rparen: simple(:rparen),
            expr: simple(:expr)) do
         [
@@ -401,10 +406,25 @@ module Plurimath
 
       rule(power_base: simple(:power_base),
            base: simple(:base)) do
-        Math::Function::Base.new(
-          power_base,
-          Utility.unfenced_value(base),
-        )
+        if base.is_a?(Math::Formula) && base.value.any? { |value| Utility.symbol_value(value, ",") }
+          sliced = base.value.slice_before { |object| Utility.symbol_value(object, ",")  }.to_a
+          base_object = Math::Function::Base.new(
+            power_base,
+            Utility.filter_values(
+              Utility.unfenced_value(sliced.shift),
+            ),
+          )
+          [
+            base_object,
+            sliced.shift.first,
+            Utility.filter_values(sliced),
+          ].compact
+        else
+          Math::Function::Base.new(
+            power_base,
+            Utility.unfenced_value(base),
+          )
+        end
       end
 
       rule(power_base: simple(:power_base),
@@ -452,16 +472,7 @@ module Plurimath
           Utility.unfenced_value(base_value),
           Utility.filter_values(first_value),
         )
-        if power_value.empty?
-          power_base_object
-        else
-          Math::Formula.new(
-            power_value.insert(
-              0,
-              power_base_object,
-            ),
-          )
-        end
+        power_value.insert(0, power_base_object)
       end
 
       rule(power_base: simple(:power_base),
