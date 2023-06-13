@@ -162,7 +162,7 @@ RSpec.describe Plurimath::Math::Formula do
       let(:exp) { "int_0^1 f(x)dx" }
 
       it 'converts formula back to Asciimath string for simple text' do
-        expect(formula).to eql('int_(0)^(1) f(x) d x')
+        expect(formula).to eql('int_(0)^(1) f (x) d x')
       end
     end
 

@@ -27,7 +27,7 @@ module Plurimath
         end
 
         def to_latex
-          "\\left #{Latex::Constants::LEFT_RIGHT_PARENTHESIS.invert[parameter_one] || "."}"
+          "\\left #{Latex::Constants::LEFT_RIGHT_PARENTHESIS.invert[parameter_one] || '.'}"
         end
 
         protected

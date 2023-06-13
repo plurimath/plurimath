@@ -218,9 +218,8 @@ RSpec.describe Plurimath::Asciimath::Parser do
 
       it "returns formula" do
         expected_value = Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::G.new(
-            Plurimath::Math::Symbol.new("a")
-          ),
+          Plurimath::Math::Symbol.new("g"),
+          Plurimath::Math::Symbol.new("a"),
           Plurimath::Math::Symbol.new("m"),
           Plurimath::Math::Symbol.new("a"),
           Plurimath::Math::Symbol.new(")"),
@@ -244,9 +243,8 @@ RSpec.describe Plurimath::Asciimath::Parser do
 
       it "returns formula" do
         expected_value = Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::G.new(
-            Plurimath::Math::Symbol.new("a")
-          ),
+          Plurimath::Math::Symbol.new("g"),
+          Plurimath::Math::Symbol.new("a"),
           Plurimath::Math::Symbol.new("m"),
           Plurimath::Math::Symbol.new("a"),
           Plurimath::Math::Function::Power.new(

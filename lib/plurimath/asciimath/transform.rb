@@ -407,7 +407,7 @@ module Plurimath
       rule(power_base: simple(:power_base),
            base: simple(:base)) do
         if base.is_a?(Math::Formula) && base.value.any? { |value| Utility.symbol_value(value, ",") }
-          sliced = base.value.slice_before { |object| Utility.symbol_value(object, ",")  }.to_a
+          sliced = base.value.slice_before { |object| Utility.symbol_value(object, ",") }.to_a
           base_object = Math::Function::Base.new(
             power_base,
             Utility.filter_values(

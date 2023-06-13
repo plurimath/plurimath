@@ -9150,7 +9150,7 @@ RSpec.describe Plurimath::Math::Formula do
             "bf"
           ),
           Plurimath::Math::Symbol.new("="),
-          Plurimath::Math::Symbol.new("&#x27e8;"),
+          Plurimath::Math::Symbol.new("&#x2329;"),
           Plurimath::Math::Function::FontStyle.new(
             Plurimath::Math::Symbol.new("x"),
             "bf"
@@ -9160,7 +9160,7 @@ RSpec.describe Plurimath::Math::Formula do
             Plurimath::Math::Symbol.new("d"),
             "bf"
           ),
-          Plurimath::Math::Symbol.new("&#x27e9;")
+          Plurimath::Math::Symbol.new("&#x232a;")
         ])
       }
       let(:expected_value) { "z=\\langlex\\timesd\\rangle" }
@@ -9379,7 +9379,7 @@ RSpec.describe Plurimath::Math::Formula do
             "bf"
           ),
           Plurimath::Math::Symbol.new("="),
-          Plurimath::Math::Symbol.new("&#x27e8;"),
+          Plurimath::Math::Symbol.new("&#x2329;"),
           Plurimath::Math::Function::FontStyle.new(
             Plurimath::Math::Symbol.new("&#x3b7;"),
             "bf"
@@ -9389,7 +9389,7 @@ RSpec.describe Plurimath::Math::Formula do
             Plurimath::Math::Symbol.new("&#x3b6;"),
             "bf"
           ),
-          Plurimath::Math::Symbol.new("&#x27e9;")
+          Plurimath::Math::Symbol.new("&#x232a;")
         ])
       }
       let(:expected_value) { "x^{\\prime}=\\langle\\eta\\times\\zeta\\rangle" }
@@ -9432,7 +9432,7 @@ RSpec.describe Plurimath::Math::Formula do
             "bf"
           ),
           Plurimath::Math::Symbol.new("="),
-          Plurimath::Math::Symbol.new("&#x27e8;"),
+          Plurimath::Math::Symbol.new("&#x2329;"),
           Plurimath::Math::Function::FontStyle.new(
             Plurimath::Math::Symbol.new("&#x3be;"),
             "bf"
@@ -9442,7 +9442,7 @@ RSpec.describe Plurimath::Math::Formula do
             Plurimath::Math::Symbol.new("&#x3b7;"),
             "bf"
           ),
-          Plurimath::Math::Symbol.new("&#x27e9;")
+          Plurimath::Math::Symbol.new("&#x232a;")
         ])
       }
       let(:expected_value) { "z^{\\prime}=\\langle\\xi\\times\\eta\\rangle" }
@@ -9485,7 +9485,7 @@ RSpec.describe Plurimath::Math::Formula do
             "bf"
           ),
           Plurimath::Math::Symbol.new("="),
-          Plurimath::Math::Symbol.new("&#x27e8;"),
+          Plurimath::Math::Symbol.new("&#x2329;"),
           Plurimath::Math::Function::FontStyle.new(
             Plurimath::Math::Symbol.new("&#x3b6;"),
             "bf"
@@ -9495,7 +9495,7 @@ RSpec.describe Plurimath::Math::Formula do
             Plurimath::Math::Symbol.new("&#x3be;"),
             "bf"
           ),
-          Plurimath::Math::Symbol.new("&#x27e9;")
+          Plurimath::Math::Symbol.new("&#x232a;")
         ])
       }
       let(:expected_value) { "y^{\\prime}=\\langle\\zeta\\times\\xi\\rangle" }

@@ -515,7 +515,7 @@ RSpec.describe Plurimath::Asciimath::Parser do
           ),
           Plurimath::Math::Symbol.new("="),
           Plurimath::Math::Function::Base.new(
-            Plurimath::Math::Function::F.new,
+            Plurimath::Math::Symbol.new("f"),
             Plurimath::Math::Formula.new([
               Plurimath::Math::Function::Base.new(
                 Plurimath::Math::Function::Text.new("H"),
@@ -533,7 +533,7 @@ RSpec.describe Plurimath::Asciimath::Parser do
             Plurimath::Math::Function::Text.new("r,Hg")
           ),
           Plurimath::Math::Function::Base.new(
-            Plurimath::Math::Function::F.new,
+            Plurimath::Math::Symbol.new("f"),
             Plurimath::Math::Function::Text.new("Hg")
           ),
           Plurimath::Math::Symbol.new("+"),
@@ -545,7 +545,7 @@ RSpec.describe Plurimath::Asciimath::Parser do
             Plurimath::Math::Function::Text.new("r,Ar")
           ),
           Plurimath::Math::Function::Base.new(
-            Plurimath::Math::Function::F.new,
+            Plurimath::Math::Symbol.new("f"),
             Plurimath::Math::Function::Text.new("Ar")
           )
         ])
@@ -663,7 +663,7 @@ RSpec.describe Plurimath::Asciimath::Parser do
       it "returns formula" do
         expected_value = Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Base.new(
-            Plurimath::Math::Function::F.new,
+            Plurimath::Math::Symbol.new("f"),
             Plurimath::Math::Formula.new([
               Plurimath::Math::Function::Base.new(
                 Plurimath::Math::Function::Text.new("H"),
@@ -980,14 +980,13 @@ RSpec.describe Plurimath::Asciimath::Parser do
             Plurimath::Math::Symbol.new(")")
           ),
           Plurimath::Math::Symbol.new("&#x22c5;"),
-          Plurimath::Math::Function::F.new(
-            Plurimath::Math::Function::Fenced.new(
-              Plurimath::Math::Symbol.new("("),
-              [
-                Plurimath::Math::Symbol.new("t")
-              ],
-              Plurimath::Math::Symbol.new(")")
-            )
+          Plurimath::Math::Symbol.new("f"),
+          Plurimath::Math::Function::Fenced.new(
+            Plurimath::Math::Symbol.new("("),
+            [
+              Plurimath::Math::Symbol.new("t")
+            ],
+            Plurimath::Math::Symbol.new(")")
           ),
           Plurimath::Math::Symbol.new("="),
           Plurimath::Math::Function::Table.new(

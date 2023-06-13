@@ -6,6 +6,11 @@ module Plurimath
   module Math
     module Function
       class Fenced < TernaryFunction
+        def initialize(parameter_one = nil, parameter_two = nil, parameter_three = nil)
+          super
+          circular_parens
+        end
+
         def to_asciimath
           first_value  = parameter_one ? parameter_one.to_asciimath : "("
           third_value  = parameter_three ? parameter_three.to_asciimath : ")"
@@ -33,8 +38,8 @@ module Plurimath
           open_paren   = parameter_one ? parameter_one.value : "("
           fenced_value = parameter_two&.map(&:to_latex)&.join(" ")
           close_paren  = parameter_three ? parameter_three.value : ")"
-          first_value  = latex_paren(open_paren, false)
-          second_value = latex_paren(close_paren, true)
+          first_value  = latex_paren(open_paren)
+          second_value = latex_paren(close_paren)
           "#{first_value} #{fenced_value} #{second_value}"
         end
 
@@ -52,25 +57,6 @@ module Plurimath
 
         protected
 
-        def second_value
-          class_names = ["number", "symbol"].freeze
-          parameter_two&.map do |object|
-            e_tag = Utility.ox_element("e", namespace: "m")
-            e_tag << if class_names.include?(object.class_name)
-                       fenced_omml_value(object)
-                     else
-                       object&.to_omml_without_math_tag
-                     end
-          end
-        end
-
-        def fenced_omml_value(object)
-          r_tag = Utility.ox_element("r", namespace: "m")
-          t_tag = Utility.ox_element("t", namespace: "m")
-          t_tag << object&.value
-          r_tag << t_tag
-        end
-
         def first_value(dpr)
           first_value = parameter_one&.value
           return dpr if first_value.nil? || first_value.empty?
@@ -81,6 +67,18 @@ module Plurimath
             namespace: "m",
             attributes: attributes,
           )
+        end
+
+        def second_value
+          class_names = ["number", "symbol"].freeze
+          parameter_two&.map do |object|
+            e_tag = Utility.ox_element("e", namespace: "m")
+            e_tag << if class_names.include?(object.class_name)
+                       fenced_omml_value(object)
+                     else
+                       object&.to_omml_without_math_tag
+                     end
+          end
         end
 
         def third_value(dpr)
@@ -95,17 +93,30 @@ module Plurimath
           )
         end
 
-        def latex_paren(paren, right)
+        def fenced_omml_value(object)
+          r_tag = Utility.ox_element("r", namespace: "m")
+          t_tag = Utility.ox_element("t", namespace: "m")
+          t_tag << object&.value
+          r_tag << t_tag
+        end
+
+        def latex_paren(paren)
           return "" if paren.nil? || paren.empty?
 
           paren = %w[{ }].include?(paren) ? "\\#{paren}" : paren
-          "#{paren}"
+          paren = "\\#{Latex::Constants::UNICODE_SYMBOLS.invert[paren]}" if paren.to_s.match?(/\&#x.{0,4};/)
+          paren.to_s
         end
 
         def mathml_paren(field)
           return "" if field&.value&.include?(":")
 
           field&.value
+        end
+
+        def circular_parens
+          parameter_one&.value = "&#x2329;" if Utility.symbol_value(parameter_one, "ᑕ")
+          parameter_three&.value = "&#x232a;" if Utility.symbol_value(parameter_three, "ᑐ")
         end
       end
     end

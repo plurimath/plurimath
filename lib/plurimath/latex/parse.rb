@@ -90,7 +90,7 @@ module Plurimath
           (slash >> math_operators_classes) |
           match["a-zA-Z"].as(:symbols) |
           match(/\d+(\.[0-9]+)|\d/).repeat(1).as(:number) |
-          str("\\\\").as("\\\\") >> match(/\s/).repeat |
+          (str("\\\\").as("\\\\") >> match(/\s/).repeat) |
           str("\\ ").as(:space)
       end
 
@@ -140,10 +140,10 @@ module Plurimath
             (expression.repeat.as(:dividend) >> str("\\over") >> expression.repeat.as(:divisor)) |
             expression.as(:expression).maybe
           ) >>
-         (
-           str("\\right").as(:right).maybe >> (right_parens | str(".").maybe)
-         )
-       )
+          (
+            str("\\right").as(:right).maybe >> (right_parens | str(".").maybe)
+          )
+        )
       end
 
       rule(:over_class) do
@@ -156,7 +156,7 @@ module Plurimath
 
       rule(:iteration) do
         (sequence.as(:sequence) >> iteration.as(:expression)) |
-          sequence >> expression.maybe
+          (sequence >> expression.maybe)
       end
 
       rule(:expression) do
@@ -204,7 +204,7 @@ module Plurimath
         when :binary
           (slashed_value(first_value, :binary) >> intermediate_exp.as(:first_value) >> intermediate_exp.as(:second_value)).as(:binary)
         when :text
-          (slashed_value(first_value, :text) >> (str("{") >> (match("[^\}]").repeat).as(:first_value) >> str("}")))
+          (slashed_value(first_value, :text) >> (str("{") >> match("[^}]").repeat.as(:first_value) >> str("}")))
         end
       end
 

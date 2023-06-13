@@ -58,8 +58,8 @@ module Plurimath
       end
 
       rule(:quoted_text) do
-        str('"') >> match("[^\"]").repeat.as(:text) >> str('"') |
-          str('"') >> str("").as(:text)
+        (str('"') >> match("[^\"]").repeat.as(:text) >> str('"')) |
+          (str('"') >> str("").as(:text))
       end
 
       rule(:symbol_text_or_integer) do
@@ -70,7 +70,7 @@ module Plurimath
           quoted_text |
           (str("d").as(:d) >> str("x").as(:x)).as(:intermediate_exp) |
           match["a-zA-Z"].as(:symbol) |
-          match(/[^\[{(\\\/@;:.,'"|\]})0-9a-zA-Z\-><$%^&*_=+!`~\s?ℒℛ]/).as(:symbol) |
+          match(/[^\[{(\\\/@;:.,'"|\]})0-9a-zA-Z\-><$%^&*_=+!`~\s?ℒℛᑕᑐ]/).as(:symbol) |
           number
       end
 
@@ -89,16 +89,15 @@ module Plurimath
       end
 
       rule(:table) do
-        (open_table.as(:table_left) >> tr >> close_table.as(:table_right)) |
-          (open_table.as(:table_left) >> tr >> str("}").as(:table_right)) |
-          (str("norm").as(:norm) >> open_table.as(:table_left) >> tr >> close_table.as(:table_right)) |
-          (str("{").as(:table_left) >> tr >> close_table.as(:table_right)) |
-          (str("|").as(:table_left) >> tr >> str("|").as(:table_right)) |
-          (str("left") >> left_right_open_paren.as(:left) >> tr >> str("right") >> left_right_close_paren.as(:right))
+        (str("{").as(:table_left) >> space.maybe >> tr >> space.maybe >> close_table.as(:table_right)) |
+          (open_table.as(:table_left) >> space.maybe >> tr >> space.maybe >> close_table.as(:table_right)) |
+          (str("norm").as(:norm) >> open_table.as(:table_left) >> space.maybe >> tr >> space.maybe >> close_table.as(:table_right)) |
+          (str("|").as(:table_left) >> space.maybe >> tr >> space.maybe >> str("|").as(:table_right)) |
+          (str("left") >> left_right_open_paren.as(:left) >> space.maybe >> tr >> space.maybe >> str("right") >> left_right_close_paren.as(:right))
       end
 
       rule(:tr) do
-        ((left_right_open_paren.as(:open_tr) >> td.as(:tds_list) >> left_right_close_paren).as(:table_row) >> comma >> tr.as(:expr)) |
+        ((left_right_open_paren.as(:open_tr) >> td.as(:tds_list) >> left_right_close_paren).as(:table_row) >> comma >> space.maybe >> tr.as(:expr)) |
           (left_right_open_paren.as(:open_tr) >> td.as(:tds_list) >> left_right_close_paren).as(:table_row)
       end
 

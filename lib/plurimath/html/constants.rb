@@ -34,8 +34,6 @@ module Plurimath
         det
         ln
         lg
-        g
-        f
       ].freeze
       SUB_SUP_CLASSES = {
         "&prod;": :prod,

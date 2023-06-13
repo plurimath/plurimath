@@ -71,7 +71,7 @@ module Plurimath
       end
 
       def explicit_checks(unicode)
-        return true if [unicode, value].any?{|v| ["∣", "|"].include?(v) }
+        return true if [unicode, value].any? { |v| ["∣", "|"].include?(v) }
       end
 
       def specific_values

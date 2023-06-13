@@ -9659,7 +9659,7 @@ RSpec.describe Plurimath::Latex::Parser do
             "bf"
           ),
           Plurimath::Math::Symbol.new("="),
-          Plurimath::Math::Symbol.new("&#x27e8;"),
+          Plurimath::Math::Symbol.new("&#x2329;"),
           Plurimath::Math::Function::FontStyle::Bold.new(
             Plurimath::Math::Symbol.new("x"),
             "bf"
@@ -9669,7 +9669,7 @@ RSpec.describe Plurimath::Latex::Parser do
             Plurimath::Math::Symbol.new("d"),
             "bf"
           ),
-          Plurimath::Math::Symbol.new("&#x27e9;")
+          Plurimath::Math::Symbol.new("&#x232a;")
         ])
         expect(formula).to eq(expected_value)
       end
@@ -9946,7 +9946,7 @@ RSpec.describe Plurimath::Latex::Parser do
             "bf"
           ),
           Plurimath::Math::Symbol.new("="),
-          Plurimath::Math::Symbol.new("&#x27e8;"),
+          Plurimath::Math::Symbol.new("&#x2329;"),
           Plurimath::Math::Function::FontStyle::Bold.new(
             Plurimath::Math::Symbol.new("&#x3b7;"),
             "bf"
@@ -9956,7 +9956,7 @@ RSpec.describe Plurimath::Latex::Parser do
             Plurimath::Math::Symbol.new("&#x3b6;"),
             "bf"
           ),
-          Plurimath::Math::Symbol.new("&#x27e9;")
+          Plurimath::Math::Symbol.new("&#x232a;")
         ])
         expect(formula).to eq(expected_value)
       end
@@ -10003,7 +10003,7 @@ RSpec.describe Plurimath::Latex::Parser do
             "mathtt"
           ),
           Plurimath::Math::Symbol.new("="),
-          Plurimath::Math::Symbol.new("&#x27e8;"),
+          Plurimath::Math::Symbol.new("&#x2329;"),
           Plurimath::Math::Function::FontStyle::Bold.new(
             Plurimath::Math::Symbol.new("&#x3be;"),
             "bf"
@@ -10013,7 +10013,7 @@ RSpec.describe Plurimath::Latex::Parser do
             Plurimath::Math::Symbol.new("&#x3b7;"),
             "mathsf"
           ),
-          Plurimath::Math::Symbol.new("&#x27e9;")
+          Plurimath::Math::Symbol.new("&#x232a;")
         ])
         expect(formula).to eq(expected_value)
       end
@@ -10060,7 +10060,7 @@ RSpec.describe Plurimath::Latex::Parser do
             "bf"
           ),
           Plurimath::Math::Symbol.new("="),
-          Plurimath::Math::Symbol.new("&#x27e8;"),
+          Plurimath::Math::Symbol.new("&#x2329;"),
           Plurimath::Math::Function::FontStyle::Bold.new(
             Plurimath::Math::Symbol.new("&#x3b6;"),
             "bf"
@@ -10070,7 +10070,7 @@ RSpec.describe Plurimath::Latex::Parser do
             Plurimath::Math::Symbol.new("&#x3be;"),
             "bf"
           ),
-          Plurimath::Math::Symbol.new("&#x27e9;")
+          Plurimath::Math::Symbol.new("&#x232a;")
         ])
         expect(formula).to eq(expected_value)
       end

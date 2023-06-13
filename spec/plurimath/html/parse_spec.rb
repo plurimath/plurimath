@@ -82,7 +82,7 @@ RSpec.describe Plurimath::Html::Parse do
         expect(sup_value[:lparen]).to eq("(")
         expect(sup_value[:sequence][:text]).to eq("S")
         expect(sup_value[:rparen]).to eq(")")
-        expect(sub_value[:unary]).to eq("g")
+        expect(sub_value[:text]).to eq("g")
       end
     end
 
@@ -314,24 +314,24 @@ RSpec.describe Plurimath::Html::Parse do
     context "contains HTML math example #20" do
       let(:string) { "<i>f</i>(<i>x</x>)" }
       it "returns abstract parsed tree" do
-        first_value = formula[:unary_function][:first_value]
+        int_exp = formula[:parse_parenthesis]
 
-        expect(formula[:unary_function][:unary]).to eq("f")
-        expect(first_value[:lparen]).to eq("(")
-        expect(first_value[:sequence][:text]).to eq("x")
-        expect(first_value[:rparen]).to eq(")")
+        expect(formula[:sequence][:text]).to eq("f")
+        expect(int_exp[:lparen]).to eq("(")
+        expect(int_exp[:sequence][:text]).to eq("x")
+        expect(int_exp[:rparen]).to eq(")")
       end
     end
 
     context "contains HTML math example #21" do
       let(:string) { "<i>f</i>(<i>g</i>(<i>x</x>))" }
       it "returns abstract parsed tree" do
-        first_value        = formula[:unary_function][:first_value]
-        nested_first_value = first_value[:unary_function][:first_value]
+        first_value        = formula[:parse_parenthesis]
+        nested_first_value = first_value[:parse_parenthesis]
 
-        expect(formula[:unary_function][:unary]).to eq("f")
+        expect(formula[:sequence][:text]).to eq("f")
         expect(first_value[:lparen]).to eq("(")
-        expect(first_value[:unary_function][:unary]).to eq("g")
+        expect(first_value[:sequence][:text]).to eq("g")
         expect(nested_first_value[:lparen]).to eq("(")
         expect(nested_first_value[:sequence][:text]).to eq("x")
         expect(nested_first_value[:rparen]).to eq(")")
@@ -342,13 +342,12 @@ RSpec.describe Plurimath::Html::Parse do
     context "contains HTML math example #22" do
       let(:string) { "f&sum;(<i>n</i>)(<i>2</i>)" }
       it "returns abstract parsed tree" do
-        sequence    = formula[:sequence]
-        parse_paren = sequence[:sequence][:parse_parenthesis]
-        expression  = formula[:expression][:parse_parenthesis]
-        unary       = sequence[:unary_function]
+        sequence    = formula[:expression][:sequence]
+        parse_paren = sequence[:parse_parenthesis]
+        expression  = formula[:expression][:expression][:parse_parenthesis]
 
-        expect(unary[:unary]).to eq("f")
-        expect(unary[:first_value][:sum_prod]).to eq("&sum;")
+        expect(formula[:text]).to eq("f")
+        expect(sequence[:symbol]).to eq("&sum;")
         expect(parse_paren[:lparen]).to eq("(")
         expect(parse_paren[:sequence][:text]).to eq("n")
         expect(parse_paren[:rparen]).to eq(")")
@@ -361,12 +360,12 @@ RSpec.describe Plurimath::Html::Parse do
     context "contains HTML math example #23" do
       let(:string) { "fib(<i>n</i>)" }
       it "returns abstract parsed tree" do
-        unary       = formula[:unary_function]
-        parse_paren = formula[:sequence][:parse_parenthesis]
+        expression  = formula[:expression]
+        parse_paren = expression[:expression][:parse_parenthesis]
 
-        expect(unary[:unary]).to eq("f")
-        expect(unary[:first_value][:text]).to eq("i")
-        expect(formula[:sequence][:text]).to eq("b")
+        expect(formula[:text]).to eq("f")
+        expect(expression[:text]).to eq("i")
+        expect(expression[:expression][:text]).to eq("b")
         expect(parse_paren[:lparen]).to eq("(")
         expect(parse_paren[:sequence][:text]).to eq("n")
         expect(parse_paren[:rparen]).to eq(")")
@@ -378,7 +377,7 @@ RSpec.describe Plurimath::Html::Parse do
       it "returns abstract parsed tree" do
         sub_value = formula[:sub_value]
 
-        expect(formula[:sub_sup][:unary]).to eq("f")
+        expect(formula[:sub_sup][:sequence][:text]).to eq("f")
         expect(sub_value[:text]).to eq("m")
         expect(sub_value[:expression][:text]).to eq("a")
         expect(sub_value[:expression][:expression][:text]).to eq("x")
@@ -424,12 +423,12 @@ RSpec.describe Plurimath::Html::Parse do
     context "contains HTML math example #29" do
       let(:string) { "<i>f</i><sup>-1</sup>(<i>x</x>)" }
       it "returns abstract parsed tree" do
-        sequence    = formula[:unary_function][:first_value][:sequence]
-        parse_paren = formula[:sequence][:parse_parenthesis]
+        sup_value   = formula[:sup_value]
+        parse_paren = formula[:expression][:parse_parenthesis]
 
-        expect(formula[:unary_function][:unary]).to eq("f")
-        expect(sequence[:symbol]).to eq("-")
-        expect(sequence[:expression][:number]).to eq("1")
+        expect(formula[:sub_sup][:sequence][:text]).to eq("f")
+        expect(sup_value[:symbol]).to eq("-")
+        expect(sup_value[:expression][:number]).to eq("1")
         expect(parse_paren[:lparen]).to eq("(")
         expect(parse_paren[:sequence][:text]).to eq("x")
         expect(parse_paren[:rparen]).to eq(")")
@@ -467,6 +466,7 @@ RSpec.describe Plurimath::Html::Parse do
 
     context "contains HTML math example #32" do
       let(:string) { "<table><tr><td>Something</td></tr></table>" }
+
       it "returns abstract parsed tree" do
         td_value   = formula[:table_value][:tr_value][:td_value]
         expression = td_value[:expression][:expression][:expression][:expression]
@@ -479,7 +479,7 @@ RSpec.describe Plurimath::Html::Parse do
         expect(expression[:expression][:text]).to eq("h")
         expect(expression[:expression][:expression][:text]).to eq("i")
         expect(expression[:expression][:expression][:expression][:text]).to eq("n")
-        expect(expression[:expression][:expression][:expression][:expression][:unary]).to eq("g")
+        expect(expression[:expression][:expression][:expression][:expression][:text]).to eq("g")
       end
     end
 

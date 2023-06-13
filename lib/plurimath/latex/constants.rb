@@ -1311,8 +1311,8 @@ module Plurimath
         Lbrack: "&#x27e6;",
         rBrack: "&#x27e7;",
         Rbrack: "&#x27e7;",
-        langle: "&#x27e8;",
-        rangle: "&#x27e9;",
+        langle: "&#x2329;",
+        rangle: "&#x232a;",
         lAngle: "&#x27ea;",
         rAngle: "&#x27eb;",
         lgroup: "&#x27ee;",
@@ -3787,8 +3787,8 @@ module Plurimath
       ].freeze
       LEFT_RIGHT_PARENTHESIS = {
         "\\backslash": "&#x5c;",
-        "\\langle": "&#x27e8;",
-        "\\rangle": "&#x27e9;",
+        "\\langle": "&#x2329;",
+        "\\rangle": "&#x232a;",
         "\\lfloor": "&#x230a;",
         "\\rfloor": "&#x230b;",
         "\\lceil": "&#x2308;",
@@ -3828,7 +3828,7 @@ module Plurimath
         |
         }
         {
-      ]
+      ].freeze
     end
   end
 end
