@@ -116,9 +116,7 @@ RSpec.describe Plurimath::Mathml do
                 <mi>n</mi>
                 <mi>i</mi>
                 <mi>n</mi>
-                <mrow>
-                  <mi>g</mi>
-                </mrow>
+                <mi>g</mi>
                 <mo>(</mo>
                 <mi>k</mi>
                 <mo>)</mo>
@@ -240,9 +238,7 @@ RSpec.describe Plurimath::Mathml do
                       </mrow>
                     </msubsup>
                     <mrow>
-                      <mrow>
-                        <mi>f</mi>
-                      </mrow>
+                      <mi>f</mi>
                       <mo>(</mo>
                       <mi>t</mi>
                       <mo>)</mo>

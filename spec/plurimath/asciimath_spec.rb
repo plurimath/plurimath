@@ -209,8 +209,8 @@ RSpec.describe Plurimath::Asciimath do
       let(:string) { 'int_0^1f(x)dx' }
 
       it 'returns parsed Asciimath to Formula' do
-        latex = '\int_{0}^{1} f( x ) d x'
-        asciimath = 'int_(0)^(1) f(x) d x'
+        latex = '\int_{0}^{1} f ( x ) d x'
+        asciimath = 'int_(0)^(1) f (x) d x'
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -219,13 +219,11 @@ RSpec.describe Plurimath::Asciimath do
                 <mn>0</mn>
                 <mn>1</mn>
               </msubsup>
+              <mi>f</mi>
               <mrow>
-                <mi>f</mi>
-                <mrow>
-                  <mo>(</mo>
-                  <mi>x</mi>
-                  <mo>)</mo>
-                </mrow>
+                <mo>(</mo>
+                <mi>x</mi>
+                <mo>)</mo>
               </mrow>
               <mrow>
                 <mi>d</mi>
@@ -611,8 +609,8 @@ RSpec.describe Plurimath::Asciimath do
       let(:string) { 'int_0^1 f(x)dx' }
 
       it 'returns parsed Asciimath to Formula' do
-        latex = '\int_{0}^{1} f( x ) d x'
-        asciimath = 'int_(0)^(1) f(x) d x'
+        latex = '\int_{0}^{1} f ( x ) d x'
+        asciimath = 'int_(0)^(1) f (x) d x'
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -621,13 +619,11 @@ RSpec.describe Plurimath::Asciimath do
                 <mn>0</mn>
                 <mn>1</mn>
               </msubsup>
+              <mi>f</mi>
               <mrow>
-                <mi>f</mi>
-                <mrow>
-                  <mo>(</mo>
-                  <mi>x</mi>
-                  <mo>)</mo>
-                </mrow>
+                <mo>(</mo>
+                <mi>x</mi>
+                <mo>)</mo>
               </mrow>
               <mrow>
                 <mi>d</mi>
@@ -1611,9 +1607,7 @@ RSpec.describe Plurimath::Asciimath do
                       <mo>&#x7c;</mo>
                     </mtd>
                     <mtd>
-                      <mrow>
-                        <mi>f</mi>
-                      </mrow>
+                      <mi>f</mi>
                     </mtd>
                   </mtr>
                 </mtable>
@@ -2183,8 +2177,8 @@ RSpec.describe Plurimath::Asciimath do
       let(:string) { '(ii(T)_1+ii(T)_2-a_1-a_2)*f(t) = {(0,pour,{(0&#x3c;t&#x3c;a_(-)),("ou "t&#x3e;ii(T)_(-)+a_2):}),(1,"''",{(a_(-)&#x3c;t&#x3c;a_+","),(ii(T)_1-a_1&#x3c;t&#x3c;ii(T)_(-)),("ou "ii(T)_1&#x3c;t&#x3c;ii(T)_(-)+a_2):}),(2,"''",a_+&#x3c;t&#x3c;ii(T)_1-a_1),((ii(T)_3-ii(T)_(-)+a_1)*delta(t-ii(T)_1),pour,t=ii(T)_1),((ii(T)_1-ii(T)_4)*delta(t-ii(T)_2),"''",t=ii(T)_2","):}' }
 
       it 'returns parsed Asciimath to Formula' do
-        latex = '( \mathit{T}_{1} + \mathit{T}_{2} - a_{1} - a_{2} ) \cdot f( t ) = \left \{\begin{matrix}0 & p o u r & \left \{\begin{matrix}0 \& \# x 3 c ; t \& \# x 3 c ; a_{-} \\\\ \text{ou } t \& \# x 3 e ; \mathit{T}_{-} + a_{2}\end{matrix}\right  . \\\\ 1 & \text{} & \left \{\begin{matrix}a_{-} \& \# x 3 c ; t \& \# x 3 c ; a_{+} \text{,} \\\\ \mathit{T}_{1} - a_{1} \& \# x 3 c ; t \& \# x 3 c ; \mathit{T}_{-} \\\\ \text{ou } \mathit{T}_{1} \& \# x 3 c ; t \& \# x 3 c ; \mathit{T}_{-} + a_{2}\end{matrix}\right  . \\\\ 2 & \text{} & a_{+} \& \# x 3 c ; t \& \# x 3 c ; \mathit{T}_{1} - a_{1} \\\\ ( \mathit{T}_{3} - \mathit{T}_{-} + a_{1} ) \cdot \delta ( t - \mathit{T}_{1} ) & p o u r & t = \mathit{T}_{1} \\\\ ( \mathit{T}_{1} - \mathit{T}_{4} ) \cdot \delta ( t - \mathit{T}_{2} ) & \text{} & t = \mathit{T}_{2} \text{,}\end{matrix}\right  .'
-        asciimath = '(ii(T)_(1) + ii(T)_(2) - a_(1) - a_(2)) * f(t) = {[0, p o u r, {[0 & # x 3 c ; t & # x 3 c ; a_(-)], ["ou " t & # x 3 e ; ii(T)_(-) + a_(2)]:}], [1, "", {[a_(-) & # x 3 c ; t & # x 3 c ; a_(+) ","], [ii(T)_(1) - a_(1) & # x 3 c ; t & # x 3 c ; ii(T)_(-)], ["ou " ii(T)_(1) & # x 3 c ; t & # x 3 c ; ii(T)_(-) + a_(2)]:}], [2, "", a_(+) & # x 3 c ; t & # x 3 c ; ii(T)_(1) - a_(1)], [(ii(T)_(3) - ii(T)_(-) + a_(1)) * delta (t - ii(T)_(1)), p o u r, t = ii(T)_(1)], [(ii(T)_(1) - ii(T)_(4)) * delta (t - ii(T)_(2)), "", t = ii(T)_(2) ","]:}'
+        latex = '( \mathit{T}_{1} + \mathit{T}_{2} - a_{1} - a_{2} ) \cdot f ( t ) = \left \{\begin{matrix}0 & p o u r & \left \{\begin{matrix}0 \& \# x 3 c ; t \& \# x 3 c ; a_{-} \\\\ \text{ou } t \& \# x 3 e ; \mathit{T}_{-} + a_{2}\end{matrix}\right  . \\\\ 1 & \text{} & \left \{\begin{matrix}a_{-} \& \# x 3 c ; t \& \# x 3 c ; a_{+} \text{,} \\\\ \mathit{T}_{1} - a_{1} \& \# x 3 c ; t \& \# x 3 c ; \mathit{T}_{-} \\\\ \text{ou } \mathit{T}_{1} \& \# x 3 c ; t \& \# x 3 c ; \mathit{T}_{-} + a_{2}\end{matrix}\right  . \\\\ 2 & \text{} & a_{+} \& \# x 3 c ; t \& \# x 3 c ; \mathit{T}_{1} - a_{1} \\\\ ( \mathit{T}_{3} - \mathit{T}_{-} + a_{1} ) \cdot \delta ( t - \mathit{T}_{1} ) & p o u r & t = \mathit{T}_{1} \\\\ ( \mathit{T}_{1} - \mathit{T}_{4} ) \cdot \delta ( t - \mathit{T}_{2} ) & \text{} & t = \mathit{T}_{2} \text{,}\end{matrix}\right  .'
+        asciimath = '(ii(T)_(1) + ii(T)_(2) - a_(1) - a_(2)) * f (t) = {[0, p o u r, {[0 & # x 3 c ; t & # x 3 c ; a_(-)], ["ou " t & # x 3 e ; ii(T)_(-) + a_(2)]:}], [1, "", {[a_(-) & # x 3 c ; t & # x 3 c ; a_(+) ","], [ii(T)_(1) - a_(1) & # x 3 c ; t & # x 3 c ; ii(T)_(-)], ["ou " ii(T)_(1) & # x 3 c ; t & # x 3 c ; ii(T)_(-) + a_(2)]:}], [2, "", a_(+) & # x 3 c ; t & # x 3 c ; ii(T)_(1) - a_(1)], [(ii(T)_(3) - ii(T)_(-) + a_(1)) * delta (t - ii(T)_(1)), p o u r, t = ii(T)_(1)], [(ii(T)_(1) - ii(T)_(4)) * delta (t - ii(T)_(2)), "", t = ii(T)_(2) ","]:}'
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -2216,13 +2210,11 @@ RSpec.describe Plurimath::Asciimath do
                 <mo>)</mo>
               </mrow>
               <mo>&#x22c5;</mo>
+              <mi>f</mi>
               <mrow>
-                <mi>f</mi>
-                <mrow>
-                  <mo>(</mo>
-                  <mi>t</mi>
-                  <mo>)</mo>
-                </mrow>
+                <mo>(</mo>
+                <mi>t</mi>
+                <mo>)</mo>
               </mrow>
               <mo>=</mo>
               <mrow>
@@ -2813,9 +2805,7 @@ RSpec.describe Plurimath::Asciimath do
               <mrow>
                 <mo>(</mo>
                 <mi>a</mi>
-                <mrow>
-                  <mi>g</mi>
-                </mrow>
+                <mi>g</mi>
                 <mo>)</mo>
               </mrow>
               <mo>&#x26;</mo>
@@ -2870,9 +2860,7 @@ RSpec.describe Plurimath::Asciimath do
                           <mfrac>
                             <mrow>
                               <mo>&#x2202;</mo>
-                              <mrow>
-                                <mi>f</mi>
-                              </mrow>
+                              <mi>f</mi>
                             </mrow>
                             <mrow>
                               <mo>&#x2202;</mo>
@@ -2907,9 +2895,7 @@ RSpec.describe Plurimath::Asciimath do
                           <mfrac>
                             <mrow>
                               <mo>&#x2202;</mo>
-                              <mrow>
-                                <mi>f</mi>
-                              </mrow>
+                              <mi>f</mi>
                             </mrow>
                             <mrow>
                               <mo>&#x2202;</mo>
@@ -2942,9 +2928,7 @@ RSpec.describe Plurimath::Asciimath do
                       <mfrac>
                         <mrow>
                           <mo>&#x2202;</mo>
-                          <mrow>
-                            <mi>f</mi>
-                          </mrow>
+                          <mi>f</mi>
                         </mrow>
                         <mrow>
                           <mo>&#x2202;</mo>
@@ -2959,9 +2943,7 @@ RSpec.describe Plurimath::Asciimath do
                       <mfrac>
                         <mrow>
                           <mo>&#x2202;</mo>
-                          <mrow>
-                            <mi>f</mi>
-                          </mrow>
+                          <mi>f</mi>
                         </mrow>
                         <mrow>
                           <mo>&#x2202;</mo>
@@ -3152,9 +3134,7 @@ RSpec.describe Plurimath::Asciimath do
                       <mfrac>
                         <mrow>
                           <mo>&#x2202;</mo>
-                          <mrow>
-                            <mi>f</mi>
-                          </mrow>
+                          <mi>f</mi>
                         </mrow>
                         <mrow>
                           <mo>&#x2202;</mo>
@@ -3189,9 +3169,7 @@ RSpec.describe Plurimath::Asciimath do
                       <mfrac>
                         <mrow>
                           <mo>&#x2202;</mo>
-                          <mrow>
-                            <mi>f</mi>
-                          </mrow>
+                          <mi>f</mi>
                         </mrow>
                         <mrow>
                           <mo>&#x2202;</mo>
@@ -3711,15 +3689,13 @@ RSpec.describe Plurimath::Asciimath do
       let(:string) { "f'(x) = dy/dx" }
 
       it 'returns parsed Asciimath to Formula' do
-        latex = "f\\prime ( x ) = d \\frac{y}{d x}"
-        asciimath = "f' (x) = d frac(y)(d x)"
+        latex = "f \\prime ( x ) = d \\frac{y}{d x}"
+        asciimath = "f ' (x) = d frac(y)(d x)"
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
-              <mrow>
-                <mi>f</mi>
-                <mo>&#x2032;</mo>
-              </mrow>
+              <mi>f</mi>
+              <mo>&#x2032;</mo>
               <mrow>
                 <mo>(</mo>
                 <mi>x</mi>
@@ -3893,9 +3869,7 @@ RSpec.describe Plurimath::Asciimath do
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
               <msub>
-                <mrow>
-                  <mi>f</mi>
-                </mrow>
+                <mi>f</mi>
                 <mrow>
                   <mn>199</mn>
                   <mtext>Hg</mtext>
@@ -4017,18 +3991,14 @@ RSpec.describe Plurimath::Asciimath do
       let(:string) { 'g @ f' }
 
       it 'returns parsed Asciimath to Formula' do
-        latex = 'g\circ f'
-        asciimath = 'g@ f'
+        latex = 'g \circ f'
+        asciimath = 'g @ f'
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
-              <mrow>
-                <mi>g</mi>
-                <mi>&#x2218;</mi>
-              </mrow>
-              <mrow>
-                <mi>f</mi>
-              </mrow>
+              <mi>g</mi>
+              <mi>&#x2218;</mi>
+              <mi>f</mi>
             </mstyle>
           </math>
         MATHML
@@ -4650,53 +4620,49 @@ RSpec.describe Plurimath::Asciimath do
       let(:string) { "f (\"a\"_{28},\" P(54) 8-4\") - f (\"a\"_{16},\" R(127) 11-5\"{^(127)ii(I)_2}) = -42.99(4) \"unitsml(MHz)\"" }
 
       it 'returns parsed Asciimath to Formula' do
-        latex = 'f( \text{a}_{28} , \text{ P(54) 8-4} ) - f( \text{a}_{16} , \text{ R(127) 11-5} \{ ^ ( 127 ) \mathit{I}_{2} \} ) = - 42.99 ( 4 ) \text{unitsml(MHz)}'
-        asciimath = "f(\"a\"_(28) , \" P(54) 8-4\") - f(\"a\"_(16) , \" R(127) 11-5\" {^ (127) ii(I)_(2)}) = - 42.99 (4) \"unitsml(MHz)\""
+        latex = 'f ( \text{a}_{28} , \text{ P(54) 8-4} ) - f ( \text{a}_{16} , \text{ R(127) 11-5} \{ ^ ( 127 ) \mathit{I}_{2} \} ) = - 42.99 ( 4 ) \text{unitsml(MHz)}'
+        asciimath = "f (\"a\"_(28) , \" P(54) 8-4\") - f (\"a\"_(16) , \" R(127) 11-5\" {^ (127) ii(I)_(2)}) = - 42.99 (4) \"unitsml(MHz)\""
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
+              <mi>f</mi>
               <mrow>
-                <mi>f</mi>
-                <mrow>
-                  <mo>(</mo>
-                  <msub>
-                    <mtext>a</mtext>
-                    <mn>28</mn>
-                  </msub>
-                  <mo>,</mo>
-                  <mtext> P(54) 8-4</mtext>
-                  <mo>)</mo>
-                </mrow>
+                <mo>(</mo>
+                <msub>
+                  <mtext>a</mtext>
+                  <mn>28</mn>
+                </msub>
+                <mo>,</mo>
+                <mtext> P(54) 8-4</mtext>
+                <mo>)</mo>
               </mrow>
               <mo>&#x2212;</mo>
+              <mi>f</mi>
               <mrow>
-                <mi>f</mi>
+                <mo>(</mo>
+                <msub>
+                  <mtext>a</mtext>
+                  <mn>16</mn>
+                </msub>
+                <mo>,</mo>
+                <mtext> R(127) 11-5</mtext>
                 <mrow>
-                  <mo>(</mo>
-                  <msub>
-                    <mtext>a</mtext>
-                    <mn>16</mn>
-                  </msub>
-                  <mo>,</mo>
-                  <mtext> R(127) 11-5</mtext>
+                  <mo>{</mo>
+                  <mo>^</mo>
                   <mrow>
-                    <mo>{</mo>
-                    <mo>^</mo>
-                    <mrow>
-                      <mo>(</mo>
-                      <mn>127</mn>
-                      <mo>)</mo>
-                    </mrow>
-                    <msub>
-                      <mstyle mathvariant="italic">
-                        <mi>I</mi>
-                      </mstyle>
-                      <mn>2</mn>
-                    </msub>
-                    <mo>}</mo>
+                    <mo>(</mo>
+                    <mn>127</mn>
+                    <mo>)</mo>
                   </mrow>
-                  <mo>)</mo>
+                  <msub>
+                    <mstyle mathvariant="italic">
+                      <mi>I</mi>
+                    </mstyle>
+                    <mn>2</mn>
+                  </msub>
+                  <mo>}</mo>
                 </mrow>
+                <mo>)</mo>
               </mrow>
               <mo>=</mo>
               <mo>&#x2212;</mo>
@@ -4707,6 +4673,282 @@ RSpec.describe Plurimath::Asciimath do
                 <mo>)</mo>
               </mrow>
               <mtext>unitsml(MHz)</mtext>
+            </mstyle>
+          </math>
+        MATHML
+        expect(formula.to_latex).to eql(latex)
+        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_asciimath).to eql(asciimath)
+      end
+    end
+
+    context "contains matrix rendering example #91" do
+      let(:string) { "T_m = T_{lm} = [(a,b,0),(c,d,0),(e,f,1)]" }
+
+      it 'returns parsed Asciimath to Formula' do
+        latex = 'T_{m} = T_{l m} = \left [\begin{matrix}a & b & 0 \\\\ c & d & 0 \\\\ e & f & 1\end{matrix}\right ]'
+        asciimath = "T_(m) = T_(l m) = [[a, b, 0], [c, d, 0], [e, f, 1]]"
+        mathml = <<~MATHML
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
+              <msub>
+                <mi>T</mi>
+                <mi>m</mi>
+              </msub>
+              <mo>=</mo>
+              <msub>
+                <mi>T</mi>
+                <mrow>
+                  <mi>l</mi>
+                  <mi>m</mi>
+                </mrow>
+              </msub>
+              <mo>=</mo>
+              <mrow>
+                <mo>[</mo>
+                <mtable>
+                  <mtr>
+                    <mtd>
+                      <mi>a</mi>
+                    </mtd>
+                    <mtd>
+                      <mi>b</mi>
+                    </mtd>
+                    <mtd>
+                      <mn>0</mn>
+                    </mtd>
+                  </mtr>
+                  <mtr>
+                    <mtd>
+                      <mi>c</mi>
+                    </mtd>
+                    <mtd>
+                      <mi>d</mi>
+                    </mtd>
+                    <mtd>
+                      <mn>0</mn>
+                    </mtd>
+                  </mtr>
+                  <mtr>
+                    <mtd>
+                      <mi>e</mi>
+                    </mtd>
+                    <mtd>
+                      <mi>f</mi>
+                    </mtd>
+                    <mtd>
+                      <mn>1</mn>
+                    </mtd>
+                  </mtr>
+                </mtable>
+                <mo>]</mo>
+              </mrow>
+            </mstyle>
+          </math>
+        MATHML
+        expect(formula.to_latex).to eql(latex)
+        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_asciimath).to eql(asciimath)
+      end
+    end
+
+    context "contains matrix rendering and f class fix example #92" do
+      let(:string) do
+        <<~ASCIIMATH
+          << C_{s_i}, f_{j_i}, alpha_{j_i} >> =
+          { ("Composite"(C_{i-1},alpha_{i-1},E_i),"if " E_i " is a group"),
+          ("intrinsic color, shape, and "("shape" xx "opacity") " of " E_i, "otherwise") :}
+        ASCIIMATH
+      end
+
+      it 'returns parsed Asciimath to Formula' do
+        latex = '\langle C_{s_{i}} ,  f_{j_{i}} ,  \alpha_{j_{i}} \rangle = \left \{\begin{matrix}\text{Composite} ( C_{i - 1} , \alpha_{i - 1} , E_{i} ) & \text{if } E_{i} \text{ is a group} \\\\ \text{intrinsic color, shape, and } ( \text{shape} \times \text{opacity} ) \text{ of } E_{i} & \text{otherwise}\end{matrix}\right  .'
+        asciimath = '<< C_(s_(i)) ,  f_(j_(i)) ,  alpha_(j_(i)) >> = {["Composite" (C_(i - 1) , alpha_(i - 1) , E_(i)), "if " E_(i) " is a group"], ["intrinsic color, shape, and " ("shape" xx "opacity") " of " E_(i), "otherwise"]:}'
+        mathml = <<~MATHML
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
+              <mi>&#x2329;</mi>
+              <msub>
+                <mi>C</mi>
+                <msub>
+                  <mi>s</mi>
+                  <mi>i</mi>
+                </msub>
+              </msub>
+              <mo>, </mo>
+              <msub>
+                <mi>f</mi>
+                <msub>
+                  <mi>j</mi>
+                  <mi>i</mi>
+                </msub>
+              </msub>
+              <mo>, </mo>
+              <msub>
+                <mi>&#x3b1;</mi>
+                <msub>
+                  <mi>j</mi>
+                  <mi>i</mi>
+                </msub>
+              </msub>
+              <mi>&#x232a;</mi>
+              <mo>=</mo>
+              <mrow>
+                <mrow>
+                  <mo>{</mo>
+                  <mtable>
+                    <mtr>
+                      <mtd>
+                        <mtext>Composite</mtext>
+                        <mrow>
+                          <mo>(</mo>
+                          <msub>
+                            <mi>C</mi>
+                            <mrow>
+                              <mi>i</mi>
+                              <mo>&#x2212;</mo>
+                              <mn>1</mn>
+                            </mrow>
+                          </msub>
+                          <mo>,</mo>
+                          <msub>
+                            <mi>&#x3b1;</mi>
+                            <mrow>
+                              <mi>i</mi>
+                              <mo>&#x2212;</mo>
+                              <mn>1</mn>
+                            </mrow>
+                          </msub>
+                          <mo>,</mo>
+                          <msub>
+                            <mi>E</mi>
+                            <mi>i</mi>
+                          </msub>
+                          <mo>)</mo>
+                        </mrow>
+                      </mtd>
+                      <mtd>
+                        <mtext>if </mtext>
+                        <msub>
+                          <mi>E</mi>
+                          <mi>i</mi>
+                        </msub>
+                        <mtext> is a group</mtext>
+                      </mtd>
+                    </mtr>
+                    <mtr>
+                      <mtd>
+                        <mtext>intrinsic color, shape, and </mtext>
+                        <mrow>
+                          <mo>(</mo>
+                          <mtext>shape</mtext>
+                          <mo>&#xd7;</mo>
+                          <mtext>opacity</mtext>
+                          <mo>)</mo>
+                        </mrow>
+                        <mtext> of </mtext>
+                        <msub>
+                          <mi>E</mi>
+                          <mi>i</mi>
+                        </msub>
+                      </mtd>
+                      <mtd>
+                        <mtext>otherwise</mtext>
+                      </mtd>
+                    </mtr>
+                  </mtable>
+                  <mo></mo>
+                </mrow>
+              </mrow>
+            </mstyle>
+          </math>
+        MATHML
+        expect(formula.to_latex).to eql(latex)
+        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_asciimath).to eql(asciimath)
+      end
+    end
+
+    context "contains matrix rendering example #93" do
+      let(:string) { '<< C_g, f_g, alpha_g >> = "Composite"(U,0,P)' }
+
+      it 'returns parsed Asciimath to Formula' do
+        latex = '\langle C_{g} ,  f_{g} ,  \alpha_{g} \rangle = \text{Composite} ( U , 0 , P )'
+        asciimath = '<< C_(g) ,  f_(g) ,  alpha_(g) >> = "Composite" (U , 0 , P)'
+        mathml = <<~MATHML
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
+              <mi>&#x2329;</mi>
+              <msub>
+                <mi>C</mi>
+                <mi>g</mi>
+              </msub>
+              <mo>, </mo>
+              <msub>
+                <mi>f</mi>
+                <mi>g</mi>
+              </msub>
+              <mo>, </mo>
+              <msub>
+                <mi>&#x3b1;</mi>
+                <mi>g</mi>
+              </msub>
+              <mi>&#x232a;</mi>
+              <mo>=</mo>
+              <mtext>Composite</mtext>
+              <mrow>
+                <mo>(</mo>
+                <mi>U</mi>
+                <mo>,</mo>
+                <mn>0</mn>
+                <mo>,</mo>
+                <mi>P</mi>
+                <mo>)</mo>
+              </mrow>
+            </mstyle>
+          </math>
+        MATHML
+        expect(formula.to_latex).to eql(latex)
+        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_asciimath).to eql(asciimath)
+      end
+    end
+
+    context "contains matrix rendering example #94" do
+      let(:string) { '(: C,f,alpha :) = "Composite"(C_0,alpha_0,G)' }
+
+      it 'returns parsed Asciimath to Formula' do
+        latex = '\langle C , f , \alpha \rangle = \text{Composite} ( C_{0} , \alpha_{0} , G )'
+        asciimath = '<<C , f , alpha>> = "Composite" (C_(0) , alpha_(0) , G)'
+        mathml = <<~MATHML
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
+              <mrow>
+                <mo>&#x2329;</mo>
+                <mi>C</mi>
+                <mo>,</mo>
+                <mi>f</mi>
+                <mo>,</mo>
+                <mi>&#x3b1;</mi>
+                <mo>&#x232a;</mo>
+              </mrow>
+              <mo>=</mo>
+              <mtext>Composite</mtext>
+              <mrow>
+                <mo>(</mo>
+                <msub>
+                  <mi>C</mi>
+                  <mn>0</mn>
+                </msub>
+                <mo>,</mo>
+                <msub>
+                  <mi>&#x3b1;</mi>
+                  <mn>0</mn>
+                </msub>
+                <mo>,</mo>
+                <mi>G</mi>
+                <mo>)</mo>
+              </mrow>
             </mstyle>
           </math>
         MATHML

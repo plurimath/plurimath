@@ -86,8 +86,6 @@
 * `sec`
 * `ln`
 * `ul`
-* `g`
-* `f`
 
 
 == Symbols
@@ -1588,10 +1586,10 @@
 | `Lbrack` | &#x27e6;
 | `rBrack` | &#x27e7;
 | `Rbrack` | &#x27e7;
-| `langle` | &#x27e8;
+| `langle` | &#x2329;
 | `lAngle` | &#x27ea;
 | `rAngle` | &#x27eb;
-| `rangle` | &#x27e9;
+| `rangle` | &#x232a;
 | `lgroup` | &#x27ee;
 | `rgroup` | &#x27ef;
 | `Mapsto` | &#x2907;

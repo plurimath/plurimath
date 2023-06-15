@@ -37,6 +37,11 @@ module Plurimath
       end
 
       rule(sequence: simple(:sequence),
+           parse_parenthesis: simple(:parse_paren)) do
+        [sequence, parse_paren]
+      end
+
+      rule(sequence: simple(:sequence),
            expression: sequence(:expr)) do
         expr.insert(0, sequence)
       end
@@ -69,6 +74,13 @@ module Plurimath
             unary_function,
             sequence,
           ],
+        )
+      end
+
+      rule(unary_function: simple(:unary_function),
+           sequence: sequence(:sequence)) do
+        Math::Formula.new(
+          ([unary_function] + sequence),
         )
       end
 
@@ -250,6 +262,16 @@ module Plurimath
         end
       end
 
+      rule(sub_sup: simple(:sub_sup),
+           sup_value: sequence(:sup_value),
+           expression: simple(:expression)) do
+        power = Math::Function::Power.new(
+          sub_sup,
+          Math::Formula.new(sup_value),
+        )
+        [power, expression]
+      end
+
       rule(lparen: simple(:lparen),
            text: simple(:text),
            rparen: simple(:rparen)) do
@@ -266,6 +288,18 @@ module Plurimath
         Math::Formula.new([
                             Math::Symbol.new(lparen),
                             sequence,
+                            Math::Symbol.new(rparen),
+                          ])
+      end
+
+      rule(lparen: simple(:lparen),
+           sequence: simple(:sequence),
+           parse_parenthesis: simple(:parse_paren),
+           rparen: simple(:rparen)) do
+        Math::Formula.new([
+                            Math::Symbol.new(lparen),
+                            sequence,
+                            parse_paren,
                             Math::Symbol.new(rparen),
                           ])
       end

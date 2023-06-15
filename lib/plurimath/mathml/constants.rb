@@ -93,8 +93,8 @@ module Plurimath
         "&#x22a8;": "|==",
         "&#x2329;": "(:",
         "&#x232a;": ":)",
-        "&#x27e8;": "<<",
-        "&#x27e9;": ">>",
+        "&#x2329;": "<<",
+        "&#x232a;": ">>",
         "&#x222b;": "int",
         "&#x222e;": "oint",
         "&#x2202;": "del",
@@ -225,8 +225,6 @@ module Plurimath
         log
         ul
         ln
-        f
-        g
       ].freeze
       OPERATORS = [
         "&#x00a0;&#x00a0;&#x00a0;&#x00a0;",

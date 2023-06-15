@@ -4,13 +4,13 @@ module Plurimath
   class Asciimath
     class Constants
       TABLE_PARENTHESIS = {
-        "(:": ":)",
+        "ᑕ": "ᑐ",
         "ℒ": "ℛ",
         "[": "]",
         "(": ")",
       }.freeze
       PARENTHESIS = {
-        "(:": ":)",
+        "ᑕ": "ᑐ",
         "ℒ": "ℛ",
         "(": ")",
         "{": "}",
@@ -286,8 +286,6 @@ module Plurimath
         vec
         ul
         ln
-        f
-        g
       ].freeze
       BINARY_CLASSES = %i[
         underset

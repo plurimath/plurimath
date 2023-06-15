@@ -206,7 +206,7 @@ RSpec.describe Plurimath::Asciimath::Parser do
             Plurimath::Math::Symbol.new("("),
             [
               Plurimath::Math::Symbol.new("a"),
-              Plurimath::Math::Function::G.new
+              Plurimath::Math::Symbol.new("g")
             ],
             Plurimath::Math::Symbol.new(")")
           ),

@@ -295,7 +295,7 @@ RSpec.describe Plurimath::Mathml::Parser do
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
         Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::F.new,
+          Plurimath::Math::Symbol.new(" f "),
           Plurimath::Math::Symbol.new(" &#x2061; "),
           Plurimath::Math::Formula.new([
             Plurimath::Math::Symbol.new(" ( "),
@@ -586,7 +586,7 @@ RSpec.describe Plurimath::Mathml::Parser do
       expected_value = Plurimath::Math::Formula.new([
         Plurimath::Math::Formula.new([
           Plurimath::Math::Formula.new([
-            Plurimath::Math::Function::F.new,
+            Plurimath::Math::Symbol.new("f"),
             Plurimath::Math::Symbol.new("&#x2061;"),
             Plurimath::Math::Symbol.new("("),
             Plurimath::Math::Symbol.new("x"),
@@ -712,17 +712,17 @@ RSpec.describe Plurimath::Mathml::Parser do
             Plurimath::Math::Symbol.new(" such that "),
             Plurimath::Math::Formula.new([
               Plurimath::Math::Formula.new([
-                Plurimath::Math::Function::F.new,
+                Plurimath::Math::Symbol.new(" f "),
                 Plurimath::Math::Symbol.new(" &#x2061; "),
                 Plurimath::Math::Formula.new([
                   Plurimath::Math::Symbol.new(" ( "),
                   Plurimath::Math::Symbol.new(" x "),
                   Plurimath::Math::Symbol.new(" ) ")
-                ])
+                ]),
               ]),
               Plurimath::Math::Symbol.new(" &#x3c; "),
               Plurimath::Math::Symbol.new(" 1 ")
-            ])
+            ]),
           ])
         ])
       ])
@@ -1342,7 +1342,7 @@ RSpec.describe Plurimath::Mathml::Parser do
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
         Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::F.new,
+          Plurimath::Math::Symbol.new(" f "),
           Plurimath::Math::Symbol.new(" &#x2061; "),
           Plurimath::Math::Function::Fenced.new(
             Plurimath::Math::Symbol.new("("),
