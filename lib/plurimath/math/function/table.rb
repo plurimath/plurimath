@@ -129,6 +129,7 @@ module Plurimath
         def mathml_attrs(column_strings)
           args = options&.dup&.reject { |arg| arg.to_s == "asterisk" }
           args[:columnlines] = column_strings.join(" ") if column_strings.include?("solid")
+          args[:columnalign] = "left" if close_paren&.include?(":}")
           args
         end
 
@@ -152,8 +153,11 @@ module Plurimath
         def latex_columnalign
           return "" unless Hash(options)[:asterisk]
 
-          columnalign = Hash(value&.first&.parameter_one&.first&.parameter_two)[:columnalign]
-          "[#{Utility::ALIGNMENT_LETTERS.invert[columnalign]}]"
+          "[#{Utility::ALIGNMENT_LETTERS.invert[Hash(td_hash)[:columnalign]]}]"
+        end
+
+        def td_hash
+          value&.first&.parameter_one&.first&.parameter_two
         end
 
         def environment

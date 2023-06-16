@@ -6,11 +6,6 @@ module Plurimath
   module Math
     module Function
       class Fenced < TernaryFunction
-        def initialize(parameter_one = nil, parameter_two = nil, parameter_three = nil)
-          super
-          circular_parens
-        end
-
         def to_asciimath
           first_value  = parameter_one ? parameter_one.to_asciimath : "("
           third_value  = parameter_three ? parameter_three.to_asciimath : ")"
@@ -112,11 +107,6 @@ module Plurimath
           return "" if field&.value&.include?(":")
 
           field&.value
-        end
-
-        def circular_parens
-          parameter_one&.value = "&#x2329;" if Utility.symbol_value(parameter_one, "ᑕ")
-          parameter_three&.value = "&#x232a;" if Utility.symbol_value(parameter_three, "ᑐ")
         end
       end
     end
