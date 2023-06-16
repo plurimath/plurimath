@@ -1362,7 +1362,7 @@ RSpec.describe Plurimath::Asciimath do
               <mo>=</mo>
               <mrow>
                 <mo>{</mo>
-                <mtable>
+                <mtable columnalign="left">
                   <mtr>
                     <mtd>
                       <mo>&#x2212;</mo>
@@ -2219,7 +2219,7 @@ RSpec.describe Plurimath::Asciimath do
               <mo>=</mo>
               <mrow>
                 <mo>{</mo>
-                <mtable>
+                <mtable columnalign="left">
                   <mtr>
                     <mtd>
                       <mn>0</mn>
@@ -2233,7 +2233,7 @@ RSpec.describe Plurimath::Asciimath do
                     <mtd>
                       <mrow>
                         <mo>{</mo>
-                        <mtable>
+                        <mtable columnalign="left">
                           <mtr>
                             <mtd>
                               <mn>0</mn>
@@ -2294,7 +2294,7 @@ RSpec.describe Plurimath::Asciimath do
                     <mtd>
                       <mrow>
                         <mo>{</mo>
-                        <mtable>
+                        <mtable columnalign="left">
                           <mtr>
                             <mtd>
                               <msub>
@@ -4796,7 +4796,7 @@ RSpec.describe Plurimath::Asciimath do
               <mrow>
                 <mrow>
                   <mo>{</mo>
-                  <mtable>
+                  <mtable columnalign="left">
                     <mtr>
                       <mtd>
                         <mtext>Composite</mtext>
