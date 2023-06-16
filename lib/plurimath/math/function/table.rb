@@ -153,12 +153,7 @@ module Plurimath
         def latex_columnalign
           return "" unless Hash(options)[:asterisk]
 
-          columnalign = if close_paren&.include?(":}")
-                          Utility::ALIGNMENT_LETTERS.invert["left"]
-                        else
-                          Hash(td_hash)[:columnalign]
-                        end
-          "[#{Utility::ALIGNMENT_LETTERS.invert[columnalign]}]"
+          "[#{Utility::ALIGNMENT_LETTERS.invert[Hash(td_hash)[:columnalign]]}]"
         end
 
         def td_hash

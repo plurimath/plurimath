@@ -395,6 +395,8 @@ module Plurimath
         value = case value
                 when "ℒ" then "{:"
                 when "ℛ" then ":}"
+                when "ᑕ" then "&#x2329;"
+                when "ᑐ" then "&#x232a;"
                 else value
                 end
         Math::Symbol.new(value)
