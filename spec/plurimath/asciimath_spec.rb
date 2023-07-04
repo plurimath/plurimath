@@ -5067,5 +5067,98 @@ RSpec.describe Plurimath::Asciimath do
         expect(formula).to be_equivalent_to(omml)
       end
     end
+
+    context "contains simple table example #03" do
+      let(:string) { '[(a,b,0),(c,d,0),(e,f,1)]' }
+
+      it 'returns OMML string' do
+        omml = <<~OMML
+          <m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape">
+            <m:oMath>
+              <m:d>
+                <m:dPr>
+                  <m:begChr m:val="["/>
+                  <m:endChr m:val="]"/>
+                  <m:sepChr m:val=""/>
+                  <m:grow/>
+                </m:dPr>
+                <m:e>
+                  <m:m>
+                    <m:mpr>
+                      <m:mcs>
+                        <m:mc>
+                          <m:mcPr>
+                            <m:count m:val="3"/>
+                            <m:mcJc m:val="center"/>
+                          </m:mcPr>
+                        </m:mc>
+                      </m:mcs>
+                      <m:ctrlPr>
+                        <w:rPr>
+                          <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
+                          <w:i/>
+                        </w:rPr>
+                      </m:ctrlPr>
+                    </m:mpr>
+                    <m:mr>
+                      <m:e>
+                        <m:r>
+                          <m:t>a</m:t>
+                        </m:r>
+                      </m:e>
+                      <m:e>
+                        <m:r>
+                          <m:t>b</m:t>
+                        </m:r>
+                      </m:e>
+                      <m:e>
+                        <m:r>
+                          <m:t>0</m:t>
+                        </m:r>
+                      </m:e>
+                    </m:mr>
+                    <m:mr>
+                      <m:e>
+                        <m:r>
+                          <m:t>c</m:t>
+                        </m:r>
+                      </m:e>
+                      <m:e>
+                        <m:r>
+                          <m:t>d</m:t>
+                        </m:r>
+                      </m:e>
+                      <m:e>
+                        <m:r>
+                          <m:t>0</m:t>
+                        </m:r>
+                      </m:e>
+                    </m:mr>
+                    <m:mr>
+                      <m:e>
+                        <m:r>
+                          <m:t>e</m:t>
+                        </m:r>
+                      </m:e>
+                      <m:e>
+                        <m:r>
+                          <m:t>f</m:t>
+                        </m:r>
+                      </m:e>
+                      <m:e>
+                        <m:r>
+                          <m:t>1</m:t>
+                        </m:r>
+                      </m:e>
+                    </m:mr>
+                  </m:m>
+                </m:e>
+              </m:d>
+            </m:oMath>
+          </m:oMathPara>
+        OMML
+        expect(formula).to be_equivalent_to(omml)
+      end
+    end
   end
 end

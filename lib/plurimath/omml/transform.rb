@@ -21,6 +21,7 @@ module Plurimath
       rule(deg: sequence(:deg))  { Utility.filter_values(deg) }
       rule(sub: sequence(:sub))  { Utility.filter_values(sub) }
       rule(sup: sequence(:sup))  { Utility.filter_values(sup) }
+      rule(mtd: sequence(:mtd))  { mtd.flatten.compact }
       rule(boxPr: subtree(:box)) { nil }
       rule(argPr: subtree(:arg)) { nil }
       rule(accPr: subtree(:acc)) { acc.flatten.compact }
@@ -100,7 +101,7 @@ module Plurimath
         row = []
         mr.each do |td|
           row << Math::Function::Td.new(
-            td.is_a?(Array) ? td : [td],
+            Array(td),
           )
         end
         Math::Function::Tr.new(row)
@@ -197,7 +198,7 @@ module Plurimath
 
       rule(sSub: subtree(:ssub)) do
         sub = ssub.flatten.compact
-        Plurimath::Math::Function::Base.new(
+        Math::Function::Base.new(
           sub[0],
           sub[1],
         )
@@ -253,7 +254,7 @@ module Plurimath
           table_value << Math::Function::Tr.new(
             [
               Math::Function::Td.new(
-                value.is_a?(Array) ? value : [value],
+                Array(value),
               ),
             ],
           )

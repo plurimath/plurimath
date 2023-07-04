@@ -34,10 +34,11 @@ module Plurimath
 
         def to_omml_without_math_tag
           me = Utility.ox_element("e", namespace: "m")
-          Utility.update_nodes(
-            me,
-            parameter_one&.map(&:to_omml_without_math_tag),
-          )
+          return me if parameter_one&.empty?
+
+          mr = Utility.ox_element("r", namespace: "m")
+          Utility.update_nodes(mr, Formula.new(parameter_one).omml_content)
+          Utility.update_nodes(me, Array(mr))
         end
       end
     end
