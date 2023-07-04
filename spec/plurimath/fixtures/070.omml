@@ -52,18 +52,22 @@
           </m:eqArrPr>
           <m:e>
             <m:r>
-              <w:rPr>
-                <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
-              </w:rPr>
-              <m:t>-x,  &amp;x&lt;0</m:t>
+              <m:r>
+                <w:rPr>
+                  <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
+                </w:rPr>
+                <m:t>-x,  &amp;x&lt;0</m:t>
+              </m:r>
             </m:r>
           </m:e>
           <m:e>
             <m:r>
-              <w:rPr>
-                <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
-              </w:rPr>
-              <m:t>x,  &amp;x&ge;0</m:t>
+              <m:r>
+                <w:rPr>
+                  <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
+                </w:rPr>
+                <m:t>x,  &amp;x&ge;0</m:t>
+              </m:r>
             </m:r>
           </m:e>
         </m:eqArr>

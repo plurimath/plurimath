@@ -32,9 +32,18 @@ module Plurimath
                 value: parse_nodes(node.nodes),
               },
             }
+          elsif ["mr", "eqArr"].include?(node.name)
+            organize_table_td(node)
+            { node.name => parse_nodes(node.nodes) }
           else
             { node.name => parse_nodes(node.nodes) }
           end
+        end
+      end
+
+      def organize_table_td(node)
+        node.locate("e/?").each do |child_node|
+          child_node.name = "mtd" if child_node.name == "r"
         end
       end
     end

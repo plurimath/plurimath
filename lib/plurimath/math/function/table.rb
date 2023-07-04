@@ -75,7 +75,7 @@ module Plurimath
           if value.map { |d| d.parameter_one.length == 1 }.all?
             single_td_table
           else
-            multiple_td_table
+            fenced_table(multiple_td_table)
           end
         end
 
@@ -208,6 +208,30 @@ module Plurimath
           Utility.update_nodes(
             Utility.ox_element("mrow"),
             [mo_tag, table_tag, mo_tag],
+          )
+        end
+
+        def fenced_table(ox_table)
+          return ox_table unless open_paren && close_paren
+
+          d_node = Utility.ox_element("d", namespace: "m")
+          e_node = Utility.ox_element("e", namespace: "m")
+          e_node << ox_table
+          Utility.update_nodes(d_node, [mdpr_node, e_node])
+        end
+
+        def mdpr_node
+          begchr_attr = { "m:val": open_paren } if open_paren
+          endchr_attr = { "m:val": close_paren } if close_paren
+          sepchr_attr = { "m:val": "" }
+          begchr = Utility.ox_element("begChr", attributes: begchr_attr, namespace: "m")
+          endchr = Utility.ox_element("endChr", attributes: endchr_attr, namespace: "m")
+          sepchr = Utility.ox_element("sepChr", attributes: sepchr_attr, namespace: "m")
+          mgrow  = Utility.ox_element("grow", namespace: "m")
+          mdpr = Utility.ox_element("dPr", namespace: "m")
+          Utility.update_nodes(
+            mdpr,
+            [begchr, endchr, sepchr, mgrow]
           )
         end
       end
