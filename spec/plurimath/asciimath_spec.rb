@@ -56,19 +56,21 @@ RSpec.describe Plurimath::Asciimath do
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
-              <munderover>
-                <mo>&#x2211;</mo>
-                <mrow>
+              <mrow>
+                <munderover>
+                  <mo>&#x2211;</mo>
+                  <mrow>
+                    <mi>i</mi>
+                    <mo>=</mo>
+                    <mn>1</mn>
+                  </mrow>
+                  <mi>n</mi>
+                </munderover>
+                <msup>
                   <mi>i</mi>
-                  <mo>=</mo>
-                  <mn>1</mn>
-                </mrow>
-                <mi>n</mi>
-              </munderover>
-              <msup>
-                <mi>i</mi>
-                <mn>3</mn>
-              </msup>
+                  <mn>3</mn>
+                </msup>
+              </mrow>
               <mo>=</mo>
               <msup>
                 <mrow>
@@ -206,20 +208,22 @@ RSpec.describe Plurimath::Asciimath do
     end
 
     context "contains example #06" do
-      let(:string) { 'int_0^1f(x)dx' }
+      let(:string) { 'int_0^(sin)f(x)dx' }
 
       it 'returns parsed Asciimath to Formula' do
-        latex = '\int_{0}^{1} f ( x ) d x'
-        asciimath = 'int_(0)^(1) f (x) d x'
+        latex = '\int_{0}^{\sin} f ( x ) d x'
+        asciimath = 'int_(0)^(sin) f (x) d x'
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
-              <msubsup>
-                <mo>&#x222b;</mo>
-                <mn>0</mn>
-                <mn>1</mn>
-              </msubsup>
-              <mi>f</mi>
+              <mrow>
+                <msubsup>
+                  <mo>&#x222b;</mo>
+                  <mn>0</mn>
+                  <mi>sin</mi>
+                </msubsup>
+                <mi>f</mi>
+              </mrow>
               <mrow>
                 <mo>(</mo>
                 <mi>x</mi>
@@ -407,32 +411,42 @@ RSpec.describe Plurimath::Asciimath do
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
-              <munder>
-                <mo>&#x2211;</mo>
-                <mi>a</mi>
-              </munder>
-              <mover>
-                <mo>&#x2211;</mo>
-                <mi>a</mi>
-              </mover>
-              <munderover>
-                <mo>&#x2211;</mo>
-                <mn>3</mn>
-                <mi>d</mi>
-              </munderover>
-              <munder>
-                <mo>&#x220f;</mo>
-                <mi>a</mi>
-              </munder>
-              <mover>
-                <mo>&#x220f;</mo>
-                <mi>a</mi>
-              </mover>
-              <munderover>
-                <mo>&#x220f;</mo>
-                <mn>3</mn>
-                <mi>d</mi>
-              </munderover>
+              <mrow>
+                <munder>
+                  <mo>&#x2211;</mo>
+                  <mi>a</mi>
+                </munder>
+                <mrow>
+                  <mover>
+                    <mo>&#x2211;</mo>
+                    <mi>a</mi>
+                  </mover>
+                  <mrow>
+                    <munderover>
+                      <mo>&#x2211;</mo>
+                      <mn>3</mn>
+                      <mi>d</mi>
+                    </munderover>
+                    <mrow>
+                      <munder>
+                        <mo>&#x220f;</mo>
+                        <mi>a</mi>
+                      </munder>
+                      <mrow>
+                        <mover>
+                          <mo>&#x220f;</mo>
+                          <mi>a</mi>
+                        </mover>
+                        <munderover>
+                          <mo>&#x220f;</mo>
+                          <mn>3</mn>
+                          <mi>d</mi>
+                        </munderover>
+                      </mrow>
+                    </mrow>
+                  </mrow>
+                </mrow>
+              </mrow>
             </mstyle>
           </math>
         MATHML
@@ -559,19 +573,21 @@ RSpec.describe Plurimath::Asciimath do
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
-              <munderover>
-                <mo>&#x2211;</mo>
-                <mrow>
+              <mrow>
+                <munderover>
+                  <mo>&#x2211;</mo>
+                  <mrow>
+                    <mi>i</mi>
+                    <mo>=</mo>
+                    <mn>1</mn>
+                  </mrow>
+                  <mi>n</mi>
+                </munderover>
+                <msup>
                   <mi>i</mi>
-                  <mo>=</mo>
-                  <mn>1</mn>
-                </mrow>
-                <mi>n</mi>
-              </munderover>
-              <msup>
-                <mi>i</mi>
-                <mn>3</mn>
-              </msup>
+                  <mn>3</mn>
+                </msup>
+              </mrow>
               <mo>=</mo>
               <msup>
                 <mrow>
@@ -606,20 +622,27 @@ RSpec.describe Plurimath::Asciimath do
     end
 
     context "contains example #19" do
-      let(:string) { 'int_0^1 f(x)dx' }
+      let(:string) { 'int_(thetasin)^(mathbb(gamma)) f(x)dx' }
 
       it 'returns parsed Asciimath to Formula' do
-        latex = '\int_{0}^{1} f ( x ) d x'
-        asciimath = 'int_(0)^(1) f (x) d x'
+        latex = '\int_{ \left ( \theta \sin \right ) }^{ \left ( \mathbb{\gamma} \right ) } f ( x ) d x'
+        asciimath = 'int_(theta sin)^(mathbb(gamma)) f (x) d x'
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
-              <msubsup>
-                <mo>&#x222b;</mo>
-                <mn>0</mn>
-                <mn>1</mn>
-              </msubsup>
-              <mi>f</mi>
+              <mrow>
+                <msubsup>
+                  <mo>&#x222b;</mo>
+                  <mrow>
+                    <mi>&#x3b8;</mi>
+                    <mi>sin</mi>
+                  </mrow>
+                  <mstyle mathvariant="double-struck">
+                    <mi>&#x3b3;</mi>
+                  </mstyle>
+                </msubsup>
+                <mi>f</mi>
+              </mrow>
               <mrow>
                 <mo>(</mo>
                 <mi>x</mi>
@@ -2132,24 +2155,26 @@ RSpec.describe Plurimath::Asciimath do
                 <mi>n</mi>
               </msub>
               <mo>=</mo>
-              <munderover>
-                <mo>&#x2211;</mo>
-                <mrow>
+              <mrow>
+                <munderover>
+                  <mo>&#x2211;</mo>
+                  <mrow>
+                    <mi>j</mi>
+                    <mo>=</mo>
+                    <mn>1</mn>
+                  </mrow>
+                  <mi>n</mi>
+                </munderover>
+                <msup>
+                  <mrow>
+                    <mo>(</mo>
+                    <mo>&#x2212;</mo>
+                    <mn>1</mn>
+                    <mo>)</mo>
+                  </mrow>
                   <mi>j</mi>
-                  <mo>=</mo>
-                  <mn>1</mn>
-                </mrow>
-                <mi>n</mi>
-              </munderover>
-              <msup>
-                <mrow>
-                  <mo>(</mo>
-                  <mo>&#x2212;</mo>
-                  <mn>1</mn>
-                  <mo>)</mo>
-                </mrow>
-                <mi>j</mi>
-              </msup>
+                </msup>
+              </mrow>
               <msup>
                 <mi>j</mi>
                 <mi>r</mi>
@@ -4328,22 +4353,24 @@ RSpec.describe Plurimath::Asciimath do
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
-              <munderover>
-                <mo>&#x2211;</mo>
-                <mi>d</mi>
-                <mn>3</mn>
-              </munderover>
-              <munderover>
-                <mo>&#x220f;</mo>
-                <mrow>
+              <mrow>
+                <munderover>
+                  <mo>&#x2211;</mo>
                   <mi>d</mi>
-                  <mi>d</mi>
-                </mrow>
-                <mrow>
-                  <mi>d</mi>
-                  <mi>d</mi>
-                </mrow>
-              </munderover>
+                  <mn>3</mn>
+                </munderover>
+                <munderover>
+                  <mo>&#x220f;</mo>
+                  <mrow>
+                    <mi>d</mi>
+                    <mi>d</mi>
+                  </mrow>
+                  <mrow>
+                    <mi>d</mi>
+                    <mi>d</mi>
+                  </mrow>
+                </munderover>
+              </mrow>
             </mstyle>
           </math>
         MATHML
@@ -4962,53 +4989,26 @@ RSpec.describe Plurimath::Asciimath do
   describe ".to_omml" do
     subject(:formula) { Plurimath::Asciimath.new(string).to_formula.to_omml }
 
-    context "contains example #01" do
-      let(:string) { '(d2)' }
+    context "contains simple fenced example #01" do
+      let(:string) { 'left ( d2 right )' }
 
-      it 'returns parsed Asciimath to Formula' do
+      it 'returns OMML string' do
         omml = <<~OMML
-          <m:oMathPara
-            xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math"
-            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-            xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main"
-            xmlns:mv="urn:schemas-microsoft-com:mac:vml"
-            xmlns:o="urn:schemas-microsoft-com:office:office"
-            xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"
-            xmlns:v="urn:schemas-microsoft-com:vml"
-            xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"
-            xmlns:w10="urn:schemas-microsoft-com:office:word"
-            xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml"
-            xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml"
-            xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml"
-            xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing"
-            xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing"
-            xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas"
-            xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup"
-            xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk"
-            xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape">
+          <m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape">
             <m:oMath>
-              <m:d>
-                <m:dPr>
-                  <m:begChr m:val="("/>
-                  <m:endChr m:val=")"/>
-                  <m:ctrlPr>
-                    <w:rPr>
-                      <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
-                      <w:i/>
-                    </w:rPr>
-                  </m:ctrlPr>
-                </m:dPr>
-                <m:e>
-                  <m:r>
-                    <m:t>d</m:t>
-                  </m:r>
-                </m:e>
-                <m:e>
-                  <m:r>
-                    <m:t>2</m:t>
-                  </m:r>
-                </m:e>
-              </m:d>
+              <m:r>
+                <m:t>(</m:t>
+              </m:r>
+              <m:r>
+                <w:rPr>
+                  <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
+                </w:rPr>
+                <m:t>d</m:t>
+                <m:t>2</m:t>
+              </m:r>
+              <m:r>
+                <m:t>)</m:t>
+              </m:r>
             </m:oMath>
           </m:oMathPara>
         OMML
@@ -5016,51 +5016,106 @@ RSpec.describe Plurimath::Asciimath do
       end
     end
 
-    context "contains example #02" do
-      let(:string) { 'log_(d)^(d)' }
+    context "contains simple log power base valued example #02" do
+      let(:string) { 'log_(d)^(d)log_(100)^(dd)log^(dd)' }
 
-      it 'returns parsed Asciimath to Formula' do
+      it 'returns OMML string' do
         omml = <<~OMML
-          <m:oMathPara
-            xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math"
-            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-            xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main"
-            xmlns:mv="urn:schemas-microsoft-com:mac:vml"
-            xmlns:o="urn:schemas-microsoft-com:office:office"
-            xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"
-            xmlns:v="urn:schemas-microsoft-com:vml"
-            xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"
-            xmlns:w10="urn:schemas-microsoft-com:office:word"
-            xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml"
-            xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml"
-            xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml"
-            xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing"
-            xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing"
-            xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas"
-            xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup"
-            xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk"
-            xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape">
+          <m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape">
             <m:oMath>
-              <m:func>
-                <m:funcPr>
+              <m:sSubSup>
+                <m:sSubSupPr>
                   <m:ctrlPr>
                     <w:rPr>
                       <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
                       <w:i/>
                     </w:rPr>
                   </m:ctrlPr>
-                </m:funcPr>
-                <m:fName>
+                </m:sSubSupPr>
+                <m:e>
+                  <m:r>
+                    <m:rPr>
+                      <m:sty m:val="p"/>
+                    </m:rPr>
+                    <m:t>log</m:t>
+                  </m:r>
+                </m:e>
+                <m:sub>
+                  <m:r>
+                    <m:t>d</m:t>
+                  </m:r>
+                </m:sub>
+                <m:sup>
+                  <m:r>
+                    <m:t>d</m:t>
+                  </m:r>
+                </m:sup>
+              </m:sSubSup>
+              <m:sSubSup>
+                <m:sSubSupPr>
+                  <m:ctrlPr>
+                    <w:rPr>
+                      <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
+                      <w:i/>
+                    </w:rPr>
+                  </m:ctrlPr>
+                </m:sSubSupPr>
+                <m:e>
+                  <m:r>
+                    <m:rPr>
+                      <m:sty m:val="p"/>
+                    </m:rPr>
+                    <m:t>log</m:t>
+                  </m:r>
+                </m:e>
+                <m:sub>
+                  <m:r>
+                    <m:t>100</m:t>
+                  </m:r>
+                </m:sub>
+                <m:sup>
                   <m:r>
                     <w:rPr>
                       <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
                     </w:rPr>
+                    <m:t>d</m:t>
+                    <m:t>d</m:t>
+                  </m:r>
+                </m:sup>
+              </m:sSubSup>
+              <m:sSubSup>
+                <m:sSubSupPr>
+                  <m:ctrlPr>
+                    <w:rPr>
+                      <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
+                      <w:i/>
+                    </w:rPr>
+                    <m:subHide m:val="1"/>
+                  </m:ctrlPr>
+                </m:sSubSupPr>
+                <m:e>
+                  <m:r>
+                    <m:rPr>
+                      <m:sty m:val="p"/>
+                    </m:rPr>
                     <m:t>log</m:t>
                   </m:r>
-                </m:fName>
-                <m:e>d</m:e>
-                <m:e>d</m:e>
-              </m:func>
+                </m:e>
+                <m:sub>
+                  <m:r>
+                    <m:t>&#8203;</m:t>
+                  </m:r>
+                </m:sub>
+                <m:sup>
+                  <m:r>
+                    <w:rPr>
+                      <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
+                    </w:rPr>
+                    <m:t>d</m:t>
+                    <m:t>d</m:t>
+                  </m:r>
+                </m:sup>
+              </m:sSubSup>
             </m:oMath>
           </m:oMathPara>
         OMML
@@ -5103,16 +5158,25 @@ RSpec.describe Plurimath::Asciimath do
                     <m:mr>
                       <m:e>
                         <m:r>
+                          <w:rPr>
+                            <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
+                          </w:rPr>
                           <m:t>a</m:t>
                         </m:r>
                       </m:e>
                       <m:e>
                         <m:r>
+                          <w:rPr>
+                            <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
+                          </w:rPr>
                           <m:t>b</m:t>
                         </m:r>
                       </m:e>
                       <m:e>
                         <m:r>
+                          <w:rPr>
+                            <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
+                          </w:rPr>
                           <m:t>0</m:t>
                         </m:r>
                       </m:e>
@@ -5120,16 +5184,25 @@ RSpec.describe Plurimath::Asciimath do
                     <m:mr>
                       <m:e>
                         <m:r>
+                          <w:rPr>
+                            <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
+                          </w:rPr>
                           <m:t>c</m:t>
                         </m:r>
                       </m:e>
                       <m:e>
                         <m:r>
+                          <w:rPr>
+                            <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
+                          </w:rPr>
                           <m:t>d</m:t>
                         </m:r>
                       </m:e>
                       <m:e>
                         <m:r>
+                          <w:rPr>
+                            <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
+                          </w:rPr>
                           <m:t>0</m:t>
                         </m:r>
                       </m:e>
@@ -5137,16 +5210,25 @@ RSpec.describe Plurimath::Asciimath do
                     <m:mr>
                       <m:e>
                         <m:r>
+                          <w:rPr>
+                            <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
+                          </w:rPr>
                           <m:t>e</m:t>
                         </m:r>
                       </m:e>
                       <m:e>
                         <m:r>
+                          <w:rPr>
+                            <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
+                          </w:rPr>
                           <m:t>f</m:t>
                         </m:r>
                       </m:e>
                       <m:e>
                         <m:r>
+                          <w:rPr>
+                            <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
+                          </w:rPr>
                           <m:t>1</m:t>
                         </m:r>
                       </m:e>
@@ -5154,6 +5236,160 @@ RSpec.describe Plurimath::Asciimath do
                   </m:m>
                 </m:e>
               </m:d>
+            </m:oMath>
+          </m:oMathPara>
+        OMML
+        expect(formula).to be_equivalent_to(omml)
+      end
+    end
+
+    context "contains simple ddot as value in abs function example #04" do
+      let(:string) { 'abs(ddot(sum))' }
+
+      it 'returns OMML string' do
+        omml = <<~OMML
+          <m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape">
+            <m:oMath>
+              <m:d>
+                <m:dPr>
+                  <w:rPr>
+                    <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
+                  </w:rPr>
+                  <m:begChr m:val="|"/>
+                  <m:endChr m:val="|"/>
+                  <m:sepChr m:val=""/>
+                  <m:grow/>
+                </m:dPr>
+                <m:e>
+                  <m:acc>
+                    <m:accPr>
+                      <m:chr m:val=".."/>
+                    </m:accPr>
+                    <m:e>
+                      <m:r>
+                        <m:t>&#x2211;</m:t>
+                      </m:r>
+                    </m:e>
+                  </m:acc>
+                </m:e>
+              </m:d>
+            </m:oMath>
+          </m:oMathPara>
+        OMML
+        expect(formula).to be_equivalent_to(omml)
+      end
+    end
+
+    context "contains simple font style and sqrt functions example #05" do
+      let(:string) { 'ii(E)[ii(S)//sqrt(n)\ ' }
+
+      it 'returns OMML string' do
+        omml = <<~OMML
+          <m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape">
+            <m:oMath>
+              <m:r>
+                <m:r>
+                  <m:t>E</m:t>
+                </m:r>
+              </m:r>
+              <m:d>
+                <m:dPr>
+                  <m:begChr m:val="["/>
+                  <m:ctrlPr>
+                    <w:rPr>
+                      <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
+                      <w:i/>
+                    </w:rPr>
+                  </m:ctrlPr>
+                </m:dPr>
+                <m:e>
+                  <m:r>
+                    <m:r>
+                      <m:t>S</m:t>
+                    </m:r>
+                  </m:r>
+                  <m:r>
+                    <w:rPr>
+                      <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
+                    </w:rPr>
+                    <m:t>/</m:t>
+                  </m:r>
+                  <m:rad>
+                    <m:radPr>
+                      <m:degHide m:val="1"/>
+                      <m:ctrlPr>
+                        <w:rPr>
+                          <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
+                          <w:i/>
+                        </w:rPr>
+                      </m:ctrlPr>
+                    </m:radPr>
+                    <m:deg/>
+                    <m:e>
+                      <m:r>
+                        <m:t>n</m:t>
+                      </m:r>
+                    </m:e>
+                  </m:rad>
+                  <m:r>
+                    <w:rPr>
+                      <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
+                    </w:rPr>
+                    <m:t>&#xa0;</m:t>
+                  </m:r>
+                </m:e>
+              </m:d>
+            </m:oMath>
+          </m:oMathPara>
+        OMML
+        expect(formula).to be_equivalent_to(omml)
+      end
+    end
+
+    context "contains simple lim example #06" do
+      let(:string) { 'lim_2^d' }
+
+      it 'returns OMML string' do
+        omml = <<~OMML
+          <m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape">
+            <m:oMath>
+              <m:limLow>
+                <m:limLowPr>
+                  <m:ctrlPr>
+                    <w:rPr>
+                      <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
+                      <w:i/>
+                    </w:rPr>
+                  </m:ctrlPr>
+                </m:limLowPr>
+                <m:e>
+                  <m:limUpp>
+                    <m:limUppPr>
+                      <m:ctrlPr>
+                        <w:rPr>
+                          <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
+                          <w:i/>
+                        </w:rPr>
+                      </m:ctrlPr>
+                    </m:limUppPr>
+                    <m:e>
+                      <m:r>
+                        <m:t>lim</m:t>
+                      </m:r>
+                    </m:e>
+                    <m:lim>
+                      <m:r>
+                        <m:t>d</m:t>
+                      </m:r>
+                    </m:lim>
+                  </m:limUpp>
+                </m:e>
+                <m:lim>
+                  <m:r>
+                    <m:t>2</m:t>
+                  </m:r>
+                </m:lim>
+              </m:limLow>
             </m:oMath>
           </m:oMathPara>
         OMML

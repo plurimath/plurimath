@@ -1430,9 +1430,7 @@ RSpec.describe Plurimath::Latex do
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
               <munder>
-                <mrow>
-                  <mi>max</mi>
-                </mrow>
+                <mi>max</mi>
                 <mrow>
                   <mi>x</mi>
                   <mo>&#x2208;</mo>
@@ -1468,9 +1466,7 @@ RSpec.describe Plurimath::Latex do
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
               <munder>
-                <mrow>
-                  <mi>min</mi>
-                </mrow>
+                <mi>min</mi>
                 <mrow>
                   <mi>x</mi>
                   <mo>&#x2208;</mo>
@@ -2296,50 +2292,52 @@ RSpec.describe Plurimath::Latex do
                   </msqrt>
                 </mrow>
                 <mo>)</mo>
-                <munderover>
-                  <mo>&#x2211;</mo>
-                  <mrow>
-                    <mi>n</mi>
-                    <mo>=</mo>
-                    <mn>0</mn>
-                  </mrow>
-                  <mrow>
-                    <mi>s</mi>
-                    <mo>&#x2212;</mo>
-                    <mn>1</mn>
-                  </mrow>
-                </munderover>
                 <mrow>
-                  <mi>i</mi>
-                  <msub>
-                    <mi>n</mi>
-                    <mi>n</mi>
-                  </msub>
-                  <mo>&#x22c5;</mo>
-                  <mrow>
-                    <mi>cos</mi>
+                  <munderover>
+                    <mo>&#x2211;</mo>
                     <mrow>
-                      <mo>(</mo>
+                      <mi>n</mi>
+                      <mo>=</mo>
+                      <mn>0</mn>
+                    </mrow>
+                    <mrow>
+                      <mi>s</mi>
+                      <mo>&#x2212;</mo>
+                      <mn>1</mn>
+                    </mrow>
+                  </munderover>
+                  <mrow>
+                    <mi>i</mi>
+                    <msub>
+                      <mi>n</mi>
+                      <mi>n</mi>
+                    </msub>
+                    <mo>&#x22c5;</mo>
+                    <mrow>
+                      <mi>cos</mi>
                       <mrow>
-                        <mfrac>
-                          <mrow>
-                            <mi>&#x3c0;</mi>
-                            <mi>k</mi>
-                          </mrow>
-                          <mi>s</mi>
-                        </mfrac>
                         <mo>(</mo>
                         <mrow>
-                          <mi>n</mi>
-                          <mo>+</mo>
                           <mfrac>
-                            <mn>1</mn>
-                            <mn>2</mn>
+                            <mrow>
+                              <mi>&#x3c0;</mi>
+                              <mi>k</mi>
+                            </mrow>
+                            <mi>s</mi>
                           </mfrac>
+                          <mo>(</mo>
+                          <mrow>
+                            <mi>n</mi>
+                            <mo>+</mo>
+                            <mfrac>
+                              <mn>1</mn>
+                              <mn>2</mn>
+                            </mfrac>
+                          </mrow>
+                          <mo>)</mo>
                         </mrow>
                         <mo>)</mo>
                       </mrow>
-                      <mo>)</mo>
                     </mrow>
                   </mrow>
                 </mrow>
@@ -2395,48 +2393,50 @@ RSpec.describe Plurimath::Latex do
                   </msqrt>
                   <mo>)</mo>
                 </mrow>
-                <munderover>
-                  <mo>&#x2211;</mo>
-                  <mrow>
-                    <mi>n</mi>
-                    <mo>=</mo>
-                    <mn>0</mn>
-                  </mrow>
-                  <mrow>
-                    <mi>s</mi>
-                    <mo>&#x2212;</mo>
-                    <mn>1</mn>
-                  </mrow>
-                </munderover>
                 <mrow>
-                  <mi>i</mi>
-                  <msub>
-                    <mi>n</mi>
-                    <mi>n</mi>
-                  </msub>
-                  <mo>&#x22c5;</mo>
-                  <mrow>
-                    <mi>cos</mi>
+                  <munderover>
+                    <mo>&#x2211;</mo>
                     <mrow>
-                      <mo>(</mo>
-                      <mfrac>
-                        <mrow>
-                          <mi>&#x3c0;</mi>
-                          <mi>k</mi>
-                        </mrow>
-                        <mi>s</mi>
-                      </mfrac>
+                      <mi>n</mi>
+                      <mo>=</mo>
+                      <mn>0</mn>
+                    </mrow>
+                    <mrow>
+                      <mi>s</mi>
+                      <mo>&#x2212;</mo>
+                      <mn>1</mn>
+                    </mrow>
+                  </munderover>
+                  <mrow>
+                    <mi>i</mi>
+                    <msub>
+                      <mi>n</mi>
+                      <mi>n</mi>
+                    </msub>
+                    <mo>&#x22c5;</mo>
+                    <mrow>
+                      <mi>cos</mi>
                       <mrow>
                         <mo>(</mo>
-                        <mi>n</mi>
-                        <mo>+</mo>
                         <mfrac>
-                          <mn>1</mn>
-                          <mn>2</mn>
+                          <mrow>
+                            <mi>&#x3c0;</mi>
+                            <mi>k</mi>
+                          </mrow>
+                          <mi>s</mi>
                         </mfrac>
+                        <mrow>
+                          <mo>(</mo>
+                          <mi>n</mi>
+                          <mo>+</mo>
+                          <mfrac>
+                            <mn>1</mn>
+                            <mn>2</mn>
+                          </mfrac>
+                          <mo>)</mo>
+                        </mrow>
                         <mo>)</mo>
                       </mrow>
-                      <mo>)</mo>
                     </mrow>
                   </mrow>
                 </mrow>
@@ -2465,9 +2465,7 @@ RSpec.describe Plurimath::Latex do
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
               <msubsup>
-                <mrow>
-                  <mi>sin</mi>
-                </mrow>
+                <mi>sin</mi>
                 <mi>d</mi>
                 <mi>e</mi>
               </msubsup>
@@ -2494,9 +2492,7 @@ RSpec.describe Plurimath::Latex do
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
               <msup>
-                <mrow>
-                  <mi>sin</mi>
-                </mrow>
+                <mi>sin</mi>
                 <mi>e</mi>
               </msup>
             </mstyle>
@@ -2564,6 +2560,36 @@ RSpec.describe Plurimath::Latex do
         LATEX
         expect(formula.to_latex.gsub(/\s+/, "")).to eql(latex.gsub(/\s+/, ""))
         expect(formula.to_mathml).to be_equivalent_to(mathml)
+      end
+    end
+  end
+
+  describe ".to_omml" do
+    subject(:formula) { Plurimath::Latex.new(string).to_formula.to_omml }
+
+    context "contains simple fenced example #01" do
+      let(:string) { '\mbox{100}\mbox{\sigma}\mbox{\sum}\rule[-1mm]{5mm}{1cm}' }
+
+      it 'returns parsed LaTeX to OMML' do
+        omml = <<~OMML
+          <m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape">
+            <m:oMath>
+              <m:r>
+                <m:t>100</m:t>
+              </m:r>
+              <m:r>
+                <m:t>&#x3c3;</m:t>
+              </m:r>
+              <m:r>
+                <m:t>&#x2211;</m:t>
+              </m:r>
+              <m:r>
+                <m:t/>
+              </m:r>
+            </m:oMath>
+          </m:oMathPara>
+        OMML
+        expect(formula).to be_equivalent_to(omml)
       end
     end
   end

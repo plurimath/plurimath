@@ -53,7 +53,7 @@ module Plurimath
           r_tag = Utility.ox_element("r", namespace: "m")
           update_row_tag(r_tag, parameter_one) if parameter_one
           update_row_tag(r_tag, parameter_two) if parameter_two
-          r_tag
+          [r_tag]
         end
 
         def class_name
@@ -134,6 +134,26 @@ module Plurimath
 
         def invert_unicode_symbols
           Mathml::Constants::UNICODE_SYMBOLS.invert[class_name] || class_name
+        end
+
+        def empty_tag(wrapper_tag)
+          r_tag = Utility.ox_element("r", namespace: "m")
+          r_tag << (Utility.ox_element("t", namespace: "m") << "&#8203;")
+          wrapper_tag << r_tag
+        end
+
+        def insert_t_tag(parameter)
+          parameter_value = parameter&.to_omml_without_math_tag
+          r_tag = Utility.ox_element("r", namespace: "m")
+          if parameter.is_a?(Symbol)
+            r_tag << (Utility.ox_element("t", namespace: "m") << parameter_value)
+            [r_tag]
+          elsif parameter.is_a?(Number)
+            Utility.update_nodes(r_tag, parameter_value)
+            [r_tag]
+          else
+            Array(parameter_value)
+          end
         end
       end
     end

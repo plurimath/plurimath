@@ -21,9 +21,7 @@ module Plurimath
         end
 
         def to_omml_without_math_tag
-          text = Utility.ox_element("t", namespace: "m")
-          text << parameter_one.to_omml_without_math_tag if parameter_one
-          text
+          omml_value
         end
       end
     end

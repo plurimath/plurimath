@@ -700,28 +700,29 @@ RSpec.describe Plurimath::Asciimath::Parser do
     end
 
     context "example #02 from /site/documents/jcgm/101-2008-en/document.presentation.xml" do
-      let(:string) { "sum_{j=s-r}^{ii(M)} " "^{ii(M)} ii(C)_j p^j (1 - p)^{ii(M)-j} &#x3c; 1 - 0.99," }
+      let(:string) { "sum_{j=s-r}^{ii(M)} \" \"^{ii(M)} ii(C)_j p^j (1 - p)^{ii(M)-j} &#x3c; 1 - 0.99," }
 
       it "returns formula" do
         expected_value = Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Power.new(
-            Plurimath::Math::Function::Sum.new(
-              Plurimath::Math::Formula.new([
-                Plurimath::Math::Symbol.new("j"),
-                Plurimath::Math::Symbol.new("="),
-                Plurimath::Math::Symbol.new("s"),
-                Plurimath::Math::Symbol.new("-"),
-                Plurimath::Math::Symbol.new("r")
-              ]),
+          Plurimath::Math::Function::Sum.new(
+            Plurimath::Math::Formula.new([
+              Plurimath::Math::Symbol.new("j"),
+              Plurimath::Math::Symbol.new("="),
+              Plurimath::Math::Symbol.new("s"),
+              Plurimath::Math::Symbol.new("-"),
+              Plurimath::Math::Symbol.new("r")
+            ]),
+            Plurimath::Math::Function::FontStyle::Italic.new(
+              Plurimath::Math::Symbol.new("M"),
+              "ii"
+            ),
+            Plurimath::Math::Function::Power.new(
+              Plurimath::Math::Function::Text.new(" "),
               Plurimath::Math::Function::FontStyle::Italic.new(
                 Plurimath::Math::Symbol.new("M"),
                 "ii"
               )
             ),
-            Plurimath::Math::Function::FontStyle::Italic.new(
-              Plurimath::Math::Symbol.new("M"),
-              "ii"
-            )
           ),
           Plurimath::Math::Function::Base.new(
             Plurimath::Math::Function::FontStyle::Italic.new(

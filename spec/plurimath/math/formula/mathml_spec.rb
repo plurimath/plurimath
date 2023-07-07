@@ -16,9 +16,7 @@ RSpec.describe Plurimath::Math::Formula do
         <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
-              <mrow>
-                <mi>sin</mi>
-              </mrow>
+              <mi>sin</mi>
               <mn>1</mn>
             </mstyle>
           </math>
@@ -125,9 +123,7 @@ RSpec.describe Plurimath::Math::Formula do
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
               <msub>
-                <mrow>
-                  <mi>sin</mi>
-                </mrow>
+                <mi>sin</mi>
                 <mo>&#x2211;</mo>
               </msub>
             </mstyle>
@@ -152,9 +148,7 @@ RSpec.describe Plurimath::Math::Formula do
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
               <msup>
-                <mrow>
-                  <mi>sin</mi>
-                </mrow>
+                <mi>sin</mi>
                 <mo>&#x2211;</mo>
               </msup>
             </mstyle>
@@ -184,9 +178,7 @@ RSpec.describe Plurimath::Math::Formula do
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
               <msubsup>
-                <mrow>
-                  <mi>sin</mi>
-                </mrow>
+                <mi>sin</mi>
                 <mrow>
                   <mo>&#x220f;</mo>
                 </mrow>
@@ -247,9 +239,7 @@ RSpec.describe Plurimath::Math::Formula do
         <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
-              <mrow>
-                <mi>sin</mi>
-              </mrow>
+              <mi>sin</mi>
             </mstyle>
           </math>
         MATHML
@@ -367,9 +357,7 @@ RSpec.describe Plurimath::Math::Formula do
         <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
-              <mrow>
-                <mi>sin</mi>
-              </mrow>
+              <mi>sin</mi>
               <mover>
                 <mo>&#x2211;</mo>
                 <mo>&#x3b8;</mo>

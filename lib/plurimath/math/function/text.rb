@@ -30,6 +30,7 @@ module Plurimath
         def to_omml_without_math_tag
           text = Utility.ox_element("t", namespace: "m")
           text << (parse_text("omml") || parameter_one)
+          [text]
         end
 
         protected

@@ -21,6 +21,14 @@ module Plurimath
           third_value  = "{#{parameter_three.to_latex}}" if parameter_three
           "#{first_value}\\#{class_name}_#{second_value}^#{third_value}"
         end
+
+        def to_omml_without_math_tag
+          value_array = []
+          value_array << omml_value(parameter_one) if parameter_one
+          value_array << omml_value(parameter_two) if parameter_two
+          value_array << omml_value(parameter_three) if parameter_three
+          value_array
+        end
       end
     end
   end

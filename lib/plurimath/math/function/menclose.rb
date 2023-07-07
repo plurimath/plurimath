@@ -31,7 +31,7 @@ module Plurimath
           borderpr = Utility.ox_element("borderBoxPr", namespace: "m")
           borderpr << Utility.pr_element("ctrl", true, namespace: "m")
           me = Utility.ox_element("e", namespace: "m")
-          me << parameter_two.to_omml_without_math_tag if parameter_two
+          Utility.update_nodes(me, Array(parameter_two.to_omml_without_math_tag)) if parameter_two
           Utility.update_nodes(
             borderbox,
             [
@@ -39,6 +39,7 @@ module Plurimath
               me,
             ],
           )
+          [borderbox]
         end
       end
     end

@@ -25,22 +25,21 @@ module Plurimath
         end
 
         def to_omml_without_math_tag
-          func   = Utility.ox_element("func", namespace: "m")
-          funcpr = Utility.ox_element("funcPr", namespace: "m")
-          funcpr << Utility.pr_element("ctrl", true, namespace: "m")
-          fname  = Utility.ox_element("fName", namespace: "m")
-          mr     = Utility.ox_element("r", namespace: "m")
-          rpr    = Utility.rpr_element
-          mt     = Utility.ox_element("t", namespace: "m") << class_name
-          fname << Utility.update_nodes(mr, [rpr, mt])
-          log_values = [first_value, second_value].flatten.compact
-          Utility.update_nodes(
-            func,
-            [
-              funcpr,
-              fname,
-            ] + log_values,
+          ssubsup   = Utility.ox_element("sSubSup", namespace: "m")
+          ssubsuppr = Utility.ox_element("sSubSupPr", namespace: "m")
+          ssubsuppr << hide_tags(
+            Utility.pr_element("ctrl", true, namespace: "m"),
           )
+          Utility.update_nodes(
+            ssubsup,
+            [
+              ssubsuppr,
+              e_parameter,
+              sub_parameter,
+              sup_parameter,
+            ],
+          )
+          [ssubsup]
         end
 
         def to_mathml_without_math_tag
@@ -61,18 +60,71 @@ module Plurimath
 
         protected
 
-        def first_value
-          return nil if parameter_one.nil?
+        def sub_parameter
+          sub_tag = Utility.ox_element("sub", namespace: "m")
+          return empty_tag(sub_tag) unless parameter_one
 
-          first_value = parameter_one.to_omml_without_math_tag
-          Utility.ox_element("e", namespace: "m") << first_value
+          Utility.update_nodes(sub_tag, insert_t_tag(parameter_one))
         end
 
-        def second_value
-          return nil if parameter_two.nil?
+        def sup_parameter
+          sup_tag = Utility.ox_element("sup", namespace: "m")
+          return empty_tag(sup_tag) unless parameter_two
 
-          second_value = parameter_two.to_omml_without_math_tag
-          Utility.ox_element("e", namespace: "m") << second_value
+          Utility.update_nodes(sup_tag, insert_t_tag(parameter_two))
+        end
+
+        def e_parameter
+          e_tag = Utility.ox_element("e", namespace: "m")
+          e_tag << rpr_tag
+        end
+
+        def empty_tag(wrapper_tag)
+          r_tag = Utility.ox_element("r", namespace: "m")
+          r_tag << (Utility.ox_element("t", namespace: "m") << "&#8203;")
+          wrapper_tag << r_tag
+        end
+
+        def insert_t_tag(parameter)
+          parameter_value = parameter.to_omml_without_math_tag
+          r_tag = Utility.ox_element("r", namespace: "m")
+          if parameter.is_a?(Symbol)
+            r_tag << (Utility.ox_element("t", namespace: "m") << parameter_value)
+            [r_tag]
+          elsif parameter.is_a?(Number)
+            Utility.update_nodes(r_tag, parameter_value)
+            [r_tag]
+          else
+            Array(parameter_value)
+          end
+        end
+
+        def hide_tags(nar)
+          attr = { "m:val": "1" }
+          if parameter_one.nil?
+            nar << Utility.ox_element(
+              "subHide",
+              namespace: "m",
+              attributes: attr,
+            )
+          end
+          if parameter_two.nil?
+            nar << Utility.ox_element(
+              "supHide",
+              namespace: "m",
+              attributes: attr,
+            )
+          end
+          nar
+        end
+
+        def rpr_tag
+          sty_atrs = { "m:val": "p" }
+          sty_tag  = Utility.ox_element("sty", attributes: sty_atrs, namespace: "m")
+          rpr_tag  = (Utility.ox_element("rPr", namespace: "m") << sty_tag)
+          r_tag = Utility.ox_element("r", namespace: "m")
+          t_tag = (Utility.ox_element("t", namespace: "m") << "log")
+          Utility.update_nodes(r_tag, [rpr_tag, t_tag])
         end
       end
     end

@@ -22,10 +22,7 @@ module Plurimath
         end
 
         def to_omml_without_math_tag
-          Utility.update_nodes(
-            Utility.ox_element("msgroup"),
-            parameter_one&.map(&:to_omml_without_math_tag),
-          )
+          Formula.new(parameter_one).omml_content
         end
 
         def to_html

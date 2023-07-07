@@ -22,15 +22,16 @@ module Plurimath
             attributes: { "m:val": "1" },
           )
           e_element = Utility.ox_element("e", namespace: "m")
+          Utility.update_nodes(e_element, omml_value)
           Utility.update_nodes(
             rad_element,
             [
-              pr_element << Utility.pr_element("ctrl", true, namespace: "m"),
+              (pr_element << Utility.pr_element("ctrl", true, namespace: "m")),
               Utility.ox_element("deg", namespace: "m"),
-              e_element << parameter_one.to_omml_without_math_tag,
+              e_element,
             ],
           )
-          rad_element
+          [rad_element]
         end
       end
     end

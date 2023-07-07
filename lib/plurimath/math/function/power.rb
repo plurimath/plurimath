@@ -34,19 +34,52 @@ module Plurimath
         def to_omml_without_math_tag
           ssup_element  = Utility.ox_element("sSup", namespace: "m")
           suppr_element = Utility.ox_element("sSupPr", namespace: "m")
-          sup_element   = Utility.ox_element("sup", namespace: "m")
           e_element     = Utility.ox_element("e", namespace: "m")
-          e_element << parameter_one.to_omml_without_math_tag if parameter_one
-          sup_element << parameter_two.to_omml_without_math_tag if parameter_two
+          suppr_element << Utility.pr_element("ctrl", true, namespace: "m")
           Utility.update_nodes(
             ssup_element,
             [
-              suppr_element << Utility.pr_element("ctrl", true, namespace: "m"),
-              e_element,
-              sup_element,
+              suppr_element,
+              e_parameter,
+              sup_parameter,
             ],
           )
-          ssup_element
+          [ssup_element]
+        end
+
+        protected
+
+        def e_parameter
+          e_tag = Utility.ox_element("e", namespace: "m")
+          return empty_tag(e_tag) unless parameter_one
+
+          Utility.update_nodes(e_tag, insert_t_tag(parameter_one))
+        end
+
+        def sup_parameter
+          sup_tag = Utility.ox_element("sup", namespace: "m")
+          return empty_tag(sup_tag) unless parameter_two
+
+         Utility.update_nodes(sup_tag, insert_t_tag(parameter_two))
+        end
+
+        def empty_tag(wrapper_tag)
+          r_tag = Utility.ox_element("r", namespace: "m")
+          r_tag << (Utility.ox_element("t", namespace: "m") << "&#8203;")
+          wrapper_tag << r_tag
+        end
+
+        def insert_t_tag(parameter)
+          parameter_value = parameter.to_omml_without_math_tag
+          r_tag = Utility.ox_element("r", namespace: "m")
+          if parameter.is_a?(Symbol)
+            r_tag << (Utility.ox_element("t", namespace: "m") << parameter_value)
+            [r_tag]
+          elsif parameter.is_a?(Number)
+            Array(Utility.update_nodes(r_tag, parameter_value))
+          else
+            parameter_value
+          end
         end
       end
     end

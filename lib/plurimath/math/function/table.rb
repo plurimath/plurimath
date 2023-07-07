@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require_relative "ternary_function"
-
 module Plurimath
   module Math
     module Function
@@ -173,6 +171,7 @@ module Plurimath
           eqarr    << eqarrpr
           tr_value = value.map(&:to_omml_without_math_tag).flatten
           Utility.update_nodes(eqarr, tr_value.compact)
+          [eqarr]
         end
 
         def multiple_td_table
@@ -200,14 +199,22 @@ module Plurimath
           mpr << mcs
           mpr << ctrlpr
           mm_value = value&.map(&:to_omml_without_math_tag)
-          Utility.update_nodes(mm, mm_value.insert(0, mpr).flatten)
+          Utility.update_nodes(
+            mm,
+            mm_value.insert(0, mpr).flatten,
+          )
+          [mm]
         end
 
         def norm_table(table_tag)
           mo_tag = Utility.ox_element("mo") << "&#x2225;"
           Utility.update_nodes(
             Utility.ox_element("mrow"),
-            [mo_tag, table_tag, mo_tag],
+            [
+              mo_tag,
+              table_tag,
+              mo_tag,
+            ],
           )
         end
 
@@ -216,15 +223,16 @@ module Plurimath
 
           d_node = Utility.ox_element("d", namespace: "m")
           e_node = Utility.ox_element("e", namespace: "m")
-          e_node << ox_table
+          Utility.update_nodes(e_node, ox_table)
           Utility.update_nodes(d_node, [mdpr_node, e_node])
+          [d_node]
         end
 
         def mdpr_node
           begchr = Utility.ox_element("begChr", namespace: "m")
-          begchr.attributes["m:val"] = open_paren if open_paren
+          begchr.attributes["m:val"] = paren(open_paren)
           endchr = Utility.ox_element("endChr", namespace: "m")
-          endchr.attributes["m:val"] = close_paren if close_paren
+          endchr.attributes["m:val"] = paren(close_paren)
           sepchr = Utility.ox_element("sepChr", attributes: { "m:val": "" }, namespace: "m")
           mgrow  = Utility.ox_element("grow", namespace: "m")
           mdpr = Utility.ox_element("dPr", namespace: "m")
@@ -232,6 +240,12 @@ module Plurimath
             mdpr,
             [begchr, endchr, sepchr, mgrow]
           )
+        end
+
+        def paren(parenthesis)
+          return "" if ["{:", ":}"].include?(parenthesis)
+
+          parenthesis
         end
       end
     end

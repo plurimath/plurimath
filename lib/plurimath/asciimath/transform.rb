@@ -12,6 +12,7 @@ module Plurimath
       rule(rparen: simple(:rparen)) { Utility.symbol_object(rparen) }
       rule(number: simple(:number)) { Math::Number.new(number) }
 
+      rule(ternary: simple(:ternary))       { ternary }
       rule(sequence: simple(:sequence))     { sequence }
       rule(table_row: simple(:table_row))   { table_row }
       rule(sequence: sequence(:sequence))   { sequence }
@@ -39,6 +40,10 @@ module Plurimath
 
       rule(binary_class: simple(:binary)) do
         Utility.get_class(binary).new
+      end
+
+      rule(ternary_class: simple(:ternary)) do
+        Utility.get_class(ternary).new
       end
 
       rule(comma_separated: subtree(:comma_separated)) do
@@ -125,6 +130,11 @@ module Plurimath
         new_arr = [sequence]
         new_arr << left_right unless left_right.to_s.strip.empty?
         new_arr
+      end
+
+      rule(sequence: simple(:sequence),
+           number: simple(:number)) do
+        [sequence, Math::Number.new(number.to_s)]
       end
 
       rule(table_row: simple(:table_row),
@@ -680,6 +690,82 @@ module Plurimath
         )
       end
 
+      rule(ternary_class: simple(:function),
+           base_value: simple(:base),
+           power_value: simple(:power)) do
+        Utility.get_class(function).new(
+          Utility.unfenced_value(base),
+          Utility.unfenced_value(power),
+        )
+      end
+
+      rule(ternary_class: simple(:function),
+           base: simple(:base)) do
+        Utility.get_class(function).new(
+          Utility.unfenced_value(base),
+        )
+      end
+
+      rule(ternary_class: simple(:function),
+           base: simple(:base),
+           third_value: simple(:third)) do
+        third_value = third.is_a?(Slice) ? nil : third
+        Utility.get_class(function).new(
+          Utility.unfenced_value(base),
+          nil,
+          third_value,
+        )
+      end
+
+      rule(ternary_class: simple(:function),
+           power: simple(:power)) do
+        Utility.get_class(function).new(
+          nil,
+          Utility.unfenced_value(power),
+        )
+      end
+
+      rule(ternary_class: simple(:function),
+           expr: simple(:expr)) do
+        [
+          Utility.get_class(function).new,
+          expr,
+        ]
+      end
+
+      rule(ternary_class: simple(:function),
+           expr: sequence(:expr)) do
+        expr.insert(0, Utility.get_class(function).new)
+      end
+
+      rule(ternary: simple(:ternary),
+           expr: simple(:expr)) do
+        [ternary, expr]
+      end
+
+      rule(ternary_class: simple(:function),
+           power: simple(:power),
+           third_value: simple(:third)) do
+        third_value = third.is_a?(Slice) ? nil : third
+        Utility.get_class(function).new(
+          nil,
+          Utility.unfenced_value(power),
+          third_value,
+        )
+      end
+
+      rule(ternary_class: simple(:function),
+           base_value: simple(:base),
+           power_value: simple(:power),
+           third_value: simple(:third)) do
+        third_value = third.is_a?(Slice) ? nil : third
+        Utility.get_class(function).new(
+          Utility.unfenced_value(base),
+          Utility.unfenced_value(power),
+          third_value,
+        )
+      end
+
       rule(unary_class: simple(:function),
            intermediate_exp: simple(:int_exp)) do
         first_value = if Utility::UNARY_CLASSES.include?(function)
@@ -723,6 +809,19 @@ module Plurimath
       end
 
       rule(unary_class: simple(:function),
+           ternary_class: simple(:ternary_class)) do
+        [
+          Utility.get_class(function).new,
+          Utility.get_class(ternary_class).new,
+        ]
+      end
+
+      rule(ternary: simple(:ternary),
+           expr: sequence(:expr)) do
+        expr.insert(0, ternary)
+      end
+
+      rule(unary_class: simple(:function),
            text: simple(:text)) do
         Utility.get_class(function).new(
           Math::Function::Text.new(text),
@@ -756,6 +855,18 @@ module Plurimath
           [
             Math::Function::Left.new(left),
             left_right,
+            Math::Function::Right.new(right),
+          ],
+        )
+      end
+
+      rule(left: simple(:left),
+           left_right_value: sequence(:left_right),
+           right: simple(:right)) do
+        Math::Formula.new(
+          [
+            Math::Function::Left.new(left),
+            Math::Formula.new(left_right),
             Math::Function::Right.new(right),
           ],
         )

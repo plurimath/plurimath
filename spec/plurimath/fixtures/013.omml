@@ -12,8 +12,16 @@
           </w:rPr>
         </m:ctrlPr>
       </m:naryPr>
-      <m:sub/>
-      <m:sup/>
+      <m:sub>
+        <m:r>
+          <m:t>&#8203;</m:t>
+        </m:r>
+      </m:sub>
+      <m:sup>
+        <m:r>
+          <m:t>&#8203;</m:t>
+        </m:r>
+      </m:sup>
       <m:e>
         <m:r>
           <w:rPr>

@@ -22,7 +22,7 @@ module Plurimath
           barpr  = Utility.ox_element("barPr", namespace: "m")
           barpr << Utility.pr_element("ctrl", true, namespace: "m")
           me = Utility.ox_element("e", namespace: "m")
-          me << parameter_one.to_omml_without_math_tag
+          Utility.update_nodes(me, omml_value)
           Utility.update_nodes(
             bar,
             [
@@ -30,6 +30,7 @@ module Plurimath
               me,
             ],
           )
+          [bar]
         end
 
         def class_name
