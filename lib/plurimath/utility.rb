@@ -192,6 +192,7 @@ module Plurimath
       def update_nodes(element, nodes)
         nodes&.each do |node|
           next update_nodes(element, node) if node.is_a?(Array)
+
           element << node unless node.nil?
         end
         element
@@ -217,12 +218,12 @@ module Plurimath
       end
 
       def text_classes(text)
-        return nil if text.empty?
+        return nil if text&.empty?
 
         text = filter_values(text) unless text.is_a?(String)
-        if text.scan(/[[:digit:]]/).length == text.length
+        if text&.scan(/[[:digit:]]/)&.length == text&.length
           Math::Number.new(text)
-        elsif text.match?(/[a-zA-Z]/)
+        elsif text&.match?(/[a-zA-Z]/)
           Math::Function::Text.new(text)
         else
           Math::Symbol.new(text)
@@ -230,10 +231,11 @@ module Plurimath
       end
 
       def nary_fonts(nary)
-        narypr = nary.first.flatten.compact
-        subsup = narypr.any?("undOvr") ? "underover" : "power_base"
+        narypr  = nary.first.flatten.compact
+        subsup  = narypr.any?("undOvr") ? "underover" : "power_base"
+        unicode = narypr.any?(Hash) ? narypr.first[:chr] : "∫"
         get_class(subsup).new(
-          Math::Symbol.new(narypr.any?(Hash) ? narypr.first[:chr] : "∫"),
+          Math::Symbol.new(string_to_html_entity(unicode)),
           nary[1],
           nary[2],
         )
@@ -297,6 +299,11 @@ module Plurimath
       def string_to_html_entity(string)
         entities = HTMLEntities.new
         entities.encode(string, :hexadecimal)
+      end
+
+      def html_entity_to_unicode(string)
+        entities = HTMLEntities.new
+        entities.decode(string)
       end
 
       def table_separator(separator, value, symbol: "solid")
@@ -417,6 +424,11 @@ module Plurimath
                   Latex::Constants::LEFT_RIGHT_PARENTHESIS[paren.to_sym]
                 end
         get_class(function).new(paren)
+      end
+
+      def valid_class(object)
+        text = object.extract_class_from_text
+        Asciimath::Constants::SUB_SUP_CLASSES.include?(text) || false
       end
     end
   end

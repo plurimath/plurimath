@@ -32,9 +32,7 @@ RSpec.describe Plurimath::Asciimath::Parser do
               Plurimath::Math::Symbol.new("="),
               Plurimath::Math::Number.new("1")
             ]),
-            Plurimath::Math::Symbol.new("M")
-          ),
-          Plurimath::Math::Formula.new([
+            Plurimath::Math::Symbol.new("M"),
             Plurimath::Math::Function::PowerBase.new(
               Plurimath::Math::Function::Overset.new(
                 Plurimath::Math::Symbol.new("&#x7e;"),
@@ -43,26 +41,26 @@ RSpec.describe Plurimath::Asciimath::Parser do
               Plurimath::Math::Symbol.new("j"),
               Plurimath::Math::Symbol.new("i")
             ),
-            Plurimath::Math::Function::Base.new(
-              Plurimath::Math::Symbol.new("a"),
+          ),
+          Plurimath::Math::Function::Base.new(
+            Plurimath::Math::Symbol.new("a"),
+            Plurimath::Math::Symbol.new("i")
+          ),
+          Plurimath::Math::Function::Power.new(
+            Plurimath::Math::Symbol.new("z"),
+            Plurimath::Math::Formula.new([
+              Plurimath::Math::Symbol.new("-"),
               Plurimath::Math::Symbol.new("i")
-            ),
-            Plurimath::Math::Function::Power.new(
-              Plurimath::Math::Symbol.new("z"),
-              Plurimath::Math::Formula.new([
-                Plurimath::Math::Symbol.new("-"),
-                Plurimath::Math::Symbol.new("i")
-              ])
-            ),
-            Plurimath::Math::Symbol.new(", "),
-            Plurimath::Math::Function::Text.new(" for "),
-            Plurimath::Math::Symbol.new("j"),
-            Plurimath::Math::Symbol.new("="),
-            Plurimath::Math::Number.new("1"),
-            Plurimath::Math::Symbol.new(","),
-            Plurimath::Math::Number.new("2"),
-            Plurimath::Math::Symbol.new(".")
-          ]),
+            ])
+          ),
+          Plurimath::Math::Symbol.new(", "),
+          Plurimath::Math::Function::Text.new(" for "),
+          Plurimath::Math::Symbol.new("j"),
+          Plurimath::Math::Symbol.new("="),
+          Plurimath::Math::Number.new("1"),
+          Plurimath::Math::Symbol.new(","),
+          Plurimath::Math::Number.new("2"),
+          Plurimath::Math::Symbol.new(".")
         ])
         expect(formula).to eq(expected_value)
       end

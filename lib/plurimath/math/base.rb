@@ -10,6 +10,10 @@ module Plurimath
       def class_name
         self.class.name.split("::").last.downcase
       end
+
+      def nary_attr_value
+        value
+      end
     end
   end
 end

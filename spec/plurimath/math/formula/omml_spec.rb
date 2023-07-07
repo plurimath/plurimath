@@ -1777,19 +1777,27 @@ RSpec.describe Plurimath::Math::Formula do
 
     context "contains #178.omml" do
       let(:file_name) { "spec/plurimath/fixtures/178.omml" }
-      let(:exp) do
-        Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Limits.new(
-            Plurimath::Math::Function::Int.new,
-            Plurimath::Math::Number.new("0"),
-            Plurimath::Math::Function::PowerBase.new(
-              Plurimath::Math::Symbol.new("&#x3C0;"),
-              Plurimath::Math::Number.new("2221"),
-              Plurimath::Math::Symbol.new("&#x2221;"),
-            ),
-          )
-        ])
+      let(:exp) { ExpectedValues::EX_178 }
+
+      it "matches open and close tag" do
+        expected_value = File.read(file_name)
+        expect(formula).to be_equivalent_to(expected_value)
       end
+    end
+
+    context "contains #179.omml" do
+      let(:file_name) { "spec/plurimath/fixtures/179.omml" }
+      let(:exp) { ExpectedValues::EX_179 }
+
+      it "matches open and close tag" do
+        expected_value = File.read(file_name)
+        expect(formula).to be_equivalent_to(expected_value)
+      end
+    end
+
+    context "contains #180.omml" do
+      let(:file_name) { "spec/plurimath/fixtures/180.omml" }
+      let(:exp) { ExpectedValues::EX_180 }
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)

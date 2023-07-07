@@ -65,10 +65,14 @@ module Plurimath
         )
       end
 
-      rule(r: sequence(:r)) do
-        Math::Formula.new(
-          r.flatten.compact,
-        )
+      rule(r: subtree(:r)) do
+        if r.flatten.compact.empty?
+          nil
+        else
+          Math::Formula.new(
+            r.flatten.compact,
+          )
+        end
       end
 
       rule(m: sequence(:m)) do
@@ -81,7 +85,7 @@ module Plurimath
         if t.empty?
           Math::Function::Text.new
         else
-          Utility.text_classes(t)
+          t&.compact&.empty? ? [nil] : Utility.text_classes(t)
         end
       end
 
@@ -168,11 +172,20 @@ module Plurimath
         subsup.each_with_index do |object, ind|
           subsup[ind] = Utility.mathml_unary_classes([object]) if object.is_a?(String)
         end
-        Math::Function::PowerBase.new(
-          subsup[0],
-          subsup[1],
-          subsup[2],
-        )
+        if subsup[0].is_a?(Math::Formula) && Utility.valid_class(subsup[0])
+          Utility.get_class(
+            subsup[0].extract_class_from_text
+          ).new(
+            subsup[1],
+            subsup[2],
+          )
+        else
+          Math::Function::PowerBase.new(
+            subsup[0],
+            subsup[1],
+            subsup[2],
+          )
+        end
       end
 
       rule(sSup: subtree(:ssup)) do

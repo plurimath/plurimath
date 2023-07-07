@@ -114,6 +114,20 @@ module Plurimath
         )
       end
 
+      rule(msub: subtree(:msub)) do
+        Math::Function::Base.new(
+          Utility.filter_values(msub[0]),
+          Utility.filter_values(msub[1]),
+        )
+      end
+
+      rule(msup: subtree(:msup)) do
+        Math::Function::Power.new(
+          Utility.filter_values(msup[0]),
+          Utility.filter_values(msup[1]),
+        )
+      end
+
       rule(msup: sequence(:msup)) do
         Math::Function::Power.new(
           msup[0],
@@ -131,10 +145,16 @@ module Plurimath
 
       rule(munderover: sequence(:function)) do
         binary_function = Plurimath::Math::Function::BinaryFunction
+        ternary_function = Plurimath::Math::Function::TernaryFunction
         base_class = function[0]&.value&.first if function[0].is_a?(Math::Formula)
         if base_class&.class&.ancestors&.include?(binary_function)
           base_class.parameter_one = function[1]
           base_class.parameter_two = function[2]
+          base_class
+        elsif base_class&.class&.ancestors&.include?(ternary_function)
+          base_class.parameter_one = function[1]
+          base_class.parameter_two = function[2]
+          base_class.parameter_three = function[3]
           base_class
         else
           Math::Function::Underover.new(

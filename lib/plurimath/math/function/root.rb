@@ -29,15 +29,17 @@ module Plurimath
           pr_element  = Utility.ox_element("radPr", namespace: "m")
           deg_element = Utility.ox_element("deg", namespace: "m")
           e_element   = Utility.ox_element("e", namespace: "m")
+          Utility.update_nodes(e_element, parameter_one.to_omml_without_math_tag)
+          Utility.update_nodes(deg_element, parameter_two.to_omml_without_math_tag)
           Utility.update_nodes(
             rad_element,
             [
-              pr_element  << Utility.pr_element("ctrl", true, namespace: "m"),
-              deg_element << parameter_two.to_omml_without_math_tag,
-              e_element   << parameter_one.to_omml_without_math_tag,
+              (pr_element  << Utility.pr_element("ctrl", true, namespace: "m")),
+              deg_element,
+              e_element,
             ],
           )
-          rad_element
+          [rad_element]
         end
       end
     end

@@ -40,20 +40,11 @@ module Plurimath
         end
 
         def to_omml_without_math_tag
-          limupp = Utility.ox_element("limUpp", namespace: "m")
-          limpr = Utility.ox_element("limUppPr", namespace: "m")
-          limpr << Utility.pr_element("ctrl", namespace: "m")
-          e_tag = Utility.ox_element("e", namespace: "m")
-          e_tag << parameter_one&.to_omml_without_math_tag
-          lim = Utility.ox_element("lim", namespace: "m")
-          lim << parameter_two&.to_omml_without_math_tag if parameter_two
-          Utility.update_nodes(
-            limupp,
-            [
-              e_tag,
-              lim,
-            ],
-          )
+          lim = Symbol.new("lim")
+          overset = Overset.new(lim, parameter_two)
+          return overset unless parameter_one
+
+          Underset.new(overset, parameter_one)&.to_omml_without_math_tag
         end
       end
     end

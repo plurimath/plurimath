@@ -110,17 +110,9 @@ RSpec.describe Plurimath::Math::Number do
     subject(:formula) do
       Ox.dump(
         described_class.new(first_value).
-          to_omml_without_math_tag,
+          to_omml_without_math_tag.first,
         indent: 2,
       ).gsub("&amp;", "&")
-    end
-
-    context "contains Symbol as value" do
-      let(:first_value) { "n" }
-
-      it "returns mathml string" do
-        expect(formula).to be_equivalent_to("<m:t>n</m:t>")
-      end
     end
 
     context "contains Number as value" do

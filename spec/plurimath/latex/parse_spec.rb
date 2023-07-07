@@ -103,14 +103,14 @@ RSpec.describe Plurimath::Latex::Parse do
         LATEX
       }
       it "returns parsed tree" do
-        binary = formula[:power_base]
-        expression = binary[:subscript][:expression]
+        ternary = formula[:ternary_class]
+        expression = ternary[:subscript][:expression]
 
-        expect(binary[:binary]).to eq("sum")
+        expect(ternary[:ternary_functions]).to eq("sum")
         expect(expression[:sequence][:symbols]).to eq("n")
         expect(expression[:expression][:sequence][:operant]).to eq("=")
         expect(expression[:expression][:expression][:number]).to eq("1")
-        expect(binary[:supscript][:expression][:symbols]).to eq("infty")
+        expect(ternary[:supscript][:expression][:symbols]).to eq("infty")
       end
     end
 
@@ -121,13 +121,13 @@ RSpec.describe Plurimath::Latex::Parse do
         LATEX
       }
       it "returns parsed tree" do
-        power_base = formula[:power_base]
+        ternary = formula[:ternary_class]
 
-        expect(power_base[:binary]).to eq("prod")
-        expect(power_base[:supscript][:expression][:symbols]).to eq("infty")
-        expect(power_base[:subscript][:expression][:sequence][:symbols]).to eq("n")
-        expect(power_base[:subscript][:expression][:expression][:sequence][:operant]).to eq("=")
-        expect(power_base[:subscript][:expression][:expression][:expression][:number]).to eq("1")
+        expect(ternary[:ternary_functions]).to eq("prod")
+        expect(ternary[:supscript][:expression][:symbols]).to eq("infty")
+        expect(ternary[:subscript][:expression][:sequence][:symbols]).to eq("n")
+        expect(ternary[:subscript][:expression][:expression][:sequence][:operant]).to eq("=")
+        expect(ternary[:subscript][:expression][:expression][:expression][:number]).to eq("1")
       end
     end
 

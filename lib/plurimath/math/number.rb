@@ -30,7 +30,7 @@ module Plurimath
       end
 
       def to_omml_without_math_tag
-        Utility.ox_element("t", namespace: "m") << value
+        [(Utility.ox_element("t", namespace: "m") << value)]
       end
     end
   end

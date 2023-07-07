@@ -22,7 +22,9 @@ module Plurimath
         end
 
         def to_omml_without_math_tag
-          parameter_one&.to_omml_without_math_tag
+          r_tag = Utility.ox_element("r", namespace: "m")
+          Utility.update_nodes(r_tag, insert_t_tag(parameter_one))
+          [r_tag]
         end
 
         def to_html

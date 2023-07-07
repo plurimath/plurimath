@@ -30,8 +30,12 @@ module Plurimath
           row_tag = Utility.ox_element("mrow")
           tag_name = Utility::UNARY_CLASSES.include?(class_name) ? "mi" : "mo"
           new_arr = [Utility.ox_element(tag_name) << class_name]
-          new_arr += mathml_value if parameter_one
-          Utility.update_nodes(row_tag, new_arr)
+          if parameter_one
+            new_arr += mathml_value
+            Utility.update_nodes(row_tag, new_arr)
+          else
+            new_arr.first
+          end
         end
 
         def to_latex
@@ -67,6 +71,7 @@ module Plurimath
               me,
             ],
           )
+          [func]
         end
 
         def class_name
@@ -109,10 +114,17 @@ module Plurimath
           end
 
           first_value = parameter_one&.to_omml_without_math_tag
-          if parameter_one.is_a?(Symbol)
-            first_value = Utility.ox_element("t", namespace: "m") << first_value
-          end
-          Array(first_value)
+          r_tag = Utility.ox_element("r", namespace: "m")
+          value = if parameter_one.is_a?(Symbol)
+                    r_tag << (Utility.ox_element("t", namespace: "m") << first_value)
+                    [r_tag]
+                  elsif parameter_one.is_a?(Number)
+                    Utility.update_nodes(r_tag, Array(first_value))
+                    [r_tag]
+                  else
+                    first_value
+                  end
+          Array(value)
         end
       end
     end

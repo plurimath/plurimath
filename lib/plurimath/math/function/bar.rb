@@ -25,7 +25,7 @@ module Plurimath
         def to_omml_without_math_tag
           bar = Utility.ox_element("bar", namespace: "m")
           me  = Utility.ox_element("e", namespace: "m")
-          me << parameter_one.to_omml_without_math_tag if parameter_one
+          Utility.update_nodes(me, omml_value) if parameter_one
           Utility.update_nodes(
             bar,
             [
@@ -33,6 +33,7 @@ module Plurimath
               me,
             ],
           )
+          [bar]
         end
 
         protected

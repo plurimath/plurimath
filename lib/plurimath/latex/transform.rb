@@ -17,8 +17,10 @@ module Plurimath
       rule("\\\\" => simple(:slash))  { Math::Symbol.new(slash) }
       rule(expression: simple(:expr)) { expr }
       rule(environment: simple(:env)) { env }
+      rule(ternary: simple(:ternary)) { Utility.get_class(ternary).new }
 
       rule(unary_functions: simple(:unary)) { unary }
+      rule(ternary_class: simple(:ternary)) { ternary }
       rule(left_right: simple(:left_right)) { left_right }
       rule(under_over: simple(:under_over)) { under_over }
       rule(power_base: simple(:power_base)) { power_base }
@@ -308,6 +310,11 @@ module Plurimath
         )
       end
 
+      rule(ternary_functions: simple(:ternary),
+           subscript: simple(:subscript)) do
+        Utility.get_class(ternary).new(subscript)
+      end
+
       rule(unary_functions: simple(:unary),
            supscript: simple(:supscript)) do
         unary_function = if unary.is_a?(Parslet::Slice)
@@ -317,6 +324,25 @@ module Plurimath
                          end
         Math::Function::Power.new(
           unary_function,
+          supscript,
+        )
+      end
+
+      rule(ternary_functions: simple(:ternary),
+           subscript: simple(:subscript),
+           third_value: simple(:third_value)) do
+        Utility.get_class(ternary).new(
+          subscript,
+          nil,
+          third_value,
+        )
+      end
+
+      rule(ternary_functions: simple(:ternary),
+           subscript: simple(:subscript),
+           supscript: simple(:supscript)) do
+        Utility.get_class(ternary).new(
+          subscript,
           supscript,
         )
       end
@@ -333,6 +359,17 @@ module Plurimath
           unary_function,
           subscript,
           supscript,
+        )
+      end
+
+      rule(ternary_functions: simple(:ternary),
+           subscript: simple(:subscript),
+           supscript: simple(:supscript),
+           third_value: simple(:third_value)) do
+        Utility.get_class(ternary).new(
+          subscript,
+          supscript,
+          third_value,
         )
       end
 

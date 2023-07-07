@@ -41,6 +41,7 @@ module Plurimath
               mr,
               omml_content,
             )
+            [mr]
           end
         end
       end

@@ -1,6 +1,7 @@
 require_relative '../spec_helper'
 
 RSpec.describe Plurimath::Mathml do
+
   describe ".initialize" do
     subject(:formula) { described_class.new(mathml) }
 
@@ -129,9 +130,7 @@ RSpec.describe Plurimath::Mathml do
                 <mn>1</mn>
                 <mo>&#x2212;</mo>
                 <mrow>
-                  <mrow>
-                    <mi>cos</mi>
-                  </mrow>
+                  <mi>cos</mi>
                   <mo>(</mo>
                 </mrow>
                 <mn>2</mn>
@@ -259,6 +258,381 @@ RSpec.describe Plurimath::Mathml do
         expect(formula.to_latex).to eq(latex)
         expect(formula.to_mathml).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eq(asciimath)
+      end
+    end
+  end
+
+  describe ".to_omml" do
+    subject(:formula) { described_class.new(string).to_formula.to_omml }
+
+    context "contains one value in sub tag in Mathml" do
+      let(:string)  do
+        <<~MATHML
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <mrow>
+              <msubsup>
+                <mrow>
+                  <mstyle mathvariant="italic">
+                    <mi>N</mi>
+                  </mstyle>
+                </mrow>
+                <mrow>
+                  <mi>s</mi>
+                </mrow>
+                <mrow>
+                  <mn>2</mn>
+                </mrow>
+              </msubsup>
+              <mstyle mathvariant="italic">
+                <mi>T</mi>
+              </mstyle>
+            </mrow>
+            <mrow>
+              <msubsup>
+                <mrow>
+                  <mstyle mathvariant="italic">
+                    <mi>N</mi>
+                  </mstyle>
+                </mrow>
+                <mrow>
+                  <mi>s</mi>
+                </mrow>
+                <mrow>
+                  <mn>2</mn>
+                </mrow>
+              </msubsup>
+              <mstyle mathvariant="italic">
+                <mn>100</mn>
+              </mstyle>
+            </mrow>
+            <mrow>
+              <msubsup>
+                <mrow>
+                  <mstyle mathvariant="italic">
+                    <mi>N</mi>
+                  </mstyle>
+                </mrow>
+                <mrow>
+                  <mi>s</mi>
+                </mrow>
+                <mrow>
+                  <mn>2</mn>
+                </mrow>
+              </msubsup>
+              <mstyle mathvariant="italic">
+                <mrow>
+                  <mfrac>
+                    <mo>f</mo>
+                    <mn>100</mn>
+                  </mfrac>
+                </mrow>
+              </mstyle>
+            </mrow>
+          </math>
+        MATHML
+      end
+
+      let(:expected_value) do
+        <<~OMML
+          <m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape">
+            <m:oMath>
+              <m:nary>
+                <m:naryPr>
+                  <m:chr m:val="N"/>
+                  <m:limLoc m:val="subSup"/>
+                  <m:ctrlPr>
+                    <w:rPr>
+                      <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
+                      <w:i/>
+                    </w:rPr>
+                  </m:ctrlPr>
+                </m:naryPr>
+                <m:sub>
+                  <m:r>
+                    <w:rPr>
+                      <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
+                    </w:rPr>
+                    <m:t>s</m:t>
+                  </m:r>
+                </m:sub>
+                <m:sup>
+                  <m:r>
+                    <w:rPr>
+                      <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
+                    </w:rPr>
+                    <m:t>2</m:t>
+                  </m:r>
+                </m:sup>
+                <m:e>
+                  <m:r>
+                    <m:t>T</m:t>
+                  </m:r>
+                </m:e>
+              </m:nary>
+              <m:nary>
+                <m:naryPr>
+                  <m:chr m:val="N"/>
+                  <m:limLoc m:val="subSup"/>
+                  <m:ctrlPr>
+                    <w:rPr>
+                      <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
+                      <w:i/>
+                    </w:rPr>
+                  </m:ctrlPr>
+                </m:naryPr>
+                <m:sub>
+                  <m:r>
+                    <w:rPr>
+                      <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
+                    </w:rPr>
+                    <m:t>s</m:t>
+                  </m:r>
+                </m:sub>
+                <m:sup>
+                  <m:r>
+                    <w:rPr>
+                      <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
+                    </w:rPr>
+                    <m:t>2</m:t>
+                  </m:r>
+                </m:sup>
+                <m:e>
+                  <m:r>
+                    <m:t>100</m:t>
+                  </m:r>
+                </m:e>
+              </m:nary>
+              <m:nary>
+                <m:naryPr>
+                  <m:chr m:val="N"/>
+                  <m:limLoc m:val="subSup"/>
+                  <m:ctrlPr>
+                    <w:rPr>
+                      <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
+                      <w:i/>
+                    </w:rPr>
+                  </m:ctrlPr>
+                </m:naryPr>
+                <m:sub>
+                  <m:r>
+                    <w:rPr>
+                      <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
+                    </w:rPr>
+                    <m:t>s</m:t>
+                  </m:r>
+                </m:sub>
+                <m:sup>
+                  <m:r>
+                    <w:rPr>
+                      <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
+                    </w:rPr>
+                    <m:t>2</m:t>
+                  </m:r>
+                </m:sup>
+                <m:e>
+                  <m:f>
+                    <m:fPr>
+                      <m:ctrlPr>
+                        <w:rPr>
+                          <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
+                          <w:i/>
+                        </w:rPr>
+                      </m:ctrlPr>
+                    </m:fPr>
+                    <m:num>
+                      <m:r>
+                        <m:t>f</m:t>
+                      </m:r>
+                    </m:num>
+                    <m:den>
+                      <m:r>
+                        <m:t>100</m:t>
+                      </m:r>
+                    </m:den>
+                  </m:f>
+                </m:e>
+              </m:nary>
+            </m:oMath>
+          </m:oMathPara>
+        OMML
+      end
+
+      it 'returns Mathml string' do
+        expect(formula).to eq(expected_value)
+      end
+    end
+
+    context "contains one value in sub tag in Mathml" do
+      let(:string)  do
+        <<~MATHML
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
+              <msup>
+                <mn>2</mn>
+                <mi/>
+              </msup>
+              <msup>
+                <mi/>
+                <mi>&#x3b8;</mi>
+              </msup>
+              <msub>
+                <mi/>
+                <mi>&#x3b8;</mi>
+              </msub>
+              <msub>
+                <mn>100</mn>
+                <mrow>
+                  <mi>&#x3b8;</mi>
+                </mrow>
+              </msub>
+              <msgroup>
+                <munderover>
+                  <mn>100</mn>
+                  <mi>&#x3b1;</mi>
+                  <mrow>
+                    <mi>&#x3b2;</mi>
+                  </mrow>
+                </munderover>
+              </msgroup>
+            </mstyle>
+          </math>
+        MATHML
+      end
+
+      let(:expected_value) do
+        <<~OMML
+          <m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape">
+            <m:oMath>
+              <m:sSup>
+                <m:sSupPr>
+                  <m:ctrlPr>
+                    <w:rPr>
+                      <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
+                      <w:i/>
+                    </w:rPr>
+                  </m:ctrlPr>
+                </m:sSupPr>
+                <m:e>
+                  <m:r>
+                    <m:t>2</m:t>
+                  </m:r>
+                </m:e>
+                <m:sup>
+                  <m:r>
+                    <m:t>&#8203;</m:t>
+                  </m:r>
+                </m:sup>
+              </m:sSup>
+              <m:sSup>
+                <m:sSupPr>
+                  <m:ctrlPr>
+                    <w:rPr>
+                      <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
+                      <w:i/>
+                    </w:rPr>
+                  </m:ctrlPr>
+                </m:sSupPr>
+                <m:e>
+                  <m:r>
+                    <m:t>&#8203;</m:t>
+                  </m:r>
+                </m:e>
+                <m:sup>
+                  <m:r>
+                    <m:t>&#x3b8;</m:t>
+                  </m:r>
+                </m:sup>
+              </m:sSup>
+              <m:sSub>
+                <m:sSubPr>
+                  <m:ctrlPr>
+                    <w:rPr>
+                      <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
+                      <w:i/>
+                    </w:rPr>
+                  </m:ctrlPr>
+                </m:sSubPr>
+                <m:e>
+                  <m:r>
+                    <m:t>&#8203;</m:t>
+                  </m:r>
+                </m:e>
+                <m:sub>
+                  <m:r>
+                    <m:t>&#x3b8;</m:t>
+                  </m:r>
+                </m:sub>
+              </m:sSub>
+              <m:sSub>
+                <m:sSubPr>
+                  <m:ctrlPr>
+                    <w:rPr>
+                      <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
+                      <w:i/>
+                    </w:rPr>
+                  </m:ctrlPr>
+                </m:sSubPr>
+                <m:e>
+                  <m:r>
+                    <m:t>100</m:t>
+                  </m:r>
+                </m:e>
+                <m:sub>
+                  <m:r>
+                    <w:rPr>
+                      <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
+                    </w:rPr>
+                    <m:t>&#x3b8;</m:t>
+                  </m:r>
+                </m:sub>
+              </m:sSub>
+              <m:limLow>
+                <m:limLowPr>
+                  <m:ctrlPr>
+                    <w:rPr>
+                      <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
+                      <w:i/>
+                    </w:rPr>
+                  </m:ctrlPr>
+                </m:limLowPr>
+                <m:e>
+                  <m:limUpp>
+                    <m:limUppPr>
+                      <m:ctrlPr>
+                        <w:rPr>
+                          <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
+                          <w:i/>
+                        </w:rPr>
+                      </m:ctrlPr>
+                    </m:limUppPr>
+                    <m:e>
+                      <m:r>
+                        <m:t>100</m:t>
+                      </m:r>
+                    </m:e>
+                    <m:lim>
+                      <m:r>
+                        <w:rPr>
+                          <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
+                        </w:rPr>
+                        <m:t>&#x3b2;</m:t>
+                      </m:r>
+                    </m:lim>
+                  </m:limUpp>
+                </m:e>
+                <m:lim>
+                  <m:r>
+                    <m:t>&#x3b1;</m:t>
+                  </m:r>
+                </m:lim>
+              </m:limLow>
+            </m:oMath>
+          </m:oMathPara>
+        OMML
+      end
+
+      it 'returns Mathml string' do
+        expect(formula).to eq(expected_value)
       end
     end
   end

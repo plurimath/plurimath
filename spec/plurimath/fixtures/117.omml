@@ -18,7 +18,12 @@
         </m:r>
       </m:e>
       <m:lim>
-        <m:t>⃡</m:t>
+        <m:r>
+          <w:rPr>
+            <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
+          </w:rPr>
+          <m:t>⃡</m:t>
+        </m:r>
       </m:lim>
     </m:limUpp>
   </m:oMath>

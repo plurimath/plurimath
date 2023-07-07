@@ -20,23 +20,13 @@ module Plurimath
         end
 
         def to_omml_without_math_tag
-          first_value  = if parameter_one.is_a?(Math::Symbol)
-                           mt = Utility.ox_element("t", namespace: "m")
-                           mt << parameter_one.to_omml_without_math_tag
-                         else
-                           parameter_one.to_omml_without_math_tag
-                         end
-          second_value = if parameter_two.is_a?(Math::Symbol)
-                           mt = Utility.ox_element("t", namespace: "m")
-                           mt << parameter_two.to_omml_without_math_tag
-                         else
-                           parameter_two.to_omml_without_math_tag
-                         end
           limupp   = Utility.ox_element("limUpp", namespace: "m")
           limupppr = Utility.ox_element("limUppPr", namespace: "m")
           limupppr << Utility.pr_element("ctrl", true, namespace: "m")
-          me = (Utility.ox_element("e", namespace: "m") << first_value)
-          lim = (Utility.ox_element("lim", namespace: "m") << second_value)
+          me = Utility.ox_element("e", namespace: "m")
+          Utility.update_nodes(me, insert_t_tag(parameter_one))
+          lim = Utility.ox_element("lim", namespace: "m")
+          Utility.update_nodes(lim, insert_t_tag(parameter_two))
           Utility.update_nodes(
             limupp,
             [
@@ -45,6 +35,7 @@ module Plurimath
               lim,
             ],
           )
+          [limupp]
         end
       end
     end

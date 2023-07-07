@@ -85,15 +85,24 @@ module Plurimath
         )
         math_element = Utility.ox_element("oMath", namespace: "m")
         Utility.update_nodes(math_element, omml_content)
-        para_element << math_element
-        Ox.dump(para_element, indent: 2).gsub("&amp;", "&")
+        Utility.update_nodes(para_element, Array(math_element))
+        Ox.dump(para_element, indent: 2).gsub("&amp;", "&").lstrip
       end
 
-      def omml_content
+      def omml_content(insert_r_tag = true)
         value.map do |object|
-          if object.is_a?(Symbol)
-            mt = Utility.ox_element("t", namespace: "m")
-            mt << object.value
+          if ["symbol", "number", "text"].include?(object.class_name)
+            if object.is_a?(Symbol)
+              mt = Utility.ox_element("t", namespace: "m")
+              mt << object.value
+              [mt]
+            else
+              mt = object.to_omml_without_math_tag
+            end
+            next mt unless insert_r_tag
+
+            r_element = (Utility.ox_element("r", namespace: "m") << Utility.rpr_element)
+            Utility.update_nodes(r_element, Array(mt))
           else
             object.to_omml_without_math_tag
           end
@@ -101,32 +110,64 @@ module Plurimath
       end
 
       def to_omml_without_math_tag
-        if value.length == 2 && ["underover", "powerbase"].include?(
-          value&.first&.class_name,
-        )
-          nary_tag
-        else
+        return nary_tag if nary_tag_able?
+
+        if value&.all? { |obj| ["symbol", "number", "text"].include?(obj.class_name) }
           r_element = Utility.ox_element("r", namespace: "m")
-          r_element << Utility.rpr_element if ["symbol", "number", "text"].include?(value&.first&.class_name)
-          Utility.update_nodes(r_element, omml_content)
+          r_element << Utility.rpr_element
+          Utility.update_nodes(r_element, omml_content(false))
+          [r_element]
+        else
+          omml_content
         end
       end
 
       def nary_tag
         nary_tag = Utility.ox_element("nary", namespace: "m")
         e_tag    = Utility.ox_element("e", namespace: "m")
-        e_tag   << value&.last&.to_omml_without_math_tag
+        Utility.update_nodes(e_tag, insert_t_tag(value&.last))
         Utility.update_nodes(
           nary_tag,
-          [
-            value.first.omml_nary_tag,
-            e_tag,
-          ].flatten.compact,
+          (value.first.omml_nary_tag << e_tag),
         )
+        [nary_tag]
       end
 
       def class_name
         self.class.name.split("::").last.downcase
+      end
+
+      def extract_class_from_text
+        return false unless value&.length < 2 && value&.first&.is_a?(Function::Text)
+
+        value.first.parameter_one
+      end
+
+      def nary_attr_value
+        value.first.nary_attr_value
+      end
+
+      def nary_tag_able?
+        value.length == 2 &&
+        ["underover", "powerbase"].include?(value&.first&.class_name) &&
+        (
+          value&.first&.parameter_one&.to_omml_without_math_tag.length == 1 ||
+          value&.first&.parameter_one&.to_omml_without_math_tag.match?(/^&#x\w*\d*;$/)
+        )
+      end
+
+      def insert_t_tag(parameter)
+        parameter_value = parameter&.to_omml_without_math_tag
+        r_tag = Utility.ox_element("r", namespace: "m")
+        if parameter.is_a?(Symbol)
+          r_tag << (Utility.ox_element("t", namespace: "m") << parameter_value)
+          [r_tag]
+        elsif parameter.is_a?(Number)
+          Utility.update_nodes(r_tag, parameter_value)
+          [r_tag]
+        else
+          Array(parameter_value)
+        end
       end
     end
   end

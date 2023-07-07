@@ -310,13 +310,15 @@ module Plurimath
         tt
         ii
       ].freeze
-      SUB_SUP_CLASSES = %w[
+      TERNARY_CLASSES = %w[
         prod
+        sum
+        int
+      ].freeze
+      SUB_SUP_CLASSES = %w[
         oint
         lim
-        sum
         log
-        int
       ].freeze
       SPECIAL_BOLD_ALPHABETS = %w[
         ZZ

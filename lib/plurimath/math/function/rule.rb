@@ -21,7 +21,7 @@ module Plurimath
         end
 
         def to_omml_without_math_tag
-          Utility.ox_element("m:e")
+          [Utility.ox_element("m:r") << Utility.ox_element("m:t") ]
         end
 
         def to_html

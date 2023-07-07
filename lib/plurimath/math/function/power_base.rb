@@ -7,16 +7,13 @@ module Plurimath
     module Function
       class PowerBase < TernaryFunction
         def to_mathml_without_math_tag
-          tag_name = (["ubrace", "obrace"].include?(parameter_one&.class_name) ? "underover" : "subsup")
+          tag_name = (underover_class?(parameter_one) ? "underover" : "subsup")
           subsup_tag = Utility.ox_element("m#{tag_name}")
           new_arr = []
           new_arr << parameter_one.to_mathml_without_math_tag
           new_arr << parameter_two&.to_mathml_without_math_tag
           new_arr << parameter_three&.to_mathml_without_math_tag
-          Utility.update_nodes(
-            subsup_tag,
-            new_arr,
-          )
+          Utility.update_nodes(subsup_tag, new_arr)
         end
 
         def to_latex
@@ -45,8 +42,8 @@ module Plurimath
           narypr << Utility.pr_element("ctrl", true, namespace: "m")
           [
             narypr,
-            sub_element,
-            sup_element,
+            sub_parameter,
+            sup_parameter,
           ]
         end
 
@@ -60,17 +57,59 @@ module Plurimath
             ssubsup,
             [
               ssubsuppr,
-              e_element,
-              sub_element,
-              sup_element,
+              e_parameter,
+              sub_parameter,
+              sup_parameter,
             ],
           )
+          [ssubsup]
         end
 
         protected
 
+        def sub_parameter
+          sub_tag = Utility.ox_element("sub", namespace: "m")
+          return empty_tag(sub_tag) unless parameter_two
+
+          Utility.update_nodes(sub_tag, insert_t_tag(parameter_two))
+        end
+
+        def sup_parameter
+          sup_tag = Utility.ox_element("sup", namespace: "m")
+          return empty_tag(sup_tag) unless parameter_three
+
+          Utility.update_nodes(sup_tag, insert_t_tag(parameter_three))
+        end
+
+        def e_parameter
+          e_tag = Utility.ox_element("e", namespace: "m")
+          return empty_tag(e_tag) unless parameter_one
+
+          Utility.update_nodes(e_tag, insert_t_tag(parameter_one))
+        end
+
+        def empty_tag(wrapper_tag)
+          r_tag = Utility.ox_element("r", namespace: "m")
+          r_tag << (Utility.ox_element("t", namespace: "m") << "&#8203;")
+          wrapper_tag << r_tag
+        end
+
+        def insert_t_tag(parameter)
+          parameter_value = parameter&.to_omml_without_math_tag
+          r_tag = Utility.ox_element("r", namespace: "m")
+          if parameter.is_a?(Symbol)
+            r_tag << (Utility.ox_element("t", namespace: "m") << parameter_value)
+            [r_tag]
+          elsif parameter.is_a?(Number)
+            Utility.update_nodes(r_tag, parameter_value)
+            [r_tag]
+          else
+            Array(parameter_value)
+          end
+        end
+
         def chr_value(narypr)
-          first_value = parameter_one.to_omml_without_math_tag
+          first_value = Utility.html_entity_to_unicode(parameter_one&.nary_attr_value)
           return narypr if first_value == "∫"
 
           narypr << Utility.ox_element(
@@ -78,33 +117,6 @@ module Plurimath
             namespace: "m",
             attributes: { "m:val": first_value },
           )
-        end
-
-        def e_element
-          elemnet = Utility.ox_element("e", namespace: "m")
-          if parameter_one
-            elemnet << parameter_one&.to_omml_without_math_tag
-          else
-            elemnet
-          end
-        end
-
-        def sub_element
-          elemnet = Utility.ox_element("sub", namespace: "m")
-          if parameter_two
-            elemnet << parameter_two&.to_omml_without_math_tag
-          else
-            elemnet
-          end
-        end
-
-        def sup_element
-          elemnet = Utility.ox_element("sup", namespace: "m")
-          if parameter_three
-            elemnet << parameter_three&.to_omml_without_math_tag
-          else
-            elemnet
-          end
         end
 
         def hide_tags(nar)

@@ -24,7 +24,7 @@ module Plurimath
       def parse_nodes(nodes)
         nodes.map do |node|
           if node.is_a?(String)
-            node
+            node == "​" ? nil : node
           elsif !node.attributes.empty?
             {
               node.name => {
