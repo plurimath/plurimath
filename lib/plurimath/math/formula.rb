@@ -3,12 +3,17 @@
 module Plurimath
   module Math
     class Formula < Core
-      attr_accessor :value, :left_right_wrapper
+      attr_accessor :value, :left_right_wrapper, :displaystyle
 
-      def initialize(value = [], left_right_wrapper = true)
+      def initialize(
+        value = [],
+        left_right_wrapper = true,
+        displaystyle: true
+      )
         @value = value.is_a?(Array) ? value : [value]
         left_right_wrapper = false if @value.first.is_a?(Function::Left)
         @left_right_wrapper = left_right_wrapper
+        @displaystyle = displaystyle
       end
 
       def ==(object)
@@ -20,12 +25,12 @@ module Plurimath
         value.map(&:to_asciimath).join(" ")
       end
 
-      def to_mathml
+      def to_mathml(display_style: displaystyle)
         math_attrs = {
           xmlns: "http://www.w3.org/1998/Math/MathML",
           display: "block",
         }
-        style_attrs = { displaystyle: "true" }
+        style_attrs = { displaystyle: display_style }
         math  = Utility.ox_element("math", attributes: math_attrs)
         style = Utility.ox_element("mstyle", attributes: style_attrs)
         Utility.update_nodes(style, mathml_content)
