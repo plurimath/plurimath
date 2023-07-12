@@ -221,12 +221,11 @@ module Plurimath
         end
 
         def mdpr_node
-          begchr_attr = { "m:val": open_paren } if open_paren
-          endchr_attr = { "m:val": close_paren } if close_paren
-          sepchr_attr = { "m:val": "" }
-          begchr = Utility.ox_element("begChr", attributes: begchr_attr, namespace: "m")
-          endchr = Utility.ox_element("endChr", attributes: endchr_attr, namespace: "m")
-          sepchr = Utility.ox_element("sepChr", attributes: sepchr_attr, namespace: "m")
+          begchr = Utility.ox_element("begChr", namespace: "m")
+          begchr.attributes["m:val"] = open_paren if open_paren
+          endchr = Utility.ox_element("endChr", namespace: "m")
+          endchr.attributes["m:val"] = close_paren if close_paren
+          sepchr = Utility.ox_element("sepChr", attributes: { "m:val": "" }, namespace: "m")
           mgrow  = Utility.ox_element("grow", namespace: "m")
           mdpr = Utility.ox_element("dPr", namespace: "m")
           Utility.update_nodes(

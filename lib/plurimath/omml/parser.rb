@@ -32,10 +32,8 @@ module Plurimath
                 value: parse_nodes(node.nodes),
               },
             }
-          elsif ["mr", "eqArr"].include?(node.name)
-            organize_table_td(node)
-            { node.name => parse_nodes(node.nodes) }
           else
+            organize_table_td(node) if %w[mr eqArr].include?(node.name)
             { node.name => parse_nodes(node.nodes) }
           end
         end
