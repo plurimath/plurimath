@@ -174,7 +174,7 @@ module Plurimath
         end
         if subsup[0].is_a?(Math::Formula) && Utility.valid_class(subsup[0])
           Utility.get_class(
-            subsup[0].extract_class_from_text
+            subsup[0].extract_class_from_text,
           ).new(
             subsup[1],
             subsup[2],

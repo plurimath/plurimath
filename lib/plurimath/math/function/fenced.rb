@@ -66,7 +66,6 @@ module Plurimath
         end
 
         def second_value
-          class_names = ["number", "symbol"].freeze
           e_tag = Utility.ox_element("e", namespace: "m")
           Utility.update_nodes(
             e_tag,
@@ -91,7 +90,7 @@ module Plurimath
           return "" if paren.nil? || paren.empty?
 
           paren = %w[{ }].include?(paren) ? "\\#{paren}" : paren
-          paren = "\\#{Latex::Constants::UNICODE_SYMBOLS.invert[paren]}" if paren.to_s.match?(/\&#x.{0,4};/)
+          paren = "\\#{Latex::Constants::UNICODE_SYMBOLS.invert[paren]}" if paren.to_s.match?(/&#x.{0,4};/)
           paren.to_s
         end
 

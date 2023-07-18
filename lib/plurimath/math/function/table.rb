@@ -238,7 +238,12 @@ module Plurimath
           mdpr = Utility.ox_element("dPr", namespace: "m")
           Utility.update_nodes(
             mdpr,
-            [begchr, endchr, sepchr, mgrow]
+            [
+              begchr,
+              endchr,
+              sepchr,
+              mgrow,
+            ],
           )
         end
 

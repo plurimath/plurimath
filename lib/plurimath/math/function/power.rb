@@ -34,7 +34,6 @@ module Plurimath
         def to_omml_without_math_tag
           ssup_element  = Utility.ox_element("sSup", namespace: "m")
           suppr_element = Utility.ox_element("sSupPr", namespace: "m")
-          e_element     = Utility.ox_element("e", namespace: "m")
           suppr_element << Utility.pr_element("ctrl", true, namespace: "m")
           Utility.update_nodes(
             ssup_element,

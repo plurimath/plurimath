@@ -81,7 +81,7 @@ module Plurimath
           (match(/[0-9]/).as(:number) >> comma.as(:comma)).repeat(1).as(:comma_separated) |
           quoted_text |
           (str("d").as(:d) >> str("x").as(:x)).as(:intermediate_exp) |
-          (str("left").absent? >> str("right").absent?) >> match["a-zA-Z"].as(:symbol) |
+          ((str("left").absent? >> str("right").absent?) >> match["a-zA-Z"].as(:symbol)) |
           match(/[^\[{(\\\/@;:.,'"|\]})0-9a-zA-Z\-><$%^&*_=+!`~\s?ℒℛᑕᑐ]/).as(:symbol) |
           number
       end
