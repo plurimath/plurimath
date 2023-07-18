@@ -138,7 +138,7 @@ module Plurimath
       end
 
       def extract_class_from_text
-        return false unless value&.length < 2 && value&.first&.is_a?(Function::Text)
+        return false unless (value.length < 2 && value&.first&.is_a?(Function::Text))
 
         value.first.parameter_one
       end
@@ -149,11 +149,11 @@ module Plurimath
 
       def nary_tag_able?
         value.length == 2 &&
-        ["underover", "powerbase"].include?(value&.first&.class_name) &&
-        (
-          value&.first&.parameter_one&.to_omml_without_math_tag.length == 1 ||
-          value&.first&.parameter_one&.to_omml_without_math_tag.match?(/^&#x\w*\d*;$/)
-        )
+          ["underover", "powerbase"].include?(value&.first&.class_name) &&
+          (
+            value&.first&.parameter_one&.to_omml_without_math_tag&.length == 1 ||
+            value&.first&.parameter_one.to_omml_without_math_tag.match?(/^&#x\w*\d*;$/)
+          )
       end
 
       def insert_t_tag(parameter)

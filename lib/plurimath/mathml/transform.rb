@@ -310,7 +310,7 @@ module Plurimath
            value: sequence(:value)) do
         Utility.join_attr_value(
           attrs.is_a?(Hash) ? nil : attrs,
-          value&.flatten.compact,
+          value&.flatten&.compact,
         )
       end
     end

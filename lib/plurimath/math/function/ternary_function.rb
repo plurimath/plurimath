@@ -137,21 +137,21 @@ module Plurimath
 
         def narypr(function_symbol, function_type: "undOvr")
           chr_arg     = { "m:val": function_symbol }
-          limLoc_arg  = { "m:val": function_type }
+          limloc_arg  = { "m:val": function_type }
           subhide_arg = { "m:val": "0" }
           suphide_arg = { "m:val": "0" }
-          chr_tag     = Utility.ox_element("chr", attributes: chr_arg ,namespace: "m")
-          limLoc_tag  = Utility.ox_element("limLoc", attributes: limLoc_arg ,namespace: "m")
-          subHide_tag = Utility.ox_element("subHide", attributes: subhide_arg ,namespace: "m")
-          supHide_tag = Utility.ox_element("supHide", attributes: suphide_arg ,namespace: "m")
-          nary_pr_tag = Utility.ox_element("naryPr" ,namespace: "m")
+          chr_tag     = Utility.ox_element("chr", attributes: chr_arg, namespace: "m")
+          limloc_tag  = Utility.ox_element("limLoc", attributes: limloc_arg, namespace: "m")
+          subhide_tag = Utility.ox_element("subHide", attributes: subhide_arg, namespace: "m")
+          suphide_tag = Utility.ox_element("supHide", attributes: suphide_arg, namespace: "m")
+          nary_pr_tag = Utility.ox_element("naryPr", namespace: "m")
           Utility.update_nodes(
             nary_pr_tag,
             [
               chr_tag,
-              limLoc_tag,
-              subHide_tag,
-              supHide_tag,
+              limloc_tag,
+              subhide_tag,
+              suphide_tag,
             ],
           )
         end

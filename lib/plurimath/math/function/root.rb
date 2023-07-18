@@ -34,7 +34,7 @@ module Plurimath
           Utility.update_nodes(
             rad_element,
             [
-              (pr_element  << Utility.pr_element("ctrl", true, namespace: "m")),
+              (pr_element << Utility.pr_element("ctrl", true, namespace: "m")),
               deg_element,
               e_element,
             ],

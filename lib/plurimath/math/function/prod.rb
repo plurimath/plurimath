@@ -41,7 +41,7 @@ module Plurimath
               [
                 munderover_tag,
                 parameter_three&.to_mathml_without_math_tag,
-              ].flatten.compact
+              ].flatten.compact,
             )
           else
             first_value

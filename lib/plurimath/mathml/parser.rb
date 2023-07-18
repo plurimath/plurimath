@@ -6,7 +6,15 @@ module Plurimath
   class Mathml
     class Parser
       attr_accessor :text
-      SUPPORTED_ATTRIBUTES = %w[columnlines mathvariant mathcolor notation close open].freeze
+
+      SUPPORTED_ATTRIBUTES = %w[
+        columnlines
+        mathvariant
+        mathcolor
+        notation
+        close
+        open
+      ].freeze
 
       def initialize(text)
         @text = text
