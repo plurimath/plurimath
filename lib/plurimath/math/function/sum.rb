@@ -55,15 +55,15 @@ module Plurimath
         end
 
         def to_omml_without_math_tag
-          if present?
+          if all_values_exist?
             nary = Utility.ox_element("nary", namespace: "m")
             Utility.update_nodes(
               nary,
               [
                 narypr("∑"),
-                sub_parameter,
-                sup_parameter,
-                e_parameter,
+                omml_parameter(parameter_one, tag_name: "sub"),
+                omml_parameter(parameter_two, tag_name: "sup"),
+                omml_parameter(parameter_three, tag_name: "e"),
               ],
             )
             [nary]

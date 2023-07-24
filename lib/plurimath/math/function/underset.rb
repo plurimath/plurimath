@@ -22,16 +22,12 @@ module Plurimath
           limlow   = Utility.ox_element("limLow", namespace: "m")
           limlowpr = Utility.ox_element("limLowPr", namespace: "m")
           limlowpr << Utility.pr_element("ctrl", true, namespace: "m")
-          me = Utility.ox_element("e", namespace: "m")
-          Utility.update_nodes(me, insert_t_tag(parameter_one))
-          lim = Utility.ox_element("lim", namespace: "m")
-          Utility.update_nodes(lim, insert_t_tag(parameter_two))
           Utility.update_nodes(
             limlow,
             [
               limlowpr,
-              me,
-              lim,
+              omml_parameter(parameter_one, tag_name: "e"),
+              omml_parameter(parameter_two, tag_name: "lim"),
             ],
           )
           [limlow]

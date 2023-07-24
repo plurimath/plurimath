@@ -6,6 +6,9 @@ module Plurimath
   module Math
     module Function
       class Lub < UnaryFunction
+        def validate_function_formula
+          false
+        end
       end
     end
   end

@@ -27,11 +27,12 @@
           </m:naryPr>
           <m:sub>
             <m:r>
-              <w:rPr>
-                <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
-              </w:rPr>
               <m:t>j</m:t>
+            </m:r>
+            <m:r>
               <m:t>=</m:t>
+            </m:r>
+            <m:r>
               <m:t>0</m:t>
             </m:r>
           </m:sub>
@@ -57,10 +58,9 @@
               </m:e>
               <m:sub>
                 <m:r>
-                  <w:rPr>
-                    <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
-                  </w:rPr>
                   <m:t>i</m:t>
+                </m:r>
+                <m:r>
                   <m:t>j</m:t>
                 </m:r>
               </m:sub>

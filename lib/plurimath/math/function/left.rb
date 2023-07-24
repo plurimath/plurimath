@@ -33,6 +33,10 @@ module Plurimath
           "\\left #{Latex::Constants::LEFT_RIGHT_PARENTHESIS.invert[parameter_one] || '.'}"
         end
 
+        def validate_function_formula
+          false
+        end
+
         protected
 
         def left_paren

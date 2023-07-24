@@ -349,17 +349,11 @@ RSpec.describe Plurimath::Mathml do
                 </m:naryPr>
                 <m:sub>
                   <m:r>
-                    <w:rPr>
-                      <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
-                    </w:rPr>
                     <m:t>s</m:t>
                   </m:r>
                 </m:sub>
                 <m:sup>
                   <m:r>
-                    <w:rPr>
-                      <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
-                    </w:rPr>
                     <m:t>2</m:t>
                   </m:r>
                 </m:sup>
@@ -382,17 +376,11 @@ RSpec.describe Plurimath::Mathml do
                 </m:naryPr>
                 <m:sub>
                   <m:r>
-                    <w:rPr>
-                      <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
-                    </w:rPr>
                     <m:t>s</m:t>
                   </m:r>
                 </m:sub>
                 <m:sup>
                   <m:r>
-                    <w:rPr>
-                      <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
-                    </w:rPr>
                     <m:t>2</m:t>
                   </m:r>
                 </m:sup>
@@ -415,17 +403,11 @@ RSpec.describe Plurimath::Mathml do
                 </m:naryPr>
                 <m:sub>
                   <m:r>
-                    <w:rPr>
-                      <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
-                    </w:rPr>
                     <m:t>s</m:t>
                   </m:r>
                 </m:sub>
                 <m:sup>
                   <m:r>
-                    <w:rPr>
-                      <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
-                    </w:rPr>
                     <m:t>2</m:t>
                   </m:r>
                 </m:sup>
@@ -579,9 +561,6 @@ RSpec.describe Plurimath::Mathml do
                 </m:e>
                 <m:sub>
                   <m:r>
-                    <w:rPr>
-                      <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
-                    </w:rPr>
                     <m:t>&#x3b8;</m:t>
                   </m:r>
                 </m:sub>
@@ -612,9 +591,6 @@ RSpec.describe Plurimath::Mathml do
                     </m:e>
                     <m:lim>
                       <m:r>
-                        <w:rPr>
-                          <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
-                        </w:rPr>
                         <m:t>&#x3b2;</m:t>
                       </m:r>
                     </m:lim>

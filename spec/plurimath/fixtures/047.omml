@@ -24,17 +24,11 @@
           </m:eqArrPr>
           <m:e>
             <m:r>
-              <w:rPr>
-                <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
-              </w:rPr>
               <m:t>0&le; i &le; m</m:t>
             </m:r>
           </m:e>
           <m:e>
             <m:r>
-              <w:rPr>
-                <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
-              </w:rPr>
               <m:t>0&lt;j&lt;n </m:t>
             </m:r>
           </m:e>
@@ -47,9 +41,6 @@
       </m:sup>
       <m:e>
         <m:r>
-          <w:rPr>
-            <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
-          </w:rPr>
           <m:t>P</m:t>
         </m:r>
         <m:d>
@@ -63,9 +54,6 @@
           </m:dPr>
           <m:e>
             <m:r>
-              <w:rPr>
-                <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
-              </w:rPr>
               <m:t>i,j</m:t>
             </m:r>
           </m:e>

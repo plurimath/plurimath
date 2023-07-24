@@ -6,6 +6,9 @@ module Plurimath
   module Math
     module Function
       class Max < UnaryFunction
+        def validate_function_formula
+          false
+        end
       end
     end
   end

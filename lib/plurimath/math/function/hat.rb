@@ -18,6 +18,10 @@ module Plurimath
             ],
           )
         end
+
+        def validate_function_formula
+          false
+        end
       end
     end
   end

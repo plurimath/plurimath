@@ -21,6 +21,14 @@ module Plurimath
             mo_tag
           end
         end
+
+        def tag_name
+          "underover"
+        end
+
+        def validate_function_formula
+          false
+        end
       end
 
       Underbrace = Ubrace

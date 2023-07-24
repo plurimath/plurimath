@@ -11,17 +11,11 @@
       </m:limLowPr>
       <m:e>
         <m:r>
-          <w:rPr>
-            <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
-          </w:rPr>
           <m:t>lim</m:t>
         </m:r>
       </m:e>
       <m:lim>
         <m:r>
-          <w:rPr>
-            <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
-          </w:rPr>
           <m:t>n&rarr;&infin;</m:t>
         </m:r>
       </m:lim>
@@ -47,9 +41,6 @@
           </m:dPr>
           <m:e>
             <m:r>
-              <w:rPr>
-                <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
-              </w:rPr>
               <m:t>1+</m:t>
             </m:r>
             <m:f>
@@ -63,17 +54,11 @@
               </m:fPr>
               <m:num>
                 <m:r>
-                  <w:rPr>
-                    <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
-                  </w:rPr>
                   <m:t>1</m:t>
                 </m:r>
               </m:num>
               <m:den>
                 <m:r>
-                  <w:rPr>
-                    <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
-                  </w:rPr>
                   <m:t>n</m:t>
                 </m:r>
               </m:den>
@@ -83,9 +68,6 @@
       </m:e>
       <m:sup>
         <m:r>
-          <w:rPr>
-            <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
-          </w:rPr>
           <m:t>n</m:t>
         </m:r>
       </m:sup>

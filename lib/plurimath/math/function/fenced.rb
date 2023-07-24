@@ -46,7 +46,13 @@ module Plurimath
           dpr << Utility.pr_element("ctrl", true, namespace: "m")
           Utility.update_nodes(
             d,
-            [dpr, second_value],
+            [
+              dpr,
+              omml_parameter(
+                Formula.new(Array(parameter_two)),
+                tag_name: "e",
+              ),
+            ],
           )
           [d]
         end
@@ -63,15 +69,6 @@ module Plurimath
             namespace: "m",
             attributes: attributes,
           )
-        end
-
-        def second_value
-          e_tag = Utility.ox_element("e", namespace: "m")
-          Utility.update_nodes(
-            e_tag,
-            Formula.new(parameter_two).to_omml_without_math_tag,
-          )
-          e_tag
         end
 
         def third_value(dpr)

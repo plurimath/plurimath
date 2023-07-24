@@ -3,7 +3,7 @@
 module Plurimath
   module Math
     module Function
-      class UnaryFunction
+      class UnaryFunction < Core
         attr_accessor :parameter_one
 
         def initialize(parameter_one = nil)
@@ -110,21 +110,10 @@ module Plurimath
 
         def omml_value
           if parameter_one.is_a?(Array)
-            return parameter_one&.compact&.map(&:to_omml_without_math_tag)
+            return parameter_one&.compact&.map(&:insert_t_tag)
           end
 
-          first_value = parameter_one&.to_omml_without_math_tag
-          r_tag = Utility.ox_element("r", namespace: "m")
-          value = if parameter_one.is_a?(Symbol)
-                    r_tag << (Utility.ox_element("t", namespace: "m") << first_value)
-                    [r_tag]
-                  elsif parameter_one.is_a?(Number)
-                    Utility.update_nodes(r_tag, Array(first_value))
-                    [r_tag]
-                  else
-                    first_value
-                  end
-          Array(value)
+          Array(parameter_one&.insert_t_tag)
         end
       end
     end

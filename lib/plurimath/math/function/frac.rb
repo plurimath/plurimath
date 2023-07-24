@@ -34,29 +34,16 @@ module Plurimath
         def to_omml_without_math_tag
           f_element   = Utility.ox_element("f", namespace: "m")
           fpr_element = Utility.ox_element("fPr", namespace: "m")
+          fpr_element << Utility.pr_element("ctrl", true, namespace: "m")
           Utility.update_nodes(
             f_element,
             [
-              fpr_element << Utility.pr_element("ctrl", true, namespace: "m"),
-              num_element,
-              den_element,
+              fpr_element,
+              omml_parameter(parameter_one, tag_name: "num"),
+              omml_parameter(parameter_two, tag_name: "den"),
             ],
           )
           [f_element]
-        end
-
-        def num_element
-          num_element = Utility.ox_element("num", namespace: "m")
-          return empty_tag(num_element) unless parameter_one
-
-          Utility.update_nodes(num_element, insert_t_tag(parameter_one))
-        end
-
-        def den_element
-          den_element = Utility.ox_element("den", namespace: "m")
-          return empty_tag(den_element) unless parameter_two
-
-          Utility.update_nodes(den_element, insert_t_tag(parameter_two))
         end
       end
     end
