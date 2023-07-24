@@ -51,16 +51,6 @@ module Plurimath
           "#{first_value}#{second_value}#{third_value}"
         end
 
-        def to_omml_without_math_tag
-          r_tag = Utility.ox_element("r", namespace: "m")
-          value_array = []
-          value_array << omml_value(parameter_one) if parameter_one
-          value_array << omml_value(parameter_two) if parameter_two
-          value_array << omml_value(parameter_three) if parameter_three
-          Utility.update_nodes(r_tag, value_array)
-          [r_tag]
-        end
-
         def class_name
           self.class.name.split("::").last.downcase
         end
@@ -77,15 +67,6 @@ module Plurimath
 
         def invert_unicode_symbols
           Mathml::Constants::UNICODE_SYMBOLS.invert[class_name] || class_name
-        end
-
-        def omml_value(field)
-          case field
-          when Array
-            field.compact.map(&:insert_t_tag)
-          else
-            field&.insert_t_tag
-          end
         end
 
         def wrapped(field, type: "ascii")

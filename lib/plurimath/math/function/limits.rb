@@ -24,9 +24,9 @@ module Plurimath
 
         def to_omml_without_math_tag
           value_array = []
-          value_array << omml_value(parameter_one) if parameter_one
-          value_array << omml_value(parameter_two) if parameter_two
-          value_array << omml_value(parameter_three) if parameter_three
+          value_array << parameter_one.insert_t_tag if parameter_one
+          value_array << parameter_two.insert_t_tag if parameter_two
+          value_array << parameter_three.insert_t_tag if parameter_three
           value_array
         end
       end
