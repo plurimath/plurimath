@@ -70,44 +70,10 @@ module Plurimath
           end
         end
 
-        def mathml_wrapped(field)
-          if field.validate_function_formula
-            mrow_tag = Utility.ox_element("mrow")
-            open_paren = (Utility.ox_element("mo") << "(")
-            close_paren = (Utility.ox_element("mo") << ")")
-            Utility.update_nodes(
-              mrow_tag,
-              [
-                open_paren,
-                field.to_mathml_without_math_tag,
-                close_paren,
-              ],
-            )
-          else
-            field.to_mathml_without_math_tag
-          end
-        end
-
         def wrapped(field)
           return "" unless field
 
           "(#{field.to_asciimath})"
-        end
-
-        def asciimath_base_value(field)
-          if field.validate_function_formula
-            "(#{field.to_asciimath})"
-          else
-            field.to_asciimath
-          end
-        end
-
-        def latex_base_value(field)
-          if field.validate_function_formula
-            "{ \\left ( #{field.to_latex} \\right ) }"
-          else
-            field.to_latex
-          end
         end
 
         def invert_unicode_symbols
