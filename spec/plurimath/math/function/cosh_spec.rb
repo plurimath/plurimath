@@ -179,4 +179,24 @@ RSpec.describe Plurimath::Math::Function::Cosh do
       end
     end
   end
+
+  describe ".validate_function_formula" do
+    subject(:formula) { described_class.new(first_value).validate_function_formula }
+
+    context "contains Symbol as value" do
+      let(:first_value) { "n" }
+
+      it "expects false in return" do
+        expect(formula).to eql(false)
+      end
+    end
+
+    context "contains Symbol as value" do
+      let(:first_value) { "a" }
+
+      it "should not return true" do
+        expect(formula).not_to eql(true)
+      end
+    end
+  end
 end
