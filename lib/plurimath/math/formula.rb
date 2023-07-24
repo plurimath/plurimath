@@ -134,7 +134,7 @@ module Plurimath
       end
 
       def validate_function_formula
-        !(value.any?(Function::Left) || value.any?(Function::Right))
+        (value.none?(Function::Left) || value.none?(Function::Right))
       end
     end
   end

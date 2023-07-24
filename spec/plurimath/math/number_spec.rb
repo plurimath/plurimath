@@ -143,4 +143,24 @@ RSpec.describe Plurimath::Math::Number do
       end
     end
   end
+
+  describe ".validate_function_formula" do
+    subject(:formula) { described_class.new(first_value).validate_function_formula }
+
+    context "contains Number as value" do
+      let(:first_value) { "80" }
+
+      it "expects false in return" do
+        expect(formula).to eql(false)
+      end
+    end
+
+    context "contains Number as value" do
+      let(:first_value) { "80" }
+
+      it "should not return true" do
+        expect(formula).not_to eql(true)
+      end
+    end
+  end
 end

@@ -192,4 +192,24 @@ RSpec.describe Plurimath::Math::Function::FontStyle do
       end
     end
   end
+
+  describe ".validate_function_formula" do
+    subject(:formula) { described_class.new(first_value).validate_function_formula }
+
+    context "contains Symbol as value" do
+      let(:first_value) { "n" }
+
+      it "expects true in return" do
+        expect(formula).to eql(true)
+      end
+    end
+
+    context "contains Symbol as value" do
+      let(:first_value) { "a" }
+
+      it "should not return false" do
+        expect(formula).not_to eql(false)
+      end
+    end
+  end
 end

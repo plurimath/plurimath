@@ -1025,4 +1025,34 @@ RSpec.describe Plurimath::Math::Formula do
       end
     end
   end
+
+  describe ".validate_function_formula" do
+    subject(:formula) { described_class.new(exp).validate_function_formula }
+
+    context "contains array of values left, right and value" do
+      let(:exp) do
+        [
+          Plurimath::Math::Function::Left.new("("),
+          Plurimath::Math::Number.new("1"),
+          Plurimath::Math::Function::Right.new(")"),
+        ]
+      end
+
+      it "expects false in return" do
+        expect(formula).to eql(false)
+      end
+    end
+
+    context "contains array of values only left and right" do
+      let(:exp) do
+        [
+          Plurimath::Math::Function::Text.new(")"),
+        ]
+      end
+
+      it "expects true in return" do
+        expect(formula).to eql(true)
+      end
+    end
+  end
 end
