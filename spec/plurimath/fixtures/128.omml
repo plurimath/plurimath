@@ -20,9 +20,6 @@
       </m:e>
       <m:sub>
         <m:r>
-          <w:rPr>
-            <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
-          </w:rPr>
           <m:t>x</m:t>
         </m:r>
       </m:sub>

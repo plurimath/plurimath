@@ -2,11 +2,11 @@
 
 module Plurimath
   module Math
-    class Symbol < Base
+    class Symbol < Core
       attr_accessor :value
 
       def initialize(sym)
-        @value = super
+        @value = sym.is_a?(Parslet::Slice) ? sym.to_s : sym
       end
 
       def ==(object)
@@ -60,6 +60,24 @@ module Plurimath
 
       def to_omml_without_math_tag
         value
+      end
+
+      def insert_t_tag
+        r_tag = Utility.ox_element("r", namespace: "m")
+        r_tag << (Utility.ox_element("t", namespace: "m") << value)
+        [r_tag]
+      end
+
+      def tag_name
+        ["&#x22c0;", "&#x22c1;", "&#x22c2;", "&#x22c3;"].include?(value) ? "underover" : "subsup"
+      end
+
+      def nary_attr_value
+        value
+      end
+
+      def validate_function_formula
+        false
       end
 
       private

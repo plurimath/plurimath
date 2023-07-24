@@ -22,7 +22,7 @@ module Plurimath
         end
 
         def to_omml_without_math_tag
-          Formula.new(parameter_one).omml_content
+          omml_value
         end
 
         def to_html

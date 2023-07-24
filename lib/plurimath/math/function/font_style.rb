@@ -23,7 +23,7 @@ module Plurimath
 
         def to_omml_without_math_tag
           r_tag = Utility.ox_element("r", namespace: "m")
-          Utility.update_nodes(r_tag, insert_t_tag(parameter_one))
+          Utility.update_nodes(r_tag, parameter_one&.insert_t_tag)
           [r_tag]
         end
 
@@ -33,6 +33,10 @@ module Plurimath
 
         def to_latex
           parameter_one&.to_latex
+        end
+
+        def validate_function_formula
+          true
         end
       end
     end

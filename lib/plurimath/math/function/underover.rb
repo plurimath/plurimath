@@ -44,7 +44,11 @@ module Plurimath
 
         def omml_nary_tag
           pr = Utility.ox_element("naryPr", namespace: "m")
-          [pr_element_value(pr), sub_parameter, sup_parameter]
+          [
+            pr_element_value(pr),
+            omml_parameter(parameter_two, tag_name: "sub"),
+            omml_parameter(parameter_three, tag_name: "sup"),
+          ]
         end
 
         protected
@@ -79,20 +83,6 @@ module Plurimath
           hidden_sub_tag(pr_element)
           hidden_sup_tag(pr_element)
           pr_element << Utility.pr_element("ctrl", true, namespace: "m")
-        end
-
-        def sub_parameter
-          sub_tag = Utility.ox_element("sub", namespace: "m")
-          return empty_tag(sub_tag) unless parameter_two
-
-          Utility.update_nodes(sub_tag, insert_t_tag(parameter_two))
-        end
-
-        def sup_parameter
-          sup_tag = Utility.ox_element("sup", namespace: "m")
-          return empty_tag(sup_tag) unless parameter_three
-
-          Utility.update_nodes(sup_tag, insert_t_tag(parameter_three))
         end
 
         def first_value(pr_element)

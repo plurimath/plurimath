@@ -3,7 +3,7 @@
 module Plurimath
   module Math
     module Function
-      class Table
+      class Table < Core
         attr_accessor :value, :open_paren, :close_paren, :options
 
         def initialize(value = nil,

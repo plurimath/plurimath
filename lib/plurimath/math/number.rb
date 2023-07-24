@@ -2,11 +2,11 @@
 
 module Plurimath
   module Math
-    class Number < Base
+    class Number < Core
       attr_accessor :value
 
       def initialize(value)
-        @value = super
+        @value = value.is_a?(Parslet::Slice) ? value.to_s : value
       end
 
       def ==(object)
@@ -31,6 +31,20 @@ module Plurimath
 
       def to_omml_without_math_tag
         [(Utility.ox_element("t", namespace: "m") << value)]
+      end
+
+      def insert_t_tag
+        r_tag = Utility.ox_element("r", namespace: "m")
+        r_tag << (Utility.ox_element("t", namespace: "m") << value)
+        [r_tag]
+      end
+
+      def nary_attr_value
+        value
+      end
+
+      def validate_function_formula
+        false
       end
     end
   end

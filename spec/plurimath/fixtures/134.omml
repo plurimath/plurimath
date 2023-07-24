@@ -11,25 +11,16 @@
       </m:limLowPr>
       <m:e>
         <m:r>
-          <w:rPr>
-            <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
-          </w:rPr>
           <m:t>max</m:t>
         </m:r>
       </m:e>
       <m:lim>
         <m:r>
-          <w:rPr>
-            <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
-          </w:rPr>
           <m:t>0&le;x&le;1</m:t>
         </m:r>
       </m:lim>
     </m:limLow>
     <m:r>
-      <w:rPr>
-        <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
-      </w:rPr>
       <m:t>x</m:t>
     </m:r>
     <m:sSup>
@@ -43,17 +34,11 @@
       </m:sSupPr>
       <m:e>
         <m:r>
-          <w:rPr>
-            <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
-          </w:rPr>
           <m:t>e</m:t>
         </m:r>
       </m:e>
       <m:sup>
         <m:r>
-          <w:rPr>
-            <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
-          </w:rPr>
           <m:t>-</m:t>
         </m:r>
         <m:sSup>
@@ -67,17 +52,11 @@
           </m:sSupPr>
           <m:e>
             <m:r>
-              <w:rPr>
-                <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
-              </w:rPr>
               <m:t>x</m:t>
             </m:r>
           </m:e>
           <m:sup>
             <m:r>
-              <w:rPr>
-                <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
-              </w:rPr>
               <m:t>2</m:t>
             </m:r>
           </m:sup>

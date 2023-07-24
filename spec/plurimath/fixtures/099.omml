@@ -19,17 +19,11 @@
       </m:fName>
       <m:e>
         <m:r>
-          <w:rPr>
-            <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
-          </w:rPr>
           <m:t>θ</m:t>
         </m:r>
       </m:e>
     </m:func>
     <m:r>
-      <w:rPr>
-        <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
-      </w:rPr>
       <m:t>=</m:t>
     </m:r>
     <m:f>
@@ -61,9 +55,6 @@
           </m:fName>
           <m:e>
             <m:r>
-              <w:rPr>
-                <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
-              </w:rPr>
               <m:t>θ</m:t>
             </m:r>
           </m:e>
@@ -89,9 +80,6 @@
           </m:fName>
           <m:e>
             <m:r>
-              <w:rPr>
-                <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
-              </w:rPr>
               <m:t>θ</m:t>
             </m:r>
           </m:e>

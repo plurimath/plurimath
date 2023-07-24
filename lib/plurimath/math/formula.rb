@@ -2,7 +2,7 @@
 
 module Plurimath
   module Math
-    class Formula
+    class Formula < Core
       attr_accessor :value, :left_right_wrapper
 
       def initialize(value = [], left_right_wrapper = true)
@@ -89,43 +89,20 @@ module Plurimath
         Ox.dump(para_element, indent: 2).gsub("&amp;", "&").lstrip
       end
 
-      def omml_content(insert_r_tag = true)
-        value.map do |object|
-          if ["symbol", "number", "text"].include?(object.class_name)
-            if object.is_a?(Symbol)
-              mt = Utility.ox_element("t", namespace: "m")
-              mt << object.value
-              [mt]
-            else
-              mt = object.to_omml_without_math_tag
-            end
-            next mt unless insert_r_tag
-
-            r_element = (Utility.ox_element("r", namespace: "m") << Utility.rpr_element)
-            Utility.update_nodes(r_element, Array(mt))
-          else
-            object.to_omml_without_math_tag
-          end
-        end
+      def omml_content
+        value&.map(&:insert_t_tag)
       end
 
       def to_omml_without_math_tag
         return nary_tag if nary_tag_able?
 
-        if value&.all? { |obj| ["symbol", "number", "text"].include?(obj.class_name) }
-          r_element = Utility.ox_element("r", namespace: "m")
-          r_element << Utility.rpr_element
-          Utility.update_nodes(r_element, omml_content(false))
-          [r_element]
-        else
-          omml_content
-        end
+        omml_content
       end
 
       def nary_tag
         nary_tag = Utility.ox_element("nary", namespace: "m")
         e_tag    = Utility.ox_element("e", namespace: "m")
-        Utility.update_nodes(e_tag, insert_t_tag(value&.last))
+        Utility.update_nodes(e_tag, value.last.insert_t_tag)
         Utility.update_nodes(
           nary_tag,
           (value.first.omml_nary_tag << e_tag),
@@ -156,18 +133,8 @@ module Plurimath
           )
       end
 
-      def insert_t_tag(parameter)
-        parameter_value = parameter&.to_omml_without_math_tag
-        r_tag = Utility.ox_element("r", namespace: "m")
-        if parameter.is_a?(Symbol)
-          r_tag << (Utility.ox_element("t", namespace: "m") << parameter_value)
-          [r_tag]
-        elsif parameter.is_a?(Number)
-          Utility.update_nodes(r_tag, parameter_value)
-          [r_tag]
-        else
-          Array(parameter_value)
-        end
+      def validate_function_formula
+        !(value.any?(Function::Left) || value.any?(Function::Right))
       end
     end
   end

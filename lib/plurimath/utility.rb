@@ -64,8 +64,6 @@ module Plurimath
       csc
       ln
       lg
-      f
-      g
     ].freeze
     MUNDER_CLASSES = %w[
       ubrace
@@ -428,7 +426,7 @@ module Plurimath
 
       def valid_class(object)
         text = object.extract_class_from_text
-        Asciimath::Constants::SUB_SUP_CLASSES.include?(text) || false
+        Asciimath::Constants::SUB_SUP_CLASSES.include?(text)
       end
     end
   end

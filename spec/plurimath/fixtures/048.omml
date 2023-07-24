@@ -13,17 +13,11 @@
       </m:naryPr>
       <m:sub>
         <m:r>
-          <w:rPr>
-            <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
-          </w:rPr>
           <m:t>k=1</m:t>
         </m:r>
       </m:sub>
       <m:sup>
         <m:r>
-          <w:rPr>
-            <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
-          </w:rPr>
           <m:t>n</m:t>
         </m:r>
       </m:sup>
@@ -39,17 +33,11 @@
           </m:sSubPr>
           <m:e>
             <m:r>
-              <w:rPr>
-                <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
-              </w:rPr>
               <m:t>A</m:t>
             </m:r>
           </m:e>
           <m:sub>
             <m:r>
-              <w:rPr>
-                <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
-              </w:rPr>
               <m:t>k</m:t>
             </m:r>
           </m:sub>

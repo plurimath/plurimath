@@ -14,9 +14,6 @@
       </m:naryPr>
       <m:sub>
         <m:r>
-          <w:rPr>
-            <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
-          </w:rPr>
           <m:t>k</m:t>
         </m:r>
       </m:sub>
@@ -47,17 +44,11 @@
               </m:fPr>
               <m:num>
                 <m:r>
-                  <w:rPr>
-                    <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
-                  </w:rPr>
                   <m:t>n</m:t>
                 </m:r>
               </m:num>
               <m:den>
                 <m:r>
-                  <w:rPr>
-                    <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
-                  </w:rPr>
                   <m:t>k</m:t>
                 </m:r>
               </m:den>

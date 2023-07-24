@@ -6,6 +6,9 @@ module Plurimath
   module Math
     module Function
       class Det < UnaryFunction
+        def validate_function_formula
+          false
+        end
       end
     end
   end

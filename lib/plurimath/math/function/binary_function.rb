@@ -3,7 +3,7 @@
 module Plurimath
   module Math
     module Function
-      class BinaryFunction
+      class BinaryFunction < Core
         attr_accessor :parameter_one, :parameter_two
 
         def initialize(parameter_one = nil, parameter_two = nil)
@@ -51,8 +51,8 @@ module Plurimath
 
         def to_omml_without_math_tag
           r_tag = Utility.ox_element("r", namespace: "m")
-          update_row_tag(r_tag, parameter_one) if parameter_one
-          update_row_tag(r_tag, parameter_two) if parameter_two
+          Utility.update_nodes(r_tag, [parameter_one.insert_t_tag]) if parameter_one
+          Utility.update_nodes(r_tag, [parameter_two.insert_t_tag]) if parameter_two
           [r_tag]
         end
 
@@ -62,38 +62,16 @@ module Plurimath
 
         protected
 
-        def update_row_tag(tag, field)
-          first_value = field.to_omml_without_math_tag
-          first_value = if first_value.is_a?(String)
-                          Utility.ox_element("t", namespace: "m") << first_value
-                        end
-          Utility.update_nodes(
-            tag,
-            first_value.is_a?(Array) ? first_value : [first_value],
-          )
-        end
-
         def latex_wrapped(field)
-          if validate_function_formula(field)
+          if field.validate_function_formula
             "{ \\left ( #{field.to_latex} \\right ) }"
           else
             "{#{field.to_latex}}"
           end
         end
 
-        def validate_function_formula(field)
-          unary_classes = (Utility::UNARY_CLASSES + ["obrace", "ubrace", "hat"])
-          if field.is_a?(Formula)
-            !(field.value.any?(Left) || field.value.any?(Right))
-          elsif unary_classes.include?(field.class_name)
-            false
-          elsif field.class.name.include?("Function") || field.is_a?(FontStyle)
-            !field.is_a?(Text)
-          end
-        end
-
         def mathml_wrapped(field)
-          if validate_function_formula(field)
+          if field.validate_function_formula
             mrow_tag = Utility.ox_element("mrow")
             open_paren = (Utility.ox_element("mo") << "(")
             close_paren = (Utility.ox_element("mo") << ")")
@@ -117,7 +95,7 @@ module Plurimath
         end
 
         def asciimath_base_value(field)
-          if validate_function_formula(field)
+          if field.validate_function_formula
             "(#{field.to_asciimath})"
           else
             field.to_asciimath
@@ -125,7 +103,7 @@ module Plurimath
         end
 
         def latex_base_value(field)
-          if validate_function_formula(field)
+          if field.validate_function_formula
             "{ \\left ( #{field.to_latex} \\right ) }"
           else
             field.to_latex
@@ -140,20 +118,6 @@ module Plurimath
           r_tag = Utility.ox_element("r", namespace: "m")
           r_tag << (Utility.ox_element("t", namespace: "m") << "&#8203;")
           wrapper_tag << r_tag
-        end
-
-        def insert_t_tag(parameter)
-          parameter_value = parameter&.to_omml_without_math_tag
-          r_tag = Utility.ox_element("r", namespace: "m")
-          if parameter.is_a?(Symbol)
-            r_tag << (Utility.ox_element("t", namespace: "m") << parameter_value)
-            [r_tag]
-          elsif parameter.is_a?(Number)
-            Utility.update_nodes(r_tag, parameter_value)
-            [r_tag]
-          else
-            Array(parameter_value)
-          end
         end
       end
     end

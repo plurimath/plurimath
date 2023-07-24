@@ -33,6 +33,16 @@ module Plurimath
           [text]
         end
 
+        def insert_t_tag
+          r_tag = Utility.ox_element("r", namespace: "m")
+          Utility.update_nodes(r_tag, to_omml_without_math_tag)
+          [r_tag]
+        end
+
+        def validate_function_formula
+          false
+        end
+
         protected
 
         def symbol_value(unicode)
