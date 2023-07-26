@@ -27,6 +27,10 @@ module Plurimath
           second_value = parameter_two&.to_latex
           "{\\#{class_name}{#{first_value}} #{second_value}}"
         end
+
+        def to_omml_without_math_tag
+          Array(parameter_two.insert_t_tag)
+        end
       end
     end
   end

@@ -85,6 +85,10 @@ module Plurimath
           r_tag << (Utility.ox_element("t", namespace: "m") << "&#8203;")
           wrapper_tag << r_tag
         end
+
+        def all_values_exist?
+          !(parameter_one.nil? || parameter_two.nil?)
+        end
       end
     end
   end

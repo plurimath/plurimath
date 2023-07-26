@@ -1656,11 +1656,12 @@ module ExpectedValues
     ]),
   ])
   EX_132 = Plurimath::Math::Formula.new([
-    Plurimath::Math::Function::Ln.new(
-      Plurimath::Math::Formula.new([
-        Plurimath::Math::Function::Text.new("x"),
-      ]),
-    ),
+    Plurimath::Math::Formula.new([
+      Plurimath::Math::Function::Text.new("ln"),
+    ]),
+    Plurimath::Math::Formula.new([
+      Plurimath::Math::Function::Text.new("x"),
+    ]),
   ])
   EX_133 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Underset.new(

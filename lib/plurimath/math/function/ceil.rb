@@ -19,6 +19,13 @@ module Plurimath
             first_value << right_value,
           )
         end
+
+        def to_omml_without_math_tag
+          lceil = Symbol.new("⌈")
+          rceil = Symbol.new("⌉")
+          fenced = Fenced.new(lceil, Array(parameter_one), rceil)
+          Array(fenced.to_omml_without_math_tag)
+        end
       end
     end
   end

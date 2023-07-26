@@ -21,6 +21,14 @@ module Plurimath
             ],
           )
         end
+
+        def to_omml_without_math_tag
+          [
+            r_element("⌊"),
+            omml_value,
+            r_element("⌋"),
+          ]
+        end
       end
     end
   end

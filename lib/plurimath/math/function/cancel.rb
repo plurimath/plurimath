@@ -14,6 +14,10 @@ module Plurimath
           first_value = parameter_one&.to_mathml_without_math_tag
           Utility.update_nodes(cancel_tag, [first_value])
         end
+
+        def to_omml_without_math_tag
+          omml_value
+        end
       end
     end
   end

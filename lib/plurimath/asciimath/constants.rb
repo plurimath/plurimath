@@ -312,11 +312,11 @@ module Plurimath
       ].freeze
       TERNARY_CLASSES = %w[
         prod
+        oint
         sum
         int
       ].freeze
       SUB_SUP_CLASSES = %w[
-        oint
         lim
         log
       ].freeze

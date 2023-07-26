@@ -129,6 +129,12 @@ module Plurimath
         def all_values_exist?
           !(parameter_one.nil? && parameter_two.nil? && parameter_three.nil?)
         end
+
+        def validate_mathml_tag(parameter)
+          return Array(Utility.ox_element("mrow")) unless parameter
+
+          Array(parameter.to_mathml_without_math_tag)
+        end
       end
     end
   end

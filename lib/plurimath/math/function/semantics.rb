@@ -23,6 +23,10 @@ module Plurimath
           parameter_one&.to_asciimath
         end
 
+        def to_omml_without_math_tag
+          Array(parameter_one.insert_t_tag)
+        end
+
         protected
 
         def other_tags(array)

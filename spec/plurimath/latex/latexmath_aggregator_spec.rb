@@ -1406,7 +1406,7 @@ RSpec.describe Plurimath::Latex::Parser do
       it "returns formula" do
         expected_value = Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Limits.new(
-            Plurimath::Math::Symbol.new("&#x222b;"),
+            Plurimath::Math::Function::Int.new,
             Plurimath::Math::Number.new("0"),
             Plurimath::Math::Symbol.new("&#x3c0;")
           )
