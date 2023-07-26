@@ -40,9 +40,11 @@ module Plurimath
         end
 
         def to_omml_without_math_tag
+          return r_element("lim", rpr_tag: false) unless all_values_exist?
+
           lim = Symbol.new("lim")
           overset = Overset.new(lim, parameter_two)
-          return overset unless parameter_one
+          return overset.to_omml_without_math_tag unless parameter_one
 
           Underset.new(overset, parameter_one)&.to_omml_without_math_tag
         end

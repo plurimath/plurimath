@@ -7,7 +7,7 @@ module Plurimath
     module Function
       class Phantom < UnaryFunction
         def to_asciimath
-          "\"#{Array.new(parameter_one&.length, ' ').join}\""
+          "#{Array.new(parameter_one&.length, '\ ').join}"
         end
 
         def to_html
@@ -15,12 +15,15 @@ module Plurimath
         end
 
         def to_latex
-          "<i>#{Array.new(parameter_one&.length, '\\ ').join}</i>"
+          Array.new(parameter_one&.length, '\\ ').join
         end
 
         def to_mathml_without_math_tag
-          mi_tag_value = Array.new(parameter_one&.length, "&nbsp;&nbsp;").join
-          Utility.ox_element("mi") << mi_tag_value
+          phantom = Utility.ox_element("mphantom")
+          Utility.update_nodes(
+            phantom,
+            parameter_one&.map(&:to_mathml_without_math_tag),
+          )
         end
       end
     end

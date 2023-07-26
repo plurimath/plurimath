@@ -220,9 +220,7 @@ RSpec.describe Plurimath::Mathml do
                 <mrow>
                   <mrow>
                     <msubsup>
-                      <msubsup>
-                        <mo>&#x222b;</mo>
-                      </msubsup>
+                      <mo>&#x222b;</mo>
                       <mrow>
                         <msub>
                           <mi>t</mi>
@@ -255,6 +253,51 @@ RSpec.describe Plurimath::Mathml do
         MATHML
         latex = "\\int_{t_{2}}^{t_{1}} f ( t ) d t"
         asciimath = 'int_(t_(2))^(t_(1)) f ( t ) d t'
+        expect(formula.to_latex).to eq(latex)
+        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_asciimath).to eq(asciimath)
+      end
+    end
+
+    context "contains Mathml phantom tag's example" do
+      let(:string)  do
+        <<~MATHML
+          <math>
+             <mrow>
+                <mi> x </mi>
+                <mphantom>
+                   <mo> + </mo>
+                </mphantom>
+                <mphantom>
+                   <mi> y </mi>
+                </mphantom>
+                <mo> + </mo>
+                <mi> z </mi>
+             </mrow>
+          </math>
+        MATHML
+      end
+
+      it 'returns Mathml string' do
+        mathml = <<~MATHML
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
+              <mrow>
+                 <mi> x </mi>
+                 <mphantom>
+                    <mo> + </mo>
+                 </mphantom>
+                 <mphantom>
+                    <mi> y </mi>
+                 </mphantom>
+                 <mo> + </mo>
+                 <mi> z </mi>
+              </mrow>
+            </mstyle>
+          </math>
+        MATHML
+        latex = " x  \\  \\   +   z "
+        asciimath = ' x  \  \  +  z '
         expect(formula.to_latex).to eq(latex)
         expect(formula.to_mathml).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eq(asciimath)

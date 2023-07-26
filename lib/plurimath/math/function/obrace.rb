@@ -22,12 +22,44 @@ module Plurimath
           end
         end
 
-        def tag_name
-          "underover"
-        end
-
         def validate_function_formula
           false
+        end
+
+        def to_omml_without_math_tag
+          groupchr = Utility.ox_element("groupChr", namespace: "m")
+          Utility.update_nodes(
+            groupchr,
+            [
+              group_chr_pr,
+              omml_parameter(parameter_one, tag_name: "e"),
+            ],
+          )
+          [groupchr]
+        end
+
+        protected
+
+        def group_chr_pr
+          groupchrpr = Utility.ox_element("groupChrPr", namespace: "m")
+          vert_jc = Utility.ox_element("vertJc", namespace: "m", attributes: { "m:val": "bot" })
+          chr = Utility.ox_element("chr", namespace: "m", attributes: { "m:val": "⏞" })
+          pos = Utility.ox_element("pos", namespace: "m", attributes: { "m:val": "top" })
+          Utility.update_nodes(
+            groupchrpr,
+            [
+              chr,
+              pos,
+              vert_jc,
+            ],
+          )
+        end
+
+        def e_element
+          e_tag = Utility.ox_element("e", namespace: "m")
+          return empty_tag(e_tag) unless parameter_one
+
+          Utility.update_nodes(e_tag, omml_value)
         end
       end
 

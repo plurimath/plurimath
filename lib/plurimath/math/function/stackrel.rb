@@ -27,6 +27,21 @@ module Plurimath
           "#{first_value}#{second_value}"
         end
 
+        def to_omml_without_math_tag
+          limupp   = Utility.ox_element("limUpp", namespace: "m")
+          limupppr = Utility.ox_element("limUppPr", namespace: "m")
+          limupppr << Utility.pr_element("ctrl", true, namespace: "m")
+          Utility.update_nodes(
+            limupp,
+            [
+              limupppr,
+              omml_parameter(parameter_two, tag_name: "e"),
+              omml_parameter(parameter_one, tag_name: "lim"),
+            ],
+          )
+          [limupp]
+        end
+
         protected
 
         def wrapped(field)

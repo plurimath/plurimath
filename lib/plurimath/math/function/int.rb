@@ -13,22 +13,22 @@ module Plurimath
         end
 
         def to_latex
-          first_value = "_#{latex_wrapped(parameter_one)}" if parameter_one
-          second_value = "^#{latex_wrapped(parameter_two)}" if parameter_two
+          first_value = "_{#{parameter_one.to_latex}}" if parameter_one
+          second_value = "^{#{parameter_two.to_latex}}" if parameter_two
           "\\#{class_name}#{first_value}#{second_value} #{parameter_three&.to_latex}".strip
         end
 
         def to_mathml_without_math_tag
+          base_element = (Utility.ox_element("mo") << invert_unicode_symbols.to_s)
+          return base_element unless all_values_exist?
+
           msubsup_tag = Utility.ox_element("msubsup")
-          mo_tag = Utility.ox_element("mo") << invert_unicode_symbols.to_s
-          first_value = parameter_one&.to_mathml_without_math_tag if parameter_one
-          second_value = parameter_two&.to_mathml_without_math_tag if parameter_two
           Utility.update_nodes(
             msubsup_tag,
             [
-              mo_tag,
-              first_value,
-              second_value,
+              base_element,
+              validate_mathml_tag(parameter_one),
+              validate_mathml_tag(parameter_two),
             ],
           )
           return msubsup_tag if parameter_three.nil?

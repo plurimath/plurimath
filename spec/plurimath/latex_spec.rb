@@ -2203,26 +2203,32 @@ RSpec.describe Plurimath::Latex do
                 <mi>t</mi>
               </msup>
               <mo>&#x3a;</mo>
-              <msub>
-                <mo>&#x222b;</mo>
-                <mtext>surface</mtext>
-              </msub>
-              <mo>&#x3a;</mo>
-              <msub>
-                <mo>&#x222b;</mo>
-                <mrow>
-                  <mi>t</mi>
-                  <mi>h</mi>
-                  <mi>i</mi>
-                  <mi>c</mi>
-                  <mi>k</mi>
-                  <mi>n</mi>
-                  <mi>e</mi>
-                  <mi>s</mi>
-                  <mi>s</mi>
-                </mrow>
-              </msub>
-              <mo>&#x3a;</mo>
+              <mrow>
+                <msubsup>
+                  <mo>&#x222b;</mo>
+                  <mtext>surface</mtext>
+                  <mrow/>
+                </msubsup>
+                <mo>&#x3a;</mo>
+              </mrow>
+              <mrow>
+                <msubsup>
+                  <mo>&#x222b;</mo>
+                  <mrow>
+                    <mi>t</mi>
+                    <mi>h</mi>
+                    <mi>i</mi>
+                    <mi>c</mi>
+                    <mi>k</mi>
+                    <mi>n</mi>
+                    <mi>e</mi>
+                    <mi>s</mi>
+                    <mi>s</mi>
+                  </mrow>
+                  <mrow/>
+                </msubsup>
+                <mo>&#x3a;</mo>
+              </mrow>
               <msup>
                 <mi>B</mi>
                 <mi>t</mi>

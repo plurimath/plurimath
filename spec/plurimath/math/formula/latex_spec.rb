@@ -1765,7 +1765,7 @@ RSpec.describe Plurimath::Math::Formula do
             Plurimath::Math::Symbol.new("z"),
           ),
           Plurimath::Math::Symbol.new("="),
-          Plurimath::Math::Symbol.new("&#x222b;"),
+          Plurimath::Math::Function::Int.new,
           Plurimath::Math::Function::Vec.new(
             Plurimath::Math::Symbol.new("f")
           ),
@@ -1820,7 +1820,7 @@ RSpec.describe Plurimath::Math::Formula do
             Plurimath::Math::Symbol.new("z"),
           ),
           Plurimath::Math::Symbol.new("="),
-          Plurimath::Math::Symbol.new("&#x222b;"),
+          Plurimath::Math::Function::Int.new,
           Plurimath::Math::Formula.new([
             Plurimath::Math::Function::Vec.new(
               Plurimath::Math::Symbol.new("r"),
@@ -1954,7 +1954,7 @@ RSpec.describe Plurimath::Math::Formula do
             Plurimath::Math::Symbol.new("&#x3b6;"),
           ),
           Plurimath::Math::Symbol.new("="),
-          Plurimath::Math::Symbol.new("&#x222b;"),
+          Plurimath::Math::Function::Int.new,
           Plurimath::Math::Formula.new([
             Plurimath::Math::Function::Vec.new(
               Plurimath::Math::Symbol.new("r")
@@ -8115,11 +8115,11 @@ RSpec.describe Plurimath::Math::Formula do
             Plurimath::Math::Symbol.new("t")
           ),
           Plurimath::Math::Symbol.new("&#x3a;"),
-          Plurimath::Math::Function::Base.new(
-            Plurimath::Math::Symbol.new("&#x222b;"),
-            Plurimath::Math::Symbol.new("surface")
+          Plurimath::Math::Function::Int.new(
+            Plurimath::Math::Symbol.new("surface"),
+            nil,
+            Plurimath::Math::Symbol.new("&#x3a;"),
           ),
-          Plurimath::Math::Symbol.new("&#x3a;"),
           Plurimath::Math::Function::Power.new(
             Plurimath::Math::Formula.new([
               Plurimath::Math::Symbol.new("B"),
@@ -8203,16 +8203,16 @@ RSpec.describe Plurimath::Math::Formula do
             Plurimath::Math::Symbol.new("t")
           ),
           Plurimath::Math::Symbol.new("&#x3a;"),
-          Plurimath::Math::Function::Base.new(
-            Plurimath::Math::Symbol.new("&#x222b;"),
-            Plurimath::Math::Symbol.new("surface")
+          Plurimath::Math::Function::Int.new(
+            Plurimath::Math::Symbol.new("surface"),
+            nil,
+            Plurimath::Math::Symbol.new("&#x3a;"),
           ),
-          Plurimath::Math::Symbol.new("&#x3a;"),
-          Plurimath::Math::Function::Base.new(
-            Plurimath::Math::Symbol.new("&#x222b;"),
-            Plurimath::Math::Symbol.new("thickness")
+          Plurimath::Math::Function::Int.new(
+            Plurimath::Math::Symbol.new("thickness"),
+            nil,
+            Plurimath::Math::Symbol.new("&#x3a;"),
           ),
-          Plurimath::Math::Symbol.new("&#x3a;"),
           Plurimath::Math::Function::Power.new(
             Plurimath::Math::Symbol.new("B"),
             Plurimath::Math::Symbol.new("t")

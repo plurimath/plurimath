@@ -38,6 +38,16 @@ module Plurimath
       def validate_function_formula
         true
       end
+
+      def r_element(string, rpr_tag: true)
+        r_tag = Utility.ox_element("r", namespace: "m")
+        if rpr_tag
+          sty_tag = Utility.ox_element("sty", namespace: "m", attributes: { "m:val": "p" })
+          r_tag << (Utility.ox_element("rPr", namespace: "m") << sty_tag)
+        end
+        r_tag << (Utility.ox_element("t", namespace: "m") << string)
+        Array(r_tag)
+      end
     end
   end
 end

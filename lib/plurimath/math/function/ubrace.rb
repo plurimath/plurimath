@@ -29,6 +29,22 @@ module Plurimath
         def validate_function_formula
           false
         end
+
+        def to_omml_without_math_tag
+          limlow   = Utility.ox_element("limLow", namespace: "m")
+          limlowpr = Utility.ox_element("limLowPr", namespace: "m")
+          limlowpr << Utility.pr_element("ctrl", true, namespace: "m")
+          lim = Utility.ox_element("lim", namespace: "m")
+          Utility.update_nodes(
+            limlow,
+            [
+              limlowpr,
+              omml_parameter(parameter_one, tag_name: "e"),
+              Utility.update_nodes(lim, r_element("⏟")),
+            ],
+          )
+          [limlow]
+        end
       end
 
       Underbrace = Ubrace
