@@ -74,10 +74,6 @@ module Plurimath
           [func]
         end
 
-        def class_name
-          self.class.name.split("::").last.downcase
-        end
-
         protected
 
         def asciimath_value

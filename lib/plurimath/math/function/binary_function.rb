@@ -56,10 +56,6 @@ module Plurimath
           [r_tag]
         end
 
-        def class_name
-          self.class.name.split("::").last.downcase
-        end
-
         protected
 
         def latex_wrapped(field)

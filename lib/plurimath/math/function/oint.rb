@@ -9,7 +9,7 @@ module Plurimath
         def to_asciimath
           first_value = "_#{wrapped(parameter_one)}" if parameter_one
           second_value = "^#{wrapped(parameter_two)}" if parameter_two
-          "oint#{first_value}#{second_value}"
+          "oint#{first_value}#{second_value} #{parameter_three&.to_asciimath}".strip
         end
 
         def to_latex
@@ -19,8 +19,10 @@ module Plurimath
         end
 
         def to_mathml_without_math_tag
-          msubsup_tag = Utility.ox_element("msubsup")
           mo_tag = Utility.ox_element("mo") << invert_unicode_symbols.to_s
+          return mo_tag unless all_values_exist?
+
+          msubsup_tag = Utility.ox_element("msubsup")
           first_value = parameter_one&.to_mathml_without_math_tag if parameter_one
           second_value = parameter_two&.to_mathml_without_math_tag if parameter_two
           Utility.update_nodes(
@@ -49,9 +51,9 @@ module Plurimath
               nary,
               [
                 narypr("∮", function_type: "subSup"),
-                omml_parameter(parameter_two, tag_name: "sub"),
-                omml_parameter(parameter_three, tag_name: "sup"),
-                omml_parameter(parameter_one, tag_name: "e"),
+                omml_parameter(parameter_one, tag_name: "sub"),
+                omml_parameter(parameter_two, tag_name: "sup"),
+                omml_parameter(parameter_three, tag_name: "e"),
               ],
             )
             [nary]

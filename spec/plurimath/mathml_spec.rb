@@ -303,6 +303,88 @@ RSpec.describe Plurimath::Mathml do
         expect(formula.to_asciimath).to eq(asciimath)
       end
     end
+
+    context "contains menclose tags in Mathml" do
+      let(:string)  do
+        <<~MATHML
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
+              <menclose notation="updiagonalstrike">
+                <msubsup>
+                  <mi>a</mi>
+                  <mi>b</mi>
+                  <mi>c</mi>
+                </msubsup>
+              </menclose>
+            </mstyle>
+          </math>
+        MATHML
+      end
+
+      it 'returns Mathml string' do
+        mathml = <<~MATHML
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+              <mstyle displaystyle="true">
+                <menclose notation="updiagonalstrike">
+                  <msubsup>
+                    <mi>a</mi>
+                    <mi>b</mi>
+                    <mi>c</mi>
+                  </msubsup>
+                </menclose>
+              </mstyle>
+            </math>
+        MATHML
+        latex = "a_{b}^{c}"
+        asciimath = 'a_(b)^(c)'
+        expect(formula.to_latex).to eq(latex)
+        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_asciimath).to eq(asciimath)
+      end
+    end
+
+    context "contains msgroup tags in Mathml" do
+      let(:string)  do
+        <<~MATHML
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
+              <msgroup>
+                <munderover>
+                  <mn>100</mn>
+                  <mi>&#x3b1;</mi>
+                  <mrow>
+                    <mi>&#x3b2;</mi>
+                  </mrow>
+                </munderover>
+              </msgroup>
+            </mstyle>
+          </math>
+        MATHML
+      end
+
+      it 'returns Mathml string' do
+        mathml = <<~MATHML
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
+              <msgroup>
+                <munderover>
+                  <mn>100</mn>
+                  <mi>&#x3b1;</mi>
+                  <mrow>
+                    <mi>&#x3b2;</mi>
+                  </mrow>
+                </munderover>
+              </msgroup>
+            </mstyle>
+          </math>
+        MATHML
+        latex = "100_{\\alpha}^{\\beta}"
+        asciimath = '100_(alpha)^(beta)'
+        expect(formula.to_latex).to eq(latex)
+        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_asciimath).to eq(asciimath)
+      end
+    end
   end
 
   describe ".to_omml" do
@@ -487,7 +569,7 @@ RSpec.describe Plurimath::Mathml do
       end
     end
 
-    context "contains one value in sub tag in Mathml" do
+    context "contains multiple tags in Mathml" do
       let(:string)  do
         <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
@@ -645,6 +727,114 @@ RSpec.describe Plurimath::Mathml do
                   </m:r>
                 </m:lim>
               </m:limLow>
+            </m:oMath>
+          </m:oMathPara>
+        OMML
+      end
+
+      it 'returns Mathml string' do
+        expect(formula).to eq(expected_value)
+      end
+    end
+
+    context "contains menclose tags in Mathml" do
+      let(:string)  do
+        <<~MATHML
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
+              <menclose notation="updiagonalstrike">
+                <msubsup>
+                  <mi>a</mi>
+                  <mi>b</mi>
+                  <mi>c</mi>
+                </msubsup>
+              </menclose>
+            </mstyle>
+          </math>
+        MATHML
+      end
+
+      let(:expected_value) do
+        <<~OMML
+          <m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape">
+            <m:oMath>
+              <m:borderBox>
+                <m:borderBoxPr>
+                  <m:ctrlPr>
+                    <w:rPr>
+                      <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
+                      <w:i/>
+                    </w:rPr>
+                  </m:ctrlPr>
+                </m:borderBoxPr>
+                <m:e>
+                  <m:sSubSup>
+                    <m:sSubSupPr>
+                      <m:ctrlPr>
+                        <w:rPr>
+                          <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
+                          <w:i/>
+                        </w:rPr>
+                      </m:ctrlPr>
+                    </m:sSubSupPr>
+                    <m:e>
+                      <m:r>
+                        <m:t>a</m:t>
+                      </m:r>
+                    </m:e>
+                    <m:sub>
+                      <m:r>
+                        <m:t>b</m:t>
+                      </m:r>
+                    </m:sub>
+                    <m:sup>
+                      <m:r>
+                        <m:t>c</m:t>
+                      </m:r>
+                    </m:sup>
+                  </m:sSubSup>
+                </m:e>
+              </m:borderBox>
+            </m:oMath>
+          </m:oMathPara>
+        OMML
+      end
+
+      it 'returns Mathml string' do
+        expect(formula).to eq(expected_value)
+      end
+    end
+
+    context "contains scarries, longdiv, msline and scarry tags in Mathml" do
+      let(:string)  do
+        <<~MATHML
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
+              <mscarries crossout='updiagonalstrike'>
+                <mlongdiv longdivstyle="lefttop">
+                  <mn>2</mn>
+                  <msline length="2"/>
+                  <mn>12</mn>
+                </mlongdiv>
+                <mscarry crossout='none'>
+                  <none/>
+                </mscarry>
+              </mscarries>
+            </mstyle>
+          </math>
+        MATHML
+      end
+
+      let(:expected_value) do
+        <<~OMML
+          <m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape">
+            <m:oMath>
+              <m:r>
+                <m:t>2</m:t>
+              </m:r>
+              <m:r>
+                <m:t>12</m:t>
+              </m:r>
             </m:oMath>
           </m:oMathPara>
         OMML
