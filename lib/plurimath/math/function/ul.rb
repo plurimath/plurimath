@@ -37,6 +37,8 @@ module Plurimath
           "underline"
         end
       end
+
+      Underline = Ul
     end
   end
 end

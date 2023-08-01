@@ -51,10 +51,6 @@ module Plurimath
           "#{first_value}#{second_value}#{third_value}"
         end
 
-        def class_name
-          self.class.name.split("::").last.downcase
-        end
-
         protected
 
         def latex_wrapped(field)

@@ -27,7 +27,7 @@ module Plurimath
                 omml_parameter(parameter_one, tag_name: "mr"),
                 omml_parameter(parameter_two, tag_name: "mr"),
               ],
-            )
+            ),
           )
         end
 
@@ -62,10 +62,6 @@ module Plurimath
           mc << Utility.update_nodes(mcpr, [mcjc, mcount])
           mcs << mc
           Utility.update_nodes(mm, [mpr])
-        end
-
-        def mr_tag(field)
-          omml_parameter(field, tag_name: "mr")
         end
       end
     end

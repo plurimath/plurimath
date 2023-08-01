@@ -54,13 +54,6 @@ module Plurimath
             ],
           )
         end
-
-        def e_element
-          e_tag = Utility.ox_element("e", namespace: "m")
-          return empty_tag(e_tag) unless parameter_one
-
-          Utility.update_nodes(e_tag, omml_value)
-        end
       end
 
       Overbrace = Obrace
