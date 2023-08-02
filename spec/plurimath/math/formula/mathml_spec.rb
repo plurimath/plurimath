@@ -2,7 +2,8 @@ require "./spec/spec_helper"
 
 RSpec.describe Plurimath::Math::Formula do
   describe ".to_mathml" do
-    subject(:formula) { exp.to_mathml }
+    subject(:formula) { exp.to_mathml(display_style: display_style) }
+    let(:display_style) { true }
 
     context "contains mathml string of sin formula" do
       let(:exp) {
@@ -877,11 +878,12 @@ RSpec.describe Plurimath::Math::Formula do
           Plurimath::Math::Number.new("1")
         ])
       }
+      let(:display_style) { false }
       it "returns string of bold text" do
         expected_value =
         <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
-            <mstyle displaystyle="true">
+            <mstyle displaystyle="false">
               <mi>n</mi>
               <mo>&lt;</mo>
               <mn>1</mn>

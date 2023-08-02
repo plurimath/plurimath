@@ -21,10 +21,12 @@ module Plurimath
       end
 
       def parse
-        ox_nodes = Ox.load(text, strip_namespace: true).nodes
-        nodes = parse_nodes(ox_nodes)
+        ox_nodes = Ox.load(text, strip_namespace: true)
+        display_style = ox_nodes&.locate("*/mstyle/@displaystyle")&.first
+        nodes = parse_nodes(ox_nodes.nodes)
         Math::Formula.new(
           Transform.new.apply(nodes).flatten.compact,
+          displaystyle: display_style
         )
       end
 
