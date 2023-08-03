@@ -74,6 +74,10 @@ module Plurimath
             [r_tag]
           end
         end
+
+        def nary_attr_value
+          "∏"
+        end
       end
     end
   end

@@ -15,6 +15,10 @@ module Plurimath
         "subsup"
       end
 
+      def omml_tag_name
+        "subSup"
+      end
+
       def nary_attr_value
         ""
       end

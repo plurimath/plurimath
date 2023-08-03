@@ -126,10 +126,6 @@ module Plurimath
         [nary_tag]
       end
 
-      def class_name
-        self.class.name.split("::").last.downcase
-      end
-
       def extract_class_from_text
         return false unless (value.length < 2 && value&.first&.is_a?(Function::Text))
 
