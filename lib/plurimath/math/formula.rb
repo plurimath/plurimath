@@ -3,12 +3,13 @@
 module Plurimath
   module Math
     class Formula < Core
-      attr_accessor :value, :left_right_wrapper, :displaystyle
+      attr_accessor :value, :left_right_wrapper, :displaystyle, :input_string
 
       def initialize(
         value = [],
         left_right_wrapper = true,
-        displaystyle: true
+        displaystyle: true,
+        input_string: nil
       )
         @value = value.is_a?(Array) ? value : [value]
         left_right_wrapper = false if @value.first.is_a?(Function::Left)
@@ -23,6 +24,8 @@ module Plurimath
 
       def to_asciimath
         value.map(&:to_asciimath).join(" ")
+      rescue
+        parse_error!(:asciimath)
       end
 
       def to_mathml(display_style: displaystyle)
@@ -36,6 +39,8 @@ module Plurimath
         Utility.update_nodes(style, mathml_content)
         Utility.update_nodes(math, [style])
         Ox.dump(math, indent: 2).gsub("&amp;", "&")
+      rescue
+        parse_error!(:mathml)
       end
 
       def to_mathml_without_math_tag
@@ -53,10 +58,14 @@ module Plurimath
 
       def to_latex
         value&.map(&:to_latex)&.join(" ")
+      rescue
+        parse_error!(:latex)
       end
 
       def to_html
         value&.map(&:to_html)&.join(" ")
+      rescue
+        parse_error!(:html)
       end
 
       def omml_math_attrs
@@ -92,6 +101,8 @@ module Plurimath
         Utility.update_nodes(math_element, omml_content)
         Utility.update_nodes(para_element, Array(math_element))
         Ox.dump(para_element, indent: 2).gsub("&amp;", "&").lstrip
+      rescue
+        parse_error!(:omml)
       end
 
       def omml_content
@@ -140,6 +151,12 @@ module Plurimath
 
       def validate_function_formula
         (value.none?(Function::Left) || value.none?(Function::Right))
+      end
+
+      protected
+
+      def parse_error!(type)
+        Math.parse_error!(input_string, type)
       end
     end
   end
