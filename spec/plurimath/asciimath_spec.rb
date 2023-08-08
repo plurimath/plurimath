@@ -5010,6 +5010,166 @@ RSpec.describe Plurimath::Asciimath do
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
+
+    context "contains concatenated expressions example 1 example #96" do
+      let(:string) { 'ii(M)_(12) = 11 - sum_(j=2)^(10) 2^j ((12),(j)) ii(B)_j = ... = -2" "073' }
+
+      it 'returns parsed Asciimath to Formula' do
+        latex = '\mathit{M}_{12} = 11 - \sum_{j = 2}^{10} 2^{j} \left (\begin{matrix}12 \\\\ j\end{matrix}\right ) \mathit{B}_{j} = \ldots = - 2 \text{ } 073'
+        asciimath = 'ii(M)_(12) = 11 - sum_(j = 2)^(10) 2^(j) ([12], [j]) ii(B)_(j) = ... = - 2 " " 073'
+        mathml = <<~MATHML
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
+              <msub>
+                <mstyle mathvariant="italic">
+                  <mi>M</mi>
+                </mstyle>
+                <mn>12</mn>
+              </msub>
+              <mo>=</mo>
+              <mn>11</mn>
+              <mo>&#x2212;</mo>
+              <mrow>
+                <munderover>
+                  <mo>&#x2211;</mo>
+                  <mrow>
+                    <mi>j</mi>
+                    <mo>=</mo>
+                    <mn>2</mn>
+                  </mrow>
+                  <mn>10</mn>
+                </munderover>
+                <msup>
+                  <mn>2</mn>
+                  <mi>j</mi>
+                </msup>
+              </mrow>
+              <mrow>
+                <mrow>
+                  <mo>(</mo>
+                  <mtable>
+                    <mtr>
+                      <mtd>
+                        <mn>12</mn>
+                      </mtd>
+                    </mtr>
+                    <mtr>
+                      <mtd>
+                        <mi>j</mi>
+                      </mtd>
+                    </mtr>
+                  </mtable>
+                  <mo>)</mo>
+                </mrow>
+                <msub>
+                  <mstyle mathvariant="italic">
+                    <mi>B</mi>
+                  </mstyle>
+                  <mi>j</mi>
+                </msub>
+                <mo>=</mo>
+                <mo>&#x2026;</mo>
+                <mo>=</mo>
+                <mo>&#x2212;</mo>
+                <mn>2</mn>
+                <mtext> </mtext>
+                <mn>073</mn>
+              </mrow>
+            </mstyle>
+          </math>
+        MATHML
+        expect(formula.to_latex).to eql(latex)
+        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_asciimath).to eql(asciimath)
+      end
+    end
+
+    context "contains concatenated expressions example 2 example #97" do
+      let(:string) { 'bar(x) = 1/n sum_{i=1}^n x_i, " " s^2 = 1/{n - 1} sum_{i=1}^n (x_i - bar(x))^2,' }
+
+      it 'returns parsed Asciimath to Formula' do
+        latex = '\overline{x} = \frac{1}{n} \sum_{i = 1}^{n} x_{i} ,  \text{ } s^{2} = \frac{1}{n - 1} \sum_{i = 1}^{n} ( x_{i} - \overline{x} )^{2} ,'
+        asciimath = 'bar(x) = frac(1)(n) sum_(i = 1)^(n) x_(i) ,  " " s^(2) = frac(1)(n - 1) sum_(i = 1)^(n) (x_(i) - bar(x))^(2) ,'
+        mathml = <<~MATHML
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
+              <mover>
+                <mi>x</mi>
+                <mo>&#xaf;</mo>
+              </mover>
+              <mo>=</mo>
+              <mfrac>
+                <mn>1</mn>
+                <mi>n</mi>
+              </mfrac>
+              <mrow>
+                <munderover>
+                  <mo>&#x2211;</mo>
+                  <mrow>
+                    <mi>i</mi>
+                    <mo>=</mo>
+                    <mn>1</mn>
+                  </mrow>
+                  <mi>n</mi>
+                </munderover>
+                <msub>
+                  <mi>x</mi>
+                  <mi>i</mi>
+                </msub>
+              </mrow>
+              <mo>, </mo>
+              <mtext> </mtext>
+              <msup>
+                <mi>s</mi>
+                <mn>2</mn>
+              </msup>
+              <mo>=</mo>
+              <mfrac>
+                <mn>1</mn>
+                <mrow>
+                  <mi>n</mi>
+                  <mo>&#x2212;</mo>
+                  <mn>1</mn>
+                </mrow>
+              </mfrac>
+              <mrow>
+                <munderover>
+                  <mo>&#x2211;</mo>
+                  <mrow>
+                    <mi>i</mi>
+                    <mo>=</mo>
+                    <mn>1</mn>
+                  </mrow>
+                  <mi>n</mi>
+                </munderover>
+                <mrow>
+                  <msup>
+                    <mrow>
+                      <mo>(</mo>
+                      <msub>
+                        <mi>x</mi>
+                        <mi>i</mi>
+                      </msub>
+                      <mo>&#x2212;</mo>
+                      <mover>
+                        <mi>x</mi>
+                        <mo>&#xaf;</mo>
+                      </mover>
+                      <mo>)</mo>
+                    </mrow>
+                    <mn>2</mn>
+                  </msup>
+                  <mo>,</mo>
+                </mrow>
+              </mrow>
+            </mstyle>
+          </math>
+        MATHML
+        expect(formula.to_latex).to eql(latex)
+        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_asciimath).to eql(asciimath)
+      end
+    end
   end
 
   describe ".to_omml" do

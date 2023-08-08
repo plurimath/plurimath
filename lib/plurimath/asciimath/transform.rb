@@ -766,6 +766,18 @@ module Plurimath
         )
       end
 
+      rule(ternary_class: simple(:function),
+           base_value: simple(:base),
+           power_value: simple(:power),
+           third_value: sequence(:third)) do
+        third_value = third.is_a?(Slice) ? nil : third
+        Utility.get_class(function).new(
+          Utility.unfenced_value(base),
+          Utility.unfenced_value(power),
+          Utility.filter_values(third_value),
+        )
+      end
+
       rule(unary_class: simple(:function),
            intermediate_exp: simple(:int_exp)) do
         first_value = if Utility::UNARY_CLASSES.include?(function)
@@ -819,6 +831,11 @@ module Plurimath
       rule(ternary: simple(:ternary),
            expr: sequence(:expr)) do
         expr.insert(0, ternary)
+      end
+
+      rule(ternary: simple(:ternary),
+           left_right: simple(:left_right)) do
+        [ternary, left_right]
       end
 
       rule(unary_class: simple(:function),

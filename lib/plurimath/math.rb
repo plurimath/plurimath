@@ -42,7 +42,9 @@ module Plurimath
 
       begin
         klass = klass_from_type(type)
-        klass.new(text).to_formula
+        formula = klass.new(text).to_formula
+        formula.input_string = text
+        formula
       rescue => ee
         parse_error!(text, type.to_sym)
       end
