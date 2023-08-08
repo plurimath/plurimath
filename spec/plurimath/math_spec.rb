@@ -24,5 +24,19 @@ RSpec.describe Plurimath::Math do
         )
       end
     end
+
+    context "contains correct input string and custom invalid formula" do
+
+      it "raises error on wrong text input" do
+        formula = Plurimath::Math::Formula.new([
+          Plurimath::Math::Function::Sin.new("d"),
+        ])
+        expect{formula.to_html}.to raise_error(Plurimath::Math::ParseError)
+        expect{formula.to_omml}.to raise_error(Plurimath::Math::ParseError)
+        expect{formula.to_latex}.to raise_error(Plurimath::Math::ParseError)
+        expect{formula.to_mathml}.to raise_error(Plurimath::Math::ParseError)
+        expect{formula.to_asciimath}.to raise_error(Plurimath::Math::ParseError)
+      end
+    end
   end
 end
