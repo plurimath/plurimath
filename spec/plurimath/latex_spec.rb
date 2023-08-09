@@ -2591,6 +2591,39 @@ RSpec.describe Plurimath::Latex do
         expect(formula.to_mathml).to be_equivalent_to(mathml)
       end
     end
+
+    context "contains inf with power base values example #53" do
+      let(:string) do
+        <<~LATEX
+          \\inf_{\\oint_{\\lg{\\sigma}}}^{200}
+        LATEX
+      end
+
+      it 'returns parsed Latex to MathML' do
+        mathml = <<~MATHML
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
+              <munderover>
+                <mo>inf</mo>
+                <msub>
+                  <mo>&#x222e;</mo>
+                  <mrow>
+                    <mi>lg</mi>
+                    <mi>&#x3c3;</mi>
+                  </mrow>
+                </msub>
+                <mn>200</mn>
+              </munderover>
+            </mstyle>
+          </math>
+        MATHML
+        latex = "\\inf_{\\oint_{\\lg{\\sigma}}}^{200}"
+        asciimath = "inf(oint_(lgsigma))(200)"
+        expect(formula.to_asciimath).to eql(asciimath)
+        expect(formula.to_latex.gsub(/\s+/, "")).to eql(latex.gsub(/\s+/, ""))
+        expect(formula.to_mathml).to be_equivalent_to(mathml)
+      end
+    end
   end
 
   describe ".to_asciimath" do

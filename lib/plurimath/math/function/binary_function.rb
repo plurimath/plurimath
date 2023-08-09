@@ -83,7 +83,7 @@ module Plurimath
         end
 
         def all_values_exist?
-          !parameter_one.nil? && !parameter_two.nil?
+          !(parameter_one.nil? && parameter_two.nil?)
         end
 
         def underover

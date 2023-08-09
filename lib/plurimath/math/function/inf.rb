@@ -14,7 +14,7 @@ module Plurimath
 
         def to_mathml_without_math_tag
           first_value = Utility.ox_element("mo") << class_name
-          return first_value if all_values_exist?
+          return first_value unless all_values_exist?
 
           value_array = [first_value]
           value_array << parameter_one&.to_mathml_without_math_tag

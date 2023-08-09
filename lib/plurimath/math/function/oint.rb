@@ -22,17 +22,16 @@ module Plurimath
           mo_tag = Utility.ox_element("mo") << invert_unicode_symbols.to_s
           return mo_tag unless all_values_exist?
 
-          msubsup_tag = Utility.ox_element("msubsup")
-          first_value = parameter_one&.to_mathml_without_math_tag if parameter_one
-          second_value = parameter_two&.to_mathml_without_math_tag if parameter_two
-          Utility.update_nodes(
-            msubsup_tag,
-            [
-              mo_tag,
-              first_value,
-              second_value,
-            ],
-          )
+          value_array = [mo_tag]
+          value_array << parameter_one&.to_mathml_without_math_tag
+          value_array << parameter_two&.to_mathml_without_math_tag
+          tag_name = if parameter_one && parameter_two
+                       "subsup"
+                     else
+                       parameter_one ? "sub" : "sup"
+                     end
+          msubsup_tag = Utility.ox_element("m#{tag_name}")
+          Utility.update_nodes(msubsup_tag, value_array)
           return msubsup_tag if parameter_three.nil?
 
           Utility.update_nodes(
@@ -40,7 +39,7 @@ module Plurimath
             [
               msubsup_tag,
               parameter_three&.to_mathml_without_math_tag,
-            ].flatten.compact,
+            ].compact,
           )
         end
 
