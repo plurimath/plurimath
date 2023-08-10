@@ -77,10 +77,6 @@ module Plurimath
           end
         end
 
-        def class_name
-          self.class.name.split("::").last.downcase
-        end
-
         protected
 
         def present?(field)

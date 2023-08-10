@@ -3,7 +3,7 @@
     <m:nary>
       <m:naryPr>
         <m:chr m:val="⋁"/>
-        <m:limLoc m:val="subSup"/>
+        <m:limLoc m:val="undOvr"/>
         <m:supHide m:val="1"/>
         <m:ctrlPr>
           <w:rPr>

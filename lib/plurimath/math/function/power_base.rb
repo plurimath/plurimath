@@ -35,7 +35,7 @@ module Plurimath
           narypr << Utility.ox_element(
             "limLoc",
             namespace: "m",
-            attributes: { "m:val": "subSup" },
+            attributes: { "m:val": parameter_one.omml_tag_name },
           )
           hide_tags(narypr)
           narypr << Utility.pr_element("ctrl", true, namespace: "m")
@@ -47,6 +47,8 @@ module Plurimath
         end
 
         def to_omml_without_math_tag
+          return underover if parameter_one.omml_tag_name == "undOvr"
+
           ssubsup   = Utility.ox_element("sSubSup", namespace: "m")
           ssubsuppr = Utility.ox_element("sSubSupPr", namespace: "m")
           ssubsuppr << hide_tags(

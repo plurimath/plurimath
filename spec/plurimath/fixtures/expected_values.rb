@@ -414,7 +414,7 @@ module ExpectedValues
   ])
   EX_036 = Plurimath::Math::Formula.new([
     Plurimath::Math::Formula.new([
-      Plurimath::Math::Function::PowerBase.new(
+      Plurimath::Math::Function::Underover.new(
         Plurimath::Math::Symbol.new("&#x2211;"),
         Plurimath::Math::Formula.new([
           Plurimath::Math::Number.new("3"),
@@ -444,7 +444,7 @@ module ExpectedValues
   ])
   EX_038 = Plurimath::Math::Formula.new([
     Plurimath::Math::Formula.new([
-      Plurimath::Math::Function::PowerBase.new(
+      Plurimath::Math::Function::Underover.new(
         Plurimath::Math::Symbol.new("&#x2211;"),
         Plurimath::Math::Formula.new([
           Plurimath::Math::Number.new("1"),
@@ -458,7 +458,7 @@ module ExpectedValues
   ])
   EX_039 = Plurimath::Math::Formula.new([
     Plurimath::Math::Formula.new([
-      Plurimath::Math::Function::PowerBase.new(
+      Plurimath::Math::Function::Underover.new(
         Plurimath::Math::Symbol.new("&#x220f;"),
         Plurimath::Math::Formula.new([
           Plurimath::Math::Number.new("3"),
@@ -506,7 +506,7 @@ module ExpectedValues
   ])
   EX_042 = Plurimath::Math::Formula.new([
     Plurimath::Math::Formula.new([
-      Plurimath::Math::Function::PowerBase.new(
+      Plurimath::Math::Function::Underover.new(
         Plurimath::Math::Symbol.new("&#x22c2;"),
         Plurimath::Math::Formula.new([
           Plurimath::Math::Number.new("3"),
@@ -522,7 +522,7 @@ module ExpectedValues
   ])
   EX_043 = Plurimath::Math::Formula.new([
     Plurimath::Math::Formula.new([
-      Plurimath::Math::Function::PowerBase.new(
+      Plurimath::Math::Function::Underover.new(
         Plurimath::Math::Symbol.new("&#x22c1;"),
         Plurimath::Math::Formula.new([
           Plurimath::Math::Number.new("1"),
@@ -536,7 +536,7 @@ module ExpectedValues
   ])
   EX_044 = Plurimath::Math::Formula.new([
     Plurimath::Math::Formula.new([
-      Plurimath::Math::Function::PowerBase.new(
+      Plurimath::Math::Function::Underover.new(
         Plurimath::Math::Symbol.new("&#x22c0;"),
         Plurimath::Math::Formula.new([
           Plurimath::Math::Number.new("1"),
@@ -552,7 +552,7 @@ module ExpectedValues
   ])
   EX_045 = Plurimath::Math::Formula.new([
     Plurimath::Math::Formula.new([
-      Plurimath::Math::Function::PowerBase.new(
+      Plurimath::Math::Function::Underover.new(
         Plurimath::Math::Symbol.new("&#x2211;"),
         Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Text.new("k"),
@@ -577,7 +577,7 @@ module ExpectedValues
   ])
   EX_046 = Plurimath::Math::Formula.new([
     Plurimath::Math::Formula.new([
-      Plurimath::Math::Function::PowerBase.new(
+      Plurimath::Math::Function::Underover.new(
         Plurimath::Math::Symbol.new("&#x2211;"),
         Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Text.new("i=0"),
@@ -593,7 +593,7 @@ module ExpectedValues
   ])
   EX_047 = Plurimath::Math::Formula.new([
     Plurimath::Math::Formula.new([
-      Plurimath::Math::Function::PowerBase.new(
+      Plurimath::Math::Function::Underover.new(
         Plurimath::Math::Symbol.new("&#x2211;"),
         Plurimath::Math::Function::Table.new(
           [
@@ -631,7 +631,7 @@ module ExpectedValues
   ])
   EX_048 = Plurimath::Math::Formula.new([
     Plurimath::Math::Formula.new([
-      Plurimath::Math::Function::PowerBase.new(
+      Plurimath::Math::Function::Underover.new(
         Plurimath::Math::Symbol.new("&#x220f;"),
         Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Text.new("k=1"),
@@ -652,7 +652,7 @@ module ExpectedValues
   ])
   EX_049 = Plurimath::Math::Formula.new([
     Plurimath::Math::Formula.new([
-      Plurimath::Math::Function::PowerBase.new(
+      Plurimath::Math::Function::Underover.new(
         Plurimath::Math::Symbol.new("&#x22c3;"),
         Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Text.new("n=1"),
@@ -2585,6 +2585,37 @@ module ExpectedValues
         )
       )
     ),
+  ])
+  EX_181 = Plurimath::Math::Formula.new([
+    Plurimath::Math::Function::Underover.new(
+      Plurimath::Math::Symbol.new("&#x22c2;"),
+      Plurimath::Math::Formula.new([
+        Plurimath::Math::Symbol.new("i"),
+        Plurimath::Math::Symbol.new("&#x2208;"),
+        Plurimath::Math::Symbol.new("I")
+      ]),
+      Plurimath::Math::Symbol.new("n"),
+    )
+  ])
+  EX_182 = Plurimath::Math::Formula.new([
+    Plurimath::Math::Formula.new([
+      Plurimath::Math::Function::PowerBase.new(
+        Plurimath::Math::Function::Prod.new,
+        Plurimath::Math::Symbol.new("d"),
+        Plurimath::Math::Number.new("1"),
+      ),
+      Plurimath::Math::Symbol.new("c"),
+    ]),
+  ])
+  EX_183 = Plurimath::Math::Formula.new([
+    Plurimath::Math::Formula.new([
+      Plurimath::Math::Function::PowerBase.new(
+        Plurimath::Math::Function::Sum.new,
+        Plurimath::Math::Symbol.new("d"),
+        Plurimath::Math::Number.new("1"),
+      ),
+      Plurimath::Math::Symbol.new("c"),
+    ]),
   ])
   EXIssue158 = Plurimath::Math::Formula.new([
     Plurimath::Math::Formula.new([

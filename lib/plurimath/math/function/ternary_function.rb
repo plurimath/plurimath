@@ -131,6 +131,13 @@ module Plurimath
 
           Array(parameter.to_mathml_without_math_tag)
         end
+
+        def underover
+          overset = Overset.new(parameter_one, parameter_three)
+          return overset unless parameter_two
+
+          Underset.new(overset, parameter_two)&.to_omml_without_math_tag
+        end
       end
     end
   end

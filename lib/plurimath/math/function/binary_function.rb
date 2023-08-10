@@ -83,7 +83,17 @@ module Plurimath
         end
 
         def all_values_exist?
-          !parameter_one.nil? && !parameter_two.nil?
+          !(parameter_one.nil? && parameter_two.nil?)
+        end
+
+        def underover
+          return r_element(class_name, rpr_tag: false) unless all_values_exist?
+
+          first_value = Symbol.new(class_name)
+          overset = Overset.new(first_value, parameter_two)
+          return Array(overset.to_omml_without_math_tag) unless parameter_one
+
+          Array(Underset.new(overset, parameter_one)&.to_omml_without_math_tag)
         end
       end
     end

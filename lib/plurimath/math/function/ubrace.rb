@@ -26,6 +26,10 @@ module Plurimath
           "underover"
         end
 
+        def omml_tag_name
+          "undOvr"
+        end
+
         def validate_function_formula
           false
         end

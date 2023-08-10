@@ -72,6 +72,14 @@ module Plurimath
         ["&#x22c0;", "&#x22c1;", "&#x22c2;", "&#x22c3;"].include?(value) ? "underover" : "subsup"
       end
 
+      def omml_tag_name
+        if ["&#x22c0;", "&#x22c1;", "&#x22c2;", "&#x22c3;", "&#x22c3;", "&#x2211;", "&#x220f;"].include?(value)
+          return "undOvr"
+        end
+
+        "subSup"
+      end
+
       def nary_attr_value
         value
       end

@@ -36,10 +36,7 @@ module Plurimath
         end
 
         def to_omml_without_math_tag
-          overset = Overset.new(parameter_one, parameter_three)
-          return overset unless parameter_two
-
-          Underset.new(overset, parameter_two)&.to_omml_without_math_tag
+          underover
         end
 
         def omml_nary_tag
@@ -86,7 +83,7 @@ module Plurimath
         end
 
         def first_value(pr_element)
-          first_value = parameter_one.is_a?(Number) ? parameter_one.value : parameter_one.to_omml_without_math_tag
+          first_value = parameter_one.nary_attr_value
           first_value = Utility.html_entity_to_unicode(first_value)
           unless first_value == "∫"
             pr_element << Utility.ox_element(

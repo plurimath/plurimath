@@ -74,6 +74,14 @@ module Plurimath
             [r_tag]
           end
         end
+
+        def omml_tag_name
+          "undOvr"
+        end
+
+        def nary_attr_value
+          "∑"
+        end
       end
     end
   end

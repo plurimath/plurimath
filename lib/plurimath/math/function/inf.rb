@@ -14,7 +14,7 @@ module Plurimath
 
         def to_mathml_without_math_tag
           first_value = Utility.ox_element("mo") << class_name
-          return first_value if all_values_exist?
+          return first_value unless all_values_exist?
 
           value_array = [first_value]
           value_array << parameter_one&.to_mathml_without_math_tag
@@ -31,13 +31,7 @@ module Plurimath
         end
 
         def to_omml_without_math_tag
-          return r_element("inf", rpr_tag: false) unless all_values_exist?
-
-          inf = Symbol.new("inf")
-          overset = Overset.new(inf, parameter_two)
-          return Array(overset.to_omml_without_math_tag) unless parameter_one
-
-          Array(Underset.new(overset, parameter_one)&.to_omml_without_math_tag)
+          underover
         end
       end
     end
