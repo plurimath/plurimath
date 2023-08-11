@@ -27,15 +27,15 @@ module Plurimath
           parse_text("html") || parameter_one
         end
 
-        def to_omml_without_math_tag
+        def to_omml_without_math_tag(_display_style)
           text = Utility.ox_element("t", namespace: "m")
           text << (parse_text("omml") || parameter_one)
           [text]
         end
 
-        def insert_t_tag
+        def insert_t_tag(display_style)
           r_tag = Utility.ox_element("r", namespace: "m")
-          Utility.update_nodes(r_tag, to_omml_without_math_tag)
+          Utility.update_nodes(r_tag, to_omml_without_math_tag(display_style))
           [r_tag]
         end
 
@@ -54,7 +54,8 @@ module Plurimath
           html_value = first_value(lang).dup
           html_value&.gsub!(PARSER_REGEX) do |_text|
             last_match = Regexp.last_match
-            if ["mathml", "html"].include?(lang)
+            case lang
+            when "mathml", "html"
               symbol_value(last_match[:unicode])
             else
               last_match[:unicode]
@@ -67,7 +68,7 @@ module Plurimath
           if lang == "omml"
             entities = HTMLEntities.new
             entities.encode(
-              entities.decode(parameter_one),
+              entities.decode(parameter_one.gsub(/ /, "&nbsp;")),
               :named,
             )
           else

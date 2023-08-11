@@ -49,11 +49,15 @@ module Plurimath
           "#{first_value}#{second_value}"
         end
 
-        def to_omml_without_math_tag
+        def to_omml_without_math_tag(display_style)
           r_tag = Utility.ox_element("r", namespace: "m")
-          Utility.update_nodes(r_tag, [parameter_one.insert_t_tag]) if parameter_one
-          Utility.update_nodes(r_tag, [parameter_two.insert_t_tag]) if parameter_two
+          Utility.update_nodes(r_tag, [parameter_one.insert_t_tag(display_style)]) if parameter_one
+          Utility.update_nodes(r_tag, [parameter_two.insert_t_tag(display_style)]) if parameter_two
           [r_tag]
+        end
+
+        def all_values_exist?
+          !(parameter_one.nil? && parameter_two.nil?)
         end
 
         protected
@@ -82,18 +86,20 @@ module Plurimath
           wrapper_tag << r_tag
         end
 
-        def all_values_exist?
-          !(parameter_one.nil? && parameter_two.nil?)
-        end
-
-        def underover
+        def underover(display_style)
           return r_element(class_name, rpr_tag: false) unless all_values_exist?
 
           first_value = Symbol.new(class_name)
-          overset = Overset.new(first_value, parameter_two)
-          return Array(overset.to_omml_without_math_tag) unless parameter_one
+          if !display_style
+            power_base = PowerBase.new(first_value, parameter_one, parameter_two)
+            return power_base.to_omml_without_math_tag(display_style)
+          end
 
-          Array(Underset.new(overset, parameter_one)&.to_omml_without_math_tag)
+          overset = Overset.new(first_value, parameter_two)
+          return Array(overset.to_omml_without_math_tag(display_style)) unless parameter_one
+
+          underset = Underset.new(overset, parameter_one)
+          Array(underset.to_omml_without_math_tag(display_style))
         end
       end
     end

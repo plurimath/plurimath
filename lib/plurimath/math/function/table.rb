@@ -69,11 +69,11 @@ module Plurimath
           "<table>#{first_value}</table>"
         end
 
-        def to_omml_without_math_tag
+        def to_omml_without_math_tag(display_style)
           if value.map { |d| d.parameter_one.length == 1 }.all?
-            single_td_table
+            single_td_table(display_style)
           else
-            fenced_table(multiple_td_table)
+            fenced_table(multiple_td_table(display_style))
           end
         end
 
@@ -160,17 +160,17 @@ module Plurimath
           matrices_hash.invert[open_paren].to_s if matric_value
         end
 
-        def single_td_table
+        def single_td_table(display_style)
           eqarr    = Utility.ox_element("eqArr", namespace: "m")
           eqarrpr  = Utility.ox_element("eqArrPr", namespace: "m")
           eqarrpr  << Utility.pr_element("ctrl", true, namespace: "m")
           eqarr    << eqarrpr
-          tr_value = value.map(&:to_omml_without_math_tag).flatten
+          tr_value = value.map { |obj| obj.to_omml_without_math_tag(display_style) }.flatten
           Utility.update_nodes(eqarr, tr_value.compact)
           [eqarr]
         end
 
-        def multiple_td_table
+        def multiple_td_table(display_style)
           count  = { "m:val": value&.first&.parameter_one&.count }
           mcjc   = { "m:val": "center" }
           mm     = Utility.ox_element("m", namespace: "m")
@@ -194,7 +194,7 @@ module Plurimath
           mcs << mc
           mpr << mcs
           mpr << ctrlpr
-          mm_value = value&.map(&:to_omml_without_math_tag)
+          mm_value = value&.map { |obj| obj.to_omml_without_math_tag(display_style) }
           Utility.update_nodes(
             mm,
             mm_value.insert(0, mpr).flatten,

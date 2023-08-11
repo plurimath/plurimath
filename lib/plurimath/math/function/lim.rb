@@ -39,8 +39,8 @@ module Plurimath
           end
         end
 
-        def to_omml_without_math_tag
-          underover
+        def to_omml_without_math_tag(display_style)
+          underover(display_style)
         end
       end
     end

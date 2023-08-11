@@ -6,6 +6,12 @@ module Plurimath
     class Parser
       attr_accessor :text
 
+      CUSTOMIZABLE_TAGS = %w[
+        eqArr
+        mr
+        r
+      ].freeze
+
       def initialize(text)
         @text = text
       end
@@ -33,9 +39,18 @@ module Plurimath
               },
             }
           else
-            organize_table_td(node) if %w[mr eqArr].include?(node.name)
+            customize_tags(node) if CUSTOMIZABLE_TAGS.include?(node.name)
             { node.name => parse_nodes(node.nodes) }
           end
+        end
+      end
+
+      def customize_tags(node)
+        case node.name
+        when "r"
+          organize_fonts(node)
+        when "mr", "eqArr"
+          organize_table_td(node)
         end
       end
 
@@ -43,6 +58,14 @@ module Plurimath
         node.locate("e/?").each do |child_node|
           child_node.name = "mtd" if child_node.name == "r"
         end
+      end
+
+      def organize_fonts(node)
+        attrs_arr = { val: [] }
+        node.locate("rPr/?").each do |child|
+          attrs_arr[:val] << child.attributes["val"]
+        end
+        node.attributes.merge! attrs_arr
       end
     end
   end

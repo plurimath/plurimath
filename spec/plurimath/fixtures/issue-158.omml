@@ -82,10 +82,10 @@
           </m:e>
           <m:e>
             <m:r>
-              <m:t>E,  &amp;</m:t>
+              <m:t>E,&nbsp;&nbsp;&amp;</m:t>
             </m:r>
             <m:r>
-              <m:t>if </m:t>
+              <m:t>if&nbsp;</m:t>
             </m:r>
             <m:sSub>
               <m:sSubPr>
@@ -219,7 +219,7 @@
                           </m:sub>
                         </m:sSub>
                         <m:r>
-                          <m:t>mod S</m:t>
+                          <m:t>mod&nbsp;S</m:t>
                         </m:r>
                       </m:num>
                       <m:den>
@@ -236,7 +236,7 @@
               </m:e>
             </m:d>
             <m:r>
-              <m:t>E,  &amp;</m:t>
+              <m:t>E,&nbsp;&nbsp;&amp;</m:t>
             </m:r>
             <m:r>
               <m:t>otherwise</m:t>

@@ -26,7 +26,7 @@ module Plurimath
           "<menclose notation=\"#{parameter_one}\">#{second_value}</menclose>"
         end
 
-        def to_omml_without_math_tag
+        def to_omml_without_math_tag(display_style)
           borderbox = Utility.ox_element("borderBox", namespace: "m")
           borderpr = Utility.ox_element("borderBoxPr", namespace: "m")
           borderpr << Utility.pr_element("ctrl", true, namespace: "m")
@@ -34,7 +34,7 @@ module Plurimath
             borderbox,
             [
               borderpr,
-              omml_parameter(parameter_two, tag_name: "e"),
+              omml_parameter(parameter_two, display_style, tag_name: "e"),
             ],
           )
           [borderbox]

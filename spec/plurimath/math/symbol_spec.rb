@@ -125,7 +125,7 @@ RSpec.describe Plurimath::Math::Symbol do
   end
 
   describe ".to_omml" do
-    subject(:formula) { described_class.new(first_value).to_omml_without_math_tag.gsub("&amp;", "&") }
+    subject(:formula) { described_class.new(first_value).to_omml_without_math_tag(true).gsub("&amp;", "&") }
 
     context "contains Symbol as value" do
       let(:first_value) { "n" }

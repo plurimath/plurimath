@@ -31,7 +31,7 @@ module Plurimath
           "#{first_value}#{second_value}"
         end
 
-        def to_omml_without_math_tag
+        def to_omml_without_math_tag(display_style)
           ssup_element  = Utility.ox_element("sSup", namespace: "m")
           suppr_element = Utility.ox_element("sSupPr", namespace: "m")
           suppr_element << Utility.pr_element("ctrl", true, namespace: "m")
@@ -39,8 +39,8 @@ module Plurimath
             ssup_element,
             [
               suppr_element,
-              omml_parameter(parameter_one, tag_name: "e"),
-              omml_parameter(parameter_two, tag_name: "sup"),
+              omml_parameter(parameter_one, display_style, tag_name: "e"),
+              omml_parameter(parameter_two, display_style, tag_name: "sup"),
             ],
           )
           [ssup_element]

@@ -51,6 +51,10 @@ module Plurimath
           "#{first_value}#{second_value}#{third_value}"
         end
 
+        def any_value_exist?
+          !(parameter_one.nil? || parameter_two.nil? || parameter_three.nil?)
+        end
+
         protected
 
         def latex_wrapped(field)
@@ -132,11 +136,11 @@ module Plurimath
           Array(parameter.to_mathml_without_math_tag)
         end
 
-        def underover
+        def underover(display_style)
           overset = Overset.new(parameter_one, parameter_three)
-          return overset unless parameter_two
+          return overset.to_omml_without_math_tag(display_style) unless parameter_two
 
-          Underset.new(overset, parameter_two)&.to_omml_without_math_tag
+          Underset.new(overset, parameter_two)&.to_omml_without_math_tag(display_style)
         end
       end
     end

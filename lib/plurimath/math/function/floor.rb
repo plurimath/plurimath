@@ -22,10 +22,10 @@ module Plurimath
           )
         end
 
-        def to_omml_without_math_tag
+        def to_omml_without_math_tag(display_style)
           [
             r_element("⌊"),
-            omml_value,
+            omml_value(display_style),
             r_element("⌋"),
           ]
         end

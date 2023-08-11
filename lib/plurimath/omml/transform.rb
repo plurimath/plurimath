@@ -10,10 +10,11 @@ module Plurimath
       rule(e: sequence(:e)) { e.flatten.compact }
 
       rule(val: simple(:val))    { val }
+      rule(scr: simple(:scr))    { scr }
+      rule(sty: simple(:sty))    { sty }
       rule(dPr: subtree(:dpr))   { dpr }
       rule(num: subtree(:num))   { num }
       rule(den: subtree(:den))   { den }
-      rule(rPr: subtree(:rPr))   { nil }
       rule(fPr: subtree(:fPr))   { nil }
       rule(mpr: subtree(:mpr))   { nil }
       rule(mPr: subtree(:mPr))   { nil }
@@ -66,12 +67,17 @@ module Plurimath
       end
 
       rule(r: subtree(:r)) do
-        if r.flatten.compact.empty?
+        flatten_row = r&.flatten&.compact
+        if flatten_row.empty?
           nil
-        else
-          Math::Formula.new(
-            r.flatten.compact,
+        elsif flatten_row.length > 1 && !flatten_row.first.is_a?(Math::Core)
+          font = flatten_row.shift
+          font.new(
+            Utility.filter_values(flatten_row),
+            Utility::OMML_FONTS.invert[font].to_s,
           )
+        else
+          Utility.filter_values(flatten_row)
         end
       end
 
@@ -85,15 +91,15 @@ module Plurimath
         if t.empty?
           Math::Function::Text.new
         else
-          t&.compact&.empty? ? [nil] : Utility.text_classes(t)
+          t&.compact&.empty? ? [nil] : Utility.mathml_unary_classes(t, omml: true)
         end
       end
 
       rule(d: subtree(:data)) do
-        fenced       = data.flatten.compact
-        open_paren   = fenced.shift if fenced.first.class_name == "symbol"
-        close_paren  = fenced.shift if fenced.first.class_name == "symbol"
-        fenced_value = fenced
+        fenced       = data.flatten
+        open_paren   = fenced.shift if fenced&.first&.class_name == "symbol"
+        close_paren  = fenced.shift if fenced&.first&.class_name == "symbol"
+        fenced_value = fenced.compact
         Math::Function::Fenced.new(
           open_paren,
           fenced_value,
@@ -111,6 +117,12 @@ module Plurimath
         Math::Function::Tr.new(row)
       end
 
+      rule(rPr: subtree(:rpr)) do
+        if rpr.is_a?(Array)
+          Utility::OMML_FONTS[rpr.join("-").to_sym]
+        end
+      end
+
       rule(lim: sequence(:lim)) do
         if lim.any?(String)
           Utility.text_classes(lim)
@@ -122,23 +134,18 @@ module Plurimath
       rule(acc: subtree(:acc)) do
         acc_value = acc.flatten.compact
         chr = Utility.find_pos_chr(acc_value, :chr)
-        chr_value = chr ? chr[:chr] : "^"
-        Math::Function::Overset.new(
-          Math::Symbol.new(chr_value),
-          Utility.filter_values(acc.last),
-        )
+        chr_value = chr ? chr[:chr] : Math::Function::Hat.new
+        index = acc_value.index { |d| d[:chr] }
+        acc_value[index] = chr_value
+        Utility.binary_function_classes(acc_value)
+        acc_value.first.parameter_two = { accent: true }
+        acc_value.first
       end
 
       rule(func: subtree(:func)) do
-        func_name = func.flatten.compact
-        class_object = Utility.find_class_name(func_name.first)
-        if class_object
-          class_object.new(func_name.last)
-        else
-          Math::Formula.new(
-            func_name,
-          )
-        end
+        Utility.filter_values(
+          Utility.populate_function_classes(func),
+        )
       end
 
       rule(nary: subtree(:nary)) do
@@ -168,11 +175,12 @@ module Plurimath
       end
 
       rule(sSubSup: subtree(:sSubSup)) do
+        function_classes = [Math::Formula, Math::Function::FontStyle]
         subsup = sSubSup.flatten.compact
         subsup.each_with_index do |object, ind|
           subsup[ind] = Utility.mathml_unary_classes([object]) if object.is_a?(String)
         end
-        if subsup[0].is_a?(Math::Formula) && Utility.valid_class(subsup[0])
+        if Utility.valid_class(subsup[0])
           Utility.get_class(
             subsup[0].extract_class_from_text,
           ).new(
@@ -217,8 +225,8 @@ module Plurimath
         )
       end
 
-      rule(limUpp: subtree(:limUpp)) do
-        lim_values = limUpp.flatten.compact
+      rule(limUpp: subtree(:lim)) do
+        lim_values = lim.flatten.compact
         first_value = lim_values[0]
         Math::Function::Overset.new(
           first_value,
@@ -227,9 +235,13 @@ module Plurimath
       end
 
       rule(limLow: subtree(:lim)) do
+        flatten_lim = lim.flatten.compact
+        second_value = Utility.filter_values(lim[2])
+        unicode = Mathml::Constants::UNICODE_SYMBOLS.invert[second_value.class_name]
+        second_value = unicode ? Math::Symbol.new(unicode.to_s) : second_value
         Math::Function::Underset.new(
           Utility.filter_values(lim[1]),
-          Utility.filter_values(lim[2]),
+          second_value,
         )
       end
 
@@ -241,14 +253,9 @@ module Plurimath
       end
 
       rule(bar: subtree(:bar)) do
-        barpr = bar&.flatten&.compact
-        pospr = Utility.find_pos_chr(bar.first, :pos)
-        class_name = if pospr&.value?("top")
-                       Math::Function::Bar
-                     else
-                       Math::Function::Ul
-                     end
-        class_name.new(barpr.last)
+        flatten_bar = bar.flatten.compact
+        attrs = { accent: false }
+        Math::Function::Bar.new(flatten_bar.last, attrs)
       end
 
       rule(sPre: subtree(:spre)) do

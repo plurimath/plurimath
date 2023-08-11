@@ -142,7 +142,7 @@ RSpec.describe Plurimath::Math::Function::Vec do
         ])
       end
       it "returns mathml string" do
-        expect(formula).to eql("\\vec{\\sum_{&}^{\\text{so}}}")
+        expect(formula).to eql("\\vec{ \\left ( \\sum_{&}^{\\text{so}} \\right ) }")
       end
     end
   end
@@ -154,7 +154,7 @@ RSpec.describe Plurimath::Math::Function::Vec do
       let(:first_value) { Plurimath::Math::Symbol.new("n") }
 
       it "returns mathml string" do
-        expect(formula).to be_equivalent_to("<i>vec</i><i>n</i>")
+        expect(formula).to be_equivalent_to("<i>n</i>")
       end
     end
 
@@ -162,7 +162,7 @@ RSpec.describe Plurimath::Math::Function::Vec do
       let(:first_value) { Plurimath::Math::Number.new("70") }
 
       it "returns mathml string" do
-        expect(formula).to be_equivalent_to("<i>vec</i><i>70</i>")
+        expect(formula).to be_equivalent_to("<i>70</i>")
       end
     end
 
@@ -176,7 +176,7 @@ RSpec.describe Plurimath::Math::Function::Vec do
         ])
       end
       it "returns mathml string" do
-        expect(formula).to be_equivalent_to("<i>vec</i><i><i>&sum;</i><sub>&</sub><sup>so</sup></i>")
+        expect(formula).to be_equivalent_to("<i><i>&sum;</i><sub>&</sub><sup>so</sup></i>")
       end
     end
   end

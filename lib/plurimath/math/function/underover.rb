@@ -35,16 +35,21 @@ module Plurimath
           )
         end
 
-        def to_omml_without_math_tag
-          underover
+        def to_omml_without_math_tag(display_style)
+          if !display_style
+            power_base = PowerBase.new(parameter_one, parameter_two, parameter_three)
+            return power_base.to_omml_without_math_tag(display_style)
+          end
+
+          underover(display_style)
         end
 
-        def omml_nary_tag
+        def omml_nary_tag(display_style)
           pr = Utility.ox_element("naryPr", namespace: "m")
           [
             pr_element_value(pr),
-            omml_parameter(parameter_two, tag_name: "sub"),
-            omml_parameter(parameter_three, tag_name: "sup"),
+            omml_parameter(parameter_two, display_style, tag_name: "sub"),
+            omml_parameter(parameter_three, display_style, tag_name: "sup"),
           ]
         end
 

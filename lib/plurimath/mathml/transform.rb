@@ -135,23 +135,33 @@ module Plurimath
         )
       end
 
-      rule(msubsup: sequence(:msubsup)) do
-        Math::Function::PowerBase.new(
-          msubsup[0],
-          msubsup[1],
-          msubsup[2],
-        )
-      end
-
-      rule(munderover: sequence(:function)) do
-        binary_function = Plurimath::Math::Function::BinaryFunction
-        ternary_function = Plurimath::Math::Function::TernaryFunction
-        base_class = function[0]&.value&.first if function[0].is_a?(Math::Formula)
-        if base_class&.class&.ancestors&.include?(binary_function)
+      rule(msubsup: sequence(:function)) do
+        base_class = function[0].is_a?(Math::Formula) ? function[0]&.value&.first : function[0]
+        if base_class.is_a?(Math::Function::BinaryFunction)
           base_class.parameter_one = function[1]
           base_class.parameter_two = function[2]
           base_class
-        elsif base_class&.class&.ancestors&.include?(ternary_function)
+        elsif base_class.is_a?(Math::Function::TernaryFunction)
+          base_class.parameter_one = function[1]
+          base_class.parameter_two = function[2]
+          base_class.parameter_three = function[3]
+          base_class
+        else
+          Math::Function::PowerBase.new(
+            function[0],
+            function[1],
+            function[2],
+          )
+        end
+      end
+
+      rule(munderover: sequence(:function)) do
+        base_class = function[0].is_a?(Math::Formula) ? function[0]&.value&.first : function[0]
+        if base_class.is_a?(Math::Function::BinaryFunction)
+          base_class.parameter_one = function[1]
+          base_class.parameter_two = function[2]
+          base_class
+        elsif base_class.is_a?(Math::Function::TernaryFunction)
           base_class.parameter_one = function[1]
           base_class.parameter_two = function[2]
           base_class.parameter_three = function[3]
@@ -166,12 +176,15 @@ module Plurimath
       end
 
       rule(mrow: subtree(:mrow)) do
-        if mrow.any?(String)
-          mrow.each_with_index do |object, ind|
-            mrow[ind] = Utility.mathml_unary_classes([object]) if object.is_a?(String)
-          end
+        flatten_mrow = Utility.populate_function_classes(mrow)
+        if flatten_mrow.length == 1
+          flatten_mrow.first
+        else
+          Math::Formula.new(
+            flatten_mrow,
+            Utility.mrow_left_right(flatten_mrow),
+          )
         end
-        Math::Formula.new(mrow.flatten.compact)
       end
 
       rule(msrow: sequence(:msrow)) do
@@ -184,8 +197,15 @@ module Plurimath
         )
       end
 
-      rule(mover: sequence(:mover)) do
-        if ["ubrace", "obrace"].any?(mover.last.class_name)
+      rule(mover: subtree(:mover)) do
+        Utility.binary_function_classes(mover, under: true)
+        if mover&.length == 1
+          if mover.first.class_name == "underline"
+            mover.first.swap_class
+          else
+            mover.first
+          end
+        elsif Constants::CLASSES.any?(mover&.last&.class_name)
           mover.last.parameter_one = mover.shift if mover.length > 1
           mover.last
         else
@@ -202,9 +222,16 @@ module Plurimath
             munder[ind] = Utility.mathml_unary_classes([object]) if object.is_a?(String)
           end
         end
+        Utility.binary_function_classes(munder, under: true)
         if ["ubrace", "obrace"].any?(munder.last.class_name)
           munder.last.parameter_one = munder.shift if munder.length > 1
           munder.last
+        elsif munder.length == 1
+          if munder.first.class_name == "bar"
+            munder.first.swap_class
+          else
+            munder.last
+          end
         else
           Math::Function::Underset.new(
             munder[1],
@@ -308,10 +335,12 @@ module Plurimath
 
       rule(attributes: subtree(:attrs),
            value: sequence(:value)) do
-        Utility.join_attr_value(
-          attrs.is_a?(Hash) ? nil : attrs,
-          value&.flatten&.compact,
-        )
+        approved_attrs = if attrs.is_a?(Hash)
+          attrs.keys.any? { |k| ["accentunder", "accent"].include?(k.to_s) } ? attrs : nil
+        else
+          attrs
+        end
+        Utility.join_attr_value(approved_attrs, value&.flatten&.compact)
       end
     end
   end

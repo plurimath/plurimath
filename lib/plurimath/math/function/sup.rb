@@ -10,8 +10,8 @@ module Plurimath
           Utility.ox_element("mo") << "sup"
         end
 
-        def to_omml_without_math_tag
-          [r_element("sup"), omml_value]
+        def to_omml_without_math_tag(display_style)
+          [r_element("sup", rpr_tag: false), omml_value(display_style)]
         end
       end
     end

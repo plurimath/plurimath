@@ -13,7 +13,7 @@ module Plurimath
           sqrt_tag
         end
 
-        def to_omml_without_math_tag
+        def to_omml_without_math_tag(display_style)
           rad_element = Utility.ox_element("rad", namespace: "m")
           pr_element = Utility.ox_element("radPr", namespace: "m")
           pr_element << Utility.ox_element(
@@ -26,7 +26,7 @@ module Plurimath
             [
               (pr_element << Utility.pr_element("ctrl", true, namespace: "m")),
               Utility.ox_element("deg", namespace: "m"),
-              omml_parameter(parameter_one, tag_name: "e"),
+              omml_parameter(parameter_one, display_style, tag_name: "e"),
             ],
           )
           [rad_element]

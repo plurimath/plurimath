@@ -54,16 +54,16 @@ module Plurimath
           "<i>&prod;</i>#{first_value}#{second_value}"
         end
 
-        def to_omml_without_math_tag
+        def to_omml_without_math_tag(display_style)
           if all_values_exist?
             nary = Utility.ox_element("nary", namespace: "m")
             Utility.update_nodes(
               nary,
               [
                 narypr("∏"),
-                omml_parameter(parameter_one, tag_name: "sub"),
-                omml_parameter(parameter_two, tag_name: "sup"),
-                omml_parameter(parameter_three, tag_name: "e"),
+                omml_parameter(parameter_one, display_style, tag_name: "sub"),
+                omml_parameter(parameter_two, display_style, tag_name: "sup"),
+                omml_parameter(parameter_three, display_style, tag_name: "e"),
               ],
             )
             [nary]

@@ -6,7 +6,7 @@ module Plurimath
   module Math
     module Function
       class Merror < BinaryFunction
-        def to_omml_without_math_tag; end
+        def to_omml_without_math_tag(display_style); end
       end
     end
   end

@@ -15,26 +15,16 @@
         </m:r>
       </m:e>
       <m:lim>
-        <m:limLow>
-          <m:limLowPr>
-            <m:ctrlPr>
-              <w:rPr>
-                <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
-                <w:i/>
-              </w:rPr>
-            </m:ctrlPr>
-          </m:limLowPr>
+        <m:acc>
+          <m:accPr>
+            <m:chr m:val="⏞"/>
+          </m:accPr>
           <m:e>
-            <m:r>
-              <m:t>⏞</m:t>
-            </m:r>
-          </m:e>
-          <m:lim>
             <m:r>
               <m:t>e</m:t>
             </m:r>
-          </m:lim>
-        </m:limLow>
+          </m:e>
+        </m:acc>
       </m:lim>
     </m:limUpp>
   </m:oMath>

@@ -15,8 +15,8 @@ module Plurimath
           Utility.update_nodes(cancel_tag, [first_value])
         end
 
-        def to_omml_without_math_tag
-          omml_value
+        def to_omml_without_math_tag(display_style)
+          omml_value(display_style)
         end
       end
     end

@@ -38,7 +38,7 @@ module Plurimath
           "#{first_value} #{fenced_value} #{second_value}"
         end
 
-        def to_omml_without_math_tag
+        def to_omml_without_math_tag(display_style)
           d = Utility.ox_element("d", namespace: "m")
           dpr = Utility.ox_element("dPr", namespace: "m")
           first_value(dpr)
@@ -50,6 +50,7 @@ module Plurimath
               dpr,
               omml_parameter(
                 Formula.new(Array(parameter_two)),
+                display_style,
                 tag_name: "e",
               ),
             ],

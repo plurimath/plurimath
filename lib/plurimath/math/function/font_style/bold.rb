@@ -29,6 +29,10 @@ module Plurimath
               [parameter_one&.to_mathml_without_math_tag],
             )
           end
+
+          def to_omml_without_math_tag(display_style)
+            font_styles(display_style, sty: "b")
+          end
         end
       end
     end
