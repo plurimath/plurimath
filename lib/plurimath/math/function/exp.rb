@@ -10,8 +10,8 @@ module Plurimath
           false
         end
 
-        def to_omml_without_math_tag
-          [r_element("exp"), omml_value]
+        def to_omml_without_math_tag(display_style)
+          [r_element("exp", rpr_tag: false), omml_value(display_style)]
         end
       end
     end

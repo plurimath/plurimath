@@ -8,13 +8,13 @@ module Plurimath
       def initialize(
         value = [],
         left_right_wrapper = true,
-        displaystyle: true,
+        display_style: true,
         input_string: nil
       )
         @value = value.is_a?(Array) ? value : [value]
         left_right_wrapper = false if @value.first.is_a?(Function::Left)
         @left_right_wrapper = left_right_wrapper
-        @displaystyle = displaystyle
+        @displaystyle = boolean_display_style(display_style)
       end
 
       def ==(object)
@@ -33,7 +33,7 @@ module Plurimath
           xmlns: "http://www.w3.org/1998/Math/MathML",
           display: "block",
         }
-        style_attrs = { displaystyle: display_style }
+        style_attrs = { displaystyle: boolean_display_style(display_style) }
         math  = Utility.ox_element("math", attributes: math_attrs)
         style = Utility.ox_element("mstyle", attributes: style_attrs)
         Utility.update_nodes(style, mathml_content)
@@ -91,39 +91,39 @@ module Plurimath
         }
       end
 
-      def to_omml
+      def to_omml(display_style: displaystyle)
         para_element = Utility.ox_element(
           "oMathPara",
           attributes: omml_math_attrs,
           namespace: "m",
         )
         math_element = Utility.ox_element("oMath", namespace: "m")
-        Utility.update_nodes(math_element, omml_content)
-        Utility.update_nodes(para_element, Array(math_element))
+        content = omml_content(boolean_display_style(display_style))
+        para_element << Utility.update_nodes(math_element, content)
         Ox.dump(para_element, indent: 2).gsub("&amp;", "&").lstrip
       rescue
         parse_error!(:omml)
       end
 
-      def omml_content
-        value&.map(&:insert_t_tag)
+      def omml_content(display_style)
+        value&.map { |val| val.insert_t_tag(display_style) }
       end
 
-      def to_omml_without_math_tag
-        return nary_tag if nary_tag_able?
+      def to_omml_without_math_tag(display_style)
+        return nary_tag(display_style) if nary_tag_able?(display_style)
 
-        omml_content
+        omml_content(display_style)
       end
 
-      def nary_tag
-        nary_tag = Utility.ox_element("nary", namespace: "m")
+      def nary_tag(display_style)
+        nary_element = Utility.ox_element("nary", namespace: "m")
         e_tag    = Utility.ox_element("e", namespace: "m")
-        Utility.update_nodes(e_tag, value.last.insert_t_tag)
+        Utility.update_nodes(e_tag, value.last.insert_t_tag(display_style))
         Utility.update_nodes(
-          nary_tag,
-          (value.first.omml_nary_tag << e_tag),
+          nary_element,
+          (value.first.omml_nary_tag(display_style) << e_tag),
         )
-        [nary_tag]
+        [nary_element]
       end
 
       def extract_class_from_text
@@ -136,12 +136,12 @@ module Plurimath
         value.first.nary_attr_value
       end
 
-      def nary_tag_able?
+      def nary_tag_able?(display_style)
         value.length == 2 &&
           ["underover", "powerbase"].include?(value&.first&.class_name) &&
           (
-            value&.first&.parameter_one&.to_omml_without_math_tag&.length == 1 ||
-            value&.first&.parameter_one.to_omml_without_math_tag.match?(/^&#x\w*\d*;$/)
+            value&.first&.parameter_one&.to_omml_without_math_tag(display_style)&.length == 1 ||
+            value&.first&.parameter_one.to_omml_without_math_tag(display_style).match?(/^&#x\w*\d*;$/)
           )
       end
 
@@ -150,6 +150,10 @@ module Plurimath
       end
 
       protected
+
+      def boolean_display_style(display_style = displaystyle)
+        YAML.load(display_style.to_s)
+      end
 
       def parse_error!(type)
         Math.parse_error!(input_string, type)

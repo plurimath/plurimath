@@ -64,7 +64,7 @@ RSpec.describe Plurimath::Math::Function::Ul do
         expected_value = <<~MATHML
           <munder>
             <mi>n</mi>
-            <mo>&#xaf;</mo>
+            <mo>&#x332;</mo>
           </munder>
         MATHML
         expect(formula).to be_equivalent_to(expected_value)
@@ -78,7 +78,7 @@ RSpec.describe Plurimath::Math::Function::Ul do
         expected_value = <<~MATHML
           <munder>
             <mn>70</mn>
-            <mo>&#xaf;</mo>
+            <mo>&#x332;</mo>
           </munder>
         MATHML
         expect(formula).to be_equivalent_to(expected_value)
@@ -104,7 +104,7 @@ RSpec.describe Plurimath::Math::Function::Ul do
                 <mtext>so</mtext>
               </munderover>
             </mrow>
-            <mo>&#xaf;</mo>
+            <mo>&#x332;</mo>
           </munder>
         MATHML
         expect(formula).to be_equivalent_to(expected_value)
@@ -153,7 +153,7 @@ RSpec.describe Plurimath::Math::Function::Ul do
       let(:first_value) { Plurimath::Math::Symbol.new("n") }
 
       it "returns mathml string" do
-        expect(formula).to eql("<i>underline</i><i>n</i>")
+        expect(formula).to eql("<i>n</i>")
       end
     end
 
@@ -161,7 +161,7 @@ RSpec.describe Plurimath::Math::Function::Ul do
       let(:first_value) { Plurimath::Math::Number.new("70") }
 
       it "returns mathml string" do
-        expect(formula).to eql("<i>underline</i><i>70</i>")
+        expect(formula).to eql("<i>70</i>")
       end
     end
 
@@ -175,7 +175,7 @@ RSpec.describe Plurimath::Math::Function::Ul do
         ])
       end
       it "returns mathml string" do
-        expect(formula).to eql("<i>underline</i><i><i>&sum;</i><sub>&</sub><sup>so</sup></i>")
+        expect(formula).to eql("<i><i>&sum;</i><sub>&</sub><sup>so</sup></i>")
       end
     end
   end

@@ -10,8 +10,10 @@ module Plurimath
       SUPPORTED_ATTRIBUTES = %w[
         columnlines
         mathvariant
+        accentunder
         mathcolor
         notation
+        accent
         close
         open
       ].freeze
@@ -26,7 +28,7 @@ module Plurimath
         nodes = parse_nodes(ox_nodes.nodes)
         Math::Formula.new(
           Transform.new.apply(nodes).flatten.compact,
-          displaystyle: display_style,
+          display_style: display_style,
         )
       end
 

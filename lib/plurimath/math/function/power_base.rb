@@ -29,7 +29,7 @@ module Plurimath
           "#{first_value}#{second_value}#{third_value}"
         end
 
-        def omml_nary_tag
+        def omml_nary_tag(display_style)
           narypr = Utility.ox_element("naryPr", namespace: "m")
           chr_value(narypr)
           narypr << Utility.ox_element(
@@ -41,13 +41,13 @@ module Plurimath
           narypr << Utility.pr_element("ctrl", true, namespace: "m")
           [
             narypr,
-            omml_parameter(parameter_two, tag_name: "sub"),
-            omml_parameter(parameter_three, tag_name: "sup"),
+            omml_parameter(parameter_two, display_style, tag_name: "sub"),
+            omml_parameter(parameter_three, display_style, tag_name: "sup"),
           ]
         end
 
-        def to_omml_without_math_tag
-          return underover if parameter_one.omml_tag_name == "undOvr"
+        def to_omml_without_math_tag(display_style)
+          return underover(display_style) if parameter_one.omml_tag_name == "undOvr"
 
           ssubsup   = Utility.ox_element("sSubSup", namespace: "m")
           ssubsuppr = Utility.ox_element("sSubSupPr", namespace: "m")
@@ -58,9 +58,9 @@ module Plurimath
             ssubsup,
             [
               ssubsuppr,
-              omml_parameter(parameter_one, tag_name: "e"),
-              omml_parameter(parameter_two, tag_name: "sub"),
-              omml_parameter(parameter_three, tag_name: "sup"),
+              omml_parameter(parameter_one, display_style, tag_name: "e"),
+              omml_parameter(parameter_two, display_style, tag_name: "sub"),
+              omml_parameter(parameter_three, display_style, tag_name: "sup"),
             ],
           )
           [ssubsup]

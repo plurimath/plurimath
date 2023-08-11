@@ -2,6 +2,7 @@
   <m:oMath>
     <m:bar>
       <m:barPr>
+        <m:pos m:val="top" />
         <m:ctrlPr>
           <w:rPr>
             <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>

@@ -153,7 +153,7 @@ RSpec.describe Plurimath::Math::Function::Ddot do
       let(:first_value) { Plurimath::Math::Symbol.new("n") }
 
       it "returns mathml string" do
-        expect(formula).to eql("<i>ddot</i><i>n</i>")
+        expect(formula).to eql("<i>n</i><i>..</i>")
       end
     end
 
@@ -161,7 +161,7 @@ RSpec.describe Plurimath::Math::Function::Ddot do
       let(:first_value) { Plurimath::Math::Number.new("70") }
 
       it "returns mathml string" do
-        expect(formula).to eql("<i>ddot</i><i>70</i>")
+        expect(formula).to eql("<i>70</i><i>..</i>")
       end
     end
 
@@ -175,7 +175,7 @@ RSpec.describe Plurimath::Math::Function::Ddot do
         ])
       end
       it "returns mathml string" do
-        expect(formula).to eql("<i>ddot</i><i><i>&sum;</i><sub>&</sub><sup>so</sup></i>")
+        expect(formula).to eql("<i><i>&sum;</i><sub>&</sub><sup>so</sup></i><i>..</i>")
       end
     end
   end

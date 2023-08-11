@@ -43,12 +43,12 @@
           </m:eqArrPr>
           <m:e>
             <m:r>
-              <m:t>-x,  &amp;x&lt;0</m:t>
+              <m:t>-x,&nbsp;&nbsp;&amp;x&lt;0</m:t>
             </m:r>
           </m:e>
           <m:e>
             <m:r>
-              <m:t>x,  &amp;x&ge;0</m:t>
+              <m:t>x,&nbsp;&nbsp;&amp;x&ge;0</m:t>
             </m:r>
           </m:e>
         </m:eqArr>

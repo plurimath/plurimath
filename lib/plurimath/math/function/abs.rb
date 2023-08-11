@@ -15,10 +15,10 @@ module Plurimath
           )
         end
 
-        def to_omml_without_math_tag
+        def to_omml_without_math_tag(display_style)
           md = (Utility.ox_element("d", namespace: "m") << mdpr_tag)
           me = Utility.ox_element("e", namespace: "m")
-          Utility.update_nodes(me, omml_value)
+          Utility.update_nodes(me, omml_value(display_style))
           Utility.update_nodes(md, Array(me))
           [md]
         end

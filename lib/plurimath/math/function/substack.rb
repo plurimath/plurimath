@@ -19,13 +19,13 @@ module Plurimath
           Utility.update_nodes(Utility.ox_element("mtable"), value_array)
         end
 
-        def to_omml_without_math_tag
+        def to_omml_without_math_tag(display_style)
           Array(
             Utility.update_nodes(
               mm_element,
               [
-                omml_parameter(parameter_one, tag_name: "mr"),
-                omml_parameter(parameter_two, tag_name: "mr"),
+                omml_parameter(parameter_one, display_style, tag_name: "mr"),
+                omml_parameter(parameter_two, display_style, tag_name: "mr"),
               ],
             ),
           )

@@ -20,6 +20,7 @@ require_relative "html/parser"
 require_relative "omml/parser"
 require_relative "utility"
 require "ox"
+require "yaml"
 Ox.default_options = { encoding: "UTF-8" }
 
 module Plurimath

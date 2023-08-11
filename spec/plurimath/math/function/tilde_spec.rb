@@ -141,7 +141,7 @@ RSpec.describe Plurimath::Math::Function::Tilde do
         ])
       end
       it "returns mathml string" do
-        expect(formula).to eql("\\tilde{\\sum_{&}^{\\text{so}}}")
+        expect(formula).to eql("\\tilde{ \\left ( \\sum_{&}^{\\text{so}} \\right ) }")
       end
     end
   end
@@ -153,7 +153,7 @@ RSpec.describe Plurimath::Math::Function::Tilde do
       let(:first_value) { Plurimath::Math::Symbol.new("n") }
 
       it "returns mathml string" do
-        expect(formula).to eql("<i>tilde</i><i>n</i>")
+        expect(formula).to eql("<i>n</i>")
       end
     end
 
@@ -161,7 +161,7 @@ RSpec.describe Plurimath::Math::Function::Tilde do
       let(:first_value) { Plurimath::Math::Number.new("70") }
 
       it "returns mathml string" do
-        expect(formula).to eql("<i>tilde</i><i>70</i>")
+        expect(formula).to eql("<i>70</i>")
       end
     end
 
@@ -175,7 +175,7 @@ RSpec.describe Plurimath::Math::Function::Tilde do
         ])
       end
       it "returns mathml string" do
-        expect(formula).to eql("<i>tilde</i><i><i>&sum;</i><sub>&</sub><sup>so</sup></i>")
+        expect(formula).to eql("<i><i>&sum;</i><sub>&</sub><sup>so</sup></i>")
       end
     end
   end

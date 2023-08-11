@@ -24,12 +24,12 @@
           </m:eqArrPr>
           <m:e>
             <m:r>
-              <m:t>0&le; i &le; m</m:t>
+              <m:t>0&le;&nbsp;i&nbsp;&le;&nbsp;m</m:t>
             </m:r>
           </m:e>
           <m:e>
             <m:r>
-              <m:t>0&lt;j&lt;n </m:t>
+              <m:t>0&lt;j&lt;n&nbsp;</m:t>
             </m:r>
           </m:e>
         </m:eqArr>

@@ -7,8 +7,8 @@ module Plurimath
         self.class.name.split("::").last.downcase
       end
 
-      def insert_t_tag
-        Array(to_omml_without_math_tag)
+      def insert_t_tag(display_style)
+        Array(to_omml_without_math_tag(display_style))
       end
 
       def tag_name
@@ -29,13 +29,13 @@ module Plurimath
         wrapper_tag << r_tag
       end
 
-      def omml_parameter(field, tag_name: , namespace: "m")
+      def omml_parameter(field, display_style, tag_name: , namespace: "m")
         tag = Utility.ox_element(tag_name, namespace: namespace)
         return empty_tag(tag) unless field
 
         Utility.update_nodes(
           tag,
-          field&.insert_t_tag,
+          field&.insert_t_tag(display_style),
         )
       end
 
@@ -51,6 +51,18 @@ module Plurimath
         end
         r_tag << (Utility.ox_element("t", namespace: "m") << string)
         Array(r_tag)
+      end
+
+      def extractable?
+        false
+      end
+
+      def extract_class_from_text
+        ""
+      end
+
+      def font_style_t_tag(display_style)
+        to_omml_without_math_tag(display_style)
       end
     end
   end

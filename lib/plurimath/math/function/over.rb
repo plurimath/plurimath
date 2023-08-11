@@ -31,15 +31,15 @@ module Plurimath
           "{#{first_value} \\over #{two_value}}"
         end
 
-        def to_omml_without_math_tag
+        def to_omml_without_math_tag(display_style)
           f_element   = Utility.ox_element("f", namespace: "m")
           fpr_element = Utility.ox_element("fPr", namespace: "m")
           Utility.update_nodes(
             f_element,
             [
               fpr_element << Utility.pr_element("ctrl", true, namespace: "m"),
-              omml_parameter(parameter_one, tag_name: "num"),
-              omml_parameter(parameter_two, tag_name: "den"),
+              omml_parameter(parameter_one, display_style, tag_name: "num"),
+              omml_parameter(parameter_two, display_style, tag_name: "den"),
             ],
           )
           [f_element]

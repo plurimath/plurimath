@@ -16,7 +16,7 @@ module Plurimath
           mo
         end
 
-        def to_omml_without_math_tag
+        def to_omml_without_math_tag(display_style)
           mr = Utility.ox_element("m:r")
           if parameter_one
             mt = Utility.ox_element("m:t")

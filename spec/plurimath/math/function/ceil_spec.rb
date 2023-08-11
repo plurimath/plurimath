@@ -156,7 +156,7 @@ RSpec.describe Plurimath::Math::Function::Ceil do
       let(:first_value) { Plurimath::Math::Symbol.new("n") }
 
       it "returns mathml string" do
-        expect(formula).to eql("<i>ceil</i><i>n</i>")
+        expect(formula).to eql("<i>&#x2308;</i><i>n</i><i>&#x2309;</i>")
       end
     end
 
@@ -164,7 +164,7 @@ RSpec.describe Plurimath::Math::Function::Ceil do
       let(:first_value) { Plurimath::Math::Number.new("70") }
 
       it "returns mathml string" do
-        expect(formula).to eql("<i>ceil</i><i>70</i>")
+        expect(formula).to eql("<i>&#x2308;</i><i>70</i><i>&#x2309;</i>")
       end
     end
 
@@ -178,7 +178,7 @@ RSpec.describe Plurimath::Math::Function::Ceil do
         ])
       end
       it "returns mathml string" do
-        expect(formula).to eql("<i>ceil</i><i><i>&sum;</i><sub>&</sub><sup>so</sup></i>")
+        expect(formula).to eql("<i>&#x2308;</i><i><i>&sum;</i><sub>&</sub><sup>so</sup></i><i>&#x2309;</i>")
       end
     end
   end

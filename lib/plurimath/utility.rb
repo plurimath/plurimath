@@ -72,6 +72,22 @@ module Plurimath
       max
       min
     ].freeze
+    OMML_FONTS  = {
+      "sans-serif-bi": Math::Function::FontStyle::SansSerifBoldItalic,
+      "sans-serif-i": Math::Function::FontStyle::SansSerifItalic,
+      "sans-serif-b": Math::Function::FontStyle::BoldSansSerif,
+      "double-struck": Math::Function::FontStyle::DoubleStruck,
+      "sans-serif-p": Math::Function::FontStyle::SansSerif,
+      "fraktur-p": Math::Function::FontStyle::Fraktur,
+      "fraktur-b": Math::Function::FontStyle::BoldFraktur,
+      "script-b": Math::Function::FontStyle::BoldScript,
+      "monospace": Math::Function::FontStyle::Monospace,
+      "script-p": Math::Function::FontStyle::Script,
+      "bi": Math::Function::FontStyle::BoldItalic,
+      "p": Math::Function::FontStyle::Normal,
+      "i": Math::Function::FontStyle::Italic,
+      "b": Math::Function::FontStyle::Bold,
+    }.freeze
 
     class << self
       def organize_table(array, column_align: nil, options: nil)
@@ -271,7 +287,7 @@ module Plurimath
         td_object
       end
 
-      def mathml_unary_classes(text_array)
+      def mathml_unary_classes(text_array, omml: false)
         return [] if text_array.empty?
 
         compacted = text_array.compact
@@ -290,7 +306,7 @@ module Plurimath
         elsif classes.any?(string&.strip)
           get_class(string.strip).new
         else
-          Math::Symbol.new(unicode)
+          omml ? text_classes(string) : Math::Symbol.new(unicode)
         end
       end
 
@@ -326,16 +342,35 @@ module Plurimath
           attrs.nil? ? array_value : join_attr_value(attrs, array_value)
         elsif attrs.nil?
           value
-        elsif attrs.is_a?(Math::Function::Menclose)
+        elsif attrs.is_a?(String) && ["solid", "none"].include?(attrs.split.first.downcase)
+          table_separator(attrs.split, value)
+        elsif attrs.is_a?(Hash) && (attrs.key?(:accent) ||  attrs.key?(:accentunder))
+          attr_is_accent(attrs, value)
+        elsif attrs.is_a?(Math::Core)
+          attr_is_function(attrs, value)
+        end
+      end
+
+      def attr_is_accent(attrs, value)
+        value.last.parameter_one = value.shift if value.length > 1
+        if value.last.is_a?(Math::Function::BinaryFunction)
+          value.last.parameter_two = attrs.transform_values { |v| YAML.load(v) }
+        end
+        value
+      end
+
+      def attr_is_function(attrs, value)
+        case attrs
+        when Math::Function::Menclose
           attrs.parameter_two = filter_values(value)
           attrs
-        elsif attrs.is_a?(Math::Function::Fenced)
+        when Math::Function::Fenced
           attrs.parameter_two = value.compact
           attrs
-        elsif attrs.is_a?(Math::Function::FontStyle)
+        when Math::Function::FontStyle
           attrs.parameter_one = filter_values(value)
           attrs
-        elsif attrs.is_a?(Math::Function::Color)
+        when Math::Function::Color
           color_value = filter_values(value)
           if attrs.parameter_two
             attrs.parameter_two.parameter_one = color_value
@@ -343,8 +378,6 @@ module Plurimath
             attrs.parameter_two = color_value
           end
           attrs
-        elsif ["solid", "none"].include?(attrs.split.first.downcase)
-          table_separator(attrs.split, value)
         end
       end
 
@@ -426,7 +459,79 @@ module Plurimath
 
       def valid_class(object)
         text = object.extract_class_from_text
-        Asciimath::Constants::SUB_SUP_CLASSES.include?(text)
+        (object.extractable? && Asciimath::Constants::SUB_SUP_CLASSES.include?(text)) ||
+          Latex::Constants::SYMBOLS[text.to_sym] == :power_base
+      end
+
+      def mrow_left_right(mrow = [])
+        object = mrow.first
+        !(
+          (
+            (
+              object.is_a?(Math::Function::TernaryFunction) && object.any_value_exist?
+            ) &&
+            mrow.length <= 2
+          ) ||
+          object.is_a?(Math::Function::UnaryFunction) && mrow.length == 1
+        )
+      end
+
+      def populate_function_classes(mrow = [])
+        flatten_mrow = mrow.flatten.compact
+        unary_function_classes(flatten_mrow)
+        binary_function_classes(flatten_mrow)
+        ternary_function_classes(flatten_mrow)
+        flatten_mrow
+      end
+
+      def binary_function_classes(mrow, under: false)
+        binary_class = Math::Function::BinaryFunction
+        mrow.each_with_index do |object, ind|
+          mrow[ind] = mathml_unary_classes([object]) if object.is_a?(String)
+          object = mrow[ind]
+          next unless object.is_a?(binary_class)
+
+          if object.is_a?(Math::Function::Mod)
+            next unless mrow.length >= 1
+
+            object.parameter_one = mrow.delete_at(ind - 1) unless ind == 0
+            object.parameter_two = mrow.delete_at(ind)
+          elsif Mathml::Constants::UNICODE_SYMBOLS.invert[object.class_name] && mrow.length > 1
+            next if object.parameter_one || mrow.length > 2
+            next object.parameter_one = mrow.delete_at(ind - 1) if under && ind <= 1
+
+            object.parameter_one = mrow.delete_at(ind + 1)
+          end
+        end
+      end
+
+      def unary_function_classes(mrow)
+        unary_class = Math::Function::UnaryFunction
+        if mrow.any?(String) || mrow.any?(unary_class)
+          mrow.each_with_index do |object, ind|
+            mrow[ind] = mathml_unary_classes([object]) if object.is_a?(String)
+            next unless object.is_a?(unary_class)
+            next if object.is_a?(Math::Function::Text)
+            next if object.parameter_one || mrow[ind + 1].nil?
+
+            object.parameter_one = mrow.delete_at(ind + 1)
+          end
+        end
+      end
+
+      def ternary_function_classes(mrow)
+        ternary_class = Math::Function::TernaryFunction
+        if mrow.any?(ternary_class) && mrow.length > 1
+          mrow.each_with_index do |object, ind|
+            if object.is_a?(ternary_class)
+              next if [Math::Function::Fenced, Math::Function::Multiscript].include?(object.class)
+              next unless object.parameter_one || object.parameter_two
+              next if object.parameter_three
+
+              object.parameter_three = filter_values(mrow.delete_at(ind + 1))
+            end
+          end
+        end
       end
     end
   end

@@ -20,11 +20,16 @@ module Plurimath
           )
         end
 
-        def to_omml_without_math_tag
+        def to_omml_without_math_tag(display_style)
           lceil = Symbol.new("⌈")
           rceil = Symbol.new("⌉")
           fenced = Fenced.new(lceil, Array(parameter_one), rceil)
-          Array(fenced.to_omml_without_math_tag)
+          Array(fenced.to_omml_without_math_tag(display_style))
+        end
+
+        def to_html
+          first_value = "<i>#{parameter_one.to_html}</i>" if parameter_one
+          "<i>&#x2308;</i>#{first_value}<i>&#x2309;</i>"
         end
       end
     end

@@ -24,15 +24,15 @@ module Plurimath
           "\\sqrt[#{first_value}]{#{second_value}}"
         end
 
-        def to_omml_without_math_tag
+        def to_omml_without_math_tag(display_style)
           rad_element = Utility.ox_element("rad", namespace: "m")
           pr_element  = Utility.ox_element("radPr", namespace: "m")
           Utility.update_nodes(
             rad_element,
             [
               (pr_element << Utility.pr_element("ctrl", true, namespace: "m")),
-              omml_parameter(parameter_two, tag_name: "deg"),
-              omml_parameter(parameter_one, tag_name: "e"),
+              omml_parameter(parameter_two, display_style, tag_name: "deg"),
+              omml_parameter(parameter_one, display_style, tag_name: "e"),
             ],
           )
           [rad_element]

@@ -52,7 +52,9 @@ module Plurimath
           "<i>#{class_name}</i>#{first_value}"
         end
 
-        def to_omml_without_math_tag
+        def to_omml_without_math_tag(display_style)
+          return r_element(class_name, rpr_tag: false) unless parameter_one
+
           func   = Utility.ox_element("func", namespace: "m")
           funcpr = Utility.ox_element("funcPr", namespace: "m")
           funcpr << Utility.pr_element("ctrl", true, namespace: "m")
@@ -62,7 +64,7 @@ module Plurimath
           mt  = Utility.ox_element("t", namespace: "m") << class_name
           fname << Utility.update_nodes(mr, [rpr, mt])
           me = Utility.ox_element("e", namespace: "m")
-          Utility.update_nodes(me, omml_value) if parameter_one
+          Utility.update_nodes(me, omml_value(display_style)) if parameter_one
           Utility.update_nodes(
             func,
             [
@@ -104,12 +106,12 @@ module Plurimath
           parameter_one&.to_latex
         end
 
-        def omml_value
+        def omml_value(display_style)
           if parameter_one.is_a?(Array)
-            return parameter_one&.compact&.map(&:insert_t_tag)
+            return parameter_one&.compact&.map { |obj| obj.insert_t_tag(display_style) }
           end
 
-          Array(parameter_one&.insert_t_tag)
+          Array(parameter_one&.insert_t_tag(display_style))
         end
       end
     end

@@ -14,18 +14,16 @@ module Plurimath
           )
         end
 
-        def to_omml_without_math_tag
-          acc_tag    = Utility.ox_element("acc", namespace: "m")
-          acc_pr_tag = Utility.ox_element("accPr", namespace: "m")
-          acc_pr_tag << (Utility.ox_element("chr", namespace: "m", attributes: { "m:val": ".." }))
-          Utility.update_nodes(
-            acc_tag,
-            [
-              acc_pr_tag,
-              omml_parameter(parameter_one, tag_name: "e"),
-            ],
-          )
-          [acc_tag]
+        def to_omml_without_math_tag(display_style)
+          return r_element("..", rpr_tag: false) unless parameter_one
+
+          symbol = Symbol.new("..")
+          Overset.new(parameter_one, symbol).to_omml_without_math_tag(true)
+        end
+
+        def to_html
+          first_value = "<i>#{parameter_one.to_html}</i>" if parameter_one
+          "#{first_value}<i>..</i>"
         end
       end
     end

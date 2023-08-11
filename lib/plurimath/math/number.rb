@@ -29,14 +29,18 @@ module Plurimath
         value
       end
 
-      def to_omml_without_math_tag
+      def to_omml_without_math_tag(_display_style)
         [(Utility.ox_element("t", namespace: "m") << value)]
       end
 
-      def insert_t_tag
+      def insert_t_tag(_display_style)
         r_tag = Utility.ox_element("r", namespace: "m")
         r_tag << (Utility.ox_element("t", namespace: "m") << value)
         [r_tag]
+      end
+
+      def font_style_t_tag(_display_style)
+        Utility.ox_element("t", namespace: "m") << value
       end
 
       def nary_attr_value

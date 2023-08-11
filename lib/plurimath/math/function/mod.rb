@@ -39,11 +39,11 @@ module Plurimath
           "#{first_value}<i>mod</i>#{second_value}"
         end
 
-        def to_omml_without_math_tag
+        def to_omml_without_math_tag(display_style)
           values = []
-          values << parameter_one.insert_t_tag if parameter_one
+          values << parameter_one.insert_t_tag(display_style) if parameter_one
           values << r_element("mod")
-          values << parameter_two.insert_t_tag if parameter_two
+          values << parameter_two.insert_t_tag(display_style) if parameter_two
           values
         end
       end

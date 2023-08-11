@@ -27,7 +27,7 @@ module Plurimath
           "#{first_value}#{second_value}"
         end
 
-        def to_omml_without_math_tag
+        def to_omml_without_math_tag(display_style)
           limupp   = Utility.ox_element("limUpp", namespace: "m")
           limupppr = Utility.ox_element("limUppPr", namespace: "m")
           limupppr << Utility.pr_element("ctrl", true, namespace: "m")
@@ -35,8 +35,8 @@ module Plurimath
             limupp,
             [
               limupppr,
-              omml_parameter(parameter_two, tag_name: "e"),
-              omml_parameter(parameter_one, tag_name: "lim"),
+              omml_parameter(parameter_two, display_style, tag_name: "e"),
+              omml_parameter(parameter_one, display_style, tag_name: "lim"),
             ],
           )
           [limupp]

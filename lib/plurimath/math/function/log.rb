@@ -24,7 +24,9 @@ module Plurimath
           "<i>log</i>#{first_value}#{second_value}"
         end
 
-        def to_omml_without_math_tag
+        def to_omml_without_math_tag(display_style)
+          return r_element("log", rpr_tag: false) unless all_values_exist?
+
           ssubsup   = Utility.ox_element("sSubSup", namespace: "m")
           ssubsuppr = Utility.ox_element("sSubSupPr", namespace: "m")
           ssubsuppr << hide_tags(
@@ -35,8 +37,8 @@ module Plurimath
             [
               ssubsuppr,
               e_parameter,
-              omml_parameter(parameter_one, tag_name: "sub"),
-              omml_parameter(parameter_two, tag_name: "sup"),
+              omml_parameter(parameter_one, display_style, tag_name: "sub"),
+              omml_parameter(parameter_two, display_style, tag_name: "sup"),
             ],
           )
           [ssubsup]

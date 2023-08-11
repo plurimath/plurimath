@@ -28,8 +28,8 @@ module Plurimath
           "{\\#{class_name}{#{first_value}} #{second_value}}"
         end
 
-        def to_omml_without_math_tag
-          Array(parameter_two.insert_t_tag)
+        def to_omml_without_math_tag(display_style)
+          Array(parameter_two.insert_t_tag(display_style))
         end
       end
     end

@@ -18,7 +18,12 @@ module Plurimath
           )
         end
 
-        def to_omml_without_math_tag
+        def to_omml_without_math_tag(display_style)
+          if !display_style
+            base = Base.new(parameter_one, parameter_two)
+            return base.to_omml_without_math_tag(display_style)
+          end
+
           limlow   = Utility.ox_element("limLow", namespace: "m")
           limlowpr = Utility.ox_element("limLowPr", namespace: "m")
           limlowpr << Utility.pr_element("ctrl", true, namespace: "m")
@@ -26,8 +31,8 @@ module Plurimath
             limlow,
             [
               limlowpr,
-              omml_parameter(parameter_one, tag_name: "e"),
-              omml_parameter(parameter_two, tag_name: "lim"),
+              omml_parameter(parameter_one, display_style, tag_name: "e"),
+              omml_parameter(parameter_two, display_style, tag_name: "lim"),
             ],
           )
           [limlow]

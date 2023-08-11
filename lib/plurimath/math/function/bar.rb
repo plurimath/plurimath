@@ -1,42 +1,73 @@
 # frozen_string_literal: true
 
-require_relative "unary_function"
+require_relative "binary_function"
 
 module Plurimath
   module Math
     module Function
-      class Bar < UnaryFunction
+      class Bar < BinaryFunction
+        def to_asciimath
+          first_value = "(#{parameter_one.to_asciimath})" if parameter_one
+          "bar#{first_value}"
+        end
+
         def to_latex
           first_value = "{#{parameter_one.to_latex}}" if parameter_one
           "\\overline#{first_value}"
         end
 
         def to_mathml_without_math_tag
-          first_value = parameter_one&.to_mathml_without_math_tag
+          mo_tag = Utility.ox_element("mo") << "&#xaf;"
+          return mo_tag unless parameter_one
+
+          mover_tag = Utility.ox_element("mover")
+          mover_tag.attributes.merge!(parameter_two) if parameter_two && !parameter_two.empty?
           Utility.update_nodes(
-            Utility.ox_element("mover"),
+            mover_tag,
             [
-              first_value,
-              Utility.ox_element("mo") << "&#xaf;",
+              parameter_one&.to_mathml_without_math_tag,
+              mo_tag,
             ],
           )
         end
 
-        def to_omml_without_math_tag
+        def to_omml_without_math_tag(display_style)
+          return r_element("&#xaf;", rpr_tag: false) unless all_values_exist?
+
+          parameter_two && parameter_two[:accent] ? acc_tag(display_style) : bar_tag(display_style)
+        end
+
+        def swap_class
+          Ul.new(parameter_one, parameter_two)
+        end
+
+        protected
+
+        def acc_tag(display_style)
+          acc = Utility.ox_element("acc", namespace: "m")
+          chr = Utility.ox_element("chr", namespace: "m", attributes: { "m:val": "‾" } )
+          acc_pr = (Utility.ox_element("accPr", namespace: "m") << chr)
+          Utility.update_nodes(
+            acc,
+            [
+              acc_pr,
+              omml_parameter(parameter_one, display_style, tag_name: "e"),
+            ],
+          )
+          [acc]
+        end
+
+        def bar_tag(display_style)
           bar = Utility.ox_element("bar", namespace: "m")
-          me  = Utility.ox_element("e", namespace: "m")
-          Utility.update_nodes(me, omml_value) if parameter_one
           Utility.update_nodes(
             bar,
             [
               bar_pr,
-              me,
+              omml_parameter(parameter_one, display_style, tag_name: "e", namespace: "m"),
             ],
           )
           [bar]
         end
-
-        protected
 
         def bar_pr
           attrs = { "m:val": "top" }

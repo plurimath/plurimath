@@ -31,8 +31,8 @@ module Plurimath
           "<tr>#{first_value}</tr>"
         end
 
-        def to_omml_without_math_tag
-          omml_content = parameter_one&.map(&:to_omml_without_math_tag)
+        def to_omml_without_math_tag(display_style)
+          omml_content = parameter_one&.map { |obj| obj.to_omml_without_math_tag(display_style) }
           if parameter_one.count.eql?(1)
             omml_content
           else

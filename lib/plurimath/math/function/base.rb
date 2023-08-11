@@ -34,7 +34,7 @@ module Plurimath
           "#{first_value}#{second_value}"
         end
 
-        def to_omml_without_math_tag
+        def to_omml_without_math_tag(display_style)
           ssub_element  = Utility.ox_element("sSub", namespace: "m")
           subpr_element = Utility.ox_element("sSubPr", namespace: "m")
           subpr_element << Utility.pr_element("ctrl", true, namespace: "m")
@@ -42,8 +42,8 @@ module Plurimath
             ssub_element,
             [
               subpr_element,
-              omml_parameter(parameter_one, tag_name: "e"),
-              omml_parameter(parameter_two, tag_name: "sub"),
+              omml_parameter(parameter_one, display_style, tag_name: "e"),
+              omml_parameter(parameter_two, display_style, tag_name: "sub"),
             ],
           )
           [ssub_element]

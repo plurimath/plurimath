@@ -1600,6 +1600,33 @@ RSpec.describe Plurimath::Omml::Parser do
     end
   end
 
+  context "contains #184.omml" do
+    let(:file_name) { "spec/plurimath/fixtures/184.omml" }
+    let(:expected_value) { ExpectedValues::EX_184 }
+
+    it "matches open and close tag" do
+      expect(formula).to eq(expected_value)
+    end
+  end
+
+  context "contains #185.omml" do
+    let(:file_name) { "spec/plurimath/fixtures/185.omml" }
+    let(:expected_value) { ExpectedValues::EX_185 }
+
+    it "matches open and close tag" do
+      expect(formula).to eq(expected_value)
+    end
+  end
+
+  context "contains #186.omml" do
+    let(:file_name) { "spec/plurimath/fixtures/186.omml" }
+    let(:expected_value) { ExpectedValues::EX_186 }
+
+    it "matches open and close tag" do
+      expect(formula).to eq(expected_value)
+    end
+  end
+
   context "contains #issue-158.omml" do
     let(:file_name) { "spec/plurimath/fixtures/issue-158.omml" }
     let(:expected_value) { ExpectedValues::EXIssue158 }
