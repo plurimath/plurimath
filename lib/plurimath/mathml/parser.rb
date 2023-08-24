@@ -7,7 +7,7 @@ module Plurimath
     class Parser
       attr_accessor :text
 
-      SUPPORTED_ATTRIBUTES = %w[
+      SUPPORTED_ATTRS = %w[
         columnlines
         mathvariant
         accentunder
@@ -24,11 +24,11 @@ module Plurimath
 
       def parse
         ox_nodes = Ox.load(text, strip_namespace: true)
-        display_style = ox_nodes&.locate("*/mstyle/@displaystyle")&.first || true
+        display_style = ox_nodes&.locate("*/mstyle/@displaystyle")&.first
         nodes = parse_nodes(ox_nodes.nodes)
         Math::Formula.new(
           Transform.new.apply(nodes).flatten.compact,
-          display_style: display_style,
+          display_style: (display_style || true),
         )
       end
 
@@ -39,12 +39,7 @@ module Plurimath
           if node.is_a?(String)
             node
           elsif !node.attributes.empty?
-            {
-              node.name.to_sym => {
-                attributes: validate_attributes(node.attributes),
-                value: parse_nodes(node.nodes),
-              },
-            }
+            attrs_hash(node)
           else
             { node.name.to_sym => parse_nodes(node.nodes) }
           end
@@ -52,8 +47,17 @@ module Plurimath
       end
 
       def validate_attributes(attributes)
-        attributes&.select! { |key, _| SUPPORTED_ATTRIBUTES.include?(key&.to_s) }
+        attributes&.select! { |key, _| SUPPORTED_ATTRS.include?(key&.to_s) }
         attributes&.transform_keys(&:to_sym) if attributes&.any?
+      end
+
+      def attrs_hash(node)
+        {
+          node.name.to_sym => {
+            attributes: validate_attributes(node.attributes),
+            value: parse_nodes(node.nodes),
+          },
+        }
       end
     end
   end
