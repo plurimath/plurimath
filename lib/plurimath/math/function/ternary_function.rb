@@ -108,8 +108,8 @@ module Plurimath
         def narypr(function_symbol, function_type: "undOvr")
           chr_arg     = { "m:val": function_symbol }
           limloc_arg  = { "m:val": function_type }
-          subhide_arg = { "m:val": "0" }
-          suphide_arg = { "m:val": "0" }
+          subhide_arg = { "m:val": parameter_one ? "0" : "1" }
+          suphide_arg = { "m:val": parameter_two ? "0" : "1" }
           chr_tag     = Utility.ox_element("chr", attributes: chr_arg, namespace: "m")
           limloc_tag  = Utility.ox_element("limLoc", attributes: limloc_arg, namespace: "m")
           subhide_tag = Utility.ox_element("subHide", attributes: subhide_arg, namespace: "m")

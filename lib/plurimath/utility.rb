@@ -72,7 +72,7 @@ module Plurimath
       max
       min
     ].freeze
-    OMML_FONTS  = {
+    OMML_FONTS = {
       "sans-serif-bi": Math::Function::FontStyle::SansSerifBoldItalic,
       "sans-serif-i": Math::Function::FontStyle::SansSerifItalic,
       "sans-serif-b": Math::Function::FontStyle::BoldSansSerif,
@@ -81,12 +81,12 @@ module Plurimath
       "fraktur-p": Math::Function::FontStyle::Fraktur,
       "fraktur-b": Math::Function::FontStyle::BoldFraktur,
       "script-b": Math::Function::FontStyle::BoldScript,
-      "monospace": Math::Function::FontStyle::Monospace,
       "script-p": Math::Function::FontStyle::Script,
-      "bi": Math::Function::FontStyle::BoldItalic,
-      "p": Math::Function::FontStyle::Normal,
-      "i": Math::Function::FontStyle::Italic,
-      "b": Math::Function::FontStyle::Bold,
+      monospace: Math::Function::FontStyle::Monospace,
+      bi: Math::Function::FontStyle::BoldItalic,
+      p: Math::Function::FontStyle::Normal,
+      i: Math::Function::FontStyle::Italic,
+      b: Math::Function::FontStyle::Bold,
     }.freeze
 
     class << self
@@ -344,7 +344,7 @@ module Plurimath
           value
         elsif attrs.is_a?(String) && ["solid", "none"].include?(attrs.split.first.downcase)
           table_separator(attrs.split, value)
-        elsif attrs.is_a?(Hash) && (attrs.key?(:accent) ||  attrs.key?(:accentunder))
+        elsif attrs.is_a?(Hash) && (attrs.key?(:accent) || attrs.key?(:accentunder))
           attr_is_accent(attrs, value)
         elsif attrs.is_a?(Math::Core)
           attr_is_function(attrs, value)
@@ -354,7 +354,7 @@ module Plurimath
       def attr_is_accent(attrs, value)
         value.last.parameter_one = value.shift if value.length > 1
         if value.last.is_a?(Math::Function::BinaryFunction)
-          value.last.parameter_two = attrs.transform_values { |v| YAML.load(v) }
+          value.last.parameter_two = attrs.transform_values { |v| YAML.safe_load(v) }
         end
         value
       end
@@ -470,9 +470,9 @@ module Plurimath
             (
               object.is_a?(Math::Function::TernaryFunction) && object.any_value_exist?
             ) &&
-            mrow.length <= 2
+            (mrow.length <= 2)
           ) ||
-          object.is_a?(Math::Function::UnaryFunction) && mrow.length == 1
+          (object.is_a?(Math::Function::UnaryFunction) && mrow.length == 1)
         )
       end
 
@@ -494,7 +494,7 @@ module Plurimath
           if object.is_a?(Math::Function::Mod)
             next unless mrow.length >= 1
 
-            object.parameter_one = mrow.delete_at(ind - 1) unless ind == 0
+            object.parameter_one = mrow.delete_at(ind - 1) unless ind.zero?
             object.parameter_two = mrow.delete_at(ind)
           elsif Mathml::Constants::UNICODE_SYMBOLS.invert[object.class_name] && mrow.length > 1
             next if object.parameter_one || mrow.length > 2

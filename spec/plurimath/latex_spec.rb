@@ -2709,7 +2709,7 @@ RSpec.describe Plurimath::Latex do
                   <m:chr m:val="∑"/>
                   <m:limLoc m:val="undOvr"/>
                   <m:subHide m:val="0"/>
-                  <m:supHide m:val="0"/>
+                  <m:supHide m:val="1"/>
                 </m:naryPr>
                 <m:sub>
                   <m:m>

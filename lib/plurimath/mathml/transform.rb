@@ -136,16 +136,17 @@ module Plurimath
       end
 
       rule(msubsup: sequence(:function)) do
-        base_class = function[0].is_a?(Math::Formula) ? function[0]&.value&.first : function[0]
-        if base_class.is_a?(Math::Function::BinaryFunction)
-          base_class.parameter_one = function[1]
-          base_class.parameter_two = function[2]
-          base_class
-        elsif base_class.is_a?(Math::Function::TernaryFunction)
-          base_class.parameter_one = function[1]
-          base_class.parameter_two = function[2]
-          base_class.parameter_three = function[3]
-          base_class
+        base = function[0].is_a?(Math::Formula) ? function[0].value : function
+        base_object = base.first
+        if base_object.is_a?(Math::Function::BinaryFunction)
+          base_object.parameter_one = function[1]
+          base_object.parameter_two = function[2]
+          base_object
+        elsif base_object.is_a?(Math::Function::TernaryFunction)
+          base_object.parameter_one = function[1]
+          base_object.parameter_two = function[2]
+          base_object.parameter_three = function[3]
+          base_object
         else
           Math::Function::PowerBase.new(
             function[0],
@@ -156,16 +157,16 @@ module Plurimath
       end
 
       rule(munderover: sequence(:function)) do
-        base_class = function[0].is_a?(Math::Formula) ? function[0]&.value&.first : function[0]
-        if base_class.is_a?(Math::Function::BinaryFunction)
-          base_class.parameter_one = function[1]
-          base_class.parameter_two = function[2]
-          base_class
-        elsif base_class.is_a?(Math::Function::TernaryFunction)
-          base_class.parameter_one = function[1]
-          base_class.parameter_two = function[2]
-          base_class.parameter_three = function[3]
-          base_class
+        base = function[0].is_a?(Math::Formula) ? function[0].value : function
+        if base.first.is_a?(Math::Function::BinaryFunction)
+          base.first.parameter_one = function[1]
+          base.first.parameter_two = function[2]
+          base.first
+        elsif base.first.is_a?(Math::Function::TernaryFunction)
+          base.first.parameter_one = function[1]
+          base.first.parameter_two = function[2]
+          base.first.parameter_three = function[3]
+          base.first
         else
           Math::Function::Underover.new(
             function[0],
@@ -219,7 +220,9 @@ module Plurimath
       rule(munder: sequence(:munder)) do
         if munder.any?(String)
           munder.each_with_index do |object, ind|
-            munder[ind] = Utility.mathml_unary_classes([object]) if object.is_a?(String)
+            next unless object.is_a?(String)
+
+            munder[ind] = Utility.mathml_unary_classes([object])
           end
         end
         Utility.binary_function_classes(munder, under: true)
@@ -336,10 +339,13 @@ module Plurimath
       rule(attributes: subtree(:attrs),
            value: sequence(:value)) do
         approved_attrs = if attrs.is_a?(Hash)
-          attrs.keys.any? { |k| ["accentunder", "accent"].include?(k.to_s) } ? attrs : nil
-        else
-          attrs
-        end
+                           supported_attrs = %w[accentunder accent]
+                           attrs if attrs.keys.any? do |k|
+                             supported_attrs.include?(k.to_s)
+                           end
+                         else
+                           attrs
+                         end
         Utility.join_attr_value(approved_attrs, value&.flatten&.compact)
       end
     end

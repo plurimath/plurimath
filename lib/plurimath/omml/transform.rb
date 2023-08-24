@@ -149,12 +149,22 @@ module Plurimath
       end
 
       rule(nary: subtree(:nary)) do
-        Math::Formula.new(
-          [
-            Utility.nary_fonts(nary),
-            Utility.filter_values(nary[3]),
-          ],
-        )
+        flatten_nary = nary.flatten.compact
+        chr = Utility.find_pos_chr(flatten_nary, :chr)
+        ternary_class = Utility.mathml_unary_classes(chr.values) if chr
+        if ternary_class.is_a?(Math::Function::TernaryFunction)
+          ternary_class.parameter_one = Utility.filter_values(nary[1])
+          ternary_class.parameter_two = Utility.filter_values(nary[2])
+          ternary_class.parameter_three = Utility.filter_values(nary[3])
+          ternary_class
+        else
+          Math::Formula.new(
+            [
+              Utility.nary_fonts(nary),
+              Utility.filter_values(nary[3]),
+            ],
+          )
+        end
       end
 
       rule(groupChr: subtree(:groupchr)) do
@@ -175,7 +185,6 @@ module Plurimath
       end
 
       rule(sSubSup: subtree(:sSubSup)) do
-        function_classes = [Math::Formula, Math::Function::FontStyle]
         subsup = sSubSup.flatten.compact
         subsup.each_with_index do |object, ind|
           subsup[ind] = Utility.mathml_unary_classes([object]) if object.is_a?(String)
@@ -235,7 +244,6 @@ module Plurimath
       end
 
       rule(limLow: subtree(:lim)) do
-        flatten_lim = lim.flatten.compact
         second_value = Utility.filter_values(lim[2])
         unicode = Mathml::Constants::UNICODE_SYMBOLS.invert[second_value.class_name]
         second_value = unicode ? Math::Symbol.new(unicode.to_s) : second_value
