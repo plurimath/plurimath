@@ -178,6 +178,7 @@ module Plurimath
 
       rule(mrow: subtree(:mrow)) do
         flatten_mrow = Utility.populate_function_classes(mrow)
+        Utility.fenceable_classes(flatten_mrow)
         if flatten_mrow.length == 1
           flatten_mrow.first
         else
