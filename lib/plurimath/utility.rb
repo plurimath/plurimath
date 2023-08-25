@@ -88,6 +88,18 @@ module Plurimath
       i: Math::Function::FontStyle::Italic,
       b: Math::Function::FontStyle::Bold,
     }.freeze
+    PARENTHESIS = {
+      "&#x2329;": "&#x232a;",
+      "&#x230a;": "&#x230b;",
+      "&#x2308;": "&#x2309;",
+      "&#x2016;": "&#x2016;",
+      "&#x7b;": "&#x7d;",
+      "&#x5b;": "&#x5d;",
+      "&#x7c;": "&#x7c;",
+      "(": ")",
+      "{": "}",
+      "[": "]",
+    }.freeze
 
     class << self
       def organize_table(array, column_align: nil, options: nil)
@@ -530,6 +542,32 @@ module Plurimath
 
               object.parameter_three = filter_values(mrow.delete_at(ind + 1))
             end
+          end
+        end
+      end
+
+      def paren_able?(arr = [], mrow = [])
+        arr.any? do |opening, closing|
+          symbol_value(mrow.first, opening.to_s) && symbol_value(mrow.last, closing.to_s)
+        end
+      end
+
+      def fenceable_classes(mrow = [])
+        return false unless mrow.length > 1
+
+        if paren_able?(PARENTHESIS, mrow)
+          open_paren = mrow.shift
+          close_paren = mrow.pop
+          if mrow.length == 1 && mrow.first.is_a?(Math::Function::Table)
+            table = mrow.first
+            table.open_paren = open_paren
+            table.close_paren = close_paren
+          else
+            mrow.replace(
+              [
+                Math::Function::Fenced.new(open_paren, mrow.dup, close_paren),
+              ],
+            )
           end
         end
       end
