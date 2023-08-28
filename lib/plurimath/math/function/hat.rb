@@ -1,11 +1,18 @@
 # frozen_string_literal: true
 
-require_relative "binary_function"
+require_relative "unary_function"
 
 module Plurimath
   module Math
     module Function
-      class Hat < BinaryFunction
+      class Hat < UnaryFunction
+        attr_accessor :attributes
+
+        def initialize(parameter_one = nil, attributes = {})
+          super(parameter_one)
+          @attributes = attributes
+        end
+
         def to_asciimath
           first_value = "(#{parameter_one.to_asciimath})" if parameter_one
           "hat#{first_value}"
@@ -21,7 +28,7 @@ module Plurimath
           return mo_tag unless parameter_one
 
           mover_tag = Utility.ox_element("mover")
-          mover_tag.attributes.merge!(parameter_two) if parameter_two && !parameter_two.empty?
+          mover_tag.attributes.merge!(attributes) if attributes && !attributes.empty?
           Utility.update_nodes(
             mover_tag,
             [
@@ -36,9 +43,9 @@ module Plurimath
         end
 
         def to_omml_without_math_tag(display_style)
-          return r_element("^", rpr_tag: false) unless all_values_exist?
+          return r_element("^", rpr_tag: false)  unless parameter_one
 
-          if parameter_two && parameter_two[:accent]
+          if attributes && attributes[:accent]
             accent_tag(display_style)
           else
             symbol = Symbol.new("&#x302;")

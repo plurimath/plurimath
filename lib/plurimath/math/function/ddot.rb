@@ -6,6 +6,13 @@ module Plurimath
   module Math
     module Function
       class Ddot < UnaryFunction
+        attr_accessor :attributes
+
+        def initialize(parameter_one = nil, attributes = {})
+          super(parameter_one)
+          @attributes = attributes
+        end
+
         def to_mathml_without_math_tag
           second_value = Utility.ox_element("mo") << ".."
           Utility.update_nodes(

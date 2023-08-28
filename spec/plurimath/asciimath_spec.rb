@@ -211,7 +211,7 @@ RSpec.describe Plurimath::Asciimath do
       let(:string) { 'int_0^(sin)f(x)dx' }
 
       it 'returns parsed Asciimath to Formula' do
-        latex = '\int_{0}^{\sin} f ( x ) d x'
+        latex = '\int_{0}^{\sin{}} f ( x ) d x'
         asciimath = 'int_(0)^(sin) f (x) d x'
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
@@ -625,7 +625,7 @@ RSpec.describe Plurimath::Asciimath do
       let(:string) { 'int_(thetasin)^(mathbb(gamma)) f(x)dx' }
 
       it 'returns parsed Asciimath to Formula' do
-        latex = '\int_{\theta \sin}^{\mathbb{\gamma}} f ( x ) d x'
+        latex = '\int_{\theta \sin{}}^{\mathbb{\gamma}} f ( x ) d x'
         asciimath = 'int_(theta sin)^(mathbb(gamma)) f (x) d x'
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">

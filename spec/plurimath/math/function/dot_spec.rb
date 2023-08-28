@@ -100,7 +100,7 @@ RSpec.describe Plurimath::Math::Function::Dot do
             <mrow>
               <munderover>
                 <mo>&#x2211;</mo>
-                <mo>&#x26;</mo>
+                <mo>&amp;</mo>
                 <mtext>so</mtext>
               </munderover>
             </mrow>
@@ -141,7 +141,7 @@ RSpec.describe Plurimath::Math::Function::Dot do
         ])
       end
       it "returns mathml string" do
-        expect(formula).to eql("\\dot{ \\left ( \\sum_{&}^{\\text{so}} \\right ) }")
+        expect(formula).to eql("\\dot{\\sum_{&}^{\\text{so}}}")
       end
     end
   end
@@ -153,7 +153,7 @@ RSpec.describe Plurimath::Math::Function::Dot do
       let(:first_value) { Plurimath::Math::Symbol.new("n") }
 
       it "returns mathml string" do
-        expect(formula).to eql("<i>n</i>")
+        expect(formula).to eql("<i>dot</i><i>n</i>")
       end
     end
 
@@ -161,7 +161,7 @@ RSpec.describe Plurimath::Math::Function::Dot do
       let(:first_value) { Plurimath::Math::Number.new("70") }
 
       it "returns mathml string" do
-        expect(formula).to eql("<i>70</i>")
+        expect(formula).to eql("<i>dot</i><i>70</i>")
       end
     end
 
@@ -175,7 +175,7 @@ RSpec.describe Plurimath::Math::Function::Dot do
         ])
       end
       it "returns mathml string" do
-        expect(formula).to eql("<i><i>&sum;</i><sub>&</sub><sup>so</sup></i>")
+        expect(formula).to eql("<i>dot</i><i><i>&sum;</i><sub>&</sub><sup>so</sup></i>")
       end
     end
   end

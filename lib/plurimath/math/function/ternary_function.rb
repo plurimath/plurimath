@@ -55,6 +55,10 @@ module Plurimath
           !(parameter_one.nil? || parameter_two.nil? || parameter_three.nil?)
         end
 
+        def all_values_exist?
+          !(parameter_one.nil? && parameter_two.nil? && parameter_three.nil?)
+        end
+
         protected
 
         def latex_wrapped(field)
@@ -124,10 +128,6 @@ module Plurimath
               suphide_tag,
             ],
           )
-        end
-
-        def all_values_exist?
-          !(parameter_one.nil? && parameter_two.nil? && parameter_three.nil?)
         end
 
         def validate_mathml_tag(parameter)

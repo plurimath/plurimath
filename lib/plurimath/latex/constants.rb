@@ -2853,6 +2853,7 @@ module Plurimath
         mathbfit: :fonts,
         mathfrak: :fonts,
         overline: :unary,
+        overset: :binary,
         ddagger: :symbols,
         trprime: :symbols,
         closure: :symbols,

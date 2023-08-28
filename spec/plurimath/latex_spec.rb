@@ -1416,7 +1416,7 @@ RSpec.describe Plurimath::Latex do
             </mstyle>
           </math>
         MATHML
-        latex = "\\sup_{x \\in \\mathbb{R}} f ( x )"
+        latex = "\\sup{}_{x \\in \\mathbb{R}} f ( x )"
         expect(formula.to_latex).to eql(latex)
         expect(formula.to_mathml).to be_equivalent_to(mathml)
       end
@@ -1452,7 +1452,7 @@ RSpec.describe Plurimath::Latex do
             </mstyle>
           </math>
         MATHML
-        latex = "\\max_{x \\in \\[ a , b \\]} f ( x )"
+        latex = "\\max{}_{x \\in \\[ a , b \\]} f ( x )"
         expect(formula.to_latex).to eql(latex)
         expect(formula.to_mathml).to be_equivalent_to(mathml)
       end
@@ -1488,7 +1488,7 @@ RSpec.describe Plurimath::Latex do
             </mstyle>
           </math>
         MATHML
-        latex = "\\min_{x \\in \\[ \\alpha , \\beta \\]} f ( x )"
+        latex = "\\min{}_{x \\in \\[ \\alpha , \\beta \\]} f ( x )"
         expect(formula.to_latex).to eql(latex)
         expect(formula.to_mathml).to be_equivalent_to(mathml)
       end
@@ -2479,7 +2479,7 @@ RSpec.describe Plurimath::Latex do
           </math>
         MATHML
         latex = <<~LATEX
-          \\sin_{d}^{e}
+          \\sin{}_{d}^{e}
         LATEX
         expect(formula.to_latex.gsub(/\s+/, "")).to eql(latex.gsub(/\s+/, ""))
         expect(formula.to_mathml).to be_equivalent_to(mathml)
@@ -2505,7 +2505,7 @@ RSpec.describe Plurimath::Latex do
           </math>
         MATHML
         latex = <<~LATEX
-          \\sin^{e}
+          \\sin{}^{e}
         LATEX
         expect(formula.to_latex.gsub(/\s+/, "")).to eql(latex.gsub(/\s+/, ""))
         expect(formula.to_mathml).to be_equivalent_to(mathml)

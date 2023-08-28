@@ -138,11 +138,11 @@ module Plurimath
       rule(msubsup: sequence(:function)) do
         base = function[0].is_a?(Math::Formula) ? function[0].value : function
         base_object = base.first
-        if base_object.is_a?(Math::Function::BinaryFunction)
+        if base_object.is_a?(Math::Function::BinaryFunction) && !base_object.any_value_exist?
           base_object.parameter_one = function[1]
           base_object.parameter_two = function[2]
           base_object
-        elsif base_object.is_a?(Math::Function::TernaryFunction)
+        elsif base_object.is_a?(Math::Function::TernaryFunction) && !base_object.any_value_exist?
           base_object.parameter_one = function[1]
           base_object.parameter_two = function[2]
           base_object.parameter_three = function[3]
@@ -158,15 +158,16 @@ module Plurimath
 
       rule(munderover: sequence(:function)) do
         base = function[0].is_a?(Math::Formula) ? function[0].value : function
-        if base.first.is_a?(Math::Function::BinaryFunction)
-          base.first.parameter_one = function[1]
-          base.first.parameter_two = function[2]
-          base.first
-        elsif base.first.is_a?(Math::Function::TernaryFunction)
-          base.first.parameter_one = function[1]
-          base.first.parameter_two = function[2]
-          base.first.parameter_three = function[3]
-          base.first
+        base_object = base.first
+        if base_object.is_a?(Math::Function::BinaryFunction) && !base_object.any_value_exist?
+          base_object.parameter_one = function[1]
+          base_object.parameter_two = function[2]
+          base_object
+        elsif base_object.is_a?(Math::Function::TernaryFunction) && !base_object.any_value_exist?
+          base_object.parameter_one = function[1]
+          base_object.parameter_two = function[2]
+          base_object.parameter_three = function[3]
+          base_object
         else
           Math::Function::Underover.new(
             function[0],
@@ -200,13 +201,9 @@ module Plurimath
       end
 
       rule(mover: subtree(:mover)) do
-        Utility.binary_function_classes(mover, under: true)
         if mover&.length == 1
-          if mover.first.class_name == "underline"
-            mover.first.swap_class
-          else
-            mover.first
-          end
+          base_object = mover.first
+          base_object.class_name == "underline" ? base_object.swap_class : base_object
         elsif Constants::CLASSES.any?(mover&.last&.class_name)
           mover.last.parameter_one = mover.shift if mover.length > 1
           mover.last
@@ -226,16 +223,11 @@ module Plurimath
             munder[ind] = Utility.mathml_unary_classes([object])
           end
         end
-        Utility.binary_function_classes(munder, under: true)
-        if ["ubrace", "obrace"].any?(munder.last.class_name)
+        if munder.length == 1
+          munder.first.class_name == "bar" ? munder.first.swap_class : munder.last
+        elsif ["ubrace", "obrace", "underline"].any?(munder.last.class_name)
           munder.last.parameter_one = munder.shift if munder.length > 1
           munder.last
-        elsif munder.length == 1
-          if munder.first.class_name == "bar"
-            munder.first.swap_class
-          else
-            munder.last
-          end
         else
           Math::Function::Underset.new(
             munder[1],

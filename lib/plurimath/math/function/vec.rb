@@ -1,15 +1,22 @@
 # frozen_string_literal: true
 
-require_relative "binary_function"
+require_relative "unary_function"
 
 module Plurimath
   module Math
     module Function
-      class Vec < BinaryFunction
+      class Vec < UnaryFunction
+        attr_accessor :attributes
+
+        def initialize(parameter_one = nil, attributes = {})
+          super(parameter_one)
+          @attributes = attributes
+        end
+
         def to_mathml_without_math_tag
           mover = Utility.ox_element("mover")
           first_value = parameter_one&.to_mathml_without_math_tag
-          mover.attributes.merge!({ accent: parameter_two[:accent] }) if parameter_two
+          mover.attributes.merge!({ accent: attributes[:accent] }) if attributes && attributes[:accent]
           Utility.update_nodes(
             mover,
             [
@@ -20,9 +27,9 @@ module Plurimath
         end
 
         def to_omml_without_math_tag(display_style)
-          return r_element("&#x2192;", rpr_tag: false) unless all_values_exist?
+          return r_element("&#x2192;", rpr_tag: false) unless parameter_one
 
-          if parameter_two && parameter_two[:accent]
+          if attributes && attributes[:accent]
             acc_tag(display_style)
           else
             symbol = Symbol.new("→")

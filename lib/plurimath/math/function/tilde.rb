@@ -1,23 +1,30 @@
 # frozen_string_literal: true
 
-require_relative "binary_function"
+require_relative "unary_function"
 
 module Plurimath
   module Math
     module Function
-      class Tilde < BinaryFunction
+      class Tilde < UnaryFunction
+        attr_accessor :attributes
+
+        def initialize(parameter_one = nil, attributes = {})
+          super(parameter_one)
+          @attributes = attributes
+        end
+
         def to_mathml_without_math_tag
           mover = Utility.ox_element("mover")
-          mover.attributes.merge!({ accent: parameter_two[:accent]}) if parameter_two
+          mover.attributes.merge!({ accent: attributes[:accent]}) if attributes && attributes[:accent]
           first_value = (Utility.ox_element("mo") << "~")
           second_value = parameter_one.to_mathml_without_math_tag if parameter_one
           Utility.update_nodes(mover, [second_value, first_value])
         end
 
         def to_omml_without_math_tag(display_style)
-          return r_element("~", rpr_tag: false) unless all_values_exist?
+          return r_element("~", rpr_tag: false) unless parameter_one
 
-          if parameter_two && parameter_two[:accent]
+          if attributes && attributes[:accent]
             acc_tag(display_style)
           else
             symbol = Symbol.new("~")
