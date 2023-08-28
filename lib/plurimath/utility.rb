@@ -364,9 +364,9 @@ module Plurimath
       end
 
       def attr_is_accent(attrs, value)
-        value.last.parameter_one = value.shift if value.length > 1
-        if value.last.is_a?(Math::Function::BinaryFunction)
-          value.last.parameter_two = attrs.transform_values { |v| YAML.safe_load(v) }
+        if value.last.is_a?(Math::Function::UnaryFunction)
+          value.last.parameter_one = value.shift if value.length > 1
+          value.last.attributes = attrs.transform_values { |v| YAML.safe_load(v) }
         end
         value
       end
@@ -522,9 +522,11 @@ module Plurimath
         if mrow.any?(String) || mrow.any?(unary_class)
           mrow.each_with_index do |object, ind|
             mrow[ind] = mathml_unary_classes([object]) if object.is_a?(String)
+            object = mrow[ind] if object.is_a?(String)
             next unless object.is_a?(unary_class)
             next if object.is_a?(Math::Function::Text)
             next if object.parameter_one || mrow[ind + 1].nil?
+            next unless ind.zero?
 
             object.parameter_one = mrow.delete_at(ind + 1)
           end

@@ -39,8 +39,7 @@ module Plurimath
         end
 
         def to_latex
-          first_value = "{#{latex_value}}" if parameter_one
-          "\\#{class_name}#{first_value}"
+          "\\#{class_name}{#{latex_value}}"
         end
 
         def to_html
@@ -49,7 +48,7 @@ module Plurimath
                         elsif parameter_one
                           "<i>#{parameter_one.to_html}</i>"
                         end
-          "<i>#{class_name}</i>#{first_value}"
+        "<i>#{invert_unicode_symbols}</i>#{first_value}"
         end
 
         def to_omml_without_math_tag(display_style)
@@ -77,6 +76,10 @@ module Plurimath
         end
 
         protected
+
+        def invert_unicode_symbols
+          Mathml::Constants::UNICODE_SYMBOLS.invert[class_name] || class_name
+        end
 
         def asciimath_value
           return "" unless parameter_one

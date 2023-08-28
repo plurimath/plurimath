@@ -137,8 +137,8 @@ module Plurimath
         chr_value = chr ? chr[:chr] : Math::Function::Hat.new
         index = acc_value.index { |d| d[:chr] }
         acc_value[index] = chr_value
-        Utility.binary_function_classes(acc_value)
-        acc_value.first.parameter_two = { accent: true }
+        Utility.unary_function_classes(acc_value)
+        acc_value.first.attributes = { accent: true }
         acc_value.first
       end
 

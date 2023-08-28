@@ -153,7 +153,7 @@ RSpec.describe Plurimath::Math::Function::Bar do
       let(:first_value) { Plurimath::Math::Symbol.new("n") }
 
       it "returns mathml string" do
-        expect(formula).to eql("<i>n</i>")
+        expect(formula).to eql("<i>¯</i><i>n</i>")
       end
     end
 
@@ -161,7 +161,7 @@ RSpec.describe Plurimath::Math::Function::Bar do
       let(:first_value) { Plurimath::Math::Number.new("70") }
 
       it "returns mathml string" do
-        expect(formula).to eql("<i>70</i>")
+        expect(formula).to eql("<i>¯</i><i>70</i>")
       end
     end
 
@@ -175,7 +175,7 @@ RSpec.describe Plurimath::Math::Function::Bar do
         ])
       end
       it "returns mathml string" do
-        expect(formula).to eql("<i><i>&sum;</i><sub>&</sub><sup>so</sup></i>")
+        expect(formula).to eql("<i>¯</i><i><i>&sum;</i><sub>&</sub><sup>so</sup></i>")
       end
     end
   end

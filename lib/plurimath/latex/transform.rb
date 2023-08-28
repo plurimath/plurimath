@@ -627,6 +627,23 @@ module Plurimath
       end
 
       rule(binary: simple(:binary),
+           subscript: simple(:subscript),
+           supscript: simple(:supscript)) do
+        if binary.is_a?(Parslet::Slice)
+          Utility.get_class(binary).new(
+            subscript,
+            supscript,
+          )
+        else
+          Math::Function::PowerBase.new(
+            binary,
+            subscript,
+            subscript,
+          )
+        end
+      end
+
+      rule(binary: simple(:binary),
            subscript: simple(:subscript)) do
         if binary.is_a?(Parslet::Slice)
           Utility.get_class(binary).new(subscript)

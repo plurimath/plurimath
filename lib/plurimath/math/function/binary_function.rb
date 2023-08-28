@@ -56,6 +56,10 @@ module Plurimath
           [r_tag]
         end
 
+        def any_value_exist?
+          !(parameter_one.nil? || parameter_two.nil?)
+        end
+
         def all_values_exist?
           !(parameter_one.nil? && parameter_two.nil?)
         end
