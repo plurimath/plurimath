@@ -30,11 +30,9 @@ module Plurimath
         end
 
         def to_latex
-          open_paren   = parameter_one ? parameter_one.value : "("
           fenced_value = parameter_two&.map(&:to_latex)&.join(" ")
-          close_paren  = parameter_three ? parameter_three.value : ")"
-          first_value  = latex_paren(open_paren)
-          second_value = latex_paren(close_paren)
+          first_value  = latex_paren(parameter_one.value)
+          second_value = latex_paren(parameter_three.value)
           "#{first_value} #{fenced_value} #{second_value}"
         end
 
@@ -88,8 +86,8 @@ module Plurimath
           return "" if paren.nil? || paren.empty?
 
           paren = %w[{ }].include?(paren) ? "\\#{paren}" : paren
-          paren = "\\#{Latex::Constants::UNICODE_SYMBOLS.invert[paren]}" if paren.to_s.match?(/&#x.{0,4};/)
-          paren.to_s
+          paren = "\\#{Latex::Constants::UNICODE_SYMBOLS.invert[paren]}" if paren&.to_s&.match?(/&#x.{0,4};/)
+          paren&.to_s
         end
 
         def mathml_paren(field)

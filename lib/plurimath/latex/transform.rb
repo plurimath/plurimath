@@ -404,6 +404,16 @@ module Plurimath
         )
       end
 
+      rule(number: simple(:number),
+           subscript: simple(:subscript),
+           supscript: simple(:supscript)) do
+        Math::Function::PowerBase.new(
+          Math::Number.new(number),
+          subscript,
+          supscript,
+        )
+      end
+
       rule(symbols: simple(:sym),
            subscript: simple(:subscript)) do
         Math::Function::Base.new(
@@ -469,6 +479,38 @@ module Plurimath
         Math::Function::Text.new(first_value)
       end
 
+      rule(text: simple(:text),
+           first_value: sequence(:first_value)) do
+        Math::Function::Text.new(first_value.join)
+      end
+
+      rule(text: simple(:text),
+           first_value: simple(:first_value),
+           supscript: simple(:supscript),) do
+        Math::Function::Power.new(
+          Math::Function::Text.new(first_value),
+          supscript,
+        )
+      end
+
+      rule(text: simple(:text),
+           first_value: sequence(:first_value),
+           supscript: simple(:supscript),) do
+        Math::Function::Power.new(
+          Math::Function::Text.new(first_value.join),
+          supscript,
+        )
+      end
+
+      rule(text: simple(:text),
+           first_value: simple(:first_value),
+           subscript: simple(:subscript),) do
+        Math::Function::Base.new(
+          Math::Function::Text.new(first_value),
+          subscript,
+        )
+      end
+
       rule(unary: simple(:unary),
            first_value: simple(:first_value)) do
         Utility.get_class(
@@ -518,6 +560,28 @@ module Plurimath
         Math::Function::Base.new(
           font_style,
           subscript,
+        )
+      end
+
+      rule(fonts: simple(:fonts),
+           intermediate_exp: simple(:int_exp),
+           subscript: simple(:subscript),
+           supscript: simple(:supscript)) do
+        font_style = if Utility::FONT_STYLES[fonts.to_sym].nil?
+                       Math::Function::FontStyle.new(
+                         int_exp,
+                         fonts.to_s,
+                       )
+                     else
+                       Utility::FONT_STYLES[fonts.to_sym].new(
+                         int_exp,
+                         fonts.to_s,
+                       )
+                     end
+        Math::Function::PowerBase.new(
+          font_style,
+          subscript,
+          supscript,
         )
       end
 

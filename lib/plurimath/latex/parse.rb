@@ -95,9 +95,16 @@ module Plurimath
       end
 
       rule(:intermediate_exp) do
-        (lparen.as(:left_paren) >> expression.maybe.as(:expression) >> rparen.as(:right_paren)).as(:intermediate_exp) |
+        (lparen.as(:left_paren) >> expression.maybe.as(:expression) >> (rparen | (str("\\") >> (match("\s") >> str(".")).maybe).as(:rparen)).maybe.as(:right_paren)).as(:intermediate_exp) |
           (str("{") >> expression.maybe.as(:expression) >> str("}")) |
           symbol_text_or_integer
+      end
+
+      rule(:parsing_text_values) do
+        (str("{") >> parsing_text_values >> str("}")) >> parsing_text_values |
+          (str("{") >> parsing_text_values >> str("}")) |
+          (match("[^}]") >> parsing_text_values) |
+          match("[^}]").repeat
       end
 
       rule(:power_base) do
@@ -204,7 +211,7 @@ module Plurimath
         when :binary
           (slashed_value(first_value, :binary) >> intermediate_exp.as(:first_value) >> intermediate_exp.as(:second_value)).as(:binary)
         when :text
-          (slashed_value(first_value, :text) >> (str("{") >> match("[^}]").repeat.as(:first_value) >> str("}")))
+          (slashed_value(first_value, :text) >> (str("{") >> parsing_text_values.as(:first_value) >> str("}")))
         when :ternary
           (slashed_value(first_value, :ternary_functions) >> dynamic_power_base >> sequence.as(:third_value).maybe).as(:ternary_class) |
             slashed_value(first_value, :ternary)
