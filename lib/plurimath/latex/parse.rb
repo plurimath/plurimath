@@ -137,7 +137,8 @@ module Plurimath
           (begining >> expression.as(:table_data) >> ending).as(:environment) |
           (slash >> environment >> intermediate_exp).as(:table_data) |
           power_base |
-          intermediate_exp
+          intermediate_exp |
+          intermediate_exp.as(:intermediate_exp) >> rparen.as(:symbol)
       end
 
       rule(:left_right) do
