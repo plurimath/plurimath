@@ -45,13 +45,9 @@ module Plurimath
       end
 
       rule(symbols: simple(:sym)) do
-        if sym.is_a?(Parslet::Slice)
-          Math::Symbol.new(
-            Constants::UNICODE_SYMBOLS[sym.to_sym] || sym,
-          )
-        else
-          sym
-        end
+        Math::Symbol.new(
+          Constants::UNICODE_SYMBOLS[sym.to_sym] || sym,
+        )
       end
 
       rule(lparen: simple(:lparen),
@@ -499,6 +495,15 @@ module Plurimath
         Math::Function::Power.new(
           Math::Function::Text.new(first_value.join),
           supscript,
+        )
+      end
+
+      rule(text: simple(:text),
+           first_value: sequence(:first_value),
+           subscript: simple(:subscript),) do
+        Math::Function::Base.new(
+          Math::Function::Text.new(first_value.join),
+          subscript,
         )
       end
 

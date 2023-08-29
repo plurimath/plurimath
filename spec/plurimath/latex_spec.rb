@@ -2693,6 +2693,49 @@ RSpec.describe Plurimath::Latex do
         expect(formula.to_mathml).to be_equivalent_to(mathml)
       end
     end
+
+    context "contains text with empty and string value and base value, power base value of font style example #56" do
+      let(:string) do
+        <<~LATEX
+          \\text{}_{d} \\text{d}_{d} \\mathfrak{d}_d^w 100_d^w \\text{}
+        LATEX
+      end
+
+      it 'returns parsed Latex to MathML' do
+        mathml = <<~MATHML
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
+              <msub>
+                <mtext></mtext>
+                <mi>d</mi>
+              </msub>
+              <msub>
+                <mtext>d</mtext>
+                <mi>d</mi>
+              </msub>
+              <msubsup>
+                <mstyle mathvariant="fraktur">
+                  <mi>d</mi>
+                </mstyle>
+                <mi>d</mi>
+                <mi>w</mi>
+              </msubsup>
+              <msubsup>
+                <mn>100</mn>
+                <mi>d</mi>
+                <mi>w</mi>
+              </msubsup>
+              <mtext></mtext>
+            </mstyle>
+          </math>
+        MATHML
+        latex = "\\text{}_{d} \\text{d}_{d} \\mathfrak{d}_{d}^{w} 100_{d}^{w} \\text{}"
+        asciimath = "\"\"_(d) \"d\"_(d) mathfrak(d)_(d)^(w) 100_(d)^(w) \"\""
+        expect(formula.to_asciimath).to eql(asciimath)
+        expect(formula.to_latex.gsub(/\s+/, "")).to eql(latex.gsub(/\s+/, ""))
+        expect(formula.to_mathml).to be_equivalent_to(mathml)
+      end
+    end
   end
 
   describe ".to_asciimath" do

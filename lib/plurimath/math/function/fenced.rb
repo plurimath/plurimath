@@ -31,8 +31,8 @@ module Plurimath
 
         def to_latex
           fenced_value = parameter_two&.map(&:to_latex)&.join(" ")
-          first_value  = latex_paren(parameter_one.value)
-          second_value = latex_paren(parameter_three.value)
+          first_value  = latex_paren(parameter_one&.value)
+          second_value = latex_paren(parameter_three&.value)
           "#{first_value} #{fenced_value} #{second_value}"
         end
 
