@@ -21,6 +21,10 @@ module Plurimath
           )
         end
 
+        def to_omml_without_math_tag(display_style)
+          font_styles(display_style)
+        end
+
         def to_html
           parameter_one&.to_html
         end

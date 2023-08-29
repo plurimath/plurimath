@@ -68,7 +68,7 @@ module Plurimath
           if lang == "omml"
             entities = HTMLEntities.new
             entities.encode(
-              entities.decode(parameter_one.gsub(/ /, "&nbsp;")),
+              entities.decode(parameter_one&.gsub(/ /, "&#xa0;")),
               :named,
             )
           else

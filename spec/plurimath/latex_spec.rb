@@ -2624,6 +2624,75 @@ RSpec.describe Plurimath::Latex do
         expect(formula.to_mathml).to be_equivalent_to(mathml)
       end
     end
+
+    context "contains text with value and power value example #54" do
+      let(:string) do
+        <<~LATEX
+          a ( \\text{&#x200c;}^{28} \\text{Si} )^{3}
+        LATEX
+      end
+
+      it 'returns parsed Latex to MathML' do
+        mathml = <<~MATHML
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
+              <mi>a</mi>
+              <msup>
+                <mrow>
+                  <mo>(</mo>
+                  <msup>
+                    <mtext>&#x200c;</mtext>
+                    <mn>28</mn>
+                  </msup>
+                  <mtext>Si</mtext>
+                  <mo>)</mo>
+                </mrow>
+                <mn>3</mn>
+              </msup>
+            </mstyle>
+          </math>
+        MATHML
+        latex = "a ( \\text{&#x200c;}^{28} \\text{Si} )^{3}"
+        asciimath = "a (\"&#x200c;\"^(28) \"Si\")^(3)"
+        expect(formula.to_asciimath).to eql(asciimath)
+        expect(formula.to_latex.gsub(/\s+/, "")).to eql(latex.gsub(/\s+/, ""))
+        expect(formula.to_mathml).to be_equivalent_to(mathml)
+      end
+    end
+
+    context "contains text with empty value and power value example #55" do
+      let(:string) do
+        <<~LATEX
+          \\mathit{M} ( \\text{}^{12} \\text{C} )
+        LATEX
+      end
+
+      it 'returns parsed Latex to MathML' do
+        mathml = <<~MATHML
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
+              <mstyle mathvariant="mathit">
+                <mi>M</mi>
+              </mstyle>
+              <mrow>
+                <mo>(</mo>
+                <msup>
+                  <mtext></mtext>
+                  <mn>12</mn>
+                </msup>
+                <mtext>C</mtext>
+                <mo>)</mo>
+              </mrow>
+            </mstyle>
+          </math>
+        MATHML
+        latex = "M ( \\text{}^{12} \\text{C} )"
+        asciimath = "M (\"\"^(12) \"C\")"
+        expect(formula.to_asciimath).to eql(asciimath)
+        expect(formula.to_latex.gsub(/\s+/, "")).to eql(latex.gsub(/\s+/, ""))
+        expect(formula.to_mathml).to be_equivalent_to(mathml)
+      end
+    end
   end
 
   describe ".to_asciimath" do
