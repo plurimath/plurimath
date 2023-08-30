@@ -72,7 +72,7 @@ module Plurimath
           font = flatten_row.shift
           font.new(
             Utility.filter_values(flatten_row),
-            Utility::OMML_FONTS.invert[font].to_s,
+            Utility::FONT_STYLES.key(font).to_s,
           )
         else
           Utility.filter_values(flatten_row)
@@ -133,7 +133,11 @@ module Plurimath
 
       rule(rPr: subtree(:rpr)) do
         if rpr.is_a?(Array)
-          Utility::OMML_FONTS[rpr.join("-").to_sym]
+          Utility::FONT_STYLES[
+            Omml::Parser::SUPPORTED_FONTS[
+              rpr&.join("-")&.to_sym,
+            ]&.to_sym,
+          ]
         end
       end
 

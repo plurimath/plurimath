@@ -1415,11 +1415,15 @@ RSpec.describe Plurimath::Mathml::Parser do
         </math>
       MATHML
     }
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
         Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Base.new(
-            Plurimath::Math::Symbol.new("T"),
+            Plurimath::Math::Function::FontStyle::Italic.new(
+              Plurimath::Math::Symbol.new("T"),
+              "italic",
+            ),
             Plurimath::Math::Number.new("90"),
           ),
           Plurimath::Math::Symbol.new("/"),
@@ -1429,7 +1433,10 @@ RSpec.describe Plurimath::Mathml::Parser do
           ),
           Plurimath::Math::Symbol.new("="),
           Plurimath::Math::Function::Base.new(
-            Plurimath::Math::Symbol.new("A"),
+            Plurimath::Math::Function::FontStyle::Italic.new(
+              Plurimath::Math::Symbol.new("A"),
+              "italic",
+            ),
             Plurimath::Math::Number.new("0"),
           ),
           Plurimath::Math::Symbol.new("+"),
@@ -1442,7 +1449,10 @@ RSpec.describe Plurimath::Mathml::Parser do
             Plurimath::Math::Number.new("9"),
           ),
           Plurimath::Math::Function::Base.new(
-            Plurimath::Math::Symbol.new("A"),
+            Plurimath::Math::Function::FontStyle::Italic.new(
+              Plurimath::Math::Symbol.new("A"),
+              "italic",
+            ),
             Plurimath::Math::Symbol.new("i"),
           ),
           Plurimath::Math::Function::Power.new(
@@ -1471,13 +1481,19 @@ RSpec.describe Plurimath::Mathml::Parser do
                           ),
                         ),
                         Plurimath::Math::Symbol.new("&#x2014;"),
-                        Plurimath::Math::Symbol.new("B")
+                        Plurimath::Math::Function::FontStyle::Italic.new(
+                          Plurimath::Math::Symbol.new("B"),
+                          "italic",
+                        ),
                       ])
                     ],
                     Plurimath::Math::Symbol.new(")")
                   ),
                   Plurimath::Math::Symbol.new("/"),
-                  Plurimath::Math::Symbol.new("C")
+                  Plurimath::Math::Function::FontStyle::Italic.new(
+                    Plurimath::Math::Symbol.new("C"),
+                    "italic",
+                  ),
                 ])
               ],
               Plurimath::Math::Symbol.new("]")
@@ -1607,7 +1623,10 @@ RSpec.describe Plurimath::Mathml::Parser do
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
         Plurimath::Math::Function::Base.new(
-          Plurimath::Math::Symbol.new("D"),
+          Plurimath::Math::Function::FontStyle::Italic.new(
+            Plurimath::Math::Symbol.new("D"),
+            "italic",
+          ),
           Plurimath::Math::Symbol.new("i"),
         ),
         Plurimath::Math::Symbol.new("="),
@@ -1700,14 +1719,20 @@ RSpec.describe Plurimath::Mathml::Parser do
       expected_value = Plurimath::Math::Formula.new([
         Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Base.new(
-            Plurimath::Math::Symbol.new("W"),
+            Plurimath::Math::Function::FontStyle::Italic.new(
+              Plurimath::Math::Symbol.new("W"),
+              "italic",
+            ),
             Plurimath::Math::Symbol.new("t"),
           ),
           Plurimath::Math::Function::Fenced.new(
             Plurimath::Math::Symbol.new("("),
             [
               Plurimath::Math::Function::Base.new(
-                Plurimath::Math::Symbol.new("T"),
+                Plurimath::Math::Function::FontStyle::Italic.new(
+                  Plurimath::Math::Symbol.new("T"),
+                  "italic",
+                ),
                 Plurimath::Math::Number.new("90"),
               )
             ],
