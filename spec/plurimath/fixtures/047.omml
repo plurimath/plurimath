@@ -19,12 +19,12 @@
           </m:eqArrPr>
           <m:e>
             <m:r>
-              <m:t>0&le;&nbsp;i&nbsp;&le;&nbsp;m</m:t>
+              <m:t>0&#x2264;&#xa0;i&#xa0;&#x2264;&#xa0;m</m:t>
             </m:r>
           </m:e>
           <m:e>
             <m:r>
-              <m:t>0&lt;j&lt;n&nbsp;</m:t>
+              <m:t>0&#x3c;j&#x3c;n&#xa0;</m:t>
             </m:r>
           </m:e>
         </m:eqArr>

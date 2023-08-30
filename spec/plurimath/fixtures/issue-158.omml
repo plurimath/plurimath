@@ -82,10 +82,10 @@
           </m:e>
           <m:e>
             <m:r>
-              <m:t>E,&nbsp;&nbsp;&amp;</m:t>
+              <m:t>E,&#xa0;&#xa0;&#x26;</m:t>
             </m:r>
             <m:r>
-              <m:t>if&nbsp;</m:t>
+              <m:t>if&#xa0;</m:t>
             </m:r>
             <m:sSub>
               <m:sSubPr>
@@ -108,7 +108,7 @@
               </m:sub>
             </m:sSub>
             <m:r>
-              <m:t>&lt;S</m:t>
+              <m:t>&#x3c;S</m:t>
             </m:r>
           </m:e>
           <m:e>
@@ -219,7 +219,7 @@
                           </m:sub>
                         </m:sSub>
                         <m:r>
-                          <m:t>mod&nbsp;S</m:t>
+                          <m:t>mod&#xa0;S</m:t>
                         </m:r>
                       </m:num>
                       <m:den>
@@ -236,7 +236,7 @@
               </m:e>
             </m:d>
             <m:r>
-              <m:t>E,&nbsp;&nbsp;&amp;</m:t>
+              <m:t>E,&#xa0;&#xa0;&#x26;</m:t>
             </m:r>
             <m:r>
               <m:t>otherwise</m:t>

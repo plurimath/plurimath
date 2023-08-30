@@ -11,7 +11,7 @@
       </m:limLowPr>
       <m:e>
         <m:r>
-          <m:t>x&oplus;y</m:t>
+          <m:t>x&#x2295;y</m:t>
         </m:r>
       </m:e>
       <m:lim>

@@ -16,7 +16,7 @@
       </m:e>
       <m:lim>
         <m:r>
-          <m:t>0&le;x&le;1</m:t>
+          <m:t>0&#x2264;x&#x2264;1</m:t>
         </m:r>
       </m:lim>
     </m:limLow>

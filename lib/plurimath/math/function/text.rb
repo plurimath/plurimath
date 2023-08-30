@@ -69,7 +69,7 @@ module Plurimath
             entities = HTMLEntities.new
             entities.encode(
               entities.decode(parameter_one&.gsub(/ /, "&#xa0;")),
-              :named,
+              :hexadecimal,
             )
           else
             parameter_one
