@@ -1024,7 +1024,7 @@ module ExpectedValues
       Plurimath::Math::Function::Text.new("over"),
       Plurimath::Math::Function::FontStyle::Normal.new(
         Plurimath::Math::Symbol.new("‾"),
-        "p",
+        "mathrm",
       ),
     )
   ])
@@ -1039,7 +1039,7 @@ module ExpectedValues
       Plurimath::Math::Function::Text.new("A"),
       Plurimath::Math::Function::FontStyle::Normal.new(
         Plurimath::Math::Symbol.new("‾"),
-        "p",
+        "mathrm",
       ),
     )
   ])
@@ -1048,7 +1048,7 @@ module ExpectedValues
       Plurimath::Math::Function::Text.new("ABC"),
       Plurimath::Math::Function::FontStyle::Normal.new(
         Plurimath::Math::Symbol.new("‾"),
-        "p",
+        "mathrm",
       ),
     )
   ])
@@ -1057,7 +1057,7 @@ module ExpectedValues
       Plurimath::Math::Function::Text.new("x⊕y"),
       Plurimath::Math::Function::FontStyle::Normal.new(
         Plurimath::Math::Symbol.new("‾"),
-        "p",
+        "mathrm",
       ),
     )
   ])
@@ -1924,19 +1924,19 @@ module ExpectedValues
   EX_184 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::FontStyle::Normal.new(
       Plurimath::Math::Number.new("100"),
-      "p"
+      "mathrm"
     ),
     Plurimath::Math::Function::FontStyle::Bold.new(
       Plurimath::Math::Function::Text.new("a"),
-      "b"
+      "mathbf"
     ),
     Plurimath::Math::Function::FontStyle::Italic.new(
       Plurimath::Math::Function::Text.new("a"),
-      "i"
+      "italic"
     ),
     Plurimath::Math::Function::FontStyle::BoldItalic.new(
       Plurimath::Math::Function::Text.new("a"),
-      "bi"
+      "bold-italic"
     ),
     Plurimath::Math::Function::FontStyle::DoubleStruck.new(
       Plurimath::Math::Function::Text.new("a"),
@@ -1944,35 +1944,35 @@ module ExpectedValues
     ),
     Plurimath::Math::Function::FontStyle::BoldFraktur.new(
       Plurimath::Math::Function::Text.new("a"),
-      "fraktur-b"
+      "bold-fraktur"
     ),
     Plurimath::Math::Function::FontStyle::Script.new(
       Plurimath::Math::Function::Text.new("a"),
-      "script-p"
+      "mathcal"
     ),
     Plurimath::Math::Function::FontStyle::BoldScript.new(
       Plurimath::Math::Function::Text.new("a"),
-      "script-b"
+      "bold-script"
     ),
     Plurimath::Math::Function::FontStyle::Fraktur.new(
       Plurimath::Math::Function::Text.new("a"),
-      "fraktur-p"
+      "mathfrak"
     ),
     Plurimath::Math::Function::FontStyle::SansSerif.new(
       Plurimath::Math::Function::Text.new("a"),
-      "sans-serif-p"
+      "sans-serif"
     ),
     Plurimath::Math::Function::FontStyle::BoldSansSerif.new(
       Plurimath::Math::Function::Text.new("a"),
-      "sans-serif-b"
+      "bold-sans-serif"
     ),
     Plurimath::Math::Function::FontStyle::SansSerifItalic.new(
       Plurimath::Math::Function::Text.new("a"),
-      "sans-serif-i"
+      "sans-serif-italic"
     ),
     Plurimath::Math::Function::FontStyle::SansSerifBoldItalic.new(
       Plurimath::Math::Function::Text.new("a"),
-      "sans-serif-bi"
+      "sans-serif-bold-italic"
     ),
     Plurimath::Math::Function::FontStyle::Monospace.new(
       Plurimath::Math::Function::Text.new("a"),

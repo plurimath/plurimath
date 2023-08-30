@@ -4,24 +4,30 @@ module Plurimath
   class Utility
     FONT_STYLES = {
       "double-struck": Math::Function::FontStyle::DoubleStruck,
+      "sans-serif-bold-italic": Math::Function::FontStyle::SansSerifBoldItalic,
+      "sans-serif-italic": Math::Function::FontStyle::SansSerifItalic,
+      "bold-sans-serif": Math::Function::FontStyle::BoldSansSerif,
       "sans-serif": Math::Function::FontStyle::SansSerif,
+      "bold-fraktur": Math::Function::FontStyle::BoldFraktur,
+      "bold-italic": Math::Function::FontStyle::BoldItalic,
+      "bold-script": Math::Function::FontStyle::BoldScript,
       monospace: Math::Function::FontStyle::Monospace,
-      fraktur: Math::Function::FontStyle::Fraktur,
-      script: Math::Function::FontStyle::Script,
-      normal: Math::Function::FontStyle::Normal,
-      bold: Math::Function::FontStyle::Bold,
       mathfrak: Math::Function::FontStyle::Fraktur,
       mathcal: Math::Function::FontStyle::Script,
+      fraktur: Math::Function::FontStyle::Fraktur,
       mathbb: Math::Function::FontStyle::DoubleStruck,
       mathtt: Math::Function::FontStyle::Monospace,
       mathsf: Math::Function::FontStyle::SansSerif,
       mathrm: Math::Function::FontStyle::Normal,
       textrm: Math::Function::FontStyle::Normal,
+      italic: Math::Function::FontStyle::Italic,
       mathbf: Math::Function::FontStyle::Bold,
       textbf: Math::Function::FontStyle::Bold,
+      script: Math::Function::FontStyle::Script,
+      normal: Math::Function::FontStyle::Normal,
+      bold: Math::Function::FontStyle::Bold,
       bbb: Math::Function::FontStyle::DoubleStruck,
       cal: Math::Function::FontStyle::Script,
-      bf: Math::Function::FontStyle::Bold,
       sf: Math::Function::FontStyle::SansSerif,
       tt: Math::Function::FontStyle::Monospace,
       fr: Math::Function::FontStyle::Fraktur,
@@ -29,6 +35,7 @@ module Plurimath
       cc: Math::Function::FontStyle::Script,
       ii: Math::Function::FontStyle::Italic,
       bb: Math::Function::FontStyle::Bold,
+      bf: Math::Function::FontStyle::Bold,
     }.freeze
     ALIGNMENT_LETTERS = {
       c: "center",
@@ -72,22 +79,6 @@ module Plurimath
       max
       min
     ].freeze
-    OMML_FONTS = {
-      "sans-serif-bi": Math::Function::FontStyle::SansSerifBoldItalic,
-      "sans-serif-i": Math::Function::FontStyle::SansSerifItalic,
-      "sans-serif-b": Math::Function::FontStyle::BoldSansSerif,
-      "double-struck": Math::Function::FontStyle::DoubleStruck,
-      "sans-serif-p": Math::Function::FontStyle::SansSerif,
-      "fraktur-p": Math::Function::FontStyle::Fraktur,
-      "fraktur-b": Math::Function::FontStyle::BoldFraktur,
-      "script-b": Math::Function::FontStyle::BoldScript,
-      "script-p": Math::Function::FontStyle::Script,
-      monospace: Math::Function::FontStyle::Monospace,
-      bi: Math::Function::FontStyle::BoldItalic,
-      p: Math::Function::FontStyle::Normal,
-      i: Math::Function::FontStyle::Italic,
-      b: Math::Function::FontStyle::Bold,
-    }.freeze
     PARENTHESIS = {
       "&#x2329;": "&#x232a;",
       "&#x230a;": "&#x230b;",

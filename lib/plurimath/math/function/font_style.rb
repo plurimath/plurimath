@@ -57,6 +57,7 @@ module Plurimath
             r_tag,
             Array(parameter_one.font_style_t_tag(display_style)),
           )
+          [r_tag]
         end
       end
     end
