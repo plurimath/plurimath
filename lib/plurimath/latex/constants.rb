@@ -3245,6 +3245,7 @@ module Plurimath
         textrm: :fonts,
         textbf: :fonts,
         arccos: :unary,
+        cancel: :unary,
         arcsin: :unary,
         arctan: :unary,
         limsup: :unary,

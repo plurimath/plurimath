@@ -525,10 +525,21 @@ module Plurimath
 
       rule(text: simple(:text),
            first_value: simple(:first_value),
-           subscript: simple(:subscript),) do
+           subscript: simple(:subscript)) do
         Math::Function::Base.new(
           Math::Function::Text.new(first_value),
           subscript,
+        )
+      end
+
+      rule(text: simple(:text),
+           first_value: simple(:first_value),
+           subscript: simple(:subscript),
+           supscript: simple(:supscript)) do
+        Math::Function::PowerBase.new(
+          Math::Function::Text.new(first_value),
+          subscript,
+          supscript,
         )
       end
 
