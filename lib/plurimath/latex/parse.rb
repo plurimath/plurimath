@@ -91,7 +91,8 @@ module Plurimath
           match["a-zA-Z"].as(:symbols) |
           match(/\d+(\.[0-9]+)|\d/).repeat(1).as(:number) |
           (str("\\\\").as("\\\\") >> match(/\s/).repeat) |
-          str("\\ ").as(:space)
+          str("\\ ").as(:space) |
+          (str("\\operatorname{") >> match("[^}]").repeat.as(:symbols) >> str("}"))
       end
 
       rule(:intermediate_exp) do
