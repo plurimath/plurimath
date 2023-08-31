@@ -275,6 +275,14 @@ module Plurimath
         )
       end
 
+      rule(operant: simple(:operant),
+           supscript: simple(:supscript)) do
+        Math::Function::Power.new(
+          Math::Symbol.new(operant),
+          supscript,
+        )
+      end
+
       rule(sequence: simple(:sequence),
            expression: simple(:expr)) do
         [sequence, expr].compact
@@ -443,6 +451,14 @@ module Plurimath
         Math::Function::Power.new(
           int_exp,
           supscript,
+        )
+      end
+
+      rule(intermediate_exp: simple(:int_exp),
+           subscript: simple(:subscript)) do
+        Math::Function::Base.new(
+          int_exp,
+          subscript,
         )
       end
 

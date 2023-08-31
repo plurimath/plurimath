@@ -238,6 +238,34 @@ RSpec.describe Plurimath::Math do
         }.not_to raise_error
       end
     end
+
+    context "contains jcgm example #6" do
+      let(:string) do
+        <<~ASCIIMATH
+          \\mathit{F} ( \\mathit{\\nu}_{\\text{a}} , \\mathit{\\nu}_{\\text{b}} ) = \\frac{s_{\\text{a}}^{2}}{s_{\\text{b}}^{2}} = \\frac{\\mathit{K} s^{2} ( \\overline{\\mathit{V}}_{j} )}{s^{2} ( \\mathit{V} )_{j k}} = \\frac{5 ( 57 \\text{unitsml(uV)} )^{2}}{( 85 \\text{unitsml(uV)} )^{2}} = 2.25
+        ASCIIMATH
+      end
+
+      it 'returns instance of Asciimath' do
+        expect{
+          convert(string_to_formula(string, :asciimath), :asciimath)
+        }.not_to raise_error
+      end
+    end
+
+    context "contains jcgm example #7" do
+      let(:string) do
+        <<~ASCIIMATH
+           "\\mathit{Y} = \\frac{P_{M}}{P_{S}} = \\frac{1 - | \\mathit{\\Gamma}_{M} |^{2}}{1 - | \\mathit{\\Gamma}_{S} |^{2}} \\times \\frac{| 1 - \\mathit{\\Gamma}_{S} \\mathit{\\Gamma}_{G} |^{2}}{| 1 - \\mathit{\\Gamma}_{M} \\mathit{\\Gamma}_{G} |^{2}} ,"
+        ASCIIMATH
+      end
+
+      it 'returns instance of Asciimath' do
+        expect{
+          convert(string_to_formula(string, :asciimath), :asciimath)
+        }.not_to raise_error
+      end
+    end
   end
 end
 
