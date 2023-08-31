@@ -8,8 +8,10 @@ module Plurimath
       class Sqrt < UnaryFunction
         def to_mathml_without_math_tag
           sqrt_tag = Utility.ox_element("msqrt")
-          first_value = parameter_one&.to_mathml_without_math_tag
-          sqrt_tag << first_value if first_value
+          Utility.update_nodes(
+            sqrt_tag,
+            Array(parameter_one&.to_mathml_without_math_tag),
+          )
           sqrt_tag
         end
 

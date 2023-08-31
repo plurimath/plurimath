@@ -1978,8 +1978,8 @@ RSpec.describe Plurimath::Mathml::Parser do
               ])
             ])
           ],
-          Plurimath::Math::Symbol.new(" ( "),
-          Plurimath::Math::Symbol.new(" ) ")
+          " ( ",
+          " ) "
         ),
       ])
       expect(formula).to eq(expected_value)

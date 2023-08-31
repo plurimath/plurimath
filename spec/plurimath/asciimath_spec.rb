@@ -2854,7 +2854,7 @@ RSpec.describe Plurimath::Asciimath do
       let(:string) { '{:(u^2(delta y), = {:[({partial f}/{partial ii(X)_1})^2 u^2(x_1) +({partial f}/{partial ii(X)_2})^2 u^2(x_2) +2 {partial f}/{partial ii(X)_1} {partial f}/{partial ii(X)_2} r(x_1,x_2)u(x_1)u(x_2)]|_{bb(X)=bb(x)}),(" ",= 4x_1^2 u^2 (x_1) + 4x_2^2 u^2 (x_2) + 8r(x_1,x_2) x_1 x_2 u(x_1) u(x_2).):}' }
 
       it 'returns parsed Asciimath to Formula' do
-        latex = '{: ( u^{2} ( \delta y ) ,  = {: [ ( \frac{\partial f}{\partial \mathit{X}_{1}} )^{2} u^{2} ( x_{1} ) + ( \frac{\partial f}{\partial \mathit{X}_{2}} )^{2} u^{2} ( x_{2} ) + 2 \frac{\partial f}{\partial \mathit{X}_{1}} \frac{\partial f}{\partial \mathit{X}_{2}} r ( x_{1} , x_{2} ) u ( x_{1} ) u ( x_{2} ) ] |_{\mathbf{X} = \mathbf{x}} ) , ( \text{ } , = 4 x_{1}^{2} u^{2} ( x_{1} ) + 4 x_{2}^{2} u^{2} ( x_{2} ) + 8 r ( x_{1} , x_{2} ) x_{1} x_{2} u ( x_{1} ) u ( x_{2} ) . ) :} '
+        latex = ' ( u^{2} ( \delta y ) ,  =  [ ( \frac{\partial f}{\partial \mathit{X}_{1}} )^{2} u^{2} ( x_{1} ) + ( \frac{\partial f}{\partial \mathit{X}_{2}} )^{2} u^{2} ( x_{2} ) + 2 \frac{\partial f}{\partial \mathit{X}_{1}} \frac{\partial f}{\partial \mathit{X}_{2}} r ( x_{1} , x_{2} ) u ( x_{1} ) u ( x_{2} ) ] |_{\mathbf{X} = \mathbf{x}} ) , ( \text{ } , = 4 x_{1}^{2} u^{2} ( x_{1} ) + 4 x_{2}^{2} u^{2} ( x_{2} ) + 8 r ( x_{1} , x_{2} ) x_{1} x_{2} u ( x_{1} ) u ( x_{2} ) . )  '
         asciimath = '{:(u^(2) (delta y) ,  = {:[(frac(del f)(del ii(X)_(1)))^(2) u^(2) (x_(1)) + (frac(del f)(del ii(X)_(2)))^(2) u^(2) (x_(2)) + 2 frac(del f)(del ii(X)_(1)) frac(del f)(del ii(X)_(2)) r (x_(1) , x_(2)) u (x_(1)) u (x_(2))] |_(mathbf(X) = mathbf(x))) , (" " , = 4 x_(1)^(2) u^(2) (x_(1)) + 4 x_(2)^(2) u^(2) (x_(2)) + 8 r (x_(1) , x_(2)) x_(1) x_(2) u (x_(1)) u (x_(2)) .):}'
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
@@ -3133,7 +3133,7 @@ RSpec.describe Plurimath::Asciimath do
       let(:string) { 'u^2(delta y) = {:[({partial f}/{partial ii(X)_1})^2 u^2(x_1) + ({partial f}/{partial ii(X)_2})^2]|_{bb(X)=bb(x)} = 4 x_1^2 u^2 (x_1) + 4 x_2^2 u^2 (x_2),' }
 
       it 'returns parsed Asciimath to Formula' do
-        latex = 'u^{2} ( \delta y ) = {: [ ( \frac{\partial f}{\partial \mathit{X}_{1}} )^{2} u^{2} ( x_{1} ) + ( \frac{\partial f}{\partial \mathit{X}_{2}} )^{2} ] |_{\mathbf{X} = \mathbf{x}} = 4 x_{1}^{2} u^{2} ( x_{1} ) + 4 x_{2}^{2} u^{2} ( x_{2} ) , '
+        latex = 'u^{2} ( \delta y ) =  [ ( \frac{\partial f}{\partial \mathit{X}_{1}} )^{2} u^{2} ( x_{1} ) + ( \frac{\partial f}{\partial \mathit{X}_{2}} )^{2} ] |_{\mathbf{X} = \mathbf{x}} = 4 x_{1}^{2} u^{2} ( x_{1} ) + 4 x_{2}^{2} u^{2} ( x_{2} ) , '
         asciimath = 'u^(2) (delta y) = {:[(frac(del f)(del ii(X)_(1)))^(2) u^(2) (x_(1)) + (frac(del f)(del ii(X)_(2)))^(2)] |_(mathbf(X) = mathbf(x)) = 4 x_(1)^(2) u^(2) (x_(1)) + 4 x_(2)^(2) u^(2) (x_(2)) ,'
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
@@ -4559,7 +4559,7 @@ RSpec.describe Plurimath::Asciimath do
       let(:string) { '[(cos{:y_2:},sin y_2),(-(sin y_2)//y_1,(cos y_2)//y_1)] .' }
 
       it 'returns parsed Asciimath to Formula' do
-        latex = '\left [\begin{matrix}\cos{{: y_{2} :}} & \sin{y}_{2} \\\\ - ( \sin{y}_{2} ) / y_{1} & ( \cos{y}_{2} ) / y_{1}\end{matrix}\right ] .'
+        latex = '\left [\begin{matrix}\cos{ y_{2} } & \sin{y}_{2} \\\\ - ( \sin{y}_{2} ) / y_{1} & ( \cos{y}_{2} ) / y_{1}\end{matrix}\right ] .'
         asciimath = '[[cos{:y_(2):}, siny_(2)], [- (siny_(2)) // y_(1), (cosy_(2)) // y_(1)]] .'
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
@@ -6252,6 +6252,209 @@ RSpec.describe Plurimath::Asciimath do
                   </m:r>
                 </m:sup>
               </m:sSubSup>
+            </m:oMath>
+          </m:oMathPara>
+        OMML
+        expect(formula).to be_equivalent_to(omml)
+      end
+    end
+
+    context "contains power and fenced example #17" do
+      let(:string) { "ii(rho)_{ij} = ii(nu)(w_i, w_j)//(ii(sigma)_i^2 ii(sigma)_j^2)^{1//2}" }
+      let(:display_style) { false }
+
+      it 'returns OMML string' do
+        omml = <<~OMML
+          <m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape">
+            <m:oMath>
+              <m:sSub>
+                <m:sSubPr>
+                  <m:ctrlPr>
+                    <w:rPr>
+                      <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
+                      <w:i/>
+                    </w:rPr>
+                  </m:ctrlPr>
+                </m:sSubPr>
+                <m:e>
+                  <m:r>
+                    <m:rPr>
+                      <m:sty m:val="i"/>
+                    </m:rPr>
+                    <m:t>&#x3c1;</m:t>
+                  </m:r>
+                </m:e>
+                <m:sub>
+                  <m:r>
+                    <m:t>i</m:t>
+                  </m:r>
+                  <m:r>
+                    <m:t>j</m:t>
+                  </m:r>
+                </m:sub>
+              </m:sSub>
+              <m:r>
+                <m:t>=</m:t>
+              </m:r>
+              <m:r>
+                <m:rPr>
+                  <m:sty m:val="i"/>
+                </m:rPr>
+                <m:t>&#x3bd;</m:t>
+              </m:r>
+              <m:d>
+                <m:dPr>
+                  <m:begChr m:val="("/>
+                  <m:endChr m:val=")"/>
+                  <m:ctrlPr>
+                    <w:rPr>
+                      <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
+                      <w:i/>
+                    </w:rPr>
+                  </m:ctrlPr>
+                </m:dPr>
+                <m:e>
+                  <m:sSub>
+                    <m:sSubPr>
+                      <m:ctrlPr>
+                        <w:rPr>
+                          <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
+                          <w:i/>
+                        </w:rPr>
+                      </m:ctrlPr>
+                    </m:sSubPr>
+                    <m:e>
+                      <m:r>
+                        <m:t>w</m:t>
+                      </m:r>
+                    </m:e>
+                    <m:sub>
+                      <m:r>
+                        <m:t>i</m:t>
+                      </m:r>
+                    </m:sub>
+                  </m:sSub>
+                  <m:r>
+                    <m:t>, </m:t>
+                  </m:r>
+                  <m:sSub>
+                    <m:sSubPr>
+                      <m:ctrlPr>
+                        <w:rPr>
+                          <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
+                          <w:i/>
+                        </w:rPr>
+                      </m:ctrlPr>
+                    </m:sSubPr>
+                    <m:e>
+                      <m:r>
+                        <m:t>w</m:t>
+                      </m:r>
+                    </m:e>
+                    <m:sub>
+                      <m:r>
+                        <m:t>j</m:t>
+                      </m:r>
+                    </m:sub>
+                  </m:sSub>
+                </m:e>
+              </m:d>
+              <m:r>
+                <m:t>/</m:t>
+              </m:r>
+              <m:sSup>
+                <m:sSupPr>
+                  <m:ctrlPr>
+                    <w:rPr>
+                      <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
+                      <w:i/>
+                    </w:rPr>
+                  </m:ctrlPr>
+                </m:sSupPr>
+                <m:e>
+                  <m:d>
+                    <m:dPr>
+                      <m:begChr m:val="("/>
+                      <m:endChr m:val=")"/>
+                      <m:ctrlPr>
+                        <w:rPr>
+                          <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
+                          <w:i/>
+                        </w:rPr>
+                      </m:ctrlPr>
+                    </m:dPr>
+                    <m:e>
+                      <m:sSubSup>
+                        <m:sSubSupPr>
+                          <m:ctrlPr>
+                            <w:rPr>
+                              <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
+                              <w:i/>
+                            </w:rPr>
+                          </m:ctrlPr>
+                        </m:sSubSupPr>
+                        <m:e>
+                          <m:r>
+                            <m:rPr>
+                              <m:sty m:val="i"/>
+                            </m:rPr>
+                            <m:t>&#x3c3;</m:t>
+                          </m:r>
+                        </m:e>
+                        <m:sub>
+                          <m:r>
+                            <m:t>i</m:t>
+                          </m:r>
+                        </m:sub>
+                        <m:sup>
+                          <m:r>
+                            <m:t>2</m:t>
+                          </m:r>
+                        </m:sup>
+                      </m:sSubSup>
+                      <m:sSubSup>
+                        <m:sSubSupPr>
+                          <m:ctrlPr>
+                            <w:rPr>
+                              <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
+                              <w:i/>
+                            </w:rPr>
+                          </m:ctrlPr>
+                        </m:sSubSupPr>
+                        <m:e>
+                          <m:r>
+                            <m:rPr>
+                              <m:sty m:val="i"/>
+                            </m:rPr>
+                            <m:t>&#x3c3;</m:t>
+                          </m:r>
+                        </m:e>
+                        <m:sub>
+                          <m:r>
+                            <m:t>j</m:t>
+                          </m:r>
+                        </m:sub>
+                        <m:sup>
+                          <m:r>
+                            <m:t>2</m:t>
+                          </m:r>
+                        </m:sup>
+                      </m:sSubSup>
+                    </m:e>
+                  </m:d>
+                </m:e>
+                <m:sup>
+                  <m:r>
+                    <m:t>1</m:t>
+                  </m:r>
+                  <m:r>
+                    <m:t>/</m:t>
+                  </m:r>
+                  <m:r>
+                    <m:t>2</m:t>
+                  </m:r>
+                </m:sup>
+              </m:sSup>
             </m:oMath>
           </m:oMathPara>
         OMML

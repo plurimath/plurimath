@@ -48,6 +48,196 @@ RSpec.describe Plurimath::Math do
         }.not_to raise_error
       end
     end
+
+    context "contains ogc example #1" do
+      let(:string) do
+        <<~ASCIIMATH
+          R_z(alpha) = [[cos alpha, - sin alpha, 0],
+          [sin alpha, cos alpha, 0],
+          [0, 0, 1]]
+        ASCIIMATH
+      end
+
+      it 'returns instance of Asciimath' do
+        expect{
+          convert(string_to_formula(string, :asciimath), :asciimath)
+        }.not_to raise_error
+      end
+    end
+
+    context "contains ogc example #2" do
+      let(:string) do
+        <<~ASCIIMATH
+          R_y(beta) = [[cos beta, 0, sin beta],
+          [0, 1, 0],
+          [-sin beta, 0, cos beta]]
+        ASCIIMATH
+      end
+
+      it 'returns instance of Asciimath' do
+        expect{
+          convert(string_to_formula(string, :asciimath), :asciimath)
+        }.not_to raise_error
+      end
+    end
+
+    context "contains ogc example #3" do
+      let(:string) do
+        <<~ASCIIMATH
+          R_x (gamma) = [[1, 0, 0],
+          [0, cos gamma, -sin gamma],
+          [0, sin gamma, cos gamma]]
+        ASCIIMATH
+      end
+
+      it 'returns instance of Asciimath' do
+        expect{
+          convert(string_to_formula(string, :asciimath), :asciimath)
+        }.not_to raise_error
+      end
+    end
+
+    context "contains ogc example #4" do
+      let(:string) do
+        <<~ASCIIMATH
+          R(alpha,beta,gamma) = R_z (alpha) R_y (beta) R_x (gamma) = [[cos alpha cos beta, cos alpha sin beta sin gamma - sin alpha cos gamma, cos alpha sin beta cos gamma + sin alpha sin gamma],
+          [sin alpha cos beta, sin alpha sin beta sin gamma + cos alpha cos gamma, sin alpha sin beta cos gamma - cos alpha sin gamma],
+          [-sin beta, cos beta sin gamma, cos beta cos gamma]]
+        ASCIIMATH
+      end
+
+      it 'returns instance of Asciimath' do
+        expect{
+          convert(string_to_formula(string, :asciimath), :asciimath)
+        }.not_to raise_error
+      end
+    end
+
+    context "contains ogc example #5" do
+      let(:string) do
+        <<~ASCIIMATH
+          "Convert"(x,y,z,p_a,p_o,R,S,T) = R_z(alpha) R_y(beta) R_x(gamma) S(x - a_x, y - a_y, z - a_z) + p_o + T = [[cos⁡ alpha cos beta, cos⁡ alpha sin⁡ beta sin⁡ gamma - sin⁡ alpha cos gamma, cos⁡ alpha sin⁡ beta cos⁡ gamma + sin⁡ alpha sin⁡ gamma],
+          [sin⁡ alpha cos⁡ beta, sin⁡ alpha sin⁡ beta sin⁡ gamma + cos⁡ alpha cos⁡ gamma, sin⁡ alpha sin⁡ beta cos⁡ gamma - cos⁡ alpha sin⁡ gamma],
+          [-sin⁡ beta, cos⁡ beta sin⁡ gamma, cos⁡ beta cos⁡ gamma]] [[s_x ∗ (x - a_x)],
+          [s_y ∗ (y - a_y)],
+          [s_z ∗ (z - a_z)]] +
+          [[x_0 + t_x],
+          [y_0 + t_y],
+          [z_0 + t_z]]
+        ASCIIMATH
+      end
+
+      it 'returns instance of Asciimath' do
+        expect{
+          convert(string_to_formula(string, :asciimath), :asciimath)
+        }.not_to raise_error
+      end
+    end
+
+    context "contains bipm example #1" do
+      let(:string) do
+        <<~ASCIIMATH
+          1 "unitsml(A)" = ( ((4pi xx 10^(-7)))/((9192631770)(299792458)(1)) )^(1/2) ( (Delta ii(nu)_("Cs")cm_(cc K))/(ii(mu)_0) )^(1/2) = 6.789687... xx 10^(-13) ((Delta ii(nu)_("Cs")c m_(cc K))/(ii(mu)_0))^(1/2)
+        ASCIIMATH
+      end
+
+      it 'returns instance of Asciimath' do
+        expect{
+          convert(string_to_formula(string, :asciimath), :asciimath)
+        }.not_to raise_error
+      end
+    end
+
+    context "contains itu example #1" do
+      let(:string) do
+        <<~ASCIIMATH
+          [[A_11,A_12,...,A_(1n)],
+          [A_21,A_22,...,A_(2n)],
+          [.,.,.,.],[.,.,.,.],
+          [.,.,.,.],
+          [A_(m1),A_(m2),...,A_(mn)]]
+        ASCIIMATH
+      end
+
+      it 'returns instance of Asciimath' do
+        expect{
+          convert(string_to_formula(string, :asciimath), :asciimath)
+        }.not_to raise_error
+      end
+    end
+
+    context "contains jcgm example #1" do
+      let(:string) do
+        <<~ASCIIMATH
+          bb(U_x) = [(u(x_1,x_1),cdots,u(x_1,x_N)),(vdots,ddots,vdots),(u(x_N,x_1),cdots,u(x_N,x_N))],
+        ASCIIMATH
+      end
+
+      it 'returns instance of Asciimath' do
+        expect{
+          convert(string_to_formula(string, :asciimath), :asciimath)
+        }.not_to raise_error
+      end
+    end
+
+    context "contains jcgm example #2" do
+      let(:string) do
+        <<~ASCIIMATH
+          bb(U_x) = [({: u^2(x_1) :},{: u(x_1,x_2) :},{: cdots :},{: u(x_1,x_N) :}),
+          ({: u(x_2,x_1) :},{: u^2(x_2) :},{: cdots :},{: u(x_2,x_N) :}),
+          ({: vdots :},{: vdots :},{: ddots :},{: vdots :}),
+          ({: u(x_N,x_1) :},{: u(x_N,x_2) :},{: cdots :},{: u^2(x_N) :})],
+        ASCIIMATH
+      end
+
+      it 'returns instance of Asciimath' do
+        expect{
+          convert(string_to_formula(string, :asciimath), :asciimath)
+        }.not_to raise_error
+      end
+    end
+
+    context "contains jcgm example #3" do
+      let(:string) do
+        <<~ASCIIMATH
+          g_X (xi) = {Gamma (n//2)}/{Gamma((n-1)//2)sqrt((n - 1)pi)} times 1/{s//sqrt(n)} (1 + 1/{n - 1} ({xi - bar(x)}/{s//sqrt(n)}))^{-n//2},
+        ASCIIMATH
+      end
+
+      it 'returns instance of Asciimath' do
+        expect{
+          convert(string_to_formula(string, :asciimath), :asciimath)
+        }.not_to raise_error
+      end
+    end
+
+    context "contains jcgm example #4" do
+      let(:string) do
+        <<~ASCIIMATH
+          [(x_1),(x_2)], " " [(u^2(x_1),ru(x_1)u(x_2)),(ru(x_1)u(x_2),u^2(x_2))].
+        ASCIIMATH
+      end
+
+      it 'returns instance of Asciimath' do
+        expect{
+          convert(string_to_formula(string, :asciimath), :asciimath)
+        }.not_to raise_error
+      end
+    end
+
+    context "contains jcgm example #5" do
+      let(:string) do
+        <<~ASCIIMATH
+          bb(mu) = [(2.0),(3.0)], "    " bb(V) = [(2.0,1.9),(1.9,2.0)] " ",
+        ASCIIMATH
+      end
+
+      it 'returns instance of Asciimath' do
+        expect{
+          convert(string_to_formula(string, :asciimath), :asciimath)
+        }.not_to raise_error
+      end
+    end
   end
 end
 
