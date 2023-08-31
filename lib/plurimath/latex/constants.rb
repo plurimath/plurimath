@@ -3783,6 +3783,7 @@ module Plurimath
       UNDEROVER_CLASSES = %w[
         bmod
         pmod
+        mod
       ].freeze
       LEFT_RIGHT_PARENTHESIS = {
         "\\backslash": "&#x5c;",
