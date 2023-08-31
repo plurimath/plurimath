@@ -14227,5 +14227,22 @@ RSpec.describe Plurimath::Latex::Parser do
         expect(formula).to eq(expected_value)
       end
     end
+
+    context "contains simple operator with power value #175" do
+      let(:string) {
+        <<~LATEX
+          |^100
+        LATEX
+      }
+      it "returns formula" do
+        expected_value = Plurimath::Math::Formula.new([
+          Plurimath::Math::Function::Power.new(
+            Plurimath::Math::Symbol.new("|"),
+            Plurimath::Math::Number.new("100"),
+          )
+        ])
+        expect(formula).to eq(expected_value)
+      end
+    end
   end
 end
