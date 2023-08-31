@@ -15,7 +15,12 @@ module Plurimath
       end
 
       rule(:begining) do
-        (slash >> str("begin") >> (str("{") >> symbol_text_or_integer >> str("*").as(:asterisk).maybe >> str("}")) >> optional_args)
+        (slash >> str("begin") >> (str("{") >> symbol_text_or_integer >> str("*").as(:asterisk) >> str("}")) >> optional_args.maybe) |
+        (slash >> str("begin") >> (str("{") >> symbol_text_or_integer >> str("}")))
+      end
+
+      rule(:array_begin) do
+        (str("\\begin{") >> str("array").as(:environment) >> str("}"))
       end
 
       rule(:ending) do
@@ -134,7 +139,7 @@ module Plurimath
           (left_right.as(:left_right) >> base >> intermediate_exp.as(:subscript)) |
           left_right.as(:left_right) |
           (slash >> str("substack").as(:substack) >> intermediate_exp) |
-          (begining >> array_args >> expression.as(:table_data) >> ending).as(:environment) |
+          (array_begin >> array_args >> expression.as(:table_data) >> ending).as(:environment) |
           (begining >> expression.as(:table_data) >> ending).as(:environment) |
           (slash >> environment >> intermediate_exp).as(:table_data) |
           power_base |

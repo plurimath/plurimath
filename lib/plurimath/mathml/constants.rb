@@ -108,6 +108,7 @@ module Plurimath
         "&#x2032;": "'",
         "&#xa0;&#xa0;": "quad",
         "&#xa0;&#xa0;&#xa0;&#xa0;": "qquad",
+        "&#x203e;": "overline",
         "&#x2322;": "frown",
         "&#x22ef;": "cdots",
         "&#x22ee;": "vdots",
