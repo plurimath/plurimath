@@ -562,8 +562,8 @@ module Plurimath
           close_paren = mrow.pop
           if mrow.length == 1 && mrow.first.is_a?(Math::Function::Table)
             table = mrow.first
-            table.open_paren = open_paren
-            table.close_paren = close_paren
+            table.open_paren = open_paren.value
+            table.close_paren = close_paren.value
           else
             mrow.replace(
               [

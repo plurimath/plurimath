@@ -139,6 +139,7 @@ module Plurimath
       def nary_tag_able?(display_style)
         value.length == 2 &&
           ["underover", "powerbase"].include?(value&.first&.class_name) &&
+          !value.first.parameter_one.is_a?(Function::FontStyle) &&
           (
             value&.first&.parameter_one&.to_omml_without_math_tag(display_style)&.length == 1 ||
             value&.first&.parameter_one.to_omml_without_math_tag(display_style).match?(/^&#x\w*\d*;$/)

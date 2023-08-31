@@ -12,7 +12,6 @@ module Plurimath
       rule(val: simple(:val))    { val }
       rule(scr: simple(:scr))    { scr }
       rule(sty: simple(:sty))    { sty }
-      rule(dPr: subtree(:dpr))   { dpr }
       rule(num: subtree(:num))   { num }
       rule(den: subtree(:den))   { den }
       rule(fPr: subtree(:fPr))   { nil }
@@ -22,7 +21,6 @@ module Plurimath
       rule(deg: sequence(:deg))  { Utility.filter_values(deg) }
       rule(sub: sequence(:sub))  { Utility.filter_values(sub) }
       rule(sup: sequence(:sup))  { Utility.filter_values(sup) }
-      rule(mtd: sequence(:mtd))  { mtd.flatten.compact }
       rule(boxPr: subtree(:box)) { nil }
       rule(argPr: subtree(:arg)) { nil }
       rule(accPr: subtree(:acc)) { acc.flatten.compact }
@@ -107,12 +105,28 @@ module Plurimath
         )
       end
 
+      rule(dPr: subtree(:dpr)) do
+        dpr.reject! { |d| d.is_a?(Hash) }
+        dpr
+      end
+
+      rule(mtd: sequence(:mtd)) do
+        flatten_mtd = mtd&.flatten&.compact
+        if flatten_mtd.length > 1 && !flatten_mtd.first.is_a?(Math::Core)
+          font = flatten_mtd.shift
+          font.new(
+            Utility.filter_values(flatten_mtd),
+            Utility::OMML_FONTS.invert[font].to_s,
+          )
+        else
+          flatten_mtd
+        end
+      end
+
       rule(mr: subtree(:mr)) do
         row = []
         mr.each do |td|
-          row << Math::Function::Td.new(
-            Array(td),
-          )
+          row << Math::Function::Td.new(Array(td))
         end
         Math::Function::Tr.new(row)
       end

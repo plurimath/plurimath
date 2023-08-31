@@ -84,6 +84,7 @@ module Plurimath
 
         def latex_paren(paren)
           return "" if paren.nil? || paren.empty?
+          return "" if paren.include?(":") && ["{:", ":}"].include?(paren)
 
           paren = %w[{ }].include?(paren) ? "\\#{paren}" : paren
           paren = "\\#{Latex::Constants::UNICODE_SYMBOLS.invert[paren]}" if paren&.to_s&.match?(/&#x.{0,4};/)
