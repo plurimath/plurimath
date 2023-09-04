@@ -116,7 +116,7 @@ module Plurimath
           font = flatten_mtd.shift
           font.new(
             Utility.filter_values(flatten_mtd),
-            Utility::OMML_FONTS.invert[font].to_s,
+            Utility::FONT_STYLES.rassoc(font).first.to_s,
           )
         else
           flatten_mtd

@@ -1997,7 +1997,7 @@ module ExpectedValues
       Plurimath::Math::Function::Ln.new,
       Plurimath::Math::Function::FontStyle::Italic.new(
         Plurimath::Math::Function::Text.new("R"),
-        "i"
+        "italic"
       ),
       Plurimath::Math::Symbol.new("="),
       Plurimath::Math::Function::Fenced.new(
@@ -2011,26 +2011,26 @@ module ExpectedValues
                   Plurimath::Math::Function::Base.new(
                     Plurimath::Math::Function::FontStyle::Italic.new(
                       Plurimath::Math::Function::Text.new("N"),
-                      "i",
+                      "italic",
                     ),
                     Plurimath::Math::Function::Text.new("tot")
                   ),
                   Plurimath::Math::Function::FontStyle::Italic.new(
                     Plurimath::Math::Symbol.new("τ"),
-                    "i"
+                    "italic"
                   )
                 ]),
                 Plurimath::Math::Function::Td.new([
                   Plurimath::Math::Function::Text.new("for "),
                   Plurimath::Math::Function::FontStyle::Italic.new(
                     Plurimath::Math::Symbol.new("τ"),
-                    "i"
+                    "italic"
                   ),
                   Plurimath::Math::Symbol.new("<"),
                   Plurimath::Math::Function::Base.new(
                     Plurimath::Math::Function::FontStyle::Italic.new(
                       Plurimath::Math::Symbol.new("τ"),
-                      "i"
+                      "italic"
                     ),
                     Plurimath::Math::Function::Text.new("o")
                   )
@@ -2042,20 +2042,20 @@ module ExpectedValues
                   Plurimath::Math::Function::Base.new(
                     Plurimath::Math::Function::FontStyle::Italic.new(
                       Plurimath::Math::Function::Text.new("N"),
-                      "i"
+                      "italic"
                     ),
                     Plurimath::Math::Function::Text.new("tot")
                   ),
                   Plurimath::Math::Function::FontStyle::Italic.new(
                     Plurimath::Math::Symbol.new("τ"),
-                    "i"
+                    "italic"
                   ),
                   Plurimath::Math::Symbol.new("-"),
                   Plurimath::Math::Number.new("4"),
                   Plurimath::Math::Function::Base.new(
                     Plurimath::Math::Function::FontStyle::Italic.new(
                       Plurimath::Math::Function::Text.new("N"),
-                      "i"
+                      "italic"
                     ),
                     Plurimath::Math::Function::Text.new("pair")
                   ),
@@ -2064,13 +2064,13 @@ module ExpectedValues
                     [
                       Plurimath::Math::Function::FontStyle::Italic.new(
                         Plurimath::Math::Symbol.new("τ"),
-                        "i"
+                        "italic"
                       ),
                       Plurimath::Math::Symbol.new("-"),
                       Plurimath::Math::Function::Base.new(
                         Plurimath::Math::Function::FontStyle::Italic.new(
                           Plurimath::Math::Symbol.new("τ"),
-                          "i"
+                          "italic"
                         ),
                         Plurimath::Math::Function::Text.new("o"),
                       )
@@ -2082,13 +2082,13 @@ module ExpectedValues
                   Plurimath::Math::Symbol.new("'' "),
                   Plurimath::Math::Function::FontStyle::Italic.new(
                     Plurimath::Math::Symbol.new("τ"),
-                    "i"
+                    "italic"
                   ),
                   Plurimath::Math::Symbol.new(">"),
                   Plurimath::Math::Function::Base.new(
                     Plurimath::Math::Function::FontStyle::Italic.new(
                       Plurimath::Math::Symbol.new("τ"),
-                      "i"
+                      "italic"
                     ),
                     Plurimath::Math::Function::Text.new("o")
                   )
