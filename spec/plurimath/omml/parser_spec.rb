@@ -2,7 +2,6 @@ require_relative "../../spec_helper"
 require_relative "../fixtures/expected_values.rb"
 
 RSpec.describe Plurimath::Omml::Parser do
-
   subject(:formula) do
     described_class.new(File.read(file_name)).parse
   end
