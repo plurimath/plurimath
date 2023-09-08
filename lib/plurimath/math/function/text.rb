@@ -55,7 +55,7 @@ module Plurimath
           html_value&.gsub!(PARSER_REGEX) do |_text|
             last_match = Regexp.last_match
             case lang
-            when "mathml", "html"
+            when "mathml", "html", "omml"
               symbol_value(last_match[:unicode])
             else
               last_match[:unicode]
