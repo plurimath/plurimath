@@ -52,13 +52,11 @@ module Plurimath
         end
 
         def to_latex
-          if open_paren == "norm["
-            return "\\begin{Vmatrix}#{latex_content}\\end{Vmatrix}"
-          end
+          return "\\begin{Vmatrix}#{latex_content}\\end{Vmatrix}" if open_paren == "norm["
 
           separator = "{#{table_attribute(:latex)}}" if environment&.include?("array")
-          left_paren = latex_parenthesis(open_paren) || "."
-          right_paren = latex_parenthesis(close_paren) || "."
+          left_paren = latex_parenthesis(open_paren)
+          right_paren = latex_parenthesis(close_paren)
           left = "\\left #{left_paren}\\begin{matrix}"
           right = "\\end{matrix}\\right #{right_paren}"
           "#{left}#{separator}#{latex_content}#{right}"
@@ -106,15 +104,7 @@ module Plurimath
           ]
         end
 
-        def class_name
-          self.class.name.split("::").last.downcase
-        end
-
         protected
-
-        def gsub_spacing(spacing, last)
-          spacing.gsub(/\|\_/, last ? "  " : "| ")
-        end
 
         def present?(field)
           !(field.nil? || field.empty?)
@@ -127,6 +117,7 @@ module Plurimath
         end
 
         def latex_parenthesis(field)
+          return "." unless field
           return " ." if field&.include?(":")
 
           return "\\#{field}" if ["{", "}"].include?(field)

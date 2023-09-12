@@ -113,14 +113,6 @@ module Plurimath
           end
         end
 
-        def gsub_spacing(spacing, last)
-          spacing.gsub(/\|\_/, last ? "  " : "| ")
-        end
-
-        def invert_unicode_symbols
-          Mathml::Constants::UNICODE_SYMBOLS.invert[class_name] || class_name
-        end
-
         def wrapped(field, type: "ascii")
           return "" unless field
 

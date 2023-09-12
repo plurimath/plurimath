@@ -102,10 +102,6 @@ module Plurimath
 
         protected
 
-        def gsub_spacing(spacing, last)
-          spacing.gsub(/\|\_/, last ? "  " : "| ")
-        end
-
         def latex_wrapped(field)
           if field.validate_function_formula
             "{ \\left ( #{field.to_latex} \\right ) }"
@@ -118,10 +114,6 @@ module Plurimath
           return "" unless field
 
           "(#{field.to_asciimath})"
-        end
-
-        def invert_unicode_symbols
-          Mathml::Constants::UNICODE_SYMBOLS.invert[class_name] || class_name
         end
 
         def empty_tag(wrapper_tag)
