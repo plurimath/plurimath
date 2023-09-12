@@ -1,7 +1,10 @@
 module ExpectedValues
   EX_001 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Frac.new(
-      Plurimath::Math::Number.new("1"),
+      Plurimath::Math::Formula.new([
+        Plurimath::Math::Number.new("1"),
+        Plurimath::Math::Function::Text.new,
+      ])
     )
   ])
   EX_002 = Plurimath::Math::Formula.new([

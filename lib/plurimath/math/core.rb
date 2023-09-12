@@ -144,6 +144,14 @@ module Plurimath
       def dump_ox_nodes(nodes)
         Ox.dump(nodes)
       end
+
+      def gsub_spacing(spacing, last)
+        spacing.gsub(/\|\_/, last ? "  " : "| ")
+      end
+
+      def invert_unicode_symbols
+        Mathml::Constants::UNICODE_SYMBOLS.invert[class_name] || class_name
+      end
     end
   end
 end
