@@ -45,10 +45,10 @@ module Plurimath
           end
         end
 
-        def to_asciimath_math_zone(spacing, last = false, _indent = true)
+        def to_asciimath_math_zone(spacing, last = false, indent = true)
           [
             "#{spacing}\"tr\" function apply\n",
-            Formula.new(parameter_one).to_asciimath_math_zone(gsub_spacing(spacing, last)),
+            Formula.new(parameter_one).to_asciimath_math_zone(gsub_spacing(spacing, last), last, indent),
           ]
         end
 

@@ -56,24 +56,24 @@ module Plurimath
           [d]
         end
 
-        def to_asciimath_math_zone(spacing, last = false, _indent = true)
+        def to_asciimath_math_zone(spacing, last = false, indent = true)
           filtered_values(parameter_two).map.with_index(1) do |object, index|
             last = index == @values.length
-            object.to_asciimath_math_zone(spacing, last)
+            object.to_asciimath_math_zone(spacing, last, indent)
           end
         end
 
-        def to_latex_math_zone(spacing, last = false, _indent = true)
+        def to_latex_math_zone(spacing, last = false, indent = true)
           filtered_values(parameter_two).map.with_index(1) do |object, index|
             last = index == @values.length
-            object.to_latex_math_zone(spacing, last)
+            object.to_latex_math_zone(spacing, last, indent)
           end
         end
 
-        def to_mathml_math_zone(spacing, last = false, _indent = true)
+        def to_mathml_math_zone(spacing, last = false, indent = true)
           filtered_values(parameter_two).map.with_index(1) do |object, index|
             last = index == @values.length
-            object.to_mathml_math_zone(spacing, last)
+            object.to_mathml_math_zone(spacing, last, indent)
           end
         end
 
