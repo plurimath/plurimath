@@ -43,19 +43,19 @@ module Plurimath
           false
         end
 
-        def to_asciimath_math_zone(spacing, last = false, _indent = true)
+        def to_asciimath_math_zone(spacing, _, _)
           "#{spacing}#{to_asciimath} text\n"
         end
 
-        def to_latex_math_zone(spacing, last = false, _indent = true)
+        def to_latex_math_zone(spacing, _, _)
           "#{spacing}#{to_asciimath} text\n"
         end
 
-        def to_mathml_math_zone(spacing, last = false, _indent = true)
+        def to_mathml_math_zone(spacing, _, _)
           "#{spacing}\"#{dump_mathml(self)}\" text\n"
         end
 
-        def to_omml_math_zone(spacing, last = false, _indent = true, display_style:)
+        def to_omml_math_zone(spacing, _, _, display_style:)
           "#{spacing}\"#{dump_omml(self, display_style)}\" text\n"
         end
 

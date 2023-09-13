@@ -37,20 +37,20 @@ module Plurimath
           false
         end
 
-        def to_asciimath_math_zone(spacing = "", _last = false, _indent = true)
+        def to_asciimath_math_zone(spacing = "", _, _)
           "#{spacing}\"#{latex_paren}\" right\n"
         end
 
-        def to_latex_math_zone(spacing = "", _last = false, _indent = true)
+        def to_latex_math_zone(spacing = "", _, _)
           "#{spacing}\"#{latex_paren}\" right\n"
         end
 
-        def to_mathml_math_zone(spacing = "", _last = false, _indent = true)
+        def to_mathml_math_zone(spacing = "", _, _)
           mo_tag = (Utility.ox_element("mo") << right_paren)
           "#{spacing}\"#{dump_ox_nodes(mo_tag).gsub(/\s+/, "")}\" right\n"
         end
 
-        def to_omml_math_zone(spacing = "", _last = false, _indent = true, display_style:)
+        def to_omml_math_zone(spacing = "", _, _, display_style:)
           t_tag = (Utility.ox_element("t", namespace: "m") << right_paren)
           "#{spacing}\"#{dump_ox_nodes(t_tag).gsub(/\s+/, "")}\" right\n"
         end

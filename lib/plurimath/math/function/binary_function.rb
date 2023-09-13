@@ -64,7 +64,7 @@ module Plurimath
           !(parameter_one.nil? && parameter_two.nil?)
         end
 
-        def to_asciimath_math_zone(spacing, last = false, _indent = true)
+        def to_asciimath_math_zone(spacing, last = false, _)
           parameters = self.class::FUNCTION
           new_spacing = gsub_spacing(spacing, last)
           new_arr = ["#{spacing}\"#{to_asciimath}\" #{parameters[:name]}\n"]
@@ -73,7 +73,7 @@ module Plurimath
           new_arr
         end
 
-        def to_latex_math_zone(spacing, last = false, _indent = true)
+        def to_latex_math_zone(spacing, last = false, _)
           parameters = self.class::FUNCTION
           new_spacing = gsub_spacing(spacing, last)
           new_arr = ["#{spacing}\"#{to_latex}\" #{parameters[:name]}\n"]
@@ -82,7 +82,7 @@ module Plurimath
           new_arr
         end
 
-        def to_mathml_math_zone(spacing, last = false, _indent = true)
+        def to_mathml_math_zone(spacing, last = false, _)
           parameters = self.class::FUNCTION
           new_spacing = gsub_spacing(spacing, last)
           new_arr = ["#{spacing}\"#{dump_mathml(self)}\" #{parameters[:name]}\n"]
@@ -91,7 +91,7 @@ module Plurimath
           new_arr
         end
 
-        def to_omml_math_zone(spacing, last = false, _indent = true, display_style:)
+        def to_omml_math_zone(spacing, last = false, _, display_style:)
           parameters = self.class::FUNCTION
           new_spacing = gsub_spacing(spacing, last)
           new_arr = ["#{spacing}\"#{dump_omml(self, display_style)}\" #{parameters[:name]}\n"]

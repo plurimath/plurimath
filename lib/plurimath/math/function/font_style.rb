@@ -60,7 +60,7 @@ module Plurimath
           [r_tag]
         end
 
-        def to_asciimath_math_zone(spacing, last = false, _indent = true)
+        def to_asciimath_math_zone(spacing, last = false, _)
           new_spacing = gsub_spacing(spacing, last)
           new_arr = [
             "#{spacing}\"#{to_asciimath}\" function apply\n",
@@ -70,7 +70,7 @@ module Plurimath
           new_arr
         end
 
-        def to_latex_math_zone(spacing, last = false, _indent = true)
+        def to_latex_math_zone(spacing, last = false, _)
           new_spacing = gsub_spacing(spacing, last)
           new_arr = [
             "#{spacing}\"#{to_latex}\" function apply\n",
@@ -80,7 +80,7 @@ module Plurimath
           new_arr
         end
 
-        def to_mathml_math_zone(spacing, last = false, _indent = true)
+        def to_mathml_math_zone(spacing, last = false, _)
           new_spacing = gsub_spacing(spacing, last)
           new_arr = [
             "#{spacing}\"#{dump_mathml(self)}\" function apply\n",
@@ -90,7 +90,7 @@ module Plurimath
           new_arr
         end
 
-        def to_omml_math_zone(spacing, last = false, _indent = true, display_style:)
+        def to_omml_math_zone(spacing, last = false, _, display_style:)
           new_spacing = gsub_spacing(spacing, last)
           new_arr = [
             "#{spacing}\"#{dump_omml(self, display_style)}\" function apply\n",

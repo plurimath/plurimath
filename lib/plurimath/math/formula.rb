@@ -141,28 +141,28 @@ module Plurimath
       def to_asciimath_math_zone(spacing = "", last = false, indent = true)
         filtered_values(value).map.with_index(1) do |object, index|
           last = index == @values.length
-          object.to_asciimath_math_zone(new_space(spacing, indent), last)
+          object.to_asciimath_math_zone(new_space(spacing, indent), last, indent)
         end
       end
 
       def to_latex_math_zone(spacing = "", last = false, indent = true)
         filtered_values(value).map.with_index(1) do |object, index|
           last = index == @values.length
-          object.to_latex_math_zone(new_space(spacing, indent), last)
+          object.to_latex_math_zone(new_space(spacing, indent), last, indent)
         end
       end
 
       def to_mathml_math_zone(spacing = "", last = false, indent = true)
         filtered_values(value).map.with_index(1) do |object, index|
           last = index == @values.length
-          object.to_mathml_math_zone(new_space(spacing, indent), last)
+          object.to_mathml_math_zone(new_space(spacing, indent), last, indent)
         end
       end
 
       def to_omml_math_zone(spacing = "", last = false, indent = true, display_style:)
         filtered_values(value).map.with_index(1) do |object, index|
           last = index == @values.length
-          object.to_omml_math_zone(new_space(spacing, indent), last, display_style: display_style)
+          object.to_omml_math_zone(new_space(spacing, indent), last, indent, display_style: display_style)
         end
       end
 
