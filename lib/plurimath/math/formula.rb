@@ -187,7 +187,7 @@ module Plurimath
       end
 
       def new_space(spacing, indent)
-        if value.any? { |val| val.class_name == "left" && value.any? { |val| val.class_name == "right" } }
+        if value.any? { |val| val.class_name == "left" } && value.any? { |val| val.class_name == "right" }
           return spacing
         end
 

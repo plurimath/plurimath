@@ -38,7 +38,7 @@ module Plurimath
           Array(parameter_two.insert_t_tag(display_style))
         end
 
-        def to_omml_math_zone(spacing, last = false, indent = true, display_style:)
+        def to_omml_math_zone(spacing, last = false, _indent = true, display_style:)
           parameters = self.class::FUNCTION
           new_spacing = gsub_spacing(spacing, last)
           new_arr = ["#{spacing}\"#{dump_omml(self, display_style)}\" #{parameters[:name]}\n"]
