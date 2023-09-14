@@ -9,6 +9,7 @@ module Plurimath
       rule(mtd: sequence(:mtd))     { Math::Function::Td.new(mtd) }
       rule(mtr: sequence(:mtr))     { Math::Function::Tr.new(mtr) }
       rule(none: sequence(:none))   { nil }
+      rule(mspace: simple(:space))  { nil }
       rule(notation: simple(:att))  { Math::Function::Menclose.new(att) }
       rule(mtable: simple(:table))  { table }
       rule(msqrt: sequence(:sqrt))  { Math::Function::Sqrt.new(sqrt.first) }
@@ -316,11 +317,6 @@ module Plurimath
         end
       end
 
-      rule(attributes: simple(:attrs),
-           value: subtree(:value)) do
-        Utility.join_attr_value(attrs, value&.flatten&.compact)
-      end
-
       rule(semantics: subtree(:value)) do
         Math::Function::Semantics.new(
           value.shift,
@@ -328,17 +324,27 @@ module Plurimath
         )
       end
 
+      rule(attributes: simple(:attrs),
+           value: subtree(:value)) do
+        Utility.join_attr_value(attrs, value&.flatten&.compact)
+      end
+
       rule(attributes: subtree(:attrs),
            value: sequence(:value)) do
-        approved_attrs = if attrs.is_a?(Hash)
-                           supported_attrs = %w[accentunder accent]
-                           attrs if attrs.keys.any? do |k|
-                             supported_attrs.include?(k.to_s)
-                           end
-                         else
-                           attrs
-                         end
-        Utility.join_attr_value(approved_attrs, value&.flatten&.compact)
+        approved = if attrs.is_a?(Hash)
+                     supported = %w[accentunder accent linebreak]
+                     if attrs.keys.any? { |k| supported.include?(k.to_s) }
+                       unicode_only = true if attrs.key?(:linebreak)
+                       attrs
+                     end
+                   else
+                     attrs
+                   end
+        Utility.join_attr_value(
+          approved,
+          value&.flatten&.compact,
+          unicode_only: unicode_only,
+        )
       end
     end
   end

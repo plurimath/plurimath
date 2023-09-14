@@ -152,6 +152,14 @@ module Plurimath
       def invert_unicode_symbols
         Mathml::Constants::UNICODE_SYMBOLS.invert[class_name] || class_name
       end
+
+      def separate_table
+        false
+      end
+
+      def linebreak
+        false
+      end
     end
   end
 end

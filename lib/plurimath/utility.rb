@@ -103,14 +103,13 @@ module Plurimath
         table = []
         table_data = []
         table_row = []
-        table_separators = ["&", "\\\\"].freeze
         organize_options(array, column_align) if options
         string_columns = column_align&.map(&:value)
         array.each do |data|
-          if data.is_a?(Math::Symbol) && table_separators.include?(data.value)
+          if data&.separate_table
             table_row << Math::Function::Td.new(filter_table_data(table_data).compact)
             table_data = []
-            if data.value == "\\\\"
+            if data.linebreak
               organize_tds(table_row.flatten, string_columns.dup, options)
               table << Math::Function::Tr.new(table_row)
               table_row = []
@@ -287,7 +286,8 @@ module Plurimath
       end
 
       def symbol_value(object, value)
-        object.is_a?(Math::Symbol) && object.value.include?(value)
+        (object.is_a?(Math::Symbol) && object.value.include?(value)) ||
+          (value == "\\\\" && object.is_a?(Math::Function::Linebreak))
       end
 
       def td_value(td_object)
@@ -298,20 +298,18 @@ module Plurimath
         td_object
       end
 
-      def mathml_unary_classes(text_array, omml: false)
+      def mathml_unary_classes(text_array, omml: false, unicode_only: false)
         return [] if text_array.empty?
 
         compacted = text_array.compact
-        string = if compacted.count == 1
-                   compacted.first
-                 else
-                   compacted.join
-                 end
-        return string unless string.is_a?(String)
+        return filter_values(compacted) unless compacted.any?(String)
 
+        string  = compacted.join
         classes = Mathml::Constants::CLASSES
         unicode = string_to_html_entity(string)
-        symbol  = Mathml::Constants::UNICODE_SYMBOLS[unicode.strip.to_sym]
+        return Math::Symbol.new(unicode) if unicode_only && unicode
+
+        symbol = Mathml::Constants::UNICODE_SYMBOLS[unicode.strip.to_sym]
         if classes.include?(symbol&.strip)
           get_class(symbol.strip).new
         elsif classes.any?(string&.strip)
@@ -346,17 +344,24 @@ module Plurimath
         value
       end
 
-      def join_attr_value(attrs, value)
+      def join_attr_value(attrs, value, unicode_only: false)
         if value.any?(String)
-          new_value = mathml_unary_classes(value)
+          new_value = mathml_unary_classes(value, unicode_only: unicode_only)
           array_value = Array(new_value)
-          attrs.nil? ? array_value : join_attr_value(attrs, array_value)
+          attrs.nil? ? array_value : join_attr_value(attrs, array_value, unicode_only: unicode_only)
         elsif attrs.nil?
           value
         elsif attrs.is_a?(String) && ["solid", "none"].include?(attrs.split.first.downcase)
           table_separator(attrs.split, value)
-        elsif attrs.is_a?(Hash) && (attrs.key?(:accent) || attrs.key?(:accentunder))
-          attr_is_accent(attrs, value)
+        elsif attrs.is_a?(Hash)
+          if (attrs.key?(:accent) || attrs.key?(:accentunder))
+            attr_is_accent(attrs, value)
+          elsif attrs.key?(:linebreak)
+            Math::Function::Linebreak.new(
+              value.first,
+              attrs,
+            )
+          end
         elsif attrs.is_a?(Math::Core)
           attr_is_function(attrs, value)
         end

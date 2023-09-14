@@ -8,9 +8,11 @@ module Plurimath
       attr_accessor :text
 
       SUPPORTED_ATTRS = %w[
+        linebreakstyle
         columnlines
         mathvariant
         accentunder
+        linebreak
         mathcolor
         notation
         accent

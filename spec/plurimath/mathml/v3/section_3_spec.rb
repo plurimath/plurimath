@@ -615,7 +615,10 @@ RSpec.describe Plurimath::Mathml::Parser do
               ),
               Plurimath::Math::Symbol.new("4")
             ),
-            Plurimath::Math::Symbol.new("="),
+            Plurimath::Math::Function::Linebreak.new(
+              Plurimath::Math::Symbol.new("="),
+              { linebreak: "newline", linebreakstyle: "before" },
+            ),
             Plurimath::Math::Formula.new([
               Plurimath::Math::Function::Power.new(
                 Plurimath::Math::Symbol.new("x"),
@@ -639,7 +642,10 @@ RSpec.describe Plurimath::Mathml::Parser do
                   Plurimath::Math::Symbol.new("2")
                 )
               ]),
-              Plurimath::Math::Symbol.new("+"),
+              Plurimath::Math::Function::Linebreak.new(
+                Plurimath::Math::Symbol.new("+"),
+                { linebreak: "newline", linebreakstyle: "before" },
+              ),
               Plurimath::Math::Formula.new([
                 Plurimath::Math::Symbol.new("4"),
                 Plurimath::Math::Symbol.new("&#x2062;"),

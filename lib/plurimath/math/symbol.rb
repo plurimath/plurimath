@@ -98,6 +98,14 @@ module Plurimath
         Utility.ox_element("t", namespace: "m") << value
       end
 
+      def separate_table
+        ["&", "\\\\"].include?(value)
+      end
+
+      def linebreak
+        "\\\\" == value
+      end
+
       private
 
       def operator?(unicode)

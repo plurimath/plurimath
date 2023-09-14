@@ -8,6 +8,7 @@ module Plurimath
       rule(unary: simple(:unary))   { unary }
       rule(table: simple(:table))   { table }
       rule(comma: simple(:comma))   { Utility.symbol_object(comma) }
+      rule(slash: simple(:slash))   { Math::Function::Linebreak.new }
       rule(unary: sequence(:unary)) { Utility.filter_values(unary) }
       rule(rparen: simple(:rparen)) { Utility.symbol_object(rparen) }
       rule(number: simple(:number)) { Math::Number.new(number) }
