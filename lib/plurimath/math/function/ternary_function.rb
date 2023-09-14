@@ -4,7 +4,7 @@ module Plurimath
   module Math
     module Function
       class TernaryFunction < Core
-        attr_accessor :parameter_one, :parameter_two, :parameter_three
+        attr_accessor :parameter_one, :parameter_two, :parameter_three, :hide_function_name
 
         def initialize(parameter_one = nil,
                        parameter_two = nil,
@@ -12,7 +12,7 @@ module Plurimath
           @parameter_one = parameter_one
           @parameter_two = parameter_two
           @parameter_three = parameter_three
-          Utility.validate_left_right([parameter_one, parameter_two, parameter_three])
+          Utility.validate_left_right(variables.map { |var| get(var) })
         end
 
         def to_asciimath
@@ -97,10 +97,6 @@ module Plurimath
           omml_fields_to_print(parameter_two, { spacing: new_spacing, field_name: parameters[:second_value], additional_space: "  |_ ", array: new_arr, display_style: display_style })
           omml_fields_to_print(parameter_three, { spacing: new_spacing, field_name: parameters[:third_value], additional_space: "   |_ ", array: new_arr, display_style: display_style })
           new_arr
-        end
-
-        def any_value_exist?
-          !(parameter_one.nil? || parameter_two.nil? || parameter_three.nil?)
         end
 
         protected

@@ -21,7 +21,7 @@ module Plurimath
           )
         end
 
-        def to_omml_without_math_tag(display_style)
+        def to_omml_without_math_tag(_)
           return r_element("..", rpr_tag: false) unless parameter_one
 
           symbol = Symbol.new("..")
@@ -31,6 +31,11 @@ module Plurimath
         def to_html
           first_value = "<i>#{parameter_one.to_html}</i>" if parameter_one
           "#{first_value}<i>..</i>"
+        end
+
+        def line_breaking(obj)
+          parameter_one&.line_breaking(obj)
+          obj.update(Utility.filter_values(obj.value)) if obj.value_exist?
         end
       end
     end

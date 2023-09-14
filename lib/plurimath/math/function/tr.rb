@@ -32,7 +32,7 @@ module Plurimath
         end
 
         def to_omml_without_math_tag(display_style)
-          omml_content = parameter_one&.map { |obj| obj.to_omml_without_math_tag(display_style) }
+          omml_content = parameter_one&.map { |object| object.to_omml_without_math_tag(display_style) }
           if parameter_one.count.eql?(1)
             omml_content
           else

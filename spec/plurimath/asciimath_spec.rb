@@ -1177,6 +1177,61 @@ RSpec.describe Plurimath::Asciimath do
       end
     end
 
+    context "contains example #32" do
+      let(:string) { '[(a,b),(((c), (d)),e)]' }
+
+      it 'returns parsed Asciimath to Formula' do
+        latex = '\left [\begin{matrix}a & b \\\\ \left (\begin{matrix}c \\\\ d\end{matrix}\right ) & e\end{matrix}\right ]'
+        asciimath = '[[a, b], [([c], [d]), e]]'
+        mathml = <<~MATHML
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
+              <mrow>
+                <mo>[</mo>
+                <mtable>
+                  <mtr>
+                    <mtd>
+                      <mi>a</mi>
+                    </mtd>
+                    <mtd>
+                      <mi>b</mi>
+                    </mtd>
+                  </mtr>
+                  <mtr>
+                    <mtd>
+                      <mrow>
+                        <mo>(</mo>
+                        <mtable>
+                          <mtr>
+                            <mtd>
+                              <mi>c</mi>
+                            </mtd>
+                          </mtr>
+                          <mtr>
+                            <mtd>
+                              <mi>d</mi>
+                            </mtd>
+                          </mtr>
+                        </mtable>
+                        <mo>)</mo>
+                      </mrow>
+                    </mtd>
+                    <mtd>
+                      <mi>e</mi>
+                    </mtd>
+                  </mtr>
+                </mtable>
+                <mo>]</mo>
+              </mrow>
+            </mstyle>
+          </math>
+        MATHML
+        expect(formula.to_latex).to eql(latex)
+        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_asciimath).to eql(asciimath)
+      end
+    end
+
     context "contains example #33" do
       let(:string) { '((a_(11), cdots , a_(1n)),(vdots, ddots, vdots),(a_(m1), cdots , a_(mn)))' }
 
@@ -3745,11 +3800,14 @@ RSpec.describe Plurimath::Asciimath do
     end
 
     context "contains example #64" do
-      let(:string) { "bar X'" }
+      let(:string) { "bar X' \\ \n theta" }
 
       it 'returns parsed Asciimath to Formula' do
-        latex = "\\overline{X} \\prime"
-        asciimath = "bar(X) '"
+        latex = "\\overline{X} \\prime \\\\  \\theta"
+        asciimath = <<~ASCIIMATH.strip
+          bar(X) ' \\
+            theta
+        ASCIIMATH
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -3758,6 +3816,8 @@ RSpec.describe Plurimath::Asciimath do
                 <mo>&#xaf;</mo>
               </mover>
               <mo>&#x2032;</mo>
+              <mo linebreak="newline"/>
+              <mi>&#x3b8;</mi>
             </mstyle>
           </math>
         MATHML
@@ -5170,6 +5230,63 @@ RSpec.describe Plurimath::Asciimath do
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
+
+    context "contains nested table with new line example #97" do
+      let(:string) { "[[1,((2\\\n4),(7))], [3,4]]" }
+
+      it 'returns parsed Asciimath to Formula' do
+        latex = "\\left [\\begin{matrix}1 & \\left (\\begin{matrix}2 \\\\  4 \\\\ 7\\end{matrix}\\right ) \\\\ 3 & 4\\end{matrix}\\right ]"
+        asciimath = "[[1, ([2 \\\n  4], [7])], [3, 4]]"
+        mathml = <<~MATHML
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
+              <mrow>
+                <mo>[</mo>
+                <mtable>
+                  <mtr>
+                    <mtd>
+                      <mn>1</mn>
+                    </mtd>
+                    <mtd>
+                      <mrow>
+                        <mo>(</mo>
+                        <mtable>
+                          <mtr>
+                            <mtd>
+                              <mn>2</mn>
+                              <mo linebreak="newline"/>
+                              <mn>4</mn>
+                            </mtd>
+                          </mtr>
+                          <mtr>
+                            <mtd>
+                              <mn>7</mn>
+                            </mtd>
+                          </mtr>
+                        </mtable>
+                        <mo>)</mo>
+                      </mrow>
+                    </mtd>
+                  </mtr>
+                  <mtr>
+                    <mtd>
+                      <mn>3</mn>
+                    </mtd>
+                    <mtd>
+                      <mn>4</mn>
+                    </mtd>
+                  </mtr>
+                </mtable>
+                <mo>]</mo>
+              </mrow>
+            </mstyle>
+          </math>
+        MATHML
+        expect(formula.to_latex).to eql(latex)
+        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_asciimath).to eql(asciimath)
+      end
+    end
   end
 
   describe ".to_omml" do
@@ -5609,7 +5726,7 @@ RSpec.describe Plurimath::Asciimath do
     end
 
     context "contains simple color example #10" do
-      let(:string) { 'color(red)(2)' }
+      let(:string) { "color(red)(2 \\ \n e)" }
 
       it 'returns OMML string' do
         omml = <<~OMML
@@ -5617,6 +5734,13 @@ RSpec.describe Plurimath::Asciimath do
             <m:oMath>
               <m:r>
                 <m:t>2</m:t>
+              </m:r>
+            </m:oMath>
+          </m:oMathPara>
+          <m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape">
+            <m:oMath>
+              <m:r>
+                <m:t>e</m:t>
               </m:r>
             </m:oMath>
           </m:oMathPara>

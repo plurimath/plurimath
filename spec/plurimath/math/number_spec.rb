@@ -110,7 +110,7 @@ RSpec.describe Plurimath::Math::Number do
     subject(:formula) do
       Plurimath.xml_engine.dump(
         described_class.new(first_value).
-          to_omml_without_math_tag(true).first,
+          to_omml_without_math_tag(true, obj: nil).first,
         indent: 2,
       ).gsub("&amp;", "&")
     end

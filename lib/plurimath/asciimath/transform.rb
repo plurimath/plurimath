@@ -8,6 +8,7 @@ module Plurimath
       rule(unary: simple(:unary))   { unary }
       rule(table: simple(:table))   { table }
       rule(comma: simple(:comma))   { Utility.symbol_object(comma) }
+      rule(slash: simple(:slash))   { Math::Function::Linebreak.new }
       rule(unary: sequence(:unary)) { Utility.filter_values(unary) }
       rule(rparen: simple(:rparen)) { Utility.symbol_object(rparen) }
       rule(number: simple(:number)) { Math::Number.new(number) }
@@ -296,11 +297,15 @@ module Plurimath
       end
 
       rule(td: simple(:td)) do
-        Math::Function::Td.new(
-          [
-            Utility.td_value(td),
-          ],
-        )
+        if td.is_a?(Math::Formula) && td.value.any?(Math::Function::Table)
+          Utility.td_values(td.value, ",")
+        else
+          Math::Function::Td.new(
+            [
+              Utility.td_value(td),
+            ],
+          )
+        end
       end
 
       rule(td: sequence(:td)) do
@@ -621,6 +626,13 @@ module Plurimath
            expr: simple(:expr)) do
         new_arr = sequence.flatten.compact
         new_arr << expr unless expr.to_s.strip.empty?
+        new_arr
+      end
+
+      rule(sequence: sequence(:sequence),
+           left_right: simple(:left_right)) do
+        new_arr = sequence.flatten.compact
+        new_arr << left_right unless left_right.to_s.strip.empty?
         new_arr
       end
 

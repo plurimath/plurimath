@@ -36,6 +36,28 @@ module Plurimath
           value_array << parameter_three.insert_t_tag(display_style) if parameter_three
           value_array
         end
+
+        def line_breaking(obj)
+          parameter_one&.line_breaking(obj)
+          if obj.value_exist?
+            obj.update(self.class.new(Utility.filter_values(obj.value), parameter_two, parameter_three))
+            self.parameter_two = nil
+            self.parameter_three = nil
+            return
+          end
+
+          parameter_two&.line_breaking(obj)
+          if obj.value_exist?
+            obj.update(self.class.new(nil, Utility.filter_values(obj.value), parameter_three))
+            self.parameter_three = nil
+            return
+          end
+
+          parameter_three&.line_breaking(obj)
+          if obj.value_exist?
+            obj.update(self.class.new(nil, nil, self.class.new(Utility.filter_values(obj.value))))
+          end
+        end
       end
     end
   end

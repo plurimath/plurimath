@@ -39,20 +39,12 @@ module Plurimath
         def to_omml_without_math_tag(display_style)
           d = Utility.ox_element("d", namespace: "m")
           dpr = Utility.ox_element("dPr", namespace: "m")
-          first_value(dpr)
-          third_value(dpr)
+          parameter = Formula.new(Array(parameter_two))
+          open_paren(dpr)
+          close_paren(dpr)
+          fenced_value = omml_parameter(parameter, display_style, tag_name: "e")
           dpr << Utility.pr_element("ctrl", true, namespace: "m")
-          Utility.update_nodes(
-            d,
-            [
-              dpr,
-              omml_parameter(
-                Formula.new(Array(parameter_two)),
-                display_style,
-                tag_name: "e",
-              ),
-            ],
-          )
+          Utility.update_nodes(d, [dpr, fenced_value])
           [d]
         end
 
@@ -78,14 +70,21 @@ module Plurimath
         end
 
         def to_omml_math_zone(spacing, last = false, indent = true, display_style:)
-          filtered_values(parameter_two).map.with_index(1) do |object, index|
+          filtered_values(parameter_two).map do |object|
             object.to_omml_math_zone(spacing, last, !indent, display_style: display_style)
           end
         end
 
+        def line_breaking(obj)
+          field_values = result(Array(parameter_two))
+          return unless field_values.length > 1
+
+          obj.update(value_split(obj, field_values))
+        end
+
         protected
 
-        def first_value(dpr)
+        def open_paren(dpr)
           first_value = parameter_one&.value
           return dpr if first_value.nil? || first_value.empty?
 
@@ -97,7 +96,7 @@ module Plurimath
           )
         end
 
-        def third_value(dpr)
+        def close_paren(dpr)
           third_value = parameter_three&.value
           return dpr if third_value.nil? || third_value.empty?
 
@@ -122,6 +121,16 @@ module Plurimath
           return "" if field&.value&.include?(":")
 
           field&.value
+        end
+
+        def value_split(obj, field_value)
+          object = cloned_objects
+          breaked_result = field_value.first.last.omml_line_break(field_value)
+          self.parameter_two = Array(breaked_result.shift)
+          object.parameter_one = nil
+          object.parameter_two = breaked_result.flatten
+          self.parameter_three = nil
+          object
         end
       end
     end

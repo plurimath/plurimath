@@ -27,7 +27,7 @@ module Plurimath
           parse_text("html") || parameter_one
         end
 
-        def to_omml_without_math_tag(_display_style)
+        def to_omml_without_math_tag(_)
           text = Utility.ox_element("t", namespace: "m")
           text << (parse_text("omml") || parameter_one)
           [text]

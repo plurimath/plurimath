@@ -35,9 +35,7 @@ module Plurimath
 
           ssubsup   = Utility.ox_element("sSubSup", namespace: "m")
           ssubsuppr = Utility.ox_element("sSubSupPr", namespace: "m")
-          ssubsuppr << hide_tags(
-            Utility.pr_element("ctrl", true, namespace: "m"),
-          )
+          ssubsuppr << hide_tags(Utility.pr_element("ctrl", true, namespace: "m"))
           Utility.update_nodes(
             ssubsup,
             [
@@ -57,12 +55,18 @@ module Plurimath
             new_arr = [first_value]
             new_arr << parameter_one&.to_mathml_without_math_tag
             new_arr << parameter_two&.to_mathml_without_math_tag
-            Utility.update_nodes(
-              subsup_tag,
-              new_arr,
-            )
+            Utility.update_nodes(subsup_tag, new_arr)
           else
             first_value
+          end
+        end
+
+        def line_breaking(obj)
+          parameter_one&.line_breaking(obj)
+          if obj.value_exist?
+            log = self.class.new(Utility.filter_values(obj.value), parameter_two)
+            log.hide_function_name = true
+            obj.update(log)
           end
         end
 
@@ -70,6 +74,8 @@ module Plurimath
 
         def e_parameter
           e_tag = Utility.ox_element("e", namespace: "m")
+          return e_tag if hide_function_name
+
           e_tag << rpr_tag
         end
 

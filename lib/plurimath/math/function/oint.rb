@@ -55,7 +55,7 @@ module Plurimath
             Utility.update_nodes(
               nary,
               [
-                narypr("∮", function_type: "subSup"),
+                narypr((hide_function_name ? "" : "∮"), function_type: "subSup"),
                 omml_parameter(parameter_one, display_style, tag_name: "sub"),
                 omml_parameter(parameter_two, display_style, tag_name: "sup"),
                 omml_parameter(parameter_three, display_style, tag_name: "e"),
@@ -67,6 +67,25 @@ module Plurimath
             t_tag = Utility.ox_element("t", namespace: "m")
             r_tag << (t_tag << "&#x222e;")
             [r_tag]
+          end
+        end
+
+        def line_breaking(obj)
+          parameter_one&.line_breaking(obj)
+          if obj.value_exist?
+            oint = self.class.new(Utility.filter_values(obj.value), parameter_two, parameter_three)
+            oint.hide_function_name = true
+            obj.update(oint)
+            self.parameter_two = nil
+            self.parameter_three = nil
+            return
+          end
+
+          parameter_three&.line_breaking(obj)
+          if obj.value_exist?
+            oint = self.class.new(nil, nil, Utility.filter_values(obj.value))
+            oint.hide_function_name = true
+            obj.update(oint)
           end
         end
       end

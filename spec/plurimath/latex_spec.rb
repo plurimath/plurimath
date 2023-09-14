@@ -2672,7 +2672,7 @@ RSpec.describe Plurimath::Latex do
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
-              <mstyle mathvariant="mathit">
+              <mstyle mathvariant="italic">
                 <mi>M</mi>
               </mstyle>
               <mrow>
@@ -2687,8 +2687,8 @@ RSpec.describe Plurimath::Latex do
             </mstyle>
           </math>
         MATHML
-        latex = "M ( \\text{}^{12} \\text{C} )"
-        asciimath = "M (\"\"^(12) \"C\")"
+        latex = "\\mathit{M} ( \\text{}^{12} \\text{C} )"
+        asciimath = "ii(M) (\"\"^(12) \"C\")"
         expect(formula.to_asciimath).to eql(asciimath)
         expect(formula.to_latex.gsub(/\s+/, "")).to eql(latex.gsub(/\s+/, ""))
         expect(formula.to_mathml).to be_equivalent_to(mathml)
