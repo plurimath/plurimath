@@ -36,10 +36,7 @@ module Plurimath
           me = Utility.ox_element("e", namespace: "m")
           return [me] if parameter_one&.empty?
 
-          Utility.update_nodes(
-            me,
-            Formula.new(parameter_one).omml_content(display_style),
-          )
+          Utility.update_nodes(me, omml_content(display_style))
           [me]
         end
 
@@ -69,6 +66,19 @@ module Plurimath
             "#{spacing}\"td\" function apply\n",
             Formula.new(parameter_one).to_omml_math_zone(gsub_spacing(spacing, last), last, indent, display_style: display_style),
           ]
+        end
+
+        def omml_content(display_style)
+          parameter_one&.map { |val| val.insert_t_tag(display_style) }
+        end
+
+        def line_breaking(obj)
+          sliced_value = result(Array(parameter_one))
+          return unless sliced_value.length > 1
+
+          sliced_result = sliced_value.first.last.omml_line_break(sliced_value)
+          table = Table.new(sliced_result.map { |res| Tr.new(Array(Td.new(Array(res)))) })
+          self.parameter_one = [table]
         end
       end
     end

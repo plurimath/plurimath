@@ -15,7 +15,7 @@ module Plurimath
           Utility.update_nodes(merror, mathml_value)
         end
 
-        def to_omml_without_math_tag(display_style); end
+        def to_omml_without_math_tag(_); end
       end
     end
   end

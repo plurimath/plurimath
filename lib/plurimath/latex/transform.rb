@@ -14,7 +14,7 @@ module Plurimath
       rule(lparen: simple(:lparen))   { Math::Symbol.new(lparen) }
       rule(rparen: simple(:rparen))   { Math::Symbol.new(rparen) }
       rule(limits: simple(:limits))   { limits }
-      rule("\\\\" => simple(:slash))  { Math::Symbol.new(slash) }
+      rule("\\\\" => simple(:slash))  { Math::Function::Linebreak.new }
       rule(expression: simple(:expr)) { expr }
       rule(environment: simple(:env)) { env }
       rule(ternary: simple(:ternary)) { Utility.get_class(ternary).new }

@@ -1,0 +1,28 @@
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mstyle displaystyle="true">
+    <mstyle mathvariant="monospace">
+      <mrow>
+        <mi>a</mi>
+      </mrow>
+    </mstyle>
+  </mstyle>
+</math>
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mstyle displaystyle="true">
+    <mstyle mathvariant="monospace">
+      <mi>b</mi>
+    </mstyle>
+    <mstyle mathvariant="itt">
+      <mrow>
+        <mi>d</mi>
+      </mrow>
+    </mstyle>
+  </mstyle>
+</math>
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mstyle displaystyle="true">
+    <mstyle mathvariant="itt">
+      <mi>e</mi>
+    </mstyle>
+  </mstyle>
+</math>

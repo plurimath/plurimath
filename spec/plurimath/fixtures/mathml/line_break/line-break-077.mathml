@@ -1,0 +1,16 @@
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mstyle displaystyle="true">
+    <mscarries>
+      <mrow>
+        <mo>&#x2211;</mo>
+      </mrow>
+    </mscarries>
+  </mstyle>
+</math>
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mstyle displaystyle="true">
+    <mscarries>
+      <mo>&#x220f;</mo>
+    </mscarries>
+  </mstyle>
+</math>

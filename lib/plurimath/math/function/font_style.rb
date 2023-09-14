@@ -37,7 +37,7 @@ module Plurimath
           true
         end
 
-        def extract_class_from_text
+        def extract_class_name_from_text
           parameter_one.parameter_one if parameter_one.is_a?(Text)
           parameter_one.class_name
         end
@@ -47,15 +47,13 @@ module Plurimath
         end
 
         def font_styles(display_style, sty: "p", scr: nil)
-          r_tag   = Utility.ox_element("r", namespace: "m")
+          r_tag = Utility.ox_element("r", namespace: "m")
           rpr_tag = Utility.ox_element("rPr", namespace: "m")
-          fonts   = []
-          fonts << Utility.ox_element("scr", namespace: "m", attributes: { "m:val": scr }) if scr
-          fonts << Utility.ox_element("sty", namespace: "m", attributes: { "m:val": sty }) if sty
-          r_tag << Utility.update_nodes(rpr_tag, fonts)
+          rpr_tag << Utility.ox_element("scr", namespace: "m", attributes: { "m:val": scr }) if scr
+          rpr_tag << Utility.ox_element("sty", namespace: "m", attributes: { "m:val": sty }) if sty
           Utility.update_nodes(
-            r_tag,
-            Array(parameter_one.font_style_t_tag(display_style)),
+            (r_tag << rpr_tag),
+            Array(parameter_one&.font_style_t_tag(display_style)),
           )
           [r_tag]
         end
@@ -103,6 +101,18 @@ module Plurimath
         def omml_and_mathml_font_family
           fonts = Utility::FONT_STYLES.select { |_font, font_class| font_class == self.class }.keys.map(&:to_s)
           Omml::Parser::SUPPORTED_FONTS.values.find { |value| fonts.include?(value) }
+        end
+
+        def line_breaking(obj)
+          parameter_one&.line_breaking(obj)
+          return unless obj.value_exist?
+
+          obj.update(
+            self.class.new(
+              Utility.filter_values(obj.value),
+              self.parameter_two,
+            )
+          )
         end
       end
     end

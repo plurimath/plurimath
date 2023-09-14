@@ -4,6 +4,7 @@ module Plurimath
   module Math
     class Formula < Core
       attr_accessor :value, :left_right_wrapper, :displaystyle, :input_string
+
       MATH_ZONE_TYPES = %i[
         omml
         latex
@@ -36,19 +37,27 @@ module Plurimath
         parse_error!(:asciimath)
       end
 
-      def to_mathml(display_style: displaystyle)
+      def to_mathml(display_style: displaystyle, split_on_linebreak: false)
+        return line_breaked_mathml(display_style) if split_on_linebreak
+
         math_attrs = {
           xmlns: "http://www.w3.org/1998/Math/MathML",
           display: "block",
         }
         style_attrs = { displaystyle: boolean_display_style(display_style) }
-        math  = Utility.ox_element("math", attributes: math_attrs)
-        style = Utility.ox_element("mstyle", attributes: style_attrs)
+        math  = ox_element("math", attributes: math_attrs)
+        style = ox_element("mstyle", attributes: style_attrs)
         Utility.update_nodes(style, mathml_content)
         Utility.update_nodes(math, [style])
-        Plurimath.xml_engine.dump(math, indent: 2).gsub("&amp;", "&")
+        dump_nodes(math, indent: 2)
       rescue
         parse_error!(:mathml)
+      end
+
+      def line_breaked_mathml(display_style)
+        new_line_support.map do |formula|
+          formula.to_mathml(display_style: display_style)
+        end.join
       end
 
       def to_mathml_without_math_tag
@@ -76,7 +85,7 @@ module Plurimath
         parse_error!(:html)
       end
 
-      def omml_math_attrs
+      def omml_attrs
         {
           "xmlns:m": "http://schemas.openxmlformats.org/officeDocument/2006/math",
           "xmlns:mc": "http://schemas.openxmlformats.org/markup-compatibility/2006",
@@ -99,16 +108,20 @@ module Plurimath
         }
       end
 
-      def to_omml(display_style: displaystyle)
-        para_element = Utility.ox_element(
-          "oMathPara",
-          attributes: omml_math_attrs,
-          namespace: "m",
-        )
-        math_element = Utility.ox_element("oMath", namespace: "m")
-        content = omml_content(boolean_display_style(display_style))
-        para_element << Utility.update_nodes(math_element, content)
-        Plurimath.xml_engine.dump(para_element, indent: 2).gsub("&amp;", "&").lstrip
+      def to_omml(display_style: displaystyle, split_on_linebreak: false)
+        objects = split_on_linebreak ? new_line_support : [self]
+
+        para_element = Utility.ox_element("oMathPara", attributes: omml_attrs, namespace: "m")
+        objects.each.with_index(1) do |object, index|
+          para_element << Utility.update_nodes(
+            Utility.ox_element("oMath", namespace: "m"),
+            object.omml_content(boolean_display_style(display_style)),
+          )
+          next if objects.length == index
+
+          para_element << omml_br_tag
+        end
+        dump_nodes(para_element, indent: 2)
       rescue
         parse_error!(:omml)
       end
@@ -168,8 +181,8 @@ module Plurimath
         end
       end
 
-      def extract_class_from_text
-        return false unless (value.length < 2 && value&.first&.is_a?(Function::Text))
+      def extract_class_name_from_text
+        return unless value.length < 2 && value.first.is_a?(Function::Text)
 
         value.first.parameter_one
       end
@@ -182,10 +195,62 @@ module Plurimath
         (value.none?(Function::Left) || value.none?(Function::Right))
       end
 
+      def value_exist?
+        value && !value.empty?
+      end
+
+      def update(object)
+        self.value = Array(object)
+      end
+
+      def cloned_objects
+        cloned_obj = value.map(&:cloned_objects)
+        formula = self.class.new(cloned_obj)
+        formula.left_right_wrapper = @left_right_wrapper
+        formula
+      end
+
+      def new_line_support(array = [])
+        cloned = cloned_objects
+        obj = self.class.new
+        cloned.line_breaking(obj)
+        array << cloned
+        obj.value_exist? ? obj.new_line_support(array) : array
+      end
+
+      def line_breaking(obj)
+        if result.size > 1
+          breaked_result = result.first.last.omml_line_break(result)
+          update(Array(breaked_result.shift))
+          obj.update(breaked_result.flatten)
+          reprocess_value(obj)
+          return
+        end
+
+        value.each.with_index(1) do |object, index|
+          object.line_breaking(obj)
+          break obj.insert(value.slice!(index..value.size)) if obj.value_exist?
+        end
+      end
+
+      def reprocess_value(obj)
+        new_obj = self.class.new([])
+        self.line_breaking(new_obj)
+        if new_obj.value_exist?
+          obj.value.insert(0, Function::Linebreak.new)
+          obj.value.insert(0, self.class.new(new_obj.value))
+        end
+      end
+
+      def insert(values)
+        update(Array(value) + values)
+      end
+
+
       protected
 
       def boolean_display_style(display_style = displaystyle)
-        YAML.load(display_style.to_s)
+        YAML.safe_load(display_style.to_s)
       end
 
       def new_space(spacing, indent)
@@ -202,6 +267,11 @@ module Plurimath
 
       def parse_error!(type)
         Math.parse_error!(input_string, type)
+      end
+
+      def omml_br_tag
+        r_tag = ox_element("r", namespace: "m")
+        r_tag << ox_element("br")
       end
     end
   end

@@ -3,6 +3,11 @@
 module Plurimath
   module Math
     class Core
+      REPLACABLES = {
+        /&amp;/ => "&",
+        /^\n/ => "",
+      }
+
       def class_name
         self.class.name.split("::").last.downcase
       end
@@ -24,18 +29,18 @@ module Plurimath
       end
 
       def empty_tag(wrapper_tag)
-        r_tag = Utility.ox_element("r", namespace: "m")
-        r_tag << (Utility.ox_element("t", namespace: "m") << "&#8203;")
+        r_tag = ox_element("r", namespace: "m")
+        r_tag << (ox_element("t", namespace: "m") << "&#8203;")
         wrapper_tag << r_tag
       end
 
-      def omml_parameter(field, display_style, tag_name: , namespace: "m")
-        tag = Utility.ox_element(tag_name, namespace: namespace)
+      def omml_parameter(field, display_style, tag_name:, namespace: "m")
+        tag = ox_element(tag_name, namespace: namespace)
         return empty_tag(tag) unless field
 
         Utility.update_nodes(
           tag,
-          field&.insert_t_tag(display_style),
+          field.insert_t_tag(display_style),
         )
       end
 
@@ -44,12 +49,13 @@ module Plurimath
       end
 
       def r_element(string, rpr_tag: true)
-        r_tag = Utility.ox_element("r", namespace: "m")
+        r_tag = ox_element("r", namespace: "m")
         if rpr_tag
-          sty_tag = Utility.ox_element("sty", namespace: "m", attributes: { "m:val": "p" })
-          r_tag << (Utility.ox_element("rPr", namespace: "m") << sty_tag)
+          attrs = { "m:val": "p" }
+          sty_tag = ox_element("sty", namespace: "m", attributes: attrs)
+          r_tag << (ox_element("rPr", namespace: "m") << sty_tag)
         end
-        r_tag << (Utility.ox_element("t", namespace: "m") << string)
+        r_tag << (ox_element("t", namespace: "m") << string)
         Array(r_tag)
       end
 
@@ -57,7 +63,7 @@ module Plurimath
         false
       end
 
-      def extract_class_from_text
+      def extract_class_name_from_text
         ""
       end
 
@@ -107,16 +113,13 @@ module Plurimath
       end
 
       def dump_mathml(field)
-        mathml = dump_ox_nodes(field.to_mathml_without_math_tag)
-        mathml.gsub(/\n\s*/, "").gsub("&amp;", "&")
+        dump_ox_nodes(field.to_mathml_without_math_tag).gsub(/\n\s*/, "")
       end
 
       def dump_omml(field, display_style)
         return if field.nil?
 
-        omml = field.omml_nodes(display_style)
-        omml_string = omml.is_a?(Array) ? omml.flatten.map { |obj| dump_ox_nodes(obj) }.join : dump_ox_nodes(omml)
-        omml_string.gsub(/\n\s*/, "").gsub("&amp;", "&")
+        dump_ox_nodes(field.omml_nodes(display_style)).gsub(/\n\s*/, "")
       end
 
       def omml_nodes(display_style)
@@ -124,16 +127,16 @@ module Plurimath
       end
 
       def validate_mathml_fields(field)
-        field.nil? ? Utility.ox_element("mi") : field.to_mathml_without_math_tag
+        field.nil? ? ox_element("mi") : field.to_mathml_without_math_tag
       end
 
       def common_math_zone_conversion(field, options = {})
         {
           spacing: options[:spacing],
           last: options[:last] || true,
-          indent: !field&.is_a?(Formula),
+          indent: !field.is_a?(Formula),
           function_spacing: "#{options[:spacing]}#{options[:additional_space]}",
-          field_name: options[:field_name] ?  " #{options[:field_name]}" : "",
+          field_name: (options[:field_name] ? " #{options[:field_name]}" : ""),
         }
       end
 
@@ -142,15 +145,122 @@ module Plurimath
       end
 
       def dump_ox_nodes(nodes)
-        Plurimath.xml_engine.dump(nodes)
+        return dump_nodes(nodes) unless nodes.is_a?(Array)
+
+        nodes.flatten.map { |node| dump_nodes(node) }.join
+      end
+
+      def dump_nodes(nodes, indent: nil)
+        replacable_values(
+          Plurimath.xml_engine.dump(nodes, indent: indent),
+        )
+      end
+
+      def replacable_values(string)
+        REPLACABLES.each { |regex, str| string.gsub!(regex, str) }
+        string
       end
 
       def gsub_spacing(spacing, last)
-        spacing.gsub(/\|\_/, last ? "  " : "| ")
+        spacing.gsub(/\|_/, last ? "  " : "| ")
       end
 
       def invert_unicode_symbols
         Mathml::Constants::UNICODE_SYMBOLS.invert[class_name] || class_name
+      end
+
+      def separate_table
+        false
+      end
+
+      def linebreak
+        false
+      end
+
+      def cloned_objects
+        object = self.class.new rescue self.class.new(nil)
+        variables.each { |var| object.set(var, variable_value(get(var))) }
+        object
+      end
+
+      def variable_value(value)
+        case value
+        when Core
+          value.cloned_objects
+        when Array
+          value.map { |object| variable_value(object) }
+        else
+          value
+        end
+      end
+
+      def line_breaking(obj)
+        variables.each do |variable|
+          field = get(variable)
+          case field
+          when Core
+            field.line_breaking(obj)
+            updated_object_values(variable, obj: obj, update_value: true) if obj.value_exist?
+          when Array
+            if result(field).length > 1
+              updated_object_values(variable, obj: obj)
+            else
+              field.each { |object| object.line_breaking(obj) }
+            end
+          end
+        end
+      end
+
+      def updated_object_values(param, obj:, update_value: false)
+        object = self.class.new(nil)
+        found = false
+        variables.each do |variable|
+          value = if param == variable
+                    found = true
+                    if update_value
+                      return_value = obj.value
+                      obj.value = []
+                      return_value
+                    else
+                      formula = Formula.new(get(variable))
+                      formula.line_breaking(obj)
+                      set(variable, obj)
+                      get(variable)
+                    end
+                  else
+                    return_value = get(variable)
+                    set(variable, nil) if found
+                    return_value
+                  end
+          object.set(variable, Utility.filter_values(value))
+        end
+        object.hide_function_name = true if object.methods.include?(:hide_function_name)
+        obj.update(object)
+      end
+
+      def get(variable)
+        instance_variable_get(variable)
+      end
+
+      def set(variable, value)
+        instance_variable_set(variable, value)
+      end
+
+      def variables
+        instance_variables
+      end
+
+      def ox_element(node, attributes: [], namespace: "")
+        Utility.ox_element(
+          node,
+          attributes: attributes,
+          namespace: namespace,
+        )
+      end
+
+      def result(value = [])
+        value = get("@value") || value
+        value.slice_after { |d| d.is_a?(Math::Function::Linebreak) }.to_a
       end
 
       def is_unary?

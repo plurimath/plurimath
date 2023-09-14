@@ -13,15 +13,11 @@ module Plurimath
         }.freeze
 
         def to_mathml_without_math_tag
-          first_value = parameter_one&.to_mathml_without_math_tag
-          second_value = parameter_two&.to_mathml_without_math_tag
-          Utility.update_nodes(
-            Utility.ox_element("munder"),
-            [
-              second_value,
-              first_value,
-            ],
-          )
+          value_array = [
+            validate_mathml_fields(parameter_two),
+            validate_mathml_fields(parameter_one),
+          ]
+          Utility.update_nodes(ox_element("munder"), value_array)
         end
 
         def to_omml_without_math_tag(display_style)
@@ -42,6 +38,20 @@ module Plurimath
             ],
           )
           [limlow]
+        end
+
+        def line_breaking(obj)
+          parameter_one&.line_breaking(obj)
+          if obj.value_exist?
+            obj.update(self.class.new(Utility.filter_values(obj.value), parameter_two))
+            self.parameter_two = nil
+            return
+          end
+
+          parameter_two&.line_breaking(obj)
+          if obj.value_exist?
+            obj.update(self.class.new(nil, Utility.filter_values(obj.value)))
+          end
         end
       end
     end

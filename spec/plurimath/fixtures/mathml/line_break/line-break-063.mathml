@@ -1,0 +1,28 @@
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mstyle displaystyle="true">
+    <munderover>
+      <mo>&#x220f;</mo>
+      <mrow>
+        <mi>&#x3b8;</mi>
+      </mrow>
+      <mrow>
+        <mi>&#x2222;</mi>
+        <mo linebreak="newline"/>
+        <mi>&#xd3;</mi>
+      </mrow>
+    </munderover>
+  </mstyle>
+</math>
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mstyle displaystyle="true">
+    <munderover>
+      <mo/>
+      <mi>&#x3b3;</mi>
+      <mrow>
+        <mi>&#x2222;</mi>
+        <mo linebreak="newline"/>
+        <mi>&#xd3;</mi>
+      </mrow>
+    </munderover>
+  </mstyle>
+</math>

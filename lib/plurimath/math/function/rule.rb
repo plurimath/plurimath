@@ -27,7 +27,7 @@ module Plurimath
           Utility.ox_element("mi")
         end
 
-        def to_omml_without_math_tag(display_style)
+        def to_omml_without_math_tag(_)
           [Utility.ox_element("m:r") << Utility.ox_element("m:t")]
         end
 

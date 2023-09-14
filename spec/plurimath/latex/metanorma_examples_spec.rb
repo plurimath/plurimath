@@ -8,12 +8,12 @@ RSpec.describe Plurimath::Latex::Parser do
     context "contains example #1" do
       let(:string) {
         <<~LATEX
-          \\mbox{\\rule{15mm}{0mm}}
+          \\mbox{rule{15mm}{0mm}}
         LATEX
       }
       it "returns formula" do
         expected_value = Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Mbox.new("\\rule{15mm}{0mm}")
+          Plurimath::Math::Function::Mbox.new("rule{15mm}{0mm}")
         ])
         expect(formula).to eq(expected_value)
       end
@@ -43,13 +43,13 @@ RSpec.describe Plurimath::Latex::Parser do
     context "contains example #3" do
       let(:string) {
         <<~LATEX
-          \\mbox{\\rule{15mm}{0mm}}^{Q/10}
+          \\mbox{rule{15mm}{0mm}}^{Q/10}
         LATEX
       }
       it "returns formula" do
         expected_value = Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Power.new(
-            Plurimath::Math::Function::Mbox.new("\\rule{15mm}{0mm}"),
+            Plurimath::Math::Function::Mbox.new("rule{15mm}{0mm}"),
             Plurimath::Math::Formula.new([
               Plurimath::Math::Symbol.new("Q"),
               Plurimath::Math::Symbol.new("/"),
@@ -64,13 +64,13 @@ RSpec.describe Plurimath::Latex::Parser do
     context "contains example #4" do
       let(:string) {
         <<~LATEX
-          \\mbox{\\rule{15mm}{0mm}}_{Q/10}
+          \\mbox{rule{15mm}{0mm}}_{Q/10}
         LATEX
       }
       it "returns formula" do
         expected_value = Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Base.new(
-            Plurimath::Math::Function::Mbox.new("\\rule{15mm}{0mm}"),
+            Plurimath::Math::Function::Mbox.new("rule{15mm}{0mm}"),
             Plurimath::Math::Formula.new([
               Plurimath::Math::Symbol.new("Q"),
               Plurimath::Math::Symbol.new("/"),

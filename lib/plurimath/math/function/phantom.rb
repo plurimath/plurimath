@@ -21,7 +21,7 @@ module Plurimath
         def to_mathml_without_math_tag
           Utility.update_nodes(
             Utility.ox_element("mphantom"),
-            Array(parameter_one&.to_mathml_without_math_tag),
+            Array(mathml_value),
           )
         end
 
@@ -30,6 +30,10 @@ module Plurimath
           e_tag = Utility.ox_element("e", namespace: "m")
           Utility.update_nodes(e_tag, Array(omml_value(display_style)))
           Utility.update_nodes(phant, [phant_pr, e_tag])
+        end
+
+        def line_breaking(obj)
+          custom_array_line_breaking(obj)
         end
 
         protected

@@ -33,6 +33,15 @@ module Plurimath
           Array(parameter_one.insert_t_tag(display_style))
         end
 
+        def line_breaking(obj)
+          parameter_one&.line_breaking(obj)
+          if obj.value_exist?
+            semantics = self.class.new(Utility.filter_values(obj.value), self.parameter_two)
+            self.parameter_two = nil
+            obj.update(semantics)
+          end
+        end
+
         protected
 
         def other_tags(array)

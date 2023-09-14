@@ -19,16 +19,12 @@ module Plurimath
         end
 
         def to_mathml_without_math_tag
-          mover_tag    = Utility.ox_element("mfrac")
-          first_value  = parameter_one&.to_mathml_without_math_tag
-          second_value = parameter_two&.to_mathml_without_math_tag
-          Utility.update_nodes(
-            mover_tag,
-            [
-              first_value,
-              second_value,
-            ],
-          )
+          tag_name = hide_function_name ? "mrow" : "mfrac"
+          mathml_value  = [
+            parameter_one&.to_mathml_without_math_tag,
+            parameter_two&.to_mathml_without_math_tag,
+          ]
+          Utility.update_nodes(ox_element(tag_name), mathml_value)
         end
 
         def to_latex
@@ -49,6 +45,23 @@ module Plurimath
             ],
           )
           [f_element]
+        end
+
+        def line_breaking(obj)
+          parameter_one&.line_breaking(obj)
+          if obj.value_exist?
+            obj.update(self.class.new(Utility.filter_values(obj.value), parameter_two))
+            self.parameter_two = nil
+            self.hide_function_name = true
+            return
+          end
+
+          parameter_two&.line_breaking(obj)
+          if obj.value_exist?
+            over = self.class.new(nil, Utility.filter_values(obj.value))
+            over.hide_function_name = true
+            obj.update(over)
+          end
         end
       end
     end

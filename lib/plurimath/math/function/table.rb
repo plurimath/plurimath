@@ -197,7 +197,7 @@ module Plurimath
           eqarrpr  = Utility.ox_element("eqArrPr", namespace: "m")
           eqarrpr  << Utility.pr_element("ctrl", true, namespace: "m")
           eqarr    << eqarrpr
-          tr_value = value.map { |obj| obj.to_omml_without_math_tag(display_style) }.flatten
+          tr_value = value.map { |object| object.to_omml_without_math_tag(display_style) }.flatten
           Utility.update_nodes(eqarr, tr_value.compact)
           [eqarr]
         end
@@ -226,7 +226,7 @@ module Plurimath
           mcs << mc
           mpr << mcs
           mpr << ctrlpr
-          mm_value = value&.map { |obj| obj.to_omml_without_math_tag(display_style) }
+          mm_value = value&.map { |object| object.to_omml_without_math_tag(display_style) }
           Utility.update_nodes(
             mm,
             mm_value.insert(0, mpr).flatten,

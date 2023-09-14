@@ -43,22 +43,33 @@ module Plurimath
         end
 
         def to_omml_without_math_tag(display_style)
-          return r_element("^", rpr_tag: false)  unless parameter_one
+          return r_element("^", rpr_tag: false) unless parameter_one
+          return omml_value(display_style) if hide_function_name
 
           if attributes && attributes[:accent]
             accent_tag(display_style)
           else
-            symbol = Symbol.new("&#x302;")
-            Overset.new(parameter_one, symbol).to_omml_without_math_tag(true)
+            symbol = Symbol.new("&#x302;") unless hide_function_name
+            Overset.new(parameter_one, symbol).to_omml_without_math_tag(display_style)
+          end
+        end
+
+        def line_breaking(obj)
+          parameter_one&.line_breaking(obj)
+          if obj.value_exist?
+            obj.update(
+              Overset.new(Utility.filter_values(obj.value), nil),
+            )
           end
         end
 
         protected
 
         def accent_tag(display_style)
-          acc_tag    = Utility.ox_element("acc", namespace: "m")
+          symbol  = "̂" unless hide_function_name
+          acc_tag = Utility.ox_element("acc", namespace: "m")
           acc_pr_tag = Utility.ox_element("accPr", namespace: "m")
-          acc_pr_tag << (Utility.ox_element("chr", namespace: "m", attributes: { "m:val": "̂" }))
+          acc_pr_tag << (Utility.ox_element("chr", namespace: "m", attributes: { "m:val": symbol }))
           Utility.update_nodes(
             acc_tag,
             [
