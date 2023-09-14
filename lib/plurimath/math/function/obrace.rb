@@ -53,6 +53,11 @@ module Plurimath
           end
         end
 
+        def line_breaking(obj)
+          parameter_one&.line_breaking(obj)
+          obj.update(Utility.filter_values(obj.value)) if obj.value_exist?
+        end
+
         protected
 
         def acc_tag(display_style)

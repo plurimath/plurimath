@@ -9,6 +9,7 @@ module Plurimath
       rule(i: sequence(:i)) { i }
       rule(e: sequence(:e)) { e.flatten.compact }
 
+      rule(br: sequence(:br))    { Math::Function::Linebreak.new }
       rule(val: simple(:val))    { val }
       rule(scr: simple(:scr))    { scr }
       rule(sty: simple(:sty))    { sty }
@@ -264,7 +265,7 @@ module Plurimath
 
       rule(limLow: subtree(:lim)) do
         second_value = Utility.filter_values(lim[2])
-        unicode = Mathml::Constants::UNICODE_SYMBOLS.invert[second_value.class_name]
+        unicode = Mathml::Constants::UNICODE_SYMBOLS.invert[second_value&.class_name]
         second_value = unicode ? Math::Symbol.new(unicode.to_s) : second_value
         Math::Function::Underset.new(
           Utility.filter_values(lim[1]),

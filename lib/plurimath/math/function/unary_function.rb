@@ -4,12 +4,13 @@ module Plurimath
   module Math
     module Function
       class UnaryFunction < Core
-        attr_accessor :parameter_one
+        attr_accessor :parameter_one, :hide_function_name
 
         def initialize(parameter_one = nil)
           parameter_one  = parameter_one.to_s if parameter_one.is_a?(Parslet::Slice)
           @parameter_one = parameter_one
-          Utility.validate_left_right([parameter_one])
+          method(:post_initialize).call if methods.include?(:post_initialize)
+          Utility.validate_left_right(variables.map { |var| get(var) })
         end
 
         def ==(object)
@@ -54,25 +55,13 @@ module Plurimath
         def to_omml_without_math_tag(display_style)
           return r_element(class_name, rpr_tag: false) unless parameter_one
 
-          func   = Utility.ox_element("func", namespace: "m")
-          funcpr = Utility.ox_element("funcPr", namespace: "m")
-          funcpr << Utility.pr_element("ctrl", true, namespace: "m")
-          fname  = Utility.ox_element("fName", namespace: "m")
-          mr  = Utility.ox_element("r", namespace: "m")
-          rpr = Utility.rpr_element
-          mt  = Utility.ox_element("t", namespace: "m") << class_name
-          fname << Utility.update_nodes(mr, [rpr, mt])
-          me = Utility.ox_element("e", namespace: "m")
-          Utility.update_nodes(me, omml_value(display_style)) if parameter_one
-          Utility.update_nodes(
-            func,
-            [
-              funcpr,
-              fname,
-              me,
-            ],
-          )
-          [func]
+          if @hide_function_name
+            value = omml_value(display_style)
+          else
+            func = Utility.ox_element("func", namespace: "m")
+            value = Utility.update_nodes(func, function_values(display_style))
+          end
+          Array(value)
         end
 
         def to_asciimath_math_zone(spacing, last = false, _)
@@ -147,14 +136,38 @@ module Plurimath
 
         def omml_value(display_style)
           if parameter_one.is_a?(Array)
-            return parameter_one&.compact&.map { |obj| obj.insert_t_tag(display_style) }
+            return parameter_one&.compact&.map { |object| formula_to_nodes(object, display_style) }
           end
 
-          Array(parameter_one&.insert_t_tag(display_style))
+          Array(formula_to_nodes(parameter_one, display_style))
+        end
+
+        def formula_to_nodes(object, display_style)
+          object&.insert_t_tag(display_style)
         end
 
         def latex_paren
           Latex::Constants::LEFT_RIGHT_PARENTHESIS.invert[parameter_one] || '.'
+        end
+
+        def exist?
+          parameter_one && !(parameter_one.is_a?(Array) ? parameter_one.empty? : parameter_one.nil?)
+        end
+
+        def function_values(display_style)
+          funcpr = Utility.ox_element("funcPr", namespace: "m")
+          funcpr << Utility.pr_element("ctrl", true, namespace: "m")
+          fname  = Utility.ox_element("fName", namespace: "m")
+          fname << Utility.update_nodes(
+            Utility.ox_element("r", namespace: "m"),
+            [
+              Utility.rpr_element,
+              (Utility.ox_element("t", namespace: "m") << class_name),
+            ],
+          )
+          me = Utility.ox_element("e", namespace: "m")
+          Utility.update_nodes(me, omml_value(display_style)) if parameter_one
+          [funcpr, fname, me]
         end
       end
     end

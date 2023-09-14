@@ -47,10 +47,43 @@ module Plurimath
 
         def to_omml_without_math_tag(display_style)
           values = []
-          values << parameter_one.insert_t_tag(display_style) if parameter_one
-          values << r_element("mod")
-          values << parameter_two.insert_t_tag(display_style) if parameter_two
+          first_value(display_style, values)
+          values << r_element("mod") unless hide_function_name
+          second_value(display_style, values)
           values
+        end
+
+        def line_breaking(obj)
+          parameter_one&.line_breaking(obj)
+          if obj.value_exist?
+            mod = self.class.new(Utility.filter_values(obj.value), parameter_two)
+            mod.hide_function_name = false
+            self.hide_function_name = true
+            obj.update(mod)
+            self.parameter_two = nil
+            return
+          end
+
+          parameter_two&.line_breaking(obj)
+          if obj.value_exist?
+            mod = self.class.new(nil, Utility.filter_values(obj.value))
+            mod.hide_function_name = true
+            obj.update(mod)
+          end
+        end
+
+        protected
+
+        def first_value(display_style, values)
+          return unless parameter_one
+
+          values << parameter_one.insert_t_tag(display_style)
+        end
+
+        def second_value(display_style, values)
+          return unless parameter_two
+
+          values << parameter_two.insert_t_tag(display_style)
         end
       end
     end

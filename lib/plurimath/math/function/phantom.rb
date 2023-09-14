@@ -25,6 +25,15 @@ module Plurimath
             parameter_one&.map(&:to_mathml_without_math_tag),
           )
         end
+
+        def to_omml_without_math_tag(display_style)
+          string = Array.new(Array(parameter_one)&.length, "&#xa0;").join
+          Array(
+            Symbol.new(string).insert_t_tag(display_style),
+          )
+        end
+
+        def updated_object_values(*); end
       end
     end
   end

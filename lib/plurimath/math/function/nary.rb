@@ -60,6 +60,30 @@ module Plurimath
           Array(nary_element)
         end
 
+        def line_breaking(obj)
+          parameter_one&.line_breaking(obj)
+          if obj.value_exist?
+            obj.update(self.class.new(Utility.filter_values(obj.value), parameter_two, parameter_three, parameter_four))
+            self.parameter_two = nil
+            self.parameter_three = nil
+            self.parameter_four = nil
+            return
+          end
+
+          parameter_two&.line_breaking(obj)
+          if obj.value_exist?
+            obj.update(self.class.new(nil, Utility.filter_values(obj.value), parameter_three, parameter_four))
+            self.parameter_three = nil
+            self.parameter_four = nil
+            return
+          end
+
+          parameter_four&.line_breaking(obj)
+          if obj.value_exist?
+            obj.update(self.class.new(nil, nil, nil, Utility.filter_values(obj.value)))
+          end
+        end
+
         protected
 
         def chr_value(narypr)

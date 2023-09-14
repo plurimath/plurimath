@@ -56,6 +56,11 @@ module Plurimath
           symbol = Symbol.new("⏟")
           Underset.new(parameter_one, symbol).to_omml_without_math_tag(true)
         end
+
+        def line_breaking(obj)
+          parameter_one&.line_breaking(obj)
+          obj.update(Utility.filter_values(obj.value)) if obj.value_exist?
+        end
       end
 
       Underbrace = Ubrace

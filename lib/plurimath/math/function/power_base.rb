@@ -37,7 +37,7 @@ module Plurimath
         end
 
         def to_omml_without_math_tag(display_style)
-          return underover(display_style) if parameter_one.omml_tag_name == "undOvr"
+          return underover(display_style) if parameter_one&.omml_tag_name == "undOvr"
 
           ssubsup   = Utility.ox_element("sSubSup", namespace: "m")
           ssubsuppr = Utility.ox_element("sSubSupPr", namespace: "m")
@@ -54,6 +54,27 @@ module Plurimath
             ],
           )
           [ssubsup]
+        end
+
+        def line_breaking(obj)
+          parameter_one&.line_breaking(obj)
+          if obj.value_exist?
+            obj.update(
+              self.class.new(Utility.filter_values(obj.value), parameter_two, parameter_three)
+            )
+            self.parameter_two = nil
+            self.parameter_three = nil
+            return
+          end
+
+          parameter_two.line_breaking(obj)
+          if obj.value_exist?
+            obj.update(
+              self.class.new(nil, Utility.filter_values(obj.value), parameter_three)
+            )
+            self.parameter_two = nil
+            self.parameter_three = nil
+          end
         end
 
         protected

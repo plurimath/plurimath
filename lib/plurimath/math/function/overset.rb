@@ -16,13 +16,7 @@ module Plurimath
           first_value = parameter_one&.to_mathml_without_math_tag
           second_value = parameter_two&.to_mathml_without_math_tag
           over_tag = Utility.ox_element("mover")
-          Utility.update_nodes(
-            over_tag,
-            [
-              second_value,
-              first_value,
-            ],
-          )
+          Utility.update_nodes(over_tag, [second_value, first_value])
         end
 
         def to_omml_without_math_tag(display_style)
@@ -43,6 +37,15 @@ module Plurimath
             ],
           )
           [limupp]
+        end
+
+        def line_breaking(obj)
+          parameter_one&.line_breaking(obj)
+          if obj.value_exist?
+            obj.update(self.class.new(Utility.filter_values(obj.value), parameter_two))
+            self.parameter_two = nil
+            return
+          end
         end
       end
     end

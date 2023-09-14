@@ -50,6 +50,20 @@ module Plurimath
           )
           [f_element]
         end
+
+        def line_breaking(obj)
+          parameter_one&.line_breaking(obj)
+          if obj.value_exist?
+            obj.update(self.class.new(Utility.filter_values(obj.value), parameter_two))
+            self.parameter_two = nil
+            return
+          end
+
+          parameter_two&.line_breaking(obj)
+          if obj.value_exist?
+            obj.update(self.class.new(nil, Utility.filter_values(obj.value)))
+          end
+        end
       end
     end
   end

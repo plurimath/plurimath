@@ -52,15 +52,7 @@ module Plurimath
         def to_omml_without_math_tag(display_style)
           if all_values_exist?
             nary = Utility.ox_element("nary", namespace: "m")
-            Utility.update_nodes(
-              nary,
-              [
-                narypr("∫", function_type: "subSup"),
-                omml_parameter(parameter_one, display_style, tag_name: "sub"),
-                omml_parameter(parameter_two, display_style, tag_name: "sup"),
-                omml_parameter(parameter_three, display_style, tag_name: "e"),
-              ],
-            )
+            Utility.update_nodes(nary, nary_array(display_style))
             [nary]
           else
             r_tag = Utility.ox_element("r", namespace: "m")
@@ -68,6 +60,35 @@ module Plurimath
             r_tag << (t_tag << "&#x222b;")
             [r_tag]
           end
+        end
+
+        def line_breaking(obj)
+          parameter_one&.line_breaking(obj)
+          if obj.value_exist?
+            int = Int.new(Utility.filter_values(obj.value), parameter_two, parameter_three)
+            int.hide_function_name = true
+            obj.update(int)
+            self.parameter_two = nil
+            self.parameter_three = nil
+            return
+          end
+
+          parameter_three&.line_breaking(obj)
+          if obj.value_exist?
+            int = Int.new(nil, nil, Utility.filter_values(obj.value))
+            int.hide_function_name = true
+            obj.update(int)
+          end
+        end
+
+        def nary_array(display_style)
+          symbol = hide_function_name ? "" : "∫"
+          [
+            narypr(symbol, function_type: "subSup"),
+            omml_parameter(parameter_one, display_style, tag_name: "sub"),
+            omml_parameter(parameter_two, display_style, tag_name: "sup"),
+            omml_parameter(parameter_three, display_style, tag_name: "e"),
+          ]
         end
       end
     end
