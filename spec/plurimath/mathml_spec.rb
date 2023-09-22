@@ -246,7 +246,7 @@ RSpec.describe Plurimath::Mathml do
           </math>
         MATHML
         latex = "\\int_{t_{2}}^{t_{1}} f ( t ) \\\\ d t"
-        asciimath = 'int_(t_(2))^(t_(1)) f ( t ) \\\\ d t'
+        asciimath = "int_(t_(2))^(t_(1)) f ( t ) \\\n d t"
         expect(formula.to_latex).to eq(latex)
         expect(formula.to_mathml).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eq(asciimath)
@@ -1160,7 +1160,7 @@ RSpec.describe Plurimath::Mathml do
           </math>
         MATHML
         latex = "\\text{Convert} ( x , y , z , p_{a} , p_{o} , R , S , T ) = R_{z} ( \\alpha ) R_{y} ( \\beta ) R_{x} ( \\gamma ) S ( x - a_{x} ,  y - a_{y} ,  z - a_{z} ) + p_{o} + T =\\\\  \\left [\\begin{matrix}\\cos{&#x2061;} \\alpha \\cos{\\beta} & \\cos{&#x2061;} \\alpha \\sin{&#x2061;} \\beta \\sin{&#x2061;} \\gamma - \\sin{&#x2061;} \\alpha \\cos{\\gamma} & \\cos{&#x2061;} \\alpha \\sin{&#x2061;} \\beta \\cos{&#x2061;} \\gamma + \\sin{&#x2061;} \\alpha \\sin{&#x2061;} \\gamma \\\\ \\sin{&#x2061;} \\alpha \\cos{&#x2061;} \\beta & \\sin{&#x2061;} \\alpha \\sin{&#x2061;} \\beta \\sin{&#x2061;} \\gamma + \\cos{&#x2061;} \\alpha \\cos{&#x2061;} \\gamma & \\sin{&#x2061;} \\alpha \\sin{&#x2061;} \\beta \\cos{&#x2061;} \\gamma - \\cos{&#x2061;} \\alpha \\sin{&#x2061;} \\gamma \\\\ - \\sin{&#x2061;} \\beta & \\cos{&#x2061;} \\beta \\sin{&#x2061;} \\gamma & \\cos{&#x2061;} \\beta \\cos{&#x2061;} \\gamma\\end{matrix}\\right ] \\left [\\begin{matrix}s_{x} \\ast ( x - a_{x} ) \\\\ s_{y} \\ast ( y - a_{y} ) \\\\ s_{z} \\ast ( z - a_{z} )\\end{matrix}\\right ] + \\left [\\begin{matrix}x_{0} + t_{x} \\\\ y_{0} + t_{y} \\\\ z_{0} + t_{z}\\end{matrix}\\right ] \\sqrt{d}"
-        asciimath = "\"Convert\" (x , y , z , p_(a) , p_(o) , R , S , T) = R_(z) (alpha) R_(y) (beta) R_(x) (gamma) S (x - a_(x) ,  y - a_(y) ,  z - a_(z)) + p_(o) + T =\\\\  [[cos&#x2061; alpha cosbeta, cos&#x2061; alpha sin&#x2061; beta sin&#x2061; gamma - sin&#x2061; alpha cosgamma, cos&#x2061; alpha sin&#x2061; beta cos&#x2061; gamma + sin&#x2061; alpha sin&#x2061; gamma], [sin&#x2061; alpha cos&#x2061; beta, sin&#x2061; alpha sin&#x2061; beta sin&#x2061; gamma + cos&#x2061; alpha cos&#x2061; gamma, sin&#x2061; alpha sin&#x2061; beta cos&#x2061; gamma - cos&#x2061; alpha sin&#x2061; gamma], [- sin&#x2061; beta, cos&#x2061; beta sin&#x2061; gamma, cos&#x2061; beta cos&#x2061; gamma]] [[s_(x) ast (x - a_(x))], [s_(y) ast (y - a_(y))], [s_(z) ast (z - a_(z))]] + [[x_(0) + t_(x)], [y_(0) + t_(y)], [z_(0) + t_(z)]] sqrt(d)"
+        asciimath = "\"Convert\" (x , y , z , p_(a) , p_(o) , R , S , T) = R_(z) (alpha) R_(y) (beta) R_(x) (gamma) S (x - a_(x) ,  y - a_(y) ,  z - a_(z)) + p_(o) + T =\\\n  [[cos&#x2061; alpha cosbeta, cos&#x2061; alpha sin&#x2061; beta sin&#x2061; gamma - sin&#x2061; alpha cosgamma, cos&#x2061; alpha sin&#x2061; beta cos&#x2061; gamma + sin&#x2061; alpha sin&#x2061; gamma], [sin&#x2061; alpha cos&#x2061; beta, sin&#x2061; alpha sin&#x2061; beta sin&#x2061; gamma + cos&#x2061; alpha cos&#x2061; gamma, sin&#x2061; alpha sin&#x2061; beta cos&#x2061; gamma - cos&#x2061; alpha sin&#x2061; gamma], [- sin&#x2061; beta, cos&#x2061; beta sin&#x2061; gamma, cos&#x2061; beta cos&#x2061; gamma]] [[s_(x) ast (x - a_(x))], [s_(y) ast (y - a_(y))], [s_(z) ast (z - a_(z))]] + [[x_(0) + t_(x)], [y_(0) + t_(y)], [z_(0) + t_(z)]] sqrt(d)"
         expect(formula.to_latex).to eq(latex)
         expect(formula.to_mathml).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eq(asciimath)

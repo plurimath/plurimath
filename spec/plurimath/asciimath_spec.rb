@@ -3745,11 +3745,14 @@ RSpec.describe Plurimath::Asciimath do
     end
 
     context "contains example #64" do
-      let(:string) { "bar X'" }
+      let(:string) { "bar X' \\ \n theta" }
 
       it 'returns parsed Asciimath to Formula' do
-        latex = "\\overline{X} \\prime"
-        asciimath = "bar(X) '"
+        latex = "\\overline{X} \\prime \\\\  \\theta"
+        asciimath = <<~ASCIIMATH.strip
+          bar(X) ' \\
+            theta
+        ASCIIMATH
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -3758,6 +3761,8 @@ RSpec.describe Plurimath::Asciimath do
                 <mo>&#xaf;</mo>
               </mover>
               <mo>&#x2032;</mo>
+              <mo linebreak="newline"/>
+              <mi>&#x3b8;</mi>
             </mstyle>
           </math>
         MATHML
