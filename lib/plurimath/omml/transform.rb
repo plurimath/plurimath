@@ -9,6 +9,7 @@ module Plurimath
       rule(i: sequence(:i)) { i }
       rule(e: sequence(:e)) { e.flatten.compact }
 
+      rule(br: sequence(:br))    { Math::Function::Linebreak.new }
       rule(val: simple(:val))    { val }
       rule(scr: simple(:scr))    { scr }
       rule(sty: simple(:sty))    { sty }

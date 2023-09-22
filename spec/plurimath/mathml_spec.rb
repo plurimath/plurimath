@@ -1458,6 +1458,9 @@ RSpec.describe Plurimath::Mathml do
               <m:r>
                 <m:t>=</m:t>
               </m:r>
+              <m:r>
+                <w:br/>
+              </m:r>
               <m:sSub>
                 <m:sSubPr>
                   <m:ctrlPr>
