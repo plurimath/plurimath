@@ -102,43 +102,31 @@ RSpec.describe Plurimath::Asciimath do
     end
 
     context "contains example #03" do
-      let(:string) { 'unitsml(V*s//A,symbol:V cdot s//A)' }
+      let(:string) { '"unitsml(V*s//A,symbol:V cdot s//A)"' }
 
       it 'returns parsed Asciimath to Formula' do
-        latex = 'u n i t s m l ( V \\cdot s / A , s y m b o l : V \\cdot s / A )'
-        asciimath = 'u n i t s m l (V * s // A , s y m b o l : V * s // A)'
+        latex = '\\mathrm{V} \\cdot \\mathrm{s} \\cdot \\mathrm{A}^{- 1}'
+        asciimath = 'rm(V) * rm(s) * rm(A)^(- 1)'
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
-              <mi>u</mi>
-              <mi>n</mi>
-              <mi>i</mi>
-              <mi>t</mi>
-              <mi>s</mi>
-              <mi>m</mi>
-              <mi>l</mi>
-              <mrow>
-                <mo>(</mo>
+              <mstyle mathvariant="normal">
                 <mi>V</mi>
-                <mo>&#x22c5;</mo>
+              </mstyle>
+              <mo>&#x22c5;</mo>
+              <mstyle mathvariant="normal">
                 <mi>s</mi>
-                <mo>/</mo>
-                <mi>A</mi>
-                <mo>,</mo>
-                <mi>s</mi>
-                <mi>y</mi>
-                <mi>m</mi>
-                <mi>b</mi>
-                <mi>o</mi>
-                <mi>l</mi>
-                <mo>&#x3a;</mo>
-                <mi>V</mi>
-                <mo>&#x22c5;</mo>
-                <mi>s</mi>
-                <mo>/</mo>
-                <mi>A</mi>
-                <mo>)</mo>
-              </mrow>
+              </mstyle>
+              <mo>&#x22c5;</mo>
+              <msup>
+                <mstyle mathvariant="normal">
+                  <mi>A</mi>
+                </mstyle>
+                <mrow>
+                  <mo>&#x2212;</mo>
+                  <mn>1</mn>
+                </mrow>
+              </msup>
             </mstyle>
           </math>
         MATHML
@@ -772,8 +760,8 @@ RSpec.describe Plurimath::Asciimath do
       let(:string) { '540 xx 10^(12) "unitsml(Hz)", " "ii(K)_("cd")' }
 
       it 'returns parsed Asciimath to Formula' do
-        latex = '540 \times 10^{12} \text{unitsml(Hz)} ,  \text{ } \mathit{K}_{\text{cd}}'
-        asciimath = '540 xx 10^(12) "unitsml(Hz)" ,  " " ii(K)_("cd")'
+        latex = '540 \times 10^{12} \mathrm{Hz} ,  \text{ } \mathit{K}_{\text{cd}}'
+        asciimath = '540 xx 10^(12) rm(Hz) ,  " " ii(K)_("cd")'
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -783,7 +771,9 @@ RSpec.describe Plurimath::Asciimath do
                 <mn>10</mn>
                 <mn>12</mn>
               </msup>
-              <mtext>unitsml(Hz)</mtext>
+              <mstyle mathvariant="normal">
+                <mi>Hz</mi>
+              </mstyle>
               <mo>, </mo>
               <mtext> </mtext>
               <msub>
@@ -2045,13 +2035,15 @@ RSpec.describe Plurimath::Asciimath do
       let(:string) { '1 "unitsml(A)" = ( ((4pi xx 10^(-7)))/((9192631770)(299792458)(1)) )^(1/2) ( (Delta ii(nu)_("Cs")cm_(cc K))/(ii(mu)_0) )^(1/2) = 6.789687... xx 10^(-13) ((Delta ii(nu)_("Cs")c m_(cc K))/(ii(mu)_0))^(1/2)' }
 
       it 'returns parsed Asciimath to Formula' do
-        latex = '1 \text{unitsml(A)} = ( \frac{\left (\begin{matrix}4 \pi \times 10^{- 7}\end{matrix}\right )}{( 9192631770 ) ( 299792458 ) ( 1 )} )^{\frac{1}{2}} ( \frac{\Delta \mathit{\nu}_{\text{Cs}} c m_{\mathcal{K}}}{\mathit{\mu}_{0}} )^{\frac{1}{2}} = 6.789687 \ldots \times 10^{- 13} ( \frac{\Delta \mathit{\nu}_{\text{Cs}} c m_{\mathcal{K}}}{\mathit{\mu}_{0}} )^{\frac{1}{2}}'
-        asciimath = '1 "unitsml(A)" = (frac(([4 pi xx 10^(- 7)]))((9192631770) (299792458) (1)))^(frac(1)(2)) (frac(Delta ii(nu)_("Cs") c m_(mathcal(K)))(ii(mu)_(0)))^(frac(1)(2)) = 6.789687 ... xx 10^(- 13) (frac(Delta ii(nu)_("Cs") c m_(mathcal(K)))(ii(mu)_(0)))^(frac(1)(2))'
+        latex = '1 \mathrm{A} = ( \frac{\left (\begin{matrix}4 \pi \times 10^{- 7}\end{matrix}\right )}{( 9192631770 ) ( 299792458 ) ( 1 )} )^{\frac{1}{2}} ( \frac{\Delta \mathit{\nu}_{\text{Cs}} c m_{\mathcal{K}}}{\mathit{\mu}_{0}} )^{\frac{1}{2}} = 6.789687 \ldots \times 10^{- 13} ( \frac{\Delta \mathit{\nu}_{\text{Cs}} c m_{\mathcal{K}}}{\mathit{\mu}_{0}} )^{\frac{1}{2}}'
+        asciimath = '1 rm(A) = (frac(([4 pi xx 10^(- 7)]))((9192631770) (299792458) (1)))^(frac(1)(2)) (frac(Delta ii(nu)_("Cs") c m_(mathcal(K)))(ii(mu)_(0)))^(frac(1)(2)) = 6.789687 ... xx 10^(- 13) (frac(Delta ii(nu)_("Cs") c m_(mathcal(K)))(ii(mu)_(0)))^(frac(1)(2))'
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
               <mn>1</mn>
-              <mtext>unitsml(A)</mtext>
+              <mstyle mathvariant="normal">
+                <mi>A</mi>
+              </mstyle>
               <mo>=</mo>
               <msup>
                 <mrow>
@@ -3948,8 +3940,8 @@ RSpec.describe Plurimath::Asciimath do
       let(:string) { 'f_(199"Hg") = 1128575290808154.8 "unitsml(Hz)"' }
 
       it 'returns parsed Asciimath to Formula' do
-        latex = 'f_{199 \\text{Hg}} = 1128575290808154.8 \\text{unitsml(Hz)}'
-        asciimath = 'f_(199 "Hg") = 1128575290808154.8 "unitsml(Hz)"'
+        latex = 'f_{199 \\text{Hg}} = 1128575290808154.8 \\mathrm{Hz}'
+        asciimath = 'f_(199 "Hg") = 1128575290808154.8 rm(Hz)'
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -3962,7 +3954,9 @@ RSpec.describe Plurimath::Asciimath do
               </msub>
               <mo>=</mo>
               <mn>1128575290808154.8</mn>
-              <mtext>unitsml(Hz)</mtext>
+              <mstyle mathvariant="normal">
+                <mi>Hz</mi>
+              </mstyle>
             </mstyle>
           </math>
         MATHML
@@ -3976,8 +3970,8 @@ RSpec.describe Plurimath::Asciimath do
       let(:string) { 'n_"S"("X") = m_"S" // ii(M)("X"), " and " ii(M)(""X"") = ii(A)_"r"("X") "unitsml(g/mol)"' }
 
       it 'returns parsed Asciimath to Formula' do
-        latex = 'n_{\text{S}} ( \text{X} ) = m_{\text{S}} / \mathit{M} ( \text{X} ) ,  \text{ and } \mathit{M} ( \text{} X \text{} ) = \mathit{A}_{\text{r}} ( \text{X} ) \text{unitsml(g/mol)}'
-        asciimath = 'n_("S") ("X") = m_("S") // ii(M) ("X") ,  " and " ii(M) ("" X "") = ii(A)_("r") ("X") "unitsml(g/mol)"'
+        latex = 'n_{\text{S}} ( \text{X} ) = m_{\text{S}} / \mathit{M} ( \text{X} ) ,  \text{ and } \mathit{M} ( \text{} X \text{} ) = \mathit{A}_{\text{r}} ( \text{X} ) \mathrm{g} \cdot \mathrm{mol}^{- 1}'
+        asciimath = 'n_("S") ("X") = m_("S") // ii(M) ("X") ,  " and " ii(M) ("" X "") = ii(A)_("r") ("X") rm(g) * rm(mol)^(- 1)'
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -4028,7 +4022,21 @@ RSpec.describe Plurimath::Asciimath do
                 <mtext>X</mtext>
                 <mo>)</mo>
               </mrow>
-              <mtext>unitsml(g/mol)</mtext>
+              <mrow>
+                <mstyle mathvariant="normal">
+                  <mi>g</mi>
+                </mstyle>
+                <mo>&#x22c5;</mo>
+                <msup>
+                  <mstyle mathvariant="normal">
+                    <mi>mol</mi>
+                  </mstyle>
+                  <mrow>
+                    <mo>&#x2212;</mo>
+                    <mn>1</mn>
+                  </mrow>
+                </msup>
+              </mrow>
             </mstyle>
           </math>
         MATHML
@@ -4707,8 +4715,8 @@ RSpec.describe Plurimath::Asciimath do
       let(:string) { "f (\"a\"_{28},\" P(54) 8-4\") - f (\"a\"_{16},\" R(127) 11-5\"{^(127)ii(I)_2}) = -42.99(4) \"unitsml(MHz)\"" }
 
       it 'returns parsed Asciimath to Formula' do
-        latex = 'f ( \text{a}_{28} , \text{ P(54) 8-4} ) - f ( \text{a}_{16} , \text{ R(127) 11-5} \{ ^ ( 127 ) \mathit{I}_{2} \} ) = - 42.99 ( 4 ) \text{unitsml(MHz)}'
-        asciimath = "f (\"a\"_(28) , \" P(54) 8-4\") - f (\"a\"_(16) , \" R(127) 11-5\" {^ (127) ii(I)_(2)}) = - 42.99 (4) \"unitsml(MHz)\""
+        latex = 'f ( \text{a}_{28} , \text{ P(54) 8-4} ) - f ( \text{a}_{16} , \text{ R(127) 11-5} \{ ^ ( 127 ) \mathit{I}_{2} \} ) = - 42.99 ( 4 ) \mathrm{MHz}'
+        asciimath = "f (\"a\"_(28) , \" P(54) 8-4\") - f (\"a\"_(16) , \" R(127) 11-5\" {^ (127) ii(I)_(2)}) = - 42.99 (4) rm(MHz)"
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -4759,7 +4767,9 @@ RSpec.describe Plurimath::Asciimath do
                 <mn>4</mn>
                 <mo>)</mo>
               </mrow>
-              <mtext>unitsml(MHz)</mtext>
+              <mstyle mathvariant="normal">
+                <mi>MHz</mi>
+              </mstyle>
             </mstyle>
           </math>
         MATHML
@@ -5231,7 +5241,7 @@ RSpec.describe Plurimath::Asciimath do
       end
     end
 
-    context "contains nested table with new line example #97" do
+    context "contains nested table with new line example #98" do
       let(:string) { "[[1,((2\\\n4),(7))], [3,4]]" }
 
       it 'returns parsed Asciimath to Formula' do
@@ -5278,6 +5288,42 @@ RSpec.describe Plurimath::Asciimath do
                   </mtr>
                 </mtable>
                 <mo>]</mo>
+              </mrow>
+            </mstyle>
+          </math>
+        MATHML
+        expect(formula.to_latex).to eql(latex)
+        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_asciimath).to eql(asciimath)
+      end
+    end
+
+    context "contains unitsml example as unary function value example #99" do
+      let(:string) { 'sin "unitsml(mm*s^-2)"' }
+
+      it 'returns parsed Asciimath to Formula' do
+        latex = '\sin{\mathrm{mm} \cdot \mathrm{s}^{- 2}}'
+        asciimath = 'sinrm(mm) * rm(s)^(- 2)'
+        mathml = <<~MATHML
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
+              <mrow>
+                <mi>sin</mi>
+                <mrow>
+                  <mstyle mathvariant="normal">
+                    <mi>mm</mi>
+                  </mstyle>
+                  <mo>&#x22c5;</mo>
+                  <msup>
+                    <mstyle mathvariant="normal">
+                      <mi>s</mi>
+                    </mstyle>
+                    <mrow>
+                      <mo>&#x2212;</mo>
+                      <mn>2</mn>
+                    </mrow>
+                  </msup>
+                </mrow>
               </mrow>
             </mstyle>
           </math>
@@ -6383,8 +6429,8 @@ RSpec.describe Plurimath::Asciimath do
       end
     end
 
-    context "contains power and fenced example #17" do
-      let(:string) { "ii(rho)_{ij} = ii(nu)(w_i, w_j)//(ii(sigma)_i^2 ii(sigma)_j^2)^{1//2}" }
+    context "contains power and fenced example #18" do
+      let(:string) { "ii(rho)_{ij} = ii(nu)(w_i, w_j)//(ii(sigma)_i^2 ii(sigma)_j^2)^{1//2} \"unitsml(mm*s^-2)\"" }
       let(:display_style) { false }
 
       it 'returns OMML string' do
@@ -6573,6 +6619,41 @@ RSpec.describe Plurimath::Asciimath do
                   </m:r>
                   <m:r>
                     <m:t>/</m:t>
+                  </m:r>
+                  <m:r>
+                    <m:t>2</m:t>
+                  </m:r>
+                </m:sup>
+              </m:sSup>
+              <m:r>
+                <m:rPr>
+                  <m:sty m:val="p"/>
+                </m:rPr>
+                <m:t>mm</m:t>
+              </m:r>
+              <m:r>
+                <m:t>&#x22c5;</m:t>
+              </m:r>
+              <m:sSup>
+                <m:sSupPr>
+                  <m:ctrlPr>
+                    <w:rPr>
+                      <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
+                      <w:i/>
+                    </w:rPr>
+                  </m:ctrlPr>
+                </m:sSupPr>
+                <m:e>
+                  <m:r>
+                    <m:rPr>
+                      <m:sty m:val="p"/>
+                    </m:rPr>
+                    <m:t>s</m:t>
+                  </m:r>
+                </m:e>
+                <m:sup>
+                  <m:r>
+                    <m:t>&#x2212;</m:t>
                   </m:r>
                   <m:r>
                     <m:t>2</m:t>

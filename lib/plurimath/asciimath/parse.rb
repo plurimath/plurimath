@@ -69,7 +69,8 @@ module Plurimath
       end
 
       rule(:quoted_text) do
-        (str('"') >> match("[^\"]").repeat.as(:text) >> str('"')) |
+        (str('"') >> str("unitsml(") >> match("[^\)\"]").repeat.as(:unitsml) >> str(')"')) |
+          (str('"') >> match("[^\"]").repeat.as(:text) >> str('"')) |
           (str('"') >> str("").as(:text))
       end
 

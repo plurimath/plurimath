@@ -1714,7 +1714,10 @@ RSpec.describe Plurimath::Asciimath::Parser do
             Plurimath::Math::Number.new("10"),
             Plurimath::Math::Number.new("12"),
           ),
-          Plurimath::Math::Function::Text.new("unitsml(Hz)"),
+          Plurimath::Math::Function::FontStyle::Normal.new(
+            Plurimath::Math::Symbol.new("Hz"),
+            "normal",
+          ),
           Plurimath::Math::Symbol.new(", "),
           Plurimath::Math::Function::Text.new(" "),
           Plurimath::Math::Function::Base.new(

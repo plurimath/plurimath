@@ -28,6 +28,12 @@ module Plurimath
       rule(power_value: sequence(:power_value))    { power_value }
       rule(mod: simple(:mod), expr: simple(:expr)) { [mod, expr] }
 
+      rule(unitsml: simple(:unitsml)) do
+        Utility.filter_values(
+          Unitsml.new(unitsml.to_s).to_formula.value,
+        )
+      end
+
       rule(bold_fonts: simple(:font)) do
         Math::Function::FontStyle::DoubleStruck.new(
           Utility.symbol_object(font.to_s[0]),
@@ -854,6 +860,15 @@ module Plurimath
            text: simple(:text)) do
         Utility.get_class(function).new(
           Math::Function::Text.new(text),
+        )
+      end
+
+      rule(unary_class: simple(:function),
+           unitsml: simple(:unitsml)) do
+        Utility.get_class(function).new(
+          Utility.filter_values(
+            Unitsml.new(unitsml.to_s).to_formula.value,
+          ),
         )
       end
 
