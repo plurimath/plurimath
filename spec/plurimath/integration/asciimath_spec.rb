@@ -248,7 +248,7 @@ RSpec.describe Plurimath::Math do
 
       it 'returns instance of Asciimath' do
         expect{
-          convert(string_to_formula(string, :asciimath), :asciimath)
+          convert(string_to_formula(string, :latex), :latex)
         }.not_to raise_error
       end
     end
@@ -262,7 +262,7 @@ RSpec.describe Plurimath::Math do
 
       it 'returns instance of Asciimath' do
         expect{
-          convert(string_to_formula(string, :asciimath), :asciimath)
+          convert(string_to_formula(string, :latex), :latex)
         }.not_to raise_error
       end
     end

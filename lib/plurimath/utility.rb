@@ -21,6 +21,7 @@ module Plurimath
       mathrm: Math::Function::FontStyle::Normal,
       textrm: Math::Function::FontStyle::Normal,
       italic: Math::Function::FontStyle::Italic,
+      mathit: Math::Function::FontStyle::Italic,
       mathbf: Math::Function::FontStyle::Bold,
       textbf: Math::Function::FontStyle::Bold,
       script: Math::Function::FontStyle::Script,
@@ -229,12 +230,10 @@ module Plurimath
       end
 
       def filter_values(array)
-        return array unless array.is_a?(Array)
+        return array unless array.is_a?(Array) || array.is_a?(Math::Formula)
 
-        array = array.flatten.compact
-        if array.length > 1
-          return Math::Formula.new(array)
-        end
+        array = array.is_a?(Math::Formula) ? array.value : array.flatten.compact
+        return Math::Formula.new(array) if array.length > 1
 
         array.first
       end
@@ -263,11 +262,6 @@ module Plurimath
           filter_values(nary[3]),
           { type: subsup }
         )
-      end
-
-      def find_class_name(object)
-        new_object = object.value.first.parameter_one if object.is_a?(Math::Formula)
-        get_class(new_object) unless new_object.nil?
       end
 
       def find_pos_chr(fonts_array, key)
@@ -357,10 +351,7 @@ module Plurimath
           if (attrs.key?(:accent) || attrs.key?(:accentunder))
             attr_is_accent(attrs, value)
           elsif attrs.key?(:linebreak)
-            Math::Function::Linebreak.new(
-              value.first,
-              attrs,
-            )
+            Math::Function::Linebreak.new(value.first, attrs)
           end
         elsif attrs.is_a?(Math::Core)
           attr_is_function(attrs, value)

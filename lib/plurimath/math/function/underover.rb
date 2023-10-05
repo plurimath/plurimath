@@ -50,6 +50,27 @@ module Plurimath
 
           underover(display_style)
         end
+
+        def line_breaking(obj)
+          parameter_one&.line_breaking(obj)
+          if obj.value_exist?
+            obj.update(
+              Underover.new(Utility.filter_values(obj.value), parameter_two, parameter_three)
+            )
+            self.parameter_two = nil
+            self.parameter_three = nil
+            return
+          end
+
+          parameter_two.line_breaking(obj)
+          if obj.value_exist?
+            obj.update(
+              Underover.new(nil, Utility.filter_values(obj.value), parameter_three)
+            )
+            self.parameter_two = nil
+            self.parameter_three = nil
+          end
+        end
       end
     end
   end

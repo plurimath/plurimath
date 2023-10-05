@@ -4,6 +4,7 @@ module Plurimath
   module Math
     class Formula < Core
       attr_accessor :value, :left_right_wrapper, :displaystyle, :input_string
+
       MATH_ZONE_TYPES = %i[
         omml
         latex
@@ -74,7 +75,7 @@ module Plurimath
         parse_error!(:html)
       end
 
-      def omml_math_attrs
+      def omml_attrs
         {
           "xmlns:m": "http://schemas.openxmlformats.org/officeDocument/2006/math",
           "xmlns:mc": "http://schemas.openxmlformats.org/markup-compatibility/2006",
@@ -98,15 +99,14 @@ module Plurimath
       end
 
       def to_omml(display_style: displaystyle)
-        para_element = Utility.ox_element(
-          "oMathPara",
-          attributes: omml_math_attrs,
-          namespace: "m",
-        )
-        math_element = Utility.ox_element("oMath", namespace: "m")
-        content = omml_content(boolean_display_style(display_style))
-        para_element << Utility.update_nodes(math_element, content)
-        Ox.dump(para_element, indent: 2).gsub("&amp;", "&").lstrip
+        new_line_support.map do |object|
+          para_element = Utility.ox_element("oMathPara", attributes: omml_attrs, namespace: "m")
+          para_element << Utility.update_nodes(
+            Utility.ox_element("oMath", namespace: "m"),
+            object.omml_content(boolean_display_style(display_style)),
+          )
+          Ox.dump(para_element, indent: 2).gsub("&amp;", "&").gsub(/^\n/, "")
+        end.join
       rescue
         parse_error!(:omml)
       end
@@ -167,7 +167,7 @@ module Plurimath
       end
 
       def extract_class_from_text
-        return false unless (value.length < 2 && value&.first&.is_a?(Function::Text))
+        return false unless value.length < 2 && value.first.is_a?(Function::Text)
 
         value.first.parameter_one
       end
@@ -180,10 +180,45 @@ module Plurimath
         (value.none?(Function::Left) || value.none?(Function::Right))
       end
 
+      def value_exist?
+        value && !value.empty?
+      end
+
+      def update(object)
+        self.value = Array(object)
+      end
+
+      def cloned_objects
+        self.class.new(value.map(&:cloned_objects))
+      end
+
+      def new_line_support(array = [])
+        cloned = cloned_objects
+        obj = self.class.new
+        cloned.line_breaking(obj)
+        array << cloned
+        obj.value_exist? ? obj.new_line_support(array) : array
+      end
+
+      def line_breaking(obj)
+        if result.size > 1
+          breaked_result = result.first.last.omml_line_break(result)
+          update(Array(breaked_result.shift))
+          obj.update(breaked_result.flatten)
+          return
+        end
+
+        value.each.with_index do |object, index|
+          object.line_breaking(obj)
+          break obj.insert(value.slice!(index+1..value.size)) if obj.value_exist?
+        end
+      end
+
+
       protected
 
       def boolean_display_style(display_style = displaystyle)
-        YAML.load(display_style.to_s)
+        YAML.safe_load(display_style.to_s)
       end
 
       def new_space(spacing, indent)
@@ -196,6 +231,10 @@ module Plurimath
 
       def wrapable?(spacing)
         left_right_wrapper && !spacing.end_with?("|_ ")
+      end
+
+      def insert(values)
+        update(Array(value) + values)
       end
 
       def parse_error!(type)

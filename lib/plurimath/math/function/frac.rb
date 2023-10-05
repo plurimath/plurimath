@@ -41,15 +41,16 @@ module Plurimath
           f_element   = Utility.ox_element("f", namespace: "m")
           fpr_element = Utility.ox_element("fPr", namespace: "m")
           fpr_element << Utility.pr_element("ctrl", true, namespace: "m")
-          Utility.update_nodes(
-            f_element,
-            [
-              fpr_element,
-              omml_parameter(parameter_one, display_style, tag_name: "num"),
-              omml_parameter(parameter_two, display_style, tag_name: "den"),
-            ],
+          Array(
+            Utility.update_nodes(
+              f_element,
+              [
+                fpr_element,
+                omml_parameter(parameter_one, display_style, tag_name: "num"),
+                omml_parameter(parameter_two, display_style, tag_name: "den"),
+              ],
+            ),
           )
-          [f_element]
         end
       end
     end

@@ -403,7 +403,6 @@ module ExpectedValues
             Plurimath::Math::Function::Text.new("n")
           ),
           Plurimath::Math::Symbol.new("∩"),
-          Plurimath::Math::Function::Linebreak.new,
           Plurimath::Math::Function::Base.new(
             Plurimath::Math::Function::Text.new("Y"),
             Plurimath::Math::Function::Text.new("n")

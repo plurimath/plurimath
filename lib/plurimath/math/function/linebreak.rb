@@ -65,13 +65,21 @@ module Plurimath
           end
         end
 
-        def to_omml_without_math_tag(display_style)
-          br_tag = Utility.ox_element("br", namespace: "w")
-          r_tag = (Utility.ox_element("r", namespace: "m") << br_tag)
-          return r_tag unless parameter_one
+        def to_omml_without_math_tag(_)
+          []
+        end
 
-          value_arr = parameter_one.insert_t_tag(display_style)
-          value_arr.insert(attributes[:linebreakstyle] == "after" ? 1 : 0, r_tag )
+        def omml_line_break(result)
+          result.first.pop
+          return result unless exist?
+
+          case attributes[:linebreakstyle]
+          when "after"
+            result[0] << parameter_one
+          else
+            result[1].insert(0, parameter_one)
+          end
+          result
         end
 
         def separate_table
