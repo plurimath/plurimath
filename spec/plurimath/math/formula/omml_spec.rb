@@ -1,5 +1,5 @@
-require_relative "../../../../spec/spec_helper"
-require_relative "../../fixtures/expected_values"
+require "spec_helper"
+require "plurimath/fixtures/expected_values"
 
 RSpec.describe Plurimath::Math::Formula do
   describe ".to_omml" do

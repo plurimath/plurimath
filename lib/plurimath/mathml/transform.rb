@@ -246,7 +246,7 @@ module Plurimath
         symbols  = Constants::UNICODE_SYMBOLS.transform_keys(&:to_s)
         text     = entities.encode(mtext.flatten.join, :hexadecimal)
         symbols.each do |code, string|
-          text.gsub!(code.downcase, "unicode[:#{string}]")
+          text = text.gsub(code.downcase, "unicode[:#{string}]")
         end
         Math::Function::Text.new(text)
       end
@@ -256,7 +256,7 @@ module Plurimath
         symbols  = Constants::UNICODE_SYMBOLS.transform_keys(&:to_s)
         text     = entities.encode(ms.first, :hexadecimal)
         symbols.each do |code, string|
-          text.gsub!(code.downcase, "unicode[:#{string}]")
+          text = text.gsub(code.downcase, "unicode[:#{string}]")
         end
         Math::Function::Text.new(text)
       end

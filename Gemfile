@@ -8,3 +8,6 @@ gem "rspec", "~> 3.0"
 gem 'simplecov', require: false, group: :test
 gem 'htmlentities'
 gem 'equivalent-xml'
+gem 'opal-rspec', "~> 1.1.0a"
+gem 'oga'
+gem 'ox'

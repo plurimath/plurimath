@@ -1,0 +1,11 @@
+--default-path=spec
+-I lib
+-q oga/setup_opal
+-q ll/setup_opal
+--opal-opt=-g,htmlentities
+--opal-opt=-g,equivalent-xml
+--opal-opt=-g,parslet
+--opal-opt=-g,oga
+--format documentation
+--color
+--require spec_helper

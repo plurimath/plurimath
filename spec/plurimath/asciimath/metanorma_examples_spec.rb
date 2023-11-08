@@ -1,4 +1,4 @@
-require_relative "../../spec_helper"
+require "spec_helper"
 
 # These examples originate from https://github.com/metanorma/metanorma-standoc
 

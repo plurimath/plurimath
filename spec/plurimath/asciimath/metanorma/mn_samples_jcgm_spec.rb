@@ -1,3 +1,5 @@
+require "spec_helper"
+
 # These examples originate from https://github.com/metanorma/mn-samples-jcgm
 
 RSpec.describe Plurimath::Asciimath::Parser do

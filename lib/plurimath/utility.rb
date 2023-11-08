@@ -193,7 +193,7 @@ module Plurimath
       def ox_element(node, attributes: [], namespace: "")
         namespace = "#{namespace}:" unless namespace.empty?
 
-        element = Ox::Element.new("#{namespace}#{node}")
+        element = Plurimath.xml_engine.new_element("#{namespace}#{node}")
         attributes&.each do |attr_key, attr_value|
           element[attr_key] = attr_value
         end
@@ -460,7 +460,7 @@ module Plurimath
       end
 
       def left_right_objects(paren, function)
-        paren = if paren.to_s.match?(/\\{|\\}/)
+        paren = if paren.to_s.match?(/\\\{|\\\}/)
                   paren.to_s.gsub(/\\/, "")
                 else
                   Latex::Constants::LEFT_RIGHT_PARENTHESIS[paren.to_sym]
