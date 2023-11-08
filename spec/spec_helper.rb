@@ -1,11 +1,18 @@
-require "simplecov"
-SimpleCov.start do
-  add_filter "/spec/"
-end
+if RUBY_ENGINE != "opal"
+  require "simplecov"
+  SimpleCov.start do
+    add_filter "/spec/"
+  end
 
-require "bundler/setup"
+  require "bundler/setup"
+end
 require "plurimath"
 require "rspec/matchers"
+if RUBY_ENGINE == "opal"
+  require "oga"
+else
+  require "nokogiri"
+end
 require "equivalent-xml/rspec_matchers"
 
 RSpec.configure do |config|
@@ -19,5 +26,3 @@ RSpec.configure do |config|
     c.syntax = :expect
   end
 end
-
-Ox.default_options = { encoding: "UTF-8" }

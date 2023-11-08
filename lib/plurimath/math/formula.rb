@@ -24,7 +24,9 @@ module Plurimath
       end
 
       def ==(object)
-        object.value == value &&
+        object.respond_to?(:value) &&
+          object.respond_to?(:left_right_wrapper) &&
+          object.value == value &&
           object.left_right_wrapper == left_right_wrapper
       end
 
@@ -44,7 +46,7 @@ module Plurimath
         style = Utility.ox_element("mstyle", attributes: style_attrs)
         Utility.update_nodes(style, mathml_content)
         Utility.update_nodes(math, [style])
-        Ox.dump(math, indent: 2).gsub("&amp;", "&")
+        Plurimath.xml_engine.dump(math, indent: 2).gsub("&amp;", "&")
       rescue
         parse_error!(:mathml)
       end
@@ -106,7 +108,7 @@ module Plurimath
         math_element = Utility.ox_element("oMath", namespace: "m")
         content = omml_content(boolean_display_style(display_style))
         para_element << Utility.update_nodes(math_element, content)
-        Ox.dump(para_element, indent: 2).gsub("&amp;", "&").lstrip
+        Plurimath.xml_engine.dump(para_element, indent: 2).gsub("&amp;", "&").lstrip
       rescue
         parse_error!(:omml)
       end

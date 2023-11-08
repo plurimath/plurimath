@@ -33,7 +33,7 @@ module Plurimath
       end
 
       def parse
-        nodes = Ox.load(text, strip_namespace: true)
+        nodes = Plurimath.xml_engine.load(text)
         @hash = { sequence: parse_nodes(nodes.nodes) }
         nodes = JSON.parse(@hash.to_json, symbolize_names: true)
         Math::Formula.new(
@@ -71,14 +71,14 @@ module Plurimath
       end
 
       def organize_table_td(node)
-        node.locate("e/?").each do |child_node|
+        node.locate("e/*").each do |child_node|
           child_node.name = "mtd" if child_node.name == "r"
         end
       end
 
       def organize_fonts(node)
         attrs_arr = { val: [] }
-        node.locate("rPr/?").each do |child|
+        node.locate("rPr/*").each do |child|
           attrs_arr[:val] << child.attributes["val"]
         end
         node.attributes.merge! attrs_arr

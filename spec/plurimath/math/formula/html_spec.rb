@@ -1,4 +1,4 @@
-require_relative '../../../../spec/spec_helper'
+require "spec_helper"
 
 RSpec.describe Plurimath::Math::Formula do
   describe ".to_html" do

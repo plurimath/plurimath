@@ -142,7 +142,7 @@ module Plurimath
       end
 
       def dump_ox_nodes(nodes)
-        Ox.dump(nodes)
+        Plurimath.xml_engine.dump(nodes)
       end
 
       def gsub_spacing(spacing, last)

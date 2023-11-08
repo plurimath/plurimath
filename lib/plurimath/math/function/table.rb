@@ -262,17 +262,13 @@ module Plurimath
         def begchr
           return unless open_paren
 
-          begchr = Utility.ox_element("begChr", namespace: "m")
-          begchr.attributes["m:val"] = paren(open_paren)
-          begchr
+          Utility.ox_element("begChr", attributes: { "m:val": paren(open_paren) }, namespace: "m")
         end
 
         def endchr
           return unless close_paren
 
-          endchr = Utility.ox_element("endChr", namespace: "m")
-          endchr.attributes["m:val"] = paren(close_paren)
-          endchr
+          Utility.ox_element("endChr", attributes: { "m:val": paren(close_paren) }, namespace: "m")
         end
 
         def paren(parenthesis)

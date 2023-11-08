@@ -1,4 +1,4 @@
-require_relative '../../../../spec/spec_helper'
+require "spec_helper"
 
 RSpec.describe Plurimath::Math::Function::Det do
 
@@ -50,7 +50,7 @@ RSpec.describe Plurimath::Math::Function::Det do
 
   describe ".to_mathml" do
     subject(:formula) do
-      Ox.dump(
+      Plurimath.xml_engine.dump(
         described_class.new(first_value).
           to_mathml_without_math_tag,
         indent: 2,

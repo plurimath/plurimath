@@ -72,7 +72,7 @@ module Plurimath
 
         def parse_text(lang)
           html_value = first_value(lang).dup
-          html_value&.gsub!(PARSER_REGEX) do |_text|
+          html_value = html_value&.gsub(PARSER_REGEX) do |_text|
             last_match = Regexp.last_match
             case lang
             when "mathml", "html", "omml"

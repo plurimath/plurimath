@@ -1,4 +1,4 @@
-require_relative '../../../../spec/spec_helper'
+require "spec_helper"
 
 RSpec.describe Plurimath::Math::Function::UnaryFunction do
 

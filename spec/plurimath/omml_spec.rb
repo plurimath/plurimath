@@ -1,4 +1,4 @@
-require_relative '../../lib/plurimath/math'
+require "spec_helper"
 
 RSpec.describe Plurimath::Omml do
 

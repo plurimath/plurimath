@@ -23,8 +23,8 @@ module Plurimath
       end
 
       def parse
-        ox_nodes = Ox.load(text, strip_namespace: true)
-        display_style = ox_nodes&.locate("*/mstyle/@displaystyle")&.first
+        ox_nodes = Plurimath.xml_engine.load(text)
+        display_style = ox_nodes&.locate("mstyle/@displaystyle")&.first
         nodes = parse_nodes(ox_nodes.nodes)
         Math::Formula.new(
           Transform.new.apply(nodes).flatten.compact,
@@ -34,7 +34,7 @@ module Plurimath
 
       def parse_nodes(nodes)
         nodes.map do |node|
-          next if node.is_a?(Ox::Comment)
+          next if Plurimath.xml_engine.is_xml_comment?(node)
 
           if node.is_a?(String)
             node

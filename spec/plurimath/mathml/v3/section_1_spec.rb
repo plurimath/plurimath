@@ -1,4 +1,4 @@
-require_relative "../../../../lib/plurimath/mathml"
+require "spec_helper"
 
 RSpec.describe Plurimath::Mathml::Parser do
 
