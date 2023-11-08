@@ -133,6 +133,13 @@ module Plurimath
       end
 
       rule(sequence: simple(:sequence),
+           left_right: sequence(:left_right)) do
+        new_arr = [sequence]
+        new_arr += left_right unless left_right.empty?
+        new_arr
+      end
+
+      rule(sequence: simple(:sequence),
            number: simple(:number)) do
         [sequence, Math::Number.new(number.to_s)]
       end
@@ -627,6 +634,14 @@ module Plurimath
       rule(sequence: sequence(:sequence),
            expr: sequence(:expr)) do
         sequence.flatten.compact + expr.flatten.compact
+      end
+
+      rule(sequence: simple(:sequence),
+           symbol: simple(:symbol)) do
+        [
+          sequence,
+          Math::Symbol.new(symbol),
+        ]
       end
 
       rule(binary_class: simple(:function),
