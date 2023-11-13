@@ -29,11 +29,9 @@ module Plurimath
         mi_tag = Utility.ox_element("mi")
         return mi_tag if ["{:", ":}"].include?(value)
 
-        unicodes = Mathml::Constants::UNICODE_SYMBOLS
-        unicode = unicodes.invert[value]
+        unicode = Mathml::Constants::UNICODE_SYMBOLS.invert[value]
         if operator?(unicode) || unicode || explicit_checks(unicode)
-          mo_value = (unicodes[value] || unicode || value).to_s
-          return Utility.ox_element("mo") << mo_value
+          return  Utility.ox_element("mo") << (unicode || value).to_s
         end
 
         mi_tag << value
