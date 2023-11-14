@@ -1,0 +1,60 @@
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mstyle displaystyle="true">
+    <mfrac>
+      <mrow>
+        <mrow>
+          <munderover>
+            <mo>&#x2211;</mo>
+            <mi>d</mi>
+            <mn>3</mn>
+          </munderover>
+          <mn>3</mn>
+        </mrow>
+      </mrow>
+    </mfrac>
+  </mstyle>
+</math>
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mstyle displaystyle="true">
+    <mfrac>
+      <mrow>
+        <munderover>
+          <mo>&#x220f;</mo>
+          <mn>3</mn>
+          <mi>d</mi>
+        </munderover>
+        <mrow>
+          <mi>e</mi>
+        </mrow>
+      </mrow>
+    </mfrac>
+  </mstyle>
+</math>
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mstyle displaystyle="true">
+    <mfrac>
+      <mi>w</mi>
+      <mrow>
+        <mi>sin</mi>
+        <mrow>
+          <mo>(</mo>
+          <mi>d</mi>
+          <mo></mo>
+        </mrow>
+      </mrow>
+    </mfrac>
+  </mstyle>
+</math>
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mstyle displaystyle="true">
+    <mfrac>
+      <mrow>
+        <mrow>
+          <mo></mo>
+          <msline/>
+          <mo>)</mo>
+        </mrow>
+      </mrow>
+    </mfrac>
+  </mstyle>
+</math>

@@ -234,9 +234,17 @@ RSpec.describe Plurimath::Mathml do
                     <mo>(</mo>
                     <mi>t</mi>
                     <mo>)</mo>
-                    <mo linebreak="newline">d</mo>
-                    <mi>t</mi>
                   </mrow>
+                </mrow>
+              </semantics>
+            </mstyle>
+          </math>
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
+              <semantics>
+                <mrow>
+                  <mi>d</mi>
+                  <mi>t</mi>
                 </mrow>
                 <annotation>
                   <mi>MathType@MTEF@5@5@+= feaagKart1ev2aaatCvAUfeBSjuyZL2yd9gzLbvyNv2CaerbbjxAHX garuavP1wzZbItLDhis9wBH5garmWu51MyVXgarqqtubsr4rNCHbGe aGqipG0dh9qqWrVepG0dbbL8F4rqqrVepeea0xe9LqFf0xc9q8qqaq Fn0lXdHiVcFbIOFHK8Feea0dXdar=Jb9hs0dXdHuk9fr=xfr=xfrpe WZqaaeaaciWacmGadaGadeaabaGaaqaaaOqaamaapedabaGaamOzai aacIcacaWG0bGaaiykaKqzaeGaaiizaOGaamiDaaWcbaGaamiDamaa BaaameaacaaIYaaabeaaaSqaaiaadshadaWgaaadbaGaaGymaaqaba aaniabgUIiYdaaaa@40DD@ </mi>
@@ -248,7 +256,7 @@ RSpec.describe Plurimath::Mathml do
         latex = "\\int_{t_{2}}^{t_{1}} f ( t ) \\\\ d t"
         asciimath = "int_(t_(2))^(t_(1)) f ( t ) \\\n d t"
         expect(formula.to_latex).to eq(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(split_on_linebreak: true)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eq(asciimath)
       end
     end
@@ -860,312 +868,375 @@ RSpec.describe Plurimath::Mathml do
                 </msub>
                 <mo>+</mo>
                 <mi>T</mi>
-                <mo linebreak="newline" linebreakstyle="after">=</mo>
+                <mo>=</mo>
+              </mrow>
+            </mstyle>
+          </math>
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
+              <mrow>
+                <mrow>
+                  <mo>[</mo>
+                  <mtable>
+                    <mtr>
+                      <mtd>
+                        <mrow>
+                          <mi>cos</mi>
+                          <mi>&#x2061;</mi>
+                        </mrow>
+                        <mi>&#x3b1;</mi>
+                        <mrow>
+                          <mi>cos</mi>
+                          <mi>&#x3b2;</mi>
+                        </mrow>
+                      </mtd>
+                      <mtd>
+                        <mrow>
+                          <mi>cos</mi>
+                          <mi>&#x2061;</mi>
+                        </mrow>
+                        <mi>&#x3b1;</mi>
+                        <mrow>
+                          <mi>sin</mi>
+                          <mi>&#x2061;</mi>
+                        </mrow>
+                        <mi>&#x3b2;</mi>
+                        <mrow>
+                          <mi>sin</mi>
+                          <mi>&#x2061;</mi>
+                        </mrow>
+                        <mi>&#x3b3;</mi>
+                        <mo>&#x2212;</mo>
+                        <mrow>
+                          <mi>sin</mi>
+                          <mi>&#x2061;</mi>
+                        </mrow>
+                        <mi>&#x3b1;</mi>
+                        <mrow>
+                          <mi>cos</mi>
+                          <mi>&#x3b3;</mi>
+                        </mrow>
+                      </mtd>
+                      <mtd>
+                        <mrow>
+                          <mi>cos</mi>
+                          <mi>&#x2061;</mi>
+                        </mrow>
+                        <mi>&#x3b1;</mi>
+                        <mrow>
+                          <mi>sin</mi>
+                          <mi>&#x2061;</mi>
+                        </mrow>
+                        <mi>&#x3b2;</mi>
+                        <mrow>
+                          <mi>cos</mi>
+                          <mi>&#x2061;</mi>
+                        </mrow>
+                        <mi>&#x3b3;</mi>
+                        <mo>+</mo>
+                        <mrow>
+                          <mi>sin</mi>
+                          <mi>&#x2061;</mi>
+                        </mrow>
+                        <mi>&#x3b1;</mi>
+                        <mrow>
+                          <mi>sin</mi>
+                          <mi>&#x2061;</mi>
+                        </mrow>
+                        <mi>&#x3b3;</mi>
+                      </mtd>
+                    </mtr>
+                    <mtr>
+                      <mtd>
+                        <mrow>
+                          <mi>sin</mi>
+                          <mi>&#x2061;</mi>
+                        </mrow>
+                        <mi>&#x3b1;</mi>
+                        <mrow>
+                          <mi>cos</mi>
+                          <mi>&#x2061;</mi>
+                        </mrow>
+                        <mi>&#x3b2;</mi>
+                      </mtd>
+                      <mtd>
+                        <mrow>
+                          <mi>sin</mi>
+                          <mi>&#x2061;</mi>
+                        </mrow>
+                        <mi>&#x3b1;</mi>
+                        <mrow>
+                          <mi>sin</mi>
+                          <mi>&#x2061;</mi>
+                        </mrow>
+                        <mi>&#x3b2;</mi>
+                        <mrow>
+                          <mi>sin</mi>
+                          <mi>&#x2061;</mi>
+                        </mrow>
+                        <mi>&#x3b3;</mi>
+                        <mo>+</mo>
+                        <mrow>
+                          <mi>cos</mi>
+                          <mi>&#x2061;</mi>
+                        </mrow>
+                        <mi>&#x3b1;</mi>
+                        <mrow>
+                          <mi>cos</mi>
+                          <mi>&#x2061;</mi>
+                        </mrow>
+                        <mi>&#x3b3;</mi>
+                      </mtd>
+                      <mtd>
+                        <mrow>
+                          <mi>sin</mi>
+                          <mi>&#x2061;</mi>
+                        </mrow>
+                        <mi>&#x3b1;</mi>
+                        <mrow>
+                          <mi>sin</mi>
+                          <mi>&#x2061;</mi>
+                        </mrow>
+                        <mi>&#x3b2;</mi>
+                        <mrow>
+                          <mi>cos</mi>
+                          <mi>&#x2061;</mi>
+                        </mrow>
+                        <mi>&#x3b3;</mi>
+                        <mo>&#x2212;</mo>
+                        <mrow>
+                          <mi>cos</mi>
+                          <mi>&#x2061;</mi>
+                        </mrow>
+                        <mi>&#x3b1;</mi>
+                        <mrow>
+                          <mi>sin</mi>
+                          <mi>&#x2061;</mi>
+                        </mrow>
+                        <mi>&#x3b3;</mi>
+                      </mtd>
+                    </mtr>
+                    <mtr>
+                      <mtd>
+                        <mo>&#x2212;</mo>
+                        <mrow>
+                          <mi>sin</mi>
+                          <mi>&#x2061;</mi>
+                        </mrow>
+                        <mi>&#x3b2;</mi>
+                      </mtd>
+                      <mtd>
+                        <mrow>
+                          <mi>cos</mi>
+                          <mi>&#x2061;</mi>
+                        </mrow>
+                        <mi>&#x3b2;</mi>
+                        <mrow>
+                          <mi>sin</mi>
+                          <mi>&#x2061;</mi>
+                        </mrow>
+                        <mi>&#x3b3;</mi>
+                      </mtd>
+                      <mtd>
+                        <mrow>
+                          <mi>cos</mi>
+                          <mi>&#x2061;</mi>
+                        </mrow>
+                        <mi>&#x3b2;</mi>
+                        <mrow>
+                          <mi>cos</mi>
+                          <mi>&#x2061;</mi>
+                        </mrow>
+                        <mi>&#x3b3;</mi>
+                      </mtd>
+                    </mtr>
+                  </mtable>
+                  <mo>]</mo>
+                </mrow>
                 <mrow>
                   <mrow>
                     <mo>[</mo>
                     <mtable>
                       <mtr>
                         <mtd>
+                          <msub>
+                            <mi>s</mi>
+                            <mi>x</mi>
+                          </msub>
+                          <mi>&#x2217;</mi>
                           <mrow>
-                            <mi>cos</mi>
-                            <mi>&#x2061;</mi>
+                            <mo>(</mo>
+                            <mi>x</mi>
+                            <mo>&#x2212;</mo>
+                            <msub>
+                              <mi>a</mi>
+                              <mi>x</mi>
+                            </msub>
+                            <mo>)</mo>
                           </mrow>
-                          <mi>&#x3b1;</mi>
-                          <mrow>
-                            <mi>cos</mi>
-                            <mi>&#x3b2;</mi>
-                          </mrow>
-                        </mtd>
-                        <mtd>
-                          <mrow>
-                            <mi>cos</mi>
-                            <mi>&#x2061;</mi>
-                          </mrow>
-                          <mi>&#x3b1;</mi>
-                          <mrow>
-                            <mi>sin</mi>
-                            <mi>&#x2061;</mi>
-                          </mrow>
-                          <mi>&#x3b2;</mi>
-                          <mrow>
-                            <mi>sin</mi>
-                            <mi>&#x2061;</mi>
-                          </mrow>
-                          <mi>&#x3b3;</mi>
-                          <mo>&#x2212;</mo>
-                          <mrow>
-                            <mi>sin</mi>
-                            <mi>&#x2061;</mi>
-                          </mrow>
-                          <mi>&#x3b1;</mi>
-                          <mrow>
-                            <mi>cos</mi>
-                            <mi>&#x3b3;</mi>
-                          </mrow>
-                        </mtd>
-                        <mtd>
-                          <mrow>
-                            <mi>cos</mi>
-                            <mi>&#x2061;</mi>
-                          </mrow>
-                          <mi>&#x3b1;</mi>
-                          <mrow>
-                            <mi>sin</mi>
-                            <mi>&#x2061;</mi>
-                          </mrow>
-                          <mi>&#x3b2;</mi>
-                          <mrow>
-                            <mi>cos</mi>
-                            <mi>&#x2061;</mi>
-                          </mrow>
-                          <mi>&#x3b3;</mi>
-                          <mo>+</mo>
-                          <mrow>
-                            <mi>sin</mi>
-                            <mi>&#x2061;</mi>
-                          </mrow>
-                          <mi>&#x3b1;</mi>
-                          <mrow>
-                            <mi>sin</mi>
-                            <mi>&#x2061;</mi>
-                          </mrow>
-                          <mi>&#x3b3;</mi>
                         </mtd>
                       </mtr>
                       <mtr>
                         <mtd>
+                          <msub>
+                            <mi>s</mi>
+                            <mi>y</mi>
+                          </msub>
+                          <mi>&#x2217;</mi>
                           <mrow>
-                            <mi>sin</mi>
-                            <mi>&#x2061;</mi>
+                            <mo>(</mo>
+                            <mi>y</mi>
+                            <mo>&#x2212;</mo>
+                            <msub>
+                              <mi>a</mi>
+                              <mi>y</mi>
+                            </msub>
+                            <mo>)</mo>
                           </mrow>
-                          <mi>&#x3b1;</mi>
-                          <mrow>
-                            <mi>cos</mi>
-                            <mi>&#x2061;</mi>
-                          </mrow>
-                          <mi>&#x3b2;</mi>
-                        </mtd>
-                        <mtd>
-                          <mrow>
-                            <mi>sin</mi>
-                            <mi>&#x2061;</mi>
-                          </mrow>
-                          <mi>&#x3b1;</mi>
-                          <mrow>
-                            <mi>sin</mi>
-                            <mi>&#x2061;</mi>
-                          </mrow>
-                          <mi>&#x3b2;</mi>
-                          <mrow>
-                            <mi>sin</mi>
-                            <mi>&#x2061;</mi>
-                          </mrow>
-                          <mi>&#x3b3;</mi>
-                          <mo>+</mo>
-                          <mrow>
-                            <mi>cos</mi>
-                            <mi>&#x2061;</mi>
-                          </mrow>
-                          <mi>&#x3b1;</mi>
-                          <mrow>
-                            <mi>cos</mi>
-                            <mi>&#x2061;</mi>
-                          </mrow>
-                          <mi>&#x3b3;</mi>
-                        </mtd>
-                        <mtd>
-                          <mrow>
-                            <mi>sin</mi>
-                            <mi>&#x2061;</mi>
-                          </mrow>
-                          <mi>&#x3b1;</mi>
-                          <mrow>
-                            <mi>sin</mi>
-                            <mi>&#x2061;</mi>
-                          </mrow>
-                          <mi>&#x3b2;</mi>
-                          <mrow>
-                            <mi>cos</mi>
-                            <mi>&#x2061;</mi>
-                          </mrow>
-                          <mi>&#x3b3;</mi>
-                          <mo>&#x2212;</mo>
-                          <mrow>
-                            <mi>cos</mi>
-                            <mi>&#x2061;</mi>
-                          </mrow>
-                          <mi>&#x3b1;</mi>
-                          <mrow>
-                            <mi>sin</mi>
-                            <mi>&#x2061;</mi>
-                          </mrow>
-                          <mi>&#x3b3;</mi>
                         </mtd>
                       </mtr>
                       <mtr>
                         <mtd>
-                          <mo>&#x2212;</mo>
+                          <msub>
+                            <mi>s</mi>
+                            <mi>z</mi>
+                          </msub>
+                          <mi>&#x2217;</mi>
                           <mrow>
-                            <mi>sin</mi>
-                            <mi>&#x2061;</mi>
+                            <mo>(</mo>
+                            <mi>z</mi>
+                            <mo>&#x2212;</mo>
+                            <msub>
+                              <mi>a</mi>
+                              <mi>z</mi>
+                            </msub>
+                            <mo>)</mo>
                           </mrow>
-                          <mi>&#x3b2;</mi>
-                        </mtd>
-                        <mtd>
-                          <mrow>
-                            <mi>cos</mi>
-                            <mi>&#x2061;</mi>
-                          </mrow>
-                          <mi>&#x3b2;</mi>
-                          <mrow>
-                            <mi>sin</mi>
-                            <mi>&#x2061;</mi>
-                          </mrow>
-                          <mi>&#x3b3;</mi>
-                        </mtd>
-                        <mtd>
-                          <mrow>
-                            <mi>cos</mi>
-                            <mi>&#x2061;</mi>
-                          </mrow>
-                          <mi>&#x3b2;</mi>
-                          <mrow>
-                            <mi>cos</mi>
-                            <mi>&#x2061;</mi>
-                          </mrow>
-                          <mi>&#x3b3;</mi>
                         </mtd>
                       </mtr>
                     </mtable>
                     <mo>]</mo>
                   </mrow>
+                  <mo>+</mo>
                   <mrow>
-                    <mrow>
-                      <mo>[</mo>
-                      <mtable>
-                        <mtr>
-                          <mtd>
-                            <msub>
-                              <mi>s</mi>
-                              <mi>x</mi>
-                            </msub>
-                            <mi>&#x2217;</mi>
-                            <mrow>
-                              <mo>(</mo>
-                              <mi>x</mi>
-                              <mo>&#x2212;</mo>
-                              <msub>
-                                <mi>a</mi>
-                                <mi>x</mi>
-                              </msub>
-                              <mo>)</mo>
-                            </mrow>
-                          </mtd>
-                        </mtr>
-                        <mtr>
-                          <mtd>
-                            <msub>
-                              <mi>s</mi>
-                              <mi>y</mi>
-                            </msub>
-                            <mi>&#x2217;</mi>
-                            <mrow>
-                              <mo>(</mo>
-                              <mi>y</mi>
-                              <mo>&#x2212;</mo>
-                              <msub>
-                                <mi>a</mi>
-                                <mi>y</mi>
-                              </msub>
-                              <mo>)</mo>
-                            </mrow>
-                          </mtd>
-                        </mtr>
-                        <mtr>
-                          <mtd>
-                            <msub>
-                              <mi>s</mi>
-                              <mi>z</mi>
-                            </msub>
-                            <mi>&#x2217;</mi>
-                            <mrow>
-                              <mo>(</mo>
-                              <mi>z</mi>
-                              <mo>&#x2212;</mo>
-                              <msub>
-                                <mi>a</mi>
-                                <mi>z</mi>
-                              </msub>
-                              <mo>)</mo>
-                            </mrow>
-                          </mtd>
-                        </mtr>
-                      </mtable>
-                      <mo>]</mo>
-                    </mrow>
-                    <mo>+</mo>
-                    <mrow>
-                      <mo>[</mo>
-                      <mtable>
-                        <mtr>
-                          <mtd>
-                            <msub>
-                              <mi>x</mi>
-                              <mn>0</mn>
-                            </msub>
-                            <mo>+</mo>
-                            <msub>
-                              <mi>t</mi>
-                              <mi>x</mi>
-                            </msub>
-                          </mtd>
-                        </mtr>
-                        <mtr>
-                          <mtd>
-                            <msub>
-                              <mi>y</mi>
-                              <mn>0</mn>
-                            </msub>
-                            <mo>+</mo>
-                            <msub>
-                              <mi>t</mi>
-                              <mi>y</mi>
-                            </msub>
-                          </mtd>
-                        </mtr>
-                        <mtr>
-                          <mtd>
-                            <msub>
-                              <mi>z</mi>
-                              <mn>0</mn>
-                            </msub>
-                            <mo>+</mo>
-                            <msub>
-                              <mi>t</mi>
-                              <mi>z</mi>
-                            </msub>
-                          </mtd>
-                        </mtr>
-                      </mtable>
-                      <mo>]</mo>
-                    </mrow>
+                    <mo>[</mo>
+                    <mtable>
+                      <mtr>
+                        <mtd>
+                          <msub>
+                            <mi>x</mi>
+                            <mn>0</mn>
+                          </msub>
+                          <mo>+</mo>
+                          <msub>
+                            <mi>t</mi>
+                            <mi>x</mi>
+                          </msub>
+                        </mtd>
+                      </mtr>
+                      <mtr>
+                        <mtd>
+                          <msub>
+                            <mi>y</mi>
+                            <mn>0</mn>
+                          </msub>
+                          <mo>+</mo>
+                          <msub>
+                            <mi>t</mi>
+                            <mi>y</mi>
+                          </msub>
+                        </mtd>
+                      </mtr>
+                      <mtr>
+                        <mtd>
+                          <msub>
+                            <mi>z</mi>
+                            <mn>0</mn>
+                          </msub>
+                          <mo>+</mo>
+                          <msub>
+                            <mi>t</mi>
+                            <mi>z</mi>
+                          </msub>
+                        </mtd>
+                      </mtr>
+                    </mtable>
+                    <mo>]</mo>
                   </mrow>
                 </mrow>
-                <msqrt>
-                  <mi>d</mi>
-                </msqrt>
               </mrow>
+              <msqrt>
+                <mi>d</mi>
+              </msqrt>
             </mstyle>
           </math>
         MATHML
         latex = "\\text{Convert} ( x , y , z , p_{a} , p_{o} , R , S , T ) = R_{z} ( \\alpha ) R_{y} ( \\beta ) R_{x} ( \\gamma ) S ( x - a_{x} ,  y - a_{y} ,  z - a_{z} ) + p_{o} + T =\\\\  \\left [\\begin{matrix}\\cos{&#x2061;} \\alpha \\cos{\\beta} & \\cos{&#x2061;} \\alpha \\sin{&#x2061;} \\beta \\sin{&#x2061;} \\gamma - \\sin{&#x2061;} \\alpha \\cos{\\gamma} & \\cos{&#x2061;} \\alpha \\sin{&#x2061;} \\beta \\cos{&#x2061;} \\gamma + \\sin{&#x2061;} \\alpha \\sin{&#x2061;} \\gamma \\\\ \\sin{&#x2061;} \\alpha \\cos{&#x2061;} \\beta & \\sin{&#x2061;} \\alpha \\sin{&#x2061;} \\beta \\sin{&#x2061;} \\gamma + \\cos{&#x2061;} \\alpha \\cos{&#x2061;} \\gamma & \\sin{&#x2061;} \\alpha \\sin{&#x2061;} \\beta \\cos{&#x2061;} \\gamma - \\cos{&#x2061;} \\alpha \\sin{&#x2061;} \\gamma \\\\ - \\sin{&#x2061;} \\beta & \\cos{&#x2061;} \\beta \\sin{&#x2061;} \\gamma & \\cos{&#x2061;} \\beta \\cos{&#x2061;} \\gamma\\end{matrix}\\right ] \\left [\\begin{matrix}s_{x} \\ast ( x - a_{x} ) \\\\ s_{y} \\ast ( y - a_{y} ) \\\\ s_{z} \\ast ( z - a_{z} )\\end{matrix}\\right ] + \\left [\\begin{matrix}x_{0} + t_{x} \\\\ y_{0} + t_{y} \\\\ z_{0} + t_{z}\\end{matrix}\\right ] \\sqrt{d}"
         asciimath = "\"Convert\" (x , y , z , p_(a) , p_(o) , R , S , T) = R_(z) (alpha) R_(y) (beta) R_(x) (gamma) S (x - a_(x) ,  y - a_(y) ,  z - a_(z)) + p_(o) + T =\\\n  [[cos&#x2061; alpha cosbeta, cos&#x2061; alpha sin&#x2061; beta sin&#x2061; gamma - sin&#x2061; alpha cosgamma, cos&#x2061; alpha sin&#x2061; beta cos&#x2061; gamma + sin&#x2061; alpha sin&#x2061; gamma], [sin&#x2061; alpha cos&#x2061; beta, sin&#x2061; alpha sin&#x2061; beta sin&#x2061; gamma + cos&#x2061; alpha cos&#x2061; gamma, sin&#x2061; alpha sin&#x2061; beta cos&#x2061; gamma - cos&#x2061; alpha sin&#x2061; gamma], [- sin&#x2061; beta, cos&#x2061; beta sin&#x2061; gamma, cos&#x2061; beta cos&#x2061; gamma]] [[s_(x) ast (x - a_(x))], [s_(y) ast (y - a_(y))], [s_(z) ast (z - a_(z))]] + [[x_(0) + t_(x)], [y_(0) + t_(y)], [z_(0) + t_(z)]] sqrt(d)"
         expect(formula.to_latex).to eq(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(split_on_linebreak: true)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eq(asciimath)
       end
     end
+
+    # context "contains mmultiscripts tag Mathml" do
+    #   let(:string)  do
+    #     <<~MATHML
+    #       <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+    #         <mstyle displaystyle="true">
+    #           <mmultiscripts>
+    #             <mrow>
+    #               <mi>&#x3b1;</mi>
+    #               <mo linebreak="newline">=</mo>
+    #               <mi>&#x3b1;</mi>
+    #             </mrow>
+    #             <mrow>
+    #               <mi>&#x3b3;</mi>
+    #               <mo linebreak="newline">=</mo>
+    #               <mi>&#x3b3;</mi>
+    #             </mrow>
+    #             <mrow>
+    #               <mi>&#x3b2;</mi>
+    #               <mo linebreak="newline">=</mo>
+    #               <mi>&#x3b2;</mi>
+    #             </mrow>
+    #           </mmultiscripts>
+    #         </mstyle>
+    #       </math>
+    #     MATHML
+    #   end
+
+    #   it 'returns Mathml string' do
+    #     mathml = <<~MATHML
+    #       <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+    #         <mstyle displaystyle="true">
+    #           <mmultiscripts>
+    #             <mrow>
+    #               <mi>&#x3b1;</mi>
+    #               <mo linebreak="newline">=</mo>
+    #               <mi>&#x3b1;</mi>
+    #             </mrow>
+    #             <mrow>
+    #               <mi>&#x3b3;</mi>
+    #               <mo linebreak="newline">=</mo>
+    #               <mi>&#x3b3;</mi>
+    #             </mrow>
+    #             <mrow>
+    #               <mi>&#x3b2;</mi>
+    #               <mo linebreak="newline">=</mo>
+    #               <mi>&#x3b2;</mi>
+    #             </mrow>
+    #           </mmultiscripts>
+    #         </mstyle>
+    #       </math>
+    #     MATHML
+    #     latex = "\\alpha \\\\ = \\alpha\\gamma \\\\ = \\gamma\\beta \\\\ = \\beta"
+    #     asciimath = "(alpha \\\n = alpha)_(gamma \\\n = gamma)^(beta \\\n = beta)"
+    #     expect(formula.to_latex).to eq(latex)
+    #     expect(formula.to_mathml).to be_equivalent_to(mathml)
+    #     expect(formula.to_asciimath).to eq(asciimath)
+    #   end
+    # end
   end
 
   describe ".to_omml" do
@@ -1458,11 +1529,6 @@ RSpec.describe Plurimath::Mathml do
               <m:r>
                 <m:t>=</m:t>
               </m:r>
-            </m:oMath>
-            <m:r>
-              <br/>
-            </m:r>
-            <m:oMath>
               <m:sSub>
                 <m:sSubPr>
                   <m:ctrlPr>

@@ -26,27 +26,33 @@ module Plurimath
         end
 
         def to_mathml_without_math_tag
-          first_value = Utility.ox_element("mo") << invert_unicode_symbols.to_s
-          return first_value unless parameter_one || parameter_two
+          first_value = ox_element("mo")
+          first_value << invert_unicode_symbols.to_s unless hide_function_name
 
-          value_array = [parameter_one&.to_mathml_without_math_tag]
-          value_array << parameter_two&.to_mathml_without_math_tag
-          tag_name = if parameter_two && parameter_one
-                       "underover"
-                     else
-                       parameter_one ? "under" : "over"
-                     end
-          munderover_tag = Utility.ox_element("m#{tag_name}")
-          Utility.update_nodes(munderover_tag, value_array.insert(0, first_value))
-          return munderover_tag if parameter_three.nil?
+          if parameter_one || parameter_two
+            value_array = [
+              parameter_one&.to_mathml_without_math_tag,
+              parameter_two&.to_mathml_without_math_tag,
+            ]
+            tag_name = if parameter_two && parameter_one
+                         "underover"
+                       else
+                         parameter_one ? "under" : "over"
+                       end
+            munderover_tag = ox_element("m#{tag_name}")
+            Utility.update_nodes(munderover_tag, value_array.insert(0, first_value))
+            return munderover_tag if parameter_three.nil?
 
-          Utility.update_nodes(
-            Utility.ox_element("mrow"),
-            [
-              munderover_tag,
-              parameter_three&.to_mathml_without_math_tag,
-            ].flatten.compact,
-          )
+            Utility.update_nodes(
+              ox_element("mrow"),
+              [
+                munderover_tag,
+                parameter_three&.to_mathml_without_math_tag,
+              ],
+            )
+          else
+            first_value
+          end
         end
 
         def to_html
@@ -92,9 +98,7 @@ module Plurimath
 
           parameter_three&.line_breaking(obj)
           if obj.value_exist?
-            sum = self.class.new(nil, nil, Utility.filter_values(obj.value))
-            sum.hide_function_name = true
-            obj.update(sum)
+            obj.update(Utility.filter_values(obj.value))
           end
         end
       end

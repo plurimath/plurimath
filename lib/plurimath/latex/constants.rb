@@ -3562,7 +3562,7 @@ module Plurimath
         tanh: :unary,
         cosh: :unary,
         ddot: :unary,
-        mbox: :unary,
+        mbox: :text,
         text: :text,
         '"': :symbols,
         sum: :ternary,

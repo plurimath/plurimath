@@ -1,0 +1,28 @@
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mstyle displaystyle="true">
+    <mover>
+      <mrow/>
+      <mrow>
+        <mrow>
+          <mi>d</mi>
+        </mrow>
+      </mrow>
+    </mover>
+  </mstyle>
+</math>
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mstyle displaystyle="true">
+    <mover>
+      <mrow>
+        <mrow>
+          <mi>s</mi>
+          <mo linebreak="newline"/>
+          <mi>p</mi>
+        </mrow>
+      </mrow>
+      <mrow>
+        <mi>e</mi>
+      </mrow>
+    </mover>
+  </mstyle>
+</math>

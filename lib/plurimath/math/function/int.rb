@@ -75,9 +75,7 @@ module Plurimath
 
           parameter_three&.line_breaking(obj)
           if obj.value_exist?
-            int = Int.new(nil, nil, Utility.filter_values(obj.value))
-            int.hide_function_name = true
-            obj.update(int)
+            obj.update(Utility.filter_values(obj.value))
           end
         end
 

@@ -1,8 +1,8 @@
-require_relative "../../spec_helper"
-require_relative "../fixtures/formula_modules/line_break_values.rb"
+require "spec_helper"
+require "plurimath/fixtures/formula_modules/line_break_values"
 
 RSpec.describe Plurimath::Omml::Parser do
-  subject(:omml) { expected_value.to_omml }
+  subject(:omml) { expected_value.to_omml(split_on_linebreak: true) }
   subject(:file) { File.read(file_name) }
 
   context "contains #line-break-001.omml" do
@@ -764,6 +764,42 @@ RSpec.describe Plurimath::Omml::Parser do
   context "contains #line-break-085.omml" do
     let(:file_name) { "spec/plurimath/fixtures/omml/line_break/line-break-085.omml" }
     let(:expected_value) { LineBreakValues::LineBreak_085 }
+
+    it "matches OMML equations" do
+      expect(omml).to eq(file)
+    end
+  end
+
+  context "contains #line-break-086.omml" do
+    let(:file_name) { "spec/plurimath/fixtures/omml/line_break/line-break-086.omml" }
+    let(:expected_value) { LineBreakValues::LineBreak_086 }
+
+    it "matches OMML equations" do
+      expect(omml).to eq(file)
+    end
+  end
+
+  context "contains #line-break-087.omml" do
+    let(:file_name) { "spec/plurimath/fixtures/omml/line_break/line-break-087.omml" }
+    let(:expected_value) { LineBreakValues::LineBreak_087 }
+
+    it "matches OMML equations" do
+      expect(omml).to eq(file)
+    end
+  end
+
+  context "contains #line-break-088.omml" do
+    let(:file_name) { "spec/plurimath/fixtures/omml/line_break/line-break-088.omml" }
+    let(:expected_value) { LineBreakValues::LineBreak_088 }
+
+    it "matches OMML equations" do
+      expect(omml).to eq(file)
+    end
+  end
+
+  context "contains #line-break-089.omml" do
+    let(:file_name) { "spec/plurimath/fixtures/omml/line_break/line-break-089.omml" }
+    let(:expected_value) { LineBreakValues::LineBreak_089 }
 
     it "matches OMML equations" do
       expect(omml).to eq(file)

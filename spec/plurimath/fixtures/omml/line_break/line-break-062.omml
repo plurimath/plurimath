@@ -59,28 +59,8 @@
     <br/>
   </m:r>
   <m:oMath>
-    <m:nary>
-      <m:naryPr>
-        <m:chr m:val=""/>
-        <m:limLoc m:val="undOvr"/>
-        <m:subHide m:val="1"/>
-        <m:supHide m:val="1"/>
-      </m:naryPr>
-      <m:sub>
-        <m:r>
-          <m:t>&#8203;</m:t>
-        </m:r>
-      </m:sub>
-      <m:sup>
-        <m:r>
-          <m:t>&#8203;</m:t>
-        </m:r>
-      </m:sup>
-      <m:e>
-        <m:r>
-          <m:t>&#xed3;</m:t>
-        </m:r>
-      </m:e>
-    </m:nary>
+    <m:r>
+      <m:t>&#xed3;</m:t>
+    </m:r>
   </m:oMath>
 </m:oMathPara>

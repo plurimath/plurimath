@@ -102,34 +102,8 @@
     <br/>
   </m:r>
   <m:oMath>
-    <m:nary>
-      <m:naryPr>
-        <m:chr m:val=""/>
-        <m:limLoc m:val=""/>
-        <m:subHide m:val="1"/>
-        <m:supHide m:val="1"/>
-        <m:ctrlPr>
-          <w:rPr>
-            <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
-            <w:i/>
-          </w:rPr>
-        </m:ctrlPr>
-      </m:naryPr>
-      <m:sub>
-        <m:r>
-          <m:t>&#8203;</m:t>
-        </m:r>
-      </m:sub>
-      <m:sup>
-        <m:r>
-          <m:t>&#8203;</m:t>
-        </m:r>
-      </m:sup>
-      <m:e>
-        <m:r>
-          <m:t>&#xd1;</m:t>
-        </m:r>
-      </m:e>
-    </m:nary>
+    <m:r>
+      <m:t>&#xd1;</m:t>
+    </m:r>
   </m:oMath>
 </m:oMathPara>

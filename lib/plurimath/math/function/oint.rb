@@ -25,28 +25,33 @@ module Plurimath
         end
 
         def to_mathml_without_math_tag
-          mo_tag = Utility.ox_element("mo") << invert_unicode_symbols.to_s
+          mo_tag = ox_element("mo")
+          mo_tag << invert_unicode_symbols.to_s unless hide_function_name
           return mo_tag unless all_values_exist?
 
-          value_array = [mo_tag]
-          value_array << parameter_one&.to_mathml_without_math_tag
-          value_array << parameter_two&.to_mathml_without_math_tag
-          tag_name = if parameter_one && parameter_two
-                       "subsup"
-                     else
-                       parameter_one ? "sub" : "sup"
-                     end
-          msubsup_tag = Utility.ox_element("m#{tag_name}")
-          Utility.update_nodes(msubsup_tag, value_array)
-          return msubsup_tag if parameter_three.nil?
+          if parameter_one || parameter_two
+            value_array = [
+              mo_tag,
+              parameter_one&.to_mathml_without_math_tag,
+              parameter_two&.to_mathml_without_math_tag,
+            ]
+            tag_name = if parameter_one && parameter_two
+                         "subsup"
+                       else
+                         parameter_one ? "sub" : "sup"
+                       end
+            msubsup_tag = ox_element("m#{tag_name}")
+            Utility.update_nodes(msubsup_tag, value_array)
+            return msubsup_tag unless parameter_three
 
-          Utility.update_nodes(
-            Utility.ox_element("mrow"),
-            [
-              msubsup_tag,
-              parameter_three&.to_mathml_without_math_tag,
-            ].compact,
-          )
+            Utility.update_nodes(
+              ox_element("mrow"),
+              [
+                msubsup_tag,
+                parameter_three&.to_mathml_without_math_tag,
+              ],
+            )
+          end
         end
 
         def to_omml_without_math_tag(display_style)
@@ -83,9 +88,7 @@ module Plurimath
 
           parameter_three&.line_breaking(obj)
           if obj.value_exist?
-            oint = self.class.new(nil, nil, Utility.filter_values(obj.value))
-            oint.hide_function_name = true
-            obj.update(oint)
+            obj.update(Utility.filter_values(obj.value))
           end
         end
       end

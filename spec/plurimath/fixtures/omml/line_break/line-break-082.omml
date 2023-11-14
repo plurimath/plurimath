@@ -39,7 +39,6 @@
             <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
             <w:i/>
           </w:rPr>
-          <m:subHide m:val="1"/>
           <m:supHide m:val="1"/>
         </m:ctrlPr>
       </m:sSubSupPr>
@@ -48,12 +47,12 @@
           <m:t>=</m:t>
         </m:r>
         <m:r>
-          <m:t>&#x3b1;</m:t>
+          <m:t>&#x3b2;</m:t>
         </m:r>
       </m:e>
       <m:sub>
         <m:r>
-          <m:t>&#8203;</m:t>
+          <m:t>&#x3b3;</m:t>
         </m:r>
       </m:sub>
       <m:sup>
@@ -86,7 +85,7 @@
           <m:t>=</m:t>
         </m:r>
         <m:r>
-          <m:t>&#x3b3;</m:t>
+          <m:t>&#x3b4;</m:t>
         </m:r>
       </m:sub>
       <m:sup>
@@ -94,7 +93,10 @@
           <m:t>&#x3b2;</m:t>
         </m:r>
         <m:r>
-          <m:t>&#x3b2;</m:t>
+          <m:t>=</m:t>
+        </m:r>
+        <m:r>
+          <m:t>&#x3b5;</m:t>
         </m:r>
       </m:sup>
     </m:sSubSup>

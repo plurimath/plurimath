@@ -3808,13 +3808,16 @@ RSpec.describe Plurimath::Asciimath do
                 <mo>&#xaf;</mo>
               </mover>
               <mo>&#x2032;</mo>
-              <mo linebreak="newline"/>
+            </mstyle>
+          </math>
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
               <mi>&#x3b8;</mi>
             </mstyle>
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(split_on_linebreak: true)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -5906,11 +5909,6 @@ RSpec.describe Plurimath::Asciimath do
               <m:r>
                 <m:t>2</m:t>
               </m:r>
-              </m:oMath>
-              <m:r>
-                <br/>
-              </m:r>
-              <m:oMath>
               <m:r>
                 <m:t>e</m:t>
               </m:r>

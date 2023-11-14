@@ -14,14 +14,10 @@ module Plurimath
 
         def to_mathml_without_math_tag
           first_value = parameter_one&.to_mathml_without_math_tag
-          Utility.update_nodes(
-            Utility.ox_element("mrow"),
-            [
-              Utility.ox_element("mo") << "&#x230a;",
-              first_value,
-              Utility.ox_element("mo") << "&#x230b;",
-            ],
-          )
+          value_array = [first_value]
+          value_array.insert(0, (ox_element("mo") << "&#x230a;")) unless open_paren
+          value_array << (ox_element("mo") << "&#x230b;") unless close_paren
+          Utility.update_nodes(ox_element("mrow"), value_array)
         end
 
         def to_omml_without_math_tag(display_style)
@@ -40,7 +36,7 @@ module Plurimath
             ceil_object.close_paren = false
             obj.update(ceil_object)
             self.close_paren = true
-            self.open_paren = false
+            self.open_paren = false unless open_paren
           end
         end
       end

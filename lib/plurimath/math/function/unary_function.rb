@@ -28,12 +28,12 @@ module Plurimath
         end
 
         def to_mathml_without_math_tag
-          row_tag = Utility.ox_element("mrow")
           tag_name = Utility::UNARY_CLASSES.include?(class_name) ? "mi" : "mo"
-          new_arr = [Utility.ox_element(tag_name) << class_name]
+          new_arr = []
+          new_arr << (ox_element(tag_name) << class_name) unless hide_function_name
           if parameter_one
             new_arr += mathml_value
-            Utility.update_nodes(row_tag, new_arr)
+            Utility.update_nodes(ox_element("mrow"), new_arr)
           else
             new_arr.first
           end
@@ -102,6 +102,35 @@ module Plurimath
           ]
           omml_fields_to_print(parameter_one, { spacing: new_spacing, field_name: "argument", additional_space: "   |_ ", array: new_arr, display_style: display_style })
           new_arr
+        end
+
+        def custom_array_line_breaking(obj)
+          parameter_value = result(parameter_one)
+          if parameter_value.size > 1
+            breaked_result = parameter_value.first.last.omml_line_break(parameter_value)
+            update(Array(breaked_result.shift))
+            obj.update(self.class.new(breaked_result.flatten))
+            reprocess_parameter_one(obj)
+            return
+          end
+
+          parameter_one.each.with_index do |object, index|
+            object.line_breaking(obj)
+            break obj.insert(parameter_one.slice!(index+1..parameter_one.size)) if obj.value_exist?
+          end
+        end
+
+        def update(value)
+          self.parameter_one = value
+        end
+
+        def reprocess_parameter_one(obj)
+          new_obj = Formula.new([])
+          self.line_breaking(new_obj)
+          if new_obj.value_exist?
+            obj.value.insert(0, Linebreak.new)
+            obj.value.insert(0, self.class.new(new_obj.value))
+          end
         end
 
         protected

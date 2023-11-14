@@ -7,6 +7,7 @@
             <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
             <w:i/>
           </w:rPr>
+          <m:supHide m:val="1"/>
         </m:ctrlPr>
       </m:sSubSupPr>
       <m:e>
@@ -24,10 +25,7 @@
       </m:sub>
       <m:sup>
         <m:r>
-          <m:t>&#x2222;</m:t>
-        </m:r>
-        <m:r>
-          <m:t>&#xd3;</m:t>
+          <m:t>&#8203;</m:t>
         </m:r>
       </m:sup>
     </m:sSubSup>

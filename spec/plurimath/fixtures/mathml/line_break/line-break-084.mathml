@@ -1,0 +1,40 @@
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mstyle displaystyle="true">
+    <mtable>
+      <mtr>
+        <mtd>
+          <mtable>
+            <mtr>
+              <mtd>
+                <mi>a</mi>
+                <mi>b</mi>
+              </mtd>
+            </mtr>
+            <mtr>
+              <mtd>
+                <mi>d</mi>
+              </mtd>
+            </mtr>
+          </mtable>
+        </mtd>
+      </mtr>
+      <mtr>
+        <mtd>
+          <mtable>
+            <mtr>
+              <mtd>
+                <mi>d</mi>
+              </mtd>
+            </mtr>
+            <mtr>
+              <mtd>
+                <mi>e</mi>
+                <mi>c</mi>
+              </mtd>
+            </mtr>
+          </mtable>
+        </mtd>
+      </mtr>
+    </mtable>
+  </mstyle>
+</math>

@@ -3,6 +3,37 @@
     <m:r>
       <m:t>&#x3b8;</m:t>
     </m:r>
+    <m:func>
+      <m:funcPr>
+        <m:ctrlPr>
+          <w:rPr>
+            <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
+            <w:i/>
+          </w:rPr>
+        </m:ctrlPr>
+      </m:funcPr>
+      <m:fName>
+        <m:r>
+          <w:rPr>
+            <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
+          </w:rPr>
+          <m:t>cos</m:t>
+        </m:r>
+      </m:fName>
+      <m:e>
+        <m:r>
+          <m:t>asd</m:t>
+        </m:r>
+      </m:e>
+    </m:func>
+  </m:oMath>
+  <m:r>
+    <br/>
+  </m:r>
+  <m:oMath>
+    <m:r>
+      <m:t>dsa</m:t>
+    </m:r>
   </m:oMath>
   <m:r>
     <br/>

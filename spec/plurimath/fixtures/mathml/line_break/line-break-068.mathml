@@ -1,0 +1,15 @@
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mstyle displaystyle="true">
+    <mover accent="true">
+      <mrow>
+        <mi>&#x3b8;</mi>
+      </mrow>
+      <mo>..</mo>
+    </mover>
+  </mstyle>
+</math>
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mstyle displaystyle="true">
+    <mi>&#x3b3;</mi>
+  </mstyle>
+</math>

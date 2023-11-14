@@ -46,12 +46,22 @@ module Plurimath
 
         def to_mathml_without_math_tag
           tag_name = options[:type] == "undOvr" ? "munderover" : "msubsup"
-          subsup_tag = Utility.ox_element(tag_name)
-          new_arr = []
-          new_arr << validate_mathml_fields(parameter_one)
-          new_arr << validate_mathml_fields(parameter_two)
-          new_arr << validate_mathml_fields(parameter_three)
+          subsup_tag = ox_element(tag_name)
+          new_arr = [
+            validate_mathml_fields(parameter_one),
+            validate_mathml_fields(parameter_two),
+            validate_mathml_fields(parameter_three),
+          ]
           Utility.update_nodes(subsup_tag, new_arr)
+          return subsup_tag unless parameter_four
+
+          Utility.update_nodes(
+            ox_element("mrow"),
+            [
+              subsup_tag,
+              parameter_four&.to_mathml_without_math_tag,
+            ],
+          )
         end
 
         def to_omml_without_math_tag(display_style)
@@ -63,7 +73,7 @@ module Plurimath
         def line_breaking(obj)
           parameter_one&.line_breaking(obj)
           if obj.value_exist?
-            obj.update(self.class.new(Utility.filter_values(obj.value), parameter_two, parameter_three, parameter_four))
+            obj.update(self.class.new(Utility.filter_values(obj.value), self.parameter_two, self.parameter_three, self.parameter_four))
             self.parameter_two = nil
             self.parameter_three = nil
             self.parameter_four = nil
@@ -72,7 +82,7 @@ module Plurimath
 
           parameter_two&.line_breaking(obj)
           if obj.value_exist?
-            obj.update(self.class.new(nil, Utility.filter_values(obj.value), parameter_three, parameter_four))
+            obj.update(self.class.new(nil, Utility.filter_values(obj.value), self.parameter_three, self.parameter_four))
             self.parameter_three = nil
             self.parameter_four = nil
             return
@@ -80,7 +90,7 @@ module Plurimath
 
           parameter_four&.line_breaking(obj)
           if obj.value_exist?
-            obj.update(self.class.new(nil, nil, nil, Utility.filter_values(obj.value)))
+            obj.update(Utility.filter_values(obj.value))
           end
         end
 

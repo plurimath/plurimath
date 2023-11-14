@@ -1,0 +1,16 @@
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mstyle displaystyle="true">
+    <menclose notation="updiagonalstrike">
+      <mrow>
+        <mi>&#x3b8;</mi>
+      </mrow>
+    </menclose>
+  </mstyle>
+</math>
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mstyle displaystyle="true">
+    <menclose notation="updiagonalstrike">
+      <mi>&#x3b3;</mi>
+    </menclose>
+  </mstyle>
+</math>

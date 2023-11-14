@@ -17,16 +17,11 @@ module Plurimath
         end
 
         def to_mathml_without_math_tag
-          first_value = parameter_one&.to_mathml_without_math_tag
-          norm = Utility.ox_element("mo") << "&#x2225;"
-          Utility.update_nodes(
-            Utility.ox_element("mrow"),
-            [
-              norm,
-              first_value,
-              norm,
-            ],
-          )
+          first_value = Array(parameter_one&.to_mathml_without_math_tag)
+          norm = ox_element("mo") << "&#x2225;"
+          first_value = first_value.insert(0, norm) unless open_paren
+          first_value = first_value << norm unless close_paren
+          Utility.update_nodes(ox_element("mrow"), first_value)
         end
 
         def to_omml_without_math_tag(display_style)
@@ -40,12 +35,12 @@ module Plurimath
         def line_breaking(obj)
           parameter_one.line_breaking(obj)
           if obj.value_exist?
-            ceil_object = self.class.new(Utility.filter_values(obj.value))
-            ceil_object.open_paren = true
-            ceil_object.close_paren = false
-            obj.update(ceil_object)
+            norm_object = self.class.new(Utility.filter_values(obj.value))
+            norm_object.open_paren = true
+            norm_object.close_paren = false
+            obj.update(norm_object)
             self.close_paren = true
-            self.open_paren = false
+            self.open_paren = false unless open_paren
           end
         end
       end

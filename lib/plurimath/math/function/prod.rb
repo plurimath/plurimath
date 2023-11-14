@@ -25,17 +25,20 @@ module Plurimath
         end
 
         def to_mathml_without_math_tag
-          first_value = Utility.ox_element("mo") << invert_unicode_symbols.to_s
+          first_value = ox_element("mo")
+          first_value << invert_unicode_symbols.to_s unless hide_function_name
           if parameter_one || parameter_two
-            value_array = [first_value]
-            value_array << parameter_one&.to_mathml_without_math_tag
-            value_array << parameter_two&.to_mathml_without_math_tag
             tag_name = if parameter_two && parameter_one
                          "underover"
                        else
                          parameter_one ? "under" : "over"
                        end
-            munderover_tag = Utility.ox_element("m#{tag_name}")
+            value_array = [
+              first_value,
+              parameter_one&.to_mathml_without_math_tag,
+              parameter_two&.to_mathml_without_math_tag,
+            ]
+            munderover_tag = ox_element("m#{tag_name}")
             Utility.update_nodes(
               munderover_tag,
               value_array,
@@ -92,9 +95,7 @@ module Plurimath
 
           parameter_three&.line_breaking(obj)
           if obj.value_exist?
-            prod = self.class.new(nil, nil, Utility.filter_values(obj.value))
-            prod.hide_function_name = true
-            obj.update(prod)
+            obj.update(Utility.filter_values(obj.value))
           end
         end
       end

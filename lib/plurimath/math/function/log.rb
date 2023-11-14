@@ -49,13 +49,15 @@ module Plurimath
         end
 
         def to_mathml_without_math_tag
-          subsup_tag = Utility.ox_element("msubsup")
-          first_value = (Utility.ox_element("mi") << "log")
+          first_value = ox_element("mi")
+          first_value << "log" unless hide_function_name
           if parameter_one || parameter_two
-            new_arr = [first_value]
-            new_arr << parameter_one&.to_mathml_without_math_tag
-            new_arr << parameter_two&.to_mathml_without_math_tag
-            Utility.update_nodes(subsup_tag, new_arr)
+            new_arr = [
+              first_value,
+              validate_mathml_fields(parameter_one),
+              validate_mathml_fields(parameter_two),
+            ]
+            Utility.update_nodes(ox_element("msubsup"), new_arr)
           else
             first_value
           end
@@ -65,6 +67,7 @@ module Plurimath
           parameter_one&.line_breaking(obj)
           if obj.value_exist?
             log = self.class.new(Utility.filter_values(obj.value), parameter_two)
+            self.parameter_two = nil
             log.hide_function_name = true
             obj.update(log)
           end

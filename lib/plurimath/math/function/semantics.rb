@@ -36,7 +36,8 @@ module Plurimath
         def line_breaking(obj)
           parameter_one&.line_breaking(obj)
           if obj.value_exist?
-            semantics = self.class.new(Utility.filter_values(obj.value), parameter_two)
+            semantics = self.class.new(Utility.filter_values(obj.value), self.parameter_two)
+            self.parameter_two =nil
             obj.update(semantics)
           end
         end

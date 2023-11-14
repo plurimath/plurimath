@@ -19,18 +19,12 @@ module Plurimath
         end
 
         def to_mathml_without_math_tag
-          mrow_tag = Utility.ox_element("mrow")
-          mo_tag = Utility.ox_element("mi") << "mod"
-          first_value = parameter_one&.to_mathml_without_math_tag if parameter_one
-          second_value = parameter_two&.to_mathml_without_math_tag if parameter_two
-          Utility.update_nodes(
-            mrow_tag,
-            [
-              first_value,
-              mo_tag,
-              second_value,
-            ],
-          )
+          mi_tag = ox_element("mi")
+          mi_tag << "mod" unless hide_function_name
+          value_array = [mi_tag]
+          value_array.insert(0, parameter_one&.to_mathml_without_math_tag) if parameter_one
+          value_array << parameter_two&.to_mathml_without_math_tag if parameter_two
+          Utility.update_nodes(ox_element("mrow"), value_array)
         end
 
         def to_latex

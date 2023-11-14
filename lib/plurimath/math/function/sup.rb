@@ -7,7 +7,13 @@ module Plurimath
     module Function
       class Sup < UnaryFunction
         def to_mathml_without_math_tag
-          Utility.ox_element("mo") << "sup"
+          mo_tag = Utility.ox_element("mo") << "sup"
+          first_value = mathml_value
+          first_value = mathml_value&.insert(0, mo_tag) unless hide_function_name
+          Utility.update_nodes(
+            ox_element("mrow"),
+            first_value,
+          )
         end
 
         def to_omml_without_math_tag(display_style)

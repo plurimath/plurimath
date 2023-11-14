@@ -1283,32 +1283,7 @@ RSpec.describe Plurimath::Math::Formula do
                 ),
                 Plurimath::Math::Function::Td.new(
                   [
-                    Plurimath::Math::Function::Mbox.new(
-                      Plurimath::Math::Formula.new([
-                        Plurimath::Math::Symbol.new("d"),
-                        Plurimath::Math::Symbol.new("e"),
-                        Plurimath::Math::Symbol.new("g"),
-                        Plurimath::Math::Symbol.new("r"),
-                        Plurimath::Math::Symbol.new("e"),
-                        Plurimath::Math::Symbol.new("e"),
-                        Plurimath::Math::Symbol.new("o"),
-                        Plurimath::Math::Symbol.new("f"),
-                        Plurimath::Math::Symbol.new("f"),
-                        Plurimath::Math::Symbol.new("r"),
-                        Plurimath::Math::Symbol.new("e"),
-                        Plurimath::Math::Symbol.new("e"),
-                        Plurimath::Math::Symbol.new("d"),
-                        Plurimath::Math::Symbol.new("o"),
-                        Plurimath::Math::Symbol.new("m"),
-                        Plurimath::Math::Number.new("1"),
-                        Plurimath::Math::Symbol.new(","),
-                        Plurimath::Math::Symbol.new("n"),
-                        Plurimath::Math::Symbol.new("o"),
-                        Plurimath::Math::Symbol.new("d"),
-                        Plurimath::Math::Symbol.new("e"),
-                        Plurimath::Math::Number.new("1"),
-                      ])
-                    ),
+                    Plurimath::Math::Function::Mbox.new("degreeoffreedom1,node1"),
                   ],
                   nil
                 ),
@@ -1324,32 +1299,7 @@ RSpec.describe Plurimath::Math::Formula do
                 ),
                 Plurimath::Math::Function::Td.new(
                   [
-                    Plurimath::Math::Function::Mbox.new(
-                      Plurimath::Math::Formula.new([
-                        Plurimath::Math::Symbol.new("d"),
-                        Plurimath::Math::Symbol.new("e"),
-                        Plurimath::Math::Symbol.new("g"),
-                        Plurimath::Math::Symbol.new("r"),
-                        Plurimath::Math::Symbol.new("e"),
-                        Plurimath::Math::Symbol.new("e"),
-                        Plurimath::Math::Symbol.new("o"),
-                        Plurimath::Math::Symbol.new("f"),
-                        Plurimath::Math::Symbol.new("f"),
-                        Plurimath::Math::Symbol.new("r"),
-                        Plurimath::Math::Symbol.new("e"),
-                        Plurimath::Math::Symbol.new("e"),
-                        Plurimath::Math::Symbol.new("d"),
-                        Plurimath::Math::Symbol.new("o"),
-                        Plurimath::Math::Symbol.new("m"),
-                        Plurimath::Math::Number.new("2"),
-                        Plurimath::Math::Symbol.new(","),
-                        Plurimath::Math::Symbol.new("n"),
-                        Plurimath::Math::Symbol.new("o"),
-                        Plurimath::Math::Symbol.new("d"),
-                        Plurimath::Math::Symbol.new("e"),
-                        Plurimath::Math::Number.new("2"),
-                      ])
-                    ),
+                    Plurimath::Math::Function::Mbox.new("degreeoffreedom2,node2"),
                   ],
                   nil
                 ),
@@ -3127,19 +3077,7 @@ RSpec.describe Plurimath::Math::Formula do
                   Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
                   Plurimath::Math::Function::Td.new(
                     [
-                      Plurimath::Math::Function::Mbox.new(
-                        Plurimath::Math::Formula.new([
-                          Plurimath::Math::Symbol.new("s"),
-                          Plurimath::Math::Symbol.new("y"),
-                          Plurimath::Math::Symbol.new("m"),
-                          Plurimath::Math::Symbol.new("m"),
-                          Plurimath::Math::Symbol.new("e"),
-                          Plurimath::Math::Symbol.new("t"),
-                          Plurimath::Math::Symbol.new("r"),
-                          Plurimath::Math::Symbol.new("i"),
-                          Plurimath::Math::Symbol.new("c"),
-                        ])
-                      ),
+                      Plurimath::Math::Function::Mbox.new("symmetric"),
                     ],
                     { columnalign: "center" }
                   ),
@@ -3581,19 +3519,7 @@ RSpec.describe Plurimath::Math::Formula do
                   ),
                   Plurimath::Math::Function::Td.new(
                     [
-                      Plurimath::Math::Function::Mbox.new(
-                        Plurimath::Math::Formula.new([
-                          Plurimath::Math::Symbol.new("s"),
-                          Plurimath::Math::Symbol.new("y"),
-                          Plurimath::Math::Symbol.new("m"),
-                          Plurimath::Math::Symbol.new("m"),
-                          Plurimath::Math::Symbol.new("e"),
-                          Plurimath::Math::Symbol.new("t"),
-                          Plurimath::Math::Symbol.new("r"),
-                          Plurimath::Math::Symbol.new("i"),
-                          Plurimath::Math::Symbol.new("c"),
-                        ])
-                      ),
+                      Plurimath::Math::Function::Mbox.new("symmetric"),
                     ],
                     { columnalign: "center" }
                   ),
@@ -4272,19 +4198,7 @@ RSpec.describe Plurimath::Math::Formula do
                   ),
                   Plurimath::Math::Function::Td.new(
                     [
-                      Plurimath::Math::Function::Mbox.new(
-                        Plurimath::Math::Formula.new([
-                          Plurimath::Math::Symbol.new("s"),
-                          Plurimath::Math::Symbol.new("y"),
-                          Plurimath::Math::Symbol.new("m"),
-                          Plurimath::Math::Symbol.new("m"),
-                          Plurimath::Math::Symbol.new("e"),
-                          Plurimath::Math::Symbol.new("t"),
-                          Plurimath::Math::Symbol.new("r"),
-                          Plurimath::Math::Symbol.new("i"),
-                          Plurimath::Math::Symbol.new("c"),
-                        ])
-                      ),
+                      Plurimath::Math::Function::Mbox.new("symmetric"),
                     ],
                     { columnalign: "center" }
                   ),
@@ -4617,19 +4531,7 @@ RSpec.describe Plurimath::Math::Formula do
                   ),
                   Plurimath::Math::Function::Td.new(
                     [
-                      Plurimath::Math::Function::Mbox.new(
-                        Plurimath::Math::Formula.new([
-                          Plurimath::Math::Symbol.new("s"),
-                          Plurimath::Math::Symbol.new("y"),
-                          Plurimath::Math::Symbol.new("m"),
-                          Plurimath::Math::Symbol.new("m"),
-                          Plurimath::Math::Symbol.new("e"),
-                          Plurimath::Math::Symbol.new("t"),
-                          Plurimath::Math::Symbol.new("r"),
-                          Plurimath::Math::Symbol.new("i"),
-                          Plurimath::Math::Symbol.new("c"),
-                        ])
-                      ),
+                      Plurimath::Math::Function::Mbox.new("symmetric"),
                     ],
                     { columnalign: "center" }
                   ),
@@ -4902,19 +4804,7 @@ RSpec.describe Plurimath::Math::Formula do
                   ),
                   Plurimath::Math::Function::Td.new(
                     [
-                      Plurimath::Math::Function::Mbox.new(
-                        Plurimath::Math::Formula.new([
-                          Plurimath::Math::Symbol.new("s"),
-                          Plurimath::Math::Symbol.new("y"),
-                          Plurimath::Math::Symbol.new("m"),
-                          Plurimath::Math::Symbol.new("m"),
-                          Plurimath::Math::Symbol.new("e"),
-                          Plurimath::Math::Symbol.new("t"),
-                          Plurimath::Math::Symbol.new("r"),
-                          Plurimath::Math::Symbol.new("i"),
-                          Plurimath::Math::Symbol.new("c"),
-                        ])
-                      ),
+                      Plurimath::Math::Function::Mbox.new("symmetric"),
                     ],
                     { columnalign: "center" }
                   ),
@@ -5353,19 +5243,7 @@ RSpec.describe Plurimath::Math::Formula do
                   Plurimath::Math::Function::Td.new([], { columnalign: "center" }),
                   Plurimath::Math::Function::Td.new(
                     [
-                      Plurimath::Math::Function::Mbox.new(
-                        Plurimath::Math::Formula.new([
-                          Plurimath::Math::Symbol.new("s"),
-                          Plurimath::Math::Symbol.new("y"),
-                          Plurimath::Math::Symbol.new("m"),
-                          Plurimath::Math::Symbol.new("m"),
-                          Plurimath::Math::Symbol.new("e"),
-                          Plurimath::Math::Symbol.new("t"),
-                          Plurimath::Math::Symbol.new("r"),
-                          Plurimath::Math::Symbol.new("i"),
-                          Plurimath::Math::Symbol.new("c"),
-                        ])
-                      ),
+                      Plurimath::Math::Function::Mbox.new("symmetric"),
                     ],
                     { columnalign: "center" }
                   ),
@@ -9720,32 +9598,7 @@ RSpec.describe Plurimath::Math::Formula do
                           ),
                           Plurimath::Math::Function::Td.new(
                             [
-                              Plurimath::Math::Function::Mbox.new(
-                                Plurimath::Math::Formula.new([
-                                  Plurimath::Math::Symbol.new("d"),
-                                  Plurimath::Math::Symbol.new("e"),
-                                  Plurimath::Math::Symbol.new("g"),
-                                  Plurimath::Math::Symbol.new("r"),
-                                  Plurimath::Math::Symbol.new("e"),
-                                  Plurimath::Math::Symbol.new("e"),
-                                  Plurimath::Math::Symbol.new("o"),
-                                  Plurimath::Math::Symbol.new("f"),
-                                  Plurimath::Math::Symbol.new("f"),
-                                  Plurimath::Math::Symbol.new("r"),
-                                  Plurimath::Math::Symbol.new("e"),
-                                  Plurimath::Math::Symbol.new("e"),
-                                  Plurimath::Math::Symbol.new("d"),
-                                  Plurimath::Math::Symbol.new("o"),
-                                  Plurimath::Math::Symbol.new("m"),
-                                  Plurimath::Math::Number.new("1"),
-                                  Plurimath::Math::Symbol.new(","),
-                                  Plurimath::Math::Symbol.new("n"),
-                                  Plurimath::Math::Symbol.new("o"),
-                                  Plurimath::Math::Symbol.new("d"),
-                                  Plurimath::Math::Symbol.new("e"),
-                                  Plurimath::Math::Number.new("1"),
-                                ])
-                              ),
+                              Plurimath::Math::Function::Mbox.new("degreeoffreedom1,node1"),
                             ],
                             { columnalign: "center" }
                           ),
@@ -9781,32 +9634,7 @@ RSpec.describe Plurimath::Math::Formula do
                           ),
                           Plurimath::Math::Function::Td.new(
                             [
-                              Plurimath::Math::Function::Mbox.new(
-                                Plurimath::Math::Formula.new([
-                                  Plurimath::Math::Symbol.new("d"),
-                                  Plurimath::Math::Symbol.new("e"),
-                                  Plurimath::Math::Symbol.new("g"),
-                                  Plurimath::Math::Symbol.new("r"),
-                                  Plurimath::Math::Symbol.new("e"),
-                                  Plurimath::Math::Symbol.new("e"),
-                                  Plurimath::Math::Symbol.new("o"),
-                                  Plurimath::Math::Symbol.new("f"),
-                                  Plurimath::Math::Symbol.new("f"),
-                                  Plurimath::Math::Symbol.new("r"),
-                                  Plurimath::Math::Symbol.new("e"),
-                                  Plurimath::Math::Symbol.new("e"),
-                                  Plurimath::Math::Symbol.new("d"),
-                                  Plurimath::Math::Symbol.new("o"),
-                                  Plurimath::Math::Symbol.new("m"),
-                                  Plurimath::Math::Number.new("2"),
-                                  Plurimath::Math::Symbol.new(","),
-                                  Plurimath::Math::Symbol.new("n"),
-                                  Plurimath::Math::Symbol.new("o"),
-                                  Plurimath::Math::Symbol.new("d"),
-                                  Plurimath::Math::Symbol.new("e"),
-                                  Plurimath::Math::Number.new("2"),
-                                ])
-                              ),
+                              Plurimath::Math::Function::Mbox.new("degreeoffreedom2,node2"),
                             ],
                             { columnalign: "center" }
                           ),
@@ -9872,35 +9700,13 @@ RSpec.describe Plurimath::Math::Formula do
                           }),
                           Plurimath::Math::Function::Td.new(
                             [
-                              Plurimath::Math::Function::Mbox.new(
-                                Plurimath::Math::Formula.new([
-                                  Plurimath::Math::Symbol.new("d"),
-                                  Plurimath::Math::Symbol.new("e"),
-                                  Plurimath::Math::Symbol.new("g"),
-                                  Plurimath::Math::Symbol.new("r"),
-                                  Plurimath::Math::Symbol.new("e"),
-                                  Plurimath::Math::Symbol.new("e"),
-                                  Plurimath::Math::Symbol.new("o"),
-                                  Plurimath::Math::Symbol.new("f"),
-                                ])
-                              ),
+                              Plurimath::Math::Function::Mbox.new("degreeof"),
                             ],
                             { columnalign: "center" }
                           ),
                           Plurimath::Math::Function::Td.new(
                             [
-                              Plurimath::Math::Function::Mbox.new(
-                                Plurimath::Math::Formula.new([
-                                  Plurimath::Math::Symbol.new("d"),
-                                  Plurimath::Math::Symbol.new("e"),
-                                  Plurimath::Math::Symbol.new("g"),
-                                  Plurimath::Math::Symbol.new("r"),
-                                  Plurimath::Math::Symbol.new("e"),
-                                  Plurimath::Math::Symbol.new("e"),
-                                  Plurimath::Math::Symbol.new("o"),
-                                  Plurimath::Math::Symbol.new("f"),
-                                ])
-                              ),
+                              Plurimath::Math::Function::Mbox.new("degreeof"),
                             ],
                             { columnalign: "center" }
                           ),
@@ -9914,37 +9720,13 @@ RSpec.describe Plurimath::Math::Formula do
                           }),
                           Plurimath::Math::Function::Td.new(
                             [
-                              Plurimath::Math::Function::Mbox.new(
-                                Plurimath::Math::Formula.new([
-                                  Plurimath::Math::Symbol.new("f"),
-                                  Plurimath::Math::Symbol.new("r"),
-                                  Plurimath::Math::Symbol.new("e"),
-                                  Plurimath::Math::Symbol.new("e"),
-                                  Plurimath::Math::Symbol.new("d"),
-                                  Plurimath::Math::Symbol.new("o"),
-                                  Plurimath::Math::Symbol.new("m"),
-                                  Plurimath::Math::Number.new("1"),
-                                  Plurimath::Math::Symbol.new(","),
-                                ])
-                              ),
+                              Plurimath::Math::Function::Mbox.new("freedom1,"),
                             ],
                             { columnalign: "center" }
                           ),
                           Plurimath::Math::Function::Td.new(
                             [
-                              Plurimath::Math::Function::Mbox.new(
-                                Plurimath::Math::Formula.new([
-                                  Plurimath::Math::Symbol.new("f"),
-                                  Plurimath::Math::Symbol.new("r"),
-                                  Plurimath::Math::Symbol.new("e"),
-                                  Plurimath::Math::Symbol.new("e"),
-                                  Plurimath::Math::Symbol.new("d"),
-                                  Plurimath::Math::Symbol.new("o"),
-                                  Plurimath::Math::Symbol.new("m"),
-                                  Plurimath::Math::Number.new("2"),
-                                  Plurimath::Math::Symbol.new(","),
-                                ])
-                              ),
+                              Plurimath::Math::Function::Mbox.new("freedom2,"),
                             ],
                             { columnalign: "center" }
                           ),
@@ -9958,29 +9740,13 @@ RSpec.describe Plurimath::Math::Formula do
                           }),
                           Plurimath::Math::Function::Td.new(
                             [
-                              Plurimath::Math::Function::Mbox.new(
-                                Plurimath::Math::Formula.new([
-                                  Plurimath::Math::Symbol.new("n"),
-                                  Plurimath::Math::Symbol.new("o"),
-                                  Plurimath::Math::Symbol.new("d"),
-                                  Plurimath::Math::Symbol.new("e"),
-                                  Plurimath::Math::Number.new("1"),
-                                ])
-                              ),
+                              Plurimath::Math::Function::Mbox.new("node1"),
                             ],
                             { columnalign: "center" }
                           ),
                           Plurimath::Math::Function::Td.new(
                             [
-                              Plurimath::Math::Function::Mbox.new(
-                                Plurimath::Math::Formula.new([
-                                  Plurimath::Math::Symbol.new("n"),
-                                  Plurimath::Math::Symbol.new("o"),
-                                  Plurimath::Math::Symbol.new("d"),
-                                  Plurimath::Math::Symbol.new("e"),
-                                  Plurimath::Math::Number.new("2"),
-                                ])
-                              ),
+                              Plurimath::Math::Function::Mbox.new("node2"),
                             ],
                             { columnalign: "center" }
                           ),

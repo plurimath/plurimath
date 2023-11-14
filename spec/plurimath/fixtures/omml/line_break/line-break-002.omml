@@ -80,6 +80,31 @@
         </m:nary>
       </m:num>
       <m:den>
+        <m:r>
+          <m:t>&#8203;</m:t>
+        </m:r>
+      </m:den>
+    </m:f>
+  </m:oMath>
+  <m:r>
+    <br/>
+  </m:r>
+  <m:oMath>
+    <m:f>
+      <m:fPr>
+        <m:ctrlPr>
+          <w:rPr>
+            <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
+            <w:i/>
+          </w:rPr>
+        </m:ctrlPr>
+      </m:fPr>
+      <m:num>
+        <m:r>
+          <m:t>w</m:t>
+        </m:r>
+      </m:num>
+      <m:den>
         <m:func>
           <m:funcPr>
             <m:ctrlPr>
@@ -101,7 +126,6 @@
             <m:d>
               <m:dPr>
                 <m:begChr m:val="("/>
-                <m:endChr m:val=")"/>
                 <m:ctrlPr>
                   <w:rPr>
                     <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
@@ -117,6 +141,40 @@
             </m:d>
           </m:e>
         </m:func>
+      </m:den>
+    </m:f>
+  </m:oMath>
+  <m:r>
+    <br/>
+  </m:r>
+  <m:oMath>
+    <m:f>
+      <m:fPr>
+        <m:ctrlPr>
+          <w:rPr>
+            <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
+            <w:i/>
+          </w:rPr>
+        </m:ctrlPr>
+      </m:fPr>
+      <m:num>
+        <m:r>
+          <m:t>&#8203;</m:t>
+        </m:r>
+      </m:num>
+      <m:den>
+        <m:d>
+          <m:dPr>
+            <m:endChr m:val=")"/>
+            <m:ctrlPr>
+              <w:rPr>
+                <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
+                <w:i/>
+              </w:rPr>
+            </m:ctrlPr>
+          </m:dPr>
+          <m:e/>
+        </m:d>
       </m:den>
     </m:f>
   </m:oMath>

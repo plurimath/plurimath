@@ -30,10 +30,12 @@ module Plurimath
         end
 
         def to_mathml_without_math_tag
-          value_arr = [parameter_one&.to_mathml_without_math_tag]
-          value_arr << parameter_two&.to_mathml_without_math_tag
-          value_arr << parameter_three&.to_mathml_without_math_tag
-          class_tag = Utility.ox_element("m#{class_name}")
+          value_arr = [
+            validate_mathml_fields(parameter_one),
+            validate_mathml_fields(parameter_two),
+            validate_mathml_fields(parameter_three),
+          ]
+          class_tag = ox_element("m#{class_name}")
           Utility.update_nodes(class_tag, value_arr)
         end
 

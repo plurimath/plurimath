@@ -65,8 +65,8 @@ module Plurimath
           end
         end
 
-        def to_omml_without_math_tag(_)
-          []
+        def to_omml_without_math_tag(display_style)
+          parameter_one&.insert_t_tag(display_style)
         end
 
         def omml_line_break(result)

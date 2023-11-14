@@ -19,10 +19,11 @@ module Plurimath
 
         def to_mathml_without_math_tag
           tag_name = (["ubrace", "obrace"].include?(parameter_one&.class_name) ? "over" : "sup")
-          sup_tag = Utility.ox_element("m#{tag_name}")
-          mathml_value = [validate_mathml_fields(parameter_one)]
-          mathml_value << validate_mathml_fields(parameter_two)
-          Utility.update_nodes(sup_tag, mathml_value)
+          value_array = [
+            validate_mathml_fields(parameter_one),
+            validate_mathml_fields(parameter_two),
+          ]
+          Utility.update_nodes(ox_element("m#{tag_name}"), value_array)
         end
 
         def to_latex

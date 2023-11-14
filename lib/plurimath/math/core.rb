@@ -3,6 +3,11 @@
 module Plurimath
   module Math
     class Core
+      REPLACABLES = {
+        /&amp;/ => "&",
+        /^\n/ => "",
+      }
+
       def class_name
         self.class.name.split("::").last.downcase
       end
@@ -108,15 +113,13 @@ module Plurimath
       end
 
       def dump_mathml(field)
-        mathml = dump_ox_nodes(field.to_mathml_without_math_tag)
-        mathml.gsub(/\n\s*/, "").gsub("&amp;", "&")
+        dump_ox_nodes(field.to_mathml_without_math_tag).gsub(/\n\s*/, "")
       end
 
       def dump_omml(field, display_style)
         return if field.nil?
 
-        omml = field.omml_nodes(display_style)
-        dump_ox_nodes(omml).gsub(/\n\s*/, "").gsub("&amp;", "&")
+        dump_ox_nodes(field.omml_nodes(display_style)).gsub(/\n\s*/, "")
       end
 
       def omml_nodes(display_style)
@@ -147,8 +150,15 @@ module Plurimath
         nodes.flatten.map { |node| dump_nodes(node) }.join
       end
 
-      def dump_nodes(nodes)
-        Plurimath.xml_engine.dump(nodes)
+      def dump_nodes(nodes, indent: nil)
+        replacable_values(
+          Plurimath.xml_engine.dump(nodes, indent: indent),
+        )
+      end
+
+      def replacable_values(string)
+        REPLACABLES.each { |regex, str| string.gsub!(regex, str) }
+        string
       end
 
       def gsub_spacing(spacing, last)
@@ -169,14 +179,19 @@ module Plurimath
 
       def cloned_objects
         object = self.class.new rescue self.class.new(nil)
-        variables.each do |var|
-          value = get(var)
-          object.set(
-            var,
-            (value.is_a?(Core) ? value.cloned_objects : value),
-          )
-        end
+        variables.each { |var| object.set(var, variable_value(get(var))) }
         object
+      end
+
+      def variable_value(value)
+        case value
+        when Core
+          value.cloned_objects
+        when Array
+          value.map { |object| variable_value(object) }
+        else
+          value
+        end
       end
 
       def line_breaking(obj)
@@ -207,7 +222,9 @@ module Plurimath
                       obj.value = []
                       return_value
                     else
-                      set(variable, Formula.new(get(variable)).line_breaking(obj))
+                      formula = Formula.new(get(variable))
+                      formula.line_breaking(obj)
+                      set(variable, obj)
                       get(variable)
                     end
                   else

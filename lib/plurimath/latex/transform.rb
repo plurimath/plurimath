@@ -488,19 +488,19 @@ module Plurimath
 
       rule(text: simple(:text),
            first_value: simple(:first_value)) do
-        Math::Function::Text.new(first_value)
+        Utility.get_class(text).new(first_value)
       end
 
       rule(text: simple(:text),
            first_value: sequence(:first_value)) do
-        Math::Function::Text.new(first_value.join)
+        Utility.get_class(text).new(first_value.join)
       end
 
       rule(text: simple(:text),
            first_value: simple(:first_value),
            supscript: simple(:supscript),) do
         Math::Function::Power.new(
-          Math::Function::Text.new(first_value),
+          Utility.get_class(text).new(first_value),
           supscript,
         )
       end
@@ -509,7 +509,7 @@ module Plurimath
            first_value: sequence(:first_value),
            supscript: simple(:supscript),) do
         Math::Function::Power.new(
-          Math::Function::Text.new(first_value.join),
+          Utility.get_class(text).new(first_value.join),
           supscript,
         )
       end
@@ -518,7 +518,7 @@ module Plurimath
            first_value: sequence(:first_value),
            subscript: simple(:subscript)) do
         Math::Function::Base.new(
-          Math::Function::Text.new(first_value.join),
+          Utility.get_class(text).new(first_value.join),
           subscript,
         )
       end
@@ -527,7 +527,7 @@ module Plurimath
            first_value: simple(:first_value),
            subscript: simple(:subscript)) do
         Math::Function::Base.new(
-          Math::Function::Text.new(first_value),
+          Utility.get_class(text).new(first_value),
           subscript,
         )
       end
@@ -537,7 +537,7 @@ module Plurimath
            subscript: simple(:subscript),
            supscript: simple(:supscript)) do
         Math::Function::PowerBase.new(
-          Math::Function::Text.new(first_value),
+          Utility.get_class(text).new(first_value),
           subscript,
           supscript,
         )

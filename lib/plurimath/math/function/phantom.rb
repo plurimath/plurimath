@@ -33,7 +33,9 @@ module Plurimath
           )
         end
 
-        def updated_object_values(*); end
+        def line_breaking(obj)
+          custom_array_line_breaking(obj)
+        end
       end
     end
   end

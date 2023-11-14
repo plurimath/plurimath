@@ -10,11 +10,10 @@ module Plurimath
 
         def to_mathml_without_math_tag
           symbol = Utility.ox_element("mo") << "|"
-          first_value = mathml_value&.insert(0, symbol)
-          Utility.update_nodes(
-            Utility.ox_element("mrow"),
-            first_value << symbol,
-          )
+          first_value = mathml_value
+          first_value = first_value&.insert(0, symbol) unless open_paren
+          first_value << symbol unless close_paren
+          Utility.update_nodes(ox_element("mrow"), first_value)
         end
 
         def to_omml_without_math_tag(display_style)
@@ -31,7 +30,7 @@ module Plurimath
             ceil_object.close_paren = false
             obj.update(ceil_object)
             self.close_paren = true
-            self.open_paren = false
+            self.open_paren = false unless open_paren
           end
         end
 
