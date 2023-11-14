@@ -31,7 +31,7 @@ module Plurimath
 
         unicode = Mathml::Constants::UNICODE_SYMBOLS.invert[value]
         if operator?(unicode) || unicode || explicit_checks(unicode)
-          return  Utility.ox_element("mo") << (unicode || value).to_s
+          return Utility.ox_element("mo") << (unicode || value).to_s
         end
 
         mi_tag << value
