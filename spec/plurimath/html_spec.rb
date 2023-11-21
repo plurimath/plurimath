@@ -5,7 +5,7 @@ RSpec.describe Plurimath::Html do
   describe ".initialize" do
     subject(:formula) { described_class.new(string.gsub(/\s/, "")) }
 
-    context "matches class naem and text" do
+    context "matches class name and text" do
       let(:string) { '<h4> 1 + 3 </h4>' }
       it 'matches the class object' do
         expect(formula).to be_a(Plurimath::Html)

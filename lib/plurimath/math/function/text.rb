@@ -15,7 +15,9 @@ module Plurimath
 
         def to_mathml_without_math_tag
           text = Utility.ox_element("mtext")
-          text << (parse_text("mathml") || parameter_one) if parameter_one
+          return text unless parameter_one
+
+          text << (parse_text("mathml") || parameter_one)
         end
 
         def to_latex

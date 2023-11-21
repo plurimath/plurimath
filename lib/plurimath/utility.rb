@@ -291,7 +291,8 @@ module Plurimath
       end
 
       def td_value(td_object)
-        if td_object.is_a?(String) && td_object.empty?
+        str_classes = [String, Parslet::Slice]
+        if str_classes.include?(td_object.class) && td_object.to_s.empty?
           return Math::Function::Text.new(nil)
         end
 

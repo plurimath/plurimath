@@ -266,6 +266,46 @@ RSpec.describe Plurimath::Math do
         }.not_to raise_error
       end
     end
+
+    context "contains jcgm#35 GUM 6:2020 document plurimath#195 example #1" do
+      let(:string) { "x = ((I_x + varepsilon_x))/I_\"ref\" x_\"ref\"" }
+
+      it 'expects to not raise an exception' do
+        expect{
+          convert(string_to_formula(string, :asciimath), :asciimath)
+        }.not_to raise_error
+      end
+    end
+
+    context "contains jcgm#35 GUM 6:2020 document plurimath#195 example #2" do
+      let(:string) { "(u(r)//r)//" }
+
+      it 'expects to not raise an exception' do
+        expect{
+          convert(string_to_formula(string, :asciimath), :asciimath)
+        }.not_to raise_error
+      end
+    end
+
+    context "contains jcgm#35 GUM 6:2020 document plurimath#195 example #3" do
+      let(:string) { "u(x)//" }
+
+      it 'expects to not raise an exception' do
+        expect{
+          convert(string_to_formula(string, :asciimath), :asciimath)
+        }.not_to raise_error
+      end
+    end
+
+    context "contains jcgm#35 GUM 6:2020 document plurimath#195 example #4" do
+      let(:string) { "x//" }
+
+      it 'expects to not raise an exception' do
+        expect{
+          convert(string_to_formula(string, :asciimath), :asciimath)
+        }.not_to raise_error
+      end
+    end
   end
 end
 

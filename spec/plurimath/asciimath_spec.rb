@@ -5170,6 +5170,131 @@ RSpec.describe Plurimath::Asciimath do
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
+
+    context "contains contains jcgm#35 GUM 6:2020 document plurimath#195 equation #1 example #98" do
+      let(:string) { "x = ((I_x + varepsilon_x))/I_\"ref\" x_\"ref\"" }
+
+      it 'returns parsed Asciimath to Formula' do
+        latex = "x = \\frac{\\left (\\begin{matrix}I_{x} + &#x25b;_{x}\\end{matrix}\\right )}{I_{\\text{ref}}} x_{\\text{ref}}"
+        asciimath = "x = frac(([I_(x) + varepsilon_(x)]))(I_(\"ref\")) x_(\"ref\")"
+        mathml = <<~MATHML
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
+              <mi>x</mi>
+              <mo>=</mo>
+              <mfrac>
+                <mrow>
+                  <mo>(</mo>
+                  <mtable>
+                    <mtr>
+                      <mtd>
+                        <msub>
+                          <mi>I</mi>
+                          <mi>x</mi>
+                        </msub>
+                        <mo>+</mo>
+                        <msub>
+                          <mi>&#x25b;</mi>
+                          <mi>x</mi>
+                        </msub>
+                      </mtd>
+                    </mtr>
+                  </mtable>
+                  <mo>)</mo>
+                </mrow>
+                <msub>
+                  <mi>I</mi>
+                  <mtext>ref</mtext>
+                </msub>
+              </mfrac>
+              <msub>
+                <mi>x</mi>
+                <mtext>ref</mtext>
+              </msub>
+            </mstyle>
+          </math>
+        MATHML
+        expect(formula.to_latex).to eql(latex)
+        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_asciimath).to eql(asciimath)
+      end
+    end
+
+    context "contains contains jcgm#35 GUM 6:2020 document plurimath#195 equation #2 example #99" do
+      let(:string) { "(u(r)//r)//" }
+
+      it 'returns parsed Asciimath to Formula' do
+        latex = "( u ( r ) / r ) //"
+        asciimath = "(u (r) // r) //"
+        mathml = <<~MATHML
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
+              <mrow>
+                <mo>(</mo>
+                <mi>u</mi>
+                <mrow>
+                  <mo>(</mo>
+                  <mi>r</mi>
+                  <mo>)</mo>
+                </mrow>
+                <mo>/</mo>
+                <mi>r</mi>
+                <mo>)</mo>
+              </mrow>
+              <mo>//</mo>
+            </mstyle>
+          </math>
+        MATHML
+        expect(formula.to_latex).to eql(latex)
+        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_asciimath).to eql(asciimath)
+      end
+    end
+
+    context "contains contains jcgm#35 GUM 6:2020 document plurimath#195 equation #3 example #100" do
+      let(:string) { "u(x)//" }
+
+      it 'returns parsed Asciimath to Formula' do
+        latex = "u ( x ) //"
+        asciimath = "u (x) //"
+        mathml = <<~MATHML
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
+              <mi>u</mi>
+              <mrow>
+                <mo>(</mo>
+                <mi>x</mi>
+                <mo>)</mo>
+              </mrow>
+              <mo>//</mo>
+            </mstyle>
+          </math>
+        MATHML
+        expect(formula.to_latex).to eql(latex)
+        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_asciimath).to eql(asciimath)
+      end
+    end
+
+    context "contains contains jcgm#35 GUM 6:2020 document plurimath#195 equation #4 example #101" do
+      let(:string) { "x//" }
+
+      it 'returns parsed Asciimath to Formula' do
+        latex = "x //"
+        asciimath = "x //"
+        mathml = <<~MATHML
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
+              <mi>x</mi>
+              <mo>//</mo>
+            </mstyle>
+          </math>
+        MATHML
+        expect(formula.to_latex).to eql(latex)
+        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_asciimath).to eql(asciimath)
+      end
+    end
   end
 
   describe ".to_omml" do
