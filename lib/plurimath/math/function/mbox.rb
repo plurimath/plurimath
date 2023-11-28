@@ -5,23 +5,24 @@ module Plurimath
   module Math
     module Function
       class Mbox < UnaryFunction
+        def to_asciimath
+          Text.new(parameter_one).to_asciimath
+        end
+
         def to_mathml_without_math_tag
-          text = Utility.ox_element("mtext")
-          text << (parameter_one.to_mathml_without_math_tag) if parameter_one
-          text
+          Text.new(parameter_one).to_mathml_without_math_tag
         end
 
         def to_latex
-          first_value = parameter_one&.to_latex
-          "\\mbox{#{first_value}}"
+          "\\mbox{#{parameter_one}}"
         end
 
         def to_html
-          parameter_one&.to_html
+          parameter_one
         end
 
         def to_omml_without_math_tag(display_style)
-          omml_value(display_style)
+          Text.new(parameter_one).to_omml_without_math_tag(display_style)
         end
       end
     end

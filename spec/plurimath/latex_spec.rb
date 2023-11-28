@@ -990,7 +990,7 @@ RSpec.describe Plurimath::Latex do
             </mstyle>
           </math>
         MATHML
-        latex = "\\begin{array}\\end{array}"
+        latex = "\\begin{array}.\\end{array}"
         expect(formula.to_latex).to be_equivalent_to(latex)
         expect(formula.to_mathml).to be_equivalent_to(mathml)
       end
@@ -1011,7 +1011,7 @@ RSpec.describe Plurimath::Latex do
             </mstyle>
           </math>
         MATHML
-        latex = "\\begin{array}\\end{array}"
+        latex = "\\begin{array}.\\end{array}"
         expect(formula.to_latex).to be_equivalent_to(latex)
         expect(formula.to_mathml).to be_equivalent_to(mathml)
       end
@@ -1547,7 +1547,7 @@ RSpec.describe Plurimath::Latex do
             </mstyle>
           </math>
         MATHML
-        latex = "\\sum_{\\substack{1 \\le i \\le n\\\\i \\ne j}}"
+        latex = "\\sum_{\\substack{1 \\le i \\le n \\\\ i \\ne j}}"
         expect(formula.to_latex).to eql(latex)
         expect(formula.to_mathml).to be_equivalent_to(mathml)
       end
@@ -1732,32 +1732,7 @@ RSpec.describe Plurimath::Latex do
                           <mo>&#x22ef;</mo>
                         </mtd>
                         <mtd columnalign="center">
-                          <mtext>
-                            <mrow>
-                              <mi>d</mi>
-                              <mi>e</mi>
-                              <mi>g</mi>
-                              <mi>r</mi>
-                              <mi>e</mi>
-                              <mi>e</mi>
-                              <mi>o</mi>
-                              <mi>f</mi>
-                              <mi>f</mi>
-                              <mi>r</mi>
-                              <mi>e</mi>
-                              <mi>e</mi>
-                              <mi>d</mi>
-                              <mi>o</mi>
-                              <mi>m</mi>
-                              <mn>1</mn>
-                              <mo>,</mo>
-                              <mi>n</mi>
-                              <mi>o</mi>
-                              <mi>d</mi>
-                              <mi>e</mi>
-                              <mn>1</mn>
-                            </mrow>
-                          </mtext>
+                          <mtext>degreeoffreedom1,node1</mtext>
                         </mtd>
                       </mtr>
                       <mtr>
@@ -1777,32 +1752,7 @@ RSpec.describe Plurimath::Latex do
                           <mo>&#x22ef;</mo>
                         </mtd>
                         <mtd columnalign="center">
-                          <mtext>
-                            <mrow>
-                              <mi>d</mi>
-                              <mi>e</mi>
-                              <mi>g</mi>
-                              <mi>r</mi>
-                              <mi>e</mi>
-                              <mi>e</mi>
-                              <mi>o</mi>
-                              <mi>f</mi>
-                              <mi>f</mi>
-                              <mi>r</mi>
-                              <mi>e</mi>
-                              <mi>e</mi>
-                              <mi>d</mi>
-                              <mi>o</mi>
-                              <mi>m</mi>
-                              <mn>2</mn>
-                              <mo>,</mo>
-                              <mi>n</mi>
-                              <mi>o</mi>
-                              <mi>d</mi>
-                              <mi>e</mi>
-                              <mn>2</mn>
-                            </mrow>
-                          </mtext>
+                          <mtext>degreeoffreedom2,node2</mtext>
                         </mtd>
                       </mtr>
                     </mtable>
@@ -1837,92 +1787,30 @@ RSpec.describe Plurimath::Latex do
                       <mtr>
                         <mtd columnalign="center"/>
                         <mtd columnalign="center">
-                          <mtext>
-                            <mrow>
-                              <mi>d</mi>
-                              <mi>e</mi>
-                              <mi>g</mi>
-                              <mi>r</mi>
-                              <mi>e</mi>
-                              <mi>e</mi>
-                              <mi>o</mi>
-                              <mi>f</mi>
-                            </mrow>
-                          </mtext>
+                          <mtext>degreeof</mtext>
                         </mtd>
                         <mtd columnalign="center">
-                          <mtext>
-                            <mrow>
-                              <mi>d</mi>
-                              <mi>e</mi>
-                              <mi>g</mi>
-                              <mi>r</mi>
-                              <mi>e</mi>
-                              <mi>e</mi>
-                              <mi>o</mi>
-                              <mi>f</mi>
-                            </mrow>
-                          </mtext>
+                          <mtext>degreeof</mtext>
                         </mtd>
                         <mtd columnalign="center"/>
                       </mtr>
                       <mtr>
                         <mtd columnalign="center"/>
                         <mtd columnalign="center">
-                          <mtext>
-                            <mrow>
-                              <mi>f</mi>
-                              <mi>r</mi>
-                              <mi>e</mi>
-                              <mi>e</mi>
-                              <mi>d</mi>
-                              <mi>o</mi>
-                              <mi>m</mi>
-                              <mn>1</mn>
-                              <mo>,</mo>
-                            </mrow>
-                          </mtext>
+                          <mtext>freedom1,</mtext>
                         </mtd>
                         <mtd columnalign="center">
-                          <mtext>
-                            <mrow>
-                              <mi>f</mi>
-                              <mi>r</mi>
-                              <mi>e</mi>
-                              <mi>e</mi>
-                              <mi>d</mi>
-                              <mi>o</mi>
-                              <mi>m</mi>
-                              <mn>2</mn>
-                              <mo>,</mo>
-                            </mrow>
-                          </mtext>
+                          <mtext>freedom2,</mtext>
                         </mtd>
                         <mtd columnalign="center"/>
                       </mtr>
                       <mtr>
                         <mtd columnalign="center"/>
                         <mtd columnalign="center">
-                          <mtext>
-                            <mrow>
-                              <mi>n</mi>
-                              <mi>o</mi>
-                              <mi>d</mi>
-                              <mi>e</mi>
-                              <mn>1</mn>
-                            </mrow>
-                          </mtext>
+                          <mtext>node1</mtext>
                         </mtd>
                         <mtd columnalign="center">
-                          <mtext>
-                            <mrow>
-                              <mi>n</mi>
-                              <mi>o</mi>
-                              <mi>d</mi>
-                              <mi>e</mi>
-                              <mn>2</mn>
-                            </mrow>
-                          </mtext>
+                          <mtext>node2</mtext>
                         </mtd>
                         <mtd columnalign="center"/>
                       </mtr>
@@ -2573,7 +2461,7 @@ RSpec.describe Plurimath::Latex do
     context "contains rule unary function example #52" do
       let(:string) do
         <<~LATEX
-          \\rule[-1mm]{5mm}{1cm}
+          \\rule[-1mm]{5mm}{1cm} \\mbox{a + b}
         LATEX
       end
 
@@ -2582,11 +2470,12 @@ RSpec.describe Plurimath::Latex do
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
               <mi/>
+              <mtext>a+b</mtext>
             </mstyle>
           </math>
         MATHML
-        latex = "\\rule[-1mm]{5mm}{1cm}"
-        asciimath = ""
+        latex = "\\rule[-1mm]{5mm}{1cm} \\mbox{a+b}"
+        asciimath = " \"a+b\""
         expect(formula.to_asciimath).to eql(asciimath)
         expect(formula.to_latex.gsub(/\s+/, "")).to eql(latex.gsub(/\s+/, ""))
         expect(formula.to_mathml).to be_equivalent_to(mathml)
@@ -2619,7 +2508,7 @@ RSpec.describe Plurimath::Latex do
           </math>
         MATHML
         latex = "\\inf_{\\oint_{\\lg{\\sigma}}}^{200}"
-        asciimath = "inf(oint_(lgsigma))(200)"
+        asciimath = "inf_(oint_(lgsigma))^(200)"
         expect(formula.to_asciimath).to eql(asciimath)
         expect(formula.to_latex.gsub(/\s+/, "")).to eql(latex.gsub(/\s+/, ""))
         expect(formula.to_mathml).to be_equivalent_to(mathml)
@@ -2745,6 +2634,28 @@ RSpec.describe Plurimath::Latex do
         expect(formula.to_mathml).to be_equivalent_to(mathml)
       end
     end
+
+    context "contains sup function example #57" do
+      let(:string) { "\\sup{a+b}" }
+
+      it 'compares LaTeX to MathML and LaTeX conversion' do
+        mathml = <<~MATHML
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
+              <mrow>
+                <mo>sup</mo>
+                <mrow>
+                  <mi>a</mi>
+                  <mo>+</mo>
+                  <mi>b</mi>
+                </mrow>
+              </mrow>
+            </mstyle>
+          </math>
+        MATHML
+        expect(formula.to_mathml).to be_equivalent_to(mathml)
+      end
+    end
   end
 
   describe ".to_asciimath" do
@@ -2767,6 +2678,37 @@ RSpec.describe Plurimath::Latex do
         expect(asciimath).to eql(expected_value)
       end
     end
+
+    context "contains substack function example #3" do
+      let(:string) { "\\substack{1 \\\\ b \\\\ 100}" }
+
+      it 'compares parsed Latex to AsciiMath' do
+        expected_value = "{:[1],[b],[100]:}"
+        expect(asciimath).to eql(expected_value)
+      end
+    end
+
+    context "contains array function example #3" do
+      let(:string) { "\\begin{array}1 \\\\ b \\\\ 100\\end{array}" }
+
+      it 'compares parsed Latex to AsciiMath' do
+        expected_value = "{:[1], [b], [100]:}"
+        expect(asciimath).to eql(expected_value)
+      end
+    end
+  end
+
+  describe ".to_html" do
+    subject(:html) { Plurimath::Latex.new(string).to_formula.to_html }
+
+    context "contains mbox unary function example #1" do
+      let(:string) { "\\mbox{1cm}" }
+
+      it 'compares parsed Latex to HTML' do
+        expected_value = "1cm"
+        expect(html).to eql(expected_value)
+      end
+    end
   end
 
   describe ".to_omml" do
@@ -2779,15 +2721,9 @@ RSpec.describe Plurimath::Latex do
         omml = <<~OMML
           <m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape">
             <m:oMath>
-              <m:r>
-                <m:t>100</m:t>
-              </m:r>
-              <m:r>
-                <m:t>&#x3c3;</m:t>
-              </m:r>
-              <m:r>
-                <m:t>&#x2211;</m:t>
-              </m:r>
+              <m:t>100</m:t>
+              <m:t>\\sigma</m:t>
+              <m:t>\\sum</m:t>
               <m:r>
                 <m:t/>
               </m:r>
@@ -2833,41 +2769,44 @@ RSpec.describe Plurimath::Latex do
                   <m:supHide m:val="1"/>
                 </m:naryPr>
                 <m:sub>
-                  <m:m>
-                    <m:mpr/>
-                    <m:mr>
-                      <m:e>
-                        <m:r>
-                          <m:t>1</m:t>
-                        </m:r>
-                        <m:r>
-                          <m:t>&#x2264;</m:t>
-                        </m:r>
-                        <m:r>
-                          <m:t>i</m:t>
-                        </m:r>
-                        <m:r>
-                          <m:t>&#x2264;</m:t>
-                        </m:r>
-                        <m:r>
-                          <m:t>n</m:t>
-                        </m:r>
-                      </m:e>
-                    </m:mr>
-                    <m:mr>
-                      <m:e>
-                        <m:r>
-                          <m:t>i</m:t>
-                        </m:r>
-                        <m:r>
-                          <m:t>&#x2260;</m:t>
-                        </m:r>
-                        <m:r>
-                          <m:t>j</m:t>
-                        </m:r>
-                      </m:e>
-                    </m:mr>
-                  </m:m>
+                  <m:eqArr>
+                    <m:eqArrPr>
+                      <m:ctrlPr>
+                        <w:rPr>
+                          <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
+                          <w:i/>
+                        </w:rPr>
+                      </m:ctrlPr>
+                    </m:eqArrPr>
+                    <m:e>
+                      <m:r>
+                        <m:t>1</m:t>
+                      </m:r>
+                      <m:r>
+                        <m:t>&#x2264;</m:t>
+                      </m:r>
+                      <m:r>
+                        <m:t>i</m:t>
+                      </m:r>
+                      <m:r>
+                        <m:t>&#x2264;</m:t>
+                      </m:r>
+                      <m:r>
+                        <m:t>n</m:t>
+                      </m:r>
+                    </m:e>
+                    <m:e>
+                      <m:r>
+                        <m:t>i</m:t>
+                      </m:r>
+                      <m:r>
+                        <m:t>&#x2260;</m:t>
+                      </m:r>
+                      <m:r>
+                        <m:t>j</m:t>
+                      </m:r>
+                    </m:e>
+                  </m:eqArr>
                 </m:sub>
                 <m:sup>
                   <m:r>
@@ -3077,6 +3016,36 @@ RSpec.describe Plurimath::Latex do
             </m:oMath>
           </m:oMathPara>
 
+        OMML
+        expect(formula).to be_equivalent_to(omml)
+      end
+    end
+
+    context "contains simple over example #04" do
+      let(:string) { "\\phantom{1 + 2}" }
+
+      it 'compares parsed LaTeX to OMML' do
+        omml = <<~OMML
+          <m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape">
+            <m:oMath>
+              <m:phant>
+                <m:phant>
+                  <m:show val="m:off"/>
+                </m:phant>
+                <m:e>
+                  <m:r>
+                    <m:t>1</m:t>
+                  </m:r>
+                  <m:r>
+                    <m:t>+</m:t>
+                  </m:r>
+                  <m:r>
+                    <m:t>2</m:t>
+                  </m:r>
+                </m:e>
+              </m:phant>
+            </m:oMath>
+          </m:oMathPara>
         OMML
         expect(formula).to be_equivalent_to(omml)
       end

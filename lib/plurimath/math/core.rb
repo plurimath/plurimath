@@ -152,6 +152,10 @@ module Plurimath
       def invert_unicode_symbols
         Mathml::Constants::UNICODE_SYMBOLS.invert[class_name] || class_name
       end
+
+      def is_unary?
+        is_a?(Math::Function::UnaryFunction)
+      end
     end
   end
 end

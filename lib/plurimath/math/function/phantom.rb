@@ -7,23 +7,37 @@ module Plurimath
     module Function
       class Phantom < UnaryFunction
         def to_asciimath
-          "#{Array.new(parameter_one&.length, '\ ').join}"
+          "#{Array.new(asciimath_value&.length, '\ ').join}"
         end
 
         def to_html
-          "<i>#{Array.new(parameter_one&.length, '&nbsp;').join}</i>"
+          "<i style='visibility: hidden;'>#{parameter_one&.to_html}</i>"
         end
 
         def to_latex
-          Array.new(parameter_one&.length, '\\ ').join
+          "\\#{class_name}{#{latex_value}}"
         end
 
         def to_mathml_without_math_tag
-          phantom = Utility.ox_element("mphantom")
           Utility.update_nodes(
-            phantom,
-            parameter_one&.map(&:to_mathml_without_math_tag),
+            Utility.ox_element("mphantom"),
+            Array(parameter_one&.to_mathml_without_math_tag),
           )
+        end
+
+        def to_omml_without_math_tag(display_style)
+          phant = Utility.ox_element("phant", namespace: "m")
+          e_tag = Utility.ox_element("e", namespace: "m")
+          Utility.update_nodes(e_tag, Array(omml_value(display_style)))
+          Utility.update_nodes(phant, [phant_pr, e_tag])
+        end
+
+        protected
+
+        def phant_pr
+          attributes = { val: "m:off" }
+          phant = Utility.ox_element("phant", namespace: "m")
+          phant << Utility.ox_element("show", namespace: "m", attributes: attributes)
         end
       end
     end

@@ -13,21 +13,7 @@ RSpec.describe Plurimath::Latex::Parser do
       }
       it "returns formula" do
         expected_value = Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Mbox.new(
-            Plurimath::Math::Function::Rule.new(
-              nil,
-              Plurimath::Math::Formula.new([
-                Plurimath::Math::Number.new("15"),
-                Plurimath::Math::Symbol.new("m"),
-                Plurimath::Math::Symbol.new("m")
-              ]),
-              Plurimath::Math::Formula.new([
-                Plurimath::Math::Number.new("0"),
-                Plurimath::Math::Symbol.new("m"),
-                Plurimath::Math::Symbol.new("m")
-              ])
-            )
-          )
+          Plurimath::Math::Function::Mbox.new("\\rule{15mm}{0mm}")
         ])
         expect(formula).to eq(expected_value)
       end
@@ -63,21 +49,7 @@ RSpec.describe Plurimath::Latex::Parser do
       it "returns formula" do
         expected_value = Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Power.new(
-            Plurimath::Math::Function::Mbox.new(
-              Plurimath::Math::Function::Rule.new(
-                nil,
-                Plurimath::Math::Formula.new([
-                  Plurimath::Math::Number.new("15"),
-                  Plurimath::Math::Symbol.new("m"),
-                  Plurimath::Math::Symbol.new("m")
-                ]),
-                Plurimath::Math::Formula.new([
-                  Plurimath::Math::Number.new("0"),
-                  Plurimath::Math::Symbol.new("m"),
-                  Plurimath::Math::Symbol.new("m")
-                ])
-              )
-            ),
+            Plurimath::Math::Function::Mbox.new("\\rule{15mm}{0mm}"),
             Plurimath::Math::Formula.new([
               Plurimath::Math::Symbol.new("Q"),
               Plurimath::Math::Symbol.new("/"),
@@ -98,21 +70,7 @@ RSpec.describe Plurimath::Latex::Parser do
       it "returns formula" do
         expected_value = Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Base.new(
-            Plurimath::Math::Function::Mbox.new(
-              Plurimath::Math::Function::Rule.new(
-                nil,
-                Plurimath::Math::Formula.new([
-                  Plurimath::Math::Number.new("15"),
-                  Plurimath::Math::Symbol.new("m"),
-                  Plurimath::Math::Symbol.new("m")
-                ]),
-                Plurimath::Math::Formula.new([
-                  Plurimath::Math::Number.new("0"),
-                  Plurimath::Math::Symbol.new("m"),
-                  Plurimath::Math::Symbol.new("m")
-                ])
-              )
-            ),
+            Plurimath::Math::Function::Mbox.new("\\rule{15mm}{0mm}"),
             Plurimath::Math::Formula.new([
               Plurimath::Math::Symbol.new("Q"),
               Plurimath::Math::Symbol.new("/"),

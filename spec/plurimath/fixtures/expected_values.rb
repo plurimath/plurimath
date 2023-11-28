@@ -1152,9 +1152,8 @@ module ExpectedValues
     )
   ])
   EX_143 = Plurimath::Math::Formula.new([
-    Plurimath::Math::Function::Overset.new(
+    Plurimath::Math::Function::Vec.new(
       Plurimath::Math::Function::Text.new("c"),
-      Plurimath::Math::Function::Vec.new,
     )
   ])
   EX_144 = Plurimath::Math::Formula.new([

@@ -1204,10 +1204,12 @@ RSpec.describe Plurimath::Mathml::Parser do
           ]),
           Plurimath::Math::Formula.new([
             Plurimath::Math::Symbol.new(" x "),
-            Plurimath::Math::Function::Phantom.new([
-              Plurimath::Math::Symbol.new(" + "),
-              Plurimath::Math::Symbol.new(" y ")
-            ]),
+            Plurimath::Math::Function::Phantom.new(
+              Plurimath::Math::Formula.new([
+                Plurimath::Math::Symbol.new(" + "),
+                Plurimath::Math::Symbol.new(" y ")
+              ]),
+            ),
             Plurimath::Math::Symbol.new(" + "),
             Plurimath::Math::Symbol.new(" z ")
           ])
@@ -1222,24 +1224,24 @@ RSpec.describe Plurimath::Mathml::Parser do
       <<~MATHML
         <math>
           <mfrac>
-             <mrow>
-                <mi> x </mi>
+            <mrow>
+              <mi> x </mi>
+              <mo> + </mo>
+              <mi> y </mi>
+              <mo> + </mo>
+              <mi> z </mi>
+            </mrow>
+            <mrow>
+              <mi> x </mi>
+              <mphantom>
                 <mo> + </mo>
+              </mphantom>
+              <mphantom>
                 <mi> y </mi>
-                <mo> + </mo>
-                <mi> z </mi>
-             </mrow>
-             <mrow>
-                <mi> x </mi>
-                <mphantom>
-                   <mo> + </mo>
-                </mphantom>
-                <mphantom>
-                   <mi> y </mi>
-                </mphantom>
-                <mo> + </mo>
-                <mi> z </mi>
-             </mrow>
+              </mphantom>
+              <mo> + </mo>
+              <mi> z </mi>
+            </mrow>
           </mfrac>
         </math>
       MATHML
@@ -1256,12 +1258,12 @@ RSpec.describe Plurimath::Mathml::Parser do
           ]),
           Plurimath::Math::Formula.new([
             Plurimath::Math::Symbol.new(" x "),
-            Plurimath::Math::Function::Phantom.new([
+            Plurimath::Math::Function::Phantom.new(
               Plurimath::Math::Symbol.new(" + "),
-            ]),
-            Plurimath::Math::Function::Phantom.new([
+            ),
+            Plurimath::Math::Function::Phantom.new(
               Plurimath::Math::Symbol.new(" y "),
-            ]),
+            ),
             Plurimath::Math::Symbol.new(" + "),
             Plurimath::Math::Symbol.new(" z ")
           ])

@@ -14,6 +14,10 @@ module Plurimath
             super
           end
 
+          def to_asciimath
+            "{:#{value.map(&:to_asciimath).join(", ")}:}"
+          end
+
           def to_latex
             "\\begin#{opening}#{latex_content}\\end#{matrix_class}"
           end

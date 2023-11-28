@@ -6076,9 +6076,23 @@ RSpec.describe Plurimath::Asciimath do
               <m:r>
                 <m:t>lcm</m:t>
               </m:r>
-              <m:r>
-                <m:t>d</m:t>
-              </m:r>
+              <m:d>
+                <m:dPr>
+                  <m:begChr m:val="("/>
+                  <m:endChr m:val=")"/>
+                  <m:ctrlPr>
+                    <w:rPr>
+                      <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
+                      <w:i/>
+                    </w:rPr>
+                  </m:ctrlPr>
+                </m:dPr>
+                <m:e>
+                  <m:r>
+                    <m:t>d</m:t>
+                  </m:r>
+                </m:e>
+              </m:d>
               <m:r>
                 <m:t>exp</m:t>
               </m:r>

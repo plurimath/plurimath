@@ -119,7 +119,7 @@ RSpec.describe Plurimath::Math::Function::Glb do
       let(:first_value) { Plurimath::Math::Symbol.new("n") }
 
       it "returns mathml string" do
-        expect(formula).to eql("\\glb{n}")
+        expect(formula).to eql("glb{n}")
       end
     end
 
@@ -127,7 +127,7 @@ RSpec.describe Plurimath::Math::Function::Glb do
       let(:first_value) { Plurimath::Math::Number.new("70") }
 
       it "returns mathml string" do
-        expect(formula).to eql("\\glb{70}")
+        expect(formula).to eql("glb{70}")
       end
     end
 
@@ -141,7 +141,7 @@ RSpec.describe Plurimath::Math::Function::Glb do
         ])
       end
       it "returns mathml string" do
-        expect(formula).to eql("\\glb{\\sum_{&}^{\\text{so}}}")
+        expect(formula).to eql("glb{\\sum_{&}^{\\text{so}}}")
       end
     end
   end
