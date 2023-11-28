@@ -256,20 +256,31 @@ module Plurimath
       rule(limUpp: subtree(:lim)) do
         lim_values = lim.flatten.compact
         first_value = lim_values[0]
-        Math::Function::Overset.new(
-          first_value,
-          lim_values[1],
-        )
+        if lim.last.is_unary? && lim.last.value_nil?
+          function_class = lim.pop
+          function_class.parameter_one = Utility.filter_values(lim.flatten.compact)
+          function_class
+        else
+          Math::Function::Overset.new(
+            first_value,
+            lim_values[1],
+          )
+        end
       end
 
       rule(limLow: subtree(:lim)) do
         second_value = Utility.filter_values(lim[2])
         unicode = Mathml::Constants::UNICODE_SYMBOLS.invert[second_value.class_name]
         second_value = unicode ? Math::Symbol.new(unicode.to_s) : second_value
-        Math::Function::Underset.new(
-          Utility.filter_values(lim[1]),
-          second_value,
-        )
+        if second_value.is_unary? && second_value.value_nil?
+          second_value.parameter_one = Utility.filter_values(lim[1])
+          second_value
+        else
+          Math::Function::Underset.new(
+            Utility.filter_values(lim[1]),
+            second_value,
+          )
+        end
       end
 
       rule(borderBox: subtree(:box)) do

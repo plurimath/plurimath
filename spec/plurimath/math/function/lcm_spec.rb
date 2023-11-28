@@ -21,7 +21,7 @@ RSpec.describe Plurimath::Math::Function::Lcm do
       let(:first_value) { Plurimath::Math::Symbol.new("n") }
 
       it "returns asciimath string" do
-        expect(formula).to eq("lcm(n)")
+        expect(formula).to eq("lcm n")
       end
     end
 
@@ -29,7 +29,7 @@ RSpec.describe Plurimath::Math::Function::Lcm do
       let(:first_value) { Plurimath::Math::Number.new("70") }
 
       it "returns asciimath string" do
-        expect(formula).to eq("lcm(70)")
+        expect(formula).to eq("lcm 70")
       end
     end
 
@@ -43,7 +43,7 @@ RSpec.describe Plurimath::Math::Function::Lcm do
         ])
       end
       it "returns asciimath string" do
-        expect(formula).to eq("lcm(sum_(&)^(\"so\"))")
+        expect(formula).to eq("lcm sum_(&)^(\"so\")")
       end
     end
   end
@@ -64,7 +64,7 @@ RSpec.describe Plurimath::Math::Function::Lcm do
         expected_value = <<~MATHML
 
           <mrow>
-            <mo>lcm</mo>
+            <mi>lcm</mi>
             <mi>n</mi>
           </mrow>
         MATHML
@@ -78,7 +78,7 @@ RSpec.describe Plurimath::Math::Function::Lcm do
       it "returns mathml string" do
         expected_value = <<~MATHML
           <mrow>
-            <mo>lcm</mo>
+            <mi>lcm</mi>
             <mn>70</mn>
           </mrow>
         MATHML
@@ -98,11 +98,11 @@ RSpec.describe Plurimath::Math::Function::Lcm do
       it "returns mathml string" do
         expected_value = <<~MATHML
           <mrow>
-            <mo>lcm</mo>
+            <mi>lcm</mi>
             <mrow>
               <munderover>
                 <mo>&#x2211;</mo>
-                <mo>&#x26;</mo>
+                <mo>&amp;</mo>
                 <mtext>so</mtext>
               </munderover>
             </mrow>
@@ -120,7 +120,7 @@ RSpec.describe Plurimath::Math::Function::Lcm do
       let(:first_value) { Plurimath::Math::Symbol.new("n") }
 
       it "returns mathml string" do
-        expect(formula).to eql("\\lcm{n}")
+        expect(formula).to eql("lcm{n}")
       end
     end
 
@@ -128,7 +128,7 @@ RSpec.describe Plurimath::Math::Function::Lcm do
       let(:first_value) { Plurimath::Math::Number.new("70") }
 
       it "returns mathml string" do
-        expect(formula).to eql("\\lcm{70}")
+        expect(formula).to eql("lcm{70}")
       end
     end
 
@@ -142,7 +142,7 @@ RSpec.describe Plurimath::Math::Function::Lcm do
         ])
       end
       it "returns mathml string" do
-        expect(formula).to eql("\\lcm{\\sum_{&}^{\\text{so}}}")
+        expect(formula).to eql("lcm{\\sum_{&}^{\\text{so}}}")
       end
     end
   end
@@ -177,6 +177,26 @@ RSpec.describe Plurimath::Math::Function::Lcm do
       end
       it "returns mathml string" do
         expect(formula).to eql("<i>lcm</i><i><i>&sum;</i><sub>&</sub><sup>so</sup></i>")
+      end
+    end
+  end
+
+  describe ".validate_function_formula" do
+    subject(:formula) { described_class.new(first_value).validate_function_formula }
+
+    context "contains Symbol as value" do
+      let(:first_value) { "n" }
+
+      it "expects false in return" do
+        expect(formula).to eql(false)
+      end
+    end
+
+    context "contains Symbol as value" do
+      let(:first_value) { "a" }
+
+      it "should not return true" do
+        expect(formula).not_to eql(true)
       end
     end
   end

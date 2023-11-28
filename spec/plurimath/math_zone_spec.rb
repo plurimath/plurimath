@@ -1851,16 +1851,14 @@ RSpec.describe Plurimath::Math do
       it 'should puts Math zone representation of sample example #12' do
         expected_value = <<~MATHZONE
           |_ Math zone
-            |_ "<m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape"><m:oMath><m:r><m:t>|</m:t></m:r><m:r><m:t>x</m:t></m:r><m:r><m:t>|</m:t></m:r><m:d><m:dPr><m:begChr m:val="⌊"/><m:endChr m:val="⌋"/><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:dPr><m:e><m:r><m:t>x</m:t></m:r></m:e></m:d><m:d><m:dPr><m:begChr m:val="⌈"/><m:endChr m:val="⌉"/><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:dPr><m:e><m:r><m:t>x</m:t></m:r></m:e></m:d><m:r><m:t>∥</m:t></m:r><m:limUpp><m:limUppPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:limUppPr><m:e><m:r><m:t>x</m:t></m:r></m:e><m:lim><m:r><m:t>&#x2192;</m:t></m:r></m:lim></m:limUpp><m:r><m:t>∥</m:t></m:r></m:oMath></m:oMathPara>"
+            |_ "<m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape"><m:oMath><m:r><m:t>|</m:t></m:r><m:r><m:t>x</m:t></m:r><m:r><m:t>|</m:t></m:r><m:d><m:dPr><m:begChr m:val="⌊"/><m:endChr m:val="⌋"/><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:dPr><m:e><m:r><m:t>x</m:t></m:r></m:e></m:d><m:d><m:dPr><m:begChr m:val="⌈"/><m:endChr m:val="⌉"/><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:dPr><m:e><m:r><m:t>x</m:t></m:r></m:e></m:d><m:r><m:t>∥</m:t></m:r><m:limUpp><m:limUppPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:limUppPr><m:e><m:r><m:t>x</m:t></m:r></m:e><m:lim><m:r><m:t>→</m:t></m:r></m:lim></m:limUpp><m:r><m:t>∥</m:t></m:r></m:oMath></m:oMathPara>"
                |_ "<m:t>|&#xa0;x&#xa0;|</m:t>" text
                |_ "<m:t>x</m:t>" text
                |_ "<m:t>x</m:t>" text
                |_ "<m:t>&#x2225;</m:t>" text
-               |_ "<m:limUpp><m:limUppPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:limUppPr><m:e><m:r><m:t>x</m:t></m:r></m:e><m:lim><m:r><m:t>&#x2192;</m:t></m:r></m:lim></m:limUpp>" overset
-               |  |_ "<m:t>x</m:t>" base
-               |  |_ "<m:r><m:t>&#x2192;</m:t></m:r>" supscript
-               |    |_ "<m:r><m:t>&#x2192;</m:t></m:r>" overset
-               |       |_ "<m:t>&#x2192;</m:t>" base
+               |_ "<m:limUpp><m:limUppPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:limUppPr><m:e><m:r><m:t>x</m:t></m:r></m:e><m:lim><m:r><m:t>→</m:t></m:r></m:lim></m:limUpp>" overset
+               |  |_ "<m:t>&#x2192;</m:t>" base
+               |  |_ "<m:t>x</m:t>" supscript
                |_ "<m:t>&#x2225;</m:t>" text
         MATHZONE
         expect(formula).to eql(expected_value)
@@ -3275,7 +3273,7 @@ RSpec.describe Plurimath::Math do
         MATHML
         asciimath = <<~ASCIIMATH
           |_ Math zone
-            |_ "left[ [[sigma, gamma], [theta, alpha]] right]"
+            |_ "left[ {:[sigma, gamma], [theta, alpha]:} right]"
                |_ "[" left
                |_ "table" function apply
                |  |_ "tr" function apply

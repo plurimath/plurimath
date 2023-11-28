@@ -290,8 +290,8 @@ RSpec.describe Plurimath::Mathml do
             </mstyle>
           </math>
         MATHML
-        latex = " x  \\  \\   +   z "
-        asciimath = ' x  \  \  +  z '
+        latex = " x  \\phantom{ + } \\phantom{ y }  +   z "
+        asciimath = ' x  \  \ \ \  +  z '
         expect(formula.to_latex).to eq(latex)
         expect(formula.to_mathml).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eq(asciimath)
@@ -1161,6 +1161,55 @@ RSpec.describe Plurimath::Mathml do
         MATHML
         latex = "\\text{Convert} ( x , y , z , p_{a} , p_{o} , R , S , T ) = R_{z} ( \\alpha ) R_{y} ( \\beta ) R_{x} ( \\gamma ) S ( x - a_{x} ,  y - a_{y} ,  z - a_{z} ) + p_{o} + T = \\left [\\begin{matrix}\\cos{&#x2061;} \\alpha \\cos{\\beta} & \\cos{&#x2061;} \\alpha \\sin{&#x2061;} \\beta \\sin{&#x2061;} \\gamma - \\sin{&#x2061;} \\alpha \\cos{\\gamma} & \\cos{&#x2061;} \\alpha \\sin{&#x2061;} \\beta \\cos{&#x2061;} \\gamma + \\sin{&#x2061;} \\alpha \\sin{&#x2061;} \\gamma \\\\ \\sin{&#x2061;} \\alpha \\cos{&#x2061;} \\beta & \\sin{&#x2061;} \\alpha \\sin{&#x2061;} \\beta \\sin{&#x2061;} \\gamma + \\cos{&#x2061;} \\alpha \\cos{&#x2061;} \\gamma & \\sin{&#x2061;} \\alpha \\sin{&#x2061;} \\beta \\cos{&#x2061;} \\gamma - \\cos{&#x2061;} \\alpha \\sin{&#x2061;} \\gamma \\\\ - \\sin{&#x2061;} \\beta & \\cos{&#x2061;} \\beta \\sin{&#x2061;} \\gamma & \\cos{&#x2061;} \\beta \\cos{&#x2061;} \\gamma\\end{matrix}\\right ] \\left [\\begin{matrix}s_{x} \\ast ( x - a_{x} ) \\\\ s_{y} \\ast ( y - a_{y} ) \\\\ s_{z} \\ast ( z - a_{z} )\\end{matrix}\\right ] + \\left [\\begin{matrix}x_{0} + t_{x} \\\\ y_{0} + t_{y} \\\\ z_{0} + t_{z}\\end{matrix}\\right ] \\sqrt{d}"
         asciimath = "\"Convert\" (x , y , z , p_(a) , p_(o) , R , S , T) = R_(z) (alpha) R_(y) (beta) R_(x) (gamma) S (x - a_(x) ,  y - a_(y) ,  z - a_(z)) + p_(o) + T = [[cos&#x2061; alpha cosbeta, cos&#x2061; alpha sin&#x2061; beta sin&#x2061; gamma - sin&#x2061; alpha cosgamma, cos&#x2061; alpha sin&#x2061; beta cos&#x2061; gamma + sin&#x2061; alpha sin&#x2061; gamma], [sin&#x2061; alpha cos&#x2061; beta, sin&#x2061; alpha sin&#x2061; beta sin&#x2061; gamma + cos&#x2061; alpha cos&#x2061; gamma, sin&#x2061; alpha sin&#x2061; beta cos&#x2061; gamma - cos&#x2061; alpha sin&#x2061; gamma], [- sin&#x2061; beta, cos&#x2061; beta sin&#x2061; gamma, cos&#x2061; beta cos&#x2061; gamma]] [[s_(x) ast (x - a_(x))], [s_(y) ast (y - a_(y))], [s_(z) ast (z - a_(z))]] + [[x_(0) + t_(x)], [y_(0) + t_(y)], [z_(0) + t_(z)]] sqrt(d)"
+        expect(formula.to_latex).to eq(latex)
+        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_asciimath).to eq(asciimath)
+      end
+    end
+
+    context "contains longidv tag Mathml" do
+      let(:string)  do
+        <<~MATHML
+          <math>
+            <mstyle displaystyle="true">
+              <mscarries crossout='updiagonalstrike'>
+                <mlongdiv longdivstyle="lefttop">
+                  <mn>12</mn>
+                  <msline length="2"/>
+                  <mi>i</mi>
+                </mlongdiv>
+                <merror>
+                  <mrow>
+                    <mi>failed</mi>
+                  </mrow>
+                </merror>
+              </mscarries>
+            </mstyle>
+          </math>
+        MATHML
+      end
+
+      it 'compares MathML, LaTeX, and AsciiMath string' do
+        mathml = <<~MATHML
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
+              <mscarries>
+                <mrow>
+                  <mlongdiv>
+                    <mn>12</mn>
+                    <msline/>
+                    <mi>i</mi>
+                  </mlongdiv>
+                  <merror>
+                    <mi>failed</mi>
+                  </merror>
+                </mrow>
+              </mscarries>
+            </mstyle>
+          </math>
+        MATHML
+        latex = "12  i "
+        asciimath = "12i "
         expect(formula.to_latex).to eq(latex)
         expect(formula.to_mathml).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eq(asciimath)

@@ -30,11 +30,7 @@ module Plurimath
         end
 
         def to_omml_without_math_tag(display_style)
-          value_array = []
-          value_array << parameter_one.insert_t_tag(display_style) if parameter_one
-          value_array << parameter_two.insert_t_tag(display_style) if parameter_two
-          value_array << parameter_three.insert_t_tag(display_style) if parameter_three
-          value_array
+          underover(display_style)
         end
       end
     end

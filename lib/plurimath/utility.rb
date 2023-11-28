@@ -46,6 +46,8 @@ module Plurimath
       arccos
       arcsin
       arctan
+      liminf
+      limsup
       right
       sech
       sinh
@@ -58,6 +60,7 @@ module Plurimath
       min
       sec
       sin
+      sup
       deg
       det
       dim
@@ -65,6 +68,8 @@ module Plurimath
       gcd
       glb
       lub
+      lcm
+      ker
       tan
       cos
       cot

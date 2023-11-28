@@ -6,6 +6,8 @@ module Plurimath
       class Table < Core
         attr_accessor :value, :open_paren, :close_paren, :options
 
+        SIMPLE_TABLES = %w[array align split].freeze
+
         def initialize(value = nil,
                        open_paren = nil,
                        close_paren = nil,
@@ -25,6 +27,8 @@ module Plurimath
         end
 
         def to_asciimath
+          return parentheless_table if SIMPLE_TABLES.include?(class_name)
+
           parenthesis = Asciimath::Constants::TABLE_PARENTHESIS
           first_value = value.map(&:to_asciimath).join(", ")
           third_value = close_paren.is_a?(::Array) || close_paren.nil?
@@ -275,6 +279,10 @@ module Plurimath
           return "" if ["{:", ":}"].include?(parenthesis)
 
           parenthesis
+        end
+
+        def parentheless_table
+          "{:#{value.map(&:to_asciimath).join(", ")}:}"
         end
       end
     end

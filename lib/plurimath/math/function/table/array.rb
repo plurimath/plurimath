@@ -15,7 +15,7 @@ module Plurimath
           end
 
           def to_latex
-            "\\begin{array}#{array_args}#{latex_content}\\end{array}"
+            "\\begin{array}#{array_args || '.'}#{latex_content}\\end{array}"
           end
 
           def array_args

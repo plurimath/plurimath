@@ -36,7 +36,9 @@ module Plurimath
       end
 
       rule(mphantom: sequence(:phantom)) do
-        Math::Function::Phantom.new(phantom)
+        Math::Function::Phantom.new(
+          Utility.filter_values(phantom),
+        )
       end
 
       rule(mn: sequence(:mn)) do

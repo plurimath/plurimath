@@ -115,6 +115,10 @@ module Plurimath
           new_arr
         end
 
+        def value_nil?
+          !parameter_one
+        end
+
         protected
 
         def asciimath_value
