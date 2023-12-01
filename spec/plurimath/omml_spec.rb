@@ -111,6 +111,55 @@ RSpec.describe Plurimath::Omml do
         expect(formula.to_omml).to eq(expected_output)
       end
     end
+
+    context 'contains underline example #03' do
+      let(:string) do
+        <<~OMML
+          <m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape">
+            <m:oMath>
+              <m:limLow>
+                <m:limLowPr>
+                  <m:ctrlPr>
+                    <w:rPr>
+                      <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
+                      <w:i/>
+                    </w:rPr>
+                  </m:ctrlPr>
+                </m:limLowPr>
+                <m:e>
+                  <m:r>
+                    <m:t>3</m:t>
+                  </m:r>
+                </m:e>
+                <m:lim>
+                  <m:r>
+                    <m:t>&#x332;</m:t>
+                  </m:r>
+                </m:lim>
+              </m:limLow>
+            </m:oMath>
+          </m:oMathPara>
+        OMML
+      end
+
+      let(:expected_value) do
+        <<~MATHML
+
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
+              <munder>
+                <mn>3</mn>
+                <mo>&#x332;</mo>
+              </munder>
+            </mstyle>
+          </math>
+        MATHML
+      end
+
+      it 'converts and matches OMML to MathML' do
+        expect(formula.to_mathml).to eq(expected_value)
+      end
+    end
   end
 
   describe ".to_omml" do
