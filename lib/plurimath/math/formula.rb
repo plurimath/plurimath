@@ -101,14 +101,18 @@ module Plurimath
       end
 
       def to_omml(display_style: displaystyle)
-        new_line_support.map do |object|
-          para_element = Utility.ox_element("oMathPara", attributes: omml_attrs, namespace: "m")
+        para_element = Utility.ox_element("oMathPara", attributes: omml_attrs, namespace: "m")
+        new_line_support.each.with_index(1) do |object, index|
           para_element << Utility.update_nodes(
             Utility.ox_element("oMath", namespace: "m"),
             object.omml_content(boolean_display_style(display_style)),
           )
-          Plurimath.xml_engine.dump(para_element, indent: 2).gsub("&amp;", "&").gsub(/^\n/, "")
-        end.join
+
+          next if new_line_support.length == index
+
+          para_element << omml_br_tag
+        end
+        Plurimath.xml_engine.dump(para_element, indent: 2).gsub("&amp;", "&").gsub(/^\n/, "")
       rescue
         parse_error!(:omml)
       end
@@ -241,6 +245,11 @@ module Plurimath
 
       def parse_error!(type)
         Math.parse_error!(input_string, type)
+      end
+
+      def omml_br_tag
+        r_tag = ox_element("r", namespace: "m")
+        r_tag << ox_element("br")
       end
     end
   end
