@@ -244,9 +244,11 @@ module Plurimath
       end
 
       def text_classes(text)
-        return nil if text&.empty?
+        return nil unless text
 
         text = filter_values(text) unless text.is_a?(String)
+        return text if text.is_a?(Math::Core)
+
         if text&.scan(/[[:digit:]]/)&.length == text&.length
           Math::Number.new(text)
         elsif text&.match?(/[a-zA-Z]/)

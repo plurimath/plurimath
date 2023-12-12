@@ -104,6 +104,21 @@ module Plurimath
         value == "\\\\"
       end
 
+      def is_nary_function?
+        %w[
+          &#x222c;
+          &#x222d;
+          &#x222f;
+          &#x2230;
+          &#x2232;
+          &#x2233;
+          &#x2231;
+          &#x2229;
+          &#x222a;
+          &#x2210;
+        ].include?(value)
+      end
+
       private
 
       def operator?(unicode)
