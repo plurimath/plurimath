@@ -255,13 +255,8 @@ module Plurimath
       end
 
       rule(ms: sequence(:ms)) do
-        entities = HTMLEntities.new
-        symbols  = Constants::UNICODE_SYMBOLS.transform_keys(&:to_s)
-        text     = entities.encode(ms.first, :hexadecimal)
-        symbols.each do |code, string|
-          text = text.gsub(code.downcase, "unicode[:#{string}]")
-        end
-        Math::Function::Text.new(text)
+        ms_value = ms.compact.map { |string| Utility.text_classes(string) }
+        Math::Function::Ms.new(Utility.filter_values(ms_value))
       end
 
       rule(mfenced: sequence(:fenced)) do

@@ -43,7 +43,7 @@ module Plurimath
           elsif !node.attributes.empty?
             attrs_hash(node)
           else
-            { node.name.to_sym => parse_nodes(node.nodes) }
+            manage_tags(node)
           end
         end
       end
@@ -60,6 +60,25 @@ module Plurimath
             value: parse_nodes(node.nodes),
           },
         }
+      end
+
+      def manage_tags(node)
+        if node.name = "ms"
+          node.replace_nodes([ms_tag(node.nodes).join(" ")])
+        end
+        { node.name.to_sym => parse_nodes(node.nodes) }
+      end
+
+      def ms_tag(nodes)
+        return nodes if nodes.any?(String)
+
+        nodes.map do |node|
+          if node.nodes.any?(String)
+            node.nodes
+          else
+            ms_tag(node.nodes)
+          end
+        end
       end
     end
   end

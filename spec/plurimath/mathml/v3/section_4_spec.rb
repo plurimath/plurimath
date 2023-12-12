@@ -171,11 +171,20 @@ RSpec.describe Plurimath::Mathml::Parser do
         Plurimath::Math::Function::Fenced.new(
           Plurimath::Math::Symbol.new("{"),
           [
-            Plurimath::Math::Function::Text.new("A"),
+            Plurimath::Math::Function::Ms.new(
+              Plurimath::Math::Function::Text.new("A"),
+            ),
             Plurimath::Math::Symbol.new(","),
-            Plurimath::Math::Function::Text.new("B"),
+            Plurimath::Math::Function::Ms.new(
+              Plurimath::Math::Function::Text.new("B"),
+            ),
             Plurimath::Math::Symbol.new(","),
-            Plurimath::Math::Function::Text.new("&#xa0;"),
+            Plurimath::Math::Function::Ms.new(
+              Plurimath::Math::Formula.new([
+                Plurimath::Math::Symbol.new(" "),
+                Plurimath::Math::Symbol.new(" "),
+              ])
+            ),
           ],
           Plurimath::Math::Symbol.new("}"),
         )

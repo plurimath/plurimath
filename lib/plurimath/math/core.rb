@@ -266,6 +266,8 @@ module Plurimath
       def is_unary?
         is_a?(Math::Function::UnaryFunction)
       end
+
+      def is_nary_function?;end
     end
   end
 end
