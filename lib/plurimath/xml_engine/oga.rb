@@ -30,6 +30,11 @@ module Plurimath
           node = node.unwrap if node.respond_to? :unwrap
           node.is_a?(Comment)
         end
+
+        def replace_nodes(root, nodes)
+          root.unwrap.children = ::Oga::XML::NodeSet.new([::Oga::XML::Text.new(text: nodes)])
+          root
+        end
       end
 
       # Create API compatible with Ox, per Plurimath usage

@@ -88,6 +88,10 @@ module Plurimath
             omml_parameter(parameter_three, display_style, tag_name: "e"),
           ]
         end
+
+        def is_nary_function?
+          true
+        end
       end
     end
   end

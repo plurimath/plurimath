@@ -104,7 +104,7 @@ module Plurimath
         value == "\\\\"
       end
 
-      def is_nary_function?
+      def is_nary_symbol?
         %w[
           &#x222c;
           &#x222d;

@@ -171,20 +171,11 @@ RSpec.describe Plurimath::Mathml::Parser do
         Plurimath::Math::Function::Fenced.new(
           Plurimath::Math::Symbol.new("{"),
           [
-            Plurimath::Math::Function::Ms.new(
-              Plurimath::Math::Function::Text.new("A"),
-            ),
+            Plurimath::Math::Function::Ms.new("A"),
             Plurimath::Math::Symbol.new(","),
-            Plurimath::Math::Function::Ms.new(
-              Plurimath::Math::Function::Text.new("B"),
-            ),
+            Plurimath::Math::Function::Ms.new("B"),
             Plurimath::Math::Symbol.new(","),
-            Plurimath::Math::Function::Ms.new(
-              Plurimath::Math::Formula.new([
-                Plurimath::Math::Symbol.new(" "),
-                Plurimath::Math::Symbol.new(" "),
-              ])
-            ),
+            Plurimath::Math::Function::Ms.new("   "),
           ],
           Plurimath::Math::Symbol.new("}"),
         )
@@ -4271,15 +4262,13 @@ RSpec.describe Plurimath::Mathml::Parser do
     }
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Underset.new(
-            Plurimath::Math::Formula.new([
-              Plurimath::Math::Symbol.new("x"),
-              Plurimath::Math::Symbol.new("&#x2208;"),
-              Plurimath::Math::Symbol.new("B")
-            ]),
-            Plurimath::Math::Function::Sum.new
-          ),
+        Plurimath::Math::Function::Sum.new(
+          Plurimath::Math::Formula.new([
+            Plurimath::Math::Symbol.new("x"),
+            Plurimath::Math::Symbol.new("&#x2208;"),
+            Plurimath::Math::Symbol.new("B")
+          ]),
+          nil,
           Plurimath::Math::Formula.new([
             Plurimath::Math::Symbol.new("f"),
             Plurimath::Math::Symbol.new("&#x2061;"),
@@ -4291,7 +4280,7 @@ RSpec.describe Plurimath::Mathml::Parser do
               Plurimath::Math::Symbol.new(")"),
             )
           ])
-        ])
+        ),
       ])
       expect(formula).to eq(expected_value)
     end
@@ -4313,13 +4302,11 @@ RSpec.describe Plurimath::Mathml::Parser do
     }
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Underset.new(
-            Plurimath::Math::Symbol.new("B"),
-            Plurimath::Math::Function::Sum.new
-          ),
+        Plurimath::Math::Function::Sum.new(
+          Plurimath::Math::Symbol.new("B"),
+          nil,
           Plurimath::Math::Symbol.new("f"),
-        ])
+        ),
       ])
       expect(formula).to eq(expected_value)
     end
@@ -4402,15 +4389,13 @@ RSpec.describe Plurimath::Mathml::Parser do
     }
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Underset.new(
-            Plurimath::Math::Formula.new([
-              Plurimath::Math::Symbol.new("x"),
-              Plurimath::Math::Symbol.new("&#x2208;"),
-              Plurimath::Math::Symbol.new("B")
-            ]),
-            Plurimath::Math::Function::Prod.new,
-          ),
+        Plurimath::Math::Function::Prod.new(
+          Plurimath::Math::Formula.new([
+            Plurimath::Math::Symbol.new("x"),
+            Plurimath::Math::Symbol.new("&#x2208;"),
+            Plurimath::Math::Symbol.new("B")
+          ]),
+          nil,
           Plurimath::Math::Formula.new([
             Plurimath::Math::Symbol.new("f"),
             Plurimath::Math::Symbol.new("&#x2061;"),
@@ -4422,7 +4407,7 @@ RSpec.describe Plurimath::Mathml::Parser do
               Plurimath::Math::Symbol.new(")"),
             )
           ])
-        ])
+        ),
       ])
       expect(formula).to eq(expected_value)
     end

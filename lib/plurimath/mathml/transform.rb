@@ -8,6 +8,7 @@ module Plurimath
       rule(mo: sequence(:mo))       { Utility.mathml_unary_classes(mo) }
       rule(mtd: sequence(:mtd))     { Math::Function::Td.new(mtd) }
       rule(mtr: sequence(:mtr))     { Math::Function::Tr.new(mtr) }
+      rule(math: subtree(:math))    { math.flatten.compact }
       rule(none: sequence(:none))   { nil }
       rule(mspace: simple(:space))  { nil }
       rule(notation: simple(:att))  { Math::Function::Menclose.new(att) }
@@ -18,7 +19,6 @@ module Plurimath
       rule(value: sequence(:value)) { Utility.filter_values(value) }
 
       rule(mspace: sequence(:space))    { nil }
-      rule(mstyle: sequence(:mstyle))   { Utility.filter_values(mstyle) }
       rule(mfenced: simple(:mfenced))   { mfenced }
       rule(mtable: sequence(:mtable))   { Math::Function::Table.new(mtable) }
       rule(mscarry: sequence(:scarry))  { nil }
@@ -29,12 +29,6 @@ module Plurimath
       rule(maligngroup: sequence(:att)) { nil }
       rule(mprescripts: sequence(:att)) { "mprescripts" }
       rule(columnlines: simple(:lines)) { lines }
-
-      rule(math: subtree(:math)) do
-        Utility.filter_values(
-          math.flatten.compact,
-        )
-      end
 
       rule(mphantom: sequence(:phantom)) do
         Math::Function::Phantom.new(
@@ -184,12 +178,38 @@ module Plurimath
         Utility.fenceable_classes(flatten_mrow)
         if flatten_mrow.length == 1
           flatten_mrow.first
+        elsif flatten_mrow&.first&.is_nary_function?
+          nary_function = flatten_mrow.first
+          if nary_function.is_ternary_function? && nary_function.parameter_three.nil? && nary_function.any_value_exist?
+            nary_function.parameter_three = flatten_mrow.delete_at(1)
+            flatten_mrow
+          elsif nary_function.is_binary_function? && nary_function.any_value_exist?
+            flatten_mrow[0] = nary_function.new_nary_function(flatten_mrow.delete_at(1))
+            flatten_mrow
+          else
+            Math::Formula.new(
+              flatten_mrow,
+              Utility.mrow_left_right(flatten_mrow),
+            )
+          end
         else
           Math::Formula.new(
             flatten_mrow,
             Utility.mrow_left_right(flatten_mrow),
           )
         end
+      end
+
+      rule(mstyle: sequence(:mstyle)) do
+        nary_function = mstyle.first
+        if nary_function&.is_nary_function?
+          if nary_function.is_ternary_function? && nary_function.parameter_three.nil?
+            nary_function.parameter_three = mstyle.delete_at(1)
+          elsif nary_function.is_binary_function? && nary_function.parameter_two.nil?
+            mstyle[0] = nary_function.new_nary_function(mstyle.delete_at(1))
+          end
+        end
+        Utility.filter_values(mstyle)
       end
 
       rule(msrow: sequence(:msrow)) do
@@ -230,6 +250,9 @@ module Plurimath
         elsif ["ubrace", "obrace", "underline"].any?(munder.last.class_name)
           munder.last.parameter_one = munder.shift if munder.length > 1
           munder.last
+        elsif Mathml::Constants::CLASSES.include?(munder.first.class_name)
+          munder.first.parameter_one = munder.delete_at(1)
+          munder.first
         else
           Math::Function::Underset.new(
             munder[1],
@@ -255,8 +278,9 @@ module Plurimath
       end
 
       rule(ms: sequence(:ms)) do
-        ms_value = ms.compact.map { |string| Utility.text_classes(string) }
-        Math::Function::Ms.new(Utility.filter_values(ms_value))
+        Math::Function::Ms.new(
+          ms.flatten.compact.join(" "),
+        )
       end
 
       rule(mfenced: sequence(:fenced)) do

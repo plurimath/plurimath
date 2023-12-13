@@ -27,12 +27,14 @@ module Plurimath
       def parse
         ox_nodes = Plurimath.xml_engine.load(text)
         display_style = ox_nodes&.locate("mstyle/@displaystyle")&.first
-        nodes = parse_nodes(ox_nodes.nodes)
+        nodes = parse_nodes(Array(ox_nodes))
         Math::Formula.new(
           Transform.new.apply(nodes).flatten.compact,
           display_style: (display_style || true),
         )
       end
+
+      protected
 
       def parse_nodes(nodes)
         nodes.map do |node|
@@ -63,8 +65,11 @@ module Plurimath
       end
 
       def manage_tags(node)
-        if node.name = "ms"
-          node.replace_nodes([ms_tag(node.nodes).join(" ")])
+        if node.name == "ms"
+          Plurimath::xml_engine.replace_nodes(
+            node,
+            ms_tag(comment_remove(node.nodes)).join(" "),
+          )
         end
         { node.name.to_sym => parse_nodes(node.nodes) }
       end
@@ -79,6 +84,10 @@ module Plurimath
             ms_tag(node.nodes)
           end
         end
+      end
+
+      def comment_remove(nodes)
+        nodes.delete_if { |node| node.is_a?(Ox::Comment)  }
       end
     end
   end

@@ -23,6 +23,11 @@ module Plurimath
         def is_xml_comment?(node)
           node.is_a?(::Ox::Comment)
         end
+
+        def replace_nodes(root, nodes)
+          root.nodes.replace(Array(nodes))
+          root
+        end
       end
     end
   end

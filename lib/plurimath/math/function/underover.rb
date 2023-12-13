@@ -67,6 +67,14 @@ module Plurimath
             self.parameter_three = nil
           end
         end
+
+        def new_nary_function(fourth_value)
+          Nary.new(parameter_one, parameter_two, nil, fourth_value, { type: "undOvr" })
+        end
+
+        def is_nary_function?
+          parameter_one.is_nary_function? || parameter_one.is_nary_symbol?
+        end
       end
     end
   end

@@ -268,6 +268,16 @@ module Plurimath
       end
 
       def is_nary_function?;end
+
+      def is_nary_symbol?;end
+
+      def is_binary_function?
+        is_a?(Function::BinaryFunction)
+      end
+
+      def is_ternary_function?
+        is_a?(Function::TernaryFunction)
+      end
     end
   end
 end

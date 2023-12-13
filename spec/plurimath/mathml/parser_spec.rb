@@ -701,9 +701,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     }
     it "returns formula of prod and theta" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Function::Underset.new(
+        Plurimath::Math::Function::Prod.new(
           Plurimath::Math::Symbol.new("&#x3b8;"),
-          Plurimath::Math::Function::Prod.new,
+          nil,
         ),
         Plurimath::Math::Symbol.new("i"),
       ])
