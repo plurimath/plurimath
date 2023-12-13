@@ -98,6 +98,10 @@ module Plurimath
             obj.update(Utility.filter_values(obj.value))
           end
         end
+
+        def is_nary_function?
+          true
+        end
       end
     end
   end

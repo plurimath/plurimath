@@ -7,23 +7,20 @@ module Plurimath
     module Function
       class Ms < UnaryFunction
         def to_mathml_without_math_tag
-          ms = Utility.ox_element("ms")
-          Utility.update_nodes(ms, mathml_value)
+          Utility.ox_element("ms") << parameter_one
         end
 
         def to_asciimath
-          "\"“#{asciimath_value}”\""
+          "\"“#{parameter_one}”\""
         end
 
         def to_latex
-          "\\text{“#{latex_value}”}"
+          "\\text{“#{parameter_one}”}"
         end
 
         def to_omml_without_math_tag(display_style)
           [
-            (Utility.ox_element("t", namespace: "m") << "“"),
-            omml_value(display_style),
-            (Utility.ox_element("t", namespace: "m") << "”"),
+            (Utility.ox_element("t", namespace: "m") << "“#{parameter_one}”"),
           ]
         end
       end

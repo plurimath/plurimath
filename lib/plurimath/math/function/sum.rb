@@ -28,20 +28,18 @@ module Plurimath
         def to_mathml_without_math_tag
           first_value = ox_element("mo")
           first_value << invert_unicode_symbols.to_s unless hide_function_name
-
-          if parameter_one || parameter_two
-            value_array = [
-              parameter_one&.to_mathml_without_math_tag,
-              parameter_two&.to_mathml_without_math_tag,
-            ]
-            tag_name = if parameter_two && parameter_one
-                         "underover"
-                       else
-                         parameter_one ? "under" : "over"
-                       end
-            munderover_tag = ox_element("m#{tag_name}")
-            Utility.update_nodes(munderover_tag, value_array.insert(0, first_value))
-            return munderover_tag if parameter_three.nil?
+          value_array = [
+            parameter_one&.to_mathml_without_math_tag,
+            parameter_two&.to_mathml_without_math_tag,
+          ]
+          tag_name = if parameter_two && parameter_one
+                       "underover"
+                     else
+                       parameter_one ? "under" : "over"
+                     end
+          munderover_tag = Utility.ox_element("m#{tag_name}")
+          Utility.update_nodes(munderover_tag, value_array.insert(0, first_value))
+          return munderover_tag if parameter_three.nil?
 
             Utility.update_nodes(
               ox_element("mrow"),
@@ -100,6 +98,10 @@ module Plurimath
           if obj.value_exist?
             obj.update(Utility.filter_values(obj.value))
           end
+        end
+
+        def is_nary_function?
+          true
         end
       end
     end

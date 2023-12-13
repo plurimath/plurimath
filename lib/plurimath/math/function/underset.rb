@@ -53,6 +53,14 @@ module Plurimath
             obj.update(self.class.new(nil, Utility.filter_values(obj.value)))
           end
         end
+
+        def new_nary_function(fourth_value)
+          Nary.new(parameter_two, parameter_one, nil, fourth_value, { type: "undOvr" })
+        end
+
+        def is_nary_function?
+          parameter_two.is_nary_function? || parameter_two.is_nary_symbol?
+        end
       end
     end
   end

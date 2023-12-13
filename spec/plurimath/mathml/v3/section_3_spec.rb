@@ -545,9 +545,8 @@ RSpec.describe Plurimath::Mathml::Parser do
       expected_value = Plurimath::Math::Formula.new([
         Plurimath::Math::Formula.new([
           Plurimath::Math::Symbol.new(" x "),
-          Plurimath::Math::Function::Underset.new(
+          Plurimath::Math::Function::Vec.new(
             Plurimath::Math::Function::Text.new(" maps to "),
-            Plurimath::Math::Function::Vec.new,
           ),
           Plurimath::Math::Symbol.new(" y ")
         ])
@@ -1781,9 +1780,8 @@ RSpec.describe Plurimath::Mathml::Parser do
         Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Overset.new(
             Plurimath::Math::Symbol.new(" &#x221e; "),
-            Plurimath::Math::Function::Underset.new(
+            Plurimath::Math::Function::Int.new(
               Plurimath::Math::Symbol.new(" 0 "),
-              Plurimath::Math::Function::Int.new
             )
           ),
           Plurimath::Math::Function::Text.new("&#xa0;versus&#xa0;"),
