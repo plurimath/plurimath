@@ -69,7 +69,9 @@ RSpec.describe Plurimath::Omml do
                   <mn>2</mn>
                   <mn>1</mn>
                 </msubsup>
-                <mn>3</mn>
+                <mrow>
+                  <mn>3</mn>
+                </mrow>
               </mrow>
             </mstyle>
           </math>
@@ -115,51 +117,227 @@ RSpec.describe Plurimath::Omml do
       end
     end
 
-    context 'contains underline example #03' do
+    context "contains nary munder example #03" do
       let(:string) do
         <<~OMML
           <m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape">
             <m:oMath>
-              <m:limLow>
-                <m:limLowPr>
+              <m:nary>
+                <m:naryPr>
+                  <m:limLoc m:val="undOvr"/>
                   <m:ctrlPr>
                     <w:rPr>
                       <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
                       <w:i/>
                     </w:rPr>
                   </m:ctrlPr>
-                </m:limLowPr>
+                </m:naryPr>
+                <m:sub>
+                  <m:r>
+                    <m:t>2</m:t>
+                  </m:r>
+                </m:sub>
+                <m:sup/>
                 <m:e>
                   <m:r>
                     <m:t>3</m:t>
                   </m:r>
                 </m:e>
-                <m:lim>
-                  <m:r>
-                    <m:t>&#x332;</m:t>
-                  </m:r>
-                </m:lim>
-              </m:limLow>
+              </m:nary>
             </m:oMath>
           </m:oMathPara>
         OMML
       end
 
-      let(:expected_value) do
-        <<~MATHML
+      it 'converts and matches OMML to MathML' do
+        latex = '\int_2{3}'
+        asciimath = 'int_2 3'
+        mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
-              <munder>
-                <mn>3</mn>
-                <mo>&#x332;</mo>
-              </munder>
+              <mrow>
+                <munder>
+                  <mo>&#x222b;</mo>
+                  <mn>2</mn>
+                </munder>
+                <mrow>
+                  <mn>3</mn>
+                </mrow>
+              </mrow>
             </mstyle>
           </math>
         MATHML
+        expect(formula.to_latex).to eq(latex)
+        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_asciimath).to eq(asciimath)
+      end
+    end
+
+    context "contains nary msub example #04" do
+      let(:string) do
+        <<~OMML
+          <m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape">
+            <m:oMath>
+              <m:nary>
+                <m:naryPr>
+                  <m:limLoc m:val="subSup"/>
+                  <m:ctrlPr>
+                    <w:rPr>
+                      <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
+                      <w:i/>
+                    </w:rPr>
+                  </m:ctrlPr>
+                </m:naryPr>
+                <m:sub>
+                  <m:r>
+                    <m:t>2</m:t>
+                  </m:r>
+                </m:sub>
+                <m:sup/>
+                <m:e>
+                  <m:r>
+                    <m:t>3</m:t>
+                  </m:r>
+                </m:e>
+              </m:nary>
+            </m:oMath>
+          </m:oMathPara>
+        OMML
       end
 
-      it 'converts and matches OMML to MathML' do
-        expect(formula.to_mathml).to eq(expected_value)
+      it 'returns parsed Asciimath to Formula' do
+        latex = '\int_2{3}'
+        asciimath = 'int_2 3'
+        mathml = <<~MATHML
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
+              <mrow>
+                <msub>
+                  <mo>&#x222b;</mo>
+                  <mn>2</mn>
+                </msub>
+                <mrow>
+                  <mn>3</mn>
+                </mrow>
+              </mrow>
+            </mstyle>
+          </math>
+        MATHML
+        expect(formula.to_latex).to eq(latex)
+        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_asciimath).to eq(asciimath)
+      end
+    end
+
+    context "contains nary mover example #05" do
+      let(:string) do
+        <<~OMML
+          <m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape">
+            <m:oMath>
+              <m:nary>
+                <m:naryPr>
+                  <m:limLoc m:val="undOvr"/>
+                  <m:ctrlPr>
+                    <w:rPr>
+                      <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
+                      <w:i/>
+                    </w:rPr>
+                  </m:ctrlPr>
+                </m:naryPr>
+                <m:sub/>
+                <m:sup>
+                  <m:r>
+                    <m:t>1</m:t>
+                  </m:r>
+                </m:sup>
+                <m:e>
+                  <m:r>
+                    <m:t>3</m:t>
+                  </m:r>
+                </m:e>
+              </m:nary>
+            </m:oMath>
+          </m:oMathPara>
+        OMML
+      end
+
+      it 'returns parsed Asciimath to Formula' do
+        latex = '\int^1{3}'
+        asciimath = 'int^1 3'
+        mathml = <<~MATHML
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
+              <mrow>
+                <mover>
+                  <mo>&#x222b;</mo>
+                  <mn>1</mn>
+                </mover>
+                <mrow>
+                  <mn>3</mn>
+                </mrow>
+              </mrow>
+            </mstyle>
+          </math>
+        MATHML
+        expect(formula.to_latex).to eq(latex)
+        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_asciimath).to eq(asciimath)
+      end
+    end
+
+    context "contains nary msup example #06" do
+      let(:string) do
+        <<~OMML
+          <m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape">
+            <m:oMath>
+              <m:nary>
+                <m:naryPr>
+                  <m:limLoc m:val="subSup"/>
+                  <m:ctrlPr>
+                    <w:rPr>
+                      <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
+                      <w:i/>
+                    </w:rPr>
+                  </m:ctrlPr>
+                </m:naryPr>
+                <m:sub/>
+                <m:sup>
+                  <m:r>
+                    <m:t>1</m:t>
+                  </m:r>
+                </m:sup>
+                <m:e>
+                  <m:r>
+                    <m:t>3</m:t>
+                  </m:r>
+                </m:e>
+              </m:nary>
+            </m:oMath>
+          </m:oMathPara>
+        OMML
+      end
+
+      it 'returns parsed Asciimath to Formula' do
+        latex = '\int^1{3}'
+        asciimath = 'int^1 3'
+        mathml = <<~MATHML
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
+              <mrow>
+                <msup>
+                  <mo>&#x222b;</mo>
+                  <mn>1</mn>
+                </msup>
+                <mrow>
+                  <mn>3</mn>
+                </mrow>
+              </mrow>
+            </mstyle>
+          </math>
+        MATHML
+        expect(formula.to_latex).to eq(latex)
+        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_asciimath).to eq(asciimath)
       end
     end
   end

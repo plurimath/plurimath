@@ -6,6 +6,8 @@ module Plurimath
   module Math
     module Function
       class Sqrt < UnaryFunction
+        attr_accessor :options
+
         def to_mathml_without_math_tag
           sqrt_tag = Utility.ox_element("msqrt")
           Utility.update_nodes(
@@ -21,7 +23,7 @@ module Plurimath
           pr_element << Utility.ox_element(
             "degHide",
             namespace: "m",
-            attributes: { "m:val": "1" },
+            attributes: { "m:val": "on" },
           )
           Utility.update_nodes(
             rad_element,

@@ -360,6 +360,20 @@ module Plurimath
             attr_is_accent(attrs, value)
           elsif attrs.key?(:linebreak)
             Math::Function::Linebreak.new(value.first, attrs)
+          elsif attrs.key?(:bevelled) || attrs.key?(:linethickness)
+            frac = Math::Function::Frac.new(value[0], value[1])
+            frac.options = attrs
+            frac
+          elsif attrs.key?(:notation)
+            value << attrs
+          elsif attrs.key?(:separators)
+            fenced = Math::Function::Fenced.new(
+              symbol_object(attrs[:open] || "("),
+              value,
+              symbol_object(attrs[:close] || ")"),
+            )
+            fenced.options = { separators: attrs[:separators] }
+            fenced
           end
         elsif attrs.is_a?(Math::Core)
           attr_is_function(attrs, value)

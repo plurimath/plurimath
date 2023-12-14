@@ -2043,41 +2043,43 @@ RSpec.describe Plurimath::Mathml::Parser do
       MATHML
     }
     it "returns formula of decimal values" do
+      fenced_object = Plurimath::Math::Function::Fenced.new(
+        Plurimath::Math::Symbol.new("("),
+        [
+          Plurimath::Math::Formula.new([
+            Plurimath::Math::Symbol.new("x"),
+            Plurimath::Math::Symbol.new("&#x2208;"),
+            Plurimath::Math::Function::FontStyle::DoubleStruck.new(
+              Plurimath::Math::Symbol.new("Z"),
+              "double-struck",
+            )
+          ]),
+          Plurimath::Math::Symbol.new("&#x2227;"),
+          Plurimath::Math::Formula.new([
+            Plurimath::Math::Formula.new([
+              Plurimath::Math::Symbol.new("f"),
+              Plurimath::Math::Symbol.new("&#x2061;"),
+              Plurimath::Math::Function::Fenced.new(
+                Plurimath::Math::Symbol.new("("),
+                [
+                  Plurimath::Math::Symbol.new("x")
+                ],
+                Plurimath::Math::Symbol.new(")"),
+              )
+            ]),
+            Plurimath::Math::Symbol.new("="),
+            Plurimath::Math::Number.new("0")
+          ])
+        ],
+        Plurimath::Math::Symbol.new(")"),
+      )
+      fenced_object.options = { separators: "" }
       expected_value = Plurimath::Math::Formula.new([
         Plurimath::Math::Formula.new([
           Plurimath::Math::Symbol.new("&#x2203;"),
           Plurimath::Math::Symbol.new("x"),
           Plurimath::Math::Symbol.new("."),
-          Plurimath::Math::Function::Fenced.new(
-            Plurimath::Math::Symbol.new("("),
-            [
-              Plurimath::Math::Formula.new([
-                Plurimath::Math::Symbol.new("x"),
-                Plurimath::Math::Symbol.new("&#x2208;"),
-                Plurimath::Math::Function::FontStyle::DoubleStruck.new(
-                  Plurimath::Math::Symbol.new("Z"),
-                  "double-struck",
-                )
-              ]),
-              Plurimath::Math::Symbol.new("&#x2227;"),
-              Plurimath::Math::Formula.new([
-                Plurimath::Math::Formula.new([
-                  Plurimath::Math::Symbol.new("f"),
-                  Plurimath::Math::Symbol.new("&#x2061;"),
-                  Plurimath::Math::Function::Fenced.new(
-                    Plurimath::Math::Symbol.new("("),
-                    [
-                      Plurimath::Math::Symbol.new("x")
-                    ],
-                    Plurimath::Math::Symbol.new(")"),
-                  )
-                ]),
-                Plurimath::Math::Symbol.new("="),
-                Plurimath::Math::Number.new("0")
-              ])
-            ],
-            Plurimath::Math::Symbol.new(")"),
-          )
+          fenced_object,
         ])
       ])
       expect(formula).to eq(expected_value)

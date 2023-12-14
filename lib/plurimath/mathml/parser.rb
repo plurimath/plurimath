@@ -9,12 +9,15 @@ module Plurimath
 
       SUPPORTED_ATTRS = %w[
         linebreakstyle
+        linethickness
         columnlines
         mathvariant
         accentunder
+        separators
         linebreak
         mathcolor
         notation
+        bevelled
         accent
         close
         open
