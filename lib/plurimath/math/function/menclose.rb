@@ -12,6 +12,19 @@ module Plurimath
           second_value: "expression",
         }.freeze
 
+        FOUR_SIDED_NOTATIONS = {
+          top: "hideTop",
+          bottom: "hideBot",
+          left: "hideLeft",
+          right: "hideRight",
+        }
+        STRIKES_NOTATIONS = {
+          horizontalstrike: "strikeH",
+          verticalstrike: "strikeV",
+          updiagonalstrike: "strikeBLTR",
+          downdiagonalstrike: "strikeTLBR",
+        }
+
         def to_asciimath
           parameter_two&.to_asciimath
         end
@@ -34,16 +47,49 @@ module Plurimath
 
         def to_omml_without_math_tag(display_style)
           borderbox = Utility.ox_element("borderBox", namespace: "m")
-          borderpr = Utility.ox_element("borderBoxPr", namespace: "m")
-          borderpr << Utility.pr_element("ctrl", true, namespace: "m")
           Utility.update_nodes(
             borderbox,
             [
-              borderpr,
+              borderboxpr,
               omml_parameter(parameter_two, display_style, tag_name: "e"),
             ],
           )
           [borderbox]
+        end
+
+        protected
+
+        def borderboxpr
+          return if %w[box circle roundedbox].include?(parameter_one)
+
+          borderpr = Utility.ox_element("borderBoxPr", namespace: "m")
+          four_sided_notations(borderpr)
+          strikes_notations(borderpr)
+          borderpr
+        end
+
+        def four_sided_notations(borderpr)
+          return if %w[box circle roundedbox].any? { |value| parameter_one.include?(value) }
+
+          FOUR_SIDED_NOTATIONS.each do |side, rep|
+            ox_element(rep, !parameter_one.include?(side.to_s), borderpr)
+          end
+        end
+
+        def strikes_notations(borderpr)
+          STRIKES_NOTATIONS.each do |strike, rep|
+            ox_element(rep, parameter_one.include?(strike.to_s), borderpr)
+          end
+        end
+
+        def ox_element(tag_name, condition, borderpr)
+          return unless condition
+
+          borderpr << Utility.ox_element(
+            tag_name,
+            namespace: "m",
+            attributes: { "m:val": "on" },
+          )
         end
       end
     end

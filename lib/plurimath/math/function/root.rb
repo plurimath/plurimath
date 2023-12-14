@@ -31,12 +31,14 @@ module Plurimath
         end
 
         def to_omml_without_math_tag(display_style)
+          attribute = { "m:val": "off" }
           rad_element = Utility.ox_element("rad", namespace: "m")
           pr_element  = Utility.ox_element("radPr", namespace: "m")
+          pr_element << Utility.ox_element("degHide", namespace: "m", attributes: attribute)
           Utility.update_nodes(
             rad_element,
             [
-              (pr_element << Utility.pr_element("ctrl", true, namespace: "m")),
+              pr_element,
               omml_parameter(parameter_two, display_style, tag_name: "deg"),
               omml_parameter(parameter_one, display_style, tag_name: "e"),
             ],

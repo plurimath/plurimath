@@ -9,11 +9,9 @@ module Plurimath
       rule(mtd: sequence(:mtd))     { Math::Function::Td.new(mtd) }
       rule(mtr: sequence(:mtr))     { Math::Function::Tr.new(mtr) }
       rule(math: subtree(:math))    { math.flatten.compact }
+      rule(mfrac: simple(:mfrac))   { mfrac }
       rule(none: sequence(:none))   { nil }
-      rule(mspace: simple(:space))  { nil }
-      rule(notation: simple(:att))  { Math::Function::Menclose.new(att) }
       rule(mtable: simple(:table))  { table }
-      rule(msqrt: sequence(:sqrt))  { Math::Function::Sqrt.new(sqrt.first) }
       rule(mstyle: simple(:mstyle)) { mstyle }
       rule(msline: sequence(:line)) { Math::Function::Msline.new }
       rule(value: sequence(:value)) { Utility.filter_values(value) }
@@ -76,6 +74,14 @@ module Plurimath
         )
       end
 
+      rule(menclose: subtree(:close)) do
+        options = close.find { |obj| obj.is_a?(Hash) and close.delete(obj) }
+        Math::Function::Menclose.new(
+          (options[:notation] if options),
+          Utility.filter_values(close),
+        )
+      end
+
       rule(mroot: sequence(:mroot)) do
         Math::Function::Root.new(
           mroot[1],
@@ -87,6 +93,15 @@ module Plurimath
         Math::Function::Merror.new(
           Utility.filter_values(merror),
         )
+      end
+
+      rule(msqrt: subtree(:sqrt)) do
+        options = sqrt.find { |sqr| sqr.is_a?(Hash) and sqrt.delete(sqr) }
+        sqrt_obj = Math::Function::Sqrt.new(
+          Utility.filter_values(sqrt),
+        )
+        sqrt_obj.options = options
+        sqrt_obj
       end
 
       rule(mfrac: sequence(:mfrac)) do
@@ -250,7 +265,7 @@ module Plurimath
         elsif ["ubrace", "obrace", "underline"].any?(munder.last.class_name)
           munder.last.parameter_one = munder.shift if munder.length > 1
           munder.last
-        elsif Mathml::Constants::CLASSES.include?(munder.first.class_name)
+        elsif Constants::CLASSES.include?(munder.first.class_name)
           munder.first.parameter_one = munder.delete_at(1)
           munder.first
         else
@@ -353,11 +368,19 @@ module Plurimath
       rule(attributes: subtree(:attrs),
            value: sequence(:value)) do
         approved = if attrs.is_a?(Hash)
-                     supported = %w[accentunder accent linebreak]
-                     if attrs.keys.any? { |k| supported.include?(k.to_s) }
-                       unicode_only = true if attrs.key?(:linebreak)
-                       attrs
+                     supported_attrs = %w[
+                       accentunder
+                       accent
+                       bevelled
+                       linethickness
+                       notation
+                       separators
+                     ]
+                     attrs if attrs.keys.any? do |k|
+                       supported_attrs.include?(k.to_s)
                      end
+                     unicode_only = true if attrs.key?(:linebreak)
+                     attrs
                    else
                      attrs
                    end

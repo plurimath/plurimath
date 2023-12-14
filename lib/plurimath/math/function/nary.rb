@@ -46,20 +46,27 @@ module Plurimath
 
         def to_mathml_without_math_tag
           tag_name = options[:type] == "undOvr" ? "munderover" : "msubsup"
+          if !(parameter_two && parameter_three)
+            tag_name = if parameter_two
+                         tag_name == "munderover" ? "munder" : "msub"
+                       elsif parameter_three
+                         tag_name == "munderover" ? "mover" : "msup"
+                       end
+          end
           subsup_tag = ox_element(tag_name)
           new_arr = [
-            validate_mathml_fields(parameter_one),
-            validate_mathml_fields(parameter_two),
-            validate_mathml_fields(parameter_three),
+            validate_mathml_fields(parameter_one, tag_name: tag_name),
+            validate_mathml_fields(parameter_two, tag_name: tag_name),
+            validate_mathml_fields(parameter_three, tag_name: tag_name),
           ]
           Utility.update_nodes(subsup_tag, new_arr)
           return subsup_tag unless parameter_four
 
           Utility.update_nodes(
-            ox_element("mrow"),
+            row_tag,
             [
               subsup_tag,
-              parameter_four&.to_mathml_without_math_tag,
+              (row_tag << validate_mathml_fields(parameter_four)),
             ],
           )
         end
@@ -100,7 +107,7 @@ module Plurimath
           first_value = Utility.html_entity_to_unicode(parameter_one&.nary_attr_value)
           narypr << Utility.ox_element("chr", namespace: "m", attributes: { "m:val": first_value }) unless first_value == "∫"
 
-          narypr << Utility.ox_element("limLoc", namespace: "m", attributes: { "m:val": options[:type].to_s })
+          narypr << Utility.ox_element("limLoc", namespace: "m", attributes: { "m:val": (options[:type] || "subSup").to_s })
           hide_tags(narypr, parameter_two, "sub")
           hide_tags(narypr, parameter_three, "sup")
           narypr
@@ -121,6 +128,10 @@ module Plurimath
             omml_parameter(parameter_three, display_style, tag_name: "sup"),
             omml_parameter(parameter_four, display_style, tag_name: "e"),
           ]
+        end
+
+        def row_tag
+          Utility.ox_element("mrow")
         end
       end
     end

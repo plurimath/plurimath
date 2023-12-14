@@ -6,6 +6,8 @@ module Plurimath
   module Math
     module Function
       class Fenced < TernaryFunction
+        attr_accessor :options
+
         def to_asciimath
           first_value  = parameter_one ? parameter_one.to_asciimath : "("
           third_value  = parameter_three ? parameter_three.to_asciimath : ")"
@@ -37,14 +39,23 @@ module Plurimath
         end
 
         def to_omml_without_math_tag(display_style)
+          attrs = { "m:val": (options ? options[:separators] : "") }
           d = Utility.ox_element("d", namespace: "m")
           dpr = Utility.ox_element("dPr", namespace: "m")
-          parameter = Formula.new(Array(parameter_two))
-          open_paren(dpr)
-          close_paren(dpr)
-          fenced_value = omml_parameter(parameter, display_style, tag_name: "e")
-          dpr << Utility.pr_element("ctrl", true, namespace: "m")
-          Utility.update_nodes(d, [dpr, fenced_value])
+          first_value(dpr)
+          dpr << Utility.ox_element("sepChr", namespace: "m", attributes: attrs)
+          third_value(dpr)
+          Utility.update_nodes(
+            d,
+            [
+              dpr,
+              omml_parameter(
+                Formula.new(Array(parameter_two)),
+                display_style,
+                tag_name: "e",
+              ),
+            ],
+          )
           [d]
         end
 
