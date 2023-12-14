@@ -40,12 +40,7 @@
         </m:r>
         <m:d>
           <m:dPr>
-            <m:ctrlPr>
-              <w:rPr>
-                <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
-                <w:i/>
-              </w:rPr>
-            </m:ctrlPr>
+            <m:sepChr m:val=""/>
           </m:dPr>
           <m:e>
             <m:r>
