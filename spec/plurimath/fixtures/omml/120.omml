@@ -2,12 +2,10 @@
   <m:oMath>
     <m:borderBox>
       <m:borderBoxPr>
-        <m:ctrlPr>
-          <w:rPr>
-            <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
-            <w:i/>
-          </w:rPr>
-        </m:ctrlPr>
+        <m:hideTop m:val="on"/>
+        <m:hideBot m:val="on"/>
+        <m:hideLeft m:val="on"/>
+        <m:hideRight m:val="on"/>
       </m:borderBoxPr>
       <m:e>
         <m:r>
