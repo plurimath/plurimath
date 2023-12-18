@@ -31,7 +31,7 @@ module Plurimath
 
         def to_mathml_without_math_tag
           attributes = { notation: parameter_one }
-          menclose = Utility.ox_element("menclose", attributes: attributes)
+          menclose = ox_element("menclose", attributes: attributes)
           menclose << parameter_two.to_mathml_without_math_tag if parameter_two
           menclose
         end
@@ -46,7 +46,7 @@ module Plurimath
         end
 
         def to_omml_without_math_tag(display_style)
-          borderbox = Utility.ox_element("borderBox", namespace: "m")
+          borderbox = ox_element("borderBox", namespace: "m")
           Utility.update_nodes(
             borderbox,
             [
@@ -62,7 +62,7 @@ module Plurimath
         def borderboxpr
           return if %w[box circle roundedbox].include?(parameter_one)
 
-          borderpr = Utility.ox_element("borderBoxPr", namespace: "m")
+          borderpr = ox_element("borderBoxPr", namespace: "m")
           four_sided_notations(borderpr)
           strikes_notations(borderpr)
           borderpr
@@ -72,20 +72,20 @@ module Plurimath
           return if %w[box circle roundedbox].any? { |value| parameter_one.include?(value) }
 
           FOUR_SIDED_NOTATIONS.each do |side, rep|
-            ox_element(rep, !parameter_one.include?(side.to_s), borderpr)
+            border_ox_element(rep, !parameter_one.include?(side.to_s), borderpr)
           end
         end
 
         def strikes_notations(borderpr)
           STRIKES_NOTATIONS.each do |strike, rep|
-            ox_element(rep, parameter_one.include?(strike.to_s), borderpr)
+            border_ox_element(rep, parameter_one.include?(strike.to_s), borderpr)
           end
         end
 
-        def ox_element(tag_name, condition, borderpr)
+        def border_ox_element(tag_name, condition, borderpr)
           return unless condition
 
-          borderpr << Utility.ox_element(
+          borderpr << ox_element(
             tag_name,
             namespace: "m",
             attributes: { "m:val": "on" },

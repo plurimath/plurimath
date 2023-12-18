@@ -3,7 +3,7 @@
     <m:nary>
       <m:naryPr>
         <m:chr m:val="∑"/>
-        <m:limLoc m:val=""/>
+        <m:limLoc m:val="subSup"/>
         <m:subHide m:val="1"/>
         <m:supHide m:val="1"/>
         <m:ctrlPr>
@@ -37,7 +37,7 @@
     <m:nary>
       <m:naryPr>
         <m:chr m:val="∏"/>
-        <m:limLoc m:val=""/>
+        <m:limLoc m:val="subSup"/>
         <m:supHide m:val="1"/>
         <m:ctrlPr>
           <w:rPr>
@@ -70,7 +70,7 @@
     <m:nary>
       <m:naryPr>
         <m:chr m:val=""/>
-        <m:limLoc m:val=""/>
+        <m:limLoc m:val="subSup"/>
         <m:ctrlPr>
           <w:rPr>
             <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>

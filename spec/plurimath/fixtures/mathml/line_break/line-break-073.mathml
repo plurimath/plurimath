@@ -9,7 +9,7 @@
 </math>
 <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
   <mstyle displaystyle="true">
-    <msubsup>
+    <msub>
       <mo>&#x220f;</mo>
       <mrow>
         <mi>&#x2222;</mi>
@@ -27,9 +27,11 @@
           <mo linebreak="newline"/>
           <mi>&#xd5;</mi>
         </mrow>
-      </msubsup>
+      </msub>
       <mrow>
-        <mi>&#x2262;</mi>
+        <mrow>
+          <mi>&#x2262;</mi>
+        </mrow>
       </mrow>
     </mrow>
   </mstyle>
