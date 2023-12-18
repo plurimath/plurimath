@@ -18,7 +18,9 @@ module Plurimath
         mathcolor
         notation
         bevelled
+        rowlines
         accent
+        frame
         close
         open
       ].freeze

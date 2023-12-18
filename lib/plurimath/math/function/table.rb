@@ -72,7 +72,7 @@ module Plurimath
         end
 
         def to_omml_without_math_tag(display_style)
-          ox_table = if value.map { |d| d.parameter_one.length == 1 }.all?
+          ox_table = if single_table?
                        single_td_table(display_style)
                      else
                        multiple_td_table(display_style)
@@ -283,6 +283,19 @@ module Plurimath
 
         def parentheless_table
           "{:#{value.map(&:to_asciimath).join(", ")}:}"
+        end
+
+        def single_table?
+          value.map { |d| d.parameter_one.length == 1 }.all? &&
+            nil_option?(:frame) &&
+            nil_option?(:columnlines) &&
+            nil_option?(:rowlines)
+        end
+
+        def nil_option?(option)
+          options[option].nil? ||
+            options[option] == "" ||
+            options[option] == "none"
         end
       end
     end

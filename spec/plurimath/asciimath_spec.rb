@@ -5754,12 +5754,7 @@ RSpec.describe Plurimath::Asciimath do
               <m:d>
                 <m:dPr>
                   <m:begChr m:val="["/>
-                  <m:ctrlPr>
-                    <w:rPr>
-                      <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
-                      <w:i/>
-                    </w:rPr>
-                  </m:ctrlPr>
+                  <m:sepChr m:val=""/>
                 </m:dPr>
                 <m:e>
                   <m:r>
@@ -5773,7 +5768,7 @@ RSpec.describe Plurimath::Asciimath do
                   </m:r>
                   <m:rad>
                     <m:radPr>
-                      <m:degHide m:val="1"/>
+                      <m:degHide m:val="on"/>
                       <m:ctrlPr>
                         <w:rPr>
                           <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
@@ -5878,13 +5873,8 @@ RSpec.describe Plurimath::Asciimath do
               <m:d>
                 <m:dPr>
                   <m:begChr m:val="⌈"/>
+                  <m:sepChr m:val=""/>
                   <m:endChr m:val="⌉"/>
-                  <m:ctrlPr>
-                    <w:rPr>
-                      <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
-                      <w:i/>
-                    </w:rPr>
-                  </m:ctrlPr>
                 </m:dPr>
                 <m:e>
                   <m:r>
@@ -5932,13 +5922,8 @@ RSpec.describe Plurimath::Asciimath do
               <m:d>
                 <m:dPr>
                   <m:begChr m:val="("/>
+                  <m:sepChr m:val=""/>
                   <m:endChr m:val=")"/>
-                  <m:ctrlPr>
-                    <w:rPr>
-                      <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
-                      <w:i/>
-                    </w:rPr>
-                  </m:ctrlPr>
                 </m:dPr>
                 <m:e>
                   <m:r>
@@ -5952,13 +5937,8 @@ RSpec.describe Plurimath::Asciimath do
               <m:d>
                 <m:dPr>
                   <m:begChr m:val="("/>
+                  <m:sepChr m:val=""/>
                   <m:endChr m:val=")"/>
-                  <m:ctrlPr>
-                    <w:rPr>
-                      <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
-                      <w:i/>
-                    </w:rPr>
-                  </m:ctrlPr>
                 </m:dPr>
                 <m:e>
                   <m:r>
@@ -6268,13 +6248,8 @@ RSpec.describe Plurimath::Asciimath do
               <m:d>
                 <m:dPr>
                   <m:begChr m:val="("/>
+                  <m:sepChr m:val=""/>
                   <m:endChr m:val=")"/>
-                  <m:ctrlPr>
-                    <w:rPr>
-                      <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
-                      <w:i/>
-                    </w:rPr>
-                  </m:ctrlPr>
                 </m:dPr>
                 <m:e>
                   <m:r>
@@ -6288,13 +6263,8 @@ RSpec.describe Plurimath::Asciimath do
               <m:d>
                 <m:dPr>
                   <m:begChr m:val="("/>
+                  <m:sepChr m:val=""/>
                   <m:endChr m:val=")"/>
-                  <m:ctrlPr>
-                    <w:rPr>
-                      <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
-                      <w:i/>
-                    </w:rPr>
-                  </m:ctrlPr>
                 </m:dPr>
                 <m:e>
                   <m:r>
@@ -6308,13 +6278,8 @@ RSpec.describe Plurimath::Asciimath do
               <m:d>
                 <m:dPr>
                   <m:begChr m:val="("/>
+                  <m:sepChr m:val=""/>
                   <m:endChr m:val=")"/>
-                  <m:ctrlPr>
-                    <w:rPr>
-                      <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
-                      <w:i/>
-                    </w:rPr>
-                  </m:ctrlPr>
                 </m:dPr>
                 <m:e>
                   <m:r>
@@ -6328,13 +6293,8 @@ RSpec.describe Plurimath::Asciimath do
               <m:d>
                 <m:dPr>
                   <m:begChr m:val="("/>
+                  <m:sepChr m:val=""/>
                   <m:endChr m:val=")"/>
-                  <m:ctrlPr>
-                    <w:rPr>
-                      <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
-                      <w:i/>
-                    </w:rPr>
-                  </m:ctrlPr>
                 </m:dPr>
                 <m:e>
                   <m:r>
@@ -6348,13 +6308,8 @@ RSpec.describe Plurimath::Asciimath do
               <m:d>
                 <m:dPr>
                   <m:begChr m:val="("/>
+                  <m:sepChr m:val=""/>
                   <m:endChr m:val=")"/>
-                  <m:ctrlPr>
-                    <w:rPr>
-                      <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
-                      <w:i/>
-                    </w:rPr>
-                  </m:ctrlPr>
                 </m:dPr>
                 <m:e>
                   <m:r>
@@ -6368,13 +6323,8 @@ RSpec.describe Plurimath::Asciimath do
               <m:d>
                 <m:dPr>
                   <m:begChr m:val="("/>
+                  <m:sepChr m:val=""/>
                   <m:endChr m:val=")"/>
-                  <m:ctrlPr>
-                    <w:rPr>
-                      <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
-                      <w:i/>
-                    </w:rPr>
-                  </m:ctrlPr>
                 </m:dPr>
                 <m:e>
                   <m:r>
@@ -6388,13 +6338,8 @@ RSpec.describe Plurimath::Asciimath do
               <m:d>
                 <m:dPr>
                   <m:begChr m:val="("/>
+                  <m:sepChr m:val=""/>
                   <m:endChr m:val=")"/>
-                  <m:ctrlPr>
-                    <w:rPr>
-                      <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
-                      <w:i/>
-                    </w:rPr>
-                  </m:ctrlPr>
                 </m:dPr>
                 <m:e>
                   <m:r>
@@ -6613,13 +6558,8 @@ RSpec.describe Plurimath::Asciimath do
               <m:d>
                 <m:dPr>
                   <m:begChr m:val="("/>
+                  <m:sepChr m:val=""/>
                   <m:endChr m:val=")"/>
-                  <m:ctrlPr>
-                    <w:rPr>
-                      <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
-                      <w:i/>
-                    </w:rPr>
-                  </m:ctrlPr>
                 </m:dPr>
                 <m:e>
                   <m:sSub>
@@ -6683,13 +6623,8 @@ RSpec.describe Plurimath::Asciimath do
                   <m:d>
                     <m:dPr>
                       <m:begChr m:val="("/>
+                      <m:sepChr m:val=""/>
                       <m:endChr m:val=")"/>
-                      <m:ctrlPr>
-                        <w:rPr>
-                          <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
-                          <w:i/>
-                        </w:rPr>
-                      </m:ctrlPr>
                     </m:dPr>
                     <m:e>
                       <m:sSubSup>

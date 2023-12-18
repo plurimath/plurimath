@@ -193,7 +193,7 @@ module Plurimath
         Utility.fenceable_classes(flatten_mrow)
         if flatten_mrow.length == 1
           flatten_mrow.first
-        elsif flatten_mrow&.first&.is_nary_function?
+        elsif flatten_mrow&.first&.is_nary_function? && flatten_mrow.length == 2
           nary_function = flatten_mrow.first
           if nary_function.is_ternary_function? && nary_function.parameter_three.nil? && nary_function.any_value_exist?
             nary_function.parameter_three = flatten_mrow.delete_at(1)
@@ -245,10 +245,7 @@ module Plurimath
           mover.last.parameter_one = mover.shift if mover.length > 1
           mover.last
         else
-          Math::Function::Overset.new(
-            mover[1],
-            mover[0],
-          )
+          Math::Function::Overset.new(mover[1], mover[0])
         end
       end
 
@@ -369,12 +366,15 @@ module Plurimath
            value: sequence(:value)) do
         approved = if attrs.is_a?(Hash)
                      supported_attrs = %w[
-                       accentunder
-                       accent
-                       bevelled
-                       linethickness
-                       notation
-                       separators
+                      linethickness
+                      accentunder
+                      columnlines
+                      separators
+                      rowlines
+                      bevelled
+                      notation
+                      accent
+                      frame
                      ]
                      attrs if attrs.keys.any? do |k|
                        supported_attrs.include?(k.to_s)

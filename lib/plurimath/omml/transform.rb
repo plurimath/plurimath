@@ -34,8 +34,6 @@ module Plurimath
       rule(fName: subtree(:fname))  { fname }
       rule(oMath: sequence(:omath)) { omath }
       rule(limLoc: simple(:limLoc)) { limLoc }
-      rule(begChr: simple(:begChr)) { Math::Symbol.new(begChr) }
-      rule(endChr: simple(:endChr)) { Math::Symbol.new(endChr) }
 
       rule(rFonts: subtree(:rFonts))   { nil }
       rule(sSupPr: subtree(:ssuppr))   { nil }
@@ -95,26 +93,32 @@ module Plurimath
       end
 
       rule(d: subtree(:data)) do
-        fenced       = data.flatten
-        open_paren   = fenced.shift if fenced&.first&.class_name == "symbol"
-        close_paren  = fenced.shift if fenced&.first&.class_name == "symbol"
-        fenced_value = fenced.compact
-        if fenced_value.length == 1 && fenced_value.first.is_a?(Math::Function::Table)
-          fenced_value.first.open_paren = open_paren&.value
-          fenced_value.first.close_paren = close_paren&.value
-          fenced_value
+        fenced = data.shift
+        fenced_value = data.flatten.compact
+        if data.length == 1 && data.flatten.compact.first.is_a?(Math::Function::Table)
+          fenced_value.first.open_paren = fenced&.parameter_one&.value
+          fenced_value.first.close_paren = fenced&.parameter_three&.value
+          data
         else
-          Math::Function::Fenced.new(
-            open_paren,
-            fenced_value,
-            close_paren,
-          )
+          fenced.parameter_two = data.flatten.compact
+          fenced
         end
       end
 
       rule(dPr: subtree(:dpr)) do
-        dpr.reject! { |d| d.is_a?(Hash) }
-        dpr
+        flatten_dpr = dpr.flatten.compact
+        open_paren  = flatten_dpr.find { |hash| hash[:begChr] }&.values&.first
+        close_paren = flatten_dpr.find { |hash| hash[:endChr] }&.values&.first
+        sep_chr     = flatten_dpr.find { |hash| hash[:sepChr] }
+        open_paren_object = Utility.symbol_object(open_paren) if open_paren
+        close_paren_object = Utility.symbol_object(close_paren) if close_paren
+        fenced = Math::Function::Fenced.new(
+          open_paren_object,
+          nil,
+          close_paren_object,
+        )
+        fenced.options = sep_chr
+        fenced
       end
 
       rule(mtd: sequence(:mtd)) do
