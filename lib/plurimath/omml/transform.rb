@@ -304,9 +304,9 @@ module Plurimath
       rule(sPre: subtree(:spre)) do
         pre = spre.flatten.compact
         Math::Function::Multiscript.new(
-          pre[2],
           pre[0],
           pre[1],
+          pre[2],
         )
       end
 

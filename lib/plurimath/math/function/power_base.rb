@@ -86,6 +86,14 @@ module Plurimath
           parameter_one.is_nary_function? || parameter_one.is_nary_symbol?
         end
 
+        def mmultiscript
+          [
+            validate_mathml_fields(parameter_one),
+            validate_mathml_fields(parameter_two),
+            validate_mathml_fields(parameter_three),
+          ]
+        end
+
         protected
 
         def hide_tags(nar)

@@ -12,19 +12,27 @@ module Plurimath
           third_value: "supscript",
         }.freeze
 
-        def to_omml_without_math_tag(display_style)
-          pre_element = Utility.ox_element("sPre", namespace: "m")
-          pr_element  = Utility.ox_element("sPrePr", namespace: "m")
+        def to_mathml_without_math_tag
           Utility.update_nodes(
-            pre_element,
+            ox_element("mmultiscripts"),
             [
-              pr_element << Utility.pr_element("ctrl", true, namespace: "m"),
+              parameter_one.mmultiscript,
+              ox_element("mprescripts"),
+              validate_mathml_fields(parameter_two),
+              validate_mathml_fields(parameter_three),
+            ]
+          )
+        end
+
+        def to_omml_without_math_tag(display_style)
+          Utility.update_nodes(
+            ox_element("sPre", namespace: "m"),
+            [
+              omml_parameter(parameter_one, display_style, tag_name: "e"),
               omml_parameter(parameter_two, display_style, tag_name: "sub"),
               omml_parameter(parameter_three, display_style, tag_name: "sup"),
-              omml_parameter(parameter_one, display_style, tag_name: "e"),
             ],
           )
-          [pre_element]
         end
 
         def line_breaking(obj)
