@@ -2947,13 +2947,8 @@ RSpec.describe Plurimath::Latex do
               <m:d>
                 <m:dPr>
                   <m:begChr m:val="("/>
+                  <m:sepChr m:val=""/>
                   <m:endChr m:val=")"/>
-                  <m:ctrlPr>
-                    <w:rPr>
-                      <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
-                      <w:i/>
-                    </w:rPr>
-                  </m:ctrlPr>
                 </m:dPr>
                 <m:e>
                   <m:r>
@@ -2967,13 +2962,8 @@ RSpec.describe Plurimath::Latex do
               <m:d>
                 <m:dPr>
                   <m:begChr m:val="("/>
+                  <m:sepChr m:val=""/>
                   <m:endChr m:val=")"/>
-                  <m:ctrlPr>
-                    <w:rPr>
-                      <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
-                      <w:i/>
-                    </w:rPr>
-                  </m:ctrlPr>
                 </m:dPr>
                 <m:e>
                   <m:r>
@@ -2987,13 +2977,8 @@ RSpec.describe Plurimath::Latex do
               <m:d>
                 <m:dPr>
                   <m:begChr m:val="("/>
+                  <m:sepChr m:val=""/>
                   <m:endChr m:val=")"/>
-                  <m:ctrlPr>
-                    <w:rPr>
-                      <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
-                      <w:i/>
-                    </w:rPr>
-                  </m:ctrlPr>
                 </m:dPr>
                 <m:e>
                   <m:r>
@@ -3007,13 +2992,8 @@ RSpec.describe Plurimath::Latex do
               <m:d>
                 <m:dPr>
                   <m:begChr m:val="("/>
+                  <m:sepChr m:val=""/>
                   <m:endChr m:val=")"/>
-                  <m:ctrlPr>
-                    <w:rPr>
-                      <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
-                      <w:i/>
-                    </w:rPr>
-                  </m:ctrlPr>
                 </m:dPr>
                 <m:e>
                   <m:r>

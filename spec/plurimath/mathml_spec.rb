@@ -1112,6 +1112,28 @@ RSpec.describe Plurimath::Mathml do
                             </msub>
                             <mo>)</mo>
                           </mrow>
+                          <mi>&#x3b2;</mi>
+                        </mtd>
+                        <mtd>
+                          <ms>cos ⁡</ms>
+                          <mi>&#x3b2;</mi>
+                          <mrow>
+                            <mi>sin</mi>
+                            <mi>&#x2061;</mi>
+                          </mrow>
+                          <mi>&#x3b3;</mi>
+                        </mtd>
+                        <mtd>
+                          <mrow>
+                            <mi>cos</mi>
+                            <mi>&#x2061;</mi>
+                          </mrow>
+                          <mi>&#x3b2;</mi>
+                          <mrow>
+                            <mi>cos</mi>
+                            <mi>&#x2061;</mi>
+                          </mrow>
+                          <mi>&#x3b3;</mi>
                         </mtd>
                       </mtr>
                     </mtable>
@@ -1629,12 +1651,11 @@ RSpec.describe Plurimath::Mathml do
             <m:oMath>
               <m:borderBox>
                 <m:borderBoxPr>
-                  <m:ctrlPr>
-                    <w:rPr>
-                      <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
-                      <w:i/>
-                    </w:rPr>
-                  </m:ctrlPr>
+                  <m:hideTop m:val="on"/>
+                  <m:hideBot m:val="on"/>
+                  <m:hideLeft m:val="on"/>
+                  <m:hideRight m:val="on"/>
+                  <m:strikeBLTR m:val="on"/>
                 </m:borderBoxPr>
                 <m:e>
                   <m:sSubSup>

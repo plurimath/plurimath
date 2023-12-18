@@ -2082,6 +2082,7 @@ module ExpectedValues
                     )
                   ],
                   Plurimath::Math::Symbol.new("⌋"),
+                  { sepChr: "" },
                 ),
                 Plurimath::Math::Symbol.new("+"),
                 Plurimath::Math::Function::Fenced.new(
@@ -2099,10 +2100,12 @@ module ExpectedValues
                     )
                   ],
                   Plurimath::Math::Symbol.new("⌉"),
+                  { sepChr: "" },
                 ),
                 Plurimath::Math::Symbol.new(" ")
               ],
               nil,
+              { sepChr: "" },
             ),
             Plurimath::Math::Function::Text.new("E,  &"),
             Plurimath::Math::Function::Text.new("otherwise")

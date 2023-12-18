@@ -103,6 +103,11 @@ module Plurimath
       number
       text
     ].freeze
+    TABLE_SUPPORTED_ATTRS = %i[
+      columnlines
+      rowlines
+      frame
+    ].freeze
 
     class << self
       def organize_table(array, column_align: nil, options: nil)
@@ -374,6 +379,8 @@ module Plurimath
             )
             fenced.options = { separators: attrs[:separators] }
             fenced
+          elsif TABLE_SUPPORTED_ATTRS.any? { |atr| attrs.key?(atr) }
+            Math::Function::Table.new(value, nil, nil, attrs)
           end
         elsif attrs.is_a?(Math::Core)
           attr_is_function(attrs, value)
