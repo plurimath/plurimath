@@ -21,13 +21,13 @@ module Plurimath
         end
 
         def to_mathml_without_math_tag
-          tag_name = hide_function_name ? "mfrac" : "mrow"
+          tag_name = hide_function_name ? "mrow" : "mfrac"
           mathml_value = [
             parameter_one&.to_mathml_without_math_tag,
             parameter_two&.to_mathml_without_math_tag,
           ]
           frac_tag = ox_element(tag_name)
-          frac_tag.attributes.merge!(options) if tag_name == "mfrac"
+          frac_tag.attributes.merge!(options) if tag_name == "mfrac" && options
           Utility.update_nodes(frac_tag, mathml_value)
         end
 
@@ -52,9 +52,10 @@ module Plurimath
         def line_breaking(obj)
           parameter_one&.line_breaking(obj)
           if obj.value_exist?
-            obj.update(self.class.new(Utility.filter_values(obj.value), parameter_two))
+            frac = self.class.new(Utility.filter_values(obj.value), parameter_two)
+            frac.hide_function_name = true
+            obj.update(frac)
             self.parameter_two = nil
-            self.hide_function_name = true
             return
           end
 

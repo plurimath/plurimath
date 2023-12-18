@@ -16,7 +16,7 @@
 </math>
 <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
   <mstyle displaystyle="true">
-    <mfrac>
+    <mrow>
       <mrow>
         <munderover>
           <mo>&#x220f;</mo>
@@ -27,12 +27,12 @@
           <mi>e</mi>
         </mrow>
       </mrow>
-    </mfrac>
+    </mrow>
   </mstyle>
 </math>
 <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
   <mstyle displaystyle="true">
-    <mfrac>
+    <mrow>
       <mi>w</mi>
       <mrow>
         <mi>sin</mi>
@@ -42,12 +42,12 @@
           <mo></mo>
         </mrow>
       </mrow>
-    </mfrac>
+    </mrow>
   </mstyle>
 </math>
 <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
   <mstyle displaystyle="true">
-    <mfrac>
+    <mrow>
       <mrow>
         <mrow>
           <mo></mo>
@@ -55,6 +55,6 @@
           <mo>)</mo>
         </mrow>
       </mrow>
-    </mfrac>
+    </mrow>
   </mstyle>
 </math>

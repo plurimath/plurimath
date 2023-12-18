@@ -54,9 +54,9 @@ module Plurimath
           attrs = { "m:val": (options ? options[:separators] : "") }
           d = Utility.ox_element("d", namespace: "m")
           dpr = Utility.ox_element("dPr", namespace: "m")
-          first_value(dpr)
+          open_paren(dpr)
           dpr << Utility.ox_element("sepChr", namespace: "m", attributes: attrs)
-          third_value(dpr)
+          close_paren(dpr)
           Utility.update_nodes(
             d,
             [

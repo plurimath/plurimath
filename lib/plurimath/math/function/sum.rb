@@ -28,6 +28,8 @@ module Plurimath
         def to_mathml_without_math_tag
           first_value = ox_element("mo")
           first_value << invert_unicode_symbols.to_s unless hide_function_name
+          return first_value unless all_values_exist?
+
           value_array = [
             parameter_one&.to_mathml_without_math_tag,
             parameter_two&.to_mathml_without_math_tag,
@@ -41,16 +43,13 @@ module Plurimath
           Utility.update_nodes(munderover_tag, value_array.insert(0, first_value))
           return munderover_tag if parameter_three.nil?
 
-            Utility.update_nodes(
-              ox_element("mrow"),
-              [
-                munderover_tag,
-                parameter_three&.to_mathml_without_math_tag,
-              ],
-            )
-          else
-            first_value
-          end
+          Utility.update_nodes(
+            ox_element("mrow"),
+            [
+              munderover_tag,
+              parameter_three&.to_mathml_without_math_tag,
+            ],
+          )
         end
 
         def to_html

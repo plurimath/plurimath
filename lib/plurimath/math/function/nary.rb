@@ -46,7 +46,7 @@ module Plurimath
 
         def to_mathml_without_math_tag
           tag_name = options[:type] == "undOvr" ? "munderover" : "msubsup"
-          if !(parameter_two && parameter_three)
+          if !(parameter_two.nil? && parameter_three.nil?)
             tag_name = if parameter_two
                          tag_name == "munderover" ? "munder" : "msub"
                        elsif parameter_three
@@ -80,7 +80,7 @@ module Plurimath
         def line_breaking(obj)
           parameter_one&.line_breaking(obj)
           if obj.value_exist?
-            obj.update(self.class.new(Utility.filter_values(obj.value), self.parameter_two, self.parameter_three, self.parameter_four))
+            obj.update(self.class.new(Utility.filter_values(obj.value), self.parameter_two, self.parameter_three, self.parameter_four, self.options))
             self.parameter_two = nil
             self.parameter_three = nil
             self.parameter_four = nil
@@ -89,7 +89,7 @@ module Plurimath
 
           parameter_two&.line_breaking(obj)
           if obj.value_exist?
-            obj.update(self.class.new(nil, Utility.filter_values(obj.value), self.parameter_three, self.parameter_four))
+            obj.update(self.class.new(nil, Utility.filter_values(obj.value), self.parameter_three, self.parameter_four, self.options))
             self.parameter_three = nil
             self.parameter_four = nil
             return
