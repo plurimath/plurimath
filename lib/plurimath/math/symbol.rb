@@ -5,7 +5,7 @@ module Plurimath
     class Symbol < Core
       attr_accessor :value
 
-      def initialize(sym)
+      def initialize(sym = nil)
         @value = sym.is_a?(Parslet::Slice) ? sym.to_s : sym
       end
 
@@ -56,11 +56,11 @@ module Plurimath
         value
       end
 
-      def to_omml_without_math_tag(_display_style)
+      def to_omml_without_math_tag(_, _)
         value
       end
 
-      def insert_t_tag(_display_style)
+      def insert_t_tag(_)
         [(Utility.ox_element("r", namespace: "m") << t_tag)]
       end
 
@@ -76,7 +76,7 @@ module Plurimath
         "subSup"
       end
 
-      def font_style_t_tag(_display_style)
+      def font_style_t_tag(_)
         t_tag
       end
 
@@ -88,12 +88,20 @@ module Plurimath
         false
       end
 
-      def omml_nodes(display_style)
+      def omml_nodes(_)
         Array(t_tag)
       end
 
       def t_tag
         Utility.ox_element("t", namespace: "m") << value
+      end
+
+      def separate_table
+        ["&", "\\\\"].include?(value)
+      end
+
+      def linebreak
+        value == "\\\\"
       end
 
       private

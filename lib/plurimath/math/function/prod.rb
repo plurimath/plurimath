@@ -25,17 +25,20 @@ module Plurimath
         end
 
         def to_mathml_without_math_tag
-          first_value = Utility.ox_element("mo") << invert_unicode_symbols.to_s
+          first_value = ox_element("mo")
+          first_value << invert_unicode_symbols.to_s unless hide_function_name
           if parameter_one || parameter_two
-            value_array = [first_value]
-            value_array << parameter_one&.to_mathml_without_math_tag
-            value_array << parameter_two&.to_mathml_without_math_tag
             tag_name = if parameter_two && parameter_one
                          "underover"
                        else
                          parameter_one ? "under" : "over"
                        end
-            munderover_tag = Utility.ox_element("m#{tag_name}")
+            value_array = [
+              first_value,
+              parameter_one&.to_mathml_without_math_tag,
+              parameter_two&.to_mathml_without_math_tag,
+            ]
+            munderover_tag = ox_element("m#{tag_name}")
             Utility.update_nodes(
               munderover_tag,
               value_array,
@@ -64,20 +67,36 @@ module Plurimath
           return r_element("&#x220f;", rpr_tag: false) unless all_values_exist?
 
           nary = Utility.ox_element("nary", namespace: "m")
-          Utility.update_nodes(
-            nary,
-            [
-              narypr("∏"),
-              omml_parameter(parameter_one, display_style, tag_name: "sub"),
-              omml_parameter(parameter_two, display_style, tag_name: "sup"),
-              omml_parameter(parameter_three, display_style, tag_name: "e"),
-            ],
-          )
+          Utility.update_nodes(nary, nary_values(display_style))
           [nary]
+        end
+
+        def nary_values(display_style)
+          [
+            narypr(hide_function_name ? "" : nary_attr_value),
+            omml_parameter(parameter_one, display_style, tag_name: "sub"),
+            omml_parameter(parameter_two, display_style, tag_name: "sup"),
+            omml_parameter(parameter_three, display_style, tag_name: "e"),
+          ]
         end
 
         def nary_attr_value
           "∏"
+        end
+
+        def line_breaking(obj)
+          parameter_one&.line_breaking(obj)
+          if obj.value_exist?
+            prod = self.class.new(Utility.filter_values(obj.value), parameter_two, parameter_three)
+            prod.hide_function_name = true
+            obj.update(prod)
+            return
+          end
+
+          parameter_three&.line_breaking(obj)
+          if obj.value_exist?
+            obj.update(Utility.filter_values(obj.value))
+          end
         end
       end
     end

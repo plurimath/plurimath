@@ -8,6 +8,7 @@ module Plurimath
       rule(unary: simple(:unary))   { unary }
       rule(table: simple(:table))   { table }
       rule(comma: simple(:comma))   { Utility.symbol_object(comma) }
+      rule(slash: simple(:slash))   { Math::Function::Linebreak.new }
       rule(unary: sequence(:unary)) { Utility.filter_values(unary) }
       rule(rparen: simple(:rparen)) { Utility.symbol_object(rparen) }
       rule(number: simple(:number)) { Math::Number.new(number) }
@@ -26,6 +27,12 @@ module Plurimath
       rule(intermediate_exp: simple(:int_exp))     { int_exp }
       rule(power_value: sequence(:power_value))    { power_value }
       rule(mod: simple(:mod), expr: simple(:expr)) { [mod, expr] }
+
+      rule(unitsml: simple(:unitsml)) do
+        Utility.filter_values(
+          Unitsml.new(unitsml.to_s).to_formula.value,
+        )
+      end
 
       rule(bold_fonts: simple(:font)) do
         Math::Function::FontStyle::DoubleStruck.new(
@@ -303,11 +310,15 @@ module Plurimath
       end
 
       rule(td: simple(:td)) do
-        Math::Function::Td.new(
-          [
-            Utility.td_value(td),
-          ],
-        )
+        if td.is_a?(Math::Formula) && td.value.any?(Math::Function::Table)
+          Utility.td_values(td.value, ",")
+        else
+          Math::Function::Td.new(
+            [
+              Utility.td_value(td),
+            ],
+          )
+        end
       end
 
       rule(td: sequence(:td)) do
@@ -632,6 +643,13 @@ module Plurimath
       end
 
       rule(sequence: sequence(:sequence),
+           left_right: simple(:left_right)) do
+        new_arr = sequence.flatten.compact
+        new_arr << left_right unless left_right.to_s.strip.empty?
+        new_arr
+      end
+
+      rule(sequence: sequence(:sequence),
            expr: sequence(:expr)) do
         sequence.flatten.compact + expr.flatten.compact
       end
@@ -857,6 +875,15 @@ module Plurimath
            text: simple(:text)) do
         Utility.get_class(function).new(
           Math::Function::Text.new(text),
+        )
+      end
+
+      rule(unary_class: simple(:function),
+           unitsml: simple(:unitsml)) do
+        Utility.get_class(function).new(
+          Utility.filter_values(
+            Unitsml.new(unitsml.to_s).to_formula.value,
+          ),
         )
       end
 

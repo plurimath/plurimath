@@ -1,0 +1,18 @@
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mstyle displaystyle="true">
+    <munder>
+      <mrow>
+        <mi>&#x3b8;</mi>
+      </mrow>
+      <mo>&#x332;</mo>
+    </munder>
+  </mstyle>
+</math>
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mstyle displaystyle="true">
+    <munder>
+      <mi>&#x3b3;</mi>
+      <mo>&#x332;</mo>
+    </munder>
+  </mstyle>
+</math>

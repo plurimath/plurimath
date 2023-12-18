@@ -1,0 +1,258 @@
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mstyle displaystyle="true">
+    <mfrac>
+      <mrow>
+        <msubsup>
+          <mi>u</mi>
+          <mtext>c</mtext>
+          <mn>2</mn>
+        </msubsup>
+        <mrow>
+          <mo>(</mo>
+          <msub>
+            <mstyle mathvariant="italic">
+              <mi>A</mi>
+            </mstyle>
+            <mi>x</mi>
+          </msub>
+          <mo>)</mo>
+        </mrow>
+      </mrow>
+      <msubsup>
+        <mstyle mathvariant="italic">
+          <mi>A</mi>
+        </mstyle>
+        <mi>x</mi>
+        <mn>2</mn>
+      </msubsup>
+    </mfrac>
+    <mo>=</mo>
+  </mstyle>
+</math>
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mstyle displaystyle="true">
+    <mfrac>
+      <mrow>
+        <msup>
+          <mi>u</mi>
+          <mn>2</mn>
+        </msup>
+        <mrow>
+          <mo>(</mo>
+          <msub>
+            <mstyle mathvariant="italic">
+              <mi>A</mi>
+            </mstyle>
+            <mtext>S</mtext>
+          </msub>
+          <mo>)</mo>
+        </mrow>
+      </mrow>
+      <msubsup>
+        <mstyle mathvariant="italic">
+          <mi>A</mi>
+        </mstyle>
+        <mtext>S</mtext>
+        <mn>2</mn>
+      </msubsup>
+    </mfrac>
+    <mo>+</mo>
+    <mfrac>
+      <mrow>
+        <msup>
+          <mi>u</mi>
+          <mn>2</mn>
+        </msup>
+        <mrow>
+          <mo>(</mo>
+          <msub>
+            <mi>m</mi>
+            <mtext>S</mtext>
+          </msub>
+          <mo>)</mo>
+        </mrow>
+      </mrow>
+      <msubsup>
+        <mi>m</mi>
+        <mtext>S</mtext>
+        <mn>2</mn>
+      </msubsup>
+    </mfrac>
+    <mo>+</mo>
+  </mstyle>
+</math>
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mstyle displaystyle="true">
+    <mfrac>
+      <mrow>
+        <msup>
+          <mi>u</mi>
+          <mn>2</mn>
+        </msup>
+        <mrow>
+          <mo>(</mo>
+          <msub>
+            <mi>m</mi>
+            <mi>x</mi>
+          </msub>
+          <mo>)</mo>
+        </mrow>
+      </mrow>
+      <msubsup>
+        <mi>m</mi>
+        <mi>x</mi>
+        <mn>2</mn>
+      </msubsup>
+    </mfrac>
+    <mo>+</mo>
+    <mfrac>
+      <mrow>
+        <msup>
+          <mi>u</mi>
+          <mn>2</mn>
+        </msup>
+        <mrow>
+          <mo>(</mo>
+          <msub>
+            <mover>
+              <mstyle mathvariant="italic">
+                <mi>R</mi>
+              </mstyle>
+              <mo>&#xaf;</mo>
+            </mover>
+            <mi>x</mi>
+          </msub>
+          <mo>)</mo>
+        </mrow>
+      </mrow>
+      <msubsup>
+        <mover>
+          <mstyle mathvariant="italic">
+            <mi>R</mi>
+          </mstyle>
+          <mo>&#xaf;</mo>
+        </mover>
+        <mi>x</mi>
+        <mn>2</mn>
+      </msubsup>
+    </mfrac>
+    <mo>+</mo>
+  </mstyle>
+</math>
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mstyle displaystyle="true">
+    <mfrac>
+      <mrow>
+        <msup>
+          <mi>u</mi>
+          <mn>2</mn>
+        </msup>
+        <mrow>
+          <mo>(</mo>
+          <msub>
+            <mover>
+              <mstyle mathvariant="italic">
+                <mi>R</mi>
+              </mstyle>
+              <mo>&#xaf;</mo>
+            </mover>
+            <mtext>S</mtext>
+          </msub>
+          <mo>)</mo>
+        </mrow>
+      </mrow>
+      <msubsup>
+        <mover>
+          <mstyle mathvariant="italic">
+            <mi>R</mi>
+          </mstyle>
+          <mo>&#xaf;</mo>
+        </mover>
+        <mtext>S</mtext>
+        <mn>2</mn>
+      </msubsup>
+    </mfrac>
+    <mo>&#x2212;</mo>
+    <mn>2</mn>
+    <mi>r</mi>
+    <mrow>
+      <mo>(</mo>
+      <msub>
+        <mover>
+          <mstyle mathvariant="italic">
+            <mi>R</mi>
+          </mstyle>
+          <mo>&#xaf;</mo>
+        </mover>
+        <mi>x</mi>
+      </msub>
+      <mo>,</mo>
+      <msub>
+        <mover>
+          <mstyle mathvariant="italic">
+            <mi>R</mi>
+          </mstyle>
+          <mo>&#xaf;</mo>
+        </mover>
+        <mtext>S</mtext>
+      </msub>
+      <mo>)</mo>
+    </mrow>
+  </mstyle>
+</math>
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mstyle displaystyle="true">
+    <mfrac>
+      <mrow>
+        <mi>u</mi>
+        <mrow>
+          <mo>(</mo>
+          <msub>
+            <mover>
+              <mstyle mathvariant="italic">
+                <mi>R</mi>
+              </mstyle>
+              <mo>&#xaf;</mo>
+            </mover>
+            <mi>x</mi>
+          </msub>
+          <mo>)</mo>
+        </mrow>
+        <mi>u</mi>
+        <mrow>
+          <mo>(</mo>
+          <msub>
+            <mover>
+              <mstyle mathvariant="italic">
+                <mi>R</mi>
+              </mstyle>
+              <mo>&#xaf;</mo>
+            </mover>
+            <mtext>S</mtext>
+          </msub>
+          <mo>)</mo>
+        </mrow>
+      </mrow>
+      <mrow>
+        <msub>
+          <mover>
+            <mstyle mathvariant="italic">
+              <mi>R</mi>
+            </mstyle>
+            <mo>&#xaf;</mo>
+          </mover>
+          <mi>x</mi>
+        </msub>
+        <msub>
+          <mover>
+            <mstyle mathvariant="italic">
+              <mi>R</mi>
+            </mstyle>
+            <mo>&#xaf;</mo>
+          </mover>
+          <mtext>S</mtext>
+        </msub>
+      </mrow>
+    </mfrac>
+  </mstyle>
+</math>

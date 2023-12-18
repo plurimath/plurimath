@@ -69,7 +69,8 @@ module Plurimath
       end
 
       rule(:quoted_text) do
-        (str('"') >> match("[^\"]").repeat.as(:text) >> str('"')) |
+        (str('"') >> str("unitsml(") >> match("[^\)\"]").repeat.as(:unitsml) >> str(')"')) |
+          (str('"') >> match("[^\"]").repeat.as(:text) >> str('"')) |
           (str('"') >> str("").as(:text))
       end
 
@@ -188,7 +189,7 @@ module Plurimath
       def dynamic_parser_rules(expr)
         first_value = str(expr.first.to_s)
         case expr.last
-        when :symbol then first_value.as(:symbol)
+        when :symbol then (str("\\").as(:slash) >> match("\s").repeat >> str("\n")) | first_value.as(:symbol)
         when :unary_class then (first_value.as(:unary_class) >> space? >> sequence.maybe).as(:unary)
         when :fonts then first_value.as(:fonts_class) >> space? >> sequence.as(:fonts_value)
         when :special_fonts then first_value.as(:bold_fonts)

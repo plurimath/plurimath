@@ -1,0 +1,22 @@
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mstyle displaystyle="true">
+    <mover>
+      <mrow>
+        <mi>a</mi>
+        <mi>s</mi>
+      </mrow>
+      <mo>^</mo>
+    </mover>
+  </mstyle>
+</math>
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mstyle displaystyle="true">
+    <mover>
+      <mi/>
+      <mrow>
+        <mi>d</mi>
+        <mi>f</mi>
+      </mrow>
+    </mover>
+  </mstyle>
+</math>

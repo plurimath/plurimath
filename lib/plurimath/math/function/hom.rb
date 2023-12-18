@@ -7,7 +7,10 @@ module Plurimath
     module Function
       class Hom < UnaryFunction
         def to_omml_without_math_tag(display_style)
-          [r_element("hom", rpr_tag: false), omml_value(display_style)]
+          array = []
+          array << r_element("hom", rpr_tag: false) unless hide_function_name
+          array += Array(omml_value(display_style))
+          array
         end
       end
     end

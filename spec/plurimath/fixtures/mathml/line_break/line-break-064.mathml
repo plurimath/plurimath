@@ -1,0 +1,19 @@
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mstyle displaystyle="true">
+    <mrow>
+      <munderover>
+        <mo>&#x220f;</mo>
+        <mtext>symmetric</mtext>
+        <mtext>node2</mtext>
+      </munderover>
+      <mrow>
+        <mtext>symmetric</mtext>
+      </mrow>
+    </mrow>
+  </mstyle>
+</math>
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mstyle displaystyle="true">
+    <mi>&#xaab;</mi>
+  </mstyle>
+</math>

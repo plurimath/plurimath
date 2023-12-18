@@ -11,7 +11,11 @@ module Plurimath
         def to_latex;end
 
         def to_mathml_without_math_tag
-          Utility.ox_element("msline")
+          ox_element("msline")
+        end
+
+        def to_omml_without_math_tag(display_style)
+          omml_value(display_style)
         end
 
         def to_omml_without_math_tag(display_style);end

@@ -4,12 +4,12 @@ module Plurimath
   module Math
     module Function
       class BinaryFunction < Core
-        attr_accessor :parameter_one, :parameter_two
+        attr_accessor :parameter_one, :parameter_two, :hide_function_name
 
         def initialize(parameter_one = nil, parameter_two = nil)
           @parameter_one = parameter_one
           @parameter_two = parameter_two
-          Utility.validate_left_right([parameter_one, parameter_two])
+          Utility.validate_left_right(variables.map { |var| get(var) })
         end
 
         def to_asciimath
@@ -114,12 +114,6 @@ module Plurimath
           return "" unless field
 
           "(#{field.to_asciimath})"
-        end
-
-        def empty_tag(wrapper_tag)
-          r_tag = Utility.ox_element("r", namespace: "m")
-          r_tag << (Utility.ox_element("t", namespace: "m") << "&#8203;")
-          wrapper_tag << r_tag
         end
 
         def underover(display_style)

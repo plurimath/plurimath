@@ -28,16 +28,12 @@ module Plurimath
         end
 
         def to_mathml_without_math_tag
-          first_value  = parameter_one&.to_mathml_without_math_tag
-          second_value = parameter_two&.to_mathml_without_math_tag
-          third_value  = parameter_three&.to_mathml_without_math_tag
-          class_tag = Utility.ox_element("m#{class_name}")
           Utility.update_nodes(
-            class_tag,
+            ox_element("m#{class_name}"),
             [
-              first_value,
-              second_value,
-              third_value,
+              validate_mathml_fields(parameter_one),
+              validate_mathml_fields(parameter_two),
+              validate_mathml_fields(parameter_three),
             ],
           )
         end
@@ -49,6 +45,27 @@ module Plurimath
           end
 
           underover(display_style)
+        end
+
+        def line_breaking(obj)
+          parameter_one&.line_breaking(obj)
+          if obj.value_exist?
+            obj.update(
+              Underover.new(Utility.filter_values(obj.value), parameter_two, parameter_three)
+            )
+            self.parameter_two = nil
+            self.parameter_three = nil
+            return
+          end
+
+          parameter_two.line_breaking(obj)
+          if obj.value_exist?
+            obj.update(
+              Underover.new(nil, Utility.filter_values(obj.value), parameter_three)
+            )
+            self.parameter_two = nil
+            self.parameter_three = nil
+          end
         end
       end
     end

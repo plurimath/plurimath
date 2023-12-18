@@ -29,17 +29,17 @@ module Plurimath
         value
       end
 
-      def to_omml_without_math_tag(_display_style)
+      def to_omml_without_math_tag(_)
         [t_tag]
       end
 
-      def insert_t_tag(_display_style)
+      def insert_t_tag(_)
         [
           (Utility.ox_element("r", namespace: "m") << t_tag),
         ]
       end
 
-      def font_style_t_tag(_display_style)
+      def font_style_t_tag(_)
         t_tag
       end
 

@@ -63,11 +63,14 @@ RSpec.describe Plurimath::Omml do
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
-              <msubsup>
-                <mo>&#x222b;</mo>
-                <mn>2</mn>
-                <mn>1</mn>
-              </msubsup>
+              <mrow>
+                <msubsup>
+                  <mo>&#x222b;</mo>
+                  <mn>2</mn>
+                  <mn>1</mn>
+                </msubsup>
+                <mn>3</mn>
+              </mrow>
             </mstyle>
           </math>
         MATHML
@@ -144,7 +147,6 @@ RSpec.describe Plurimath::Omml do
 
       let(:expected_value) do
         <<~MATHML
-
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
               <munder>

@@ -15,10 +15,11 @@ module Plurimath
 
         def to_mathml_without_math_tag
           underover = Utility.ox_element("munderover")
-          value_array = []
-          value_array << parameter_one&.to_mathml_without_math_tag
-          value_array << parameter_two&.to_mathml_without_math_tag
-          value_array << parameter_three&.to_mathml_without_math_tag
+          value_array = [
+            validate_mathml_fields(parameter_one),
+            validate_mathml_fields(parameter_two),
+            validate_mathml_fields(parameter_three),
+          ]
           Utility.update_nodes(underover, value_array)
         end
 
@@ -31,6 +32,22 @@ module Plurimath
 
         def to_omml_without_math_tag(display_style)
           underover(display_style)
+        end
+
+        def line_breaking(obj)
+          parameter_one&.line_breaking(obj)
+          if obj.value_exist?
+            obj.update(self.class.new(Utility.filter_values(obj.value), parameter_two, parameter_three))
+            self.parameter_two = nil
+            self.parameter_three = nil
+            return
+          end
+
+          parameter_two&.line_breaking(obj)
+          if obj.value_exist?
+            obj.update(self.class.new(nil, Utility.filter_values(obj.value), parameter_three))
+            self.parameter_three = nil
+          end
         end
       end
     end

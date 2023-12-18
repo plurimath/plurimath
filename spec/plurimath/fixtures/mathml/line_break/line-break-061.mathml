@@ -1,0 +1,24 @@
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mstyle displaystyle="true">
+    <msubsup>
+      <mi>log</mi>
+      <mrow>
+        <mi>&#x3b8;</mi>
+      </mrow>
+      <mi/>
+    </msubsup>
+  </mstyle>
+</math>
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mstyle displaystyle="true">
+    <msubsup>
+      <mi/>
+      <mi>&#x3b3;</mi>
+      <mrow>
+        <mi>&#x2222;</mi>
+        <mo linebreak="newline"/>
+        <mi>&#xd3;</mi>
+      </mrow>
+    </msubsup>
+  </mstyle>
+</math>

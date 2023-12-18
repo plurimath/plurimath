@@ -39,6 +39,16 @@ module Plurimath
         def to_omml_without_math_tag(display_style)
           underover(display_style)
         end
+
+        def line_breaking(obj)
+          parameter_one.line_breaking(obj)
+          if obj.value_exist?
+            obj.update(
+              Underover.new(nil, Utility.filter_values(obj.value), parameter_two)
+            )
+            self.parameter_two = nil
+          end
+        end
       end
     end
   end

@@ -56,6 +56,10 @@ module Plurimath
             Formula.new(parameter_one).to_omml_math_zone(gsub_spacing(spacing, last), last, indent, display_style: display_style),
           ]
         end
+
+        def line_breaking(obj)
+          custom_array_line_breaking(obj)
+        end
       end
     end
   end
