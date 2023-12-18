@@ -38,10 +38,12 @@ module Plurimath
         tag = ox_element(tag_name, namespace: namespace)
         return empty_tag(tag) unless field
 
-        Utility.update_nodes(
-          tag,
-          field.insert_t_tag(display_style),
-        )
+        field_value = if field.is_a?(Array)
+                        field.map { |object| object.insert_t_tag(display_style) }
+                      else
+                        field.insert_t_tag(display_style)
+                      end
+        Utility.update_nodes(tag, field_value)
       end
 
       def validate_function_formula

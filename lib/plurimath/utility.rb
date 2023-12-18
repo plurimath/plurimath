@@ -421,8 +421,8 @@ module Plurimath
         values.slice_before("mprescripts").map do |value|
           base_value   = value.shift
           part_val     = value.partition.with_index { |_, i| i.even? }
-          first_value  = part_val[0].empty? ? nil : filter_values(part_val[0])
-          second_value = part_val[1].empty? ? nil : filter_values(part_val[1])
+          first_value  = part_val[0].empty? ? nil : part_val[0]
+          second_value = part_val[1].empty? ? nil : part_val[1]
           if base_value.to_s.include?("mprescripts")
             [first_value, second_value]
           else

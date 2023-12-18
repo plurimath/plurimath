@@ -1835,7 +1835,7 @@ RSpec.describe Plurimath::Mathml::Parser do
               Plurimath::Math::Symbol.new(" F "),
               Plurimath::Math::Symbol.new(" 1 "),
             ),
-            Plurimath::Math::Symbol.new(" 0 "),
+            [Plurimath::Math::Symbol.new(" 0 ")],
           ),
           Plurimath::Math::Symbol.new(" &#x2061; "),
           Plurimath::Math::Function::Fenced.new(
