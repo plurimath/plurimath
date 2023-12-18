@@ -1,6 +1,6 @@
 <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
   <mstyle displaystyle="true">
-    <msubsup>
+    <mrow>
       <mrow>
         <mo>&#x2211;</mo>
       </mrow>
@@ -27,7 +27,7 @@
           <mo linebreak="newline"/>
           <mi>&#xd5;</mi>
         </mrow>
-      </msub>
+      </msubsup>
       <mrow>
         <mrow>
           <mi>&#x2262;</mi>

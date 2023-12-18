@@ -11,6 +11,7 @@ module Plurimath
       rule(math: subtree(:math))    { math.flatten.compact }
       rule(mfrac: simple(:mfrac))   { mfrac }
       rule(none: sequence(:none))   { nil }
+      rule(mspace: simple(:space))  { space }
       rule(mtable: simple(:table))  { table }
       rule(mstyle: simple(:mstyle)) { mstyle }
       rule(msline: sequence(:line)) { Math::Function::Msline.new }

@@ -769,6 +769,10 @@ RSpec.describe Plurimath::Mathml::Parser do
           Plurimath::Math::Symbol.new("a"),
           Plurimath::Math::Symbol.new("+"),
           Plurimath::Math::Symbol.new("b"),
+          Plurimath::Math::Function::Linebreak.new(
+            nil,
+            { linebreak: "newline" }
+          ),
           Plurimath::Math::Symbol.new("+"),
           Plurimath::Math::Symbol.new("c")
         ])
