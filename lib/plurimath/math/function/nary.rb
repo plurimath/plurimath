@@ -46,11 +46,13 @@ module Plurimath
 
         def to_mathml_without_math_tag
           tag_name = options[:type] == "undOvr" ? "munderover" : "msubsup"
-          if !(parameter_two.nil? && parameter_three.nil?)
+          if !(parameter_two && parameter_three)
             tag_name = if parameter_two
                          tag_name == "munderover" ? "munder" : "msub"
                        elsif parameter_three
                          tag_name == "munderover" ? "mover" : "msup"
+                       else
+                        'mrow'
                        end
           end
           subsup_tag = ox_element(tag_name)
