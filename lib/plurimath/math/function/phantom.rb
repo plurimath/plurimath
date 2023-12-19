@@ -39,8 +39,8 @@ module Plurimath
         protected
 
         def phant_pr
-          attributes = { val: "m:off" }
-          phant = Utility.ox_element("phant", namespace: "m")
+          attributes = { "m:val": "off" }
+          phant = Utility.ox_element("phantPr", namespace: "m")
           phant << Utility.ox_element("show", namespace: "m", attributes: attributes)
         end
       end

@@ -1250,14 +1250,14 @@ module LineBreakValues
   ])
   LineBreak_083 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Multiscript.new(
-      Plurimath::Math::Formula.new([
+      Plurimath::Math::Function::PowerBase.new(
         Plurimath::Math::Symbol.new("&#x3b1;"),
         Plurimath::Math::Function::Linebreak.new(
           Plurimath::Math::Symbol.new("="),
           { linebreak: "newline" }
         ),
         Plurimath::Math::Symbol.new("&#x3b1;")
-      ]),
+      ),
       Plurimath::Math::Formula.new([
         Plurimath::Math::Symbol.new("&#x3b3;"),
         Plurimath::Math::Function::Linebreak.new(

@@ -17,7 +17,7 @@ module Plurimath
           Utility.update_nodes(
             ox_element("mmultiscripts"),
             [
-              parameter_one.mmultiscript,
+              parameter_one&.mmultiscript,
               mprescript,
               validate_mathml_fields(prescripts),
             ]

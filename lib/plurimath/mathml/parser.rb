@@ -20,8 +20,15 @@ module Plurimath
         bevelled
         rowlines
         accent
+        height
         frame
+        depth
+        height
+        width
+        index
         close
+        alt
+        src
         open
       ].freeze
 

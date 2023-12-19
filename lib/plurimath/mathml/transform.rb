@@ -11,19 +11,20 @@ module Plurimath
       rule(math: subtree(:math))    { math.flatten.compact }
       rule(mfrac: simple(:mfrac))   { mfrac }
       rule(none: sequence(:none))   { nil }
-      rule(mspace: simple(:space))  { space }
+      rule(mspace: simple(:space))  { space.is_a?(Math::Function::Mpadded) ? nil : space }
       rule(mtable: simple(:table))  { table }
+      rule(mglyph: simple(:glyph))  { glyph }
       rule(mstyle: simple(:mstyle)) { mstyle }
       rule(msline: sequence(:line)) { Math::Function::Msline.new }
       rule(value: sequence(:value)) { Utility.filter_values(value) }
 
+      rule(mpadded: simple(:padded))    { padded }
       rule(mspace: sequence(:space))    { nil }
       rule(mfenced: simple(:mfenced))   { mfenced }
       rule(mtable: sequence(:mtable))   { Math::Function::Table.new(mtable) }
       rule(mscarry: sequence(:scarry))  { nil }
       rule(menclose: simple(:enclose))  { enclose }
       rule(mlabeledtr: sequence(:mtr))  { Math::Function::Tr.new(mtr) }
-      rule(mpadded: sequence(:padded))  { Utility.filter_values(padded) }
       rule(malignmark: sequence(:mark)) { nil }
       rule(maligngroup: sequence(:att)) { nil }
       rule(mprescripts: sequence(:att)) { "mprescripts" }
@@ -280,6 +281,12 @@ module Plurimath
         )
       end
 
+      rule(mpadded: sequence(:padded)) do
+        Math::Function::Mpadded.new(
+          Utility.filter_values(padded),
+        )
+      end
+
       rule(mtext: subtree(:mtext)) do
         entities = HTMLEntities.new
         symbols  = Constants::UNICODE_SYMBOLS.transform_keys(&:to_s)
@@ -367,15 +374,23 @@ module Plurimath
            value: sequence(:value)) do
         approved = if attrs.is_a?(Hash)
                      supported_attrs = %w[
-                      linethickness
-                      accentunder
-                      columnlines
-                      separators
-                      rowlines
-                      bevelled
-                      notation
-                      accent
-                      frame
+                       linethickness
+                       accentunder
+                       columnlines
+                       separators
+                       rowlines
+                       bevelled
+                       notation
+                       height
+                       accent
+                       height
+                       width
+                       index
+                       depth
+                       width
+                       frame
+                       alt
+                       src
                      ]
                      attrs if attrs.keys.any? do |k|
                        supported_attrs.include?(k.to_s)

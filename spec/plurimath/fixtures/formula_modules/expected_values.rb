@@ -47,8 +47,8 @@ module ExpectedValues
   EX_008 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Multiscript.new(
       Plurimath::Math::Number.new("2"),
-      Plurimath::Math::Number.new("3"),
-      Plurimath::Math::Number.new("1"),
+      [Plurimath::Math::Number.new("3")],
+      [Plurimath::Math::Number.new("1")],
     )
   ])
   EX_009 = Plurimath::Math::Formula.new([

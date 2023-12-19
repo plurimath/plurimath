@@ -108,6 +108,18 @@ module Plurimath
       rowlines
       frame
     ].freeze
+    MPADDED_ATTRS = %i[
+      height
+      depth
+      width
+    ]
+    MGLYPH_ATTRS = %i[
+      height
+      width
+      index
+      alt
+      src
+    ]
 
     class << self
       def organize_table(array, column_align: nil, options: nil)
@@ -381,6 +393,15 @@ module Plurimath
             fenced
           elsif TABLE_SUPPORTED_ATTRS.any? { |atr| attrs.key?(atr) }
             Math::Function::Table.new(value, nil, nil, attrs)
+          elsif MPADDED_ATTRS.any? { |atr| attrs.key?(atr) }
+            Math::Function::Mpadded.new(
+              filter_values(value),
+              attrs,
+            )
+          elsif MGLYPH_ATTRS.any? { |atr| attrs.key?(atr) }
+            Math::Function::Mglyph.new(
+              attrs,
+            )
           end
         elsif attrs.is_a?(Math::Core)
           attr_is_function(attrs, value)
@@ -428,9 +449,9 @@ module Plurimath
             [first_value, second_value]
           else
             Math::Function::PowerBase.new(
-              base_value,
-              first_value,
-              second_value,
+              filter_values(base_value),
+              filter_values(first_value),
+              filter_values(second_value),
             )
           end
         end

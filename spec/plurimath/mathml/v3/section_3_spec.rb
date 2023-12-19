@@ -1168,7 +1168,9 @@ RSpec.describe Plurimath::Mathml::Parser do
       expected_value = Plurimath::Math::Formula.new([
         Plurimath::Math::Formula.new([
           Plurimath::Math::Symbol.new("x"),
-          Plurimath::Math::Symbol.new("y"),
+          Plurimath::Math::Function::Mpadded.new(
+            Plurimath::Math::Symbol.new("y"),
+          ),
           Plurimath::Math::Symbol.new("z")
         ])
       ])
@@ -1834,8 +1836,10 @@ RSpec.describe Plurimath::Mathml::Parser do
             Plurimath::Math::Function::PowerBase.new(
               Plurimath::Math::Symbol.new(" F "),
               Plurimath::Math::Symbol.new(" 1 "),
+              Plurimath::Math::Function::None.new,
             ),
             [Plurimath::Math::Symbol.new(" 0 ")],
+            [Plurimath::Math::Function::None.new],
           ),
           Plurimath::Math::Symbol.new(" &#x2061; "),
           Plurimath::Math::Function::Fenced.new(
@@ -1881,11 +1885,15 @@ RSpec.describe Plurimath::Mathml::Parser do
             Plurimath::Math::Symbol.new(" R "),
             Plurimath::Math::Formula.new([
               Plurimath::Math::Symbol.new(" i "),
-              Plurimath::Math::Symbol.new(" k ")
+              Plurimath::Math::Function::None.new,
+              Plurimath::Math::Symbol.new(" k "),
+              Plurimath::Math::Symbol.new(" l ")
             ]),
             Plurimath::Math::Formula.new([
+              Plurimath::Math::Function::None.new,
               Plurimath::Math::Symbol.new(" j "),
-              Plurimath::Math::Symbol.new(" l ")
+              Plurimath::Math::Function::None.new,
+              Plurimath::Math::Function::None.new,
             ]),
           ),
         )
@@ -1899,10 +1907,13 @@ RSpec.describe Plurimath::Mathml::Parser do
       <<~MATHML
         <math>
           <mstyle dir="rtl">
-            <mmultiscripts><mo>&#x0644;<!--ARABIC LETTER LAM--></mo>
-              <mn>12</mn><none/>
+            <mmultiscripts>
+              <mo>&#x0644;<!--ARABIC LETTER LAM--></mo>
+              <mn>12</mn>
+              <none/>
               <mprescripts/>
-              <none/><mn>5</mn>
+              <none/>
+              <mn>5</mn>
             </mmultiscripts>
           </mstyle>
         </math>
@@ -1913,9 +1924,11 @@ RSpec.describe Plurimath::Mathml::Parser do
         Plurimath::Math::Function::Multiscript.new(
           Plurimath::Math::Function::PowerBase.new(
             Plurimath::Math::Symbol.new("&#x644;"),
-            Plurimath::Math::Symbol.new("12")
+            Plurimath::Math::Symbol.new("12"),
+            Plurimath::Math::Function::None.new,
           ),
-          Plurimath::Math::Symbol.new("5")
+          [Plurimath::Math::Function::None.new],
+          [Plurimath::Math::Symbol.new("5")],
         )
       ])
       expect(formula).to eq(expected_value)
