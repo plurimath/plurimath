@@ -28,10 +28,10 @@ module Plurimath
         ""
       end
 
-      def empty_tag(wrapper_tag)
+      def empty_tag(wrapper_tag = nil)
         r_tag = ox_element("r", namespace: "m")
         r_tag << (ox_element("t", namespace: "m") << "&#8203;")
-        wrapper_tag << r_tag
+        wrapper_tag ? wrapper_tag << r_tag : r_tag
       end
 
       def omml_parameter(field, display_style, tag_name:, namespace: "m")

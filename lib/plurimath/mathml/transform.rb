@@ -305,7 +305,7 @@ module Plurimath
       end
 
       rule(mmultiscripts: subtree(:script)) do
-        multi = Utility.multiscript(script.compact)
+        multi = Utility.multiscript(script)
         prescripts = multi[1]
         Math::Function::Multiscript.new(
           multi[0],

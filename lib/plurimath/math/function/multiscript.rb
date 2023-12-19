@@ -13,13 +13,13 @@ module Plurimath
         }.freeze
 
         def to_mathml_without_math_tag
+          mprescript = ox_element("mprescripts") if (parameter_two || parameter_three)
           Utility.update_nodes(
             ox_element("mmultiscripts"),
             [
               parameter_one.mmultiscript,
-              ox_element("mprescripts"),
-              validate_mathml_fields(parameter_two),
-              validate_mathml_fields(parameter_three),
+              mprescript,
+              validate_mathml_fields(prescripts),
             ]
           )
         end
@@ -53,6 +53,12 @@ module Plurimath
             )
             self.parameter_three = nil
           end
+        end
+
+        private
+
+        def prescripts
+          Array(parameter_two)&.zip(Array(parameter_three))&.flatten&.compact
         end
       end
     end
