@@ -206,7 +206,7 @@ module Plurimath
           count  = { "m:val": value&.first&.parameter_one&.count }
           mcjc   = { "m:val": "center" }
           mm     = Utility.ox_element("m", namespace: "m")
-          mpr    = Utility.ox_element("mpr", namespace: "m")
+          mpr    = Utility.ox_element("mPr", namespace: "m")
           mcs    = Utility.ox_element("mcs", namespace: "m")
           mc     = Utility.ox_element("mc", namespace: "m")
           mcpr   = Utility.ox_element("mcPr", namespace: "m")
