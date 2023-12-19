@@ -32,6 +32,8 @@ module Plurimath
       rule(barPr: subtree(:barpr))  { barpr }
       rule(oMath: subtree(:omath))  { omath.flatten.compact }
       rule(fName: subtree(:fname))  { fname }
+      rule(sPreSub: sequence(:sub)) { { sub: Utility.nil_to_none_object(sub) } }
+      rule(sPreSup: sequence(:sup)) { { sup: Utility.nil_to_none_object(sup) } }
       rule(oMath: sequence(:omath)) { omath }
       rule(limLoc: simple(:limLoc)) { limLoc }
 
@@ -302,11 +304,12 @@ module Plurimath
       end
 
       rule(sPre: subtree(:spre)) do
-        pre = spre.flatten.compact
+        sub_value = spre.find { |pre| pre.is_a?(Hash) && pre[:sub] }[:sub]
+        sup_value = spre.find { |pre| pre.is_a?(Hash) && pre[:sup] }[:sup]
         Math::Function::Multiscript.new(
-          pre[0],
-          pre[1],
-          pre[2],
+          Utility.filter_values(spre[0]),
+          sub_value,
+          sup_value,
         )
       end
 

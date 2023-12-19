@@ -8,6 +8,7 @@ module Plurimath
 
       CUSTOMIZABLE_TAGS = %w[
         eqArr
+        sPre
         mr
         r
       ].freeze
@@ -67,6 +68,8 @@ module Plurimath
           organize_fonts(node)
         when "mr", "eqArr"
           organize_table_td(node)
+        when "sPre"
+          organize_spre(node)
         end
       end
 
@@ -82,6 +85,11 @@ module Plurimath
           attrs_arr[:val] << child.attributes["val"]
         end
         node.attributes.merge! attrs_arr
+      end
+
+      def organize_spre(node)
+        node.locate("sub").first.name = "sPreSub"
+        node.locate("sup").first.name = "sPreSup"
       end
     end
   end

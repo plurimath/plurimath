@@ -420,6 +420,7 @@ module Plurimath
       def multiscript(values)
         values.slice_before("mprescripts").map do |value|
           base_value   = value.shift
+          value        = nil_to_none_object(value)
           part_val     = value.partition.with_index { |_, i| i.even? }
           first_value  = part_val[0].empty? ? nil : part_val[0]
           second_value = part_val[1].empty? ? nil : part_val[1]
@@ -432,6 +433,16 @@ module Plurimath
               second_value,
             )
           end
+        end
+      end
+
+      def nil_to_none_object(value)
+        return value unless value.any?(NilClass) || value.any? { |val| val.is_a?(Array) && val.empty? }
+
+        value.each.with_index do |val, index|
+          next unless val.nil? || val.is_a?(Array)
+
+          value[index] = Math::Function::None.new
         end
       end
 
