@@ -9,7 +9,7 @@
       </m:dPr>
       <m:e>
         <m:m>
-          <m:mpr>
+          <m:mPr>
             <m:mcs>
               <m:mc>
                 <m:mcPr>
@@ -24,7 +24,7 @@
                 <w:i/>
               </w:rPr>
             </m:ctrlPr>
-          </m:mpr>
+          </m:mPr>
           <m:mr>
             <m:e>
               <m:r>

@@ -5614,7 +5614,7 @@ RSpec.describe Plurimath::Asciimath do
                 </m:dPr>
                 <m:e>
                   <m:m>
-                    <m:mpr>
+                    <m:mPr>
                       <m:mcs>
                         <m:mc>
                           <m:mcPr>
@@ -5629,7 +5629,7 @@ RSpec.describe Plurimath::Asciimath do
                           <w:i/>
                         </w:rPr>
                       </m:ctrlPr>
-                    </m:mpr>
+                    </m:mPr>
                     <m:mr>
                       <m:e>
                         <m:r>
