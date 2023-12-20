@@ -11,7 +11,6 @@ module Plurimath
           first_value: "enclosure type",
           second_value: "expression",
         }.freeze
-
         FOUR_SIDED_NOTATIONS = {
           top: "hideTop",
           bottom: "hideBot",

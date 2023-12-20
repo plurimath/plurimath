@@ -6,8 +6,6 @@ module Plurimath
   module Math
     module Function
       class Sqrt < UnaryFunction
-        attr_accessor :options
-
         def to_mathml_without_math_tag
           sqrt_tag = Utility.ox_element("msqrt")
           Utility.update_nodes(
