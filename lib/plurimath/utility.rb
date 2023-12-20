@@ -418,9 +418,6 @@ module Plurimath
 
       def attr_is_function(attrs, value)
         case attrs
-        when Math::Function::Menclose
-          attrs.parameter_two = filter_values(value)
-          attrs
         when Math::Function::Fenced
           attrs.parameter_two = value.compact
           attrs
