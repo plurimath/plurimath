@@ -805,4 +805,13 @@ RSpec.describe Plurimath::Mathml::Parser do
       expect(mathml).to eq(file)
     end
   end
+
+  context "contains #line-break-090.mathml" do
+    let(:file_name) { "spec/plurimath/fixtures/mathml/line_break/line-break-090.mathml" }
+    let(:expected_value) { LineBreakValues::LineBreak_090 }
+
+    it "matches mathml equations" do
+      expect(mathml).to eq(file)
+    end
+  end
 end

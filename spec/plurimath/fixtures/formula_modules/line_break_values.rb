@@ -1354,4 +1354,36 @@ module LineBreakValues
       ])
     )
   ])
+  LineBreak_090 = Plurimath::Math::Formula.new([
+    Plurimath::Math::Function::Multiscript.new(
+      Plurimath::Math::Function::PowerBase.new(
+        Plurimath::Math::Formula.new([
+          Plurimath::Math::Symbol.new("a"),
+          Plurimath::Math::Function::Linebreak.new(
+            Plurimath::Math::Symbol.new("="),
+            { linebreak: "newline" }
+          ),
+          Plurimath::Math::Symbol.new("b"),
+        ]),
+        Plurimath::Math::Symbol.new("&#x3b1;"),
+        Plurimath::Math::Symbol.new("&#x3b1;")
+      ),
+      Plurimath::Math::Formula.new([
+        Plurimath::Math::Symbol.new("&#x3b3;"),
+        Plurimath::Math::Function::Linebreak.new(
+          Plurimath::Math::Symbol.new("="),
+          { linebreak: "newline" }
+        ),
+        Plurimath::Math::Symbol.new("&#x3b3;")
+      ]),
+      Plurimath::Math::Formula.new([
+        Plurimath::Math::Symbol.new("&#x3b2;"),
+        Plurimath::Math::Function::Linebreak.new(
+          Plurimath::Math::Symbol.new("="),
+          { linebreak: "newline" }
+        ),
+        Plurimath::Math::Symbol.new("&#x3b2;")
+      ])
+    )
+  ])
 end
