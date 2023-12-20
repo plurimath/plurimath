@@ -6,6 +6,10 @@ module Plurimath
   module Math
     module Function
       class None < UnaryFunction
+        def to_asciimath; end
+
+        def to_latex; end
+
         def to_mathml_without_math_tag
           ox_element("none")
         end

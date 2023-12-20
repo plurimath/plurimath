@@ -58,8 +58,8 @@ RSpec.describe Plurimath::Omml do
       end
 
       it 'returns parsed Asciimath to Formula' do
-        latex = '\int_2^1{3}'
-        asciimath = 'int_2^1 3'
+        latex = '\int_{2}^{1} 3'
+        asciimath = 'int_(2)^(1) 3'
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -150,8 +150,8 @@ RSpec.describe Plurimath::Omml do
       end
 
       it 'converts and matches OMML to MathML' do
-        latex = '\int_2{3}'
-        asciimath = 'int_2 3'
+        latex = '\int_{2} 3'
+        asciimath = 'int_(2) 3'
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -206,8 +206,8 @@ RSpec.describe Plurimath::Omml do
       end
 
       it 'returns parsed Asciimath to Formula' do
-        latex = '\int_2{3}'
-        asciimath = 'int_2 3'
+        latex = '\int_{2} 3'
+        asciimath = 'int_(2) 3'
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -262,8 +262,8 @@ RSpec.describe Plurimath::Omml do
       end
 
       it 'returns parsed Asciimath to Formula' do
-        latex = '\int^1{3}'
-        asciimath = 'int^1 3'
+        latex = '\int^{1} 3'
+        asciimath = 'int^(1) 3'
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -318,8 +318,8 @@ RSpec.describe Plurimath::Omml do
       end
 
       it 'returns parsed Asciimath to Formula' do
-        latex = '\int^1{3}'
-        asciimath = 'int^1 3'
+        latex = '\int^{1} 3'
+        asciimath = 'int^(1) 3'
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">

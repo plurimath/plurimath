@@ -12,6 +12,20 @@ module Plurimath
           third_value: "supscript",
         }.freeze
 
+        def to_asciimath
+          subscript = "_(#{parameter_two&.map(&:to_asciimath).join})" unless valid_value_exist?(parameter_two)
+          supscript = "^(#{parameter_three&.map(&:to_asciimath).join})" unless valid_value_exist?(parameter_three)
+          prescript = "\\ #{subscript}#{supscript}" if subscript || supscript
+          "#{prescript}#{parameter_one&.to_asciimath}"
+        end
+
+        def to_latex
+          subscript = "_{#{parameter_two&.map(&:to_latex).join}}" unless valid_value_exist?(parameter_two)
+          supscript = "^{#{parameter_three&.map(&:to_latex).join}}" unless valid_value_exist?(parameter_three)
+          prescript = "{}#{subscript}#{supscript}" if subscript || supscript
+          "#{prescript}#{parameter_one&.to_latex}"
+        end
+
         def to_mathml_without_math_tag
           mprescript = ox_element("mprescripts") if (parameter_two || parameter_three)
           Utility.update_nodes(
@@ -59,6 +73,10 @@ module Plurimath
 
         def prescripts
           Array(parameter_two)&.zip(Array(parameter_three))&.flatten&.compact
+        end
+
+        def valid_value_exist?(field)
+          field&.empty? || field&.all?(None)
         end
       end
     end
