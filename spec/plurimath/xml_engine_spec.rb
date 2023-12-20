@@ -145,6 +145,13 @@ RSpec.describe Plurimath::XMLEngine do
       expect(comments_2).to eq [true, false, true, false]
     end
 
+    it ".replace_nodes?" do
+      nodes = sample_document_with_comments.nodes
+      expect(nodes[2].nodes.length).to eq 4
+      engine.replace_nodes(nodes.first, "t")
+      expect(nodes.first.nodes.length).to eq 1
+    end
+
     describe "Node" do
       describe "#nodes" do
         it "handles basic documents correctly" do
