@@ -155,11 +155,7 @@ module Plurimath
       end
 
       rule(lim: sequence(:lim)) do
-        if lim.any?(String)
-          Utility.text_classes(lim)
-        else
-          Utility.filter_values(lim)
-        end
+        lim.any?(String) ? Utility.text_classes(lim) : Utility.filter_values(lim)
       end
 
       rule(acc: subtree(:acc)) do
