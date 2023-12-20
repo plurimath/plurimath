@@ -69,13 +69,6 @@ module Plurimath
         Math::Function::Longdiv.new(long.flatten.compact)
       end
 
-      rule(menclose: sequence(:close)) do
-        Math::Function::Menclose.new(
-          nil,
-          Utility.filter_values(close),
-        )
-      end
-
       rule(menclose: subtree(:close)) do
         options = close.find { |obj| obj.is_a?(Hash) and close.delete(obj) }
         Math::Function::Menclose.new(
