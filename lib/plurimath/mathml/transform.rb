@@ -197,8 +197,8 @@ module Plurimath
           flatten_mrow.first
         elsif flatten_mrow&.first&.is_nary_function? && flatten_mrow.length == 2
           nary_function = flatten_mrow.first
-          if nary_function.is_ternary_function? && nary_function.parameter_three.nil? && nary_function.any_value_exist?
-            nary_function.parameter_three = flatten_mrow.delete_at(1)
+          if nary_function.is_ternary_function? && nary_function.all_values_exist?
+            flatten_mrow[0] = nary_function.new_nary_function(flatten_mrow.delete_at(1))
             flatten_mrow
           elsif nary_function.is_binary_function? && nary_function.any_value_exist?
             flatten_mrow[0] = nary_function.new_nary_function(flatten_mrow.delete_at(1))
@@ -222,7 +222,7 @@ module Plurimath
         if nary_function&.is_nary_function?
           if nary_function.is_ternary_function? && nary_function.parameter_three.nil?
             nary_function.parameter_three = mstyle.delete_at(1)
-          elsif nary_function.is_binary_function? && nary_function.parameter_two.nil?
+          elsif nary_function.is_binary_function?
             mstyle[0] = nary_function.new_nary_function(mstyle.delete_at(1))
           end
         end

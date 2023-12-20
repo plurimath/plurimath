@@ -30,17 +30,17 @@ module Plurimath
 
         def to_asciimath
           first_value  = parameter_one&.to_asciimath || "int"
-          second_value = "_#{parameter_two.to_asciimath}" if parameter_two
-          third_value  = "^#{parameter_three.to_asciimath}" if parameter_three
+          second_value = "_(#{parameter_two.to_asciimath})" if parameter_two
+          third_value  = "^(#{parameter_three.to_asciimath})" if parameter_three
           fourth_value = " #{parameter_four.to_asciimath}" if parameter_four
           "#{first_value}#{second_value}#{third_value}#{fourth_value}"
         end
 
         def to_latex
           first_value  = parameter_one&.to_latex || "\\int"
-          second_value = "_#{parameter_two.to_latex}" if parameter_two
-          third_value  = "^#{parameter_three.to_latex}" if parameter_three
-          fourth_value = "{#{parameter_four.to_latex}}" if parameter_four
+          second_value = "_{#{parameter_two.to_latex}}" if parameter_two
+          third_value  = "^{#{parameter_three.to_latex}}" if parameter_three
+          fourth_value = " #{parameter_four.to_latex}" if parameter_four
           "#{first_value}#{second_value}#{third_value}#{fourth_value}"
         end
 

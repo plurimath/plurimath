@@ -1224,6 +1224,269 @@ RSpec.describe Plurimath::Mathml do
         expect(formula.to_asciimath).to eq(asciimath)
       end
     end
+
+    context "contains mglyph with options/attributes index, src, and alt Mathml" do
+      let(:string)  do
+        <<~MATHML
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
+              <mglyph src="image.png" alt="Alternate Text" index="65534"/>
+              <mglyph src="image.png" alt="Alternate Text 1" index="34"/>
+              <mglyph src="image.png" alt="Alternate Text 2" index="0"/>
+            </mstyle>
+          </math>
+        MATHML
+      end
+
+      it 'compares MathML, LaTeX, and AsciiMath string' do
+        mathml = <<~MATHML
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
+              <mrow>
+                <mglyph src="image.png" alt="Alternate Text" index="65534"/>
+                <mglyph src="image.png" alt="Alternate Text 1" index="34"/>
+                <mglyph src="image.png" alt="Alternate Text 2" index="0"/>
+              </mrow>
+            </mstyle>
+          </math>
+        MATHML
+        latex = "Alternate Text Alternate Text 1 Alternate Text 2"
+        asciimath = "Alternate Text Alternate Text 1 Alternate Text 2"
+        expect(formula.to_latex).to eq(latex)
+        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_asciimath).to eq(asciimath)
+      end
+    end
+
+    context "contains mpadded with attributes width, height, and depth Mathml" do
+      let(:string)  do
+        <<~MATHML
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
+              <mpadded height="100" width="100" depth="100">
+                <mi>F</mi>
+              </mpadded>
+              <mpadded height="0%" width="0%" depth="00%">
+                <mi>F</mi>
+              </mpadded>
+              <none/>
+            </mstyle>
+          </math>
+        MATHML
+      end
+
+      it 'compares MathML, LaTeX, and AsciiMath string' do
+        mathml = <<~MATHML
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
+              <mrow>
+                <mpadded height="100" width="100" depth="100">
+                  <mi>F</mi>
+                </mpadded>
+                <mpadded height="0%" width="0%" depth="00%">
+                  <mi>F</mi>
+                </mpadded>
+              </mrow>
+            </mstyle>
+          </math>
+        MATHML
+        latex = "F F"
+        asciimath = "F F"
+        expect(formula.to_latex).to eq(latex)
+        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_asciimath).to eq(asciimath)
+      end
+    end
+
+    context "contains mmultiscript containing none tag Mathml" do
+      let(:string)  do
+        <<~MATHML
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
+              <mmultiscripts>
+                <mo>&#x2211;</mo>
+                <mi>F</mi>
+                <mi>A</mi>
+                <mprescripts/>
+                <none/>
+                <mi/>
+              </mmultiscripts>
+              <mmultiscripts>
+                <mo>&#x2211;</mo>
+                <mi>F</mi>
+                <mi>B</mi>
+                <mprescripts/>
+                <mn>4</mn>
+                <mi>E</mi>
+              </mmultiscripts>
+            </mstyle>
+          </math>
+        MATHML
+      end
+
+      it 'compares MathML, LaTeX, and AsciiMath string' do
+        mathml = <<~MATHML
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
+              <mrow>
+                <mmultiscripts>
+                  <mo>&#x2211;</mo>
+                  <mi>F</mi>
+                  <mi>A</mi>
+                  <mprescripts/>
+                  <none/>
+                  <none/>
+                </mmultiscripts>
+                <mmultiscripts>
+                  <mo>&#x2211;</mo>
+                  <mi>F</mi>
+                  <mi>B</mi>
+                  <mprescripts/>
+                  <mn>4</mn>
+                  <mi>E</mi>
+                </mmultiscripts>
+              </mrow>
+            </mstyle>
+          </math>
+        MATHML
+        latex = "\\sum_{F}^{A} {}_{4}^{E}\\sum_{F}^{B}"
+        asciimath = "sum_(F)^(A) \\ _(4)^(E)sum_(F)^(B)"
+        expect(formula.to_latex).to eq(latex)
+        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_asciimath).to eq(asciimath)
+      end
+    end
+
+    context "contains mstyle containing nary oint value in msubsup tag Mathml" do
+      let(:string)  do
+        <<~MATHML
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
+              <msubsup>
+                <mo>&#x222e;</mo>
+                <mi>F</mi>
+                <mi>A</mi>
+              </msubsup>
+              <mi>C</mi>
+            </mstyle>
+          </math>
+        MATHML
+      end
+
+      it 'compares MathML, LaTeX, and AsciiMath string' do
+        mathml = <<~MATHML
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
+              <mrow>
+                <msubsup>
+                  <mo>&#x222e;</mo>
+                  <mi>F</mi>
+                  <mi>A</mi>
+                </msubsup>
+                <mi>C</mi>
+              </mrow>
+            </mstyle>
+          </math>
+        MATHML
+        latex = "\\oint_{F}^{A} C"
+        asciimath = "oint_(F)^(A) C"
+        expect(formula.to_latex).to eq(latex)
+        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_asciimath).to eq(asciimath)
+      end
+    end
+
+    context "contains mstyle containing nary oint value in msub tag Mathml" do
+      let(:string)  do
+        <<~MATHML
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
+              <msub>
+                <mo>&#x222e;</mo>
+                <mi>F</mi>
+              </msub>
+              <mi>C</mi>
+            </mstyle>
+          </math>
+        MATHML
+      end
+
+      it 'compares MathML, LaTeX, and AsciiMath string' do
+        mathml = <<~MATHML
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
+              <mrow>
+                <msub>
+                  <mo>&#x222e;</mo>
+                  <mi>F</mi>
+                </msub>
+                <mrow>
+                  <mi>C</mi>
+                </mrow>
+              </mrow>
+            </mstyle>
+          </math>
+        MATHML
+        latex = "\\oint_{F} C"
+        asciimath = "oint_(F) C"
+        expect(formula.to_latex).to eq(latex)
+        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_asciimath).to eq(asciimath)
+      end
+    end
+
+    context "contains mtable containing frame, rowlines, and columnlines Mathml" do
+      let(:string)  do
+        <<~MATHML
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
+              <mtable frame="none" rowlines="solid" columnlines="dashed">
+                <mtr>
+                  <mtd>
+                    <mo>&#x222a;</mo>
+                    <mi>F</mi>
+                  </mtd>
+                </mtr>
+                <mtr>
+                  <mtd>
+                    <mo>&#x222a;</mo>
+                    <mi>E</mi>
+                  </mtd>
+                </mtr>
+              </mtable>
+            </mstyle>
+          </math>
+        MATHML
+      end
+
+      it 'compares MathML, LaTeX, and AsciiMath string' do
+        mathml = <<~MATHML
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
+              <mtable frame="none" rowlines="solid" columnlines="dashed">
+                <mtr>
+                  <mtd>
+                    <mo>&#x222a;</mo>
+                    <mi>F</mi>
+                  </mtd>
+                </mtr>
+                <mtr>
+                  <mtd>
+                    <mo>&#x222a;</mo>
+                    <mi>E</mi>
+                  </mtd>
+                </mtr>
+              </mtable>
+            </mstyle>
+          </math>
+        MATHML
+        latex = "\\left .\\begin{matrix}{a}\\cup F \\\\ \\cup E\\end{matrix}\\right ."
+        asciimath = "[[uu F], [uu E]]"
+        expect(formula.to_latex).to eq(latex)
+        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_asciimath).to eq(asciimath)
+      end
+    end
   end
 
   describe ".to_omml" do
@@ -2038,6 +2301,567 @@ RSpec.describe Plurimath::Mathml do
 
       it 'returns Mathml string' do
         expect(formula).to eq(expected_value)
+      end
+    end
+
+    context "contains mfrac with options/attributes tag Mathml" do
+      let(:string)  do
+        <<~MATHML
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
+              <mfrac linethickness="0">
+                <mn>12</mn>
+                <mi>i</mi>
+              </mfrac>
+              <mfrac bevelled="true">
+                <mn>12</mn>
+                <mi>i</mi>
+              </mfrac>
+            </mstyle>
+          </math>
+        MATHML
+      end
+
+      it 'compares OMML string' do
+        omml = <<~OMML
+          <m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape">
+            <m:oMath>
+              <m:f>
+                <m:fPr>
+                  <m:type m:val="noBar"/>
+                  <m:ctrlPr>
+                    <w:rPr>
+                      <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
+                      <w:i/>
+                    </w:rPr>
+                  </m:ctrlPr>
+                </m:fPr>
+                <m:num>
+                  <m:r>
+                    <m:t>12</m:t>
+                  </m:r>
+                </m:num>
+                <m:den>
+                  <m:r>
+                    <m:t>i</m:t>
+                  </m:r>
+                </m:den>
+              </m:f>
+              <m:f>
+                <m:fPr>
+                  <m:type m:val="skw"/>
+                  <m:ctrlPr>
+                    <w:rPr>
+                      <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
+                      <w:i/>
+                    </w:rPr>
+                  </m:ctrlPr>
+                </m:fPr>
+                <m:num>
+                  <m:r>
+                    <m:t>12</m:t>
+                  </m:r>
+                </m:num>
+                <m:den>
+                  <m:r>
+                    <m:t>i</m:t>
+                  </m:r>
+                </m:den>
+              </m:f>
+            </m:oMath>
+          </m:oMathPara>
+        OMML
+        expect(formula).to eq(omml)
+      end
+    end
+
+    context "contains mglyph with options/attributes index, src, and alt Mathml" do
+      let(:string)  do
+        <<~MATHML
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
+              <mglyph src="image.png" alt="Alternate Text" index="65534"/>
+              <mglyph src="image.png" alt="Alternate Text 1" index="34"/>
+              <mglyph src="image.png" alt="Alternate Text 2" index="0"/>
+              <mglyph src="image.png" alt="Alternate Text 2" index="10"/>
+              <mglyph src="image.png" alt="Alternate Text 2" index="176"/>
+              <mglyph src="image.png" alt="Alternate Text 2" index="192"/>
+              <mglyph src="image.png" alt="Alternate Text 2" index="208"/>
+              <mglyph src="image.png" alt="Alternate Text 2" index="224"/>
+              <mglyph src="image.png" alt="Alternate Text 2" index="240"/>
+            </mstyle>
+          </math>
+        MATHML
+      end
+
+      it 'compares OMML string' do
+        omml = <<~OMML
+          <m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape">
+            <m:oMath>
+              <m:r>
+                <m:t>Alternate Text</m:t>
+              </m:r>
+              <m:r>
+                <m:t>&#x22;</m:t>
+              </m:r>
+              <m:r>
+                <m:t>Alternate Text 2</m:t>
+              </m:r>
+              <m:r>
+                <m:t>&#xA;</m:t>
+              </m:r>
+              <m:r>
+                <m:t>&#xB0;</m:t>
+              </m:r>
+              <m:r>
+                <m:t>&#xC0;</m:t>
+              </m:r>
+              <m:r>
+                <m:t>&#xD0;</m:t>
+              </m:r>
+              <m:r>
+                <m:t>&#xE0;</m:t>
+              </m:r>
+              <m:r>
+                <m:t>&#xF0;</m:t>
+              </m:r>
+            </m:oMath>
+          </m:oMathPara>
+        OMML
+        expect(formula).to eq(omml)
+      end
+    end
+
+    context "contains mpadded with attributes width, height, and depth Mathml" do
+      let(:string)  do
+        <<~MATHML
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
+              <mpadded height="100" width="100" depth="100">
+                <mi>F</mi>
+              </mpadded>
+              <mpadded height="0%" width="0%" depth="00%">
+                <mi>F</mi>
+              </mpadded>
+            </mstyle>
+          </math>
+        MATHML
+      end
+
+      it 'compares OMML string' do
+        omml = <<~OMML
+          <m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape">
+            <m:oMath>
+              <m:phant>
+                <m:e>
+                  <m:r>
+                    <m:t>F</m:t>
+                  </m:r>
+                </m:e>
+              </m:phant>
+              <m:phant>
+                <m:phantPr>
+                  <zeroAsc m:val="on"/>
+                  <zeroWid m:val="on"/>
+                  <zeroDesc m:val="on"/>
+                </m:phantPr>
+                <m:e>
+                  <m:r>
+                    <m:t>F</m:t>
+                  </m:r>
+                </m:e>
+              </m:phant>
+            </m:oMath>
+          </m:oMathPara>
+        OMML
+        expect(formula).to eq(omml)
+      end
+    end
+
+    context "contains ms tag Mathml" do
+      let(:string)  do
+        <<~MATHML
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
+              <ms>
+                <mi>F</mi>
+                <mn>F</mn>
+              </ms>
+              <ms>
+                <msubsup>
+                  <mi>F</mi>
+                  <mn>3</mn>
+                  <mo>&#x2a;</mo>
+                </msubsup>
+              </ms>
+              <none/>
+            </mstyle>
+          </math>
+        MATHML
+      end
+
+      it 'compares OMML string' do
+        omml = <<~OMML
+          <m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape">
+            <m:oMath>
+              <m:t>“F F”</m:t>
+              <m:t>“F 3 *”</m:t>
+            </m:oMath>
+          </m:oMathPara>
+        OMML
+        expect(formula).to eq(omml)
+      end
+    end
+
+    context "contains multiscripts containing none tag Mathml" do
+      let(:string)  do
+        <<~MATHML
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
+              <mmultiscripts>
+                <mo>&#x2211;</mo>
+                <mi>F</mi>
+                <mi>A</mi>
+                <mprescripts/>
+                <none/>
+                <mi/>
+              </mmultiscripts>
+            </mstyle>
+          </math>
+        MATHML
+      end
+
+      it 'compares OMML string' do
+        omml = <<~OMML
+          <m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape">
+            <m:oMath>
+              <m:sPre>
+                <m:e>
+                  <m:limLow>
+                    <m:limLowPr>
+                      <m:ctrlPr>
+                        <w:rPr>
+                          <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
+                          <w:i/>
+                        </w:rPr>
+                      </m:ctrlPr>
+                    </m:limLowPr>
+                    <m:e>
+                      <m:limUpp>
+                        <m:limUppPr>
+                          <m:ctrlPr>
+                            <w:rPr>
+                              <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
+                              <w:i/>
+                            </w:rPr>
+                          </m:ctrlPr>
+                        </m:limUppPr>
+                        <m:e>
+                          <m:r>
+                            <m:t>&#x2211;</m:t>
+                          </m:r>
+                        </m:e>
+                        <m:lim>
+                          <m:r>
+                            <m:t>A</m:t>
+                          </m:r>
+                        </m:lim>
+                      </m:limUpp>
+                    </m:e>
+                    <m:lim>
+                      <m:r>
+                        <m:t>F</m:t>
+                      </m:r>
+                    </m:lim>
+                  </m:limLow>
+                </m:e>
+                <m:sub>
+                  <m:r>
+                    <m:t>&#8203;</m:t>
+                  </m:r>
+                </m:sub>
+                <m:sup>
+                  <m:r>
+                    <m:t>&#8203;</m:t>
+                  </m:r>
+                </m:sup>
+              </m:sPre>
+            </m:oMath>
+          </m:oMathPara>
+        OMML
+        expect(formula).to eq(omml)
+      end
+    end
+
+    context "contains oint msubsup tag Mathml" do
+      let(:string)  do
+        <<~MATHML
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
+              <mrow>
+                <msubsup>
+                  <mo>&#x222e;</mo>
+                  <mi>F</mi>
+                  <mi>A</mi>
+                </msubsup>
+                <mi>C</mi>
+              </mrow>
+            </mstyle>
+          </math>
+        MATHML
+      end
+
+      it 'compares OMML string' do
+        omml = <<~OMML
+          <m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape">
+            <m:oMath>
+              <m:nary>
+                <m:naryPr>
+                  <m:chr m:val="∮"/>
+                  <m:limLoc m:val="subSup"/>
+                  <m:subHide m:val="0"/>
+                  <m:supHide m:val="0"/>
+                </m:naryPr>
+                <m:sub>
+                  <m:r>
+                    <m:t>F</m:t>
+                  </m:r>
+                </m:sub>
+                <m:sup>
+                  <m:r>
+                    <m:t>A</m:t>
+                  </m:r>
+                </m:sup>
+                <m:e>
+                  <m:r>
+                    <m:t>C</m:t>
+                  </m:r>
+                </m:e>
+              </m:nary>
+            </m:oMath>
+          </m:oMathPara>
+        OMML
+        expect(formula).to eq(omml)
+      end
+    end
+
+    context "contains nary iiint symbol in underover for nary tag Mathml" do
+      let(:string)  do
+        <<~MATHML
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
+              <mrow>
+                <munderover>
+                  <mo>&#x222d;</mo>
+                  <mi>F</mi>
+                  <mi>A</mi>
+                </munderover>
+                <mi>C</mi>
+              </mrow>
+            </mstyle>
+          </math>
+        MATHML
+      end
+
+      it 'compares OMML string' do
+        omml = <<~OMML
+          <m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape">
+            <m:oMath>
+              <m:nary>
+                <m:naryPr>
+                  <m:chr m:val="∭"/>
+                  <m:limLoc m:val="undOvr"/>
+                  <m:ctrlPr>
+                    <w:rPr>
+                      <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
+                      <w:i/>
+                    </w:rPr>
+                  </m:ctrlPr>
+                </m:naryPr>
+                <m:sub>
+                  <m:r>
+                    <m:t>F</m:t>
+                  </m:r>
+                </m:sub>
+                <m:sup>
+                  <m:r>
+                    <m:t>A</m:t>
+                  </m:r>
+                </m:sup>
+                <m:e>
+                  <m:r>
+                    <m:t>C</m:t>
+                  </m:r>
+                </m:e>
+              </m:nary>
+            </m:oMath>
+          </m:oMathPara>
+        OMML
+        expect(formula).to eq(omml)
+      end
+    end
+
+    context "contains nary iiint symbol in subsup for nary tag Mathml" do
+      let(:string)  do
+        <<~MATHML
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
+              <mrow>
+                <msubsup>
+                  <mo>&#x222d;</mo>
+                  <mi>F</mi>
+                  <mi>A</mi>
+                </msubsup>
+                <mi>C</mi>
+              </mrow>
+            </mstyle>
+          </math>
+        MATHML
+      end
+
+      it 'compares OMML string' do
+        omml = <<~OMML
+          <m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape">
+            <m:oMath>
+              <m:nary>
+                <m:naryPr>
+                  <m:chr m:val="∭"/>
+                  <m:limLoc m:val="subSup"/>
+                  <m:ctrlPr>
+                    <w:rPr>
+                      <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
+                      <w:i/>
+                    </w:rPr>
+                  </m:ctrlPr>
+                </m:naryPr>
+                <m:sub>
+                  <m:r>
+                    <m:t>F</m:t>
+                  </m:r>
+                </m:sub>
+                <m:sup>
+                  <m:r>
+                    <m:t>A</m:t>
+                  </m:r>
+                </m:sup>
+                <m:e>
+                  <m:r>
+                    <m:t>C</m:t>
+                  </m:r>
+                </m:e>
+              </m:nary>
+            </m:oMath>
+          </m:oMathPara>
+        OMML
+        expect(formula).to eq(omml)
+      end
+    end
+
+    context "contains nary prod symbol in underover for nary tag Mathml" do
+      let(:string)  do
+        <<~MATHML
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
+              <mrow>
+                <munderover>
+                  <mo>&#x220f;</mo>
+                  <mi>F</mi>
+                  <mi>A</mi>
+                </munderover>
+                <mi>C</mi>
+              </mrow>
+            </mstyle>
+          </math>
+        MATHML
+      end
+
+      it 'compares OMML string' do
+        omml = <<~OMML
+          <m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape">
+            <m:oMath>
+              <m:nary>
+                <m:naryPr>
+                  <m:chr m:val="∏"/>
+                  <m:limLoc m:val="undOvr"/>
+                  <m:subHide m:val="0"/>
+                  <m:supHide m:val="0"/>
+                </m:naryPr>
+                <m:sub>
+                  <m:r>
+                    <m:t>F</m:t>
+                  </m:r>
+                </m:sub>
+                <m:sup>
+                  <m:r>
+                    <m:t>A</m:t>
+                  </m:r>
+                </m:sup>
+                <m:e>
+                  <m:r>
+                    <m:t>C</m:t>
+                  </m:r>
+                </m:e>
+              </m:nary>
+            </m:oMath>
+          </m:oMathPara>
+        OMML
+        expect(formula).to eq(omml)
+      end
+    end
+
+    context "contains nary iiint symbol in munder for nary tag Mathml" do
+      let(:string)  do
+        <<~MATHML
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
+              <mrow>
+                <munder>
+                  <mo>&#x222d;</mo>
+                  <mi>F</mi>
+                </munder>
+                <mi>C</mi>
+              </mrow>
+            </mstyle>
+          </math>
+        MATHML
+      end
+
+      it 'compares OMML string' do
+        omml = <<~OMML
+          <m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape">
+            <m:oMath>
+              <m:nary>
+                <m:naryPr>
+                  <m:chr m:val="∭"/>
+                  <m:limLoc m:val="undOvr"/>
+                  <m:supHide m:val="1"/>
+                  <m:ctrlPr>
+                    <w:rPr>
+                      <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
+                      <w:i/>
+                    </w:rPr>
+                  </m:ctrlPr>
+                </m:naryPr>
+                <m:sub>
+                  <m:r>
+                    <m:t>F</m:t>
+                  </m:r>
+                </m:sub>
+                <m:sup>
+                  <m:r>
+                    <m:t>&#8203;</m:t>
+                  </m:r>
+                </m:sup>
+                <m:e>
+                  <m:r>
+                    <m:t>C</m:t>
+                  </m:r>
+                </m:e>
+              </m:nary>
+            </m:oMath>
+          </m:oMathPara>
+        OMML
+        expect(formula).to eq(omml)
       end
     end
   end
