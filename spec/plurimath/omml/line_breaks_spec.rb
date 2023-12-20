@@ -805,4 +805,13 @@ RSpec.describe Plurimath::Omml::Parser do
       expect(omml).to eq(file)
     end
   end
+
+  context "contains #line-break-090.omml" do
+    let(:file_name) { "spec/plurimath/fixtures/omml/line_break/line-break-090.omml" }
+    let(:expected_value) { LineBreakValues::LineBreak_090 }
+
+    it "matches OMML equations" do
+      expect(omml).to eq(file)
+    end
+  end
 end

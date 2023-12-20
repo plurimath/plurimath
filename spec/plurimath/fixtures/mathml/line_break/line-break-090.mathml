@@ -1,0 +1,43 @@
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mstyle displaystyle="true">
+    <mmultiscripts>
+      <mrow>
+        <mi>a</mi>
+      </mrow>
+      <mi/>
+      <mi/>
+    </mmultiscripts>
+  </mstyle>
+</math>
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mstyle displaystyle="true">
+    <mmultiscripts>
+      <mrow>
+        <mo>=</mo>
+        <mi>b</mi>
+      </mrow>
+      <mi>&#x3b1;</mi>
+      <mi>&#x3b1;</mi>
+      <mprescripts/>
+      <mrow>
+        <mi>&#x3b3;</mi>
+      </mrow>
+    </mmultiscripts>
+  </mstyle>
+</math>
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mstyle displaystyle="true">
+    <mmultiscripts>
+      <mprescripts/>
+      <mrow>
+        <mo>=</mo>
+        <mi>&#x3b3;</mi>
+      </mrow>
+      <mrow>
+        <mi>&#x3b2;</mi>
+        <mo linebreak="newline">=</mo>
+        <mi>&#x3b2;</mi>
+      </mrow>
+    </mmultiscripts>
+  </mstyle>
+</math>
