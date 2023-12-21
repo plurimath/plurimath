@@ -13,11 +13,8 @@ module Plurimath
               parameter_two = nil,
               parameter_three = nil,
               options = {})
-          @parameter_one = parameter_one
-          @parameter_two = parameter_two
-          @parameter_three = parameter_three
+          super(parameter_one, parameter_two, parameter_three)
           @options = options
-          Utility.validate_left_right([parameter_one, parameter_two, parameter_three])
         end
 
         def to_asciimath
