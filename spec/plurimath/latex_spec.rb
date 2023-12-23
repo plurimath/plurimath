@@ -964,7 +964,6 @@ RSpec.describe Plurimath::Latex do
             <mstyle displaystyle="true">
               <msub>
                 <mn>1</mn>
-                <mi/>
               </msub>
             </mstyle>
           </math>
@@ -1209,7 +1208,6 @@ RSpec.describe Plurimath::Latex do
               <msubsup>
                 <mi>log</mi>
                 <mn>2</mn>
-                <mi/>
               </msubsup>
               <mi>x</mi>
             </mstyle>

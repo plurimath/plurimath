@@ -4,8 +4,6 @@
       <mrow>
         <mo>&#x2211;</mo>
       </mrow>
-      <mi/>
-      <mi/>
     </msubsup>
   </mstyle>
 </math>
@@ -16,7 +14,6 @@
       <mrow>
         <mi>&#x2222;</mi>
       </mrow>
-      <mi/>
     </msubsup>
   </mstyle>
 </math>
@@ -24,7 +21,6 @@
   <mstyle displaystyle="true">
     <mrow>
       <msubsup>
-        <mi/>
         <mi>&#xd3;</mi>
         <mrow>
           <mi>&#x2422;</mi>

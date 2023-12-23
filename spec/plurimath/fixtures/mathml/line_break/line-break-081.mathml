@@ -1,7 +1,6 @@
 <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
   <mstyle displaystyle="true">
     <munder>
-      <mi/>
       <mrow>
         <mo>&#x2211;</mo>
       </mrow>
@@ -22,7 +21,6 @@
   <mstyle displaystyle="true">
     <munder>
       <mi>&#x6f;</mi>
-      <mi/>
     </munder>
   </mstyle>
 </math>

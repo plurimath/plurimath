@@ -4,8 +4,6 @@
       <mrow>
         <mi>&#x3b1;</mi>
       </mrow>
-      <mi/>
-      <mi/>
     </mmultiscript>
   </mstyle>
 </math>
@@ -19,14 +17,12 @@
       <mrow>
         <mi>&#x3b3;</mi>
       </mrow>
-      <mi/>
     </mmultiscript>
   </mstyle>
 </math>
 <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
   <mstyle displaystyle="true">
     <mmultiscript>
-      <mi/>
       <mrow>
         <mo>=</mo>
         <mi>&#x3b3;</mi>
