@@ -4,8 +4,6 @@
       <mrow>
         <mi>&#x3b8;</mi>
       </mrow>
-      <mi/>
-      <mi/>
     </munderover>
   </mstyle>
 </math>
@@ -16,14 +14,12 @@
       <mrow>
         <mi>&#x2222;</mi>
       </mrow>
-      <mi/>
     </munderover>
   </mstyle>
 </math>
 <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
   <mstyle displaystyle="true">
     <munderover>
-      <mi/>
       <mi>&#xd3;</mi>
       <mrow>
         <mo>&#x2211;</mo>

@@ -127,7 +127,7 @@ module Plurimath
       end
 
       def validate_mathml_fields(field)
-        field.nil? ? ox_element("mi") : field.to_mathml_without_math_tag
+        field&.to_mathml_without_math_tag
       end
 
       def common_math_zone_conversion(field, options = {})
