@@ -1,28 +1,20 @@
 <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
   <mstyle displaystyle="true">
-    <mmultiscript>
-      <mrow>
-        <mi>&#x3b1;</mi>
-      </mrow>
-    </mmultiscript>
-  </mstyle>
-</math>
-<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
-  <mstyle displaystyle="true">
-    <mmultiscript>
-      <mrow>
-        <mo>=</mo>
-        <mi>&#x3b1;</mi>
-      </mrow>
+    <mmultiscripts>
+      <mi>&#x3b1;</mi>
+      <mo linebreak="newline">=</mo>
+      <mi>&#x3b1;</mi>
+      <mprescripts/>
       <mrow>
         <mi>&#x3b3;</mi>
       </mrow>
-    </mmultiscript>
+    </mmultiscripts>
   </mstyle>
 </math>
 <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
   <mstyle displaystyle="true">
-    <mmultiscript>
+    <mmultiscripts>
+      <mprescripts/>
       <mrow>
         <mo>=</mo>
         <mi>&#x3b3;</mi>

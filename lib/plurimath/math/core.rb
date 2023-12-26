@@ -131,7 +131,11 @@ module Plurimath
       end
 
       def validate_mathml_fields(field)
-        field&.to_mathml_without_math_tag
+        if field.is_a?(Array)
+          field&.map(&:to_mathml_without_math_tag)
+        else
+          field&.to_mathml_without_math_tag
+        end
       end
 
       def common_math_zone_conversion(field, options = {})

@@ -57,9 +57,9 @@ module Plurimath
           end
           subsup_tag = ox_element(tag_name)
           new_arr = [
-            validate_mathml_fields(parameter_one, tag_name: tag_name),
-            validate_mathml_fields(parameter_two, tag_name: tag_name),
-            validate_mathml_fields(parameter_three, tag_name: tag_name),
+            validate_mathml_fields(parameter_one),
+            validate_mathml_fields(parameter_two),
+            validate_mathml_fields(parameter_three),
           ]
           Utility.update_nodes(subsup_tag, new_arr)
           return subsup_tag unless parameter_four

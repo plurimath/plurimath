@@ -4,7 +4,7 @@
       <mrow>
         <mo>&#x2211;</mo>
       </mrow>
-    </msubsup>
+    </mrow>
   </mstyle>
 </math>
 <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
@@ -14,7 +14,7 @@
       <mrow>
         <mi>&#x2222;</mi>
       </mrow>
-    </msubsup>
+    </msub>
   </mstyle>
 </math>
 <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
