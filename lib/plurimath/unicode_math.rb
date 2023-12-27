@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Plurimath
-  class Unicode
+  class UnicodeMath
     attr_accessor :text
 
     def initialize(text)
@@ -9,7 +9,7 @@ module Plurimath
     end
 
     def to_formula
-      # TODO: Will be implemented soon
+      Parser.new(text).parse
     end
   end
 end

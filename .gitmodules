@@ -1,0 +1,3 @@
+[submodule "submodules/unicodemath-tests"]
+	path = submodules/unicodemath-tests
+	url = git@github.com:plurimath/unicodemath-tests.git
