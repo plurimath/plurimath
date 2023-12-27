@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require_relative "unicode"
 require_relative "asciimath"
 require_relative "omml"
+require_relative "unicode_math"
 require_relative "mathml"
 require_relative "html"
 require_relative "latex"
@@ -14,6 +14,7 @@ require_relative "math/unicode"
 require_relative "math/formula"
 require_relative "math/function"
 require_relative "asciimath/parser"
+require_relative "unicode_math/parser"
 require_relative "mathml/parser"
 require_relative "latex/parser"
 require_relative "html/parser"
@@ -32,7 +33,7 @@ module Plurimath
       latex: Latex,
       mathml: Mathml,
       unitsml: Unitsml,
-      unicode: Unicode,
+      unicode: UnicodeMath,
       asciimath: Asciimath,
     }.freeze
 
