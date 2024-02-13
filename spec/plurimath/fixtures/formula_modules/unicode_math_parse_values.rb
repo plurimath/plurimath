@@ -37197,18 +37197,20 @@ module UnicodeMathParseValues
                       }
                     },
                     sup: {
-                      mini_sub: {
-                        base: {
-                          factor: {
-                            atom: {
-                              char: {
-                                unicode_symbols: "&#x3b1;"
+                      sup_script: {
+                        mini_sub: {
+                          base: {
+                            factor: {
+                              atom: {
+                                char: {
+                                  unicode_symbols: "&#x3b1;"
+                                }
                               }
                             }
+                          },
+                          sub: {
+                            sub_digits: "&#x2082;"
                           }
-                        },
-                        sub: {
-                          sub_digits: "&#x2082;"
                         }
                       }
                     }
@@ -37681,18 +37683,20 @@ module UnicodeMathParseValues
                       }
                     },
                     sup: {
-                      mini_sub: {
-                        base: {
-                          factor: {
-                            atom: {
-                              char: {
-                                unicode_symbols: "&#x3b1;"
+                      sup_script: {
+                        mini_sub: {
+                          base: {
+                            factor: {
+                              atom: {
+                                char: {
+                                  unicode_symbols: "&#x3b1;"
+                                }
                               }
                             }
+                          },
+                          sub: {
+                            sub_digits: "&#x2082;"
                           }
-                        },
-                        sub: {
-                          sub_digits: "&#x2082;"
                         }
                       }
                     }
@@ -41428,12 +41432,14 @@ module UnicodeMathParseValues
         symbol: "a"
       },
       sup: {
-        mini_sub: {
-          base: {
-            symbol: "b"
-          },
-          sub: {
-            sub_digits: "&#x2081;"
+        sup_script: {
+          mini_sub: {
+            base: {
+              symbol: "b"
+            },
+            sub: {
+              sub_digits: "&#x2081;"
+            }
           }
         }
       }
@@ -42921,12 +42927,14 @@ module UnicodeMathParseValues
       },
       sup: {
         combined_symbols: "+-",
-        mini_sub: {
-          base: {
-            symbol: "b"
-          },
-          sub: {
-            sub_digits: "&#x2081;"
+        sup_script: {
+          mini_sub: {
+            base: {
+              symbol: "b"
+            },
+            sub: {
+              sub_digits: "&#x2081;"
+            }
           }
         }
       }
@@ -55460,18 +55468,20 @@ module UnicodeMathParseValues
       },
       sup: {
         combined_symbols: "+-",
-        mini_sub: {
-          base: {
-            factor: {
-              atom: {
-                char: {
-                  unicode_symbols: "&#x3b2;"
+        sup_script: {
+          mini_sub: {
+            base: {
+              factor: {
+                atom: {
+                  char: {
+                    unicode_symbols: "&#x3b2;"
+                  }
                 }
               }
+            },
+            sub: {
+              sub_digits: "&#x2081;"
             }
-          },
-          sub: {
-            sub_digits: "&#x2081;"
           }
         }
       }
@@ -59482,18 +59492,20 @@ module UnicodeMathParseValues
             }
           },
           sup: {
-            mini_sup: {
-              base: {
-                factor: {
-                  atom: {
-                    char: {
-                      unicode_symbols: "&#x1d44e;"
+            sup_script: {
+              mini_sup: {
+                base: {
+                  factor: {
+                    atom: {
+                      char: {
+                        unicode_symbols: "&#x1d44e;"
+                      }
                     }
                   }
+                },
+                sup: {
+                  sup_digits: "&#xb2;"
                 }
-              },
-              sup: {
-                sup_digits: "&#xb2;"
               }
             }
           }
@@ -60343,18 +60355,20 @@ module UnicodeMathParseValues
         sup_exp: {
           nary_class: "&#x222b;",
           sup: {
-            mini_sub: {
-              base: {
-                factor: {
-                  atom: {
-                    char: {
-                      unicode_symbols: "&#x3b1;"
+          sup_script: {
+              mini_sub: {
+                base: {
+                  factor: {
+                    atom: {
+                      char: {
+                        unicode_symbols: "&#x3b1;"
+                      }
                     }
                   }
+                },
+                sub: {
+                  sub_digits: "&#x2082;"
                 }
-              },
-              sub: {
-                sub_digits: "&#x2082;"
               }
             }
           }
@@ -68569,37 +68583,39 @@ module UnicodeMathParseValues
         }
       },
       sup: {
-        mini_sub: {
-          base: {
-            factor: {
-              atom: {
-                char: {
-                  unicode_symbols: "&#x1d6ff;"
+        sup_script: {
+          mini_sub: {
+            base: {
+              factor: {
+                atom: {
+                  char: {
+                    unicode_symbols: "&#x1d6ff;"
+                  }
                 }
               }
+            },
+            sub: {
+              sub_digits: "&#x2081;"
             }
-          },
-          sub: {
-            sub_digits: "&#x2081;"
+          }          
+        },
+        recursion: {
+          mini_sup: {
+            base: {
+              factor: {
+                atom: {
+                  char: {
+                    unicode_symbols: "&#x1d70c;"
+                  }
+                }
+              }
+            },
+            sup: {
+              sup_alpha: "&#x207f;"
+            }
           }
         }
       },
-      recursion: {
-        mini_sup: {
-          base: {
-            factor: {
-              atom: {
-                char: {
-                  unicode_symbols: "&#x1d70c;"
-                }
-              }
-            }
-          },
-          sup: {
-            sup_alpha: "&#x207f;"
-          }
-        }
-      }
     }
   }.freeze
   EXAMPLE_608 = {
@@ -68614,37 +68630,39 @@ module UnicodeMathParseValues
         }
       },
       sup: {
-        mini_sup: {
-          base: {
-            factor: {
-              atom: {
-                char: {
-                  unicode_symbols: "&#x1d70c;"
+        sup_script:{
+          mini_sup: {
+            base: {
+              factor: {
+                atom: {
+                  char: {
+                    unicode_symbols: "&#x1d70c;"
+                  }
                 }
               }
+            },
+            sup: {
+              sup_alpha: "&#x207f;"
             }
           },
-          sup: {
-            sup_alpha: "&#x207f;"
+        },
+        recursion: {
+          mini_sub: {
+            base: {
+              factor: {
+                atom: {
+                  char: {
+                    unicode_symbols: "&#x1d6ff;"
+                  }
+                }
+              }
+            },
+            sub: {
+              sub_digits: "&#x2081;"
+            }
           }
         }
       },
-      recursion: {
-        mini_sub: {
-          base: {
-            factor: {
-              atom: {
-                char: {
-                  unicode_symbols: "&#x1d6ff;"
-                }
-              }
-            }
-          },
-          sub: {
-            sub_digits: "&#x2081;"
-          }
-        }
-      }
     }
   }.freeze
   EXAMPLE_609 = {
