@@ -738,7 +738,6 @@
 * `Rightarrow`
 * `Lleftarrow`
 * `complement`
-* `varnothing`
 * `fourthroot`
 * `rightangle`
 * `Proportion`
@@ -944,6 +943,7 @@
 * `supseteqq`
 * `leqqslant`
 * `geqqslant`
+* `emptyset`
 * `horizbar`
 * `Question`
 * `medspace`
