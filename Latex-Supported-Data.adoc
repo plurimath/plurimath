@@ -738,6 +738,7 @@
 * `Rightarrow`
 * `Lleftarrow`
 * `complement`
+* `varnothing`
 * `fourthroot`
 * `rightangle`
 * `Proportion`
