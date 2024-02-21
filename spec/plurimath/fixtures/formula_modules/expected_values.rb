@@ -402,7 +402,7 @@ module ExpectedValues
             Plurimath::Math::Function::Text.new("X"),
             Plurimath::Math::Function::Text.new("n")
           ),
-          Plurimath::Math::Symbol.new("∩"),
+          Plurimath::Math::Symbol.new("&#x2229;"),
           Plurimath::Math::Function::Base.new(
             Plurimath::Math::Function::Text.new("Y"),
             Plurimath::Math::Function::Text.new("n")
@@ -818,7 +818,7 @@ module ExpectedValues
   ])
   EX_097 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Sin.new(
-      Plurimath::Math::Symbol.new("θ")
+      Plurimath::Math::Symbol.new("&#x3b8;")
     )
   ])
   EX_098 = Plurimath::Math::Formula.new([
@@ -828,33 +828,33 @@ module ExpectedValues
   ])
   EX_099 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Tan.new(
-      Plurimath::Math::Symbol.new("θ"),
+      Plurimath::Math::Symbol.new("&#x3b8;"),
     ),
     Plurimath::Math::Symbol.new("="),
     Plurimath::Math::Function::Frac.new(
       Plurimath::Math::Function::Sin.new(
-        Plurimath::Math::Symbol.new("θ")
+        Plurimath::Math::Symbol.new("&#x3b8;")
       ),
       Plurimath::Math::Function::Cos.new(
-        Plurimath::Math::Symbol.new("θ"),
+        Plurimath::Math::Symbol.new("&#x3b8;"),
       )
     )
   ])
   EX_100 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Overset.new(
-      Plurimath::Math::Symbol.new("̇"),
+      Plurimath::Math::Symbol.new("&#x307;"),
       Plurimath::Math::Function::Text.new("a"),
     )
   ])
   EX_101 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Overset.new(
-      Plurimath::Math::Symbol.new("̈"),
+      Plurimath::Math::Symbol.new("&#x308;"),
       Plurimath::Math::Function::Text.new("a"),
     )
   ])
   EX_102 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Overset.new(
-      Plurimath::Math::Symbol.new("⃛"),
+      Plurimath::Math::Symbol.new("&#x20db;"),
       Plurimath::Math::Function::Text.new("a"),
     )
   ])
@@ -866,43 +866,43 @@ module ExpectedValues
   ])
   EX_104 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Overset.new(
-      Plurimath::Math::Symbol.new("̌"),
+      Plurimath::Math::Symbol.new("&#x30c;"),
       Plurimath::Math::Function::Text.new("b"),
     )
   ])
   EX_105 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Overset.new(
-      Plurimath::Math::Symbol.new("́"),
+      Plurimath::Math::Symbol.new("&#x301;"),
       Plurimath::Math::Function::Text.new("b"),
     )
   ])
   EX_106 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Overset.new(
-      Plurimath::Math::Symbol.new("̀"),
+      Plurimath::Math::Symbol.new("&#x300;"),
       Plurimath::Math::Function::Text.new("b"),
     )
   ])
   EX_107 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Overset.new(
-      Plurimath::Math::Symbol.new("̆"),
+      Plurimath::Math::Symbol.new("&#x306;"),
       Plurimath::Math::Function::Text.new("b"),
     )
   ])
   EX_108 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Overset.new(
-      Plurimath::Math::Symbol.new("̃"),
+      Plurimath::Math::Symbol.new("&#x303;"),
       Plurimath::Math::Function::Text.new("c"),
     )
   ])
   EX_109 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Overset.new(
-      Plurimath::Math::Symbol.new("̅"),
+      Plurimath::Math::Symbol.new("&#x305;"),
       Plurimath::Math::Function::Text.new("c"),
     )
   ])
   EX_110 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Overset.new(
-      Plurimath::Math::Symbol.new("̿"),
+      Plurimath::Math::Symbol.new("&#x33f;"),
       Plurimath::Math::Function::Text.new("c"),
     )
   ])
@@ -939,31 +939,31 @@ module ExpectedValues
   EX_115 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Overset.new(
       Plurimath::Math::Function::Text.new("d"),
-      Plurimath::Math::Symbol.new("⃖"),
+      Plurimath::Math::Symbol.new("&#x20d6;"),
     )
   ])
   EX_116 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Overset.new(
       Plurimath::Math::Function::Text.new("e"),
-      Plurimath::Math::Symbol.new("⃗"),
+      Plurimath::Math::Symbol.new("&#x20d7;"),
     )
   ])
   EX_117 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Overset.new(
       Plurimath::Math::Function::Text.new("e"),
-      Plurimath::Math::Symbol.new("⃡"),
+      Plurimath::Math::Symbol.new("&#x20e1;"),
     )
   ])
   EX_118 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Overset.new(
       Plurimath::Math::Function::Text.new("e"),
-      Plurimath::Math::Symbol.new("⃐"),
+      Plurimath::Math::Symbol.new("&#x20d0;"),
     )
   ])
   EX_119 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Overset.new(
       Plurimath::Math::Function::Text.new("e"),
-      Plurimath::Math::Symbol.new("⃑"),
+      Plurimath::Math::Symbol.new("&#x20d1;"),
     )
   ])
   EX_120 = Plurimath::Math::Formula.new([
@@ -997,7 +997,7 @@ module ExpectedValues
     Plurimath::Math::Function::Underset.new(
       Plurimath::Math::Function::Text.new("over"),
       Plurimath::Math::Function::FontStyle::Normal.new(
-        Plurimath::Math::Symbol.new("‾"),
+        Plurimath::Math::Symbol.new("&#x203e;"),
         "mathrm",
       ),
     )
@@ -1012,7 +1012,7 @@ module ExpectedValues
     Plurimath::Math::Function::Underset.new(
       Plurimath::Math::Function::Text.new("A"),
       Plurimath::Math::Function::FontStyle::Normal.new(
-        Plurimath::Math::Symbol.new("‾"),
+        Plurimath::Math::Symbol.new("&#x203e;"),
         "mathrm",
       ),
     )
@@ -1021,7 +1021,7 @@ module ExpectedValues
     Plurimath::Math::Function::Underset.new(
       Plurimath::Math::Function::Text.new("ABC"),
       Plurimath::Math::Function::FontStyle::Normal.new(
-        Plurimath::Math::Symbol.new("‾"),
+        Plurimath::Math::Symbol.new("&#x203e;"),
         "mathrm",
       ),
     )
@@ -1030,7 +1030,7 @@ module ExpectedValues
     Plurimath::Math::Function::Underset.new(
       Plurimath::Math::Function::Text.new("x⊕y"),
       Plurimath::Math::Function::FontStyle::Normal.new(
-        Plurimath::Math::Symbol.new("‾"),
+        Plurimath::Math::Symbol.new("&#x203e;"),
         "mathrm",
       ),
     )
@@ -1112,7 +1112,7 @@ module ExpectedValues
   ])
   EX_135 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Text.new("x"),
-    Plurimath::Math::Symbol.new("∶="),
+    Plurimath::Math::Symbol.new("&#x2236;="),
     Plurimath::Math::Function::Text.new("y")
   ])
   EX_136 = Plurimath::Math::Formula.new([
@@ -1132,23 +1132,23 @@ module ExpectedValues
   ])
   EX_139 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Text.new("a"),
-    Plurimath::Math::Symbol.new("≝"),
+    Plurimath::Math::Symbol.new("&#x225d;"),
     Plurimath::Math::Function::Text.new("b")
   ])
   EX_140 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Text.new("a"),
-    Plurimath::Math::Symbol.new("≞"),
+    Plurimath::Math::Symbol.new("&#x225e;"),
     Plurimath::Math::Function::Text.new("b"),
   ])
   EX_141 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Text.new("a"),
-    Plurimath::Math::Symbol.new("≜"),
+    Plurimath::Math::Symbol.new("&#x225c;"),
     Plurimath::Math::Function::Text.new("b")
   ])
   EX_142 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Overset.new(
       Plurimath::Math::Function::Text.new("c"),
-      Plurimath::Math::Symbol.new("←"),
+      Plurimath::Math::Symbol.new("&#x2190;"),
     )
   ])
   EX_143 = Plurimath::Math::Formula.new([
@@ -1159,7 +1159,7 @@ module ExpectedValues
   EX_144 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Underset.new(
       Plurimath::Math::Function::Text.new("c"),
-      Plurimath::Math::Symbol.new("←"),
+      Plurimath::Math::Symbol.new("&#x2190;"),
     )
   ])
   EX_145 = Plurimath::Math::Formula.new([
@@ -1171,49 +1171,49 @@ module ExpectedValues
   EX_146 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Overset.new(
       Plurimath::Math::Function::Text.new("d"),
-      Plurimath::Math::Symbol.new("⇐"),
+      Plurimath::Math::Symbol.new("&#x21d0;"),
     )
   ])
   EX_147 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Overset.new(
       Plurimath::Math::Function::Text.new("d"),
-      Plurimath::Math::Symbol.new("⇒"),
+      Plurimath::Math::Symbol.new("&#x21d2;"),
     )
   ])
   EX_148 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Underset.new(
       Plurimath::Math::Function::Text.new("d"),
-      Plurimath::Math::Symbol.new("⇐"),
+      Plurimath::Math::Symbol.new("&#x21d0;"),
     )
   ])
   EX_149 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Underset.new(
       Plurimath::Math::Function::Text.new("d"),
-      Plurimath::Math::Symbol.new("⇒"),
+      Plurimath::Math::Symbol.new("&#x21d2;"),
     )
   ])
   EX_150 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Overset.new(
       Plurimath::Math::Function::Text.new("e"),
-      Plurimath::Math::Symbol.new("↔"),
+      Plurimath::Math::Symbol.new("&#x2194;"),
     )
   ])
   EX_151 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Underset.new(
       Plurimath::Math::Function::Text.new("e"),
-      Plurimath::Math::Symbol.new("↔"),
+      Plurimath::Math::Symbol.new("&#x2194;"),
     )
   ])
   EX_152 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Overset.new(
       Plurimath::Math::Function::Text.new("e"),
-      Plurimath::Math::Symbol.new("⇔")
+      Plurimath::Math::Symbol.new("&#x21d4;")
     )
   ])
   EX_153 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Underset.new(
       Plurimath::Math::Function::Text.new("e"),
-      Plurimath::Math::Symbol.new("⇔"),
+      Plurimath::Math::Symbol.new("&#x21d4;"),
     )
   ])
   EX_154 = Plurimath::Math::Formula.new([
@@ -1224,7 +1224,7 @@ module ExpectedValues
   ])
   EX_155 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Underset.new(
-      Plurimath::Math::Symbol.new("∆"),
+      Plurimath::Math::Symbol.new("&#x2206;"),
       Plurimath::Math::Symbol.new("&#x2192;"),
     )
   ])
@@ -1432,16 +1432,16 @@ module ExpectedValues
     )
   ])
   EX_164 = Plurimath::Math::Formula.new([
-    Plurimath::Math::Symbol.new("⋯")
+    Plurimath::Math::Symbol.new("&#x22ef;")
   ])
   EX_165 = Plurimath::Math::Formula.new([
-    Plurimath::Math::Symbol.new("…")
+    Plurimath::Math::Symbol.new("&#x2026;")
   ])
   EX_166 = Plurimath::Math::Formula.new([
-    Plurimath::Math::Symbol.new("⋮")
+    Plurimath::Math::Symbol.new("&#x22ee;")
   ])
   EX_167 = Plurimath::Math::Formula.new([
-    Plurimath::Math::Symbol.new("⋱")
+    Plurimath::Math::Symbol.new("&#x22f1;")
   ])
   EX_168 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Table.new(
@@ -1661,7 +1661,7 @@ module ExpectedValues
             Plurimath::Math::Function::Text.new( "a")
           ]),
           Plurimath::Math::Function::Td.new([
-            Plurimath::Math::Symbol.new("⋯")
+            Plurimath::Math::Symbol.new("&#x22ef;")
           ]),
           Plurimath::Math::Function::Td.new([
             Plurimath::Math::Function::Text.new( "b")
@@ -1669,13 +1669,13 @@ module ExpectedValues
         ]),
         Plurimath::Math::Function::Tr.new([
           Plurimath::Math::Function::Td.new([
-            Plurimath::Math::Symbol.new("⋮")
+            Plurimath::Math::Symbol.new("&#x22ee;")
           ]),
           Plurimath::Math::Function::Td.new([
-            Plurimath::Math::Symbol.new("⋱")
+            Plurimath::Math::Symbol.new("&#x22f1;")
           ]),
           Plurimath::Math::Function::Td.new([
-            Plurimath::Math::Symbol.new("⋮")
+            Plurimath::Math::Symbol.new("&#x22ee;")
           ])
         ]),
         Plurimath::Math::Function::Tr.new([
@@ -1683,7 +1683,7 @@ module ExpectedValues
             Plurimath::Math::Function::Text.new( "c")
           ]),
           Plurimath::Math::Function::Td.new([
-            Plurimath::Math::Symbol.new("⋯")
+            Plurimath::Math::Symbol.new("&#x22ef;")
           ]),
           Plurimath::Math::Function::Td.new([
             Plurimath::Math::Function::Text.new( "d")
@@ -1702,7 +1702,7 @@ module ExpectedValues
             Plurimath::Math::Function::Text.new( "a")
           ]),
           Plurimath::Math::Function::Td.new([
-            Plurimath::Math::Symbol.new("⋯")
+            Plurimath::Math::Symbol.new("&#x22ef;")
           ]),
           Plurimath::Math::Function::Td.new([
             Plurimath::Math::Function::Text.new( "b")
@@ -1710,13 +1710,13 @@ module ExpectedValues
         ]),
         Plurimath::Math::Function::Tr.new([
           Plurimath::Math::Function::Td.new([
-            Plurimath::Math::Symbol.new("⋮")
+            Plurimath::Math::Symbol.new("&#x22ee;")
           ]),
           Plurimath::Math::Function::Td.new([
-            Plurimath::Math::Symbol.new("⋱")
+            Plurimath::Math::Symbol.new("&#x22f1;")
           ]),
           Plurimath::Math::Function::Td.new([
-            Plurimath::Math::Symbol.new("⋮")
+            Plurimath::Math::Symbol.new("&#x22ee;")
           ])
         ]),
         Plurimath::Math::Function::Tr.new([
@@ -1724,7 +1724,7 @@ module ExpectedValues
             Plurimath::Math::Function::Text.new( "d")
           ]),
           Plurimath::Math::Function::Td.new([
-            Plurimath::Math::Symbol.new("⋯")
+            Plurimath::Math::Symbol.new("&#x22ef;")
           ]),
           Plurimath::Math::Function::Td.new([
             Plurimath::Math::Function::Text.new( "c")
@@ -1948,20 +1948,20 @@ module ExpectedValues
                 Plurimath::Math::Function::Text.new("tot")
               ),
               Plurimath::Math::Function::FontStyle::Italic.new(
-                Plurimath::Math::Symbol.new("τ"),
+                Plurimath::Math::Symbol.new("&#x3c4;"),
                 "italic"
               )
             ]),
             Plurimath::Math::Function::Td.new([
               Plurimath::Math::Function::Text.new("for "),
               Plurimath::Math::Function::FontStyle::Italic.new(
-                Plurimath::Math::Symbol.new("τ"),
+                Plurimath::Math::Symbol.new("&#x3c4;"),
                 "italic"
               ),
               Plurimath::Math::Symbol.new("<"),
               Plurimath::Math::Function::Base.new(
                 Plurimath::Math::Function::FontStyle::Italic.new(
-                  Plurimath::Math::Symbol.new("τ"),
+                  Plurimath::Math::Symbol.new("&#x3c4;"),
                   "italic"
                 ),
                 Plurimath::Math::Function::Text.new("o")
@@ -1979,7 +1979,7 @@ module ExpectedValues
                 Plurimath::Math::Function::Text.new("tot")
               ),
               Plurimath::Math::Function::FontStyle::Italic.new(
-                Plurimath::Math::Symbol.new("τ"),
+                Plurimath::Math::Symbol.new("&#x3c4;"),
                 "italic"
               ),
               Plurimath::Math::Symbol.new("-"),
@@ -1995,13 +1995,13 @@ module ExpectedValues
                 Plurimath::Math::Symbol.new("("),
                 [
                   Plurimath::Math::Function::FontStyle::Italic.new(
-                    Plurimath::Math::Symbol.new("τ"),
+                    Plurimath::Math::Symbol.new("&#x3c4;"),
                     "italic"
                   ),
                   Plurimath::Math::Symbol.new("-"),
                   Plurimath::Math::Function::Base.new(
                     Plurimath::Math::Function::FontStyle::Italic.new(
-                      Plurimath::Math::Symbol.new("τ"),
+                      Plurimath::Math::Symbol.new("&#x3c4;"),
                       "italic"
                     ),
                     Plurimath::Math::Function::Text.new("o"),
@@ -2013,13 +2013,13 @@ module ExpectedValues
             Plurimath::Math::Function::Td.new([
               Plurimath::Math::Symbol.new("'' "),
               Plurimath::Math::Function::FontStyle::Italic.new(
-                Plurimath::Math::Symbol.new("τ"),
+                Plurimath::Math::Symbol.new("&#x3c4;"),
                 "italic"
               ),
               Plurimath::Math::Symbol.new(">"),
               Plurimath::Math::Function::Base.new(
                 Plurimath::Math::Function::FontStyle::Italic.new(
-                  Plurimath::Math::Symbol.new("τ"),
+                  Plurimath::Math::Symbol.new("&#x3c4;"),
                   "italic"
                 ),
                 Plurimath::Math::Function::Text.new("o")

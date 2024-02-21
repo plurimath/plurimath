@@ -271,6 +271,13 @@ module Plurimath
         elsif text&.match?(/[a-zA-Z]/)
           Math::Function::Text.new(text)
         else
+          text = string_to_html_entity(text)
+                  .gsub("&#x26;", "&")
+                  .gsub("&#x3c;", "<")
+                  .gsub("&#x27;", "'")
+                  .gsub("&#xa0;", " ")
+                  .gsub("&#x3e;", ">")
+                  .gsub("&#xa;", "\n")
           Math::Symbol.new(text)
         end
       end
