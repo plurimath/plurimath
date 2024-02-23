@@ -46,8 +46,8 @@ module Plurimath
           return norm_table(table_tag) if open_paren == "norm["
 
           if present?(open_paren) || present?(close_paren)
-            first_paren = Utility.ox_element("mo") << mathml_parenthesis(open_paren)
-            second_paren = Utility.ox_element("mo") << mathml_parenthesis(close_paren)
+            first_paren = mo_element(mathml_parenthesis(open_paren))
+            second_paren = mo_element(mathml_parenthesis(close_paren))
             mrow_tag = Utility.ox_element("mrow")
             return Utility.update_nodes(mrow_tag, [first_paren, table_tag, second_paren])
           end
@@ -235,13 +235,12 @@ module Plurimath
         end
 
         def norm_table(table_tag)
-          mo_tag = Utility.ox_element("mo") << "&#x2225;"
           Utility.update_nodes(
             Utility.ox_element("mrow"),
             [
-              mo_tag,
+              mo_element("&#x2016;"),
               table_tag,
-              mo_tag,
+              mo_element("&#x2016;"),
             ],
           )
         end
@@ -296,6 +295,14 @@ module Plurimath
           options[option].nil? ||
             options[option] == "" ||
             options[option] == "none"
+        end
+
+        def validate_paren(paren)
+          ["&#x3016;", "&#x3017;"].include?(paren)
+        end
+
+        def mo_element(value)
+          Utility.ox_element("mo") << value
         end
       end
     end

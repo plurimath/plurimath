@@ -6,11 +6,24 @@ module Plurimath
   module Math
     module Function
       class Base < BinaryFunction
+        attr_accessor :options
         FUNCTION = {
           name: "subscript",
           first_value: "base",
           second_value: "script",
         }.freeze
+
+        def initialize(parameter_one = nil,
+                       parameter_two = nil,
+                       options = {})
+          super(parameter_one, parameter_two)
+          @options = options unless options.empty?
+        end
+
+        def ==(object)
+          super(object) &&
+            object.options == options
+        end
 
         def to_asciimath
           first_value = parameter_one.to_asciimath if parameter_one
@@ -75,6 +88,10 @@ module Plurimath
 
         def is_nary_function?
           parameter_one.is_nary_function? || parameter_one.is_nary_symbol?
+        end
+
+        def set_options(value)
+          { unicode: true }
         end
       end
     end

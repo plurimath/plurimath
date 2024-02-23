@@ -6,12 +6,25 @@ module Plurimath
   module Math
     module Function
       class Int < TernaryFunction
+        attr_accessor :options
         FUNCTION = {
           name: "integral",
           first_value: "lower limit",
           second_value: "upper limit",
           third_value: "integrand"
-        }
+        }.freeze
+
+        def initialize(parameter_one = nil,
+                       parameter_two = nil,
+                       parameter_three = nil,
+                       options = {})
+          super(parameter_one, parameter_two, parameter_three)
+          @options = options unless options&.empty?
+        end
+
+        def ==(object)
+          super(object) && object.options == options
+        end
 
         def to_asciimath
           first_value = "_#{wrapped(parameter_one)}" if parameter_one

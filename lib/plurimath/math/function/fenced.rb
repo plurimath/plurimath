@@ -24,9 +24,9 @@ module Plurimath
         end
 
         def to_mathml_without_math_tag
-          first_value = Utility.ox_element("mo") << (mathml_paren(parameter_one) || "")
+          first_value = Utility.ox_element("mo", attributes: options&.dig(:open_paren)) << (mathml_paren(parameter_one) || "")
           second_value = parameter_two&.map(&:to_mathml_without_math_tag) || []
-          third_value = Utility.ox_element("mo") << (mathml_paren(parameter_three) || "")
+          third_value = Utility.ox_element("mo", attributes: options&.dig(:close_paren)) << (mathml_paren(parameter_three) || "")
           Utility.update_nodes(
             Utility.ox_element("mrow"),
             (second_value.insert(0, first_value) << third_value),
@@ -138,7 +138,8 @@ module Plurimath
         end
 
         def mathml_paren(field)
-          return "" if field&.value&.include?(":")
+          unicodemath_syntax = ["&#x3016;", "&#x3017;"]
+          return "" if field&.value&.include?(":") || unicodemath_syntax.include?(field.value.to_s)
 
           field&.value
         end

@@ -6,6 +6,11 @@ module Plurimath
   module Math
     module Function
       class Td < BinaryFunction
+        def initialize(parameter_one = nil, parameter_two = nil)
+          parameter_one&.delete_if { |td| td if td  == "&" }
+          super(parameter_one, parameter_two)
+        end
+
         def to_asciimath
           parameter_one.map(&:to_asciimath).join(" ")
         end

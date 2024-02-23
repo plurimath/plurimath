@@ -3,14 +3,27 @@
 module Plurimath
   module Math
     class Symbol < Core
-      attr_accessor :value
+      attr_accessor :value, :slashed, :mini_sub_sized, :mini_sup_sized, :options
 
-      def initialize(sym = nil)
+      def initialize(sym = nil,
+                     slashed = nil,
+                     mini_sub_sized: false,
+                     mini_sup_sized: false,
+                     options: {})
         @value = sym.is_a?(Parslet::Slice) ? sym.to_s : sym
+        @slashed = slashed if slashed
+        @mini_sub_sized = mini_sub_sized if mini_sub_sized
+        @mini_sup_sized = mini_sup_sized if mini_sup_sized
+        @options = options unless options.empty?
       end
 
       def ==(object)
-        object.respond_to?(:value) && object.value == value
+        object.respond_to?(:value) &&
+          object.value == value &&
+          object.slashed == slashed &&
+          object.mini_sub_sized == mini_sub_sized &&
+          object.mini_sup_sized == mini_sup_sized &&
+          object.options == options
       end
 
       def to_asciimath
@@ -129,6 +142,7 @@ module Plurimath
 
       def explicit_checks(unicode)
         return true if [unicode, value].any? { |v| ["∣", "|"].include?(v) }
+        return true if UnicodeMath::Constants::ACCENT_SYMBOLS.invert.key?(value)
       end
 
       def specific_values

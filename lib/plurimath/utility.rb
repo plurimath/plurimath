@@ -11,11 +11,17 @@ module Plurimath
       "bold-fraktur": Math::Function::FontStyle::BoldFraktur,
       "bold-italic": Math::Function::FontStyle::BoldItalic,
       "bold-script": Math::Function::FontStyle::BoldScript,
+      mbfitsans: Math::Function::FontStyle::SansSerifBoldItalic,
       monospace: Math::Function::FontStyle::Monospace,
       mathfrak: Math::Function::FontStyle::Fraktur,
+      mitsans: Math::Function::FontStyle::SansSerifItalic,
+      mbfsans: Math::Function::FontStyle::BoldSansSerif,
+      mbffrak: Math::Function::FontStyle::BoldFraktur,
       mathcal: Math::Function::FontStyle::Script,
       fraktur: Math::Function::FontStyle::Fraktur,
+      mbfscr: Math::Function::FontStyle::BoldScript,
       mathbb: Math::Function::FontStyle::DoubleStruck,
+      double: Math::Function::FontStyle::DoubleStruck,
       mathtt: Math::Function::FontStyle::Monospace,
       mathsf: Math::Function::FontStyle::SansSerif,
       mathrm: Math::Function::FontStyle::Normal,
@@ -26,9 +32,18 @@ module Plurimath
       textbf: Math::Function::FontStyle::Bold,
       script: Math::Function::FontStyle::Script,
       normal: Math::Function::FontStyle::Normal,
+      mbfit: Math::Function::FontStyle::BoldItalic,
+      msans: Math::Function::FontStyle::SansSerif,
+      mfrak: Math::Function::FontStyle::Fraktur,
+      mscr: Math::Function::FontStyle::Script,
       bold: Math::Function::FontStyle::Bold,
       bbb: Math::Function::FontStyle::DoubleStruck,
+      Bbb: Math::Function::FontStyle::DoubleStruck,
+      mtt: Math::Function::FontStyle::Monospace,
       cal: Math::Function::FontStyle::Script,
+      mit: Math::Function::FontStyle::Italic,
+      mup: Math::Function::FontStyle::Normal,
+      mbf: Math::Function::FontStyle::Bold,
       sf: Math::Function::FontStyle::SansSerif,
       tt: Math::Function::FontStyle::Monospace,
       fr: Math::Function::FontStyle::Fraktur,
@@ -112,14 +127,36 @@ module Plurimath
       height
       depth
       width
-    ]
+    ].freeze
     MGLYPH_ATTRS = %i[
       height
       width
       index
       alt
       src
-    ]
+    ].freeze
+    UNICODEMATH_MENCLOSE_FUNCTIONS = {
+      underline: "bottom",
+      underbar: "bottom",
+      longdiv: "longdiv",
+      xcancel: "updiagonalstrike downdiagonalstrike",
+      bcancel: "updiagonalstrike",
+      ellipse: "circle",
+      circle: "circle",
+      cancel: "downdiagonalstrike",
+      rrect: "roundedbox",
+      rect: "box",
+    }.freeze
+    MASK_CLASSES = {
+      1 => 'top',
+      2 => 'bottom',
+      4 => 'left',
+      8 => 'right',
+      16 => 'horizontalstrike',
+      32 => 'verticalstrike',
+      64 => 'downdiagonalstrike',
+      128 => 'updiagonalstrike'
+    }.freeze
 
     class << self
       def organize_table(array, column_align: nil, options: nil)
@@ -385,9 +422,7 @@ module Plurimath
           elsif attrs.key?(:linebreak)
             Math::Function::Linebreak.new(value.first, attrs)
           elsif attrs.key?(:bevelled) || attrs.key?(:linethickness)
-            frac = Math::Function::Frac.new(value[0], value[1])
-            frac.options = attrs
-            frac
+            Math::Function::Frac.new(value[0], value[1], attrs)
           elsif attrs.key?(:notation)
             value << attrs
           elsif attrs.key?(:separators)
@@ -471,15 +506,27 @@ module Plurimath
         end
       end
 
-      def unfenced_value(object)
+      def unfenced_value(object, paren_specific: false)
         case object
         when Math::Function::Fenced
-          filter_values(object.parameter_two)
+          if !paren_specific || (paren_specific && valid_paren?(object))
+            filter_values(object.parameter_two)
+          else
+            object
+          end
         when Array
           filter_values(object)
         else
           object
         end
+      end
+
+      def valid_paren?(object)
+        object.parameter_one.value == "(" &&
+          object.parameter_three.value == ")" &&
+          !object.options.keys.any? { |k| [:open_paren, :close_paren].any?(k.to_sym) } &&
+          !object.parameter_one.mini_sup_sized &&
+          !object.parameter_three.mini_sub_sized
       end
 
       def frac_values(object)
@@ -658,6 +705,206 @@ module Plurimath
         end
         new_arr << Math::Function::Text.new(temp_array.join(" ")) if temp_array.any?
         new_arr
+      end
+
+      # UnicodeMath Functions
+
+      def unicode_accents(accents)
+        if accents.is_a?(Math::Function::BinaryFunction)
+          accents
+        else
+          if accents.any? { |acc| acc&.dig(:first_value)&.is_a?(Array) }
+            accent_value = accents.first[:first_value].pop
+            first_value = accents.first[:first_value]
+            accents.first[:first_value] = accent_value
+            Math::Formula.new(
+              first_value + [transform_accents(accents)]
+            )
+          else
+            transform_accents(accents)
+          end
+        end
+      end
+
+      def transform_accents(accents)
+        accents.reduce do |function, accent|
+          if function.is_a?(Hash)
+            if function[:prime_accent_symbols]
+              Math::Function::Power.new(
+                unfenced_value(accent_value(function, function: true), paren_specific: true),
+                accent_value(accent),
+              )
+            else
+              Math::Function::Overset.new(
+                accent_value(accent),
+                unfenced_value(accent_value(function, function: true), paren_specific: true),
+                { accent: true }
+              )
+            end
+          else
+            if accent[:prime_accent_symbols]
+              Math::Function::Power.new(
+                unfenced_value(function, paren_specific: true),
+                accent_value(accent),
+              )
+            else
+              Math::Function::Overset.new(
+                accent_value(accent),
+                unfenced_value(function, paren_specific: true),
+                { accent: true }
+              )
+            end
+          end
+        end
+      end
+
+      def accent_value(accent, function: false)
+        (accent[:accent_symbols] ? Math::Symbol.new(accent[:accent_symbols]) : (accent[:first_value] || filter_values(accent[:prime_accent_symbols])))
+      end
+
+      def unicode_fractions(fractions)
+        frac_arr = UnicodeMath::Constants::UNICODE_FRACTIONS[fractions.to_sym]
+        Math::Function::Frac.new(
+          Math::Number.new(frac_arr.first.to_s),
+          Math::Number.new(frac_arr.last.to_s),
+          { displaystyle: false }
+        )
+      end
+
+      def fractions(numerator, denominator, options = nil)
+        frac_class = Math::Function::Frac
+        if denominator.is_a?(frac_class)
+          if denominator.parameter_one.is_a?(frac_class)
+            recursion_fraction(denominator, numerator, options)
+          else
+            denominator.parameter_one = frac_class.new(
+              unfenced_value(numerator, paren_specific: true),
+              unfenced_value(denominator.parameter_one, paren_specific: true),
+              options
+            )
+          end
+          denominator
+        else
+          frac_class.new(
+            unfenced_value(numerator, paren_specific: true),
+            unfenced_value(denominator, paren_specific: true),
+            options
+          )
+        end
+      end
+
+      def recursion_fraction(frac, numerator, options)
+        frac_class = Math::Function::Frac
+        new_numerator = frac.parameter_one
+        if new_numerator.is_a?(frac_class)
+          recursion_fraction(new_numerator, numerator, options)
+        else
+          frac.parameter_one = frac_class.new(
+            unfenced_value(numerator, paren_specific: true),
+            unfenced_value(frac.parameter_one, paren_specific: true),
+            options
+          )
+          frac
+        end
+      end
+
+      def sort_sub(sub_script, sub_recursion)
+        base_class = Math::Function::Base
+        if sub_recursion.is_a?(base_class)
+          if sub_recursion.parameter_one.is_a?(base_class)
+            base_recursion(sub_script, sub_recursion)
+          else
+            sub_recursion.parameter_one = base_class.new(sub_script, sub_recursion.parameter_one)
+          end
+          sub_recursion
+        else
+          base_class.new(
+            sub_script,
+            sub_recursion,
+          )
+        end
+      end
+
+      def base_recursion(sub_script, sub_recursion)
+        base_class = Math::Function::Base
+        new_sub = sub_recursion.parameter_one
+        if new_sub.is_a?(base_class)
+          base_recursion(sub_script, new_sub)
+          sub_recursion
+        else
+          sub_recursion.parameter_one = base_class.new(sub_script, new_sub)
+          sub_recursion
+        end
+      end
+
+      def sort_sup(sup_script, sup_recursion)
+        power_class = Math::Function::Power
+        if sup_recursion.is_a?(power_class)
+          if sup_recursion.parameter_one.is_a?(power_class)
+            sup_recursion(sup_script, sup_recursion)
+          else
+            sup_recursion.parameter_one = power_class.new(sup_script, sup_recursion.parameter_one)
+          end
+          sup_recursion
+        else
+          power_class.new(
+            sup_script,
+            sup_recursion,
+          )
+        end
+      end
+
+      def sup_recursion(sup_script, sup_recursion)
+        power_class = Math::Function::Power
+        new_sup = sup_recursion.parameter_one
+        if new_sup.is_a?(power_class)
+          sup_recursion(sup_script, new_sup)
+          sup_recursion
+        else
+          sup_recursion.parameter_one = power_class.new(sup_script, new_sup)
+          sup_recursion
+        end
+      end
+
+      def base_is_prime?(base)
+        UnicodeMath::Constants::PREFIXED_PRIMES.key(base.parameter_two.value) ||
+          (base.parameter_two.value == "&#x27;")
+      end
+
+      def base_is_sub_or_sup?(base)
+        if base.is_a?(Math::Formula)
+          base_is_sub_or_sup?(base.value.first)
+        elsif base.is_a?(Math::Function::Fenced)
+          base_is_sub_or_sup?(base.parameter_two.first)
+        elsif base.is_a?(Math::Symbol) || base.is_a?(Math::Number)
+          base.mini_sub_sized || base_mini_sup_sized
+        end
+      end
+
+      def identity_matrix(size)
+        matrix = Array.new(size) { Array.new(size, 0) }
+        size.times { |i| matrix[i][i] = 1 }
+        matrix.map do |tr|
+          tr.map.with_index do |td, i|
+            tr[i] = Math::Function::Td.new([
+              Math::Number.new(td.to_s)
+            ])
+          end
+          Math::Function::Tr.new(tr)
+        end
+      end
+
+      def enclosure_attrs(mask)
+        raise "enclosure mask is not between 0 and 255" if (mask.nil? || mask < 0 || mask > 255)
+
+        ret = ""
+        unless mask.nil?
+          mask ^= 15
+          bin_mask = mask.to_s(2).reverse
+          classes = bin_mask.chars.each_with_index.map { |bit, i| MASK_CLASSES[2**i] if bit == '1' }.compact
+          ret = classes.join(' ')
+        end
+        ret
       end
     end
   end

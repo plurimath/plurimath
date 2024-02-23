@@ -1534,42 +1534,34 @@ module UnicodeMathParseValues
     factor: {
       intermediate_exp: {
         open_paren: "(",
-        frac: {
-          numerator: {
-            factor: {
-              atom: {
-                alphanumeric: "a"
-              }
-            },
-            operand: {
-              factor: {
-                relational_symbols: "&#x2223;"
-              },
-              operand: {
-                factor: {
-                  atom: {
-                    alphanumeric: "b"
-                  }
-                },
-                operand: {
-                  factor: {
-                    relational_symbols: "&#x2223;"
-                  },
-                  operand: {
-                    factor: {
-                      atom: {
-                        alphanumeric: "c"
-                      }
-                    }
-                  }
-                }
-              }
+        factor: {
+          atom: {
+            alphanumeric: "a"
+          }
+        },
+        mid_symbol: "&#x2223;",
+        mid_recursion: {
+          factor: {
+            atom: {
+              alphanumeric: "b"
             }
           },
-          denominator: {
-            factor: {
-              atom: {
-                alphanumeric: "d"
+          mid_symbol: "&#x2223;"
+        },
+        expr: {
+          frac: {
+            numerator: {
+              factor: {
+                atom: {
+                  alphanumeric: "c"
+                }
+              }
+            },
+            denominator: {
+              factor: {
+                atom: {
+                  alphanumeric: "d"
+                }
               }
             }
           }

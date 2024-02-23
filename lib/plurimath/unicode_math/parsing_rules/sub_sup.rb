@@ -7,38 +7,47 @@ module Plurimath
       module SubSup
         include Helper
 
+        rule(:above) { (str("&#x2534;") | str("\\above")).as(:over) }
+        rule(:below) { (str("&#x252c;") | str("\\below")).as(:under) }
+
         rule(:subscript) { base_value >> subscript_value }
         rule(:supscript) { base_value >> supscript_value }
 
         rule(:sub_or_sup)  { subscript | supscript }
         rule(:base_symbol) { str("_") }
+        rule(:base_syntax) { base_symbol | below }
+        rule(:alpha_ascii) { match["A-Za-z"].as(:symbol) }
         rule(:script_base) { mini_sub_sup | sub_sup_operand }
-        rule(:base_syntax) { base_symbol | (str("&#x252c;") | str("\\below")).as(:under) }
 
         rule(:power_symbol) { str("^") }
-        rule(:power_syntax) { power_symbol | (str("&#x2534;") | str("\\above")).as(:over) }
+        rule(:power_syntax) { power_symbol | above }
+        rule(:sub_override) { (invisible_space? >> base_syntax >> op_size_overrides_symbols >> (operator_symbols.maybe >> baseless_sub_values(:sub_script))) }
+        rule(:sup_override) { (invisible_space? >> power_syntax >> op_size_overrides_symbols >> (operator_symbols.maybe >> baseless_sup_values(:sup_script))) }
 
         rule(:sub_sup_paren) { sub_paren.as(:sub_paren) | sup_paren.as(:sup_paren) }
-        rule(:pre_subscript) { base_syntax >> size_overrides? >> (operand | mini_sub_sup | operator_symbols).as(:pre_subscript) | sub_paren.as(:pre_subscript) }
-        rule(:pre_supscript) { power_syntax >> size_overrides? >> (operand | mini_sub_sup | operator_symbols).as(:pre_supscript) | sup_paren.as(:pre_supscript) }
+        rule(:pre_subscript) { base_syntax >> prescript_values.as(:pre_subscript) | sub_paren.as(:pre_subscript) }
+        rule(:pre_supscript) { power_syntax >> prescript_values.as(:pre_supscript) | sup_paren.as(:pre_supscript) }
 
         rule(:mini_sub_value) { (sub_sup_operand.as(:base) >> sub_paren.as(:sub)).as(:mini_sub) }
         rule(:mini_sup_value) { (sub_sup_operand.as(:base) >> sup_paren.as(:sup)).as(:mini_sup) }
 
-        rule(:size_overrides?)  { op_size_overrides_symbols.maybe }
-        rule(:invisible_space?) { (invisible_unicode? >> invisible_times.maybe).maybe }
+        rule(:pre_script_base) { (operand.as(:base) >> (subsup | mini_subsup | subscript_value | supscript_value).maybe) }
+
+        rule(:sub_sup_override) { sub_override | sup_override }
         rule(:operator_symbols) { combined_symbols | negatable_symbols | operator }
+        rule(:invisible_space?) { (invisible_unicode? >> invisible_times.maybe).maybe }
+        rule(:prescript_values) { operand | mini_sub_sup | operator_symbols | binary_symbols }
 
         rule(:power_base_script) { (base_value >> subsup).as(:subsup_exp) | subscript.as(:sub_exp) | supscript.as(:sup_exp) }
 
         rule(:mini_sub_sup_present?) { mini_sub_value.present? | mini_sup_value.present? | mini_subsup.present? }
 
         rule(:sup_script) do
-          (script_base.as(:base) >> sup_paren.as(:sup_script)).as(:sup) >> sup_script.as(:recursion).maybe
+          (script_base.as(:base) >> sup_paren.as(:sup_script)).as(:sup) >> sup_script.maybe
         end
 
         rule(:sub_script) do
-          (script_base.as(:base) >> sub_paren.as(:sub_script)).as(:sub) >> sub_script.as(:recursion).maybe
+          (script_base.as(:base) >> sub_paren.as(:sub_script)).as(:sub) >> sub_script.maybe
         end
 
         rule(:subscript_value) do
@@ -49,28 +58,33 @@ module Plurimath
           (sup_paren | baseless_sup.as(:sup)) >> recursive_baseless_sup_exp.maybe
         end
 
+        rule(:pre_sub_sup_override) do
+          base_syntax >> op_size_overrides_symbols >> prescript_values.as(:pre_subscript) |
+            power_syntax >> op_size_overrides_symbols >> prescript_values.as(:pre_supscript)
+        end
+
         rule(:naryand_recursion) do
           (operator.absent? >> naryand_values >> naryand_recursion.as(:naryand_recursion).maybe) |
             (slashed_operator >> naryand_recursion.as(:naryand_recursion).maybe)
         end
         
         rule(:baseless_sub) do
-          (invisible_space? >> base_syntax >> size_overrides? >> (operator_symbols.maybe >> baseless_sub_values(:sub_script))) |
-            (invisible_space? >> base_syntax >> size_overrides? >> (operator_symbols >> recursive_baseless_sub_exp.maybe)) |
-              (invisible_space? >> base_syntax >> size_overrides? >> (operator_symbols >> baseless_sub_values(:sub_script).maybe)) |
-            sub_sup_paren.as(:sub_script)
+          (invisible_space? >> base_syntax >> op_size_overrides_symbols.absent? >> (operator_symbols.maybe >> baseless_sub_values(:sub_script))) |
+            (invisible_space? >> base_syntax >> op_size_overrides_symbols.absent? >> (operator_symbols >> recursive_baseless_sub_exp.maybe)) |
+            (invisible_space? >> base_syntax >> op_size_overrides_symbols.absent? >> (operator_symbols >> baseless_sub_values(:sub_script).maybe)) |
+            sub_paren.as(:sub_script)
         end
 
         rule(:baseless_sup) do
-          (invisible_space? >> power_syntax >> size_overrides? >> (operator_symbols.maybe >> baseless_sup_values(:sup_script))) |
-            (invisible_space? >> power_syntax >> size_overrides? >> (operator_symbols >> recursive_baseless_sup_exp.maybe)) |
-              (invisible_space? >> power_syntax >> size_overrides? >> (operator_symbols >> baseless_sup_values(:sup_script).maybe)) |
-            sub_sup_paren.as(:sup_script)
+          (invisible_space? >> power_syntax >> op_size_overrides_symbols.absent? >> (operator_symbols.maybe >> baseless_sup_values(:sup_script))) |
+            (invisible_space? >> power_syntax >> op_size_overrides_symbols.absent? >> (operator_symbols >> recursive_baseless_sup_exp.maybe)) |
+            (invisible_space? >> power_syntax >> op_size_overrides_symbols.absent? >> (operator_symbols >> baseless_sup_values(:sup_script).maybe)) |
+            sup_paren.as(:sup_script)
         end
 
         rule(:recursive_baseless_sup_exp) do
           (mini_sub_sup >> recursive_baseless_sup_exp.as(:exp_iteration).maybe) |
-            (baseless_sup.as(:sup_recursion) >> recursive_baseless_sup_exp.as(:exp_iteration).maybe) 
+            (baseless_sup.as(:sup_recursion) >> recursive_baseless_sup_exp.as(:exp_iteration).maybe)
         end
 
         rule(:recursive_baseless_sub_exp) do
@@ -79,9 +93,9 @@ module Plurimath
         end
 
         rule(:naryand_values) do
-          (exp_bracket >> (subsup | subscript_value | supscript_value).maybe) |
+          fraction.as(:frac) |
+            (exp_bracket >> (subsup | subscript_value | supscript_value).maybe) |
             (exp_script >> space?) |
-            fraction.as(:frac) |
             negatable_symbols.absent? >> sub_sup_operand
         end
 
@@ -109,8 +123,10 @@ module Plurimath
         end
 
         rule(:subsup) do
-          baseless_sub.as(:sub) >> baseless_sup.as(:sup) |
-            baseless_sup.as(:sup) >> baseless_sub.as(:sub)
+          op_size_overrides_symbols.absent? >> baseless_sub.as(:sub) >> (sup_override.as(:sup) | baseless_sup.as(:sup)) |
+            op_size_overrides_symbols.absent? >> baseless_sup.as(:sup) >> (sub_override.as(:sub) | baseless_sub.as(:sub)) |
+            (sub_override.as(:sub) | baseless_sub.as(:sub)) >> baseless_sup.as(:sup) |
+            (sup_override.as(:sup) | baseless_sup.as(:sup)) >> baseless_sub.as(:sub)
         end
 
         rule(:mini_subsup) do
@@ -152,7 +168,9 @@ module Plurimath
             op_unary_functions.present? >> unary_sub_sup.as(:unary_subsup) |
             accents.present? >> (accents.as(:base) >> accents_subsup).as(:accents_subsup) |
             power_base_script |
-            (paren_wrap_rule(pre_subsup) >> space? >> (operand.as(:base) >> (subsup | mini_subsup | subscript_value | supscript_value).maybe)).as(:pre_script) |
+            (base_value >> sub_sup_override).as(:override_subsup) |
+            pre_sub_sup_override.as(:pre_override_subsup) >> pre_script_base |
+            (paren_wrap_rule(pre_subsup) >> space? >> pre_script_base).as(:pre_script) |
             mini_sub_sup |
             mini_power_base
         end
@@ -165,13 +183,12 @@ module Plurimath
         end
 
         rule(:sub_sup_operand) do
-          accents |
+          binary_symbols |
+            accents |
             op_unary_functions >> invisible_unicode? |
-            a_ascii |
-            (a_ascii >> n_ascii) |
-            (n_ascii >> a_ascii) |
-            an_math |
+            alpha_numeric_values |
             number |
+            an_math |
             other |
             exp_bracket |
             parsing_text |
@@ -209,9 +226,20 @@ module Plurimath
         rule(:sub_sup_values) do
           (operator_symbols.as(:expr) >> (((mini_sub_sup | sub_or_sup) >> space?) >> bracketed_soperand.maybe)) |
             (operator_symbols.as(:expr) >> bracketed_soperand) |
-            ((accent_symbols.as(:first_value) >> repeated_accent_symbols).as(:accents) >> (sub_or_sup.maybe >> space? >> bracketed_soperand).maybe) |
+            (((primes | prefixed_primes).as(:symbol).as(:first_value) >> repeated_accent_symbols).as(:accents) >> (sub_or_sup.maybe >> space? >> bracketed_soperand).maybe) |
             bracketed_soperand >> operator_symbols.absent? >> sub_sup_values.as(:expr).maybe |
-            bracketed_soperand
+            sub_sup_binary_absent >> operator_symbols.absent? >> sub_sup_values.as(:expr).maybe |
+            bracketed_soperand |
+            prefixed_primes |
+            primes |
+            sub_sup_binary_absent
+        end
+
+        rule(:alpha_numeric_values) do
+          alpha_ascii >> alpha_numeric_values.as(:expr) |
+          (number | n_ascii) >> alpha_numeric_values.as(:expr) |
+          alpha_ascii |
+          (number | n_ascii)
         end
 
         def paren_wrap_rule(passed_rule)
