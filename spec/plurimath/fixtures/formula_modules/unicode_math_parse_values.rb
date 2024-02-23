@@ -75,7 +75,7 @@ module UnicodeMathParseValues
     }
   }.freeze
   EXAMPLE_3 = {
-    text: "A COLLECTION OF 645 UNICODEMATH EXPRESSIONS FROM VARIOUS SOURCES",
+    text: "A COLLECTION OF 669 UNICODEMATH EXPRESSIONS FROM VARIOUS SOURCES",
   }.freeze
   EXAMPLE_4 = {
     text: "So long",

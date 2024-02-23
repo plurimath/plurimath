@@ -14,7 +14,7 @@ RSpec.describe Plurimath::UnicodeMath::Parse do
       )
     end
 
-    SKIPABLE_EXAMPLES = [33, 177, 208, 209, 585, 586, 587, 588].freeze
+    SKIPABLE_EXAMPLES = [33, 179, 210, 211, 598, 599, 600, 601].freeze
 
     unicodemath_tests_file = File.read("submodules/unicodemath-tests/unicodemath_tests.yaml")
     unicodemath_tests = YAML.safe_load(unicodemath_tests_file, permitted_classes: [Time])["tests"]

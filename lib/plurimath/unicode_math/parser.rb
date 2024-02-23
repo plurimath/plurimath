@@ -28,7 +28,7 @@ module Plurimath
       end
 
       def parse
-        tree = Parse.new.parse_with_debug(text)
+        tree = Parse.new.parse(text)
         tree = post_processing(tree) if @splitted
         Math::Formula.new([tree])
       end

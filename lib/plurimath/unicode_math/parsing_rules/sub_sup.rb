@@ -42,11 +42,11 @@ module Plurimath
         end
 
         rule(:subscript_value) do
-          (sub_paren | baseless_sub.as(:sub)) >> recursive_baseless_sub_exp.as(:recursion).maybe
+          (sub_paren | baseless_sub.as(:sub)) >> recursive_baseless_sub_exp.maybe
         end
 
         rule(:supscript_value) do
-          (sup_paren | baseless_sup.as(:sup)) >> recursive_baseless_sup_exp.as(:recursion).maybe
+          (sup_paren | baseless_sup.as(:sup)) >> recursive_baseless_sup_exp.maybe
         end
 
         rule(:naryand_recursion) do
@@ -69,18 +69,18 @@ module Plurimath
 
         rule(:recursive_baseless_sup_exp) do
           (mini_sub_sup >> recursive_baseless_sup_exp.as(:exp_iteration).maybe) |
-            (baseless_sup.as(:sup_script) >> recursive_baseless_sup_exp.as(:exp_iteration).maybe) 
+            (baseless_sup.as(:sup_recursion) >> recursive_baseless_sup_exp.as(:exp_iteration).maybe) 
         end
 
         rule(:recursive_baseless_sub_exp) do
           (mini_sub_sup >> recursive_baseless_sub_exp.as(:exp_iteration).maybe) |
-            (baseless_sub.as(:sub_script) >> recursive_baseless_sub_exp.as(:exp_iteration).maybe)
+            (baseless_sub.as(:sub_recursion) >> recursive_baseless_sub_exp.as(:exp_iteration).maybe)
         end
 
         rule(:naryand_values) do
           (exp_bracket >> (subsup | subscript_value | supscript_value).maybe) |
             (exp_script >> space?) |
-            expression
+            negatable_symbols.absent? >> sub_sup_operand
         end
 
         rule(:mini_sub_sup) do
@@ -176,12 +176,12 @@ module Plurimath
         end
 
         rule(:sub_paren) do
-          op_sub_open_paren >> sub_alpha_digits >> op_sub_close_paren >> sub_paren.maybe |
+          (op_sub_open_paren >> sub_alpha_digits.as(:mini_expr) >> op_sub_close_paren).as(:mini_intermediate_exp) >> sub_paren.maybe |
             sub_alpha_digits >> sub_paren.maybe
         end
 
         rule(:sup_paren) do
-          op_sup_open_paren >> sup_alpha_digits >> op_sup_close_paren >> sup_paren.maybe |
+          (op_sup_open_paren >> sup_alpha_digits.as(:mini_expr) >> op_sup_close_paren).as(:mini_intermediate_exp) >> sup_paren.maybe |
             sup_alpha_digits >> sup_paren.maybe
         end
 
@@ -199,13 +199,13 @@ module Plurimath
         end
 
         def baseless_sub_values(soperand_name)
-          (mini_sub_sup | sub_sup_paren).as(soperand_name) >> recursive_baseless_sub_exp.as(:recursion).maybe >> sub_sup_values.maybe |
-            sub_sup_values.as(soperand_name) >> recursive_baseless_sub_exp.as(:recursion).maybe
+          (mini_sub_sup | sub_sup_paren).as(soperand_name) >> recursive_baseless_sub_exp.maybe >> sub_sup_values.maybe |
+            sub_sup_values.as(soperand_name) >> recursive_baseless_sub_exp.maybe
         end
 
         def baseless_sup_values(soperand_name)
-          (mini_sub_sup | sub_sup_paren).as(soperand_name) >> recursive_baseless_sup_exp.as(:recursion).maybe >> sub_sup_values.maybe |
-            sub_sup_values.as(soperand_name) >> recursive_baseless_sup_exp.as(:recursion).maybe
+          (mini_sub_sup | sub_sup_paren).as(soperand_name) >> recursive_baseless_sup_exp.maybe >> sub_sup_values.maybe |
+            sub_sup_values.as(soperand_name) >> recursive_baseless_sup_exp.maybe
         end
       end
     end
