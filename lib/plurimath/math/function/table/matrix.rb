@@ -28,6 +28,15 @@ module Plurimath
               table_tag,
               value&.map(&:to_mathml_without_math_tag),
             )
+            if open_paren.include?("(") && close_paren.include?(")")
+              table_tag
+            else
+              mrow = ox_element("mrow")
+              mrow << (ox_element("mo") << open_paren) unless validate_paren(open_paren)
+              mrow << table_tag
+              mrow << (ox_element("mo") << close_paren) unless validate_paren(close_paren)
+              mrow
+            end
           end
         end
       end

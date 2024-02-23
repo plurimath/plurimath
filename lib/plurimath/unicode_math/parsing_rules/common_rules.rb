@@ -14,6 +14,8 @@ module Plurimath
         rule(:operator) { match["-+*=.?:,`"].as(:operator) }
         rule(:op_unary) { op_prefixed_unary_arg_functions | op_unary_arg_functions | op_prefixed_unary_symbols | op_unary_symbols }
 
+        rule(:mid_symbols) { (slash >> str("mid").as(:mid_symbol)) | str("&#x2223;").as(:mid_symbol) }
+
         rule(:unary_spaces) { space | invisible_unicode }
         rule(:custom_fonts) { str("double") | str("fraktur") | str("script") }
         rule(:parsing_text) { str("\"") >> match("[^\"]").repeat(1).as(:text) >> str("\"") }
@@ -21,6 +23,28 @@ module Plurimath
 
         rule(:op_h_brackets)  { op_h_bracket | op_h_bracket_prefixed }
         rule(:nary_functions) { (op_unary >> unary_spaces.maybe) | (op_unary_functions >> unary_spaces) }
+        rule(:exclamation_symbols) { (str("!") | str("!!")).as(:exclamation_symbol) }
+        rule(:exclamation_symbols?) { exclamation_symbols.maybe }
+
+        rule(:mid) do
+          element >> mid_symbols >> mid.as(:mid_recursion).maybe
+        end
+
+        rule(:mini_fraction) do
+          sup_paren.as(:mini_numerator) >> (negatable_symbols.absent? >> op_over) >> sub_paren.as(:mini_denominator)
+        end
+
+        rule(:fraction) do
+          mini_fraction |
+            numerator.as(:numerator) >> space? >> (negatable_symbols.absent? >> op_over) >> space? >> denominator.as(:denominator)
+        end
+
+        rule(:fonts) do
+          str("\\") >> custom_fonts.as(:unicoded_font_class) >> str("H").as(:symbol) |
+            str("\\") >> str("mitBbb").as(:unicoded_font_class) >> match(/D|d|e|i|j/).as(:symbol)|
+            op_fonts >> match["A-Za-z"].as(:symbol) |
+            op_alphanumeric_fonts >> (match["A-Za-z"].as(:symbol) | match("[0-9]").as(:number))
+        end
 
         rule(:mini_fraction) do
           sup_paren.as(:numerator) >> (negatable_symbols.absent? >> op_over) >> sub_paren.as(:denominator)
@@ -39,8 +63,8 @@ module Plurimath
         end
 
         rule(:unary_arg_functions) do
-          op_unary_functions >> (soperand | exp_bracket).as(:first_value).maybe |
-            (nary_functions >> (exp_bracket | soperand).as(:first_value)).as(:unary_function)
+          (op_unary_functions >> space? >> (soperand | exp_bracket).as(:first_value).maybe) |
+            (nary_functions >> space? >> (exp_bracket | soperand).as(:first_value)).as(:unary_function)
         end
 
         rule(:accents)  do
@@ -49,32 +73,25 @@ module Plurimath
         end
 
         rule(:diacritics_accents) do
-          (operand.as(:first_value) >> op_diacritic_overlays).as(:diacritics_accents) |
-            (operand.as(:first_value) >> op_diacritic_belows).as(:diacritics_accents) |
-            (op_diacritic_belows >> operand.as(:first_value)).as(:diacritics_accents) |
-            (op_diacritic_overlays >> operand.as(:first_value)).as(:diacritics_accents)
+          (operand.as(:first_value) >> op_diacritic_overlays.as(:overlay_after)).as(:diacritics_accents) |
+            (operand.as(:first_value) >> op_diacritic_belows.as(:below_after)).as(:diacritics_accents) |
+            (op_diacritic_belows.as(:below_before) >> operand.as(:first_value)).as(:diacritics_accents) |
+            (op_diacritic_overlays.as(:overlay_before) >> operand.as(:first_value)).as(:diacritics_accents)
         end
 
         rule(:repeated_accent_symbols) do
-          (
-            op_accent |
-            op_accent_prefixed |
-            ((str("&#x27;") | str("'")).repeat(1) >> space?).as(:accent_symbols)
-          ).repeat(1)
+          (op_accent | op_accent_prefixed).repeat(1) >> prime_symbols.maybe |
+            prime_symbols
         end
 
-        rule(:accent_symbols) do
-          op_accent |
-            op_accent_prefixed |
-            ((str("&#x27;") | str("'"))).as(:accent_symbols)
+        rule(:prime_symbols) do
+          ((slash >> prefixed_primes.as(:prefixed_prime) | primes).repeat(1).as(:prime_accent_symbols))
         end
 
         rule(:operand) do
           rect |
             phant |
             accents |
-            monospace_fonts |
-            combined_symbols |
             negatable_symbols |
             ((parsing_text | factor.as(:factor)) >> operand.as(:operand).maybe) |
             fonts.as(:fonts)
@@ -82,18 +99,20 @@ module Plurimath
 
         rule(:factor) do
           combined_symbols |
-            ((str("&#x2212;").absent? >> op_unary_functions.absent?) >> entity >> (str("!") | str("!!")).as(:exclamation_symbol).maybe) |
+            ((str("&#x2212;").absent? >> op_unary_functions.absent?) >> entity >> exclamation_symbols?) |
             color |
-            (exp_bracket.as(:intermediate_exp) >> (str("!") | str("!!")).as(:exclamation_symbol).maybe) |
+            (exp_bracket.as(:intermediate_exp) >> exclamation_symbols?) |
             function |
             backcolor |
+            op_spaces |
             monospace_fonts |
             relational_symbols |
             unary_arg_functions |
             op_unary_functions >> unary_spaces >> (operand | exp_bracket).absent? |
             ordinary_symbols |
             negatable_symbols |
-            str("...").as(:ldots).as(:symbol)
+            str("...").as(:ldots).as(:symbol) |
+            exclamation_symbols
         end
 
         rule(:soperand) do

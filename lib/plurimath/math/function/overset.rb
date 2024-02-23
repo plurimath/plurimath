@@ -6,18 +6,27 @@ module Plurimath
   module Math
     module Function
       class Overset < BinaryFunction
+        attr_accessor :options
         FUNCTION = {
           name: "overset",
           first_value: "base",
           second_value: "supscript",
         }.freeze
 
+        def initialize(
+          parameter_one = nil,
+          parameter_two = nil,
+          options = {})
+          super(parameter_one, parameter_two)
+          @options = options unless options.empty?
+        end
+
         def to_mathml_without_math_tag
           value_array = [
             validate_mathml_fields(parameter_two),
             validate_mathml_fields(parameter_one),
           ]
-          Utility.update_nodes(ox_element("mover"), value_array)
+          Utility.update_nodes(ox_element("mover", attributes: options), value_array)
         end
 
         def to_omml_without_math_tag(display_style)

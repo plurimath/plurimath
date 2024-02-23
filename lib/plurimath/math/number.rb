@@ -3,14 +3,19 @@
 module Plurimath
   module Math
     class Number < Core
-      attr_accessor :value
+      attr_accessor :value, :mini_sub_sized, :mini_sup_sized
 
-      def initialize(value)
+      def initialize(value, mini_sub_sized: false, mini_sup_sized: false)
         @value = value.is_a?(Parslet::Slice) ? value.to_s : value
+        @mini_sub_sized = mini_sub_sized if mini_sub_sized
+        @mini_sup_sized = mini_sup_sized if mini_sup_sized
       end
 
       def ==(object)
-        object.respond_to?(:value) && object.value == value
+        object.respond_to?(:value) &&
+          object.value == value &&
+          object.mini_sub_sized == mini_sub_sized &&
+          object.mini_sup_sized == mini_sup_sized
       end
 
       def to_asciimath

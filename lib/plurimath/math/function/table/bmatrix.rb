@@ -24,11 +24,14 @@ module Plurimath
               table_tag,
               value&.map(&:to_mathml_without_math_tag),
             )
-            attributes = {
-              open: mathml_parenthesis(open_paren),
-              close: mathml_parenthesis(close_paren),
-            }
-            Utility.ox_element("mfenced", attributes: attributes) << table_tag
+            Utility.update_nodes(
+              Utility.ox_element("mrow"),
+              [
+                mo_element(mathml_parenthesis(open_paren)),
+                table_tag,
+                mo_element(mathml_parenthesis(close_paren)),
+              ],
+            )
           end
         end
       end

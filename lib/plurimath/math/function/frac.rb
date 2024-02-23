@@ -7,12 +7,23 @@ module Plurimath
     module Function
       class Frac < BinaryFunction
         attr_accessor :options
-
         FUNCTION = {
           name: "fraction",
           first_value: "numerator",
           second_value: "denominator",
         }.freeze
+
+        def initialize(parameter_one = nil,
+                       parameter_two = nil,
+                       options = {})
+          super(parameter_one, parameter_two)
+          @options = options if options && !options&.empty?
+        end
+
+        def ==(object)
+          super(object) &&
+            object.options == options
+        end
 
         def to_asciimath
           first_value = "(#{parameter_one&.to_asciimath})" if parameter_one
@@ -65,6 +76,11 @@ module Plurimath
             frac.hide_function_name = true
             obj.update(frac)
           end
+        end
+
+        def set_options(value)
+          self.options = value
+          self
         end
 
         protected

@@ -76,7 +76,7 @@ module Plurimath
         end
 
         def valid_value_exist?(field)
-          field&.empty? || field&.all?(None)
+          !field && (field&.empty? || field&.all?(None))
         end
       end
     end

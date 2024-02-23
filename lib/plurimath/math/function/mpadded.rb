@@ -14,8 +14,8 @@ module Plurimath
         }
 
         def initialize(parameter_one = nil, options = {})
-          @options = options
           super(parameter_one)
+          @options = options unless options.empty?
         end
 
         def to_asciimath

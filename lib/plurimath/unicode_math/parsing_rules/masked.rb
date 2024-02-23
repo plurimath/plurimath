@@ -22,7 +22,10 @@ module Plurimath
         rule(:rect_symbols) { str("&#x25ad;") | str("\\rect") }
         rule(:sqrt_symbols) { str("&#x221a;") | str("\\sqrt") | str("\\surd") }
         rule(:root_symbols) { str("&#x24ad;") | str("&#x221a;") | str("\\root") | str("\\surd") }
-        rule(:arg_function) { str("&#x24d0;").as(:arg) >> a_ascii.as(:arg_arguments).maybe >> space? >> expression.as(:first_value).maybe }
+        rule(:arg_function) do
+          str("&#x24d0;").as(:arg) >> str("(") >> a_ascii.as(:arg_arguments).maybe >> space? >> expression.as(:first_value).maybe >> str(")") |
+            str("&#x24d0;").as(:arg) >> a_ascii.as(:arg_arguments).maybe >> space? >> expression.as(:first_value).maybe
+        end
 
         rule(:color_symbols)   { str("&#x270e;") | str("\\color") }
         rule(:phantom_symbols) { str("&#x27e1;") | str("\\phantom") }
