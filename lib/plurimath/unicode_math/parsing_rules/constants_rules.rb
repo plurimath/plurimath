@@ -13,7 +13,7 @@ module Plurimath
 
         rule(:op_accent)  { arr_to_expression(Constants::ACCENT_SYMBOLS.values, :accent_symbols, prefix: nil) }
         rule(:op_matrixs) { arr_to_expression(Constants::MATRIXS.values, :matrixs, prefix: nil) }
-        rule(:op_negated) { arr_to_expression(Constants::NEGATABLE_SYMBOLS.keys, :negated_operator, prefix: nil) }
+        rule(:op_negated) { arr_to_expression(Constants::NEGATABLE_SYMBOLS, :negated_operator, prefix: nil) }
 
         rule(:op_nary_text) { arr_to_expression(Constants::NARY_SYMBOLS.keys, :nary_class) }
         rule(:op_sub_alpha) { arr_to_expression(Constants::SUB_ALPHABETS.values, :sub_alpha, prefix: nil) }

@@ -7,18 +7,27 @@ module Plurimath
       module CommonRules
         include Helper
 
-        rule(:atom)  { str("&#x2212;").as(:symbol) | (diacritics >> diacriticbase.maybe) | an }
-        rule(:atoms) { (atom.as(:atom) >> atoms.as(:atoms).maybe) }
-        rule(:fonts) { op_fonts >> a_ascii | op_alphanumeric_fonts >> (a_ascii | n_ascii) }
+        rule(:atom)   { (diacritics >> diacriticbase.maybe) | an }
+        rule(:atoms)  { (atom.as(:atom) >> atoms.as(:atoms).maybe) }
+        rule(:entity) { atoms | number }
         rule(:op_unary) { op_prefixed_unary_arg_functions | op_unary_arg_functions | op_prefixed_unary_symbols | op_unary_symbols }
 
-        rule(:unary_value)  { (op_opener >> space? >> spaced_bracketed_operand >> space? >> op_closer).as(:expression) }
+
+
         rule(:unary_spaces) { space | invisible_unicode }
+        rule(:custom_fonts) { str("double") | str("fraktur") | str("script") }
         rule(:parsing_text) { str("\"") >> match("[^\"]").repeat(1).as(:text) >> str("\"") }
         rule(:alphanumeric) { match("[\u{0041}-\u{005A}\u{0061}-\u{007A}\u{0391}-\u{2207}\u{3B1}-\u{3DD}\u{30}-\u{39}]") }
 
         rule(:op_h_brackets)  { op_h_bracket | op_h_bracket_prefixed }
         rule(:nary_functions) { (op_unary >> unary_spaces.maybe) | (op_unary_functions >> unary_spaces) }
+
+        rule(:fonts) do
+          str("\\") >> custom_fonts.as(:unicoded_font_class) >> str("H").as(:symbol) |
+            str("\\") >> str("mitBbb").as(:unicoded_font_class) >> match(/D|d|e|i|j/).as(:symbol)|
+            op_fonts >> match["A-Za-z"].as(:symbol) |
+            op_alphanumeric_fonts >> (match["A-Za-z"].as(:symbol) | match("[0-9]").as(:number))
+        end
 
         rule(:unary_arg_functions) do
           op_unary_functions >> (soperand | exp_bracket).as(:first_value).maybe |
@@ -28,13 +37,6 @@ module Plurimath
         rule(:accents)  do
           (exp_bracket.as(:intermediate_exp).as(:first_value) >> str("&#xa0;").maybe >> repeated_accent_symbols).as(:accents) |
             (str("&#xa0;").absent? >> factor.as(:first_value) >> str("&#xa0;").maybe >> repeated_accent_symbols).as(:accents)
-        end
-
-        rule(:entity) do
-          atoms |
-            number |
-            (exp_bracket.as(:intermediate_exp) >> operator.maybe >> element.as(:expr).maybe) |
-            (exp_bracket.as(:intermediate_exp) >> space >> operator.maybe >> element.as(:expr).maybe)
         end
 
         rule(:diacritics_accents) do
@@ -59,8 +61,7 @@ module Plurimath
         end
 
         rule(:operand) do
-          unary_value |
-            rect |
+          rect |
             phant |
             accents |
             monospace_fonts |
@@ -72,8 +73,9 @@ module Plurimath
 
         rule(:factor) do
           combined_symbols |
-            (op_unary_functions.absent? >> entity >> (str("!") | str("!!")).as(:exclamation_symbol).maybe) |
+            ((str("&#x2212;").absent? >> op_unary_functions.absent?) >> entity >> (str("!") | str("!!")).as(:exclamation_symbol).maybe) |
             color |
+            (exp_bracket.as(:intermediate_exp) >> (str("!") | str("!!")).as(:exclamation_symbol).maybe) |
             function |
             backcolor |
             monospace_fonts |

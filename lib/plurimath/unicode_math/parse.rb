@@ -29,7 +29,7 @@ module Plurimath
       rule(:hbrack) { (op_h_brackets >> operand.as(:first_value)).as(:hbrack) }
 
       rule(:op_nary) { op_nary_symbols | op_nary_text }
-      rule(:n_ascii) { match("[0-9]").repeat(1).as(:number) }
+      rule(:n_ascii) { match["0-9"].repeat(1).as(:number) }
       rule(:a_ascii) { match["A-Za-z"].repeat(1).as(:symbol) }
       rule(:unicode) { str("&#x") >> match["0-9a-fA-F"].repeat >> str(";") }
       rule(:an_math) { space.absent? >> match("[\u{1D400}-\u{1D7FF}\u{2102}-\u{2134}]") }
@@ -37,10 +37,10 @@ module Plurimath
       rule(:op_over) { forward_slash | str("&#x2298;") | str("\\over") | str("&#x002f;") | (str("&#xa6;") | str("\\atop") | str("\\choose") | str("&#x249e;")).as(:atop) }
 
       rule(:operator) { match["-+*=.?:,`"].as(:operator) }
-      rule(:function) { root_functions | box | hbrack | arg_function | intent_function }
       rule(:td_value) { expression.as(:exp) >> space? >> td_value.as(:expr).maybe }
-      rule(:op_array) { op_matrixs | op_prefixed_matrixs | str("&") | str("&#xb;") | str("\\array") }
       rule(:an_other) { (an_math | n_ascii).absent? >> alphanumeric.as(:alphanumeric) }
+      rule(:function) { root_functions | box | hbrack | arg_function | intent_function }
+      rule(:op_array) { op_matrixs | op_prefixed_matrixs | str("&") | str("&#xb;") | str("\\array") }
       rule(:fraction) { numerator.as(:numerator) >> space? >> (negatable_symbols.absent? >> op_over) >> space? >> denominator.as(:denominator) }
 
       rule(:op_opener) { open_paren | op_open_unicode | op_open_paren | op_open }
@@ -53,8 +53,9 @@ module Plurimath
       rule(:matrix_only) { non_matrixs_absence? >> (op_matrixs | op_prefixed_matrixs) }
       rule(:close_paren) { (op_masked_close >> (op_opener | op_closer)).as(:close_paren) | op_masked_close }
 
-      rule(:diacriticbase)  { an | n_ascii }
-      rule(:forward_slash)  { str("/") | str("&#x2f;") | str("&#x2044;") }
+      rule(:diacriticbase) { an | n_ascii }
+      rule(:forward_slash) { str("/") | str("&#x2f;") | str("&#x2044;") }
+
       rule(:root_functions) { qdrt | cbrt | sqrt | binary_root | nthrt }
       rule(:op_masked_open) { (str("\\left") | str("\\open") | str("&#x251c;")).as(:paren_open_prefix) >> digits.as(:open_paren_mask).maybe }
 
@@ -87,7 +88,9 @@ module Plurimath
       end
 
       rule(:numerator) do
-        exp_script >> numerator.as(:recursive_numerator).maybe |
+        (exp_script >> space?) >> numerator.as(:recursive_numerator).maybe |
+          (accents.as(:base) >> accents_subsup).as(:accents_subsup) |
+          accents |
           unary_arg_functions |
           operator.absent? >> operand 
       end
@@ -136,6 +139,7 @@ module Plurimath
 
       rule(:element) do
         accents.present? >> (accents.as(:base) >> accents_subsup).as(:accents_subsup) |
+          accents.present? >> fraction |
           accents |
           diacritics_accents |
           op_unicode_fractions |
@@ -143,6 +147,7 @@ module Plurimath
           monospace_fonts |
           array |
           exp_script |
+          (op_unary_functions.absent? >> atom.as(:factor).maybe) >> space? >> exp_script |
           unary_arg_functions |
           combined_symbols |
           operand |
