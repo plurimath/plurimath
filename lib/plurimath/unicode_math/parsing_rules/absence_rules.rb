@@ -108,6 +108,11 @@ module Plurimath
             str("&#x24b8;")
           ).absent?
         end
+
+        rule(:absent_numerator_exp_script?) do
+          (power_base_script.as(:nary_sub_sup) >> invisible_space? >> naryand_recursion.as(:naryand)).absent? |
+            (op_nary >> invisible_space? >> naryand_recursion.as(:naryand).maybe).absent?
+        end
       end
     end
   end

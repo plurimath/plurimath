@@ -80,6 +80,7 @@ module Plurimath
         rule(:naryand_values) do
           (exp_bracket >> (subsup | subscript_value | supscript_value).maybe) |
             (exp_script >> space?) |
+            fraction.as(:frac) |
             negatable_symbols.absent? >> sub_sup_operand
         end
 
