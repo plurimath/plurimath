@@ -67,7 +67,11 @@ module Plurimath
 
       rule(:invisible_unicode?) { invisible_unicode.maybe }
       rule(:relational_symbols) { op_relational_unicode | op_relational_symbols }
-      rule(:spaced_exp_bracket) { expression >> space? >> spaced_exp_bracket.as(:expr).maybe }
+      rule(:spaced_exp_bracket) do
+        expression >> space? >> spaced_exp_bracket.as(:expr) |
+          str("&#x2212;").as(:symbol) >> space? >> spaced_exp_bracket.as(:expr) |
+          expression >> space?
+      end
 
       rule(:spaced_bracketed_operand) { operand >> space? >> spaced_bracketed_operand.as(:expr).maybe }
 
@@ -88,7 +92,7 @@ module Plurimath
       end
 
       rule(:numerator) do
-        (exp_script >> space?) >> numerator.as(:recursive_numerator).maybe |
+        (absent_numerator_exp_script? >> exp_script >> space?) >> numerator.as(:recursive_numerator).maybe |
           (accents.as(:base) >> accents_subsup).as(:accents_subsup) |
           accents |
           unary_arg_functions |

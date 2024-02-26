@@ -12,8 +12,6 @@ module Plurimath
         rule(:entity) { atoms | number }
         rule(:op_unary) { op_prefixed_unary_arg_functions | op_unary_arg_functions | op_prefixed_unary_symbols | op_unary_symbols }
 
-
-
         rule(:unary_spaces) { space | invisible_unicode }
         rule(:custom_fonts) { str("double") | str("fraktur") | str("script") }
         rule(:parsing_text) { str("\"") >> match("[^\"]").repeat(1).as(:text) >> str("\"") }
@@ -91,6 +89,7 @@ module Plurimath
           operand |
             str("&#x221e;").as(:infty) |
             str("-&#x221e;").as(:symbol) |
+            str("&#x2212;").as(:symbol) |
             str("-").as(:symbol) |
             operator
         end
