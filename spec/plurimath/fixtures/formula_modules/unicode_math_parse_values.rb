@@ -59314,6 +59314,1210 @@ module UnicodeMathParseValues
     }
   }.freeze
   EXAMPLE_469 = {
+    factor: {
+      ordinary_symbols: "&#x2200;"
+    },
+    expr: {
+      factor: {
+        atom: {
+          alphanumeric: "A"
+        }
+      },
+      expr: {
+        operator: ",",
+        expr: {
+          factor: {
+            atom: {
+              alphanumeric: "B"
+            }
+          },
+          expr: {
+            operator: ",",
+            expr: {
+              factor: {
+                atom: {
+                  alphanumeric: "C"
+                }
+              },
+              expr: {
+                factor: {
+                  relational_symbols: "&#x2208;"
+                },
+                expr: {
+                  factor: {
+                    atom: {
+                      char: {
+                        unicode_symbols: "&#x1d4a2;"
+                      }
+                    }
+                  },
+                  expr: {
+                    factor: {
+                      relational_symbols: "&#x27f9;"
+                    },
+                    expr: {
+                      factor: {
+                        atom: {
+                          alphanumeric: "A"
+                        }
+                      },
+                      expr: {
+                        slashed_value: "&#x230a;",
+                        expr: {
+                          factor: {
+                            intermediate_exp: {
+                              open_paren: "(",
+                              factor: {
+                                atom: {
+                                  alphanumeric: "B"
+                                }
+                              },
+                              expr: {
+                                operator: "+",
+                                expr: {
+                                  factor: {
+                                    atom: {
+                                      alphanumeric: "C"
+                                    }
+                                  }
+                                }
+                              },
+                              close_paren: ")"
+                            }
+                          },
+                          expr: {
+                            operator: "=",
+                            expr: {
+                              factor: {
+                                atom: {
+                                  alphanumeric: "A"
+                                }
+                              },
+                              expr: {
+                                slashed_value: "&#x230a;",
+                                expr: {
+                                  factor: {
+                                    atom: {
+                                      alphanumeric: "B"
+                                    }
+                                  },
+                                  expr: {
+                                    operator: "+",
+                                    expr: {
+                                      factor: {
+                                        atom: {
+                                          alphanumeric: "A"
+                                        }
+                                      },
+                                      expr: {
+                                        slashed_value: "&#x230a;",
+                                        expr: {
+                                          factor: {
+                                            atom: {
+                                              alphanumeric: "C"
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }.freeze
+  EXAMPLE_470 = {
+    factor: {
+      ordinary_symbols: "&#x2200;"
+    },
+    expr: {
+      factor: {
+        atom: {
+          alphanumeric: "A"
+        }
+      },
+      expr: {
+        operator: ",",
+        expr: {
+          factor: {
+            atom: {
+              alphanumeric: "B"
+            }
+          },
+          expr: {
+            operator: ",",
+            expr: {
+              factor: {
+                atom: {
+                  alphanumeric: "C"
+                }
+              },
+              expr: {
+                factor: {
+                  relational_symbols: "&#x2208;"
+                },
+                expr: {
+                  factor: {
+                    atom: {
+                      char: {
+                        unicode_symbols: "&#x1d4a2;"
+                      }
+                    }
+                  },
+                  expr: {
+                    factor: {
+                      relational_symbols: "&#x27f9;"
+                    },
+                    expr: {
+                      factor: {
+                        atom: {
+                          alphanumeric: "A"
+                        }
+                      },
+                      expr: {
+                        slashed_value: "&#x230b;",
+                        expr: {
+                          factor: {
+                            intermediate_exp: {
+                              open_paren: "(",
+                              factor: {
+                                atom: {
+                                  alphanumeric: "B"
+                                }
+                              },
+                              expr: {
+                                operator: "+",
+                                expr: {
+                                  factor: {
+                                    atom: {
+                                      alphanumeric: "C"
+                                    }
+                                  }
+                                }
+                              },
+                              close_paren: ")"
+                            }
+                          },
+                          expr: {
+                            operator: "=",
+                            expr: {
+                              factor: {
+                                atom: {
+                                  alphanumeric: "A"
+                                }
+                              },
+                              expr: {
+                                slashed_value: "&#x230b;",
+                                expr: {
+                                  factor: {
+                                    atom: {
+                                      alphanumeric: "B"
+                                    }
+                                  },
+                                  expr: {
+                                    operator: "+",
+                                    expr: {
+                                      factor: {
+                                        atom: {
+                                          alphanumeric: "A"
+                                        }
+                                      },
+                                      expr: {
+                                        slashed_value: "&#x230b;",
+                                        expr: {
+                                          factor: {
+                                            atom: {
+                                              alphanumeric: "C"
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }.freeze
+  EXAMPLE_471 = {
+    factor: {
+      ordinary_symbols: "&#x2200;"
+    },
+    expr: {
+      factor: {
+        atom: {
+          alphanumeric: "A"
+        }
+      },
+      expr: {
+        operator: ",",
+        expr: {
+          factor: {
+            atom: {
+              alphanumeric: "B"
+            }
+          },
+          expr: {
+            operator: ",",
+            expr: {
+              factor: {
+                atom: {
+                  alphanumeric: "C"
+                }
+              },
+              expr: {
+                factor: {
+                  relational_symbols: "&#x2208;"
+                },
+                expr: {
+                  factor: {
+                    atom: {
+                      char: {
+                        unicode_symbols: "&#x1d4a2;"
+                      }
+                    }
+                  },
+                  expr: {
+                    factor: {
+                      relational_symbols: "&#x27f9;"
+                    },
+                    expr: {
+                      factor: {
+                        atom: {
+                          alphanumeric: "A"
+                        }
+                      },
+                      expr: {
+                        factor: {
+                          atom: {
+                            char: {
+                              unicode_symbols: "&#x2227;"
+                            }
+                          }
+                        },
+                        expr: {
+                          factor: {
+                            intermediate_exp: {
+                              open_paren: "(",
+                              factor: {
+                                atom: {
+                                  alphanumeric: "B"
+                                }
+                              },
+                              expr: {
+                                operator: "+",
+                                expr: {
+                                  factor: {
+                                    atom: {
+                                      alphanumeric: "C"
+                                    }
+                                  }
+                                }
+                              },
+                              close_paren: ")"
+                            }
+                          },
+                          expr: {
+                            operator: "=",
+                            expr: {
+                              factor: {
+                                atom: {
+                                  alphanumeric: "A"
+                                }
+                              },
+                              expr: {
+                                factor: {
+                                  atom: {
+                                    char: {
+                                      unicode_symbols: "&#x2227;"
+                                    }
+                                  }
+                                },
+                                expr: {
+                                  factor: {
+                                    atom: {
+                                      alphanumeric: "B"
+                                    }
+                                  },
+                                  expr: {
+                                    operator: "+",
+                                    expr: {
+                                      factor: {
+                                        atom: {
+                                          alphanumeric: "A"
+                                        }
+                                      },
+                                      expr: {
+                                        factor: {
+                                          atom: {
+                                            char: {
+                                              unicode_symbols: "&#x2227;"
+                                            }
+                                          }
+                                        },
+                                        expr: {
+                                          factor: {
+                                            atom: {
+                                              alphanumeric: "C"
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }.freeze
+  EXAMPLE_472 = {
+    factor: {
+      ordinary_symbols: "&#x2200;"
+    },
+    expr: {
+      factor: {
+        atom: {
+          alphanumeric: "a"
+        }
+      },
+      expr: {
+        factor: {
+          relational_symbols: "&#x2208;"
+        },
+        expr: {
+          sub_exp: {
+            base: {
+              factor: {
+                atom: {
+                  char: {
+                    unicode_symbols: "&#x1d4a2;"
+                  }
+                }
+              }
+            },
+            sub: {
+              sub_script: {
+                operand: {
+                  factor: {
+                    digit: {
+                      number: "1"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          expr: {
+            operator: ",",
+            expr: {
+              factor: {
+                ordinary_symbols: "&#x2200;"
+              },
+              expr: {
+                factor: {
+                  atom: {
+                    alphanumeric: "B"
+                  }
+                },
+                expr: {
+                  factor: {
+                    relational_symbols: "&#x2208;"
+                  },
+                  expr: {
+                    factor: {
+                      atom: {
+                        char: {
+                          unicode_symbols: "&#x1d4a2;"
+                        }
+                      }
+                    },
+                    expr: {
+                      factor: {
+                        relational_symbols: "&#x27f9;"
+                      },
+                      expr: {
+                        factor: {
+                          atom: {
+                            alphanumeric: "B"
+                          }
+                        },
+                        expr: {
+                          factor: {
+                            atom: {
+                              char: {
+                                unicode_symbols: "&#x2227;"
+                              }
+                            }
+                          },
+                          expr: {
+                            factor: {
+                              atom: {
+                                alphanumeric: "a"
+                              }
+                            },
+                            expr: {
+                              operator: "=",
+                              expr: {
+                                frac: {
+                                  numerator: {
+                                    factor: {
+                                      digit: {
+                                        number: "1"
+                                      }
+                                    }
+                                  },
+                                  denominator: {
+                                    factor: {
+                                      digit: {
+                                        number: "2"
+                                      }
+                                    }
+                                  }
+                                },
+                                expr: {
+                                  factor: {
+                                    intermediate_exp: {
+                                      open_paren: "(",
+                                      factor: {
+                                        atom: {
+                                          alphanumeric: "B"
+                                        }
+                                      },
+                                      expr: {
+                                        factor: {
+                                          atom: {
+                                            alphanumeric: "a"
+                                          }
+                                        },
+                                        expr: {
+                                          operator: "+",
+                                          expr: {
+                                            factor: {
+                                              alphanumeric: "a"
+                                            },
+                                            sup_exp: {
+                                              base: {
+                                                symbol: "B"
+                                              },
+                                              sup: {
+                                                operator: "*"
+                                              }
+                                            }
+                                          }
+                                        }
+                                      },
+                                      close_paren: ")"
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }.freeze
+  EXAMPLE_473 = {
+    factor: {
+      ordinary_symbols: "&#x2200;"
+    },
+    expr: {
+      factor: {
+        atom: {
+          alphanumeric: "a"
+        }
+      },
+      expr: {
+        factor: {
+          relational_symbols: "&#x2208;"
+        },
+        expr: {
+          sub_exp: {
+            base: {
+              factor: {
+                atom: {
+                  char: {
+                    unicode_symbols: "&#x1d4a2;"
+                  }
+                }
+              }
+            },
+            sub: {
+              sub_script: {
+                operand: {
+                  factor: {
+                    digit: {
+                      number: "1"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          expr: {
+            operator: ",",
+            expr: {
+              factor: {
+                ordinary_symbols: "&#x2200;"
+              },
+              expr: {
+                factor: {
+                  atom: {
+                    alphanumeric: "B"
+                  }
+                },
+                expr: {
+                  factor: {
+                    relational_symbols: "&#x2208;"
+                  },
+                  expr: {
+                    factor: {
+                      atom: {
+                        char: {
+                          unicode_symbols: "&#x1d4a2;"
+                        }
+                      }
+                    },
+                    expr: {
+                      factor: {
+                        relational_symbols: "&#x27f9;"
+                      },
+                      expr: {
+                        factor: {
+                          atom: {
+                            alphanumeric: "a"
+                          }
+                        },
+                        expr: {
+                          factor: {
+                            atom: {
+                              char: {
+                                unicode_symbols: "&#x2227;"
+                              }
+                            }
+                          },
+                          expr: {
+                            factor: {
+                              atom: {
+                                alphanumeric: "B"
+                              }
+                            },
+                            expr: {
+                              operator: "=",
+                              expr: {
+                                frac: {
+                                  numerator: {
+                                    factor: {
+                                      digit: {
+                                        number: "1"
+                                      }
+                                    }
+                                  },
+                                  denominator: {
+                                    factor: {
+                                      digit: {
+                                        number: "2"
+                                      }
+                                    }
+                                  }
+                                },
+                                expr: {
+                                  factor: {
+                                    intermediate_exp: {
+                                      open_paren: "(",
+                                      factor: {
+                                        atom: {
+                                          alphanumeric: "a"
+                                        }
+                                      },
+                                      expr: {
+                                        factor: {
+                                          atom: {
+                                            alphanumeric: "B"
+                                          }
+                                        },
+                                        expr: {
+                                          operator: "+",
+                                          expr: {
+                                            sup_exp: {
+                                              base: {
+                                                symbol: "B"
+                                              },
+                                              sup: {
+                                                operator: "*"
+                                              }
+                                            },
+                                            expr: {
+                                              factor: {
+                                                atom: {
+                                                  alphanumeric: "a"
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      },
+                                      close_paren: ")"
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }.freeze
+  EXAMPLE_474 = {
+    factor: {
+      ordinary_symbols: "&#x2200;"
+    },
+    expr: {
+      factor: {
+        atom: {
+          alphanumeric: "a"
+        }
+      },
+      expr: {
+        factor: {
+          relational_symbols: "&#x2208;"
+        },
+        expr: {
+          sub_exp: {
+            base: {
+              factor: {
+                atom: {
+                  char: {
+                    unicode_symbols: "&#x1d4a2;"
+                  }
+                }
+              }
+            },
+            sub: {
+              sub_script: {
+                operand: {
+                  factor: {
+                    digit: {
+                      number: "1"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          expr: {
+            operator: ",",
+            expr: {
+              factor: {
+                ordinary_symbols: "&#x2200;"
+              },
+              expr: {
+                factor: {
+                  atom: {
+                    alphanumeric: "B"
+                  }
+                },
+                expr: {
+                  factor: {
+                    relational_symbols: "&#x2208;"
+                  },
+                  expr: {
+                    sub_exp: {
+                      base: {
+                        factor: {
+                          atom: {
+                            char: {
+                              unicode_symbols: "&#x1d4a2;"
+                            }
+                          }
+                        }
+                      },
+                      sub: {
+                        sub_script: {
+                          operand: {
+                            factor: {
+                              atom: {
+                                alphanumeric: "m"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    expr: {
+                      factor: {
+                        relational_symbols: "&#x27f9;"
+                      },
+                      expr: {
+                        factor: {
+                          atom: {
+                            alphanumeric: "B"
+                          }
+                        },
+                        expr: {
+                          slashed_value: "&#x230a;",
+                          expr: {
+                            factor: {
+                              atom: {
+                                alphanumeric: "a"
+                              }
+                            },
+                            expr: {
+                              operator: "=",
+                              expr: {
+                                frac: {
+                                  numerator: {
+                                    factor: {
+                                      digit: {
+                                        number: "1"
+                                      }
+                                    }
+                                  },
+                                  denominator: {
+                                    factor: {
+                                      digit: {
+                                        number: "2"
+                                      }
+                                    }
+                                  }
+                                },
+                                expr: {
+                                  factor: {
+                                    intermediate_exp: {
+                                      open_paren: "(",
+                                      factor: {
+                                        atom: {
+                                          alphanumeric: "B"
+                                        }
+                                      },
+                                      expr: {
+                                        factor: {
+                                          atom: {
+                                            alphanumeric: "a"
+                                          }
+                                        },
+                                        expr: {
+                                          operator: "-",
+                                          expr: {
+                                            factor: {
+                                              alphanumeric: "a"
+                                            },
+                                            sup_exp: {
+                                              base: {
+                                                symbol: "B"
+                                              },
+                                              sup: {
+                                                operator: "*"
+                                              }
+                                            }
+                                          }
+                                        }
+                                      },
+                                      close_paren: ")"
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }.freeze
+  EXAMPLE_475 = {
+    factor: {
+      ordinary_symbols: "&#x2200;"
+    },
+    expr: {
+      factor: {
+        atom: {
+          alphanumeric: "a"
+        }
+      },
+      expr: {
+        factor: {
+          relational_symbols: "&#x2208;"
+        },
+        expr: {
+          sub_exp: {
+            base: {
+              factor: {
+                atom: {
+                  char: {
+                    unicode_symbols: "&#x1d4a2;"
+                  }
+                }
+              }
+            },
+            sub: {
+              sub_script: {
+                operand: {
+                  factor: {
+                    digit: {
+                      number: "1"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          expr: {
+            operator: ",",
+            expr: {
+              factor: {
+                ordinary_symbols: "&#x2200;"
+              },
+              expr: {
+                factor: {
+                  atom: {
+                    alphanumeric: "B"
+                  }
+                },
+                expr: {
+                  factor: {
+                    relational_symbols: "&#x2208;"
+                  },
+                  expr: {
+                    sub_exp: {
+                      base: {
+                        factor: {
+                          atom: {
+                            char: {
+                              unicode_symbols: "&#x1d4a2;"
+                            }
+                          }
+                        }
+                      },
+                      sub: {
+                        sub_script: {
+                          operand: {
+                            factor: {
+                              atom: {
+                                alphanumeric: "m"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    expr: {
+                      factor: {
+                        relational_symbols: "&#x27f9;"
+                      },
+                      expr: {
+                        factor: {
+                          atom: {
+                            alphanumeric: "a"
+                          }
+                        },
+                        expr: {
+                          slashed_value: "&#x230b;",
+                          expr: {
+                            factor: {
+                              atom: {
+                                alphanumeric: "B"
+                              }
+                            },
+                            expr: {
+                              operator: "=",
+                              expr: {
+                                frac: {
+                                  numerator: {
+                                    factor: {
+                                      digit: {
+                                        number: "1"
+                                      }
+                                    }
+                                  },
+                                  denominator: {
+                                    factor: {
+                                      digit: {
+                                        number: "2"
+                                      }
+                                    }
+                                  }
+                                },
+                                expr: {
+                                  factor: {
+                                    intermediate_exp: {
+                                      open_paren: "(",
+                                      factor: {
+                                        atom: {
+                                          alphanumeric: "a"
+                                        }
+                                      },
+                                      expr: {
+                                        factor: {
+                                          atom: {
+                                            alphanumeric: "B"
+                                          }
+                                        },
+                                        expr: {
+                                          operator: "-",
+                                          expr: {
+                                            sup_exp: {
+                                              base: {
+                                                symbol: "B"
+                                              },
+                                              sup: {
+                                                operator: "*"
+                                              }
+                                            },
+                                            expr: {
+                                              factor: {
+                                                atom: {
+                                                  alphanumeric: "a"
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      },
+                                      close_paren: ")"
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }.freeze
+  EXAMPLE_476 = {
+    factor: {
+      ordinary_symbols: "&#x2200;"
+    },
+    expr: {
+      factor: {
+        atom: {
+          char: {
+            unicode_symbols: "&#x3b1;"
+          }
+        }
+      },
+      expr: {
+        factor: {
+          relational_symbols: "&#x2208;"
+        },
+        expr: {
+          sub_exp: {
+            base: {
+              factor: {
+                atom: {
+                  char: {
+                    unicode_symbols: "&#x1d4a2;"
+                  }
+                }
+              }
+            },
+            sub: {
+              sub_script: {
+                operand: {
+                  factor: {
+                    digit: {
+                      number: "0"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          expr: {
+            operator: ",",
+            expr: {
+              factor: {
+                ordinary_symbols: "&#x2200;"
+              },
+              expr: {
+                factor: {
+                  atom: {
+                    alphanumeric: "B"
+                  }
+                },
+                expr: {
+                  factor: {
+                    relational_symbols: "&#x2208;"
+                  },
+                  expr: {
+                    factor: {
+                      atom: {
+                        char: {
+                          unicode_symbols: "&#x1d4a2;"
+                        }
+                      }
+                    },
+                    expr: {
+                      factor: {
+                        relational_symbols: "&#x27f9;"
+                      },
+                      expr: {
+                        factor: {
+                          atom: {
+                            char: {
+                              unicode_symbols: "&#x3b1;"
+                            }
+                          }
+                        },
+                        expr: {
+                          factor: {
+                            atom: {
+                              char: {
+                                unicode_symbols: "&#x2227;"
+                              }
+                            }
+                          },
+                          expr: {
+                            factor: {
+                              atom: {
+                                alphanumeric: "B"
+                              }
+                            },
+                            expr: {
+                              operator: "=",
+                              expr: {
+                                factor: {
+                                  atom: {
+                                    alphanumeric: "B"
+                                  }
+                                },
+                                expr: {
+                                  factor: {
+                                    atom: {
+                                      char: {
+                                        unicode_symbols: "&#x2227;"
+                                      }
+                                    }
+                                  },
+                                  expr: {
+                                    factor: {
+                                      atom: {
+                                        char: {
+                                          unicode_symbols: "&#x3b1;"
+                                        }
+                                      }
+                                    },
+                                    expr: {
+                                      operator: "=",
+                                      expr: {
+                                        factor: {
+                                          atom: {
+                                            char: {
+                                              unicode_symbols: "&#x3b1;"
+                                            }
+                                          }
+                                        },
+                                        expr: {
+                                          factor: {
+                                            atom: {
+                                              alphanumeric: "B"
+                                            }
+                                          },
+                                          expr: {
+                                            operator: "=",
+                                            expr: {
+                                              factor: {
+                                                atom: {
+                                                  alphanumeric: "B"
+                                                }
+                                              },
+                                              expr: {
+                                                factor: {
+                                                  atom: {
+                                                    char: {
+                                                      unicode_symbols: "&#x3b1;"
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }.freeze
+  EXAMPLE_477 = {
     nary: {
       nary_sub_sup: {
         subsup_exp: {
@@ -59392,14 +60596,16 @@ module UnicodeMathParseValues
               }
             },
             recursive_numerator: {
-              expression: {
-                open_paren: "(",
-                factor: {
-                  atom: {
-                    alphanumeric: "n"
-                  }
-                },
-                close_paren: ")"
+              factor: {
+                intermediate_exp: {
+                  open_paren: "(",
+                  factor: {
+                    atom: {
+                      alphanumeric: "n"
+                    }
+                  },
+                  close_paren: ")"
+                }
               }
             }
           },
@@ -59567,7 +60773,7 @@ module UnicodeMathParseValues
       }
     }
   }.freeze
-  EXAMPLE_470 = {
+  EXAMPLE_478 = {
     nary: {
       nary_sub_sup: {
         sub_exp: {
@@ -59613,7 +60819,7 @@ module UnicodeMathParseValues
       }
     }
   }.freeze
-  EXAMPLE_471 = {
+  EXAMPLE_479 = {
     sup_exp: {
       base: {
         open_paren: "(",
@@ -59655,73 +60861,73 @@ module UnicodeMathParseValues
     expr: {
       operator: "=",
       expr: {
-        nary: {
-          nary_sub_sup: {
-            sub_exp: {
-              nary_class: "&#x2211;",
-              sub: {
-                sub_script: {
-                  operand: {
-                    factor: {
-                      intermediate_exp: {
-                        open_paren: "(",
+        frac: {
+          numerator: {
+            nary: {
+              nary_sub_sup: {
+                subsup_exp: {
+                  nary_class: "&#x2211;",
+                  sub: {
+                    sub_script: {
+                      operand: {
                         factor: {
-                          atom: {
-                            char: {
-                              unicode_symbols: "&#x1d458;"
-                            }
-                          }
-                        },
-                        expr: {
-                          operator: "=",
-                          expr: {
-                            factor: {
-                              digit: {
-                                number: "0"
-                              }
-                            }
-                          }
-                        },
-                        close_paren: ")"
-                      },
-                      expr: {
-                        frac: {
-                          numerator: {
-                            pre_script: {
-                              pre_supscript: {
-                                factor: {
-                                  atom: {
-                                    char: {
-                                      unicode_symbols: "&#x1d45b;"
-                                    }
-                                  }
-                                }
-                              },
-                              base: {
-                                factor: {
-                                  atom: {
-                                    char: {
-                                      unicode_symbols: "&#x1d45b;"
-                                    }
-                                  }
-                                }
-                              }
-                            }
-                          },
-                          atop: "&#x249e;",
-                          denominator: {
+                          intermediate_exp: {
+                            open_paren: "(",
                             factor: {
                               atom: {
                                 char: {
                                   unicode_symbols: "&#x1d458;"
                                 }
                               }
+                            },
+                            expr: {
+                              operator: "=",
+                              expr: {
+                                factor: {
+                                  digit: {
+                                    number: "0"
+                                  }
+                                }
+                              }
+                            },
+                            close_paren: ")"
+                          }
+                        }
+                      }
+                    }
+                  },
+                  sup: {
+                    sup_script: {
+                      operand: {
+                        factor: {
+                          atom: {
+                            char: {
+                              unicode_symbols: "&#x1d45b;"
                             }
                           }
                         }
                       }
                     }
                   }
+                }
+              }
+            },
+            recursive_numerator: {
+              factor: {
+                atom: {
+                  char: {
+                    unicode_symbols: "&#x1d45b;"
+                  }
+                }
+              }
+            }
+          },
+          atop: "&#x249e;",
+          denominator: {
+            factor: {
+              atom: {
+                char: {
+                  unicode_symbols: "&#x1d458;"
                 }
               }
             }
@@ -59800,7 +61006,7 @@ module UnicodeMathParseValues
       }
     }
   }.freeze
-  EXAMPLE_472 = {
+  EXAMPLE_480 = {
     nary: {
       nary_sub_sup: {
         sub_exp: {
@@ -59844,7 +61050,7 @@ module UnicodeMathParseValues
       }
     }
   }.freeze
-  EXAMPLE_473 = {
+  EXAMPLE_481 = {
     nary: {
       nary_sub_sup: {
         sub_exp: {
@@ -59876,7 +61082,7 @@ module UnicodeMathParseValues
       }
     }
   }.freeze
-  EXAMPLE_474 = {
+  EXAMPLE_482 = {
     nary: {
       nary_sub_sup: {
         subsup_exp: {
@@ -59977,7 +61183,7 @@ module UnicodeMathParseValues
       }
     }
   }.freeze
-  EXAMPLE_475 = {
+  EXAMPLE_483 = {
     factor: {
       root: {
         root_symbol: "&#x221a;",
@@ -59991,7 +61197,7 @@ module UnicodeMathParseValues
       }
     }
   }.freeze
-  EXAMPLE_476 = {
+  EXAMPLE_484 = {
     factor: {
       root: {
         root_symbol: "&#x221a;",
@@ -60005,7 +61211,7 @@ module UnicodeMathParseValues
       }
     }
   }.freeze
-  EXAMPLE_477 = {
+  EXAMPLE_485 = {
     factor: {
       root: {
         root_symbol: "&#x221a;",
@@ -60021,14 +61227,16 @@ module UnicodeMathParseValues
               expr: {
                 operator: "+",
                 expr: {
-                  expression: {
-                    open_paren: "(",
-                    factor: {
-                      atom: {
-                        alphanumeric: "b"
-                      }
-                    },
-                    close_paren: ")"
+                  factor: {
+                    intermediate_exp: {
+                      open_paren: "(",
+                      factor: {
+                        atom: {
+                          alphanumeric: "b"
+                        }
+                      },
+                      close_paren: ")"
+                    }
                   }
                 }
               },
@@ -60039,7 +61247,7 @@ module UnicodeMathParseValues
       }
     }
   }.freeze
-  EXAMPLE_478 = {
+  EXAMPLE_486 = {
     factor: {
       root: {
         first_value: {
@@ -60077,7 +61285,7 @@ module UnicodeMathParseValues
       }
     }
   }.freeze
-  EXAMPLE_479 = {
+  EXAMPLE_487 = {
     factor: {
       root: {
         first_value: {
@@ -60112,7 +61320,7 @@ module UnicodeMathParseValues
       }
     }
   }.freeze
-  EXAMPLE_480 = {
+  EXAMPLE_488 = {
     factor: {
       root: {
         first_value: {
@@ -60140,7 +61348,7 @@ module UnicodeMathParseValues
       }
     }
   }.freeze
-  EXAMPLE_481 = {
+  EXAMPLE_489 = {
     factor: {
       root: {
         root_symbol: "&#x221a;",
@@ -60171,7 +61379,7 @@ module UnicodeMathParseValues
       }
     }
   }.freeze
-  EXAMPLE_482 = {
+  EXAMPLE_490 = {
     factor: {
       root_first_value: {
         expr: {
@@ -60263,7 +61471,7 @@ module UnicodeMathParseValues
       }
     }
   }.freeze
-  EXAMPLE_483 = {
+  EXAMPLE_491 = {
     factor: {
       root: {
         root_symbol: "&#x221a;",
@@ -60279,7 +61487,7 @@ module UnicodeMathParseValues
       }
     }
   }.freeze
-  EXAMPLE_484 = {
+  EXAMPLE_492 = {
     factor: {
       root: {
         root_symbol: "&#x221a;",
@@ -60304,7 +61512,7 @@ module UnicodeMathParseValues
       }
     }
   }.freeze
-  EXAMPLE_485 = {
+  EXAMPLE_493 = {
     factor: {
       atom: {
         char: {
@@ -60313,7 +61521,7 @@ module UnicodeMathParseValues
       }
     }
   }.freeze
-  EXAMPLE_486 = {
+  EXAMPLE_494 = {
     factor: {
       atom: {
         char: {
@@ -60348,73 +61556,69 @@ module UnicodeMathParseValues
         },
         expr: {
           factor: {
-            atom: {
-              char: {
-                unicode_symbols: "&#xd7;"
-              }
+            char: {
+              unicode_symbols: "&#xd7;"
             }
           },
-          expr: {
-            sub_exp: {
-              base: {
-                factor: {
-                  atom: {
-                    char: {
-                      unicode_symbols: "&#x1d4a2;"
-                    }
-                  }
-                }
-              },
-              sub: {
-                sub_script: {
-                  operand: {
-                    factor: {
-                      atom: {
-                        alphanumeric: "m"
-                      }
-                    }
+          sub_exp: {
+            base: {
+              factor: {
+                atom: {
+                  char: {
+                    unicode_symbols: "&#x1d4a2;"
                   }
                 }
               }
             },
+            sub: {
+              sub_script: {
+                operand: {
+                  factor: {
+                    atom: {
+                      alphanumeric: "m"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          expr: {
+            factor: {
+              relational_symbols: "&#x2192;"
+            },
             expr: {
-              factor: {
-                relational_symbols: "&#x2192;"
-              },
-              expr: {
-                sub_exp: {
-                  base: {
-                    factor: {
-                      atom: {
-                        char: {
-                          unicode_symbols: "&#x1d4a2;"
-                        }
+              sub_exp: {
+                base: {
+                  factor: {
+                    atom: {
+                      char: {
+                        unicode_symbols: "&#x1d4a2;"
                       }
                     }
-                  },
-                  sub: {
-                    sub_script: {
-                      operand: {
-                        factor: {
-                          intermediate_exp: {
-                            open_paren: "{",
-                            factor: {
-                              atom: {
-                                alphanumeric: "n"
-                              }
-                            },
+                  }
+                },
+                sub: {
+                  sub_script: {
+                    operand: {
+                      factor: {
+                        intermediate_exp: {
+                          open_paren: "{",
+                          factor: {
+                            atom: {
+                              alphanumeric: "n"
+                            }
+                          },
+                          expr: {
+                            operator: "+",
                             expr: {
-                              operator: "+",
-                              expr: {
-                                factor: {
-                                  atom: {
-                                    alphanumeric: "m"
-                                  }
+                              factor: {
+                                atom: {
+                                  alphanumeric: "m"
                                 }
                               }
-                            },
-                            close_paren: "}"
-                          }
+                            }
+                          },
+                          close_paren: "}"
                         }
                       }
                     }
@@ -60427,12 +61631,12 @@ module UnicodeMathParseValues
       }
     }
   }.freeze
-  EXAMPLE_487 = {
+  EXAMPLE_495 = {
     nary: {
       nary_class: "&#x222b;"
     }
   }.freeze
-  EXAMPLE_488 = {
+  EXAMPLE_496 = {
     nary: {
       nary_sub_sup: {
         subsup_exp: {
@@ -60467,15 +61671,11 @@ module UnicodeMathParseValues
         }
       },
       naryand: {
-        factor: {
-          atom: {
-            alphanumeric: "x"
-          }
-        }
+        symbol: "x"
       }
     }
   }.freeze
-  EXAMPLE_489 = {
+  EXAMPLE_497 = {
     nary: {
       nary_sub_sup: {
         subsup_exp: {
@@ -60510,15 +61710,11 @@ module UnicodeMathParseValues
         }
       },
       naryand: {
-        factor: {
-          atom: {
-            alphanumeric: "x"
-          }
-        }
+        symbol: "x"
       }
     }
   }.freeze
-  EXAMPLE_490 = {
+  EXAMPLE_498 = {
     nary: {
       nary_sub_sup: {
         subsup_exp: {
@@ -60553,15 +61749,11 @@ module UnicodeMathParseValues
         }
       },
       naryand: {
-        factor: {
-          atom: {
-            alphanumeric: "x"
-          }
-        }
+        symbol: "x"
       }
     }
   }.freeze
-  EXAMPLE_491 = {
+  EXAMPLE_499 = {
     nary: {
       nary_sub_sup: {
         subsup_exp: {
@@ -60596,15 +61788,11 @@ module UnicodeMathParseValues
         }
       },
       naryand: {
-        factor: {
-          atom: {
-            alphanumeric: "x"
-          }
-        }
+        symbol: "x"
       }
     }
   }.freeze
-  EXAMPLE_492 = {
+  EXAMPLE_500 = {
     nary: {
       nary_sub_sup: {
         subsup_exp: {
@@ -60659,15 +61847,11 @@ module UnicodeMathParseValues
         }
       },
       naryand: {
-        factor: {
-          atom: {
-            alphanumeric: "x"
-          }
-        }
+        symbol: "x"
       }
     }
   }.freeze
-  EXAMPLE_493 = {
+  EXAMPLE_501 = {
     nary: {
       nary_sub_sup: {
         subsup_exp: {
@@ -60702,15 +61886,11 @@ module UnicodeMathParseValues
         }
       },
       naryand: {
-        factor: {
-          atom: {
-            alphanumeric: "x"
-          }
-        }
+        symbol: "x"
       }
     }
   }.freeze
-  EXAMPLE_494 = {
+  EXAMPLE_502 = {
     nary: {
       nary_sub_sup: {
         sub_exp: {
@@ -60777,13 +61957,13 @@ module UnicodeMathParseValues
       }
     }
   }.freeze
-  EXAMPLE_495 = {
+  EXAMPLE_503 = {
     nary: {
       nary_sub_sup: {
         sup_exp: {
           nary_class: "&#x222b;",
           sup: {
-          sup_script: {
+            sup_script: {
               mini_sub: {
                 base: {
                   factor: {
@@ -60804,7 +61984,158 @@ module UnicodeMathParseValues
       }
     }
   }.freeze
-  EXAMPLE_496 = {
+  EXAMPLE_504 = {
+    nary: {
+      nary_sub_sup: {
+        subsup_exp: {
+          nary_class: "&#x222b;",
+          sub: {
+            sub_script: {
+              operand: {
+                factor: {
+                  digit: {
+                    number: "0"
+                  }
+                }
+              }
+            }
+          },
+          sup: {
+            sup_script: {
+              operand: {
+                factor: {
+                  digit: {
+                    number: "2"
+                  }
+                },
+                operand: {
+                  factor: {
+                    atom: {
+                      char: {
+                        unicode_symbols: "&#x1d70b;"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    expr: {
+      nary: {
+        nary_sub_sup: {
+          subsup_exp: {
+            nary_class: "&#x222b;",
+            sub: {
+              sub_script: {
+                operand: {
+                  factor: {
+                    digit: {
+                      number: "0"
+                    }
+                  }
+                }
+              }
+            },
+            sup: {
+              sup_script: {
+                operand: {
+                  factor: {
+                    atom: {
+                      char: {
+                        unicode_symbols: "&#x1d70b;"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      expr: {
+        factor: {
+          atom: {
+            char: {
+              unicode_symbols: "&#x1d453;"
+            }
+          }
+        },
+        operand: {
+          factor: {
+            intermediate_exp: {
+              open_paren: "(",
+              factor: {
+                atom: {
+                  char: {
+                    unicode_symbols: "&#x1d703;"
+                  }
+                }
+              },
+              expr: {
+                operator: ",",
+                expr: {
+                  factor: {
+                    atom: {
+                      char: {
+                        unicode_symbols: "&#x1d719;"
+                      }
+                    }
+                  }
+                }
+              },
+              close_paren: ")"
+            }
+          },
+          operand: {
+            factor: {
+              unary_functions: "sin"
+            }
+          }
+        },
+        expr: {
+          factor: {
+            atom: {
+              char: {
+                unicode_symbols: "&#x1d703;"
+              }
+            }
+          },
+          expr: {
+            factor: {
+              ordinary_symbols: "&#x2146;"
+            },
+            operand: {
+              factor: {
+                atom: {
+                  char: {
+                    unicode_symbols: "&#x1d703;"
+                  }
+                }
+              }
+            },
+            expr: {
+              factor: {
+                ordinary_symbols: "&#x2146;"
+              },
+              operand: {
+                factor: {
+                  atom: {
+                    char: {
+                      unicode_symbols: "&#x1d719;"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }.freeze
+  EXAMPLE_505 = {
     nary: {
       nary_sub_sup: {
         subsup_exp: {
@@ -60902,687 +62233,6 @@ module UnicodeMathParseValues
           }
         },
         close_paren: ")"
-      }
-    }
-  }.freeze
-  EXAMPLE_497 = {
-    nary: {
-      nary_sub_sup: {
-        subsup_exp: {
-          nary_class: "&#x222b;",
-          sub: {
-            sub_script: {
-              operand: {
-                factor: {
-                  digit: {
-                    number: "0"
-                  }
-                }
-              }
-            }
-          },
-          sup: {
-            sup_script: {
-              operand: {
-                factor: {
-                  atom: {
-                    alphanumeric: "a"
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      naryand: {
-        open_paren: "&#x3016;",
-        frac: {
-          numerator: {
-            factor: {
-              atom: {
-                alphanumeric: "x"
-              }
-            },
-            operand: {
-              factor: {
-                ordinary_symbols: "&#x2146;"
-              },
-              operand: {
-                factor: {
-                  atom: {
-                    alphanumeric: "x"
-                  }
-                }
-              }
-            }
-          },
-          denominator: {
-            factor: {
-              intermediate_exp: {
-                open_paren: "(",
-                sup_exp: {
-                  base: {
-                    symbol: "x"
-                  },
-                  sup: {
-                    sup_script: {
-                      operand: {
-                        factor: {
-                          digit: {
-                            number: "2"
-                          }
-                        }
-                      }
-                    }
-                  }
-                },
-                expr: {
-                  operator: "+",
-                  expr: {
-                    sup_exp: {
-                      base: {
-                        symbol: "a"
-                      },
-                      sup: {
-                        sup_script: {
-                          operand: {
-                            factor: {
-                              digit: {
-                                number: "2"
-                              }
-                            }
-                          }
-                        }
-                      }
-                    }
-                  }
-                },
-                close_paren: ")"
-              }
-            }
-          }
-        },
-        close_paren: "&#x3017;"
-      }
-    }
-  }.freeze
-  EXAMPLE_498 = {
-    labeled_tr_value: {
-      nary: {
-        nary_sub_sup: {
-          subsup_exp: {
-            nary_class: "&#x222b;",
-            sub: {
-              sub_script: {
-                operand: {
-                  factor: {
-                    digit: {
-                      number: "1"
-                    }
-                  }
-                }
-              }
-            },
-            sup: {
-              sup_script: {
-                operand: {
-                  factor: {
-                    atom: {
-                      alphanumeric: "t"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        naryand: {
-          open_paren: "&#x3016;",
-          frac: {
-            numerator: {
-              factor: {
-                ordinary_symbols: "&#x2146;"
-              },
-              operand: {
-                factor: {
-                  atom: {
-                    alphanumeric: "x"
-                  }
-                }
-              }
-            },
-            denominator: {
-              factor: {
-                atom: {
-                  alphanumeric: "x"
-                }
-              }
-            }
-          },
-          close_paren: "&#x3017;"
-        }
-      }
-    },
-    labeled_tr_id: "(42)"
-  }.freeze
-  EXAMPLE_499 = {
-    nary: {
-      nary_sub_sup: {
-        subsup_exp: {
-          nary_class: "&#x222b;",
-          sub: {
-            operator: "-",
-            sub_script: {
-              operand: {
-                factor: {
-                  ordinary_symbols: "&#x221e;"
-                }
-              }
-            }
-          },
-          sup: {
-            sup_script: {
-              operand: {
-                factor: {
-                  unary_function: {
-                    unary_arg_functions: "&#x25a2;",
-                    first_value: {
-                      open_paren: "(",
-                      operator: "+",
-                      expr: {
-                        factor: {
-                          ordinary_symbols: "&#x221e;"
-                        }
-                      },
-                      close_paren: ")"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  }.freeze
-  EXAMPLE_500 = {
-    nary: {
-      nary_sub_sup: {
-        sub_exp: {
-          nary_class: "&#x222b;",
-          sub: {
-            sub_script: {
-              mini_sub: {
-                base: {
-                  factor: {
-                    atom: {
-                      char: {
-                        unicode_symbols: "&#x3b1;"
-                      }
-                    }
-                  }
-                },
-                sub: {
-                  sub_digits: "&#x2082;"
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  }.freeze
-  EXAMPLE_501 = {
-    nary: {
-      nary_sub_sup: {
-        subsup_exp: {
-          nary_class: "&#x222b;",
-          sub: {
-            sub_script: {
-              sub_paren: {
-                sub_digits: "&#x2080;"
-              }
-            }
-          },
-          sup: {
-            sup_script: {
-              sup_paren: {
-                sup_digits: "&#xb2;",
-                sup_recursion_expr: {
-                  sup_digits: "&#x2070;"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    expr: {
-      factor: {
-        root: {
-          root_symbol: "&#x221a;",
-          first_value: {
-            factor: {
-              atom: {
-                alphanumeric: "x"
-              }
-            }
-          }
-        }
-      },
-      expr: {
-        factor: {
-          ordinary_symbols: "&#x2146;"
-        },
-        operand: {
-          factor: {
-            atom: {
-              alphanumeric: "x"
-            }
-          }
-        }
-      }
-    }
-  }.freeze
-  EXAMPLE_502 = {
-    nary: {
-      nary_sub_sup: {
-        sub_exp: {
-          nary_class: "&#x222e;",
-          mask: {
-            digit: {
-              number: "16"
-            }
-          },
-          sub: {
-            sub_script: {
-              operand: {
-                factor: {
-                  atom: {
-                    char: {
-                      unicode_symbols: "&#x3b1;"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      naryand: {
-        factor: {
-          atom: {
-            char: {
-              unicode_symbols: "&#x3b2;"
-            }
-          }
-        }
-      }
-    }
-  }.freeze
-
-  EXAMPLE_500 = {
-    nary: {
-      nary_sub_sup: {
-        subsup_exp: {
-          nary_class: "&#x2230;",
-          sub: {
-            sub_script: {
-              operand: {
-                factor: {
-                  digit: {
-                    number: "1"
-                  }
-                }
-              }
-            }
-          },
-          sup: {
-            sup_script: {
-              operand: {
-                factor: {
-                  atom: {
-                    alphanumeric: "n"
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      naryand: {
-        factor: {
-          atom: {
-            alphanumeric: "f"
-          }
-        },
-        operand: {
-          expression: {
-            open_paren: "(",
-            factor: {
-              atom: {
-                alphanumeric: "x"
-              }
-            },
-            close_paren: ")"
-          }
-        }
-      }
-    }
-  }.freeze
-  EXAMPLE_501 = {
-    factor: {
-      atom: {
-        char: {
-          unicode_symbols: "&#x225d;"
-        }
-      }
-    },
-    expr: {
-      factor: {
-        atom: {
-          char: {
-            unicode_symbols: "&#x200a;"
-          },
-          diacritics: {
-            char: {
-              unicode_symbols: "&#x200a;"
-            }
-          }
-        }
-      },
-      operand: {
-        factor: {
-          relational_symbols: "\\approx"
-        },
-        operand: {
-          factor: {
-            atom: {
-              char: {
-                unicode_symbols: "&#x200a;"
-              },
-              diacritics: {
-                char: {
-                  unicode_symbols: "&#x200a;"
-                }
-              }
-            }
-          }
-        }
-      },
-      expr: {
-        sup_exp: {
-          base: {
-            operator: "="
-          },
-          sup: {
-            over: "&#x2534;",
-            sup_script: {
-              operand: {
-                text: "def"
-              }
-            }
-          }
-        }
-      }
-    }
-  }.freeze
-  EXAMPLE_502 = {
-    factor: {
-      intermediate_exp: {
-        open_paren: "&#x230a;",
-        frac: {
-          numerator: {
-            factor: {
-              atom: {
-                alphanumeric: "a"
-              }
-            }
-          },
-          denominator: {
-            frac: {
-              numerator: {
-                factor: {
-                  atom: {
-                    alphanumeric: "b"
-                  }
-                }
-              },
-              denominator: {
-                factor: {
-                  atom: {
-                    alphanumeric: "c"
-                  }
-                }
-              }
-            }
-          }
-        },
-        close_paren: "&#x230b;"
-      }
-    }
-  }.freeze
-  EXAMPLE_503 = {
-    sup_exp: {
-      base: {
-        factor: {
-          hbrack: {
-            hbracket_class: "&#x23b4;",
-            first_value: {
-              expression: {
-                open_paren: "(",
-                factor: {
-                  unary_functions: "sin",
-                  first_value: {
-                    expression: {
-                      open_paren: "(",
-                      factor: {
-                        atom: {
-                          alphanumeric: "a"
-                        }
-                      },
-                      close_paren: ")"
-                    }
-                  }
-                },
-                close_paren: ")"
-              }
-            }
-          }
-        }
-      },
-      sup: {
-        sup_script: {
-          int_exp: {
-            opener: {
-              open_paren: "("
-            },
-            operand: {
-              text: "test"
-            },
-            closer: {
-              close_paren: ")"
-            }
-          }
-        }
-      }
-    }
-  }.freeze
-  EXAMPLE_504 = {
-    factor: {
-      hbrack: {
-        hbracket_class: "&#x23dc;",
-        first_value: {
-          factor: {
-            atom: {
-              char: {
-                unicode_symbols: "&#x3b1;"
-              }
-            }
-          }
-        }
-      }
-    }
-  }.freeze
-  EXAMPLE_505 = {
-    factor: {
-      hbrack: {
-        hbracket_class: "&#x23dd;",
-        first_value: {
-          factor: {
-            intermediate_exp: {
-              open_paren: "(",
-              sub_exp: {
-                base: {
-                  symbol: "a"
-                },
-                sub: {
-                  sub_script: {
-                    operand: {
-                      factor: {
-                        digit: {
-                          number: "1"
-                        }
-                      }
-                    }
-                  }
-                }
-              },
-              expr: {
-                operator: "+",
-                expr: {
-                  sub_exp: {
-                    base: {
-                      symbol: "b"
-                    },
-                    sub: {
-                      sub_script: {
-                        operand: {
-                          factor: {
-                            digit: {
-                              number: "1"
-                            }
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              },
-              close_paren: ")"
-            }
-          }
-        }
-      }
-    },
-    expr: {
-      operator: "+",
-      expr: {
-        factor: {
-          hbrack: {
-            hbracket_class: "&#x23dd;",
-            first_value: {
-              factor: {
-                intermediate_exp: {
-                  open_paren: "(",
-                  sub_exp: {
-                    base: {
-                      symbol: "a"
-                    },
-                    sub: {
-                      sub_script: {
-                        operand: {
-                          factor: {
-                            digit: {
-                              number: "2"
-                            }
-                          }
-                        }
-                      }
-                    }
-                  },
-                  expr: {
-                    operator: "+",
-                    expr: {
-                      sub_exp: {
-                        base: {
-                          symbol: "b"
-                        },
-                        sub: {
-                          sub_script: {
-                            operand: {
-                              factor: {
-                                digit: {
-                                  number: "2"
-                                }
-                              }
-                            }
-                          }
-                        }
-                      }
-                    }
-                  },
-                  close_paren: ")"
-                }
-              }
-            }
-          }
-        },
-        expr: {
-          operator: "+",
-          expr: {
-            factor: {
-              hbrack: {
-                hbracket_class: "&#x23dd;",
-                first_value: {
-                  factor: {
-                    intermediate_exp: {
-                      open_paren: "(",
-                      sub_exp: {
-                        base: {
-                          symbol: "a"
-                        },
-                        sub: {
-                          sub_script: {
-                            operand: {
-                              factor: {
-                                digit: {
-                                  number: "3"
-                                }
-                              }
-                            }
-                          }
-                        }
-                      },
-                      expr: {
-                        operator: "+",
-                        expr: {
-                          sub_exp: {
-                            base: {
-                              symbol: "b"
-                            },
-                            sub: {
-                              sub_script: {
-                                operand: {
-                                  factor: {
-                                    digit: {
-                                      number: "3"
-                                    }
-                                  }
-                                }
-                              }
-                            }
-                          }
-                        }
-                      },
-                      close_paren: ")"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
       }
     }
   }.freeze
@@ -72082,9 +72732,4 @@ module UnicodeMathParseValues
   EXAMPLE_673 = {}.freeze
   EXAMPLE_674 = {}.freeze
   EXAMPLE_675 = {}.freeze
-  EXAMPLE_676 = {}.freeze
-  EXAMPLE_677 = {}.freeze
-  EXAMPLE_678 = {}.freeze
-  EXAMPLE_679 = {}.freeze
-  EXAMPLE_680 = {}.freeze
 end
