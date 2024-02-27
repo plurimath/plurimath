@@ -29,9 +29,7 @@ module Plurimath
       rule(mod: simple(:mod), expr: simple(:expr)) { [mod, expr] }
 
       rule(unitsml: simple(:unitsml)) do
-        Utility.filter_values(
-          Unitsml.new(unitsml.to_s).to_formula.value,
-        )
+        Unitsml.new(unitsml.to_s).to_formula
       end
 
       rule(bold_fonts: simple(:font)) do
@@ -881,9 +879,7 @@ module Plurimath
       rule(unary_class: simple(:function),
            unitsml: simple(:unitsml)) do
         Utility.get_class(function).new(
-          Utility.filter_values(
-            Unitsml.new(unitsml.to_s).to_formula.value,
-          ),
+          Unitsml.new(unitsml.to_s).to_formula,
         )
       end
 

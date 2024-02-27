@@ -7,11 +7,14 @@ module Plurimath
 
     def initialize(text)
       @text = text
-      raise Math::ParseError.new(error_message) if text.match?(/\^(\([^\d-])|[^\d-]\)/)
+      raise Math::ParseError.new(error_message) if text.match?(/\^(\(([^\d-]|[^\d-])\))/)
     end
 
     def to_formula
-      ::Unitsml.parse(text).to_plurimath
+      formula = ::Unitsml.parse(text).to_plurimath
+      formula.unitsml = true
+      formula.input_string = text
+      formula
     end
 
     def error_message

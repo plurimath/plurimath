@@ -3,7 +3,7 @@
 module Plurimath
   module Math
     class Formula < Core
-      attr_accessor :value, :left_right_wrapper, :displaystyle, :input_string
+      attr_accessor :value, :left_right_wrapper, :displaystyle, :input_string, :unitsml
 
       MATH_ZONE_TYPES = %i[
         omml
@@ -16,12 +16,14 @@ module Plurimath
         value = [],
         left_right_wrapper = true,
         display_style: true,
-        input_string: nil
+        input_string: nil,
+        unitsml: false
       )
         @value = value.is_a?(Array) ? value : [value]
         left_right_wrapper = false if @value.first.is_a?(Function::Left)
         @left_right_wrapper = left_right_wrapper
         @displaystyle = boolean_display_style(display_style)
+        @unitsml = unitsml if unitsml
       end
 
       def ==(object)
@@ -49,6 +51,7 @@ module Plurimath
         style = ox_element("mstyle", attributes: style_attrs)
         Utility.update_nodes(style, mathml_content)
         Utility.update_nodes(math, [style])
+        unitsml_post_processing(math)
         dump_nodes(math, indent: 2)
       rescue
         parse_error!(:mathml)
@@ -63,10 +66,9 @@ module Plurimath
       def to_mathml_without_math_tag
         return mathml_content unless left_right_wrapper
 
-        Utility.update_nodes(
-          Utility.ox_element("mrow"),
-          mathml_content,
-        )
+        mrow = ox_element("mrow")
+        mrow.attributes[:unitsml] = true if unitsml
+        Utility.update_nodes(mrow, mathml_content)
       end
 
       def mathml_content
@@ -272,6 +274,31 @@ module Plurimath
       def omml_br_tag
         r_tag = ox_element("r", namespace: "m")
         r_tag << ox_element("br")
+      end
+
+      def unitsml_post_processing(nodes)
+        nodes.each.with_index do |node, index|
+          if node.is_a?(Ox::Element) && node.attributes&.dig(:unitsml)
+            previous = nodes[index-1]
+            if previous && ["mi", "mn"].include?(previous.name)
+              if dump_ox_nodes(node.nodes).match?(/>(&#x[0-9a-fA-F]+;)*(\w+|\d+)</)
+                nodes.insert(index, space_element(attributes: true))
+              else
+                nodes.insert(index, space_element)
+              end
+            end
+
+            node.attributes.delete_if {|k, v| k == :unitsml }
+          end
+
+          unitsml_post_processing(node.nodes) if !node.nodes.any?(String)
+        end
+      end
+
+      def space_element(attributes: false)
+        element = (ox_element("mo") << "&#x2062;")
+        element.attributes[:rspace] = "thickmathspace" if attributes
+        element
       end
     end
   end
