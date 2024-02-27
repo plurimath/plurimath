@@ -69,7 +69,7 @@ module Plurimath
       end
 
       rule(:quoted_text) do
-        (str('"') >> str("unitsml(") >> match("[^\)\"]").repeat.as(:unitsml) >> str(')"')) |
+        (str('"') >> str("unitsml(") >> (str(')"').absent? >> any).repeat.as(:unitsml) >> str(')"')) |
           (str('"') >> match("[^\"]").repeat.as(:text) >> str('"')) |
           (str('"') >> str("").as(:text))
       end
