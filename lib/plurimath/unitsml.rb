@@ -7,7 +7,7 @@ module Plurimath
 
     def initialize(text)
       @text = text
-      raise Math::ParseError.new(error_message) if text.match?(/\^(\(([^\d-]|[^\d-])\))/)
+      raise Math::ParseError.new(error_message) if text.match?(/\^(([^\s].*?[a-z]+)|(\([^-\d]+\)|[^\(\d-]+))/)
     end
 
     def to_formula

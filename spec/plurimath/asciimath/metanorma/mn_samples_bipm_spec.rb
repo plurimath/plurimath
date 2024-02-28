@@ -279,10 +279,12 @@ RSpec.describe Plurimath::Asciimath::Parser do
       it "returns formula" do
         expected_value = Plurimath::Math::Formula.new([
           Plurimath::Math::Number.new("1"),
-          Plurimath::Math::Function::FontStyle::Normal.new(
-            Plurimath::Math::Symbol.new("A"),
-            "normal",
-          ),
+          Plurimath::Math::Formula.new([
+            Plurimath::Math::Function::FontStyle::Normal.new(
+              Plurimath::Math::Symbol.new("A"),
+              "normal",
+            ),
+          ]),
           Plurimath::Math::Symbol.new("="),
           Plurimath::Math::Function::Power.new(
             Plurimath::Math::Function::Fenced.new(
@@ -440,13 +442,15 @@ RSpec.describe Plurimath::Asciimath::Parser do
 
       it "returns formula" do
         expected_value = Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Power.new(
-            Plurimath::Math::Function::FontStyle::Normal.new(
-              Plurimath::Math::Symbol.new("dm"),
-              "normal"
+          Plurimath::Math::Formula.new([
+            Plurimath::Math::Function::Power.new(
+              Plurimath::Math::Function::FontStyle::Normal.new(
+                Plurimath::Math::Symbol.new("dm"),
+                "normal"
+              ),
+              Plurimath::Math::Number.new("3")
             ),
-            Plurimath::Math::Number.new("3")
-          ),
+          ]),
           Plurimath::Math::Symbol.new(")"),
           Plurimath::Math::Symbol.new("&#x2208;"),
           Plurimath::Math::Symbol.new("s"),
@@ -458,10 +462,12 @@ RSpec.describe Plurimath::Asciimath::Parser do
             Plurimath::Math::Symbol.new("["),
             [
               Plurimath::Math::Number.new("15"),
-              Plurimath::Math::Function::FontStyle::Normal.new(
-                Plurimath::Math::Symbol.new("ml"),
-                "normal"
-              )
+              Plurimath::Math::Formula.new([
+                Plurimath::Math::Function::FontStyle::Normal.new(
+                  Plurimath::Math::Symbol.new("ml"),
+                  "normal"
+                )
+              ]),
             ],
             Plurimath::Math::Symbol.new("")
           )

@@ -771,9 +771,11 @@ RSpec.describe Plurimath::Asciimath do
                 <mn>10</mn>
                 <mn>12</mn>
               </msup>
-              <mstyle mathvariant="normal">
-                <mi>Hz</mi>
-              </mstyle>
+              <mrow>
+                <mstyle mathvariant="normal">
+                  <mi>Hz</mi>
+                </mstyle>
+              </mrow>
               <mo>, </mo>
               <mtext> </mtext>
               <msub>
@@ -2041,9 +2043,12 @@ RSpec.describe Plurimath::Asciimath do
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
               <mn>1</mn>
-              <mstyle mathvariant="normal">
-                <mi>A</mi>
-              </mstyle>
+              <mo rspace="thickmathspace">&#x2062;</mo>
+              <mrow>
+                <mstyle mathvariant="normal">
+                  <mi>A</mi>
+                </mstyle>
+              </mrow>
               <mo>=</mo>
               <msup>
                 <mrow>
@@ -3957,9 +3962,12 @@ RSpec.describe Plurimath::Asciimath do
               </msub>
               <mo>=</mo>
               <mn>1128575290808154.8</mn>
-              <mstyle mathvariant="normal">
-                <mi>Hz</mi>
-              </mstyle>
+              <mo rspace="thickmathspace">&#x2062;</mo>
+              <mrow>
+                <mstyle mathvariant="normal">
+                  <mi>Hz</mi>
+                </mstyle>
+              </mrow>
             </mstyle>
           </math>
         MATHML
@@ -4770,9 +4778,11 @@ RSpec.describe Plurimath::Asciimath do
                 <mn>4</mn>
                 <mo>)</mo>
               </mrow>
-              <mstyle mathvariant="normal">
-                <mi>MHz</mi>
-              </mstyle>
+              <mrow>
+                <mstyle mathvariant="normal">
+                  <mi>MHz</mi>
+                </mstyle>
+              </mrow>
             </mstyle>
           </math>
         MATHML
@@ -5437,6 +5447,7 @@ RSpec.describe Plurimath::Asciimath do
             <mstyle displaystyle="true">
               <mrow>
                 <mi>sin</mi>
+                <mo rspace="thickmathspace">&#x2062;</mo>
                 <mrow>
                   <mstyle mathvariant="normal">
                     <mi>mm</mi>
@@ -5452,6 +5463,242 @@ RSpec.describe Plurimath::Asciimath do
                     </mrow>
                   </msup>
                 </mrow>
+              </mrow>
+            </mstyle>
+          </math>
+        MATHML
+        expect(formula.to_latex).to eql(latex)
+        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_asciimath).to eql(asciimath)
+      end
+    end
+
+    context "contains unitsml example #1 plurimath/asciimath2unitsml example #100" do
+      let(:string) { '1 "unitsml(mm*s^-2)"' }
+
+      it 'returns parsed Asciimath to Formula' do
+        latex = '1 \\mathrm{mm} \\cdot \\mathrm{s}^{- 2}'
+        asciimath = '1 rm(mm) * rm(s)^(- 2)'
+        mathml = <<~MATHML
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
+              <mn>1</mn>
+              <mo rspace="thickmathspace">&#x2062;</mo>
+              <mrow>
+                <mstyle mathvariant="normal">
+                  <mi>mm</mi>
+                </mstyle>
+                <mo>&#x22c5;</mo>
+                <msup>
+                  <mstyle mathvariant="normal">
+                    <mi>s</mi>
+                  </mstyle>
+                  <mrow>
+                    <mo>&#x2212;</mo>
+                    <mn>2</mn>
+                  </mrow>
+                </msup>
+              </mrow>
+            </mstyle>
+          </math>
+        MATHML
+        expect(formula.to_latex).to eql(latex)
+        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_asciimath).to eql(asciimath)
+      end
+    end
+
+    context "contains unitsml example #2 plurimath/asciimath2unitsml example #101" do
+      let(:string) { '1 "unitsml(um)"' }
+
+      it 'returns parsed Asciimath to Formula' do
+        latex = '1 \\mathrm{&#xb5;m}'
+        asciimath = '1 rm(&#xb5;m)'
+        mathml = <<~MATHML
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
+              <mn>1</mn>
+              <mo rspace="thickmathspace">&#x2062;</mo>
+              <mrow>
+                <mstyle mathvariant="normal">
+                  <mi>&#xb5;m</mi>
+                </mstyle>
+              </mrow>
+            </mstyle>
+          </math>
+        MATHML
+        expect(formula.to_latex).to eql(latex)
+        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_asciimath).to eql(asciimath)
+      end
+    end
+
+    context "contains unitsml example #3 plurimath/asciimath2unitsml example #102" do
+      let(:string) { '1 "unitsml(degK)" + 1 "unitsml(prime)" + ii(theta) = s//r "unitsml(rad)" + 10^(12) "unitsml(Hz)"' }
+
+      it 'returns parsed Asciimath to Formula' do
+        latex = '1 \\mathrm{&#xb0;K} + 1 \\mathrm{\\prime} + \\mathit{\\theta} = s / r \\mathrm{rad} + 10^{12} \\mathrm{Hz}'
+        asciimath = "1 rm(&#xb0;K) + 1 rm(') + ii(theta) = s // r rm(rad) + 10^(12) rm(Hz)"
+        mathml = <<~MATHML
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
+              <mn>1</mn>
+              <mo rspace="thickmathspace">&#x2062;</mo>
+              <mrow>
+                <mstyle mathvariant="normal">
+                  <mi>&#xb0;K</mi>
+                </mstyle>
+              </mrow>
+              <mo>+</mo>
+              <mn>1</mn>
+              <mo>&#x2062;</mo>
+              <mrow>
+                <mstyle mathvariant="normal">
+                  <mo>&#x2032;</mo>
+                </mstyle>
+              </mrow>
+              <mo>+</mo>
+              <mstyle mathvariant="italic">
+                <mi>&#x3b8;</mi>
+              </mstyle>
+              <mo>=</mo>
+              <mi>s</mi>
+              <mo>/</mo>
+              <mi>r</mi>
+              <mo rspace="thickmathspace">&#x2062;</mo>
+              <mrow>
+                <mstyle mathvariant="normal">
+                  <mi>rad</mi>
+                </mstyle>
+              </mrow>
+              <mo>+</mo>
+              <msup>
+                <mn>10</mn>
+                <mn>12</mn>
+              </msup>
+              <mrow>
+                <mstyle mathvariant="normal">
+                  <mi>Hz</mi>
+                </mstyle>
+              </mrow>
+            </mstyle>
+          </math>
+        MATHML
+        expect(formula.to_latex).to eql(latex)
+        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_asciimath).to eql(asciimath)
+      end
+    end
+
+    context "contains unitsml example #4 plurimath/asciimath2unitsml example #103" do
+      let(:string) { '8 "unitsml(kg)" cdot "unitsml(m)"' }
+
+      it 'returns parsed Asciimath to Formula' do
+        latex = '8 \\mathrm{kg} \\cdot \\mathrm{m}'
+        asciimath = "8 rm(kg) * rm(m)"
+        mathml = <<~MATHML
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
+              <mn>8</mn>
+              <mo rspace="thickmathspace">&#x2062;</mo>
+              <mrow>
+                <mstyle mathvariant="normal">
+                  <mi>kg</mi>
+                </mstyle>
+              </mrow>
+              <mo>&#x22c5;</mo>
+              <mrow>
+                <mstyle mathvariant="normal">
+                  <mi>m</mi>
+                </mstyle>
+              </mrow>
+            </mstyle>
+          </math>
+        MATHML
+        expect(formula.to_latex).to eql(latex)
+        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_asciimath).to eql(asciimath)
+      end
+    end
+
+    context "contains unitsml example #5 plurimath/asciimath2unitsml example #104" do
+      let(:string) { '1 "unitsml(sqrt(Hz))"' }
+
+      it 'returns parsed Asciimath to Formula' do
+        latex = '1 \\mathrm{Hz}^{0.5}'
+        asciimath = "1 rm(Hz)^(0.5)"
+        mathml = <<~MATHML
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
+              <mn>1</mn>
+              <mo rspace="thickmathspace">&#x2062;</mo>
+              <mrow>
+                <msup>
+                  <mstyle mathvariant="normal">
+                    <mi>Hz</mi>
+                  </mstyle>
+                  <mn>0.5</mn>
+                </msup>
+              </mrow>
+            </mstyle>
+          </math>
+        MATHML
+        expect(formula.to_latex).to eql(latex)
+        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_asciimath).to eql(asciimath)
+      end
+    end
+
+    context "contains unitsml example #6 plurimath/asciimath2unitsml example #105" do
+      let(:string) { '1 "unitsml(kg)" + 1 "unitsml(g)"' }
+
+      it 'returns parsed Asciimath to Formula' do
+        latex = '1 \mathrm{kg} + 1 \mathrm{g}'
+        asciimath = "1 rm(kg) + 1 rm(g)"
+        mathml = <<~MATHML
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
+              <mn>1</mn>
+              <mo rspace="thickmathspace">&#x2062;</mo>
+              <mrow>
+                <mstyle mathvariant="normal">
+                  <mi>kg</mi>
+                </mstyle>
+              </mrow>
+              <mo>+</mo>
+              <mn>1</mn>
+              <mo rspace="thickmathspace">&#x2062;</mo>
+              <mrow>
+                <mstyle mathvariant="normal">
+                  <mi>g</mi>
+                </mstyle>
+              </mrow>
+            </mstyle>
+          </math>
+        MATHML
+        expect(formula.to_latex).to eql(latex)
+        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_asciimath).to eql(asciimath)
+      end
+    end
+
+    context "contains unitsml example #7 plurimath/asciimath2unitsml example #106" do
+      let(:string) { '"unitsml(u-)" + "unitsml(um)"' }
+
+      it 'returns parsed Asciimath to Formula' do
+        latex = 'u + \mathrm{&#xb5;m}'
+        asciimath = "u + rm(&#xb5;m)"
+        mathml = <<~MATHML
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
+              <mrow>
+                <mi>u</mi>
+              </mrow>
+              <mo>+</mo>
+              <mrow>
+                <mstyle mathvariant="normal">
+                  <mi>&#xb5;m</mi>
+                </mstyle>
               </mrow>
             </mstyle>
           </math>
