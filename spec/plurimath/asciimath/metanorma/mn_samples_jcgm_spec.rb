@@ -1806,14 +1806,14 @@ RSpec.describe Plurimath::Asciimath::Parser do
             ],
             Plurimath::Math::Symbol.new(")")
           ),
-          Plurimath::Math::Symbol.new("/"),
+          Plurimath::Math::Symbol.new("/"), 
           Plurimath::Math::Function::Base.new(
             Plurimath::Math::Function::FontStyle::Italic.new(
               Plurimath::Math::Symbol.new("T"),
               "ii"
             ),
             Plurimath::Math::Formula.new([
-              Plurimath::Math::Number.new("1"),
+              Plurimath::Math::Number.new("1"), 
               Plurimath::Math::Symbol.new("/"),
               Plurimath::Math::Number.new("2")
             ])
@@ -1828,7 +1828,18 @@ RSpec.describe Plurimath::Asciimath::Parser do
               Plurimath::Math::Number.new("4")
             ])
           ),
-          Plurimath::Math::Function::Text.new("unitsml(min^(-1))")
+          Plurimath::Math::Formula.new([
+            Plurimath::Math::Function::Power.new(
+              Plurimath::Math::Function::FontStyle::Normal.new(
+                Plurimath::Math::Function::Min.new,
+                "normal"
+              ),
+              Plurimath::Math::Formula.new([
+                Plurimath::Math::Symbol.new("&#x2212;"),
+                Plurimath::Math::Number.new("1")
+              ])
+            )
+          ])
         ])
         expect(formula).to eq(expected_value)
       end
