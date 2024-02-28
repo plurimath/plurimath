@@ -159,6 +159,7 @@ module Plurimath
           alphanumeric |
           negatable_symbols |
           operator |
+          binary_symbols |
           slashed_operator
       end
 

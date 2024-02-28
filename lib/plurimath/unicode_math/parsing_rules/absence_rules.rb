@@ -72,6 +72,7 @@ module Plurimath
             op_h_bracket_prefixed |
             op_alphanumeric_fonts |
             op_prefixed_matrixs |
+            op_binary_symbols_prefixed |
             op_prefixed_negated |
             op_accent_prefixed |
             str("\\backcolor") |

@@ -50,7 +50,8 @@ module Plurimath
         end
 
         rule(:naryand_recursion) do
-          (operator.absent? >> naryand_values >> naryand_recursion.as(:naryand_recursion).maybe)
+          (operator.absent? >> naryand_values >> naryand_recursion.as(:naryand_recursion).maybe) |
+            (slashed_operator >> naryand_recursion.as(:naryand_recursion).maybe)
         end
         
         rule(:baseless_sub) do
