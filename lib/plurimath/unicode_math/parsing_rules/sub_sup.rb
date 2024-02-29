@@ -12,7 +12,7 @@ module Plurimath
 
         rule(:sub_or_sup)  { subscript | supscript }
         rule(:base_symbol) { str("_") }
-        rule(:script_base) { mini_sub_sup_present? >> mini_sub_sup | sub_sup_operand }
+        rule(:script_base) { mini_sub_sup | sub_sup_operand }
         rule(:base_syntax) { base_symbol | (str("&#x252c;") | str("\\below")).as(:under) }
 
         rule(:power_symbol) { str("^") }
@@ -129,13 +129,32 @@ module Plurimath
             sup_paren.as(:sup)
         end
 
+        rule(:mini_power_base) do
+          sup_paren.as(:pre_supscript) >> sub_paren.as(:pre_subscript).maybe >> mini_values.as(:mini_base) >> sub_paren.as(:mini_sub).maybe >> mini_values.as(:mini_sup) |
+            sub_paren.as(:pre_subscript) >> sup_paren.as(:pre_supscript).maybe >> mini_values.as(:mini_base) >> sup_paren.as(:mini_sup).maybe >> mini_values.as(:mini_sub) |
+            mini_values.as(:mini_base) >> sub_paren.as(:mini_sub) >> mini_values.as(:mini_sup) |
+            mini_values.as(:mini_base) >> sup_paren.as(:mini_sup) >> sub_paren.as(:mini_sub) |
+            mini_values.as(:mini_base) >> mini_values.as(:mini_sup) |
+            mini_values.as(:mini_base) >> sub_paren.as(:mini_sub)
+        end
+
+        rule(:mini_values) do
+          op_sup_operators |
+          op_sub_operators |
+          op_sup_digits |
+          op_sub_digits |
+          op_sup_alpha |
+          op_sub_alpha
+        end
+
         rule(:exp_script) do
           op_nary.present? >> nary_sub_sup.as(:nary) |
             op_unary_functions.present? >> unary_sub_sup.as(:unary_subsup) |
             accents.present? >> (accents.as(:base) >> accents_subsup).as(:accents_subsup) |
             power_base_script |
             (paren_wrap_rule(pre_subsup) >> space? >> (operand.as(:base) >> (subsup | mini_subsup | subscript_value | supscript_value).maybe)).as(:pre_script) |
-            mini_sub_sup
+            mini_sub_sup |
+            mini_power_base
         end
 
         rule(:pre_subsup) do
