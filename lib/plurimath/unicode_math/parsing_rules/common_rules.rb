@@ -10,6 +10,8 @@ module Plurimath
         rule(:atom)   { (diacritics >> diacriticbase.maybe) | an }
         rule(:atoms)  { (atom.as(:atom) >> atoms.as(:atoms).maybe) }
         rule(:entity) { atoms | number }
+
+        rule(:operator) { match["-+*=.?:,`"].as(:operator) }
         rule(:op_unary) { op_prefixed_unary_arg_functions | op_unary_arg_functions | op_prefixed_unary_symbols | op_unary_symbols }
 
         rule(:unary_spaces) { space | invisible_unicode }
@@ -19,6 +21,15 @@ module Plurimath
 
         rule(:op_h_brackets)  { op_h_bracket | op_h_bracket_prefixed }
         rule(:nary_functions) { (op_unary >> unary_spaces.maybe) | (op_unary_functions >> unary_spaces) }
+
+        rule(:mini_fraction) do
+          sup_paren.as(:numerator) >> (negatable_symbols.absent? >> op_over) >> sub_paren.as(:denominator)
+        end
+
+        rule(:fraction) do
+          mini_fraction |
+            numerator.as(:numerator) >> space? >> (negatable_symbols.absent? >> op_over) >> space? >> denominator.as(:denominator)
+        end
 
         rule(:fonts) do
           str("\\") >> custom_fonts.as(:unicoded_font_class) >> str("H").as(:symbol) |
