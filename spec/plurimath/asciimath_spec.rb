@@ -5708,6 +5708,56 @@ RSpec.describe Plurimath::Asciimath do
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
+
+    context "contains unitsml example #1 plurimath/plurimath/pull/221 example #107" do
+      let(:string) { '1 "unitsml(Aring)"' }
+
+      it 'returns parsed Asciimath to Formula' do
+        latex = '1 \mathrm{&#xc5;}'
+        asciimath = "1 rm(&#xc5;)"
+        mathml = <<~MATHML
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
+              <mn>1</mn>
+              <mo rspace="thickmathspace">&#x2062;</mo>
+              <mrow>
+                <mstyle mathvariant="normal">
+                  <mi>&#xc5;</mi>
+                </mstyle>
+              </mrow>
+            </mstyle>
+          </math>
+        MATHML
+        expect(formula.to_latex).to eql(latex)
+        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_asciimath).to eql(asciimath)
+      end
+    end
+
+    context "contains unitsml example #2 plurimath/plurimath/pull/221 example #108" do
+      let(:string) { '1 "unitsml(deg)"' }
+
+      it 'returns parsed Asciimath to Formula' do
+        latex = '1 \mathrm{&#xb0;}'
+        asciimath = "1 rm(&#xb0;)"
+        mathml = <<~MATHML
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
+              <mn>1</mn>
+              <mo>&#x2062;</mo>
+              <mrow>
+                <mstyle mathvariant="normal">
+                  <mi>&#xb0;</mi>
+                </mstyle>
+              </mrow>
+            </mstyle>
+          </math>
+        MATHML
+        expect(formula.to_latex).to eql(latex)
+        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_asciimath).to eql(asciimath)
+      end
+    end
   end
 
   describe ".to_omml" do
