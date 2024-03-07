@@ -281,7 +281,7 @@ module Plurimath
           if node.is_a?(Ox::Element) && node.attributes&.dig(:unitsml)
             previous = nodes[index-1]
             if previous && ["mi", "mn"].include?(previous.name)
-              if dump_ox_nodes(node.nodes).match?(/>(&#x[0-9a-fA-F]+;)*(\w+|\d+)</)
+              if text_in_tag?(node.nodes)
                 nodes.insert(index, space_element(attributes: true))
               else
                 nodes.insert(index, space_element)
@@ -299,6 +299,15 @@ module Plurimath
         element = (ox_element("mo") << "&#x2062;")
         element.attributes[:rspace] = "thickmathspace" if attributes
         element
+      end
+
+      def text_in_tag?(nodes)
+        next_nodes = nodes.first.nodes
+        if next_nodes.all?(String)
+          Utility.html_entity_to_unicode(next_nodes.first).match?(/\p{L}|\p{N}/)
+        else
+          text_in_tag?(next_nodes)
+        end
       end
     end
   end
