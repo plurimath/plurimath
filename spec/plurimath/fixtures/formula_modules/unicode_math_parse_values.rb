@@ -80,22 +80,12 @@ module UnicodeMathParseValues
   EXAMPLE_4 = {
     text: "So long",
     expr: {
-      factor: {
-        atom: {
-          char: {
-            unicode_symbols: "&#x2227;"
-          }
-        }
-      },
+      binary_symbols: "&#x2227;",
       expr: {
         text: "thanks",
         expr: {
           factor: {
-            atom: {
-              char: {
-                unicode_symbols: "&#x200a;"
-              }
-            }
+            spaces: "&#x200a;"
           },
           operand: {
             factor: {
@@ -402,9 +392,9 @@ module UnicodeMathParseValues
                 number: "1"
               }
             },
-            expr: {
+            exp: {
               operator: "+",
-              expr: {
+              exp: {
                 factor: {
                   digit: {
                     number: "2"
@@ -436,9 +426,9 @@ module UnicodeMathParseValues
             number: "1"
           }
         },
-        expr: {
+        exp: {
           operator: ",",
-          expr: {
+          exp: {
             factor: {
               decimal_number: {
                 whole: {
@@ -497,9 +487,9 @@ module UnicodeMathParseValues
       intermediate_exp: {
         open_paren: "(",
         operator: ".",
-        expr: {
+        exp: {
           operator: "*",
-          expr: {
+          exp: {
             operator: "?"
           }
         },
@@ -510,12 +500,10 @@ module UnicodeMathParseValues
   EXAMPLE_15 = {
     frac: {
       numerator: {
-        factor: {
-          intermediate_exp: {
-            open_paren: "(",
-            negated_operator: "+",
-            close_paren: ")"
-          }
+        intermediate_exp: {
+          open_paren: "(",
+          negated_operator: "+",
+          close_paren: ")"
         }
       },
       denominator: {
@@ -536,9 +524,9 @@ module UnicodeMathParseValues
             alphanumeric: "A"
           }
         },
-        expr: {
+        exp: {
           operator: "+",
-          expr: {
+          exp: {
             factor: {
               atom: {
                 alphanumeric: "B"
@@ -656,32 +644,20 @@ module UnicodeMathParseValues
       },
       pre_supscript: {
         factor: {
-          atom: {
-            char: {
-              unicode_symbols: "&#x3b3;"
-            }
-          }
+          ordinary_symbols: "&#x3b3;"
         }
       },
       close_paren: ")",
       base: {
         factor: {
-          atom: {
-            char: {
-              unicode_symbols: "&#x3b1;"
-            }
-          }
+          ordinary_symbols: "&#x3b1;"
         }
       },
       sub: {
         sub_script: {
           operand: {
             factor: {
-              atom: {
-                char: {
-                  unicode_symbols: "&#x3b4;"
-                }
-              }
+              relational_symbols: "&#x3b4;"
             }
           }
         }
@@ -690,11 +666,7 @@ module UnicodeMathParseValues
         sup_script: {
           operand: {
             factor: {
-              atom: {
-                char: {
-                  unicode_symbols: "&#x3b5;"
-                }
-              }
+              ordinary_symbols: "&#x3b5;"
             }
           }
         }
@@ -710,9 +682,9 @@ module UnicodeMathParseValues
             alphanumeric: "a"
           }
         },
-        expr: {
+        exp: {
           operator: "+",
-          expr: {
+          exp: {
             factor: {
               atom: {
                 alphanumeric: "b"
@@ -757,9 +729,9 @@ module UnicodeMathParseValues
                             alphanumeric: "k"
                           }
                         },
-                        expr: {
+                        exp: {
                           operator: "=",
-                          expr: {
+                          exp: {
                             factor: {
                               digit: {
                                 number: "0"
@@ -790,10 +762,8 @@ module UnicodeMathParseValues
             open_paren: "(",
             frac: {
               numerator: {
-                factor: {
-                  atom: {
-                    alphanumeric: "n"
-                  }
+                atom: {
+                  alphanumeric: "n"
                 }
               },
               atop: "&#xa6;",
@@ -841,9 +811,9 @@ module UnicodeMathParseValues
                             alphanumeric: "n"
                           }
                         },
-                        expr: {
+                        exp: {
                           operator: "-",
-                          expr: {
+                          exp: {
                             factor: {
                               atom: {
                                 alphanumeric: "k"
@@ -872,9 +842,9 @@ module UnicodeMathParseValues
             alphanumeric: "a"
           }
         },
-        expr: {
+        exp: {
           operator: "+",
-          expr: {
+          exp: {
             factor: {
               atom: {
                 alphanumeric: "b"
@@ -914,9 +884,9 @@ module UnicodeMathParseValues
                             alphanumeric: "k"
                           }
                         },
-                        expr: {
+                        exp: {
                           operator: "=",
-                          expr: {
+                          exp: {
                             factor: {
                               digit: {
                                 number: "0"
@@ -947,10 +917,8 @@ module UnicodeMathParseValues
             open_paren: "(",
             frac: {
               numerator: {
-                factor: {
-                  atom: {
-                    alphanumeric: "n"
-                  }
+                atom: {
+                  alphanumeric: "n"
                 }
               },
               atop: "&#xa6;",
@@ -998,9 +966,9 @@ module UnicodeMathParseValues
                             alphanumeric: "n"
                           }
                         },
-                        expr: {
+                        exp: {
                           operator: "-",
-                          expr: {
+                          exp: {
                             factor: {
                               atom: {
                                 alphanumeric: "k"
@@ -1029,9 +997,9 @@ module UnicodeMathParseValues
             alphanumeric: "a"
           }
         },
-        expr: {
+        exp: {
           operator: "+",
-          expr: {
+          exp: {
             factor: {
               atom: {
                 alphanumeric: "b"
@@ -1396,9 +1364,9 @@ module UnicodeMathParseValues
                 alphanumeric: "a"
               }
             },
-            expr: {
+            exp: {
               operator: "+",
-              expr: {
+              exp: {
                 factor: {
                   atom: {
                     alphanumeric: "b"
@@ -1407,7 +1375,7 @@ module UnicodeMathParseValues
               }
             },
             close_paren: ")"
-          },
+          }
         }
       },
       {
@@ -1418,40 +1386,20 @@ module UnicodeMathParseValues
   EXAMPLE_28 = {
     frac: {
       numerator: {
-        factor: {
-          intermediate_exp: {
-            open_paren: "(",
-            frac: {
-              numerator: {
-                sup_exp: {
-                  base: {
-                    symbol: "a"
-                  },
-                  sup: {
-                    sup_script: {
-                      operand: {
-                        factor: {
-                          atom: {
-                            alphanumeric: "n"
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              },
-              denominator: {
-                sub_exp: {
-                  base: {
-                    symbol: "b"
-                  },
-                  sub: {
-                    sub_script: {
-                      operand: {
-                        factor: {
-                          atom: {
-                            alphanumeric: "c"
-                          }
+        intermediate_exp: {
+          open_paren: "(",
+          frac: {
+            numerator: {
+              sup_exp: {
+                base: {
+                  symbol: "a"
+                },
+                sup: {
+                  sup_script: {
+                    operand: {
+                      factor: {
+                        atom: {
+                          alphanumeric: "n"
                         }
                       }
                     }
@@ -1459,8 +1407,26 @@ module UnicodeMathParseValues
                 }
               }
             },
-            close_paren: ")"
-          }
+            denominator: {
+              sub_exp: {
+                base: {
+                  symbol: "b"
+                },
+                sub: {
+                  sub_script: {
+                    operand: {
+                      factor: {
+                        atom: {
+                          alphanumeric: "c"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          close_paren: ")"
         }
       },
       denominator: {
@@ -1514,11 +1480,9 @@ module UnicodeMathParseValues
             alphanumeric: "a"
           }
         },
-        operand: {
-          factor: {
-            relational_symbols: "&#x2223;"
-          },
-          operand: {
+        exp: {
+          mid_symbol: "&#x2223;",
+          expr: {
             factor: {
               atom: {
                 alphanumeric: "b"
@@ -1539,28 +1503,30 @@ module UnicodeMathParseValues
             alphanumeric: "a"
           }
         },
-        mid_symbol: "&#x2223;",
-        mid_recursion: {
-          factor: {
-            atom: {
-              alphanumeric: "b"
-            }
-          },
-          mid_symbol: "&#x2223;"
-        },
-        expr: {
-          frac: {
-            numerator: {
-              factor: {
-                atom: {
-                  alphanumeric: "c"
-                }
+        exp: {
+          mid_symbol: "&#x2223;",
+          expr: {
+            factor: {
+              atom: {
+                alphanumeric: "b"
               }
             },
-            denominator: {
-              factor: {
-                atom: {
-                  alphanumeric: "d"
+            exp: {
+              mid_symbol: "&#x2223;",
+              expr: {
+                frac: {
+                  numerator: {
+                    atom: {
+                      alphanumeric: "c"
+                    }
+                  },
+                  denominator: {
+                    factor: {
+                      atom: {
+                        alphanumeric: "d"
+                      }
+                    }
+                  }
                 }
               }
             }
@@ -1662,17 +1628,17 @@ module UnicodeMathParseValues
             alphanumeric: "x"
           }
         },
-        expr: {
+        exp: {
           operator: "+",
-          expr: {
+          exp: {
             factor: {
               atom: {
                 alphanumeric: "y"
               }
             },
-            expr: {
+            exp: {
               operator: "+",
-              expr: {
+              exp: {
                 factor: {
                   atom: {
                     alphanumeric: "z"
@@ -1686,13 +1652,7 @@ module UnicodeMathParseValues
       }
     },
     expr: {
-      factor: {
-        atom: {
-          char: {
-            unicode_symbols: "&#x2227;"
-          }
-        }
-      },
+      binary_symbols: "&#x2227;",
       expr: {
         factor: {
           intermediate_exp: {
@@ -1702,9 +1662,9 @@ module UnicodeMathParseValues
                 alphanumeric: "x"
               }
             },
-            expr: {
+            exp: {
               operator: "+",
-              expr: {
+              exp: {
                 factor: {
                   digit: {
                     number: "3"
@@ -1717,9 +1677,9 @@ module UnicodeMathParseValues
                     }
                   }
                 },
-                expr: {
+                exp: {
                   operator: "-",
-                  expr: {
+                  exp: {
                     factor: {
                       digit: {
                         number: "3"
@@ -1822,11 +1782,7 @@ module UnicodeMathParseValues
       intermediate_exp: {
         open_paren: "(",
         factor: {
-          atom: {
-            char: {
-              unicode_symbols: "&#x3b1;"
-            }
-          }
+          ordinary_symbols: "&#x3b1;"
         },
         close_paren: ")"
       }
@@ -1839,11 +1795,7 @@ module UnicodeMathParseValues
         sub_exp: {
           base: {
             factor: {
-              atom: {
-                char: {
-                  unicode_symbols: "&#x3b1;"
-                }
-              }
+              ordinary_symbols: "&#x3b1;"
             }
           },
           sub: {
@@ -1858,17 +1810,13 @@ module UnicodeMathParseValues
             }
           }
         },
-        expr: {
+        exp: {
           operator: "+",
-          expr: {
+          exp: {
             sub_exp: {
               base: {
                 factor: {
-                  atom: {
-                    char: {
-                      unicode_symbols: "&#x3b1;"
-                    }
-                  }
+                  ordinary_symbols: "&#x3b1;"
                 }
               },
               sub: {
@@ -1883,23 +1831,19 @@ module UnicodeMathParseValues
                 }
               }
             },
-            expr: {
+            exp: {
               factor: {
                 atom: {
                   alphanumeric: "x"
                 }
               },
-              expr: {
+              exp: {
                 operator: "+",
-                expr: {
+                exp: {
                   sub_exp: {
                     base: {
                       factor: {
-                        atom: {
-                          char: {
-                            unicode_symbols: "&#x3b1;"
-                          }
-                        }
+                        ordinary_symbols: "&#x3b1;"
                       }
                     },
                     sub: {
@@ -1914,23 +1858,19 @@ module UnicodeMathParseValues
                       }
                     }
                   },
-                  expr: {
+                  exp: {
                     factor: {
                       atom: {
                         alphanumeric: "y"
                       }
                     },
-                    expr: {
+                    exp: {
                       operator: "+",
-                      expr: {
+                      exp: {
                         sub_exp: {
                           base: {
                             factor: {
-                              atom: {
-                                char: {
-                                  unicode_symbols: "&#x3b1;"
-                                }
-                              }
+                              ordinary_symbols: "&#x3b1;"
                             }
                           },
                           sub: {
@@ -1945,23 +1885,19 @@ module UnicodeMathParseValues
                             }
                           }
                         },
-                        expr: {
+                        exp: {
                           factor: {
                             atom: {
                               alphanumeric: "z"
                             }
                           },
-                          expr: {
+                          exp: {
                             operator: "+",
-                            expr: {
+                            exp: {
                               sub_exp: {
                                 base: {
                                   factor: {
-                                    atom: {
-                                      char: {
-                                        unicode_symbols: "&#x3b1;"
-                                      }
-                                    }
+                                    ordinary_symbols: "&#x3b1;"
                                   }
                                 },
                                 sub: {
@@ -1975,7 +1911,7 @@ module UnicodeMathParseValues
                                               alphanumeric: "y"
                                             }
                                           },
-                                          expr: {
+                                          exp: {
                                             factor: {
                                               atom: {
                                                 alphanumeric: "z"
@@ -1989,29 +1925,25 @@ module UnicodeMathParseValues
                                   }
                                 }
                               },
-                              expr: {
+                              exp: {
                                 factor: {
                                   atom: {
                                     alphanumeric: "y"
                                   }
                                 },
-                                expr: {
+                                exp: {
                                   factor: {
                                     atom: {
                                       alphanumeric: "z"
                                     }
                                   },
-                                  expr: {
+                                  exp: {
                                     operator: "+",
-                                    expr: {
+                                    exp: {
                                       sub_exp: {
                                         base: {
                                           factor: {
-                                            atom: {
-                                              char: {
-                                                unicode_symbols: "&#x3b1;"
-                                              }
-                                            }
+                                            ordinary_symbols: "&#x3b1;"
                                           }
                                         },
                                         sub: {
@@ -2025,7 +1957,7 @@ module UnicodeMathParseValues
                                                       alphanumeric: "z"
                                                     }
                                                   },
-                                                  expr: {
+                                                  exp: {
                                                     factor: {
                                                       atom: {
                                                         alphanumeric: "x"
@@ -2039,29 +1971,25 @@ module UnicodeMathParseValues
                                           }
                                         }
                                       },
-                                      expr: {
+                                      exp: {
                                         factor: {
                                           atom: {
                                             alphanumeric: "z"
                                           }
                                         },
-                                        expr: {
+                                        exp: {
                                           factor: {
                                             atom: {
                                               alphanumeric: "x"
                                             }
                                           },
-                                          expr: {
+                                          exp: {
                                             operator: "+",
-                                            expr: {
+                                            exp: {
                                               sub_exp: {
                                                 base: {
                                                   factor: {
-                                                    atom: {
-                                                      char: {
-                                                        unicode_symbols: "&#x3b1;"
-                                                      }
-                                                    }
+                                                    ordinary_symbols: "&#x3b1;"
                                                   }
                                                 },
                                                 sub: {
@@ -2075,7 +2003,7 @@ module UnicodeMathParseValues
                                                               alphanumeric: "x"
                                                             }
                                                           },
-                                                          expr: {
+                                                          exp: {
                                                             factor: {
                                                               atom: {
                                                                 alphanumeric: "y"
@@ -2089,29 +2017,25 @@ module UnicodeMathParseValues
                                                   }
                                                 }
                                               },
-                                              expr: {
+                                              exp: {
                                                 factor: {
                                                   atom: {
                                                     alphanumeric: "x"
                                                   }
                                                 },
-                                                expr: {
+                                                exp: {
                                                   factor: {
                                                     atom: {
                                                       alphanumeric: "y"
                                                     }
                                                   },
-                                                  expr: {
+                                                  exp: {
                                                     operator: "+",
-                                                    expr: {
+                                                    exp: {
                                                       sub_exp: {
                                                         base: {
                                                           factor: {
-                                                            atom: {
-                                                              char: {
-                                                                unicode_symbols: "&#x3b1;"
-                                                              }
-                                                            }
+                                                            ordinary_symbols: "&#x3b1;"
                                                           }
                                                         },
                                                         sub: {
@@ -2125,13 +2049,13 @@ module UnicodeMathParseValues
                                                                       alphanumeric: "x"
                                                                     }
                                                                   },
-                                                                  expr: {
+                                                                  exp: {
                                                                     factor: {
                                                                       atom: {
                                                                         alphanumeric: "y"
                                                                       }
                                                                     },
-                                                                    expr: {
+                                                                    exp: {
                                                                       factor: {
                                                                         atom: {
                                                                           alphanumeric: "z"
@@ -2146,19 +2070,19 @@ module UnicodeMathParseValues
                                                           }
                                                         }
                                                       },
-                                                      expr: {
+                                                      exp: {
                                                         factor: {
                                                           atom: {
                                                             alphanumeric: "x"
                                                           }
                                                         },
-                                                        expr: {
+                                                        exp: {
                                                           factor: {
                                                             atom: {
                                                               alphanumeric: "y"
                                                             }
                                                           },
-                                                          expr: {
+                                                          exp: {
                                                             factor: {
                                                               atom: {
                                                                 alphanumeric: "z"
@@ -2204,11 +2128,7 @@ module UnicodeMathParseValues
         sub_exp: {
           base: {
             factor: {
-              atom: {
-                char: {
-                  unicode_symbols: "&#x3b1;"
-                }
-              }
+              ordinary_symbols: "&#x3b1;"
             }
           },
           sub: {
@@ -2223,23 +2143,19 @@ module UnicodeMathParseValues
             }
           }
         },
-        expr: {
+        exp: {
           factor: {
             atom: {
               alphanumeric: "x"
             }
           },
-          expr: {
+          exp: {
             operator: "+",
-            expr: {
+            exp: {
               sub_exp: {
                 base: {
                   factor: {
-                    atom: {
-                      char: {
-                        unicode_symbols: "&#x3b1;"
-                      }
-                    }
+                    ordinary_symbols: "&#x3b1;"
                   }
                 },
                 sub: {
@@ -2254,23 +2170,19 @@ module UnicodeMathParseValues
                   }
                 }
               },
-              expr: {
+              exp: {
                 factor: {
                   atom: {
                     alphanumeric: "y"
                   }
                 },
-                expr: {
+                exp: {
                   operator: "+",
-                  expr: {
+                  exp: {
                     sub_exp: {
                       base: {
                         factor: {
-                          atom: {
-                            char: {
-                              unicode_symbols: "&#x3b1;"
-                            }
-                          }
+                          ordinary_symbols: "&#x3b1;"
                         }
                       },
                       sub: {
@@ -2285,7 +2197,7 @@ module UnicodeMathParseValues
                         }
                       }
                     },
-                    expr: {
+                    exp: {
                       factor: {
                         atom: {
                           alphanumeric: "z"
@@ -2339,15 +2251,15 @@ module UnicodeMathParseValues
             }
           }
         },
-        expr: {
+        exp: {
           factor: {
             atom: {
               alphanumeric: "x"
             }
           },
-          expr: {
+          exp: {
             operator: "+",
-            expr: {
+            exp: {
               sub_exp: {
                 base: {
                   factor: {
@@ -2370,15 +2282,15 @@ module UnicodeMathParseValues
                   }
                 }
               },
-              expr: {
+              exp: {
                 factor: {
                   atom: {
                     alphanumeric: "y"
                   }
                 },
-                expr: {
+                exp: {
                   operator: "+",
-                  expr: {
+                  exp: {
                     sub_exp: {
                       base: {
                         factor: {
@@ -2401,7 +2313,7 @@ module UnicodeMathParseValues
                         }
                       }
                     },
-                    expr: {
+                    exp: {
                       factor: {
                         atom: {
                           alphanumeric: "z"
@@ -2450,23 +2362,21 @@ module UnicodeMathParseValues
   EXAMPLE_42 = {
     frac: {
       numerator: {
-        factor: {
-          intermediate_exp: {
-            open_paren: "(",
-            factor: {
-              root: {
-                root_symbol: "&#x221b;",
-                first_value: {
-                  factor: {
-                    atom: {
-                      alphanumeric: "a"
-                    }
+        intermediate_exp: {
+          open_paren: "(",
+          factor: {
+            root: {
+              root_symbol: "&#x221b;",
+              first_value: {
+                factor: {
+                  atom: {
+                    alphanumeric: "a"
                   }
                 }
               }
-            },
-            close_paren: ")"
-          }
+            }
+          },
+          close_paren: ")"
         }
       },
       denominator: {
@@ -2743,9 +2653,9 @@ module UnicodeMathParseValues
             }
           }
         },
-        expr: {
+        exp: {
           operator: "+",
-          expr: {
+          exp: {
             factor: {
               atom: {
                 char: {
@@ -2782,37 +2692,35 @@ module UnicodeMathParseValues
   EXAMPLE_46 = {
     frac: {
       numerator: {
-        factor: {
-          intermediate_exp: {
-            open_paren: "(",
-            factor: {
-              atom: {
+        intermediate_exp: {
+          open_paren: "(",
+          factor: {
+            atom: {
+              char: {
+                unicode_symbols: "&#x1d458;"
+              },
+              diacritics: {
                 char: {
-                  unicode_symbols: "&#x1d458;"
+                  unicode_symbols: "&#x2212;"
                 },
                 diacritics: {
                   char: {
-                    unicode_symbols: "&#x2212;"
+                    unicode_symbols: "&#x1d467;"
                   },
                   diacritics: {
                     char: {
-                      unicode_symbols: "&#x1d467;"
-                    },
-                    diacritics: {
-                      char: {
-                        unicode_symbols: "&#x2212;"
-                      }
+                      unicode_symbols: "&#x2212;"
                     }
                   }
-                },
-                number: "1"
-              }
-            },
-            close_paren: ")"
-          }
+                }
+              },
+              number: "1"
+            }
+          },
+          close_paren: ")"
         }
       },
-      atop: "&#x249e;",
+      choose: "&#x249e;",
       denominator: {
         factor: {
           atom: {
@@ -2836,11 +2744,7 @@ module UnicodeMathParseValues
           sub_exp: {
             base: {
               factor: {
-                atom: {
-                  char: {
-                    unicode_symbols: "&#x3b1;"
-                  }
-                }
+                ordinary_symbols: "&#x3b1;"
               }
             },
             sub: {
@@ -2855,7 +2759,7 @@ module UnicodeMathParseValues
               }
             }
           },
-          expr: {
+          exp: {
             sub_exp: {
               base: {
                 factor: {
@@ -2877,13 +2781,13 @@ module UnicodeMathParseValues
                             alphanumeric: "x"
                           }
                         },
-                        expr: {
+                        exp: {
                           factor: {
                             atom: {
                               alphanumeric: "y"
                             }
                           },
-                          expr: {
+                          exp: {
                             factor: {
                               atom: {
                                 alphanumeric: "z"
@@ -2898,17 +2802,13 @@ module UnicodeMathParseValues
                 }
               }
             },
-            expr: {
+            exp: {
               operator: "+",
-              expr: {
+              exp: {
                 sub_exp: {
                   base: {
                     factor: {
-                      atom: {
-                        char: {
-                          unicode_symbols: "&#x3b1;"
-                        }
-                      }
+                      ordinary_symbols: "&#x3b1;"
                     }
                   },
                   sub: {
@@ -2922,13 +2822,13 @@ module UnicodeMathParseValues
                                 alphanumeric: "x"
                               }
                             },
-                            expr: {
+                            exp: {
                               factor: {
                                 atom: {
                                   alphanumeric: "y"
                                 }
                               },
-                              expr: {
+                              exp: {
                                 factor: {
                                   atom: {
                                     alphanumeric: "z"
@@ -2943,7 +2843,7 @@ module UnicodeMathParseValues
                     }
                   }
                 },
-                expr: {
+                exp: {
                   sub_exp: {
                     base: {
                       factor: {
@@ -2966,17 +2866,13 @@ module UnicodeMathParseValues
                       }
                     }
                   },
-                  expr: {
+                  exp: {
                     operator: "+",
-                    expr: {
+                    exp: {
                       sub_exp: {
                         base: {
                           factor: {
-                            atom: {
-                              char: {
-                                unicode_symbols: "&#x3b1;"
-                              }
-                            }
+                            ordinary_symbols: "&#x3b1;"
                           }
                         },
                         sub: {
@@ -2991,7 +2887,7 @@ module UnicodeMathParseValues
                           }
                         }
                       },
-                      expr: {
+                      exp: {
                         sub_exp: {
                           base: {
                             factor: {
@@ -3013,7 +2909,7 @@ module UnicodeMathParseValues
                                         alphanumeric: "y"
                                       }
                                     },
-                                    expr: {
+                                    exp: {
                                       factor: {
                                         atom: {
                                           alphanumeric: "z"
@@ -3027,17 +2923,13 @@ module UnicodeMathParseValues
                             }
                           }
                         },
-                        expr: {
+                        exp: {
                           operator: "+",
-                          expr: {
+                          exp: {
                             sub_exp: {
                               base: {
                                 factor: {
-                                  atom: {
-                                    char: {
-                                      unicode_symbols: "&#x3b1;"
-                                    }
-                                  }
+                                  ordinary_symbols: "&#x3b1;"
                                 }
                               },
                               sub: {
@@ -3051,7 +2943,7 @@ module UnicodeMathParseValues
                                             alphanumeric: "y"
                                           }
                                         },
-                                        expr: {
+                                        exp: {
                                           factor: {
                                             atom: {
                                               alphanumeric: "z"
@@ -3065,7 +2957,7 @@ module UnicodeMathParseValues
                                 }
                               }
                             },
-                            expr: {
+                            exp: {
                               sub_exp: {
                                 base: {
                                   factor: {
@@ -3088,17 +2980,13 @@ module UnicodeMathParseValues
                                   }
                                 }
                               },
-                              expr: {
+                              exp: {
                                 operator: "+",
-                                expr: {
+                                exp: {
                                   sub_exp: {
                                     base: {
                                       factor: {
-                                        atom: {
-                                          char: {
-                                            unicode_symbols: "&#x3b1;"
-                                          }
-                                        }
+                                        ordinary_symbols: "&#x3b1;"
                                       }
                                     },
                                     sub: {
@@ -3113,7 +3001,7 @@ module UnicodeMathParseValues
                                       }
                                     }
                                   },
-                                  expr: {
+                                  exp: {
                                     sub_exp: {
                                       base: {
                                         factor: {
@@ -3135,7 +3023,7 @@ module UnicodeMathParseValues
                                                     alphanumeric: "z"
                                                   }
                                                 },
-                                                expr: {
+                                                exp: {
                                                   factor: {
                                                     atom: {
                                                       alphanumeric: "x"
@@ -3149,17 +3037,13 @@ module UnicodeMathParseValues
                                         }
                                       }
                                     },
-                                    expr: {
+                                    exp: {
                                       operator: "+",
-                                      expr: {
+                                      exp: {
                                         sub_exp: {
                                           base: {
                                             factor: {
-                                              atom: {
-                                                char: {
-                                                  unicode_symbols: "&#x3b1;"
-                                                }
-                                              }
+                                              ordinary_symbols: "&#x3b1;"
                                             }
                                           },
                                           sub: {
@@ -3173,7 +3057,7 @@ module UnicodeMathParseValues
                                                         alphanumeric: "z"
                                                       }
                                                     },
-                                                    expr: {
+                                                    exp: {
                                                       factor: {
                                                         atom: {
                                                           alphanumeric: "x"
@@ -3187,7 +3071,7 @@ module UnicodeMathParseValues
                                             }
                                           }
                                         },
-                                        expr: {
+                                        exp: {
                                           sub_exp: {
                                             base: {
                                               factor: {
@@ -3210,17 +3094,13 @@ module UnicodeMathParseValues
                                               }
                                             }
                                           },
-                                          expr: {
+                                          exp: {
                                             operator: "+",
-                                            expr: {
+                                            exp: {
                                               sub_exp: {
                                                 base: {
                                                   factor: {
-                                                    atom: {
-                                                      char: {
-                                                        unicode_symbols: "&#x3b1;"
-                                                      }
-                                                    }
+                                                    ordinary_symbols: "&#x3b1;"
                                                   }
                                                 },
                                                 sub: {
@@ -3235,7 +3115,7 @@ module UnicodeMathParseValues
                                                   }
                                                 }
                                               },
-                                              expr: {
+                                              exp: {
                                                 sub_exp: {
                                                   base: {
                                                     factor: {
@@ -3257,7 +3137,7 @@ module UnicodeMathParseValues
                                                                 alphanumeric: "x"
                                                               }
                                                             },
-                                                            expr: {
+                                                            exp: {
                                                               factor: {
                                                                 atom: {
                                                                   alphanumeric: "y"
@@ -3271,17 +3151,13 @@ module UnicodeMathParseValues
                                                     }
                                                   }
                                                 },
-                                                expr: {
+                                                exp: {
                                                   operator: "+",
-                                                  expr: {
+                                                  exp: {
                                                     sub_exp: {
                                                       base: {
                                                         factor: {
-                                                          atom: {
-                                                            char: {
-                                                              unicode_symbols: "&#x3b1;"
-                                                            }
-                                                          }
+                                                          ordinary_symbols: "&#x3b1;"
                                                         }
                                                       },
                                                       sub: {
@@ -3295,7 +3171,7 @@ module UnicodeMathParseValues
                                                                     alphanumeric: "x"
                                                                   }
                                                                 },
-                                                                expr: {
+                                                                exp: {
                                                                   factor: {
                                                                     atom: {
                                                                       alphanumeric: "y"
@@ -3309,7 +3185,7 @@ module UnicodeMathParseValues
                                                         }
                                                       }
                                                     },
-                                                    expr: {
+                                                    exp: {
                                                       sub_exp: {
                                                         base: {
                                                           factor: {
@@ -3389,11 +3265,7 @@ module UnicodeMathParseValues
           sub_exp: {
             base: {
               factor: {
-                atom: {
-                  char: {
-                    unicode_symbols: "&#x3b1;"
-                  }
-                }
+                ordinary_symbols: "&#x3b1;"
               }
             },
             sub: {
@@ -3408,7 +3280,7 @@ module UnicodeMathParseValues
               }
             }
           },
-          expr: {
+          exp: {
             sub_exp: {
               base: {
                 factor: {
@@ -3430,7 +3302,7 @@ module UnicodeMathParseValues
                             alphanumeric: "x"
                           }
                         },
-                        expr: {
+                        exp: {
                           factor: {
                             atom: {
                               alphanumeric: "y"
@@ -3444,17 +3316,13 @@ module UnicodeMathParseValues
                 }
               }
             },
-            expr: {
+            exp: {
               operator: "+",
-              expr: {
+              exp: {
                 sub_exp: {
                   base: {
                     factor: {
-                      atom: {
-                        char: {
-                          unicode_symbols: "&#x3b1;"
-                        }
-                      }
+                      ordinary_symbols: "&#x3b1;"
                     }
                   },
                   sub: {
@@ -3468,7 +3336,7 @@ module UnicodeMathParseValues
                                 alphanumeric: "x"
                               }
                             },
-                            expr: {
+                            exp: {
                               factor: {
                                 atom: {
                                   alphanumeric: "y"
@@ -3482,7 +3350,7 @@ module UnicodeMathParseValues
                     }
                   }
                 },
-                expr: {
+                exp: {
                   sub_exp: {
                     base: {
                       factor: {
@@ -3505,17 +3373,13 @@ module UnicodeMathParseValues
                       }
                     }
                   },
-                  expr: {
+                  exp: {
                     operator: "+",
-                    expr: {
+                    exp: {
                       sub_exp: {
                         base: {
                           factor: {
-                            atom: {
-                              char: {
-                                unicode_symbols: "&#x3b1;"
-                              }
-                            }
+                            ordinary_symbols: "&#x3b1;"
                           }
                         },
                         sub: {
@@ -3530,7 +3394,7 @@ module UnicodeMathParseValues
                           }
                         }
                       },
-                      expr: {
+                      exp: {
                         sub_exp: {
                           base: {
                             factor: {
@@ -3553,17 +3417,13 @@ module UnicodeMathParseValues
                             }
                           }
                         },
-                        expr: {
+                        exp: {
                           operator: "-",
-                          expr: {
+                          exp: {
                             sub_exp: {
                               base: {
                                 factor: {
-                                  atom: {
-                                    char: {
-                                      unicode_symbols: "&#x3b1;"
-                                    }
-                                  }
+                                  ordinary_symbols: "&#x3b1;"
                                 }
                               },
                               sub: {
@@ -3578,7 +3438,7 @@ module UnicodeMathParseValues
                                 }
                               }
                             },
-                            expr: {
+                            exp: {
                               sub_exp: {
                                 base: {
                                   factor: {
@@ -3601,17 +3461,13 @@ module UnicodeMathParseValues
                                   }
                                 }
                               },
-                              expr: {
+                              exp: {
                                 operator: "+",
-                                expr: {
+                                exp: {
                                   sub_exp: {
                                     base: {
                                       factor: {
-                                        atom: {
-                                          char: {
-                                            unicode_symbols: "&#x3b1;"
-                                          }
-                                        }
+                                        ordinary_symbols: "&#x3b1;"
                                       }
                                     },
                                     sub: {
@@ -3626,7 +3482,7 @@ module UnicodeMathParseValues
                                       }
                                     }
                                   },
-                                  expr: {
+                                  exp: {
                                     sub_exp: {
                                       base: {
                                         factor: {
@@ -3648,13 +3504,13 @@ module UnicodeMathParseValues
                                                     alphanumeric: "x"
                                                   }
                                                 },
-                                                expr: {
+                                                exp: {
                                                   factor: {
                                                     atom: {
                                                       alphanumeric: "y"
                                                     }
                                                   },
-                                                  expr: {
+                                                  exp: {
                                                     factor: {
                                                       atom: {
                                                         alphanumeric: "z"
@@ -3669,17 +3525,13 @@ module UnicodeMathParseValues
                                         }
                                       }
                                     },
-                                    expr: {
+                                    exp: {
                                       operator: "+",
-                                      expr: {
+                                      exp: {
                                         sub_exp: {
                                           base: {
                                             factor: {
-                                              atom: {
-                                                char: {
-                                                  unicode_symbols: "&#x3b1;"
-                                                }
-                                              }
+                                              ordinary_symbols: "&#x3b1;"
                                             }
                                           },
                                           sub: {
@@ -3693,13 +3545,13 @@ module UnicodeMathParseValues
                                                         alphanumeric: "x"
                                                       }
                                                     },
-                                                    expr: {
+                                                    exp: {
                                                       factor: {
                                                         atom: {
                                                           alphanumeric: "y"
                                                         }
                                                       },
-                                                      expr: {
+                                                      exp: {
                                                         factor: {
                                                           atom: {
                                                             alphanumeric: "z"
@@ -3714,7 +3566,7 @@ module UnicodeMathParseValues
                                             }
                                           }
                                         },
-                                        expr: {
+                                        exp: {
                                           sub_exp: {
                                             base: {
                                               factor: {
@@ -3737,17 +3589,13 @@ module UnicodeMathParseValues
                                               }
                                             }
                                           },
-                                          expr: {
+                                          exp: {
                                             operator: "+",
-                                            expr: {
+                                            exp: {
                                               sub_exp: {
                                                 base: {
                                                   factor: {
-                                                    atom: {
-                                                      char: {
-                                                        unicode_symbols: "&#x3b1;"
-                                                      }
-                                                    }
+                                                    ordinary_symbols: "&#x3b1;"
                                                   }
                                                 },
                                                 sub: {
@@ -3761,7 +3609,7 @@ module UnicodeMathParseValues
                                                               alphanumeric: "z"
                                                             }
                                                           },
-                                                          expr: {
+                                                          exp: {
                                                             factor: {
                                                               atom: {
                                                                 alphanumeric: "x"
@@ -3775,7 +3623,7 @@ module UnicodeMathParseValues
                                                   }
                                                 }
                                               },
-                                              expr: {
+                                              exp: {
                                                 sub_exp: {
                                                   base: {
                                                     factor: {
@@ -3797,7 +3645,7 @@ module UnicodeMathParseValues
                                                                 alphanumeric: "y"
                                                               }
                                                             },
-                                                            expr: {
+                                                            exp: {
                                                               factor: {
                                                                 atom: {
                                                                   alphanumeric: "z"
@@ -3811,17 +3659,13 @@ module UnicodeMathParseValues
                                                     }
                                                   }
                                                 },
-                                                expr: {
+                                                exp: {
                                                   operator: "-",
-                                                  expr: {
+                                                  exp: {
                                                     sub_exp: {
                                                       base: {
                                                         factor: {
-                                                          atom: {
-                                                            char: {
-                                                              unicode_symbols: "&#x3b1;"
-                                                            }
-                                                          }
+                                                          ordinary_symbols: "&#x3b1;"
                                                         }
                                                       },
                                                       sub: {
@@ -3835,7 +3679,7 @@ module UnicodeMathParseValues
                                                                     alphanumeric: "y"
                                                                   }
                                                                 },
-                                                                expr: {
+                                                                exp: {
                                                                   factor: {
                                                                     atom: {
                                                                       alphanumeric: "z"
@@ -3849,7 +3693,7 @@ module UnicodeMathParseValues
                                                         }
                                                       }
                                                     },
-                                                    expr: {
+                                                    exp: {
                                                       sub_exp: {
                                                         base: {
                                                           factor: {
@@ -3871,7 +3715,7 @@ module UnicodeMathParseValues
                                                                       alphanumeric: "z"
                                                                     }
                                                                   },
-                                                                  expr: {
+                                                                  exp: {
                                                                     factor: {
                                                                       atom: {
                                                                         alphanumeric: "x"
@@ -3935,11 +3779,7 @@ module UnicodeMathParseValues
           sub_exp: {
             base: {
               factor: {
-                atom: {
-                  char: {
-                    unicode_symbols: "&#x3b1;"
-                  }
-                }
+                ordinary_symbols: "&#x3b1;"
               }
             },
             sub: {
@@ -3954,7 +3794,7 @@ module UnicodeMathParseValues
               }
             }
           },
-          expr: {
+          exp: {
             sub_exp: {
               base: {
                 factor: {
@@ -3976,7 +3816,7 @@ module UnicodeMathParseValues
                             alphanumeric: "y"
                           }
                         },
-                        expr: {
+                        exp: {
                           factor: {
                             atom: {
                               alphanumeric: "z"
@@ -3990,17 +3830,13 @@ module UnicodeMathParseValues
                 }
               }
             },
-            expr: {
+            exp: {
               operator: "+",
-              expr: {
+              exp: {
                 sub_exp: {
                   base: {
                     factor: {
-                      atom: {
-                        char: {
-                          unicode_symbols: "&#x3b1;"
-                        }
-                      }
+                      ordinary_symbols: "&#x3b1;"
                     }
                   },
                   sub: {
@@ -4014,7 +3850,7 @@ module UnicodeMathParseValues
                                 alphanumeric: "y"
                               }
                             },
-                            expr: {
+                            exp: {
                               factor: {
                                 atom: {
                                   alphanumeric: "z"
@@ -4028,7 +3864,7 @@ module UnicodeMathParseValues
                     }
                   }
                 },
-                expr: {
+                exp: {
                   sub_exp: {
                     base: {
                       factor: {
@@ -4051,17 +3887,13 @@ module UnicodeMathParseValues
                       }
                     }
                   },
-                  expr: {
+                  exp: {
                     operator: "+",
-                    expr: {
+                    exp: {
                       sub_exp: {
                         base: {
                           factor: {
-                            atom: {
-                              char: {
-                                unicode_symbols: "&#x3b1;"
-                              }
-                            }
+                            ordinary_symbols: "&#x3b1;"
                           }
                         },
                         sub: {
@@ -4076,7 +3908,7 @@ module UnicodeMathParseValues
                           }
                         }
                       },
-                      expr: {
+                      exp: {
                         sub_exp: {
                           base: {
                             factor: {
@@ -4098,13 +3930,13 @@ module UnicodeMathParseValues
                                         alphanumeric: "x"
                                       }
                                     },
-                                    expr: {
+                                    exp: {
                                       factor: {
                                         atom: {
                                           alphanumeric: "y"
                                         }
                                       },
-                                      expr: {
+                                      exp: {
                                         factor: {
                                           atom: {
                                             alphanumeric: "z"
@@ -4119,17 +3951,13 @@ module UnicodeMathParseValues
                             }
                           }
                         },
-                        expr: {
+                        exp: {
                           operator: "+",
-                          expr: {
+                          exp: {
                             sub_exp: {
                               base: {
                                 factor: {
-                                  atom: {
-                                    char: {
-                                      unicode_symbols: "&#x3b1;"
-                                    }
-                                  }
+                                  ordinary_symbols: "&#x3b1;"
                                 }
                               },
                               sub: {
@@ -4143,13 +3971,13 @@ module UnicodeMathParseValues
                                             alphanumeric: "x"
                                           }
                                         },
-                                        expr: {
+                                        exp: {
                                           factor: {
                                             atom: {
                                               alphanumeric: "y"
                                             }
                                           },
-                                          expr: {
+                                          exp: {
                                             factor: {
                                               atom: {
                                                 alphanumeric: "z"
@@ -4164,7 +3992,7 @@ module UnicodeMathParseValues
                                 }
                               }
                             },
-                            expr: {
+                            exp: {
                               sub_exp: {
                                 base: {
                                   factor: {
@@ -4187,17 +4015,13 @@ module UnicodeMathParseValues
                                   }
                                 }
                               },
-                              expr: {
+                              exp: {
                                 operator: "+",
-                                expr: {
+                                exp: {
                                   sub_exp: {
                                     base: {
                                       factor: {
-                                        atom: {
-                                          char: {
-                                            unicode_symbols: "&#x3b1;"
-                                          }
-                                        }
+                                        ordinary_symbols: "&#x3b1;"
                                       }
                                     },
                                     sub: {
@@ -4212,7 +4036,7 @@ module UnicodeMathParseValues
                                       }
                                     }
                                   },
-                                  expr: {
+                                  exp: {
                                     sub_exp: {
                                       base: {
                                         factor: {
@@ -4235,17 +4059,13 @@ module UnicodeMathParseValues
                                         }
                                       }
                                     },
-                                    expr: {
+                                    exp: {
                                       operator: "-",
-                                      expr: {
+                                      exp: {
                                         sub_exp: {
                                           base: {
                                             factor: {
-                                              atom: {
-                                                char: {
-                                                  unicode_symbols: "&#x3b1;"
-                                                }
-                                              }
+                                              ordinary_symbols: "&#x3b1;"
                                             }
                                           },
                                           sub: {
@@ -4260,7 +4080,7 @@ module UnicodeMathParseValues
                                             }
                                           }
                                         },
-                                        expr: {
+                                        exp: {
                                           sub_exp: {
                                             base: {
                                               factor: {
@@ -4283,17 +4103,13 @@ module UnicodeMathParseValues
                                               }
                                             }
                                           },
-                                          expr: {
+                                          exp: {
                                             operator: "+",
-                                            expr: {
+                                            exp: {
                                               sub_exp: {
                                                 base: {
                                                   factor: {
-                                                    atom: {
-                                                      char: {
-                                                        unicode_symbols: "&#x3b1;"
-                                                      }
-                                                    }
+                                                    ordinary_symbols: "&#x3b1;"
                                                   }
                                                 },
                                                 sub: {
@@ -4307,7 +4123,7 @@ module UnicodeMathParseValues
                                                               alphanumeric: "x"
                                                             }
                                                           },
-                                                          expr: {
+                                                          exp: {
                                                             factor: {
                                                               atom: {
                                                                 alphanumeric: "y"
@@ -4321,7 +4137,7 @@ module UnicodeMathParseValues
                                                   }
                                                 }
                                               },
-                                              expr: {
+                                              exp: {
                                                 sub_exp: {
                                                   base: {
                                                     factor: {
@@ -4343,7 +4159,7 @@ module UnicodeMathParseValues
                                                                 alphanumeric: "z"
                                                               }
                                                             },
-                                                            expr: {
+                                                            exp: {
                                                               factor: {
                                                                 atom: {
                                                                   alphanumeric: "x"
@@ -4357,17 +4173,13 @@ module UnicodeMathParseValues
                                                     }
                                                   }
                                                 },
-                                                expr: {
+                                                exp: {
                                                   operator: "-",
-                                                  expr: {
+                                                  exp: {
                                                     sub_exp: {
                                                       base: {
                                                         factor: {
-                                                          atom: {
-                                                            char: {
-                                                              unicode_symbols: "&#x3b1;"
-                                                            }
-                                                          }
+                                                          ordinary_symbols: "&#x3b1;"
                                                         }
                                                       },
                                                       sub: {
@@ -4381,7 +4193,7 @@ module UnicodeMathParseValues
                                                                     alphanumeric: "z"
                                                                   }
                                                                 },
-                                                                expr: {
+                                                                exp: {
                                                                   factor: {
                                                                     atom: {
                                                                       alphanumeric: "x"
@@ -4395,7 +4207,7 @@ module UnicodeMathParseValues
                                                         }
                                                       }
                                                     },
-                                                    expr: {
+                                                    exp: {
                                                       sub_exp: {
                                                         base: {
                                                           factor: {
@@ -4417,7 +4229,7 @@ module UnicodeMathParseValues
                                                                       alphanumeric: "x"
                                                                     }
                                                                   },
-                                                                  expr: {
+                                                                  exp: {
                                                                     factor: {
                                                                       atom: {
                                                                         alphanumeric: "y"
@@ -4481,11 +4293,7 @@ module UnicodeMathParseValues
           sub_exp: {
             base: {
               factor: {
-                atom: {
-                  char: {
-                    unicode_symbols: "&#x3b1;"
-                  }
-                }
+                ordinary_symbols: "&#x3b1;"
               }
             },
             sub: {
@@ -4500,7 +4308,7 @@ module UnicodeMathParseValues
               }
             }
           },
-          expr: {
+          exp: {
             sub_exp: {
               base: {
                 factor: {
@@ -4522,7 +4330,7 @@ module UnicodeMathParseValues
                             alphanumeric: "z"
                           }
                         },
-                        expr: {
+                        exp: {
                           factor: {
                             atom: {
                               alphanumeric: "x"
@@ -4536,17 +4344,13 @@ module UnicodeMathParseValues
                 }
               }
             },
-            expr: {
+            exp: {
               operator: "+",
-              expr: {
+              exp: {
                 sub_exp: {
                   base: {
                     factor: {
-                      atom: {
-                        char: {
-                          unicode_symbols: "&#x3b1;"
-                        }
-                      }
+                      ordinary_symbols: "&#x3b1;"
                     }
                   },
                   sub: {
@@ -4560,7 +4364,7 @@ module UnicodeMathParseValues
                                 alphanumeric: "z"
                               }
                             },
-                            expr: {
+                            exp: {
                               factor: {
                                 atom: {
                                   alphanumeric: "x"
@@ -4574,7 +4378,7 @@ module UnicodeMathParseValues
                     }
                   }
                 },
-                expr: {
+                exp: {
                   sub_exp: {
                     base: {
                       factor: {
@@ -4597,17 +4401,13 @@ module UnicodeMathParseValues
                       }
                     }
                   },
-                  expr: {
+                  exp: {
                     operator: "+",
-                    expr: {
+                    exp: {
                       sub_exp: {
                         base: {
                           factor: {
-                            atom: {
-                              char: {
-                                unicode_symbols: "&#x3b1;"
-                              }
-                            }
+                            ordinary_symbols: "&#x3b1;"
                           }
                         },
                         sub: {
@@ -4622,7 +4422,7 @@ module UnicodeMathParseValues
                           }
                         }
                       },
-                      expr: {
+                      exp: {
                         sub_exp: {
                           base: {
                             factor: {
@@ -4645,17 +4445,13 @@ module UnicodeMathParseValues
                             }
                           }
                         },
-                        expr: {
+                        exp: {
                           operator: "-",
-                          expr: {
+                          exp: {
                             sub_exp: {
                               base: {
                                 factor: {
-                                  atom: {
-                                    char: {
-                                      unicode_symbols: "&#x3b1;"
-                                    }
-                                  }
+                                  ordinary_symbols: "&#x3b1;"
                                 }
                               },
                               sub: {
@@ -4670,7 +4466,7 @@ module UnicodeMathParseValues
                                 }
                               }
                             },
-                            expr: {
+                            exp: {
                               sub_exp: {
                                 base: {
                                   factor: {
@@ -4693,17 +4489,13 @@ module UnicodeMathParseValues
                                   }
                                 }
                               },
-                              expr: {
+                              exp: {
                                 operator: "+",
-                                expr: {
+                                exp: {
                                   sub_exp: {
                                     base: {
                                       factor: {
-                                        atom: {
-                                          char: {
-                                            unicode_symbols: "&#x3b1;"
-                                          }
-                                        }
+                                        ordinary_symbols: "&#x3b1;"
                                       }
                                     },
                                     sub: {
@@ -4718,7 +4510,7 @@ module UnicodeMathParseValues
                                       }
                                     }
                                   },
-                                  expr: {
+                                  exp: {
                                     sub_exp: {
                                       base: {
                                         factor: {
@@ -4740,13 +4532,13 @@ module UnicodeMathParseValues
                                                     alphanumeric: "x"
                                                   }
                                                 },
-                                                expr: {
+                                                exp: {
                                                   factor: {
                                                     atom: {
                                                       alphanumeric: "y"
                                                     }
                                                   },
-                                                  expr: {
+                                                  exp: {
                                                     factor: {
                                                       atom: {
                                                         alphanumeric: "z"
@@ -4761,17 +4553,13 @@ module UnicodeMathParseValues
                                         }
                                       }
                                     },
-                                    expr: {
+                                    exp: {
                                       operator: "+",
-                                      expr: {
+                                      exp: {
                                         sub_exp: {
                                           base: {
                                             factor: {
-                                              atom: {
-                                                char: {
-                                                  unicode_symbols: "&#x3b1;"
-                                                }
-                                              }
+                                              ordinary_symbols: "&#x3b1;"
                                             }
                                           },
                                           sub: {
@@ -4785,13 +4573,13 @@ module UnicodeMathParseValues
                                                         alphanumeric: "x"
                                                       }
                                                     },
-                                                    expr: {
+                                                    exp: {
                                                       factor: {
                                                         atom: {
                                                           alphanumeric: "y"
                                                         }
                                                       },
-                                                      expr: {
+                                                      exp: {
                                                         factor: {
                                                           atom: {
                                                             alphanumeric: "z"
@@ -4806,7 +4594,7 @@ module UnicodeMathParseValues
                                             }
                                           }
                                         },
-                                        expr: {
+                                        exp: {
                                           sub_exp: {
                                             base: {
                                               factor: {
@@ -4829,17 +4617,13 @@ module UnicodeMathParseValues
                                               }
                                             }
                                           },
-                                          expr: {
+                                          exp: {
                                             operator: "+",
-                                            expr: {
+                                            exp: {
                                               sub_exp: {
                                                 base: {
                                                   factor: {
-                                                    atom: {
-                                                      char: {
-                                                        unicode_symbols: "&#x3b1;"
-                                                      }
-                                                    }
+                                                    ordinary_symbols: "&#x3b1;"
                                                   }
                                                 },
                                                 sub: {
@@ -4853,7 +4637,7 @@ module UnicodeMathParseValues
                                                               alphanumeric: "y"
                                                             }
                                                           },
-                                                          expr: {
+                                                          exp: {
                                                             factor: {
                                                               atom: {
                                                                 alphanumeric: "z"
@@ -4867,7 +4651,7 @@ module UnicodeMathParseValues
                                                   }
                                                 }
                                               },
-                                              expr: {
+                                              exp: {
                                                 sub_exp: {
                                                   base: {
                                                     factor: {
@@ -4889,7 +4673,7 @@ module UnicodeMathParseValues
                                                                 alphanumeric: "x"
                                                               }
                                                             },
-                                                            expr: {
+                                                            exp: {
                                                               factor: {
                                                                 atom: {
                                                                   alphanumeric: "y"
@@ -4903,17 +4687,13 @@ module UnicodeMathParseValues
                                                     }
                                                   }
                                                 },
-                                                expr: {
+                                                exp: {
                                                   operator: "-",
-                                                  expr: {
+                                                  exp: {
                                                     sub_exp: {
                                                       base: {
                                                         factor: {
-                                                          atom: {
-                                                            char: {
-                                                              unicode_symbols: "&#x3b1;"
-                                                            }
-                                                          }
+                                                          ordinary_symbols: "&#x3b1;"
                                                         }
                                                       },
                                                       sub: {
@@ -4927,7 +4707,7 @@ module UnicodeMathParseValues
                                                                     alphanumeric: "x"
                                                                   }
                                                                 },
-                                                                expr: {
+                                                                exp: {
                                                                   factor: {
                                                                     atom: {
                                                                       alphanumeric: "y"
@@ -4941,7 +4721,7 @@ module UnicodeMathParseValues
                                                         }
                                                       }
                                                     },
-                                                    expr: {
+                                                    exp: {
                                                       sub_exp: {
                                                         base: {
                                                           factor: {
@@ -4963,7 +4743,7 @@ module UnicodeMathParseValues
                                                                       alphanumeric: "y"
                                                                     }
                                                                   },
-                                                                  expr: {
+                                                                  exp: {
                                                                     factor: {
                                                                       atom: {
                                                                         alphanumeric: "z"
@@ -5027,11 +4807,7 @@ module UnicodeMathParseValues
           sub_exp: {
             base: {
               factor: {
-                atom: {
-                  char: {
-                    unicode_symbols: "&#x3b1;"
-                  }
-                }
+                ordinary_symbols: "&#x3b1;"
               }
             },
             sub: {
@@ -5046,7 +4822,7 @@ module UnicodeMathParseValues
               }
             }
           },
-          expr: {
+          exp: {
             sub_exp: {
               base: {
                 factor: {
@@ -5069,17 +4845,13 @@ module UnicodeMathParseValues
                 }
               }
             },
-            expr: {
+            exp: {
               operator: "+",
-              expr: {
+              exp: {
                 sub_exp: {
                   base: {
                     factor: {
-                      atom: {
-                        char: {
-                          unicode_symbols: "&#x3b1;"
-                        }
-                      }
+                      ordinary_symbols: "&#x3b1;"
                     }
                   },
                   sub: {
@@ -5094,7 +4866,7 @@ module UnicodeMathParseValues
                     }
                   }
                 },
-                expr: {
+                exp: {
                   sub_exp: {
                     base: {
                       factor: {
@@ -5117,17 +4889,13 @@ module UnicodeMathParseValues
                       }
                     }
                   },
-                  expr: {
+                  exp: {
                     operator: "+",
-                    expr: {
+                    exp: {
                       sub_exp: {
                         base: {
                           factor: {
-                            atom: {
-                              char: {
-                                unicode_symbols: "&#x3b1;"
-                              }
-                            }
+                            ordinary_symbols: "&#x3b1;"
                           }
                         },
                         sub: {
@@ -5141,7 +4909,7 @@ module UnicodeMathParseValues
                                       alphanumeric: "x"
                                     }
                                   },
-                                  expr: {
+                                  exp: {
                                     factor: {
                                       atom: {
                                         alphanumeric: "y"
@@ -5155,7 +4923,7 @@ module UnicodeMathParseValues
                           }
                         }
                       },
-                      expr: {
+                      exp: {
                         sub_exp: {
                           base: {
                             factor: {
@@ -5178,17 +4946,13 @@ module UnicodeMathParseValues
                             }
                           }
                         },
-                        expr: {
+                        exp: {
                           operator: "-",
-                          expr: {
+                          exp: {
                             sub_exp: {
                               base: {
                                 factor: {
-                                  atom: {
-                                    char: {
-                                      unicode_symbols: "&#x3b1;"
-                                    }
-                                  }
+                                  ordinary_symbols: "&#x3b1;"
                                 }
                               },
                               sub: {
@@ -5203,7 +4967,7 @@ module UnicodeMathParseValues
                                 }
                               }
                             },
-                            expr: {
+                            exp: {
                               sub_exp: {
                                 base: {
                                   factor: {
@@ -5225,7 +4989,7 @@ module UnicodeMathParseValues
                                               alphanumeric: "x"
                                             }
                                           },
-                                          expr: {
+                                          exp: {
                                             factor: {
                                               atom: {
                                                 alphanumeric: "y"
@@ -5239,17 +5003,13 @@ module UnicodeMathParseValues
                                   }
                                 }
                               },
-                              expr: {
+                              exp: {
                                 operator: "+",
-                                expr: {
+                                exp: {
                                   sub_exp: {
                                     base: {
                                       factor: {
-                                        atom: {
-                                          char: {
-                                            unicode_symbols: "&#x3b1;"
-                                          }
-                                        }
+                                        ordinary_symbols: "&#x3b1;"
                                       }
                                     },
                                     sub: {
@@ -5264,7 +5024,7 @@ module UnicodeMathParseValues
                                       }
                                     }
                                   },
-                                  expr: {
+                                  exp: {
                                     sub_exp: {
                                       base: {
                                         factor: {
@@ -5286,7 +5046,7 @@ module UnicodeMathParseValues
                                                     alphanumeric: "z"
                                                   }
                                                 },
-                                                expr: {
+                                                exp: {
                                                   factor: {
                                                     atom: {
                                                       alphanumeric: "x"
@@ -5300,17 +5060,13 @@ module UnicodeMathParseValues
                                         }
                                       }
                                     },
-                                    expr: {
+                                    exp: {
                                       operator: "-",
-                                      expr: {
+                                      exp: {
                                         sub_exp: {
                                           base: {
                                             factor: {
-                                              atom: {
-                                                char: {
-                                                  unicode_symbols: "&#x3b1;"
-                                                }
-                                              }
+                                              ordinary_symbols: "&#x3b1;"
                                             }
                                           },
                                           sub: {
@@ -5324,7 +5080,7 @@ module UnicodeMathParseValues
                                                         alphanumeric: "z"
                                                       }
                                                     },
-                                                    expr: {
+                                                    exp: {
                                                       factor: {
                                                         atom: {
                                                           alphanumeric: "x"
@@ -5338,7 +5094,7 @@ module UnicodeMathParseValues
                                             }
                                           }
                                         },
-                                        expr: {
+                                        exp: {
                                           sub_exp: {
                                             base: {
                                               factor: {
@@ -5361,17 +5117,13 @@ module UnicodeMathParseValues
                                               }
                                             }
                                           },
-                                          expr: {
+                                          exp: {
                                             operator: "-",
-                                            expr: {
+                                            exp: {
                                               sub_exp: {
                                                 base: {
                                                   factor: {
-                                                    atom: {
-                                                      char: {
-                                                        unicode_symbols: "&#x3b1;"
-                                                      }
-                                                    }
+                                                    ordinary_symbols: "&#x3b1;"
                                                   }
                                                 },
                                                 sub: {
@@ -5385,7 +5137,7 @@ module UnicodeMathParseValues
                                                               alphanumeric: "y"
                                                             }
                                                           },
-                                                          expr: {
+                                                          exp: {
                                                             factor: {
                                                               atom: {
                                                                 alphanumeric: "z"
@@ -5399,7 +5151,7 @@ module UnicodeMathParseValues
                                                   }
                                                 }
                                               },
-                                              expr: {
+                                              exp: {
                                                 sub_exp: {
                                                   base: {
                                                     factor: {
@@ -5421,13 +5173,13 @@ module UnicodeMathParseValues
                                                                 alphanumeric: "x"
                                                               }
                                                             },
-                                                            expr: {
+                                                            exp: {
                                                               factor: {
                                                                 atom: {
                                                                   alphanumeric: "y"
                                                                 }
                                                               },
-                                                              expr: {
+                                                              exp: {
                                                                 factor: {
                                                                   atom: {
                                                                     alphanumeric: "z"
@@ -5442,17 +5194,13 @@ module UnicodeMathParseValues
                                                     }
                                                   }
                                                 },
-                                                expr: {
+                                                exp: {
                                                   operator: "-",
-                                                  expr: {
+                                                  exp: {
                                                     sub_exp: {
                                                       base: {
                                                         factor: {
-                                                          atom: {
-                                                            char: {
-                                                              unicode_symbols: "&#x3b1;"
-                                                            }
-                                                          }
+                                                          ordinary_symbols: "&#x3b1;"
                                                         }
                                                       },
                                                       sub: {
@@ -5466,13 +5214,13 @@ module UnicodeMathParseValues
                                                                     alphanumeric: "x"
                                                                   }
                                                                 },
-                                                                expr: {
+                                                                exp: {
                                                                   factor: {
                                                                     atom: {
                                                                       alphanumeric: "y"
                                                                     }
                                                                   },
-                                                                  expr: {
+                                                                  exp: {
                                                                     factor: {
                                                                       atom: {
                                                                         alphanumeric: "z"
@@ -5487,7 +5235,7 @@ module UnicodeMathParseValues
                                                         }
                                                       }
                                                     },
-                                                    expr: {
+                                                    exp: {
                                                       sub_exp: {
                                                         base: {
                                                           factor: {
@@ -5509,7 +5257,7 @@ module UnicodeMathParseValues
                                                                       alphanumeric: "y"
                                                                     }
                                                                   },
-                                                                  expr: {
+                                                                  exp: {
                                                                     factor: {
                                                                       atom: {
                                                                         alphanumeric: "z"
@@ -5566,11 +5314,7 @@ module UnicodeMathParseValues
           sub_exp: {
             base: {
               factor: {
-                atom: {
-                  char: {
-                    unicode_symbols: "&#x3b1;"
-                  }
-                }
+                ordinary_symbols: "&#x3b1;"
               }
             },
             sub: {
@@ -5585,7 +5329,7 @@ module UnicodeMathParseValues
               }
             }
           },
-          expr: {
+          exp: {
             sub_exp: {
               base: {
                 factor: {
@@ -5608,17 +5352,13 @@ module UnicodeMathParseValues
                 }
               }
             },
-            expr: {
+            exp: {
               operator: "+",
-              expr: {
+              exp: {
                 sub_exp: {
                   base: {
                     factor: {
-                      atom: {
-                        char: {
-                          unicode_symbols: "&#x3b1;"
-                        }
-                      }
+                      ordinary_symbols: "&#x3b1;"
                     }
                   },
                   sub: {
@@ -5633,7 +5373,7 @@ module UnicodeMathParseValues
                     }
                   }
                 },
-                expr: {
+                exp: {
                   sub_exp: {
                     base: {
                       factor: {
@@ -5656,17 +5396,13 @@ module UnicodeMathParseValues
                       }
                     }
                   },
-                  expr: {
+                  exp: {
                     operator: "+",
-                    expr: {
+                    exp: {
                       sub_exp: {
                         base: {
                           factor: {
-                            atom: {
-                              char: {
-                                unicode_symbols: "&#x3b1;"
-                              }
-                            }
+                            ordinary_symbols: "&#x3b1;"
                           }
                         },
                         sub: {
@@ -5681,7 +5417,7 @@ module UnicodeMathParseValues
                           }
                         }
                       },
-                      expr: {
+                      exp: {
                         sub_exp: {
                           base: {
                             factor: {
@@ -5703,7 +5439,7 @@ module UnicodeMathParseValues
                                         alphanumeric: "x"
                                       }
                                     },
-                                    expr: {
+                                    exp: {
                                       factor: {
                                         atom: {
                                           alphanumeric: "y"
@@ -5717,17 +5453,13 @@ module UnicodeMathParseValues
                             }
                           }
                         },
-                        expr: {
+                        exp: {
                           operator: "-",
-                          expr: {
+                          exp: {
                             sub_exp: {
                               base: {
                                 factor: {
-                                  atom: {
-                                    char: {
-                                      unicode_symbols: "&#x3b1;"
-                                    }
-                                  }
+                                  ordinary_symbols: "&#x3b1;"
                                 }
                               },
                               sub: {
@@ -5741,7 +5473,7 @@ module UnicodeMathParseValues
                                             alphanumeric: "x"
                                           }
                                         },
-                                        expr: {
+                                        exp: {
                                           factor: {
                                             atom: {
                                               alphanumeric: "y"
@@ -5755,7 +5487,7 @@ module UnicodeMathParseValues
                                 }
                               }
                             },
-                            expr: {
+                            exp: {
                               sub_exp: {
                                 base: {
                                   factor: {
@@ -5778,17 +5510,13 @@ module UnicodeMathParseValues
                                   }
                                 }
                               },
-                              expr: {
+                              exp: {
                                 operator: "+",
-                                expr: {
+                                exp: {
                                   sub_exp: {
                                     base: {
                                       factor: {
-                                        atom: {
-                                          char: {
-                                            unicode_symbols: "&#x3b1;"
-                                          }
-                                        }
+                                        ordinary_symbols: "&#x3b1;"
                                       }
                                     },
                                     sub: {
@@ -5802,7 +5530,7 @@ module UnicodeMathParseValues
                                                   alphanumeric: "y"
                                                 }
                                               },
-                                              expr: {
+                                              exp: {
                                                 factor: {
                                                   atom: {
                                                     alphanumeric: "z"
@@ -5816,7 +5544,7 @@ module UnicodeMathParseValues
                                       }
                                     }
                                   },
-                                  expr: {
+                                  exp: {
                                     sub_exp: {
                                       base: {
                                         factor: {
@@ -5839,17 +5567,13 @@ module UnicodeMathParseValues
                                         }
                                       }
                                     },
-                                    expr: {
+                                    exp: {
                                       operator: "-",
-                                      expr: {
+                                      exp: {
                                         sub_exp: {
                                           base: {
                                             factor: {
-                                              atom: {
-                                                char: {
-                                                  unicode_symbols: "&#x3b1;"
-                                                }
-                                              }
+                                              ordinary_symbols: "&#x3b1;"
                                             }
                                           },
                                           sub: {
@@ -5864,7 +5588,7 @@ module UnicodeMathParseValues
                                             }
                                           }
                                         },
-                                        expr: {
+                                        exp: {
                                           sub_exp: {
                                             base: {
                                               factor: {
@@ -5886,7 +5610,7 @@ module UnicodeMathParseValues
                                                           alphanumeric: "y"
                                                         }
                                                       },
-                                                      expr: {
+                                                      exp: {
                                                         factor: {
                                                           atom: {
                                                             alphanumeric: "z"
@@ -5900,17 +5624,13 @@ module UnicodeMathParseValues
                                               }
                                             }
                                           },
-                                          expr: {
+                                          exp: {
                                             operator: "-",
-                                            expr: {
+                                            exp: {
                                               sub_exp: {
                                                 base: {
                                                   factor: {
-                                                    atom: {
-                                                      char: {
-                                                        unicode_symbols: "&#x3b1;"
-                                                      }
-                                                    }
+                                                    ordinary_symbols: "&#x3b1;"
                                                   }
                                                 },
                                                 sub: {
@@ -5924,7 +5644,7 @@ module UnicodeMathParseValues
                                                               alphanumeric: "z"
                                                             }
                                                           },
-                                                          expr: {
+                                                          exp: {
                                                             factor: {
                                                               atom: {
                                                                 alphanumeric: "x"
@@ -5938,7 +5658,7 @@ module UnicodeMathParseValues
                                                   }
                                                 }
                                               },
-                                              expr: {
+                                              exp: {
                                                 sub_exp: {
                                                   base: {
                                                     factor: {
@@ -5960,13 +5680,13 @@ module UnicodeMathParseValues
                                                                 alphanumeric: "x"
                                                               }
                                                             },
-                                                            expr: {
+                                                            exp: {
                                                               factor: {
                                                                 atom: {
                                                                   alphanumeric: "y"
                                                                 }
                                                               },
-                                                              expr: {
+                                                              exp: {
                                                                 factor: {
                                                                   atom: {
                                                                     alphanumeric: "z"
@@ -5981,17 +5701,13 @@ module UnicodeMathParseValues
                                                     }
                                                   }
                                                 },
-                                                expr: {
+                                                exp: {
                                                   operator: "-",
-                                                  expr: {
+                                                  exp: {
                                                     sub_exp: {
                                                       base: {
                                                         factor: {
-                                                          atom: {
-                                                            char: {
-                                                              unicode_symbols: "&#x3b1;"
-                                                            }
-                                                          }
+                                                          ordinary_symbols: "&#x3b1;"
                                                         }
                                                       },
                                                       sub: {
@@ -6005,13 +5721,13 @@ module UnicodeMathParseValues
                                                                     alphanumeric: "x"
                                                                   }
                                                                 },
-                                                                expr: {
+                                                                exp: {
                                                                   factor: {
                                                                     atom: {
                                                                       alphanumeric: "y"
                                                                     }
                                                                   },
-                                                                  expr: {
+                                                                  exp: {
                                                                     factor: {
                                                                       atom: {
                                                                         alphanumeric: "z"
@@ -6026,7 +5742,7 @@ module UnicodeMathParseValues
                                                         }
                                                       }
                                                     },
-                                                    expr: {
+                                                    exp: {
                                                       sub_exp: {
                                                         base: {
                                                           factor: {
@@ -6048,7 +5764,7 @@ module UnicodeMathParseValues
                                                                       alphanumeric: "z"
                                                                     }
                                                                   },
-                                                                  expr: {
+                                                                  exp: {
                                                                     factor: {
                                                                       atom: {
                                                                         alphanumeric: "x"
@@ -6105,11 +5821,7 @@ module UnicodeMathParseValues
           sub_exp: {
             base: {
               factor: {
-                atom: {
-                  char: {
-                    unicode_symbols: "&#x3b1;"
-                  }
-                }
+                ordinary_symbols: "&#x3b1;"
               }
             },
             sub: {
@@ -6124,7 +5836,7 @@ module UnicodeMathParseValues
               }
             }
           },
-          expr: {
+          exp: {
             sub_exp: {
               base: {
                 factor: {
@@ -6147,17 +5859,13 @@ module UnicodeMathParseValues
                 }
               }
             },
-            expr: {
+            exp: {
               operator: "+",
-              expr: {
+              exp: {
                 sub_exp: {
                   base: {
                     factor: {
-                      atom: {
-                        char: {
-                          unicode_symbols: "&#x3b1;"
-                        }
-                      }
+                      ordinary_symbols: "&#x3b1;"
                     }
                   },
                   sub: {
@@ -6172,7 +5880,7 @@ module UnicodeMathParseValues
                     }
                   }
                 },
-                expr: {
+                exp: {
                   sub_exp: {
                     base: {
                       factor: {
@@ -6195,17 +5903,13 @@ module UnicodeMathParseValues
                       }
                     }
                   },
-                  expr: {
+                  exp: {
                     operator: "+",
-                    expr: {
+                    exp: {
                       sub_exp: {
                         base: {
                           factor: {
-                            atom: {
-                              char: {
-                                unicode_symbols: "&#x3b1;"
-                              }
-                            }
+                            ordinary_symbols: "&#x3b1;"
                           }
                         },
                         sub: {
@@ -6219,7 +5923,7 @@ module UnicodeMathParseValues
                                       alphanumeric: "z"
                                     }
                                   },
-                                  expr: {
+                                  exp: {
                                     factor: {
                                       atom: {
                                         alphanumeric: "x"
@@ -6233,7 +5937,7 @@ module UnicodeMathParseValues
                           }
                         }
                       },
-                      expr: {
+                      exp: {
                         sub_exp: {
                           base: {
                             factor: {
@@ -6256,17 +5960,13 @@ module UnicodeMathParseValues
                             }
                           }
                         },
-                        expr: {
+                        exp: {
                           operator: "-",
-                          expr: {
+                          exp: {
                             sub_exp: {
                               base: {
                                 factor: {
-                                  atom: {
-                                    char: {
-                                      unicode_symbols: "&#x3b1;"
-                                    }
-                                  }
+                                  ordinary_symbols: "&#x3b1;"
                                 }
                               },
                               sub: {
@@ -6281,7 +5981,7 @@ module UnicodeMathParseValues
                                 }
                               }
                             },
-                            expr: {
+                            exp: {
                               sub_exp: {
                                 base: {
                                   factor: {
@@ -6303,7 +6003,7 @@ module UnicodeMathParseValues
                                               alphanumeric: "z"
                                             }
                                           },
-                                          expr: {
+                                          exp: {
                                             factor: {
                                               atom: {
                                                 alphanumeric: "x"
@@ -6317,17 +6017,13 @@ module UnicodeMathParseValues
                                   }
                                 }
                               },
-                              expr: {
+                              exp: {
                                 operator: "+",
-                                expr: {
+                                exp: {
                                   sub_exp: {
                                     base: {
                                       factor: {
-                                        atom: {
-                                          char: {
-                                            unicode_symbols: "&#x3b1;"
-                                          }
-                                        }
+                                        ordinary_symbols: "&#x3b1;"
                                       }
                                     },
                                     sub: {
@@ -6342,7 +6038,7 @@ module UnicodeMathParseValues
                                       }
                                     }
                                   },
-                                  expr: {
+                                  exp: {
                                     sub_exp: {
                                       base: {
                                         factor: {
@@ -6364,7 +6060,7 @@ module UnicodeMathParseValues
                                                     alphanumeric: "y"
                                                   }
                                                 },
-                                                expr: {
+                                                exp: {
                                                   factor: {
                                                     atom: {
                                                       alphanumeric: "z"
@@ -6378,17 +6074,13 @@ module UnicodeMathParseValues
                                         }
                                       }
                                     },
-                                    expr: {
+                                    exp: {
                                       operator: "-",
-                                      expr: {
+                                      exp: {
                                         sub_exp: {
                                           base: {
                                             factor: {
-                                              atom: {
-                                                char: {
-                                                  unicode_symbols: "&#x3b1;"
-                                                }
-                                              }
+                                              ordinary_symbols: "&#x3b1;"
                                             }
                                           },
                                           sub: {
@@ -6402,7 +6094,7 @@ module UnicodeMathParseValues
                                                         alphanumeric: "y"
                                                       }
                                                     },
-                                                    expr: {
+                                                    exp: {
                                                       factor: {
                                                         atom: {
                                                           alphanumeric: "z"
@@ -6416,7 +6108,7 @@ module UnicodeMathParseValues
                                             }
                                           }
                                         },
-                                        expr: {
+                                        exp: {
                                           sub_exp: {
                                             base: {
                                               factor: {
@@ -6439,17 +6131,13 @@ module UnicodeMathParseValues
                                               }
                                             }
                                           },
-                                          expr: {
+                                          exp: {
                                             operator: "-",
-                                            expr: {
+                                            exp: {
                                               sub_exp: {
                                                 base: {
                                                   factor: {
-                                                    atom: {
-                                                      char: {
-                                                        unicode_symbols: "&#x3b1;"
-                                                      }
-                                                    }
+                                                    ordinary_symbols: "&#x3b1;"
                                                   }
                                                 },
                                                 sub: {
@@ -6463,7 +6151,7 @@ module UnicodeMathParseValues
                                                               alphanumeric: "x"
                                                             }
                                                           },
-                                                          expr: {
+                                                          exp: {
                                                             factor: {
                                                               atom: {
                                                                 alphanumeric: "y"
@@ -6477,7 +6165,7 @@ module UnicodeMathParseValues
                                                   }
                                                 }
                                               },
-                                              expr: {
+                                              exp: {
                                                 sub_exp: {
                                                   base: {
                                                     factor: {
@@ -6499,13 +6187,13 @@ module UnicodeMathParseValues
                                                                 alphanumeric: "x"
                                                               }
                                                             },
-                                                            expr: {
+                                                            exp: {
                                                               factor: {
                                                                 atom: {
                                                                   alphanumeric: "y"
                                                                 }
                                                               },
-                                                              expr: {
+                                                              exp: {
                                                                 factor: {
                                                                   atom: {
                                                                     alphanumeric: "z"
@@ -6520,17 +6208,13 @@ module UnicodeMathParseValues
                                                     }
                                                   }
                                                 },
-                                                expr: {
+                                                exp: {
                                                   operator: "-",
-                                                  expr: {
+                                                  exp: {
                                                     sub_exp: {
                                                       base: {
                                                         factor: {
-                                                          atom: {
-                                                            char: {
-                                                              unicode_symbols: "&#x3b1;"
-                                                            }
-                                                          }
+                                                          ordinary_symbols: "&#x3b1;"
                                                         }
                                                       },
                                                       sub: {
@@ -6544,13 +6228,13 @@ module UnicodeMathParseValues
                                                                     alphanumeric: "x"
                                                                   }
                                                                 },
-                                                                expr: {
+                                                                exp: {
                                                                   factor: {
                                                                     atom: {
                                                                       alphanumeric: "y"
                                                                     }
                                                                   },
-                                                                  expr: {
+                                                                  exp: {
                                                                     factor: {
                                                                       atom: {
                                                                         alphanumeric: "z"
@@ -6565,7 +6249,7 @@ module UnicodeMathParseValues
                                                         }
                                                       }
                                                     },
-                                                    expr: {
+                                                    exp: {
                                                       sub_exp: {
                                                         base: {
                                                           factor: {
@@ -6587,7 +6271,7 @@ module UnicodeMathParseValues
                                                                       alphanumeric: "x"
                                                                     }
                                                                   },
-                                                                  expr: {
+                                                                  exp: {
                                                                     factor: {
                                                                       atom: {
                                                                         alphanumeric: "y"
@@ -6644,11 +6328,7 @@ module UnicodeMathParseValues
           sub_exp: {
             base: {
               factor: {
-                atom: {
-                  char: {
-                    unicode_symbols: "&#x3b1;"
-                  }
-                }
+                ordinary_symbols: "&#x3b1;"
               }
             },
             sub: {
@@ -6663,7 +6343,7 @@ module UnicodeMathParseValues
               }
             }
           },
-          expr: {
+          exp: {
             sub_exp: {
               base: {
                 factor: {
@@ -6686,17 +6366,13 @@ module UnicodeMathParseValues
                 }
               }
             },
-            expr: {
+            exp: {
               operator: "-",
-              expr: {
+              exp: {
                 sub_exp: {
                   base: {
                     factor: {
-                      atom: {
-                        char: {
-                          unicode_symbols: "&#x3b1;"
-                        }
-                      }
+                      ordinary_symbols: "&#x3b1;"
                     }
                   },
                   sub: {
@@ -6711,7 +6387,7 @@ module UnicodeMathParseValues
                     }
                   }
                 },
-                expr: {
+                exp: {
                   sub_exp: {
                     base: {
                       factor: {
@@ -6766,11 +6442,7 @@ module UnicodeMathParseValues
           sub_exp: {
             base: {
               factor: {
-                atom: {
-                  char: {
-                    unicode_symbols: "&#x3b1;"
-                  }
-                }
+                ordinary_symbols: "&#x3b1;"
               }
             },
             sub: {
@@ -6785,7 +6457,7 @@ module UnicodeMathParseValues
               }
             }
           },
-          expr: {
+          exp: {
             sub_exp: {
               base: {
                 factor: {
@@ -6808,17 +6480,13 @@ module UnicodeMathParseValues
                 }
               }
             },
-            expr: {
+            exp: {
               operator: "-",
-              expr: {
+              exp: {
                 sub_exp: {
                   base: {
                     factor: {
-                      atom: {
-                        char: {
-                          unicode_symbols: "&#x3b1;"
-                        }
-                      }
+                      ordinary_symbols: "&#x3b1;"
                     }
                   },
                   sub: {
@@ -6833,7 +6501,7 @@ module UnicodeMathParseValues
                     }
                   }
                 },
-                expr: {
+                exp: {
                   sub_exp: {
                     base: {
                       factor: {
@@ -6886,11 +6554,7 @@ module UnicodeMathParseValues
           sub_exp: {
             base: {
               factor: {
-                atom: {
-                  char: {
-                    unicode_symbols: "&#x3b1;"
-                  }
-                }
+                ordinary_symbols: "&#x3b1;"
               }
             },
             sub: {
@@ -6905,7 +6569,7 @@ module UnicodeMathParseValues
               }
             }
           },
-          expr: {
+          exp: {
             sub_exp: {
               base: {
                 factor: {
@@ -6928,17 +6592,13 @@ module UnicodeMathParseValues
                 }
               }
             },
-            expr: {
+            exp: {
               operator: "-",
-              expr: {
+              exp: {
                 sub_exp: {
                   base: {
                     factor: {
-                      atom: {
-                        char: {
-                          unicode_symbols: "&#x3b1;"
-                        }
-                      }
+                      ordinary_symbols: "&#x3b1;"
                     }
                   },
                   sub: {
@@ -6953,7 +6613,7 @@ module UnicodeMathParseValues
                     }
                   }
                 },
-                expr: {
+                exp: {
                   sub_exp: {
                     base: {
                       factor: {
@@ -7008,11 +6668,7 @@ module UnicodeMathParseValues
           sub_exp: {
             base: {
               factor: {
-                atom: {
-                  char: {
-                    unicode_symbols: "&#x3b1;"
-                  }
-                }
+                ordinary_symbols: "&#x3b1;"
               }
             },
             sub: {
@@ -7027,7 +6683,7 @@ module UnicodeMathParseValues
               }
             }
           },
-          expr: {
+          exp: {
             sub_exp: {
               base: {
                 factor: {
@@ -7050,17 +6706,13 @@ module UnicodeMathParseValues
                 }
               }
             },
-            expr: {
+            exp: {
               operator: "-",
-              expr: {
+              exp: {
                 sub_exp: {
                   base: {
                     factor: {
-                      atom: {
-                        char: {
-                          unicode_symbols: "&#x3b1;"
-                        }
-                      }
+                      ordinary_symbols: "&#x3b1;"
                     }
                   },
                   sub: {
@@ -7075,7 +6727,7 @@ module UnicodeMathParseValues
                     }
                   }
                 },
-                expr: {
+                exp: {
                   sub_exp: {
                     base: {
                       factor: {
@@ -7128,11 +6780,7 @@ module UnicodeMathParseValues
           sub_exp: {
             base: {
               factor: {
-                atom: {
-                  char: {
-                    unicode_symbols: "&#x3b1;"
-                  }
-                }
+                ordinary_symbols: "&#x3b1;"
               }
             },
             sub: {
@@ -7147,7 +6795,7 @@ module UnicodeMathParseValues
               }
             }
           },
-          expr: {
+          exp: {
             sub_exp: {
               base: {
                 factor: {
@@ -7170,17 +6818,13 @@ module UnicodeMathParseValues
                 }
               }
             },
-            expr: {
+            exp: {
               operator: "-",
-              expr: {
+              exp: {
                 sub_exp: {
                   base: {
                     factor: {
-                      atom: {
-                        char: {
-                          unicode_symbols: "&#x3b1;"
-                        }
-                      }
+                      ordinary_symbols: "&#x3b1;"
                     }
                   },
                   sub: {
@@ -7195,7 +6839,7 @@ module UnicodeMathParseValues
                     }
                   }
                 },
-                expr: {
+                exp: {
                   sub_exp: {
                     base: {
                       factor: {
@@ -7254,13 +6898,7 @@ module UnicodeMathParseValues
           }
         },
         expr: {
-          factor: {
-            atom: {
-              char: {
-                unicode_symbols: "&#xd7;"
-              }
-            }
-          },
+          binary_symbols: "&#xd7;",
           expr: {
             factor: {
               atom: {
@@ -7294,11 +6932,7 @@ module UnicodeMathParseValues
       sub_exp: {
         base: {
           factor: {
-            atom: {
-              char: {
-                unicode_symbols: "&#x3b1;"
-              }
-            }
+            ordinary_symbols: "&#x3b1;"
           }
         },
         sub: {
@@ -7335,7 +6969,7 @@ module UnicodeMathParseValues
                         alphanumeric: "y"
                       }
                     },
-                    expr: {
+                    exp: {
                       factor: {
                         atom: {
                           alphanumeric: "z"
@@ -7367,11 +7001,7 @@ module UnicodeMathParseValues
                 sub_exp: {
                   base: {
                     factor: {
-                      atom: {
-                        char: {
-                          unicode_symbols: "&#x3b1;"
-                        }
-                      }
+                      ordinary_symbols: "&#x3b1;"
                     }
                   },
                   sub: {
@@ -7408,7 +7038,7 @@ module UnicodeMathParseValues
                                   alphanumeric: "z"
                                 }
                               },
-                              expr: {
+                              exp: {
                                 factor: {
                                   atom: {
                                     alphanumeric: "x"
@@ -7440,11 +7070,7 @@ module UnicodeMathParseValues
                           sub_exp: {
                             base: {
                               factor: {
-                                atom: {
-                                  char: {
-                                    unicode_symbols: "&#x3b1;"
-                                  }
-                                }
+                                ordinary_symbols: "&#x3b1;"
                               }
                             },
                             sub: {
@@ -7481,7 +7107,7 @@ module UnicodeMathParseValues
                                             alphanumeric: "x"
                                           }
                                         },
-                                        expr: {
+                                        exp: {
                                           factor: {
                                             atom: {
                                               alphanumeric: "y"
@@ -7513,11 +7139,7 @@ module UnicodeMathParseValues
                                     sub_exp: {
                                       base: {
                                         factor: {
-                                          atom: {
-                                            char: {
-                                              unicode_symbols: "&#x3b1;"
-                                            }
-                                          }
+                                          ordinary_symbols: "&#x3b1;"
                                         }
                                       },
                                       sub: {
@@ -7554,13 +7176,13 @@ module UnicodeMathParseValues
                                                       alphanumeric: "x"
                                                     }
                                                   },
-                                                  expr: {
+                                                  exp: {
                                                     factor: {
                                                       atom: {
                                                         alphanumeric: "y"
                                                       }
                                                     },
-                                                    expr: {
+                                                    exp: {
                                                       factor: {
                                                         atom: {
                                                           alphanumeric: "z"
@@ -7620,11 +7242,7 @@ module UnicodeMathParseValues
       sub_exp: {
         base: {
           factor: {
-            atom: {
-              char: {
-                unicode_symbols: "&#x3b1;"
-              }
-            }
+            ordinary_symbols: "&#x3b1;"
           }
         },
         sub: {
@@ -7638,13 +7256,13 @@ module UnicodeMathParseValues
                       alphanumeric: "x"
                     }
                   },
-                  expr: {
+                  exp: {
                     factor: {
                       atom: {
                         alphanumeric: "y"
                       }
                     },
-                    expr: {
+                    exp: {
                       factor: {
                         atom: {
                           alphanumeric: "z"
@@ -7706,11 +7324,7 @@ module UnicodeMathParseValues
                   sub_exp: {
                     base: {
                       factor: {
-                        atom: {
-                          char: {
-                            unicode_symbols: "&#x3b1;"
-                          }
-                        }
+                        ordinary_symbols: "&#x3b1;"
                       }
                     },
                     sub: {
@@ -7724,13 +7338,13 @@ module UnicodeMathParseValues
                                   alphanumeric: "x"
                                 }
                               },
-                              expr: {
+                              exp: {
                                 factor: {
                                   atom: {
                                     alphanumeric: "y"
                                   }
                                 },
-                                expr: {
+                                exp: {
                                   factor: {
                                     atom: {
                                       alphanumeric: "z"
@@ -7798,11 +7412,7 @@ module UnicodeMathParseValues
                                 sub_exp: {
                                   base: {
                                     factor: {
-                                      atom: {
-                                        char: {
-                                          unicode_symbols: "&#x3b1;"
-                                        }
-                                      }
+                                      ordinary_symbols: "&#x3b1;"
                                     }
                                   },
                                   sub: {
@@ -7816,13 +7426,13 @@ module UnicodeMathParseValues
                                                 alphanumeric: "x"
                                               }
                                             },
-                                            expr: {
+                                            exp: {
                                               factor: {
                                                 atom: {
                                                   alphanumeric: "y"
                                                 }
                                               },
-                                              expr: {
+                                              exp: {
                                                 factor: {
                                                   atom: {
                                                     alphanumeric: "z"
@@ -7893,11 +7503,7 @@ module UnicodeMathParseValues
                                         sub_exp: {
                                           base: {
                                             factor: {
-                                              atom: {
-                                                char: {
-                                                  unicode_symbols: "&#x3b1;"
-                                                }
-                                              }
+                                              ordinary_symbols: "&#x3b1;"
                                             }
                                           },
                                           sub: {
@@ -7911,13 +7517,13 @@ module UnicodeMathParseValues
                                                         alphanumeric: "x"
                                                       }
                                                     },
-                                                    expr: {
+                                                    exp: {
                                                       factor: {
                                                         atom: {
                                                           alphanumeric: "y"
                                                         }
                                                       },
-                                                      expr: {
+                                                      exp: {
                                                         factor: {
                                                           atom: {
                                                             alphanumeric: "z"
@@ -8002,11 +7608,7 @@ module UnicodeMathParseValues
       sub_exp: {
         base: {
           factor: {
-            atom: {
-              char: {
-                unicode_symbols: "&#x3b1;"
-              }
-            }
+            ordinary_symbols: "&#x3b1;"
           }
         },
         sub: {
@@ -8020,13 +7622,13 @@ module UnicodeMathParseValues
                       alphanumeric: "x"
                     }
                   },
-                  expr: {
+                  exp: {
                     factor: {
                       atom: {
                         alphanumeric: "y"
                       }
                     },
-                    expr: {
+                    exp: {
                       factor: {
                         atom: {
                           alphanumeric: "z"
@@ -8088,11 +7690,7 @@ module UnicodeMathParseValues
                   sub_exp: {
                     base: {
                       factor: {
-                        atom: {
-                          char: {
-                            unicode_symbols: "&#x3b1;"
-                          }
-                        }
+                        ordinary_symbols: "&#x3b1;"
                       }
                     },
                     sub: {
@@ -8106,13 +7704,13 @@ module UnicodeMathParseValues
                                   alphanumeric: "x"
                                 }
                               },
-                              expr: {
+                              exp: {
                                 factor: {
                                   atom: {
                                     alphanumeric: "y"
                                   }
                                 },
-                                expr: {
+                                exp: {
                                   factor: {
                                     atom: {
                                       alphanumeric: "z"
@@ -8180,11 +7778,7 @@ module UnicodeMathParseValues
                                 sub_exp: {
                                   base: {
                                     factor: {
-                                      atom: {
-                                        char: {
-                                          unicode_symbols: "&#x3b1;"
-                                        }
-                                      }
+                                      ordinary_symbols: "&#x3b1;"
                                     }
                                   },
                                   sub: {
@@ -8198,13 +7792,13 @@ module UnicodeMathParseValues
                                                 alphanumeric: "x"
                                               }
                                             },
-                                            expr: {
+                                            exp: {
                                               factor: {
                                                 atom: {
                                                   alphanumeric: "y"
                                                 }
                                               },
-                                              expr: {
+                                              exp: {
                                                 factor: {
                                                   atom: {
                                                     alphanumeric: "z"
@@ -8272,11 +7866,7 @@ module UnicodeMathParseValues
                                               sub_exp: {
                                                 base: {
                                                   factor: {
-                                                    atom: {
-                                                      char: {
-                                                        unicode_symbols: "&#x3b1;"
-                                                      }
-                                                    }
+                                                    ordinary_symbols: "&#x3b1;"
                                                   }
                                                 },
                                                 sub: {
@@ -8290,13 +7880,13 @@ module UnicodeMathParseValues
                                                               alphanumeric: "x"
                                                             }
                                                           },
-                                                          expr: {
+                                                          exp: {
                                                             factor: {
                                                               atom: {
                                                                 alphanumeric: "y"
                                                               }
                                                             },
-                                                            expr: {
+                                                            exp: {
                                                               factor: {
                                                                 atom: {
                                                                   alphanumeric: "z"
@@ -8394,11 +7984,7 @@ module UnicodeMathParseValues
       sub_exp: {
         base: {
           factor: {
-            atom: {
-              char: {
-                unicode_symbols: "&#x3b1;"
-              }
-            }
+            ordinary_symbols: "&#x3b1;"
           }
         },
         sub: {
@@ -8412,13 +7998,13 @@ module UnicodeMathParseValues
                       alphanumeric: "x"
                     }
                   },
-                  expr: {
+                  exp: {
                     factor: {
                       atom: {
                         alphanumeric: "y"
                       }
                     },
-                    expr: {
+                    exp: {
                       factor: {
                         atom: {
                           alphanumeric: "z"
@@ -8480,11 +8066,7 @@ module UnicodeMathParseValues
                   sub_exp: {
                     base: {
                       factor: {
-                        atom: {
-                          char: {
-                            unicode_symbols: "&#x3b1;"
-                          }
-                        }
+                        ordinary_symbols: "&#x3b1;"
                       }
                     },
                     sub: {
@@ -8498,13 +8080,13 @@ module UnicodeMathParseValues
                                   alphanumeric: "x"
                                 }
                               },
-                              expr: {
+                              exp: {
                                 factor: {
                                   atom: {
                                     alphanumeric: "y"
                                   }
                                 },
-                                expr: {
+                                exp: {
                                   factor: {
                                     atom: {
                                       alphanumeric: "z"
@@ -8560,11 +8142,7 @@ module UnicodeMathParseValues
                             sub_exp: {
                               base: {
                                 factor: {
-                                  atom: {
-                                    char: {
-                                      unicode_symbols: "&#x3b1;"
-                                    }
-                                  }
+                                  ordinary_symbols: "&#x3b1;"
                                 }
                               },
                               sub: {
@@ -8578,13 +8156,13 @@ module UnicodeMathParseValues
                                             alphanumeric: "x"
                                           }
                                         },
-                                        expr: {
+                                        exp: {
                                           factor: {
                                             atom: {
                                               alphanumeric: "y"
                                             }
                                           },
-                                          expr: {
+                                          exp: {
                                             factor: {
                                               atom: {
                                                 alphanumeric: "z"
@@ -8640,11 +8218,7 @@ module UnicodeMathParseValues
                                       sub_exp: {
                                         base: {
                                           factor: {
-                                            atom: {
-                                              char: {
-                                                unicode_symbols: "&#x3b1;"
-                                              }
-                                            }
+                                            ordinary_symbols: "&#x3b1;"
                                           }
                                         },
                                         sub: {
@@ -8658,13 +8232,13 @@ module UnicodeMathParseValues
                                                       alphanumeric: "x"
                                                     }
                                                   },
-                                                  expr: {
+                                                  exp: {
                                                     factor: {
                                                       atom: {
                                                         alphanumeric: "y"
                                                       }
                                                     },
-                                                    expr: {
+                                                    exp: {
                                                       factor: {
                                                         atom: {
                                                           alphanumeric: "z"
@@ -8741,11 +8315,7 @@ module UnicodeMathParseValues
       sub_exp: {
         base: {
           factor: {
-            atom: {
-              char: {
-                unicode_symbols: "&#x3b1;"
-              }
-            }
+            ordinary_symbols: "&#x3b1;"
           }
         },
         sub: {
@@ -8759,13 +8329,13 @@ module UnicodeMathParseValues
                       alphanumeric: "x"
                     }
                   },
-                  expr: {
+                  exp: {
                     factor: {
                       atom: {
                         alphanumeric: "y"
                       }
                     },
-                    expr: {
+                    exp: {
                       factor: {
                         atom: {
                           alphanumeric: "z"
@@ -8827,11 +8397,7 @@ module UnicodeMathParseValues
                   sub_exp: {
                     base: {
                       factor: {
-                        atom: {
-                          char: {
-                            unicode_symbols: "&#x3b1;"
-                          }
-                        }
+                        ordinary_symbols: "&#x3b1;"
                       }
                     },
                     sub: {
@@ -8845,13 +8411,13 @@ module UnicodeMathParseValues
                                   alphanumeric: "x"
                                 }
                               },
-                              expr: {
+                              exp: {
                                 factor: {
                                   atom: {
                                     alphanumeric: "y"
                                   }
                                 },
-                                expr: {
+                                exp: {
                                   factor: {
                                     atom: {
                                       alphanumeric: "z"
@@ -8907,11 +8473,7 @@ module UnicodeMathParseValues
                             sub_exp: {
                               base: {
                                 factor: {
-                                  atom: {
-                                    char: {
-                                      unicode_symbols: "&#x3b1;"
-                                    }
-                                  }
+                                  ordinary_symbols: "&#x3b1;"
                                 }
                               },
                               sub: {
@@ -8925,13 +8487,13 @@ module UnicodeMathParseValues
                                             alphanumeric: "x"
                                           }
                                         },
-                                        expr: {
+                                        exp: {
                                           factor: {
                                             atom: {
                                               alphanumeric: "y"
                                             }
                                           },
-                                          expr: {
+                                          exp: {
                                             factor: {
                                               atom: {
                                                 alphanumeric: "z"
@@ -8987,11 +8549,7 @@ module UnicodeMathParseValues
                                       sub_exp: {
                                         base: {
                                           factor: {
-                                            atom: {
-                                              char: {
-                                                unicode_symbols: "&#x3b1;"
-                                              }
-                                            }
+                                            ordinary_symbols: "&#x3b1;"
                                           }
                                         },
                                         sub: {
@@ -9005,13 +8563,13 @@ module UnicodeMathParseValues
                                                       alphanumeric: "x"
                                                     }
                                                   },
-                                                  expr: {
+                                                  exp: {
                                                     factor: {
                                                       atom: {
                                                         alphanumeric: "y"
                                                       }
                                                     },
-                                                    expr: {
+                                                    exp: {
                                                       factor: {
                                                         atom: {
                                                           alphanumeric: "z"
@@ -9088,11 +8646,7 @@ module UnicodeMathParseValues
       sub_exp: {
         base: {
           factor: {
-            atom: {
-              char: {
-                unicode_symbols: "&#x3b1;"
-              }
-            }
+            ordinary_symbols: "&#x3b1;"
           }
         },
         sub: {
@@ -9106,13 +8660,13 @@ module UnicodeMathParseValues
                       alphanumeric: "x"
                     }
                   },
-                  expr: {
+                  exp: {
                     factor: {
                       atom: {
                         alphanumeric: "y"
                       }
                     },
-                    expr: {
+                    exp: {
                       factor: {
                         atom: {
                           alphanumeric: "z"
@@ -9174,11 +8728,7 @@ module UnicodeMathParseValues
                   sub_exp: {
                     base: {
                       factor: {
-                        atom: {
-                          char: {
-                            unicode_symbols: "&#x3b1;"
-                          }
-                        }
+                        ordinary_symbols: "&#x3b1;"
                       }
                     },
                     sub: {
@@ -9192,13 +8742,13 @@ module UnicodeMathParseValues
                                   alphanumeric: "x"
                                 }
                               },
-                              expr: {
+                              exp: {
                                 factor: {
                                   atom: {
                                     alphanumeric: "y"
                                   }
                                 },
-                                expr: {
+                                exp: {
                                   factor: {
                                     atom: {
                                       alphanumeric: "z"
@@ -9266,11 +8816,7 @@ module UnicodeMathParseValues
                                 sub_exp: {
                                   base: {
                                     factor: {
-                                      atom: {
-                                        char: {
-                                          unicode_symbols: "&#x3b1;"
-                                        }
-                                      }
+                                      ordinary_symbols: "&#x3b1;"
                                     }
                                   },
                                   sub: {
@@ -9284,13 +8830,13 @@ module UnicodeMathParseValues
                                                 alphanumeric: "x"
                                               }
                                             },
-                                            expr: {
+                                            exp: {
                                               factor: {
                                                 atom: {
                                                   alphanumeric: "y"
                                                 }
                                               },
-                                              expr: {
+                                              exp: {
                                                 factor: {
                                                   atom: {
                                                     alphanumeric: "z"
@@ -9358,11 +8904,7 @@ module UnicodeMathParseValues
                                               sub_exp: {
                                                 base: {
                                                   factor: {
-                                                    atom: {
-                                                      char: {
-                                                        unicode_symbols: "&#x3b1;"
-                                                      }
-                                                    }
+                                                    ordinary_symbols: "&#x3b1;"
                                                   }
                                                 },
                                                 sub: {
@@ -9376,13 +8918,13 @@ module UnicodeMathParseValues
                                                               alphanumeric: "x"
                                                             }
                                                           },
-                                                          expr: {
+                                                          exp: {
                                                             factor: {
                                                               atom: {
                                                                 alphanumeric: "y"
                                                               }
                                                             },
-                                                            expr: {
+                                                            exp: {
                                                               factor: {
                                                                 atom: {
                                                                   alphanumeric: "z"
@@ -9477,11 +9019,7 @@ module UnicodeMathParseValues
       sub_exp: {
         base: {
           factor: {
-            atom: {
-              char: {
-                unicode_symbols: "&#x3b1;"
-              }
-            }
+            ordinary_symbols: "&#x3b1;"
           }
         },
         sub: {
@@ -9495,7 +9033,7 @@ module UnicodeMathParseValues
                       alphanumeric: "x"
                     }
                   },
-                  expr: {
+                  exp: {
                     factor: {
                       atom: {
                         alphanumeric: "y"
@@ -9550,11 +9088,7 @@ module UnicodeMathParseValues
                 sub_exp: {
                   base: {
                     factor: {
-                      atom: {
-                        char: {
-                          unicode_symbols: "&#x3b1;"
-                        }
-                      }
+                      ordinary_symbols: "&#x3b1;"
                     }
                   },
                   sub: {
@@ -9568,7 +9102,7 @@ module UnicodeMathParseValues
                                 alphanumeric: "x"
                               }
                             },
-                            expr: {
+                            exp: {
                               factor: {
                                 atom: {
                                   alphanumeric: "y"
@@ -9629,11 +9163,7 @@ module UnicodeMathParseValues
                             sub_exp: {
                               base: {
                                 factor: {
-                                  atom: {
-                                    char: {
-                                      unicode_symbols: "&#x3b1;"
-                                    }
-                                  }
+                                  ordinary_symbols: "&#x3b1;"
                                 }
                               },
                               sub: {
@@ -9647,7 +9177,7 @@ module UnicodeMathParseValues
                                             alphanumeric: "x"
                                           }
                                         },
-                                        expr: {
+                                        exp: {
                                           factor: {
                                             atom: {
                                               alphanumeric: "y"
@@ -9708,11 +9238,7 @@ module UnicodeMathParseValues
                                         sub_exp: {
                                           base: {
                                             factor: {
-                                              atom: {
-                                                char: {
-                                                  unicode_symbols: "&#x3b1;"
-                                                }
-                                              }
+                                              ordinary_symbols: "&#x3b1;"
                                             }
                                           },
                                           sub: {
@@ -9726,7 +9252,7 @@ module UnicodeMathParseValues
                                                         alphanumeric: "x"
                                                       }
                                                     },
-                                                    expr: {
+                                                    exp: {
                                                       factor: {
                                                         atom: {
                                                           alphanumeric: "y"
@@ -9813,11 +9339,7 @@ module UnicodeMathParseValues
       sub_exp: {
         base: {
           factor: {
-            atom: {
-              char: {
-                unicode_symbols: "&#x3b1;"
-              }
-            }
+            ordinary_symbols: "&#x3b1;"
           }
         },
         sub: {
@@ -9831,7 +9353,7 @@ module UnicodeMathParseValues
                       alphanumeric: "x"
                     }
                   },
-                  expr: {
+                  exp: {
                     factor: {
                       atom: {
                         alphanumeric: "y"
@@ -9886,11 +9408,7 @@ module UnicodeMathParseValues
                 sub_exp: {
                   base: {
                     factor: {
-                      atom: {
-                        char: {
-                          unicode_symbols: "&#x3b1;"
-                        }
-                      }
+                      ordinary_symbols: "&#x3b1;"
                     }
                   },
                   sub: {
@@ -9904,7 +9422,7 @@ module UnicodeMathParseValues
                                 alphanumeric: "x"
                               }
                             },
-                            expr: {
+                            exp: {
                               factor: {
                                 atom: {
                                   alphanumeric: "y"
@@ -9965,11 +9483,7 @@ module UnicodeMathParseValues
                             sub_exp: {
                               base: {
                                 factor: {
-                                  atom: {
-                                    char: {
-                                      unicode_symbols: "&#x3b1;"
-                                    }
-                                  }
+                                  ordinary_symbols: "&#x3b1;"
                                 }
                               },
                               sub: {
@@ -9983,7 +9497,7 @@ module UnicodeMathParseValues
                                             alphanumeric: "x"
                                           }
                                         },
-                                        expr: {
+                                        exp: {
                                           factor: {
                                             atom: {
                                               alphanumeric: "y"
@@ -10046,11 +9560,7 @@ module UnicodeMathParseValues
                                     sub_exp: {
                                       base: {
                                         factor: {
-                                          atom: {
-                                            char: {
-                                              unicode_symbols: "&#x3b1;"
-                                            }
-                                          }
+                                          ordinary_symbols: "&#x3b1;"
                                         }
                                       },
                                       sub: {
@@ -10064,7 +9574,7 @@ module UnicodeMathParseValues
                                                     alphanumeric: "x"
                                                   }
                                                 },
-                                                expr: {
+                                                exp: {
                                                   factor: {
                                                     atom: {
                                                       alphanumeric: "y"
@@ -10146,11 +9656,7 @@ module UnicodeMathParseValues
       sub_exp: {
         base: {
           factor: {
-            atom: {
-              char: {
-                unicode_symbols: "&#x3b1;"
-              }
-            }
+            ordinary_symbols: "&#x3b1;"
           }
         },
         sub: {
@@ -10164,7 +9670,7 @@ module UnicodeMathParseValues
                       alphanumeric: "x"
                     }
                   },
-                  expr: {
+                  exp: {
                     factor: {
                       atom: {
                         alphanumeric: "y"
@@ -10219,11 +9725,7 @@ module UnicodeMathParseValues
                 sub_exp: {
                   base: {
                     factor: {
-                      atom: {
-                        char: {
-                          unicode_symbols: "&#x3b1;"
-                        }
-                      }
+                      ordinary_symbols: "&#x3b1;"
                     }
                   },
                   sub: {
@@ -10237,7 +9739,7 @@ module UnicodeMathParseValues
                                 alphanumeric: "x"
                               }
                             },
-                            expr: {
+                            exp: {
                               factor: {
                                 atom: {
                                   alphanumeric: "y"
@@ -10304,11 +9806,7 @@ module UnicodeMathParseValues
                         sub_exp: {
                           base: {
                             factor: {
-                              atom: {
-                                char: {
-                                  unicode_symbols: "&#x3b1;"
-                                }
-                              }
+                              ordinary_symbols: "&#x3b1;"
                             }
                           },
                           sub: {
@@ -10322,7 +9820,7 @@ module UnicodeMathParseValues
                                         alphanumeric: "x"
                                       }
                                     },
-                                    expr: {
+                                    exp: {
                                       factor: {
                                         atom: {
                                           alphanumeric: "y"
@@ -10377,11 +9875,7 @@ module UnicodeMathParseValues
                                   sub_exp: {
                                     base: {
                                       factor: {
-                                        atom: {
-                                          char: {
-                                            unicode_symbols: "&#x3b1;"
-                                          }
-                                        }
+                                        ordinary_symbols: "&#x3b1;"
                                       }
                                     },
                                     sub: {
@@ -10395,7 +9889,7 @@ module UnicodeMathParseValues
                                                   alphanumeric: "x"
                                                 }
                                               },
-                                              expr: {
+                                              exp: {
                                                 factor: {
                                                   atom: {
                                                     alphanumeric: "y"
@@ -10476,11 +9970,7 @@ module UnicodeMathParseValues
       sub_exp: {
         base: {
           factor: {
-            atom: {
-              char: {
-                unicode_symbols: "&#x3b1;"
-              }
-            }
+            ordinary_symbols: "&#x3b1;"
           }
         },
         sub: {
@@ -10494,7 +9984,7 @@ module UnicodeMathParseValues
                       alphanumeric: "x"
                     }
                   },
-                  expr: {
+                  exp: {
                     factor: {
                       atom: {
                         alphanumeric: "y"
@@ -10549,11 +10039,7 @@ module UnicodeMathParseValues
                 sub_exp: {
                   base: {
                     factor: {
-                      atom: {
-                        char: {
-                          unicode_symbols: "&#x3b1;"
-                        }
-                      }
+                      ordinary_symbols: "&#x3b1;"
                     }
                   },
                   sub: {
@@ -10567,7 +10053,7 @@ module UnicodeMathParseValues
                                 alphanumeric: "x"
                               }
                             },
-                            expr: {
+                            exp: {
                               factor: {
                                 atom: {
                                   alphanumeric: "y"
@@ -10616,11 +10102,7 @@ module UnicodeMathParseValues
                         sub_exp: {
                           base: {
                             factor: {
-                              atom: {
-                                char: {
-                                  unicode_symbols: "&#x3b1;"
-                                }
-                              }
+                              ordinary_symbols: "&#x3b1;"
                             }
                           },
                           sub: {
@@ -10634,7 +10116,7 @@ module UnicodeMathParseValues
                                         alphanumeric: "x"
                                       }
                                     },
-                                    expr: {
+                                    exp: {
                                       factor: {
                                         atom: {
                                           alphanumeric: "y"
@@ -10683,11 +10165,7 @@ module UnicodeMathParseValues
                                 sub_exp: {
                                   base: {
                                     factor: {
-                                      atom: {
-                                        char: {
-                                          unicode_symbols: "&#x3b1;"
-                                        }
-                                      }
+                                      ordinary_symbols: "&#x3b1;"
                                     }
                                   },
                                   sub: {
@@ -10701,7 +10179,7 @@ module UnicodeMathParseValues
                                                 alphanumeric: "x"
                                               }
                                             },
-                                            expr: {
+                                            exp: {
                                               factor: {
                                                 atom: {
                                                   alphanumeric: "y"
@@ -10781,11 +10259,7 @@ module UnicodeMathParseValues
       sub_exp: {
         base: {
           factor: {
-            atom: {
-              char: {
-                unicode_symbols: "&#x3b1;"
-              }
-            }
+            ordinary_symbols: "&#x3b1;"
           }
         },
         sub: {
@@ -10799,7 +10273,7 @@ module UnicodeMathParseValues
                       alphanumeric: "x"
                     }
                   },
-                  expr: {
+                  exp: {
                     factor: {
                       atom: {
                         alphanumeric: "y"
@@ -10835,7 +10309,7 @@ module UnicodeMathParseValues
                         alphanumeric: "y"
                       }
                     },
-                    expr: {
+                    exp: {
                       factor: {
                         atom: {
                           alphanumeric: "z"
@@ -10873,11 +10347,7 @@ module UnicodeMathParseValues
                   sub_exp: {
                     base: {
                       factor: {
-                        atom: {
-                          char: {
-                            unicode_symbols: "&#x3b1;"
-                          }
-                        }
+                        ordinary_symbols: "&#x3b1;"
                       }
                     },
                     sub: {
@@ -10891,7 +10361,7 @@ module UnicodeMathParseValues
                                   alphanumeric: "x"
                                 }
                               },
-                              expr: {
+                              exp: {
                                 factor: {
                                   atom: {
                                     alphanumeric: "y"
@@ -10927,7 +10397,7 @@ module UnicodeMathParseValues
                                     alphanumeric: "z"
                                   }
                                 },
-                                expr: {
+                                exp: {
                                   factor: {
                                     atom: {
                                       alphanumeric: "x"
@@ -10971,11 +10441,7 @@ module UnicodeMathParseValues
                                 sub_exp: {
                                   base: {
                                     factor: {
-                                      atom: {
-                                        char: {
-                                          unicode_symbols: "&#x3b1;"
-                                        }
-                                      }
+                                      ordinary_symbols: "&#x3b1;"
                                     }
                                   },
                                   sub: {
@@ -10989,7 +10455,7 @@ module UnicodeMathParseValues
                                                 alphanumeric: "x"
                                               }
                                             },
-                                            expr: {
+                                            exp: {
                                               factor: {
                                                 atom: {
                                                   alphanumeric: "y"
@@ -11025,7 +10491,7 @@ module UnicodeMathParseValues
                                                   alphanumeric: "x"
                                                 }
                                               },
-                                              expr: {
+                                              exp: {
                                                 factor: {
                                                   atom: {
                                                     alphanumeric: "y"
@@ -11072,11 +10538,7 @@ module UnicodeMathParseValues
                                         sub_exp: {
                                           base: {
                                             factor: {
-                                              atom: {
-                                                char: {
-                                                  unicode_symbols: "&#x3b1;"
-                                                }
-                                              }
+                                              ordinary_symbols: "&#x3b1;"
                                             }
                                           },
                                           sub: {
@@ -11090,7 +10552,7 @@ module UnicodeMathParseValues
                                                         alphanumeric: "x"
                                                       }
                                                     },
-                                                    expr: {
+                                                    exp: {
                                                       factor: {
                                                         atom: {
                                                           alphanumeric: "y"
@@ -11126,13 +10588,13 @@ module UnicodeMathParseValues
                                                           alphanumeric: "x"
                                                         }
                                                       },
-                                                      expr: {
+                                                      exp: {
                                                         factor: {
                                                           atom: {
                                                             alphanumeric: "y"
                                                           }
                                                         },
-                                                        expr: {
+                                                        exp: {
                                                           factor: {
                                                             atom: {
                                                               alphanumeric: "z"
@@ -11208,11 +10670,7 @@ module UnicodeMathParseValues
       sub_exp: {
         base: {
           factor: {
-            atom: {
-              char: {
-                unicode_symbols: "&#x3b1;"
-              }
-            }
+            ordinary_symbols: "&#x3b1;"
           }
         },
         sub: {
@@ -11226,7 +10684,7 @@ module UnicodeMathParseValues
                       alphanumeric: "x"
                     }
                   },
-                  expr: {
+                  exp: {
                     factor: {
                       atom: {
                         alphanumeric: "y"
@@ -11262,7 +10720,7 @@ module UnicodeMathParseValues
                         alphanumeric: "y"
                       }
                     },
-                    expr: {
+                    exp: {
                       factor: {
                         atom: {
                           alphanumeric: "z"
@@ -11309,11 +10767,7 @@ module UnicodeMathParseValues
               sub_exp: {
                 base: {
                   factor: {
-                    atom: {
-                      char: {
-                        unicode_symbols: "&#x3b1;"
-                      }
-                    }
+                    ordinary_symbols: "&#x3b1;"
                   }
                 },
                 sub: {
@@ -11327,7 +10781,7 @@ module UnicodeMathParseValues
                               alphanumeric: "x"
                             }
                           },
-                          expr: {
+                          exp: {
                             factor: {
                               atom: {
                                 alphanumeric: "y"
@@ -11363,7 +10817,7 @@ module UnicodeMathParseValues
                                 alphanumeric: "z"
                               }
                             },
-                            expr: {
+                            exp: {
                               factor: {
                                 atom: {
                                   alphanumeric: "x"
@@ -11407,11 +10861,7 @@ module UnicodeMathParseValues
                             sub_exp: {
                               base: {
                                 factor: {
-                                  atom: {
-                                    char: {
-                                      unicode_symbols: "&#x3b1;"
-                                    }
-                                  }
+                                  ordinary_symbols: "&#x3b1;"
                                 }
                               },
                               sub: {
@@ -11425,7 +10875,7 @@ module UnicodeMathParseValues
                                             alphanumeric: "x"
                                           }
                                         },
-                                        expr: {
+                                        exp: {
                                           factor: {
                                             atom: {
                                               alphanumeric: "y"
@@ -11461,7 +10911,7 @@ module UnicodeMathParseValues
                                               alphanumeric: "x"
                                             }
                                           },
-                                          expr: {
+                                          exp: {
                                             factor: {
                                               atom: {
                                                 alphanumeric: "y"
@@ -11505,11 +10955,7 @@ module UnicodeMathParseValues
                                           sub_exp: {
                                             base: {
                                               factor: {
-                                                atom: {
-                                                  char: {
-                                                    unicode_symbols: "&#x3b1;"
-                                                  }
-                                                }
+                                                ordinary_symbols: "&#x3b1;"
                                               }
                                             },
                                             sub: {
@@ -11523,7 +10969,7 @@ module UnicodeMathParseValues
                                                           alphanumeric: "x"
                                                         }
                                                       },
-                                                      expr: {
+                                                      exp: {
                                                         factor: {
                                                           atom: {
                                                             alphanumeric: "y"
@@ -11559,13 +11005,13 @@ module UnicodeMathParseValues
                                                             alphanumeric: "x"
                                                           }
                                                         },
-                                                        expr: {
+                                                        exp: {
                                                           factor: {
                                                             atom: {
                                                               alphanumeric: "y"
                                                             }
                                                           },
-                                                          expr: {
+                                                          exp: {
                                                             factor: {
                                                               atom: {
                                                                 alphanumeric: "z"
@@ -11642,11 +11088,7 @@ module UnicodeMathParseValues
       sub_exp: {
         base: {
           factor: {
-            atom: {
-              char: {
-                unicode_symbols: "&#x3b1;"
-              }
-            }
+            ordinary_symbols: "&#x3b1;"
           }
         },
         sub: {
@@ -11660,7 +11102,7 @@ module UnicodeMathParseValues
                       alphanumeric: "x"
                     }
                   },
-                  expr: {
+                  exp: {
                     factor: {
                       atom: {
                         alphanumeric: "y"
@@ -11696,7 +11138,7 @@ module UnicodeMathParseValues
                         alphanumeric: "y"
                       }
                     },
-                    expr: {
+                    exp: {
                       factor: {
                         atom: {
                           alphanumeric: "z"
@@ -11728,11 +11170,7 @@ module UnicodeMathParseValues
                 sub_exp: {
                   base: {
                     factor: {
-                      atom: {
-                        char: {
-                          unicode_symbols: "&#x3b1;"
-                        }
-                      }
+                      ordinary_symbols: "&#x3b1;"
                     }
                   },
                   sub: {
@@ -11746,7 +11184,7 @@ module UnicodeMathParseValues
                                 alphanumeric: "x"
                               }
                             },
-                            expr: {
+                            exp: {
                               factor: {
                                 atom: {
                                   alphanumeric: "y"
@@ -11782,7 +11220,7 @@ module UnicodeMathParseValues
                                   alphanumeric: "z"
                                 }
                               },
-                              expr: {
+                              exp: {
                                 factor: {
                                   atom: {
                                     alphanumeric: "x"
@@ -11814,11 +11252,7 @@ module UnicodeMathParseValues
                           sub_exp: {
                             base: {
                               factor: {
-                                atom: {
-                                  char: {
-                                    unicode_symbols: "&#x3b1;"
-                                  }
-                                }
+                                ordinary_symbols: "&#x3b1;"
                               }
                             },
                             sub: {
@@ -11832,7 +11266,7 @@ module UnicodeMathParseValues
                                           alphanumeric: "x"
                                         }
                                       },
-                                      expr: {
+                                      exp: {
                                         factor: {
                                           atom: {
                                             alphanumeric: "y"
@@ -11868,7 +11302,7 @@ module UnicodeMathParseValues
                                             alphanumeric: "x"
                                           }
                                         },
-                                        expr: {
+                                        exp: {
                                           factor: {
                                             atom: {
                                               alphanumeric: "y"
@@ -11900,11 +11334,7 @@ module UnicodeMathParseValues
                                     sub_exp: {
                                       base: {
                                         factor: {
-                                          atom: {
-                                            char: {
-                                              unicode_symbols: "&#x3b1;"
-                                            }
-                                          }
+                                          ordinary_symbols: "&#x3b1;"
                                         }
                                       },
                                       sub: {
@@ -11918,7 +11348,7 @@ module UnicodeMathParseValues
                                                     alphanumeric: "x"
                                                   }
                                                 },
-                                                expr: {
+                                                exp: {
                                                   factor: {
                                                     atom: {
                                                       alphanumeric: "y"
@@ -11954,13 +11384,13 @@ module UnicodeMathParseValues
                                                       alphanumeric: "x"
                                                     }
                                                   },
-                                                  expr: {
+                                                  exp: {
                                                     factor: {
                                                       atom: {
                                                         alphanumeric: "y"
                                                       }
                                                     },
-                                                    expr: {
+                                                    exp: {
                                                       factor: {
                                                         atom: {
                                                           alphanumeric: "z"
@@ -12020,11 +11450,7 @@ module UnicodeMathParseValues
       sub_exp: {
         base: {
           factor: {
-            atom: {
-              char: {
-                unicode_symbols: "&#x3b1;"
-              }
-            }
+            ordinary_symbols: "&#x3b1;"
           }
         },
         sub: {
@@ -12038,7 +11464,7 @@ module UnicodeMathParseValues
                       alphanumeric: "y"
                     }
                   },
-                  expr: {
+                  exp: {
                     factor: {
                       atom: {
                         alphanumeric: "z"
@@ -12093,11 +11519,7 @@ module UnicodeMathParseValues
                 sub_exp: {
                   base: {
                     factor: {
-                      atom: {
-                        char: {
-                          unicode_symbols: "&#x3b1;"
-                        }
-                      }
+                      ordinary_symbols: "&#x3b1;"
                     }
                   },
                   sub: {
@@ -12111,7 +11533,7 @@ module UnicodeMathParseValues
                                 alphanumeric: "y"
                               }
                             },
-                            expr: {
+                            exp: {
                               factor: {
                                 atom: {
                                   alphanumeric: "z"
@@ -12172,11 +11594,7 @@ module UnicodeMathParseValues
                             sub_exp: {
                               base: {
                                 factor: {
-                                  atom: {
-                                    char: {
-                                      unicode_symbols: "&#x3b1;"
-                                    }
-                                  }
+                                  ordinary_symbols: "&#x3b1;"
                                 }
                               },
                               sub: {
@@ -12190,7 +11608,7 @@ module UnicodeMathParseValues
                                             alphanumeric: "y"
                                           }
                                         },
-                                        expr: {
+                                        exp: {
                                           factor: {
                                             atom: {
                                               alphanumeric: "z"
@@ -12239,11 +11657,7 @@ module UnicodeMathParseValues
                                     sub_exp: {
                                       base: {
                                         factor: {
-                                          atom: {
-                                            char: {
-                                              unicode_symbols: "&#x3b1;"
-                                            }
-                                          }
+                                          ordinary_symbols: "&#x3b1;"
                                         }
                                       },
                                       sub: {
@@ -12257,7 +11671,7 @@ module UnicodeMathParseValues
                                                     alphanumeric: "y"
                                                   }
                                                 },
-                                                expr: {
+                                                exp: {
                                                   factor: {
                                                     atom: {
                                                       alphanumeric: "z"
@@ -12325,11 +11739,7 @@ module UnicodeMathParseValues
       sub_exp: {
         base: {
           factor: {
-            atom: {
-              char: {
-                unicode_symbols: "&#x3b1;"
-              }
-            }
+            ordinary_symbols: "&#x3b1;"
           }
         },
         sub: {
@@ -12343,7 +11753,7 @@ module UnicodeMathParseValues
                       alphanumeric: "y"
                     }
                   },
-                  expr: {
+                  exp: {
                     factor: {
                       atom: {
                         alphanumeric: "z"
@@ -12398,11 +11808,7 @@ module UnicodeMathParseValues
                 sub_exp: {
                   base: {
                     factor: {
-                      atom: {
-                        char: {
-                          unicode_symbols: "&#x3b1;"
-                        }
-                      }
+                      ordinary_symbols: "&#x3b1;"
                     }
                   },
                   sub: {
@@ -12416,7 +11822,7 @@ module UnicodeMathParseValues
                                 alphanumeric: "y"
                               }
                             },
-                            expr: {
+                            exp: {
                               factor: {
                                 atom: {
                                   alphanumeric: "z"
@@ -12477,11 +11883,7 @@ module UnicodeMathParseValues
                             sub_exp: {
                               base: {
                                 factor: {
-                                  atom: {
-                                    char: {
-                                      unicode_symbols: "&#x3b1;"
-                                    }
-                                  }
+                                  ordinary_symbols: "&#x3b1;"
                                 }
                               },
                               sub: {
@@ -12495,7 +11897,7 @@ module UnicodeMathParseValues
                                             alphanumeric: "y"
                                           }
                                         },
-                                        expr: {
+                                        exp: {
                                           factor: {
                                             atom: {
                                               alphanumeric: "z"
@@ -12535,7 +11937,10 @@ module UnicodeMathParseValues
                               expr: {
                                 sup_exp: {
                                   base: {
-                                    symbol: "zy"
+                                    symbol: "z",
+                                    expr: {
+                                      symbol: "y"
+                                    }
                                   },
                                   sup: {
                                     sup_script: {
@@ -12555,11 +11960,7 @@ module UnicodeMathParseValues
                                     sub_exp: {
                                       base: {
                                         factor: {
-                                          atom: {
-                                            char: {
-                                              unicode_symbols: "&#x3b1;"
-                                            }
-                                          }
+                                          ordinary_symbols: "&#x3b1;"
                                         }
                                       },
                                       sub: {
@@ -12573,7 +11974,7 @@ module UnicodeMathParseValues
                                                     alphanumeric: "y"
                                                   }
                                                 },
-                                                expr: {
+                                                exp: {
                                                   factor: {
                                                     atom: {
                                                       alphanumeric: "z"
@@ -12648,11 +12049,7 @@ module UnicodeMathParseValues
       sub_exp: {
         base: {
           factor: {
-            atom: {
-              char: {
-                unicode_symbols: "&#x3b1;"
-              }
-            }
+            ordinary_symbols: "&#x3b1;"
           }
         },
         sub: {
@@ -12666,7 +12063,7 @@ module UnicodeMathParseValues
                       alphanumeric: "y"
                     }
                   },
-                  expr: {
+                  exp: {
                     factor: {
                       atom: {
                         alphanumeric: "z"
@@ -12721,11 +12118,7 @@ module UnicodeMathParseValues
                 sub_exp: {
                   base: {
                     factor: {
-                      atom: {
-                        char: {
-                          unicode_symbols: "&#x3b1;"
-                        }
-                      }
+                      ordinary_symbols: "&#x3b1;"
                     }
                   },
                   sub: {
@@ -12739,7 +12132,7 @@ module UnicodeMathParseValues
                                 alphanumeric: "y"
                               }
                             },
-                            expr: {
+                            exp: {
                               factor: {
                                 atom: {
                                   alphanumeric: "z"
@@ -12800,11 +12193,7 @@ module UnicodeMathParseValues
                             sub_exp: {
                               base: {
                                 factor: {
-                                  atom: {
-                                    char: {
-                                      unicode_symbols: "&#x3b1;"
-                                    }
-                                  }
+                                  ordinary_symbols: "&#x3b1;"
                                 }
                               },
                               sub: {
@@ -12818,7 +12207,7 @@ module UnicodeMathParseValues
                                             alphanumeric: "y"
                                           }
                                         },
-                                        expr: {
+                                        exp: {
                                           factor: {
                                             atom: {
                                               alphanumeric: "z"
@@ -12879,11 +12268,7 @@ module UnicodeMathParseValues
                                         sub_exp: {
                                           base: {
                                             factor: {
-                                              atom: {
-                                                char: {
-                                                  unicode_symbols: "&#x3b1;"
-                                                }
-                                              }
+                                              ordinary_symbols: "&#x3b1;"
                                             }
                                           },
                                           sub: {
@@ -12897,7 +12282,7 @@ module UnicodeMathParseValues
                                                         alphanumeric: "y"
                                                       }
                                                     },
-                                                    expr: {
+                                                    exp: {
                                                       factor: {
                                                         atom: {
                                                           alphanumeric: "z"
@@ -12984,11 +12369,7 @@ module UnicodeMathParseValues
       sub_exp: {
         base: {
           factor: {
-            atom: {
-              char: {
-                unicode_symbols: "&#x3b1;"
-              }
-            }
+            ordinary_symbols: "&#x3b1;"
           }
         },
         sub: {
@@ -13002,7 +12383,7 @@ module UnicodeMathParseValues
                       alphanumeric: "y"
                     }
                   },
-                  expr: {
+                  exp: {
                     factor: {
                       atom: {
                         alphanumeric: "z"
@@ -13057,11 +12438,7 @@ module UnicodeMathParseValues
                 sub_exp: {
                   base: {
                     factor: {
-                      atom: {
-                        char: {
-                          unicode_symbols: "&#x3b1;"
-                        }
-                      }
+                      ordinary_symbols: "&#x3b1;"
                     }
                   },
                   sub: {
@@ -13075,7 +12452,7 @@ module UnicodeMathParseValues
                                 alphanumeric: "y"
                               }
                             },
-                            expr: {
+                            exp: {
                               factor: {
                                 atom: {
                                   alphanumeric: "z"
@@ -13136,11 +12513,7 @@ module UnicodeMathParseValues
                             sub_exp: {
                               base: {
                                 factor: {
-                                  atom: {
-                                    char: {
-                                      unicode_symbols: "&#x3b1;"
-                                    }
-                                  }
+                                  ordinary_symbols: "&#x3b1;"
                                 }
                               },
                               sub: {
@@ -13154,7 +12527,7 @@ module UnicodeMathParseValues
                                             alphanumeric: "y"
                                           }
                                         },
-                                        expr: {
+                                        exp: {
                                           factor: {
                                             atom: {
                                               alphanumeric: "z"
@@ -13214,11 +12587,7 @@ module UnicodeMathParseValues
                                       sub_exp: {
                                         base: {
                                           factor: {
-                                            atom: {
-                                              char: {
-                                                unicode_symbols: "&#x3b1;"
-                                              }
-                                            }
+                                            ordinary_symbols: "&#x3b1;"
                                           }
                                         },
                                         sub: {
@@ -13232,7 +12601,7 @@ module UnicodeMathParseValues
                                                       alphanumeric: "y"
                                                     }
                                                   },
-                                                  expr: {
+                                                  exp: {
                                                     factor: {
                                                       atom: {
                                                         alphanumeric: "z"
@@ -13315,11 +12684,7 @@ module UnicodeMathParseValues
       sub_exp: {
         base: {
           factor: {
-            atom: {
-              char: {
-                unicode_symbols: "&#x3b1;"
-              }
-            }
+            ordinary_symbols: "&#x3b1;"
           }
         },
         sub: {
@@ -13333,7 +12698,7 @@ module UnicodeMathParseValues
                       alphanumeric: "z"
                     }
                   },
-                  expr: {
+                  exp: {
                     factor: {
                       atom: {
                         alphanumeric: "x"
@@ -13388,11 +12753,7 @@ module UnicodeMathParseValues
                 sub_exp: {
                   base: {
                     factor: {
-                      atom: {
-                        char: {
-                          unicode_symbols: "&#x3b1;"
-                        }
-                      }
+                      ordinary_symbols: "&#x3b1;"
                     }
                   },
                   sub: {
@@ -13406,7 +12767,7 @@ module UnicodeMathParseValues
                                 alphanumeric: "z"
                               }
                             },
-                            expr: {
+                            exp: {
                               factor: {
                                 atom: {
                                   alphanumeric: "x"
@@ -13461,11 +12822,7 @@ module UnicodeMathParseValues
                           sub_exp: {
                             base: {
                               factor: {
-                                atom: {
-                                  char: {
-                                    unicode_symbols: "&#x3b1;"
-                                  }
-                                }
+                                ordinary_symbols: "&#x3b1;"
                               }
                             },
                             sub: {
@@ -13479,7 +12836,7 @@ module UnicodeMathParseValues
                                           alphanumeric: "z"
                                         }
                                       },
-                                      expr: {
+                                      exp: {
                                         factor: {
                                           atom: {
                                             alphanumeric: "x"
@@ -13540,11 +12897,7 @@ module UnicodeMathParseValues
                                       sub_exp: {
                                         base: {
                                           factor: {
-                                            atom: {
-                                              char: {
-                                                unicode_symbols: "&#x3b1;"
-                                              }
-                                            }
+                                            ordinary_symbols: "&#x3b1;"
                                           }
                                         },
                                         sub: {
@@ -13558,7 +12911,7 @@ module UnicodeMathParseValues
                                                       alphanumeric: "z"
                                                     }
                                                   },
-                                                  expr: {
+                                                  exp: {
                                                     factor: {
                                                       atom: {
                                                         alphanumeric: "x"
@@ -13641,11 +12994,7 @@ module UnicodeMathParseValues
       sub_exp: {
         base: {
           factor: {
-            atom: {
-              char: {
-                unicode_symbols: "&#x3b1;"
-              }
-            }
+            ordinary_symbols: "&#x3b1;"
           }
         },
         sub: {
@@ -13659,7 +13008,7 @@ module UnicodeMathParseValues
                       alphanumeric: "z"
                     }
                   },
-                  expr: {
+                  exp: {
                     factor: {
                       atom: {
                         alphanumeric: "x"
@@ -13714,11 +13063,7 @@ module UnicodeMathParseValues
                 sub_exp: {
                   base: {
                     factor: {
-                      atom: {
-                        char: {
-                          unicode_symbols: "&#x3b1;"
-                        }
-                      }
+                      ordinary_symbols: "&#x3b1;"
                     }
                   },
                   sub: {
@@ -13732,7 +13077,7 @@ module UnicodeMathParseValues
                                 alphanumeric: "z"
                               }
                             },
-                            expr: {
+                            exp: {
                               factor: {
                                 atom: {
                                   alphanumeric: "x"
@@ -13781,11 +13126,7 @@ module UnicodeMathParseValues
                         sub_exp: {
                           base: {
                             factor: {
-                              atom: {
-                                char: {
-                                  unicode_symbols: "&#x3b1;"
-                                }
-                              }
+                              ordinary_symbols: "&#x3b1;"
                             }
                           },
                           sub: {
@@ -13799,7 +13140,7 @@ module UnicodeMathParseValues
                                         alphanumeric: "z"
                                       }
                                     },
-                                    expr: {
+                                    exp: {
                                       factor: {
                                         atom: {
                                           alphanumeric: "x"
@@ -13860,11 +13201,7 @@ module UnicodeMathParseValues
                                     sub_exp: {
                                       base: {
                                         factor: {
-                                          atom: {
-                                            char: {
-                                              unicode_symbols: "&#x3b1;"
-                                            }
-                                          }
+                                          ordinary_symbols: "&#x3b1;"
                                         }
                                       },
                                       sub: {
@@ -13878,7 +13215,7 @@ module UnicodeMathParseValues
                                                     alphanumeric: "z"
                                                   }
                                                 },
-                                                expr: {
+                                                exp: {
                                                   factor: {
                                                     atom: {
                                                       alphanumeric: "x"
@@ -13946,11 +13283,7 @@ module UnicodeMathParseValues
       sub_exp: {
         base: {
           factor: {
-            atom: {
-              char: {
-                unicode_symbols: "&#x3b1;"
-              }
-            }
+            ordinary_symbols: "&#x3b1;"
           }
         },
         sub: {
@@ -13964,7 +13297,7 @@ module UnicodeMathParseValues
                       alphanumeric: "z"
                     }
                   },
-                  expr: {
+                  exp: {
                     factor: {
                       atom: {
                         alphanumeric: "x"
@@ -14019,11 +13352,7 @@ module UnicodeMathParseValues
                 sub_exp: {
                   base: {
                     factor: {
-                      atom: {
-                        char: {
-                          unicode_symbols: "&#x3b1;"
-                        }
-                      }
+                      ordinary_symbols: "&#x3b1;"
                     }
                   },
                   sub: {
@@ -14037,7 +13366,7 @@ module UnicodeMathParseValues
                                 alphanumeric: "z"
                               }
                             },
-                            expr: {
+                            exp: {
                               factor: {
                                 atom: {
                                   alphanumeric: "x"
@@ -14098,11 +13427,7 @@ module UnicodeMathParseValues
                             sub_exp: {
                               base: {
                                 factor: {
-                                  atom: {
-                                    char: {
-                                      unicode_symbols: "&#x3b1;"
-                                    }
-                                  }
+                                  ordinary_symbols: "&#x3b1;"
                                 }
                               },
                               sub: {
@@ -14116,7 +13441,7 @@ module UnicodeMathParseValues
                                             alphanumeric: "z"
                                           }
                                         },
-                                        expr: {
+                                        exp: {
                                           factor: {
                                             atom: {
                                               alphanumeric: "x"
@@ -14177,11 +13502,7 @@ module UnicodeMathParseValues
                                         sub_exp: {
                                           base: {
                                             factor: {
-                                              atom: {
-                                                char: {
-                                                  unicode_symbols: "&#x3b1;"
-                                                }
-                                              }
+                                              ordinary_symbols: "&#x3b1;"
                                             }
                                           },
                                           sub: {
@@ -14195,7 +13516,7 @@ module UnicodeMathParseValues
                                                         alphanumeric: "z"
                                                       }
                                                     },
-                                                    expr: {
+                                                    exp: {
                                                       factor: {
                                                         atom: {
                                                           alphanumeric: "x"
@@ -14282,11 +13603,7 @@ module UnicodeMathParseValues
       sub_exp: {
         base: {
           factor: {
-            atom: {
-              char: {
-                unicode_symbols: "&#x3b1;"
-              }
-            }
+            ordinary_symbols: "&#x3b1;"
           }
         },
         sub: {
@@ -14300,7 +13617,7 @@ module UnicodeMathParseValues
                       alphanumeric: "z"
                     }
                   },
-                  expr: {
+                  exp: {
                     factor: {
                       atom: {
                         alphanumeric: "x"
@@ -14355,11 +13672,7 @@ module UnicodeMathParseValues
                 sub_exp: {
                   base: {
                     factor: {
-                      atom: {
-                        char: {
-                          unicode_symbols: "&#x3b1;"
-                        }
-                      }
+                      ordinary_symbols: "&#x3b1;"
                     }
                   },
                   sub: {
@@ -14373,7 +13686,7 @@ module UnicodeMathParseValues
                                 alphanumeric: "z"
                               }
                             },
-                            expr: {
+                            exp: {
                               factor: {
                                 atom: {
                                   alphanumeric: "x"
@@ -14436,11 +13749,7 @@ module UnicodeMathParseValues
                         sub_exp: {
                           base: {
                             factor: {
-                              atom: {
-                                char: {
-                                  unicode_symbols: "&#x3b1;"
-                                }
-                              }
+                              ordinary_symbols: "&#x3b1;"
                             }
                           },
                           sub: {
@@ -14454,7 +13763,7 @@ module UnicodeMathParseValues
                                         alphanumeric: "z"
                                       }
                                     },
-                                    expr: {
+                                    exp: {
                                       factor: {
                                         atom: {
                                           alphanumeric: "x"
@@ -14515,11 +13824,7 @@ module UnicodeMathParseValues
                                     sub_exp: {
                                       base: {
                                         factor: {
-                                          atom: {
-                                            char: {
-                                              unicode_symbols: "&#x3b1;"
-                                            }
-                                          }
+                                          ordinary_symbols: "&#x3b1;"
                                         }
                                       },
                                       sub: {
@@ -14533,7 +13838,7 @@ module UnicodeMathParseValues
                                                     alphanumeric: "z"
                                                   }
                                                 },
-                                                expr: {
+                                                exp: {
                                                   factor: {
                                                     atom: {
                                                       alphanumeric: "x"
@@ -14615,11 +13920,7 @@ module UnicodeMathParseValues
       sub_exp: {
         base: {
           factor: {
-            atom: {
-              char: {
-                unicode_symbols: "&#x3b1;"
-              }
-            }
+            ordinary_symbols: "&#x3b1;"
           }
         },
         sub: {
@@ -14633,7 +13934,7 @@ module UnicodeMathParseValues
                       alphanumeric: "z"
                     }
                   },
-                  expr: {
+                  exp: {
                     factor: {
                       atom: {
                         alphanumeric: "x"
@@ -14669,7 +13970,7 @@ module UnicodeMathParseValues
                         alphanumeric: "y"
                       }
                     },
-                    expr: {
+                    exp: {
                       factor: {
                         atom: {
                           alphanumeric: "z"
@@ -14701,11 +14002,7 @@ module UnicodeMathParseValues
                 sub_exp: {
                   base: {
                     factor: {
-                      atom: {
-                        char: {
-                          unicode_symbols: "&#x3b1;"
-                        }
-                      }
+                      ordinary_symbols: "&#x3b1;"
                     }
                   },
                   sub: {
@@ -14719,7 +14016,7 @@ module UnicodeMathParseValues
                                 alphanumeric: "z"
                               }
                             },
-                            expr: {
+                            exp: {
                               factor: {
                                 atom: {
                                   alphanumeric: "x"
@@ -14755,7 +14052,7 @@ module UnicodeMathParseValues
                                   alphanumeric: "z"
                                 }
                               },
-                              expr: {
+                              exp: {
                                 factor: {
                                   atom: {
                                     alphanumeric: "x"
@@ -14775,11 +14072,7 @@ module UnicodeMathParseValues
                       sub_exp: {
                         base: {
                           factor: {
-                            atom: {
-                              char: {
-                                unicode_symbols: "&#x3b1;"
-                              }
-                            }
+                            ordinary_symbols: "&#x3b1;"
                           }
                         },
                         sub: {
@@ -14793,7 +14086,7 @@ module UnicodeMathParseValues
                                       alphanumeric: "z"
                                     }
                                   },
-                                  expr: {
+                                  exp: {
                                     factor: {
                                       atom: {
                                         alphanumeric: "x"
@@ -14829,7 +14122,7 @@ module UnicodeMathParseValues
                                         alphanumeric: "x"
                                       }
                                     },
-                                    expr: {
+                                    exp: {
                                       factor: {
                                         atom: {
                                           alphanumeric: "y"
@@ -14861,11 +14154,7 @@ module UnicodeMathParseValues
                                 sub_exp: {
                                   base: {
                                     factor: {
-                                      atom: {
-                                        char: {
-                                          unicode_symbols: "&#x3b1;"
-                                        }
-                                      }
+                                      ordinary_symbols: "&#x3b1;"
                                     }
                                   },
                                   sub: {
@@ -14879,7 +14168,7 @@ module UnicodeMathParseValues
                                                 alphanumeric: "z"
                                               }
                                             },
-                                            expr: {
+                                            exp: {
                                               factor: {
                                                 atom: {
                                                   alphanumeric: "x"
@@ -14915,13 +14204,13 @@ module UnicodeMathParseValues
                                                   alphanumeric: "x"
                                                 }
                                               },
-                                              expr: {
+                                              exp: {
                                                 factor: {
                                                   atom: {
                                                     alphanumeric: "y"
                                                   }
                                                 },
-                                                expr: {
+                                                exp: {
                                                   factor: {
                                                     atom: {
                                                       alphanumeric: "z"
@@ -14965,11 +14254,7 @@ module UnicodeMathParseValues
       sub_exp: {
         base: {
           factor: {
-            atom: {
-              char: {
-                unicode_symbols: "&#x3b1;"
-              }
-            }
+            ordinary_symbols: "&#x3b1;"
           }
         },
         sub: {
@@ -14983,7 +14268,7 @@ module UnicodeMathParseValues
                       alphanumeric: "z"
                     }
                   },
-                  expr: {
+                  exp: {
                     factor: {
                       atom: {
                         alphanumeric: "x"
@@ -15019,7 +14304,7 @@ module UnicodeMathParseValues
                         alphanumeric: "y"
                       }
                     },
-                    expr: {
+                    exp: {
                       factor: {
                         atom: {
                           alphanumeric: "z"
@@ -15051,11 +14336,7 @@ module UnicodeMathParseValues
                 sub_exp: {
                   base: {
                     factor: {
-                      atom: {
-                        char: {
-                          unicode_symbols: "&#x3b1;"
-                        }
-                      }
+                      ordinary_symbols: "&#x3b1;"
                     }
                   },
                   sub: {
@@ -15069,7 +14350,7 @@ module UnicodeMathParseValues
                                 alphanumeric: "z"
                               }
                             },
-                            expr: {
+                            exp: {
                               factor: {
                                 atom: {
                                   alphanumeric: "x"
@@ -15105,7 +14386,7 @@ module UnicodeMathParseValues
                                   alphanumeric: "z"
                                 }
                               },
-                              expr: {
+                              exp: {
                                 factor: {
                                   atom: {
                                     alphanumeric: "x"
@@ -15125,11 +14406,7 @@ module UnicodeMathParseValues
                       sub_exp: {
                         base: {
                           factor: {
-                            atom: {
-                              char: {
-                                unicode_symbols: "&#x3b1;"
-                              }
-                            }
+                            ordinary_symbols: "&#x3b1;"
                           }
                         },
                         sub: {
@@ -15143,7 +14420,7 @@ module UnicodeMathParseValues
                                       alphanumeric: "z"
                                     }
                                   },
-                                  expr: {
+                                  exp: {
                                     factor: {
                                       atom: {
                                         alphanumeric: "x"
@@ -15179,7 +14456,7 @@ module UnicodeMathParseValues
                                         alphanumeric: "x"
                                       }
                                     },
-                                    expr: {
+                                    exp: {
                                       factor: {
                                         atom: {
                                           alphanumeric: "y"
@@ -15211,11 +14488,7 @@ module UnicodeMathParseValues
                                 sub_exp: {
                                   base: {
                                     factor: {
-                                      atom: {
-                                        char: {
-                                          unicode_symbols: "&#x3b1;"
-                                        }
-                                      }
+                                      ordinary_symbols: "&#x3b1;"
                                     }
                                   },
                                   sub: {
@@ -15229,7 +14502,7 @@ module UnicodeMathParseValues
                                                 alphanumeric: "z"
                                               }
                                             },
-                                            expr: {
+                                            exp: {
                                               factor: {
                                                 atom: {
                                                   alphanumeric: "x"
@@ -15265,13 +14538,13 @@ module UnicodeMathParseValues
                                                   alphanumeric: "x"
                                                 }
                                               },
-                                              expr: {
+                                              exp: {
                                                 factor: {
                                                   atom: {
                                                     alphanumeric: "y"
                                                   }
                                                 },
-                                                expr: {
+                                                exp: {
                                                   factor: {
                                                     atom: {
                                                       alphanumeric: "z"
@@ -15329,11 +14602,7 @@ module UnicodeMathParseValues
       sub_exp: {
         base: {
           factor: {
-            atom: {
-              char: {
-                unicode_symbols: "&#x3b1;"
-              }
-            }
+            ordinary_symbols: "&#x3b1;"
           }
         },
         sub: {
@@ -15347,7 +14616,7 @@ module UnicodeMathParseValues
                       alphanumeric: "z"
                     }
                   },
-                  expr: {
+                  exp: {
                     factor: {
                       atom: {
                         alphanumeric: "x"
@@ -15383,7 +14652,7 @@ module UnicodeMathParseValues
                         alphanumeric: "y"
                       }
                     },
-                    expr: {
+                    exp: {
                       factor: {
                         atom: {
                           alphanumeric: "z"
@@ -15415,11 +14684,7 @@ module UnicodeMathParseValues
                 sub_exp: {
                   base: {
                     factor: {
-                      atom: {
-                        char: {
-                          unicode_symbols: "&#x3b1;"
-                        }
-                      }
+                      ordinary_symbols: "&#x3b1;"
                     }
                   },
                   sub: {
@@ -15433,7 +14698,7 @@ module UnicodeMathParseValues
                                 alphanumeric: "z"
                               }
                             },
-                            expr: {
+                            exp: {
                               factor: {
                                 atom: {
                                   alphanumeric: "x"
@@ -15469,7 +14734,7 @@ module UnicodeMathParseValues
                                   alphanumeric: "z"
                                 }
                               },
-                              expr: {
+                              exp: {
                                 factor: {
                                   atom: {
                                     alphanumeric: "x"
@@ -15501,11 +14766,7 @@ module UnicodeMathParseValues
                           sub_exp: {
                             base: {
                               factor: {
-                                atom: {
-                                  char: {
-                                    unicode_symbols: "&#x3b1;"
-                                  }
-                                }
+                                ordinary_symbols: "&#x3b1;"
                               }
                             },
                             sub: {
@@ -15519,7 +14780,7 @@ module UnicodeMathParseValues
                                           alphanumeric: "z"
                                         }
                                       },
-                                      expr: {
+                                      exp: {
                                         factor: {
                                           atom: {
                                             alphanumeric: "x"
@@ -15555,7 +14816,7 @@ module UnicodeMathParseValues
                                             alphanumeric: "x"
                                           }
                                         },
-                                        expr: {
+                                        exp: {
                                           factor: {
                                             atom: {
                                               alphanumeric: "y"
@@ -15586,11 +14847,7 @@ module UnicodeMathParseValues
                                   sub_exp: {
                                     base: {
                                       factor: {
-                                        atom: {
-                                          char: {
-                                            unicode_symbols: "&#x3b1;"
-                                          }
-                                        }
+                                        ordinary_symbols: "&#x3b1;"
                                       }
                                     },
                                     sub: {
@@ -15604,7 +14861,7 @@ module UnicodeMathParseValues
                                                   alphanumeric: "z"
                                                 }
                                               },
-                                              expr: {
+                                              exp: {
                                                 factor: {
                                                   atom: {
                                                     alphanumeric: "x"
@@ -15640,13 +14897,13 @@ module UnicodeMathParseValues
                                                     alphanumeric: "x"
                                                   }
                                                 },
-                                                expr: {
+                                                exp: {
                                                   factor: {
                                                     atom: {
                                                       alphanumeric: "y"
                                                     }
                                                   },
-                                                  expr: {
+                                                  exp: {
                                                     factor: {
                                                       atom: {
                                                         alphanumeric: "z"
@@ -15703,11 +14960,7 @@ module UnicodeMathParseValues
       sub_exp: {
         base: {
           factor: {
-            atom: {
-              char: {
-                unicode_symbols: "&#x3b1;"
-              }
-            }
+            ordinary_symbols: "&#x3b1;"
           }
         },
         sub: {
@@ -15721,7 +14974,7 @@ module UnicodeMathParseValues
                       alphanumeric: "z"
                     }
                   },
-                  expr: {
+                  exp: {
                     factor: {
                       atom: {
                         alphanumeric: "x"
@@ -15757,7 +15010,7 @@ module UnicodeMathParseValues
                         alphanumeric: "y"
                       }
                     },
-                    expr: {
+                    exp: {
                       factor: {
                         atom: {
                           alphanumeric: "z"
@@ -15801,11 +15054,7 @@ module UnicodeMathParseValues
                     sub_exp: {
                       base: {
                         factor: {
-                          atom: {
-                            char: {
-                              unicode_symbols: "&#x3b1;"
-                            }
-                          }
+                          ordinary_symbols: "&#x3b1;"
                         }
                       },
                       sub: {
@@ -15819,7 +15068,7 @@ module UnicodeMathParseValues
                                     alphanumeric: "z"
                                   }
                                 },
-                                expr: {
+                                exp: {
                                   factor: {
                                     atom: {
                                       alphanumeric: "x"
@@ -15855,7 +15104,7 @@ module UnicodeMathParseValues
                                       alphanumeric: "z"
                                     }
                                   },
-                                  expr: {
+                                  exp: {
                                     factor: {
                                       atom: {
                                         alphanumeric: "x"
@@ -15902,11 +15151,7 @@ module UnicodeMathParseValues
                             sub_exp: {
                               base: {
                                 factor: {
-                                  atom: {
-                                    char: {
-                                      unicode_symbols: "&#x3b1;"
-                                    }
-                                  }
+                                  ordinary_symbols: "&#x3b1;"
                                 }
                               },
                               sub: {
@@ -15920,7 +15165,7 @@ module UnicodeMathParseValues
                                             alphanumeric: "z"
                                           }
                                         },
-                                        expr: {
+                                        exp: {
                                           factor: {
                                             atom: {
                                               alphanumeric: "x"
@@ -15956,7 +15201,7 @@ module UnicodeMathParseValues
                                               alphanumeric: "x"
                                             }
                                           },
-                                          expr: {
+                                          exp: {
                                             factor: {
                                               atom: {
                                                 alphanumeric: "y"
@@ -15994,11 +15239,7 @@ module UnicodeMathParseValues
                                         sub_exp: {
                                           base: {
                                             factor: {
-                                              atom: {
-                                                char: {
-                                                  unicode_symbols: "&#x3b1;"
-                                                }
-                                              }
+                                              ordinary_symbols: "&#x3b1;"
                                             }
                                           },
                                           sub: {
@@ -16012,7 +15253,7 @@ module UnicodeMathParseValues
                                                         alphanumeric: "z"
                                                       }
                                                     },
-                                                    expr: {
+                                                    exp: {
                                                       factor: {
                                                         atom: {
                                                           alphanumeric: "x"
@@ -16048,13 +15289,13 @@ module UnicodeMathParseValues
                                                           alphanumeric: "x"
                                                         }
                                                       },
-                                                      expr: {
+                                                      exp: {
                                                         factor: {
                                                           atom: {
                                                             alphanumeric: "y"
                                                           }
                                                         },
-                                                        expr: {
+                                                        exp: {
                                                           factor: {
                                                             atom: {
                                                               alphanumeric: "z"
@@ -16123,11 +15364,7 @@ module UnicodeMathParseValues
       sub_exp: {
         base: {
           factor: {
-            atom: {
-              char: {
-                unicode_symbols: "&#x3b1;"
-              }
-            }
+            ordinary_symbols: "&#x3b1;"
           }
         },
         sub: {
@@ -16177,11 +15414,7 @@ module UnicodeMathParseValues
               sub_exp: {
                 base: {
                   factor: {
-                    atom: {
-                      char: {
-                        unicode_symbols: "&#x3b1;"
-                      }
-                    }
+                    ordinary_symbols: "&#x3b1;"
                   }
                 },
                 sub: {
@@ -16231,11 +15464,7 @@ module UnicodeMathParseValues
                       sub_exp: {
                         base: {
                           factor: {
-                            atom: {
-                              char: {
-                                unicode_symbols: "&#x3b1;"
-                              }
-                            }
+                            ordinary_symbols: "&#x3b1;"
                           }
                         },
                         sub: {
@@ -16291,11 +15520,7 @@ module UnicodeMathParseValues
                                 sub_exp: {
                                   base: {
                                     factor: {
-                                      atom: {
-                                        char: {
-                                          unicode_symbols: "&#x3b1;"
-                                        }
-                                      }
+                                      ordinary_symbols: "&#x3b1;"
                                     }
                                   },
                                   sub: {
@@ -16369,11 +15594,7 @@ module UnicodeMathParseValues
       sub_exp: {
         base: {
           factor: {
-            atom: {
-              char: {
-                unicode_symbols: "&#x3b1;"
-              }
-            }
+            ordinary_symbols: "&#x3b1;"
           }
         },
         sub: {
@@ -16423,11 +15644,7 @@ module UnicodeMathParseValues
               sub_exp: {
                 base: {
                   factor: {
-                    atom: {
-                      char: {
-                        unicode_symbols: "&#x3b1;"
-                      }
-                    }
+                    ordinary_symbols: "&#x3b1;"
                   }
                 },
                 sub: {
@@ -16471,11 +15688,7 @@ module UnicodeMathParseValues
                     sub_exp: {
                       base: {
                         factor: {
-                          atom: {
-                            char: {
-                              unicode_symbols: "&#x3b1;"
-                            }
-                          }
+                          ordinary_symbols: "&#x3b1;"
                         }
                       },
                       sub: {
@@ -16531,11 +15744,7 @@ module UnicodeMathParseValues
                               sub_exp: {
                                 base: {
                                   factor: {
-                                    atom: {
-                                      char: {
-                                        unicode_symbols: "&#x3b1;"
-                                      }
-                                    }
+                                    ordinary_symbols: "&#x3b1;"
                                   }
                                 },
                                 sub: {
@@ -16608,11 +15817,7 @@ module UnicodeMathParseValues
       sub_exp: {
         base: {
           factor: {
-            atom: {
-              char: {
-                unicode_symbols: "&#x3b1;"
-              }
-            }
+            ordinary_symbols: "&#x3b1;"
           }
         },
         sub: {
@@ -16662,11 +15867,7 @@ module UnicodeMathParseValues
               sub_exp: {
                 base: {
                   factor: {
-                    atom: {
-                      char: {
-                        unicode_symbols: "&#x3b1;"
-                      }
-                    }
+                    ordinary_symbols: "&#x3b1;"
                   }
                 },
                 sub: {
@@ -16722,11 +15923,7 @@ module UnicodeMathParseValues
                         sub_exp: {
                           base: {
                             factor: {
-                              atom: {
-                                char: {
-                                  unicode_symbols: "&#x3b1;"
-                                }
-                              }
+                              ordinary_symbols: "&#x3b1;"
                             }
                           },
                           sub: {
@@ -16782,11 +15979,7 @@ module UnicodeMathParseValues
                                   sub_exp: {
                                     base: {
                                       factor: {
-                                        atom: {
-                                          char: {
-                                            unicode_symbols: "&#x3b1;"
-                                          }
-                                        }
+                                        ordinary_symbols: "&#x3b1;"
                                       }
                                     },
                                     sub: {
@@ -16864,11 +16057,7 @@ module UnicodeMathParseValues
       sub_exp: {
         base: {
           factor: {
-            atom: {
-              char: {
-                unicode_symbols: "&#x3b1;"
-              }
-            }
+            ordinary_symbols: "&#x3b1;"
           }
         },
         sub: {
@@ -16918,11 +16107,7 @@ module UnicodeMathParseValues
               sub_exp: {
                 base: {
                   factor: {
-                    atom: {
-                      char: {
-                        unicode_symbols: "&#x3b1;"
-                      }
-                    }
+                    ordinary_symbols: "&#x3b1;"
                   }
                 },
                 sub: {
@@ -16983,11 +16168,7 @@ module UnicodeMathParseValues
                       sub_exp: {
                         base: {
                           factor: {
-                            atom: {
-                              char: {
-                                unicode_symbols: "&#x3b1;"
-                              }
-                            }
+                            ordinary_symbols: "&#x3b1;"
                           }
                         },
                         sub: {
@@ -17043,11 +16224,7 @@ module UnicodeMathParseValues
                                 sub_exp: {
                                   base: {
                                     factor: {
-                                      atom: {
-                                        char: {
-                                          unicode_symbols: "&#x3b1;"
-                                        }
-                                      }
+                                      ordinary_symbols: "&#x3b1;"
                                     }
                                   },
                                   sub: {
@@ -17121,11 +16298,7 @@ module UnicodeMathParseValues
       sub_exp: {
         base: {
           factor: {
-            atom: {
-              char: {
-                unicode_symbols: "&#x3b1;"
-              }
-            }
+            ordinary_symbols: "&#x3b1;"
           }
         },
         sub: {
@@ -17175,11 +16348,7 @@ module UnicodeMathParseValues
               sub_exp: {
                 base: {
                   factor: {
-                    atom: {
-                      char: {
-                        unicode_symbols: "&#x3b1;"
-                      }
-                    }
+                    ordinary_symbols: "&#x3b1;"
                   }
                 },
                 sub: {
@@ -17235,11 +16404,7 @@ module UnicodeMathParseValues
                         sub_exp: {
                           base: {
                             factor: {
-                              atom: {
-                                char: {
-                                  unicode_symbols: "&#x3b1;"
-                                }
-                              }
+                              ordinary_symbols: "&#x3b1;"
                             }
                           },
                           sub: {
@@ -17295,11 +16460,7 @@ module UnicodeMathParseValues
                                   sub_exp: {
                                     base: {
                                       factor: {
-                                        atom: {
-                                          char: {
-                                            unicode_symbols: "&#x3b1;"
-                                          }
-                                        }
+                                        ordinary_symbols: "&#x3b1;"
                                       }
                                     },
                                     sub: {
@@ -17377,11 +16538,7 @@ module UnicodeMathParseValues
       sub_exp: {
         base: {
           factor: {
-            atom: {
-              char: {
-                unicode_symbols: "&#x3b1;"
-              }
-            }
+            ordinary_symbols: "&#x3b1;"
           }
         },
         sub: {
@@ -17431,11 +16588,7 @@ module UnicodeMathParseValues
               sub_exp: {
                 base: {
                   factor: {
-                    atom: {
-                      char: {
-                        unicode_symbols: "&#x3b1;"
-                      }
-                    }
+                    ordinary_symbols: "&#x3b1;"
                   }
                 },
                 sub: {
@@ -17491,11 +16644,7 @@ module UnicodeMathParseValues
                         sub_exp: {
                           base: {
                             factor: {
-                              atom: {
-                                char: {
-                                  unicode_symbols: "&#x3b1;"
-                                }
-                              }
+                              ordinary_symbols: "&#x3b1;"
                             }
                           },
                           sub: {
@@ -17551,11 +16700,7 @@ module UnicodeMathParseValues
                                   sub_exp: {
                                     base: {
                                       factor: {
-                                        atom: {
-                                          char: {
-                                            unicode_symbols: "&#x3b1;"
-                                          }
-                                        }
+                                        ordinary_symbols: "&#x3b1;"
                                       }
                                     },
                                     sub: {
@@ -17616,11 +16761,7 @@ module UnicodeMathParseValues
       sub_exp: {
         base: {
           factor: {
-            atom: {
-              char: {
-                unicode_symbols: "&#x3b1;"
-              }
-            }
+            ordinary_symbols: "&#x3b1;"
           }
         },
         sub: {
@@ -17670,11 +16811,7 @@ module UnicodeMathParseValues
               sub_exp: {
                 base: {
                   factor: {
-                    atom: {
-                      char: {
-                        unicode_symbols: "&#x3b1;"
-                      }
-                    }
+                    ordinary_symbols: "&#x3b1;"
                   }
                 },
                 sub: {
@@ -17730,11 +16867,7 @@ module UnicodeMathParseValues
                         sub_exp: {
                           base: {
                             factor: {
-                              atom: {
-                                char: {
-                                  unicode_symbols: "&#x3b1;"
-                                }
-                              }
+                              ordinary_symbols: "&#x3b1;"
                             }
                           },
                           sub: {
@@ -17790,11 +16923,7 @@ module UnicodeMathParseValues
                                   sub_exp: {
                                     base: {
                                       factor: {
-                                        atom: {
-                                          char: {
-                                            unicode_symbols: "&#x3b1;"
-                                          }
-                                        }
+                                        ordinary_symbols: "&#x3b1;"
                                       }
                                     },
                                     sub: {
@@ -17862,11 +16991,7 @@ module UnicodeMathParseValues
       sub_exp: {
         base: {
           factor: {
-            atom: {
-              char: {
-                unicode_symbols: "&#x3b1;"
-              }
-            }
+            ordinary_symbols: "&#x3b1;"
           }
         },
         sub: {
@@ -17916,11 +17041,7 @@ module UnicodeMathParseValues
               sub_exp: {
                 base: {
                   factor: {
-                    atom: {
-                      char: {
-                        unicode_symbols: "&#x3b1;"
-                      }
-                    }
+                    ordinary_symbols: "&#x3b1;"
                   }
                 },
                 sub: {
@@ -17976,11 +17097,7 @@ module UnicodeMathParseValues
                         sub_exp: {
                           base: {
                             factor: {
-                              atom: {
-                                char: {
-                                  unicode_symbols: "&#x3b1;"
-                                }
-                              }
+                              ordinary_symbols: "&#x3b1;"
                             }
                           },
                           sub: {
@@ -18036,11 +17153,7 @@ module UnicodeMathParseValues
                                   sub_exp: {
                                     base: {
                                       factor: {
-                                        atom: {
-                                          char: {
-                                            unicode_symbols: "&#x3b1;"
-                                          }
-                                        }
+                                        ordinary_symbols: "&#x3b1;"
                                       }
                                     },
                                     sub: {
@@ -18119,11 +17232,7 @@ module UnicodeMathParseValues
       sub_exp: {
         base: {
           factor: {
-            atom: {
-              char: {
-                unicode_symbols: "&#x3b1;"
-              }
-            }
+            ordinary_symbols: "&#x3b1;"
           }
         },
         sub: {
@@ -18160,7 +17269,7 @@ module UnicodeMathParseValues
                         alphanumeric: "y"
                       }
                     },
-                    expr: {
+                    exp: {
                       factor: {
                         atom: {
                           alphanumeric: "z"
@@ -18198,11 +17307,7 @@ module UnicodeMathParseValues
                   sub_exp: {
                     base: {
                       factor: {
-                        atom: {
-                          char: {
-                            unicode_symbols: "&#x3b1;"
-                          }
-                        }
+                        ordinary_symbols: "&#x3b1;"
                       }
                     },
                     sub: {
@@ -18239,7 +17344,7 @@ module UnicodeMathParseValues
                                     alphanumeric: "z"
                                   }
                                 },
-                                expr: {
+                                exp: {
                                   factor: {
                                     atom: {
                                       alphanumeric: "x"
@@ -18277,11 +17382,7 @@ module UnicodeMathParseValues
                               sub_exp: {
                                 base: {
                                   factor: {
-                                    atom: {
-                                      char: {
-                                        unicode_symbols: "&#x3b1;"
-                                      }
-                                    }
+                                    ordinary_symbols: "&#x3b1;"
                                   }
                                 },
                                 sub: {
@@ -18318,7 +17419,7 @@ module UnicodeMathParseValues
                                                 alphanumeric: "x"
                                               }
                                             },
-                                            expr: {
+                                            exp: {
                                               factor: {
                                                 atom: {
                                                   alphanumeric: "y"
@@ -18361,11 +17462,7 @@ module UnicodeMathParseValues
                                         sub_exp: {
                                           base: {
                                             factor: {
-                                              atom: {
-                                                char: {
-                                                  unicode_symbols: "&#x3b1;"
-                                                }
-                                              }
+                                              ordinary_symbols: "&#x3b1;"
                                             }
                                           },
                                           sub: {
@@ -18402,13 +17499,13 @@ module UnicodeMathParseValues
                                                           alphanumeric: "x"
                                                         }
                                                       },
-                                                      expr: {
+                                                      exp: {
                                                         factor: {
                                                           atom: {
                                                             alphanumeric: "y"
                                                           }
                                                         },
-                                                        expr: {
+                                                        exp: {
                                                           factor: {
                                                             atom: {
                                                               alphanumeric: "z"
@@ -18481,11 +17578,7 @@ module UnicodeMathParseValues
       sub_exp: {
         base: {
           factor: {
-            atom: {
-              char: {
-                unicode_symbols: "&#x3b1;"
-              }
-            }
+            ordinary_symbols: "&#x3b1;"
           }
         },
         sub: {
@@ -18522,7 +17615,7 @@ module UnicodeMathParseValues
                         alphanumeric: "y"
                       }
                     },
-                    expr: {
+                    exp: {
                       factor: {
                         atom: {
                           alphanumeric: "z"
@@ -18560,11 +17653,7 @@ module UnicodeMathParseValues
                   sub_exp: {
                     base: {
                       factor: {
-                        atom: {
-                          char: {
-                            unicode_symbols: "&#x3b1;"
-                          }
-                        }
+                        ordinary_symbols: "&#x3b1;"
                       }
                     },
                     sub: {
@@ -18601,7 +17690,7 @@ module UnicodeMathParseValues
                                     alphanumeric: "z"
                                   }
                                 },
-                                expr: {
+                                exp: {
                                   factor: {
                                     atom: {
                                       alphanumeric: "x"
@@ -18645,11 +17734,7 @@ module UnicodeMathParseValues
                           sub_exp: {
                             base: {
                               factor: {
-                                atom: {
-                                  char: {
-                                    unicode_symbols: "&#x3b1;"
-                                  }
-                                }
+                                ordinary_symbols: "&#x3b1;"
                               }
                             },
                             sub: {
@@ -18686,7 +17771,7 @@ module UnicodeMathParseValues
                                             alphanumeric: "x"
                                           }
                                         },
-                                        expr: {
+                                        exp: {
                                           factor: {
                                             atom: {
                                               alphanumeric: "y"
@@ -18718,11 +17803,7 @@ module UnicodeMathParseValues
                                     sub_exp: {
                                       base: {
                                         factor: {
-                                          atom: {
-                                            char: {
-                                              unicode_symbols: "&#x3b1;"
-                                            }
-                                          }
+                                          ordinary_symbols: "&#x3b1;"
                                         }
                                       },
                                       sub: {
@@ -18759,13 +17840,13 @@ module UnicodeMathParseValues
                                                       alphanumeric: "x"
                                                     }
                                                   },
-                                                  expr: {
+                                                  exp: {
                                                     factor: {
                                                       atom: {
                                                         alphanumeric: "y"
                                                       }
                                                     },
-                                                    expr: {
+                                                    exp: {
                                                       factor: {
                                                         atom: {
                                                           alphanumeric: "z"
@@ -18825,11 +17906,7 @@ module UnicodeMathParseValues
       sub_exp: {
         base: {
           factor: {
-            atom: {
-              char: {
-                unicode_symbols: "&#x3b1;"
-              }
-            }
+            ordinary_symbols: "&#x3b1;"
           }
         },
         sub: {
@@ -18866,7 +17943,7 @@ module UnicodeMathParseValues
                         alphanumeric: "y"
                       }
                     },
-                    expr: {
+                    exp: {
                       factor: {
                         atom: {
                           alphanumeric: "z"
@@ -18904,11 +17981,7 @@ module UnicodeMathParseValues
                   sub_exp: {
                     base: {
                       factor: {
-                        atom: {
-                          char: {
-                            unicode_symbols: "&#x3b1;"
-                          }
-                        }
+                        ordinary_symbols: "&#x3b1;"
                       }
                     },
                     sub: {
@@ -18945,7 +18018,7 @@ module UnicodeMathParseValues
                                     alphanumeric: "z"
                                   }
                                 },
-                                expr: {
+                                exp: {
                                   factor: {
                                     atom: {
                                       alphanumeric: "x"
@@ -18971,11 +18044,7 @@ module UnicodeMathParseValues
                           sub_exp: {
                             base: {
                               factor: {
-                                atom: {
-                                  char: {
-                                    unicode_symbols: "&#x3b1;"
-                                  }
-                                }
+                                ordinary_symbols: "&#x3b1;"
                               }
                             },
                             sub: {
@@ -19012,7 +18081,7 @@ module UnicodeMathParseValues
                                             alphanumeric: "x"
                                           }
                                         },
-                                        expr: {
+                                        exp: {
                                           factor: {
                                             atom: {
                                               alphanumeric: "y"
@@ -19038,11 +18107,7 @@ module UnicodeMathParseValues
                                   sub_exp: {
                                     base: {
                                       factor: {
-                                        atom: {
-                                          char: {
-                                            unicode_symbols: "&#x3b1;"
-                                          }
-                                        }
+                                        ordinary_symbols: "&#x3b1;"
                                       }
                                     },
                                     sub: {
@@ -19079,13 +18144,13 @@ module UnicodeMathParseValues
                                                     alphanumeric: "x"
                                                   }
                                                 },
-                                                expr: {
+                                                exp: {
                                                   factor: {
                                                     atom: {
                                                       alphanumeric: "y"
                                                     }
                                                   },
-                                                  expr: {
+                                                  exp: {
                                                     factor: {
                                                       atom: {
                                                         alphanumeric: "z"
@@ -19137,11 +18202,7 @@ module UnicodeMathParseValues
       sub_exp: {
         base: {
           factor: {
-            atom: {
-              char: {
-                unicode_symbols: "&#x3b1;"
-              }
-            }
+            ordinary_symbols: "&#x3b1;"
           }
         },
         sub: {
@@ -19191,11 +18252,7 @@ module UnicodeMathParseValues
               sub_exp: {
                 base: {
                   factor: {
-                    atom: {
-                      char: {
-                        unicode_symbols: "&#x3b1;"
-                      }
-                    }
+                    ordinary_symbols: "&#x3b1;"
                   }
                 },
                 sub: {
@@ -19251,11 +18308,7 @@ module UnicodeMathParseValues
                         sub_exp: {
                           base: {
                             factor: {
-                              atom: {
-                                char: {
-                                  unicode_symbols: "&#x3b1;"
-                                }
-                              }
+                              ordinary_symbols: "&#x3b1;"
                             }
                           },
                           sub: {
@@ -19311,11 +18364,7 @@ module UnicodeMathParseValues
                                   sub_exp: {
                                     base: {
                                       factor: {
-                                        atom: {
-                                          char: {
-                                            unicode_symbols: "&#x3b1;"
-                                          }
-                                        }
+                                        ordinary_symbols: "&#x3b1;"
                                       }
                                     },
                                     sub: {
@@ -19393,11 +18442,7 @@ module UnicodeMathParseValues
       sub_exp: {
         base: {
           factor: {
-            atom: {
-              char: {
-                unicode_symbols: "&#x3b1;"
-              }
-            }
+            ordinary_symbols: "&#x3b1;"
           }
         },
         sub: {
@@ -19447,11 +18492,7 @@ module UnicodeMathParseValues
               sub_exp: {
                 base: {
                   factor: {
-                    atom: {
-                      char: {
-                        unicode_symbols: "&#x3b1;"
-                      }
-                    }
+                    ordinary_symbols: "&#x3b1;"
                   }
                 },
                 sub: {
@@ -19507,11 +18548,7 @@ module UnicodeMathParseValues
                         sub_exp: {
                           base: {
                             factor: {
-                              atom: {
-                                char: {
-                                  unicode_symbols: "&#x3b1;"
-                                }
-                              }
+                              ordinary_symbols: "&#x3b1;"
                             }
                           },
                           sub: {
@@ -19561,11 +18598,7 @@ module UnicodeMathParseValues
                                 sub_exp: {
                                   base: {
                                     factor: {
-                                      atom: {
-                                        char: {
-                                          unicode_symbols: "&#x3b1;"
-                                        }
-                                      }
+                                      ordinary_symbols: "&#x3b1;"
                                     }
                                   },
                                   sub: {
@@ -19639,11 +18672,7 @@ module UnicodeMathParseValues
       sub_exp: {
         base: {
           factor: {
-            atom: {
-              char: {
-                unicode_symbols: "&#x3b1;"
-              }
-            }
+            ordinary_symbols: "&#x3b1;"
           }
         },
         sub: {
@@ -19693,11 +18722,7 @@ module UnicodeMathParseValues
               sub_exp: {
                 base: {
                   factor: {
-                    atom: {
-                      char: {
-                        unicode_symbols: "&#x3b1;"
-                      }
-                    }
+                    ordinary_symbols: "&#x3b1;"
                   }
                 },
                 sub: {
@@ -19753,11 +18778,7 @@ module UnicodeMathParseValues
                         sub_exp: {
                           base: {
                             factor: {
-                              atom: {
-                                char: {
-                                  unicode_symbols: "&#x3b1;"
-                                }
-                              }
+                              ordinary_symbols: "&#x3b1;"
                             }
                           },
                           sub: {
@@ -19801,11 +18822,7 @@ module UnicodeMathParseValues
                               sub_exp: {
                                 base: {
                                   factor: {
-                                    atom: {
-                                      char: {
-                                        unicode_symbols: "&#x3b1;"
-                                      }
-                                    }
+                                    ordinary_symbols: "&#x3b1;"
                                   }
                                 },
                                 sub: {
@@ -19878,11 +18895,7 @@ module UnicodeMathParseValues
       sub_exp: {
         base: {
           factor: {
-            atom: {
-              char: {
-                unicode_symbols: "&#x3b1;"
-              }
-            }
+            ordinary_symbols: "&#x3b1;"
           }
         },
         sub: {
@@ -19932,11 +18945,7 @@ module UnicodeMathParseValues
               sub_exp: {
                 base: {
                   factor: {
-                    atom: {
-                      char: {
-                        unicode_symbols: "&#x3b1;"
-                      }
-                    }
+                    ordinary_symbols: "&#x3b1;"
                   }
                 },
                 sub: {
@@ -19992,11 +19001,7 @@ module UnicodeMathParseValues
                         sub_exp: {
                           base: {
                             factor: {
-                              atom: {
-                                char: {
-                                  unicode_symbols: "&#x3b1;"
-                                }
-                              }
+                              ordinary_symbols: "&#x3b1;"
                             }
                           },
                           sub: {
@@ -20057,11 +19062,7 @@ module UnicodeMathParseValues
                                 sub_exp: {
                                   base: {
                                     factor: {
-                                      atom: {
-                                        char: {
-                                          unicode_symbols: "&#x3b1;"
-                                        }
-                                      }
+                                      ordinary_symbols: "&#x3b1;"
                                     }
                                   },
                                   sub: {
@@ -20135,11 +19136,7 @@ module UnicodeMathParseValues
       sub_exp: {
         base: {
           factor: {
-            atom: {
-              char: {
-                unicode_symbols: "&#x3b1;"
-              }
-            }
+            ordinary_symbols: "&#x3b1;"
           }
         },
         sub: {
@@ -20176,7 +19173,7 @@ module UnicodeMathParseValues
                         alphanumeric: "y"
                       }
                     },
-                    expr: {
+                    exp: {
                       factor: {
                         atom: {
                           alphanumeric: "z"
@@ -20208,11 +19205,7 @@ module UnicodeMathParseValues
                 sub_exp: {
                   base: {
                     factor: {
-                      atom: {
-                        char: {
-                          unicode_symbols: "&#x3b1;"
-                        }
-                      }
+                      ordinary_symbols: "&#x3b1;"
                     }
                   },
                   sub: {
@@ -20249,7 +19242,7 @@ module UnicodeMathParseValues
                                   alphanumeric: "z"
                                 }
                               },
-                              expr: {
+                              exp: {
                                 factor: {
                                   atom: {
                                     alphanumeric: "x"
@@ -20287,11 +19280,7 @@ module UnicodeMathParseValues
                             sub_exp: {
                               base: {
                                 factor: {
-                                  atom: {
-                                    char: {
-                                      unicode_symbols: "&#x3b1;"
-                                    }
-                                  }
+                                  ordinary_symbols: "&#x3b1;"
                                 }
                               },
                               sub: {
@@ -20328,7 +19317,7 @@ module UnicodeMathParseValues
                                               alphanumeric: "x"
                                             }
                                           },
-                                          expr: {
+                                          exp: {
                                             factor: {
                                               atom: {
                                                 alphanumeric: "y"
@@ -20368,11 +19357,7 @@ module UnicodeMathParseValues
                                     sub_exp: {
                                       base: {
                                         factor: {
-                                          atom: {
-                                            char: {
-                                              unicode_symbols: "&#x3b1;"
-                                            }
-                                          }
+                                          ordinary_symbols: "&#x3b1;"
                                         }
                                       },
                                       sub: {
@@ -20409,13 +19394,13 @@ module UnicodeMathParseValues
                                                       alphanumeric: "x"
                                                     }
                                                   },
-                                                  expr: {
+                                                  exp: {
                                                     factor: {
                                                       atom: {
                                                         alphanumeric: "y"
                                                       }
                                                     },
-                                                    expr: {
+                                                    exp: {
                                                       factor: {
                                                         atom: {
                                                           alphanumeric: "z"
@@ -20482,11 +19467,7 @@ module UnicodeMathParseValues
       sub_exp: {
         base: {
           factor: {
-            atom: {
-              char: {
-                unicode_symbols: "&#x3b1;"
-              }
-            }
+            ordinary_symbols: "&#x3b1;"
           }
         },
         sub: {
@@ -20523,7 +19504,7 @@ module UnicodeMathParseValues
                         alphanumeric: "y"
                       }
                     },
-                    expr: {
+                    exp: {
                       factor: {
                         atom: {
                           alphanumeric: "z"
@@ -20567,11 +19548,7 @@ module UnicodeMathParseValues
               sub_exp: {
                 base: {
                   factor: {
-                    atom: {
-                      char: {
-                        unicode_symbols: "&#x3b1;"
-                      }
-                    }
+                    ordinary_symbols: "&#x3b1;"
                   }
                 },
                 sub: {
@@ -20608,7 +19585,7 @@ module UnicodeMathParseValues
                                 alphanumeric: "z"
                               }
                             },
-                            expr: {
+                            exp: {
                               factor: {
                                 atom: {
                                   alphanumeric: "x"
@@ -20646,11 +19623,7 @@ module UnicodeMathParseValues
                           sub_exp: {
                             base: {
                               factor: {
-                                atom: {
-                                  char: {
-                                    unicode_symbols: "&#x3b1;"
-                                  }
-                                }
+                                ordinary_symbols: "&#x3b1;"
                               }
                             },
                             sub: {
@@ -20687,7 +19660,7 @@ module UnicodeMathParseValues
                                             alphanumeric: "x"
                                           }
                                         },
-                                        expr: {
+                                        exp: {
                                           factor: {
                                             atom: {
                                               alphanumeric: "y"
@@ -20725,11 +19698,7 @@ module UnicodeMathParseValues
                                       sub_exp: {
                                         base: {
                                           factor: {
-                                            atom: {
-                                              char: {
-                                                unicode_symbols: "&#x3b1;"
-                                              }
-                                            }
+                                            ordinary_symbols: "&#x3b1;"
                                           }
                                         },
                                         sub: {
@@ -20766,13 +19735,13 @@ module UnicodeMathParseValues
                                                         alphanumeric: "x"
                                                       }
                                                     },
-                                                    expr: {
+                                                    exp: {
                                                       factor: {
                                                         atom: {
                                                           alphanumeric: "y"
                                                         }
                                                       },
-                                                      expr: {
+                                                      exp: {
                                                         factor: {
                                                           atom: {
                                                             alphanumeric: "z"
@@ -20840,11 +19809,7 @@ module UnicodeMathParseValues
       sub_exp: {
         base: {
           factor: {
-            atom: {
-              char: {
-                unicode_symbols: "&#x3b1;"
-              }
-            }
+            ordinary_symbols: "&#x3b1;"
           }
         },
         sub: {
@@ -20881,7 +19846,7 @@ module UnicodeMathParseValues
                         alphanumeric: "y"
                       }
                     },
-                    expr: {
+                    exp: {
                       factor: {
                         atom: {
                           alphanumeric: "z"
@@ -20907,11 +19872,7 @@ module UnicodeMathParseValues
               sub_exp: {
                 base: {
                   factor: {
-                    atom: {
-                      char: {
-                        unicode_symbols: "&#x3b1;"
-                      }
-                    }
+                    ordinary_symbols: "&#x3b1;"
                   }
                 },
                 sub: {
@@ -20948,7 +19909,7 @@ module UnicodeMathParseValues
                                 alphanumeric: "z"
                               }
                             },
-                            expr: {
+                            exp: {
                               factor: {
                                 atom: {
                                   alphanumeric: "x"
@@ -20986,11 +19947,7 @@ module UnicodeMathParseValues
                           sub_exp: {
                             base: {
                               factor: {
-                                atom: {
-                                  char: {
-                                    unicode_symbols: "&#x3b1;"
-                                  }
-                                }
+                                ordinary_symbols: "&#x3b1;"
                               }
                             },
                             sub: {
@@ -21027,7 +19984,7 @@ module UnicodeMathParseValues
                                             alphanumeric: "x"
                                           }
                                         },
-                                        expr: {
+                                        exp: {
                                           factor: {
                                             atom: {
                                               alphanumeric: "y"
@@ -21053,11 +20010,7 @@ module UnicodeMathParseValues
                                   sub_exp: {
                                     base: {
                                       factor: {
-                                        atom: {
-                                          char: {
-                                            unicode_symbols: "&#x3b1;"
-                                          }
-                                        }
+                                        ordinary_symbols: "&#x3b1;"
                                       }
                                     },
                                     sub: {
@@ -21094,13 +20047,13 @@ module UnicodeMathParseValues
                                                     alphanumeric: "x"
                                                   }
                                                 },
-                                                expr: {
+                                                exp: {
                                                   factor: {
                                                     atom: {
                                                       alphanumeric: "y"
                                                     }
                                                   },
-                                                  expr: {
+                                                  exp: {
                                                     factor: {
                                                       atom: {
                                                         alphanumeric: "z"
@@ -21152,11 +20105,7 @@ module UnicodeMathParseValues
       sub_exp: {
         base: {
           factor: {
-            atom: {
-              char: {
-                unicode_symbols: "&#x3b1;"
-              }
-            }
+            ordinary_symbols: "&#x3b1;"
           }
         },
         sub: {
@@ -21193,7 +20142,7 @@ module UnicodeMathParseValues
                         alphanumeric: "y"
                       }
                     },
-                    expr: {
+                    exp: {
                       factor: {
                         atom: {
                           alphanumeric: "z"
@@ -21219,11 +20168,7 @@ module UnicodeMathParseValues
               sub_exp: {
                 base: {
                   factor: {
-                    atom: {
-                      char: {
-                        unicode_symbols: "&#x3b1;"
-                      }
-                    }
+                    ordinary_symbols: "&#x3b1;"
                   }
                 },
                 sub: {
@@ -21260,7 +20205,7 @@ module UnicodeMathParseValues
                                 alphanumeric: "z"
                               }
                             },
-                            expr: {
+                            exp: {
                               factor: {
                                 atom: {
                                   alphanumeric: "x"
@@ -21298,11 +20243,7 @@ module UnicodeMathParseValues
                           sub_exp: {
                             base: {
                               factor: {
-                                atom: {
-                                  char: {
-                                    unicode_symbols: "&#x3b1;"
-                                  }
-                                }
+                                ordinary_symbols: "&#x3b1;"
                               }
                             },
                             sub: {
@@ -21339,7 +20280,7 @@ module UnicodeMathParseValues
                                             alphanumeric: "x"
                                           }
                                         },
-                                        expr: {
+                                        exp: {
                                           factor: {
                                             atom: {
                                               alphanumeric: "y"
@@ -21365,11 +20306,7 @@ module UnicodeMathParseValues
                                   sub_exp: {
                                     base: {
                                       factor: {
-                                        atom: {
-                                          char: {
-                                            unicode_symbols: "&#x3b1;"
-                                          }
-                                        }
+                                        ordinary_symbols: "&#x3b1;"
                                       }
                                     },
                                     sub: {
@@ -21406,13 +20343,13 @@ module UnicodeMathParseValues
                                                     alphanumeric: "x"
                                                   }
                                                 },
-                                                expr: {
+                                                exp: {
                                                   factor: {
                                                     atom: {
                                                       alphanumeric: "y"
                                                     }
                                                   },
-                                                  expr: {
+                                                  exp: {
                                                     factor: {
                                                       atom: {
                                                         alphanumeric: "z"
@@ -21489,11 +20426,7 @@ module UnicodeMathParseValues
           sub_exp: {
             base: {
               factor: {
-                atom: {
-                  char: {
-                    unicode_symbols: "&#x3b1;"
-                  }
-                }
+                ordinary_symbols: "&#x3b1;"
               }
             },
             sub: {
@@ -21507,13 +20440,13 @@ module UnicodeMathParseValues
                           alphanumeric: "x"
                         }
                       },
-                      expr: {
+                      exp: {
                         factor: {
                           atom: {
                             alphanumeric: "y"
                           }
                         },
-                        expr: {
+                        exp: {
                           factor: {
                             atom: {
                               alphanumeric: "z"
@@ -21578,11 +20511,7 @@ module UnicodeMathParseValues
                       sub_exp: {
                         base: {
                           factor: {
-                            atom: {
-                              char: {
-                                unicode_symbols: "&#x3b1;"
-                              }
-                            }
+                            ordinary_symbols: "&#x3b1;"
                           }
                         },
                         sub: {
@@ -21596,13 +20525,13 @@ module UnicodeMathParseValues
                                       alphanumeric: "x"
                                     }
                                   },
-                                  expr: {
+                                  exp: {
                                     factor: {
                                       atom: {
                                         alphanumeric: "y"
                                       }
                                     },
-                                    expr: {
+                                    exp: {
                                       factor: {
                                         atom: {
                                           alphanumeric: "z"
@@ -21667,11 +20596,7 @@ module UnicodeMathParseValues
                                   sub_exp: {
                                     base: {
                                       factor: {
-                                        atom: {
-                                          char: {
-                                            unicode_symbols: "&#x3b1;"
-                                          }
-                                        }
+                                        ordinary_symbols: "&#x3b1;"
                                       }
                                     },
                                     sub: {
@@ -21685,13 +20610,13 @@ module UnicodeMathParseValues
                                                   alphanumeric: "x"
                                                 }
                                               },
-                                              expr: {
+                                              exp: {
                                                 factor: {
                                                   atom: {
                                                     alphanumeric: "y"
                                                   }
                                                 },
-                                                expr: {
+                                                exp: {
                                                   factor: {
                                                     atom: {
                                                       alphanumeric: "z"
@@ -21804,11 +20729,7 @@ module UnicodeMathParseValues
           sub_exp: {
             base: {
               factor: {
-                atom: {
-                  char: {
-                    unicode_symbols: "&#x3b1;"
-                  }
-                }
+                ordinary_symbols: "&#x3b1;"
               }
             },
             sub: {
@@ -21822,7 +20743,7 @@ module UnicodeMathParseValues
                           alphanumeric: "x"
                         }
                       },
-                      expr: {
+                      exp: {
                         factor: {
                           atom: {
                             alphanumeric: "y"
@@ -21880,11 +20801,7 @@ module UnicodeMathParseValues
                     sub_exp: {
                       base: {
                         factor: {
-                          atom: {
-                            char: {
-                              unicode_symbols: "&#x3b1;"
-                            }
-                          }
+                          ordinary_symbols: "&#x3b1;"
                         }
                       },
                       sub: {
@@ -21898,7 +20815,7 @@ module UnicodeMathParseValues
                                     alphanumeric: "x"
                                   }
                                 },
-                                expr: {
+                                exp: {
                                   factor: {
                                     atom: {
                                       alphanumeric: "y"
@@ -21956,11 +20873,7 @@ module UnicodeMathParseValues
                               sub_exp: {
                                 base: {
                                   factor: {
-                                    atom: {
-                                      char: {
-                                        unicode_symbols: "&#x3b1;"
-                                      }
-                                    }
+                                    ordinary_symbols: "&#x3b1;"
                                   }
                                 },
                                 sub: {
@@ -21974,7 +20887,7 @@ module UnicodeMathParseValues
                                               alphanumeric: "x"
                                             }
                                           },
-                                          expr: {
+                                          exp: {
                                             factor: {
                                               atom: {
                                                 alphanumeric: "y"
@@ -22077,11 +20990,7 @@ module UnicodeMathParseValues
           sub_exp: {
             base: {
               factor: {
-                atom: {
-                  char: {
-                    unicode_symbols: "&#x3b1;"
-                  }
-                }
+                ordinary_symbols: "&#x3b1;"
               }
             },
             sub: {
@@ -22095,7 +21004,7 @@ module UnicodeMathParseValues
                           alphanumeric: "y"
                         }
                       },
-                      expr: {
+                      exp: {
                         factor: {
                           atom: {
                             alphanumeric: "z"
@@ -22153,11 +21062,7 @@ module UnicodeMathParseValues
                     sub_exp: {
                       base: {
                         factor: {
-                          atom: {
-                            char: {
-                              unicode_symbols: "&#x3b1;"
-                            }
-                          }
+                          ordinary_symbols: "&#x3b1;"
                         }
                       },
                       sub: {
@@ -22171,7 +21076,7 @@ module UnicodeMathParseValues
                                     alphanumeric: "y"
                                   }
                                 },
-                                expr: {
+                                exp: {
                                   factor: {
                                     atom: {
                                       alphanumeric: "z"
@@ -22229,11 +21134,7 @@ module UnicodeMathParseValues
                               sub_exp: {
                                 base: {
                                   factor: {
-                                    atom: {
-                                      char: {
-                                        unicode_symbols: "&#x3b1;"
-                                      }
-                                    }
+                                    ordinary_symbols: "&#x3b1;"
                                   }
                                 },
                                 sub: {
@@ -22247,7 +21148,7 @@ module UnicodeMathParseValues
                                               alphanumeric: "y"
                                             }
                                           },
-                                          expr: {
+                                          exp: {
                                             factor: {
                                               atom: {
                                                 alphanumeric: "z"
@@ -22350,11 +21251,7 @@ module UnicodeMathParseValues
           sub_exp: {
             base: {
               factor: {
-                atom: {
-                  char: {
-                    unicode_symbols: "&#x3b1;"
-                  }
-                }
+                ordinary_symbols: "&#x3b1;"
               }
             },
             sub: {
@@ -22368,7 +21265,7 @@ module UnicodeMathParseValues
                           alphanumeric: "z"
                         }
                       },
-                      expr: {
+                      exp: {
                         factor: {
                           atom: {
                             alphanumeric: "x"
@@ -22426,11 +21323,7 @@ module UnicodeMathParseValues
                     sub_exp: {
                       base: {
                         factor: {
-                          atom: {
-                            char: {
-                              unicode_symbols: "&#x3b1;"
-                            }
-                          }
+                          ordinary_symbols: "&#x3b1;"
                         }
                       },
                       sub: {
@@ -22444,7 +21337,7 @@ module UnicodeMathParseValues
                                     alphanumeric: "z"
                                   }
                                 },
-                                expr: {
+                                exp: {
                                   factor: {
                                     atom: {
                                       alphanumeric: "x"
@@ -22502,11 +21395,7 @@ module UnicodeMathParseValues
                               sub_exp: {
                                 base: {
                                   factor: {
-                                    atom: {
-                                      char: {
-                                        unicode_symbols: "&#x3b1;"
-                                      }
-                                    }
+                                    ordinary_symbols: "&#x3b1;"
                                   }
                                 },
                                 sub: {
@@ -22520,7 +21409,7 @@ module UnicodeMathParseValues
                                               alphanumeric: "z"
                                             }
                                           },
-                                          expr: {
+                                          exp: {
                                             factor: {
                                               atom: {
                                                 alphanumeric: "x"
@@ -22623,11 +21512,7 @@ module UnicodeMathParseValues
           sub_exp: {
             base: {
               factor: {
-                atom: {
-                  char: {
-                    unicode_symbols: "&#x3b1;"
-                  }
-                }
+                ordinary_symbols: "&#x3b1;"
               }
             },
             sub: {
@@ -22680,11 +21565,7 @@ module UnicodeMathParseValues
                   sub_exp: {
                     base: {
                       factor: {
-                        atom: {
-                          char: {
-                            unicode_symbols: "&#x3b1;"
-                          }
-                        }
+                        ordinary_symbols: "&#x3b1;"
                       }
                     },
                     sub: {
@@ -22737,11 +21618,7 @@ module UnicodeMathParseValues
                           sub_exp: {
                             base: {
                               factor: {
-                                atom: {
-                                  char: {
-                                    unicode_symbols: "&#x3b1;"
-                                  }
-                                }
+                                ordinary_symbols: "&#x3b1;"
                               }
                             },
                             sub: {
@@ -22836,11 +21713,7 @@ module UnicodeMathParseValues
           sub_exp: {
             base: {
               factor: {
-                atom: {
-                  char: {
-                    unicode_symbols: "&#x3b1;"
-                  }
-                }
+                ordinary_symbols: "&#x3b1;"
               }
             },
             sub: {
@@ -22893,11 +21766,7 @@ module UnicodeMathParseValues
                   sub_exp: {
                     base: {
                       factor: {
-                        atom: {
-                          char: {
-                            unicode_symbols: "&#x3b1;"
-                          }
-                        }
+                        ordinary_symbols: "&#x3b1;"
                       }
                     },
                     sub: {
@@ -22950,11 +21819,7 @@ module UnicodeMathParseValues
                           sub_exp: {
                             base: {
                               factor: {
-                                atom: {
-                                  char: {
-                                    unicode_symbols: "&#x3b1;"
-                                  }
-                                }
+                                ordinary_symbols: "&#x3b1;"
                               }
                             },
                             sub: {
@@ -23049,11 +21914,7 @@ module UnicodeMathParseValues
           sub_exp: {
             base: {
               factor: {
-                atom: {
-                  char: {
-                    unicode_symbols: "&#x3b1;"
-                  }
-                }
+                ordinary_symbols: "&#x3b1;"
               }
             },
             sub: {
@@ -23106,11 +21967,7 @@ module UnicodeMathParseValues
                   sub_exp: {
                     base: {
                       factor: {
-                        atom: {
-                          char: {
-                            unicode_symbols: "&#x3b1;"
-                          }
-                        }
+                        ordinary_symbols: "&#x3b1;"
                       }
                     },
                     sub: {
@@ -23163,11 +22020,7 @@ module UnicodeMathParseValues
                           sub_exp: {
                             base: {
                               factor: {
-                                atom: {
-                                  char: {
-                                    unicode_symbols: "&#x3b1;"
-                                  }
-                                }
+                                ordinary_symbols: "&#x3b1;"
                               }
                             },
                             sub: {
@@ -23492,9 +22345,9 @@ module UnicodeMathParseValues
                                 }
                               }
                             },
-                            expr: {
+                            exp: {
                               operator: "+",
-                              expr: {
+                              exp: {
                                 factor: {
                                   digit: {
                                     number: "3"
@@ -23513,13 +22366,7 @@ module UnicodeMathParseValues
                           }
                         },
                         expr: {
-                          factor: {
-                            atom: {
-                              char: {
-                                unicode_symbols: "&#x2227;"
-                              }
-                            }
-                          },
+                          binary_symbols: "&#x2227;",
                           expr: {
                             factor: {
                               intermediate_exp: {
@@ -23529,9 +22376,9 @@ module UnicodeMathParseValues
                                     alphanumeric: "y"
                                   }
                                 },
-                                expr: {
+                                exp: {
                                   operator: "-",
-                                  expr: {
+                                  exp: {
                                     factor: {
                                       digit: {
                                         number: "2"
@@ -23568,11 +22415,7 @@ module UnicodeMathParseValues
       sub_exp: {
         base: {
           factor: {
-            atom: {
-              char: {
-                unicode_symbols: "&#x3b1;"
-              }
-            }
+            ordinary_symbols: "&#x3b1;"
           }
         },
         sub: {
@@ -23586,13 +22429,13 @@ module UnicodeMathParseValues
                       alphanumeric: "x"
                     }
                   },
-                  expr: {
+                  exp: {
                     factor: {
                       atom: {
                         alphanumeric: "y"
                       }
                     },
-                    expr: {
+                    exp: {
                       factor: {
                         atom: {
                           alphanumeric: "z"
@@ -23629,7 +22472,7 @@ module UnicodeMathParseValues
                         alphanumeric: "y"
                       }
                     },
-                    expr: {
+                    exp: {
                       factor: {
                         atom: {
                           alphanumeric: "z"
@@ -23655,11 +22498,7 @@ module UnicodeMathParseValues
               sub_exp: {
                 base: {
                   factor: {
-                    atom: {
-                      char: {
-                        unicode_symbols: "&#x3b1;"
-                      }
-                    }
+                    ordinary_symbols: "&#x3b1;"
                   }
                 },
                 sub: {
@@ -23673,13 +22512,13 @@ module UnicodeMathParseValues
                               alphanumeric: "x"
                             }
                           },
-                          expr: {
+                          exp: {
                             factor: {
                               atom: {
                                 alphanumeric: "y"
                               }
                             },
-                            expr: {
+                            exp: {
                               factor: {
                                 atom: {
                                   alphanumeric: "z"
@@ -23716,7 +22555,7 @@ module UnicodeMathParseValues
                                 alphanumeric: "z"
                               }
                             },
-                            expr: {
+                            exp: {
                               factor: {
                                 atom: {
                                   alphanumeric: "x"
@@ -23754,11 +22593,7 @@ module UnicodeMathParseValues
                           sub_exp: {
                             base: {
                               factor: {
-                                atom: {
-                                  char: {
-                                    unicode_symbols: "&#x3b1;"
-                                  }
-                                }
+                                ordinary_symbols: "&#x3b1;"
                               }
                             },
                             sub: {
@@ -23772,13 +22607,13 @@ module UnicodeMathParseValues
                                           alphanumeric: "x"
                                         }
                                       },
-                                      expr: {
+                                      exp: {
                                         factor: {
                                           atom: {
                                             alphanumeric: "y"
                                           }
                                         },
-                                        expr: {
+                                        exp: {
                                           factor: {
                                             atom: {
                                               alphanumeric: "z"
@@ -23815,7 +22650,7 @@ module UnicodeMathParseValues
                                             alphanumeric: "x"
                                           }
                                         },
-                                        expr: {
+                                        exp: {
                                           factor: {
                                             atom: {
                                               alphanumeric: "y"
@@ -23852,11 +22687,7 @@ module UnicodeMathParseValues
                                     sub_exp: {
                                       base: {
                                         factor: {
-                                          atom: {
-                                            char: {
-                                              unicode_symbols: "&#x3b1;"
-                                            }
-                                          }
+                                          ordinary_symbols: "&#x3b1;"
                                         }
                                       },
                                       sub: {
@@ -23870,13 +22701,13 @@ module UnicodeMathParseValues
                                                     alphanumeric: "x"
                                                   }
                                                 },
-                                                expr: {
+                                                exp: {
                                                   factor: {
                                                     atom: {
                                                       alphanumeric: "y"
                                                     }
                                                   },
-                                                  expr: {
+                                                  exp: {
                                                     factor: {
                                                       atom: {
                                                         alphanumeric: "z"
@@ -23913,13 +22744,13 @@ module UnicodeMathParseValues
                                                       alphanumeric: "x"
                                                     }
                                                   },
-                                                  expr: {
+                                                  exp: {
                                                     factor: {
                                                       atom: {
                                                         alphanumeric: "y"
                                                       }
                                                     },
-                                                    expr: {
+                                                    exp: {
                                                       factor: {
                                                         atom: {
                                                           alphanumeric: "z"
@@ -23986,11 +22817,7 @@ module UnicodeMathParseValues
       sub_exp: {
         base: {
           factor: {
-            atom: {
-              char: {
-                unicode_symbols: "&#x3b1;"
-              }
-            }
+            ordinary_symbols: "&#x3b1;"
           }
         },
         sub: {
@@ -24004,13 +22831,13 @@ module UnicodeMathParseValues
                       alphanumeric: "x"
                     }
                   },
-                  expr: {
+                  exp: {
                     factor: {
                       atom: {
                         alphanumeric: "y"
                       }
                     },
-                    expr: {
+                    exp: {
                       factor: {
                         atom: {
                           alphanumeric: "z"
@@ -24047,7 +22874,7 @@ module UnicodeMathParseValues
                         alphanumeric: "y"
                       }
                     },
-                    expr: {
+                    exp: {
                       factor: {
                         atom: {
                           alphanumeric: "z"
@@ -24073,11 +22900,7 @@ module UnicodeMathParseValues
               sub_exp: {
                 base: {
                   factor: {
-                    atom: {
-                      char: {
-                        unicode_symbols: "&#x3b1;"
-                      }
-                    }
+                    ordinary_symbols: "&#x3b1;"
                   }
                 },
                 sub: {
@@ -24091,13 +22914,13 @@ module UnicodeMathParseValues
                               alphanumeric: "x"
                             }
                           },
-                          expr: {
+                          exp: {
                             factor: {
                               atom: {
                                 alphanumeric: "y"
                               }
                             },
-                            expr: {
+                            exp: {
                               factor: {
                                 atom: {
                                   alphanumeric: "z"
@@ -24134,7 +22957,7 @@ module UnicodeMathParseValues
                                 alphanumeric: "z"
                               }
                             },
-                            expr: {
+                            exp: {
                               factor: {
                                 atom: {
                                   alphanumeric: "x"
@@ -24172,11 +22995,7 @@ module UnicodeMathParseValues
                           sub_exp: {
                             base: {
                               factor: {
-                                atom: {
-                                  char: {
-                                    unicode_symbols: "&#x3b1;"
-                                  }
-                                }
+                                ordinary_symbols: "&#x3b1;"
                               }
                             },
                             sub: {
@@ -24190,13 +23009,13 @@ module UnicodeMathParseValues
                                           alphanumeric: "x"
                                         }
                                       },
-                                      expr: {
+                                      exp: {
                                         factor: {
                                           atom: {
                                             alphanumeric: "y"
                                           }
                                         },
-                                        expr: {
+                                        exp: {
                                           factor: {
                                             atom: {
                                               alphanumeric: "z"
@@ -24233,7 +23052,7 @@ module UnicodeMathParseValues
                                             alphanumeric: "x"
                                           }
                                         },
-                                        expr: {
+                                        exp: {
                                           factor: {
                                             atom: {
                                               alphanumeric: "y"
@@ -24259,11 +23078,7 @@ module UnicodeMathParseValues
                                   sub_exp: {
                                     base: {
                                       factor: {
-                                        atom: {
-                                          char: {
-                                            unicode_symbols: "&#x3b1;"
-                                          }
-                                        }
+                                        ordinary_symbols: "&#x3b1;"
                                       }
                                     },
                                     sub: {
@@ -24277,13 +23092,13 @@ module UnicodeMathParseValues
                                                   alphanumeric: "x"
                                                 }
                                               },
-                                              expr: {
+                                              exp: {
                                                 factor: {
                                                   atom: {
                                                     alphanumeric: "y"
                                                   }
                                                 },
-                                                expr: {
+                                                exp: {
                                                   factor: {
                                                     atom: {
                                                       alphanumeric: "z"
@@ -24320,13 +23135,13 @@ module UnicodeMathParseValues
                                                     alphanumeric: "x"
                                                   }
                                                 },
-                                                expr: {
+                                                exp: {
                                                   factor: {
                                                     atom: {
                                                       alphanumeric: "y"
                                                     }
                                                   },
-                                                  expr: {
+                                                  exp: {
                                                     factor: {
                                                       atom: {
                                                         alphanumeric: "z"
@@ -24378,11 +23193,7 @@ module UnicodeMathParseValues
       sub_exp: {
         base: {
           factor: {
-            atom: {
-              char: {
-                unicode_symbols: "&#x3b1;"
-              }
-            }
+            ordinary_symbols: "&#x3b1;"
           }
         },
         sub: {
@@ -24396,13 +23207,13 @@ module UnicodeMathParseValues
                       alphanumeric: "x"
                     }
                   },
-                  expr: {
+                  exp: {
                     factor: {
                       atom: {
                         alphanumeric: "y"
                       }
                     },
-                    expr: {
+                    exp: {
                       factor: {
                         atom: {
                           alphanumeric: "z"
@@ -24439,7 +23250,7 @@ module UnicodeMathParseValues
                         alphanumeric: "y"
                       }
                     },
-                    expr: {
+                    exp: {
                       factor: {
                         atom: {
                           alphanumeric: "z"
@@ -24465,11 +23276,7 @@ module UnicodeMathParseValues
               sub_exp: {
                 base: {
                   factor: {
-                    atom: {
-                      char: {
-                        unicode_symbols: "&#x3b1;"
-                      }
-                    }
+                    ordinary_symbols: "&#x3b1;"
                   }
                 },
                 sub: {
@@ -24483,13 +23290,13 @@ module UnicodeMathParseValues
                               alphanumeric: "x"
                             }
                           },
-                          expr: {
+                          exp: {
                             factor: {
                               atom: {
                                 alphanumeric: "y"
                               }
                             },
-                            expr: {
+                            exp: {
                               factor: {
                                 atom: {
                                   alphanumeric: "z"
@@ -24526,7 +23333,7 @@ module UnicodeMathParseValues
                                 alphanumeric: "z"
                               }
                             },
-                            expr: {
+                            exp: {
                               factor: {
                                 atom: {
                                   alphanumeric: "x"
@@ -24552,11 +23359,7 @@ module UnicodeMathParseValues
                       sub_exp: {
                         base: {
                           factor: {
-                            atom: {
-                              char: {
-                                unicode_symbols: "&#x3b1;"
-                              }
-                            }
+                            ordinary_symbols: "&#x3b1;"
                           }
                         },
                         sub: {
@@ -24570,13 +23373,13 @@ module UnicodeMathParseValues
                                       alphanumeric: "x"
                                     }
                                   },
-                                  expr: {
+                                  exp: {
                                     factor: {
                                       atom: {
                                         alphanumeric: "y"
                                       }
                                     },
-                                    expr: {
+                                    exp: {
                                       factor: {
                                         atom: {
                                           alphanumeric: "z"
@@ -24613,7 +23416,7 @@ module UnicodeMathParseValues
                                         alphanumeric: "x"
                                       }
                                     },
-                                    expr: {
+                                    exp: {
                                       factor: {
                                         atom: {
                                           alphanumeric: "y"
@@ -24639,11 +23442,7 @@ module UnicodeMathParseValues
                               sub_exp: {
                                 base: {
                                   factor: {
-                                    atom: {
-                                      char: {
-                                        unicode_symbols: "&#x3b1;"
-                                      }
-                                    }
+                                    ordinary_symbols: "&#x3b1;"
                                   }
                                 },
                                 sub: {
@@ -24657,13 +23456,13 @@ module UnicodeMathParseValues
                                               alphanumeric: "x"
                                             }
                                           },
-                                          expr: {
+                                          exp: {
                                             factor: {
                                               atom: {
                                                 alphanumeric: "y"
                                               }
                                             },
-                                            expr: {
+                                            exp: {
                                               factor: {
                                                 atom: {
                                                   alphanumeric: "z"
@@ -24700,13 +23499,13 @@ module UnicodeMathParseValues
                                                 alphanumeric: "x"
                                               }
                                             },
-                                            expr: {
+                                            exp: {
                                               factor: {
                                                 atom: {
                                                   alphanumeric: "y"
                                                 }
                                               },
-                                              expr: {
+                                              exp: {
                                                 factor: {
                                                   atom: {
                                                     alphanumeric: "z"
@@ -24742,11 +23541,7 @@ module UnicodeMathParseValues
       sub_exp: {
         base: {
           factor: {
-            atom: {
-              char: {
-                unicode_symbols: "&#x3b1;"
-              }
-            }
+            ordinary_symbols: "&#x3b1;"
           }
         },
         sub: {
@@ -24760,13 +23555,13 @@ module UnicodeMathParseValues
                       alphanumeric: "x"
                     }
                   },
-                  expr: {
+                  exp: {
                     factor: {
                       atom: {
                         alphanumeric: "y"
                       }
                     },
-                    expr: {
+                    exp: {
                       factor: {
                         atom: {
                           alphanumeric: "z"
@@ -24803,7 +23598,7 @@ module UnicodeMathParseValues
                         alphanumeric: "y"
                       }
                     },
-                    expr: {
+                    exp: {
                       factor: {
                         atom: {
                           alphanumeric: "z"
@@ -24853,11 +23648,7 @@ module UnicodeMathParseValues
                       sub_exp: {
                         base: {
                           factor: {
-                            atom: {
-                              char: {
-                                unicode_symbols: "&#x3b1;"
-                              }
-                            }
+                            ordinary_symbols: "&#x3b1;"
                           }
                         },
                         sub: {
@@ -24871,13 +23662,13 @@ module UnicodeMathParseValues
                                       alphanumeric: "x"
                                     }
                                   },
-                                  expr: {
+                                  exp: {
                                     factor: {
                                       atom: {
                                         alphanumeric: "y"
                                       }
                                     },
-                                    expr: {
+                                    exp: {
                                       factor: {
                                         atom: {
                                           alphanumeric: "z"
@@ -24914,7 +23705,7 @@ module UnicodeMathParseValues
                                         alphanumeric: "z"
                                       }
                                     },
-                                    expr: {
+                                    exp: {
                                       factor: {
                                         atom: {
                                           alphanumeric: "x"
@@ -24967,11 +23758,7 @@ module UnicodeMathParseValues
                                 sub_exp: {
                                   base: {
                                     factor: {
-                                      atom: {
-                                        char: {
-                                          unicode_symbols: "&#x3b1;"
-                                        }
-                                      }
+                                      ordinary_symbols: "&#x3b1;"
                                     }
                                   },
                                   sub: {
@@ -24985,13 +23772,13 @@ module UnicodeMathParseValues
                                                 alphanumeric: "x"
                                               }
                                             },
-                                            expr: {
+                                            exp: {
                                               factor: {
                                                 atom: {
                                                   alphanumeric: "y"
                                                 }
                                               },
-                                              expr: {
+                                              exp: {
                                                 factor: {
                                                   atom: {
                                                     alphanumeric: "z"
@@ -25028,7 +23815,7 @@ module UnicodeMathParseValues
                                                   alphanumeric: "x"
                                                 }
                                               },
-                                              expr: {
+                                              exp: {
                                                 factor: {
                                                   atom: {
                                                     alphanumeric: "y"
@@ -25078,11 +23865,7 @@ module UnicodeMathParseValues
                                                 sub_exp: {
                                                   base: {
                                                     factor: {
-                                                      atom: {
-                                                        char: {
-                                                          unicode_symbols: "&#x3b1;"
-                                                        }
-                                                      }
+                                                      ordinary_symbols: "&#x3b1;"
                                                     }
                                                   },
                                                   sub: {
@@ -25096,13 +23879,13 @@ module UnicodeMathParseValues
                                                                 alphanumeric: "x"
                                                               }
                                                             },
-                                                            expr: {
+                                                            exp: {
                                                               factor: {
                                                                 atom: {
                                                                   alphanumeric: "y"
                                                                 }
                                                               },
-                                                              expr: {
+                                                              exp: {
                                                                 factor: {
                                                                   atom: {
                                                                     alphanumeric: "z"
@@ -25139,13 +23922,13 @@ module UnicodeMathParseValues
                                                                   alphanumeric: "x"
                                                                 }
                                                               },
-                                                              expr: {
+                                                              exp: {
                                                                 factor: {
                                                                   atom: {
                                                                     alphanumeric: "y"
                                                                   }
                                                                 },
-                                                                expr: {
+                                                                exp: {
                                                                   factor: {
                                                                     atom: {
                                                                       alphanumeric: "z"
@@ -25232,11 +24015,7 @@ module UnicodeMathParseValues
       sub_exp: {
         base: {
           factor: {
-            atom: {
-              char: {
-                unicode_symbols: "&#x3b1;"
-              }
-            }
+            ordinary_symbols: "&#x3b1;"
           }
         },
         sub: {
@@ -25250,13 +24029,13 @@ module UnicodeMathParseValues
                       alphanumeric: "x"
                     }
                   },
-                  expr: {
+                  exp: {
                     factor: {
                       atom: {
                         alphanumeric: "y"
                       }
                     },
-                    expr: {
+                    exp: {
                       factor: {
                         atom: {
                           alphanumeric: "z"
@@ -25293,7 +24072,7 @@ module UnicodeMathParseValues
                         alphanumeric: "y"
                       }
                     },
-                    expr: {
+                    exp: {
                       factor: {
                         atom: {
                           alphanumeric: "z"
@@ -25351,11 +24130,7 @@ module UnicodeMathParseValues
               sub_exp: {
                 base: {
                   factor: {
-                    atom: {
-                      char: {
-                        unicode_symbols: "&#x3b1;"
-                      }
-                    }
+                    ordinary_symbols: "&#x3b1;"
                   }
                 },
                 sub: {
@@ -25369,13 +24144,13 @@ module UnicodeMathParseValues
                               alphanumeric: "x"
                             }
                           },
-                          expr: {
+                          exp: {
                             factor: {
                               atom: {
                                 alphanumeric: "y"
                               }
                             },
-                            expr: {
+                            exp: {
                               factor: {
                                 atom: {
                                   alphanumeric: "z"
@@ -25412,7 +24187,7 @@ module UnicodeMathParseValues
                                 alphanumeric: "z"
                               }
                             },
-                            expr: {
+                            exp: {
                               factor: {
                                 atom: {
                                   alphanumeric: "x"
@@ -25456,11 +24231,7 @@ module UnicodeMathParseValues
                             sub_exp: {
                               base: {
                                 factor: {
-                                  atom: {
-                                    char: {
-                                      unicode_symbols: "&#x3b1;"
-                                    }
-                                  }
+                                  ordinary_symbols: "&#x3b1;"
                                 }
                               },
                               sub: {
@@ -25474,13 +24245,13 @@ module UnicodeMathParseValues
                                             alphanumeric: "x"
                                           }
                                         },
-                                        expr: {
+                                        exp: {
                                           factor: {
                                             atom: {
                                               alphanumeric: "y"
                                             }
                                           },
-                                          expr: {
+                                          exp: {
                                             factor: {
                                               atom: {
                                                 alphanumeric: "z"
@@ -25517,7 +24288,7 @@ module UnicodeMathParseValues
                                               alphanumeric: "x"
                                             }
                                           },
-                                          expr: {
+                                          exp: {
                                             factor: {
                                               atom: {
                                                 alphanumeric: "y"
@@ -25566,11 +24337,7 @@ module UnicodeMathParseValues
                                           sub_exp: {
                                             base: {
                                               factor: {
-                                                atom: {
-                                                  char: {
-                                                    unicode_symbols: "&#x3b1;"
-                                                  }
-                                                }
+                                                ordinary_symbols: "&#x3b1;"
                                               }
                                             },
                                             sub: {
@@ -25584,13 +24351,13 @@ module UnicodeMathParseValues
                                                           alphanumeric: "x"
                                                         }
                                                       },
-                                                      expr: {
+                                                      exp: {
                                                         factor: {
                                                           atom: {
                                                             alphanumeric: "y"
                                                           }
                                                         },
-                                                        expr: {
+                                                        exp: {
                                                           factor: {
                                                             atom: {
                                                               alphanumeric: "z"
@@ -25627,13 +24394,13 @@ module UnicodeMathParseValues
                                                             alphanumeric: "x"
                                                           }
                                                         },
-                                                        expr: {
+                                                        exp: {
                                                           factor: {
                                                             atom: {
                                                               alphanumeric: "y"
                                                             }
                                                           },
-                                                          expr: {
+                                                          exp: {
                                                             factor: {
                                                               atom: {
                                                                 alphanumeric: "z"
@@ -25717,11 +24484,7 @@ module UnicodeMathParseValues
       sub_exp: {
         base: {
           factor: {
-            atom: {
-              char: {
-                unicode_symbols: "&#x3b1;"
-              }
-            }
+            ordinary_symbols: "&#x3b1;"
           }
         },
         sub: {
@@ -25735,7 +24498,7 @@ module UnicodeMathParseValues
                       alphanumeric: "x"
                     }
                   },
-                  expr: {
+                  exp: {
                     factor: {
                       atom: {
                         alphanumeric: "y"
@@ -25771,7 +24534,7 @@ module UnicodeMathParseValues
                         alphanumeric: "y"
                       }
                     },
-                    expr: {
+                    exp: {
                       factor: {
                         atom: {
                           alphanumeric: "z"
@@ -25803,11 +24566,7 @@ module UnicodeMathParseValues
                 sub_exp: {
                   base: {
                     factor: {
-                      atom: {
-                        char: {
-                          unicode_symbols: "&#x3b1;"
-                        }
-                      }
+                      ordinary_symbols: "&#x3b1;"
                     }
                   },
                   sub: {
@@ -25821,7 +24580,7 @@ module UnicodeMathParseValues
                                 alphanumeric: "x"
                               }
                             },
-                            expr: {
+                            exp: {
                               factor: {
                                 atom: {
                                   alphanumeric: "y"
@@ -25857,7 +24616,7 @@ module UnicodeMathParseValues
                                   alphanumeric: "z"
                                 }
                               },
-                              expr: {
+                              exp: {
                                 factor: {
                                   atom: {
                                     alphanumeric: "x"
@@ -25889,11 +24648,7 @@ module UnicodeMathParseValues
                           sub_exp: {
                             base: {
                               factor: {
-                                atom: {
-                                  char: {
-                                    unicode_symbols: "&#x3b1;"
-                                  }
-                                }
+                                ordinary_symbols: "&#x3b1;"
                               }
                             },
                             sub: {
@@ -25907,7 +24662,7 @@ module UnicodeMathParseValues
                                           alphanumeric: "x"
                                         }
                                       },
-                                      expr: {
+                                      exp: {
                                         factor: {
                                           atom: {
                                             alphanumeric: "y"
@@ -25943,7 +24698,7 @@ module UnicodeMathParseValues
                                             alphanumeric: "x"
                                           }
                                         },
-                                        expr: {
+                                        exp: {
                                           factor: {
                                             atom: {
                                               alphanumeric: "y"
@@ -25963,11 +24718,7 @@ module UnicodeMathParseValues
                                 sub_exp: {
                                   base: {
                                     factor: {
-                                      atom: {
-                                        char: {
-                                          unicode_symbols: "&#x3b1;"
-                                        }
-                                      }
+                                      ordinary_symbols: "&#x3b1;"
                                     }
                                   },
                                   sub: {
@@ -25981,7 +24732,7 @@ module UnicodeMathParseValues
                                                 alphanumeric: "x"
                                               }
                                             },
-                                            expr: {
+                                            exp: {
                                               factor: {
                                                 atom: {
                                                   alphanumeric: "y"
@@ -26017,13 +24768,13 @@ module UnicodeMathParseValues
                                                   alphanumeric: "x"
                                                 }
                                               },
-                                              expr: {
+                                              exp: {
                                                 factor: {
                                                   atom: {
                                                     alphanumeric: "y"
                                                   }
                                                 },
-                                                expr: {
+                                                exp: {
                                                   factor: {
                                                     atom: {
                                                       alphanumeric: "z"
@@ -26067,11 +24818,7 @@ module UnicodeMathParseValues
       sub_exp: {
         base: {
           factor: {
-            atom: {
-              char: {
-                unicode_symbols: "&#x3b1;"
-              }
-            }
+            ordinary_symbols: "&#x3b1;"
           }
         },
         sub: {
@@ -26085,7 +24832,7 @@ module UnicodeMathParseValues
                       alphanumeric: "y"
                     }
                   },
-                  expr: {
+                  exp: {
                     factor: {
                       atom: {
                         alphanumeric: "z"
@@ -26121,7 +24868,7 @@ module UnicodeMathParseValues
                         alphanumeric: "y"
                       }
                     },
-                    expr: {
+                    exp: {
                       factor: {
                         atom: {
                           alphanumeric: "z"
@@ -26141,11 +24888,7 @@ module UnicodeMathParseValues
             sub_exp: {
               base: {
                 factor: {
-                  atom: {
-                    char: {
-                      unicode_symbols: "&#x3b1;"
-                    }
-                  }
+                  ordinary_symbols: "&#x3b1;"
                 }
               },
               sub: {
@@ -26159,7 +24902,7 @@ module UnicodeMathParseValues
                             alphanumeric: "y"
                           }
                         },
-                        expr: {
+                        exp: {
                           factor: {
                             atom: {
                               alphanumeric: "z"
@@ -26195,7 +24938,7 @@ module UnicodeMathParseValues
                               alphanumeric: "z"
                             }
                           },
-                          expr: {
+                          exp: {
                             factor: {
                               atom: {
                                 alphanumeric: "x"
@@ -26227,11 +24970,7 @@ module UnicodeMathParseValues
                       sub_exp: {
                         base: {
                           factor: {
-                            atom: {
-                              char: {
-                                unicode_symbols: "&#x3b1;"
-                              }
-                            }
+                            ordinary_symbols: "&#x3b1;"
                           }
                         },
                         sub: {
@@ -26245,7 +24984,7 @@ module UnicodeMathParseValues
                                       alphanumeric: "y"
                                     }
                                   },
-                                  expr: {
+                                  exp: {
                                     factor: {
                                       atom: {
                                         alphanumeric: "z"
@@ -26281,7 +25020,7 @@ module UnicodeMathParseValues
                                         alphanumeric: "x"
                                       }
                                     },
-                                    expr: {
+                                    exp: {
                                       factor: {
                                         atom: {
                                           alphanumeric: "y"
@@ -26313,11 +25052,7 @@ module UnicodeMathParseValues
                                 sub_exp: {
                                   base: {
                                     factor: {
-                                      atom: {
-                                        char: {
-                                          unicode_symbols: "&#x3b1;"
-                                        }
-                                      }
+                                      ordinary_symbols: "&#x3b1;"
                                     }
                                   },
                                   sub: {
@@ -26331,7 +25066,7 @@ module UnicodeMathParseValues
                                                 alphanumeric: "y"
                                               }
                                             },
-                                            expr: {
+                                            exp: {
                                               factor: {
                                                 atom: {
                                                   alphanumeric: "z"
@@ -26367,13 +25102,13 @@ module UnicodeMathParseValues
                                                   alphanumeric: "x"
                                                 }
                                               },
-                                              expr: {
+                                              exp: {
                                                 factor: {
                                                   atom: {
                                                     alphanumeric: "y"
                                                   }
                                                 },
-                                                expr: {
+                                                exp: {
                                                   factor: {
                                                     atom: {
                                                       alphanumeric: "z"
@@ -26417,11 +25152,7 @@ module UnicodeMathParseValues
       sub_exp: {
         base: {
           factor: {
-            atom: {
-              char: {
-                unicode_symbols: "&#x3b1;"
-              }
-            }
+            ordinary_symbols: "&#x3b1;"
           }
         },
         sub: {
@@ -26435,7 +25166,7 @@ module UnicodeMathParseValues
                       alphanumeric: "y"
                     }
                   },
-                  expr: {
+                  exp: {
                     factor: {
                       atom: {
                         alphanumeric: "z"
@@ -26471,7 +25202,7 @@ module UnicodeMathParseValues
                         alphanumeric: "y"
                       }
                     },
-                    expr: {
+                    exp: {
                       factor: {
                         atom: {
                           alphanumeric: "z"
@@ -26491,11 +25222,7 @@ module UnicodeMathParseValues
             sub_exp: {
               base: {
                 factor: {
-                  atom: {
-                    char: {
-                      unicode_symbols: "&#x3b1;"
-                    }
-                  }
+                  ordinary_symbols: "&#x3b1;"
                 }
               },
               sub: {
@@ -26509,7 +25236,7 @@ module UnicodeMathParseValues
                             alphanumeric: "y"
                           }
                         },
-                        expr: {
+                        exp: {
                           factor: {
                             atom: {
                               alphanumeric: "z"
@@ -26545,7 +25272,7 @@ module UnicodeMathParseValues
                               alphanumeric: "z"
                             }
                           },
-                          expr: {
+                          exp: {
                             factor: {
                               atom: {
                                 alphanumeric: "x"
@@ -26577,11 +25304,7 @@ module UnicodeMathParseValues
                       sub_exp: {
                         base: {
                           factor: {
-                            atom: {
-                              char: {
-                                unicode_symbols: "&#x3b1;"
-                              }
-                            }
+                            ordinary_symbols: "&#x3b1;"
                           }
                         },
                         sub: {
@@ -26595,7 +25318,7 @@ module UnicodeMathParseValues
                                       alphanumeric: "y"
                                     }
                                   },
-                                  expr: {
+                                  exp: {
                                     factor: {
                                       atom: {
                                         alphanumeric: "z"
@@ -26631,7 +25354,7 @@ module UnicodeMathParseValues
                                         alphanumeric: "x"
                                       }
                                     },
-                                    expr: {
+                                    exp: {
                                       factor: {
                                         atom: {
                                           alphanumeric: "y"
@@ -26663,11 +25386,7 @@ module UnicodeMathParseValues
                                 sub_exp: {
                                   base: {
                                     factor: {
-                                      atom: {
-                                        char: {
-                                          unicode_symbols: "&#x3b1;"
-                                        }
-                                      }
+                                      ordinary_symbols: "&#x3b1;"
                                     }
                                   },
                                   sub: {
@@ -26681,7 +25400,7 @@ module UnicodeMathParseValues
                                                 alphanumeric: "y"
                                               }
                                             },
-                                            expr: {
+                                            exp: {
                                               factor: {
                                                 atom: {
                                                   alphanumeric: "z"
@@ -26717,13 +25436,13 @@ module UnicodeMathParseValues
                                                   alphanumeric: "x"
                                                 }
                                               },
-                                              expr: {
+                                              exp: {
                                                 factor: {
                                                   atom: {
                                                     alphanumeric: "y"
                                                   }
                                                 },
-                                                expr: {
+                                                exp: {
                                                   factor: {
                                                     atom: {
                                                       alphanumeric: "z"
@@ -26781,11 +25500,7 @@ module UnicodeMathParseValues
       sub_exp: {
         base: {
           factor: {
-            atom: {
-              char: {
-                unicode_symbols: "&#x3b1;"
-              }
-            }
+            ordinary_symbols: "&#x3b1;"
           }
         },
         sub: {
@@ -26799,7 +25514,7 @@ module UnicodeMathParseValues
                       alphanumeric: "y"
                     }
                   },
-                  expr: {
+                  exp: {
                     factor: {
                       atom: {
                         alphanumeric: "z"
@@ -26835,7 +25550,7 @@ module UnicodeMathParseValues
                         alphanumeric: "y"
                       }
                     },
-                    expr: {
+                    exp: {
                       factor: {
                         atom: {
                           alphanumeric: "z"
@@ -26867,11 +25582,7 @@ module UnicodeMathParseValues
                 sub_exp: {
                   base: {
                     factor: {
-                      atom: {
-                        char: {
-                          unicode_symbols: "&#x3b1;"
-                        }
-                      }
+                      ordinary_symbols: "&#x3b1;"
                     }
                   },
                   sub: {
@@ -26885,7 +25596,7 @@ module UnicodeMathParseValues
                                 alphanumeric: "y"
                               }
                             },
-                            expr: {
+                            exp: {
                               factor: {
                                 atom: {
                                   alphanumeric: "z"
@@ -26921,7 +25632,7 @@ module UnicodeMathParseValues
                                   alphanumeric: "z"
                                 }
                               },
-                              expr: {
+                              exp: {
                                 factor: {
                                   atom: {
                                     alphanumeric: "x"
@@ -26953,11 +25664,7 @@ module UnicodeMathParseValues
                           sub_exp: {
                             base: {
                               factor: {
-                                atom: {
-                                  char: {
-                                    unicode_symbols: "&#x3b1;"
-                                  }
-                                }
+                                ordinary_symbols: "&#x3b1;"
                               }
                             },
                             sub: {
@@ -26971,7 +25678,7 @@ module UnicodeMathParseValues
                                           alphanumeric: "y"
                                         }
                                       },
-                                      expr: {
+                                      exp: {
                                         factor: {
                                           atom: {
                                             alphanumeric: "z"
@@ -27007,7 +25714,7 @@ module UnicodeMathParseValues
                                             alphanumeric: "x"
                                           }
                                         },
-                                        expr: {
+                                        exp: {
                                           factor: {
                                             atom: {
                                               alphanumeric: "y"
@@ -27039,11 +25746,7 @@ module UnicodeMathParseValues
                                     sub_exp: {
                                       base: {
                                         factor: {
-                                          atom: {
-                                            char: {
-                                              unicode_symbols: "&#x3b1;"
-                                            }
-                                          }
+                                          ordinary_symbols: "&#x3b1;"
                                         }
                                       },
                                       sub: {
@@ -27057,7 +25760,7 @@ module UnicodeMathParseValues
                                                     alphanumeric: "y"
                                                   }
                                                 },
-                                                expr: {
+                                                exp: {
                                                   factor: {
                                                     atom: {
                                                       alphanumeric: "z"
@@ -27093,13 +25796,13 @@ module UnicodeMathParseValues
                                                       alphanumeric: "x"
                                                     }
                                                   },
-                                                  expr: {
+                                                  exp: {
                                                     factor: {
                                                       atom: {
                                                         alphanumeric: "y"
                                                       }
                                                     },
-                                                    expr: {
+                                                    exp: {
                                                       factor: {
                                                         atom: {
                                                           alphanumeric: "z"
@@ -27159,11 +25862,7 @@ module UnicodeMathParseValues
       sub_exp: {
         base: {
           factor: {
-            atom: {
-              char: {
-                unicode_symbols: "&#x3b1;"
-              }
-            }
+            ordinary_symbols: "&#x3b1;"
           }
         },
         sub: {
@@ -27177,7 +25876,7 @@ module UnicodeMathParseValues
                       alphanumeric: "y"
                     }
                   },
-                  expr: {
+                  exp: {
                     factor: {
                       atom: {
                         alphanumeric: "z"
@@ -27213,7 +25912,7 @@ module UnicodeMathParseValues
                         alphanumeric: "y"
                       }
                     },
-                    expr: {
+                    exp: {
                       factor: {
                         atom: {
                           alphanumeric: "z"
@@ -27256,11 +25955,7 @@ module UnicodeMathParseValues
                   sub_exp: {
                     base: {
                       factor: {
-                        atom: {
-                          char: {
-                            unicode_symbols: "&#x3b1;"
-                          }
-                        }
+                        ordinary_symbols: "&#x3b1;"
                       }
                     },
                     sub: {
@@ -27274,7 +25969,7 @@ module UnicodeMathParseValues
                                   alphanumeric: "y"
                                 }
                               },
-                              expr: {
+                              exp: {
                                 factor: {
                                   atom: {
                                     alphanumeric: "z"
@@ -27310,7 +26005,7 @@ module UnicodeMathParseValues
                                     alphanumeric: "z"
                                   }
                                 },
-                                expr: {
+                                exp: {
                                   factor: {
                                     atom: {
                                       alphanumeric: "x"
@@ -27357,11 +26052,7 @@ module UnicodeMathParseValues
                           sub_exp: {
                             base: {
                               factor: {
-                                atom: {
-                                  char: {
-                                    unicode_symbols: "&#x3b1;"
-                                  }
-                                }
+                                ordinary_symbols: "&#x3b1;"
                               }
                             },
                             sub: {
@@ -27375,7 +26066,7 @@ module UnicodeMathParseValues
                                           alphanumeric: "y"
                                         }
                                       },
-                                      expr: {
+                                      exp: {
                                         factor: {
                                           atom: {
                                             alphanumeric: "z"
@@ -27411,7 +26102,7 @@ module UnicodeMathParseValues
                                             alphanumeric: "x"
                                           }
                                         },
-                                        expr: {
+                                        exp: {
                                           factor: {
                                             atom: {
                                               alphanumeric: "y"
@@ -27454,11 +26145,7 @@ module UnicodeMathParseValues
                                       sub_exp: {
                                         base: {
                                           factor: {
-                                            atom: {
-                                              char: {
-                                                unicode_symbols: "&#x3b1;"
-                                              }
-                                            }
+                                            ordinary_symbols: "&#x3b1;"
                                           }
                                         },
                                         sub: {
@@ -27472,7 +26159,7 @@ module UnicodeMathParseValues
                                                       alphanumeric: "y"
                                                     }
                                                   },
-                                                  expr: {
+                                                  exp: {
                                                     factor: {
                                                       atom: {
                                                         alphanumeric: "z"
@@ -27508,13 +26195,13 @@ module UnicodeMathParseValues
                                                         alphanumeric: "x"
                                                       }
                                                     },
-                                                    expr: {
+                                                    exp: {
                                                       factor: {
                                                         atom: {
                                                           alphanumeric: "y"
                                                         }
                                                       },
-                                                      expr: {
+                                                      exp: {
                                                         factor: {
                                                           atom: {
                                                             alphanumeric: "z"
@@ -27589,11 +26276,7 @@ module UnicodeMathParseValues
       sub_exp: {
         base: {
           factor: {
-            atom: {
-              char: {
-                unicode_symbols: "&#x3b1;"
-              }
-            }
+            ordinary_symbols: "&#x3b1;"
           }
         },
         sub: {
@@ -27607,7 +26290,7 @@ module UnicodeMathParseValues
                       alphanumeric: "y"
                     }
                   },
-                  expr: {
+                  exp: {
                     factor: {
                       atom: {
                         alphanumeric: "z"
@@ -27643,7 +26326,7 @@ module UnicodeMathParseValues
                         alphanumeric: "y"
                       }
                     },
-                    expr: {
+                    exp: {
                       factor: {
                         atom: {
                           alphanumeric: "z"
@@ -27660,7 +26343,10 @@ module UnicodeMathParseValues
         expr: {
           sup_exp: {
             base: {
-              symbol: "zy"
+              symbol: "z",
+              expr: {
+                symbol: "y"
+              }
             },
             sup: {
               sup_script: {
@@ -27687,11 +26373,7 @@ module UnicodeMathParseValues
               sub_exp: {
                 base: {
                   factor: {
-                    atom: {
-                      char: {
-                        unicode_symbols: "&#x3b1;"
-                      }
-                    }
+                    ordinary_symbols: "&#x3b1;"
                   }
                 },
                 sub: {
@@ -27705,7 +26387,7 @@ module UnicodeMathParseValues
                               alphanumeric: "y"
                             }
                           },
-                          expr: {
+                          exp: {
                             factor: {
                               atom: {
                                 alphanumeric: "z"
@@ -27741,7 +26423,7 @@ module UnicodeMathParseValues
                                 alphanumeric: "z"
                               }
                             },
-                            expr: {
+                            exp: {
                               factor: {
                                 atom: {
                                   alphanumeric: "x"
@@ -27779,11 +26461,7 @@ module UnicodeMathParseValues
                           sub_exp: {
                             base: {
                               factor: {
-                                atom: {
-                                  char: {
-                                    unicode_symbols: "&#x3b1;"
-                                  }
-                                }
+                                ordinary_symbols: "&#x3b1;"
                               }
                             },
                             sub: {
@@ -27797,7 +26475,7 @@ module UnicodeMathParseValues
                                           alphanumeric: "y"
                                         }
                                       },
-                                      expr: {
+                                      exp: {
                                         factor: {
                                           atom: {
                                             alphanumeric: "z"
@@ -27833,7 +26511,7 @@ module UnicodeMathParseValues
                                             alphanumeric: "x"
                                           }
                                         },
-                                        expr: {
+                                        exp: {
                                           factor: {
                                             atom: {
                                               alphanumeric: "y"
@@ -27876,11 +26554,7 @@ module UnicodeMathParseValues
                                       sub_exp: {
                                         base: {
                                           factor: {
-                                            atom: {
-                                              char: {
-                                                unicode_symbols: "&#x3b1;"
-                                              }
-                                            }
+                                            ordinary_symbols: "&#x3b1;"
                                           }
                                         },
                                         sub: {
@@ -27894,7 +26568,7 @@ module UnicodeMathParseValues
                                                       alphanumeric: "y"
                                                     }
                                                   },
-                                                  expr: {
+                                                  exp: {
                                                     factor: {
                                                       atom: {
                                                         alphanumeric: "z"
@@ -27930,13 +26604,13 @@ module UnicodeMathParseValues
                                                         alphanumeric: "x"
                                                       }
                                                     },
-                                                    expr: {
+                                                    exp: {
                                                       factor: {
                                                         atom: {
                                                           alphanumeric: "y"
                                                         }
                                                       },
-                                                      expr: {
+                                                      exp: {
                                                         factor: {
                                                           atom: {
                                                             alphanumeric: "z"
@@ -28011,11 +26685,7 @@ module UnicodeMathParseValues
       sub_exp: {
         base: {
           factor: {
-            atom: {
-              char: {
-                unicode_symbols: "&#x3b1;"
-              }
-            }
+            ordinary_symbols: "&#x3b1;"
           }
         },
         sub: {
@@ -28029,7 +26699,7 @@ module UnicodeMathParseValues
                       alphanumeric: "z"
                     }
                   },
-                  expr: {
+                  exp: {
                     factor: {
                       atom: {
                         alphanumeric: "x"
@@ -28065,7 +26735,7 @@ module UnicodeMathParseValues
                         alphanumeric: "y"
                       }
                     },
-                    expr: {
+                    exp: {
                       factor: {
                         atom: {
                           alphanumeric: "z"
@@ -28109,11 +26779,7 @@ module UnicodeMathParseValues
                     sub_exp: {
                       base: {
                         factor: {
-                          atom: {
-                            char: {
-                              unicode_symbols: "&#x3b1;"
-                            }
-                          }
+                          ordinary_symbols: "&#x3b1;"
                         }
                       },
                       sub: {
@@ -28127,7 +26793,7 @@ module UnicodeMathParseValues
                                     alphanumeric: "z"
                                   }
                                 },
-                                expr: {
+                                exp: {
                                   factor: {
                                     atom: {
                                       alphanumeric: "x"
@@ -28163,7 +26829,7 @@ module UnicodeMathParseValues
                                       alphanumeric: "z"
                                     }
                                   },
-                                  expr: {
+                                  exp: {
                                     factor: {
                                       atom: {
                                         alphanumeric: "x"
@@ -28207,11 +26873,7 @@ module UnicodeMathParseValues
                                   sub_exp: {
                                     base: {
                                       factor: {
-                                        atom: {
-                                          char: {
-                                            unicode_symbols: "&#x3b1;"
-                                          }
-                                        }
+                                        ordinary_symbols: "&#x3b1;"
                                       }
                                     },
                                     sub: {
@@ -28225,7 +26887,7 @@ module UnicodeMathParseValues
                                                   alphanumeric: "z"
                                                 }
                                               },
-                                              expr: {
+                                              exp: {
                                                 factor: {
                                                   atom: {
                                                     alphanumeric: "x"
@@ -28261,7 +26923,7 @@ module UnicodeMathParseValues
                                                     alphanumeric: "x"
                                                   }
                                                 },
-                                                expr: {
+                                                exp: {
                                                   factor: {
                                                     atom: {
                                                       alphanumeric: "y"
@@ -28308,11 +26970,7 @@ module UnicodeMathParseValues
                                           sub_exp: {
                                             base: {
                                               factor: {
-                                                atom: {
-                                                  char: {
-                                                    unicode_symbols: "&#x3b1;"
-                                                  }
-                                                }
+                                                ordinary_symbols: "&#x3b1;"
                                               }
                                             },
                                             sub: {
@@ -28326,7 +26984,7 @@ module UnicodeMathParseValues
                                                           alphanumeric: "z"
                                                         }
                                                       },
-                                                      expr: {
+                                                      exp: {
                                                         factor: {
                                                           atom: {
                                                             alphanumeric: "x"
@@ -28362,13 +27020,13 @@ module UnicodeMathParseValues
                                                             alphanumeric: "x"
                                                           }
                                                         },
-                                                        expr: {
+                                                        exp: {
                                                           factor: {
                                                             atom: {
                                                               alphanumeric: "y"
                                                             }
                                                           },
-                                                          expr: {
+                                                          exp: {
                                                             factor: {
                                                               atom: {
                                                                 alphanumeric: "z"
@@ -28445,11 +27103,7 @@ module UnicodeMathParseValues
       sub_exp: {
         base: {
           factor: {
-            atom: {
-              char: {
-                unicode_symbols: "&#x3b1;"
-              }
-            }
+            ordinary_symbols: "&#x3b1;"
           }
         },
         sub: {
@@ -28486,7 +27140,7 @@ module UnicodeMathParseValues
                         alphanumeric: "y"
                       }
                     },
-                    expr: {
+                    exp: {
                       factor: {
                         atom: {
                           alphanumeric: "z"
@@ -28512,11 +27166,7 @@ module UnicodeMathParseValues
               sub_exp: {
                 base: {
                   factor: {
-                    atom: {
-                      char: {
-                        unicode_symbols: "&#x3b1;"
-                      }
-                    }
+                    ordinary_symbols: "&#x3b1;"
                   }
                 },
                 sub: {
@@ -28553,7 +27203,7 @@ module UnicodeMathParseValues
                                 alphanumeric: "z"
                               }
                             },
-                            expr: {
+                            exp: {
                               factor: {
                                 atom: {
                                   alphanumeric: "x"
@@ -28579,11 +27229,7 @@ module UnicodeMathParseValues
                       sub_exp: {
                         base: {
                           factor: {
-                            atom: {
-                              char: {
-                                unicode_symbols: "&#x3b1;"
-                              }
-                            }
+                            ordinary_symbols: "&#x3b1;"
                           }
                         },
                         sub: {
@@ -28620,7 +27266,7 @@ module UnicodeMathParseValues
                                         alphanumeric: "x"
                                       }
                                     },
-                                    expr: {
+                                    exp: {
                                       factor: {
                                         atom: {
                                           alphanumeric: "y"
@@ -28658,11 +27304,7 @@ module UnicodeMathParseValues
                                   sub_exp: {
                                     base: {
                                       factor: {
-                                        atom: {
-                                          char: {
-                                            unicode_symbols: "&#x3b1;"
-                                          }
-                                        }
+                                        ordinary_symbols: "&#x3b1;"
                                       }
                                     },
                                     sub: {
@@ -28699,13 +27341,13 @@ module UnicodeMathParseValues
                                                     alphanumeric: "x"
                                                   }
                                                 },
-                                                expr: {
+                                                exp: {
                                                   factor: {
                                                     atom: {
                                                       alphanumeric: "y"
                                                     }
                                                   },
-                                                  expr: {
+                                                  exp: {
                                                     factor: {
                                                       atom: {
                                                         alphanumeric: "z"
@@ -28757,11 +27399,7 @@ module UnicodeMathParseValues
       sub_exp: {
         base: {
           factor: {
-            atom: {
-              char: {
-                unicode_symbols: "&#x3b1;"
-              }
-            }
+            ordinary_symbols: "&#x3b1;"
           }
         },
         sub: {
@@ -28798,7 +27436,7 @@ module UnicodeMathParseValues
                         alphanumeric: "y"
                       }
                     },
-                    expr: {
+                    exp: {
                       factor: {
                         atom: {
                           alphanumeric: "z"
@@ -28836,11 +27474,7 @@ module UnicodeMathParseValues
                   sub_exp: {
                     base: {
                       factor: {
-                        atom: {
-                          char: {
-                            unicode_symbols: "&#x3b1;"
-                          }
-                        }
+                        ordinary_symbols: "&#x3b1;"
                       }
                     },
                     sub: {
@@ -28877,7 +27511,7 @@ module UnicodeMathParseValues
                                     alphanumeric: "z"
                                   }
                                 },
-                                expr: {
+                                exp: {
                                   factor: {
                                     atom: {
                                       alphanumeric: "x"
@@ -28921,11 +27555,7 @@ module UnicodeMathParseValues
                           sub_exp: {
                             base: {
                               factor: {
-                                atom: {
-                                  char: {
-                                    unicode_symbols: "&#x3b1;"
-                                  }
-                                }
+                                ordinary_symbols: "&#x3b1;"
                               }
                             },
                             sub: {
@@ -28962,7 +27592,7 @@ module UnicodeMathParseValues
                                             alphanumeric: "x"
                                           }
                                         },
-                                        expr: {
+                                        exp: {
                                           factor: {
                                             atom: {
                                               alphanumeric: "y"
@@ -29000,11 +27630,7 @@ module UnicodeMathParseValues
                                       sub_exp: {
                                         base: {
                                           factor: {
-                                            atom: {
-                                              char: {
-                                                unicode_symbols: "&#x3b1;"
-                                              }
-                                            }
+                                            ordinary_symbols: "&#x3b1;"
                                           }
                                         },
                                         sub: {
@@ -29041,13 +27667,13 @@ module UnicodeMathParseValues
                                                         alphanumeric: "x"
                                                       }
                                                     },
-                                                    expr: {
+                                                    exp: {
                                                       factor: {
                                                         atom: {
                                                           alphanumeric: "y"
                                                         }
                                                       },
-                                                      expr: {
+                                                      exp: {
                                                         factor: {
                                                           atom: {
                                                             alphanumeric: "z"
@@ -29115,11 +27741,7 @@ module UnicodeMathParseValues
       sub_exp: {
         base: {
           factor: {
-            atom: {
-              char: {
-                unicode_symbols: "&#x3b1;"
-              }
-            }
+            ordinary_symbols: "&#x3b1;"
           }
         },
         sub: {
@@ -29156,7 +27778,7 @@ module UnicodeMathParseValues
                         alphanumeric: "y"
                       }
                     },
-                    expr: {
+                    exp: {
                       factor: {
                         atom: {
                           alphanumeric: "z"
@@ -29200,11 +27822,7 @@ module UnicodeMathParseValues
               sub_exp: {
                 base: {
                   factor: {
-                    atom: {
-                      char: {
-                        unicode_symbols: "&#x3b1;"
-                      }
-                    }
+                    ordinary_symbols: "&#x3b1;"
                   }
                 },
                 sub: {
@@ -29241,7 +27859,7 @@ module UnicodeMathParseValues
                                 alphanumeric: "z"
                               }
                             },
-                            expr: {
+                            exp: {
                               factor: {
                                 atom: {
                                   alphanumeric: "x"
@@ -29273,11 +27891,7 @@ module UnicodeMathParseValues
                         sub_exp: {
                           base: {
                             factor: {
-                              atom: {
-                                char: {
-                                  unicode_symbols: "&#x3b1;"
-                                }
-                              }
+                              ordinary_symbols: "&#x3b1;"
                             }
                           },
                           sub: {
@@ -29314,7 +27928,7 @@ module UnicodeMathParseValues
                                           alphanumeric: "x"
                                         }
                                       },
-                                      expr: {
+                                      exp: {
                                         factor: {
                                           atom: {
                                             alphanumeric: "y"
@@ -29352,11 +27966,7 @@ module UnicodeMathParseValues
                                     sub_exp: {
                                       base: {
                                         factor: {
-                                          atom: {
-                                            char: {
-                                              unicode_symbols: "&#x3b1;"
-                                            }
-                                          }
+                                          ordinary_symbols: "&#x3b1;"
                                         }
                                       },
                                       sub: {
@@ -29393,13 +28003,13 @@ module UnicodeMathParseValues
                                                       alphanumeric: "x"
                                                     }
                                                   },
-                                                  expr: {
+                                                  exp: {
                                                     factor: {
                                                       atom: {
                                                         alphanumeric: "y"
                                                       }
                                                     },
-                                                    expr: {
+                                                    exp: {
                                                       factor: {
                                                         atom: {
                                                           alphanumeric: "z"
@@ -29485,10 +28095,8 @@ module UnicodeMathParseValues
             expr: {
               frac: {
                 numerator: {
-                  factor: {
-                    digit: {
-                      number: "17"
-                    }
+                  digit: {
+                    number: "17"
                   }
                 },
                 denominator: {
@@ -29536,16 +28144,12 @@ module UnicodeMathParseValues
     }
   }.freeze
   EXAMPLE_133 = {
-    accents: [
-      {
-        first_value: {
-          negated_operator: "+"
-        }
+    accents: {
+      first_value: {
+        negated_operator: "+"
       },
-      {
-        accent_symbols: "&#x27;"
-      }
-    ]
+      prime_accent_symbols: "&#x27;"
+    }
   }.freeze
   EXAMPLE_134 = {
     operator: "=",
@@ -29556,11 +28160,7 @@ module UnicodeMathParseValues
           sub_exp: {
             base: {
               factor: {
-                atom: {
-                  char: {
-                    unicode_symbols: "&#x3b1;"
-                  }
-                }
+                ordinary_symbols: "&#x3b1;"
               }
             },
             sub: {
@@ -29575,23 +28175,19 @@ module UnicodeMathParseValues
               }
             }
           },
-          expr: {
+          exp: {
             factor: {
               atom: {
                 alphanumeric: "x"
               }
             },
-            expr: {
+            exp: {
               operator: "+",
-              expr: {
+              exp: {
                 sub_exp: {
                   base: {
                     factor: {
-                      atom: {
-                        char: {
-                          unicode_symbols: "&#x3b1;"
-                        }
-                      }
+                      ordinary_symbols: "&#x3b1;"
                     }
                   },
                   sub: {
@@ -29606,23 +28202,19 @@ module UnicodeMathParseValues
                     }
                   }
                 },
-                expr: {
+                exp: {
                   factor: {
                     atom: {
                       alphanumeric: "y"
                     }
                   },
-                  expr: {
+                  exp: {
                     operator: "+",
-                    expr: {
+                    exp: {
                       sub_exp: {
                         base: {
                           factor: {
-                            atom: {
-                              char: {
-                                unicode_symbols: "&#x3b1;"
-                              }
-                            }
+                            ordinary_symbols: "&#x3b1;"
                           }
                         },
                         sub: {
@@ -29637,7 +28229,7 @@ module UnicodeMathParseValues
                           }
                         }
                       },
-                      expr: {
+                      exp: {
                         factor: {
                           atom: {
                             alphanumeric: "z"
@@ -29664,11 +28256,7 @@ module UnicodeMathParseValues
           sub_exp: {
             base: {
               factor: {
-                atom: {
-                  char: {
-                    unicode_symbols: "&#x3b1;"
-                  }
-                }
+                ordinary_symbols: "&#x3b1;"
               }
             },
             sub: {
@@ -29683,23 +28271,19 @@ module UnicodeMathParseValues
               }
             }
           },
-          expr: {
+          exp: {
             factor: {
               atom: {
                 alphanumeric: "x"
               }
             },
-            expr: {
+            exp: {
               operator: "+",
-              expr: {
+              exp: {
                 sub_exp: {
                   base: {
                     factor: {
-                      atom: {
-                        char: {
-                          unicode_symbols: "&#x3b1;"
-                        }
-                      }
+                      ordinary_symbols: "&#x3b1;"
                     }
                   },
                   sub: {
@@ -29714,23 +28298,19 @@ module UnicodeMathParseValues
                     }
                   }
                 },
-                expr: {
+                exp: {
                   factor: {
                     atom: {
                       alphanumeric: "y"
                     }
                   },
-                  expr: {
+                  exp: {
                     operator: "+",
-                    expr: {
+                    exp: {
                       sub_exp: {
                         base: {
                           factor: {
-                            atom: {
-                              char: {
-                                unicode_symbols: "&#x3b1;"
-                              }
-                            }
+                            ordinary_symbols: "&#x3b1;"
                           }
                         },
                         sub: {
@@ -29745,7 +28325,7 @@ module UnicodeMathParseValues
                           }
                         }
                       },
-                      expr: {
+                      exp: {
                         factor: {
                           atom: {
                             alphanumeric: "z"
@@ -29788,7 +28368,7 @@ module UnicodeMathParseValues
                               alphanumeric: "y"
                             }
                           },
-                          expr: {
+                          exp: {
                             factor: {
                               atom: {
                                 alphanumeric: "z"
@@ -29802,7 +28382,7 @@ module UnicodeMathParseValues
                   }
                 }
               },
-              expr: {
+              exp: {
                 factor: {
                   atom: {
                     alphanumeric: "y"
@@ -29813,9 +28393,9 @@ module UnicodeMathParseValues
                     }
                   }
                 },
-                expr: {
+                exp: {
                   operator: "+",
-                  expr: {
+                  exp: {
                     sub_exp: {
                       base: {
                         factor: {
@@ -29837,7 +28417,7 @@ module UnicodeMathParseValues
                                     alphanumeric: "z"
                                   }
                                 },
-                                expr: {
+                                exp: {
                                   factor: {
                                     atom: {
                                       alphanumeric: "x"
@@ -29851,7 +28431,7 @@ module UnicodeMathParseValues
                         }
                       }
                     },
-                    expr: {
+                    exp: {
                       factor: {
                         atom: {
                           alphanumeric: "z"
@@ -29862,9 +28442,9 @@ module UnicodeMathParseValues
                           }
                         }
                       },
-                      expr: {
+                      exp: {
                         operator: "+",
-                        expr: {
+                        exp: {
                           sub_exp: {
                             base: {
                               factor: {
@@ -29886,7 +28466,7 @@ module UnicodeMathParseValues
                                           alphanumeric: "x"
                                         }
                                       },
-                                      expr: {
+                                      exp: {
                                         factor: {
                                           atom: {
                                             alphanumeric: "y"
@@ -29900,13 +28480,13 @@ module UnicodeMathParseValues
                               }
                             }
                           },
-                          expr: {
+                          exp: {
                             factor: {
                               atom: {
                                 alphanumeric: "x"
                               }
                             },
-                            expr: {
+                            exp: {
                               factor: {
                                 atom: {
                                   alphanumeric: "y"
@@ -29936,11 +28516,7 @@ module UnicodeMathParseValues
           sub_exp: {
             base: {
               factor: {
-                atom: {
-                  char: {
-                    unicode_symbols: "&#x3b1;"
-                  }
-                }
+                ordinary_symbols: "&#x3b1;"
               }
             },
             sub: {
@@ -29955,23 +28531,19 @@ module UnicodeMathParseValues
               }
             }
           },
-          expr: {
+          exp: {
             factor: {
               atom: {
                 alphanumeric: "x"
               }
             },
-            expr: {
+            exp: {
               operator: "+",
-              expr: {
+              exp: {
                 sub_exp: {
                   base: {
                     factor: {
-                      atom: {
-                        char: {
-                          unicode_symbols: "&#x3b1;"
-                        }
-                      }
+                      ordinary_symbols: "&#x3b1;"
                     }
                   },
                   sub: {
@@ -29986,23 +28558,19 @@ module UnicodeMathParseValues
                     }
                   }
                 },
-                expr: {
+                exp: {
                   factor: {
                     atom: {
                       alphanumeric: "y"
                     }
                   },
-                  expr: {
+                  exp: {
                     operator: "+",
-                    expr: {
+                    exp: {
                       sub_exp: {
                         base: {
                           factor: {
-                            atom: {
-                              char: {
-                                unicode_symbols: "&#x3b1;"
-                              }
-                            }
+                            ordinary_symbols: "&#x3b1;"
                           }
                         },
                         sub: {
@@ -30017,7 +28585,7 @@ module UnicodeMathParseValues
                           }
                         }
                       },
-                      expr: {
+                      exp: {
                         factor: {
                           atom: {
                             alphanumeric: "z"
@@ -30034,13 +28602,7 @@ module UnicodeMathParseValues
         }
       },
       expr: {
-        factor: {
-          atom: {
-            char: {
-              unicode_symbols: "&#x2227;"
-            }
-          }
-        },
+        binary_symbols: "&#x2227;",
         expr: {
           factor: {
             intermediate_exp: {
@@ -30067,15 +28629,15 @@ module UnicodeMathParseValues
                   }
                 }
               },
-              expr: {
+              exp: {
                 factor: {
                   atom: {
                     alphanumeric: "x"
                   }
                 },
-                expr: {
+                exp: {
                   operator: "+",
-                  expr: {
+                  exp: {
                     sub_exp: {
                       base: {
                         factor: {
@@ -30098,15 +28660,15 @@ module UnicodeMathParseValues
                         }
                       }
                     },
-                    expr: {
+                    exp: {
                       factor: {
                         atom: {
                           alphanumeric: "y"
                         }
                       },
-                      expr: {
+                      exp: {
                         operator: "+",
-                        expr: {
+                        exp: {
                           sub_exp: {
                             base: {
                               factor: {
@@ -30129,7 +28691,7 @@ module UnicodeMathParseValues
                               }
                             }
                           },
-                          expr: {
+                          exp: {
                             factor: {
                               atom: {
                                 alphanumeric: "z"
@@ -30158,11 +28720,7 @@ module UnicodeMathParseValues
           sub_exp: {
             base: {
               factor: {
-                atom: {
-                  char: {
-                    unicode_symbols: "&#x3b1;"
-                  }
-                }
+                ordinary_symbols: "&#x3b1;"
               }
             },
             sub: {
@@ -30177,23 +28735,19 @@ module UnicodeMathParseValues
               }
             }
           },
-          expr: {
+          exp: {
             factor: {
               atom: {
                 alphanumeric: "x"
               }
             },
-            expr: {
+            exp: {
               operator: "+",
-              expr: {
+              exp: {
                 sub_exp: {
                   base: {
                     factor: {
-                      atom: {
-                        char: {
-                          unicode_symbols: "&#x3b1;"
-                        }
-                      }
+                      ordinary_symbols: "&#x3b1;"
                     }
                   },
                   sub: {
@@ -30208,23 +28762,19 @@ module UnicodeMathParseValues
                     }
                   }
                 },
-                expr: {
+                exp: {
                   factor: {
                     atom: {
                       alphanumeric: "y"
                     }
                   },
-                  expr: {
+                  exp: {
                     operator: "+",
-                    expr: {
+                    exp: {
                       sub_exp: {
                         base: {
                           factor: {
-                            atom: {
-                              char: {
-                                unicode_symbols: "&#x3b1;"
-                              }
-                            }
+                            ordinary_symbols: "&#x3b1;"
                           }
                         },
                         sub: {
@@ -30239,7 +28789,7 @@ module UnicodeMathParseValues
                           }
                         }
                       },
-                      expr: {
+                      exp: {
                         factor: {
                           atom: {
                             alphanumeric: "z"
@@ -30262,11 +28812,7 @@ module UnicodeMathParseValues
             sub_exp: {
               base: {
                 factor: {
-                  atom: {
-                    char: {
-                      unicode_symbols: "&#x3b1;"
-                    }
-                  }
+                  ordinary_symbols: "&#x3b1;"
                 }
               },
               sub: {
@@ -30281,23 +28827,19 @@ module UnicodeMathParseValues
                 }
               }
             },
-            expr: {
+            exp: {
               factor: {
                 atom: {
                   alphanumeric: "x"
                 }
               },
-              expr: {
+              exp: {
                 operator: "+",
-                expr: {
+                exp: {
                   sub_exp: {
                     base: {
                       factor: {
-                        atom: {
-                          char: {
-                            unicode_symbols: "&#x3b1;"
-                          }
-                        }
+                        ordinary_symbols: "&#x3b1;"
                       }
                     },
                     sub: {
@@ -30312,23 +28854,19 @@ module UnicodeMathParseValues
                       }
                     }
                   },
-                  expr: {
+                  exp: {
                     factor: {
                       atom: {
                         alphanumeric: "y"
                       }
                     },
-                    expr: {
+                    exp: {
                       operator: "+",
-                      expr: {
+                      exp: {
                         sub_exp: {
                           base: {
                             factor: {
-                              atom: {
-                                char: {
-                                  unicode_symbols: "&#x3b1;"
-                                }
-                              }
+                              ordinary_symbols: "&#x3b1;"
                             }
                           },
                           sub: {
@@ -30343,7 +28881,7 @@ module UnicodeMathParseValues
                             }
                           }
                         },
-                        expr: {
+                        exp: {
                           factor: {
                             atom: {
                               alphanumeric: "z"
@@ -30371,11 +28909,7 @@ module UnicodeMathParseValues
           sub_exp: {
             base: {
               factor: {
-                atom: {
-                  char: {
-                    unicode_symbols: "&#x3b1;"
-                  }
-                }
+                ordinary_symbols: "&#x3b1;"
               }
             },
             sub: {
@@ -30390,7 +28924,7 @@ module UnicodeMathParseValues
               }
             }
           },
-          expr: {
+          exp: {
             sub_exp: {
               base: {
                 factor: {
@@ -30412,7 +28946,7 @@ module UnicodeMathParseValues
                             alphanumeric: "z"
                           }
                         },
-                        expr: {
+                        exp: {
                           factor: {
                             atom: {
                               alphanumeric: "x"
@@ -30426,17 +28960,13 @@ module UnicodeMathParseValues
                 }
               }
             },
-            expr: {
+            exp: {
               operator: "-",
-              expr: {
+              exp: {
                 sub_exp: {
                   base: {
                     factor: {
-                      atom: {
-                        char: {
-                          unicode_symbols: "&#x3b1;"
-                        }
-                      }
+                      ordinary_symbols: "&#x3b1;"
                     }
                   },
                   sub: {
@@ -30451,7 +28981,7 @@ module UnicodeMathParseValues
                     }
                   }
                 },
-                expr: {
+                exp: {
                   sub_exp: {
                     base: {
                       factor: {
@@ -30473,7 +29003,7 @@ module UnicodeMathParseValues
                                   alphanumeric: "x"
                                 }
                               },
-                              expr: {
+                              exp: {
                                 factor: {
                                   atom: {
                                     alphanumeric: "y"
@@ -30509,11 +29039,7 @@ module UnicodeMathParseValues
                 sub_exp: {
                   base: {
                     factor: {
-                      atom: {
-                        char: {
-                          unicode_symbols: "&#x3b1;"
-                        }
-                      }
+                      ordinary_symbols: "&#x3b1;"
                     }
                   },
                   sub: {
@@ -30528,7 +29054,7 @@ module UnicodeMathParseValues
                     }
                   }
                 },
-                expr: {
+                exp: {
                   sub_exp: {
                     base: {
                       factor: {
@@ -30550,7 +29076,7 @@ module UnicodeMathParseValues
                                   alphanumeric: "x"
                                 }
                               },
-                              expr: {
+                              exp: {
                                 factor: {
                                   atom: {
                                     alphanumeric: "y"
@@ -30564,17 +29090,13 @@ module UnicodeMathParseValues
                       }
                     }
                   },
-                  expr: {
+                  exp: {
                     operator: "-",
-                    expr: {
+                    exp: {
                       sub_exp: {
                         base: {
                           factor: {
-                            atom: {
-                              char: {
-                                unicode_symbols: "&#x3b1;"
-                              }
-                            }
+                            ordinary_symbols: "&#x3b1;"
                           }
                         },
                         sub: {
@@ -30589,7 +29111,7 @@ module UnicodeMathParseValues
                           }
                         }
                       },
-                      expr: {
+                      exp: {
                         sub_exp: {
                           base: {
                             factor: {
@@ -30611,7 +29133,7 @@ module UnicodeMathParseValues
                                         alphanumeric: "y"
                                       }
                                     },
-                                    expr: {
+                                    exp: {
                                       factor: {
                                         atom: {
                                           alphanumeric: "z"
@@ -30645,15 +29167,11 @@ module UnicodeMathParseValues
                     intermediate_exp: {
                       open_paren: "(",
                       operator: "-",
-                      expr: {
+                      exp: {
                         sub_exp: {
                           base: {
                             factor: {
-                              atom: {
-                                char: {
-                                  unicode_symbols: "&#x3b1;"
-                                }
-                              }
+                              ordinary_symbols: "&#x3b1;"
                             }
                           },
                           sub: {
@@ -30668,7 +29186,7 @@ module UnicodeMathParseValues
                             }
                           }
                         },
-                        expr: {
+                        exp: {
                           sub_exp: {
                             base: {
                               factor: {
@@ -30690,7 +29208,7 @@ module UnicodeMathParseValues
                                           alphanumeric: "z"
                                         }
                                       },
-                                      expr: {
+                                      exp: {
                                         factor: {
                                           atom: {
                                             alphanumeric: "x"
@@ -30704,17 +29222,13 @@ module UnicodeMathParseValues
                               }
                             }
                           },
-                          expr: {
+                          exp: {
                             operator: "+",
-                            expr: {
+                            exp: {
                               sub_exp: {
                                 base: {
                                   factor: {
-                                    atom: {
-                                      char: {
-                                        unicode_symbols: "&#x3b1;"
-                                      }
-                                    }
+                                    ordinary_symbols: "&#x3b1;"
                                   }
                                 },
                                 sub: {
@@ -30729,7 +29243,7 @@ module UnicodeMathParseValues
                                   }
                                 }
                               },
-                              expr: {
+                              exp: {
                                 sub_exp: {
                                   base: {
                                     factor: {
@@ -30751,7 +29265,7 @@ module UnicodeMathParseValues
                                                 alphanumeric: "y"
                                               }
                                             },
-                                            expr: {
+                                            exp: {
                                               factor: {
                                                 atom: {
                                                   alphanumeric: "z"
@@ -30797,11 +29311,7 @@ module UnicodeMathParseValues
           sub_exp: {
             base: {
               factor: {
-                atom: {
-                  char: {
-                    unicode_symbols: "&#x3b1;"
-                  }
-                }
+                ordinary_symbols: "&#x3b1;"
               }
             },
             sub: {
@@ -30816,7 +29326,7 @@ module UnicodeMathParseValues
               }
             }
           },
-          expr: {
+          exp: {
             sub_exp: {
               base: {
                 factor: {
@@ -30839,17 +29349,13 @@ module UnicodeMathParseValues
                 }
               }
             },
-            expr: {
+            exp: {
               operator: "-",
-              expr: {
+              exp: {
                 sub_exp: {
                   base: {
                     factor: {
-                      atom: {
-                        char: {
-                          unicode_symbols: "&#x3b1;"
-                        }
-                      }
+                      ordinary_symbols: "&#x3b1;"
                     }
                   },
                   sub: {
@@ -30864,7 +29370,7 @@ module UnicodeMathParseValues
                     }
                   }
                 },
-                expr: {
+                exp: {
                   sub_exp: {
                     base: {
                       factor: {
@@ -30916,11 +29422,7 @@ module UnicodeMathParseValues
         sub_exp: {
           base: {
             factor: {
-              atom: {
-                char: {
-                  unicode_symbols: "&#x3b1;"
-                }
-              }
+              ordinary_symbols: "&#x3b1;"
             }
           },
           sub: {
@@ -30941,11 +29443,7 @@ module UnicodeMathParseValues
             sub_exp: {
               base: {
                 factor: {
-                  atom: {
-                    char: {
-                      unicode_symbols: "&#x3b1;"
-                    }
-                  }
+                  ordinary_symbols: "&#x3b1;"
                 }
               },
               sub: {
@@ -30972,11 +29470,7 @@ module UnicodeMathParseValues
                   sub_exp: {
                     base: {
                       factor: {
-                        atom: {
-                          char: {
-                            unicode_symbols: "&#x3b1;"
-                          }
-                        }
+                        ordinary_symbols: "&#x3b1;"
                       }
                     },
                     sub: {
@@ -31003,11 +29497,7 @@ module UnicodeMathParseValues
                         sub_exp: {
                           base: {
                             factor: {
-                              atom: {
-                                char: {
-                                  unicode_symbols: "&#x3b1;"
-                                }
-                              }
+                              ordinary_symbols: "&#x3b1;"
                             }
                           },
                           sub: {
@@ -31049,11 +29539,7 @@ module UnicodeMathParseValues
       sub_exp: {
         base: {
           factor: {
-            atom: {
-              char: {
-                unicode_symbols: "&#x3b1;"
-              }
-            }
+            ordinary_symbols: "&#x3b1;"
           }
         },
         sub: {
@@ -31074,11 +29560,7 @@ module UnicodeMathParseValues
           sub_exp: {
             base: {
               factor: {
-                atom: {
-                  char: {
-                    unicode_symbols: "&#x3b1;"
-                  }
-                }
+                ordinary_symbols: "&#x3b1;"
               }
             },
             sub: {
@@ -31092,7 +29574,7 @@ module UnicodeMathParseValues
                           alphanumeric: "y"
                         }
                       },
-                      expr: {
+                      exp: {
                         factor: {
                           atom: {
                             alphanumeric: "z"
@@ -31123,11 +29605,7 @@ module UnicodeMathParseValues
                 sub_exp: {
                   base: {
                     factor: {
-                      atom: {
-                        char: {
-                          unicode_symbols: "&#x3b1;"
-                        }
-                      }
+                      ordinary_symbols: "&#x3b1;"
                     }
                   },
                   sub: {
@@ -31141,7 +29619,7 @@ module UnicodeMathParseValues
                                 alphanumeric: "z"
                               }
                             },
-                            expr: {
+                            exp: {
                               factor: {
                                 atom: {
                                   alphanumeric: "x"
@@ -31173,11 +29651,7 @@ module UnicodeMathParseValues
                         sub_exp: {
                           base: {
                             factor: {
-                              atom: {
-                                char: {
-                                  unicode_symbols: "&#x3b1;"
-                                }
-                              }
+                              ordinary_symbols: "&#x3b1;"
                             }
                           },
                           sub: {
@@ -31191,7 +29665,7 @@ module UnicodeMathParseValues
                                         alphanumeric: "x"
                                       }
                                     },
-                                    expr: {
+                                    exp: {
                                       factor: {
                                         atom: {
                                           alphanumeric: "y"
@@ -31223,11 +29697,7 @@ module UnicodeMathParseValues
                                 sub_exp: {
                                   base: {
                                     factor: {
-                                      atom: {
-                                        char: {
-                                          unicode_symbols: "&#x3b1;"
-                                        }
-                                      }
+                                      ordinary_symbols: "&#x3b1;"
                                     }
                                   },
                                   sub: {
@@ -31241,13 +29711,13 @@ module UnicodeMathParseValues
                                                 alphanumeric: "x"
                                               }
                                             },
-                                            expr: {
+                                            exp: {
                                               factor: {
                                                 atom: {
                                                   alphanumeric: "y"
                                                 }
                                               },
-                                              expr: {
+                                              exp: {
                                                 factor: {
                                                   atom: {
                                                     alphanumeric: "z"
@@ -31304,11 +29774,7 @@ module UnicodeMathParseValues
       sub_exp: {
         base: {
           factor: {
-            atom: {
-              char: {
-                unicode_symbols: "&#x3b1;"
-              }
-            }
+            ordinary_symbols: "&#x3b1;"
           }
         },
         sub: {
@@ -31329,11 +29795,7 @@ module UnicodeMathParseValues
           sub_exp: {
             base: {
               factor: {
-                atom: {
-                  char: {
-                    unicode_symbols: "&#x3b1;"
-                  }
-                }
+                ordinary_symbols: "&#x3b1;"
               }
             },
             sub: {
@@ -31360,11 +29822,7 @@ module UnicodeMathParseValues
                 sub_exp: {
                   base: {
                     factor: {
-                      atom: {
-                        char: {
-                          unicode_symbols: "&#x3b1;"
-                        }
-                      }
+                      ordinary_symbols: "&#x3b1;"
                     }
                   },
                   sub: {
@@ -31391,11 +29849,7 @@ module UnicodeMathParseValues
                       sub_exp: {
                         base: {
                           factor: {
-                            atom: {
-                              char: {
-                                unicode_symbols: "&#x3b1;"
-                              }
-                            }
+                            ordinary_symbols: "&#x3b1;"
                           }
                         },
                         sub: {
@@ -31422,11 +29876,7 @@ module UnicodeMathParseValues
                             sub_exp: {
                               base: {
                                 factor: {
-                                  atom: {
-                                    char: {
-                                      unicode_symbols: "&#x3b1;"
-                                    }
-                                  }
+                                  ordinary_symbols: "&#x3b1;"
                                 }
                               },
                               sub: {
@@ -31440,7 +29890,7 @@ module UnicodeMathParseValues
                                             alphanumeric: "y"
                                           }
                                         },
-                                        expr: {
+                                        exp: {
                                           factor: {
                                             atom: {
                                               alphanumeric: "z"
@@ -31471,11 +29921,7 @@ module UnicodeMathParseValues
                                   sub_exp: {
                                     base: {
                                       factor: {
-                                        atom: {
-                                          char: {
-                                            unicode_symbols: "&#x3b1;"
-                                          }
-                                        }
+                                        ordinary_symbols: "&#x3b1;"
                                       }
                                     },
                                     sub: {
@@ -31489,7 +29935,7 @@ module UnicodeMathParseValues
                                                   alphanumeric: "z"
                                                 }
                                               },
-                                              expr: {
+                                              exp: {
                                                 factor: {
                                                   atom: {
                                                     alphanumeric: "x"
@@ -31521,11 +29967,7 @@ module UnicodeMathParseValues
                                           sub_exp: {
                                             base: {
                                               factor: {
-                                                atom: {
-                                                  char: {
-                                                    unicode_symbols: "&#x3b1;"
-                                                  }
-                                                }
+                                                ordinary_symbols: "&#x3b1;"
                                               }
                                             },
                                             sub: {
@@ -31539,7 +29981,7 @@ module UnicodeMathParseValues
                                                           alphanumeric: "x"
                                                         }
                                                       },
-                                                      expr: {
+                                                      exp: {
                                                         factor: {
                                                           atom: {
                                                             alphanumeric: "y"
@@ -31571,11 +30013,7 @@ module UnicodeMathParseValues
                                                   sub_exp: {
                                                     base: {
                                                       factor: {
-                                                        atom: {
-                                                          char: {
-                                                            unicode_symbols: "&#x3b1;"
-                                                          }
-                                                        }
+                                                        ordinary_symbols: "&#x3b1;"
                                                       }
                                                     },
                                                     sub: {
@@ -31589,13 +30027,13 @@ module UnicodeMathParseValues
                                                                   alphanumeric: "x"
                                                                 }
                                                               },
-                                                              expr: {
+                                                              exp: {
                                                                 factor: {
                                                                   atom: {
                                                                     alphanumeric: "y"
                                                                   }
                                                                 },
-                                                                expr: {
+                                                                exp: {
                                                                   factor: {
                                                                     atom: {
                                                                       alphanumeric: "z"
@@ -31661,11 +30099,7 @@ module UnicodeMathParseValues
       sub_exp: {
         base: {
           factor: {
-            atom: {
-              char: {
-                unicode_symbols: "&#x3b1;"
-              }
-            }
+            ordinary_symbols: "&#x3b1;"
           }
         },
         sub: {
@@ -31709,11 +30143,7 @@ module UnicodeMathParseValues
             sub_exp: {
               base: {
                 factor: {
-                  atom: {
-                    char: {
-                      unicode_symbols: "&#x3b1;"
-                    }
-                  }
+                  ordinary_symbols: "&#x3b1;"
                 }
               },
               sub: {
@@ -31763,11 +30193,7 @@ module UnicodeMathParseValues
                     sub_exp: {
                       base: {
                         factor: {
-                          atom: {
-                            char: {
-                              unicode_symbols: "&#x3b1;"
-                            }
-                          }
+                          ordinary_symbols: "&#x3b1;"
                         }
                       },
                       sub: {
@@ -31817,11 +30243,7 @@ module UnicodeMathParseValues
                             sub_exp: {
                               base: {
                                 factor: {
-                                  atom: {
-                                    char: {
-                                      unicode_symbols: "&#x3b1;"
-                                    }
-                                  }
+                                  ordinary_symbols: "&#x3b1;"
                                 }
                               },
                               sub: {
@@ -31886,11 +30308,7 @@ module UnicodeMathParseValues
       sub_exp: {
         base: {
           factor: {
-            atom: {
-              char: {
-                unicode_symbols: "&#x3b1;"
-              }
-            }
+            ordinary_symbols: "&#x3b1;"
           }
         },
         sub: {
@@ -31934,11 +30352,7 @@ module UnicodeMathParseValues
             sub_exp: {
               base: {
                 factor: {
-                  atom: {
-                    char: {
-                      unicode_symbols: "&#x3b1;"
-                    }
-                  }
+                  ordinary_symbols: "&#x3b1;"
                 }
               },
               sub: {
@@ -31988,11 +30402,7 @@ module UnicodeMathParseValues
                     sub_exp: {
                       base: {
                         factor: {
-                          atom: {
-                            char: {
-                              unicode_symbols: "&#x3b1;"
-                            }
-                          }
+                          ordinary_symbols: "&#x3b1;"
                         }
                       },
                       sub: {
@@ -32042,11 +30452,7 @@ module UnicodeMathParseValues
                             sub_exp: {
                               base: {
                                 factor: {
-                                  atom: {
-                                    char: {
-                                      unicode_symbols: "&#x3b1;"
-                                    }
-                                  }
+                                  ordinary_symbols: "&#x3b1;"
                                 }
                               },
                               sub: {
@@ -32114,11 +30520,7 @@ module UnicodeMathParseValues
       sub_exp: {
         base: {
           factor: {
-            atom: {
-              char: {
-                unicode_symbols: "&#x3b1;"
-              }
-            }
+            ordinary_symbols: "&#x3b1;"
           }
         },
         sub: {
@@ -32162,11 +30564,7 @@ module UnicodeMathParseValues
             sub_exp: {
               base: {
                 factor: {
-                  atom: {
-                    char: {
-                      unicode_symbols: "&#x3b1;"
-                    }
-                  }
+                  ordinary_symbols: "&#x3b1;"
                 }
               },
               sub: {
@@ -32210,11 +30608,7 @@ module UnicodeMathParseValues
                   sub_exp: {
                     base: {
                       factor: {
-                        atom: {
-                          char: {
-                            unicode_symbols: "&#x3b1;"
-                          }
-                        }
+                        ordinary_symbols: "&#x3b1;"
                       }
                     },
                     sub: {
@@ -32258,11 +30652,7 @@ module UnicodeMathParseValues
                         sub_exp: {
                           base: {
                             factor: {
-                              atom: {
-                                char: {
-                                  unicode_symbols: "&#x3b1;"
-                                }
-                              }
+                              ordinary_symbols: "&#x3b1;"
                             }
                           },
                           sub: {
@@ -32306,11 +30696,7 @@ module UnicodeMathParseValues
                               sub_exp: {
                                 base: {
                                   factor: {
-                                    atom: {
-                                      char: {
-                                        unicode_symbols: "&#x3b1;"
-                                      }
-                                    }
+                                    ordinary_symbols: "&#x3b1;"
                                   }
                                 },
                                 sub: {
@@ -32324,7 +30710,7 @@ module UnicodeMathParseValues
                                               alphanumeric: "y"
                                             }
                                           },
-                                          expr: {
+                                          exp: {
                                             factor: {
                                               atom: {
                                                 alphanumeric: "z"
@@ -32360,7 +30746,7 @@ module UnicodeMathParseValues
                                                 alphanumeric: "y"
                                               }
                                             },
-                                            expr: {
+                                            exp: {
                                               factor: {
                                                 atom: {
                                                   alphanumeric: "z"
@@ -32380,11 +30766,7 @@ module UnicodeMathParseValues
                                     sub_exp: {
                                       base: {
                                         factor: {
-                                          atom: {
-                                            char: {
-                                              unicode_symbols: "&#x3b1;"
-                                            }
-                                          }
+                                          ordinary_symbols: "&#x3b1;"
                                         }
                                       },
                                       sub: {
@@ -32398,7 +30780,7 @@ module UnicodeMathParseValues
                                                     alphanumeric: "z"
                                                   }
                                                 },
-                                                expr: {
+                                                exp: {
                                                   factor: {
                                                     atom: {
                                                       alphanumeric: "x"
@@ -32434,7 +30816,7 @@ module UnicodeMathParseValues
                                                       alphanumeric: "z"
                                                     }
                                                   },
-                                                  expr: {
+                                                  exp: {
                                                     factor: {
                                                       atom: {
                                                         alphanumeric: "x"
@@ -32454,11 +30836,7 @@ module UnicodeMathParseValues
                                           sub_exp: {
                                             base: {
                                               factor: {
-                                                atom: {
-                                                  char: {
-                                                    unicode_symbols: "&#x3b1;"
-                                                  }
-                                                }
+                                                ordinary_symbols: "&#x3b1;"
                                               }
                                             },
                                             sub: {
@@ -32472,7 +30850,7 @@ module UnicodeMathParseValues
                                                           alphanumeric: "x"
                                                         }
                                                       },
-                                                      expr: {
+                                                      exp: {
                                                         factor: {
                                                           atom: {
                                                             alphanumeric: "y"
@@ -32508,7 +30886,7 @@ module UnicodeMathParseValues
                                                             alphanumeric: "x"
                                                           }
                                                         },
-                                                        expr: {
+                                                        exp: {
                                                           factor: {
                                                             atom: {
                                                               alphanumeric: "y"
@@ -32528,11 +30906,7 @@ module UnicodeMathParseValues
                                                 sub_exp: {
                                                   base: {
                                                     factor: {
-                                                      atom: {
-                                                        char: {
-                                                          unicode_symbols: "&#x3b1;"
-                                                        }
-                                                      }
+                                                      ordinary_symbols: "&#x3b1;"
                                                     }
                                                   },
                                                   sub: {
@@ -32546,13 +30920,13 @@ module UnicodeMathParseValues
                                                                 alphanumeric: "x"
                                                               }
                                                             },
-                                                            expr: {
+                                                            exp: {
                                                               factor: {
                                                                 atom: {
                                                                   alphanumeric: "y"
                                                                 }
                                                               },
-                                                              expr: {
+                                                              exp: {
                                                                 factor: {
                                                                   atom: {
                                                                     alphanumeric: "z"
@@ -32589,13 +30963,13 @@ module UnicodeMathParseValues
                                                                   alphanumeric: "x"
                                                                 }
                                                               },
-                                                              expr: {
+                                                              exp: {
                                                                 factor: {
                                                                   atom: {
                                                                     alphanumeric: "y"
                                                                   }
                                                                 },
-                                                                expr: {
+                                                                exp: {
                                                                   factor: {
                                                                     atom: {
                                                                       alphanumeric: "z"
@@ -32640,11 +31014,7 @@ module UnicodeMathParseValues
       sub_exp: {
         base: {
           factor: {
-            atom: {
-              char: {
-                unicode_symbols: "&#x3b1;"
-              }
-            }
+            ordinary_symbols: "&#x3b1;"
           }
         },
         sub: {
@@ -32671,11 +31041,7 @@ module UnicodeMathParseValues
             sub_exp: {
               base: {
                 factor: {
-                  atom: {
-                    char: {
-                      unicode_symbols: "&#x3b1;"
-                    }
-                  }
+                  ordinary_symbols: "&#x3b1;"
                 }
               },
               sub: {
@@ -32702,11 +31068,7 @@ module UnicodeMathParseValues
                   sub_exp: {
                     base: {
                       factor: {
-                        atom: {
-                          char: {
-                            unicode_symbols: "&#x3b1;"
-                          }
-                        }
+                        ordinary_symbols: "&#x3b1;"
                       }
                     },
                     sub: {
@@ -32733,11 +31095,7 @@ module UnicodeMathParseValues
                         sub_exp: {
                           base: {
                             factor: {
-                              atom: {
-                                char: {
-                                  unicode_symbols: "&#x3b1;"
-                                }
-                              }
+                              ordinary_symbols: "&#x3b1;"
                             }
                           },
                           sub: {
@@ -32751,13 +31109,13 @@ module UnicodeMathParseValues
                                         alphanumeric: "x"
                                       }
                                     },
-                                    expr: {
+                                    exp: {
                                       factor: {
                                         atom: {
                                           alphanumeric: "y"
                                         }
                                       },
-                                      expr: {
+                                      exp: {
                                         factor: {
                                           atom: {
                                             alphanumeric: "z"
@@ -32810,11 +31168,7 @@ module UnicodeMathParseValues
       sub_exp: {
         base: {
           factor: {
-            atom: {
-              char: {
-                unicode_symbols: "&#x3b1;"
-              }
-            }
+            ordinary_symbols: "&#x3b1;"
           }
         },
         sub: {
@@ -32836,11 +31190,7 @@ module UnicodeMathParseValues
         sub_exp: {
           base: {
             factor: {
-              atom: {
-                char: {
-                  unicode_symbols: "&#x3b1;"
-                }
-              }
+              ordinary_symbols: "&#x3b1;"
             }
           },
           sub: {
@@ -32867,11 +31217,7 @@ module UnicodeMathParseValues
               sub_exp: {
                 base: {
                   factor: {
-                    atom: {
-                      char: {
-                        unicode_symbols: "&#x3b1;"
-                      }
-                    }
+                    ordinary_symbols: "&#x3b1;"
                   }
                 },
                 sub: {
@@ -32893,11 +31239,7 @@ module UnicodeMathParseValues
                 sub_exp: {
                   base: {
                     factor: {
-                      atom: {
-                        char: {
-                          unicode_symbols: "&#x3b1;"
-                        }
-                      }
+                      ordinary_symbols: "&#x3b1;"
                     }
                   },
                   sub: {
@@ -32924,11 +31266,7 @@ module UnicodeMathParseValues
                       sub_exp: {
                         base: {
                           factor: {
-                            atom: {
-                              char: {
-                                unicode_symbols: "&#x3b1;"
-                              }
-                            }
+                            ordinary_symbols: "&#x3b1;"
                           }
                         },
                         sub: {
@@ -32950,11 +31288,7 @@ module UnicodeMathParseValues
                         sub_exp: {
                           base: {
                             factor: {
-                              atom: {
-                                char: {
-                                  unicode_symbols: "&#x3b1;"
-                                }
-                              }
+                              ordinary_symbols: "&#x3b1;"
                             }
                           },
                           sub: {
@@ -32981,11 +31315,7 @@ module UnicodeMathParseValues
                               sub_exp: {
                                 base: {
                                   factor: {
-                                    atom: {
-                                      char: {
-                                        unicode_symbols: "&#x3b1;"
-                                      }
-                                    }
+                                    ordinary_symbols: "&#x3b1;"
                                   }
                                 },
                                 sub: {
@@ -33007,11 +31337,7 @@ module UnicodeMathParseValues
                                 sub_exp: {
                                   base: {
                                     factor: {
-                                      atom: {
-                                        char: {
-                                          unicode_symbols: "&#x3b1;"
-                                        }
-                                      }
+                                      ordinary_symbols: "&#x3b1;"
                                     }
                                   },
                                   sub: {
@@ -33038,11 +31364,7 @@ module UnicodeMathParseValues
                                       sub_exp: {
                                         base: {
                                           factor: {
-                                            atom: {
-                                              char: {
-                                                unicode_symbols: "&#x3b1;"
-                                              }
-                                            }
+                                            ordinary_symbols: "&#x3b1;"
                                           }
                                         },
                                         sub: {
@@ -33064,11 +31386,7 @@ module UnicodeMathParseValues
                                         sub_exp: {
                                           base: {
                                             factor: {
-                                              atom: {
-                                                char: {
-                                                  unicode_symbols: "&#x3b1;"
-                                                }
-                                              }
+                                              ordinary_symbols: "&#x3b1;"
                                             }
                                           },
                                           sub: {
@@ -33095,11 +31413,7 @@ module UnicodeMathParseValues
                                               sub_exp: {
                                                 base: {
                                                   factor: {
-                                                    atom: {
-                                                      char: {
-                                                        unicode_symbols: "&#x3b1;"
-                                                      }
-                                                    }
+                                                    ordinary_symbols: "&#x3b1;"
                                                   }
                                                 },
                                                 sub: {
@@ -33121,11 +31435,7 @@ module UnicodeMathParseValues
                                                 sub_exp: {
                                                   base: {
                                                     factor: {
-                                                      atom: {
-                                                        char: {
-                                                          unicode_symbols: "&#x3b1;"
-                                                        }
-                                                      }
+                                                      ordinary_symbols: "&#x3b1;"
                                                     }
                                                   },
                                                   sub: {
@@ -33152,11 +31462,7 @@ module UnicodeMathParseValues
                                                       sub_exp: {
                                                         base: {
                                                           factor: {
-                                                            atom: {
-                                                              char: {
-                                                                unicode_symbols: "&#x3b1;"
-                                                              }
-                                                            }
+                                                            ordinary_symbols: "&#x3b1;"
                                                           }
                                                         },
                                                         sub: {
@@ -33178,11 +31484,7 @@ module UnicodeMathParseValues
                                                         sub_exp: {
                                                           base: {
                                                             factor: {
-                                                              atom: {
-                                                                char: {
-                                                                  unicode_symbols: "&#x3b1;"
-                                                                }
-                                                              }
+                                                              ordinary_symbols: "&#x3b1;"
                                                             }
                                                           },
                                                           sub: {
@@ -33209,11 +31511,7 @@ module UnicodeMathParseValues
                                                               sub_exp: {
                                                                 base: {
                                                                   factor: {
-                                                                    atom: {
-                                                                      char: {
-                                                                        unicode_symbols: "&#x3b1;"
-                                                                      }
-                                                                    }
+                                                                    ordinary_symbols: "&#x3b1;"
                                                                   }
                                                                 },
                                                                 sub: {
@@ -33235,11 +31533,7 @@ module UnicodeMathParseValues
                                                                 sub_exp: {
                                                                   base: {
                                                                     factor: {
-                                                                      atom: {
-                                                                        char: {
-                                                                          unicode_symbols: "&#x3b1;"
-                                                                        }
-                                                                      }
+                                                                      ordinary_symbols: "&#x3b1;"
                                                                     }
                                                                   },
                                                                   sub: {
@@ -33266,11 +31560,7 @@ module UnicodeMathParseValues
                                                                       sub_exp: {
                                                                         base: {
                                                                           factor: {
-                                                                            atom: {
-                                                                              char: {
-                                                                                unicode_symbols: "&#x3b1;"
-                                                                              }
-                                                                            }
+                                                                            ordinary_symbols: "&#x3b1;"
                                                                           }
                                                                         },
                                                                         sub: {
@@ -33292,11 +31582,7 @@ module UnicodeMathParseValues
                                                                         sub_exp: {
                                                                           base: {
                                                                             factor: {
-                                                                              atom: {
-                                                                                char: {
-                                                                                  unicode_symbols: "&#x3b1;"
-                                                                                }
-                                                                              }
+                                                                              ordinary_symbols: "&#x3b1;"
                                                                             }
                                                                           },
                                                                           sub: {
@@ -33359,11 +31645,7 @@ module UnicodeMathParseValues
       sub_exp: {
         base: {
           factor: {
-            atom: {
-              char: {
-                unicode_symbols: "&#x3b1;"
-              }
-            }
+            ordinary_symbols: "&#x3b1;"
           }
         },
         sub: {
@@ -33407,11 +31689,7 @@ module UnicodeMathParseValues
             sub_exp: {
               base: {
                 factor: {
-                  atom: {
-                    char: {
-                      unicode_symbols: "&#x3b1;"
-                    }
-                  }
+                  ordinary_symbols: "&#x3b1;"
                 }
               },
               sub: {
@@ -33455,11 +31733,7 @@ module UnicodeMathParseValues
                   sub_exp: {
                     base: {
                       factor: {
-                        atom: {
-                          char: {
-                            unicode_symbols: "&#x3b1;"
-                          }
-                        }
+                        ordinary_symbols: "&#x3b1;"
                       }
                     },
                     sub: {
@@ -33512,11 +31786,7 @@ module UnicodeMathParseValues
       subsup_exp: {
         base: {
           factor: {
-            atom: {
-              char: {
-                unicode_symbols: "&#x3b1;"
-              }
-            }
+            ordinary_symbols: "&#x3b1;"
           }
         },
         sub: {
@@ -33554,11 +31824,7 @@ module UnicodeMathParseValues
             subsup_exp: {
               base: {
                 factor: {
-                  atom: {
-                    char: {
-                      unicode_symbols: "&#x3b1;"
-                    }
-                  }
+                  ordinary_symbols: "&#x3b1;"
                 }
               },
               sub: {
@@ -33596,11 +31862,7 @@ module UnicodeMathParseValues
                   subsup_exp: {
                     base: {
                       factor: {
-                        atom: {
-                          char: {
-                            unicode_symbols: "&#x3b1;"
-                          }
-                        }
+                        ordinary_symbols: "&#x3b1;"
                       }
                     },
                     sub: {
@@ -33641,11 +31903,7 @@ module UnicodeMathParseValues
                             sub_exp: {
                               base: {
                                 factor: {
-                                  atom: {
-                                    char: {
-                                      unicode_symbols: "&#x3b1;"
-                                    }
-                                  }
+                                  ordinary_symbols: "&#x3b1;"
                                 }
                               },
                               sub: {
@@ -33660,15 +31918,11 @@ module UnicodeMathParseValues
                                 }
                               }
                             },
-                            expr: {
+                            exp: {
                               sub_exp: {
                                 base: {
                                   factor: {
-                                    atom: {
-                                      char: {
-                                        unicode_symbols: "&#x3b1;"
-                                      }
-                                    }
+                                    ordinary_symbols: "&#x3b1;"
                                   }
                                 },
                                 sub: {
@@ -33683,29 +31937,25 @@ module UnicodeMathParseValues
                                   }
                                 }
                               },
-                              expr: {
+                              exp: {
                                 factor: {
                                   atom: {
                                     alphanumeric: "y"
                                   }
                                 },
-                                expr: {
+                                exp: {
                                   factor: {
                                     atom: {
                                       alphanumeric: "z"
                                     }
                                   },
-                                  expr: {
+                                  exp: {
                                     operator: "-",
-                                    expr: {
+                                    exp: {
                                       sub_exp: {
                                         base: {
                                           factor: {
-                                            atom: {
-                                              char: {
-                                                unicode_symbols: "&#x3b1;"
-                                              }
-                                            }
+                                            ordinary_symbols: "&#x3b1;"
                                           }
                                         },
                                         sub: {
@@ -33720,15 +31970,11 @@ module UnicodeMathParseValues
                                           }
                                         }
                                       },
-                                      expr: {
+                                      exp: {
                                         sub_exp: {
                                           base: {
                                             factor: {
-                                              atom: {
-                                                char: {
-                                                  unicode_symbols: "&#x3b1;"
-                                                }
-                                              }
+                                              ordinary_symbols: "&#x3b1;"
                                             }
                                           },
                                           sub: {
@@ -33743,13 +31989,13 @@ module UnicodeMathParseValues
                                             }
                                           }
                                         },
-                                        expr: {
+                                        exp: {
                                           factor: {
                                             atom: {
                                               alphanumeric: "y"
                                             }
                                           },
-                                          expr: {
+                                          exp: {
                                             factor: {
                                               atom: {
                                                 alphanumeric: "z"
@@ -33775,11 +32021,7 @@ module UnicodeMathParseValues
                                 sub_exp: {
                                   base: {
                                     factor: {
-                                      atom: {
-                                        char: {
-                                          unicode_symbols: "&#x3b1;"
-                                        }
-                                      }
+                                      ordinary_symbols: "&#x3b1;"
                                     }
                                   },
                                   sub: {
@@ -33794,15 +32036,11 @@ module UnicodeMathParseValues
                                     }
                                   }
                                 },
-                                expr: {
+                                exp: {
                                   sub_exp: {
                                     base: {
                                       factor: {
-                                        atom: {
-                                          char: {
-                                            unicode_symbols: "&#x3b1;"
-                                          }
-                                        }
+                                        ordinary_symbols: "&#x3b1;"
                                       }
                                     },
                                     sub: {
@@ -33817,29 +32055,25 @@ module UnicodeMathParseValues
                                       }
                                     }
                                   },
-                                  expr: {
+                                  exp: {
                                     factor: {
                                       atom: {
                                         alphanumeric: "z"
                                       }
                                     },
-                                    expr: {
+                                    exp: {
                                       factor: {
                                         atom: {
                                           alphanumeric: "x"
                                         }
                                       },
-                                      expr: {
+                                      exp: {
                                         operator: "-",
-                                        expr: {
+                                        exp: {
                                           sub_exp: {
                                             base: {
                                               factor: {
-                                                atom: {
-                                                  char: {
-                                                    unicode_symbols: "&#x3b1;"
-                                                  }
-                                                }
+                                                ordinary_symbols: "&#x3b1;"
                                               }
                                             },
                                             sub: {
@@ -33854,15 +32088,11 @@ module UnicodeMathParseValues
                                               }
                                             }
                                           },
-                                          expr: {
+                                          exp: {
                                             sub_exp: {
                                               base: {
                                                 factor: {
-                                                  atom: {
-                                                    char: {
-                                                      unicode_symbols: "&#x3b1;"
-                                                    }
-                                                  }
+                                                  ordinary_symbols: "&#x3b1;"
                                                 }
                                               },
                                               sub: {
@@ -33877,13 +32107,13 @@ module UnicodeMathParseValues
                                                 }
                                               }
                                             },
-                                            expr: {
+                                            exp: {
                                               factor: {
                                                 atom: {
                                                   alphanumeric: "z"
                                                 }
                                               },
-                                              expr: {
+                                              exp: {
                                                 factor: {
                                                   atom: {
                                                     alphanumeric: "x"
@@ -33909,11 +32139,7 @@ module UnicodeMathParseValues
                                     sub_exp: {
                                       base: {
                                         factor: {
-                                          atom: {
-                                            char: {
-                                              unicode_symbols: "&#x3b1;"
-                                            }
-                                          }
+                                          ordinary_symbols: "&#x3b1;"
                                         }
                                       },
                                       sub: {
@@ -33928,15 +32154,11 @@ module UnicodeMathParseValues
                                         }
                                       }
                                     },
-                                    expr: {
+                                    exp: {
                                       sub_exp: {
                                         base: {
                                           factor: {
-                                            atom: {
-                                              char: {
-                                                unicode_symbols: "&#x3b1;"
-                                              }
-                                            }
+                                            ordinary_symbols: "&#x3b1;"
                                           }
                                         },
                                         sub: {
@@ -33951,29 +32173,25 @@ module UnicodeMathParseValues
                                           }
                                         }
                                       },
-                                      expr: {
+                                      exp: {
                                         factor: {
                                           atom: {
                                             alphanumeric: "x"
                                           }
                                         },
-                                        expr: {
+                                        exp: {
                                           factor: {
                                             atom: {
                                               alphanumeric: "y"
                                             }
                                           },
-                                          expr: {
+                                          exp: {
                                             operator: "-",
-                                            expr: {
+                                            exp: {
                                               sub_exp: {
                                                 base: {
                                                   factor: {
-                                                    atom: {
-                                                      char: {
-                                                        unicode_symbols: "&#x3b1;"
-                                                      }
-                                                    }
+                                                    ordinary_symbols: "&#x3b1;"
                                                   }
                                                 },
                                                 sub: {
@@ -33988,15 +32206,11 @@ module UnicodeMathParseValues
                                                   }
                                                 }
                                               },
-                                              expr: {
+                                              exp: {
                                                 sub_exp: {
                                                   base: {
                                                     factor: {
-                                                      atom: {
-                                                        char: {
-                                                          unicode_symbols: "&#x3b1;"
-                                                        }
-                                                      }
+                                                      ordinary_symbols: "&#x3b1;"
                                                     }
                                                   },
                                                   sub: {
@@ -34011,13 +32225,13 @@ module UnicodeMathParseValues
                                                     }
                                                   }
                                                 },
-                                                expr: {
+                                                exp: {
                                                   factor: {
                                                     atom: {
                                                       alphanumeric: "x"
                                                     }
                                                   },
-                                                  expr: {
+                                                  exp: {
                                                     factor: {
                                                       atom: {
                                                         alphanumeric: "y"
@@ -34055,11 +32269,7 @@ module UnicodeMathParseValues
       subsup_exp: {
         base: {
           factor: {
-            atom: {
-              char: {
-                unicode_symbols: "&#x3b1;"
-              }
-            }
+            ordinary_symbols: "&#x3b1;"
           }
         },
         sub: {
@@ -34091,11 +32301,7 @@ module UnicodeMathParseValues
           subsup_exp: {
             base: {
               factor: {
-                atom: {
-                  char: {
-                    unicode_symbols: "&#x3b1;"
-                  }
-                }
+                ordinary_symbols: "&#x3b1;"
               }
             },
             sub: {
@@ -34127,11 +32333,7 @@ module UnicodeMathParseValues
               subsup_exp: {
                 base: {
                   factor: {
-                    atom: {
-                      char: {
-                        unicode_symbols: "&#x3b1;"
-                      }
-                    }
+                    ordinary_symbols: "&#x3b1;"
                   }
                 },
                 sub: {
@@ -34169,11 +32371,7 @@ module UnicodeMathParseValues
       subsup_exp: {
         base: {
           factor: {
-            atom: {
-              char: {
-                unicode_symbols: "&#x3b1;"
-              }
-            }
+            ordinary_symbols: "&#x3b1;"
           }
         },
         sub: {
@@ -34222,11 +32420,7 @@ module UnicodeMathParseValues
             sub_exp: {
               base: {
                 factor: {
-                  atom: {
-                    char: {
-                      unicode_symbols: "&#x3b1;"
-                    }
-                  }
+                  ordinary_symbols: "&#x3b1;"
                 }
               },
               sub: {
@@ -34245,11 +32439,7 @@ module UnicodeMathParseValues
               sub_exp: {
                 base: {
                   factor: {
-                    atom: {
-                      char: {
-                        unicode_symbols: "&#x3b1;"
-                      }
-                    }
+                    ordinary_symbols: "&#x3b1;"
                   }
                 },
                 sub: {
@@ -34282,11 +32472,7 @@ module UnicodeMathParseValues
                       sub_exp: {
                         base: {
                           factor: {
-                            atom: {
-                              char: {
-                                unicode_symbols: "&#x3b1;"
-                              }
-                            }
+                            ordinary_symbols: "&#x3b1;"
                           }
                         },
                         sub: {
@@ -34305,11 +32491,7 @@ module UnicodeMathParseValues
                         sub_exp: {
                           base: {
                             factor: {
-                              atom: {
-                                char: {
-                                  unicode_symbols: "&#x3b1;"
-                                }
-                              }
+                              ordinary_symbols: "&#x3b1;"
                             }
                           },
                           sub: {
@@ -34342,11 +32524,7 @@ module UnicodeMathParseValues
                                 sub_exp: {
                                   base: {
                                     factor: {
-                                      atom: {
-                                        char: {
-                                          unicode_symbols: "&#x3b1;"
-                                        }
-                                      }
+                                      ordinary_symbols: "&#x3b1;"
                                     }
                                   },
                                   sub: {
@@ -34365,11 +32543,7 @@ module UnicodeMathParseValues
                                   sub_exp: {
                                     base: {
                                       factor: {
-                                        atom: {
-                                          char: {
-                                            unicode_symbols: "&#x3b1;"
-                                          }
-                                        }
+                                        ordinary_symbols: "&#x3b1;"
                                       }
                                     },
                                     sub: {
@@ -34402,11 +32576,7 @@ module UnicodeMathParseValues
                                           subsup_exp: {
                                             base: {
                                               factor: {
-                                                atom: {
-                                                  char: {
-                                                    unicode_symbols: "&#x3b1;"
-                                                  }
-                                                }
+                                                ordinary_symbols: "&#x3b1;"
                                               }
                                             },
                                             sub: {
@@ -34455,11 +32625,7 @@ module UnicodeMathParseValues
                                                 sub_exp: {
                                                   base: {
                                                     factor: {
-                                                      atom: {
-                                                        char: {
-                                                          unicode_symbols: "&#x3b1;"
-                                                        }
-                                                      }
+                                                      ordinary_symbols: "&#x3b1;"
                                                     }
                                                   },
                                                   sub: {
@@ -34478,11 +32644,7 @@ module UnicodeMathParseValues
                                                   sub_exp: {
                                                     base: {
                                                       factor: {
-                                                        atom: {
-                                                          char: {
-                                                            unicode_symbols: "&#x3b1;"
-                                                          }
-                                                        }
+                                                        ordinary_symbols: "&#x3b1;"
                                                       }
                                                     },
                                                     sub: {
@@ -34515,11 +32677,7 @@ module UnicodeMathParseValues
                                                           sub_exp: {
                                                             base: {
                                                               factor: {
-                                                                atom: {
-                                                                  char: {
-                                                                    unicode_symbols: "&#x3b1;"
-                                                                  }
-                                                                }
+                                                                ordinary_symbols: "&#x3b1;"
                                                               }
                                                             },
                                                             sub: {
@@ -34538,11 +32696,7 @@ module UnicodeMathParseValues
                                                             sub_exp: {
                                                               base: {
                                                                 factor: {
-                                                                  atom: {
-                                                                    char: {
-                                                                      unicode_symbols: "&#x3b1;"
-                                                                    }
-                                                                  }
+                                                                  ordinary_symbols: "&#x3b1;"
                                                                 }
                                                               },
                                                               sub: {
@@ -34575,11 +32729,7 @@ module UnicodeMathParseValues
                                                                     sub_exp: {
                                                                       base: {
                                                                         factor: {
-                                                                          atom: {
-                                                                            char: {
-                                                                              unicode_symbols: "&#x3b1;"
-                                                                            }
-                                                                          }
+                                                                          ordinary_symbols: "&#x3b1;"
                                                                         }
                                                                       },
                                                                       sub: {
@@ -34598,11 +32748,7 @@ module UnicodeMathParseValues
                                                                       sub_exp: {
                                                                         base: {
                                                                           factor: {
-                                                                            atom: {
-                                                                              char: {
-                                                                                unicode_symbols: "&#x3b1;"
-                                                                              }
-                                                                            }
+                                                                            ordinary_symbols: "&#x3b1;"
                                                                           }
                                                                         },
                                                                         sub: {
@@ -34635,11 +32781,7 @@ module UnicodeMathParseValues
                                                                               subsup_exp: {
                                                                                 base: {
                                                                                   factor: {
-                                                                                    atom: {
-                                                                                      char: {
-                                                                                        unicode_symbols: "&#x3b1;"
-                                                                                      }
-                                                                                    }
+                                                                                    ordinary_symbols: "&#x3b1;"
                                                                                   }
                                                                                 },
                                                                                 sub: {
@@ -34727,11 +32869,7 @@ module UnicodeMathParseValues
       subsup_exp: {
         base: {
           factor: {
-            atom: {
-              char: {
-                unicode_symbols: "&#x3b1;"
-              }
-            }
+            ordinary_symbols: "&#x3b1;"
           }
         },
         sub: {
@@ -34780,11 +32918,7 @@ module UnicodeMathParseValues
             sub_exp: {
               base: {
                 factor: {
-                  atom: {
-                    char: {
-                      unicode_symbols: "&#x3b1;"
-                    }
-                  }
+                  ordinary_symbols: "&#x3b1;"
                 }
               },
               sub: {
@@ -34803,11 +32937,7 @@ module UnicodeMathParseValues
               sub_exp: {
                 base: {
                   factor: {
-                    atom: {
-                      char: {
-                        unicode_symbols: "&#x3b1;"
-                      }
-                    }
+                    ordinary_symbols: "&#x3b1;"
                   }
                 },
                 sub: {
@@ -34840,11 +32970,7 @@ module UnicodeMathParseValues
                       sub_exp: {
                         base: {
                           factor: {
-                            atom: {
-                              char: {
-                                unicode_symbols: "&#x3b1;"
-                              }
-                            }
+                            ordinary_symbols: "&#x3b1;"
                           }
                         },
                         sub: {
@@ -34863,11 +32989,7 @@ module UnicodeMathParseValues
                         sub_exp: {
                           base: {
                             factor: {
-                              atom: {
-                                char: {
-                                  unicode_symbols: "&#x3b1;"
-                                }
-                              }
+                              ordinary_symbols: "&#x3b1;"
                             }
                           },
                           sub: {
@@ -34900,11 +33022,7 @@ module UnicodeMathParseValues
                                 sub_exp: {
                                   base: {
                                     factor: {
-                                      atom: {
-                                        char: {
-                                          unicode_symbols: "&#x3b1;"
-                                        }
-                                      }
+                                      ordinary_symbols: "&#x3b1;"
                                     }
                                   },
                                   sub: {
@@ -34923,11 +33041,7 @@ module UnicodeMathParseValues
                                   sub_exp: {
                                     base: {
                                       factor: {
-                                        atom: {
-                                          char: {
-                                            unicode_symbols: "&#x3b1;"
-                                          }
-                                        }
+                                        ordinary_symbols: "&#x3b1;"
                                       }
                                     },
                                     sub: {
@@ -34960,11 +33074,7 @@ module UnicodeMathParseValues
                                           subsup_exp: {
                                             base: {
                                               factor: {
-                                                atom: {
-                                                  char: {
-                                                    unicode_symbols: "&#x3b1;"
-                                                  }
-                                                }
+                                                ordinary_symbols: "&#x3b1;"
                                               }
                                             },
                                             sub: {
@@ -35013,11 +33123,7 @@ module UnicodeMathParseValues
                                                 sub_exp: {
                                                   base: {
                                                     factor: {
-                                                      atom: {
-                                                        char: {
-                                                          unicode_symbols: "&#x3b1;"
-                                                        }
-                                                      }
+                                                      ordinary_symbols: "&#x3b1;"
                                                     }
                                                   },
                                                   sub: {
@@ -35036,11 +33142,7 @@ module UnicodeMathParseValues
                                                   sub_exp: {
                                                     base: {
                                                       factor: {
-                                                        atom: {
-                                                          char: {
-                                                            unicode_symbols: "&#x3b1;"
-                                                          }
-                                                        }
+                                                        ordinary_symbols: "&#x3b1;"
                                                       }
                                                     },
                                                     sub: {
@@ -35073,11 +33175,7 @@ module UnicodeMathParseValues
                                                           sub_exp: {
                                                             base: {
                                                               factor: {
-                                                                atom: {
-                                                                  char: {
-                                                                    unicode_symbols: "&#x3b1;"
-                                                                  }
-                                                                }
+                                                                ordinary_symbols: "&#x3b1;"
                                                               }
                                                             },
                                                             sub: {
@@ -35096,11 +33194,7 @@ module UnicodeMathParseValues
                                                             sub_exp: {
                                                               base: {
                                                                 factor: {
-                                                                  atom: {
-                                                                    char: {
-                                                                      unicode_symbols: "&#x3b1;"
-                                                                    }
-                                                                  }
+                                                                  ordinary_symbols: "&#x3b1;"
                                                                 }
                                                               },
                                                               sub: {
@@ -35133,11 +33227,7 @@ module UnicodeMathParseValues
                                                                     sub_exp: {
                                                                       base: {
                                                                         factor: {
-                                                                          atom: {
-                                                                            char: {
-                                                                              unicode_symbols: "&#x3b1;"
-                                                                            }
-                                                                          }
+                                                                          ordinary_symbols: "&#x3b1;"
                                                                         }
                                                                       },
                                                                       sub: {
@@ -35156,11 +33246,7 @@ module UnicodeMathParseValues
                                                                       sub_exp: {
                                                                         base: {
                                                                           factor: {
-                                                                            atom: {
-                                                                              char: {
-                                                                                unicode_symbols: "&#x3b1;"
-                                                                              }
-                                                                            }
+                                                                            ordinary_symbols: "&#x3b1;"
                                                                           }
                                                                         },
                                                                         sub: {
@@ -35193,11 +33279,7 @@ module UnicodeMathParseValues
                                                                               subsup_exp: {
                                                                                 base: {
                                                                                   factor: {
-                                                                                    atom: {
-                                                                                      char: {
-                                                                                        unicode_symbols: "&#x3b1;"
-                                                                                      }
-                                                                                    }
+                                                                                    ordinary_symbols: "&#x3b1;"
                                                                                   }
                                                                                 },
                                                                                 sub: {
@@ -35285,11 +33367,7 @@ module UnicodeMathParseValues
       subsup_exp: {
         base: {
           factor: {
-            atom: {
-              char: {
-                unicode_symbols: "&#x3b1;"
-              }
-            }
+            ordinary_symbols: "&#x3b1;"
           }
         },
         sub: {
@@ -35338,11 +33416,7 @@ module UnicodeMathParseValues
             subsup_exp: {
               base: {
                 factor: {
-                  atom: {
-                    char: {
-                      unicode_symbols: "&#x3b1;"
-                    }
-                  }
+                  ordinary_symbols: "&#x3b1;"
                 }
               },
               sub: {
@@ -35391,11 +33465,7 @@ module UnicodeMathParseValues
                   subsup_exp: {
                     base: {
                       factor: {
-                        atom: {
-                          char: {
-                            unicode_symbols: "&#x3b1;"
-                          }
-                        }
+                        ordinary_symbols: "&#x3b1;"
                       }
                     },
                     sub: {
@@ -35444,11 +33514,7 @@ module UnicodeMathParseValues
                         sub_exp: {
                           base: {
                             factor: {
-                              atom: {
-                                char: {
-                                  unicode_symbols: "&#x3b1;"
-                                }
-                              }
+                              ordinary_symbols: "&#x3b1;"
                             }
                           },
                           sub: {
@@ -35467,11 +33533,7 @@ module UnicodeMathParseValues
                           sub_exp: {
                             base: {
                               factor: {
-                                atom: {
-                                  char: {
-                                    unicode_symbols: "&#x3b1;"
-                                  }
-                                }
+                                ordinary_symbols: "&#x3b1;"
                               }
                             },
                             sub: {
@@ -35504,11 +33566,7 @@ module UnicodeMathParseValues
                                   sub_exp: {
                                     base: {
                                       factor: {
-                                        atom: {
-                                          char: {
-                                            unicode_symbols: "&#x3b1;"
-                                          }
-                                        }
+                                        ordinary_symbols: "&#x3b1;"
                                       }
                                     },
                                     sub: {
@@ -35527,11 +33585,7 @@ module UnicodeMathParseValues
                                     sub_exp: {
                                       base: {
                                         factor: {
-                                          atom: {
-                                            char: {
-                                              unicode_symbols: "&#x3b1;"
-                                            }
-                                          }
+                                          ordinary_symbols: "&#x3b1;"
                                         }
                                       },
                                       sub: {
@@ -35564,11 +33618,7 @@ module UnicodeMathParseValues
                                             sub_exp: {
                                               base: {
                                                 factor: {
-                                                  atom: {
-                                                    char: {
-                                                      unicode_symbols: "&#x3b1;"
-                                                    }
-                                                  }
+                                                  ordinary_symbols: "&#x3b1;"
                                                 }
                                               },
                                               sub: {
@@ -35587,11 +33637,7 @@ module UnicodeMathParseValues
                                               sub_exp: {
                                                 base: {
                                                   factor: {
-                                                    atom: {
-                                                      char: {
-                                                        unicode_symbols: "&#x3b1;"
-                                                      }
-                                                    }
+                                                    ordinary_symbols: "&#x3b1;"
                                                   }
                                                 },
                                                 sub: {
@@ -35624,11 +33670,7 @@ module UnicodeMathParseValues
                                                       sub_exp: {
                                                         base: {
                                                           factor: {
-                                                            atom: {
-                                                              char: {
-                                                                unicode_symbols: "&#x3b1;"
-                                                              }
-                                                            }
+                                                            ordinary_symbols: "&#x3b1;"
                                                           }
                                                         },
                                                         sub: {
@@ -35647,11 +33689,7 @@ module UnicodeMathParseValues
                                                         sub_exp: {
                                                           base: {
                                                             factor: {
-                                                              atom: {
-                                                                char: {
-                                                                  unicode_symbols: "&#x3b1;"
-                                                                }
-                                                              }
+                                                              ordinary_symbols: "&#x3b1;"
                                                             }
                                                           },
                                                           sub: {
@@ -35684,11 +33722,7 @@ module UnicodeMathParseValues
                                                                 sub_exp: {
                                                                   base: {
                                                                     factor: {
-                                                                      atom: {
-                                                                        char: {
-                                                                          unicode_symbols: "&#x3b1;"
-                                                                        }
-                                                                      }
+                                                                      ordinary_symbols: "&#x3b1;"
                                                                     }
                                                                   },
                                                                   sub: {
@@ -35707,11 +33741,7 @@ module UnicodeMathParseValues
                                                                   sub_exp: {
                                                                     base: {
                                                                       factor: {
-                                                                        atom: {
-                                                                          char: {
-                                                                            unicode_symbols: "&#x3b1;"
-                                                                          }
-                                                                        }
+                                                                        ordinary_symbols: "&#x3b1;"
                                                                       }
                                                                     },
                                                                     sub: {
@@ -35744,11 +33774,7 @@ module UnicodeMathParseValues
                                                                           sub_exp: {
                                                                             base: {
                                                                               factor: {
-                                                                                atom: {
-                                                                                  char: {
-                                                                                    unicode_symbols: "&#x3b1;"
-                                                                                  }
-                                                                                }
+                                                                                ordinary_symbols: "&#x3b1;"
                                                                               }
                                                                             },
                                                                             sub: {
@@ -35767,11 +33793,7 @@ module UnicodeMathParseValues
                                                                             sub_exp: {
                                                                               base: {
                                                                                 factor: {
-                                                                                  atom: {
-                                                                                    char: {
-                                                                                      unicode_symbols: "&#x3b1;"
-                                                                                    }
-                                                                                  }
+                                                                                  ordinary_symbols: "&#x3b1;"
                                                                                 }
                                                                               },
                                                                               sub: {
@@ -35882,9 +33904,9 @@ module UnicodeMathParseValues
               alphanumeric: "B"
             }
           },
-          expr: {
+          exp: {
             operator: "+",
-            expr: {
+            exp: {
               factor: {
                 atom: {
                   alphanumeric: "C"
@@ -35946,7 +33968,7 @@ module UnicodeMathParseValues
               alphanumeric: "B"
             }
           },
-          expr: {
+          exp: {
             factor: {
               atom: {
                 alphanumeric: "C"
@@ -35967,7 +33989,7 @@ module UnicodeMathParseValues
                   alphanumeric: "A"
                 }
               },
-              expr: {
+              exp: {
                 factor: {
                   atom: {
                     alphanumeric: "B"
@@ -36037,25 +34059,25 @@ module UnicodeMathParseValues
                     alphanumeric: "A"
                   }
                 },
-                expr: {
+                exp: {
                   operator: ".",
-                  expr: {
+                  exp: {
                     factor: {
                       atom: {
                         alphanumeric: "a"
                       }
                     },
-                    expr: {
+                    exp: {
                       operator: "=",
-                      expr: {
+                      exp: {
                         factor: {
                           atom: {
                             alphanumeric: "B"
                           }
                         },
-                        expr: {
+                        exp: {
                           operator: ".",
-                          expr: {
+                          exp: {
                             factor: {
                               atom: {
                                 alphanumeric: "b"
@@ -36124,7 +34146,7 @@ module UnicodeMathParseValues
                             base: {
                               open_paren: "(",
                               operator: "-",
-                              expr: {
+                              exp: {
                                 factor: {
                                   digit: {
                                     number: "1"
@@ -36145,7 +34167,7 @@ module UnicodeMathParseValues
                               }
                             }
                           },
-                          expr: {
+                          exp: {
                             sub_exp: {
                               base: {
                                 open_paren: "&#x27e8;",
@@ -36296,7 +34318,7 @@ module UnicodeMathParseValues
                     }
                   }
                 },
-                expr: {
+                exp: {
                   sub_exp: {
                     base: {
                       symbol: "B"
@@ -36327,9 +34349,9 @@ module UnicodeMathParseValues
                             alphanumeric: "n"
                           }
                         },
-                        expr: {
+                        exp: {
                           operator: "-",
-                          expr: {
+                          exp: {
                             factor: {
                               atom: {
                                 alphanumeric: "m"
@@ -36407,7 +34429,7 @@ module UnicodeMathParseValues
                     }
                   }
                 },
-                expr: {
+                exp: {
                   sub_exp: {
                     base: {
                       symbol: "B"
@@ -36438,9 +34460,9 @@ module UnicodeMathParseValues
                             alphanumeric: "m"
                           }
                         },
-                        expr: {
+                        exp: {
                           operator: "-",
-                          expr: {
+                          exp: {
                             factor: {
                               atom: {
                                 alphanumeric: "n"
@@ -36478,91 +34500,89 @@ module UnicodeMathParseValues
       }
     },
     expr: {
-      factor: {
-        char: {
-          unicode_symbols: "&#x2227;"
-        }
-      },
-      sub_exp: {
-        base: {
-          symbol: "B"
-        },
-        sub: {
-          sub_script: {
-            operand: {
-              factor: {
-                atom: {
-                  alphanumeric: "m"
+      binary_symbols: "&#x2227;",
+      expr: {
+        sub_exp: {
+          base: {
+            symbol: "B"
+          },
+          sub: {
+            sub_script: {
+              operand: {
+                factor: {
+                  atom: {
+                    alphanumeric: "m"
+                  }
                 }
               }
             }
           }
-        }
-      },
-      expr: {
-        operator: "=",
+        },
         expr: {
-          sub_exp: {
-            base: {
-              open_paren: "&#x27e8;",
-              sub_exp: {
-                base: {
-                  symbol: "A"
-                },
-                sub: {
-                  sub_script: {
-                    operand: {
-                      factor: {
-                        atom: {
-                          alphanumeric: "n"
-                        }
-                      }
-                    }
-                  }
-                }
-              },
-              expr: {
+          operator: "=",
+          expr: {
+            sub_exp: {
+              base: {
+                open_paren: "&#x27e8;",
                 sub_exp: {
                   base: {
-                    symbol: "B"
+                    symbol: "A"
                   },
                   sub: {
                     sub_script: {
                       operand: {
                         factor: {
                           atom: {
-                            alphanumeric: "m"
+                            alphanumeric: "n"
                           }
                         }
                       }
                     }
                   }
-                }
-              },
-              close_paren: "&#x27e9;"
-            },
-            sub: {
-              sub_script: {
-                operand: {
-                  factor: {
-                    intermediate_exp: {
-                      open_paren: "{",
-                      factor: {
-                        atom: {
-                          alphanumeric: "n"
-                        }
-                      },
-                      expr: {
-                        operator: "+",
-                        expr: {
+                },
+                exp: {
+                  sub_exp: {
+                    base: {
+                      symbol: "B"
+                    },
+                    sub: {
+                      sub_script: {
+                        operand: {
                           factor: {
                             atom: {
                               alphanumeric: "m"
                             }
                           }
                         }
-                      },
-                      close_paren: "}"
+                      }
+                    }
+                  }
+                },
+                close_paren: "&#x27e9;"
+              },
+              sub: {
+                sub_script: {
+                  operand: {
+                    factor: {
+                      intermediate_exp: {
+                        open_paren: "{",
+                        factor: {
+                          atom: {
+                            alphanumeric: "n"
+                          }
+                        },
+                        exp: {
+                          operator: "+",
+                          exp: {
+                            factor: {
+                              atom: {
+                                alphanumeric: "m"
+                              }
+                            }
+                          }
+                        },
+                        close_paren: "}"
+                      }
                     }
                   }
                 }
@@ -36598,25 +34618,25 @@ module UnicodeMathParseValues
                     alphanumeric: "A"
                   }
                 },
-                expr: {
+                exp: {
                   operator: ".",
-                  expr: {
+                  exp: {
                     factor: {
                       atom: {
                         alphanumeric: "x"
                       }
                     },
-                    expr: {
+                    exp: {
                       operator: "=",
-                      expr: {
+                      exp: {
                         factor: {
                           atom: {
                             alphanumeric: "B"
                           }
                         },
-                        expr: {
+                        exp: {
                           operator: ".",
-                          expr: {
+                          exp: {
                             factor: {
                               atom: {
                                 alphanumeric: "y"
@@ -36654,7 +34674,10 @@ module UnicodeMathParseValues
       expr: {
         mini_sup: {
           base: {
-            symbol: "mc"
+            symbol: "m",
+            expr: {
+              symbol: "c"
+            }
           },
           sup: {
             sup_digits: "&#xb2;"
@@ -36721,21 +34744,17 @@ module UnicodeMathParseValues
               alphanumeric: "x"
             }
           },
-          expr: {
+          exp: {
             operator: ",",
-            expr: {
-              accents: [
-                {
-                  first_value: {
-                    atom: {
-                      alphanumeric: "x"
-                    }
+            exp: {
+              accents: {
+                first_value: {
+                  atom: {
+                    alphanumeric: "x"
                   }
                 },
-                {
-                  accent_symbols: "&#x27;"
-                }
-              ]
+                prime_accent_symbols: "&#x27;"
+              }
             }
           },
           close_paren: ")"
@@ -36759,21 +34778,17 @@ module UnicodeMathParseValues
                   alphanumeric: "x"
                 }
               },
-              expr: {
+              exp: {
                 operator: ",",
-                expr: {
-                  accents: [
-                    {
-                      first_value: {
-                        atom: {
-                          alphanumeric: "x"
-                        }
+                exp: {
+                  accents: {
+                    first_value: {
+                      atom: {
+                        alphanumeric: "x"
                       }
                     },
-                    {
-                      accent_symbols: "&#x27;"
-                    }
-                  ]
+                    prime_accent_symbols: "&#x27;"
+                  }
                 }
               },
               close_paren: ")"
@@ -36785,11 +34800,7 @@ module UnicodeMathParseValues
             intermediate_exp: {
               open_paren: "[",
               factor: {
-                atom: {
-                  char: {
-                    unicode_symbols: "&#x3b5;"
-                  }
-                }
+                ordinary_symbols: "&#x3b5;"
               },
               operand: {
                 factor: {
@@ -36800,30 +34811,26 @@ module UnicodeMathParseValues
                         alphanumeric: "x"
                       }
                     },
-                    expr: {
+                    exp: {
                       operator: ",",
-                      expr: {
-                        accents: [
-                          {
-                            first_value: {
-                              atom: {
-                                alphanumeric: "x"
-                              }
+                      exp: {
+                        accents: {
+                          first_value: {
+                            atom: {
+                              alphanumeric: "x"
                             }
                           },
-                          {
-                            accent_symbols: "&#x27;"
-                          }
-                        ]
+                          prime_accent_symbols: "&#x27;"
+                        }
                       }
                     },
                     close_paren: ")"
                   }
                 }
               },
-              expr: {
+              exp: {
                 operator: "+",
-                expr: {
+                exp: {
                   nary: {
                     nary_sub_sup: {
                       sub_exp: {
@@ -36843,11 +34850,7 @@ module UnicodeMathParseValues
                     },
                     naryand: {
                       factor: {
-                        atom: {
-                          char: {
-                            unicode_symbols: "&#x3c1;"
-                          }
-                        }
+                        ordinary_symbols: "&#x3c1;"
                       },
                       operand: {
                         factor: {
@@ -36858,36 +34861,28 @@ module UnicodeMathParseValues
                                 alphanumeric: "x"
                               }
                             },
-                            expr: {
+                            exp: {
                               operator: ",",
-                              expr: {
-                                accents: [
-                                  {
-                                    first_value: {
-                                      atom: {
-                                        alphanumeric: "x"
-                                      }
+                              exp: {
+                                accents: {
+                                  first_value: {
+                                    atom: {
+                                      alphanumeric: "x"
                                     }
                                   },
-                                  {
-                                    accent_symbols: "&#x27;"
-                                  }
-                                ],
-                                expr: {
+                                  prime_accent_symbols: "&#x27;"
+                                },
+                                exp: {
                                   operator: ",",
-                                  expr: {
-                                    accents: [
-                                      {
-                                        first_value: {
-                                          atom: {
-                                            alphanumeric: "x"
-                                          }
+                                  exp: {
+                                    accents: {
+                                      first_value: {
+                                        atom: {
+                                          alphanumeric: "x"
                                         }
                                       },
-                                      {
-                                        accent_symbols: "&#x27;&#x27;"
-                                      }
-                                    ]
+                                      prime_accent_symbols: "&#x27;&#x27;"
+                                    }
                                   }
                                 }
                               }
@@ -36905,57 +34900,43 @@ module UnicodeMathParseValues
                             factor: {
                               intermediate_exp: {
                                 open_paren: "(",
-                                accents: [
-                                  {
-                                    first_value: {
-                                      atom: {
-                                        alphanumeric: "x"
-                                      }
+                                accents: {
+                                  first_value: {
+                                    atom: {
+                                      alphanumeric: "x"
                                     }
                                   },
-                                  {
-                                    accent_symbols: "&#x27;"
-                                  }
-                                ],
-                                expr: {
+                                  prime_accent_symbols: "&#x27;"
+                                },
+                                exp: {
                                   operator: ",",
-                                  expr: {
-                                    accents: [
-                                      {
-                                        first_value: {
-                                          atom: {
-                                            alphanumeric: "x"
-                                          }
+                                  exp: {
+                                    accents: {
+                                      first_value: {
+                                        atom: {
+                                          alphanumeric: "x"
                                         }
                                       },
-                                      {
-                                        accent_symbols: "&#x27;&#x27;"
-                                      }
-                                    ]
+                                      prime_accent_symbols: "&#x27;&#x27;"
+                                    }
                                   }
                                 },
                                 close_paren: ")"
                               }
-                            },
-                            operand: {
-                              factor: {
-                                ordinary_symbols: "&#x2146;"
-                              },
-                              operand: {
-                                accents: [
-                                  {
-                                    first_value: {
-                                      atom: {
-                                        alphanumeric: "x"
-                                      }
-                                    }
-                                  },
-                                  {
-                                    accent_symbols: "&#x27;&#x27;"
-                                  }
-                                ]
-                              }
                             }
+                          }
+                        }
+                      },
+                      naryand_recursion: {
+                        binary_symbols: "&#x2146;",
+                        naryand_recursion: {
+                          accents: {
+                            first_value: {
+                              atom: {
+                                alphanumeric: "x"
+                              }
+                            },
+                            prime_accent_symbols: "&#x27;&#x27;"
                           }
                         }
                       }
@@ -37019,9 +35000,9 @@ module UnicodeMathParseValues
                     intermediate_exp: {
                       open_paren: "[",
                       unicode_fractions: "&#xbc;",
-                      expr: {
+                      exp: {
                         operator: ",",
-                        expr: {
+                        exp: {
                           unicode_fractions: "&#xbe;"
                         }
                       },
@@ -37049,55 +35030,53 @@ module UnicodeMathParseValues
               expr: {
                 unicode_fractions: "&#xbd;",
                 expr: {
-                  factor: {
-                    char: {
-                      unicode_symbols: "&#xd7;"
-                    }
-                  },
-                  sub_exp: {
-                    base: {
-                      factor: {
-                        atom: {
-                          char: {
-                            unicode_symbols: "&#x1d7cf;"
+                  binary_symbols: "&#xd7;",
+                  expr: {
+                    sub_exp: {
+                      base: {
+                        factor: {
+                          atom: {
+                            char: {
+                              unicode_symbols: "&#x1d7cf;"
+                            }
                           }
                         }
-                      }
-                    },
-                    sub: {
-                      sub_script: {
-                        operand: {
-                          factor: {
-                            intermediate_exp: {
-                              open_paren: "[",
-                              factor: {
-                                digit: {
-                                  number: "0"
-                                }
-                              },
-                              expr: {
-                                operator: ",",
-                                expr: {
-                                  unicode_fractions: "&#xbc;"
-                                }
-                              },
-                              close_paren: "]"
+                      },
+                      sub: {
+                        sub_script: {
+                          operand: {
+                            factor: {
+                              intermediate_exp: {
+                                open_paren: "[",
+                                factor: {
+                                  digit: {
+                                    number: "0"
+                                  }
+                                },
+                                exp: {
+                                  operator: ",",
+                                  exp: {
+                                    unicode_fractions: "&#xbc;"
+                                  }
+                                },
+                                close_paren: "]"
+                              }
                             }
                           }
                         }
                       }
-                    }
-                  },
-                  expr: {
-                    factor: {
-                      intermediate_exp: {
-                        open_paren: "(",
-                        factor: {
-                          atom: {
-                            alphanumeric: "r"
-                          }
-                        },
-                        close_paren: ")"
+                    },
+                    expr: {
+                      factor: {
+                        intermediate_exp: {
+                          open_paren: "(",
+                          factor: {
+                            atom: {
+                              alphanumeric: "r"
+                            }
+                          },
+                          close_paren: ")"
+                        }
                       }
                     }
                   }
@@ -37121,11 +35100,7 @@ module UnicodeMathParseValues
         sub_exp: {
           base: {
             factor: {
-              atom: {
-                char: {
-                  unicode_symbols: "&#x3b1;"
-                }
-              }
+              ordinary_symbols: "&#x3b1;"
             }
           },
           sub: {
@@ -37146,11 +35121,7 @@ module UnicodeMathParseValues
             sub_exp: {
               base: {
                 factor: {
-                  atom: {
-                    char: {
-                      unicode_symbols: "&#x3b1;"
-                    }
-                  }
+                  ordinary_symbols: "&#x3b1;"
                 }
               },
               sub: {
@@ -37177,11 +35148,7 @@ module UnicodeMathParseValues
                   sub_exp: {
                     base: {
                       factor: {
-                        atom: {
-                          char: {
-                            unicode_symbols: "&#x3b1;"
-                          }
-                        }
+                        ordinary_symbols: "&#x3b1;"
                       }
                     },
                     sub: {
@@ -37208,11 +35175,7 @@ module UnicodeMathParseValues
                         sub_exp: {
                           base: {
                             factor: {
-                              atom: {
-                                char: {
-                                  unicode_symbols: "&#x3b1;"
-                                }
-                              }
+                              ordinary_symbols: "&#x3b1;"
                             }
                           },
                           sub: {
@@ -37345,118 +35308,92 @@ module UnicodeMathParseValues
   EXAMPLE_173 = {
     frac: {
       numerator: {
-        factor: {
-          atom: {
-            alphanumeric: "W"
-          }
+        atom: {
+          alphanumeric: "W"
         }
       },
       denominator: {
         frac: {
           numerator: {
-            factor: {
-              atom: {
-                alphanumeric: "e"
-              }
+            atom: {
+              alphanumeric: "e"
             }
           },
           denominator: {
             frac: {
               numerator: {
-                factor: {
-                  atom: {
-                    alphanumeric: "i"
-                  }
+                atom: {
+                  alphanumeric: "i"
                 }
               },
               denominator: {
                 frac: {
                   numerator: {
-                    factor: {
-                      atom: {
-                        alphanumeric: "h"
-                      }
+                    atom: {
+                      alphanumeric: "h"
                     }
                   },
                   denominator: {
                     frac: {
                       numerator: {
-                        factor: {
-                          atom: {
-                            alphanumeric: "n"
-                          }
+                        atom: {
+                          alphanumeric: "n"
                         }
                       },
                       denominator: {
                         frac: {
                           numerator: {
-                            factor: {
-                              atom: {
-                                alphanumeric: "a"
-                              }
+                            atom: {
+                              alphanumeric: "a"
                             }
                           },
                           denominator: {
                             frac: {
                               numerator: {
-                                factor: {
-                                  atom: {
-                                    alphanumeric: "c"
-                                  }
+                                atom: {
+                                  alphanumeric: "c"
                                 }
                               },
                               denominator: {
                                 frac: {
                                   numerator: {
-                                    factor: {
-                                      atom: {
-                                        alphanumeric: "h"
-                                      }
+                                    atom: {
+                                      alphanumeric: "h"
                                     }
                                   },
                                   denominator: {
                                     frac: {
                                       numerator: {
-                                        factor: {
-                                          atom: {
-                                            alphanumeric: "t"
-                                          }
+                                        atom: {
+                                          alphanumeric: "t"
                                         }
                                       },
                                       denominator: {
                                         frac: {
                                           numerator: {
-                                            factor: {
-                                              atom: {
-                                                alphanumeric: "s"
-                                              }
+                                            atom: {
+                                              alphanumeric: "s"
                                             }
                                           },
                                           denominator: {
                                             frac: {
                                               numerator: {
-                                                factor: {
-                                                  atom: {
-                                                    alphanumeric: "b"
-                                                  }
+                                                atom: {
+                                                  alphanumeric: "b"
                                                 }
                                               },
                                               denominator: {
                                                 frac: {
                                                   numerator: {
-                                                    factor: {
-                                                      atom: {
-                                                        alphanumeric: "a"
-                                                      }
+                                                    atom: {
+                                                      alphanumeric: "a"
                                                     }
                                                   },
                                                   denominator: {
                                                     frac: {
                                                       numerator: {
-                                                        factor: {
-                                                          atom: {
-                                                            alphanumeric: "u"
-                                                          }
+                                                        atom: {
+                                                          alphanumeric: "u"
                                                         }
                                                       },
                                                       denominator: {
@@ -37501,11 +35438,7 @@ module UnicodeMathParseValues
         sub_script: {
           operand: {
             factor: {
-              atom: {
-                char: {
-                  unicode_symbols: "&#x3b4;"
-                }
-              }
+              relational_symbols: "&#x3b4;"
             }
           }
         },
@@ -37526,11 +35459,7 @@ module UnicodeMathParseValues
       mini_sub: {
         base: {
           factor: {
-            atom: {
-              char: {
-                unicode_symbols: "&#x3c1;"
-              }
-            }
+            ordinary_symbols: "&#x3c1;"
           }
         },
         sub: {
@@ -37543,11 +35472,7 @@ module UnicodeMathParseValues
             mini_sub: {
               base: {
                 factor: {
-                  atom: {
-                    char: {
-                      unicode_symbols: "&#x3c3;"
-                    }
-                  }
+                  ordinary_symbols: "&#x3c3;"
                 }
               },
               sub: {
@@ -37589,11 +35514,7 @@ module UnicodeMathParseValues
           mini_sub: {
             base: {
               factor: {
-                atom: {
-                  char: {
-                    unicode_symbols: "&#x3b4;"
-                  }
-                }
+                relational_symbols: "&#x3b4;"
               }
             },
             sub: {
@@ -37604,11 +35525,7 @@ module UnicodeMathParseValues
         mini_sub: {
           base: {
             factor: {
-              atom: {
-                char: {
-                  unicode_symbols: "&#x3c1;"
-                }
-              }
+              ordinary_symbols: "&#x3c1;"
             }
           },
           sub: {
@@ -37619,11 +35536,7 @@ module UnicodeMathParseValues
           mini_sub: {
             base: {
               factor: {
-                atom: {
-                  char: {
-                    unicode_symbols: "&#x3c3;"
-                  }
-                }
+                ordinary_symbols: "&#x3c3;"
               }
             },
             sub: {
@@ -37664,11 +35577,7 @@ module UnicodeMathParseValues
           mini_sub: {
             base: {
               factor: {
-                atom: {
-                  char: {
-                    unicode_symbols: "&#x3b4;"
-                  }
-                }
+                relational_symbols: "&#x3b4;"
               }
             },
             sub: {
@@ -37679,11 +35588,7 @@ module UnicodeMathParseValues
         mini_sub: {
           base: {
             factor: {
-              atom: {
-                char: {
-                  unicode_symbols: "&#x3c1;"
-                }
-              }
+              ordinary_symbols: "&#x3c1;"
             }
           },
           sub: {
@@ -37694,11 +35599,7 @@ module UnicodeMathParseValues
           mini_sub: {
             base: {
               factor: {
-                atom: {
-                  char: {
-                    unicode_symbols: "&#x3c3;"
-                  }
-                }
+                ordinary_symbols: "&#x3c3;"
               }
             },
             sub: {
@@ -37740,11 +35641,7 @@ module UnicodeMathParseValues
               mini_sub: {
                 base: {
                   factor: {
-                    atom: {
-                      char: {
-                        unicode_symbols: "&#x3b4;"
-                      }
-                    }
+                    relational_symbols: "&#x3b4;"
                   }
                 },
                 sub: {
@@ -37755,11 +35652,7 @@ module UnicodeMathParseValues
             mini_sub: {
               base: {
                 factor: {
-                  atom: {
-                    char: {
-                      unicode_symbols: "&#x3c1;"
-                    }
-                  }
+                  ordinary_symbols: "&#x3c1;"
                 }
               },
               sub: {
@@ -37793,10 +35686,8 @@ module UnicodeMathParseValues
           expr: {
             frac: {
               numerator: {
-                factor: {
-                  digit: {
-                    number: "1"
-                  }
+                digit: {
+                  number: "1"
                 }
               },
               denominator: {
@@ -37807,11 +35698,7 @@ module UnicodeMathParseValues
                   sup_exp: {
                     base: {
                       factor: {
-                        atom: {
-                          char: {
-                            unicode_symbols: "&#x3c0;"
-                          }
-                        }
+                        ordinary_symbols: "&#x3c0;"
                       }
                     },
                     sup: {
@@ -37839,11 +35726,7 @@ module UnicodeMathParseValues
                         mini_sub: {
                           base: {
                             factor: {
-                              atom: {
-                                char: {
-                                  unicode_symbols: "&#x3b1;"
-                                }
-                              }
+                              ordinary_symbols: "&#x3b1;"
                             }
                           },
                           sub: {
@@ -37857,11 +35740,7 @@ module UnicodeMathParseValues
                         mini_sub: {
                           base: {
                             factor: {
-                              atom: {
-                                char: {
-                                  unicode_symbols: "&#x3b1;"
-                                }
-                              }
+                              ordinary_symbols: "&#x3b1;"
                             }
                           },
                           sub: {
@@ -37873,41 +35752,27 @@ module UnicodeMathParseValues
                   }
                 },
                 naryand: {
-                  accents_subsup: {
-                    base: {
-                      accents: [
-                        {
+                  symbol: "d",
+                  naryand_recursion: {
+                    accents_subsup: {
+                      base: {
+                        accents: {
                           first_value: {
-                            atom: {
-                              alphanumeric: "d"
-                            },
-                            atoms: {
-                              atom: {
-                                char: {
-                                  unicode_symbols: "&#x3b1;"
-                                }
-                              }
-                            }
-                          }
-                        },
-                        {
-                          accent_symbols: "&#x27;"
+                            ordinary_symbols: "&#x3b1;"
+                          },
+                          prime_accent_symbols: "&#x27;"
                         }
-                      ]
-                    },
-                    sub: {
-                      sub_script: {
-                        sub_paren: {
+                      },
+                      sub: {
+                        sub_script: {
                           sub_digits: "&#x2082;"
                         }
                       }
-                    }
-                  },
-                  naryand_recursion: {
-                    open_paren: "[",
-                    frac: {
-                      numerator: {
-                        factor: {
+                    },
+                    naryand_recursion: {
+                      open_paren: "[",
+                      frac: {
+                        numerator: {
                           intermediate_exp: {
                             open_paren: "(",
                             subsup_exp: {
@@ -37919,11 +35784,7 @@ module UnicodeMathParseValues
                                   mini_sub: {
                                     base: {
                                       factor: {
-                                        atom: {
-                                          char: {
-                                            unicode_symbols: "&#x3b4;"
-                                          }
-                                        }
+                                        relational_symbols: "&#x3b4;"
                                       }
                                     },
                                     sub: {
@@ -37934,11 +35795,7 @@ module UnicodeMathParseValues
                                 mini_sub: {
                                   base: {
                                     factor: {
-                                      atom: {
-                                        char: {
-                                          unicode_symbols: "&#x3c1;"
-                                        }
-                                      }
+                                      ordinary_symbols: "&#x3c1;"
                                     }
                                   },
                                   sub: {
@@ -37967,35 +35824,25 @@ module UnicodeMathParseValues
                                 }
                               }
                             },
-                            expr: {
+                            exp: {
                               operator: "-",
-                              expr: {
+                              exp: {
                                 accents_subsup: {
                                   base: {
-                                    accents: [
-                                      {
-                                        first_value: {
-                                          atom: {
-                                            char: {
-                                              unicode_symbols: "&#x3b1;"
-                                            }
-                                          }
-                                        }
+                                    accents: {
+                                      first_value: {
+                                        ordinary_symbols: "&#x3b1;"
                                       },
-                                      {
-                                        accent_symbols: "&#x27;"
-                                      }
-                                    ]
+                                      prime_accent_symbols: "&#x27;"
+                                    }
                                   },
                                   sub: {
                                     sub_script: {
-                                      sub_paren: {
-                                        sub_digits: "&#x2082;"
-                                      }
+                                      sub_digits: "&#x2082;"
                                     }
                                   }
                                 },
-                                expr: {
+                                exp: {
                                   subsup_exp: {
                                     base: {
                                       symbol: "U"
@@ -38005,11 +35852,7 @@ module UnicodeMathParseValues
                                         mini_sub: {
                                           base: {
                                             factor: {
-                                              atom: {
-                                                char: {
-                                                  unicode_symbols: "&#x3b4;"
-                                                }
-                                              }
+                                              relational_symbols: "&#x3b4;"
                                             }
                                           },
                                           sub: {
@@ -38020,11 +35863,7 @@ module UnicodeMathParseValues
                                       mini_sub: {
                                         base: {
                                           factor: {
-                                            atom: {
-                                              char: {
-                                                unicode_symbols: "&#x3c1;"
-                                              }
-                                            }
+                                            ordinary_symbols: "&#x3c1;"
                                           }
                                         },
                                         sub: {
@@ -38058,23 +35897,29 @@ module UnicodeMathParseValues
                             },
                             close_paren: ")"
                           }
-                        }
-                      },
-                      denominator: {
-                        subsup_exp: {
-                          base: {
-                            symbol: "U"
-                          },
-                          sub: {
-                            sub_script: {
+                        },
+                        denominator: {
+                          subsup_exp: {
+                            base: {
+                              symbol: "U"
+                            },
+                            sub: {
+                              sub_script: {
+                                mini_sub: {
+                                  base: {
+                                    factor: {
+                                      relational_symbols: "&#x3b4;"
+                                    }
+                                  },
+                                  sub: {
+                                    sub_digits: "&#x2081;"
+                                  }
+                                }
+                              },
                               mini_sub: {
                                 base: {
                                   factor: {
-                                    atom: {
-                                      char: {
-                                        unicode_symbols: "&#x3b4;"
-                                      }
-                                    }
+                                    ordinary_symbols: "&#x3c1;"
                                   }
                                 },
                                 sub: {
@@ -38082,34 +35927,20 @@ module UnicodeMathParseValues
                                 }
                               }
                             },
-                            mini_sub: {
-                              base: {
-                                factor: {
-                                  atom: {
-                                    char: {
-                                      unicode_symbols: "&#x3c1;"
-                                    }
-                                  }
-                                }
-                              },
-                              sub: {
-                                sub_digits: "&#x2081;"
-                              }
-                            }
-                          },
-                          sup: {
-                            sup_script: {
-                              operand: {
-                                factor: {
-                                  digit: {
-                                    number: "0"
-                                  }
-                                },
+                            sup: {
+                              sup_script: {
                                 operand: {
                                   factor: {
-                                    atom: {
-                                      char: {
-                                        unicode_symbols: "&#x3b2;"
+                                    digit: {
+                                      number: "0"
+                                    }
+                                  },
+                                  operand: {
+                                    factor: {
+                                      atom: {
+                                        char: {
+                                          unicode_symbols: "&#x3b2;"
+                                        }
                                       }
                                     }
                                   }
@@ -38118,9 +35949,9 @@ module UnicodeMathParseValues
                             }
                           }
                         }
-                      }
-                    },
-                    close_paren: "]"
+                      },
+                      close_paren: "]"
+                    }
                   }
                 }
               }
@@ -38140,11 +35971,7 @@ module UnicodeMathParseValues
           mini_sub: {
             base: {
               factor: {
-                atom: {
-                  char: {
-                    unicode_symbols: "&#x3b4;"
-                  }
-                }
+                relational_symbols: "&#x3b4;"
               }
             },
             sub: {
@@ -38155,11 +35982,7 @@ module UnicodeMathParseValues
         mini_sub: {
           base: {
             factor: {
-              atom: {
-                char: {
-                  unicode_symbols: "&#x3c1;"
-                }
-              }
+              ordinary_symbols: "&#x3c1;"
             }
           },
           sub: {
@@ -38170,11 +35993,7 @@ module UnicodeMathParseValues
           mini_sub: {
             base: {
               factor: {
-                atom: {
-                  char: {
-                    unicode_symbols: "&#x3c3;"
-                  }
-                }
+                ordinary_symbols: "&#x3c3;"
               }
             },
             sub: {
@@ -38216,11 +36035,7 @@ module UnicodeMathParseValues
               mini_sub: {
                 base: {
                   factor: {
-                    atom: {
-                      char: {
-                        unicode_symbols: "&#x3b4;"
-                      }
-                    }
+                    relational_symbols: "&#x3b4;"
                   }
                 },
                 sub: {
@@ -38231,11 +36046,7 @@ module UnicodeMathParseValues
             mini_sub: {
               base: {
                 factor: {
-                  atom: {
-                    char: {
-                      unicode_symbols: "&#x3c1;"
-                    }
-                  }
+                  ordinary_symbols: "&#x3c1;"
                 }
               },
               sub: {
@@ -38269,10 +36080,8 @@ module UnicodeMathParseValues
           expr: {
             frac: {
               numerator: {
-                factor: {
-                  digit: {
-                    number: "1"
-                  }
+                digit: {
+                  number: "1"
                 }
               },
               denominator: {
@@ -38283,11 +36092,7 @@ module UnicodeMathParseValues
                   sup_exp: {
                     base: {
                       factor: {
-                        atom: {
-                          char: {
-                            unicode_symbols: "&#x3c0;"
-                          }
-                        }
+                        ordinary_symbols: "&#x3c0;"
                       }
                     },
                     sup: {
@@ -38315,11 +36120,7 @@ module UnicodeMathParseValues
                         mini_sub: {
                           base: {
                             factor: {
-                              atom: {
-                                char: {
-                                  unicode_symbols: "&#x3b1;"
-                                }
-                              }
+                              ordinary_symbols: "&#x3b1;"
                             }
                           },
                           sub: {
@@ -38333,11 +36134,7 @@ module UnicodeMathParseValues
                         mini_sub: {
                           base: {
                             factor: {
-                              atom: {
-                                char: {
-                                  unicode_symbols: "&#x3b1;"
-                                }
-                              }
+                              ordinary_symbols: "&#x3b1;"
                             }
                           },
                           sub: {
@@ -38349,41 +36146,27 @@ module UnicodeMathParseValues
                   }
                 },
                 naryand: {
-                  accents_subsup: {
-                    base: {
-                      accents: [
-                        {
+                  symbol: "d",
+                  naryand_recursion: {
+                    accents_subsup: {
+                      base: {
+                        accents: {
                           first_value: {
-                            atom: {
-                              alphanumeric: "d"
-                            },
-                            atoms: {
-                              atom: {
-                                char: {
-                                  unicode_symbols: "&#x3b1;"
-                                }
-                              }
-                            }
-                          }
-                        },
-                        {
-                          accent_symbols: "&#x27;"
+                            ordinary_symbols: "&#x3b1;"
+                          },
+                          prime_accent_symbols: "&#x27;"
                         }
-                      ]
-                    },
-                    sub: {
-                      sub_script: {
-                        sub_paren: {
+                      },
+                      sub: {
+                        sub_script: {
                           sub_digits: "&#x2082;"
                         }
                       }
-                    }
-                  },
-                  naryand_recursion: {
-                    open_paren: "[",
-                    frac: {
-                      numerator: {
-                        factor: {
+                    },
+                    naryand_recursion: {
+                      open_paren: "[",
+                      frac: {
+                        numerator: {
                           intermediate_exp: {
                             open_paren: "(",
                             subsup_exp: {
@@ -38395,11 +36178,7 @@ module UnicodeMathParseValues
                                   mini_sub: {
                                     base: {
                                       factor: {
-                                        atom: {
-                                          char: {
-                                            unicode_symbols: "&#x3b4;"
-                                          }
-                                        }
+                                        relational_symbols: "&#x3b4;"
                                       }
                                     },
                                     sub: {
@@ -38410,11 +36189,7 @@ module UnicodeMathParseValues
                                 mini_sub: {
                                   base: {
                                     factor: {
-                                      atom: {
-                                        char: {
-                                          unicode_symbols: "&#x3c1;"
-                                        }
-                                      }
+                                      ordinary_symbols: "&#x3c1;"
                                     }
                                   },
                                   sub: {
@@ -38443,35 +36218,25 @@ module UnicodeMathParseValues
                                 }
                               }
                             },
-                            expr: {
+                            exp: {
                               operator: "-",
-                              expr: {
+                              exp: {
                                 accents_subsup: {
                                   base: {
-                                    accents: [
-                                      {
-                                        first_value: {
-                                          atom: {
-                                            char: {
-                                              unicode_symbols: "&#x3b1;"
-                                            }
-                                          }
-                                        }
+                                    accents: {
+                                      first_value: {
+                                        ordinary_symbols: "&#x3b1;"
                                       },
-                                      {
-                                        accent_symbols: "&#x27;"
-                                      }
-                                    ]
+                                      prime_accent_symbols: "&#x27;"
+                                    }
                                   },
                                   sub: {
                                     sub_script: {
-                                      sub_paren: {
-                                        sub_digits: "&#x2082;"
-                                      }
+                                      sub_digits: "&#x2082;"
                                     }
                                   }
                                 },
-                                expr: {
+                                exp: {
                                   subsup_exp: {
                                     base: {
                                       symbol: "U"
@@ -38481,11 +36246,7 @@ module UnicodeMathParseValues
                                         mini_sub: {
                                           base: {
                                             factor: {
-                                              atom: {
-                                                char: {
-                                                  unicode_symbols: "&#x3c1;"
-                                                }
-                                              }
+                                              ordinary_symbols: "&#x3c1;"
                                             }
                                           },
                                           sub: {
@@ -38496,11 +36257,7 @@ module UnicodeMathParseValues
                                       mini_sub: {
                                         base: {
                                           factor: {
-                                            atom: {
-                                              char: {
-                                                unicode_symbols: "&#x3c3;"
-                                              }
-                                            }
+                                            ordinary_symbols: "&#x3c3;"
                                           }
                                         },
                                         sub: {
@@ -38534,58 +36291,50 @@ module UnicodeMathParseValues
                             },
                             close_paren: ")"
                           }
-                        }
-                      },
-                      denominator: {
-                        subsup_exp: {
-                          base: {
-                            symbol: "U"
-                          },
-                          sub: {
-                            sub_script: {
-                              mini_sub: {
-                                base: {
-                                  factor: {
-                                    atom: {
-                                      char: {
-                                        unicode_symbols: "&#x3c1;"
-                                      }
-                                    }
-                                  }
-                                },
-                                sub: {
-                                  sub_digits: "&#x2081;"
-                                }
-                              }
+                        },
+                        denominator: {
+                          subsup_exp: {
+                            base: {
+                              symbol: "U"
                             },
-                            mini_sub: {
-                              base: {
-                                factor: {
-                                  atom: {
-                                    char: {
-                                      unicode_symbols: "&#x3c3;"
+                            sub: {
+                              sub_script: {
+                                mini_sub: {
+                                  base: {
+                                    factor: {
+                                      ordinary_symbols: "&#x3c1;"
                                     }
+                                  },
+                                  sub: {
+                                    sub_digits: "&#x2081;"
                                   }
                                 }
                               },
-                              sub: {
-                                sub_digits: "&#x2082;"
-                              }
-                            }
-                          },
-                          sup: {
-                            sup_script: {
-                              operand: {
-                                factor: {
-                                  digit: {
-                                    number: "0"
+                              mini_sub: {
+                                base: {
+                                  factor: {
+                                    ordinary_symbols: "&#x3c3;"
                                   }
                                 },
+                                sub: {
+                                  sub_digits: "&#x2082;"
+                                }
+                              }
+                            },
+                            sup: {
+                              sup_script: {
                                 operand: {
                                   factor: {
-                                    atom: {
-                                      char: {
-                                        unicode_symbols: "&#x3b2;"
+                                    digit: {
+                                      number: "0"
+                                    }
+                                  },
+                                  operand: {
+                                    factor: {
+                                      atom: {
+                                        char: {
+                                          unicode_symbols: "&#x3b2;"
+                                        }
                                       }
                                     }
                                   }
@@ -38594,9 +36343,9 @@ module UnicodeMathParseValues
                             }
                           }
                         }
-                      }
-                    },
-                    close_paren: "]"
+                      },
+                      close_paren: "]"
+                    }
                   }
                 }
               }
@@ -38627,9 +36376,9 @@ module UnicodeMathParseValues
                 sub_digits: "&#x2081;"
               }
             },
-            expr: {
+            exp: {
               operator: ",",
-              expr: {
+              exp: {
                 mini_sub: {
                   base: {
                     factor: {
@@ -38649,9 +36398,9 @@ module UnicodeMathParseValues
             close_paren: ")"
           }
         },
-        expr: {
+        exp: {
           operator: ",",
-          expr: {
+          exp: {
             factor: {
               intermediate_exp: {
                 open_paren: "(",
@@ -38669,9 +36418,9 @@ module UnicodeMathParseValues
                     sub_digits: "&#x2082;"
                   }
                 },
-                expr: {
+                exp: {
                   operator: ",",
-                  expr: {
+                  exp: {
                     mini_sub: {
                       base: {
                         factor: {
@@ -38691,9 +36440,9 @@ module UnicodeMathParseValues
                 close_paren: ")"
               }
             },
-            expr: {
+            exp: {
               operator: ",",
-              expr: {
+              exp: {
                 factor: {
                   atom: {
                     char: {
@@ -38721,11 +36470,7 @@ module UnicodeMathParseValues
               td: {
                 exp: {
                   factor: {
-                    atom: {
-                      char: {
-                        unicode_symbols: "&#x3b1;"
-                      }
-                    }
+                    ordinary_symbols: "&#x3b1;"
                   }
                 }
               },
@@ -38748,11 +36493,7 @@ module UnicodeMathParseValues
                 td: {
                   exp: {
                     factor: {
-                      atom: {
-                        char: {
-                          unicode_symbols: "&#x3b3;"
-                        }
-                      }
+                      ordinary_symbols: "&#x3b3;"
                     }
                   }
                 },
@@ -38760,11 +36501,7 @@ module UnicodeMathParseValues
                   td: {
                     exp: {
                       factor: {
-                        atom: {
-                          char: {
-                            unicode_symbols: "&#x3b4;"
-                          }
-                        }
+                        relational_symbols: "&#x3b4;"
                       }
                     }
                   }
@@ -39097,83 +36834,75 @@ module UnicodeMathParseValues
     }
   }.freeze
   EXAMPLE_185 = {
-    frac: {
-      numerator: {
-        nary: {
-          nary_sub_sup: {
-            subsup_exp: {
-              nary_class: "int",
-              sub: {
-                sub_script: {
-                  operand: {
-                    factor: {
-                      digit: {
-                        number: "0"
-                      }
-                    }
-                  }
-                }
-              },
-              sup: {
-                sup_script: {
-                  operand: {
-                    factor: {
-                      atom: {
-                        alphanumeric: "a"
-                      }
-                    }
+    nary: {
+      nary_sub_sup: {
+        subsup_exp: {
+          nary_class: "int",
+          sub: {
+            sub_script: {
+              operand: {
+                factor: {
+                  digit: {
+                    number: "0"
                   }
                 }
               }
             }
-          }
-        },
-        recursive_numerator: {
-          factor: {
-            atom: {
-              alphanumeric: "x"
-            }
           },
-          operand: {
-            factor: {
-              ordinary_symbols: "&#x2146;"
-            },
-            operand: {
-              factor: {
-                atom: {
-                  alphanumeric: "x"
+          sup: {
+            sup_script: {
+              operand: {
+                factor: {
+                  atom: {
+                    alphanumeric: "a"
+                  }
                 }
               }
             }
           }
         }
-      },
-      denominator: {
-        factor: {
-          intermediate_exp: {
-            open_paren: "(",
-            mini_sup: {
-              base: {
-                symbol: "x"
+      }
+    },
+    expr: {
+      frac: {
+        numerator: {
+          atom: {
+            alphanumeric: "x"
+          },
+          binary_symbols: "&#x2146;",
+          recursive_numerator: {
+            atom: {
+              alphanumeric: "x"
+            }
+          }
+        },
+        denominator: {
+          factor: {
+            intermediate_exp: {
+              open_paren: "(",
+              mini_sup: {
+                base: {
+                  symbol: "x"
+                },
+                sup: {
+                  sup_digits: "&#xb2;"
+                }
               },
-              sup: {
-                sup_digits: "&#xb2;"
-              }
-            },
-            expr: {
-              operator: "+",
-              expr: {
-                mini_sup: {
-                  base: {
-                    symbol: "a"
-                  },
-                  sup: {
-                    sup_digits: "&#xb2;"
+              exp: {
+                operator: "+",
+                exp: {
+                  mini_sup: {
+                    base: {
+                      symbol: "a"
+                    },
+                    sup: {
+                      sup_digits: "&#xb2;"
+                    }
                   }
                 }
-              }
-            },
-            close_paren: ")"
+              },
+              close_paren: ")"
+            }
           }
         }
       }
@@ -39184,81 +36913,17 @@ module UnicodeMathParseValues
       unicoded_font_class: "mitBbb",
       symbol: "d"
     },
+    relational_symbols: "equiv",
     expr: {
-      factor: {
-        relational_symbols: "equiv"
-      },
-      operand: {
-        factor: {
-          ordinary_symbols: "dd"
-        }
-      }
+      binary_symbols: "dd"
     }
   }.freeze
   EXAMPLE_187 = {
-    binary_symbols: "not",
-    expr: {
-      factor: {
-        atom: {
-          alphanumeric: "a"
-        },
-        atoms: {
-          atom: {
-            alphanumeric: "c"
-          },
-          atoms: {
-            atom: {
-              alphanumeric: "o"
-            },
-            atoms: {
-              atom: {
-                alphanumeric: "n"
-              },
-              atoms: {
-                atom: {
-                  alphanumeric: "t"
-                },
-                atoms: {
-                  atom: {
-                    alphanumeric: "r"
-                  },
-                  atoms: {
-                    atom: {
-                      alphanumeric: "o"
-                    },
-                    atoms: {
-                      atom: {
-                        alphanumeric: "l"
-                      },
-                      atoms: {
-                        atom: {
-                          alphanumeric: "w"
-                        },
-                        atoms: {
-                          atom: {
-                            alphanumeric: "o"
-                          },
-                          atoms: {
-                            atom: {
-                              alphanumeric: "r"
-                            },
-                            atoms: {
-                              atom: {
-                                alphanumeric: "d"
-                              }
-                            }
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
+    slashed_value: [
+      {
+        symbol: "notacontrolword"
       }
-    }
+    ]
   }.freeze
   EXAMPLE_188 = {
     slashed_value: [
@@ -39291,17 +36956,17 @@ module UnicodeMathParseValues
             alphanumeric: "y"
           }
         },
-        expr: {
+        exp: {
           operator: "=",
-          expr: {
+          exp: {
             factor: {
               atom: {
                 alphanumeric: "x"
               }
             },
-            expr: {
+            exp: {
               operator: "+",
-              expr: {
+              exp: {
                 factor: {
                   digit: {
                     number: "4"
@@ -39350,9 +37015,9 @@ module UnicodeMathParseValues
                   alphanumeric: "b"
                 }
               },
-              expr: {
+              exp: {
                 operator: "+",
-                expr: {
+                exp: {
                   factor: {
                     atom: {
                       alphanumeric: "c"
@@ -39438,7 +37103,7 @@ module UnicodeMathParseValues
       naryand: {
         open_paren: "(",
         operator: "-",
-        expr: {
+        exp: {
           factor: {
             digit: {
               number: "1"
@@ -39491,9 +37156,9 @@ module UnicodeMathParseValues
                   alphanumeric: "t"
                 }
               },
-              expr: {
+              exp: {
                 operator: "-",
-                expr: {
+                exp: {
                   factor: {
                     atom: {
                       alphanumeric: "k"
@@ -39538,7 +37203,7 @@ module UnicodeMathParseValues
                 naryand: {
                   open_paren: "(",
                   operator: "-",
-                  expr: {
+                  exp: {
                     factor: {
                       digit: {
                         number: "1"
@@ -39574,9 +37239,9 @@ module UnicodeMathParseValues
                           alphanumeric: "t"
                         }
                       },
-                      expr: {
+                      exp: {
                         operator: "-",
-                        expr: {
+                        exp: {
                           factor: {
                             atom: {
                               alphanumeric: "k"
@@ -39645,9 +37310,9 @@ module UnicodeMathParseValues
                 alphanumeric: "a"
               }
             },
-            expr: {
+            exp: {
               operator: "+",
-              expr: {
+              exp: {
                 factor: {
                   atom: {
                     alphanumeric: "b"
@@ -39668,9 +37333,9 @@ module UnicodeMathParseValues
                   alphanumeric: "f"
                 }
               },
-              expr: {
+              exp: {
                 operator: "+",
-                expr: {
+                exp: {
                   factor: {
                     atom: {
                       alphanumeric: "g"
@@ -39691,9 +37356,9 @@ module UnicodeMathParseValues
                     alphanumeric: "u"
                   }
                 },
-                expr: {
+                exp: {
                   operator: "+",
-                  expr: {
+                  exp: {
                     factor: {
                       atom: {
                         alphanumeric: "i"
@@ -39737,70 +37402,68 @@ module UnicodeMathParseValues
           }
         },
         expr: {
-          factor: {
-            char: {
-              unicode_symbols: "&#xd7;"
-            }
-          },
-          sub_exp: {
-            base: {
-              factor: {
-                atom: {
-                  char: {
-                    unicode_symbols: "&#x1d4a2;"
-                  }
-                }
-              }
-            },
-            sub: {
-              sub_script: {
-                operand: {
-                  factor: {
-                    atom: {
-                      alphanumeric: "m"
+          binary_symbols: "&#xd7;",
+          expr: {
+            sub_exp: {
+              base: {
+                factor: {
+                  atom: {
+                    char: {
+                      unicode_symbols: "&#x1d4a2;"
                     }
                   }
                 }
-              }
-            }
-          },
-          expr: {
-            factor: {
-              relational_symbols: "to"
-            },
-            expr: {
-              sub_exp: {
-                base: {
-                  factor: {
-                    atom: {
-                      char: {
-                        unicode_symbols: "&#x1d4a2;"
+              },
+              sub: {
+                sub_script: {
+                  operand: {
+                    factor: {
+                      atom: {
+                        alphanumeric: "m"
                       }
                     }
                   }
-                },
-                sub: {
-                  sub_script: {
-                    operand: {
-                      factor: {
-                        intermediate_exp: {
-                          open_paren: "{",
-                          factor: {
-                            atom: {
-                              alphanumeric: "n"
-                            }
-                          },
-                          expr: {
-                            operator: "-",
-                            expr: {
-                              factor: {
-                                atom: {
-                                  alphanumeric: "m"
+                }
+              }
+            },
+            expr: {
+              factor: {
+                relational_symbols: "to"
+              },
+              expr: {
+                sub_exp: {
+                  base: {
+                    factor: {
+                      atom: {
+                        char: {
+                          unicode_symbols: "&#x1d4a2;"
+                        }
+                      }
+                    }
+                  },
+                  sub: {
+                    sub_script: {
+                      operand: {
+                        factor: {
+                          intermediate_exp: {
+                            open_paren: "{",
+                            factor: {
+                              atom: {
+                                alphanumeric: "n"
+                              }
+                            },
+                            exp: {
+                              operator: "-",
+                              exp: {
+                                factor: {
+                                  atom: {
+                                    alphanumeric: "m"
+                                  }
                                 }
                               }
-                            }
-                          },
-                          close_paren: "}"
+                            },
+                            close_paren: "}"
+                          }
                         }
                       }
                     }
@@ -39841,70 +37504,68 @@ module UnicodeMathParseValues
           }
         },
         expr: {
-          factor: {
-            char: {
-              unicode_symbols: "&#xd7;"
-            }
-          },
-          sub_exp: {
-            base: {
-              factor: {
-                atom: {
-                  char: {
-                    unicode_symbols: "&#x1d4a2;"
-                  }
-                }
-              }
-            },
-            sub: {
-              sub_script: {
-                operand: {
-                  factor: {
-                    atom: {
-                      alphanumeric: "m"
+          binary_symbols: "&#xd7;",
+          expr: {
+            sub_exp: {
+              base: {
+                factor: {
+                  atom: {
+                    char: {
+                      unicode_symbols: "&#x1d4a2;"
                     }
                   }
                 }
-              }
-            }
-          },
-          expr: {
-            factor: {
-              relational_symbols: "to"
-            },
-            expr: {
-              sub_exp: {
-                base: {
-                  factor: {
-                    atom: {
-                      char: {
-                        unicode_symbols: "&#x1d4a2;"
+              },
+              sub: {
+                sub_script: {
+                  operand: {
+                    factor: {
+                      atom: {
+                        alphanumeric: "m"
                       }
                     }
                   }
-                },
-                sub: {
-                  sub_script: {
-                    operand: {
-                      factor: {
-                        intermediate_exp: {
-                          open_paren: "{",
-                          factor: {
-                            atom: {
-                              alphanumeric: "m"
-                            }
-                          },
-                          expr: {
-                            operator: "-",
-                            expr: {
-                              factor: {
-                                atom: {
-                                  alphanumeric: "n"
+                }
+              }
+            },
+            expr: {
+              factor: {
+                relational_symbols: "to"
+              },
+              expr: {
+                sub_exp: {
+                  base: {
+                    factor: {
+                      atom: {
+                        char: {
+                          unicode_symbols: "&#x1d4a2;"
+                        }
+                      }
+                    }
+                  },
+                  sub: {
+                    sub_script: {
+                      operand: {
+                        factor: {
+                          intermediate_exp: {
+                            open_paren: "{",
+                            factor: {
+                              atom: {
+                                alphanumeric: "m"
+                              }
+                            },
+                            exp: {
+                              operator: "-",
+                              exp: {
+                                factor: {
+                                  atom: {
+                                    alphanumeric: "n"
+                                  }
                                 }
                               }
-                            }
-                          },
-                          close_paren: "}"
+                            },
+                            close_paren: "}"
+                          }
                         }
                       }
                     }
@@ -40140,13 +37801,7 @@ module UnicodeMathParseValues
   EXAMPLE_201 = {
     pre_script: {
       pre_supscript: {
-        factor: {
-          atom: {
-            char: {
-              unicode_symbols: "&#x22ba;"
-            }
-          }
-        }
+        binary_symbols: "&#x22ba;"
       },
       base: {
         factor: {
@@ -40414,13 +38069,11 @@ module UnicodeMathParseValues
       expr: {
         frac: {
           numerator: {
-            factor: {
-              atom: {
-                alphanumeric: "n"
-              }
+            atom: {
+              alphanumeric: "n"
             }
           },
-          atop: "&#x249e;",
+          choose: "&#x249e;",
           denominator: {
             factor: {
               atom: {
@@ -40434,12 +38087,10 @@ module UnicodeMathParseValues
           expr: {
             frac: {
               numerator: {
-                factor: {
-                  atom: {
-                    alphanumeric: "n"
-                  },
-                  exclamation_symbol: "!"
-                }
+                atom: {
+                  alphanumeric: "n"
+                },
+                exclamation_symbol: "!"
               },
               denominator: {
                 factor: {
@@ -40451,15 +38102,9 @@ module UnicodeMathParseValues
                       },
                       exclamation_symbol: "!"
                     },
-                    expr: {
-                      factor: {
-                        atom: {
-                          char: {
-                            unicode_symbols: "&#x22c5;"
-                          }
-                        }
-                      },
-                      expr: {
+                    exp: {
+                      binary_symbols: "&#x22c5;",
+                      exp: {
                         factor: {
                           intermediate_exp: {
                             open_paren: "(",
@@ -40468,9 +38113,9 @@ module UnicodeMathParseValues
                                 alphanumeric: "n"
                               }
                             },
-                            expr: {
+                            exp: {
                               operator: "-",
-                              expr: {
+                              exp: {
                                 factor: {
                                   atom: {
                                     alphanumeric: "k"
@@ -40507,20 +38152,12 @@ module UnicodeMathParseValues
       },
       pre_supscript: {
         factor: {
-          atom: {
-            char: {
-              unicode_symbols: "&#x3b3;"
-            }
-          }
+          ordinary_symbols: "&#x3b3;"
         }
       },
       base: {
         factor: {
-          atom: {
-            char: {
-              unicode_symbols: "&#x3b1;"
-            }
-          }
+          ordinary_symbols: "&#x3b1;"
         }
       }
     }
@@ -40534,11 +38171,7 @@ module UnicodeMathParseValues
             first_value: {
               expr: {
                 factor: {
-                  atom: {
-                    char: {
-                      unicode_symbols: "&#x3b1;"
-                    }
-                  }
+                  ordinary_symbols: "&#x3b1;"
                 }
               }
             }
@@ -40570,11 +38203,7 @@ module UnicodeMathParseValues
             first_value: {
               expr: {
                 factor: {
-                  atom: {
-                    char: {
-                      unicode_symbols: "&#x3b3;"
-                    }
-                  }
+                  ordinary_symbols: "&#x3b3;"
                 }
               }
             }
@@ -40627,27 +38256,25 @@ module UnicodeMathParseValues
     expr: {
       operator: "+",
       expr: {
-        sub_exp: {
+        override_subsup: {
           base: {
             symbol: "b"
           },
-          sub: {
-            size_overrides: "D",
-            sub_script: {
+          size_overrides: "D",
+          sub_script: {
+            operand: {
+              factor: {
+                atom: {
+                  char: {
+                    unicode_symbols: "&#x2132;"
+                  },
+                  alphanumeric: "D"
+                }
+              },
               operand: {
                 factor: {
-                  atom: {
-                    char: {
-                      unicode_symbols: "&#x2132;"
-                    },
-                    alphanumeric: "D"
-                  }
-                },
-                operand: {
-                  factor: {
-                    digit: {
-                      number: "2"
-                    }
+                  digit: {
+                    number: "2"
                   }
                 }
               }
@@ -40768,24 +38395,18 @@ module UnicodeMathParseValues
     }
   }.freeze
   EXAMPLE_218 = {
-    frac: {
-      numerator: {
-        factor: {
-          atom: {
-            alphanumeric: "a"
-          }
-        }
-      },
-      denominator: {
-        factor: {
-          ordinary_symbols: "&#xac;"
-        }
+    factor: {
+      atom: {
+        alphanumeric: "a"
       }
     },
     expr: {
-      factor: {
-        atom: {
-          alphanumeric: "b"
+      ordinary_negated_operator: "&#xac;",
+      expr: {
+        factor: {
+          atom: {
+            alphanumeric: "b"
+          }
         }
       }
     }
@@ -40866,7 +38487,7 @@ module UnicodeMathParseValues
                   number: "2"
                 }
               },
-              expr: {
+              exp: {
                 factor: {
                   atom: {
                     alphanumeric: "x"
@@ -40885,21 +38506,21 @@ module UnicodeMathParseValues
                     number: "4"
                   }
                 },
-                expr: {
+                exp: {
                   factor: {
                     atom: {
                       alphanumeric: "x"
                     }
                   },
-                  expr: {
+                  exp: {
                     operator: "+",
-                    expr: {
+                    exp: {
                       factor: {
                         digit: {
                           number: "3"
                         }
                       },
-                      expr: {
+                      exp: {
                         factor: {
                           atom: {
                             alphanumeric: "y"
@@ -40958,13 +38579,7 @@ module UnicodeMathParseValues
       }
     },
     expr: {
-      factor: {
-        atom: {
-          char: {
-            unicode_symbols: "&#x2227;"
-          }
-        }
-      },
+      binary_symbols: "&#x2227;",
       expr: {
         factor: {
           atom: {
@@ -40982,13 +38597,7 @@ module UnicodeMathParseValues
                 }
               },
               expr: {
-                factor: {
-                  atom: {
-                    char: {
-                      unicode_symbols: "&#x2227;"
-                    }
-                  }
-                },
+                binary_symbols: "&#x2227;",
                 expr: {
                   factor: {
                     atom: {
@@ -41010,9 +38619,7 @@ module UnicodeMathParseValues
       }
     },
     expr: {
-      factor: {
-        relational_symbols: "&#x2260;"
-      },
+      binary_symbols: "&#x2260;",
       expr: {
         factor: {
           atom: {
@@ -41047,25 +38654,25 @@ module UnicodeMathParseValues
                     alphanumeric: "a"
                   }
                 },
-                expr: {
+                exp: {
                   operator: ".",
-                  expr: {
+                  exp: {
                     factor: {
                       atom: {
                         alphanumeric: "a"
                       }
                     },
-                    expr: {
+                    exp: {
                       operator: "=",
-                      expr: {
+                      exp: {
                         factor: {
                           atom: {
                             alphanumeric: "b"
                           }
                         },
-                        expr: {
+                        exp: {
                           operator: ".",
-                          expr: {
+                          exp: {
                             factor: {
                               atom: {
                                 alphanumeric: "b"
@@ -41095,12 +38702,10 @@ module UnicodeMathParseValues
   EXAMPLE_225 = {
     frac: {
       numerator: {
-        factor: {
-          atom: {
-            alphanumeric: "a"
-          },
-          exclamation_symbol: "!"
-        }
+        atom: {
+          alphanumeric: "a"
+        },
+        exclamation_symbol: "!"
       },
       denominator: {
         factor: {
@@ -41157,34 +38762,26 @@ module UnicodeMathParseValues
     }
   }.freeze
   EXAMPLE_229 = {
-    accents: [
-      {
-        first_value: {
-          atom: {
-            alphanumeric: "a"
-          }
+    accents: {
+      first_value: {
+        atom: {
+          alphanumeric: "a"
         }
       },
-      {
-        accent_symbols: "&#x27;&#x27;"
-      }
-    ]
+      prime_accent_symbols: "&#x27;&#x27;"
+    }
   }.freeze
   EXAMPLE_230 = {
     accents_subsup: {
       base: {
-        accents: [
-          {
-            first_value: {
-              atom: {
-                alphanumeric: "a"
-              }
+        accents: {
+          first_value: {
+            atom: {
+              alphanumeric: "a"
             }
           },
-          {
-            accent_symbols: "&#x27;"
-          }
-        ]
+          prime_accent_symbols: "&#x27;"
+        }
       },
       sup: {
         sup_script: {
@@ -41200,24 +38797,14 @@ module UnicodeMathParseValues
     }
   }.freeze
   EXAMPLE_231 = {
-    accents: [
-      {
-        first_value: {
-          atom: {
-            alphanumeric: "a"
-          }
+    accents: {
+      first_value: {
+        atom: {
+          alphanumeric: "a"
         }
       },
-      {
-        accent_symbols: "&#x27;"
-      },
-      {
-        accent_symbols: "&#x2057;"
-      },
-      {
-        accent_symbols: "&#x2034;"
-      }
-    ]
+      prime_accent_symbols: "&#x27;&#x2057;&#x2034;"
+    }
   }.freeze
   EXAMPLE_232 = {
     factor: {
@@ -41277,16 +38864,14 @@ module UnicodeMathParseValues
             open_paren: "{",
             frac: {
               numerator: {
-                factor: {
-                  intermediate_exp: {
-                    open_paren: "(",
-                    factor: {
-                      digit: {
-                        number: "1"
-                      }
-                    },
-                    close_paren: "]"
-                  }
+                intermediate_exp: {
+                  open_paren: "(",
+                  factor: {
+                    digit: {
+                      number: "1"
+                    }
+                  },
+                  close_paren: "]"
                 }
               },
               denominator: {
@@ -41317,16 +38902,14 @@ module UnicodeMathParseValues
             open_paren: "{",
             frac: {
               numerator: {
-                factor: {
-                  intermediate_exp: {
-                    open_paren: "(",
-                    factor: {
-                      digit: {
-                        number: "1"
-                      }
-                    },
-                    close_paren: "]"
-                  }
+                intermediate_exp: {
+                  open_paren: "(",
+                  factor: {
+                    digit: {
+                      number: "1"
+                    }
+                  },
+                  close_paren: "]"
                 }
               },
               denominator: {
@@ -41433,10 +39016,8 @@ module UnicodeMathParseValues
   EXAMPLE_238 = {
     frac: {
       numerator: {
-        factor: {
-          atom: {
-            alphanumeric: "a"
-          }
+        atom: {
+          alphanumeric: "a"
         }
       },
       denominator: {
@@ -41451,226 +39032,176 @@ module UnicodeMathParseValues
   EXAMPLE_239 = {
     frac: {
       numerator: {
-        factor: {
-          atom: {
-            alphanumeric: "a"
-          }
+        atom: {
+          alphanumeric: "a"
         }
       },
       denominator: {
         frac: {
           numerator: {
-            factor: {
-              atom: {
-                alphanumeric: "b"
-              }
+            atom: {
+              alphanumeric: "b"
             }
           },
           denominator: {
             frac: {
               numerator: {
-                factor: {
-                  atom: {
-                    alphanumeric: "c"
-                  }
+                atom: {
+                  alphanumeric: "c"
                 }
               },
               denominator: {
                 frac: {
                   numerator: {
-                    factor: {
-                      atom: {
-                        alphanumeric: "d"
-                      }
+                    atom: {
+                      alphanumeric: "d"
                     }
                   },
                   denominator: {
                     frac: {
                       numerator: {
-                        factor: {
-                          atom: {
-                            alphanumeric: "e"
-                          }
+                        atom: {
+                          alphanumeric: "e"
                         }
                       },
                       denominator: {
                         frac: {
                           numerator: {
-                            factor: {
-                              atom: {
-                                alphanumeric: "f"
-                              }
+                            atom: {
+                              alphanumeric: "f"
                             }
                           },
                           denominator: {
                             frac: {
                               numerator: {
-                                factor: {
-                                  atom: {
-                                    alphanumeric: "g"
-                                  }
+                                atom: {
+                                  alphanumeric: "g"
                                 }
                               },
                               denominator: {
                                 frac: {
                                   numerator: {
-                                    factor: {
-                                      atom: {
-                                        alphanumeric: "h"
-                                      }
+                                    atom: {
+                                      alphanumeric: "h"
                                     }
                                   },
                                   denominator: {
                                     frac: {
                                       numerator: {
-                                        factor: {
-                                          atom: {
-                                            alphanumeric: "i"
-                                          }
+                                        atom: {
+                                          alphanumeric: "i"
                                         }
                                       },
                                       denominator: {
                                         frac: {
                                           numerator: {
-                                            factor: {
-                                              atom: {
-                                                alphanumeric: "j"
-                                              }
+                                            atom: {
+                                              alphanumeric: "j"
                                             }
                                           },
                                           denominator: {
                                             frac: {
                                               numerator: {
-                                                factor: {
-                                                  atom: {
-                                                    alphanumeric: "k"
-                                                  }
+                                                atom: {
+                                                  alphanumeric: "k"
                                                 }
                                               },
                                               denominator: {
                                                 frac: {
                                                   numerator: {
-                                                    factor: {
-                                                      atom: {
-                                                        alphanumeric: "l"
-                                                      }
+                                                    atom: {
+                                                      alphanumeric: "l"
                                                     }
                                                   },
                                                   denominator: {
                                                     frac: {
                                                       numerator: {
-                                                        factor: {
-                                                          atom: {
-                                                            alphanumeric: "m"
-                                                          }
+                                                        atom: {
+                                                          alphanumeric: "m"
                                                         }
                                                       },
                                                       denominator: {
                                                         frac: {
                                                           numerator: {
-                                                            factor: {
-                                                              atom: {
-                                                                alphanumeric: "n"
-                                                              }
+                                                            atom: {
+                                                              alphanumeric: "n"
                                                             }
                                                           },
                                                           denominator: {
                                                             frac: {
                                                               numerator: {
-                                                                factor: {
-                                                                  atom: {
-                                                                    alphanumeric: "o"
-                                                                  }
+                                                                atom: {
+                                                                  alphanumeric: "o"
                                                                 }
                                                               },
                                                               denominator: {
                                                                 frac: {
                                                                   numerator: {
-                                                                    factor: {
-                                                                      atom: {
-                                                                        alphanumeric: "p"
-                                                                      }
+                                                                    atom: {
+                                                                      alphanumeric: "p"
                                                                     }
                                                                   },
                                                                   denominator: {
                                                                     frac: {
                                                                       numerator: {
-                                                                        factor: {
-                                                                          atom: {
-                                                                            alphanumeric: "q"
-                                                                          }
+                                                                        atom: {
+                                                                          alphanumeric: "q"
                                                                         }
                                                                       },
                                                                       denominator: {
                                                                         frac: {
                                                                           numerator: {
-                                                                            factor: {
-                                                                              atom: {
-                                                                                alphanumeric: "r"
-                                                                              }
+                                                                            atom: {
+                                                                              alphanumeric: "r"
                                                                             }
                                                                           },
                                                                           denominator: {
                                                                             frac: {
                                                                               numerator: {
-                                                                                factor: {
-                                                                                  atom: {
-                                                                                    alphanumeric: "s"
-                                                                                  }
+                                                                                atom: {
+                                                                                  alphanumeric: "s"
                                                                                 }
                                                                               },
                                                                               denominator: {
                                                                                 frac: {
                                                                                   numerator: {
-                                                                                    factor: {
-                                                                                      atom: {
-                                                                                        alphanumeric: "t"
-                                                                                      }
+                                                                                    atom: {
+                                                                                      alphanumeric: "t"
                                                                                     }
                                                                                   },
                                                                                   denominator: {
                                                                                     frac: {
                                                                                       numerator: {
-                                                                                        factor: {
-                                                                                          atom: {
-                                                                                            alphanumeric: "u"
-                                                                                          }
+                                                                                        atom: {
+                                                                                          alphanumeric: "u"
                                                                                         }
                                                                                       },
                                                                                       denominator: {
                                                                                         frac: {
                                                                                           numerator: {
-                                                                                            factor: {
-                                                                                              atom: {
-                                                                                                alphanumeric: "v"
-                                                                                              }
+                                                                                            atom: {
+                                                                                              alphanumeric: "v"
                                                                                             }
                                                                                           },
                                                                                           denominator: {
                                                                                             frac: {
                                                                                               numerator: {
-                                                                                                factor: {
-                                                                                                  atom: {
-                                                                                                    alphanumeric: "w"
-                                                                                                  }
+                                                                                                atom: {
+                                                                                                  alphanumeric: "w"
                                                                                                 }
                                                                                               },
                                                                                               denominator: {
                                                                                                 frac: {
                                                                                                   numerator: {
-                                                                                                    factor: {
-                                                                                                      atom: {
-                                                                                                        alphanumeric: "x"
-                                                                                                      }
+                                                                                                    atom: {
+                                                                                                      alphanumeric: "x"
                                                                                                     }
                                                                                                   },
                                                                                                   denominator: {
                                                                                                     frac: {
                                                                                                       numerator: {
-                                                                                                        factor: {
-                                                                                                          atom: {
-                                                                                                            alphanumeric: "y"
-                                                                                                          }
+                                                                                                        atom: {
+                                                                                                          alphanumeric: "y"
                                                                                                         }
                                                                                                       },
                                                                                                       denominator: {
@@ -42112,19 +39643,12 @@ module UnicodeMathParseValues
       },
       sup: {
         sup_script: {
-          accents: [
-            {
-              first_value: {
-                accent_symbols: "&#x2032;"
-              }
+          accents: {
+            first_value: {
+              symbol: "&#x2032;"
             },
-            {
-              accent_symbols: "&#x2032;"
-            },
-            {
-              accent_symbols: "&#x2032;"
-            }
-          ]
+            prime_accent_symbols: "&#x2032;&#x2032;"
+          }
         }
       }
     }
@@ -42193,9 +39717,9 @@ module UnicodeMathParseValues
                                 alphanumeric: "i"
                               }
                             },
-                            expr: {
+                            exp: {
                               operator: "-",
-                              expr: {
+                              exp: {
                                 factor: {
                                   digit: {
                                     number: "1"
@@ -42235,106 +39759,100 @@ module UnicodeMathParseValues
                         sup_exp: {
                           base: {
                             factor: {
-                              hbrack: {
-                                hbracket_class: "&#x23de;",
-                                first_value: {
-                                  factor: {
-                                    intermediate_exp: {
-                                      open_paren: "(",
-                                      sub_exp: {
-                                        base: {
-                                          symbol: "a"
-                                        },
-                                        sub: {
-                                          sub_script: {
-                                            operand: {
-                                              factor: {
-                                                intermediate_exp: {
-                                                  open_paren: "(",
-                                                  factor: {
-                                                    atom: {
-                                                      alphanumeric: "i"
-                                                    }
-                                                  },
-                                                  expr: {
-                                                    operator: "+",
-                                                    expr: {
-                                                      factor: {
-                                                        digit: {
-                                                          number: "1"
-                                                        }
-                                                      }
-                                                    }
-                                                  },
-                                                  close_paren: ")"
-                                                }
+                              hbracket_class: "&#x23de;",
+                              first_value: {
+                                open_paren: "(",
+                                sub_exp: {
+                                  base: {
+                                    symbol: "a"
+                                  },
+                                  sub: {
+                                    sub_script: {
+                                      operand: {
+                                        factor: {
+                                          intermediate_exp: {
+                                            open_paren: "(",
+                                            factor: {
+                                              atom: {
+                                                alphanumeric: "i"
                                               }
-                                            }
-                                          }
-                                        }
-                                      },
-                                      expr: {
-                                        operator: "+",
-                                        expr: {
-                                          factor: {
-                                            atom: {
-                                              char: {
-                                                unicode_symbols: "&#x22ef;"
-                                              }
-                                            }
-                                          },
-                                          expr: {
-                                            operator: "+",
-                                            expr: {
-                                              sub_exp: {
-                                                base: {
-                                                  symbol: "a"
-                                                },
-                                                sub: {
-                                                  sub_script: {
-                                                    operand: {
-                                                      factor: {
-                                                        intermediate_exp: {
-                                                          open_paren: "(",
-                                                          factor: {
-                                                            atom: {
-                                                              alphanumeric: "n"
-                                                            }
-                                                          },
-                                                          expr: {
-                                                            operator: "-",
-                                                            expr: {
-                                                              factor: {
-                                                                digit: {
-                                                                  number: "1"
-                                                                }
-                                                              }
-                                                            }
-                                                          },
-                                                          close_paren: ")"
-                                                        }
-                                                      }
-                                                    }
+                                            },
+                                            exp: {
+                                              operator: "+",
+                                              exp: {
+                                                factor: {
+                                                  digit: {
+                                                    number: "1"
                                                   }
                                                 }
-                                              },
-                                              expr: {
-                                                operator: "+",
-                                                expr: {
-                                                  sub_exp: {
-                                                    base: {
-                                                      symbol: "a"
+                                              }
+                                            },
+                                            close_paren: ")"
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                },
+                                exp: {
+                                  operator: "+",
+                                  exp: {
+                                    factor: {
+                                      atom: {
+                                        char: {
+                                          unicode_symbols: "&#x22ef;"
+                                        }
+                                      }
+                                    },
+                                    exp: {
+                                      operator: "+",
+                                      exp: {
+                                        sub_exp: {
+                                          base: {
+                                            symbol: "a"
+                                          },
+                                          sub: {
+                                            sub_script: {
+                                              operand: {
+                                                factor: {
+                                                  intermediate_exp: {
+                                                    open_paren: "(",
+                                                    factor: {
+                                                      atom: {
+                                                        alphanumeric: "n"
+                                                      }
                                                     },
-                                                    sub: {
-                                                      sub_script: {
-                                                        operand: {
-                                                          factor: {
-                                                            atom: {
-                                                              alphanumeric: "n"
-                                                            }
+                                                    exp: {
+                                                      operator: "-",
+                                                      exp: {
+                                                        factor: {
+                                                          digit: {
+                                                            number: "1"
                                                           }
                                                         }
                                                       }
+                                                    },
+                                                    close_paren: ")"
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        },
+                                        exp: {
+                                          operator: "+",
+                                          exp: {
+                                            sub_exp: {
+                                              base: {
+                                                symbol: "a"
+                                              },
+                                              sub: {
+                                                sub_script: {
+                                                  operand: {
+                                                    factor: {
+                                                      atom: {
+                                                        alphanumeric: "n"
+                                                      }
                                                     }
                                                   }
                                                 }
@@ -42342,11 +39860,11 @@ module UnicodeMathParseValues
                                             }
                                           }
                                         }
-                                      },
-                                      close_paren: ")"
+                                      }
                                     }
                                   }
-                                }
+                                },
+                                close_paren: ")"
                               }
                             }
                           },
@@ -42361,15 +39879,15 @@ module UnicodeMathParseValues
                                         alphanumeric: "n"
                                       }
                                     },
-                                    expr: {
+                                    exp: {
                                       operator: "-",
-                                      expr: {
+                                      exp: {
                                         factor: {
                                           atom: {
                                             alphanumeric: "i"
                                           }
                                         },
-                                        expr: {
+                                        exp: {
                                           text: " times"
                                         }
                                       }
@@ -42730,18 +40248,16 @@ module UnicodeMathParseValues
     }
   }.freeze
   EXAMPLE_259 = {
-    sub_exp: {
+    override_subsup: {
       base: {
         symbol: "a"
       },
-      sub: {
-        size_overrides: "A",
-        sub_script: {
-          operand: {
-            factor: {
-              digit: {
-                number: "2"
-              }
+      size_overrides: "A",
+      sub_script: {
+        operand: {
+          factor: {
+            digit: {
+              number: "2"
             }
           }
         }
@@ -42749,18 +40265,16 @@ module UnicodeMathParseValues
     }
   }.freeze
   EXAMPLE_260 = {
-    sub_exp: {
+    override_subsup: {
       base: {
         symbol: "a"
       },
-      sub: {
-        size_overrides: "D",
-        sub_script: {
-          operand: {
-            factor: {
-              atom: {
-                alphanumeric: "a"
-              }
+      size_overrides: "D",
+      sub_script: {
+        operand: {
+          factor: {
+            atom: {
+              alphanumeric: "a"
             }
           }
         }
@@ -42769,18 +40283,16 @@ module UnicodeMathParseValues
     expr: {
       operator: "+",
       expr: {
-        sub_exp: {
+        override_subsup: {
           base: {
             symbol: "a"
           },
-          sub: {
-            size_overrides: "C",
-            sub_script: {
-              operand: {
-                factor: {
-                  atom: {
-                    alphanumeric: "a"
-                  }
+          size_overrides: "C",
+          sub_script: {
+            operand: {
+              factor: {
+                atom: {
+                  alphanumeric: "a"
                 }
               }
             }
@@ -42808,18 +40320,16 @@ module UnicodeMathParseValues
             expr: {
               operator: "+",
               expr: {
-                sub_exp: {
+                override_subsup: {
                   base: {
                     symbol: "a"
                   },
-                  sub: {
-                    size_overrides: "A",
-                    sub_script: {
-                      operand: {
-                        factor: {
-                          atom: {
-                            alphanumeric: "a"
-                          }
+                  size_overrides: "A",
+                  sub_script: {
+                    operand: {
+                      factor: {
+                        atom: {
+                          alphanumeric: "a"
                         }
                       }
                     }
@@ -42828,18 +40338,16 @@ module UnicodeMathParseValues
                 expr: {
                   operator: "+",
                   expr: {
-                    sub_exp: {
+                    override_subsup: {
                       base: {
                         symbol: "a"
                       },
-                      sub: {
-                        size_overrides: "B",
-                        sub_script: {
-                          operand: {
-                            factor: {
-                              atom: {
-                                alphanumeric: "a"
-                              }
+                      size_overrides: "B",
+                      sub_script: {
+                        operand: {
+                          factor: {
+                            atom: {
+                              alphanumeric: "a"
                             }
                           }
                         }
@@ -42857,42 +40365,36 @@ module UnicodeMathParseValues
   EXAMPLE_261 = {
     frac: {
       numerator: {
-        factor: {
+        atom: {
+          alphanumeric: "a"
+        },
+        atoms: {
           atom: {
-            alphanumeric: "a"
-          },
-          atoms: {
-            atom: {
-              alphanumeric: "b"
-            }
+            alphanumeric: "b"
           }
         }
       },
       denominator: {
         frac: {
           numerator: {
-            factor: {
+            atom: {
+              alphanumeric: "c"
+            },
+            atoms: {
               atom: {
-                alphanumeric: "c"
-              },
-              atoms: {
-                atom: {
-                  alphanumeric: "d"
-                }
+                alphanumeric: "d"
               }
             }
           },
           denominator: {
             frac: {
               numerator: {
-                factor: {
+                atom: {
+                  alphanumeric: "e"
+                },
+                atoms: {
                   atom: {
-                    alphanumeric: "e"
-                  },
-                  atoms: {
-                    atom: {
-                      alphanumeric: "f"
-                    }
+                    alphanumeric: "f"
                   }
                 }
               },
@@ -42906,7 +40408,7 @@ module UnicodeMathParseValues
                             number: "10"
                           }
                         }
-                      },
+                      }
                     },
                     second_value: {
                       expr: {
@@ -42961,7 +40463,19 @@ module UnicodeMathParseValues
   EXAMPLE_263 = {
     sub_exp: {
       base: {
-        symbol: "abcde"
+        symbol: "a",
+        expr: {
+          symbol: "b",
+          expr: {
+            symbol: "c",
+            expr: {
+              symbol: "d",
+              expr: {
+                symbol: "e"
+              }
+            }
+          }
+        }
       },
       sub: {
         under: "&#x252c;",
@@ -42994,7 +40508,9 @@ module UnicodeMathParseValues
           }
         }
       },
-      diacritic_overlays: "&#x20df;"
+      overlay_after: {
+        diacritic_overlays: "&#x20df;"
+      }
     }
   }.freeze
   EXAMPLE_265 = {
@@ -43021,30 +40537,26 @@ module UnicodeMathParseValues
       }
     },
     expr: {
-      mini_sup: {
-        base: {
-          factor: {
-            atom: {
-              char: {
-                unicode_symbols: "&#x22c5;"
-              },
-              alphanumeric: "b"
-            }
+      binary_symbols: "&#x22c5;",
+      expr: {
+        mini_sup: {
+          base: {
+            symbol: "b"
+          },
+          sup: {
+            sup_digits: "&#xb2;"
           }
         },
-        sup: {
-          sup_digits: "&#xb2;"
-        }
-      },
-      expr: {
-        operator: "=",
         expr: {
-          mini_sup: {
-            base: {
-              symbol: "c"
-            },
-            sup: {
-              sup_digits: "&#xb2;"
+          operator: "=",
+          expr: {
+            mini_sup: {
+              base: {
+                symbol: "c"
+              },
+              sup: {
+                sup_digits: "&#xb2;"
+              }
             }
           }
         }
@@ -43060,13 +40572,17 @@ module UnicodeMathParseValues
           }
         }
       },
-      diacritic_belows: "&#x304;"
+      overlay_after: {
+        diacritic_overlays: "&#x304;"
+      }
     },
     expr: {
       operator: "+",
       expr: {
         diacritics_accents: {
-          diacritic_belows: "&#x304;",
+          overlay_before: {
+            diacritic_overlays: "&#x304;"
+          },
           first_value: {
             factor: {
               intermediate_exp: {
@@ -43085,16 +40601,16 @@ module UnicodeMathParseValues
     }
   }.freeze
   EXAMPLE_268 = {
-    factor: {
-      atom: {
-        alphanumeric: "a"
-      },
-      atoms: {
-        atom: {
-          char: {
-            unicode_symbols: "&#x33c;"
+    diacritics_accents: {
+      first_value: {
+        factor: {
+          atom: {
+            alphanumeric: "a"
           }
         }
+      },
+      below_after: {
+        diacritic_belows: "&#x33c;"
       }
     }
   }.freeze
@@ -43107,20 +40623,26 @@ module UnicodeMathParseValues
           }
         }
       },
-      diacritic_belows: "&#x356;"
+      below_after: {
+        diacritic_belows: "&#x356;"
+      }
     }
   }.freeze
   EXAMPLE_270 = {
     factor: {
       atom: {
         alphanumeric: "a"
+      }
+    },
+    operand: {
+      factor: {
+        spaces: "&#x2002;"
       },
-      atoms: {
-        atom: {
-          char: {
-            unicode_symbols: "&#x2002;"
-          },
-          alphanumeric: "b"
+      operand: {
+        factor: {
+          atom: {
+            alphanumeric: "b"
+          }
         }
       }
     }
@@ -43128,14 +40650,18 @@ module UnicodeMathParseValues
   EXAMPLE_271 = {
     factor: {
       atom: {
-        alphanumeric: "a",
+        alphanumeric: "a"
+      }
+    },
+    operand: {
+      factor: {
+        spaces: "&#x2003;"
       },
-      atoms: {
-        atom: {
-          char: {
-            unicode_symbols: "&#x2003;"
-          },
-          alphanumeric: "b"
+      operand: {
+        factor: {
+          atom: {
+            alphanumeric: "b"
+          }
         }
       }
     }
@@ -43143,14 +40669,18 @@ module UnicodeMathParseValues
   EXAMPLE_272 = {
     factor: {
       atom: {
-        alphanumeric: "a",
+        alphanumeric: "a"
+      }
+    },
+    operand: {
+      factor: {
+        spaces: "&#x2004;"
       },
-      atoms: {
-        atom: {
-          char: {
-            unicode_symbols: "&#x2004;"
-          },
-          alphanumeric: "b"
+      operand: {
+        factor: {
+          atom: {
+            alphanumeric: "b"
+          }
         }
       }
     }
@@ -43159,18 +40689,22 @@ module UnicodeMathParseValues
     factor: {
       atom: {
         alphanumeric: "a"
+      }
+    },
+    operand: {
+      factor: {
+        spaces: "&#x2004;"
       },
-      atoms: {
-        atom: {
-          char: {
-            unicode_symbols: "&#x2004;"
-          },
-          diacritics: {
-            char: {
-              unicode_symbols: "&#x200a;"
+      operand: {
+        factor: {
+          spaces: "&#x200a;"
+        },
+        operand: {
+          factor: {
+            atom: {
+              alphanumeric: "b"
             }
-          },
-          alphanumeric: "b"
+          }
         }
       }
     }
@@ -43179,13 +40713,17 @@ module UnicodeMathParseValues
     factor: {
       atom: {
         alphanumeric: "a"
+      }
+    },
+    operand: {
+      factor: {
+        spaces: "&#x2005;"
       },
-      atoms: {
-        atom: {
-          char: {
-            unicode_symbols: "&#x2005;"
-          },
-          alphanumeric: "b"
+      operand: {
+        factor: {
+          atom: {
+            alphanumeric: "b"
+          }
         }
       }
     }
@@ -43194,13 +40732,17 @@ module UnicodeMathParseValues
     factor: {
       atom: {
         alphanumeric: "a"
+      }
+    },
+    operand: {
+      factor: {
+        spaces: "&#x2007;"
       },
-      atoms: {
-        atom: {
-          char: {
-            unicode_symbols: "&#x2007;"
-          },
-          alphanumeric: "b"
+      operand: {
+        factor: {
+          atom: {
+            alphanumeric: "b"
+          }
         }
       }
     }
@@ -43224,13 +40766,17 @@ module UnicodeMathParseValues
     factor: {
       atom: {
         alphanumeric: "a"
+      }
+    },
+    operand: {
+      factor: {
+        spaces: "&#x200a;"
       },
-      atoms: {
-        atom: {
-          char: {
-            unicode_symbols: "&#x200a;"
-          },
-          alphanumeric: "b"
+      operand: {
+        factor: {
+          atom: {
+            alphanumeric: "b"
+          }
         }
       }
     }
@@ -43239,18 +40785,22 @@ module UnicodeMathParseValues
     factor: {
       atom: {
         alphanumeric: "a"
+      }
+    },
+    operand: {
+      factor: {
+        spaces: "&#x200a;"
       },
-      atoms: {
-        atom: {
-          char: {
-            unicode_symbols: "&#x200a;"
-          },
-          diacritics: {
-            char: {
-              unicode_symbols: "&#x200a;"
+      operand: {
+        factor: {
+          spaces: "&#x200a;"
+        },
+        operand: {
+          factor: {
+            atom: {
+              alphanumeric: "b"
             }
-          },
-          alphanumeric: "b"
+          }
         }
       }
     }
@@ -43275,89 +40825,54 @@ module UnicodeMathParseValues
     }
   }.freeze
   EXAMPLE_280 = {
-    accents: [
-      {
-        first_value: {
-          atom: {
-            alphanumeric: "a"
-          }
+    accents: {
+      first_value: {
+        atom: {
+          alphanumeric: "a"
         }
       },
-      {
-        accent_symbols: "&#x2032;"
-      }
-    ]
+      prime_accent_symbols: "&#x2032;"
+    }
   }.freeze
   EXAMPLE_281 = {
-    accents: [
-      {
-        first_value: {
-          atom: {
-            alphanumeric: "a"
-          }
+    accents: {
+      first_value: {
+        atom: {
+          alphanumeric: "a"
         }
       },
-      {
-        accent_symbols: "&#x2032;"
-      },
-      {
-        accent_symbols: "&#x2032;"
-      },
-      {
-        accent_symbols: "&#x2032;"
-      }
-    ]
+      prime_accent_symbols: "&#x2032;&#x2032;&#x2032;"
+    }
   }.freeze
   EXAMPLE_282 = {
-    accents: [
-      {
-        first_value: {
-          atom: {
-            alphanumeric: "a"
-          }
+    accents: {
+      first_value: {
+        atom: {
+          alphanumeric: "a"
         }
       },
-      {
-        accent_symbols: "&#x2032;"
-      },
-      {
-        accent_symbols: "&#x2032;"
-      },
-      {
-        accent_symbols: "&#x2032;"
-      },
-      {
-        accent_symbols: "&#x27;&#x27;&#x27;"
-      }
-    ]
+      prime_accent_symbols: "&#x2032;&#x2032;&#x2032;&#x27;&#x27;&#x27;"
+    }
   }.freeze
   EXAMPLE_283 = {
-    accents: [
-      {
-        first_value: {
-          atom: {
-            alphanumeric: "a"
-          }
+    accents: {
+      first_value: {
+        atom: {
+          alphanumeric: "a"
         }
       },
-      {
-        accent_symbols: "&#x2033;"
-      }
-    ]
+      prime_accent_symbols: "&#x2033;"
+    }
   }.freeze
   EXAMPLE_284 = {
-    accents: [
-      {
-        first_value: {
-          atom: {
-            alphanumeric: "a"
-          }
+    accents: {
+      first_value: {
+        atom: {
+          alphanumeric: "a"
         }
       },
-      {
-        accent_symbols: "&#x2034;"
-      }
-    ]
+      prime_accent_symbols: "&#x2034;"
+    }
   }.freeze
   EXAMPLE_285 = {
     factor: {
@@ -43374,81 +40889,44 @@ module UnicodeMathParseValues
     }
   }.freeze
   EXAMPLE_286 = {
-    accents: [
-      {
-        first_value: {
-          atom: {
-            alphanumeric: "a"
-          }
+    accents: {
+      first_value: {
+        atom: {
+          alphanumeric: "a"
         }
       },
-      {
-        accent_symbols: "&#x2057;"
-      }
-    ]
+      prime_accent_symbols: "&#x2057;"
+    }
   }.freeze
   EXAMPLE_287 = {
-    accents: [
-      {
-        first_value: {
-          atom: {
-            alphanumeric: "a"
-          }
+    accents: {
+      first_value: {
+        atom: {
+          alphanumeric: "a"
         }
       },
-      {
-        accent_symbols: "&#x2057;"
-      },
-      {
-        accent_symbols: "&#x27;"
-      }
-    ]
+      prime_accent_symbols: "&#x2057;&#x27;"
+    }
   }.freeze
   EXAMPLE_288 = {
-    accents: [
-      {
-        first_value: {
-          atom: {
-            alphanumeric: "a"
-          }
+    accents: {
+      first_value: {
+        atom: {
+          alphanumeric: "a"
         }
       },
-      {
-        accent_symbols: "&#x2057;"
-      },
-      {
-        accent_symbols: "&#x27;"
-      },
-      {
-        accent_symbols: "&#x2034;"
-      }
-    ]
+      prime_accent_symbols: "&#x2057;&#x27;&#x2034;"
+    }
   }.freeze
   EXAMPLE_289 = {
-    accents: [
-      {
-        first_value: {
-          atom: {
-            alphanumeric: "a"
-          }
+    accents: {
+      first_value: {
+        atom: {
+          alphanumeric: "a"
         }
       },
-      {
-        accent_symbols: "&#x2057;"
-      },
-      {
-        accent_symbols: "&#x2057;"
-      },
-      {
-        accent_symbols: "&#x27;"
-      },
-      {
-        accent_symbols: "&#x2057;"
-      },
-      {
-        accent_symbols: "&#x2034;"
-      }
-    ]
+      prime_accent_symbols: "&#x2057;&#x2057;&#x27;&#x2057;&#x2034;"
+    }
   }.freeze
   EXAMPLE_290 = {
     factor: {
@@ -43560,11 +41038,7 @@ module UnicodeMathParseValues
         sup_script: {
           operand: {
             factor: {
-              atom: {
-                char: {
-                  unicode_symbols: "&#x3b1;"
-                }
-              }
+              ordinary_symbols: "&#x3b1;"
             }
           }
         }
@@ -43621,7 +41095,9 @@ module UnicodeMathParseValues
           }
         }
       },
-      diacritic_overlays: "&#x20d2;"
+      overlay_after: {
+        diacritic_overlays: "&#x20d2;"
+      }
     }
   }.freeze
   EXAMPLE_298 = {
@@ -43640,11 +41116,9 @@ module UnicodeMathParseValues
           }
         ]
       },
-      sub: {
-        sub_script: {
-          sup_paren: {
-            sup_alpha: "&#x207f;"
-          }
+      sup: {
+        sup_script: {
+          sup_alpha: "&#x207f;"
         }
       }
     }
@@ -43658,7 +41132,9 @@ module UnicodeMathParseValues
           }
         }
       },
-      diacritic_overlays: "&#x20da;"
+      overlay_after: {
+        diacritic_overlays: "&#x20da;"
+      }
     }
   }.freeze
   EXAMPLE_300 = {
@@ -43670,7 +41146,9 @@ module UnicodeMathParseValues
           }
         }
       },
-      diacritic_overlays: "&#x20dd;"
+      overlay_after: {
+        diacritic_overlays: "&#x20dd;"
+      }
     }
   }.freeze
   EXAMPLE_301 = {
@@ -43682,7 +41160,9 @@ module UnicodeMathParseValues
           }
         }
       },
-      diacritic_overlays: "&#x20e2;"
+      overlay_after: {
+        diacritic_overlays: "&#x20e2;"
+      }
     }
   }.freeze
   EXAMPLE_302 = {
@@ -43694,7 +41174,9 @@ module UnicodeMathParseValues
           }
         }
       },
-      diacritic_overlays: "&#x20eb;"
+      overlay_after: {
+        diacritic_overlays: "&#x20eb;"
+      }
     }
   }.freeze
   EXAMPLE_303 = {
@@ -43740,11 +41222,9 @@ module UnicodeMathParseValues
         alphanumeric: "a"
       }
     },
-    operand: {
-      factor: {
-        relational_symbols: "&#x2260;"
-      },
-      operand: {
+    expr: {
+      binary_symbols: "&#x2260;",
+      expr: {
         factor: {
           atom: {
             alphanumeric: "b"
@@ -43756,228 +41236,203 @@ module UnicodeMathParseValues
   EXAMPLE_305 = {
     frac: {
       numerator: {
-        factor: {
-          atom: {
-            alphanumeric: "a"
-          }
+        atom: {
+          alphanumeric: "a"
         }
       },
+      no_display_style: "&#x2298;",
       denominator: {
         frac: {
           numerator: {
-            factor: {
-              atom: {
-                alphanumeric: "b"
-              }
+            atom: {
+              alphanumeric: "b"
             }
           },
+          no_display_style: "&#x2298;",
           denominator: {
             frac: {
               numerator: {
-                factor: {
-                  atom: {
-                    alphanumeric: "c"
-                  }
+                atom: {
+                  alphanumeric: "c"
                 }
               },
+              no_display_style: "&#x2298;",
               denominator: {
                 frac: {
                   numerator: {
-                    factor: {
-                      atom: {
-                        alphanumeric: "d"
-                      }
+                    atom: {
+                      alphanumeric: "d"
                     }
                   },
+                  no_display_style: "&#x2298;",
                   denominator: {
                     frac: {
                       numerator: {
-                        factor: {
-                          atom: {
-                            alphanumeric: "e"
-                          }
+                        atom: {
+                          alphanumeric: "e"
                         }
                       },
+                      no_display_style: "&#x2298;",
                       denominator: {
                         frac: {
                           numerator: {
-                            factor: {
-                              atom: {
-                                alphanumeric: "f"
-                              }
+                            atom: {
+                              alphanumeric: "f"
                             }
                           },
+                          no_display_style: "&#x2298;",
                           denominator: {
                             frac: {
                               numerator: {
-                                factor: {
-                                  atom: {
-                                    alphanumeric: "g"
-                                  }
+                                atom: {
+                                  alphanumeric: "g"
                                 }
                               },
+                              no_display_style: "&#x2298;",
                               denominator: {
                                 frac: {
                                   numerator: {
-                                    factor: {
-                                      atom: {
-                                        alphanumeric: "h"
-                                      }
+                                    atom: {
+                                      alphanumeric: "h"
                                     }
                                   },
+                                  no_display_style: "&#x2298;",
                                   denominator: {
                                     frac: {
                                       numerator: {
-                                        factor: {
-                                          atom: {
-                                            alphanumeric: "i"
-                                          }
+                                        atom: {
+                                          alphanumeric: "i"
                                         }
                                       },
+                                      no_display_style: "&#x2298;",
                                       denominator: {
                                         frac: {
                                           numerator: {
-                                            factor: {
-                                              atom: {
-                                                alphanumeric: "j"
-                                              }
+                                            atom: {
+                                              alphanumeric: "j"
                                             }
                                           },
+                                          no_display_style: "&#x2298;",
                                           denominator: {
                                             frac: {
                                               numerator: {
-                                                factor: {
-                                                  atom: {
-                                                    alphanumeric: "k"
-                                                  }
+                                                atom: {
+                                                  alphanumeric: "k"
                                                 }
                                               },
+                                              no_display_style: "&#x2298;",
                                               denominator: {
                                                 frac: {
                                                   numerator: {
-                                                    factor: {
-                                                      atom: {
-                                                        alphanumeric: "l"
-                                                      }
+                                                    atom: {
+                                                      alphanumeric: "l"
                                                     }
                                                   },
+                                                  no_display_style: "&#x2298;",
                                                   denominator: {
                                                     frac: {
                                                       numerator: {
-                                                        factor: {
-                                                          atom: {
-                                                            alphanumeric: "m"
-                                                          }
+                                                        atom: {
+                                                          alphanumeric: "m"
                                                         }
                                                       },
+                                                      no_display_style: "&#x2298;",
                                                       denominator: {
                                                         frac: {
                                                           numerator: {
-                                                            factor: {
-                                                              atom: {
-                                                                alphanumeric: "n"
-                                                              }
+                                                            atom: {
+                                                              alphanumeric: "n"
                                                             }
                                                           },
+                                                          no_display_style: "&#x2298;",
                                                           denominator: {
                                                             frac: {
                                                               numerator: {
-                                                                factor: {
-                                                                  atom: {
-                                                                    alphanumeric: "o"
-                                                                  }
+                                                                atom: {
+                                                                  alphanumeric: "o"
                                                                 }
                                                               },
+                                                              no_display_style: "&#x2298;",
                                                               denominator: {
                                                                 frac: {
                                                                   numerator: {
-                                                                    factor: {
-                                                                      atom: {
-                                                                        alphanumeric: "p"
-                                                                      }
+                                                                    atom: {
+                                                                      alphanumeric: "p"
                                                                     }
                                                                   },
+                                                                  no_display_style: "&#x2298;",
                                                                   denominator: {
                                                                     frac: {
                                                                       numerator: {
-                                                                        factor: {
-                                                                          atom: {
-                                                                            alphanumeric: "q"
-                                                                          }
+                                                                        atom: {
+                                                                          alphanumeric: "q"
                                                                         }
                                                                       },
+                                                                      no_display_style: "&#x2298;",
                                                                       denominator: {
                                                                         frac: {
                                                                           numerator: {
-                                                                            factor: {
-                                                                              atom: {
-                                                                                alphanumeric: "r"
-                                                                              }
+                                                                            atom: {
+                                                                              alphanumeric: "r"
                                                                             }
                                                                           },
+                                                                          no_display_style: "&#x2298;",
                                                                           denominator: {
                                                                             frac: {
                                                                               numerator: {
-                                                                                factor: {
-                                                                                  atom: {
-                                                                                    alphanumeric: "s"
-                                                                                  }
+                                                                                atom: {
+                                                                                  alphanumeric: "s"
                                                                                 }
                                                                               },
+                                                                              no_display_style: "&#x2298;",
                                                                               denominator: {
                                                                                 frac: {
                                                                                   numerator: {
-                                                                                    factor: {
-                                                                                      atom: {
-                                                                                        alphanumeric: "t"
-                                                                                      }
+                                                                                    atom: {
+                                                                                      alphanumeric: "t"
                                                                                     }
                                                                                   },
+                                                                                  no_display_style: "&#x2298;",
                                                                                   denominator: {
                                                                                     frac: {
                                                                                       numerator: {
-                                                                                        factor: {
-                                                                                          atom: {
-                                                                                            alphanumeric: "u"
-                                                                                          }
+                                                                                        atom: {
+                                                                                          alphanumeric: "u"
                                                                                         }
                                                                                       },
+                                                                                      no_display_style: "&#x2298;",
                                                                                       denominator: {
                                                                                         frac: {
                                                                                           numerator: {
-                                                                                            factor: {
-                                                                                              atom: {
-                                                                                                alphanumeric: "v"
-                                                                                              }
+                                                                                            atom: {
+                                                                                              alphanumeric: "v"
                                                                                             }
                                                                                           },
+                                                                                          no_display_style: "&#x2298;",
                                                                                           denominator: {
                                                                                             frac: {
                                                                                               numerator: {
-                                                                                                factor: {
-                                                                                                  atom: {
-                                                                                                    alphanumeric: "w"
-                                                                                                  }
+                                                                                                atom: {
+                                                                                                  alphanumeric: "w"
                                                                                                 }
                                                                                               },
+                                                                                              no_display_style: "&#x2298;",
                                                                                               denominator: {
                                                                                                 frac: {
                                                                                                   numerator: {
-                                                                                                    factor: {
-                                                                                                      atom: {
-                                                                                                        alphanumeric: "x"
-                                                                                                      }
+                                                                                                    atom: {
+                                                                                                      alphanumeric: "x"
                                                                                                     }
                                                                                                   },
+                                                                                                  no_display_style: "&#x2298;",
                                                                                                   denominator: {
                                                                                                     frac: {
                                                                                                       numerator: {
-                                                                                                        factor: {
-                                                                                                          atom: {
-                                                                                                            alphanumeric: "y"
-                                                                                                          }
+                                                                                                        atom: {
+                                                                                                          alphanumeric: "y"
                                                                                                         }
                                                                                                       },
+                                                                                                      no_display_style: "&#x2298;",
                                                                                                       denominator: {
                                                                                                         factor: {
                                                                                                           atom: {
@@ -44153,18 +41608,14 @@ module UnicodeMathParseValues
   EXAMPLE_309 = {
     accents_subsup: {
       base: {
-        accents: [
-          {
-            first_value: {
-              atom: {
-                alphanumeric: "c"
-              }
+        accents: {
+          first_value: {
+            atom: {
+              alphanumeric: "c"
             }
           },
-          {
-            accent_symbols: "&#x27;"
-          }
-        ]
+          prime_accent_symbols: "&#x27;"
+        }
       },
       sup: {
         sup_script: {
@@ -44182,18 +41633,14 @@ module UnicodeMathParseValues
   EXAMPLE_310 = {
     accents_subsup: {
       base: {
-        accents: [
-          {
-            first_value: {
-              atom: {
-                alphanumeric: "c"
-              }
+        accents: {
+          first_value: {
+            atom: {
+              alphanumeric: "c"
             }
           },
-          {
-            accent_symbols: "&#x27;"
-          }
-        ]
+          prime_accent_symbols: "&#x27;"
+        }
       },
       sub: {
         sub_script: {
@@ -44213,11 +41660,7 @@ module UnicodeMathParseValues
       unary_functions: "cos",
       first_value: {
         factor: {
-          atom: {
-            char: {
-              unicode_symbols: "&#x3b8;"
-            }
-          }
+          ordinary_symbols: "&#x3b8;"
         }
       }
     },
@@ -44226,12 +41669,11 @@ module UnicodeMathParseValues
       expr: {
         frac: {
           numerator: {
-            factor: {
-              digit: {
-                number: "1"
-              }
+            digit: {
+              number: "1"
             }
           },
+          bevelled: "&#x2044;",
           denominator: {
             factor: {
               digit: {
@@ -44260,13 +41702,9 @@ module UnicodeMathParseValues
                       factor: {
                         ordinary_symbols: "&#x2148;"
                       },
-                      expr: {
+                      exp: {
                         factor: {
-                          atom: {
-                            char: {
-                              unicode_symbols: "&#x3b8;"
-                            }
-                          }
+                          ordinary_symbols: "&#x3b8;"
                         }
                       },
                       close_paren: ")"
@@ -44300,11 +41738,7 @@ module UnicodeMathParseValues
       },
       first_value: {
         factor: {
-          atom: {
-            char: {
-              unicode_symbols: "&#x3b1;"
-            }
-          }
+          ordinary_symbols: "&#x3b1;"
         }
       }
     }
@@ -44319,14 +41753,12 @@ module UnicodeMathParseValues
   EXAMPLE_314 = {
     frac: {
       numerator: {
-        factor: {
+        atom: {
+          alphanumeric: "d"
+        },
+        atoms: {
           atom: {
-            alphanumeric: "d"
-          },
-          atoms: {
-            atom: {
-              alphanumeric: "y"
-            }
+            alphanumeric: "y"
           }
         }
       },
@@ -44345,18 +41777,14 @@ module UnicodeMathParseValues
     }
   }.freeze
   EXAMPLE_315 = {
-    accents: [
-      {
-        first_value: {
-          atom: {
-            alphanumeric: "e"
-          }
+    accents: {
+      first_value: {
+        atom: {
+          alphanumeric: "e"
         }
       },
-      {
-        accent_symbols: "&#x27;"
-      }
-    ]
+      prime_accent_symbols: "&#x27;"
+    }
   }.freeze
   EXAMPLE_316 = {
     unary_subsup: {
@@ -44367,10 +41795,8 @@ module UnicodeMathParseValues
             open_paren: "(",
             frac: {
               numerator: {
-                factor: {
-                  atom: {
-                    alphanumeric: "x"
-                  }
+                atom: {
+                  alphanumeric: "x"
                 }
               },
               denominator: {
@@ -44386,9 +41812,9 @@ module UnicodeMathParseValues
                           alphanumeric: "x"
                         }
                       },
-                      expr: {
+                      exp: {
                         operator: ",",
-                        expr: {
+                        exp: {
                           factor: {
                             atom: {
                               alphanumeric: "G"
@@ -44429,18 +41855,14 @@ module UnicodeMathParseValues
     }
   }.freeze
   EXAMPLE_318 = {
-    accents: [
-      {
-        first_value: {
-          atom: {
-            alphanumeric: "f"
-          }
+    accents: {
+      first_value: {
+        atom: {
+          alphanumeric: "f"
         }
       },
-      {
-        accent_symbols: "&#x27;"
-      }
-    ],
+      prime_accent_symbols: "&#x27;"
+    },
     expr: {
       factor: {
         intermediate_exp: {
@@ -44467,46 +41889,42 @@ module UnicodeMathParseValues
                 open_paren: "(",
                 frac: {
                   numerator: {
-                    factor: {
-                      intermediate_exp: {
-                        open_paren: "(",
-                        factor: {
-                          digit: {
-                            number: "1"
-                          }
-                        },
-                        expr: {
-                          operator: "-",
-                          expr: {
-                            unary_subsup: {
-                              unary_functions: "cos",
-                              first_value: {
-                                factor: {
-                                  intermediate_exp: {
-                                    open_paren: "&#x3016;",
-                                    frac: {
-                                      numerator: {
-                                        factor: {
-                                          ordinary_symbols: "theta"
-                                        }
-                                      },
-                                      denominator: {
-                                        factor: {
-                                          digit: {
-                                            number: "2"
-                                          }
+                    intermediate_exp: {
+                      open_paren: "(",
+                      factor: {
+                        digit: {
+                          number: "1"
+                        }
+                      },
+                      exp: {
+                        operator: "-",
+                        exp: {
+                          unary_subsup: {
+                            unary_functions: "cos",
+                            first_value: {
+                              factor: {
+                                intermediate_exp: {
+                                  open_paren: "&#x3016;",
+                                  frac: {
+                                    numerator: {
+                                      ordinary_symbols: "theta"
+                                    },
+                                    denominator: {
+                                      factor: {
+                                        digit: {
+                                          number: "2"
                                         }
                                       }
-                                    },
-                                    close_paren: "&#x3017;"
-                                  }
+                                    }
+                                  },
+                                  close_paren: "&#x3017;"
                                 }
                               }
                             }
                           }
-                        },
-                        close_paren: ")"
-                      }
+                        }
+                      },
+                      close_paren: ")"
                     }
                   },
                   denominator: {
@@ -44518,9 +41936,9 @@ module UnicodeMathParseValues
                             number: "1"
                           }
                         },
-                        expr: {
+                        exp: {
                           operator: "+",
-                          expr: {
+                          exp: {
                             unary_subsup: {
                               unary_functions: "cos",
                               first_value: {
@@ -44529,9 +41947,7 @@ module UnicodeMathParseValues
                                     open_paren: "&#x3016;",
                                     frac: {
                                       numerator: {
-                                        factor: {
-                                          ordinary_symbols: "theta"
-                                        }
+                                        ordinary_symbols: "theta"
                                       },
                                       denominator: {
                                         factor: {
@@ -44553,7 +41969,7 @@ module UnicodeMathParseValues
                     }
                   }
                 },
-                expr: {
+                exp: {
                   unary_subsup: {
                     unary_functions: "sin",
                     first_value: {
@@ -44562,9 +41978,7 @@ module UnicodeMathParseValues
                           open_paren: "&#x3016;",
                           frac: {
                             numerator: {
-                              factor: {
-                                ordinary_symbols: "theta"
-                              }
+                              ordinary_symbols: "theta"
                             },
                             denominator: {
                               factor: {
@@ -44603,9 +42017,9 @@ module UnicodeMathParseValues
                       alphanumeric: "t"
                     }
                   },
-                  expr: {
+                  exp: {
                     operator: "-",
-                    expr: {
+                    exp: {
                       factor: {
                         digit: {
                           number: "1"
@@ -44638,9 +42052,9 @@ module UnicodeMathParseValues
                           }
                         }
                       },
-                      expr: {
+                      exp: {
                         operator: "-",
-                        expr: {
+                        exp: {
                           factor: {
                             digit: {
                               number: "1"
@@ -44657,8 +42071,12 @@ module UnicodeMathParseValues
                         open_paren: "(",
                         sup_exp: {
                           base: {
-                            number: "6",
-                            symbol: "t"
+                            digit: {
+                              number: "6"
+                            },
+                            expr: {
+                              symbol: "t"
+                            }
                           },
                           sup: {
                             sup_script: {
@@ -44672,9 +42090,9 @@ module UnicodeMathParseValues
                             }
                           }
                         },
-                        expr: {
+                        exp: {
                           operator: "-",
-                          expr: {
+                          exp: {
                             factor: {
                               digit: {
                                 number: "6"
@@ -44687,9 +42105,9 @@ module UnicodeMathParseValues
                                 }
                               }
                             },
-                            expr: {
+                            exp: {
                               operator: "+",
-                              expr: {
+                              exp: {
                                 factor: {
                                   digit: {
                                     number: "1"
@@ -44712,18 +42130,14 @@ module UnicodeMathParseValues
     }
   }.freeze
   EXAMPLE_319 = {
-    accents: [
-      {
-        first_value: {
-          atom: {
-            alphanumeric: "f"
-          }
+    accents: {
+      first_value: {
+        atom: {
+          alphanumeric: "f"
         }
       },
-      {
-        accent_symbols: "&#x27;"
-      }
-    ],
+      prime_accent_symbols: "&#x27;"
+    },
     expr: {
       factor: {
         intermediate_exp: {
@@ -44750,46 +42164,42 @@ module UnicodeMathParseValues
                 open_paren: "(",
                 frac: {
                   numerator: {
-                    factor: {
-                      intermediate_exp: {
-                        open_paren: "(",
-                        factor: {
-                          digit: {
-                            number: "1"
-                          }
-                        },
-                        expr: {
-                          operator: "-",
-                          expr: {
-                            unary_subsup: {
-                              unary_functions: "cos",
-                              first_value: {
-                                factor: {
-                                  intermediate_exp: {
-                                    open_paren: "&#x3016;",
-                                    frac: {
-                                      numerator: {
-                                        factor: {
-                                          ordinary_symbols: "theta"
-                                        }
-                                      },
-                                      denominator: {
-                                        factor: {
-                                          digit: {
-                                            number: "2"
-                                          }
+                    intermediate_exp: {
+                      open_paren: "(",
+                      factor: {
+                        digit: {
+                          number: "1"
+                        }
+                      },
+                      exp: {
+                        operator: "-",
+                        exp: {
+                          unary_subsup: {
+                            unary_functions: "cos",
+                            first_value: {
+                              factor: {
+                                intermediate_exp: {
+                                  open_paren: "&#x3016;",
+                                  frac: {
+                                    numerator: {
+                                      ordinary_symbols: "theta"
+                                    },
+                                    denominator: {
+                                      factor: {
+                                        digit: {
+                                          number: "2"
                                         }
                                       }
-                                    },
-                                    close_paren: "&#x3017;"
-                                  }
+                                    }
+                                  },
+                                  close_paren: "&#x3017;"
                                 }
                               }
                             }
                           }
-                        },
-                        close_paren: ")"
-                      }
+                        }
+                      },
+                      close_paren: ")"
                     }
                   },
                   denominator: {
@@ -44801,9 +42211,9 @@ module UnicodeMathParseValues
                             number: "1"
                           }
                         },
-                        expr: {
+                        exp: {
                           operator: "+",
-                          expr: {
+                          exp: {
                             unary_subsup: {
                               unary_functions: "cos",
                               first_value: {
@@ -44812,9 +42222,7 @@ module UnicodeMathParseValues
                                     open_paren: "&#x3016;",
                                     frac: {
                                       numerator: {
-                                        factor: {
-                                          ordinary_symbols: "theta"
-                                        }
+                                        ordinary_symbols: "theta"
                                       },
                                       denominator: {
                                         factor: {
@@ -44836,7 +42244,7 @@ module UnicodeMathParseValues
                     }
                   }
                 },
-                expr: {
+                exp: {
                   unary_subsup: {
                     unary_functions: "sin",
                     first_value: {
@@ -44845,9 +42253,7 @@ module UnicodeMathParseValues
                           open_paren: "&#x3016;",
                           frac: {
                             numerator: {
-                              factor: {
-                                ordinary_symbols: "theta"
-                              }
+                              ordinary_symbols: "theta"
                             },
                             denominator: {
                               factor: {
@@ -44886,9 +42292,9 @@ module UnicodeMathParseValues
                       alphanumeric: "t"
                     }
                   },
-                  expr: {
+                  exp: {
                     operator: "-",
-                    expr: {
+                    exp: {
                       factor: {
                         digit: {
                           number: "1"
@@ -44921,9 +42327,9 @@ module UnicodeMathParseValues
                           }
                         }
                       },
-                      expr: {
+                      exp: {
                         operator: "-",
-                        expr: {
+                        exp: {
                           factor: {
                             digit: {
                               number: "1"
@@ -44940,16 +42346,20 @@ module UnicodeMathParseValues
                         open_paren: "(",
                         mini_sup: {
                           base: {
-                            number: "6",
-                            symbol: "t"
+                            digit: {
+                              number: "6"
+                            },
+                            expr: {
+                              symbol: "t"
+                            }
                           },
                           sup: {
                             sup_digits: "&#xb2;"
                           }
                         },
-                        expr: {
+                        exp: {
                           operator: "-",
-                          expr: {
+                          exp: {
                             factor: {
                               digit: {
                                 number: "6"
@@ -44962,9 +42372,9 @@ module UnicodeMathParseValues
                                 }
                               }
                             },
-                            expr: {
+                            exp: {
                               operator: "+",
-                              expr: {
+                              exp: {
                                 factor: {
                                   digit: {
                                     number: "1"
@@ -44987,18 +42397,14 @@ module UnicodeMathParseValues
     }
   }.freeze
   EXAMPLE_320 = {
-    accents: [
-      {
-        first_value: {
-          atom: {
-            alphanumeric: "f"
-          }
+    accents: {
+      first_value: {
+        atom: {
+          alphanumeric: "f"
         }
       },
-      {
-        accent_symbols: "&#x27;"
-      }
-    ],
+      prime_accent_symbols: "&#x27;"
+    },
     expr: {
       factor: {
         intermediate_exp: {
@@ -45035,11 +42441,7 @@ module UnicodeMathParseValues
           intermediate_exp: {
             open_paren: "(",
             factor: {
-              atom: {
-                char: {
-                  unicode_symbols: "&#x3be;"
-                }
-              }
+              ordinary_symbols: "&#x3be;"
             },
             close_paren: ")"
           }
@@ -45096,11 +42498,7 @@ module UnicodeMathParseValues
                             },
                             operand: {
                               factor: {
-                                atom: {
-                                  char: {
-                                    unicode_symbols: "&#x3c0;"
-                                  }
-                                }
+                                ordinary_symbols: "&#x3c0;"
                               },
                               operand: {
                                 factor: {
@@ -45110,13 +42508,11 @@ module UnicodeMathParseValues
                                   factor: {
                                     atom: {
                                       alphanumeric: "x"
-                                    },
-                                    atoms: {
-                                      atom: {
-                                        char: {
-                                          unicode_symbols: "&#x3be;"
-                                        }
-                                      }
+                                    }
+                                  },
+                                  operand: {
+                                    factor: {
+                                      ordinary_symbols: "&#x3be;"
                                     }
                                   }
                                 }
@@ -45131,15 +42527,9 @@ module UnicodeMathParseValues
                     }
                   },
                   naryand_recursion: {
-                    factor: {
-                      ordinary_symbols: "&#x2146;"
-                    },
-                    operand: {
-                      factor: {
-                        atom: {
-                          alphanumeric: "x"
-                        }
-                      }
+                    binary_symbols: "&#x2146;",
+                    naryand_recursion: {
+                      symbol: "x"
                     }
                   }
                 }
@@ -45169,11 +42559,7 @@ module UnicodeMathParseValues
         intermediate_exp: {
           open_paren: "(",
           factor: {
-            atom: {
-              char: {
-                unicode_symbols: "&#x3be;"
-              }
-            }
+            ordinary_symbols: "&#x3be;"
           },
           close_paren: ")"
         }
@@ -45230,7 +42616,7 @@ module UnicodeMathParseValues
                             intermediate_exp: {
                               open_paren: "(",
                               operator: "-",
-                              expr: {
+                              exp: {
                                 factor: {
                                   digit: {
                                     number: "2"
@@ -45238,11 +42624,7 @@ module UnicodeMathParseValues
                                 },
                                 operand: {
                                   factor: {
-                                    atom: {
-                                      char: {
-                                        unicode_symbols: "&#x3c0;"
-                                      }
-                                    }
+                                    ordinary_symbols: "&#x3c0;"
                                   },
                                   operand: {
                                     factor: {
@@ -45252,13 +42634,11 @@ module UnicodeMathParseValues
                                       factor: {
                                         atom: {
                                           alphanumeric: "x"
-                                        },
-                                        atoms: {
-                                          atom: {
-                                            char: {
-                                              unicode_symbols: "&#x3be;"
-                                            }
-                                          }
+                                        }
+                                      },
+                                      operand: {
+                                        factor: {
+                                          ordinary_symbols: "&#x3be;"
                                         }
                                       }
                                     }
@@ -45267,11 +42647,11 @@ module UnicodeMathParseValues
                               },
                               close_paren: ")"
                             }
-                          },
-                          operand: {
-                            factor: {
-                              ordinary_symbols: "&#x2146;"
-                            },
+                          }
+                        },
+                        expr: {
+                          binary_symbols: "&#x2146;",
+                          expr: {
                             operand: {
                               factor: {
                                 atom: {
@@ -45310,11 +42690,7 @@ module UnicodeMathParseValues
         intermediate_exp: {
           open_paren: "(",
           factor: {
-            atom: {
-              char: {
-                unicode_symbols: "&#x3be;"
-              }
-            }
+            ordinary_symbols: "&#x3be;"
           },
           close_paren: ")"
         }
@@ -45375,11 +42751,7 @@ module UnicodeMathParseValues
                           },
                           operand: {
                             factor: {
-                              atom: {
-                                char: {
-                                  unicode_symbols: "&#x3c0;"
-                                }
-                              }
+                              ordinary_symbols: "&#x3c0;"
                             },
                             operand: {
                               factor: {
@@ -45389,13 +42761,11 @@ module UnicodeMathParseValues
                                 factor: {
                                   atom: {
                                     alphanumeric: "x"
-                                  },
-                                  atoms: {
-                                    atom: {
-                                      char: {
-                                        unicode_symbols: "&#x3be;"
-                                      }
-                                    }
+                                  }
+                                },
+                                operand: {
+                                  factor: {
+                                    ordinary_symbols: "&#x3be;"
                                   }
                                 }
                               }
@@ -45406,15 +42776,9 @@ module UnicodeMathParseValues
                     }
                   },
                   naryand_recursion: {
-                    factor: {
-                      ordinary_symbols: "&#x2146;"
-                    },
-                    operand: {
-                      factor: {
-                        atom: {
-                          alphanumeric: "x"
-                        }
-                      }
+                    binary_symbols: "&#x2146;",
+                    naryand_recursion: {
+                      symbol: "x"
                     }
                   }
                 }
@@ -45444,11 +42808,7 @@ module UnicodeMathParseValues
           intermediate_exp: {
             open_paren: "(",
             factor: {
-              atom: {
-                char: {
-                  unicode_symbols: "&#x3be;"
-                }
-              }
+              ordinary_symbols: "&#x3be;"
             },
             close_paren: ")"
           }
@@ -45509,11 +42869,7 @@ module UnicodeMathParseValues
                             },
                             operand: {
                               factor: {
-                                atom: {
-                                  char: {
-                                    unicode_symbols: "&#x3c0;"
-                                  }
-                                }
+                                ordinary_symbols: "&#x3c0;"
                               },
                               operand: {
                                 factor: {
@@ -45523,13 +42879,11 @@ module UnicodeMathParseValues
                                   factor: {
                                     atom: {
                                       alphanumeric: "x"
-                                    },
-                                    atoms: {
-                                      atom: {
-                                        char: {
-                                          unicode_symbols: "&#x3be;"
-                                        }
-                                      }
+                                    }
+                                  },
+                                  operand: {
+                                    factor: {
+                                      ordinary_symbols: "&#x3be;"
                                     }
                                   }
                                 }
@@ -45540,15 +42894,9 @@ module UnicodeMathParseValues
                       }
                     },
                     naryand_recursion: {
-                      factor: {
-                        ordinary_symbols: "&#x2146;"
-                      },
-                      operand: {
-                        factor: {
-                          atom: {
-                            alphanumeric: "x"
-                          }
-                        }
+                      binary_symbols: "&#x2146;",
+                      naryand_recursion: {
+                        symbol: "x"
                       }
                     }
                   }
@@ -45663,9 +43011,7 @@ module UnicodeMathParseValues
               },
               sup: {
                 sup_script: {
-                  sup_paren: {
-                    sup_digits: "&#xb2;"
-                  }
+                  sup_digits: "&#xb2;"
                 }
               },
               sub: {
@@ -45759,9 +43105,7 @@ module UnicodeMathParseValues
           },
           sup: {
             sup_script: {
-              sup_paren: {
-                sup_digits: "&#xb2;"
-              }
+              sup_digits: "&#xb2;"
             }
           },
           sub: {
@@ -45946,12 +43290,11 @@ module UnicodeMathParseValues
       expr: {
         frac: {
           numerator: {
-            factor: {
-              atom: {
-                alphanumeric: "a"
-              }
+            atom: {
+              alphanumeric: "a"
             }
           },
+          bevelled: "&#x2044;",
           denominator: {
             sub_exp: {
               base: {
@@ -46018,13 +43361,11 @@ module UnicodeMathParseValues
   EXAMPLE_334 = {
     frac: {
       numerator: {
-        factor: {
-          atom: {
-            alphanumeric: "n"
-          }
+        atom: {
+          alphanumeric: "n"
         }
       },
-      atop: "&#x249e;",
+      choose: "&#x249e;",
       denominator: {
         factor: {
           atom: {
@@ -46038,17 +43379,15 @@ module UnicodeMathParseValues
       expr: {
         frac: {
           numerator: {
-            factor: {
-              intermediate_exp: {
-                open_paren: "(",
-                factor: {
-                  atom: {
-                    alphanumeric: "n"
-                  },
-                  exclamation_symbol: "!"
+            intermediate_exp: {
+              open_paren: "(",
+              factor: {
+                atom: {
+                  alphanumeric: "n"
                 },
-                close_paren: ")"
-              }
+                exclamation_symbol: "!"
+              },
+              close_paren: ")"
             }
           },
           denominator: {
@@ -46070,9 +43409,9 @@ module UnicodeMathParseValues
                           alphanumeric: "n"
                         }
                       },
-                      expr: {
+                      exp: {
                         operator: "-",
-                        expr: {
+                        exp: {
                           factor: {
                             atom: {
                               alphanumeric: "k"
@@ -46114,23 +43453,23 @@ module UnicodeMathParseValues
         },
         operand: {
           factor: {
-            unary_functions: "sin"
+            unary_functions: "sin",
+            first_value: {
+              factor: {
+                digit: {
+                  number: "0"
+                }
+              }
+            }
           }
         },
         expr: {
-          factor: {
-            digit: {
-              number: "0"
-            }
-          },
-          expr: {
-            unary_subsup: {
-              unary_functions: "cos",
-              first_value: {
-                factor: {
-                  digit: {
-                    number: "0"
-                  }
+          unary_subsup: {
+            unary_functions: "cos",
+            first_value: {
+              factor: {
+                digit: {
+                  number: "0"
                 }
               }
             }
@@ -46156,11 +43495,7 @@ module UnicodeMathParseValues
       unary_functions: "sin",
       first_value: {
         factor: {
-          atom: {
-            char: {
-              unicode_symbols: "&#x3b1;"
-            }
-          }
+          ordinary_symbols: "&#x3b1;"
         }
       }
     }
@@ -46170,11 +43505,7 @@ module UnicodeMathParseValues
       unary_functions: "sin",
       first_value: {
         factor: {
-          atom: {
-            char: {
-              unicode_symbols: "&#x3b8;"
-            }
-          }
+          ordinary_symbols: "&#x3b8;"
         }
       }
     },
@@ -46183,63 +43514,57 @@ module UnicodeMathParseValues
       expr: {
         frac: {
           numerator: {
-            factor: {
-              intermediate_exp: {
-                open_paren: "(",
-                sup_exp: {
-                  base: {
-                    symbol: "e"
-                  },
-                  sup: {
-                    sup_script: {
+            intermediate_exp: {
+              open_paren: "(",
+              sup_exp: {
+                base: {
+                  symbol: "e"
+                },
+                sup: {
+                  sup_script: {
+                    operand: {
+                      factor: {
+                        atom: {
+                          alphanumeric: "i"
+                        }
+                      },
                       operand: {
                         factor: {
-                          atom: {
-                            alphanumeric: "i"
-                          },
-                          atoms: {
-                            atom: {
-                              char: {
-                                unicode_symbols: "&#x3b8;"
-                              }
-                            }
-                          }
+                          ordinary_symbols: "&#x3b8;"
                         }
                       }
                     }
                   }
-                },
-                expr: {
-                  operator: "-",
-                  expr: {
-                    sup_exp: {
-                      base: {
-                        symbol: "e"
-                      },
-                      sup: {
-                        operator: "-",
-                        sup_script: {
+                }
+              },
+              exp: {
+                operator: "-",
+                exp: {
+                  sup_exp: {
+                    base: {
+                      symbol: "e"
+                    },
+                    sup: {
+                      operator: "-",
+                      sup_script: {
+                        operand: {
+                          factor: {
+                            atom: {
+                              alphanumeric: "i"
+                            }
+                          },
                           operand: {
                             factor: {
-                              atom: {
-                                alphanumeric: "i"
-                              },
-                              atoms: {
-                                atom: {
-                                  char: {
-                                    unicode_symbols: "&#x3b8;"
-                                  }
-                                }
-                              }
+                              ordinary_symbols: "&#x3b8;"
                             }
                           }
                         }
                       }
                     }
                   }
-                },
-                close_paren: ")"
-              }
+                }
+              },
+              close_paren: ")"
             }
           },
           denominator: {
@@ -46276,12 +43601,11 @@ module UnicodeMathParseValues
       expr: {
         frac: {
           numerator: {
-            factor: {
-              digit: {
-                number: "1"
-              }
+            digit: {
+              number: "1"
             }
           },
+          bevelled: "&#x2044;",
           denominator: {
             digit: {
               number: "2"
@@ -46479,29 +43803,27 @@ module UnicodeMathParseValues
     expr: {
       operator: "=",
       expr: {
-        unary_subsup: {
-          unary_functions: "sin",
-          first_value: {
-            frac: {
-              numerator: {
+        frac: {
+          numerator: {
+            unary_functions: "sin",
+            first_value: {
+              factor: {
+                atom: {
+                  char: {
+                    unicode_symbols: "&#x1d465;"
+                  }
+                }
+              }
+            }
+          },
+          denominator: {
+            unary_subsup: {
+              unary_functions: "cos",
+              first_value: {
                 factor: {
                   atom: {
                     char: {
                       unicode_symbols: "&#x1d465;"
-                    }
-                  }
-                }
-              },
-              denominator: {
-                unary_subsup: {
-                  unary_functions: "cos",
-                  first_value: {
-                    factor: {
-                      atom: {
-                        char: {
-                          unicode_symbols: "&#x1d465;"
-                        }
-                      }
                     }
                   }
                 }
@@ -46583,21 +43905,19 @@ module UnicodeMathParseValues
       }
     },
     expr: {
-      factor: {
-        char: {
-          unicode_symbols: "&#x2227;"
-        }
-      },
-      sub_exp: {
-        base: {
-          symbol: "v"
-        },
-        sub: {
-          sub_script: {
-            operand: {
-              factor: {
-                digit: {
-                  number: "2"
+      binary_symbols: "&#x2227;",
+      expr: {
+        sub_exp: {
+          base: {
+            symbol: "v"
+          },
+          sub: {
+            sub_script: {
+              operand: {
+                factor: {
+                  digit: {
+                    number: "2"
+                  }
                 }
               }
             }
@@ -46763,28 +44083,22 @@ module UnicodeMathParseValues
                     open_paren: "(",
                     frac: {
                       numerator: {
-                        factor: {
-                          digit: {
-                            number: "1"
-                          }
+                        digit: {
+                          number: "1"
                         }
                       },
                       denominator: {
                         frac: {
                           numerator: {
-                            factor: {
-                              digit: {
-                                number: "2"
-                              }
+                            digit: {
+                              number: "2"
                             }
                           },
                           denominator: {
                             frac: {
                               numerator: {
-                                factor: {
-                                  digit: {
-                                    number: "333"
-                                  }
+                                digit: {
+                                  number: "333"
                                 }
                               },
                               denominator: {
@@ -46799,17 +44113,17 @@ module UnicodeMathParseValues
                         }
                       }
                     },
-                    expr: {
+                    exp: {
                       operator: "+",
-                      expr: {
+                      exp: {
                         factor: {
                           digit: {
                             number: "1"
                           }
                         },
-                        expr: {
+                        exp: {
                           operator: "+",
-                          expr: {
+                          exp: {
                             factor: {
                               digit: {
                                 number: "1"
@@ -46829,7 +44143,13 @@ module UnicodeMathParseValues
                       numerator: {
                         mini_sub_sup: {
                           base: {
-                            symbol: "abc"
+                            symbol: "a",
+                            expr: {
+                              symbol: "b",
+                              expr: {
+                                symbol: "c"
+                              }
+                            }
                           },
                           sub: {
                             sub_digits: "&#x2082;"
@@ -47056,13 +44376,11 @@ module UnicodeMathParseValues
                     factor: {
                       atom: {
                         alphanumeric: "a"
-                      },
-                      atoms: {
-                        atom: {
-                          char: {
-                            unicode_symbols: "&#x3b1;"
-                          }
-                        }
+                      }
+                    },
+                    operand: {
+                      factor: {
+                        ordinary_symbols: "&#x3b1;"
                       }
                     }
                   }
@@ -47517,10 +44835,8 @@ module UnicodeMathParseValues
           expr: {
             frac: {
               numerator: {
-                factor: {
-                  digit: {
-                    number: "17"
-                  }
+                digit: {
+                  number: "17"
                 }
               },
               denominator: {
@@ -47664,20 +44980,20 @@ module UnicodeMathParseValues
       expr: {
         frac: {
           numerator: {
-            factor: {
-              intermediate_exp: {
-                open_paren: "(",
-                operator: "-",
-                expr: {
+            intermediate_exp: {
+              open_paren: "(",
+              operator: "-",
+              exp: {
+                factor: {
+                  atom: {
+                    alphanumeric: "b"
+                  }
+                },
+                operand: {
                   factor: {
-                    atom: {
-                      alphanumeric: "b"
-                    }
-                  },
-                  operand: {
                     combined_symbols: "+-"
                   },
-                  expr: {
+                  operand: {
                     factor: {
                       root: {
                         root_symbol: "\\sqrt",
@@ -47701,9 +45017,9 @@ module UnicodeMathParseValues
                                   }
                                 }
                               },
-                              expr: {
+                              exp: {
                                 operator: "-",
-                                expr: {
+                                exp: {
                                   factor: {
                                     digit: {
                                       number: "4"
@@ -47730,9 +45046,9 @@ module UnicodeMathParseValues
                       }
                     }
                   }
-                },
-                close_paren: ")"
-              }
+                }
+              },
+              close_paren: ")"
             }
           },
           denominator: {
@@ -48387,25 +45703,21 @@ module UnicodeMathParseValues
                 open_paren: "&#x27e8;",
                 frac: {
                   numerator: {
-                    factor: {
-                      digit: {
-                        number: "1"
-                      }
+                    digit: {
+                      number: "1"
                     }
                   },
                   denominator: {
                     frac: {
                       numerator: {
-                        factor: {
-                          intermediate_exp: {
-                            open_paren: "[",
-                            factor: {
-                              digit: {
-                                number: "2"
-                              }
-                            },
-                            close_paren: ")"
-                          }
+                        intermediate_exp: {
+                          open_paren: "[",
+                          factor: {
+                            digit: {
+                              number: "2"
+                            }
+                          },
+                          close_paren: ")"
                         }
                       },
                       denominator: {
@@ -48446,19 +45758,19 @@ module UnicodeMathParseValues
             }
           }
         },
-        expr: {
+        exp: {
           operator: ":",
-          expr: {
+          exp: {
             factor: {
               atom: {
                 alphanumeric: "i"
               }
             },
-            expr: {
+            exp: {
               factor: {
                 relational_symbols: "in"
               },
-              expr: {
+              exp: {
                 factor: {
                   intermediate_exp: {
                     open_paren: "{",
@@ -48523,10 +45835,8 @@ module UnicodeMathParseValues
             alphanumeric: "x"
           }
         },
-        expr: {
-          factor: {
-            relational_symbols: "&#x2223;"
-          },
+        exp: {
+          mid_symbol: "&#x2223;",
           expr: {
             factor: {
               atom: {
@@ -48546,9 +45856,9 @@ module UnicodeMathParseValues
                 }
               }
             },
-            expr: {
+            exp: {
               operator: "=",
-              expr: {
+              exp: {
                 factor: {
                   digit: {
                     number: "0"
@@ -48582,17 +45892,17 @@ module UnicodeMathParseValues
             }
           }
         },
-        expr: {
+        exp: {
           operator: ",",
-          expr: {
+          exp: {
             factor: {
               symbol: {
                 ldots: "..."
               }
             },
-            expr: {
+            exp: {
               operator: ",",
-              expr: {
+              exp: {
                 sub_exp: {
                   base: {
                     symbol: "x"
@@ -48648,17 +45958,17 @@ module UnicodeMathParseValues
             }
           }
         },
-        expr: {
+        exp: {
           operator: ",",
-          expr: {
+          exp: {
             factor: {
               symbol: {
                 ldots: "..."
               }
             },
-            expr: {
+            exp: {
               operator: ",",
-              expr: {
+              exp: {
                 sub_exp: {
                   base: {
                     symbol: "x"
@@ -48805,9 +46115,9 @@ module UnicodeMathParseValues
                 close_paren: "|"
               }
             },
-            expr: {
+            exp: {
               operator: "-",
-              expr: {
+              exp: {
                 factor: {
                   intermediate_exp: {
                     open_paren: "|",
@@ -48880,42 +46190,38 @@ module UnicodeMathParseValues
         open_paren: "|",
         frac: {
           numerator: {
-            factor: {
-              atom: {
-                alphanumeric: "a"
-              }
+            atom: {
+              alphanumeric: "a"
             },
-            operand: {
-              factor: {
-                intermediate_exp: {
-                  open_paren: "(",
-                  factor: {
-                    atom: {
-                      alphanumeric: "x"
-                    }
-                  },
-                  expr: {
-                    operator: ",",
-                    expr: {
-                      factor: {
-                        atom: {
-                          alphanumeric: "y"
-                        }
+            recursive_numerator: {
+              intermediate_exp: {
+                open_paren: "(",
+                factor: {
+                  atom: {
+                    alphanumeric: "x"
+                  }
+                },
+                exp: {
+                  operator: ",",
+                  exp: {
+                    factor: {
+                      atom: {
+                        alphanumeric: "y"
                       }
                     }
-                  },
-                  close_paren: ")"
-                }
+                  }
+                },
+                close_paren: ")"
               }
             }
           },
           denominator: {
-            factor: {
-              atom: {
-                char: {
-                  unicode_symbols: "&#x394;"
-                },
-                alphanumeric: "x"
+            relational_symbols: "&#x394;",
+            recursive_denominator: {
+              factor: {
+                atom: {
+                  alphanumeric: "x"
+                }
               }
             }
           }
@@ -49192,40 +46498,34 @@ module UnicodeMathParseValues
   }.freeze
   EXAMPLE_389 = {
     factor: {
-      atom: {
-        char: {
-          unicode_symbols: "&#x394;"
-        },
-        alphanumeric: "x"
+      relational_symbols: "&#x394;"
+    },
+    operand: {
+      factor: {
+        atom: {
+          alphanumeric: "x"
+        }
       }
     }
   }.freeze
   EXAMPLE_390 = {
     factor: {
-      atom: {
-        char: {
-          unicode_symbols: "&#x3b1;"
-        }
-      }
+      ordinary_symbols: "&#x3b1;"
     }
   }.freeze
   EXAMPLE_391 = {
     factor: {
-      atom: {
-        char: {
-          unicode_symbols: "&#x3b1;"
-        }
-      }
+      ordinary_symbols: "&#x3b1;"
     }
   }.freeze
   EXAMPLE_392 = {
     factor: {
-      atom: {
-        char: {
-          unicode_symbols: "&#x3b1;"
-        }
-      },
-      exclamation_symbol: "!"
+      ordinary_symbols: "&#x3b1;"
+    },
+    operand: {
+      factor: {
+        exclamation_symbol: "!"
+      }
     },
     expr: {
       operator: "+",
@@ -49246,47 +46546,26 @@ module UnicodeMathParseValues
     }
   }.freeze
   EXAMPLE_393 = {
-    accents: [
-      {
-        first_value: {
-          atom: {
-            char: {
-              unicode_symbols: "&#x3b1;"
-            }
-          }
-        }
+    accents: {
+      first_value: {
+        ordinary_symbols: "&#x3b1;"
       },
-      {
-        accent_symbols: "&#x27;"
-      },
-      {
-        accent_symbols: "&#x2032;"
-      }
-    ]
+      prime_accent_symbols: "&#x27;&#x2032;"
+    }
   }.freeze
   EXAMPLE_394 = {
     accents_subsup: {
       base: {
-        accents: [
-          {
-            first_value: {
-              atom: {
-                char: {
-                  unicode_symbols: "&#x3b1;"
-                }
-              }
-            }
+        accents: {
+          first_value: {
+            ordinary_symbols: "&#x3b1;"
           },
-          {
-            accent_symbols: "&#x27;"
-          }
-        ]
+          prime_accent_symbols: "&#x27;"
+        }
       },
       sub: {
         sub_script: {
-          sub_paren: {
-            sub_digits: "&#x2082;"
-          }
+          sub_digits: "&#x2082;"
         }
       },
       sup: {
@@ -49306,11 +46585,7 @@ module UnicodeMathParseValues
   }.freeze
   EXAMPLE_395 = {
     factor: {
-      atom: {
-        char: {
-          unicode_symbols: "&#x3b1;"
-        }
-      }
+      ordinary_symbols: "&#x3b1;"
     },
     expr: {
       operator: "+",
@@ -49328,13 +46603,7 @@ module UnicodeMathParseValues
   EXAMPLE_396 = {
     frac: {
       numerator: {
-        factor: {
-          atom: {
-            char: {
-              unicode_symbols: "&#x3b1;"
-            }
-          }
-        }
+        ordinary_symbols: "&#x3b1;"
       },
       denominator: {
         factor: {
@@ -49350,29 +46619,23 @@ module UnicodeMathParseValues
   EXAMPLE_397 = {
     frac: {
       numerator: {
-        factor: {
-          atom: {
-            char: {
-              unicode_symbols: "&#x3b1;"
-            }
-          }
-        }
+        ordinary_symbols: "&#x3b1;"
       },
       denominator: {
         factor: {
           atom: {
             char: {
               unicode_symbols: "&#x3b2;"
-            },
-            diacritics: {
-              char: {
-                unicode_symbols: "&#x2215;"
-              },
-              diacritics: {
-                char: {
-                  unicode_symbols: "&#x3b3;"
-                }
-              }
+            }
+          }
+        },
+        operand: {
+          factor: {
+            relational_symbols: "&#x2215;"
+          },
+          operand: {
+            factor: {
+              ordinary_symbols: "&#x3b3;"
             }
           }
         }
@@ -49383,11 +46646,7 @@ module UnicodeMathParseValues
     sub_exp: {
       base: {
         factor: {
-          atom: {
-            char: {
-              unicode_symbols: "&#x3b1;"
-            }
-          }
+          ordinary_symbols: "&#x3b1;"
         }
       },
       sub: {
@@ -49407,11 +46666,7 @@ module UnicodeMathParseValues
     sub_exp: {
       base: {
         factor: {
-          atom: {
-            char: {
-              unicode_symbols: "&#x3b1;"
-            }
-          }
+          ordinary_symbols: "&#x3b1;"
         }
       },
       sub: {
@@ -49448,7 +46703,7 @@ module UnicodeMathParseValues
                       alphanumeric: "y"
                     }
                   },
-                  expr: {
+                  exp: {
                     factor: {
                       atom: {
                         alphanumeric: "z"
@@ -49480,11 +46735,7 @@ module UnicodeMathParseValues
               sub_exp: {
                 base: {
                   factor: {
-                    atom: {
-                      char: {
-                        unicode_symbols: "&#x3b1;"
-                      }
-                    }
+                    ordinary_symbols: "&#x3b1;"
                   }
                 },
                 sub: {
@@ -49521,7 +46772,7 @@ module UnicodeMathParseValues
                                 alphanumeric: "z"
                               }
                             },
-                            expr: {
+                            exp: {
                               factor: {
                                 atom: {
                                   alphanumeric: "x"
@@ -49553,11 +46804,7 @@ module UnicodeMathParseValues
                         sub_exp: {
                           base: {
                             factor: {
-                              atom: {
-                                char: {
-                                  unicode_symbols: "&#x3b1;"
-                                }
-                              }
+                              ordinary_symbols: "&#x3b1;"
                             }
                           },
                           sub: {
@@ -49594,7 +46841,7 @@ module UnicodeMathParseValues
                                           alphanumeric: "x"
                                         }
                                       },
-                                      expr: {
+                                      exp: {
                                         factor: {
                                           atom: {
                                             alphanumeric: "y"
@@ -49626,11 +46873,7 @@ module UnicodeMathParseValues
                                   sub_exp: {
                                     base: {
                                       factor: {
-                                        atom: {
-                                          char: {
-                                            unicode_symbols: "&#x3b1;"
-                                          }
-                                        }
+                                        ordinary_symbols: "&#x3b1;"
                                       }
                                     },
                                     sub: {
@@ -49667,13 +46910,13 @@ module UnicodeMathParseValues
                                                     alphanumeric: "x"
                                                   }
                                                 },
-                                                expr: {
+                                                exp: {
                                                   factor: {
                                                     atom: {
                                                       alphanumeric: "y"
                                                     }
                                                   },
-                                                  expr: {
+                                                  exp: {
                                                     factor: {
                                                       atom: {
                                                         alphanumeric: "z"
@@ -49730,11 +46973,7 @@ module UnicodeMathParseValues
     sub_exp: {
       base: {
         factor: {
-          atom: {
-            char: {
-              unicode_symbols: "&#x3b1;"
-            }
-          }
+          ordinary_symbols: "&#x3b1;"
         }
       },
       sub: {
@@ -49748,13 +46987,13 @@ module UnicodeMathParseValues
                     alphanumeric: "x"
                   }
                 },
-                expr: {
+                exp: {
                   factor: {
                     atom: {
                       alphanumeric: "y"
                     }
                   },
-                  expr: {
+                  exp: {
                     factor: {
                       atom: {
                         alphanumeric: "z"
@@ -49795,11 +47034,7 @@ module UnicodeMathParseValues
     sub_exp: {
       base: {
         factor: {
-          atom: {
-            char: {
-              unicode_symbols: "&#x3b1;"
-            }
-          }
+          ordinary_symbols: "&#x3b1;"
         }
       },
       sub: {
@@ -49813,13 +47048,13 @@ module UnicodeMathParseValues
                     alphanumeric: "x"
                   }
                 },
-                expr: {
+                exp: {
                   factor: {
                     atom: {
                       alphanumeric: "y"
                     }
                   },
-                  expr: {
+                  exp: {
                     factor: {
                       atom: {
                         alphanumeric: "z"
@@ -49871,7 +47106,7 @@ module UnicodeMathParseValues
                           alphanumeric: "y"
                         }
                       },
-                      expr: {
+                      exp: {
                         factor: {
                           atom: {
                             alphanumeric: "z"
@@ -49903,11 +47138,7 @@ module UnicodeMathParseValues
                   sub_exp: {
                     base: {
                       factor: {
-                        atom: {
-                          char: {
-                            unicode_symbols: "&#x3b1;"
-                          }
-                        }
+                        ordinary_symbols: "&#x3b1;"
                       }
                     },
                     sub: {
@@ -49921,13 +47152,13 @@ module UnicodeMathParseValues
                                   alphanumeric: "x"
                                 }
                               },
-                              expr: {
+                              exp: {
                                 factor: {
                                   atom: {
                                     alphanumeric: "y"
                                   }
                                 },
-                                expr: {
+                                exp: {
                                   factor: {
                                     atom: {
                                       alphanumeric: "z"
@@ -49979,7 +47210,7 @@ module UnicodeMathParseValues
                                         alphanumeric: "z"
                                       }
                                     },
-                                    expr: {
+                                    exp: {
                                       factor: {
                                         atom: {
                                           alphanumeric: "x"
@@ -50011,11 +47242,7 @@ module UnicodeMathParseValues
                                 sub_exp: {
                                   base: {
                                     factor: {
-                                      atom: {
-                                        char: {
-                                          unicode_symbols: "&#x3b1;"
-                                        }
-                                      }
+                                      ordinary_symbols: "&#x3b1;"
                                     }
                                   },
                                   sub: {
@@ -50029,13 +47256,13 @@ module UnicodeMathParseValues
                                                 alphanumeric: "x"
                                               }
                                             },
-                                            expr: {
+                                            exp: {
                                               factor: {
                                                 atom: {
                                                   alphanumeric: "y"
                                                 }
                                               },
-                                              expr: {
+                                              exp: {
                                                 factor: {
                                                   atom: {
                                                     alphanumeric: "z"
@@ -50087,7 +47314,7 @@ module UnicodeMathParseValues
                                                       alphanumeric: "x"
                                                     }
                                                   },
-                                                  expr: {
+                                                  exp: {
                                                     factor: {
                                                       atom: {
                                                         alphanumeric: "y"
@@ -50119,11 +47346,7 @@ module UnicodeMathParseValues
                                               sub_exp: {
                                                 base: {
                                                   factor: {
-                                                    atom: {
-                                                      char: {
-                                                        unicode_symbols: "&#x3b1;"
-                                                      }
-                                                    }
+                                                    ordinary_symbols: "&#x3b1;"
                                                   }
                                                 },
                                                 sub: {
@@ -50137,13 +47360,13 @@ module UnicodeMathParseValues
                                                               alphanumeric: "x"
                                                             }
                                                           },
-                                                          expr: {
+                                                          exp: {
                                                             factor: {
                                                               atom: {
                                                                 alphanumeric: "y"
                                                               }
                                                             },
-                                                            expr: {
+                                                            exp: {
                                                               factor: {
                                                                 atom: {
                                                                   alphanumeric: "z"
@@ -50195,13 +47418,13 @@ module UnicodeMathParseValues
                                                                     alphanumeric: "x"
                                                                   }
                                                                 },
-                                                                expr: {
+                                                                exp: {
                                                                   factor: {
                                                                     atom: {
                                                                       alphanumeric: "y"
                                                                     }
                                                                   },
-                                                                  expr: {
+                                                                  exp: {
                                                                     factor: {
                                                                       atom: {
                                                                         alphanumeric: "z"
@@ -50266,11 +47489,7 @@ module UnicodeMathParseValues
     sub_exp: {
       base: {
         factor: {
-          atom: {
-            char: {
-              unicode_symbols: "&#x3b1;"
-            }
-          }
+          ordinary_symbols: "&#x3b1;"
         }
       },
       sub: {
@@ -50284,13 +47503,13 @@ module UnicodeMathParseValues
                     alphanumeric: "x"
                   }
                 },
-                expr: {
+                exp: {
                   factor: {
                     atom: {
                       alphanumeric: "y"
                     }
                   },
-                  expr: {
+                  exp: {
                     factor: {
                       atom: {
                         alphanumeric: "z"
@@ -50327,7 +47546,7 @@ module UnicodeMathParseValues
                       alphanumeric: "y"
                     }
                   },
-                  expr: {
+                  exp: {
                     factor: {
                       atom: {
                         alphanumeric: "z"
@@ -50377,11 +47596,7 @@ module UnicodeMathParseValues
                     sub_exp: {
                       base: {
                         factor: {
-                          atom: {
-                            char: {
-                              unicode_symbols: "&#x3b1;"
-                            }
-                          }
+                          ordinary_symbols: "&#x3b1;"
                         }
                       },
                       sub: {
@@ -50395,13 +47610,13 @@ module UnicodeMathParseValues
                                     alphanumeric: "x"
                                   }
                                 },
-                                expr: {
+                                exp: {
                                   factor: {
                                     atom: {
                                       alphanumeric: "y"
                                     }
                                   },
-                                  expr: {
+                                  exp: {
                                     factor: {
                                       atom: {
                                         alphanumeric: "z"
@@ -50438,7 +47653,7 @@ module UnicodeMathParseValues
                                       alphanumeric: "z"
                                     }
                                   },
-                                  expr: {
+                                  exp: {
                                     factor: {
                                       atom: {
                                         alphanumeric: "x"
@@ -50488,11 +47703,7 @@ module UnicodeMathParseValues
                                     sub_exp: {
                                       base: {
                                         factor: {
-                                          atom: {
-                                            char: {
-                                              unicode_symbols: "&#x3b1;"
-                                            }
-                                          }
+                                          ordinary_symbols: "&#x3b1;"
                                         }
                                       },
                                       sub: {
@@ -50506,13 +47717,13 @@ module UnicodeMathParseValues
                                                     alphanumeric: "x"
                                                   }
                                                 },
-                                                expr: {
+                                                exp: {
                                                   factor: {
                                                     atom: {
                                                       alphanumeric: "y"
                                                     }
                                                   },
-                                                  expr: {
+                                                  exp: {
                                                     factor: {
                                                       atom: {
                                                         alphanumeric: "z"
@@ -50549,7 +47760,7 @@ module UnicodeMathParseValues
                                                       alphanumeric: "x"
                                                     }
                                                   },
-                                                  expr: {
+                                                  exp: {
                                                     factor: {
                                                       atom: {
                                                         alphanumeric: "y"
@@ -50599,11 +47810,7 @@ module UnicodeMathParseValues
                                                     sub_exp: {
                                                       base: {
                                                         factor: {
-                                                          atom: {
-                                                            char: {
-                                                              unicode_symbols: "&#x3b1;"
-                                                            }
-                                                          }
+                                                          ordinary_symbols: "&#x3b1;"
                                                         }
                                                       },
                                                       sub: {
@@ -50617,13 +47824,13 @@ module UnicodeMathParseValues
                                                                     alphanumeric: "x"
                                                                   }
                                                                 },
-                                                                expr: {
+                                                                exp: {
                                                                   factor: {
                                                                     atom: {
                                                                       alphanumeric: "y"
                                                                     }
                                                                   },
-                                                                  expr: {
+                                                                  exp: {
                                                                     factor: {
                                                                       atom: {
                                                                         alphanumeric: "z"
@@ -50660,13 +47867,13 @@ module UnicodeMathParseValues
                                                                       alphanumeric: "x"
                                                                     }
                                                                   },
-                                                                  expr: {
+                                                                  exp: {
                                                                     factor: {
                                                                       atom: {
                                                                         alphanumeric: "y"
                                                                       }
                                                                     },
-                                                                    expr: {
+                                                                    exp: {
                                                                       factor: {
                                                                         atom: {
                                                                           alphanumeric: "z"
@@ -50753,11 +47960,7 @@ module UnicodeMathParseValues
     sub_exp: {
       base: {
         factor: {
-          atom: {
-            char: {
-              unicode_symbols: "&#x3b1;"
-            }
-          }
+          ordinary_symbols: "&#x3b1;"
         }
       },
       sub: {
@@ -50771,7 +47974,7 @@ module UnicodeMathParseValues
                     alphanumeric: "x"
                   }
                 },
-                expr: {
+                exp: {
                   factor: {
                     atom: {
                       alphanumeric: "y"
@@ -50816,7 +48019,7 @@ module UnicodeMathParseValues
                         alphanumeric: "y"
                       }
                     },
-                    expr: {
+                    exp: {
                       factor: {
                         atom: {
                           alphanumeric: "z"
@@ -50848,11 +48051,7 @@ module UnicodeMathParseValues
                 sub_exp: {
                   base: {
                     factor: {
-                      atom: {
-                        char: {
-                          unicode_symbols: "&#x3b1;"
-                        }
-                      }
+                      ordinary_symbols: "&#x3b1;"
                     }
                   },
                   sub: {
@@ -50866,7 +48065,7 @@ module UnicodeMathParseValues
                                 alphanumeric: "x"
                               }
                             },
-                            expr: {
+                            exp: {
                               factor: {
                                 atom: {
                                   alphanumeric: "y"
@@ -50911,7 +48110,7 @@ module UnicodeMathParseValues
                                     alphanumeric: "z"
                                   }
                                 },
-                                expr: {
+                                exp: {
                                   factor: {
                                     atom: {
                                       alphanumeric: "x"
@@ -50943,11 +48142,7 @@ module UnicodeMathParseValues
                             sub_exp: {
                               base: {
                                 factor: {
-                                  atom: {
-                                    char: {
-                                      unicode_symbols: "&#x3b1;"
-                                    }
-                                  }
+                                  ordinary_symbols: "&#x3b1;"
                                 }
                               },
                               sub: {
@@ -50961,7 +48156,7 @@ module UnicodeMathParseValues
                                             alphanumeric: "x"
                                           }
                                         },
-                                        expr: {
+                                        exp: {
                                           factor: {
                                             atom: {
                                               alphanumeric: "y"
@@ -51006,7 +48201,7 @@ module UnicodeMathParseValues
                                                 alphanumeric: "x"
                                               }
                                             },
-                                            expr: {
+                                            exp: {
                                               factor: {
                                                 atom: {
                                                   alphanumeric: "y"
@@ -51038,11 +48233,7 @@ module UnicodeMathParseValues
                                         sub_exp: {
                                           base: {
                                             factor: {
-                                              atom: {
-                                                char: {
-                                                  unicode_symbols: "&#x3b1;"
-                                                }
-                                              }
+                                              ordinary_symbols: "&#x3b1;"
                                             }
                                           },
                                           sub: {
@@ -51056,7 +48247,7 @@ module UnicodeMathParseValues
                                                         alphanumeric: "x"
                                                       }
                                                     },
-                                                    expr: {
+                                                    exp: {
                                                       factor: {
                                                         atom: {
                                                           alphanumeric: "y"
@@ -51101,13 +48292,13 @@ module UnicodeMathParseValues
                                                             alphanumeric: "x"
                                                           }
                                                         },
-                                                        expr: {
+                                                        exp: {
                                                           factor: {
                                                             atom: {
                                                               alphanumeric: "y"
                                                             }
                                                           },
-                                                          expr: {
+                                                          exp: {
                                                             factor: {
                                                               atom: {
                                                                 alphanumeric: "z"
@@ -51168,11 +48359,7 @@ module UnicodeMathParseValues
     sub_exp: {
       base: {
         factor: {
-          atom: {
-            char: {
-              unicode_symbols: "&#x3b1;"
-            }
-          }
+          ordinary_symbols: "&#x3b1;"
         }
       },
       sub: {
@@ -51186,7 +48373,7 @@ module UnicodeMathParseValues
                     alphanumeric: "x"
                   }
                 },
-                expr: {
+                exp: {
                   factor: {
                     atom: {
                       alphanumeric: "y"
@@ -51222,7 +48409,7 @@ module UnicodeMathParseValues
                       alphanumeric: "y"
                     }
                   },
-                  expr: {
+                  exp: {
                     factor: {
                       atom: {
                         alphanumeric: "z"
@@ -51266,11 +48453,7 @@ module UnicodeMathParseValues
                   sub_exp: {
                     base: {
                       factor: {
-                        atom: {
-                          char: {
-                            unicode_symbols: "&#x3b1;"
-                          }
-                        }
+                        ordinary_symbols: "&#x3b1;"
                       }
                     },
                     sub: {
@@ -51284,7 +48467,7 @@ module UnicodeMathParseValues
                                   alphanumeric: "x"
                                 }
                               },
-                              expr: {
+                              exp: {
                                 factor: {
                                   atom: {
                                     alphanumeric: "y"
@@ -51320,7 +48503,7 @@ module UnicodeMathParseValues
                                     alphanumeric: "z"
                                   }
                                 },
-                                expr: {
+                                exp: {
                                   factor: {
                                     atom: {
                                       alphanumeric: "x"
@@ -51364,11 +48547,7 @@ module UnicodeMathParseValues
                                 sub_exp: {
                                   base: {
                                     factor: {
-                                      atom: {
-                                        char: {
-                                          unicode_symbols: "&#x3b1;"
-                                        }
-                                      }
+                                      ordinary_symbols: "&#x3b1;"
                                     }
                                   },
                                   sub: {
@@ -51382,7 +48561,7 @@ module UnicodeMathParseValues
                                                 alphanumeric: "x"
                                               }
                                             },
-                                            expr: {
+                                            exp: {
                                               factor: {
                                                 atom: {
                                                   alphanumeric: "y"
@@ -51418,7 +48597,7 @@ module UnicodeMathParseValues
                                                   alphanumeric: "x"
                                                 }
                                               },
-                                              expr: {
+                                              exp: {
                                                 factor: {
                                                   atom: {
                                                     alphanumeric: "y"
@@ -51462,11 +48641,7 @@ module UnicodeMathParseValues
                                               sub_exp: {
                                                 base: {
                                                   factor: {
-                                                    atom: {
-                                                      char: {
-                                                        unicode_symbols: "&#x3b1;"
-                                                      }
-                                                    }
+                                                    ordinary_symbols: "&#x3b1;"
                                                   }
                                                 },
                                                 sub: {
@@ -51480,7 +48655,7 @@ module UnicodeMathParseValues
                                                               alphanumeric: "x"
                                                             }
                                                           },
-                                                          expr: {
+                                                          exp: {
                                                             factor: {
                                                               atom: {
                                                                 alphanumeric: "y"
@@ -51516,13 +48691,13 @@ module UnicodeMathParseValues
                                                                 alphanumeric: "x"
                                                               }
                                                             },
-                                                            expr: {
+                                                            exp: {
                                                               factor: {
                                                                 atom: {
                                                                   alphanumeric: "y"
                                                                 }
                                                               },
-                                                              expr: {
+                                                              exp: {
                                                                 factor: {
                                                                   atom: {
                                                                     alphanumeric: "z"
@@ -51599,11 +48774,7 @@ module UnicodeMathParseValues
     sub_exp: {
       base: {
         factor: {
-          atom: {
-            char: {
-              unicode_symbols: "&#x3b1;"
-            }
-          }
+          ordinary_symbols: "&#x3b1;"
         }
       },
       sub: {
@@ -51617,7 +48788,7 @@ module UnicodeMathParseValues
                     alphanumeric: "y"
                   }
                 },
-                expr: {
+                exp: {
                   factor: {
                     atom: {
                       alphanumeric: "z"
@@ -51649,11 +48820,7 @@ module UnicodeMathParseValues
             sub_exp: {
               base: {
                 factor: {
-                  atom: {
-                    char: {
-                      unicode_symbols: "&#x3b1;"
-                    }
-                  }
+                  ordinary_symbols: "&#x3b1;"
                 }
               },
               sub: {
@@ -51667,7 +48834,7 @@ module UnicodeMathParseValues
                             alphanumeric: "z"
                           }
                         },
-                        expr: {
+                        exp: {
                           factor: {
                             atom: {
                               alphanumeric: "x"
@@ -51699,11 +48866,7 @@ module UnicodeMathParseValues
                     sub_exp: {
                       base: {
                         factor: {
-                          atom: {
-                            char: {
-                              unicode_symbols: "&#x3b1;"
-                            }
-                          }
+                          ordinary_symbols: "&#x3b1;"
                         }
                       },
                       sub: {
@@ -51717,7 +48880,7 @@ module UnicodeMathParseValues
                                     alphanumeric: "x"
                                   }
                                 },
-                                expr: {
+                                exp: {
                                   factor: {
                                     atom: {
                                       alphanumeric: "y"
@@ -51758,11 +48921,7 @@ module UnicodeMathParseValues
     sub_exp: {
       base: {
         factor: {
-          atom: {
-            char: {
-              unicode_symbols: "&#x3b1;"
-            }
-          }
+          ordinary_symbols: "&#x3b1;"
         }
       },
       sub: {
@@ -51776,7 +48935,7 @@ module UnicodeMathParseValues
                     alphanumeric: "y"
                   }
                 },
-                expr: {
+                exp: {
                   factor: {
                     atom: {
                       alphanumeric: "z"
@@ -51821,7 +48980,7 @@ module UnicodeMathParseValues
                         alphanumeric: "y"
                       }
                     },
-                    expr: {
+                    exp: {
                       factor: {
                         atom: {
                           alphanumeric: "z"
@@ -51853,11 +49012,7 @@ module UnicodeMathParseValues
                 sub_exp: {
                   base: {
                     factor: {
-                      atom: {
-                        char: {
-                          unicode_symbols: "&#x3b1;"
-                        }
-                      }
+                      ordinary_symbols: "&#x3b1;"
                     }
                   },
                   sub: {
@@ -51871,7 +49026,7 @@ module UnicodeMathParseValues
                                 alphanumeric: "y"
                               }
                             },
-                            expr: {
+                            exp: {
                               factor: {
                                 atom: {
                                   alphanumeric: "z"
@@ -51916,7 +49071,7 @@ module UnicodeMathParseValues
                                     alphanumeric: "z"
                                   }
                                 },
-                                expr: {
+                                exp: {
                                   factor: {
                                     atom: {
                                       alphanumeric: "x"
@@ -51948,11 +49103,7 @@ module UnicodeMathParseValues
                             sub_exp: {
                               base: {
                                 factor: {
-                                  atom: {
-                                    char: {
-                                      unicode_symbols: "&#x3b1;"
-                                    }
-                                  }
+                                  ordinary_symbols: "&#x3b1;"
                                 }
                               },
                               sub: {
@@ -51966,7 +49117,7 @@ module UnicodeMathParseValues
                                             alphanumeric: "y"
                                           }
                                         },
-                                        expr: {
+                                        exp: {
                                           factor: {
                                             atom: {
                                               alphanumeric: "z"
@@ -52011,7 +49162,7 @@ module UnicodeMathParseValues
                                                 alphanumeric: "x"
                                               }
                                             },
-                                            expr: {
+                                            exp: {
                                               factor: {
                                                 atom: {
                                                   alphanumeric: "y"
@@ -52043,11 +49194,7 @@ module UnicodeMathParseValues
                                         sub_exp: {
                                           base: {
                                             factor: {
-                                              atom: {
-                                                char: {
-                                                  unicode_symbols: "&#x3b1;"
-                                                }
-                                              }
+                                              ordinary_symbols: "&#x3b1;"
                                             }
                                           },
                                           sub: {
@@ -52061,7 +49208,7 @@ module UnicodeMathParseValues
                                                         alphanumeric: "y"
                                                       }
                                                     },
-                                                    expr: {
+                                                    exp: {
                                                       factor: {
                                                         atom: {
                                                           alphanumeric: "z"
@@ -52106,13 +49253,13 @@ module UnicodeMathParseValues
                                                             alphanumeric: "x"
                                                           }
                                                         },
-                                                        expr: {
+                                                        exp: {
                                                           factor: {
                                                             atom: {
                                                               alphanumeric: "y"
                                                             }
                                                           },
-                                                          expr: {
+                                                          exp: {
                                                             factor: {
                                                               atom: {
                                                                 alphanumeric: "z"
@@ -52173,11 +49320,7 @@ module UnicodeMathParseValues
     sub_exp: {
       base: {
         factor: {
-          atom: {
-            char: {
-              unicode_symbols: "&#x3b1;"
-            }
-          }
+          ordinary_symbols: "&#x3b1;"
         }
       },
       sub: {
@@ -52191,7 +49334,7 @@ module UnicodeMathParseValues
                     alphanumeric: "y"
                   }
                 },
-                expr: {
+                exp: {
                   factor: {
                     atom: {
                       alphanumeric: "z"
@@ -52222,11 +49365,7 @@ module UnicodeMathParseValues
           sub_exp: {
             base: {
               factor: {
-                atom: {
-                  char: {
-                    unicode_symbols: "&#x3b1;"
-                  }
-                }
+                ordinary_symbols: "&#x3b1;"
               }
             },
             sub: {
@@ -52240,7 +49379,7 @@ module UnicodeMathParseValues
                           alphanumeric: "z"
                         }
                       },
-                      expr: {
+                      exp: {
                         factor: {
                           atom: {
                             alphanumeric: "x"
@@ -52272,11 +49411,7 @@ module UnicodeMathParseValues
                   sub_exp: {
                     base: {
                       factor: {
-                        atom: {
-                          char: {
-                            unicode_symbols: "&#x3b1;"
-                          }
-                        }
+                        ordinary_symbols: "&#x3b1;"
                       }
                     },
                     sub: {
@@ -52290,7 +49425,7 @@ module UnicodeMathParseValues
                                   alphanumeric: "x"
                                 }
                               },
-                              expr: {
+                              exp: {
                                 factor: {
                                   atom: {
                                     alphanumeric: "y"
@@ -52322,11 +49457,7 @@ module UnicodeMathParseValues
                           sub_exp: {
                             base: {
                               factor: {
-                                atom: {
-                                  char: {
-                                    unicode_symbols: "&#x3b1;"
-                                  }
-                                }
+                                ordinary_symbols: "&#x3b1;"
                               }
                             },
                             sub: {
@@ -52340,13 +49471,13 @@ module UnicodeMathParseValues
                                           alphanumeric: "x"
                                         }
                                       },
-                                      expr: {
+                                      exp: {
                                         factor: {
                                           atom: {
                                             alphanumeric: "y"
                                           }
                                         },
-                                        expr: {
+                                        exp: {
                                           factor: {
                                             atom: {
                                               alphanumeric: "z"
@@ -52398,11 +49529,7 @@ module UnicodeMathParseValues
     sub_exp: {
       base: {
         factor: {
-          atom: {
-            char: {
-              unicode_symbols: "&#x3b1;"
-            }
-          }
+          ordinary_symbols: "&#x3b1;"
         }
       },
       sub: {
@@ -52416,7 +49543,7 @@ module UnicodeMathParseValues
                     alphanumeric: "y"
                   }
                 },
-                expr: {
+                exp: {
                   factor: {
                     atom: {
                       alphanumeric: "z"
@@ -52447,11 +49574,7 @@ module UnicodeMathParseValues
           sub_exp: {
             base: {
               factor: {
-                atom: {
-                  char: {
-                    unicode_symbols: "&#x3b1;"
-                  }
-                }
+                ordinary_symbols: "&#x3b1;"
               }
             },
             sub: {
@@ -52465,7 +49588,7 @@ module UnicodeMathParseValues
                           alphanumeric: "z"
                         }
                       },
-                      expr: {
+                      exp: {
                         factor: {
                           atom: {
                             alphanumeric: "x"
@@ -52497,11 +49620,7 @@ module UnicodeMathParseValues
                   sub_exp: {
                     base: {
                       factor: {
-                        atom: {
-                          char: {
-                            unicode_symbols: "&#x3b1;"
-                          }
-                        }
+                        ordinary_symbols: "&#x3b1;"
                       }
                     },
                     sub: {
@@ -52515,7 +49634,7 @@ module UnicodeMathParseValues
                                   alphanumeric: "x"
                                 }
                               },
-                              expr: {
+                              exp: {
                                 factor: {
                                   atom: {
                                     alphanumeric: "y"
@@ -52547,11 +49666,7 @@ module UnicodeMathParseValues
                           sub_exp: {
                             base: {
                               factor: {
-                                atom: {
-                                  char: {
-                                    unicode_symbols: "&#x3b1;"
-                                  }
-                                }
+                                ordinary_symbols: "&#x3b1;"
                               }
                             },
                             sub: {
@@ -52565,13 +49680,13 @@ module UnicodeMathParseValues
                                           alphanumeric: "x"
                                         }
                                       },
-                                      expr: {
+                                      exp: {
                                         factor: {
                                           atom: {
                                             alphanumeric: "y"
                                           }
                                         },
-                                        expr: {
+                                        exp: {
                                           factor: {
                                             atom: {
                                               alphanumeric: "z"
@@ -52626,11 +49741,7 @@ module UnicodeMathParseValues
     sub_exp: {
       base: {
         factor: {
-          atom: {
-            char: {
-              unicode_symbols: "&#x3b1;"
-            }
-          }
+          ordinary_symbols: "&#x3b1;"
         }
       },
       sub: {
@@ -52644,7 +49755,7 @@ module UnicodeMathParseValues
                     alphanumeric: "y"
                   }
                 },
-                expr: {
+                exp: {
                   factor: {
                     atom: {
                       alphanumeric: "z"
@@ -52680,7 +49791,7 @@ module UnicodeMathParseValues
                       alphanumeric: "y"
                     }
                   },
-                  expr: {
+                  exp: {
                     factor: {
                       atom: {
                         alphanumeric: "z"
@@ -52724,11 +49835,7 @@ module UnicodeMathParseValues
                   sub_exp: {
                     base: {
                       factor: {
-                        atom: {
-                          char: {
-                            unicode_symbols: "&#x3b1;"
-                          }
-                        }
+                        ordinary_symbols: "&#x3b1;"
                       }
                     },
                     sub: {
@@ -52742,7 +49849,7 @@ module UnicodeMathParseValues
                                   alphanumeric: "y"
                                 }
                               },
-                              expr: {
+                              exp: {
                                 factor: {
                                   atom: {
                                     alphanumeric: "z"
@@ -52778,7 +49885,7 @@ module UnicodeMathParseValues
                                     alphanumeric: "z"
                                   }
                                 },
-                                expr: {
+                                exp: {
                                   factor: {
                                     atom: {
                                       alphanumeric: "x"
@@ -52822,11 +49929,7 @@ module UnicodeMathParseValues
                                 sub_exp: {
                                   base: {
                                     factor: {
-                                      atom: {
-                                        char: {
-                                          unicode_symbols: "&#x3b1;"
-                                        }
-                                      }
+                                      ordinary_symbols: "&#x3b1;"
                                     }
                                   },
                                   sub: {
@@ -52840,7 +49943,7 @@ module UnicodeMathParseValues
                                                 alphanumeric: "y"
                                               }
                                             },
-                                            expr: {
+                                            exp: {
                                               factor: {
                                                 atom: {
                                                   alphanumeric: "z"
@@ -52876,7 +49979,7 @@ module UnicodeMathParseValues
                                                   alphanumeric: "x"
                                                 }
                                               },
-                                              expr: {
+                                              exp: {
                                                 factor: {
                                                   atom: {
                                                     alphanumeric: "y"
@@ -52920,11 +50023,7 @@ module UnicodeMathParseValues
                                               sub_exp: {
                                                 base: {
                                                   factor: {
-                                                    atom: {
-                                                      char: {
-                                                        unicode_symbols: "&#x3b1;"
-                                                      }
-                                                    }
+                                                    ordinary_symbols: "&#x3b1;"
                                                   }
                                                 },
                                                 sub: {
@@ -52938,7 +50037,7 @@ module UnicodeMathParseValues
                                                               alphanumeric: "y"
                                                             }
                                                           },
-                                                          expr: {
+                                                          exp: {
                                                             factor: {
                                                               atom: {
                                                                 alphanumeric: "z"
@@ -52974,13 +50073,13 @@ module UnicodeMathParseValues
                                                                 alphanumeric: "x"
                                                               }
                                                             },
-                                                            expr: {
+                                                            exp: {
                                                               factor: {
                                                                 atom: {
                                                                   alphanumeric: "y"
                                                                 }
                                                               },
-                                                              expr: {
+                                                              exp: {
                                                                 factor: {
                                                                   atom: {
                                                                     alphanumeric: "z"
@@ -53057,11 +50156,7 @@ module UnicodeMathParseValues
     sub_exp: {
       base: {
         factor: {
-          atom: {
-            char: {
-              unicode_symbols: "&#x3b1;"
-            }
-          }
+          ordinary_symbols: "&#x3b1;"
         }
       },
       sub: {
@@ -53075,7 +50170,7 @@ module UnicodeMathParseValues
                     alphanumeric: "z"
                   }
                 },
-                expr: {
+                exp: {
                   factor: {
                     atom: {
                       alphanumeric: "x"
@@ -53120,7 +50215,7 @@ module UnicodeMathParseValues
                         alphanumeric: "y"
                       }
                     },
-                    expr: {
+                    exp: {
                       factor: {
                         atom: {
                           alphanumeric: "z"
@@ -53152,11 +50247,7 @@ module UnicodeMathParseValues
                 sub_exp: {
                   base: {
                     factor: {
-                      atom: {
-                        char: {
-                          unicode_symbols: "&#x3b1;"
-                        }
-                      }
+                      ordinary_symbols: "&#x3b1;"
                     }
                   },
                   sub: {
@@ -53170,7 +50261,7 @@ module UnicodeMathParseValues
                                 alphanumeric: "z"
                               }
                             },
-                            expr: {
+                            exp: {
                               factor: {
                                 atom: {
                                   alphanumeric: "x"
@@ -53215,7 +50306,7 @@ module UnicodeMathParseValues
                                     alphanumeric: "z"
                                   }
                                 },
-                                expr: {
+                                exp: {
                                   factor: {
                                     atom: {
                                       alphanumeric: "x"
@@ -53247,11 +50338,7 @@ module UnicodeMathParseValues
                             sub_exp: {
                               base: {
                                 factor: {
-                                  atom: {
-                                    char: {
-                                      unicode_symbols: "&#x3b1;"
-                                    }
-                                  }
+                                  ordinary_symbols: "&#x3b1;"
                                 }
                               },
                               sub: {
@@ -53265,7 +50352,7 @@ module UnicodeMathParseValues
                                             alphanumeric: "z"
                                           }
                                         },
-                                        expr: {
+                                        exp: {
                                           factor: {
                                             atom: {
                                               alphanumeric: "x"
@@ -53310,7 +50397,7 @@ module UnicodeMathParseValues
                                                 alphanumeric: "x"
                                               }
                                             },
-                                            expr: {
+                                            exp: {
                                               factor: {
                                                 atom: {
                                                   alphanumeric: "y"
@@ -53342,11 +50429,7 @@ module UnicodeMathParseValues
                                         sub_exp: {
                                           base: {
                                             factor: {
-                                              atom: {
-                                                char: {
-                                                  unicode_symbols: "&#x3b1;"
-                                                }
-                                              }
+                                              ordinary_symbols: "&#x3b1;"
                                             }
                                           },
                                           sub: {
@@ -53360,7 +50443,7 @@ module UnicodeMathParseValues
                                                         alphanumeric: "z"
                                                       }
                                                     },
-                                                    expr: {
+                                                    exp: {
                                                       factor: {
                                                         atom: {
                                                           alphanumeric: "x"
@@ -53405,13 +50488,13 @@ module UnicodeMathParseValues
                                                             alphanumeric: "x"
                                                           }
                                                         },
-                                                        expr: {
+                                                        exp: {
                                                           factor: {
                                                             atom: {
                                                               alphanumeric: "y"
                                                             }
                                                           },
-                                                          expr: {
+                                                          exp: {
                                                             factor: {
                                                               atom: {
                                                                 alphanumeric: "z"
@@ -53472,11 +50555,7 @@ module UnicodeMathParseValues
     sub_exp: {
       base: {
         factor: {
-          atom: {
-            char: {
-              unicode_symbols: "&#x3b1;"
-            }
-          }
+          ordinary_symbols: "&#x3b1;"
         }
       },
       sub: {
@@ -53490,7 +50569,7 @@ module UnicodeMathParseValues
                     alphanumeric: "z"
                   }
                 },
-                expr: {
+                exp: {
                   factor: {
                     atom: {
                       alphanumeric: "x"
@@ -53526,7 +50605,7 @@ module UnicodeMathParseValues
                       alphanumeric: "y"
                     }
                   },
-                  expr: {
+                  exp: {
                     factor: {
                       atom: {
                         alphanumeric: "z"
@@ -53570,11 +50649,7 @@ module UnicodeMathParseValues
                   sub_exp: {
                     base: {
                       factor: {
-                        atom: {
-                          char: {
-                            unicode_symbols: "&#x3b1;"
-                          }
-                        }
+                        ordinary_symbols: "&#x3b1;"
                       }
                     },
                     sub: {
@@ -53588,7 +50663,7 @@ module UnicodeMathParseValues
                                   alphanumeric: "z"
                                 }
                               },
-                              expr: {
+                              exp: {
                                 factor: {
                                   atom: {
                                     alphanumeric: "x"
@@ -53624,7 +50699,7 @@ module UnicodeMathParseValues
                                     alphanumeric: "z"
                                   }
                                 },
-                                expr: {
+                                exp: {
                                   factor: {
                                     atom: {
                                       alphanumeric: "x"
@@ -53668,11 +50743,7 @@ module UnicodeMathParseValues
                                 sub_exp: {
                                   base: {
                                     factor: {
-                                      atom: {
-                                        char: {
-                                          unicode_symbols: "&#x3b1;"
-                                        }
-                                      }
+                                      ordinary_symbols: "&#x3b1;"
                                     }
                                   },
                                   sub: {
@@ -53686,7 +50757,7 @@ module UnicodeMathParseValues
                                                 alphanumeric: "z"
                                               }
                                             },
-                                            expr: {
+                                            exp: {
                                               factor: {
                                                 atom: {
                                                   alphanumeric: "x"
@@ -53722,7 +50793,7 @@ module UnicodeMathParseValues
                                                   alphanumeric: "x"
                                                 }
                                               },
-                                              expr: {
+                                              exp: {
                                                 factor: {
                                                   atom: {
                                                     alphanumeric: "y"
@@ -53766,11 +50837,7 @@ module UnicodeMathParseValues
                                               sub_exp: {
                                                 base: {
                                                   factor: {
-                                                    atom: {
-                                                      char: {
-                                                        unicode_symbols: "&#x3b1;"
-                                                      }
-                                                    }
+                                                    ordinary_symbols: "&#x3b1;"
                                                   }
                                                 },
                                                 sub: {
@@ -53784,7 +50851,7 @@ module UnicodeMathParseValues
                                                               alphanumeric: "z"
                                                             }
                                                           },
-                                                          expr: {
+                                                          exp: {
                                                             factor: {
                                                               atom: {
                                                                 alphanumeric: "x"
@@ -53820,13 +50887,13 @@ module UnicodeMathParseValues
                                                                 alphanumeric: "x"
                                                               }
                                                             },
-                                                            expr: {
+                                                            exp: {
                                                               factor: {
                                                                 atom: {
                                                                   alphanumeric: "y"
                                                                 }
                                                               },
-                                                              expr: {
+                                                              exp: {
                                                                 factor: {
                                                                   atom: {
                                                                     alphanumeric: "z"
@@ -53903,11 +50970,7 @@ module UnicodeMathParseValues
     sub_exp: {
       base: {
         factor: {
-          atom: {
-            char: {
-              unicode_symbols: "&#x3b1;"
-            }
-          }
+          ordinary_symbols: "&#x3b1;"
         }
       },
       sub: {
@@ -53934,11 +50997,7 @@ module UnicodeMathParseValues
           sub_exp: {
             base: {
               factor: {
-                atom: {
-                  char: {
-                    unicode_symbols: "&#x3b1;"
-                  }
-                }
+                ordinary_symbols: "&#x3b1;"
               }
             },
             sub: {
@@ -53965,11 +51024,7 @@ module UnicodeMathParseValues
                 sub_exp: {
                   base: {
                     factor: {
-                      atom: {
-                        char: {
-                          unicode_symbols: "&#x3b1;"
-                        }
-                      }
+                      ordinary_symbols: "&#x3b1;"
                     }
                   },
                   sub: {
@@ -54002,11 +51057,7 @@ module UnicodeMathParseValues
     sub_exp: {
       base: {
         factor: {
-          atom: {
-            char: {
-              unicode_symbols: "&#x3b1;"
-            }
-          }
+          ordinary_symbols: "&#x3b1;"
         }
       },
       sub: {
@@ -54046,7 +51097,7 @@ module UnicodeMathParseValues
                       alphanumeric: "y"
                     }
                   },
-                  expr: {
+                  exp: {
                     factor: {
                       atom: {
                         alphanumeric: "z"
@@ -54078,11 +51129,7 @@ module UnicodeMathParseValues
               sub_exp: {
                 base: {
                   factor: {
-                    atom: {
-                      char: {
-                        unicode_symbols: "&#x3b1;"
-                      }
-                    }
+                    ordinary_symbols: "&#x3b1;"
                   }
                 },
                 sub: {
@@ -54122,7 +51169,7 @@ module UnicodeMathParseValues
                                 alphanumeric: "z"
                               }
                             },
-                            expr: {
+                            exp: {
                               factor: {
                                 atom: {
                                   alphanumeric: "x"
@@ -54154,11 +51201,7 @@ module UnicodeMathParseValues
                         sub_exp: {
                           base: {
                             factor: {
-                              atom: {
-                                char: {
-                                  unicode_symbols: "&#x3b1;"
-                                }
-                              }
+                              ordinary_symbols: "&#x3b1;"
                             }
                           },
                           sub: {
@@ -54198,7 +51241,7 @@ module UnicodeMathParseValues
                                           alphanumeric: "x"
                                         }
                                       },
-                                      expr: {
+                                      exp: {
                                         factor: {
                                           atom: {
                                             alphanumeric: "y"
@@ -54230,11 +51273,7 @@ module UnicodeMathParseValues
                                   sub_exp: {
                                     base: {
                                       factor: {
-                                        atom: {
-                                          char: {
-                                            unicode_symbols: "&#x3b1;"
-                                          }
-                                        }
+                                        ordinary_symbols: "&#x3b1;"
                                       }
                                     },
                                     sub: {
@@ -54274,13 +51313,13 @@ module UnicodeMathParseValues
                                                     alphanumeric: "x"
                                                   }
                                                 },
-                                                expr: {
+                                                exp: {
                                                   factor: {
                                                     atom: {
                                                       alphanumeric: "y"
                                                     }
                                                   },
-                                                  expr: {
+                                                  exp: {
                                                     factor: {
                                                       atom: {
                                                         alphanumeric: "z"
@@ -54337,11 +51376,7 @@ module UnicodeMathParseValues
     sub_exp: {
       base: {
         factor: {
-          atom: {
-            char: {
-              unicode_symbols: "&#x3b1;"
-            }
-          }
+          ordinary_symbols: "&#x3b1;"
         }
       },
       sub: {
@@ -54381,7 +51416,7 @@ module UnicodeMathParseValues
                       alphanumeric: "y"
                     }
                   },
-                  expr: {
+                  exp: {
                     factor: {
                       atom: {
                         alphanumeric: "z"
@@ -54413,11 +51448,7 @@ module UnicodeMathParseValues
               sub_exp: {
                 base: {
                   factor: {
-                    atom: {
-                      char: {
-                        unicode_symbols: "&#x3b1;"
-                      }
-                    }
+                    ordinary_symbols: "&#x3b1;"
                   }
                 },
                 sub: {
@@ -54457,7 +51488,7 @@ module UnicodeMathParseValues
                                 alphanumeric: "z"
                               }
                             },
-                            expr: {
+                            exp: {
                               factor: {
                                 atom: {
                                   alphanumeric: "x"
@@ -54489,11 +51520,7 @@ module UnicodeMathParseValues
                         sub_exp: {
                           base: {
                             factor: {
-                              atom: {
-                                char: {
-                                  unicode_symbols: "&#x3b1;"
-                                }
-                              }
+                              ordinary_symbols: "&#x3b1;"
                             }
                           },
                           sub: {
@@ -54533,7 +51560,7 @@ module UnicodeMathParseValues
                                           alphanumeric: "x"
                                         }
                                       },
-                                      expr: {
+                                      exp: {
                                         factor: {
                                           atom: {
                                             alphanumeric: "y"
@@ -54565,11 +51592,7 @@ module UnicodeMathParseValues
                                   sub_exp: {
                                     base: {
                                       factor: {
-                                        atom: {
-                                          char: {
-                                            unicode_symbols: "&#x3b1;"
-                                          }
-                                        }
+                                        ordinary_symbols: "&#x3b1;"
                                       }
                                     },
                                     sub: {
@@ -54609,13 +51632,13 @@ module UnicodeMathParseValues
                                                     alphanumeric: "x"
                                                   }
                                                 },
-                                                expr: {
+                                                exp: {
                                                   factor: {
                                                     atom: {
                                                       alphanumeric: "y"
                                                     }
                                                   },
-                                                  expr: {
+                                                  exp: {
                                                     factor: {
                                                       atom: {
                                                         alphanumeric: "z"
@@ -54672,11 +51695,7 @@ module UnicodeMathParseValues
     sub_exp: {
       base: {
         factor: {
-          atom: {
-            char: {
-              unicode_symbols: "&#x3b1;"
-            }
-          }
+          ordinary_symbols: "&#x3b1;"
         }
       },
       sub: {
@@ -54713,7 +51732,7 @@ module UnicodeMathParseValues
                       alphanumeric: "y"
                     }
                   },
-                  expr: {
+                  exp: {
                     factor: {
                       atom: {
                         alphanumeric: "z"
@@ -54751,11 +51770,7 @@ module UnicodeMathParseValues
                 sub_exp: {
                   base: {
                     factor: {
-                      atom: {
-                        char: {
-                          unicode_symbols: "&#x3b1;"
-                        }
-                      }
+                      ordinary_symbols: "&#x3b1;"
                     }
                   },
                   sub: {
@@ -54792,7 +51807,7 @@ module UnicodeMathParseValues
                                   alphanumeric: "z"
                                 }
                               },
-                              expr: {
+                              exp: {
                                 factor: {
                                   atom: {
                                     alphanumeric: "x"
@@ -54830,11 +51845,7 @@ module UnicodeMathParseValues
                             sub_exp: {
                               base: {
                                 factor: {
-                                  atom: {
-                                    char: {
-                                      unicode_symbols: "&#x3b1;"
-                                    }
-                                  }
+                                  ordinary_symbols: "&#x3b1;"
                                 }
                               },
                               sub: {
@@ -54871,7 +51882,7 @@ module UnicodeMathParseValues
                                               alphanumeric: "x"
                                             }
                                           },
-                                          expr: {
+                                          exp: {
                                             factor: {
                                               atom: {
                                                 alphanumeric: "y"
@@ -54909,11 +51920,7 @@ module UnicodeMathParseValues
                                         sub_exp: {
                                           base: {
                                             factor: {
-                                              atom: {
-                                                char: {
-                                                  unicode_symbols: "&#x3b1;"
-                                                }
-                                              }
+                                              ordinary_symbols: "&#x3b1;"
                                             }
                                           },
                                           sub: {
@@ -54950,13 +51957,13 @@ module UnicodeMathParseValues
                                                           alphanumeric: "x"
                                                         }
                                                       },
-                                                      expr: {
+                                                      exp: {
                                                         factor: {
                                                           atom: {
                                                             alphanumeric: "y"
                                                           }
                                                         },
-                                                        expr: {
+                                                        exp: {
                                                           factor: {
                                                             atom: {
                                                               alphanumeric: "z"
@@ -55023,11 +52030,7 @@ module UnicodeMathParseValues
     sub_exp: {
       base: {
         factor: {
-          atom: {
-            char: {
-              unicode_symbols: "&#x3b1;"
-            }
-          }
+          ordinary_symbols: "&#x3b1;"
         }
       },
       sub: {
@@ -55064,7 +52067,7 @@ module UnicodeMathParseValues
                       alphanumeric: "y"
                     }
                   },
-                  expr: {
+                  exp: {
                     factor: {
                       atom: {
                         alphanumeric: "z"
@@ -55102,11 +52105,7 @@ module UnicodeMathParseValues
                 sub_exp: {
                   base: {
                     factor: {
-                      atom: {
-                        char: {
-                          unicode_symbols: "&#x3b1;"
-                        }
-                      }
+                      ordinary_symbols: "&#x3b1;"
                     }
                   },
                   sub: {
@@ -55143,7 +52142,7 @@ module UnicodeMathParseValues
                                   alphanumeric: "z"
                                 }
                               },
-                              expr: {
+                              exp: {
                                 factor: {
                                   atom: {
                                     alphanumeric: "x"
@@ -55181,11 +52180,7 @@ module UnicodeMathParseValues
                             sub_exp: {
                               base: {
                                 factor: {
-                                  atom: {
-                                    char: {
-                                      unicode_symbols: "&#x3b1;"
-                                    }
-                                  }
+                                  ordinary_symbols: "&#x3b1;"
                                 }
                               },
                               sub: {
@@ -55222,7 +52217,7 @@ module UnicodeMathParseValues
                                               alphanumeric: "x"
                                             }
                                           },
-                                          expr: {
+                                          exp: {
                                             factor: {
                                               atom: {
                                                 alphanumeric: "y"
@@ -55260,11 +52255,7 @@ module UnicodeMathParseValues
                                         sub_exp: {
                                           base: {
                                             factor: {
-                                              atom: {
-                                                char: {
-                                                  unicode_symbols: "&#x3b1;"
-                                                }
-                                              }
+                                              ordinary_symbols: "&#x3b1;"
                                             }
                                           },
                                           sub: {
@@ -55301,13 +52292,13 @@ module UnicodeMathParseValues
                                                           alphanumeric: "x"
                                                         }
                                                       },
-                                                      expr: {
+                                                      exp: {
                                                         factor: {
                                                           atom: {
                                                             alphanumeric: "y"
                                                           }
                                                         },
-                                                        expr: {
+                                                        exp: {
                                                           factor: {
                                                             atom: {
                                                               alphanumeric: "z"
@@ -55374,11 +52365,7 @@ module UnicodeMathParseValues
     sub_exp: {
       base: {
         factor: {
-          atom: {
-            char: {
-              unicode_symbols: "&#x3b1;"
-            }
-          }
+          ordinary_symbols: "&#x3b1;"
         }
       },
       sub: {
@@ -55418,7 +52405,7 @@ module UnicodeMathParseValues
                       alphanumeric: "y"
                     }
                   },
-                  expr: {
+                  exp: {
                     factor: {
                       atom: {
                         alphanumeric: "z"
@@ -55450,11 +52437,7 @@ module UnicodeMathParseValues
               sub_exp: {
                 base: {
                   factor: {
-                    atom: {
-                      char: {
-                        unicode_symbols: "&#x3b1;"
-                      }
-                    }
+                    ordinary_symbols: "&#x3b1;"
                   }
                 },
                 sub: {
@@ -55494,7 +52477,7 @@ module UnicodeMathParseValues
                                 alphanumeric: "z"
                               }
                             },
-                            expr: {
+                            exp: {
                               factor: {
                                 atom: {
                                   alphanumeric: "x"
@@ -55526,11 +52509,7 @@ module UnicodeMathParseValues
                         sub_exp: {
                           base: {
                             factor: {
-                              atom: {
-                                char: {
-                                  unicode_symbols: "&#x3b1;"
-                                }
-                              }
+                              ordinary_symbols: "&#x3b1;"
                             }
                           },
                           sub: {
@@ -55570,7 +52549,7 @@ module UnicodeMathParseValues
                                           alphanumeric: "x"
                                         }
                                       },
-                                      expr: {
+                                      exp: {
                                         factor: {
                                           atom: {
                                             alphanumeric: "y"
@@ -55602,11 +52581,7 @@ module UnicodeMathParseValues
                                   sub_exp: {
                                     base: {
                                       factor: {
-                                        atom: {
-                                          char: {
-                                            unicode_symbols: "&#x3b1;"
-                                          }
-                                        }
+                                        ordinary_symbols: "&#x3b1;"
                                       }
                                     },
                                     sub: {
@@ -55646,13 +52621,13 @@ module UnicodeMathParseValues
                                                     alphanumeric: "x"
                                                   }
                                                 },
-                                                expr: {
+                                                exp: {
                                                   factor: {
                                                     atom: {
                                                       alphanumeric: "y"
                                                     }
                                                   },
-                                                  expr: {
+                                                  exp: {
                                                     factor: {
                                                       atom: {
                                                         alphanumeric: "z"
@@ -55709,11 +52684,7 @@ module UnicodeMathParseValues
     sub_exp: {
       base: {
         factor: {
-          atom: {
-            char: {
-              unicode_symbols: "&#x3b1;"
-            }
-          }
+          ordinary_symbols: "&#x3b1;"
         }
       },
       sub: {
@@ -55750,7 +52721,7 @@ module UnicodeMathParseValues
                       alphanumeric: "y"
                     }
                   },
-                  expr: {
+                  exp: {
                     factor: {
                       atom: {
                         alphanumeric: "z"
@@ -55788,11 +52759,7 @@ module UnicodeMathParseValues
                 sub_exp: {
                   base: {
                     factor: {
-                      atom: {
-                        char: {
-                          unicode_symbols: "&#x3b1;"
-                        }
-                      }
+                      ordinary_symbols: "&#x3b1;"
                     }
                   },
                   sub: {
@@ -55829,7 +52796,7 @@ module UnicodeMathParseValues
                                   alphanumeric: "z"
                                 }
                               },
-                              expr: {
+                              exp: {
                                 factor: {
                                   atom: {
                                     alphanumeric: "x"
@@ -55867,11 +52834,7 @@ module UnicodeMathParseValues
                             sub_exp: {
                               base: {
                                 factor: {
-                                  atom: {
-                                    char: {
-                                      unicode_symbols: "&#x3b1;"
-                                    }
-                                  }
+                                  ordinary_symbols: "&#x3b1;"
                                 }
                               },
                               sub: {
@@ -55908,7 +52871,7 @@ module UnicodeMathParseValues
                                               alphanumeric: "x"
                                             }
                                           },
-                                          expr: {
+                                          exp: {
                                             factor: {
                                               atom: {
                                                 alphanumeric: "y"
@@ -55946,11 +52909,7 @@ module UnicodeMathParseValues
                                         sub_exp: {
                                           base: {
                                             factor: {
-                                              atom: {
-                                                char: {
-                                                  unicode_symbols: "&#x3b1;"
-                                                }
-                                              }
+                                              ordinary_symbols: "&#x3b1;"
                                             }
                                           },
                                           sub: {
@@ -55987,13 +52946,13 @@ module UnicodeMathParseValues
                                                           alphanumeric: "x"
                                                         }
                                                       },
-                                                      expr: {
+                                                      exp: {
                                                         factor: {
                                                           atom: {
                                                             alphanumeric: "y"
                                                           }
                                                         },
-                                                        expr: {
+                                                        exp: {
                                                           factor: {
                                                             atom: {
                                                               alphanumeric: "z"
@@ -56060,11 +53019,7 @@ module UnicodeMathParseValues
     subsup_exp: {
       base: {
         factor: {
-          atom: {
-            char: {
-              unicode_symbols: "&#x3b1;"
-            }
-          }
+          ordinary_symbols: "&#x3b1;"
         }
       },
       sub: {
@@ -56084,11 +53039,7 @@ module UnicodeMathParseValues
         sup_script: {
           operand: {
             factor: {
-              atom: {
-                char: {
-                  unicode_symbols: "&#x3b3;"
-                }
-              }
+              ordinary_symbols: "&#x3b3;"
             }
           }
         }
@@ -56099,11 +53050,7 @@ module UnicodeMathParseValues
     accents: [
       {
         first_value: {
-          atom: {
-            char: {
-              unicode_symbols: "&#x3b1;"
-            }
-          }
+          ordinary_symbols: "&#x3b1;"
         }
       },
       {
@@ -56124,11 +53071,7 @@ module UnicodeMathParseValues
     accents: [
       {
         first_value: {
-          atom: {
-            char: {
-              unicode_symbols: "&#x3b1;"
-            }
-          }
+          ordinary_symbols: "&#x3b1;"
         }
       },
       {
@@ -56145,11 +53088,7 @@ module UnicodeMathParseValues
         mini_sub_sup: {
           base: {
             factor: {
-              atom: {
-                char: {
-                  unicode_symbols: "&#x3b1;"
-                }
-              }
+              ordinary_symbols: "&#x3b1;"
             }
           },
           sub: {
@@ -56181,17 +53120,13 @@ module UnicodeMathParseValues
                 sup_digits: "&#xb3;"
               }
             },
-            expr: {
+            exp: {
               operator: "+",
-              expr: {
+              exp: {
                 mini_sub_sup: {
                   base: {
                     factor: {
-                      atom: {
-                        char: {
-                          unicode_symbols: "&#x3b3;"
-                        }
-                      }
+                      ordinary_symbols: "&#x3b3;"
                     }
                   },
                   sub: {
@@ -56215,11 +53150,7 @@ module UnicodeMathParseValues
         mini_sub: {
           base: {
             factor: {
-              atom: {
-                char: {
-                  unicode_symbols: "&#x3b1;"
-                }
-              }
+              ordinary_symbols: "&#x3b1;"
             }
           },
           sub: {
@@ -56253,17 +53184,11 @@ module UnicodeMathParseValues
   }.freeze
   EXAMPLE_424 = {
     factor: {
-      atom: {
-        char: {
-          unicode_symbols: "&#x3b1;"
-        }
-      }
+      ordinary_symbols: "&#x3b1;"
     },
-    operand: {
-      factor: {
-        ordinary_symbols: "&#x2146;"
-      },
-      operand: {
+    expr: {
+      binary_symbols: "&#x2146;",
+      expr: {
         factor: {
           atom: {
             char: {
@@ -56276,11 +53201,7 @@ module UnicodeMathParseValues
   }.freeze
   EXAMPLE_425 = {
     factor: {
-      atom: {
-        char: {
-          unicode_symbols: "&#x3b1;"
-        }
-      }
+      ordinary_symbols: "&#x3b1;"
     },
     operand: {
       factor: {
@@ -56301,11 +53222,7 @@ module UnicodeMathParseValues
       },
       operand: {
         factor: {
-          atom: {
-            char: {
-              unicode_symbols: "&#x3b3;"
-            }
-          }
+          ordinary_symbols: "&#x3b3;"
         }
       }
     }
@@ -56313,14 +53230,9 @@ module UnicodeMathParseValues
   EXAMPLE_426 = {
     frac: {
       numerator: {
-        factor: {
-          atom: {
-            char: {
-              unicode_symbols: "&#x3b1;"
-            }
-          }
-        }
+        ordinary_symbols: "&#x3b1;"
       },
+      no_display_style: "&#x2298;",
       denominator: {
         factor: {
           atom: {
@@ -56336,11 +53248,7 @@ module UnicodeMathParseValues
     subsup_exp: {
       base: {
         factor: {
-          atom: {
-            char: {
-              unicode_symbols: "&#x3b1;"
-            }
-          }
+          ordinary_symbols: "&#x3b1;"
         }
       },
       sub: {
@@ -56362,11 +53270,7 @@ module UnicodeMathParseValues
         sup_script: {
           operand: {
             factor: {
-              atom: {
-                char: {
-                  unicode_symbols: "&#x3b3;"
-                }
-              }
+              ordinary_symbols: "&#x3b3;"
             }
           }
         }
@@ -56375,11 +53279,7 @@ module UnicodeMathParseValues
   }.freeze
   EXAMPLE_428 = {
     factor: {
-      atom: {
-        char: {
-          unicode_symbols: "&#x3b1;"
-        }
-      }
+      ordinary_symbols: "&#x3b1;"
     },
     operand: {
       factor: {
@@ -56400,22 +53300,14 @@ module UnicodeMathParseValues
       },
       operand: {
         factor: {
-          atom: {
-            char: {
-              unicode_symbols: "&#x3b3;"
-            }
-          }
+          ordinary_symbols: "&#x3b3;"
         }
       }
     }
   }.freeze
   EXAMPLE_429 = {
     factor: {
-      atom: {
-        char: {
-          unicode_symbols: "&#x3b1;"
-        }
-      }
+      ordinary_symbols: "&#x3b1;"
     },
     operand: {
       factor: {
@@ -56436,11 +53328,7 @@ module UnicodeMathParseValues
       },
       operand: {
         factor: {
-          atom: {
-            char: {
-              unicode_symbols: "&#x3b3;"
-            }
-          }
+          ordinary_symbols: "&#x3b3;"
         }
       }
     }
@@ -56467,7 +53355,7 @@ module UnicodeMathParseValues
                     alphanumeric: "y"
                   }
                 },
-                expr: {
+                exp: {
                   factor: {
                     atom: {
                       alphanumeric: "z"
@@ -56516,7 +53404,7 @@ module UnicodeMathParseValues
                           alphanumeric: "z"
                         }
                       },
-                      expr: {
+                      exp: {
                         factor: {
                           atom: {
                             alphanumeric: "x"
@@ -56566,7 +53454,7 @@ module UnicodeMathParseValues
                                   alphanumeric: "x"
                                 }
                               },
-                              expr: {
+                              exp: {
                                 factor: {
                                   atom: {
                                     alphanumeric: "y"
@@ -56616,13 +53504,13 @@ module UnicodeMathParseValues
                                           alphanumeric: "x"
                                         }
                                       },
-                                      expr: {
+                                      exp: {
                                         factor: {
                                           atom: {
                                             alphanumeric: "y"
                                           }
                                         },
-                                        expr: {
+                                        exp: {
                                           factor: {
                                             atom: {
                                               alphanumeric: "z"
@@ -56677,11 +53565,7 @@ module UnicodeMathParseValues
     mini_sub: {
       base: {
         factor: {
-          atom: {
-            char: {
-              unicode_symbols: "&#x3b4;"
-            }
-          }
+          relational_symbols: "&#x3b4;"
         }
       },
       sub: {
@@ -56689,23 +53573,17 @@ module UnicodeMathParseValues
       }
     },
     expr: {
-      mini_sub: {
-        base: {
-          factor: {
-            atom: {
-              char: {
-                unicode_symbols: "&#x22c5;"
-              },
-              diacritics: {
-                char: {
-                  unicode_symbols: "&#x3c1;"
-                }
-              }
+      binary_symbols: "&#x22c5;",
+      expr: {
+        mini_sub: {
+          base: {
+            factor: {
+              ordinary_symbols: "&#x3c1;"
             }
+          },
+          sub: {
+            sub_digits: "&#x2081;"
           }
-        },
-        sub: {
-          sub_digits: "&#x2081;"
         }
       }
     }
@@ -56714,11 +53592,7 @@ module UnicodeMathParseValues
     mini_sup: {
       base: {
         factor: {
-          atom: {
-            char: {
-              unicode_symbols: "&#x3b8;"
-            }
-          }
+          ordinary_symbols: "&#x3b8;"
         }
       },
       sup: {
@@ -56728,22 +53602,14 @@ module UnicodeMathParseValues
   }.freeze
   EXAMPLE_433 = {
     factor: {
-      atom: {
-        char: {
-          unicode_symbols: "&#x3c0;"
-        }
-      }
+      ordinary_symbols: "&#x3c0;"
     }
   }.freeze
   EXAMPLE_434 = {
     sub_exp: {
       base: {
         factor: {
-          atom: {
-            char: {
-              unicode_symbols: "&#x3c0;"
-            }
-          }
+          ordinary_symbols: "&#x3c0;"
         }
       },
       sub: {
@@ -56755,33 +53621,31 @@ module UnicodeMathParseValues
                 monospace: {
                   monospace_value: "X"
                 },
+                relational_symbols: "&#x2190;",
                 expr: {
-                  factor: {
-                    relational_symbols: "&#x2190;"
-                  },
-                  operand: {
+                  monospace: {
+                    monospace_value: "A"
+                  }
+                },
+                exp: {
+                  operator: "+",
+                  exp: {
                     monospace: {
-                      monospace_value: "A"
-                    }
-                  },
-                  expr: {
-                    operator: "+",
-                    expr: {
-                      monospace: {
-                        monospace_value: "C"
-                      },
-                      expr: {
-                        operator: ",",
-                        expr: {
+                      monospace_value: "C"
+                    },
+                    exp: {
+                      operator: ",",
+                      exp: {
+                        factor: {
+                          ordinary_symbols: "&#x205f;"
+                        },
+                        operand: {
                           factor: {
-                            ordinary_symbols: "&#x205f;"
-                          },
-                          operand: {
                             monospace: {
                               monospace_value: "Y"
                             }
                           },
-                          expr: {
+                          operand: {
                             factor: {
                               relational_symbols: "&#x2190;"
                             },
@@ -56790,27 +53654,33 @@ module UnicodeMathParseValues
                                 ordinary_symbols: "&#xac;"
                               },
                               operand: {
-                                monospace: {
-                                  monospace_value: "B"
+                                factor: {
+                                  monospace: {
+                                    monospace_value: "B"
+                                  }
                                 }
                               }
+                            }
+                          }
+                        },
+                        exp: {
+                          operator: ",",
+                          exp: {
+                            factor: {
+                              ordinary_symbols: "&#x205f;"
                             },
-                            expr: {
-                              operator: ",",
-                              expr: {
+                            operand: {
+                              factor: {
+                                monospace: {
+                                  monospace_value: "Z"
+                                }
+                              },
+                              operand: {
                                 factor: {
-                                  ordinary_symbols: "&#x205f;"
+                                  relational_symbols: "&#x2190;"
                                 },
                                 operand: {
-                                  monospace: {
-                                    monospace_value: "Z"
-                                  }
-                                },
-                                expr: {
                                   factor: {
-                                    relational_symbols: "&#x2190;"
-                                  },
-                                  operand: {
                                     monospace: {
                                       monospace_value: "\"LEGO\""
                                     }
@@ -56849,11 +53719,7 @@ module UnicodeMathParseValues
     sub_exp: {
       base: {
         factor: {
-          atom: {
-            char: {
-              unicode_symbols: "&#x3c0;"
-            }
-          }
+          ordinary_symbols: "&#x3c0;"
         }
       },
       sub: {
@@ -56865,24 +53731,28 @@ module UnicodeMathParseValues
                 monospace: {
                   monospace_value: "from"
                 },
-                expr: {
+                exp: {
                   operator: ",",
-                  expr: {
+                  exp: {
                     factor: {
                       ordinary_symbols: "&#x205f;"
                     },
                     operand: {
-                      monospace: {
-                        monospace_value: "to"
-                      }
-                    },
-                    expr: {
                       factor: {
-                        relational_symbols: "&#x2190;"
+                        monospace: {
+                          monospace_value: "to"
+                        }
                       },
                       operand: {
-                        monospace: {
-                          monospace_value: "to2"
+                        factor: {
+                          relational_symbols: "&#x2190;"
+                        },
+                        operand: {
+                          factor: {
+                            monospace: {
+                              monospace_value: "to2"
+                            }
+                          }
                         }
                       }
                     }
@@ -56902,11 +53772,7 @@ module UnicodeMathParseValues
           sub_exp: {
             base: {
               factor: {
-                atom: {
-                  char: {
-                    unicode_symbols: "&#x3c3;"
-                  }
-                }
+                ordinary_symbols: "&#x3c3;"
               }
             },
             sub: {
@@ -56918,9 +53784,9 @@ module UnicodeMathParseValues
                       monospace: {
                         monospace_value: "to"
                       },
-                      expr: {
+                      exp: {
                         operator: "=",
-                        expr: {
+                        exp: {
                           monospace: {
                             monospace_value: "from2"
                           }
@@ -56933,87 +53799,85 @@ module UnicodeMathParseValues
               }
             }
           },
-          expr: {
+          exp: {
             factor: {
               intermediate_exp: {
                 open_paren: "(",
                 factor: {
-                  alphanumeric: "G"
+                  atom: {
+                    alphanumeric: "G"
+                  }
                 },
-                sub_exp: {
-                  base: {
-                    factor: {
-                      atom: {
-                        char: {
-                          unicode_symbols: "&#xd7;"
-                        },
-                        diacritics: {
-                          char: {
-                            unicode_symbols: "&#x3c0;"
-                          }
-                        }
-                      }
-                    }
-                  },
-                  sub: {
-                    sub_script: {
-                      operand: {
+                exp: {
+                  binary_symbols: "&#xd7;",
+                  exp: {
+                    sub_exp: {
+                      base: {
                         factor: {
-                          intermediate_exp: {
-                            open_paren: "(",
-                            monospace: {
-                              monospace_value: "from2"
-                            },
-                            expr: {
-                              factor: {
-                                relational_symbols: "&#x2190;"
-                              },
-                              operand: {
+                          ordinary_symbols: "&#x3c0;"
+                        }
+                      },
+                      sub: {
+                        sub_script: {
+                          operand: {
+                            factor: {
+                              intermediate_exp: {
+                                open_paren: "(",
                                 monospace: {
-                                  monospace_value: "from"
-                                }
-                              },
-                              expr: {
-                                operator: ",",
+                                  monospace_value: "from2"
+                                },
+                                relational_symbols: "&#x2190;",
                                 expr: {
-                                  factor: {
-                                    ordinary_symbols: "&#x205f;"
-                                  },
-                                  operand: {
-                                    monospace: {
-                                      monospace_value: "to2"
-                                    }
-                                  },
-                                  expr: {
+                                  monospace: {
+                                    monospace_value: "from"
+                                  }
+                                },
+                                exp: {
+                                  operator: ",",
+                                  exp: {
                                     factor: {
-                                      relational_symbols: "&#x2190;"
+                                      ordinary_symbols: "&#x205f;"
                                     },
                                     operand: {
-                                      monospace: {
-                                        monospace_value: "to"
+                                      factor: {
+                                        monospace: {
+                                          monospace_value: "to2"
+                                        }
+                                      },
+                                      operand: {
+                                        factor: {
+                                          relational_symbols: "&#x2190;"
+                                        },
+                                        operand: {
+                                          factor: {
+                                            monospace: {
+                                              monospace_value: "to"
+                                            }
+                                          }
+                                        }
                                       }
                                     }
                                   }
-                                }
+                                },
+                                close_paren: ")"
                               }
-                            },
-                            close_paren: ")"
+                            }
                           }
                         }
                       }
-                    }
-                  }
-                },
-                expr: {
-                  factor: {
-                    intermediate_exp: {
-                      open_paren: "(",
+                    },
+                    exp: {
                       factor: {
-                        atom: {
-                          alphanumeric: "G"
+                        intermediate_exp: {
+                          open_paren: "(",
+                          factor: {
+                            atom: {
+                              alphanumeric: "G"
+                            }
+                          },
+                          close_paren: ")"
                         }
-                      },
-                      close_paren: ")"
+                      }
                     }
                   }
                 },
@@ -57028,11 +53892,7 @@ module UnicodeMathParseValues
   }.freeze
   EXAMPLE_436 = {
     factor: {
-      atom: {
-        char: {
-          unicode_symbols: "&#x3c1;"
-        }
-      }
+      ordinary_symbols: "&#x3c1;"
     }
   }.freeze
   EXAMPLE_437 = {
@@ -57089,10 +53949,8 @@ module UnicodeMathParseValues
       expr: {
         frac: {
           numerator: {
-            factor: {
-              digit: {
-                number: "1"
-              }
+            digit: {
+              number: "1"
             }
           },
           denominator: {
@@ -57119,9 +53977,9 @@ module UnicodeMathParseValues
                               alphanumeric: "t"
                             }
                           },
-                          expr: {
+                          exp: {
                             operator: "=",
-                            expr: {
+                            exp: {
                               factor: {
                                 digit: {
                                   number: "1"
@@ -57166,9 +54024,9 @@ module UnicodeMathParseValues
                   }
                 }
               },
-              expr: {
+              exp: {
                 operator: "-",
-                expr: {
+                exp: {
                   sub_exp: {
                     base: {
                       symbol: "o"
@@ -57257,13 +54115,11 @@ module UnicodeMathParseValues
           unicode_symbols: "&#x2132;"
         },
         alphanumeric: "B"
-      },
-      atoms: {
-        atom: {
-          char: {
-            unicode_symbols: "&#x3b1;"
-          }
-        }
+      }
+    },
+    operand: {
+      factor: {
+        ordinary_symbols: "&#x3b1;"
       }
     }
   }.freeze
@@ -57274,13 +54130,11 @@ module UnicodeMathParseValues
           unicode_symbols: "&#x2132;"
         },
         alphanumeric: "B"
-      },
-      atoms: {
-        atom: {
-          char: {
-            unicode_symbols: "&#x3b1;"
-          }
-        }
+      }
+    },
+    operand: {
+      factor: {
+        ordinary_symbols: "&#x3b1;"
       }
     },
     expr: {
@@ -57301,11 +54155,7 @@ module UnicodeMathParseValues
       },
       expr: {
         factor: {
-          atom: {
-            char: {
-              unicode_symbols: "&#x3b3;"
-            }
-          }
+          ordinary_symbols: "&#x3b3;"
         },
         expr: {
           factor: {
@@ -57314,13 +54164,11 @@ module UnicodeMathParseValues
                 unicode_symbols: "&#x2132;"
               },
               alphanumeric: "C"
-            },
-            atoms: {
-              atom: {
-                char: {
-                  unicode_symbols: "&#x3b4;"
-                }
-              }
+            }
+          },
+          operand: {
+            factor: {
+              relational_symbols: "&#x3b4;"
             }
           },
           expr: {
@@ -57330,13 +54178,11 @@ module UnicodeMathParseValues
                   unicode_symbols: "&#x2132;"
                 },
                 alphanumeric: "D"
-              },
-              atoms: {
-                atom: {
-                  char: {
-                    unicode_symbols: "&#x3b5;"
-                  }
-                }
+              }
+            },
+            operand: {
+              factor: {
+                ordinary_symbols: "&#x3b5;"
               }
             }
           }
@@ -57449,96 +54295,94 @@ module UnicodeMathParseValues
       }
     },
     expr: {
-      sub_exp: {
-        base: {
-          factor: {
-            atom: {
-              char: {
-                unicode_symbols: "&#x1d453;"
-              }
-            }
-          },
-          operand: {
+      factor: {
+        atom: {
+          char: {
+            unicode_symbols: "&#x1d453;"
+          }
+        }
+      },
+      operand: {
+        factor: {
+          intermediate_exp: {
+            open_paren: "(",
             factor: {
-              intermediate_exp: {
-                open_paren: "(",
-                factor: {
-                  atom: {
-                    char: {
-                      unicode_symbols: "&#x1d465;"
-                    }
-                  }
-                },
-                close_paren: ")"
+              atom: {
+                char: {
+                  unicode_symbols: "&#x1d465;"
+                }
               }
             },
-            operand: {
-              factor: {
-                relational_symbols: "&#x2260;"
-              },
-              operand: {
-                factor: {
-                  atom: {
-                    char: {
-                      unicode_symbols: "&#x1d715;"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        sub: {
-          sub_script: {
-            operand: {
-              factor: {
-                atom: {
-                  char: {
-                    unicode_symbols: "&#x1d465;"
-                  },
-                  diacritics: {
-                    char: {
-                      unicode_symbols: "&#x1d466;"
-                    }
-                  }
-                }
-              }
-            }
+            close_paren: ")"
           }
         }
       },
       expr: {
-        factor: {
-          atom: {
-            char: {
-              unicode_symbols: "&#x1d453;"
-            }
-          }
-        },
-        operand: {
-          factor: {
-            intermediate_exp: {
-              open_paren: "(",
+        binary_symbols: "&#x2260;",
+        expr: {
+          sub_exp: {
+            base: {
               factor: {
                 atom: {
                   char: {
-                    unicode_symbols: "&#x1d465;"
+                    unicode_symbols: "&#x1d715;"
                   }
                 }
-              },
-              expr: {
-                operator: ",",
-                expr: {
+              }
+            },
+            sub: {
+              sub_script: {
+                operand: {
                   factor: {
                     atom: {
                       char: {
-                        unicode_symbols: "&#x1d466;"
+                        unicode_symbols: "&#x1d465;"
+                      },
+                      diacritics: {
+                        char: {
+                          unicode_symbols: "&#x1d466;"
+                        }
                       }
                     }
                   }
                 }
-              },
-              close_paren: ")"
+              }
+            }
+          },
+          expr: {
+            factor: {
+              atom: {
+                char: {
+                  unicode_symbols: "&#x1d453;"
+                }
+              }
+            },
+            operand: {
+              factor: {
+                intermediate_exp: {
+                  open_paren: "(",
+                  factor: {
+                    atom: {
+                      char: {
+                        unicode_symbols: "&#x1d465;"
+                      }
+                    }
+                  },
+                  exp: {
+                    operator: ",",
+                    exp: {
+                      factor: {
+                        atom: {
+                          char: {
+                            unicode_symbols: "&#x1d466;"
+                          }
+                        }
+                      }
+                    }
+                  },
+                  close_paren: ")"
+                }
+              }
             }
           }
         }
@@ -57562,20 +54406,16 @@ module UnicodeMathParseValues
       factor: {
         intermediate_exp: {
           open_paren: "(",
-          accents: [
-            {
-              first_value: {
-                atom: {
-                  char: {
-                    unicode_symbols: "&#x1d465;"
-                  }
+          accents: {
+            first_value: {
+              atom: {
+                char: {
+                  unicode_symbols: "&#x1d465;"
                 }
               }
             },
-            {
-              accent_symbols: "&#x2032;"
-            }
-          ],
+            prime_accent_symbols: "&#x2032;"
+          },
           close_paren: ")"
         }
       }
@@ -57618,20 +54458,16 @@ module UnicodeMathParseValues
         factor: {
           intermediate_exp: {
             open_paren: "(",
-            accents: [
-              {
-                first_value: {
-                  atom: {
-                    char: {
-                      unicode_symbols: "&#x1d465;"
-                    }
+            accents: {
+              first_value: {
+                atom: {
+                  char: {
+                    unicode_symbols: "&#x1d465;"
                   }
                 }
               },
-              {
-                accent_symbols: "&#x2032;"
-              }
-            ],
+              prime_accent_symbols: "&#x2032;"
+            },
             close_paren: ")"
           }
         }
@@ -57656,33 +54492,25 @@ module UnicodeMathParseValues
                 }
               },
               recursive_numerator: {
-                factor: {
-                  atom: {
-                    char: {
-                      unicode_symbols: "&#x1d453;"
-                    }
+                atom: {
+                  char: {
+                    unicode_symbols: "&#x1d453;"
                   }
                 },
-                operand: {
-                  factor: {
-                    intermediate_exp: {
-                      open_paren: "(",
-                      accents: [
-                        {
-                          first_value: {
-                            atom: {
-                              char: {
-                                unicode_symbols: "&#x1d465;"
-                              }
-                            }
+                recursive_numerator: {
+                  intermediate_exp: {
+                    open_paren: "(",
+                    accents: {
+                      first_value: {
+                        atom: {
+                          char: {
+                            unicode_symbols: "&#x1d465;"
                           }
-                        },
-                        {
-                          accent_symbols: "&#x2032;"
                         }
-                      ],
-                      close_paren: ")"
-                    }
+                      },
+                      prime_accent_symbols: "&#x2032;"
+                    },
+                    close_paren: ")"
                   }
                 }
               }
@@ -57690,31 +54518,25 @@ module UnicodeMathParseValues
             denominator: {
               accents_subsup: {
                 base: {
-                  accents: [
-                    {
-                      first_value: {
-                        atom: {
+                  accents: {
+                    first_value: {
+                      atom: {
+                        char: {
+                          unicode_symbols: "&#x1d451;"
+                        },
+                        diacritics: {
                           char: {
-                            unicode_symbols: "&#x1d451;"
-                          },
-                          diacritics: {
-                            char: {
-                              unicode_symbols: "&#x1d465;"
-                            }
+                            unicode_symbols: "&#x1d465;"
                           }
                         }
                       }
                     },
-                    {
-                      accent_symbols: "&#x2032;"
-                    }
-                  ]
+                    prime_accent_symbols: "&#x2032;"
+                  }
                 },
-                sub: {
-                  sub_script: {
-                    sup_paren: {
-                      sup_digits: "&#xb2;"
-                    }
+                sup: {
+                  sup_script: {
+                    sup_digits: "&#xb2;"
                   }
                 }
               }
@@ -57727,17 +54549,52 @@ module UnicodeMathParseValues
   EXAMPLE_448 = {
     frac: {
       numerator: {
-        factor: {
-          ordinary_symbols: "&#x2146;"
-        }
+        binary_symbols: "&#x2146;"
       },
       denominator: {
-        ordinary_symbols: "&#x2146;",
+        binary_symbols: "&#x2146;",
         recursive_denominator: {
-          factor: {
+          atom: {
+            char: {
+              unicode_symbols: "&#x1d467;"
+            }
+          },
+          recursive_denominator: {
             atom: {
-              char: {
-                unicode_symbols: "&#x1d467;"
+              alphanumeric: "a"
+            },
+            atoms: {
+              atom: {
+                alphanumeric: "r"
+              },
+              atoms: {
+                atom: {
+                  alphanumeric: "c"
+                },
+                atoms: {
+                  atom: {
+                    alphanumeric: "s"
+                  },
+                  atoms: {
+                    atom: {
+                      alphanumeric: "i"
+                    },
+                    atoms: {
+                      atom: {
+                        alphanumeric: "n"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            recursive_denominator: {
+              factor: {
+                atom: {
+                  char: {
+                    unicode_symbols: "&#x1d467;"
+                  }
+                }
               }
             }
           }
@@ -57745,103 +54602,62 @@ module UnicodeMathParseValues
       }
     },
     expr: {
-      factor: {
-        atom: {
-          alphanumeric: "a"
-        },
-        atoms: {
-          atom: {
-            alphanumeric: "r"
-          },
-          atoms: {
-            atom: {
-              alphanumeric: "c"
+      operator: "=",
+      expr: {
+        sup_exp: {
+          base: {
+            open_paren: "(",
+            factor: {
+              digit: {
+                number: "1"
+              }
             },
-            atoms: {
-              atom: {
-                alphanumeric: "s"
-              },
-              atoms: {
-                atom: {
-                  alphanumeric: "i"
-                },
-                atoms: {
-                  atom: {
-                    alphanumeric: "n"
+            exp: {
+              unicode_symbols: "&#x2212;",
+              exp: {
+                mini_sup: {
+                  base: {
+                    factor: {
+                      atom: {
+                        char: {
+                          unicode_symbols: "&#x1d467;"
+                        }
+                      }
+                    }
+                  },
+                  sup: {
+                    sup_digits: "&#xb2;"
                   }
                 }
               }
-            }
-          }
-        }
-      },
-      expr: {
-        factor: {
-          atom: {
-            char: {
-              unicode_symbols: "&#x1d467;"
-            }
-          }
-        },
-        expr: {
-          operator: "=",
-          expr: {
-            sup_exp: {
-              base: {
-                open_paren: "(",
+            },
+            close_paren: ")"
+          },
+          sup: {
+            sup_script: {
+              operand: {
                 factor: {
-                  digit: {
-                    number: "1"
-                  }
-                },
-                expr: {
-                  unicode_symbols: "&#x2212;",
-                  expr: {
-                    mini_sup: {
-                      base: {
-                        factor: {
-                          atom: {
-                            char: {
-                              unicode_symbols: "&#x1d467;"
+                  intermediate_exp: {
+                    open_paren: "(",
+                    unicode_symbols: "&#x2212;",
+                    exp: {
+                      factor: {
+                        digit: {
+                          number: "1"
+                        }
+                      },
+                      exp: {
+                        slashed_value: "/",
+                        exp: {
+                          factor: {
+                            digit: {
+                              number: "2"
                             }
                           }
                         }
-                      },
-                      sup: {
-                        sup_digits: "&#xb2;"
                       }
-                    }
-                  }
-                },
-                close_paren: ")"
-              },
-              sup: {
-                sup_script: {
-                  operand: {
-                    factor: {
-                      intermediate_exp: {
-                        open_paren: "(",
-                        unicode_symbols: "&#x2212;",
-                        expr: {
-                          factor: {
-                            digit: {
-                              number: "1"
-                            }
-                          },
-                          expr: {
-                            slashed_value: "/",
-                            expr: {
-                              factor: {
-                                digit: {
-                                  number: "2"
-                                }
-                              }
-                            }
-                          }
-                        },
-                        close_paren: ")"
-                      }
-                    }
+                    },
+                    close_paren: ")"
                   }
                 }
               }
@@ -57854,30 +54670,26 @@ module UnicodeMathParseValues
   EXAMPLE_449 = {
     frac: {
       numerator: {
-        factor: {
-          ordinary_symbols: "&#x2146;"
-        },
-        operand: {
-          factor: {
-            intermediate_exp: {
-              open_paren: "(",
-              unary_subsup: {
-                unary_functions: "tan",
-                first_value: {
-                  factor: {
-                    atom: {
-                      alphanumeric: "x"
-                    }
+        binary_symbols: "&#x2146;",
+        recursive_numerator: {
+          intermediate_exp: {
+            open_paren: "(",
+            unary_subsup: {
+              unary_functions: "tan",
+              first_value: {
+                factor: {
+                  atom: {
+                    alphanumeric: "x"
                   }
                 }
-              },
-              close_paren: ")"
-            }
+              }
+            },
+            close_paren: ")"
           }
         }
       },
       denominator: {
-        ordinary_symbols: "&#x2146;",
+        binary_symbols: "&#x2146;",
         recursive_denominator: {
           factor: {
             atom: {
@@ -57892,10 +54704,8 @@ module UnicodeMathParseValues
       expr: {
         frac: {
           numerator: {
-            factor: {
-              digit: {
-                number: "1"
-              }
+            digit: {
+              number: "1"
             }
           },
           denominator: {
@@ -57932,10 +54742,8 @@ module UnicodeMathParseValues
     }
   }.freeze
   EXAMPLE_450 = {
-    factor: {
-      ordinary_symbols: "&#x2146;"
-    },
-    operand: {
+    binary_symbols: "&#x2146;",
+    expr: {
       factor: {
         atom: {
           alphanumeric: "x"
@@ -57946,19 +54754,15 @@ module UnicodeMathParseValues
   EXAMPLE_451 = {
     frac: {
       numerator: {
-        factor: {
-          ordinary_symbols: "&#x2146;"
-        },
-        operand: {
-          factor: {
-            atom: {
-              alphanumeric: "y"
-            }
+        binary_symbols: "&#x2146;",
+        recursive_numerator: {
+          atom: {
+            alphanumeric: "y"
           }
         }
       },
       denominator: {
-        ordinary_symbols: "&#x2146;",
+        binary_symbols: "&#x2146;",
         recursive_denominator: {
           factor: {
             atom: {
@@ -57973,39 +54777,37 @@ module UnicodeMathParseValues
       expr: {
         frac: {
           numerator: {
-            factor: {
-              intermediate_exp: {
-                open_paren: "[",
-                factor: {
-                  atom: {
-                    alphanumeric: "y"
-                  }
-                },
-                expr: {
-                  operator: "-",
-                  expr: {
+            intermediate_exp: {
+              open_paren: "[",
+              factor: {
+                atom: {
+                  alphanumeric: "y"
+                }
+              },
+              exp: {
+                operator: "-",
+                exp: {
+                  factor: {
+                    atom: {
+                      alphanumeric: "G"
+                    }
+                  },
+                  operand: {
                     factor: {
-                      atom: {
-                        alphanumeric: "G"
-                      }
-                    },
-                    operand: {
-                      factor: {
-                        intermediate_exp: {
-                          open_paren: "(",
-                          factor: {
-                            atom: {
-                              alphanumeric: "x"
-                            }
-                          },
-                          close_paren: ")"
-                        }
+                      intermediate_exp: {
+                        open_paren: "(",
+                        factor: {
+                          atom: {
+                            alphanumeric: "x"
+                          }
+                        },
+                        close_paren: ")"
                       }
                     }
                   }
-                },
-                close_paren: "]"
-              }
+                }
+              },
+              close_paren: "]"
             }
           },
           denominator: {
@@ -58021,9 +54823,9 @@ module UnicodeMathParseValues
                       alphanumeric: "x"
                     }
                   },
-                  expr: {
+                  exp: {
                     operator: ",",
-                    expr: {
+                    exp: {
                       factor: {
                         atom: {
                           alphanumeric: "y"
@@ -58043,19 +54845,15 @@ module UnicodeMathParseValues
   EXAMPLE_452 = {
     frac: {
       numerator: {
-        factor: {
-          ordinary_symbols: "&#x2146;"
-        },
-        operand: {
-          factor: {
-            atom: {
-              alphanumeric: "y"
-            }
+        binary_symbols: "&#x2146;",
+        recursive_numerator: {
+          atom: {
+            alphanumeric: "y"
           }
         }
       },
       denominator: {
-        ordinary_symbols: "&#x2146;",
+        binary_symbols: "&#x2146;",
         recursive_denominator: {
           factor: {
             atom: {
@@ -58070,39 +54868,37 @@ module UnicodeMathParseValues
       expr: {
         frac: {
           numerator: {
-            factor: {
-              intermediate_exp: {
-                open_paren: "[",
-                factor: {
-                  atom: {
-                    alphanumeric: "y"
-                  }
-                },
-                expr: {
-                  operator: "-",
-                  expr: {
+            intermediate_exp: {
+              open_paren: "[",
+              factor: {
+                atom: {
+                  alphanumeric: "y"
+                }
+              },
+              exp: {
+                operator: "-",
+                exp: {
+                  factor: {
+                    atom: {
+                      alphanumeric: "G"
+                    }
+                  },
+                  operand: {
                     factor: {
-                      atom: {
-                        alphanumeric: "G"
-                      }
-                    },
-                    operand: {
-                      factor: {
-                        intermediate_exp: {
-                          open_paren: "(",
-                          factor: {
-                            atom: {
-                              alphanumeric: "x"
-                            }
-                          },
-                          close_paren: ")"
-                        }
+                      intermediate_exp: {
+                        open_paren: "(",
+                        factor: {
+                          atom: {
+                            alphanumeric: "x"
+                          }
+                        },
+                        close_paren: ")"
                       }
                     }
                   }
-                },
-                close_paren: "]"
-              }
+                }
+              },
+              close_paren: "]"
             }
           },
           denominator: {
@@ -58118,9 +54914,9 @@ module UnicodeMathParseValues
                       alphanumeric: "x"
                     }
                   },
-                  expr: {
+                  exp: {
                     operator: ",",
-                    expr: {
+                    exp: {
                       factor: {
                         atom: {
                           alphanumeric: "y"
@@ -58140,19 +54936,15 @@ module UnicodeMathParseValues
   EXAMPLE_453 = {
     frac: {
       numerator: {
-        factor: {
-          ordinary_symbols: "&#x2146;"
-        },
-        operand: {
-          factor: {
-            atom: {
-              alphanumeric: "y"
-            }
+        binary_symbols: "&#x2146;",
+        recursive_numerator: {
+          atom: {
+            alphanumeric: "y"
           }
         }
       },
       denominator: {
-        ordinary_symbols: "&#x2146;",
+        binary_symbols: "&#x2146;",
         recursive_denominator: {
           factor: {
             atom: {
@@ -58167,39 +54959,37 @@ module UnicodeMathParseValues
       expr: {
         frac: {
           numerator: {
-            factor: {
-              intermediate_exp: {
-                open_paren: "[",
-                factor: {
-                  atom: {
-                    alphanumeric: "y"
-                  }
-                },
-                expr: {
-                  operator: "-",
-                  expr: {
+            intermediate_exp: {
+              open_paren: "[",
+              factor: {
+                atom: {
+                  alphanumeric: "y"
+                }
+              },
+              exp: {
+                operator: "-",
+                exp: {
+                  factor: {
+                    atom: {
+                      alphanumeric: "G"
+                    }
+                  },
+                  operand: {
                     factor: {
-                      atom: {
-                        alphanumeric: "G"
-                      }
-                    },
-                    operand: {
-                      factor: {
-                        intermediate_exp: {
-                          open_paren: "(",
-                          factor: {
-                            atom: {
-                              alphanumeric: "x"
-                            }
-                          },
-                          close_paren: ")"
-                        }
+                      intermediate_exp: {
+                        open_paren: "(",
+                        factor: {
+                          atom: {
+                            alphanumeric: "x"
+                          }
+                        },
+                        close_paren: ")"
                       }
                     }
                   }
-                },
-                close_paren: "]"
-              }
+                }
+              },
+              close_paren: "]"
             }
           },
           denominator: {
@@ -58215,9 +55005,9 @@ module UnicodeMathParseValues
                       alphanumeric: "x"
                     }
                   },
-                  expr: {
+                  exp: {
                     operator: ",",
-                    expr: {
+                    exp: {
                       factor: {
                         atom: {
                           alphanumeric: "y"
@@ -58268,9 +55058,7 @@ module UnicodeMathParseValues
       numerator: {
         mini_sup: {
           base: {
-            factor: {
-              ordinary_symbols: "&#x2146;"
-            }
+            binary_symbols: "&#x2146;"
           },
           sup: {
             sup_digits: "&#xb2;"
@@ -58289,81 +55077,59 @@ module UnicodeMathParseValues
             },
             sup: {
               sup_script: {
-                operand: {
-                  factor: {
-                    atom: {
-                      char: {
-                        unicode_symbols: "&#x2217;"
-                      }
-                    }
-                  }
-                }
+                binary_symbols: "&#x2217;"
               }
             }
           }
         }
       },
       denominator: {
-        frac: {
-          numerator: {
-            mini_sup: {
-              base: {
-                factor: {
-                  ordinary_symbols: "&#x2146;"
-                },
-                operand: {
-                  factor: {
-                    atom: {
-                      char: {
-                        unicode_symbols: "&#x1d467;"
-                      }
-                    }
+        binary_symbols: "&#x2146;",
+        recursive_denominator: {
+          mini_sup: {
+            base: {
+              factor: {
+                atom: {
+                  char: {
+                    unicode_symbols: "&#x1d467;"
                   }
                 }
-              },
-              sup: {
-                sup_digits: "&#xb2;"
               }
             },
+            sup: {
+              sup_digits: "&#xb2;"
+            }
+          }
+        }
+      }
+    },
+    expr: {
+      binary_symbols: "&#x2260;",
+      expr: {
+        frac: {
+          numerator: {
+            binary_symbols: "&#x2146;",
             recursive_numerator: {
               sup_exp: {
                 base: {
                   factor: {
-                    relational_symbols: "&#x2260;"
-                  },
-                  operand: {
-                    factor: {
-                      ordinary_symbols: "&#x2146;"
-                    },
-                    operand: {
-                      factor: {
-                        atom: {
-                          char: {
-                            unicode_symbols: "&#x1d6fe;"
-                          }
-                        }
+                    atom: {
+                      char: {
+                        unicode_symbols: "&#x1d6fe;"
                       }
                     }
                   }
                 },
                 sup: {
                   sup_script: {
-                    operand: {
-                      factor: {
-                        atom: {
-                          char: {
-                            unicode_symbols: "&#x2217;"
-                          }
-                        }
-                      }
-                    }
+                    binary_symbols: "&#x2217;"
                   }
                 }
               }
             }
           },
           denominator: {
-            ordinary_symbols: "&#x2146;",
+            binary_symbols: "&#x2146;",
             recursive_denominator: {
               factor: {
                 atom: {
@@ -58383,107 +55149,85 @@ module UnicodeMathParseValues
       numerator: {
         mini_sup: {
           base: {
-            factor: {
-              ordinary_symbols: "&#x2146;"
-            }
+            binary_symbols: "&#x2146;"
           },
           sup: {
             sup_digits: "&#xb2;"
           }
         },
         recursive_numerator: {
-          accents: [
-            {
-              first_value: {
-                atom: {
-                  char: {
-                    unicode_symbols: "&#x1d6fe;"
-                  }
+          accents: {
+            first_value: {
+              atom: {
+                char: {
+                  unicode_symbols: "&#x1d6fe;"
                 }
               }
             },
-            {
-              accent_symbols: "&#x2032;"
-            }
-          ]
+            prime_accent_symbols: "&#x2032;"
+          }
         }
       },
       denominator: {
-        frac: {
-          numerator: {
-            mini_sup: {
-              base: {
-                factor: {
-                  ordinary_symbols: "&#x2146;"
-                },
-                operand: {
-                  factor: {
-                    atom: {
-                      char: {
-                        unicode_symbols: "&#x1d467;"
-                      }
-                    }
+        binary_symbols: "&#x2146;",
+        recursive_denominator: {
+          mini_sup: {
+            base: {
+              factor: {
+                atom: {
+                  char: {
+                    unicode_symbols: "&#x1d467;"
                   }
                 }
-              },
-              sup: {
-                sup_digits: "&#xb2;"
               }
             },
+            sup: {
+              sup_digits: "&#xb2;"
+            }
+          }
+        }
+      }
+    },
+    expr: {
+      binary_symbols: "&#x2260;",
+      expr: {
+        frac: {
+          numerator: {
+            binary_symbols: "&#x2146;",
             recursive_numerator: {
-              factor: {
-                relational_symbols: "&#x2260;"
-              },
-              operand: {
-                factor: {
-                  ordinary_symbols: "&#x2146;"
-                },
-                operand: {
-                  accents: [
-                    {
-                      first_value: {
-                        atom: {
-                          char: {
-                            unicode_symbols: "&#x1d6fe;"
-                          }
-                        }
-                      }
-                    },
-                    {
-                      accent_symbols: "&#x2032;"
+              accents: {
+                first_value: {
+                  atom: {
+                    char: {
+                      unicode_symbols: "&#x1d6fe;"
                     }
-                  ]
-                }
+                  }
+                },
+                prime_accent_symbols: "&#x2032;"
               }
             }
           },
           denominator: {
+            binary_symbols: "&#x2146;",
+            recursive_denominator: {
+              factor: {
+                atom: {
+                  char: {
+                    unicode_symbols: "&#x1d467;"
+                  }
+                }
+              }
+            }
+          }
+        },
+        expr: {
+          binary_symbols: "&#x2260;",
+          expr: {
             frac: {
               numerator: {
                 sup_exp: {
                   base: {
-                    factor: {
-                      ordinary_symbols: "&#x2146;"
-                    },
-                    operand: {
-                      factor: {
-                        atom: {
-                          char: {
-                            unicode_symbols: "&#x1d467;"
-                          }
-                        }
-                      },
-                      operand: {
-                        factor: {
-                          relational_symbols: "&#x2260;"
-                        },
-                        operand: {
-                          factor: {
-                            ordinary_symbols: "&#x2146;"
-                          }
-                        }
-                      }
-                    }
+                    binary_symbols: "&#x2146;"
                   },
                   sup: {
                     sup_script: {
@@ -58498,29 +55242,23 @@ module UnicodeMathParseValues
                   }
                 },
                 recursive_numerator: {
-                  accents: [
-                    {
-                      first_value: {
-                        atom: {
-                          char: {
-                            unicode_symbols: "&#x1d6fe;"
-                          }
+                  accents: {
+                    first_value: {
+                      atom: {
+                        char: {
+                          unicode_symbols: "&#x1d6fe;"
                         }
                       }
                     },
-                    {
-                      accent_symbols: "&#x2032;"
-                    }
-                  ]
+                    prime_accent_symbols: "&#x2032;"
+                  }
                 }
               },
               denominator: {
-                mini_sup: {
-                  base: {
-                    factor: {
-                      ordinary_symbols: "&#x2146;"
-                    },
-                    operand: {
+                binary_symbols: "&#x2146;",
+                recursive_denominator: {
+                  mini_sup: {
+                    base: {
                       factor: {
                         atom: {
                           char: {
@@ -58528,10 +55266,10 @@ module UnicodeMathParseValues
                           }
                         }
                       }
+                    },
+                    sup: {
+                      sup_digits: "&#xb2;"
                     }
-                  },
-                  sup: {
-                    sup_digits: "&#xb2;"
                   }
                 }
               }
@@ -58544,12 +55282,10 @@ module UnicodeMathParseValues
   EXAMPLE_456 = {
     frac: {
       numerator: {
-        mini_sub: {
-          base: {
-            factor: {
-              ordinary_symbols: "&#x2146;"
-            },
-            operand: {
+        binary_symbols: "&#x2146;",
+        recursive_numerator: {
+          mini_sub: {
+            base: {
               factor: {
                 atom: {
                   char: {
@@ -58557,15 +55293,15 @@ module UnicodeMathParseValues
                   }
                 }
               }
+            },
+            sub: {
+              sub_digits: "&#x2081;"
             }
-          },
-          sub: {
-            sub_digits: "&#x2081;"
           }
         }
       },
       denominator: {
-        ordinary_symbols: "&#x2146;",
+        binary_symbols: "&#x2146;",
         recursive_denominator: {
           factor: {
             atom: {
@@ -58612,9 +55348,9 @@ module UnicodeMathParseValues
                   sub_digits: "&#x2082;"
                 }
               },
-              expr: {
+              exp: {
                 unicode_symbols: "&#x2212;",
-                expr: {
+                exp: {
                   mini_sub: {
                     base: {
                       factor: {
@@ -58679,9 +55415,7 @@ module UnicodeMathParseValues
       numerator: {
         mini_sup: {
           base: {
-            factor: {
-              ordinary_symbols: "&#x2146;"
-            }
+            binary_symbols: "&#x2146;"
           },
           sup: {
             sup_digits: "&#xb2;"
@@ -58690,38 +55424,30 @@ module UnicodeMathParseValues
         recursive_numerator: {
           accents_subsup: {
             base: {
-              accents: [
-                {
-                  first_value: {
-                    atom: {
-                      char: {
-                        unicode_symbols: "&#x1d6fe;"
-                      }
+              accents: {
+                first_value: {
+                  atom: {
+                    char: {
+                      unicode_symbols: "&#x1d6fe;"
                     }
                   }
                 },
-                {
-                  accent_symbols: "&#x2032;"
-                }
-              ]
+                prime_accent_symbols: "&#x2032;"
+              }
             },
             sub: {
               sub_script: {
-                sub_paren: {
-                  sub_digits: "&#x2081;"
-                }
+                sub_digits: "&#x2081;"
               }
             }
           }
         }
       },
       denominator: {
-        mini_sup: {
-          base: {
-            factor: {
-              ordinary_symbols: "&#x2146;"
-            },
-            operand: {
+        binary_symbols: "&#x2146;",
+        recursive_denominator: {
+          mini_sup: {
+            base: {
               factor: {
                 atom: {
                   char: {
@@ -58729,10 +55455,10 @@ module UnicodeMathParseValues
                   }
                 }
               }
+            },
+            sup: {
+              sup_digits: "&#xb2;"
             }
-          },
-          sup: {
-            sup_digits: "&#xb2;"
           }
         }
       }
@@ -58853,9 +55579,9 @@ module UnicodeMathParseValues
                     }
                   }
                 },
-                expr: {
+                exp: {
                   operator: "+",
-                  expr: {
+                  exp: {
                     factor: {
                       atom: {
                         char: {
@@ -58897,46 +55623,36 @@ module UnicodeMathParseValues
         open_paren: "(",
         frac: {
           numerator: {
-            factor: {
-              atom: {
-                alphanumeric: "a"
-              }
+            atom: {
+              alphanumeric: "a"
             }
           },
           denominator: {
             frac: {
               numerator: {
-                factor: {
-                  atom: {
-                    alphanumeric: "b"
-                  }
+                atom: {
+                  alphanumeric: "b"
                 }
               },
               denominator: {
                 frac: {
                   numerator: {
-                    factor: {
-                      atom: {
-                        alphanumeric: "b"
-                      }
+                    atom: {
+                      alphanumeric: "b"
                     }
                   },
                   denominator: {
                     frac: {
                       numerator: {
-                        factor: {
-                          atom: {
-                            alphanumeric: "b"
-                          }
+                        atom: {
+                          alphanumeric: "b"
                         }
                       },
                       denominator: {
                         frac: {
                           numerator: {
-                            factor: {
-                              atom: {
-                                alphanumeric: "b"
-                              }
+                            atom: {
+                              alphanumeric: "b"
                             }
                           },
                           denominator: {
@@ -59020,9 +55736,9 @@ module UnicodeMathParseValues
                               alphanumeric: "A"
                             }
                           },
-                          expr: {
+                          exp: {
                             operator: "+",
-                            expr: {
+                            exp: {
                               factor: {
                                 atom: {
                                   alphanumeric: "B"
@@ -59144,9 +55860,9 @@ module UnicodeMathParseValues
                               alphanumeric: "A"
                             }
                           },
-                          expr: {
+                          exp: {
                             operator: "+",
-                            expr: {
+                            exp: {
                               factor: {
                                 atom: {
                                   alphanumeric: "B"
@@ -59268,9 +55984,9 @@ module UnicodeMathParseValues
                               alphanumeric: "A"
                             }
                           },
-                          expr: {
+                          exp: {
                             operator: "+",
-                            expr: {
+                            exp: {
                               factor: {
                                 atom: {
                                   alphanumeric: "B"
@@ -59282,13 +55998,7 @@ module UnicodeMathParseValues
                         }
                       },
                       expr: {
-                        factor: {
-                          atom: {
-                            char: {
-                              unicode_symbols: "&#x2227;"
-                            }
-                          }
-                        },
+                        binary_symbols: "&#x2227;",
                         expr: {
                           factor: {
                             atom: {
@@ -59304,13 +56014,7 @@ module UnicodeMathParseValues
                                 }
                               },
                               expr: {
-                                factor: {
-                                  atom: {
-                                    char: {
-                                      unicode_symbols: "&#x2227;"
-                                    }
-                                  }
-                                },
+                                binary_symbols: "&#x2227;",
                                 expr: {
                                   factor: {
                                     atom: {
@@ -59326,13 +56030,7 @@ module UnicodeMathParseValues
                                         }
                                       },
                                       expr: {
-                                        factor: {
-                                          atom: {
-                                            char: {
-                                              unicode_symbols: "&#x2227;"
-                                            }
-                                          }
-                                        },
+                                        binary_symbols: "&#x2227;",
                                         expr: {
                                           factor: {
                                             atom: {
@@ -59418,9 +56116,9 @@ module UnicodeMathParseValues
                                   alphanumeric: "B"
                                 }
                               },
-                              expr: {
+                              exp: {
                                 operator: "+",
-                                expr: {
+                                exp: {
                                   factor: {
                                     atom: {
                                       alphanumeric: "C"
@@ -59542,9 +56240,9 @@ module UnicodeMathParseValues
                                   alphanumeric: "B"
                                 }
                               },
-                              expr: {
+                              exp: {
                                 operator: "+",
-                                expr: {
+                                exp: {
                                   factor: {
                                     atom: {
                                       alphanumeric: "C"
@@ -59656,13 +56354,7 @@ module UnicodeMathParseValues
                         }
                       },
                       expr: {
-                        factor: {
-                          atom: {
-                            char: {
-                              unicode_symbols: "&#x2227;"
-                            }
-                          }
-                        },
+                        binary_symbols: "&#x2227;",
                         expr: {
                           factor: {
                             intermediate_exp: {
@@ -59672,9 +56364,9 @@ module UnicodeMathParseValues
                                   alphanumeric: "B"
                                 }
                               },
-                              expr: {
+                              exp: {
                                 operator: "+",
-                                expr: {
+                                exp: {
                                   factor: {
                                     atom: {
                                       alphanumeric: "C"
@@ -59694,13 +56386,7 @@ module UnicodeMathParseValues
                                 }
                               },
                               expr: {
-                                factor: {
-                                  atom: {
-                                    char: {
-                                      unicode_symbols: "&#x2227;"
-                                    }
-                                  }
-                                },
+                                binary_symbols: "&#x2227;",
                                 expr: {
                                   factor: {
                                     atom: {
@@ -59716,13 +56402,7 @@ module UnicodeMathParseValues
                                         }
                                       },
                                       expr: {
-                                        factor: {
-                                          atom: {
-                                            char: {
-                                              unicode_symbols: "&#x2227;"
-                                            }
-                                          }
-                                        },
+                                        binary_symbols: "&#x2227;",
                                         expr: {
                                           factor: {
                                             atom: {
@@ -59821,13 +56501,7 @@ module UnicodeMathParseValues
                           }
                         },
                         expr: {
-                          factor: {
-                            atom: {
-                              char: {
-                                unicode_symbols: "&#x2227;"
-                              }
-                            }
-                          },
+                          binary_symbols: "&#x2227;",
                           expr: {
                             factor: {
                               atom: {
@@ -59839,10 +56513,8 @@ module UnicodeMathParseValues
                               expr: {
                                 frac: {
                                   numerator: {
-                                    factor: {
-                                      digit: {
-                                        number: "1"
-                                      }
+                                    digit: {
+                                      number: "1"
                                     }
                                   },
                                   denominator: {
@@ -59862,15 +56534,15 @@ module UnicodeMathParseValues
                                           alphanumeric: "B"
                                         }
                                       },
-                                      expr: {
+                                      exp: {
                                         factor: {
                                           atom: {
                                             alphanumeric: "a"
                                           }
                                         },
-                                        expr: {
+                                        exp: {
                                           operator: "+",
-                                          expr: {
+                                          exp: {
                                             factor: {
                                               alphanumeric: "a"
                                             },
@@ -59976,13 +56648,7 @@ module UnicodeMathParseValues
                           }
                         },
                         expr: {
-                          factor: {
-                            atom: {
-                              char: {
-                                unicode_symbols: "&#x2227;"
-                              }
-                            }
-                          },
+                          binary_symbols: "&#x2227;",
                           expr: {
                             factor: {
                               atom: {
@@ -59994,10 +56660,8 @@ module UnicodeMathParseValues
                               expr: {
                                 frac: {
                                   numerator: {
-                                    factor: {
-                                      digit: {
-                                        number: "1"
-                                      }
+                                    digit: {
+                                      number: "1"
                                     }
                                   },
                                   denominator: {
@@ -60017,15 +56681,15 @@ module UnicodeMathParseValues
                                           alphanumeric: "a"
                                         }
                                       },
-                                      expr: {
+                                      exp: {
                                         factor: {
                                           atom: {
                                             alphanumeric: "B"
                                           }
                                         },
-                                        expr: {
+                                        exp: {
                                           operator: "+",
-                                          expr: {
+                                          exp: {
                                             sup_exp: {
                                               base: {
                                                 symbol: "B"
@@ -60034,7 +56698,7 @@ module UnicodeMathParseValues
                                                 operator: "*"
                                               }
                                             },
-                                            expr: {
+                                            exp: {
                                               factor: {
                                                 atom: {
                                                   alphanumeric: "a"
@@ -60162,10 +56826,8 @@ module UnicodeMathParseValues
                               expr: {
                                 frac: {
                                   numerator: {
-                                    factor: {
-                                      digit: {
-                                        number: "1"
-                                      }
+                                    digit: {
+                                      number: "1"
                                     }
                                   },
                                   denominator: {
@@ -60185,15 +56847,15 @@ module UnicodeMathParseValues
                                           alphanumeric: "B"
                                         }
                                       },
-                                      expr: {
+                                      exp: {
                                         factor: {
                                           atom: {
                                             alphanumeric: "a"
                                           }
                                         },
-                                        expr: {
+                                        exp: {
                                           operator: "-",
-                                          expr: {
+                                          exp: {
                                             factor: {
                                               alphanumeric: "a"
                                             },
@@ -60326,10 +56988,8 @@ module UnicodeMathParseValues
                               expr: {
                                 frac: {
                                   numerator: {
-                                    factor: {
-                                      digit: {
-                                        number: "1"
-                                      }
+                                    digit: {
+                                      number: "1"
                                     }
                                   },
                                   denominator: {
@@ -60349,15 +57009,15 @@ module UnicodeMathParseValues
                                           alphanumeric: "a"
                                         }
                                       },
-                                      expr: {
+                                      exp: {
                                         factor: {
                                           atom: {
                                             alphanumeric: "B"
                                           }
                                         },
-                                        expr: {
+                                        exp: {
                                           operator: "-",
-                                          expr: {
+                                          exp: {
                                             sup_exp: {
                                               base: {
                                                 symbol: "B"
@@ -60366,7 +57026,7 @@ module UnicodeMathParseValues
                                                 operator: "*"
                                               }
                                             },
-                                            expr: {
+                                            exp: {
                                               factor: {
                                                 atom: {
                                                   alphanumeric: "a"
@@ -60401,11 +57061,7 @@ module UnicodeMathParseValues
     },
     expr: {
       factor: {
-        atom: {
-          char: {
-            unicode_symbols: "&#x3b1;"
-          }
-        }
+        ordinary_symbols: "&#x3b1;"
       },
       expr: {
         factor: {
@@ -60464,20 +57120,10 @@ module UnicodeMathParseValues
                       },
                       expr: {
                         factor: {
-                          atom: {
-                            char: {
-                              unicode_symbols: "&#x3b1;"
-                            }
-                          }
+                          ordinary_symbols: "&#x3b1;"
                         },
                         expr: {
-                          factor: {
-                            atom: {
-                              char: {
-                                unicode_symbols: "&#x2227;"
-                              }
-                            }
-                          },
+                          binary_symbols: "&#x2227;",
                           expr: {
                             factor: {
                               atom: {
@@ -60493,30 +57139,16 @@ module UnicodeMathParseValues
                                   }
                                 },
                                 expr: {
-                                  factor: {
-                                    atom: {
-                                      char: {
-                                        unicode_symbols: "&#x2227;"
-                                      }
-                                    }
-                                  },
+                                  binary_symbols: "&#x2227;",
                                   expr: {
                                     factor: {
-                                      atom: {
-                                        char: {
-                                          unicode_symbols: "&#x3b1;"
-                                        }
-                                      }
+                                      ordinary_symbols: "&#x3b1;"
                                     },
                                     expr: {
                                       operator: "=",
                                       expr: {
                                         factor: {
-                                          atom: {
-                                            char: {
-                                              unicode_symbols: "&#x3b1;"
-                                            }
-                                          }
+                                          ordinary_symbols: "&#x3b1;"
                                         },
                                         expr: {
                                           factor: {
@@ -60534,11 +57166,7 @@ module UnicodeMathParseValues
                                               },
                                               expr: {
                                                 factor: {
-                                                  atom: {
-                                                    char: {
-                                                      unicode_symbols: "&#x3b1;"
-                                                    }
-                                                  }
+                                                  ordinary_symbols: "&#x3b1;"
                                                 }
                                               }
                                             }
@@ -60579,9 +57207,9 @@ module UnicodeMathParseValues
                         alphanumeric: "k"
                       }
                     },
-                    expr: {
+                    exp: {
                       operator: "=",
-                      expr: {
+                      exp: {
                         factor: {
                           digit: {
                             number: "0"
@@ -60611,13 +57239,11 @@ module UnicodeMathParseValues
       naryand: {
         frac: {
           numerator: {
-            factor: {
-              atom: {
-                alphanumeric: "n"
-              }
+            atom: {
+              alphanumeric: "n"
             }
           },
-          atop: "&#x249e;",
+          choose: "&#x249e;",
           denominator: {
             factor: {
               atom: {
@@ -60642,16 +57268,14 @@ module UnicodeMathParseValues
               }
             },
             recursive_numerator: {
-              factor: {
-                intermediate_exp: {
-                  open_paren: "(",
-                  factor: {
-                    atom: {
-                      alphanumeric: "n"
-                    }
-                  },
-                  close_paren: ")"
-                }
+              intermediate_exp: {
+                open_paren: "(",
+                factor: {
+                  atom: {
+                    alphanumeric: "n"
+                  }
+                },
+                close_paren: ")"
               }
             }
           },
@@ -60678,9 +57302,9 @@ module UnicodeMathParseValues
                             alphanumeric: "n"
                           }
                         },
-                        expr: {
+                        exp: {
                           operator: "+",
-                          expr: {
+                          exp: {
                             factor: {
                               digit: {
                                 number: "1"
@@ -60702,65 +57326,45 @@ module UnicodeMathParseValues
           expr: {
             frac: {
               numerator: {
-                factor: {
-                  intermediate_exp: {
-                    open_paren: "(",
-                    nary: {
-                      nary_sub_sup: {
-                        subsup_exp: {
-                          nary_class: "&#x220f;",
-                          sub: {
-                            sub_script: {
-                              operand: {
-                                factor: {
-                                  intermediate_exp: {
-                                    open_paren: "(",
-                                    factor: {
-                                      atom: {
-                                        alphanumeric: "h"
-                                      }
-                                    },
-                                    expr: {
-                                      operator: "=",
-                                      expr: {
-                                        factor: {
-                                          digit: {
-                                            number: "0"
-                                          }
+                intermediate_exp: {
+                  open_paren: "(",
+                  nary: {
+                    nary_sub_sup: {
+                      subsup_exp: {
+                        nary_class: "&#x220f;",
+                        sub: {
+                          sub_script: {
+                            operand: {
+                              factor: {
+                                intermediate_exp: {
+                                  open_paren: "(",
+                                  factor: {
+                                    atom: {
+                                      alphanumeric: "h"
+                                    }
+                                  },
+                                  exp: {
+                                    operator: "=",
+                                    exp: {
+                                      factor: {
+                                        digit: {
+                                          number: "0"
                                         }
                                       }
-                                    },
-                                    close_paren: ")"
-                                  }
-                                }
-                              }
-                            }
-                          },
-                          sup: {
-                            sup_script: {
-                              operand: {
-                                factor: {
-                                  atom: {
-                                    alphanumeric: "n"
-                                  }
+                                    }
+                                  },
+                                  close_paren: ")"
                                 }
                               }
                             }
                           }
-                        }
-                      },
-                      naryand: {
-                        sup_exp: {
-                          base: {
-                            symbol: "h"
-                          },
-                          sup: {
-                            sup_script: {
-                              operand: {
-                                factor: {
-                                  atom: {
-                                    alphanumeric: "h"
-                                  }
+                        },
+                        sup: {
+                          sup_script: {
+                            operand: {
+                              factor: {
+                                atom: {
+                                  alphanumeric: "n"
                                 }
                               }
                             }
@@ -60768,8 +57372,26 @@ module UnicodeMathParseValues
                         }
                       }
                     },
-                    close_paren: ")"
-                  }
+                    naryand: {
+                      sup_exp: {
+                        base: {
+                          symbol: "h"
+                        },
+                        sup: {
+                          sup_script: {
+                            operand: {
+                              factor: {
+                                atom: {
+                                  alphanumeric: "h"
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  close_paren: ")"
                 }
               },
               denominator: {
@@ -60795,9 +57417,9 @@ module UnicodeMathParseValues
                                 alphanumeric: "n"
                               }
                             },
-                            expr: {
+                            exp: {
                               operator: "+",
-                              expr: {
+                              exp: {
                                 factor: {
                                   digit: {
                                     number: "1"
@@ -60842,7 +57464,7 @@ module UnicodeMathParseValues
         factor: {
           ordinary_symbols: "forall"
         },
-        expr: {
+        exp: {
           factor: {
             atom: {
               alphanumeric: "y"
@@ -60853,7 +57475,7 @@ module UnicodeMathParseValues
               ordinary_symbols: "exists"
             }
           },
-          expr: {
+          exp: {
             factor: {
               digit: {
                 number: "1"
@@ -60876,9 +57498,9 @@ module UnicodeMathParseValues
             }
           }
         },
-        expr: {
+        exp: {
           operator: "+",
-          expr: {
+          exp: {
             factor: {
               atom: {
                 char: {
@@ -60907,98 +57529,70 @@ module UnicodeMathParseValues
     expr: {
       operator: "=",
       expr: {
-        frac: {
-          numerator: {
-            nary: {
-              nary_sub_sup: {
-                subsup_exp: {
-                  nary_class: "&#x2211;",
-                  sub: {
-                    sub_script: {
-                      operand: {
-                        factor: {
-                          intermediate_exp: {
-                            open_paren: "(",
-                            factor: {
-                              atom: {
-                                char: {
-                                  unicode_symbols: "&#x1d458;"
-                                }
-                              }
-                            },
-                            expr: {
-                              operator: "=",
-                              expr: {
-                                factor: {
-                                  digit: {
-                                    number: "0"
-                                  }
-                                }
-                              }
-                            },
-                            close_paren: ")"
-                          }
-                        }
-                      }
-                    }
-                  },
-                  sup: {
-                    sup_script: {
-                      operand: {
+        nary: {
+          nary_sub_sup: {
+            subsup_exp: {
+              nary_class: "&#x2211;",
+              sub: {
+                sub_script: {
+                  operand: {
+                    factor: {
+                      intermediate_exp: {
+                        open_paren: "(",
                         factor: {
                           atom: {
                             char: {
-                              unicode_symbols: "&#x1d45b;"
+                              unicode_symbols: "&#x1d458;"
                             }
                           }
-                        }
+                        },
+                        exp: {
+                          operator: "=",
+                          exp: {
+                            factor: {
+                              digit: {
+                                number: "0"
+                              }
+                            }
+                          }
+                        },
+                        close_paren: ")"
                       }
                     }
                   }
                 }
-              }
-            },
-            recursive_numerator: {
-              factor: {
-                atom: {
-                  char: {
-                    unicode_symbols: "&#x1d45b;"
+              },
+              sup: {
+                sup_script: {
+                  operand: {
+                    factor: {
+                      atom: {
+                        char: {
+                          unicode_symbols: "&#x1d45b;"
+                        }
+                      }
+                    }
                   }
-                }
-              }
-            }
-          },
-          atop: "&#x249e;",
-          denominator: {
-            factor: {
-              atom: {
-                char: {
-                  unicode_symbols: "&#x1d458;"
                 }
               }
             }
           }
         },
         expr: {
-          sup_exp: {
-            base: {
-              factor: {
-                atom: {
-                  char: {
-                    unicode_symbols: "&#x1d44e;"
-                  }
+          frac: {
+            numerator: {
+              atom: {
+                char: {
+                  unicode_symbols: "&#x1d45b;"
                 }
               }
             },
-            sup: {
-              sup_script: {
-                operand: {
-                  factor: {
-                    atom: {
-                      char: {
-                        unicode_symbols: "&#x1d458;"
-                      }
-                    }
+            choose: "&#x249e;",
+            denominator: {
+              factor: {
+                atom: {
+                  char: {
+                    unicode_symbols: "&#x1d458;"
                   }
                 }
               }
@@ -61010,38 +57604,64 @@ module UnicodeMathParseValues
                 factor: {
                   atom: {
                     char: {
-                      unicode_symbols: "&#x1d44f;"
+                      unicode_symbols: "&#x1d44e;"
                     }
                   }
                 }
               },
               sup: {
                 sup_script: {
-                  int_exp: {
-                    opener: {
-                      open_paren: "("
-                    },
-                    operand: {
-                      factor: {
-                        atom: {
-                          char: {
-                            unicode_symbols: "&#x1d45b;"
-                          },
-                          diacritics: {
+                  operand: {
+                    factor: {
+                      atom: {
+                        char: {
+                          unicode_symbols: "&#x1d458;"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            expr: {
+              sup_exp: {
+                base: {
+                  factor: {
+                    atom: {
+                      char: {
+                        unicode_symbols: "&#x1d44f;"
+                      }
+                    }
+                  }
+                },
+                sup: {
+                  sup_script: {
+                    int_exp: {
+                      opener: {
+                        open_paren: "("
+                      },
+                      operand: {
+                        factor: {
+                          atom: {
                             char: {
-                              unicode_symbols: "&#x2212;"
+                              unicode_symbols: "&#x1d45b;"
                             },
                             diacritics: {
                               char: {
-                                unicode_symbols: "&#x1d458;"
+                                unicode_symbols: "&#x2212;"
+                              },
+                              diacritics: {
+                                char: {
+                                  unicode_symbols: "&#x1d458;"
+                                }
                               }
                             }
                           }
                         }
+                      },
+                      closer: {
+                        close_paren: ")"
                       }
-                    },
-                    closer: {
-                      close_paren: ")"
                     }
                   }
                 }
@@ -61077,15 +57697,11 @@ module UnicodeMathParseValues
         mini_sup: {
           base: {
             factor: {
-              atom: {
-                char: {
-                  unicode_symbols: "&#x394;"
-                },
-                diacritics: {
-                  char: {
-                    unicode_symbols: "&#x3b1;"
-                  }
-                }
+              relational_symbols: "&#x394;"
+            },
+            operand: {
+              factor: {
+                ordinary_symbols: "&#x3b1;"
               }
             }
           },
@@ -61106,11 +57722,7 @@ module UnicodeMathParseValues
             sub_script: {
               operand: {
                 factor: {
-                  atom: {
-                    char: {
-                      unicode_symbols: "&#x3b1;"
-                    }
-                  }
+                  ordinary_symbols: "&#x3b1;"
                 }
               }
             }
@@ -61146,9 +57758,9 @@ module UnicodeMathParseValues
                         }
                       }
                     },
-                    expr: {
+                    exp: {
                       operator: "=",
-                      expr: {
+                      exp: {
                         mini_sup: {
                           base: {
                             factor: {
@@ -61270,9 +57882,9 @@ module UnicodeMathParseValues
                   alphanumeric: "a"
                 }
               },
-              expr: {
+              exp: {
                 operator: "+",
-                expr: {
+                exp: {
                   factor: {
                     intermediate_exp: {
                       open_paren: "(",
@@ -61351,11 +57963,7 @@ module UnicodeMathParseValues
                 first_value: {
                   expr: {
                     factor: {
-                      atom: {
-                        char: {
-                          unicode_symbols: "&#x3b1;"
-                        }
-                      }
+                      ordinary_symbols: "&#x3b1;"
                     }
                   }
                 }
@@ -61372,22 +57980,14 @@ module UnicodeMathParseValues
         first_value: {
           expr: {
             factor: {
-              atom: {
-                char: {
-                  unicode_symbols: "&#x3b4;"
-                }
-              }
+              relational_symbols: "&#x3b4;"
             }
           }
         },
         second_value: {
           expr: {
             factor: {
-              atom: {
-                char: {
-                  unicode_symbols: "&#x3b1;"
-                }
-              }
+              ordinary_symbols: "&#x3b1;"
             }
           }
         }
@@ -61467,10 +58067,8 @@ module UnicodeMathParseValues
                     expr: {
                       frac: {
                         numerator: {
-                          factor: {
-                            digit: {
-                              number: "1"
-                            }
+                          digit: {
+                            number: "1"
                           }
                         },
                         denominator: {
@@ -61496,10 +58094,8 @@ module UnicodeMathParseValues
               open_paren: "(",
               frac: {
                 numerator: {
-                  factor: {
-                    atom: {
-                      alphanumeric: "c"
-                    }
+                  atom: {
+                    alphanumeric: "c"
                   }
                 },
                 denominator: {
@@ -61523,11 +58119,7 @@ module UnicodeMathParseValues
         root_symbol: "&#x221a;",
         first_value: {
           factor: {
-            atom: {
-              char: {
-                unicode_symbols: "&#x3b1;"
-              }
-            }
+            ordinary_symbols: "&#x3b1;"
           }
         }
       }
@@ -61544,11 +58136,7 @@ module UnicodeMathParseValues
               first_value: {
                 expr: {
                   factor: {
-                    atom: {
-                      char: {
-                        unicode_symbols: "&#x3b1;"
-                      }
-                    }
+                    ordinary_symbols: "&#x3b1;"
                   }
                 }
               }
@@ -61559,22 +58147,10 @@ module UnicodeMathParseValues
     }
   }.freeze
   EXAMPLE_493 = {
-    factor: {
-      atom: {
-        char: {
-          unicode_symbols: "&#x2227;"
-        }
-      }
-    }
+    binary_symbols: "&#x2227;"
   }.freeze
   EXAMPLE_494 = {
-    factor: {
-      atom: {
-        char: {
-          unicode_symbols: "&#x2227;"
-        }
-      }
-    },
+    binary_symbols: "&#x2227;",
     expr: {
       operator: ":",
       expr: {
@@ -61601,70 +58177,68 @@ module UnicodeMathParseValues
           }
         },
         expr: {
-          factor: {
-            char: {
-              unicode_symbols: "&#xd7;"
-            }
-          },
-          sub_exp: {
-            base: {
-              factor: {
-                atom: {
-                  char: {
-                    unicode_symbols: "&#x1d4a2;"
-                  }
-                }
-              }
-            },
-            sub: {
-              sub_script: {
-                operand: {
-                  factor: {
-                    atom: {
-                      alphanumeric: "m"
+          binary_symbols: "&#xd7;",
+          expr: {
+            sub_exp: {
+              base: {
+                factor: {
+                  atom: {
+                    char: {
+                      unicode_symbols: "&#x1d4a2;"
                     }
                   }
                 }
-              }
-            }
-          },
-          expr: {
-            factor: {
-              relational_symbols: "&#x2192;"
-            },
-            expr: {
-              sub_exp: {
-                base: {
-                  factor: {
-                    atom: {
-                      char: {
-                        unicode_symbols: "&#x1d4a2;"
+              },
+              sub: {
+                sub_script: {
+                  operand: {
+                    factor: {
+                      atom: {
+                        alphanumeric: "m"
                       }
                     }
                   }
-                },
-                sub: {
-                  sub_script: {
-                    operand: {
-                      factor: {
-                        intermediate_exp: {
-                          open_paren: "{",
-                          factor: {
-                            atom: {
-                              alphanumeric: "n"
-                            }
-                          },
-                          expr: {
-                            operator: "+",
-                            expr: {
-                              factor: {
-                                atom: {
-                                  alphanumeric: "m"
+                }
+              }
+            },
+            expr: {
+              factor: {
+                relational_symbols: "&#x2192;"
+              },
+              expr: {
+                sub_exp: {
+                  base: {
+                    factor: {
+                      atom: {
+                        char: {
+                          unicode_symbols: "&#x1d4a2;"
+                        }
+                      }
+                    }
+                  },
+                  sub: {
+                    sub_script: {
+                      operand: {
+                        factor: {
+                          intermediate_exp: {
+                            open_paren: "{",
+                            factor: {
+                              atom: {
+                                alphanumeric: "n"
+                              }
+                            },
+                            exp: {
+                              operator: "+",
+                              exp: {
+                                factor: {
+                                  atom: {
+                                    alphanumeric: "m"
+                                  }
                                 }
                               }
-                            }
-                          },
-                          close_paren: "}"
+                            },
+                            close_paren: "}"
+                          }
                         }
                       }
                     }
