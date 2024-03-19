@@ -90,7 +90,7 @@ module Plurimath
           forward_slash |
           str("\\over") |
           str("\\not") |
-          str("&#x002f;") |
+          str("&#x2f;") |
           (str("&#xa6;") | str("\\atop")).as(:atop) |
           (str("\\choose") | str("&#x249e;")).as(:choose)
       end
