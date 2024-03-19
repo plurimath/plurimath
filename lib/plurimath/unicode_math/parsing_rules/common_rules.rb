@@ -46,15 +46,6 @@ module Plurimath
             op_alphanumeric_fonts >> (match["A-Za-z"].as(:symbol) | match("[0-9]").as(:number))
         end
 
-        rule(:mini_fraction) do
-          sup_paren.as(:numerator) >> (negatable_symbols.absent? >> op_over) >> sub_paren.as(:denominator)
-        end
-
-        rule(:fraction) do
-          mini_fraction |
-            numerator.as(:numerator) >> space? >> (negatable_symbols.absent? >> op_over) >> space? >> denominator.as(:denominator)
-        end
-
         rule(:fonts) do
           str("\\") >> custom_fonts.as(:unicoded_font_class) >> str("H").as(:symbol) |
             str("\\") >> str("mitBbb").as(:unicoded_font_class) >> match(/D|d|e|i|j/).as(:symbol)|
