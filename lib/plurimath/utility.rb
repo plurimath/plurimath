@@ -759,7 +759,11 @@ module Plurimath
       end
 
       def accent_value(accent, function: false)
-        (accent[:accent_symbols] ? Math::Symbol.new(accent[:accent_symbols]) : (accent[:first_value] || filter_values(accent[:prime_accent_symbols])))
+        if accent[:accent_symbols]
+          Math::Symbol.new(accent[:accent_symbols])
+        else
+          accent[:first_value] || filter_values(accent[:prime_accent_symbols])
+        end
       end
 
       def unicode_fractions(fractions)
