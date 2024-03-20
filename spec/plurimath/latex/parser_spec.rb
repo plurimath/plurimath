@@ -13476,7 +13476,7 @@ RSpec.describe Plurimath::Latex::Parser do
           ),
           Plurimath::Math::Symbol.new("&#x3a;"),
           Plurimath::Math::Function::Power.new(
-            Plurimath::Math::Function::FontStyle.new(
+            Plurimath::Math::Function::FontStyle::BoldItalic.new(
               Plurimath::Math::Symbol.new("F"),
               "mbfit"
             ),
@@ -13501,10 +13501,10 @@ RSpec.describe Plurimath::Latex::Parser do
                       Plurimath::Math::Function::Base.new(
                         Plurimath::Math::Symbol.new("n"),
                         Plurimath::Math::Symbol.new("x")
-                      ),
+                      )
                     ],
                     { columnalign: "center" }
-                  ),
+                  )
                 ]),
                 Plurimath::Math::Function::Tr.new([
                   Plurimath::Math::Function::Td.new(
@@ -13512,18 +13512,17 @@ RSpec.describe Plurimath::Latex::Parser do
                       Plurimath::Math::Function::Base.new(
                         Plurimath::Math::Symbol.new("n"),
                         Plurimath::Math::Symbol.new("y")
-                      ),
+                      )
                     ],
                     { columnalign: "center" }
-                  ),
-                ]),
+                  )
+                ])
               ],
               nil,
               nil,
-              {}
             ),
-            Plurimath::Math::Function::Right.new(")"),
-          ]),
+            Plurimath::Math::Function::Right.new(")")
+          ])
         ])
         expect(formula).to eq(expected_value)
       end

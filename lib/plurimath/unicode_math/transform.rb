@@ -140,10 +140,14 @@ module Plurimath
       rule(slashed_value: sequence(:values)) do
         values.each.with_index do |value, index|
           decoded = HTMLEntities.new.decode(value.value)
-          slashed = if decoded.to_s.match?(/^\w+/)
-                      Math::Function::Text.new("\\#{decoded}")
+          slashed = if index == 0
+                      if decoded.to_s.match?(/^\w+/)
+                        Math::Function::Text.new("\\#{decoded}")
+                      else
+                        Math::Symbol.new(decoded, true)
+                      end
                     else
-                      Math::Symbol.new(decoded, true)
+                      decoded.match?(/[0-9]/) ? Math::Number.new(decoded) : Math::Symbol.new(decoded)
                     end
           values[index] = slashed
         end
@@ -228,14 +232,6 @@ module Plurimath
         Math::Symbol.new(unicode)
       end
 
-      rule(number: simple(:number),
-           symbol: simple(:symbol)) do
-        [
-          Math::Number.new(number),
-          Math::Symbol.new(symbol),
-        ]
-      end
-
       rule(symbol: simple(:symbol),
            naryand_recursion: sequence(:naryand_recursion)) do
         [
@@ -295,22 +291,10 @@ module Plurimath
         [Math::Symbol.new(symbol), recursive_numerator]
       end
 
-      rule(number: simple(:number),
-           expr: simple(:expr)) do
-        [Math::Number.new(number), expr]
-      end
-
       rule(symbol: simple(:symbol),
            expr: sequence(:expr)) do
         [
           Math::Symbol.new(symbol),
-        ] + expr
-      end
-
-      rule(number: simple(:number),
-           expr: sequence(:expr)) do
-        [
-          Math::Number.new(number),
         ] + expr
       end
 
@@ -916,15 +900,11 @@ module Plurimath
 
       rule(intent: simple(:intent),
            intent_expr: simple(:expr)) do
-        if expr.is_a?(Math::Function::Fenced) && expr.parameter_two.first.is_a?(Math::Function::Text)
-          intent_string = expr.parameter_two.shift
-          Math::Function::Intent.new(
-            Utility.filter_values(expr.parameter_two),
-            intent_string,
-          )
-        else
-          binding.pry
-        end
+        intent_string = expr.parameter_two.shift
+        Math::Function::Intent.new(
+          Utility.filter_values(expr.parameter_two),
+          intent_string,
+        )
       end
 
       rule(over: simple(:over),
@@ -1327,7 +1307,6 @@ module Plurimath
            scripted_first_value: sequence(:scripted_first_value)) do
         value = Utility.unfenced_value(scripted_first_value, paren_specific: true)
         if hbrack == "&#x23de;"
-          binding.pry
           Math::Function::Obrace.new(value)
         elsif hbrack == "&#x23df;"
           if value.is_a?(Math::Function::Base) && !value.parameter_one.is_a?(Math::Formula)
@@ -1339,7 +1318,6 @@ module Plurimath
             Math::Function::Ubrace.new(value)
           end
         else
-          binding.pry
           if Constants::UNDER_HORIZONTAL_BRACKETS[hbrack.to_sym] || Constants::UNDER_HORIZONTAL_BRACKETS.key(hbrack)
             Math::Function::Underset.new(
               Math::Symbol.new(Constants::HORIZONTAL_BRACKETS[hbrack.to_sym] || hbrack),
@@ -1381,9 +1359,7 @@ module Plurimath
                               { accent: true },
                             )
                          else
-                           if notation.split(" ").length > 1
-                             binding.pry
-                           elsif overlay == "&#x304;"
+                           if overlay == "&#x304;"
                              Math::Function::Overset.new(
                                Math::Symbol.new(overlay),
                                overlay_value,
@@ -1410,9 +1386,7 @@ module Plurimath
             { accent: true },
           )
         else
-          if notation.split(" ").length > 1
-            binding.pry
-          elsif overlay == "&#x304;"
+          if overlay == "&#x304;"
             Math::Function::Overset.new(
               Math::Symbol.new(overlay),
               overlay_value,
@@ -1438,14 +1412,10 @@ module Plurimath
             { accent: true },
           )
         else
-          if notation.split(" ").length > 1
-            binding.pry
-          else
-            Math::Function::Menclose.new(
-              notation,
-              overlay_value
-            )
-          end
+          Math::Function::Menclose.new(
+            notation,
+            overlay_value
+          )
         end
       end
 
@@ -1460,11 +1430,7 @@ module Plurimath
             { accent: true },
           )
         else
-          if notation.split(" ").length > 1
-            binding.pry
-          else
-            Math::Function::Menclose.new(notation, overlay_value)
-          end
+          Math::Function::Menclose.new(notation, overlay_value)
         end
       end
 
@@ -1614,7 +1580,7 @@ module Plurimath
 
       rule(matrixs: simple(:matrixs),
            array: sequence(:array)) do
-        matrix = Constants::MATRIXS.key(matrixs)
+        matrix = Constants::MATRIXS.key(matrixs) || matrixs.to_sym
         if :Vmatrix == matrix
           Utility.get_table_class(matrix).new(
             array,
@@ -1633,15 +1599,15 @@ module Plurimath
 
       rule(matrixs: simple(:matrixs),
            identity_matrix_number: simple(:number)) do
-        matrix = Constants::MATRIXS.key(matrixs)
+        matrix = Constants::MATRIXS.key(matrixs) || matrixs.to_sym
         if :Vmatrix == matrix
           Utility.get_table_class(matrix).new(
-            array,
+            Utility.identity_matrix(number.to_i),
             "norm[",
           )
         elsif :Bmatrix == matrix
           Utility.get_table_class(matrix).new(
-            array,
+            Utility.identity_matrix(number.to_i),
             "{",
             "}",
           )
@@ -1797,6 +1763,9 @@ module Plurimath
         if subsup_exp.is_ternary_function?
           subsup_exp.parameter_three = naryand
           subsup_exp
+        elsif subsup_exp.is_a?(Math::Function::Nary)
+          subsup_exp.parameter_four = naryand
+          subsup_exp
         else
           Math::Formula.new([subsup_exp, naryand])
         end
@@ -1841,12 +1810,17 @@ module Plurimath
 
       rule(slashed_value: sequence(:values),
            expr: simple(:expr)) do
+
         values.each.with_index do |value, index|
           decoded = HTMLEntities.new.decode(value.value)
-          slashed = if decoded.to_s.match?(/^\w+/)
-                      Math::Function::Text.new("\\#{decoded}")
+          slashed = if index == 0
+                      if decoded.to_s.match?(/^\w+/)
+                        Math::Function::Text.new("\\#{decoded}")
+                      else
+                        Math::Symbol.new(decoded, true)
+                      end
                     else
-                      Math::Symbol.new(decoded, true)
+                      decoded.match?(/[0-9]/) ? Math::Number.new(decoded) : Math::Symbol.new(decoded)
                     end
           values[index] = slashed
         end
@@ -1857,10 +1831,14 @@ module Plurimath
            expr: sequence(:expr)) do
         values.each.with_index do |value, index|
           decoded = HTMLEntities.new.decode(value.value)
-          slashed = if decoded.to_s.match?(/^\w+/)
-                      Math::Function::Text.new("\\#{decoded}")
+          slashed = if index == 0
+                      if decoded.to_s.match?(/^\w+/)
+                        Math::Function::Text.new("\\#{decoded}")
+                      else
+                        Math::Symbol.new(decoded, true)
+                      end
                     else
-                      Math::Symbol.new(decoded, true)
+                      decoded.match?(/[0-9]/) ? Math::Number.new(decoded) : Math::Symbol.new(decoded)
                     end
           values[index] = slashed
         end
@@ -1886,13 +1864,9 @@ module Plurimath
                         else
                           Constants::NARY_CLASSES.invert[nary]
                         end
-        if nary_function
-          Utility.get_class(nary_function).new(
-            Utility.filter_values(sub),
-          )
-        else
-          binding.pry
-        end
+        Utility.get_class(nary_function).new(
+          Utility.filter_values(sub),
+        )
       end
 
       rule(nary_class: simple(:nary_class),
@@ -1926,16 +1900,12 @@ module Plurimath
                         else
                           Constants::NARY_CLASSES.invert[nary]
                         end
-        if nary_function
-          nary_value = if sup.class_name == "overset"
-                         sup.parameter_one
-                       else
-                         Utility.unfenced_value(sup, paren_specific: true)
-                       end
-          Utility.get_class(nary_function).new(nil, nary_value)
-        else
-          binding.pry
-        end
+        nary_value = if sup.class_name == "overset"
+                       sup.parameter_one
+                     else
+                       Utility.unfenced_value(sup, paren_specific: true)
+                     end
+        Utility.get_class(nary_function).new(nil, nary_value)
       end
 
       rule(nary_class: simple(:nary_class),
@@ -2163,14 +2133,10 @@ module Plurimath
                         else
                           Constants::NARY_CLASSES.invert[nary]
                         end
-        if nary_function
-          Utility.get_class(nary_function).new(
-            Utility.filter_values(sub),
-            Utility.filter_values(sup),
-          )
-        else
-          binding.pry
-        end
+        Utility.get_class(nary_function).new(
+          Utility.filter_values(sub),
+          Utility.filter_values(sup),
+        )
       end
 
       rule(numerator: simple(:numerator),
@@ -2761,14 +2727,10 @@ module Plurimath
                         else
                           Constants::NARY_CLASSES.invert[nary]
                         end
-        if nary_function
-          Utility.get_class(nary_function).new(
-            Utility.unfenced_value(sub, paren_specific: true),
-            Utility.unfenced_value(sup, paren_specific: true),
-          )
-        else
-          binding.pry
-        end
+        Utility.get_class(nary_function).new(
+          Utility.unfenced_value(sub, paren_specific: true),
+          Utility.unfenced_value(sup, paren_specific: true),
+        )
       end
 
       rule(nary_class: simple(:nary_class),
@@ -2781,23 +2743,19 @@ module Plurimath
                           Constants::NARY_CLASSES.invert[nary]
                         end
         sub_value = sub.is_a?(Math::Function::Underset) ? sub.parameter_one : Utility.unfenced_value(sub, paren_specific: true)
-        if nary_function
-          Utility.get_class(nary_function).new(
-            sub_value,
-            Utility.unfenced_value(sup, paren_specific: true),
-          )
-        else
-          binding.pry
-        end
+        Utility.get_class(nary_function).new(
+          sub_value,
+          Utility.unfenced_value(sup, paren_specific: true),
+        )
       end
 
       rule(nary_class: simple(:nary_class),
            mask: simple(:mask),
            sub: simple(:sub)) do
-        nary_function = Constants::NARY_CLASSES.invert[nary_class.to_s]
+        nary_function = (Constants::NARY_CLASSES.invert[nary_class.to_s] || nary_class)
         sub_value = sub.is_a?(Math::Function::Underset) ? sub.parameter_one : Utility.unfenced_value(sub, paren_specific: true)
         options = { mask: mask.value }
-        if nary_function
+        if Constants::NARY_CLASSES.key?(nary_function.to_sym)
           Utility.get_class(nary_function).new(
             sub_value,
             nil,
@@ -2808,6 +2766,7 @@ module Plurimath
           Math::Function::Nary.new(
             Math::Symbol.new(nary_class),
             sub_value,
+            nil,
             nil,
             options
           )
@@ -2817,10 +2776,10 @@ module Plurimath
       rule(nary_class: simple(:nary_class),
            mask: simple(:mask),
            sup: simple(:sup)) do
-        nary_function = Constants::NARY_CLASSES.invert[nary_class.to_s]
+        nary_function = (Constants::NARY_CLASSES.invert[nary_class.to_s] || nary_class)
         sup_value = sup.is_a?(Math::Function::Overset) ? sup.parameter_one : Utility.unfenced_value(sup, paren_specific: true)
         options = { mask: mask.value }
-        if nary_function
+        if Constants::NARY_CLASSES.key?(nary_function.to_sym)
           Utility.get_class(nary_function).new(
             nil,
             sup_value,
@@ -2832,6 +2791,7 @@ module Plurimath
             Math::Symbol.new(nary_class),
             nil,
             sup_value,
+            nil,
             options
           )
         end
@@ -3384,13 +3344,25 @@ module Plurimath
            mask: simple(:mask),
            sub: simple(:sub),
            sup: simple(:sup)) do
-        nary_function = Constants::NARY_CLASSES.invert[nary_class.to_s]
+        nary_function = (Constants::NARY_CLASSES.invert[nary_class.to_s] || nary_class)
         sub_value = sub.is_a?(Math::Function::Underset) ? sub.parameter_one : Utility.unfenced_value(sub, paren_specific: true)
         sup_value = sup.is_a?(Math::Function::Overset) ? sup.parameter_one : Utility.unfenced_value(sup, paren_specific: true)
-        if nary_function
-          Utility.get_class(nary_function).new(sub_value, sup_value, nil, { mask: mask.value })
+        options = { mask: mask.value }
+        if Constants::NARY_CLASSES.key?(nary_function.to_sym)
+          Utility.get_class(nary_function).new(
+            sub_value,
+            sup_value,
+            nil,
+            options
+          )
         else
-          binding.pry
+          Math::Function::Nary.new(
+            Math::Symbol.new(nary_class),
+            sub_value,
+            sup_value,
+            nil,
+            options
+          )
         end
       end
 

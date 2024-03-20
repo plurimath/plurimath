@@ -1420,7 +1420,7 @@ RSpec.describe Plurimath::Mathml::Parser do
       expected_value = Plurimath::Math::Formula.new([
         Plurimath::Math::Function::Mod.new(
           Plurimath::Math::Symbol.new("a"),
-          Plurimath::Math::Number.new("b"),
+          Plurimath::Math::Symbol.new("b"),
         ),
       ])
       expect(formula).to eq(expected_value)

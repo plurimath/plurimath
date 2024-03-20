@@ -591,14 +591,13 @@ RSpec.describe Plurimath::Math::Formula do
         ])
       }
       it "returns formula of symbols and text" do
-        expected_value =
-        <<~MATHML
+        expected_value = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
               <msubsup>
                 <mi>a</mi>
                 <mrow>
-                  <mo>&#x2225;</mo>
+                  <mo>&#x2016;</mo>
                   <mtable>
                     <mtr>
                       <mtd>
@@ -606,7 +605,7 @@ RSpec.describe Plurimath::Math::Formula do
                       </mtd>
                     </mtr>
                   </mtable>
-                  <mo>&#x2225;</mo>
+                  <mo>&#x2016;</mo>
                 </mrow>
                 <mtext>4terms</mtext>
               </msubsup>

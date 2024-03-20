@@ -363,7 +363,7 @@ RSpec.describe Plurimath::Mathml::Parser do
     it "returns formula of sum" do
       expected_value = Plurimath::Math::Formula.new([
         Plurimath::Math::Function::Overset.new(
-          Plurimath::Math::Number.new("&#x398;"),
+          Plurimath::Math::Symbol.new("&#x398;"),
           Plurimath::Math::Function::Sum.new,
         )
       ])
@@ -466,7 +466,7 @@ RSpec.describe Plurimath::Mathml::Parser do
     }
     it "returns formula of mod" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Symbol.new("12"),
+        Plurimath::Math::Number.new("12"),
         Plurimath::Math::Function::Mod.new,
         Plurimath::Math::Number.new("1234"),
         Plurimath::Math::Symbol.new("i"),
@@ -1099,9 +1099,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     it "returns formula of Mathbf" do
       expected_value = Plurimath::Math::Formula.new([
         Plurimath::Math::Function::Msgroup.new([
-          Plurimath::Math::Number.new("33"),
+          Plurimath::Math::Symbol.new("33"),
           Plurimath::Math::Function::Text.new("dd"),
-          Plurimath::Math::Number.new("0\n  "),
+          Plurimath::Math::Symbol.new("0\n  "),
         ])
       ])
       expect(formula).to eq(expected_value)
@@ -1122,9 +1122,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     it "returns formula of Mathbf" do
       expected_value = Plurimath::Math::Formula.new([
         Plurimath::Math::Function::Msgroup.new([
-          Plurimath::Math::Number.new("33"),
+          Plurimath::Math::Symbol.new("33"),
           Plurimath::Math::Symbol.new("dd"),
-          Plurimath::Math::Number.new("0\n  ")
+          Plurimath::Math::Symbol.new("0\n  ")
         ])
       ])
       expect(formula).to eq(expected_value)

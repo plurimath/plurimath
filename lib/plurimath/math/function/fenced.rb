@@ -139,7 +139,7 @@ module Plurimath
 
         def mathml_paren(field)
           unicodemath_syntax = ["&#x3016;", "&#x3017;"]
-          return "" if field&.value&.include?(":") || unicodemath_syntax.include?(field.value.to_s)
+          return "" if field&.value&.include?(":") || unicodemath_syntax.include?(field&.value&.to_s)
 
           field&.value
         end

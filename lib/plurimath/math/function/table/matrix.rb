@@ -28,7 +28,7 @@ module Plurimath
               table_tag,
               value&.map(&:to_mathml_without_math_tag),
             )
-            if open_paren.include?("(") && close_paren.include?(")")
+            if (open_paren&.include?("(") && close_paren&.include?(")")) || !(open_paren && close_paren)
               table_tag
             else
               mrow = ox_element("mrow")
