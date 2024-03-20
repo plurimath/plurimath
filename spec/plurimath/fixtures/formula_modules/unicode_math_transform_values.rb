@@ -18534,4 +18534,37 @@ module UnicodeMathTransformValues
       )
     )
   ])
+  EXAMPLE_676 = Plurimath::Math::Formula.new([
+    Plurimath::Math::Function::Nary.new(
+      Plurimath::Math::Symbol.new("&#x2210;"),
+      Plurimath::Math::Symbol.new("d"),
+      nil,
+      Plurimath::Math::Symbol.new("d"),
+      { mask: "13"}
+    )
+  ])
+  EXAMPLE_677 = Plurimath::Math::Formula.new([
+    Plurimath::Math::Function::Nary.new(
+      Plurimath::Math::Symbol.new("&#x2210;"),
+      Plurimath::Math::Formula.new([
+        Plurimath::Math::Symbol.new("d"),
+        Plurimath::Math::Symbol.new("d"),
+      ]),
+      nil,
+      Plurimath::Math::Symbol.new("d"),
+      { mask: "13" }
+    )
+  ])
+  EXAMPLE_678 = Plurimath::Math::Formula.new([
+    Plurimath::Math::Function::Nary.new(
+      Plurimath::Math::Symbol.new("&#x2210;"),
+      Plurimath::Math::Formula.new([
+        Plurimath::Math::Symbol.new("d"),
+        Plurimath::Math::Symbol.new("d"),
+      ]),
+      Plurimath::Math::Symbol.new("d"),
+      Plurimath::Math::Symbol.new("d"),
+      { mask: "13" }
+    )
+  ])
 end
