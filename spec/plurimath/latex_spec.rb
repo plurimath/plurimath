@@ -467,7 +467,8 @@ RSpec.describe Plurimath::Latex do
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
-              <mfenced open="[" close="]">
+              <mrow>
+                <mo>[</mo>
                 <mtable>
                   <mtr>
                     <mtd>
@@ -589,7 +590,8 @@ RSpec.describe Plurimath::Latex do
                     </mtd>
                   </mtr>
                 </mtable>
-              </mfenced>
+                <mo>]</mo>
+              </mrow>
             </mstyle>
           </math>
         MATHML

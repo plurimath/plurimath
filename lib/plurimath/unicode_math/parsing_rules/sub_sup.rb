@@ -42,14 +42,6 @@ module Plurimath
 
         rule(:mini_sub_sup_present?) { mini_sub_value.present? | mini_sup_value.present? | mini_subsup.present? }
 
-        rule(:sup_script) do
-          (script_base.as(:base) >> sup_paren.as(:sup_script)).as(:sup) >> sup_script.maybe
-        end
-
-        rule(:sub_script) do
-          (script_base.as(:base) >> sub_paren.as(:sub_script)).as(:sub) >> sub_script.maybe
-        end
-
         rule(:subscript_value) do
           (sub_paren | baseless_sub.as(:sub)) >> recursive_baseless_sub_exp.maybe
         end

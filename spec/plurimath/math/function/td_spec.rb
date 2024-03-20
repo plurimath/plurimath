@@ -6,15 +6,15 @@ RSpec.describe Plurimath::Math::Function::Td do
     subject(:td) { Plurimath::Math::Function::Td.new(first_value) }
 
     context "initialize Td object" do
-      let(:first_value) { "70" }
+      let(:first_value) { ["70"] }
 
       it 'returns instance of Td' do
         expect(td).to be_a(Plurimath::Math::Function::Td)
       end
 
       it 'initialize Td object' do
-        td = Plurimath::Math::Function::Td.new('70')
-        expect(td.parameter_one).to eql('70')
+        td = Plurimath::Math::Function::Td.new(['70'])
+        expect(td.parameter_one).to eql(['70'])
       end
     end
   end

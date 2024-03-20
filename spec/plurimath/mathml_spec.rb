@@ -1349,8 +1349,8 @@ RSpec.describe Plurimath::Mathml do
             </mstyle>
           </math>
         MATHML
-        latex = "\\sum_{F}^{A} {}_{4}^{E}\\sum_{F}^{B}"
-        asciimath = "sum_(F)^(A) \\ _(4)^(E)sum_(F)^(B)"
+        latex = "{}_{}^{}\\sum_{F}^{A} {}_{4}^{E}\\sum_{F}^{B}"
+        asciimath = "\\ _()^()sum_(F)^(A) \\ _(4)^(E)sum_(F)^(B)"
         expect(formula.to_latex).to eq(latex)
         expect(formula.to_mathml).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eq(asciimath)

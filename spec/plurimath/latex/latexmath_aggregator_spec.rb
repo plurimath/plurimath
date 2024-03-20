@@ -920,7 +920,7 @@ RSpec.describe Plurimath::Latex::Parser do
         expected_value = Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Root.new(
             Plurimath::Math::Formula.new([
-              Plurimath::Math::Symbol.new("3"),
+              Plurimath::Math::Number.new("3"),
             ]),
             Plurimath::Math::Formula.new([]),
           )

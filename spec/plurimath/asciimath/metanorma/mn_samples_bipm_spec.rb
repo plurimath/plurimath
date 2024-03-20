@@ -952,7 +952,7 @@ RSpec.describe Plurimath::Asciimath::Parser do
               Plurimath::Math::Symbol.new("r")
             ),
             Plurimath::Math::Symbol.new("t"),
-            Plurimath::Math::Number.new(".")
+            Plurimath::Math::Symbol.new(".")
           ])
         ])
         expect(formula).to eq(expected_value)
