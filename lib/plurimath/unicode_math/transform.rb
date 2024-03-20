@@ -187,11 +187,10 @@ module Plurimath
       end
 
       rule(nary_class: simple(:nary_class)) do
-        nary = nary_class.to_s
-        nary_function = if Constants::NARY_CLASSES.key?(nary.to_sym)
-                          nary
+        nary_function = if Constants::NARY_CLASSES.key?(nary_class.to_sym)
+                          nary_class
                         else
-                          Constants::NARY_CLASSES.invert[nary]
+                          (Constants::NARY_CLASSES.invert[nary_class.to_s] || Constants::NARY_SYMBOLS[nary_class.to_sym] || nary_class)
                         end
         Utility.get_class(nary_function).new 
       end
@@ -1858,11 +1857,10 @@ module Plurimath
 
       rule(nary_class: simple(:nary_class),
            sub: sequence(:sub)) do
-        nary = nary_class.to_s
-        nary_function = if Constants::NARY_CLASSES.key?(nary.to_sym)
-                          nary
+        nary_function = if Constants::NARY_CLASSES.key?(nary_class.to_sym)
+                          nary_class
                         else
-                          Constants::NARY_CLASSES.invert[nary]
+                          (Constants::NARY_CLASSES.invert[nary_class.to_s] || Constants::NARY_SYMBOLS[nary_class.to_sym] || nary_class)
                         end
         Utility.get_class(nary_function).new(
           Utility.filter_values(sub),
@@ -1871,13 +1869,12 @@ module Plurimath
 
       rule(nary_class: simple(:nary_class),
            sub: simple(:sub)) do
-        nary = nary_class.to_s
-        nary_function = if Constants::NARY_CLASSES.key?(nary.to_sym)
-                          nary
+        nary_function = if Constants::NARY_CLASSES.key?(nary_class.to_sym)
+                          nary_class
                         else
-                          Constants::NARY_CLASSES.invert[nary]
+                          (Constants::NARY_CLASSES.invert[nary_class.to_s] || Constants::NARY_SYMBOLS[nary_class.to_sym] || nary_class)
                         end
-        if nary_function
+        if Constants::NARY_CLASSES.key?(nary_function.to_sym)
           nary_value = if sub.class_name == "underset"
                          sub.parameter_one
                        else
@@ -1886,7 +1883,7 @@ module Plurimath
           Utility.get_class(nary_function).new(nary_value)
         else
           Math::Function::Nary.new(
-            Math::Symbol.new(nary),
+            Math::Symbol.new(nary_function),
             Utility.unfenced_value(sub, paren_specific: true)
           )
         end
@@ -1894,11 +1891,10 @@ module Plurimath
 
       rule(nary_class: simple(:nary_class),
            sup: simple(:sup)) do
-        nary = nary_class.to_s
-        nary_function = if Constants::NARY_CLASSES.key?(nary.to_sym)
-                          nary
+        nary_function = if Constants::NARY_CLASSES.key?(nary_class.to_sym)
+                          nary_class
                         else
-                          Constants::NARY_CLASSES.invert[nary]
+                          (Constants::NARY_CLASSES.invert[nary_class.to_s] || Constants::NARY_SYMBOLS[nary_class.to_sym] || nary_class)
                         end
         nary_value = if sup.class_name == "overset"
                        sup.parameter_one
@@ -1910,13 +1906,12 @@ module Plurimath
 
       rule(nary_class: simple(:nary_class),
            naryand: simple(:naryand)) do
-        nary = nary_class.to_s
-        nary_function = if Constants::NARY_CLASSES.key?(nary.to_sym)
-                          nary
+        nary_function = if Constants::NARY_CLASSES.key?(nary_class.to_sym)
+                          nary_class
                         else
-                          Constants::NARY_CLASSES.invert[nary]
+                          (Constants::NARY_CLASSES.invert[nary_class.to_s] || Constants::NARY_SYMBOLS[nary_class.to_sym] || nary_class)
                         end
-        if nary_function
+        if Constants::NARY_CLASSES.key?(nary_function.to_sym)
           nary_value = if naryand.class_name == "underset"
                          naryand.parameter_two
                        else
@@ -1925,7 +1920,7 @@ module Plurimath
           Utility.get_class(nary_function).new(nil, nil, nary_value)
         else
           Math::Function::Nary.new(
-            Math::Symbol.new(nary),
+            Math::Symbol.new(nary_function),
             nil,
             nil,
             naryand,
@@ -2127,11 +2122,10 @@ module Plurimath
       rule(nary_class: simple(:nary_class),
            sub: sequence(:sub),
            sup: simple(:sup)) do
-        nary = nary_class.to_s
-        nary_function = if Constants::NARY_CLASSES.key?(nary.to_sym)
-                          nary
+        nary_function = if Constants::NARY_CLASSES.key?(nary_class.to_sym)
+                          nary_class
                         else
-                          Constants::NARY_CLASSES.invert[nary]
+                          (Constants::NARY_CLASSES.invert[nary_class.to_s] || Constants::NARY_SYMBOLS[nary_class.to_sym] || nary_class)
                         end
         Utility.get_class(nary_function).new(
           Utility.filter_values(sub),
@@ -2699,19 +2693,18 @@ module Plurimath
       rule(nary_class: simple(:nary_class),
            sub: simple(:sub),
            sup: simple(:sup)) do
-        nary = nary_class.to_s
-        nary_function = if Constants::NARY_CLASSES.key?(nary.to_sym)
-                          nary
+        nary_function = if Constants::NARY_CLASSES.key?(nary_class.to_sym)
+                          nary_class
                         else
-                          Constants::NARY_CLASSES.invert[nary]
+                          (Constants::NARY_CLASSES.invert[nary_class.to_s] || Constants::NARY_SYMBOLS[nary_class.to_sym] || nary_class)
                         end
-        if nary_function
+        if Constants::NARY_CLASSES.key?(nary_function.to_sym)
           new_sub = (sub.class_name == "underset" ? sub.parameter_one : Utility.unfenced_value(sub, paren_specific: true))
           new_sup = (sup.class_name == "overset" ? sup.parameter_one : Utility.unfenced_value(sup, paren_specific: true))
           Utility.get_class(nary_function).new(new_sub, new_sup)
         else
           Math::Function::Nary.new(
-            Math::Symbol.new(Constants::NARY_SYMBOLS[nary_class.to_sym] || nary),
+            Math::Symbol.new(nary_function),
             Utility.unfenced_value(sub, paren_specific: true),
             Utility.unfenced_value(sup, paren_specific: true),
           )
@@ -2721,11 +2714,10 @@ module Plurimath
       rule(nary_class: simple(:nary_class),
            sub: sequence(:sub),
            sup: sequence(:sup)) do
-        nary = nary_class.to_s
-        nary_function = if Constants::NARY_CLASSES.key?(nary.to_sym)
-                          nary
+        nary_function = if Constants::NARY_CLASSES.key?(nary_class.to_sym)
+                          nary_class
                         else
-                          Constants::NARY_CLASSES.invert[nary]
+                          (Constants::NARY_CLASSES.invert[nary_class.to_s] || Constants::NARY_SYMBOLS[nary_class.to_sym] || nary_class)
                         end
         Utility.get_class(nary_function).new(
           Utility.unfenced_value(sub, paren_specific: true),
@@ -2736,11 +2728,10 @@ module Plurimath
       rule(nary_class: simple(:nary_class),
            sub: simple(:sub),
            sup: sequence(:sup)) do
-        nary = nary_class.to_s
-        nary_function = if Constants::NARY_CLASSES.key?(nary.to_sym)
-                          nary
+        nary_function = if Constants::NARY_CLASSES.key?(nary_class.to_sym)
+                          nary_class
                         else
-                          Constants::NARY_CLASSES.invert[nary]
+                          (Constants::NARY_CLASSES.invert[nary_class.to_s] || Constants::NARY_SYMBOLS[nary_class.to_sym] || nary_class)
                         end
         sub_value = sub.is_a?(Math::Function::Underset) ? sub.parameter_one : Utility.unfenced_value(sub, paren_specific: true)
         Utility.get_class(nary_function).new(
@@ -2752,7 +2743,11 @@ module Plurimath
       rule(nary_class: simple(:nary_class),
            mask: simple(:mask),
            sub: simple(:sub)) do
-        nary_function = (Constants::NARY_CLASSES.invert[nary_class.to_s] || nary_class)
+        nary_function = if Constants::NARY_CLASSES.key?(nary_class.to_sym)
+                          nary_class
+                        else
+                          (Constants::NARY_CLASSES.invert[nary_class.to_s] || Constants::NARY_SYMBOLS[nary_class.to_sym] || nary_class)
+                        end
         sub_value = sub.is_a?(Math::Function::Underset) ? sub.parameter_one : Utility.unfenced_value(sub, paren_specific: true)
         options = { mask: mask.value }
         if Constants::NARY_CLASSES.key?(nary_function.to_sym)
@@ -2764,7 +2759,7 @@ module Plurimath
           )
         else
           Math::Function::Nary.new(
-            Math::Symbol.new(nary_class),
+            Math::Symbol.new(nary_function),
             sub_value,
             nil,
             nil,
@@ -2775,8 +2770,39 @@ module Plurimath
 
       rule(nary_class: simple(:nary_class),
            mask: simple(:mask),
+           sub: sequence(:sub)) do
+        nary_function = if Constants::NARY_CLASSES.key?(nary_class.to_sym)
+                          nary_class
+                        else
+                          (Constants::NARY_CLASSES.invert[nary_class.to_s] || Constants::NARY_SYMBOLS[nary_class.to_sym] || nary_class)
+                        end
+        options = { mask: mask.value }
+        if Constants::NARY_CLASSES.key?(nary_function.to_sym)
+          Utility.get_class(nary_function).new(
+            Utility.unfenced_value(sub, paren_specific: true),
+            nil,
+            nil,
+            options
+          )
+        else
+          Math::Function::Nary.new(
+            Math::Symbol.new(nary_function),
+            Utility.unfenced_value(sub, paren_specific: true),
+            nil,
+            nil,
+            options
+          )
+        end
+      end
+
+      rule(nary_class: simple(:nary_class),
+           mask: simple(:mask),
            sup: simple(:sup)) do
-        nary_function = (Constants::NARY_CLASSES.invert[nary_class.to_s] || nary_class)
+        nary_function = if Constants::NARY_CLASSES.key?(nary_class.to_sym)
+                          nary_class
+                        else
+                          (Constants::NARY_CLASSES.invert[nary_class.to_s] || Constants::NARY_SYMBOLS[nary_class.to_sym] || nary_class)
+                        end
         sup_value = sup.is_a?(Math::Function::Overset) ? sup.parameter_one : Utility.unfenced_value(sup, paren_specific: true)
         options = { mask: mask.value }
         if Constants::NARY_CLASSES.key?(nary_function.to_sym)
@@ -2788,9 +2814,36 @@ module Plurimath
           )
         else
           Math::Function::Nary.new(
-            Math::Symbol.new(nary_class),
+            Math::Symbol.new(nary_function),
             nil,
             sup_value,
+            nil,
+            options
+          )
+        end
+      end
+
+      rule(nary_class: simple(:nary_class),
+           mask: simple(:mask),
+           sup: simple(:sup)) do
+        nary_function = if Constants::NARY_CLASSES.key?(nary_class.to_sym)
+                          nary_class
+                        else
+                          (Constants::NARY_CLASSES.invert[nary_class.to_s] || Constants::NARY_SYMBOLS[nary_class.to_sym] || nary_class)
+                        end
+        options = { mask: mask.value }
+        if Constants::NARY_CLASSES.key?(nary_function.to_sym)
+          Utility.get_class(nary_function).new(
+            nil,
+            Utility.unfenced_value(sup, paren_specific: true),
+            nil,
+            options
+          )
+        else
+          Math::Function::Nary.new(
+            Math::Symbol.new(nary_function),
+            nil,
+            Utility.unfenced_value(sup, paren_specific: true),
             nil,
             options
           )
@@ -2850,6 +2903,87 @@ module Plurimath
           [pre_script],
           close_paren.is_a?(Slice) ? Math::Symbol.new(close_paren) : close_paren,
         )
+      end
+
+      rule(nary_class: simple(:nary_class),
+           mask: simple(:mask),
+           sub: sequence(:sub),
+           sup: sequence(:sup)) do
+        nary_function = if Constants::NARY_CLASSES.key?(nary_class.to_sym)
+                          nary_class
+                        else
+                          (Constants::NARY_CLASSES.invert[nary_class.to_s] || Constants::NARY_SYMBOLS[nary_class.to_sym] || nary_class)
+                        end
+        options = { mask: mask.value }
+        if Constants::NARY_CLASSES.key?(nary_function&.to_sym)
+          Utility.get_class(nary_function).new(
+            Utility.filter_values(sub),
+            Utility.filter_values(sup),
+            options
+          )
+        else
+          Math::Function::Nary.new(
+            Math::Symbol.new(nary_function),
+            Utility.filter_values(sub),
+            Utility.filter_values(sup),
+            nil,
+            options
+          )
+        end
+      end
+
+      rule(nary_class: simple(:nary_class),
+           mask: simple(:mask),
+           sub: simple(:sub),
+           sup: sequence(:sup)) do
+        nary_function = if Constants::NARY_CLASSES.key?(nary_class.to_sym)
+                          nary_class
+                        else
+                          (Constants::NARY_CLASSES.invert[nary_class.to_s] || Constants::NARY_SYMBOLS[nary_class.to_sym] || nary_class)
+                        end
+        options = { mask: mask.value }
+        if Constants::NARY_CLASSES.key?(nary_function&.to_sym)
+          Utility.get_class(nary_function).new(
+            Utility.unfenced_value(sub, paren_specific: true),
+            Utility.filter_values(sup),
+            options
+          )
+        else
+          Math::Function::Nary.new(
+            Math::Symbol.new(nary_function),
+            Utility.unfenced_value(sub, paren_specific: true),
+            Utility.filter_values(sup),
+            nil,
+            options
+          )
+        end
+      end
+
+      rule(nary_class: simple(:nary_class),
+           mask: simple(:mask),
+           sub: sequence(:sub),
+           sup: simple(:sup)) do
+        nary_function = if Constants::NARY_CLASSES.key?(nary_class.to_sym)
+                          nary_class
+                        else
+                          (Constants::NARY_CLASSES.invert[nary_class.to_s] || Constants::NARY_SYMBOLS[nary_class.to_sym] || nary_class)
+                        end
+        options = { mask: mask.value }
+        if Constants::NARY_CLASSES.key?(nary_function&.to_sym)
+          Utility.get_class(nary_function).new(
+            Utility.filter_values(sub),
+            Utility.unfenced_value(sup, paren_specific: true),
+            options
+          )
+        else
+          Math::Function::Nary.new(
+            Math::Symbol.new(nary_function),
+            Utility.filter_values(sub),
+            Utility.unfenced_value(sup, paren_specific: true),
+            nil,
+            options
+          )
+        end
       end
 
       rule(atom: simple(:atom),
@@ -3344,7 +3478,11 @@ module Plurimath
            mask: simple(:mask),
            sub: simple(:sub),
            sup: simple(:sup)) do
-        nary_function = (Constants::NARY_CLASSES.invert[nary_class.to_s] || nary_class)
+        nary_function = if Constants::NARY_CLASSES.key?(nary_class.to_sym)
+                          nary_class
+                        else
+                          (Constants::NARY_CLASSES.invert[nary_class.to_s] || Constants::NARY_SYMBOLS[nary_class.to_sym] || nary_class)
+                        end
         sub_value = sub.is_a?(Math::Function::Underset) ? sub.parameter_one : Utility.unfenced_value(sub, paren_specific: true)
         sup_value = sup.is_a?(Math::Function::Overset) ? sup.parameter_one : Utility.unfenced_value(sup, paren_specific: true)
         options = { mask: mask.value }
@@ -3357,7 +3495,7 @@ module Plurimath
           )
         else
           Math::Function::Nary.new(
-            Math::Symbol.new(nary_class),
+            Math::Symbol.new(nary_function),
             sub_value,
             sup_value,
             nil,
