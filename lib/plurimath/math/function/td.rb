@@ -7,7 +7,7 @@ module Plurimath
     module Function
       class Td < BinaryFunction
         def initialize(parameter_one = nil, parameter_two = nil)
-          parameter_one&.delete_if { |td| td if td  == "&" }
+          parameter_one&.delete_if { |td| td == "&" }
           super(parameter_one, parameter_two)
         end
 
