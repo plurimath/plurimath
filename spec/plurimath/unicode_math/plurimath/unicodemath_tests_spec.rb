@@ -8,14 +8,11 @@ RSpec.describe Plurimath::UnicodeMath::Parse do
   describe ".parse" do
     subject(:formula) do
       post_processing(
-        described_class.new.parse(
-          unicode_encode_entities(string.to_s, delete_prefix_suffix: !delete_prefix_suffix, delete_suffix_only: delete_suffix_only)
-        )
+        described_class.new.parse(unicode_encode_entities(string.to_s))
       )
     end
 
     SKIPABLE_EXAMPLES = [33, 179, 210, 211, 598, 599, 600, 601].freeze
-
     unicodemath_tests_file = File.read("submodules/unicodemath-tests/unicodemath_tests.yaml")
     unicodemath_tests = YAML.safe_load(unicodemath_tests_file, permitted_classes: [Time])["tests"]
     unicodemath_tests.each.with_index(1) do |unicode_hash, index|
@@ -24,8 +21,6 @@ RSpec.describe Plurimath::UnicodeMath::Parse do
 
       context "contains unicdemath-tests example ##{index}" do
         let(:string) { unicode_hash["unicodemath"] }
-        let(:delete_prefix_suffix) { [359, 373, 445, 627, 633, 651].include?(index) }
-        let(:delete_suffix_only) { [359, 373, 445, 627, 633, 651].include?(index) }
 
         it "matches tree structure of UnicodeMath" do
           if SKIPABLE_EXAMPLES.include?(index)
