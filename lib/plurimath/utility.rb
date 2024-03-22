@@ -707,8 +707,6 @@ module Plurimath
         new_arr
       end
 
-      # UnicodeMath Functions
-
       def unicode_accents(accents)
         if accents.is_a?(Math::Function::BinaryFunction)
           accents
@@ -812,7 +810,7 @@ module Plurimath
         end
       end
 
-      def sort_sub(sub_script, sub_recursion)
+      def recursive_sub(sub_script, sub_recursion)
         base_class = Math::Function::Base
         if sub_recursion.is_a?(base_class)
           if sub_recursion.parameter_one.is_a?(base_class)
@@ -841,7 +839,7 @@ module Plurimath
         end
       end
 
-      def sort_sup(sup_script, sup_recursion)
+      def recursive_sup(sup_script, sup_recursion)
         power_class = Math::Function::Power
         if sup_recursion.is_a?(power_class)
           if sup_recursion.parameter_one.is_a?(power_class)
@@ -890,9 +888,7 @@ module Plurimath
         size.times { |i| matrix[i][i] = 1 }
         matrix.map do |tr|
           tr.map.with_index do |td, i|
-            tr[i] = Math::Function::Td.new([
-              Math::Number.new(td.to_s)
-            ])
+            tr[i] = Math::Function::Td.new([Math::Number.new(td.to_s)])
           end
           Math::Function::Tr.new(tr)
         end

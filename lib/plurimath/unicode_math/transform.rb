@@ -578,7 +578,7 @@ module Plurimath
 
       rule(operator: simple(:operator),
            sup_recursion: simple(:sup_recursion)) do
-        Utility.sort_sup(
+        Utility.recursive_sup(
           Math::Symbol.new(operator),
           Utility.unfenced_value(sup_recursion, paren_specific: true),
         )
@@ -586,7 +586,7 @@ module Plurimath
 
       rule(operator: simple(:operator),
            sub_recursion: simple(:sub_recursion)) do
-        Utility.sort_sub(
+        Utility.recursive_sub(
           Math::Symbol.new(operator),
           sub_recursion,
         )
@@ -599,7 +599,7 @@ module Plurimath
 
       rule(sub_script: simple(:sub_script),
            sub_recursion: simple(:sub_recursion)) do
-        Utility.sort_sub(sub_script, sub_recursion)
+        Utility.recursive_sub(sub_script, sub_recursion)
       end
 
       rule(sub_operators: simple(:operator),
@@ -924,7 +924,7 @@ module Plurimath
 
       rule(sup_script: simple(:sup_script),
            sup_recursion: simple(:sup_recursion)) do
-        Utility.sort_sup(
+        Utility.recursive_sup(
           sup_script,
           Utility.unfenced_value(sup_recursion, paren_specific: true),
         )
@@ -942,7 +942,7 @@ module Plurimath
 
       rule(sub_script: simple(:sub_script),
            recursion: simple(:recursion)) do
-        Utility.sort_sub(
+        Utility.recursive_sub(
           sub_script,
           Utility.unfenced_value(recursion, paren_specific: true),
         )
@@ -950,7 +950,7 @@ module Plurimath
 
       rule(sup_script: sequence(:sup_script),
            sup_recursion: simple(:sup_recursion)) do
-        Utility.sort_sup(
+        Utility.recursive_sup(
           Math::Formula.new(sup_script),
           Utility.unfenced_value(sup_recursion, paren_specific: true),
         )
@@ -1184,8 +1184,8 @@ module Plurimath
         color_obj = Math::Function::Color.new(
           Math::Symbol.new(color),
           first_value,
+          { backcolor: true }
         )
-        color_obj.set_options({ backcolor: true })
       end
 
       rule(backcolor_value: simple(:color),
@@ -1193,8 +1193,8 @@ module Plurimath
         color_obj = Math::Function::Color.new(
           Math::Symbol.new(color),
           Utility.filter_values(first_value),
+          { backcolor: true }
         )
-        color_obj.set_options({ backcolor: true })
       end
 
       rule(rect_value: simple(:mask),
@@ -2336,7 +2336,7 @@ module Plurimath
         else
           Math::Function::Base.new(
             base,
-            Utility.sort_sub(
+            Utility.recursive_sub(
               Utility.filter_values(sub),
               sub_recursion,
             ),

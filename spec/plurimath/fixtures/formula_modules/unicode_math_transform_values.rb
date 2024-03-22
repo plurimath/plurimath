@@ -343,7 +343,8 @@ module UnicodeMathTransformValues
           Plurimath::Math::Function::Frac.new(
             Plurimath::Math::Symbol.new("n"),
             Plurimath::Math::Symbol.new("k"),
-          ).set_options({ linethickness: "0" })
+            { linethickness: "0" }
+          )
         ],
         Plurimath::Math::Symbol.new(")")
       )
@@ -8374,26 +8375,30 @@ module UnicodeMathTransformValues
         Plurimath::Math::Function::Color.new(
           Plurimath::Math::Symbol.new("green"),
           Plurimath::Math::Symbol.new("n"),
-        ).set_options({ backcolor: true }),
+          { backcolor: true }
+        ),
         Plurimath::Math::Function::Color.new(
           Plurimath::Math::Symbol.new("yellow"),
           Plurimath::Math::Function::Color.new(
             Plurimath::Math::Symbol.new("black"),
             Plurimath::Math::Symbol.new("n")
           ),
-        ).set_options({ backcolor: true })
+          { backcolor: true }
+        )
       ),
       [
         Plurimath::Math::Function::Color.new(
           Plurimath::Math::Symbol.new("blue"),
           Plurimath::Math::Symbol.new("n"),
-        ).set_options({ backcolor: true })
+          { backcolor: true }
+        )
       ],
       [
         Plurimath::Math::Function::Color.new(
           Plurimath::Math::Symbol.new("red"),
           Plurimath::Math::Symbol.new("n"),
-        ).set_options({ backcolor: true })
+          { backcolor: true }
+        )
       ]
     )
   ])

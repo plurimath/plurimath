@@ -89,10 +89,6 @@ module Plurimath
         def is_nary_function?
           parameter_one.is_nary_function? || parameter_one.is_nary_symbol?
         end
-
-        def set_options(value)
-          { unicode: true }
-        end
       end
     end
   end

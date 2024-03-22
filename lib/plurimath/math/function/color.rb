@@ -55,11 +55,6 @@ module Plurimath
           new_arr
         end
 
-        def set_options(value)
-          self.options = value
-          self
-        end
-
         protected
 
         def attr_key
