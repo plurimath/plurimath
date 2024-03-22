@@ -9,28 +9,17 @@ module Plurimath
 
         rule(:frac_binary_absent) { frac_binary_absent_symbols? >> binary_symbols }
 
+        rule(:non_matrixs_absence?) { (str("eqarray") | str("&#x2588;") | str("cases") | str("&#x24b8;")).absent? }
+
         rule(:sub_sup_binary_absent) { ((slash >> str("times")) | str("&#xd7;")).absent? >> binary_symbols }
 
         rule(:absent_negated_unicodes) { sqrt_symbols | root_symbols }
 
-        rule(:frac_binary_absent_symbols?) do
-          (
-            (
-              slash >> (
-                str("times") |
-                str("neq") |
-                str("ne")
-              )
-            ) |
-            (
-              str("&#xd7;") |
-              str("&#x2260")
-            )
-          ).absent?
-        end
+        rule(:frac_binary_absent_symbols?) { ((slash >> (str("times") | str("neq") | str("ne"))) | (str("&#xd7;") | str("&#x2260"))).absent? }
 
         rule(:binary_negated_absent_symbols?) { ((slash >> str("dd")) | str("&#x2146;")).absent? }
 
+        rule(:mini_fraction_exp_script_absent?) { (operator >> mini_fraction).absent? }
 
         rule(:absent_chars) do
           (
@@ -137,21 +126,10 @@ module Plurimath
           ).absent?
         end
 
-        rule(:non_matrixs_absence?) do
-          (
-            str("eqarray") |
-            str("&#x2588;") |
-            str("cases") |
-            str("&#x24b8;")
-          ).absent?
-        end
-
         rule(:absent_numerator_exp_script?) do
           (power_base_script.as(:nary_sub_sup) >> invisible_space? >> naryand_recursion.as(:naryand)).absent? |
             (op_nary >> invisible_space? >> naryand_recursion.as(:naryand).maybe).absent?
         end
-
-        rule(:mini_fraction_exp_script_absent?) { (operator >> mini_fraction).absent? }
       end
     end
   end

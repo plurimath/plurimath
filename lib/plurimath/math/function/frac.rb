@@ -78,11 +78,6 @@ module Plurimath
           end
         end
 
-        def set_options(value)
-          self.options = value
-          self
-        end
-
         protected
 
         def fpr_element

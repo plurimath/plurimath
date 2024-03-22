@@ -23,20 +23,26 @@ module Plurimath
           end
 
           def to_mathml_without_math_tag
-            table_tag = Utility.ox_element("mtable", attributes: table_attribute)
-            Utility.update_nodes(
-              table_tag,
-              value&.map(&:to_mathml_without_math_tag),
+            table_tag = Utility.update_nodes(
+              ox_element("mtable", attributes: table_attribute),
+              value&.map(&:to_mathml_without_math_tag)
             )
-            if (open_paren&.include?("(") && close_paren&.include?(")")) || !(open_paren && close_paren)
-              table_tag
-            else
-              mrow = ox_element("mrow")
-              mrow << (ox_element("mo") << open_paren) unless validate_paren(open_paren)
-              mrow << table_tag
-              mrow << (ox_element("mo") << close_paren) unless validate_paren(close_paren)
-              mrow
-            end
+            return table_tag if table_tag_only?
+
+            Utility.update_nodes(
+              ox_element("mrow"),
+              [mo_tag(open_paren), table_tag, mo_tag(close_paren)]
+            )
+          end
+
+          protected
+
+          def mo_tag(paren)
+            (ox_element("mo") << paren) unless validate_paren(paren)
+          end
+
+          def table_tag_only?
+            (open_paren&.include?("(") && close_paren&.include?(")")) || !(open_paren && close_paren)
           end
         end
       end

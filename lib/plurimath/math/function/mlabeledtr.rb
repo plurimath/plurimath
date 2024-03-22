@@ -14,6 +14,8 @@ module Plurimath
           table << mlabeledtr
         end
 
+        protected
+
         def labeledtr_td(tr, value)
           tr << (ox_element("mtd") << value)
         end
