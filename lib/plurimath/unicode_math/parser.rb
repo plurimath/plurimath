@@ -19,7 +19,7 @@ module Plurimath
         @text.gsub!("&#x22;", "\"")
         @text.gsub!(/&#x2af7;.*&#x2af8;/, "")
         @text.gsub!(/\\\\/, "\\")
-        @text.gsub!(/\\u([\da-fA-F]{1,5})\w{0,5}/) { "&#x#{$1};" }
+        @text.gsub!(/\\u([\da-fA-F]{1,5})\w{0,5}/) { "&#x#{$1};" } # Converting \u#{xxxx} encoding to &#x#{xxxx};
         @text.strip!
       end
 

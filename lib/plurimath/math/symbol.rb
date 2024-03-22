@@ -142,7 +142,7 @@ module Plurimath
 
       def explicit_checks(unicode)
         return true if [unicode, value].any? { |v| ["∣", "|"].include?(v) }
-        return true if UnicodeMath::Constants::ACCENT_SYMBOLS.invert.key?(value)
+        return true if UnicodeMath::Constants::ACCENT_SYMBOLS.has_value?(value)
       end
 
       def specific_values
