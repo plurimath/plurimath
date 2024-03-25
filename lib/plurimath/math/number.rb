@@ -38,6 +38,13 @@ module Plurimath
         [t_tag]
       end
 
+      def to_unicodemath
+        return mini_sub if mini_sub_sized
+        return mini_sup if mini_sup_sized
+
+        value
+      end
+
       def insert_t_tag(_)
         [
           (Utility.ox_element("r", namespace: "m") << t_tag),
@@ -58,6 +65,24 @@ module Plurimath
 
       def validate_function_formula
         false
+      end
+
+      def mini_sized?
+        mini_sub_sized || mini_sup_sized
+      end
+
+      protected
+
+      def mini_sub
+        unicode_const(:SUB_DIGITS)[value.to_sym]
+      end
+
+      def mini_sup
+        unicode_const(:SUP_DIGITS)[value.to_sym]
+      end
+
+      def unicode_const(const)
+        UnicodeMath::Constants.const_get(const)
       end
     end
   end

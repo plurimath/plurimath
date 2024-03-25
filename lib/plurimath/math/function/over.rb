@@ -47,6 +47,12 @@ module Plurimath
           [f_element]
         end
 
+        def to_unicodemath
+          first_value = unicodemath_parens(parameter_one) if parameter_one
+          second_value = unicodemath_parens(parameter_two) if parameter_two
+          "#{first_value}/#{second_value}"
+        end
+
         def line_breaking(obj)
           parameter_one&.line_breaking(obj)
           if obj.value_exist?

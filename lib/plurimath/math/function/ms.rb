@@ -23,6 +23,10 @@ module Plurimath
             (Utility.ox_element("t", namespace: "m") << "“#{parameter_one}”"),
           ]
         end
+
+        def to_unicodemath
+          Text.new(parameter_one).to_unicodemath
+        end
       end
     end
   end

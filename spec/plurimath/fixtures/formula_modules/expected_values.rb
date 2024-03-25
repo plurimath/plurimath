@@ -339,6 +339,7 @@ module ExpectedValues
           ),
         ],
         nil,
+        { sepChr: "" },
       )
     ),
   ])
@@ -376,6 +377,7 @@ module ExpectedValues
             Plurimath::Math::Function::Text.new("i,j"),
           ],
           nil,
+          { sepChr: "" },
         ),
       ])
     ),
@@ -409,6 +411,7 @@ module ExpectedValues
           )
         ],
         nil,
+        { sepChr: "" },
       ),
       { type: "undOvr" }
     ),
@@ -420,6 +423,7 @@ module ExpectedValues
         Plurimath::Math::Number.new("1"),
       ],
       nil,
+      { sepChr: "" },
     )
   ])
   EX_051 = Plurimath::Math::Formula.new([
@@ -429,6 +433,7 @@ module ExpectedValues
         Plurimath::Math::Number.new("2"),
       ],
       Plurimath::Math::Symbol.new("]"),
+      { sepChr: "" },
     )
   ])
   EX_052 = Plurimath::Math::Formula.new([
@@ -438,6 +443,7 @@ module ExpectedValues
         Plurimath::Math::Number.new("3"),
       ],
       Plurimath::Math::Symbol.new("}"),
+      { sepChr: "" },
     )
   ])
   EX_053 = Plurimath::Math::Formula.new([
@@ -447,6 +453,7 @@ module ExpectedValues
         Plurimath::Math::Number.new("4"),
       ],
       Plurimath::Math::Symbol.new("〉"),
+      { sepChr: "" },
     )
   ])
   EX_054 = Plurimath::Math::Formula.new([
@@ -456,6 +463,7 @@ module ExpectedValues
         Plurimath::Math::Number.new("5"),
       ],
       Plurimath::Math::Symbol.new("⌋"),
+      { sepChr: "" },
     )
   ])
   EX_055 = Plurimath::Math::Formula.new([
@@ -465,6 +473,7 @@ module ExpectedValues
         Plurimath::Math::Number.new("6"),
       ],
       Plurimath::Math::Symbol.new("⌉"),
+      { sepChr: "" },
     )
   ])
   EX_056 = Plurimath::Math::Formula.new([
@@ -474,6 +483,7 @@ module ExpectedValues
         Plurimath::Math::Number.new("7"),
       ],
       Plurimath::Math::Symbol.new("|"),
+      { sepChr: "" },
     )
   ])
   EX_057 = Plurimath::Math::Formula.new([
@@ -483,6 +493,7 @@ module ExpectedValues
         Plurimath::Math::Number.new("8"),
       ],
       Plurimath::Math::Symbol.new("‖"),
+      { sepChr: "" },
     )
   ])
   EX_058 = Plurimath::Math::Formula.new([
@@ -492,6 +503,7 @@ module ExpectedValues
         Plurimath::Math::Number.new("9"),
       ],
       Plurimath::Math::Symbol.new("["),
+      { sepChr: "" },
     )
   ])
   EX_059 = Plurimath::Math::Formula.new([
@@ -501,6 +513,7 @@ module ExpectedValues
         Plurimath::Math::Number.new("0"),
       ],
       Plurimath::Math::Symbol.new("]"),
+      { sepChr: "" },
     )
   ])
   EX_060 = Plurimath::Math::Formula.new([
@@ -510,6 +523,7 @@ module ExpectedValues
         Plurimath::Math::Number.new("1"),
       ],
       Plurimath::Math::Symbol.new("["),
+      { sepChr: "" },
     )
   ])
   EX_061 = Plurimath::Math::Formula.new([
@@ -519,6 +533,7 @@ module ExpectedValues
         Plurimath::Math::Number.new("2"),
       ],
       Plurimath::Math::Symbol.new("⟧"),
+      { sepChr: "" },
     )
   ])
   EX_062 = Plurimath::Math::Formula.new([
@@ -529,6 +544,7 @@ module ExpectedValues
         Plurimath::Math::Number.new("2"),
       ],
       nil,
+      { sepChr: "" },
     )
   ])
   EX_063 = Plurimath::Math::Formula.new([
@@ -539,6 +555,7 @@ module ExpectedValues
         Plurimath::Math::Number.new("4"),
       ],
       Plurimath::Math::Symbol.new("}"),
+      { sepChr: "" },
     )
   ])
   EX_064 = Plurimath::Math::Formula.new([
@@ -549,6 +566,7 @@ module ExpectedValues
         Plurimath::Math::Number.new("6"),
       ],
       Plurimath::Math::Symbol.new("⟩"),
+      { sepChr: "" },
     )
   ])
   EX_065 = Plurimath::Math::Formula.new([
@@ -560,6 +578,7 @@ module ExpectedValues
         Plurimath::Math::Number.new("9"),
       ],
       Plurimath::Math::Symbol.new("⟩"),
+      { sepChr: "" },
     )
   ])
   EX_066 = Plurimath::Math::Formula.new([
@@ -619,6 +638,7 @@ module ExpectedValues
         )
       ],
       nil,
+      { sepChr: "" },
     )
   ])
   EX_070 = Plurimath::Math::Formula.new([
@@ -629,6 +649,7 @@ module ExpectedValues
         Plurimath::Math::Function::Text.new("x")
       ],
       nil,
+      { sepChr: "" },
     ),
     Plurimath::Math::Symbol.new("="),
     Plurimath::Math::Function::Table.new(
@@ -658,6 +679,7 @@ module ExpectedValues
         )
       ],
       nil,
+      { sepChr: "" },
     )
   ])
   EX_072 = Plurimath::Math::Formula.new([
@@ -670,6 +692,7 @@ module ExpectedValues
         )
       ],
       Plurimath::Math::Symbol.new("⟩"),
+      { sepChr: "" },
     )
   ])
   EX_073 = Plurimath::Math::Formula.new([
@@ -1089,6 +1112,7 @@ module ExpectedValues
           )
         ],
         nil,
+        { sepChr: "" },
       ),
       Plurimath::Math::Function::Text.new("n"),
     )
@@ -2007,7 +2031,8 @@ module ExpectedValues
                     Plurimath::Math::Function::Text.new("o"),
                   )
                 ],
-                Plurimath::Math::Symbol.new(")")
+                Plurimath::Math::Symbol.new(")"),
+                nil
               )
             ]),
             Plurimath::Math::Function::Td.new([
@@ -2029,7 +2054,6 @@ module ExpectedValues
         ],
         "{",
         "",
-        {}
       )
     ],
   )

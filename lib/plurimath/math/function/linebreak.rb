@@ -82,6 +82,11 @@ module Plurimath
           result
         end
 
+        def to_unicodemath
+          first_value = parameter_one.to_unicodemath if parameter_one
+          "&#xa;#{first_value}"
+        end
+
         def separate_table
           true
         end

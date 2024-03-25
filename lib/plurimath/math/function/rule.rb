@@ -34,6 +34,10 @@ module Plurimath
         def to_html
           ""
         end
+
+        def to_unicodemath
+          ""
+        end
       end
     end
   end

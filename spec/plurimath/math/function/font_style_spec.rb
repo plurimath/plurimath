@@ -67,7 +67,7 @@ RSpec.describe Plurimath::Math::Function::FontStyle do
 
       it "returns mathml string" do
         expected_value = <<~MATHML
-          <mstyle mathvariant="bb">
+          <mstyle mathvariant="bold">
             <mi>n</mi>
           </mstyle>
         MATHML

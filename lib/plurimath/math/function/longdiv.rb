@@ -25,6 +25,10 @@ module Plurimath
           omml_value(display_style)
         end
 
+        def to_unicodemath
+          parameter_one&.to_unicodemath
+        end
+
         def line_breaking(obj)
           custom_array_line_breaking(obj)
         end

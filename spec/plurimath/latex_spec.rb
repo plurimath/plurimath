@@ -2707,19 +2707,6 @@ RSpec.describe Plurimath::Latex do
     context "contains mbox unary function example #1" do
       let(:string) { "\\mbox{1cm}" }
 
-      it 'compares parsed Latex to HTML' do
-        expected_value = "1cm"
-        expect(html).to eql(expected_value)
-      end
-    end
-  end
-
-  describe ".to_html" do
-    subject(:html) { Plurimath::Latex.new(string).to_formula.to_html }
-
-    context "contains mbox unary function example #1" do
-      let(:string) { "\\mbox{1cm}" }
-
       it 'returns parsed Latex to HTML' do
         expected_value = "1cm"
         expect(html).to eql(expected_value)

@@ -68,6 +68,20 @@ module Plurimath
           [ssub_element]
         end
 
+        def to_unicodemath
+          first_value = parameter_one.to_unicodemath if parameter_one
+          second_value = if parameter_two.is_a?(self.class)
+            "_#{size_overrides}#{parameter_two.to_unicodemath}"
+          elsif parameter_two&.mini_sized?
+            parameter_two.to_unicodemath
+          elsif parameter_two.nil?
+            "()"
+          else
+            "_#{size_overrides}#{unicodemath_parens(parameter_two)}"
+          end
+          "#{first_value}#{second_value}"
+        end
+
         def line_breaking(obj)
           parameter_one&.line_breaking(obj)
           if obj.value_exist?
@@ -88,6 +102,20 @@ module Plurimath
 
         def is_nary_function?
           parameter_one.is_nary_function? || parameter_one.is_nary_symbol?
+        end
+
+        protected
+
+        def size_overrides
+          return if options.nil? || options&.empty?
+
+          "Ⅎ#{UnicodeMath::Constants::SIZE_OVERRIDES_SYMBOLS.invert[options[:size]]}" if options[:size]
+        end
+
+        def unicodemath_parens(field)
+          return "〖#{field.to_unicodemath}〗" unless options.nil? || options&.empty?
+
+          super(field)
         end
       end
     end

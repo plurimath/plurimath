@@ -49,6 +49,15 @@ module Plurimath
           [limupp]
         end
 
+        def to_unicodemath
+          return "#{unicodemath_parens(parameter_two)}#{parameter_one.value}" if unicode_accent?(parameter_one)
+          return "#{parameter_one.value}#{parameter_two.to_unicodemath}" if unicode_accent?(parameter_two)
+          return "#{parameter_one.to_unicodemath}#{unicodemath_parens(parameter_two)}" if horizontal_brackets?
+          return "#{parameter_two.to_unicodemath}^#{unicodemath_parens(parameter_one)}" if unicode_classes_accent?(parameter_two)
+
+          "#{unicodemath_parens(parameter_two)}┴#{unicodemath_parens(parameter_one)}" if parameter_one || parameter_two
+        end
+
         def line_breaking(obj)
           parameter_two&.line_breaking(obj)
           if obj.value_exist?
@@ -63,6 +72,25 @@ module Plurimath
 
         def is_nary_function?
           parameter_two.is_nary_function? || parameter_two.is_nary_symbol?
+        end
+
+        protected
+
+        def unicode_accent?(field)
+          field.is_a?(Math::Symbol) &&
+            (
+              UnicodeMath::Constants::DIACRITIC_OVERLAYS.include?(field.value) ||
+                UnicodeMath::Constants::ACCENT_SYMBOLS.has_value?(field.value)
+            )
+        end
+
+        def unicode_classes_accent?(field)
+          (field.is_a?(Math::Function::Obrace) || field.is_a?(Math::Function::Ubrace))
+        end
+
+        def horizontal_brackets?
+          parameter_one.is_a?(Math::Symbol) &&
+            UnicodeMath::Constants::HORIZONTAL_BRACKETS.value?(parameter_one.value)
         end
       end
     end

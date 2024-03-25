@@ -17,6 +17,8 @@ module Plurimath
         def to_omml_without_math_tag(_)
           empty_tag
         end
+
+        def to_unicodemath; end
       end
     end
   end

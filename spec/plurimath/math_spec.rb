@@ -36,6 +36,7 @@ RSpec.describe Plurimath::Math do
         expect{formula.to_latex}.to raise_error(Plurimath::Math::ParseError)
         expect{formula.to_mathml}.to raise_error(Plurimath::Math::ParseError)
         expect{formula.to_asciimath}.to raise_error(Plurimath::Math::ParseError)
+        expect{formula.to_unicodemath}.to raise_error(Plurimath::Math::ParseError)
       end
     end
   end

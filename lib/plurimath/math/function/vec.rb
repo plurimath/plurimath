@@ -37,6 +37,10 @@ module Plurimath
           end
         end
 
+        def to_unicodemath
+          "#{unicodemath_parens(parameter_one)}⃗"
+        end
+
         def to_asciimath_math_zone(spacing, last = false, _)
           new_spacing = gsub_spacing(spacing, last)
           new_arr = [

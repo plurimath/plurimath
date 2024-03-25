@@ -6,6 +6,13 @@ module Plurimath
   module Math
     module Function
       class Tr < UnaryFunction
+        def initialize(parameter_one = [])
+          if parameter_one&.all? { |val| val == "@" }
+            parameter_one.each.with_index { |param, index| parameter_one[index] = Td.new([]) }
+          end
+          super(parameter_one)
+        end
+
         def to_asciimath
           "[#{parameter_one.map(&:to_asciimath).join(', ')}]"
         end
@@ -43,6 +50,10 @@ module Plurimath
             )
             [mr]
           end
+        end
+
+        def to_unicodemath
+          parameter_one&.map(&:to_unicodemath)&.join("&")
         end
 
         def to_asciimath_math_zone(spacing, last = false, indent = true)

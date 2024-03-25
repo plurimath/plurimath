@@ -24,6 +24,10 @@ module Plurimath
         def to_omml_without_math_tag(display_style)
           Text.new(parameter_one).to_omml_without_math_tag(display_style)
         end
+
+        def to_unicodemath
+          Text.new(parameter_one).to_unicodemath
+        end
       end
     end
   end

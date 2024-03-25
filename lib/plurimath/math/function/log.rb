@@ -63,6 +63,12 @@ module Plurimath
           end
         end
 
+        def to_unicodemath
+          first_value = sub_value if parameter_one
+          second_value = sup_value if parameter_two
+          "log#{first_value}#{second_value}"
+        end
+
         def line_breaking(obj)
           parameter_one&.line_breaking(obj)
           if obj.value_exist?
@@ -89,6 +95,26 @@ module Plurimath
           r_tag = Utility.ox_element("r", namespace: "m")
           t_tag = (Utility.ox_element("t", namespace: "m") << "log")
           Utility.update_nodes(r_tag, [rpr_tag, t_tag])
+        end
+
+        def sup_value
+          if parameter_two&.mini_sized? || prime_unicode?(parameter_two)
+            parameter_two.to_unicodemath
+          elsif parameter_two.is_a?(Math::Function::Power)
+            "^#{parameter_two.to_unicodemath}"
+          else
+            "^#{unicodemath_parens(parameter_two)}"
+          end
+        end
+
+        def sub_value
+          if parameter_one&.mini_sized?
+            parameter_one.to_unicodemath
+          elsif parameter_one.is_a?(Math::Function::Base)
+            "_#{parameter_one.to_unicodemath}"
+          else
+            "_#{unicodemath_parens(parameter_one)}"
+          end
         end
       end
     end

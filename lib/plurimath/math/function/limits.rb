@@ -34,6 +34,10 @@ module Plurimath
           underover(display_style)
         end
 
+        def to_unicodemath
+          "#{parameter_one&.to_unicodemath}#{sup_value}#{sub_value}"
+        end
+
         def line_breaking(obj)
           parameter_one&.line_breaking(obj)
           if obj.value_exist?
@@ -47,6 +51,30 @@ module Plurimath
           if obj.value_exist?
             obj.update(self.class.new(nil, Utility.filter_values(obj.value), parameter_three))
             self.parameter_three = nil
+          end
+        end
+
+        protected
+
+        def sup_value
+          return unless parameter_three
+
+          if parameter_three.is_a?(Math::Function::Power)
+            "┴#{parameter_three.to_unicodemath}"
+          elsif parameter_one.is_a?(Math::Function::Power) && parameter_one&.prime_unicode?(parameter_one&.parameter_two)
+            "┴#{parameter_three.to_unicodemath}"
+          else
+            "┴#{unicodemath_parens(parameter_three)}"
+          end
+        end
+
+        def sub_value
+          return unless parameter_two
+
+          if parameter_two.is_a?(Math::Function::Base)
+            "┬#{parameter_two.to_unicodemath}"
+          else
+            "┬#{unicodemath_parens(parameter_two)}"
           end
         end
       end

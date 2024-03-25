@@ -56,6 +56,16 @@ module Plurimath
           [borderbox]
         end
 
+        def to_unicodemath
+          if unicode_symbol?
+            "#{unicode_symbol}#{unicodemath_parens(parameter_two)}"
+          elsif masked_class?
+            first_value = Utility.notations_to_mask(parameter_one) if parameter_one
+            second_value = parameter_two&.to_unicodemath if parameter_two
+            "▭(#{first_value}&#{second_value})"
+          end
+        end
+
         protected
 
         def borderboxpr
@@ -89,6 +99,20 @@ module Plurimath
             namespace: "m",
             attributes: { "m:val": "on" },
           )
+        end
+
+        def masked_class?
+          Utility::MASK_CLASSES.values.any? { |mask| parameter_one.include?(mask) }
+        end
+
+        def unicode_symbol
+          class_name = Utility::UNICODEMATH_MENCLOSE_FUNCTIONS.key(parameter_one)
+          UnicodeMath::Constants::UNARY_ARG_FUNCTIONS[class_name] ||
+            UnicodeMath::Constants::UNARY_SYMBOLS[class_name]
+        end
+
+        def unicode_symbol?
+          Utility::UNICODEMATH_MENCLOSE_FUNCTIONS.value?(parameter_one)
         end
       end
     end

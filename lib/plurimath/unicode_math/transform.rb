@@ -364,6 +364,11 @@ module Plurimath
         [subsup] + expr
       end
 
+      rule(subsup_exp: simple(:subsup),
+           exp: sequence(:exp)) do
+        [subsup] + exp
+      end
+
       rule(override_subsup: simple(:subsup),
            expr: sequence(:expr)) do
         [subsup] + expr
@@ -412,6 +417,11 @@ module Plurimath
       rule(subsup_exp: simple(:subsup),
            expr: simple(:expr)) do
         [subsup, expr]
+      end
+
+      rule(subsup_exp: simple(:subsup),
+           exp: simple(:exp)) do
+        [subsup, exp]
       end
 
       rule(int_exp: simple(:int),
@@ -902,6 +912,11 @@ module Plurimath
         [table] + expr
       end
 
+      rule(table: simple(:table),
+           expr: simple(:expr)) do
+        [table, expr]
+      end
+
       rule(intent: simple(:intent),
            intent_expr: simple(:expr)) do
         intent_string = expr.parameter_two.shift
@@ -1169,7 +1184,7 @@ module Plurimath
             elsif function_name == :mpadded
               new_value = Math::Function::Mpadded.new(
                 Utility.unfenced_value(first_value, paren_specific: true),
-                attributes,
+                Constants::PHANTOM_SYMBOLS[unary_symbol],
               )
             end
           end
@@ -1602,6 +1617,25 @@ module Plurimath
       end
 
       rule(matrixs: simple(:matrixs),
+           array: simple(:array)) do
+        matrix = Constants::MATRIXS.key(matrixs) || matrixs.to_sym
+        if :Vmatrix == matrix
+          Utility.get_table_class(matrix).new(
+            [array],
+            "norm[",
+          )
+        elsif :Bmatrix == matrix
+          Utility.get_table_class(matrix).new(
+            [array],
+            "{",
+            "}",
+          )
+        else
+          Utility.get_table_class(matrix).new([array])
+        end
+      end
+
+      rule(matrixs: simple(:matrixs),
            identity_matrix_number: simple(:number)) do
         matrix = Constants::MATRIXS.key(matrixs) || matrixs.to_sym
         if :Vmatrix == matrix
@@ -1814,7 +1848,6 @@ module Plurimath
 
       rule(slashed_value: sequence(:values),
            expr: simple(:expr)) do
-
         values.each.with_index do |value, index|
           decoded = HTMLEntities.new.decode(value.value)
           slashed = if index == 0
@@ -1953,12 +1986,12 @@ module Plurimath
 
       rule(paren_close_prefix: simple(:prefix),
            open_paren: simple(:paren)) do
-        paren
+        [Math::Number.new(""), paren]
      end
 
       rule(paren_open_prefix: simple(:prefix),
            close_paren: simple(:paren)) do
-        paren
+        [Math::Number.new(""), paren]
      end
 
       rule(open_paren: simple(:open_paren),
@@ -2156,7 +2189,7 @@ module Plurimath
         Math::Function::Fenced.new(
           Math::Symbol.new("("),
           [
-            Utility.fractions(numerator, denominator, { linethickness: "0" }),
+            Utility.fractions(numerator, denominator, { linethickness: "0", choose: true }),
           ],
           Math::Symbol.new(")"),
         )
@@ -2289,9 +2322,21 @@ module Plurimath
       end
 
       rule(numerator: simple(:numerator),
+           ldiv: simple(:ldiv),
+           denominator: simple(:denominator)) do
+        Utility.fractions(numerator, denominator, { ldiv: true })
+      end
+
+      rule(numerator: simple(:numerator),
            bevelled: simple(:bevelled),
            denominator: sequence(:denominator)) do
         Utility.fractions(numerator, denominator, { bevelled: true })
+      end
+
+      rule(numerator: simple(:numerator),
+           ldiv: simple(:ldiv),
+           denominator: sequence(:denominator)) do
+        Utility.fractions(numerator, denominator, { ldiv: true })
       end
 
       rule(numerator: simple(:numerator),
@@ -2383,10 +2428,11 @@ module Plurimath
       rule(opener: sequence(:opener),
            operand: simple(:operand),
            closer: simple(:closer)) do
-        options = { prefixed: true }
+        options = {}
         if opener.first.is_a?(Math::Number)
           mask = "#{1.25**opener[0].value.to_i}em"
-          options[:open_paren] = { minsize: mask, maxisize: mask }
+          options[:open_prefixed] = true
+          options[:open_paren] = { minsize: mask, maxsize: mask } unless opener.first.value == ""
         end
         Utility.unfenced_value(operand, paren_specific: true) if [opener, closer].include?("|")
         Math::Function::Fenced.new(
@@ -2403,6 +2449,29 @@ module Plurimath
         Math::Function::Fenced.new(
           open_paren.is_a?(Slice) ? Math::Symbol.new(open_paren) : open_paren,
           [frac],
+          close_paren.is_a?(Slice) ? Math::Symbol.new(close_paren) : close_paren,
+        )
+      end
+
+      rule(open_paren: simple(:open_paren),
+           slashed_value: sequence(:values),
+           close_paren: simple(:close_paren)) do
+        values.each.with_index do |value, index|
+          decoded = HTMLEntities.new.decode(value.value)
+          slashed = if index == 0
+                      if decoded.to_s.match?(/^\w+/)
+                        Math::Function::Text.new("\\#{decoded}")
+                      else
+                        Math::Symbol.new(decoded, true)
+                      end
+                    else
+                      decoded.match?(/[0-9]/) ? Math::Number.new(decoded) : Math::Symbol.new(decoded)
+                    end
+          values[index] = slashed
+        end
+        Math::Function::Fenced.new(
+          open_paren.is_a?(Slice) ? Math::Symbol.new(open_paren) : open_paren,
+          values,
           close_paren.is_a?(Slice) ? Math::Symbol.new(close_paren) : close_paren,
         )
       end
@@ -2444,7 +2513,7 @@ module Plurimath
           open_paren.is_a?(Slice) ? Math::Symbol.new(open_paren) : open_paren,
           [factor],
           Math::Symbol.new(close_prefix),
-          { prefixed: true }
+          { close_prefixed: true }
         )
       end
 
@@ -2455,7 +2524,7 @@ module Plurimath
           Math::Symbol.new(open_paren),
           [factor],
           close_paren.is_a?(Slice) ? Math::Symbol.new(close_paren) : close_paren,
-          { prefixed: true }
+          { open_prefixed: true }
         )
       end
 
@@ -2565,10 +2634,11 @@ module Plurimath
       rule(open_paren: sequence(:open_paren),
            factor: simple(:factor),
            close_paren: simple(:close_paren)) do
-        options = { prefixed: true }
+        options = {}
         if open_paren.first.is_a?(Math::Number)
           mask = "#{1.25**open_paren.first.value.to_i}em"
-          options[:open_paren] = { minsize: mask, maxisize: mask }
+          options[:open_prefixed] = true
+          options[:open_paren] = { minsize: mask, maxsize: mask } unless open_paren.first.value == ""
         end
         new_factor = [open_paren, close_paren].include?("|") ? Utility.unfenced_value(factor, paren_specific: true) : factor
         Math::Function::Fenced.new(
@@ -2580,16 +2650,35 @@ module Plurimath
       end
 
       rule(open_paren: sequence(:open_paren),
-           frac: simple(:frac),
-           close_paren: sequence(:close_paren)) do
-        options = { prefixed: true }
+           factor: simple(:factor),
+           paren_close_prefix: simple(:close_prefix)) do
+        options = {}
         if open_paren.first.is_a?(Math::Number)
           mask = "#{1.25**open_paren.first.value.to_i}em"
-          options[:open_paren] = { minsize: mask, maxisize: mask }
+          options[:open_prefixed] = true
+          options[:open_paren] = { minsize: mask, maxsize: mask } unless open_paren.first.value == ""
+        end
+        Math::Function::Fenced.new(
+          Math::Symbol.new(open_paren.last),
+          [factor],
+          Math::Symbol.new(close_prefix),
+          options
+        )
+      end
+
+      rule(open_paren: sequence(:open_paren),
+           frac: simple(:frac),
+           close_paren: sequence(:close_paren)) do
+        options = {}
+        if open_paren.first.is_a?(Math::Number)
+          mask = "#{1.25**open_paren.first.value.to_i}em"
+          options[:open_prefixed] = true
+          options[:open_paren] = { minsize: mask, maxsize: mask } unless open_paren.first.value == ""
         end
         if close_paren.first.is_a?(Math::Number)
           mask = "#{1.25**close_paren.first.value.to_i}em"
-          options[:close_paren] = { minsize: mask, maxisize: mask }
+          options[:close_prefixed] = true
+          options[:close_paren] = { minsize: mask, maxsize: mask } unless close_paren.first.value == ""
         end
         Math::Function::Fenced.new(
           Math::Symbol.new(open_paren.last),
@@ -2602,10 +2691,11 @@ module Plurimath
       rule(open_paren: simple(:open_paren),
            frac: simple(:frac),
            close_paren: sequence(:close_paren)) do
-        options = { prefixed: true }
+        options = {}
         if close_paren.first.is_a?(Math::Number)
           mask = "#{1.25**close_paren.first.value.to_i}em"
-          options[:close_paren] = { minsize: mask, maxisize: mask }
+          options[:close_prefixed] = true
+          options[:close_paren] = { minsize: mask, maxsize: mask } unless close_paren.first.value == ""
         end
         Math::Function::Fenced.new(
           open_paren.is_a?(Slice) ? Math::Symbol.new(open_paren) : open_paren,
@@ -2618,14 +2708,16 @@ module Plurimath
       rule(open_paren: sequence(:open_paren),
            factor: simple(:factor),
            close_paren: sequence(:close_paren)) do
-        options = { prefixed: true }
+        options = {}
         if open_paren.first.is_a?(Math::Number)
           mask = "#{1.25**open_paren.first.value.to_i}em"
-          options[:open_paren] = { minsize: mask, maxisize: mask }
+          options[:open_prefixed] = true
+          options[:open_paren] = { minsize: mask, maxsize: mask } unless open_paren.first.value == ""
         end
         if close_paren.first.is_a?(Math::Number)
           mask = "#{1.25**close_paren.first.value.to_i}em"
-          options[:close_paren] = { minsize: mask, maxisize: mask }
+          options[:close_prefixed] = true
+          options[:close_paren] = { minsize: mask, maxsize: mask } unless close_paren.first.value == ""
         end
         Math::Function::Fenced.new(
           Math::Symbol.new(open_paren.last),
@@ -3006,14 +3098,16 @@ module Plurimath
            factor: simple(:factor),
            exp: sequence(:exp),
            close_paren: sequence(:close_paren)) do
-        options = { prefixed: true }
+        options = {}
         if open_paren.first.is_a?(Math::Number)
           mask = "#{1.25**open_paren.first.value.to_i}em"
-          options[:open_paren] = { minsize: mask, maxisize: mask }
+          options[:open_prefixed] = true
+          options[:open_paren] = { minsize: mask, maxsize: mask } unless open_paren.first.value == ""
         end
         if close_paren.first.is_a?(Math::Number)
           mask = "#{1.25**close_paren.first.value.to_i}em"
-          options[:close_paren] = { minsize: mask, maxisize: mask }
+          options[:close_prefixed] = true
+          options[:close_paren] = { minsize: mask, maxsize: mask } unless close_paren.first.value == ""
         end
         Math::Function::Fenced.new(
           Math::Symbol.new(open_paren.last),
@@ -3745,6 +3839,32 @@ module Plurimath
         Math::Function::Intent.new(Utility.filter_values(value), args)
       end
 
+      rule(paren_open_prefix: simple(:open_paren),
+           factor: simple(:factor),
+           accents_subsup: simple(:subsup),
+           exp: simple(:exp),
+           paren_close_prefix: simple(:close_paren)) do
+        Math::Function::Fenced.new(
+          Math::Symbol.new(open_paren),
+          [factor, subsup, exp],
+          Math::Symbol.new(close_paren),
+        )
+      end
+
+      rule(open_paren: simple(:open_paren),
+           pre_subscript: simple(:pre_sub),
+           pre_supscript: simple(:pre_sup),
+           close_paren: simple(:close_paren),
+           base: simple(:base)) do
+        Math::Function::Multiscript.new(
+          Math::Function::PowerBase.new(
+            base,
+          ),
+          [pre_sub],
+          [pre_sup],
+        )
+      end
+
       rule(open_paren: simple(:open_paren),
            pre_subscript: simple(:pre_sub),
            pre_supscript: simple(:pre_sup),
@@ -3757,20 +3877,6 @@ module Plurimath
             base,
             Utility.unfenced_value(sub, paren_specific: true),
             Utility.unfenced_value(sup, paren_specific: true),
-          ),
-          [pre_sub],
-          [pre_sup],
-        )
-      end
-
-      rule(open_paren: simple(:open_paren),
-           pre_subscript: simple(:pre_sub),
-           pre_supscript: simple(:pre_sup),
-           close_paren: simple(:close_paren),
-           base: simple(:base)) do
-        Math::Function::Multiscript.new(
-          Math::Function::PowerBase.new(
-            base,
           ),
           [pre_sub],
           [pre_sup],

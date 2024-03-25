@@ -13,6 +13,10 @@ module Plurimath
                          options = {})
             super
           end
+
+          def to_unicodemath
+            "Ⓒ(#{value.map(&:to_unicodemath).join("@")})"
+          end
         end
       end
     end

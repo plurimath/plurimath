@@ -49,6 +49,12 @@ module Plurimath
           )
         end
 
+        def to_unicodemath
+          first_value = sub_value if unicode_valid_value?(parameter_two)
+          second_value = sup_value if unicode_valid_value?(parameter_three)
+          "#{first_value}#{second_value} #{parameter_one&.to_unicodemath}"
+        end
+
         def line_breaking(obj)
           parameter_one&.line_breaking(obj)
           if obj.value_exist?
@@ -77,6 +83,32 @@ module Plurimath
 
         def valid_value_exist?(field)
           !field && (field&.empty? || field&.all?(None))
+        end
+
+        def unicode_valid_value?(field)
+          !field.empty? && !valid_value_exist?(field)
+        end
+
+        def sup_value
+          field = Utility.filter_values(parameter_two)
+          if field&.mini_sized? || prime_unicode?(field)
+            parameter_three.map(&:to_unicodemath).join
+          elsif field.is_a?(Math::Function::Power)
+            "^#{parameter_three.map(&:to_unicodemath).join}"
+          elsif parameter_three && !parameter_three.empty?
+            "^(#{parameter_three.map(&:to_unicodemath).join})"
+          end
+        end
+
+        def sub_value
+          field = Utility.filter_values(parameter_two)
+          if field&.mini_sized?
+            parameter_two.map(&:to_unicodemath).join
+          elsif parameter_two.is_a?(Math::Function::Base)
+            "_#{parameter_two.map(&:to_unicodemath).join}"
+          elsif parameter_two && !parameter_two.empty?
+            "_(#{parameter_two.map(&:to_unicodemath).join})"
+          end
         end
       end
     end

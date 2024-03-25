@@ -30,6 +30,10 @@ module Plurimath
           )
         end
 
+        def to_unicodemath
+          parameter_one[:alt] if parameter_one
+        end
+
         protected
 
         def glyph_user_index(index)

@@ -30,6 +30,10 @@ module Plurimath
         def to_omml_without_math_tag(display_style)
           Table.new(parameter_one).to_omml_without_math_tag(display_style)
         end
+
+        def to_unicodemath
+          "■(#{parameter_one.compact.map(&:to_unicodemath).join("@")})"
+        end
       end
     end
   end

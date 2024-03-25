@@ -71,6 +71,13 @@ module Plurimath
           "<i>&sum;</i>#{first_value}#{second_value}"
         end
 
+        def to_unicodemath
+          first_value = "_#{unicodemath_parens(parameter_one)}" if parameter_one
+          second_value = "^#{unicodemath_parens(parameter_two)}" if parameter_two
+          mask = options&.dig(:mask) if options&.key?(:mask)
+          "∑#{mask}#{first_value}#{second_value}#{naryand_value(parameter_three)}"
+        end
+
         def to_omml_without_math_tag(display_style)
           return r_element("&#x2211;", rpr_tag: false) unless all_values_exist?
 

@@ -33,6 +33,10 @@ module Plurimath
           def to_omml_without_math_tag(display_style)
             font_styles(display_style, sty: nil, scr: "monospace")
           end
+
+          def to_unicodemath
+            "ￗ#{unicodemath_parens(parameter_one)}"
+          end
         end
       end
     end

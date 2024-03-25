@@ -41,6 +41,11 @@ module Plurimath
           end
         end
 
+        def to_unicodemath
+          first_value = unicodemath_parens(parameter_one) if parameter_one
+          "#{first_value}̇"
+        end
+
         def line_breaking(obj)
           parameter_one&.line_breaking(obj)
           obj.update(Utility.filter_values(obj.value)) if obj.value_exist?

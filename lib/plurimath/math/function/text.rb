@@ -35,6 +35,16 @@ module Plurimath
           [text]
         end
 
+        def to_unicodemath
+          return unless value
+
+          if value&.start_with?("\\")
+            value
+          else
+            "\"#{(Utility.html_entity_to_unicode(value))}\""
+          end
+        end
+
         def insert_t_tag(display_style)
           r_tag = Utility.ox_element("r", namespace: "m")
           Utility.update_nodes(r_tag, to_omml_without_math_tag(display_style))

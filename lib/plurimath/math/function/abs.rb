@@ -34,6 +34,10 @@ module Plurimath
           end
         end
 
+        def to_unicodemath
+          "⒜#{unicodemath_parens(parameter_one)}"
+        end
+
         protected
 
         def md_tag
