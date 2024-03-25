@@ -49,6 +49,14 @@ module Plurimath
           [limupp]
         end
 
+        def to_unicodemath
+          if unicode_accent?
+            "#{unicodemath_parens(parameter_two)}#{unicode_overlay_underlay}"
+          else
+            "#{unicodemath_parens(parameter_two)}\\above#{parameter_one.to_unicodemath}"
+          end
+        end
+
         def line_breaking(obj)
           parameter_two&.line_breaking(obj)
           if obj.value_exist?
@@ -63,6 +71,20 @@ module Plurimath
 
         def is_nary_function?
           parameter_two.is_nary_function? || parameter_two.is_nary_symbol?
+        end
+
+        protected
+
+        def unicode_accent?
+          parameter_one.is_a?(Math::Symbol) &&
+            (
+              UnicodeMath::Constants::DIACRITIC_OVERLAYS.include?(parameter_one.value) ||
+                UnicodeMath::Constants::ACCENT_SYMBOLS.has_value?(parameter_one.value)
+            )
+        end
+
+        def unicode_overlay_underlay
+          "\\#{UnicodeMath::Constants::ACCENT_SYMBOLS.invert[parameter_one.value]}"
         end
       end
     end

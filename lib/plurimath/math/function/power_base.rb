@@ -58,6 +58,12 @@ module Plurimath
           [ssubsup]
         end
 
+        def to_unicodemath
+          sub_value = "_#{unicodemath_parens(parameter_two)}" if parameter_two
+          sup_value = "^#{unicodemath_parens(parameter_three)}" if parameter_three
+          "#{parameter_one&.to_unicodemath}#{sub_value}#{sup_value}"
+        end
+
         def line_breaking(obj)
           parameter_one&.line_breaking(obj)
           if obj.value_exist?

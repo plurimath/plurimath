@@ -68,6 +68,17 @@ module Plurimath
           [d]
         end
 
+        def to_unicodemath
+          fenced_value = parameter_two&.map do |param|
+            next param.choose_frac if choose_frac?(param)
+
+            param.to_unicodemath
+          end&.join(" ")
+          return fenced_value if choose_frac?(parameter_two.first)
+
+          "#{unicode_open_paren}#{fenced_value}#{unicode_close_paren}"
+        end
+
         def to_asciimath_math_zone(spacing, last = false, indent = true)
           filtered_values(parameter_two).map.with_index(1) do |object, index|
             last = index == @values.length
@@ -152,6 +163,20 @@ module Plurimath
           object.parameter_two = breaked_result.flatten
           self.parameter_three = nil
           object
+        end
+
+        def unicode_open_paren
+          paren = parameter_one.to_unicodemath
+          (UnicodeMath::Constants::OPEN_SYMBOLS.invert[paren] || "\\open" if paren == "&#x251c;") || paren
+        end
+
+        def unicode_close_paren
+          paren = parameter_three.to_unicodemath
+          (UnicodeMath::Constants::CLOSE_SYMBOLS.invert[paren] || "\\close" if paren == "&#x2524;") || paren
+        end
+
+        def choose_frac?(param)
+          param&.is_a?(Math::Function::Frac) && param&.options&.dig(:linethickness)
         end
       end
     end

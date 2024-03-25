@@ -45,6 +45,12 @@ module Plurimath
           )
           [rad_element]
         end
+
+        def to_unicodemath
+          first_value = unicodemath_parens(parameter_one) if parameter_one
+          second_value = unicodemath_parens(parameter_two) if parameter_two
+          "\\sqrt(#{first_value}&#{second_value})"
+        end
       end
     end
   end

@@ -622,7 +622,7 @@ module UnicodeMathTransformValues
       Plurimath::Math::Symbol.new(")")
     )
   ])
-  EXAMPLE_33 = {}.freeze
+  EXAMPLE_33 = Plurimath::Math::Formula.new([])
   EXAMPLE_34 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Power.new(
       Plurimath::Math::Function::Fenced.new(
@@ -8315,7 +8315,7 @@ module UnicodeMathTransformValues
       Plurimath::Math::Symbol.new("]")
     )
   ])
-  EXAMPLE_179 = {}.freeze
+  EXAMPLE_179 = Plurimath::Math::Formula.new([])
   EXAMPLE_180 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Table::Matrix.new(
       [
@@ -8934,7 +8934,7 @@ module UnicodeMathTransformValues
     Plurimath::Math::Symbol.new("+"),
     Plurimath::Math::Symbol.new("b")
   ])
-  EXAMPLE_211 = {}.freeze
+  EXAMPLE_211 = Plurimath::Math::Formula.new([])
   EXAMPLE_212 = Plurimath::Math::Formula.new([
     Plurimath::Math::Symbol.new("a"),
     Plurimath::Math::Symbol.new("+"),
@@ -16892,10 +16892,10 @@ module UnicodeMathTransformValues
     ),
     Plurimath::Math::Symbol.new("c")
   ])
-  EXAMPLE_598 = {}.freeze
-  EXAMPLE_599 = {}.freeze
-  EXAMPLE_600 = {}.freeze
-  EXAMPLE_601 = {}.freeze
+  EXAMPLE_598 = Plurimath::Math::Formula.new([])
+  EXAMPLE_599 = Plurimath::Math::Formula.new([])
+  EXAMPLE_600 = Plurimath::Math::Formula.new([])
+  EXAMPLE_601 = Plurimath::Math::Formula.new([])
   EXAMPLE_602 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Mpadded.new(
       Plurimath::Math::Function::Frac.new(

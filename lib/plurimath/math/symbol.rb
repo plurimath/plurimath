@@ -73,6 +73,20 @@ module Plurimath
         value
       end
 
+      def to_unicodemath
+        return "\\#{unicode_spaces}" if options && options.key?(:space)
+
+        slashed_symbol(UnicodeMath::Constants::ORDINARY_SYMBOLS.key(value)) ||
+          slashed_symbol(UnicodeMath::Constants::RELATIONAL_SYMBOLS.key(value)) ||
+          slashed_symbol(UnicodeMath::Constants::BINARY_SYMBOLS.key(value)) ||
+          slashed_symbol(UnicodeMath::Constants::SUB_ALPHABETS.key(value)) ||
+          slashed_symbol(UnicodeMath::Constants::SUP_ALPHABETS.key(value)) ||
+          slashed_symbol(UnicodeMath::Constants::SUB_OPERATORS.key(value)) ||
+          slashed_symbol(UnicodeMath::Constants::SUP_OPERATORS.key(value)) ||
+          (slashed_symbol(value, forward_slash: true) if UnicodeMath::Constants::NEGATABLE_SYMBOLS.include?(value) && slashed) ||
+          value
+      end
+
       def insert_t_tag(_)
         [(Utility.ox_element("r", namespace: "m") << t_tag)]
       end
@@ -151,6 +165,17 @@ module Plurimath
         return "\\#{value}" if ["{", "}"].include?(value) || value == "_"
 
         return "\\operatorname{if}" if value == "if"
+      end
+
+      def slashed_symbol(value, forward_slash: false)
+        return false unless value
+        return "/#{value}" if forward_slash
+
+        "\\#{value}"
+      end
+
+      def unicode_spaces
+        UnicodeMath::Constants::SKIP_SYMBOLS.invert[value]
       end
     end
   end

@@ -35,6 +35,11 @@ module Plurimath
             )
           end
 
+          def to_unicodemath
+            first_value = value.map(&:to_unicodemath).join("@")
+            "#{unicode_open_paren}\\matrix(#{first_value})#{unicode_close_paren}"
+          end
+
           protected
 
           def mo_tag(paren)
@@ -43,6 +48,14 @@ module Plurimath
 
           def table_tag_only?
             (open_paren&.include?("(") && close_paren&.include?(")")) || !(open_paren && close_paren)
+          end
+
+          def unicode_close_paren
+            (UnicodeMath::Constants::CLOSE_SYMBOLS.has_value?(close_paren) || "\\close" if close_paren == "&#x2524;") || close_paren
+          end
+
+          def unicode_open_paren
+            (UnicodeMath::Constants::OPEN_SYMBOLS.invert[open_paren] || "\\open" if open_paren == "&#x251c;") || open_paren
           end
         end
       end

@@ -60,6 +60,16 @@ module Plurimath
           )
         end
 
+        def to_unicodemath
+          first_value = unicodemath_parens(parameter_one) if parameter_one
+          second_value = unicodemath_parens(parameter_two) if parameter_two
+          if options && options.key?(:linethickness)
+            "#{first_value}\\atop #{second_value}"
+          else
+            "#{first_value}/#{second_value}"
+          end
+        end
+
         def line_breaking(obj)
           parameter_one&.line_breaking(obj)
           if obj.value_exist?
@@ -76,6 +86,12 @@ module Plurimath
             frac.hide_function_name = true
             obj.update(frac)
           end
+        end
+
+        def choose_frac
+          first_value = unicodemath_parens(parameter_one) if parameter_one
+          second_value = unicodemath_parens(parameter_two) if parameter_two
+          "#{first_value}\\choose #{second_value}"
         end
 
         protected

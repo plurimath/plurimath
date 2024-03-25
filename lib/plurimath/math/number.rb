@@ -38,6 +38,10 @@ module Plurimath
         [t_tag]
       end
 
+      def to_unicodemath
+        value
+      end
+
       def insert_t_tag(_)
         [
           (Utility.ox_element("r", namespace: "m") << t_tag),

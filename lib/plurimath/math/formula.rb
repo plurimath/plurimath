@@ -136,6 +136,14 @@ module Plurimath
         omml_content(display_style)
       end
 
+      def to_unicodemath
+        Utility.html_entity_to_unicode(
+          negated_value? ? value.map(&:to_unicodemath).join : value.map(&:to_unicodemath).join(" ")
+        )
+      rescue
+        parse_error!(:unicodemath)
+      end
+
       def to_display(type = nil)
         return type_error! unless MATH_ZONE_TYPES.include?(type.downcase.to_sym)
 
@@ -308,6 +316,10 @@ module Plurimath
         else
           text_in_tag?(next_nodes)
         end
+      end
+
+      def negated_value?
+        value.last.is_a?(Math::Symbol) && value.last.value == "&#x338;"
       end
     end
   end

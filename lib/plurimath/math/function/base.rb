@@ -68,6 +68,12 @@ module Plurimath
           [ssub_element]
         end
 
+        def to_unicodemath
+          first_value = parameter_one.to_unicodemath if parameter_one
+          second_value = "_#{unicodemath_parens(parameter_two)}" if parameter_two
+          "#{first_value}#{second_value}"
+        end
+
         def line_breaking(obj)
           parameter_one&.line_breaking(obj)
           if obj.value_exist?

@@ -131,6 +131,14 @@ module Plurimath
           underset = Underset.new(overset, parameter_one)
           Array(underset.to_omml_without_math_tag(display_style))
         end
+
+        def unicodemath_parens(field)
+          if field.is_a?(Math::Function::Fenced)
+            field.to_unicodemath
+          else
+            "(#{field.to_unicodemath})"
+          end
+        end
       end
     end
   end

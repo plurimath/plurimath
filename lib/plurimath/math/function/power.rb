@@ -53,6 +53,16 @@ module Plurimath
           [ssup_element]
         end
 
+        def to_unicodemath
+          first_value = parameter_one.to_unicodemath if parameter_one
+          second_value = if parameter_two.is_a?(self.class)
+            "^#{parameter_two.to_unicodemath}"
+          else
+            "^#{unicodemath_parens(parameter_two)}"
+          end
+          "#{first_value}#{second_value}"
+        end
+
         def line_breaking(obj)
           parameter_one&.line_breaking(obj)
           if obj.value_exist?

@@ -49,6 +49,12 @@ module Plurimath
           )
         end
 
+        def to_unicodemath
+          sub_value = "_(#{parameter_two.map(&:to_unicodemath).join})" if unicode_valid_value?(parameter_two)
+          sup_value = "^(#{parameter_three.map(&:to_unicodemath).join})" if unicode_valid_value?(parameter_three)
+          "#{sub_value}#{sup_value} #{parameter_one.to_unicodemath}"
+        end
+
         def line_breaking(obj)
           parameter_one&.line_breaking(obj)
           if obj.value_exist?
@@ -77,6 +83,10 @@ module Plurimath
 
         def valid_value_exist?(field)
           !field && (field&.empty? || field&.all?(None))
+        end
+
+        def unicode_valid_value?(field)
+          !field.empty? && !valid_value_exist?(field)
         end
       end
     end
