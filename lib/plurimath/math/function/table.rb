@@ -80,6 +80,14 @@ module Plurimath
           fenced_table(ox_table)
         end
 
+        def to_unicodemath
+          if unicodemath_table_class?
+            "#{unicodemath_class_name}(#{value.map(&:to_unicodemath).join("@")})"
+          else
+            "#{open_paren}■(#{value.map(&:to_unicodemath).join("@")})#{close_paren}"
+          end
+        end
+
         def to_asciimath_math_zone(spacing, last = false, indent = true)
           [
             "#{spacing}\"table\" function apply\n",
@@ -115,7 +123,7 @@ module Plurimath
         end
 
         def mathml_parenthesis(field)
-          return "" if field&.include?(":")
+          return "" if field&.include?(":") || validate_paren(field)
 
           present?(field) ? field : ""
         end
@@ -303,6 +311,29 @@ module Plurimath
 
         def mo_element(value)
           Utility.ox_element("mo") << value
+        end
+
+        def unicodemath_table_class?
+          return unless class_name == "table"
+          return if open_paren.nil? && close_paren.nil?
+
+          (!(open_paren.nil? || open_paren.empty?) && !(close_paren.nil? || close_paren.empty?)) ||
+            Utility::PARENTHESIS[open_paren&.to_sym] == close_paren ||
+            (open_paren.include?("|") && close_paren.include?("|"))
+        end
+
+        def unicodemath_class_name
+          return matrices_functions(:Vmatrix) if class_name == "vmatrix" && open_paren == "norm["
+          return matrices_functions(:vmatrix) if open_paren == "|" && close_paren == "|"
+          return matrices_functions(:matrix) if class_name == "Bmatrix" && open_paren == "{"
+          return unless unicodemath_table_class?
+
+          matrix_name = UnicodeMath::Constants::PARENTHESIS_MATRICES.key(open_paren)
+          matrices_functions(matrix_name)
+        end
+
+        def matrices_functions(matrix_name)
+          UnicodeMath::Constants::MATRIXS[matrix_name]
         end
       end
     end

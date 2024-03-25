@@ -49,6 +49,18 @@ module Plurimath
           [limlow]
         end
 
+        def to_unicodemath
+          if horizontal_brackets?
+            "#{parameter_one.to_unicodemath}#{unicodemath_parens(parameter_two)}"
+          elsif unicode_classes_accent?(parameter_two)
+            "#{parameter_two.to_unicodemath}_#{unicodemath_parens(parameter_one)}"
+          elsif unicode_accent?
+            "#{unicodemath_parens(parameter_two)}#{parameter_one.value}"
+          else
+            "#{unicodemath_parens(parameter_two)}┬#{parameter_one.to_unicodemath}"
+          end
+        end
+
         def line_breaking(obj)
           parameter_one&.line_breaking(obj)
           if obj.value_exist?
@@ -69,6 +81,25 @@ module Plurimath
 
         def is_nary_function?
           parameter_two.is_nary_function? || parameter_two.is_nary_symbol?
+        end
+
+        protected
+
+        def unicode_accent?
+          parameter_one.is_a?(Math::Symbol) &&
+            (
+              UnicodeMath::Constants::DIACRITIC_BELOWS.include?(parameter_one.value) ||
+                UnicodeMath::Constants::ACCENT_SYMBOLS.has_value?(parameter_one.value)
+            )
+        end
+
+        def horizontal_brackets?
+          parameter_one.is_a?(Math::Symbol) &&
+            UnicodeMath::Constants::HORIZONTAL_BRACKETS.value?(parameter_one.value)
+        end
+
+        def unicode_classes_accent?(field)
+          (field.is_a?(Math::Function::Obrace) || field.is_a?(Math::Function::Ubrace))
         end
       end
     end

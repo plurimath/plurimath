@@ -33,6 +33,16 @@ module Plurimath
               ],
             )
           end
+
+          def to_unicodemath
+            "#{matrix_symbol}(#{value.map(&:to_unicodemath).join("@")})"
+          end
+
+          private
+
+          def matrix_symbol
+            open_paren == "{" ? "Ⓢ" : "ⓢ"
+          end
         end
       end
     end

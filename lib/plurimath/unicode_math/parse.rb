@@ -87,10 +87,11 @@ module Plurimath
           slash >> (str("sdiv") | str("sdivide") | str("sfrac")).as(:bevelled) |
           str("&#x2298;").as(:no_display_style) |
           slash >> (str("ndiv") | str("oslash")).as(:no_display_style) |
+          (str("&#x2215;") | str("\\ldiv")).as(:ldiv) |
           forward_slash |
           str("\\over") |
-          str("\\not") |
           str("&#x2f;") |
+          str("\\not") |
           (str("&#xa6;") | str("\\atop")).as(:atop) |
           (str("\\choose") | str("&#x249e;")).as(:choose)
       end

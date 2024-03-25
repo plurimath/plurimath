@@ -73,6 +73,14 @@ module Plurimath
         value
       end
 
+      def to_unicodemath
+        return "\\#{value}" if slashed || special_chars
+        return mini_sub if mini_sub_sized
+        return mini_sup if mini_sup_sized
+
+        value
+      end
+
       def insert_t_tag(_)
         [(Utility.ox_element("r", namespace: "m") << t_tag)]
       end
@@ -132,6 +140,10 @@ module Plurimath
         ].include?(value)
       end
 
+      def mini_sized?
+        mini_sub_sized || mini_sup_sized
+      end
+
       private
 
       def operator?(unicode)
@@ -142,7 +154,7 @@ module Plurimath
 
       def explicit_checks(unicode)
         return true if [unicode, value].any? { |v| ["∣", "|"].include?(v) }
-        return true if UnicodeMath::Constants::ACCENT_SYMBOLS.has_value?(value)
+        return true if unicode_const(:ACCENT_SYMBOLS).has_value?(value)
       end
 
       def specific_values
@@ -151,6 +163,30 @@ module Plurimath
         return "\\#{value}" if ["{", "}"].include?(value) || value == "_"
 
         return "\\operatorname{if}" if value == "if"
+      end
+
+      def mini_sub
+        unicode_const(:SUB_ALPHABETS)[value.to_sym] ||
+          unicode_const(:SUB_OPERATORS)[value.to_sym] ||
+          mini_sized_parenthesis(unicode_const(:SUB_PARENTHESIS))
+      end
+
+      def mini_sup
+        unicode_const(:SUP_ALPHABETS)[value.to_sym] ||
+          unicode_const(:SUP_OPERATORS)[value.to_sym] ||
+          mini_sized_parenthesis(unicode_const(:SUP_PARENTHESIS))
+      end
+
+      def unicode_const(const)
+        UnicodeMath::Constants.const_get(const)
+      end
+
+      def mini_sized_parenthesis(parens)
+        parens.values.find { |paren| paren.dig(value.to_sym) }&.dig(value.to_sym)
+      end
+
+      def special_chars
+        %w[& @ ^].include?(value)
       end
     end
   end

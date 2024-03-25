@@ -49,6 +49,36 @@ module Plurimath
             self.parameter_two = nil
           end
         end
+
+        def to_unicodemath
+          "inf#{sub_value}#{sup_value}"
+        end
+
+        protected
+
+        def sup_value
+          return unless parameter_two
+
+          if parameter_two&.mini_sized? || prime_unicode?(parameter_two)
+            parameter_two.to_unicodemath
+          elsif parameter_two.is_a?(Math::Function::Power)
+            "^#{parameter_two.to_unicodemath}"
+          else
+            "^#{unicodemath_parens(parameter_two)}"
+          end
+        end
+
+        def sub_value
+          return unless parameter_one
+
+          if parameter_one&.mini_sized?
+            parameter_one.to_unicodemath
+          elsif parameter_one.is_a?(Math::Function::Base)
+            "_#{parameter_one.to_unicodemath}"
+          else
+            "_#{unicodemath_parens(parameter_one)}"
+          end
+        end
       end
     end
   end

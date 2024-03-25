@@ -735,6 +735,7 @@ RSpec.describe Plurimath::Math::Formula do
               ])
             ],
             nil,
+            nil,
             [
               Plurimath::Math::Symbol.new("a")
             ]
@@ -1486,7 +1487,8 @@ RSpec.describe Plurimath::Math::Formula do
               ]),
             ],
             nil,
-            [],
+            nil,
+            {},
           )
         ])
       }
@@ -12899,7 +12901,8 @@ RSpec.describe Plurimath::Math::Formula do
                 ])
               ],
               nil,
-              []
+              nil,
+              {}
             ),
             Plurimath::Math::Function::Right.new("]")
           ])

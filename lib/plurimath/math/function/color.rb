@@ -55,6 +55,10 @@ module Plurimath
           new_arr
         end
 
+        def to_unicodemath
+          "✎(#{parameter_one.to_unicodemath}&#{parameter_two.to_unicodemath})"
+        end
+
         protected
 
         def attr_key

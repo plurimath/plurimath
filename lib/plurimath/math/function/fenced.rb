@@ -17,6 +17,11 @@ module Plurimath
           @options = options
         end
 
+        def ==(object)
+          super(object) &&
+            object.options == options
+        end
+
         def to_asciimath
           first_value  = parameter_one ? parameter_one.to_asciimath : "("
           third_value  = parameter_three ? parameter_three.to_asciimath : ")"
@@ -68,6 +73,21 @@ module Plurimath
           [d]
         end
 
+        def to_unicodemath
+          return mini_sized_unicode if mini_sized?
+
+          fenced_value = parameter_two&.map do |param|
+            next param.choose_frac if choose_frac?(param)
+
+            param.to_unicodemath
+          end&.join(" ")
+          return fenced_value if choose_frac?(parameter_two.first)
+
+          fenced_value = "(#{fenced_value})" if parameter_one&.value&.include?("|")
+
+          "#{unicode_open_paren}#{fenced_value}#{unicode_close_paren}"
+        end
+
         def to_asciimath_math_zone(spacing, last = false, indent = true)
           filtered_values(parameter_two).map.with_index(1) do |object, index|
             last = index == @values.length
@@ -100,6 +120,17 @@ module Plurimath
           return unless field_values.length > 1
 
           obj.update(value_split(obj, field_values))
+        end
+
+        def mini_sized?
+          parameter_one&.mini_sized? ||
+            Math::Formula.new(parameter_two)&.mini_sized? ||
+            parameter_three&.mini_sized?
+        end
+
+        def mini_sized_unicode
+          fenced_value = parameter_two&.map(&:to_unicodemath)&.join
+          "#{parameter_one.to_unicodemath}#{fenced_value}#{parameter_three.to_unicodemath}"
         end
 
         protected
@@ -138,7 +169,7 @@ module Plurimath
         end
 
         def mathml_paren(field)
-          unicodemath_syntax = ["&#x3016;", "&#x3017;"]
+          unicodemath_syntax = ["&#x3016;", "&#x3017;", "&#x2524;", "&#x251c;"]
           return "" if field&.value&.include?(":") || unicodemath_syntax.include?(field&.value&.to_s)
 
           field&.value
@@ -152,6 +183,45 @@ module Plurimath
           object.parameter_two = breaked_result.flatten
           self.parameter_three = nil
           object
+        end
+
+        def unicode_open_paren
+          paren = parameter_one&.to_unicodemath
+          return "├#{convert_paren_size(paren_size: options&.dig(:open_paren, :minsize))}#{paren}" if options&.key?(:open_paren)
+          return "├#{paren}" if options&.key?(:open_prefixed) && !open_or_begin?
+          return "├" if options&.key?(:open_prefixed) || paren == "{:"
+
+          paren
+        end
+
+        def unicode_close_paren
+          paren = parameter_three&.to_unicodemath
+          return "┤#{convert_paren_size(paren_size: options&.dig(:close_paren, :minsize))}#{paren}" if options&.key?(:close_paren)
+          return "┤#{paren}" if options&.key?(:close_prefixed) && !close_or_end?
+          return "┤" if options&.key?(:close_prefixed) || paren == ":}"
+
+          paren
+        end
+
+        def choose_frac?(param)
+          param&.is_a?(Math::Function::Frac) && param&.options&.key?(:choose)
+        end
+
+        def convert_paren_size(paren_size:)
+          paren = paren_size.delete_suffix("em").to_f
+          (::Math.log(paren) / ::Math.log(1.25)).round
+        end
+
+        def open_or_begin?
+          parameter_one&.value&.include?("&#x251c;") ||
+            parameter_one&.value&.include?("&#x3016;") ||
+            parameter_one&.value&.include?("{:")
+        end
+
+        def close_or_end?
+          parameter_three&.value&.include?("&#x2524;") ||
+            parameter_three&.value&.include?("&#x3017;") ||
+            parameter_three&.value&.include?(":}")
         end
       end
     end

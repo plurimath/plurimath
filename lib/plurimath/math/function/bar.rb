@@ -53,6 +53,10 @@ module Plurimath
           obj.update(Utility.filter_values(obj.value)) if obj.value_exist?
         end
 
+        def to_unicodemath
+          "#{unicodemath_parens(parameter_one)}̅"
+        end
+
         protected
 
         def acc_tag(display_style)

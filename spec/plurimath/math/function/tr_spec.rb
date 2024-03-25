@@ -3,7 +3,7 @@ require "spec_helper"
 RSpec.describe Plurimath::Math::Function::Tr do
 
   describe ".initialize" do
-    subject(:tr) { described_class.new(first) }
+    subject(:tr) { described_class.new([first]) }
 
     context "initialize Tr object" do
       let(:first) { "70" }
@@ -13,7 +13,7 @@ RSpec.describe Plurimath::Math::Function::Tr do
       end
 
       it 'initialize Tr object' do
-        expect(tr.parameter_one).to eql('70')
+        expect(tr.parameter_one).to eql(['70'])
       end
     end
   end

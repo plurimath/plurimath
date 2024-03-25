@@ -57,6 +57,10 @@ module Plurimath
           ]
         end
 
+        def to_unicodemath
+          parameter_one.map(&:to_unicodemath).join
+        end
+
         def line_breaking(obj)
           custom_array_line_breaking(obj)
         end

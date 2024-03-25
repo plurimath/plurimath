@@ -372,6 +372,22 @@ module Plurimath
         "[",
         "]",
       ].freeze
+      SUPPORTED_FONT_STYLES = {
+        "sans-serif-bold-italic": Math::Function::FontStyle::SansSerifBoldItalic,
+        "sans-serif-italic": Math::Function::FontStyle::SansSerifItalic,
+        "bold-sans-serif": Math::Function::FontStyle::BoldSansSerif,
+        "double-struck": Math::Function::FontStyle::DoubleStruck,
+        "bold-fraktur": Math::Function::FontStyle::BoldFraktur,
+        "bold-italic": Math::Function::FontStyle::BoldItalic,
+        "bold-script": Math::Function::FontStyle::BoldScript,
+        "sans-serif": Math::Function::FontStyle::SansSerif,
+        monospace: Math::Function::FontStyle::Monospace,
+        fraktur: Math::Function::FontStyle::Fraktur,
+        normal: Math::Function::FontStyle::Normal,
+        script: Math::Function::FontStyle::Script,
+        italic: Math::Function::FontStyle::Italic,
+        bold: Math::Function::FontStyle::Bold,
+      }.freeze
     end
   end
 end

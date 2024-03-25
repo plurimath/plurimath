@@ -17,6 +17,10 @@ module Plurimath
           def to_latex
             "\\begin#{opening}#{latex_content}\\end#{matrix_class}"
           end
+
+          def to_unicodemath
+            "⒨(#{value.map(&:to_unicodemath).join("@")})"
+          end
         end
       end
     end

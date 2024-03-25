@@ -1477,7 +1477,8 @@ RSpec.describe Plurimath::Mathml::Parser do
                                 )
                               ])
                             ],
-                            Plurimath::Math::Symbol.new(")")
+                            Plurimath::Math::Symbol.new(")"),
+                            { separators: "" }
                           ),
                         ),
                         Plurimath::Math::Symbol.new("&#x2014;"),
@@ -1487,7 +1488,8 @@ RSpec.describe Plurimath::Mathml::Parser do
                         ),
                       ])
                     ],
-                    Plurimath::Math::Symbol.new(")")
+                    Plurimath::Math::Symbol.new(")"),
+                    { separators: "" }
                   ),
                   Plurimath::Math::Symbol.new("/"),
                   Plurimath::Math::Function::FontStyle::Italic.new(
@@ -1496,7 +1498,8 @@ RSpec.describe Plurimath::Mathml::Parser do
                   ),
                 ])
               ],
-              Plurimath::Math::Symbol.new("]")
+              Plurimath::Math::Symbol.new("]"),
+              { separators: "" }
             ),
             Plurimath::Math::Symbol.new("i")
           ),
@@ -1737,6 +1740,7 @@ RSpec.describe Plurimath::Mathml::Parser do
               )
             ],
             Plurimath::Math::Symbol.new(")"),
+            { separators: "" }
           )
         ])
       ])

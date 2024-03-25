@@ -15,7 +15,7 @@ module Plurimath
           Utility.update_nodes(
             Utility.ox_element(
               "mstyle",
-              attributes: { mathvariant: parameter_two },
+              attributes: { mathvariant: font_family(mathml: true) },
             ),
             [first_value],
           )
@@ -31,6 +31,10 @@ module Plurimath
 
         def to_latex
           parameter_one&.to_latex
+        end
+
+        def to_unicodemath
+          "#{font_family(unicode: true)}#{parameter_one&.to_unicodemath}"
         end
 
         def validate_function_formula
@@ -82,7 +86,7 @@ module Plurimath
           new_spacing = gsub_spacing(spacing, last)
           new_arr = [
             "#{spacing}\"#{dump_mathml(self)}\" function apply\n",
-            "#{new_spacing}|_ \"#{omml_and_mathml_font_family}\" font family\n",
+            "#{new_spacing}|_ \"#{font_family(mathml: true)}\" font family\n",
           ]
           mathml_fields_to_print(parameter_one, { spacing: new_spacing, field_name: "argument", additional_space: "|  |_ ", array: new_arr })
           new_arr
@@ -92,15 +96,28 @@ module Plurimath
           new_spacing = gsub_spacing(spacing, last)
           new_arr = [
             "#{spacing}\"#{dump_omml(self, display_style)}\" function apply\n",
-            "#{new_spacing}|_ \"#{omml_and_mathml_font_family}\" font family\n",
+            "#{new_spacing}|_ \"#{font_family(omml: true)}\" font family\n",
           ]
           omml_fields_to_print(parameter_one, { spacing: new_spacing, field_name: "argument", additional_space: "|  |_ ", array: new_arr, display_style: display_style })
           new_arr
         end
 
-        def omml_and_mathml_font_family
-          fonts = Utility::FONT_STYLES.select { |_font, font_class| font_class == self.class }.keys.map(&:to_s)
-          Omml::Parser::SUPPORTED_FONTS.values.find { |value| fonts.include?(value) }
+        def font_family(unicode: false, omml: false, mathml: false)
+          fonts = font_classes
+          fonts = font_classes(parameter_to_class) if fonts.empty?
+          supported_fonts(fonts, unicode: unicode, omml: omml, mathml: mathml)
+        end
+
+        def supported_fonts(fonts_array = [], unicode: false, omml: false, mathml: false)
+          if unicode
+            font = UnicodeMath::Constants::FONTS_CLASSES.find { |value| fonts_array.include?(value) }
+            return "\\#{font}" if font
+          end
+          return Omml::Parser::SUPPORTED_FONTS.values.find { |value| fonts_array.include?(value) } if omml
+          if mathml
+            Mathml::Constants::SUPPORTED_FONT_STYLES.find { |string, object| fonts_array.include?(string.to_s) }&.first ||
+              parameter_two
+          end
         end
 
         def line_breaking(obj)
@@ -113,6 +130,14 @@ module Plurimath
               self.parameter_two,
             )
           )
+        end
+
+        def font_classes(object = self)
+          Utility::FONT_STYLES.select { |_font, font_class| font_class == object.class }.keys.map(&:to_s)
+        end
+
+        def parameter_to_class
+          Utility::FONT_STYLES.select { |font, _font_class| font == parameter_two.to_sym }&.values&.first&.new('')
         end
       end
     end

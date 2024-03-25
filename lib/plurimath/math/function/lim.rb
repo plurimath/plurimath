@@ -49,6 +49,12 @@ module Plurimath
           underover(display_style)
         end
 
+        def to_unicodemath
+          first_value  = "_#{unicodemath_parens(parameter_one)}" if parameter_one
+          second_value = "^#{unicodemath_parens(parameter_two)}" if parameter_two
+          "lim#{first_value}#{second_value}"
+        end
+
         def line_breaking(obj)
           parameter_one.line_breaking(obj)
           if obj.value_exist?

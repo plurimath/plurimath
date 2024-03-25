@@ -18,6 +18,11 @@ module Plurimath
           @options = options unless options.empty?
         end
 
+        def ==(object)
+          super(object) &&
+            object&.options == options
+        end
+
         def to_asciimath
           asciimath_value
         end
@@ -42,6 +47,17 @@ module Plurimath
           phant << omml_parameter(parameter_one, display_style, tag_name: "e")
         end
 
+        def to_unicodemath
+          if options&.dig(:mpadded)
+            "#{mpadded_unicode}#{unicodemath_parens(parameter_one)}"
+          elsif options&.key?(:mask)
+            "⟡(#{options.dig(:mask)}&#{parameter_one&.to_unicodemath})"
+          else
+            first_value = "(#{parameter_one.to_unicodemath})" if parameter_one
+            "⟡#{first_value}"
+          end
+        end
+
         protected
 
         def phant_pr
@@ -53,6 +69,14 @@ module Plurimath
 
         def attr_value_zero?(atr)
           !atr.match?(/[1-9]/) && atr.match?(/\d/)
+        end
+
+        def mpadded_symbol
+          UnicodeMath::Constants::PHANTOM_SYMBOLS.key(options)
+        end
+
+        def mpadded_unicode
+          UnicodeMath::Constants::UNARY_SYMBOLS[mpadded_symbol]
         end
       end
     end

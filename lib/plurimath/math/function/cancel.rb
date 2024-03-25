@@ -18,6 +18,11 @@ module Plurimath
         def to_omml_without_math_tag(display_style)
           omml_value(display_style)
         end
+
+        def to_unicodemath
+          first_value = unicodemath_parens(parameter_one) if parameter_one
+          "╱#{first_value}"
+        end
       end
     end
   end

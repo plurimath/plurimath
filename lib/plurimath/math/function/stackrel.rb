@@ -48,6 +48,12 @@ module Plurimath
           [limupp]
         end
 
+        def to_unicodemath
+          first_value = "(#{parameter_one&.to_unicodemath})"
+          second_value = "(#{parameter_two&.to_unicodemath})"
+          "#{second_value}┴#{first_value}"
+        end
+
         def line_breaking(obj)
           parameter_one.line_breaking(obj)
           if obj.value_exist?

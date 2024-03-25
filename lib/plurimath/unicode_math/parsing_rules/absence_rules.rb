@@ -62,6 +62,7 @@ module Plurimath
             str("&#x24d0;") |
             str("&#x24d8;") |
             str("&#x2223;") |
+            str("&#x2215;") |
             str("&#x20;") |
             str("&#x27;") |
             str("&#x2f;") |
@@ -102,6 +103,7 @@ module Plurimath
             slash >> str("root") |
             slash >> str("sdiv") |
             slash >> str("ndiv") |
+            slash >> str("ldiv") |
             op_prefixed_matrixs |
             op_binary_symbols_prefixed |
             op_prefixed_negated |

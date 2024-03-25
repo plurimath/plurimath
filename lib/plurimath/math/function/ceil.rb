@@ -31,6 +31,12 @@ module Plurimath
           "<i>&#x2308;</i>#{first_value}<i>&#x2309;</i>"
         end
 
+        def to_unicodemath
+          first_value = "&#x2308;" unless open_paren
+          second_value = "&#x2309;" unless close_paren
+          "#{first_value}#{parameter_one&.to_unicodemath}#{second_value}"
+        end
+
         def line_breaking(obj)
           parameter_one.line_breaking(obj)
           if obj.value_exist?

@@ -389,7 +389,6 @@ module Plurimath
         vdash: "&#x22a2;",
         vdots: "&#x22ee;",
         Vvdash: "&#x22aa;",
-        ldiv: "&#x2215;",
       }.freeze
 
       HORIZONTAL_BRACKETS = {
@@ -998,6 +997,18 @@ module Plurimath
         ppprime: "&#x2034;",
         pprime: "&#x2033;",
         prime: "&#x2032;",
+      }.freeze
+      PARENTHESIS_MATRICES = {
+        multline: nil,
+        Vmatrix: "norm[",
+        vmatrix: "|",
+        pmatrix: "(",
+        Bmatrix: "{",
+        bmatrix: "[",
+        matrix: nil,
+        split: nil,
+        align: nil,
+        array: nil,
       }.freeze
     end
   end

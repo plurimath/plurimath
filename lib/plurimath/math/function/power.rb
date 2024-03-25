@@ -53,6 +53,22 @@ module Plurimath
           [ssup_element]
         end
 
+        def to_unicodemath
+          if accented?(parameter_two)
+            "#{parameter_one.to_unicodemath}#{parameter_two.to_unicodemath}"
+          elsif parameter_two.mini_sized?
+            "#{parameter_one.to_unicodemath}#{parameter_two.to_unicodemath}"
+          else
+            first_value = parameter_one.to_unicodemath if parameter_one
+            second_value = if parameter_two.is_a?(self.class)
+              "^#{parameter_two.to_unicodemath}"
+            else
+              "^#{unicodemath_parens(parameter_two)}"
+            end
+            "#{first_value}#{second_value}"
+          end
+        end
+
         def line_breaking(obj)
           parameter_one&.line_breaking(obj)
           if obj.value_exist?
@@ -67,6 +83,19 @@ module Plurimath
 
         def is_nary_function?
           parameter_one.is_nary_function? || parameter_one.is_nary_symbol?
+        end
+
+        def prime_unicode?(field)
+          return unless field.is_a?(Math::Symbol)
+
+          UnicodeMath::Constants::PREFIXED_PRIMES.any? { |prefix, prime| field.value.include?(prime) || field.value.include?("&#x27;") }
+        end
+
+        protected
+
+        def accented?(field)
+          (field.is_a?(Math::Symbol) && prime_unicode?(field)) ||
+            (field.is_a?(Math::Function::Power) && prime_unicode?(field.parameter_one))
         end
       end
     end

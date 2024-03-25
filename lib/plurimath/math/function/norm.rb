@@ -24,6 +24,12 @@ module Plurimath
           Utility.update_nodes(ox_element("mrow"), first_value)
         end
 
+        def to_unicodemath
+          first_value = "&#x2016;" unless open_paren
+          second_value = "&#x2016;" unless close_paren
+          "#{first_value}#{parameter_one&.to_unicodemath}#{second_value}"
+        end
+
         def to_omml_without_math_tag(display_style)
           array = []
           array << r_element("∥") unless open_paren
