@@ -3,7 +3,7 @@ require "plurimath/fixtures/formula_modules/unicode_math_transform_values"
 
 RSpec.describe Plurimath::UnicodeMath::Parser do
   describe ".parse" do
-    subject(:formula) { described_class.new(edit_suffix_prefix(string.to_s)).parse }
+    subject(:formula) { described_class.new(string).parse }
 
     context "contains n-ary function with mask value #1 #EXAMPLE_676" do
       let(:string) { "\\amalg13_d\\of d" }

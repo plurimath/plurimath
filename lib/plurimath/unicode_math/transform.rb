@@ -515,6 +515,11 @@ module Plurimath
         [pre_script] + expr
       end
 
+      rule(pre_script: simple(:pre_script),
+           expr: simple(:expr)) do
+        [pre_script, expr]
+      end
+
       rule(sub_digits: simple(:sub_digits),
            sub_recursion_expr: sequence(:sub_recursion_expr)) do
         digit = Constants::SUB_DIGITS.key(sub_digits).to_s
