@@ -74,17 +74,11 @@ module Plurimath
       end
 
       def to_unicodemath
-        return "\\#{unicode_spaces}" if options && options.key?(:space)
+        return "\\#{value}" if slashed
+        return mini_sub if mini_sub_sized
+        return mini_sup if mini_sup_sized
 
-        slashed_symbol(UnicodeMath::Constants::ORDINARY_SYMBOLS.key(value)) ||
-          slashed_symbol(UnicodeMath::Constants::RELATIONAL_SYMBOLS.key(value)) ||
-          slashed_symbol(UnicodeMath::Constants::BINARY_SYMBOLS.key(value)) ||
-          slashed_symbol(UnicodeMath::Constants::SUB_ALPHABETS.key(value)) ||
-          slashed_symbol(UnicodeMath::Constants::SUP_ALPHABETS.key(value)) ||
-          slashed_symbol(UnicodeMath::Constants::SUB_OPERATORS.key(value)) ||
-          slashed_symbol(UnicodeMath::Constants::SUP_OPERATORS.key(value)) ||
-          (slashed_symbol(value, forward_slash: true) if UnicodeMath::Constants::NEGATABLE_SYMBOLS.include?(value) && slashed) ||
-          value
+        value
       end
 
       def insert_t_tag(_)
@@ -146,6 +140,10 @@ module Plurimath
         ].include?(value)
       end
 
+      def mini_sized?
+        mini_sub_sized || mini_sup_sized
+      end
+
       private
 
       def operator?(unicode)
@@ -156,7 +154,7 @@ module Plurimath
 
       def explicit_checks(unicode)
         return true if [unicode, value].any? { |v| ["∣", "|"].include?(v) }
-        return true if UnicodeMath::Constants::ACCENT_SYMBOLS.has_value?(value)
+        return true if unicode_const(:ACCENT_SYMBOLS).has_value?(value)
       end
 
       def specific_values
@@ -174,8 +172,20 @@ module Plurimath
         "\\#{value}"
       end
 
-      def unicode_spaces
-        UnicodeMath::Constants::SKIP_SYMBOLS.invert[value]
+      def mini_sub
+        unicode_const(:SUB_DIGITS)[value.to_sym] ||
+          unicode_const(:SUB_ALPHABETS)[value.to_sym] ||
+          unicode_const(:SUB_OPERATORS)[value.to_sym]
+      end
+
+      def mini_sup
+        unicode_const(:SUP_ALPHABETS)[value.to_sym] ||
+          unicode_const(:SUP_OPERATORS)[value.to_sym] ||
+          unicode_const(:SUP_DIGITS)[value.to_sym]
+      end
+
+      def unicode_const(const)
+        UnicodeMath::Constants.const_get(const)
       end
     end
   end

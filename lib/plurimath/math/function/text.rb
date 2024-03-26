@@ -36,7 +36,11 @@ module Plurimath
         end
 
         def to_unicodemath
-          "\"#{(Utility.html_entity_to_unicode(value))}\""
+          if value.start_with?("\\")
+            value
+          else
+            "\"#{(Utility.html_entity_to_unicode(value))}\""
+          end
         end
 
         def insert_t_tag(display_style)

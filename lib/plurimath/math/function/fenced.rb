@@ -149,7 +149,7 @@ module Plurimath
         end
 
         def mathml_paren(field)
-          unicodemath_syntax = ["&#x3016;", "&#x3017;"]
+          unicodemath_syntax = ["&#x3016;", "&#x3017;", "&#x2524;", "&#x251c;"]
           return "" if field&.value&.include?(":") || unicodemath_syntax.include?(field&.value&.to_s)
 
           field&.value
@@ -167,16 +167,29 @@ module Plurimath
 
         def unicode_open_paren
           paren = parameter_one.to_unicodemath
-          (UnicodeMath::Constants::OPEN_SYMBOLS.invert[paren] || "\\open" if paren == "&#x251c;") || paren
+          return "├#{convert_paren_size(paren_size: options.dig(:open_paren, :minsize))}#{paren}" if options.key?(:open_paren)
+          return "├#{paren}" if options.key?(:open_prefixed)
+
+          paren
         end
 
         def unicode_close_paren
           paren = parameter_three.to_unicodemath
-          (UnicodeMath::Constants::CLOSE_SYMBOLS.invert[paren] || "\\close" if paren == "&#x2524;") || paren
+          return "┤#{convert_paren_size(paren_size: options.dig(:close_paren, :minsize))}#{paren}" if options.key?(:close_paren)
+          return "┤#{paren}" if options.key?(:close_prefixed)
+
+          paren
         end
 
         def choose_frac?(param)
           param&.is_a?(Math::Function::Frac) && param&.options&.dig(:linethickness)
+        end
+
+        protected
+
+        def convert_paren_size(paren_size:)
+          paren = paren_size.delete_suffix("em").to_f
+          (::Math.log(paren) / ::Math.log(1.25)).round
         end
       end
     end

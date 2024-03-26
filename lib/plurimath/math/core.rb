@@ -286,6 +286,10 @@ module Plurimath
       def is_ternary_function?
         is_a?(Function::TernaryFunction)
       end
+
+      def mini_sized?
+        false
+      end
     end
   end
 end

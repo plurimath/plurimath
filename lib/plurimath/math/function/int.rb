@@ -75,6 +75,13 @@ module Plurimath
           end
         end
 
+        def to_unicodemath
+          first_value = "_#{unicodemath_parens(parameter_one)}" if parameter_one
+          second_value = "^#{unicodemath_parens(parameter_two)}" if parameter_two
+          mask = options&.dig(:mask) if options&.key?(:mask)
+          "∫#{mask}#{first_value}#{second_value}#{naryand_value(parameter_three)}"
+        end
+
         def line_breaking(obj)
           parameter_one&.line_breaking(obj)
           if obj.value_exist?
@@ -104,6 +111,28 @@ module Plurimath
 
         def is_nary_function?
           true
+        end
+
+        protected
+
+        def sup_value
+          if parameter_three.mini_sized?
+            parameter_three.to_unicodemath
+          elsif parameter_three.is_a?(Math::Function::Power)
+            "^#{parameter_three.to_unicodemath}"
+          else
+            "^#{unicodemath_parens(parameter_three)}"
+          end
+        end
+
+        def sub_value
+          if parameter_two.mini_sized?
+            parameter_two.to_unicodemath
+          elsif parameter_two.is_a?(Math::Function::Base)
+            "_#{parameter_two.to_unicodemath}"
+          else
+            "_#{unicodemath_parens(parameter_two)}"
+          end
         end
       end
     end

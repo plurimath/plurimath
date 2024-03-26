@@ -74,10 +74,8 @@ module Plurimath
         def to_unicodemath
           first_value = "_#{unicodemath_parens(parameter_one)}" if parameter_one
           second_value = "^#{unicodemath_parens(parameter_two)}" if parameter_two
-          third_value = parameter_three.to_unicodemath if parameter_three
           mask = options&.dig(:mask) if options&.key?(:mask)
-          new_class = mask ? "∑#{mask}" : "\\sum"
-          "#{new_class}#{first_value}#{second_value} #{third_value} "
+          "∑#{mask}#{first_value}#{second_value}#{naryand_value(parameter_three)}"
         end
 
         def to_omml_without_math_tag(display_style)

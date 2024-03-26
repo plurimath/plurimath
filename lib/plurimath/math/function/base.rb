@@ -70,7 +70,11 @@ module Plurimath
 
         def to_unicodemath
           first_value = parameter_one.to_unicodemath if parameter_one
-          second_value = "_#{unicodemath_parens(parameter_two)}" if parameter_two
+          second_value = if parameter_two.is_a?(self.class)
+            "_#{size_overrides}#{parameter_two.to_unicodemath}"
+          else
+            "_#{size_overrides}#{unicodemath_parens(parameter_two)}"
+          end
           "#{first_value}#{second_value}"
         end
 
@@ -94,6 +98,20 @@ module Plurimath
 
         def is_nary_function?
           parameter_one.is_nary_function? || parameter_one.is_nary_symbol?
+        end
+
+        protected
+
+        def size_overrides
+          return if options.nil? || options&.empty?
+
+          "Ⅎ#{UnicodeMath::Constants::SIZE_OVERRIDES_SYMBOLS.invert[options[:size]]}" if options[:size]
+        end
+
+        def unicodemath_parens(field)
+          return "〖#{field.to_unicodemath}〗" unless options.nil? || options&.empty?
+
+          super(field)
         end
       end
     end

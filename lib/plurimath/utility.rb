@@ -526,7 +526,8 @@ module Plurimath
           object.parameter_three.value == ")" &&
           !object.options.keys.any? { |k| [:open_paren, :close_paren].any?(k.to_sym) } &&
           !object.parameter_one.mini_sup_sized &&
-          !object.parameter_three.mini_sub_sized
+          !object.parameter_three.mini_sub_sized &&
+          object.options.empty?
       end
 
       def frac_values(object)

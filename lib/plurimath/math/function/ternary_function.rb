@@ -188,6 +188,13 @@ module Plurimath
             "(#{field.to_unicodemath})"
           end
         end
+
+        def naryand_value(field)
+          return "" unless field
+
+          field_value =field.to_unicodemath
+          field.is_a?(Math::Function::Fenced) ? "▒#{field_value}" :  "▒〖#{field_value}〗"
+        end
       end
     end
   end

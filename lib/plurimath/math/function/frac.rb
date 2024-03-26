@@ -63,11 +63,10 @@ module Plurimath
         def to_unicodemath
           first_value = unicodemath_parens(parameter_one) if parameter_one
           second_value = unicodemath_parens(parameter_two) if parameter_two
-          if options && options.key?(:linethickness)
-            "#{first_value}\\atop #{second_value}"
-          else
-            "#{first_value}/#{second_value}"
-          end
+          return "#{first_value}/#{second_value}" unless options
+
+          "#{first_value}¦#{second_value}" if options && options.key?(:linethickness)
+          "#{parameter_one.to_unicodemath}⊘#{parameter_two.to_unicodemath}" if options && options.key?(:displaystyle)
         end
 
         def line_breaking(obj)
@@ -91,7 +90,7 @@ module Plurimath
         def choose_frac
           first_value = unicodemath_parens(parameter_one) if parameter_one
           second_value = unicodemath_parens(parameter_two) if parameter_two
-          "#{first_value}\\choose #{second_value}"
+          "#{first_value}⒞#{second_value}"
         end
 
         protected

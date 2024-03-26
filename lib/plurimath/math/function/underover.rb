@@ -48,8 +48,8 @@ module Plurimath
         end
 
         def to_unicodemath
-          sub_value = "\\below#{unicodemath_parens(parameter_two)}" if parameter_two
-          sup_value = "\\above#{unicodemath_parens(parameter_three)}" if parameter_three
+          sub_value = "┬#{unicodemath_parens(parameter_two)}" if parameter_two
+          sup_value = "┴#{unicodemath_parens(parameter_three)}" if parameter_three
           "#{parameter_one&.to_unicodemath}#{sub_value}#{sup_value}"
         end
 

@@ -51,9 +51,11 @@ module Plurimath
 
         def to_unicodemath
           if unicode_accent?
-            "#{unicodemath_parens(parameter_two)}#{unicode_overlay_underlay}"
+            "#{unicodemath_parens(parameter_two)}#{parameter_one.value}"
+          elsif unicode_classes_accent?(parameter_two)
+            "#{parameter_two.to_unicodemath}^#{unicodemath_parens(parameter_one)}"
           else
-            "#{unicodemath_parens(parameter_two)}\\above#{parameter_one.to_unicodemath}"
+            "#{unicodemath_parens(parameter_two)}┴#{unicodemath_parens(parameter_one)}"
           end
         end
 
@@ -83,8 +85,8 @@ module Plurimath
             )
         end
 
-        def unicode_overlay_underlay
-          "\\#{UnicodeMath::Constants::ACCENT_SYMBOLS.invert[parameter_one.value]}"
+        def unicode_classes_accent?(field)
+          (field.is_a?(Math::Function::Obrace) || field.is_a?(Math::Function::Ubrace))
         end
       end
     end
