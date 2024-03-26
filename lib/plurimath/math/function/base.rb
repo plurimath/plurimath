@@ -72,6 +72,8 @@ module Plurimath
           first_value = parameter_one.to_unicodemath if parameter_one
           second_value = if parameter_two.is_a?(self.class)
             "_#{size_overrides}#{parameter_two.to_unicodemath}"
+          elsif parameter_two.mini_sized?
+            parameter_two.to_unicodemath
           else
             "_#{size_overrides}#{unicodemath_parens(parameter_two)}"
           end
