@@ -173,19 +173,23 @@ module Plurimath
       end
 
       def mini_sub
-        unicode_const(:SUB_DIGITS)[value.to_sym] ||
-          unicode_const(:SUB_ALPHABETS)[value.to_sym] ||
-          unicode_const(:SUB_OPERATORS)[value.to_sym]
+        unicode_const(:SUB_ALPHABETS)[value.to_sym] ||
+          unicode_const(:SUB_OPERATORS)[value.to_sym] ||
+          mini_sized_parenthesis(unicode_const(:SUB_PARENTHESIS))
       end
 
       def mini_sup
         unicode_const(:SUP_ALPHABETS)[value.to_sym] ||
           unicode_const(:SUP_OPERATORS)[value.to_sym] ||
-          unicode_const(:SUP_DIGITS)[value.to_sym]
+          mini_sized_parenthesis(unicode_const(:SUP_PARENTHESIS))
       end
 
       def unicode_const(const)
         UnicodeMath::Constants.const_get(const)
+      end
+
+      def mini_sized_parenthesis(parens)
+        parens.values.find { |paren| paren.dig(value.to_sym) }&.dig(value.to_sym)
       end
     end
   end

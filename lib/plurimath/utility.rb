@@ -768,9 +768,9 @@ module Plurimath
       def unicode_fractions(fractions)
         frac_arr = UnicodeMath::Constants::UNICODE_FRACTIONS[fractions.to_sym]
         Math::Function::Frac.new(
-          Math::Number.new(frac_arr.first.to_s),
-          Math::Number.new(frac_arr.last.to_s),
-          { displaystyle: false }
+          Math::Number.new(frac_arr.first.to_s, ),
+          Math::Number.new(frac_arr.last.to_s, ),
+          { displaystyle: false, unicodemath_fraction: true }
         )
       end
 

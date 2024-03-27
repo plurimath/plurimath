@@ -61,7 +61,11 @@ module Plurimath
         def to_unicodemath
           first_value = sub_value if parameter_two
           second_value = sup_value if parameter_three
-          "#{parameter_one&.to_unicodemath}#{first_value}#{second_value}"
+          if prime_unicode?(parameter_three)
+            "#{parameter_one&.to_unicodemath}#{second_value}#{first_value}"
+          else
+            "#{parameter_one&.to_unicodemath}#{first_value}#{second_value}"
+          end
         end
 
         def line_breaking(obj)
@@ -122,9 +126,11 @@ module Plurimath
         end
 
         def sup_value
-          if parameter_three.mini_sized?
+          if parameter_three.mini_sized? || prime_unicode?(parameter_three)
             parameter_three.to_unicodemath
           elsif parameter_three.is_a?(Math::Function::Power)
+            "^#{parameter_three.to_unicodemath}"
+          elsif parameter_one.is_a?(Math::Function::Power) && parameter_one&.prime_unicode?(parameter_one&.parameter_two)
             "^#{parameter_three.to_unicodemath}"
           else
             "^#{unicodemath_parens(parameter_three)}"

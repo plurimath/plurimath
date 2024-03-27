@@ -32,6 +32,14 @@ module Plurimath
           Utility.update_nodes(phant, [phant_pr, e_tag])
         end
 
+        def to_unicodemath
+          if parameter_one.is_a?(Math::Function::Mpadded) && parameter_one&.options&.dig(:phantom)
+            "#{phantom_unicode}#{unicodemath_parens(parameter_one.parameter_one)}"
+          else
+            "⟡#{unicodemath_parens(parameter_one)}"
+          end
+        end
+
         def line_breaking(obj)
           custom_array_line_breaking(obj)
         end
@@ -42,6 +50,14 @@ module Plurimath
           attributes = { "m:val": "off" }
           phant = Utility.ox_element("phantPr", namespace: "m")
           phant << Utility.ox_element("show", namespace: "m", attributes: attributes)
+        end
+
+        def phantom_symbol
+          UnicodeMath::Constants::PHANTOM_SYMBOLS.key(parameter_one.options)
+        end
+
+        def phantom_unicode
+          UnicodeMath::Constants::UNARY_SYMBOLS[phantom_symbol]
         end
       end
     end

@@ -85,17 +85,17 @@ module Plurimath
           parameter_one.is_nary_function? || parameter_one.is_nary_symbol?
         end
 
-        protected
-
-        def accented?(field)
-          (field.is_a?(Math::Symbol) && prime_unicode(field)) ||
-            (field.is_a?(Math::Function::Power) && prime_unicode(field.parameter_one))
-        end
-
-        def prime_unicode(field)
+        def prime_unicode?(field)
           return unless field.is_a?(Math::Symbol)
 
           UnicodeMath::Constants::PREFIXED_PRIMES.any? { |prefix, prime| field.value.include?(prime) || field.value.include?("&#x27;") }
+        end
+
+        protected
+
+        def accented?(field)
+          (field.is_a?(Math::Symbol) && prime_unicode?(field)) ||
+            (field.is_a?(Math::Function::Power) && prime_unicode?(field.parameter_one))
         end
       end
     end

@@ -1169,7 +1169,7 @@ module Plurimath
             elsif function_name == :mpadded
               new_value = Math::Function::Mpadded.new(
                 Utility.unfenced_value(first_value, paren_specific: true),
-                attributes,
+                Constants::PHANTOM_SYMBOLS[unary_symbol],
               )
             end
           end
@@ -1953,12 +1953,12 @@ module Plurimath
 
       rule(paren_close_prefix: simple(:prefix),
            open_paren: simple(:paren)) do
-        paren
+        [Math::Number.new(""), paren]
      end
 
       rule(paren_open_prefix: simple(:prefix),
            close_paren: simple(:paren)) do
-        paren
+        [Math::Number.new(""), paren]
      end
 
       rule(open_paren: simple(:open_paren),
@@ -2387,7 +2387,7 @@ module Plurimath
         if opener.first.is_a?(Math::Number)
           mask = "#{1.25**opener[0].value.to_i}em"
           options[:open_prefixed] = true
-          options[:open_paren] = { minsize: mask, maxisize: mask }
+          options[:open_paren] = { minsize: mask, maxsize: mask } unless opener.first.value == ""
         end
         Utility.unfenced_value(operand, paren_specific: true) if [opener, closer].include?("|")
         Math::Function::Fenced.new(
@@ -2570,7 +2570,7 @@ module Plurimath
         if open_paren.first.is_a?(Math::Number)
           mask = "#{1.25**open_paren.first.value.to_i}em"
           options[:open_prefixed] = true
-          options[:open_paren] = { minsize: mask, maxisize: mask }
+          options[:open_paren] = { minsize: mask, maxsize: mask } unless open_paren.first.value == ""
         end
         new_factor = [open_paren, close_paren].include?("|") ? Utility.unfenced_value(factor, paren_specific: true) : factor
         Math::Function::Fenced.new(
@@ -2582,18 +2582,35 @@ module Plurimath
       end
 
       rule(open_paren: sequence(:open_paren),
+           factor: simple(:factor),
+           paren_close_prefix: simple(:close_prefix)) do
+        options = {}
+        if open_paren.first.is_a?(Math::Number)
+          mask = "#{1.25**open_paren.first.value.to_i}em"
+          options[:open_prefixed] = true
+          options[:open_paren] = { minsize: mask, maxsize: mask } unless open_paren.first.value == ""
+        end
+        Math::Function::Fenced.new(
+          Math::Symbol.new(open_paren.last),
+          [factor],
+          Math::Symbol.new(close_prefix),
+          options
+        )
+      end
+
+      rule(open_paren: sequence(:open_paren),
            frac: simple(:frac),
            close_paren: sequence(:close_paren)) do
         options = {}
         if open_paren.first.is_a?(Math::Number)
           mask = "#{1.25**open_paren.first.value.to_i}em"
           options[:open_prefixed] = true
-          options[:open_paren] = { minsize: mask, maxisize: mask }
+          options[:open_paren] = { minsize: mask, maxsize: mask } unless open_paren.first.value == ""
         end
         if close_paren.first.is_a?(Math::Number)
           mask = "#{1.25**close_paren.first.value.to_i}em"
           options[:close_prefixed] = true
-          options[:close_paren] = { minsize: mask, maxisize: mask }
+          options[:close_paren] = { minsize: mask, maxsize: mask } unless close_paren.first.value == ""
         end
         Math::Function::Fenced.new(
           Math::Symbol.new(open_paren.last),
@@ -2610,7 +2627,7 @@ module Plurimath
         if close_paren.first.is_a?(Math::Number)
           mask = "#{1.25**close_paren.first.value.to_i}em"
           options[:close_prefixed] = true
-          options[:close_paren] = { minsize: mask, maxisize: mask }
+          options[:close_paren] = { minsize: mask, maxsize: mask } unless close_paren.first.value == ""
         end
         Math::Function::Fenced.new(
           open_paren.is_a?(Slice) ? Math::Symbol.new(open_paren) : open_paren,
@@ -2627,12 +2644,12 @@ module Plurimath
         if open_paren.first.is_a?(Math::Number)
           mask = "#{1.25**open_paren.first.value.to_i}em"
           options[:open_prefixed] = true
-          options[:open_paren] = { minsize: mask, maxisize: mask }
+          options[:open_paren] = { minsize: mask, maxsize: mask } unless open_paren.first.value == ""
         end
         if close_paren.first.is_a?(Math::Number)
           mask = "#{1.25**close_paren.first.value.to_i}em"
           options[:close_prefixed] = true
-          options[:close_paren] = { minsize: mask, maxisize: mask }
+          options[:close_paren] = { minsize: mask, maxsize: mask } unless close_paren.first.value == ""
         end
         Math::Function::Fenced.new(
           Math::Symbol.new(open_paren.last),
@@ -3017,12 +3034,12 @@ module Plurimath
         if open_paren.first.is_a?(Math::Number)
           mask = "#{1.25**open_paren.first.value.to_i}em"
           options[:open_prefixed] = true
-          options[:open_paren] = { minsize: mask, maxisize: mask }
+          options[:open_paren] = { minsize: mask, maxsize: mask } unless open_paren.first.value == ""
         end
         if close_paren.first.is_a?(Math::Number)
           mask = "#{1.25**close_paren.first.value.to_i}em"
           options[:close_prefixed] = true
-          options[:close_paren] = { minsize: mask, maxisize: mask }
+          options[:close_paren] = { minsize: mask, maxsize: mask } unless close_paren.first.value == ""
         end
         Math::Function::Fenced.new(
           Math::Symbol.new(open_paren.last),

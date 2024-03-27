@@ -290,6 +290,14 @@ module Plurimath
       def mini_sized?
         false
       end
+
+      def unicodemath_parens(field)
+        if field.is_a?(Math::Function::Fenced)
+          field.to_unicodemath
+        else
+          "(#{field.to_unicodemath})"
+        end
+      end
     end
   end
 end

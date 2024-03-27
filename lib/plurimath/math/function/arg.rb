@@ -11,6 +11,10 @@ module Plurimath
           first_value.attributes[:arg] = Utility.html_entity_to_unicode(parameter_two.value)
           first_value
         end
+
+        def to_unicodemath
+          "ⓐ(#{parameter_two.to_unicodemath} #{parameter_one.to_unicodemath})"
+        end
       end
     end
   end

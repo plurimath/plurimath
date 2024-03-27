@@ -81,15 +81,11 @@ module Plurimath
       end
 
       def mini_sub
-        unicode_const(:SUB_DIGITS)[value.to_sym] ||
-          unicode_const(:SUB_ALPHABETS)[value.to_sym] ||
-          unicode_const(:SUB_OPERATORS)[value.to_sym]
+        unicode_const(:SUB_DIGITS)[value.to_sym]
       end
 
       def mini_sup
-        unicode_const(:SUP_ALPHABETS)[value.to_sym] ||
-          unicode_const(:SUP_OPERATORS)[value.to_sym] ||
-          unicode_const(:SUP_DIGITS)[value.to_sym]
+        unicode_const(:SUP_DIGITS)[value.to_sym]
       end
 
       def unicode_const(const)

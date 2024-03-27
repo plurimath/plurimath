@@ -257,6 +257,10 @@ module Plurimath
       end
 
 
+      def mini_sized?
+        true if value&.first&.mini_sized?
+      end
+
       protected
 
       def boolean_display_style(display_style = displaystyle)

@@ -50,7 +50,9 @@ module Plurimath
         end
 
         def to_unicodemath
-          if unicode_accent?
+          if horizontal_brackets?
+            "#{parameter_one.to_unicodemath}#{unicodemath_parens(parameter_two)}"
+          elsif unicode_accent?
             "#{unicodemath_parens(parameter_two)}#{parameter_one.value}"
           elsif unicode_classes_accent?(parameter_two)
             "#{parameter_two.to_unicodemath}^#{unicodemath_parens(parameter_one)}"
@@ -87,6 +89,11 @@ module Plurimath
 
         def unicode_classes_accent?(field)
           (field.is_a?(Math::Function::Obrace) || field.is_a?(Math::Function::Ubrace))
+        end
+
+        def horizontal_brackets?
+          parameter_one.is_a?(Math::Symbol) &&
+            UnicodeMath::Constants::HORIZONTAL_BRACKETS.value?(parameter_one.value)
         end
       end
     end

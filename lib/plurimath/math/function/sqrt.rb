@@ -40,6 +40,10 @@ module Plurimath
           parameter_one&.line_breaking(obj)
           obj.update(Utility.filter_values(obj.value)) if obj.value_exist?
         end
+
+        def to_unicodemath
+          "√#{unicodemath_parens(parameter_one)}"
+        end
       end
     end
   end

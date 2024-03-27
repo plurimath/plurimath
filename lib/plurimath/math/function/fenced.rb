@@ -17,6 +17,11 @@ module Plurimath
           @options = options
         end
 
+        def ==(object)
+          super(object) &&
+            object.options == options
+        end
+
         def to_asciimath
           first_value  = parameter_one ? parameter_one.to_asciimath : "("
           third_value  = parameter_three ? parameter_three.to_asciimath : ")"
@@ -69,12 +74,16 @@ module Plurimath
         end
 
         def to_unicodemath
+          return mini_sized_unicode if mini_sized?
+
           fenced_value = parameter_two&.map do |param|
             next param.choose_frac if choose_frac?(param)
 
             param.to_unicodemath
           end&.join(" ")
           return fenced_value if choose_frac?(parameter_two.first)
+
+          fenced_value = "(#{fenced_value})" if parameter_one&.value.include?("|")
 
           "#{unicode_open_paren}#{fenced_value}#{unicode_close_paren}"
         end
@@ -111,6 +120,17 @@ module Plurimath
           return unless field_values.length > 1
 
           obj.update(value_split(obj, field_values))
+        end
+
+        def mini_sized?
+          parameter_one&.mini_sized? ||
+            Math::Formula.new(parameter_two)&.mini_sized? ||
+            parameter_three&.mini_sized?
+        end
+
+        def mini_sized_unicode
+          fenced_value = parameter_two&.map(&:to_unicodemath)&.join
+          "#{parameter_one.to_unicodemath}#{fenced_value}#{parameter_three.to_unicodemath}"
         end
 
         protected
@@ -184,8 +204,6 @@ module Plurimath
         def choose_frac?(param)
           param&.is_a?(Math::Function::Frac) && param&.options&.dig(:linethickness)
         end
-
-        protected
 
         def convert_paren_size(paren_size:)
           paren = paren_size.delete_suffix("em").to_f

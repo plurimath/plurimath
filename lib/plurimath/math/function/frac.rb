@@ -61,12 +61,14 @@ module Plurimath
         end
 
         def to_unicodemath
+          return unicodemath_fraction if options&.dig(:unicodemath_fraction)
+
           first_value = unicodemath_parens(parameter_one) if parameter_one
           second_value = unicodemath_parens(parameter_two) if parameter_two
           return "#{first_value}/#{second_value}" unless options
 
-          "#{first_value}¦#{second_value}" if options && options.key?(:linethickness)
-          "#{parameter_one.to_unicodemath}⊘#{parameter_two.to_unicodemath}" if options && options.key?(:displaystyle)
+          return "#{first_value}¦#{second_value}" if options && options.key?(:linethickness)
+          return"#{parameter_one.to_unicodemath}⊘#{parameter_two.to_unicodemath}" if options && options.key?(:displaystyle)
         end
 
         def line_breaking(obj)
@@ -110,6 +112,11 @@ module Plurimath
           else
             options[:bevelled] == 'true' ? 'skw' : "bar"
           end
+        end
+
+        def unicodemath_fraction
+          frac_array = [parameter_one.value.to_i, parameter_two.value.to_i]
+          UnicodeMath::Constants::UNICODE_FRACTIONS.key(frac_array)
         end
       end
     end
