@@ -45,6 +45,12 @@ module Plurimath
           )
           [rad_element]
         end
+
+        def to_unicodemath
+          first_value = parameter_one.to_unicodemath if parameter_one
+          second_value = parameter_two.to_unicodemath if parameter_two
+          "√(#{first_value}&#{second_value})"
+        end
       end
     end
   end

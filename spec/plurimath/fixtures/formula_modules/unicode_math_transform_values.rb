@@ -26,11 +26,12 @@ module UnicodeMathTransformValues
     Plurimath::Math::Function::Text.new("So long"),
     Plurimath::Math::Symbol.new("&#x2227;"),
     Plurimath::Math::Function::Text.new("thanks"),
-    Plurimath::Math::Symbol.new("&#x200a;", nil, options: { space: true }),
+    Plurimath::Math::Symbol.new("&#x200a;", options: { space: true }),
     Plurimath::Math::Symbol.new("&#x205f;"),
     Plurimath::Math::Symbol.new("&#x2200;"),
     Plurimath::Math::Symbol.new("&#x205f;"),
-    Plurimath::Math::Function::Text.new("&#x1f41f;&#x1f420;&#x1f421;")
+    Plurimath::Math::Function::Text.new("&#x1f41f;&#x1f420;&#x1f421;"),
+    Plurimath::Math::Symbol.new(".")
   ])
   EXAMPLE_5 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Text.new("hex"),
@@ -137,8 +138,9 @@ module UnicodeMathTransformValues
     Plurimath::Math::Symbol.new("="),
     Plurimath::Math::Function::Frac.new(
       Plurimath::Math::Function::Text.new("distance"),
-      Plurimath::Math::Function::Text.new("time"),
-    )
+      Plurimath::Math::Function::Text.new("time")
+    ),
+    Plurimath::Math::Symbol.new(".")
   ])
   EXAMPLE_7 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Text.new("&#x3b1;")
@@ -510,7 +512,7 @@ module UnicodeMathTransformValues
         Plurimath::Math::Symbol.new("a")
       ],
       Plurimath::Math::Symbol.new(")"),
-      { open_paren: { minsize: 1.25, maxisize: 1.25 } }
+      { open_prefixed: true, open_paren: { minsize: "1.25em", maxsize: "1.25em" } }
     ),
     Plurimath::Math::Symbol.new("+"), 
     Plurimath::Math::Function::Fenced.new(
@@ -519,7 +521,7 @@ module UnicodeMathTransformValues
         Plurimath::Math::Symbol.new("a")
       ],
       Plurimath::Math::Symbol.new(")"),
-      { open_paren: { minsize: 1.5625, maxisize: 1.5625 } }
+      { open_prefixed: true, open_paren: { minsize: "1.5625em", maxsize: "1.5625em" } }
     ),
     Plurimath::Math::Symbol.new("+"),
     Plurimath::Math::Function::Fenced.new(
@@ -528,7 +530,7 @@ module UnicodeMathTransformValues
         Plurimath::Math::Symbol.new("a")
       ],
       Plurimath::Math::Symbol.new(")"),
-      { open_paren: { minsize: 1.953125, maxisize: 1.953125 } }
+      { open_prefixed: true, open_paren: { minsize: "1.953125em", maxsize: "1.953125em" } }
     ),
     Plurimath::Math::Symbol.new("+"),
     Plurimath::Math::Function::Fenced.new(
@@ -537,7 +539,7 @@ module UnicodeMathTransformValues
         Plurimath::Math::Symbol.new("a")
       ],
       Plurimath::Math::Symbol.new(")"),
-      { open_paren: { minsize: 2.44140625, maxisize: 2.44140625 } }
+      { open_prefixed: true, open_paren: { minsize: "2.44140625em", maxsize: "2.44140625em" } }
     )
   ])
   EXAMPLE_27 = Plurimath::Math::Formula.new([
@@ -620,7 +622,7 @@ module UnicodeMathTransformValues
       Plurimath::Math::Symbol.new(")")
     )
   ])
-  EXAMPLE_33 = {}.freeze
+  EXAMPLE_33 = Plurimath::Math::Formula.new([])
   EXAMPLE_34 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Power.new(
       Plurimath::Math::Function::Fenced.new(
@@ -904,8 +906,9 @@ module UnicodeMathTransformValues
         ])
       ],
       "(",
-      ")"
-    )
+      ")",
+    ),
+    Plurimath::Math::Symbol.new(".")
   ])
   EXAMPLE_44 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Table::Matrix.new(
@@ -959,7 +962,7 @@ module UnicodeMathTransformValues
             Plurimath::Math::Number.new("1")
           ]),
           Plurimath::Math::Symbol.new("&#x1d458;"),
-          { linethickness: "0" }
+          { linethickness: "0", choose: true }
         )
       ],
       Plurimath::Math::Symbol.new(")"),
@@ -6142,8 +6145,7 @@ module UnicodeMathTransformValues
     Plurimath::Math::Symbol.new("y"),
     Plurimath::Math::Symbol.new("z"),
     Plurimath::Math::Symbol.new(","),
-    Plurimath::Math::Symbol.new("."),
-    Plurimath::Math::Symbol.new(".")
+    Plurimath::Math::Symbol.new("...")
   ])
   EXAMPLE_133 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Power.new(
@@ -7779,7 +7781,7 @@ module UnicodeMathTransformValues
       [
         Plurimath::Math::Symbol.new("r")
       ],
-      Plurimath::Math::Symbol.new(")")
+      Plurimath::Math::Symbol.new(")"),
     ),
     Plurimath::Math::Symbol.new("="),
     Plurimath::Math::Function::Base.new(
@@ -7790,16 +7792,16 @@ module UnicodeMathTransformValues
           Plurimath::Math::Function::Frac.new(
             Plurimath::Math::Number.new("1"),
             Plurimath::Math::Number.new("4"),
-            { displaystyle: false }
+            { displaystyle: false, unicodemath_fraction: true }
           ),
           Plurimath::Math::Symbol.new(","),
           Plurimath::Math::Function::Frac.new(
             Plurimath::Math::Number.new("3"),
             Plurimath::Math::Number.new("4"),
-            { displaystyle: false }
+            { displaystyle: false, unicodemath_fraction: true }
           )
         ],
-        Plurimath::Math::Symbol.new("]")
+        Plurimath::Math::Symbol.new("]"),
       )
     ),
     Plurimath::Math::Function::Fenced.new(
@@ -7807,13 +7809,13 @@ module UnicodeMathTransformValues
       [
         Plurimath::Math::Symbol.new("r")
       ],
-      Plurimath::Math::Symbol.new(")")
+      Plurimath::Math::Symbol.new(")"),
     ),
     Plurimath::Math::Symbol.new("+"),
     Plurimath::Math::Function::Frac.new(
       Plurimath::Math::Number.new("1"),
       Plurimath::Math::Number.new("2"),
-      { displaystyle: false }
+      { displaystyle: false, unicodemath_fraction: true }
     ),
     Plurimath::Math::Symbol.new("&#xd7;"),
     Plurimath::Math::Function::Base.new(
@@ -7826,10 +7828,10 @@ module UnicodeMathTransformValues
           Plurimath::Math::Function::Frac.new(
             Plurimath::Math::Number.new("1"),
             Plurimath::Math::Number.new("4"),
-            { displaystyle: false }
+            { displaystyle: false, unicodemath_fraction: true }
           )
         ],
-        Plurimath::Math::Symbol.new("]")
+        Plurimath::Math::Symbol.new("]"),
       )
     ),
     Plurimath::Math::Function::Fenced.new(
@@ -7837,7 +7839,7 @@ module UnicodeMathTransformValues
       [
         Plurimath::Math::Symbol.new("r")
       ],
-      Plurimath::Math::Symbol.new(")")
+      Plurimath::Math::Symbol.new(")"),
     )
   ])
   EXAMPLE_169 = Plurimath::Math::Formula.new([
@@ -7972,7 +7974,8 @@ module UnicodeMathTransformValues
         Plurimath::Math::Number.new("3"),
         Plurimath::Math::Symbol.new("&#x3b2;")
       ])
-    )
+    ),
+    Plurimath::Math::Symbol.new(".")
   ])
   EXAMPLE_175 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::PowerBase.new(
@@ -8312,7 +8315,7 @@ module UnicodeMathTransformValues
       Plurimath::Math::Symbol.new("]")
     )
   ])
-  EXAMPLE_179 = {}.freeze
+  EXAMPLE_179 = Plurimath::Math::Formula.new([])
   EXAMPLE_180 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Table::Matrix.new(
       [
@@ -8717,12 +8720,12 @@ module UnicodeMathTransformValues
             ]
           )
         ],
-        Plurimath::Math::Symbol.new("&#x3017;")
+        Plurimath::Math::Symbol.new("&#x3017;"),
       ),
       Plurimath::Math::Number.new("4"),
       Plurimath::Math::Number.new("3")
     ),
-    Plurimath::Math::Function::Text.new("   instead of   "), 
+    Plurimath::Math::Function::Text.new("   instead of   "),
     Plurimath::Math::Function::Multiscript.new(
       Plurimath::Math::Function::PowerBase.new(
         Plurimath::Math::Symbol.new("n"),
@@ -8735,7 +8738,8 @@ module UnicodeMathTransformValues
       [
         Plurimath::Math::Number.new("1")
       ]
-    )
+    ),
+    Plurimath::Math::Symbol.new(".")
   ])
   EXAMPLE_200 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Multiscript.new(
@@ -8757,7 +8761,7 @@ module UnicodeMathTransformValues
       [
         Plurimath::Math::Symbol.new("&#x22ba;")
       ]
-    ), 
+    ),
     Plurimath::Math::Symbol.new("="),
     Plurimath::Math::Number.new("0")
   ])
@@ -8854,7 +8858,7 @@ module UnicodeMathTransformValues
         Plurimath::Math::Function::Frac.new(
           Plurimath::Math::Symbol.new("n"),
           Plurimath::Math::Symbol.new("k"),
-          { linethickness: "0" }
+          { linethickness: "0", choose: true }
         ),
       ],
       Plurimath::Math::Symbol.new(")"),
@@ -8925,12 +8929,8 @@ module UnicodeMathTransformValues
   EXAMPLE_209 = Plurimath::Math::Formula.new([
     Plurimath::Math::Symbol.new("a")
   ])
-  EXAMPLE_210 = Plurimath::Math::Formula.new([
-    Plurimath::Math::Symbol.new("a"),
-    Plurimath::Math::Symbol.new("+"),
-    Plurimath::Math::Symbol.new("b")
-  ])
-  EXAMPLE_211 = {}.freeze
+  EXAMPLE_210 = Plurimath::Math::Formula.new([])
+  EXAMPLE_211 = Plurimath::Math::Formula.new([])
   EXAMPLE_212 = Plurimath::Math::Formula.new([
     Plurimath::Math::Symbol.new("a"),
     Plurimath::Math::Symbol.new("+"),
@@ -9523,7 +9523,10 @@ module UnicodeMathTransformValues
           Plurimath::Math::Symbol.new("a")
         ],
         Plurimath::Math::Symbol.new(")"),
-        { open_paren: { minsize: "1.25em", maxisize: "1.25em" } }
+        {
+          open_prefixed: true,
+          open_paren: { minsize: "1.25em", maxsize: "1.25em" }
+        }
       )
     ),
     Plurimath::Math::Symbol.new("+"),
@@ -9535,7 +9538,10 @@ module UnicodeMathTransformValues
           Plurimath::Math::Symbol.new("a")
         ],
         Plurimath::Math::Symbol.new(")"),
-        { open_paren: { minsize: "1.5625em", maxisize: "1.5625em" } }
+        {
+          open_prefixed: true,
+          open_paren: { minsize: "1.5625em", maxsize: "1.5625em" }
+        }
       )
     ),
     Plurimath::Math::Symbol.new("+"),
@@ -9547,7 +9553,10 @@ module UnicodeMathTransformValues
           Plurimath::Math::Symbol.new("a")
         ],
         Plurimath::Math::Symbol.new(")"),
-        { open_paren: { minsize: "1.953125em", maxisize: "1.953125em" } }
+        {
+          open_prefixed: true,
+          open_paren: { minsize: "1.953125em", maxsize: "1.953125em" }
+        }
       )
     ),
     Plurimath::Math::Symbol.new("+"),
@@ -9559,7 +9568,10 @@ module UnicodeMathTransformValues
           Plurimath::Math::Symbol.new("a")
         ],
         Plurimath::Math::Symbol.new(")"),
-        { open_paren: { minsize: "2.44140625em", maxisize: "2.44140625em" } }
+        {
+          open_prefixed: true,
+          open_paren: { minsize: "2.44140625em", maxsize: "2.44140625em" }
+        }
       )
     )
   ])
@@ -10772,7 +10784,7 @@ module UnicodeMathTransformValues
         Plurimath::Math::Function::Frac.new(
           Plurimath::Math::Symbol.new("n"),
           Plurimath::Math::Symbol.new("k"),
-          { linethickness: "0" }
+          { linethickness: "0", choose: true }
         ),
       ],
       Plurimath::Math::Symbol.new(")"),
@@ -11217,8 +11229,7 @@ module UnicodeMathTransformValues
     Plurimath::Math::Symbol.new(","),
     Plurimath::Math::Symbol.new("z"),
     Plurimath::Math::Symbol.new(","),
-    Plurimath::Math::Symbol.new("."),
-    Plurimath::Math::Symbol.new(".")
+    Plurimath::Math::Symbol.new("...")
   ])
   EXAMPLE_363 = Plurimath::Math::Formula.new([
     Plurimath::Math::Symbol.new("x"),
@@ -11445,7 +11456,8 @@ module UnicodeMathTransformValues
         ],
         Plurimath::Math::Symbol.new("]"),
       )
-    )
+    ),
+    Plurimath::Math::Symbol.new(".")
   ])
   EXAMPLE_377 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Fenced.new(
@@ -11784,12 +11796,12 @@ module UnicodeMathTransformValues
   ])
   EXAMPLE_397 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Frac.new(
-      Plurimath::Math::Symbol.new("&#x3b1;"),
-      Plurimath::Math::Formula.new([
+      Plurimath::Math::Function::Frac.new(
+        Plurimath::Math::Symbol.new("&#x3b1;"),
         Plurimath::Math::Symbol.new("&#x3b2;"),
-        Plurimath::Math::Symbol.new("&#x2215;"),
-        Plurimath::Math::Symbol.new("&#x3b3;")
-      ])
+      ),
+      Plurimath::Math::Symbol.new("&#x3b3;"),
+      { ldiv: true }
     )
   ])
   EXAMPLE_398 = Plurimath::Math::Formula.new([
@@ -13118,7 +13130,7 @@ module UnicodeMathTransformValues
     Plurimath::Math::Function::Phantom.new(
       Plurimath::Math::Function::Mpadded.new(
         Plurimath::Math::Symbol.new("&#x3b2;"),
-        { width: "0" },
+        { mpadded: { width: "0"}, phantom: true }
       )
     ),
     Plurimath::Math::Symbol.new("&#x3b3;")
@@ -13148,7 +13160,7 @@ module UnicodeMathTransformValues
     Plurimath::Math::Symbol.new("&#x3b1;"),
     Plurimath::Math::Function::Mpadded.new(
       Plurimath::Math::Symbol.new("&#x3b2;"),
-      { width: "0" },
+      { mpadded: { width: "0" }, phantom: false },
     ),
     Plurimath::Math::Symbol.new("&#x3b3;")
   ])
@@ -13716,7 +13728,8 @@ module UnicodeMathTransformValues
           Plurimath::Math::Symbol.new(")"),
         )
       ])
-    )
+    ),
+    Plurimath::Math::Symbol.new(".")
   ])
   EXAMPLE_453 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Frac.new(
@@ -13945,92 +13958,92 @@ module UnicodeMathTransformValues
     Plurimath::Math::Function::Frac.new(
       Plurimath::Math::Number.new("0"),
       Plurimath::Math::Number.new("3"),
-      { displaystyle: false }
+      { displaystyle: false, unicodemath_fraction: true }
     ),
     Plurimath::Math::Function::Frac.new(
       Plurimath::Math::Number.new("1"),
       Plurimath::Math::Number.new("2"),
-      { displaystyle: false }
+      { displaystyle: false, unicodemath_fraction: true }
     ),
     Plurimath::Math::Function::Frac.new(
       Plurimath::Math::Number.new("1"),
       Plurimath::Math::Number.new("3"),
-      { displaystyle: false }
+      { displaystyle: false, unicodemath_fraction: true }
     ),
     Plurimath::Math::Function::Frac.new(
       Plurimath::Math::Number.new("2"),
       Plurimath::Math::Number.new("3"),
-      { displaystyle: false }
+      { displaystyle: false, unicodemath_fraction: true }
     ),
     Plurimath::Math::Function::Frac.new(
       Plurimath::Math::Number.new("1"),
       Plurimath::Math::Number.new("4"),
-      { displaystyle: false }
+      { displaystyle: false, unicodemath_fraction: true }
     ),
     Plurimath::Math::Function::Frac.new(
       Plurimath::Math::Number.new("3"),
       Plurimath::Math::Number.new("4"),
-      { displaystyle: false }
+      { displaystyle: false, unicodemath_fraction: true }
     ),
     Plurimath::Math::Function::Frac.new(
       Plurimath::Math::Number.new("1"),
       Plurimath::Math::Number.new("5"),
-      { displaystyle: false }
+      { displaystyle: false, unicodemath_fraction: true }
     ),
     Plurimath::Math::Function::Frac.new(
       Plurimath::Math::Number.new("2"),
       Plurimath::Math::Number.new("5"),
-      { displaystyle: false }
+      { displaystyle: false, unicodemath_fraction: true }
     ),
     Plurimath::Math::Function::Frac.new(
       Plurimath::Math::Number.new("3"),
       Plurimath::Math::Number.new("5"),
-      { displaystyle: false }
+      { displaystyle: false, unicodemath_fraction: true }
     ),
     Plurimath::Math::Function::Frac.new(
       Plurimath::Math::Number.new("4"),
       Plurimath::Math::Number.new("5"),
-      { displaystyle: false }
+      { displaystyle: false, unicodemath_fraction: true }
     ),
     Plurimath::Math::Function::Frac.new(
       Plurimath::Math::Number.new("1"),
       Plurimath::Math::Number.new("6"),
-      { displaystyle: false }
+      { displaystyle: false, unicodemath_fraction: true }
     ),
     Plurimath::Math::Function::Frac.new(
       Plurimath::Math::Number.new("5"),
       Plurimath::Math::Number.new("6"),
-      { displaystyle: false }
+      { displaystyle: false, unicodemath_fraction: true }
     ),
     Plurimath::Math::Function::Frac.new(
       Plurimath::Math::Number.new("1"),
       Plurimath::Math::Number.new("7"),
-      { displaystyle: false }
+      { displaystyle: false, unicodemath_fraction: true }
     ),
     Plurimath::Math::Function::Frac.new(
       Plurimath::Math::Number.new("1"),
       Plurimath::Math::Number.new("8"),
-      { displaystyle: false }
+      { displaystyle: false, unicodemath_fraction: true }
     ),
     Plurimath::Math::Function::Frac.new(
       Plurimath::Math::Number.new("3"),
       Plurimath::Math::Number.new("8"),
-      { displaystyle: false }
+      { displaystyle: false, unicodemath_fraction: true }
     ),
     Plurimath::Math::Function::Frac.new(
       Plurimath::Math::Number.new("5"),
       Plurimath::Math::Number.new("8"),
-      { displaystyle: false }
+      { displaystyle: false, unicodemath_fraction: true }
     ),
     Plurimath::Math::Function::Frac.new(
       Plurimath::Math::Number.new("7"),
       Plurimath::Math::Number.new("8"),
-      { displaystyle: false }
+      { displaystyle: false, unicodemath_fraction: true }
     ),
     Plurimath::Math::Function::Frac.new(
       Plurimath::Math::Number.new("1"),
       Plurimath::Math::Number.new("9"),
-      { displaystyle: false }
+      { displaystyle: false, unicodemath_fraction: true }
     )
   ])
   EXAMPLE_463 = Plurimath::Math::Formula.new([
@@ -14068,7 +14081,7 @@ module UnicodeMathTransformValues
           ),
           Plurimath::Math::Symbol.new("b")
         ),
-        { width: "0" }
+        { mpadded: { width: "0" }, phantom: true }
       )
     ),
     Plurimath::Math::Symbol.new("+"),
@@ -14450,7 +14463,7 @@ module UnicodeMathTransformValues
           Plurimath::Math::Function::Frac.new(
             Plurimath::Math::Symbol.new("n"),
             Plurimath::Math::Symbol.new("k"),
-            { linethickness: "0" }
+            { linethickness: "0", choose: true }
           )
         ],
         Plurimath::Math::Symbol.new(")"),
@@ -14561,7 +14574,7 @@ module UnicodeMathTransformValues
         Plurimath::Math::Function::Frac.new(
           Plurimath::Math::Symbol.new("&#x1d45b;"),
           Plurimath::Math::Symbol.new("&#x1d458;"),
-          { linethickness: "0" }
+          { linethickness: "0", choose: true }
         )
       ],
       Plurimath::Math::Symbol.new(")"),
@@ -15307,7 +15320,7 @@ module UnicodeMathTransformValues
           Plurimath::Math::Function::Frac.new(
             Plurimath::Math::Symbol.new("&#x1d45b;"),
             Plurimath::Math::Symbol.new("&#x1d458;"),
-            { linethickness: "0" }
+            { linethickness: "0", choose: true }
           )
         ],
         Plurimath::Math::Symbol.new(")"),
@@ -15395,7 +15408,7 @@ module UnicodeMathTransformValues
           Plurimath::Math::Function::Frac.new(
             Plurimath::Math::Symbol.new("&#x1d45b;"),
             Plurimath::Math::Symbol.new("&#x1d458;"),
-            { linethickness: "0" }
+            { linethickness: "0", choose: true }
           )
         ],
         Plurimath::Math::Symbol.new(")"),
@@ -15760,8 +15773,10 @@ module UnicodeMathTransformValues
       ],
       Plurimath::Math::Symbol.new("["),
       {
-        open_paren: { minsize: "1.25em",  maxisize: "1.25em"},
-        close_paren: { minsize: "2.44140625em",  maxisize: "2.44140625em"}
+        open_prefixed: true,
+        open_paren: { minsize: "1.25em",  maxsize: "1.25em"},
+        close_prefixed: true,
+        close_paren: { minsize: "2.44140625em",  maxsize: "2.44140625em"}
       }
     )
   ])
@@ -15772,7 +15787,11 @@ module UnicodeMathTransformValues
         Plurimath::Math::Symbol.new("a")
       ],
       Plurimath::Math::Symbol.new("["),
-      { open_paren: { minsize: "1.25em", maxisize: "1.25em" } }
+      {
+        open_prefixed: true,
+        close_prefixed: true,
+        open_paren: { minsize: "1.25em", maxsize: "1.25em" }
+      }
     )
   ])
   EXAMPLE_546 = Plurimath::Math::Formula.new([
@@ -15785,8 +15804,10 @@ module UnicodeMathTransformValues
       ],
       Plurimath::Math::Symbol.new(")"),
       {
-        open_paren: { minsize: "1.25em", maxisize: "1.25em"},
-        close_paren: { minsize: "1.25em", maxisize: "1.25em"}
+        open_prefixed: true,
+        open_paren: { minsize: "1.25em", maxsize: "1.25em"},
+        close_prefixed: true,
+        close_paren: { minsize: "1.25em", maxsize: "1.25em"}
       }
     )
   ])
@@ -15807,15 +15828,19 @@ module UnicodeMathTransformValues
           ],
           Plurimath::Math::Symbol.new(")"),
           {
-            open_paren: { minsize: "1.25em",  maxisize: "1.25em"},
-            close_paren: { minsize: "1.25em",  maxisize: "1.25em"}
+            open_prefixed: true,
+            open_paren: { minsize: "1.25em", maxsize: "1.25em"},
+            close_prefixed: true,
+            close_paren: { minsize: "1.25em", maxsize: "1.25em"}
           }
         )
       ],
       Plurimath::Math::Symbol.new(")"),
       {
-        open_paren: { minsize: "1.953125em",  maxisize: "1.953125em"},
-        close_paren: { minsize: "1.953125em",  maxisize: "1.953125em"}
+        open_prefixed: true,
+        open_paren: { minsize: "1.953125em", maxsize: "1.953125em" },
+        close_prefixed: true,
+        close_paren: { minsize: "1.953125em", maxsize: "1.953125em" }
       }
     ),
     Plurimath::Math::Formula.new([
@@ -15840,7 +15865,8 @@ module UnicodeMathTransformValues
         )
       ],
       Plurimath::Math::Symbol.new(")"),
-    )
+    ),
+    Plurimath::Math::Symbol.new(".")
   ])
   EXAMPLE_548 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Fenced.new(
@@ -15849,6 +15875,7 @@ module UnicodeMathTransformValues
         Plurimath::Math::Symbol.new("a")
       ],
       Plurimath::Math::Symbol.new(")"),
+      { open_prefixed: true }
     )
   ])
   EXAMPLE_549 = Plurimath::Math::Formula.new([
@@ -15858,6 +15885,7 @@ module UnicodeMathTransformValues
         Plurimath::Math::Symbol.new("a")
       ],
       Plurimath::Math::Symbol.new("&#x2524;"),
+      { open_prefixed: true }
     )
   ])
   EXAMPLE_550 = Plurimath::Math::Formula.new([
@@ -15870,7 +15898,11 @@ module UnicodeMathTransformValues
         )
       ],
       Plurimath::Math::Symbol.new("["),
-      { close_paren: { minsize: "2.44140625em", maxisize: "2.44140625em"} }
+      {
+        open_prefixed: true,
+        close_prefixed: true,
+        close_paren: { minsize: "2.44140625em", maxsize: "2.44140625em"}
+      }
     )
   ])
   EXAMPLE_551 = Plurimath::Math::Formula.new([
@@ -15880,7 +15912,7 @@ module UnicodeMathTransformValues
         Plurimath::Math::Symbol.new("a")
       ],
       Plurimath::Math::Symbol.new(")"),
-      { prefixed: true }
+      { open_prefixed: true }
     )
   ])
   EXAMPLE_552 = Plurimath::Math::Formula.new([
@@ -16024,7 +16056,8 @@ module UnicodeMathTransformValues
         Plurimath::Math::Symbol.new("+"),
         Plurimath::Math::Symbol.new("b")
       ])
-    )
+    ),
+    Plurimath::Math::Symbol.new(".")
   ])
   EXAMPLE_557 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Menclose.new(
@@ -16296,14 +16329,16 @@ module UnicodeMathTransformValues
     )
   ])
   EXAMPLE_579 = Plurimath::Math::Formula.new([
-    Plurimath::Math::Function::Color.new(
-      Plurimath::Math::Symbol.new("#e01f32"),
-      Plurimath::Math::Symbol.new("&#x3b1;")
-    ),
-    Plurimath::Math::Symbol.new("&#x2215;"),
-    Plurimath::Math::Function::Color.new(
-      Plurimath::Math::Symbol.new("#18a199"),
-      Plurimath::Math::Symbol.new("&#x3b2;")
+    Plurimath::Math::Function::Frac.new(
+      Plurimath::Math::Function::Color.new(
+        Plurimath::Math::Symbol.new("#e01f32"),
+        Plurimath::Math::Symbol.new("&#x3b1;")
+      ),
+      Plurimath::Math::Function::Color.new(
+        Plurimath::Math::Symbol.new("#18a199"),
+        Plurimath::Math::Symbol.new("&#x3b2;")
+      ),
+      { ldiv: true }
     )
   ])
   EXAMPLE_580 = Plurimath::Math::Formula.new([
@@ -16883,10 +16918,10 @@ module UnicodeMathTransformValues
     ),
     Plurimath::Math::Symbol.new("c")
   ])
-  EXAMPLE_598 = {}.freeze
-  EXAMPLE_599 = {}.freeze
-  EXAMPLE_600 = {}.freeze
-  EXAMPLE_601 = {}.freeze
+  EXAMPLE_598 = Plurimath::Math::Formula.new([])
+  EXAMPLE_599 = Plurimath::Math::Formula.new([])
+  EXAMPLE_600 = Plurimath::Math::Formula.new([])
+  EXAMPLE_601 = Plurimath::Math::Formula.new([])
   EXAMPLE_602 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Mpadded.new(
       Plurimath::Math::Function::Frac.new(
@@ -16902,7 +16937,7 @@ module UnicodeMathTransformValues
           )
         )
       ),
-      { depth: "0" }
+      { mpadded: { depth: "0" }, phantom: false }
     ),
     Plurimath::Math::Symbol.new("+"),
     Plurimath::Math::Symbol.new("b")
@@ -16929,7 +16964,7 @@ module UnicodeMathTransformValues
           )
         ]
       ),
-      { width: "0" }
+      { mpadded: { width: "0" }, phantom: false }
     ),
     Plurimath::Math::Function::Multiscript.new(
       Plurimath::Math::Function::PowerBase.new(
@@ -16949,7 +16984,7 @@ module UnicodeMathTransformValues
         Plurimath::Math::Symbol.new("a"),
         Plurimath::Math::Symbol.new("b")
       ),
-      { width: "0" }
+      { mpadded: { width: "0" }, phantom: false }
     ),
     Plurimath::Math::Symbol.new("+"),
     Plurimath::Math::Symbol.new("c")
@@ -16970,9 +17005,9 @@ module UnicodeMathTransformValues
           ),
           Plurimath::Math::Symbol.new("e")
         ),
-        { height: "0" }
+        { mpadded: { height: "0" }, phantom: false }
       ),
-      { width: "0" }
+      { mpadded: { width: "0" }, phantom: false }
     ),
     Plurimath::Math::Symbol.new("+"),
     Plurimath::Math::Symbol.new("b")
@@ -16995,7 +17030,7 @@ module UnicodeMathTransformValues
         ),
         Plurimath::Math::Symbol.new("f")
       ),
-      { height: "0", depth: "0" }
+      { mpadded: { height: "0", depth: "0" }, phantom: false }
     ),
     Plurimath::Math::Symbol.new("+"),
     Plurimath::Math::Symbol.new("c")
@@ -17653,7 +17688,7 @@ module UnicodeMathTransformValues
     ),
     Plurimath::Math::Symbol.new("="),
     Plurimath::Math::Number.new("0")
-  ]) # => Mini fractions
+  ])
   EXAMPLE_628 = Plurimath::Math::Formula.new([
     Plurimath::Math::Symbol.new("&#x1d44e;")
   ])
@@ -18196,7 +18231,7 @@ module UnicodeMathTransformValues
         Plurimath::Math::Number.new("2"),
         Plurimath::Math::Function::Mpadded.new(
           Plurimath::Math::Symbol.new("&#x3c0;"),
-          { width:  "0" }
+          { mpadded: { width: "0" }, phantom: false }
         )
       ]),
       Plurimath::Math::Function::Frac.new(
@@ -18230,7 +18265,8 @@ module UnicodeMathTransformValues
           )
         ])
       )
-    )
+    ),
+    Plurimath::Math::Symbol.new(".")
   ])
   EXAMPLE_659 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Frac.new(
@@ -18391,9 +18427,11 @@ module UnicodeMathTransformValues
     )
   ])
   EXAMPLE_663 = Plurimath::Math::Formula.new([
-    Plurimath::Math::Number.new("1"),
-    Plurimath::Math::Symbol.new("&#x2215;"),
-    Plurimath::Math::Number.new("2")
+    Plurimath::Math::Function::Frac.new(
+      Plurimath::Math::Number.new("1"),
+      Plurimath::Math::Number.new("2"),
+      { ldiv: true }
+    )
   ])
   EXAMPLE_664 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Frac.new(
@@ -18458,8 +18496,7 @@ module UnicodeMathTransformValues
     Plurimath::Math::Symbol.new("x"),
     Plurimath::Math::Symbol.new("y"),
     Plurimath::Math::Symbol.new(","),
-    Plurimath::Math::Symbol.new("."),
-    Plurimath::Math::Symbol.new(".")
+    Plurimath::Math::Symbol.new("...")
   ])
   EXAMPLE_671 = Plurimath::Math::Formula.new([
     Plurimath::Math::Number.new("8"),
@@ -18526,7 +18563,8 @@ module UnicodeMathTransformValues
     Plurimath::Math::Function::Overset.new(
       Plurimath::Math::Number.new("123"),
       Plurimath::Math::Symbol.new("&#x2194;")
-    )
+    ),
+    Plurimath::Math::Symbol.new(".")
   ])
   EXAMPLE_675 = Plurimath::Math::Formula.new([
     Plurimath::Math::Number.new("300"),

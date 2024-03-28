@@ -27,14 +27,9 @@ RSpec.configure do |config|
   end
 end
 
-def unicode_encode_entities(string = nil, delete_prefix_suffix: true, delete_suffix_only: false)
+def unicode_encode_entities(string = nil)
   # Implements pre-processing to convert Unicode characters to Unicode codes for Unicode::Parse class.
-
-  string = edit_suffix_prefix(
-    string,
-    delete_suffix_only: delete_suffix_only,
-    delete_prefix_suffix: delete_prefix_suffix,
-  )
+  remove_prefix(string)
   string = if string.include?("#") && !string.match?(/"([^"]*(#|&#x23;|\\\\eqno)[^"]*[^"]*|[^"]*(#|&#x23;|\\\\eqno)[^"]*[^"]*)"/)
       string.gsub!(/✎\(.*(\#).*\)/) { |str| str.gsub!("#", ":d:") }
       splitted = string.split("#")
@@ -54,9 +49,8 @@ def unicode_encode_entities(string = nil, delete_prefix_suffix: true, delete_suf
   string
 end
 
-def edit_suffix_prefix(string = nil, delete_prefix_suffix: true, delete_suffix_only: false)
-  string.delete_prefix!("1") || string.delete_prefix!("0") if (delete_prefix_suffix || delete_suffix_only)
-  string = string.delete_suffix(".") if delete_prefix_suffix || !delete_suffix_only
+def remove_prefix(string)
+  string.delete_prefix!("1") || string.delete_prefix!("0")
   string
 end
 

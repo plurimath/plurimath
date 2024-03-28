@@ -6,15 +6,7 @@ require "plurimath/fixtures/formula_modules/unicode_math_transform_values"
 # https://github.com/plurimath/unicodemath-tests
 RSpec.describe Plurimath::UnicodeMath::Parser do
   describe ".parse" do
-    subject(:formula) do
-      described_class.new(
-        edit_suffix_prefix(
-          string.to_s,
-          delete_suffix_only: delete_suffix_only,
-          delete_prefix_suffix: !delete_prefix_suffix,
-        )
-      ).parse
-    end
+    subject(:formula) { described_class.new(string).parse }
 
     SKIPABLE_EXAMPLES = [33, 179, 210, 211, 598, 599, 600, 601].freeze
     unicodemath_tests_file = File.read("submodules/unicodemath-tests/unicodemath_tests.yaml")
@@ -24,9 +16,7 @@ RSpec.describe Plurimath::UnicodeMath::Parser do
       break unless UnicodeMathTransformValues.constants.any?(constant)
 
       context "contains unicdemath-tests example ##{index}" do
-        let(:string) { unicode_hash["unicodemath"] }
-        let(:delete_prefix_suffix) { [359, 373, 445, 627, 633, 646, 651, 652, 676].include?(index) }
-        let(:delete_suffix_only) { [359, 373, 445, 627, 633, 646, 651, 652, 676].include?(index) }
+        let(:string) { remove_prefix(unicode_hash["unicodemath"].to_s) }
 
         it "matches formula structure of UnicodeMath" do
           if SKIPABLE_EXAMPLES.include?(index)

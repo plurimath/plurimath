@@ -526,7 +526,8 @@ module Plurimath
           object.parameter_three.value == ")" &&
           !object.options.keys.any? { |k| [:open_paren, :close_paren].any?(k.to_sym) } &&
           !object.parameter_one.mini_sup_sized &&
-          !object.parameter_three.mini_sub_sized
+          !object.parameter_three.mini_sub_sized &&
+          object.options.empty?
       end
 
       def frac_values(object)
@@ -767,9 +768,9 @@ module Plurimath
       def unicode_fractions(fractions)
         frac_arr = UnicodeMath::Constants::UNICODE_FRACTIONS[fractions.to_sym]
         Math::Function::Frac.new(
-          Math::Number.new(frac_arr.first.to_s),
-          Math::Number.new(frac_arr.last.to_s),
-          { displaystyle: false }
+          Math::Number.new(frac_arr.first.to_s, ),
+          Math::Number.new(frac_arr.last.to_s, ),
+          { displaystyle: false, unicodemath_fraction: true }
         )
       end
 
@@ -905,6 +906,12 @@ module Plurimath
           ret = classes.join(' ')
         end
         ret
+      end
+
+      def notations_to_mask(notations)
+        mask = []
+        notations.split(" ").each { |notation| mask << MASK_CLASSES.key(notation) }
+        mask.inject(*:+)^15
       end
     end
   end

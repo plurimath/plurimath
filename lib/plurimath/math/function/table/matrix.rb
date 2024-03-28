@@ -35,6 +35,11 @@ module Plurimath
             )
           end
 
+          def to_unicodemath
+            first_value = value.map(&:to_unicodemath).join("@")
+            "#{open_paren}■(#{first_value})#{close_paren}"
+          end
+
           protected
 
           def mo_tag(paren)

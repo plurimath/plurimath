@@ -103,7 +103,10 @@ module UnicodeMathParseValues
             }
           },
           expr: {
-            text: "&#x1f41f;&#x1f420;&#x1f421;"
+            text: "&#x1f41f;&#x1f420;&#x1f421;",
+            expr: {
+              operator: "."
+            }
           }
         }
       }
@@ -368,6 +371,9 @@ module UnicodeMathParseValues
           denominator: {
             text: "time"
           }
+        },
+        expr: {
+          operator: "."
         }
       }
     }
@@ -2581,6 +2587,9 @@ module UnicodeMathParseValues
         },
         close_paren: ")"
       }
+    },
+    expr: {
+      operator: "."
     }
   }.freeze
   EXAMPLE_44 = {
@@ -28128,9 +28137,10 @@ module UnicodeMathParseValues
                     expr: {
                       operator: ",",
                       expr: {
-                        operator: ".",
-                        expr: {
-                          operator: "."
+                        factor: {
+                          symbol: {
+                            ldots: "..."
+                          }
                         }
                       }
                     }
@@ -35500,6 +35510,9 @@ module UnicodeMathParseValues
               }
             }
           }
+        },
+        expr: {
+          operator: "."
         }
       }
     }
@@ -37778,6 +37791,9 @@ module UnicodeMathParseValues
                   }
                 }
               }
+            },
+            expr: {
+              operator: "."
             }
           }
         }
@@ -44942,9 +44958,10 @@ module UnicodeMathParseValues
                                             expr: {
                                               operator: ",",
                                               expr: {
-                                                operator: ".",
-                                                expr: {
-                                                  operator: "."
+                                                factor: {
+                                                  symbol: {
+                                                    ldots: "..."
+                                                  }
                                                 }
                                               }
                                             }
@@ -45736,6 +45753,9 @@ module UnicodeMathParseValues
           }
         }
       }
+    },
+    expr: {
+      operator: "."
     }
   }.freeze
   EXAMPLE_377 = {
@@ -46622,18 +46642,16 @@ module UnicodeMathParseValues
         ordinary_symbols: "&#x3b1;"
       },
       denominator: {
-        factor: {
-          atom: {
-            char: {
-              unicode_symbols: "&#x3b2;"
+        frac: {
+          numerator: {
+            atom: {
+              char: {
+                unicode_symbols: "&#x3b2;"
+              }
             }
-          }
-        },
-        operand: {
-          factor: {
-            relational_symbols: "&#x2215;"
           },
-          operand: {
+          ldiv: "&#x2215;",
+          denominator: {
             factor: {
               ordinary_symbols: "&#x3b3;"
             }
@@ -54929,6 +54947,9 @@ module UnicodeMathParseValues
               }
             }
           }
+        },
+        expr: {
+          operator: "."
         }
       }
     }
@@ -61407,7 +61428,7 @@ module UnicodeMathParseValues
               },
               open_paren: "("
             },
-            factor:{
+            factor: {
               intermediate_exp: {
                 open_paren: "(",
                 factor: {
@@ -61416,7 +61437,7 @@ module UnicodeMathParseValues
                   }
                 },
                 close_paren: ")"
-              },
+              }
             },
             close_paren: {
               paren_close_prefix: "&#x2524;",
@@ -61425,7 +61446,7 @@ module UnicodeMathParseValues
               },
               close_paren: ")"
             }
-          },
+          }
         },
         close_paren: {
           paren_close_prefix: "&#x2524;",
@@ -61434,7 +61455,7 @@ module UnicodeMathParseValues
           },
           close_paren: ")"
         }
-      },
+      }
     },
     expr: {
       negated_operator: "=",
@@ -61454,13 +61475,16 @@ module UnicodeMathParseValues
                       }
                     },
                     close_paren: ")"
-                  },
+                  }
                 },
                 close_paren: ")"
-              },
+              }
             },
             close_paren: ")"
           }
+        },
+        expr: {
+          operator: "."
         }
       }
     }
@@ -61987,6 +62011,9 @@ module UnicodeMathParseValues
         },
         close_paren: ")"
       }
+    },
+    expr: {
+      operator: "."
     }
   }.freeze
   EXAMPLE_557 = {
@@ -62626,23 +62653,21 @@ module UnicodeMathParseValues
     }
   }.freeze
   EXAMPLE_579 = {
-    factor: {
-      color: {
-        color_value: "#e01f32",
-        first_value: {
-          expr: {
-            factor: {
-              ordinary_symbols: "&#x3b1;"
+    frac: {
+      numerator: {
+        color: {
+          color_value: "#e01f32",
+          first_value: {
+            expr: {
+              factor: {
+                ordinary_symbols: "&#x3b1;"
+              }
             }
           }
         }
-      }
-    },
-    operand: {
-      factor: {
-        relational_symbols: "&#x2215;"
       },
-      operand: {
+      ldiv: "&#x2215;",
+      denominator: {
         factor: {
           color: {
             color_value: "#18a199",
@@ -68369,9 +68394,10 @@ module UnicodeMathParseValues
                                           expr: {
                                             operator: ",",
                                             expr: {
-                                              operator: ".",
-                                              expr: {
-                                                operator: "."
+                                              factor: {
+                                                symbol: {
+                                                  ldots: "..."
+                                                }
                                               }
                                             }
                                           }
@@ -68686,9 +68712,10 @@ module UnicodeMathParseValues
                       expr: {
                         operator: ",",
                         expr: {
-                          operator: ".",
-                          expr: {
-                            operator: "."
+                          factor: {
+                            symbol: {
+                              ldots: "..."
+                            }
                           }
                         }
                       }
@@ -69190,6 +69217,9 @@ module UnicodeMathParseValues
                 }
               }
             }
+          },
+          expr: {
+            operator: "."
           }
         }
       }
@@ -69737,16 +69767,14 @@ module UnicodeMathParseValues
     }
   }.freeze
   EXAMPLE_663 = {
-    factor: {
-      digit: {
-        number: "1"
-      }
-    },
-    operand: {
-      factor: {
-        relational_symbols: "&#x2215;"
+    frac: {
+      numerator: {
+        digit: {
+          number: "1"
+        }
       },
-      operand: {
+      ldiv: "&#x2215;",
+      denominator: {
         factor: {
           digit: {
             number: "2"
@@ -69978,9 +70006,10 @@ module UnicodeMathParseValues
                                     expr: {
                                       operator: ",",
                                       expr: {
-                                        operator: ".",
-                                        expr: {
-                                          operator: "."
+                                        factor: {
+                                          symbol: {
+                                            ldots: "..."
+                                          }
                                         }
                                       }
                                     }
@@ -70244,6 +70273,9 @@ module UnicodeMathParseValues
               }
             }
           }
+        },
+        expr: {
+          operator: "."
         }
       }
     }

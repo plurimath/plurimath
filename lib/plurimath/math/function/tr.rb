@@ -45,6 +45,10 @@ module Plurimath
           end
         end
 
+        def to_unicodemath
+          parameter_one&.map(&:to_unicodemath)&.join("&")
+        end
+
         def to_asciimath_math_zone(spacing, last = false, indent = true)
           [
             "#{spacing}\"tr\" function apply\n",

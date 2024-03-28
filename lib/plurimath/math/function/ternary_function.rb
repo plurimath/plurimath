@@ -180,6 +180,19 @@ module Plurimath
 
           Underset.new(overset, parameter_two)&.to_omml_without_math_tag(display_style)
         end
+
+        def naryand_value(field)
+          return "" unless field
+
+          field_value = field.to_unicodemath
+          field.is_a?(Math::Function::Fenced) ? "▒#{field_value}" :  "▒〖#{field_value}〗"
+        end
+
+        def prime_unicode?(field)
+          return unless field.is_a?(Math::Symbol)
+
+          UnicodeMath::Constants::PREFIXED_PRIMES.any? { |prefix, prime| field.value.include?(prime) || field.value.include?("&#x27;") }
+        end
       end
     end
   end

@@ -14,6 +14,10 @@ module Plurimath
           table << mlabeledtr
         end
 
+        def to_unicodemath
+          "#{parameter_one&.to_unicodemath}##{parameter_two&.value}"
+        end
+
         protected
 
         def labeledtr_td(tr, value)
