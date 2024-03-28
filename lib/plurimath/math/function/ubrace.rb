@@ -58,7 +58,7 @@ module Plurimath
         end
 
         def to_unicodemath
-          "⏟(#{parameter_one.to_unicodemath})"
+          "⏟(#{parameter_one&.to_unicodemath})"
         end
 
         def line_breaking(obj)

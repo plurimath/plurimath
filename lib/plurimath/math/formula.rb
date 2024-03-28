@@ -138,7 +138,7 @@ module Plurimath
 
       def to_unicodemath
         Utility.html_entity_to_unicode(
-          (negated_value? || mini_sized?) ? value.map(&:to_unicodemath).join : value.map(&:to_unicodemath).join(" ")
+          (negated_value? || mini_sized?) ? value&.map(&:to_unicodemath)&.join : value&.map(&:to_unicodemath)&.join(" ")
         )
       rescue
         parse_error!(:unicodemath)

@@ -132,12 +132,10 @@ module Plurimath
           Array(underset.to_omml_without_math_tag(display_style))
         end
 
-        def unicodemath_parens(field)
-          if field.is_a?(Math::Function::Fenced)
-            field.to_unicodemath
-          else
-            "(#{field.to_unicodemath})"
-          end
+        def prime_unicode?(field)
+          return unless field.is_a?(Math::Symbol)
+
+          UnicodeMath::Constants::PREFIXED_PRIMES.any? { |prefix, prime| field.value.include?(prime) || field.value.include?("&#x27;") }
         end
       end
     end

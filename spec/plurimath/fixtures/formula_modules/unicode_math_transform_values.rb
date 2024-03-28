@@ -962,7 +962,7 @@ module UnicodeMathTransformValues
             Plurimath::Math::Number.new("1")
           ]),
           Plurimath::Math::Symbol.new("&#x1d458;"),
-          { linethickness: "0" }
+          { linethickness: "0", choose: true }
         )
       ],
       Plurimath::Math::Symbol.new(")"),
@@ -8858,7 +8858,7 @@ module UnicodeMathTransformValues
         Plurimath::Math::Function::Frac.new(
           Plurimath::Math::Symbol.new("n"),
           Plurimath::Math::Symbol.new("k"),
-          { linethickness: "0" }
+          { linethickness: "0", choose: true }
         ),
       ],
       Plurimath::Math::Symbol.new(")"),
@@ -10784,7 +10784,7 @@ module UnicodeMathTransformValues
         Plurimath::Math::Function::Frac.new(
           Plurimath::Math::Symbol.new("n"),
           Plurimath::Math::Symbol.new("k"),
-          { linethickness: "0" }
+          { linethickness: "0", choose: true }
         ),
       ],
       Plurimath::Math::Symbol.new(")"),
@@ -11796,12 +11796,12 @@ module UnicodeMathTransformValues
   ])
   EXAMPLE_397 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Frac.new(
-      Plurimath::Math::Symbol.new("&#x3b1;"),
-      Plurimath::Math::Formula.new([
+      Plurimath::Math::Function::Frac.new(
+        Plurimath::Math::Symbol.new("&#x3b1;"),
         Plurimath::Math::Symbol.new("&#x3b2;"),
-        Plurimath::Math::Symbol.new("&#x2215;"),
-        Plurimath::Math::Symbol.new("&#x3b3;")
-      ])
+      ),
+      Plurimath::Math::Symbol.new("&#x3b3;"),
+      { ldiv: true }
     )
   ])
   EXAMPLE_398 = Plurimath::Math::Formula.new([
@@ -14463,7 +14463,7 @@ module UnicodeMathTransformValues
           Plurimath::Math::Function::Frac.new(
             Plurimath::Math::Symbol.new("n"),
             Plurimath::Math::Symbol.new("k"),
-            { linethickness: "0" }
+            { linethickness: "0", choose: true }
           )
         ],
         Plurimath::Math::Symbol.new(")"),
@@ -14574,7 +14574,7 @@ module UnicodeMathTransformValues
         Plurimath::Math::Function::Frac.new(
           Plurimath::Math::Symbol.new("&#x1d45b;"),
           Plurimath::Math::Symbol.new("&#x1d458;"),
-          { linethickness: "0" }
+          { linethickness: "0", choose: true }
         )
       ],
       Plurimath::Math::Symbol.new(")"),
@@ -15320,7 +15320,7 @@ module UnicodeMathTransformValues
           Plurimath::Math::Function::Frac.new(
             Plurimath::Math::Symbol.new("&#x1d45b;"),
             Plurimath::Math::Symbol.new("&#x1d458;"),
-            { linethickness: "0" }
+            { linethickness: "0", choose: true }
           )
         ],
         Plurimath::Math::Symbol.new(")"),
@@ -15408,7 +15408,7 @@ module UnicodeMathTransformValues
           Plurimath::Math::Function::Frac.new(
             Plurimath::Math::Symbol.new("&#x1d45b;"),
             Plurimath::Math::Symbol.new("&#x1d458;"),
-            { linethickness: "0" }
+            { linethickness: "0", choose: true }
           )
         ],
         Plurimath::Math::Symbol.new(")"),
@@ -16329,14 +16329,16 @@ module UnicodeMathTransformValues
     )
   ])
   EXAMPLE_579 = Plurimath::Math::Formula.new([
-    Plurimath::Math::Function::Color.new(
-      Plurimath::Math::Symbol.new("#e01f32"),
-      Plurimath::Math::Symbol.new("&#x3b1;")
-    ),
-    Plurimath::Math::Symbol.new("&#x2215;"),
-    Plurimath::Math::Function::Color.new(
-      Plurimath::Math::Symbol.new("#18a199"),
-      Plurimath::Math::Symbol.new("&#x3b2;")
+    Plurimath::Math::Function::Frac.new(
+      Plurimath::Math::Function::Color.new(
+        Plurimath::Math::Symbol.new("#e01f32"),
+        Plurimath::Math::Symbol.new("&#x3b1;")
+      ),
+      Plurimath::Math::Function::Color.new(
+        Plurimath::Math::Symbol.new("#18a199"),
+        Plurimath::Math::Symbol.new("&#x3b2;")
+      ),
+      { ldiv: true }
     )
   ])
   EXAMPLE_580 = Plurimath::Math::Formula.new([
@@ -18425,9 +18427,11 @@ module UnicodeMathTransformValues
     )
   ])
   EXAMPLE_663 = Plurimath::Math::Formula.new([
-    Plurimath::Math::Number.new("1"),
-    Plurimath::Math::Symbol.new("&#x2215;"),
-    Plurimath::Math::Number.new("2")
+    Plurimath::Math::Function::Frac.new(
+      Plurimath::Math::Number.new("1"),
+      Plurimath::Math::Number.new("2"),
+      { ldiv: true }
+    )
   ])
   EXAMPLE_664 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Frac.new(

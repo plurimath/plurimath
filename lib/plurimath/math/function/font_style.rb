@@ -33,6 +33,10 @@ module Plurimath
           parameter_one&.to_latex
         end
 
+        def to_unicodemath
+          "#{font_family(unicode: true, omml_or_mathml: false)}#{parameter_one&.to_unicodemath}"
+        end
+
         def validate_function_formula
           true
         end
@@ -82,7 +86,7 @@ module Plurimath
           new_spacing = gsub_spacing(spacing, last)
           new_arr = [
             "#{spacing}\"#{dump_mathml(self)}\" function apply\n",
-            "#{new_spacing}|_ \"#{omml_and_mathml_font_family}\" font family\n",
+            "#{new_spacing}|_ \"#{font_family}\" font family\n",
           ]
           mathml_fields_to_print(parameter_one, { spacing: new_spacing, field_name: "argument", additional_space: "|  |_ ", array: new_arr })
           new_arr
@@ -92,15 +96,23 @@ module Plurimath
           new_spacing = gsub_spacing(spacing, last)
           new_arr = [
             "#{spacing}\"#{dump_omml(self, display_style)}\" function apply\n",
-            "#{new_spacing}|_ \"#{omml_and_mathml_font_family}\" font family\n",
+            "#{new_spacing}|_ \"#{font_family}\" font family\n",
           ]
           omml_fields_to_print(parameter_one, { spacing: new_spacing, field_name: "argument", additional_space: "|  |_ ", array: new_arr, display_style: display_style })
           new_arr
         end
 
-        def omml_and_mathml_font_family
+        def font_family(unicode: false, omml_or_mathml: true)
           fonts = Utility::FONT_STYLES.select { |_font, font_class| font_class == self.class }.keys.map(&:to_s)
-          Omml::Parser::SUPPORTED_FONTS.values.find { |value| fonts.include?(value) }
+          supported_fonts(fonts, unicode: unicode, omml_or_mathml: omml_or_mathml)
+        end
+
+        def supported_fonts(fonts_array = [], unicode: false, omml_or_mathml: true)
+          if unicode
+            font = UnicodeMath::Constants::FONTS_CLASSES.find { |value| fonts_array.include?(value) }
+            return "\\#{font}" if font
+          end
+          return Omml::Parser::SUPPORTED_FONTS.values.find { |value| fonts_array.include?(value) } if omml_or_mathml
         end
 
         def line_breaking(obj)

@@ -2156,7 +2156,7 @@ module Plurimath
         Math::Function::Fenced.new(
           Math::Symbol.new("("),
           [
-            Utility.fractions(numerator, denominator, { linethickness: "0" }),
+            Utility.fractions(numerator, denominator, { linethickness: "0", choose: true }),
           ],
           Math::Symbol.new(")"),
         )
@@ -2289,9 +2289,21 @@ module Plurimath
       end
 
       rule(numerator: simple(:numerator),
+           ldiv: simple(:ldiv),
+           denominator: simple(:denominator)) do
+        Utility.fractions(numerator, denominator, { ldiv: true })
+      end
+
+      rule(numerator: simple(:numerator),
            bevelled: simple(:bevelled),
            denominator: sequence(:denominator)) do
         Utility.fractions(numerator, denominator, { bevelled: true })
+      end
+
+      rule(numerator: simple(:numerator),
+           ldiv: simple(:ldiv),
+           denominator: sequence(:denominator)) do
+        Utility.fractions(numerator, denominator, { ldiv: true })
       end
 
       rule(numerator: simple(:numerator),

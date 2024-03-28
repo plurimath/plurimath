@@ -48,9 +48,12 @@ module Plurimath
         end
 
         def to_unicodemath
-          if options.dig(:mpadded)
+          if options&.dig(:mpadded)
             "#{mpadded_unicode}#{unicodemath_parens(parameter_one)}"
+          elsif options&.key?(:mask)
+            "⟡(#{options.dig(:mask)}&#{parameter_one.to_unicodemath})"
           else
+            "⟡(#{parameter_one.to_unicodemath})"
           end
         end
 

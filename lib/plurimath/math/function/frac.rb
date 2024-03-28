@@ -69,6 +69,7 @@ module Plurimath
 
           return "#{first_value}¦#{second_value}" if options && options.key?(:linethickness)
           return"#{parameter_one.to_unicodemath}⊘#{parameter_two.to_unicodemath}" if options && options.key?(:displaystyle)
+          return "#{first_value}∕#{second_value}" if options && options.key?(:ldiv)
         end
 
         def line_breaking(obj)

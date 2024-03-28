@@ -33,6 +33,10 @@ module Plurimath
           "\\right #{latex_paren}"
         end
 
+        def to_unicodemath
+          parameter_one
+        end
+
         def validate_function_formula
           false
         end

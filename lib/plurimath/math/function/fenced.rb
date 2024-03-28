@@ -187,27 +187,37 @@ module Plurimath
 
         def unicode_open_paren
           paren = parameter_one.to_unicodemath
-          return "├#{convert_paren_size(paren_size: options.dig(:open_paren, :minsize))}#{paren}" if options.key?(:open_paren)
-          return "├#{paren}" if options.key?(:open_prefixed)
+          return "├#{convert_paren_size(paren_size: options.dig(:open_paren, :minsize))}#{paren}" if options&.key?(:open_paren)
+          return "├#{paren}" if options&.key?(:open_prefixed) && !open_or_begin?
 
           paren
         end
 
         def unicode_close_paren
           paren = parameter_three.to_unicodemath
-          return "┤#{convert_paren_size(paren_size: options.dig(:close_paren, :minsize))}#{paren}" if options.key?(:close_paren)
-          return "┤#{paren}" if options.key?(:close_prefixed)
+          return "┤#{convert_paren_size(paren_size: options.dig(:close_paren, :minsize))}#{paren}" if options&.key?(:close_paren)
+          return "┤#{paren}" if options&.key?(:close_prefixed) && !close_or_end?
 
           paren
         end
 
         def choose_frac?(param)
-          param&.is_a?(Math::Function::Frac) && param&.options&.dig(:linethickness)
+          param&.is_a?(Math::Function::Frac) && param&.options&.key?(:choose)
         end
 
         def convert_paren_size(paren_size:)
           paren = paren_size.delete_suffix("em").to_f
           (::Math.log(paren) / ::Math.log(1.25)).round
+        end
+
+        def open_or_begin?
+          parameter_one&.value&.include?("&#x251c;") ||
+            parameter_one&.value&.include?("&#x3016;")
+        end
+
+        def close_or_end?
+          parameter_three&.value&.include?("&#x2524;") ||
+            parameter_three&.value&.include?("&#x3017;")
         end
       end
     end

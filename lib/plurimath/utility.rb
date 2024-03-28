@@ -907,6 +907,12 @@ module Plurimath
         end
         ret
       end
+
+      def notations_to_mask(notations)
+        mask = []
+        notations.split(" ").each { |notation| mask << MASK_CLASSES.key(notation) }
+        mask.inject(*:+)^15
+      end
     end
   end
 end
