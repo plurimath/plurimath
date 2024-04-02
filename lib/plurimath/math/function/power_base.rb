@@ -43,9 +43,7 @@ module Plurimath
 
           ssubsup   = Utility.ox_element("sSubSup", namespace: "m")
           ssubsuppr = Utility.ox_element("sSubSupPr", namespace: "m")
-          ssubsuppr << hide_tags(
-            Utility.pr_element("ctrl", true, namespace: "m"),
-          )
+          ssubsuppr << Utility.pr_element("ctrl", true, namespace: "m")
           Utility.update_nodes(
             ssubsup,
             [
@@ -92,27 +90,6 @@ module Plurimath
             validate_mathml_fields(parameter_two),
             validate_mathml_fields(parameter_three),
           ]
-        end
-
-        protected
-
-        def hide_tags(nar)
-          attr = { "m:val": "1" }
-          if parameter_two.nil?
-            nar << Utility.ox_element(
-              "subHide",
-              namespace: "m",
-              attributes: attr,
-            )
-          end
-          if parameter_three.nil?
-            nar << Utility.ox_element(
-              "supHide",
-              namespace: "m",
-              attributes: attr,
-            )
-          end
-          nar
         end
       end
     end

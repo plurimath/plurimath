@@ -5863,7 +5863,6 @@ RSpec.describe Plurimath::Asciimath do
                       <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
                       <w:i/>
                     </w:rPr>
-                    <m:subHide m:val="1"/>
                   </m:ctrlPr>
                 </m:sSubSupPr>
                 <m:e>
