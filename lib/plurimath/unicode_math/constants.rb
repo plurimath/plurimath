@@ -998,17 +998,16 @@ module Plurimath
         pprime: "&#x2033;",
         prime: "&#x2032;",
       }.freeze
+
       PARENTHESIS_MATRICES = {
-        multline: nil,
-        Vmatrix: "norm[",
-        vmatrix: "|",
         pmatrix: "(",
-        Bmatrix: "{",
+        vmatrix: "|",
+        Vmatrix: "norm[",
         bmatrix: "[",
+        Bmatrix: "{",
+        eqarray: nil,
         matrix: nil,
-        split: nil,
-        align: nil,
-        array: nil,
+        cases: nil,
       }.freeze
     end
   end
