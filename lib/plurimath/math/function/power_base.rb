@@ -104,25 +104,6 @@ module Plurimath
 
         protected
 
-        def hide_tags(nar)
-          attr = { "m:val": "1" }
-          if parameter_two.nil?
-            nar << Utility.ox_element(
-              "subHide",
-              namespace: "m",
-              attributes: attr,
-            )
-          end
-          if parameter_three.nil?
-            nar << Utility.ox_element(
-              "supHide",
-              namespace: "m",
-              attributes: attr,
-            )
-          end
-          nar
-        end
-
         def sup_value
           if parameter_three.mini_sized? || prime_unicode?(parameter_three)
             parameter_three.to_unicodemath
