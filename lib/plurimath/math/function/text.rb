@@ -38,11 +38,7 @@ module Plurimath
         def to_unicodemath
           return unless value
 
-          if value&.start_with?("\\")
-            value
-          else
-            "\"#{(Utility.html_entity_to_unicode(value))}\""
-          end
+          value&.start_with?("\\") ? value : "\"#{(Utility.html_entity_to_unicode(value))}\""
         end
 
         def insert_t_tag(display_style)

@@ -15343,7 +15343,7 @@ module UnicodeMathTransformValues
         ])
       ],
       "{",
-      "",
+      ":}",
     )
   ])
   EXAMPLE_528 = Plurimath::Math::Formula.new([

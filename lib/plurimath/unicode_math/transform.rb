@@ -61,6 +61,7 @@ module Plurimath
       rule(sup_script: sequence(:script)) { script }
       rule(mini_sub: sequence(:mini_sub)) { mini_sub }
       rule(monospace: simple(:monospace)) { monospace }
+      rule(slashed_value: simple(:value)) { Utility.slashed_values(value) }
 
       rule(intermediate_exp: simple(:expr))  { expr }
       rule(decimal_number: simple(:number))  { number }
@@ -69,6 +70,7 @@ module Plurimath
       rule(expression: simple(:expression))  { expression }
       rule(open_paren: simple(:open_paren))  { Math::Symbol.new(open_paren) }
       rule(override_subsup: simple(:subsup)) { subsup }
+      rule(slashed_value: sequence(:values)) { Utility.sequence_slashed_values(values) }
 
       rule(intermediate_exp: sequence(:expr)) { expr }
       rule(diacritic_belows: simple(:belows)) { belows }
@@ -89,14 +91,13 @@ module Plurimath
       rule(mini_intermediate_exp: simple(:mini_expr)) { mini_expr }
 
       rule(combined_symbols: simple(:combined_symbols)) do
-        Math::Symbol.new(Constants::COMBINING_SYMBOLS[combined_symbols.to_sym] || combined_symbols)
+        symbol = Constants::COMBINING_SYMBOLS[combined_symbols.to_sym] || combined_symbols
+        Math::Symbol.new(symbol)
       end
 
       rule(spaces: simple(:spaces)) do
-        Math::Symbol.new(
-          (Constants::SKIP_SYMBOLS[spaces.to_sym] || spaces),
-          options: { space: true },
-        )
+        space = Constants::SKIP_SYMBOLS[spaces.to_sym] || spaces
+        Math::Symbol.new(space, options: { space: true })
       end
 
       rule(binary_symbols: simple(:symbols)) do
@@ -126,32 +127,6 @@ module Plurimath
           Math::Symbol.new(operator),
           Math::Symbol.new("&#x338;"),
         ])
-      end
-
-      rule(slashed_value: simple(:value)) do
-        decoded = HTMLEntities.new.decode(value)
-        if decoded.to_s.match?(/^\w+/)
-          Math::Function::Text.new("\\#{decoded}")
-        else
-          Math::Symbol.new(decoded, true)
-        end
-      end
-
-      rule(slashed_value: sequence(:values)) do
-        values.each.with_index do |value, index|
-          decoded = HTMLEntities.new.decode(value.value)
-          slashed = if index == 0
-                      if decoded.to_s.match?(/^\w+/)
-                        Math::Function::Text.new("\\#{decoded}")
-                      else
-                        Math::Symbol.new(decoded, true)
-                      end
-                    else
-                      decoded.match?(/[0-9]/) ? Math::Number.new(decoded) : Math::Symbol.new(decoded)
-                    end
-          values[index] = slashed
-        end
-        values
       end
 
       rule(ordinary_symbols: simple(:ordinary)) do
@@ -1826,71 +1801,27 @@ module Plurimath
 
       rule(slashed_value: simple(:value),
            expr: simple(:expr)) do
-        decoded = HTMLEntities.new.decode(value)
-        slashed = if decoded.to_s.match?(/^\w+/)
-                    Math::Function::Text.new("\\#{decoded}")
-                  else
-                    Math::Symbol.new(decoded, true)
-                  end
-        [slashed, expr]
+        [Utility.slashed_values(value), expr]
       end
 
       rule(slashed_value: simple(:value),
            exp: simple(:expr)) do
-        decoded = HTMLEntities.new.decode(value)
-        slashed = if decoded.to_s.match?(/^\w+/)
-                    Math::Function::Text.new("\\#{decoded}")
-                  else
-                    Math::Symbol.new(decoded, true)
-                  end
-        [slashed, expr]
+        [Utility.slashed_values(value), expr]
       end
 
       rule(slashed_value: sequence(:values),
            expr: simple(:expr)) do
-        values.each.with_index do |value, index|
-          decoded = HTMLEntities.new.decode(value.value)
-          slashed = if index == 0
-                      if decoded.to_s.match?(/^\w+/)
-                        Math::Function::Text.new("\\#{decoded}")
-                      else
-                        Math::Symbol.new(decoded, true)
-                      end
-                    else
-                      decoded.match?(/[0-9]/) ? Math::Number.new(decoded) : Math::Symbol.new(decoded)
-                    end
-          values[index] = slashed
-        end
-        values + [expr]
+        Utility.sequence_slashed_values(values) + [expr]
       end
 
       rule(slashed_value: sequence(:values),
            expr: sequence(:expr)) do
-        values.each.with_index do |value, index|
-          decoded = HTMLEntities.new.decode(value.value)
-          slashed = if index == 0
-                      if decoded.to_s.match?(/^\w+/)
-                        Math::Function::Text.new("\\#{decoded}")
-                      else
-                        Math::Symbol.new(decoded, true)
-                      end
-                    else
-                      decoded.match?(/[0-9]/) ? Math::Number.new(decoded) : Math::Symbol.new(decoded)
-                    end
-          values[index] = slashed
-        end
-        values + expr
+        Utility.sequence_slashed_values(values) + expr
       end
 
       rule(slashed_value: simple(:value),
            expr: sequence(:expr)) do
-        decoded = HTMLEntities.new.decode(value)
-        slashed = if decoded.to_s.match?(/^\w+/)
-                    Math::Function::Text.new("\\#{decoded}")
-                  else
-                    Math::Symbol.new(decoded, true)
-                  end
-        [slashed] + expr
+        [Utility.slashed_values(value)] + expr
       end
 
       rule(nary_class: simple(:nary_class),
@@ -2456,22 +2387,9 @@ module Plurimath
       rule(open_paren: simple(:open_paren),
            slashed_value: sequence(:values),
            close_paren: simple(:close_paren)) do
-        values.each.with_index do |value, index|
-          decoded = HTMLEntities.new.decode(value.value)
-          slashed = if index == 0
-                      if decoded.to_s.match?(/^\w+/)
-                        Math::Function::Text.new("\\#{decoded}")
-                      else
-                        Math::Symbol.new(decoded, true)
-                      end
-                    else
-                      decoded.match?(/[0-9]/) ? Math::Number.new(decoded) : Math::Symbol.new(decoded)
-                    end
-          values[index] = slashed
-        end
         Math::Function::Fenced.new(
           open_paren.is_a?(Slice) ? Math::Symbol.new(open_paren) : open_paren,
-          values,
+          Utility.sequence_slashed_values(values),
           close_paren.is_a?(Slice) ? Math::Symbol.new(close_paren) : close_paren,
         )
       end

@@ -7,9 +7,7 @@ module Plurimath
     module Function
       class Tr < UnaryFunction
         def initialize(parameter_one = [])
-          if parameter_one&.all? { |val| val == "@" }
-            parameter_one.each.with_index { |param, index| parameter_one[index] = Td.new([]) }
-          end
+          parameter_one.map!.with_index { |_, index| Td.new([]) } if parameter_one&.all?("@")
           super(parameter_one)
         end
 
