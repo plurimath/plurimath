@@ -913,6 +913,28 @@ module Plurimath
         notations.split(" ").each { |notation| mask << MASK_CLASSES.key(notation) }
         mask.inject(*:+)^15
       end
+
+      def slashed_values(value)
+        decoded = HTMLEntities.new.decode(value)
+        if decoded.to_s.match?(/^\w+/)
+          Math::Function::Text.new("\\#{decoded}")
+        else
+          Math::Symbol.new(decoded, true)
+        end
+      end
+
+      def sequence_slashed_values(values)
+        values.each.with_index do |value, index|
+          decoded = HTMLEntities.new.decode(value.value)
+          slashed = if index == 0
+                      slashed_values(value.value)
+                    else
+                      decoded.match?(/[0-9]/) ? Math::Number.new(decoded) : Math::Symbol.new(decoded)
+                    end
+          values[index] = slashed
+        end
+        values
+      end
     end
   end
 end

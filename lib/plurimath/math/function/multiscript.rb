@@ -86,7 +86,7 @@ module Plurimath
         end
 
         def unicode_valid_value?(field)
-          !field.empty? && !valid_value_exist?(field)
+          !(field.empty? && valid_value_exist?(field))
         end
 
         def sup_value

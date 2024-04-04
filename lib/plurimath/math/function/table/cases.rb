@@ -9,7 +9,7 @@ module Plurimath
         class Cases < Table
           def initialize(value = [],
                          open_paren = "{",
-                         close_paren = "",
+                         close_paren = ":}",
                          options = {})
             super
           end
