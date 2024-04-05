@@ -36,7 +36,7 @@ module UnicodeMathTransformValues
   EXAMPLE_5 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Text.new("hex"),
     Plurimath::Math::Symbol.new("="),
-    Plurimath::Math::Function::Table::Matrix.new(
+    Plurimath::Math::Function::Table.new(
       [
         Plurimath::Math::Function::Tr.new([
           Plurimath::Math::Function::Td.new([
@@ -864,7 +864,7 @@ module UnicodeMathTransformValues
     )
   ])
   EXAMPLE_43 = Plurimath::Math::Formula.new([
-    Plurimath::Math::Function::Table::Matrix.new(
+    Plurimath::Math::Function::Table.new(
       [
         Plurimath::Math::Function::Tr.new([
           Plurimath::Math::Function::Td.new([
@@ -911,7 +911,7 @@ module UnicodeMathTransformValues
     Plurimath::Math::Symbol.new(".")
   ])
   EXAMPLE_44 = Plurimath::Math::Formula.new([
-    Plurimath::Math::Function::Table::Matrix.new(
+    Plurimath::Math::Function::Table.new(
       [
         Plurimath::Math::Function::Tr.new([
           Plurimath::Math::Function::Td.new([
@@ -8317,7 +8317,7 @@ module UnicodeMathTransformValues
   ])
   EXAMPLE_179 = Plurimath::Math::Formula.new([])
   EXAMPLE_180 = Plurimath::Math::Formula.new([
-    Plurimath::Math::Function::Table::Matrix.new(
+    Plurimath::Math::Function::Table.new(
       [
         Plurimath::Math::Function::Tr.new([
           Plurimath::Math::Function::Td.new([
@@ -11548,7 +11548,7 @@ module UnicodeMathTransformValues
     )
   ])
   EXAMPLE_381 = Plurimath::Math::Formula.new([
-    Plurimath::Math::Function::Table::Matrix.new(
+    Plurimath::Math::Function::Table.new(
       [
         Plurimath::Math::Function::Tr.new([
           Plurimath::Math::Function::Td.new([
