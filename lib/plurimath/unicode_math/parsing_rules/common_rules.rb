@@ -73,8 +73,8 @@ module Plurimath
             phant |
             accents |
             negatable_symbols |
-            ((parsing_text | factor.as(:factor)) >> operand.as(:operand).maybe) |
-            fonts.as(:fonts)
+            fonts.as(:fonts) |
+            ((parsing_text | factor.as(:factor)) >> operand.as(:operand).maybe)
         end
 
         rule(:factor) do

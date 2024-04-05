@@ -34,7 +34,7 @@ module Plurimath
         end
 
         def to_unicodemath
-          "̈#{unicodemath_parens(parameter_one)}"
+          "#{unicodemath_parens(parameter_one)}̈"
         end
 
         def line_breaking(obj)

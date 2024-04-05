@@ -206,6 +206,13 @@ module Plurimath
         Math::Symbol.new(unicode)
       end
 
+      rule(font_class: simple(:fonts),
+           symbol: simple(:symbol)) do
+        Utility::FONT_STYLES[fonts.to_sym].new(
+          Math::Symbol.new(symbol),
+        )
+      end
+
       rule(symbol: simple(:symbol),
            naryand_recursion: sequence(:naryand_recursion)) do
         [
@@ -1328,6 +1335,7 @@ module Plurimath
 
       rule(first_value: simple(:first_value),
            prime_accent_symbols: sequence(:prime)) do
+        prime.map!.with_index { |pp| (Constants::ACCENT_SYMBOLS[pp.to_sym] || pp) }
         Math::Function::Power.new(
           Utility.unfenced_value(first_value, paren_specific: true),
           Utility.filter_values(prime),
@@ -1336,9 +1344,10 @@ module Plurimath
 
       rule(first_value: simple(:first_value),
            prime_accent_symbols: simple(:prime)) do
+        prime_symbol = (Constants::ACCENT_SYMBOLS[prime.to_sym] || prime)
         Math::Function::Power.new(
           Utility.unfenced_value(first_value, paren_specific: true),
-          Math::Symbol.new(prime),
+          Math::Symbol.new(prime_symbol),
         )
       end
 
@@ -1430,9 +1439,10 @@ module Plurimath
 
       rule(first_value: sequence(:first_value),
            prime_accent_symbols: simple(:prime)) do
+        prime_symbol = (Constants::ACCENT_SYMBOLS[prime.to_sym] || prime)
         Math::Function::Power.new(
           Utility.unfenced_value(first_value, paren_specific: true),
-          Math::Symbol.new(prime),
+          Math::Symbol.new(prime_symbol),
         )
       end
 
@@ -1456,6 +1466,14 @@ module Plurimath
            second_value: simple(:second_value)) do
         Math::Function::Root.new(
           first_value,
+          Utility.unfenced_value(second_value, paren_specific: true),
+        )
+      end
+
+      rule(first_value: sequence(:first_value),
+           second_value: sequence(:second_value)) do
+        Math::Function::Root.new(
+          Utility.filter_values(first_value),
           Utility.unfenced_value(second_value, paren_specific: true),
         )
       end
@@ -1586,6 +1604,8 @@ module Plurimath
             "{",
             "}",
           )
+        elsif :matrix == matrix
+          Math::Function::Table.new(array)
         else
           Utility.get_table_class(matrix).new(array)
         end
@@ -1605,6 +1625,8 @@ module Plurimath
             "{",
             "}",
           )
+        elsif :matrix == matrix
+          Math::Function::Table.new([array])
         else
           Utility.get_table_class(matrix).new([array])
         end
@@ -1623,6 +1645,10 @@ module Plurimath
             Utility.identity_matrix(number.to_i),
             "{",
             "}",
+          )
+        elsif :matrix == matrix
+          Math::Function::Table.new(
+            Utility.identity_matrix(number.to_i)
           )
         else
           Utility.get_table_class(matrix).new(
