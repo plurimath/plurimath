@@ -56,9 +56,13 @@ module Plurimath
       end
 
       rule(symbol: simple(:symbol)) do
-        Utility.symbol_object(
-          (Constants::SYMBOLS[symbol.to_sym] || symbol).to_s,
-        )
+        if symbol.is_a?(Math::Symbol)
+          symbol
+        else
+          Utility.symbol_object(
+            (Constants::SYMBOLS[symbol.to_sym] || symbol).to_s,
+          )
+        end
       end
 
       rule(expr: subtree(:expr)) do
@@ -88,6 +92,12 @@ module Plurimath
 
       rule(base_value: sequence(:base_value)) do
         Utility.filter_values(base_value)
+      end
+
+      rule(latex_wrapped: simple(:sym)) do
+        Math::Symbol.new(
+          Latex::Constants::UNICODE_SYMBOLS[sym.to_sym] || sym,
+        )
       end
 
       rule(numerator: simple(:numerator),
@@ -695,18 +705,26 @@ module Plurimath
       rule(sequence: simple(:sequence),
            symbol: simple(:sym),
            expr: simple(:expr)) do
-        symbol = Utility.symbol_object(
-          (Constants::SYMBOLS[sym.to_sym] || sym).to_s,
-        )
+        if sym.is_a?(Math::Symbol)
+          symbol = sym
+        else
+          symbol = Utility.symbol_object(
+            (Constants::SYMBOLS[sym.to_sym] || sym).to_s,
+          )
+        end
         [sequence, symbol, expr]
       end
 
       rule(sequence: simple(:sequence),
            symbol: simple(:sym),
            expr: sequence(:expr)) do
-        symbol = Utility.symbol_object(
-          (Constants::SYMBOLS[sym.to_sym] || sym).to_s,
-        )
+        if sym.is_a?(Math::Symbol)
+          symbol = sym
+        else
+          symbol = Utility.symbol_object(
+            (Constants::SYMBOLS[sym.to_sym] || sym).to_s,
+          )
+        end
         new_arr = [sequence, symbol]
         new_arr += expr.flatten.compact unless expr.to_s.strip.empty?
         new_arr
@@ -821,9 +839,13 @@ module Plurimath
 
       rule(unary_class: simple(:function),
            symbol: simple(:symbol)) do
-        symbol_object = Utility.symbol_object(
-          (Constants::SYMBOLS[symbol.to_sym] || symbol).to_s,
-        )
+        if symbol.is_a?(Math::Symbol)
+          symbol_object = symbol
+        else
+          symbol_object = Utility.symbol_object(
+            (Constants::SYMBOLS[symbol.to_sym] || symbol).to_s,
+          )
+        end
         Utility.get_class(function).new(symbol_object)
       end
 

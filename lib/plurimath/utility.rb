@@ -550,6 +550,8 @@ module Plurimath
       end
 
       def symbol_object(value)
+        return value if value.is_a?(Math::Symbol)
+
         value = case value
                 when "ℒ" then "{:"
                 when "ℛ" then ":}"

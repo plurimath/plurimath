@@ -16,6 +16,8 @@ module Plurimath
           str(".").as(:symbol)
       end
 
+      rule(:latex_wrapper) { str("___{") >> latex_symbols.as(:symbol) >> str("}") }
+
       rule(:controversial_symbols)   { power_base | expression }
       rule(:left_right_open_paren)   { str("(") | str("[") }
       rule(:left_right_close_paren)  { str(")") | str("]") }
@@ -38,6 +40,10 @@ module Plurimath
 
       rule(:sub_sup_classes) do
         arr_to_expression(Constants::SUB_SUP_CLASSES, :binary_class)
+      end
+
+      rule(:latex_symbols) do
+        arr_to_expression(Latex::Constants::UNICODE_SYMBOLS.keys, :latex_wrapped)
       end
 
       rule(:open_table) do
@@ -78,6 +84,7 @@ module Plurimath
         sub_sup_classes |
           binary_classes |
           ternary_classes |
+          latex_wrapper |
           hash_to_expression(Constants.precompile_constants) |
           (match(/[0-9]/).as(:number) >> comma.as(:comma)).repeat(1).as(:comma_separated) |
           quoted_text |
@@ -120,7 +127,8 @@ module Plurimath
       end
 
       rule(:sequence) do
-        (lparen.as(:lparen) >> space? >> expression.maybe.as(:expr) >> space? >> rparen.maybe.as(:rparen)).as(:intermediate_exp) |
+        latex_wrapper |
+          (lparen.as(:lparen) >> space? >> expression.maybe.as(:expr) >> space? >> rparen.maybe.as(:rparen)).as(:intermediate_exp) |
           (str("text") >> lparen.capture(:paren) >> read_text.as(:text) >> rparen.maybe).as(:intermediate_exp) |
           symbol_text_or_integer
       end
@@ -137,7 +145,8 @@ module Plurimath
       end
 
       rule(:iteration) do
-        ternary_classes_rules |
+        latex_wrapper |
+          ternary_classes_rules |
           table.as(:table) |
           comma.as(:comma) |
           mod |
@@ -178,21 +187,25 @@ module Plurimath
         end
       end
 
-      def hash_to_expression(arr)
+      def hash_to_expression(arr, named: nil)
         type = arr.first.class
         @@expression ||= arr.reduce do |expression, expr_string|
-          expression = dynamic_parser_rules(expression) if expression.is_a?(type)
-          expression | dynamic_parser_rules(expr_string)
+          expression = dynamic_parser_rules(expression, named: named) if expression.is_a?(type)
+          expression | dynamic_parser_rules(expr_string, named: named)
         end
       end
 
-      def dynamic_parser_rules(expr)
+      def dynamic_parser_rules(expr, named:)
         first_value = str(expr.first.to_s)
-        case expr.last
-        when :symbol then (str("\\").as(:slash) >> match("\s").repeat >> str("\n")) | first_value.as(:symbol)
-        when :unary_class then (first_value.as(:unary_class) >> space? >> sequence.maybe).as(:unary)
-        when :fonts then first_value.as(:fonts_class) >> space? >> sequence.as(:fonts_value)
-        when :special_fonts then first_value.as(:bold_fonts)
+        if named
+          first_value.as(:symbol)
+        else
+          case expr.last
+          when :symbol then (str("\\").as(:slash) >> match("\s").repeat >> str("\n")) | first_value.as(:symbol)
+          when :unary_class then (first_value.as(:unary_class) >> space? >> sequence.maybe).as(:unary)
+          when :fonts then first_value.as(:fonts_class) >> space? >> sequence.as(:fonts_value)
+          when :special_fonts then first_value.as(:bold_fonts)
+          end
         end
       end
     end
