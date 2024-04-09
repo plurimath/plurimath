@@ -15,8 +15,6 @@ module Plurimath
       formula.unitsml = true
       formula.input_string = text
       formula
-    rescue
-      raise Math::ParseError.new(error_message)
     end
 
     def error_message
