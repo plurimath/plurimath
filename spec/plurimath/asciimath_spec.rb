@@ -4778,6 +4778,7 @@ RSpec.describe Plurimath::Asciimath do
                 <mn>4</mn>
                 <mo>)</mo>
               </mrow>
+              <mo rspace="thickmathspace">&#x2062;</mo>
               <mrow>
                 <mstyle mathvariant="normal">
                   <mi>MHz</mi>

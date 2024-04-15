@@ -288,26 +288,18 @@ module Plurimath
 
       def unitsml_post_processing(nodes)
         nodes.each.with_index do |node, index|
-          if node.is_a?(Ox::Element) && node.attributes&.dig(:unitsml)
-            previous = nodes[index-1]
-            if previous && ["mi", "mn"].include?(previous.name)
-              if text_in_tag?(node.nodes)
-                nodes.insert(index, space_element(attributes: true))
-              else
-                nodes.insert(index, space_element)
-              end
-            end
-
-            node.attributes.delete_if {|k, v| k == :unitsml }
+          if node.is_a?(Ox::Element) && node&.attributes&.dig(:unitsml)
+            nodes.insert(index, space_element(node)) if valid_previous?(nodes[index-1])
+            node.attributes.delete_if { |k, v| k == :unitsml }
           end
 
           unitsml_post_processing(node.nodes) if !node.nodes.any?(String)
         end
       end
 
-      def space_element(attributes: false)
+      def space_element(node)
         element = (ox_element("mo") << "&#x2062;")
-        element.attributes[:rspace] = "thickmathspace" if attributes
+        element.attributes[:rspace] = "thickmathspace" if text_in_tag?(node.nodes)
         element
       end
 
@@ -326,6 +318,21 @@ module Plurimath
 
       def unicodemath_value
         (negated_value? || mini_sized?) ? value&.map(&:to_unicodemath)&.join : value&.map(&:to_unicodemath)&.join(" ")
+      end
+
+      def valid_previous?(previous)
+        return unless previous
+
+        ["mi", "mn"].include?(previous.name) ||
+          (previous.name == "mrow" && tags_in_mrow?(previous))
+      end
+
+      def tags_in_mrow?(previous)
+        previous&.nodes&.any? do |node|
+          next unless node.is_a?(Ox::Element)
+
+          ["mi", "mn"].include?(node&.name)
+        end
       end
     end
   end
