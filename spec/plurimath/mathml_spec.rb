@@ -1487,6 +1487,139 @@ RSpec.describe Plurimath::Mathml do
         expect(formula.to_asciimath).to eq(asciimath)
       end
     end
+
+    context "contains string from plurimath/issue#238" do
+      let(:string)  do
+        <<~MATHML
+          <math>
+            <mstyle displaystyle="true">
+              <msubsup>
+                <mi>s</mi>
+                <mtext>p</mtext>
+                <mn>2</mn>
+              </msubsup>
+              <mo>=</mo>
+              <mfrac>
+                <mrow>
+                  <mrow>
+                    <munderover>
+                      <mo>&#8721;</mo>
+                      <mrow>
+                        <mi>i</mi>
+                        <mo>=</mo>
+                        <mn>1</mn>
+                      </mrow>
+                      <mstyle mathvariant="italic">
+                        <mi>N</mi>
+                      </mstyle>
+                    </munderover>
+                    <msub>
+                      <mstyle mathvariant="italic">
+                        <mi>&#957;</mi>
+                      </mstyle>
+                      <mi>i</mi>
+                    </msub>
+                  </mrow>
+                  <msubsup>
+                    <mi>s</mi>
+                    <mi>i</mi>
+                    <mn>2</mn>
+                  </msubsup>
+                </mrow>
+                <mrow>
+                  <munderover>
+                    <mo>&#8721;</mo>
+                    <mrow>
+                      <mi>i</mi>
+                      <mo>=</mo>
+                      <mn>1</mn>
+                    </mrow>
+                    <mstyle mathvariant="italic">
+                      <mi>N</mi>
+                    </mstyle>
+                  </munderover>
+                  <msub>
+                    <mstyle mathvariant="italic">
+                      <mi>&#957;</mi>
+                    </mstyle>
+                    <mi>i</mi>
+                  </msub>
+                </mrow>
+              </mfrac>
+            </mstyle>
+          </math>
+        MATHML
+      end
+
+      it 'compares MathML, LaTeX, and AsciiMath string' do
+        mathml = <<~MATHML
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
+              <mrow>
+                <msubsup>
+                  <mi>s</mi>
+                  <mtext>p</mtext>
+                  <mn>2</mn>
+                </msubsup>
+                <mo>=</mo>
+                <mfrac>
+                  <mrow>
+                    <mrow>
+                      <munderover>
+                        <mo>&#x2211;</mo>
+                        <mrow>
+                          <mi>i</mi>
+                          <mo>=</mo>
+                          <mn>1</mn>
+                        </mrow>
+                        <mstyle mathvariant="italic">
+                          <mi>N</mi>
+                        </mstyle>
+                      </munderover>
+                      <msub>
+                        <mstyle mathvariant="italic">
+                          <mi>&#x3bd;</mi>
+                        </mstyle>
+                        <mi>i</mi>
+                      </msub>
+                    </mrow>
+                    <msubsup>
+                      <mi>s</mi>
+                      <mi>i</mi>
+                      <mn>2</mn>
+                    </msubsup>
+                  </mrow>
+                  <mrow>
+                    <munderover>
+                      <mo>&#x2211;</mo>
+                      <mrow>
+                        <mi>i</mi>
+                        <mo>=</mo>
+                        <mn>1</mn>
+                      </mrow>
+                      <mstyle mathvariant="italic">
+                        <mi>N</mi>
+                      </mstyle>
+                    </munderover>
+                    <msub>
+                      <mstyle mathvariant="italic">
+                        <mi>&#x3bd;</mi>
+                      </mstyle>
+                      <mi>i</mi>
+                    </msub>
+                  </mrow>
+                </mfrac>
+              </mrow>
+            </mstyle>
+          </math>
+        MATHML
+        latex = 's_{\text{p}}^{2} = \frac{\sum_{i = 1}^{\mathit{N}} \mathit{\nu}_{i} s_{i}^{2}}{\sum_{i = 1}^{\mathit{N}} \mathit{\nu}_{i}}'
+        asciimath = 's_("p")^(2) = frac(sum_(i = 1)^(ii(N)) ii(nu)_(i) s_(i)^(2))(sum_(i = 1)^(ii(N)) ii(nu)_(i))'
+        expect(formula.to_latex).to eq(latex)
+        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_asciimath).to eq(asciimath)
+      end
+    end
   end
 
   describe ".to_omml" do

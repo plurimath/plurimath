@@ -191,8 +191,12 @@ module Plurimath
         elsif flatten_mrow&.first&.is_nary_function? && flatten_mrow.length == 2
           nary_function = flatten_mrow.first
           if nary_function.is_ternary_function? && nary_function.all_values_exist?
-            flatten_mrow[0] = nary_function.new_nary_function(flatten_mrow.delete_at(1))
-            flatten_mrow
+            if nary_function.respond_to?(:new_nary_function)
+              flatten_mrow[0] = nary_function.new_nary_function(flatten_mrow.delete_at(1))
+              flatten_mrow
+            else
+              Utility.filter_values(flatten_mrow)
+            end
           elsif nary_function.is_binary_function? && nary_function.any_value_exist?
             flatten_mrow[0] = nary_function.new_nary_function(flatten_mrow.delete_at(1))
             flatten_mrow
