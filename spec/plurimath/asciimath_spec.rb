@@ -771,6 +771,7 @@ RSpec.describe Plurimath::Asciimath do
                 <mn>10</mn>
                 <mn>12</mn>
               </msup>
+              <mo rspace="thickmathspace">&#x2062;</mo>
               <mrow>
                 <mstyle mathvariant="normal">
                   <mi>Hz</mi>
@@ -5577,6 +5578,7 @@ RSpec.describe Plurimath::Asciimath do
                 <mn>10</mn>
                 <mn>12</mn>
               </msup>
+              <mo rspace="thickmathspace">&#x2062;</mo>
               <mrow>
                 <mstyle mathvariant="normal">
                   <mi>Hz</mi>
