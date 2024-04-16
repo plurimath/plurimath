@@ -5762,7 +5762,7 @@ RSpec.describe Plurimath::Asciimath do
     context "contains example #1 from plurimath/plurimath/pull/238 example #109" do
       let(:string) { 's_{"p"}^2 = {sum_{i=1}^{ii(N)} ii(nu)_i s_i^2}/{sum_{i=1}^{ii(N)} ii(nu)_i}' }
 
-      it 'returns parsed Asciimath to Formula' do
+      it 'prevention of conversion from ternary functions to nary-and function' do
         latex = 's_{\text{p}}^{2} = \frac{\sum_{i = 1}^{\mathit{N}} \mathit{\nu}_{i} s_{i}^{2}}{\sum_{i = 1}^{\mathit{N}} \mathit{\nu}_{i}}'
         asciimath = 's_("p")^(2) = frac(sum_(i = 1)^(ii(N)) ii(nu)_(i) s_(i)^(2))(sum_(i = 1)^(ii(N)) ii(nu)_(i))'
         mathml = <<~MATHML
