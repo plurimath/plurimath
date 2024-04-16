@@ -771,6 +771,7 @@ RSpec.describe Plurimath::Asciimath do
                 <mn>10</mn>
                 <mn>12</mn>
               </msup>
+              <mo rspace="thickmathspace">&#x2062;</mo>
               <mrow>
                 <mstyle mathvariant="normal">
                   <mi>Hz</mi>
@@ -4778,6 +4779,7 @@ RSpec.describe Plurimath::Asciimath do
                 <mn>4</mn>
                 <mo>)</mo>
               </mrow>
+              <mo rspace="thickmathspace">&#x2062;</mo>
               <mrow>
                 <mstyle mathvariant="normal">
                   <mi>MHz</mi>
@@ -5576,6 +5578,7 @@ RSpec.describe Plurimath::Asciimath do
                 <mn>10</mn>
                 <mn>12</mn>
               </msup>
+              <mo rspace="thickmathspace">&#x2062;</mo>
               <mrow>
                 <mstyle mathvariant="normal">
                   <mi>Hz</mi>
@@ -5749,6 +5752,259 @@ RSpec.describe Plurimath::Asciimath do
                 <mstyle mathvariant="normal">
                   <mi>&#xb0;</mi>
                 </mstyle>
+              </mrow>
+            </mstyle>
+          </math>
+        MATHML
+        expect(formula.to_latex).to eql(latex)
+        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_asciimath).to eql(asciimath)
+      end
+    end
+
+    context "contains example from plurimath/pull/238 example #109" do
+      let(:string) { 's_{"p"}^2 = {sum_{i=1}^{ii(N)} ii(nu)_i s_i^2}/{sum_{i=1}^{ii(N)} ii(nu)_i}' }
+
+      it 'prevention of conversion from ternary functions to nary-and function' do
+        latex = 's_{\text{p}}^{2} = \frac{\sum_{i = 1}^{\mathit{N}} \mathit{\nu}_{i} s_{i}^{2}}{\sum_{i = 1}^{\mathit{N}} \mathit{\nu}_{i}}'
+        asciimath = 's_("p")^(2) = frac(sum_(i = 1)^(ii(N)) ii(nu)_(i) s_(i)^(2))(sum_(i = 1)^(ii(N)) ii(nu)_(i))'
+        mathml = <<~MATHML
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
+              <msubsup>
+                <mi>s</mi>
+                <mtext>p</mtext>
+                <mn>2</mn>
+              </msubsup>
+              <mo>=</mo>
+              <mfrac>
+                <mrow>
+                  <mrow>
+                    <munderover>
+                      <mo>&#x2211;</mo>
+                      <mrow>
+                        <mi>i</mi>
+                        <mo>=</mo>
+                        <mn>1</mn>
+                      </mrow>
+                      <mstyle mathvariant="italic">
+                        <mi>N</mi>
+                      </mstyle>
+                    </munderover>
+                    <msub>
+                      <mstyle mathvariant="italic">
+                        <mi>&#x3bd;</mi>
+                      </mstyle>
+                      <mi>i</mi>
+                    </msub>
+                  </mrow>
+                  <msubsup>
+                    <mi>s</mi>
+                    <mi>i</mi>
+                    <mn>2</mn>
+                  </msubsup>
+                </mrow>
+                <mrow>
+                  <munderover>
+                    <mo>&#x2211;</mo>
+                    <mrow>
+                      <mi>i</mi>
+                      <mo>=</mo>
+                      <mn>1</mn>
+                    </mrow>
+                    <mstyle mathvariant="italic">
+                      <mi>N</mi>
+                    </mstyle>
+                  </munderover>
+                  <msub>
+                    <mstyle mathvariant="italic">
+                      <mi>&#x3bd;</mi>
+                    </mstyle>
+                    <mi>i</mi>
+                  </msub>
+                </mrow>
+              </mfrac>
+            </mstyle>
+          </math>
+        MATHML
+        expect(formula.to_latex).to eql(latex)
+        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_asciimath).to eql(asciimath)
+      end
+    end
+
+    context "contains example from plurimath/pull/240 example #110" do
+      let(:string) { '1 "unitsml(A)" = (e/(1.602176634 xx 10^(-19))) "unitsml(s^(-1))"' }
+
+      it 'returns parsed Asciimath to Formula' do
+        latex = '1 \mathrm{A} = ( \frac{e}{1.602176634 \times 10^{- 19}} ) \mathrm{s}^{- 1}'
+        asciimath = '1 rm(A) = (frac(e)(1.602176634 xx 10^(- 19))) rm(s)^(- 1)'
+        mathml = <<~MATHML
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
+              <mn>1</mn>
+              <mo rspace="thickmathspace">&#x2062;</mo>
+              <mrow>
+                <mstyle mathvariant="normal">
+                  <mi>A</mi>
+                </mstyle>
+              </mrow>
+              <mo>=</mo>
+              <mrow>
+                <mo>(</mo>
+                <mfrac>
+                  <mi>e</mi>
+                  <mrow>
+                    <mn>1.602176634</mn>
+                    <mo>&#xd7;</mo>
+                    <msup>
+                      <mn>10</mn>
+                      <mrow>
+                        <mo>&#x2212;</mo>
+                        <mn>19</mn>
+                      </mrow>
+                    </msup>
+                  </mrow>
+                </mfrac>
+                <mo>)</mo>
+              </mrow>
+              <mo rspace="thickmathspace">&#x2062;</mo>
+              <mrow>
+                <msup>
+                  <mstyle mathvariant="normal">
+                    <mi>s</mi>
+                  </mstyle>
+                  <mrow>
+                    <mo>&#x2212;</mo>
+                    <mn>1</mn>
+                  </mrow>
+                </msup>
+              </mrow>
+            </mstyle>
+          </math>
+        MATHML
+        expect(formula.to_latex).to eql(latex)
+        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_asciimath).to eql(asciimath)
+      end
+    end
+
+    context "contains example from plurimath/issues/232 example #110" do
+      let(:string) { '((E_H^s),(E_V^s)) = e^(jkR)/R ([S_(HH),S_(HV)], [S_(VH), S_(VV)])((E_H^j), (E_V^j))' }
+
+      it 'matches LaTeX, AsciiMath, and MathML' do
+        latex = '\left (\begin{matrix}E_{H}^{s} \\\\ E_{V}^{s}\end{matrix}\right ) = \frac{e^{j k R}}{R} \left (\begin{matrix}S_{H H} & S_{H V} \\\\ S_{V H} & S_{V V}\end{matrix}\right ) \left (\begin{matrix}E_{H}^{j} \\\\ E_{V}^{j}\end{matrix}\right )'
+        asciimath = '([E_(H)^(s)], [E_(V)^(s)]) = frac(e^(j k R))(R) ([S_(H H), S_(H V)], [S_(V H), S_(V V)]) ([E_(H)^(j)], [E_(V)^(j)])'
+        mathml = <<~MATHML
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
+              <mrow>
+                <mo>(</mo>
+                <mtable>
+                  <mtr>
+                    <mtd>
+                      <msubsup>
+                        <mi>E</mi>
+                        <mi>H</mi>
+                        <mi>s</mi>
+                      </msubsup>
+                    </mtd>
+                  </mtr>
+                  <mtr>
+                    <mtd>
+                      <msubsup>
+                        <mi>E</mi>
+                        <mi>V</mi>
+                        <mi>s</mi>
+                      </msubsup>
+                    </mtd>
+                  </mtr>
+                </mtable>
+                <mo>)</mo>
+              </mrow>
+              <mo>=</mo>
+              <mfrac>
+                <msup>
+                  <mi>e</mi>
+                  <mrow>
+                    <mi>j</mi>
+                    <mi>k</mi>
+                    <mi>R</mi>
+                  </mrow>
+                </msup>
+                <mi>R</mi>
+              </mfrac>
+              <mrow>
+                <mrow>
+                  <mo>(</mo>
+                  <mtable>
+                    <mtr>
+                      <mtd>
+                        <msub>
+                          <mi>S</mi>
+                          <mrow>
+                            <mi>H</mi>
+                            <mi>H</mi>
+                          </mrow>
+                        </msub>
+                      </mtd>
+                      <mtd>
+                        <msub>
+                          <mi>S</mi>
+                          <mrow>
+                            <mi>H</mi>
+                            <mi>V</mi>
+                          </mrow>
+                        </msub>
+                      </mtd>
+                    </mtr>
+                    <mtr>
+                      <mtd>
+                        <msub>
+                          <mi>S</mi>
+                          <mrow>
+                            <mi>V</mi>
+                            <mi>H</mi>
+                          </mrow>
+                        </msub>
+                      </mtd>
+                      <mtd>
+                        <msub>
+                          <mi>S</mi>
+                          <mrow>
+                            <mi>V</mi>
+                            <mi>V</mi>
+                          </mrow>
+                        </msub>
+                      </mtd>
+                    </mtr>
+                  </mtable>
+                  <mo>)</mo>
+                </mrow>
+                <mrow>
+                  <mo>(</mo>
+                  <mtable>
+                    <mtr>
+                      <mtd>
+                        <msubsup>
+                          <mi>E</mi>
+                          <mi>H</mi>
+                          <mi>j</mi>
+                        </msubsup>
+                      </mtd>
+                    </mtr>
+                    <mtr>
+                      <mtd>
+                        <msubsup>
+                          <mi>E</mi>
+                          <mi>V</mi>
+                          <mi>j</mi>
+                        </msubsup>
+                      </mtd>
+                    </mtr>
+                  </mtable>
+                  <mo>)</mo>
+                </mrow>
               </mrow>
             </mstyle>
           </math>
