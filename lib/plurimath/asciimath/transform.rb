@@ -897,6 +897,11 @@ module Plurimath
       end
 
       rule(table: simple(:table),
+           left_right: simple(:left_right)) do
+        Math::Formula.new([table, left_right])
+      end
+
+      rule(table: simple(:table),
            expr: simple(:expr)) do
         formula_array = [table]
         formula_array << expr unless expr.to_s.strip.empty?

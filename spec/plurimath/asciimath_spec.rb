@@ -5762,7 +5762,7 @@ RSpec.describe Plurimath::Asciimath do
       end
     end
 
-    context "contains example #1 from plurimath/plurimath/pull/238 example #109" do
+    context "contains example from plurimath/pull/238 example #109" do
       let(:string) { 's_{"p"}^2 = {sum_{i=1}^{ii(N)} ii(nu)_i s_i^2}/{sum_{i=1}^{ii(N)} ii(nu)_i}' }
 
       it 'returns parsed Asciimath to Formula' do
@@ -5833,7 +5833,7 @@ RSpec.describe Plurimath::Asciimath do
       end
     end
 
-    context "contains example #1 from plurimath/plurimath/pull/240 example #110" do
+    context "contains example from plurimath/pull/240 example #110" do
       let(:string) { '1 "unitsml(A)" = (e/(1.602176634 xx 10^(-19))) "unitsml(s^(-1))"' }
 
       it 'returns parsed Asciimath to Formula' do
@@ -5879,6 +5879,132 @@ RSpec.describe Plurimath::Asciimath do
                     <mn>1</mn>
                   </mrow>
                 </msup>
+              </mrow>
+            </mstyle>
+          </math>
+        MATHML
+        expect(formula.to_latex).to eql(latex)
+        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_asciimath).to eql(asciimath)
+      end
+    end
+
+    context "contains example from plurimath/issues/232 example #110" do
+      let(:string) { '((E_H^s),(E_V^s)) = e^(jkR)/R ([S_(HH),S_(HV)], [S_(VH), S_(VV)])((E_H^j), (E_V^j))' }
+
+      it 'matches LaTeX, AsciiMath, and MathML' do
+        latex = '\left (\begin{matrix}E_{H}^{s} \\\\ E_{V}^{s}\end{matrix}\right ) = \frac{e^{j k R}}{R} \left (\begin{matrix}S_{H H} & S_{H V} \\\\ S_{V H} & S_{V V}\end{matrix}\right ) \left (\begin{matrix}E_{H}^{j} \\\\ E_{V}^{j}\end{matrix}\right )'
+        asciimath = '([E_(H)^(s)], [E_(V)^(s)]) = frac(e^(j k R))(R) ([S_(H H), S_(H V)], [S_(V H), S_(V V)]) ([E_(H)^(j)], [E_(V)^(j)])'
+        mathml = <<~MATHML
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
+              <mrow>
+                <mo>(</mo>
+                <mtable>
+                  <mtr>
+                    <mtd>
+                      <msubsup>
+                        <mi>E</mi>
+                        <mi>H</mi>
+                        <mi>s</mi>
+                      </msubsup>
+                    </mtd>
+                  </mtr>
+                  <mtr>
+                    <mtd>
+                      <msubsup>
+                        <mi>E</mi>
+                        <mi>V</mi>
+                        <mi>s</mi>
+                      </msubsup>
+                    </mtd>
+                  </mtr>
+                </mtable>
+                <mo>)</mo>
+              </mrow>
+              <mo>=</mo>
+              <mfrac>
+                <msup>
+                  <mi>e</mi>
+                  <mrow>
+                    <mi>j</mi>
+                    <mi>k</mi>
+                    <mi>R</mi>
+                  </mrow>
+                </msup>
+                <mi>R</mi>
+              </mfrac>
+              <mrow>
+                <mrow>
+                  <mo>(</mo>
+                  <mtable>
+                    <mtr>
+                      <mtd>
+                        <msub>
+                          <mi>S</mi>
+                          <mrow>
+                            <mi>H</mi>
+                            <mi>H</mi>
+                          </mrow>
+                        </msub>
+                      </mtd>
+                      <mtd>
+                        <msub>
+                          <mi>S</mi>
+                          <mrow>
+                            <mi>H</mi>
+                            <mi>V</mi>
+                          </mrow>
+                        </msub>
+                      </mtd>
+                    </mtr>
+                    <mtr>
+                      <mtd>
+                        <msub>
+                          <mi>S</mi>
+                          <mrow>
+                            <mi>V</mi>
+                            <mi>H</mi>
+                          </mrow>
+                        </msub>
+                      </mtd>
+                      <mtd>
+                        <msub>
+                          <mi>S</mi>
+                          <mrow>
+                            <mi>V</mi>
+                            <mi>V</mi>
+                          </mrow>
+                        </msub>
+                      </mtd>
+                    </mtr>
+                  </mtable>
+                  <mo>)</mo>
+                </mrow>
+                <mrow>
+                  <mo>(</mo>
+                  <mtable>
+                    <mtr>
+                      <mtd>
+                        <msubsup>
+                          <mi>E</mi>
+                          <mi>H</mi>
+                          <mi>j</mi>
+                        </msubsup>
+                      </mtd>
+                    </mtr>
+                    <mtr>
+                      <mtd>
+                        <msubsup>
+                          <mi>E</mi>
+                          <mi>V</mi>
+                          <mi>j</mi>
+                        </msubsup>
+                      </mtd>
+                    </mtr>
+                  </mtable>
+                  <mo>)</mo>
+                </mrow>
               </mrow>
             </mstyle>
           </math>
