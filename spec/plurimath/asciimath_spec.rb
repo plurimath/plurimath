@@ -5832,6 +5832,62 @@ RSpec.describe Plurimath::Asciimath do
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
+
+    context "contains example #1 from plurimath/plurimath/pull/240 example #110" do
+      let(:string) { '1 "unitsml(A)" = (e/(1.602176634 xx 10^(-19))) "unitsml(s^(-1))"' }
+
+      it 'returns parsed Asciimath to Formula' do
+        latex = '1 \mathrm{A} = ( \frac{e}{1.602176634 \times 10^{- 19}} ) \mathrm{s}^{- 1}'
+        asciimath = '1 rm(A) = (frac(e)(1.602176634 xx 10^(- 19))) rm(s)^(- 1)'
+        mathml = <<~MATHML
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
+              <mn>1</mn>
+              <mo rspace="thickmathspace">&#x2062;</mo>
+              <mrow>
+                <mstyle mathvariant="normal">
+                  <mi>A</mi>
+                </mstyle>
+              </mrow>
+              <mo>=</mo>
+              <mrow>
+                <mo>(</mo>
+                <mfrac>
+                  <mi>e</mi>
+                  <mrow>
+                    <mn>1.602176634</mn>
+                    <mo>&#xd7;</mo>
+                    <msup>
+                      <mn>10</mn>
+                      <mrow>
+                        <mo>&#x2212;</mo>
+                        <mn>19</mn>
+                      </mrow>
+                    </msup>
+                  </mrow>
+                </mfrac>
+                <mo>)</mo>
+              </mrow>
+              <mo rspace="thickmathspace">&#x2062;</mo>
+              <mrow>
+                <msup>
+                  <mstyle mathvariant="normal">
+                    <mi>s</mi>
+                  </mstyle>
+                  <mrow>
+                    <mo>&#x2212;</mo>
+                    <mn>1</mn>
+                  </mrow>
+                </msup>
+              </mrow>
+            </mstyle>
+          </math>
+        MATHML
+        expect(formula.to_latex).to eql(latex)
+        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_asciimath).to eql(asciimath)
+      end
+    end
   end
 
   describe ".to_omml" do

@@ -289,11 +289,12 @@ module Plurimath
       def unitsml_post_processing(nodes)
         nodes.each.with_index do |node, index|
           if node.is_a?(Ox::Element) && node&.attributes&.dig(:unitsml)
-            nodes.insert(index, space_element(node)) if valid_previous?(nodes[index - 1])
+            pre_index = index - 1
+            pre_node = nodes[pre_index] if pre_index.zero? || pre_index.positive?
+            nodes.insert(index, space_element(node)) if valid_previous?(pre_node)
             node.attributes.delete_if { |k, _| k == :unitsml }
           end
-
-          unitsml_post_processing(node.nodes) if !node.nodes.any?(String)
+          unitsml_post_processing(node.nodes) if node.nodes.none?(String)
         end
       end
 
@@ -323,15 +324,12 @@ module Plurimath
       def valid_previous?(previous)
         return unless previous
 
-        ["mi", "mn"].include?(previous.name) || inside_tag?(previous)
+        ["mi", "mn"].include?(previous.name) ||
+          inside_tag?(previous)
       end
 
       def inside_tag?(previous)
-        previous&.nodes&.any? do |node|
-          next unless node.is_a?(Ox::Element)
-
-          ["mi", "mn"].include?(node&.name)
-        end
+        previous&.nodes&.any? { |node| valid_previous?(node) if node.is_a?(Ox::Element) }
       end
     end
   end
