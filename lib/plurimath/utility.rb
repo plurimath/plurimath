@@ -253,9 +253,7 @@ module Plurimath
         namespace = "#{namespace}:" unless namespace.empty?
 
         element = Plurimath.xml_engine.new_element("#{namespace}#{node}")
-        attributes&.each do |attr_key, attr_value|
-          element[attr_key] = attr_value
-        end
+        element.set_attr(attributes)
         element
       end
 
