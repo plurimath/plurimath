@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 
 require "plurimath/xml_engine"
+require "plurimath/xml_engine/ox/comment"
+require "plurimath/xml_engine/ox/element"
+require "plurimath/xml_engine/ox/wrapper"
+require "plurimath/xml_engine/ox/node"
 require "ox"
 Ox.default_options = { encoding: "UTF-8" }
 
@@ -9,7 +13,7 @@ module Plurimath
     class Ox
       class << self
         def new_element(name)
-          ::Ox::Element.new(name)
+          Element.new(name)
         end
 
         def dump(data, **options)

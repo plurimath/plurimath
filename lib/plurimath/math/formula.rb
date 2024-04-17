@@ -67,7 +67,7 @@ module Plurimath
         return mathml_content unless left_right_wrapper
 
         mrow = ox_element("mrow")
-        mrow.attributes[:unitsml] = true if unitsml
+        mrow.set_attr({unitsml: true}) if unitsml
         Utility.update_nodes(mrow, mathml_content)
       end
 
@@ -288,7 +288,7 @@ module Plurimath
 
       def unitsml_post_processing(nodes)
         nodes.each.with_index do |node, index|
-          if node.is_a?(Ox::Element) && node&.attributes&.dig(:unitsml)
+          if node&.attributes&.dig(:unitsml)
             pre_index = index - 1
             pre_node = nodes[pre_index] if pre_index.zero? || pre_index.positive?
             nodes.insert(index, space_element(node)) if valid_previous?(pre_node)
@@ -329,7 +329,7 @@ module Plurimath
       end
 
       def inside_tag?(previous)
-        previous&.nodes&.any? { |node| valid_previous?(node) if node.is_a?(Ox::Element) }
+        previous&.nodes&.any? { |node| valid_previous?(node) if node.xml_node? }
       end
     end
   end
