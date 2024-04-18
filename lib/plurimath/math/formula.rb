@@ -51,7 +51,7 @@ module Plurimath
         style = ox_element("mstyle", attributes: style_attrs)
         Utility.update_nodes(style, mathml_content)
         Utility.update_nodes(math, [style])
-        unitsml_post_processing(math)
+        unitsml_post_processing(math.nodes, math)
         dump_nodes(math, indent: 2)
       rescue
         parse_error!(:mathml)
@@ -286,21 +286,21 @@ module Plurimath
         r_tag << ox_element("br")
       end
 
-      def unitsml_post_processing(nodes)
+      def unitsml_post_processing(nodes, prev_node)
         nodes.each.with_index do |node, index|
           if node&.attributes&.dig(:unitsml)
             pre_index = index - 1
             pre_node = nodes[pre_index] if pre_index.zero? || pre_index.positive?
-            nodes.insert(index, space_element(node)) if valid_previous?(pre_node)
-            node.attributes.delete_if { |k, _| k == :unitsml }
+            prev_node.insert_in_nodes(index, space_element(node)) if valid_previous?(pre_node)
+            node.remove_attr(:unitsml)
           end
-          unitsml_post_processing(node.nodes) if node.nodes.none?(String)
+          unitsml_post_processing(node.nodes, node) if node.nodes.none?(String)
         end
       end
 
       def space_element(node)
         element = (ox_element("mo") << "&#x2062;")
-        element.attributes[:rspace] = "thickmathspace" if text_in_tag?(node.nodes)
+        element.set_attr({ rspace: "thickmathspace" }) if text_in_tag?(node.xml_nodes.nodes)
         element
       end
 
@@ -329,7 +329,13 @@ module Plurimath
       end
 
       def inside_tag?(previous)
-        previous&.nodes&.any? { |node| valid_previous?(node) if node.xml_node? }
+        previous&.nodes&.any? do |node|
+          next if node.is_a?(String)
+
+          if node.xml_node?
+            valid_previous?(node)
+          end
+        end
       end
     end
   end
