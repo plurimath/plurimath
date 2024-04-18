@@ -4,6 +4,7 @@ require "plurimath/xml_engine"
 require "plurimath/xml_engine/ox/comment"
 require "plurimath/xml_engine/ox/element"
 require "plurimath/xml_engine/ox/wrapper"
+require "plurimath/xml_engine/ox/dumper"
 require "plurimath/xml_engine/ox/node"
 require "ox"
 Ox.default_options = { encoding: "UTF-8" }
@@ -17,11 +18,13 @@ module Plurimath
         end
 
         def dump(data, **options)
-          ::Ox.dump(data, **options)
+          Dumper.new(data, **options).dump
         end
 
         def load(data)
-          ::Ox.load(data, strip_namespace: true)
+          Element.new(
+            ::Ox.load(data, strip_namespace: true),
+          )
         end
 
         def is_xml_comment?(node)
