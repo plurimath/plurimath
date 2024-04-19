@@ -10,7 +10,12 @@ module Plurimath
 
         def ==(object)
           self.class == object.class &&
-            match_nodes(init_nodes_vars(xml_nodes), object.xml_nodes)
+            @node == object.xml_nodes &&
+            nodes == object.nodes
+        end
+
+        def [](object)
+          xml_nodes&.attributes&.dig(object.to_s)
         end
 
         def []=(attr, value)
@@ -32,7 +37,7 @@ module Plurimath
         end
 
         def remove_attr(attribute)
-          xml_nodes.attributes.delete(attribute)
+          xml_nodes&.attributes&.delete(attribute)
         end
 
         def <<(object)
@@ -54,7 +59,7 @@ module Plurimath
         end
 
         def nodes
-          xml_nodes.nodes.map { |node| self.class.new(node) }
+          xml_nodes.nodes.map { |node| element_or_string(node) }
         end
 
         def each(&block)
@@ -81,6 +86,14 @@ module Plurimath
           @node.locate(string)
         end
 
+        def replace_nodes(nodes_array)
+          xml_nodes.nodes.replace(nodes_array)
+        end
+
+        def is_xml_comment?
+          xml_nodes.is_a?(::Ox::Comment)
+        end
+
         private
 
         def update_nodes(element, all_nodes)
@@ -93,7 +106,9 @@ module Plurimath
         end
 
         def update_attrs(element, attributes = @attributes)
-          attributes&.each { |key, value| element.attributes[key] = value }
+          attributes&.each do |key, value|
+            element.attributes[key.to_s] = Utility.html_entity_to_unicode(value.to_s)
+          end
           element
         end
 
@@ -107,8 +122,8 @@ module Plurimath
           end
         end
 
-        def match_nodes(self_nodes, object_nodes)
-          # TODO: Work in progress
+        def element_or_string(node)
+          node.is_a?(String) ? node : self.class.new(node)
         end
       end
     end

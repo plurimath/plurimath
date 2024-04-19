@@ -249,7 +249,7 @@ module Plurimath
         )
       end
 
-      def ox_element(node, attributes: [], namespace: "")
+      def ox_element(node, attributes: {}, namespace: "")
         namespace = "#{namespace}:" unless namespace.empty?
 
         element = Plurimath.xml_engine.new_element("#{namespace}#{node}")
@@ -382,7 +382,10 @@ module Plurimath
 
       def string_to_html_entity(string)
         entities = HTMLEntities.new
-        entities.encode(string, :hexadecimal)
+        entities.encode(
+          string.frozen? ? string : string.force_encoding('UTF-8'),
+          :hexadecimal,
+        )
       end
 
       def html_entity_to_unicode(string)

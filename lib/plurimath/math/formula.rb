@@ -288,11 +288,11 @@ module Plurimath
 
       def unitsml_post_processing(nodes, prev_node)
         nodes.each.with_index do |node, index|
-          if node&.attributes&.dig(:unitsml)
+          if node&.attributes&.dig("unitsml")
             pre_index = index - 1
             pre_node = nodes[pre_index] if pre_index.zero? || pre_index.positive?
             prev_node.insert_in_nodes(index, space_element(node)) if valid_previous?(pre_node)
-            node.remove_attr(:unitsml)
+            node.remove_attr("unitsml")
           end
           unitsml_post_processing(node.nodes, node) if node.nodes.none?(String)
         end

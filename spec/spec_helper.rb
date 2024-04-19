@@ -7,6 +7,7 @@ if RUBY_ENGINE != "opal"
   require "bundler/setup"
 end
 require "plurimath"
+require "plurimath/xml_engine/oga"
 require "rspec/matchers"
 if RUBY_ENGINE == "opal"
   require "oga"
@@ -21,6 +22,13 @@ RSpec.configure do |config|
 
   # Disable RSpec exposing methods globally on `Module` and `main`
   config.disable_monkey_patching!
+
+  config.around(:all) do |example|
+    Plurimath.xml_engine = Plurimath::XMLEngine::Ox
+    example.run
+    Plurimath.xml_engine = Plurimath::XMLEngine::Oga
+    example.run
+  end
 
   config.expect_with :rspec do |c|
     c.syntax = :expect

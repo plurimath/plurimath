@@ -69,12 +69,8 @@ module Plurimath
 
         def dump_attrs(node)
           node.unwrap.attributes.map do |i|
-            # Currently, this is not part of the contract. But in the future
-            # it may be needed to also handle namespaces:
-            #
-            # if i.namespace
-            #   %{ #{i.namespace.name}:#{i.name}="#{attr_entities i.value}"}
-            %{ #{i.name}="#{attr_entities i.value}"}
+            attr_key = i.namespace_name ? "#{i.namespace_name}:#{i.name}" : i.name
+            %{ #{attr_key}="#{Utility.html_entity_to_unicode(attr_entities(i.value))}"}
           end.join
         end
 

@@ -16,7 +16,7 @@ module Plurimath
         def to_mathml_without_math_tag
           mover = Utility.ox_element("mover")
           first_value = parameter_one&.to_mathml_without_math_tag
-          mover.attributes.merge!({ accent: attributes[:accent] }) if attributes && attributes[:accent]
+          mover.set_attr({ accent: attributes[:accent] }) if attributes && attributes[:accent]
           Utility.update_nodes(
             mover,
             [

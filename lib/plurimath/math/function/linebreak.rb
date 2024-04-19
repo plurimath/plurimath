@@ -49,7 +49,7 @@ module Plurimath
 
           mo_node = parameter_one.to_mathml_without_math_tag
           mo_node.name = "mo" unless mo_node.name == "mo"
-          mo_node.attributes.merge!(attributes) unless attributes.empty?
+          mo_node.set_attr(attributes) unless attributes.empty?
           mo_node
         end
 

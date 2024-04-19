@@ -16,9 +16,7 @@ module Plurimath
         end
 
         def to_mathml_without_math_tag
-          first_value = parameter_one.dup
-          row_lines = first_value.first.parameter_one
-          row_lines.shift if Utility.symbol_value(row_lines.first, "&#x23af;")
+          first_value = remove_hline(cloned_objects.parameter_one)
           Utility.update_nodes(
             Utility.ox_element("mtr"),
             first_value.map(&:to_mathml_without_math_tag).compact,
@@ -80,6 +78,12 @@ module Plurimath
             "#{spacing}\"tr\" function apply\n",
             Formula.new(parameter_one).to_omml_math_zone(gsub_spacing(spacing, last), last, indent, display_style: display_style),
           ]
+        end
+
+        def remove_hline(first_value)
+          row_lines = first_value.first.parameter_one
+          row_lines.shift if Utility.symbol_value(row_lines.first, "&#x23af;")
+          first_value
         end
       end
     end
