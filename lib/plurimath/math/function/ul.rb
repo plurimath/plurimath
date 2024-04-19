@@ -28,7 +28,7 @@ module Plurimath
           return mo_tag unless parameter_one
 
           munder_tag = Utility.ox_element("munder")
-          munder_tag.attributes.merge!(attributes) if attributes && !attributes.empty?
+          munder_tag.set_attr(attributes) if attributes && !attributes.empty?
           Utility.update_nodes(
             munder_tag,
             [

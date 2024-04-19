@@ -6,7 +6,7 @@ RSpec.describe Plurimath::XMLEngine do
   let(:engine) { Plurimath.xml_engine }
 
   let(:string_with_tricky_characters) {
-    "\x01\x13\x19\x21\x7f\u0081\u00ff\n\u{1FAC3}Ú®'\"%%<>&&amp;&lt;αθσ"
+    "\x01\x13\x19\x21\x7f\u0081\u00ff\n\u{1FAC3}Ú®'\"%%<>&&<αθσ"
   }
 
   let(:dumped_string_with_tricky_characters) {
@@ -198,7 +198,7 @@ RSpec.describe Plurimath::XMLEngine do
           elem = engine.new_element("a")
           elem["b"] = "&#x230b;"
 
-          expect(engine.dump(elem).strip).to eq '<a b="&amp;#x230b;"/>'
+          expect(engine.dump(elem).strip).to eq '<a b="⌋"/>'
         end
       end
 

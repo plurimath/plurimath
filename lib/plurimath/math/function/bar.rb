@@ -28,7 +28,7 @@ module Plurimath
           return mo_tag unless parameter_one
 
           mover_tag = Utility.ox_element("mover")
-          mover_tag.attributes.merge!(attributes) if attributes && !attributes.empty?
+          mover_tag.set_attr(attributes) if attributes && !attributes.empty?
           Utility.update_nodes(
             mover_tag,
             [

@@ -99,7 +99,7 @@ module Plurimath
       end
 
       def comment_remove(nodes)
-        nodes.delete_if { |node| node.is_a?(Ox::Comment)  }
+        nodes.delete_if { |node| Plurimath.xml_engine.is_xml_comment?(node)  }
       end
     end
   end

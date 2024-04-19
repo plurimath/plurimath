@@ -84,7 +84,7 @@ module Plurimath
         node.locate("rPr/*").each do |child|
           attrs_arr[:val] << child.attributes["val"]
         end
-        node.attributes.merge! attrs_arr
+        node.set_attr attrs_arr
       end
 
       def organize_spre(node)

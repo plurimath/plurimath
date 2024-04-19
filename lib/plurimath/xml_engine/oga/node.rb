@@ -43,7 +43,7 @@ module Plurimath
           # bug in Oga
           attr = ::Oga::XML::Attribute.new(name: attr.to_s)
           attr.element = @wrapped
-          attr.instance_variable_set(:@value, value.to_s)
+          attr.instance_variable_set(:@value, encode_entities(value.to_s))
           attr.instance_variable_set(:@decoded, true)
           @wrapped.attributes << attr
         end
@@ -97,8 +97,24 @@ module Plurimath
           nodes.each
         end
 
-        def set_attr(attrs)
-          Array(attrs)&.each { |key, value| @wrapped.set(key.to_s, value.to_s) }
+        def set_attr(attr_hash)
+          Array(attr_hash)&.each { |key, value| @wrapped.set(key.to_s, encode_entities((value.to_s))) }
+        end
+
+        def xml_node?
+          true
+        end
+
+        def xml_nodes
+          self
+        end
+
+        def insert_in_nodes(index, element)
+          @wrapped.children.insert(index, element.unwrap)
+        end
+
+        def remove_attr(attr_key)
+          @wrapped.unset(attr_key)
         end
 
         private
@@ -106,6 +122,10 @@ module Plurimath
         def remove_indentation(text)
           from_us = text.instance_variable_get(:@from_plurimath)
           !from_us && text.text.strip == "" ? nil : text.text
+        end
+
+        def encode_entities(entity)
+          Utility.html_entity_to_unicode(entity)
         end
       end
     end

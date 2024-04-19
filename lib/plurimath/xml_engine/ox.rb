@@ -1,11 +1,7 @@
 # frozen_string_literal: true
 
 require "plurimath/xml_engine"
-require "plurimath/xml_engine/ox/comment"
 require "plurimath/xml_engine/ox/element"
-require "plurimath/xml_engine/ox/wrapper"
-require "plurimath/xml_engine/ox/dumper"
-require "plurimath/xml_engine/ox/node"
 require "ox"
 Ox.default_options = { encoding: "UTF-8" }
 
@@ -18,7 +14,7 @@ module Plurimath
         end
 
         def dump(data, **options)
-          Dumper.new(data, **options).dump
+          ::Ox.dump(data.xml_nodes, **options)
         end
 
         def load(data)
@@ -28,11 +24,13 @@ module Plurimath
         end
 
         def is_xml_comment?(node)
-          node.is_a?(::Ox::Comment)
+          return node.is_xml_comment? if node.is_a?(Element)
+
+          false
         end
 
         def replace_nodes(root, nodes)
-          root.nodes.replace(Array(nodes))
+          root.replace_nodes(Array(nodes))
           root
         end
       end
