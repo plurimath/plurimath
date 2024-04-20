@@ -70,10 +70,6 @@ module Plurimath
           xml_nodes.map(&block)
         end
 
-        def dumper
-          ::Ox.dump(xml_nodes)
-        end
-
         def xml_node?
           true
         end
