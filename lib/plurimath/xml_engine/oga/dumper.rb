@@ -70,12 +70,12 @@ module Plurimath
         def dump_attrs(node)
           node.unwrap.attributes.map do |i|
             attr_key = i.namespace_name ? "#{i.namespace_name}:#{i.name}" : i.name
-            %{ #{attr_key}="#{Utility.html_entity_to_unicode(attr_entities(i.value))}"}
+            %{ #{attr_key}="#{attr_entities(i.value)}"}
           end.join
         end
 
-        def entities(text)
-          self.class.entities(text)
+        def entities(text, attr = false)
+          self.class.entities(to_unicode(text, attr))
         end
 
         def attr_entities(text)
@@ -85,6 +85,10 @@ module Plurimath
         def line_break
           @out += "\n"
           @out += " " * (@indent * @depth) if @indent
+        end
+
+        def to_unicode(text, attr = false)
+          attr ? Utility.html_entity_to_unicode(text) : text
         end
       end
     end
