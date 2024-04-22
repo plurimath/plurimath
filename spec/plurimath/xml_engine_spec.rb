@@ -2,7 +2,7 @@ require "spec_helper"
 require "plurimath/xml_engine/oga"
 require "plurimath/xml_engine/ox" unless RUBY_ENGINE == 'opal'
 
-RSpec.describe Plurimath::XMLEngine do
+RSpec.describe Plurimath::XmlEngine do
   let(:engine) { Plurimath.xml_engine }
 
   let(:string_with_tricky_characters) {
@@ -10,13 +10,13 @@ RSpec.describe Plurimath::XMLEngine do
   }
 
   let(:dumped_string_with_tricky_characters) {
-    Plurimath::XMLEngine::Oga::Dumper.entities(
+    Plurimath::XmlEngine::Oga::Dumper.entities(
       string_with_tricky_characters
     )
   }
 
   let(:dumped_attr_string_with_tricky_characters) {
-    Plurimath::XMLEngine::Oga::Dumper.entities(
+    Plurimath::XmlEngine::Oga::Dumper.entities(
       string_with_tricky_characters, true
     )
   }
@@ -249,13 +249,13 @@ RSpec.describe Plurimath::XMLEngine do
   end
 
   describe "Ox" do
-    let(:tested_engine) { Plurimath::XMLEngine::Ox }
+    let(:tested_engine) { Plurimath::XmlEngine::Ox }
 
     include_examples "all engines"
   end unless RUBY_ENGINE == "opal"
 
   describe "Oga" do
-    let(:tested_engine) { Plurimath::XMLEngine::Oga }
+    let(:tested_engine) { Plurimath::XmlEngine::Oga }
 
     include_examples "all engines"
   end

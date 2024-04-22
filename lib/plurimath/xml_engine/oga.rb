@@ -10,7 +10,7 @@ require_relative "oga/dumper"
 require_relative "oga/node"
 
 module Plurimath
-  module XMLEngine
+  module XmlEngine
     class Oga
       class << self
         def new_element(name)

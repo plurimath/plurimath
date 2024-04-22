@@ -1,5 +1,5 @@
 module Plurimath
-  module XMLEngine
+  module XmlEngine
     class Oga
       # Create API compatible with Ox, per Plurimath usage
       class Wrapper

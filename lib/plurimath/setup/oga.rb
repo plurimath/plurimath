@@ -2,4 +2,4 @@
 
 require "plurimath/xml_engine/oga"
 
-Plurimath.xml_engine = Plurimath::XMLEngine::Oga
+Plurimath.xml_engine = Plurimath::XmlEngine::Oga
