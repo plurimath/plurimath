@@ -24,9 +24,9 @@ RSpec.configure do |config|
   config.disable_monkey_patching!
 
   config.around(:all) do |example|
-    Plurimath.xml_engine = Plurimath::XMLEngine::Ox
+    Plurimath.xml_engine = Plurimath::XmlEngine::Ox
     example.run
-    Plurimath.xml_engine = Plurimath::XMLEngine::Oga
+    Plurimath.xml_engine = Plurimath::XmlEngine::Oga
     example.run
   end
 
