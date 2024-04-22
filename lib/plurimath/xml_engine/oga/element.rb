@@ -1,5 +1,5 @@
 module Plurimath
-  module XMLEngine
+  module XmlEngine
     class Oga
       class Element < ::Oga::XML::Element
       end

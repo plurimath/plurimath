@@ -6,7 +6,7 @@ require "ox"
 Ox.default_options = { encoding: "UTF-8" }
 
 module Plurimath
-  module XMLEngine
+  module XmlEngine
     class Ox
       class << self
         def new_element(name)

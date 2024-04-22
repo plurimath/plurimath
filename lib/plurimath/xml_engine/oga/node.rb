@@ -1,7 +1,7 @@
 require "plurimath/xml_engine/oga/wrapper"
 
 module Plurimath
-  module XMLEngine
+  module XmlEngine
     class Oga
       class Node < Wrapper
         # Ox removes text nodes that are whitespace-only.

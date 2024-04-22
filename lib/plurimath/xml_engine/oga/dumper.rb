@@ -1,5 +1,5 @@
 module Plurimath
-  module XMLEngine
+  module XmlEngine
     class Oga
       # Dump the tree just as if we were Ox. This is a limited implementation.
       class Dumper

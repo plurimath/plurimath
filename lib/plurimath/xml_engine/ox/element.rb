@@ -1,5 +1,5 @@
 module Plurimath
-  module XMLEngine
+  module XmlEngine
     class Ox
       class Element
         attr_accessor :attributes
