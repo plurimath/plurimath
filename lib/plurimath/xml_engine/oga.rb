@@ -4,7 +4,6 @@ require "plurimath/xml_engine"
 require "corelib/array/pack" if RUBY_ENGINE == "opal"
 require "oga"
 require_relative "oga/document"
-require_relative "oga/comment"
 require_relative "oga/wrapper"
 require_relative "oga/element"
 require_relative "oga/dumper"
@@ -25,11 +24,9 @@ module Plurimath
 
         def load(data)
           data = ::Oga::XML::Parser.new(data, html: true).parse
-          if data.xml_declaration
-            Document.new(data)
-          else
-            Document.new(data).nodes.first
-          end
+          return Document.new(data) if data.xml_declaration
+
+          Document.new(data).nodes.first
         end
 
         def is_xml_comment?(node)
@@ -38,7 +35,8 @@ module Plurimath
         end
 
         def replace_nodes(root, nodes)
-          root.unwrap.children = ::Oga::XML::NodeSet.new([::Oga::XML::Text.new(text: nodes)])
+          text_node = ::Oga::XML::Text.new(text: nodes)
+          root.unwrap.children = ::Oga::XML::NodeSet.new([text_node])
           root
         end
       end

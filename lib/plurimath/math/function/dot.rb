@@ -20,7 +20,7 @@ module Plurimath
           first_value = parameter_one&.to_mathml_without_math_tag
           dot_tag = (Utility.ox_element("mo") << ".")
           over_tag = Utility.ox_element("mover")
-          over_tag.set_attr({ accent: attributes[:accent] }) if attributes && attributes[:accent]
+          over_tag[:accent] = attributes[:accent] if attributes && attributes[:accent]
           Utility.update_nodes(
             over_tag,
             [
