@@ -67,7 +67,7 @@ module Plurimath
         return mathml_content unless left_right_wrapper
 
         mrow = ox_element("mrow")
-        mrow.set_attr({unitsml: true}) if unitsml
+        mrow[:unitsml] = true if unitsml
         Utility.update_nodes(mrow, mathml_content)
       end
 
@@ -288,7 +288,7 @@ module Plurimath
 
       def unitsml_post_processing(nodes, prev_node)
         nodes.each.with_index do |node, index|
-          if node&.attributes&.dig("unitsml")
+          if node[:unitsml]
             pre_index = index - 1
             pre_node = nodes[pre_index] if pre_index.zero? || pre_index.positive?
             prev_node.insert_in_nodes(index, space_element(node)) if valid_previous?(pre_node)
@@ -300,7 +300,7 @@ module Plurimath
 
       def space_element(node)
         element = (ox_element("mo") << "&#x2062;")
-        element.set_attr({ rspace: "thickmathspace" }) if text_in_tag?(node.xml_nodes.nodes)
+        element[:rspace] = "thickmathspace" if text_in_tag?(node.xml_nodes.nodes)
         element
       end
 
@@ -332,9 +332,7 @@ module Plurimath
         previous&.nodes&.any? do |node|
           next if node.is_a?(String)
 
-          if node.xml_node?
-            valid_previous?(node)
-          end
+          valid_previous?(node) if node.xml_node?
         end
       end
     end
