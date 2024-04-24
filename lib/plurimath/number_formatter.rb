@@ -2,7 +2,7 @@ require "twitter_cldr"
 
 module Plurimath
   class NumberFormatter
-    attr_accessor :twitter_cldr_reader, :locale, :localize_number, :twitter_cldr_localiser_symbols
+    attr_accessor :locale, :localize_number, :twitter_cldr_localiser_symbols
 
     LOCALIZE_NUMBER_REGEX = %r{(?<group>[^#])?(?<groupdigits>#+0)(?<decimal>.)(?<fractdigits>#+)(?<fractgroup>[^#])?}
 
@@ -13,12 +13,11 @@ module Plurimath
     end
 
     def localized_number(number_string, locale: @locale, precision: nil, digitcount: nil, format: {})
-      # digitcount is not implemented yet!
-      locale_sym, reader = locale_and_reader(locale)
-      num = BigDecimal(number_string.to_s)
+      locale_sym, @reader = locale_and_reader(locale)
+      num = BigDecimal(number_string)
       precision ||= /\./.match?(number_string) ? number_string.sub(/^.*\./, "").size : 0
-      reader.merge!(format)
-      localize_number(num, locale_sym, precision)
+      @reader.merge!(format)
+      localize_number(num, locale: locale_sym, precision: precision, digitcount: digitcount.to_i)
     end
 
     private
@@ -29,10 +28,12 @@ module Plurimath
     end
 
     def twitter_cldr_reader(locale)
-      return @twitter_cldr_reader if locale.to_s == @locale.to_s
+      return @twitter_cldr_reader if locale.to_s == @locale.to_s && @twitter_cldr_reader
 
       num = TwitterCldr::DataReaders::NumberDataReader.new(locale)
-      num.symbols.merge!(@twitter_cldr_localiser_symbols).merge!(parse_localize_number)
+      num.symbols
+        .merge!(@twitter_cldr_localiser_symbols)
+        .merge!(parse_localize_number)
     end
 
     def parse_localize_number
@@ -54,12 +55,30 @@ module Plurimath
       end
     end
 
-    def localize_number(num, locale, precision)
-      if precision.zero?
-        num.localize(locale).to_s
-      else
-        num.localize(locale).to_decimal.to_s(precision: precision)
-      end
+    def localize_number(num, locale:, precision:, digitcount:)
+      localized = num.localize(locale)
+      return localized.to_s if precision.zero?
+
+      localized.to_decimal.to_s(precision: precision)
+    end
+
+    def digitcount_number(number_str, digitcount)
+      number = number_str.sub(".", '')
+      num_count = number.length
+      return number_str if num_count == digitcount
+      return round_number(number_str, digitcount) unless (digitcount - num_count).positive?
+
+      zeros = ("0" * (digitcount - num_count))
+      number_str += "." unless number_str.include?(".")
+      number_str += zeros
+      number_str
+    end
+
+    def round_number(number, digitcount)
+      rounded_number = digitcount - number.split(".").first.length
+      return number unless number.include?(".") && rounded_number.positive?
+
+      number.to_f.round(rounded_number).to_s
     end
   end
 end
