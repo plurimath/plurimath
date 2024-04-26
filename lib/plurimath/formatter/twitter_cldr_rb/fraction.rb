@@ -9,9 +9,9 @@ module TwitterCldr
         def initialize(token, symbols = {})
           @format  = token ? token.value.split('.').pop : ''
           @decimal = symbols[:decimal] || '.'
-          @separator = symbols[:fraction_group]
-          @group = symbols[:fraction_group_digits]
-          @digit_count = symbols[:digit_count]
+          @separator = symbols[:fraction_group] || " "
+          @group = symbols[:fraction_group_digits] || 3
+          @digit_count = symbols[:digit_count] || nil
           @precision = @format.length
         end
 
@@ -42,10 +42,12 @@ module TwitterCldr
         def digit_count_format(int, fraction, number)
           integer = (int + "." + fraction)
           float = integer.to_f
-          if (integer.length - 1) > @digit_count
+          int_length = integer.length - 1
+          @digit_count ||= int_length
+          if int_length > @digit_count
             float.round(@digit_count - int.length).to_s.split(".").last
-          elsif (integer.length - 1) < @digit_count
-            number += "0" * (@digit_count - (integer.length - 1))
+          elsif int_length < @digit_count
+            number += "0" * (@digit_count - int_length)
           end
         end
       end
