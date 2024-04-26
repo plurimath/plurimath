@@ -1,4 +1,5 @@
 require "twitter_cldr"
+require_relative "twitter_cldr_rb/integer"
 require_relative "twitter_cldr_rb/fraction"
 require_relative "twitter_cldr_rb/number_formatter"
 
@@ -8,32 +9,24 @@ module Plurimath
       attr_accessor :locale, :localize_number, :localiser_symbols
 
       LOCALIZE_NUMBER_REGEX = %r{(?<group>[^#])?(?<groupdigits>#+0)(?<decimal>.)(?<fractdigits>#+)(?<fractgroup>[^#])?}
-      SUPPORTED_NOTATIONS = %i[basic scientific engineering e].freeze
+      SUPPORTED_NOTATIONS = %i[e scientific engineering].freeze
 
-      def initialize(locale = "en", localize_number: nil, localiser_symbols: {})
+      def initialize(locale, localize_number:, localiser_symbols:)
+        @locale = locale
         @localize_number = localize_number if localize_number
         @localiser_symbols = localiser_symbols
-        @locale, @twitter_cldr_reader = twitter_cldr_localiser(locale)
+        @twitter_cldr_reader = twitter_cldr_reader(locale)
       end
 
-      def localized_number(number_string, locale: @locale, precision: nil, format: {})
-        locale_sym, @reader = locale_and_reader(locale)
-        num = BigDecimal(number_string)
-        precision ||= /\./.match?(number_string) ? number_string.sub(/^.*\./, "").size : 0
-        @reader.merge!(format)
-        if format[:notation] && format[:notation] != :basic
-          send("#{format[:notation]}_format", num.to_s, locale: locale_sym, precision: precision)
-        else
-          localize_number(num, locale: locale_sym, precision: precision)
-        end
+      def localized_number(number_string, locale:, precision:, format:)
+        options_instance_variables(number_string, format, precision)
+        @twitter_cldr_reader.merge!(format)
+        return send("#{@notation}_format", number_string) if SUPPORTED_NOTATIONS.include?(@notation&.to_sym)
+
+        localize_number(number_string)
       end
 
       private
-
-      def twitter_cldr_localiser(locale = "en")
-        locale = TwitterCldr.supported_locale?(locale.to_sym) ? locale.to_sym : :en
-        [locale , twitter_cldr_reader(locale)]
-      end
 
       def twitter_cldr_reader(locale)
         return @twitter_cldr_reader if locale.to_s == @locale.to_s && @twitter_cldr_reader
@@ -55,37 +48,67 @@ module Plurimath
         ret
       end
 
-      def locale_and_reader(locale)
-        if (locale.to_s == @locale.to_s)
-          [@locale,  @twitter_cldr_reader]
-        else
-          twitter_cldr_localiser(locale)
-        end
+      def localize_number(num)
+        num = num.match?(/\./) ? num.to_f : num.to_i
+        localized = BigDecimal(num.to_s).localize(@locale)
+        return localized.to_s if @precision.zero?
+
+        localized.to_decimal.to_s(precision: @precision)
       end
 
-      def localize_number(num, locale:, precision:)
-        localized = num.localize(locale)
-        return localized.to_s if precision.zero?
-
-        localized.to_decimal.to_s(precision: precision)
+      def e_format(num_str)
+        notations_formatting(num_str).join(@e.to_s)
       end
 
-      def e_format(num_str, locale:, precision:)
-        localized, exponent = notation_format(num_str, locale, precision)
-        "#{localized}#{@reader&.dig(:e) || :e}#{exponent_sign}#{exponent}"
+      def scientific_format(num_str)
+        notations_formatting(num_str).join(" #{@times} 10^")
       end
 
-      def exponent_sign
-        "+" if @reader&.dig(:exponent_sign)&.to_sym == :plus
+      def engineering_format(num_str)
+        @precision = num_str.length - 1 unless @precision > 0
+        chars = notation_chars(num_str)
+        update_string_index(chars, chars.last.to_i % 3)
+        chars[0] = localize_number(chars[0])
+        chars.join(" #{@times} 10^")
       end
 
-      def notation_format(num_str, locale, precision)
-        num_str = num_str&.sub!(/0\./, "")&.insert(1, ".")
-        chars = num_str.chars
-        chars.last.replace((chars.last.to_i - 1).to_s)
-        big_decimal = BigDecimal(chars.join.split("e").first)
-        localized = localize_number(big_decimal, locale: locale, precision: precision)
-        [localized, chars.slice_after("e").to_a.last.join]
+      def update_exponent_sign(str)
+        str.gsub!("e", "e+") if @exponent_sign == :plus
+      end
+
+      def notation_chars(num_str)
+        notation_number = ("%.#{@precision}e" %num_str)
+        update_exponent_sign(notation_number.gsub!("+0", ""))
+        notation_number.split("e")
+      end
+
+      def notations_formatting(num_str)
+        chars = notation_chars(num_str)
+        chars[0] = localize_number(chars[0])
+        chars
+      end
+
+      def options_instance_variables(string, format, precision)
+        @e = format.delete(:e)&.to_sym || :e
+        @times = format.delete(:times)&.to_sym || "\u{d7}"
+        @notation = format.delete(:notation)&.to_sym || nil
+        @precision = update_precision(string, precision)
+        @exponent_sign = format.delete(:exponent_sign)&.to_sym || nil
+      end
+
+      def update_precision(num, precision)
+        return precision if precision
+        return num.sub(/\./, "").size - 1 if SUPPORTED_NOTATIONS.include?(@notation&.to_sym)
+
+        /\./.match?(num) ? num.sub(/^.*\./, "").size : 0
+      end
+
+      def update_string_index(chars, index)
+        return if index.zero?
+
+        chars.first.delete!(".")
+        chars.first.insert(index + 1, ".")
+        chars[-1] = (chars[-1].to_i - index).to_s
       end
     end
   end

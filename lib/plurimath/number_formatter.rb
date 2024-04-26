@@ -12,12 +12,12 @@ module Plurimath
 
     def localized_number(number_string, locale: @locale, precision: nil, format: {})
       Formatter::NumberFormatter.new(
-        locale,
+        supported_locale(locale),
         localize_number: localize_number,
         localiser_symbols: localiser_symbols,
       ).localized_number(
         number_string,
-        locale: locale,
+        locale: supported_locale(locale),
         precision: precision,
         format: format,
       )
