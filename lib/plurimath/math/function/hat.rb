@@ -49,7 +49,7 @@ module Plurimath
           if attributes && attributes[:accent]
             accent_tag(display_style)
           else
-            symbol = Symbol.new("&#x302;") unless hide_function_name
+            symbol = Symbols::Symbol.new("&#x302;") unless hide_function_name
             Overset.new(parameter_one, symbol).to_omml_without_math_tag(display_style)
           end
         end

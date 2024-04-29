@@ -29,7 +29,7 @@ module Plurimath
 
         rule(:color_symbols)   { str("&#x270e;") | str("\\color") }
         rule(:phantom_symbols) { str("&#x27e1;") | str("\\phantom") }
-        rule(:monospace_fonts) { (str("&#xffd7;") >> str("(") >> match["^\)"].repeat(0).as(:monospace_value) >> str(")")).as(:monospace) }
+        rule(:monospace_fonts) { (str("&#xffd7;") >> str("(") >> space? >> expression.as(:monospace_value) >> space? >> str(")")).as(:monospace) }
 
         rule(:backcolor_symbols) { str("&#x2601;") | str("\\backcolor") }
         rule(:masked_recursive_value) { (space? >> expression | exp_bracket | exp_script).as(:expr) >> masked_recursive_value.as(:func_expr).maybe }

@@ -80,7 +80,7 @@ module Plurimath
 
         hashed = common_math_zone_conversion(field, options)
         options[:array] << "#{hashed[:spacing]}|_ \"#{field&.to_asciimath}\"#{hashed[:field_name]}\n"
-        return unless Utility.validate_math_zone(field)
+        return unless Utility.validate_math_zone(field, lang: :asciimath)
 
         options[:array] << field&.to_asciimath_math_zone(hashed[:function_spacing], hashed[:last], hashed[:indent])
       end
@@ -90,7 +90,7 @@ module Plurimath
 
         hashed = common_math_zone_conversion(field, options)
         options[:array] << "#{hashed[:spacing]}|_ \"#{field&.to_latex}\"#{hashed[:field_name]}\n"
-        return unless Utility.validate_math_zone(field)
+        return unless Utility.validate_math_zone(field, lang: :latex)
 
         options[:array] << field&.to_latex_math_zone(hashed[:function_spacing], hashed[:last], hashed[:indent])
       end
@@ -100,7 +100,7 @@ module Plurimath
 
         hashed = common_math_zone_conversion(field, options)
         options[:array] << "#{hashed[:spacing]}|_ \"#{dump_mathml(field)}\"#{hashed[:field_name]}\n"
-        return unless Utility.validate_math_zone(field)
+        return unless Utility.validate_math_zone(field, lang: :mathml)
 
         options[:array] << field&.to_mathml_math_zone(hashed[:function_spacing], hashed[:last], hashed[:indent])
       end
@@ -111,7 +111,7 @@ module Plurimath
         hashed = common_math_zone_conversion(field, options)
         display_style = options[:display_style]
         options[:array] << "#{hashed[:spacing]}|_ \"#{dump_omml(field, display_style)}\"#{hashed[:field_name]}\n"
-        return unless Utility.validate_math_zone(field)
+        return unless Utility.validate_math_zone(field, lang: :omml)
 
         options[:array] << field&.to_omml_math_zone(hashed[:function_spacing], hashed[:last], hashed[:indent], display_style: display_style)
       end
@@ -148,8 +148,8 @@ module Plurimath
         }
       end
 
-      def filtered_values(value)
-        @values = Utility.filter_math_zone_values(value)
+      def filtered_values(value, lang:)
+        @values = Utility.filter_math_zone_values(value, lang: lang)
       end
 
       def dump_ox_nodes(nodes)
@@ -292,11 +292,49 @@ module Plurimath
       end
 
       def unicodemath_parens(field)
-        if field.is_a?(Math::Function::Fenced)
-          field.to_unicodemath
-        else
-          "(#{field.to_unicodemath})" if field
-        end
+        return field.to_unicodemath if field.is_a?(Math::Function::Fenced)
+
+        "(#{field.to_unicodemath})" if field
+      end
+
+      def prime_unicode?(field)
+        return unless field.is_a?(Math::Symbols::Symbol)
+        return true if field&.value&.include?("&#x27;")
+
+        Utility.primes_constants.any? { |prefix, prime| unicodemath_field_value(field).include?(prime) }
+      end
+
+      private
+
+      def prime_classes
+        %w[
+          backtrprime
+          backtrprime
+          backdprime
+          backdprime
+          backprime
+          backprime
+          pppprime
+          pppprime
+          pppprime
+          pppprime
+          ppprime
+          ppprime
+          ppprime
+          ppprime
+          dprime
+          dprime
+          dprime
+          pprime
+          dprime
+          prime
+          prime
+          prime
+        ].freeze
+      end
+
+      def unicodemath_field_value(field)
+        field.class_name == "symbol" ? field.value : Utility.hexcode_in_input(field)
       end
     end
   end

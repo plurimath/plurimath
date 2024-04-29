@@ -48,36 +48,36 @@ RSpec.describe Plurimath::Mathml::Parser do
     it "returns formula of sin from mathml string" do
       expected_value = Plurimath::Math::Formula.new([
         Plurimath::Math::Formula.new([
-          Plurimath::Math::Symbol.new("x"),
-          Plurimath::Math::Symbol.new("="),
+          Plurimath::Math::Symbols::Symbol.new("x"),
+          Plurimath::Math::Symbols::Equal.new,
           Plurimath::Math::Function::Frac.new(
             Plurimath::Math::Formula.new([
               Plurimath::Math::Formula.new([
-                Plurimath::Math::Symbol.new("-"),
-                Plurimath::Math::Symbol.new("b")
+                Plurimath::Math::Symbols::Minus.new("-"),
+                Plurimath::Math::Symbols::Symbol.new("b")
               ]),
-              Plurimath::Math::Symbol.new("&#xb1;"),
+              Plurimath::Math::Symbols::Pm.new,
               Plurimath::Math::Function::Sqrt.new(
                 Plurimath::Math::Formula.new([
                   Plurimath::Math::Function::Power.new(
-                    Plurimath::Math::Symbol.new("b"),
+                    Plurimath::Math::Symbols::Symbol.new("b"),
                     Plurimath::Math::Number.new("2")
                   ),
-                  Plurimath::Math::Symbol.new("-"),
+                  Plurimath::Math::Symbols::Symbol.new("-"),
                   Plurimath::Math::Formula.new([
                     Plurimath::Math::Number.new("4"),
                     Plurimath::Math::Function::Prod.new,
-                    Plurimath::Math::Symbol.new("a"),
+                    Plurimath::Math::Symbols::Symbol.new("a"),
                     Plurimath::Math::Function::Sum.new,
-                    Plurimath::Math::Symbol.new("c")
+                    Plurimath::Math::Symbols::Symbol.new("c")
                   ])
                 ])
               )
             ]),
             Plurimath::Math::Formula.new([
               Plurimath::Math::Number.new("2"),
-              Plurimath::Math::Symbol.new("&#x2221;"),
-              Plurimath::Math::Symbol.new("a")
+              Plurimath::Math::Symbols::Angmsd.new,
+              Plurimath::Math::Symbols::Symbol.new("a")
             ])
           )
         ])

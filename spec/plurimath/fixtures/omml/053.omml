@@ -2,9 +2,9 @@
   <m:oMath>
     <m:d>
       <m:dPr>
-        <m:begChr m:val="〈"/>
+        <m:begChr m:val="⟨"/>
         <m:sepChr m:val=""/>
-        <m:endChr m:val="〉"/>
+        <m:endChr m:val="⟩"/>
       </m:dPr>
       <m:e>
         <m:r>

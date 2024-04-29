@@ -119,7 +119,7 @@ module Plurimath
         def underover(display_style)
           return r_element(class_name, rpr_tag: false) unless all_values_exist?
 
-          first_value = Symbol.new(class_name)
+          first_value = Symbols::Symbol.new(class_name)
           if !display_style
             power_base = PowerBase.new(first_value, parameter_one, parameter_two)
             return power_base.to_omml_without_math_tag(display_style)
@@ -130,12 +130,6 @@ module Plurimath
 
           underset = Underset.new(overset, parameter_one)
           Array(underset.to_omml_without_math_tag(display_style))
-        end
-
-        def prime_unicode?(field)
-          return unless field.is_a?(Math::Symbol)
-
-          UnicodeMath::Constants::PREFIXED_PRIMES.any? { |prefix, prime| field.value.include?(prime) || field.value.include?("&#x27;") }
         end
       end
     end

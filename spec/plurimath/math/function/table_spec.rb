@@ -14,8 +14,8 @@ RSpec.describe Plurimath::Math::Function::Table do
 
       it 'initializes Table object' do
         expect(table.value).to eql(['70'])
-        expect(table.open_paren).to eql('{')
-        expect(table.close_paren).to eql('}')
+        expect(table.open_paren).to eq(Plurimath::Math::Symbols::Paren::Lcurly.new)
+        expect(table.close_paren).to eq(Plurimath::Math::Symbols::Paren::Rcurly.new)
         expect(table.options).to eql({})
       end
     end
@@ -28,10 +28,10 @@ RSpec.describe Plurimath::Math::Function::Table do
       let(:first_value) do
         Plurimath::Math::Function::Tr.new([
           Plurimath::Math::Function::Td.new([
-            Plurimath::Math::Symbol.new("&#x3ba;"),
+            Plurimath::Math::Symbols::Kappa.new,
           ]),
           Plurimath::Math::Function::Td.new([
-            Plurimath::Math::Symbol.new("n"),
+            Plurimath::Math::Symbols::Symbol.new("n"),
           ])
         ])
       end
@@ -45,7 +45,7 @@ RSpec.describe Plurimath::Math::Function::Table do
       let(:first_value) do
         Plurimath::Math::Function::Tr.new([
           Plurimath::Math::Function::Td.new([
-            Plurimath::Math::Symbol.new("&#x3ba;"),
+            Plurimath::Math::Symbols::Kappa.new,
           ])
         ])
       end
@@ -59,12 +59,12 @@ RSpec.describe Plurimath::Math::Function::Table do
       let(:first_value) do
         Plurimath::Math::Function::Tr.new([
           Plurimath::Math::Function::Td.new([
-            Plurimath::Math::Symbol.new("&#x3ba;"),
+            Plurimath::Math::Symbols::Kappa.new,
           ]),
           Plurimath::Math::Function::Td.new([
             Plurimath::Math::Formula.new([
               Plurimath::Math::Function::Sum.new(
-                Plurimath::Math::Symbol.new("&"),
+                Plurimath::Math::Symbols::Ampersand.new,
                 Plurimath::Math::Function::Text.new("so"),
               )
             ])
@@ -91,7 +91,7 @@ RSpec.describe Plurimath::Math::Function::Table do
       let(:first_value) do
         Plurimath::Math::Function::Tr.new([
           Plurimath::Math::Function::Td.new([
-            Plurimath::Math::Symbol.new("&#x3ba;"),
+            Plurimath::Math::Symbols::Kappa.new,
           ]),
         ])
       end
@@ -114,7 +114,7 @@ RSpec.describe Plurimath::Math::Function::Table do
       let(:first_value) do
         Plurimath::Math::Function::Tr.new([
           Plurimath::Math::Function::Td.new([
-            Plurimath::Math::Symbol.new("&#x3ba;"),
+            Plurimath::Math::Symbols::Kappa.new,
             Plurimath::Math::Number.new("70"),
           ]),
         ])
@@ -139,12 +139,12 @@ RSpec.describe Plurimath::Math::Function::Table do
       let(:first_value) do
         Plurimath::Math::Function::Tr.new([
           Plurimath::Math::Function::Td.new([
-            Plurimath::Math::Symbol.new("&#x3ba;"),
+            Plurimath::Math::Symbols::Kappa.new,
           ]),
           Plurimath::Math::Function::Td.new([
             Plurimath::Math::Formula.new([
               Plurimath::Math::Function::Sum.new(
-                Plurimath::Math::Symbol.new("&"),
+                Plurimath::Math::Symbols::Ampersand.new,
                 Plurimath::Math::Function::Text.new("so"),
               )
             ])
@@ -163,7 +163,7 @@ RSpec.describe Plurimath::Math::Function::Table do
                 <mrow>
                   <munderover>
                     <mo>&#x2211;</mo>
-                    <mo>&#x26;</mo>
+                    <mo>&</mo>
                     <mtext>so</mtext>
                   </munderover>
                 </mrow>
@@ -183,7 +183,7 @@ RSpec.describe Plurimath::Math::Function::Table do
       let(:first_value) do
         Plurimath::Math::Function::Tr.new([
           Plurimath::Math::Function::Td.new([
-            Plurimath::Math::Symbol.new("&#x3ba;"),
+            Plurimath::Math::Symbols::Kappa.new,
           ]),
         ])
       end
@@ -197,7 +197,7 @@ RSpec.describe Plurimath::Math::Function::Table do
       let(:first_value) do
         Plurimath::Math::Function::Tr.new([
           Plurimath::Math::Function::Td.new([
-            Plurimath::Math::Symbol.new("&#x3ba;"),
+            Plurimath::Math::Symbols::Kappa.new,
             Plurimath::Math::Number.new("70"),
           ]),
         ])
@@ -212,12 +212,12 @@ RSpec.describe Plurimath::Math::Function::Table do
       let(:first_value) do
         Plurimath::Math::Function::Tr.new([
           Plurimath::Math::Function::Td.new([
-            Plurimath::Math::Symbol.new("&#x3ba;"),
+            Plurimath::Math::Symbols::Kappa.new,
           ]),
           Plurimath::Math::Function::Td.new([
             Plurimath::Math::Formula.new([
               Plurimath::Math::Function::Sum.new(
-                Plurimath::Math::Symbol.new("&"),
+                Plurimath::Math::Symbols::Ampersand.new,
                 Plurimath::Math::Function::Text.new("so"),
               )
             ])
@@ -225,7 +225,7 @@ RSpec.describe Plurimath::Math::Function::Table do
         ])
       end
       it "returns mathml string" do
-        expect(formula).to eql("\\left .\\begin{matrix}{aa}\\kappa & \\sum_{&}^{\\text{so}}\\end{matrix}\\right .")
+        expect(formula).to eql("\\left .\\begin{matrix}{aa}\\kappa & \\sum_{\\&}^{\\text{so}}\\end{matrix}\\right .")
       end
     end
   end
@@ -237,12 +237,12 @@ RSpec.describe Plurimath::Math::Function::Table do
       let(:first_value) do
         Plurimath::Math::Function::Tr.new([
           Plurimath::Math::Function::Td.new([
-            Plurimath::Math::Symbol.new("&#x3ba;"),
+            Plurimath::Math::Symbols::Kappa.new,
           ]),
           Plurimath::Math::Function::Td.new([
             Plurimath::Math::Formula.new([
               Plurimath::Math::Function::Sum.new(
-                Plurimath::Math::Symbol.new("&"),
+                Plurimath::Math::Symbols::Ampersand.new,
                 Plurimath::Math::Function::Text.new("so"),
               )
             ])
@@ -271,7 +271,7 @@ RSpec.describe Plurimath::Math::Function::Table do
       let(:first_value) do
         Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Sum.new(
-            Plurimath::Math::Symbol.new("&"),
+            Plurimath::Math::Symbols::Ampersand.new,
             Plurimath::Math::Function::Text.new("so"),
           )
         ])

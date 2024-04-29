@@ -39,16 +39,16 @@ module Plurimath
         end
 
         def to_html
-          first_value  = "<i>#{parameter_one.value}</i>" if parameter_one
+          first_value  = "<i>#{symbol_or_paren(parameter_one, lang: :html)}</i>" if parameter_one
           second_value = parameter_two.map(&:to_html).join if parameter_two
-          third_value  = "<i>#{parameter_three.value}</i>" if parameter_three
+          third_value  = "<i>#{symbol_or_paren(parameter_three, lang: :html)}</i>" if parameter_three
           "#{first_value}#{second_value}#{third_value}"
         end
 
         def to_latex
           fenced_value = parameter_two&.map(&:to_latex)&.join(" ")
-          first_value  = latex_paren(parameter_one&.value)
-          second_value = latex_paren(parameter_three&.value)
+          first_value  = latex_paren(symbol_or_paren(parameter_one, lang: :latex))
+          second_value = latex_paren(symbol_or_paren(parameter_three, lang: :latex))
           "#{first_value} #{fenced_value} #{second_value}"
         end
 
@@ -83,34 +83,34 @@ module Plurimath
           end&.join(" ")
           return fenced_value if choose_frac?(parameter_two.first)
 
-          fenced_value = "(#{fenced_value})" if parameter_one&.value&.include?("|")
+          fenced_value = "(#{fenced_value})" if vert_paren?
 
           "#{unicode_open_paren}#{fenced_value}#{unicode_close_paren}"
         end
 
         def to_asciimath_math_zone(spacing, last = false, indent = true)
-          filtered_values(parameter_two).map.with_index(1) do |object, index|
+          filtered_values(parameter_two, lang: :asciimath).map.with_index(1) do |object, index|
             last = index == @values.length
             object.to_asciimath_math_zone(spacing, last, indent)
           end
         end
 
         def to_latex_math_zone(spacing, last = false, indent = true)
-          filtered_values(parameter_two).map.with_index(1) do |object, index|
+          filtered_values(parameter_two, lang: :latex).map.with_index(1) do |object, index|
             last = index == @values.length
             object.to_latex_math_zone(spacing, last, indent)
           end
         end
 
         def to_mathml_math_zone(spacing, last = false, indent = true)
-          filtered_values(parameter_two).map.with_index(1) do |object, index|
+          filtered_values(parameter_two, lang: :mathml).map.with_index(1) do |object, index|
             last = index == @values.length
             object.to_mathml_math_zone(spacing, last, indent)
           end
         end
 
         def to_omml_math_zone(spacing, last = false, indent = true, display_style:)
-          filtered_values(parameter_two).map do |object|
+          filtered_values(parameter_two, lang: :omml).map do |object|
             object.to_omml_math_zone(spacing, last, !indent, display_style: display_style)
           end
         end
@@ -136,10 +136,10 @@ module Plurimath
         protected
 
         def open_paren(dpr)
-          first_value = parameter_one&.value
-          return dpr if first_value.nil? || first_value.empty?
+          first_value = symbol_or_paren(parameter_one, lang: :omml)
+          return dpr if first_value.nil?
 
-          attributes = { "m:val": first_value }
+          attributes = { "m:val": Utility.html_entity_to_unicode(first_value) }
           dpr << Utility.ox_element(
             "begChr",
             namespace: "m",
@@ -148,10 +148,10 @@ module Plurimath
         end
 
         def close_paren(dpr)
-          third_value = parameter_three&.value
-          return dpr if third_value.nil? || third_value.empty?
+          third_value = symbol_or_paren(parameter_three, lang: :omml)
+          return dpr if third_value.nil?
 
-          attributes = { "m:val": third_value }
+          attributes = { "m:val": Utility.html_entity_to_unicode(third_value) }
           dpr << Utility.ox_element(
             "endChr",
             namespace: "m",
@@ -160,19 +160,16 @@ module Plurimath
         end
 
         def latex_paren(paren)
-          return "" if paren.nil? || paren.empty?
+          return "" if paren.nil?
           return paren.gsub(":", "") if paren.include?(":") && ["{:", ":}"].include?(paren)
 
-          paren = %w[{ }].include?(paren) ? "\\#{paren}" : paren
-          paren = "\\#{Latex::Constants::UNICODE_SYMBOLS.invert[paren]}" if paren&.to_s&.match?(/&#x.{0,4};/)
-          paren&.to_s
+          paren
         end
 
         def mathml_paren(field)
           unicodemath_syntax = ["&#x3016;", "&#x3017;", "&#x2524;", "&#x251c;"]
-          return "" if field&.value&.include?(":") || unicodemath_syntax.include?(field&.value&.to_s)
-
-          field&.value
+          paren = symbol_or_paren(field, lang: :mathml)
+          (paren&.include?(":") || unicodemath_syntax.include?(paren)) ? "" : paren
         end
 
         def value_split(obj, field_value)
@@ -222,6 +219,25 @@ module Plurimath
           parameter_three&.value&.include?("&#x2524;") ||
             parameter_three&.value&.include?("&#x3017;") ||
             parameter_three&.value&.include?(":}")
+        end
+
+        def vert_paren?
+          return parameter_one&.value&.include?("|") if parameter_one.class_name == "symbol"
+
+          parameter_one.is_a?(Math::Symbols::Paren::Vert)
+        end
+
+        def symbol_or_paren(field, lang:)
+          return field&.value unless field.is_a?(Math::Symbols::Paren)
+
+          case lang
+          when :mathml, :html
+            field.to_mathml_without_math_tag.nodes.first
+          when :latex
+            field.to_latex
+          when :omml
+            field.to_omml_without_math_tag(true)
+          end
         end
       end
     end

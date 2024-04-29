@@ -5,7 +5,7 @@ module Plurimath
     class Transform < Parslet::Transform
       rule(mi: simple(:mi))         { mi }
       rule(mo: simple(:mo))         { mo }
-      rule(mo: sequence(:mo))       { Utility.mathml_unary_classes(mo) }
+      rule(mo: sequence(:mo))       { Utility.mathml_unary_classes(mo, lang: :mathml) }
       rule(mtd: sequence(:mtd))     { Math::Function::Td.new(mtd) }
       rule(mtr: sequence(:mtr))     { Math::Function::Tr.new(mtr) }
       rule(math: subtree(:math))    { math.flatten.compact }
@@ -49,17 +49,19 @@ module Plurimath
       end
 
       rule(mi: sequence(:mi)) do
-        mi.any?(String) ? Utility.mathml_unary_classes(mi) : mi
+        mi.any?(String) ? Utility.mathml_unary_classes(mi, lang: :mathml) : mi
       end
 
       rule(open: simple(:lparen)) do
-        Math::Function::Fenced.new(Math::Symbol.new(lparen))
+        Math::Function::Fenced.new(
+          Utility.symbols_class(lparen, lang: :mathml),
+        )
       end
 
       rule(msgroup: sequence(:group)) do
         if group.any?(String)
           group.each_with_index do |object, ind|
-            group[ind] = Utility.text_classes(object) if object.is_a?(String)
+            group[ind] = Utility.text_classes(object, lang: :mathml) if object.is_a?(String)
           end
         end
         Math::Function::Msgroup.new(group.flatten.compact)
@@ -184,7 +186,7 @@ module Plurimath
       end
 
       rule(mrow: subtree(:mrow)) do
-        flatten_mrow = Utility.populate_function_classes(mrow)
+        flatten_mrow = Utility.populate_function_classes(mrow, lang: :mathml)
         Utility.fenceable_classes(flatten_mrow)
         if flatten_mrow.length == 1
           flatten_mrow.first
@@ -253,7 +255,7 @@ module Plurimath
           munder.each_with_index do |object, ind|
             next unless object.is_a?(String)
 
-            munder[ind] = Utility.mathml_unary_classes([object])
+            munder[ind] = Utility.mathml_unary_classes([object], lang: :mathml)
           end
         end
         if munder.length == 1
@@ -302,9 +304,9 @@ module Plurimath
 
       rule(mfenced: sequence(:fenced)) do
         Math::Function::Fenced.new(
-          Math::Symbol.new("("),
+          Math::Symbols::Paren::Lround.new,
           fenced.compact,
-          Math::Symbol.new(")"),
+          Math::Symbols::Paren::Rround.new,
         )
       end
 
@@ -327,9 +329,9 @@ module Plurimath
       rule(open: simple(:lparen),
            close: simple(:rparen)) do
         Math::Function::Fenced.new(
-          Math::Symbol.new(lparen),
+          Utility.symbols_class(lparen, lang: :mathml),
           nil,
-          Math::Symbol.new(rparen),
+          Utility.symbols_class(rparen, lang: :mathml),
         )
       end
 

@@ -50,8 +50,8 @@ module Plurimath
         end
 
         def to_unicodemath
-          return "#{unicodemath_parens(parameter_two)}#{parameter_one.value}" if unicode_accent?(parameter_one)
-          return "#{parameter_one.value}#{parameter_two.to_unicodemath}" if unicode_accent?(parameter_two)
+          return "#{unicodemath_parens(parameter_two)}#{unicodemath_field_value(parameter_one)}" if unicode_accent?(parameter_one)
+          return "#{unicodemath_field_value(parameter_one)}#{parameter_two.to_unicodemath}" if unicode_accent?(parameter_two)
           return "#{parameter_one.to_unicodemath}#{unicodemath_parens(parameter_two)}" if horizontal_brackets?
           return "#{parameter_two.to_unicodemath}^#{unicodemath_parens(parameter_one)}" if unicode_classes_accent?(parameter_two)
 
@@ -77,20 +77,25 @@ module Plurimath
         protected
 
         def unicode_accent?(field)
-          field.is_a?(Math::Symbol) &&
-            (
-              UnicodeMath::Constants::DIACRITIC_OVERLAYS.include?(field.value) ||
-                UnicodeMath::Constants::ACCENT_SYMBOLS.has_value?(field.value)
-            )
+          return unless field.is_a?(Math::Symbols::Symbol)
+
+          match_unicode?(unicodemath_field_value(field))
         end
 
         def unicode_classes_accent?(field)
-          (field.is_a?(Math::Function::Obrace) || field.is_a?(Math::Function::Ubrace))
+          field.is_a?(Math::Function::Obrace) ||
+            field.is_a?(Math::Function::Ubrace)
         end
 
         def horizontal_brackets?
-          parameter_one.is_a?(Math::Symbol) &&
-            UnicodeMath::Constants::HORIZONTAL_BRACKETS.value?(parameter_one.value)
+          return unless parameter_one.is_a?(Math::Symbols::Symbol)
+
+          UnicodeMath::Constants::HORIZONTAL_BRACKETS.value?(unicodemath_field_value(parameter_one))
+        end
+
+        def match_unicode?(unicode)
+          UnicodeMath::Constants::DIACRITIC_OVERLAYS.include?(unicode) ||
+            UnicodeMath::Constants::ACCENT_SYMBOLS.has_value?(unicode)
         end
       end
     end

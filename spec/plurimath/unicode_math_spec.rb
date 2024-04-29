@@ -85,30 +85,21 @@ RSpec.describe Plurimath::UnicodeMath do
       let(:asciimath_string) { 'ubrace_d^2 bigwedge_2^d 1 mod 3' }
 
       it 'matches parsed Asciimath string to UnicodeMath' do
-        unicodemath = '⏟_(d)^(2) ⋀_(2)^(d) 1mod3'
+        unicodemath = '⏟(\\_) d^(2) ⋀_(2)^(d) 1mod3'
         expect(string).to eq(unicodemath)
       end
     end
 
-    context "contains example #09" do
+    context "contains example #9" do
       let(:asciimath_string) { '[(cos{:y_2:},sin y_2),(-(sin y_2)//y_1,(cos y_2)//y_1)] .' }
 
       it 'matches parsed Asciimath string to UnicodeMath' do
-        unicodemath = 'ⓢ(cos⁡├y_(2)┤&sin⁡y_(2)@-(sin⁡y_(2))/y_(1)&(cos⁡y_(2))/y_(1)) .'
+        unicodemath = 'ⓢ(cos⁡〖y_(2)〗&sin⁡y_(2)@−(sin⁡y_(2))/y_(1)&(cos⁡y_(2))/y_(1)) .'
         expect(string).to eq(unicodemath)
       end
     end
 
     context "contains example #10" do
-      let(:asciimath_string) { '[(cos{:y_2:},sin y_2),(-(sin y_2)//y_1,(cos y_2)//y_1)] .' }
-
-      it 'matches parsed Asciimath string to UnicodeMath' do
-        unicodemath = 'ⓢ(cos⁡├y_(2)┤&sin⁡y_(2)@-(sin⁡y_(2))/y_(1)&(cos⁡y_(2))/y_(1)) .'
-        expect(string).to eq(unicodemath)
-      end
-    end
-
-    context "contains example #11" do
       let(:asciimath_string) { 'stackrel(70)(n)' }
 
       it 'matches parsed Asciimath string to UnicodeMath' do

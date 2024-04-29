@@ -18,7 +18,7 @@ RSpec.describe Plurimath::Math::Function::BinaryFunction do
 
     context "contains a symbol and sum fuction" do
       let(:first_value) { Plurimath::Math::Function::Sum.new }
-      let(:second_value) { Plurimath::Math::Symbol.new("theta") }
+      let(:second_value) { Plurimath::Math::Symbols::Symbol.new("theta") }
       it "returns asciimath string" do
         expect(formula.to_asciimath).to eq("binaryfunction(sum)(theta)")
       end
@@ -30,10 +30,10 @@ RSpec.describe Plurimath::Math::Function::BinaryFunction do
 
     context "contains a symbol and sum fuction" do
       let(:first_value) { Plurimath::Math::Function::Sum.new }
-      let(:second_value) { Plurimath::Math::Symbol.new("theta") }
+      let(:second_value) { Plurimath::Math::Symbols::Symbol.new("theta") }
       expected_value = Plurimath::Math::Function::BinaryFunction.new(
                         Plurimath::Math::Function::Sum.new,
-                        Plurimath::Math::Symbol.new("theta")
+                        Plurimath::Math::Symbols::Symbol.new("theta")
                       )
       it "returns true" do
         expect(formula == expected_value ).to be_truthy
@@ -42,10 +42,10 @@ RSpec.describe Plurimath::Math::Function::BinaryFunction do
 
     context "contains a symbol only" do
       let(:first_value) { nil }
-      let(:second_value) { Plurimath::Math::Symbol.new("theta") }
+      let(:second_value) { Plurimath::Math::Symbols::Symbol.new("theta") }
       expected_value = Plurimath::Math::Function::BinaryFunction.new(
                         nil,
-                        Plurimath::Math::Symbol.new("theta")
+                        Plurimath::Math::Symbols::Symbol.new("theta")
                       )
       it "returns true" do
         expect(formula == expected_value ).to be_truthy
@@ -66,10 +66,10 @@ RSpec.describe Plurimath::Math::Function::BinaryFunction do
 
     context "contains a symbol and sum fuction" do
       let(:first_value) { Plurimath::Math::Function::Sum.new }
-      let(:second_value) { Plurimath::Math::Symbol.new("theta") }
+      let(:second_value) { Plurimath::Math::Symbols::Symbol.new("theta") }
       expected_value = Plurimath::Math::Function::BinaryFunction.new(
                         nil,
-                        Plurimath::Math::Symbol.new("theta")
+                        Plurimath::Math::Symbols::Symbol.new("theta")
                       )
       it "returns false" do
         expect(formula == expected_value ).to be_falsey
@@ -78,10 +78,10 @@ RSpec.describe Plurimath::Math::Function::BinaryFunction do
 
     context "contains a prod and symbol fuction" do
       let(:first_value) { Plurimath::Math::Function::Sum.new }
-      let(:second_value) { Plurimath::Math::Symbol.new("theta") }
+      let(:second_value) { Plurimath::Math::Symbols::Symbol.new("theta") }
       expected_value = Plurimath::Math::Function::BinaryFunction.new(
                         Plurimath::Math::Function::Prod.new,
-                        Plurimath::Math::Symbol.new("theta")
+                        Plurimath::Math::Symbols::Symbol.new("theta")
                       )
       it "returns false" do
         expect(formula == expected_value ).to be_falsey

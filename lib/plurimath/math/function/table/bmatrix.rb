@@ -41,7 +41,7 @@ module Plurimath
           private
 
           def matrix_symbol
-            open_paren == "{" ? "Ⓢ" : "ⓢ"
+            open_paren.is_a?(Math::Symbols::Paren::Lcurly) ? "Ⓢ" : "ⓢ"
           end
         end
       end

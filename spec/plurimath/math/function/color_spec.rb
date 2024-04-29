@@ -19,8 +19,8 @@ RSpec.describe Plurimath::Math::Function::Color do
     subject(:formula) { described_class.new(first_value, second_value).to_asciimath }
 
     context "contains Symbol as value" do
-      let(:first_value) { Plurimath::Math::Symbol.new("red") }
-      let(:second_value) { Plurimath::Math::Symbol.new("n") }
+      let(:first_value) { Plurimath::Math::Symbols::Symbol.new("red") }
+      let(:second_value) { Plurimath::Math::Symbols::Symbol.new("n") }
 
       it "returns asciimath string" do
         expect(formula).to eq("color(red)(n)")
@@ -41,7 +41,7 @@ RSpec.describe Plurimath::Math::Function::Color do
       let(:second_value) do
         Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Sum.new(
-            Plurimath::Math::Symbol.new("&"),
+            Plurimath::Math::Symbols::Ampersand.new,
             Plurimath::Math::Function::Text.new("so"),
           )
         ])
@@ -63,7 +63,7 @@ RSpec.describe Plurimath::Math::Function::Color do
 
     context "contains Symbol as value" do
       let(:first_value) { Plurimath::Math::Function::Text.new("red") }
-      let(:second_value) { Plurimath::Math::Symbol.new("n") }
+      let(:second_value) { Plurimath::Math::Symbols::Symbol.new("n") }
 
       it "returns mathml string" do
         expected_value = <<~MATHML
@@ -94,7 +94,7 @@ RSpec.describe Plurimath::Math::Function::Color do
       let(:second_value) do
         Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Sum.new(
-            Plurimath::Math::Symbol.new("&"),
+            Plurimath::Math::Symbols::Ampersand.new,
             Plurimath::Math::Function::Text.new("so"),
           )
         ])
@@ -105,7 +105,7 @@ RSpec.describe Plurimath::Math::Function::Color do
             <mrow>
               <munderover>
                 <mo>&#x2211;</mo>
-                <mo>&#x26;</mo>
+                <mo>&</mo>
                 <mtext>so</mtext>
               </munderover>
             </mrow>
@@ -121,7 +121,7 @@ RSpec.describe Plurimath::Math::Function::Color do
 
     context "contains Symbol as value" do
       let(:first_value) { Plurimath::Math::Function::Text.new("nas") }
-      let(:second_value) { Plurimath::Math::Symbol.new("n") }
+      let(:second_value) { Plurimath::Math::Symbols::Symbol.new("n") }
 
       it "returns mathml string" do
         expect(formula).to eql("{\\color{\"nas\"} n}")
@@ -129,7 +129,7 @@ RSpec.describe Plurimath::Math::Function::Color do
     end
 
     context "contains Number as value" do
-      let(:first_value) { Plurimath::Math::Symbol.new("pink") }
+      let(:first_value) { Plurimath::Math::Symbols::Symbol.new("pink") }
       let(:second_value) { Plurimath::Math::Number.new("70") }
 
       it "returns mathml string" do
@@ -138,17 +138,17 @@ RSpec.describe Plurimath::Math::Function::Color do
     end
 
     context "contains Formula as value" do
-      let(:first_value) { Plurimath::Math::Symbol.new("red") }
+      let(:first_value) { Plurimath::Math::Symbols::Symbol.new("red") }
       let(:second_value) do
         Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Sum.new(
-            Plurimath::Math::Symbol.new("&"),
+            Plurimath::Math::Symbols::Ampersand.new,
             Plurimath::Math::Function::Text.new("so"),
           )
         ])
       end
       it "returns mathml string" do
-        expect(formula).to eql("{\\color{red} \\sum_{&}^{\\text{so}}}")
+        expect(formula).to eql("{\\color{red} \\sum_{\\&}^{\\text{so}}}")
       end
     end
   end
@@ -158,7 +158,7 @@ RSpec.describe Plurimath::Math::Function::Color do
 
     context "contains Symbol as value" do
       let(:first_value) { Plurimath::Math::Function::Text.new("nas") }
-      let(:second_value) { Plurimath::Math::Symbol.new("n") }
+      let(:second_value) { Plurimath::Math::Symbols::Symbol.new("n") }
 
       it "returns mathml string" do
         expect(formula).to eql("<i>nas</i><i>n</i>")
@@ -179,7 +179,7 @@ RSpec.describe Plurimath::Math::Function::Color do
       let(:second_value) do
         Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Sum.new(
-            Plurimath::Math::Symbol.new("&"),
+            Plurimath::Math::Symbols::Ampersand.new,
             Plurimath::Math::Function::Text.new("so"),
           )
         ])

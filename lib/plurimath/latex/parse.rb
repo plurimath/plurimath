@@ -43,11 +43,11 @@ module Plurimath
       end
 
       rule(:lparen) do
-        arr_to_expression(Constants::PARENTHESIS.keys, :lparen)
+        arr_to_expression(Constants.parenthesis.keys, :lparen)
       end
 
       rule(:rparen) do
-        arr_to_expression(Constants::PARENTHESIS.values, :rparen)
+        arr_to_expression(Constants.parenthesis.values.flatten, :rparen)
       end
 
       rule(:left_parens) do
@@ -86,7 +86,7 @@ module Plurimath
 
       rule(:symbol_class_commands) do
         (str("&#x") >> match["0-9a-fA-F"].repeat >> str(";")).as(:unicode_symbols) |
-          hash_to_expression(Constants::SYMBOLS) |
+          hash_to_expression(Constants.symbols_constants) |
           under_over |
           environment |
           numeric_values
@@ -94,7 +94,7 @@ module Plurimath
 
       rule(:symbol_text_or_integer) do
         str('"').as(:symbol) |
-          symbol_class_commands |
+          rparen.absent? >> symbol_class_commands |
           (slash >> math_operators_classes) |
           match["a-zA-Z"].as(:symbols) |
           match(/\d+(\.[0-9]+)|\d/).repeat(1).as(:number) |
@@ -104,7 +104,7 @@ module Plurimath
       end
 
       rule(:intermediate_exp) do
-        (lparen.as(:left_paren) >> expression.maybe.as(:expression) >> (rparen | (str("\\") >> (match("\s") >> str(".")).maybe).as(:rparen)).maybe.as(:right_paren)).as(:intermediate_exp) |
+        (lparen.as(:left_paren) >> expression.maybe.as(:expression) >> (rparen | (slash >> (match("\s").maybe >> str(".")).maybe).as(:rparen)).maybe.as(:right_paren)).as(:intermediate_exp) |
           (str("{") >> expression.maybe.as(:expression) >> str("}")) |
           symbol_text_or_integer
       end
@@ -127,7 +127,7 @@ module Plurimath
         (intermediate_exp.as(:first_value) >> under_over >> intermediate_exp.as(:second_value)).as(:under_over) |
           (slash >> str("sqrt").as(:root) >> sqrt_arg.as(:first_value) >> intermediate_exp.as(:second_value)).as(:binary) |
           (slash >> str("sqrt").as(:sqrt) >> intermediate_exp.as(:intermediate_exp)).as(:binary) |
-          (color_rules)
+          color_rules
       end
 
       rule(:sequence) do

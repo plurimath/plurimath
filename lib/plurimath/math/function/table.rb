@@ -13,8 +13,8 @@ module Plurimath
                        close_paren = nil,
                        options = {})
           @value = value
-          @open_paren = open_paren
-          @close_paren = close_paren
+          @open_paren = Utility.symbols_class(open_paren, lang: :unicodemath)
+          @close_paren = Utility.symbols_class(close_paren, lang: :unicodemath)
           @options = options
         end
 
@@ -31,9 +31,8 @@ module Plurimath
 
           parenthesis = Asciimath::Constants::TABLE_PARENTHESIS
           first_value = value.map(&:to_asciimath).join(", ")
-          third_value = close_paren.is_a?(::Array) || close_paren.nil?
-          lparen = open_paren.nil? ? "[" : open_paren
-          rparen = third_value ? parenthesis[lparen.to_sym] : close_paren
+          lparen = open_paren.nil? ? "[" : open_paren.to_asciimath
+          rparen = close_paren.nil? ? parenthesis[lparen.to_sym] : close_paren.to_asciimath
           "#{lparen}#{first_value}#{rparen}"
         end
 
@@ -43,9 +42,9 @@ module Plurimath
             table_tag,
             value&.map(&:to_mathml_without_math_tag),
           )
-          return norm_table(table_tag) if open_paren == "norm["
+          return norm_table(table_tag) if open_paren.is_a?(Math::Symbols::Paren::Norm)
 
-          if present?(open_paren) || present?(close_paren)
+          if mathml_paren_present?(open_paren) || mathml_paren_present?(close_paren)
             first_paren = mo_element(mathml_parenthesis(open_paren))
             second_paren = mo_element(mathml_parenthesis(close_paren))
             mrow_tag = Utility.ox_element("mrow")
@@ -56,13 +55,13 @@ module Plurimath
         end
 
         def to_latex
-          return "\\begin{Vmatrix}#{latex_content}\\end{Vmatrix}" if open_paren == "norm["
+          return "\\begin{Vmatrix}#{latex_content}\\end{Vmatrix}" if open_paren.is_a?(Math::Symbols::Paren::Norm)
 
           separator = "{#{table_attribute(:latex)}}" if environment&.include?("array")
-          left_paren = latex_parenthesis(open_paren)
-          right_paren = latex_parenthesis(close_paren)
+          left_paren = open_paren&.to_latex || "."
+          right_paren = close_paren&.to_latex || "."
           left = "\\left #{left_paren}\\begin{matrix}"
-          right = "\\end{matrix}\\right #{right_paren}"
+          right = "\\end{matrix}\\right #{right_paren.delete_prefix("\\right")}"
           "#{left}#{separator}#{latex_content}#{right}"
         end
 
@@ -84,7 +83,7 @@ module Plurimath
           if unicodemath_table_class?
             "#{unicodemath_class_name}(#{value.map(&:to_unicodemath).join("@")})"
           else
-            "#{open_paren}■(#{value.map(&:to_unicodemath).join("@")})#{close_paren}"
+            "#{open_paren&.to_unicodemath}■(#{value.map(&:to_unicodemath).join("@")})#{close_paren&.to_unicodemath}"
           end
         end
 
@@ -118,23 +117,12 @@ module Plurimath
 
         protected
 
-        def present?(field)
-          !(field.nil? || field.empty?)
-        end
-
         def mathml_parenthesis(field)
-          return "" if field&.include?(":") || validate_paren(field)
+          return "" unless field
+          return field&.to_mathml_without_math_tag&.nodes&.first if field&.class_name == "symbol"
 
-          present?(field) ? field : ""
-        end
-
-        def latex_parenthesis(field)
-          return "." unless field
-          return " ." if field&.include?(":")
-
-          return "\\#{field}" if ["{", "}"].include?(field)
-
-          field
+          paren = field&.respond_to?(:encoded) ? field&.encoded : field&.paren_value
+          invisible_paren?(paren) ? "" : paren
         end
 
         def table_attribute(type = :mathml)
@@ -144,7 +132,7 @@ module Plurimath
             mathml_attrs(column_string)
           when :latex
             column_string.insert(0, "none") if column_string.include?("solid")
-            column_string&.map { |d| d == "solid" ? "|" : "a" }&.join
+            column_string&.map { |str| str == "solid" ? "|" : "a" }&.join
           end
         end
 
@@ -163,7 +151,7 @@ module Plurimath
         def mathml_attrs(column_strings)
           args = options&.dup&.reject { |arg| arg.to_s == "asterisk" }
           args[:columnlines] = column_strings.join(" ") if column_strings.include?("solid")
-          args[:columnalign] = "left" if close_paren&.include?(":}")
+          args[:columnalign] = "left" if close_paren.is_a?(Math::Symbols::Paren::CloseParen)
           args
         end
 
@@ -173,7 +161,7 @@ module Plurimath
 
         def matrix_class
           matrix = if open_paren
-                     Latex::Constants::MATRICES.invert[open_paren]
+                     Latex::Constants::MATRICES.invert[open_paren.to_matrices]
                    else
                      class_name
                    end
@@ -283,9 +271,7 @@ module Plurimath
         end
 
         def paren(parenthesis)
-          return "" if ["{:", ":}"].include?(parenthesis)
-
-          parenthesis
+          parenthesis.to_omml_without_math_tag(true)
         end
 
         def parentheless_table
@@ -305,7 +291,7 @@ module Plurimath
             options[option] == "none"
         end
 
-        def validate_paren(paren)
+        def invisible_paren?(paren)
           ["&#x3016;", "&#x3017;"].include?(paren)
         end
 
@@ -317,23 +303,29 @@ module Plurimath
           return unless class_name == "table"
           return if open_paren.nil? && close_paren.nil?
 
-          (!(open_paren.nil? || open_paren.empty?) && !(close_paren.nil? || close_paren.empty?)) ||
-            Utility::PARENTHESIS[open_paren&.to_sym] == close_paren ||
-            (open_paren.include?("|") && close_paren.include?("|"))
+          (!open_paren.nil? && !close_paren.nil?) ||
+            Utility::PARENTHESIS[unicodemath_field_value(open_paren)] == close_paren ||
+            [open_paren, close_paren].all?(Math::Symbols::Paren::Vert)
         end
 
         def unicodemath_class_name
-          return matrices_functions(:Vmatrix) if class_name == "vmatrix" && open_paren == "norm["
-          return matrices_functions(:vmatrix) if open_paren == "|" && close_paren == "|"
-          return matrices_functions(:matrix) if class_name == "Bmatrix" && open_paren == "{"
+          return matrices_functions(:Vmatrix) if class_name == "vmatrix" && open_paren&.class_name&.is_a?(Math::Symbols::Paren::Norm)
+          return matrices_functions(:vmatrix) if [open_paren, close_paren].all?(Math::Symbols::Paren::Vert)
+          return matrices_functions(:matrix) if class_name == "Bmatrix" && open_paren == Math::Symbols::Paren::Lcurly
           return unless unicodemath_table_class?
 
-          matrix_name = UnicodeMath::Constants::PARENTHESIS_MATRICES.key(open_paren)
+          matrix_name = UnicodeMath::Constants::PARENTHESIS_MATRICES.key(open_paren.to_unicodemath)
           matrices_functions(matrix_name)
         end
 
         def matrices_functions(matrix_name)
           UnicodeMath::Constants::MATRIXS[matrix_name]
+        end
+
+        def mathml_paren_present?(paren)
+          return unless paren || paren&.class_name == "symbol"
+
+          !paren&.to_mathml_without_math_tag&.nodes&.first&.empty?
         end
       end
     end

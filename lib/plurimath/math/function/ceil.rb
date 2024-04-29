@@ -20,8 +20,8 @@ module Plurimath
         end
 
         def to_omml_without_math_tag(display_style)
-          lceil = Symbol.new("⌈") unless open_paren
-          rceil = Symbol.new("⌉") unless close_paren
+          lceil = Symbols::Symbol.new("⌈") unless open_paren
+          rceil = Symbols::Symbol.new("⌉") unless close_paren
           fenced = Fenced.new(lceil, Array(parameter_one), rceil)
           Array(fenced.to_omml_without_math_tag(display_style))
         end

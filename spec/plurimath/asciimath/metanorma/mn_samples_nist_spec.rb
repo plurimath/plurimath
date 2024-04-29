@@ -11,7 +11,7 @@ RSpec.describe Plurimath::Asciimath::Parser do
       let(:string) { "α" }
       it "returns formula" do
         expected_value = Plurimath::Math::Formula.new([
-          Plurimath::Math::Symbol.new("α"),
+          Plurimath::Math::Symbols::Symbol.new("α"),
         ])
         expect(formula).to eq(expected_value)
       end
@@ -21,9 +21,9 @@ RSpec.describe Plurimath::Asciimath::Parser do
       let(:string) { "L − p" }
       it "returns formula" do
         expected_value = Plurimath::Math::Formula.new([
-          Plurimath::Math::Symbol.new("L"),
-          Plurimath::Math::Symbol.new("−"),
-          Plurimath::Math::Symbol.new("p"),
+          Plurimath::Math::Symbols::Symbol.new("L"),
+          Plurimath::Math::Symbols::Symbol.new("−"),
+          Plurimath::Math::Symbols::Symbol.new("p"),
         ])
         expect(formula).to eq(expected_value)
       end
@@ -34,10 +34,10 @@ RSpec.describe Plurimath::Asciimath::Parser do
       it "returns formula" do
         expected_value = Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Base.new(
-            Plurimath::Math::Symbol.new("x"),
+            Plurimath::Math::Symbols::Symbol.new("x"),
             Plurimath::Math::Number.new("50")
           ),
-          Plurimath::Math::Symbol.new(")")
+          Plurimath::Math::Symbols::Paren::Rround.new
         ])
         expect(formula).to eq(expected_value)
       end
@@ -48,18 +48,18 @@ RSpec.describe Plurimath::Asciimath::Parser do
       it "returns formula" do
         expected_value = Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Fenced.new(
-            Plurimath::Math::Symbol.new("("),
+            Plurimath::Math::Symbols::Paren::Lround.new,
             [
               Plurimath::Math::Function::Text.new("Key"),
-              Plurimath::Math::Symbol.new(", "),
-              Plurimath::Math::Symbol.new("V"),
-              Plurimath::Math::Symbol.new("⊕"),
+              Plurimath::Math::Symbols::Comma.new,
+              Plurimath::Math::Symbols::Symbol.new("V"),
+              Plurimath::Math::Symbols::Symbol.new("⊕"),
               Plurimath::Math::Function::Base.new(
-                Plurimath::Math::Symbol.new("s"),
-                Plurimath::Math::Symbol.new("i")
+                Plurimath::Math::Symbols::Symbol.new("s"),
+                Plurimath::Math::Symbols::Symbol.new("i")
               )
             ],
-            Plurimath::Math::Symbol.new(")")
+            Plurimath::Math::Symbols::Paren::Rround.new
           )
         ])
         expect(formula).to eq(expected_value)

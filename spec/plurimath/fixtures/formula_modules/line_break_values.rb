@@ -1,45 +1,45 @@
 module LineBreakValues
   LineBreak_001 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Sum.new(
-      Plurimath::Math::Symbol.new("d"),
+      Plurimath::Math::Symbols::Symbol.new("d"),
       Plurimath::Math::Number.new("3"),
-      Plurimath::Math::Symbol.new("d"),
+      Plurimath::Math::Symbols::Symbol.new("d"),
     ),
     Plurimath::Math::Function::Linebreak.new,
     Plurimath::Math::Function::Prod.new(
       Plurimath::Math::Number.new("3"),
-      Plurimath::Math::Symbol.new("d"),
-      Plurimath::Math::Symbol.new("e"),
+      Plurimath::Math::Symbols::Symbol.new("d"),
+      Plurimath::Math::Symbols::Symbol.new("e"),
     )
   ])
   LineBreak_002 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Frac.new(
       Plurimath::Math::Formula.new([
         Plurimath::Math::Function::Sum.new(
-          Plurimath::Math::Symbol.new("d"),
+          Plurimath::Math::Symbols::Symbol.new("d"),
           Plurimath::Math::Number.new("3"),
           Plurimath::Math::Number.new("3"),
         ),
         Plurimath::Math::Function::Linebreak.new,
         Plurimath::Math::Function::Prod.new(
           Plurimath::Math::Number.new("3"),
-          Plurimath::Math::Symbol.new("d"),
+          Plurimath::Math::Symbols::Symbol.new("d"),
           Plurimath::Math::Formula.new([
-            Plurimath::Math::Symbol.new("e"),
+            Plurimath::Math::Symbols::Symbol.new("e"),
             Plurimath::Math::Function::Linebreak.new,
-            Plurimath::Math::Symbol.new("w"),
+            Plurimath::Math::Symbols::Symbol.new("w"),
           ])
         )
       ]),
       Plurimath::Math::Function::Sin.new(
         Plurimath::Math::Function::Fenced.new(
-          Plurimath::Math::Symbol.new("("),
+          Plurimath::Math::Symbols::Symbol.new("("),
           [
-            Plurimath::Math::Symbol.new("d"),
+            Plurimath::Math::Symbols::Symbol.new("d"),
             Plurimath::Math::Function::Linebreak.new,
             Plurimath::Math::Function::Msline.new,
           ],
-          Plurimath::Math::Symbol.new(")"),
+          Plurimath::Math::Symbols::Symbol.new(")"),
         )
       )
     )
@@ -47,13 +47,13 @@ module LineBreakValues
   LineBreak_003 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Sin.new(
       Plurimath::Math::Function::Fenced.new(
-        Plurimath::Math::Symbol.new("("),
+        Plurimath::Math::Symbols::Symbol.new("("),
         [
-          Plurimath::Math::Symbol.new("&#x3c3;"),
+          Plurimath::Math::Symbols::Symbol.new("&#x3c3;"),
           Plurimath::Math::Function::Linebreak.new,
-          Plurimath::Math::Symbol.new("&#x3b8;"),
+          Plurimath::Math::Symbols::Symbol.new("&#x3b8;"),
         ],
-        Plurimath::Math::Symbol.new(")"),
+        Plurimath::Math::Symbols::Symbol.new(")"),
       )
     )
   ])
@@ -61,175 +61,175 @@ module LineBreakValues
     Plurimath::Math::Function::Frac.new(
       Plurimath::Math::Formula.new([
         Plurimath::Math::Function::PowerBase.new(
-          Plurimath::Math::Symbol.new("u"),
+          Plurimath::Math::Symbols::Symbol.new("u"),
           Plurimath::Math::Function::Text.new("c"),
           Plurimath::Math::Number.new("2"),
         ),
         Plurimath::Math::Function::Fenced.new(
-          Plurimath::Math::Symbol.new("("),
+          Plurimath::Math::Symbols::Symbol.new("("),
           [
             Plurimath::Math::Function::Base.new(
               Plurimath::Math::Function::FontStyle::Italic.new(
-                Plurimath::Math::Symbol.new("A"),
+                Plurimath::Math::Symbols::Symbol.new("A"),
                 "ii",
               ),
-              Plurimath::Math::Symbol.new("x"),
+              Plurimath::Math::Symbols::Symbol.new("x"),
             )
           ],
-          Plurimath::Math::Symbol.new(")")
+          Plurimath::Math::Symbols::Symbol.new(")")
         )
       ]),
       Plurimath::Math::Function::PowerBase.new(
         Plurimath::Math::Function::FontStyle::Italic.new(
-          Plurimath::Math::Symbol.new("A"),
+          Plurimath::Math::Symbols::Symbol.new("A"),
           "ii"
         ),
-        Plurimath::Math::Symbol.new("x"),
+        Plurimath::Math::Symbols::Symbol.new("x"),
         Plurimath::Math::Number.new("2"),
       ),
     ),
-    Plurimath::Math::Symbol.new("="),
+    Plurimath::Math::Symbols::Equal.new,
     Plurimath::Math::Function::Linebreak.new,
     Plurimath::Math::Function::Frac.new(
       Plurimath::Math::Formula.new([
         Plurimath::Math::Function::Power.new(
-          Plurimath::Math::Symbol.new("u"),
+          Plurimath::Math::Symbols::Symbol.new("u"),
           Plurimath::Math::Number.new("2"),
         ),
         Plurimath::Math::Function::Fenced.new(
-          Plurimath::Math::Symbol.new("("),
+          Plurimath::Math::Symbols::Symbol.new("("),
           [
             Plurimath::Math::Function::Base.new(
               Plurimath::Math::Function::FontStyle::Italic.new(
-                Plurimath::Math::Symbol.new("A"),
+                Plurimath::Math::Symbols::Symbol.new("A"),
                 "ii"
               ),
               Plurimath::Math::Function::Text.new("S")
             )
           ],
-          Plurimath::Math::Symbol.new(")")
+          Plurimath::Math::Symbols::Symbol.new(")")
         )
       ]),
       Plurimath::Math::Function::PowerBase.new(
         Plurimath::Math::Function::FontStyle::Italic.new(
-          Plurimath::Math::Symbol.new("A"),
+          Plurimath::Math::Symbols::Symbol.new("A"),
           "ii"
         ),
         Plurimath::Math::Function::Text.new("S"),
         Plurimath::Math::Number.new("2")
       )
     ),
-    Plurimath::Math::Symbol.new("+"),
+    Plurimath::Math::Symbols::Plus.new,
     Plurimath::Math::Function::Frac.new(
       Plurimath::Math::Formula.new([
         Plurimath::Math::Function::Power.new(
-          Plurimath::Math::Symbol.new("u"),
+          Plurimath::Math::Symbols::Symbol.new("u"),
           Plurimath::Math::Number.new("2")
         ),
         Plurimath::Math::Function::Fenced.new(
-          Plurimath::Math::Symbol.new("("),
+          Plurimath::Math::Symbols::Symbol.new("("),
           [
             Plurimath::Math::Function::Base.new(
-              Plurimath::Math::Symbol.new("m"),
+              Plurimath::Math::Symbols::Symbol.new("m"),
               Plurimath::Math::Function::Text.new("S")
             )
           ],
-          Plurimath::Math::Symbol.new(")")
+          Plurimath::Math::Symbols::Symbol.new(")")
         )
       ]),
       Plurimath::Math::Function::PowerBase.new(
-        Plurimath::Math::Symbol.new("m"),
+        Plurimath::Math::Symbols::Symbol.new("m"),
         Plurimath::Math::Function::Text.new("S"),
         Plurimath::Math::Number.new("2")
       )
     ),
-    Plurimath::Math::Symbol.new("+"),
+    Plurimath::Math::Symbols::Plus.new,
     Plurimath::Math::Function::Linebreak.new,
     Plurimath::Math::Function::Frac.new(
       Plurimath::Math::Formula.new([
         Plurimath::Math::Function::Power.new(
-          Plurimath::Math::Symbol.new("u"),
+          Plurimath::Math::Symbols::Symbol.new("u"),
           Plurimath::Math::Number.new("2")
         ),
         Plurimath::Math::Function::Fenced.new(
-          Plurimath::Math::Symbol.new("("),
+          Plurimath::Math::Symbols::Symbol.new("("),
           [
             Plurimath::Math::Function::Base.new(
-              Plurimath::Math::Symbol.new("m"),
-              Plurimath::Math::Symbol.new("x")
+              Plurimath::Math::Symbols::Symbol.new("m"),
+              Plurimath::Math::Symbols::Symbol.new("x")
             )
           ],
-          Plurimath::Math::Symbol.new(")")
+          Plurimath::Math::Symbols::Symbol.new(")")
         )
       ]),
       Plurimath::Math::Function::PowerBase.new(
-        Plurimath::Math::Symbol.new("m"),
-        Plurimath::Math::Symbol.new("x"),
+        Plurimath::Math::Symbols::Symbol.new("m"),
+        Plurimath::Math::Symbols::Symbol.new("x"),
         Plurimath::Math::Number.new("2")
       )
     ),
-    Plurimath::Math::Symbol.new("+"),
+    Plurimath::Math::Symbols::Plus.new,
     Plurimath::Math::Function::Frac.new(
       Plurimath::Math::Formula.new([
         Plurimath::Math::Function::Power.new(
-          Plurimath::Math::Symbol.new("u"),
+          Plurimath::Math::Symbols::Symbol.new("u"),
           Plurimath::Math::Number.new("2")
         ),
         Plurimath::Math::Function::Fenced.new(
-          Plurimath::Math::Symbol.new("("),
+          Plurimath::Math::Symbols::Symbol.new("("),
           [
             Plurimath::Math::Function::Base.new(
               Plurimath::Math::Function::Bar.new(
                 Plurimath::Math::Function::FontStyle::Italic.new(
-                  Plurimath::Math::Symbol.new("R"),
+                  Plurimath::Math::Symbols::Symbol.new("R"),
                   "ii"
                 )
               ),
-              Plurimath::Math::Symbol.new("x")
+              Plurimath::Math::Symbols::Symbol.new("x")
             )
           ],
-          Plurimath::Math::Symbol.new(")")
+          Plurimath::Math::Symbols::Symbol.new(")")
         )
       ]),
       Plurimath::Math::Function::PowerBase.new(
         Plurimath::Math::Function::Bar.new(
           Plurimath::Math::Function::FontStyle::Italic.new(
-            Plurimath::Math::Symbol.new("R"),
+            Plurimath::Math::Symbols::Symbol.new("R"),
             "ii"
           )
         ),
-        Plurimath::Math::Symbol.new("x"),
+        Plurimath::Math::Symbols::Symbol.new("x"),
         Plurimath::Math::Number.new("2")
       )
     ),
-    Plurimath::Math::Symbol.new("+"),
+    Plurimath::Math::Symbols::Plus.new,
     Plurimath::Math::Function::Linebreak.new,
     Plurimath::Math::Function::Frac.new(
       Plurimath::Math::Formula.new([
         Plurimath::Math::Function::Power.new(
-          Plurimath::Math::Symbol.new("u"),
+          Plurimath::Math::Symbols::Symbol.new("u"),
           Plurimath::Math::Number.new("2")
         ),
         Plurimath::Math::Function::Fenced.new(
-          Plurimath::Math::Symbol.new("("),
+          Plurimath::Math::Symbols::Symbol.new("("),
           [
             Plurimath::Math::Function::Base.new(
               Plurimath::Math::Function::Bar.new(
                 Plurimath::Math::Function::FontStyle::Italic.new(
-                  Plurimath::Math::Symbol.new("R"),
+                  Plurimath::Math::Symbols::Symbol.new("R"),
                   "ii"
                 )
               ),
               Plurimath::Math::Function::Text.new("S")
             )
           ],
-          Plurimath::Math::Symbol.new(")")
+          Plurimath::Math::Symbols::Symbol.new(")")
         )
       ]),
       Plurimath::Math::Function::PowerBase.new(
         Plurimath::Math::Function::Bar.new(
           Plurimath::Math::Function::FontStyle::Italic.new(
-            Plurimath::Math::Symbol.new("R"),
+            Plurimath::Math::Symbols::Symbol.new("R"),
             "ii"
           )
         ),
@@ -237,84 +237,84 @@ module LineBreakValues
         Plurimath::Math::Number.new("2")
       )
     ),
-    Plurimath::Math::Symbol.new("-"),
+    Plurimath::Math::Symbols::Minus.new,
     Plurimath::Math::Number.new("2"),
-    Plurimath::Math::Symbol.new("r"),
+    Plurimath::Math::Symbols::Symbol.new("r"),
     Plurimath::Math::Function::Fenced.new(
-      Plurimath::Math::Symbol.new("("),
+      Plurimath::Math::Symbols::Symbol.new("("),
       [
         Plurimath::Math::Function::Base.new(
           Plurimath::Math::Function::Bar.new(
             Plurimath::Math::Function::FontStyle::Italic.new(
-              Plurimath::Math::Symbol.new("R"),
+              Plurimath::Math::Symbols::Symbol.new("R"),
               "ii"
             ),
           ),
-          Plurimath::Math::Symbol.new("x")
+          Plurimath::Math::Symbols::Symbol.new("x")
         ),
-        Plurimath::Math::Symbol.new(","),
+        Plurimath::Math::Symbols::Comma.new,
         Plurimath::Math::Function::Base.new(
           Plurimath::Math::Function::Bar.new(
             Plurimath::Math::Function::FontStyle::Italic.new(
-              Plurimath::Math::Symbol.new("R"),
+              Plurimath::Math::Symbols::Symbol.new("R"),
               "ii"
             ),
           ),
           Plurimath::Math::Function::Text.new("S")
         ),
       ],
-      Plurimath::Math::Symbol.new(")")
+      Plurimath::Math::Symbols::Symbol.new(")")
     ),
     Plurimath::Math::Function::Linebreak.new,
     Plurimath::Math::Function::Frac.new(
       Plurimath::Math::Formula.new([
-        Plurimath::Math::Symbol.new("u"),
+        Plurimath::Math::Symbols::Symbol.new("u"),
         Plurimath::Math::Function::Fenced.new(
-          Plurimath::Math::Symbol.new("("),
+          Plurimath::Math::Symbols::Symbol.new("("),
           [
             Plurimath::Math::Function::Base.new(
               Plurimath::Math::Function::Bar.new(
                 Plurimath::Math::Function::FontStyle::Italic.new(
-                  Plurimath::Math::Symbol.new("R"),
+                  Plurimath::Math::Symbols::Symbol.new("R"),
                   "ii"
                 ),
               ),
-              Plurimath::Math::Symbol.new("x")
+              Plurimath::Math::Symbols::Symbol.new("x")
             )
           ],
-          Plurimath::Math::Symbol.new(")")
+          Plurimath::Math::Symbols::Symbol.new(")")
         ),
-        Plurimath::Math::Symbol.new("u"),
+        Plurimath::Math::Symbols::Symbol.new("u"),
         Plurimath::Math::Function::Fenced.new(
-          Plurimath::Math::Symbol.new("("),
+          Plurimath::Math::Symbols::Symbol.new("("),
           [
             Plurimath::Math::Function::Base.new(
               Plurimath::Math::Function::Bar.new(
                 Plurimath::Math::Function::FontStyle::Italic.new(
-                  Plurimath::Math::Symbol.new("R"),
+                  Plurimath::Math::Symbols::Symbol.new("R"),
                   "ii"
                 ),
               ),
               Plurimath::Math::Function::Text.new("S")
             )
           ],
-          Plurimath::Math::Symbol.new(")")
+          Plurimath::Math::Symbols::Symbol.new(")")
         )
       ]),
       Plurimath::Math::Formula.new([
         Plurimath::Math::Function::Base.new(
           Plurimath::Math::Function::Bar.new(
             Plurimath::Math::Function::FontStyle::Italic.new(
-              Plurimath::Math::Symbol.new("R"),
+              Plurimath::Math::Symbols::Symbol.new("R"),
               "ii"
             ),
           ),
-          Plurimath::Math::Symbol.new("x")
+          Plurimath::Math::Symbols::Symbol.new("x")
         ),
         Plurimath::Math::Function::Base.new(
           Plurimath::Math::Function::Bar.new(
             Plurimath::Math::Function::FontStyle::Italic.new(
-              Plurimath::Math::Symbol.new("R"),
+              Plurimath::Math::Symbols::Symbol.new("R"),
               "ii"
             ),
           ),
@@ -326,9 +326,9 @@ module LineBreakValues
   LineBreak_005 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Abs.new(
       Plurimath::Math::Formula.new([
-        Plurimath::Math::Symbol.new("&#x3c3;"),
+        Plurimath::Math::Symbols::Symbol.new("&#x3c3;"),
         Plurimath::Math::Function::Linebreak.new,
-        Plurimath::Math::Symbol.new("&#x3b8;")
+        Plurimath::Math::Symbols::Symbol.new("&#x3b8;")
       ])
     )
   ])
@@ -340,17 +340,17 @@ module LineBreakValues
   LineBreak_007 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::FontStyle::Monospace.new(
       Plurimath::Math::Formula.new([
-        Plurimath::Math::Symbol.new("a"),
+        Plurimath::Math::Symbols::Symbol.new("a"),
         Plurimath::Math::Function::Linebreak.new,
-        Plurimath::Math::Symbol.new("b")
+        Plurimath::Math::Symbols::Symbol.new("b")
       ]),
       "mathtt",
     ),
     Plurimath::Math::Function::FontStyle.new(
       Plurimath::Math::Formula.new([
-        Plurimath::Math::Symbol.new("d"),
+        Plurimath::Math::Symbols::Symbol.new("d"),
         Plurimath::Math::Function::Linebreak.new,
-        Plurimath::Math::Symbol.new("e")
+        Plurimath::Math::Symbols::Symbol.new("e")
       ]),
       "itt",
     )
@@ -358,18 +358,18 @@ module LineBreakValues
   LineBreak_008 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Sup.new(
       Plurimath::Math::Formula.new([
-        Plurimath::Math::Symbol.new("d"),
+        Plurimath::Math::Symbols::Symbol.new("d"),
         Plurimath::Math::Function::Linebreak.new,
-        Plurimath::Math::Symbol.new("e")
+        Plurimath::Math::Symbols::Symbol.new("e")
       ])
     )
   ])
   LineBreak_009 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Hom.new(
       Plurimath::Math::Formula.new([
-        Plurimath::Math::Symbol.new("d"),
+        Plurimath::Math::Symbols::Symbol.new("d"),
         Plurimath::Math::Function::Linebreak.new,
-        Plurimath::Math::Symbol.new("e")
+        Plurimath::Math::Symbols::Symbol.new("e")
       ])
     )
   ])
@@ -385,22 +385,22 @@ module LineBreakValues
   LineBreak_011 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Mod.new(
       Plurimath::Math::Function::Fenced.new(
-        Plurimath::Math::Symbol.new("("),
+        Plurimath::Math::Symbols::Symbol.new("("),
         [
-          Plurimath::Math::Symbol.new("d"),
+          Plurimath::Math::Symbols::Symbol.new("d"),
           Plurimath::Math::Function::Linebreak.new,
-          Plurimath::Math::Symbol.new("e"),
+          Plurimath::Math::Symbols::Symbol.new("e"),
         ],
-        Plurimath::Math::Symbol.new(")")
+        Plurimath::Math::Symbols::Symbol.new(")")
       ),
       Plurimath::Math::Function::Fenced.new(
-        Plurimath::Math::Symbol.new("("),
+        Plurimath::Math::Symbols::Symbol.new("("),
         [
-          Plurimath::Math::Symbol.new("c"),
+          Plurimath::Math::Symbols::Symbol.new("c"),
           Plurimath::Math::Function::Linebreak.new,
-          Plurimath::Math::Symbol.new("r")
+          Plurimath::Math::Symbols::Symbol.new("r")
         ],
-        Plurimath::Math::Symbol.new(")"),
+        Plurimath::Math::Symbols::Symbol.new(")"),
       )
     )
   ])
@@ -419,576 +419,576 @@ module LineBreakValues
           Plurimath::Math::Function::Td.new([
             Plurimath::Math::Number.new("3"),
             Plurimath::Math::Function::Linebreak.new,
-            Plurimath::Math::Symbol.new("&#x3c3;")
+            Plurimath::Math::Symbols::Symbol.new("&#x3c3;")
           ]),
           Plurimath::Math::Function::Td.new([
             Plurimath::Math::Number.new("5")
           ])
         ])
       ],
-      "[",
-      "]",
+      Plurimath::Math::Symbols::Paren::Lsquare.new,
+      Plurimath::Math::Symbols::Paren::Rsquare.new,
       {}
     )
   ])
   LineBreak_013 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Det.new(
       Plurimath::Math::Formula.new([
-        Plurimath::Math::Symbol.new("&#x3b8;"),
+        Plurimath::Math::Symbols::Symbol.new("&#x3b8;"),
         Plurimath::Math::Function::Linebreak.new,
-        Plurimath::Math::Symbol.new("&#x3b3;")
+        Plurimath::Math::Symbols::Symbol.new("&#x3b3;")
       ])
     )
   ])
   LineBreak_014 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Sup.new(
       Plurimath::Math::Formula.new([
-        Plurimath::Math::Symbol.new("&#x3b8;"),
+        Plurimath::Math::Symbols::Symbol.new("&#x3b8;"),
         Plurimath::Math::Function::Linebreak.new,
-        Plurimath::Math::Symbol.new("&#x3b3;")
+        Plurimath::Math::Symbols::Symbol.new("&#x3b3;")
       ])
     )
   ])
   LineBreak_015 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Exp.new(
       Plurimath::Math::Formula.new([
-        Plurimath::Math::Symbol.new("&#x3b8;"),
+        Plurimath::Math::Symbols::Symbol.new("&#x3b8;"),
         Plurimath::Math::Function::Linebreak.new,
-        Plurimath::Math::Symbol.new("&#x3b3;")
+        Plurimath::Math::Symbols::Symbol.new("&#x3b3;")
       ])
     )
   ])
   LineBreak_016 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Floor.new(
       Plurimath::Math::Formula.new([
-        Plurimath::Math::Symbol.new("a"),
-        Plurimath::Math::Symbol.new("s"),
+        Plurimath::Math::Symbols::Symbol.new("a"),
+        Plurimath::Math::Symbols::Symbol.new("s"),
         Plurimath::Math::Function::Linebreak.new,
-        Plurimath::Math::Symbol.new("d"),
-        Plurimath::Math::Symbol.new("f")
+        Plurimath::Math::Symbols::Symbol.new("d"),
+        Plurimath::Math::Symbols::Symbol.new("f")
       ])
     )
   ])
   LineBreak_017 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Gcd.new(
       Plurimath::Math::Function::Fenced.new(
-        Plurimath::Math::Symbol.new("("),
+        Plurimath::Math::Symbols::Symbol.new("("),
         [
-          Plurimath::Math::Symbol.new("a"),
-          Plurimath::Math::Symbol.new("s"),
+          Plurimath::Math::Symbols::Symbol.new("a"),
+          Plurimath::Math::Symbols::Symbol.new("s"),
           Plurimath::Math::Function::Linebreak.new,
-          Plurimath::Math::Symbol.new("d"),
-          Plurimath::Math::Symbol.new("f")
+          Plurimath::Math::Symbols::Symbol.new("d"),
+          Plurimath::Math::Symbols::Symbol.new("f")
         ],
-        Plurimath::Math::Symbol.new(")")
+        Plurimath::Math::Symbols::Symbol.new(")")
       )
     )
   ])
   LineBreak_018 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Glb.new(
       Plurimath::Math::Function::Fenced.new(
-        Plurimath::Math::Symbol.new("("),
+        Plurimath::Math::Symbols::Symbol.new("("),
         [
-          Plurimath::Math::Symbol.new("a"),
-          Plurimath::Math::Symbol.new("s"),
+          Plurimath::Math::Symbols::Symbol.new("a"),
+          Plurimath::Math::Symbols::Symbol.new("s"),
           Plurimath::Math::Function::Linebreak.new,
-          Plurimath::Math::Symbol.new("d"),
-          Plurimath::Math::Symbol.new("f")
+          Plurimath::Math::Symbols::Symbol.new("d"),
+          Plurimath::Math::Symbols::Symbol.new("f")
         ],
-        Plurimath::Math::Symbol.new(")")
+        Plurimath::Math::Symbols::Symbol.new(")")
       )
     )
   ])
   LineBreak_019 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Hat.new(
       Plurimath::Math::Formula.new([
-        Plurimath::Math::Symbol.new("a"),
-        Plurimath::Math::Symbol.new("s"),
+        Plurimath::Math::Symbols::Symbol.new("a"),
+        Plurimath::Math::Symbols::Symbol.new("s"),
         Plurimath::Math::Function::Linebreak.new,
-        Plurimath::Math::Symbol.new("d"),
-        Plurimath::Math::Symbol.new("f")
+        Plurimath::Math::Symbols::Symbol.new("d"),
+        Plurimath::Math::Symbols::Symbol.new("f")
       ])
     )
   ])
   LineBreak_020 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Deg.new(
       Plurimath::Math::Formula.new([
-        Plurimath::Math::Symbol.new("&#x3b8;"),
+        Plurimath::Math::Symbols::Symbol.new("&#x3b8;"),
         Plurimath::Math::Function::Linebreak.new,
-        Plurimath::Math::Symbol.new("&#x3b3;")
+        Plurimath::Math::Symbols::Symbol.new("&#x3b3;")
       ])
     )
   ])
   LineBreak_021 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Dim.new(
       Plurimath::Math::Formula.new([
-        Plurimath::Math::Symbol.new("&#x3b8;"),
+        Plurimath::Math::Symbols::Symbol.new("&#x3b8;"),
         Plurimath::Math::Function::Linebreak.new,
-        Plurimath::Math::Symbol.new("&#x3b3;")
+        Plurimath::Math::Symbols::Symbol.new("&#x3b3;")
       ])
     )
   ])
   LineBreak_022 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Exp.new(
       Plurimath::Math::Formula.new([
-        Plurimath::Math::Symbol.new("&#x3b8;"),
+        Plurimath::Math::Symbols::Symbol.new("&#x3b8;"),
         Plurimath::Math::Function::Linebreak.new,
-        Plurimath::Math::Symbol.new("&#x3b3;")
+        Plurimath::Math::Symbols::Symbol.new("&#x3b3;")
       ])
     )
   ])
   LineBreak_023 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Floor.new(
       Plurimath::Math::Formula.new([
-        Plurimath::Math::Symbol.new("a"),
-        Plurimath::Math::Symbol.new("s"),
+        Plurimath::Math::Symbols::Symbol.new("a"),
+        Plurimath::Math::Symbols::Symbol.new("s"),
         Plurimath::Math::Function::Linebreak.new,
-        Plurimath::Math::Symbol.new("d"),
-        Plurimath::Math::Symbol.new("f")
+        Plurimath::Math::Symbols::Symbol.new("d"),
+        Plurimath::Math::Symbols::Symbol.new("f")
       ])
     )
   ])
   LineBreak_024 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Inf.new(
       Plurimath::Math::Formula.new([
-        Plurimath::Math::Symbol.new("a"),
-        Plurimath::Math::Symbol.new("s"),
+        Plurimath::Math::Symbols::Symbol.new("a"),
+        Plurimath::Math::Symbols::Symbol.new("s"),
         Plurimath::Math::Function::Linebreak.new,
-        Plurimath::Math::Symbol.new("d"),
-        Plurimath::Math::Symbol.new("f")
+        Plurimath::Math::Symbols::Symbol.new("d"),
+        Plurimath::Math::Symbols::Symbol.new("f")
       ]),
       Plurimath::Math::Formula.new([
-        Plurimath::Math::Symbol.new("e"),
+        Plurimath::Math::Symbols::Symbol.new("e"),
         Plurimath::Math::Function::Linebreak.new,
-        Plurimath::Math::Symbol.new("c")
+        Plurimath::Math::Symbols::Symbol.new("c")
       ])
     )
   ])
   LineBreak_025 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Int.new(
       Plurimath::Math::Formula.new([
-        Plurimath::Math::Symbol.new("a"),
-        Plurimath::Math::Symbol.new("s"),
+        Plurimath::Math::Symbols::Symbol.new("a"),
+        Plurimath::Math::Symbols::Symbol.new("s"),
         Plurimath::Math::Function::Linebreak.new,
-        Plurimath::Math::Symbol.new("d"),
-        Plurimath::Math::Symbol.new("f")
+        Plurimath::Math::Symbols::Symbol.new("d"),
+        Plurimath::Math::Symbols::Symbol.new("f")
       ]),
       Plurimath::Math::Formula.new([
-        Plurimath::Math::Symbol.new("e"),
+        Plurimath::Math::Symbols::Symbol.new("e"),
         Plurimath::Math::Function::Linebreak.new,
-        Plurimath::Math::Symbol.new("c")
+        Plurimath::Math::Symbols::Symbol.new("c")
       ])
     )
   ])
   LineBreak_026 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Ker.new(
       Plurimath::Math::Formula.new([
-        Plurimath::Math::Symbol.new("a"),
-        Plurimath::Math::Symbol.new("s"),
+        Plurimath::Math::Symbols::Symbol.new("a"),
+        Plurimath::Math::Symbols::Symbol.new("s"),
         Plurimath::Math::Function::Linebreak.new,
-        Plurimath::Math::Symbol.new("d"),
-        Plurimath::Math::Symbol.new("f")
+        Plurimath::Math::Symbols::Symbol.new("d"),
+        Plurimath::Math::Symbols::Symbol.new("f")
       ])
     )
   ])
   LineBreak_027 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Lcm.new(
       Plurimath::Math::Formula.new([
-        Plurimath::Math::Symbol.new("a"),
-        Plurimath::Math::Symbol.new("s"),
+        Plurimath::Math::Symbols::Symbol.new("a"),
+        Plurimath::Math::Symbols::Symbol.new("s"),
         Plurimath::Math::Function::Linebreak.new,
-        Plurimath::Math::Symbol.new("d"),
-        Plurimath::Math::Symbol.new("f")
+        Plurimath::Math::Symbols::Symbol.new("d"),
+        Plurimath::Math::Symbols::Symbol.new("f")
       ])
     )
   ])
   LineBreak_028 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Lg.new(
       Plurimath::Math::Formula.new([
-        Plurimath::Math::Symbol.new("&#x3b8;"),
+        Plurimath::Math::Symbols::Symbol.new("&#x3b8;"),
         Plurimath::Math::Function::Linebreak.new,
-        Plurimath::Math::Symbol.new("&#x3c3;")
+        Plurimath::Math::Symbols::Symbol.new("&#x3c3;")
       ])
     )
   ])
   LineBreak_029 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Lim.new(
       Plurimath::Math::Formula.new([
-        Plurimath::Math::Symbol.new("&#x3b8;"),
+        Plurimath::Math::Symbols::Symbol.new("&#x3b8;"),
         Plurimath::Math::Function::Linebreak.new(
-          Plurimath::Math::Symbol.new("a"),
+          Plurimath::Math::Symbols::Symbol.new("a"),
           { linebreakstyle: "before" },
         ),
-        Plurimath::Math::Symbol.new("&#x3c3;")
+        Plurimath::Math::Symbols::Symbol.new("&#x3c3;")
       ]),
       Plurimath::Math::Formula.new([
-        Plurimath::Math::Symbol.new("&#x3b3;"),
+        Plurimath::Math::Symbols::Symbol.new("&#x3b3;"),
         Plurimath::Math::Function::Linebreak.new,
-        Plurimath::Math::Symbol.new("&#x3b8;")
+        Plurimath::Math::Symbols::Symbol.new("&#x3b8;")
       ])
     )
   ])
   LineBreak_030 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Liminf.new(
       Plurimath::Math::Formula.new([
-        Plurimath::Math::Symbol.new("&#x3b8;"),
+        Plurimath::Math::Symbols::Symbol.new("&#x3b8;"),
         Plurimath::Math::Function::Linebreak.new,
-        Plurimath::Math::Symbol.new("&#x3c3;")
+        Plurimath::Math::Symbols::Symbol.new("&#x3c3;")
       ])
     ),
     Plurimath::Math::Formula.new([
-      Plurimath::Math::Symbol.new("&#x3b3;"),
+      Plurimath::Math::Symbols::Symbol.new("&#x3b3;"),
       Plurimath::Math::Function::Linebreak.new,
-      Plurimath::Math::Symbol.new("&#x39e;")
+      Plurimath::Math::Symbols::Symbol.new("&#x39e;")
     ])
   ])
   LineBreak_031 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Ln.new(
       Plurimath::Math::Formula.new([
-        Plurimath::Math::Symbol.new("&#x3b8;"),
+        Plurimath::Math::Symbols::Symbol.new("&#x3b8;"),
         Plurimath::Math::Function::Linebreak.new,
-        Plurimath::Math::Symbol.new("&#x3b3;")
+        Plurimath::Math::Symbols::Symbol.new("&#x3b3;")
       ])
     )
   ])
   LineBreak_032 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Max.new(
       Plurimath::Math::Formula.new([
-        Plurimath::Math::Symbol.new("&#x3b8;"),
+        Plurimath::Math::Symbols::Symbol.new("&#x3b8;"),
         Plurimath::Math::Function::Linebreak.new,
-        Plurimath::Math::Symbol.new("&#x3b3;")
+        Plurimath::Math::Symbols::Symbol.new("&#x3b3;")
       ])
     )
   ])
   LineBreak_033 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Cot.new(
       Plurimath::Math::Formula.new([
-        Plurimath::Math::Symbol.new("&#x3b8;"),
+        Plurimath::Math::Symbols::Symbol.new("&#x3b8;"),
         Plurimath::Math::Function::Linebreak.new,
-        Plurimath::Math::Symbol.new("&#x3b3;")
+        Plurimath::Math::Symbols::Symbol.new("&#x3b3;")
       ])
     )
   ])
   LineBreak_034 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Min.new(
       Plurimath::Math::Formula.new([
-        Plurimath::Math::Symbol.new("&#x3b8;"),
+        Plurimath::Math::Symbols::Symbol.new("&#x3b8;"),
         Plurimath::Math::Function::Linebreak.new,
-        Plurimath::Math::Symbol.new("&#x3b3;")
+        Plurimath::Math::Symbols::Symbol.new("&#x3b3;")
       ])
     )
   ])
   LineBreak_035 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Tan.new(
       Plurimath::Math::Formula.new([
-        Plurimath::Math::Symbol.new("&#x3b8;"),
+        Plurimath::Math::Symbols::Symbol.new("&#x3b8;"),
         Plurimath::Math::Function::Linebreak.new,
-        Plurimath::Math::Symbol.new("&#x3b3;")
+        Plurimath::Math::Symbols::Symbol.new("&#x3b3;")
       ])
     )
   ])
   LineBreak_036 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Sec.new(
       Plurimath::Math::Formula.new([
-        Plurimath::Math::Symbol.new("&#x3b8;"),
+        Plurimath::Math::Symbols::Symbol.new("&#x3b8;"),
         Plurimath::Math::Function::Linebreak.new,
-        Plurimath::Math::Symbol.new("&#x3b3;")
+        Plurimath::Math::Symbols::Symbol.new("&#x3b3;")
       ])
     )
   ])
   LineBreak_037 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Lub.new(
       Plurimath::Math::Formula.new([
-        Plurimath::Math::Symbol.new("&#x3b8;"),
+        Plurimath::Math::Symbols::Symbol.new("&#x3b8;"),
         Plurimath::Math::Function::Linebreak.new,
-        Plurimath::Math::Symbol.new("&#x3b3;")
+        Plurimath::Math::Symbols::Symbol.new("&#x3b3;")
       ])
     )
   ])
   LineBreak_038 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Csc.new(
       Plurimath::Math::Formula.new([
-        Plurimath::Math::Symbol.new("&#x3b8;"),
+        Plurimath::Math::Symbols::Symbol.new("&#x3b8;"),
         Plurimath::Math::Function::Linebreak.new,
-        Plurimath::Math::Symbol.new("&#x3b3;")
+        Plurimath::Math::Symbols::Symbol.new("&#x3b3;")
       ])
     )
   ])
   LineBreak_039 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Cos.new(
       Plurimath::Math::Formula.new([
-        Plurimath::Math::Symbol.new("&#x3b8;"),
+        Plurimath::Math::Symbols::Symbol.new("&#x3b8;"),
         Plurimath::Math::Function::Linebreak.new,
-        Plurimath::Math::Symbol.new("&#x3b3;")
+        Plurimath::Math::Symbols::Symbol.new("&#x3b3;")
       ])
     )
   ])
   LineBreak_040 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Norm.new(
       Plurimath::Math::Formula.new([
-        Plurimath::Math::Symbol.new("&#x3b8;"),
+        Plurimath::Math::Symbols::Symbol.new("&#x3b8;"),
         Plurimath::Math::Function::Linebreak.new,
-        Plurimath::Math::Symbol.new("&#x3b3;")
+        Plurimath::Math::Symbols::Symbol.new("&#x3b3;")
       ])
     )
   ])
   LineBreak_041 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Cosh.new(
       Plurimath::Math::Formula.new([
-        Plurimath::Math::Symbol.new("&#x3b8;"),
+        Plurimath::Math::Symbols::Symbol.new("&#x3b8;"),
         Plurimath::Math::Function::Linebreak.new,
-        Plurimath::Math::Symbol.new("&#x3b3;")
+        Plurimath::Math::Symbols::Symbol.new("&#x3b3;")
       ])
     )
   ])
   LineBreak_042 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Sinh.new(
       Plurimath::Math::Formula.new([
-        Plurimath::Math::Symbol.new("&#x3b8;"),
+        Plurimath::Math::Symbols::Symbol.new("&#x3b8;"),
         Plurimath::Math::Function::Linebreak.new,
-        Plurimath::Math::Symbol.new("&#x3b3;")
+        Plurimath::Math::Symbols::Symbol.new("&#x3b3;")
       ])
     )
   ])
   LineBreak_043 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Ceil.new(
       Plurimath::Math::Formula.new([
-        Plurimath::Math::Symbol.new("&#x3b8;"),
+        Plurimath::Math::Symbols::Symbol.new("&#x3b8;"),
         Plurimath::Math::Function::Linebreak.new,
-        Plurimath::Math::Symbol.new("&#x3b3;")
+        Plurimath::Math::Symbols::Symbol.new("&#x3b3;")
       ])
     )
   ])
   LineBreak_044 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Sqrt.new(
       Plurimath::Math::Formula.new([
-        Plurimath::Math::Symbol.new("&#x3b8;"),
+        Plurimath::Math::Symbols::Symbol.new("&#x3b8;"),
         Plurimath::Math::Function::Linebreak.new,
-        Plurimath::Math::Symbol.new("&#x3b3;")
+        Plurimath::Math::Symbols::Symbol.new("&#x3b3;")
       ])
     )
   ])
   LineBreak_045 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Csch.new(
       Plurimath::Math::Formula.new([
-        Plurimath::Math::Symbol.new("&#x3b8;"),
+        Plurimath::Math::Symbols::Symbol.new("&#x3b8;"),
         Plurimath::Math::Function::Linebreak.new,
-        Plurimath::Math::Symbol.new("&#x3b3;")
+        Plurimath::Math::Symbols::Symbol.new("&#x3b3;")
       ])
     )
   ])
   LineBreak_046 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Sech.new(
       Plurimath::Math::Formula.new([
-        Plurimath::Math::Symbol.new("&#x3b8;"),
+        Plurimath::Math::Symbols::Symbol.new("&#x3b8;"),
         Plurimath::Math::Function::Linebreak.new,
-        Plurimath::Math::Symbol.new("&#x3b3;")
+        Plurimath::Math::Symbols::Symbol.new("&#x3b3;")
       ])
     )
   ])
   LineBreak_047 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Tanh.new(
       Plurimath::Math::Formula.new([
-        Plurimath::Math::Symbol.new("&#x3b8;"),
+        Plurimath::Math::Symbols::Symbol.new("&#x3b8;"),
         Plurimath::Math::Function::Linebreak.new,
-        Plurimath::Math::Symbol.new("&#x3b3;")
+        Plurimath::Math::Symbols::Symbol.new("&#x3b3;")
       ])
     )
   ])
   LineBreak_048 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Coth.new(
       Plurimath::Math::Formula.new([
-        Plurimath::Math::Symbol.new("&#x3b8;"),
+        Plurimath::Math::Symbols::Symbol.new("&#x3b8;"),
         Plurimath::Math::Function::Linebreak.new,
-        Plurimath::Math::Symbol.new("&#x3b3;")
+        Plurimath::Math::Symbols::Symbol.new("&#x3b3;")
       ])
     )
   ])
   LineBreak_049 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Color.new(
       Plurimath::Math::Formula.new([
-        Plurimath::Math::Symbol.new("r"),
-        Plurimath::Math::Symbol.new("e"),
-        Plurimath::Math::Symbol.new("d"),
+        Plurimath::Math::Symbols::Symbol.new("r"),
+        Plurimath::Math::Symbols::Symbol.new("e"),
+        Plurimath::Math::Symbols::Symbol.new("d"),
       ]),
       Plurimath::Math::Formula.new([
-        Plurimath::Math::Symbol.new("&#x3b8;"),
+        Plurimath::Math::Symbols::Symbol.new("&#x3b8;"),
         Plurimath::Math::Function::Linebreak.new,
-        Plurimath::Math::Symbol.new("&#x3b3;")
+        Plurimath::Math::Symbols::Symbol.new("&#x3b3;")
       ])
     )
   ])
   LineBreak_050 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Cancel.new(
       Plurimath::Math::Formula.new([
-        Plurimath::Math::Symbol.new("&#x3b8;"),
+        Plurimath::Math::Symbols::Symbol.new("&#x3b8;"),
         Plurimath::Math::Function::Linebreak.new,
-        Plurimath::Math::Symbol.new("&#x3b3;")
+        Plurimath::Math::Symbols::Symbol.new("&#x3b3;")
       ])
     )
   ])
   LineBreak_051 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Arctan.new(
       Plurimath::Math::Formula.new([
-        Plurimath::Math::Symbol.new("&#x3b8;"),
+        Plurimath::Math::Symbols::Symbol.new("&#x3b8;"),
         Plurimath::Math::Function::Linebreak.new,
-        Plurimath::Math::Symbol.new("&#x3b3;")
+        Plurimath::Math::Symbols::Symbol.new("&#x3b3;")
       ])
     )
   ])
   LineBreak_052 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Arcsin.new(
       Plurimath::Math::Formula.new([
-        Plurimath::Math::Symbol.new("&#x3b8;"),
+        Plurimath::Math::Symbols::Symbol.new("&#x3b8;"),
         Plurimath::Math::Function::Linebreak.new,
-        Plurimath::Math::Symbol.new("&#x3b3;")
+        Plurimath::Math::Symbols::Symbol.new("&#x3b3;")
       ])
     )
   ])
   LineBreak_053 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Arccos.new(
       Plurimath::Math::Formula.new([
-        Plurimath::Math::Symbol.new("&#x3b8;"),
+        Plurimath::Math::Symbols::Symbol.new("&#x3b8;"),
         Plurimath::Math::Function::Linebreak.new,
-        Plurimath::Math::Symbol.new("&#x3b3;")
+        Plurimath::Math::Symbols::Symbol.new("&#x3b3;")
       ])
     )
   ])
   LineBreak_054 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Cos.new(
       Plurimath::Math::Formula.new([
-        Plurimath::Math::Symbol.new("&#x3b8;"),
+        Plurimath::Math::Symbols::Symbol.new("&#x3b8;"),
         Plurimath::Math::Function::Linebreak.new,
-        Plurimath::Math::Symbol.new("&#x3b3;")
+        Plurimath::Math::Symbols::Symbol.new("&#x3b3;")
       ])
     ),
     Plurimath::Math::Function::Linebreak.new,
-    Plurimath::Math::Symbol.new("&#x2211;")
+    Plurimath::Math::Function::Sum.new
   ])
   LineBreak_055 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Limsup.new(
       Plurimath::Math::Formula.new([
-        Plurimath::Math::Symbol.new("&#x3b8;"),
+        Plurimath::Math::Symbols::Symbol.new("&#x3b8;"),
         Plurimath::Math::Function::Linebreak.new,
-        Plurimath::Math::Symbol.new("&#x3b3;")
+        Plurimath::Math::Symbols::Symbol.new("&#x3b3;")
       ])
     )
   ])
   LineBreak_056 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Msgroup.new(
       [
-        Plurimath::Math::Symbol.new("&#x3b8;"),
+        Plurimath::Math::Symbols::Symbol.new("&#x3b8;"),
         Plurimath::Math::Function::Cos.new(
           Plurimath::Math::Formula.new([
-            Plurimath::Math::Symbol.new("asd"),
+            Plurimath::Math::Symbols::Symbol.new("asd"),
             Plurimath::Math::Function::Linebreak.new,
             Plurimath::Math::Function::Text.new("dsa")
           ])
         ),
         Plurimath::Math::Function::Linebreak.new,
-        Plurimath::Math::Symbol.new("&#x3b3;")
+        Plurimath::Math::Symbols::Symbol.new("&#x3b3;")
       ],
     )
   ])
   LineBreak_057 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Phantom.new(
       [
-        Plurimath::Math::Symbol.new("&#x3b8;"),
+        Plurimath::Math::Symbols::Symbol.new("&#x3b8;"),
         Plurimath::Math::Function::Linebreak.new,
-        Plurimath::Math::Symbol.new("&#x3b3;")
+        Plurimath::Math::Symbols::Symbol.new("&#x3b3;")
       ]
     )
   ])
   LineBreak_058 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Longdiv.new(
       [
-        Plurimath::Math::Symbol.new("&#x3b8;"),
+        Plurimath::Math::Symbols::Symbol.new("&#x3b8;"),
         Plurimath::Math::Function::Linebreak.new,
-        Plurimath::Math::Symbol.new("&#x3b3;")
+        Plurimath::Math::Symbols::Symbol.new("&#x3b3;")
       ]
     )
   ])
   LineBreak_059 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Underover.new(
       Plurimath::Math::Formula.new([
-        Plurimath::Math::Symbol.new("&#x3b1;"),
+        Plurimath::Math::Symbols::Symbol.new("&#x3b1;"),
         Plurimath::Math::Function::Linebreak.new(
-          Plurimath::Math::Symbol.new("="),
+          Plurimath::Math::Symbols::Equal.new,
           { linebreak: "newline" }
         ),
-        Plurimath::Math::Symbol.new("&#x3b1;")
+        Plurimath::Math::Symbols::Symbol.new("&#x3b1;")
       ]),
       Plurimath::Math::Formula.new([
-        Plurimath::Math::Symbol.new("&#x3b3;"),
+        Plurimath::Math::Symbols::Symbol.new("&#x3b3;"),
         Plurimath::Math::Function::Linebreak.new(
-          Plurimath::Math::Symbol.new("="),
+          Plurimath::Math::Symbols::Equal.new,
           { linebreak: "newline" }
         ),
-        Plurimath::Math::Symbol.new("&#x3b3;")
+        Plurimath::Math::Symbols::Symbol.new("&#x3b3;")
       ]),
       Plurimath::Math::Formula.new([
-        Plurimath::Math::Symbol.new("&#x3b2;"),
+        Plurimath::Math::Symbols::Symbol.new("&#x3b2;"),
         Plurimath::Math::Function::Linebreak.new(
-          Plurimath::Math::Symbol.new("="),
+          Plurimath::Math::Symbols::Equal.new,
           { linebreak: "newline" }
         ),
-        Plurimath::Math::Symbol.new("&#x3b2;")
+        Plurimath::Math::Symbols::Symbol.new("&#x3b2;")
       ])
     )
   ])
   LineBreak_060 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Ul.new(
       Plurimath::Math::Formula.new([
-        Plurimath::Math::Symbol.new("&#x3b8;"),
+        Plurimath::Math::Symbols::Symbol.new("&#x3b8;"),
         Plurimath::Math::Function::Linebreak.new,
-        Plurimath::Math::Symbol.new("&#x3b3;")
+        Plurimath::Math::Symbols::Symbol.new("&#x3b3;")
       ])
     )
   ])
   LineBreak_061 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Log.new(
       Plurimath::Math::Formula.new([
-        Plurimath::Math::Symbol.new("&#x3b8;"),
+        Plurimath::Math::Symbols::Symbol.new("&#x3b8;"),
         Plurimath::Math::Function::Linebreak.new,
-        Plurimath::Math::Symbol.new("&#x3b3;")
+        Plurimath::Math::Symbols::Symbol.new("&#x3b3;")
       ]),
       Plurimath::Math::Formula.new([
-        Plurimath::Math::Symbol.new("&#x2222;"),
+        Plurimath::Math::Symbols::Symbol.new("&#x2222;"),
         Plurimath::Math::Function::Linebreak.new,
-        Plurimath::Math::Symbol.new("&#xd3;")
+        Plurimath::Math::Symbols::Symbol.new("&#xd3;")
       ])
     )
   ])
   LineBreak_062 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Sum.new(
       Plurimath::Math::Formula.new([
-        Plurimath::Math::Symbol.new("&#x3b8;"),
+        Plurimath::Math::Symbols::Symbol.new("&#x3b8;"),
         Plurimath::Math::Function::Linebreak.new,
-        Plurimath::Math::Symbol.new("&#x3b3;")
+        Plurimath::Math::Symbols::Symbol.new("&#x3b3;")
       ]),
       Plurimath::Math::Formula.new([
-        Plurimath::Math::Symbol.new("&#x2222;"),
+        Plurimath::Math::Symbols::Symbol.new("&#x2222;"),
         Plurimath::Math::Function::Linebreak.new,
-        Plurimath::Math::Symbol.new("&#xd3;")
+        Plurimath::Math::Symbols::Symbol.new("&#xd3;")
       ]),
       Plurimath::Math::Formula.new([
-        Plurimath::Math::Symbol.new("&#x2122;"),
+        Plurimath::Math::Symbols::Symbol.new("&#x2122;"),
         Plurimath::Math::Function::Linebreak.new,
-        Plurimath::Math::Symbol.new("&#xed3;")
+        Plurimath::Math::Symbols::Symbol.new("&#xed3;")
       ])
     )
   ])
   LineBreak_063 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Prod.new(
       Plurimath::Math::Formula.new([
-        Plurimath::Math::Symbol.new("&#x3b8;"),
+        Plurimath::Math::Symbols::Symbol.new("&#x3b8;"),
         Plurimath::Math::Function::Linebreak.new,
-        Plurimath::Math::Symbol.new("&#x3b3;")
+        Plurimath::Math::Symbols::Symbol.new("&#x3b3;")
       ]),
       Plurimath::Math::Formula.new([
-        Plurimath::Math::Symbol.new("&#x2222;"),
+        Plurimath::Math::Symbols::Symbol.new("&#x2222;"),
         Plurimath::Math::Function::Linebreak.new,
-        Plurimath::Math::Symbol.new("&#xd3;")
+        Plurimath::Math::Symbols::Symbol.new("&#xd3;")
       ])
     )
   ])
@@ -999,280 +999,280 @@ module LineBreakValues
       Plurimath::Math::Formula.new([
         Plurimath::Math::Function::Text.new("symmetric"),
         Plurimath::Math::Function::Linebreak.new,
-        Plurimath::Math::Symbol.new("&#xaab;")
+        Plurimath::Math::Symbols::Symbol.new("&#xaab;")
       ])
     )
   ])
   LineBreak_065 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Bar.new(
       Plurimath::Math::Formula.new([
-        Plurimath::Math::Symbol.new("&#x3b8;"),
+        Plurimath::Math::Symbols::Symbol.new("&#x3b8;"),
         Plurimath::Math::Function::Linebreak.new,
-        Plurimath::Math::Symbol.new("&#x3b3;")
+        Plurimath::Math::Symbols::Symbol.new("&#x3b3;")
       ]),
     )
   ])
   LineBreak_066 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Vec.new(
       Plurimath::Math::Formula.new([
-        Plurimath::Math::Symbol.new("&#x3b8;"),
+        Plurimath::Math::Symbols::Symbol.new("&#x3b8;"),
         Plurimath::Math::Function::Linebreak.new,
-        Plurimath::Math::Symbol.new("&#x3b3;")
+        Plurimath::Math::Symbols::Symbol.new("&#x3b3;")
       ]),
     )
   ])
   LineBreak_067 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Dot.new(
       Plurimath::Math::Formula.new([
-        Plurimath::Math::Symbol.new("&#x3b8;"),
+        Plurimath::Math::Symbols::Symbol.new("&#x3b8;"),
         Plurimath::Math::Function::Linebreak.new,
-        Plurimath::Math::Symbol.new("&#x3b3;")
+        Plurimath::Math::Symbols::Symbol.new("&#x3b3;")
       ]),
     )
   ])
   LineBreak_068 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Ddot.new(
       Plurimath::Math::Formula.new([
-        Plurimath::Math::Symbol.new("&#x3b8;"),
+        Plurimath::Math::Symbols::Symbol.new("&#x3b8;"),
         Plurimath::Math::Function::Linebreak.new,
-        Plurimath::Math::Symbol.new("&#x3b3;")
+        Plurimath::Math::Symbols::Symbol.new("&#x3b3;")
       ]),
     )
   ])
   LineBreak_069 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Oint.new(
       Plurimath::Math::Formula.new([
-        Plurimath::Math::Symbol.new("&#x3b8;"),
+        Plurimath::Math::Symbols::Symbol.new("&#x3b8;"),
         Plurimath::Math::Function::Linebreak.new,
-        Plurimath::Math::Symbol.new("&#x3b3;")
+        Plurimath::Math::Symbols::Symbol.new("&#x3b3;")
       ]),
       Plurimath::Math::Formula.new([
-        Plurimath::Math::Symbol.new("&#x2222;"),
+        Plurimath::Math::Symbols::Symbol.new("&#x2222;"),
         Plurimath::Math::Function::Linebreak.new,
-        Plurimath::Math::Symbol.new("&#xd3;")
+        Plurimath::Math::Symbols::Symbol.new("&#xd3;")
       ]),
       Plurimath::Math::Formula.new([
-        Plurimath::Math::Symbol.new("&#x2122;"),
+        Plurimath::Math::Symbols::Symbol.new("&#x2122;"),
         Plurimath::Math::Function::Linebreak.new,
-        Plurimath::Math::Symbol.new("&#xed3;")
+        Plurimath::Math::Symbols::Symbol.new("&#xed3;")
       ])
     )
   ])
   LineBreak_070 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Tilde.new(
       Plurimath::Math::Formula.new([
-        Plurimath::Math::Symbol.new("&#x3b8;"),
+        Plurimath::Math::Symbols::Symbol.new("&#x3b8;"),
         Plurimath::Math::Function::Linebreak.new,
-        Plurimath::Math::Symbol.new("&#x3b3;")
+        Plurimath::Math::Symbols::Symbol.new("&#x3b3;")
       ]),
     )
   ])
   LineBreak_071 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Ubrace.new(
       Plurimath::Math::Formula.new([
-        Plurimath::Math::Symbol.new("&#x3b8;"),
+        Plurimath::Math::Symbols::Symbol.new("&#x3b8;"),
         Plurimath::Math::Function::Linebreak.new,
-        Plurimath::Math::Symbol.new("&#x3b3;")
+        Plurimath::Math::Symbols::Symbol.new("&#x3b3;")
       ]),
     )
   ])
   LineBreak_072 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Over.new(
       Plurimath::Math::Formula.new([
-        Plurimath::Math::Symbol.new("&#x3b8;"),
+        Plurimath::Math::Symbols::Symbol.new("&#x3b8;"),
         Plurimath::Math::Function::Linebreak.new,
-        Plurimath::Math::Symbol.new("&#x3b3;")
+        Plurimath::Math::Symbols::Symbol.new("&#x3b3;")
       ]),
       Plurimath::Math::Formula.new([
-        Plurimath::Math::Symbol.new("&#x2222;"),
+        Plurimath::Math::Symbols::Symbol.new("&#x2222;"),
         Plurimath::Math::Function::Linebreak.new,
-        Plurimath::Math::Symbol.new("&#xd3;")
+        Plurimath::Math::Symbols::Symbol.new("&#xd3;")
       ])
     )
   ])
   LineBreak_073 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Nary.new(
       Plurimath::Math::Formula.new([
-        Plurimath::Math::Symbol.new("&#x2211;"),
+        Plurimath::Math::Function::Sum.new,
         Plurimath::Math::Function::Linebreak.new,
-        Plurimath::Math::Symbol.new("&#x220f;"),
+        Plurimath::Math::Function::Prod.new,
       ]),
       Plurimath::Math::Formula.new([
-        Plurimath::Math::Symbol.new("&#x2222;"),
+        Plurimath::Math::Symbols::Symbol.new("&#x2222;"),
         Plurimath::Math::Function::Linebreak.new,
-        Plurimath::Math::Symbol.new("&#xd3;")
+        Plurimath::Math::Symbols::Symbol.new("&#xd3;")
       ]),
       Plurimath::Math::Formula.new([
-        Plurimath::Math::Symbol.new("&#x2422;"),
+        Plurimath::Math::Symbols::Symbol.new("&#x2422;"),
         Plurimath::Math::Function::Linebreak.new,
-        Plurimath::Math::Symbol.new("&#xd5;")
+        Plurimath::Math::Symbols::Symbol.new("&#xd5;")
       ]),
       Plurimath::Math::Formula.new([
-        Plurimath::Math::Symbol.new("&#x2262;"),
+        Plurimath::Math::Symbols::Symbol.new("&#x2262;"),
         Plurimath::Math::Function::Linebreak.new,
-        Plurimath::Math::Symbol.new("&#xd1;")
+        Plurimath::Math::Symbols::Symbol.new("&#xd1;")
       ])
     )
   ])
   LineBreak_074 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Base.new(
       Plurimath::Math::Formula.new([
-        Plurimath::Math::Symbol.new("&#x3b8;"),
+        Plurimath::Math::Symbols::Symbol.new("&#x3b8;"),
         Plurimath::Math::Function::Linebreak.new,
-        Plurimath::Math::Symbol.new("&#x3b3;")
+        Plurimath::Math::Symbols::Symbol.new("&#x3b3;")
       ]),
       Plurimath::Math::Formula.new([
-        Plurimath::Math::Symbol.new("&#x2222;"),
+        Plurimath::Math::Symbols::Symbol.new("&#x2222;"),
         Plurimath::Math::Function::Linebreak.new,
-        Plurimath::Math::Symbol.new("&#xd3;")
+        Plurimath::Math::Symbols::Symbol.new("&#xd3;")
       ])
     )
   ])
   LineBreak_075 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Power.new(
       Plurimath::Math::Formula.new([
-        Plurimath::Math::Symbol.new("&#x3b8;"),
+        Plurimath::Math::Symbols::Symbol.new("&#x3b8;"),
         Plurimath::Math::Function::Linebreak.new,
-        Plurimath::Math::Symbol.new("&#x3b3;")
+        Plurimath::Math::Symbols::Symbol.new("&#x3b3;")
       ]),
       Plurimath::Math::Formula.new([
-        Plurimath::Math::Symbol.new("&#x2222;"),
+        Plurimath::Math::Symbols::Symbol.new("&#x2222;"),
         Plurimath::Math::Function::Linebreak.new,
-        Plurimath::Math::Symbol.new("&#xd3;")
+        Plurimath::Math::Symbols::Symbol.new("&#xd3;")
       ])
     )
   ])
   LineBreak_076 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Limits.new(
       Plurimath::Math::Formula.new([
-        Plurimath::Math::Symbol.new("&#x3b8;"),
+        Plurimath::Math::Symbols::Symbol.new("&#x3b8;"),
         Plurimath::Math::Function::Linebreak.new,
-        Plurimath::Math::Symbol.new("&#x3b3;")
+        Plurimath::Math::Symbols::Symbol.new("&#x3b3;")
       ]),
       Plurimath::Math::Formula.new([
-        Plurimath::Math::Symbol.new("&#x2222;"),
+        Plurimath::Math::Symbols::Symbol.new("&#x2222;"),
         Plurimath::Math::Function::Linebreak.new,
-        Plurimath::Math::Symbol.new("&#xd3;")
+        Plurimath::Math::Symbols::Symbol.new("&#xd3;")
       ]),
       Plurimath::Math::Formula.new([
-        Plurimath::Math::Symbol.new("&#x2211;"),
+        Plurimath::Math::Function::Sum.new,
         Plurimath::Math::Function::Linebreak.new,
-        Plurimath::Math::Symbol.new("&#x220f;")
+        Plurimath::Math::Function::Prod.new
       ])
     )
   ])
   LineBreak_077 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Scarries.new(
       Plurimath::Math::Formula.new([
-        Plurimath::Math::Symbol.new("&#x2211;"),
+        Plurimath::Math::Function::Sum.new,
         Plurimath::Math::Function::Linebreak.new,
-        Plurimath::Math::Symbol.new("&#x220f;")
+        Plurimath::Math::Function::Prod.new
       ])
     )
   ])
   LineBreak_078 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Obrace.new(
       Plurimath::Math::Formula.new([
-        Plurimath::Math::Symbol.new("&#x2211;"),
+        Plurimath::Math::Function::Sum.new,
         Plurimath::Math::Function::Linebreak.new,
-        Plurimath::Math::Symbol.new("&#x220f;")
+        Plurimath::Math::Function::Prod.new
       ])
     )
   ])
   LineBreak_079 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Overset.new(
       Plurimath::Math::Formula.new([
-        Plurimath::Math::Symbol.new("&#x2211;"),
+        Plurimath::Math::Function::Sum.new,
         Plurimath::Math::Function::Linebreak.new,
-        Plurimath::Math::Symbol.new("&#x220f;")
+        Plurimath::Math::Function::Prod.new
       ]),
       Plurimath::Math::Formula.new([
-        Plurimath::Math::Symbol.new("&#x2222;"),
+        Plurimath::Math::Symbols::Symbol.new("&#x2222;"),
         Plurimath::Math::Function::Linebreak.new,
-        Plurimath::Math::Symbol.new("&#x6f;")
+        Plurimath::Math::Symbols::Symbol.new("&#x6f;")
       ])
     )
   ])
   LineBreak_080 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Overset.new(
       Plurimath::Math::Formula.new([
-        Plurimath::Math::Symbol.new("&#x2211;"),
+        Plurimath::Math::Function::Sum.new,
         Plurimath::Math::Function::Linebreak.new,
-        Plurimath::Math::Symbol.new("&#x220f;")
+        Plurimath::Math::Function::Prod.new
       ]),
       Plurimath::Math::Formula.new([
-        Plurimath::Math::Symbol.new("&#x2222;"),
-        Plurimath::Math::Symbol.new("&#x6f;")
+        Plurimath::Math::Symbols::Symbol.new("&#x2222;"),
+        Plurimath::Math::Symbols::Symbol.new("&#x6f;")
       ])
     )
   ])
   LineBreak_081 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Underset.new(
       Plurimath::Math::Formula.new([
-        Plurimath::Math::Symbol.new("&#x2211;"),
+        Plurimath::Math::Function::Sum.new,
         Plurimath::Math::Function::Linebreak.new,
-        Plurimath::Math::Symbol.new("&#x220f;")
+        Plurimath::Math::Function::Prod.new
       ]),
       Plurimath::Math::Formula.new([
-        Plurimath::Math::Symbol.new("&#x2222;"),
+        Plurimath::Math::Symbols::Symbol.new("&#x2222;"),
         Plurimath::Math::Function::Linebreak.new,
-        Plurimath::Math::Symbol.new("&#x6f;")
+        Plurimath::Math::Symbols::Symbol.new("&#x6f;")
       ])
     )
   ])
   LineBreak_082 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::PowerBase.new(
       Plurimath::Math::Formula.new([
-        Plurimath::Math::Symbol.new("&#x3b1;"),
+        Plurimath::Math::Symbols::Symbol.new("&#x3b1;"),
         Plurimath::Math::Function::Linebreak.new(
-          Plurimath::Math::Symbol.new("="),
+          Plurimath::Math::Symbols::Equal.new,
           { linebreak: "newline" }
         ),
-        Plurimath::Math::Symbol.new("&#x3b2;")
+        Plurimath::Math::Symbols::Symbol.new("&#x3b2;")
       ]),
       Plurimath::Math::Formula.new([
-        Plurimath::Math::Symbol.new("&#x3b3;"),
+        Plurimath::Math::Symbols::Symbol.new("&#x3b3;"),
         Plurimath::Math::Function::Linebreak.new(
-          Plurimath::Math::Symbol.new("="),
+          Plurimath::Math::Symbols::Equal.new,
           { linebreak: "newline" }
         ),
-        Plurimath::Math::Symbol.new("&#x3b4;")
+        Plurimath::Math::Symbols::Symbol.new("&#x3b4;")
       ]),
       Plurimath::Math::Formula.new([
-        Plurimath::Math::Symbol.new("&#x3b2;"),
+        Plurimath::Math::Symbols::Symbol.new("&#x3b2;"),
         Plurimath::Math::Function::Linebreak.new(
-          Plurimath::Math::Symbol.new("="),
+          Plurimath::Math::Symbols::Equal.new,
           { linebreak: "newline" }
         ),
-        Plurimath::Math::Symbol.new("&#x3b5;")
+        Plurimath::Math::Symbols::Symbol.new("&#x3b5;")
       ])
     )
   ])
   LineBreak_083 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Multiscript.new(
       Plurimath::Math::Function::PowerBase.new(
-        Plurimath::Math::Symbol.new("&#x3b1;"),
+        Plurimath::Math::Symbols::Symbol.new("&#x3b1;"),
         Plurimath::Math::Function::Linebreak.new(
-          Plurimath::Math::Symbol.new("="),
+          Plurimath::Math::Symbols::Equal.new,
           { linebreak: "newline" }
         ),
-        Plurimath::Math::Symbol.new("&#x3b1;")
+        Plurimath::Math::Symbols::Symbol.new("&#x3b1;")
       ),
       Plurimath::Math::Formula.new([
-        Plurimath::Math::Symbol.new("&#x3b3;"),
+        Plurimath::Math::Symbols::Symbol.new("&#x3b3;"),
         Plurimath::Math::Function::Linebreak.new(
-          Plurimath::Math::Symbol.new("="),
+          Plurimath::Math::Symbols::Equal.new,
           { linebreak: "newline" }
         ),
-        Plurimath::Math::Symbol.new("&#x3b3;")
+        Plurimath::Math::Symbols::Symbol.new("&#x3b3;")
       ]),
       Plurimath::Math::Formula.new([
-        Plurimath::Math::Symbol.new("&#x3b2;"),
+        Plurimath::Math::Symbols::Symbol.new("&#x3b2;"),
         Plurimath::Math::Function::Linebreak.new(
-          Plurimath::Math::Symbol.new("="),
+          Plurimath::Math::Symbols::Equal.new,
           { linebreak: "newline" }
         ),
-        Plurimath::Math::Symbol.new("&#x3b2;")
+        Plurimath::Math::Symbols::Symbol.new("&#x3b2;")
       ])
     )
   ])
@@ -1280,18 +1280,18 @@ module LineBreakValues
     Plurimath::Math::Function::Substack.new([
         Plurimath::Math::Function::Tr.new([
           Plurimath::Math::Function::Td.new([
-            Plurimath::Math::Symbol.new("a"),
-            Plurimath::Math::Symbol.new("b"),
+            Plurimath::Math::Symbols::Symbol.new("a"),
+            Plurimath::Math::Symbols::Symbol.new("b"),
             Plurimath::Math::Function::Linebreak.new,
-            Plurimath::Math::Symbol.new("d")
+            Plurimath::Math::Symbols::Symbol.new("d")
           ])
         ]),
         Plurimath::Math::Function::Tr.new([
           Plurimath::Math::Function::Td.new([
-            Plurimath::Math::Symbol.new("d"),
+            Plurimath::Math::Symbols::Symbol.new("d"),
             Plurimath::Math::Function::Linebreak.new,
-            Plurimath::Math::Symbol.new("e"),
-            Plurimath::Math::Symbol.new("c")
+            Plurimath::Math::Symbols::Symbol.new("e"),
+            Plurimath::Math::Symbols::Symbol.new("c")
           ])
         ])
     ])
@@ -1299,58 +1299,58 @@ module LineBreakValues
   LineBreak_085 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Stackrel.new(
       Plurimath::Math::Formula.new([
-        Plurimath::Math::Symbol.new("d"),
+        Plurimath::Math::Symbols::Symbol.new("d"),
         Plurimath::Math::Function::Linebreak.new,
-        Plurimath::Math::Symbol.new("e")
+        Plurimath::Math::Symbols::Symbol.new("e")
       ]),
       Plurimath::Math::Formula.new([
-        Plurimath::Math::Symbol.new("s"),
+        Plurimath::Math::Symbols::Symbol.new("s"),
         Plurimath::Math::Function::Linebreak.new,
-        Plurimath::Math::Symbol.new("p")
+        Plurimath::Math::Symbols::Symbol.new("p")
       ])
     )
   ])
   LineBreak_086 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Ceil.new(
       Plurimath::Math::Formula.new([
-        Plurimath::Math::Symbol.new("&#x3b3;"),
+        Plurimath::Math::Symbols::Symbol.new("&#x3b3;"),
         Plurimath::Math::Function::Linebreak.new,
-        Plurimath::Math::Symbol.new("&#x3b8;"),
+        Plurimath::Math::Symbols::Symbol.new("&#x3b8;"),
         Plurimath::Math::Function::Linebreak.new,
-        Plurimath::Math::Symbol.new("&#x3b1;")
+        Plurimath::Math::Symbols::Symbol.new("&#x3b1;")
       ])
     )
   ])
   LineBreak_087 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Floor.new(
       Plurimath::Math::Formula.new([
-        Plurimath::Math::Symbol.new("&#x3b3;"),
+        Plurimath::Math::Symbols::Symbol.new("&#x3b3;"),
         Plurimath::Math::Function::Linebreak.new,
-        Plurimath::Math::Symbol.new("&#x3b8;"),
+        Plurimath::Math::Symbols::Symbol.new("&#x3b8;"),
         Plurimath::Math::Function::Linebreak.new,
-        Plurimath::Math::Symbol.new("&#x3b1;")
+        Plurimath::Math::Symbols::Symbol.new("&#x3b1;")
       ])
     )
   ])
   LineBreak_088 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Norm.new(
       Plurimath::Math::Formula.new([
-        Plurimath::Math::Symbol.new("&#x3b3;"),
+        Plurimath::Math::Symbols::Symbol.new("&#x3b3;"),
         Plurimath::Math::Function::Linebreak.new,
-        Plurimath::Math::Symbol.new("&#x3b8;"),
+        Plurimath::Math::Symbols::Symbol.new("&#x3b8;"),
         Plurimath::Math::Function::Linebreak.new,
-        Plurimath::Math::Symbol.new("&#x3b1;")
+        Plurimath::Math::Symbols::Symbol.new("&#x3b1;")
       ])
     )
   ])
   LineBreak_089 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Abs.new(
       Plurimath::Math::Formula.new([
-        Plurimath::Math::Symbol.new("&#x3b3;"),
+        Plurimath::Math::Symbols::Symbol.new("&#x3b3;"),
         Plurimath::Math::Function::Linebreak.new,
-        Plurimath::Math::Symbol.new("&#x3b8;"),
+        Plurimath::Math::Symbols::Symbol.new("&#x3b8;"),
         Plurimath::Math::Function::Linebreak.new,
-        Plurimath::Math::Symbol.new("&#x3b1;")
+        Plurimath::Math::Symbols::Symbol.new("&#x3b1;")
       ])
     )
   ])
@@ -1358,31 +1358,31 @@ module LineBreakValues
     Plurimath::Math::Function::Multiscript.new(
       Plurimath::Math::Function::PowerBase.new(
         Plurimath::Math::Formula.new([
-          Plurimath::Math::Symbol.new("a"),
+          Plurimath::Math::Symbols::Symbol.new("a"),
           Plurimath::Math::Function::Linebreak.new(
-            Plurimath::Math::Symbol.new("="),
+            Plurimath::Math::Symbols::Equal.new,
             { linebreak: "newline" }
           ),
-          Plurimath::Math::Symbol.new("b"),
+          Plurimath::Math::Symbols::Symbol.new("b"),
         ]),
-        Plurimath::Math::Symbol.new("&#x3b1;"),
-        Plurimath::Math::Symbol.new("&#x3b1;")
+        Plurimath::Math::Symbols::Symbol.new("&#x3b1;"),
+        Plurimath::Math::Symbols::Symbol.new("&#x3b1;")
       ),
       Plurimath::Math::Formula.new([
-        Plurimath::Math::Symbol.new("&#x3b3;"),
+        Plurimath::Math::Symbols::Symbol.new("&#x3b3;"),
         Plurimath::Math::Function::Linebreak.new(
-          Plurimath::Math::Symbol.new("="),
+          Plurimath::Math::Symbols::Equal.new,
           { linebreak: "newline" }
         ),
-        Plurimath::Math::Symbol.new("&#x3b3;")
+        Plurimath::Math::Symbols::Symbol.new("&#x3b3;")
       ]),
       Plurimath::Math::Formula.new([
-        Plurimath::Math::Symbol.new("&#x3b2;"),
+        Plurimath::Math::Symbols::Symbol.new("&#x3b2;"),
         Plurimath::Math::Function::Linebreak.new(
-          Plurimath::Math::Symbol.new("="),
+          Plurimath::Math::Symbols::Equal.new,
           { linebreak: "newline" }
         ),
-        Plurimath::Math::Symbol.new("&#x3b2;")
+        Plurimath::Math::Symbols::Symbol.new("&#x3b2;")
       ])
     )
   ])

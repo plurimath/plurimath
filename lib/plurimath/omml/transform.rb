@@ -4,7 +4,7 @@ require "parslet"
 module Plurimath
   class Omml
     class Transform < Parslet::Transform
-      rule(t: simple(:t))   { Utility.text_classes(t) }
+      rule(t: simple(:t))   { Utility.text_classes(t, lang: :omml) }
       rule(e: subtree(:e))  { e.flatten.compact }
       rule(i: sequence(:i)) { i }
       rule(e: sequence(:e)) { e.flatten.compact }
@@ -90,7 +90,7 @@ module Plurimath
         if t.empty?
           Math::Function::Text.new
         else
-          t&.compact&.empty? ? [nil] : Utility.mathml_unary_classes(t, omml: true)
+          t&.compact&.empty? ? [nil] : Utility.mathml_unary_classes(t, omml: true, lang: :omml)
         end
       end
 
@@ -98,8 +98,8 @@ module Plurimath
         fenced = data.shift
         fenced_value = data.flatten.compact
         if data.length == 1 && data.flatten.compact.first.is_a?(Math::Function::Table)
-          fenced_value.first.open_paren = fenced&.parameter_one&.value
-          fenced_value.first.close_paren = fenced&.parameter_three&.value
+          fenced_value.first.open_paren = fenced&.parameter_one
+          fenced_value.first.close_paren = fenced&.parameter_three
           data
         else
           fenced.parameter_two = data.flatten.compact
@@ -109,11 +109,11 @@ module Plurimath
 
       rule(dPr: subtree(:dpr)) do
         flatten_dpr = dpr.flatten.compact
-        open_paren  = flatten_dpr.find { |hash| hash[:begChr] }&.values&.first
-        close_paren = flatten_dpr.find { |hash| hash[:endChr] }&.values&.first
+        open_paren  = Utility.string_to_html_entity(flatten_dpr.find { |hash| hash[:begChr] }&.values&.first)
+        close_paren = Utility.string_to_html_entity(flatten_dpr.find { |hash| hash[:endChr] }&.values&.first)
         sep_chr     = flatten_dpr.find { |hash| hash[:sepChr] }
-        open_paren_object = Utility.symbol_object(open_paren) if open_paren
-        close_paren_object = Utility.symbol_object(close_paren) if close_paren
+        open_paren_object = Utility.symbol_object(open_paren, lang: :omml) if open_paren && !open_paren.empty?
+        close_paren_object = Utility.symbol_object(close_paren, lang: :omml) if close_paren && !close_paren.empty?
         fenced = Math::Function::Fenced.new(
           open_paren_object,
           nil,
@@ -155,7 +155,7 @@ module Plurimath
       end
 
       rule(lim: sequence(:lim)) do
-        lim.any?(String) ? Utility.text_classes(lim) : Utility.filter_values(lim)
+        lim.any?(String) ? Utility.text_classes(lim, lang: :omml) : Utility.filter_values(lim)
       end
 
       rule(acc: subtree(:acc)) do
@@ -164,28 +164,28 @@ module Plurimath
         chr_value = chr ? chr[:chr] : Math::Function::Hat.new
         index = acc_value.index { |d| d[:chr] }
         acc_value[index] = chr_value
-        Utility.unary_function_classes(acc_value)
+        Utility.unary_function_classes(acc_value, lang: :omml)
         acc_value.first.attributes = { accent: true }
         acc_value.first
       end
 
       rule(func: subtree(:func)) do
         Utility.filter_values(
-          Utility.populate_function_classes(func),
+          Utility.populate_function_classes(func, lang: :omml),
         )
       end
 
       rule(nary: subtree(:nary)) do
         flatten_nary = nary.flatten.compact
         chr = Utility.find_pos_chr(flatten_nary, :chr)
-        ternary_class = Utility.mathml_unary_classes(chr.values) if chr
+        ternary_class = Utility.mathml_unary_classes(chr.values, lang: :omml) if chr
         if ternary_class.is_a?(Math::Function::TernaryFunction)
           ternary_class.parameter_one = Utility.filter_values(nary[1])
           ternary_class.parameter_two = Utility.filter_values(nary[2])
           ternary_class.parameter_three = Utility.filter_values(nary[3])
           ternary_class
         else
-          Utility.nary_fonts(nary)
+          Utility.nary_fonts(nary, lang: :omml)
         end
       end
 
@@ -195,12 +195,12 @@ module Plurimath
         chr = Utility.find_pos_chr(chr_pos, :chr)
         if pos&.value?("top")
           Math::Function::Overset.new(
-            Math::Symbol.new(chr ? chr[:chr] : ""),
+            Math::Symbols::Symbol.new(chr ? chr[:chr] : ""),
             Utility.filter_values(groupchr[1]),
           )
         else
           Math::Function::Underset.new(
-            Math::Symbol.new(chr ? chr[:chr] : "⏟"),
+            Math::Symbols::Symbol.new(chr ? chr[:chr] : "⏟"),
             Utility.filter_values(groupchr[1]),
           )
         end
@@ -209,7 +209,7 @@ module Plurimath
       rule(sSubSup: subtree(:sSubSup)) do
         subsup = sSubSup.flatten.compact
         subsup.each_with_index do |object, ind|
-          subsup[ind] = Utility.mathml_unary_classes([object]) if object.is_a?(String)
+          subsup[ind] = Utility.mathml_unary_classes([object], lang: :omml) if object.is_a?(String)
         end
         if Utility.valid_class(subsup[0])
           Utility.get_class(
@@ -273,8 +273,6 @@ module Plurimath
 
       rule(limLow: subtree(:lim)) do
         second_value = Utility.filter_values(lim[2])
-        unicode = Mathml::Constants::UNICODE_SYMBOLS.invert[second_value&.class_name]
-        second_value = unicode ? Math::Symbol.new(unicode.to_s) : second_value
         if second_value.is_unary? && second_value.value_nil?
           second_value.parameter_one = Utility.filter_values(lim[1])
           second_value

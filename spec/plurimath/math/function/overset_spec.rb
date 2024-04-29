@@ -19,11 +19,11 @@ RSpec.describe Plurimath::Math::Function::Overset do
     subject(:formula) { described_class.new(first_value, second_value).to_asciimath }
 
     context "contains Symbol as value" do
-      let(:first_value) { Plurimath::Math::Symbol.new("n") }
+      let(:first_value) { Plurimath::Math::Symbols::Symbol.new("n") }
       let(:second_value) do
         Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Prod.new(
-            Plurimath::Math::Symbol.new("&"),
+            Plurimath::Math::Symbols::Ampersand.new,
             Plurimath::Math::Function::Text.new("so"),
           )
         ])
@@ -38,7 +38,7 @@ RSpec.describe Plurimath::Math::Function::Overset do
       let(:first_value) do
         Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Prod.new(
-            Plurimath::Math::Symbol.new("&"),
+            Plurimath::Math::Symbols::Ampersand.new,
             Plurimath::Math::Function::Text.new("so"),
           )
         ])
@@ -54,7 +54,7 @@ RSpec.describe Plurimath::Math::Function::Overset do
       let(:first_value) do
         Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Sum.new(
-            Plurimath::Math::Symbol.new("&"),
+            Plurimath::Math::Symbols::Ampersand.new,
             Plurimath::Math::Function::Text.new("so"),
           )
         ])
@@ -62,7 +62,7 @@ RSpec.describe Plurimath::Math::Function::Overset do
       let(:second_value) do
         Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Prod.new(
-            Plurimath::Math::Symbol.new("&"),
+            Plurimath::Math::Symbols::Ampersand.new,
             Plurimath::Math::Function::Text.new("so"),
           )
         ])
@@ -84,11 +84,11 @@ RSpec.describe Plurimath::Math::Function::Overset do
     end
 
     context "contains Symbol as value" do
-      let(:first_value) { Plurimath::Math::Symbol.new("n") }
+      let(:first_value) { Plurimath::Math::Symbols::Symbol.new("n") }
       let(:second_value) do
         Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Prod.new(
-            Plurimath::Math::Symbol.new("&"),
+            Plurimath::Math::Symbols::Ampersand.new,
             Plurimath::Math::Function::Text.new("so"),
           )
         ])
@@ -102,7 +102,7 @@ RSpec.describe Plurimath::Math::Function::Overset do
             <mrow>
               <munderover>
                 <mo>&#x220f;</mo>
-                <mo>&#x26;</mo>
+                <mo>&</mo>
                 <mtext>so</mtext>
               </munderover>
             </mrow>
@@ -116,7 +116,7 @@ RSpec.describe Plurimath::Math::Function::Overset do
       let(:first_value) do
         Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Prod.new(
-            Plurimath::Math::Symbol.new("&"),
+            Plurimath::Math::Symbols::Ampersand.new,
             Plurimath::Math::Function::Text.new("so"),
           )
         ])
@@ -129,7 +129,7 @@ RSpec.describe Plurimath::Math::Function::Overset do
             <mrow>
               <munderover>
                 <mo>&#x220f;</mo>
-                <mo>&#x26;</mo>
+                <mo>&</mo>
                 <mtext>so</mtext>
               </munderover>
             </mrow>
@@ -144,7 +144,7 @@ RSpec.describe Plurimath::Math::Function::Overset do
       let(:first_value) do
         Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Sum.new(
-            Plurimath::Math::Symbol.new("&"),
+            Plurimath::Math::Symbols::Ampersand.new,
             Plurimath::Math::Function::Text.new("so"),
           )
         ])
@@ -152,7 +152,7 @@ RSpec.describe Plurimath::Math::Function::Overset do
       let(:second_value) do
         Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Prod.new(
-            Plurimath::Math::Symbol.new("&"),
+            Plurimath::Math::Symbols::Ampersand.new,
             Plurimath::Math::Function::Text.new("so"),
           )
         ])
@@ -164,14 +164,14 @@ RSpec.describe Plurimath::Math::Function::Overset do
             <mrow>
               <munderover>
                 <mo>&#x220f;</mo>
-                <mo>&#x26;</mo>
+                <mo>&</mo>
                 <mtext>so</mtext>
               </munderover>
             </mrow>
             <mrow>
               <munderover>
                 <mo>&#x2211;</mo>
-                <mo>&#x26;</mo>
+                <mo>&</mo>
                 <mtext>so</mtext>
               </munderover>
             </mrow>
@@ -186,18 +186,18 @@ RSpec.describe Plurimath::Math::Function::Overset do
     subject(:formula) { described_class.new(first_value, second_value).to_latex }
 
     context "contains Symbol as value" do
-      let(:first_value) { Plurimath::Math::Symbol.new("n") }
+      let(:first_value) { Plurimath::Math::Symbols::Symbol.new("n") }
       let(:second_value) do
         Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Prod.new(
-            Plurimath::Math::Symbol.new("&"),
+            Plurimath::Math::Symbols::Ampersand.new,
             Plurimath::Math::Function::Text.new("so"),
           )
         ])
       end
 
       it "returns mathml string" do
-        expect(formula).to eql("\\overset{n}{ \\left ( \\prod_{&}^{\\text{so}} \\right ) }")
+        expect(formula).to eql("\\overset{n}{ \\left ( \\prod_{\\&}^{\\text{so}} \\right ) }")
       end
     end
 
@@ -206,14 +206,14 @@ RSpec.describe Plurimath::Math::Function::Overset do
       let(:second_value) do
         Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Prod.new(
-            Plurimath::Math::Symbol.new("&"),
+            Plurimath::Math::Symbols::Ampersand.new,
             Plurimath::Math::Function::Text.new("so"),
           )
         ])
       end
 
       it "returns mathml string" do
-        expect(formula).to eql("\\overset{70}{ \\left ( \\prod_{&}^{\\text{so}} \\right ) }")
+        expect(formula).to eql("\\overset{70}{ \\left ( \\prod_{\\&}^{\\text{so}} \\right ) }")
       end
     end
 
@@ -221,7 +221,7 @@ RSpec.describe Plurimath::Math::Function::Overset do
       let(:first_value) do
         Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Sum.new(
-            Plurimath::Math::Symbol.new("&"),
+            Plurimath::Math::Symbols::Ampersand.new,
             Plurimath::Math::Function::Text.new("so"),
           )
         ])
@@ -229,14 +229,14 @@ RSpec.describe Plurimath::Math::Function::Overset do
       let(:second_value) do
         Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Prod.new(
-            Plurimath::Math::Symbol.new("&"),
+            Plurimath::Math::Symbols::Ampersand.new,
             Plurimath::Math::Function::Text.new("so"),
           )
         ])
       end
 
       it "returns mathml string" do
-        expect(formula).to eql("\\overset{ \\left ( \\sum_{&}^{\\text{so}} \\right ) }{ \\left ( \\prod_{&}^{\\text{so}} \\right ) }")
+        expect(formula).to eql("\\overset{ \\left ( \\sum_{\\&}^{\\text{so}} \\right ) }{ \\left ( \\prod_{\\&}^{\\text{so}} \\right ) }")
       end
     end
   end
@@ -245,11 +245,11 @@ RSpec.describe Plurimath::Math::Function::Overset do
     subject(:formula) { described_class.new(first_value, second_value).to_html }
 
     context "contains Symbol as value" do
-      let(:first_value) { Plurimath::Math::Symbol.new("n") }
+      let(:first_value) { Plurimath::Math::Symbols::Symbol.new("n") }
       let(:second_value) do
         Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Prod.new(
-            Plurimath::Math::Symbol.new("&"),
+            Plurimath::Math::Symbols::Ampersand.new,
             Plurimath::Math::Function::Text.new("so"),
           )
         ])
@@ -262,7 +262,7 @@ RSpec.describe Plurimath::Math::Function::Overset do
 
     context "contains Number as value" do
       let(:first_value) { Plurimath::Math::Number.new("70") }
-      let(:second_value) { Plurimath::Math::Symbol.new("n") }
+      let(:second_value) { Plurimath::Math::Symbols::Symbol.new("n") }
 
       it "returns mathml string" do
         expect(formula).to eql("<i>70</i><i>n</i>")
@@ -273,7 +273,7 @@ RSpec.describe Plurimath::Math::Function::Overset do
       let(:first_value) do
         Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Sum.new(
-            Plurimath::Math::Symbol.new("&"),
+            Plurimath::Math::Symbols::Ampersand.new,
             Plurimath::Math::Function::Text.new("so"),
           )
         ])
@@ -281,7 +281,7 @@ RSpec.describe Plurimath::Math::Function::Overset do
       let(:second_value) do
         Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Prod.new(
-            Plurimath::Math::Symbol.new("&"),
+            Plurimath::Math::Symbols::Ampersand.new,
             Plurimath::Math::Function::Text.new("so"),
           )
         ])

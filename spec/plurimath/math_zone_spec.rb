@@ -57,7 +57,7 @@ RSpec.describe Plurimath::Math do
                |        |  |_ "mathbb("d")" function apply
                |        |  |  |_ "bbb" font family
                |        |  |  |_ ""d"" argument
-               |        |  |_ "&#x3b8;" text
+               |        |  |_ "theta" text
                |        |_ "a + b sintheta" denominator
                |           |_ "a + b" text
                |           |_ "sintheta" function apply
@@ -174,14 +174,14 @@ RSpec.describe Plurimath::Math do
                |_ "table" function apply
                   |_ "tr" function apply
                   |  |_ "td" function apply
-                  |  |  |_ "&#x3c3;" text
+                  |  |  |_ "sigma" text
                   |  |_ "td" function apply
-                  |     |_ "&#x3b3;" text
+                  |     |_ "gamma" text
                   |_ "tr" function apply
                      |_ "td" function apply
-                     |  |_ "&#x3b8;" text
+                     |  |_ "theta" text
                      |_ "td" function apply
-                        |_ "&#x3b1;" text
+                        |_ "alpha" text
         MATHZONE
         expect(formula).to eql(expected_value)
       end
@@ -441,7 +441,7 @@ RSpec.describe Plurimath::Math do
                |        |  |_ "<mstyle mathvariant="double-struck"><mtext>d</mtext></mstyle>" function apply
                |        |  |  |_ "double-struck" font family
                |        |  |  |_ "<mtext>d</mtext>" argument
-               |        |  |_ "<mtext>&#x3b8;</mtext>" text
+               |        |  |_ "<mi>&#x3b8;</mi>" text
                |        |_ "<mrow><mi>a</mi><mo>+</mo><mi>b</mi><mrow><mi>sin</mi><mi>&#x3b8;</mi></mrow></mrow>" denominator
                |          |_ "<mtext>a + b</mtext>" text
                |          |_ "<mrow><mi>sin</mi><mi>&#x3b8;</mi></mrow>" function apply
@@ -679,14 +679,14 @@ RSpec.describe Plurimath::Math do
                |_ "table" function apply
                   |_ "tr" function apply
                   |  |_ "td" function apply
-                  |  |  |_ "<mtext>&#x3c3;</mtext>" text
+                  |  |  |_ "<mi>&#x3c3;</mi>" text
                   |  |_ "td" function apply
-                  |     |_ "<mtext>&#x3b3;</mtext>" text
+                  |     |_ "<mi>&#x3b3;</mi>" text
                   |_ "tr" function apply
                      |_ "td" function apply
-                     |  |_ "<mtext>&#x3b8;</mtext>" text
+                     |  |_ "<mi>&#x3b8;</mi>" text
                      |_ "td" function apply
-                        |_ "<mtext>&#x3b1;</mtext>" text
+                        |_ "<mi>&#x3b1;</mi>" text
         MATHZONE
         expect(formula).to eql(expected_value)
       end
@@ -780,14 +780,14 @@ RSpec.describe Plurimath::Math do
                 <mo>|</mo>
               </mrow>
               <mrow>
-                <mo>&#x230a;</mo>
+                <mo>⌊</mo>
                 <mi>x</mi>
-                <mo>&#x230b;</mo>
+                <mo>⌋</mo>
               </mrow>
               <mrow>
-                <mo>&#x2308;</mo>
+                <mo>⌈</mo>
                 <mi>x</mi>
-                <mo>&#x2309;</mo>
+                <mo>⌉</mo>
               </mrow>
               <mrow>
                 <mo>&#x2225;</mo>
@@ -805,15 +805,15 @@ RSpec.describe Plurimath::Math do
       it 'should puts Math zone representation of sample example #12' do
         expected_value = <<~MATHZONE
           |_ Math zone
-            |_ "<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mstyle displaystyle="true"><mrow><mrow><mo>|</mo><mi>x</mi><mo>|</mo></mrow><mrow><mo>&#x230a;</mo><mi>x</mi><mo>&#x230b;</mo></mrow><mrow><mo>&#x2308;</mo><mi>x</mi><mo>&#x2309;</mo></mrow><mrow><mi>&#x2225;</mi><mover><mi>x</mi><mo>&#x2192;</mo></mover><mi>&#x2225;</mi></mrow></mrow></mstyle></math>"
-               |_ "<mtext>| x |</mtext>" text
+            |_ "<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mstyle displaystyle="true"><mrow><mrow><mo>|</mo><mi>x</mi><mo>|</mo></mrow><mrow><mo>⌊</mo><mi>x</mi><mo>⌋</mo></mrow><mrow><mo>⌈</mo><mi>x</mi><mo>⌉</mo></mrow><mrow><mi>&#x2225;</mi><mover><mi>x</mi><mo>&#x2192;</mo></mover><mi>&#x2225;</mi></mrow></mrow></mstyle></math>"
                |_ "<mtext>x</mtext>" text
                |_ "<mtext>x</mtext>" text
-               |_ "<mtext>&#x2225;</mtext>" text
+               |_ "<mtext>x</mtext>" text
+               |_ "<mi>&#x2225;</mi>" text
                |_ "<mover><mi>x</mi><mo>&#x2192;</mo></mover>" overset
                |  |_ "<mo>&#x2192;</mo>" base
                |  |_ "<mi>x</mi>" supscript
-               |_ "<mtext>&#x2225;</mtext>" text
+               |_ "<mi>&#x2225;</mi>" text
         MATHZONE
         expect(formula).to eql(expected_value)
       end
@@ -1852,7 +1852,9 @@ RSpec.describe Plurimath::Math do
         expected_value = <<~MATHZONE
           |_ Math zone
             |_ "<m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape"><m:oMath><m:r><m:t>|</m:t></m:r><m:r><m:t>x</m:t></m:r><m:r><m:t>|</m:t></m:r><m:d><m:dPr><m:begChr m:val="⌊"/><m:sepChr m:val=""/><m:endChr m:val="⌋"/></m:dPr><m:e><m:r><m:t>x</m:t></m:r></m:e></m:d><m:d><m:dPr><m:begChr m:val="⌈"/><m:sepChr m:val=""/><m:endChr m:val="⌉"/></m:dPr><m:e><m:r><m:t>x</m:t></m:r></m:e></m:d><m:r><m:t>&#x2225;</m:t></m:r><m:limUpp><m:limUppPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:limUppPr><m:e><m:r><m:t>x</m:t></m:r></m:e><m:lim><m:r><m:t>→</m:t></m:r></m:lim></m:limUpp><m:r><m:t>&#x2225;</m:t></m:r></m:oMath></m:oMathPara>"
-               |_ "<m:t>|&#xa0;x&#xa0;|</m:t>" text
+               |_ "<m:t>|</m:t>" text
+               |_ "<m:t>x</m:t>" text
+               |_ "<m:t>|</m:t>" text
                |_ "<m:t>x</m:t>" text
                |_ "<m:t>x</m:t>" text
                |_ "<m:t>&#x2225;</m:t>" text
@@ -2022,7 +2024,7 @@ RSpec.describe Plurimath::Math do
                |        |  |_ "\\mathbb{\\text{d}}" function apply
                |        |  |  |_ "bbb" font family
                |        |  |  |_ "\\text{d}" argument
-               |        |  |_ "&#x3b8;" text
+               |        |  |_ "\\theta" text
                |        |_ "a + b \\sin{\\theta}" denominator
                |           |_ "a + b" text
                |           |_ "\\sin{\\theta}" function apply
@@ -2058,7 +2060,7 @@ RSpec.describe Plurimath::Math do
                |        |  |_ "<mstyle mathvariant="double-struck"><mtext>d</mtext></mstyle>" function apply
                |        |  |  |_ "double-struck" font family
                |        |  |  |_ "<mtext>d</mtext>" argument
-               |        |  |_ "<mtext>&#x3b8;</mtext>" text
+               |        |  |_ "<mi>&#x3b8;</mi>" text
                |        |_ "<mrow><mi>a</mi><mo>+</mo><mi>b</mi><mrow><mi>sin</mi><mi>&#x3b8;</mi></mrow></mrow>" denominator
                |          |_ "<mtext>a + b</mtext>" text
                |          |_ "<mrow><mi>sin</mi><mi>&#x3b8;</mi></mrow>" function apply
@@ -2094,7 +2096,7 @@ RSpec.describe Plurimath::Math do
                |        |  |_ "mathbb("d")" function apply
                |        |  |  |_ "bbb" font family
                |        |  |  |_ ""d"" argument
-               |        |  |_ "&#x3b8;" text
+               |        |  |_ "theta" text
                |        |_ "a + b sintheta" denominator
                |           |_ "a + b" text
                |           |_ "sintheta" function apply
@@ -2391,14 +2393,14 @@ RSpec.describe Plurimath::Math do
                |_ "table" function apply
                   |_ "tr" function apply
                   |  |_ "td" function apply
-                  |  |  |_ "&#x3c3;" text
+                  |  |  |_ "\\sigma" text
                   |  |_ "td" function apply
-                  |     |_ "&#x3b3;" text
+                  |     |_ "\\gamma" text
                   |_ "tr" function apply
                      |_ "td" function apply
-                     |  |_ "&#x3b8;" text
+                     |  |_ "\\theta" text
                      |_ "td" function apply
-                        |_ "&#x3b1;" text
+                        |_ "\\alpha" text
         LATEX
         mathml = <<~MATHML
           |_ Math zone
@@ -2406,14 +2408,14 @@ RSpec.describe Plurimath::Math do
                |_ "table" function apply
                   |_ "tr" function apply
                   |  |_ "td" function apply
-                  |  |  |_ "<mtext>&#x3c3;</mtext>" text
+                  |  |  |_ "<mi>&#x3c3;</mi>" text
                   |  |_ "td" function apply
-                  |     |_ "<mtext>&#x3b3;</mtext>" text
+                  |     |_ "<mi>&#x3b3;</mi>" text
                   |_ "tr" function apply
                      |_ "td" function apply
-                     |  |_ "<mtext>&#x3b8;</mtext>" text
+                     |  |_ "<mi>&#x3b8;</mi>" text
                      |_ "td" function apply
-                        |_ "<mtext>&#x3b1;</mtext>" text
+                        |_ "<mi>&#x3b1;</mi>" text
         MATHML
         asciimath = <<~ASCIIMATH
           |_ Math zone
@@ -2421,14 +2423,14 @@ RSpec.describe Plurimath::Math do
                |_ "table" function apply
                   |_ "tr" function apply
                   |  |_ "td" function apply
-                  |  |  |_ "&#x3c3;" text
+                  |  |  |_ "sigma" text
                   |  |_ "td" function apply
-                  |     |_ "&#x3b3;" text
+                  |     |_ "gamma" text
                   |_ "tr" function apply
                      |_ "td" function apply
-                     |  |_ "&#x3b8;" text
+                     |  |_ "theta" text
                      |_ "td" function apply
-                        |_ "&#x3b1;" text
+                        |_ "alpha" text
         ASCIIMATH
         expect(formula.to_display(:omml)).to eql(omml)
         expect(formula.to_display(:latex)).to eql(latex)
@@ -2896,7 +2898,7 @@ RSpec.describe Plurimath::Math do
                |        |  |_ "\\mathbb{\\text{"d"}}" function apply
                |        |  |  |_ "mathbb" font family
                |        |  |  |_ "\\text{"d"}" argument
-               |        |  |_ "&#x3b8;" text
+               |        |  |_ "\\theta" text
                |        |_ "a + b \\sin{\\theta}" denominator
                |           |_ "a + b" text
                |           |_ "\\sin{\\theta}" function apply
@@ -2912,7 +2914,7 @@ RSpec.describe Plurimath::Math do
                            |_ "a^{2}" superscript
                            |  |_ "a" base
                            |  |_ "2" script
-                           |_ "&#x2212;" text
+                           |_ "-" text
                            |_ "b^{2}" superscript
                               |_ "b" base
                               |_ "2" script
@@ -2932,7 +2934,7 @@ RSpec.describe Plurimath::Math do
                |        |  |_ "<mstyle mathvariant="double-struck"><mtext>"d"</mtext></mstyle>" function apply
                |        |  |  |_ "double-struck" font family
                |        |  |  |_ "<mtext>"d"</mtext>" argument
-               |        |  |_ "<mtext>&#x3b8;</mtext>" text
+               |        |  |_ "<mi>&#x3b8;</mi>" text
                |        |_ "<mrow><mi>a</mi><mo>+</mo><mi>b</mi><mrow><mi>sin</mi><mi>&#x3b8;</mi></mrow></mrow>" denominator
                |          |_ "<mtext>a + b</mtext>" text
                |          |_ "<mrow><mi>sin</mi><mi>&#x3b8;</mi></mrow>" function apply
@@ -2968,7 +2970,7 @@ RSpec.describe Plurimath::Math do
                |        |  |_ "mathbb(""d"")" function apply
                |        |  |  |_ "mathbb" font family
                |        |  |  |_ """d""" argument
-               |        |  |_ "&#x3b8;" text
+               |        |  |_ "theta" text
                |        |_ "a + b sintheta" denominator
                |           |_ "a + b" text
                |           |_ "sintheta" function apply
@@ -2984,7 +2986,7 @@ RSpec.describe Plurimath::Math do
                            |_ "a^(2)" superscript
                            |  |_ "a" base
                            |  |_ "2" script
-                           |_ "&#x2212;" text
+                           |_ "-" text
                            |_ "b^(2)" superscript
                               |_ "b" base
                               |_ "2" script
@@ -3244,14 +3246,14 @@ RSpec.describe Plurimath::Math do
                |_ "table" function apply
                |  |_ "tr" function apply
                |  |  |_ "td" function apply
-               |  |  |  |_ "&#x3c3;" text
+               |  |  |  |_ "\\sigma" text
                |  |  |_ "td" function apply
-               |  |     |_ "&#x3b3;" text
+               |  |     |_ "\\gamma" text
                |  |_ "tr" function apply
                |     |_ "td" function apply
-               |     |  |_ "&#x3b8;" text
+               |     |  |_ "\\theta" text
                |     |_ "td" function apply
-               |        |_ "&#x3b1;" text
+               |        |_ "\\alpha" text
                |_ "]" right
         LATEX
         mathml = <<~MATHML
@@ -3261,14 +3263,14 @@ RSpec.describe Plurimath::Math do
                |_ "table" function apply
                |  |_ "tr" function apply
                |  |  |_ "td" function apply
-               |  |  |  |_ "<mtext>&#x3c3;</mtext>" text
+               |  |  |  |_ "<mi>&#x3c3;</mi>" text
                |  |  |_ "td" function apply
-               |  |     |_ "<mtext>&#x3b3;</mtext>" text
+               |  |     |_ "<mi>&#x3b3;</mi>" text
                |  |_ "tr" function apply
                |     |_ "td" function apply
-               |     |  |_ "<mtext>&#x3b8;</mtext>" text
+               |     |  |_ "<mi>&#x3b8;</mi>" text
                |     |_ "td" function apply
-               |        |_ "<mtext>&#x3b1;</mtext>" text
+               |        |_ "<mi>&#x3b1;</mi>" text
                |_ "<mo>]</mo>" right
         MATHML
         asciimath = <<~ASCIIMATH
@@ -3278,14 +3280,14 @@ RSpec.describe Plurimath::Math do
                |_ "table" function apply
                |  |_ "tr" function apply
                |  |  |_ "td" function apply
-               |  |  |  |_ "&#x3c3;" text
+               |  |  |  |_ "sigma" text
                |  |  |_ "td" function apply
-               |  |     |_ "&#x3b3;" text
+               |  |     |_ "gamma" text
                |  |_ "tr" function apply
                |     |_ "td" function apply
-               |     |  |_ "&#x3b8;" text
+               |     |  |_ "theta" text
                |     |_ "td" function apply
-               |        |_ "&#x3b1;" text
+               |        |_ "alpha" text
                |_ "]" right
         ASCIIMATH
         expect(formula.to_display(:omml)).to eql(omml)
@@ -3761,7 +3763,7 @@ RSpec.describe Plurimath::Math do
                |        |  |_ "\\mathbb{\\text{d}}" function apply
                |        |  |  |_ "double-struck" font family
                |        |  |  |_ "\\text{d}" argument
-               |        |  |_ "&#x3b8;" text
+               |        |  |_ "\\theta" text
                |        |_ "a + b \\sin{\\theta}" denominator
                |           |_ "a + b" text
                |           |_ "\\sin{\\theta}" function apply
@@ -3777,7 +3779,7 @@ RSpec.describe Plurimath::Math do
                            |_ "a^{2}" superscript
                            |  |_ "a" base
                            |  |_ "2" script
-                           |_ "&#x2212;" text
+                           |_ "-" text
                            |_ "b^{2}" superscript
                               |_ "b" base
                               |_ "2" script
@@ -3797,7 +3799,7 @@ RSpec.describe Plurimath::Math do
                |        |  |_ "<mstyle mathvariant="double-struck"><mtext>d</mtext></mstyle>" function apply
                |        |  |  |_ "double-struck" font family
                |        |  |  |_ "<mtext>d</mtext>" argument
-               |        |  |_ "<mtext>&#x3b8;</mtext>" text
+               |        |  |_ "<mi>&#x3b8;</mi>" text
                |        |_ "<mrow><mi>a</mi><mo>+</mo><mi>b</mi><mrow><mi>sin</mi><mi>&#x3b8;</mi></mrow></mrow>" denominator
                |          |_ "<mtext>a + b</mtext>" text
                |          |_ "<mrow><mi>sin</mi><mi>&#x3b8;</mi></mrow>" function apply
@@ -3833,7 +3835,7 @@ RSpec.describe Plurimath::Math do
                |        |  |_ "mathbb("d")" function apply
                |        |  |  |_ "double-struck" font family
                |        |  |  |_ ""d"" argument
-               |        |  |_ "&#x3b8;" text
+               |        |  |_ "theta" text
                |        |_ "a + b sintheta" denominator
                |           |_ "a + b" text
                |           |_ "sintheta" function apply
@@ -3849,7 +3851,7 @@ RSpec.describe Plurimath::Math do
                            |_ "a^(2)" superscript
                            |  |_ "a" base
                            |  |_ "2" script
-                           |_ "&#x2212;" text
+                           |_ "-" text
                            |_ "b^(2)" superscript
                               |_ "b" base
                               |_ "2" script
@@ -4251,14 +4253,14 @@ RSpec.describe Plurimath::Math do
                |_ "table" function apply
                   |_ "tr" function apply
                   |  |_ "td" function apply
-                  |  |  |_ "&#x3c3;" text
+                  |  |  |_ "\\sigma" text
                   |  |_ "td" function apply
-                  |     |_ "&#x3b3;" text
+                  |     |_ "\\gamma" text
                   |_ "tr" function apply
                      |_ "td" function apply
-                     |  |_ "&#x3b8;" text
+                     |  |_ "\\theta" text
                      |_ "td" function apply
-                        |_ "&#x3b1;" text
+                        |_ "\\alpha" text
         LATEX
         mathml = <<~MATHML
           |_ Math zone
@@ -4266,14 +4268,14 @@ RSpec.describe Plurimath::Math do
                |_ "table" function apply
                   |_ "tr" function apply
                   |  |_ "td" function apply
-                  |  |  |_ "<mtext>&#x3c3;</mtext>" text
+                  |  |  |_ "<mi>&#x3c3;</mi>" text
                   |  |_ "td" function apply
-                  |     |_ "<mtext>&#x3b3;</mtext>" text
+                  |     |_ "<mi>&#x3b3;</mi>" text
                   |_ "tr" function apply
                      |_ "td" function apply
-                     |  |_ "<mtext>&#x3b8;</mtext>" text
+                     |  |_ "<mi>&#x3b8;</mi>" text
                      |_ "td" function apply
-                        |_ "<mtext>&#x3b1;</mtext>" text
+                        |_ "<mi>&#x3b1;</mi>" text
         MATHML
         asciimath = <<~ASCIIMATH
           |_ Math zone
@@ -4281,14 +4283,14 @@ RSpec.describe Plurimath::Math do
                |_ "table" function apply
                   |_ "tr" function apply
                   |  |_ "td" function apply
-                  |  |  |_ "&#x3c3;" text
+                  |  |  |_ "sigma" text
                   |  |_ "td" function apply
-                  |     |_ "&#x3b3;" text
+                  |     |_ "gamma" text
                   |_ "tr" function apply
                      |_ "td" function apply
-                     |  |_ "&#x3b8;" text
+                     |  |_ "theta" text
                      |_ "td" function apply
-                        |_ "&#x3b1;" text
+                        |_ "alpha" text
         ASCIIMATH
         expect(formula.to_display(:omml)).to eql(omml)
         expect(formula.to_display(:latex)).to eql(latex)
@@ -4457,14 +4459,14 @@ RSpec.describe Plurimath::Math do
                   <mo>|</mo>
                 </mrow>
                 <mrow>
-                  <mo>&#x230a;</mo>
+                  <mo>⌊</mo>
                   <mi>x</mi>
-                  <mo>&#x230b;</mo>
+                  <mo>⌋</mo>
                 </mrow>
                 <mrow>
-                  <mo>&#x2308;</mo>
+                  <mo>⌈</mo>
                   <mi>x</mi>
-                  <mo>&#x2309;</mo>
+                  <mo>⌉</mo>
                 </mrow>
                 <mrow>
                   <mo>&#x2225;</mo>
@@ -4483,9 +4485,9 @@ RSpec.describe Plurimath::Math do
       it 'should puts Math zone representation of sample example #12' do
         omml = <<~OMML
           |_ Math zone
-            |_ "<m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape"><m:oMath><m:r><m:t>|</m:t></m:r><m:r><m:t>x</m:t></m:r><m:r><m:t>|</m:t></m:r><m:d><m:dPr><m:begChr m:val="⌊"/><m:sepChr m:val=""/><m:endChr m:val="⌋"/></m:dPr><m:e><m:r><m:t>x</m:t></m:r></m:e></m:d><m:d><m:dPr><m:begChr m:val="⌈"/><m:sepChr m:val=""/><m:endChr m:val="⌉"/></m:dPr><m:e><m:r><m:t>x</m:t></m:r></m:e></m:d><m:r><m:t>&#x2225;</m:t></m:r><m:limUpp><m:limUppPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:limUppPr><m:e><m:r><m:t>x</m:t></m:r></m:e><m:lim><m:r><m:t>→</m:t></m:r></m:lim></m:limUpp><m:r><m:t>&#x2225;</m:t></m:r></m:oMath></m:oMathPara>"
+            |_ "<m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape"><m:oMath><m:d><m:dPr><m:begChr m:val="|"/><m:sepChr m:val=""/><m:endChr m:val="|"/></m:dPr><m:e><m:r><m:t>x</m:t></m:r></m:e></m:d><m:d><m:dPr><m:begChr m:val="⌊"/><m:sepChr m:val=""/><m:endChr m:val="⌋"/></m:dPr><m:e><m:r><m:t>x</m:t></m:r></m:e></m:d><m:d><m:dPr><m:begChr m:val="⌈"/><m:sepChr m:val=""/><m:endChr m:val="⌉"/></m:dPr><m:e><m:r><m:t>x</m:t></m:r></m:e></m:d><m:r><m:t>&#x2225;</m:t></m:r><m:limUpp><m:limUppPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:limUppPr><m:e><m:r><m:t>x</m:t></m:r></m:e><m:lim><m:r><m:t>→</m:t></m:r></m:lim></m:limUpp><m:r><m:t>&#x2225;</m:t></m:r></m:oMath></m:oMathPara>"
                |_ "msgroup" function apply
-                  |_ "<m:t>|&#xa0;x&#xa0;|</m:t>" text
+                  |_ "<m:t>x</m:t>" text
                   |_ "<m:t>x</m:t>" text
                   |_ "<m:t>x</m:t>" text
                   |_ "<m:t>&#x2225;</m:t>" text
@@ -4498,40 +4500,40 @@ RSpec.describe Plurimath::Math do
           |_ Math zone
             |_ "| x |\\lfloor x \\rfloor\\lceil x \\rceil\\rVert \\vec{x} \\rVert"
                |_ "msgroup" function apply
-                  |_ "| x |" text
                   |_ "x" text
                   |_ "x" text
-                  |_ "&#x2225;" text
+                  |_ "x" text
+                  |_ "\\rVert" text
                   |_ "\\vec{x}" function apply
                   |  |_ "vec" function name
                   |  |_ "x" supscript
-                  |_ "&#x2225;" text
+                  |_ "\\rVert" text
         LATEX
         mathml = <<~MATHML
           |_ Math zone
-            |_ "<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mstyle displaystyle="true"><msgroup><mrow><mo>|</mo><mi>x</mi><mo>|</mo></mrow><mrow><mo>&#x230a;</mo><mi>x</mi><mo>&#x230b;</mo></mrow><mrow><mo>&#x2308;</mo><mi>x</mi><mo>&#x2309;</mo></mrow><mrow><mi>&#x2225;</mi><mover><mi>x</mi><mo>&#x2192;</mo></mover><mi>&#x2225;</mi></mrow></msgroup></mstyle></math>"
+            |_ "<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mstyle displaystyle="true"><msgroup><mrow><mo>|</mo><mi>x</mi><mo>|</mo></mrow><mrow><mo>⌊</mo><mi>x</mi><mo>⌋</mo></mrow><mrow><mo>⌈</mo><mi>x</mi><mo>⌉</mo></mrow><mrow><mi>&#x2225;</mi><mover><mi>x</mi><mo>&#x2192;</mo></mover><mi>&#x2225;</mi></mrow></msgroup></mstyle></math>"
                |_ "msgroup" function apply
-                  |_ "<mtext>| x |</mtext>" text
                   |_ "<mtext>x</mtext>" text
                   |_ "<mtext>x</mtext>" text
-                  |_ "<mtext>&#x2225;</mtext>" text
+                  |_ "<mtext>x</mtext>" text
+                  |_ "<mi>&#x2225;</mi>" text
                   |_ "<mover><mi>x</mi><mo>&#x2192;</mo></mover>" overset
                   |  |_ "<mo>&#x2192;</mo>" base
                   |  |_ "<mi>x</mi>" supscript
-                  |_ "<mtext>&#x2225;</mtext>" text
+                  |_ "<mi>&#x2225;</mi>" text
         MATHML
         asciimath = <<~ASCIIMATH
           |_ Math zone
-            |_ "| x ||__x__||~x~|rVert vec(x) rVert"
+            |_ "|x||__x__||~x~|__{rVert} vec(x) __{rVert}"
                |_ "msgroup" function apply
-                  |_ "| x |" text
                   |_ "x" text
                   |_ "x" text
-                  |_ "&#x2225;" text
+                  |_ "x" text
+                  |_ "__{rVert}" text
                   |_ "vec(x)" function apply
                   |  |_ "vec" function name
                   |  |_ "x" supscript
-                  |_ "&#x2225;" text
+                  |_ "__{rVert}" text
         ASCIIMATH
         expect(formula.to_display(:omml)).to eql(omml)
         expect(formula.to_display(:latex)).to eql(latex)

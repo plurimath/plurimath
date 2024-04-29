@@ -32,7 +32,7 @@ RSpec.describe Plurimath::Math::Formula do
           Plurimath::Math::Function::Underover.new(
             Plurimath::Math::Function::Sum.new,
             Plurimath::Math::Function::Prod.new,
-            Plurimath::Math::Symbol.new("vvv")
+            Plurimath::Math::Symbols::Vvv.new
           )
         ])
       }
@@ -58,8 +58,8 @@ RSpec.describe Plurimath::Math::Formula do
         Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Underover.new(
             Plurimath::Math::Function::Sum.new,
-            Plurimath::Math::Symbol.new("x"),
-            Plurimath::Math::Symbol.new("s"),
+            Plurimath::Math::Symbols::Symbol.new("x"),
+            Plurimath::Math::Symbols::Symbol.new("s"),
           )
         ])
       }
@@ -85,8 +85,8 @@ RSpec.describe Plurimath::Math::Formula do
         Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Underover.new(
             Plurimath::Math::Function::Sum.new,
-            Plurimath::Math::Symbol.new("x"),
-            Plurimath::Math::Symbol.new("w"),
+            Plurimath::Math::Symbols::Symbol.new("x"),
+            Plurimath::Math::Symbols::Symbol.new("w"),
           ),
           Plurimath::Math::Function::Text.new("something"),
         ])
@@ -199,11 +199,11 @@ RSpec.describe Plurimath::Math::Formula do
         Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Underover.new(
               Plurimath::Math::Function::Sum.new,
-              Plurimath::Math::Symbol.new("i"),
-              Plurimath::Math::Symbol.new("n"),
+              Plurimath::Math::Symbols::Symbol.new("i"),
+              Plurimath::Math::Symbols::Symbol.new("n"),
             ),
           Plurimath::Math::Function::Power.new(
-            Plurimath::Math::Symbol.new("i"),
+            Plurimath::Math::Symbols::Symbol.new("i"),
             Plurimath::Math::Number.new("3"),
           )
         ])
@@ -292,17 +292,17 @@ RSpec.describe Plurimath::Math::Formula do
           Plurimath::Math::Function::Underover.new(
             Plurimath::Math::Function::Sum.new,
             Plurimath::Math::Number.new("1"),
-            Plurimath::Math::Symbol.new("n"),
+            Plurimath::Math::Symbols::Symbol.new("n"),
           ),
           Plurimath::Math::Function::Power.new(
-            Plurimath::Math::Symbol.new("i"),
+            Plurimath::Math::Symbols::Symbol.new("i"),
             Plurimath::Math::Number.new("3"),
           ),
-          Plurimath::Math::Symbol.new("="),
+          Plurimath::Math::Symbols::Equal.new,
           Plurimath::Math::Function::Power.new(
             Plurimath::Math::Function::Frac.new(
               Plurimath::Math::Formula.new([
-                Plurimath::Math::Symbol.new("n"),
+                Plurimath::Math::Symbols::Symbol.new("n"),
                 Plurimath::Math::Number.new("1"),
               ]),
               Plurimath::Math::Number.new("2"),
@@ -348,7 +348,7 @@ RSpec.describe Plurimath::Math::Formula do
         Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Sin.new,
           Plurimath::Math::Function::Overset.new(
-            Plurimath::Math::Symbol.new("theta"),
+            Plurimath::Math::Symbols::Theta.new,
             Plurimath::Math::Function::Sum.new,
           ),
         ])
@@ -361,7 +361,7 @@ RSpec.describe Plurimath::Math::Formula do
               <mi>sin</mi>
               <mover>
                 <mo>&#x2211;</mo>
-                <mo>&#x3b8;</mo>
+                <mi>&#x3b8;</mi>
               </mover>
             </mstyle>
           </math>
@@ -399,7 +399,7 @@ RSpec.describe Plurimath::Math::Formula do
       let(:exp) {
         Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Overset.new(
-            Plurimath::Math::Symbol.new("Theta"),
+            Plurimath::Math::Symbols::UpcaseTheta.new,
             Plurimath::Math::Function::Sum.new,
           )
         ])
@@ -427,7 +427,7 @@ RSpec.describe Plurimath::Math::Formula do
             Plurimath::Math::Function::Sum.new,
             Plurimath::Math::Function::Frac.new(
               Plurimath::Math::Number.new("12"),
-              Plurimath::Math::Symbol.new("square")
+              Plurimath::Math::Symbols::Box.new
             ),
             Plurimath::Math::Number.new("33"),
           )
@@ -485,7 +485,7 @@ RSpec.describe Plurimath::Math::Formula do
         Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Overset.new(
             Plurimath::Math::Number.new("1234"),
-            Plurimath::Math::Symbol.new("i"),
+            Plurimath::Math::Symbols::Symbol.new("i"),
           )
         ])
       }
@@ -511,7 +511,7 @@ RSpec.describe Plurimath::Math::Formula do
           Plurimath::Math::Number.new("12"),
           Plurimath::Math::Function::Mod.new,
           Plurimath::Math::Number.new("1234"),
-          Plurimath::Math::Symbol.new("i"),
+          Plurimath::Math::Symbols::Symbol.new("i"),
         ])
       }
       it "returns formula of mod" do
@@ -536,7 +536,7 @@ RSpec.describe Plurimath::Math::Formula do
       let(:exp) {
         Plurimath::Math::Formula.new([
           Plurimath::Math::Function::PowerBase.new(
-            Plurimath::Math::Symbol.new("a"),
+            Plurimath::Math::Symbols::Symbol.new("a"),
             Plurimath::Math::Function::Table.new([
               Plurimath::Math::Function::Tr.new([
                 Plurimath::Math::Function::Td.new([
@@ -575,7 +575,7 @@ RSpec.describe Plurimath::Math::Formula do
       let(:exp) {
         Plurimath::Math::Formula.new([
           Plurimath::Math::Function::PowerBase.new(
-            Plurimath::Math::Symbol.new("a"),
+            Plurimath::Math::Symbols::Symbol.new("a"),
             Plurimath::Math::Function::Table.new(
               [
                 Plurimath::Math::Function::Tr.new([
@@ -584,7 +584,7 @@ RSpec.describe Plurimath::Math::Formula do
                   ])
                 ]),
               ],
-              "norm["
+              Plurimath::Math::Symbols::Paren::Norm.new
             ),
             Plurimath::Math::Function::Text.new("4terms"),
           )
@@ -620,7 +620,7 @@ RSpec.describe Plurimath::Math::Formula do
       let(:exp) {
         Plurimath::Math::Formula.new([
           Plurimath::Math::Function::PowerBase.new(
-            Plurimath::Math::Symbol.new("a"),
+            Plurimath::Math::Symbols::Symbol.new("a"),
             Plurimath::Math::Function::Table.new(
               [
                 Plurimath::Math::Function::Tr.new([
@@ -629,7 +629,7 @@ RSpec.describe Plurimath::Math::Formula do
                   ])
                 ]),
               ],
-              "["
+              Plurimath::Math::Symbols::Paren::Lsquare.new,
             ),
             Plurimath::Math::Function::Text.new("4terms"),
           )
@@ -689,9 +689,9 @@ RSpec.describe Plurimath::Math::Formula do
       let(:exp) {
         Plurimath::Math::Formula.new([
           Plurimath::Math::Function::PowerBase.new(
-            Plurimath::Math::Symbol.new("a"),
+            Plurimath::Math::Symbols::Symbol.new("a"),
             Plurimath::Math::Function::Fenced.new(
-              Plurimath::Math::Symbol.new("{"),
+              Plurimath::Math::Symbols::Paren::Lcurly.new,
               [
                 Plurimath::Math::Function::Table.new([
                   Plurimath::Math::Function::Tr.new([
@@ -701,7 +701,7 @@ RSpec.describe Plurimath::Math::Formula do
                   ]),
                 ])
               ],
-              Plurimath::Math::Symbol.new("}"),
+              Plurimath::Math::Symbols::Paren::Rcurly.new,
             ),
             Plurimath::Math::Function::Text.new("4terms"),
           )
@@ -740,11 +740,11 @@ RSpec.describe Plurimath::Math::Formula do
           Plurimath::Math::Function::Underover.new(
             Plurimath::Math::Function::Sum.new,
             Plurimath::Math::Formula.new([
-              Plurimath::Math::Symbol.new("i"),
-              Plurimath::Math::Symbol.new("="),
+              Plurimath::Math::Symbols::Symbol.new("i"),
+              Plurimath::Math::Symbols::Equal.new,
               Plurimath::Math::Function::Color.new(
                 Plurimath::Math::Function::Text.new("blue"),
-                Plurimath::Math::Symbol.new("!="),
+                Plurimath::Math::Symbols::Neq.new,
               )
             ]),
             Plurimath::Math::Number.new("33"),
@@ -780,14 +780,14 @@ RSpec.describe Plurimath::Math::Formula do
           Plurimath::Math::Function::Underover.new(
             Plurimath::Math::Function::Sum.new,
             Plurimath::Math::Formula.new([
-              Plurimath::Math::Symbol.new("i"),
-              Plurimath::Math::Symbol.new("="),
+              Plurimath::Math::Symbols::Symbol.new("i"),
+              Plurimath::Math::Symbols::Equal.new,
               Plurimath::Math::Function::Color.new(
                 Plurimath::Math::Function::Text.new("blue"),
-                Plurimath::Math::Symbol.new("!="),
+                Plurimath::Math::Symbols::Neq.new,
               )
             ]),
-            Plurimath::Math::Symbol.new("something"),
+            Plurimath::Math::Symbols::Symbol.new("something"),
           )
         ])
       }
@@ -872,8 +872,8 @@ RSpec.describe Plurimath::Math::Formula do
     context "contains mathml string bold text" do
       let(:exp) {
         Plurimath::Math::Formula.new([
-          Plurimath::Math::Symbol.new("n"),
-          Plurimath::Math::Symbol.new("<"),
+          Plurimath::Math::Symbols::Symbol.new("n"),
+          Plurimath::Math::Symbols::Less.new,
           Plurimath::Math::Number.new("1")
         ])
       }
@@ -884,7 +884,7 @@ RSpec.describe Plurimath::Math::Formula do
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="false">
               <mi>n</mi>
-              <mo>&lt;</mo>
+              <mo>&#x3c;</mo>
               <mn>1</mn>
             </mstyle>
           </math>

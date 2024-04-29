@@ -53,7 +53,7 @@ module Plurimath
         def to_omml_without_math_tag(display_style)
           return r_element("⏟", rpr_tag: false) unless parameter_one
 
-          symbol = Symbol.new("⏟")
+          symbol = Symbols::Symbol.new("⏟")
           Underset.new(parameter_one, symbol).to_omml_without_math_tag(true)
         end
 

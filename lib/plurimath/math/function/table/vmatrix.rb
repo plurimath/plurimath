@@ -25,7 +25,7 @@ module Plurimath
           private
 
           def matrix_symbol
-            open_paren == "norm[" ? "⒩" : "⒱"
+            open_paren&.class_name == "norm" ? "⒩" : "⒱"
           end
         end
       end

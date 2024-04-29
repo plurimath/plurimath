@@ -53637,19 +53637,37 @@ module UnicodeMathParseValues
               intermediate_exp: {
                 open_paren: "(",
                 monospace: {
-                  monospace_value: "X"
+                  monospace_value: {
+                    factor: {
+                      atom: {
+                        alphanumeric: "X"
+                      }
+                    }
+                  }
                 },
                 relational_symbols: "&#x2190;",
                 expr: {
                   monospace: {
-                    monospace_value: "A"
+                    monospace_value: {
+                      factor: {
+                        atom: {
+                          alphanumeric: "A"
+                        }
+                      }
+                    }
                   }
                 },
                 exp: {
                   operator: "+",
                   exp: {
                     monospace: {
-                      monospace_value: "C"
+                      monospace_value: {
+                        factor: {
+                          atom: {
+                            alphanumeric: "C"
+                          }
+                        }
+                      }
                     },
                     exp: {
                       operator: ",",
@@ -53660,7 +53678,13 @@ module UnicodeMathParseValues
                         operand: {
                           factor: {
                             monospace: {
-                              monospace_value: "Y"
+                              monospace_value: {
+                                factor: {
+                                  atom: {
+                                    alphanumeric: "Y"
+                                  }
+                                }
+                              }
                             }
                           },
                           operand: {
@@ -53674,7 +53698,13 @@ module UnicodeMathParseValues
                               operand: {
                                 factor: {
                                   monospace: {
-                                    monospace_value: "B"
+                                    monospace_value: {
+                                      factor: {
+                                        atom: {
+                                          alphanumeric: "B"
+                                        }
+                                      }
+                                    }
                                   }
                                 }
                               }
@@ -53690,7 +53720,13 @@ module UnicodeMathParseValues
                             operand: {
                               factor: {
                                 monospace: {
-                                  monospace_value: "Z"
+                                  monospace_value: {
+                                    factor: {
+                                      atom: {
+                                        alphanumeric: "Z"
+                                      }
+                                    }
+                                  }
                                 }
                               },
                               operand: {
@@ -53700,7 +53736,9 @@ module UnicodeMathParseValues
                                 operand: {
                                   factor: {
                                     monospace: {
-                                      monospace_value: "\"LEGO\""
+                                      monospace_value: {
+                                        text: "LEGO"
+                                      }
                                     }
                                   }
                                 }
@@ -53747,7 +53785,28 @@ module UnicodeMathParseValues
               intermediate_exp: {
                 open_paren: "(",
                 monospace: {
-                  monospace_value: "from"
+                  monospace_value: {
+                    factor: {
+                      atom: {
+                        alphanumeric: "f"
+                      },
+                      atoms: {
+                        atom: {
+                          alphanumeric: "r"
+                        },
+                        atoms: {
+                          atom: {
+                            alphanumeric: "o"
+                          },
+                          atoms: {
+                            atom: {
+                              alphanumeric: "m"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
                 },
                 exp: {
                   operator: ",",
@@ -53758,7 +53817,18 @@ module UnicodeMathParseValues
                     operand: {
                       factor: {
                         monospace: {
-                          monospace_value: "to"
+                          monospace_value: {
+                            factor: {
+                              atom: {
+                                alphanumeric: "t"
+                              },
+                              atoms: {
+                                atom: {
+                                  alphanumeric: "o"
+                                }
+                              }
+                            }
+                          }
                         }
                       },
                       operand: {
@@ -53768,7 +53838,25 @@ module UnicodeMathParseValues
                         operand: {
                           factor: {
                             monospace: {
-                              monospace_value: "to2"
+                              monospace_value: {
+                                factor: {
+                                  atom: {
+                                    alphanumeric: "t"
+                                  },
+                                  atoms: {
+                                    atom: {
+                                      alphanumeric: "o"
+                                    }
+                                  }
+                                },
+                                operand: {
+                                  factor: {
+                                    digit: {
+                                      number: "2"
+                                    }
+                                  }
+                                }
+                              }
                             }
                           }
                         }
@@ -53800,13 +53888,52 @@ module UnicodeMathParseValues
                     intermediate_exp: {
                       open_paren: "(",
                       monospace: {
-                        monospace_value: "to"
+                        monospace_value: {
+                          factor: {
+                            atom: {
+                              alphanumeric: "t"
+                            },
+                            atoms: {
+                              atom: {
+                                alphanumeric: "o"
+                              }
+                            }
+                          }
+                        }
                       },
                       exp: {
                         operator: "=",
                         exp: {
                           monospace: {
-                            monospace_value: "from2"
+                            monospace_value: {
+                              factor: {
+                                atom: {
+                                  alphanumeric: "f"
+                                },
+                                atoms: {
+                                  atom: {
+                                    alphanumeric: "r"
+                                  },
+                                  atoms: {
+                                    atom: {
+                                      alphanumeric: "o"
+                                    },
+                                    atoms: {
+                                      atom: {
+                                        alphanumeric: "m"
+                                      }
+                                    }
+                                  }
+                                }
+                              },
+                              operand: {
+                                factor: {
+                                  digit: {
+                                    number: "2"
+                                  }
+                                }
+                              }
+                            }
                           }
                         }
                       },
@@ -53842,12 +53969,61 @@ module UnicodeMathParseValues
                               intermediate_exp: {
                                 open_paren: "(",
                                 monospace: {
-                                  monospace_value: "from2"
+                                  monospace_value: {
+                                    factor: {
+                                      atom: {
+                                        alphanumeric: "f"
+                                      },
+                                      atoms: {
+                                        atom: {
+                                          alphanumeric: "r"
+                                        },
+                                        atoms: {
+                                          atom: {
+                                            alphanumeric: "o"
+                                          },
+                                          atoms: {
+                                            atom: {
+                                              alphanumeric: "m"
+                                            }
+                                          }
+                                        }
+                                      }
+                                    },
+                                    operand: {
+                                      factor: {
+                                        digit: {
+                                          number: "2"
+                                        }
+                                      }
+                                    }
+                                  }
                                 },
                                 relational_symbols: "&#x2190;",
                                 expr: {
                                   monospace: {
-                                    monospace_value: "from"
+                                    monospace_value: {
+                                      factor: {
+                                        atom: {
+                                          alphanumeric: "f"
+                                        },
+                                        atoms: {
+                                          atom: {
+                                            alphanumeric: "r"
+                                          },
+                                          atoms: {
+                                            atom: {
+                                              alphanumeric: "o"
+                                            },
+                                            atoms: {
+                                              atom: {
+                                                alphanumeric: "m"
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
                                   }
                                 },
                                 exp: {
@@ -53859,7 +54035,25 @@ module UnicodeMathParseValues
                                     operand: {
                                       factor: {
                                         monospace: {
-                                          monospace_value: "to2"
+                                          monospace_value: {
+                                            factor: {
+                                              atom: {
+                                                alphanumeric: "t"
+                                              },
+                                              atoms: {
+                                                atom: {
+                                                  alphanumeric: "o"
+                                                }
+                                              }
+                                            },
+                                            operand: {
+                                              factor: {
+                                                digit: {
+                                                  number: "2"
+                                                }
+                                              }
+                                            }
+                                          }
                                         }
                                       },
                                       operand: {
@@ -53869,7 +54063,18 @@ module UnicodeMathParseValues
                                         operand: {
                                           factor: {
                                             monospace: {
-                                              monospace_value: "to"
+                                              monospace_value: {
+                                                factor: {
+                                                  atom: {
+                                                    alphanumeric: "t"
+                                                  },
+                                                  atoms: {
+                                                    atom: {
+                                                      alphanumeric: "o"
+                                                    }
+                                                  }
+                                                }
+                                              }
                                             }
                                           }
                                         }
@@ -68080,7 +68285,23 @@ module UnicodeMathParseValues
   }.freeze
   EXAMPLE_642 = {
     monospace: {
-      monospace_value: "let "
+      monospace_value: {
+        factor: {
+          atom: {
+            alphanumeric: "l"
+          },
+          atoms: {
+            atom: {
+              alphanumeric: "e"
+            },
+            atoms: {
+              atom: {
+                alphanumeric: "t"
+              }
+            }
+          }
+        }
+      }
     },
     expr: {
       factor: {
@@ -68098,7 +68319,18 @@ module UnicodeMathParseValues
           },
           expr: {
             monospace: {
-              monospace_value: " in "
+              monospace_value: {
+                factor: {
+                  atom: {
+                    alphanumeric: "i"
+                  },
+                  atoms: {
+                    atom: {
+                      alphanumeric: "n"
+                    }
+                  }
+                }
+              }
             },
             expr: {
               factor: {
@@ -68192,7 +68424,11 @@ module UnicodeMathParseValues
   }.freeze
   EXAMPLE_643 = {
     monospace: {
-      monospace_value: "&#x3b1;"
+      monospace_value: {
+        factor: {
+          ordinary_symbols: "&#x3b1;"
+        }
+      }
     }
   }.freeze
   EXAMPLE_644 = {
