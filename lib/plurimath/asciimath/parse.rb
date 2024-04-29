@@ -79,7 +79,7 @@ module Plurimath
           binary_classes |
           ternary_classes |
           hash_to_expression(Constants.precompile_constants) |
-          (match(/[0-9]/).as(:number) >> comma.as(:comma)).repeat(1).as(:comma_separated) |
+          (match(/[0-9]/).as(:number) >> str(",").as(:comma)).repeat(1).as(:comma_separated) |
           quoted_text |
           (str("d").as(:d) >> str("x").as(:x)).as(:intermediate_exp) |
           ((str("left").absent? >> str("right").absent?) >> match["a-zA-Z"].as(:symbol)) |
@@ -88,11 +88,11 @@ module Plurimath
       end
 
       rule(:power_base) do
-        (base >> space? >> sequence.as(:base_value) >> power >> space? >> sequence.as(:power_value)) |
+        (base >> space? >> sequence.as(:base_value) >> power >> (power >> power.maybe).absent? >> space? >> sequence.as(:power_value)) |
           (space? >> base >> space? >> sequence.as(:base_value)).as(:base) |
-          (space? >> power >> space? >> sequence.as(:power_value)).as(:power) |
+          (space? >> power >> (power >> power.maybe).absent? >> space? >> sequence.as(:power_value)).as(:power) |
           (space? >> base >> space? >> power.as(:symbol).as(:base_value)).as(:base) |
-          (space? >> power >> space? >> base.as(:symbol).as(:power_value)).as(:power)
+          (space? >> power >> (power >> power.maybe).absent? >> space? >> base.as(:symbol).as(:power_value)).as(:power)
       end
 
       rule(:power_base_rules) do
@@ -190,9 +190,19 @@ module Plurimath
         first_value = str(expr.first.to_s)
         case expr.last
         when :symbol then (str("\\").as(:slash) >> match("\s").repeat >> str("\n")) | first_value.as(:symbol)
-        when :unary_class then (first_value.as(:unary_class) >> space? >> sequence.maybe).as(:unary)
+        when :unary_class then unary_functions(first_value)
         when :fonts then first_value.as(:fonts_class) >> space? >> sequence.as(:fonts_value)
         when :special_fonts then first_value.as(:bold_fonts)
+        end
+      end
+
+      def unary_functions(first_value)
+        if ["'underbrace'", "'ubrace'"].include?(first_value.to_s)
+          (first_value.as(:unary_class) >> space? >> str("_").as(:symbol)).as(:unary) |
+            (first_value.as(:unary_class) >> space? >> sequence.maybe).as(:unary)
+        else
+          (first_value.as(:unary_class).as(:power_base) >> space? >> power_base).as(:unary) |
+            (first_value.as(:unary_class) >> space? >> sequence.maybe).as(:unary)
         end
       end
     end

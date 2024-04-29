@@ -37,7 +37,7 @@ module Plurimath
       rule(sub_exp: sequence(:exp)) { exp }
       rule(factor: simple(:factor)) { factor }
       rule(hbrack: simple(:hbrack)) { hbrack }
-      rule(symbol: simple(:symbol)) { Math::Symbol.new(symbol) }
+      rule(symbol: simple(:symbol)) { Utility.symbols_class(symbol, lang: :unicodemath) }
       rule(number: simple(:number)) { Math::Number.new(number) }
 
       rule(backcolor: simple(:color)) { color }
@@ -45,7 +45,7 @@ module Plurimath
       rule(factor: sequence(:factor)) { factor }
       rule(operand: simple(:operand)) { operand }
       rule(accents: subtree(:accent)) { Utility.unicode_accents(accent) }
-      rule(sup_alpha: simple(:alpha)) { Math::Symbol.new(Constants::SUP_ALPHABETS.key(alpha).to_s, mini_sup_sized: true) }
+      rule(sup_alpha: simple(:alpha)) { Math::Symbols::Symbol.new(Constants::SUP_ALPHABETS.key(alpha).to_s, mini_sup_sized: true) }
 
       rule(sub_script: simple(:script)) { script }
       rule(sup_script: simple(:script)) { script }
@@ -53,8 +53,8 @@ module Plurimath
       rule(operand: sequence(:operand)) { operand }
       rule(mini_sup: simple(:mini_sup)) { mini_sup }
       rule(mini_sub: simple(:mini_sub)) { mini_sub }
-      rule(close_paren: simple(:paren)) { Math::Symbol.new(paren) }
-      rule(operator: simple(:operator)) { Math::Symbol.new(operator) }
+      rule(close_paren: simple(:paren)) { Utility.symbols_class(paren, lang: :unicodemath) }
+      rule(operator: simple(:operator)) { Utility.symbols_class(operator, lang: :unicodemath) }
 
       rule(unary_sub_sup: simple(:unary)) { unary }
       rule(sub_script: sequence(:script)) { script }
@@ -68,9 +68,9 @@ module Plurimath
       rule(accents_subsup: simple(:subsup))  { subsup }
       rule(subsup_exp: simple(:subsup_exp))  { subsup_exp }
       rule(expression: simple(:expression))  { expression }
-      rule(open_paren: simple(:open_paren))  { Math::Symbol.new(open_paren) }
+      rule(open_paren: simple(:open_paren))  { Utility.symbols_class(open_paren, lang: :unicodemath) }
       rule(override_subsup: simple(:subsup)) { subsup }
-      rule(slashed_value: sequence(:values)) { Utility.sequence_slashed_values(values) }
+      rule(slashed_value: sequence(:values)) { Utility.sequence_slashed_values(values, lang: :unicodemath) }
 
       rule(intermediate_exp: sequence(:expr)) { expr }
       rule(diacritic_belows: simple(:belows)) { belows }
@@ -82,8 +82,8 @@ module Plurimath
       rule(diacritics_accents: simple(:accent)) { accent }
       rule(mini_sub_sup: simple(:mini_sub_sup)) { mini_sub_sup }
       rule(unary_subsup: simple(:unary_subsup)) { unary_subsup }
-      rule(exclamation_symbol: simple(:symbol)) { Math::Symbol.new(symbol) }
-      rule(alphanumeric: simple(:alphanumeric)) { Math::Symbol.new(alphanumeric) }
+      rule(exclamation_symbol: simple(:symbol)) { Utility.symbols_class(symbol, lang: :unicodemath) }
+      rule(alphanumeric: simple(:alphanumeric)) { Utility.symbols_class(alphanumeric, lang: :unicodemath) }
 
       rule(diacritic_overlays: simple(:overlays)) { overlays }
       rule(mini_sub_sup: sequence(:mini_sub_sup)) { mini_sub_sup }
@@ -92,31 +92,30 @@ module Plurimath
 
       rule(combined_symbols: simple(:combined_symbols)) do
         symbol = Constants::COMBINING_SYMBOLS[combined_symbols.to_sym] || combined_symbols
-        Math::Symbol.new(symbol)
+        Utility.symbols_class(symbol, lang: :unicodemath)
       end
 
       rule(spaces: simple(:spaces)) do
         space = Constants::SKIP_SYMBOLS[spaces.to_sym] || spaces
-        Math::Symbol.new(space, options: { space: true })
+        Math::Symbols::Symbol.new(space, options: { space: true })
       end
 
       rule(binary_symbols: simple(:symbols)) do
-        symbol = (Constants::BINARY_SYMBOLS[symbols.to_sym] || symbols)
-        Math::Symbol.new(symbol)
+        Utility.symbols_class(symbols, lang: :unicodemath)
       end
 
       rule(sup_operators: simple(:operator)) do
         op = Constants::SUP_OPERATORS.key(operator).to_s
-        Math::Symbol.new(op, mini_sup_sized: true)
+        Math::Symbols::Symbol.new(op, mini_sup_sized: true)
       end
 
       rule(prefixed_prime: simple(:prime)) do
-        Math::Symbol.new(Constants::PREFIXED_PRIMES[prime.to_sym])
+        Utility.updated_primes(prime)
       end
 
       rule(unary_functions: simple(:unary)) do
         if Constants::UNDEF_UNARY_FUNCTIONS.include?(unary.to_s)
-          Math::Symbol.new(unary)
+          Utility.symbols_class(unary, lang: :unicodemath)
         else
           Utility.get_class(unary).new
         end
@@ -124,30 +123,32 @@ module Plurimath
 
       rule(negated_operator: simple(:operator)) do
         Math::Formula.new([
-          Math::Symbol.new(operator),
-          Math::Symbol.new("&#x338;"),
+          Utility.symbols_class(operator, lang: :unicodemath),
+          Math::Symbols::Symbol.new("&#x338;"),
         ])
       end
 
       rule(ordinary_symbols: simple(:ordinary)) do
-        Math::Symbol.new(
-          (Constants::ORDINARY_SYMBOLS[ordinary.to_sym] || ordinary),
-        )
+        Utility.symbols_class(ordinary, lang: :unicodemath)
       end
 
       rule(relational_symbols: simple(:symbol)) do
-        Math::Symbol.new(
-          (Constants::RELATIONAL_SYMBOLS[symbol.to_sym] || symbol),
-        )
+        Utility.symbols_class(symbol, lang: :unicodemath)
       end
 
       rule(unicode_symbols: simple(:unicode_symbols)) do
-        Math::Symbol.new(unicode_symbols)
+        Utility.symbols_class(unicode_symbols, lang: :unicodemath)
       end
 
       rule(monospace_value: simple(:monospace_value)) do
         Math::Function::FontStyle::Monospace.new(
-          Math::Symbol.new(monospace_value),
+          monospace_value,
+        )
+      end
+
+      rule(monospace_value: sequence(:monospace_value)) do
+        Math::Function::FontStyle::Monospace.new(
+          Utility.filter_values(monospace_value),
         )
       end
 
@@ -172,8 +173,8 @@ module Plurimath
 
       rule(ordinary_negated_operator: simple(:operator)) do
         Math::Formula.new([
-          Math::Symbol.new(operator),
-          Math::Symbol.new("&#x338;"),
+          Utility.symbols_class(operator, lang: :unicodemath),
+          Math::Symbols::Symbol.new("&#x338;"),
         ])
       end
 
@@ -203,79 +204,79 @@ module Plurimath
           unicoded.to_sym,
           symbol.to_sym,
         )
-        Math::Symbol.new(unicode)
+        Utility.symbols_class(unicode, lang: :unicodemath)
       end
 
       rule(font_class: simple(:fonts),
            symbol: simple(:symbol)) do
         Utility::FONT_STYLES[fonts.to_sym].new(
-          Math::Symbol.new(symbol),
+          Utility.symbols_class(symbol, lang: :unicodemath),
         )
       end
 
       rule(symbol: simple(:symbol),
            naryand_recursion: sequence(:naryand_recursion)) do
         [
-          Math::Symbol.new(symbol),
+          Utility.symbols_class(symbol, lang: :unicodemath),
         ] + naryand_recursion
       end
 
       rule(symbol: simple(:symbol),
            naryand_recursion: simple(:naryand_recursion)) do
-        [Math::Symbol.new(symbol), naryand_recursion]
+        [Utility.symbols_class(symbol, lang: :unicodemath), naryand_recursion]
       end
 
       rule(symbol: simple(:symbol),
            expr: simple(:expr)) do
-        [Math::Symbol.new(symbol), expr]
+        [Utility.symbols_class(symbol, lang: :unicodemath), expr]
       end
 
       rule(binary_symbols: simple(:symbols),
            expr: simple(:expr)) do
         symbol = (Constants::BINARY_SYMBOLS[symbols.to_sym] || symbols)
-        [Math::Symbol.new(symbol), expr]
+        [Utility.symbols_class(symbol, lang: :unicodemath), expr]
       end
 
       rule(binary_symbols: simple(:symbols),
            exp: sequence(:exp)) do
         symbol = (Constants::BINARY_SYMBOLS[symbols.to_sym] || symbols)
-        [Math::Symbol.new(symbol)] + exp
+        [Utility.symbols_class(symbol, lang: :unicodemath)] + exp
       end
 
       rule(binary_symbols: simple(:symbols),
            expr: sequence(:expr)) do
         symbol = (Constants::BINARY_SYMBOLS[symbols.to_sym] || symbols)
-        [Math::Symbol.new(symbol)] + expr
+        [Utility.symbols_class(symbol, lang: :unicodemath)] + expr
       end
 
       rule(binary_symbols: simple(:symbols),
            naryand_recursion: simple(:naryand_recursion)) do
         symbol = (Constants::BINARY_SYMBOLS[symbols.to_sym] || symbols)
-        [Math::Symbol.new(symbol), naryand_recursion]
+        [Utility.symbols_class(symbol, lang: :unicodemath), naryand_recursion]
       end
 
       rule(binary_symbols: simple(:symbols),
            recursive_denominator: simple(:recursive_denominator)) do
         symbol = (Constants::BINARY_SYMBOLS[symbols.to_sym] || symbols)
-        [Math::Symbol.new(symbol), recursive_denominator]
+        [Utility.symbols_class(symbol, lang: :unicodemath), recursive_denominator]
       end
 
       rule(binary_symbols: simple(:symbols),
            recursive_denominator: sequence(:recursive_denominator)) do
         symbol = (Constants::BINARY_SYMBOLS[symbols.to_sym] || symbols)
-        [Math::Symbol.new(symbol)] + recursive_denominator
+        [Utility.symbols_class(symbol, lang: :unicodemath)] + recursive_denominator
       end
 
       rule(binary_symbols: simple(:symbols),
            recursive_numerator: simple(:recursive_numerator)) do
         symbol = (Constants::BINARY_SYMBOLS[symbols.to_sym] || symbols)
-        [Math::Symbol.new(symbol), recursive_numerator]
+        [Utility.symbols_class(symbol, lang: :unicodemath), recursive_numerator]
       end
 
       rule(symbol: simple(:symbol),
            expr: sequence(:expr)) do
         [
-          Math::Symbol.new(symbol),
+          Utility.symbols_class(symbol, lang: :unicodemath),
         ] + expr
       end
 
@@ -283,8 +284,8 @@ module Plurimath
            expr: simple(:expr)) do
         [
           Math::Formula.new([
-            Math::Symbol.new(operator),
-            Math::Symbol.new("&#x338;"),
+            Utility.symbols_class(operator, lang: :unicodemath),
+            Math::Symbols::Symbol.new("&#x338;"),
           ]),
           expr,
         ]
@@ -294,8 +295,8 @@ module Plurimath
            expr: sequence(:expr)) do
         [
           Math::Formula.new([
-            Math::Symbol.new(operator),
-            Math::Symbol.new("&#x338;"),
+            Utility.symbols_class(operator, lang: :unicodemath),
+            Math::Symbols::Symbol.new("&#x338;"),
           ]),
         ] + expr
       end
@@ -304,8 +305,8 @@ module Plurimath
            expr: simple(:expr)) do
         [
           Math::Formula.new([
-            Math::Symbol.new(operator),
-            Math::Symbol.new("&#x338;"),
+            Utility.symbols_class(operator, lang: :unicodemath),
+            Math::Symbols::Symbol.new("&#x338;"),
           ]),
           expr,
         ]
@@ -368,7 +369,7 @@ module Plurimath
 
       rule(char: simple(:char),
            alphanumeric: simple(:alphanumeric)) do
-        [char, Math::Symbol.new(alphanumeric)]
+        [char, Utility.symbols_class(alphanumeric, lang: :unicodemath)]
       end
 
       rule(char: simple(:char),
@@ -413,42 +414,42 @@ module Plurimath
 
       rule(operator: simple(:operator),
            expr: simple(:expr)) do
-        [Math::Symbol.new(operator), expr]
+        [Utility.symbols_class(operator, lang: :unicodemath), expr]
       end
 
       rule(mid_symbol: simple(:mid_symbol),
            expr: simple(:expr)) do
-        [Math::Symbol.new(mid_symbol), expr]
+        [Utility.symbols_class(mid_symbol, lang: :unicodemath), expr]
       end
 
       rule(mid_symbol: simple(:mid_symbol),
            expr: sequence(:expr)) do
-        [Math::Symbol.new(mid_symbol)] + expr
+        [Utility.symbols_class(mid_symbol, lang: :unicodemath)] + expr
       end
 
       rule(operator: simple(:operator),
            exp: simple(:exp)) do
-        [Math::Symbol.new(operator), exp]
+        [Utility.symbols_class(operator, lang: :unicodemath), exp]
       end
 
       rule(unicode_symbols: simple(:unicode_symbols),
            exp: simple(:exp)) do
-        [Math::Symbol.new(unicode_symbols), exp]
+        [Utility.symbols_class(unicode_symbols, lang: :unicodemath), exp]
       end
 
       rule(unicode_symbols: simple(:unicode_symbols),
            expr: simple(:expr)) do
-        [Math::Symbol.new(unicode_symbols), expr]
+        [Utility.symbols_class(unicode_symbols, lang: :unicodemath), expr]
       end
 
       rule(unicode_symbols: simple(:unicode_symbols),
            exp: sequence(:exp)) do
-        [Math::Symbol.new(unicode_symbols)] + exp
+        [Utility.symbols_class(unicode_symbols, lang: :unicodemath)] + exp
       end
 
       rule(unicode_symbols: simple(:unicode_symbols),
            expr: sequence(:expr)) do
-        [Math::Symbol.new(unicode_symbols)] + expr
+        [Utility.symbols_class(unicode_symbols, lang: :unicodemath)] + expr
       end
 
       rule(atom: simple(:atom),
@@ -468,33 +469,33 @@ module Plurimath
 
       rule(operator: simple(:operator),
            expr: sequence(:expr)) do
-        [Math::Symbol.new(operator)] + expr
+        [Utility.symbols_class(operator, lang: :unicodemath)] + expr
       end
 
       rule(operator: simple(:operator),
            exp: sequence(:exp)) do
-        [Math::Symbol.new(operator)] + exp
+        [Utility.symbols_class(operator, lang: :unicodemath)] + exp
       end
 
       rule(operator: simple(:operator),
            sup_script: simple(:sup_script)) do
-        [Math::Symbol.new(operator), sup_script]
+        [Utility.symbols_class(operator, lang: :unicodemath), sup_script]
       end
 
       rule(operator: simple(:operator),
            sup_script: sequence(:sup_script)) do
-        [Math::Symbol.new(operator)] + sup_script
+        [Utility.symbols_class(operator, lang: :unicodemath)] + sup_script
       end
 
       rule(combined_symbols: simple(:combined_symbols),
            sup_script: simple(:sup_script)) do
         symbol = Constants::COMBINING_SYMBOLS[combined_symbols.to_sym]
-        [Math::Symbol.new(symbol), sup_script]
+        [Utility.symbols_class(symbol, lang: :unicodemath), sup_script]
       end
 
       rule(operator: simple(:operator),
            sub_script: simple(:sub_script)) do
-        [Math::Symbol.new(operator), sub_script]
+        [Utility.symbols_class(operator, lang: :unicodemath), sub_script]
       end
 
       rule(size_overrides: simple(:size_overrides),
@@ -530,7 +531,7 @@ module Plurimath
            sup_recursion_expr: sequence(:sup_recursion_expr)) do
         alpha = Constants::SUP_ALPHABETS.key(sup_alpha)
         [
-          Math::Symbol.new(alpha.to_s, mini_sup_sized: true)
+          Math::Symbols::Symbol.new(alpha.to_s, mini_sup_sized: true)
         ] + sup_recursion_expr
       end
 
@@ -538,7 +539,7 @@ module Plurimath
            sup_recursion_expr: simple(:sup_recursion_expr)) do
         alpha = Constants::SUP_ALPHABETS.key(sup_alpha)
         [
-          Math::Symbol.new(alpha.to_s, mini_sup_sized: true),
+          Math::Symbols::Symbol.new(alpha.to_s, mini_sup_sized: true),
           sup_recursion_expr,
         ]
       end
@@ -576,7 +577,7 @@ module Plurimath
       rule(operator: simple(:operator),
            sup_recursion: simple(:sup_recursion)) do
         Utility.recursive_sup(
-          Math::Symbol.new(operator),
+          Utility.symbols_class(operator, lang: :unicodemath),
           Utility.unfenced_value(sup_recursion, paren_specific: true),
         )
       end
@@ -584,14 +585,14 @@ module Plurimath
       rule(operator: simple(:operator),
            sub_recursion: simple(:sub_recursion)) do
         Utility.recursive_sub(
-          Math::Symbol.new(operator),
+          Utility.symbols_class(operator, lang: :unicodemath),
           sub_recursion,
         )
       end
 
       rule(operator: simple(:operator),
            sub_recursion: sequence(:sub_recursion)) do
-        [Math::Symbol.new(operator)] + sub_recursion
+        [Utility.symbols_class(operator, lang: :unicodemath)] + sub_recursion
       end
 
       rule(sub_script: simple(:sub_script),
@@ -602,19 +603,19 @@ module Plurimath
       rule(sub_operators: simple(:operator),
            sub_recursions: simple(:recursions)) do
         op = Constants::SUB_OPERATORS.key(operator).to_s
-        [Math::Symbol.new(op, mini_sub_sized: true), recursions]
+        [Math::Symbols::Symbol.new(op, mini_sub_sized: true), recursions]
       end
 
       rule(sub_operators: simple(:operator),
            sub_recursions: sequence(:recursions)) do
         op = Constants::SUB_OPERATORS.key(operator).to_s
-        [Math::Symbol.new(op, mini_sub_sized: true)] + recursions
+        [Math::Symbols::Symbol.new(op, mini_sub_sized: true)] + recursions
       end
 
       rule(sup_operators: simple(:operator),
            sup_recursions: simple(:recursions)) do
         op = Constants::SUP_OPERATORS.key(operator).to_s
-        [Math::Symbol.new(op, mini_sup_sized: true), recursions]
+        [Math::Symbols::Symbol.new(op, mini_sup_sized: true), recursions]
       end
 
       rule(digit: simple(:digit),
@@ -629,7 +630,7 @@ module Plurimath
            recursive_denominator: simple(:recursive_denominator)) do
         symbol = Constants::RELATIONAL_SYMBOLS[symbols.to_sym] || symbols
         [
-          Math::Symbol.new(symbol.to_s),
+          Utility.symbols_class(symbol.to_s, lang: :unicodemath),
           recursive_denominator,
         ]
       end
@@ -1125,7 +1126,7 @@ module Plurimath
       rule(color_value: simple(:color),
            first_value: simple(:first_value)) do
         Math::Function::Color.new(
-          Math::Symbol.new(color),
+          Math::Symbols::Symbol.new(color),
           first_value,
         )
       end
@@ -1133,7 +1134,7 @@ module Plurimath
       rule(color_value: simple(:color),
            first_value: sequence(:first_value)) do
         Math::Function::Color.new(
-          Math::Symbol.new(color),
+          Math::Symbols::Symbol.new(color),
           Utility.filter_values(first_value),
         )
       end
@@ -1184,7 +1185,7 @@ module Plurimath
       rule(backcolor_value: simple(:color),
            first_value: simple(:first_value)) do
         color_obj = Math::Function::Color.new(
-          Math::Symbol.new(color),
+          Math::Symbols::Symbol.new(color),
           first_value,
           { backcolor: true }
         )
@@ -1193,7 +1194,7 @@ module Plurimath
       rule(backcolor_value: simple(:color),
            first_value: sequence(:first_value)) do
         color_obj = Math::Function::Color.new(
-          Math::Symbol.new(color),
+          Math::Symbols::Symbol.new(color),
           Utility.filter_values(first_value),
           { backcolor: true }
         )
@@ -1232,12 +1233,12 @@ module Plurimath
         else
           if Constants::UNDER_HORIZONTAL_BRACKETS[hbrack.to_sym] || Constants::UNDER_HORIZONTAL_BRACKETS.key(hbrack)
             Math::Function::Underset.new(
-              Math::Symbol.new(Constants::HORIZONTAL_BRACKETS[hbrack.to_sym] || hbrack),
+              Math::Symbols::Symbol.new(Constants::HORIZONTAL_BRACKETS[hbrack.to_sym] || hbrack),
               value,
             )
           else
             Math::Function::Overset.new(
-              Math::Symbol.new(Constants::HORIZONTAL_BRACKETS[hbrack.to_sym] || hbrack),
+              Math::Symbols::Symbol.new(Constants::HORIZONTAL_BRACKETS[hbrack.to_sym] || hbrack),
               value,
             )
           end
@@ -1261,12 +1262,12 @@ module Plurimath
         else
           if Constants::UNDER_HORIZONTAL_BRACKETS[hbrack.to_sym] || Constants::UNDER_HORIZONTAL_BRACKETS.key(hbrack)
             Math::Function::Underset.new(
-              Math::Symbol.new(Constants::HORIZONTAL_BRACKETS[hbrack.to_sym] || hbrack),
+              Math::Symbols::Symbol.new(Constants::HORIZONTAL_BRACKETS[hbrack.to_sym] || hbrack),
               value,
             )
           else
             Math::Function::Overset.new(
-              Math::Symbol.new(Constants::HORIZONTAL_BRACKETS[hbrack.to_sym] || hbrack),
+              Math::Symbols::Symbol.new(Constants::HORIZONTAL_BRACKETS[hbrack.to_sym] || hbrack),
               value,
             )
           end
@@ -1292,12 +1293,12 @@ module Plurimath
         else
           if Constants::UNDER_HORIZONTAL_BRACKETS[hbrack.to_sym] || Constants::UNDER_HORIZONTAL_BRACKETS.key(hbrack)
             Math::Function::Underset.new(
-              Math::Symbol.new(Constants::HORIZONTAL_BRACKETS[hbrack.to_sym] || hbrack),
+              Math::Symbols::Symbol.new(Constants::HORIZONTAL_BRACKETS[hbrack.to_sym] || hbrack),
               value,
             )
           else
             Math::Function::Overset.new(
-              Math::Symbol.new(Constants::HORIZONTAL_BRACKETS[hbrack.to_sym] || hbrack),
+              Math::Symbols::Symbol.new(Constants::HORIZONTAL_BRACKETS[hbrack.to_sym] || hbrack),
               value,
             )
           end
@@ -1321,12 +1322,12 @@ module Plurimath
         else
           if Constants::UNDER_HORIZONTAL_BRACKETS[hbrack.to_sym] || Constants::UNDER_HORIZONTAL_BRACKETS.key(hbrack)
             Math::Function::Underset.new(
-              Math::Symbol.new(Constants::HORIZONTAL_BRACKETS[hbrack.to_sym] || hbrack),
+              Math::Symbols::Symbol.new(Constants::HORIZONTAL_BRACKETS[hbrack.to_sym] || hbrack),
               value,
             )
           else
             Math::Function::Overset.new(
-              Math::Symbol.new(Constants::HORIZONTAL_BRACKETS[hbrack.to_sym] || hbrack),
+              Math::Symbols::Symbol.new(Constants::HORIZONTAL_BRACKETS[hbrack.to_sym] || hbrack),
               value,
             )
           end
@@ -1335,19 +1336,17 @@ module Plurimath
 
       rule(first_value: simple(:first_value),
            prime_accent_symbols: sequence(:prime)) do
-        prime.map!.with_index { |pp| (Constants::ACCENT_SYMBOLS[pp.to_sym] || pp) }
         Math::Function::Power.new(
           Utility.unfenced_value(first_value, paren_specific: true),
-          Utility.filter_values(prime),
+          Utility.updated_primes(prime),
         )
       end
 
       rule(first_value: simple(:first_value),
            prime_accent_symbols: simple(:prime)) do
-        prime_symbol = (Constants::ACCENT_SYMBOLS[prime.to_sym] || prime)
         Math::Function::Power.new(
           Utility.unfenced_value(first_value, paren_specific: true),
-          Math::Symbol.new(prime_symbol),
+          Utility.updated_primes(prime),
         )
       end
 
@@ -1357,14 +1356,14 @@ module Plurimath
         overlay_value = Utility.unfenced_value(first_value.pop, paren_specific: true)
         overlay_object = if notation == "mover"
                            Math::Function::Overset.new(
-                              Math::Symbol.new(overlay),
+                              Utility.symbols_class(overlay, lang: :unicodemath),
                               overlay_value,
                               { accent: true },
                             )
                          else
                            if overlay == "&#x304;"
                              Math::Function::Overset.new(
-                               Math::Symbol.new(overlay),
+                               Utility.symbols_class(overlay, lang: :unicodemath),
                                overlay_value,
                                { accent: true },
                              )
@@ -1384,14 +1383,14 @@ module Plurimath
         overlay_value = Utility.unfenced_value(first_value, paren_specific: true)
         if notation == "mover"
           Math::Function::Overset.new(
-            Math::Symbol.new(overlay),
+            Utility.symbols_class(overlay, lang: :unicodemath),
             overlay_value,
             { accent: true },
           )
         else
           if overlay == "&#x304;"
             Math::Function::Overset.new(
-              Math::Symbol.new(overlay),
+              Utility.symbols_class(overlay, lang: :unicodemath),
               overlay_value,
               { accent: true },
             )
@@ -1410,7 +1409,7 @@ module Plurimath
         overlay_value = Utility.unfenced_value(first_value, paren_specific: true)
         if notation == "mover"
           Math::Function::Overset.new(
-            Math::Symbol.new(overlay),
+            Utility.symbols_class(overlay, lang: :unicodemath),
             overlay_value,
             { accent: true },
           )
@@ -1428,7 +1427,7 @@ module Plurimath
         overlay_value = Utility.unfenced_value(first_value, paren_specific: true)
         if notation == "munder"
           Math::Function::Underset.new(
-            Math::Symbol.new(overlay),
+            Utility.symbols_class(overlay, lang: :unicodemath),
             overlay_value,
             { accent: true },
           )
@@ -1439,10 +1438,9 @@ module Plurimath
 
       rule(first_value: sequence(:first_value),
            prime_accent_symbols: simple(:prime)) do
-        prime_symbol = (Constants::ACCENT_SYMBOLS[prime.to_sym] || prime)
         Math::Function::Power.new(
           Utility.unfenced_value(first_value, paren_specific: true),
-          Math::Symbol.new(prime_symbol),
+          Utility.updated_primes(prime),
         )
       end
 
@@ -1482,7 +1480,7 @@ module Plurimath
            first_value: simple(:first_value)) do
         if Constants::UNDEF_UNARY_FUNCTIONS.include?(unary.to_s)
           Math::Formula.new([
-            Math::Symbol.new(unary),
+            Utility.symbols_class(unary, lang: :unicodemath),
             first_value,
           ])
         else
@@ -1494,7 +1492,7 @@ module Plurimath
            first_value: simple(:first_value)) do
         if Constants::UNDEF_UNARY_FUNCTIONS.include?(unary.to_s)
           Math::Formula.new([
-            Math::Symbol.new(unary),
+            Utility.symbols_class(unary, lang: :unicodemath),
             first_value,
           ])
         else
@@ -1596,13 +1594,13 @@ module Plurimath
         if :Vmatrix == matrix
           Utility.get_table_class(matrix).new(
             array,
-            "norm[",
+            Plurimath::Math::Symbols::Paren::Norm.new,
           )
         elsif :Bmatrix == matrix
           Utility.get_table_class(matrix).new(
             array,
-            "{",
-            "}",
+            Plurimath::Math::Symbols::Paren::Lcurly.new,
+            Plurimath::Math::Symbols::Paren::Rcurly.new,
           )
         elsif :matrix == matrix
           Math::Function::Table.new(array)
@@ -1617,13 +1615,13 @@ module Plurimath
         if :Vmatrix == matrix
           Utility.get_table_class(matrix).new(
             [array],
-            "norm[",
+            Plurimath::Math::Symbols::Paren::Norm.new,
           )
         elsif :Bmatrix == matrix
           Utility.get_table_class(matrix).new(
             [array],
-            "{",
-            "}",
+            Plurimath::Math::Symbols::Paren::Lcurly.new,
+            Plurimath::Math::Symbols::Paren::Rcurly.new,
           )
         elsif :matrix == matrix
           Math::Function::Table.new([array])
@@ -1638,13 +1636,13 @@ module Plurimath
         if :Vmatrix == matrix
           Utility.get_table_class(matrix).new(
             Utility.identity_matrix(number.to_i),
-            "norm[",
+            Plurimath::Math::Symbols::Paren::Norm.new,
           )
         elsif :Bmatrix == matrix
           Utility.get_table_class(matrix).new(
             Utility.identity_matrix(number.to_i),
-            "{",
-            "}",
+            Plurimath::Math::Symbols::Paren::Lcurly.new,
+            Plurimath::Math::Symbols::Paren::Rcurly.new,
           )
         elsif :matrix == matrix
           Math::Function::Table.new(
@@ -1779,17 +1777,17 @@ module Plurimath
 
       rule(intermediate_exp: simple(:exp),
            operator: simple(:operator)) do
-        [exp, Math::Symbol.new(operator)]
+        [exp, Utility.symbols_class(operator, lang: :unicodemath)]
       end
 
       rule(intermediate_exp: simple(:exp),
            exclamation_symbol: simple(:exclamation_symbol)) do
-        [exp, Math::Symbol.new(exclamation_symbol)]
+        [exp, Utility.symbols_class(exclamation_symbol, lang: :unicodemath)]
       end
 
       rule(atom: simple(:atom),
            exclamation_symbol: simple(:exclamation_symbol)) do
-        [atom, Math::Symbol.new(exclamation_symbol)]
+        [atom, Utility.symbols_class(exclamation_symbol, lang: :unicodemath)]
       end
 
       rule(intermediate_exp: simple(:exp),
@@ -1837,12 +1835,12 @@ module Plurimath
 
       rule(slashed_value: sequence(:values),
            expr: simple(:expr)) do
-        Utility.sequence_slashed_values(values) + [expr]
+        Utility.sequence_slashed_values(values, lang: :unicodemath) + [expr]
       end
 
       rule(slashed_value: sequence(:values),
            expr: sequence(:expr)) do
-        Utility.sequence_slashed_values(values) + expr
+        Utility.sequence_slashed_values(values, lang: :unicodemath) + expr
       end
 
       rule(slashed_value: simple(:value),
@@ -1878,7 +1876,7 @@ module Plurimath
           Utility.get_class(nary_function).new(nary_value)
         else
           Math::Function::Nary.new(
-            Math::Symbol.new(nary_function),
+            Utility.symbols_class(nary_function, lang: :unicodemath),
             Utility.unfenced_value(sub, paren_specific: true)
           )
         end
@@ -1915,7 +1913,7 @@ module Plurimath
           Utility.get_class(nary_function).new(nil, nil, nary_value)
         else
           Math::Function::Nary.new(
-            Math::Symbol.new(nary_function),
+            Utility.symbols_class(nary_function, lang: :unicodemath),
             nil,
             nil,
             naryand,
@@ -1954,9 +1952,9 @@ module Plurimath
       rule(open_paren: simple(:open_paren),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Slice) ? Math::Symbol.new(open_paren) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           [],
-          close_paren.is_a?(Slice) ? Math::Symbol.new(close_paren) : close_paren
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren
         )
      end
 
@@ -1976,14 +1974,14 @@ module Plurimath
            binary_symbols: simple(:symbols),
            factor: simple(:factor)) do
         symbol = (Constants::BINARY_SYMBOLS[symbols.to_sym] || symbols)
-        [atom, Math::Symbol.new(symbol), factor]
+        [atom, Utility.symbols_class(symbol, lang: :unicodemath), factor]
       end
 
       rule(atom: simple(:atom),
            binary_symbols: simple(:symbols),
            recursive_numerator: simple(:numerator)) do
         symbol = (Constants::BINARY_SYMBOLS[symbols.to_sym] || symbols)
-        [atom, Math::Symbol.new(symbol), numerator]
+        [atom, Utility.symbols_class(symbol, lang: :unicodemath), numerator]
       end
 
       rule(paren_open_prefix: simple(:paren_open_prefix),
@@ -2025,7 +2023,7 @@ module Plurimath
       rule(char: simple(:char),
            diacritics: simple(:diacritics),
            alphanumeric: simple(:alpha)) do
-        [char, diacritics, Math::Symbol.new(alpha)]
+        [char, diacritics, Utility.symbols_class(alpha, lang: :unicodemath)]
       end
 
       rule(sub_script: simple(:sub_script),
@@ -2144,11 +2142,11 @@ module Plurimath
            choose: simple(:choose),
            denominator: simple(:denominator)) do
         Math::Function::Fenced.new(
-          Math::Symbol.new("("),
+          Math::Symbols::Paren::Lround.new,
           [
             Utility.fractions(numerator, denominator, { linethickness: "0", choose: true }),
           ],
-          Math::Symbol.new(")"),
+          Math::Symbols::Paren::Rround.new,
         )
       end
 
@@ -2313,7 +2311,7 @@ module Plurimath
            expr: simple(:expr)) do
         [
           fonts,
-          Math::Symbol.new((Constants::RELATIONAL_SYMBOLS[symbols.to_sym] || symbols)),
+          Utility.symbols_class(symbols, lang: :unicodemath),
           expr,
         ]
       end
@@ -2323,7 +2321,7 @@ module Plurimath
            expr: simple(:expr)) do
         [
           frac,
-          Math::Symbol.new((Constants::RELATIONAL_SYMBOLS[symbols.to_sym] || symbols)),
+          Utility.symbols_class(symbols, lang: :unicodemath),
           expr,
         ]
       end
@@ -2366,9 +2364,9 @@ module Plurimath
            closer: simple(:closer)) do
         Utility.unfenced_value(operand, paren_specific: true) if [opener, closer].include?("|")
         Math::Function::Fenced.new(
-          opener.is_a?(Slice) ? Math::Symbol.new(opener) : opener,
+          opener.is_a?(Slice) ? Utility.symbols_class(opener, lang: :unicodemath) : opener,
           [operand],
-          closer.is_a?(Slice) ? Math::Symbol.new(closer) : closer,
+          closer.is_a?(Slice) ? Utility.symbols_class(closer, lang: :unicodemath) : closer,
         )
       end
 
@@ -2376,9 +2374,9 @@ module Plurimath
            operand: sequence(:operand),
            closer: simple(:closer)) do
         Math::Function::Fenced.new(
-          opener.is_a?(Slice) ? Math::Symbol.new(opener) : opener,
+          opener.is_a?(Slice) ? Utility.symbols_class(opener, lang: :unicodemath) : opener,
           operand,
-          closer.is_a?(Slice) ? Math::Symbol.new(closer) : closer,
+          closer.is_a?(Slice) ? Utility.symbols_class(closer, lang: :unicodemath) : closer,
         )
       end
 
@@ -2393,9 +2391,9 @@ module Plurimath
         end
         Utility.unfenced_value(operand, paren_specific: true) if [opener, closer].include?("|")
         Math::Function::Fenced.new(
-          Math::Symbol.new(opener.last),
+          Utility.symbols_class(opener.last, lang: :unicodemath),
           [operand],
-          closer.is_a?(Slice) ? Math::Symbol.new(closer) : closer,
+          closer.is_a?(Slice) ? Utility.symbols_class(closer, lang: :unicodemath) : closer,
           options,
         )
       end
@@ -2404,9 +2402,9 @@ module Plurimath
            frac: simple(:frac),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Slice) ? Math::Symbol.new(open_paren) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           [frac],
-          close_paren.is_a?(Slice) ? Math::Symbol.new(close_paren) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -2414,9 +2412,9 @@ module Plurimath
            slashed_value: sequence(:values),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Slice) ? Math::Symbol.new(open_paren) : open_paren,
-          Utility.sequence_slashed_values(values),
-          close_paren.is_a?(Slice) ? Math::Symbol.new(close_paren) : close_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
+          Utility.sequence_slashed_values(values, lang: :unicodemath),
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -2424,9 +2422,9 @@ module Plurimath
            phantom: simple(:phantom),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Slice) ? Math::Symbol.new(open_paren) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           [phantom],
-          close_paren.is_a?(Slice) ? Math::Symbol.new(close_paren) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -2434,9 +2432,9 @@ module Plurimath
            unary_function: simple(:unary_function),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Slice) ? Math::Symbol.new(open_paren) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           [unary_function],
-          close_paren.is_a?(Slice) ? Math::Symbol.new(close_paren) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -2444,9 +2442,9 @@ module Plurimath
            rect: simple(:rect),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Slice) ? Math::Symbol.new(open_paren) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           [rect],
-          close_paren.is_a?(Slice) ? Math::Symbol.new(close_paren) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -2454,9 +2452,9 @@ module Plurimath
            factor: simple(:factor),
            paren_close_prefix: simple(:close_prefix)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Slice) ? Math::Symbol.new(open_paren) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           [factor],
-          Math::Symbol.new(close_prefix),
+          Utility.symbols_class(close_prefix, lang: :unicodemath),
           { close_prefixed: true }
         )
       end
@@ -2465,9 +2463,9 @@ module Plurimath
            factor: simple(:factor),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          Math::Symbol.new(open_paren),
+          Utility.symbols_class(open_paren, lang: :unicodemath),
           [factor],
-          close_paren.is_a?(Slice) ? Math::Symbol.new(close_paren) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
           { open_prefixed: true }
         )
       end
@@ -2476,9 +2474,9 @@ module Plurimath
            nary: simple(:nary),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Slice) ? Math::Symbol.new(open_paren) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           [nary],
-          close_paren.is_a?(Slice) ? Math::Symbol.new(close_paren) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -2486,9 +2484,9 @@ module Plurimath
            sub_exp: simple(:sub_exp),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Slice) ? Math::Symbol.new(open_paren) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           [sub_exp],
-          close_paren.is_a?(Slice) ? Math::Symbol.new(close_paren) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -2496,9 +2494,9 @@ module Plurimath
            subsup_exp: simple(:subsup_exp),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Slice) ? Math::Symbol.new(open_paren) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           [subsup_exp],
-          close_paren.is_a?(Slice) ? Math::Symbol.new(close_paren) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -2506,9 +2504,9 @@ module Plurimath
            unary_subsup: simple(:subsup),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Slice) ? Math::Symbol.new(open_paren) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           [subsup],
-          close_paren.is_a?(Slice) ? Math::Symbol.new(close_paren) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -2516,9 +2514,9 @@ module Plurimath
            mini_sup: simple(:mini_sup),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Slice) ? Math::Symbol.new(open_paren) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           [mini_sup],
-          close_paren.is_a?(Slice) ? Math::Symbol.new(close_paren) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -2528,9 +2526,9 @@ module Plurimath
         sub_open = Constants::SUB_PARENTHESIS[:open].key(open_paren)
         sub_close = Constants::SUB_PARENTHESIS[:close].key(close_paren)
         Math::Function::Fenced.new(
-          Math::Symbol.new(sub_open.to_s, mini_sub_sized: true),
+          Math::Symbols::Symbol.new(sub_open.to_s, mini_sub_sized: true),
           mini_expr,
-          Math::Symbol.new(sub_close.to_s, mini_sub_sized: true),
+          Math::Symbols::Symbol.new(sub_close.to_s, mini_sub_sized: true),
         )
       end
 
@@ -2538,9 +2536,9 @@ module Plurimath
            text: simple(:text),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Slice) ? Math::Symbol.new(open_paren) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           [Math::Function::Text.new(text)],
-          close_paren.is_a?(Slice) ? Math::Symbol.new(close_paren) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -2549,9 +2547,9 @@ module Plurimath
            close_paren: simple(:close_paren)) do
         new_factor = [open_paren, close_paren].include?("|") ? Utility.unfenced_value(factor, paren_specific: true) : factor
         Math::Function::Fenced.new(
-          open_paren.is_a?(Slice) ? Math::Symbol.new(open_paren) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           [new_factor],
-          close_paren.is_a?(Slice) ? Math::Symbol.new(close_paren) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -2559,9 +2557,9 @@ module Plurimath
            sup_exp: simple(:sup_exp),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Slice) ? Math::Symbol.new(open_paren) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           [sup_exp],
-          close_paren.is_a?(Slice) ? Math::Symbol.new(close_paren) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -2569,9 +2567,9 @@ module Plurimath
            accents: subtree(:accents),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Slice) ? Math::Symbol.new(open_paren) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           [Utility.unicode_accents(accents)],
-          close_paren.is_a?(Slice) ? Math::Symbol.new(close_paren) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -2586,9 +2584,9 @@ module Plurimath
         end
         new_factor = [open_paren, close_paren].include?("|") ? Utility.unfenced_value(factor, paren_specific: true) : factor
         Math::Function::Fenced.new(
-          Math::Symbol.new(open_paren.last),
+          Utility.symbols_class(open_paren.last, lang: :unicodemath),
           [new_factor],
-          close_paren.is_a?(Slice) ? Math::Symbol.new(close_paren) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
           options
         )
       end
@@ -2603,9 +2601,9 @@ module Plurimath
           options[:open_paren] = { minsize: mask, maxsize: mask } unless open_paren.first.value == ""
         end
         Math::Function::Fenced.new(
-          Math::Symbol.new(open_paren.last),
+          Utility.symbols_class(open_paren.last, lang: :unicodemath),
           [factor],
-          Math::Symbol.new(close_prefix),
+          Utility.symbols_class(close_prefix, lang: :unicodemath),
           options
         )
       end
@@ -2625,9 +2623,9 @@ module Plurimath
           options[:close_paren] = { minsize: mask, maxsize: mask } unless close_paren.first.value == ""
         end
         Math::Function::Fenced.new(
-          Math::Symbol.new(open_paren.last),
+          Utility.symbols_class(open_paren.last, lang: :unicodemath),
           [frac],
-          Math::Symbol.new(close_paren.last),
+          Utility.symbols_class(close_paren.last, lang: :unicodemath),
           options
         )
       end
@@ -2642,9 +2640,9 @@ module Plurimath
           options[:close_paren] = { minsize: mask, maxsize: mask } unless close_paren.first.value == ""
         end
         Math::Function::Fenced.new(
-          open_paren.is_a?(Slice) ? Math::Symbol.new(open_paren) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           [frac],
-          Math::Symbol.new(close_paren.last),
+          Utility.symbols_class(close_paren.last, lang: :unicodemath),
           options
         )
       end
@@ -2664,9 +2662,9 @@ module Plurimath
           options[:close_paren] = { minsize: mask, maxsize: mask } unless close_paren.first.value == ""
         end
         Math::Function::Fenced.new(
-          Math::Symbol.new(open_paren.last),
+          Utility.symbols_class(open_paren.last, lang: :unicodemath),
           [factor],
-          Math::Symbol.new(close_paren.last),
+          Utility.symbols_class(close_paren.last, lang: :unicodemath),
           options
         )
       end
@@ -2675,30 +2673,30 @@ module Plurimath
            negated_operator: simple(:operator),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Slice) ? Math::Symbol.new(open_paren) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           [
             Math::Formula.new([
-              Math::Symbol.new(operator),
-              Math::Symbol.new("&#x338;"),
+              Utility.symbols_class(operator, lang: :unicodemath),
+              Math::Symbols::Symbol.new("&#x338;"),
             ])
           ],
-          close_paren.is_a?(Slice) ? Math::Symbol.new(close_paren) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
       rule(open_paren: simple(:open_paren),
            table: simple(:table),
            paren_close_prefix: simple(:close_paren)) do
-          table.open_paren = open_paren.to_s
-          table.close_paren = close_paren.to_s
+          table.open_paren = Utility.symbols_class(open_paren, lang: :unicodemath)
+          table.close_paren = Utility.symbols_class(close_paren, lang: :unicodemath)
           table
       end
 
       rule(open_paren: simple(:open_paren),
            table: simple(:table),
            close_paren: simple(:close_paren)) do
-          table.open_paren = open_paren.to_s
-          table.close_paren = close_paren.to_s
+          table.open_paren = Utility.symbols_class(open_paren, lang: :unicodemath)
+          table.close_paren = Utility.symbols_class(close_paren, lang: :unicodemath)
           table
       end
 
@@ -2707,7 +2705,7 @@ module Plurimath
            expr: simple(:expr)) do
         [
           intermediate_exp,
-          Math::Symbol.new(operator),
+          Utility.symbols_class(operator, lang: :unicodemath),
           expr,
         ]
       end
@@ -2717,7 +2715,7 @@ module Plurimath
            frac: simple(:frac)) do
         [
           atom,
-          Math::Symbol.new(operator),
+          Utility.symbols_class(operator, lang: :unicodemath),
           frac,
         ]
       end
@@ -2726,7 +2724,7 @@ module Plurimath
            frac: simple(:frac),
            expr: sequence(:expr)) do
         [
-          Math::Symbol.new(operator),
+          Utility.symbols_class(operator, lang: :unicodemath),
           frac,
         ] + expr
       end
@@ -2745,7 +2743,7 @@ module Plurimath
           Utility.get_class(nary_function).new(new_sub, new_sup)
         else
           Math::Function::Nary.new(
-            Math::Symbol.new(nary_function),
+            Utility.symbols_class(nary_function, lang: :unicodemath),
             Utility.unfenced_value(sub, paren_specific: true),
             Utility.unfenced_value(sup, paren_specific: true),
           )
@@ -2800,7 +2798,7 @@ module Plurimath
           )
         else
           Math::Function::Nary.new(
-            Math::Symbol.new(nary_function),
+            Utility.symbols_class(nary_function, lang: :unicodemath),
             sub_value,
             nil,
             nil,
@@ -2827,7 +2825,7 @@ module Plurimath
           )
         else
           Math::Function::Nary.new(
-            Math::Symbol.new(nary_function),
+            Utility.symbols_class(nary_function, lang: :unicodemath),
             Utility.unfenced_value(sub, paren_specific: true),
             nil,
             nil,
@@ -2855,7 +2853,7 @@ module Plurimath
           )
         else
           Math::Function::Nary.new(
-            Math::Symbol.new(nary_function),
+            Utility.symbols_class(nary_function, lang: :unicodemath),
             nil,
             sup_value,
             nil,
@@ -2882,7 +2880,7 @@ module Plurimath
           )
         else
           Math::Function::Nary.new(
-            Math::Symbol.new(nary_function),
+            Utility.symbols_class(nary_function, lang: :unicodemath),
             nil,
             Utility.unfenced_value(sup, paren_specific: true),
             nil,
@@ -2940,9 +2938,9 @@ module Plurimath
            pre_script: simple(:pre_script),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Slice) ? Math::Symbol.new(open_paren) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           [pre_script],
-          close_paren.is_a?(Slice) ? Math::Symbol.new(close_paren) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -2964,7 +2962,7 @@ module Plurimath
           )
         else
           Math::Function::Nary.new(
-            Math::Symbol.new(nary_function),
+            Utility.symbols_class(nary_function, lang: :unicodemath),
             Utility.filter_values(sub),
             Utility.filter_values(sup),
             nil,
@@ -2991,7 +2989,7 @@ module Plurimath
           )
         else
           Math::Function::Nary.new(
-            Math::Symbol.new(nary_function),
+            Utility.symbols_class(nary_function, lang: :unicodemath),
             Utility.unfenced_value(sub, paren_specific: true),
             Utility.filter_values(sup),
             nil,
@@ -3018,7 +3016,7 @@ module Plurimath
           )
         else
           Math::Function::Nary.new(
-            Math::Symbol.new(nary_function),
+            Utility.symbols_class(nary_function, lang: :unicodemath),
             Utility.filter_values(sub),
             Utility.unfenced_value(sup, paren_specific: true),
             nil,
@@ -3033,7 +3031,7 @@ module Plurimath
            expr: sequence(:expr)) do
         [
           atom,
-          Math::Symbol.new(operator),
+          Utility.symbols_class(operator, lang: :unicodemath),
           frac,
         ] + expr
       end
@@ -3054,9 +3052,9 @@ module Plurimath
           options[:close_paren] = { minsize: mask, maxsize: mask } unless close_paren.first.value == ""
         end
         Math::Function::Fenced.new(
-          Math::Symbol.new(open_paren.last),
+          Utility.symbols_class(open_paren.last, lang: :unicodemath),
           ([factor] + exp),
-          Math::Symbol.new(close_paren.last),
+          Utility.symbols_class(close_paren.last, lang: :unicodemath),
           options
         )
       end
@@ -3066,9 +3064,9 @@ module Plurimath
            exp: sequence(:exp),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Slice) ? Math::Symbol.new(open_paren) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           ([unary] + exp),
-          close_paren.is_a?(Slice) ? Math::Symbol.new(close_paren) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -3078,9 +3076,9 @@ module Plurimath
            naryand_recursion: sequence(:naryand_recursion)) do
         new_factor = [open_paren, close_paren].include?("|") ? Utility.unfenced_value(factor, paren_specific: true) : factor
         fenced = Math::Function::Fenced.new(
-          open_paren.is_a?(Slice) ? Math::Symbol.new(open_paren) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           [new_factor],
-          close_paren.is_a?(Slice) ? Math::Symbol.new(close_paren) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
         [fenced] + naryand_recursion
       end
@@ -3091,9 +3089,9 @@ module Plurimath
            naryand_recursion: simple(:naryand_recursion)) do
         new_factor = [open_paren, close_paren].include?("|") ? Utility.unfenced_value(factor, paren_specific: true) : factor
         fenced = Math::Function::Fenced.new(
-          open_paren.is_a?(Slice) ? Math::Symbol.new(open_paren) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           [new_factor],
-          close_paren.is_a?(Slice) ? Math::Symbol.new(close_paren) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
         [fenced, naryand_recursion]
       end
@@ -3103,9 +3101,9 @@ module Plurimath
            expr: sequence(:expr),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Slice) ? Math::Symbol.new(open_paren) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           ([mini_sub] + expr),
-          close_paren.is_a?(Slice) ? Math::Symbol.new(close_paren) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -3114,9 +3112,9 @@ module Plurimath
            exp: sequence(:exp),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Slice) ? Math::Symbol.new(open_paren) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           ([mini_sub] + exp),
-          close_paren.is_a?(Slice) ? Math::Symbol.new(close_paren) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -3125,9 +3123,9 @@ module Plurimath
            exp: sequence(:exp),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Slice) ? Math::Symbol.new(open_paren) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           ([mini_sub_sup] + exp),
-          close_paren.is_a?(Slice) ? Math::Symbol.new(close_paren) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -3136,9 +3134,9 @@ module Plurimath
            expr: sequence(:expr),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Slice) ? Math::Symbol.new(open_paren) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           ([mini_sup] + expr),
-          close_paren.is_a?(Slice) ? Math::Symbol.new(close_paren) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -3147,9 +3145,9 @@ module Plurimath
            exp: sequence(:exp),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Slice) ? Math::Symbol.new(open_paren) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           ([mini_sup] + exp),
-          close_paren.is_a?(Slice) ? Math::Symbol.new(close_paren) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -3158,9 +3156,9 @@ module Plurimath
            expr: sequence(:expr),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Slice) ? Math::Symbol.new(open_paren) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           ([intermediate_exp] + expr),
-          close_paren.is_a?(Slice) ? Math::Symbol.new(close_paren) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -3169,9 +3167,9 @@ module Plurimath
            expr: simple(:expr),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Slice) ? Math::Symbol.new(open_paren) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           [factor, expr],
-          close_paren.is_a?(Slice) ? Math::Symbol.new(close_paren) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -3180,9 +3178,9 @@ module Plurimath
            exp: simple(:exp),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Slice) ? Math::Symbol.new(open_paren) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           [factor, exp],
-          close_paren.is_a?(Slice) ? Math::Symbol.new(close_paren) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -3191,9 +3189,9 @@ module Plurimath
            expr: sequence(:expr),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Slice) ? Math::Symbol.new(open_paren) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           ([Utility.unicode_accents(accent)] + expr),
-          close_paren.is_a?(Slice) ? Math::Symbol.new(close_paren) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -3202,9 +3200,9 @@ module Plurimath
            exp: sequence(:exp),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Slice) ? Math::Symbol.new(open_paren) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           ([Utility.unicode_accents(accent)] + exp),
-          close_paren.is_a?(Slice) ? Math::Symbol.new(close_paren) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -3213,9 +3211,9 @@ module Plurimath
            expr: sequence(:expr),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Slice) ? Math::Symbol.new(open_paren) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           ([Utility.unicode_fractions(fraction)] + expr),
-          close_paren.is_a?(Slice) ? Math::Symbol.new(close_paren) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -3224,9 +3222,9 @@ module Plurimath
            exp: sequence(:exp),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Slice) ? Math::Symbol.new(open_paren) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           ([Utility.unicode_fractions(fraction)] + exp),
-          close_paren.is_a?(Slice) ? Math::Symbol.new(close_paren) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -3235,9 +3233,9 @@ module Plurimath
            exp: sequence(:exp),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Slice) ? Math::Symbol.new(open_paren) : open_paren,
-          ([Math::Symbol.new(symbol)] + exp),
-          close_paren.is_a?(Slice) ? Math::Symbol.new(close_paren) : close_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
+          ([Utility.symbols_class(symbol, lang: :unicodemath)] + exp),
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -3246,9 +3244,9 @@ module Plurimath
            exp: simple(:exp),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Slice) ? Math::Symbol.new(open_paren) : open_paren,
-          [Math::Symbol.new(symbol), exp],
-          close_paren.is_a?(Slice) ? Math::Symbol.new(close_paren) : close_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
+          [Utility.symbols_class(symbol, lang: :unicodemath), exp],
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -3257,9 +3255,9 @@ module Plurimath
            expr: simple(:expr),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Slice) ? Math::Symbol.new(open_paren) : open_paren,
-          [Math::Symbol.new(operator), expr],
-          close_paren.is_a?(Slice) ? Math::Symbol.new(close_paren) : close_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
+          [Utility.symbols_class(operator, lang: :unicodemath), expr],
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -3268,9 +3266,9 @@ module Plurimath
            expr: sequence(:expr),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Slice) ? Math::Symbol.new(open_paren) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           ([sub_exp] + expr),
-          close_paren.is_a?(Slice) ? Math::Symbol.new(close_paren) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -3279,9 +3277,9 @@ module Plurimath
            exp: sequence(:exp),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Slice) ? Math::Symbol.new(open_paren) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           ([sub_exp] + exp),
-          close_paren.is_a?(Slice) ? Math::Symbol.new(close_paren) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -3290,9 +3288,9 @@ module Plurimath
            expr: simple(:expr),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Slice) ? Math::Symbol.new(open_paren) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           ([sub_exp, expr]),
-          close_paren.is_a?(Slice) ? Math::Symbol.new(close_paren) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -3301,9 +3299,9 @@ module Plurimath
            exp: simple(:exp),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Slice) ? Math::Symbol.new(open_paren) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           ([sub_exp, exp]),
-          close_paren.is_a?(Slice) ? Math::Symbol.new(close_paren) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -3312,9 +3310,9 @@ module Plurimath
            expr: simple(:expr),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Slice) ? Math::Symbol.new(open_paren) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           ([sup_exp, expr]),
-          close_paren.is_a?(Slice) ? Math::Symbol.new(close_paren) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -3323,9 +3321,9 @@ module Plurimath
            exp: simple(:exp),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Slice) ? Math::Symbol.new(open_paren) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           ([sup_exp, exp]),
-          close_paren.is_a?(Slice) ? Math::Symbol.new(close_paren) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -3334,9 +3332,9 @@ module Plurimath
            exp: sequence(:exp),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Slice) ? Math::Symbol.new(open_paren) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           ([monospace] + exp),
-          close_paren.is_a?(Slice) ? Math::Symbol.new(close_paren) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -3345,9 +3343,9 @@ module Plurimath
            exp: simple(:exp),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Slice) ? Math::Symbol.new(open_paren) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           ([frac, exp]),
-          close_paren.is_a?(Slice) ? Math::Symbol.new(close_paren) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -3356,9 +3354,9 @@ module Plurimath
            exp: sequence(:exp),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Slice) ? Math::Symbol.new(open_paren) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           ([frac] + exp),
-          close_paren.is_a?(Slice) ? Math::Symbol.new(close_paren) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -3367,9 +3365,9 @@ module Plurimath
            exp: sequence(:exp),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Slice) ? Math::Symbol.new(open_paren) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           ([sup_exp] + exp),
-          close_paren.is_a?(Slice) ? Math::Symbol.new(close_paren) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -3378,9 +3376,9 @@ module Plurimath
            expr: sequence(:expr),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Slice) ? Math::Symbol.new(open_paren) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           ([subsup_exp] + expr),
-          close_paren.is_a?(Slice) ? Math::Symbol.new(close_paren) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -3389,9 +3387,9 @@ module Plurimath
            exp: sequence(:exp),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Slice) ? Math::Symbol.new(open_paren) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           ([subsup_exp] + exp),
-          close_paren.is_a?(Slice) ? Math::Symbol.new(close_paren) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -3400,9 +3398,9 @@ module Plurimath
            expr: sequence(:expr),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Slice) ? Math::Symbol.new(open_paren) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           ([factor] + expr),
-          close_paren.is_a?(Slice) ? Math::Symbol.new(close_paren) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -3411,9 +3409,9 @@ module Plurimath
            exp: sequence(:exp),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Slice) ? Math::Symbol.new(open_paren) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           ([factor] + exp),
-          close_paren.is_a?(Slice) ? Math::Symbol.new(close_paren) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -3422,9 +3420,9 @@ module Plurimath
            expr: sequence(:expr),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Slice) ? Math::Symbol.new(open_paren) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           (factor + expr),
-          close_paren.is_a?(Slice) ? Math::Symbol.new(close_paren) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -3433,9 +3431,9 @@ module Plurimath
            expr: sequence(:expr),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Slice) ? Math::Symbol.new(open_paren) : open_paren,
-          ([Math::Symbol.new(symbol)] + expr),
-          close_paren.is_a?(Slice) ? Math::Symbol.new(close_paren) : close_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
+          ([Utility.symbols_class(symbol, lang: :unicodemath)] + expr),
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -3444,9 +3442,9 @@ module Plurimath
            exp: sequence(:exp),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Slice) ? Math::Symbol.new(open_paren) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           (factor + exp),
-          close_paren.is_a?(Slice) ? Math::Symbol.new(close_paren) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -3454,9 +3452,9 @@ module Plurimath
            factor: sequence(:factor),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Slice) ? Math::Symbol.new(open_paren) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           factor,
-          close_paren.is_a?(Slice) ? Math::Symbol.new(close_paren) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -3465,9 +3463,9 @@ module Plurimath
            operand: simple(:operand),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Slice) ? Math::Symbol.new(open_paren) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           ([factor, operand]),
-          close_paren.is_a?(Slice) ? Math::Symbol.new(close_paren) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -3476,9 +3474,9 @@ module Plurimath
            operand: sequence(:operand),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Slice) ? Math::Symbol.new(open_paren) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           ([factor] + operand),
-          close_paren.is_a?(Slice) ? Math::Symbol.new(close_paren) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -3487,9 +3485,9 @@ module Plurimath
            operand: sequence(:operand),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Slice) ? Math::Symbol.new(open_paren) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           (factor + operand),
-          close_paren.is_a?(Slice) ? Math::Symbol.new(close_paren) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -3499,9 +3497,9 @@ module Plurimath
            exp: simple(:exp),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Slice) ? Math::Symbol.new(open_paren) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           [Math::Function::Text.new(text), operand, exp],
-          close_paren.is_a?(Slice) ? Math::Symbol.new(close_paren) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -3511,9 +3509,9 @@ module Plurimath
            exp: sequence(:exp),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Slice) ? Math::Symbol.new(open_paren) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           [Math::Function::Text.new(text), operand] + exp,
-          close_paren.is_a?(Slice) ? Math::Symbol.new(close_paren) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -3538,7 +3536,7 @@ module Plurimath
           )
         else
           Math::Function::Nary.new(
-            Math::Symbol.new(nary_function),
+            Utility.symbols_class(nary_function, lang: :unicodemath),
             sub_value,
             sup_value,
             nil,
@@ -3552,9 +3550,9 @@ module Plurimath
            expr: sequence(:expr),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Slice) ? Math::Symbol.new(open_paren) : open_paren,
-          ([Math::Symbol.new(operator)] + expr),
-          close_paren.is_a?(Slice) ? Math::Symbol.new(close_paren) : close_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
+          ([Utility.symbols_class(operator, lang: :unicodemath)] + expr),
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -3563,9 +3561,9 @@ module Plurimath
            exp: sequence(:exp),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Slice) ? Math::Symbol.new(open_paren) : open_paren,
-          ([Math::Symbol.new(operator)] + exp),
-          close_paren.is_a?(Slice) ? Math::Symbol.new(close_paren) : close_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
+          ([Utility.symbols_class(operator, lang: :unicodemath)] + exp),
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -3588,9 +3586,9 @@ module Plurimath
            exp: simple(:exp),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Slice) ? Math::Symbol.new(open_paren) : open_paren,
-          ([Math::Symbol.new(operator), exp]),
-          close_paren.is_a?(Slice) ? Math::Symbol.new(close_paren) : close_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
+          ([Utility.symbols_class(operator, lang: :unicodemath), exp]),
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -3611,9 +3609,9 @@ module Plurimath
            close_paren: simple(:close_paren),
            sup: simple(:sup)) do
         fenced = Math::Function::Fenced.new(
-          open_paren.is_a?(Slice) ? Math::Symbol.new(open_paren) : open_paren,
-          [Math::Symbol.new(operator), expr],
-          close_paren.is_a?(Slice) ? Math::Symbol.new(close_paren) : close_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
+          [Utility.symbols_class(operator, lang: :unicodemath), expr],
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
         Math::Function::Power.new(fenced, sup)
       end
@@ -3624,9 +3622,9 @@ module Plurimath
            exp: sequence(:exp),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Slice) ? Math::Symbol.new(open_paren) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           ([factor, sup_exp] + exp),
-          close_paren.is_a?(Slice) ? Math::Symbol.new(close_paren) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -3636,9 +3634,9 @@ module Plurimath
            close_paren: simple(:close_paren),
            sup: simple(:sup)) do
         fenced = Math::Function::Fenced.new(
-          open_paren.is_a?(Slice) ? Math::Symbol.new(open_paren) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           ([sub_exp, exp]),
-          close_paren.is_a?(Slice) ? Math::Symbol.new(close_paren) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
         Math::Function::Power.new(
           fenced,
@@ -3652,9 +3650,9 @@ module Plurimath
            close_paren: simple(:close_paren),
            sup: simple(:sup)) do
         fenced = Math::Function::Fenced.new(
-          open_paren.is_a?(Slice) ? Math::Symbol.new(open_paren) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           ([sub_exp] + exp),
-          close_paren.is_a?(Slice) ? Math::Symbol.new(close_paren) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
         Math::Function::Power.new(
           fenced,
@@ -3668,9 +3666,9 @@ module Plurimath
            close_paren: simple(:close_paren),
            sup: simple(:sup)) do
         fenced = Math::Function::Fenced.new(
-          open_paren.is_a?(Slice) ? Math::Symbol.new(open_paren) : open_paren,
-          [Math::Symbol.new(operator), exp],
-          close_paren.is_a?(Slice) ? Math::Symbol.new(close_paren) : close_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
+          [Utility.symbols_class(operator, lang: :unicodemath), exp],
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
         Math::Function::Power.new(fenced, sup)
       end
@@ -3693,9 +3691,9 @@ module Plurimath
            expr: sequence(:expr),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Slice) ? Math::Symbol.new(open_paren) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           ([factor, operand] + expr),
-          close_paren.is_a?(Slice) ? Math::Symbol.new(close_paren) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -3705,9 +3703,9 @@ module Plurimath
            exp: sequence(:exp),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Slice) ? Math::Symbol.new(open_paren) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           ([factor, operand] + exp),
-          close_paren.is_a?(Slice) ? Math::Symbol.new(close_paren) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -3717,9 +3715,9 @@ module Plurimath
            expr: simple(:expr),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Slice) ? Math::Symbol.new(open_paren) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           ([factor, operand, expr]),
-          close_paren.is_a?(Slice) ? Math::Symbol.new(close_paren) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -3729,9 +3727,9 @@ module Plurimath
            exp: simple(:exp),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Slice) ? Math::Symbol.new(open_paren) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           ([factor] + sub_exp + [exp]),
-          close_paren.is_a?(Slice) ? Math::Symbol.new(close_paren) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -3741,13 +3739,10 @@ module Plurimath
            expr: simple(:expr),
            exp: sequence(:exp),
            close_paren: simple(:close_paren)) do
-        relational = Math::Symbol.new(
-          (Constants::RELATIONAL_SYMBOLS[symbol.to_sym] || symbol),
-        )
         Math::Function::Fenced.new(
-          open_paren.is_a?(Slice) ? Math::Symbol.new(open_paren) : open_paren,
-          ([monospace, relational, expr] + exp),
-          close_paren.is_a?(Slice) ? Math::Symbol.new(close_paren) : close_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
+          ([monospace, Utility.symbols_class(symbol, lang: :unicodemath), expr] + exp),
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -3789,9 +3784,9 @@ module Plurimath
            exp: simple(:exp),
            paren_close_prefix: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          Math::Symbol.new(open_paren),
+          Utility.symbols_class(open_paren, lang: :unicodemath),
           [factor, subsup, exp],
-          Math::Symbol.new(close_paren),
+          Utility.symbols_class(close_paren, lang: :unicodemath),
         )
       end
 

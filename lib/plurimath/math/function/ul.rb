@@ -44,7 +44,7 @@ module Plurimath
           if attributes && attributes[:accentunder]
             groupchr_tag(display_style)
           else
-            symbol = Symbol.new("&#x332;")
+            symbol = Symbols::Symbol.new("&#x332;")
             Underset.new(parameter_one, symbol).to_omml_without_math_tag(true)
           end
         end

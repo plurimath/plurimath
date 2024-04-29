@@ -18,7 +18,7 @@ RSpec.describe Plurimath::Math::Function::Phantom do
     subject(:formula) { described_class.new(first_value).to_asciimath }
 
     context "contains Symbol as value" do
-      let(:first_value) { Plurimath::Math::Symbol.new("n") }
+      let(:first_value) { Plurimath::Math::Symbols::Symbol.new("n") }
 
       it "returns AsciiMath string" do
         expect(formula).to eq("\\ ")
@@ -29,7 +29,7 @@ RSpec.describe Plurimath::Math::Function::Phantom do
       let(:first_value) do
         Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Prod.new(
-            Plurimath::Math::Symbol.new("&"),
+            Plurimath::Math::Symbols::Ampersand.new,
             Plurimath::Math::Function::Text.new("so"),
           )
         ])
@@ -51,7 +51,7 @@ RSpec.describe Plurimath::Math::Function::Phantom do
     end
 
     context "contains Symbol as value" do
-      let(:first_value) { Plurimath::Math::Symbol.new("n") }
+      let(:first_value) { Plurimath::Math::Symbols::Symbol.new("n") }
 
       it "returns MathML string" do
         expected_value = <<~MATHML
@@ -68,7 +68,7 @@ RSpec.describe Plurimath::Math::Function::Phantom do
       let(:first_value) do
         Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Prod.new(
-            Plurimath::Math::Symbol.new("&"),
+            Plurimath::Math::Symbols::Ampersand.new,
             Plurimath::Math::Function::Text.new("so"),
           )
         ])
@@ -81,7 +81,7 @@ RSpec.describe Plurimath::Math::Function::Phantom do
             <mrow>
               <munderover>
                 <mo>&#x220f;</mo>
-                <mo>&#x26;</mo>
+                <mo>&</mo>
                 <mtext>so</mtext>
               </munderover>
             </mrow>
@@ -96,7 +96,7 @@ RSpec.describe Plurimath::Math::Function::Phantom do
     subject(:formula) { described_class.new(first_value).to_latex }
 
     context "contains Symbol as value" do
-      let(:first_value) { Plurimath::Math::Symbol.new("n") }
+      let(:first_value) { Plurimath::Math::Symbols::Symbol.new("n") }
 
       it "returns LaTeX string" do
         expect(formula).to eql("\\phantom{n}")
@@ -107,14 +107,14 @@ RSpec.describe Plurimath::Math::Function::Phantom do
       let(:first_value) do
         Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Sum.new(
-            Plurimath::Math::Symbol.new("&"),
+            Plurimath::Math::Symbols::Ampersand.new,
             Plurimath::Math::Function::Text.new("so"),
           )
         ])
       end
 
       it "returns LaTeX string" do
-        expect(formula).to eql("\\phantom{\\sum_{&}^{\\text{so}}}")
+        expect(formula).to eql("\\phantom{\\sum_{\\&}^{\\text{so}}}")
       end
     end
   end
@@ -123,7 +123,7 @@ RSpec.describe Plurimath::Math::Function::Phantom do
     subject(:formula) { described_class.new(first_value).to_html }
 
     context "contains Symbol as value" do
-      let(:first_value) { Plurimath::Math::Symbol.new("n") }
+      let(:first_value) { Plurimath::Math::Symbols::Symbol.new("n") }
 
       it "returns HTML string" do
         expect(formula).to eql("<i style='visibility: hidden;'>n</i>")
@@ -134,7 +134,7 @@ RSpec.describe Plurimath::Math::Function::Phantom do
       let(:first_value) do
         Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Sum.new(
-            Plurimath::Math::Symbol.new("&"),
+            Plurimath::Math::Symbols::Ampersand.new,
             Plurimath::Math::Function::Text.new("so"),
           )
         ])

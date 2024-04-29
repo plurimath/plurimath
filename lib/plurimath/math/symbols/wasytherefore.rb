@@ -1,0 +1,41 @@
+module Plurimath
+  module Math
+    module Symbols
+      class Wasytherefore < Symbol
+        INPUT = {
+          unicodemath: [["therefore", "&#x2234;"], parsing_wrapper([":.", "wasytherefore"])],
+          asciimath: [["therefore", ":.", "&#x2234;"], parsing_wrapper(["wasytherefore"])],
+          mathml: ["&#x2234;"],
+          latex: [["wasytherefore", "therefore", "&#x2234;"], parsing_wrapper([":."])],
+          omml: ["&#x2234;"],
+          html: ["&#x2234;"],
+        }.freeze
+
+        # output methods
+        def to_latex
+          "\\wasytherefore"
+        end
+
+        def to_asciimath
+          "therefore"
+        end
+
+        def to_unicodemath
+          Utility.html_entity_to_unicode("&#x2234;")
+        end
+
+        def to_mathml_without_math_tag
+          ox_element("mi") << "&#x2234;"
+        end
+
+        def to_omml_without_math_tag(_)
+          "&#x2234;"
+        end
+
+        def to_html
+          "&#x2234;"
+        end
+      end
+    end
+  end
+end

@@ -82,7 +82,7 @@ module Plurimath
 
         def remove_hline(first_value)
           row_lines = first_value.first.parameter_one
-          row_lines.shift if Utility.symbol_value(row_lines.first, "&#x23af;")
+          row_lines.shift if row_lines.first.is_a?(Math::Symbols::Hline)
           first_value
         end
       end

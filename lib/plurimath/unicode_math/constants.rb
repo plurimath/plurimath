@@ -1002,7 +1002,7 @@ module Plurimath
       PARENTHESIS_MATRICES = {
         pmatrix: "(",
         vmatrix: "|",
-        Vmatrix: "norm[",
+        Vmatrix: "\\Vert",
         bmatrix: "[",
         Bmatrix: "{",
         eqarray: nil,

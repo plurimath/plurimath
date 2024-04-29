@@ -10,7 +10,7 @@ module Plurimath
         "&#x393;": "Gamma",
         "&#x3b4;": "delta",
         "&#x394;": "Delta",
-        "&#x2206;": "Delta",
+        "&#x2206;": "increment",
         "&#x3b5;": "epsilon",
         "&#x25b;": "varepsilon",
         "&#x3b6;": "zeta",

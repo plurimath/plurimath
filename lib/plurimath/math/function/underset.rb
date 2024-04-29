@@ -50,15 +50,11 @@ module Plurimath
         end
 
         def to_unicodemath
-          if horizontal_brackets?
-            "#{parameter_one.to_unicodemath}#{unicodemath_parens(parameter_two)}"
-          elsif unicode_classes_accent?(parameter_two)
-            "#{parameter_two.to_unicodemath}_#{unicodemath_parens(parameter_one)}"
-          elsif unicode_accent?
-            "#{unicodemath_parens(parameter_two)}#{parameter_one.value}"
-          else
-            "#{unicodemath_parens(parameter_two)}┬#{parameter_one.to_unicodemath}"
-          end
+          return "#{parameter_one.to_unicodemath}#{unicodemath_parens(parameter_two)}" if horizontal_brackets?
+          return "#{parameter_two.to_unicodemath}_#{unicodemath_parens(parameter_one)}" if unicode_classes_accent?(parameter_two)
+          return "#{unicodemath_parens(parameter_two)}#{unicodemath_field_value(parameter_one)}" if unicode_accent?(parameter_one)
+
+          "#{unicodemath_parens(parameter_two)}┬#{parameter_one.to_unicodemath}"
         end
 
         def line_breaking(obj)
@@ -85,21 +81,25 @@ module Plurimath
 
         protected
 
-        def unicode_accent?
-          parameter_one.is_a?(Math::Symbol) &&
-            (
-              UnicodeMath::Constants::DIACRITIC_BELOWS.include?(parameter_one.value) ||
-                UnicodeMath::Constants::ACCENT_SYMBOLS.has_value?(parameter_one.value)
-            )
+        def unicode_accent?(field)
+          return unless field.is_a?(Math::Symbols::Symbol)
+
+          match_unicode?(unicodemath_field_value(field))
         end
 
         def horizontal_brackets?
-          parameter_one.is_a?(Math::Symbol) &&
-            UnicodeMath::Constants::HORIZONTAL_BRACKETS.value?(parameter_one.value)
+          return unless parameter_one.is_a?(Math::Symbols::Symbol)
+
+          UnicodeMath::Constants::HORIZONTAL_BRACKETS.value?(unicodemath_field_value(parameter_one))
         end
 
         def unicode_classes_accent?(field)
           (field.is_a?(Math::Function::Obrace) || field.is_a?(Math::Function::Ubrace))
+        end
+
+        def match_unicode?(unicode)
+          UnicodeMath::Constants::DIACRITIC_BELOWS.include?(unicode) ||
+            UnicodeMath::Constants::ACCENT_SYMBOLS.has_value?(unicode)
         end
       end
     end

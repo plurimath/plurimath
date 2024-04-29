@@ -57,9 +57,9 @@ RSpec.describe Plurimath::Math::Function::UnaryFunction do
     end
 
     context "contains symbols fuction" do
-      let(:first_value) { Plurimath::Math::Symbol.new("Theta") }
+      let(:first_value) { Plurimath::Math::Symbols::Symbol.new("Theta") }
       expected_value = Plurimath::Math::Function::UnaryFunction.new(
-                        Plurimath::Math::Symbol.new("theta")
+                        Plurimath::Math::Symbols::Symbol.new("theta")
                       )
       it "returns false" do
         expect(formula == expected_value).to be_falsey
@@ -67,9 +67,9 @@ RSpec.describe Plurimath::Math::Function::UnaryFunction do
     end
 
     context "contains symbols fuction" do
-      let(:first_value) { Plurimath::Math::Symbol.new("square") }
+      let(:first_value) { Plurimath::Math::Symbols::Symbol.new("square") }
       expected_value = Plurimath::Math::Function::UnaryFunction.new(
-                        Plurimath::Math::Symbol.new("theta")
+                        Plurimath::Math::Symbols::Symbol.new("theta")
                       )
       it "returns false" do
         expect(formula == expected_value).to be_falsey

@@ -37,7 +37,7 @@ module Plurimath
 
           def to_unicodemath
             first_value = value.map(&:to_unicodemath).join("@")
-            "#{open_paren}■(#{first_value})#{close_paren}"
+            "#{open_paren&.to_unicodemath}■(#{first_value})#{close_paren&.to_unicodemath}"
           end
 
           protected
@@ -47,7 +47,8 @@ module Plurimath
           end
 
           def table_tag_only?
-            (open_paren&.include?("(") && close_paren&.include?(")")) || !(open_paren && close_paren)
+            (open_paren&.class_name == "lround" && close_paren&.class_name == "rround") ||
+              !(open_paren && close_paren)
           end
         end
       end

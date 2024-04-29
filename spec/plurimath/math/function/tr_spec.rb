@@ -22,7 +22,7 @@ RSpec.describe Plurimath::Math::Function::Tr do
     subject(:tr) { described_class.new([first]).to_asciimath }
 
     context "returns instance of Tr" do
-      let(:first) { Plurimath::Math::Symbol.new("theta") }
+      let(:first) { Plurimath::Math::Symbols::Symbol.new("theta") }
 
       it 'matches epxected value of Tr' do
         expect(tr).to eq("[theta]")
@@ -38,7 +38,7 @@ RSpec.describe Plurimath::Math::Function::Tr do
     subject(:formula) { described_class.new([first_value]).to_asciimath }
 
     context "contains Symbol as value" do
-      let(:first_value) { Plurimath::Math::Symbol.new("n") }
+      let(:first_value) { Plurimath::Math::Symbols::Symbol.new("n") }
 
       it "returns asciimath string" do
         expect(formula).to eq("[n]")
@@ -57,7 +57,7 @@ RSpec.describe Plurimath::Math::Function::Tr do
       let(:first_value) do
         Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Sum.new(
-            Plurimath::Math::Symbol.new("&"),
+            Plurimath::Math::Symbols::Ampersand.new,
             Plurimath::Math::Function::Text.new("so"),
           )
         ])
@@ -80,7 +80,7 @@ RSpec.describe Plurimath::Math::Function::Tr do
     context "contains Symbol as value" do
       let(:first_value) do
         Plurimath::Math::Function::Td.new([
-          Plurimath::Math::Symbol.new("n")
+          Plurimath::Math::Symbols::Symbol.new("n")
         ])
       end
 
@@ -120,7 +120,7 @@ RSpec.describe Plurimath::Math::Function::Tr do
         Plurimath::Math::Function::Td.new([
           Plurimath::Math::Formula.new([
             Plurimath::Math::Function::Sum.new(
-              Plurimath::Math::Symbol.new("&"),
+              Plurimath::Math::Symbols::Ampersand.new,
               Plurimath::Math::Function::Text.new("so"),
             )
           ])
@@ -133,7 +133,7 @@ RSpec.describe Plurimath::Math::Function::Tr do
               <mrow>
                 <munderover>
                   <mo>&#x2211;</mo>
-                  <mo>&#x26;</mo>
+                  <mo>&</mo>
                   <mtext>so</mtext>
                 </munderover>
               </mrow>
@@ -151,7 +151,7 @@ RSpec.describe Plurimath::Math::Function::Tr do
     context "contains Symbol as value" do
       let(:first_value) do
         Plurimath::Math::Function::Td.new([
-          Plurimath::Math::Symbol.new("n"),
+          Plurimath::Math::Symbols::Symbol.new("n"),
         ])
       end
 
@@ -164,7 +164,7 @@ RSpec.describe Plurimath::Math::Function::Tr do
       let(:first_value) do
         Plurimath::Math::Function::Td.new([
           Plurimath::Math::Number.new("70"),
-          Plurimath::Math::Symbol.new("n"),
+          Plurimath::Math::Symbols::Symbol.new("n"),
         ])
       end
 
@@ -178,7 +178,7 @@ RSpec.describe Plurimath::Math::Function::Tr do
         Plurimath::Math::Function::Td.new([
           Plurimath::Math::Formula.new([
             Plurimath::Math::Function::Sum.new(
-              Plurimath::Math::Symbol.new("&"),
+              Plurimath::Math::Symbols::Ampersand.new,
               Plurimath::Math::Function::Text.new("so"),
             )
           ])
@@ -186,7 +186,7 @@ RSpec.describe Plurimath::Math::Function::Tr do
       end
 
       it "returns mathml string" do
-        expect(formula).to eql("\\sum_{&}^{\\text{so}}")
+        expect(formula).to eql("\\sum_{\\&}^{\\text{so}}")
       end
     end
   end
@@ -195,7 +195,7 @@ RSpec.describe Plurimath::Math::Function::Tr do
     subject(:formula) { described_class.new([first_value]).to_html }
 
     context "contains Symbol as value" do
-      let(:first_value) { Plurimath::Math::Symbol.new("n") }
+      let(:first_value) { Plurimath::Math::Symbols::Symbol.new("n") }
 
       it "returns mathml string" do
         expect(formula).to eql("<tr>n</tr>")
@@ -214,7 +214,7 @@ RSpec.describe Plurimath::Math::Function::Tr do
       let(:first_value) do
         Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Sum.new(
-            Plurimath::Math::Symbol.new("&"),
+            Plurimath::Math::Symbols::Ampersand.new,
             Plurimath::Math::Function::Text.new("so"),
           )
         ])

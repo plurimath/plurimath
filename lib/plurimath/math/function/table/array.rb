@@ -18,6 +18,15 @@ module Plurimath
             "\\begin{array}#{array_args || '.'}#{latex_content}\\end{array}"
           end
 
+          def to_mathml_without_math_tag
+            Utility.update_nodes(
+              ox_element("mtable", attributes: table_attribute),
+              value&.map(&:to_mathml_without_math_tag),
+            )
+          end
+
+          private
+
           def array_args
             args = []
             value.first.parameter_one.each do |td|
@@ -28,14 +37,6 @@ module Plurimath
                       end
             end
             "{#{args.join}}" unless args.compact.empty?
-          end
-
-          def to_mathml_without_math_tag
-            table_tag = Utility.ox_element("mtable", attributes: table_attribute)
-            Utility.update_nodes(
-              table_tag,
-              value&.map(&:to_mathml_without_math_tag),
-            )
           end
         end
       end

@@ -15,7 +15,7 @@ module Plurimath
           end
 
           def to_unicodemath
-            "#{open_paren}█(#{value&.map(&:to_unicodemath).join("@")})#{close_paren}"
+            "#{open_paren&.to_unicodemath}█(#{value&.map(&:to_unicodemath).join("@")})#{close_paren&.to_unicodemath}"
           end
         end
       end

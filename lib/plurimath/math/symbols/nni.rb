@@ -1,0 +1,41 @@
+module Plurimath
+  module Math
+    module Symbols
+      class Nni < Symbol
+        INPUT = {
+          unicodemath: [["notni", "&#x220c;"], parsing_wrapper(["nni"])],
+          asciimath: [["&#x220c;"], parsing_wrapper(["notni", "nni"])],
+          mathml: ["&#x220c;"],
+          latex: [["notni", "nni", "&#x220c;"]],
+          omml: ["&#x220c;"],
+          html: ["&#x220c;"],
+        }.freeze
+
+        # output methods
+        def to_latex
+          "\\notni"
+        end
+
+        def to_asciimath
+          parsing_wrapper("nni")
+        end
+
+        def to_unicodemath
+          Utility.html_entity_to_unicode("&#x220c;")
+        end
+
+        def to_mathml_without_math_tag
+          ox_element("mi") << "&#x220c;"
+        end
+
+        def to_omml_without_math_tag(_)
+          "&#x220c;"
+        end
+
+        def to_html
+          "&#x220c;"
+        end
+      end
+    end
+  end
+end

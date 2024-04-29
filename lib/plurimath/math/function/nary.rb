@@ -168,13 +168,6 @@ module Plurimath
           end
         end
 
-        def prime_unicode?(field)
-          return unless field.is_a?(Math::Symbol)
-          return true if field.value.include?("&#x27;")
-
-          UnicodeMath::Constants::PREFIXED_PRIMES.any? { |prefix, prime| field.value.include?(prime) }
-        end
-
         def naryand_value(field)
           return "" unless field
 

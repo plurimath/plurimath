@@ -35,6 +35,10 @@ RSpec.configure do |config|
   end
 end
 
+def dump_ox_nodes(nodes)
+  Plurimath::Math::Core.new.dump_ox_nodes(nodes)
+end
+
 def unicode_encode_entities(string = nil)
   # Implements pre-processing to convert Unicode characters to Unicode codes for Unicode::Parse class.
   remove_prefix(string)

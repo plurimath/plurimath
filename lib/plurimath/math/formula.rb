@@ -162,28 +162,28 @@ module Plurimath
       end
 
       def to_asciimath_math_zone(spacing = "", last = false, indent = true)
-        filtered_values(value).map.with_index(1) do |object, index|
+        filtered_values(value, lang: :asciimath).map.with_index(1) do |object, index|
           last = index == @values.length
           object.to_asciimath_math_zone(new_space(spacing, indent), last, indent)
         end
       end
 
       def to_latex_math_zone(spacing = "", last = false, indent = true)
-        filtered_values(value).map.with_index(1) do |object, index|
+        filtered_values(value, lang: :latex).map.with_index(1) do |object, index|
           last = index == @values.length
           object.to_latex_math_zone(new_space(spacing, indent), last, indent)
         end
       end
 
       def to_mathml_math_zone(spacing = "", last = false, indent = true)
-        filtered_values(value).map.with_index(1) do |object, index|
+        filtered_values(value, lang: :mathml).map.with_index(1) do |object, index|
           last = index == @values.length
           object.to_mathml_math_zone(new_space(spacing, indent), last, indent)
         end
       end
 
       def to_omml_math_zone(spacing = "", last = false, indent = true, display_style:)
-        filtered_values(value).map.with_index(1) do |object, index|
+        filtered_values(value, lang: :omml).map.with_index(1) do |object, index|
           last = index == @values.length
           object.to_omml_math_zone(new_space(spacing, indent), last, indent, display_style: display_style)
         end
@@ -314,7 +314,7 @@ module Plurimath
       end
 
       def negated_value?
-        value.last.is_a?(Math::Symbol) && value.last.value == "&#x338;"
+        value.last.is_a?(Math::Symbols::Symbol) && value.last.value == "&#x338;"
       end
 
       def unicodemath_value

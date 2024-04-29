@@ -1,0 +1,41 @@
+module Plurimath
+  module Math
+    module Symbols
+      class Upvarsigma < Symbol
+        INPUT = {
+          unicodemath: [["varsigma", "&#x3c2;"], parsing_wrapper(["upvarsigma"])],
+          asciimath: [["&#x3c2;"], parsing_wrapper(["varsigma", "upvarsigma"])],
+          mathml: ["&#x3c2;"],
+          latex: [["upvarsigma", "varsigma", "&#x3c2;"]],
+          omml: ["&#x3c2;"],
+          html: ["&#x3c2;"],
+        }.freeze
+
+        # output methods
+        def to_latex
+          "\\upvarsigma"
+        end
+
+        def to_asciimath
+          parsing_wrapper("upvarsigma")
+        end
+
+        def to_unicodemath
+          Utility.html_entity_to_unicode("&#x3c2;")
+        end
+
+        def to_mathml_without_math_tag
+          ox_element("mo") << "&#x3c2;"
+        end
+
+        def to_omml_without_math_tag(_)
+          "&#x3c2;"
+        end
+
+        def to_html
+          "&#x3c2;"
+        end
+      end
+    end
+  end
+end

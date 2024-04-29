@@ -20,12 +20,12 @@ RSpec.describe Plurimath::Math::Function::Underover do
     subject(:formula) { described_class.new(first_value, second_value, third_value).to_asciimath }
 
     context "contains Symbol Unicode and Number as values" do
-      let(:first_value)  { Plurimath::Math::Unicode.new("&#x2211;") }
-      let(:second_value) { Plurimath::Math::Symbol.new("&#x2212;") }
+      let(:first_value)  { Plurimath::Math::Function::Sum.new }
+      let(:second_value) { Plurimath::Math::Symbols::Minus.new }
       let(:third_value)  { Plurimath::Math::Number.new("70") }
 
       it "returns asciimath string" do
-        expect(formula).to eq("&#x2211;_(-)^(70)")
+        expect(formula).to eq("sum_(-)^(70)")
       end
     end
 
@@ -33,12 +33,12 @@ RSpec.describe Plurimath::Math::Function::Underover do
       let(:first_value) do
         Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Sum.new(
-            Plurimath::Math::Symbol.new("&"),
+            Plurimath::Math::Symbols::Ampersand.new,
             Plurimath::Math::Function::Text.new("so"),
           )
         ])
       end
-      let(:second_value) { Plurimath::Math::Symbol.new("&#x2212;") }
+      let(:second_value) { Plurimath::Math::Symbols::Minus.new }
       let(:third_value)  { Plurimath::Math::Number.new("70") }
 
       it "returns asciimath string" do
@@ -57,8 +57,8 @@ RSpec.describe Plurimath::Math::Function::Underover do
     end
 
     context "contains Symbol as value" do
-      let(:first_value)  { Plurimath::Math::Symbol.new("n") }
-      let(:second_value) { Plurimath::Math::Symbol.new("&#x2212;") }
+      let(:first_value)  { Plurimath::Math::Symbols::Symbol.new("n") }
+      let(:second_value) { Plurimath::Math::Symbols::Minus.new }
       let(:third_value)  { Plurimath::Math::Number.new("70") }
 
       it "returns mathml string" do
@@ -74,8 +74,8 @@ RSpec.describe Plurimath::Math::Function::Underover do
     end
 
     context "contains Number as value" do
-      let(:first_value)  { Plurimath::Math::Unicode.new("&#x2211;") }
-      let(:second_value) { Plurimath::Math::Symbol.new("&#x2212;") }
+      let(:first_value)  { Plurimath::Math::Function::Sum.new }
+      let(:second_value) { Plurimath::Math::Symbols::Minus.new }
       let(:third_value)  { Plurimath::Math::Number.new("70") }
 
       it "returns mathml string" do
@@ -94,12 +94,12 @@ RSpec.describe Plurimath::Math::Function::Underover do
       let(:first_value) do
         Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Sum.new(
-            Plurimath::Math::Symbol.new("&"),
+            Plurimath::Math::Symbols::Ampersand.new,
             Plurimath::Math::Function::Text.new("so"),
           )
         ])
       end
-      let(:second_value) { Plurimath::Math::Symbol.new("&#x2211;") }
+      let(:second_value) { Plurimath::Math::Function::Sum.new }
       let(:third_value)  { Plurimath::Math::Number.new("70") }
 
       it "returns mathml string" do
@@ -108,7 +108,7 @@ RSpec.describe Plurimath::Math::Function::Underover do
             <mrow>
               <munderover>
                 <mo>&#x2211;</mo>
-                <mo>&#x26;</mo>
+                <mo>&</mo>
                 <mtext>so</mtext>
               </munderover>
             </mrow>
@@ -128,32 +128,32 @@ RSpec.describe Plurimath::Math::Function::Underover do
       let(:first_value) do
         Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Sum.new(
-            Plurimath::Math::Symbol.new("&"),
+            Plurimath::Math::Symbols::Ampersand.new,
             Plurimath::Math::Function::Text.new("so"),
           )
         ])
       end
-      let(:second_value) { Plurimath::Math::Symbol.new("&#x2212;") }
+      let(:second_value) { Plurimath::Math::Symbols::Minus.new }
       let(:third_value)  { Plurimath::Math::Number.new("70") }
 
       it "returns latex string" do
-        expect(formula).to eql("{\\sum_{&}^{\\text{so}}}_{-}^{70}")
+        expect(formula).to eql("{\\sum_{\\&}^{\\text{so}}}_{-}^{70}")
       end
     end
 
     context "contains Unicode as value" do
-      let(:first_value) { Plurimath::Math::Symbol.new("&#x2211;") }
-      let(:second_value) { Plurimath::Math::Symbol.new("&#x2212;") }
+      let(:first_value) { Plurimath::Math::Function::Sum.new }
+      let(:second_value) { Plurimath::Math::Symbols::Minus.new }
       let(:third_value)  { Plurimath::Math::Number.new("70") }
 
       it "returns latex string" do
-        expect(formula).to eql("&#x2211;_{-}^{70}")
+        expect(formula).to eql("\\sum_{-}^{70}")
       end
     end
 
     context "contains Number as value" do
       let(:first_value) { Plurimath::Math::Number.new("80") }
-      let(:second_value) { Plurimath::Math::Symbol.new("&#x2212;") }
+      let(:second_value) { Plurimath::Math::Symbols::Minus.new }
       let(:third_value)  { Plurimath::Math::Number.new("70") }
 
       it "returns latex string" do
@@ -166,8 +166,8 @@ RSpec.describe Plurimath::Math::Function::Underover do
     subject(:formula) { described_class.new(first_value, second_value, third_value).to_html }
 
     context "contains Symbol as value" do
-      let(:first_value) { Plurimath::Math::Symbol.new("n") }
-      let(:second_value) { Plurimath::Math::Symbol.new("&#x2212;") }
+      let(:first_value) { Plurimath::Math::Symbols::Symbol.new("n") }
+      let(:second_value) { Plurimath::Math::Symbols::Minus.new }
       let(:third_value)  { Plurimath::Math::Number.new("70") }
 
       it "returns html string" do
@@ -177,8 +177,8 @@ RSpec.describe Plurimath::Math::Function::Underover do
 
     context "contains Number as value" do
       let(:first_value) { Plurimath::Math::Number.new("70") }
-      let(:second_value) { Plurimath::Math::Symbol.new("&#x2212;") }
-      let(:third_value)  { Plurimath::Math::Symbol.new("n") }
+      let(:second_value) { Plurimath::Math::Symbols::Minus.new }
+      let(:third_value)  { Plurimath::Math::Symbols::Symbol.new("n") }
 
       it "returns html string" do
         expect(formula).to eql("<i>70</i><i>&#x2212;</i><i>n</i>")
@@ -189,12 +189,12 @@ RSpec.describe Plurimath::Math::Function::Underover do
       let(:first_value) do
         Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Sum.new(
-            Plurimath::Math::Symbol.new("&"),
+            Plurimath::Math::Symbols::Ampersand.new,
             Plurimath::Math::Function::Text.new("so"),
           )
         ])
       end
-      let(:second_value) { Plurimath::Math::Symbol.new("&#x2212;") }
+      let(:second_value) { Plurimath::Math::Symbols::Minus.new }
       let(:third_value)  { Plurimath::Math::Number.new("70") }
 
       it "returns html string" do

@@ -6,8 +6,8 @@ RSpec.describe Plurimath::Math::Function::PowerBase do
 
     context "initialize PowerBase object" do
       let(:first) { Plurimath::Math::Function::Sum.new }
-      let(:second) { Plurimath::Math::Symbol.new("Theta") }
-      let(:third) { Plurimath::Math::Symbol.new("square") }
+      let(:second) { Plurimath::Math::Symbols::Symbol.new("Theta") }
+      let(:third) { Plurimath::Math::Symbols::Symbol.new("square") }
 
       it 'returns instance of PowerBase' do
         expect(power_base).to be_a(Plurimath::Math::Function::PowerBase)
@@ -15,8 +15,8 @@ RSpec.describe Plurimath::Math::Function::PowerBase do
 
       it 'initializes PowerBase object' do
         expect(power_base.parameter_one).to eq(Plurimath::Math::Function::Sum.new)
-        expect(power_base.parameter_two).to eq(Plurimath::Math::Symbol.new("Theta"))
-        expect(power_base.parameter_three).to eq(Plurimath::Math::Symbol.new("square"))
+        expect(power_base.parameter_two).to eq(Plurimath::Math::Symbols::Symbol.new("Theta"))
+        expect(power_base.parameter_three).to eq(Plurimath::Math::Symbols::Symbol.new("square"))
       end
     end
   end
@@ -26,14 +26,14 @@ RSpec.describe Plurimath::Math::Function::PowerBase do
 
     context "contains PowerBase object" do
       let(:first) { Plurimath::Math::Function::Sum.new }
-      let(:second) { Plurimath::Math::Symbol.new("Theta") }
-      let(:third) { Plurimath::Math::Symbol.new("square") }
+      let(:second) { Plurimath::Math::Symbols::Symbol.new("Theta") }
+      let(:third) { Plurimath::Math::Symbols::Symbol.new("square") }
 
       it 'matches epxected value' do
         expected_value = Plurimath::Math::Function::PowerBase.new(
           Plurimath::Math::Function::Sum.new,
-          Plurimath::Math::Symbol.new("Theta"),
-          Plurimath::Math::Symbol.new("square"),
+          Plurimath::Math::Symbols::Symbol.new("Theta"),
+          Plurimath::Math::Symbols::Symbol.new("square"),
         )
         expect(power_base).to eq(expected_value)
       end
@@ -41,8 +41,8 @@ RSpec.describe Plurimath::Math::Function::PowerBase do
       it 'matches epxected value' do
         expected_value = Plurimath::Math::Function::PowerBase.new(
           Plurimath::Math::Function::Sum.new,
-          Plurimath::Math::Symbol.new("theta"),
-          Plurimath::Math::Symbol.new("square"),
+          Plurimath::Math::Symbols::Symbol.new("theta"),
+          Plurimath::Math::Symbols::Symbol.new("square"),
         )
         expect(power_base).not_to eq(expected_value)
       end
@@ -53,11 +53,11 @@ RSpec.describe Plurimath::Math::Function::PowerBase do
     subject(:formula) { described_class.new(first_value, second_value, third_value).to_asciimath }
 
     context "contains Symbol as value" do
-      let(:first_value) { Plurimath::Math::Symbol.new("n") }
+      let(:first_value) { Plurimath::Math::Symbols::Symbol.new("n") }
       let(:second_value) do
         Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Prod.new(
-            Plurimath::Math::Symbol.new("&"),
+            Plurimath::Math::Symbols::Ampersand.new,
             Plurimath::Math::Function::Text.new("so"),
           )
         ])
@@ -70,9 +70,9 @@ RSpec.describe Plurimath::Math::Function::PowerBase do
     end
 
     context "contains Number as value" do
-      let(:first_value) { Plurimath::Math::Symbol.new("n") }
+      let(:first_value) { Plurimath::Math::Symbols::Symbol.new("n") }
       let(:second_value) { Plurimath::Math::Number.new("70") }
-      let(:third_value) { Plurimath::Math::Symbol.new("&#x3b4;") }
+      let(:third_value) { Plurimath::Math::Symbols::Delta.new }
 
       it "returns asciimath string" do
         expect(formula).to eq("n_(70)^(delta)")
@@ -83,7 +83,7 @@ RSpec.describe Plurimath::Math::Function::PowerBase do
       let(:first_value) do
         Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Sum.new(
-            Plurimath::Math::Symbol.new("&"),
+            Plurimath::Math::Symbols::Ampersand.new,
             Plurimath::Math::Function::Text.new("so"),
           )
         ])
@@ -92,7 +92,7 @@ RSpec.describe Plurimath::Math::Function::PowerBase do
       let(:third_value) do
         Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Prod.new(
-            Plurimath::Math::Symbol.new("&"),
+            Plurimath::Math::Symbols::Ampersand.new,
             Plurimath::Math::Function::Text.new("so"),
           )
         ])
@@ -114,12 +114,12 @@ RSpec.describe Plurimath::Math::Function::PowerBase do
     end
 
     context "contains Symbol as value" do
-      let(:first_value) { Plurimath::Math::Symbol.new("n") }
+      let(:first_value) { Plurimath::Math::Symbols::Symbol.new("n") }
       let(:second_value) { Plurimath::Math::Number.new("70") }
       let(:third_value) do
         Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Prod.new(
-            Plurimath::Math::Symbol.new("&"),
+            Plurimath::Math::Symbols::Ampersand.new,
             Plurimath::Math::Function::Text.new("so"),
           )
         ])
@@ -133,7 +133,7 @@ RSpec.describe Plurimath::Math::Function::PowerBase do
             <mrow>
               <munderover>
                 <mo>&#x220f;</mo>
-                <mo>&#x26;</mo>
+                <mo>&</mo>
                 <mtext>so</mtext>
               </munderover>
             </mrow>
@@ -148,7 +148,7 @@ RSpec.describe Plurimath::Math::Function::PowerBase do
       let(:second_value) do
         Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Prod.new(
-            Plurimath::Math::Symbol.new("&"),
+            Plurimath::Math::Symbols::Ampersand.new,
             Plurimath::Math::Function::Text.new("so"),
           )
         ])
@@ -162,7 +162,7 @@ RSpec.describe Plurimath::Math::Function::PowerBase do
             <mrow>
               <munderover>
                 <mo>&#x220f;</mo>
-                <mo>&#x26;</mo>
+                <mo>&</mo>
                 <mtext>so</mtext>
               </munderover>
             </mrow>
@@ -177,7 +177,7 @@ RSpec.describe Plurimath::Math::Function::PowerBase do
       let(:first_value) do
         Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Sum.new(
-            Plurimath::Math::Symbol.new("&"),
+            Plurimath::Math::Symbols::Ampersand.new,
             Plurimath::Math::Function::Text.new("so"),
           )
         ])
@@ -186,7 +186,7 @@ RSpec.describe Plurimath::Math::Function::PowerBase do
       let(:third_value) do
         Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Prod.new(
-            Plurimath::Math::Symbol.new("&"),
+            Plurimath::Math::Symbols::Ampersand.new,
             Plurimath::Math::Function::Text.new("so"),
           )
         ])
@@ -198,7 +198,7 @@ RSpec.describe Plurimath::Math::Function::PowerBase do
             <mrow>
               <munderover>
                 <mo>&#x2211;</mo>
-                <mo>&#x26;</mo>
+                <mo>&</mo>
                 <mtext>so</mtext>
               </munderover>
             </mrow>
@@ -206,7 +206,7 @@ RSpec.describe Plurimath::Math::Function::PowerBase do
             <mrow>
               <munderover>
                 <mo>&#x220f;</mo>
-                <mo>&#x26;</mo>
+                <mo>&</mo>
                 <mtext>so</mtext>
               </munderover>
             </mrow>
@@ -221,11 +221,11 @@ RSpec.describe Plurimath::Math::Function::PowerBase do
     subject(:formula) { described_class.new(first_value, second_value, third_value).to_latex }
 
     context "contains Symbol as value" do
-      let(:first_value) { Plurimath::Math::Symbol.new("n") }
+      let(:first_value) { Plurimath::Math::Symbols::Symbol.new("n") }
       let(:second_value) do
         Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Prod.new(
-            Plurimath::Math::Symbol.new("&"),
+            Plurimath::Math::Symbols::Ampersand.new,
             Plurimath::Math::Function::Text.new("so"),
           )
         ])
@@ -233,20 +233,20 @@ RSpec.describe Plurimath::Math::Function::PowerBase do
       let(:third_value) do
         Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Prod.new(
-            Plurimath::Math::Symbol.new("&"),
+            Plurimath::Math::Symbols::Ampersand.new,
             Plurimath::Math::Function::Text.new("so"),
           )
         ])
       end
 
       it "returns mathml string" do
-        expect(formula).to eql("n_{\\prod_{&}^{\\text{so}}}^{\\prod_{&}^{\\text{so}}}")
+        expect(formula).to eql("n_{\\prod_{\\&}^{\\text{so}}}^{\\prod_{\\&}^{\\text{so}}}")
       end
     end
 
     context "contains Number as value" do
       let(:first_value) { Plurimath::Math::Number.new("70") }
-      let(:second_value) { Plurimath::Math::Symbol.new("&#x22a2;") }
+      let(:second_value) { Plurimath::Math::Symbols::Vdash.new }
       let(:third_value) { Plurimath::Math::Number.new("70") }
 
       it "returns mathml string" do
@@ -258,7 +258,7 @@ RSpec.describe Plurimath::Math::Function::PowerBase do
       let(:first_value) do
         Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Sum.new(
-            Plurimath::Math::Symbol.new("&"),
+            Plurimath::Math::Symbols::Ampersand.new,
             Plurimath::Math::Function::Text.new("so"),
           )
         ])
@@ -266,7 +266,7 @@ RSpec.describe Plurimath::Math::Function::PowerBase do
       let(:second_value) do
         Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Prod.new(
-            Plurimath::Math::Symbol.new("&"),
+            Plurimath::Math::Symbols::Ampersand.new,
             Plurimath::Math::Function::Text.new("so"),
           )
         ])
@@ -274,14 +274,14 @@ RSpec.describe Plurimath::Math::Function::PowerBase do
       let(:third_value) do
         Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Stackrel.new(
-            Plurimath::Math::Symbol.new("&"),
+            Plurimath::Math::Symbols::Ampersand.new,
             Plurimath::Math::Function::Text.new("so"),
           )
         ])
       end
 
       it "returns mathml string" do
-        expect(formula).to eql("\\sum_{&}^{\\text{so}}_{\\prod_{&}^{\\text{so}}}^{\\stackrel{&}{\\text{so}}}")
+        expect(formula).to eql("\\sum_{\\&}^{\\text{so}}_{\\prod_{\\&}^{\\text{so}}}^{\\stackrel{\\&}{\\text{so}}}")
       end
     end
   end
@@ -290,11 +290,11 @@ RSpec.describe Plurimath::Math::Function::PowerBase do
     subject(:formula) { described_class.new(first_value, second_value, third_value).to_html }
 
     context "contains Symbol as value" do
-      let(:first_value) { Plurimath::Math::Symbol.new("n") }
+      let(:first_value) { Plurimath::Math::Symbols::Symbol.new("n") }
       let(:second_value) do
         Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Prod.new(
-            Plurimath::Math::Symbol.new("&"),
+            Plurimath::Math::Symbols::Ampersand.new,
             Plurimath::Math::Function::Text.new("so"),
           )
         ])
@@ -302,7 +302,7 @@ RSpec.describe Plurimath::Math::Function::PowerBase do
       let(:third_value) do
         Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Sum.new(
-            Plurimath::Math::Symbol.new("&"),
+            Plurimath::Math::Symbols::Ampersand.new,
             Plurimath::Math::Function::Text.new("so"),
           )
         ])
@@ -328,11 +328,11 @@ RSpec.describe Plurimath::Math::Function::PowerBase do
 
     context "contains Number as value" do
       let(:first_value) { Plurimath::Math::Number.new("70") }
-      let(:second_value) { Plurimath::Math::Symbol.new("&#x2200;") }
+      let(:second_value) { Plurimath::Math::Symbols::Symbol.new("&#x2200;") }
       let(:third_value) do
         Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Sum.new(
-            Plurimath::Math::Symbol.new("&"),
+            Plurimath::Math::Symbols::Ampersand.new,
             Plurimath::Math::Function::Text.new("so"),
           )
         ])
@@ -347,7 +347,7 @@ RSpec.describe Plurimath::Math::Function::PowerBase do
       let(:first_value) do
         Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Sum.new(
-            Plurimath::Math::Symbol.new("&"),
+            Plurimath::Math::Symbols::Ampersand.new,
             Plurimath::Math::Function::Text.new("so"),
           )
         ])
@@ -355,7 +355,7 @@ RSpec.describe Plurimath::Math::Function::PowerBase do
       let(:second_value) do
         Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Stackrel.new(
-            Plurimath::Math::Symbol.new("&"),
+            Plurimath::Math::Symbols::Ampersand.new,
             Plurimath::Math::Function::Text.new("so"),
           )
         ])
@@ -363,7 +363,7 @@ RSpec.describe Plurimath::Math::Function::PowerBase do
       let(:third_value) do
         Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Prod.new(
-            Plurimath::Math::Symbol.new("&"),
+            Plurimath::Math::Symbols::Ampersand.new,
             Plurimath::Math::Function::Text.new("so"),
           )
         ])

@@ -24,7 +24,7 @@ module Plurimath
         def to_omml_without_math_tag(_)
           return r_element("..", rpr_tag: false) unless parameter_one
 
-          symbol = Symbol.new("..")
+          symbol = Symbols::Symbol.new("..")
           Overset.new(parameter_one, symbol).to_omml_without_math_tag(true)
         end
 

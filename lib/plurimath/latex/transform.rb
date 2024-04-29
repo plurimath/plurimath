@@ -9,10 +9,10 @@ module Plurimath
       rule(power: simple(:power))     { power }
       rule(unary: simple(:unary))     { Utility.get_class(unary).new }
       rule(space: simple(:space))     { Math::Function::Text.new(" ") }
-      rule(operant: simple(:oper))    { Math::Symbol.new(oper) }
-      rule(symbol: simple(:symbol))   { Math::Symbol.new(symbol) }
-      rule(lparen: simple(:lparen))   { Math::Symbol.new(lparen) }
-      rule(rparen: simple(:rparen))   { Math::Symbol.new(rparen) }
+      rule(operant: simple(:oper))    { Utility.symbols_class(oper, lang: :latex) }
+      rule(symbol: simple(:symbol))   { Utility.symbols_class(symbol, lang: :latex) }
+      rule(lparen: simple(:lparen))   { Utility.symbols_class(lparen, lang: :latex) }
+      rule(rparen: simple(:rparen))   { Utility.symbols_class(rparen, lang: :latex) }
       rule(limits: simple(:limits))   { limits }
       rule("\\\\" => simple(:slash))  { Math::Function::Linebreak.new }
       rule(expression: simple(:expr)) { expr }
@@ -29,7 +29,7 @@ module Plurimath
       rule(intermediate_exp: simple(:int_exp)) { int_exp }
 
       rule(numeric_values: simple(:value)) do
-        Math::Symbol.new(value)
+        Utility.symbols_class(value, lang: :latex)
       end
 
       rule(text: simple(:text)) do
@@ -37,7 +37,7 @@ module Plurimath
       end
 
       rule(unicode_symbols: simple(:unicode)) do
-        Math::Unicode.new(unicode)
+        Utility.symbols_class(unicode, lang: :latex)
       end
 
       rule(binary: simple(:binary)) do
@@ -45,9 +45,7 @@ module Plurimath
       end
 
       rule(symbols: simple(:sym)) do
-        Math::Symbol.new(
-          Constants::UNICODE_SYMBOLS[sym.to_sym] || sym,
-        )
+        Utility.symbols_class(sym, lang: :latex)
       end
 
       rule(lparen: simple(:lparen),
@@ -270,7 +268,7 @@ module Plurimath
       rule(operant: simple(:operant),
            subscript: simple(:subscript)) do
         Math::Function::Base.new(
-          Math::Symbol.new(operant),
+          Utility.symbols_class(operant, lang: :latex),
           subscript,
         )
       end
@@ -278,7 +276,7 @@ module Plurimath
       rule(operant: simple(:operant),
            supscript: simple(:supscript)) do
         Math::Function::Power.new(
-          Math::Symbol.new(operant),
+          Utility.symbols_class(operant, lang: :latex),
           supscript,
         )
       end
@@ -421,9 +419,7 @@ module Plurimath
       rule(symbols: simple(:sym),
            subscript: simple(:subscript)) do
         Math::Function::Base.new(
-          Math::Symbol.new(
-            Constants::UNICODE_SYMBOLS[sym.to_sym] || sym,
-          ),
+          Utility.symbols_class(sym, lang: :latex),
           subscript,
         )
       end
@@ -431,7 +427,7 @@ module Plurimath
       rule(numeric_values: simple(:value),
            subscript: simple(:subscript)) do
         Math::Function::Base.new(
-          Math::Symbol.new(value),
+          Utility.symbols_class(value, lang: :latex),
           subscript,
         )
       end
@@ -439,9 +435,7 @@ module Plurimath
       rule(symbols: simple(:sym),
            supscript: simple(:supscript)) do
         Math::Function::Power.new(
-          Math::Symbol.new(
-            Constants::UNICODE_SYMBOLS[sym.to_sym] || sym,
-          ),
+          Utility.symbols_class(sym, lang: :latex),
           supscript,
         )
       end
@@ -465,7 +459,7 @@ module Plurimath
       rule(unicode_symbols: simple(:sym),
            subscript: simple(:subscript)) do
         Math::Function::Base.new(
-          Math::Unicode.new(sym),
+          Utility.symbols_class(sym, lang: :latex),
           subscript,
         )
       end
@@ -473,7 +467,7 @@ module Plurimath
       rule(unicode_symbols: simple(:sym),
            supscript: simple(:supscript)) do
         Math::Function::Power.new(
-          Math::Unicode.new(sym),
+          Utility.symbols_class(sym, lang: :latex),
           supscript,
         )
       end
@@ -481,7 +475,7 @@ module Plurimath
       rule(numeric_values: simple(:value),
            supscript: simple(:supscript)) do
         Math::Function::Power.new(
-          Math::Symbol.new(value),
+          Utility.symbols_class(value, lang: :latex),
           supscript,
         )
       end
@@ -658,9 +652,9 @@ module Plurimath
            expression: simple(:expr),
            right_paren: simple(:rparen)) do
         Math::Function::Fenced.new(
-          lparen,
+          Utility.symbols_class(lparen, lang: :latex),
           [expr],
-          rparen,
+          Utility.symbols_class(rparen, lang: :latex),
         )
       end
 
@@ -668,9 +662,9 @@ module Plurimath
            expression: sequence(:expr),
            right_paren: simple(:rparen)) do
         Math::Function::Fenced.new(
-          lparen,
+          Utility.symbols_class(lparen, lang: :latex),
           expr,
-          rparen,
+          Utility.symbols_class(rparen, lang: :latex),
         )
       end
 
@@ -755,9 +749,7 @@ module Plurimath
            subscript: simple(:subscript),
            supscript: simple(:supscript)) do
         Math::Function::PowerBase.new(
-          Math::Symbol.new(
-            Constants::UNICODE_SYMBOLS[sym.to_sym] || sym,
-          ),
+          Utility.symbols_class(sym, lang: :latex),
           subscript,
           supscript,
         )
@@ -767,7 +759,7 @@ module Plurimath
            subscript: simple(:subscript),
            supscript: simple(:supscript)) do
         Math::Function::PowerBase.new(
-          Math::Unicode.new(sym),
+          Utility.symbols_class(sym, lang: :latex),
           subscript,
           supscript,
         )
@@ -786,8 +778,8 @@ module Plurimath
                 Utility.table_td(second_value),
               ),
             ],
-            "(",
-            ")",
+            Plurimath::Math::Symbols::Paren::Lcurly.new,
+            Plurimath::Math::Symbols::Paren::Rcurly.new,
           )
         else
           Utility.get_class(
@@ -827,8 +819,8 @@ module Plurimath
         open_paren = Constants::MATRICES[environment.to_sym]
         Utility.get_table_class(environment).new(
           Utility.organize_table(table_data),
-          open_paren,
-          Constants::MATRICES_PARENTHESIS[open_paren&.to_sym]&.to_s,
+          Utility.symbols_class(open_paren, lang: :latex, table: true),
+          Utility.symbols_class(Constants::MATRICES_PARENTHESIS[open_paren&.to_sym]&.to_s, lang: :latex, table: true),
           {},
         )
       end
@@ -845,8 +837,8 @@ module Plurimath
         )
         Utility.get_table_class(environment).new(
           table,
-          open_paren,
-          Constants::MATRICES_PARENTHESIS[open_paren&.to_sym]&.to_s,
+          Utility.symbols_class(open_paren, lang: :latex, table: true),
+          Utility.symbols_class(Constants::MATRICES_PARENTHESIS[open_paren&.to_sym]&.to_s, lang: :latex, table: true),
           Utility.table_options(table),
         )
       end
@@ -857,8 +849,8 @@ module Plurimath
         open_paren = Constants::MATRICES[environment.to_sym]
         Utility.get_table_class(environment).new(
           Utility.organize_table([table_data]),
-          open_paren,
-          Constants::MATRICES_PARENTHESIS[open_paren&.to_sym]&.to_s,
+          Utility.symbols_class(open_paren, lang: :latex, table: true),
+          Utility.symbols_class(Constants::MATRICES_PARENTHESIS[open_paren&.to_sym]&.to_s, lang: :latex, table: true),
         )
       end
 
@@ -870,8 +862,8 @@ module Plurimath
         table = Utility.organize_table(table_data, column_align: args)
         Utility.get_table_class(environment).new(
           table,
-          open_paren,
-          Constants::MATRICES_PARENTHESIS[open_paren&.to_sym]&.to_s,
+          Utility.symbols_class(open_paren, lang: :latex, table: true),
+          Utility.symbols_class(Constants::MATRICES_PARENTHESIS[open_paren&.to_sym]&.to_s, lang: :latex, table: true),
           Utility.table_options(table),
         )
       end
@@ -885,8 +877,8 @@ module Plurimath
         table = Utility.organize_table(table_data, column_align: third_value)
         Utility.get_table_class(environment).new(
           table,
-          open_paren,
-          Constants::MATRICES_PARENTHESIS[open_paren&.to_sym]&.to_s,
+          Utility.symbols_class(open_paren, lang: :latex, table: true),
+          Utility.symbols_class(Constants::MATRICES_PARENTHESIS[open_paren&.to_sym]&.to_s, lang: :latex, table: true),
           Utility.table_options(table),
         )
       end
@@ -905,8 +897,8 @@ module Plurimath
         )
         Utility.get_table_class(environment).new(
           table,
-          open_paren,
-          Constants::MATRICES_PARENTHESIS[open_paren&.to_sym]&.to_s,
+          Utility.symbols_class(open_paren, lang: :latex, table: true),
+          Utility.symbols_class(Constants::MATRICES_PARENTHESIS[open_paren&.to_sym]&.to_s, lang: :latex, table: true),
           { asterisk: true },
         )
       end
@@ -918,8 +910,8 @@ module Plurimath
         open_paren = Constants::MATRICES[environment.to_sym]
         Utility.get_table_class(environment).new(
           Utility.organize_table(table_data),
-          open_paren,
-          Constants::MATRICES_PARENTHESIS[open_paren&.to_sym]&.to_s,
+          Utility.symbols_class(open_paren, lang: :latex, table: true),
+          Utility.symbols_class(Constants::MATRICES_PARENTHESIS[open_paren&.to_sym]&.to_s, lang: :latex, table: true),
           { asterisk: true },
         )
       end
@@ -929,8 +921,8 @@ module Plurimath
         open_paren = Constants::MATRICES[env.to_sym]
         Utility.get_table_class(env).new(
           Utility.organize_table(expr.nil? ? [] : [expr]),
-          open_paren,
-          Constants::MATRICES_PARENTHESIS[open_paren&.to_sym]&.to_s,
+          Utility.symbols_class(open_paren, lang: :latex, table: true),
+          Utility.symbols_class(Constants::MATRICES_PARENTHESIS[open_paren&.to_sym]&.to_s, lang: :latex, table: true),
           {},
         )
       end
@@ -940,8 +932,8 @@ module Plurimath
         open_paren = Constants::MATRICES[env.to_sym]
         Utility.get_table_class(env).new(
           Utility.organize_table(expr.compact),
-          open_paren,
-          Constants::MATRICES_PARENTHESIS[open_paren&.to_sym]&.to_s,
+          Utility.symbols_class(open_paren, lang: :latex, table: true),
+          Utility.symbols_class(Constants::MATRICES_PARENTHESIS[open_paren&.to_sym]&.to_s, lang: :latex, table: true),
           {},
         )
       end

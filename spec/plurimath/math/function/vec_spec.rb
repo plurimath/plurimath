@@ -18,7 +18,7 @@ RSpec.describe Plurimath::Math::Function::Vec do
     subject(:formula) { described_class.new(first_value).to_asciimath }
 
     context "contains Symbol as value" do
-      let(:first_value) { Plurimath::Math::Symbol.new("n") }
+      let(:first_value) { Plurimath::Math::Symbols::Symbol.new("n") }
 
       it "returns asciimath string" do
         expect(formula).to eq("vec(n)")
@@ -37,7 +37,7 @@ RSpec.describe Plurimath::Math::Function::Vec do
       let(:first_value) do
         Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Sum.new(
-            Plurimath::Math::Symbol.new("&"),
+            Plurimath::Math::Symbols::Ampersand.new,
             Plurimath::Math::Function::Text.new("so"),
           )
         ])
@@ -58,7 +58,7 @@ RSpec.describe Plurimath::Math::Function::Vec do
     end
 
     context "contains Symbol as value" do
-      let(:first_value) { Plurimath::Math::Symbol.new("n") }
+      let(:first_value) { Plurimath::Math::Symbols::Symbol.new("n") }
 
       it "returns mathml string" do
         expected_value = <<~MATHML
@@ -90,7 +90,7 @@ RSpec.describe Plurimath::Math::Function::Vec do
       let(:first_value) do
         Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Sum.new(
-            Plurimath::Math::Symbol.new("&"),
+            Plurimath::Math::Symbols::Ampersand.new,
             Plurimath::Math::Function::Text.new("so"),
           )
         ])
@@ -101,7 +101,7 @@ RSpec.describe Plurimath::Math::Function::Vec do
             <mrow>
               <munderover>
                 <mo>&#x2211;</mo>
-                <mo>&amp;</mo>
+                <mo>&</mo>
                 <mtext>so</mtext>
               </munderover>
             </mrow>
@@ -117,7 +117,7 @@ RSpec.describe Plurimath::Math::Function::Vec do
     subject(:formula) { described_class.new(first_value).to_latex }
 
     context "contains Symbol as value" do
-      let(:first_value) { Plurimath::Math::Symbol.new("n") }
+      let(:first_value) { Plurimath::Math::Symbols::Symbol.new("n") }
 
       it "returns mathml string" do
         expect(formula).to eql("\\vec{n}")
@@ -136,13 +136,13 @@ RSpec.describe Plurimath::Math::Function::Vec do
       let(:first_value) do
         Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Sum.new(
-            Plurimath::Math::Symbol.new("&"),
+            Plurimath::Math::Symbols::Ampersand.new,
             Plurimath::Math::Function::Text.new("so"),
           )
         ])
       end
       it "returns mathml string" do
-        expect(formula).to eql("\\vec{\\sum_{&}^{\\text{so}}}")
+        expect(formula).to eql("\\vec{\\sum_{\\&}^{\\text{so}}}")
       end
     end
   end
@@ -151,7 +151,7 @@ RSpec.describe Plurimath::Math::Function::Vec do
     subject(:formula) { described_class.new(first_value).to_html }
 
     context "contains Symbol as value" do
-      let(:first_value) { Plurimath::Math::Symbol.new("n") }
+      let(:first_value) { Plurimath::Math::Symbols::Symbol.new("n") }
 
       it "returns mathml string" do
         expect(formula).to be_equivalent_to("<i>&#x2192;</i><i>n</i>")
@@ -170,7 +170,7 @@ RSpec.describe Plurimath::Math::Function::Vec do
       let(:first_value) do
         Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Sum.new(
-            Plurimath::Math::Symbol.new("&"),
+            Plurimath::Math::Symbols::Ampersand.new,
             Plurimath::Math::Function::Text.new("so"),
           )
         ])

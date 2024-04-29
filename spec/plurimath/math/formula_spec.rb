@@ -914,9 +914,9 @@ RSpec.describe Plurimath::Math::Formula do
       let(:exp) do
         Plurimath::Math::Formula.new([
           Plurimath::Math::Formula.new([
-            Plurimath::Math::Symbol.new("Δ"),
+            Plurimath::Math::Symbols::Symbol.new("Δ"),
             Plurimath::Math::Formula.new([
-              Plurimath::Math::Symbol.new("ν")
+              Plurimath::Math::Symbols::Symbol.new("ν")
             ])
           ])
         ])
@@ -931,15 +931,15 @@ RSpec.describe Plurimath::Math::Formula do
       let(:exp) do
         Plurimath::Math::Formula.new([
           Plurimath::Math::Formula.new([
-            Plurimath::Math::Symbol.new("&#x2215;"),
+            Plurimath::Math::Symbols::Slash.new,
             Plurimath::Math::Formula.new([
-              Plurimath::Math::Symbol.new("&#x3bd;")
+              Plurimath::Math::Symbols::Nu.new
             ])
           ])
         ])
       end
       it 'converts from formula to asciimath string' do
-        expected_value = "slash nu"
+        expected_value = "// nu"
         expect(exp.to_asciimath).to eq(expected_value)
       end
     end

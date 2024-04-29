@@ -25,7 +25,7 @@ RSpec.describe Plurimath::Html do
       it 'returns parsed HTML to Formula' do
         expected_value = Plurimath::Math::Formula.new([
           Plurimath::Math::Number.new("1"),
-          Plurimath::Math::Symbol.new("+"),
+          Plurimath::Math::Symbols::Symbol.new("+"),
           Plurimath::Math::Number.new("3")
         ])
         expect(formula).to eq(expected_value)
