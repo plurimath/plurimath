@@ -2,19 +2,19 @@ require "plurimath/formatter/number_formatter"
 
 module Plurimath
   class NumberFormatter
-    attr_accessor :locale, :localize_number, :localiser_symbols
+    attr_accessor :locale, :localize_number, :localizer_symbols
 
-    def initialize(locale = "en", localize_number: nil, localiser_symbols: {})
+    def initialize(locale = "en", localize_number: nil, localizer_symbols: {})
       @locale = supported_locale(locale)
-      @localize_number = localize_number if localize_number
-      @localiser_symbols = localiser_symbols
+      @localize_number = localize_number
+      @localizer_symbols = localizer_symbols
     end
 
     def localized_number(number_string, locale: @locale, precision: nil, format: {})
       Formatter::NumberFormatter.new(
         supported_locale(locale),
         localize_number: localize_number,
-        localiser_symbols: localiser_symbols,
+        localizer_symbols: localizer_symbols,
       ).localized_number(
         number_string,
         locale: supported_locale(locale),
