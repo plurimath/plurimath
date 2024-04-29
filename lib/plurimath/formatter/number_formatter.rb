@@ -42,11 +42,9 @@ module Plurimath
           decimal: m[:decimal],
           group_digits: m[:groupdigits].size,
           fraction_group_digits: m[:fractdigits].size,
-          group: m[:group] || "",
-          fraction_group: m[:fractgroup] || ""
+          group: m[:group] == " " ? "\u00A0" : (m[:group] || ""),
+          fraction_group: m[:fractgroup] == " " ? "\u00A0" : (m[:fractgroup]  || "")
         }.compact
-        %i(group fraction_group).each { |x| ret[x] == " " and ret[x] = "\u00A0" }
-        ret
       end
 
       def localize_number(num)

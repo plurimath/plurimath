@@ -17,13 +17,11 @@ module TwitterCldr
 
         def apply(fraction, options = {}, int = "")
           precision = options[:precision] || self.precision
-          if precision > 0
-            number = interpolate(format(options), fraction, :left)
-            number = digit_count_format(int, fraction, number) if @digit_count
-            decimal + change_format(precision, number)
-          else
-            ''
-          end
+          return "" unless precision > 0
+
+          number = interpolate(format(options), fraction, :left)
+          number = digit_count_format(int, fraction, number) if @digit_count
+          decimal + change_format(precision, number)
         end
 
         def format(options)
