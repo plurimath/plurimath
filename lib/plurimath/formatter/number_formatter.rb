@@ -6,15 +6,15 @@ require_relative "twitter_cldr_rb/number_formatter"
 module Plurimath
   module Formatter
     class NumberFormatter
-      attr_accessor :locale, :localize_number, :localiser_symbols
+      attr_accessor :locale, :localize_number, :localizer_symbols
 
       LOCALIZE_NUMBER_REGEX = %r{(?<group>[^#])?(?<groupdigits>#+0)(?<decimal>.)(?<fractdigits>#+)(?<fractgroup>[^#])?}
       SUPPORTED_NOTATIONS = %i[e scientific engineering].freeze
 
-      def initialize(locale, localize_number:, localiser_symbols:)
+      def initialize(locale, localize_number:, localizer_symbols:)
         @locale = locale
-        @localize_number = localize_number if localize_number
-        @localiser_symbols = localiser_symbols
+        @localize_number = localize_number
+        @localizer_symbols = localizer_symbols
         @twitter_cldr_reader = twitter_cldr_reader(locale)
       end
 
@@ -29,21 +29,22 @@ module Plurimath
       private
 
       def twitter_cldr_reader(locale)
-        return @twitter_cldr_reader if locale.to_s == @locale.to_s && @twitter_cldr_reader
-
         num = TwitterCldr::DataReaders::NumberDataReader.new(locale)
         num.symbols
-          .merge!(@localiser_symbols)
+          .merge!(@localizer_symbols)
           .merge!(parse_localize_number)
       end
 
       def parse_localize_number
         @localize_number or return {}
         m = LOCALIZE_NUMBER_REGEX.match(@localize_number) or return {}
-        ret = { decimal: m[:decimal], group_digits: m[:groupdigits].size,
-                fraction_group_digits: m[:fractdigits].size,
-                group: m[:group] || "",
-                fraction_group: m[:fractgroup] || "" }.compact
+        ret = {
+          decimal: m[:decimal],
+          group_digits: m[:groupdigits].size,
+          fraction_group_digits: m[:fractdigits].size,
+          group: m[:group] || "",
+          fraction_group: m[:fractgroup] || ""
+        }.compact
         %i(group fraction_group).each { |x| ret[x] == " " and ret[x] = "\u00A0" }
         ret
       end

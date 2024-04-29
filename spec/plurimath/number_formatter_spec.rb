@@ -3,12 +3,12 @@ require "spec_helper"
 RSpec.describe Plurimath::NumberFormatter do
 
   describe ".initialize" do
-    subject(:formatter) { described_class.new(locale, localize_number: localize_number, localiser_symbols: localiser_symbols) }
+    subject(:formatter) { described_class.new(locale, localize_number: localize_number, localizer_symbols: localizer_symbols) }
 
     context "class variables" do
       let(:locale) { :de }
       let(:localize_number) { nil }
-      let(:localiser_symbols) { {} }
+      let(:localizer_symbols) { {} }
 
       it "matches class to be correct" do
         expect(formatter).to be_a(described_class)
@@ -17,19 +17,19 @@ RSpec.describe Plurimath::NumberFormatter do
       it "matches instance variables values" do
         expect(formatter.locale).to eql(:de)
         expect(formatter.localize_number).to eql(nil)
-        expect(formatter.localiser_symbols).to eql({})
+        expect(formatter.localizer_symbols).to eql({})
       end
     end
   end
 
   describe ".localized_number" do
-    subject(:formatter) { described_class.new(locale, localize_number: localize_number, localiser_symbols: localiser_symbols) }
+    subject(:formatter) { described_class.new(locale, localize_number: localize_number, localizer_symbols: localizer_symbols) }
 
     context "testing notations with notation related arguments(times, exponent_sign, e sign), decimal, locale, and precision" do
       let(:locale) { :en }
       let(:number) { "14000" }
       let(:localize_number) { nil }
-      let(:localiser_symbols) { {} }
+      let(:localizer_symbols) { {} }
 
       it "matches notation: :basic with de locale localized without precision string" do
         format = { decimal: "*", notation: :basic }
@@ -59,13 +59,13 @@ RSpec.describe Plurimath::NumberFormatter do
     context "testing digit grouping and decimal symbol" do
       let(:locale) { :en }
       let(:number) { "14236.39239" }
-      let(:localize_number) { nil }
-      let(:localiser_symbols) { {} }
+      let(:localize_number) { "#,##0.### #" }
+      let(:localizer_symbols) { {} }
 
       it "matches group_digits:, group:, and decimal" do
         format = { group_digits: 2, group: "'", decimal: "*" }
         output_string = formatter.localized_number(number, locale: locale, format: format)
-        expect(output_string).to eql("1'42'36*392 39")
+        expect(output_string).to eql("1'42'36*392 39")
       end
     end
 
@@ -73,7 +73,7 @@ RSpec.describe Plurimath::NumberFormatter do
       let(:locale) { :en }
       let(:number) { "14236.39239" }
       let(:localize_number) { nil }
-      let(:localiser_symbols) { {} }
+      let(:localizer_symbols) { {} }
 
       it "matches fraction_group_digits:, fraction_group:, and decimal" do
         format = { fraction_group_digits: 4, fraction_group: ",", decimal: "@" }
@@ -86,11 +86,16 @@ RSpec.describe Plurimath::NumberFormatter do
       let(:locale) { :en }
       let(:number) { "14236.39239" }
       let(:localize_number) { nil }
-      let(:localiser_symbols) { {} }
+      let(:localizer_symbols) { {} }
 
-      it "matches locale: kk with digit_count" do
+      it "matches locale: kk with minimum digit_count" do
         output_string = formatter.localized_number(number, locale: :kk, format: { digit_count: 6 })
         expect(output_string).to eql("14 236,4")
+      end
+
+      it "matches locale: kk with maximum digit_count" do
+        output_string = formatter.localized_number(number, locale: :kk, format: { digit_count: 16 })
+        expect(output_string).to eql("14 236,392 390 000 00")
       end
     end
 
@@ -98,7 +103,7 @@ RSpec.describe Plurimath::NumberFormatter do
       let(:locale) { :en }
       let(:number) { "14236.39239" }
       let(:localize_number) { nil }
-      let(:localiser_symbols) { {} }
+      let(:localizer_symbols) { {} }
 
       it "matches locale: kk with precision" do
         output_string = formatter.localized_number(number, locale: :es, precision: 20)

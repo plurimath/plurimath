@@ -40,7 +40,7 @@ module TwitterCldr
         end
 
         def digit_count_format(int, fraction, number)
-          integer = (int + "." + fraction)
+          integer = int + "." + fraction
           float = integer.to_f
           int_length = integer.length - 1
           @digit_count ||= int_length
