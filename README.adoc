@@ -82,6 +82,21 @@ formula.to_mathml
 >   </mstyle>
 > </math>
 ----
+=== XML Engines
+
+**Plurimath** supports two XML engines.
+
+1. **Oga**
+2. **Ox**
+
+By default, **Ox** is used which can be easily changed using the following syntax.
+```[source, ruby]
+require "plurimath/xml_engines/oga" # load files related to oga
+
+Plurimath.xml_engine = Plurimath::XmlEngine::Oga # set Oga as Plurimath xml engine
+```
+Using the same syntax you can change from **Oga** to **Ox**.
+
 === Supported Content
 --
 link:AsciiMath-Supported-Data.adoc[AsciiMath Supported Data, target="_blank"]
