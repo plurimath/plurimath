@@ -993,7 +993,7 @@ module Plurimath
       end
 
       def hexcode_in_input(field)
-        field&.class::INPUT[:unicodemath]&.flatten&.find { |input| input.match?(/&#x.+;/) }
+        field.input(:unicodemath)&.flatten&.find { |input| input.match?(/&#x.+;/) }
       end
 
       def base_is_sub_or_sup?(base)

@@ -1,0 +1,441 @@
+|===
+|  | AsciiMath | LaTeX | MathML | OMML | UnicodeMath | Presentation 
+
+| CloseParen
+l|
+:}
+&#x3017;
+__{end}
+l|
+&#x3017;
+__{end}
+__{:}}
+l|
+&#x3017;
+l|
+&#x3017;
+l|
+\\end
+&#x3017;
+__{:}}
+| `&#x3017;`
+
+| Langle
+l|
+langle
+(:
+<<
+&#x2329;
+__{&#x27e8;}
+__{bra}
+l|
+\langle
+&#x2329;
+__{(:}
+__{<<}
+__{&#x27e8;}
+__{bra}
+l|
+&#x2329;
+&#x27e8;
+l|
+&#x2329;
+&#x27e8;
+l|
+&#x2329;
+&#x27e8;
+\\bra
+__{langle}
+__{(:}
+__{<<}
+| `&#x2329;`
+
+| Lbbrack
+l|
+&#x27e6;
+__{lbbrack}
+__{Lbrack}
+l|
+&#x27e6;
+__{lbbrack}
+__{Lbrack}
+l|
+&#x27e6;
+l|
+&#x27e6;
+l|
+&#x27e6;
+\\lbbrack
+\\Lbrack
+| `&#x27e6;`
+
+| Lbrace
+l|
+&#x7b;
+__{lbrace}
+l|
+\lbrace
+&#x7b;
+l|
+&#x7b;
+l|
+&#x7b;
+l|
+&#x7b;
+\\lbrace
+| `&#x7b;`
+
+| Lbrack
+l|
+&#x5b;
+__{lbrack}
+l|
+\lbrack
+&#x5b;
+l|
+&#x5b;
+l|
+&#x5b;
+l|
+&#x5b;
+\\lbrack
+| `&#x5b;`
+
+| Lceil
+l|
+lceiling
+\|~
+&#x2308;
+__{lceil}
+l|
+\lceil
+&#x2308;
+__{lceiling}
+__{\|~}
+l|
+&#x2308;
+l|
+&#x2308;
+l|
+&#x2308;
+\\lceil
+__{lceiling}
+__{\|~}
+| `&#x2308;`
+
+| Lcurly
+l|
+{
+l|
+\{
+l|
+{
+l|
+{
+l|
+{
+| `{`
+
+| Lfloor
+l|
+lfloor
+\|__
+&#x230a;
+l|
+\lfloor
+&#x230a;
+__{\|__}
+l|
+&#x230a;
+l|
+&#x230a;
+l|
+&#x230a;
+\\lfloor
+__{\|__}
+| `&#x230a;`
+
+| Lround
+l|
+(
+l|
+(
+l|
+(
+l|
+(
+l|
+(
+| `(`
+
+| Lsquare
+l|
+[
+l|
+[
+l|
+[
+l|
+[
+l|
+[
+| `[`
+
+| Norm
+l|
+&#x2016;
+__{Vert}
+__{norm}
+l|
+\Vert
+&#x2016;
+__{norm}
+l|
+&#x2016;
+l|
+&#x2016;
+l|
+\Vert
+\\Vert
+\\norm
+&#x2016;
+| `&#x2016;`
+
+| OpenParen
+l|
+{:
+&#x3016;
+__{begin}
+l|
+&#x3016;
+__{begin}
+__{{:}
+l|
+&#x3016;
+l|
+&#x3016;
+l|
+\\begin
+&#x3016;
+__{{:}
+| `&#x3016;`
+
+| Rangle
+l|
+rangle
+:)
+>>
+&#x232a;
+&#x27e9;
+__{&#x27e9;}
+__{ket}
+l|
+\rangle
+&#x232a;
+&#x27e9;
+__{:)}
+__{>>}
+__{&#x27e9;}
+__{ket}
+l|
+&#x232a;
+&#x27e9;
+l|
+&#x232a;
+&#x27e9;
+l|
+&#x232a;
+&#x27e9;
+\\ket
+__{rangle}
+__{:)}
+__{>>}
+__{&#x27e9;}
+| `&#x232a;`
+
+| Rbbrack
+l|
+&#x27e7;
+__{rbbrack}
+__{Rbrack}
+l|
+&#x27e7;
+__{rbbrack}
+__{Rbrack}
+l|
+&#x27e7;
+l|
+&#x27e7;
+l|
+&#x27e7;
+\\rbbrack
+\\Rbrack
+| `&#x27e7;`
+
+| Rbrace
+l|
+&#x7d;
+__{rbrace}
+l|
+\rbrace
+&#x7d;
+l|
+&#x7d;
+l|
+&#x7d;
+l|
+&#x7d;
+__{rbrace}
+| `&#x7d;`
+
+| Rbrack
+l|
+&#x5d;
+__{rbrack}
+l|
+\rbrack
+&#x5d;
+l|
+&#x5d;
+l|
+&#x5d;
+l|
+&#x5d;
+__{rbrack}
+| `&#x5d;`
+
+| Rceil
+l|
+rceiling
+~\|
+&#x2309;
+__{rceil}
+l|
+\rceil
+&#x2309;
+__{rceiling}
+__{~\|}
+l|
+&#x2309;
+l|
+&#x2309;
+l|
+&#x2309;
+\\rceil
+__{rceiling}
+__{~\|}
+| `&#x2309;`
+
+| Rcurly
+l|
+}
+l|
+\}
+l|
+}
+l|
+}
+l|
+}
+| `}`
+
+| Rfloor
+l|
+rfloor
+__\|
+&#x230b;
+l|
+\rfloor
+&#x230b;
+__{__\|}
+l|
+&#x230b;
+l|
+&#x230b;
+l|
+&#x230b;
+\\rfloor
+__{__\|}
+| `&#x230b;`
+
+| Rround
+l|
+)
+l|
+)
+l|
+)
+l|
+)
+l|
+)
+| `)`
+
+| Rsquare
+l|
+]
+l|
+]
+l|
+]
+l|
+]
+l|
+]
+| `]`
+
+| UpcaseLangle
+l|
+&#x27ea;
+__{Langle}
+l|
+&#x27ea;
+__{Langle}
+l|
+&#x27ea;
+l|
+&#x27ea;
+l|
+&#x27ea;
+\\Langle
+| `&#x27ea;`
+
+| UpcaseRangle
+l|
+&#x27eb;
+__{Langle}
+l|
+&#x27eb;
+__{Langle}
+l|
+&#x27eb;
+l|
+&#x27eb;
+l|
+&#x27eb;
+\\Langle
+| `&#x27eb;`
+
+| Vert
+l|
+\|
+&#x7c;
+__{vert}
+l|
+\vert
+\|
+&#x7c;
+l|
+&#x7c;
+\|
+l|
+&#x7c;
+\|
+l|
+\vert
+&#x7c;
+\|
+__{\|}
+| `&#x7c;`
+
+|===
