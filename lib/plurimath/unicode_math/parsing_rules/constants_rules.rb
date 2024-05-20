@@ -36,6 +36,7 @@ module Plurimath
         rule(:binary_negated) { binary_negated_absent_symbols? >> (op_binary_negated | op_prefixed_binary_negated) }
         rule(:op_close_paren) { arr_to_expression(Constants::CLOSE_PARENTHESIS, :close_paren) }
 
+        rule(:wrapper_symbols) { arr_to_expression(Constants.wrapper_symbols, :symbol) }
         rule(:op_nary_symbols) { arr_to_expression(Constants::NARY_SYMBOLS.values, :nary_class) }
         rule(:op_open_unicode) { arr_to_expression(Constants::OPEN_SYMBOLS.values, :open_paren) }
         rule(:prefixed_primes) { str("pppprime") | str("ppprime") | str("pprime") | str("prime") }

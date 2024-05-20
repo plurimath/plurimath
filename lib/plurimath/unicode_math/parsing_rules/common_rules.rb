@@ -89,6 +89,7 @@ module Plurimath
             relational_symbols |
             unary_arg_functions |
             op_unary_functions >> unary_spaces >> (operand | exp_bracket).absent? |
+            wrapper_symbols |
             ordinary_symbols |
             negatable_symbols |
             str("...").as(:ldots).as(:symbol) |

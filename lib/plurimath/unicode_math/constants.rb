@@ -410,6 +410,7 @@ module Plurimath
       }.freeze
 
       ORDINARY_SYMBOLS = {
+        backepsilon: "&#x3f6;",
         diamondsuit: "&#x2664;",
         varepsilon: "&#x3b5;",
         rightangle: "&#x2220;",
@@ -1009,6 +1010,12 @@ module Plurimath
         matrix: nil,
         cases: nil,
       }.freeze
+
+      class << self
+        def wrapper_symbols
+          @@wrapper_symbols ||= Utility.symbols_hash(:unicodemath).keys.grep(/__{/)
+        end
+      end
     end
   end
 end

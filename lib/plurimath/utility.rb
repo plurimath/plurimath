@@ -29,6 +29,7 @@ module Plurimath
       textrm: Math::Function::FontStyle::Normal,
       italic: Math::Function::FontStyle::Italic,
       mathit: Math::Function::FontStyle::Italic,
+      textit: Math::Function::FontStyle::Italic,
       mathbf: Math::Function::FontStyle::Bold,
       textbf: Math::Function::FontStyle::Bold,
       script: Math::Function::FontStyle::Script,
