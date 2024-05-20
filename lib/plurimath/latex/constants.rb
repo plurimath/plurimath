@@ -30,6 +30,7 @@ module Plurimath
         mathit: :fonts,
         textrm: :fonts,
         textbf: :fonts,
+        textit: :fonts,
         arccos: :unary,
         cancel: :unary,
         arcsin: :unary,
@@ -235,10 +236,14 @@ module Plurimath
           reverse_sort_hash(@@parens)
         end
 
+        def wrapper_symbols
+          symbols_hash.keys.grep(/__{/)
+        end
+
         private
 
         def symbols_hash
-          latex_symbols.map { |sym, klass| [sym, :symbols] unless klass.new.paren? }.compact.to_h
+          latex_symbols.map { |sym, klass| [sym, :symbols] }.compact.to_h
         end
 
         def latex_symbols
