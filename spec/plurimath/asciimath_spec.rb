@@ -5803,7 +5803,7 @@ RSpec.describe Plurimath::Asciimath do
       end
     end
 
-    context "contains example from plurimath/issues/232 example #110" do
+    context "contains example from plurimath/issues/232 example #111" do
       let(:string) { '((E_H^s),(E_V^s)) = e^(jkR)/R ([S_(HH),S_(HV)], [S_(VH), S_(VV)])((E_H^j), (E_V^j))' }
 
       it 'matches LaTeX, AsciiMath, and MathML' do
@@ -5919,6 +5919,315 @@ RSpec.describe Plurimath::Asciimath do
                   </mtable>
                   <mo>)</mo>
                 </mrow>
+              </mrow>
+            </mstyle>
+          </math>
+        MATHML
+        expect(formula.to_latex).to eql(latex)
+        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_asciimath).to eql(asciimath)
+      end
+    end
+
+    context "contains example from metanorma/metanorma-cli/pull/329 example #1 example #112" do
+      let(:string) { '{ii(L)_{ii(lambda)} (ii(T)_{90})}/{ii(L)_{ii(lambda)} (ii(T)_{90} (ii(X)))} = {exp(c_2 / {ii(lambda) ii(T)_{90} (ii(X))}) - 1} / {exp (c_2 / {ii(lambda) ii(T)_{90}}) - 1} ,' }
+
+      it 'matches LaTeX, AsciiMath, and MathML' do
+        latex = '\frac{\mathit{L}_{\mathit{\lambda}} ( \mathit{T}_{90} )}{\mathit{L}_{\mathit{\lambda}} ( \mathit{T}_{90} ( \mathit{X} ) )} = \frac{\exp{( \frac{c_{2}}{\mathit{\lambda} \mathit{T}_{90} ( \mathit{X} )} )} - 1}{\exp{( \frac{c_{2}}{\mathit{\lambda} \mathit{T}_{90}} )} - 1} ,'
+        asciimath = 'frac(ii(L)_(ii(lambda)) (ii(T)_(90)))(ii(L)_(ii(lambda)) (ii(T)_(90) (ii(X)))) = frac(exp(frac(c_(2))(ii(lambda) ii(T)_(90) (ii(X)))) - 1)(exp(frac(c_(2))(ii(lambda) ii(T)_(90))) - 1) ,'
+        mathml = <<~MATHML
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
+              <mfrac>
+                <mrow>
+                  <msub>
+                    <mstyle mathvariant="italic">
+                      <mi>L</mi>
+                    </mstyle>
+                    <mstyle mathvariant="italic">
+                      <mi>&#x3bb;</mi>
+                    </mstyle>
+                  </msub>
+                  <mrow>
+                    <mo>(</mo>
+                    <msub>
+                      <mstyle mathvariant="italic">
+                        <mi>T</mi>
+                      </mstyle>
+                      <mn>90</mn>
+                    </msub>
+                    <mo>)</mo>
+                  </mrow>
+                </mrow>
+                <mrow>
+                  <msub>
+                    <mstyle mathvariant="italic">
+                      <mi>L</mi>
+                    </mstyle>
+                    <mstyle mathvariant="italic">
+                      <mi>&#x3bb;</mi>
+                    </mstyle>
+                  </msub>
+                  <mrow>
+                    <mo>(</mo>
+                    <msub>
+                      <mstyle mathvariant="italic">
+                        <mi>T</mi>
+                      </mstyle>
+                      <mn>90</mn>
+                    </msub>
+                    <mrow>
+                      <mo>(</mo>
+                      <mstyle mathvariant="italic">
+                        <mi>X</mi>
+                      </mstyle>
+                      <mo>)</mo>
+                    </mrow>
+                    <mo>)</mo>
+                  </mrow>
+                </mrow>
+              </mfrac>
+              <mo>=</mo>
+              <mfrac>
+                <mrow>
+                  <mrow>
+                    <mi>exp</mi>
+                    <mrow>
+                      <mo>(</mo>
+                      <mfrac>
+                        <msub>
+                          <mi>c</mi>
+                          <mn>2</mn>
+                        </msub>
+                        <mrow>
+                          <mstyle mathvariant="italic">
+                            <mi>&#x3bb;</mi>
+                          </mstyle>
+                          <msub>
+                            <mstyle mathvariant="italic">
+                              <mi>T</mi>
+                            </mstyle>
+                            <mn>90</mn>
+                          </msub>
+                          <mrow>
+                            <mo>(</mo>
+                            <mstyle mathvariant="italic">
+                              <mi>X</mi>
+                            </mstyle>
+                            <mo>)</mo>
+                          </mrow>
+                        </mrow>
+                      </mfrac>
+                      <mo>)</mo>
+                    </mrow>
+                  </mrow>
+                  <mo>&#x2212;</mo>
+                  <mn>1</mn>
+                </mrow>
+                <mrow>
+                  <mrow>
+                    <mi>exp</mi>
+                    <mrow>
+                      <mo>(</mo>
+                      <mfrac>
+                        <msub>
+                          <mi>c</mi>
+                          <mn>2</mn>
+                        </msub>
+                        <mrow>
+                          <mstyle mathvariant="italic">
+                            <mi>&#x3bb;</mi>
+                          </mstyle>
+                          <msub>
+                            <mstyle mathvariant="italic">
+                              <mi>T</mi>
+                            </mstyle>
+                            <mn>90</mn>
+                          </msub>
+                        </mrow>
+                      </mfrac>
+                      <mo>)</mo>
+                    </mrow>
+                  </mrow>
+                  <mo>&#x2212;</mo>
+                  <mn>1</mn>
+                </mrow>
+              </mfrac>
+              <mo>,</mo>
+            </mstyle>
+          </math>
+        MATHML
+        expect(formula.to_latex).to eql(latex)
+        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_asciimath).to eql(asciimath)
+      end
+    end
+
+    context "contains example from metanorma/metanorma-cli/pull/329 example #2 example #113" do
+      let(:string) { 'ii(L)_{ii(lambda)} (ii(T)_{90}) = c_1 / {n_{ii(lambda)}^2 ii(lambda)^5} [exp(c_2 / {n_{ii(lambda)} ii(lambda) ii(T)_{90}}) - 1]^{-1}' }
+
+      it 'matches LaTeX, AsciiMath, and MathML' do
+        latex = '\mathit{L}_{\mathit{\lambda}} ( \mathit{T}_{90} ) = \frac{c_{1}}{n_{\mathit{\lambda}}^{2} \mathit{\lambda}^{5}} [ \exp{( \frac{c_{2}}{n_{\mathit{\lambda}} \mathit{\lambda} \mathit{T}_{90}} )} - 1 ]^{- 1}'
+        asciimath = 'ii(L)_(ii(lambda)) (ii(T)_(90)) = frac(c_(1))(n_(ii(lambda))^(2) ii(lambda)^(5)) [exp(frac(c_(2))(n_(ii(lambda)) ii(lambda) ii(T)_(90))) - 1]^(- 1)'
+        mathml = <<~MATHML
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
+              <msub>
+                <mstyle mathvariant="italic">
+                  <mi>L</mi>
+                </mstyle>
+                <mstyle mathvariant="italic">
+                  <mi>&#x3bb;</mi>
+                </mstyle>
+              </msub>
+              <mrow>
+                <mo>(</mo>
+                <msub>
+                  <mstyle mathvariant="italic">
+                    <mi>T</mi>
+                  </mstyle>
+                  <mn>90</mn>
+                </msub>
+                <mo>)</mo>
+              </mrow>
+              <mo>=</mo>
+              <mfrac>
+                <msub>
+                  <mi>c</mi>
+                  <mn>1</mn>
+                </msub>
+                <mrow>
+                  <msubsup>
+                    <mi>n</mi>
+                    <mstyle mathvariant="italic">
+                      <mi>&#x3bb;</mi>
+                    </mstyle>
+                    <mn>2</mn>
+                  </msubsup>
+                  <msup>
+                    <mstyle mathvariant="italic">
+                      <mi>&#x3bb;</mi>
+                    </mstyle>
+                    <mn>5</mn>
+                  </msup>
+                </mrow>
+              </mfrac>
+              <msup>
+                <mrow>
+                  <mo>[</mo>
+                  <mrow>
+                    <mi>exp</mi>
+                    <mrow>
+                      <mo>(</mo>
+                      <mfrac>
+                        <msub>
+                          <mi>c</mi>
+                          <mn>2</mn>
+                        </msub>
+                        <mrow>
+                          <msub>
+                            <mi>n</mi>
+                            <mstyle mathvariant="italic">
+                              <mi>&#x3bb;</mi>
+                            </mstyle>
+                          </msub>
+                          <mstyle mathvariant="italic">
+                            <mi>&#x3bb;</mi>
+                          </mstyle>
+                          <msub>
+                            <mstyle mathvariant="italic">
+                              <mi>T</mi>
+                            </mstyle>
+                            <mn>90</mn>
+                          </msub>
+                        </mrow>
+                      </mfrac>
+                      <mo>)</mo>
+                    </mrow>
+                  </mrow>
+                  <mo>&#x2212;</mo>
+                  <mn>1</mn>
+                  <mo>]</mo>
+                </mrow>
+                <mrow>
+                  <mo>&#x2212;</mo>
+                  <mn>1</mn>
+                </mrow>
+              </msup>
+            </mstyle>
+          </math>
+        MATHML
+        expect(formula.to_latex).to eql(latex)
+        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_asciimath).to eql(asciimath)
+      end
+    end
+
+    context "contains example from plurimath/pull/244 example #114" do
+      let(:string) { '[u_0, u_1, u_2, u_3, ... , u_n] __{backepsilon} [[0 leq u_i leq 1] wedge sum u_i = 1.0]' }
+
+      it 'matches LaTeX, AsciiMath, and MathML' do
+        latex = '[ u_{0} , u_{1} , u_{2} , u_{3} , \ldots , u_{n} ] \backepsilon [ [ 0 \le q u_{i} \le q 1 ] \land \sum u_{i} = 1.0 ]'
+        asciimath = '[u_(0) , u_(1) , u_(2) , u_(3) , ... , u_(n)] __{backepsilon} [[0 le q u_(i) le q 1] ^^ sum u_(i) = 1.0]'
+        mathml = <<~MATHML
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
+              <mrow>
+                <mo>[</mo>
+                <msub>
+                  <mi>u</mi>
+                  <mn>0</mn>
+                </msub>
+                <mo>,</mo>
+                <msub>
+                  <mi>u</mi>
+                  <mn>1</mn>
+                </msub>
+                <mo>,</mo>
+                <msub>
+                  <mi>u</mi>
+                  <mn>2</mn>
+                </msub>
+                <mo>,</mo>
+                <msub>
+                  <mi>u</mi>
+                  <mn>3</mn>
+                </msub>
+                <mo>,</mo>
+                <mo>&#x2026;</mo>
+                <mo>,</mo>
+                <msub>
+                  <mi>u</mi>
+                  <mi>n</mi>
+                </msub>
+                <mo>]</mo>
+              </mrow>
+              <mi>&#x3f6;</mi>
+              <mrow>
+                <mo>[</mo>
+                <mrow>
+                  <mo>[</mo>
+                  <mn>0</mn>
+                  <mo>&#x2264;</mo>
+                  <mi>q</mi>
+                  <msub>
+                    <mi>u</mi>
+                    <mi>i</mi>
+                  </msub>
+                  <mo>&#x2264;</mo>
+                  <mi>q</mi>
+                  <mn>1</mn>
+                  <mo>]</mo>
+                </mrow>
+                <mo>&#x2227;</mo>
+                <mo>&#x2211;</mo>
+                <msub>
+                  <mi>u</mi>
+                  <mi>i</mi>
+                </msub>
+                <mo>=</mo>
+                <mn>1.0</mn>
+                <mo>]</mo>
               </mrow>
             </mstyle>
           </math>

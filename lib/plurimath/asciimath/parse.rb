@@ -127,7 +127,7 @@ module Plurimath
 
       rule(:frac) do
         (sequence.as(:numerator) >> space? >> match(/(?<!\/)\/(?!\/)/) >> space? >> iteration.as(:denominator)).as(:frac) |
-          ((power_base_rules | power_base).as(:numerator) >> match(/(?<!\/)\/(?!\/)/) >> iteration.as(:denominator)).as(:frac)
+          ((power_base_rules | power_base).as(:numerator) >> space? >> match(/(?<!\/)\/(?!\/)/) >> space? >> iteration.as(:denominator)).as(:frac)
       end
 
       rule(:mod) do
