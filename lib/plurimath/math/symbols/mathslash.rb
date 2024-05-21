@@ -6,7 +6,7 @@ module Plurimath
           unicodemath: [["&#x2f;"], parsing_wrapper(["//", "mathslash"])],
           asciimath: [["//", "&#x2f;"], parsing_wrapper(["mathslash"])],
           mathml: ["&#x2f;"],
-          latex: [["mathslash", "//", "&#x2f;"]],
+          latex: ["mathslash", "//", "&#x2f;"],
           omml: ["&#x2f;"],
           html: ["&#x2f;"],
         }.freeze
