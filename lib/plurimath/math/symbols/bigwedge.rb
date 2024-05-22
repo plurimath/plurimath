@@ -3,7 +3,7 @@ module Plurimath
     module Symbols
       class Bigwedge < Symbol
         INPUT = {
-          unicodemath: [["&#x22c0;"], parsing_wrapper(["bigwedge", "^^^"])],
+          unicodemath: [["&#x22c0;", "bigwedge"], parsing_wrapper(["^^^"])],
           asciimath: [["bigwedge", "^^^", "&#x22c0;"]],
           mathml: ["&#x22c0;"],
           latex: [["bigwedge", "&#x22c0;"], parsing_wrapper(["^^^"])],
@@ -24,7 +24,7 @@ module Plurimath
           Utility.html_entity_to_unicode("&#x22c0;")
         end
 
-        def to_mathml_without_math_tag
+        def to_mathml_without_math_tag(_)
           ox_element("mi") << "&#x22c0;"
         end
 
@@ -34,6 +34,22 @@ module Plurimath
 
         def to_html
           "&#x22c0;"
+        end
+
+        def is_nary_symbol?
+          true
+        end
+
+        def nary_intent_name
+          "n-ary"
+        end
+
+        def tag_name
+          "underover"
+        end
+
+        def omml_tag_name
+          "undOvr"
         end
       end
     end

@@ -15,15 +15,13 @@
   <mstyle displaystyle="true">
     <mmultiscripts>
       <mprescripts/>
-      <mrow>
-        <mo>=</mo>
-        <mi>&#x3b3;</mi>
-      </mrow>
+      <mo>=</mo>
       <mrow>
         <mi>&#x3b2;</mi>
         <mo linebreak="newline">=</mo>
         <mi>&#x3b2;</mi>
       </mrow>
+      <mi>&#x3b3;</mi>
     </mmultiscripts>
   </mstyle>
 </math>

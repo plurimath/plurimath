@@ -22,7 +22,7 @@ module Plurimath
         value
       end
 
-      def to_mathml_without_math_tag
+      def to_mathml_without_math_tag(_)
         Utility.ox_element("mn") << value
       end
 

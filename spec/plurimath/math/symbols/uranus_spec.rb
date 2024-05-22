@@ -30,7 +30,7 @@ RSpec.describe Plurimath::Math::Symbols::Uranus do
       end
 
       it "matches MathML string" do
-        string = dump_ox_nodes(klass.to_mathml_without_math_tag).strip
+        string = dump_ox_nodes(klass.to_mathml_without_math_tag(false)).strip
         expect(string).to eq("<mi>&#x2645;</mi>")
       end
 

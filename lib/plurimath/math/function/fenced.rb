@@ -28,13 +28,16 @@ module Plurimath
           "#{first_value}#{parameter_two&.map(&:to_asciimath)&.join(' ')}#{third_value}"
         end
 
-        def to_mathml_without_math_tag
-          first_value = Utility.ox_element("mo", attributes: options&.dig(:open_paren)) << (mathml_paren(parameter_one) || "")
-          second_value = parameter_two&.map(&:to_mathml_without_math_tag) || []
-          third_value = Utility.ox_element("mo", attributes: options&.dig(:close_paren)) << (mathml_paren(parameter_three) || "")
-          Utility.update_nodes(
-            Utility.ox_element("mrow"),
-            (second_value.insert(0, first_value) << third_value),
+        def to_mathml_without_math_tag(intent)
+          first_value = ox_element("mo", attributes: options&.dig(:open_paren)) << (mathml_paren(parameter_one, intent) || "")
+          third_value = ox_element("mo", attributes: options&.dig(:close_paren)) << (mathml_paren(parameter_three, intent) || "")
+          mrow_value = mathml_value(intent).insert(0, first_value) << third_value
+          fenced = Utility.update_nodes(ox_element("mrow"), mrow_value)
+          intentify(
+            fenced,
+            intent,
+            func_name: :interval_fence,
+            intent_name: intent_value(mrow_value),
           )
         end
 
@@ -166,9 +169,9 @@ module Plurimath
           paren
         end
 
-        def mathml_paren(field)
+        def mathml_paren(field, intent)
           unicodemath_syntax = ["&#x3016;", "&#x3017;", "&#x2524;", "&#x251c;"]
-          paren = symbol_or_paren(field, lang: :mathml)
+          paren = symbol_or_paren(field, lang: :mathml, intent: intent)
           (paren&.include?(":") || unicodemath_syntax.include?(paren)) ? "" : paren
         end
 
@@ -227,17 +230,113 @@ module Plurimath
           parameter_one.is_a?(Math::Symbols::Paren::Vert)
         end
 
-        def symbol_or_paren(field, lang:)
+        def symbol_or_paren(field, lang:, intent: false)
           return field&.value unless field.is_a?(Math::Symbols::Paren)
 
           case lang
           when :mathml, :html
-            field.to_mathml_without_math_tag.nodes.first
+            field.to_mathml_without_math_tag(intent).nodes.first
           when :latex
             field.to_latex
           when :omml
             field.to_omml_without_math_tag(true)
           end
+        end
+
+        def intent_value(value)
+          return "binomial-coefficient" if binomial_coefficient?(value)
+
+          open_paren = symbol_or_paren(parameter_one, lang: :latex)
+          close_paren = symbol_or_paren(parameter_three, lang: :latex)
+          return "fenced" unless interval_intent?(value, open_paren, close_paren)
+
+          interval_intent(value, open_paren, close_paren)
+        end
+
+        def binomial_coefficient?(value)
+          parameter_two.first.is_a?(Frac) &&
+            parameter_two&.first&.options&.dig(:choose)
+        end
+
+        def interval_intent(value, open_paren, close_paren)
+          case open_paren
+          when "("
+            'open-closed-interval' if close_paren == ']'
+          when "["
+            return 'closed-interval' if close_paren == ']'
+
+            'closed-open-interval' if (close_paren == '[' || close_paren == ')')
+          when "]"
+            return 'open-closed-interval' if close_paren == ']'
+
+            'open-interval' if close_paren == '['
+          end
+        end
+
+        def interval_intent?(value, open_paren, close_paren)
+          return if value.length != 5
+          return unless interval_intent_value?(value)
+
+          case open_paren
+          when "(" then close_paren == ']'
+          when "]" then ['[', ']'].include?(close_paren)
+          when "[" then ['[', ']', ')'].include?(close_paren)
+          end
+        end
+
+        def interval_intent_value?(value)
+          return unless value[2].nodes.first == ","
+
+          valid_intent_value?(value[1]) &&
+            valid_intent_value?(value[3])
+        end
+
+        def valid_intent_value?(node)
+          case node.name
+          when "mrow"
+            return true if all_specific_nodes?(node.nodes, "mn")
+
+            all_specific_nodes?(node.nodes, ["mo", "mi"])
+          when "mi", "mo" then match_node_value?(node, /[A-Za-z]/)
+          when "mn" then match_node_value?(node, /[0-9]/)
+          end
+        end
+
+        def all_specific_nodes?(nodes, array)
+          nodes.all? { |node| Array(array).include?(node.name) }
+        end
+
+        def match_node_value?(node, regex)
+          node.nodes.first.match?(regex)
+        end
+
+        def mathml_value(intent)
+          nodes = parameter_two&.map { |object| object&.to_mathml_without_math_tag(intent) }
+          if intent
+            mrow = Utility.update_nodes(ox_element("mrow"), nodes)
+            update_partial_derivative(nodes) unless mrow.locate("*/mfrac/@intent").empty?
+          end
+          nodes
+        end
+
+        def update_partial_derivative(nodes)
+          nodes.reduce do |first, second|
+            if valid_partial_node(first)
+              if %w[mfrac mo].include?(second.name)
+                first["intent"].gsub!("$f", "")
+              else
+                second["arg"] = "f"
+              end
+            end
+            second
+          end
+        end
+
+        def valid_partial_node(node)
+          return unless node.name == "mfrac"
+
+          node["intent"]&.start_with?(":partial-derivative") &&
+            !node.locate("*/@arg").include?("f")
         end
       end
     end

@@ -27,13 +27,15 @@ module Plurimath
           "#{class_name}#{value}"
         end
 
-        def to_mathml_without_math_tag
+        def to_mathml_without_math_tag(intent)
           tag_name = Utility::UNARY_CLASSES.include?(class_name) ? "mi" : "mo"
           new_arr = []
           new_arr << (ox_element(tag_name) << class_name) unless hide_function_name
           if parameter_one
-            new_arr += mathml_value
-            Utility.update_nodes(ox_element("mrow"), new_arr)
+            new_arr += mathml_value(intent)
+            mrow = ox_element("mrow")
+            Utility.update_nodes(mrow, new_arr)
+            intentify(mrow, intent, func_name: :function, intent_name: :function)
           else
             new_arr.first
           end
@@ -154,12 +156,12 @@ module Plurimath
           end
         end
 
-        def mathml_value
+        def mathml_value(intent)
           case parameter_one
           when Array
-            parameter_one.compact.map(&:to_mathml_without_math_tag)
+            parameter_one.compact.map { |object| object&.to_mathml_without_math_tag(intent) }
           else
-            Array(parameter_one&.to_mathml_without_math_tag)
+            Array(parameter_one&.to_mathml_without_math_tag(intent))
           end
         end
 

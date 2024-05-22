@@ -24,7 +24,7 @@ module Plurimath
           Utility.html_entity_to_unicode("&#x2210;")
         end
 
-        def to_mathml_without_math_tag
+        def to_mathml_without_math_tag(_)
           ox_element("mi") << "&#x2210;"
         end
 
@@ -38,6 +38,10 @@ module Plurimath
 
         def is_nary_symbol?
           true
+        end
+
+        def nary_intent_name
+          "coproduct"
         end
       end
     end

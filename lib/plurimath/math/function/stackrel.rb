@@ -18,13 +18,14 @@ module Plurimath
           "#{class_name}#{first_value}#{second_value}"
         end
 
-        def to_mathml_without_math_tag
-          mover = Utility.ox_element("mover")
-          first_value = Utility.ox_element("mrow")
-          first_value << parameter_one.to_mathml_without_math_tag if parameter_one
-          second_value = Utility.ox_element("mrow")
-          second_value << parameter_two.to_mathml_without_math_tag if parameter_two
-          Utility.update_nodes(mover, [second_value, first_value])
+        def to_mathml_without_math_tag(intent)
+          Utility.update_nodes(
+            ox_element("mover"),
+            [
+              mathml_values(parameter_two, intent),
+              mathml_values(parameter_one, intent),
+            ],
+          )
         end
 
         def to_html
@@ -67,6 +68,10 @@ module Plurimath
         def wrapped(field)
           string = field&.to_asciimath || ""
           string.start_with?("(") ? string : "(#{string})"
+        end
+
+        def mathml_values(field, intent)
+          ox_element("mrow") << (field&.to_mathml_without_math_tag(intent) || "")
         end
       end
     end

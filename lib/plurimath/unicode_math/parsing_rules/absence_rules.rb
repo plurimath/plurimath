@@ -63,6 +63,7 @@ module Plurimath
             str("&#x24d8;") |
             str("&#x2223;") |
             str("&#x2215;") |
+            unicoded_fonts |
             str("&#x20;") |
             str("&#x27;") |
             str("&#x2f;") |

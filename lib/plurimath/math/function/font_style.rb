@@ -10,8 +10,8 @@ module Plurimath
           parameter_one&.to_asciimath
         end
 
-        def to_mathml_without_math_tag
-          first_value = parameter_one&.to_mathml_without_math_tag
+        def to_mathml_without_math_tag(intent)
+          first_value = parameter_one&.to_mathml_without_math_tag(intent)
           Utility.update_nodes(
             Utility.ox_element(
               "mstyle",

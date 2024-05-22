@@ -44,32 +44,27 @@ module Plurimath
           "#{first_value}#{second_value}#{third_value}#{fourth_value}"
         end
 
-        def to_mathml_without_math_tag
-          tag_name = options[:type] == "undOvr" ? "munderover" : "msubsup"
-          if !(parameter_two && parameter_three)
-            tag_name = if parameter_two
-                         tag_name == "munderover" ? "munder" : "msub"
-                       elsif parameter_three
-                         tag_name == "munderover" ? "mover" : "msup"
-                       else
-                        'mrow'
-                       end
-          end
-          subsup_tag = ox_element(tag_name)
+        def to_mathml_without_math_tag(intent)
           new_arr = [
-            validate_mathml_fields(parameter_one),
-            validate_mathml_fields(parameter_two),
-            validate_mathml_fields(parameter_three),
+            validate_mathml_fields(parameter_one, intent),
+            validate_mathml_fields(parameter_two, intent),
+            validate_mathml_fields(parameter_three, intent),
           ]
-          Utility.update_nodes(subsup_tag, new_arr)
+          subsup_tag = Utility.update_nodes(ox_element(tag_name), new_arr)
+          masked_tag(subsup_tag) if options.dig(:mask)
           return subsup_tag unless parameter_four
 
-          Utility.update_nodes(
-            row_tag,
-            [
-              subsup_tag,
-              (row_tag << validate_mathml_fields(parameter_four)),
-            ],
+          intentify(
+            Utility.update_nodes(
+              ox_element("mrow"),
+              [
+                subsup_tag,
+                wrap_mrow(validate_mathml_fields(parameter_four, intent), true),
+              ],
+            ),
+            intent,
+            func_name: :naryand,
+            intent_name: intent_name,
           )
         end
 
@@ -92,7 +87,15 @@ module Plurimath
         def line_breaking(obj)
           parameter_one&.line_breaking(obj)
           if obj.value_exist?
-            obj.update(self.class.new(Utility.filter_values(obj.value), self.parameter_two, self.parameter_three, self.parameter_four, self.options))
+            obj.update(
+              self.class.new(
+                Utility.filter_values(obj.value),
+                self.parameter_two,
+                self.parameter_three,
+                self.parameter_four,
+                self.options,
+              )
+            )
             self.parameter_two = nil
             self.parameter_three = nil
             self.parameter_four = nil
@@ -101,7 +104,15 @@ module Plurimath
 
           parameter_two&.line_breaking(obj)
           if obj.value_exist?
-            obj.update(self.class.new(nil, Utility.filter_values(obj.value), self.parameter_three, self.parameter_four, self.options))
+            obj.update(
+              self.class.new(
+                nil,
+                Utility.filter_values(obj.value),
+                self.parameter_three,
+                self.parameter_four,
+                self.options
+              )
+            )
             self.parameter_three = nil
             self.parameter_four = nil
             return
@@ -142,10 +153,6 @@ module Plurimath
           ]
         end
 
-        def row_tag
-          Utility.ox_element("mrow")
-        end
-
         def sup_value
           if parameter_three.mini_sized? || prime_unicode?(parameter_three)
             parameter_three.to_unicodemath
@@ -173,6 +180,27 @@ module Plurimath
 
           field_value = field.to_unicodemath
           field.is_a?(Math::Function::Fenced) ? "▒#{field_value}" : "▒〖#{field_value}〗"
+        end
+
+        def tag_name
+          tag = options[:type] == "undOvr" ? "munderover" : "msubsup"
+          if !(parameter_two && parameter_three)
+            if parameter_two
+              tag == "munderover" ? "munder" : "msub"
+            elsif parameter_three
+              tag == "munderover" ? "mover" : "msup"
+            else
+             'mrow'
+            end
+          else
+            tag
+          end
+        end
+
+        def intent_name
+          return "n-ary" unless parameter_one&.is_nary_symbol?
+
+          parameter_one.nary_intent_name
         end
       end
     end

@@ -21,12 +21,15 @@ module Plurimath
           @options = options unless options.empty?
         end
 
-        def to_mathml_without_math_tag
+        def to_mathml_without_math_tag(intent)
           value_array = [
-            validate_mathml_fields(parameter_two),
-            validate_mathml_fields(parameter_one),
+            validate_mathml_fields(parameter_two, intent),
+            validate_mathml_fields(parameter_one, intent),
           ]
-          Utility.update_nodes(ox_element("mover", attributes: options), value_array)
+          Utility.update_nodes(
+            ox_element("mover", attributes: options),
+            value_array,
+          )
         end
 
         def to_omml_without_math_tag(display_style)

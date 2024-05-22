@@ -38,31 +38,30 @@ module Plurimath
           "\\sum#{first_value}#{second_value} #{parameter_three&.to_latex}".strip
         end
 
-        def to_mathml_without_math_tag
+        def to_mathml_without_math_tag(intent)
           first_value = ox_element("mo")
           first_value << invert_unicode_symbols.to_s unless hide_function_name
           return first_value unless all_values_exist?
 
-          value_array = [
-            parameter_one&.to_mathml_without_math_tag,
-            parameter_two&.to_mathml_without_math_tag,
-          ]
-          tag_name = if parameter_two && parameter_one
-                       "underover"
-                     else
-                       parameter_one ? "under" : "over"
-                     end
-          munderover_tag = Utility.ox_element("m#{tag_name}")
-          Utility.update_nodes(munderover_tag, value_array.insert(0, first_value))
-          return munderover_tag if parameter_three.nil?
-
-          Utility.update_nodes(
-            ox_element("mrow"),
+          munderover_tag = Utility.update_nodes(
+            sum_tag,
             [
-              munderover_tag,
-              parameter_three&.to_mathml_without_math_tag,
+              first_value,
+              parameter_one&.to_mathml_without_math_tag(intent),
+              parameter_two&.to_mathml_without_math_tag(intent),
             ],
           )
+          return munderover_tag if parameter_three.nil?
+
+          mrow = ox_element("mrow")
+          Utility.update_nodes(
+            mrow,
+            [
+              munderover_tag,
+              wrap_mrow(parameter_three&.to_mathml_without_math_tag(intent), intent),
+            ],
+          )
+          ternary_intentify(mrow, intent)
         end
 
         def to_html
@@ -121,6 +120,26 @@ module Plurimath
 
         def is_nary_function?
           true
+        end
+
+        private
+
+        def sum_tag
+          tag_name = if parameter_two && parameter_one
+                       "underover"
+                     else
+                       parameter_one ? "under" : "over"
+                     end
+          ox_element("m#{tag_name}")
+        end
+
+        def ternary_intentify(tag, intent)
+          intentify(
+            tag,
+            intent,
+            func_name: :naryand,
+            intent_name: :sum,
+          )
         end
       end
     end

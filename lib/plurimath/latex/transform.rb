@@ -283,12 +283,30 @@ module Plurimath
 
       rule(sequence: simple(:sequence),
            expression: simple(:expr)) do
-        [sequence, expr].compact
+        if sequence.is_a?(Math::Function::PowerBase) && sequence.parameter_one.is_nary_symbol?
+          Math::Function::Nary.new(
+            sequence.parameter_one,
+            sequence.parameter_two,
+            sequence.parameter_three,
+            expr,
+          )
+        else
+          [sequence, expr].compact
+        end
       end
 
       rule(sequence: simple(:sequence),
            expression: sequence(:expr)) do
-        [sequence] + expr
+        if sequence.is_a?(Math::Function::PowerBase) && sequence.parameter_one.is_nary_symbol?
+          Math::Function::Nary.new(
+            sequence.parameter_one,
+            sequence.parameter_two,
+            sequence.parameter_three,
+            Utility.filter_values(expr),
+          )
+        else
+          [sequence] + expr
+        end
       end
 
       rule(unary_functions: simple(:unary),

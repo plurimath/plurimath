@@ -24,7 +24,7 @@ module Plurimath
           Utility.html_entity_to_unicode("&#x222e;")
         end
 
-        def to_mathml_without_math_tag
+        def to_mathml_without_math_tag(_)
           ox_element("mo") << "&#x222e;"
         end
 
@@ -34,6 +34,22 @@ module Plurimath
 
         def to_html
           "&#x222e;"
+        end
+
+        def is_nary_symbol?
+          true
+        end
+
+        def nary_intent_name
+          "contour integral"
+        end
+
+        def tag_name
+          "underover"
+        end
+
+        def omml_tag_name
+          "undOvr"
         end
       end
     end

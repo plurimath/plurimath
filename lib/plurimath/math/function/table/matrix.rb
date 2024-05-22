@@ -22,10 +22,10 @@ module Plurimath
             "\\begin#{opening}#{latex_content}\\end#{matrix_class}"
           end
 
-          def to_mathml_without_math_tag
+          def to_mathml_without_math_tag(intent)
             table_tag = Utility.update_nodes(
               ox_element("mtable", attributes: table_attribute),
-              value&.map(&:to_mathml_without_math_tag)
+              value&.map { |object| object&.to_mathml_without_math_tag(intent) }
             )
             return table_tag if table_tag_only?
 

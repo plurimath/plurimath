@@ -97,7 +97,7 @@ RSpec.describe Plurimath::Mathml::Parser do
       expected_value = Plurimath::Math::Formula.new([
         Plurimath::Math::Symbols::Pi.new,
         Plurimath::Math::Symbols::Ii.new,
-        Plurimath::Math::Symbols::Symbol.new(" &#x2147; "),
+        Plurimath::Math::Symbols::Ee.new,
       ])
       expect(formula).to eq(expected_value)
     end
@@ -166,7 +166,7 @@ RSpec.describe Plurimath::Mathml::Parser do
           Plurimath::Math::Number.new(" 2 ")
         ),
         Plurimath::Math::Symbols::Pi.new,
-        Plurimath::Math::Symbols::Symbol.new(" &#x2147; ")
+        Plurimath::Math::Symbols::Ee.new
       ])
       expect(formula).to eq(expected_value)
     end
@@ -1593,7 +1593,7 @@ RSpec.describe Plurimath::Mathml::Parser do
           Plurimath::Math::Symbols::Symbol.new(" 1 "),
           Plurimath::Math::Formula.new([
             Plurimath::Math::Function::Power.new(
-              Plurimath::Math::Symbols::Symbol.new(" &#x2147; "),
+              Plurimath::Math::Symbols::Ee.new,
               Plurimath::Math::Symbols::Symbol.new(" x ")
             ),
             Plurimath::Math::Symbols::Symbol.new(" &#x2062; "),
