@@ -25,7 +25,7 @@ module Plurimath
             Utility.html_entity_to_unicode(paren_value)
           end
 
-          def to_mathml_without_math_tag
+          def to_mathml_without_math_tag(_)
             ox_element("mo") << paren_value
           end
 

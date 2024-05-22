@@ -28,13 +28,13 @@ module Plurimath
           "#{first_value}#{parameter_two&.map(&:to_asciimath)&.join(' ')}#{third_value}"
         end
 
-        def to_mathml_without_math_tag
-          first_value = Utility.ox_element("mo", attributes: options&.dig(:open_paren)) << (mathml_paren(parameter_one) || "")
-          second_value = parameter_two&.map(&:to_mathml_without_math_tag) || []
-          third_value = Utility.ox_element("mo", attributes: options&.dig(:close_paren)) << (mathml_paren(parameter_three) || "")
+        def to_mathml_without_math_tag(intent)
+          first_value = Utility.ox_element("mo", attributes: options&.dig(:open_paren)) << (mathml_paren(parameter_one, intent) || "")
+          second_value = parameter_two&.map { |object| object&.to_mathml_without_math_tag(intent) } || []
+          third_value = Utility.ox_element("mo", attributes: options&.dig(:close_paren)) << (mathml_paren(parameter_three, intent) || "")
           Utility.update_nodes(
             Utility.ox_element("mrow"),
-            (second_value.insert(0, first_value) << third_value),
+            second_value.insert(0, first_value) << third_value,
           )
         end
 
@@ -166,9 +166,9 @@ module Plurimath
           paren
         end
 
-        def mathml_paren(field)
+        def mathml_paren(field, intent)
           unicodemath_syntax = ["&#x3016;", "&#x3017;", "&#x2524;", "&#x251c;"]
-          paren = symbol_or_paren(field, lang: :mathml)
+          paren = symbol_or_paren(field, lang: :mathml, intent: intent)
           (paren&.include?(":") || unicodemath_syntax.include?(paren)) ? "" : paren
         end
 
@@ -227,12 +227,12 @@ module Plurimath
           parameter_one.is_a?(Math::Symbols::Paren::Vert)
         end
 
-        def symbol_or_paren(field, lang:)
+        def symbol_or_paren(field, lang:, intent: false)
           return field&.value unless field.is_a?(Math::Symbols::Paren)
 
           case lang
           when :mathml, :html
-            field.to_mathml_without_math_tag.nodes.first
+            field.to_mathml_without_math_tag(intent).nodes.first
           when :latex
             field.to_latex
           when :omml

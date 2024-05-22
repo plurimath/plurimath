@@ -18,7 +18,7 @@ module Plurimath
           parameter_one[:alt]
         end
 
-        def to_mathml_without_math_tag
+        def to_mathml_without_math_tag(intent)
           ox_element(class_name, attributes: parameter_one)
         end
 

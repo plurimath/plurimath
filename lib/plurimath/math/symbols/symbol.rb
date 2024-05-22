@@ -36,7 +36,7 @@ module Plurimath
           value
         end
 
-        def to_mathml_without_math_tag
+        def to_mathml_without_math_tag(_)
           mi_tag = Utility.ox_element("mi")
           return mi_tag if ["{:", ":}"].include?(value)
 

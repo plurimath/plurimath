@@ -37,32 +37,23 @@ module Plurimath
           "\\prod#{first_value}#{second_value} #{parameter_three&.to_latex}".strip
         end
 
-        def to_mathml_without_math_tag
+        def to_mathml_without_math_tag(intent)
           first_value = ox_element("mo")
           first_value << invert_unicode_symbols.to_s unless hide_function_name
           if parameter_one || parameter_two
-            tag_name = if parameter_two && parameter_one
-                         "underover"
-                       else
-                         parameter_one ? "under" : "over"
-                       end
             value_array = [
               first_value,
-              parameter_one&.to_mathml_without_math_tag,
-              parameter_two&.to_mathml_without_math_tag,
+              parameter_one&.to_mathml_without_math_tag(intent),
+              parameter_two&.to_mathml_without_math_tag(intent),
             ]
-            munderover_tag = ox_element("m#{tag_name}")
-            Utility.update_nodes(
-              munderover_tag,
-              value_array,
-            )
-            return munderover_tag if parameter_three.nil?
+            munderover_tag = Utility.update_nodes(prod_tag_name, value_array)
+            return intentify(munderover_tag, intent, "prod") if parameter_three.nil?
 
             Utility.update_nodes(
-              Utility.ox_element("mrow"),
+              ox_element("mrow"),
               [
                 munderover_tag,
-                parameter_three&.to_mathml_without_math_tag,
+                parameter_three&.to_mathml_without_math_tag(intent),
               ].flatten.compact,
             )
           else
@@ -143,6 +134,15 @@ module Plurimath
           else
             "_#{unicodemath_parens(parameter_one)}"
           end
+        end
+
+        def prod_tag_name
+          tag_name = if parameter_two && parameter_one
+                       "underover"
+                     else
+                       parameter_one ? "under" : "over"
+                     end
+          ox_element("m#{tag_name}")
         end
       end
     end

@@ -38,7 +38,7 @@ module Plurimath
           "\\#{class_name}#{first_value}#{second_value} #{parameter_three&.to_latex}".strip
         end
 
-        def to_mathml_without_math_tag
+        def to_mathml_without_math_tag(intent)
           base_element = (Utility.ox_element("mo") << invert_unicode_symbols.to_s)
           return base_element unless all_values_exist?
 
@@ -47,8 +47,8 @@ module Plurimath
             msubsup_tag,
             [
               base_element,
-              validate_mathml_tag(parameter_one),
-              validate_mathml_tag(parameter_two),
+              validate_mathml_tag(parameter_one, intent),
+              validate_mathml_tag(parameter_two, intent),
             ],
           )
           return msubsup_tag if parameter_three.nil?
@@ -57,7 +57,7 @@ module Plurimath
             Utility.ox_element("mrow"),
             [
               msubsup_tag,
-              parameter_three&.to_mathml_without_math_tag,
+              parameter_three&.to_mathml_without_math_tag(intent),
             ].flatten.compact,
           )
         end

@@ -18,18 +18,18 @@ module Plurimath
             "\\begin#{opening}#{latex_content}\\end#{matrix_class}"
           end
 
-          def to_mathml_without_math_tag
-            table_tag = Utility.ox_element("mtable", attributes: table_attribute)
+          def to_mathml_without_math_tag(intent)
+            table_tag = ox_element("mtable", attributes: table_attribute)
             Utility.update_nodes(
               table_tag,
-              value&.map(&:to_mathml_without_math_tag),
+              value&.map { |object| object&.to_mathml_without_math_tag(intent) },
             )
             Utility.update_nodes(
               Utility.ox_element("mrow"),
               [
-                mo_element(mathml_parenthesis(open_paren)),
+                mo_element(mathml_parenthesis(open_paren, intent)),
                 table_tag,
-                mo_element(mathml_parenthesis(close_paren)),
+                mo_element(mathml_parenthesis(close_paren, intent)),
               ],
             )
           end

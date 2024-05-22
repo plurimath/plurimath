@@ -39,8 +39,8 @@ module Plurimath
         parse_error!(:asciimath)
       end
 
-      def to_mathml(display_style: displaystyle, split_on_linebreak: false)
-        return line_breaked_mathml(display_style) if split_on_linebreak
+      def to_mathml(display_style: displaystyle, split_on_linebreak: false, intent: false)
+        return line_breaked_mathml(display_style, intent) if split_on_linebreak
 
         math_attrs = {
           xmlns: "http://www.w3.org/1998/Math/MathML",
@@ -49,7 +49,7 @@ module Plurimath
         style_attrs = { displaystyle: boolean_display_style(display_style) }
         math  = ox_element("math", attributes: math_attrs)
         style = ox_element("mstyle", attributes: style_attrs)
-        Utility.update_nodes(style, mathml_content)
+        Utility.update_nodes(style, mathml_content(intent))
         Utility.update_nodes(math, [style])
         unitsml_post_processing(math.nodes, math)
         dump_nodes(math, indent: 2)
@@ -57,22 +57,22 @@ module Plurimath
         parse_error!(:mathml)
       end
 
-      def line_breaked_mathml(display_style)
+      def line_breaked_mathml(display_style, intent)
         new_line_support.map do |formula|
-          formula.to_mathml(display_style: display_style)
+          formula.to_mathml(display_style: display_style, intent: intent)
         end.join
       end
 
-      def to_mathml_without_math_tag
-        return mathml_content unless left_right_wrapper
+      def to_mathml_without_math_tag(intent)
+        return mathml_content(intent) unless left_right_wrapper
 
         mrow = ox_element("mrow")
         mrow[:unitsml] = true if unitsml
-        Utility.update_nodes(mrow, mathml_content)
+        Utility.update_nodes(mrow, mathml_content(intent))
       end
 
-      def mathml_content
-        value.map(&:to_mathml_without_math_tag)
+      def mathml_content(intent)
+        value.map { |val| val.to_mathml_without_math_tag(intent) }
       end
 
       def to_latex

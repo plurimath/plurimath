@@ -37,7 +37,7 @@ module Plurimath
           "\\#{class_name}#{first_value}#{second_value} #{parameter_three&.to_latex}".strip
         end
 
-        def to_mathml_without_math_tag
+        def to_mathml_without_math_tag(intent)
           mo_tag = ox_element("mo")
           mo_tag << invert_unicode_symbols.to_s unless hide_function_name
           return mo_tag unless all_values_exist?
@@ -45,8 +45,8 @@ module Plurimath
           if parameter_one || parameter_two
             value_array = [
               mo_tag,
-              parameter_one&.to_mathml_without_math_tag,
-              parameter_two&.to_mathml_without_math_tag,
+              parameter_one&.to_mathml_without_math_tag(intent),
+              parameter_two&.to_mathml_without_math_tag(intent),
             ]
             tag_name = if parameter_one && parameter_two
                          "subsup"
@@ -61,7 +61,7 @@ module Plurimath
               ox_element("mrow"),
               [
                 msubsup_tag,
-                parameter_three&.to_mathml_without_math_tag,
+                parameter_three&.to_mathml_without_math_tag(intent),
               ],
             )
           end

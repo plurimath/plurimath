@@ -36,17 +36,17 @@ module Plurimath
           "#{lparen}#{first_value}#{rparen}"
         end
 
-        def to_mathml_without_math_tag
+        def to_mathml_without_math_tag(intent)
           table_tag = Utility.ox_element("mtable", attributes: table_attribute)
           Utility.update_nodes(
             table_tag,
-            value&.map(&:to_mathml_without_math_tag),
+            value&.map { |object| object&.to_mathml_without_math_tag(intent) },
           )
           return norm_table(table_tag) if open_paren.is_a?(Math::Symbols::Paren::Norm)
 
-          if mathml_paren_present?(open_paren) || mathml_paren_present?(close_paren)
-            first_paren = mo_element(mathml_parenthesis(open_paren))
-            second_paren = mo_element(mathml_parenthesis(close_paren))
+          if mathml_paren_present?(open_paren, intent) || mathml_paren_present?(close_paren, intent)
+            first_paren = mo_element(mathml_parenthesis(open_paren, intent))
+            second_paren = mo_element(mathml_parenthesis(close_paren, intent))
             mrow_tag = Utility.ox_element("mrow")
             return Utility.update_nodes(mrow_tag, [first_paren, table_tag, second_paren])
           end
@@ -117,9 +117,9 @@ module Plurimath
 
         protected
 
-        def mathml_parenthesis(field)
+        def mathml_parenthesis(field, intent)
           return "" unless field
-          return field&.to_mathml_without_math_tag&.nodes&.first if field&.class_name == "symbol"
+          return field&.to_mathml_without_math_tag(intent)&.nodes&.first if field&.class_name == "symbol"
 
           paren = field&.respond_to?(:encoded) ? field&.encoded : field&.paren_value
           invisible_paren?(paren) ? "" : paren
@@ -322,10 +322,10 @@ module Plurimath
           UnicodeMath::Constants::MATRIXS[matrix_name]
         end
 
-        def mathml_paren_present?(paren)
+        def mathml_paren_present?(paren, intent)
           return unless paren || paren&.class_name == "symbol"
 
-          !paren&.to_mathml_without_math_tag&.nodes&.first&.empty?
+          !paren&.to_mathml_without_math_tag(intent)&.nodes&.first&.empty?
         end
       end
     end

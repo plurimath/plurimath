@@ -31,15 +31,16 @@ module Plurimath
           "frac#{first_value}#{second_value}"
         end
 
-        def to_mathml_without_math_tag
+        def to_mathml_without_math_tag(intent)
           tag_name = hide_function_name ? "mrow" : "mfrac"
           mathml_value = [
-            parameter_one&.to_mathml_without_math_tag,
-            parameter_two&.to_mathml_without_math_tag,
+            parameter_one&.to_mathml_without_math_tag(intent),
+            parameter_two&.to_mathml_without_math_tag(intent),
           ]
           frac_tag = ox_element(tag_name)
           frac_tag.set_attr(options) if tag_name == "mfrac" && options
           Utility.update_nodes(frac_tag, mathml_value)
+          frac_intentify(frac, intent)
         end
 
         def to_latex

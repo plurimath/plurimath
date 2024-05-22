@@ -9,8 +9,8 @@ module Plurimath
           Text.new(parameter_one).to_asciimath
         end
 
-        def to_mathml_without_math_tag
-          Text.new(parameter_one).to_mathml_without_math_tag
+        def to_mathml_without_math_tag(intent)
+          Text.new(parameter_one).to_mathml_without_math_tag(intent)
         end
 
         def to_latex

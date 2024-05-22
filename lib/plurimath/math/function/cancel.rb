@@ -6,12 +6,12 @@ module Plurimath
   module Math
     module Function
       class Cancel < UnaryFunction
-        def to_mathml_without_math_tag
+        def to_mathml_without_math_tag(intent)
           cancel_tag = Utility.ox_element(
             "menclose",
             attributes: { notation: "updiagonalstrike" },
           )
-          first_value = parameter_one&.to_mathml_without_math_tag
+          first_value = parameter_one&.to_mathml_without_math_tag(intent)
           Utility.update_nodes(cancel_tag, [first_value])
         end
 

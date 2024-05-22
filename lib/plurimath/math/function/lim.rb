@@ -24,22 +24,19 @@ module Plurimath
           "\\#{class_name}#{first_value}#{second_value}"
         end
 
-        def to_mathml_without_math_tag
-          first_value = (Utility.ox_element("mo") << "lim")
+        def to_mathml_without_math_tag(intent)
+          first_value = Utility.ox_element("mo") << "lim"
           if parameter_one || parameter_two
             value_array = [first_value]
-            value_array << parameter_one&.to_mathml_without_math_tag
-            value_array << parameter_two&.to_mathml_without_math_tag
+            value_array << parameter_one&.to_mathml_without_math_tag(intent)
+            value_array << parameter_two&.to_mathml_without_math_tag(intent)
             tag_name = if parameter_two && parameter_one
                          "underover"
                        else
                          parameter_one ? "under" : "over"
                        end
             munderover_tag = Utility.ox_element("m#{tag_name}")
-            Utility.update_nodes(
-              munderover_tag,
-              value_array,
-            )
+            Utility.update_nodes(munderover_tag, value_array)
           else
             first_value
           end

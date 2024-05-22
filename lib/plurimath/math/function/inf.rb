@@ -18,13 +18,13 @@ module Plurimath
           "\\#{class_name}#{first_value}#{second_value}"
         end
 
-        def to_mathml_without_math_tag
+        def to_mathml_without_math_tag(intent)
           first_value = Utility.ox_element("mo") << class_name
           return first_value unless all_values_exist?
 
           value_array = [first_value]
-          value_array << parameter_one&.to_mathml_without_math_tag
-          value_array << parameter_two&.to_mathml_without_math_tag
+          value_array << parameter_one&.to_mathml_without_math_tag(intent)
+          value_array << parameter_two&.to_mathml_without_math_tag(intent)
           tag_name = if parameter_two && parameter_one
                        "underover"
                      else

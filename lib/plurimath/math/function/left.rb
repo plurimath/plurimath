@@ -10,7 +10,7 @@ module Plurimath
           "left#{parameter_one}"
         end
 
-        def to_mathml_without_math_tag
+        def to_mathml_without_math_tag(intent)
           mo = Utility.ox_element("mo")
           mo << left_paren if parameter_one
           mo

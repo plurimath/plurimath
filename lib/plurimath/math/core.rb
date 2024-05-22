@@ -100,7 +100,7 @@ module Plurimath
 
         hashed = common_math_zone_conversion(field, options)
         options[:array] << "#{hashed[:spacing]}|_ \"#{dump_mathml(field)}\"#{hashed[:field_name]}\n"
-        return unless Utility.validate_math_zone(field, lang: :mathml)
+        return unless Utility.validate_math_zone(field, lang: :mathml, intent: options[:intent])
 
         options[:array] << field&.to_mathml_math_zone(hashed[:function_spacing], hashed[:last], hashed[:indent])
       end
@@ -116,8 +116,8 @@ module Plurimath
         options[:array] << field&.to_omml_math_zone(hashed[:function_spacing], hashed[:last], hashed[:indent], display_style: display_style)
       end
 
-      def dump_mathml(field)
-        dump_ox_nodes(field.to_mathml_without_math_tag).gsub(/\n\s*/, "")
+      def dump_mathml(field, intent)
+        dump_ox_nodes(field.to_mathml_without_math_tag(intent)).gsub(/\n\s*/, "")
       end
 
       def dump_omml(field, display_style)
@@ -130,11 +130,11 @@ module Plurimath
         to_omml_without_math_tag(display_style)
       end
 
-      def validate_mathml_fields(field)
+      def validate_mathml_fields(field, intent)
         if field.is_a?(Array)
-          field&.map(&:to_mathml_without_math_tag)
+          field&.map { |object| object.to_mathml_without_math_tag(intent) }
         else
-          field&.to_mathml_without_math_tag
+          field&.to_mathml_without_math_tag(intent)
         end
       end
 
@@ -335,6 +335,22 @@ module Plurimath
 
       def unicodemath_field_value(field)
         field.class_name == "symbol" ? field.value : Utility.hexcode_in_input(field)
+      end
+
+      def wrap_mrow(xml_engine_node)
+        xml_engine_node.name == "mrow" ? xml_engine_node : ox_element("mrow") << xml_engine_node
+      end
+
+      def naryand_intentify(tag, intent, klass_name)
+        return tag unless intent
+
+        Utility::IntentEncoding.naryand_intent(tag, klass_name)
+      end
+
+      def frac_intentify(tag, intent)
+        return tag unless intent
+
+        Utility::IntentEncoding.frac_intent(frac_tag)
       end
     end
   end

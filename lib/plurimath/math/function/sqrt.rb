@@ -8,13 +8,11 @@ module Plurimath
       class Sqrt < UnaryFunction
         attr_accessor :options
 
-        def to_mathml_without_math_tag
-          sqrt_tag = Utility.ox_element("msqrt")
+        def to_mathml_without_math_tag(intent)
           Utility.update_nodes(
-            sqrt_tag,
-            Array(parameter_one&.to_mathml_without_math_tag),
+            ox_element("msqrt"),
+            Array(parameter_one&.to_mathml_without_math_tag(intent)),
           )
-          sqrt_tag
         end
 
         def to_omml_without_math_tag(display_style)

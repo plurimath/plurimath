@@ -16,8 +16,8 @@ module Plurimath
           "{\\lVert #{parameter_one&.to_latex} \\lVert}"
         end
 
-        def to_mathml_without_math_tag
-          first_value = Array(parameter_one&.to_mathml_without_math_tag)
+        def to_mathml_without_math_tag(intent)
+          first_value = Array(parameter_one&.to_mathml_without_math_tag(intent))
           norm = ox_element("mo") << "&#x2225;"
           first_value = first_value.insert(0, norm) unless open_paren
           first_value = first_value << norm unless close_paren

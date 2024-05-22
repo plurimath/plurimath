@@ -8,7 +8,7 @@ module Plurimath
       class Abs < UnaryFunction
         attr_accessor :open_paren, :close_paren
 
-        def to_mathml_without_math_tag
+        def to_mathml_without_math_tag(intent)
           symbol = Utility.ox_element("mo") << "|"
           first_value = mathml_value
           first_value = first_value&.insert(0, symbol) unless open_paren

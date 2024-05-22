@@ -29,11 +29,11 @@ module Plurimath
             object.parameter_three == parameter_three
         end
 
-        def to_mathml_without_math_tag
+        def to_mathml_without_math_tag(intent)
           value_arr = [
-            validate_mathml_fields(parameter_one),
-            validate_mathml_fields(parameter_two),
-            validate_mathml_fields(parameter_three),
+            validate_mathml_fields(parameter_one, intent),
+            validate_mathml_fields(parameter_two, intent),
+            validate_mathml_fields(parameter_three, intent),
           ]
           class_tag = ox_element("m#{class_name}")
           Utility.update_nodes(class_tag, value_arr)
@@ -168,10 +168,10 @@ module Plurimath
           )
         end
 
-        def validate_mathml_tag(parameter)
+        def validate_mathml_tag(parameter, intent)
           return Array(Utility.ox_element("mrow")) unless parameter
 
-          Array(parameter.to_mathml_without_math_tag)
+          Array(parameter.to_mathml_without_math_tag(intent))
         end
 
         def underover(display_style)

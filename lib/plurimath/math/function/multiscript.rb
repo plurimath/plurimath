@@ -26,14 +26,14 @@ module Plurimath
           "#{prescript}#{parameter_one&.to_latex}"
         end
 
-        def to_mathml_without_math_tag
-          mprescript = ox_element("mprescripts") if (parameter_two || parameter_three)
+        def to_mathml_without_math_tag(intent)
+          mprescript = ox_element("mprescripts") if parameter_two || parameter_three
           Utility.update_nodes(
             ox_element("mmultiscripts"),
             [
               parameter_one&.mmultiscript,
               mprescript,
-              validate_mathml_fields(prescripts),
+              validate_mathml_fields(prescripts, intent),
             ]
           )
         end

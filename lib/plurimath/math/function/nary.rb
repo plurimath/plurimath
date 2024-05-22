@@ -44,7 +44,7 @@ module Plurimath
           "#{first_value}#{second_value}#{third_value}#{fourth_value}"
         end
 
-        def to_mathml_without_math_tag
+        def to_mathml_without_math_tag(intent)
           tag_name = options[:type] == "undOvr" ? "munderover" : "msubsup"
           if !(parameter_two && parameter_three)
             tag_name = if parameter_two
@@ -57,9 +57,9 @@ module Plurimath
           end
           subsup_tag = ox_element(tag_name)
           new_arr = [
-            validate_mathml_fields(parameter_one),
-            validate_mathml_fields(parameter_two),
-            validate_mathml_fields(parameter_three),
+            validate_mathml_fields(parameter_one, intent),
+            validate_mathml_fields(parameter_two, intent),
+            validate_mathml_fields(parameter_three, intent),
           ]
           Utility.update_nodes(subsup_tag, new_arr)
           return subsup_tag unless parameter_four
@@ -68,7 +68,7 @@ module Plurimath
             row_tag,
             [
               subsup_tag,
-              (row_tag << validate_mathml_fields(parameter_four)),
+              row_tag << validate_mathml_fields(parameter_four, intent),
             ],
           )
         end

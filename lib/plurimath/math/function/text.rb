@@ -13,8 +13,8 @@ module Plurimath
           "\"#{parse_text('asciimath') || parameter_one}\""
         end
 
-        def to_mathml_without_math_tag
-          text = Utility.ox_element("mtext")
+        def to_mathml_without_math_tag(intent)
+          text = ox_element("mtext")
           return text unless parameter_one
 
           text << (parse_text("mathml") || parameter_one)
