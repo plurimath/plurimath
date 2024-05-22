@@ -23,16 +23,16 @@ module Plurimath
           "\\underbrace#{first_value}"
         end
 
-        def to_mathml_without_math_tag
-          mo_tag = (Utility.ox_element("mo") << "&#x23df;")
+        def to_mathml_without_math_tag(intent)
+          mo_tag = ox_element("mo") << "&#x23df;"
           return mo_tag unless parameter_one
 
-          over_tag = Utility.ox_element("munder")
+          over_tag = ox_element("munder")
           over_tag.set_attr(attributes) if attributes && !attributes.empty?
           Utility.update_nodes(
             over_tag,
             [
-              parameter_one.to_mathml_without_math_tag,
+              parameter_one.to_mathml_without_math_tag(intent),
               mo_tag,
             ],
           )

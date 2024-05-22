@@ -24,7 +24,7 @@ module Plurimath
           Utility.html_entity_to_unicode("&#x220f;")
         end
 
-        def to_mathml_without_math_tag
+        def to_mathml_without_math_tag(_)
           ox_element("mo") << "&#x220f;"
         end
 
@@ -34,6 +34,14 @@ module Plurimath
 
         def to_html
           "&#x220f;"
+        end
+
+        def tag_name
+          "underover"
+        end
+
+        def omml_tag_name
+          "undOvr"
         end
       end
     end

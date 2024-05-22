@@ -22,11 +22,11 @@ module Plurimath
             object.parameter_two == parameter_two
         end
 
-        def to_mathml_without_math_tag
+        def to_mathml_without_math_tag(intent)
           mrow_tag = Utility.ox_element("mrow")
           mo_tag = Utility.ox_element("mo") << invert_unicode_symbols.to_s
-          first_value = parameter_one&.to_mathml_without_math_tag if parameter_one
-          second_value = parameter_two&.to_mathml_without_math_tag if parameter_two
+          first_value = parameter_one&.to_mathml_without_math_tag(intent) if parameter_one
+          second_value = parameter_two&.to_mathml_without_math_tag(intent) if parameter_two
           Utility.update_nodes(
             mrow_tag,
             [

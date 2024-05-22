@@ -6,11 +6,11 @@ module Plurimath
   module Math
     module Function
       class Mlabeledtr < BinaryFunction
-        def to_mathml_without_math_tag
+        def to_mathml_without_math_tag(intent)
           table = ox_element("mtable")
           mlabeledtr = ox_element(class_name)
-          labeledtr_td(mlabeledtr, parameter_two.to_mathml_without_math_tag)
-          labeledtr_td(mlabeledtr, parameter_one.to_mathml_without_math_tag)
+          labeledtr_td(mlabeledtr, parameter_two.to_mathml_without_math_tag(intent))
+          labeledtr_td(mlabeledtr, parameter_one.to_mathml_without_math_tag(intent))
           table << mlabeledtr
         end
 

@@ -66,6 +66,11 @@ def remove_prefix(string)
   string
 end
 
+def unicodemath_tests
+  file_content = File.read("submodules/unicodemath-tests/unicodemath_tests.yaml")
+  YAML.safe_load(file_content, permitted_classes: [Time])["tests"]
+end
+
 def hp(*hash_values)
   hash_values.each do |hash_value|
     if hash_value.is_a?(Hash)

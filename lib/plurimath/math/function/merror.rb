@@ -10,9 +10,9 @@ module Plurimath
 
         def to_latex;end
 
-        def to_mathml_without_math_tag
+        def to_mathml_without_math_tag(intent)
           merror = Utility.ox_element("merror")
-          Utility.update_nodes(merror, mathml_value)
+          Utility.update_nodes(merror, mathml_value(intent))
         end
 
         def to_omml_without_math_tag(_); end

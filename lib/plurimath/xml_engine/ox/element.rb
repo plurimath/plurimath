@@ -83,7 +83,9 @@ module Plurimath
         end
 
         def replace_nodes(nodes_array)
-          xml_nodes.nodes.replace(nodes_array)
+          xml_nodes.nodes.replace(
+            nodes_array.all?(Element) ? nodes_array.map(&:xml_nodes) : nodes_array
+          )
         end
 
         def is_xml_comment?

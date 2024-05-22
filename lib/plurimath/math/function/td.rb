@@ -15,14 +15,13 @@ module Plurimath
           parameter_one.map(&:to_asciimath).join(" ")
         end
 
-        def to_mathml_without_math_tag
+        def to_mathml_without_math_tag(intent)
           return "" if Utility.symbol_value(parameter_one.first, "|")
 
           td_attribute = parameter_two if parameter_two&.any?
-
           Utility.update_nodes(
-            Utility.ox_element("mtd", attributes: td_attribute),
-            parameter_one.map(&:to_mathml_without_math_tag),
+            ox_element("mtd", attributes: td_attribute),
+            parameter_one.map { |object| object&.to_mathml_without_math_tag(intent) },
           )
         end
 

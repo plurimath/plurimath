@@ -14,10 +14,11 @@ module Plurimath
           latex_value
         end
 
-        def to_mathml_without_math_tag
-          scarries_tag = Utility.ox_element("mscarries")
-          Utility.update_nodes(scarries_tag, mathml_value)
-          scarries_tag
+        def to_mathml_without_math_tag(intent)
+          Utility.update_nodes(
+            ox_element("mscarries"),
+            mathml_value(intent),
+          )
         end
 
         def to_omml_without_math_tag(display_style)

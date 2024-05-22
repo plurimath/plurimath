@@ -7374,31 +7374,43 @@ RSpec.describe Plurimath::Asciimath do
                   </m:r>
                 </m:sup>
               </m:sSup>
-              <m:sSubSup>
-                <m:sSubSupPr>
+              <m:limLow>
+                <m:limLowPr>
                   <m:ctrlPr>
                     <w:rPr>
                       <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
                       <w:i/>
                     </w:rPr>
                   </m:ctrlPr>
-                </m:sSubSupPr>
+                </m:limLowPr>
                 <m:e>
-                  <m:r>
-                    <m:t>&#x22c0;</m:t>
-                  </m:r>
+                  <m:limUpp>
+                    <m:limUppPr>
+                      <m:ctrlPr>
+                        <w:rPr>
+                          <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
+                          <w:i/>
+                        </w:rPr>
+                      </m:ctrlPr>
+                    </m:limUppPr>
+                    <m:e>
+                      <m:r>
+                        <m:t>&#x22c0;</m:t>
+                      </m:r>
+                    </m:e>
+                    <m:lim>
+                      <m:r>
+                        <m:t>d</m:t>
+                      </m:r>
+                    </m:lim>
+                  </m:limUpp>
                 </m:e>
-                <m:sub>
+                <m:lim>
                   <m:r>
                     <m:t>2</m:t>
                   </m:r>
-                </m:sub>
-                <m:sup>
-                  <m:r>
-                    <m:t>d</m:t>
-                  </m:r>
-                </m:sup>
-              </m:sSubSup>
+                </m:lim>
+              </m:limLow>
             </m:oMath>
           </m:oMathPara>
         OMML
