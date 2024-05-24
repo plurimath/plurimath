@@ -6,7 +6,7 @@ module Plurimath
       REPLACABLES = {
         /&amp;/ => "&",
         /^\n/ => "",
-      }
+      }.freeze
 
       def class_name
         self.class.name.split("::").last.downcase
@@ -306,51 +306,21 @@ module Plurimath
 
       private
 
-      def prime_classes
-        %w[
-          backtrprime
-          backtrprime
-          backdprime
-          backdprime
-          backprime
-          backprime
-          pppprime
-          pppprime
-          pppprime
-          pppprime
-          ppprime
-          ppprime
-          ppprime
-          ppprime
-          dprime
-          dprime
-          dprime
-          pprime
-          dprime
-          prime
-          prime
-          prime
-        ].freeze
-      end
-
       def unicodemath_field_value(field)
         field.class_name == "symbol" ? field.value : Utility.hexcode_in_input(field)
       end
 
-      def wrap_mrow(xml_engine_node)
-        xml_engine_node.name == "mrow" ? xml_engine_node : ox_element("mrow") << xml_engine_node
+      def wrap_mrow(xml_engine_node, intent)
+        return xml_engine_node if xml_engine_node.name == "mrow"
+        return xml_engine_node unless intent
+
+        ox_element("mrow") << xml_engine_node
       end
 
-      def naryand_intentify(tag, intent, klass_name)
+      def intentify(tag, intent, func_name:, intent_name:)
         return tag unless intent
 
-        Utility::IntentEncoding.naryand_intent(tag, klass_name)
-      end
-
-      def frac_intentify(tag, intent)
-        return tag unless intent
-
-        Utility::IntentEncoding.frac_intent(frac_tag)
+        Utility::IntentEncoding.send("#{func_name}_intent", tag, intent_name)
       end
     end
   end

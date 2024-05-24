@@ -51,15 +51,17 @@ module Plurimath
               validate_mathml_tag(parameter_two, intent),
             ],
           )
-          return msubsup_tag if parameter_three.nil?
+          return intentify(msubsup_tag, intent, func_name: :naryand, intent_name: :integral) if parameter_three.nil?
 
+          mrow = ox_element("mrow")
           Utility.update_nodes(
-            Utility.ox_element("mrow"),
+            mrow,
             [
               msubsup_tag,
-              parameter_three&.to_mathml_without_math_tag(intent),
+              wrap_mrow(parameter_three&.to_mathml_without_math_tag(intent), intent),
             ].flatten.compact,
           )
+          intentify(mrow, intent, func_name: :naryand, intent_name: :integral)
         end
 
         def to_omml_without_math_tag(display_style)

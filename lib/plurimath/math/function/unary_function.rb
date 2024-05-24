@@ -30,7 +30,7 @@ module Plurimath
         def to_mathml_without_math_tag(intent)
           tag_name = Utility::UNARY_CLASSES.include?(class_name) ? "mi" : "mo"
           new_arr = []
-          new_arr << ox_element(tag_name) << class_name unless hide_function_name
+          new_arr << (ox_element(tag_name) << class_name) unless hide_function_name
           if parameter_one
             new_arr += mathml_value(intent)
             Utility.update_nodes(ox_element("mrow"), new_arr)

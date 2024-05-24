@@ -40,7 +40,7 @@ module Plurimath
           frac_tag = ox_element(tag_name)
           frac_tag.set_attr(options) if tag_name == "mfrac" && options
           Utility.update_nodes(frac_tag, mathml_value)
-          frac_intentify(frac, intent)
+          intentify(frac_tag, intent, func_name: :frac, intent_name: :divide)
         end
 
         def to_latex

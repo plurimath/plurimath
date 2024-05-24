@@ -40,25 +40,27 @@ module Plurimath
         def to_mathml_without_math_tag(intent)
           first_value = ox_element("mo")
           first_value << invert_unicode_symbols.to_s unless hide_function_name
-          if parameter_one || parameter_two
-            value_array = [
+          return first_value unless all_values_exist?
+
+          munderover_tag = Utility.update_nodes(
+            prod_tag_name,
+            [
               first_value,
               parameter_one&.to_mathml_without_math_tag(intent),
               parameter_two&.to_mathml_without_math_tag(intent),
-            ]
-            munderover_tag = Utility.update_nodes(prod_tag_name, value_array)
-            return intentify(munderover_tag, intent, "prod") if parameter_three.nil?
+            ],
+          )
+          return intentify(munderover_tag, intent, func_name: :naryand, intent_name: :product) if parameter_three.nil?
 
-            Utility.update_nodes(
-              ox_element("mrow"),
-              [
-                munderover_tag,
-                parameter_three&.to_mathml_without_math_tag(intent),
-              ].flatten.compact,
-            )
-          else
-            first_value
-          end
+          mrow = ox_element("mrow")
+          Utility.update_nodes(
+            mrow,
+            [
+              munderover_tag,
+              wrap_mrow(parameter_three&.to_mathml_without_math_tag(intent), intent),
+            ].flatten.compact,
+          )
+          intentify(mrow, intent, func_name: :naryand, intent_name: :product)
         end
 
         def to_html

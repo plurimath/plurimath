@@ -51,17 +51,17 @@ module Plurimath
               parameter_two&.to_mathml_without_math_tag(intent),
             ],
           )
-          return naryand_intentify(munderover_tag, intent) if parameter_three.nil?
+          return intentify(munderover_tag, intent, func_name: :naryand, intent_name: :sum) if parameter_three.nil?
 
           mrow = ox_element("mrow")
           Utility.update_nodes(
             mrow,
             [
               munderover_tag,
-              wrap_mrow(parameter_three&.to_mathml_without_math_tag(intent)),
+              wrap_mrow(parameter_three&.to_mathml_without_math_tag(intent), intent),
             ],
           )
-          naryand_intentify(mrow, intent)
+          intentify(mrow, intent, func_name: :naryand, intent_name: :sum)
         end
 
         def to_html
