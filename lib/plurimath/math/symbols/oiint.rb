@@ -25,7 +25,7 @@ module Plurimath
         end
 
         def to_mathml_without_math_tag(_)
-          ox_element("mi") << "&#x222f;"
+          ox_element("mo") << "&#x222f;"
         end
 
         def to_omml_without_math_tag(_)
@@ -38,6 +38,10 @@ module Plurimath
 
         def is_nary_symbol?
           true
+        end
+
+        def nary_intent_name
+          "surface integral"
         end
       end
     end

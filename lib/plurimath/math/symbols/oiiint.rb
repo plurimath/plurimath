@@ -39,6 +39,10 @@ module Plurimath
         def is_nary_symbol?
           true
         end
+
+        def nary_intent_name
+          "volume integral"
+        end
       end
     end
   end

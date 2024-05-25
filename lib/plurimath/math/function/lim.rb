@@ -26,20 +26,23 @@ module Plurimath
 
         def to_mathml_without_math_tag(intent)
           first_value = Utility.ox_element("mo") << "lim"
-          if parameter_one || parameter_two
-            value_array = [first_value]
-            value_array << parameter_one&.to_mathml_without_math_tag(intent)
-            value_array << parameter_two&.to_mathml_without_math_tag(intent)
-            tag_name = if parameter_two && parameter_one
-                         "underover"
-                       else
-                         parameter_one ? "under" : "over"
-                       end
-            munderover_tag = Utility.ox_element("m#{tag_name}")
-            Utility.update_nodes(munderover_tag, value_array)
-          else
-            first_value
-          end
+          return first_value unless all_values_exist?
+
+          tag_name = if parameter_two && parameter_one
+                       "underover"
+                     else
+                       parameter_one ? "under" : "over"
+                     end
+          lim_tag = Utility.ox_element("m#{tag_name}")
+          Utility.update_nodes(
+            lim_tag,
+            [
+              first_value,
+              parameter_one&.to_mathml_without_math_tag(intent),
+              parameter_two&.to_mathml_without_math_tag(intent),
+            ],
+          )
+          intentify(lim_tag, intent, func_name: :function, intent_name: :function)
         end
 
         def to_omml_without_math_tag(display_style)

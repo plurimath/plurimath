@@ -10,7 +10,7 @@ module Plurimath
 
         def to_mathml_without_math_tag(intent)
           symbol = Utility.ox_element("mo") << "|"
-          first_value = mathml_value
+          first_value = mathml_value(intent)
           first_value = first_value&.insert(0, symbol) unless open_paren
           first_value << symbol unless close_paren
           Utility.update_nodes(ox_element("mrow"), first_value)

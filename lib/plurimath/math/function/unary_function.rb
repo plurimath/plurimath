@@ -33,7 +33,9 @@ module Plurimath
           new_arr << (ox_element(tag_name) << class_name) unless hide_function_name
           if parameter_one
             new_arr += mathml_value(intent)
-            Utility.update_nodes(ox_element("mrow"), new_arr)
+            mrow = ox_element("mrow")
+            Utility.update_nodes(mrow, new_arr)
+            intentify(mrow, intent, func_name: :function, intent_name: :function)
           else
             new_arr.first
           end

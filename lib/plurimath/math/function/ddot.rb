@@ -17,7 +17,7 @@ module Plurimath
           second_value = Utility.ox_element("mo") << ".."
           Utility.update_nodes(
             Utility.ox_element("mover", attributes: { accent: "true" }),
-            mathml_value << second_value,
+            mathml_value(intent) << second_value,
           )
         end
 

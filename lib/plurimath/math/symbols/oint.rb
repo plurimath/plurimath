@@ -35,6 +35,14 @@ module Plurimath
         def to_html
           "&#x222e;"
         end
+
+        def is_nary_symbol?
+          true
+        end
+
+        def nary_intent_name
+          "contour integral"
+        end
       end
     end
   end

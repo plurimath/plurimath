@@ -50,7 +50,7 @@ module Plurimath
               parameter_two&.to_mathml_without_math_tag(intent),
             ],
           )
-          return intentify(munderover_tag, intent, func_name: :naryand, intent_name: :product) if parameter_three.nil?
+          return ternary_intentify(munderover_tag, intent) if parameter_three.nil?
 
           mrow = ox_element("mrow")
           Utility.update_nodes(
@@ -60,7 +60,7 @@ module Plurimath
               wrap_mrow(parameter_three&.to_mathml_without_math_tag(intent), intent),
             ].flatten.compact,
           )
-          intentify(mrow, intent, func_name: :naryand, intent_name: :product)
+          ternary_intentify(mrow, intent)
         end
 
         def to_html
@@ -116,7 +116,7 @@ module Plurimath
           true
         end
 
-        protected
+        private
 
         def sup_value
           if parameter_two&.mini_sized? || prime_unicode?(parameter_two)
@@ -145,6 +145,15 @@ module Plurimath
                        parameter_one ? "under" : "over"
                      end
           ox_element("m#{tag_name}")
+        end
+
+        def ternary_intentify(tag, intent)
+          intentify(
+            tag,
+            intent,
+            func_name: :naryand,
+            intent_name: :product,
+          )
         end
       end
     end

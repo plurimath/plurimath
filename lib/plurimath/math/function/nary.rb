@@ -45,31 +45,25 @@ module Plurimath
         end
 
         def to_mathml_without_math_tag(intent)
-          tag_name = options[:type] == "undOvr" ? "munderover" : "msubsup"
-          if !(parameter_two && parameter_three)
-            tag_name = if parameter_two
-                         tag_name == "munderover" ? "munder" : "msub"
-                       elsif parameter_three
-                         tag_name == "munderover" ? "mover" : "msup"
-                       else
-                        'mrow'
-                       end
-          end
-          subsup_tag = ox_element(tag_name)
           new_arr = [
             validate_mathml_fields(parameter_one, intent),
             validate_mathml_fields(parameter_two, intent),
             validate_mathml_fields(parameter_three, intent),
           ]
-          Utility.update_nodes(subsup_tag, new_arr)
+          subsup_tag = Utility.update_nodes(ox_element(tag_name), new_arr)
           return subsup_tag unless parameter_four
 
-          Utility.update_nodes(
-            row_tag,
-            [
-              subsup_tag,
-              row_tag << validate_mathml_fields(parameter_four, intent),
-            ],
+          intentify(
+            Utility.update_nodes(
+              ox_element("mrow"),
+              [
+                subsup_tag,
+                wrap_mrow(validate_mathml_fields(parameter_four, intent), true),
+              ],
+            ),
+            intent,
+            func_name: :naryand,
+            intent_name: intent_name,
           )
         end
 
@@ -142,10 +136,6 @@ module Plurimath
           ]
         end
 
-        def row_tag
-          Utility.ox_element("mrow")
-        end
-
         def sup_value
           if parameter_three.mini_sized? || prime_unicode?(parameter_three)
             parameter_three.to_unicodemath
@@ -173,6 +163,25 @@ module Plurimath
 
           field_value = field.to_unicodemath
           field.is_a?(Math::Function::Fenced) ? "▒#{field_value}" : "▒〖#{field_value}〗"
+        end
+
+        def tag_name
+          tag = options[:type] == "undOvr" ? "munderover" : "msubsup"
+          if !(parameter_two && parameter_three)
+            if parameter_two
+              tag == "munderover" ? "munder" : "msub"
+            elsif parameter_three
+              tag == "munderover" ? "mover" : "msup"
+            else
+             'mrow'
+            end
+          else
+            tag
+          end
+        end
+
+        def intent_name
+          parameter_one.is_nary_symbol? ? parameter_one.nary_intent_name : "n-ary"
         end
       end
     end

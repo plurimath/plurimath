@@ -35,6 +35,14 @@ module Plurimath
         def to_html
           "&#x22c2;"
         end
+
+        def is_nary_symbol?
+          true
+        end
+
+        def nary_intent_name
+          "n-ary"
+        end
       end
     end
   end

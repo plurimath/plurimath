@@ -8,7 +8,7 @@ module Plurimath
       class Sup < UnaryFunction
         def to_mathml_without_math_tag(intent)
           mo_tag = ox_element("mo") << "sup"
-          first_value = mathml_value
+          first_value = mathml_value(intent)
           first_value = mathml_value&.insert(0, mo_tag) unless hide_function_name
           Utility.update_nodes(
             ox_element("mrow"),

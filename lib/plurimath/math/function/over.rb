@@ -20,7 +20,7 @@ module Plurimath
 
         def to_mathml_without_math_tag(intent)
           tag_name = hide_function_name ? "mrow" : "mfrac"
-          mathml_value  = [
+          mathml_value = [
             parameter_one&.to_mathml_without_math_tag(intent),
             parameter_two&.to_mathml_without_math_tag(intent),
           ]

@@ -13,7 +13,7 @@ module Plurimath
         end
 
         def to_mathml_without_math_tag(intent)
-          first_value = mathml_value
+          first_value = mathml_value(intent)
           first_value = first_value&.insert(0, paren_node("&#x2308;")) unless open_paren
           first_value = first_value << paren_node("&#x2309;") unless close_paren
           Utility.update_nodes(ox_element("mrow"), first_value)

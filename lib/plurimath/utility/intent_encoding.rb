@@ -6,6 +6,7 @@ module Plurimath
       INTENT_VALUES = {
         divide: %w[num denom],
       }.freeze
+
       class << self
       # Intent common code begin
         def node_value(node, field_name)
@@ -16,6 +17,7 @@ module Plurimath
           "$#{field_name}"
         end
       # Intent common code end
+
       # Naryand intent begin
         def naryand_intent(field, intent_name)
           return nary_intent(field, intent_name) if field.name == "mrow"
@@ -34,6 +36,7 @@ module Plurimath
           field
         end
       # Naryand intent end
+
       # SubSup intent begin
         def power_base_intent(field)
           return nil unless ["munderover", "msubsup"].include?(field.name)
@@ -51,6 +54,7 @@ module Plurimath
           [node_value(value_node, "l"), nil]
         end
       # SubSup intent end
+
       # Frac intent begin
         def frac_intent(frac, intent_name)
           first_value = node_value(frac.nodes[0], INTENT_VALUES[intent_name].first)
@@ -59,9 +63,11 @@ module Plurimath
           frac
         end
       # Frac intent end
+
       # Function intent begin
-        def function_intent(tag)
-          # IN PROGRESS
+        def function_intent(tag, _)
+          tag.attributes["intent"] = ":function"
+          tag
         end
       # Function intent end
       end

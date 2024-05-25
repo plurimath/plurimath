@@ -42,29 +42,32 @@ module Plurimath
           mo_tag << invert_unicode_symbols.to_s unless hide_function_name
           return mo_tag unless all_values_exist?
 
-          if parameter_one || parameter_two
-            value_array = [
+          tag_name = if parameter_one && parameter_two
+                       "subsup"
+                     else
+                       parameter_one ? "sub" : "sup"
+                     end
+          oint_tag = ox_element("m#{tag_name}")
+          Utility.update_nodes(
+            oint_tag,
+            [
               mo_tag,
               parameter_one&.to_mathml_without_math_tag(intent),
               parameter_two&.to_mathml_without_math_tag(intent),
-            ]
-            tag_name = if parameter_one && parameter_two
-                         "subsup"
-                       else
-                         parameter_one ? "sub" : "sup"
-                       end
-            msubsup_tag = ox_element("m#{tag_name}")
-            Utility.update_nodes(msubsup_tag, value_array)
-            return msubsup_tag unless parameter_three
+            ],
+          )
+          return ternary_intentify(oint_tag, intent) unless parameter_three
 
+          ternary_intentify(
             Utility.update_nodes(
               ox_element("mrow"),
               [
-                msubsup_tag,
-                parameter_three&.to_mathml_without_math_tag(intent),
+                oint_tag,
+                wrap_mrow(parameter_three&.to_mathml_without_math_tag(intent)),
               ],
-            )
-          end
+            ),
+            intent,
+          )
         end
 
         def to_omml_without_math_tag(display_style)
@@ -114,6 +117,17 @@ module Plurimath
 
         def is_nary_function?
           true
+        end
+
+        private
+
+        def ternary_intentify(tag, intent)
+          intentify(
+            tag,
+            intent,
+            func_name: :naryand,
+            intent_name: "contour integral",
+          )
         end
       end
     end

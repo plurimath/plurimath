@@ -116,7 +116,7 @@ module Plurimath
         options[:array] << field&.to_omml_math_zone(hashed[:function_spacing], hashed[:last], hashed[:indent], display_style: display_style)
       end
 
-      def dump_mathml(field, intent)
+      def dump_mathml(field, intent = false)
         dump_ox_nodes(field.to_mathml_without_math_tag(intent)).gsub(/\n\s*/, "")
       end
 
@@ -278,6 +278,8 @@ module Plurimath
       def is_nary_function?;end
 
       def is_nary_symbol?;end
+
+      def nary_intent_name;end
 
       def is_binary_function?
         is_a?(Function::BinaryFunction)
