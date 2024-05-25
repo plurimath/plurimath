@@ -98,6 +98,9 @@ Plurimath.xml_engine = Plurimath::XmlEngine::Oga # set Oga as Plurimath xml engi
 Using the same syntax you can change from **Oga** to **Ox**.
 
 === Supported Content
+
+Take a look into the link:supported_symbols_list.adoc[Symbols, target="_blank"] and link:supported_parens_list.adoc[Parenthesis, target="_blank"] tables for parenthesis and symbols support.
+
 --
 link:AsciiMath-Supported-Data.adoc[AsciiMath Supported Data, target="_blank"]
 --
@@ -108,4 +111,13 @@ link:MathML-Supported-Data.adoc[MathML Supported Data, target="_blank"]
 
 --
 link:Latex-Supported-Data.adoc[Latex Supported Data, target="_blank"]
+--
+
+--
+link:UnicodeMath-Supported-Data.adoc[UnicodeMath Supported Data, target="_blank"]
+--
+
+
+--
+link:UnitsML-Supported-Data.adoc[UnitsML Supported Data, target="_blank"]
 --

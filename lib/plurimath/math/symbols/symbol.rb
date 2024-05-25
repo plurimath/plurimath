@@ -150,6 +150,14 @@ module Plurimath
           false
         end
 
+        def input(lang)
+          self.class.input(lang)
+        end
+
+        def self.input(lang)
+          self::INPUT[lang]
+        end
+
         private
 
         def explicit_checks(unicode)
