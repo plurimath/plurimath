@@ -181,7 +181,7 @@ module Plurimath
         end
 
         def intent_name
-          parameter_one.is_nary_symbol? ? parameter_one.nary_intent_name : "n-ary"
+          parameter_one&.is_nary_symbol? ? parameter_one.nary_intent_name : "n-ary"
         end
       end
     end

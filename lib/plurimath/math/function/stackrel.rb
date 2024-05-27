@@ -71,7 +71,7 @@ module Plurimath
         end
 
         def mathml_values(field, intent)
-          ox_element("mrow") << field.to_mathml_without_math_tag(intent) if field
+          ox_element("mrow") << (field&.to_mathml_without_math_tag(intent) || "")
         end
       end
     end

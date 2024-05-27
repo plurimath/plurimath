@@ -39,6 +39,18 @@ module Plurimath
         def is_nary_symbol?
           true
         end
+
+        def nary_intent_name
+          "clockwise contour integral"
+        end
+
+        def tag_name
+          "underover"
+        end
+
+        def omml_tag_name
+          "undOvr"
+        end
       end
     end
   end

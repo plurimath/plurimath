@@ -63,7 +63,7 @@ module Plurimath
               ox_element("mrow"),
               [
                 oint_tag,
-                wrap_mrow(parameter_three&.to_mathml_without_math_tag(intent)),
+                wrap_mrow(parameter_three&.to_mathml_without_math_tag(intent), intent),
               ],
             ),
             intent,

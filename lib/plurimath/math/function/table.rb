@@ -37,7 +37,8 @@ module Plurimath
         end
 
         def to_mathml_without_math_tag(intent)
-          table_tag = Utility.ox_element("mtable", attributes: table_attribute)
+          table_tag = ox_element("mtable", attributes: table_attribute)
+          table_tag[:intent] = ":matrix(#{value.length},#{td_count})" if intent
           Utility.update_nodes(
             table_tag,
             value&.map { |object| object&.to_mathml_without_math_tag(intent) },
@@ -47,8 +48,8 @@ module Plurimath
           if mathml_paren_present?(open_paren, intent) || mathml_paren_present?(close_paren, intent)
             first_paren = mo_element(mathml_parenthesis(open_paren, intent))
             second_paren = mo_element(mathml_parenthesis(close_paren, intent))
-            mrow_tag = Utility.ox_element("mrow")
-            return Utility.update_nodes(mrow_tag, [first_paren, table_tag, second_paren])
+            mrow = ox_element("mrow", attributes: { intent: ":fenced" })
+            return Utility.update_nodes(mrow, [first_paren, table_tag, second_paren])
           end
 
           table_tag
@@ -119,7 +120,10 @@ module Plurimath
 
         def mathml_parenthesis(field, intent)
           return "" unless field
-          return field&.to_mathml_without_math_tag(intent)&.nodes&.first if field&.class_name == "symbol"
+          if field&.class_name == "symbol"
+            paren = field&.to_mathml_without_math_tag(intent)&.nodes&.first
+            return invisible_paren?(paren) ? "" : paren
+          end
 
           paren = field&.respond_to?(:encoded) ? field&.encoded : field&.paren_value
           invisible_paren?(paren) ? "" : paren
@@ -232,7 +236,7 @@ module Plurimath
 
         def norm_table(table_tag)
           Utility.update_nodes(
-            Utility.ox_element("mrow"),
+            ox_element("mrow"),
             [
               mo_element("&#x2016;"),
               table_tag,
@@ -292,7 +296,7 @@ module Plurimath
         end
 
         def invisible_paren?(paren)
-          ["&#x3016;", "&#x3017;"].include?(paren)
+          ["&#x3016;", "&#x3017;", "&#x2524;", "&#x251c;"].include?(paren)
         end
 
         def mo_element(value)
@@ -326,6 +330,10 @@ module Plurimath
           return unless paren || paren&.class_name == "symbol"
 
           !paren&.to_mathml_without_math_tag(intent)&.nodes&.first&.empty?
+        end
+
+        def td_count
+          value&.first&.parameter_one&.length
         end
       end
     end

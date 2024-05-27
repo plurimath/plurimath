@@ -43,6 +43,14 @@ module Plurimath
         def nary_intent_name
           "contour integral"
         end
+
+        def tag_name
+          "underover"
+        end
+
+        def omml_tag_name
+          "undOvr"
+        end
       end
     end
   end

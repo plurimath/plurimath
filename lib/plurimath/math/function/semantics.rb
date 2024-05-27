@@ -16,7 +16,7 @@ module Plurimath
           first_value = parameter_one&.to_mathml_without_math_tag(intent)
           Utility.update_nodes(
             Utility.ox_element("semantics"),
-            other_tags(parameter_two).insert(0, first_value),
+            other_tags(parameter_two, intent).insert(0, first_value),
           )
         end
 
@@ -43,7 +43,7 @@ module Plurimath
 
         protected
 
-        def other_tags(array)
+        def other_tags(array, intent)
           contented = []
           array&.each do |hash|
             hash.each do |tag, content|

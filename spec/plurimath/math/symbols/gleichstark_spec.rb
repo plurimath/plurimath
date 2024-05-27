@@ -30,7 +30,7 @@ RSpec.describe Plurimath::Math::Symbols::Gleichstark do
       end
 
       it "matches MathML string" do
-        string = dump_ox_nodes(klass.to_mathml_without_math_tag).strip
+        string = dump_ox_nodes(klass.to_mathml_without_math_tag(false)).strip
         expect(string).to eq("<mi>&#x29e6;</mi>")
       end
 

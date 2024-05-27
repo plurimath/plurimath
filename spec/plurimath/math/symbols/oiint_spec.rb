@@ -30,8 +30,8 @@ RSpec.describe Plurimath::Math::Symbols::Oiint do
       end
 
       it "matches MathML string" do
-        string = dump_ox_nodes(klass.to_mathml_without_math_tag).strip
-        expect(string).to eq("<mi>&#x222f;</mi>")
+        string = dump_ox_nodes(klass.to_mathml_without_math_tag(false)).strip
+        expect(string).to eq("<mo>&#x222f;</mo>")
       end
 
       it "matches HTML string" do

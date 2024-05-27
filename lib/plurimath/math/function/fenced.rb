@@ -29,12 +29,13 @@ module Plurimath
         end
 
         def to_mathml_without_math_tag(intent)
-          first_value = Utility.ox_element("mo", attributes: options&.dig(:open_paren)) << (mathml_paren(parameter_one, intent) || "")
+          first_value = ox_element("mo", attributes: options&.dig(:open_paren)) << (mathml_paren(parameter_one, intent) || "")
           second_value = parameter_two&.map { |object| object&.to_mathml_without_math_tag(intent) } || []
-          third_value = Utility.ox_element("mo", attributes: options&.dig(:close_paren)) << (mathml_paren(parameter_three, intent) || "")
+          third_value = ox_element("mo", attributes: options&.dig(:close_paren)) << (mathml_paren(parameter_three, intent) || "")
+          mrow_value = second_value.insert(0, first_value) << third_value
           Utility.update_nodes(
-            Utility.ox_element("mrow"),
-            second_value.insert(0, first_value) << third_value,
+            ox_element("mrow", attributes: mrow_attributes(intent, mrow_value)),
+            mrow_value,
           )
         end
 
@@ -238,6 +239,18 @@ module Plurimath
           when :omml
             field.to_omml_without_math_tag(true)
           end
+        end
+
+        def mrow_attributes(intent, value)
+          return {} unless intent
+
+          intent_name = binomial_coefficient?(value) ? "binomial-coefficient" : "fenced"
+          { intent: ":#{intent_name}" }
+        end
+
+        def binomial_coefficient?(value)
+          parameter_two.first.is_a?(Frac) &&
+            parameter_two.first.options[:choose]
         end
       end
     end

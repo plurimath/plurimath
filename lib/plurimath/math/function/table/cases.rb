@@ -17,6 +17,12 @@ module Plurimath
           def to_unicodemath
             "Ⓒ(#{value.map(&:to_unicodemath).join("@")})"
           end
+
+          def to_mathml_without_math_tag(intent)
+            table_tag = super
+            table_tag.attributes[:intent] = ":cases" if intent
+            table_tag
+          end
         end
       end
     end

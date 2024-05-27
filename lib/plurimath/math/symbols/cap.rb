@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("Cap")
+          parsing_wrapper("cap")
         end
 
         def to_unicodemath

@@ -61,7 +61,7 @@ RSpec.describe Plurimath::Math::Function::Abs do
     subject(:formula) do
       Plurimath.xml_engine.dump(
         described_class.new(first_value).
-          to_mathml_without_math_tag,
+          to_mathml_without_math_tag(false),
         indent: 2,
       ).gsub("&amp;", "&")
     end

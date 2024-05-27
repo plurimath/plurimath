@@ -23,7 +23,7 @@ module Plurimath
           return nary_intent(field, intent_name) if field.name == "mrow"
           base, power = power_base_intent(field)
           base, power = power_or_base_intent(field) unless base && power
-          field[:intent] = ":#{intent_name}(#{base}, #{power})"
+          field[:intent] = ":#{intent_name}(#{base},#{power})"
           field
         end
 
@@ -31,8 +31,8 @@ module Plurimath
           sub_sup = field.nodes[0]
           base, power = power_base_intent(sub_sup)
           base, power = power_or_base_intent(sub_sup) unless base && power
-          naryand = node_value(field.nodes[1], "naryand")
-          field[:intent] = ":#{intent_name}(#{base}, #{power}, #{naryand})"
+          naryand = node_value(field.nodes[1],"naryand")
+          field[:intent] = ":#{intent_name}(#{base},#{power},#{naryand})"
           field
         end
       # Naryand intent end
@@ -54,15 +54,6 @@ module Plurimath
           [node_value(value_node, "l"), nil]
         end
       # SubSup intent end
-
-      # Frac intent begin
-        def frac_intent(frac, intent_name)
-          first_value = node_value(frac.nodes[0], INTENT_VALUES[intent_name].first)
-          second_value = node_value(frac.nodes[1], INTENT_VALUES[intent_name].last)
-          frac[:intent] = ":#{intent_name}(#{first_value}, #{second_value})"
-          frac
-        end
-      # Frac intent end
 
       # Function intent begin
         def function_intent(tag, _)

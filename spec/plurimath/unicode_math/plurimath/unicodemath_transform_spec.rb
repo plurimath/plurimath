@@ -9,8 +9,6 @@ RSpec.describe Plurimath::UnicodeMath::Parser do
     subject(:formula) { described_class.new(string).parse }
 
     SKIPABLE_EXAMPLES = [33, 179, 210, 211, 598, 599, 600, 601].freeze
-    unicodemath_tests_file = File.read("submodules/unicodemath-tests/unicodemath_tests.yaml")
-    unicodemath_tests = YAML.safe_load(unicodemath_tests_file, permitted_classes: [Time])["tests"]
     unicodemath_tests.each.with_index(1) do |unicode_hash, index|
       constant = :"EXAMPLE_#{index}"
       break unless UnicodeMathTransformValues.constants.any?(constant)
@@ -24,6 +22,14 @@ RSpec.describe Plurimath::UnicodeMath::Parser do
           else
             expect(formula).to eq(UnicodeMathTransformValues.const_get(constant))
           end
+        rescue RSpec::Expectations::ExpectationNotMetError => e
+          hp formula
+          # print formula.formula_inspect
+          print string
+          binding.pry
+          # system("subl #{constant_location(constant, file_name: "transform")}")
+        rescue => e
+          binding.pry
         end
       end
     end

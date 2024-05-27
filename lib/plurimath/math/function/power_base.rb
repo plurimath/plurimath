@@ -94,11 +94,11 @@ module Plurimath
           parameter_one.is_nary_function? || parameter_one.is_nary_symbol?
         end
 
-        def mmultiscript
+        def mmultiscript(intent)
           [
-            validate_mathml_fields(parameter_one),
-            validate_mathml_fields(parameter_two),
-            validate_mathml_fields(parameter_three),
+            validate_mathml_fields(parameter_one, intent),
+            validate_mathml_fields(parameter_two, intent),
+            validate_mathml_fields(parameter_three, intent),
           ]
         end
 

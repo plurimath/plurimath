@@ -3,7 +3,7 @@ module Plurimath
     module Symbols
       class Nnn < Symbol
         INPUT = {
-          unicodemath: [["&#x22c2;"], parsing_wrapper(["bigcap", "nnn", "dint"])],
+          unicodemath: [["&#x22c2;", "bigcap"], parsing_wrapper(["bigcap", "nnn", "dint"])],
           asciimath: [["bigcap", "nnn", "&#x22c2;"], parsing_wrapper(["dint"])],
           mathml: ["&#x22c2;"],
           latex: [["bigcap", "dint", "&#x22c2;"], parsing_wrapper(["nnn"])],
@@ -42,6 +42,14 @@ module Plurimath
 
         def nary_intent_name
           "n-ary"
+        end
+
+        def tag_name
+          "underover"
+        end
+
+        def omml_tag_name
+          "undOvr"
         end
       end
     end

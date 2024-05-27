@@ -47,7 +47,7 @@ RSpec.describe Plurimath::Math::Symbols::Paren::Lcurly do
       end
 
       it "matches MathML paren string" do
-        string = dump_ox_nodes(klass.to_mathml_without_math_tag).strip
+        string = dump_ox_nodes(klass.to_mathml_without_math_tag(false)).strip
         expect(string).to eq("<mi>{</mi>")
       end
 

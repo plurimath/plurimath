@@ -1,36 +1,26 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Formula do
-  describe ".to_mathml(intent: true)" do
-    subject(:formula) { Plurimath::Math.parse(string, lang).to_mathml(intent: true) }
+  describe "unicodemath examples" do
+    subject(:mathml) { Plurimath::Math.parse(string, :unicode).to_mathml(intent: true) }
 
-    context "contains frac AsciiMath string" do
-      let(:lang) { :asciimath }
-      let(:string) { "(n(n+1))/2" }
+    SKIPABLE_INDEXES = [16]
+    intent_examples = unicodemath_tests.find_all { |record| record["mathml"].match?(/intent=\"/) }
+    intent_examples.each.with_index(1) do |example_hash, index|
+      next if SKIPABLE_INDEXES.include?(index)
 
-      it "matches MathML string containing Intent attribute" do
-        mathml = <<~MATHML
-          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
-            <mstyle displaystyle="true">
-              <mfrac intent=":divide($num, 2)">
-                <mrow arg="num">
-                  <mi>n</mi>
-                  <mrow>
-                    <mo>(</mo>
-                    <mi>n</mi>
-                    <mo>+</mo>
-                    <mn>1</mn>
-                    <mo>)</mo>
-                  </mrow>
-                </mrow>
-                <mn>2</mn>
-              </mfrac>
-            </mstyle>
-          </math>
-        MATHML
-        expect(formula).to be_equivalent_to(mathml)
+      context "processing unicode example(#{index})" do
+        let(:string) { remove_prefix(example_hash["unicodemath"].to_s) }
+
+        it "matches example's MathML with Plurimath MathML" do
+          expect(mathml.scan(/intent="([^"]+)"/).sort.flatten.join).to eql(example_hash["mathml"].scan(/intent="([^"]+)"/).sort.flatten.join)
+        end
       end
     end
+  end
+
+  describe ".to_mathml(intent: true)" do
+    subject(:formula) { Plurimath::Math.parse(string, lang).to_mathml(intent: true) }
 
     context "contains prod AsciiMath string" do
       let(:lang) { :asciimath }
@@ -126,17 +116,17 @@ RSpec.describe Plurimath::Math::Formula do
       end
     end
 
-    context "contains oiint LaTeX string" do
+    context "contains oiiint LaTeX string" do
       let(:lang) { :latex }
-      let(:string) { "\\oiint_{i=1}^n 1^3" }
+      let(:string) { "\\oiiint_{i=1}^n 1^3" }
 
       it "matches MathML string containing Intent attribute" do
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
-              <mrow intent=":surface integral($l, n, $naryand)">
+              <mrow intent=":volume integral($l, n, $naryand)">
                 <msubsup>
-                  <mo>&#x222f;</mo>
+                  <mo>&#x2230;</mo>
                   <mrow arg="l">
                     <mi>i</mi>
                     <mo>=</mo>
@@ -158,9 +148,9 @@ RSpec.describe Plurimath::Math::Formula do
       end
     end
 
-    context "contains oiiint LaTeX string" do
+    context "contains oiint LaTeX string" do
       let(:lang) { :latex }
-      let(:string) { "\\oiiint_{i=1}^n 1^3" }
+      let(:string) { "\\oiint_{i=1}^n 1^3" }
 
       it "matches MathML string containing Intent attribute" do
         mathml = <<~MATHML

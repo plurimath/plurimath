@@ -25,7 +25,7 @@ module Plurimath
         end
 
         def to_mathml_without_math_tag(_)
-          ox_element("mi") << "&#x2230;"
+          ox_element("mo") << "&#x2230;"
         end
 
         def to_omml_without_math_tag(_)
@@ -42,6 +42,14 @@ module Plurimath
 
         def nary_intent_name
           "volume integral"
+        end
+
+        def tag_name
+          "underover"
+        end
+
+        def omml_tag_name
+          "undOvr"
         end
       end
     end

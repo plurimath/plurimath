@@ -35,6 +35,14 @@ module Plurimath
         def to_html
           "&#x2211;"
         end
+
+        def tag_name
+          "underover"
+        end
+
+        def omml_tag_name
+          "undOvr"
+        end
       end
     end
   end

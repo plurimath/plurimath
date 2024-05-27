@@ -20,7 +20,7 @@ module Plurimath
 
           def to_mathml_without_math_tag(intent)
             Utility.update_nodes(
-              ox_element("mtable", attributes: table_attribute),
+              ox_element("mtable", attributes: attributes(intent)),
               value&.map { |object| object&.to_mathml_without_math_tag(intent) },
             )
           end
@@ -37,6 +37,12 @@ module Plurimath
                       end
             end
             "{#{args.join}}" unless args.compact.empty?
+          end
+
+          def attributes(intent)
+            return {} unless intent
+
+            table_attribute.merge(intent: ":equations")
           end
         end
       end
