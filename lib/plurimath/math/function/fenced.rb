@@ -250,7 +250,7 @@ module Plurimath
 
         def binomial_coefficient?(value)
           parameter_two.first.is_a?(Frac) &&
-            parameter_two.first.options[:choose]
+            parameter_two&.first&.options&.dig(:choose)
         end
       end
     end

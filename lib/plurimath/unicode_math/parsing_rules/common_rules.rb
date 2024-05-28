@@ -30,8 +30,13 @@ module Plurimath
           sup_paren.as(:mini_numerator) >> (negatable_symbols.absent? >> op_over) >> sub_paren.as(:mini_denominator)
         end
 
+        rule(:binomial_fraction) do
+          numerator.as(:numerator) >> op_over_choose >> denominator.as(:denominator)
+        end
+
         rule(:fraction) do
           mini_fraction |
+            binomial_fraction |
             numerator.as(:numerator) >> space? >> (negatable_symbols.absent? >> op_over) >> space? >> denominator.as(:denominator)
         end
 

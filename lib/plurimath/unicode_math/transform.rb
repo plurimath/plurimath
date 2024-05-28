@@ -690,6 +690,11 @@ module Plurimath
         [nary, naryand_recursion]
       end
 
+      rule(nary: simple(:nary),
+           naryand_recursion: sequence(:naryand_recursion)) do
+        [nary] + naryand_recursion
+      end
+
       rule(factor: simple(:factor),
            operand: simple(:operand)) do
         [factor, operand]
@@ -748,6 +753,11 @@ module Plurimath
       rule(sub_exp: simple(:sub_exp),
            naryand_recursion: sequence(:naryand)) do
         [sub_exp] + naryand
+      end
+
+      rule(sup_exp: simple(:sup_exp),
+           naryand_recursion: simple(:naryand)) do
+        [sup_exp, naryand]
       end
 
       rule(exp: simple(:exp),
@@ -1738,6 +1748,11 @@ module Plurimath
       rule(frac: simple(:frac),
            exp: simple(:exp)) do
         [frac, exp]
+      end
+
+      rule(frac: simple(:frac),
+           naryand_recursion: sequence(:naryand)) do
+        [frac] + naryand
       end
 
       rule(expr: simple(:expr),
@@ -3248,6 +3263,19 @@ module Plurimath
           [Utility.symbols_class(symbol, lang: :unicodemath), exp],
           close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
+      end
+
+      rule(open_paren: simple(:open_paren),
+           unicode_symbols: simple(:symbol),
+           exp: simple(:exp),
+           close_paren: simple(:close_paren),
+           sup: simple(:sup)) do
+        fenced = Math::Function::Fenced.new(
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
+          [Utility.symbols_class(symbol, lang: :unicodemath), exp],
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
+        )
+        Math::Function::Power.new(fenced, sup)
       end
 
       rule(open_paren: simple(:open_paren),

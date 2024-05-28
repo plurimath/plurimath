@@ -51,6 +51,7 @@ module Plurimath
       rule(:forward_slash) { str("/") | str("&#x2f;") | str("&#x2044;") }
 
       rule(:root_functions) { qdrt | cbrt | sqrt | binary_root | nthrt }
+      rule(:op_over_choose) { (str("\\choose") | str("&#x249e;")).as(:choose) }
       rule(:op_masked_open) { (str("\\left") | str("\\open") | str("&#x251c;")).as(:paren_open_prefix) >> digits.as(:open_paren_mask).maybe }
 
       rule(:invisible_times) { (str("&#x2062;") | str("&#x2061;") | str("&#x20;") | str("\\itimes") >> space?) }
@@ -93,7 +94,7 @@ module Plurimath
           str("&#x2f;") |
           str("\\not") |
           (str("&#xa6;") | str("\\atop")).as(:atop) |
-          (str("\\choose") | str("&#x249e;")).as(:choose)
+          op_over_choose
       end
 
       rule(:element_exp_script_validation?) do

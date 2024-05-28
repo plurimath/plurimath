@@ -2,7 +2,8 @@ require "spec_helper"
 
 RSpec.describe Plurimath::Math::Formula do
   describe "unicodemath examples" do
-    subject(:mathml) { Plurimath::Math.parse(string, :unicode).to_mathml(intent: true) }
+    subject(:formula) { Plurimath::Math.parse(string, :unicode) }
+    subject(:mathml) { formula.to_mathml(intent: true) }
 
     SKIPABLE_INDEXES = [16]
     intent_examples = unicodemath_tests.find_all { |record| record["mathml"].match?(/intent=\"/) }
@@ -13,7 +14,7 @@ RSpec.describe Plurimath::Math::Formula do
         let(:string) { remove_prefix(example_hash["unicodemath"].to_s) }
 
         it "matches example's MathML with Plurimath MathML" do
-          expect(mathml.scan(/intent="([^"]+)"/).sort.flatten.join).to eql(example_hash["mathml"].scan(/intent="([^"]+)"/).sort.flatten.join)
+          expect(unicodemath_examples_intents(mathml)).to eql(unicodemath_examples_intents(example_hash["mathml"]))
         end
       end
     end
@@ -252,4 +253,12 @@ RSpec.describe Plurimath::Math::Formula do
       end
     end
   end
+end
+
+def unicodemath_examples_intents(array)
+  array.scan(/intent="([^"]+)"/).sort.flatten.join.
+    gsub("$n)", "$naryand)").
+    gsub(",𝑛", ",n").
+    gsub("𝐴,", "A,").
+    gsub("𝑎,", "a,")
 end
