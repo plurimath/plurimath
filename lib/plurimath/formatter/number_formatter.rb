@@ -15,7 +15,7 @@ module Plurimath
         @locale = locale
         @localize_number = localize_number
         @localizer_symbols = localizer_symbols
-        @twitter_cldr_reader = twitter_cldr_reader(locale)
+        @twitter_cldr_reader = twitter_cldr_reader
       end
 
       def localized_number(number_string, locale:, precision:, format:)
@@ -28,7 +28,7 @@ module Plurimath
 
       private
 
-      def twitter_cldr_reader(locale)
+      def twitter_cldr_reader
         num = TwitterCldr::DataReaders::NumberDataReader.new(locale)
         num.symbols
           .merge!(@localizer_symbols)
