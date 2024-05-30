@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-module TwitterCldr
-  module Formatters
+module Plurimath
+  module Formatter
     module Numbers
-      class Fraction
+      class Fraction < TwitterCldr::Formatters::Numbers::Fraction
         attr_reader :format, :decimal, :precision, :separator, :group
 
         def initialize(token, symbols = {})
@@ -54,4 +54,3 @@ module TwitterCldr
     end
   end
 end
-
