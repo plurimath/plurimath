@@ -51,7 +51,7 @@ module Plurimath
               parameter_two&.to_mathml_without_math_tag(intent),
             ],
           )
-          return ternary_intentify(munderover_tag, intent) if parameter_three.nil?
+          return munderover_tag if parameter_three.nil?
 
           mrow = ox_element("mrow")
           Utility.update_nodes(

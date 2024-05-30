@@ -103,8 +103,8 @@ module Plurimath
 
         rule(:soperand) do
           operand |
-            str("&#x221e;").as(:infty) |
-            str("-&#x221e;").as(:symbol) |
+            infty.as(:infty) |
+            (str("-") >> infty).as(:symbol) |
             str("&#x2212;").as(:symbol) |
             str("-").as(:symbol) |
             operator
@@ -114,6 +114,8 @@ module Plurimath
           (op_opener.as(:opener) >> space? >> soperand.as(:operand) >> space? >> op_closer.as(:closer)).as(:int_exp) |
             soperand.as(:operand)
         end
+
+        rule(:infty) { str("&#x221e;") }
       end
     end
   end

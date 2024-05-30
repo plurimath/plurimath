@@ -244,13 +244,21 @@ module Plurimath
         def mrow_attributes(intent, value)
           return {} unless intent
 
-          intent_name = binomial_coefficient?(value) ? "binomial-coefficient" : "fenced"
-          { intent: ":#{intent_name}" }
+          { intent: binomial_coefficient?(value) ? binomial_intent(value) : ":fenced" }
         end
 
         def binomial_coefficient?(value)
           parameter_two.first.is_a?(Frac) &&
             parameter_two&.first&.options&.dig(:choose)
+        end
+
+        def binomial_intent(value)
+          intentify(
+            value,
+            true,
+            func_name: :binomial_fraction,
+            intent_name: :"binomial-coefficient",
+          )
         end
       end
     end

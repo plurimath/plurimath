@@ -168,9 +168,24 @@ module Plurimath
       rule(:exp_bracket) do
         (str("||").as(:open_paren) >> space? >> spaced_exp_bracket >> space? >> str("||").as(:close_paren)) |
           (str("|").as(:open_paren) >> space? >> spaced_exp_bracket >> space? >> str("|").as(:close_paren)) |
+          interval_exp_bracket |
           (op_opener >> space? >> spaced_exp_bracket.maybe >> space? >> op_closer) |
           (mix_bracketed.as(:intermediate_exp) >> space? >> expression.as(:expr)) |
           (mix_bracketed.as(:intermediate_exp) >> space)
+      end
+
+      rule(:interval_exp_bracket) do
+        str("(").as(:open_paren) >> interval_value.as(:left_value) >> str(",").as(:comma) >> interval_value.as(:right_value) >> str("]").as(:close_paren) |
+        str("[").as(:open_paren) >> interval_value.as(:left_value) >> str(",").as(:comma) >> interval_value.as(:right_value) >> str(")").as(:close_paren) |
+        (str("[") | str("]")).as(:open_paren) >> interval_value.as(:left_value) >> str(",").as(:comma) >> interval_value.as(:right_value) >> (str("[") | str("]")).as(:close_paren)
+      end
+
+      rule(:interval_value) do
+        infty.as(:infty) |
+          (str("+").as(:positive) >> (infty.as(:infty) | digits | a_ascii)) |
+          ((str("-") | str("&#x2212;")).as(:negative) >> (infty.as(:infty) | digits | a_ascii)) |
+          digits |
+          a_ascii
       end
 
       rule(:mix_bracketed) do

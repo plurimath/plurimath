@@ -12,7 +12,7 @@ module Plurimath
       # Intent common code begin
         def node_value(node, field_name)
           return unless node
-          return node.nodes.first if INTENT_TEXT_NODES.include?(node.name)
+          return html_entity_to_unicode(node.nodes.first) if valid_node_value?(node)
 
           node[:arg] = field_name
           "$#{field_name}"
@@ -63,6 +63,21 @@ module Plurimath
           tag
         end
       # Function intent end
+
+      # Binomial fraction intent begin
+        def binomial_fraction_intent(tag, intent_name)
+          numerator = node_value(tag[1].nodes[0], "t")
+          denominator = node_value(tag[1].nodes[1], "b")
+          "#{intent_name}(#{numerator},#{denominator})"
+        end
+      # Binomial fraction intent end
+
+        private
+
+        def valid_node_value?(node)
+          return true if INTENT_TEXT_NODES.include?(node.name)
+          return true if node.name == "mrow" && node.nodes.empty?
+        end
       end
     end
   end

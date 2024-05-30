@@ -260,5 +260,6 @@ def unicodemath_examples_intents(array)
     gsub("$n)", "$naryand)").
     gsub(",𝑛", ",n").
     gsub("𝐴,", "A,").
-    gsub("𝑎,", "a,")
+    gsub("𝑎,", "a,").
+    gsub("𝑆,", "S,")
 end

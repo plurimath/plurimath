@@ -51,7 +51,7 @@ module Plurimath
               validate_mathml_tag(parameter_two, intent),
             ],
           )
-          return intentify(msubsup_tag, intent, func_name: :naryand, intent_name: :integral) if parameter_three.nil?
+          return msubsup_tag if parameter_three.nil?
 
           mrow = ox_element("mrow")
           Utility.update_nodes(
