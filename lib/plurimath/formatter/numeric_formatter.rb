@@ -1,4 +1,3 @@
-require "pry"
 require "twitter_cldr"
 require_relative "numbers/integer"
 require_relative "numbers/fraction"
