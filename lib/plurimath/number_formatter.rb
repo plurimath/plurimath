@@ -1,4 +1,4 @@
-require "plurimath/formatter/number_formatter"
+require "plurimath/formatter/numeric_formatter"
 
 module Plurimath
   class NumberFormatter
@@ -11,7 +11,7 @@ module Plurimath
     end
 
     def localized_number(number_string, locale: @locale, precision: nil, format: {})
-      Formatter::NumberFormatter.new(
+      Formatter::NumericFormatter.new(
         supported_locale(locale),
         localize_number: localize_number,
         localizer_symbols: localizer_symbols,

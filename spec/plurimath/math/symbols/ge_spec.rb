@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Ge do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Ge" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{ge}")
+        expect(klass.to_asciimath).to eq("ge")
       end
 
       it "matches LaTeX string" do

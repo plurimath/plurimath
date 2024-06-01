@@ -44,7 +44,7 @@ RSpec.describe Plurimath::NumberFormatter do
       end
 
       it "matches localized string notation: :scientific with en locale and exponent sign" do
-        format = { decimal: ".", notation: :scientific, exponent_sign: :plus }
+        format = { decimal: ".", notation: :scientific, exponent_sign: :plus, fraction_group: " ", fraction_group_digits: 3 }
         output_string = formatter.localized_number(number, format: format)
         expect(output_string).to eql("1.400 0 × 10^+4")
       end
@@ -94,7 +94,7 @@ RSpec.describe Plurimath::NumberFormatter do
       end
 
       it "matches locale: kk with maximum digit_count" do
-        output_string = formatter.localized_number(number, locale: :kk, format: { digit_count: 16 })
+        output_string = formatter.localized_number(number, locale: :kk, format: { digit_count: 16, fraction_group: " ", fraction_group_digits: 3 })
         expect(output_string).to eql("14 236,392 390 000 00")
       end
     end
@@ -106,7 +106,7 @@ RSpec.describe Plurimath::NumberFormatter do
       let(:localizer_symbols) { {} }
 
       it "matches locale: kk with precision" do
-        output_string = formatter.localized_number(number, locale: :es, precision: 20)
+        output_string = formatter.localized_number(number, locale: :es, precision: 20, format: { fraction_group: " ", fraction_group_digits: 3 })
         expect(output_string).to eql("14.236,392 390 000 000 000 000 00")
       end
     end

@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("ge")
+          "ge"
         end
 
         def to_unicodemath
