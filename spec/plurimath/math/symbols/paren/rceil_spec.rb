@@ -48,7 +48,7 @@ RSpec.describe Plurimath::Math::Symbols::Paren::Rceil do
 
       it "matches MathML paren string" do
         string = dump_ox_nodes(klass.to_mathml_without_math_tag).strip
-        expect(string).to eq("<mi>⌉</mi>")
+        expect(string).to eq("<mo>⌉</mo>")
       end
 
       it "matches HTML paren string" do

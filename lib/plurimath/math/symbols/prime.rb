@@ -3,10 +3,10 @@ module Plurimath
     module Symbols
       class Prime < Symbol
         INPUT = {
-          unicodemath: ["&#x2032;", "prime"],
-          asciimath: ["&#x2032;", "prime"],
+          unicodemath: ["&#x2032;", "prime", "'"],
+          asciimath: ["&#x2032;", "prime", "'"],
           mathml: ["&#x2032;"],
-          latex: ["&#x2032;", "prime"],
+          latex: ["&#x2032;", "prime", "'"],
           omml: ["&#x2032;"],
           html: ["&#x2032;"],
         }.freeze

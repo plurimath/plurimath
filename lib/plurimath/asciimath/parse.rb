@@ -5,7 +5,7 @@ module Plurimath
   class Asciimath
     class Parse < Parslet::Parser
       rule(:td)     { expression.as(:td) }
-      rule(:base)   { arr_to_expression(Constants.wrapper_symbols, :symbol).absent? >> str("_") }
+      rule(:base)   { arr_to_expression(Constants.absent_symbols, :symbol).absent? >> str("_") }
       rule(:power)  { str("^") }
       rule(:space)  { match(/\s+/) }
       rule(:comma)  { (str(",") >> space?) }
