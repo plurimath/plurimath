@@ -109,6 +109,10 @@ module Plurimath
         def parens_symbols
           Utility.parens_hash(:asciimath).keys.delete_if { |sym| SKIP_INPUT_PARENS.include?(sym) }
         end
+
+        def absent_symbols
+          wrapper_symbols.concat(parens_symbols)
+        end
       end
     end
   end

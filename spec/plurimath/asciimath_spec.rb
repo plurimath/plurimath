@@ -1427,7 +1427,7 @@ RSpec.describe Plurimath::Asciimath do
             <mstyle displaystyle="true">
               <mi>s</mi>
               <msub>
-                <mo>&#x27;</mo>
+                <mo>&#x2032;</mo>
                 <mi>i</mi>
               </msub>
               <mo>=</mo>
@@ -3687,7 +3687,7 @@ RSpec.describe Plurimath::Asciimath do
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
               <mi>f</mi>
-              <mo>&#x27;</mo>
+              <mo>&#x2032;</mo>
               <mrow>
                 <mo>(</mo>
                 <mi>x</mi>
@@ -3727,7 +3727,7 @@ RSpec.describe Plurimath::Asciimath do
                 <mi>X</mi>
                 <mo>&#xaf;</mo>
               </mover>
-              <mo>&#x27;</mo>
+              <mo>&#x2032;</mo>
             </mstyle>
           </math>
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
@@ -6229,6 +6229,91 @@ RSpec.describe Plurimath::Asciimath do
                 <mn>1.0</mn>
                 <mo>]</mo>
               </mrow>
+            </mstyle>
+          </math>
+        MATHML
+        expect(formula.to_latex).to eql(latex)
+        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_asciimath).to eql(asciimath)
+      end
+    end
+
+    context "contains example from metanorma-standoc specs #1 example #115" do
+      let(:string) { "bar X' = (1)/(v) sum_(i = 1)^(v) t_(i)" }
+
+      it 'matches LaTeX, AsciiMath, and MathML' do
+        latex = '\overline{X} \prime = \frac{1}{v} \sum_{i = 1}^{v} t_{i}'
+        asciimath = 'bar(X) prime = frac(1)(v) sum_(i = 1)^(v) t_(i)'
+        mathml = <<~MATHML
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
+              <mover>
+                <mi>X</mi>
+                <mo>&#xaf;</mo>
+              </mover>
+              <mo>&#x2032;</mo>
+              <mo>=</mo>
+              <mfrac>
+                <mn>1</mn>
+                <mi>v</mi>
+              </mfrac>
+              <mrow>
+                <munderover>
+                  <mo>&#x2211;</mo>
+                  <mrow>
+                    <mi>i</mi>
+                    <mo>=</mo>
+                    <mn>1</mn>
+                  </mrow>
+                  <mi>v</mi>
+                </munderover>
+                <msub>
+                  <mi>t</mi>
+                  <mi>i</mi>
+                </msub>
+              </mrow>
+            </mstyle>
+          </math>
+        MATHML
+        expect(formula.to_latex).to eql(latex)
+        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_asciimath).to eql(asciimath)
+      end
+    end
+
+    context "contains example from metanorma-standoc specs #2 example #116" do
+      let(:string) { "|~ x ~|" }
+
+      it 'matches LaTeX, AsciiMath, and MathML' do
+        latex = '\lceil x \rceil'
+        asciimath = '|~ x ~|'
+        mathml = <<~MATHML
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
+              <mo>⌈</mo>
+              <mi>x</mi>
+              <mo>⌉</mo>
+            </mstyle>
+          </math>
+        MATHML
+        expect(formula.to_latex).to eql(latex)
+        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_asciimath).to eql(asciimath)
+      end
+    end
+
+    context "contains example from metanorma-standoc specs #3 example #117" do
+      let(:string) { "|__ x __|" }
+
+      it 'matches LaTeX, AsciiMath, and MathML' do
+        latex = '\lfloor x \rfloor'
+        asciimath = '|__ x __|'
+        mathml = <<~MATHML
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
+              <mo>⌊</mo>
+              <mi>x</mi>
+              <mo>⌋</mo>
             </mstyle>
           </math>
         MATHML

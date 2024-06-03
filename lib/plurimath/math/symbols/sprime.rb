@@ -3,10 +3,10 @@ module Plurimath
     module Symbols
       class Sprime < Symbol
         INPUT = {
-          unicodemath: ["&#x27;", "'"],
-          asciimath: ["&#x27;", "'"],
+          unicodemath: ["&#x27;"],
+          asciimath: ["&#x27;"],
           mathml: ["&#x27;"],
-          latex: ["&#x27;", "'"],
+          latex: ["&#x27;"],
           omml: ["&#x27;"],
           html: ["&#x27;"],
         }.freeze
