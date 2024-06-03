@@ -1421,7 +1421,7 @@ RSpec.describe Plurimath::Asciimath do
 
       it 'returns parsed Asciimath to Formula' do
         latex = 's \\prime_{i} = \left \{\begin{matrix}- 1 & \operatorname{if} s_{i} > s_{i + 1} \\\\ + 1 & \operatorname{if} s_{i} \le s_{i + 1}\end{matrix}\right .'
-        asciimath = 's \'_(i) = {[- 1, if s_(i) gt s_(i + 1)], [+ 1, if s_(i) le s_(i + 1)]:}'
+        asciimath = 's prime_(i) = {[- 1, if s_(i) gt s_(i + 1)], [+ 1, if s_(i) le s_(i + 1)]:}'
         mathml = <<~MATHML
           <math display="block" xmlns="http://www.w3.org/1998/Math/MathML">
             <mstyle displaystyle="true">
@@ -3682,7 +3682,7 @@ RSpec.describe Plurimath::Asciimath do
 
       it 'returns parsed Asciimath to Formula' do
         latex = "f \\prime ( x ) = d \\frac{y}{d x}"
-        asciimath = "f ' (x) = d frac(y)(d x)"
+        asciimath = "f prime (x) = d frac(y)(d x)"
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -3717,7 +3717,7 @@ RSpec.describe Plurimath::Asciimath do
       it 'returns parsed Asciimath to Formula' do
         latex = "\\overline{X} \\prime \\\\  \\theta"
         asciimath = <<~ASCIIMATH.strip
-          bar(X) ' \\
+          bar(X) prime \\
             theta
         ASCIIMATH
         mathml = <<~MATHML

@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          "'"
+          "prime"
         end
 
         def to_unicodemath
