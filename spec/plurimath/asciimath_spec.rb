@@ -6327,7 +6327,7 @@ RSpec.describe Plurimath::Asciimath do
       let(:string) { "λ(u) = C(u) + d \\< v × t \\>)," }
 
       it 'matches LaTeX, AsciiMath, and MathML' do
-        latex = 'λ ( u ) = C ( u ) + d \ < v × t \ > ) ,'
+        latex = 'λ ( u ) = C ( u ) + d \backslash < v × t \backslash > ) ,'
         asciimath = 'λ (u) = C (u) + d \ lt v × t \ gt ) ,'
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
@@ -6347,12 +6347,12 @@ RSpec.describe Plurimath::Asciimath do
               </mrow>
               <mo>+</mo>
               <mi>d</mi>
-              <mo>\</mo>
+              <mo>\\</mo>
               <mo>&#x3c;</mo>
               <mi>v</mi>
               <mi>×</mi>
               <mi>t</mi>
-              <mo>\</mo>
+              <mo>\\</mo>
               <mo>&#x3e;</mo>
               <mo>)</mo>
               <mo>,</mo>
