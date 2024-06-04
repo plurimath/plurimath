@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Backslash do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Backslash" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("backslash")
+        expect(klass.to_asciimath).to eq("\\")
       end
 
       it "matches LaTeX string" do
@@ -31,7 +31,7 @@ RSpec.describe Plurimath::Math::Symbols::Backslash do
 
       it "matches MathML string" do
         string = dump_ox_nodes(klass.to_mathml_without_math_tag).strip
-        expect(string).to eq("<mi>&#x5c;</mi>")
+        expect(string).to eq("<mo>\\</mo>")
       end
 
       it "matches HTML string" do
