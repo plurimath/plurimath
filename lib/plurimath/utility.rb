@@ -270,7 +270,7 @@ module Plurimath
       def symbols_hash(lang)
         @@symbols ||= {}
         lang_symbols = @@symbols[lang]
-        return lang_symbols if lang_symbols && lang_symbols.empty?
+        return lang_symbols if lang_symbols && !lang_symbols.empty?
 
         lang_symbols = {}
         symbols_files.map do |file_name|
@@ -290,7 +290,7 @@ module Plurimath
       def parens_hash(lang, skipables: nil)
         @@parens ||= {}
         lang_parens = @@parens[lang]
-        return lang_parens if lang_parens && lang_parens.empty?
+        return lang_parens if lang_parens && !lang_parens.empty?
 
         lang_parens = {}
         paren_files.map do |file_name|
