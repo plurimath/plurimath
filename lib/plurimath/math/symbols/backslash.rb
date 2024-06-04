@@ -3,10 +3,10 @@ module Plurimath
     module Symbols
       class Backslash < Symbol
         INPUT = {
-          unicodemath: [["&#x5c;"], parsing_wrapper(["backslash"])],
-          asciimath: [["backslash", "&#x5c;"]],
+          unicodemath: [["&#x5c;"], parsing_wrapper(["backslash", "\\"])],
+          asciimath: ["backslash", "&#x5c;", "\\"],
           mathml: ["&#x5c;"],
-          latex: [["backslash", "&#x5c;"]],
+          latex: [["backslash", "&#x5c;"], parsing_wrapper(["\\"])],
           omml: ["&#x5c;"],
           html: ["&#x5c;"],
         }.freeze
@@ -25,7 +25,7 @@ module Plurimath
         end
 
         def to_mathml_without_math_tag
-          ox_element("mi") << "&#x5c;"
+          ox_element("mo") << "\\"
         end
 
         def to_omml_without_math_tag(_)

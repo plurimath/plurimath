@@ -6322,6 +6322,48 @@ RSpec.describe Plurimath::Asciimath do
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
+
+    context "contains example from iso-10303 #1 example #118" do
+      let(:string) { "λ(u) = C(u) + d \\< v × t \\>)," }
+
+      it 'matches LaTeX, AsciiMath, and MathML' do
+        latex = 'λ ( u ) = C ( u ) + d \ < v × t \ > ) ,'
+        asciimath = 'λ (u) = C (u) + d \ lt v × t \ gt ) ,'
+        mathml = <<~MATHML
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
+              <mi>λ</mi>
+              <mrow>
+                <mo>(</mo>
+                <mi>u</mi>
+                <mo>)</mo>
+              </mrow>
+              <mo>=</mo>
+              <mi>C</mi>
+              <mrow>
+                <mo>(</mo>
+                <mi>u</mi>
+                <mo>)</mo>
+              </mrow>
+              <mo>+</mo>
+              <mi>d</mi>
+              <mo>\</mo>
+              <mo>&#x3c;</mo>
+              <mi>v</mi>
+              <mi>×</mi>
+              <mi>t</mi>
+              <mo>\</mo>
+              <mo>&#x3e;</mo>
+              <mo>)</mo>
+              <mo>,</mo>
+            </mstyle>
+          </math>
+        MATHML
+        expect(formula.to_latex).to eql(latex)
+        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_asciimath).to eql(asciimath)
+      end
+    end
   end
 
   describe ".to_omml" do
