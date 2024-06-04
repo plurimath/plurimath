@@ -56,7 +56,9 @@ module Plurimath
 
       rule(:invisible_times) { (str("&#x2062;") | str("&#x2061;") | str("&#x20;") | str("\\itimes") >> space?) }
 
-      rule(:ordinary_symbols)  { op_ordinary_symbols | op_prefixed_ordinary_symbols }
+      rule(:ordinary_symbols) { op_ordinary_symbols | op_prefixed_ordinary_symbols }
+      rule(:interval_a_ascii) { match["A-Za-z"].as(:symbol).repeat(1) }
+
       rule(:negatable_symbols) { forward_slash >> negated | negated >> str("&#x338;") }
       rule(:invisible_unicode) { str("&#x2592;") | (str("\\naryand") | str("\\of") >> space?) }
 
@@ -182,10 +184,10 @@ module Plurimath
 
       rule(:interval_value) do
         infty.as(:infty) |
-          (str("+").as(:positive) >> (infty.as(:infty) | digits | a_ascii)) |
-          ((str("-") | str("&#x2212;")).as(:negative) >> (infty.as(:infty) | digits | a_ascii)) |
+          (str("+").as(:positive) >> (infty.as(:infty) | digits | interval_a_ascii)) |
+          ((str("-") | str("&#x2212;")).as(:negative) >> (infty.as(:infty) | digits | interval_a_ascii)) |
           digits |
-          a_ascii
+          interval_a_ascii
       end
 
       rule(:mix_bracketed) do

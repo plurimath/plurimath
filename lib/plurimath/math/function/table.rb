@@ -48,7 +48,8 @@ module Plurimath
           if mathml_paren_present?(open_paren, intent) || mathml_paren_present?(close_paren, intent)
             first_paren = mo_element(mathml_parenthesis(open_paren, intent))
             second_paren = mo_element(mathml_parenthesis(close_paren, intent))
-            mrow = ox_element("mrow", attributes: { intent: ":fenced" })
+            attributes = { intent: ":fenced" } if intent
+            mrow = ox_element("mrow", attributes: attributes)
             return Utility.update_nodes(mrow, [first_paren, table_tag, second_paren])
           end
 

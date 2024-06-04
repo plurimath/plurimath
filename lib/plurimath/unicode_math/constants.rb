@@ -129,6 +129,7 @@ module Plurimath
         wr: "&#x2240;",
         ne: "&#x2260;",
         dd: "&#x2146;",
+        Dd: "&#x2145;",
       }.freeze
 
       NARY_CLASSES = {

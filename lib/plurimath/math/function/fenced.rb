@@ -33,9 +33,12 @@ module Plurimath
           second_value = parameter_two&.map { |object| object&.to_mathml_without_math_tag(intent) } || []
           third_value = ox_element("mo", attributes: options&.dig(:close_paren)) << (mathml_paren(parameter_three, intent) || "")
           mrow_value = second_value.insert(0, first_value) << third_value
-          Utility.update_nodes(
-            ox_element("mrow", attributes: mrow_attributes(intent, mrow_value)),
-            mrow_value,
+          fenced = Utility.update_nodes(ox_element("mrow"), mrow_value)
+          intentify(
+            fenced,
+            intent,
+            func_name: :interval_fence,
+            intent_name: intent_value(mrow_value),
           )
         end
 
@@ -241,10 +244,14 @@ module Plurimath
           end
         end
 
-        def mrow_attributes(intent, value)
-          return {} unless intent
+        def intent_value(value)
+          return "binomial-coefficient" if binomial_coefficient?(value)
 
-          { intent: binomial_coefficient?(value) ? binomial_intent(value) : ":fenced" }
+          open_paren = symbol_or_paren(parameter_one, lang: :latex)
+          close_paren = symbol_or_paren(parameter_three, lang: :latex)
+          return "fenced" unless interval_intent?(value, open_paren, close_paren)
+
+          interval_intent(value, open_paren, close_paren)
         end
 
         def binomial_coefficient?(value)
@@ -252,13 +259,27 @@ module Plurimath
             parameter_two&.first&.options&.dig(:choose)
         end
 
-        def binomial_intent(value)
-          intentify(
-            value,
-            true,
-            func_name: :binomial_fraction,
-            intent_name: :"binomial-coefficient",
-          )
+        def interval_intent(value, open_paren, close_paren)
+          case open_paren
+          when "("
+            'open-closed-interval' if close_paren == ']'
+          when "["
+            return 'closed-interval' if close_paren == ']'
+
+            'closed-open-interval' if (close_paren == '[' || close_paren == ')')
+          when "]"
+            return 'open-closed-interval' if close_paren == ']'
+
+            'open-interval' if close_paren == '['
+          end
+        end
+
+        def interval_intent?(value, open_paren, close_paren)
+          case open_paren
+          when "(" then close_paren == ']'
+          when "]" then ['[', ']'].include?(close_paren)
+          when "[" then ['[', ']', ')'].include?(close_paren)
+          end
         end
       end
     end

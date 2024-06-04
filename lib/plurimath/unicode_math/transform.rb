@@ -183,6 +183,22 @@ module Plurimath
         Math::Number.new("#{decimal}#{whole.value}")
       end
 
+      rule(positive: simple(:positive),
+           infty: simple(:infty)) do
+        [
+          Utility.symbols_class(positive, lang: :unicodemath),
+          Utility.symbols_class(infty, lang: :unicodemath),
+        ]
+      end
+
+      rule(negative: simple(:negative),
+           infty: simple(:infty)) do
+        [
+          Utility.symbols_class(negative, lang: :unicodemath),
+          Utility.symbols_class(infty, lang: :unicodemath),
+        ]
+      end
+
       rule(unicode_fractions: simple(:fractions),
            expr: sequence(:expr)) do
         [Utility.unicode_fractions(fractions)] + expr
@@ -3814,6 +3830,61 @@ module Plurimath
         Math::Function::Fenced.new(
           Utility.symbols_class(open_paren, lang: :unicodemath),
           [factor, subsup, exp],
+          Utility.symbols_class(close_paren, lang: :unicodemath),
+        )
+      end
+
+      rule(open_paren: simple(:open_paren),
+           left_value: simple(:left_value),
+           comma: simple(:comma),
+           right_value: simple(:right_value),
+           close_paren: simple(:close_paren)) do
+        Math::Function::Fenced.new(
+          Utility.symbols_class(open_paren, lang: :unicodemath),
+          [left_value, Utility.symbols_class(comma, lang: :unicodemath), right_value],
+          Utility.symbols_class(close_paren, lang: :unicodemath),
+        )
+      end
+
+      rule(open_paren: simple(:open_paren),
+           left_value: simple(:left_value),
+           comma: simple(:comma),
+           right_value: sequence(:right_value),
+           close_paren: simple(:close_paren)) do
+        fence_value = [left_value, Utility.symbols_class(comma, lang: :unicodemath)]
+        Math::Function::Fenced.new(
+          Utility.symbols_class(open_paren, lang: :unicodemath),
+          fence_value.concat([Utility.filter_values(right_value)]),
+          Utility.symbols_class(close_paren, lang: :unicodemath),
+        )
+      end
+
+      rule(open_paren: simple(:open_paren),
+           left_value: sequence(:left_value),
+           comma: simple(:comma),
+           right_value: simple(:right_value),
+           close_paren: simple(:close_paren)) do
+        fence_value = [Utility.symbols_class(comma, lang: :unicodemath), right_value]
+        Math::Function::Fenced.new(
+          Utility.symbols_class(open_paren, lang: :unicodemath),
+          fence_value.insert(0, Utility.filter_values(left_value)),
+          Utility.symbols_class(close_paren, lang: :unicodemath),
+        )
+      end
+
+      rule(open_paren: simple(:open_paren),
+           left_value: sequence(:left_value),
+           comma: simple(:comma),
+           right_value: sequence(:right_value),
+           close_paren: simple(:close_paren)) do
+        fenced_value = [
+          Utility.filter_values(left_value),
+          Utility.symbols_class(comma, lang: :unicodemath),
+          Utility.filter_values(right_value),
+        ]
+        Math::Function::Fenced.new(
+          Utility.symbols_class(open_paren, lang: :unicodemath),
+          fenced_value,
           Utility.symbols_class(close_paren, lang: :unicodemath),
         )
       end

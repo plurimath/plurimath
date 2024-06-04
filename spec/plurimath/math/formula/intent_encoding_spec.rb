@@ -31,7 +31,7 @@ RSpec.describe Plurimath::Math::Formula do
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
-              <mrow intent=":product($l, n, $naryand)">
+              <mrow intent=":product($l,n,$naryand)">
                 <munderover>
                   <mo>&#x220f;</mo>
                   <mrow arg="l">
@@ -63,7 +63,7 @@ RSpec.describe Plurimath::Math::Formula do
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
-              <mrow intent=":sum($l, n, $naryand)">
+              <mrow intent=":sum($l,n,$naryand)">
                 <munderover>
                   <mo>&#x2211;</mo>
                   <mrow arg="l">
@@ -97,11 +97,11 @@ RSpec.describe Plurimath::Math::Formula do
             <mstyle displaystyle="true">
               <mrow intent=":function">
                 <mi>cos</mi>
-                <mrow>
+                <mrow intent=":fenced">
                   <mo>(</mo>
                   <mrow intent=":function">
                     <mi>tan</mi>
-                    <mrow>
+                    <mrow intent=":fenced">
                       <mo>(</mo>
                       <mn>1</mn>
                       <mo>)</mo>
@@ -125,7 +125,7 @@ RSpec.describe Plurimath::Math::Formula do
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
-              <mrow intent=":volume integral($l, n, $naryand)">
+              <mrow intent=":volume integral($l,n,$naryand)">
                 <msubsup>
                   <mo>&#x2230;</mo>
                   <mrow arg="l">
@@ -157,7 +157,7 @@ RSpec.describe Plurimath::Math::Formula do
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
-              <mrow intent=":surface integral($l, n, $naryand)">
+              <mrow intent=":surface integral($l,n,$naryand)">
                 <msubsup>
                   <mo>&#x222f;</mo>
                   <mrow arg="l">
@@ -261,5 +261,7 @@ def unicodemath_examples_intents(array)
     gsub(",𝑛", ",n").
     gsub("𝐴,", "A,").
     gsub("𝑎,", "a,").
-    gsub("𝑆,", "S,")
+    gsub("𝑆,", "S,").
+    gsub("𝑛,", "n,").
+    gsub(",𝑘", ",k")
 end
