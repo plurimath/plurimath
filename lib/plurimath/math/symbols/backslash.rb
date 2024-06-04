@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          "backslash"
+          "\\"
         end
 
         def to_unicodemath
