@@ -8,6 +8,8 @@ module Plurimath
     class Parser
       attr_accessor :text
 
+      TEXT_REGEX = %r(\\(?:mbox|text){[^}]+})
+
       def initialize(text)
         enti = HTMLEntities.new
         text = enti.encode(enti.decode(text), :hexadecimal)
@@ -25,16 +27,14 @@ module Plurimath
       private
 
       def gsub_text(text)
-        text.partition(/\\(mbox|text){[^}]*}/).map do |str|
-          text_str = true if str.start_with?(/\\(text|mbox)/)
-
-          gsub_space_and_unicodes(str, text_str)
-        end.join
+        text_functions = text.scan(TEXT_REGEX)
+        text = gsub_space_and_unicodes(text)
+        text.gsub(TEXT_REGEX) { |str| text_functions.shift }
       end
 
-      def gsub_space_and_unicodes(text, text_str)
-        text = text.gsub(/((?<!\\) )|\n+/, "") unless text_str
+      def gsub_space_and_unicodes(text)
         text
+          .gsub(/((?<!\\) )|\n+/, "")
           .gsub(/\\\\ /, "\\\\\\\\")
           .gsub(/&#x26;/, "&")
           .gsub(/&#x22;/, "\"")

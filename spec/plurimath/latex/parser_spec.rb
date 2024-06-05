@@ -10356,33 +10356,13 @@ RSpec.describe Plurimath::Latex::Parser do
                           }),
                           Plurimath::Math::Function::Td.new(
                             [
-                              Plurimath::Math::Function::Mbox.new("degreeof"),
+                              Plurimath::Math::Function::Mbox.new("degree of"),
                             ],
                             { columnalign: "center" }
                           ),
                           Plurimath::Math::Function::Td.new(
                             [
-                              Plurimath::Math::Function::Mbox.new("degreeof"),
-                            ],
-                            { columnalign: "center" }
-                          ),
-                          Plurimath::Math::Function::Td.new([], {
-                            columnalign: "center",
-                          }),
-                        ]),
-                        Plurimath::Math::Function::Tr.new([
-                          Plurimath::Math::Function::Td.new([], {
-                            columnalign: "center",
-                          }),
-                          Plurimath::Math::Function::Td.new(
-                            [
-                              Plurimath::Math::Function::Mbox.new("freedom1,"),
-                            ],
-                            { columnalign: "center" }
-                          ),
-                          Plurimath::Math::Function::Td.new(
-                            [
-                              Plurimath::Math::Function::Mbox.new("freedom2,"),
+                              Plurimath::Math::Function::Mbox.new("degree of"),
                             ],
                             { columnalign: "center" }
                           ),
@@ -10396,13 +10376,33 @@ RSpec.describe Plurimath::Latex::Parser do
                           }),
                           Plurimath::Math::Function::Td.new(
                             [
-                              Plurimath::Math::Function::Mbox.new("node1"),
+                              Plurimath::Math::Function::Mbox.new("freedom 1,"),
                             ],
                             { columnalign: "center" }
                           ),
                           Plurimath::Math::Function::Td.new(
                             [
-                              Plurimath::Math::Function::Mbox.new("node2"),
+                              Plurimath::Math::Function::Mbox.new("freedom 2,"),
+                            ],
+                            { columnalign: "center" }
+                          ),
+                          Plurimath::Math::Function::Td.new([], {
+                            columnalign: "center",
+                          }),
+                        ]),
+                        Plurimath::Math::Function::Tr.new([
+                          Plurimath::Math::Function::Td.new([], {
+                            columnalign: "center",
+                          }),
+                          Plurimath::Math::Function::Td.new(
+                            [
+                              Plurimath::Math::Function::Mbox.new("node 1"),
+                            ],
+                            { columnalign: "center" }
+                          ),
+                          Plurimath::Math::Function::Td.new(
+                            [
+                              Plurimath::Math::Function::Mbox.new("node 2"),
                             ],
                             { columnalign: "center" }
                           ),
