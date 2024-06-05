@@ -10254,7 +10254,7 @@ RSpec.describe Plurimath::Latex::Parser do
                           ),
                           Plurimath::Math::Function::Td.new(
                             [
-                              Plurimath::Math::Function::Mbox.new("degreeoffreedom1,node1"),
+                              Plurimath::Math::Function::Mbox.new("degree of freedom 1, node 1"),
                             ],
                             { columnalign: "center" }
                           ),
@@ -10290,7 +10290,7 @@ RSpec.describe Plurimath::Latex::Parser do
                           ),
                           Plurimath::Math::Function::Td.new(
                             [
-                              Plurimath::Math::Function::Mbox.new("degreeoffreedom2,node2"),
+                              Plurimath::Math::Function::Mbox.new("degree of freedom 2, node 2"),
                             ],
                             { columnalign: "center" }
                           ),

@@ -1735,7 +1735,7 @@ RSpec.describe Plurimath::Latex do
                           <mo>&#x22ef;</mo>
                         </mtd>
                         <mtd columnalign="center">
-                          <mtext>degreeoffreedom1,node1</mtext>
+                          <mtext>degree of freedom 1, node 1</mtext>
                         </mtd>
                       </mtr>
                       <mtr>
