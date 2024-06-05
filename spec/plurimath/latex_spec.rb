@@ -3,7 +3,7 @@ require "spec_helper"
 RSpec.describe Plurimath::Latex do
 
   describe ".initialize" do
-    subject(:latex) { described_class.new(string.gsub(/\s/, "")) }
+    subject(:latex) { described_class.new(string) }
 
     context "contains simple cos function with numeric value" do
       let(:string) { "\\cos_{45}" }
@@ -18,7 +18,7 @@ RSpec.describe Plurimath::Latex do
   end
 
   describe ".to_formula" do
-    subject(:formula) { described_class.new(string.gsub(/\s/, "")).to_formula }
+    subject(:formula) { described_class.new(string).to_formula }
 
     context "contains basic simple Latex equation cos and numeric value" do
       let(:string) { '\\cos{45}' }
@@ -34,7 +34,7 @@ RSpec.describe Plurimath::Latex do
   end
 
   describe ".to_mathml" do
-    subject(:formula) { described_class.new(string.gsub(/\s/, "")).to_formula }
+    subject(:formula) { described_class.new(string).to_formula }
 
     context "contains example #01" do
       let(:string) { '\\cos{45}' }
@@ -2652,6 +2652,62 @@ RSpec.describe Plurimath::Latex do
                   <mo>+</mo>
                   <mi>b</mi>
                 </mrow>
+              </mrow>
+            </mstyle>
+          </math>
+        MATHML
+        expect(formula.to_mathml).to be_equivalent_to(mathml)
+      end
+    end
+
+    context "contains equation from plurimath/issue#250 example #58" do
+      let(:string) { '[X \text{ is open}] \Leftrightarrow [x \in X] \implies [\exists \varepsilon > 0 \backepsilon \text{distance} (x,y) < \varepsilon] \implies [y \in X]' }
+
+      it 'compares LaTeX to MathML and LaTeX conversion' do
+        mathml = <<~MATHML
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
+              <mrow>
+                <mo>[</mo>
+                <mi>X</mi>
+                <mtext> is open</mtext>
+                <mo>]</mo>
+              </mrow>
+              <mi>&#x21d4;</mi>
+              <mrow>
+                <mo>[</mo>
+                <mi>x</mi>
+                <mo>&#x2208;</mo>
+                <mi>X</mi>
+                <mo>]</mo>
+              </mrow>
+              <mi>&#x27f9;</mi>
+              <mrow>
+                <mo>[</mo>
+                <mi>&#x2203;</mi>
+                <mi>&#x25b;</mi>
+                <mo>&#x3e;</mo>
+                <mn>0</mn>
+                <mi>&#x3f6;</mi>
+                <mtext>distance</mtext>
+                <mrow>
+                  <mo>(</mo>
+                  <mi>x</mi>
+                  <mo>,</mo>
+                  <mi>y</mi>
+                  <mo>)</mo>
+                </mrow>
+                <mo>&#x3c;</mo>
+                <mi>&#x25b;</mi>
+                <mo>]</mo>
+              </mrow>
+              <mi>&#x27f9;</mi>
+              <mrow>
+                <mo>[</mo>
+                <mi>y</mi>
+                <mo>&#x2208;</mo>
+                <mi>X</mi>
+                <mo>]</mo>
               </mrow>
             </mstyle>
           </math>
