@@ -1755,7 +1755,7 @@ RSpec.describe Plurimath::Latex do
                           <mo>&#x22ef;</mo>
                         </mtd>
                         <mtd columnalign="center">
-                          <mtext>degreeoffreedom2,node2</mtext>
+                          <mtext>degree of freedom 2, node 2</mtext>
                         </mtd>
                       </mtr>
                     </mtable>
@@ -1790,30 +1790,30 @@ RSpec.describe Plurimath::Latex do
                       <mtr>
                         <mtd columnalign="center"/>
                         <mtd columnalign="center">
-                          <mtext>degreeof</mtext>
+                          <mtext>degree of</mtext>
                         </mtd>
                         <mtd columnalign="center">
-                          <mtext>degreeof</mtext>
-                        </mtd>
-                        <mtd columnalign="center"/>
-                      </mtr>
-                      <mtr>
-                        <mtd columnalign="center"/>
-                        <mtd columnalign="center">
-                          <mtext>freedom1,</mtext>
-                        </mtd>
-                        <mtd columnalign="center">
-                          <mtext>freedom2,</mtext>
+                          <mtext>degree of</mtext>
                         </mtd>
                         <mtd columnalign="center"/>
                       </mtr>
                       <mtr>
                         <mtd columnalign="center"/>
                         <mtd columnalign="center">
-                          <mtext>node1</mtext>
+                          <mtext>freedom 1,</mtext>
                         </mtd>
                         <mtd columnalign="center">
-                          <mtext>node2</mtext>
+                          <mtext>freedom 2,</mtext>
+                        </mtd>
+                        <mtd columnalign="center"/>
+                      </mtr>
+                      <mtr>
+                        <mtd columnalign="center"/>
+                        <mtd columnalign="center">
+                          <mtext>node 1</mtext>
+                        </mtd>
+                        <mtd columnalign="center">
+                          <mtext>node 2</mtext>
                         </mtd>
                         <mtd columnalign="center"/>
                       </mtr>
