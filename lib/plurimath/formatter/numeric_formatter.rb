@@ -50,7 +50,6 @@ module Plurimath
       end
 
       def localize_number(num)
-        num = num.match?(/\./) ? num.to_f : num.to_i
         localized = localize(BigDecimal(num.to_s))
         return localized.to_s if @precision.zero?
 
