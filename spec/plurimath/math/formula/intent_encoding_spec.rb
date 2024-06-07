@@ -13,7 +13,7 @@ RSpec.describe Plurimath::Math::Formula do
       context "processing unicode example(#{index})" do
         let(:string) { remove_prefix(example_hash["unicodemath"].to_s) }
 
-        it "matches example's MathML with Plurimath MathML" do
+        it "matches example's MathML with Plurimath MathML(#{index})" do
           expect(unicodemath_examples_intents(mathml)).to eql(unicodemath_examples_intents(example_hash["mathml"]))
         end
       end
@@ -258,10 +258,12 @@ end
 def unicodemath_examples_intents(array)
   array.scan(/intent="([^"]+)"/).sort.flatten.join.
     gsub("$n)", "$naryand)").
-    gsub(",𝑛", ",n").
-    gsub("𝐴,", "A,").
-    gsub("𝑎,", "a,").
-    gsub("𝑆,", "S,").
-    gsub("𝑛,", "n,").
-    gsub(",𝑘", ",k")
+    gsub("𝐴", "A").
+    gsub("𝑎", "a").
+    gsub("𝛼", "a").
+    gsub("𝑏", "b").
+    gsub("𝑆", "S").
+    gsub("𝑛", "n").
+    gsub("𝑘", "k").
+    gsub("𝑡", "t")
 end

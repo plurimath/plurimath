@@ -85,6 +85,14 @@ module Plurimath
         end
       # Interval fence intent end
 
+      # Frac derivative intent begin
+        def frac_intent(tag, intent_name)
+          return partial_derivative(tag) if partial_derivative?(tag.nodes[0], tag.nodes[1])
+          # derivative if derivative?(tag[0], tag[1])
+          tag
+        end
+      # Frac derivative intent end
+
         private
 
         def fence_node_value(tag, arg_name)
@@ -98,7 +106,7 @@ module Plurimath
         end
 
         def infty_nodes?(nodes)
-          return unless nodes.length == 2
+          return unless nodes&.length == 2
 
           ["&#x2212;", "-", "+"].include?(nodes&.first&.nodes&.first) &&
             ["&#x221e;"].include?(nodes&.last&.nodes&.first)
@@ -108,6 +116,74 @@ module Plurimath
           INTENT_TEXT_NODES.include?(node.name) ||
             node.name == "mrow" && node.nodes.empty?
         end
+
+        # Frac derivative intent begin
+        # num == numerator && den == denominator
+        def partial_derivative?(num, den)
+          validate_field_and_value(num) &&
+            validate_field_and_value(den)
+        end
+
+        def validate_field_and_value(node, parent_node = nil)
+          case node.name
+          when "mo"
+            node.nodes[0] == "&#x2202;"
+          when "mrow"
+            validate_field_and_value(node.nodes[0], node)
+          when "msup", "msubsup"
+            if validate_field_and_value(node.nodes[0], parent_node)
+              wrap_in_mrow(parent_node) if parent_node
+              true
+            end
+          end
+        end
+
+        def partial_derivative(node)
+          intent = "($n,#{f_arg(node&.nodes[0])},#{den_arg(node&.nodes[1])})"
+          node[:intent] = ":partial-derivative#{intent}"
+          node
+        end
+
+        def f_arg(node)
+          nodes = node&.nodes
+          all_mi = nodes&.all? { |element| element.name == "mi" }
+          return "$f" unless all_mi
+
+          nodes&.first
+        end
+
+        def den_arg(node, nodes = [])
+          str = ""
+          case node.name
+          when "mo" then str = extract_string(nodes[1..-1], str)
+          when "mrow" then den_arg(node.nodes.first, node.nodes)
+          end
+          str
+        end
+
+        def wrap_in_mrow(node)
+          nodes = node&.nodes[1..-1]
+          return if nodes&.empty?
+
+          mrow = ox_element("mrow", attributes: { arg: "n" })
+          update_nodes(mrow, nodes)
+          replace_nodes = [node.nodes.first.xml_nodes, mrow.xml_nodes.nodes]
+          Plurimath.xml_engine.replace_nodes(node, replace_nodes.flatten)
+          node
+        end
+
+        def extract_string(nodes, str)
+          nodes.each do |node|
+            case node.name
+            when "mi"
+              str += html_entity_to_unicode(node.nodes.first)
+            when "msup", "msubsup"
+              str += html_entity_to_unicode(node.nodes.first.nodes.first)
+            end
+          end
+          str
+        end
+        # Frac derivative intent end
       end
     end
   end

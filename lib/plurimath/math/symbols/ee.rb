@@ -25,7 +25,8 @@ module Plurimath
         end
 
         def to_mathml_without_math_tag(_)
-          ox_element("mi") << "&#x2203;"
+          attributes = { intent: encoded } if intent
+          ox_element("mi", attributes: attributes) << "&#x2203;"
         end
 
         def to_omml_without_math_tag(_)
@@ -34,6 +35,12 @@ module Plurimath
 
         def to_html
           "&#x2203;"
+        end
+
+        private
+
+        def encoded
+          Utility.html_entity_to_unicode("&#x2203;")
         end
       end
     end

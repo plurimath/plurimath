@@ -1149,6 +1149,16 @@ module Plurimath
         end
       end
 
+      rule(unary_sub_sup: simple(:sub_sup),
+           first_value: sequence(:first_value)) do
+        if sub_sup.is_unary?
+          sub_sup.parameter_one.parameter_one = Utility.filter_values(first_value)
+          sub_sup
+        else
+          Math::Formula.new([sub_sup] + first_value)
+        end
+      end
+
       rule(color_value: simple(:color),
            first_value: simple(:first_value)) do
         Math::Function::Color.new(

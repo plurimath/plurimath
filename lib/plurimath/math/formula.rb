@@ -11,6 +11,7 @@ module Plurimath
         mathml
         asciimath
       ].freeze
+      POWER_BASE_CLASSES = %w[power_base power base].freeze
 
       def initialize(
         value = [],
@@ -66,9 +67,11 @@ module Plurimath
       def to_mathml_without_math_tag(intent)
         return mathml_content(intent) unless left_right_wrapper
 
-        mrow = ox_element("mrow")
+        mathml_value = mathml_content(intent)
+        attributes = intent_attribute(mathml_value) if intent
+        mrow = ox_element("mrow", attributes: attributes)
         mrow[:unitsml] = true if unitsml
-        Utility.update_nodes(mrow, mathml_content(intent))
+        Utility.update_nodes(mrow, mathml_value)
       end
 
       def mathml_content(intent)
@@ -334,6 +337,19 @@ module Plurimath
 
           valid_previous?(node) if node.xml_node?
         end
+      end
+
+      def intent_attribute(mathml)
+        return unless mathml || value.length != 2
+        return unless valid_first_parameter?(value.first)
+
+        { intent: ":function" }
+      end
+
+      def valid_first_parameter?(param)
+        return unless POWER_BASE_CLASSES.include?(param.class_name)
+
+        param.parameter_one.is_a?(Function::UnaryFunction)
       end
     end
   end

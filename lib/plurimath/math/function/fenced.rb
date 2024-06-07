@@ -275,11 +275,40 @@ module Plurimath
         end
 
         def interval_intent?(value, open_paren, close_paren)
+          return if value.length != 5
+          return unless interval_intent_value?(value)
+
           case open_paren
           when "(" then close_paren == ']'
           when "]" then ['[', ']'].include?(close_paren)
           when "[" then ['[', ']', ')'].include?(close_paren)
           end
+        end
+
+        def interval_intent_value?(value)
+          return unless value[2].nodes.first == ","
+
+          valid_intent_value?(value[1]) &&
+            valid_intent_value?(value[3])
+        end
+
+        def valid_intent_value?(node)
+          case node.name
+          when "mrow"
+            return true if all_specific_nodes?(node.nodes, "mn")
+
+            all_specific_nodes?(node.nodes, ["mo", "mi"])
+          when "mi", "mo" then match_node_value?(node, /[A-Za-z]/)
+          when "mn" then match_node_value?(node, /[0-9]/)
+          end
+        end
+
+        def all_specific_nodes?(nodes, array)
+          nodes.all? { |node| Array(array).include?(node.name) }
+        end
+
+        def match_node_value?(node, regex)
+          node.nodes.first.match?(regex)
         end
       end
     end

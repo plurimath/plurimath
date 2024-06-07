@@ -8,7 +8,7 @@ module Plurimath
       class Intent < BinaryFunction
         def to_mathml_without_math_tag(intent)
           first_value = parameter_one.to_mathml_without_math_tag(intent)
-          first_value.attributes[:intent] = Utility.html_entity_to_unicode(parameter_two.value)
+          first_value.attributes["intent"] = Utility.html_entity_to_unicode(parameter_two.value)
           first_value
         end
 
