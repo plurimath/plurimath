@@ -11,9 +11,7 @@ module Plurimath
       TEXT_REGEX = %r(\\(?:mbox|text){[^}]+})
 
       def initialize(text)
-        enti = HTMLEntities.new
-        text = enti.encode(enti.decode(text), :hexadecimal)
-        @text = gsub_text(text)
+        @text = pre_processing(text)
       end
 
       def parse
@@ -26,8 +24,10 @@ module Plurimath
 
       private
 
-      def gsub_text(text)
+      def pre_processing(text)
         text_functions = text.scan(TEXT_REGEX)
+        enti = HTMLEntities.new
+        text = enti.encode(enti.decode(text), :hexadecimal)
         text = gsub_space_and_unicodes(text)
         text.gsub(TEXT_REGEX) { |str| text_functions.shift }
       end
