@@ -24,7 +24,7 @@ module Plurimath
 
           def to_mathml_without_math_tag(intent)
             matrix = super
-            matrix[:intent] = intent_attr_value(intent) if intent
+            matrix["intent"] = intent_attr_value(intent) if intent
             matrix
           end
 

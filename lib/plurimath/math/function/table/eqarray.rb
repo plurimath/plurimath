@@ -20,8 +20,15 @@ module Plurimath
 
           def to_mathml_without_math_tag(intent)
             matrix = super
-            matrix[:intent] = ":equations" if intent
+            table(matrix)["intent"] = ":cases" if intent
+            matrix["intent"] = ":equations" if intent
             matrix
+          end
+
+          private
+
+          def table(tag)
+            tag.nodes.find { |tag| tag.name == "mtable" }
           end
         end
       end

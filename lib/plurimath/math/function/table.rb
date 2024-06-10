@@ -38,7 +38,7 @@ module Plurimath
 
         def to_mathml_without_math_tag(intent)
           table_tag = ox_element("mtable", attributes: table_attribute)
-          table_tag[:intent] = ":matrix(#{value.length},#{td_count})" if intent
+          table_tag["intent"] = ":matrix(#{value.length},#{td_count})" if intent
           Utility.update_nodes(
             table_tag,
             value&.map { |object| object&.to_mathml_without_math_tag(intent) },
@@ -123,7 +123,7 @@ module Plurimath
           return "" unless field
           if field&.class_name == "symbol"
             paren = field&.to_mathml_without_math_tag(intent)&.nodes&.first
-            return invisible_paren?(paren) ? "" : paren
+            return invisible_paren?(paren) ? "" : paren.to_s
           end
 
           paren = field&.respond_to?(:encoded) ? field&.encoded : field&.paren_value

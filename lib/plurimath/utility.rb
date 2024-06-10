@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "plurimath/utility/intent_encoding"
+require_relative "utility/intent_encoding"
 module Plurimath
   class Utility
     UNICODE_REGEX = %r{&#x[a-zA-Z0-9]+;}

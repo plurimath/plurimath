@@ -20,7 +20,7 @@ module Plurimath
 
           def to_mathml_without_math_tag(intent)
             table_tag = ox_element("mtable", attributes: table_attribute)
-            table_tag[:intent] = ":matrix(#{value.length},#{td_count})" if intent
+            table_tag["intent"] = ":matrix(#{value.length},#{td_count})" if intent
             Utility.update_nodes(
               table_tag,
               value&.map { |object| object&.to_mathml_without_math_tag(intent) },
@@ -53,7 +53,7 @@ module Plurimath
             return {} unless intent
 
             {
-              "intent": capital_bmatrix? ? ":curly-braced-matrix" : ":bracketed-matrix"
+              intent: capital_bmatrix? ? ":curly-braced-matrix" : ":bracketed-matrix"
             }
           end
         end

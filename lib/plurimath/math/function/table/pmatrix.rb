@@ -24,7 +24,7 @@ module Plurimath
 
           def to_mathml_without_math_tag(intent)
             matrix = super
-            matrix[:intent] = ":parenthesized-matrix" if intent
+            matrix["intent"] = ":parenthesized-matrix" if intent
             matrix
           end
         end

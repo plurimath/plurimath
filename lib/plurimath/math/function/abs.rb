@@ -13,7 +13,8 @@ module Plurimath
           first_value = mathml_value(intent)
           first_value = first_value&.insert(0, symbol) unless open_paren
           first_value << symbol unless close_paren
-          Utility.update_nodes(ox_element("mrow"), first_value)
+          mrow = Utility.update_nodes(ox_element("mrow"), first_value)
+          intentify(mrow, intent, func_name: :abs, intent_name: :"absolute-value")
         end
 
         def to_omml_without_math_tag(display_style)

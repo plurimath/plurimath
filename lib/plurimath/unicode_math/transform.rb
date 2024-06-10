@@ -37,6 +37,9 @@ module Plurimath
       rule(sub_exp: sequence(:exp)) { exp }
       rule(factor: simple(:factor)) { factor }
       rule(hbrack: simple(:hbrack)) { hbrack }
+      rule(script: simple(:script)) { :script }
+      rule(double: simple(:double)) { :double }
+      rule(mitBbb: simple(:mitBbb)) { :mitBbb }
       rule(symbol: simple(:symbol)) { Utility.symbols_class(symbol, lang: :unicodemath) }
       rule(number: simple(:number)) { Math::Number.new(number) }
 
@@ -44,6 +47,7 @@ module Plurimath
       rule(sub_paren: simple(:paren)) { paren }
       rule(factor: sequence(:factor)) { factor }
       rule(operand: simple(:operand)) { operand }
+      rule(fraktur: simple(:fraktur)) { :fraktur }
       rule(accents: subtree(:accent)) { Utility.unicode_accents(accent) }
       rule(sup_alpha: simple(:alpha)) { Math::Symbols::Symbol.new(Constants::SUP_ALPHABETS.key(alpha).to_s, mini_sup_sized: true) }
 
@@ -220,7 +224,7 @@ module Plurimath
           unicoded.to_sym,
           symbol.to_sym,
         )
-        Utility.symbols_class(unicode, lang: :unicodemath)
+        Utility.symbols_class((unicode || symbol), lang: :unicodemath)
       end
 
       rule(font_class: simple(:fonts),
@@ -406,6 +410,11 @@ module Plurimath
       rule(fonts: simple(:fonts),
            expr: sequence(:expr)) do
         [fonts] + expr
+      end
+
+      rule(fonts: simple(:fonts),
+           expr: simple(:expr)) do
+        [fonts, expr]
       end
 
       rule(phantom: simple(:phantom),
@@ -724,6 +733,16 @@ module Plurimath
       rule(factor: simple(:factor),
            operand: sequence(:operand)) do
         [factor] + operand
+      end
+
+      rule(operand: sequence(:operand),
+           expr: simple(:expr)) do
+        operand + [expr]
+      end
+
+      rule(operand: sequence(:operand),
+           expr: sequence(:expr)) do
+        operand + expr
       end
 
       rule(factor: simple(:factor),
@@ -2221,6 +2240,12 @@ module Plurimath
         [factor] + operand + naryand_recursion
       end
 
+      rule(factor: simple(:factor),
+           operand: sequence(:operand),
+           naryand_recursion: simple(:naryand_recursion)) do
+        [factor] + operand + [naryand_recursion]
+      end
+
       rule(factor: sequence(:factor),
            operand: simple(:operand),
            expr: sequence(:expr)) do
@@ -3611,6 +3636,17 @@ module Plurimath
       end
 
       rule(open_paren: simple(:open_paren),
+           fonts: simple(:fonts),
+           expr: simple(:expr),
+           close_paren: simple(:close_paren)) do
+        Math::Function::Fenced.new(
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
+          [fonts, expr],
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
+        )
+      end
+
+      rule(open_paren: simple(:open_paren),
            operator: simple(:operator),
            exp: sequence(:exp),
            close_paren: simple(:close_paren)) do
@@ -3759,6 +3795,18 @@ module Plurimath
         Math::Function::Fenced.new(
           open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           ([factor, operand] + exp),
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
+        )
+      end
+
+      rule(open_paren: simple(:open_paren),
+           factor: simple(:factor),
+           operand: sequence(:operand),
+           exp: sequence(:exp),
+           close_paren: simple(:close_paren)) do
+        Math::Function::Fenced.new(
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
+          ([factor] + operand + exp),
           close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end

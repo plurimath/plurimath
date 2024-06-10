@@ -35,6 +35,14 @@ module Plurimath
         def to_html
           "&#x2a0c;"
         end
+
+        def is_nary_symbol?
+          true
+        end
+
+        def nary_intent_name
+          "quadruple integral"
+        end
       end
     end
   end

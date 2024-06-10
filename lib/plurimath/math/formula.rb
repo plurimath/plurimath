@@ -347,6 +347,8 @@ module Plurimath
       end
 
       def valid_first_parameter?(param)
+        undef_functions = UnicodeMath::Constants::UNDEF_UNARY_FUNCTIONS
+        return true if param.is_a?(Symbols::Symbol) && undef_functions.include?(param.value)
         return unless POWER_BASE_CLASSES.include?(param.class_name)
 
         param.parameter_one.is_a?(Function::UnaryFunction)

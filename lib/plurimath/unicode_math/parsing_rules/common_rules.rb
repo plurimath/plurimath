@@ -41,7 +41,8 @@ module Plurimath
         end
 
         rule(:fonts) do
-          str("\\") >> custom_fonts.as(:unicoded_font_class) >> str("H").as(:symbol) |
+          unicoded_fonts |
+            str("\\") >> custom_fonts.as(:unicoded_font_class) >> str("H").as(:symbol) |
             str("\\") >> str("mitBbb").as(:unicoded_font_class) >> match(/D|d|e|i|j/).as(:symbol)|
             op_fonts >> match["A-Za-z"].as(:symbol) |
             op_alphanumeric_fonts >> (match["A-Za-z"].as(:symbol) | match("[0-9]").as(:number))
