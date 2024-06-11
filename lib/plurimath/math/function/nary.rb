@@ -51,6 +51,7 @@ module Plurimath
             validate_mathml_fields(parameter_three, intent),
           ]
           subsup_tag = Utility.update_nodes(ox_element(tag_name), new_arr)
+          mask_subsup_tag(subsup_tag) if options.dig(:mask)
           return subsup_tag unless parameter_four
 
           intentify(
@@ -86,7 +87,15 @@ module Plurimath
         def line_breaking(obj)
           parameter_one&.line_breaking(obj)
           if obj.value_exist?
-            obj.update(self.class.new(Utility.filter_values(obj.value), self.parameter_two, self.parameter_three, self.parameter_four, self.options))
+            obj.update(
+              self.class.new(
+                Utility.filter_values(obj.value),
+                self.parameter_two,
+                self.parameter_three,
+                self.parameter_four,
+                self.options,
+              )
+            )
             self.parameter_two = nil
             self.parameter_three = nil
             self.parameter_four = nil
@@ -95,7 +104,15 @@ module Plurimath
 
           parameter_two&.line_breaking(obj)
           if obj.value_exist?
-            obj.update(self.class.new(nil, Utility.filter_values(obj.value), self.parameter_three, self.parameter_four, self.options))
+            obj.update(
+              self.class.new(
+                nil,
+                Utility.filter_values(obj.value),
+                self.parameter_three,
+                self.parameter_four,
+                self.options
+              )
+            )
             self.parameter_three = nil
             self.parameter_four = nil
             return
@@ -180,8 +197,85 @@ module Plurimath
           end
         end
 
+        def masked_tag(tag)
+          options_array = get_mask_options
+          if options_array.include?("show_up_limit_place_holder") && parameter_three.nil?
+            set_place_holder(tag, type: :above)
+          end
+          if options_array.include?("show_low_limit_place_holder") && parameter_two.nil?
+            set_place_holder(tag, type: :below)
+          end
+          if options_array.include?("limits_opposite")
+            change_power_base_values(tag)
+          end
+          if options_array.include?("limits_under_over")
+            # TODO: change tag name to munderover
+          end
+          if options_array.include?("limits_sub_sup")
+            # TODO: change tag name to msubsup
+          end
+          if options_array.include?("upper_limit_as_super_script")
+            # TODO: change mover to msup
+          end
+        end
+
+        def get_mask_options(mask_options = [])
+          mask = options&.dig(:mask).to_i
+
+          case mask % 4
+          when 0 then mask_options << "limits_default"
+          when 1 then mask_options << "limits_under_over"
+          when 2 then mask_options << "limits_sub_sup"
+          when 3 then mask_options << "upper_limit_as_super_script"
+          end
+
+          mask -= mask % 4
+
+          case mask % 32
+          when 4 then mask_options << "limits_opposite"
+          when 8 then mask_options << "show_low_limit_place_holder"
+          when 12 then mask_options += ["limits_opposite", "show_low_limit_place_holder"]
+          when 16 then mask_options << "show_up_limit_place_holder"
+          when 20 then mask_options += ["limits_opposite", "show_up_limit_place_holder"]
+          when 24 then mask_options += ["show_low_limit_place_holder", "show_up_limit_place_holder"]
+          when 28 then mask_options += ["limits_opposite", "show_low_limit_place_holder", "show_up_limit_place_holder"]
+          end
+
+          mask_options
+        end
+
         def intent_name
-          parameter_one&.is_nary_symbol? ? parameter_one.nary_intent_name : "n-ary"
+          return "n-ary" unless parameter_one&.is_nary_symbol?
+
+          parameter_one.nary_intent_name
+        end
+
+        def mask_subsup_tag(tag)
+          masked_tag(tag)
+          # IN progress yet!
+        end
+
+        def change_power_base_values(tag)
+          case tag.name
+          when "msub", "munder" then # TODO: Update the values nodes if needed
+          when "msup", "mover" then # TODO: Update the values nodes if needed
+          when "munderover", "msubsup" then # TODO: Update the values nodes if needed
+          end
+        end
+
+        def set_place_holder(node, type:)
+          nodes = if type == :below
+                    node.name = node.name == "msup" ? "msubsup" : "munderover"
+                    node.nodes.insert(1, mo_tag("&#x2b1a;"))
+                  else
+                    node.name = node.name == "msub" ? "msubsup" : "munderover"
+                    node.nodes.insert(2, mo_tag("&#x2b1a;"))
+                  end
+          Plurimath.xml_engine.replace_nodes(node, nodes)
+        end
+
+        def mo_tag(str)
+          ox_element("mo") << str
         end
       end
     end

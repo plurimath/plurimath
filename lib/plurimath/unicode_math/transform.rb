@@ -1873,6 +1873,11 @@ module Plurimath
         if subsup_exp.is_ternary_function?
           subsup_exp.parameter_three = Utility.filter_values(naryand)
           subsup_exp
+        elsif subsup_exp.is_a?(Math::Function::Nary)
+          if subsup_exp.parameter_four.nil?
+            subsup_exp.parameter_four = Utility.filter_values(naryand)
+          end
+          subsup_exp
         else
           Math::Function::Nary.new(
             subsup_exp.parameter_one,
@@ -2908,34 +2913,6 @@ module Plurimath
                         else
                           (Constants::NARY_CLASSES.invert[nary_class.to_s] || Constants::NARY_SYMBOLS[nary_class.to_sym] || nary_class)
                         end
-        sup_value = sup.is_a?(Math::Function::Overset) ? sup.parameter_one : Utility.unfenced_value(sup, paren_specific: true)
-        options = { mask: mask.value }
-        if Constants::NARY_CLASSES.key?(nary_function.to_sym)
-          Utility.get_class(nary_function).new(
-            nil,
-            sup_value,
-            nil,
-            options
-          )
-        else
-          Math::Function::Nary.new(
-            Utility.symbols_class(nary_function, lang: :unicodemath),
-            nil,
-            sup_value,
-            nil,
-            options
-          )
-        end
-      end
-
-      rule(nary_class: simple(:nary_class),
-           mask: simple(:mask),
-           sup: simple(:sup)) do
-        nary_function = if Constants::NARY_CLASSES.key?(nary_class.to_sym)
-                          nary_class
-                        else
-                          (Constants::NARY_CLASSES.invert[nary_class.to_s] || Constants::NARY_SYMBOLS[nary_class.to_sym] || nary_class)
-                        end
         options = { mask: mask.value }
         if Constants::NARY_CLASSES.key?(nary_function.to_sym)
           Utility.get_class(nary_function).new(
@@ -3642,6 +3619,17 @@ module Plurimath
         Math::Function::Fenced.new(
           open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           [fonts, expr],
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
+        )
+      end
+
+      rule(open_paren: simple(:open_paren),
+           fonts: simple(:fonts),
+           exp: simple(:exp),
+           close_paren: simple(:close_paren)) do
+        Math::Function::Fenced.new(
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
+          [fonts, exp],
           close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end

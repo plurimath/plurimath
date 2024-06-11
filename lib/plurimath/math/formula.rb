@@ -11,7 +11,7 @@ module Plurimath
         mathml
         asciimath
       ].freeze
-      POWER_BASE_CLASSES = %w[power_base power base].freeze
+      POWER_BASE_CLASSES = %w[powerbase power base].freeze
 
       def initialize(
         value = [],
@@ -351,7 +351,8 @@ module Plurimath
         return true if param.is_a?(Symbols::Symbol) && undef_functions.include?(param.value)
         return unless POWER_BASE_CLASSES.include?(param.class_name)
 
-        param.parameter_one.is_a?(Function::UnaryFunction)
+        param.parameter_one.is_a?(Function::UnaryFunction) ||
+          param.parameter_one.is_a?(Function::Lim)
       end
     end
   end
