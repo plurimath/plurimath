@@ -87,6 +87,7 @@ module Plurimath
           num = tag.nodes[0]
           den = tag.nodes[1]
           return partial_derivative(tag) if partial_derivative?(num, den)
+
           derivative(tag) if derivative?(num, den)
           tag
         end
@@ -146,7 +147,7 @@ module Plurimath
         end
 
         def validate_power_base_values(num, den)
-          return unless find_power_base_nodes(num) || find_power_base_nodes(den)
+          return true if find_power_base_nodes(num) && find_power_base_nodes(den)
 
           find_power_base_nodes(num) == find_power_base_nodes(den)
         end
@@ -167,11 +168,11 @@ module Plurimath
         end
 
         def f_arg(node)
-          nodes = node&.nodes
-          all_mi = nodes&.all? { |element| element.name == "mi" }
-          return "$f" unless all_mi
+          nodes = node&.nodes[1..-1]
+          all_m_tags = nodes&.all? { |element| element.name == "mi" }
+          return "$f" unless all_m_tags
 
-          nodes&.first
+          nodes&.first&.nodes&.first
         end
 
         def den_arg(node, nodes = [])
@@ -208,8 +209,10 @@ module Plurimath
 
         def partial_arg(node)
           found_node = find_power_base_nodes(node.nodes[0])
+          return "1" unless found_node
+
           case found_node.name
-          when INTENT_TEXT_NODES
+          when "mo", "mi", "mn"
             html_entity_to_unicode(found_node.nodes.first)
           else
             "$n"
@@ -220,31 +223,30 @@ module Plurimath
       # Frac derivative intent begin
         def derivative?(num, den)
           return unless num || den
-          return unless num.name == "mrow" && den.name == "mrow"
 
-          valid_derivative?(num) &&
-            valid_derivative?(den) &&
-            validate_power_base_values(num, den)
+          valid_derivative?(num) && valid_derivative?(den)
         end
 
         def valid_derivative?(node)
+          return node.nodes.first.match?(/(&#x2146;)|d/) if INTENT_TEXT_NODES.include?(node.name)
+
           node.nodes.first.name == "mi" &&
-            node.nodes.first.nodes.first == "d" &&
+            node.nodes.first.nodes.first.match?(/(&#x2146;)|^d$/) &&
             node.nodes.length >= 2
         end
 
         def derivative(node)
           num = node.nodes[0]
           den = node.nodes[1]
-          intent_name = ":derivative(1,#{num_arg(num)},#{den_arg(den)})"
-          node
+          intent_name = ":derivative(1,#{num_arg(num, den)},#{derivative_den_arg(den, num)})"
+          node["intent"] = intent_name
         end
 
-        def num_arg(num)
+        def num_arg(num, den)
           # TODO: in-progress => binding.irb
         end
 
-        def den_arg(den)
+        def derivative_den_arg(den, num)
           # TODO: in-progress => binding.irb
         end
       # Frac derivative intent end

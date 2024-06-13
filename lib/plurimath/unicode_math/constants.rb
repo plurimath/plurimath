@@ -4,6 +4,14 @@ module Plurimath
   class UnicodeMath
     class Constants
       UNARY_FUNCTIONS = %w[
+        arccos
+        arcsin
+        arctan
+        csch
+        sech
+        sinh
+        tanh
+        cosh
         cos
         cot
         csc
@@ -101,7 +109,6 @@ module Plurimath
         divideontimes: "&#xc7;",
         dotminus: "&#x2238;",
         dotplus: "&#x2214;",
-        funcapply: "&#x2061;",
         intercal: "&#x22ba;",
         leftthreetimes: "&#x22cb;",
         lor: "&#x2228;",

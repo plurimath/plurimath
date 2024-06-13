@@ -13752,13 +13752,9 @@ module UnicodeMathTransformValues
       Plurimath::Math::Formula.new([
         Plurimath::Math::Symbols::Dd.new,
         Plurimath::Math::Symbols::Symbol.new("&#x1d467;"),
-        Plurimath::Math::Symbols::Symbol.new("a"),
-        Plurimath::Math::Symbols::Symbol.new("r"),
-        Plurimath::Math::Symbols::Symbol.new("c"),
-        Plurimath::Math::Symbols::Symbol.new("s"),
-        Plurimath::Math::Symbols::Symbol.new("i"),
-        Plurimath::Math::Symbols::Symbol.new("n"),
-        Plurimath::Math::Symbols::Symbol.new("&#x1d467;")
+        Plurimath::Math::Function::Arcsin.new(
+          Plurimath::Math::Symbols::Symbol.new("&#x1d467;")
+        )
       ])
     ),
     Plurimath::Math::Symbols::Equal.new,
