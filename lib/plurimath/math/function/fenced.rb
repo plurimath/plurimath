@@ -30,9 +30,8 @@ module Plurimath
 
         def to_mathml_without_math_tag(intent)
           first_value = ox_element("mo", attributes: options&.dig(:open_paren)) << (mathml_paren(parameter_one, intent) || "")
-          second_value = parameter_two&.map { |object| object&.to_mathml_without_math_tag(intent) } || []
           third_value = ox_element("mo", attributes: options&.dig(:close_paren)) << (mathml_paren(parameter_three, intent) || "")
-          mrow_value = second_value.insert(0, first_value) << third_value
+          mrow_value = mathml_value(intent).insert(0, first_value) << third_value
           fenced = Utility.update_nodes(ox_element("mrow"), mrow_value)
           intentify(
             fenced,
@@ -309,6 +308,35 @@ module Plurimath
 
         def match_node_value?(node, regex)
           node.nodes.first.match?(regex)
+        end
+
+        def mathml_value(intent)
+          nodes = parameter_two&.map { |object| object&.to_mathml_without_math_tag(intent) }
+          if intent
+            mrow = Utility.update_nodes(ox_element("mrow"), nodes)
+            update_partial_derivative(nodes) unless mrow.locate("*/mfrac/@intent").empty?
+          end
+          nodes
+        end
+
+        def update_partial_derivative(nodes)
+          nodes.reduce do |first, second|
+            if valid_partial_node(first)
+              if %w[mfrac mo].include?(second.name)
+                first["intent"].gsub!("$f", "")
+              else
+                second["arg"] = "f"
+              end
+            end
+            second
+          end
+        end
+
+        def valid_partial_node(node)
+          return unless node.name == "mfrac"
+
+          node["intent"]&.start_with?(":partial-derivative") &&
+            !node.locate("*/@arg").include?("f")
         end
       end
     end

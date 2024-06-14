@@ -30,7 +30,6 @@ module Plurimath
       rule(:n_ascii) { match["0-9"].repeat(1).as(:number) }
       rule(:a_ascii) { match["A-Za-z"].repeat(1).as(:symbol) }
       rule(:unicode) { str("&#x") >> match["0-9a-fA-F"].repeat >> str(";") }
-      rule(:d_or_dd) { str("d") | str("&#x2146;") | str("&#x2145;") | str("\\dd")  | str("\\Dd") }
       rule(:an_math) { space.absent? >> match("[\u{1D400}-\u{1D7FF}\u{2102}-\u{2134}]") }
 
       rule(:td_value) { expression.as(:exp) >> space? >> td_value.as(:expr).maybe }
@@ -201,8 +200,7 @@ module Plurimath
           exp_script |
           sub_paren |
           sup_paren |
-          d_or_dd.as(:symbol) >> factor.as(:expr) |
-          frac_binary_absent >> frac_binary_absent >> invisible_times.maybe >> relational_symbols.absent? >> denominator.as(:recursive_denominator) |
+          frac_binary_absent >> invisible_times.maybe >> relational_symbols.absent? >> denominator.as(:recursive_denominator) |
           operator.absent? >> factor >> invisible_times.maybe >> relational_symbols.absent? >> denominator.as(:recursive_denominator) |
           operator.absent? >> operand >> invisible_times.maybe >> relational_symbols.absent? >> denominator.as(:recursive_denominator) |
           frac_binary_absent |

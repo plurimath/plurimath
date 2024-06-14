@@ -87,8 +87,8 @@ module Plurimath
           num = tag.nodes[0]
           den = tag.nodes[1]
           return partial_derivative(tag) if partial_derivative?(num, den)
+          return derivative(tag) if derivative?(num, den)
 
-          derivative(tag) if derivative?(num, den)
           tag
         end
       # Frac derivative intent end
@@ -128,8 +128,7 @@ module Plurimath
         # num == numerator && den == denominator
         def partial_derivative?(num, den)
           validate_field_and_value(num) &&
-            validate_field_and_value(den) &&
-            validate_power_base_values(num, den)
+            validate_field_and_value(den)
         end
 
         def validate_field_and_value(node, parent_node = nil)
@@ -144,12 +143,6 @@ module Plurimath
               true
             end
           end
-        end
-
-        def validate_power_base_values(num, den)
-          return true if find_power_base_nodes(num) && find_power_base_nodes(den)
-
-          find_power_base_nodes(num) == find_power_base_nodes(den)
         end
 
         def find_power_base_nodes(node)
@@ -170,18 +163,32 @@ module Plurimath
         def f_arg(node)
           nodes = node&.nodes[1..-1]
           all_m_tags = nodes&.all? { |element| element.name == "mi" }
-          return "$f" unless all_m_tags
+          return insert_f_arg(node, nodes) unless all_m_tags
 
           nodes&.first&.nodes&.first
         end
 
+        def insert_f_arg(node, nodes)
+          if !nodes.empty? && !%w[msup msubsup].include?(node.name)
+            mrow = ox_element("mrow", attributes: { arg: "$f" })
+            Plurimath.xml_engine.replace_nodes(
+              node,
+              [
+                node.nodes.first,
+                update_nodes(mrow, nodes),
+              ],
+            )
+          end
+          "$f"
+        end
+
         def den_arg(node, nodes = [])
-          str = ""
+          str = []
           case node.name
           when "mo" then str = extract_string(nodes[1..-1], str)
-          when "mrow" then str += den_arg(node.nodes.first, node.nodes)
+          when "mrow" then str << den_arg(node.nodes.first, node.nodes)
           end
-          str
+          str.join(",")
         end
 
         def wrap_in_mrow(node)
@@ -199,9 +206,9 @@ module Plurimath
           nodes.each do |node|
             case node.name
             when "mi"
-              str += html_entity_to_unicode(node.nodes.first)
+              str << html_entity_to_unicode(node.nodes.first)
             when "msup", "msubsup"
-              str += html_entity_to_unicode(node.nodes.first.nodes.first)
+              str << html_entity_to_unicode(node.nodes.first.nodes.first)
             end
           end
           str
@@ -228,26 +235,37 @@ module Plurimath
         end
 
         def valid_derivative?(node)
-          return node.nodes.first.match?(/(&#x2146;)|d/) if INTENT_TEXT_NODES.include?(node.name)
+          return node.nodes.first.match?(/(&#x214(6|5);)|^d$/) if INTENT_TEXT_NODES.include?(node.name)
 
           node.nodes.first.name == "mi" &&
-            node.nodes.first.nodes.first.match?(/(&#x2146;)|^d$/) &&
+            node.nodes.first.nodes.first.match?(/(&#x214(6|5);)|^d$/) &&
             node.nodes.length >= 2
         end
 
         def derivative(node)
           num = node.nodes[0]
           den = node.nodes[1]
-          intent_name = ":derivative(1,#{num_arg(num, den)},#{derivative_den_arg(den, num)})"
+          intent_name = ":derivative(1,#{num_arg(num)},#{derivative_den_arg(den)})"
           node["intent"] = intent_name
+          node
         end
 
-        def num_arg(num, den)
-          # TODO: in-progress => binding.irb
+        def num_arg(num)
+          return if num.nodes.length <= 1
+
+          case num.nodes[1].name
+          when "mi", "mo", "mn"
+            num.nodes[1].nodes.first
+          else
+            num.nodes[1]["arg"] = "f"
+            "$f"
+          end
         end
 
-        def derivative_den_arg(den, num)
-          # TODO: in-progress => binding.irb
+        def derivative_den_arg(den)
+          return if den.nodes.length <= 1
+
+          den.nodes[1].nodes.first
         end
       # Frac derivative intent end
       end

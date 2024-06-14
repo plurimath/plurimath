@@ -75,7 +75,9 @@ module Plurimath
       end
 
       def mathml_content(intent)
-        value.map { |val| val.to_mathml_without_math_tag(intent) }
+        nodes = value.map { |val| val.to_mathml_without_math_tag(intent) }
+        intent_post_processing(nodes, intent) if intent
+        nodes
       end
 
       def to_latex
@@ -353,6 +355,58 @@ module Plurimath
 
         param.parameter_one.is_a?(Function::UnaryFunction) ||
           param.parameter_one.is_a?(Function::Lim)
+      end
+
+      def intent_post_processing(nodes, intent)
+        mrow = Utility.update_nodes(ox_element("mrow"), nodes)
+        update_partial_derivative_nodes(nodes) unless mrow.locate("*/mfrac/@intent").empty?
+      end
+
+      def update_partial_derivative_nodes(nodes)
+        nodes.reduce do |first, second|
+          if valid_partial_node(first)
+            if %w[mfrac mo].include?(second.name)
+              first["intent"].gsub!("$f", "")
+            else
+              second["arg"] = "f"
+            end
+          end
+          second
+        end
+      end
+
+      def valid_partial_node(node)
+        return unless node.name == "mfrac"
+
+        node["intent"]&.start_with?(":partial-derivative") &&
+          !node.locate("*/@arg").include?("f")
+      end
+
+      def validate_double_d_derivatives?(nodes)
+        nodes.find.with_index do |node, index|
+          next unless %w[msub msup msubsup].include?(node.name)
+
+          next_node = nodes[index + 1]
+          next unless next_node
+          next if next_node.name == "mo"
+
+          node.nodes.first["intent"] == "ⅅ"
+        end
+      end
+
+      def base_derivative_intent(first, second)
+        intent_name = ":derivative(1,$f,#{second_value(first.nodes[1], second)})"
+        first["intent"] = intent_name
+        first
+      end
+
+      def second_value(first, second)
+        return Utility.html_entity_to_unicode(first.nodes.first) if first.name == "mi"
+
+        case tag.name
+        when "mi"
+        when "mrow"
+        end
       end
     end
   end
