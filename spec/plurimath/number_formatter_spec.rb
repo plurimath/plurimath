@@ -31,6 +31,16 @@ RSpec.describe Plurimath::NumberFormatter do
       let(:localize_number) { nil }
       let(:localizer_symbols) { {} }
 
+      it "exposes symbols: :basic with en locale" do
+        output_string = formatter.twitter_cldr_reader(locale: locale)
+        expect(output_string[:decimal]).to eql(".")
+      end
+
+      it "exposes symbols: :basic with fr locale" do
+        output_string = formatter.twitter_cldr_reader(locale: :fr)
+        expect(output_string[:decimal]).to eql(",")
+      end
+
       it "matches notation: :basic with de locale localized without precision string" do
         format = { decimal: "*", notation: :basic }
         output_string = formatter.localized_number(number, locale: locale, format: format)

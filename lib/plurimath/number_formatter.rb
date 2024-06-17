@@ -23,6 +23,14 @@ module Plurimath
       )
     end
 
+    def twitter_cldr_reader(locale: @locale)
+      Formatter::NumericFormatter.new(
+        supported_locale(locale),
+        localize_number: localize_number,
+        localizer_symbols: localizer_symbols,
+      ).twitter_cldr_reader
+    end
+
     private
 
     def supported_locale(locale)
