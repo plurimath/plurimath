@@ -8,7 +8,7 @@ require_relative "localized_number"
 module Plurimath
   module Formatter
     class NumericFormatter
-      attr_accessor :locale, :localize_number, :localizer_symbols
+      attr_accessor :locale, :localize_number, :localizer_symbols, :twitter_cldr_reader
 
       LOCALIZE_NUMBER_REGEX = %r{(?<group>[^#])?(?<groupdigits>#+0)(?<decimal>.)(?<fractdigits>#+)(?<fractgroup>[^#])?}
       SUPPORTED_NOTATIONS = %i[e scientific engineering].freeze
@@ -17,7 +17,7 @@ module Plurimath
         @locale = locale
         @localize_number = localize_number
         @localizer_symbols = localizer_symbols
-        @twitter_cldr_reader = twitter_cldr_reader
+        @twitter_cldr_reader = twitter_cldr_reader_lookup
       end
 
       def localized_number(number_string, locale:, precision:, format:)
@@ -30,7 +30,7 @@ module Plurimath
 
       private
 
-      def twitter_cldr_reader
+      def twitter_cldr_reader_lookup
         num = TwitterCldr::DataReaders::NumberDataReader.new(locale)
         num.symbols
           .merge!(@localizer_symbols)
