@@ -1,123 +1,511 @@
 = Plurimath
 
-This gem implements a mechanism of conversion between Math languages mentioned below.
+== Purpose
 
-1. **AsciiMath**
-2. **MathML** 
-3. **Latex** 
+Plurimath provides a common data model for mathematical representation languages
+and allows conversion between various math representation languages.
+
+Plurimath aims to streamline the process of converting mathematical expressions
+between different representation languages. This facilitates easier integration
+across different systems and platforms, ensuring that mathematical content
+remains consistent and accurate regardless of the format it is presented in.
+
+Supported math representational languages:
+
+* MathML
+* AsciiMath
+* UnicodeMath
+* LaTeX math
+* OMML
+
+Supported units representation languages:
+
+* UnitsML
+
+
+== Benefits
+
+Suitability:: Convert mathematical content to the required format for different
+tools and platforms.
+
+Correctness:: Ensure mathematical expressions are correctly formatted for print
+and digital publications.
+
+Interoperability:: Facilitate the integration of mathematical expressions across
+various software systems and platforms.
+
+Accessibility:: Convert mathematical content into formats that are more
+accessible for screen readers and other assistive technologies.
+
 
 == Installation
 
 Add this line to your application's Gemfile:
 
-```ruby
+[source,ruby]
+----
 gem "plurimath"
-```
+----
+
 And then execute:
-```shell
- $ bundle install
-```
-Or install it yourself as:
-```shell
- $ gem install plurimath
-```
+
+[source,sh]
+----
+$ bundle install
+----
+
+Or install it yourself with:
+
+[source,sh]
+----
+$ gem install plurimath
+----
 
 == Usage
 
-Pass the string you want to convert and Math type of the string provided, which will give you **Plurimath::Math::Formula** object as output, Let's see some examples below.
+The central data model in Plurimath is the `Plurimath::Formula` class, which
+allows you to transform any math representation language into any other
+representation language.
 
-=== *Conversion Examples*
 
-===== Asciimath Formula Example
-[source, ruby, indent=2]
+=== Conversion Examples
+
+==== AsciiMath Formula Example
+
+[source,ruby]
 ----
 asciimath = "sin(1)"
 formula = Plurimath::Math.parse(asciimath, :asciimath)
 ----
-===== MathML Formula Example
-[source, ruby, indent=2]
+
+==== MathML Formula Example
+
+[source,ruby]
 ----
 mathml = <<~MATHML
-              <math xmlns='http://www.w3.org/1998/Math/MathML'>
-                <mstyle displaystyle='true'>
-                  <mi>sin</mi>
-                  <mn>1</mn>
-                </mstyle>
-              </math>
-            MATHML
-formula = Plurimath::Math.parse(mathml, "mathml")
+  <math xmlns='http://www.w3.org/1998/Math/MathML'>
+    <mstyle displaystyle='true'>
+      <mi>sin</mi>
+      <mn>1</mn>
+    </mstyle>
+  </math>
+MATHML
+formula = Plurimath::Math.parse(mathml, :mathml)
 ----
-===== Latex Formula Example
-[source, ruby, indent=2]
+
+==== LaTeX Formula Example
+
+[source,ruby]
 ----
 latex = "\\sin{1}"
-formula = Plurimath::Math.parse(latex, "latex")
+formula = Plurimath::Math.parse(latex, :latex)
 ----
----
-Since we have the object of **Plurimath::Formula**,We can generate **AsciiMath**, **MathMl** or **Latex** string from the formula object,All we have to do is call conversion function on formula object, see examples below.
 
-===== AsciiMath Output conversion
-[source, ruby, indent=2]
+==== UnicodeMath Formula Example
+
+[source,ruby]
+----
+unicodemath = "sin(1)"
+formula = Plurimath::Math.parse(unicodemath, :unicodemath)
+----
+
+==== OMML Formula Example
+
+[source,ruby]
+----
+omml = <<~OMML
+  <m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math">
+    <m:oMath>
+      <m:f>
+        <m:fPr>
+          <m:ctrlPr />
+        </m:fPr>
+        <m:num>
+          <m:r>
+            <m:t>sin</m:t>
+          </m:r>
+        </m:num>
+        <m:den>
+          <m:r>
+            <m:t>1</m:t>
+          </m:r>
+        </m:den>
+      </m:f>
+    </m:oMath>
+  </m:oMathPara>
+OMML
+formula = Plurimath::Math.parse(omml, :omml)
+----
+
+=== Converting to Other Formats
+
+Once you have a `Plurimath::Math::Formula` object, you can convert it to
+AsciiMath, MathML, LaTeX, UnicodeMath, or OMML by calling the respective
+conversion function on the `Formula` object.
+
+==== AsciiMath Output Conversion
+
+[source,ruby]
 ----
 formula.to_asciimath
-> sin(1)
+# => "sin(1)"
 ----
-*Note:*
- Asciimath doesn't support link:AsciiMath-Supported-Data.adoc#symbols-inherited-from-latex[*following symbols*] but Latex does.So from Latex to Asciimath conversion we are returning latex's supported symbols if it's not supported in Asciimath.
 
-===== Latex Output conversion
-[source, ruby, indent=2]
+NOTE: AsciiMath doesn't support
+link:AsciiMath-Supported-Data.adoc#symbols-inherited-from-latex[certain symbols]
+that LaTeX does. During conversion from LaTeX to AsciiMath, if a symbol is not
+supported in AsciiMath, the LaTeX symbol will be returned.
+
+
+==== LaTeX Output Conversion
+
+[source,ruby]
 ----
 formula.to_latex
-> \\sin1
+# => "\\sin1"
 ----
-===== MathML Output conversion
-[source, ruby, indent=2]
+
+==== MathML Output Conversion
+
+[source,ruby]
 ----
 formula.to_mathml
-> <math xmlns='http://www.w3.org/1998/Math/MathML'>
->   <mstyle displaystyle='true'>
->     <mi>sin</mi>
->     <mn>1</mn>
->   </mstyle>
-> </math>
+# => "<math xmlns='http://www.w3.org/1998/Math/MathML'><mstyle displaystyle='true'><mi>sin</mi><mn>1</mn></mstyle></math>"
 ----
-=== XML Engines
 
-**Plurimath** supports two XML engines.
+==== UnicodeMath Output Conversion
 
-1. **Oga**
-2. **Ox**
+[source,ruby]
+----
+formula.to_unicodemath
+# => "sin(1)"
+----
 
-By default, **Ox** is used which can be easily changed using the following syntax.
-```[source, ruby]
-require "plurimath/xml_engines/oga" # load files related to oga
+==== OMML Output Conversion
 
-Plurimath.xml_engine = Plurimath::XmlEngine::Oga # set Oga as Plurimath xml engine
-```
-Using the same syntax you can change from **Oga** to **Ox**.
+[source,ruby]
+----
+formula.to_omml
+# => "<m:oMathPara xmlns:m=\"http://schemas.openxmlformats.org/officeDocument/2006/math\"><m:oMath><m:f><m:fPr><m:ctrlPr /></m:fPr><m:num><m:r><m:t>sin</m:t></m:r></m:num><m:den><m:r><m:t>1</m:t></m:r></m:den></m:f></m:oMath></m:oMathPara>"
+----
 
-=== Supported Content
+== Handling Complex Mathematical Expressions
 
-Take a look into the link:supported_symbols_list.adoc[Symbols, target="_blank"] and link:supported_parens_list.adoc[Parenthesis, target="_blank"] tables for parenthesis and symbols support.
+Plurimath is capable of handling complex mathematical expressions with nested
+functions and operators.
 
---
-link:AsciiMath-Supported-Data.adoc[AsciiMath Supported Data, target="_blank"]
---
+This feature is particularly useful for application that requires consistent and
+accurate conversion of intricate mathematical content.
 
---
-link:MathML-Supported-Data.adoc[MathML Supported Data, target="_blank"]
---
+=== Example of a Complex Expression
 
---
-link:Latex-Supported-Data.adoc[Latex Supported Data, target="_blank"]
---
+Consider the following complex LaTeX expression:
 
---
-link:UnicodeMath-Supported-Data.adoc[UnicodeMath Supported Data, target="_blank"]
---
+[source,latex]
+----
+\frac{\sqrt{a^2 + b^2}}{\sin(\theta) + \cos(\theta)}
+----
+
+You can parse and convert this complex expression with Plurimath:
+
+[source,ruby]
+----
+complex_latex = "\\frac{\\sqrt{a^2 + b^2}}{\\sin(\\theta) + \\cos(\\theta)}"
+formula = Plurimath::Math.parse(complex_latex, :latex)
+
+# Convert to AsciiMath
+asciimath = formula.to_asciimath
+# => "frac(sqrt(a^2 + b^2))(sin(theta) + cos(theta))"
+
+# Convert to MathML
+mathml = formula.to_mathml
+# => "<math xmlns='http://www.w3.org/1998/Math/MathML'><mfrac><msqrt><mrow><msup><mi>a</mi><mn>2</mn></msup><mo>+</mo><msup><mi>b</mi><mn>2</mn></msup></mrow></msqrt><mrow><mi>sin</mi><mo>(</mo><mi>θ</mi><mo>)</mo><mo>+</mo><mi>cos</mi><mo>(</mo><mi>θ</mi><mo>)</mo></mrow></mfrac></math>"
+
+# Convert to UnicodeMath
+unicodemath = formula.to_unicodemath
+# => "frac(√(a^2 + b^2))(sin(θ) + cos(θ))"
+
+# Convert to OMML
+omml = formula.to_omml
+# => "<omml representation of the expression>"
+----
 
 
---
-link:UnitsML-Supported-Data.adoc[UnitsML Supported Data, target="_blank"]
---
+
+
+== Displaying the Math Parse Tree
+
+Plurimath allows you to display the math parse tree both as `Formula` objects
+and in the math language of expression.
+
+=== Displaying as Formula Objects
+
+You can display the parse tree as `Formula` objects to understand the structure
+of the parsed mathematical expression.
+
+[source,ruby]
+----
+formula = Plurimath::Math.parse("sin(1)", :asciimath)
+formula.to_display(:asciimath)
+# |_ Math zone
+#   |_ "sin(1)"
+#      |_ "sin" function apply
+#         |_ "1" argument
+----
+
+=== Displaying in the Math Language of Expression
+
+You can also display the parse tree in the math language of expression to see
+how the expression is represented in that language.
+
+[source,ruby]
+----
+formula = Plurimath::Math.parse("sin(1)", :asciimath)
+formula.to_display(:latex)
+# |_ Math zone
+#   |_ "\\sin1"
+#      |_ "sin" function apply
+#         |_ "1" argument
+----
+
+// == Integration
+
+// Integrate Plurimath into your project by requiring the gem and using its
+// conversion capabilities as shown in the above examples. You can parse
+// mathematical expressions from various formats and convert them as needed for
+// your application's requirements.
+
+
+== Working with UnitsML
+
+=== General
+
+Plurimath supports https://www.unitsml.org[UnitsML], a markup language used to
+express units of measure in a way that can be understood by humans and machines.
+This allows you to handle mathematical expressions involving units of measure
+seamlessly.
+
+UnitsML can be used with the following math representation languages:
+
+* MathML
+* AsciiMath
+
+For detailed information on supported units and symbols in UnitsML, refer to the
+link:UnitsML-Supported-Data.adoc[UnitsML Supported Data] documentation.
+
+
+=== Parsing and Converting UnitsML Expressions
+
+Plurimath can parse UnitsML expressions and convert them to other mathematical
+representation languages. Here's an example of how to work with UnitsML in
+Plurimath.
+
+=== Example: Parsing and Converting UnitsML
+
+Consider the following UnitsML expression in AsciiMath syntax:
+
+[source,asciimath]
+----
+h = 6.62607015 xx 10^(-34) "unitsml(kg*m^2*s^(-1))"
+----
+
+==== Step-by-Step Customization
+
+. **Parse the UnitsML Expression**
+. **Customize and Convert to AsciiMath**
+. **Customize and Convert to MathML**
+. **Customize and Convert to UnicodeMath**
+. **Customize and Convert to OMML**
+
+==== Parse the UnitsML Expression
+
+First, parse the UnitsML expression using Plurimath:
+
+[source,ruby]
+----
+require 'plurimath'
+
+asciimath_unitsml = 'h = 6.62607015 xx 10^(-34) "unitsml(kg*m^2*s^(-1))"'
+formula = Plurimath::Math.parse(asciimath_unitsml, :asciimath)
+----
+
+==== Customize and Convert to AsciiMath
+
+You can customize the output by modifying the resulting string after conversion:
+
+[source,ruby]
+----
+asciimath = formula.to_asciimath
+# Customization logic (if any)
+puts asciimath
+# Output: 'h = 6.62607015 xx 10^(-34) "unitsml(kg*m^2*s^(-1))"'
+----
+
+==== Customize and Convert to MathML
+
+To customize the MathML output, you can use additional attributes and options:
+
+[source,ruby]
+----
+mathml = formula.to_mathml
+# Customization logic (if any)
+puts mathml
+# Output: "<math xmlns='http://www.w3.org/1998/Math/MathML'><mrow><mi>h</mi><mo>=</mo><mn>6.62607015</mn><mo>×</mo><msup><mn>10</mn><mrow><mo>−</mo><mn>34</mn></mrow></msup><mtext>kg·m²·s⁻¹</mtext></mrow></math>"
+----
+
+==== Customize and Convert to UnicodeMath
+
+Similarly, customize the UnicodeMath output:
+
+[source,ruby]
+----
+unicodemath = formula.to_unicodemath
+# Customization logic (if any)
+puts unicodemath
+# Output: 'h = 6.62607015 × 10^(−34) kg·m²·s⁻¹'
+----
+
+==== Customize and Convert to OMML
+
+For OMML output, you can customize the XML structure:
+
+[source,ruby]
+----
+omml = formula.to_omml
+# Customization logic (if any)
+puts omml
+# Output: "<m:oMathPara xmlns:m='http://schemas.openxmlformats.org/officeDocument/2006/math'><m:oMath><m:r><m:t>h</m:t></m:r><m:r><m:t>=</m:t></m:r><m:r><m:t>6.62607015</m:t></m:r><m:r><m:t>×</m:t></m:r><m:sSup><m:sSupPr><m:ctrlPr /></m:sSupPr><m:e><m:r><m:t>10</m:t></m:r></m:e><m:sup><m:r><m:t>−34</m:t></m:r></m:sup></m:sSup><m:r><m:t>kg·m²·s⁻¹</m:t></m:r></m:oMath></m:oMathPara>"
+----
+
+=== Complete Example Code with Customization
+
+Here's the complete code for parsing, converting, and customizing the UnitsML
+expression between different formats:
+
+[source,ruby]
+----
+require 'plurimath'
+
+# Step 1: Parse the UnitsML Expression
+asciimath_unitsml = 'h = 6.62607015 xx 10^(-34) "unitsml(kg*m^2*s^(-1))"'
+formula = Plurimath::Math.parse(asciimath_unitsml, :asciimath)
+
+# Step 2: Convert to AsciiMath
+asciimath = formula.to_asciimath
+# Customization logic for AsciiMath (if needed)
+puts "AsciiMath: #{asciimath}"
+# Output: 'h = 6.62607015 xx 10^(-34) "unitsml(kg*m^2*s^(-1))"'
+
+# Step 3: Convert to MathML
+mathml = formula.to_mathml
+# Customization logic for MathML (if needed)
+puts "MathML: #{mathml}"
+# Output: "<math xmlns='http://www.w3.org/1998/Math/MathML'><mrow><mi>h</mi><mo>=</mo><mn>6.62607015</mn><mo>×</mo><msup><mn>10</mn><mrow><mo>−</mo><mn>34</mn></mrow></msup><mtext>kg·m²·s⁻¹</mtext></mrow></math>"
+
+# Step 4: Convert to UnicodeMath
+unicodemath = formula.to_unicodemath
+# Customization logic for UnicodeMath (if needed)
+puts "UnicodeMath: #{unicodemath}"
+# Output: 'h = 6.62607015 × 10^(−34) kg·m²·s⁻¹'
+
+# Step 5: Convert to OMML
+omml = formula.to_omml
+# Customization logic for OMML (if needed)
+puts "OMML: #{omml}"
+# Output: "<m:oMathPara xmlns:m='http://schemas.openxmlformats.org/officeDocument/2006/math'><m:oMath><m:r><m:t>h</m:t></m:r><m:r><m:t>=</m:t></m:r><m:r><m:t>6.62607015</m:t></m:r><m:r><m:t>×</m:t></m:r><m:sSup><m:sSupPr><m:ctrlPr /></m:sSupPr><m:e><m:r><m:t>10</m:t></m:r></m:e><m:sup><m:r><m:t>−34</m:t></m:r></m:sup></m:sSup><m:r><m:t>kg·m²·s⁻¹</m:t></m:r></m:oMath></m:oMathPara>"
+----
+
+
+
+
+== Compatibility
+
+=== General
+
+Not every math representation language supports expressing all symbols and
+primitives supported by another. For example, the `backepsilon` symbol is
+supported by LaTeX and UnicodeMath, but not AsciiMath.
+
+Plurimath implements a "compatibility wrapper" syntax for each math
+representation language to allow all symbols usable by Plurimath to be expressed
+in a side-effect-free wrapper in those languages. For example, in AsciiMath, the
+`"__{symbol-name}"` is side-effect-free because it is considered a single symbol
+as a text string of `"__{symbol-name}"`. Plurimath can recognize it, but other
+renderers or processors would treat it as a single symbol, which is accurate.
+
+
+=== Example of Compatibility Wrapper
+
+For a symbol like `backepsilon`.
+
+In AsciiMath:
+
+[source,ruby]
+----
+"__{backepsilon}"
+----
+
+In LaTeX:
+
+[source,ruby]
+----
+"\\backepsilon"
+----
+
+In UnicodeMath:
+
+[source,ruby]
+----
+"∍"
+----
+
+In MathML:
+
+[source,xml]
+----
+<mi>∍</mi>
+----
+
+== XML Engines
+
+**Plurimath** supports two XML engines:
+
+. **Oga**: A pure Ruby XML parser
+. **Ox**: A fast XML parser
+
+By default, **Ox** is used.
+
+To switch to **Oga**, use the following syntax:
+
+[source,ruby]
+----
+require "plurimath/xml_engines/oga" = load files related to Oga
+Plurimath.xml_engine = Plurimath::XmlEngine::Oga = set Oga as Plurimath XML engine
+----
+
+You can switch back to **Ox** similarly.
+
+=== Supported content
+
+=== General
+
+Consult the following tables for details on supported symbols and parentheses:
+
+* link:supported_symbols_list.adoc[Symbols]
+* link:supported_parens_list.adoc[Parentheses]
+
+NOTE: To regenerate these files, delete them and run:
+`bundle exec rake supported_symbols_list.adoc`.
+
+==== Supported Data Files
+
+* link:AsciiMath-Supported-Data.adoc[AsciiMath Supported Data]
+* link:MathML-Supported-Data.adoc[MathML Supported Data]
+* link:Latex-Supported-Data.adoc[LaTeX Supported Data]
+* link:UnicodeMath-Supported-Data.adoc[UnicodeMath Supported Data]
+* link:OMML-Supported-Data.adoc[OMML Supported Data]
+* link:UnitsML-Supported-Data.adoc[UnitsML Supported Data]
+
+== Copyright and license
+
+Copyright Ribose. BSD 2-clause license.
