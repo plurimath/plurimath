@@ -6,17 +6,19 @@ module Plurimath
       INTENT_TEXT_NODES = %w[mi mo mn].freeze
 
       class << self
-      # Intent common code begin
+        # Intent common code begin
         def node_value(node, field_name)
           return unless node
+          return if node.name == "mo" && node.nodes[0] == "&#x2b1a;"
           return html_entity_to_unicode(node.nodes.first) if valid_node_value?(node)
+          return all_numeric(node) if all_numeric?(node)
 
           node[:arg] = field_name
           "$#{field_name}"
         end
-      # Intent common code end
+        # Intent common code end
 
-      # Naryand intent begin
+        # Naryand intent begin
         def naryand_intent(field, intent_name)
           return nary_intent(field, intent_name) if field.name == "mrow"
 
@@ -29,14 +31,14 @@ module Plurimath
         def nary_intent(field, intent_name)
           sub_sup = field.nodes[0]
           base, power = power_base_intent(sub_sup)
-          base, power = power_or_base_intent(sub_sup) unless base && power
+          base, power = power_or_base_intent(sub_sup) unless base || power
           naryand = node_value(field.nodes[1], "naryand")
           field["intent"] = ":#{intent_name}(#{base},#{power},#{naryand})"
           field
         end
-      # Naryand intent end
+        # Naryand intent end
 
-      # SubSup intent begin
+        # SubSup intent begin
         def power_base_intent(field)
           return nil unless ["munderover", "msubsup"].include?(field.name)
 
@@ -52,25 +54,25 @@ module Plurimath
 
           [node_value(value_node, "l"), nil]
         end
-      # SubSup intent end
+        # SubSup intent end
 
-      # Function intent begin
+        # Function intent begin
         def function_intent(tag, intent_name = "function")
           tag.attributes["intent"] = ":#{intent_name}"
           tag
         end
-      # Function intent end
+        # Function intent end
 
-      # Binomial fraction intent begin
+        # Binomial fraction intent begin
         def binomial_fraction_intent(tag, intent_name)
           numerator = node_value(tag.nodes[1].nodes[0], "t")
           denominator = node_value(tag.nodes[1].nodes[1], "b")
           tag["intent"] = "#{intent_name}(#{numerator},#{denominator})"
           tag
         end
-      # Binomial fraction intent end
+        # Binomial fraction intent end
 
-      # Interval fence intent begin
+        # Interval fence intent begin
         def interval_fence_intent(tag, intent_name)
           return function_intent(tag, intent_name) if intent_name == "fenced"
           return binomial_fraction_intent(tag, intent_name) if intent_name == "binomial-coefficient"
@@ -80,9 +82,9 @@ module Plurimath
           tag["intent"] = "#{intent_name}(#{first_value},#{second_value})"
           tag
         end
-      # Interval fence intent end
+        # Interval fence intent end
 
-      # Frac derivative intent begin
+        # Frac derivative intent begin
         def frac_intent(tag, intent_name)
           num = tag.nodes[0]
           den = tag.nodes[1]
@@ -91,14 +93,14 @@ module Plurimath
 
           tag
         end
-      # Frac derivative intent end
+        # Frac derivative intent end
 
-      # Abs intent end
+        # Abs intent begin
         def abs_intent(tag, intent_name)
           tag["intent"] = "#{intent_name}(#{node_value(tag.nodes[1], 'a')})"
           tag
         end
-      # Abs intent end
+        # Abs intent end
 
         private
 
@@ -124,7 +126,7 @@ module Plurimath
             node.name == "mrow" && node.nodes.empty?
         end
 
-      # Frac Partial derivative intent begin
+        # Frac Partial derivative intent begin
         # num == numerator && den == denominator
         def partial_derivative?(num, den)
           validate_field_and_value(num) &&
@@ -186,9 +188,20 @@ module Plurimath
           str = []
           case node.name
           when "mo" then str = extract_string(nodes[1..-1], str)
+          when "msup" then str = power_arg(node.nodes, str)
           when "mrow" then str << den_arg(node.nodes.first, node.nodes)
           end
           str.join(",")
+        end
+
+        def power_arg(nodes, str)
+          nodes[0].each do |node|
+            next if node.nodes[0] == "&#x2202;"
+
+            str << html_entity_to_unicode(node.nodes[0])
+          end
+          str.last << nodes[1].nodes[0] if primes_constants.value?(nodes[1].nodes[0])
+          str
         end
 
         def wrap_in_mrow(node)
@@ -224,10 +237,10 @@ module Plurimath
           else
             "$n"
           end
-        end
-      # Frac Partial derivative intent end
+          end
+        # Frac Partial derivative intent end
 
-      # Frac derivative intent begin
+        # Frac derivative intent begin
         def derivative?(num, den)
           return unless num || den
 
@@ -267,7 +280,21 @@ module Plurimath
 
           den.nodes[1].nodes.first
         end
-      # Frac derivative intent end
+        # Frac derivative intent end
+
+        # Intent common but private begin
+        def all_numeric?(node)
+          return unless node.name == "mrow"
+
+          node.nodes.all? { |element| element.name == "mn" }
+        end
+
+        def all_numeric(node)
+          str = ""
+          node.nodes.each { |element| str += element.nodes.first }
+          str
+        end
+        # Intent common but private end
       end
     end
   end

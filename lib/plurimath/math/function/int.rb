@@ -51,6 +51,7 @@ module Plurimath
               validate_mathml_tag(parameter_two, intent),
             ],
           )
+          msubsup_tag = masked_tag(msubsup_tag) if options && options.key?(:mask)
           return msubsup_tag if parameter_three.nil?
 
           mrow = ox_element("mrow")

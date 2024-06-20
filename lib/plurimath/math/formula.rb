@@ -359,9 +359,12 @@ module Plurimath
 
       def intent_post_processing(nodes, intent)
         mrow = Utility.update_nodes(ox_element("mrow"), nodes)
-        update_partial_derivative_nodes(nodes) unless mrow.locate("*/mfrac/@intent").empty?
+        double_d_derivative(nodes) if validate_double_d_derivatives?(nodes)
+        partial_derivative(nodes) if valid_partial_derivative?(nodes)
+        update_partial_derivative_nodes(nodes) unless mrow.locate("*/mfrac/@arg").empty?
       end
 
+      # Partial derivative nodes begin
       def update_partial_derivative_nodes(nodes)
         nodes.reduce do |first, second|
           if valid_partial_node(first)
@@ -382,6 +385,26 @@ module Plurimath
           !node.locate("*/@arg").include?("f")
       end
 
+      def valid_partial_derivative?(nodes)
+        valid = false
+        nodes.reduce do |first, second|
+          next second unless first.name == "msub"
+
+          valid = true if first.nodes[0].nodes[0] == "&#x2202;" && second
+          second
+        end
+        valid
+      end
+
+      def partial_derivative(nodes)
+        nodes.reduce do |first, second|
+          # TODO: implementation in progress for partial-derivative for sub
+          second
+        end
+      end
+      # Partial derivative nodes end
+
+      # Dd derivative nodes begin
       def validate_double_d_derivatives?(nodes)
         nodes.find.with_index do |node, index|
           next unless %w[msub msup msubsup].include?(node.name)
@@ -394,20 +417,60 @@ module Plurimath
         end
       end
 
-      def base_derivative_intent(first, second)
-        intent_name = ":derivative(1,$f,#{second_value(first.nodes[1], second)})"
-        first["intent"] = intent_name
-        first
-      end
+      def double_d_derivative(nodes)
+        iteration = 0
+        return unless nodes[iteration].nodes[iteration]["intent"] == "ⅅ"
 
-      def second_value(first, second)
-        return Utility.html_entity_to_unicode(first.nodes.first) if first.name == "mi"
-
-        case tag.name
-        when "mi"
-        when "mrow"
+        while iteration < nodes.length do
+          node = nodes[iteration]
+          if node.nodes[0]["intent"] == "ⅅ"
+            node["intent"] = ":derivative#{derivative_intent_name(node.nodes[1], type: node.name)}"
+            iteration += 1
+            next_node = nodes[iteration]
+            case next_node.name
+            when "mi", "mrow"
+              if ["mi", "mrow"].include?(nodes[iteration + 1].name)
+                wrap_in_mrow(nodes[iteration..-1])
+              else
+                next_node["arg"] = "f"
+              end
+            end
+          end
+          iteration += 1
         end
       end
+
+      def derivative_intent_name(node, type:)
+        case type
+        when "msub"
+          first_value, second_value = intent_content(node)
+          "(#{first_value},$f,#{second_value})"
+        when "msup"
+          # TODO: implementation in progress
+        when "msubsup"
+          # TODO: implementation in progress
+        end
+      end
+
+      def intent_content(node)
+        return ["1", Utility.html_entity_to_unicode(node.nodes[0])] if node.name == "mi"
+        return ["1"] if node["intent"] == "fenced"
+        return unless node.name == "mrow"
+        return ["1"] unless node.nodes.all? { |element| element.name == "mi" }
+      end
+
+      def wrap_in_mrow(nodes)
+        mrow = ox_element("mrow", attributes: { arg: "f" })
+        row_nodes = []
+        loop do
+          node = nodes.shift if ["mi", "mrow"].include?(nodes[0].name)
+          row_nodes << node
+          next if node.name == "mi"
+          break if node.name == "mrow"
+        end
+        Utility.update_nodes(mrow, row_nodes)
+      end
+      # Dd derivative nodes end
     end
   end
 end
