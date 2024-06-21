@@ -264,7 +264,7 @@ module Plurimath
         end
 
         def num_arg(num)
-          return if num.nodes.length <= 1
+          return "$f" if num.nodes.length <= 1
 
           case num.nodes[1].name
           when "mi", "mo", "mn"

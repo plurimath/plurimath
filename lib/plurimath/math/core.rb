@@ -319,7 +319,7 @@ module Plurimath
         ox_element("mrow") << xml_engine_node
       end
 
-      def intentify(tag, intent, func_name:, intent_name:)
+      def intentify(tag, intent, func_name:, intent_name: nil)
         return tag unless intent
 
         Utility::IntentEncoding.send("#{func_name}_intent", tag, intent_name)

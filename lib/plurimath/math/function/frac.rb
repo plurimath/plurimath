@@ -40,7 +40,8 @@ module Plurimath
           frac_tag = ox_element(tag_name)
           frac_tag.set_attr(options.reject { |opt| opt == :choose }) if tag_name == "mfrac" && options
           Utility.update_nodes(frac_tag, mathml_value)
-          intentify(frac_tag, intent, func_name: :frac, intent_name: nil)
+          update_derivative(frac_tag, mathml_value[0], mathml_value[1])
+          intentify(frac_tag, intent, func_name: :frac)
         end
 
         def to_latex
@@ -119,6 +120,34 @@ module Plurimath
         def unicodemath_fraction
           frac_array = [parameter_one.value.to_i, parameter_two.value.to_i]
           UnicodeMath::Constants::UNICODE_FRACTIONS.key(frac_array)
+        end
+
+        def update_derivative(tag, num, den)
+          intent = num.nodes.first["intent"]
+          return unless intent
+          return unless intent.start_with?(":derivative") && intent.end_with?(",)")
+
+          num.nodes.first["intent"].gsub!(/,\)$/, ",#{validate_derivative(den.nodes)})")
+        end
+
+        def validate_derivative(den_nodes)
+          str = ""
+          if den_nodes.first.name == "mi"
+            node = den_nodes[1]
+            if %w[msub msup].include?(node.name)
+              case node.nodes.first.name
+              when "mi"
+                str += Utility.html_entity_to_unicode(node.nodes.first.nodes.first)
+              when "mrow"
+                node.nodes.first.nodes.each do |element|
+                  break unless element.name == "mi"
+
+                  str += Utility.html_entity_to_unicode(element.nodes.first)
+                end
+              end
+            end
+          end
+          str
         end
       end
     end

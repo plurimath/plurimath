@@ -12,6 +12,12 @@ module Plurimath
         asciimath
       ].freeze
       POWER_BASE_CLASSES = %w[powerbase power base].freeze
+      DERIVATIVE_CONSTS = [
+        "&#x1d451;",
+        "&#x2145;",
+        "&#x2146;",
+        "d",
+      ].freeze
 
       def initialize(
         value = [],
@@ -397,10 +403,90 @@ module Plurimath
       end
 
       def partial_derivative(nodes)
-        nodes.reduce do |first, second|
-          # TODO: implementation in progress for partial-derivative for sub
-          second
+        nodes.each.with_index do |first, index|
+          second = nodes[index+1]
+          next second unless first.name == "msub" && first.nodes.first.nodes.include?("&#x2202;")
+
+          first["intent"] = partial_derivative_intent(first)
+          f_arg(nodes, index+1)
         end
+      end
+
+      def partial_derivative_intent(first)
+        first_node = first.nodes.last
+        case first_node.name
+        when "mi"
+          first_arg, second_arg = [1, encode(first_node.nodes.first)]
+        when "mn"
+          first_arg, second_arg = numeric_encoding(node)
+        when "mrow"
+          str = ""
+          first_node.nodes.each do |node|
+            case node.name
+            when "mi"
+              str += encode(node.nodes.first)
+            when "mn"
+              str += numeric_encoding(node).last if str.empty?
+              break
+            end
+          end
+          first_arg = str.include?(",") ? str.split(",").length : str.length
+          second_arg = str.include?(",") ? str : str.split("").join(",")
+        when "msup"
+          nodes = first_node.nodes
+          str = ""
+          case nodes.first.name
+          when "mrow"
+            nodes.first.nodes.each do |node|
+              case node.name
+              when "mi"
+                str += encode(node.nodes.first)
+              when "mn"
+                str += numeric_encoding(node).last if str.empty?
+                break
+              end
+            end
+          when "mi"
+            str += encode(node.nodes.first)
+          end
+          first_arg = str.include?(",") ? str.split(",").length : str.length
+          second_arg = str.include?(",") ? str : str.split("").join(",")
+          prime_str = encode(nodes.last.nodes.first) if valid_prime?(nodes.last)
+          second_arg.insert(-1, prime_str) unless second_arg.match?(/[0-9]$/)
+        end
+        ":partial-derivative(#{first_arg},$f,#{second_arg})"
+      end
+
+      def f_arg(tag_nodes, index)
+        nodes = []
+        while index <= tag_nodes.length
+          node = tag_nodes[index]
+          break unless node
+
+          case node.name
+          when "mrow"
+            nodes << tag_nodes.delete_at(index)
+            break
+          when "mi"
+            nodes << tag_nodes.delete_at(index)
+          when "mn"
+            nodes << tag_nodes.delete_at(index) if nodes.empty?
+            break
+          else
+            break
+          end
+        end
+        mrow = if nodes.length == 1
+                 node = nodes.first
+                 node["arg"] = "f"
+                 node
+               else
+                 Utility.update_nodes(
+                   ox_element("mrow", attributes: { arg: "f" }),
+                   nodes,
+                 )
+               end
+        tag_nodes.insert(index, mrow)
       end
       # Partial derivative nodes end
 
@@ -413,19 +499,21 @@ module Plurimath
           next unless next_node
           next if next_node.name == "mo"
 
-          node.nodes.first["intent"] == "ⅅ"
+          DERIVATIVE_CONSTS.include?(node.nodes.first.nodes.first)
         end
       end
 
       def double_d_derivative(nodes)
         iteration = 0
-        return unless nodes[iteration].nodes[iteration]["intent"] == "ⅅ"
+        return unless DERIVATIVE_CONSTS.include?(nodes[iteration].nodes[iteration].nodes.first)
 
         while iteration < nodes.length do
           node = nodes[iteration]
-          if node.nodes[0]["intent"] == "ⅅ"
-            node["intent"] = ":derivative#{derivative_intent_name(node.nodes[1], type: node.name)}"
+          next iteration += 1 unless node.nodes[0].is_a?(Plurimath::XmlEngine::Ox::Element)
+
+          if DERIVATIVE_CONSTS.include?(node.nodes[0]&.nodes&.first)
             iteration += 1
+            node["intent"] = ":derivative#{derivative_intent_name(node.nodes[1], nodes[iteration..-1], type: node.name)}"
             next_node = nodes[iteration]
             case next_node.name
             when "mi", "mrow"
@@ -440,23 +528,59 @@ module Plurimath
         end
       end
 
-      def derivative_intent_name(node, type:)
+      def derivative_intent_name(node, next_nodes, type:)
         case type
         when "msub"
-          first_value, second_value = intent_content(node)
+          first_value, second_value = sub_intent_content(node)
           "(#{first_value},$f,#{second_value})"
         when "msup"
-          # TODO: implementation in progress
+          "(#{sup_intent_content(node)},$f,#{sup_second_content(next_nodes)})"
         when "msubsup"
           # TODO: implementation in progress
         end
       end
 
-      def intent_content(node)
-        return ["1", Utility.html_entity_to_unicode(node.nodes[0])] if node.name == "mi"
+      def sub_intent_content(node)
+        return ["1", encode(node.nodes[0])] if node.name == "mi"
+        return numeric_encoding(node) if node.name == "mn"
         return ["1"] if node["intent"] == "fenced"
         return unless node.name == "mrow"
         return ["1"] unless node.nodes.all? { |element| element.name == "mi" }
+      end
+
+      def sup_intent_content(node)
+        return encode(first_node) if node.name == "mi"
+        return node.nodes[0] if node.name == "mn"
+        return "$n" if node.name == "mrow"
+      end
+
+      def sup_second_content(next_nodes)
+        fence_node = nil
+        next_nodes.each do |node|
+          break if fence_node
+
+          next if %w[mi mn].include?(node.name)
+          fence_node = node if node.name == "mrow" && node["intent"] == ":fenced"
+          break unless %w[mi mn].include?(node.name)
+        end
+        return if fence_node.nil?
+
+        nodes = fence_node.nodes[1..-1]
+        sliced_nodes = nodes.slice_before { |node| node.name == "mn" }
+        str = ""
+        sliced_nodes.to_a.last.each do |node|
+          break unless %w[msub msup msubsup mi mn].include?(node.name)
+
+          case node.name
+          when "msub", "msup", "msubsup"
+            powerbase_nodes = node.nodes
+            str += encode(powerbase_nodes.first.nodes.first)
+            str += encode(powerbase_nodes.last.nodes.first) if valid_prime?(powerbase_nodes.last)
+          when "mi", "mn"
+            str += node.nodes.first
+          end
+        end
+        str
       end
 
       def wrap_in_mrow(nodes)
@@ -469,6 +593,19 @@ module Plurimath
           break if node.name == "mrow"
         end
         Utility.update_nodes(mrow, row_nodes)
+      end
+
+      def numeric_encoding(node)
+        nodes = node.nodes[0].split("")
+        [nodes.length, nodes.join(",")]
+      end
+
+      def valid_prime?(node)
+        Utility.primes_constants.values.any? { |prime| prime == node.nodes.first }
+      end
+
+      def encode(str)
+        Utility.html_entity_to_unicode(str)
       end
       # Dd derivative nodes end
     end
