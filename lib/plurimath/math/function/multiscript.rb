@@ -66,10 +66,14 @@ module Plurimath
             return
           end
 
-          parameter_two.line_breaking(obj)
+          array_line_break_field(
+            parameter_two,
+            :@parameter_two,
+            obj,
+          )
           if obj.value_exist?
             obj.update(
-              self.class.new(nil, Utility.filter_values(obj.value), parameter_three)
+              self.class.new(nil, obj.value, parameter_three)
             )
             self.parameter_three = nil
           end
@@ -78,10 +82,11 @@ module Plurimath
         private
 
         def prescripts
-          return parameter_three if parameter_two&.empty?
+          return parameter_three if parameter_two&.nil? || parameter_two&.empty?
+          return parameter_two if parameter_three.nil? || parameter_three.empty?
 
           prescripts_array = []
-          Array(parameter_two).zip(parameter_three) { |array| prescripts_array << array }
+          Array(parameter_two).zip(Array(parameter_three)) { |array| prescripts_array << array }
           prescripts_array.flatten.compact
         end
 

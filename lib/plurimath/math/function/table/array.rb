@@ -40,7 +40,7 @@ module Plurimath
           end
 
           def attributes(intent)
-            return {} unless intent
+            return table_attribute unless intent
 
             table_attribute.merge(intent: ":equations")
           end

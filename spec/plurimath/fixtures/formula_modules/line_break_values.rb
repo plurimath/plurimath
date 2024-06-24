@@ -1258,22 +1258,26 @@ module LineBreakValues
         ),
         Plurimath::Math::Symbols::Symbol.new("&#x3b1;")
       ),
-      Plurimath::Math::Formula.new([
-        Plurimath::Math::Symbols::Symbol.new("&#x3b3;"),
-        Plurimath::Math::Function::Linebreak.new(
-          Plurimath::Math::Symbols::Equal.new,
-          { linebreak: "newline" }
-        ),
-        Plurimath::Math::Symbols::Symbol.new("&#x3b3;")
-      ]),
-      Plurimath::Math::Formula.new([
-        Plurimath::Math::Symbols::Symbol.new("&#x3b2;"),
-        Plurimath::Math::Function::Linebreak.new(
-          Plurimath::Math::Symbols::Equal.new,
-          { linebreak: "newline" }
-        ),
-        Plurimath::Math::Symbols::Symbol.new("&#x3b2;")
-      ])
+      [
+        Plurimath::Math::Formula.new([
+          Plurimath::Math::Symbols::Symbol.new("&#x3b3;"),
+          Plurimath::Math::Function::Linebreak.new(
+            Plurimath::Math::Symbols::Equal.new,
+            { linebreak: "newline" }
+          ),
+          Plurimath::Math::Symbols::Symbol.new("&#x3b3;")
+        ])
+      ],
+      [
+        Plurimath::Math::Formula.new([
+          Plurimath::Math::Symbols::Symbol.new("&#x3b2;"),
+          Plurimath::Math::Function::Linebreak.new(
+            Plurimath::Math::Symbols::Equal.new,
+            { linebreak: "newline" }
+          ),
+          Plurimath::Math::Symbols::Symbol.new("&#x3b2;")
+        ])
+      ],
     )
   ])
   LineBreak_084 = Plurimath::Math::Formula.new([
@@ -1368,22 +1372,26 @@ module LineBreakValues
         Plurimath::Math::Symbols::Symbol.new("&#x3b1;"),
         Plurimath::Math::Symbols::Symbol.new("&#x3b1;")
       ),
-      Plurimath::Math::Formula.new([
-        Plurimath::Math::Symbols::Symbol.new("&#x3b3;"),
-        Plurimath::Math::Function::Linebreak.new(
-          Plurimath::Math::Symbols::Equal.new,
-          { linebreak: "newline" }
-        ),
-        Plurimath::Math::Symbols::Symbol.new("&#x3b3;")
-      ]),
-      Plurimath::Math::Formula.new([
-        Plurimath::Math::Symbols::Symbol.new("&#x3b2;"),
-        Plurimath::Math::Function::Linebreak.new(
-          Plurimath::Math::Symbols::Equal.new,
-          { linebreak: "newline" }
-        ),
-        Plurimath::Math::Symbols::Symbol.new("&#x3b2;")
-      ])
+      [
+        Plurimath::Math::Formula.new([
+          Plurimath::Math::Symbols::Symbol.new("&#x3b3;"),
+          Plurimath::Math::Function::Linebreak.new(
+            Plurimath::Math::Symbols::Equal.new,
+            { linebreak: "newline" }
+          ),
+          Plurimath::Math::Symbols::Symbol.new("&#x3b3;")
+        ])
+      ],
+      [
+        Plurimath::Math::Formula.new([
+          Plurimath::Math::Symbols::Symbol.new("&#x3b2;"),
+          Plurimath::Math::Function::Linebreak.new(
+            Plurimath::Math::Symbols::Equal.new,
+            { linebreak: "newline" }
+          ),
+          Plurimath::Math::Symbols::Symbol.new("&#x3b2;")
+        ])
+      ],
     )
   ])
 end

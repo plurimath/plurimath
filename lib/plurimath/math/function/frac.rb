@@ -40,7 +40,7 @@ module Plurimath
           frac_tag = ox_element(tag_name)
           frac_tag.set_attr(options.reject { |opt| opt == :choose }) if tag_name == "mfrac" && options
           Utility.update_nodes(frac_tag, mathml_value)
-          update_derivative(frac_tag, mathml_value[0], mathml_value[1])
+          update_derivative(frac_tag, mathml_value[0], mathml_value[1]) if intent
           intentify(frac_tag, intent, func_name: :frac)
         end
 
@@ -123,7 +123,9 @@ module Plurimath
         end
 
         def update_derivative(tag, num, den)
-          intent = num.nodes.first["intent"]
+          return if %w[mi mo mn].include?(num&.name)
+
+          intent = num.is_a?(::Array) ? num.first["intent"] : num&.nodes&.first["intent"]
           return unless intent
           return unless intent.start_with?(":derivative") && intent.end_with?(",)")
 

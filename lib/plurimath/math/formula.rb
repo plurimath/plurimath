@@ -365,7 +365,8 @@ module Plurimath
 
       def intent_post_processing(nodes, intent)
         mrow = Utility.update_nodes(ox_element("mrow"), nodes)
-        double_d_derivative(nodes) if validate_double_d_derivatives?(nodes)
+        upcase_dd_derivative(nodes) if validate_upcase_dd_derivatives?(nodes)
+        subsup_dd_derivative(nodes) if validate_subsup_dd_derivatives?(nodes)
         partial_derivative(nodes) if valid_partial_derivative?(nodes)
         update_partial_derivative_nodes(nodes) unless mrow.locate("*/mfrac/@arg").empty?
       end
@@ -491,7 +492,7 @@ module Plurimath
       # Partial derivative nodes end
 
       # Dd derivative nodes begin
-      def validate_double_d_derivatives?(nodes)
+      def validate_subsup_dd_derivatives?(nodes)
         nodes.find.with_index do |node, index|
           next unless %w[msub msup msubsup].include?(node.name)
 
@@ -503,7 +504,35 @@ module Plurimath
         end
       end
 
-      def double_d_derivative(nodes)
+      def validate_upcase_dd_derivatives?(nodes)
+        return unless nodes[0]&.nodes&.first == "&#x2145;"
+        return unless nodes[1].name == "mi"
+
+        true
+      end
+
+      def upcase_dd_derivative(nodes)
+        mrow_nodes = []
+        while true
+          node = nodes[1]
+          case node.name
+          when "mi"
+            mrow_nodes << nodes.delete_at(1)
+            next
+          when "mrow"
+            second_arg = mrow_nodes.map { |node| encode(node.nodes.first) }.join
+            third_arg  = upcase_dd_intent_name(node.nodes[1..-2])
+            mrow_nodes << nodes.delete_at(1)
+            break
+          end
+          break
+        end
+        intent_name = ":derivative(1,#{second_arg},#{third_arg})"
+        mrow = ox_element("mrow", attributes: { intent: intent_name })
+        nodes.insert(0, Utility.update_nodes(mrow, mrow_nodes))
+      end
+
+      def subsup_dd_derivative(nodes)
         iteration = 0
         return unless DERIVATIVE_CONSTS.include?(nodes[iteration].nodes[iteration].nodes.first)
 
@@ -535,8 +564,6 @@ module Plurimath
           "(#{first_value},$f,#{second_value})"
         when "msup"
           "(#{sup_intent_content(node)},$f,#{sup_second_content(next_nodes)})"
-        when "msubsup"
-          # TODO: implementation in progress
         end
       end
 
@@ -606,6 +633,29 @@ module Plurimath
 
       def encode(str)
         Utility.html_entity_to_unicode(str)
+      end
+
+      def upcase_dd_intent_name(nodes)
+        str = ""
+        nodes.each do |node|
+          case node.name
+          when "mi"
+            str += node.nodes.first
+          when "mn"
+            str = node.nodes.first
+          when "msub", "msup", "msubsup"
+            next unless %w[mi mn].include?(node.nodes[0].name)
+
+            str = node.nodes[0] if node.nodes.first.name == "mn"
+            str += node.nodes[0].nodes[0] if node.nodes.first.name == "mi"
+            sup_index = node.name == "msubsup" ? 2 : 1
+            str += node.nodes[sup_index].nodes[0] if valid_prime?(node.nodes[sup_index])
+          else
+            str = "" if node.name == "mfrac"
+            break
+          end
+        end
+        encode(str)
       end
       # Dd derivative nodes end
     end

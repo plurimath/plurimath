@@ -210,11 +210,7 @@ module Plurimath
             field.line_breaking(obj)
             updated_object_values(variable, obj: obj, update_value: true) if obj.value_exist?
           when Array
-            if result(field).length > 1
-              updated_object_values(variable, obj: obj)
-            else
-              field.each { |object| object.line_breaking(obj) }
-            end
+            array_line_break_field(field, variable, obj)
           end
         end
       end
@@ -307,6 +303,14 @@ module Plurimath
       end
 
       private
+
+      def array_line_break_field(field, variable, obj)
+        if result(field).length > 1
+          updated_object_values(variable, obj: obj)
+        else
+          field.each { |object| object.line_breaking(obj) }
+        end
+      end
 
       def unicodemath_field_value(field)
         field.class_name == "symbol" ? field.value : Utility.hexcode_in_input(field)

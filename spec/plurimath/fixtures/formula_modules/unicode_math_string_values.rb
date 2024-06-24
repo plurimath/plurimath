@@ -446,7 +446,7 @@ module UnicodeMathStringValues
   EXAMPLE_445 = 'ⅅ_(𝑥) 𝑓 (𝑥) ≠ ∂_(𝑥 𝑦) 𝑓 (𝑥 , 𝑦)'
   EXAMPLE_446 = 'ⅅ 𝑓 (𝑥′) = 0'
   EXAMPLE_447 = 'ⅅ² 𝑓 (𝑥′) = (𝑑² 𝑓 (𝑥′))/(𝑑 𝑥′²)'
-  EXAMPLE_448 = '(ⅆ)/(ⅆ 𝑧 a r c s i n 𝑧) = (1 − 𝑧²)^(− 1 \/ 2)'
+  EXAMPLE_448 = '(ⅆ)/(ⅆ 𝑧 arcsin⁡𝑧) = (1 − 𝑧²)^(− 1 \/ 2)'
   EXAMPLE_449 = '(ⅆ (tan⁡x))/(ⅆ x) = (1)/(cos⁡^(2) x)'
   EXAMPLE_450 = 'ⅆ x'
   EXAMPLE_451 = '(ⅆ y)/(ⅆ x) = [y − G (x)]/(a (x , y))'
