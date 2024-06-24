@@ -1,0 +1,64 @@
+#!/usr/bin/env ruby
+require 'thor'
+require 'plurimath'
+
+class PlurimathCLI < Thor
+  desc 'convert', 'Convert between math formats'
+  option :input,
+         aliases: '-i',
+         required: true
+
+  option :output,
+         aliases: '-o',
+         required: true
+
+  option :input_format,
+         aliases: '-f',
+         default: 'asciimath',
+         desc: 'Value should be string, for example "asciimath"'
+
+  option :output_format,
+         aliases: '-t',
+         default: 'mathml',
+         desc: 'Value should be string, for example "mathml"'
+
+  option :display_style,
+         aliases: "-d",
+         desc: "DisplayStyle is only supported for OMML and MathML conversion",
+         force: :boolean,
+         alias: :string
+
+  option :split_on_linebreak,
+         aliases: "-l",
+         desc: "Splits only MathML and OMML equations into multiple equations",
+         force: :boolean,
+         alias: :string
+
+  def convert
+    input_text = options[:input]
+    input_format = options[:input_format]
+    output_format = options[:output_format]
+    display_style = options[:display_style]
+    line_splitting = options[:split_on_linebreak]
+    formula = Plurimath::Math.parse(input_text, input_format)
+
+    output_text = case output_format
+                  when 'asciimath'
+                    formula.to_asciimath
+                  when 'unicodemath'
+                    formula.to_unicodemath
+                  when 'mathml'
+                    formula.to_mathml(display_style: display_style, split_on_linebreak: line_splitting)
+                  when 'latex'
+                    formula.to_latex
+                  when 'omml'
+                    formula.to_omml(display_style: display_style, split_on_linebreak: line_splitting)
+                  else
+                    raise ArgumentError, "Invalid output format: #{output_format}"
+                  end
+
+    puts output_text
+  end
+end
+
+PlurimathCLI.start(ARGV)
