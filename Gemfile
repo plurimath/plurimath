@@ -12,3 +12,4 @@ gem 'opal-rspec', "~> 1.1.0a"
 gem 'oga'
 gem 'ox'
 gem "unitsml"
+gem "debug"
