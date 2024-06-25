@@ -109,7 +109,7 @@ RSpec.describe Plurimath::NumberFormatter do
       end
     end
 
-    context "testing precision with kk locale" do
+    context "testing precision with es locale" do
       let(:locale) { :en }
       let(:number) { "14236.39239" }
       let(:localize_number) { nil }
@@ -118,6 +118,28 @@ RSpec.describe Plurimath::NumberFormatter do
       it "matches locale: kk with precision" do
         output_string = formatter.localized_number(number, locale: :es, precision: 20, format: { fraction_group: " ", fraction_group_digits: 3 })
         expect(output_string).to eql("14.236,392 390 000 000 000 000 00")
+      end
+    end
+
+    context "testing plurimath#262 example with de locale" do
+      let(:locale) { :de }
+      let(:number) { "327428.000878432992" }
+      let(:localize_number) { nil }
+      let(:localizer_symbols) { {} }
+
+      it "matches locale: de with precision" do
+        output_string = formatter.localized_number(number, format: { digit_count: 18 })
+        expect(output_string).to eql("327.428,000878432992")
+        output_string = formatter.localized_number(number, format: { digit_count: 19 })
+        expect(output_string).to eql("327.428,0008784329920")
+        output_string = formatter.localized_number(number, format: { digit_count: 20 })
+        expect(output_string).to eql("327.428,00087843299200")
+        output_string = formatter.localized_number(number, format: { digit_count: 18, notation: :scientific })
+        expect(output_string).to eql("3,27428000878432998 × 10^5")
+        output_string = formatter.localized_number(number, format: { digit_count: 19, notation: :scientific })
+        expect(output_string).to eql("3,274280008784329980 × 10^5")
+        output_string = formatter.localized_number(number, format: { digit_count: 20, notation: :scientific })
+        expect(output_string).to eql("3,2742800087843299800 × 10^5")
       end
     end
   end
