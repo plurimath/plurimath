@@ -19,7 +19,6 @@ module Plurimath
           precision = options[:precision] || self.precision
           return "" unless precision > 0
 
-          require "debug"; binding.b
           number = interpolate(format(options), fraction, :left)
           number = digit_count_format(int, fraction, number) if @digit_count
           formatted_number = change_format(precision, number) if number
