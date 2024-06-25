@@ -19,6 +19,7 @@ module Plurimath
           precision = options[:precision] || self.precision
           return "" unless precision > 0
 
+          require "debug"; binding.b
           number = interpolate(format(options), fraction, :left)
           number = digit_count_format(int, fraction, number) if @digit_count
           formatted_number = change_format(precision, number) if number
@@ -40,14 +41,16 @@ module Plurimath
 
         def digit_count_format(int, fraction, number)
           integer = int + "." + fraction
-          float = integer.to_f
+          float = BigDecimal(integer)
           int_length = integer.length - 1
           @digit_count ||= int_length
           if int_length > @digit_count
-            number_string = float.round(@digit_count - int.length)
-            number_string.is_a?(Float) ? number_string.to_s.split(".").last : nil
+            number_string = float.round(@digit_count - int.length).to_s("F")
+            @digit_count > int.length ? number_string.to_s.split(".").last : nil
           elsif int_length < @digit_count
-            number += "0" * (@digit_count - int_length)
+            number + "0" * (@digit_count - int_length)
+          else
+            number
           end
         end
       end
