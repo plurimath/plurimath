@@ -1,8 +1,7 @@
 require "spec_helper"
-load "exe/plurimath"
+require "plurimath/cli"
 
-RSpec.describe PlurimathCLI do
-
+RSpec.describe Plurimath::Cli do
   describe ".convert" do
     context "contains no argument" do
       let(:options) { ["convert"] }
