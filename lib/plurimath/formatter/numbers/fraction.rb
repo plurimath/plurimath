@@ -45,8 +45,8 @@ module Plurimath
           int_length = integer.length - 1
           @digit_count ||= int_length
           if int_length > @digit_count
-            number_string = float.round(@digit_count - int.length).to_s("F")
-            @digit_count > int.length ? number_string.to_s.split(".").last : nil
+            number_string = float.round(@digit_count - int.length)
+            @digit_count > int.length ? number_string.to_s("F").split(".").last : nil
           elsif int_length < @digit_count
             number + "0" * (@digit_count - int_length)
           else
