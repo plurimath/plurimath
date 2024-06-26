@@ -495,7 +495,7 @@ plurimath convert [options]
 plurimath convert -i "sqrt(x^2 + y^2)" -f asciimath -t mathml
 ----
 
-==== Convert an OMML equation to LaTeX with DisplayStyle:
+==== Convert an OMML equation to MathML with DisplayStyle:
 
 [source,bash]
 ----
