@@ -482,7 +482,7 @@ plurimath convert [options]
 === Options
 1. `-i, --input <INPUT>` => Specifies the input math equation. Should be provided within double quotes.
 2. `-f, --input-format <FORMAT>` => Specifies the input format of the equation. Defaults to "asciimath".
-3. `-e, --file-input <FILE_PATH>` => Reads input from a file instead of the command line input. Use this for larger inputs or when input contains special characters.
+3. `-p, --file-path <FILE_PATH>` => Reads input from a file instead of the command line input. Use this for larger inputs or when input contains special characters.
 4. `-t, --output-format <FORMAT>` => Specifies the output format type. Defaults to "mathml".
 5. `-m, --math-rendering` => Renders the converted equation as a math zone display tree. Boolean option (true/false).
 6. `-d, --display-style` => Specifies the DisplayStyle for OMML and MathML outputs only. Boolean option (true/false).

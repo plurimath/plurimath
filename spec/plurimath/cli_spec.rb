@@ -68,7 +68,7 @@ RSpec.describe Plurimath::Cli do
 
       it "should match mathml output string" do
         file_path = "spec/plurimath/fixtures/executables/power_base.tex"
-        options = ["convert", "-e", file_path, "-f", "latex", "-t", "mathml"]
+        options = ["convert", "-p", file_path, "-f", "latex", "-t", "mathml"]
         expect{described_class.start(options)}.to output(mathml).to_stdout
       end
     end
