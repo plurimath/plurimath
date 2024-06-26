@@ -17,9 +17,9 @@ module Plurimath
            default: "asciimath",
            desc: "Input format should be in quoted string => \"asciimath\""
 
-    option :file_input,
-           aliases: "-I",
-           desc: "Excepts file path instead of quoted string as input",
+    option :file_path,
+           aliases: "-p",
+           desc: "Reads input from a file instead of the command line input. Use this for larger inputs or when input contains special characters.",
            force: :boolean
 
     option :output_format,
@@ -45,7 +45,7 @@ module Plurimath
 
     def convert
       input          = options[:input]
-      input_string   = options[:file_input] ? File.read(options[:file_input]) : input
+      input_string   = options[:file_path] ? File.read(options[:file_path]) : input
       warn_and_exit("missing generator argument --input or --file-input") unless input_string
 
       input_format   = options[:input_format]
