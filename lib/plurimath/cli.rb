@@ -18,8 +18,8 @@ module Plurimath
            desc: "Input format should be in quoted string => \"asciimath\""
 
     option :file_input,
-           aliases: "-e",
-           desc: "Splits only MathML and OMML equations into multiple equations, Boolean only",
+           aliases: "-I",
+           desc: "Excepts file path instead of quoted string as input",
            force: :boolean
 
     option :output_format,
