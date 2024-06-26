@@ -1207,10 +1207,10 @@ RSpec.describe Plurimath::Latex do
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
-              <msubsup>
+              <msub>
                 <mi>log</mi>
                 <mn>2</mn>
-              </msubsup>
+              </msub>
               <mi>x</mi>
             </mstyle>
           </math>
