@@ -468,12 +468,12 @@ In MathML:
 
 == Command Line Interface (CLI) Usage
 
-The Plurimath gem provides a command line interface (CLI) tool for converting between different math formats. This CLI tool utilizes Thor for command handling and options management.
+The Plurimath gem provides a Command Line Interface (CLI) tool for converting between different math formats.
 Before continuing please ensure you have the gem installed.
 
 === Usage
 
-To convert math equations between formats, use the plurimath convert command followed by appropriate options.
+To convert math equations between formats, use the following command followed by appropriate options.
 [source,bash]
 ----
 plurimath convert [options]
@@ -514,8 +514,6 @@ For more detailed information and additional options, use:
 ----
 plurimath convert --help
 ----
-NOTE: AsciiMath and MathML are default languages for input and output respectively.
-
 
 == XML Engines
 
