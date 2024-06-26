@@ -22,11 +22,6 @@ module Plurimath
            desc: "Splits only MathML and OMML equations into multiple equations, Boolean only",
            force: :boolean
 
-    option :output,
-           aliases: "-o",
-           default: "text",
-           desc: "Specifies the output format"
-
     option :output_format,
            aliases: "-t",
            default: "mathml",
