@@ -6364,6 +6364,52 @@ RSpec.describe Plurimath::Asciimath do
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
+
+    context "contains example from plrimath/issue#265 example #119" do
+      let(:string) { '"ISLR"=10log_10 {(P_("total")-P_("main"))/P_("main") }' }
+
+      it 'matches LaTeX, AsciiMath, and MathML' do
+        latex = '\text{ISLR} = 10 \log_{10} \{ \frac{P_{\text{total}} - P_{\text{main}}}{P_{\text{main}}} \}'
+        asciimath = '"ISLR" = 10 log_(10) {frac(P_("total") - P_("main"))(P_("main"))}'
+        mathml = <<~MATHML
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
+              <mtext>ISLR</mtext>
+              <mo>=</mo>
+              <mn>10</mn>
+              <msub>
+                <mi>log</mi>
+                <mn>10</mn>
+              </msub>
+              <mrow>
+                <mo>{</mo>
+                <mfrac>
+                  <mrow>
+                    <msub>
+                      <mi>P</mi>
+                      <mtext>total</mtext>
+                    </msub>
+                    <mo>&#x2212;</mo>
+                    <msub>
+                      <mi>P</mi>
+                      <mtext>main</mtext>
+                    </msub>
+                  </mrow>
+                  <msub>
+                    <mi>P</mi>
+                    <mtext>main</mtext>
+                  </msub>
+                </mfrac>
+                <mo>}</mo>
+              </mrow>
+            </mstyle>
+          </math>
+        MATHML
+        expect(formula.to_latex).to eql(latex)
+        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_asciimath).to eql(asciimath)
+      end
+    end
   end
 
   describe ".to_omml" do
