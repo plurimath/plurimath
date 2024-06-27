@@ -26,5 +26,6 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
   spec.add_dependency 'twitter_cldr'
   spec.add_dependency 'parslet'
+  spec.add_dependency 'thor'
   spec.add_dependency 'ox'
 end
