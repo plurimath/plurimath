@@ -10,7 +10,7 @@ module Plurimath
 
         def to_latex; end
 
-        def to_mathml_without_math_tag
+        def to_mathml_without_math_tag(_)
           ox_element("none")
         end
 

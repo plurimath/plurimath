@@ -85,9 +85,10 @@ module Plurimath
         end
 
         rule(:naryand_values) do
-          fraction.as(:frac) |
+          binomial_fraction.absent? >> fraction.as(:frac) |
             (exp_bracket >> (subsup | subscript_value | supscript_value).maybe) |
             (exp_script >> space?) |
+            binomial_fraction.as(:frac) >> space? |
             negatable_symbols.absent? >> sub_sup_operand
         end
 
@@ -100,8 +101,8 @@ module Plurimath
         end
 
         rule(:nary_sub_sup) do
-          (power_base_script.as(:nary_sub_sup) >> invisible_space? >> naryand_recursion.as(:naryand).maybe) |
-            (op_nary >> invisible_space? >> naryand_recursion.as(:naryand).maybe)
+          (power_base_script.as(:nary_sub_sup) >> (invisible_space? >> space?) >> naryand_recursion.as(:naryand).maybe) |
+            (op_nary >> (invisible_space? >> space?) >> naryand_recursion.as(:naryand).maybe)
         end
 
         rule(:unary_sub_sup) do

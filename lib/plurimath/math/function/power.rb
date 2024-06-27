@@ -17,11 +17,11 @@ module Plurimath
           "#{parameter_one.to_asciimath}#{second_value}"
         end
 
-        def to_mathml_without_math_tag
-          tag_name = (["ubrace", "obrace"].include?(parameter_one&.class_name) ? "over" : "sup")
+        def to_mathml_without_math_tag(intent)
+          tag_name = ["ubrace", "obrace"].include?(parameter_one&.class_name) ? "over" : "sup"
           value_array = [
-            validate_mathml_fields(parameter_one),
-            validate_mathml_fields(parameter_two),
+            validate_mathml_fields(parameter_one, intent),
+            validate_mathml_fields(parameter_two, intent),
           ]
           Utility.update_nodes(ox_element("m#{tag_name}"), value_array)
         end

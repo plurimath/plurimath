@@ -15,11 +15,11 @@ module Plurimath
           "[#{parameter_one.map(&:to_asciimath).join(', ')}]"
         end
 
-        def to_mathml_without_math_tag
+        def to_mathml_without_math_tag(intent)
           first_value = remove_hline(cloned_objects.parameter_one)
           Utility.update_nodes(
             Utility.ox_element("mtr"),
-            first_value.map(&:to_mathml_without_math_tag).compact,
+            first_value.map { |obj| obj&.to_mathml_without_math_tag(intent) }.compact,
           )
         end
 

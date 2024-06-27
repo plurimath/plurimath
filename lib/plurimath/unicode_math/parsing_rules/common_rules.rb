@@ -30,13 +30,19 @@ module Plurimath
           sup_paren.as(:mini_numerator) >> (negatable_symbols.absent? >> op_over) >> sub_paren.as(:mini_denominator)
         end
 
+        rule(:binomial_fraction) do
+          numerator.as(:numerator) >> op_over_choose >> denominator.as(:denominator)
+        end
+
         rule(:fraction) do
           mini_fraction |
+            binomial_fraction |
             numerator.as(:numerator) >> space? >> (negatable_symbols.absent? >> op_over) >> space? >> denominator.as(:denominator)
         end
 
         rule(:fonts) do
-          str("\\") >> custom_fonts.as(:unicoded_font_class) >> str("H").as(:symbol) |
+          unicoded_fonts |
+            str("\\") >> custom_fonts.as(:unicoded_font_class) >> str("H").as(:symbol) |
             str("\\") >> str("mitBbb").as(:unicoded_font_class) >> match(/D|d|e|i|j/).as(:symbol)|
             op_fonts >> match["A-Za-z"].as(:symbol) |
             op_alphanumeric_fonts >> (match["A-Za-z"].as(:symbol) | match("[0-9]").as(:number))
@@ -98,8 +104,8 @@ module Plurimath
 
         rule(:soperand) do
           operand |
-            str("&#x221e;").as(:infty) |
-            str("-&#x221e;").as(:symbol) |
+            infty.as(:infty) |
+            (str("-") >> infty).as(:symbol) |
             str("&#x2212;").as(:symbol) |
             str("-").as(:symbol) |
             operator
@@ -109,6 +115,8 @@ module Plurimath
           (op_opener.as(:opener) >> space? >> soperand.as(:operand) >> space? >> op_closer.as(:closer)).as(:int_exp) |
             soperand.as(:operand)
         end
+
+        rule(:infty) { str("&#x221e;") }
       end
     end
   end

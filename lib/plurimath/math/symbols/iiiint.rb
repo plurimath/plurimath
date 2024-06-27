@@ -24,7 +24,7 @@ module Plurimath
           Utility.html_entity_to_unicode("&#x2a0c;")
         end
 
-        def to_mathml_without_math_tag
+        def to_mathml_without_math_tag(_)
           ox_element("mi") << "&#x2a0c;"
         end
 
@@ -34,6 +34,14 @@ module Plurimath
 
         def to_html
           "&#x2a0c;"
+        end
+
+        def is_nary_symbol?
+          true
+        end
+
+        def nary_intent_name
+          "quadruple integral"
         end
       end
     end

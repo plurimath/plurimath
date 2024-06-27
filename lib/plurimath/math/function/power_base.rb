@@ -13,13 +13,13 @@ module Plurimath
           third_value: "supscript",
         }.freeze
 
-        def to_mathml_without_math_tag
+        def to_mathml_without_math_tag(intent)
           tag_name = parameter_one&.tag_name || "subsup"
           subsup_tag = ox_element("m#{tag_name}")
           new_arr = [
-            validate_mathml_fields(parameter_one),
-            validate_mathml_fields(parameter_two),
-            validate_mathml_fields(parameter_three),
+            validate_mathml_fields(parameter_one, intent),
+            validate_mathml_fields(parameter_two, intent),
+            validate_mathml_fields(parameter_three, intent),
           ]
           Utility.update_nodes(subsup_tag, new_arr)
         end
@@ -94,11 +94,11 @@ module Plurimath
           parameter_one.is_nary_function? || parameter_one.is_nary_symbol?
         end
 
-        def mmultiscript
+        def mmultiscript(intent)
           [
-            validate_mathml_fields(parameter_one),
-            validate_mathml_fields(parameter_two),
-            validate_mathml_fields(parameter_three),
+            validate_mathml_fields(parameter_one, intent),
+            validate_mathml_fields(parameter_two, intent),
+            validate_mathml_fields(parameter_three, intent),
           ]
         end
 

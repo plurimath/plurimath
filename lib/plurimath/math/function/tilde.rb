@@ -13,12 +13,11 @@ module Plurimath
           @attributes = attributes
         end
 
-        def to_mathml_without_math_tag
-          mover = Utility.ox_element("mover")
-          mover[:accent] = attributes[:accent] if attributes && attributes[:accent]
-          first_value = (Utility.ox_element("mo") << "~")
-          second_value = parameter_one.to_mathml_without_math_tag if parameter_one
-          Utility.update_nodes(mover, [second_value, first_value])
+        def to_mathml_without_math_tag(intent)
+          mover = ox_element("mover")
+          mover[:accent] = attributes[:accent] if attributes&.dig(:accent)
+          second_value = parameter_one.to_mathml_without_math_tag(intent) if parameter_one
+          Utility.update_nodes(mover, [second_value, ox_element("mo") << "~"])
         end
 
         def to_omml_without_math_tag(display_style)

@@ -3,7 +3,7 @@ module Plurimath
     module Symbols
       class Comma < Symbol
         INPUT = {
-          unicodemath: [["&#x2c;"], parsing_wrapper([",", "comma"])],
+          unicodemath: [["&#x2c;", ","], parsing_wrapper(["comma"])],
           asciimath: [[",", "&#x2c;"], parsing_wrapper(["comma"])],
           mathml: ["&#x2c;", ","],
           latex: [["comma", ",", "&#x2c;"]],
@@ -24,7 +24,7 @@ module Plurimath
           Utility.html_entity_to_unicode(",")
         end
 
-        def to_mathml_without_math_tag
+        def to_mathml_without_math_tag(_)
           ox_element("mo") << ","
         end
 

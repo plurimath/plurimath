@@ -51,11 +51,14 @@ module Plurimath
       rule(:forward_slash) { str("/") | str("&#x2f;") | str("&#x2044;") }
 
       rule(:root_functions) { qdrt | cbrt | sqrt | binary_root | nthrt }
+      rule(:op_over_choose) { (str("\\choose") | str("&#x249e;")).as(:choose) }
       rule(:op_masked_open) { (str("\\left") | str("\\open") | str("&#x251c;")).as(:paren_open_prefix) >> digits.as(:open_paren_mask).maybe }
 
       rule(:invisible_times) { (str("&#x2062;") | str("&#x2061;") | str("&#x20;") | str("\\itimes") >> space?) }
 
-      rule(:ordinary_symbols)  { op_ordinary_symbols | op_prefixed_ordinary_symbols }
+      rule(:ordinary_symbols) { op_ordinary_symbols | op_prefixed_ordinary_symbols }
+      rule(:interval_a_ascii) { match["A-Za-z"].as(:symbol).repeat(1) }
+
       rule(:negatable_symbols) { forward_slash >> negated | negated >> str("&#x338;") }
       rule(:invisible_unicode) { str("&#x2592;") | (str("\\naryand") | str("\\of") >> space?) }
 
@@ -93,7 +96,7 @@ module Plurimath
           str("&#x2f;") |
           str("\\not") |
           (str("&#xa6;") | str("\\atop")).as(:atop) |
-          (str("\\choose") | str("&#x249e;")).as(:choose)
+          op_over_choose
       end
 
       rule(:element_exp_script_validation?) do
@@ -167,9 +170,24 @@ module Plurimath
       rule(:exp_bracket) do
         (str("||").as(:open_paren) >> space? >> spaced_exp_bracket >> space? >> str("||").as(:close_paren)) |
           (str("|").as(:open_paren) >> space? >> spaced_exp_bracket >> space? >> str("|").as(:close_paren)) |
+          interval_exp_bracket |
           (op_opener >> space? >> spaced_exp_bracket.maybe >> space? >> op_closer) |
           (mix_bracketed.as(:intermediate_exp) >> space? >> expression.as(:expr)) |
           (mix_bracketed.as(:intermediate_exp) >> space)
+      end
+
+      rule(:interval_exp_bracket) do
+        str("(").as(:open_paren) >> interval_value.as(:left_value) >> str(",").as(:comma) >> interval_value.as(:right_value) >> str("]").as(:close_paren) |
+        str("[").as(:open_paren) >> interval_value.as(:left_value) >> str(",").as(:comma) >> interval_value.as(:right_value) >> str(")").as(:close_paren) |
+        (str("[") | str("]")).as(:open_paren) >> interval_value.as(:left_value) >> str(",").as(:comma) >> interval_value.as(:right_value) >> (str("[") | str("]")).as(:close_paren)
+      end
+
+      rule(:interval_value) do
+        infty.as(:infty) |
+          (str("+").as(:positive) >> (infty.as(:infty) | digits | interval_a_ascii)) |
+          ((str("-") | str("&#x2212;")).as(:negative) >> (infty.as(:infty) | digits | interval_a_ascii)) |
+          digits |
+          interval_a_ascii
       end
 
       rule(:mix_bracketed) do

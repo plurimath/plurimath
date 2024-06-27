@@ -22,10 +22,24 @@ module Plurimath
             "#{matrix_symbol}(#{value.map(&:to_unicodemath).join("@")})"
           end
 
+          def to_mathml_without_math_tag(intent)
+            matrix = super
+            matrix["intent"] = intent_attr_value(intent) if intent
+            matrix
+          end
+
           private
 
           def matrix_symbol
-            open_paren&.class_name == "norm" ? "⒩" : "⒱"
+            capital_vmatrix? ? "⒩" : "⒱"
+          end
+
+          def capital_vmatrix?
+            open_paren&.class_name == "norm"
+          end
+
+          def intent_attr_value(intent)
+            capital_vmatrix? ? ":normed-matrix" : ":determinant"
           end
         end
       end

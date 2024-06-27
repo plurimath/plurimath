@@ -8,9 +8,7 @@ RSpec.describe Plurimath::UnicodeMath::Parser do
   describe ".parse" do
     subject(:formula) { described_class.new(string).parse }
 
-    SKIPABLE_EXAMPLES = [33, 179, 210, 211, 598, 599, 600, 601].freeze
-    unicodemath_tests_file = File.read("submodules/unicodemath-tests/unicodemath_tests.yaml")
-    unicodemath_tests = YAML.safe_load(unicodemath_tests_file, permitted_classes: [Time])["tests"]
+    SKIPABLE_EXAMPLES = [33, 210, 211, 598, 599, 600, 601].freeze
     unicodemath_tests.each.with_index(1) do |unicode_hash, index|
       constant = :"EXAMPLE_#{index}"
       break unless UnicodeMathTransformValues.constants.any?(constant)

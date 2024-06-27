@@ -36,7 +36,7 @@ module Plurimath
           value
         end
 
-        def to_mathml_without_math_tag
+        def to_mathml_without_math_tag(_)
           mi_tag = Utility.ox_element("mi")
           return mi_tag if ["{:", ":}"].include?(value)
 
@@ -71,14 +71,10 @@ module Plurimath
         end
 
         def tag_name
-          ["&#x22c0;", "&#x22c1;", "&#x22c2;", "&#x22c3;"].include?(value) ? "underover" : "subsup"
+          "subsup"
         end
 
         def omml_tag_name
-          if ["&#x22c0;", "&#x22c1;", "&#x22c2;", "&#x22c3;", "&#x22c3;", "&#x2211;", "&#x220f;"].include?(value)
-            return "undOvr"
-          end
-
           "subSup"
         end
 
@@ -109,21 +105,6 @@ module Plurimath
 
         def linebreak
           value == "\\\\"
-        end
-
-        def is_nary_symbol?
-          %w[
-            &#x222c;
-            &#x222d;
-            &#x222f;
-            &#x2230;
-            &#x2232;
-            &#x2233;
-            &#x2231;
-            &#x2229;
-            &#x222a;
-            &#x2210;
-          ].include?(value)
         end
 
         def mini_sized?

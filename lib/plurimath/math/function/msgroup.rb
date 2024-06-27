@@ -14,10 +14,10 @@ module Plurimath
           parameter_one.map(&:to_latex).join
         end
 
-        def to_mathml_without_math_tag
+        def to_mathml_without_math_tag(intent)
           Utility.update_nodes(
             Utility.ox_element("msgroup"),
-            parameter_one.map(&:to_mathml_without_math_tag),
+            parameter_one.map { |object| object&.to_mathml_without_math_tag(intent) },
           )
         end
 

@@ -13,18 +13,18 @@ module Plurimath
 
         # output methods
         def to_latex
-          "\\Cap"
+          "\\cap"
         end
 
         def to_asciimath
-          parsing_wrapper("Cap")
+          parsing_wrapper("cap")
         end
 
         def to_unicodemath
           Utility.html_entity_to_unicode("&#x2229;")
         end
 
-        def to_mathml_without_math_tag
+        def to_mathml_without_math_tag(_)
           ox_element("mi") << "&#x2229;"
         end
 
@@ -34,10 +34,6 @@ module Plurimath
 
         def to_html
           "&#x2229;"
-        end
-
-        def is_nary_symbol?
-          true
         end
       end
     end

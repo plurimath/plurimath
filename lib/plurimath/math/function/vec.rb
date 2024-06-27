@@ -13,9 +13,9 @@ module Plurimath
           @attributes = attributes
         end
 
-        def to_mathml_without_math_tag
-          mover = Utility.ox_element("mover")
-          first_value = parameter_one&.to_mathml_without_math_tag
+        def to_mathml_without_math_tag(intent)
+          mover = ox_element("mover")
+          first_value = parameter_one&.to_mathml_without_math_tag(intent)
           mover[:accent] = attributes[:accent] if attributes && attributes[:accent]
           Utility.update_nodes(
             mover,

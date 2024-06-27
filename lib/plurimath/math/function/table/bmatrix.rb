@@ -18,18 +18,19 @@ module Plurimath
             "\\begin#{opening}#{latex_content}\\end#{matrix_class}"
           end
 
-          def to_mathml_without_math_tag
-            table_tag = Utility.ox_element("mtable", attributes: table_attribute)
+          def to_mathml_without_math_tag(intent)
+            table_tag = ox_element("mtable", attributes: table_attribute)
+            table_tag["intent"] = ":matrix(#{value.length},#{td_count})" if intent
             Utility.update_nodes(
               table_tag,
-              value&.map(&:to_mathml_without_math_tag),
+              value&.map { |object| object&.to_mathml_without_math_tag(intent) },
             )
             Utility.update_nodes(
-              Utility.ox_element("mrow"),
+              ox_element("mrow", attributes: intent_attr(intent)),
               [
-                mo_element(mathml_parenthesis(open_paren)),
+                mo_element(mathml_parenthesis(open_paren, intent)),
                 table_tag,
-                mo_element(mathml_parenthesis(close_paren)),
+                mo_element(mathml_parenthesis(close_paren, intent)),
               ],
             )
           end
@@ -41,7 +42,19 @@ module Plurimath
           private
 
           def matrix_symbol
-            open_paren.is_a?(Math::Symbols::Paren::Lcurly) ? "Ⓢ" : "ⓢ"
+            capital_bmatrix? ? "Ⓢ" : "ⓢ"
+          end
+
+          def capital_bmatrix?
+            open_paren.is_a?(Math::Symbols::Paren::Lcurly)
+          end
+
+          def intent_attr(intent)
+            return {} unless intent
+
+            {
+              intent: capital_bmatrix? ? ":curly-braced-matrix" : ":bracketed-matrix"
+            }
           end
         end
       end

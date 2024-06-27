@@ -3,7 +3,7 @@ module Plurimath
     module Symbols
       class Duni < Symbol
         INPUT = {
-          unicodemath: [["&#x22c3;"], parsing_wrapper(["bigcup", "uuu", "duni"])],
+          unicodemath: [["&#x22c3;", "bigcup"], parsing_wrapper(["uuu", "duni"])],
           asciimath: [["bigcup", "uuu", "&#x22c3;"], parsing_wrapper(["duni"])],
           mathml: ["&#x22c3;"],
           latex: [["bigcup", "duni", "&#x22c3;"], parsing_wrapper(["uuu"])],
@@ -24,7 +24,7 @@ module Plurimath
           Utility.html_entity_to_unicode("&#x22c3;")
         end
 
-        def to_mathml_without_math_tag
+        def to_mathml_without_math_tag(_)
           ox_element("mi") << "&#x22c3;"
         end
 
@@ -34,6 +34,22 @@ module Plurimath
 
         def to_html
           "&#x22c3;"
+        end
+
+        def is_nary_symbol?
+          true
+        end
+
+        def nary_intent_name
+          "n-ary"
+        end
+
+        def tag_name
+          "underover"
+        end
+
+        def omml_tag_name
+          "undOvr"
         end
       end
     end

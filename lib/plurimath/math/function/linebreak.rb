@@ -44,10 +44,10 @@ module Plurimath
           end
         end
 
-        def to_mathml_without_math_tag
+        def to_mathml_without_math_tag(intent)
           return Utility.ox_element("mo", attributes: { linebreak: "newline" }) unless parameter_one
 
-          mo_node = parameter_one.to_mathml_without_math_tag
+          mo_node = parameter_one.to_mathml_without_math_tag(intent)
           mo_node.name = "mo" unless mo_node.name == "mo"
           mo_node.set_attr(attributes) unless attributes.empty?
           mo_node

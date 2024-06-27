@@ -24,7 +24,7 @@ module Plurimath
           Utility.html_entity_to_unicode("&#x2232;")
         end
 
-        def to_mathml_without_math_tag
+        def to_mathml_without_math_tag(_)
           ox_element("mi") << "&#x2232;"
         end
 
@@ -38,6 +38,18 @@ module Plurimath
 
         def is_nary_symbol?
           true
+        end
+
+        def nary_intent_name
+          "n-ary"
+        end
+
+        def tag_name
+          "underover"
+        end
+
+        def omml_tag_name
+          "undOvr"
         end
       end
     end

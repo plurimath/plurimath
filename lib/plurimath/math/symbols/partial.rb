@@ -3,12 +3,12 @@ module Plurimath
     module Symbols
       class Partial < Symbol
         INPUT = {
-          unicodemath: [["partial", "&#x2202;"], parsing_wrapper(["del", "partialup"])],
-          asciimath: [["partial", "del", "&#x2202;"], parsing_wrapper(["partialup"])],
-          mathml: ["&#x2202;"],
-          latex: [["partialup", "partial", "&#x2202;"], parsing_wrapper(["del"])],
-          omml: ["&#x2202;"],
-          html: ["&#x2202;"],
+          unicodemath: [["partial", "&#x2202;", "&#x1d715;"], parsing_wrapper(["del", "partialup"])],
+          asciimath: [["partial", "del", "&#x2202;", "&#x1d715;"], parsing_wrapper(["partialup"])],
+          mathml: ["&#x2202;", "&#x1d715;"],
+          latex: [["partialup", "partial", "&#x2202;", "&#x1d715;"], parsing_wrapper(["del"])],
+          omml: ["&#x2202;", "&#x1d715;"],
+          html: ["&#x2202;", "&#x1d715;"],
         }.freeze
 
         # output methods
@@ -24,7 +24,7 @@ module Plurimath
           Utility.html_entity_to_unicode("&#x2202;")
         end
 
-        def to_mathml_without_math_tag
+        def to_mathml_without_math_tag(_)
           ox_element("mo") << "&#x2202;"
         end
 

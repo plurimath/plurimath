@@ -24,7 +24,7 @@ module Plurimath
           Utility.html_entity_to_unicode("&#xa0;&#xa0;")
         end
 
-        def to_mathml_without_math_tag
+        def to_mathml_without_math_tag(_)
           ox_element("mi") << "&#xa0;&#xa0;"
         end
 

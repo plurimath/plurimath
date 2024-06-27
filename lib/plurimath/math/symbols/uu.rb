@@ -24,7 +24,7 @@ module Plurimath
           Utility.html_entity_to_unicode("&#x222a;")
         end
 
-        def to_mathml_without_math_tag
+        def to_mathml_without_math_tag(_)
           ox_element("mo") << "&#x222a;"
         end
 
@@ -34,10 +34,6 @@ module Plurimath
 
         def to_html
           "&#x222a;"
-        end
-
-        def is_nary_symbol?
-          true
         end
       end
     end

@@ -23,8 +23,8 @@ module Plurimath
           "\\overbrace#{first_value}"
         end
 
-        def to_mathml_without_math_tag
-          mo_tag = (Utility.ox_element("mo") << "&#x23de;")
+        def to_mathml_without_math_tag(intent)
+          mo_tag = Utility.ox_element("mo") << "&#x23de;"
           return mo_tag unless parameter_one
 
           over_tag = Utility.ox_element("mover")
@@ -32,7 +32,7 @@ module Plurimath
           Utility.update_nodes(
             over_tag,
             [
-              parameter_one.to_mathml_without_math_tag,
+              parameter_one.to_mathml_without_math_tag(intent),
               mo_tag,
             ],
           )

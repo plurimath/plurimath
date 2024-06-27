@@ -6,7 +6,7 @@ module Plurimath
   module Math
     module Function
       class Ms < UnaryFunction
-        def to_mathml_without_math_tag
+        def to_mathml_without_math_tag(intent)
           Utility.ox_element("ms") << parameter_one
         end
 

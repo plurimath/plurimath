@@ -6,7 +6,7 @@ module Plurimath
       REPLACABLES = {
         /&amp;/ => "&",
         /^\n/ => "",
-      }
+      }.freeze
 
       def class_name
         self.class.name.split("::").last.downcase
@@ -100,7 +100,7 @@ module Plurimath
 
         hashed = common_math_zone_conversion(field, options)
         options[:array] << "#{hashed[:spacing]}|_ \"#{dump_mathml(field)}\"#{hashed[:field_name]}\n"
-        return unless Utility.validate_math_zone(field, lang: :mathml)
+        return unless Utility.validate_math_zone(field, lang: :mathml, intent: options[:intent])
 
         options[:array] << field&.to_mathml_math_zone(hashed[:function_spacing], hashed[:last], hashed[:indent])
       end
@@ -116,8 +116,8 @@ module Plurimath
         options[:array] << field&.to_omml_math_zone(hashed[:function_spacing], hashed[:last], hashed[:indent], display_style: display_style)
       end
 
-      def dump_mathml(field)
-        dump_ox_nodes(field.to_mathml_without_math_tag).gsub(/\n\s*/, "")
+      def dump_mathml(field, intent = false)
+        dump_ox_nodes(field.to_mathml_without_math_tag(intent)).gsub(/\n\s*/, "")
       end
 
       def dump_omml(field, display_style)
@@ -130,11 +130,11 @@ module Plurimath
         to_omml_without_math_tag(display_style)
       end
 
-      def validate_mathml_fields(field)
+      def validate_mathml_fields(field, intent)
         if field.is_a?(Array)
-          field&.map(&:to_mathml_without_math_tag)
+          field&.map { |object| object.to_mathml_without_math_tag(intent) }
         else
-          field&.to_mathml_without_math_tag
+          field&.to_mathml_without_math_tag(intent)
         end
       end
 
@@ -210,11 +210,7 @@ module Plurimath
             field.line_breaking(obj)
             updated_object_values(variable, obj: obj, update_value: true) if obj.value_exist?
           when Array
-            if result(field).length > 1
-              updated_object_values(variable, obj: obj)
-            else
-              field.each { |object| object.line_breaking(obj) }
-            end
+            array_line_break_field(field, variable, obj)
           end
         end
       end
@@ -279,6 +275,8 @@ module Plurimath
 
       def is_nary_symbol?;end
 
+      def nary_intent_name;end
+
       def is_binary_function?
         is_a?(Function::BinaryFunction)
       end
@@ -306,35 +304,119 @@ module Plurimath
 
       private
 
-      def prime_classes
-        %w[
-          backtrprime
-          backtrprime
-          backdprime
-          backdprime
-          backprime
-          backprime
-          pppprime
-          pppprime
-          pppprime
-          pppprime
-          ppprime
-          ppprime
-          ppprime
-          ppprime
-          dprime
-          dprime
-          dprime
-          pprime
-          dprime
-          prime
-          prime
-          prime
-        ].freeze
+      def array_line_break_field(field, variable, obj)
+        if result(field).length > 1
+          updated_object_values(variable, obj: obj)
+        else
+          field.each { |object| object.line_breaking(obj) }
+        end
       end
 
       def unicodemath_field_value(field)
         field.class_name == "symbol" ? field.value : Utility.hexcode_in_input(field)
+      end
+
+      def wrap_mrow(xml_engine_node, intent)
+        return xml_engine_node if xml_engine_node.name == "mrow"
+        return xml_engine_node unless intent
+
+        ox_element("mrow") << xml_engine_node
+      end
+
+      def intentify(tag, intent, func_name:, intent_name: nil)
+        return tag unless intent
+
+        Utility::IntentEncoding.send("#{func_name}_intent", tag, intent_name)
+      end
+
+      def masked_tag(tag)
+        options_array = get_mask_options
+        if options_array.include?("show_up_limit_place_holder") && parameter_three.nil?
+          set_place_holder(tag, type: :above)
+        end
+        if options_array.include?("show_low_limit_place_holder") && parameter_two.nil?
+          set_place_holder(tag, type: :below)
+        end
+        if options_array.include?("limits_opposite")
+          change_power_base_values(tag)
+        end
+        if options_array.include?("limits_under_over")
+          case tag.name
+          when "msubsup" then tag.name = "munderover"
+          when "msub" then tag.name = "munder"
+          when "msup" then tag.name = "mover"
+          end
+        elsif options_array.include?("limits_sub_sup")
+          case tag.name
+          when "munderover" then tag.name = "msubsup"
+          when "munder" then tag.name = "msub"
+          when "mover" then tag.name = "msup"
+          end
+        elsif options_array.include?("upper_limit_as_super_script") && tag.nodes[1].name == "mrow"
+          tag = Utility.update_nodes(
+            ox_element("munder"),
+            [
+              Utility.update_nodes(
+                ox_element("msup"),
+                [
+                  tag.nodes[0],
+                  tag.nodes[2],
+                ],
+              ),
+              tag.nodes[1],
+            ],
+          )
+        end
+        tag
+      end
+
+      def get_mask_options(mask_options = [])
+        mask = options&.dig(:mask).to_i
+
+        case mask % 4
+        when 0 then mask_options << "limits_default"
+        when 1 then mask_options << "limits_under_over"
+        when 2 then mask_options << "limits_sub_sup"
+        when 3 then mask_options << "upper_limit_as_super_script"
+        end
+
+        mask -= mask % 4
+
+        case mask % 32
+        when 4 then mask_options << "limits_opposite"
+        when 8 then mask_options << "show_low_limit_place_holder"
+        when 12 then mask_options += ["limits_opposite", "show_low_limit_place_holder"]
+        when 16 then mask_options << "show_up_limit_place_holder"
+        when 20 then mask_options += ["limits_opposite", "show_up_limit_place_holder"]
+        when 24 then mask_options += ["show_low_limit_place_holder", "show_up_limit_place_holder"]
+        when 28 then mask_options += ["limits_opposite", "show_low_limit_place_holder", "show_up_limit_place_holder"]
+        end
+
+        mask_options
+      end
+
+      def change_power_base_values(tag)
+        return unless ["munderover", "msubsup"].include?(tag.name)
+
+        Plurimath.xml_engine.replace_nodes(
+          tag,
+          [tag.nodes[0], tag.nodes[2], tag.nodes[1]],
+        )
+      end
+
+      def set_place_holder(node, type:)
+        nodes = if type == :below
+                  node.name = node.name == "msup" ? "msubsup" : "munderover"
+                  node.nodes.insert(1, mo_tag("&#x2b1a;"))
+                else
+                  node.name = node.name == "msub" ? "msubsup" : "munderover"
+                  node.nodes.insert(2, mo_tag("&#x2b1a;"))
+                end
+        Plurimath.xml_engine.replace_nodes(node, nodes)
+      end
+
+      def mo_tag(str)
+        ox_element("mo") << str
       end
     end
   end

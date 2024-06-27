@@ -26,14 +26,14 @@ module Plurimath
           "#{prescript}#{parameter_one&.to_latex}"
         end
 
-        def to_mathml_without_math_tag
-          mprescript = ox_element("mprescripts") if (parameter_two || parameter_three)
+        def to_mathml_without_math_tag(intent)
+          mprescript = ox_element("mprescripts") if parameter_two || parameter_three
           Utility.update_nodes(
             ox_element("mmultiscripts"),
             [
-              parameter_one&.mmultiscript,
+              parameter_one&.mmultiscript(intent),
               mprescript,
-              validate_mathml_fields(prescripts),
+              validate_mathml_fields(prescripts, intent),
             ]
           )
         end
@@ -66,10 +66,14 @@ module Plurimath
             return
           end
 
-          parameter_two.line_breaking(obj)
+          array_line_break_field(
+            parameter_two,
+            :@parameter_two,
+            obj,
+          )
           if obj.value_exist?
             obj.update(
-              self.class.new(nil, Utility.filter_values(obj.value), parameter_three)
+              self.class.new(nil, obj.value, parameter_three)
             )
             self.parameter_three = nil
           end
@@ -78,7 +82,12 @@ module Plurimath
         private
 
         def prescripts
-          Array(parameter_two)&.zip(Array(parameter_three))&.flatten&.compact
+          return parameter_three if parameter_two&.nil? || parameter_two&.empty?
+          return parameter_two if parameter_three.nil? || parameter_three.empty?
+
+          prescripts_array = []
+          Array(parameter_two).zip(Array(parameter_three)) { |array| prescripts_array << array }
+          prescripts_array.flatten.compact
         end
 
         def valid_value_exist?(field)

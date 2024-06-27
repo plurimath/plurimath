@@ -31,15 +31,17 @@ module Plurimath
           "frac#{first_value}#{second_value}"
         end
 
-        def to_mathml_without_math_tag
+        def to_mathml_without_math_tag(intent)
           tag_name = hide_function_name ? "mrow" : "mfrac"
           mathml_value = [
-            parameter_one&.to_mathml_without_math_tag,
-            parameter_two&.to_mathml_without_math_tag,
+            parameter_one&.to_mathml_without_math_tag(intent),
+            parameter_two&.to_mathml_without_math_tag(intent),
           ]
           frac_tag = ox_element(tag_name)
-          frac_tag.set_attr(options) if tag_name == "mfrac" && options
+          frac_tag.set_attr(options.reject { |opt| opt == :choose }) if tag_name == "mfrac" && options
           Utility.update_nodes(frac_tag, mathml_value)
+          update_derivative(frac_tag, mathml_value[0], mathml_value[1]) if intent
+          intentify(frac_tag, intent, func_name: :frac)
         end
 
         def to_latex
@@ -118,6 +120,36 @@ module Plurimath
         def unicodemath_fraction
           frac_array = [parameter_one.value.to_i, parameter_two.value.to_i]
           UnicodeMath::Constants::UNICODE_FRACTIONS.key(frac_array)
+        end
+
+        def update_derivative(tag, num, den)
+          return if %w[mi mo mn].include?(num&.name)
+
+          intent = num.is_a?(::Array) ? num.first["intent"] : num&.nodes&.first["intent"]
+          return unless intent
+          return unless intent.start_with?(":derivative") && intent.end_with?(",)")
+
+          num.nodes.first["intent"].gsub!(/,\)$/, ",#{validate_derivative(den.nodes)})")
+        end
+
+        def validate_derivative(den_nodes)
+          str = ""
+          if den_nodes.first.name == "mi"
+            node = den_nodes[1]
+            if %w[msub msup].include?(node.name)
+              case node.nodes.first.name
+              when "mi"
+                str += Utility.html_entity_to_unicode(node.nodes.first.nodes.first)
+              when "mrow"
+                node.nodes.first.nodes.each do |element|
+                  break unless element.name == "mi"
+
+                  str += Utility.html_entity_to_unicode(element.nodes.first)
+                end
+              end
+            end
+          end
+          str
         end
       end
     end

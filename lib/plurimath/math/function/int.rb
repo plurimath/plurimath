@@ -38,7 +38,7 @@ module Plurimath
           "\\#{class_name}#{first_value}#{second_value} #{parameter_three&.to_latex}".strip
         end
 
-        def to_mathml_without_math_tag
+        def to_mathml_without_math_tag(intent)
           base_element = (Utility.ox_element("mo") << invert_unicode_symbols.to_s)
           return base_element unless all_values_exist?
 
@@ -47,19 +47,22 @@ module Plurimath
             msubsup_tag,
             [
               base_element,
-              validate_mathml_tag(parameter_one),
-              validate_mathml_tag(parameter_two),
+              validate_mathml_tag(parameter_one, intent),
+              validate_mathml_tag(parameter_two, intent),
             ],
           )
+          msubsup_tag = masked_tag(msubsup_tag) if options && options.key?(:mask)
           return msubsup_tag if parameter_three.nil?
 
+          mrow = ox_element("mrow")
           Utility.update_nodes(
-            Utility.ox_element("mrow"),
+            mrow,
             [
               msubsup_tag,
-              parameter_three&.to_mathml_without_math_tag,
+              wrap_mrow(parameter_three&.to_mathml_without_math_tag(intent), intent),
             ].flatten.compact,
           )
+          intentify(mrow, intent, func_name: :naryand, intent_name: :integral)
         end
 
         def to_omml_without_math_tag(display_style)

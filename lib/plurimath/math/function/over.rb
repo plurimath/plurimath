@@ -18,11 +18,11 @@ module Plurimath
           "frac#{first_value}#{second_value}"
         end
 
-        def to_mathml_without_math_tag
+        def to_mathml_without_math_tag(intent)
           tag_name = hide_function_name ? "mrow" : "mfrac"
-          mathml_value  = [
-            parameter_one&.to_mathml_without_math_tag,
-            parameter_two&.to_mathml_without_math_tag,
+          mathml_value = [
+            parameter_one&.to_mathml_without_math_tag(intent),
+            parameter_two&.to_mathml_without_math_tag(intent),
           ]
           Utility.update_nodes(ox_element(tag_name), mathml_value)
         end

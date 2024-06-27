@@ -12,8 +12,8 @@ module Plurimath
           "{\\lfloor #{parameter_one.to_latex} \\rfloor}"
         end
 
-        def to_mathml_without_math_tag
-          first_value = parameter_one&.to_mathml_without_math_tag
+        def to_mathml_without_math_tag(intent)
+          first_value = parameter_one&.to_mathml_without_math_tag(intent)
           value_array = [first_value]
           value_array.insert(0, (ox_element("mo") << "&#x230a;")) unless open_paren
           value_array << (ox_element("mo") << "&#x230b;") unless close_paren
