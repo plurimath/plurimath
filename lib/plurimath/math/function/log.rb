@@ -52,12 +52,17 @@ module Plurimath
           first_value = ox_element("mi")
           first_value << "log" unless hide_function_name
           if parameter_one || parameter_two
+            tag_name = if parameter_two && parameter_one
+                         "subsup"
+                       else
+                         parameter_one ? "sub" : "sup"
+                       end
             new_arr = [
               first_value,
               validate_mathml_fields(parameter_one),
               validate_mathml_fields(parameter_two),
             ]
-            Utility.update_nodes(ox_element("msubsup"), new_arr)
+            Utility.update_nodes(ox_element("m#{tag_name}"), new_arr)
           else
             first_value
           end

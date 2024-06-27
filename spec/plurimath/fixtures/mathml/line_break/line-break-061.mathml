@@ -1,11 +1,11 @@
 <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
   <mstyle displaystyle="true">
-    <msubsup>
+    <msub>
       <mi>log</mi>
       <mrow>
         <mi>&#x3b8;</mi>
       </mrow>
-    </msubsup>
+    </msub>
   </mstyle>
 </math>
 <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
