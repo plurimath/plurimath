@@ -105,6 +105,40 @@ Specifies the DisplayStyle for OMML and MathML outputs only. Boolean option
 Splits MathML and OMML output into multiple equations. Boolean option (`true`,
 `false`).
 
+=== **Render** Command
+
+The `render` command generates graphical outputs (PNG, SVG, or PDF) from mathematical expressions.
+[source,bash]
+----
+plurimath render -i <expression> -o <file-name>.<one-of-the-supported-extension>
+----
+
+==== Options
+1. `-i, --input <INPUT>` => Specifies the input math equation. Should be provided within double quotes.
+2. `-f, --input-format <FORMAT>` => Specifies the input format of the equation. Defaults to "asciimath".
+3. `-p, --file-path <FILE_PATH>` => Reads input from a file instead of the command line input. Use this for larger inputs or when input contains special characters.
+4. `-o, --output <filename.ext>` => Required. Specifies the output file name with extension (png, svg, or pdf).
+5. `-d, --display-style <Boolean>` => Optional. Enables display style MathML conversion (boolean).
+
+==== Examples
+
+Render a mathematical expression of Asciimath input to a PNG file:
+[source,bash]
+----
+plurimath render -i "sqrt(x^2 + y^2)" -o output.png
+----
+
+Render from a file and specify display style:
+[source,bash]
+----
+plurimath render -p -i input.txt -o output.svg -d true # -d true|false only
+----
+
+For more detailed information and additional options, use:
+[source,bash]
+----
+plurimath render --help
+----
 
 === Convert an AsciiMath equation to MathML
 
@@ -553,10 +587,16 @@ In MathML:
 <mi>∍</mi>
 ----
 
+=== Dependency
 
-== XML engines
+The *Lasem* library serves as the rendering engine for mathematical equations into graphical formats such as *PDF*, *SVG*, and *PNG*. To use the `render` command effectively, ensure you have *Lasem* installed on your system.
 
-Plurimath supports two XML engines:
+Install the *Lasem* library by following the instructions provided on https://github.com/LasemProject/lasem[*Lasem GitHub repository*].
+
+
+== XML Engines
+
+**Plurimath** supports two XML engines:
 
 . **Ox**: (default) A fast XML parser
 . **Oga**: A pure Ruby XML parser
