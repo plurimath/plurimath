@@ -103,11 +103,15 @@ module Plurimath
       output = options[:output]
       warn_and_exit("wrong generator argument output value") unless %w[png svg pdf].include?(output.split(".").last)
 
-      input_format = options[:input_format]
-      mathml = Plurimath::Math.parse(input_string, input_format).to_mathml(display_style: style)
+      unless `which lasem-render-0.6` && $?.success?
+        warn_and_exit("Lasem doesn't exist, see github repo https://github.com/LasemProject/lasem for use and installation documentation.")
+      end
       Dir.mktmpdir do |dir|
         input_file_path = File.join(dir, "mathml.mml")
-        File.open(input_file_path, "w+") { |f| f.write(mathml) }
+        formula = Plurimath::Math.parse(input_string, options[:input_format])
+        File.open(input_file_path, "w+") do |file|
+          file.write(formula.to_mathml(display_style: style))
+        end
         `lasem-render-0.6 "#{input_file_path}" -o #{output}`
       end
     end
