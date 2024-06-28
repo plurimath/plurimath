@@ -471,7 +471,7 @@ In MathML:
 The Plurimath gem provides a Command Line Interface (CLI) tool for converting between different math formats.
 Before continuing please ensure you have the gem installed.
 
-=== Usage
+== Usage
 
 === **Convert** Command
 
@@ -519,7 +519,7 @@ plurimath convert --help
 
 === **Render** Command
 
-The render command generates graphical outputs (PNG, SVG, or PDF) from mathematical expressions.
+The `render` command generates graphical outputs (PNG, SVG, or PDF) from mathematical expressions.
 [source,bash]
 ----
 plurimath render -i <expression> -o <file-name>.<one-of-the-supported-extension>
@@ -554,7 +554,7 @@ plurimath render --help
 
 === Dependency
 
-The *Lasem* library serves as the rendering engine for mathematical equations into graphical formats such as *PDF*, *SVG*, and *PNG*. To use the render command effectively, ensure you have *Lasem* installed on your system.
+The *Lasem* library serves as the rendering engine for mathematical equations into graphical formats such as *PDF*, *SVG*, and *PNG*. To use the `render` command effectively, ensure you have *Lasem* installed on your system.
 
 Install the *Lasem* library by following the instructions provided on https://github.com/LasemProject/lasem[*Lasem GitHub repository*].
 
