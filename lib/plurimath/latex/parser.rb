@@ -8,17 +8,10 @@ module Plurimath
     class Parser
       attr_accessor :text
 
+      TEXT_REGEX = %r(\\(?:mbox|text){[^}]+})
+
       def initialize(text)
-        enti = HTMLEntities.new
-        text = enti.encode(enti.decode(text), :hexadecimal)
-        text = text
-          .gsub(/((?<!\\) )|\n+/, "")
-          .gsub(/\\\\ /, "\\\\\\\\")
-          .gsub(/&#x26;/, "&")
-          .gsub(/&#x22;/, "\"")
-          .gsub(/(?<!\\\\)\\&#xa;/, "\\ ")
-          .gsub(/&#xa;/, "")
-        @text = text
+        @text = pre_processing(text)
       end
 
       def parse
@@ -27,6 +20,26 @@ module Plurimath
         formula = [formula] unless formula.is_a?(Array)
 
         Math::Formula.new(formula)
+      end
+
+      private
+
+      def pre_processing(text)
+        text_functions = text.scan(TEXT_REGEX)
+        enti = HTMLEntities.new
+        text = enti.encode(enti.decode(text), :hexadecimal)
+        text = gsub_space_and_unicodes(text)
+        text.gsub(TEXT_REGEX) { |str| text_functions.shift }
+      end
+
+      def gsub_space_and_unicodes(text)
+        text
+          .gsub(/((?<!\\) )|\n+/, "")
+          .gsub(/\\\\ /, "\\\\\\\\")
+          .gsub(/&#x26;/, "&")
+          .gsub(/&#x22;/, "\"")
+          .gsub(/(?<!\\\\)\\&#xa;/, "\\ ")
+          .gsub(/&#xa;/, "")
       end
     end
   end
