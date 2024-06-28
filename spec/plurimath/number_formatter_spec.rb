@@ -1,10 +1,9 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::NumberFormatter do
+  subject(:formatter) { described_class.new(locale, localize_number: localize_number, localizer_symbols: localizer_symbols) }
 
   describe ".initialize" do
-    subject(:formatter) { described_class.new(locale, localize_number: localize_number, localizer_symbols: localizer_symbols) }
-
     context "class variables" do
       let(:locale) { :de }
       let(:localize_number) { nil }
@@ -23,8 +22,6 @@ RSpec.describe Plurimath::NumberFormatter do
   end
 
   describe ".localized_number" do
-    subject(:formatter) { described_class.new(locale, localize_number: localize_number, localizer_symbols: localizer_symbols) }
-
     context "testing notations with notation related arguments(times, exponent_sign, e sign), decimal, locale, and precision" do
       let(:locale) { :en }
       let(:number) { "14000" }
@@ -140,6 +137,22 @@ RSpec.describe Plurimath::NumberFormatter do
         expect(output_string).to eql("3,274280008784329980 × 10^5")
         output_string = formatter.localized_number(number, format: { digit_count: 20, notation: :scientific })
         expect(output_string).to eql("3,2742800087843299800 × 10^5")
+      end
+    end
+
+    context "testing plurimath#264 example with de locale and significant option" do
+      let(:locale) { :de }
+      let(:number) { "0.001" }
+      let(:localize_number) { nil }
+      let(:localizer_symbols) { {} }
+
+      it "matches locale: de with precision" do
+        output_string = formatter.localized_number(number, format: { digit_count: 3 })
+        expect(output_string).to eql("0,00")
+        output_string = formatter.localized_number(number, format: { digit_count: 6, notation: :scientific })
+        expect(output_string).to eql("1,00000 × 10^-03")
+        output_string = formatter.localized_number(number, format: { significant: 3 })
+        # expect(output_string).to eql("0,00")
       end
     end
   end

@@ -94,6 +94,7 @@ module Plurimath
         @notation = format.delete(:notation)&.to_sym || nil
         @precision = update_precision(string, precision)
         @exponent_sign = format.delete(:exponent_sign)&.to_sym || nil
+        @twitter_cldr_reader.delete(:digit_count) unless format.dig(:digit_count)
       end
 
       def update_precision(num, precision)
