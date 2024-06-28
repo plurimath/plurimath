@@ -94,7 +94,7 @@ module Plurimath
 
     option :display_style,
            aliases: "-d",
-           desc: "DisplayStyle is only supported for OMML and MathML conversion, Boolean only",
+           desc: "DisplayStyle is only supported for MathML conversion, Boolean only",
            force: :boolean
 
     def render
