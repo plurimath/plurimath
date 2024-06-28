@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "thor"
+require "tmpdir"
 
 module Plurimath
   self.autoload :Math, "plurimath/math"
