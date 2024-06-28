@@ -525,14 +525,14 @@ The render command generates graphical outputs (PNG, SVG, or PDF) from mathemati
 plurimath render -i <expression> -o <file-name>.<one-of-the-supported-extension>
 ----
 
-===== Options
+==== Options
 1. `-i, --input <INPUT>` => Specifies the input math equation. Should be provided within double quotes.
 2. `-f, --input-format <FORMAT>` => Specifies the input format of the equation. Defaults to "asciimath".
 3. `-p, --file-path <FILE_PATH>` => Reads input from a file instead of the command line input. Use this for larger inputs or when input contains special characters.
 4. -o, --output <filename.ext>: Required. Specifies the output file name with extension (png, svg, or pdf).
 5. -d, --display-style: Optional. Enables display style MathML conversion (boolean).
 
-===== Examples
+==== Examples
 
 Render a mathematical expression of Asciimath input to a PNG file:
 [source,bash]
