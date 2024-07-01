@@ -152,7 +152,26 @@ RSpec.describe Plurimath::NumberFormatter do
         output_string = formatter.localized_number(number, format: { digit_count: 6, notation: :scientific })
         expect(output_string).to eql("1,00000 × 10^-03")
         output_string = formatter.localized_number(number, format: { significant: 3 })
-        # expect(output_string).to eql("0,00")
+        expect(output_string).to eql("0,00100")
+        output_string = formatter.localized_number(number, format: { significant: 3, notation: :e })
+        expect(output_string).to eql("1,00e-03")
+        output_string = formatter.localized_number(number, format: { significant: 3, notation: :scientific })
+        expect(output_string).to eql("1,00 × 10^-03")
+        output_string = formatter.localized_number(number, format: { significant: 4, notation: :engineering })
+        expect(output_string).to eql("1,000 × 10^-03")
+      end
+    end
+
+    context "testing examples with de locale and significant option" do
+      let(:locale) { :de }
+      let(:localize_number) { nil }
+      let(:localizer_symbols) { {} }
+
+      it "matches locale: de with precision" do
+        output_string = formatter.localized_number("112", format: { significant: 3 })
+        expect(output_string).to eql("112")
+        output_string = formatter.localized_number("112436", format: { significant: 5, notation: :engineering })
+        expect(output_string).to eql("112,43 × 10^3")
       end
     end
   end
