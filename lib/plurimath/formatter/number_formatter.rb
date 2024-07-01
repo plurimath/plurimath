@@ -49,27 +49,27 @@ module Plurimath
         sig_num = false
         sig_count = significant
         frac_part = false
-        new_str = chars.map.with_index do |char, ind|
-          if char == decimal_char
-            frac_part = true
-          elsif sig_count.zero?
-            next if frac_part
+        new_array = []
+        chars.each.with_index do |char, ind|
+          frac_part = frac_part || char == decimal_char
+          sig_num = sig_num || char.match?(/[1-9]/)
 
-            next "0"
-          elsif sig_num
-            sig_count -= 1
-            round_str(chars, ind, frac_part) if sig_count.zero?
-          elsif char.match?(/[1-9]/)
-            sig_num = true
-            sig_count -= 1
-          end
-          char
-        end.join
-        if sig_count > 0
-          decimal = frac_part ? "" : decimal_char
-          new_str << (decimal + ("0" * sig_count))
+          break if sig_count.zero?
+
+          new_array << char
+          next unless sig_num || char.match?(/[0-9]/)
+
+          sig_count -= 1
         end
-        new_str
+        if sig_count > 0
+          new_array << decimal_char unless frac_part
+          new_array << ("0" * sig_count)
+        else
+          remain_chars = chars.length - significant
+          round_str(chars, new_array, frac_part) if remain_chars > 0
+          new_array << ("0" * remain_chars)
+        end
+        new_array
       end
 
       def decimal_char
@@ -80,7 +80,9 @@ module Plurimath
         data_reader.symbols[:significant] || 0
       end
 
-      def round_str(chars, index, frac_part)
+      def round_str(chars, new_array, frac_part)
+        return unless chars[new_array.length].match?(/[5-9]/)
+
         plus_one = false
         chars.reverse.each.with_index do |char, ind|
           next char unless index >= ind
