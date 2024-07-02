@@ -1,6 +1,7 @@
 require "twitter_cldr"
 require_relative "numbers/integer"
 require_relative "numbers/fraction"
+require_relative "numbers/significant"
 require_relative "number_formatter"
 require_relative "number_data_reader"
 require_relative "localized_number"
@@ -94,6 +95,8 @@ module Plurimath
         @notation = format.delete(:notation)&.to_sym || nil
         @precision = update_precision(string, precision)
         @exponent_sign = format.delete(:exponent_sign)&.to_sym || nil
+        @twitter_cldr_reader.delete(:digit_count) unless format.dig(:digit_count)
+        @twitter_cldr_reader.delete(:significant) unless format.dig(:significant)
       end
 
       def update_precision(num, precision)

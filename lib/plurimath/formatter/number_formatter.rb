@@ -7,12 +7,14 @@ module Plurimath
         options[:precision] ||= precision_from(number)
         options[:type] ||= :decimal
 
-        prefix, suffix, integer_format, fraction_format = *partition_tokens(tokens)
+        prefix, suffix, integer_format, fraction_format, signif_format = *partition_tokens(tokens)
         number = truncate_number(number, integer_format.format.length)
 
         int, fraction = parse_number(number, options)
         result = integer_format.apply(int, options)
         result << fraction_format.apply(fraction, options, int) if fraction
+
+        result = signif_format.apply(result, integer_format, fraction_format)
 
         number_system.transliterate(
           "#{prefix.to_s}#{result}#{suffix.to_s}"
@@ -32,6 +34,9 @@ module Plurimath
           Numbers::Fraction.new(
             tokens[1],
             data_reader.symbols
+          ),
+          Numbers::Significant.new(
+            data_reader.symbols,
           )
         ]
       end

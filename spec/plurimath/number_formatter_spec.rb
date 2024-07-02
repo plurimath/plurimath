@@ -1,10 +1,9 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::NumberFormatter do
+  subject(:formatter) { described_class.new(locale, localize_number: localize_number, localizer_symbols: localizer_symbols) }
 
   describe ".initialize" do
-    subject(:formatter) { described_class.new(locale, localize_number: localize_number, localizer_symbols: localizer_symbols) }
-
     context "class variables" do
       let(:locale) { :de }
       let(:localize_number) { nil }
@@ -23,8 +22,6 @@ RSpec.describe Plurimath::NumberFormatter do
   end
 
   describe ".localized_number" do
-    subject(:formatter) { described_class.new(locale, localize_number: localize_number, localizer_symbols: localizer_symbols) }
-
     context "testing notations with notation related arguments(times, exponent_sign, e sign), decimal, locale, and precision" do
       let(:locale) { :en }
       let(:number) { "14000" }
@@ -140,6 +137,64 @@ RSpec.describe Plurimath::NumberFormatter do
         expect(output_string).to eql("3,274280008784329980 × 10^5")
         output_string = formatter.localized_number(number, format: { digit_count: 20, notation: :scientific })
         expect(output_string).to eql("3,2742800087843299800 × 10^5")
+      end
+    end
+
+    context "testing plurimath#264 example with de locale and significant option" do
+      let(:locale) { :de }
+      let(:number) { "0.001" }
+      let(:localize_number) { nil }
+      let(:localizer_symbols) { {} }
+
+      it "matches locale: de with digit count and significant" do
+        output_string = formatter.localized_number(number, format: { digit_count: 3 })
+        expect(output_string).to eql("0,00")
+        output_string = formatter.localized_number(number, format: { digit_count: 6, notation: :scientific })
+        expect(output_string).to eql("1,00000 × 10^-03")
+        output_string = formatter.localized_number(number, format: { significant: 3 })
+        expect(output_string).to eql("0,00100")
+        output_string = formatter.localized_number(number, format: { significant: 3, notation: :e })
+        expect(output_string).to eql("1,00e-03")
+        output_string = formatter.localized_number(number, format: { significant: 3, notation: :scientific })
+        expect(output_string).to eql("1,00 × 10^-03")
+        output_string = formatter.localized_number(number, format: { significant: 4, notation: :engineering })
+        expect(output_string).to eql("1,000 × 10^-03")
+      end
+    end
+
+    context "testing examples with de locale and significant option" do
+      let(:locale) { :de }
+      let(:localize_number) { nil }
+      let(:localizer_symbols) { {} }
+
+      it "matches locale: de with 2 significant" do
+        output_string = formatter.localized_number("112", format: { significant: 2 })
+        expect(output_string).to eql("110")
+      end
+
+      it "matches locale: de with 2 significant for multiple 9's in number" do
+        output_string = formatter.localized_number("1999", format: { significant: 2 })
+        expect(output_string).to eql("2.000")
+      end
+
+      it "matches locale: de with 4 significant for float number" do
+        output_string = formatter.localized_number("1999.9", format: { significant: 4 })
+        expect(output_string).to eql("2.000")
+      end
+
+      it "matches locale: de with 5 significant" do
+        output_string = formatter.localized_number("112436", format: { significant: 5 })
+        expect(output_string).to eql("112.440")
+      end
+
+      it "matches locale: de with 5 significant with engineering notation" do
+        output_string = formatter.localized_number("112436", format: { significant: 5, notation: :engineering })
+        expect(output_string).to eql("112,44000 × 10^3")
+      end
+
+      it "matches locale: de with 3 significant" do
+        output_string = formatter.localized_number("1234567", format: { significant: 5 })
+        expect(output_string).to eql("1.234.600")
       end
     end
   end
