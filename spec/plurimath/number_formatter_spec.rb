@@ -146,7 +146,7 @@ RSpec.describe Plurimath::NumberFormatter do
       let(:localize_number) { nil }
       let(:localizer_symbols) { {} }
 
-      it "matches locale: de with precision" do
+      it "matches locale: de with digit count and significant" do
         output_string = formatter.localized_number(number, format: { digit_count: 3 })
         expect(output_string).to eql("0,00")
         output_string = formatter.localized_number(number, format: { digit_count: 6, notation: :scientific })
@@ -167,11 +167,34 @@ RSpec.describe Plurimath::NumberFormatter do
       let(:localize_number) { nil }
       let(:localizer_symbols) { {} }
 
-      it "matches locale: de with precision" do
-        output_string = formatter.localized_number("112", format: { significant: 3 })
-        expect(output_string).to eql("112")
+      it "matches locale: de with 2 significant" do
+        output_string = formatter.localized_number("112", format: { significant: 2 })
+        expect(output_string).to eql("110")
+      end
+
+      it "matches locale: de with 2 significant for multiple 9's in number" do
+        output_string = formatter.localized_number("1999", format: { significant: 2 })
+        expect(output_string).to eql("2.000")
+      end
+
+      it "matches locale: de with 4 significant for float number" do
+        output_string = formatter.localized_number("1999.9", format: { significant: 4 })
+        expect(output_string).to eql("2.000")
+      end
+
+      it "matches locale: de with 5 significant" do
+        output_string = formatter.localized_number("112436", format: { significant: 5 })
+        expect(output_string).to eql("112.440")
+      end
+
+      it "matches locale: de with 5 significant with engineering notation" do
         output_string = formatter.localized_number("112436", format: { significant: 5, notation: :engineering })
-        expect(output_string).to eql("112,43 × 10^3")
+        expect(output_string).to eql("112,44000 × 10^3")
+      end
+
+      it "matches locale: de with 3 significant" do
+        output_string = formatter.localized_number("1234567", format: { significant: 5 })
+        expect(output_string).to eql("1.234.600")
       end
     end
   end

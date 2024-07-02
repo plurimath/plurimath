@@ -1,6 +1,7 @@
 require "twitter_cldr"
 require_relative "numbers/integer"
 require_relative "numbers/fraction"
+require_relative "numbers/significant"
 require_relative "number_formatter"
 require_relative "number_data_reader"
 require_relative "localized_number"

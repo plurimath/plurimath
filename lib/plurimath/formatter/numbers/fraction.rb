@@ -21,7 +21,7 @@ module Plurimath
 
           number = interpolate(format(options), fraction, :left)
           number = digit_count_format(int, fraction, number) if @digit_count
-          formatted_number = change_format(precision, number) if number
+          formatted_number = change_format(number) if number
           formatted_number ? decimal + formatted_number : ""
         end
 
@@ -32,7 +32,7 @@ module Plurimath
 
         protected
 
-        def change_format(precision, string)
+        def change_format(string)
           tokens = []
           tokens << string&.slice!(0, (group || string.length)) until string&.empty?
           tokens.compact.join(separator)
