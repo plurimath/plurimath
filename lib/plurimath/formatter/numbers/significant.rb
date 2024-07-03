@@ -15,8 +15,11 @@ module Plurimath
         def apply(string, int_format, frac_format)
           return string if significant.zero?
           return string unless string.match?(/[1-9]/)
+          chars = string.split("")
 
-          string = signify(string.split(""))
+          return string if count_chars(chars, true) == significant
+
+          string = signify(chars)
           integer, fraction = string.split(decimal)
           string = [format_groups(int_format, integer)]
           string << format_groups(frac_format, fraction) if fraction
