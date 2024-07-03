@@ -30,6 +30,10 @@ module Plurimath
           precision ? '0' * precision : @format
         end
 
+        def format_groups(string)
+          change_format(string)
+        end
+
         protected
 
         def change_format(string)
