@@ -119,6 +119,10 @@ RSpec.describe Plurimath::NumberFormatter do
     end
 
     context "testing plurimath#262 example with de locale" do
+      # :de locale default values used
+      # group => "."
+      # decimal => ","
+      # group_digits => 3
       let(:locale) { :de }
       let(:number) { "327428.000878432992" }
       let(:localize_number) { nil }
@@ -141,6 +145,10 @@ RSpec.describe Plurimath::NumberFormatter do
     end
 
     context "testing plurimath#264 example with de locale and significant option" do
+      # :de locale default values used
+      # group => "."
+      # decimal => ","
+      # group_digits => 3
       let(:locale) { :de }
       let(:number) { "0.001" }
       let(:localize_number) { nil }
@@ -163,6 +171,10 @@ RSpec.describe Plurimath::NumberFormatter do
     end
 
     context "testing examples with de locale and significant option" do
+      # :de locale default values used
+      # group => "."
+      # decimal => ","
+      # group_digits => 3
       let(:locale) { :de }
       let(:localize_number) { nil }
       let(:localizer_symbols) { {} }
@@ -187,14 +199,14 @@ RSpec.describe Plurimath::NumberFormatter do
         expect(output_string).to eql("112.440")
       end
 
-      it "matches locale: de with 5 significant with engineering notation" do
-        output_string = formatter.localized_number("112436", format: { significant: 5, notation: :engineering })
-        expect(output_string).to eql("112,44000 × 10^3")
-      end
-
       it "matches locale: de with 3 significant" do
         output_string = formatter.localized_number("1234567", format: { significant: 5 })
         expect(output_string).to eql("1.234.600")
+      end
+
+      it "matches locale: de with 5 significant with engineering notation" do
+        output_string = formatter.localized_number("112436", format: { significant: 5, notation: :engineering })
+        expect(output_string).to eql("112,44000 × 10^3")
       end
     end
   end
