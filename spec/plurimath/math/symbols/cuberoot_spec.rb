@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Cuberoot do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Cuberoot" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{cuberoot}")
+        expect(klass.to_asciimath).to eq("\"P{cuberoot}\"")
       end
 
       it "matches LaTeX string" do

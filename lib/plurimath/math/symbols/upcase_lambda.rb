@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class UpcaseLambda < Symbol
         INPUT = {
-          unicodemath: [["Lambda", "&#x39b;"], parsing_wrapper(["upLambda"])],
-          asciimath: [["Lambda", "&#x39b;"], parsing_wrapper(["upLambda"])],
+          unicodemath: [["Lambda", "&#x39b;"], parsing_wrapper(["upLambda"], lang: :unicode)],
+          asciimath: [["Lambda", "&#x39b;"], parsing_wrapper(["upLambda"], lang: :asciimath)],
           mathml: ["&#x39b;"],
           latex: [["upLambda", "Lambda", "&#x39b;"]],
           omml: ["&#x39b;"],

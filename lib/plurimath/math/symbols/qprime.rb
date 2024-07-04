@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Qprime < Symbol
         INPUT = {
-          unicodemath: [["&#x2057;"], parsing_wrapper(["fourth", "qprime"])],
-          asciimath: [["&#x2057;"], parsing_wrapper(["fourth", "qprime"])],
+          unicodemath: [["&#x2057;"], parsing_wrapper(["fourth", "qprime"], lang: :unicode)],
+          asciimath: [["&#x2057;"], parsing_wrapper(["fourth", "qprime"], lang: :asciimath)],
           mathml: ["&#x2057;"],
           latex: [["fourth", "qprime", "&#x2057;"]],
           omml: ["&#x2057;"],

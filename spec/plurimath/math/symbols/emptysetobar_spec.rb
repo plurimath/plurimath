@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Emptysetobar do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Emptysetobar" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{emptysetobar}")
+        expect(klass.to_asciimath).to eq("\"P{emptysetobar}\"")
       end
 
       it "matches LaTeX string" do

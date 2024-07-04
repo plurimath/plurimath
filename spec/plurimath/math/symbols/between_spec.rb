@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Between do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Between" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{between}")
+        expect(klass.to_asciimath).to eq("\"P{between}\"")
       end
 
       it "matches LaTeX string" do

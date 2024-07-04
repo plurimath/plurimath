@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Lrblacktriangle do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Lrblacktriangle" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{lrblacktriangle}")
+        expect(klass.to_asciimath).to eq("\"P{lrblacktriangle}\"")
       end
 
       it "matches LaTeX string" do

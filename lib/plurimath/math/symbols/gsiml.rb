@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Gsiml < Symbol
         INPUT = {
-          unicodemath: [["&#x2a90;"], parsing_wrapper(["gsiml"])],
-          asciimath: [["&#x2a90;"], parsing_wrapper(["gsiml"])],
+          unicodemath: [["&#x2a90;"], parsing_wrapper(["gsiml"], lang: :unicode)],
+          asciimath: [["&#x2a90;"], parsing_wrapper(["gsiml"], lang: :asciimath)],
           mathml: ["&#x2a90;"],
           latex: [["gsiml", "&#x2a90;"]],
           omml: ["&#x2a90;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("gsiml")
+          parsing_wrapper("gsiml", lang: :asciimath)
         end
 
         def to_unicodemath

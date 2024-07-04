@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Recycle < Symbol
         INPUT = {
-          unicodemath: [["&#x267b;"], parsing_wrapper(["recycle"])],
-          asciimath: [["&#x267b;"], parsing_wrapper(["recycle"])],
+          unicodemath: [["&#x267b;"], parsing_wrapper(["recycle"], lang: :unicode)],
+          asciimath: [["&#x267b;"], parsing_wrapper(["recycle"], lang: :asciimath)],
           mathml: ["&#x267b;"],
           latex: [["recycle", "&#x267b;"]],
           omml: ["&#x267b;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("recycle")
+          parsing_wrapper("recycle", lang: :asciimath)
         end
 
         def to_unicodemath

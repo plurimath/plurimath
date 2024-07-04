@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Ltrivb < Symbol
         INPUT = {
-          unicodemath: [["&#x29cf;"], parsing_wrapper(["LeftTriangleBar", "ltrivb"])],
-          asciimath: [["&#x29cf;"], parsing_wrapper(["LeftTriangleBar", "ltrivb"])],
+          unicodemath: [["&#x29cf;"], parsing_wrapper(["LeftTriangleBar", "ltrivb"], lang: :unicode)],
+          asciimath: [["&#x29cf;"], parsing_wrapper(["LeftTriangleBar", "ltrivb"], lang: :asciimath)],
           mathml: ["&#x29cf;"],
           latex: [["LeftTriangleBar", "ltrivb", "&#x29cf;"]],
           omml: ["&#x29cf;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("ltrivb")
+          parsing_wrapper("ltrivb", lang: :asciimath)
         end
 
         def to_unicodemath

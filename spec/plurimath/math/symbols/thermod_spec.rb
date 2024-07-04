@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Thermod do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Thermod" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{thermod}")
+        expect(klass.to_asciimath).to eq("\"P{thermod}\"")
       end
 
       it "matches LaTeX string" do

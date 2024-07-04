@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Sqlozenge do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Sqlozenge" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{sqlozenge}")
+        expect(klass.to_asciimath).to eq("\"P{sqlozenge}\"")
       end
 
       it "matches LaTeX string" do

@@ -3,10 +3,10 @@ module Plurimath
     module Symbols
       class Pm < Symbol
         INPUT = {
-          unicodemath: [["pm", "&#xb1;"], parsing_wrapper(["+-"])],
+          unicodemath: [["pm", "&#xb1;"], parsing_wrapper(["+-"], lang: :unicode)],
           asciimath: [["+-", "pm", "&#xb1;"]],
           mathml: ["&#xb1;"],
-          latex: [["pm", "&#xb1;"], parsing_wrapper(["+-"])],
+          latex: [["pm", "&#xb1;"], parsing_wrapper(["+-"], lang: :latex)],
           omml: ["&#xb1;"],
           html: ["&#xb1;"],
         }.freeze

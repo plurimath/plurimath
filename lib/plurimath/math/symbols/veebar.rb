@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Veebar < Symbol
         INPUT = {
-          unicodemath: [["&#x22bb;"], parsing_wrapper(["veebar"])],
-          asciimath: [["&#x22bb;"], parsing_wrapper(["veebar"])],
+          unicodemath: [["&#x22bb;"], parsing_wrapper(["veebar"], lang: :unicode)],
+          asciimath: [["&#x22bb;"], parsing_wrapper(["veebar"], lang: :asciimath)],
           mathml: ["&#x22bb;"],
           latex: [["veebar", "&#x22bb;"]],
           omml: ["&#x22bb;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("veebar")
+          parsing_wrapper("veebar", lang: :asciimath)
         end
 
         def to_unicodemath

@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Tieinfty < Symbol
         INPUT = {
-          unicodemath: [["&#x29dd;"], parsing_wrapper(["tieinfty"])],
-          asciimath: [["&#x29dd;"], parsing_wrapper(["tieinfty"])],
+          unicodemath: [["&#x29dd;"], parsing_wrapper(["tieinfty"], lang: :unicode)],
+          asciimath: [["&#x29dd;"], parsing_wrapper(["tieinfty"], lang: :asciimath)],
           mathml: ["&#x29dd;"],
           latex: [["tieinfty", "&#x29dd;"]],
           omml: ["&#x29dd;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("tieinfty")
+          parsing_wrapper("tieinfty", lang: :asciimath)
         end
 
         def to_unicodemath

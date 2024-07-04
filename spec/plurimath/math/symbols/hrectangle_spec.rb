@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Hrectangle do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Hrectangle" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{hrectangle}")
+        expect(klass.to_asciimath).to eq("\"P{hrectangle}\"")
       end
 
       it "matches LaTeX string" do

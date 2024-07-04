@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Supsetplus do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Supsetplus" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{supsetplus}")
+        expect(klass.to_asciimath).to eq("\"P{supsetplus}\"")
       end
 
       it "matches LaTeX string" do

@@ -4,20 +4,20 @@ module Plurimath
       class Dasharrowright < Symbol
         INPUT = {
           unicodemath: [["dasharrowright", "&#x21eb;"]],
-          asciimath: [["&#x21eb;"], parsing_wrapper(["dasharrowright"])],
+          asciimath: [["&#x21eb;"], parsing_wrapper(["dasharrowright"], lang: :asciimath)],
           mathml: ["&#x21eb;"],
-          latex: [["&#x21eb;"], parsing_wrapper(["dasharrowright"])],
+          latex: [["&#x21eb;"], parsing_wrapper(["dasharrowright"], lang: :latex)],
           omml: ["&#x21eb;"],
           html: ["&#x21eb;"],
         }.freeze
 
         # output methods
         def to_latex
-          parsing_wrapper("dasharrowright")
+          parsing_wrapper("dasharrowright", lang: :latex)
         end
 
         def to_asciimath
-          parsing_wrapper("dasharrowright")
+          parsing_wrapper("dasharrowright", lang: :asciimath)
         end
 
         def to_unicodemath

@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Gtrdot do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Gtrdot" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{gtrdot}")
+        expect(klass.to_asciimath).to eq("\"P{gtrdot}\"")
       end
 
       it "matches LaTeX string" do

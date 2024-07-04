@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Diamondtopblack < Symbol
         INPUT = {
-          unicodemath: [["&#x2b18;"], parsing_wrapper(["diamondtopblack"])],
-          asciimath: [["&#x2b18;"], parsing_wrapper(["diamondtopblack"])],
+          unicodemath: [["&#x2b18;"], parsing_wrapper(["diamondtopblack"], lang: :unicode)],
+          asciimath: [["&#x2b18;"], parsing_wrapper(["diamondtopblack"], lang: :asciimath)],
           mathml: ["&#x2b18;"],
           latex: [["diamondtopblack", "&#x2b18;"]],
           omml: ["&#x2b18;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("diamondtopblack")
+          parsing_wrapper("diamondtopblack", lang: :asciimath)
         end
 
         def to_unicodemath

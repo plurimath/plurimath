@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Upmu do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Upmu" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{upMu}")
+        expect(klass.to_asciimath).to eq("\"P{upMu}\"")
       end
 
       it "matches LaTeX string" do

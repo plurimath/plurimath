@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Whtvertoval < Symbol
         INPUT = {
-          unicodemath: [["&#x2b2f;"], parsing_wrapper(["whtvertoval"])],
-          asciimath: [["&#x2b2f;"], parsing_wrapper(["whtvertoval"])],
+          unicodemath: [["&#x2b2f;"], parsing_wrapper(["whtvertoval"], lang: :unicode)],
+          asciimath: [["&#x2b2f;"], parsing_wrapper(["whtvertoval"], lang: :asciimath)],
           mathml: ["&#x2b2f;"],
           latex: [["whtvertoval", "&#x2b2f;"]],
           omml: ["&#x2b2f;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("whtvertoval")
+          parsing_wrapper("whtvertoval", lang: :asciimath)
         end
 
         def to_unicodemath

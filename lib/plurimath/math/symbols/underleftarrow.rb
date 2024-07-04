@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Underleftarrow < Symbol
         INPUT = {
-          unicodemath: [["&#x20ee;"], parsing_wrapper(["underleftarrow"])],
-          asciimath: [["&#x20ee;"], parsing_wrapper(["underleftarrow"])],
+          unicodemath: [["&#x20ee;"], parsing_wrapper(["underleftarrow"], lang: :unicode)],
+          asciimath: [["&#x20ee;"], parsing_wrapper(["underleftarrow"], lang: :asciimath)],
           mathml: ["&#x20ee;"],
           latex: [["underleftarrow", "&#x20ee;"]],
           omml: ["&#x20ee;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("underleftarrow")
+          parsing_wrapper("underleftarrow", lang: :asciimath)
         end
 
         def to_unicodemath

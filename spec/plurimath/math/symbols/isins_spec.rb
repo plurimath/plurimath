@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Isins do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Isins" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{isins}")
+        expect(klass.to_asciimath).to eq("\"P{isins}\"")
       end
 
       it "matches LaTeX string" do

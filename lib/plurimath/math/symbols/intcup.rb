@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Intcup < Symbol
         INPUT = {
-          unicodemath: [["&#x2a1a;"], parsing_wrapper(["intcup"])],
-          asciimath: [["&#x2a1a;"], parsing_wrapper(["intcup"])],
+          unicodemath: [["&#x2a1a;"], parsing_wrapper(["intcup"], lang: :unicode)],
+          asciimath: [["&#x2a1a;"], parsing_wrapper(["intcup"], lang: :asciimath)],
           mathml: ["&#x2a1a;"],
           latex: [["intcup", "&#x2a1a;"]],
           omml: ["&#x2a1a;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("intcup")
+          parsing_wrapper("intcup", lang: :asciimath)
         end
 
         def to_unicodemath

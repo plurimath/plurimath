@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Postalmark do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Postalmark" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{postalmark}")
+        expect(klass.to_asciimath).to eq("\"P{postalmark}\"")
       end
 
       it "matches LaTeX string" do

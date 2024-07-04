@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Ringplus < Symbol
         INPUT = {
-          unicodemath: [["&#x2a22;"], parsing_wrapper(["ringplus"])],
-          asciimath: [["&#x2a22;"], parsing_wrapper(["ringplus"])],
+          unicodemath: [["&#x2a22;"], parsing_wrapper(["ringplus"], lang: :unicode)],
+          asciimath: [["&#x2a22;"], parsing_wrapper(["ringplus"], lang: :asciimath)],
           mathml: ["&#x2a22;"],
           latex: [["ringplus", "&#x2a22;"]],
           omml: ["&#x2a22;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("ringplus")
+          parsing_wrapper("ringplus", lang: :asciimath)
         end
 
         def to_unicodemath

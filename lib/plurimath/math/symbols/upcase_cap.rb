@@ -4,7 +4,7 @@ module Plurimath
       class UpcaseCap < Symbol
         INPUT = {
           unicodemath: [["Cap", "&#x22d2;"]],
-          asciimath: [["&#x22d2;"], parsing_wrapper(["Cap"])],
+          asciimath: [["&#x22d2;"], parsing_wrapper(["Cap"], lang: :asciimath)],
           mathml: ["&#x22d2;"],
           latex: [["Cap", "&#x22d2;"]],
           omml: ["&#x22d2;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("Cap")
+          parsing_wrapper("Cap", lang: :asciimath)
         end
 
         def to_unicodemath

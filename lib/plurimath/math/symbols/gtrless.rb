@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Gtrless < Symbol
         INPUT = {
-          unicodemath: [["gtrless", "&#x2277;"], parsing_wrapper(["GreaterLess"])],
-          asciimath: [["&#x2277;"], parsing_wrapper(["gtrless", "GreaterLess"])],
+          unicodemath: [["gtrless", "&#x2277;"], parsing_wrapper(["GreaterLess"], lang: :unicode)],
+          asciimath: [["&#x2277;"], parsing_wrapper(["gtrless", "GreaterLess"], lang: :asciimath)],
           mathml: ["&#x2277;"],
           latex: [["GreaterLess", "gtrless", "&#x2277;"]],
           omml: ["&#x2277;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("gtrless")
+          parsing_wrapper("gtrless", lang: :asciimath)
         end
 
         def to_unicodemath

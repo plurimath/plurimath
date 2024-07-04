@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Parallelogramblack do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Parallelogramblack" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{parallelogramblack}")
+        expect(klass.to_asciimath).to eq("\"P{parallelogramblack}\"")
       end
 
       it "matches LaTeX string" do

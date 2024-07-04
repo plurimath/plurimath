@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Plusdot < Symbol
         INPUT = {
-          unicodemath: [["&#x2a25;"], parsing_wrapper(["plusdot"])],
-          asciimath: [["&#x2a25;"], parsing_wrapper(["plusdot"])],
+          unicodemath: [["&#x2a25;"], parsing_wrapper(["plusdot"], lang: :unicode)],
+          asciimath: [["&#x2a25;"], parsing_wrapper(["plusdot"], lang: :asciimath)],
           mathml: ["&#x2a25;"],
           latex: [["plusdot", "&#x2a25;"]],
           omml: ["&#x2a25;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("plusdot")
+          parsing_wrapper("plusdot", lang: :asciimath)
         end
 
         def to_unicodemath

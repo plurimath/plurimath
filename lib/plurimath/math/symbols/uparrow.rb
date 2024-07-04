@@ -4,7 +4,7 @@ module Plurimath
       class Uparrow < Symbol
         INPUT = {
           unicodemath: [["Uparrow", "&#x21d1;"]],
-          asciimath: [["&#x21d1;"], parsing_wrapper(["Uparrow"])],
+          asciimath: [["&#x21d1;"], parsing_wrapper(["Uparrow"], lang: :asciimath)],
           mathml: ["&#x21d1;"],
           latex: [["Uparrow", "&#x21d1;"]],
           omml: ["&#x21d1;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("Uparrow")
+          parsing_wrapper("Uparrow", lang: :asciimath)
         end
 
         def to_unicodemath

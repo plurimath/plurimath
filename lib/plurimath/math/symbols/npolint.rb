@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Npolint < Symbol
         INPUT = {
-          unicodemath: [["&#x2a14;"], parsing_wrapper(["npolint"])],
-          asciimath: [["&#x2a14;"], parsing_wrapper(["npolint"])],
+          unicodemath: [["&#x2a14;"], parsing_wrapper(["npolint"], lang: :unicode)],
+          asciimath: [["&#x2a14;"], parsing_wrapper(["npolint"], lang: :asciimath)],
           mathml: ["&#x2a14;"],
           latex: [["npolint", "&#x2a14;"]],
           omml: ["&#x2a14;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("npolint")
+          parsing_wrapper("npolint", lang: :asciimath)
         end
 
         def to_unicodemath

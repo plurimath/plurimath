@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Precnapprox do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Precnapprox" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{precnapprox}")
+        expect(klass.to_asciimath).to eq("\"P{precnapprox}\"")
       end
 
       it "matches LaTeX string" do

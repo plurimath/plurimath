@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Backsimeq do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Backsimeq" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{backsimeq}")
+        expect(klass.to_asciimath).to eq("\"P{backsimeq}\"")
       end
 
       it "matches LaTeX string" do

@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Plus < Symbol
         INPUT = {
-          unicodemath: [["&#x2b;", "+"], parsing_wrapper(["plus"])],
-          asciimath: [["&#x2b;", "+"], parsing_wrapper(["plus"])],
+          unicodemath: [["&#x2b;", "+"], parsing_wrapper(["plus"], lang: :unicode)],
+          asciimath: [["&#x2b;", "+"], parsing_wrapper(["plus"], lang: :asciimath)],
           mathml: ["&#x2b;", "+"],
           latex: [["plus", "+", "&#x2b;"]],
           omml: ["&#x2b;", "+"],

@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Lat do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Lat" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{lat}")
+        expect(klass.to_asciimath).to eq("\"P{lat}\"")
       end
 
       it "matches LaTeX string" do

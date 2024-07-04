@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Turnednot < Symbol
         INPUT = {
-          unicodemath: [["&#x2319;"], parsing_wrapper(["turnednot"])],
-          asciimath: [["&#x2319;"], parsing_wrapper(["turnednot"])],
+          unicodemath: [["&#x2319;"], parsing_wrapper(["turnednot"], lang: :unicode)],
+          asciimath: [["&#x2319;"], parsing_wrapper(["turnednot"], lang: :asciimath)],
           mathml: ["&#x2319;"],
           latex: [["turnednot", "&#x2319;"]],
           omml: ["&#x2319;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("turnednot")
+          parsing_wrapper("turnednot", lang: :asciimath)
         end
 
         def to_unicodemath

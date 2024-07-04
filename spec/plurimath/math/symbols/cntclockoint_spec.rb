@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Cntclockoint do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Cntclockoint" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{cntclockoint}")
+        expect(klass.to_asciimath).to eq("\"P{cntclockoint}\"")
       end
 
       it "matches LaTeX string" do

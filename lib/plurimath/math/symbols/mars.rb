@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Mars < Symbol
         INPUT = {
-          unicodemath: [["&#x2642;"], parsing_wrapper(["male", "Mars"])],
-          asciimath: [["&#x2642;"], parsing_wrapper(["male", "Mars"])],
+          unicodemath: [["&#x2642;"], parsing_wrapper(["male", "Mars"], lang: :unicode)],
+          asciimath: [["&#x2642;"], parsing_wrapper(["male", "Mars"], lang: :asciimath)],
           mathml: ["&#x2642;"],
           latex: [["male", "Mars", "&#x2642;"]],
           omml: ["&#x2642;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("Mars")
+          parsing_wrapper("Mars", lang: :asciimath)
         end
 
         def to_unicodemath

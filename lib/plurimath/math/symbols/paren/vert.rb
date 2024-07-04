@@ -4,8 +4,8 @@ module Plurimath
       class Paren
         class Vert < Paren
           INPUT = {
-            unicodemath: [["\\vert", "&#x7c;", "|"], parsing_wrapper(["|"])],
-            asciimath: [["|", "&#x7c;"], parsing_wrapper(["vert"])],
+            unicodemath: [["\\vert", "&#x7c;", "|"], parsing_wrapper(["|"], lang: :unicode)],
+            asciimath: [["|", "&#x7c;"], parsing_wrapper(["vert"], lang: :asciimath)],
             mathml: ["&#x7c;", "|"],
             latex: [["\\vert", "|", "&#x7c;"]],
             omml: ["&#x7c;", "|"],

@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Errbardiamond do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Errbardiamond" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{errbardiamond}")
+        expect(klass.to_asciimath).to eq("\"P{errbardiamond}\"")
       end
 
       it "matches LaTeX string" do

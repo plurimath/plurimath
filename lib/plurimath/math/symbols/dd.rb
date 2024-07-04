@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Dd < Symbol
         INPUT = {
-          unicodemath: [["dd", "&#x2146;"], parsing_wrapper(["DifferentialD"])],
-          asciimath: [["&#x2146;"], parsing_wrapper(["dd", "DifferentialD"])],
+          unicodemath: [["dd", "&#x2146;"], parsing_wrapper(["DifferentialD"], lang: :unicode)],
+          asciimath: [["&#x2146;"], parsing_wrapper(["dd", "DifferentialD"], lang: :asciimath)],
           mathml: ["&#x2146;"],
           latex: [["DifferentialD", "dd", "&#x2146;"]],
           omml: ["&#x2146;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("dd")
+          parsing_wrapper("dd", lang: :asciimath)
         end
 
         def to_unicodemath

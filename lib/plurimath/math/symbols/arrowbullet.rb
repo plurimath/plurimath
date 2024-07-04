@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Arrowbullet < Symbol
         INPUT = {
-          unicodemath: [["&#x27a2;"], parsing_wrapper(["arrowbullet"])],
-          asciimath: [["&#x27a2;"], parsing_wrapper(["arrowbullet"])],
+          unicodemath: [["&#x27a2;"], parsing_wrapper(["arrowbullet"], lang: :unicode)],
+          asciimath: [["&#x27a2;"], parsing_wrapper(["arrowbullet"], lang: :asciimath)],
           mathml: ["&#x27a2;"],
           latex: [["arrowbullet", "&#x27a2;"]],
           omml: ["&#x27a2;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("arrowbullet")
+          parsing_wrapper("arrowbullet", lang: :asciimath)
         end
 
         def to_unicodemath

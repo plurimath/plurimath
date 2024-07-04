@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Tona do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Tona" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{tona}")
+        expect(klass.to_asciimath).to eq("\"P{tona}\"")
       end
 
       it "matches LaTeX string" do

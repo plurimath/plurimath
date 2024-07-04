@@ -4,7 +4,7 @@ module Plurimath
       class Ggg < Symbol
         INPUT = {
           unicodemath: [["ggg", "&#x22d9;"]],
-          asciimath: [["&#x22d9;"], parsing_wrapper(["ggg"])],
+          asciimath: [["&#x22d9;"], parsing_wrapper(["ggg"], lang: :asciimath)],
           mathml: ["&#x22d9;"],
           latex: [["ggg", "&#x22d9;"]],
           omml: ["&#x22d9;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("ggg")
+          parsing_wrapper("ggg", lang: :asciimath)
         end
 
         def to_unicodemath

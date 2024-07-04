@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Triangleubar do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Triangleubar" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{triangleubar}")
+        expect(klass.to_asciimath).to eq("\"P{triangleubar}\"")
       end
 
       it "matches LaTeX string" do

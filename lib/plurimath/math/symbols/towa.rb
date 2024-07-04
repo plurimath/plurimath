@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Towa < Symbol
         INPUT = {
-          unicodemath: [["&#x292a;"], parsing_wrapper(["towa"])],
-          asciimath: [["&#x292a;"], parsing_wrapper(["towa"])],
+          unicodemath: [["&#x292a;"], parsing_wrapper(["towa"], lang: :unicode)],
+          asciimath: [["&#x292a;"], parsing_wrapper(["towa"], lang: :asciimath)],
           mathml: ["&#x292a;"],
           latex: [["towa", "&#x292a;"]],
           omml: ["&#x292a;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("towa")
+          parsing_wrapper("towa", lang: :asciimath)
         end
 
         def to_unicodemath

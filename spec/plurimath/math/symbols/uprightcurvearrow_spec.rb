@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Uprightcurvearrow do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Uprightcurvearrow" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{uprightcurvearrow}")
+        expect(klass.to_asciimath).to eq("\"P{uprightcurvearrow}\"")
       end
 
       it "matches LaTeX string" do

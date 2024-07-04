@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Sqrtbottom do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Sqrtbottom" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{sqrtbottom}")
+        expect(klass.to_asciimath).to eq("\"P{sqrtbottom}\"")
       end
 
       it "matches LaTeX string" do

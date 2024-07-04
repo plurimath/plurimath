@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Simneqq do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Simneqq" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{simneqq}")
+        expect(klass.to_asciimath).to eq("\"P{simneqq}\"")
       end
 
       it "matches LaTeX string" do

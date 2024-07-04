@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Botsemicircle < Symbol
         INPUT = {
-          unicodemath: [["&#x25e1;"], parsing_wrapper(["botsemicircle"])],
-          asciimath: [["&#x25e1;"], parsing_wrapper(["botsemicircle"])],
+          unicodemath: [["&#x25e1;"], parsing_wrapper(["botsemicircle"], lang: :unicode)],
+          asciimath: [["&#x25e1;"], parsing_wrapper(["botsemicircle"], lang: :asciimath)],
           mathml: ["&#x25e1;"],
           latex: [["botsemicircle", "&#x25e1;"]],
           omml: ["&#x25e1;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("botsemicircle")
+          parsing_wrapper("botsemicircle", lang: :asciimath)
         end
 
         def to_unicodemath

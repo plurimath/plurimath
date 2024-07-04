@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Pushout < Symbol
         INPUT = {
-          unicodemath: [["&#x27d4;"], parsing_wrapper(["pushout"])],
-          asciimath: [["&#x27d4;"], parsing_wrapper(["pushout"])],
+          unicodemath: [["&#x27d4;"], parsing_wrapper(["pushout"], lang: :unicode)],
+          asciimath: [["&#x27d4;"], parsing_wrapper(["pushout"], lang: :asciimath)],
           mathml: ["&#x27d4;"],
           latex: [["pushout", "&#x27d4;"]],
           omml: ["&#x27d4;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("pushout")
+          parsing_wrapper("pushout", lang: :asciimath)
         end
 
         def to_unicodemath

@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Imageof do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Imageof" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{imageof}")
+        expect(klass.to_asciimath).to eq("\"P{imageof}\"")
       end
 
       it "matches LaTeX string" do

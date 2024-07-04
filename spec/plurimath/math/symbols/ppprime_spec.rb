@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Ppprime do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Ppprime" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{ppprime}")
+        expect(klass.to_asciimath).to eq("\"P{ppprime}\"")
       end
 
       it "matches LaTeX string" do

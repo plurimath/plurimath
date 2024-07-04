@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Backepsilon do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Backepsilon" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{backepsilon}")
+        expect(klass.to_asciimath).to eq("\"P{backepsilon}\"")
       end
 
       it "matches LaTeX string" do

@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Nvtwoheadrightarrow do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Nvtwoheadrightarrow" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{nVtwoheadrightarrow}")
+        expect(klass.to_asciimath).to eq("\"P{nVtwoheadrightarrow}\"")
       end
 
       it "matches LaTeX string" do

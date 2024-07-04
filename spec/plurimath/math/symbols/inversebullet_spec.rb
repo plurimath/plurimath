@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Inversebullet do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Inversebullet" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{inversebullet}")
+        expect(klass.to_asciimath).to eq("\"P{inversebullet}\"")
       end
 
       it "matches LaTeX string" do

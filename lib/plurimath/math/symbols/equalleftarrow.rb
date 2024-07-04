@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Equalleftarrow < Symbol
         INPUT = {
-          unicodemath: [["&#x2b40;"], parsing_wrapper(["equalleftarrow"])],
-          asciimath: [["&#x2b40;"], parsing_wrapper(["equalleftarrow"])],
+          unicodemath: [["&#x2b40;"], parsing_wrapper(["equalleftarrow"], lang: :unicode)],
+          asciimath: [["&#x2b40;"], parsing_wrapper(["equalleftarrow"], lang: :asciimath)],
           mathml: ["&#x2b40;"],
           latex: [["equalleftarrow", "&#x2b40;"]],
           omml: ["&#x2b40;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("equalleftarrow")
+          parsing_wrapper("equalleftarrow", lang: :asciimath)
         end
 
         def to_unicodemath

@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Plushat < Symbol
         INPUT = {
-          unicodemath: [["&#x2a23;"], parsing_wrapper(["plushat"])],
-          asciimath: [["&#x2a23;"], parsing_wrapper(["plushat"])],
+          unicodemath: [["&#x2a23;"], parsing_wrapper(["plushat"], lang: :unicode)],
+          asciimath: [["&#x2a23;"], parsing_wrapper(["plushat"], lang: :asciimath)],
           mathml: ["&#x2a23;"],
           latex: [["plushat", "&#x2a23;"]],
           omml: ["&#x2a23;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("plushat")
+          parsing_wrapper("plushat", lang: :asciimath)
         end
 
         def to_unicodemath

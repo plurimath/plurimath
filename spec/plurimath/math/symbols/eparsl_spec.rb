@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Eparsl do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Eparsl" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{eparsl}")
+        expect(klass.to_asciimath).to eq("\"P{eparsl}\"")
       end
 
       it "matches LaTeX string" do

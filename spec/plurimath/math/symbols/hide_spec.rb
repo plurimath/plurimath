@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Hide do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Hide" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{hide}")
+        expect(klass.to_asciimath).to eq("\"P{hide}\"")
       end
 
       it "matches LaTeX string" do

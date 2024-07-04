@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Varniobar do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Varniobar" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{varniobar}")
+        expect(klass.to_asciimath).to eq("\"P{varniobar}\"")
       end
 
       it "matches LaTeX string" do

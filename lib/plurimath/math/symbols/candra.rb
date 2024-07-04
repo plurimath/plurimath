@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Candra < Symbol
         INPUT = {
-          unicodemath: [["&#x310;"], parsing_wrapper(["candra"])],
-          asciimath: [["&#x310;"], parsing_wrapper(["candra"])],
+          unicodemath: [["&#x310;"], parsing_wrapper(["candra"], lang: :unicode)],
+          asciimath: [["&#x310;"], parsing_wrapper(["candra"], lang: :asciimath)],
           mathml: ["&#x310;"],
           latex: [["candra", "&#x310;"]],
           omml: ["&#x310;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("candra")
+          parsing_wrapper("candra", lang: :asciimath)
         end
 
         def to_unicodemath

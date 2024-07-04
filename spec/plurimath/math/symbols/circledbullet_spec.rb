@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Circledbullet do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Circledbullet" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{circledbullet}")
+        expect(klass.to_asciimath).to eq("\"P{circledbullet}\"")
       end
 
       it "matches LaTeX string" do

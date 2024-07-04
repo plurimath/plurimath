@@ -10609,7 +10609,7 @@ module UnicodeMathTransformValues
               Plurimath::Math::Symbols::Paren::Rround.new,
             ),
             Plurimath::Math::Function::Power.new(
-              Plurimath::Math::Symbols::Ee.new,
+              Plurimath::Math::Symbols::Symbol.new("&#x2147;"),
               Plurimath::Math::Formula.new([
                 Plurimath::Math::Number.new("2"),
                 Plurimath::Math::Symbols::Pi.new,
@@ -10655,7 +10655,7 @@ module UnicodeMathTransformValues
           Plurimath::Math::Symbols::Paren::Rround.new,
         ),
         Plurimath::Math::Function::Power.new(
-          Plurimath::Math::Symbols::Ee.new,
+          Plurimath::Math::Symbols::Symbol.new("&#x2147;"),
           Plurimath::Math::Formula.new([
             Plurimath::Math::Function::Fenced.new(
               Plurimath::Math::Symbols::Paren::Lround.new,
@@ -10705,7 +10705,7 @@ module UnicodeMathTransformValues
           Plurimath::Math::Symbols::Paren::Rround.new,
         ),
         Plurimath::Math::Function::Power.new(
-          Plurimath::Math::Symbols::Ee.new,
+          Plurimath::Math::Symbols::Symbol.new("&#x2147;"),
           Plurimath::Math::Formula.new([
             Plurimath::Math::Symbols::Minus.new,
             Plurimath::Math::Number.new("2"),
@@ -10751,7 +10751,7 @@ module UnicodeMathTransformValues
               Plurimath::Math::Symbols::Paren::Rround.new,
             ),
             Plurimath::Math::Function::Power.new(
-              Plurimath::Math::Symbols::Ee.new,
+              Plurimath::Math::Symbols::Symbol.new("&#x2147;"),
               Plurimath::Math::Formula.new([
                 Plurimath::Math::Symbols::Minus.new,
                 Plurimath::Math::Number.new("2"),
@@ -14107,7 +14107,7 @@ module UnicodeMathTransformValues
     )
   ])
   EXAMPLE_458 = Plurimath::Math::Formula.new([
-    Plurimath::Math::Symbols::Ee.new
+    Plurimath::Math::Symbols::Symbol.new("&#x2147;")
   ])
   EXAMPLE_459 = Plurimath::Math::Formula.new([
     Plurimath::Math::Symbols::Ii.new
@@ -15570,11 +15570,11 @@ module UnicodeMathTransformValues
     Plurimath::Math::Symbols::Dd.new,
     Plurimath::Math::Symbols::Plus.new,
     Plurimath::Math::Function::Intent.new(
-      Plurimath::Math::Symbols::Ee.new,
+      Plurimath::Math::Symbols::Symbol.new("&#x2147;"),
       Plurimath::Math::Function::Text.new("Euler&#x27;s number")
     ),
     Plurimath::Math::Symbols::Plus.new,
-    Plurimath::Math::Symbols::Ee.new
+    Plurimath::Math::Symbols::Symbol.new("&#x2147;")
   ])
   EXAMPLE_531 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Intent.new(

@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Lesges < Symbol
         INPUT = {
-          unicodemath: [["&#x2a93;"], parsing_wrapper(["lesges"])],
-          asciimath: [["&#x2a93;"], parsing_wrapper(["lesges"])],
+          unicodemath: [["&#x2a93;"], parsing_wrapper(["lesges"], lang: :unicode)],
+          asciimath: [["&#x2a93;"], parsing_wrapper(["lesges"], lang: :asciimath)],
           mathml: ["&#x2a93;"],
           latex: [["lesges", "&#x2a93;"]],
           omml: ["&#x2a93;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("lesges")
+          parsing_wrapper("lesges", lang: :asciimath)
         end
 
         def to_unicodemath

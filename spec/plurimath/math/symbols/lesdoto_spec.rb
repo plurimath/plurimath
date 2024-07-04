@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Lesdoto do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Lesdoto" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{lesdoto}")
+        expect(klass.to_asciimath).to eq("\"P{lesdoto}\"")
       end
 
       it "matches LaTeX string" do

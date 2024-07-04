@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Strns < Symbol
         INPUT = {
-          unicodemath: [["&#x23e4;"], parsing_wrapper(["strns"])],
-          asciimath: [["&#x23e4;"], parsing_wrapper(["strns"])],
+          unicodemath: [["&#x23e4;"], parsing_wrapper(["strns"], lang: :unicode)],
+          asciimath: [["&#x23e4;"], parsing_wrapper(["strns"], lang: :asciimath)],
           mathml: ["&#x23e4;"],
           latex: [["strns", "&#x23e4;"]],
           omml: ["&#x23e4;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("strns")
+          parsing_wrapper("strns", lang: :asciimath)
         end
 
         def to_unicodemath

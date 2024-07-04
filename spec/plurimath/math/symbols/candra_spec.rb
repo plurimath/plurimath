@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Candra do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Candra" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{candra}")
+        expect(klass.to_asciimath).to eq("\"P{candra}\"")
       end
 
       it "matches LaTeX string" do

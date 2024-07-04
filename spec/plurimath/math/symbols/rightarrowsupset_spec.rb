@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Rightarrowsupset do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Rightarrowsupset" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{rightarrowsupset}")
+        expect(klass.to_asciimath).to eq("\"P{rightarrowsupset}\"")
       end
 
       it "matches LaTeX string" do

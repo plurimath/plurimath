@@ -4,20 +4,20 @@ module Plurimath
       class Degc < Symbol
         INPUT = {
           unicodemath: [["degc", "&#x2103;"]],
-          asciimath: [["&#x2103;"], parsing_wrapper(["degc"])],
+          asciimath: [["&#x2103;"], parsing_wrapper(["degc"], lang: :asciimath)],
           mathml: ["&#x2103;"],
-          latex: [["&#x2103;"], parsing_wrapper(["degc"])],
+          latex: [["&#x2103;"], parsing_wrapper(["degc"], lang: :latex)],
           omml: ["&#x2103;"],
           html: ["&#x2103;"],
         }.freeze
 
         # output methods
         def to_latex
-          parsing_wrapper("degc")
+          parsing_wrapper("degc", lang: :latex)
         end
 
         def to_asciimath
-          parsing_wrapper("degc")
+          parsing_wrapper("degc", lang: :asciimath)
         end
 
         def to_unicodemath

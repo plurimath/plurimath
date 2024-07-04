@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Aplboxupcaret do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Aplboxupcaret" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{APLboxupcaret}")
+        expect(klass.to_asciimath).to eq("\"P{APLboxupcaret}\"")
       end
 
       it "matches LaTeX string" do

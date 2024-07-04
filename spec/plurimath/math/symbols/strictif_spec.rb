@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Strictif do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Strictif" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{strictif}")
+        expect(klass.to_asciimath).to eq("\"P{strictif}\"")
       end
 
       it "matches LaTeX string" do

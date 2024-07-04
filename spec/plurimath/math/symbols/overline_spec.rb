@@ -14,11 +14,11 @@ RSpec.describe Plurimath::Math::Symbols::Overline do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Overline" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{overline}")
+        expect(klass.to_asciimath).to eq("\"P{overline}\"")
       end
 
       it "matches LaTeX string" do
-        expect(klass.to_latex).to eq("__{overline}")
+        expect(klass.to_latex).to eq("\\text{P[overline]}")
       end
 
       it "matches UnicodeMath string" do

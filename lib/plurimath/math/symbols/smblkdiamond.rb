@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Smblkdiamond < Symbol
         INPUT = {
-          unicodemath: [["&#x2b29;"], parsing_wrapper(["smblkdiamond"])],
-          asciimath: [["&#x2b29;"], parsing_wrapper(["smblkdiamond"])],
+          unicodemath: [["&#x2b29;"], parsing_wrapper(["smblkdiamond"], lang: :unicode)],
+          asciimath: [["&#x2b29;"], parsing_wrapper(["smblkdiamond"], lang: :asciimath)],
           mathml: ["&#x2b29;"],
           latex: [["smblkdiamond", "&#x2b29;"]],
           omml: ["&#x2b29;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("smblkdiamond")
+          parsing_wrapper("smblkdiamond", lang: :asciimath)
         end
 
         def to_unicodemath

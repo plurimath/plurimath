@@ -4,7 +4,7 @@ module Plurimath
       class Gtrdot < Symbol
         INPUT = {
           unicodemath: [["gtrdot", "&#x22d7;"]],
-          asciimath: [["&#x22d7;"], parsing_wrapper(["gtrdot"])],
+          asciimath: [["&#x22d7;"], parsing_wrapper(["gtrdot"], lang: :asciimath)],
           mathml: ["&#x22d7;"],
           latex: [["gtrdot", "&#x22d7;"]],
           omml: ["&#x22d7;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("gtrdot")
+          parsing_wrapper("gtrdot", lang: :asciimath)
         end
 
         def to_unicodemath

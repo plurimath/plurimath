@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Commaminus < Symbol
         INPUT = {
-          unicodemath: [["&#x2a29;"], parsing_wrapper(["commaminus"])],
-          asciimath: [["&#x2a29;"], parsing_wrapper(["commaminus"])],
+          unicodemath: [["&#x2a29;"], parsing_wrapper(["commaminus"], lang: :unicode)],
+          asciimath: [["&#x2a29;"], parsing_wrapper(["commaminus"], lang: :asciimath)],
           mathml: ["&#x2a29;"],
           latex: [["commaminus", "&#x2a29;"]],
           omml: ["&#x2a29;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("commaminus")
+          parsing_wrapper("commaminus", lang: :asciimath)
         end
 
         def to_unicodemath

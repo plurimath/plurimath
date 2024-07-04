@@ -4,7 +4,7 @@ module Plurimath
       class Mp < Symbol
         INPUT = {
           unicodemath: [["mp", "&#x2213;"]],
-          asciimath: [["&#x2213;"], parsing_wrapper(["mp"])],
+          asciimath: [["&#x2213;"], parsing_wrapper(["mp"], lang: :asciimath)],
           mathml: ["&#x2213;"],
           latex: [["mp", "&#x2213;"]],
           omml: ["&#x2213;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("mp")
+          parsing_wrapper("mp", lang: :asciimath)
         end
 
         def to_unicodemath

@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Invlazys < Symbol
         INPUT = {
-          unicodemath: [["&#x223e;"], parsing_wrapper(["invlazys"])],
-          asciimath: [["&#x223e;"], parsing_wrapper(["invlazys"])],
+          unicodemath: [["&#x223e;"], parsing_wrapper(["invlazys"], lang: :unicode)],
+          asciimath: [["&#x223e;"], parsing_wrapper(["invlazys"], lang: :asciimath)],
           mathml: ["&#x223e;"],
           latex: [["invlazys", "&#x223e;"]],
           omml: ["&#x223e;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("invlazys")
+          parsing_wrapper("invlazys", lang: :asciimath)
         end
 
         def to_unicodemath

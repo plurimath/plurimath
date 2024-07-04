@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Simplus < Symbol
         INPUT = {
-          unicodemath: [["&#x2a24;"], parsing_wrapper(["simplus"])],
-          asciimath: [["&#x2a24;"], parsing_wrapper(["simplus"])],
+          unicodemath: [["&#x2a24;"], parsing_wrapper(["simplus"], lang: :unicode)],
+          asciimath: [["&#x2a24;"], parsing_wrapper(["simplus"], lang: :asciimath)],
           mathml: ["&#x2a24;"],
           latex: [["simplus", "&#x2a24;"]],
           omml: ["&#x2a24;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("simplus")
+          parsing_wrapper("simplus", lang: :asciimath)
         end
 
         def to_unicodemath

@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Nin do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Nin" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{nin}")
+        expect(klass.to_asciimath).to eq("\"P{nin}\"")
       end
 
       it "matches LaTeX string" do

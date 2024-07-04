@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Subrarr < Symbol
         INPUT = {
-          unicodemath: [["&#x2979;"], parsing_wrapper(["subrarr"])],
-          asciimath: [["&#x2979;"], parsing_wrapper(["subrarr"])],
+          unicodemath: [["&#x2979;"], parsing_wrapper(["subrarr"], lang: :unicode)],
+          asciimath: [["&#x2979;"], parsing_wrapper(["subrarr"], lang: :asciimath)],
           mathml: ["&#x2979;"],
           latex: [["subrarr", "&#x2979;"]],
           omml: ["&#x2979;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("subrarr")
+          parsing_wrapper("subrarr", lang: :asciimath)
         end
 
         def to_unicodemath

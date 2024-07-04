@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Boxminus do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Boxminus" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{boxminus}")
+        expect(klass.to_asciimath).to eq("\"P{boxminus}\"")
       end
 
       it "matches LaTeX string" do

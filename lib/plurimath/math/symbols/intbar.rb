@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Intbar < Symbol
         INPUT = {
-          unicodemath: [["&#x2a0e;"], parsing_wrapper(["intBar"])],
-          asciimath: [["&#x2a0e;"], parsing_wrapper(["intBar"])],
+          unicodemath: [["&#x2a0e;"], parsing_wrapper(["intBar"], lang: :unicode)],
+          asciimath: [["&#x2a0e;"], parsing_wrapper(["intBar"], lang: :asciimath)],
           mathml: ["&#x2a0e;"],
           latex: [["intBar", "&#x2a0e;"]],
           omml: ["&#x2a0e;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("intBar")
+          parsing_wrapper("intBar", lang: :asciimath)
         end
 
         def to_unicodemath

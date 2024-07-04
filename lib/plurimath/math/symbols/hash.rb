@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Hash < Symbol
         INPUT = {
-          unicodemath: [["&#x22d5;"], parsing_wrapper(["equalparallel", "hash"])],
-          asciimath: [["&#x22d5;"], parsing_wrapper(["equalparallel", "hash"])],
+          unicodemath: [["&#x22d5;"], parsing_wrapper(["equalparallel", "hash"], lang: :unicode)],
+          asciimath: [["&#x22d5;"], parsing_wrapper(["equalparallel", "hash"], lang: :asciimath)],
           mathml: ["&#x22d5;"],
           latex: [["equalparallel", "hash", "&#x22d5;"]],
           omml: ["&#x22d5;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("hash")
+          parsing_wrapper("hash", lang: :asciimath)
         end
 
         def to_unicodemath

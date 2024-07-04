@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Precnapprox < Symbol
         INPUT = {
-          unicodemath: [["&#x2ab9;"], parsing_wrapper(["precnapprox"])],
-          asciimath: [["&#x2ab9;"], parsing_wrapper(["precnapprox"])],
+          unicodemath: [["&#x2ab9;"], parsing_wrapper(["precnapprox"], lang: :unicode)],
+          asciimath: [["&#x2ab9;"], parsing_wrapper(["precnapprox"], lang: :asciimath)],
           mathml: ["&#x2ab9;"],
           latex: [["precnapprox", "&#x2ab9;"]],
           omml: ["&#x2ab9;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("precnapprox")
+          parsing_wrapper("precnapprox", lang: :asciimath)
         end
 
         def to_unicodemath

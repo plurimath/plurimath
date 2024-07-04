@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Upfishtail < Symbol
         INPUT = {
-          unicodemath: [["&#x297e;"], parsing_wrapper(["upfishtail"])],
-          asciimath: [["&#x297e;"], parsing_wrapper(["upfishtail"])],
+          unicodemath: [["&#x297e;"], parsing_wrapper(["upfishtail"], lang: :unicode)],
+          asciimath: [["&#x297e;"], parsing_wrapper(["upfishtail"], lang: :asciimath)],
           mathml: ["&#x297e;"],
           latex: [["upfishtail", "&#x297e;"]],
           omml: ["&#x297e;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("upfishtail")
+          parsing_wrapper("upfishtail", lang: :asciimath)
         end
 
         def to_unicodemath

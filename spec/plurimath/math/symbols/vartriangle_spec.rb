@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Vartriangle do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Vartriangle" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{vartriangle}")
+        expect(klass.to_asciimath).to eq("\"P{vartriangle}\"")
       end
 
       it "matches LaTeX string" do

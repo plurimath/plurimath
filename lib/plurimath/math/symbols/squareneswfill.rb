@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Squareneswfill < Symbol
         INPUT = {
-          unicodemath: [["&#x25a8;"], parsing_wrapper(["squareneswfill"])],
-          asciimath: [["&#x25a8;"], parsing_wrapper(["squareneswfill"])],
+          unicodemath: [["&#x25a8;"], parsing_wrapper(["squareneswfill"], lang: :unicode)],
+          asciimath: [["&#x25a8;"], parsing_wrapper(["squareneswfill"], lang: :asciimath)],
           mathml: ["&#x25a8;"],
           latex: [["squareneswfill", "&#x25a8;"]],
           omml: ["&#x25a8;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("squareneswfill")
+          parsing_wrapper("squareneswfill", lang: :asciimath)
         end
 
         def to_unicodemath

@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Vartriangle < Symbol
         INPUT = {
-          unicodemath: [["&#x25b5;"], parsing_wrapper(["smalltriangleup", "vartriangle"])],
-          asciimath: [["&#x25b5;"], parsing_wrapper(["smalltriangleup", "vartriangle"])],
+          unicodemath: [["&#x25b5;"], parsing_wrapper(["smalltriangleup", "vartriangle"], lang: :unicode)],
+          asciimath: [["&#x25b5;"], parsing_wrapper(["smalltriangleup", "vartriangle"], lang: :asciimath)],
           mathml: ["&#x25b5;"],
           latex: [["smalltriangleup", "vartriangle", "&#x25b5;"]],
           omml: ["&#x25b5;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("vartriangle")
+          parsing_wrapper("vartriangle", lang: :asciimath)
         end
 
         def to_unicodemath

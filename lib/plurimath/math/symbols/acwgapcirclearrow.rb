@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Acwgapcirclearrow < Symbol
         INPUT = {
-          unicodemath: [["&#x27f2;"], parsing_wrapper(["acwgapcirclearrow"])],
-          asciimath: [["&#x27f2;"], parsing_wrapper(["acwgapcirclearrow"])],
+          unicodemath: [["&#x27f2;"], parsing_wrapper(["acwgapcirclearrow"], lang: :unicode)],
+          asciimath: [["&#x27f2;"], parsing_wrapper(["acwgapcirclearrow"], lang: :asciimath)],
           mathml: ["&#x27f2;"],
           latex: [["acwgapcirclearrow", "&#x27f2;"]],
           omml: ["&#x27f2;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("acwgapcirclearrow")
+          parsing_wrapper("acwgapcirclearrow", lang: :asciimath)
         end
 
         def to_unicodemath

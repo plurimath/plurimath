@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Closedvarcap do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Closedvarcap" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{closedvarcap}")
+        expect(klass.to_asciimath).to eq("\"P{closedvarcap}\"")
       end
 
       it "matches LaTeX string" do

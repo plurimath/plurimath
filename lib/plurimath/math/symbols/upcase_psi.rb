@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class UpcasePsi < Symbol
         INPUT = {
-          unicodemath: [["Psi", "&#x3a8;"], parsing_wrapper(["upPsi"])],
-          asciimath: [["Psi", "&#x3a8;"], parsing_wrapper(["upPsi"])],
+          unicodemath: [["Psi", "&#x3a8;"], parsing_wrapper(["upPsi"], lang: :unicode)],
+          asciimath: [["Psi", "&#x3a8;"], parsing_wrapper(["upPsi"], lang: :asciimath)],
           mathml: ["&#x3a8;"],
           latex: [["upPsi", "Psi", "&#x3a8;"]],
           omml: ["&#x3a8;"],

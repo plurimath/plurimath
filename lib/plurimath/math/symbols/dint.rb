@@ -3,10 +3,10 @@ module Plurimath
     module Symbols
       class Dint < Symbol
         INPUT = {
-          unicodemath: [["&#x22c2;", "bigcap"], parsing_wrapper(["nnn", "dint"])],
-          asciimath: [["bigcap", "nnn", "&#x22c2;"], parsing_wrapper(["dint"])],
+          unicodemath: [["&#x22c2;"], parsing_wrapper(["bigcap", "nnn", "dint"], lang: :unicode)],
+          asciimath: [["bigcap", "nnn", "&#x22c2;"], parsing_wrapper(["dint"], lang: :asciimath)],
           mathml: ["&#x22c2;"],
-          latex: [["bigcap", "dint", "&#x22c2;"], parsing_wrapper(["nnn"])],
+          latex: [["bigcap", "dint", "&#x22c2;"], parsing_wrapper(["nnn"], lang: :latex)],
           omml: ["&#x22c2;"],
           html: ["&#x22c2;"],
         }.freeze
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("dint")
+          parsing_wrapper("dint", lang: :asciimath)
         end
 
         def to_unicodemath
@@ -38,18 +38,6 @@ module Plurimath
 
         def is_nary_symbol?
           true
-        end
-
-        def nary_intent_name
-          "n-ary"
-        end
-
-        def tag_name
-          "underover"
-        end
-
-        def omml_tag_name
-          "undOvr"
         end
       end
     end

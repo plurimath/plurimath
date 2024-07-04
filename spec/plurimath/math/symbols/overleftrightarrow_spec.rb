@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Overleftrightarrow do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Overleftrightarrow" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{overleftrightarrow}")
+        expect(klass.to_asciimath).to eq("\"P{overleftrightarrow}\"")
       end
 
       it "matches LaTeX string" do

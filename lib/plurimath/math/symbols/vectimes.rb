@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Vectimes < Symbol
         INPUT = {
-          unicodemath: [["&#x2a2f;"], parsing_wrapper(["vectimes"])],
-          asciimath: [["&#x2a2f;"], parsing_wrapper(["vectimes"])],
+          unicodemath: [["&#x2a2f;"], parsing_wrapper(["vectimes"], lang: :unicode)],
+          asciimath: [["&#x2a2f;"], parsing_wrapper(["vectimes"], lang: :asciimath)],
           mathml: ["&#x2a2f;"],
           latex: [["vectimes", "&#x2a2f;"]],
           omml: ["&#x2a2f;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("vectimes")
+          parsing_wrapper("vectimes", lang: :asciimath)
         end
 
         def to_unicodemath

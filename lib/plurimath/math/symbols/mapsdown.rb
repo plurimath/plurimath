@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Mapsdown < Symbol
         INPUT = {
-          unicodemath: [["&#x21a7;"], parsing_wrapper(["MapsDown", "mapsdown"])],
-          asciimath: [["&#x21a7;"], parsing_wrapper(["MapsDown", "mapsdown"])],
+          unicodemath: [["&#x21a7;"], parsing_wrapper(["MapsDown", "mapsdown"], lang: :unicode)],
+          asciimath: [["&#x21a7;"], parsing_wrapper(["MapsDown", "mapsdown"], lang: :asciimath)],
           mathml: ["&#x21a7;"],
           latex: [["MapsDown", "mapsdown", "&#x21a7;"]],
           omml: ["&#x21a7;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("mapsdown")
+          parsing_wrapper("mapsdown", lang: :asciimath)
         end
 
         def to_unicodemath

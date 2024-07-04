@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Simminussim do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Simminussim" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{simminussim}")
+        expect(klass.to_asciimath).to eq("\"P{simminussim}\"")
       end
 
       it "matches LaTeX string" do

@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Blockuphalf < Symbol
         INPUT = {
-          unicodemath: [["&#x2580;"], parsing_wrapper(["blockuphalf"])],
-          asciimath: [["&#x2580;"], parsing_wrapper(["blockuphalf"])],
+          unicodemath: [["&#x2580;"], parsing_wrapper(["blockuphalf"], lang: :unicode)],
+          asciimath: [["&#x2580;"], parsing_wrapper(["blockuphalf"], lang: :asciimath)],
           mathml: ["&#x2580;"],
           latex: [["blockuphalf", "&#x2580;"]],
           omml: ["&#x2580;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("blockuphalf")
+          parsing_wrapper("blockuphalf", lang: :asciimath)
         end
 
         def to_unicodemath

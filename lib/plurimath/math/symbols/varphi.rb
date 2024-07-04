@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Varphi < Symbol
         INPUT = {
-          unicodemath: [["phi", "&#x3d5;"], parsing_wrapper(["upphi"])],
-          asciimath: [["phi", "&#x3d5;"], parsing_wrapper(["upphi"])],
+          unicodemath: [["phi", "&#x3d5;"], parsing_wrapper(["upphi"], lang: :unicode)],
+          asciimath: [["phi", "&#x3d5;"], parsing_wrapper(["upphi"], lang: :asciimath)],
           mathml: ["&#x3d5;"],
           latex: [["upphi", "phi", "&#x3d5;"]],
           omml: ["&#x3d5;"],

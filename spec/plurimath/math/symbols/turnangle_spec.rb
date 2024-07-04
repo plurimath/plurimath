@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Turnangle do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Turnangle" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{turnangle}")
+        expect(klass.to_asciimath).to eq("\"P{turnangle}\"")
       end
 
       it "matches LaTeX string" do

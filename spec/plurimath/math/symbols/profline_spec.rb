@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Profline do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Profline" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{profline}")
+        expect(klass.to_asciimath).to eq("\"P{profline}\"")
       end
 
       it "matches LaTeX string" do

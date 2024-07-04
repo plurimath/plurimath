@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Uranus < Symbol
         INPUT = {
-          unicodemath: [["&#x2645;"], parsing_wrapper(["uranus", "Uranus"])],
-          asciimath: [["&#x2645;"], parsing_wrapper(["uranus", "Uranus"])],
+          unicodemath: [["&#x2645;"], parsing_wrapper(["uranus", "Uranus"], lang: :unicode)],
+          asciimath: [["&#x2645;"], parsing_wrapper(["uranus", "Uranus"], lang: :asciimath)],
           mathml: ["&#x2645;"],
           latex: [["uranus", "Uranus", "&#x2645;"]],
           omml: ["&#x2645;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("Uranus")
+          parsing_wrapper("Uranus", lang: :asciimath)
         end
 
         def to_unicodemath

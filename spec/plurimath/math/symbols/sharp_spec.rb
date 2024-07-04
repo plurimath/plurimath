@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Sharp do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Sharp" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{sharp}")
+        expect(klass.to_asciimath).to eq("\"P{sharp}\"")
       end
 
       it "matches LaTeX string" do

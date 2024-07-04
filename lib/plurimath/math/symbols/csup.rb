@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Csup < Symbol
         INPUT = {
-          unicodemath: [["&#x2ad0;"], parsing_wrapper(["csup"])],
-          asciimath: [["&#x2ad0;"], parsing_wrapper(["csup"])],
+          unicodemath: [["&#x2ad0;"], parsing_wrapper(["csup"], lang: :unicode)],
+          asciimath: [["&#x2ad0;"], parsing_wrapper(["csup"], lang: :asciimath)],
           mathml: ["&#x2ad0;"],
           latex: [["csup", "&#x2ad0;"]],
           omml: ["&#x2ad0;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("csup")
+          parsing_wrapper("csup", lang: :asciimath)
         end
 
         def to_unicodemath

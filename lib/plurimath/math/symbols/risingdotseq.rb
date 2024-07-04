@@ -4,7 +4,7 @@ module Plurimath
       class Risingdotseq < Symbol
         INPUT = {
           unicodemath: [["risingdotseq", "&#x2253;"]],
-          asciimath: [["&#x2253;"], parsing_wrapper(["risingdotseq"])],
+          asciimath: [["&#x2253;"], parsing_wrapper(["risingdotseq"], lang: :asciimath)],
           mathml: ["&#x2253;"],
           latex: [["risingdotseq", "&#x2253;"]],
           omml: ["&#x2253;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("risingdotseq")
+          parsing_wrapper("risingdotseq", lang: :asciimath)
         end
 
         def to_unicodemath

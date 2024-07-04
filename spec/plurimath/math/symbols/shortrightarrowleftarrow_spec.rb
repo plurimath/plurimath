@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Shortrightarrowleftarrow do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Shortrightarrowleftarrow" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{shortrightarrowleftarrow}")
+        expect(klass.to_asciimath).to eq("\"P{shortrightarrowleftarrow}\"")
       end
 
       it "matches LaTeX string" do

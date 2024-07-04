@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Oplusrhrim do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Oplusrhrim" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{oplusrhrim}")
+        expect(klass.to_asciimath).to eq("\"P{oplusrhrim}\"")
       end
 
       it "matches LaTeX string" do

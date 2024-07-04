@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Inversewhitecircle < Symbol
         INPUT = {
-          unicodemath: [["&#x25d9;"], parsing_wrapper(["inversewhitecircle"])],
-          asciimath: [["&#x25d9;"], parsing_wrapper(["inversewhitecircle"])],
+          unicodemath: [["&#x25d9;"], parsing_wrapper(["inversewhitecircle"], lang: :unicode)],
+          asciimath: [["&#x25d9;"], parsing_wrapper(["inversewhitecircle"], lang: :asciimath)],
           mathml: ["&#x25d9;"],
           latex: [["inversewhitecircle", "&#x25d9;"]],
           omml: ["&#x25d9;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("inversewhitecircle")
+          parsing_wrapper("inversewhitecircle", lang: :asciimath)
         end
 
         def to_unicodemath

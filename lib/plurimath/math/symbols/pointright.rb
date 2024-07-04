@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Pointright < Symbol
         INPUT = {
-          unicodemath: [["&#x261e;"], parsing_wrapper(["pointright"])],
-          asciimath: [["&#x261e;"], parsing_wrapper(["pointright"])],
+          unicodemath: [["&#x261e;"], parsing_wrapper(["pointright"], lang: :unicode)],
+          asciimath: [["&#x261e;"], parsing_wrapper(["pointright"], lang: :asciimath)],
           mathml: ["&#x261e;"],
           latex: [["pointright", "&#x261e;"]],
           omml: ["&#x261e;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("pointright")
+          parsing_wrapper("pointright", lang: :asciimath)
         end
 
         def to_unicodemath

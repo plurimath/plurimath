@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Leftarrowx < Symbol
         INPUT = {
-          unicodemath: [["&#x2b3e;"], parsing_wrapper(["leftarrowx"])],
-          asciimath: [["&#x2b3e;"], parsing_wrapper(["leftarrowx"])],
+          unicodemath: [["&#x2b3e;"], parsing_wrapper(["leftarrowx"], lang: :unicode)],
+          asciimath: [["&#x2b3e;"], parsing_wrapper(["leftarrowx"], lang: :asciimath)],
           mathml: ["&#x2b3e;"],
           latex: [["leftarrowx", "&#x2b3e;"]],
           omml: ["&#x2b3e;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("leftarrowx")
+          parsing_wrapper("leftarrowx", lang: :asciimath)
         end
 
         def to_unicodemath

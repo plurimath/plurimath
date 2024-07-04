@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Closure do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Closure" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{closure}")
+        expect(klass.to_asciimath).to eq("\"P{closure}\"")
       end
 
       it "matches LaTeX string" do

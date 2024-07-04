@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Angdnr < Symbol
         INPUT = {
-          unicodemath: [["&#x299f;"], parsing_wrapper(["angdnr"])],
-          asciimath: [["&#x299f;"], parsing_wrapper(["angdnr"])],
+          unicodemath: [["&#x299f;"], parsing_wrapper(["angdnr"], lang: :unicode)],
+          asciimath: [["&#x299f;"], parsing_wrapper(["angdnr"], lang: :asciimath)],
           mathml: ["&#x299f;"],
           latex: [["angdnr", "&#x299f;"]],
           omml: ["&#x299f;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("angdnr")
+          parsing_wrapper("angdnr", lang: :asciimath)
         end
 
         def to_unicodemath

@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Trslash < Symbol
         INPUT = {
-          unicodemath: [["&#x2afb;"], parsing_wrapper(["trslash"])],
-          asciimath: [["&#x2afb;"], parsing_wrapper(["trslash"])],
+          unicodemath: [["&#x2afb;"], parsing_wrapper(["trslash"], lang: :unicode)],
+          asciimath: [["&#x2afb;"], parsing_wrapper(["trslash"], lang: :asciimath)],
           mathml: ["&#x2afb;"],
           latex: [["trslash", "&#x2afb;"]],
           omml: ["&#x2afb;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("trslash")
+          parsing_wrapper("trslash", lang: :asciimath)
         end
 
         def to_unicodemath

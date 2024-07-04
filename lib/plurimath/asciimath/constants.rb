@@ -102,16 +102,8 @@ module Plurimath
           @@symbols ||= Utility.symbols_hash(:asciimath).keys.concat(parens_symbols)
         end
 
-        def wrapper_symbols
-          symbols_array.grep(/__{/)
-        end
-
         def parens_symbols
           Utility.parens_hash(:asciimath).keys.delete_if { |sym| SKIP_INPUT_PARENS.include?(sym) }
-        end
-
-        def absent_symbols
-          wrapper_symbols.concat(parens_symbols)
         end
       end
     end

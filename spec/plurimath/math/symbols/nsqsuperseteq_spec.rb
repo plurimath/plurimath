@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Nsqsuperseteq do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Nsqsuperseteq" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{nsqsuperseteq}")
+        expect(klass.to_asciimath).to eq("\"P{nsqsuperseteq}\"")
       end
 
       it "matches LaTeX string" do

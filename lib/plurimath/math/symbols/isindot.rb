@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Isindot < Symbol
         INPUT = {
-          unicodemath: [["&#x22f5;"], parsing_wrapper(["isindot"])],
-          asciimath: [["&#x22f5;"], parsing_wrapper(["isindot"])],
+          unicodemath: [["&#x22f5;"], parsing_wrapper(["isindot"], lang: :unicode)],
+          asciimath: [["&#x22f5;"], parsing_wrapper(["isindot"], lang: :asciimath)],
           mathml: ["&#x22f5;"],
           latex: [["isindot", "&#x22f5;"]],
           omml: ["&#x22f5;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("isindot")
+          parsing_wrapper("isindot", lang: :asciimath)
         end
 
         def to_unicodemath

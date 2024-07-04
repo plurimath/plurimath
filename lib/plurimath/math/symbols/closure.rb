@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Closure < Symbol
         INPUT = {
-          unicodemath: [["&#x2050;"], parsing_wrapper(["closure"])],
-          asciimath: [["&#x2050;"], parsing_wrapper(["closure"])],
+          unicodemath: [["&#x2050;"], parsing_wrapper(["closure"], lang: :unicode)],
+          asciimath: [["&#x2050;"], parsing_wrapper(["closure"], lang: :asciimath)],
           mathml: ["&#x2050;"],
           latex: [["closure", "&#x2050;"]],
           omml: ["&#x2050;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("closure")
+          parsing_wrapper("closure", lang: :asciimath)
         end
 
         def to_unicodemath

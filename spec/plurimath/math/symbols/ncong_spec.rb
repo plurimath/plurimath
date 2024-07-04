@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Ncong do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Ncong" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{ncong}")
+        expect(klass.to_asciimath).to eq("\"P{ncong}\"")
       end
 
       it "matches LaTeX string" do

@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Underline < Symbol
         INPUT = {
-          unicodemath: [["&#x332;"], parsing_wrapper(["underline"])],
-          asciimath: [["&#x332;"], parsing_wrapper(["underline"])],
+          unicodemath: [["&#x332;"], parsing_wrapper(["underline"], lang: :unicode)],
+          asciimath: [["&#x332;"], parsing_wrapper(["underline"], lang: :asciimath)],
           mathml: ["&#x332;"],
           latex: [["underline", "&#x332;"]],
           omml: ["&#x332;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("underline")
+          parsing_wrapper("underline", lang: :asciimath)
         end
 
         def to_unicodemath

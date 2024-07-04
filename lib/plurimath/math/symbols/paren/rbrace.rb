@@ -4,8 +4,8 @@ module Plurimath
       class Paren
         class Rbrace < Paren
           INPUT = {
-            unicodemath: [["&#x7d;"], parsing_wrapper(["rbrace"])],
-            asciimath: [["&#x7d;"], parsing_wrapper(["rbrace"])],
+            unicodemath: [["&#x7d;"], parsing_wrapper(["rbrace"], lang: :unicode)],
+            asciimath: [["&#x7d;"], parsing_wrapper(["rbrace"], lang: :asciimath)],
             mathml: ["&#x7d;"],
             latex: [["\\rbrace", "&#x7d;"]],
             omml: ["&#x7d;"],
@@ -18,7 +18,7 @@ module Plurimath
           end
 
           def to_asciimath
-            parsing_wrapper("rbrace")
+            parsing_wrapper("rbrace", lang: :asciimath)
           end
 
           def to_unicodemath

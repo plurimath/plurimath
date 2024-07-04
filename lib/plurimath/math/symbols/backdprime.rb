@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Backdprime < Symbol
         INPUT = {
-          unicodemath: [["&#x2036;"], parsing_wrapper(["backdprime"])],
-          asciimath: [["&#x2036;"], parsing_wrapper(["backdprime"])],
+          unicodemath: [["&#x2036;"], parsing_wrapper(["backdprime"], lang: :unicode)],
+          asciimath: [["&#x2036;"], parsing_wrapper(["backdprime"], lang: :asciimath)],
           mathml: ["&#x2036;"],
           latex: [["backdprime", "&#x2036;"]],
           omml: ["&#x2036;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("backdprime")
+          parsing_wrapper("backdprime", lang: :asciimath)
         end
 
         def to_unicodemath

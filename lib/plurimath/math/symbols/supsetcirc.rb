@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Supsetcirc < Symbol
         INPUT = {
-          unicodemath: [["&#x27c4;"], parsing_wrapper(["supsetcirc"])],
-          asciimath: [["&#x27c4;"], parsing_wrapper(["supsetcirc"])],
+          unicodemath: [["&#x27c4;"], parsing_wrapper(["supsetcirc"], lang: :unicode)],
+          asciimath: [["&#x27c4;"], parsing_wrapper(["supsetcirc"], lang: :asciimath)],
           mathml: ["&#x27c4;"],
           latex: [["supsetcirc", "&#x27c4;"]],
           omml: ["&#x27c4;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("supsetcirc")
+          parsing_wrapper("supsetcirc", lang: :asciimath)
         end
 
         def to_unicodemath

@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Sqrtbottom < Symbol
         INPUT = {
-          unicodemath: [["&#x23b7;"], parsing_wrapper(["sqrtbottom"])],
-          asciimath: [["&#x23b7;"], parsing_wrapper(["sqrtbottom"])],
+          unicodemath: [["&#x23b7;"], parsing_wrapper(["sqrtbottom"], lang: :unicode)],
+          asciimath: [["&#x23b7;"], parsing_wrapper(["sqrtbottom"], lang: :asciimath)],
           mathml: ["&#x23b7;"],
           latex: [["sqrtbottom", "&#x23b7;"]],
           omml: ["&#x23b7;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("sqrtbottom")
+          parsing_wrapper("sqrtbottom", lang: :asciimath)
         end
 
         def to_unicodemath

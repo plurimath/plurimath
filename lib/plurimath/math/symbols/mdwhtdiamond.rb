@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Mdwhtdiamond < Symbol
         INPUT = {
-          unicodemath: [["&#x2b26;"], parsing_wrapper(["mdwhtdiamond"])],
-          asciimath: [["&#x2b26;"], parsing_wrapper(["mdwhtdiamond"])],
+          unicodemath: [["&#x2b26;"], parsing_wrapper(["mdwhtdiamond"], lang: :unicode)],
+          asciimath: [["&#x2b26;"], parsing_wrapper(["mdwhtdiamond"], lang: :asciimath)],
           mathml: ["&#x2b26;"],
           latex: [["mdwhtdiamond", "&#x2b26;"]],
           omml: ["&#x2b26;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("mdwhtdiamond")
+          parsing_wrapper("mdwhtdiamond", lang: :asciimath)
         end
 
         def to_unicodemath

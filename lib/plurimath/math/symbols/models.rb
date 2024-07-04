@@ -3,10 +3,10 @@ module Plurimath
     module Symbols
       class Models < Symbol
         INPUT = {
-          unicodemath: [["models", "&#x22a8;"], parsing_wrapper(["|==", "vDash"])],
-          asciimath: [["models", "|==", "&#x22a8;"], parsing_wrapper(["vDash"])],
+          unicodemath: [["models", "&#x22a8;"], parsing_wrapper(["|==", "vDash"], lang: :unicode)],
+          asciimath: [["models", "|==", "&#x22a8;"], parsing_wrapper(["vDash"], lang: :asciimath)],
           mathml: ["&#x22a8;"],
-          latex: [["vDash", "&#x22a8;"], parsing_wrapper(["models", "|=="])],
+          latex: [["vDash", "&#x22a8;"], parsing_wrapper(["models", "|=="], lang: :latex)],
           omml: ["&#x22a8;"],
           html: ["&#x22a8;"],
         }.freeze

@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Lbracklltick < Symbol
         INPUT = {
-          unicodemath: [["&#x298f;"], parsing_wrapper(["lbracklltick"])],
-          asciimath: [["&#x298f;"], parsing_wrapper(["lbracklltick"])],
+          unicodemath: [["&#x298f;"], parsing_wrapper(["lbracklltick"], lang: :unicode)],
+          asciimath: [["&#x298f;"], parsing_wrapper(["lbracklltick"], lang: :asciimath)],
           mathml: ["&#x298f;"],
           latex: [["lbracklltick", "&#x298f;"]],
           omml: ["&#x298f;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("lbracklltick")
+          parsing_wrapper("lbracklltick", lang: :asciimath)
         end
 
         def to_unicodemath

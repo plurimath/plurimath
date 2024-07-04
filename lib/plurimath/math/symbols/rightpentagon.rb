@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Rightpentagon < Symbol
         INPUT = {
-          unicodemath: [["&#x2b54;"], parsing_wrapper(["rightpentagon"])],
-          asciimath: [["&#x2b54;"], parsing_wrapper(["rightpentagon"])],
+          unicodemath: [["&#x2b54;"], parsing_wrapper(["rightpentagon"], lang: :unicode)],
+          asciimath: [["&#x2b54;"], parsing_wrapper(["rightpentagon"], lang: :asciimath)],
           mathml: ["&#x2b54;"],
           latex: [["rightpentagon", "&#x2b54;"]],
           omml: ["&#x2b54;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("rightpentagon")
+          parsing_wrapper("rightpentagon", lang: :asciimath)
         end
 
         def to_unicodemath

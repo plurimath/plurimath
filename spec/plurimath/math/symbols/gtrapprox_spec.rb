@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Gtrapprox do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Gtrapprox" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{gtrapprox}")
+        expect(klass.to_asciimath).to eq("\"P{gtrapprox}\"")
       end
 
       it "matches LaTeX string" do

@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Varhexagonblack < Symbol
         INPUT = {
-          unicodemath: [["&#x2b22;"], parsing_wrapper(["varhexagonblack"])],
-          asciimath: [["&#x2b22;"], parsing_wrapper(["varhexagonblack"])],
+          unicodemath: [["&#x2b22;"], parsing_wrapper(["varhexagonblack"], lang: :unicode)],
+          asciimath: [["&#x2b22;"], parsing_wrapper(["varhexagonblack"], lang: :asciimath)],
           mathml: ["&#x2b22;"],
           latex: [["varhexagonblack", "&#x2b22;"]],
           omml: ["&#x2b22;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("varhexagonblack")
+          parsing_wrapper("varhexagonblack", lang: :asciimath)
         end
 
         def to_unicodemath

@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Euro do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Euro" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{euro}")
+        expect(klass.to_asciimath).to eq("\"P{euro}\"")
       end
 
       it "matches LaTeX string" do

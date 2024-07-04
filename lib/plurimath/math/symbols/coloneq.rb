@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Coloneq < Symbol
         INPUT = {
-          unicodemath: [["&#x2a74;"], parsing_wrapper(["Coloneqq", "Coloneq"])],
-          asciimath: [["&#x2a74;"], parsing_wrapper(["Coloneqq", "Coloneq"])],
+          unicodemath: [["&#x2a74;"], parsing_wrapper(["Coloneqq", "Coloneq"], lang: :unicode)],
+          asciimath: [["&#x2a74;"], parsing_wrapper(["Coloneqq", "Coloneq"], lang: :asciimath)],
           mathml: ["&#x2a74;"],
           latex: [["Coloneqq", "Coloneq", "&#x2a74;"]],
           omml: ["&#x2a74;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("Coloneq")
+          parsing_wrapper("Coloneq", lang: :asciimath)
         end
 
         def to_unicodemath

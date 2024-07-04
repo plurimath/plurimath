@@ -4,7 +4,7 @@ module Plurimath
       class Ominus < Symbol
         INPUT = {
           unicodemath: [["ominus", "&#x2296;"]],
-          asciimath: [["&#x2296;"], parsing_wrapper(["ominus"])],
+          asciimath: [["&#x2296;"], parsing_wrapper(["ominus"], lang: :asciimath)],
           mathml: ["&#x2296;"],
           latex: [["ominus", "&#x2296;"]],
           omml: ["&#x2296;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("ominus")
+          parsing_wrapper("ominus", lang: :asciimath)
         end
 
         def to_unicodemath

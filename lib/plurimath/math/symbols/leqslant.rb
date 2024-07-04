@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Leqslant < Symbol
         INPUT = {
-          unicodemath: [["&#x2a7d;"], parsing_wrapper(["leqslant"])],
-          asciimath: [["&#x2a7d;"], parsing_wrapper(["leqslant"])],
+          unicodemath: [["&#x2a7d;"], parsing_wrapper(["leqslant"], lang: :unicode)],
+          asciimath: [["&#x2a7d;"], parsing_wrapper(["leqslant"], lang: :asciimath)],
           mathml: ["&#x2a7d;"],
           latex: [["leqslant", "&#x2a7d;"]],
           omml: ["&#x2a7d;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("leqslant")
+          parsing_wrapper("leqslant", lang: :asciimath)
         end
 
         def to_unicodemath

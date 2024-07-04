@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Bigtop do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Bigtop" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{bigtop}")
+        expect(klass.to_asciimath).to eq("\"P{bigtop}\"")
       end
 
       it "matches LaTeX string" do

@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Bigslopedvee do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Bigslopedvee" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{bigslopedvee}")
+        expect(klass.to_asciimath).to eq("\"P{bigslopedvee}\"")
       end
 
       it "matches LaTeX string" do

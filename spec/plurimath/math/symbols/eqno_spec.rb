@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Eqno do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Eqno" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{eqno}")
+        expect(klass.to_asciimath).to eq("\"P{eqno}\"")
       end
 
       it "matches LaTeX string" do

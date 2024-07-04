@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Circlebottomhalfblack do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Circlebottomhalfblack" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{circlebottomhalfblack}")
+        expect(klass.to_asciimath).to eq("\"P{circlebottomhalfblack}\"")
       end
 
       it "matches LaTeX string" do

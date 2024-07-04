@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Upupharpoons do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Upupharpoons" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{upupharpoons}")
+        expect(klass.to_asciimath).to eq("\"P{upupharpoons}\"")
       end
 
       it "matches LaTeX string" do

@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Perps do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Perps" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{perps}")
+        expect(klass.to_asciimath).to eq("\"P{perps}\"")
       end
 
       it "matches LaTeX string" do

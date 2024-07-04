@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Limg < Symbol
         INPUT = {
-          unicodemath: [["&#x2987;"], parsing_wrapper(["llparenthesis", "limg"])],
-          asciimath: [["&#x2987;"], parsing_wrapper(["llparenthesis", "limg"])],
+          unicodemath: [["&#x2987;"], parsing_wrapper(["llparenthesis", "limg"], lang: :unicode)],
+          asciimath: [["&#x2987;"], parsing_wrapper(["llparenthesis", "limg"], lang: :asciimath)],
           mathml: ["&#x2987;"],
           latex: [["llparenthesis", "limg", "&#x2987;"]],
           omml: ["&#x2987;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("limg")
+          parsing_wrapper("limg", lang: :asciimath)
         end
 
         def to_unicodemath

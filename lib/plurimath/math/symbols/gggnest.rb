@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Gggnest < Symbol
         INPUT = {
-          unicodemath: [["&#x2af8;"], parsing_wrapper(["gggnest"])],
-          asciimath: [["&#x2af8;"], parsing_wrapper(["gggnest"])],
+          unicodemath: [["&#x2af8;"], parsing_wrapper(["gggnest"], lang: :unicode)],
+          asciimath: [["&#x2af8;"], parsing_wrapper(["gggnest"], lang: :asciimath)],
           mathml: ["&#x2af8;"],
           latex: [["gggnest", "&#x2af8;"]],
           omml: ["&#x2af8;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("gggnest")
+          parsing_wrapper("gggnest", lang: :asciimath)
         end
 
         def to_unicodemath

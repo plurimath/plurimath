@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Leftbkarrow < Symbol
         INPUT = {
-          unicodemath: [["&#x290c;"], parsing_wrapper(["leftbkarrow"])],
-          asciimath: [["&#x290c;"], parsing_wrapper(["leftbkarrow"])],
+          unicodemath: [["&#x290c;"], parsing_wrapper(["leftbkarrow"], lang: :unicode)],
+          asciimath: [["&#x290c;"], parsing_wrapper(["leftbkarrow"], lang: :asciimath)],
           mathml: ["&#x290c;"],
           latex: [["leftbkarrow", "&#x290c;"]],
           omml: ["&#x290c;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("leftbkarrow")
+          parsing_wrapper("leftbkarrow", lang: :asciimath)
         end
 
         def to_unicodemath

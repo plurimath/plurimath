@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Cancer < Symbol
         INPUT = {
-          unicodemath: [["&#x264b;"], parsing_wrapper(["cancer"])],
-          asciimath: [["&#x264b;"], parsing_wrapper(["cancer"])],
+          unicodemath: [["&#x264b;"], parsing_wrapper(["cancer"], lang: :unicode)],
+          asciimath: [["&#x264b;"], parsing_wrapper(["cancer"], lang: :asciimath)],
           mathml: ["&#x264b;"],
           latex: [["cancer", "&#x264b;"]],
           omml: ["&#x264b;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("cancer")
+          parsing_wrapper("cancer", lang: :asciimath)
         end
 
         def to_unicodemath

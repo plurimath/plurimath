@@ -4,20 +4,20 @@ module Plurimath
       class Degree < Symbol
         INPUT = {
           unicodemath: [["degree", "&#xb0;"]],
-          asciimath: [["&#xb0;"], parsing_wrapper(["degree"])],
+          asciimath: [["&#xb0;"], parsing_wrapper(["degree"], lang: :asciimath)],
           mathml: ["&#xb0;"],
-          latex: [["&#xb0;"], parsing_wrapper(["degree"])],
+          latex: [["&#xb0;"], parsing_wrapper(["degree"], lang: :latex)],
           omml: ["&#xb0;"],
           html: ["&#xb0;"],
         }.freeze
 
         # output methods
         def to_latex
-          parsing_wrapper("degree")
+          parsing_wrapper("degree", lang: :latex)
         end
 
         def to_asciimath
-          parsing_wrapper("degree")
+          parsing_wrapper("degree", lang: :asciimath)
         end
 
         def to_unicodemath

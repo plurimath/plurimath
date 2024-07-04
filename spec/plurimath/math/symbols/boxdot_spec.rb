@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Boxdot do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Boxdot" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{boxdot}")
+        expect(klass.to_asciimath).to eq("\"P{boxdot}\"")
       end
 
       it "matches LaTeX string" do

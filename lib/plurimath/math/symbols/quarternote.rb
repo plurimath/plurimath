@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Quarternote < Symbol
         INPUT = {
-          unicodemath: [["&#x2669;"], parsing_wrapper(["quarternote"])],
-          asciimath: [["&#x2669;"], parsing_wrapper(["quarternote"])],
+          unicodemath: [["&#x2669;"], parsing_wrapper(["quarternote"], lang: :unicode)],
+          asciimath: [["&#x2669;"], parsing_wrapper(["quarternote"], lang: :asciimath)],
           mathml: ["&#x2669;"],
           latex: [["quarternote", "&#x2669;"]],
           omml: ["&#x2669;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("quarternote")
+          parsing_wrapper("quarternote", lang: :asciimath)
         end
 
         def to_unicodemath

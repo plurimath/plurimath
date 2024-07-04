@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Ltcir < Symbol
         INPUT = {
-          unicodemath: [["&#x2a79;"], parsing_wrapper(["ltcir"])],
-          asciimath: [["&#x2a79;"], parsing_wrapper(["ltcir"])],
+          unicodemath: [["&#x2a79;"], parsing_wrapper(["ltcir"], lang: :unicode)],
+          asciimath: [["&#x2a79;"], parsing_wrapper(["ltcir"], lang: :asciimath)],
           mathml: ["&#x2a79;"],
           latex: [["ltcir", "&#x2a79;"]],
           omml: ["&#x2a79;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("ltcir")
+          parsing_wrapper("ltcir", lang: :asciimath)
         end
 
         def to_unicodemath

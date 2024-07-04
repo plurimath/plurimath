@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Intbottom < Symbol
         INPUT = {
-          unicodemath: [["&#x2321;"], parsing_wrapper(["intbottom"])],
-          asciimath: [["&#x2321;"], parsing_wrapper(["intbottom"])],
+          unicodemath: [["&#x2321;"], parsing_wrapper(["intbottom"], lang: :unicode)],
+          asciimath: [["&#x2321;"], parsing_wrapper(["intbottom"], lang: :asciimath)],
           mathml: ["&#x2321;"],
           latex: [["intbottom", "&#x2321;"]],
           omml: ["&#x2321;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("intbottom")
+          parsing_wrapper("intbottom", lang: :asciimath)
         end
 
         def to_unicodemath

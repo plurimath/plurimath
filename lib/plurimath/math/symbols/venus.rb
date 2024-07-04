@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Venus < Symbol
         INPUT = {
-          unicodemath: [["&#x2640;"], parsing_wrapper(["female", "Venus"])],
-          asciimath: [["&#x2640;"], parsing_wrapper(["female", "Venus"])],
+          unicodemath: [["&#x2640;"], parsing_wrapper(["female", "Venus"], lang: :unicode)],
+          asciimath: [["&#x2640;"], parsing_wrapper(["female", "Venus"], lang: :asciimath)],
           mathml: ["&#x2640;"],
           latex: [["female", "Venus", "&#x2640;"]],
           omml: ["&#x2640;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("Venus")
+          parsing_wrapper("Venus", lang: :asciimath)
         end
 
         def to_unicodemath

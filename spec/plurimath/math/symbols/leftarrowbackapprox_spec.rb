@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Leftarrowbackapprox do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Leftarrowbackapprox" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{leftarrowbackapprox}")
+        expect(klass.to_asciimath).to eq("\"P{leftarrowbackapprox}\"")
       end
 
       it "matches LaTeX string" do

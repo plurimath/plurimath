@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Pfun < Symbol
         INPUT = {
-          unicodemath: [["&#x21f8;"], parsing_wrapper(["nvrightarrow", "pfun"])],
-          asciimath: [["&#x21f8;"], parsing_wrapper(["nvrightarrow", "pfun"])],
+          unicodemath: [["&#x21f8;"], parsing_wrapper(["nvrightarrow", "pfun"], lang: :unicode)],
+          asciimath: [["&#x21f8;"], parsing_wrapper(["nvrightarrow", "pfun"], lang: :asciimath)],
           mathml: ["&#x21f8;"],
           latex: [["nvrightarrow", "pfun", "&#x21f8;"]],
           omml: ["&#x21f8;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("pfun")
+          parsing_wrapper("pfun", lang: :asciimath)
         end
 
         def to_unicodemath

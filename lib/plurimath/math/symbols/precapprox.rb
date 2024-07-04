@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Precapprox < Symbol
         INPUT = {
-          unicodemath: [["&#x2ab7;"], parsing_wrapper(["precapprox"])],
-          asciimath: [["&#x2ab7;"], parsing_wrapper(["precapprox"])],
+          unicodemath: [["&#x2ab7;"], parsing_wrapper(["precapprox"], lang: :unicode)],
+          asciimath: [["&#x2ab7;"], parsing_wrapper(["precapprox"], lang: :asciimath)],
           mathml: ["&#x2ab7;"],
           latex: [["precapprox", "&#x2ab7;"]],
           omml: ["&#x2ab7;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("precapprox")
+          parsing_wrapper("precapprox", lang: :asciimath)
         end
 
         def to_unicodemath

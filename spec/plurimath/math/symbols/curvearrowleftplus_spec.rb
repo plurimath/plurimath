@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Curvearrowleftplus do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Curvearrowleftplus" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{curvearrowleftplus}")
+        expect(klass.to_asciimath).to eq("\"P{curvearrowleftplus}\"")
       end
 
       it "matches LaTeX string" do

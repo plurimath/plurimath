@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Aplboxquestion < Symbol
         INPUT = {
-          unicodemath: [["&#x2370;"], parsing_wrapper(["APLboxquestion"])],
-          asciimath: [["&#x2370;"], parsing_wrapper(["APLboxquestion"])],
+          unicodemath: [["&#x2370;"], parsing_wrapper(["APLboxquestion"], lang: :unicode)],
+          asciimath: [["&#x2370;"], parsing_wrapper(["APLboxquestion"], lang: :asciimath)],
           mathml: ["&#x2370;"],
           latex: [["APLboxquestion", "&#x2370;"]],
           omml: ["&#x2370;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("APLboxquestion")
+          parsing_wrapper("APLboxquestion", lang: :asciimath)
         end
 
         def to_unicodemath

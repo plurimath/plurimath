@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Blackdiamonddownarrow do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Blackdiamonddownarrow" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{blackdiamonddownarrow}")
+        expect(klass.to_asciimath).to eq("\"P{blackdiamonddownarrow}\"")
       end
 
       it "matches LaTeX string" do

@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Upequilibrium do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Upequilibrium" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{upequilibrium}")
+        expect(klass.to_asciimath).to eq("\"P{upequilibrium}\"")
       end
 
       it "matches LaTeX string" do

@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Bowtie do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Bowtie" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{bowtie}")
+        expect(klass.to_asciimath).to eq("\"P{bowtie}\"")
       end
 
       it "matches LaTeX string" do

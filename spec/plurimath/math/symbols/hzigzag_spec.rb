@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Hzigzag do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Hzigzag" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{hzigzag}")
+        expect(klass.to_asciimath).to eq("\"P{hzigzag}\"")
       end
 
       it "matches LaTeX string" do

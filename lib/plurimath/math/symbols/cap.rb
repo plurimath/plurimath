@@ -13,11 +13,11 @@ module Plurimath
 
         # output methods
         def to_latex
-          "\\cap"
+          "\\Cap"
         end
 
         def to_asciimath
-          parsing_wrapper("cap")
+          parsing_wrapper("Cap", lang: :asciimath)
         end
 
         def to_unicodemath
@@ -34,6 +34,10 @@ module Plurimath
 
         def to_html
           "&#x2229;"
+        end
+
+        def is_nary_symbol?
+          true
         end
       end
     end

@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Bigsqcap < Symbol
         INPUT = {
-          unicodemath: [["&#x2a05;"], parsing_wrapper(["bigsqcap"])],
-          asciimath: [["&#x2a05;"], parsing_wrapper(["bigsqcap"])],
+          unicodemath: [["&#x2a05;"], parsing_wrapper(["bigsqcap"], lang: :unicode)],
+          asciimath: [["&#x2a05;"], parsing_wrapper(["bigsqcap"], lang: :asciimath)],
           mathml: ["&#x2a05;"],
           latex: [["bigsqcap", "&#x2a05;"]],
           omml: ["&#x2a05;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("bigsqcap")
+          parsing_wrapper("bigsqcap", lang: :asciimath)
         end
 
         def to_unicodemath

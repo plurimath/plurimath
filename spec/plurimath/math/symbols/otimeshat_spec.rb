@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Otimeshat do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Otimeshat" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{otimeshat}")
+        expect(klass.to_asciimath).to eq("\"P{otimeshat}\"")
       end
 
       it "matches LaTeX string" do

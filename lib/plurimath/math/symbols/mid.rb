@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Mid < Symbol
         INPUT = {
-          unicodemath: [["&#x2223;"], parsing_wrapper(["mid"])],
-          asciimath: [["&#x2223;"], parsing_wrapper(["mid"])],
+          unicodemath: [["&#x2223;"], parsing_wrapper(["mid"], lang: :unicode)],
+          asciimath: [["&#x2223;"], parsing_wrapper(["mid"], lang: :asciimath)],
           mathml: ["&#x2223;"],
           latex: [["mid", "&#x2223;"]],
           omml: ["&#x2223;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("mid")
+          parsing_wrapper("mid", lang: :asciimath)
         end
 
         def to_unicodemath

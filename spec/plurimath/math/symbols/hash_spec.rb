@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Hash do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Hash" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{hash}")
+        expect(klass.to_asciimath).to eq("\"P{hash}\"")
       end
 
       it "matches LaTeX string" do

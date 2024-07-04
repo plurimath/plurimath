@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Cupbarcap < Symbol
         INPUT = {
-          unicodemath: [["&#x2a48;"], parsing_wrapper(["cupbarcap"])],
-          asciimath: [["&#x2a48;"], parsing_wrapper(["cupbarcap"])],
+          unicodemath: [["&#x2a48;"], parsing_wrapper(["cupbarcap"], lang: :unicode)],
+          asciimath: [["&#x2a48;"], parsing_wrapper(["cupbarcap"], lang: :asciimath)],
           mathml: ["&#x2a48;"],
           latex: [["cupbarcap", "&#x2a48;"]],
           omml: ["&#x2a48;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("cupbarcap")
+          parsing_wrapper("cupbarcap", lang: :asciimath)
         end
 
         def to_unicodemath

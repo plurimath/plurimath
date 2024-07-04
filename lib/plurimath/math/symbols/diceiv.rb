@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Diceiv < Symbol
         INPUT = {
-          unicodemath: [["&#x2683;"], parsing_wrapper(["diceiv"])],
-          asciimath: [["&#x2683;"], parsing_wrapper(["diceiv"])],
+          unicodemath: [["&#x2683;"], parsing_wrapper(["diceiv"], lang: :unicode)],
+          asciimath: [["&#x2683;"], parsing_wrapper(["diceiv"], lang: :asciimath)],
           mathml: ["&#x2683;"],
           latex: [["diceiv", "&#x2683;"]],
           omml: ["&#x2683;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("diceiv")
+          parsing_wrapper("diceiv", lang: :asciimath)
         end
 
         def to_unicodemath

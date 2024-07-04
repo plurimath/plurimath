@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Bij do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Bij" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{bij}")
+        expect(klass.to_asciimath).to eq("\"P{bij}\"")
       end
 
       it "matches LaTeX string" do

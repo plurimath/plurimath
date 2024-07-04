@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Rmoust do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Rmoust" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{rmoust}")
+        expect(klass.to_asciimath).to eq("\"P{rmoust}\"")
       end
 
       it "matches LaTeX string" do

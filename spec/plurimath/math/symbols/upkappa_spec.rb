@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Upkappa do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Upkappa" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{upKappa}")
+        expect(klass.to_asciimath).to eq("\"P{upKappa}\"")
       end
 
       it "matches LaTeX string" do

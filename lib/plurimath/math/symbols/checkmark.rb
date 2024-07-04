@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Checkmark < Symbol
         INPUT = {
-          unicodemath: [["&#x2713;"], parsing_wrapper(["ballotcheck", "checkmark"])],
-          asciimath: [["&#x2713;"], parsing_wrapper(["ballotcheck", "checkmark"])],
+          unicodemath: [["&#x2713;"], parsing_wrapper(["ballotcheck", "checkmark"], lang: :unicode)],
+          asciimath: [["&#x2713;"], parsing_wrapper(["ballotcheck", "checkmark"], lang: :asciimath)],
           mathml: ["&#x2713;"],
           latex: [["ballotcheck", "checkmark", "&#x2713;"]],
           omml: ["&#x2713;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("checkmark")
+          parsing_wrapper("checkmark", lang: :asciimath)
         end
 
         def to_unicodemath

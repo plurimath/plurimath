@@ -3,10 +3,10 @@ module Plurimath
     module Symbols
       class Space < Symbol
         INPUT = {
-          unicodemath: [["&#xa0;"], parsing_wrapper(["\\ "])],
+          unicodemath: [["&#xa0;"], parsing_wrapper(["\\ "], lang: :unicode)],
           asciimath: [["\\ ", "&#xa0;"]],
           mathml: ["&#xa0;"],
-          latex: [["&#xa0;"], parsing_wrapper(["\\ "])],
+          latex: [["&#xa0;"], parsing_wrapper(["\\ "], lang: :latex)],
           omml: ["&#xa0;"],
           html: ["&#xa0;"],
         }.freeze

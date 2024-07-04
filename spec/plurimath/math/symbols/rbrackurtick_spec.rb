@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Rbrackurtick do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Rbrackurtick" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{rbrackurtick}")
+        expect(klass.to_asciimath).to eq("\"P{rbrackurtick}\"")
       end
 
       it "matches LaTeX string" do

@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Upvartheta < Symbol
         INPUT = {
-          unicodemath: [["&#x3f4;"], parsing_wrapper(["upvarTheta"])],
-          asciimath: [["&#x3f4;"], parsing_wrapper(["upvarTheta"])],
+          unicodemath: [["&#x3f4;"], parsing_wrapper(["upvarTheta"], lang: :unicode)],
+          asciimath: [["&#x3f4;"], parsing_wrapper(["upvarTheta"], lang: :asciimath)],
           mathml: ["&#x3f4;"],
           latex: [["upvarTheta", "&#x3f4;"]],
           omml: ["&#x3f4;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("upvarTheta")
+          parsing_wrapper("upvarTheta", lang: :asciimath)
         end
 
         def to_unicodemath

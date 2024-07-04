@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Stareq do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Stareq" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{stareq}")
+        expect(klass.to_asciimath).to eq("\"P{stareq}\"")
       end
 
       it "matches LaTeX string" do

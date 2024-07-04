@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Glj < Symbol
         INPUT = {
-          unicodemath: [["&#x2aa4;"], parsing_wrapper(["glj"])],
-          asciimath: [["&#x2aa4;"], parsing_wrapper(["glj"])],
+          unicodemath: [["&#x2aa4;"], parsing_wrapper(["glj"], lang: :unicode)],
+          asciimath: [["&#x2aa4;"], parsing_wrapper(["glj"], lang: :asciimath)],
           mathml: ["&#x2aa4;"],
           latex: [["glj", "&#x2aa4;"]],
           omml: ["&#x2aa4;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("glj")
+          parsing_wrapper("glj", lang: :asciimath)
         end
 
         def to_unicodemath

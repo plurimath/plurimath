@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Lparenextender do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Lparenextender" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{lparenextender}")
+        expect(klass.to_asciimath).to eq("\"P{lparenextender}\"")
       end
 
       it "matches LaTeX string" do

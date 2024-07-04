@@ -4,7 +4,7 @@ module Plurimath
       class Boxtimes < Symbol
         INPUT = {
           unicodemath: [["boxtimes", "&#x22a0;"]],
-          asciimath: [["&#x22a0;"], parsing_wrapper(["boxtimes"])],
+          asciimath: [["&#x22a0;"], parsing_wrapper(["boxtimes"], lang: :asciimath)],
           mathml: ["&#x22a0;"],
           latex: [["boxtimes", "&#x22a0;"]],
           omml: ["&#x22a0;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("boxtimes")
+          parsing_wrapper("boxtimes", lang: :asciimath)
         end
 
         def to_unicodemath

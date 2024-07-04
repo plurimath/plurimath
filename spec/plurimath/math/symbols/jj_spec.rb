@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Jj do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Jj" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{jj}")
+        expect(klass.to_asciimath).to eq("\"P{jj}\"")
       end
 
       it "matches LaTeX string" do

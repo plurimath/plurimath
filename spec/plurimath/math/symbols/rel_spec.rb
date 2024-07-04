@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Rel do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Rel" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{rel}")
+        expect(klass.to_asciimath).to eq("\"P{rel}\"")
       end
 
       it "matches LaTeX string" do

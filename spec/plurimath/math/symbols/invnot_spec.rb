@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Invnot do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Invnot" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{invnot}")
+        expect(klass.to_asciimath).to eq("\"P{invnot}\"")
       end
 
       it "matches LaTeX string" do

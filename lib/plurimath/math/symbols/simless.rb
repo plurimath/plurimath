@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Simless < Symbol
         INPUT = {
-          unicodemath: [["&#x2a9d;"], parsing_wrapper(["simless"])],
-          asciimath: [["&#x2a9d;"], parsing_wrapper(["simless"])],
+          unicodemath: [["&#x2a9d;"], parsing_wrapper(["simless"], lang: :unicode)],
+          asciimath: [["&#x2a9d;"], parsing_wrapper(["simless"], lang: :asciimath)],
           mathml: ["&#x2a9d;"],
           latex: [["simless", "&#x2a9d;"]],
           omml: ["&#x2a9d;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("simless")
+          parsing_wrapper("simless", lang: :asciimath)
         end
 
         def to_unicodemath

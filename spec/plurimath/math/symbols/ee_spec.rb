@@ -14,28 +14,28 @@ RSpec.describe Plurimath::Math::Symbols::Ee do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Ee" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("mathbb(e)")
+        expect(klass.to_asciimath).to eq("exists")
       end
 
       it "matches LaTeX string" do
-        expect(klass.to_latex).to eq("\\mathbb{e}")
+        expect(klass.to_latex).to eq("\\exists")
       end
 
       it "matches UnicodeMath string" do
-        expect(klass.to_unicodemath).to eq("ⅇ")
+        expect(klass.to_unicodemath).to eq("∃")
       end
 
       it "matches OMML string" do
-        expect(klass.to_omml_without_math_tag(true)).to eq("&#x2147;")
+        expect(klass.to_omml_without_math_tag(true)).to eq("&#x2203;")
       end
 
       it "matches MathML string" do
         string = dump_ox_nodes(klass.to_mathml_without_math_tag(false)).strip
-        expect(string).to eq("<mi>&#x2147;</mi>")
+        expect(string).to eq("<mi>&#x2203;</mi>")
       end
 
       it "matches HTML string" do
-        expect(klass.to_html).to eq("&#x2147;")
+        expect(klass.to_html).to eq("&#x2203;")
       end
     end
   end

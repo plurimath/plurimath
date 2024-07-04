@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Veemidvert < Symbol
         INPUT = {
-          unicodemath: [["&#x2a5b;"], parsing_wrapper(["veemidvert"])],
-          asciimath: [["&#x2a5b;"], parsing_wrapper(["veemidvert"])],
+          unicodemath: [["&#x2a5b;"], parsing_wrapper(["veemidvert"], lang: :unicode)],
+          asciimath: [["&#x2a5b;"], parsing_wrapper(["veemidvert"], lang: :asciimath)],
           mathml: ["&#x2a5b;"],
           latex: [["veemidvert", "&#x2a5b;"]],
           omml: ["&#x2a5b;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("veemidvert")
+          parsing_wrapper("veemidvert", lang: :asciimath)
         end
 
         def to_unicodemath

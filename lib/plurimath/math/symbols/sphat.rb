@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Sphat < Symbol
         INPUT = {
-          unicodemath: [["&#x5e;"], parsing_wrapper(["sphat"])],
-          asciimath: [["&#x5e;"], parsing_wrapper(["sphat"])],
+          unicodemath: [["&#x5e;"], parsing_wrapper(["sphat"], lang: :unicode)],
+          asciimath: [["&#x5e;"], parsing_wrapper(["sphat"], lang: :asciimath)],
           mathml: ["&#x5e;"],
           latex: [["sphat", "&#x5e;"]],
           omml: ["&#x5e;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("sphat")
+          parsing_wrapper("sphat", lang: :asciimath)
         end
 
         def to_unicodemath

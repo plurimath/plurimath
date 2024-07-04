@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Nlessgtr do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Nlessgtr" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{nlessgtr}")
+        expect(klass.to_asciimath).to eq("\"P{nlessgtr}\"")
       end
 
       it "matches LaTeX string" do

@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Steaming < Symbol
         INPUT = {
-          unicodemath: [["&#x2615;"], parsing_wrapper(["steaming"])],
-          asciimath: [["&#x2615;"], parsing_wrapper(["steaming"])],
+          unicodemath: [["&#x2615;"], parsing_wrapper(["steaming"], lang: :unicode)],
+          asciimath: [["&#x2615;"], parsing_wrapper(["steaming"], lang: :asciimath)],
           mathml: ["&#x2615;"],
           latex: [["steaming", "&#x2615;"]],
           omml: ["&#x2615;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("steaming")
+          parsing_wrapper("steaming", lang: :asciimath)
         end
 
         def to_unicodemath

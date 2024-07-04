@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Accurrent do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Accurrent" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{accurrent}")
+        expect(klass.to_asciimath).to eq("\"P{accurrent}\"")
       end
 
       it "matches LaTeX string" do

@@ -3,10 +3,10 @@ module Plurimath
     module Symbols
       class Bullet < Symbol
         INPUT = {
-          unicodemath: [["bullet", "&#x2219;"], parsing_wrapper(["vysmblkcircle"])],
-          asciimath: [["&#x2219;"], parsing_wrapper(["bullet", "vysmblkcircle"])],
+          unicodemath: [["bullet", "&#x2219;"], parsing_wrapper(["vysmblkcircle"], lang: :unicode)],
+          asciimath: [["&#x2219;"], parsing_wrapper(["bullet", "vysmblkcircle"], lang: :asciimath)],
           mathml: ["&#x2219;"],
-          latex: [["vysmblkcircle", "&#x2219;"], parsing_wrapper(["bullet"])],
+          latex: [["vysmblkcircle", "&#x2219;"], parsing_wrapper(["bullet"], lang: :latex)],
           omml: ["&#x2219;"],
           html: ["&#x2219;"],
         }.freeze
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("bullet")
+          parsing_wrapper("bullet", lang: :asciimath)
         end
 
         def to_unicodemath

@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Qquad do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Qquad" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{qquad}")
+        expect(klass.to_asciimath).to eq("\"P{qquad}\"")
       end
 
       it "matches LaTeX string" do

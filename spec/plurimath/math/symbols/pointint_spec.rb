@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Pointint do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Pointint" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{pointint}")
+        expect(klass.to_asciimath).to eq("\"P{pointint}\"")
       end
 
       it "matches LaTeX string" do

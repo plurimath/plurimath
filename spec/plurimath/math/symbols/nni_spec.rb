@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Nni do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Nni" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{nni}")
+        expect(klass.to_asciimath).to eq("\"P{nni}\"")
       end
 
       it "matches LaTeX string" do

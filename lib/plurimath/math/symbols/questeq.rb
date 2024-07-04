@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Questeq < Symbol
         INPUT = {
-          unicodemath: [["&#x225f;"], parsing_wrapper(["questeq"])],
-          asciimath: [["&#x225f;"], parsing_wrapper(["questeq"])],
+          unicodemath: [["&#x225f;"], parsing_wrapper(["questeq"], lang: :unicode)],
+          asciimath: [["&#x225f;"], parsing_wrapper(["questeq"], lang: :asciimath)],
           mathml: ["&#x225f;"],
           latex: [["questeq", "&#x225f;"]],
           omml: ["&#x225f;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("questeq")
+          parsing_wrapper("questeq", lang: :asciimath)
         end
 
         def to_unicodemath

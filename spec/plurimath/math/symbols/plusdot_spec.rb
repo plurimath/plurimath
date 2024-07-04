@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Plusdot do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Plusdot" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{plusdot}")
+        expect(klass.to_asciimath).to eq("\"P{plusdot}\"")
       end
 
       it "matches LaTeX string" do

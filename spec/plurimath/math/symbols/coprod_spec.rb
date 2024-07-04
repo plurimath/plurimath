@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Coprod do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Coprod" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{coprod}")
+        expect(klass.to_asciimath).to eq("\"P{coprod}\"")
       end
 
       it "matches LaTeX string" do

@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Leftarrowtail do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Leftarrowtail" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{leftarrowtail}")
+        expect(klass.to_asciimath).to eq("\"P{leftarrowtail}\"")
       end
 
       it "matches LaTeX string" do

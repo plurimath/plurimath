@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Viewdata do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Viewdata" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{viewdata}")
+        expect(klass.to_asciimath).to eq("\"P{viewdata}\"")
       end
 
       it "matches LaTeX string" do

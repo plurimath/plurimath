@@ -4,7 +4,7 @@ module Plurimath
       class Circeq < Symbol
         INPUT = {
           unicodemath: [["circeq", "&#x2257;"]],
-          asciimath: [["&#x2257;"], parsing_wrapper(["circeq"])],
+          asciimath: [["&#x2257;"], parsing_wrapper(["circeq"], lang: :asciimath)],
           mathml: ["&#x2257;"],
           latex: [["circeq", "&#x2257;"]],
           omml: ["&#x2257;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("circeq")
+          parsing_wrapper("circeq", lang: :asciimath)
         end
 
         def to_unicodemath

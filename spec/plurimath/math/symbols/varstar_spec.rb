@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Varstar do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Varstar" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{varstar}")
+        expect(klass.to_asciimath).to eq("\"P{varstar}\"")
       end
 
       it "matches LaTeX string" do

@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Kappa < Symbol
         INPUT = {
-          unicodemath: [["kappa", "&#x3ba;"], parsing_wrapper(["upkappa"])],
-          asciimath: [["kappa", "&#x3ba;"], parsing_wrapper(["upkappa"])],
+          unicodemath: [["kappa", "&#x3ba;"], parsing_wrapper(["upkappa"], lang: :unicode)],
+          asciimath: [["kappa", "&#x3ba;"], parsing_wrapper(["upkappa"], lang: :asciimath)],
           mathml: ["&#x3ba;"],
           latex: [["upkappa", "kappa", "&#x3ba;"]],
           omml: ["&#x3ba;"],

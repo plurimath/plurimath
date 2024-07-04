@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Buni < Symbol
         INPUT = {
-          unicodemath: [["uplus", "&#x228e;"], parsing_wrapper(["buni"])],
-          asciimath: [["&#x228e;"], parsing_wrapper(["uplus", "buni"])],
+          unicodemath: [["uplus", "&#x228e;"], parsing_wrapper(["buni"], lang: :unicode)],
+          asciimath: [["&#x228e;"], parsing_wrapper(["uplus", "buni"], lang: :asciimath)],
           mathml: ["&#x228e;"],
           latex: [["uplus", "buni", "&#x228e;"]],
           omml: ["&#x228e;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("buni")
+          parsing_wrapper("buni", lang: :asciimath)
         end
 
         def to_unicodemath

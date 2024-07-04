@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Whtvertoval do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Whtvertoval" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{whtvertoval}")
+        expect(klass.to_asciimath).to eq("\"P{whtvertoval}\"")
       end
 
       it "matches LaTeX string" do

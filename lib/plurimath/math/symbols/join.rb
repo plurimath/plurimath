@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Join < Symbol
         INPUT = {
-          unicodemath: [["&#x2a1d;"], parsing_wrapper(["Join"])],
-          asciimath: [["&#x2a1d;"], parsing_wrapper(["Join"])],
+          unicodemath: [["&#x2a1d;"], parsing_wrapper(["Join"], lang: :unicode)],
+          asciimath: [["&#x2a1d;"], parsing_wrapper(["Join"], lang: :asciimath)],
           mathml: ["&#x2a1d;"],
           latex: [["Join", "&#x2a1d;"]],
           omml: ["&#x2a1d;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("Join")
+          parsing_wrapper("Join", lang: :asciimath)
         end
 
         def to_unicodemath

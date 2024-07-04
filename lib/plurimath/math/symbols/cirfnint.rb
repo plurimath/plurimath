@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Cirfnint < Symbol
         INPUT = {
-          unicodemath: [["&#x2a10;"], parsing_wrapper(["cirfnint"])],
-          asciimath: [["&#x2a10;"], parsing_wrapper(["cirfnint"])],
+          unicodemath: [["&#x2a10;"], parsing_wrapper(["cirfnint"], lang: :unicode)],
+          asciimath: [["&#x2a10;"], parsing_wrapper(["cirfnint"], lang: :asciimath)],
           mathml: ["&#x2a10;"],
           latex: [["cirfnint", "&#x2a10;"]],
           omml: ["&#x2a10;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("cirfnint")
+          parsing_wrapper("cirfnint", lang: :asciimath)
         end
 
         def to_unicodemath

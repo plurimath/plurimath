@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Nvinfty < Symbol
         INPUT = {
-          unicodemath: [["&#x29de;"], parsing_wrapper(["nvinfty"])],
-          asciimath: [["&#x29de;"], parsing_wrapper(["nvinfty"])],
+          unicodemath: [["&#x29de;"], parsing_wrapper(["nvinfty"], lang: :unicode)],
+          asciimath: [["&#x29de;"], parsing_wrapper(["nvinfty"], lang: :asciimath)],
           mathml: ["&#x29de;"],
           latex: [["nvinfty", "&#x29de;"]],
           omml: ["&#x29de;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("nvinfty")
+          parsing_wrapper("nvinfty", lang: :asciimath)
         end
 
         def to_unicodemath

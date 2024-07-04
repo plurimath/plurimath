@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Spadesuit do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Spadesuit" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{spadesuit}")
+        expect(klass.to_asciimath).to eq("\"P{spadesuit}\"")
       end
 
       it "matches LaTeX string" do

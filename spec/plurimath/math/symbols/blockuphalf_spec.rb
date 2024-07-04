@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Blockuphalf do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Blockuphalf" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{blockuphalf}")
+        expect(klass.to_asciimath).to eq("\"P{blockuphalf}\"")
       end
 
       it "matches LaTeX string" do

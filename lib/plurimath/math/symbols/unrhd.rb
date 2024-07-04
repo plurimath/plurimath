@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Unrhd < Symbol
         INPUT = {
-          unicodemath: [["trianglerighteq", "&#x22b5;"], parsing_wrapper(["unrhd"])],
-          asciimath: [["&#x22b5;"], parsing_wrapper(["trianglerighteq", "unrhd"])],
+          unicodemath: [["trianglerighteq", "&#x22b5;"], parsing_wrapper(["unrhd"], lang: :unicode)],
+          asciimath: [["&#x22b5;"], parsing_wrapper(["trianglerighteq", "unrhd"], lang: :asciimath)],
           mathml: ["&#x22b5;"],
           latex: [["trianglerighteq", "unrhd", "&#x22b5;"]],
           omml: ["&#x22b5;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("unrhd")
+          parsing_wrapper("unrhd", lang: :asciimath)
         end
 
         def to_unicodemath

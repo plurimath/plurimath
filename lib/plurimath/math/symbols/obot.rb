@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Obot < Symbol
         INPUT = {
-          unicodemath: [["&#x29ba;"], parsing_wrapper(["obot"])],
-          asciimath: [["&#x29ba;"], parsing_wrapper(["obot"])],
+          unicodemath: [["&#x29ba;"], parsing_wrapper(["obot"], lang: :unicode)],
+          asciimath: [["&#x29ba;"], parsing_wrapper(["obot"], lang: :asciimath)],
           mathml: ["&#x29ba;"],
           latex: [["obot", "&#x29ba;"]],
           omml: ["&#x29ba;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("obot")
+          parsing_wrapper("obot", lang: :asciimath)
         end
 
         def to_unicodemath

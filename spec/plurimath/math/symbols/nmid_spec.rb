@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Nmid do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Nmid" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{nmid}")
+        expect(klass.to_asciimath).to eq("\"P{nmid}\"")
       end
 
       it "matches LaTeX string" do

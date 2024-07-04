@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Utilde do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Utilde" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{utilde}")
+        expect(klass.to_asciimath).to eq("\"P{utilde}\"")
       end
 
       it "matches LaTeX string" do

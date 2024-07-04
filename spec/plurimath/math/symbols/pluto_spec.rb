@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Pluto do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Pluto" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{Pluto}")
+        expect(klass.to_asciimath).to eq("\"P{Pluto}\"")
       end
 
       it "matches LaTeX string" do

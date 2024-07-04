@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Xsol < Symbol
         INPUT = {
-          unicodemath: [["&#x29f8;"], parsing_wrapper(["xsol"])],
-          asciimath: [["&#x29f8;"], parsing_wrapper(["xsol"])],
+          unicodemath: [["&#x29f8;"], parsing_wrapper(["xsol"], lang: :unicode)],
+          asciimath: [["&#x29f8;"], parsing_wrapper(["xsol"], lang: :asciimath)],
           mathml: ["&#x29f8;"],
           latex: [["xsol", "&#x29f8;"]],
           omml: ["&#x29f8;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("xsol")
+          parsing_wrapper("xsol", lang: :asciimath)
         end
 
         def to_unicodemath

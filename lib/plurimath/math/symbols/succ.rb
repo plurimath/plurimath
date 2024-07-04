@@ -3,10 +3,10 @@ module Plurimath
     module Symbols
       class Succ < Symbol
         INPUT = {
-          unicodemath: [["succ", "&#x227b;"], parsing_wrapper([">-"])],
+          unicodemath: [["succ", "&#x227b;"], parsing_wrapper([">-"], lang: :unicode)],
           asciimath: [["succ", ">-", "&#x227b;"]],
           mathml: ["&#x227b;"],
-          latex: [["succ", "&#x227b;"], parsing_wrapper([">-"])],
+          latex: [["succ", "&#x227b;"], parsing_wrapper([">-"], lang: :latex)],
           omml: ["&#x227b;"],
           html: ["&#x227b;"],
         }.freeze

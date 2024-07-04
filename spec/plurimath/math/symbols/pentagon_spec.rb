@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Pentagon do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Pentagon" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{pentagon}")
+        expect(klass.to_asciimath).to eq("\"P{pentagon}\"")
       end
 
       it "matches LaTeX string" do

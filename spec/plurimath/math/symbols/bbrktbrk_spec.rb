@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Bbrktbrk do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Bbrktbrk" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{bbrktbrk}")
+        expect(klass.to_asciimath).to eq("\"P{bbrktbrk}\"")
       end
 
       it "matches LaTeX string" do

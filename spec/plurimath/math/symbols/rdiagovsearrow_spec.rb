@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Rdiagovsearrow do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Rdiagovsearrow" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{rdiagovsearrow}")
+        expect(klass.to_asciimath).to eq("\"P{rdiagovsearrow}\"")
       end
 
       it "matches LaTeX string" do

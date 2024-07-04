@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Doublebarvee do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Doublebarvee" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{doublebarvee}")
+        expect(klass.to_asciimath).to eq("\"P{doublebarvee}\"")
       end
 
       it "matches LaTeX string" do

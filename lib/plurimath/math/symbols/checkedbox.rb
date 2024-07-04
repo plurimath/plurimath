@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Checkedbox < Symbol
         INPUT = {
-          unicodemath: [["&#x2611;"], parsing_wrapper(["CheckedBox"])],
-          asciimath: [["&#x2611;"], parsing_wrapper(["CheckedBox"])],
+          unicodemath: [["&#x2611;"], parsing_wrapper(["CheckedBox"], lang: :unicode)],
+          asciimath: [["&#x2611;"], parsing_wrapper(["CheckedBox"], lang: :asciimath)],
           mathml: ["&#x2611;"],
           latex: [["CheckedBox", "&#x2611;"]],
           omml: ["&#x2611;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("CheckedBox")
+          parsing_wrapper("CheckedBox", lang: :asciimath)
         end
 
         def to_unicodemath

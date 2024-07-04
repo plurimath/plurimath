@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Taurus < Symbol
         INPUT = {
-          unicodemath: [["&#x2649;"], parsing_wrapper(["taurus", "Taurus"])],
-          asciimath: [["&#x2649;"], parsing_wrapper(["taurus", "Taurus"])],
+          unicodemath: [["&#x2649;"], parsing_wrapper(["taurus", "Taurus"], lang: :unicode)],
+          asciimath: [["&#x2649;"], parsing_wrapper(["taurus", "Taurus"], lang: :asciimath)],
           mathml: ["&#x2649;"],
           latex: [["taurus", "Taurus", "&#x2649;"]],
           omml: ["&#x2649;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("Taurus")
+          parsing_wrapper("Taurus", lang: :asciimath)
         end
 
         def to_unicodemath

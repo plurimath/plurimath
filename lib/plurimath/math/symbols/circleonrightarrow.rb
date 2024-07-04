@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Circleonrightarrow < Symbol
         INPUT = {
-          unicodemath: [["&#x21f4;"], parsing_wrapper(["circleonrightarrow"])],
-          asciimath: [["&#x21f4;"], parsing_wrapper(["circleonrightarrow"])],
+          unicodemath: [["&#x21f4;"], parsing_wrapper(["circleonrightarrow"], lang: :unicode)],
+          asciimath: [["&#x21f4;"], parsing_wrapper(["circleonrightarrow"], lang: :asciimath)],
           mathml: ["&#x21f4;"],
           latex: [["circleonrightarrow", "&#x21f4;"]],
           omml: ["&#x21f4;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("circleonrightarrow")
+          parsing_wrapper("circleonrightarrow", lang: :asciimath)
         end
 
         def to_unicodemath

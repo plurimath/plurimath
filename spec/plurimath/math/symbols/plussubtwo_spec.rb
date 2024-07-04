@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Plussubtwo do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Plussubtwo" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{plussubtwo}")
+        expect(klass.to_asciimath).to eq("\"P{plussubtwo}\"")
       end
 
       it "matches LaTeX string" do

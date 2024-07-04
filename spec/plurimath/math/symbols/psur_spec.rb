@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Psur do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Psur" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{psur}")
+        expect(klass.to_asciimath).to eq("\"P{psur}\"")
       end
 
       it "matches LaTeX string" do

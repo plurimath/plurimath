@@ -3,10 +3,10 @@ module Plurimath
     module Symbols
       class Harr < Symbol
         INPUT = {
-          unicodemath: [["Leftrightarrow", "&#x21d4;"], parsing_wrapper(["<=>", "hArr", "iff"])],
+          unicodemath: [["Leftrightarrow", "&#x21d4;"], parsing_wrapper(["<=>", "hArr", "iff"], lang: :unicode)],
           asciimath: [["Leftrightarrow", "<=>", "hArr", "iff", "&#x21d4;"]],
           mathml: ["&#x21d4;"],
-          latex: [["Leftrightarrow", "&#x21d4;"], parsing_wrapper(["<=>", "hArr", "iff"])],
+          latex: [["Leftrightarrow", "&#x21d4;"], parsing_wrapper(["<=>", "hArr", "iff"], lang: :latex)],
           omml: ["&#x21d4;"],
           html: ["&#x21d4;"],
         }.freeze

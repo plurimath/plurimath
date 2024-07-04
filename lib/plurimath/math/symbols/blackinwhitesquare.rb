@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Blackinwhitesquare < Symbol
         INPUT = {
-          unicodemath: [["&#x25a3;"], parsing_wrapper(["blackinwhitesquare"])],
-          asciimath: [["&#x25a3;"], parsing_wrapper(["blackinwhitesquare"])],
+          unicodemath: [["&#x25a3;"], parsing_wrapper(["blackinwhitesquare"], lang: :unicode)],
+          asciimath: [["&#x25a3;"], parsing_wrapper(["blackinwhitesquare"], lang: :asciimath)],
           mathml: ["&#x25a3;"],
           latex: [["blackinwhitesquare", "&#x25a3;"]],
           omml: ["&#x25a3;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("blackinwhitesquare")
+          parsing_wrapper("blackinwhitesquare", lang: :asciimath)
         end
 
         def to_unicodemath

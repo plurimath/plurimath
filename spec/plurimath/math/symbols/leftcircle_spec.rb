@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Leftcircle do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Leftcircle" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{LEFTCIRCLE}")
+        expect(klass.to_asciimath).to eq("\"P{LEFTCIRCLE}\"")
       end
 
       it "matches LaTeX string" do

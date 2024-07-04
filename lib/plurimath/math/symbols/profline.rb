@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Profline < Symbol
         INPUT = {
-          unicodemath: [["&#x2312;"], parsing_wrapper(["profline"])],
-          asciimath: [["&#x2312;"], parsing_wrapper(["profline"])],
+          unicodemath: [["&#x2312;"], parsing_wrapper(["profline"], lang: :unicode)],
+          asciimath: [["&#x2312;"], parsing_wrapper(["profline"], lang: :asciimath)],
           mathml: ["&#x2312;"],
           latex: [["profline", "&#x2312;"]],
           omml: ["&#x2312;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("profline")
+          parsing_wrapper("profline", lang: :asciimath)
         end
 
         def to_unicodemath

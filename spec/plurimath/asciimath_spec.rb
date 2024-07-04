@@ -5655,8 +5655,8 @@ RSpec.describe Plurimath::Asciimath do
       let(:string) { '1 "unitsml(deg)"' }
 
       it 'returns parsed Asciimath to Formula' do
-        latex = '1 \mathrm{__{degree}}'
-        asciimath = "1 rm(__{degree})"
+        latex = '1 \mathrm{\\text{P[degree]}}'
+        asciimath = "1 rm(\"P{degree}\")"
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -6164,11 +6164,11 @@ RSpec.describe Plurimath::Asciimath do
     end
 
     context "contains example from plurimath/pull/244 example #114" do
-      let(:string) { '[u_0, u_1, u_2, u_3, ... , u_n] __{backepsilon} [[0 leq u_i leq 1] wedge sum u_i = 1.0]' }
+      let(:string) { '[u_0, u_1, u_2, u_3, ... , u_n] "P{backepsilon}" [[0 leq u_i leq 1] wedge sum u_i = 1.0]' }
 
       it 'matches LaTeX, AsciiMath, and MathML' do
         latex = '[ u_{0} , u_{1} , u_{2} , u_{3} , \ldots , u_{n} ] \backepsilon [ [ 0 \le q u_{i} \le q 1 ] \land \sum u_{i} = 1.0 ]'
-        asciimath = '[u_(0) , u_(1) , u_(2) , u_(3) , ... , u_(n)] __{backepsilon} [[0 le q u_(i) le q 1] ^^ sum u_(i) = 1.0]'
+        asciimath = '[u_(0) , u_(1) , u_(2) , u_(3) , ... , u_(n)] "P{backepsilon}" [[0 le q u_(i) le q 1] ^^ sum u_(i) = 1.0]'
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -7374,43 +7374,31 @@ RSpec.describe Plurimath::Asciimath do
                   </m:r>
                 </m:sup>
               </m:sSup>
-              <m:limLow>
-                <m:limLowPr>
+              <m:sSubSup>
+                <m:sSubSupPr>
                   <m:ctrlPr>
                     <w:rPr>
                       <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
                       <w:i/>
                     </w:rPr>
                   </m:ctrlPr>
-                </m:limLowPr>
+                </m:sSubSupPr>
                 <m:e>
-                  <m:limUpp>
-                    <m:limUppPr>
-                      <m:ctrlPr>
-                        <w:rPr>
-                          <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
-                          <w:i/>
-                        </w:rPr>
-                      </m:ctrlPr>
-                    </m:limUppPr>
-                    <m:e>
-                      <m:r>
-                        <m:t>&#x22c0;</m:t>
-                      </m:r>
-                    </m:e>
-                    <m:lim>
-                      <m:r>
-                        <m:t>d</m:t>
-                      </m:r>
-                    </m:lim>
-                  </m:limUpp>
+                  <m:r>
+                    <m:t>&#x22c0;</m:t>
+                  </m:r>
                 </m:e>
-                <m:lim>
+                <m:sub>
                   <m:r>
                     <m:t>2</m:t>
                   </m:r>
-                </m:lim>
-              </m:limLow>
+                </m:sub>
+                <m:sup>
+                  <m:r>
+                    <m:t>d</m:t>
+                  </m:r>
+                </m:sup>
+              </m:sSubSup>
             </m:oMath>
           </m:oMathPara>
         OMML

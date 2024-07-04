@@ -4,7 +4,7 @@ module Plurimath
       class Bumpeq < Symbol
         INPUT = {
           unicodemath: [["bumpeq", "&#x224f;"]],
-          asciimath: [["&#x224f;"], parsing_wrapper(["bumpeq"])],
+          asciimath: [["&#x224f;"], parsing_wrapper(["bumpeq"], lang: :asciimath)],
           mathml: ["&#x224f;"],
           latex: [["bumpeq", "&#x224f;"]],
           omml: ["&#x224f;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("bumpeq")
+          parsing_wrapper("bumpeq", lang: :asciimath)
         end
 
         def to_unicodemath

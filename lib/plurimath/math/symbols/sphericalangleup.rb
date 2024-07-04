@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Sphericalangleup < Symbol
         INPUT = {
-          unicodemath: [["&#x29a1;"], parsing_wrapper(["sphericalangleup"])],
-          asciimath: [["&#x29a1;"], parsing_wrapper(["sphericalangleup"])],
+          unicodemath: [["&#x29a1;"], parsing_wrapper(["sphericalangleup"], lang: :unicode)],
+          asciimath: [["&#x29a1;"], parsing_wrapper(["sphericalangleup"], lang: :asciimath)],
           mathml: ["&#x29a1;"],
           latex: [["sphericalangleup", "&#x29a1;"]],
           omml: ["&#x29a1;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("sphericalangleup")
+          parsing_wrapper("sphericalangleup", lang: :asciimath)
         end
 
         def to_unicodemath

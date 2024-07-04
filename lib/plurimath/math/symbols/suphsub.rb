@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Suphsub < Symbol
         INPUT = {
-          unicodemath: [["&#x2ad7;"], parsing_wrapper(["suphsub"])],
-          asciimath: [["&#x2ad7;"], parsing_wrapper(["suphsub"])],
+          unicodemath: [["&#x2ad7;"], parsing_wrapper(["suphsub"], lang: :unicode)],
+          asciimath: [["&#x2ad7;"], parsing_wrapper(["suphsub"], lang: :asciimath)],
           mathml: ["&#x2ad7;"],
           latex: [["suphsub", "&#x2ad7;"]],
           omml: ["&#x2ad7;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("suphsub")
+          parsing_wrapper("suphsub", lang: :asciimath)
         end
 
         def to_unicodemath

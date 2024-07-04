@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Smblkcircle < Symbol
         INPUT = {
-          unicodemath: [["&#x2022;"], parsing_wrapper(["smblkcircle", "bullet"])],
-          asciimath: [["&#x2022;"], parsing_wrapper(["smblkcircle", "bullet"])],
+          unicodemath: [["&#x2022;"], parsing_wrapper(["smblkcircle", "bullet"], lang: :unicode)],
+          asciimath: [["&#x2022;"], parsing_wrapper(["smblkcircle", "bullet"], lang: :asciimath)],
           mathml: ["&#x2022;"],
           latex: [["smblkcircle", "bullet", "&#x2022;"]],
           omml: ["&#x2022;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("smblkcircle")
+          parsing_wrapper("smblkcircle", lang: :asciimath)
         end
 
         def to_unicodemath

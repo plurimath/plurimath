@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Triangleodot < Symbol
         INPUT = {
-          unicodemath: [["&#x29ca;"], parsing_wrapper(["triangleodot"])],
-          asciimath: [["&#x29ca;"], parsing_wrapper(["triangleodot"])],
+          unicodemath: [["&#x29ca;"], parsing_wrapper(["triangleodot"], lang: :unicode)],
+          asciimath: [["&#x29ca;"], parsing_wrapper(["triangleodot"], lang: :asciimath)],
           mathml: ["&#x29ca;"],
           latex: [["triangleodot", "&#x29ca;"]],
           omml: ["&#x29ca;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("triangleodot")
+          parsing_wrapper("triangleodot", lang: :asciimath)
         end
 
         def to_unicodemath

@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Theta < Symbol
         INPUT = {
-          unicodemath: ["theta", "&#x3b8;", "&#x1d703;", parsing_wrapper(["uptheta"])],
-          asciimath: ["theta", "&#x3b8;", "&#x1d703;", parsing_wrapper(["uptheta"])],
+          unicodemath: ["theta", "&#x3b8;", "&#x1d703;", parsing_wrapper(["uptheta"], lang: :unicode)],
+          asciimath: ["theta", "&#x3b8;", "&#x1d703;", parsing_wrapper(["uptheta"], lang: :asciimath)],
           mathml: ["&#x3b8;", "&#x1d703;"],
           latex: ["uptheta", "theta", "&#x3b8;", "&#x1d703;"],
           omml: ["&#x3b8;", "&#x1d703;"],

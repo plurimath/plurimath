@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Nearrow do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Nearrow" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{Nearrow}")
+        expect(klass.to_asciimath).to eq("\"P{Nearrow}\"")
       end
 
       it "matches LaTeX string" do

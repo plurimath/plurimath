@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Nasymp < Symbol
         INPUT = {
-          unicodemath: [["nasymp", "&#x226d;"], parsing_wrapper(["notasymp"])],
-          asciimath: [["&#x226d;"], parsing_wrapper(["nasymp", "notasymp"])],
+          unicodemath: [["nasymp", "&#x226d;"], parsing_wrapper(["notasymp"], lang: :unicode)],
+          asciimath: [["&#x226d;"], parsing_wrapper(["nasymp", "notasymp"], lang: :asciimath)],
           mathml: ["&#x226d;"],
           latex: [["notasymp", "nasymp", "&#x226d;"]],
           omml: ["&#x226d;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("nasymp")
+          parsing_wrapper("nasymp", lang: :asciimath)
         end
 
         def to_unicodemath

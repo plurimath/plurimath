@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Accurrent < Symbol
         INPUT = {
-          unicodemath: [["&#x23e6;"], parsing_wrapper(["accurrent"])],
-          asciimath: [["&#x23e6;"], parsing_wrapper(["accurrent"])],
+          unicodemath: [["&#x23e6;"], parsing_wrapper(["accurrent"], lang: :unicode)],
+          asciimath: [["&#x23e6;"], parsing_wrapper(["accurrent"], lang: :asciimath)],
           mathml: ["&#x23e6;"],
           latex: [["accurrent", "&#x23e6;"]],
           omml: ["&#x23e6;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("accurrent")
+          parsing_wrapper("accurrent", lang: :asciimath)
         end
 
         def to_unicodemath

@@ -3,10 +3,10 @@ module Plurimath
     module Symbols
       class Ge < Symbol
         INPUT = {
-          unicodemath: [["ge", "geq", "&#x2265;"], parsing_wrapper([">="])],
-          asciimath: [[">=", "ge", "&#x2265;"], parsing_wrapper(["geq"])],
+          unicodemath: [["ge", "geq", "&#x2265;"], parsing_wrapper([">="], lang: :unicode)],
+          asciimath: [[">=", "ge", "&#x2265;"], parsing_wrapper(["geq"], lang: :asciimath)],
           mathml: ["&#x2265;"],
-          latex: [["geq", "ge", "&#x2265;"], parsing_wrapper([">="])],
+          latex: [["geq", "ge", "&#x2265;"], parsing_wrapper([">="], lang: :latex)],
           omml: ["&#x2265;"],
           html: ["&#x2265;"],
         }.freeze

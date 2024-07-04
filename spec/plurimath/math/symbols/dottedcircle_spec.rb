@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Dottedcircle do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Dottedcircle" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{dottedcircle}")
+        expect(klass.to_asciimath).to eq("\"P{dottedcircle}\"")
       end
 
       it "matches LaTeX string" do

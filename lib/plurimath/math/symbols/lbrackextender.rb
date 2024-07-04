@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Lbrackextender < Symbol
         INPUT = {
-          unicodemath: [["&#x23a2;"], parsing_wrapper(["lbrackextender"])],
-          asciimath: [["&#x23a2;"], parsing_wrapper(["lbrackextender"])],
+          unicodemath: [["&#x23a2;"], parsing_wrapper(["lbrackextender"], lang: :unicode)],
+          asciimath: [["&#x23a2;"], parsing_wrapper(["lbrackextender"], lang: :asciimath)],
           mathml: ["&#x23a2;"],
           latex: [["lbrackextender", "&#x23a2;"]],
           omml: ["&#x23a2;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("lbrackextender")
+          parsing_wrapper("lbrackextender", lang: :asciimath)
         end
 
         def to_unicodemath

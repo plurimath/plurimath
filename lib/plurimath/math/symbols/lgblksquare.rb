@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Lgblksquare < Symbol
         INPUT = {
-          unicodemath: [["&#x2b1b;"], parsing_wrapper(["lgblksquare"])],
-          asciimath: [["&#x2b1b;"], parsing_wrapper(["lgblksquare"])],
+          unicodemath: [["&#x2b1b;"], parsing_wrapper(["lgblksquare"], lang: :unicode)],
+          asciimath: [["&#x2b1b;"], parsing_wrapper(["lgblksquare"], lang: :asciimath)],
           mathml: ["&#x2b1b;"],
           latex: [["lgblksquare", "&#x2b1b;"]],
           omml: ["&#x2b1b;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("lgblksquare")
+          parsing_wrapper("lgblksquare", lang: :asciimath)
         end
 
         def to_unicodemath

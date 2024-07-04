@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Subedot do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Subedot" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{subedot}")
+        expect(klass.to_asciimath).to eq("\"P{subedot}\"")
       end
 
       it "matches LaTeX string" do

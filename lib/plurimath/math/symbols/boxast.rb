@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Boxast < Symbol
         INPUT = {
-          unicodemath: [["&#x29c6;"], parsing_wrapper(["boxast"])],
-          asciimath: [["&#x29c6;"], parsing_wrapper(["boxast"])],
+          unicodemath: [["&#x29c6;"], parsing_wrapper(["boxast"], lang: :unicode)],
+          asciimath: [["&#x29c6;"], parsing_wrapper(["boxast"], lang: :asciimath)],
           mathml: ["&#x29c6;"],
           latex: [["boxast", "&#x29c6;"]],
           omml: ["&#x29c6;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("boxast")
+          parsing_wrapper("boxast", lang: :asciimath)
         end
 
         def to_unicodemath

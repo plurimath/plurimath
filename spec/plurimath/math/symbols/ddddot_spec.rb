@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Ddddot do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Ddddot" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{ddddot}")
+        expect(klass.to_asciimath).to eq("\"P{ddddot}\"")
       end
 
       it "matches LaTeX string" do

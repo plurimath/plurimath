@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Medwhitestar do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Medwhitestar" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{medwhitestar}")
+        expect(klass.to_asciimath).to eq("\"P{medwhitestar}\"")
       end
 
       it "matches LaTeX string" do

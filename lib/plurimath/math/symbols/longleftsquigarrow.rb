@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Longleftsquigarrow < Symbol
         INPUT = {
-          unicodemath: [["&#x2b33;"], parsing_wrapper(["longleftsquigarrow"])],
-          asciimath: [["&#x2b33;"], parsing_wrapper(["longleftsquigarrow"])],
+          unicodemath: [["&#x2b33;"], parsing_wrapper(["longleftsquigarrow"], lang: :unicode)],
+          asciimath: [["&#x2b33;"], parsing_wrapper(["longleftsquigarrow"], lang: :asciimath)],
           mathml: ["&#x2b33;"],
           latex: [["longleftsquigarrow", "&#x2b33;"]],
           omml: ["&#x2b33;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("longleftsquigarrow")
+          parsing_wrapper("longleftsquigarrow", lang: :asciimath)
         end
 
         def to_unicodemath

@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Upand do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Upand" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{upand}")
+        expect(klass.to_asciimath).to eq("\"P{upand}\"")
       end
 
       it "matches LaTeX string" do

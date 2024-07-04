@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Succcurlyeq do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Succcurlyeq" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{succcurlyeq}")
+        expect(klass.to_asciimath).to eq("\"P{succcurlyeq}\"")
       end
 
       it "matches LaTeX string" do

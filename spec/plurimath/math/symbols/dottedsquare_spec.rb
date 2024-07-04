@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Dottedsquare do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Dottedsquare" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{dottedsquare}")
+        expect(klass.to_asciimath).to eq("\"P{dottedsquare}\"")
       end
 
       it "matches LaTeX string" do

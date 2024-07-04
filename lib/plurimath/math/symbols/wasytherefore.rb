@@ -3,10 +3,10 @@ module Plurimath
     module Symbols
       class Wasytherefore < Symbol
         INPUT = {
-          unicodemath: [["therefore", "&#x2234;"], parsing_wrapper([":.", "wasytherefore"])],
-          asciimath: [["therefore", ":.", "&#x2234;"], parsing_wrapper(["wasytherefore"])],
+          unicodemath: [["therefore", "&#x2234;"], parsing_wrapper([":.", "wasytherefore"], lang: :unicode)],
+          asciimath: [["therefore", ":.", "&#x2234;"], parsing_wrapper(["wasytherefore"], lang: :asciimath)],
           mathml: ["&#x2234;"],
-          latex: [["wasytherefore", "therefore", "&#x2234;"], parsing_wrapper([":."])],
+          latex: [["wasytherefore", "therefore", "&#x2234;"], parsing_wrapper([":."], lang: :latex)],
           omml: ["&#x2234;"],
           html: ["&#x2234;"],
         }.freeze

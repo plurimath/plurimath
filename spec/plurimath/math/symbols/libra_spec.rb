@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Libra do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Libra" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{Libra}")
+        expect(klass.to_asciimath).to eq("\"P{Libra}\"")
       end
 
       it "matches LaTeX string" do

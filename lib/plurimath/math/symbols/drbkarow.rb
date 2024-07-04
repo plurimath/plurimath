@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Drbkarow < Symbol
         INPUT = {
-          unicodemath: [["&#x2910;"], parsing_wrapper(["drbkarow"])],
-          asciimath: [["&#x2910;"], parsing_wrapper(["drbkarow"])],
+          unicodemath: [["&#x2910;"], parsing_wrapper(["drbkarow"], lang: :unicode)],
+          asciimath: [["&#x2910;"], parsing_wrapper(["drbkarow"], lang: :asciimath)],
           mathml: ["&#x2910;"],
           latex: [["drbkarow", "&#x2910;"]],
           omml: ["&#x2910;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("drbkarow")
+          parsing_wrapper("drbkarow", lang: :asciimath)
         end
 
         def to_unicodemath

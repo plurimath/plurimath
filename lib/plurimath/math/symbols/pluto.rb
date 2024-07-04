@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Pluto < Symbol
         INPUT = {
-          unicodemath: [["&#x2647;"], parsing_wrapper(["pluto", "Pluto"])],
-          asciimath: [["&#x2647;"], parsing_wrapper(["pluto", "Pluto"])],
+          unicodemath: [["&#x2647;"], parsing_wrapper(["pluto", "Pluto"], lang: :unicode)],
+          asciimath: [["&#x2647;"], parsing_wrapper(["pluto", "Pluto"], lang: :asciimath)],
           mathml: ["&#x2647;"],
           latex: [["pluto", "Pluto", "&#x2647;"]],
           omml: ["&#x2647;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("Pluto")
+          parsing_wrapper("Pluto", lang: :asciimath)
         end
 
         def to_unicodemath

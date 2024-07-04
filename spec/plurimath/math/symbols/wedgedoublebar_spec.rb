@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Wedgedoublebar do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Wedgedoublebar" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{wedgedoublebar}")
+        expect(klass.to_asciimath).to eq("\"P{wedgedoublebar}\"")
       end
 
       it "matches LaTeX string" do

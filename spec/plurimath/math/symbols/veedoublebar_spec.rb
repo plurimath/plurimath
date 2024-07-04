@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Veedoublebar do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Veedoublebar" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{veedoublebar}")
+        expect(klass.to_asciimath).to eq("\"P{veedoublebar}\"")
       end
 
       it "matches LaTeX string" do

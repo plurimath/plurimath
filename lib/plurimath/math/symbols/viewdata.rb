@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Viewdata < Symbol
         INPUT = {
-          unicodemath: [["&#x2317;"], parsing_wrapper(["viewdata"])],
-          asciimath: [["&#x2317;"], parsing_wrapper(["viewdata"])],
+          unicodemath: [["&#x2317;"], parsing_wrapper(["viewdata"], lang: :unicode)],
+          asciimath: [["&#x2317;"], parsing_wrapper(["viewdata"], lang: :asciimath)],
           mathml: ["&#x2317;"],
           latex: [["viewdata", "&#x2317;"]],
           omml: ["&#x2317;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("viewdata")
+          parsing_wrapper("viewdata", lang: :asciimath)
         end
 
         def to_unicodemath

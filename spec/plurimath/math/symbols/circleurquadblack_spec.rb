@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Circleurquadblack do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Circleurquadblack" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{circleurquadblack}")
+        expect(klass.to_asciimath).to eq("\"P{circleurquadblack}\"")
       end
 
       it "matches LaTeX string" do

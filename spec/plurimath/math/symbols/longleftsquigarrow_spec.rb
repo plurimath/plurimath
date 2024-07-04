@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Longleftsquigarrow do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Longleftsquigarrow" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{longleftsquigarrow}")
+        expect(klass.to_asciimath).to eq("\"P{longleftsquigarrow}\"")
       end
 
       it "matches LaTeX string" do
