@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Uparrowoncircle do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Uparrowoncircle" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{uparrowoncircle}")
+        expect(klass.to_asciimath).to eq("\"P{uparrowoncircle}\"")
       end
 
       it "matches LaTeX string" do

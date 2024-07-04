@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Rparenuend < Symbol
         INPUT = {
-          unicodemath: [["&#x239e;"], parsing_wrapper(["rparenuend"])],
-          asciimath: [["&#x239e;"], parsing_wrapper(["rparenuend"])],
+          unicodemath: [["&#x239e;"], parsing_wrapper(["rparenuend"], lang: :unicode)],
+          asciimath: [["&#x239e;"], parsing_wrapper(["rparenuend"], lang: :asciimath)],
           mathml: ["&#x239e;"],
           latex: [["rparenuend", "&#x239e;"]],
           omml: ["&#x239e;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("rparenuend")
+          parsing_wrapper("rparenuend", lang: :asciimath)
         end
 
         def to_unicodemath

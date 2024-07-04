@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Rparenlend < Symbol
         INPUT = {
-          unicodemath: [["&#x23a0;"], parsing_wrapper(["rparenlend"])],
-          asciimath: [["&#x23a0;"], parsing_wrapper(["rparenlend"])],
+          unicodemath: [["&#x23a0;"], parsing_wrapper(["rparenlend"], lang: :unicode)],
+          asciimath: [["&#x23a0;"], parsing_wrapper(["rparenlend"], lang: :asciimath)],
           mathml: ["&#x23a0;"],
           latex: [["rparenlend", "&#x23a0;"]],
           omml: ["&#x23a0;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("rparenlend")
+          parsing_wrapper("rparenlend", lang: :asciimath)
         end
 
         def to_unicodemath

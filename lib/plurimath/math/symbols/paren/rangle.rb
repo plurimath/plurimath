@@ -4,10 +4,10 @@ module Plurimath
       class Paren
         class Rangle < Paren
           INPUT = {
-            unicodemath: [["&#x232a;", "&#x27e9;", "ket"], parsing_wrapper(["rangle", ":)", ">>", "&#x27e9;"])],
-            asciimath: [["rangle", ":)", ">>", "&#x232a;", "&#x27e9;"], parsing_wrapper(["&#x27e9;", "ket"])],
+            unicodemath: [["&#x232a;", "&#x27e9;", "ket"], parsing_wrapper(["rangle", ":)", ">>", "&#x27e9;"], lang: :unicode)],
+            asciimath: [["rangle", ":)", ">>", "&#x232a;", "&#x27e9;"], parsing_wrapper(["&#x27e9;", "ket"], lang: :asciimath)],
             mathml: ["&#x232a;", "&#x27e9;"],
-            latex: [["\\rangle", "&#x232a;", "&#x27e9;"], parsing_wrapper([":)", ">>", "&#x27e9;", "ket"])],
+            latex: [["\\rangle", "&#x232a;", "&#x27e9;"], parsing_wrapper([":)", ">>", "&#x27e9;", "ket"], lang: :latex)],
             omml: ["&#x232a;", "&#x27e9;"],
             html: ["&#x232a;", "&#x27e9;"],
           }.freeze

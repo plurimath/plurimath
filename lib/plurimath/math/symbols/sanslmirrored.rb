@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Sanslmirrored < Symbol
         INPUT = {
-          unicodemath: [["&#x2143;"], parsing_wrapper(["sansLmirrored"])],
-          asciimath: [["&#x2143;"], parsing_wrapper(["sansLmirrored"])],
+          unicodemath: [["&#x2143;"], parsing_wrapper(["sansLmirrored"], lang: :unicode)],
+          asciimath: [["&#x2143;"], parsing_wrapper(["sansLmirrored"], lang: :asciimath)],
           mathml: ["&#x2143;"],
           latex: [["sansLmirrored", "&#x2143;"]],
           omml: ["&#x2143;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("sansLmirrored")
+          parsing_wrapper("sansLmirrored", lang: :asciimath)
         end
 
         def to_unicodemath

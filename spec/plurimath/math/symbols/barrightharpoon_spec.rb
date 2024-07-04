@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Barrightharpoon do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Barrightharpoon" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{barrightharpoon}")
+        expect(klass.to_asciimath).to eq("\"P{barrightharpoon}\"")
       end
 
       it "matches LaTeX string" do

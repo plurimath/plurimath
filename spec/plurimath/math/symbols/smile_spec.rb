@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Smile do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Smile" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{smile}")
+        expect(klass.to_asciimath).to eq("\"P{smile}\"")
       end
 
       it "matches LaTeX string" do

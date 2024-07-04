@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class UpcaseupOmega < Symbol
         INPUT = {
-          unicodemath: [["&#x3a9;"], parsing_wrapper(["UpcaseOmega", "UpcaseupOmega"])],
-          asciimath: [["Omega", "&#x3a9;"], parsing_wrapper(["upOmega"])],
+          unicodemath: [["&#x3a9;"], parsing_wrapper(["UpcaseOmega", "UpcaseupOmega"], lang: :unicode)],
+          asciimath: [["Omega", "&#x3a9;"], parsing_wrapper(["upOmega"], lang: :asciimath)],
           mathml: ["&#x3a9;"],
           latex: [["upOmega", "Omega", "&#x3a9;"]],
           omml: ["&#x3a9;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("upOmega")
+          parsing_wrapper("upOmega", lang: :asciimath)
         end
 
         def to_unicodemath

@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Lrarc do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Lrarc" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{lrarc}")
+        expect(klass.to_asciimath).to eq("\"P{lrarc}\"")
       end
 
       it "matches LaTeX string" do

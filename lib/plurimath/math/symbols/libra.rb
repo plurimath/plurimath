@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Libra < Symbol
         INPUT = {
-          unicodemath: [["&#x264e;"], parsing_wrapper(["libra", "Libra"])],
-          asciimath: [["&#x264e;"], parsing_wrapper(["libra", "Libra"])],
+          unicodemath: [["&#x264e;"], parsing_wrapper(["libra", "Libra"], lang: :unicode)],
+          asciimath: [["&#x264e;"], parsing_wrapper(["libra", "Libra"], lang: :asciimath)],
           mathml: ["&#x264e;"],
           latex: [["libra", "Libra", "&#x264e;"]],
           omml: ["&#x264e;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("Libra")
+          parsing_wrapper("Libra", lang: :asciimath)
         end
 
         def to_unicodemath

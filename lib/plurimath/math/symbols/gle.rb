@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Gle < Symbol
         INPUT = {
-          unicodemath: [["&#x2a92;"], parsing_wrapper(["glE"])],
-          asciimath: [["&#x2a92;"], parsing_wrapper(["glE"])],
+          unicodemath: [["&#x2a92;"], parsing_wrapper(["glE"], lang: :unicode)],
+          asciimath: [["&#x2a92;"], parsing_wrapper(["glE"], lang: :asciimath)],
           mathml: ["&#x2a92;"],
           latex: [["glE", "&#x2a92;"]],
           omml: ["&#x2a92;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("glE")
+          parsing_wrapper("glE", lang: :asciimath)
         end
 
         def to_unicodemath

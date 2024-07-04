@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Pointright do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Pointright" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{pointright}")
+        expect(klass.to_asciimath).to eq("\"P{pointright}\"")
       end
 
       it "matches LaTeX string" do

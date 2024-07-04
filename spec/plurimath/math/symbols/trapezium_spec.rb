@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Trapezium do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Trapezium" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{trapezium}")
+        expect(klass.to_asciimath).to eq("\"P{trapezium}\"")
       end
 
       it "matches LaTeX string" do

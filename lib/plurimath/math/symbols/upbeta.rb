@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Upbeta < Symbol
         INPUT = {
-          unicodemath: [["&#x3b2;"], parsing_wrapper(["beta", "upbeta"])],
-          asciimath: [["beta", "&#x3b2;"], parsing_wrapper(["upbeta"])],
+          unicodemath: [["&#x3b2;"], parsing_wrapper(["beta", "upbeta"], lang: :unicode)],
+          asciimath: [["beta", "&#x3b2;"], parsing_wrapper(["upbeta"], lang: :asciimath)],
           mathml: ["&#x3b2;"],
           latex: [["upbeta", "beta", "&#x3b2;"]],
           omml: ["&#x3b2;"],

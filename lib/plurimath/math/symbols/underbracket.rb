@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Underbracket < Symbol
         INPUT = {
-          unicodemath: [["&#x23b5;"], parsing_wrapper(["underbracket"])],
-          asciimath: [["&#x23b5;"], parsing_wrapper(["underbracket"])],
+          unicodemath: [["&#x23b5;"], parsing_wrapper(["underbracket"], lang: :unicode)],
+          asciimath: [["&#x23b5;"], parsing_wrapper(["underbracket"], lang: :asciimath)],
           mathml: ["&#x23b5;"],
           latex: [["underbracket", "&#x23b5;"]],
           omml: ["&#x23b5;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("underbracket")
+          parsing_wrapper("underbracket", lang: :asciimath)
         end
 
         def to_unicodemath

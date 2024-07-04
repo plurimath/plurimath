@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Rparen do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Rparen" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{rparen}")
+        expect(klass.to_asciimath).to eq("\"P{rparen}\"")
       end
 
       it "matches LaTeX string" do

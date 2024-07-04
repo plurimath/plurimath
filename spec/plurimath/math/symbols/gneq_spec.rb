@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Gneq do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Gneq" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{gneq}")
+        expect(klass.to_asciimath).to eq("\"P{gneq}\"")
       end
 
       it "matches LaTeX string" do

@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Nhuparrow < Symbol
         INPUT = {
-          unicodemath: [["&#x21de;"], parsing_wrapper(["nHuparrow"])],
-          asciimath: [["&#x21de;"], parsing_wrapper(["nHuparrow"])],
+          unicodemath: [["&#x21de;"], parsing_wrapper(["nHuparrow"], lang: :unicode)],
+          asciimath: [["&#x21de;"], parsing_wrapper(["nHuparrow"], lang: :asciimath)],
           mathml: ["&#x21de;"],
           latex: [["nHuparrow", "&#x21de;"]],
           omml: ["&#x21de;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("nHuparrow")
+          parsing_wrapper("nHuparrow", lang: :asciimath)
         end
 
         def to_unicodemath

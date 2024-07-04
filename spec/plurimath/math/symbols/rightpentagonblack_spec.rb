@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Rightpentagonblack do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Rightpentagonblack" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{rightpentagonblack}")
+        expect(klass.to_asciimath).to eq("\"P{rightpentagonblack}\"")
       end
 
       it "matches LaTeX string" do

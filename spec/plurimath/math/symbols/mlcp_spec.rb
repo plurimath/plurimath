@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Mlcp do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Mlcp" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{mlcp}")
+        expect(klass.to_asciimath).to eq("\"P{mlcp}\"")
       end
 
       it "matches LaTeX string" do

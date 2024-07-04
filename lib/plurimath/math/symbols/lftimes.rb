@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Lftimes < Symbol
         INPUT = {
-          unicodemath: [["&#x29d4;"], parsing_wrapper(["lftimes"])],
-          asciimath: [["&#x29d4;"], parsing_wrapper(["lftimes"])],
+          unicodemath: [["&#x29d4;"], parsing_wrapper(["lftimes"], lang: :unicode)],
+          asciimath: [["&#x29d4;"], parsing_wrapper(["lftimes"], lang: :asciimath)],
           mathml: ["&#x29d4;"],
           latex: [["lftimes", "&#x29d4;"]],
           omml: ["&#x29d4;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("lftimes")
+          parsing_wrapper("lftimes", lang: :asciimath)
         end
 
         def to_unicodemath

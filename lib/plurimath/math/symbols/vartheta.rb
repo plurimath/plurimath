@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Vartheta < Symbol
         INPUT = {
-          unicodemath: [["vartheta", "&#x3d1;"], parsing_wrapper(["upvartheta"])],
-          asciimath: [["vartheta", "&#x3d1;"], parsing_wrapper(["upvartheta"])],
+          unicodemath: [["vartheta", "&#x3d1;"], parsing_wrapper(["upvartheta"], lang: :unicode)],
+          asciimath: [["vartheta", "&#x3d1;"], parsing_wrapper(["upvartheta"], lang: :asciimath)],
           mathml: ["&#x3d1;"],
           latex: [["upvartheta", "vartheta", "&#x3d1;"]],
           omml: ["&#x3d1;"],

@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Squarecrossfill do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Squarecrossfill" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{squarecrossfill}")
+        expect(klass.to_asciimath).to eq("\"P{squarecrossfill}\"")
       end
 
       it "matches LaTeX string" do

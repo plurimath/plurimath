@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Dashv < Symbol
         INPUT = {
-          unicodemath: [["&#x2ae5;"], parsing_wrapper(["DashV"])],
-          asciimath: [["&#x2ae5;"], parsing_wrapper(["DashV"])],
+          unicodemath: [["&#x2ae5;"], parsing_wrapper(["DashV"], lang: :unicode)],
+          asciimath: [["&#x2ae5;"], parsing_wrapper(["DashV"], lang: :asciimath)],
           mathml: ["&#x2ae5;"],
           latex: [["DashV", "&#x2ae5;"]],
           omml: ["&#x2ae5;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("DashV")
+          parsing_wrapper("DashV", lang: :asciimath)
         end
 
         def to_unicodemath

@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Diameter < Symbol
         INPUT = {
-          unicodemath: [["&#x2300;"], parsing_wrapper(["diameter"])],
-          asciimath: [["&#x2300;"], parsing_wrapper(["diameter"])],
+          unicodemath: [["&#x2300;"], parsing_wrapper(["diameter"], lang: :unicode)],
+          asciimath: [["&#x2300;"], parsing_wrapper(["diameter"], lang: :asciimath)],
           mathml: ["&#x2300;"],
           latex: [["diameter", "&#x2300;"]],
           omml: ["&#x2300;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("diameter")
+          parsing_wrapper("diameter", lang: :asciimath)
         end
 
         def to_unicodemath

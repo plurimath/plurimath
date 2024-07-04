@@ -3,10 +3,10 @@ module Plurimath
     module Symbols
       class Subseteq < Symbol
         INPUT = {
-          unicodemath: [["subseteq", "nsupseteq", "&#x2288;"], parsing_wrapper(["nsubseteq"])],
-          asciimath: [["&#x2288;"], parsing_wrapper(["subseteq", "nsupseteq", "nsubseteq"])],
+          unicodemath: [["subseteq", "nsupseteq", "&#x2288;"], parsing_wrapper(["nsubseteq"], lang: :unicode)],
+          asciimath: [["&#x2288;"], parsing_wrapper(["subseteq", "nsupseteq", "nsubseteq"], lang: :asciimath)],
           mathml: ["&#x2288;"],
-          latex: [["nsubseteq", "&#x2288;"], parsing_wrapper(["subseteq", "nsupseteq"])],
+          latex: [["nsubseteq", "&#x2288;"], parsing_wrapper(["subseteq", "nsupseteq"], lang: :latex)],
           omml: ["&#x2288;"],
           html: ["&#x2288;"],
         }.freeze
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("subseteq")
+          parsing_wrapper("subseteq", lang: :asciimath)
         end
 
         def to_unicodemath

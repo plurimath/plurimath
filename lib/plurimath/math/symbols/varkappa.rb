@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Varkappa < Symbol
         INPUT = {
-          unicodemath: [["varkappa", "&#x3f0;"], parsing_wrapper(["upvarkappa"])],
-          asciimath: [["&#x3f0;"], parsing_wrapper(["varkappa", "upvarkappa"])],
+          unicodemath: [["varkappa", "&#x3f0;"], parsing_wrapper(["upvarkappa"], lang: :unicode)],
+          asciimath: [["&#x3f0;"], parsing_wrapper(["varkappa", "upvarkappa"], lang: :asciimath)],
           mathml: ["&#x3f0;"],
           latex: [["upvarkappa", "varkappa", "&#x3f0;"]],
           omml: ["&#x3f0;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("varkappa")
+          parsing_wrapper("varkappa", lang: :asciimath)
         end
 
         def to_unicodemath

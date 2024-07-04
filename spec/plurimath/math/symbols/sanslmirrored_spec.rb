@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Sanslmirrored do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Sanslmirrored" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{sansLmirrored}")
+        expect(klass.to_asciimath).to eq("\"P{sansLmirrored}\"")
       end
 
       it "matches LaTeX string" do

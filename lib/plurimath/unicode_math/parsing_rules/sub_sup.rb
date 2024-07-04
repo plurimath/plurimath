@@ -14,7 +14,7 @@ module Plurimath
         rule(:supscript) { base_value >> supscript_value }
 
         rule(:sub_or_sup)  { subscript | supscript }
-        rule(:base_symbol) { wrapper_symbols.absent? >> str("_") }
+        rule(:base_symbol) { str("_") }
         rule(:base_syntax) { base_symbol | below }
         rule(:alpha_ascii) { match["A-Za-z"].as(:symbol) }
         rule(:script_base) { mini_sub_sup | sub_sup_operand }

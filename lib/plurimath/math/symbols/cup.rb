@@ -4,7 +4,7 @@ module Plurimath
       class Cup < Symbol
         INPUT = {
           unicodemath: [["Cup", "&#x22d3;"]],
-          asciimath: [["&#x22d3;"], parsing_wrapper(["Cup"])],
+          asciimath: [["&#x22d3;"], parsing_wrapper(["Cup"], lang: :asciimath)],
           mathml: ["&#x22d3;"],
           latex: [["Cup", "&#x22d3;"]],
           omml: ["&#x22d3;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("Cup")
+          parsing_wrapper("Cup", lang: :asciimath)
         end
 
         def to_unicodemath

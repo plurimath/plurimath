@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Bumpeq do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Bumpeq" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{bumpeq}")
+        expect(klass.to_asciimath).to eq("\"P{bumpeq}\"")
       end
 
       it "matches LaTeX string" do

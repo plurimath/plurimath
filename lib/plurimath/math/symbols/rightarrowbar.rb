@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Rightarrowbar < Symbol
         INPUT = {
-          unicodemath: [["&#x21e5;"], parsing_wrapper(["RightArrowBar", "rightarrowbar"])],
-          asciimath: [["&#x21e5;"], parsing_wrapper(["RightArrowBar", "rightarrowbar"])],
+          unicodemath: [["&#x21e5;"], parsing_wrapper(["RightArrowBar", "rightarrowbar"], lang: :unicode)],
+          asciimath: [["&#x21e5;"], parsing_wrapper(["RightArrowBar", "rightarrowbar"], lang: :asciimath)],
           mathml: ["&#x21e5;"],
           latex: [["RightArrowBar", "rightarrowbar", "&#x21e5;"]],
           omml: ["&#x21e5;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("rightarrowbar")
+          parsing_wrapper("rightarrowbar", lang: :asciimath)
         end
 
         def to_unicodemath

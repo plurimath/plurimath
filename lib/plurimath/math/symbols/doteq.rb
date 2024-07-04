@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Doteq < Symbol
         INPUT = {
-          unicodemath: [["Doteq", "&#x2251;"], parsing_wrapper(["doteqdot"])],
-          asciimath: [["&#x2251;"], parsing_wrapper(["Doteq", "doteqdot"])],
+          unicodemath: [["Doteq", "&#x2251;"], parsing_wrapper(["doteqdot"], lang: :unicode)],
+          asciimath: [["&#x2251;"], parsing_wrapper(["Doteq", "doteqdot"], lang: :asciimath)],
           mathml: ["&#x2251;"],
           latex: [["doteqdot", "Doteq", "&#x2251;"]],
           omml: ["&#x2251;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("Doteq")
+          parsing_wrapper("Doteq", lang: :asciimath)
         end
 
         def to_unicodemath

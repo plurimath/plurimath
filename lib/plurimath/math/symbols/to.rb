@@ -3,10 +3,10 @@ module Plurimath
     module Symbols
       class To < Symbol
         INPUT = {
-          unicodemath: [["rightarrow", "to", "&#x2192;"], parsing_wrapper(["rarr", "->"])],
+          unicodemath: [["rightarrow", "to", "&#x2192;"], parsing_wrapper(["rarr", "->"], lang: :unicode)],
           asciimath: [["rightarrow", "rarr", "->", "to", "&#x2192;"]],
           mathml: ["&#x2192;"],
-          latex: [["rightarrow", "to", "&#x2192;"], parsing_wrapper(["rarr", "->"])],
+          latex: [["rightarrow", "to", "&#x2192;"], parsing_wrapper(["rarr", "->"], lang: :latex)],
           omml: ["&#x2192;"],
           html: ["&#x2192;"],
         }.freeze

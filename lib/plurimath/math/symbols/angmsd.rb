@@ -3,10 +3,10 @@ module Plurimath
     module Symbols
       class Angmsd < Symbol
         INPUT = {
-          unicodemath: [["angmsd", "&#x2221;"], parsing_wrapper(["measuredangle"])],
-          asciimath: [["&#x2221;"], parsing_wrapper(["angmsd", "measuredangle"])],
+          unicodemath: [["angmsd", "&#x2221;"], parsing_wrapper(["measuredangle"], lang: :unicode)],
+          asciimath: [["&#x2221;"], parsing_wrapper(["angmsd", "measuredangle"], lang: :asciimath)],
           mathml: ["&#x2221;"],
-          latex: [["measuredangle", "&#x2221;"], parsing_wrapper(["angmsd"])],
+          latex: [["measuredangle", "&#x2221;"], parsing_wrapper(["angmsd"], lang: :latex)],
           omml: ["&#x2221;"],
           html: ["&#x2221;"],
         }.freeze
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("angmsd")
+          parsing_wrapper("angmsd", lang: :asciimath)
         end
 
         def to_unicodemath

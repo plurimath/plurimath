@@ -3,10 +3,10 @@ module Plurimath
     module Symbols
       class Prec < Symbol
         INPUT = {
-          unicodemath: [["prec", "&#x227a;"], parsing_wrapper(["-<"])],
+          unicodemath: [["prec", "&#x227a;"], parsing_wrapper(["-<"], lang: :unicode)],
           asciimath: [["prec", "-<", "&#x227a;"]],
           mathml: ["&#x227a;"],
-          latex: [["prec", "&#x227a;"], parsing_wrapper(["-<"])],
+          latex: [["prec", "&#x227a;"], parsing_wrapper(["-<"], lang: :latex)],
           omml: ["&#x227a;"],
           html: ["&#x227a;"],
         }.freeze

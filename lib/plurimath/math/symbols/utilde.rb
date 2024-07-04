@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Utilde < Symbol
         INPUT = {
-          unicodemath: [["&#x330;"], parsing_wrapper(["wideutilde", "utilde"])],
-          asciimath: [["&#x330;"], parsing_wrapper(["wideutilde", "utilde"])],
+          unicodemath: [["&#x330;"], parsing_wrapper(["wideutilde", "utilde"], lang: :unicode)],
+          asciimath: [["&#x330;"], parsing_wrapper(["wideutilde", "utilde"], lang: :asciimath)],
           mathml: ["&#x330;"],
           latex: [["wideutilde", "utilde", "&#x330;"]],
           omml: ["&#x330;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("utilde")
+          parsing_wrapper("utilde", lang: :asciimath)
         end
 
         def to_unicodemath

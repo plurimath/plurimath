@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Lgwhtsquare < Symbol
         INPUT = {
-          unicodemath: [["&#x2b1c;"], parsing_wrapper(["lgwhtsquare"])],
-          asciimath: [["&#x2b1c;"], parsing_wrapper(["lgwhtsquare"])],
+          unicodemath: [["&#x2b1c;"], parsing_wrapper(["lgwhtsquare"], lang: :unicode)],
+          asciimath: [["&#x2b1c;"], parsing_wrapper(["lgwhtsquare"], lang: :asciimath)],
           mathml: ["&#x2b1c;"],
           latex: [["lgwhtsquare", "&#x2b1c;"]],
           omml: ["&#x2b1c;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("lgwhtsquare")
+          parsing_wrapper("lgwhtsquare", lang: :asciimath)
         end
 
         def to_unicodemath

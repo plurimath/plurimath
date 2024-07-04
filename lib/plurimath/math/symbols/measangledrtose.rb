@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Measangledrtose < Symbol
         INPUT = {
-          unicodemath: [["&#x29ae;"], parsing_wrapper(["measangledrtose"])],
-          asciimath: [["&#x29ae;"], parsing_wrapper(["measangledrtose"])],
+          unicodemath: [["&#x29ae;"], parsing_wrapper(["measangledrtose"], lang: :unicode)],
+          asciimath: [["&#x29ae;"], parsing_wrapper(["measangledrtose"], lang: :asciimath)],
           mathml: ["&#x29ae;"],
           latex: [["measangledrtose", "&#x29ae;"]],
           omml: ["&#x29ae;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("measangledrtose")
+          parsing_wrapper("measangledrtose", lang: :asciimath)
         end
 
         def to_unicodemath

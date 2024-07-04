@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Approxeqq < Symbol
         INPUT = {
-          unicodemath: [["&#x2a70;"], parsing_wrapper(["approxeqq"])],
-          asciimath: [["&#x2a70;"], parsing_wrapper(["approxeqq"])],
+          unicodemath: [["&#x2a70;"], parsing_wrapper(["approxeqq"], lang: :unicode)],
+          asciimath: [["&#x2a70;"], parsing_wrapper(["approxeqq"], lang: :asciimath)],
           mathml: ["&#x2a70;"],
           latex: [["approxeqq", "&#x2a70;"]],
           omml: ["&#x2a70;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("approxeqq")
+          parsing_wrapper("approxeqq", lang: :asciimath)
         end
 
         def to_unicodemath

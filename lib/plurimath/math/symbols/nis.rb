@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Nis < Symbol
         INPUT = {
-          unicodemath: [["&#x22fc;"], parsing_wrapper(["nis"])],
-          asciimath: [["&#x22fc;"], parsing_wrapper(["nis"])],
+          unicodemath: [["&#x22fc;"], parsing_wrapper(["nis"], lang: :unicode)],
+          asciimath: [["&#x22fc;"], parsing_wrapper(["nis"], lang: :asciimath)],
           mathml: ["&#x22fc;"],
           latex: [["nis", "&#x22fc;"]],
           omml: ["&#x22fc;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("nis")
+          parsing_wrapper("nis", lang: :asciimath)
         end
 
         def to_unicodemath

@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Leftwhitearrow do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Leftwhitearrow" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{leftwhitearrow}")
+        expect(klass.to_asciimath).to eq("\"P{leftwhitearrow}\"")
       end
 
       it "matches LaTeX string" do

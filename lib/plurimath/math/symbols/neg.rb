@@ -3,10 +3,10 @@ module Plurimath
     module Symbols
       class Neg < Symbol
         INPUT = {
-          unicodemath: [["neg", "&#xac;"], parsing_wrapper(["not", "lnot"])],
-          asciimath: [["neg", "not", "&#xac;"], parsing_wrapper(["lnot"])],
+          unicodemath: [["neg", "&#xac;"], parsing_wrapper(["not", "lnot"], lang: :unicode)],
+          asciimath: [["neg", "not", "&#xac;"], parsing_wrapper(["lnot"], lang: :asciimath)],
           mathml: ["&#xac;"],
-          latex: [["lnot", "neg", "&#xac;"], parsing_wrapper(["not"])],
+          latex: [["lnot", "neg", "&#xac;"], parsing_wrapper(["not"], lang: :latex)],
           omml: ["&#xac;"],
           html: ["&#xac;"],
         }.freeze
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("neg")
+          parsing_wrapper("neg", lang: :asciimath)
         end
 
         def to_unicodemath

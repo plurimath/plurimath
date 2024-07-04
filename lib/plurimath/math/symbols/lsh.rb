@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Lsh < Symbol
         INPUT = {
-          unicodemath: [["&#x21b0;"], parsing_wrapper(["Lsh"])],
-          asciimath: [["&#x21b0;"], parsing_wrapper(["Lsh"])],
+          unicodemath: [["&#x21b0;"], parsing_wrapper(["Lsh"], lang: :unicode)],
+          asciimath: [["&#x21b0;"], parsing_wrapper(["Lsh"], lang: :asciimath)],
           mathml: ["&#x21b0;"],
           latex: [["Lsh", "&#x21b0;"]],
           omml: ["&#x21b0;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("Lsh")
+          parsing_wrapper("Lsh", lang: :asciimath)
         end
 
         def to_unicodemath

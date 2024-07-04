@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Lllnest do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Lllnest" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{lllnest}")
+        expect(klass.to_asciimath).to eq("\"P{lllnest}\"")
       end
 
       it "matches LaTeX string" do

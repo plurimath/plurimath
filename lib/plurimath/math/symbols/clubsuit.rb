@@ -4,7 +4,7 @@ module Plurimath
       class Clubsuit < Symbol
         INPUT = {
           unicodemath: [["clubsuit", "&#x2663;"]],
-          asciimath: [["&#x2663;"], parsing_wrapper(["clubsuit"])],
+          asciimath: [["&#x2663;"], parsing_wrapper(["clubsuit"], lang: :asciimath)],
           mathml: ["&#x2663;"],
           latex: [["clubsuit", "&#x2663;"]],
           omml: ["&#x2663;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("clubsuit")
+          parsing_wrapper("clubsuit", lang: :asciimath)
         end
 
         def to_unicodemath

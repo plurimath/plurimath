@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Upalpha do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Upalpha" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{upAlpha}")
+        expect(klass.to_asciimath).to eq("\"P{upAlpha}\"")
       end
 
       it "matches LaTeX string" do

@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Project do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Project" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{project}")
+        expect(klass.to_asciimath).to eq("\"P{project}\"")
       end
 
       it "matches LaTeX string" do

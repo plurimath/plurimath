@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Wideangleup < Symbol
         INPUT = {
-          unicodemath: [["&#x29a7;"], parsing_wrapper(["wideangleup"])],
-          asciimath: [["&#x29a7;"], parsing_wrapper(["wideangleup"])],
+          unicodemath: [["&#x29a7;"], parsing_wrapper(["wideangleup"], lang: :unicode)],
+          asciimath: [["&#x29a7;"], parsing_wrapper(["wideangleup"], lang: :asciimath)],
           mathml: ["&#x29a7;"],
           latex: [["wideangleup", "&#x29a7;"]],
           omml: ["&#x29a7;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("wideangleup")
+          parsing_wrapper("wideangleup", lang: :asciimath)
         end
 
         def to_unicodemath

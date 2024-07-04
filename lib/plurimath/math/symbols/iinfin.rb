@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Iinfin < Symbol
         INPUT = {
-          unicodemath: [["&#x29dc;"], parsing_wrapper(["iinfin"])],
-          asciimath: [["&#x29dc;"], parsing_wrapper(["iinfin"])],
+          unicodemath: [["&#x29dc;"], parsing_wrapper(["iinfin"], lang: :unicode)],
+          asciimath: [["&#x29dc;"], parsing_wrapper(["iinfin"], lang: :asciimath)],
           mathml: ["&#x29dc;"],
           latex: [["iinfin", "&#x29dc;"]],
           omml: ["&#x29dc;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("iinfin")
+          parsing_wrapper("iinfin", lang: :asciimath)
         end
 
         def to_unicodemath

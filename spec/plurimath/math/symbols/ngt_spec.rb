@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Ngt do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Ngt" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{ngt}")
+        expect(klass.to_asciimath).to eq("\"P{ngt}\"")
       end
 
       it "matches LaTeX string" do

@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Turnangle < Symbol
         INPUT = {
-          unicodemath: [["&#x29a2;"], parsing_wrapper(["turnangle"])],
-          asciimath: [["&#x29a2;"], parsing_wrapper(["turnangle"])],
+          unicodemath: [["&#x29a2;"], parsing_wrapper(["turnangle"], lang: :unicode)],
+          asciimath: [["&#x29a2;"], parsing_wrapper(["turnangle"], lang: :asciimath)],
           mathml: ["&#x29a2;"],
           latex: [["turnangle", "&#x29a2;"]],
           omml: ["&#x29a2;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("turnangle")
+          parsing_wrapper("turnangle", lang: :asciimath)
         end
 
         def to_unicodemath

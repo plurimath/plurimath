@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class UpcaseXi < Symbol
         INPUT = {
-          unicodemath: [["Xi", "&#x39e;"], parsing_wrapper(["upXi"])],
-          asciimath: [["Xi", "&#x39e;"], parsing_wrapper(["upXi"])],
+          unicodemath: [["Xi", "&#x39e;"], parsing_wrapper(["upXi"], lang: :unicode)],
+          asciimath: [["Xi", "&#x39e;"], parsing_wrapper(["upXi"], lang: :asciimath)],
           mathml: ["&#x39e;"],
           latex: [["upXi", "Xi", "&#x39e;"]],
           omml: ["&#x39e;"],

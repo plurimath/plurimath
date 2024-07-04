@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Ni < Symbol
         INPUT = {
-          unicodemath: [["ni", "&#x220b;"], parsing_wrapper(["owns"])],
-          asciimath: [["&#x220b;"], parsing_wrapper(["ni", "owns"])],
+          unicodemath: [["ni", "&#x220b;"], parsing_wrapper(["owns"], lang: :unicode)],
+          asciimath: [["&#x220b;"], parsing_wrapper(["ni", "owns"], lang: :asciimath)],
           mathml: ["&#x220b;"],
           latex: [["owns", "ni", "&#x220b;"]],
           omml: ["&#x220b;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("ni")
+          parsing_wrapper("ni", lang: :asciimath)
         end
 
         def to_unicodemath

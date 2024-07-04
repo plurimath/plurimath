@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Csube do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Csube" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{csube}")
+        expect(klass.to_asciimath).to eq("\"P{csube}\"")
       end
 
       it "matches LaTeX string" do

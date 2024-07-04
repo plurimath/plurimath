@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Blacklozenge < Symbol
         INPUT = {
-          unicodemath: [["&#x29eb;"], parsing_wrapper(["mdlgblklozenge", "blacklozenge"])],
-          asciimath: [["&#x29eb;"], parsing_wrapper(["mdlgblklozenge", "blacklozenge"])],
+          unicodemath: [["&#x29eb;"], parsing_wrapper(["mdlgblklozenge", "blacklozenge"], lang: :unicode)],
+          asciimath: [["&#x29eb;"], parsing_wrapper(["mdlgblklozenge", "blacklozenge"], lang: :asciimath)],
           mathml: ["&#x29eb;"],
           latex: [["mdlgblklozenge", "blacklozenge", "&#x29eb;"]],
           omml: ["&#x29eb;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("blacklozenge")
+          parsing_wrapper("blacklozenge", lang: :asciimath)
         end
 
         def to_unicodemath

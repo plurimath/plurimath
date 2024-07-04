@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Upepsilon do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Upepsilon" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{upEpsilon}")
+        expect(klass.to_asciimath).to eq("\"P{upEpsilon}\"")
       end
 
       it "matches LaTeX string" do

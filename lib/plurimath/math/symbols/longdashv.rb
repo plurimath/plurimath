@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Longdashv < Symbol
         INPUT = {
-          unicodemath: [["&#x27de;"], parsing_wrapper(["longdashv"])],
-          asciimath: [["&#x27de;"], parsing_wrapper(["longdashv"])],
+          unicodemath: [["&#x27de;"], parsing_wrapper(["longdashv"], lang: :unicode)],
+          asciimath: [["&#x27de;"], parsing_wrapper(["longdashv"], lang: :asciimath)],
           mathml: ["&#x27de;"],
           latex: [["longdashv", "&#x27de;"]],
           omml: ["&#x27de;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("longdashv")
+          parsing_wrapper("longdashv", lang: :asciimath)
         end
 
         def to_unicodemath

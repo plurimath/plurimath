@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Rbag < Symbol
         INPUT = {
-          unicodemath: [["&#x27c6;"], parsing_wrapper(["Rbag", "rbag"])],
-          asciimath: [["&#x27c6;"], parsing_wrapper(["Rbag", "rbag"])],
+          unicodemath: [["&#x27c6;"], parsing_wrapper(["Rbag", "rbag"], lang: :unicode)],
+          asciimath: [["&#x27c6;"], parsing_wrapper(["Rbag", "rbag"], lang: :asciimath)],
           mathml: ["&#x27c6;"],
           latex: [["Rbag", "rbag", "&#x27c6;"]],
           omml: ["&#x27c6;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("rbag")
+          parsing_wrapper("rbag", lang: :asciimath)
         end
 
         def to_unicodemath

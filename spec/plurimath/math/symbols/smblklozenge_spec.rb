@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Smblklozenge do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Smblklozenge" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{smblklozenge}")
+        expect(klass.to_asciimath).to eq("\"P{smblklozenge}\"")
       end
 
       it "matches LaTeX string" do

@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Ltrivb do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Ltrivb" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{ltrivb}")
+        expect(klass.to_asciimath).to eq("\"P{ltrivb}\"")
       end
 
       it "matches LaTeX string" do

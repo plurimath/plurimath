@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Odotslashdot do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Odotslashdot" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{odotslashdot}")
+        expect(klass.to_asciimath).to eq("\"P{odotslashdot}\"")
       end
 
       it "matches LaTeX string" do

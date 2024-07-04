@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Circeq do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Circeq" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{circeq}")
+        expect(klass.to_asciimath).to eq("\"P{circeq}\"")
       end
 
       it "matches LaTeX string" do

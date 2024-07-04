@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Blackcircledrightdot do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Blackcircledrightdot" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{blackcircledrightdot}")
+        expect(klass.to_asciimath).to eq("\"P{blackcircledrightdot}\"")
       end
 
       it "matches LaTeX string" do

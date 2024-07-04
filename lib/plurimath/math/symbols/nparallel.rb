@@ -4,7 +4,7 @@ module Plurimath
       class Nparallel < Symbol
         INPUT = {
           unicodemath: [["nparallel", "&#x2226;"]],
-          asciimath: [["&#x2226;"], parsing_wrapper(["nparallel"])],
+          asciimath: [["&#x2226;"], parsing_wrapper(["nparallel"], lang: :asciimath)],
           mathml: ["&#x2226;"],
           latex: [["nparallel", "&#x2226;"]],
           omml: ["&#x2226;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("nparallel")
+          parsing_wrapper("nparallel", lang: :asciimath)
         end
 
         def to_unicodemath

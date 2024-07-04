@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Dualmap do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Dualmap" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{dualmap}")
+        expect(klass.to_asciimath).to eq("\"P{dualmap}\"")
       end
 
       it "matches LaTeX string" do

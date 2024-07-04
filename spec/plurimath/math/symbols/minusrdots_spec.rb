@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Minusrdots do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Minusrdots" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{minusrdots}")
+        expect(klass.to_asciimath).to eq("\"P{minusrdots}\"")
       end
 
       it "matches LaTeX string" do

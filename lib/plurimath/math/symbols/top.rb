@@ -3,10 +3,10 @@ module Plurimath
     module Symbols
       class Top < Symbol
         INPUT = {
-          unicodemath: [["top", "&#x22a4;"], parsing_wrapper(["TT"])],
+          unicodemath: [["top", "&#x22a4;"], parsing_wrapper(["TT"], lang: :unicode)],
           asciimath: [["top", "TT", "&#x22a4;"]],
           mathml: ["&#x22a4;"],
-          latex: [["top", "&#x22a4;"], parsing_wrapper(["TT"])],
+          latex: [["top", "&#x22a4;"], parsing_wrapper(["TT"], lang: :latex)],
           omml: ["&#x22a4;"],
           html: ["&#x22a4;"],
         }.freeze
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("top")
+          parsing_wrapper("top", lang: :asciimath)
         end
 
         def to_unicodemath

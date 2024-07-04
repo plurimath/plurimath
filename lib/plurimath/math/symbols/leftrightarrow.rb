@@ -3,10 +3,10 @@ module Plurimath
     module Symbols
       class Leftrightarrow < Symbol
         INPUT = {
-          unicodemath: [["Leftrightarrow", "&#x21d4;"], parsing_wrapper(["<=>", "hArr", "iff"])],
+          unicodemath: [["Leftrightarrow", "&#x21d4;"], parsing_wrapper(["<=>", "hArr", "iff"], lang: :unicode)],
           asciimath: [["Leftrightarrow", "<=>", "hArr", "iff", "&#x21d4;"]],
           mathml: ["&#x21d4;"],
-          latex: [["Leftrightarrow", "&#x21d4;"], parsing_wrapper(["<=>", "hArr", "iff"])],
+          latex: [["Leftrightarrow", "&#x21d4;"], parsing_wrapper(["<=>", "hArr", "iff"], lang: :latex)],
           omml: ["&#x21d4;"],
           html: ["&#x21d4;"],
         }.freeze
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("Leftrightarrow")
+          parsing_wrapper("Leftrightarrow", lang: :asciimath)
         end
 
         def to_unicodemath

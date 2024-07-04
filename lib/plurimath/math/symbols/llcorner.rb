@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Llcorner < Symbol
         INPUT = {
-          unicodemath: [["&#x231e;"], parsing_wrapper(["llcorner"])],
-          asciimath: [["&#x231e;"], parsing_wrapper(["llcorner"])],
+          unicodemath: [["&#x231e;"], parsing_wrapper(["llcorner"], lang: :unicode)],
+          asciimath: [["&#x231e;"], parsing_wrapper(["llcorner"], lang: :asciimath)],
           mathml: ["&#x231e;"],
           latex: [["llcorner", "&#x231e;"]],
           omml: ["&#x231e;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("llcorner")
+          parsing_wrapper("llcorner", lang: :asciimath)
         end
 
         def to_unicodemath

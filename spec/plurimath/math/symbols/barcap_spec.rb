@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Barcap do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Barcap" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{barcap}")
+        expect(klass.to_asciimath).to eq("\"P{barcap}\"")
       end
 
       it "matches LaTeX string" do

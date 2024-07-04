@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Cwundercurvearrow < Symbol
         INPUT = {
-          unicodemath: [["&#x293e;"], parsing_wrapper(["cwundercurvearrow"])],
-          asciimath: [["&#x293e;"], parsing_wrapper(["cwundercurvearrow"])],
+          unicodemath: [["&#x293e;"], parsing_wrapper(["cwundercurvearrow"], lang: :unicode)],
+          asciimath: [["&#x293e;"], parsing_wrapper(["cwundercurvearrow"], lang: :asciimath)],
           mathml: ["&#x293e;"],
           latex: [["cwundercurvearrow", "&#x293e;"]],
           omml: ["&#x293e;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("cwundercurvearrow")
+          parsing_wrapper("cwundercurvearrow", lang: :asciimath)
         end
 
         def to_unicodemath

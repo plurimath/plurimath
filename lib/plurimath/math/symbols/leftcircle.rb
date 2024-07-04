@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Leftcircle < Symbol
         INPUT = {
-          unicodemath: [["&#x25d6;"], parsing_wrapper(["blacklefthalfcircle", "LEFTCIRCLE"])],
-          asciimath: [["&#x25d6;"], parsing_wrapper(["blacklefthalfcircle", "LEFTCIRCLE"])],
+          unicodemath: [["&#x25d6;"], parsing_wrapper(["blacklefthalfcircle", "LEFTCIRCLE"], lang: :unicode)],
+          asciimath: [["&#x25d6;"], parsing_wrapper(["blacklefthalfcircle", "LEFTCIRCLE"], lang: :asciimath)],
           mathml: ["&#x25d6;"],
           latex: [["blacklefthalfcircle", "LEFTCIRCLE", "&#x25d6;"]],
           omml: ["&#x25d6;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("LEFTCIRCLE")
+          parsing_wrapper("LEFTCIRCLE", lang: :asciimath)
         end
 
         def to_unicodemath

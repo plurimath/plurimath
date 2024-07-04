@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Sumtop < Symbol
         INPUT = {
-          unicodemath: [["&#x23b2;"], parsing_wrapper(["sumtop"])],
-          asciimath: [["&#x23b2;"], parsing_wrapper(["sumtop"])],
+          unicodemath: [["&#x23b2;"], parsing_wrapper(["sumtop"], lang: :unicode)],
+          asciimath: [["&#x23b2;"], parsing_wrapper(["sumtop"], lang: :asciimath)],
           mathml: ["&#x23b2;"],
           latex: [["sumtop", "&#x23b2;"]],
           omml: ["&#x23b2;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("sumtop")
+          parsing_wrapper("sumtop", lang: :asciimath)
         end
 
         def to_unicodemath

@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Intprodr do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Intprodr" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{intprodr}")
+        expect(klass.to_asciimath).to eq("\"P{intprodr}\"")
       end
 
       it "matches LaTeX string" do

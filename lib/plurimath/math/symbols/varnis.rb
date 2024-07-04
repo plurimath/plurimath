@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Varnis < Symbol
         INPUT = {
-          unicodemath: [["&#x22fb;"], parsing_wrapper(["varnis"])],
-          asciimath: [["&#x22fb;"], parsing_wrapper(["varnis"])],
+          unicodemath: [["&#x22fb;"], parsing_wrapper(["varnis"], lang: :unicode)],
+          asciimath: [["&#x22fb;"], parsing_wrapper(["varnis"], lang: :asciimath)],
           mathml: ["&#x22fb;"],
           latex: [["varnis", "&#x22fb;"]],
           omml: ["&#x22fb;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("varnis")
+          parsing_wrapper("varnis", lang: :asciimath)
         end
 
         def to_unicodemath

@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Aplleftarrowbox < Symbol
         INPUT = {
-          unicodemath: [["&#x2347;"], parsing_wrapper(["APLleftarrowbox"])],
-          asciimath: [["&#x2347;"], parsing_wrapper(["APLleftarrowbox"])],
+          unicodemath: [["&#x2347;"], parsing_wrapper(["APLleftarrowbox"], lang: :unicode)],
+          asciimath: [["&#x2347;"], parsing_wrapper(["APLleftarrowbox"], lang: :asciimath)],
           mathml: ["&#x2347;"],
           latex: [["APLleftarrowbox", "&#x2347;"]],
           omml: ["&#x2347;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("APLleftarrowbox")
+          parsing_wrapper("APLleftarrowbox", lang: :asciimath)
         end
 
         def to_unicodemath

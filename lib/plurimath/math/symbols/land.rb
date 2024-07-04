@@ -3,10 +3,10 @@ module Plurimath
     module Symbols
       class Land < Symbol
         INPUT = {
-          unicodemath: [["wedge", "&#x2227;"], parsing_wrapper(["^^", "land"])],
-          asciimath: [["wedge", "^^", "&#x2227;"], parsing_wrapper(["land"])],
+          unicodemath: [["wedge", "&#x2227;"], parsing_wrapper(["^^", "land"], lang: :unicode)],
+          asciimath: [["wedge", "^^", "&#x2227;"], parsing_wrapper(["land"], lang: :asciimath)],
           mathml: ["&#x2227;"],
-          latex: [["wedge", "land", "&#x2227;"], parsing_wrapper(["^^"])],
+          latex: [["wedge", "land", "&#x2227;"], parsing_wrapper(["^^"], lang: :latex)],
           omml: ["&#x2227;"],
           html: ["&#x2227;"],
         }.freeze

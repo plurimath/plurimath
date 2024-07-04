@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Cup do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Cup" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{Cup}")
+        expect(klass.to_asciimath).to eq("\"P{Cup}\"")
       end
 
       it "matches LaTeX string" do

@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Grave < Symbol
         INPUT = {
-          unicodemath: [["&#x300;"], parsing_wrapper(["grave"])],
-          asciimath: [["&#x300;"], parsing_wrapper(["grave"])],
+          unicodemath: [["&#x300;"], parsing_wrapper(["grave"], lang: :unicode)],
+          asciimath: [["&#x300;"], parsing_wrapper(["grave"], lang: :asciimath)],
           mathml: ["&#x300;"],
           latex: [["grave", "&#x300;"]],
           omml: ["&#x300;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("grave")
+          parsing_wrapper("grave", lang: :asciimath)
         end
 
         def to_unicodemath

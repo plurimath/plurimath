@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Medcirc do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Medcirc" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{medcirc}")
+        expect(klass.to_asciimath).to eq("\"P{medcirc}\"")
       end
 
       it "matches LaTeX string" do

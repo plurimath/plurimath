@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Eqdot do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Eqdot" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{eqdot}")
+        expect(klass.to_asciimath).to eq("\"P{eqdot}\"")
       end
 
       it "matches LaTeX string" do

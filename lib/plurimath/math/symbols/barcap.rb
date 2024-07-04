@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Barcap < Symbol
         INPUT = {
-          unicodemath: [["&#x2a43;"], parsing_wrapper(["barcap"])],
-          asciimath: [["&#x2a43;"], parsing_wrapper(["barcap"])],
+          unicodemath: [["&#x2a43;"], parsing_wrapper(["barcap"], lang: :unicode)],
+          asciimath: [["&#x2a43;"], parsing_wrapper(["barcap"], lang: :asciimath)],
           mathml: ["&#x2a43;"],
           latex: [["barcap", "&#x2a43;"]],
           omml: ["&#x2a43;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("barcap")
+          parsing_wrapper("barcap", lang: :asciimath)
         end
 
         def to_unicodemath

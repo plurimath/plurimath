@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Biohazard < Symbol
         INPUT = {
-          unicodemath: [["&#x2623;"], parsing_wrapper(["biohazard"])],
-          asciimath: [["&#x2623;"], parsing_wrapper(["biohazard"])],
+          unicodemath: [["&#x2623;"], parsing_wrapper(["biohazard"], lang: :unicode)],
+          asciimath: [["&#x2623;"], parsing_wrapper(["biohazard"], lang: :asciimath)],
           mathml: ["&#x2623;"],
           latex: [["biohazard", "&#x2623;"]],
           omml: ["&#x2623;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("biohazard")
+          parsing_wrapper("biohazard", lang: :asciimath)
         end
 
         def to_unicodemath

@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Blockfull do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Blockfull" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{blockfull}")
+        expect(klass.to_asciimath).to eq("\"P{blockfull}\"")
       end
 
       it "matches LaTeX string" do

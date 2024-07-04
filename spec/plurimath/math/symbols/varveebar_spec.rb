@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Varveebar do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Varveebar" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{varveebar}")
+        expect(klass.to_asciimath).to eq("\"P{varveebar}\"")
       end
 
       it "matches LaTeX string" do

@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Isindot do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Isindot" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{isindot}")
+        expect(klass.to_asciimath).to eq("\"P{isindot}\"")
       end
 
       it "matches LaTeX string" do

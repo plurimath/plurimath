@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Btimes do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Btimes" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{btimes}")
+        expect(klass.to_asciimath).to eq("\"P{btimes}\"")
       end
 
       it "matches LaTeX string" do

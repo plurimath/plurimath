@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Subsetdot < Symbol
         INPUT = {
-          unicodemath: [["&#x2abd;"], parsing_wrapper(["subsetdot"])],
-          asciimath: [["&#x2abd;"], parsing_wrapper(["subsetdot"])],
+          unicodemath: [["&#x2abd;"], parsing_wrapper(["subsetdot"], lang: :unicode)],
+          asciimath: [["&#x2abd;"], parsing_wrapper(["subsetdot"], lang: :asciimath)],
           mathml: ["&#x2abd;"],
           latex: [["subsetdot", "&#x2abd;"]],
           omml: ["&#x2abd;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("subsetdot")
+          parsing_wrapper("subsetdot", lang: :asciimath)
         end
 
         def to_unicodemath

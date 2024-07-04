@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Intcup do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Intcup" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{intcup}")
+        expect(klass.to_asciimath).to eq("\"P{intcup}\"")
       end
 
       it "matches LaTeX string" do

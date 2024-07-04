@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Yup < Symbol
         INPUT = {
-          unicodemath: [["&#x2144;"], parsing_wrapper(["Yup"])],
-          asciimath: [["&#x2144;"], parsing_wrapper(["Yup"])],
+          unicodemath: [["&#x2144;"], parsing_wrapper(["Yup"], lang: :unicode)],
+          asciimath: [["&#x2144;"], parsing_wrapper(["Yup"], lang: :asciimath)],
           mathml: ["&#x2144;"],
           latex: [["Yup", "&#x2144;"]],
           omml: ["&#x2144;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("Yup")
+          parsing_wrapper("Yup", lang: :asciimath)
         end
 
         def to_unicodemath

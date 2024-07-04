@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Lparengtr do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Lparengtr" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{Lparengtr}")
+        expect(klass.to_asciimath).to eq("\"P{Lparengtr}\"")
       end
 
       it "matches LaTeX string" do

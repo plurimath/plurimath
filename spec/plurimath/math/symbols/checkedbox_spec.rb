@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Checkedbox do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Checkedbox" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{CheckedBox}")
+        expect(klass.to_asciimath).to eq("\"P{CheckedBox}\"")
       end
 
       it "matches LaTeX string" do

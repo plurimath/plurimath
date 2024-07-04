@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Veedot do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Veedot" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{veedot}")
+        expect(klass.to_asciimath).to eq("\"P{veedot}\"")
       end
 
       it "matches LaTeX string" do

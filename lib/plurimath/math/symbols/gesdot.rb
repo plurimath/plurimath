@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Gesdot < Symbol
         INPUT = {
-          unicodemath: [["&#x2a80;"], parsing_wrapper(["gesdot"])],
-          asciimath: [["&#x2a80;"], parsing_wrapper(["gesdot"])],
+          unicodemath: [["&#x2a80;"], parsing_wrapper(["gesdot"], lang: :unicode)],
+          asciimath: [["&#x2a80;"], parsing_wrapper(["gesdot"], lang: :asciimath)],
           mathml: ["&#x2a80;"],
           latex: [["gesdot", "&#x2a80;"]],
           omml: ["&#x2a80;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("gesdot")
+          parsing_wrapper("gesdot", lang: :asciimath)
         end
 
         def to_unicodemath

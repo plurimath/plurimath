@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Intextender do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Intextender" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{intextender}")
+        expect(klass.to_asciimath).to eq("\"P{intextender}\"")
       end
 
       it "matches LaTeX string" do

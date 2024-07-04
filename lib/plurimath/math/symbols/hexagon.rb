@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Hexagon < Symbol
         INPUT = {
-          unicodemath: [["&#x2394;"], parsing_wrapper(["hexagon"])],
-          asciimath: [["&#x2394;"], parsing_wrapper(["hexagon"])],
+          unicodemath: [["&#x2394;"], parsing_wrapper(["hexagon"], lang: :unicode)],
+          asciimath: [["&#x2394;"], parsing_wrapper(["hexagon"], lang: :asciimath)],
           mathml: ["&#x2394;"],
           latex: [["hexagon", "&#x2394;"]],
           omml: ["&#x2394;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("hexagon")
+          parsing_wrapper("hexagon", lang: :asciimath)
         end
 
         def to_unicodemath

@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Veeeq do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Veeeq" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{veeeq}")
+        expect(klass.to_asciimath).to eq("\"P{veeeq}\"")
       end
 
       it "matches LaTeX string" do

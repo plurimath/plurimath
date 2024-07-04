@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Mid do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Mid" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{mid}")
+        expect(klass.to_asciimath).to eq("\"P{mid}\"")
       end
 
       it "matches LaTeX string" do

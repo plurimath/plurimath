@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Lnapprox < Symbol
         INPUT = {
-          unicodemath: [["&#x2a89;"], parsing_wrapper(["lnapprox"])],
-          asciimath: [["&#x2a89;"], parsing_wrapper(["lnapprox"])],
+          unicodemath: [["&#x2a89;"], parsing_wrapper(["lnapprox"], lang: :unicode)],
+          asciimath: [["&#x2a89;"], parsing_wrapper(["lnapprox"], lang: :asciimath)],
           mathml: ["&#x2a89;"],
           latex: [["lnapprox", "&#x2a89;"]],
           omml: ["&#x2a89;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("lnapprox")
+          parsing_wrapper("lnapprox", lang: :asciimath)
         end
 
         def to_unicodemath

@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Hermaphrodite do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Hermaphrodite" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{Hermaphrodite}")
+        expect(klass.to_asciimath).to eq("\"P{Hermaphrodite}\"")
       end
 
       it "matches LaTeX string" do

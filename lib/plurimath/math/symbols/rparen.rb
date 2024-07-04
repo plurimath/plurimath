@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Rparen < Symbol
         INPUT = {
-          unicodemath: [["&#x29;"], parsing_wrapper(["rparen"])],
-          asciimath: [["&#x29;"], parsing_wrapper(["rparen"])],
+          unicodemath: [["&#x29;"], parsing_wrapper(["rparen"], lang: :unicode)],
+          asciimath: [["&#x29;"], parsing_wrapper(["rparen"], lang: :asciimath)],
           mathml: ["&#x29;"],
           latex: [["rparen", "&#x29;"]],
           omml: ["&#x29;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("rparen")
+          parsing_wrapper("rparen", lang: :asciimath)
         end
 
         def to_unicodemath

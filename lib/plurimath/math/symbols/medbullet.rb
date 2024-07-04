@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Medbullet < Symbol
         INPUT = {
-          unicodemath: [["&#x26ab;"], parsing_wrapper(["mdblkcircle", "medbullet"])],
-          asciimath: [["&#x26ab;"], parsing_wrapper(["mdblkcircle", "medbullet"])],
+          unicodemath: [["&#x26ab;"], parsing_wrapper(["mdblkcircle", "medbullet"], lang: :unicode)],
+          asciimath: [["&#x26ab;"], parsing_wrapper(["mdblkcircle", "medbullet"], lang: :asciimath)],
           mathml: ["&#x26ab;"],
           latex: [["mdblkcircle", "medbullet", "&#x26ab;"]],
           omml: ["&#x26ab;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("medbullet")
+          parsing_wrapper("medbullet", lang: :asciimath)
         end
 
         def to_unicodemath

@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Cancer do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Cancer" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{cancer}")
+        expect(klass.to_asciimath).to eq("\"P{cancer}\"")
       end
 
       it "matches LaTeX string" do

@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Propertyline < Symbol
         INPUT = {
-          unicodemath: [["&#x214a;"], parsing_wrapper(["PropertyLine"])],
-          asciimath: [["&#x214a;"], parsing_wrapper(["PropertyLine"])],
+          unicodemath: [["&#x214a;"], parsing_wrapper(["PropertyLine"], lang: :unicode)],
+          asciimath: [["&#x214a;"], parsing_wrapper(["PropertyLine"], lang: :asciimath)],
           mathml: ["&#x214a;"],
           latex: [["PropertyLine", "&#x214a;"]],
           omml: ["&#x214a;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("PropertyLine")
+          parsing_wrapper("PropertyLine", lang: :asciimath)
         end
 
         def to_unicodemath

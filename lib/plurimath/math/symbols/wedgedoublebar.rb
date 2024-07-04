@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Wedgedoublebar < Symbol
         INPUT = {
-          unicodemath: [["&#x2a60;"], parsing_wrapper(["wedgedoublebar"])],
-          asciimath: [["&#x2a60;"], parsing_wrapper(["wedgedoublebar"])],
+          unicodemath: [["&#x2a60;"], parsing_wrapper(["wedgedoublebar"], lang: :unicode)],
+          asciimath: [["&#x2a60;"], parsing_wrapper(["wedgedoublebar"], lang: :asciimath)],
           mathml: ["&#x2a60;"],
           latex: [["wedgedoublebar", "&#x2a60;"]],
           omml: ["&#x2a60;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("wedgedoublebar")
+          parsing_wrapper("wedgedoublebar", lang: :asciimath)
         end
 
         def to_unicodemath

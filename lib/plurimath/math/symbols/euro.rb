@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Euro < Symbol
         INPUT = {
-          unicodemath: [["&#x20ac;"], parsing_wrapper(["euro"])],
-          asciimath: [["&#x20ac;"], parsing_wrapper(["euro"])],
+          unicodemath: [["&#x20ac;"], parsing_wrapper(["euro"], lang: :unicode)],
+          asciimath: [["&#x20ac;"], parsing_wrapper(["euro"], lang: :asciimath)],
           mathml: ["&#x20ac;"],
           latex: [["euro", "&#x20ac;"]],
           omml: ["&#x20ac;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("euro")
+          parsing_wrapper("euro", lang: :asciimath)
         end
 
         def to_unicodemath

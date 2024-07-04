@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Gescc < Symbol
         INPUT = {
-          unicodemath: [["&#x2aa9;"], parsing_wrapper(["gescc"])],
-          asciimath: [["&#x2aa9;"], parsing_wrapper(["gescc"])],
+          unicodemath: [["&#x2aa9;"], parsing_wrapper(["gescc"], lang: :unicode)],
+          asciimath: [["&#x2aa9;"], parsing_wrapper(["gescc"], lang: :asciimath)],
           mathml: ["&#x2aa9;"],
           latex: [["gescc", "&#x2aa9;"]],
           omml: ["&#x2aa9;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("gescc")
+          parsing_wrapper("gescc", lang: :asciimath)
         end
 
         def to_unicodemath

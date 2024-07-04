@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Lnsim do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Lnsim" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{lnsim}")
+        expect(klass.to_asciimath).to eq("\"P{lnsim}\"")
       end
 
       it "matches LaTeX string" do

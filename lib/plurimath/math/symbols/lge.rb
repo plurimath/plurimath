@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Lge < Symbol
         INPUT = {
-          unicodemath: [["&#x2a91;"], parsing_wrapper(["lgE"])],
-          asciimath: [["&#x2a91;"], parsing_wrapper(["lgE"])],
+          unicodemath: [["&#x2a91;"], parsing_wrapper(["lgE"], lang: :unicode)],
+          asciimath: [["&#x2a91;"], parsing_wrapper(["lgE"], lang: :asciimath)],
           mathml: ["&#x2a91;"],
           latex: [["lgE", "&#x2a91;"]],
           omml: ["&#x2a91;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("lgE")
+          parsing_wrapper("lgE", lang: :asciimath)
         end
 
         def to_unicodemath

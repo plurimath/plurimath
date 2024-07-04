@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Curlyvee do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Curlyvee" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{curlyvee}")
+        expect(klass.to_asciimath).to eq("\"P{curlyvee}\"")
       end
 
       it "matches LaTeX string" do

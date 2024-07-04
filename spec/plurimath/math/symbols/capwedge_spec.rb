@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Capwedge do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Capwedge" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{capwedge}")
+        expect(klass.to_asciimath).to eq("\"P{capwedge}\"")
       end
 
       it "matches LaTeX string" do

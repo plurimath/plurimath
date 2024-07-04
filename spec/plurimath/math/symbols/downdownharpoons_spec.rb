@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Downdownharpoons do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Downdownharpoons" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{downdownharpoons}")
+        expect(klass.to_asciimath).to eq("\"P{downdownharpoons}\"")
       end
 
       it "matches LaTeX string" do

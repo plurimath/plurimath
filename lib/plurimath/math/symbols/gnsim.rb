@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Gnsim < Symbol
         INPUT = {
-          unicodemath: [["&#x22e7;"], parsing_wrapper(["gnsim"])],
-          asciimath: [["&#x22e7;"], parsing_wrapper(["gnsim"])],
+          unicodemath: [["&#x22e7;"], parsing_wrapper(["gnsim"], lang: :unicode)],
+          asciimath: [["&#x22e7;"], parsing_wrapper(["gnsim"], lang: :asciimath)],
           mathml: ["&#x22e7;"],
           latex: [["gnsim", "&#x22e7;"]],
           omml: ["&#x22e7;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("gnsim")
+          parsing_wrapper("gnsim", lang: :asciimath)
         end
 
         def to_unicodemath

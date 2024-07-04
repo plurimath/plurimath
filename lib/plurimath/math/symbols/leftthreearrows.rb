@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Leftthreearrows < Symbol
         INPUT = {
-          unicodemath: [["&#x2b31;"], parsing_wrapper(["leftthreearrows"])],
-          asciimath: [["&#x2b31;"], parsing_wrapper(["leftthreearrows"])],
+          unicodemath: [["&#x2b31;"], parsing_wrapper(["leftthreearrows"], lang: :unicode)],
+          asciimath: [["&#x2b31;"], parsing_wrapper(["leftthreearrows"], lang: :asciimath)],
           mathml: ["&#x2b31;"],
           latex: [["leftthreearrows", "&#x2b31;"]],
           omml: ["&#x2b31;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("leftthreearrows")
+          parsing_wrapper("leftthreearrows", lang: :asciimath)
         end
 
         def to_unicodemath

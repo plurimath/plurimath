@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Urarc do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Urarc" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{urarc}")
+        expect(klass.to_asciimath).to eq("\"P{urarc}\"")
       end
 
       it "matches LaTeX string" do

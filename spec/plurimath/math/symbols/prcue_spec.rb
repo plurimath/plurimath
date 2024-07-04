@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Prcue do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Prcue" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{prcue}")
+        expect(klass.to_asciimath).to eq("\"P{prcue}\"")
       end
 
       it "matches LaTeX string" do

@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Isinvb do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Isinvb" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{isinvb}")
+        expect(klass.to_asciimath).to eq("\"P{isinvb}\"")
       end
 
       it "matches LaTeX string" do

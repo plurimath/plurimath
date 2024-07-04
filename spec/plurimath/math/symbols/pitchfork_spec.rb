@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Pitchfork do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Pitchfork" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{pitchfork}")
+        expect(klass.to_asciimath).to eq("\"P{pitchfork}\"")
       end
 
       it "matches LaTeX string" do

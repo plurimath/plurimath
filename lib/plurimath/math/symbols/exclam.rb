@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Exclam < Symbol
         INPUT = {
-          unicodemath: [["&#x21;"], parsing_wrapper(["!", "exclam"])],
-          asciimath: [["!", "&#x21;"], parsing_wrapper(["exclam"])],
+          unicodemath: [["&#x21;"], parsing_wrapper(["!", "exclam"], lang: :unicode)],
+          asciimath: [["!", "&#x21;"], parsing_wrapper(["exclam"], lang: :asciimath)],
           mathml: ["&#x21;"],
           latex: [["exclam", "!", "&#x21;"]],
           omml: ["&#x21;"],

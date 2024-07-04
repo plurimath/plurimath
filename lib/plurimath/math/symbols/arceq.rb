@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Arceq < Symbol
         INPUT = {
-          unicodemath: [["&#x2258;"], parsing_wrapper(["arceq"])],
-          asciimath: [["&#x2258;"], parsing_wrapper(["arceq"])],
+          unicodemath: [["&#x2258;"], parsing_wrapper(["arceq"], lang: :unicode)],
+          asciimath: [["&#x2258;"], parsing_wrapper(["arceq"], lang: :asciimath)],
           mathml: ["&#x2258;"],
           latex: [["arceq", "&#x2258;"]],
           omml: ["&#x2258;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("arceq")
+          parsing_wrapper("arceq", lang: :asciimath)
         end
 
         def to_unicodemath

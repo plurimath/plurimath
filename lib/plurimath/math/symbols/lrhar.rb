@@ -3,10 +3,10 @@ module Plurimath
     module Symbols
       class Lrhar < Symbol
         INPUT = {
-          unicodemath: [["leftrightharpoons", "lrhar", "&#x21cb;"], parsing_wrapper(["revequilibrium"])],
-          asciimath: [["&#x21cb;"], parsing_wrapper(["leftrightharpoons", "lrhar", "revequilibrium"])],
+          unicodemath: [["leftrightharpoons", "lrhar", "&#x21cb;"], parsing_wrapper(["revequilibrium"], lang: :unicode)],
+          asciimath: [["&#x21cb;"], parsing_wrapper(["leftrightharpoons", "lrhar", "revequilibrium"], lang: :asciimath)],
           mathml: ["&#x21cb;"],
-          latex: [["leftrightharpoons", "revequilibrium", "&#x21cb;"], parsing_wrapper(["lrhar"])],
+          latex: [["leftrightharpoons", "revequilibrium", "&#x21cb;"], parsing_wrapper(["lrhar"], lang: :latex)],
           omml: ["&#x21cb;"],
           html: ["&#x21cb;"],
         }.freeze
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("lrhar")
+          parsing_wrapper("lrhar", lang: :asciimath)
         end
 
         def to_unicodemath

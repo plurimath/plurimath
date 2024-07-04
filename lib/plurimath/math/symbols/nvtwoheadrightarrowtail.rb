@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Nvtwoheadrightarrowtail < Symbol
         INPUT = {
-          unicodemath: [["&#x2918;"], parsing_wrapper(["nVtwoheadrightarrowtail"])],
-          asciimath: [["&#x2918;"], parsing_wrapper(["nVtwoheadrightarrowtail"])],
+          unicodemath: [["&#x2918;"], parsing_wrapper(["nVtwoheadrightarrowtail"], lang: :unicode)],
+          asciimath: [["&#x2918;"], parsing_wrapper(["nVtwoheadrightarrowtail"], lang: :asciimath)],
           mathml: ["&#x2918;"],
           latex: [["nVtwoheadrightarrowtail", "&#x2918;"]],
           omml: ["&#x2918;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("nVtwoheadrightarrowtail")
+          parsing_wrapper("nVtwoheadrightarrowtail", lang: :asciimath)
         end
 
         def to_unicodemath

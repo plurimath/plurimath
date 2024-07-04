@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Precapprox do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Precapprox" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{precapprox}")
+        expect(klass.to_asciimath).to eq("\"P{precapprox}\"")
       end
 
       it "matches LaTeX string" do

@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Geqqslant < Symbol
         INPUT = {
-          unicodemath: [["&#x2afa;"], parsing_wrapper(["geqqslant"])],
-          asciimath: [["&#x2afa;"], parsing_wrapper(["geqqslant"])],
+          unicodemath: [["&#x2afa;"], parsing_wrapper(["geqqslant"], lang: :unicode)],
+          asciimath: [["&#x2afa;"], parsing_wrapper(["geqqslant"], lang: :asciimath)],
           mathml: ["&#x2afa;"],
           latex: [["geqqslant", "&#x2afa;"]],
           omml: ["&#x2afa;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("geqqslant")
+          parsing_wrapper("geqqslant", lang: :asciimath)
         end
 
         def to_unicodemath

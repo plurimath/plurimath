@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Midbarvee < Symbol
         INPUT = {
-          unicodemath: [["&#x2a5d;"], parsing_wrapper(["midbarvee"])],
-          asciimath: [["&#x2a5d;"], parsing_wrapper(["midbarvee"])],
+          unicodemath: [["&#x2a5d;"], parsing_wrapper(["midbarvee"], lang: :unicode)],
+          asciimath: [["&#x2a5d;"], parsing_wrapper(["midbarvee"], lang: :asciimath)],
           mathml: ["&#x2a5d;"],
           latex: [["midbarvee", "&#x2a5d;"]],
           omml: ["&#x2a5d;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("midbarvee")
+          parsing_wrapper("midbarvee", lang: :asciimath)
         end
 
         def to_unicodemath

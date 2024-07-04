@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Angstrom do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Angstrom" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{Angstrom}")
+        expect(klass.to_asciimath).to eq("\"P{Angstrom}\"")
       end
 
       it "matches LaTeX string" do

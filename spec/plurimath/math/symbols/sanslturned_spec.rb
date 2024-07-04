@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Sanslturned do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Sanslturned" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{sansLturned}")
+        expect(klass.to_asciimath).to eq("\"P{sansLturned}\"")
       end
 
       it "matches LaTeX string" do

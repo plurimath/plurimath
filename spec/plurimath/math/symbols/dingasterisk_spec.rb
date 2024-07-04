@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Dingasterisk do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Dingasterisk" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{dingasterisk}")
+        expect(klass.to_asciimath).to eq("\"P{dingasterisk}\"")
       end
 
       it "matches LaTeX string" do

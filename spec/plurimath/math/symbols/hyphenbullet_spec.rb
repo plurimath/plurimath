@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Hyphenbullet do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Hyphenbullet" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{hyphenbullet}")
+        expect(klass.to_asciimath).to eq("\"P{hyphenbullet}\"")
       end
 
       it "matches LaTeX string" do

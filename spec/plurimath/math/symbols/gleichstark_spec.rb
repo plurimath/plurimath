@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Gleichstark do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Gleichstark" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{gleichstark}")
+        expect(klass.to_asciimath).to eq("\"P{gleichstark}\"")
       end
 
       it "matches LaTeX string" do

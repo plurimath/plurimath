@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Eqqslantless < Symbol
         INPUT = {
-          unicodemath: [["&#x2a9b;"], parsing_wrapper(["eqqslantless"])],
-          asciimath: [["&#x2a9b;"], parsing_wrapper(["eqqslantless"])],
+          unicodemath: [["&#x2a9b;"], parsing_wrapper(["eqqslantless"], lang: :unicode)],
+          asciimath: [["&#x2a9b;"], parsing_wrapper(["eqqslantless"], lang: :asciimath)],
           mathml: ["&#x2a9b;"],
           latex: [["eqqslantless", "&#x2a9b;"]],
           omml: ["&#x2a9b;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("eqqslantless")
+          parsing_wrapper("eqqslantless", lang: :asciimath)
         end
 
         def to_unicodemath

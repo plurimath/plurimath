@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Boxdiag < Symbol
         INPUT = {
-          unicodemath: [["&#x29c4;"], parsing_wrapper(["boxslash", "boxdiag"])],
-          asciimath: [["&#x29c4;"], parsing_wrapper(["boxslash", "boxdiag"])],
+          unicodemath: [["&#x29c4;"], parsing_wrapper(["boxslash", "boxdiag"], lang: :unicode)],
+          asciimath: [["&#x29c4;"], parsing_wrapper(["boxslash", "boxdiag"], lang: :asciimath)],
           mathml: ["&#x29c4;"],
           latex: [["boxslash", "boxdiag", "&#x29c4;"]],
           omml: ["&#x29c4;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("boxdiag")
+          parsing_wrapper("boxdiag", lang: :asciimath)
         end
 
         def to_unicodemath

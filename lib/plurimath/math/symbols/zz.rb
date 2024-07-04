@@ -3,10 +3,10 @@ module Plurimath
     module Symbols
       class Zz < Symbol
         INPUT = {
-          unicodemath: [["&#x2124;"], parsing_wrapper(["ZZ"])],
-          asciimath: [["&#x2124;"], parsing_wrapper(["ZZ"])],
+          unicodemath: [["&#x2124;"], parsing_wrapper(["ZZ"], lang: :unicode)],
+          asciimath: ["&#x2124;", "ZZ"],
           mathml: ["&#x2124;"],
-          latex: [["ZZ", "&#x2124;"]],
+          latex: ["ZZ", "&#x2124;"],
           omml: ["&#x2124;"],
           html: ["&#x2124;"],
         }.freeze

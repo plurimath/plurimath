@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Danger do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Danger" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{danger}")
+        expect(klass.to_asciimath).to eq("\"P{danger}\"")
       end
 
       it "matches LaTeX string" do

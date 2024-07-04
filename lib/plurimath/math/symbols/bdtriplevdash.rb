@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Bdtriplevdash < Symbol
         INPUT = {
-          unicodemath: [["&#x2506;"], parsing_wrapper(["bdtriplevdash"])],
-          asciimath: [["&#x2506;"], parsing_wrapper(["bdtriplevdash"])],
+          unicodemath: [["&#x2506;"], parsing_wrapper(["bdtriplevdash"], lang: :unicode)],
+          asciimath: [["&#x2506;"], parsing_wrapper(["bdtriplevdash"], lang: :asciimath)],
           mathml: ["&#x2506;"],
           latex: [["bdtriplevdash", "&#x2506;"]],
           omml: ["&#x2506;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("bdtriplevdash")
+          parsing_wrapper("bdtriplevdash", lang: :asciimath)
         end
 
         def to_unicodemath

@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Boxcircle < Symbol
         INPUT = {
-          unicodemath: [["&#x29c7;"], parsing_wrapper(["boxcircle"])],
-          asciimath: [["&#x29c7;"], parsing_wrapper(["boxcircle"])],
+          unicodemath: [["&#x29c7;"], parsing_wrapper(["boxcircle"], lang: :unicode)],
+          asciimath: [["&#x29c7;"], parsing_wrapper(["boxcircle"], lang: :asciimath)],
           mathml: ["&#x29c7;"],
           latex: [["boxcircle", "&#x29c7;"]],
           omml: ["&#x29c7;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("boxcircle")
+          parsing_wrapper("boxcircle", lang: :asciimath)
         end
 
         def to_unicodemath

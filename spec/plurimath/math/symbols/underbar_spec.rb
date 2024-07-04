@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Underbar do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Underbar" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{underbar}")
+        expect(klass.to_asciimath).to eq("\"P{underbar}\"")
       end
 
       it "matches LaTeX string" do

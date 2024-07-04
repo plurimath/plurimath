@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Rvzigzag < Symbol
         INPUT = {
-          unicodemath: [["&#x29db;"], parsing_wrapper(["Rvzigzag"])],
-          asciimath: [["&#x29db;"], parsing_wrapper(["Rvzigzag"])],
+          unicodemath: [["&#x29db;"], parsing_wrapper(["Rvzigzag"], lang: :unicode)],
+          asciimath: [["&#x29db;"], parsing_wrapper(["Rvzigzag"], lang: :asciimath)],
           mathml: ["&#x29db;"],
           latex: [["Rvzigzag", "&#x29db;"]],
           omml: ["&#x29db;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("Rvzigzag")
+          parsing_wrapper("Rvzigzag", lang: :asciimath)
         end
 
         def to_unicodemath

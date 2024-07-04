@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Pounds do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Pounds" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{pounds}")
+        expect(klass.to_asciimath).to eq("\"P{pounds}\"")
       end
 
       it "matches LaTeX string" do

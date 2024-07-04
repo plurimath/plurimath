@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Rr < Symbol
         INPUT = {
-          unicodemath: [["&#x211d;"], parsing_wrapper(["RR"])],
-          asciimath: [["&#x211d;"], parsing_wrapper(["RR"])],
+          unicodemath: [["&#x211d;"], parsing_wrapper(["RR"], lang: :unicode)],
+          asciimath: [["&#x211d;"], parsing_wrapper(["RR"], lang: :asciimath)],
           mathml: ["&#x211d;"],
           latex: [["RR", "&#x211d;"]],
           omml: ["&#x211d;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("RR")
+          parsing_wrapper("RR", lang: :asciimath)
         end
 
         def to_unicodemath

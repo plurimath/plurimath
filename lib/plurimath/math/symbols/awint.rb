@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Awint < Symbol
         INPUT = {
-          unicodemath: [["&#x2a11;"], parsing_wrapper(["awint"])],
-          asciimath: [["&#x2a11;"], parsing_wrapper(["awint"])],
+          unicodemath: [["&#x2a11;"], parsing_wrapper(["awint"], lang: :unicode)],
+          asciimath: [["&#x2a11;"], parsing_wrapper(["awint"], lang: :asciimath)],
           mathml: ["&#x2a11;"],
           latex: [["awint", "&#x2a11;"]],
           omml: ["&#x2a11;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("awint")
+          parsing_wrapper("awint", lang: :asciimath)
         end
 
         def to_unicodemath

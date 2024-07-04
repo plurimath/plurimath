@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Towa do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Towa" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{towa}")
+        expect(klass.to_asciimath).to eq("\"P{towa}\"")
       end
 
       it "matches LaTeX string" do

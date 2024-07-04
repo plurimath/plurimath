@@ -4,7 +4,7 @@ module Plurimath
       class Im < Symbol
         INPUT = {
           unicodemath: [["Im", "&#x2111;"]],
-          asciimath: [["&#x2111;"], parsing_wrapper(["Im"])],
+          asciimath: [["&#x2111;"], parsing_wrapper(["Im"], lang: :asciimath)],
           mathml: ["&#x2111;"],
           latex: [["Im", "&#x2111;"]],
           omml: ["&#x2111;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("Im")
+          parsing_wrapper("Im", lang: :asciimath)
         end
 
         def to_unicodemath

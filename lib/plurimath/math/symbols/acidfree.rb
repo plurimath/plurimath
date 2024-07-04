@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Acidfree < Symbol
         INPUT = {
-          unicodemath: [["&#x267e;"], parsing_wrapper(["acidfree"])],
-          asciimath: [["&#x267e;"], parsing_wrapper(["acidfree"])],
+          unicodemath: [["&#x267e;"], parsing_wrapper(["acidfree"], lang: :unicode)],
+          asciimath: [["&#x267e;"], parsing_wrapper(["acidfree"], lang: :asciimath)],
           mathml: ["&#x267e;"],
           latex: [["acidfree", "&#x267e;"]],
           omml: ["&#x267e;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("acidfree")
+          parsing_wrapper("acidfree", lang: :asciimath)
         end
 
         def to_unicodemath

@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Succneq < Symbol
         INPUT = {
-          unicodemath: [["&#x2ab2;"], parsing_wrapper(["succneq"])],
-          asciimath: [["&#x2ab2;"], parsing_wrapper(["succneq"])],
+          unicodemath: [["&#x2ab2;"], parsing_wrapper(["succneq"], lang: :unicode)],
+          asciimath: [["&#x2ab2;"], parsing_wrapper(["succneq"], lang: :asciimath)],
           mathml: ["&#x2ab2;"],
           latex: [["succneq", "&#x2ab2;"]],
           omml: ["&#x2ab2;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("succneq")
+          parsing_wrapper("succneq", lang: :asciimath)
         end
 
         def to_unicodemath

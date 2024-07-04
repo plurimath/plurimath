@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Measangledltosw do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Measangledltosw" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{measangledltosw}")
+        expect(klass.to_asciimath).to eq("\"P{measangledltosw}\"")
       end
 
       it "matches LaTeX string" do

@@ -3,10 +3,10 @@ module Plurimath
     module Symbols
       class Perp < Symbol
         INPUT = {
-          unicodemath: [["bot", "perp", "&#x22a5;"], parsing_wrapper(["_|_"])],
-          asciimath: [["_|_", "bot", "&#x22a5;"], parsing_wrapper(["perp"])],
+          unicodemath: [["bot", "perp", "&#x22a5;"], parsing_wrapper(["_|_"], lang: :unicode)],
+          asciimath: [["_|_", "bot", "&#x22a5;"], parsing_wrapper(["perp"], lang: :asciimath)],
           mathml: ["&#x22a5;"],
-          latex: [["bot", "&#x22a5;"], parsing_wrapper(["perp", "_|_"])],
+          latex: [["bot", "&#x22a5;"], parsing_wrapper(["perp", "_|_"], lang: :latex)],
           omml: ["&#x22a5;"],
           html: ["&#x22a5;"],
         }.freeze

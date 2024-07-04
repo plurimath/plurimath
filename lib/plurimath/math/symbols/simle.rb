@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Simle < Symbol
         INPUT = {
-          unicodemath: [["&#x2a9f;"], parsing_wrapper(["simlE"])],
-          asciimath: [["&#x2a9f;"], parsing_wrapper(["simlE"])],
+          unicodemath: [["&#x2a9f;"], parsing_wrapper(["simlE"], lang: :unicode)],
+          asciimath: [["&#x2a9f;"], parsing_wrapper(["simlE"], lang: :asciimath)],
           mathml: ["&#x2a9f;"],
           latex: [["simlE", "&#x2a9f;"]],
           omml: ["&#x2a9f;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("simlE")
+          parsing_wrapper("simlE", lang: :asciimath)
         end
 
         def to_unicodemath

@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Langledot < Symbol
         INPUT = {
-          unicodemath: [["&#x2991;"], parsing_wrapper(["langledot"])],
-          asciimath: [["&#x2991;"], parsing_wrapper(["langledot"])],
+          unicodemath: [["&#x2991;"], parsing_wrapper(["langledot"], lang: :unicode)],
+          asciimath: [["&#x2991;"], parsing_wrapper(["langledot"], lang: :asciimath)],
           mathml: ["&#x2991;"],
           latex: [["langledot", "&#x2991;"]],
           omml: ["&#x2991;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("langledot")
+          parsing_wrapper("langledot", lang: :asciimath)
         end
 
         def to_unicodemath

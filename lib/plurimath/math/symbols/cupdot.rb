@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Cupdot < Symbol
         INPUT = {
-          unicodemath: [["&#x228d;"], parsing_wrapper(["cupdot"])],
-          asciimath: [["&#x228d;"], parsing_wrapper(["cupdot"])],
+          unicodemath: [["&#x228d;"], parsing_wrapper(["cupdot"], lang: :unicode)],
+          asciimath: [["&#x228d;"], parsing_wrapper(["cupdot"], lang: :asciimath)],
           mathml: ["&#x228d;"],
           latex: [["cupdot", "&#x228d;"]],
           omml: ["&#x228d;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("cupdot")
+          parsing_wrapper("cupdot", lang: :asciimath)
         end
 
         def to_unicodemath

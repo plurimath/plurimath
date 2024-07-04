@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Unlhd do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Unlhd" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{unlhd}")
+        expect(klass.to_asciimath).to eq("\"P{unlhd}\"")
       end
 
       it "matches LaTeX string" do

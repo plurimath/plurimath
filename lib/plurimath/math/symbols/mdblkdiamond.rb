@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Mdblkdiamond < Symbol
         INPUT = {
-          unicodemath: [["&#x2b25;"], parsing_wrapper(["mdblkdiamond"])],
-          asciimath: [["&#x2b25;"], parsing_wrapper(["mdblkdiamond"])],
+          unicodemath: [["&#x2b25;"], parsing_wrapper(["mdblkdiamond"], lang: :unicode)],
+          asciimath: [["&#x2b25;"], parsing_wrapper(["mdblkdiamond"], lang: :asciimath)],
           mathml: ["&#x2b25;"],
           latex: [["mdblkdiamond", "&#x2b25;"]],
           omml: ["&#x2b25;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("mdblkdiamond")
+          parsing_wrapper("mdblkdiamond", lang: :asciimath)
         end
 
         def to_unicodemath

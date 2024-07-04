@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Otimes < Symbol
         INPUT = {
-          unicodemath: [["&#x2a37;"], parsing_wrapper(["Otimes"])],
-          asciimath: [["&#x2a37;"], parsing_wrapper(["Otimes"])],
+          unicodemath: [["&#x2a37;"], parsing_wrapper(["Otimes"], lang: :unicode)],
+          asciimath: [["&#x2a37;"], parsing_wrapper(["Otimes"], lang: :asciimath)],
           mathml: ["&#x2a37;"],
           latex: [["Otimes", "&#x2a37;"]],
           omml: ["&#x2a37;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("Otimes")
+          parsing_wrapper("Otimes", lang: :asciimath)
         end
 
         def to_unicodemath

@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Ntriangleleft do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Ntriangleleft" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{ntriangleleft}")
+        expect(klass.to_asciimath).to eq("\"P{ntriangleleft}\"")
       end
 
       it "matches LaTeX string" do

@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Eqslantgtr do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Eqslantgtr" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{eqslantgtr}")
+        expect(klass.to_asciimath).to eq("\"P{eqslantgtr}\"")
       end
 
       it "matches LaTeX string" do

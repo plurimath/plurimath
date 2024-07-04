@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Smwhtcircle do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Smwhtcircle" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{smwhtcircle}")
+        expect(klass.to_asciimath).to eq("\"P{smwhtcircle}\"")
       end
 
       it "matches LaTeX string" do

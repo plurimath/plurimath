@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Varrho do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Varrho" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{varrho}")
+        expect(klass.to_asciimath).to eq("\"P{varrho}\"")
       end
 
       it "matches LaTeX string" do

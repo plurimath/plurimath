@@ -13,11 +13,11 @@ module Plurimath
 
         # output methods
         def to_latex
-          parsing_wrapper("bar")
+          parsing_wrapper("bar", lang: :latex)
         end
 
         def to_asciimath
-          parsing_wrapper("bar")
+          parsing_wrapper("bar", lang: :asciimath)
         end
 
         def to_unicodemath

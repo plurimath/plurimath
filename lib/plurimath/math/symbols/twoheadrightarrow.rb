@@ -3,10 +3,10 @@ module Plurimath
     module Symbols
       class Twoheadrightarrow < Symbol
         INPUT = {
-          unicodemath: [["twoheadrightarrow", "&#x21a0;"], parsing_wrapper(["->>", "tsur"])],
-          asciimath: [["twoheadrightarrow", "->>", "&#x21a0;"], parsing_wrapper(["tsur"])],
+          unicodemath: [["twoheadrightarrow", "&#x21a0;"], parsing_wrapper(["->>", "tsur"], lang: :unicode)],
+          asciimath: [["twoheadrightarrow", "->>", "&#x21a0;"], parsing_wrapper(["tsur"], lang: :asciimath)],
           mathml: ["&#x21a0;"],
-          latex: [["twoheadrightarrow", "tsur", "&#x21a0;"], parsing_wrapper(["->>"])],
+          latex: [["twoheadrightarrow", "tsur", "&#x21a0;"], parsing_wrapper(["->>"], lang: :latex)],
           omml: ["&#x21a0;"],
           html: ["&#x21a0;"],
         }.freeze

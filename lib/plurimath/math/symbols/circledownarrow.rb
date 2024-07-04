@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Circledownarrow < Symbol
         INPUT = {
-          unicodemath: [["&#x29ec;"], parsing_wrapper(["circledownarrow"])],
-          asciimath: [["&#x29ec;"], parsing_wrapper(["circledownarrow"])],
+          unicodemath: [["&#x29ec;"], parsing_wrapper(["circledownarrow"], lang: :unicode)],
+          asciimath: [["&#x29ec;"], parsing_wrapper(["circledownarrow"], lang: :asciimath)],
           mathml: ["&#x29ec;"],
           latex: [["circledownarrow", "&#x29ec;"]],
           omml: ["&#x29ec;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("circledownarrow")
+          parsing_wrapper("circledownarrow", lang: :asciimath)
         end
 
         def to_unicodemath

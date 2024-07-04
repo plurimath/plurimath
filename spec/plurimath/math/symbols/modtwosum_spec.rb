@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Modtwosum do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Modtwosum" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{modtwosum}")
+        expect(klass.to_asciimath).to eq("\"P{modtwosum}\"")
       end
 
       it "matches LaTeX string" do

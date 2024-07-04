@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Boxbslash do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Boxbslash" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{boxbslash}")
+        expect(klass.to_asciimath).to eq("\"P{boxbslash}\"")
       end
 
       it "matches LaTeX string" do

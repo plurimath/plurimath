@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Leftvectorbar do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Leftvectorbar" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{LeftVectorBar}")
+        expect(klass.to_asciimath).to eq("\"P{LeftVectorBar}\"")
       end
 
       it "matches LaTeX string" do

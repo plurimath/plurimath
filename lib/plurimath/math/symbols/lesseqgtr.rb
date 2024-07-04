@@ -4,7 +4,7 @@ module Plurimath
       class Lesseqgtr < Symbol
         INPUT = {
           unicodemath: [["lesseqgtr", "&#x22da;"]],
-          asciimath: [["&#x22da;"], parsing_wrapper(["lesseqgtr"])],
+          asciimath: [["&#x22da;"], parsing_wrapper(["lesseqgtr"], lang: :asciimath)],
           mathml: ["&#x22da;"],
           latex: [["lesseqgtr", "&#x22da;"]],
           omml: ["&#x22da;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("lesseqgtr")
+          parsing_wrapper("lesseqgtr", lang: :asciimath)
         end
 
         def to_unicodemath

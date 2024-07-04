@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Veeeq < Symbol
         INPUT = {
-          unicodemath: [["&#x225a;"], parsing_wrapper(["veeeq"])],
-          asciimath: [["&#x225a;"], parsing_wrapper(["veeeq"])],
+          unicodemath: [["&#x225a;"], parsing_wrapper(["veeeq"], lang: :unicode)],
+          asciimath: [["&#x225a;"], parsing_wrapper(["veeeq"], lang: :asciimath)],
           mathml: ["&#x225a;"],
           latex: [["veeeq", "&#x225a;"]],
           omml: ["&#x225a;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("veeeq")
+          parsing_wrapper("veeeq", lang: :asciimath)
         end
 
         def to_unicodemath

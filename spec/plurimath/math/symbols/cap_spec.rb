@@ -14,11 +14,11 @@ RSpec.describe Plurimath::Math::Symbols::Cap do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Cap" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{cap}")
+        expect(klass.to_asciimath).to eq("\"P{Cap}\"")
       end
 
       it "matches LaTeX string" do
-        expect(klass.to_latex).to eq("\\cap")
+        expect(klass.to_latex).to eq("\\Cap")
       end
 
       it "matches UnicodeMath string" do
@@ -30,7 +30,7 @@ RSpec.describe Plurimath::Math::Symbols::Cap do
       end
 
       it "matches MathML string" do
-        string = dump_ox_nodes(klass.to_mathml_without_math_tag(false)).strip
+        string = dump_ox_nodes(klass.to_mathml_without_math_tag(true)).strip
         expect(string).to eq("<mi>&#x2229;</mi>")
       end
 

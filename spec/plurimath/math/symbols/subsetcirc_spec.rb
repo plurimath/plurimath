@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Subsetcirc do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Subsetcirc" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{subsetcirc}")
+        expect(klass.to_asciimath).to eq("\"P{subsetcirc}\"")
       end
 
       it "matches LaTeX string" do

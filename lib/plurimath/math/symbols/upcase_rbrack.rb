@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class UpcaseRbrack < Symbol
         INPUT = {
-          unicodemath: [["&#x27e7;"], parsing_wrapper(["rrbracket", "rBrack", "UpcaseRbrack"])],
-          asciimath: [["&#x27e7;"], parsing_wrapper(["rrbracket", "rBrack", "UpcaseRbrack"])],
+          unicodemath: [["&#x27e7;"], parsing_wrapper(["rrbracket", "rBrack", "UpcaseRbrack"], lang: :unicode)],
+          asciimath: [["&#x27e7;"], parsing_wrapper(["rrbracket", "rBrack", "UpcaseRbrack"], lang: :asciimath)],
           mathml: ["&#x27e7;"],
           latex: [["rrbracket", "rBrack", "Rbrack", "&#x27e7;"]],
           omml: ["&#x27e7;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("Rbrack")
+          parsing_wrapper("Rbrack", lang: :asciimath)
         end
 
         def to_unicodemath

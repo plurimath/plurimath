@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Eqcirc do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Eqcirc" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{eqcirc}")
+        expect(klass.to_asciimath).to eq("\"P{eqcirc}\"")
       end
 
       it "matches LaTeX string" do

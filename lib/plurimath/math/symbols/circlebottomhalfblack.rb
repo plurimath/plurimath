@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Circlebottomhalfblack < Symbol
         INPUT = {
-          unicodemath: [["&#x25d2;"], parsing_wrapper(["circlebottomhalfblack"])],
-          asciimath: [["&#x25d2;"], parsing_wrapper(["circlebottomhalfblack"])],
+          unicodemath: [["&#x25d2;"], parsing_wrapper(["circlebottomhalfblack"], lang: :unicode)],
+          asciimath: [["&#x25d2;"], parsing_wrapper(["circlebottomhalfblack"], lang: :asciimath)],
           mathml: ["&#x25d2;"],
           latex: [["circlebottomhalfblack", "&#x25d2;"]],
           omml: ["&#x25d2;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("circlebottomhalfblack")
+          parsing_wrapper("circlebottomhalfblack", lang: :asciimath)
         end
 
         def to_unicodemath

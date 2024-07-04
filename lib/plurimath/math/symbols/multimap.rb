@@ -4,7 +4,7 @@ module Plurimath
       class Multimap < Symbol
         INPUT = {
           unicodemath: [["multimap", "&#x22b8;"]],
-          asciimath: [["&#x22b8;"], parsing_wrapper(["multimap"])],
+          asciimath: [["&#x22b8;"], parsing_wrapper(["multimap"], lang: :asciimath)],
           mathml: ["&#x22b8;"],
           latex: [["multimap", "&#x22b8;"]],
           omml: ["&#x22b8;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("multimap")
+          parsing_wrapper("multimap", lang: :asciimath)
         end
 
         def to_unicodemath

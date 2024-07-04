@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Obot do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Obot" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{obot}")
+        expect(klass.to_asciimath).to eq("\"P{obot}\"")
       end
 
       it "matches LaTeX string" do

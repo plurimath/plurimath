@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Beth do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Beth" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{beth}")
+        expect(klass.to_asciimath).to eq("\"P{beth}\"")
       end
 
       it "matches LaTeX string" do

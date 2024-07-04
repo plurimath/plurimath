@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Wedgedot do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Wedgedot" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{wedgedot}")
+        expect(klass.to_asciimath).to eq("\"P{wedgedot}\"")
       end
 
       it "matches LaTeX string" do

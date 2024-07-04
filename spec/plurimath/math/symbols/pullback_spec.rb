@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Pullback do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Pullback" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{pullback}")
+        expect(klass.to_asciimath).to eq("\"P{pullback}\"")
       end
 
       it "matches LaTeX string" do

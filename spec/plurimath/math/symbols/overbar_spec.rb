@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Overbar do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Overbar" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{overbar}")
+        expect(klass.to_asciimath).to eq("\"P{overbar}\"")
       end
 
       it "matches LaTeX string" do

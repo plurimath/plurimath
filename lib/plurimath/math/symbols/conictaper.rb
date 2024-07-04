@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Conictaper < Symbol
         INPUT = {
-          unicodemath: [["&#x2332;"], parsing_wrapper(["conictaper"])],
-          asciimath: [["&#x2332;"], parsing_wrapper(["conictaper"])],
+          unicodemath: [["&#x2332;"], parsing_wrapper(["conictaper"], lang: :unicode)],
+          asciimath: [["&#x2332;"], parsing_wrapper(["conictaper"], lang: :asciimath)],
           mathml: ["&#x2332;"],
           latex: [["conictaper", "&#x2332;"]],
           omml: ["&#x2332;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("conictaper")
+          parsing_wrapper("conictaper", lang: :asciimath)
         end
 
         def to_unicodemath

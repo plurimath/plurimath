@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Rdsh do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Rdsh" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{rdsh}")
+        expect(klass.to_asciimath).to eq("\"P{rdsh}\"")
       end
 
       it "matches LaTeX string" do

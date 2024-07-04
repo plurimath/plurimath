@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Angleubar < Symbol
         INPUT = {
-          unicodemath: [["&#x29a4;"], parsing_wrapper(["angleubar"])],
-          asciimath: [["&#x29a4;"], parsing_wrapper(["angleubar"])],
+          unicodemath: [["&#x29a4;"], parsing_wrapper(["angleubar"], lang: :unicode)],
+          asciimath: [["&#x29a4;"], parsing_wrapper(["angleubar"], lang: :asciimath)],
           mathml: ["&#x29a4;"],
           latex: [["angleubar", "&#x29a4;"]],
           omml: ["&#x29a4;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("angleubar")
+          parsing_wrapper("angleubar", lang: :asciimath)
         end
 
         def to_unicodemath

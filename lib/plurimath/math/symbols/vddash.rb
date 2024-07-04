@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Vddash < Symbol
         INPUT = {
-          unicodemath: [["&#x2ae2;"], parsing_wrapper(["vDdash"])],
-          asciimath: [["&#x2ae2;"], parsing_wrapper(["vDdash"])],
+          unicodemath: [["&#x2ae2;"], parsing_wrapper(["vDdash"], lang: :unicode)],
+          asciimath: [["&#x2ae2;"], parsing_wrapper(["vDdash"], lang: :asciimath)],
           mathml: ["&#x2ae2;"],
           latex: [["vDdash", "&#x2ae2;"]],
           omml: ["&#x2ae2;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("vDdash")
+          parsing_wrapper("vDdash", lang: :asciimath)
         end
 
         def to_unicodemath

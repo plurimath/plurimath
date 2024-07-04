@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Downuparrows < Symbol
         INPUT = {
-          unicodemath: [["&#x21f5;"], parsing_wrapper(["downarrowuparrow", "downuparrows"])],
-          asciimath: [["&#x21f5;"], parsing_wrapper(["downarrowuparrow", "downuparrows"])],
+          unicodemath: [["&#x21f5;"], parsing_wrapper(["downarrowuparrow", "downuparrows"], lang: :unicode)],
+          asciimath: [["&#x21f5;"], parsing_wrapper(["downarrowuparrow", "downuparrows"], lang: :asciimath)],
           mathml: ["&#x21f5;"],
           latex: [["downarrowuparrow", "downuparrows", "&#x21f5;"]],
           omml: ["&#x21f5;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("downuparrows")
+          parsing_wrapper("downuparrows", lang: :asciimath)
         end
 
         def to_unicodemath

@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Sqcap do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Sqcap" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{Sqcap}")
+        expect(klass.to_asciimath).to eq("\"P{Sqcap}\"")
       end
 
       it "matches LaTeX string" do

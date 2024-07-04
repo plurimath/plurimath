@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Lgblksquare do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Lgblksquare" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{lgblksquare}")
+        expect(klass.to_asciimath).to eq("\"P{lgblksquare}\"")
       end
 
       it "matches LaTeX string" do

@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Boxcircle do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Boxcircle" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{boxcircle}")
+        expect(klass.to_asciimath).to eq("\"P{boxcircle}\"")
       end
 
       it "matches LaTeX string" do

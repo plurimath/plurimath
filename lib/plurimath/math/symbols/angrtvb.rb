@@ -3,10 +3,10 @@ module Plurimath
     module Symbols
       class Angrtvb < Symbol
         INPUT = {
-          unicodemath: [["angrtvb", "&#x22be;"], parsing_wrapper(["measuredrightangle"])],
-          asciimath: [["&#x22be;"], parsing_wrapper(["angrtvb", "measuredrightangle"])],
+          unicodemath: [["angrtvb", "&#x22be;"], parsing_wrapper(["measuredrightangle"], lang: :unicode)],
+          asciimath: [["&#x22be;"], parsing_wrapper(["angrtvb", "measuredrightangle"], lang: :asciimath)],
           mathml: ["&#x22be;"],
-          latex: [["measuredrightangle", "&#x22be;"], parsing_wrapper(["angrtvb"])],
+          latex: [["measuredrightangle", "&#x22be;"], parsing_wrapper(["angrtvb"], lang: :latex)],
           omml: ["&#x22be;"],
           html: ["&#x22be;"],
         }.freeze
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("angrtvb")
+          parsing_wrapper("angrtvb", lang: :asciimath)
         end
 
         def to_unicodemath

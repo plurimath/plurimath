@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Rightarrowonoplus do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Rightarrowonoplus" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{rightarrowonoplus}")
+        expect(klass.to_asciimath).to eq("\"P{rightarrowonoplus}\"")
       end
 
       it "matches LaTeX string" do

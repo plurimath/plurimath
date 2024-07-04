@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Postalmark < Symbol
         INPUT = {
-          unicodemath: [["&#x3012;"], parsing_wrapper(["postalmark"])],
-          asciimath: [["&#x3012;"], parsing_wrapper(["postalmark"])],
+          unicodemath: [["&#x3012;"], parsing_wrapper(["postalmark"], lang: :unicode)],
+          asciimath: [["&#x3012;"], parsing_wrapper(["postalmark"], lang: :asciimath)],
           mathml: ["&#x3012;"],
           latex: [["postalmark", "&#x3012;"]],
           omml: ["&#x3012;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("postalmark")
+          parsing_wrapper("postalmark", lang: :asciimath)
         end
 
         def to_unicodemath

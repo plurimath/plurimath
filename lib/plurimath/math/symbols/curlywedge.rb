@@ -4,7 +4,7 @@ module Plurimath
       class Curlywedge < Symbol
         INPUT = {
           unicodemath: [["curlywedge", "&#x22cf;"]],
-          asciimath: [["&#x22cf;"], parsing_wrapper(["curlywedge"])],
+          asciimath: [["&#x22cf;"], parsing_wrapper(["curlywedge"], lang: :asciimath)],
           mathml: ["&#x22cf;"],
           latex: [["curlywedge", "&#x22cf;"]],
           omml: ["&#x22cf;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("curlywedge")
+          parsing_wrapper("curlywedge", lang: :asciimath)
         end
 
         def to_unicodemath

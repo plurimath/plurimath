@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class UpcasePi < Symbol
         INPUT = {
-          unicodemath: [["Pi", "&#x3a0;"], parsing_wrapper(["upPi"])],
-          asciimath: [["Pi", "&#x3a0;"], parsing_wrapper(["upPi"])],
+          unicodemath: [["Pi", "&#x3a0;"], parsing_wrapper(["upPi"], lang: :unicode)],
+          asciimath: [["Pi", "&#x3a0;"], parsing_wrapper(["upPi"], lang: :asciimath)],
           mathml: ["&#x3a0;"],
           latex: [["upPi", "Pi", "&#x3a0;"]],
           omml: ["&#x3a0;"],

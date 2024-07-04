@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Dag do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Dag" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{dag}")
+        expect(klass.to_asciimath).to eq("\"P{dag}\"")
       end
 
       it "matches LaTeX string" do

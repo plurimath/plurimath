@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Gtrapprox < Symbol
         INPUT = {
-          unicodemath: [["&#x2a86;"], parsing_wrapper(["gtrapprox"])],
-          asciimath: [["&#x2a86;"], parsing_wrapper(["gtrapprox"])],
+          unicodemath: [["&#x2a86;"], parsing_wrapper(["gtrapprox"], lang: :unicode)],
+          asciimath: [["&#x2a86;"], parsing_wrapper(["gtrapprox"], lang: :asciimath)],
           mathml: ["&#x2a86;"],
           latex: [["gtrapprox", "&#x2a86;"]],
           omml: ["&#x2a86;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("gtrapprox")
+          parsing_wrapper("gtrapprox", lang: :asciimath)
         end
 
         def to_unicodemath

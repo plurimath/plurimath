@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Simgtr < Symbol
         INPUT = {
-          unicodemath: [["&#x2a9e;"], parsing_wrapper(["simgtr"])],
-          asciimath: [["&#x2a9e;"], parsing_wrapper(["simgtr"])],
+          unicodemath: [["&#x2a9e;"], parsing_wrapper(["simgtr"], lang: :unicode)],
+          asciimath: [["&#x2a9e;"], parsing_wrapper(["simgtr"], lang: :asciimath)],
           mathml: ["&#x2a9e;"],
           latex: [["simgtr", "&#x2a9e;"]],
           omml: ["&#x2a9e;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("simgtr")
+          parsing_wrapper("simgtr", lang: :asciimath)
         end
 
         def to_unicodemath

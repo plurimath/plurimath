@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Threeunderdot do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Threeunderdot" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{threeunderdot}")
+        expect(klass.to_asciimath).to eq("\"P{threeunderdot}\"")
       end
 
       it "matches LaTeX string" do

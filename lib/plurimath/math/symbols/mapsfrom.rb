@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Mapsfrom < Symbol
         INPUT = {
-          unicodemath: [["&#x2906;"], parsing_wrapper(["Mappedfrom", "Mapsfrom"])],
-          asciimath: [["&#x2906;"], parsing_wrapper(["Mappedfrom", "Mapsfrom"])],
+          unicodemath: [["&#x2906;"], parsing_wrapper(["Mappedfrom", "Mapsfrom"], lang: :unicode)],
+          asciimath: [["&#x2906;"], parsing_wrapper(["Mappedfrom", "Mapsfrom"], lang: :asciimath)],
           mathml: ["&#x2906;"],
           latex: [["Mappedfrom", "Mapsfrom", "&#x2906;"]],
           omml: ["&#x2906;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("Mapsfrom")
+          parsing_wrapper("Mapsfrom", lang: :asciimath)
         end
 
         def to_unicodemath

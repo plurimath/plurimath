@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Similarleftarrow < Symbol
         INPUT = {
-          unicodemath: [["&#x2b49;"], parsing_wrapper(["similarleftarrow"])],
-          asciimath: [["&#x2b49;"], parsing_wrapper(["similarleftarrow"])],
+          unicodemath: [["&#x2b49;"], parsing_wrapper(["similarleftarrow"], lang: :unicode)],
+          asciimath: [["&#x2b49;"], parsing_wrapper(["similarleftarrow"], lang: :asciimath)],
           mathml: ["&#x2b49;"],
           latex: [["similarleftarrow", "&#x2b49;"]],
           omml: ["&#x2b49;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("similarleftarrow")
+          parsing_wrapper("similarleftarrow", lang: :asciimath)
         end
 
         def to_unicodemath

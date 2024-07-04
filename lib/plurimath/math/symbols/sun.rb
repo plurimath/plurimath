@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Sun < Symbol
         INPUT = {
-          unicodemath: [["&#x263c;"], parsing_wrapper(["sun"])],
-          asciimath: [["&#x263c;"], parsing_wrapper(["sun"])],
+          unicodemath: [["&#x263c;"], parsing_wrapper(["sun"], lang: :unicode)],
+          asciimath: [["&#x263c;"], parsing_wrapper(["sun"], lang: :asciimath)],
           mathml: ["&#x263c;"],
           latex: [["sun", "&#x263c;"]],
           omml: ["&#x263c;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("sun")
+          parsing_wrapper("sun", lang: :asciimath)
         end
 
         def to_unicodemath

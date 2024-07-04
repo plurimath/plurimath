@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Vysmwhtsquare < Symbol
         INPUT = {
-          unicodemath: [["&#x2b1e;"], parsing_wrapper(["vysmwhtsquare"])],
-          asciimath: [["&#x2b1e;"], parsing_wrapper(["vysmwhtsquare"])],
+          unicodemath: [["&#x2b1e;"], parsing_wrapper(["vysmwhtsquare"], lang: :unicode)],
+          asciimath: [["&#x2b1e;"], parsing_wrapper(["vysmwhtsquare"], lang: :asciimath)],
           mathml: ["&#x2b1e;"],
           latex: [["vysmwhtsquare", "&#x2b1e;"]],
           omml: ["&#x2b1e;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("vysmwhtsquare")
+          parsing_wrapper("vysmwhtsquare", lang: :asciimath)
         end
 
         def to_unicodemath

@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Succeqq do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Succeqq" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{succeqq}")
+        expect(klass.to_asciimath).to eq("\"P{succeqq}\"")
       end
 
       it "matches LaTeX string" do

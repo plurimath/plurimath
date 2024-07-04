@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Vrectangleblack do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Vrectangleblack" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{vrectangleblack}")
+        expect(klass.to_asciimath).to eq("\"P{vrectangleblack}\"")
       end
 
       it "matches LaTeX string" do

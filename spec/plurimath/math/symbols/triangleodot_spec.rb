@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Triangleodot do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Triangleodot" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{triangleodot}")
+        expect(klass.to_asciimath).to eq("\"P{triangleodot}\"")
       end
 
       it "matches LaTeX string" do

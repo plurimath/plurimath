@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Cupdot do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Cupdot" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{cupdot}")
+        expect(klass.to_asciimath).to eq("\"P{cupdot}\"")
       end
 
       it "matches LaTeX string" do

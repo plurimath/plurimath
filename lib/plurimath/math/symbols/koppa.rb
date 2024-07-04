@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Koppa < Symbol
         INPUT = {
-          unicodemath: [["&#x3d9;"], parsing_wrapper(["upoldkoppa", "qoppa", "koppa"])],
-          asciimath: [["&#x3d9;"], parsing_wrapper(["upoldkoppa", "qoppa", "koppa"])],
+          unicodemath: [["&#x3d9;"], parsing_wrapper(["upoldkoppa", "qoppa", "koppa"], lang: :unicode)],
+          asciimath: [["&#x3d9;"], parsing_wrapper(["upoldkoppa", "qoppa", "koppa"], lang: :asciimath)],
           mathml: ["&#x3d9;"],
           latex: [["upoldkoppa", "qoppa", "koppa", "&#x3d9;"]],
           omml: ["&#x3d9;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("koppa")
+          parsing_wrapper("koppa", lang: :asciimath)
         end
 
         def to_unicodemath

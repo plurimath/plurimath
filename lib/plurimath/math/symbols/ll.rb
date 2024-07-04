@@ -4,7 +4,7 @@ module Plurimath
       class Ll < Symbol
         INPUT = {
           unicodemath: [["ll", "&#x226a;"]],
-          asciimath: [["&#x226a;"], parsing_wrapper(["ll"])],
+          asciimath: [["&#x226a;"], parsing_wrapper(["ll"], lang: :asciimath)],
           mathml: ["&#x226a;"],
           latex: [["ll", "&#x226a;"]],
           omml: ["&#x226a;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("ll")
+          parsing_wrapper("ll", lang: :asciimath)
         end
 
         def to_unicodemath

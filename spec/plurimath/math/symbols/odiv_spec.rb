@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Odiv do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Odiv" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{odiv}")
+        expect(klass.to_asciimath).to eq("\"P{odiv}\"")
       end
 
       it "matches LaTeX string" do

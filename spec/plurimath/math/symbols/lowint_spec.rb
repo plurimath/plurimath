@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Lowint do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Lowint" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{lowint}")
+        expect(klass.to_asciimath).to eq("\"P{lowint}\"")
       end
 
       it "matches LaTeX string" do

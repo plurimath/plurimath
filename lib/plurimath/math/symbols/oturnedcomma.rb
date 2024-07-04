@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Oturnedcomma < Symbol
         INPUT = {
-          unicodemath: [["&#x312;"], parsing_wrapper(["oturnedcomma"])],
-          asciimath: [["&#x312;"], parsing_wrapper(["oturnedcomma"])],
+          unicodemath: [["&#x312;"], parsing_wrapper(["oturnedcomma"], lang: :unicode)],
+          asciimath: [["&#x312;"], parsing_wrapper(["oturnedcomma"], lang: :asciimath)],
           mathml: ["&#x312;"],
           latex: [["oturnedcomma", "&#x312;"]],
           omml: ["&#x312;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("oturnedcomma")
+          parsing_wrapper("oturnedcomma", lang: :asciimath)
         end
 
         def to_unicodemath

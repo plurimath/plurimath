@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Clockoint < Symbol
         INPUT = {
-          unicodemath: [["&#x2232;"], parsing_wrapper(["varointclockwise", "clockoint"])],
-          asciimath: [["&#x2232;"], parsing_wrapper(["varointclockwise", "clockoint"])],
+          unicodemath: [["&#x2232;"], parsing_wrapper(["varointclockwise", "clockoint"], lang: :unicode)],
+          asciimath: [["&#x2232;"], parsing_wrapper(["varointclockwise", "clockoint"], lang: :asciimath)],
           mathml: ["&#x2232;"],
           latex: [["varointclockwise", "clockoint", "&#x2232;"]],
           omml: ["&#x2232;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("clockoint")
+          parsing_wrapper("clockoint", lang: :asciimath)
         end
 
         def to_unicodemath

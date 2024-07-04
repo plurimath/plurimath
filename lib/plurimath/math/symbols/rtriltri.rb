@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Rtriltri < Symbol
         INPUT = {
-          unicodemath: [["&#x29ce;"], parsing_wrapper(["rtriltri"])],
-          asciimath: [["&#x29ce;"], parsing_wrapper(["rtriltri"])],
+          unicodemath: [["&#x29ce;"], parsing_wrapper(["rtriltri"], lang: :unicode)],
+          asciimath: [["&#x29ce;"], parsing_wrapper(["rtriltri"], lang: :asciimath)],
           mathml: ["&#x29ce;"],
           latex: [["rtriltri", "&#x29ce;"]],
           omml: ["&#x29ce;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("rtriltri")
+          parsing_wrapper("rtriltri", lang: :asciimath)
         end
 
         def to_unicodemath

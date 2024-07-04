@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Intprodr < Symbol
         INPUT = {
-          unicodemath: [["&#x2a3d;"], parsing_wrapper(["intprodr"])],
-          asciimath: [["&#x2a3d;"], parsing_wrapper(["intprodr"])],
+          unicodemath: [["&#x2a3d;"], parsing_wrapper(["intprodr"], lang: :unicode)],
+          asciimath: [["&#x2a3d;"], parsing_wrapper(["intprodr"], lang: :asciimath)],
           mathml: ["&#x2a3d;"],
           latex: [["intprodr", "&#x2a3d;"]],
           omml: ["&#x2a3d;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("intprodr")
+          parsing_wrapper("intprodr", lang: :asciimath)
         end
 
         def to_unicodemath

@@ -4,7 +4,7 @@ module Plurimath
       class Curlyeqsucc < Symbol
         INPUT = {
           unicodemath: [["curlyeqsucc", "&#x22df;"]],
-          asciimath: [["&#x22df;"], parsing_wrapper(["curlyeqsucc"])],
+          asciimath: [["&#x22df;"], parsing_wrapper(["curlyeqsucc"], lang: :asciimath)],
           mathml: ["&#x22df;"],
           latex: [["curlyeqsucc", "&#x22df;"]],
           omml: ["&#x22df;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("curlyeqsucc")
+          parsing_wrapper("curlyeqsucc", lang: :asciimath)
         end
 
         def to_unicodemath

@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Gesdoto do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Gesdoto" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{gesdoto}")
+        expect(klass.to_asciimath).to eq("\"P{gesdoto}\"")
       end
 
       it "matches LaTeX string" do

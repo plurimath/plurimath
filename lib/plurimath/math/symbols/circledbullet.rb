@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Circledbullet < Symbol
         INPUT = {
-          unicodemath: [["&#x29bf;"], parsing_wrapper(["circledbullet"])],
-          asciimath: [["&#x29bf;"], parsing_wrapper(["circledbullet"])],
+          unicodemath: [["&#x29bf;"], parsing_wrapper(["circledbullet"], lang: :unicode)],
+          asciimath: [["&#x29bf;"], parsing_wrapper(["circledbullet"], lang: :asciimath)],
           mathml: ["&#x29bf;"],
           latex: [["circledbullet", "&#x29bf;"]],
           omml: ["&#x29bf;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("circledbullet")
+          parsing_wrapper("circledbullet", lang: :asciimath)
         end
 
         def to_unicodemath

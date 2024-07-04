@@ -4,7 +4,7 @@ module Plurimath
       class Nless < Symbol
         INPUT = {
           unicodemath: [["nless", "&#x226e;"]],
-          asciimath: [["&#x226e;"], parsing_wrapper(["nless"])],
+          asciimath: [["&#x226e;"], parsing_wrapper(["nless"], lang: :asciimath)],
           mathml: ["&#x226e;"],
           latex: [["nless", "&#x226e;"]],
           omml: ["&#x226e;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("nless")
+          parsing_wrapper("nless", lang: :asciimath)
         end
 
         def to_unicodemath

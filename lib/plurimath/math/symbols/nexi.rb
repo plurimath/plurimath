@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Nexi < Symbol
         INPUT = {
-          unicodemath: [["nexists", "&#x2204;"], parsing_wrapper(["nexi"])],
-          asciimath: [["&#x2204;"], parsing_wrapper(["nexists", "nexi"])],
+          unicodemath: [["nexists", "&#x2204;"], parsing_wrapper(["nexi"], lang: :unicode)],
+          asciimath: [["&#x2204;"], parsing_wrapper(["nexists", "nexi"], lang: :asciimath)],
           mathml: ["&#x2204;"],
           latex: [["nexists", "nexi", "&#x2204;"]],
           omml: ["&#x2204;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("nexi")
+          parsing_wrapper("nexi", lang: :asciimath)
         end
 
         def to_unicodemath

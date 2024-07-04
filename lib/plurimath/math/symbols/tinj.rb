@@ -3,10 +3,10 @@ module Plurimath
     module Symbols
       class Tinj < Symbol
         INPUT = {
-          unicodemath: [["rightarrowtail", "&#x21a3;"], parsing_wrapper([">->", "tinj"])],
-          asciimath: [["rightarrowtail", ">->", "&#x21a3;"], parsing_wrapper(["tinj"])],
+          unicodemath: [["rightarrowtail", "&#x21a3;"], parsing_wrapper([">->", "tinj"], lang: :unicode)],
+          asciimath: [["rightarrowtail", ">->", "&#x21a3;"], parsing_wrapper(["tinj"], lang: :asciimath)],
           mathml: ["&#x21a3;"],
-          latex: [["rightarrowtail", "tinj", "&#x21a3;"], parsing_wrapper([">->"])],
+          latex: [["rightarrowtail", "tinj", "&#x21a3;"], parsing_wrapper([">->"], lang: :latex)],
           omml: ["&#x21a3;"],
           html: ["&#x21a3;"],
         }.freeze
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("tinj")
+          parsing_wrapper("tinj", lang: :asciimath)
         end
 
         def to_unicodemath

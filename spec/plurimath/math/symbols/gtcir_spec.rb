@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Gtcir do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Gtcir" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{gtcir}")
+        expect(klass.to_asciimath).to eq("\"P{gtcir}\"")
       end
 
       it "matches LaTeX string" do

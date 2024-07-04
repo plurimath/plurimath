@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Radiation do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Radiation" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{radiation}")
+        expect(klass.to_asciimath).to eq("\"P{radiation}\"")
       end
 
       it "matches LaTeX string" do

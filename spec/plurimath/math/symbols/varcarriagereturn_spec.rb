@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Varcarriagereturn do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Varcarriagereturn" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{varcarriagereturn}")
+        expect(klass.to_asciimath).to eq("\"P{varcarriagereturn}\"")
       end
 
       it "matches LaTeX string" do

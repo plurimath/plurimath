@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Sadface do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Sadface" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{sadface}")
+        expect(klass.to_asciimath).to eq("\"P{sadface}\"")
       end
 
       it "matches LaTeX string" do

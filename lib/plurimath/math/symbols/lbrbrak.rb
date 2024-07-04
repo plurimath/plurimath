@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Lbrbrak < Symbol
         INPUT = {
-          unicodemath: [["&#x27ec;"], parsing_wrapper(["Lbrbrak"])],
-          asciimath: [["&#x27ec;"], parsing_wrapper(["Lbrbrak"])],
+          unicodemath: [["&#x27ec;"], parsing_wrapper(["Lbrbrak"], lang: :unicode)],
+          asciimath: [["&#x27ec;"], parsing_wrapper(["Lbrbrak"], lang: :asciimath)],
           mathml: ["&#x27ec;"],
           latex: [["Lbrbrak", "&#x27ec;"]],
           omml: ["&#x27ec;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("Lbrbrak")
+          parsing_wrapper("Lbrbrak", lang: :asciimath)
         end
 
         def to_unicodemath

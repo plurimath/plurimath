@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Whiteinwhitetriangle do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Whiteinwhitetriangle" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{whiteinwhitetriangle}")
+        expect(klass.to_asciimath).to eq("\"P{whiteinwhitetriangle}\"")
       end
 
       it "matches LaTeX string" do

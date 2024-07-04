@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Upand < Symbol
         INPUT = {
-          unicodemath: [["&#x214b;"], parsing_wrapper(["invamp", "upand"])],
-          asciimath: [["&#x214b;"], parsing_wrapper(["invamp", "upand"])],
+          unicodemath: [["&#x214b;"], parsing_wrapper(["invamp", "upand"], lang: :unicode)],
+          asciimath: [["&#x214b;"], parsing_wrapper(["invamp", "upand"], lang: :asciimath)],
           mathml: ["&#x214b;"],
           latex: [["invamp", "upand", "&#x214b;"]],
           omml: ["&#x214b;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("upand")
+          parsing_wrapper("upand", lang: :asciimath)
         end
 
         def to_unicodemath

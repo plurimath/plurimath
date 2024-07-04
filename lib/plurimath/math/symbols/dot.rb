@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Dot < Symbol
         INPUT = {
-          unicodemath: [["&#x307;"], parsing_wrapper(["Dot"])],
-          asciimath: [["&#x307;"], parsing_wrapper(["Dot"])],
+          unicodemath: [["&#x307;"], parsing_wrapper(["Dot"], lang: :unicode)],
+          asciimath: [["&#x307;"], parsing_wrapper(["Dot"], lang: :asciimath)],
           mathml: ["&#x307;"],
           latex: [["Dot", "&#x307;"]],
           omml: ["&#x307;"],

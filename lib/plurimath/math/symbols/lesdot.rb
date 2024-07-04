@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Lesdot < Symbol
         INPUT = {
-          unicodemath: [["&#x2a7f;"], parsing_wrapper(["lesdot"])],
-          asciimath: [["&#x2a7f;"], parsing_wrapper(["lesdot"])],
+          unicodemath: [["&#x2a7f;"], parsing_wrapper(["lesdot"], lang: :unicode)],
+          asciimath: [["&#x2a7f;"], parsing_wrapper(["lesdot"], lang: :asciimath)],
           mathml: ["&#x2a7f;"],
           latex: [["lesdot", "&#x2a7f;"]],
           omml: ["&#x2a7f;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("lesdot")
+          parsing_wrapper("lesdot", lang: :asciimath)
         end
 
         def to_unicodemath

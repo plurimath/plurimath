@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Neswarrow do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Neswarrow" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{neswarrow}")
+        expect(klass.to_asciimath).to eq("\"P{neswarrow}\"")
       end
 
       it "matches LaTeX string" do

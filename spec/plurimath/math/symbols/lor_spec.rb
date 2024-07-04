@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Lor do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Lor" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{lor}")
+        expect(klass.to_asciimath).to eq("\"P{lor}\"")
       end
 
       it "matches LaTeX string" do

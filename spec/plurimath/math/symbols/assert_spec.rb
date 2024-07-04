@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Assert do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Assert" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{assert}")
+        expect(klass.to_asciimath).to eq("\"P{assert}\"")
       end
 
       it "matches LaTeX string" do

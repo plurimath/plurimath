@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Triangleserifs do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Triangleserifs" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{triangleserifs}")
+        expect(klass.to_asciimath).to eq("\"P{triangleserifs}\"")
       end
 
       it "matches LaTeX string" do

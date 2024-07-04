@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Simneqq < Symbol
         INPUT = {
-          unicodemath: [["&#x2246;"], parsing_wrapper(["simneqq"])],
-          asciimath: [["&#x2246;"], parsing_wrapper(["simneqq"])],
+          unicodemath: [["&#x2246;"], parsing_wrapper(["simneqq"], lang: :unicode)],
+          asciimath: [["&#x2246;"], parsing_wrapper(["simneqq"], lang: :asciimath)],
           mathml: ["&#x2246;"],
           latex: [["simneqq", "&#x2246;"]],
           omml: ["&#x2246;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("simneqq")
+          parsing_wrapper("simneqq", lang: :asciimath)
         end
 
         def to_unicodemath

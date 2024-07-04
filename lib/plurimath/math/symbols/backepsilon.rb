@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Backepsilon < Symbol
         INPUT = {
-          unicodemath: [["&#x3f6;"], parsing_wrapper(["upbackepsilon", "backepsilon"])],
-          asciimath: [["&#x3f6;"], parsing_wrapper(["upbackepsilon", "backepsilon"])],
+          unicodemath: [["&#x3f6;"], parsing_wrapper(["upbackepsilon", "backepsilon"], lang: :unicode)],
+          asciimath: [["&#x3f6;"], parsing_wrapper(["upbackepsilon", "backepsilon"], lang: :asciimath)],
           mathml: ["&#x3f6;"],
           latex: [["upbackepsilon", "backepsilon", "&#x3f6;"]],
           omml: ["&#x3f6;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("backepsilon")
+          parsing_wrapper("backepsilon", lang: :asciimath)
         end
 
         def to_unicodemath

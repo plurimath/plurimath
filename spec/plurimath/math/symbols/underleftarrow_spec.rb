@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Underleftarrow do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Underleftarrow" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{underleftarrow}")
+        expect(klass.to_asciimath).to eq("\"P{underleftarrow}\"")
       end
 
       it "matches LaTeX string" do

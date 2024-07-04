@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Ring < Symbol
         INPUT = {
-          unicodemath: [["&#x30a;"], parsing_wrapper(["mathring", "ocirc", "ring"])],
-          asciimath: [["&#x30a;"], parsing_wrapper(["mathring", "ocirc", "ring"])],
+          unicodemath: [["&#x30a;"], parsing_wrapper(["mathring", "ocirc", "ring"], lang: :unicode)],
+          asciimath: [["&#x30a;"], parsing_wrapper(["mathring", "ocirc", "ring"], lang: :asciimath)],
           mathml: ["&#x30a;"],
           latex: [["mathring", "ocirc", "ring", "&#x30a;"]],
           omml: ["&#x30a;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("ring")
+          parsing_wrapper("ring", lang: :asciimath)
         end
 
         def to_unicodemath

@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Linefeed do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Linefeed" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{linefeed}")
+        expect(klass.to_asciimath).to eq("\"P{linefeed}\"")
       end
 
       it "matches LaTeX string" do

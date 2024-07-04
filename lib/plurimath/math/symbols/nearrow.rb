@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Nearrow < Symbol
         INPUT = {
-          unicodemath: [["&#x21d7;"], parsing_wrapper(["Nearrow"])],
-          asciimath: [["&#x21d7;"], parsing_wrapper(["Nearrow"])],
+          unicodemath: [["&#x21d7;"], parsing_wrapper(["Nearrow"], lang: :unicode)],
+          asciimath: [["&#x21d7;"], parsing_wrapper(["Nearrow"], lang: :asciimath)],
           mathml: ["&#x21d7;"],
           latex: [["Nearrow", "&#x21d7;"]],
           omml: ["&#x21d7;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("Nearrow")
+          parsing_wrapper("Nearrow", lang: :asciimath)
         end
 
         def to_unicodemath

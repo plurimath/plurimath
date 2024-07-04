@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Searrow do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Searrow" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{Searrow}")
+        expect(klass.to_asciimath).to eq("\"P{Searrow}\"")
       end
 
       it "matches LaTeX string" do

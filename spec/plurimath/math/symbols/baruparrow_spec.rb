@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Baruparrow do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Baruparrow" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{baruparrow}")
+        expect(klass.to_asciimath).to eq("\"P{baruparrow}\"")
       end
 
       it "matches LaTeX string" do

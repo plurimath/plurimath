@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Gtcir < Symbol
         INPUT = {
-          unicodemath: [["&#x2a7a;"], parsing_wrapper(["gtcir"])],
-          asciimath: [["&#x2a7a;"], parsing_wrapper(["gtcir"])],
+          unicodemath: [["&#x2a7a;"], parsing_wrapper(["gtcir"], lang: :unicode)],
+          asciimath: [["&#x2a7a;"], parsing_wrapper(["gtcir"], lang: :asciimath)],
           mathml: ["&#x2a7a;"],
           latex: [["gtcir", "&#x2a7a;"]],
           omml: ["&#x2a7a;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("gtcir")
+          parsing_wrapper("gtcir", lang: :asciimath)
         end
 
         def to_unicodemath

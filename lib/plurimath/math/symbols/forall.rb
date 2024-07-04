@@ -3,10 +3,10 @@ module Plurimath
     module Symbols
       class Forall < Symbol
         INPUT = {
-          unicodemath: [["forall", "&#x2200;"], parsing_wrapper(["AA"])],
+          unicodemath: [["forall", "&#x2200;"], parsing_wrapper(["AA"], lang: :unicode)],
           asciimath: [["forall", "AA", "&#x2200;"]],
           mathml: ["&#x2200;"],
-          latex: [["forall", "&#x2200;"], parsing_wrapper(["AA"])],
+          latex: [["forall", "&#x2200;"], parsing_wrapper(["AA"], lang: :latex)],
           omml: ["&#x2200;"],
           html: ["&#x2200;"],
         }.freeze
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("forall")
+          parsing_wrapper("forall", lang: :asciimath)
         end
 
         def to_unicodemath

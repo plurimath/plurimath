@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Kernelcontraction < Symbol
         INPUT = {
-          unicodemath: [["&#x223b;"], parsing_wrapper(["kernelcontraction"])],
-          asciimath: [["&#x223b;"], parsing_wrapper(["kernelcontraction"])],
+          unicodemath: [["&#x223b;"], parsing_wrapper(["kernelcontraction"], lang: :unicode)],
+          asciimath: [["&#x223b;"], parsing_wrapper(["kernelcontraction"], lang: :asciimath)],
           mathml: ["&#x223b;"],
           latex: [["kernelcontraction", "&#x223b;"]],
           omml: ["&#x223b;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("kernelcontraction")
+          parsing_wrapper("kernelcontraction", lang: :asciimath)
         end
 
         def to_unicodemath

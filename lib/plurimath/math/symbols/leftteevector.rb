@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Leftteevector < Symbol
         INPUT = {
-          unicodemath: [["&#x295a;"], parsing_wrapper(["leftharpoonupbar", "LeftTeeVector"])],
-          asciimath: [["&#x295a;"], parsing_wrapper(["leftharpoonupbar", "LeftTeeVector"])],
+          unicodemath: [["&#x295a;"], parsing_wrapper(["leftharpoonupbar", "LeftTeeVector"], lang: :unicode)],
+          asciimath: [["&#x295a;"], parsing_wrapper(["leftharpoonupbar", "LeftTeeVector"], lang: :asciimath)],
           mathml: ["&#x295a;"],
           latex: [["leftharpoonupbar", "LeftTeeVector", "&#x295a;"]],
           omml: ["&#x295a;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("LeftTeeVector")
+          parsing_wrapper("LeftTeeVector", lang: :asciimath)
         end
 
         def to_unicodemath

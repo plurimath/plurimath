@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Plushat do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Plushat" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{plushat}")
+        expect(klass.to_asciimath).to eq("\"P{plushat}\"")
       end
 
       it "matches LaTeX string" do

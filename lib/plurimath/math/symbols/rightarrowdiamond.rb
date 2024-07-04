@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Rightarrowdiamond < Symbol
         INPUT = {
-          unicodemath: [["&#x291e;"], parsing_wrapper(["rightarrowdiamond"])],
-          asciimath: [["&#x291e;"], parsing_wrapper(["rightarrowdiamond"])],
+          unicodemath: [["&#x291e;"], parsing_wrapper(["rightarrowdiamond"], lang: :unicode)],
+          asciimath: [["&#x291e;"], parsing_wrapper(["rightarrowdiamond"], lang: :asciimath)],
           mathml: ["&#x291e;"],
           latex: [["rightarrowdiamond", "&#x291e;"]],
           omml: ["&#x291e;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("rightarrowdiamond")
+          parsing_wrapper("rightarrowdiamond", lang: :asciimath)
         end
 
         def to_unicodemath

@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Turnednot do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Turnednot" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{turnednot}")
+        expect(klass.to_asciimath).to eq("\"P{turnednot}\"")
       end
 
       it "matches LaTeX string" do

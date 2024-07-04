@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Twoheadleftdbkarrow < Symbol
         INPUT = {
-          unicodemath: [["&#x2b37;"], parsing_wrapper(["twoheadleftdbkarrow"])],
-          asciimath: [["&#x2b37;"], parsing_wrapper(["twoheadleftdbkarrow"])],
+          unicodemath: [["&#x2b37;"], parsing_wrapper(["twoheadleftdbkarrow"], lang: :unicode)],
+          asciimath: [["&#x2b37;"], parsing_wrapper(["twoheadleftdbkarrow"], lang: :asciimath)],
           mathml: ["&#x2b37;"],
           latex: [["twoheadleftdbkarrow", "&#x2b37;"]],
           omml: ["&#x2b37;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("twoheadleftdbkarrow")
+          parsing_wrapper("twoheadleftdbkarrow", lang: :asciimath)
         end
 
         def to_unicodemath

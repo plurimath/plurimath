@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Supmult < Symbol
         INPUT = {
-          unicodemath: [["&#x2ac2;"], parsing_wrapper(["supmult"])],
-          asciimath: [["&#x2ac2;"], parsing_wrapper(["supmult"])],
+          unicodemath: [["&#x2ac2;"], parsing_wrapper(["supmult"], lang: :unicode)],
+          asciimath: [["&#x2ac2;"], parsing_wrapper(["supmult"], lang: :asciimath)],
           mathml: ["&#x2ac2;"],
           latex: [["supmult", "&#x2ac2;"]],
           omml: ["&#x2ac2;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("supmult")
+          parsing_wrapper("supmult", lang: :asciimath)
         end
 
         def to_unicodemath

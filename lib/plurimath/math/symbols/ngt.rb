@@ -3,10 +3,10 @@ module Plurimath
     module Symbols
       class Ngt < Symbol
         INPUT = {
-          unicodemath: [["ngt", "&#x226f;"], parsing_wrapper(["ngtr"])],
-          asciimath: [["&#x226f;"], parsing_wrapper(["ngt", "ngtr"])],
+          unicodemath: [["ngt", "&#x226f;"], parsing_wrapper(["ngtr"], lang: :unicode)],
+          asciimath: [["&#x226f;"], parsing_wrapper(["ngt", "ngtr"], lang: :asciimath)],
           mathml: ["&#x226f;"],
-          latex: [["ngtr", "&#x226f;"], parsing_wrapper(["ngt"])],
+          latex: [["ngtr", "&#x226f;"], parsing_wrapper(["ngt"], lang: :latex)],
           omml: ["&#x226f;"],
           html: ["&#x226f;"],
         }.freeze
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("ngt")
+          parsing_wrapper("ngt", lang: :asciimath)
         end
 
         def to_unicodemath

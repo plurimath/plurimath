@@ -6,7 +6,7 @@ module Plurimath
           unicodemath: [["infty", "oo", "&#x221e;"]],
           asciimath: [["infty", "oo", "&#x221e;"]],
           mathml: ["&#x221e;"],
-          latex: [["infty", "&#x221e;"], parsing_wrapper(["oo"])],
+          latex: [["infty", "&#x221e;"], parsing_wrapper(["oo"], lang: :latex)],
           omml: ["&#x221e;"],
           html: ["&#x221e;"],
         }.freeze

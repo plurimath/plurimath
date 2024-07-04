@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Twoheadleftarrow do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Twoheadleftarrow" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{twoheadleftarrow}")
+        expect(klass.to_asciimath).to eq("\"P{twoheadleftarrow}\"")
       end
 
       it "matches LaTeX string" do

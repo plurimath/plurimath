@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Eqcolon do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Eqcolon" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{eqcolon}")
+        expect(klass.to_asciimath).to eq("\"P{eqcolon}\"")
       end
 
       it "matches LaTeX string" do

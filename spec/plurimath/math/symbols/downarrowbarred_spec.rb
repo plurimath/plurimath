@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Downarrowbarred do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Downarrowbarred" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{downarrowbarred}")
+        expect(klass.to_asciimath).to eq("\"P{downarrowbarred}\"")
       end
 
       it "matches LaTeX string" do

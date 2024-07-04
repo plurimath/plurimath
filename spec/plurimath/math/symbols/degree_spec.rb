@@ -14,11 +14,11 @@ RSpec.describe Plurimath::Math::Symbols::Degree do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Degree" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{degree}")
+        expect(klass.to_asciimath).to eq("\"P{degree}\"")
       end
 
       it "matches LaTeX string" do
-        expect(klass.to_latex).to eq("__{degree}")
+        expect(klass.to_latex).to eq("\\text{P[degree]}")
       end
 
       it "matches UnicodeMath string" do

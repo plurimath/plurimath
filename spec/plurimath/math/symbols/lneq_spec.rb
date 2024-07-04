@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Lneq do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Lneq" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{lneq}")
+        expect(klass.to_asciimath).to eq("\"P{lneq}\"")
       end
 
       it "matches LaTeX string" do

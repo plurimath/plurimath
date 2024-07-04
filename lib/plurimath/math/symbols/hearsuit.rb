@@ -3,10 +3,10 @@ module Plurimath
     module Symbols
       class Hearsuit < Symbol
         INPUT = {
-          unicodemath: [["hearsuit", "&#x2661;"], parsing_wrapper(["heartsuit"])],
-          asciimath: [["&#x2661;"], parsing_wrapper(["hearsuit", "heartsuit"])],
+          unicodemath: [["hearsuit", "&#x2661;"], parsing_wrapper(["heartsuit"], lang: :unicode)],
+          asciimath: [["&#x2661;"], parsing_wrapper(["hearsuit", "heartsuit"], lang: :asciimath)],
           mathml: ["&#x2661;"],
-          latex: [["heartsuit", "&#x2661;"], parsing_wrapper(["hearsuit"])],
+          latex: [["heartsuit", "&#x2661;"], parsing_wrapper(["hearsuit"], lang: :latex)],
           omml: ["&#x2661;"],
           html: ["&#x2661;"],
         }.freeze
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("hearsuit")
+          parsing_wrapper("hearsuit", lang: :asciimath)
         end
 
         def to_unicodemath

@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Equal < Symbol
         INPUT = {
-          unicodemath: [["&#x3d;", "="], parsing_wrapper(["equal"])],
-          asciimath: [["=", "&#x3d;"], parsing_wrapper(["equal"])],
+          unicodemath: [["&#x3d;", "="], parsing_wrapper(["equal"], lang: :unicode)],
+          asciimath: [["=", "&#x3d;"], parsing_wrapper(["equal"], lang: :asciimath)],
           mathml: ["&#x3d;", "="],
           latex: [["equal", "=", "&#x3d;"]],
           omml: ["&#x3d;", "="],

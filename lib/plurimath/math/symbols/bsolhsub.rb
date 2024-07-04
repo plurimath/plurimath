@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Bsolhsub < Symbol
         INPUT = {
-          unicodemath: [["&#x27c8;"], parsing_wrapper(["bsolhsub"])],
-          asciimath: [["&#x27c8;"], parsing_wrapper(["bsolhsub"])],
+          unicodemath: [["&#x27c8;"], parsing_wrapper(["bsolhsub"], lang: :unicode)],
+          asciimath: [["&#x27c8;"], parsing_wrapper(["bsolhsub"], lang: :asciimath)],
           mathml: ["&#x27c8;"],
           latex: [["bsolhsub", "&#x27c8;"]],
           omml: ["&#x27c8;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("bsolhsub")
+          parsing_wrapper("bsolhsub", lang: :asciimath)
         end
 
         def to_unicodemath

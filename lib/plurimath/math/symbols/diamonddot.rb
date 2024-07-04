@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Diamonddot < Symbol
         INPUT = {
-          unicodemath: [["&#x27d0;"], parsing_wrapper(["diamondcdot", "Diamonddot"])],
-          asciimath: [["&#x27d0;"], parsing_wrapper(["diamondcdot", "Diamonddot"])],
+          unicodemath: [["&#x27d0;"], parsing_wrapper(["diamondcdot", "Diamonddot"], lang: :unicode)],
+          asciimath: [["&#x27d0;"], parsing_wrapper(["diamondcdot", "Diamonddot"], lang: :asciimath)],
           mathml: ["&#x27d0;"],
           latex: [["diamondcdot", "Diamonddot", "&#x27d0;"]],
           omml: ["&#x27d0;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("Diamonddot")
+          parsing_wrapper("Diamonddot", lang: :asciimath)
         end
 
         def to_unicodemath

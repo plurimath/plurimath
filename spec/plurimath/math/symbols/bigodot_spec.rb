@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Bigodot do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Bigodot" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{bigodot}")
+        expect(klass.to_asciimath).to eq("\"P{bigodot}\"")
       end
 
       it "matches LaTeX string" do

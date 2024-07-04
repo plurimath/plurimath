@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Blacksmiley < Symbol
         INPUT = {
-          unicodemath: [["&#x263b;"], parsing_wrapper(["invsmileface", "blacksmiley"])],
-          asciimath: [["&#x263b;"], parsing_wrapper(["invsmileface", "blacksmiley"])],
+          unicodemath: [["&#x263b;"], parsing_wrapper(["invsmileface", "blacksmiley"], lang: :unicode)],
+          asciimath: [["&#x263b;"], parsing_wrapper(["invsmileface", "blacksmiley"], lang: :asciimath)],
           mathml: ["&#x263b;"],
           latex: [["invsmileface", "blacksmiley", "&#x263b;"]],
           omml: ["&#x263b;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("blacksmiley")
+          parsing_wrapper("blacksmiley", lang: :asciimath)
         end
 
         def to_unicodemath

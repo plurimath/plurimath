@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Gla < Symbol
         INPUT = {
-          unicodemath: [["&#x2aa5;"], parsing_wrapper(["gla"])],
-          asciimath: [["&#x2aa5;"], parsing_wrapper(["gla"])],
+          unicodemath: [["&#x2aa5;"], parsing_wrapper(["gla"], lang: :unicode)],
+          asciimath: [["&#x2aa5;"], parsing_wrapper(["gla"], lang: :asciimath)],
           mathml: ["&#x2aa5;"],
           latex: [["gla", "&#x2aa5;"]],
           omml: ["&#x2aa5;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("gla")
+          parsing_wrapper("gla", lang: :asciimath)
         end
 
         def to_unicodemath

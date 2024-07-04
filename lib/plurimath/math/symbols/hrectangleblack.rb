@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Hrectangleblack < Symbol
         INPUT = {
-          unicodemath: [["&#x25ac;"], parsing_wrapper(["hrectangleblack"])],
-          asciimath: [["&#x25ac;"], parsing_wrapper(["hrectangleblack"])],
+          unicodemath: [["&#x25ac;"], parsing_wrapper(["hrectangleblack"], lang: :unicode)],
+          asciimath: [["&#x25ac;"], parsing_wrapper(["hrectangleblack"], lang: :asciimath)],
           mathml: ["&#x25ac;"],
           latex: [["hrectangleblack", "&#x25ac;"]],
           omml: ["&#x25ac;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("hrectangleblack")
+          parsing_wrapper("hrectangleblack", lang: :asciimath)
         end
 
         def to_unicodemath

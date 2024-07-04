@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Fourvdots < Symbol
         INPUT = {
-          unicodemath: [["&#x2999;"], parsing_wrapper(["fourvdots"])],
-          asciimath: [["&#x2999;"], parsing_wrapper(["fourvdots"])],
+          unicodemath: [["&#x2999;"], parsing_wrapper(["fourvdots"], lang: :unicode)],
+          asciimath: [["&#x2999;"], parsing_wrapper(["fourvdots"], lang: :asciimath)],
           mathml: ["&#x2999;"],
           latex: [["fourvdots", "&#x2999;"]],
           omml: ["&#x2999;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("fourvdots")
+          parsing_wrapper("fourvdots", lang: :asciimath)
         end
 
         def to_unicodemath

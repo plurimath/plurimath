@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Backprime do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Backprime" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{backprime}")
+        expect(klass.to_asciimath).to eq("\"P{backprime}\"")
       end
 
       it "matches LaTeX string" do

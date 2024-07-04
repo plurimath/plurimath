@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Wedgemidvert < Symbol
         INPUT = {
-          unicodemath: [["&#x2a5a;"], parsing_wrapper(["wedgemidvert"])],
-          asciimath: [["&#x2a5a;"], parsing_wrapper(["wedgemidvert"])],
+          unicodemath: [["&#x2a5a;"], parsing_wrapper(["wedgemidvert"], lang: :unicode)],
+          asciimath: [["&#x2a5a;"], parsing_wrapper(["wedgemidvert"], lang: :asciimath)],
           mathml: ["&#x2a5a;"],
           latex: [["wedgemidvert", "&#x2a5a;"]],
           omml: ["&#x2a5a;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("wedgemidvert")
+          parsing_wrapper("wedgemidvert", lang: :asciimath)
         end
 
         def to_unicodemath

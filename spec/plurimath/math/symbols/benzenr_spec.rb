@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Benzenr do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Benzenr" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{benzenr}")
+        expect(klass.to_asciimath).to eq("\"P{benzenr}\"")
       end
 
       it "matches LaTeX string" do

@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Concavediamondtickright do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Concavediamondtickright" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{concavediamondtickright}")
+        expect(klass.to_asciimath).to eq("\"P{concavediamondtickright}\"")
       end
 
       it "matches LaTeX string" do

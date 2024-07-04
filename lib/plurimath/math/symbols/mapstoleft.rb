@@ -3,10 +3,10 @@ module Plurimath
     module Symbols
       class Mapstoleft < Symbol
         INPUT = {
-          unicodemath: [["mapstoleft", "&#x21a4;"], parsing_wrapper(["mappedfrom", "mapsfrom"])],
-          asciimath: [["&#x21a4;"], parsing_wrapper(["mapstoleft", "mappedfrom", "mapsfrom"])],
+          unicodemath: [["mapstoleft", "&#x21a4;"], parsing_wrapper(["mappedfrom", "mapsfrom"], lang: :unicode)],
+          asciimath: [["&#x21a4;"], parsing_wrapper(["mapstoleft", "mappedfrom", "mapsfrom"], lang: :asciimath)],
           mathml: ["&#x21a4;"],
-          latex: [["mappedfrom", "mapsfrom", "&#x21a4;"], parsing_wrapper(["mapstoleft"])],
+          latex: [["mappedfrom", "mapsfrom", "&#x21a4;"], parsing_wrapper(["mapstoleft"], lang: :latex)],
           omml: ["&#x21a4;"],
           html: ["&#x21a4;"],
         }.freeze
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("mapstoleft")
+          parsing_wrapper("mapstoleft", lang: :asciimath)
         end
 
         def to_unicodemath

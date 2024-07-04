@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Diamondleftarrow < Symbol
         INPUT = {
-          unicodemath: [["&#x291d;"], parsing_wrapper(["diamondleftarrow"])],
-          asciimath: [["&#x291d;"], parsing_wrapper(["diamondleftarrow"])],
+          unicodemath: [["&#x291d;"], parsing_wrapper(["diamondleftarrow"], lang: :unicode)],
+          asciimath: [["&#x291d;"], parsing_wrapper(["diamondleftarrow"], lang: :asciimath)],
           mathml: ["&#x291d;"],
           latex: [["diamondleftarrow", "&#x291d;"]],
           omml: ["&#x291d;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("diamondleftarrow")
+          parsing_wrapper("diamondleftarrow", lang: :asciimath)
         end
 
         def to_unicodemath

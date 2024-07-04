@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Wideangledown do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Wideangledown" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{wideangledown}")
+        expect(klass.to_asciimath).to eq("\"P{wideangledown}\"")
       end
 
       it "matches LaTeX string" do

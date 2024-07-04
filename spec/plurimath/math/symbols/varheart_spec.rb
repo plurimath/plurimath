@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Varheart do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Varheart" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{varheart}")
+        expect(klass.to_asciimath).to eq("\"P{varheart}\"")
       end
 
       it "matches LaTeX string" do

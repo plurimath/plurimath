@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Origof < Symbol
         INPUT = {
-          unicodemath: [["&#x22b6;"], parsing_wrapper(["multimapdotbothA", "origof"])],
-          asciimath: [["&#x22b6;"], parsing_wrapper(["multimapdotbothA", "origof"])],
+          unicodemath: [["&#x22b6;"], parsing_wrapper(["multimapdotbothA", "origof"], lang: :unicode)],
+          asciimath: [["&#x22b6;"], parsing_wrapper(["multimapdotbothA", "origof"], lang: :asciimath)],
           mathml: ["&#x22b6;"],
           latex: [["multimapdotbothA", "origof", "&#x22b6;"]],
           omml: ["&#x22b6;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("origof")
+          parsing_wrapper("origof", lang: :asciimath)
         end
 
         def to_unicodemath

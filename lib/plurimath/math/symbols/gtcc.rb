@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Gtcc < Symbol
         INPUT = {
-          unicodemath: [["&#x2aa7;"], parsing_wrapper(["rightslice", "gtcc"])],
-          asciimath: [["&#x2aa7;"], parsing_wrapper(["rightslice", "gtcc"])],
+          unicodemath: [["&#x2aa7;"], parsing_wrapper(["rightslice", "gtcc"], lang: :unicode)],
+          asciimath: [["&#x2aa7;"], parsing_wrapper(["rightslice", "gtcc"], lang: :asciimath)],
           mathml: ["&#x2aa7;"],
           latex: [["rightslice", "gtcc", "&#x2aa7;"]],
           omml: ["&#x2aa7;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("gtcc")
+          parsing_wrapper("gtcc", lang: :asciimath)
         end
 
         def to_unicodemath

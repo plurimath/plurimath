@@ -3,10 +3,10 @@ module Plurimath
     module Symbols
       class Leftrightwavearrow < Symbol
         INPUT = {
-          unicodemath: [["leftrightwavearrow", "&#x21ad;"], parsing_wrapper(["leftrightsquigarrow"])],
-          asciimath: [["&#x21ad;"], parsing_wrapper(["leftrightwavearrow", "leftrightsquigarrow"])],
+          unicodemath: [["leftrightwavearrow", "&#x21ad;"], parsing_wrapper(["leftrightsquigarrow"], lang: :unicode)],
+          asciimath: [["&#x21ad;"], parsing_wrapper(["leftrightwavearrow", "leftrightsquigarrow"], lang: :asciimath)],
           mathml: ["&#x21ad;"],
-          latex: [["leftrightsquigarrow", "&#x21ad;"], parsing_wrapper(["leftrightwavearrow"])],
+          latex: [["leftrightsquigarrow", "&#x21ad;"], parsing_wrapper(["leftrightwavearrow"], lang: :latex)],
           omml: ["&#x21ad;"],
           html: ["&#x21ad;"],
         }.freeze
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("leftrightwavearrow")
+          parsing_wrapper("leftrightwavearrow", lang: :asciimath)
         end
 
         def to_unicodemath

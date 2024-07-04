@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Limg do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Limg" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{limg}")
+        expect(klass.to_asciimath).to eq("\"P{limg}\"")
       end
 
       it "matches LaTeX string" do

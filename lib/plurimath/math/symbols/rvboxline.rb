@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Rvboxline < Symbol
         INPUT = {
-          unicodemath: [["&#x23b9;"], parsing_wrapper(["rvboxline"])],
-          asciimath: [["&#x23b9;"], parsing_wrapper(["rvboxline"])],
+          unicodemath: [["&#x23b9;"], parsing_wrapper(["rvboxline"], lang: :unicode)],
+          asciimath: [["&#x23b9;"], parsing_wrapper(["rvboxline"], lang: :asciimath)],
           mathml: ["&#x23b9;"],
           latex: [["rvboxline", "&#x23b9;"]],
           omml: ["&#x23b9;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("rvboxline")
+          parsing_wrapper("rvboxline", lang: :asciimath)
         end
 
         def to_unicodemath

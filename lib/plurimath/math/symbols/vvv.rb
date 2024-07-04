@@ -3,10 +3,10 @@ module Plurimath
     module Symbols
       class Vvv < Symbol
         INPUT = {
-          unicodemath: [["&#x22c1;", "bigvee"], parsing_wrapper(["vvv"])],
+          unicodemath: [["&#x22c1;"], parsing_wrapper(["bigvee", "vvv"], lang: :unicode)],
           asciimath: [["bigvee", "vvv", "&#x22c1;"]],
           mathml: ["&#x22c1;"],
-          latex: [["bigvee", "&#x22c1;"], parsing_wrapper(["vvv"])],
+          latex: [["bigvee", "&#x22c1;"], parsing_wrapper(["vvv"], lang: :latex)],
           omml: ["&#x22c1;"],
           html: ["&#x22c1;"],
         }.freeze
@@ -34,22 +34,6 @@ module Plurimath
 
         def to_html
           "&#x22c1;"
-        end
-
-        def is_nary_symbol?
-          true
-        end
-
-        def nary_intent_name
-          "n-ary"
-        end
-
-        def tag_name
-          "underover"
-        end
-
-        def omml_tag_name
-          "undOvr"
         end
       end
     end

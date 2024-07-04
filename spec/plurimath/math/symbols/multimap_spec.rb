@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Multimap do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Multimap" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{multimap}")
+        expect(klass.to_asciimath).to eq("\"P{multimap}\"")
       end
 
       it "matches LaTeX string" do

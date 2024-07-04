@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Bigcupdot < Symbol
         INPUT = {
-          unicodemath: [["&#x2a03;"], parsing_wrapper(["bigcupdot"])],
-          asciimath: [["&#x2a03;"], parsing_wrapper(["bigcupdot"])],
+          unicodemath: [["&#x2a03;"], parsing_wrapper(["bigcupdot"], lang: :unicode)],
+          asciimath: [["&#x2a03;"], parsing_wrapper(["bigcupdot"], lang: :asciimath)],
           mathml: ["&#x2a03;"],
           latex: [["bigcupdot", "&#x2a03;"]],
           omml: ["&#x2a03;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("bigcupdot")
+          parsing_wrapper("bigcupdot", lang: :asciimath)
         end
 
         def to_unicodemath

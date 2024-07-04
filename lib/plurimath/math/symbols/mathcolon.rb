@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Mathcolon < Symbol
         INPUT = {
-          unicodemath: [["&#x3a;"], parsing_wrapper([":", "mathcolon", "colon"])],
-          asciimath: [[":", "&#x3a;"], parsing_wrapper(["mathcolon", "colon"])],
+          unicodemath: [["&#x3a;"], parsing_wrapper([":", "mathcolon", "colon"], lang: :unicode)],
+          asciimath: [[":", "&#x3a;"], parsing_wrapper(["mathcolon", "colon"], lang: :asciimath)],
           mathml: ["&#x3a;"],
           latex: [["mathcolon", "colon", ":", "&#x3a;"]],
           omml: ["&#x3a;"],

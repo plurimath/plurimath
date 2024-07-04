@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Egsdot < Symbol
         INPUT = {
-          unicodemath: [["&#x2a98;"], parsing_wrapper(["egsdot"])],
-          asciimath: [["&#x2a98;"], parsing_wrapper(["egsdot"])],
+          unicodemath: [["&#x2a98;"], parsing_wrapper(["egsdot"], lang: :unicode)],
+          asciimath: [["&#x2a98;"], parsing_wrapper(["egsdot"], lang: :asciimath)],
           mathml: ["&#x2a98;"],
           latex: [["egsdot", "&#x2a98;"]],
           omml: ["&#x2a98;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("egsdot")
+          parsing_wrapper("egsdot", lang: :asciimath)
         end
 
         def to_unicodemath

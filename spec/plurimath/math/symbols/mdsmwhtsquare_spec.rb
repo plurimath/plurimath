@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Mdsmwhtsquare do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Mdsmwhtsquare" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{mdsmwhtsquare}")
+        expect(klass.to_asciimath).to eq("\"P{mdsmwhtsquare}\"")
       end
 
       it "matches LaTeX string" do

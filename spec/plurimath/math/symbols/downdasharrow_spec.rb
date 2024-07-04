@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Downdasharrow do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Downdasharrow" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{downdasharrow}")
+        expect(klass.to_asciimath).to eq("\"P{downdasharrow}\"")
       end
 
       it "matches LaTeX string" do

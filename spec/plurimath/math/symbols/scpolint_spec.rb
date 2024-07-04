@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Scpolint do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Scpolint" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{scpolint}")
+        expect(klass.to_asciimath).to eq("\"P{scpolint}\"")
       end
 
       it "matches LaTeX string" do

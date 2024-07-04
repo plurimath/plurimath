@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Fisheye do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Fisheye" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{fisheye}")
+        expect(klass.to_asciimath).to eq("\"P{fisheye}\"")
       end
 
       it "matches LaTeX string" do

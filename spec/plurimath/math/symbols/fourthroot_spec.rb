@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Fourthroot do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Fourthroot" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{fourthroot}")
+        expect(klass.to_asciimath).to eq("\"P{fourthroot}\"")
       end
 
       it "matches LaTeX string" do

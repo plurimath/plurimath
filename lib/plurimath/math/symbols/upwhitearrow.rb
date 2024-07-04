@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Upwhitearrow < Symbol
         INPUT = {
-          unicodemath: [["&#x21e7;"], parsing_wrapper(["upwhitearrow"])],
-          asciimath: [["&#x21e7;"], parsing_wrapper(["upwhitearrow"])],
+          unicodemath: [["&#x21e7;"], parsing_wrapper(["upwhitearrow"], lang: :unicode)],
+          asciimath: [["&#x21e7;"], parsing_wrapper(["upwhitearrow"], lang: :asciimath)],
           mathml: ["&#x21e7;"],
           latex: [["upwhitearrow", "&#x21e7;"]],
           omml: ["&#x21e7;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("upwhitearrow")
+          parsing_wrapper("upwhitearrow", lang: :asciimath)
         end
 
         def to_unicodemath

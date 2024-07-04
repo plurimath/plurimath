@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Rang < Symbol
         INPUT = {
-          unicodemath: [["&#x27eb;"], parsing_wrapper(["rAngle", "rang"])],
-          asciimath: [["&#x27eb;"], parsing_wrapper(["rAngle", "rang"])],
+          unicodemath: [["&#x27eb;"], parsing_wrapper(["rAngle", "rang"], lang: :unicode)],
+          asciimath: [["&#x27eb;"], parsing_wrapper(["rAngle", "rang"], lang: :asciimath)],
           mathml: ["&#x27eb;"],
           latex: [["rAngle", "rang", "&#x27eb;"]],
           omml: ["&#x27eb;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("rang")
+          parsing_wrapper("rang", lang: :asciimath)
         end
 
         def to_unicodemath

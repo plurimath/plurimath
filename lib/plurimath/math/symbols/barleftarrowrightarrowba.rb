@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Barleftarrowrightarrowba < Symbol
         INPUT = {
-          unicodemath: [["&#x21b9;"], parsing_wrapper(["barleftarrowrightarrowba"])],
-          asciimath: [["&#x21b9;"], parsing_wrapper(["barleftarrowrightarrowba"])],
+          unicodemath: [["&#x21b9;"], parsing_wrapper(["barleftarrowrightarrowba"], lang: :unicode)],
+          asciimath: [["&#x21b9;"], parsing_wrapper(["barleftarrowrightarrowba"], lang: :asciimath)],
           mathml: ["&#x21b9;"],
           latex: [["barleftarrowrightarrowba", "&#x21b9;"]],
           omml: ["&#x21b9;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("barleftarrowrightarrowba")
+          parsing_wrapper("barleftarrowrightarrowba", lang: :asciimath)
         end
 
         def to_unicodemath

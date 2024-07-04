@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Diameter do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Diameter" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{diameter}")
+        expect(klass.to_asciimath).to eq("\"P{diameter}\"")
       end
 
       it "matches LaTeX string" do

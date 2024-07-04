@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Squarellquad < Symbol
         INPUT = {
-          unicodemath: [["&#x25f1;"], parsing_wrapper(["squarellquad"])],
-          asciimath: [["&#x25f1;"], parsing_wrapper(["squarellquad"])],
+          unicodemath: [["&#x25f1;"], parsing_wrapper(["squarellquad"], lang: :unicode)],
+          asciimath: [["&#x25f1;"], parsing_wrapper(["squarellquad"], lang: :asciimath)],
           mathml: ["&#x25f1;"],
           latex: [["squarellquad", "&#x25f1;"]],
           omml: ["&#x25f1;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("squarellquad")
+          parsing_wrapper("squarellquad", lang: :asciimath)
         end
 
         def to_unicodemath

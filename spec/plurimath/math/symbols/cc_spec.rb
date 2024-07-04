@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Cc do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Cc" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{CC}")
+        expect(klass.to_asciimath).to eq("\"P{CC}\"")
       end
 
       it "matches LaTeX string" do

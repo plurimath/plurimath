@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Mapsdown do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Mapsdown" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{mapsdown}")
+        expect(klass.to_asciimath).to eq("\"P{mapsdown}\"")
       end
 
       it "matches LaTeX string" do

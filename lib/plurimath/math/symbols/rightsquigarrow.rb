@@ -4,7 +4,7 @@ module Plurimath
       class Rightsquigarrow < Symbol
         INPUT = {
           unicodemath: [["rightsquigarrow", "&#x21dd;"]],
-          asciimath: [["&#x21dd;"], parsing_wrapper(["rightsquigarrow"])],
+          asciimath: [["&#x21dd;"], parsing_wrapper(["rightsquigarrow"], lang: :asciimath)],
           mathml: ["&#x21dd;"],
           latex: [["rightsquigarrow", "&#x21dd;"]],
           omml: ["&#x21dd;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("rightsquigarrow")
+          parsing_wrapper("rightsquigarrow", lang: :asciimath)
         end
 
         def to_unicodemath

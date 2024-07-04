@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Fltns do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Fltns" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{fltns}")
+        expect(klass.to_asciimath).to eq("\"P{fltns}\"")
       end
 
       it "matches LaTeX string" do

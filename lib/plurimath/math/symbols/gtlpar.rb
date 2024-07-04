@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Gtlpar < Symbol
         INPUT = {
-          unicodemath: [["&#x29a0;"], parsing_wrapper(["gtlpar"])],
-          asciimath: [["&#x29a0;"], parsing_wrapper(["gtlpar"])],
+          unicodemath: [["&#x29a0;"], parsing_wrapper(["gtlpar"], lang: :unicode)],
+          asciimath: [["&#x29a0;"], parsing_wrapper(["gtlpar"], lang: :asciimath)],
           mathml: ["&#x29a0;"],
           latex: [["gtlpar", "&#x29a0;"]],
           omml: ["&#x29a0;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("gtlpar")
+          parsing_wrapper("gtlpar", lang: :asciimath)
         end
 
         def to_unicodemath
