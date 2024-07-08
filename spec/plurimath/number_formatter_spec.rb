@@ -199,9 +199,14 @@ RSpec.describe Plurimath::NumberFormatter do
         expect(output_string).to eql("112.440")
       end
 
-      it "matches locale: de with 3 significant" do
+      it "matches locale: de with 5 significant" do
         output_string = formatter.localized_number("1234567", format: { significant: 5 })
         expect(output_string).to eql("1.234.600")
+      end
+
+      it "matches locale: de with 3 significant" do
+        output_string = formatter.localized_number("0.1999", format: { significant: 3 })
+        expect(output_string).to eql("0,200")
       end
 
       it "matches locale: de with 5 significant with engineering notation" do
