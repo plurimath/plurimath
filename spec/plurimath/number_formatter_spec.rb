@@ -85,7 +85,7 @@ RSpec.describe Plurimath::NumberFormatter do
       it "matches fraction_group_digits:, fraction_group:, and decimal" do
         format = { fraction_group_digits: 4, fraction_group: ",", decimal: "@" }
         output_string = formatter.localized_number(number, locale: locale, format: format)
-        expect(output_string).to eql("1'42'36@3923,9")
+        expect(output_string).to eql("14,236@3923,9")
       end
     end
 
@@ -212,6 +212,26 @@ RSpec.describe Plurimath::NumberFormatter do
       it "matches locale: de with 5 significant with engineering notation" do
         output_string = formatter.localized_number("112436", format: { significant: 5, notation: :engineering })
         expect(output_string).to eql("112,44000 × 10^3")
+      end
+    end
+
+    context "testing with de locale PR plurimath#268 for locale configuration" do
+      # :de locale default values used
+      # group => "."
+      # decimal => ","
+      # group_digits => 3
+      let(:locale) { :de }
+      let(:number) { "31564.346" }
+      let(:localize_number) { nil }
+      let(:localizer_symbols) { {} }
+
+      it "matches locale: de with digit count and significant" do
+        # passing group and decimal to the formatter instance
+        output_string = formatter.localized_number(number, format: { decimal: "x", group: "|" })
+        expect(output_string).to eql("31|564x346")
+        # Not passing group and decimal to the same formatter instance
+        output_string = formatter.localized_number(number)
+        expect(output_string).to eql("31.564,346")
       end
     end
   end
