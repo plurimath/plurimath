@@ -211,7 +211,7 @@ RSpec.describe Plurimath::NumberFormatter do
 
       it "matches locale: de with 5 significant with engineering notation" do
         output_string = formatter.localized_number("112436", format: { significant: 5, notation: :engineering })
-        expect(output_string).to eql("112,44000 × 10^3")
+        expect(output_string).to eql("112,44 × 10^3")
       end
     end
 
@@ -221,17 +221,49 @@ RSpec.describe Plurimath::NumberFormatter do
       # decimal => ","
       # group_digits => 3
       let(:locale) { :de }
-      let(:number) { "31564.346" }
       let(:localize_number) { nil }
       let(:localizer_symbols) { {} }
 
       it "matches locale: de with digit count and significant" do
+        number = "31564.346"
         # passing group and decimal to the formatter instance
         output_string = formatter.localized_number(number, format: { decimal: "x", group: "|" })
         expect(output_string).to eql("31|564x346")
         # Not passing group and decimal to the same formatter instance
         output_string = formatter.localized_number(number)
         expect(output_string).to eql("31.564,346")
+      end
+
+      it "matches locale: de with large number and format options, trimming trailing non-significant zeros" do
+        format_hash = { fraction_group_digits: 2, fraction_group: "'", significant: 9 }
+        output_string = formatter.localized_number("327428.7432878432992", precision: nil, format: format_hash)
+        expect(output_string).to eql("327.428,74'3")
+      end
+
+      it "matches false output due to ambiguity between decimal and group values" do
+        format_hash = { fraction_group_digits: 2, fraction_group: "'", decimal: ",", notation: :basic, significant: 9 }
+        output_string = formatter.localized_number("327428.7432878432992", locale: :en, precision: nil, format: format_hash)
+        expect(output_string).to eql("327,42'8")
+      end
+
+      it "matches precision nil, significant and other format options" do
+        format_hash = { fraction_group_digits: 2, fraction_group: "'", decimal: ",", notation: :e, significant: 9 }
+        output_string = formatter.localized_number("327428.7432878432992", precision: nil, format: format_hash)
+        expect(output_string).to eql("3,27'42'87'43e5")
+      end
+
+      it "matches notation e with significant and other format options" do
+        format_hash = { fraction_group_digits: 2, fraction_group: "'", decimal: ",", group: " ", notation: :e, significant: 1 }
+        format_hash2 = format_hash.merge(significant: 2)
+        # very large number
+        output_string = formatter.localized_number("1000000000000000000000.0", locale: :en, precision: nil, format: format_hash)
+        expect(output_string).to eql("1e21")
+        # very large number
+        output_string = formatter.localized_number("10000000000000000000.0", locale: :en, precision: nil, format: format_hash2)
+        expect(output_string).to eql("1,0e19")
+        # very small number
+        output_string = formatter.localized_number("0.0000000000000000001", locale: :en, precision: nil, format: format_hash2)
+        expect(output_string).to eql("10e-20")
       end
     end
   end

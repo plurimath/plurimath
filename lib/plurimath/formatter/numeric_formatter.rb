@@ -79,24 +79,23 @@ module Plurimath
 
       def notation_chars(num_str)
         notation_number = ("%.#{@precision}e" %num_str)
-        update_exponent_sign(notation_number.gsub!("+0", ""))
+        update_exponent_sign(notation_number.gsub!(/\+(0)*/, ""))
         notation_number.split("e")
       end
 
       def notations_formatting(num_str)
         chars = notation_chars(num_str)
         chars[0] = localize_number(chars[0])
+        chars << "0" if chars.length == 1
         chars
       end
 
       def options_instance_variables(string, format, precision)
-        @e = format.delete(:e)&.to_sym || :e
-        @times = format.delete(:times)&.to_sym || "\u{d7}"
-        @notation = format.delete(:notation)&.to_sym || nil
+        @e = format[:e]&.to_sym || :e
+        @times = format[:times]&.to_sym || "\u{d7}"
+        @notation = format[:notation]&.to_sym || nil
         @precision = update_precision(string, precision)
-        @exponent_sign = format.delete(:exponent_sign)&.to_sym || nil
-        @twitter_cldr_reader.delete(:digit_count) unless format.dig(:digit_count)
-        @twitter_cldr_reader.delete(:significant) unless format.dig(:significant)
+        @exponent_sign = format[:exponent_sign]&.to_sym || nil
       end
 
       def update_precision(num, precision)

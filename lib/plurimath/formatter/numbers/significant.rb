@@ -50,9 +50,11 @@ module Plurimath
             new_chars << ("0" * sig_count)
           else
             remain_chars = count_chars(chars, frac_part) - significant
-            round_str(chars, new_chars, frac_part) if remain_chars > 0
-            remain_chars = 0 if frac_part && remain_chars == 1
-            new_chars << ("0" * remain_chars)
+            if remain_chars > 0
+              round_str(chars, new_chars, frac_part)
+              remain_chars = 0 if frac_part && remain_chars == 1
+            end
+            new_chars << ("0" * remain_chars) unless frac_part && sig_char_count(new_chars)
           end
           new_chars.join
         end
@@ -87,7 +89,7 @@ module Plurimath
 
         def count_chars(chars, fraction)
           counting = 0
-          chars.find_all do |char|
+          chars.each do |char|
             break if char == decimal && !fraction
 
             counting += 1 if char.match?(/\d/)
@@ -107,6 +109,18 @@ module Plurimath
 
         def numeric_string(string, format)
           string.split(format.separator).join
+        end
+
+        def sig_char_count(chars)
+          start_counting = false
+          counting = 0
+          chars.each do |char|
+            start_counting = true if char.match(/[1-9]/)
+            next unless start_counting
+
+            counting += 1 if char.match?(/\d/)
+          end
+          counting == significant
         end
       end
     end
