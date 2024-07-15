@@ -136,11 +136,11 @@ RSpec.describe Plurimath::NumberFormatter do
         output_string = formatter.localized_number(number, format: { digit_count: 20 })
         expect(output_string).to eql("327.428,00087843299200")
         output_string = formatter.localized_number(number, format: { digit_count: 18, notation: :scientific })
-        expect(output_string).to eql("3,27428000878432998 × 10^5")
+        expect(output_string).to eql("3,27428000878432992 × 10^5")
         output_string = formatter.localized_number(number, format: { digit_count: 19, notation: :scientific })
-        expect(output_string).to eql("3,274280008784329980 × 10^5")
+        expect(output_string).to eql("3,274280008784329920 × 10^5")
         output_string = formatter.localized_number(number, format: { digit_count: 20, notation: :scientific })
-        expect(output_string).to eql("3,2742800087843299800 × 10^5")
+        expect(output_string).to eql("3,2742800087843299200 × 10^5")
       end
     end
 
@@ -158,15 +158,15 @@ RSpec.describe Plurimath::NumberFormatter do
         output_string = formatter.localized_number(number, format: { digit_count: 3 })
         expect(output_string).to eql("0,00")
         output_string = formatter.localized_number(number, format: { digit_count: 6, notation: :scientific })
-        expect(output_string).to eql("1,00000 × 10^-03")
+        expect(output_string).to eql("1,00000 × 10^-3")
         output_string = formatter.localized_number(number, format: { significant: 3 })
         expect(output_string).to eql("0,00100")
         output_string = formatter.localized_number(number, format: { significant: 3, notation: :e })
-        expect(output_string).to eql("1,00e-03")
+        expect(output_string).to eql("1,00e-3")
         output_string = formatter.localized_number(number, format: { significant: 3, notation: :scientific })
-        expect(output_string).to eql("1,00 × 10^-03")
+        expect(output_string).to eql("1,00 × 10^-3")
         output_string = formatter.localized_number(number, format: { significant: 4, notation: :engineering })
-        expect(output_string).to eql("1,000 × 10^-03")
+        expect(output_string).to eql("1,000 × 10^-3")
       end
     end
 
@@ -263,7 +263,7 @@ RSpec.describe Plurimath::NumberFormatter do
         expect(output_string).to eql("1,0e19")
         # very small number
         output_string = formatter.localized_number("0.0000000000000000001", locale: :en, precision: nil, format: format_hash2)
-        expect(output_string).to eql("10e-20")
+        expect(output_string).to eql("1,0e-19")
       end
     end
   end

@@ -67,6 +67,7 @@ module Plurimath
 
       def engineering_format(num_str)
         @precision = num_str.length - 1 unless @precision > 0
+
         chars = notation_chars(num_str)
         update_string_index(chars, chars.last.to_i % 3)
         chars[0] = localize_number(chars[0])
@@ -77,10 +78,19 @@ module Plurimath
         str.gsub!("e", "e+") if @exponent_sign == :plus
       end
 
+      def update_exponent_value(number_str)
+        exponent_number = BigDecimal(number_str) - 1
+        "#{"+" if @exponent_sign == :plus}#{exponent_number.to_i}"
+      end
+
       def notation_chars(num_str)
-        notation_number = ("%.#{@precision}e" %num_str)
-        update_exponent_sign(notation_number.gsub!(/\+(0)*/, ""))
-        notation_number.split("e")
+        notation_array = BigDecimal(num_str).to_s("e").split("e")
+        notation_array[1] = update_exponent_value(notation_array[1])
+        number_str = notation_array[0]
+        number_str.gsub!(/0\.(\d)/, '\1.')
+        number_str.sub!('.', '') if number_str.start_with?(".")
+        notation_array[0] = number_str[0..-2] if number_str.end_with?(".")
+        notation_array
       end
 
       def notations_formatting(num_str)
@@ -109,7 +119,7 @@ module Plurimath
         return if index.zero?
 
         chars.first.delete!(".")
-        chars.first.insert(index + 1, ".")
+        chars.first.insert(index + 1, ".") unless chars.first[index + 2].nil?
         chars[-1] = (chars[-1].to_i - index).to_s
       end
 
