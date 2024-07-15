@@ -265,6 +265,21 @@ RSpec.describe Plurimath::NumberFormatter do
         output_string = formatter.localized_number("0.0000000000000000001", locale: :en, precision: nil, format: format_hash2)
         expect(output_string).to eql("1,0e-19")
       end
+
+      it "matches notation scientific with nil significant, digit_count and precision from plurimath/268#issuecomment-2228479160" do
+        format_hash = {
+          fraction_group_digits: 4,
+          notation: :scientific,
+          fraction_group: "y",
+          significant: nil,
+          group_digits: 3,
+          digit_count: 7,
+          decimal: ",",
+          group: "x",
+        }
+        output_string = formatter.localized_number('642121496772645156.4515', precision: 7, format: format_hash)
+        expect(output_string).to eql("6,4212y15 × 10^17")
+      end
     end
   end
 end
