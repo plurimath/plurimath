@@ -19,6 +19,7 @@ module Plurimath
         notation
         bevelled
         rowlines
+        intent
         accent
         height
         frame
