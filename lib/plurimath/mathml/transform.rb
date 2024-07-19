@@ -383,6 +383,7 @@ module Plurimath
                        height
                        accent
                        height
+                       intent
                        width
                        index
                        depth
