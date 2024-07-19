@@ -482,11 +482,13 @@ module Plurimath
       end
 
       def join_attr_value(attrs, value, unicode_only: false, lang: :mathml)
-        if attrs&.key?(:intent)
-          Math::Function::Intent.new(
-            join_attr_value(nil, value, unicode_only: unicode_only, lang: lang)&.first,
-            Math::Function::Text.new(attrs[:intent]),
-          )
+        if attrs&.is_a?(Hash) && attrs.key?(:intent)
+          [
+            Math::Function::Intent.new(
+              filter_values(join_attr_value(nil, value, unicode_only: unicode_only, lang: lang)),
+              Math::Function::Text.new(attrs[:intent]),
+            )
+          ]
         elsif value.any?(String)
           new_value = mathml_unary_classes(value, unicode_only: unicode_only, lang: lang)
           array_value = Array(new_value)
