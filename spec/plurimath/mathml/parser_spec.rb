@@ -1747,4 +1747,31 @@ RSpec.describe Plurimath::Mathml::Parser do
       expect(formula).to eq(expected_value)
     end
   end
+  
+  context "contains mathml equation with intent attribute as input" do
+    let(:exp) {
+      <<~MATHML
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <mrow intent="plus(x, y)">
+            <mi>x</mi>
+            <mo>+</mo>
+            <mi>y</mi>
+          </mrow>
+        </math>
+      MATHML
+    }
+    it "returns formula of decimal values" do
+      expected_value = Plurimath::Math::Formula.new([
+        Plurimath::Math::Function::Intent.new(
+          Plurimath::Math::Formula.new([
+            Plurimath::Math::Symbols::Symbol.new("x"),
+            Plurimath::Math::Symbols::Plus.new,
+            Plurimath::Math::Symbols::Symbol.new("y"),
+          ]),
+          Plurimath::Math::Function::Text.new("plus(x, y)"),
+        )
+      ])
+      expect(formula).to eq(expected_value)
+    end
+  end
 end
