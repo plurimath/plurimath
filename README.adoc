@@ -61,16 +61,91 @@ Or install it yourself with:
 $ gem install plurimath
 ----
 
-== Usage
+== Command Line Interface (CLI) usage
+
+=== General
+
+Plurimath provides a Command Line Interface (CLI) tool for converting between
+different math formats.
+
+NOTE: Before continuing please ensure you have the gem installed.
+
+To convert math equations between formats, use the following command followed by
+appropriate options.
+
+[source,bash]
+----
+plurimath convert [options]
+----
+
+Options available are:
+
+`-i`, `--input <INPUT>`::
+Specifies the input math equation. Should be provided within double quotes.
+
+`-f`, `--input-format <FORMAT>`::
+Specifies the input format of the equation. Defaults to `asciimath`.
+
+`-p`, `--file-path <FILE_PATH>`::
+Reads input from a file instead of the command line input. Use this for larger
+inputs or when input contains special characters.
+
+`-t`, `--output-format <FORMAT>`::
+Specifies the output format type. Defaults to `mathml`.
+
+`-m`, `--math-rendering`::
+Renders the converted equation as a math zone display tree. Boolean option
+(`true`, `false`).
+
+`-d`, `--display-style`::
+Specifies the DisplayStyle for OMML and MathML outputs only. Boolean option
+(`true`, `false`).
+
+`-s`, `--split-on-linebreak`::
+Splits MathML and OMML output into multiple equations. Boolean option (`true`,
+`false`).
+
+
+=== Convert an AsciiMath equation to MathML
+
+[source,bash]
+----
+plurimath convert -i "sqrt(x^2 + y^2)" -f asciimath -t mathml
+----
+
+=== Convert an OMML equation to MathML with DisplayStyle
+
+[source,bash]
+----
+plurimath convert -i "equation" -f omml -t mathml -d true
+----
+
+=== Convert equations from a file and output as UnicodeMath
+
+[source,bash]
+----
+plurimath convert -e <file_path> -t unicodemath
+----
+
+For more detailed information and additional options, use:
+
+[source,bash]
+----
+plurimath help convert
+----
+
+
+== Ruby API
+
 
 The central data model in Plurimath is the `Plurimath::Formula` class, which
 allows you to transform any math representation language into any other
 representation language.
 
 
-=== Conversion Examples
+=== Conversion examples
 
-==== AsciiMath Formula Example
+==== AsciiMath Formula example
 
 [source,ruby]
 ----
@@ -78,7 +153,7 @@ asciimath = "sin(1)"
 formula = Plurimath::Math.parse(asciimath, :asciimath)
 ----
 
-==== MathML Formula Example
+==== MathML Formula example
 
 [source,ruby]
 ----
@@ -93,7 +168,7 @@ MATHML
 formula = Plurimath::Math.parse(mathml, :mathml)
 ----
 
-==== LaTeX Formula Example
+==== LaTeX Formula example
 
 [source,ruby]
 ----
@@ -101,7 +176,7 @@ latex = "\\sin{1}"
 formula = Plurimath::Math.parse(latex, :latex)
 ----
 
-==== UnicodeMath Formula Example
+==== UnicodeMath Formula example
 
 [source,ruby]
 ----
@@ -109,7 +184,7 @@ unicodemath = "sin(1)"
 formula = Plurimath::Math.parse(unicodemath, :unicodemath)
 ----
 
-==== OMML Formula Example
+==== OMML Formula example
 
 [source,ruby]
 ----
@@ -137,13 +212,14 @@ OMML
 formula = Plurimath::Math.parse(omml, :omml)
 ----
 
-=== Converting to Other Formats
+
+=== Converting to other formats
 
 Once you have a `Plurimath::Math::Formula` object, you can convert it to
 AsciiMath, MathML, LaTeX, UnicodeMath, or OMML by calling the respective
 conversion function on the `Formula` object.
 
-==== AsciiMath Output Conversion
+==== AsciiMath output conversion
 
 [source,ruby]
 ----
@@ -157,7 +233,7 @@ that LaTeX does. During conversion from LaTeX to AsciiMath, if a symbol is not
 supported in AsciiMath, the LaTeX symbol will be returned.
 
 
-==== LaTeX Output Conversion
+==== LaTeX output conversion
 
 [source,ruby]
 ----
@@ -165,7 +241,7 @@ formula.to_latex
 # => "\\sin1"
 ----
 
-==== MathML Output Conversion
+==== MathML output conversion
 
 [source,ruby]
 ----
@@ -173,7 +249,7 @@ formula.to_mathml
 # => "<math xmlns='http://www.w3.org/1998/Math/MathML'><mstyle displaystyle='true'><mi>sin</mi><mn>1</mn></mstyle></math>"
 ----
 
-==== UnicodeMath Output Conversion
+==== UnicodeMath output conversion
 
 [source,ruby]
 ----
@@ -181,7 +257,7 @@ formula.to_unicodemath
 # => "sin(1)"
 ----
 
-==== OMML Output Conversion
+==== OMML output conversion
 
 [source,ruby]
 ----
@@ -189,7 +265,8 @@ formula.to_omml
 # => "<m:oMathPara xmlns:m=\"http://schemas.openxmlformats.org/officeDocument/2006/math\"><m:oMath><m:f><m:fPr><m:ctrlPr /></m:fPr><m:num><m:r><m:t>sin</m:t></m:r></m:num><m:den><m:r><m:t>1</m:t></m:r></m:den></m:f></m:oMath></m:oMathPara>"
 ----
 
-== Handling Complex Mathematical Expressions
+
+==== Complex mathematical expressions
 
 Plurimath is capable of handling complex mathematical expressions with nested
 functions and operators.
@@ -197,9 +274,7 @@ functions and operators.
 This feature is particularly useful for application that requires consistent and
 accurate conversion of intricate mathematical content.
 
-=== Example of a Complex Expression
-
-Consider the following complex LaTeX expression:
+Example. Consider the following complex LaTeX expression:
 
 [source,latex]
 ----
@@ -232,16 +307,29 @@ omml = formula.to_omml
 
 
 
+== Math parse trees
 
-== Displaying the Math Parse Tree
+=== General
 
 Plurimath allows you to display the math parse tree both as `Formula` objects
 and in the math language of expression.
 
-=== Displaying as Formula Objects
+=== Displaying as Formula objects
 
 You can display the parse tree as `Formula` objects to understand the structure
 of the parsed mathematical expression.
+
+[source,ruby]
+----
+formula = Plurimath::Math.parse("sin(1)", :asciimath)
+formula.to_display(:formula)
+# ...
+----
+
+=== Displaying in the math language of expression
+
+You can also display the parse tree in the math language of expression to see
+how the expression is represented in that language.
 
 [source,ruby]
 ----
@@ -251,21 +339,20 @@ formula.to_display(:asciimath)
 #   |_ "sin(1)"
 #      |_ "sin" function apply
 #         |_ "1" argument
-----
 
-=== Displaying in the Math Language of Expression
-
-You can also display the parse tree in the math language of expression to see
-how the expression is represented in that language.
-
-[source,ruby]
-----
-formula = Plurimath::Math.parse("sin(1)", :asciimath)
 formula.to_display(:latex)
 # |_ Math zone
 #   |_ "\\sin1"
 #      |_ "sin" function apply
 #         |_ "1" argument
+
+formula.to_display(:mathml)
+# |_ Math zone
+#   |_ "<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mstyle displaystyle="true"><mrow><mi>sin</mi><mrow><mo>(</mo><mn>1</mn><mo>)</mo></mrow></mrow></mstyle></math>"
+#      |_ "<mrow><mi>sin</mi><mrow><mo>(</mo><mn>1</mn><mo>)</mo></mrow></mrow>" function apply
+#         |_ "sin" function name
+#         |_ "<mrow><mo>(</mo><mn>1</mn><mo>)</mo></mrow>" argument
+#            |_ "<mtext>1</mtext>" text
 ----
 
 // == Integration
@@ -311,11 +398,11 @@ h = 6.62607015 xx 10^(-34) "unitsml(kg*m^2*s^(-1))"
 
 ==== Step-by-Step Customization
 
-. **Parse the UnitsML Expression**
-. **Customize and Convert to AsciiMath**
-. **Customize and Convert to MathML**
-. **Customize and Convert to UnicodeMath**
-. **Customize and Convert to OMML**
+. Parse the UnitsML Expression
+. Customize and Convert to AsciiMath
+. Customize and Convert to MathML
+. Customize and Convert to UnicodeMath
+. Customize and Convert to OMML
 
 ==== Parse the UnitsML Expression
 
@@ -341,7 +428,7 @@ puts asciimath
 # Output: 'h = 6.62607015 xx 10^(-34) "unitsml(kg*m^2*s^(-1))"'
 ----
 
-==== Customize and Convert to MathML
+==== Customize and convert to MathML
 
 To customize the MathML output, you can use additional attributes and options:
 
@@ -353,7 +440,7 @@ puts mathml
 # Output: "<math xmlns='http://www.w3.org/1998/Math/MathML'><mrow><mi>h</mi><mo>=</mo><mn>6.62607015</mn><mo>×</mo><msup><mn>10</mn><mrow><mo>−</mo><mn>34</mn></mrow></msup><mtext>kg·m²·s⁻¹</mtext></mrow></math>"
 ----
 
-==== Customize and Convert to UnicodeMath
+==== Customize and convert to UnicodeMath
 
 Similarly, customize the UnicodeMath output:
 
@@ -365,7 +452,7 @@ puts unicodemath
 # Output: 'h = 6.62607015 × 10^(−34) kg·m²·s⁻¹'
 ----
 
-==== Customize and Convert to OMML
+==== Customize and convert to OMML
 
 For OMML output, you can customize the XML structure:
 
@@ -377,7 +464,7 @@ puts omml
 # Output: "<m:oMathPara xmlns:m='http://schemas.openxmlformats.org/officeDocument/2006/math'><m:oMath><m:r><m:t>h</m:t></m:r><m:r><m:t>=</m:t></m:r><m:r><m:t>6.62607015</m:t></m:r><m:r><m:t>×</m:t></m:r><m:sSup><m:sSupPr><m:ctrlPr /></m:sSupPr><m:e><m:r><m:t>10</m:t></m:r></m:e><m:sup><m:r><m:t>−34</m:t></m:r></m:sup></m:sSup><m:r><m:t>kg·m²·s⁻¹</m:t></m:r></m:oMath></m:oMathPara>"
 ----
 
-=== Complete Example Code with Customization
+=== Complete example code with customization
 
 Here's the complete code for parsing, converting, and customizing the UnitsML
 expression between different formats:
@@ -434,7 +521,7 @@ as a text string of `"__{symbol-name}"`. Plurimath can recognize it, but other
 renderers or processors would treat it as a single symbol, which is accurate.
 
 
-=== Example of Compatibility Wrapper
+=== Usage of the compatibility wrapper
 
 For a symbol like `backepsilon`.
 
@@ -466,61 +553,13 @@ In MathML:
 <mi>∍</mi>
 ----
 
-== Command Line Interface (CLI) Usage
 
-The Plurimath gem provides a Command Line Interface (CLI) tool for converting between different math formats.
-Before continuing please ensure you have the gem installed.
+== XML engines
 
-=== Usage
+Plurimath supports two XML engines:
 
-To convert math equations between formats, use the following command followed by appropriate options.
-[source,bash]
-----
-plurimath convert [options]
-----
-
-=== Options
-1. `-i, --input <INPUT>` => Specifies the input math equation. Should be provided within double quotes.
-2. `-f, --input-format <FORMAT>` => Specifies the input format of the equation. Defaults to "asciimath".
-3. `-p, --file-path <FILE_PATH>` => Reads input from a file instead of the command line input. Use this for larger inputs or when input contains special characters.
-4. `-t, --output-format <FORMAT>` => Specifies the output format type. Defaults to "mathml".
-5. `-m, --math-rendering` => Renders the converted equation as a math zone display tree. Boolean option (true/false).
-6. `-d, --display-style` => Specifies the DisplayStyle for OMML and MathML outputs only. Boolean option (true/false).
-7. `-s, --split-on-linebreak` => Splits MathML and OMML output into multiple equations. Boolean option (true/false).
-
-==== Convert an AsciiMath equation to MathML:
-
-[source,bash]
-----
-plurimath convert -i "sqrt(x^2 + y^2)" -f asciimath -t mathml
-----
-
-==== Convert an OMML equation to MathML with DisplayStyle:
-
-[source,bash]
-----
-plurimath convert -i "equation" -f omml -t mathml -d true
-----
-
-==== Convert equations from a file and output as UnicodeMath:
-
-[source,bash]
-----
-plurimath convert -e <file_path> -t unicodemath
-----
-
-For more detailed information and additional options, use:
-[source,bash]
-----
-plurimath convert --help
-----
-
-== XML Engines
-
-**Plurimath** supports two XML engines:
-
+. **Ox**: (default) A fast XML parser
 . **Oga**: A pure Ruby XML parser
-. **Ox**: A fast XML parser
 
 By default, **Ox** is used.
 
@@ -528,11 +567,12 @@ To switch to **Oga**, use the following syntax:
 
 [source,ruby]
 ----
-require "plurimath/xml_engines/oga" = load files related to Oga
-Plurimath.xml_engine = Plurimath::XmlEngine::Oga = set Oga as Plurimath XML engine
+require "plurimath/xml_engines/oga"
+Plurimath.xml_engine = Plurimath::XmlEngine::Oga
 ----
 
 You can switch back to **Ox** similarly.
+
 
 === Supported content
 
