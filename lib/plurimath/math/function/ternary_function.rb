@@ -101,6 +101,16 @@ module Plurimath
           new_arr
         end
 
+        def to_unicodemath_math_zone(spacing, last = false, _)
+          parameters = self.class::FUNCTION
+          new_spacing = gsub_spacing(spacing, last)
+          new_arr = ["#{spacing}\"#{to_unicodemath}\" #{parameters[:name]}\n"]
+          unicodemath_fields_to_print(parameter_one, { spacing: new_spacing, field_name: parameters[:first_value], additional_space: "|  |_ ", array: new_arr })
+          unicodemath_fields_to_print(parameter_two, { spacing: new_spacing, field_name: parameters[:second_value], additional_space: "  |_ ", array: new_arr })
+          unicodemath_fields_to_print(parameter_three, { spacing: new_spacing, field_name: parameters[:third_value], additional_space: "   |_ ", array: new_arr })
+          new_arr
+        end
+
         protected
 
         def latex_wrapped(field)

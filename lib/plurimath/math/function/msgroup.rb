@@ -57,6 +57,13 @@ module Plurimath
           ]
         end
 
+        def to_unicodemath_math_zone(spacing, last = false, indent = true)
+          [
+            "#{spacing}\"msgroup\" function apply\n",
+            Formula.new(parameter_one).to_unicodemath_math_zone(gsub_spacing(spacing, last), last, indent),
+          ]
+        end
+
         def to_unicodemath
           parameter_one.map(&:to_unicodemath).join
         end

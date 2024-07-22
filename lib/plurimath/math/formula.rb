@@ -10,6 +10,7 @@ module Plurimath
         latex
         mathml
         asciimath
+        unicodemath
       ].freeze
       POWER_BASE_CLASSES = %w[powerbase power base].freeze
       DERIVATIVE_CONSTS = [
@@ -165,6 +166,8 @@ module Plurimath
                       "  |_ \"#{to_mathml.gsub(/\n\s*/, "")}\"\n#{to_mathml_math_zone("     ").join}"
                     when :omml
                       "  |_ \"#{to_omml.gsub(/\n\s*/, "")}\"\n#{to_omml_math_zone("     ", display_style: displaystyle).join}"
+                    when :unicodemath
+                      "  |_ \"#{to_unicodemath}\"\n#{to_unicodemath_math_zone("     ").join}"
                     end
         <<~MATHZONE.sub(/\n$/, "")
         |_ Math zone
@@ -197,6 +200,13 @@ module Plurimath
         filtered_values(value, lang: :omml).map.with_index(1) do |object, index|
           last = index == @values.length
           object.to_omml_math_zone(new_space(spacing, indent), last, indent, display_style: display_style)
+        end
+      end
+
+      def to_unicodemath_math_zone(spacing = "", last = false, indent = true)
+        filtered_values(value, lang: :unicodemath).map.with_index(1) do |object, index|
+          last = index == @values.length
+          object.to_unicodemath_math_zone(new_space(spacing, indent), last, indent)
         end
       end
 

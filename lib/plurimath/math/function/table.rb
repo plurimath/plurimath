@@ -117,6 +117,13 @@ module Plurimath
           ]
         end
 
+        def to_unicodemath_math_zone(spacing, last = false, indent = true)
+          [
+            "#{spacing}\"table\" function apply\n",
+            Formula.new(value).to_unicodemath_math_zone(gsub_spacing(spacing, last), last, indent),
+          ]
+        end
+
         protected
 
         def mathml_parenthesis(field, intent)

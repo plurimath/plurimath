@@ -116,6 +116,16 @@ module Plurimath
         options[:array] << field&.to_omml_math_zone(hashed[:function_spacing], hashed[:last], hashed[:indent], display_style: display_style)
       end
 
+      def unicodemath_fields_to_print(field, options = {})
+        return if field.nil?
+
+        hashed = common_math_zone_conversion(field, options)
+        options[:array] << "#{hashed[:spacing]}|_ \"#{field&.to_unicodemath}\"#{hashed[:field_name]}\n"
+        return unless Utility.validate_math_zone(field, lang: :unicodemath)
+
+        options[:array] << field&.to_unicodemath_math_zone(hashed[:function_spacing], hashed[:last], hashed[:indent])
+      end
+
       def dump_mathml(field, intent = false)
         dump_ox_nodes(field.to_mathml_without_math_tag(intent)).gsub(/\n\s*/, "")
       end

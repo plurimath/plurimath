@@ -4542,4 +4542,750 @@ RSpec.describe Plurimath::Math do
       end
     end
   end
+
+  describe "UnicodeMath input to all to_display(:lang) conversions" do
+    subject(:formula) { Plurimath::Math.parse(exp, :unicode) }
+
+    context "UnicodeMath Math zone representation of sin and simple equation #1" do
+      let(:exp) { '∑_3^1 sinθ' }
+
+      it 'should puts Math zone representation of sample example #1' do
+        omml = <<~OMML
+          |_ Math zone
+            |_ "<m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape"><m:oMath><m:nary><m:naryPr><m:chr m:val="∑"/><m:limLoc m:val="undOvr"/><m:subHide m:val="0"/><m:supHide m:val="0"/></m:naryPr><m:sub><m:r><m:t>3</m:t></m:r></m:sub><m:sup><m:r><m:t>1</m:t></m:r></m:sup><m:e><m:func><m:funcPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:funcPr><m:fName><m:r><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/></w:rPr><m:t>sin</m:t></m:r></m:fName><m:e><m:r><m:t>&#x3b8;</m:t></m:r></m:e></m:func></m:e></m:nary></m:oMath></m:oMathPara>"
+               |_ "<m:nary><m:naryPr><m:chr m:val="∑"/><m:limLoc m:val="undOvr"/><m:subHide m:val="0"/><m:supHide m:val="0"/></m:naryPr><m:sub><m:r><m:t>3</m:t></m:r></m:sub><m:sup><m:r><m:t>1</m:t></m:r></m:sup><m:e><m:func><m:funcPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:funcPr><m:fName><m:r><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/></w:rPr><m:t>sin</m:t></m:r></m:fName><m:e><m:r><m:t>&#x3b8;</m:t></m:r></m:e></m:func></m:e></m:nary>" summation
+                  |_ "<m:t>3</m:t>" subscript
+                  |_ "<m:t>1</m:t>" supscript
+                  |_ "<m:func><m:funcPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:funcPr><m:fName><m:r><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/></w:rPr><m:t>sin</m:t></m:r></m:fName><m:e><m:r><m:t>&#x3b8;</m:t></m:r></m:e></m:func>" term
+                     |_ "<m:func><m:funcPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:funcPr><m:fName><m:r><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/></w:rPr><m:t>sin</m:t></m:r></m:fName><m:e><m:r><m:t>&#x3b8;</m:t></m:r></m:e></m:func>" function apply
+                        |_ "sin" function name
+                        |_ "<m:t>&#x3b8;</m:t>" argument
+        OMML
+        latex = <<~LATEX
+          |_ Math zone
+            |_ "\\sum_{3}^{1} \\sin{\\theta}"
+               |_ "\\sum_{3}^{1} \\sin{\\theta}" summation
+                  |_ "3" subscript
+                  |_ "1" supscript
+                  |_ "\\sin{\\theta}" term
+                     |_ "\\sin{\\theta}" function apply
+                        |_ "sin" function name
+                        |_ "\\theta" argument
+        LATEX
+        mathml = <<~MATHML
+          |_ Math zone
+            |_ "<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mstyle displaystyle="true"><mrow><munderover><mo>&#x2211;</mo><mn>3</mn><mn>1</mn></munderover><mrow><mi>sin</mi><mi>&#x3b8;</mi></mrow></mrow></mstyle></math>"
+               |_ "<mrow><munderover><mo>&#x2211;</mo><mn>3</mn><mn>1</mn></munderover><mrow><mi>sin</mi><mi>&#x3b8;</mi></mrow></mrow>" summation
+                  |_ "<mn>3</mn>" subscript
+                  |_ "<mn>1</mn>" supscript
+                  |_ "<mrow><mi>sin</mi><mi>&#x3b8;</mi></mrow>" term
+                     |_ "<mrow><mi>sin</mi><mi>&#x3b8;</mi></mrow>" function apply
+                        |_ "sin" function name
+                        |_ "<mi>&#x3b8;</mi>" argument
+        MATHML
+        asciimath = <<~ASCIIMATH
+          |_ Math zone
+            |_ "sum_(3)^(1) sintheta"
+               |_ "sum_(3)^(1) sintheta" summation
+                  |_ "3" subscript
+                  |_ "1" supscript
+                  |_ "sintheta" term
+                     |_ "sintheta" function apply
+                        |_ "sin" function name
+                        |_ "theta" argument
+        ASCIIMATH
+        unicodemath = <<~UNICODEMATH
+          |_ Math zone
+            |_ "∑_(3)^(1)▒〖sin⁡θ〗"
+               |_ "∑_(3)^(1)▒〖sin⁡θ〗" summation
+                  |_ "3" subscript
+                  |_ "1" supscript
+                  |_ "sin⁡θ" term
+                     |_ "sin⁡θ" function apply
+                        |_ "sin" function name
+                        |_ "θ" argument
+        UNICODEMATH
+        expect(formula.to_display(:omml)).to eql(omml)
+        expect(formula.to_display(:latex)).to eql(latex)
+        expect(formula.to_display(:mathml)).to eql(mathml)
+        expect(formula.to_display(:asciimath)).to eql(asciimath)
+        expect(formula.to_display(:unicodemath)).to eql(unicodemath)
+      end
+    end
+
+    context "UnicodeMath Math zone representation of parentheses wrapped sin equation #2" do
+      let(:exp) { "(a + 1 sin \\theta)" }
+
+      it 'should puts Math zone representation of sample example #2' do
+        omml = <<~OMML
+          |_ Math zone
+            |_ "<m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape"><m:oMath><m:d><m:dPr><m:begChr m:val="("/><m:sepChr m:val=""/><m:endChr m:val=")"/></m:dPr><m:e><m:r><m:t>a</m:t></m:r><m:r><m:t>+</m:t></m:r><m:r><m:t>1</m:t></m:r><m:func><m:funcPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:funcPr><m:fName><m:r><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/></w:rPr><m:t>sin</m:t></m:r></m:fName><m:e><m:r><m:t>&#x3b8;</m:t></m:r></m:e></m:func></m:e></m:d></m:oMath></m:oMathPara>"
+               |_ "<m:t>a&#xa0;+&#xa0;1</m:t>" text
+               |_ "<m:func><m:funcPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:funcPr><m:fName><m:r><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/></w:rPr><m:t>sin</m:t></m:r></m:fName><m:e><m:r><m:t>&#x3b8;</m:t></m:r></m:e></m:func>" function apply
+                  |_ "sin" function name
+                  |_ "<m:t>&#x3b8;</m:t>" argument
+        OMML
+        latex = <<~LATEX
+          |_ Math zone
+            |_ "( a + 1 \\sin{\\theta} )"
+               |_ "a + 1" text
+               |_ "\\sin{\\theta}" function apply
+                  |_ "sin" function name
+                  |_ "\\theta" argument
+        LATEX
+        mathml = <<~MATHML
+          |_ Math zone
+            |_ "<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mstyle displaystyle="true"><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mn>1</mn><mrow><mi>sin</mi><mi>&#x3b8;</mi></mrow><mo>)</mo></mrow></mstyle></math>"
+               |_ "<mtext>a + 1</mtext>" text
+               |_ "<mrow><mi>sin</mi><mi>&#x3b8;</mi></mrow>" function apply
+                  |_ "sin" function name
+                  |_ "<mi>&#x3b8;</mi>" argument
+        MATHML
+        asciimath = <<~ASCIIMATH
+          |_ Math zone
+            |_ "(a + 1 sintheta)"
+               |_ "a + 1" text
+               |_ "sintheta" function apply
+                  |_ "sin" function name
+                  |_ "theta" argument
+        ASCIIMATH
+        unicodemath = <<~UNICODEMATH
+          |_ Math zone
+            |_ "(a + 1 sin⁡θ)"
+               |_ "a + 1" text
+               |_ "sin⁡θ" function apply
+                  |_ "sin" function name
+                  |_ "θ" argument
+        UNICODEMATH
+        expect(formula.to_display(:omml)).to eql(omml)
+        expect(formula.to_display(:latex)).to eql(latex)
+        expect(formula.to_display(:mathml)).to eql(mathml)
+        expect(formula.to_display(:asciimath)).to eql(asciimath)
+        expect(formula.to_display(:unicodemath)).to eql(unicodemath)
+      end
+    end
+
+    context "UnicodeMath Math zone representation example provided in github issue#113 #3" do
+      let(:exp) { '1/(2𝜋) ∫_0^(2𝜋) (bbb"d" 𝜃)/(a + b sin⁡𝜃) = 1/√(a^2−b²)' }
+
+      it 'should puts Math zone representation of sample example #3' do
+        omml = <<~OMML
+          |_ Math zone
+            |_ "<m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape"><m:oMath><m:f><m:fPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:fPr><m:num><m:r><m:t>1</m:t></m:r></m:num><m:den><m:r><m:t>2</m:t></m:r><m:r><m:t>&#x3c0;</m:t></m:r></m:den></m:f><m:nary><m:naryPr><m:chr m:val="∫"/><m:limLoc m:val="subSup"/><m:subHide m:val="0"/><m:supHide m:val="0"/></m:naryPr><m:sub><m:r><m:t>0</m:t></m:r></m:sub><m:sup><m:r><m:t>2</m:t></m:r><m:r><m:t>&#x3c0;</m:t></m:r></m:sup><m:e><m:f><m:fPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:fPr><m:num><m:r><m:rPr><m:scr m:val="double-struck"/></m:rPr><m:t>d</m:t></m:r><m:r><m:t>&#x3b8;</m:t></m:r></m:num><m:den><m:r><m:t>a</m:t></m:r><m:r><m:t>+</m:t></m:r><m:r><m:t>b</m:t></m:r><m:func><m:funcPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:funcPr><m:fName><m:r><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/></w:rPr><m:t>sin</m:t></m:r></m:fName><m:e><m:r><m:t>&#x3b8;</m:t></m:r></m:e></m:func></m:den></m:f></m:e></m:nary><m:r><m:t>=</m:t></m:r><m:f><m:fPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:fPr><m:num><m:r><m:t>1</m:t></m:r></m:num><m:den><m:rad><m:radPr><m:degHide m:val="on"/><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:radPr><m:deg/><m:e><m:sSup><m:sSupPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:sSupPr><m:e><m:r><m:t>a</m:t></m:r></m:e><m:sup><m:r><m:t>2</m:t></m:r></m:sup></m:sSup><m:r><m:t>−</m:t></m:r><m:sSup><m:sSupPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:sSupPr><m:e><m:r><m:t>b</m:t></m:r></m:e><m:sup><m:r><m:t>2</m:t></m:r></m:sup></m:sSup></m:e></m:rad></m:den></m:f></m:oMath></m:oMathPara>"
+               |_ "<m:f><m:fPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:fPr><m:num><m:r><m:t>1</m:t></m:r></m:num><m:den><m:r><m:t>2</m:t></m:r><m:r><m:t>&#x3c0;</m:t></m:r></m:den></m:f>" fraction
+               |  |_ "<m:t>1</m:t>" numerator
+               |  |_ "<m:r><m:t>2</m:t></m:r><m:r><m:t>&#x3c0;</m:t></m:r>" denominator
+               |_ "<m:nary><m:naryPr><m:chr m:val="∫"/><m:limLoc m:val="subSup"/><m:subHide m:val="0"/><m:supHide m:val="0"/></m:naryPr><m:sub><m:r><m:t>0</m:t></m:r></m:sub><m:sup><m:r><m:t>2</m:t></m:r><m:r><m:t>&#x3c0;</m:t></m:r></m:sup><m:e><m:f><m:fPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:fPr><m:num><m:r><m:rPr><m:scr m:val="double-struck"/></m:rPr><m:t>d</m:t></m:r><m:r><m:t>&#x3b8;</m:t></m:r></m:num><m:den><m:r><m:t>a</m:t></m:r><m:r><m:t>+</m:t></m:r><m:r><m:t>b</m:t></m:r><m:func><m:funcPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:funcPr><m:fName><m:r><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/></w:rPr><m:t>sin</m:t></m:r></m:fName><m:e><m:r><m:t>&#x3b8;</m:t></m:r></m:e></m:func></m:den></m:f></m:e></m:nary>" integral
+               |  |_ "<m:t>0</m:t>" lower limit
+               |  |_ "<m:r><m:t>2</m:t></m:r><m:r><m:t>&#x3c0;</m:t></m:r>" upper limit
+               |  |_ "<m:f><m:fPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:fPr><m:num><m:r><m:rPr><m:scr m:val="double-struck"/></m:rPr><m:t>d</m:t></m:r><m:r><m:t>&#x3b8;</m:t></m:r></m:num><m:den><m:r><m:t>a</m:t></m:r><m:r><m:t>+</m:t></m:r><m:r><m:t>b</m:t></m:r><m:func><m:funcPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:funcPr><m:fName><m:r><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/></w:rPr><m:t>sin</m:t></m:r></m:fName><m:e><m:r><m:t>&#x3b8;</m:t></m:r></m:e></m:func></m:den></m:f>" integrand
+               |     |_ "<m:f><m:fPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:fPr><m:num><m:r><m:rPr><m:scr m:val="double-struck"/></m:rPr><m:t>d</m:t></m:r><m:r><m:t>&#x3b8;</m:t></m:r></m:num><m:den><m:r><m:t>a</m:t></m:r><m:r><m:t>+</m:t></m:r><m:r><m:t>b</m:t></m:r><m:func><m:funcPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:funcPr><m:fName><m:r><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/></w:rPr><m:t>sin</m:t></m:r></m:fName><m:e><m:r><m:t>&#x3b8;</m:t></m:r></m:e></m:func></m:den></m:f>" fraction
+               |        |_ "<m:r><m:rPr><m:scr m:val="double-struck"/></m:rPr><m:t>d</m:t></m:r><m:r><m:t>&#x3b8;</m:t></m:r>" numerator
+               |        |  |_ "<m:r><m:rPr><m:scr m:val="double-struck"/></m:rPr><m:t>d</m:t></m:r>" function apply
+               |        |  |  |_ "double-struck" font family
+               |        |  |  |_ "<m:t>d</m:t>" argument
+               |        |  |_ "<m:t>&#x3b8;</m:t>" text
+               |        |_ "<m:r><m:t>a</m:t></m:r><m:r><m:t>+</m:t></m:r><m:r><m:t>b</m:t></m:r><m:func><m:funcPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:funcPr><m:fName><m:r><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/></w:rPr><m:t>sin</m:t></m:r></m:fName><m:e><m:r><m:t>&#x3b8;</m:t></m:r></m:e></m:func>" denominator
+               |          |_ "<m:t>a&#xa0;+&#xa0;b</m:t>" text
+               |          |_ "<m:func><m:funcPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:funcPr><m:fName><m:r><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/></w:rPr><m:t>sin</m:t></m:r></m:fName><m:e><m:r><m:t>&#x3b8;</m:t></m:r></m:e></m:func>" function apply
+               |             |_ "sin" function name
+               |             |_ "<m:t>&#x3b8;</m:t>" argument
+               |_ "<m:t>=</m:t>" text
+               |_ "<m:f><m:fPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:fPr><m:num><m:r><m:t>1</m:t></m:r></m:num><m:den><m:rad><m:radPr><m:degHide m:val="on"/><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:radPr><m:deg/><m:e><m:sSup><m:sSupPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:sSupPr><m:e><m:r><m:t>a</m:t></m:r></m:e><m:sup><m:r><m:t>2</m:t></m:r></m:sup></m:sSup><m:r><m:t>−</m:t></m:r><m:sSup><m:sSupPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:sSupPr><m:e><m:r><m:t>b</m:t></m:r></m:e><m:sup><m:r><m:t>2</m:t></m:r></m:sup></m:sSup></m:e></m:rad></m:den></m:f>" fraction
+                  |_ "<m:t>1</m:t>" numerator
+                  |_ "<m:rad><m:radPr><m:degHide m:val="on"/><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:radPr><m:deg/><m:e><m:sSup><m:sSupPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:sSupPr><m:e><m:r><m:t>a</m:t></m:r></m:e><m:sup><m:r><m:t>2</m:t></m:r></m:sup></m:sSup><m:r><m:t>−</m:t></m:r><m:sSup><m:sSupPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:sSupPr><m:e><m:r><m:t>b</m:t></m:r></m:e><m:sup><m:r><m:t>2</m:t></m:r></m:sup></m:sSup></m:e></m:rad>" denominator
+                    |_ "<m:rad><m:radPr><m:degHide m:val="on"/><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:radPr><m:deg/><m:e><m:sSup><m:sSupPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:sSupPr><m:e><m:r><m:t>a</m:t></m:r></m:e><m:sup><m:r><m:t>2</m:t></m:r></m:sup></m:sSup><m:r><m:t>−</m:t></m:r><m:sSup><m:sSupPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:sSupPr><m:e><m:r><m:t>b</m:t></m:r></m:e><m:sup><m:r><m:t>2</m:t></m:r></m:sup></m:sSup></m:e></m:rad>" function apply
+                       |_ "sqrt" function name
+                       |_ "<m:sSup><m:sSupPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:sSupPr><m:e><m:r><m:t>a</m:t></m:r></m:e><m:sup><m:r><m:t>2</m:t></m:r></m:sup></m:sSup><m:r><m:t>−</m:t></m:r><m:sSup><m:sSupPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:sSupPr><m:e><m:r><m:t>b</m:t></m:r></m:e><m:sup><m:r><m:t>2</m:t></m:r></m:sup></m:sSup>" argument
+                          |_ "<m:sSup><m:sSupPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:sSupPr><m:e><m:r><m:t>a</m:t></m:r></m:e><m:sup><m:r><m:t>2</m:t></m:r></m:sup></m:sSup>" superscript
+                          |  |_ "<m:t>a</m:t>" base
+                          |  |_ "<m:t>2</m:t>" script
+                          |_ "<m:t>&#x2212;</m:t>" text
+                          |_ "<m:sSup><m:sSupPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:sSupPr><m:e><m:r><m:t>b</m:t></m:r></m:e><m:sup><m:r><m:t>2</m:t></m:r></m:sup></m:sSup>" superscript
+                             |_ "<m:t>b</m:t>" base
+                             |_ "<m:t>2</m:t>" script
+        OMML
+        latex = <<~LATEX
+          |_ Math zone
+            |_ "\\frac{1}{2 \\pi} \\int_{0}^{2 \\pi} \\frac{\\mathbb{\\text{d}} \\theta}{a + b \\sin{\\theta}} = \\frac{1}{\\sqrt{a^{2} − b^{2}}}"
+               |_ "\\frac{1}{2 \\pi}" fraction
+               |  |_ "1" numerator
+               |  |_ "2 \\pi" denominator
+               |_ "\\int_{0}^{2 \\pi} \\frac{\\mathbb{\\text{d}} \\theta}{a + b \\sin{\\theta}}" integral
+               |  |_ "0" lower limit
+               |  |_ "2 \\pi" upper limit
+               |  |_ "\\frac{\\mathbb{\\text{d}} \\theta}{a + b \\sin{\\theta}}" integrand
+               |     |_ "\\frac{\\mathbb{\\text{d}} \\theta}{a + b \\sin{\\theta}}" fraction
+               |        |_ "\\mathbb{\\text{d}} \\theta" numerator
+               |        |  |_ "\\mathbb{\\text{d}}" function apply
+               |        |  |  |_ "bbb" font family
+               |        |  |  |_ "\\text{d}" argument
+               |        |  |_ "\\theta" text
+               |        |_ "a + b \\sin{\\theta}" denominator
+               |           |_ "a + b" text
+               |           |_ "\\sin{\\theta}" function apply
+               |              |_ "sin" function name
+               |              |_ "\\theta" argument
+               |_ "=" text
+               |_ "\\frac{1}{\\sqrt{a^{2} − b^{2}}}" fraction
+                  |_ "1" numerator
+                  |_ "\\sqrt{a^{2} − b^{2}}" denominator
+                     |_ "\\sqrt{a^{2} − b^{2}}" function apply
+                        |_ "sqrt" function name
+                        |_ "a^{2} − b^{2}" argument
+                           |_ "a^{2}" superscript
+                           |  |_ "a" base
+                           |  |_ "2" script
+                           |_ "−" text
+                           |_ "b^{2}" superscript
+                              |_ "b" base
+                              |_ "2" script
+        LATEX
+        mathml = <<~MATHML
+          |_ Math zone
+            |_ "<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mstyle displaystyle="true"><mfrac><mn>1</mn><mrow><mn>2</mn><mi>&#x3c0;</mi></mrow></mfrac><mrow><msubsup><mo>&#x222b;</mo><mn>0</mn><mrow><mn>2</mn><mi>&#x3c0;</mi></mrow></msubsup><mfrac><mrow><mstyle mathvariant="double-struck"><mtext>d</mtext></mstyle><mi>&#x3b8;</mi></mrow><mrow><mi>a</mi><mo>+</mo><mi>b</mi><mrow><mi>sin</mi><mi>&#x3b8;</mi></mrow></mrow></mfrac></mrow><mo>=</mo><mfrac><mn>1</mn><msqrt><mrow><msup><mi>a</mi><mn>2</mn></msup><mi>−</mi><msup><mi>b</mi><mn>2</mn></msup></mrow></msqrt></mfrac></mstyle></math>"
+               |_ "<mfrac><mn>1</mn><mrow><mn>2</mn><mi>&#x3c0;</mi></mrow></mfrac>" fraction
+               |  |_ "<mn>1</mn>" numerator
+               |  |_ "<mrow><mn>2</mn><mi>&#x3c0;</mi></mrow>" denominator
+               |_ "<mrow><msubsup><mo>&#x222b;</mo><mn>0</mn><mrow><mn>2</mn><mi>&#x3c0;</mi></mrow></msubsup><mfrac><mrow><mstyle mathvariant="double-struck"><mtext>d</mtext></mstyle><mi>&#x3b8;</mi></mrow><mrow><mi>a</mi><mo>+</mo><mi>b</mi><mrow><mi>sin</mi><mi>&#x3b8;</mi></mrow></mrow></mfrac></mrow>" integral
+               |  |_ "<mn>0</mn>" lower limit
+               |  |_ "<mrow><mn>2</mn><mi>&#x3c0;</mi></mrow>" upper limit
+               |  |_ "<mfrac><mrow><mstyle mathvariant="double-struck"><mtext>d</mtext></mstyle><mi>&#x3b8;</mi></mrow><mrow><mi>a</mi><mo>+</mo><mi>b</mi><mrow><mi>sin</mi><mi>&#x3b8;</mi></mrow></mrow></mfrac>" integrand
+               |     |_ "<mfrac><mrow><mstyle mathvariant="double-struck"><mtext>d</mtext></mstyle><mi>&#x3b8;</mi></mrow><mrow><mi>a</mi><mo>+</mo><mi>b</mi><mrow><mi>sin</mi><mi>&#x3b8;</mi></mrow></mrow></mfrac>" fraction
+               |        |_ "<mrow><mstyle mathvariant="double-struck"><mtext>d</mtext></mstyle><mi>&#x3b8;</mi></mrow>" numerator
+               |        |  |_ "<mstyle mathvariant="double-struck"><mtext>d</mtext></mstyle>" function apply
+               |        |  |  |_ "double-struck" font family
+               |        |  |  |_ "<mtext>d</mtext>" argument
+               |        |  |_ "<mi>&#x3b8;</mi>" text
+               |        |_ "<mrow><mi>a</mi><mo>+</mo><mi>b</mi><mrow><mi>sin</mi><mi>&#x3b8;</mi></mrow></mrow>" denominator
+               |          |_ "<mtext>a + b</mtext>" text
+               |          |_ "<mrow><mi>sin</mi><mi>&#x3b8;</mi></mrow>" function apply
+               |             |_ "sin" function name
+               |             |_ "<mi>&#x3b8;</mi>" argument
+               |_ "<mtext>=</mtext>" text
+               |_ "<mfrac><mn>1</mn><msqrt><mrow><msup><mi>a</mi><mn>2</mn></msup><mi>−</mi><msup><mi>b</mi><mn>2</mn></msup></mrow></msqrt></mfrac>" fraction
+                  |_ "<mn>1</mn>" numerator
+                  |_ "<msqrt><mrow><msup><mi>a</mi><mn>2</mn></msup><mi>−</mi><msup><mi>b</mi><mn>2</mn></msup></mrow></msqrt>" denominator
+                    |_ "<msqrt><mrow><msup><mi>a</mi><mn>2</mn></msup><mi>−</mi><msup><mi>b</mi><mn>2</mn></msup></mrow></msqrt>" function apply
+                       |_ "sqrt" function name
+                       |_ "<mrow><msup><mi>a</mi><mn>2</mn></msup><mi>−</mi><msup><mi>b</mi><mn>2</mn></msup></mrow>" argument
+                          |_ "<msup><mi>a</mi><mn>2</mn></msup>" superscript
+                          |  |_ "<mi>a</mi>" base
+                          |  |_ "<mn>2</mn>" script
+                          |_ "<mtext>−</mtext>" text
+                          |_ "<msup><mi>b</mi><mn>2</mn></msup>" superscript
+                             |_ "<mi>b</mi>" base
+                             |_ "<mn>2</mn>" script
+        MATHML
+        asciimath = <<~ASCIIMATH
+          |_ Math zone
+            |_ "frac(1)(2 pi) int_(0)^(2 pi) frac(mathbb("d") theta)(a + b sintheta) = frac(1)(sqrt(a^(2) − b^(2)))"
+               |_ "frac(1)(2 pi)" fraction
+               |  |_ "1" numerator
+               |  |_ "2 pi" denominator
+               |_ "int_(0)^(2 pi) frac(mathbb("d") theta)(a + b sintheta)" integral
+               |  |_ "0" lower limit
+               |  |_ "2 pi" upper limit
+               |  |_ "frac(mathbb("d") theta)(a + b sintheta)" integrand
+               |     |_ "frac(mathbb("d") theta)(a + b sintheta)" fraction
+               |        |_ "mathbb("d") theta" numerator
+               |        |  |_ "mathbb("d")" function apply
+               |        |  |  |_ "bbb" font family
+               |        |  |  |_ ""d"" argument
+               |        |  |_ "theta" text
+               |        |_ "a + b sintheta" denominator
+               |           |_ "a + b" text
+               |           |_ "sintheta" function apply
+               |              |_ "sin" function name
+               |              |_ "theta" argument
+               |_ "=" text
+               |_ "frac(1)(sqrt(a^(2) − b^(2)))" fraction
+                  |_ "1" numerator
+                  |_ "sqrt(a^(2) − b^(2))" denominator
+                     |_ "sqrt(a^(2) − b^(2))" function apply
+                        |_ "sqrt" function name
+                        |_ "a^(2) − b^(2)" argument
+                           |_ "a^(2)" superscript
+                           |  |_ "a" base
+                           |  |_ "2" script
+                           |_ "−" text
+                           |_ "b^(2)" superscript
+                              |_ "b" base
+                              |_ "2" script
+        ASCIIMATH
+        unicodemath = <<~UNICODEMATH
+          |_ Math zone
+            |_ "x = (-b ± √(b^2 - 4ac)) / 2a"
+               |_ "x" text
+               |_ "=" text
+               |_ "(-b ± √(b^2 - 4ac)) / 2a" fraction
+                  |_ "(-b ± √(b^2 - 4ac))" numerator
+                  |  |_ "-b" text
+                  |  |_ "±" text
+                  |  |_ "√(b^2 - 4ac)" square root
+                  |     |_ "b^2 - 4ac" base
+                  |_ "2a" denominator
+        UNICODEMATH
+        expect(formula.to_display(:omml)).to eql(omml)
+        expect(formula.to_display(:latex)).to eql(latex)
+        expect(formula.to_display(:mathml)).to eql(mathml)
+        expect(formula.to_display(:asciimath)).to eql(asciimath)
+        expect(formula.to_display(:unicodemath)).to eql(unicodemath)
+      end
+    end
+
+    context "UnicodeMath Math zone representation of simple equation #4" do
+      let(:exp) { 'e^(iπ) + 1 = 0' }
+
+      it 'should puts Math zone representation of sample example #4' do
+        omml = <<~OMML
+          |_ Math zone
+            |_ "<m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape"><m:oMath><m:sSup><m:e><m:r><m:t>e</m:t></m:r></m:e><m:sup><m:r><m:t>iπ</m:t></m:r></m:sup></m:sSup><m:r><m:t>+</m:t></m:r><m:r><m:t>1</m:t></m:r><m:r><m:t>=</m:t></m:r><m:r><m:t>0</m:t></m:r></m:oMath></m:oMathPara>"
+               |_ "<m:sSup><m:e><m:r><m:t>e</m:t></m:r></m:e><m:sup><m:r><m:t>iπ</m:t></m:r></m:sup></m:sSup>" superscript
+               |  |_ "<m:r><m:t>e</m:t></m:r>" base
+               |  |_ "<m:r><m:t>iπ</m:t></m:r>" superscript
+               |_ "<m:r><m:t>+</m:t></m:r>" text
+               |_ "<m:r><m:t>1</m:t></m:r>" text
+               |_ "<m:r><m:t>=</m:t></m:r>" text
+               |_ "<m:r><m:t>0</m:t></m:r>" text
+        OMML
+        latex = <<~LATEX
+          |_ Math zone
+            |_ "e^{iπ} + 1 = 0"
+               |_ "e^{iπ}" superscript
+               |  |_ "e" base
+               |  |_ "iπ" superscript
+               |_ "+" text
+               |_ "1" text
+               |_ "=" text
+               |_ "0" text
+        LATEX
+        mathml = <<~MATHML
+          |_ Math zone
+            |_ "<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><msup><mi>e</mi><mrow><mi>i</mi><mi>π</mi></mrow></msup><mo>+</mo><mn>1</mn><mo>=</mo><mn>0</mn></mrow></math>"
+               |_ "<msup><mi>e</mi><mrow><mi>i</mi><mi>π</mi></mrow></msup>" superscript
+               |  |_ "<mi>e</mi>" base
+               |  |_ "<mrow><mi>i</mi><mi>π</mi></mrow>" superscript
+               |_ "<mo>+</mo>" text
+               |_ "<mn>1</mn>" text
+               |_ "<mo>=</mo>" text
+               |_ "<mn>0</mn>" text
+        MATHML
+        asciimath = <<~ASCIIMATH
+          |_ Math zone
+            |_ "e^(iπ) + 1 = 0"
+               |_ "e^(iπ)" superscript
+               |  |_ "e" base
+               |  |_ "iπ" superscript
+               |_ "+" text
+               |_ "1" text
+               |_ "=" text
+               |_ "0" text
+        ASCIIMATH
+        unicodemath = <<~UNICODEMATH
+          |_ Math zone
+            |_ "e^(iπ) + 1 = 0"
+               |_ "e^(iπ)" superscript
+               |  |_ "e" base
+               |  |_ "iπ" superscript
+               |_ "+" text
+               |_ "1" text
+               |_ "=" text
+               |_ "0" text
+        UNICODEMATH
+        expect(formula.to_display(:omml)).to eql(omml)
+        expect(formula.to_display(:latex)).to eql(latex)
+        expect(formula.to_display(:mathml)).to eql(mathml)
+        expect(formula.to_display(:asciimath)).to eql(asciimath)
+        expect(formula.to_display(:unicodemath)).to eql(unicodemath)
+      end
+    end
+
+    context "UnicodeMath Math zone representation of simple equation #5" do
+      let(:exp) { 'x^2 + y^2 = z^2' }
+
+      it 'should puts Math zone representation of sample example #5' do
+        omml = <<~OMML
+          |_ Math zone
+            |_ "<m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape"><m:oMath><m:r><m:t>x</m:t></m:r><m:sSup><m:e><m:r><m:t>x</m:t></m:r></m:e><m:sup><m:r><m:t>2</m:t></m:r></m:sup></m:sSup><m:r><m:t>+</m:t></m:r><m:sSup><m:e><m:r><m:t>y</m:t></m:r></m:e><m:sup><m:r><m:t>2</m:t></m:r></m:sup></m:sSup><m:r><m:t>=</m:t></m:r><m:sSup><m:e><m:r><m:t>z</m:t></m:r></m:e><m:sup><m:r><m:t>2</m:t></m:r></m:sup></m:sSup></m:oMath></m:oMathPara>"
+               |_ "<m:r><m:t>x</m:t></m:r>" text
+               |_ "<m:sSup><m:e><m:r><m:t>x</m:t></m:r></m:e><m:sup><m:r><m:t>2</m:t></m:r></m:sup></m:sSup>" superscript
+               |  |_ "<m:r><m:t>x</m:t></m:r>" base
+               |  |_ "<m:r><m:t>2</m:t></m:r>" superscript
+               |_ "<m:r><m:t>+</m:t></m:r>" text
+               |_ "<m:sSup><m:e><m:r><m:t>y</m:t></m:r></m:e><m:sup><m:r><m:t>2</m:t></m:r></m:sup></m:sSup>" superscript
+               |  |_ "<m:r><m:t>y</m:t></m:r>" base
+               |  |_ "<m:r><m:t>2</m:t></m:r>" superscript
+               |_ "<m:r><m:t>=</m:t></m:r>" text
+               |_ "<m:sSup><m:e><m:r><m:t>z</m:t></m:r></m:e><m:sup><m:r><m:t>2</m:t></m:r></m:sup></m:sSup>" superscript
+                  |_ "<m:r><m:t>z</m:t></m:r>" base
+                  |_ "<m:r><m:t>2</m:t></m:r>" superscript
+        OMML
+        latex = <<~LATEX
+          |_ Math zone
+            |_ "x^2 + y^2 = z^2"
+               |_ "x^2" superscript
+               |  |_ "x" base
+               |  |_ "2" superscript
+               |_ "+" text
+               |_ "y^2" superscript
+               |  |_ "y" base
+               |  |_ "2" superscript
+               |_ "=" text
+               |_ "z^2" superscript
+                  |_ "z" base
+                  |_ "2" superscript
+        LATEX
+        mathml = <<~MATHML
+          |_ Math zone
+            |_ "<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><msup><mi>y</mi><mn>2</mn></msup><mo>=</mo><msup><mi>z</mi><mn>2</mn></msup></mrow></math>"
+               |_ "<msup><mi>x</mi><mn>2</mn></msup>" superscript
+               |  |_ "<mi>x</mi>" base
+               |  |_ "<mn>2</mn>" superscript
+               |_ "<mo>+</mo>" text
+               |_ "<msup><mi>y</mi><mn>2</mn></msup>" superscript
+               |  |_ "<mi>y</mi>" base
+               |  |_ "<mn>2</mn>" superscript
+               |_ "<mo>=</mo>" text
+               |_ "<msup><mi>z</mi><mn>2</mn></msup>" superscript
+                  |_ "<mi>z</mi>" base
+                  |_ "<mn>2</mn>" superscript
+        MATHML
+        asciimath = <<~ASCIIMATH
+          |_ Math zone
+            |_ "x^(2) + y^(2) = z^(2)"
+               |_ "x^(2)" superscript
+               |  |_ "x" base
+               |  |_ "2" script
+               |_ "+" text
+               |_ "y^(2)" superscript
+               |  |_ "y" base
+               |  |_ "2" script
+               |_ "=" text
+               |_ "z^(2)" superscript
+                  |_ "z" base
+                  |_ "2" script
+        ASCIIMATH
+        unicodemath = <<~UNICODEMATH
+          |_ Math zone
+            |_ "x^(2) + y^(2) = z^(2)"
+               |_ "x^(2)" superscript
+               |  |_ "x" base
+               |  |_ "2" script
+               |_ "+" text
+               |_ "y^(2)" superscript
+               |  |_ "y" base
+               |  |_ "2" script
+               |_ "=" text
+               |_ "z^(2)" superscript
+                  |_ "z" base
+                  |_ "2" script
+        UNICODEMATH
+        expect(formula.to_display(:omml)).to eql(omml)
+        expect(formula.to_display(:latex)).to eql(latex)
+        expect(formula.to_display(:mathml)).to eql(mathml)
+        expect(formula.to_display(:asciimath)).to eql(asciimath)
+        expect(formula.to_display(:unicodemath)).to eql(unicodemath)
+      end
+    end
+
+    context "UnicodeMath Math zone representation of simple table equation #6" do
+      let(:exp) { '■(𝜎&𝛾@𝜃&𝛼)' }
+
+      it 'should puts Math zone representation of sample example #6' do
+        omml = <<~OMML
+        |_ Math zone
+          |_ "<m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape"><m:oMath><m:m><m:mPr><m:mcs><m:mc><m:mcPr><m:count m:val="2"/><m:mcJc m:val="center"/></m:mcPr></m:mc></m:mcs><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:mPr><m:mr><m:e><m:r><m:t>&#x1d70e;</m:t></m:r></m:e><m:e><m:r><m:t>&#x1d6fe;</m:t></m:r></m:e></m:mr><m:mr><m:e><m:r><m:t>&#x1d703;</m:t></m:r></m:e><m:e><m:r><m:t>&#x1d6fc;</m:t></m:r></m:e></m:mr></m:m></m:oMath></m:oMathPara>"
+             |_ "table" function apply
+                |_ "tr" function apply
+                |  |_ "td" function apply
+                |  |  |_ "<m:t>&#x1d70e;</m:t>" text
+                |  |_ "td" function apply
+                |     |_ "<m:t>&#x1d6fe;</m:t>" text
+                |_ "tr" function apply
+                   |_ "td" function apply
+                   |  |_ "<m:t>&#x1d703;</m:t>" text
+                   |_ "td" function apply
+                      |_ "<m:t>&#x1d6fc;</m:t>" text
+        OMML
+        latex = <<~LATEX
+          |_ Math zone
+            |_ "\\left .\\begin{matrix}{aa}&#x1d70e; & &#x1d6fe; \\\\ &#x1d703; & &#x1d6fc;\\end{matrix}\\right ."
+               |_ "table" function apply
+                  |_ "tr" function apply
+                  |  |_ "td" function apply
+                  |  |  |_ "&#x1d70e;" text
+                  |  |_ "td" function apply
+                  |     |_ "&#x1d6fe;" text
+                  |_ "tr" function apply
+                     |_ "td" function apply
+                     |  |_ "&#x1d703;" text
+                     |_ "td" function apply
+                        |_ "&#x1d6fc;" text
+        LATEX
+        mathml = <<~MATHML
+        |_ Math zone
+          |_ "<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mstyle displaystyle="true"><mtable><mtr><mtd><mi>&#x1d70e;</mi></mtd><mtd><mi>&#x1d6fe;</mi></mtd></mtr><mtr><mtd><mi>&#x1d703;</mi></mtd><mtd><mi>&#x1d6fc;</mi></mtd></mtr></mtable></mstyle></math>"
+             |_ "table" function apply
+                |_ "tr" function apply
+                |  |_ "td" function apply
+                |  |  |_ "<mtext>&#x1d70e;</mtext>" text
+                |  |_ "td" function apply
+                |     |_ "<mtext>&#x1d6fe;</mtext>" text
+                |_ "tr" function apply
+                   |_ "td" function apply
+                   |  |_ "<mtext>&#x1d703;</mtext>" text
+                   |_ "td" function apply
+                      |_ "<mtext>&#x1d6fc;</mtext>" text
+        MATHML
+        asciimath = <<~ASCIIMATH
+          |_ Math zone
+            |_ "[[&#x1d70e;, &#x1d6fe;], [&#x1d703;, &#x1d6fc;]]"
+               |_ "table" function apply
+                  |_ "tr" function apply
+                  |  |_ "td" function apply
+                  |  |  |_ "&#x1d70e;" text
+                  |  |_ "td" function apply
+                  |     |_ "&#x1d6fe;" text
+                  |_ "tr" function apply
+                     |_ "td" function apply
+                     |  |_ "&#x1d703;" text
+                     |_ "td" function apply
+                        |_ "&#x1d6fc;" text
+        ASCIIMATH
+        unicodemath = <<~UNICODEMATH
+          |_ Math zone
+            |_ "■(𝜎&𝛾@𝜃&𝛼)"
+               |_ "table" function apply
+                  |_ "tr" function apply
+                  |  |_ "td" function apply
+                  |  |  |_ "𝜎" text
+                  |  |_ "td" function apply
+                  |     |_ "𝛾" text
+                  |_ "tr" function apply
+                     |_ "td" function apply
+                     |  |_ "𝜃" text
+                     |_ "td" function apply
+                        |_ "𝛼" text
+        UNICODEMATH
+        expect(formula.to_display(:omml)).to eql(omml)
+        expect(formula.to_display(:latex)).to eql(latex)
+        expect(formula.to_display(:mathml)).to eql(mathml)
+        expect(formula.to_display(:asciimath)).to eql(asciimath)
+        expect(formula.to_display(:unicodemath)).to eql(unicodemath)
+      end
+    end
+
+    context "UnicodeMath Math zone representation of simple equation #7" do
+      let(:exp) { 'm = E / c^2' }
+
+      it 'should puts Math zone representation of sample example #7' do
+        omml = <<~OMML
+          |_ Math zone
+            |_ "<m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape"><m:oMath><m:r><m:t>m</m:t></m:r><m:r><m:t>=</m:t></m:r><m:d><m:dPr><m:begChr m:val="("/><m:endChr m:val=")"/></m:dPr><m:e><m:r><m:t>E</m:t></m:r><m:r><m:t>/</m:t></m:r><m:sSup><m:e><m:r><m:t>c</m:t></m:r></m:e><m:sup><m:r><m:t>2</m:t></m:r></m:sup></m:sSup></m:e></m:d></m:oMath></m:oMathPara>"
+               |_ "<m:r><m:t>m</m:t></m:r>" text
+               |_ "<m:r><m:t>=</m:t></m:r>" text
+               |_ "<m:d><m:dPr><m:begChr m:val="("/><m:endChr m:val=")"/></m:dPr><m:e><m:r><m:t>E</m:t></m:r><m:r><m:t>/</m:t></m:r><m:sSup><m:e><m:r><m:t>c</m:t></m:r></m:e><m:sup><m:r><m:t>2</m:t></m:r></m:sup></m:sSup></m:e></m:d>" fraction
+               |  |_ "<m:r><m:t>E</m:t></m:r>" numerator
+               |  |_ "<m:r><m:t>/</m:t></m:r>" numerator
+               |  |_ "<m:sSup><m:e><m:r><m:t>c</m:t></m:r></m:e><m:sup><m:r><m:t>2</m:t></m:r></m:sup></m:sSup>" denominator
+               |     |_ "<m:r><m:t>c</m:t></m:r>" base
+               |     |_ "<m:r><m:t>2</m:t></m:r>" superscript
+        OMML
+        latex = <<~LATEX
+          |_ Math zone
+            |_ "m = \\frac{E}{c^2}"
+               |_ "m" text
+               |_ "=" text
+               |_ "\\frac{E}{c^2}" fraction
+                  |_ "E" numerator
+                  |_ "c^2" denominator
+                     |_ "c" base
+                     |_ "2" superscript
+        LATEX
+        mathml = <<~MATHML
+          |_ Math zone
+            |_ "<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><mi>m</mi><mo>=</mo><mfrac><mi>E</mi><msup><mi>c</mi><mn>2</mn></msup></mfrac></mrow></math>"
+               |_ "<mi>m</mi>" text
+               |_ "<mo>=</mo>" text
+               |_ "<mfrac><mi>E</mi><msup><mi>c</mi><mn>2</mn></msup></mfrac>" fraction
+                  |_ "<mi>E</mi>" numerator
+                  |_ "<msup><mi>c</mi><mn>2</mn></msup>" denominator
+                     |_ "<mi>c</mi>" base
+                     |_ "<mn>2</mn>" superscript
+        MATHML
+        asciimath = <<~ASCIIMATH
+          |_ Math zone
+            |_ "m = E / c^2"
+               |_ "m" text
+               |_ "=" text
+               |_ "E / c^2" fraction
+                  |_ "E" numerator
+                  |_ "c^2" denominator
+                     |_ "c" base
+                     |_ "2" superscript
+        ASCIIMATH
+        unicodemath = <<~UNICODEMATH
+          |_ Math zone
+            |_ "m = E / c^2"
+               |_ "m" text
+               |_ "=" text
+               |_ "E / c^2" fraction
+                  |_ "E" numerator
+                  |_ "c^2" denominator
+                     |_ "c" base
+                     |_ "2" superscript
+        UNICODEMATH
+        expect(formula.to_display(:omml)).to eql(omml)
+        expect(formula.to_display(:latex)).to eql(latex)
+        expect(formula.to_display(:mathml)).to eql(mathml)
+        expect(formula.to_display(:asciimath)).to eql(asciimath)
+        expect(formula.to_display(:unicodemath)).to eql(unicodemath)
+      end
+    end
+
+    context "UnicodeMath Math zone representation of simple equation #8" do
+      let(:exp) { 'F = ma' }
+
+      it 'should puts Math zone representation of sample example #8' do
+        omml = <<~OMML
+          |_ Math zone
+            |_ "<m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape"><m:oMath><m:r><m:t>F</m:t></m:r><m:r><m:t>=</m:t></m:r><m:r><m:t>ma</m:t></m:r></m:oMath></m:oMathPara>"
+               |_ "<m:r><m:t>F</m:t></m:r>" text
+               |_ "<m:r><m:t>=</m:t></m:r>" text
+               |_ "<m:r><m:t>ma</m:t></m:r>" text
+        OMML
+        latex = <<~LATEX
+          |_ Math zone
+            |_ "F = ma"
+               |_ "F" text
+               |_ "=" text
+               |_ "ma" text
+        LATEX
+        mathml = <<~MATHML
+          |_ Math zone
+            |_ "<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><mi>F</mi><mo>=</mo><mi>m</mi><mi>a</mi></mrow></math>"
+               |_ "<mi>F</mi>" text
+               |_ "<mo>=</mo>" text
+               |_ "<mi>m</mi>" text
+               |_ "<mi>a</mi>" text
+        MATHML
+        asciimath = <<~ASCIIMATH
+          |_ Math zone
+            |_ "F = ma"
+               |_ "F" text
+               |_ "=" text
+               |_ "ma" text
+        ASCIIMATH
+        unicodemath = <<~UNICODEMATH
+          |_ Math zone
+            |_ "F = ma"
+               |_ "F" text
+               |_ "=" text
+               |_ "ma" text
+        UNICODEMATH
+        expect(formula.to_display(:omml)).to eql(omml)
+        expect(formula.to_display(:latex)).to eql(latex)
+        expect(formula.to_display(:mathml)).to eql(mathml)
+        expect(formula.to_display(:asciimath)).to eql(asciimath)
+        expect(formula.to_display(:unicodemath)).to eql(unicodemath)
+      end
+    end
+
+    context "UnicodeMath Math zone representation of simple equation #9" do
+      let(:exp) { 'x + y = z' }
+
+      it 'should puts Math zone representation of sample example #9' do
+        omml = <<~OMML
+          |_ Math zone
+            |_ "<m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape"><m:oMath><m:r><m:t>x</m:t></m:r><m:r><m:t>+</m:t></m:r><m:r><m:t>y</m:t></m:r><m:r><m:t>=</m:t></m:r><m:r><m:t>z</m:t></m:r></m:oMath></m:oMathPara>"
+               |_ "<m:r><m:t>x</m:t></m:r>" text
+               |_ "<m:r><m:t>+</m:t></m:r>" text
+               |_ "<m:r><m:t>y</m:t></m:r>" text
+               |_ "<m:r><m:t>=</m:t></m:r>" text
+               |_ "<m:r><m:t>z</m:t></m:r>" text
+        OMML
+        latex = <<~LATEX
+          |_ Math zone
+            |_ "x + y = z"
+               |_ "x" text
+               |_ "+" text
+               |_ "y" text
+               |_ "=" text
+               |_ "z" text
+        LATEX
+        mathml = <<~MATHML
+          |_ Math zone
+            |_ "<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><mi>x</mi><mo>+</mo><mi>y</mi><mo>=</mo><mi>z</mi></mrow></math>"
+               |_ "<mi>x</mi>" text
+               |_ "<mo>+</mo>" text
+               |_ "<mi>y</mi>" text
+               |_ "<mo>=</mo>" text
+               |_ "<mi>z</mi>" text
+        MATHML
+        asciimath = <<~ASCIIMATH
+          |_ Math zone
+            |_ "x + y = z"
+               |_ "x" text
+               |_ "+" text
+               |_ "y" text
+               |_ "=" text
+               |_ "z" text
+        ASCIIMATH
+        unicodemath = <<~UNICODEMATH
+          |_ Math zone
+            |_ "x + y = z"
+               |_ "x" text
+               |_ "+" text
+               |_ "y" text
+               |_ "=" text
+               |_ "z" text
+        UNICODEMATH
+        expect(formula.to_display(:omml)).to eql(omml)
+        expect(formula.to_display(:latex)).to eql(latex)
+        expect(formula.to_display(:mathml)).to eql(mathml)
+        expect(formula.to_display(:asciimath)).to eql(asciimath)
+        expect(formula.to_display(:unicodemath)).to eql(unicodemath)
+      end
+    end
+
+    context "UnicodeMath Math zone representation of simple equation #10" do
+      let(:exp) { 'p = q' }
+
+      it 'should puts Math zone representation of sample example #10' do
+        omml = <<~OMML
+          |_ Math zone
+            |_ "<m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape"><m:oMath><m:r><m:t>p</m:t></m:r><m:r><m:t>=</m:t></m:r><m:r><m:t>q</m:t></m:r></m:oMath></m:oMathPara>"
+               |_ "<m:r><m:t>p</m:t></m:r>" text
+               |_ "<m:r><m:t>=</m:t></m:r>" text
+               |_ "<m:r><m:t>q</m:t></m:r>" text
+        OMML
+        latex = <<~LATEX
+          |_ Math zone
+            |_ "p = q"
+               |_ "p" text
+               |_ "=" text
+               |_ "q" text
+        LATEX
+        mathml = <<~MATHML
+          |_ Math zone
+            |_ "<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><mi>p</mi><mo>=</mo><mi>q</mi></mrow></math>"
+               |_ "<mi>p</mi>" text
+               |_ "<mo>=</mo>" text
+               |_ "<mi>q</mi>" text
+        MATHML
+        asciimath = <<~ASCIIMATH
+          |_ Math zone
+            |_ "p = q"
+               |_ "p" text
+               |_ "=" text
+               |_ "q" text
+        ASCIIMATH
+        expect(formula.to_display(:omml)).to eql(omml)
+        expect(formula.to_display(:latex)).to eql(latex)
+        expect(formula.to_display(:mathml)).to eql(mathml)
+        expect(formula.to_display(:asciimath)).to eql(asciimath)
+      end
+    end
+  end
 end
