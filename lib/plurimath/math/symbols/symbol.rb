@@ -127,6 +127,10 @@ module Plurimath
           "#{spacing}\"#{dump_mathml(self)}\" text\n"
         end
 
+        def to_unicodemath_math_zone(spacing = "", last = false, indent = true)
+          "#{spacing}\"#{to_unicodemath}\" text\n"
+        end
+
         def paren?
           false
         end

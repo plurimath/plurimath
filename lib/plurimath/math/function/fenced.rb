@@ -118,6 +118,13 @@ module Plurimath
           end
         end
 
+        def to_unicodemath_math_zone(spacing, last = false, indent = true)
+          filtered_values(parameter_two, lang: :unicodemath).map.with_index(1) do |object, index|
+            last = index == @values.length
+            object.to_unicodemath_math_zone(spacing, last, indent)
+          end
+        end
+
         def line_breaking(obj)
           field_values = result(Array(parameter_two))
           return unless field_values.length > 1

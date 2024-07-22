@@ -110,6 +110,16 @@ module Plurimath
           new_arr
         end
 
+        def to_unicodemath_math_zone(spacing, last = false, _)
+          new_spacing = gsub_spacing(spacing, last)
+          new_arr = [
+            "#{spacing}\"#{to_unicodemath}\" function apply\n",
+            "#{new_spacing}|_ \"#{class_name}\" function name\n",
+          ]
+          unicodemath_fields_to_print(parameter_one, { spacing: new_spacing, field_name: "argument", additional_space: "   |_ " , array: new_arr })
+          new_arr
+        end
+
         def custom_array_line_breaking(obj)
           parameter_value = result(parameter_one)
           if parameter_value.size > 1

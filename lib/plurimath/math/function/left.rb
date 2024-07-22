@@ -59,6 +59,10 @@ module Plurimath
           "#{spacing}\"#{dump_ox_nodes(t_tag).gsub(/\s+/, "")}\" left\n"
         end
 
+        def to_unicodemath_math_zone(spacing = "", _, _)
+          "#{spacing}\"#{parameter_one}\" left\n"
+        end
+        
         protected
 
         def left_paren

@@ -71,6 +71,10 @@ module Plurimath
           parameter_one
         end
 
+        def to_unicodemath_math_zone(spacing, _, _)
+          "#{spacing}#{to_unicodemath} text\n"
+        end
+        
         protected
 
         def symbol_value(unicode)

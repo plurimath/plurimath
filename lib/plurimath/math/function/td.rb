@@ -76,6 +76,20 @@ module Plurimath
           ]
         end
 
+        def to_unicodemath_math_zone(spacing, last = false, _)
+          [
+            "#{spacing}\"td\" function apply\n",
+            Formula.new(parameter_one).to_unicodemath_math_zone(gsub_spacing(spacing, last), last),
+          ]
+        end
+
+        def to_unicodemath_math_zone(spacing, last = false, _)
+          [
+            "#{spacing}\"td\" function apply\n",
+            Formula.new(parameter_one).to_unicodemath_math_zone(gsub_spacing(spacing, last), last),
+          ]
+        end
+        
         def omml_content(display_style)
           parameter_one&.map { |val| val.insert_t_tag(display_style) }
         end

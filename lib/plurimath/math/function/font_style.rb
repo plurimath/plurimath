@@ -120,6 +120,18 @@ module Plurimath
           end
         end
 
+        def to_unicodemath_math_zone(spacing, last = false, _)
+          new_spacing = gsub_spacing(spacing, last)
+          new_arr = [
+            "#{spacing}\"#{dump_unicodemath(self)}\" function apply\n",
+            "#{new_spacing}|_ \"#{font_family(unicode: true)}\" font family\n",
+          ]
+          unicodemath_fields_to_print(parameter_one, { spacing: new_spacing, field_name: "argument", additional_space: "|  |_ ", array: new_arr })
+          new_arr
+        end
+
+        
+
         def line_breaking(obj)
           parameter_one&.line_breaking(obj)
           return unless obj.value_exist?

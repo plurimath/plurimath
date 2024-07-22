@@ -172,7 +172,7 @@ module Plurimath
                         else
                           (Constants::NARY_CLASSES.invert[nary_class.to_s] || Constants::NARY_SYMBOLS[nary_class.to_sym] || nary_class)
                         end
-        Utility.get_class(nary_function).new 
+        Utility.get_class(nary_function).new
       end
 
       rule(ordinary_negated_operator: simple(:operator)) do
@@ -516,6 +516,12 @@ module Plurimath
            sup_script: simple(:sup_script)) do
         symbol = Constants::COMBINING_SYMBOLS[combined_symbols.to_sym]
         [Utility.symbols_class(symbol, lang: :unicodemath), sup_script]
+      end
+
+      rule(combined_symbols: simple(:combined_symbols),
+           exp: simple(:exp)) do
+        symbol = Constants::COMBINING_SYMBOLS[combined_symbols.to_sym]
+        [Utility.symbols_class(symbol, lang: :unicodemath), exp]
       end
 
       rule(operator: simple(:operator),
@@ -3946,6 +3952,18 @@ module Plurimath
           ),
           [pre_sub],
           [pre_sup],
+        )
+      end
+
+      rule(open_paren: simple(:open_paren),
+           factor: sequence(:factor),
+           operand: simple(:operand),
+           exp: simple(:exp),
+           close_paren: simple(:close_paren)) do
+        Math::Function::Fenced.new(
+          Utility.symbols_class(open_paren, lang: :unicodemath),
+          factor + [operand, exp],
+          Utility.symbols_class(close_paren, lang: :unicodemath),
         )
       end
 

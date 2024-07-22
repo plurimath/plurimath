@@ -80,6 +80,13 @@ module Plurimath
           ]
         end
 
+        def to_unicodemath_math_zone(spacing, last = false, indent = true)
+          [
+            "#{spacing}\"tr\" function apply\n",
+            Formula.new(parameter_one).to_unicodemath_math_zone(gsub_spacing(spacing, last), last, indent),
+          ]
+        end
+
         def remove_hline(first_value)
           row_lines = first_value.first.parameter_one
           row_lines.shift if row_lines.first.is_a?(Math::Symbols::Hline)
