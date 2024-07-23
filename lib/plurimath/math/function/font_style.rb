@@ -130,8 +130,6 @@ module Plurimath
           new_arr
         end
 
-        
-
         def line_breaking(obj)
           parameter_one&.line_breaking(obj)
           return unless obj.value_exist?

@@ -1537,17 +1537,6 @@ module Plurimath
         )
       end
 
-      rule(unary_functions: simple(:unary),
-           first_value: simple(:first_value)) do
-        if Constants::UNDEF_UNARY_FUNCTIONS.include?(unary.to_s)
-          Math::Formula.new([
-            Utility.symbols_class(unary, lang: :unicodemath),
-            first_value,
-          ])
-        else
-          Utility.get_class(unary).new(first_value)
-        end
-      end
 
       rule(unary_functions: simple(:unary),
            first_value: simple(:first_value)) do
@@ -1556,6 +1545,8 @@ module Plurimath
             Utility.symbols_class(unary, lang: :unicodemath),
             first_value,
           ])
+        elsif unary == "mod"
+          Math::Function::Mod.new(nil, first_value)
         else
           Utility.get_class(unary).new(first_value)
         end
@@ -3130,6 +3121,17 @@ module Plurimath
           close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
         [fenced] + naryand_recursion
+      end
+
+      rule(open_paren: simple(:open_paren),
+           unary_subsup: simple(:unary_subsup),
+           exp: simple(:exp),
+           close_paren: simple(:close_paren)) do
+        Math::Function::Fenced.new(
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
+          [unary_subsup, exp],
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
+        )
       end
 
       rule(open_paren: simple(:open_paren),
