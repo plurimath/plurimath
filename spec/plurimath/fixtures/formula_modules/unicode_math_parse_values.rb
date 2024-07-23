@@ -69838,30 +69838,30 @@ module UnicodeMathParseValues
                                     number: "2"
                                   }
                                 }
-                              },
-                              expr: {
-                                operand: {
-                                  symbol: "&#x2212;"
-                                },
-                                expr: {
-                                  operand: {
-                                    factor: {
-                                      atom: {
-                                        char: {
-                                          unicode_symbols: "&#x1d44f;"
-                                        }
-                                      }
+                              }
+                            }
+                          }
+                        },
+                        exp: {
+                          unicode_symbols: "&#x2212;",
+                          exp: {
+                            sup_exp: {
+                              base: {
+                                factor: {
+                                  atom: {
+                                    char: {
+                                      unicode_symbols: "&#x1d44f;"
                                     }
                                   }
                                 }
-                              }
-                            },
-                            sup_recursion: {
-                              sup_script: {
-                                operand: {
-                                  factor: {
-                                    digit: {
-                                      number: "2"
+                              },
+                              sup: {
+                                sup_script: {
+                                  operand: {
+                                    factor: {
+                                      digit: {
+                                        number: "2"
+                                      }
                                     }
                                   }
                                 }

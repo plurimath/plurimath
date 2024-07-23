@@ -269,5 +269,6 @@ def unicodemath_examples_intents(array)
     gsub("𝑥", "x").
     gsub("𝑦", "y").
     gsub("𝑁", "N").
-    gsub("α", "a")
+    gsub("α", "a").
+    gsub("𝜋", "π")
 end

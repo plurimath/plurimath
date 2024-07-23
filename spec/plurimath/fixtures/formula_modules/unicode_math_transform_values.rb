@@ -7451,7 +7451,7 @@ module UnicodeMathTransformValues
     Plurimath::Math::Function::Power.new(
       Plurimath::Math::Symbols::Symbol.new("A"),
       Plurimath::Math::Symbols::Symbol.new("*")
-    ), 
+    ),
     Plurimath::Math::Symbols::Equal.new,
     Plurimath::Math::Function::Sum.new(
       Plurimath::Math::Formula.new([
@@ -7490,7 +7490,7 @@ module UnicodeMathTransformValues
           Plurimath::Math::Symbols::Paren::Rcurly.new
         )
       ])
-    ), 
+    ),
     Plurimath::Math::Symbols::Equal.new,
     Plurimath::Math::Function::Base.new(
       Plurimath::Math::Function::Fenced.new(
@@ -7902,7 +7902,7 @@ module UnicodeMathTransformValues
             Plurimath::Math::Number.new("5", mini_sub_sized: true)
           ],
           Plurimath::Math::Symbols::Symbol.new(")", mini_sub_sized: true)
-        ), 
+        ),
         Plurimath::Math::Number.new("=", mini_sub_sized: true),
         Plurimath::Math::Symbols::Symbol.new("-", mini_sub_sized: true),
         Plurimath::Math::Number.new("3", mini_sub_sized: true)
@@ -8317,7 +8317,7 @@ module UnicodeMathTransformValues
             )
           ],
           Plurimath::Math::Symbols::Paren::Rround.new,
-        ), 
+        ),
         Plurimath::Math::Symbols::Comma.new,
         Plurimath::Math::Symbols::Cdots.new
       ],
@@ -8420,15 +8420,15 @@ module UnicodeMathTransformValues
         Plurimath::Math::Function::Tr.new([
           Plurimath::Math::Function::Td.new([
             Plurimath::Math::Symbols::Alpha.new
-          ]), 
+          ]),
           Plurimath::Math::Function::Td.new([
             Plurimath::Math::Symbols::Upbeta.new
           ])
-        ]), 
+        ]),
         Plurimath::Math::Function::Tr.new([
           Plurimath::Math::Function::Td.new([
             Plurimath::Math::Symbols::Gamma.new
-          ]), 
+          ]),
           Plurimath::Math::Function::Td.new([
             Plurimath::Math::Symbols::Delta.new
           ])
@@ -8519,7 +8519,7 @@ module UnicodeMathTransformValues
     Plurimath::Math::Function::Base.new(
       Plurimath::Math::Symbols::Upbeta.new,
       Plurimath::Math::Symbols::Symbol.new("y")
-    ), 
+    ),
     Plurimath::Math::Symbols::Symbol.new("y"),
     Plurimath::Math::Symbols::Plus.new,
     Plurimath::Math::Function::Base.new(
@@ -8634,7 +8634,7 @@ module UnicodeMathTransformValues
     Plurimath::Math::Function::Base.new(
       Plurimath::Math::Symbols::Symbol.new("z"),
       Plurimath::Math::Symbols::Symbol.new("k")
-    ), 
+    ),
     Plurimath::Math::Symbols::Symbol.new("f"),
     Plurimath::Math::Function::Fenced.new(
       Plurimath::Math::Symbols::Paren::Lround.new,
@@ -8644,7 +8644,7 @@ module UnicodeMathTransformValues
         Plurimath::Math::Symbols::Symbol.new("k")
       ],
       Plurimath::Math::Symbols::Paren::Rround.new,
-    ), 
+    ),
     Plurimath::Math::Symbols::Finv.new,
     Plurimath::Math::Symbols::Symbol.new("B"),
     Plurimath::Math::Symbols::Symbol.new("/", true),
@@ -8678,7 +8678,7 @@ module UnicodeMathTransformValues
     Plurimath::Math::Function::Menclose.new(
       "updiagonalstrike downdiagonalstrike",
       Plurimath::Math::Symbols::Symbol.new("a")
-    ), 
+    ),
     Plurimath::Math::Function::Menclose.new(
       "downdiagonalstrike updiagonalstrike",
       Plurimath::Math::Formula.new([
@@ -8686,7 +8686,7 @@ module UnicodeMathTransformValues
         Plurimath::Math::Symbols::Plus.new,
         Plurimath::Math::Symbols::Symbol.new("b")
       ])
-    ), 
+    ),
     Plurimath::Math::Function::Menclose.new(
       "box",
       Plurimath::Math::Formula.new([
@@ -8801,7 +8801,7 @@ module UnicodeMathTransformValues
         Plurimath::Math::Number.new("1")
       ]
     ),
-    Plurimath::Math::Function::Text.new("   or   "), 
+    Plurimath::Math::Function::Text.new("   or   "),
     Plurimath::Math::Function::PowerBase.new(
       Plurimath::Math::Function::Fenced.new(
         Plurimath::Math::Symbols::Paren::OpenParen.new,
@@ -10998,7 +10998,7 @@ module UnicodeMathTransformValues
   ])
   EXAMPLE_339 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Sin.new(
-      Plurimath::Math::Symbols::Symbol.new("&#x1d703;")
+      Plurimath::Math::Symbols::Theta.new
     ),
     Plurimath::Math::Symbols::Equal.new,
     Plurimath::Math::Function::Frac.new(
@@ -11013,7 +11013,7 @@ module UnicodeMathTransformValues
       Plurimath::Math::Symbols::Symbol.new("&#x1d452;"),
       Plurimath::Math::Formula.new([
         Plurimath::Math::Symbols::Symbol.new("&#x1d456;"),
-        Plurimath::Math::Symbols::Symbol.new("&#x1d703;")
+        Plurimath::Math::Symbols::Theta.new
       ])
     ),
     Plurimath::Math::Symbols::Plus.new,
@@ -11025,7 +11025,7 @@ module UnicodeMathTransformValues
         Plurimath::Math::Function::Sin.new,
         Plurimath::Math::Number.new("2")
       ),
-      Plurimath::Math::Symbols::Symbol.new("&#x1d703;"),
+      Plurimath::Math::Symbols::Theta.new,
     ]),
     Plurimath::Math::Symbols::Plus.new,
     Plurimath::Math::Formula.new([
@@ -11033,7 +11033,7 @@ module UnicodeMathTransformValues
         Plurimath::Math::Function::Cos.new,
         Plurimath::Math::Number.new("2")
       ),
-      Plurimath::Math::Symbols::Symbol.new("&#x1d703;"),
+      Plurimath::Math::Symbols::Theta.new,
     ]),
     Plurimath::Math::Symbols::Equal.new,
     Plurimath::Math::Number.new("1")
@@ -15019,30 +15019,30 @@ module UnicodeMathTransformValues
       Plurimath::Math::Number.new("0"),
       Plurimath::Math::Formula.new([
         Plurimath::Math::Number.new("2"),
-        Plurimath::Math::Symbols::Symbol.new("&#x1d70b;")
+        Plurimath::Math::Symbols::Pi.new
       ]),
       Plurimath::Math::Formula.new([
         Plurimath::Math::Function::Int.new(
           Plurimath::Math::Number.new("0"),
-          Plurimath::Math::Symbols::Symbol.new("&#x1d70b;"),
+          Plurimath::Math::Symbols::Pi.new,
           Plurimath::Math::Formula.new([
             Plurimath::Math::Symbols::Symbol.new("&#x1d453;"),
             Plurimath::Math::Function::Fenced.new(
               Plurimath::Math::Symbols::Paren::Lround.new,
               [
-                Plurimath::Math::Symbols::Symbol.new("&#x1d703;"),
+                Plurimath::Math::Symbols::Theta.new,
                 Plurimath::Math::Symbols::Comma.new,
                 Plurimath::Math::Symbols::Symbol.new("&#x1d719;")
               ],
               Plurimath::Math::Symbols::Paren::Rround.new,
             ),
             Plurimath::Math::Function::Sin.new(
-              Plurimath::Math::Symbols::Symbol.new("&#x1d703;")
+              Plurimath::Math::Symbols::Theta.new
             ),
           ])
         ),
         Plurimath::Math::Symbols::Dd.new,
-        Plurimath::Math::Symbols::Symbol.new("&#x1d703;"),
+        Plurimath::Math::Symbols::Theta.new,
       ])
     ),
     Plurimath::Math::Symbols::Dd.new,
@@ -17771,7 +17771,7 @@ module UnicodeMathTransformValues
     Plurimath::Math::Function::Frac.new(
       Plurimath::Math::Symbols::Symbol.new("&#x1d456;"),
       Plurimath::Math::Function::Sqrt.new(
-        Plurimath::Math::Symbols::Symbol.new("&#x1d70b;")
+        Plurimath::Math::Symbols::Pi.new
       )
     ),
     Plurimath::Math::Function::Int.new(
@@ -18019,7 +18019,7 @@ module UnicodeMathTransformValues
   ])
   EXAMPLE_639 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Base.new(
-      Plurimath::Math::Symbols::Symbol.new("&#x1d703;"),
+      Plurimath::Math::Symbols::Theta.new,
       Plurimath::Math::Number.new("1", mini_sub_sized: true)
     ),
     Plurimath::Math::Function::Fenced.new(
@@ -18033,7 +18033,7 @@ module UnicodeMathTransformValues
     ),
     Plurimath::Math::Symbols::Equal.new,
     Plurimath::Math::Function::Base.new(
-      Plurimath::Math::Symbols::Symbol.new("&#x1d703;"),
+      Plurimath::Math::Symbols::Theta.new,
       Plurimath::Math::Number.new("1", mini_sub_sized: true)
     ),
     Plurimath::Math::Function::Fenced.new(
@@ -18459,26 +18459,26 @@ module UnicodeMathTransformValues
       Plurimath::Math::Number.new("1"),
       Plurimath::Math::Formula.new([
         Plurimath::Math::Number.new("2"),
-        Plurimath::Math::Symbols::Symbol.new("&#x1d70b;")
+        Plurimath::Math::Symbols::Pi.new
       ])
     ),
     Plurimath::Math::Function::Int.new(
       Plurimath::Math::Number.new("0"),
       Plurimath::Math::Formula.new([
         Plurimath::Math::Number.new("2"),
-        Plurimath::Math::Symbols::Symbol.new("&#x1d70b;")
+        Plurimath::Math::Symbols::Pi.new
       ]),
       Plurimath::Math::Function::Frac.new(
         Plurimath::Math::Formula.new([
           Plurimath::Math::Symbols::Dd.new,
-          Plurimath::Math::Symbols::Symbol.new("&#x1d703;")
+          Plurimath::Math::Symbols::Theta.new
         ]),
         Plurimath::Math::Formula.new([
           Plurimath::Math::Symbols::Symbol.new("&#x1d44e;"),
           Plurimath::Math::Symbols::Plus.new,
           Plurimath::Math::Symbols::Symbol.new("&#x1d44f;"),
           Plurimath::Math::Function::Sin.new(
-            Plurimath::Math::Symbols::Symbol.new("&#x1d703;")
+            Plurimath::Math::Symbols::Theta.new
           )
         ])
       )
@@ -18487,17 +18487,17 @@ module UnicodeMathTransformValues
     Plurimath::Math::Function::Frac.new(
       Plurimath::Math::Number.new("1"),
       Plurimath::Math::Function::Sqrt.new(
-        Plurimath::Math::Function::Power.new(
-          Plurimath::Math::Symbols::Symbol.new("&#x1d44e;"),
+        Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Power.new(
-            Plurimath::Math::Formula.new([
-              Plurimath::Math::Number.new("2"),
-              Plurimath::Math::Symbols::Minus.new,
-              Plurimath::Math::Symbols::Symbol.new("&#x1d44f;")
-            ]),
-            Plurimath::Math::Number.new("2")
+            Plurimath::Math::Symbols::Symbol.new("&#x1d44e;"),
+            Plurimath::Math::Number.new("2"),
+          ),
+          Plurimath::Math::Symbols::Minus.new,
+          Plurimath::Math::Function::Power.new(
+            Plurimath::Math::Symbols::Symbol.new("&#x1d44f;"),
+            Plurimath::Math::Number.new("2"),
           )
-        )
+        ])
       )
     )
   ])
