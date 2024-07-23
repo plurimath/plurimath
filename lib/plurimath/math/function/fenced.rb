@@ -93,22 +93,25 @@ module Plurimath
 
         def to_asciimath_math_zone(spacing, last = false, indent = true)
           filtered_values(parameter_two, lang: :asciimath).map.with_index(1) do |object, index|
-            last = index == @values.length
-            object.to_asciimath_math_zone(spacing, last, indent)
+            new_last = index == @values.length
+            new_last = last if new_last && !last
+            object.to_asciimath_math_zone(spacing, new_last, indent)
           end
         end
 
         def to_latex_math_zone(spacing, last = false, indent = true)
           filtered_values(parameter_two, lang: :latex).map.with_index(1) do |object, index|
-            last = index == @values.length
-            object.to_latex_math_zone(spacing, last, indent)
+            new_last = index == @values.length
+            new_last = last if new_last && !last
+            object.to_latex_math_zone(spacing, new_last, indent)
           end
         end
 
         def to_mathml_math_zone(spacing, last = false, indent = true)
           filtered_values(parameter_two, lang: :mathml).map.with_index(1) do |object, index|
-            last = index == @values.length
-            object.to_mathml_math_zone(spacing, last, indent)
+            new_last = index == @values.length
+            new_last = last if new_last && !last
+            object.to_mathml_math_zone(spacing, new_last, indent)
           end
         end
 
@@ -120,8 +123,9 @@ module Plurimath
 
         def to_unicodemath_math_zone(spacing, last = false, indent = true)
           filtered_values(parameter_two, lang: :unicodemath).map.with_index(1) do |object, index|
-            last = index == @values.length
-            object.to_unicodemath_math_zone(spacing, last, indent)
+            new_last = index == @values.length
+            new_last = last if new_last && !last
+            object.to_unicodemath_math_zone(spacing, new_last, indent)
           end
         end
 

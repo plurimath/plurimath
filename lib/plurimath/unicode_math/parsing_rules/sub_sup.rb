@@ -59,7 +59,7 @@ module Plurimath
           (operator.absent? >> naryand_values >> naryand_recursion.as(:naryand_recursion).maybe) |
             (slashed_operator >> naryand_recursion.as(:naryand_recursion).maybe)
         end
-        
+
         rule(:baseless_sub) do
           (invisible_space? >> base_syntax >> op_size_overrides_symbols.absent? >> (operator_symbols.maybe >> baseless_sub_values(:sub_script))) |
             (invisible_space? >> base_syntax >> op_size_overrides_symbols.absent? >> (operator_symbols >> recursive_baseless_sub_exp.maybe)) |
@@ -220,8 +220,8 @@ module Plurimath
           (operator_symbols.as(:expr) >> (((mini_sub_sup | sub_or_sup) >> space?) >> bracketed_soperand.maybe)) |
             (operator_symbols.as(:expr) >> bracketed_soperand) |
             (((primes | prefixed_primes).as(:symbol).as(:first_value) >> repeated_accent_symbols).as(:accents) >> (sub_or_sup.maybe >> space? >> bracketed_soperand).maybe) |
-            bracketed_soperand >> operator_symbols.absent? >> sub_sup_values.as(:expr).maybe |
-            sub_sup_binary_absent >> operator_symbols.absent? >> sub_sup_values.as(:expr).maybe |
+            bracketed_soperand >> str("&#x2212;").absent? >> operator_symbols.absent? >> sub_sup_values.as(:expr).maybe |
+            sub_sup_binary_absent >> str("&#x2212;").absent? >> operator_symbols.absent? >> sub_sup_values.as(:expr).maybe |
             bracketed_soperand |
             prefixed_primes |
             primes |

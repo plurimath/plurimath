@@ -3,12 +3,12 @@ module Plurimath
     module Symbols
       class Pi < Symbol
         INPUT = {
-          unicodemath: [["pi", "&#x3c0;"], parsing_wrapper(["uppi"])],
-          asciimath: [["pi", "&#x3c0;"], parsing_wrapper(["uppi"])],
-          mathml: [["&#x3c0;"]],
-          latex: [["pi", "uppi", "&#x3c0;"]],
-          omml: [["&#x3c0;"]],
-          html: ["&#x3C0;"],
+          unicodemath: ["pi", "&#x3c0;", "&#x1d70b;", parsing_wrapper(["uppi"])],
+          asciimath: ["pi", "&#x3c0;", "&#x1d70b;", parsing_wrapper(["uppi"])],
+          mathml: ["&#x3c0;", "&#x1d70b;"],
+          latex: ["pi", "uppi", "&#x3c0;", "&#x1d70b;"],
+          omml: ["&#x3c0;", "&#x1d70b;"],
+          html: ["&#x3C0;", "&#x1d70b;"],
         }.freeze
 
         # output methods
