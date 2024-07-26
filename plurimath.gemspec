@@ -28,4 +28,5 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'parslet'
   spec.add_dependency 'thor'
   spec.add_dependency 'ox'
+  spec.add_dependency 'bigdecimal'
 end
