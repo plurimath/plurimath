@@ -3,10 +3,10 @@ module Plurimath
     module Symbols
       class Lnot < Symbol
         INPUT = {
-          unicodemath: [["&#xac;", "lnot"], parsing_wrapper(["not"])],
-          asciimath: [["not", "&#xac;"], parsing_wrapper(["lnot"])],
+          unicodemath: [["&#xac;", "lnot"], parsing_wrapper(["not"], lang: :unicode)],
+          asciimath: [["not", "&#xac;"], parsing_wrapper(["lnot"], lang: :asciimath)],
           mathml: ["&#xac;"],
-          latex: [["lnot", "&#xac;"], parsing_wrapper(["not"])],
+          latex: [["lnot", "&#xac;"], parsing_wrapper(["not"], lang: :latex)],
           omml: ["&#xac;"],
         }.freeze
 

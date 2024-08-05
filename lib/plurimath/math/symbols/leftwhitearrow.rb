@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Leftwhitearrow < Symbol
         INPUT = {
-          unicodemath: [["&#x21e6;"], parsing_wrapper(["leftwhitearrow"])],
-          asciimath: [["&#x21e6;"], parsing_wrapper(["leftwhitearrow"])],
+          unicodemath: [["&#x21e6;"], parsing_wrapper(["leftwhitearrow"], lang: :unicode)],
+          asciimath: [["&#x21e6;"], parsing_wrapper(["leftwhitearrow"], lang: :asciimath)],
           mathml: ["&#x21e6;"],
           latex: [["leftwhitearrow", "&#x21e6;"]],
           omml: ["&#x21e6;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("leftwhitearrow")
+          parsing_wrapper("leftwhitearrow", lang: :asciimath)
         end
 
         def to_unicodemath

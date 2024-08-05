@@ -36,8 +36,13 @@ module Plurimath
           value
         end
 
-        def to_mathml_without_math_tag(_)
-          mi_tag = Utility.ox_element("mi")
+        def to_mathml_without_math_tag(intent)
+          if value&.include?("&#x2147;")
+            attributes = {
+              intent: Utility.html_entity_to_unicode(value),
+            }
+          end
+          mi_tag = ox_element("mi", attributes: attributes)
           return mi_tag if ["{:", ":}"].include?(value)
 
           mi_tag << value
@@ -190,12 +195,20 @@ module Plurimath
           Dir.glob(File.join(__dir__, "symbols", "*.rb"))
         end
 
-        def parsing_wrapper(string)
-          "__{#{string}}"
+        def parsing_wrapper(string, lang:)
+          case lang
+          when :asciimath, :unicode then "\"P{#{string}}\""
+          when :latex then "\\text{P[#{string}]}"
+          end
         end
 
-        def self.parsing_wrapper(input_arr)
-          input_arr.map { |input| "__{#{input}}" }
+        def self.parsing_wrapper(input_arr, lang:)
+          input_arr.map do |input|
+            case lang
+            when :asciimath, :unicode then "\"P{#{input}}\""
+            when :latex then "\\text{P[#{input}]}"
+            end
+          end
         end
       end
     end

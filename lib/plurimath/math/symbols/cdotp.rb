@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Cdotp < Symbol
         INPUT = {
-          unicodemath: [["&#xb7;"], parsing_wrapper(["cdotp"])],
-          asciimath: [["&#xb7;"], parsing_wrapper(["cdotp"])],
+          unicodemath: [["&#xb7;"], parsing_wrapper(["cdotp"], lang: :unicode)],
+          asciimath: [["&#xb7;"], parsing_wrapper(["cdotp"], lang: :asciimath)],
           mathml: ["&#xb7;"],
           latex: [["cdotp", "&#xb7;"]],
           omml: ["&#xb7;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("cdotp")
+          parsing_wrapper("cdotp", lang: :asciimath)
         end
 
         def to_unicodemath

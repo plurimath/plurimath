@@ -3,10 +3,10 @@ module Plurimath
     module Symbols
       class Epar < Symbol
         INPUT = {
-          unicodemath: [["epar", "&#x22e5;"], parsing_wrapper(["sqsupsetneq"])],
-          asciimath: [["&#x22e5;"], parsing_wrapper(["epar", "sqsupsetneq"])],
+          unicodemath: [["epar", "&#x22e5;"], parsing_wrapper(["sqsupsetneq"], lang: :unicode)],
+          asciimath: [["&#x22e5;"], parsing_wrapper(["epar", "sqsupsetneq"], lang: :asciimath)],
           mathml: ["&#x22e5;"],
-          latex: [["sqsupsetneq", "&#x22e5;"], parsing_wrapper(["epar"])],
+          latex: [["sqsupsetneq", "&#x22e5;"], parsing_wrapper(["epar"], lang: :latex)],
           omml: ["&#x22e5;"],
           html: ["&#x22e5;"],
         }.freeze
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("epar")
+          parsing_wrapper("epar", lang: :asciimath)
         end
 
         def to_unicodemath

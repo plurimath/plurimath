@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Sumint do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Sumint" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{sumint}")
+        expect(klass.to_asciimath).to eq("\"P{sumint}\"")
       end
 
       it "matches LaTeX string" do

@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Toea do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Toea" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{toea}")
+        expect(klass.to_asciimath).to eq("\"P{toea}\"")
       end
 
       it "matches LaTeX string" do

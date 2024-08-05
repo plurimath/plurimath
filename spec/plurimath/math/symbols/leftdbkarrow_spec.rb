@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Leftdbkarrow do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Leftdbkarrow" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{leftdbkarrow}")
+        expect(klass.to_asciimath).to eq("\"P{leftdbkarrow}\"")
       end
 
       it "matches LaTeX string" do

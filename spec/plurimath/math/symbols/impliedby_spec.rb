@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Impliedby do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Impliedby" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{impliedby}")
+        expect(klass.to_asciimath).to eq("\"P{impliedby}\"")
       end
 
       it "matches LaTeX string" do

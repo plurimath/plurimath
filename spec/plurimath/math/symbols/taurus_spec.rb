@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Taurus do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Taurus" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{Taurus}")
+        expect(klass.to_asciimath).to eq("\"P{Taurus}\"")
       end
 
       it "matches LaTeX string" do

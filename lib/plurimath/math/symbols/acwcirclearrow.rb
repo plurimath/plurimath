@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Acwcirclearrow < Symbol
         INPUT = {
-          unicodemath: [["&#x2940;"], parsing_wrapper(["acwcirclearrow"])],
-          asciimath: [["&#x2940;"], parsing_wrapper(["acwcirclearrow"])],
+          unicodemath: [["&#x2940;"], parsing_wrapper(["acwcirclearrow"], lang: :unicode)],
+          asciimath: [["&#x2940;"], parsing_wrapper(["acwcirclearrow"], lang: :asciimath)],
           mathml: ["&#x2940;"],
           latex: [["acwcirclearrow", "&#x2940;"]],
           omml: ["&#x2940;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("acwcirclearrow")
+          parsing_wrapper("acwcirclearrow", lang: :asciimath)
         end
 
         def to_unicodemath

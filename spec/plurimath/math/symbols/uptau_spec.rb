@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Uptau do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Uptau" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{upTau}")
+        expect(klass.to_asciimath).to eq("\"P{upTau}\"")
       end
 
       it "matches LaTeX string" do

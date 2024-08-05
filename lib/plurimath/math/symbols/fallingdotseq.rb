@@ -4,7 +4,7 @@ module Plurimath
       class Fallingdotseq < Symbol
         INPUT = {
           unicodemath: [["fallingdotseq", "&#x2252;"]],
-          asciimath: [["&#x2252;"], parsing_wrapper(["fallingdotseq"])],
+          asciimath: [["&#x2252;"], parsing_wrapper(["fallingdotseq"], lang: :asciimath)],
           mathml: ["&#x2252;"],
           latex: [["fallingdotseq", "&#x2252;"]],
           omml: ["&#x2252;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("fallingdotseq")
+          parsing_wrapper("fallingdotseq", lang: :asciimath)
         end
 
         def to_unicodemath

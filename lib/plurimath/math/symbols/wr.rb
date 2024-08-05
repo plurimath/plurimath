@@ -4,7 +4,7 @@ module Plurimath
       class Wr < Symbol
         INPUT = {
           unicodemath: [["wr", "&#x2240;"]],
-          asciimath: [["&#x2240;"], parsing_wrapper(["wr"])],
+          asciimath: [["&#x2240;"], parsing_wrapper(["wr"], lang: :asciimath)],
           mathml: ["&#x2240;"],
           latex: [["wr", "&#x2240;"]],
           omml: ["&#x2240;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("wr")
+          parsing_wrapper("wr", lang: :asciimath)
         end
 
         def to_unicodemath

@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Varclub < Symbol
         INPUT = {
-          unicodemath: [["&#x2667;"], parsing_wrapper(["varclubsuit", "varclub"])],
-          asciimath: [["&#x2667;"], parsing_wrapper(["varclubsuit", "varclub"])],
+          unicodemath: [["&#x2667;"], parsing_wrapper(["varclubsuit", "varclub"], lang: :unicode)],
+          asciimath: [["&#x2667;"], parsing_wrapper(["varclubsuit", "varclub"], lang: :asciimath)],
           mathml: ["&#x2667;"],
           latex: [["varclubsuit", "varclub", "&#x2667;"]],
           omml: ["&#x2667;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("varclub")
+          parsing_wrapper("varclub", lang: :asciimath)
         end
 
         def to_unicodemath

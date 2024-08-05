@@ -3,10 +3,10 @@ module Plurimath
     module Symbols
       class Equiv < Symbol
         INPUT = {
-          unicodemath: [["equiv", "&#x2261;"], parsing_wrapper(["-="])],
+          unicodemath: [["equiv", "&#x2261;"], parsing_wrapper(["-="], lang: :unicode)],
           asciimath: [["equiv", "-=", "&#x2261;"]],
           mathml: ["&#x2261;"],
-          latex: [["equiv", "&#x2261;"], parsing_wrapper(["-="])],
+          latex: [["equiv", "&#x2261;"], parsing_wrapper(["-="], lang: :latex)],
           omml: ["&#x2261;"],
           html: ["&#x2261;"],
         }.freeze

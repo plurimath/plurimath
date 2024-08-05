@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Obslash < Symbol
         INPUT = {
-          unicodemath: [["&#x29b8;"], parsing_wrapper(["circledbslash", "obslash"])],
-          asciimath: [["&#x29b8;"], parsing_wrapper(["circledbslash", "obslash"])],
+          unicodemath: [["&#x29b8;"], parsing_wrapper(["circledbslash", "obslash"], lang: :unicode)],
+          asciimath: [["&#x29b8;"], parsing_wrapper(["circledbslash", "obslash"], lang: :asciimath)],
           mathml: ["&#x29b8;"],
           latex: [["circledbslash", "obslash", "&#x29b8;"]],
           omml: ["&#x29b8;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("obslash")
+          parsing_wrapper("obslash", lang: :asciimath)
         end
 
         def to_unicodemath

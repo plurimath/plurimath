@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Circleulquad < Symbol
         INPUT = {
-          unicodemath: [["&#x25f4;"], parsing_wrapper(["circleulquad"])],
-          asciimath: [["&#x25f4;"], parsing_wrapper(["circleulquad"])],
+          unicodemath: [["&#x25f4;"], parsing_wrapper(["circleulquad"], lang: :unicode)],
+          asciimath: [["&#x25f4;"], parsing_wrapper(["circleulquad"], lang: :asciimath)],
           mathml: ["&#x25f4;"],
           latex: [["circleulquad", "&#x25f4;"]],
           omml: ["&#x25f4;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("circleulquad")
+          parsing_wrapper("circleulquad", lang: :asciimath)
         end
 
         def to_unicodemath

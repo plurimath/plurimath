@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Eth do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Eth" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{eth}")
+        expect(klass.to_asciimath).to eq("\"P{eth}\"")
       end
 
       it "matches LaTeX string" do

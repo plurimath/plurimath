@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Overbracket < Symbol
         INPUT = {
-          unicodemath: [["&#x23b4;"], parsing_wrapper(["overbracket"])],
-          asciimath: [["&#x23b4;"], parsing_wrapper(["overbracket"])],
+          unicodemath: [["&#x23b4;"], parsing_wrapper(["overbracket"], lang: :unicode)],
+          asciimath: [["&#x23b4;"], parsing_wrapper(["overbracket"], lang: :asciimath)],
           mathml: ["&#x23b4;"],
           latex: [["overbracket", "&#x23b4;"]],
           omml: ["&#x23b4;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("overbracket")
+          parsing_wrapper("overbracket", lang: :asciimath)
         end
 
         def to_unicodemath

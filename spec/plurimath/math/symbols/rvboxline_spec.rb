@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Rvboxline do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Rvboxline" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{rvboxline}")
+        expect(klass.to_asciimath).to eq("\"P{rvboxline}\"")
       end
 
       it "matches LaTeX string" do

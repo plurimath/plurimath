@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Hexagonblack do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Hexagonblack" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{hexagonblack}")
+        expect(klass.to_asciimath).to eq("\"P{hexagonblack}\"")
       end
 
       it "matches LaTeX string" do

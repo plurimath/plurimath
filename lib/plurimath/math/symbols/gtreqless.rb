@@ -4,7 +4,7 @@ module Plurimath
       class Gtreqless < Symbol
         INPUT = {
           unicodemath: [["gtreqless", "&#x22db;"]],
-          asciimath: [["&#x22db;"], parsing_wrapper(["gtreqless"])],
+          asciimath: [["&#x22db;"], parsing_wrapper(["gtreqless"], lang: :asciimath)],
           mathml: ["&#x22db;"],
           latex: [["gtreqless", "&#x22db;"]],
           omml: ["&#x22db;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("gtreqless")
+          parsing_wrapper("gtreqless", lang: :asciimath)
         end
 
         def to_unicodemath

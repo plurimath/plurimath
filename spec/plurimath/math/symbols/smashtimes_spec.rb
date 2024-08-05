@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Smashtimes do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Smashtimes" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{smashtimes}")
+        expect(klass.to_asciimath).to eq("\"P{smashtimes}\"")
       end
 
       it "matches LaTeX string" do

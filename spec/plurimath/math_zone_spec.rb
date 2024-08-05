@@ -4524,16 +4524,16 @@ RSpec.describe Plurimath::Math do
         MATHML
         asciimath = <<~ASCIIMATH
           |_ Math zone
-            |_ "|x||__x__||~x~|__{rVert} vec(x) __{rVert}"
+            |_ "|x||__x__||~x~|"P{rVert}" vec(x) "P{rVert}""
                |_ "msgroup" function apply
                   |_ "x" text
                   |_ "x" text
                   |_ "x" text
-                  |_ "__{rVert}" text
+                  |_ ""P{rVert}"" text
                   |_ "vec(x)" function apply
                   |  |_ "vec" function name
                   |  |_ "x" supscript
-                  |_ "__{rVert}" text
+                  |_ ""P{rVert}"" text
         ASCIIMATH
         expect(formula.to_display(:omml)).to eql(omml)
         expect(formula.to_display(:latex)).to eql(latex)

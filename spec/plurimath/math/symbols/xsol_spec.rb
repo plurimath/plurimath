@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Xsol do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Xsol" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{xsol}")
+        expect(klass.to_asciimath).to eq("\"P{xsol}\"")
       end
 
       it "matches LaTeX string" do

@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Revemptyset < Symbol
         INPUT = {
-          unicodemath: [["&#x29b0;"], parsing_wrapper(["revemptyset"])],
-          asciimath: [["&#x29b0;"], parsing_wrapper(["revemptyset"])],
+          unicodemath: [["&#x29b0;"], parsing_wrapper(["revemptyset"], lang: :unicode)],
+          asciimath: [["&#x29b0;"], parsing_wrapper(["revemptyset"], lang: :asciimath)],
           mathml: ["&#x29b0;"],
           latex: [["revemptyset", "&#x29b0;"]],
           omml: ["&#x29b0;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("revemptyset")
+          parsing_wrapper("revemptyset", lang: :asciimath)
         end
 
         def to_unicodemath

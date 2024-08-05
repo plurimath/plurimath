@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Nhvvert < Symbol
         INPUT = {
-          unicodemath: [["&#x2af5;"], parsing_wrapper(["nhVvert"])],
-          asciimath: [["&#x2af5;"], parsing_wrapper(["nhVvert"])],
+          unicodemath: [["&#x2af5;"], parsing_wrapper(["nhVvert"], lang: :unicode)],
+          asciimath: [["&#x2af5;"], parsing_wrapper(["nhVvert"], lang: :asciimath)],
           mathml: ["&#x2af5;"],
           latex: [["nhVvert", "&#x2af5;"]],
           omml: ["&#x2af5;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("nhVvert")
+          parsing_wrapper("nhVvert", lang: :asciimath)
         end
 
         def to_unicodemath

@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Whitesquaretickright do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Whitesquaretickright" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{whitesquaretickright}")
+        expect(klass.to_asciimath).to eq("\"P{whitesquaretickright}\"")
       end
 
       it "matches LaTeX string" do

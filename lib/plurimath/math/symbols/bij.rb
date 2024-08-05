@@ -3,10 +3,10 @@ module Plurimath
     module Symbols
       class Bij < Symbol
         INPUT = {
-          unicodemath: [["&#x2916;"], parsing_wrapper(["twoheadrightarrowtail", ">->>", "bij"])],
-          asciimath: [["twoheadrightarrowtail", ">->>", "&#x2916;"], parsing_wrapper(["bij"])],
+          unicodemath: [["&#x2916;"], parsing_wrapper(["twoheadrightarrowtail", ">->>", "bij"], lang: :unicode)],
+          asciimath: [["twoheadrightarrowtail", ">->>", "&#x2916;"], parsing_wrapper(["bij"], lang: :asciimath)],
           mathml: ["&#x2916;"],
-          latex: [["twoheadrightarrowtail", "bij", "&#x2916;"], parsing_wrapper([">->>"])],
+          latex: [["twoheadrightarrowtail", "bij", "&#x2916;"], parsing_wrapper([">->>"], lang: :latex)],
           omml: ["&#x2916;"],
           html: ["&#x2916;"],
         }.freeze
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("bij")
+          parsing_wrapper("bij", lang: :asciimath)
         end
 
         def to_unicodemath

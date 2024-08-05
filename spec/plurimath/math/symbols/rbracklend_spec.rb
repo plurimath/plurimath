@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Rbracklend do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Rbracklend" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{rbracklend}")
+        expect(klass.to_asciimath).to eq("\"P{rbracklend}\"")
       end
 
       it "matches LaTeX string" do

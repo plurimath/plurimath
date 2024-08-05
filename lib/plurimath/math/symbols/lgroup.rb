@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Lgroup < Symbol
         INPUT = {
-          unicodemath: [["&#x27ee;"], parsing_wrapper(["lgroup"])],
-          asciimath: [["&#x27ee;"], parsing_wrapper(["lgroup"])],
+          unicodemath: [["&#x27ee;"], parsing_wrapper(["lgroup"], lang: :unicode)],
+          asciimath: [["&#x27ee;"], parsing_wrapper(["lgroup"], lang: :asciimath)],
           mathml: ["&#x27ee;"],
           latex: [["lgroup", "&#x27ee;"]],
           omml: ["&#x27ee;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("lgroup")
+          parsing_wrapper("lgroup", lang: :asciimath)
         end
 
         def to_unicodemath

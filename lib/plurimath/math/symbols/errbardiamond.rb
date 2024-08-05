@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Errbardiamond < Symbol
         INPUT = {
-          unicodemath: [["&#x29f0;"], parsing_wrapper(["errbardiamond"])],
-          asciimath: [["&#x29f0;"], parsing_wrapper(["errbardiamond"])],
+          unicodemath: [["&#x29f0;"], parsing_wrapper(["errbardiamond"], lang: :unicode)],
+          asciimath: [["&#x29f0;"], parsing_wrapper(["errbardiamond"], lang: :asciimath)],
           mathml: ["&#x29f0;"],
           latex: [["errbardiamond", "&#x29f0;"]],
           omml: ["&#x29f0;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("errbardiamond")
+          parsing_wrapper("errbardiamond", lang: :asciimath)
         end
 
         def to_unicodemath

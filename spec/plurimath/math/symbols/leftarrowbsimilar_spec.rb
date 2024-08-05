@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Leftarrowbsimilar do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Leftarrowbsimilar" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{leftarrowbsimilar}")
+        expect(klass.to_asciimath).to eq("\"P{leftarrowbsimilar}\"")
       end
 
       it "matches LaTeX string" do

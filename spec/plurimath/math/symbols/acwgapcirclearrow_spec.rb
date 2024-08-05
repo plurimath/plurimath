@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Acwgapcirclearrow do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Acwgapcirclearrow" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{acwgapcirclearrow}")
+        expect(klass.to_asciimath).to eq("\"P{acwgapcirclearrow}\"")
       end
 
       it "matches LaTeX string" do

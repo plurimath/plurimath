@@ -4,7 +4,7 @@ module Plurimath
       class Sim < Symbol
         INPUT = {
           unicodemath: [["sim", "&#x223c;"]],
-          asciimath: [["&#x223c;"], parsing_wrapper(["sim"])],
+          asciimath: [["&#x223c;"], parsing_wrapper(["sim"], lang: :asciimath)],
           mathml: ["&#x223c;"],
           latex: [["sim", "&#x223c;"]],
           omml: ["&#x223c;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("sim")
+          parsing_wrapper("sim", lang: :asciimath)
         end
 
         def to_unicodemath

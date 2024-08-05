@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Swords do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Swords" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{swords}")
+        expect(klass.to_asciimath).to eq("\"P{swords}\"")
       end
 
       it "matches LaTeX string" do

@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Gesles do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Gesles" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{gesles}")
+        expect(klass.to_asciimath).to eq("\"P{gesles}\"")
       end
 
       it "matches LaTeX string" do

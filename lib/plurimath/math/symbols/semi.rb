@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Semi < Symbol
         INPUT = {
-          unicodemath: [["&#x2a1f;"], parsing_wrapper(["zcmp", "semi"])],
-          asciimath: [["&#x2a1f;"], parsing_wrapper(["zcmp", "semi"])],
+          unicodemath: [["&#x2a1f;"], parsing_wrapper(["zcmp", "semi"], lang: :unicode)],
+          asciimath: [["&#x2a1f;"], parsing_wrapper(["zcmp", "semi"], lang: :asciimath)],
           mathml: ["&#x2a1f;"],
           latex: [["zcmp", "semi", "&#x2a1f;"]],
           omml: ["&#x2a1f;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("semi")
+          parsing_wrapper("semi", lang: :asciimath)
         end
 
         def to_unicodemath

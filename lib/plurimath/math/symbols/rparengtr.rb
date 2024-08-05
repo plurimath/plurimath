@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Rparengtr < Symbol
         INPUT = {
-          unicodemath: [["&#x2994;"], parsing_wrapper(["rparengtr"])],
-          asciimath: [["&#x2994;"], parsing_wrapper(["rparengtr"])],
+          unicodemath: [["&#x2994;"], parsing_wrapper(["rparengtr"], lang: :unicode)],
+          asciimath: [["&#x2994;"], parsing_wrapper(["rparengtr"], lang: :asciimath)],
           mathml: ["&#x2994;"],
           latex: [["rparengtr", "&#x2994;"]],
           omml: ["&#x2994;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("rparengtr")
+          parsing_wrapper("rparengtr", lang: :asciimath)
         end
 
         def to_unicodemath

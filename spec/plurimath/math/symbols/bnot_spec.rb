@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Bnot do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Bnot" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{bNot}")
+        expect(klass.to_asciimath).to eq("\"P{bNot}\"")
       end
 
       it "matches LaTeX string" do

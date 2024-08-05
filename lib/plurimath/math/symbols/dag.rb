@@ -3,10 +3,10 @@ module Plurimath
     module Symbols
       class Dag < Symbol
         INPUT = {
-          unicodemath: [["dag", "&#x2020;"], parsing_wrapper(["dagger"])],
-          asciimath: [["&#x2020;"], parsing_wrapper(["dag", "dagger"])],
+          unicodemath: [["dag", "&#x2020;"], parsing_wrapper(["dagger"], lang: :unicode)],
+          asciimath: [["&#x2020;"], parsing_wrapper(["dag", "dagger"], lang: :asciimath)],
           mathml: ["&#x2020;"],
-          latex: [["dagger", "&#x2020;"], parsing_wrapper(["dag"])],
+          latex: [["dagger", "&#x2020;"], parsing_wrapper(["dag"], lang: :latex)],
           omml: ["&#x2020;"],
           html: ["&#x2020;"],
         }.freeze
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("dag")
+          parsing_wrapper("dag", lang: :asciimath)
         end
 
         def to_unicodemath

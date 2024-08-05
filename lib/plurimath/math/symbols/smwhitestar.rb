@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Smwhitestar < Symbol
         INPUT = {
-          unicodemath: [["&#x2b52;"], parsing_wrapper(["smwhitestar"])],
-          asciimath: [["&#x2b52;"], parsing_wrapper(["smwhitestar"])],
+          unicodemath: [["&#x2b52;"], parsing_wrapper(["smwhitestar"], lang: :unicode)],
+          asciimath: [["&#x2b52;"], parsing_wrapper(["smwhitestar"], lang: :asciimath)],
           mathml: ["&#x2b52;"],
           latex: [["smwhitestar", "&#x2b52;"]],
           omml: ["&#x2b52;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("smwhitestar")
+          parsing_wrapper("smwhitestar", lang: :asciimath)
         end
 
         def to_unicodemath

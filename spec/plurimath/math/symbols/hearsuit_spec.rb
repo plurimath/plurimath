@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Hearsuit do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Hearsuit" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{hearsuit}")
+        expect(klass.to_asciimath).to eq("\"P{hearsuit}\"")
       end
 
       it "matches LaTeX string" do

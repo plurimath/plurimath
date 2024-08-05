@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Varclub do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Varclub" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{varclub}")
+        expect(klass.to_asciimath).to eq("\"P{varclub}\"")
       end
 
       it "matches LaTeX string" do

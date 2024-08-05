@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Third < Symbol
         INPUT = {
-          unicodemath: [["&#x2034;"], parsing_wrapper(["trprime", "third"])],
-          asciimath: [["&#x2034;"], parsing_wrapper(["trprime", "third"])],
+          unicodemath: [["&#x2034;"], parsing_wrapper(["trprime", "third"], lang: :unicode)],
+          asciimath: [["&#x2034;"], parsing_wrapper(["trprime", "third"], lang: :asciimath)],
           mathml: ["&#x2034;"],
           latex: [["trprime", "third", "&#x2034;"]],
           omml: ["&#x2034;"],

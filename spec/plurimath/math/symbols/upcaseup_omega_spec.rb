@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::UpcaseupOmega do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::UpcaseupOmega" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{upOmega}")
+        expect(klass.to_asciimath).to eq("\"P{upOmega}\"")
       end
 
       it "matches LaTeX string" do

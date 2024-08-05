@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Leo do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Leo" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{Leo}")
+        expect(klass.to_asciimath).to eq("\"P{Leo}\"")
       end
 
       it "matches LaTeX string" do

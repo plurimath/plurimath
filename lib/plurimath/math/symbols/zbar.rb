@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Zbar < Symbol
         INPUT = {
-          unicodemath: [["&#x1b5;"], parsing_wrapper(["Zbar"])],
-          asciimath: [["&#x1b5;"], parsing_wrapper(["Zbar"])],
+          unicodemath: [["&#x1b5;"], parsing_wrapper(["Zbar"], lang: :unicode)],
+          asciimath: [["&#x1b5;"], parsing_wrapper(["Zbar"], lang: :asciimath)],
           mathml: ["&#x1b5;"],
           latex: [["Zbar", "&#x1b5;"]],
           omml: ["&#x1b5;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("Zbar")
+          parsing_wrapper("Zbar", lang: :asciimath)
         end
 
         def to_unicodemath

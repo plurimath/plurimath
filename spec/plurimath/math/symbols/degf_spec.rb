@@ -14,11 +14,11 @@ RSpec.describe Plurimath::Math::Symbols::Degf do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Degf" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{degf}")
+        expect(klass.to_asciimath).to eq("\"P{degf}\"")
       end
 
       it "matches LaTeX string" do
-        expect(klass.to_latex).to eq("__{degf}")
+        expect(klass.to_latex).to eq("\\text{P[degf]}")
       end
 
       it "matches UnicodeMath string" do

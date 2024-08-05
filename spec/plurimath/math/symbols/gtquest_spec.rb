@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Gtquest do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Gtquest" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{gtquest}")
+        expect(klass.to_asciimath).to eq("\"P{gtquest}\"")
       end
 
       it "matches LaTeX string" do

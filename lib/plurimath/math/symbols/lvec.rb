@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Lvec < Symbol
         INPUT = {
-          unicodemath: [["&#x20d6;"], parsing_wrapper(["overleftarrow", "LVec"])],
-          asciimath: [["&#x20d6;"], parsing_wrapper(["overleftarrow", "LVec"])],
+          unicodemath: [["&#x20d6;"], parsing_wrapper(["overleftarrow", "LVec"], lang: :unicode)],
+          asciimath: [["&#x20d6;"], parsing_wrapper(["overleftarrow", "LVec"], lang: :asciimath)],
           mathml: ["&#x20d6;"],
           latex: [["overleftarrow", "LVec", "&#x20d6;"]],
           omml: ["&#x20d6;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("LVec")
+          parsing_wrapper("LVec", lang: :asciimath)
         end
 
         def to_unicodemath

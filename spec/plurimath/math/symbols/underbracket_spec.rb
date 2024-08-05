@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Underbracket do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Underbracket" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{underbracket}")
+        expect(klass.to_asciimath).to eq("\"P{underbracket}\"")
       end
 
       it "matches LaTeX string" do

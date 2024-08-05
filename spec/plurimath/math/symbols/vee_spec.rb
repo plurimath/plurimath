@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Vee do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Vee" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{Vee}")
+        expect(klass.to_asciimath).to eq("\"P{Vee}\"")
       end
 
       it "matches LaTeX string" do

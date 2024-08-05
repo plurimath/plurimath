@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Varprod do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Varprod" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{varprod}")
+        expect(klass.to_asciimath).to eq("\"P{varprod}\"")
       end
 
       it "matches LaTeX string" do

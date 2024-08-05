@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Saturn do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Saturn" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{Saturn}")
+        expect(klass.to_asciimath).to eq("\"P{Saturn}\"")
       end
 
       it "matches LaTeX string" do

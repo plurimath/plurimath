@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Squoval < Symbol
         INPUT = {
-          unicodemath: [["&#x25a2;"], parsing_wrapper(["squoval"])],
-          asciimath: [["&#x25a2;"], parsing_wrapper(["squoval"])],
+          unicodemath: [["&#x25a2;"], parsing_wrapper(["squoval"], lang: :unicode)],
+          asciimath: [["&#x25a2;"], parsing_wrapper(["squoval"], lang: :asciimath)],
           mathml: ["&#x25a2;"],
           latex: [["squoval", "&#x25a2;"]],
           omml: ["&#x25a2;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("squoval")
+          parsing_wrapper("squoval", lang: :asciimath)
         end
 
         def to_unicodemath

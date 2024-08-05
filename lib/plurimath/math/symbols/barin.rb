@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Barin < Symbol
         INPUT = {
-          unicodemath: [["&#x22f6;"], parsing_wrapper(["varisinobar", "barin"])],
-          asciimath: [["&#x22f6;"], parsing_wrapper(["varisinobar", "barin"])],
+          unicodemath: [["&#x22f6;"], parsing_wrapper(["varisinobar", "barin"], lang: :unicode)],
+          asciimath: [["&#x22f6;"], parsing_wrapper(["varisinobar", "barin"], lang: :asciimath)],
           mathml: ["&#x22f6;"],
           latex: [["varisinobar", "barin", "&#x22f6;"]],
           omml: ["&#x22f6;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("barin")
+          parsing_wrapper("barin", lang: :asciimath)
         end
 
         def to_unicodemath

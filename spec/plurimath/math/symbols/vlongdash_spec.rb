@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Vlongdash do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Vlongdash" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{vlongdash}")
+        expect(klass.to_asciimath).to eq("\"P{vlongdash}\"")
       end
 
       it "matches LaTeX string" do

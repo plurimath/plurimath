@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Operp < Symbol
         INPUT = {
-          unicodemath: [["&#x29b9;"], parsing_wrapper(["operp"])],
-          asciimath: [["&#x29b9;"], parsing_wrapper(["operp"])],
+          unicodemath: [["&#x29b9;"], parsing_wrapper(["operp"], lang: :unicode)],
+          asciimath: [["&#x29b9;"], parsing_wrapper(["operp"], lang: :asciimath)],
           mathml: ["&#x29b9;"],
           latex: [["operp", "&#x29b9;"]],
           omml: ["&#x29b9;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("operp")
+          parsing_wrapper("operp", lang: :asciimath)
         end
 
         def to_unicodemath

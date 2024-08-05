@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Question < Symbol
         INPUT = {
-          unicodemath: [["&#x3f;", "?"], parsing_wrapper(["question"])],
-          asciimath: [["&#x3f;", "?"], parsing_wrapper(["question"])],
+          unicodemath: [["&#x3f;", "?"], parsing_wrapper(["question"], lang: :unicode)],
+          asciimath: [["&#x3f;", "?"], parsing_wrapper(["question"], lang: :asciimath)],
           mathml: ["&#x3f;"],
           latex: [["question", "?", "&#x3f;"]],
           omml: ["&#x3f;"],

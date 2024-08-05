@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Pisces < Symbol
         INPUT = {
-          unicodemath: [["&#x2653;"], parsing_wrapper(["pisces"])],
-          asciimath: [["&#x2653;"], parsing_wrapper(["pisces"])],
+          unicodemath: [["&#x2653;"], parsing_wrapper(["pisces"], lang: :unicode)],
+          asciimath: [["&#x2653;"], parsing_wrapper(["pisces"], lang: :asciimath)],
           mathml: ["&#x2653;"],
           latex: [["pisces", "&#x2653;"]],
           omml: ["&#x2653;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("pisces")
+          parsing_wrapper("pisces", lang: :asciimath)
         end
 
         def to_unicodemath

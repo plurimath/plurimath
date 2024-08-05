@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Eqsim do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Eqsim" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{eqsim}")
+        expect(klass.to_asciimath).to eq("\"P{eqsim}\"")
       end
 
       it "matches LaTeX string" do

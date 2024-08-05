@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Blackpointerleft < Symbol
         INPUT = {
-          unicodemath: [["&#x25c4;"], parsing_wrapper(["blackpointerleft"])],
-          asciimath: [["&#x25c4;"], parsing_wrapper(["blackpointerleft"])],
+          unicodemath: [["&#x25c4;"], parsing_wrapper(["blackpointerleft"], lang: :unicode)],
+          asciimath: [["&#x25c4;"], parsing_wrapper(["blackpointerleft"], lang: :asciimath)],
           mathml: ["&#x25c4;"],
           latex: [["blackpointerleft", "&#x25c4;"]],
           omml: ["&#x25c4;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("blackpointerleft")
+          parsing_wrapper("blackpointerleft", lang: :asciimath)
         end
 
         def to_unicodemath

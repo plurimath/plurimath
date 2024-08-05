@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Sagittarius < Symbol
         INPUT = {
-          unicodemath: [["&#x2650;"], parsing_wrapper(["sagittarius"])],
-          asciimath: [["&#x2650;"], parsing_wrapper(["sagittarius"])],
+          unicodemath: [["&#x2650;"], parsing_wrapper(["sagittarius"], lang: :unicode)],
+          asciimath: [["&#x2650;"], parsing_wrapper(["sagittarius"], lang: :asciimath)],
           mathml: ["&#x2650;"],
           latex: [["sagittarius", "&#x2650;"]],
           omml: ["&#x2650;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("sagittarius")
+          parsing_wrapper("sagittarius", lang: :asciimath)
         end
 
         def to_unicodemath

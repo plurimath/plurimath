@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Rangledownzigzagarrow < Symbol
         INPUT = {
-          unicodemath: [["&#x237c;"], parsing_wrapper(["rangledownzigzagarrow"])],
-          asciimath: [["&#x237c;"], parsing_wrapper(["rangledownzigzagarrow"])],
+          unicodemath: [["&#x237c;"], parsing_wrapper(["rangledownzigzagarrow"], lang: :unicode)],
+          asciimath: [["&#x237c;"], parsing_wrapper(["rangledownzigzagarrow"], lang: :asciimath)],
           mathml: ["&#x237c;"],
           latex: [["rangledownzigzagarrow", "&#x237c;"]],
           omml: ["&#x237c;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("rangledownzigzagarrow")
+          parsing_wrapper("rangledownzigzagarrow", lang: :asciimath)
         end
 
         def to_unicodemath

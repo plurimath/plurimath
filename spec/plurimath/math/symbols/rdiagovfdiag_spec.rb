@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Rdiagovfdiag do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Rdiagovfdiag" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{rdiagovfdiag}")
+        expect(klass.to_asciimath).to eq("\"P{rdiagovfdiag}\"")
       end
 
       it "matches LaTeX string" do

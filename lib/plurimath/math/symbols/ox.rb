@@ -3,10 +3,10 @@ module Plurimath
     module Symbols
       class Ox < Symbol
         INPUT = {
-          unicodemath: [["otimes", "&#x2297;"], parsing_wrapper(["ox"])],
+          unicodemath: [["otimes", "&#x2297;"], parsing_wrapper(["ox"], lang: :unicode)],
           asciimath: [["otimes", "ox", "&#x2297;"]],
           mathml: ["&#x2297;"],
-          latex: [["otimes", "&#x2297;"], parsing_wrapper(["ox"])],
+          latex: [["otimes", "&#x2297;"], parsing_wrapper(["ox"], lang: :latex)],
           omml: ["&#x2297;"],
           html: ["&#x2297;"],
         }.freeze

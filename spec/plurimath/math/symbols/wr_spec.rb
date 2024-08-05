@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Wr do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Wr" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{wr}")
+        expect(klass.to_asciimath).to eq("\"P{wr}\"")
       end
 
       it "matches LaTeX string" do

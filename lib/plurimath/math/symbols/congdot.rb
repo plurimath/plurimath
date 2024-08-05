@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Congdot < Symbol
         INPUT = {
-          unicodemath: [["&#x2a6d;"], parsing_wrapper(["congdot"])],
-          asciimath: [["&#x2a6d;"], parsing_wrapper(["congdot"])],
+          unicodemath: [["&#x2a6d;"], parsing_wrapper(["congdot"], lang: :unicode)],
+          asciimath: [["&#x2a6d;"], parsing_wrapper(["congdot"], lang: :asciimath)],
           mathml: ["&#x2a6d;"],
           latex: [["congdot", "&#x2a6d;"]],
           omml: ["&#x2a6d;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("congdot")
+          parsing_wrapper("congdot", lang: :asciimath)
         end
 
         def to_unicodemath

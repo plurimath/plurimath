@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Ddotseq < Symbol
         INPUT = {
-          unicodemath: [["&#x2a77;"], parsing_wrapper(["ddotseq"])],
-          asciimath: [["&#x2a77;"], parsing_wrapper(["ddotseq"])],
+          unicodemath: [["&#x2a77;"], parsing_wrapper(["ddotseq"], lang: :unicode)],
+          asciimath: [["&#x2a77;"], parsing_wrapper(["ddotseq"], lang: :asciimath)],
           mathml: ["&#x2a77;"],
           latex: [["ddotseq", "&#x2a77;"]],
           omml: ["&#x2a77;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("ddotseq")
+          parsing_wrapper("ddotseq", lang: :asciimath)
         end
 
         def to_unicodemath

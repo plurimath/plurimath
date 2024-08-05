@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Enclosecircle < Symbol
         INPUT = {
-          unicodemath: [["&#x20dd;"], parsing_wrapper(["enclosecircle"])],
-          asciimath: [["&#x20dd;"], parsing_wrapper(["enclosecircle"])],
+          unicodemath: [["&#x20dd;"], parsing_wrapper(["enclosecircle"], lang: :unicode)],
+          asciimath: [["&#x20dd;"], parsing_wrapper(["enclosecircle"], lang: :asciimath)],
           mathml: ["&#x20dd;"],
           latex: [["enclosecircle", "&#x20dd;"]],
           omml: ["&#x20dd;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("enclosecircle")
+          parsing_wrapper("enclosecircle", lang: :asciimath)
         end
 
         def to_unicodemath

@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Eqdef < Symbol
         INPUT = {
-          unicodemath: [["&#x225d;"], parsing_wrapper(["eqdef"])],
-          asciimath: [["&#x225d;"], parsing_wrapper(["eqdef"])],
+          unicodemath: [["&#x225d;"], parsing_wrapper(["eqdef"], lang: :unicode)],
+          asciimath: [["&#x225d;"], parsing_wrapper(["eqdef"], lang: :asciimath)],
           mathml: ["&#x225d;"],
           latex: [["eqdef", "&#x225d;"]],
           omml: ["&#x225d;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("eqdef")
+          parsing_wrapper("eqdef", lang: :asciimath)
         end
 
         def to_unicodemath

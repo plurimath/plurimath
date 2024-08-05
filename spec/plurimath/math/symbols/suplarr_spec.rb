@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Suplarr do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Suplarr" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{suplarr}")
+        expect(klass.to_asciimath).to eq("\"P{suplarr}\"")
       end
 
       it "matches LaTeX string" do

@@ -3,10 +3,10 @@ module Plurimath
     module Symbols
       class Darr < Symbol
         INPUT = {
-          unicodemath: [["downarrow", "&#x2193;"], parsing_wrapper(["darr"])],
+          unicodemath: [["downarrow", "&#x2193;"], parsing_wrapper(["darr"], lang: :unicode)],
           asciimath: [["downarrow", "darr", "&#x2193;"]],
           mathml: ["&#x2193;"],
-          latex: [["downarrow", "&#x2193;"], parsing_wrapper(["darr"])],
+          latex: [["downarrow", "&#x2193;"], parsing_wrapper(["darr"], lang: :latex)],
           omml: ["&#x2193;"],
           html: ["&#x2193;"],
         }.freeze

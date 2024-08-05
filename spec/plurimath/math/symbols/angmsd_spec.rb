@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Angmsd do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Angmsd" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{angmsd}")
+        expect(klass.to_asciimath).to eq("\"P{angmsd}\"")
       end
 
       it "matches LaTeX string" do

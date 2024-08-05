@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Subsetdot do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Subsetdot" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{subsetdot}")
+        expect(klass.to_asciimath).to eq("\"P{subsetdot}\"")
       end
 
       it "matches LaTeX string" do

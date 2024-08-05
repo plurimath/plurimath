@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Cire do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Cire" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{cirE}")
+        expect(klass.to_asciimath).to eq("\"P{cirE}\"")
       end
 
       it "matches LaTeX string" do

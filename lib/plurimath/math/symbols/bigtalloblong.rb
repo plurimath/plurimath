@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Bigtalloblong < Symbol
         INPUT = {
-          unicodemath: [["&#x2aff;"], parsing_wrapper(["bigtalloblong"])],
-          asciimath: [["&#x2aff;"], parsing_wrapper(["bigtalloblong"])],
+          unicodemath: [["&#x2aff;"], parsing_wrapper(["bigtalloblong"], lang: :unicode)],
+          asciimath: [["&#x2aff;"], parsing_wrapper(["bigtalloblong"], lang: :asciimath)],
           mathml: ["&#x2aff;"],
           latex: [["bigtalloblong", "&#x2aff;"]],
           omml: ["&#x2aff;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("bigtalloblong")
+          parsing_wrapper("bigtalloblong", lang: :asciimath)
         end
 
         def to_unicodemath

@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Hksearow < Symbol
         INPUT = {
-          unicodemath: [["&#x2925;"], parsing_wrapper(["hksearow"])],
-          asciimath: [["&#x2925;"], parsing_wrapper(["hksearow"])],
+          unicodemath: [["&#x2925;"], parsing_wrapper(["hksearow"], lang: :unicode)],
+          asciimath: [["&#x2925;"], parsing_wrapper(["hksearow"], lang: :asciimath)],
           mathml: ["&#x2925;"],
           latex: [["hksearow", "&#x2925;"]],
           omml: ["&#x2925;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("hksearow")
+          parsing_wrapper("hksearow", lang: :asciimath)
         end
 
         def to_unicodemath

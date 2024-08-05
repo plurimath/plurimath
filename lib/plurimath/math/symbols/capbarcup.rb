@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Capbarcup < Symbol
         INPUT = {
-          unicodemath: [["&#x2a49;"], parsing_wrapper(["capbarcup"])],
-          asciimath: [["&#x2a49;"], parsing_wrapper(["capbarcup"])],
+          unicodemath: [["&#x2a49;"], parsing_wrapper(["capbarcup"], lang: :unicode)],
+          asciimath: [["&#x2a49;"], parsing_wrapper(["capbarcup"], lang: :asciimath)],
           mathml: ["&#x2a49;"],
           latex: [["capbarcup", "&#x2a49;"]],
           omml: ["&#x2a49;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("capbarcup")
+          parsing_wrapper("capbarcup", lang: :asciimath)
         end
 
         def to_unicodemath

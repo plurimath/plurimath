@@ -13,11 +13,11 @@ module Plurimath
 
         # output methods
         def to_latex
-          parsing_wrapper("overline")
+          parsing_wrapper("overline", lang: :latex)
         end
 
         def to_asciimath
-          parsing_wrapper("overline")
+          parsing_wrapper("overline", lang: :asciimath)
         end
 
         def to_unicodemath

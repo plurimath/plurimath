@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Ngtrsim < Symbol
         INPUT = {
-          unicodemath: [["&#x2275;"], parsing_wrapper(["NotGreaterTilde", "ngtrsim"])],
-          asciimath: [["&#x2275;"], parsing_wrapper(["NotGreaterTilde", "ngtrsim"])],
+          unicodemath: [["&#x2275;"], parsing_wrapper(["NotGreaterTilde", "ngtrsim"], lang: :unicode)],
+          asciimath: [["&#x2275;"], parsing_wrapper(["NotGreaterTilde", "ngtrsim"], lang: :asciimath)],
           mathml: ["&#x2275;"],
           latex: [["NotGreaterTilde", "ngtrsim", "&#x2275;"]],
           omml: ["&#x2275;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("ngtrsim")
+          parsing_wrapper("ngtrsim", lang: :asciimath)
         end
 
         def to_unicodemath

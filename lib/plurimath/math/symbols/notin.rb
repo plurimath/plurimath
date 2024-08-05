@@ -3,10 +3,10 @@ module Plurimath
     module Symbols
       class Notin < Symbol
         INPUT = {
-          unicodemath: [["notin", "&#x2209;"], parsing_wrapper(["!in", "nin"])],
-          asciimath: [["notin", "!in", "&#x2209;"], parsing_wrapper(["nin"])],
+          unicodemath: [["notin", "&#x2209;"], parsing_wrapper(["!in", "nin"], lang: :unicode)],
+          asciimath: [["notin", "!in", "&#x2209;"], parsing_wrapper(["nin"], lang: :asciimath)],
           mathml: ["&#x2209;"],
-          latex: [["notin", "nin", "&#x2209;"], parsing_wrapper(["!in"])],
+          latex: [["notin", "nin", "&#x2209;"], parsing_wrapper(["!in"], lang: :latex)],
           omml: ["&#x2209;"],
           html: ["&#x2209;"],
         }.freeze

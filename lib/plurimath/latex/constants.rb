@@ -236,10 +236,6 @@ module Plurimath
           reverse_sort_hash(@@parens)
         end
 
-        def wrapper_symbols
-          symbols_hash.keys.grep(/__{/)
-        end
-
         private
 
         def symbols_hash

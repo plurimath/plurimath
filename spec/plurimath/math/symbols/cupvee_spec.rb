@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Cupvee do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Cupvee" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{cupvee}")
+        expect(klass.to_asciimath).to eq("\"P{cupvee}\"")
       end
 
       it "matches LaTeX string" do

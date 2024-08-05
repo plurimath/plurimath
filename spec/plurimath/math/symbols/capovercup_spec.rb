@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Capovercup do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Capovercup" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{capovercup}")
+        expect(klass.to_asciimath).to eq("\"P{capovercup}\"")
       end
 
       it "matches LaTeX string" do

@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Rightmoon < Symbol
         INPUT = {
-          unicodemath: [["&#x263d;"], parsing_wrapper(["rightmoon"])],
-          asciimath: [["&#x263d;"], parsing_wrapper(["rightmoon"])],
+          unicodemath: [["&#x263d;"], parsing_wrapper(["rightmoon"], lang: :unicode)],
+          asciimath: [["&#x263d;"], parsing_wrapper(["rightmoon"], lang: :asciimath)],
           mathml: ["&#x263d;"],
           latex: [["rightmoon", "&#x263d;"]],
           omml: ["&#x263d;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("rightmoon")
+          parsing_wrapper("rightmoon", lang: :asciimath)
         end
 
         def to_unicodemath

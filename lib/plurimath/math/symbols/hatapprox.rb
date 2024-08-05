@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Hatapprox < Symbol
         INPUT = {
-          unicodemath: [["&#x2a6f;"], parsing_wrapper(["hatapprox"])],
-          asciimath: [["&#x2a6f;"], parsing_wrapper(["hatapprox"])],
+          unicodemath: [["&#x2a6f;"], parsing_wrapper(["hatapprox"], lang: :unicode)],
+          asciimath: [["&#x2a6f;"], parsing_wrapper(["hatapprox"], lang: :asciimath)],
           mathml: ["&#x2a6f;"],
           latex: [["hatapprox", "&#x2a6f;"]],
           omml: ["&#x2a6f;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("hatapprox")
+          parsing_wrapper("hatapprox", lang: :asciimath)
         end
 
         def to_unicodemath

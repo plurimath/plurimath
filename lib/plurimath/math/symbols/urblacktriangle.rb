@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Urblacktriangle < Symbol
         INPUT = {
-          unicodemath: [["&#x25e5;"], parsing_wrapper(["urblacktriangle"])],
-          asciimath: [["&#x25e5;"], parsing_wrapper(["urblacktriangle"])],
+          unicodemath: [["&#x25e5;"], parsing_wrapper(["urblacktriangle"], lang: :unicode)],
+          asciimath: [["&#x25e5;"], parsing_wrapper(["urblacktriangle"], lang: :asciimath)],
           mathml: ["&#x25e5;"],
           latex: [["urblacktriangle", "&#x25e5;"]],
           omml: ["&#x25e5;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("urblacktriangle")
+          parsing_wrapper("urblacktriangle", lang: :asciimath)
         end
 
         def to_unicodemath

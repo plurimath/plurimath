@@ -4,7 +4,7 @@ module Plurimath
       class Wp < Symbol
         INPUT = {
           unicodemath: [["wp", "&#x2118;"]],
-          asciimath: [["&#x2118;"], parsing_wrapper(["wp"])],
+          asciimath: [["&#x2118;"], parsing_wrapper(["wp"], lang: :asciimath)],
           mathml: ["&#x2118;"],
           latex: [["wp", "&#x2118;"]],
           omml: ["&#x2118;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("wp")
+          parsing_wrapper("wp", lang: :asciimath)
         end
 
         def to_unicodemath

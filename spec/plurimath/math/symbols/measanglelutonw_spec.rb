@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Measanglelutonw do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Measanglelutonw" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{measanglelutonw}")
+        expect(klass.to_asciimath).to eq("\"P{measanglelutonw}\"")
       end
 
       it "matches LaTeX string" do

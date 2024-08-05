@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Upnu do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Upnu" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{upNu}")
+        expect(klass.to_asciimath).to eq("\"P{upNu}\"")
       end
 
       it "matches LaTeX string" do

@@ -3,10 +3,10 @@ module Plurimath
     module Symbols
       class Oeq < Symbol
         INPUT = {
-          unicodemath: [["oeq", "&#x229c;"], parsing_wrapper(["circledequal"])],
-          asciimath: [["&#x229c;"], parsing_wrapper(["oeq", "circledequal"])],
+          unicodemath: [["oeq", "&#x229c;"], parsing_wrapper(["circledequal"], lang: :unicode)],
+          asciimath: [["&#x229c;"], parsing_wrapper(["oeq", "circledequal"], lang: :asciimath)],
           mathml: ["&#x229c;"],
-          latex: [["circledequal", "&#x229c;"], parsing_wrapper(["oeq"])],
+          latex: [["circledequal", "&#x229c;"], parsing_wrapper(["oeq"], lang: :latex)],
           omml: ["&#x229c;"],
           html: ["&#x229c;"],
         }.freeze
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("oeq")
+          parsing_wrapper("oeq", lang: :asciimath)
         end
 
         def to_unicodemath

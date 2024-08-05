@@ -4,7 +4,7 @@ module Plurimath
       class Gneqq < Symbol
         INPUT = {
           unicodemath: [["gneqq", "&#x2269;"]],
-          asciimath: [["&#x2269;"], parsing_wrapper(["gneqq"])],
+          asciimath: [["&#x2269;"], parsing_wrapper(["gneqq"], lang: :asciimath)],
           mathml: ["&#x2269;"],
           latex: [["gneqq", "&#x2269;"]],
           omml: ["&#x2269;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("gneqq")
+          parsing_wrapper("gneqq", lang: :asciimath)
         end
 
         def to_unicodemath

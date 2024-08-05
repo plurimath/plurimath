@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Ruledelayed do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Ruledelayed" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{ruledelayed}")
+        expect(klass.to_asciimath).to eq("\"P{ruledelayed}\"")
       end
 
       it "matches LaTeX string" do

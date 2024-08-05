@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Caretinsert < Symbol
         INPUT = {
-          unicodemath: [["&#x2038;"], parsing_wrapper(["caretinsert"])],
-          asciimath: [["&#x2038;"], parsing_wrapper(["caretinsert"])],
+          unicodemath: [["&#x2038;"], parsing_wrapper(["caretinsert"], lang: :unicode)],
+          asciimath: [["&#x2038;"], parsing_wrapper(["caretinsert"], lang: :asciimath)],
           mathml: ["&#x2038;"],
           latex: [["caretinsert", "&#x2038;"]],
           omml: ["&#x2038;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("caretinsert")
+          parsing_wrapper("caretinsert", lang: :asciimath)
         end
 
         def to_unicodemath

@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Revangle do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Revangle" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{revangle}")
+        expect(klass.to_asciimath).to eq("\"P{revangle}\"")
       end
 
       it "matches LaTeX string" do

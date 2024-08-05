@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Downleftvectorbar do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Downleftvectorbar" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{DownLeftVectorBar}")
+        expect(klass.to_asciimath).to eq("\"P{DownLeftVectorBar}\"")
       end
 
       it "matches LaTeX string" do

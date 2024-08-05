@@ -3,10 +3,10 @@ module Plurimath
     module Symbols
       class Epsilon < Symbol
         INPUT = {
-          unicodemath: [["varepsilon", "&#x3b5;"], parsing_wrapper(["epsilon", "upepsilon"])],
-          asciimath: [["epsilon", "&#x3b5;"], parsing_wrapper(["varepsilon", "upepsilon"])],
+          unicodemath: [["varepsilon", "&#x3b5;"], parsing_wrapper(["epsilon", "upepsilon"], lang: :unicode)],
+          asciimath: [["epsilon", "&#x3b5;"], parsing_wrapper(["varepsilon", "upepsilon"], lang: :asciimath)],
           mathml: ["&#x3b5;"],
-          latex: [["upepsilon", "epsilon", "&#x3b5;"], parsing_wrapper(["varepsilon"])],
+          latex: [["upepsilon", "epsilon", "&#x3b5;"], parsing_wrapper(["varepsilon"], lang: :latex)],
           omml: ["&#x3b5;"],
           html: ["&#x3b5;"],
         }.freeze

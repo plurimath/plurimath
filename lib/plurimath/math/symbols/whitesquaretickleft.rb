@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Whitesquaretickleft < Symbol
         INPUT = {
-          unicodemath: [["&#x27e4;"], parsing_wrapper(["whitesquaretickleft"])],
-          asciimath: [["&#x27e4;"], parsing_wrapper(["whitesquaretickleft"])],
+          unicodemath: [["&#x27e4;"], parsing_wrapper(["whitesquaretickleft"], lang: :unicode)],
+          asciimath: [["&#x27e4;"], parsing_wrapper(["whitesquaretickleft"], lang: :asciimath)],
           mathml: ["&#x27e4;"],
           latex: [["whitesquaretickleft", "&#x27e4;"]],
           omml: ["&#x27e4;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("whitesquaretickleft")
+          parsing_wrapper("whitesquaretickleft", lang: :asciimath)
         end
 
         def to_unicodemath

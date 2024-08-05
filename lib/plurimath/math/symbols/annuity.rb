@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Annuity < Symbol
         INPUT = {
-          unicodemath: [["&#x20e7;"], parsing_wrapper(["annuity"])],
-          asciimath: [["&#x20e7;"], parsing_wrapper(["annuity"])],
+          unicodemath: [["&#x20e7;"], parsing_wrapper(["annuity"], lang: :unicode)],
+          asciimath: [["&#x20e7;"], parsing_wrapper(["annuity"], lang: :asciimath)],
           mathml: ["&#x20e7;"],
           latex: [["annuity", "&#x20e7;"]],
           omml: ["&#x20e7;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("annuity")
+          parsing_wrapper("annuity", lang: :asciimath)
         end
 
         def to_unicodemath

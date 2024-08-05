@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Nsucc do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Nsucc" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{nsucc}")
+        expect(klass.to_asciimath).to eq("\"P{nsucc}\"")
       end
 
       it "matches LaTeX string" do

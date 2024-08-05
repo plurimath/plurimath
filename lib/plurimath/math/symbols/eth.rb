@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Eth < Symbol
         INPUT = {
-          unicodemath: [["&#xf0;"], parsing_wrapper(["matheth", "eth"])],
-          asciimath: [["&#xf0;"], parsing_wrapper(["matheth", "eth"])],
+          unicodemath: [["&#xf0;"], parsing_wrapper(["matheth", "eth"], lang: :unicode)],
+          asciimath: [["&#xf0;"], parsing_wrapper(["matheth", "eth"], lang: :asciimath)],
           mathml: ["&#xf0;"],
           latex: [["matheth", "eth", "&#xf0;"]],
           omml: ["&#xf0;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("eth")
+          parsing_wrapper("eth", lang: :asciimath)
         end
 
         def to_unicodemath

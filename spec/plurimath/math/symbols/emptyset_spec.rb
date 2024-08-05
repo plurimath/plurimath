@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Emptyset do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Emptyset" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{emptyset}")
+        expect(klass.to_asciimath).to eq("\"P{emptyset}\"")
       end
 
       it "matches LaTeX string" do

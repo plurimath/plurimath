@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Lbracelend do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Lbracelend" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{lbracelend}")
+        expect(klass.to_asciimath).to eq("\"P{lbracelend}\"")
       end
 
       it "matches LaTeX string" do

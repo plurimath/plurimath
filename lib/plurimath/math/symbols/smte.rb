@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Smte < Symbol
         INPUT = {
-          unicodemath: [["&#x2aac;"], parsing_wrapper(["smte"])],
-          asciimath: [["&#x2aac;"], parsing_wrapper(["smte"])],
+          unicodemath: [["&#x2aac;"], parsing_wrapper(["smte"], lang: :unicode)],
+          asciimath: [["&#x2aac;"], parsing_wrapper(["smte"], lang: :asciimath)],
           mathml: ["&#x2aac;"],
           latex: [["smte", "&#x2aac;"]],
           omml: ["&#x2aac;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("smte")
+          parsing_wrapper("smte", lang: :asciimath)
         end
 
         def to_unicodemath

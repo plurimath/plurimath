@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Urcorner do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Urcorner" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{urcorner}")
+        expect(klass.to_asciimath).to eq("\"P{urcorner}\"")
       end
 
       it "matches LaTeX string" do

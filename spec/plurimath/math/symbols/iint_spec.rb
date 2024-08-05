@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Iint do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Iint" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{iint}")
+        expect(klass.to_asciimath).to eq("\"P{iint}\"")
       end
 
       it "matches LaTeX string" do

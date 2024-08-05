@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Leftbarharpoon < Symbol
         INPUT = {
-          unicodemath: [["&#x296a;"], parsing_wrapper(["leftharpoonupdash", "leftbarharpoon"])],
-          asciimath: [["&#x296a;"], parsing_wrapper(["leftharpoonupdash", "leftbarharpoon"])],
+          unicodemath: [["&#x296a;"], parsing_wrapper(["leftharpoonupdash", "leftbarharpoon"], lang: :unicode)],
+          asciimath: [["&#x296a;"], parsing_wrapper(["leftharpoonupdash", "leftbarharpoon"], lang: :asciimath)],
           mathml: ["&#x296a;"],
           latex: [["leftharpoonupdash", "leftbarharpoon", "&#x296a;"]],
           omml: ["&#x296a;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("leftbarharpoon")
+          parsing_wrapper("leftbarharpoon", lang: :asciimath)
         end
 
         def to_unicodemath

@@ -4,7 +4,7 @@ module Plurimath
       class Sqsubseteq < Symbol
         INPUT = {
           unicodemath: [["sqsubseteq", "&#x2291;"]],
-          asciimath: [["&#x2291;"], parsing_wrapper(["sqsubseteq"])],
+          asciimath: [["&#x2291;"], parsing_wrapper(["sqsubseteq"], lang: :asciimath)],
           mathml: ["&#x2291;"],
           latex: [["sqsubseteq", "&#x2291;"]],
           omml: ["&#x2291;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("sqsubseteq")
+          parsing_wrapper("sqsubseteq", lang: :asciimath)
         end
 
         def to_unicodemath

@@ -3,10 +3,10 @@ module Plurimath
     module Symbols
       class Less < Symbol
         INPUT = {
-          unicodemath: [["&#x3c;", "&lt;"], parsing_wrapper(["<", "lt", "less"])],
-          asciimath: [["<", "lt", "&#x3c;", "&lt;"], parsing_wrapper(["less"])],
+          unicodemath: [["&#x3c;", "&lt;"], parsing_wrapper(["<", "lt", "less"], lang: :unicode)],
+          asciimath: [["<", "lt", "&#x3c;", "&lt;"], parsing_wrapper(["less"], lang: :asciimath)],
           mathml: ["&#x3c;", "&lt;"],
-          latex: [["less", "<", "&#x3c;", "&lt;"], parsing_wrapper(["lt"])],
+          latex: [["less", "<", "&#x3c;", "&lt;"], parsing_wrapper(["lt"], lang: :latex)],
           omml: ["&#x3c;", "&lt;"],
           html: ["&#x3c;"],
         }.freeze

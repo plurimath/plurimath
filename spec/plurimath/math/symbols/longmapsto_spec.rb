@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Longmapsto do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Longmapsto" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{Longmapsto}")
+        expect(klass.to_asciimath).to eq("\"P{Longmapsto}\"")
       end
 
       it "matches LaTeX string" do

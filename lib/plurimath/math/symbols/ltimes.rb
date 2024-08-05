@@ -3,10 +3,10 @@ module Plurimath
     module Symbols
       class Ltimes < Symbol
         INPUT = {
-          unicodemath: [["ltimes", "&#x22c9;"], parsing_wrapper(["|><"])],
+          unicodemath: [["ltimes", "&#x22c9;"], parsing_wrapper(["|><"], lang: :unicode)],
           asciimath: [["ltimes", "|><", "&#x22c9;"]],
           mathml: ["&#x22c9;"],
-          latex: [["ltimes", "&#x22c9;"], parsing_wrapper(["|><"])],
+          latex: [["ltimes", "&#x22c9;"], parsing_wrapper(["|><"], lang: :latex)],
           omml: ["&#x22c9;"],
           html: ["&#x22c9;"],
         }.freeze

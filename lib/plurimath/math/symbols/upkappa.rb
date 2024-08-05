@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Upkappa < Symbol
         INPUT = {
-          unicodemath: [["&#x39a;"], parsing_wrapper(["upKappa"])],
-          asciimath: [["&#x39a;"], parsing_wrapper(["upKappa"])],
+          unicodemath: [["&#x39a;"], parsing_wrapper(["upKappa"], lang: :unicode)],
+          asciimath: [["&#x39a;"], parsing_wrapper(["upKappa"], lang: :asciimath)],
           mathml: ["&#x39a;"],
           latex: [["upKappa", "&#x39a;"]],
           omml: ["&#x39a;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("upKappa")
+          parsing_wrapper("upKappa", lang: :asciimath)
         end
 
         def to_unicodemath

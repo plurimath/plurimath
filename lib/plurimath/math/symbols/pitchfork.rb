@@ -4,7 +4,7 @@ module Plurimath
       class Pitchfork < Symbol
         INPUT = {
           unicodemath: [["pitchfork", "&#x22d4;"]],
-          asciimath: [["&#x22d4;"], parsing_wrapper(["pitchfork"])],
+          asciimath: [["&#x22d4;"], parsing_wrapper(["pitchfork"], lang: :asciimath)],
           mathml: ["&#x22d4;"],
           latex: [["pitchfork", "&#x22d4;"]],
           omml: ["&#x22d4;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("pitchfork")
+          parsing_wrapper("pitchfork", lang: :asciimath)
         end
 
         def to_unicodemath

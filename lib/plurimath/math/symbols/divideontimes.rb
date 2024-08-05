@@ -4,20 +4,20 @@ module Plurimath
       class Divideontimes < Symbol
         INPUT = {
           unicodemath: [["divideontimes", "&#xc7;"]],
-          asciimath: [["&#xc7;"], parsing_wrapper(["divideontimes"])],
+          asciimath: [["&#xc7;"], parsing_wrapper(["divideontimes"], lang: :asciimath)],
           mathml: ["&#xc7;"],
-          latex: [["&#xc7;"], parsing_wrapper(["divideontimes"])],
+          latex: [["&#xc7;"], parsing_wrapper(["divideontimes"], lang: :latex)],
           omml: ["&#xc7;"],
           html: ["&#xc7;"],
         }.freeze
 
         # output methods
         def to_latex
-          parsing_wrapper("divideontimes")
+          parsing_wrapper("divideontimes", lang: :latex)
         end
 
         def to_asciimath
-          parsing_wrapper("divideontimes")
+          parsing_wrapper("divideontimes", lang: :asciimath)
         end
 
         def to_unicodemath

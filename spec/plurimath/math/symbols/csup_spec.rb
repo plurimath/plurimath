@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Csup do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Csup" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{csup}")
+        expect(klass.to_asciimath).to eq("\"P{csup}\"")
       end
 
       it "matches LaTeX string" do

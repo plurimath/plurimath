@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Maltese do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Maltese" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{maltese}")
+        expect(klass.to_asciimath).to eq("\"P{maltese}\"")
       end
 
       it "matches LaTeX string" do

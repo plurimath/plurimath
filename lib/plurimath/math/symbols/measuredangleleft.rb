@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Measuredangleleft < Symbol
         INPUT = {
-          unicodemath: [["&#x299b;"], parsing_wrapper(["measuredangleleft"])],
-          asciimath: [["&#x299b;"], parsing_wrapper(["measuredangleleft"])],
+          unicodemath: [["&#x299b;"], parsing_wrapper(["measuredangleleft"], lang: :unicode)],
+          asciimath: [["&#x299b;"], parsing_wrapper(["measuredangleleft"], lang: :asciimath)],
           mathml: ["&#x299b;"],
           latex: [["measuredangleleft", "&#x299b;"]],
           omml: ["&#x299b;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("measuredangleleft")
+          parsing_wrapper("measuredangleleft", lang: :asciimath)
         end
 
         def to_unicodemath

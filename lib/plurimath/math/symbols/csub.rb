@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Csub < Symbol
         INPUT = {
-          unicodemath: [["&#x2acf;"], parsing_wrapper(["csub"])],
-          asciimath: [["&#x2acf;"], parsing_wrapper(["csub"])],
+          unicodemath: [["&#x2acf;"], parsing_wrapper(["csub"], lang: :unicode)],
+          asciimath: [["&#x2acf;"], parsing_wrapper(["csub"], lang: :asciimath)],
           mathml: ["&#x2acf;"],
           latex: [["csub", "&#x2acf;"]],
           omml: ["&#x2acf;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("csub")
+          parsing_wrapper("csub", lang: :asciimath)
         end
 
         def to_unicodemath

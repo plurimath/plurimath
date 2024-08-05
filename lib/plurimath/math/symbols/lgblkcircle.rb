@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Lgblkcircle < Symbol
         INPUT = {
-          unicodemath: [["&#x2b24;"], parsing_wrapper(["lgblkcircle"])],
-          asciimath: [["&#x2b24;"], parsing_wrapper(["lgblkcircle"])],
+          unicodemath: [["&#x2b24;"], parsing_wrapper(["lgblkcircle"], lang: :unicode)],
+          asciimath: [["&#x2b24;"], parsing_wrapper(["lgblkcircle"], lang: :asciimath)],
           mathml: ["&#x2b24;"],
           latex: [["lgblkcircle", "&#x2b24;"]],
           omml: ["&#x2b24;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("lgblkcircle")
+          parsing_wrapper("lgblkcircle", lang: :asciimath)
         end
 
         def to_unicodemath

@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Gneq < Symbol
         INPUT = {
-          unicodemath: [["&#x2a88;"], parsing_wrapper(["gneq"])],
-          asciimath: [["&#x2a88;"], parsing_wrapper(["gneq"])],
+          unicodemath: [["&#x2a88;"], parsing_wrapper(["gneq"], lang: :unicode)],
+          asciimath: [["&#x2a88;"], parsing_wrapper(["gneq"], lang: :asciimath)],
           mathml: ["&#x2a88;"],
           latex: [["gneq", "&#x2a88;"]],
           omml: ["&#x2a88;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("gneq")
+          parsing_wrapper("gneq", lang: :asciimath)
         end
 
         def to_unicodemath

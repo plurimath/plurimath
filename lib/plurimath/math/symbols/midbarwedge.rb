@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Midbarwedge < Symbol
         INPUT = {
-          unicodemath: [["&#x2a5c;"], parsing_wrapper(["midbarwedge"])],
-          asciimath: [["&#x2a5c;"], parsing_wrapper(["midbarwedge"])],
+          unicodemath: [["&#x2a5c;"], parsing_wrapper(["midbarwedge"], lang: :unicode)],
+          asciimath: [["&#x2a5c;"], parsing_wrapper(["midbarwedge"], lang: :asciimath)],
           mathml: ["&#x2a5c;"],
           latex: [["midbarwedge", "&#x2a5c;"]],
           omml: ["&#x2a5c;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("midbarwedge")
+          parsing_wrapper("midbarwedge", lang: :asciimath)
         end
 
         def to_unicodemath

@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Squareulblack do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Squareulblack" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{squareulblack}")
+        expect(klass.to_asciimath).to eq("\"P{squareulblack}\"")
       end
 
       it "matches LaTeX string" do

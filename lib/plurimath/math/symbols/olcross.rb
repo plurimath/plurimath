@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Olcross < Symbol
         INPUT = {
-          unicodemath: [["&#x29bb;"], parsing_wrapper(["olcross"])],
-          asciimath: [["&#x29bb;"], parsing_wrapper(["olcross"])],
+          unicodemath: [["&#x29bb;"], parsing_wrapper(["olcross"], lang: :unicode)],
+          asciimath: [["&#x29bb;"], parsing_wrapper(["olcross"], lang: :asciimath)],
           mathml: ["&#x29bb;"],
           latex: [["olcross", "&#x29bb;"]],
           omml: ["&#x29bb;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("olcross")
+          parsing_wrapper("olcross", lang: :asciimath)
         end
 
         def to_unicodemath

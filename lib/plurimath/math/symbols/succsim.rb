@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Succsim < Symbol
         INPUT = {
-          unicodemath: [["succsim", "&#x227f;"], parsing_wrapper(["SucceedsTilde"])],
-          asciimath: [["&#x227f;"], parsing_wrapper(["succsim", "SucceedsTilde"])],
+          unicodemath: [["succsim", "&#x227f;"], parsing_wrapper(["SucceedsTilde"], lang: :unicode)],
+          asciimath: [["&#x227f;"], parsing_wrapper(["succsim", "SucceedsTilde"], lang: :asciimath)],
           mathml: ["&#x227f;"],
           latex: [["SucceedsTilde", "succsim", "&#x227f;"]],
           omml: ["&#x227f;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("succsim")
+          parsing_wrapper("succsim", lang: :asciimath)
         end
 
         def to_unicodemath

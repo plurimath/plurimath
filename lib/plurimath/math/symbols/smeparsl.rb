@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Smeparsl < Symbol
         INPUT = {
-          unicodemath: [["&#x29e4;"], parsing_wrapper(["smeparsl"])],
-          asciimath: [["&#x29e4;"], parsing_wrapper(["smeparsl"])],
+          unicodemath: [["&#x29e4;"], parsing_wrapper(["smeparsl"], lang: :unicode)],
+          asciimath: [["&#x29e4;"], parsing_wrapper(["smeparsl"], lang: :asciimath)],
           mathml: ["&#x29e4;"],
           latex: [["smeparsl", "&#x29e4;"]],
           omml: ["&#x29e4;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("smeparsl")
+          parsing_wrapper("smeparsl", lang: :asciimath)
         end
 
         def to_unicodemath

@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Mapsfrom do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Mapsfrom" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{Mapsfrom}")
+        expect(klass.to_asciimath).to eq("\"P{Mapsfrom}\"")
       end
 
       it "matches LaTeX string" do

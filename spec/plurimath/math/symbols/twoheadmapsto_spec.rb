@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Twoheadmapsto do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Twoheadmapsto" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{twoheadmapsto}")
+        expect(klass.to_asciimath).to eq("\"P{twoheadmapsto}\"")
       end
 
       it "matches LaTeX string" do

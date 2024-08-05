@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Bdtriplevdash do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Bdtriplevdash" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{bdtriplevdash}")
+        expect(klass.to_asciimath).to eq("\"P{bdtriplevdash}\"")
       end
 
       it "matches LaTeX string" do

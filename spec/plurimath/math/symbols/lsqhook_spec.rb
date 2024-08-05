@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Lsqhook do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Lsqhook" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{lsqhook}")
+        expect(klass.to_asciimath).to eq("\"P{lsqhook}\"")
       end
 
       it "matches LaTeX string" do

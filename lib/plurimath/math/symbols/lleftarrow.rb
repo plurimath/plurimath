@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Lleftarrow < Symbol
         INPUT = {
-          unicodemath: [["&#x2b45;"], parsing_wrapper(["LLeftarrow"])],
-          asciimath: [["&#x2b45;"], parsing_wrapper(["LLeftarrow"])],
+          unicodemath: [["&#x2b45;"], parsing_wrapper(["LLeftarrow"], lang: :unicode)],
+          asciimath: [["&#x2b45;"], parsing_wrapper(["LLeftarrow"], lang: :asciimath)],
           mathml: ["&#x2b45;"],
           latex: [["LLeftarrow", "&#x2b45;"]],
           omml: ["&#x2b45;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("LLeftarrow")
+          parsing_wrapper("LLeftarrow", lang: :asciimath)
         end
 
         def to_unicodemath

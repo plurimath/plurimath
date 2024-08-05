@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Sampi < Symbol
         INPUT = {
-          unicodemath: [["&#x3e1;"], parsing_wrapper(["upsampi", "sampi"])],
-          asciimath: [["&#x3e1;"], parsing_wrapper(["upsampi", "sampi"])],
+          unicodemath: [["&#x3e1;"], parsing_wrapper(["upsampi", "sampi"], lang: :unicode)],
+          asciimath: [["&#x3e1;"], parsing_wrapper(["upsampi", "sampi"], lang: :asciimath)],
           mathml: ["&#x3e1;"],
           latex: [["upsampi", "sampi", "&#x3e1;"]],
           omml: ["&#x3e1;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("sampi")
+          parsing_wrapper("sampi", lang: :asciimath)
         end
 
         def to_unicodemath

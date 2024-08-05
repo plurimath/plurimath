@@ -4,7 +4,7 @@ module Plurimath
       class Nequiv < Symbol
         INPUT = {
           unicodemath: [["nequiv", "&#x2262;"]],
-          asciimath: [["&#x2262;"], parsing_wrapper(["nequiv"])],
+          asciimath: [["&#x2262;"], parsing_wrapper(["nequiv"], lang: :asciimath)],
           mathml: ["&#x2262;"],
           latex: [["nequiv", "&#x2262;"]],
           omml: ["&#x2262;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("nequiv")
+          parsing_wrapper("nequiv", lang: :asciimath)
         end
 
         def to_unicodemath

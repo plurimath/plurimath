@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Scurel < Symbol
         INPUT = {
-          unicodemath: [["&#x22b1;"], parsing_wrapper(["scurel"])],
-          asciimath: [["&#x22b1;"], parsing_wrapper(["scurel"])],
+          unicodemath: [["&#x22b1;"], parsing_wrapper(["scurel"], lang: :unicode)],
+          asciimath: [["&#x22b1;"], parsing_wrapper(["scurel"], lang: :asciimath)],
           mathml: ["&#x22b1;"],
           latex: [["scurel", "&#x22b1;"]],
           omml: ["&#x22b1;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("scurel")
+          parsing_wrapper("scurel", lang: :asciimath)
         end
 
         def to_unicodemath

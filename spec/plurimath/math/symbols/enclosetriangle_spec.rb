@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Enclosetriangle do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Enclosetriangle" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{enclosetriangle}")
+        expect(klass.to_asciimath).to eq("\"P{enclosetriangle}\"")
       end
 
       it "matches LaTeX string" do

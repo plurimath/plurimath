@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Skull do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Skull" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{skull}")
+        expect(klass.to_asciimath).to eq("\"P{skull}\"")
       end
 
       it "matches LaTeX string" do

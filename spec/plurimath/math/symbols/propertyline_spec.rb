@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Propertyline do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Propertyline" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{PropertyLine}")
+        expect(klass.to_asciimath).to eq("\"P{PropertyLine}\"")
       end
 
       it "matches LaTeX string" do

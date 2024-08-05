@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Emptysetocirc do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Emptysetocirc" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{emptysetocirc}")
+        expect(klass.to_asciimath).to eq("\"P{emptysetocirc}\"")
       end
 
       it "matches LaTeX string" do

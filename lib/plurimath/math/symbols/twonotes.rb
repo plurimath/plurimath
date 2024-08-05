@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Twonotes < Symbol
         INPUT = {
-          unicodemath: [["&#x266b;"], parsing_wrapper(["twonotes"])],
-          asciimath: [["&#x266b;"], parsing_wrapper(["twonotes"])],
+          unicodemath: [["&#x266b;"], parsing_wrapper(["twonotes"], lang: :unicode)],
+          asciimath: [["&#x266b;"], parsing_wrapper(["twonotes"], lang: :asciimath)],
           mathml: ["&#x266b;"],
           latex: [["twonotes", "&#x266b;"]],
           omml: ["&#x266b;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("twonotes")
+          parsing_wrapper("twonotes", lang: :asciimath)
         end
 
         def to_unicodemath

@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Mathdollar < Symbol
         INPUT = {
-          unicodemath: [["&#x24;"], parsing_wrapper(["$", "mathdollar"])],
-          asciimath: [["$", "&#x24;"], parsing_wrapper(["mathdollar"])],
+          unicodemath: [["&#x24;"], parsing_wrapper(["$", "mathdollar"], lang: :unicode)],
+          asciimath: [["$", "&#x24;"], parsing_wrapper(["mathdollar"], lang: :asciimath)],
           mathml: ["&#x24;"],
           latex: [["mathdollar", "$", "&#x24;"]],
           omml: ["&#x24;"],

@@ -3,10 +3,10 @@ module Plurimath
     module Symbols
       class Leftdasharrow < Symbol
         INPUT = {
-          unicodemath: [["curvearrowleft", "&#x21e0;"], parsing_wrapper(["dashleftarrow", "leftdasharrow"])],
-          asciimath: [["&#x21e0;"], parsing_wrapper(["curvearrowleft", "dashleftarrow", "leftdasharrow"])],
+          unicodemath: [["curvearrowleft", "&#x21e0;"], parsing_wrapper(["dashleftarrow", "leftdasharrow"], lang: :unicode)],
+          asciimath: [["&#x21e0;"], parsing_wrapper(["curvearrowleft", "dashleftarrow", "leftdasharrow"], lang: :asciimath)],
           mathml: ["&#x21e0;"],
-          latex: [["dashleftarrow", "leftdasharrow", "&#x21e0;"], parsing_wrapper(["curvearrowleft"])],
+          latex: [["dashleftarrow", "leftdasharrow", "&#x21e0;"], parsing_wrapper(["curvearrowleft"], lang: :latex)],
           omml: ["&#x21e0;"],
           html: ["&#x21e0;"],
         }.freeze
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("leftdasharrow")
+          parsing_wrapper("leftdasharrow", lang: :asciimath)
         end
 
         def to_unicodemath

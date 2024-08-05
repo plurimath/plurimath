@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Rbracemid do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Rbracemid" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{rbracemid}")
+        expect(klass.to_asciimath).to eq("\"P{rbracemid}\"")
       end
 
       it "matches LaTeX string" do

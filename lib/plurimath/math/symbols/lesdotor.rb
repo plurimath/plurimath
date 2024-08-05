@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Lesdotor < Symbol
         INPUT = {
-          unicodemath: [["&#x2a83;"], parsing_wrapper(["lesdotor"])],
-          asciimath: [["&#x2a83;"], parsing_wrapper(["lesdotor"])],
+          unicodemath: [["&#x2a83;"], parsing_wrapper(["lesdotor"], lang: :unicode)],
+          asciimath: [["&#x2a83;"], parsing_wrapper(["lesdotor"], lang: :asciimath)],
           mathml: ["&#x2a83;"],
           latex: [["lesdotor", "&#x2a83;"]],
           omml: ["&#x2a83;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("lesdotor")
+          parsing_wrapper("lesdotor", lang: :asciimath)
         end
 
         def to_unicodemath

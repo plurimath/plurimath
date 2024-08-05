@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Jj < Symbol
         INPUT = {
-          unicodemath: [["jj", "&#x2149;"], parsing_wrapper(["ComplexJ"])],
-          asciimath: [["&#x2149;"], parsing_wrapper(["jj", "ComplexJ"])],
+          unicodemath: [["jj", "&#x2149;"], parsing_wrapper(["ComplexJ"], lang: :unicode)],
+          asciimath: [["&#x2149;"], parsing_wrapper(["jj", "ComplexJ"], lang: :asciimath)],
           mathml: ["&#x2149;"],
           latex: [["ComplexJ", "jj", "&#x2149;"]],
           omml: ["&#x2149;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("jj")
+          parsing_wrapper("jj", lang: :asciimath)
         end
 
         def to_unicodemath

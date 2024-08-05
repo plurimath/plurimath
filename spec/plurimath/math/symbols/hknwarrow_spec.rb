@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Hknwarrow do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Hknwarrow" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{hknwarrow}")
+        expect(klass.to_asciimath).to eq("\"P{hknwarrow}\"")
       end
 
       it "matches LaTeX string" do

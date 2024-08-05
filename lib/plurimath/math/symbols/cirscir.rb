@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Cirscir < Symbol
         INPUT = {
-          unicodemath: [["&#x29c2;"], parsing_wrapper(["cirscir"])],
-          asciimath: [["&#x29c2;"], parsing_wrapper(["cirscir"])],
+          unicodemath: [["&#x29c2;"], parsing_wrapper(["cirscir"], lang: :unicode)],
+          asciimath: [["&#x29c2;"], parsing_wrapper(["cirscir"], lang: :asciimath)],
           mathml: ["&#x29c2;"],
           latex: [["cirscir", "&#x29c2;"]],
           omml: ["&#x29c2;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("cirscir")
+          parsing_wrapper("cirscir", lang: :asciimath)
         end
 
         def to_unicodemath

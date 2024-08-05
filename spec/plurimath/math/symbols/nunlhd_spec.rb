@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Nunlhd do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Nunlhd" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{nunlhd}")
+        expect(klass.to_asciimath).to eq("\"P{nunlhd}\"")
       end
 
       it "matches LaTeX string" do

@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Asymp do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Asymp" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{asymp}")
+        expect(klass.to_asciimath).to eq("\"P{asymp}\"")
       end
 
       it "matches LaTeX string" do

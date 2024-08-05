@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Rblot < Symbol
         INPUT = {
-          unicodemath: [["&#x298a;"], parsing_wrapper(["rrangle", "rblot"])],
-          asciimath: [["&#x298a;"], parsing_wrapper(["rrangle", "rblot"])],
+          unicodemath: [["&#x298a;"], parsing_wrapper(["rrangle", "rblot"], lang: :unicode)],
+          asciimath: [["&#x298a;"], parsing_wrapper(["rrangle", "rblot"], lang: :asciimath)],
           mathml: ["&#x298a;"],
           latex: [["rrangle", "rblot", "&#x298a;"]],
           omml: ["&#x298a;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("rblot")
+          parsing_wrapper("rblot", lang: :asciimath)
         end
 
         def to_unicodemath

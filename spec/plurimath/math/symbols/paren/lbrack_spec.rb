@@ -31,7 +31,7 @@ RSpec.describe Plurimath::Math::Symbols::Paren::Lbrack do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Paren::Lbrack" do
       it "matches AsciiMath paren string" do
-        expect(klass.to_asciimath).to eq("__{lbrack}")
+        expect(klass.to_asciimath).to eq("\"P{lbrack}\"")
       end
 
       it "matches LaTeX paren string" do

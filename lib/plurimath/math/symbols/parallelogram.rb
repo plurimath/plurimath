@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Parallelogram < Symbol
         INPUT = {
-          unicodemath: [["&#x25b1;"], parsing_wrapper(["parallelogram"])],
-          asciimath: [["&#x25b1;"], parsing_wrapper(["parallelogram"])],
+          unicodemath: [["&#x25b1;"], parsing_wrapper(["parallelogram"], lang: :unicode)],
+          asciimath: [["&#x25b1;"], parsing_wrapper(["parallelogram"], lang: :asciimath)],
           mathml: ["&#x25b1;"],
           latex: [["parallelogram", "&#x25b1;"]],
           omml: ["&#x25b1;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("parallelogram")
+          parsing_wrapper("parallelogram", lang: :asciimath)
         end
 
         def to_unicodemath

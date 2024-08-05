@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Comp < Symbol
         INPUT = {
-          unicodemath: [["&#x2a3e;"], parsing_wrapper(["fcmp", "comp"])],
-          asciimath: [["&#x2a3e;"], parsing_wrapper(["fcmp", "comp"])],
+          unicodemath: [["&#x2a3e;"], parsing_wrapper(["fcmp", "comp"], lang: :unicode)],
+          asciimath: [["&#x2a3e;"], parsing_wrapper(["fcmp", "comp"], lang: :asciimath)],
           mathml: ["&#x2a3e;"],
           latex: [["fcmp", "comp", "&#x2a3e;"]],
           omml: ["&#x2a3e;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("comp")
+          parsing_wrapper("comp", lang: :asciimath)
         end
 
         def to_unicodemath

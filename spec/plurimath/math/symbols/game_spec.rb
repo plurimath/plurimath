@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Game do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Game" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{Game}")
+        expect(klass.to_asciimath).to eq("\"P{Game}\"")
       end
 
       it "matches LaTeX string" do

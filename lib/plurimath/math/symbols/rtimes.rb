@@ -3,10 +3,10 @@ module Plurimath
     module Symbols
       class Rtimes < Symbol
         INPUT = {
-          unicodemath: [["rtimes", "&#x22ca;"], parsing_wrapper(["><|"])],
+          unicodemath: [["rtimes", "&#x22ca;"], parsing_wrapper(["><|"], lang: :unicode)],
           asciimath: [["rtimes", "><|", "&#x22ca;"]],
           mathml: ["&#x22ca;"],
-          latex: [["rtimes", "&#x22ca;"], parsing_wrapper(["><|"])],
+          latex: [["rtimes", "&#x22ca;"], parsing_wrapper(["><|"], lang: :latex)],
           omml: ["&#x22ca;"],
           html: ["&#x22ca;"],
         }.freeze

@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Circle do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Circle" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{CIRCLE}")
+        expect(klass.to_asciimath).to eq("\"P{CIRCLE}\"")
       end
 
       it "matches LaTeX string" do

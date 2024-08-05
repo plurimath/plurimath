@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Vysmblksquare do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Vysmblksquare" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{vysmblksquare}")
+        expect(klass.to_asciimath).to eq("\"P{vysmblksquare}\"")
       end
 
       it "matches LaTeX string" do

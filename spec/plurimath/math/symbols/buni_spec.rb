@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Buni do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Buni" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{buni}")
+        expect(klass.to_asciimath).to eq("\"P{buni}\"")
       end
 
       it "matches LaTeX string" do

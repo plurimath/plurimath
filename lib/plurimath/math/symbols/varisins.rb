@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Varisins < Symbol
         INPUT = {
-          unicodemath: [["&#x22f3;"], parsing_wrapper(["varisins"])],
-          asciimath: [["&#x22f3;"], parsing_wrapper(["varisins"])],
+          unicodemath: [["&#x22f3;"], parsing_wrapper(["varisins"], lang: :unicode)],
+          asciimath: [["&#x22f3;"], parsing_wrapper(["varisins"], lang: :asciimath)],
           mathml: ["&#x22f3;"],
           latex: [["varisins", "&#x22f3;"]],
           omml: ["&#x22f3;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("varisins")
+          parsing_wrapper("varisins", lang: :asciimath)
         end
 
         def to_unicodemath

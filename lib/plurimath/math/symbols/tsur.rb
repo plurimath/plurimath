@@ -3,10 +3,10 @@ module Plurimath
     module Symbols
       class Tsur < Symbol
         INPUT = {
-          unicodemath: [["twoheadrightarrow", "&#x21a0;"], parsing_wrapper(["->>", "tsur"])],
-          asciimath: [["twoheadrightarrow", "->>", "&#x21a0;"], parsing_wrapper(["tsur"])],
+          unicodemath: [["twoheadrightarrow", "&#x21a0;"], parsing_wrapper(["->>", "tsur"], lang: :unicode)],
+          asciimath: [["twoheadrightarrow", "->>", "&#x21a0;"], parsing_wrapper(["tsur"], lang: :asciimath)],
           mathml: ["&#x21a0;"],
-          latex: [["twoheadrightarrow", "tsur", "&#x21a0;"], parsing_wrapper(["->>"])],
+          latex: [["twoheadrightarrow", "tsur", "&#x21a0;"], parsing_wrapper(["->>"], lang: :latex)],
           omml: ["&#x21a0;"],
           html: ["&#x21a0;"],
         }.freeze
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("tsur")
+          parsing_wrapper("tsur", lang: :asciimath)
         end
 
         def to_unicodemath

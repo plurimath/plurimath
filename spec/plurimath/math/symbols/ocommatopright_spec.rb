@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Ocommatopright do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Ocommatopright" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{ocommatopright}")
+        expect(klass.to_asciimath).to eq("\"P{ocommatopright}\"")
       end
 
       it "matches LaTeX string" do

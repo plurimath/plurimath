@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Suphsol do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Suphsol" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{suphsol}")
+        expect(klass.to_asciimath).to eq("\"P{suphsol}\"")
       end
 
       it "matches LaTeX string" do

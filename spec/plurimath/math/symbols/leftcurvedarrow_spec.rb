@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Leftcurvedarrow do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Leftcurvedarrow" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{leftcurvedarrow}")
+        expect(klass.to_asciimath).to eq("\"P{leftcurvedarrow}\"")
       end
 
       it "matches LaTeX string" do

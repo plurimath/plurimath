@@ -14,11 +14,11 @@ RSpec.describe Plurimath::Math::Symbols::Zwnj do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Zwnj" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{zwnj}")
+        expect(klass.to_asciimath).to eq("\"P{zwnj}\"")
       end
 
       it "matches LaTeX string" do
-        expect(klass.to_latex).to eq("__{zwnj}")
+        expect(klass.to_latex).to eq("\\text{P[zwnj]}")
       end
 
       it "matches UnicodeMath string" do

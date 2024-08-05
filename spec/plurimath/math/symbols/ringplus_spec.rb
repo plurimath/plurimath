@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Ringplus do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Ringplus" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{ringplus}")
+        expect(klass.to_asciimath).to eq("\"P{ringplus}\"")
       end
 
       it "matches LaTeX string" do

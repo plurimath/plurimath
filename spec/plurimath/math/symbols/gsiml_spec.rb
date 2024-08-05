@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Gsiml do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Gsiml" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{gsiml}")
+        expect(klass.to_asciimath).to eq("\"P{gsiml}\"")
       end
 
       it "matches LaTeX string" do

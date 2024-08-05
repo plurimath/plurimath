@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Underparen < Symbol
         INPUT = {
-          unicodemath: [["&#x23dd;"], parsing_wrapper(["underparen"])],
-          asciimath: [["&#x23dd;"], parsing_wrapper(["underparen"])],
+          unicodemath: [["&#x23dd;"], parsing_wrapper(["underparen"], lang: :unicode)],
+          asciimath: [["&#x23dd;"], parsing_wrapper(["underparen"], lang: :asciimath)],
           mathml: ["&#x23dd;"],
           latex: [["underparen", "&#x23dd;"]],
           omml: ["&#x23dd;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("underparen")
+          parsing_wrapper("underparen", lang: :asciimath)
         end
 
         def to_unicodemath

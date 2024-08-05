@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Measangledrtose do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Measangledrtose" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{measangledrtose}")
+        expect(klass.to_asciimath).to eq("\"P{measangledrtose}\"")
       end
 
       it "matches LaTeX string" do

@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Diamondleftarrow do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Diamondleftarrow" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{diamondleftarrow}")
+        expect(klass.to_asciimath).to eq("\"P{diamondleftarrow}\"")
       end
 
       it "matches LaTeX string" do

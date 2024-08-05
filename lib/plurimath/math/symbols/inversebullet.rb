@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Inversebullet < Symbol
         INPUT = {
-          unicodemath: [["&#x25d8;"], parsing_wrapper(["inversebullet"])],
-          asciimath: [["&#x25d8;"], parsing_wrapper(["inversebullet"])],
+          unicodemath: [["&#x25d8;"], parsing_wrapper(["inversebullet"], lang: :unicode)],
+          asciimath: [["&#x25d8;"], parsing_wrapper(["inversebullet"], lang: :asciimath)],
           mathml: ["&#x25d8;"],
           latex: [["inversebullet", "&#x25d8;"]],
           omml: ["&#x25d8;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("inversebullet")
+          parsing_wrapper("inversebullet", lang: :asciimath)
         end
 
         def to_unicodemath

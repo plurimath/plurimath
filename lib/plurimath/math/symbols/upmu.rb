@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Upmu < Symbol
         INPUT = {
-          unicodemath: [["&#x39c;"], parsing_wrapper(["upMu"])],
-          asciimath: [["&#x39c;"], parsing_wrapper(["upMu"])],
+          unicodemath: [["&#x39c;"], parsing_wrapper(["upMu"], lang: :unicode)],
+          asciimath: [["&#x39c;"], parsing_wrapper(["upMu"], lang: :asciimath)],
           mathml: ["&#x39c;"],
           latex: [["upMu", "&#x39c;"]],
           omml: ["&#x39c;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("upMu")
+          parsing_wrapper("upMu", lang: :asciimath)
         end
 
         def to_unicodemath

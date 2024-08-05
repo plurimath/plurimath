@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Emptysetocirc < Symbol
         INPUT = {
-          unicodemath: [["&#x29b2;"], parsing_wrapper(["emptysetocirc"])],
-          asciimath: [["&#x29b2;"], parsing_wrapper(["emptysetocirc"])],
+          unicodemath: [["&#x29b2;"], parsing_wrapper(["emptysetocirc"], lang: :unicode)],
+          asciimath: [["&#x29b2;"], parsing_wrapper(["emptysetocirc"], lang: :asciimath)],
           mathml: ["&#x29b2;"],
           latex: [["emptysetocirc", "&#x29b2;"]],
           omml: ["&#x29b2;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("emptysetocirc")
+          parsing_wrapper("emptysetocirc", lang: :asciimath)
         end
 
         def to_unicodemath

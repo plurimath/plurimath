@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Vbarv do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Vbarv" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{vBarv}")
+        expect(klass.to_asciimath).to eq("\"P{vBarv}\"")
       end
 
       it "matches LaTeX string" do

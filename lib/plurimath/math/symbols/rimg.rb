@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Rimg < Symbol
         INPUT = {
-          unicodemath: [["&#x2988;"], parsing_wrapper(["rrparenthesis", "rimg"])],
-          asciimath: [["&#x2988;"], parsing_wrapper(["rrparenthesis", "rimg"])],
+          unicodemath: [["&#x2988;"], parsing_wrapper(["rrparenthesis", "rimg"], lang: :unicode)],
+          asciimath: [["&#x2988;"], parsing_wrapper(["rrparenthesis", "rimg"], lang: :asciimath)],
           mathml: ["&#x2988;"],
           latex: [["rrparenthesis", "rimg", "&#x2988;"]],
           omml: ["&#x2988;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("rimg")
+          parsing_wrapper("rimg", lang: :asciimath)
         end
 
         def to_unicodemath

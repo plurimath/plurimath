@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Leftarrowtriangle < Symbol
         INPUT = {
-          unicodemath: [["&#x21fd;"], parsing_wrapper(["leftarrowtriangle"])],
-          asciimath: [["&#x21fd;"], parsing_wrapper(["leftarrowtriangle"])],
+          unicodemath: [["&#x21fd;"], parsing_wrapper(["leftarrowtriangle"], lang: :unicode)],
+          asciimath: [["&#x21fd;"], parsing_wrapper(["leftarrowtriangle"], lang: :asciimath)],
           mathml: ["&#x21fd;"],
           latex: [["leftarrowtriangle", "&#x21fd;"]],
           omml: ["&#x21fd;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("leftarrowtriangle")
+          parsing_wrapper("leftarrowtriangle", lang: :asciimath)
         end
 
         def to_unicodemath

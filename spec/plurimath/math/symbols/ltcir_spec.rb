@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Ltcir do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Ltcir" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{ltcir}")
+        expect(klass.to_asciimath).to eq("\"P{ltcir}\"")
       end
 
       it "matches LaTeX string" do

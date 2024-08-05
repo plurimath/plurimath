@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Aplinv do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Aplinv" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{APLinv}")
+        expect(klass.to_asciimath).to eq("\"P{APLinv}\"")
       end
 
       it "matches LaTeX string" do

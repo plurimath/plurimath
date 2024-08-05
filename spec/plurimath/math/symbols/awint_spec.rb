@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Awint do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Awint" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{awint}")
+        expect(klass.to_asciimath).to eq("\"P{awint}\"")
       end
 
       it "matches LaTeX string" do

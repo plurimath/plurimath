@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Intcap < Symbol
         INPUT = {
-          unicodemath: [["&#x2a19;"], parsing_wrapper(["intcap"])],
-          asciimath: [["&#x2a19;"], parsing_wrapper(["intcap"])],
+          unicodemath: [["&#x2a19;"], parsing_wrapper(["intcap"], lang: :unicode)],
+          asciimath: [["&#x2a19;"], parsing_wrapper(["intcap"], lang: :asciimath)],
           mathml: ["&#x2a19;"],
           latex: [["intcap", "&#x2a19;"]],
           omml: ["&#x2a19;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("intcap")
+          parsing_wrapper("intcap", lang: :asciimath)
         end
 
         def to_unicodemath

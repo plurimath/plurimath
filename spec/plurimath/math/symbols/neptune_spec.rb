@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Neptune do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Neptune" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{Neptune}")
+        expect(klass.to_asciimath).to eq("\"P{Neptune}\"")
       end
 
       it "matches LaTeX string" do

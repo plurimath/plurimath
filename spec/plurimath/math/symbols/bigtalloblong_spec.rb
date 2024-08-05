@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Bigtalloblong do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Bigtalloblong" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{bigtalloblong}")
+        expect(klass.to_asciimath).to eq("\"P{bigtalloblong}\"")
       end
 
       it "matches LaTeX string" do

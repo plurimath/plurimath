@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Shortlefttack do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Shortlefttack" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{shortlefttack}")
+        expect(klass.to_asciimath).to eq("\"P{shortlefttack}\"")
       end
 
       it "matches LaTeX string" do

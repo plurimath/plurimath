@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Eqcolon < Symbol
         INPUT = {
-          unicodemath: [["&#x2239;"], parsing_wrapper(["dashcolon", "eqcolon"])],
-          asciimath: [["&#x2239;"], parsing_wrapper(["dashcolon", "eqcolon"])],
+          unicodemath: [["&#x2239;"], parsing_wrapper(["dashcolon", "eqcolon"], lang: :unicode)],
+          asciimath: [["&#x2239;"], parsing_wrapper(["dashcolon", "eqcolon"], lang: :asciimath)],
           mathml: ["&#x2239;"],
           latex: [["dashcolon", "eqcolon", "&#x2239;"]],
           omml: ["&#x2239;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("eqcolon")
+          parsing_wrapper("eqcolon", lang: :asciimath)
         end
 
         def to_unicodemath

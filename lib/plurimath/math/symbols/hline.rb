@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Hline < Symbol
         INPUT = {
-          unicodemath: [["&#x23af;"], parsing_wrapper(["harrowextender", "hline"])],
-          asciimath: [["&#x23af;"], parsing_wrapper(["harrowextender", "hline"])],
+          unicodemath: [["&#x23af;"], parsing_wrapper(["harrowextender", "hline"], lang: :unicode)],
+          asciimath: [["&#x23af;"], parsing_wrapper(["harrowextender", "hline"], lang: :asciimath)],
           mathml: ["&#x23af;"],
           latex: [["harrowextender", "hline", "&#x23af;"]],
           omml: ["&#x23af;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("hline")
+          parsing_wrapper("hline", lang: :asciimath)
         end
 
         def to_unicodemath

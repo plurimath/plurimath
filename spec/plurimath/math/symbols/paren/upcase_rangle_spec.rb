@@ -31,11 +31,11 @@ RSpec.describe Plurimath::Math::Symbols::Paren::UpcaseRangle do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Paren::UpcaseRangle" do
       it "matches AsciiMath paren string" do
-        expect(klass.to_asciimath).to eq("__{Langle}")
+        expect(klass.to_asciimath).to eq("\"P{Langle}\"")
       end
 
       it "matches LaTeX paren string" do
-        expect(klass.to_latex).to eq("__{Langle}")
+        expect(klass.to_latex).to eq("\\text{P[Langle]}")
       end
 
       it "matches UnicodeMath paren string" do

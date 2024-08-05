@@ -4,7 +4,7 @@ module Plurimath
       class Curlyvee < Symbol
         INPUT = {
           unicodemath: [["curlyvee", "&#x22ce;"]],
-          asciimath: [["&#x22ce;"], parsing_wrapper(["curlyvee"])],
+          asciimath: [["&#x22ce;"], parsing_wrapper(["curlyvee"], lang: :asciimath)],
           mathml: ["&#x22ce;"],
           latex: [["curlyvee", "&#x22ce;"]],
           omml: ["&#x22ce;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("curlyvee")
+          parsing_wrapper("curlyvee", lang: :asciimath)
         end
 
         def to_unicodemath

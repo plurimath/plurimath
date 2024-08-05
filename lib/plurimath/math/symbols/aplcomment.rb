@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Aplcomment < Symbol
         INPUT = {
-          unicodemath: [["&#x235d;"], parsing_wrapper(["APLcomment"])],
-          asciimath: [["&#x235d;"], parsing_wrapper(["APLcomment"])],
+          unicodemath: [["&#x235d;"], parsing_wrapper(["APLcomment"], lang: :unicode)],
+          asciimath: [["&#x235d;"], parsing_wrapper(["APLcomment"], lang: :asciimath)],
           mathml: ["&#x235d;"],
           latex: [["APLcomment", "&#x235d;"]],
           omml: ["&#x235d;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("APLcomment")
+          parsing_wrapper("APLcomment", lang: :asciimath)
         end
 
         def to_unicodemath

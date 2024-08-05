@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Nlessgtr < Symbol
         INPUT = {
-          unicodemath: [["&#x2278;"], parsing_wrapper(["nlessgtr"])],
-          asciimath: [["&#x2278;"], parsing_wrapper(["nlessgtr"])],
+          unicodemath: [["&#x2278;"], parsing_wrapper(["nlessgtr"], lang: :unicode)],
+          asciimath: [["&#x2278;"], parsing_wrapper(["nlessgtr"], lang: :asciimath)],
           mathml: ["&#x2278;"],
           latex: [["nlessgtr", "&#x2278;"]],
           omml: ["&#x2278;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("nlessgtr")
+          parsing_wrapper("nlessgtr", lang: :asciimath)
         end
 
         def to_unicodemath

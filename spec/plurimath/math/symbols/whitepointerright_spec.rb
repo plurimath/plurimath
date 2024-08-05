@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Whitepointerright do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Whitepointerright" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{whitepointerright}")
+        expect(klass.to_asciimath).to eq("\"P{whitepointerright}\"")
       end
 
       it "matches LaTeX string" do

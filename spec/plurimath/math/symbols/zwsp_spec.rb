@@ -14,11 +14,11 @@ RSpec.describe Plurimath::Math::Symbols::Zwsp do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Zwsp" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{zwsp}")
+        expect(klass.to_asciimath).to eq("\"P{zwsp}\"")
       end
 
       it "matches LaTeX string" do
-        expect(klass.to_latex).to eq("__{zwsp}")
+        expect(klass.to_latex).to eq("\\text{P[zwsp]}")
       end
 
       it "matches UnicodeMath string" do

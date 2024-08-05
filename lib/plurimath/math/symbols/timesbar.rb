@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Timesbar < Symbol
         INPUT = {
-          unicodemath: [["&#x2a31;"], parsing_wrapper(["timesbar"])],
-          asciimath: [["&#x2a31;"], parsing_wrapper(["timesbar"])],
+          unicodemath: [["&#x2a31;"], parsing_wrapper(["timesbar"], lang: :unicode)],
+          asciimath: [["&#x2a31;"], parsing_wrapper(["timesbar"], lang: :asciimath)],
           mathml: ["&#x2a31;"],
           latex: [["timesbar", "&#x2a31;"]],
           omml: ["&#x2a31;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("timesbar")
+          parsing_wrapper("timesbar", lang: :asciimath)
         end
 
         def to_unicodemath

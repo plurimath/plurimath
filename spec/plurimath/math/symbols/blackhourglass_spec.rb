@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Blackhourglass do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Blackhourglass" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{blackhourglass}")
+        expect(klass.to_asciimath).to eq("\"P{blackhourglass}\"")
       end
 
       it "matches LaTeX string" do

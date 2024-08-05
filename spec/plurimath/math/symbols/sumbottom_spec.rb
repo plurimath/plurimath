@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Sumbottom do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Sumbottom" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{sumbottom}")
+        expect(klass.to_asciimath).to eq("\"P{sumbottom}\"")
       end
 
       it "matches LaTeX string" do

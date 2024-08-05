@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Neuter do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Neuter" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{neuter}")
+        expect(klass.to_asciimath).to eq("\"P{neuter}\"")
       end
 
       it "matches LaTeX string" do

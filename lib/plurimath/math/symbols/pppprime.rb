@@ -3,10 +3,10 @@ module Plurimath
     module Symbols
       class Pppprime < Symbol
         INPUT = {
-          unicodemath: [["pppprime", "&#x2057;"], parsing_wrapper(["fourth", "qprime"])],
-          asciimath: [["&#x2057;"], parsing_wrapper(["pppprime", "fourth", "qprime"])],
+          unicodemath: [["pppprime", "&#x2057;"], parsing_wrapper(["fourth", "qprime"], lang: :unicode)],
+          asciimath: [["&#x2057;"], parsing_wrapper(["pppprime", "fourth", "qprime"], lang: :asciimath)],
           mathml: ["&#x2057;"],
-          latex: [["fourth", "qprime", "&#x2057;"], parsing_wrapper(["pppprime"])],
+          latex: [["fourth", "qprime", "&#x2057;"], parsing_wrapper(["pppprime"], lang: :latex)],
           omml: ["&#x2057;"],
           html: ["&#x2057;"],
         }.freeze
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("pppprime")
+          parsing_wrapper("pppprime", lang: :asciimath)
         end
 
         def to_unicodemath

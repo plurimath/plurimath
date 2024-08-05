@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Apprle < Symbol
         INPUT = {
-          unicodemath: [["lesssim", "&#x2272;"], parsing_wrapper(["apprle"])],
-          asciimath: [["&#x2272;"], parsing_wrapper(["lesssim", "apprle"])],
+          unicodemath: [["lesssim", "&#x2272;"], parsing_wrapper(["apprle"], lang: :unicode)],
+          asciimath: [["&#x2272;"], parsing_wrapper(["lesssim", "apprle"], lang: :asciimath)],
           mathml: ["&#x2272;"],
           latex: [["lesssim", "apprle", "&#x2272;"]],
           omml: ["&#x2272;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("apprle")
+          parsing_wrapper("apprle", lang: :asciimath)
         end
 
         def to_unicodemath

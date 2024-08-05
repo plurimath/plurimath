@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Arrowbullet do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Arrowbullet" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{arrowbullet}")
+        expect(klass.to_asciimath).to eq("\"P{arrowbullet}\"")
       end
 
       it "matches LaTeX string" do

@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Nhuparrow do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Nhuparrow" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{nHuparrow}")
+        expect(klass.to_asciimath).to eq("\"P{nHuparrow}\"")
       end
 
       it "matches LaTeX string" do

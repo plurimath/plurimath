@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Hbar do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Hbar" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{hbar}")
+        expect(klass.to_asciimath).to eq("\"P{hbar}\"")
       end
 
       it "matches LaTeX string" do

@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::UpcaseCap do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::UpcaseCap" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{Cap}")
+        expect(klass.to_asciimath).to eq("\"P{Cap}\"")
       end
 
       it "matches LaTeX string" do

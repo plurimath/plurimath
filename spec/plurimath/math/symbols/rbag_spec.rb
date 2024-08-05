@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Rbag do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Rbag" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{rbag}")
+        expect(klass.to_asciimath).to eq("\"P{rbag}\"")
       end
 
       it "matches LaTeX string" do

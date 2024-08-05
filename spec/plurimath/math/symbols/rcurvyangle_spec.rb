@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Rcurvyangle do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Rcurvyangle" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{rcurvyangle}")
+        expect(klass.to_asciimath).to eq("\"P{rcurvyangle}\"")
       end
 
       it "matches LaTeX string" do

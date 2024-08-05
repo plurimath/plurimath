@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Wedgedot < Symbol
         INPUT = {
-          unicodemath: [["&#x27d1;"], parsing_wrapper(["wedgedot"])],
-          asciimath: [["&#x27d1;"], parsing_wrapper(["wedgedot"])],
+          unicodemath: [["&#x27d1;"], parsing_wrapper(["wedgedot"], lang: :unicode)],
+          asciimath: [["&#x27d1;"], parsing_wrapper(["wedgedot"], lang: :asciimath)],
           mathml: ["&#x27d1;"],
           latex: [["wedgedot", "&#x27d1;"]],
           omml: ["&#x27d1;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("wedgedot")
+          parsing_wrapper("wedgedot", lang: :asciimath)
         end
 
         def to_unicodemath

@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Leftarrowless < Symbol
         INPUT = {
-          unicodemath: [["&#x2977;"], parsing_wrapper(["leftarrowless"])],
-          asciimath: [["&#x2977;"], parsing_wrapper(["leftarrowless"])],
+          unicodemath: [["&#x2977;"], parsing_wrapper(["leftarrowless"], lang: :unicode)],
+          asciimath: [["&#x2977;"], parsing_wrapper(["leftarrowless"], lang: :asciimath)],
           mathml: ["&#x2977;"],
           latex: [["leftarrowless", "&#x2977;"]],
           omml: ["&#x2977;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("leftarrowless")
+          parsing_wrapper("leftarrowless", lang: :asciimath)
         end
 
         def to_unicodemath

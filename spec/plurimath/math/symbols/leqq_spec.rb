@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Leqq do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Leqq" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{leqq}")
+        expect(klass.to_asciimath).to eq("\"P{leqq}\"")
       end
 
       it "matches LaTeX string" do

@@ -5,20 +5,20 @@ module Plurimath
         class UpcaseRangle < Paren
           INPUT = {
             unicodemath: ["&#x27eb;", "Langle"],
-            asciimath: [["&#x27eb;"], parsing_wrapper(["Langle"])],
+            asciimath: [["&#x27eb;"], parsing_wrapper(["Langle"], lang: :asciimath)],
             mathml: ["&#x27eb;"],
-            latex: ["&#x27eb;", parsing_wrapper(["Langle"])],
+            latex: ["&#x27eb;", parsing_wrapper(["Langle"], lang: :latex)],
             omml: ["&#x27eb;"],
             html: ["&#x27eb;"],
           }.freeze
 
           # output methods
           def to_latex
-            parsing_wrapper("Langle")
+            parsing_wrapper("Langle", lang: :latex)
           end
 
           def to_asciimath
-            parsing_wrapper("Langle")
+            parsing_wrapper("Langle", lang: :asciimath)
           end
 
           def to_unicodemath

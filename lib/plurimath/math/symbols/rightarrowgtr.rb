@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Rightarrowgtr < Symbol
         INPUT = {
-          unicodemath: [["&#x2b43;"], parsing_wrapper(["rightarrowgtr"])],
-          asciimath: [["&#x2b43;"], parsing_wrapper(["rightarrowgtr"])],
+          unicodemath: [["&#x2b43;"], parsing_wrapper(["rightarrowgtr"], lang: :unicode)],
+          asciimath: [["&#x2b43;"], parsing_wrapper(["rightarrowgtr"], lang: :asciimath)],
           mathml: ["&#x2b43;"],
           latex: [["rightarrowgtr", "&#x2b43;"]],
           omml: ["&#x2b43;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("rightarrowgtr")
+          parsing_wrapper("rightarrowgtr", lang: :asciimath)
         end
 
         def to_unicodemath

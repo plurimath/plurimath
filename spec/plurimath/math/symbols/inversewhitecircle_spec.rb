@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Inversewhitecircle do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Inversewhitecircle" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{inversewhitecircle}")
+        expect(klass.to_asciimath).to eq("\"P{inversewhitecircle}\"")
       end
 
       it "matches LaTeX string" do

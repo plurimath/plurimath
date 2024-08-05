@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Equivvvert do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Equivvvert" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{equivVvert}")
+        expect(klass.to_asciimath).to eq("\"P{equivVvert}\"")
       end
 
       it "matches LaTeX string" do

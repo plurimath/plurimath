@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Ffun do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Ffun" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{ffun}")
+        expect(klass.to_asciimath).to eq("\"P{ffun}\"")
       end
 
       it "matches LaTeX string" do

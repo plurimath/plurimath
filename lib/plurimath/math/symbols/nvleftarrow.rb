@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Nvleftarrow < Symbol
         INPUT = {
-          unicodemath: [["&#x2902;"], parsing_wrapper(["nvLeftarrow"])],
-          asciimath: [["&#x2902;"], parsing_wrapper(["nvLeftarrow"])],
+          unicodemath: [["&#x2902;"], parsing_wrapper(["nvLeftarrow"], lang: :unicode)],
+          asciimath: [["&#x2902;"], parsing_wrapper(["nvLeftarrow"], lang: :asciimath)],
           mathml: ["&#x2902;"],
           latex: [["nvLeftarrow", "&#x2902;"]],
           omml: ["&#x2902;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("nvLeftarrow")
+          parsing_wrapper("nvLeftarrow", lang: :asciimath)
         end
 
         def to_unicodemath

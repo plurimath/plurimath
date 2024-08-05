@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Annuity do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Annuity" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{annuity}")
+        expect(klass.to_asciimath).to eq("\"P{annuity}\"")
       end
 
       it "matches LaTeX string" do

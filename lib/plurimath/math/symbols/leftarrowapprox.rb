@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Leftarrowapprox < Symbol
         INPUT = {
-          unicodemath: [["&#x2b4a;"], parsing_wrapper(["leftarrowapprox"])],
-          asciimath: [["&#x2b4a;"], parsing_wrapper(["leftarrowapprox"])],
+          unicodemath: [["&#x2b4a;"], parsing_wrapper(["leftarrowapprox"], lang: :unicode)],
+          asciimath: [["&#x2b4a;"], parsing_wrapper(["leftarrowapprox"], lang: :asciimath)],
           mathml: ["&#x2b4a;"],
           latex: [["leftarrowapprox", "&#x2b4a;"]],
           omml: ["&#x2b4a;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("leftarrowapprox")
+          parsing_wrapper("leftarrowapprox", lang: :asciimath)
         end
 
         def to_unicodemath

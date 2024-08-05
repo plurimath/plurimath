@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Varkappa do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Varkappa" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{varkappa}")
+        expect(klass.to_asciimath).to eq("\"P{varkappa}\"")
       end
 
       it "matches LaTeX string" do

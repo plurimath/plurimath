@@ -4,7 +4,7 @@ module Plurimath
       class Ell < Symbol
         INPUT = {
           unicodemath: [["ell", "&#x2113;"]],
-          asciimath: [["&#x2113;"], parsing_wrapper(["ell"])],
+          asciimath: [["&#x2113;"], parsing_wrapper(["ell"], lang: :asciimath)],
           mathml: ["&#x2113;"],
           latex: [["ell", "&#x2113;"]],
           omml: ["&#x2113;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("ell")
+          parsing_wrapper("ell", lang: :asciimath)
         end
 
         def to_unicodemath

@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Bigtriangleleft < Symbol
         INPUT = {
-          unicodemath: [["&#x2a1e;"], parsing_wrapper(["bigtriangleleft"])],
-          asciimath: [["&#x2a1e;"], parsing_wrapper(["bigtriangleleft"])],
+          unicodemath: [["&#x2a1e;"], parsing_wrapper(["bigtriangleleft"], lang: :unicode)],
+          asciimath: [["&#x2a1e;"], parsing_wrapper(["bigtriangleleft"], lang: :asciimath)],
           mathml: ["&#x2a1e;"],
           latex: [["bigtriangleleft", "&#x2a1e;"]],
           omml: ["&#x2a1e;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("bigtriangleleft")
+          parsing_wrapper("bigtriangleleft", lang: :asciimath)
         end
 
         def to_unicodemath

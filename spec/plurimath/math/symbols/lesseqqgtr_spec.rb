@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Lesseqqgtr do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Lesseqqgtr" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{lesseqqgtr}")
+        expect(klass.to_asciimath).to eq("\"P{lesseqqgtr}\"")
       end
 
       it "matches LaTeX string" do

@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Apllog < Symbol
         INPUT = {
-          unicodemath: [["&#x235f;"], parsing_wrapper(["APLlog"])],
-          asciimath: [["&#x235f;"], parsing_wrapper(["APLlog"])],
+          unicodemath: [["&#x235f;"], parsing_wrapper(["APLlog"], lang: :unicode)],
+          asciimath: [["&#x235f;"], parsing_wrapper(["APLlog"], lang: :asciimath)],
           mathml: ["&#x235f;"],
           latex: [["APLlog", "&#x235f;"]],
           omml: ["&#x235f;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("APLlog")
+          parsing_wrapper("APLlog", lang: :asciimath)
         end
 
         def to_unicodemath

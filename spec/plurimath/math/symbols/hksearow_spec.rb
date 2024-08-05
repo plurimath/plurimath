@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Hksearow do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Hksearow" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{hksearow}")
+        expect(klass.to_asciimath).to eq("\"P{hksearow}\"")
       end
 
       it "matches LaTeX string" do

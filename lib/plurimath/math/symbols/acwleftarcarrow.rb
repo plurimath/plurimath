@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Acwleftarcarrow < Symbol
         INPUT = {
-          unicodemath: [["&#x2939;"], parsing_wrapper(["acwleftarcarrow"])],
-          asciimath: [["&#x2939;"], parsing_wrapper(["acwleftarcarrow"])],
+          unicodemath: [["&#x2939;"], parsing_wrapper(["acwleftarcarrow"], lang: :unicode)],
+          asciimath: [["&#x2939;"], parsing_wrapper(["acwleftarcarrow"], lang: :asciimath)],
           mathml: ["&#x2939;"],
           latex: [["acwleftarcarrow", "&#x2939;"]],
           omml: ["&#x2939;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("acwleftarcarrow")
+          parsing_wrapper("acwleftarcarrow", lang: :asciimath)
         end
 
         def to_unicodemath

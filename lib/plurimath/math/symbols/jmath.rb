@@ -4,7 +4,7 @@ module Plurimath
       class Jmath < Symbol
         INPUT = {
           unicodemath: [["jmath", "&#x237;"]],
-          asciimath: [["&#x237;"], parsing_wrapper(["jmath"])],
+          asciimath: [["&#x237;"], parsing_wrapper(["jmath"], lang: :asciimath)],
           mathml: ["&#x237;"],
           latex: [["jmath", "&#x237;"]],
           omml: ["&#x237;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("jmath")
+          parsing_wrapper("jmath", lang: :asciimath)
         end
 
         def to_unicodemath

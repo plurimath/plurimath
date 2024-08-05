@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Enleadertwodots < Symbol
         INPUT = {
-          unicodemath: [["&#x2025;"], parsing_wrapper(["enleadertwodots"])],
-          asciimath: [["&#x2025;"], parsing_wrapper(["enleadertwodots"])],
+          unicodemath: [["&#x2025;"], parsing_wrapper(["enleadertwodots"], lang: :unicode)],
+          asciimath: [["&#x2025;"], parsing_wrapper(["enleadertwodots"], lang: :asciimath)],
           mathml: ["&#x2025;"],
           latex: [["enleadertwodots", "&#x2025;"]],
           omml: ["&#x2025;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("enleadertwodots")
+          parsing_wrapper("enleadertwodots", lang: :asciimath)
         end
 
         def to_unicodemath

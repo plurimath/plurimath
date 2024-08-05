@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Ccwundercurvearrow do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Ccwundercurvearrow" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{ccwundercurvearrow}")
+        expect(klass.to_asciimath).to eq("\"P{ccwundercurvearrow}\"")
       end
 
       it "matches LaTeX string" do

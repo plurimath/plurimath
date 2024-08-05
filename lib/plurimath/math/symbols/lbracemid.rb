@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Lbracemid < Symbol
         INPUT = {
-          unicodemath: [["&#x23a8;"], parsing_wrapper(["lbracemid"])],
-          asciimath: [["&#x23a8;"], parsing_wrapper(["lbracemid"])],
+          unicodemath: [["&#x23a8;"], parsing_wrapper(["lbracemid"], lang: :unicode)],
+          asciimath: [["&#x23a8;"], parsing_wrapper(["lbracemid"], lang: :asciimath)],
           mathml: ["&#x23a8;"],
           latex: [["lbracemid", "&#x23a8;"]],
           omml: ["&#x23a8;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("lbracemid")
+          parsing_wrapper("lbracemid", lang: :asciimath)
         end
 
         def to_unicodemath

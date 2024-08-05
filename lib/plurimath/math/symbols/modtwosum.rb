@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Modtwosum < Symbol
         INPUT = {
-          unicodemath: [["&#x2a0a;"], parsing_wrapper(["modtwosum"])],
-          asciimath: [["&#x2a0a;"], parsing_wrapper(["modtwosum"])],
+          unicodemath: [["&#x2a0a;"], parsing_wrapper(["modtwosum"], lang: :unicode)],
+          asciimath: [["&#x2a0a;"], parsing_wrapper(["modtwosum"], lang: :asciimath)],
           mathml: ["&#x2a0a;"],
           latex: [["modtwosum", "&#x2a0a;"]],
           omml: ["&#x2a0a;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("modtwosum")
+          parsing_wrapper("modtwosum", lang: :asciimath)
         end
 
         def to_unicodemath

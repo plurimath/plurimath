@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Angleubar do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Angleubar" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{angleubar}")
+        expect(klass.to_asciimath).to eq("\"P{angleubar}\"")
       end
 
       it "matches LaTeX string" do

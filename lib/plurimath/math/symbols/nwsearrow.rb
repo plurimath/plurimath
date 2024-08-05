@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Nwsearrow < Symbol
         INPUT = {
-          unicodemath: [["&#x2921;"], parsing_wrapper(["nwsearrow"])],
-          asciimath: [["&#x2921;"], parsing_wrapper(["nwsearrow"])],
+          unicodemath: [["&#x2921;"], parsing_wrapper(["nwsearrow"], lang: :unicode)],
+          asciimath: [["&#x2921;"], parsing_wrapper(["nwsearrow"], lang: :asciimath)],
           mathml: ["&#x2921;"],
           latex: [["nwsearrow", "&#x2921;"]],
           omml: ["&#x2921;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("nwsearrow")
+          parsing_wrapper("nwsearrow", lang: :asciimath)
         end
 
         def to_unicodemath

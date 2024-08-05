@@ -4,7 +4,7 @@ module Plurimath
       class Subset < Symbol
         INPUT = {
           unicodemath: [["Subset", "&#x22d0;"]],
-          asciimath: [["&#x22d0;"], parsing_wrapper(["Subset"])],
+          asciimath: [["&#x22d0;"], parsing_wrapper(["Subset"], lang: :asciimath)],
           mathml: ["&#x22d0;"],
           latex: [["Subset", "&#x22d0;"]],
           omml: ["&#x22d0;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("Subset")
+          parsing_wrapper("Subset", lang: :asciimath)
         end
 
         def to_unicodemath

@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Nhpar < Symbol
         INPUT = {
-          unicodemath: [["&#x2af2;"], parsing_wrapper(["nhpar"])],
-          asciimath: [["&#x2af2;"], parsing_wrapper(["nhpar"])],
+          unicodemath: [["&#x2af2;"], parsing_wrapper(["nhpar"], lang: :unicode)],
+          asciimath: [["&#x2af2;"], parsing_wrapper(["nhpar"], lang: :asciimath)],
           mathml: ["&#x2af2;"],
           latex: [["nhpar", "&#x2af2;"]],
           omml: ["&#x2af2;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("nhpar")
+          parsing_wrapper("nhpar", lang: :asciimath)
         end
 
         def to_unicodemath

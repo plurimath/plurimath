@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Longdivision do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Longdivision" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{longdivision}")
+        expect(klass.to_asciimath).to eq("\"P{longdivision}\"")
       end
 
       it "matches LaTeX string" do

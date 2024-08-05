@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Measuredangleleft do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Measuredangleleft" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{measuredangleleft}")
+        expect(klass.to_asciimath).to eq("\"P{measuredangleleft}\"")
       end
 
       it "matches LaTeX string" do

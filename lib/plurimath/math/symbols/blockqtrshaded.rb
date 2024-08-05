@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Blockqtrshaded < Symbol
         INPUT = {
-          unicodemath: [["&#x2591;"], parsing_wrapper(["blockqtrshaded"])],
-          asciimath: [["&#x2591;"], parsing_wrapper(["blockqtrshaded"])],
+          unicodemath: [["&#x2591;"], parsing_wrapper(["blockqtrshaded"], lang: :unicode)],
+          asciimath: [["&#x2591;"], parsing_wrapper(["blockqtrshaded"], lang: :asciimath)],
           mathml: ["&#x2591;"],
           latex: [["blockqtrshaded", "&#x2591;"]],
           omml: ["&#x2591;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("blockqtrshaded")
+          parsing_wrapper("blockqtrshaded", lang: :asciimath)
         end
 
         def to_unicodemath

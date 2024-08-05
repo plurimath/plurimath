@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Notslash < Symbol
         INPUT = {
-          unicodemath: [["&#x233f;"], parsing_wrapper(["APLnotslash", "notslash"])],
-          asciimath: [["&#x233f;"], parsing_wrapper(["APLnotslash", "notslash"])],
+          unicodemath: [["&#x233f;"], parsing_wrapper(["APLnotslash", "notslash"], lang: :unicode)],
+          asciimath: [["&#x233f;"], parsing_wrapper(["APLnotslash", "notslash"], lang: :asciimath)],
           mathml: ["&#x233f;"],
           latex: [["APLnotslash", "notslash", "&#x233f;"]],
           omml: ["&#x233f;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("notslash")
+          parsing_wrapper("notslash", lang: :asciimath)
         end
 
         def to_unicodemath

@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Questeq do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Questeq" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{questeq}")
+        expect(klass.to_asciimath).to eq("\"P{questeq}\"")
       end
 
       it "matches LaTeX string" do

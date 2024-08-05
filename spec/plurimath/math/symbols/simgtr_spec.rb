@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Simgtr do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Simgtr" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{simgtr}")
+        expect(klass.to_asciimath).to eq("\"P{simgtr}\"")
       end
 
       it "matches LaTeX string" do

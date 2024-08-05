@@ -3,10 +3,10 @@ module Plurimath
     module Symbols
       class Preceq < Symbol
         INPUT = {
-          unicodemath: [["preceq", "&#x2aaf;"], parsing_wrapper(["-<="])],
+          unicodemath: [["preceq", "&#x2aaf;"], parsing_wrapper(["-<="], lang: :unicode)],
           asciimath: [["preceq", "-<=", "&#x2aaf;"]],
           mathml: ["&#x2aaf;"],
-          latex: [["preceq", "&#x2aaf;"], parsing_wrapper(["-<="])],
+          latex: [["preceq", "&#x2aaf;"], parsing_wrapper(["-<="], lang: :latex)],
           omml: ["&#x2aaf;"],
           html: ["&#x2aaf;"],
         }.freeze

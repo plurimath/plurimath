@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Psur < Symbol
         INPUT = {
-          unicodemath: [["&#x2900;"], parsing_wrapper(["nvtwoheadrightarrow", "psurj", "psur"])],
-          asciimath: [["&#x2900;"], parsing_wrapper(["nvtwoheadrightarrow", "psurj", "psur"])],
+          unicodemath: [["&#x2900;"], parsing_wrapper(["nvtwoheadrightarrow", "psurj", "psur"], lang: :unicode)],
+          asciimath: [["&#x2900;"], parsing_wrapper(["nvtwoheadrightarrow", "psurj", "psur"], lang: :asciimath)],
           mathml: ["&#x2900;"],
           latex: [["nvtwoheadrightarrow", "psurj", "psur", "&#x2900;"]],
           omml: ["&#x2900;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("psur")
+          parsing_wrapper("psur", lang: :asciimath)
         end
 
         def to_unicodemath

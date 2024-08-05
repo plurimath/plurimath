@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Nlesssim < Symbol
         INPUT = {
-          unicodemath: [["&#x2274;"], parsing_wrapper(["NotLessTilde", "nlesssim"])],
-          asciimath: [["&#x2274;"], parsing_wrapper(["NotLessTilde", "nlesssim"])],
+          unicodemath: [["&#x2274;"], parsing_wrapper(["NotLessTilde", "nlesssim"], lang: :unicode)],
+          asciimath: [["&#x2274;"], parsing_wrapper(["NotLessTilde", "nlesssim"], lang: :asciimath)],
           mathml: ["&#x2274;"],
           latex: [["NotLessTilde", "nlesssim", "&#x2274;"]],
           omml: ["&#x2274;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("nlesssim")
+          parsing_wrapper("nlesssim", lang: :asciimath)
         end
 
         def to_unicodemath

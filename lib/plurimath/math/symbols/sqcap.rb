@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Sqcap < Symbol
         INPUT = {
-          unicodemath: [["&#x2a4e;"], parsing_wrapper(["Sqcap"])],
-          asciimath: [["&#x2a4e;"], parsing_wrapper(["Sqcap"])],
+          unicodemath: [["&#x2a4e;"], parsing_wrapper(["Sqcap"], lang: :unicode)],
+          asciimath: [["&#x2a4e;"], parsing_wrapper(["Sqcap"], lang: :asciimath)],
           mathml: ["&#x2a4e;"],
           latex: [["Sqcap", "&#x2a4e;"]],
           omml: ["&#x2a4e;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("Sqcap")
+          parsing_wrapper("Sqcap", lang: :asciimath)
         end
 
         def to_unicodemath

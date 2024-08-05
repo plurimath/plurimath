@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Blackcircledownarrow < Symbol
         INPUT = {
-          unicodemath: [["&#x29ed;"], parsing_wrapper(["blackcircledownarrow"])],
-          asciimath: [["&#x29ed;"], parsing_wrapper(["blackcircledownarrow"])],
+          unicodemath: [["&#x29ed;"], parsing_wrapper(["blackcircledownarrow"], lang: :unicode)],
+          asciimath: [["&#x29ed;"], parsing_wrapper(["blackcircledownarrow"], lang: :asciimath)],
           mathml: ["&#x29ed;"],
           latex: [["blackcircledownarrow", "&#x29ed;"]],
           omml: ["&#x29ed;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("blackcircledownarrow")
+          parsing_wrapper("blackcircledownarrow", lang: :asciimath)
         end
 
         def to_unicodemath

@@ -4,7 +4,7 @@ module Plurimath
       class Spadesuit < Symbol
         INPUT = {
           unicodemath: [["spadesuit", "&#x2660;"]],
-          asciimath: [["&#x2660;"], parsing_wrapper(["spadesuit"])],
+          asciimath: [["&#x2660;"], parsing_wrapper(["spadesuit"], lang: :asciimath)],
           mathml: ["&#x2660;"],
           latex: [["spadesuit", "&#x2660;"]],
           omml: ["&#x2660;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("spadesuit")
+          parsing_wrapper("spadesuit", lang: :asciimath)
         end
 
         def to_unicodemath

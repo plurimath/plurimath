@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Ngtrless do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Ngtrless" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{ngtrless}")
+        expect(klass.to_asciimath).to eq("\"P{ngtrless}\"")
       end
 
       it "matches LaTeX string" do

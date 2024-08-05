@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Measanglerutone < Symbol
         INPUT = {
-          unicodemath: [["&#x29a8;"], parsing_wrapper(["measanglerutone"])],
-          asciimath: [["&#x29a8;"], parsing_wrapper(["measanglerutone"])],
+          unicodemath: [["&#x29a8;"], parsing_wrapper(["measanglerutone"], lang: :unicode)],
+          asciimath: [["&#x29a8;"], parsing_wrapper(["measanglerutone"], lang: :asciimath)],
           mathml: ["&#x29a8;"],
           latex: [["measanglerutone", "&#x29a8;"]],
           omml: ["&#x29a8;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("measanglerutone")
+          parsing_wrapper("measanglerutone", lang: :asciimath)
         end
 
         def to_unicodemath

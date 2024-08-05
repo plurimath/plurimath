@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Hatapprox do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Hatapprox" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{hatapprox}")
+        expect(klass.to_asciimath).to eq("\"P{hatapprox}\"")
       end
 
       it "matches LaTeX string" do

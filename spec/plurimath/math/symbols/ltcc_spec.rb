@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Ltcc do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Ltcc" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{ltcc}")
+        expect(klass.to_asciimath).to eq("\"P{ltcc}\"")
       end
 
       it "matches LaTeX string" do

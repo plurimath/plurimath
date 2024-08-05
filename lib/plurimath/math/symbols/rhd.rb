@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Rhd < Symbol
         INPUT = {
-          unicodemath: [["&#x25b7;"], parsing_wrapper(["triangleright", "rres", "rhd"])],
-          asciimath: [["&#x25b7;"], parsing_wrapper(["triangleright", "rres", "rhd"])],
+          unicodemath: [["&#x25b7;"], parsing_wrapper(["triangleright", "rres", "rhd"], lang: :unicode)],
+          asciimath: [["&#x25b7;"], parsing_wrapper(["triangleright", "rres", "rhd"], lang: :asciimath)],
           mathml: ["&#x25b7;"],
           latex: [["triangleright", "rres", "rhd", "&#x25b7;"]],
           omml: ["&#x25b7;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("rhd")
+          parsing_wrapper("rhd", lang: :asciimath)
         end
 
         def to_unicodemath

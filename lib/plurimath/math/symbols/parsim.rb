@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Parsim < Symbol
         INPUT = {
-          unicodemath: [["&#x2af3;"], parsing_wrapper(["parsim"])],
-          asciimath: [["&#x2af3;"], parsing_wrapper(["parsim"])],
+          unicodemath: [["&#x2af3;"], parsing_wrapper(["parsim"], lang: :unicode)],
+          asciimath: [["&#x2af3;"], parsing_wrapper(["parsim"], lang: :asciimath)],
           mathml: ["&#x2af3;"],
           latex: [["parsim", "&#x2af3;"]],
           omml: ["&#x2af3;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("parsim")
+          parsing_wrapper("parsim", lang: :asciimath)
         end
 
         def to_unicodemath

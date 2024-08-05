@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Pencil < Symbol
         INPUT = {
-          unicodemath: [["&#x270e;"], parsing_wrapper(["pencil"])],
-          asciimath: [["&#x270e;"], parsing_wrapper(["pencil"])],
+          unicodemath: [["&#x270e;"], parsing_wrapper(["pencil"], lang: :unicode)],
+          asciimath: [["&#x270e;"], parsing_wrapper(["pencil"], lang: :asciimath)],
           mathml: ["&#x270e;"],
           latex: [["pencil", "&#x270e;"]],
           omml: ["&#x270e;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("pencil")
+          parsing_wrapper("pencil", lang: :asciimath)
         end
 
         def to_unicodemath

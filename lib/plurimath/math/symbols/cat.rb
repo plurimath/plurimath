@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Cat < Symbol
         INPUT = {
-          unicodemath: [["&#x2040;"], parsing_wrapper(["tieconcat", "cat"])],
-          asciimath: [["&#x2040;"], parsing_wrapper(["tieconcat", "cat"])],
+          unicodemath: [["&#x2040;"], parsing_wrapper(["tieconcat", "cat"], lang: :unicode)],
+          asciimath: [["&#x2040;"], parsing_wrapper(["tieconcat", "cat"], lang: :asciimath)],
           mathml: ["&#x2040;"],
           latex: [["tieconcat", "cat", "&#x2040;"]],
           omml: ["&#x2040;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("cat")
+          parsing_wrapper("cat", lang: :asciimath)
         end
 
         def to_unicodemath

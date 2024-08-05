@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Tinj do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Tinj" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{tinj}")
+        expect(klass.to_asciimath).to eq("\"P{tinj}\"")
       end
 
       it "matches LaTeX string" do

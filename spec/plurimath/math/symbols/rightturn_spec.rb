@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Rightturn do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Rightturn" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{rightturn}")
+        expect(klass.to_asciimath).to eq("\"P{rightturn}\"")
       end
 
       it "matches LaTeX string" do

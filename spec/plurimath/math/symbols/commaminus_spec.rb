@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Commaminus do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Commaminus" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{commaminus}")
+        expect(klass.to_asciimath).to eq("\"P{commaminus}\"")
       end
 
       it "matches LaTeX string" do

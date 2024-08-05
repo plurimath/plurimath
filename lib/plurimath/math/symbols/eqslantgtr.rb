@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Eqslantgtr < Symbol
         INPUT = {
-          unicodemath: [["&#x2a96;"], parsing_wrapper(["eqslantgtr"])],
-          asciimath: [["&#x2a96;"], parsing_wrapper(["eqslantgtr"])],
+          unicodemath: [["&#x2a96;"], parsing_wrapper(["eqslantgtr"], lang: :unicode)],
+          asciimath: [["&#x2a96;"], parsing_wrapper(["eqslantgtr"], lang: :asciimath)],
           mathml: ["&#x2a96;"],
           latex: [["eqslantgtr", "&#x2a96;"]],
           omml: ["&#x2a96;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("eqslantgtr")
+          parsing_wrapper("eqslantgtr", lang: :asciimath)
         end
 
         def to_unicodemath

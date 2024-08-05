@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Upvarsigma do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Upvarsigma" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{upvarsigma}")
+        expect(klass.to_asciimath).to eq("\"P{upvarsigma}\"")
       end
 
       it "matches LaTeX string" do

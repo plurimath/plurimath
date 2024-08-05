@@ -4,7 +4,7 @@ module Plurimath
       class Between < Symbol
         INPUT = {
           unicodemath: [["between", "&#x226c;"]],
-          asciimath: [["&#x226c;"], parsing_wrapper(["between"])],
+          asciimath: [["&#x226c;"], parsing_wrapper(["between"], lang: :asciimath)],
           mathml: ["&#x226c;"],
           latex: [["between", "&#x226c;"]],
           omml: ["&#x226c;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("between")
+          parsing_wrapper("between", lang: :asciimath)
         end
 
         def to_unicodemath

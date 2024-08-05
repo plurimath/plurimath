@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Wedgeonwedge < Symbol
         INPUT = {
-          unicodemath: [["&#x2a55;"], parsing_wrapper(["wedgeonwedge"])],
-          asciimath: [["&#x2a55;"], parsing_wrapper(["wedgeonwedge"])],
+          unicodemath: [["&#x2a55;"], parsing_wrapper(["wedgeonwedge"], lang: :unicode)],
+          asciimath: [["&#x2a55;"], parsing_wrapper(["wedgeonwedge"], lang: :asciimath)],
           mathml: ["&#x2a55;"],
           latex: [["wedgeonwedge", "&#x2a55;"]],
           omml: ["&#x2a55;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("wedgeonwedge")
+          parsing_wrapper("wedgeonwedge", lang: :asciimath)
         end
 
         def to_unicodemath

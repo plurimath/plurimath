@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Bumpeqq < Symbol
         INPUT = {
-          unicodemath: [["&#x2aae;"], parsing_wrapper(["bumpeqq"])],
-          asciimath: [["&#x2aae;"], parsing_wrapper(["bumpeqq"])],
+          unicodemath: [["&#x2aae;"], parsing_wrapper(["bumpeqq"], lang: :unicode)],
+          asciimath: [["&#x2aae;"], parsing_wrapper(["bumpeqq"], lang: :asciimath)],
           mathml: ["&#x2aae;"],
           latex: [["bumpeqq", "&#x2aae;"]],
           omml: ["&#x2aae;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("bumpeqq")
+          parsing_wrapper("bumpeqq", lang: :asciimath)
         end
 
         def to_unicodemath

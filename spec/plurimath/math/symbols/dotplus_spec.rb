@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Dotplus do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Dotplus" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{dotplus}")
+        expect(klass.to_asciimath).to eq("\"P{dotplus}\"")
       end
 
       it "matches LaTeX string" do

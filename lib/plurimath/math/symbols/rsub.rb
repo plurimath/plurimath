@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Rsub < Symbol
         INPUT = {
-          unicodemath: [["&#x2a65;"], parsing_wrapper(["nrres", "rsub"])],
-          asciimath: [["&#x2a65;"], parsing_wrapper(["nrres", "rsub"])],
+          unicodemath: [["&#x2a65;"], parsing_wrapper(["nrres", "rsub"], lang: :unicode)],
+          asciimath: [["&#x2a65;"], parsing_wrapper(["nrres", "rsub"], lang: :asciimath)],
           mathml: ["&#x2a65;"],
           latex: [["nrres", "rsub", "&#x2a65;"]],
           omml: ["&#x2a65;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("rsub")
+          parsing_wrapper("rsub", lang: :asciimath)
         end
 
         def to_unicodemath

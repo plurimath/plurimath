@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Vbraceextender < Symbol
         INPUT = {
-          unicodemath: [["&#x23aa;"], parsing_wrapper(["vbraceextender"])],
-          asciimath: [["&#x23aa;"], parsing_wrapper(["vbraceextender"])],
+          unicodemath: [["&#x23aa;"], parsing_wrapper(["vbraceextender"], lang: :unicode)],
+          asciimath: [["&#x23aa;"], parsing_wrapper(["vbraceextender"], lang: :asciimath)],
           mathml: ["&#x23aa;"],
           latex: [["vbraceextender", "&#x23aa;"]],
           omml: ["&#x23aa;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("vbraceextender")
+          parsing_wrapper("vbraceextender", lang: :asciimath)
         end
 
         def to_unicodemath

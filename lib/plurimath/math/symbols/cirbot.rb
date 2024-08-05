@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Cirbot < Symbol
         INPUT = {
-          unicodemath: [["&#x27df;"], parsing_wrapper(["cirbot"])],
-          asciimath: [["&#x27df;"], parsing_wrapper(["cirbot"])],
+          unicodemath: [["&#x27df;"], parsing_wrapper(["cirbot"], lang: :unicode)],
+          asciimath: [["&#x27df;"], parsing_wrapper(["cirbot"], lang: :asciimath)],
           mathml: ["&#x27df;"],
           latex: [["cirbot", "&#x27df;"]],
           omml: ["&#x27df;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("cirbot")
+          parsing_wrapper("cirbot", lang: :asciimath)
         end
 
         def to_unicodemath

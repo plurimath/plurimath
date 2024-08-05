@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Smiley < Symbol
         INPUT = {
-          unicodemath: [["&#x263a;"], parsing_wrapper(["smileface", "smiley"])],
-          asciimath: [["&#x263a;"], parsing_wrapper(["smileface", "smiley"])],
+          unicodemath: [["&#x263a;"], parsing_wrapper(["smileface", "smiley"], lang: :unicode)],
+          asciimath: [["&#x263a;"], parsing_wrapper(["smileface", "smiley"], lang: :asciimath)],
           mathml: ["&#x263a;"],
           latex: [["smileface", "smiley", "&#x263a;"]],
           omml: ["&#x263a;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("smiley")
+          parsing_wrapper("smiley", lang: :asciimath)
         end
 
         def to_unicodemath

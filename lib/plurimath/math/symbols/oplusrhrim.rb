@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Oplusrhrim < Symbol
         INPUT = {
-          unicodemath: [["&#x2a2e;"], parsing_wrapper(["oplusrhrim"])],
-          asciimath: [["&#x2a2e;"], parsing_wrapper(["oplusrhrim"])],
+          unicodemath: [["&#x2a2e;"], parsing_wrapper(["oplusrhrim"], lang: :unicode)],
+          asciimath: [["&#x2a2e;"], parsing_wrapper(["oplusrhrim"], lang: :asciimath)],
           mathml: ["&#x2a2e;"],
           latex: [["oplusrhrim", "&#x2a2e;"]],
           omml: ["&#x2a2e;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("oplusrhrim")
+          parsing_wrapper("oplusrhrim", lang: :asciimath)
         end
 
         def to_unicodemath

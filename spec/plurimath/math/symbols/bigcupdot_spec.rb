@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Bigcupdot do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Bigcupdot" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{bigcupdot}")
+        expect(klass.to_asciimath).to eq("\"P{bigcupdot}\"")
       end
 
       it "matches LaTeX string" do

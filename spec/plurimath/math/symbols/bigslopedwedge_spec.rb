@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Bigslopedwedge do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Bigslopedwedge" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{bigslopedwedge}")
+        expect(klass.to_asciimath).to eq("\"P{bigslopedwedge}\"")
       end
 
       it "matches LaTeX string" do

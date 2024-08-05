@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Vec < Symbol
         INPUT = {
-          unicodemath: [["&#x20d7;"], parsing_wrapper(["Vec"])],
-          asciimath: [["&#x20d7;"], parsing_wrapper(["Vec"])],
+          unicodemath: [["&#x20d7;"], parsing_wrapper(["Vec"], lang: :unicode)],
+          asciimath: [["&#x20d7;"], parsing_wrapper(["Vec"], lang: :asciimath)],
           mathml: ["&#x20d7;"],
           latex: [["Vec", "&#x20d7;"]],
           omml: ["&#x20d7;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("Vec")
+          parsing_wrapper("Vec", lang: :asciimath)
         end
 
         def to_unicodemath

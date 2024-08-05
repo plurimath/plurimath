@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Earth do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Earth" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{earth}")
+        expect(klass.to_asciimath).to eq("\"P{earth}\"")
       end
 
       it "matches LaTeX string" do

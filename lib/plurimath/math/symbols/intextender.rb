@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Intextender < Symbol
         INPUT = {
-          unicodemath: [["&#x23ae;"], parsing_wrapper(["intextender"])],
-          asciimath: [["&#x23ae;"], parsing_wrapper(["intextender"])],
+          unicodemath: [["&#x23ae;"], parsing_wrapper(["intextender"], lang: :unicode)],
+          asciimath: [["&#x23ae;"], parsing_wrapper(["intextender"], lang: :asciimath)],
           mathml: ["&#x23ae;"],
           latex: [["intextender", "&#x23ae;"]],
           omml: ["&#x23ae;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("intextender")
+          parsing_wrapper("intextender", lang: :asciimath)
         end
 
         def to_unicodemath

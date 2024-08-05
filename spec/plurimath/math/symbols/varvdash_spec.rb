@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Varvdash do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Varvdash" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{varVdash}")
+        expect(klass.to_asciimath).to eq("\"P{varVdash}\"")
       end
 
       it "matches LaTeX string" do

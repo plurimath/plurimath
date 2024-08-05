@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Ac do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Ac" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{AC}")
+        expect(klass.to_asciimath).to eq("\"P{AC}\"")
       end
 
       it "matches LaTeX string" do

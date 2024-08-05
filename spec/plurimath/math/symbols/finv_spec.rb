@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Finv do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Finv" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{Finv}")
+        expect(klass.to_asciimath).to eq("\"P{Finv}\"")
       end
 
       it "matches LaTeX string" do

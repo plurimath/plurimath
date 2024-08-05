@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Tminus do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Tminus" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{tminus}")
+        expect(klass.to_asciimath).to eq("\"P{tminus}\"")
       end
 
       it "matches LaTeX string" do

@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Cc < Symbol
         INPUT = {
-          unicodemath: [["&#x2102;"], parsing_wrapper(["CC"])],
-          asciimath: [["&#x2102;"], parsing_wrapper(["CC"])],
+          unicodemath: [["&#x2102;"], parsing_wrapper(["CC"], lang: :unicode)],
+          asciimath: [["&#x2102;"], parsing_wrapper(["CC"], lang: :asciimath)],
           mathml: ["&#x2102;"],
           latex: [["CC", "&#x2102;"]],
           omml: ["&#x2102;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("CC")
+          parsing_wrapper("CC", lang: :asciimath)
         end
 
         def to_unicodemath

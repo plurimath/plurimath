@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Biginterleave < Symbol
         INPUT = {
-          unicodemath: [["&#x2afc;"], parsing_wrapper(["biginterleave"])],
-          asciimath: [["&#x2afc;"], parsing_wrapper(["biginterleave"])],
+          unicodemath: [["&#x2afc;"], parsing_wrapper(["biginterleave"], lang: :unicode)],
+          asciimath: [["&#x2afc;"], parsing_wrapper(["biginterleave"], lang: :asciimath)],
           mathml: ["&#x2afc;"],
           latex: [["biginterleave", "&#x2afc;"]],
           omml: ["&#x2afc;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("biginterleave")
+          parsing_wrapper("biginterleave", lang: :asciimath)
         end
 
         def to_unicodemath

@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Dottedsquare < Symbol
         INPUT = {
-          unicodemath: [["&#x2b1a;"], parsing_wrapper(["dottedsquare"])],
-          asciimath: [["&#x2b1a;"], parsing_wrapper(["dottedsquare"])],
+          unicodemath: [["&#x2b1a;"], parsing_wrapper(["dottedsquare"], lang: :unicode)],
+          asciimath: [["&#x2b1a;"], parsing_wrapper(["dottedsquare"], lang: :asciimath)],
           mathml: ["&#x2b1a;"],
           latex: [["dottedsquare", "&#x2b1a;"]],
           omml: ["&#x2b1a;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("dottedsquare")
+          parsing_wrapper("dottedsquare", lang: :asciimath)
         end
 
         def to_unicodemath

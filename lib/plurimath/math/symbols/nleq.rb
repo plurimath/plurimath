@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Nleq < Symbol
         INPUT = {
-          unicodemath: [["nleq", "&#x2270;"], parsing_wrapper(["nleqslant"])],
-          asciimath: [["&#x2270;"], parsing_wrapper(["nleq", "nleqslant"])],
+          unicodemath: [["nleq", "&#x2270;"], parsing_wrapper(["nleqslant"], lang: :unicode)],
+          asciimath: [["&#x2270;"], parsing_wrapper(["nleq", "nleqslant"], lang: :asciimath)],
           mathml: ["&#x2270;"],
           latex: [["nleqslant", "nleq", "&#x2270;"]],
           omml: ["&#x2270;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("nleq")
+          parsing_wrapper("nleq", lang: :asciimath)
         end
 
         def to_unicodemath

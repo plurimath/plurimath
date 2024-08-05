@@ -3,10 +3,10 @@ module Plurimath
     module Symbols
       class Gt < Symbol
         INPUT = {
-          unicodemath: [["&#x3e;", "&gt;"], parsing_wrapper([">", "gt", "greater"])],
-          asciimath: [[">", "gt", "&#x3e;", "&gt;"], parsing_wrapper(["greater"])],
+          unicodemath: [["&#x3e;", "&gt;"], parsing_wrapper([">", "gt", "greater"], lang: :unicode)],
+          asciimath: [[">", "gt", "&#x3e;", "&gt;"], parsing_wrapper(["greater"], lang: :asciimath)],
           mathml: ["&#x3e;", "&gt;"],
-          latex: [["greater", ">", "&#x3e;", "&gt;"], parsing_wrapper(["gt"])],
+          latex: [["greater", ">", "&#x3e;", "&gt;"], parsing_wrapper(["gt"], lang: :latex)],
           omml: ["&#x3e;", "&gt;"],
           html: ["&#x3e;"],
         }.freeze

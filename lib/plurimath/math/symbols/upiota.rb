@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Upiota < Symbol
         INPUT = {
-          unicodemath: [["&#x399;"], parsing_wrapper(["upIota"])],
-          asciimath: [["&#x399;"], parsing_wrapper(["upIota"])],
+          unicodemath: [["&#x399;"], parsing_wrapper(["upIota"], lang: :unicode)],
+          asciimath: [["&#x399;"], parsing_wrapper(["upIota"], lang: :asciimath)],
           mathml: ["&#x399;"],
           latex: [["upIota", "&#x399;"]],
           omml: ["&#x399;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("upIota")
+          parsing_wrapper("upIota", lang: :asciimath)
         end
 
         def to_unicodemath

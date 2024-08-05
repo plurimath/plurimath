@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Isinobar do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Isinobar" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{isinobar}")
+        expect(klass.to_asciimath).to eq("\"P{isinobar}\"")
       end
 
       it "matches LaTeX string" do

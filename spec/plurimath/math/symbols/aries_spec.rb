@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Aries do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Aries" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{Aries}")
+        expect(klass.to_asciimath).to eq("\"P{Aries}\"")
       end
 
       it "matches LaTeX string" do

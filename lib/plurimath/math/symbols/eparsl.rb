@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Eparsl < Symbol
         INPUT = {
-          unicodemath: [["&#x29e3;"], parsing_wrapper(["eparsl"])],
-          asciimath: [["&#x29e3;"], parsing_wrapper(["eparsl"])],
+          unicodemath: [["&#x29e3;"], parsing_wrapper(["eparsl"], lang: :unicode)],
+          asciimath: [["&#x29e3;"], parsing_wrapper(["eparsl"], lang: :asciimath)],
           mathml: ["&#x29e3;"],
           latex: [["eparsl", "&#x29e3;"]],
           omml: ["&#x29e3;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("eparsl")
+          parsing_wrapper("eparsl", lang: :asciimath)
         end
 
         def to_unicodemath

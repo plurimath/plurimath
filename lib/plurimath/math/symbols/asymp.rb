@@ -4,7 +4,7 @@ module Plurimath
       class Asymp < Symbol
         INPUT = {
           unicodemath: [["asymp", "&#x224d;"]],
-          asciimath: [["&#x224d;"], parsing_wrapper(["asymp"])],
+          asciimath: [["&#x224d;"], parsing_wrapper(["asymp"], lang: :asciimath)],
           mathml: ["&#x224d;"],
           latex: [["asymp", "&#x224d;"]],
           omml: ["&#x224d;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("asymp")
+          parsing_wrapper("asymp", lang: :asciimath)
         end
 
         def to_unicodemath

@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Finv < Symbol
         INPUT = {
-          unicodemath: [["&#x2132;"], parsing_wrapper(["Finv"])],
-          asciimath: [["&#x2132;"], parsing_wrapper(["Finv"])],
+          unicodemath: [["&#x2132;"], parsing_wrapper(["Finv"], lang: :unicode)],
+          asciimath: [["&#x2132;"], parsing_wrapper(["Finv"], lang: :asciimath)],
           mathml: ["&#x2132;"],
           latex: [["Finv", "&#x2132;"]],
           omml: ["&#x2132;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("Finv")
+          parsing_wrapper("Finv", lang: :asciimath)
         end
 
         def to_unicodemath

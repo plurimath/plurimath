@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Cuberoot < Symbol
         INPUT = {
-          unicodemath: [["&#x221b;"], parsing_wrapper(["cuberoot"])],
-          asciimath: [["&#x221b;"], parsing_wrapper(["cuberoot"])],
+          unicodemath: [["&#x221b;"], parsing_wrapper(["cuberoot"], lang: :unicode)],
+          asciimath: [["&#x221b;"], parsing_wrapper(["cuberoot"], lang: :asciimath)],
           mathml: ["&#x221b;"],
           latex: [["cuberoot", "&#x221b;"]],
           omml: ["&#x221b;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("cuberoot")
+          parsing_wrapper("cuberoot", lang: :asciimath)
         end
 
         def to_unicodemath

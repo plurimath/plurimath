@@ -3,10 +3,10 @@ module Plurimath
     module Symbols
       class Exi < Symbol
         INPUT = {
-          unicodemath: [["exists", "&#x2203;"], parsing_wrapper(["EE", "exi"])],
-          asciimath: [["exists", "EE", "&#x2203;"], parsing_wrapper(["exi"])],
+          unicodemath: [["exists", "&#x2203;"], parsing_wrapper(["EE", "exi"], lang: :unicode)],
+          asciimath: [["exists", "EE", "&#x2203;"], parsing_wrapper(["exi"], lang: :asciimath)],
           mathml: ["&#x2203;"],
-          latex: [["exists", "exi", "&#x2203;"], parsing_wrapper(["EE"])],
+          latex: [["exists", "exi", "&#x2203;"], parsing_wrapper(["EE"], lang: :latex)],
           omml: ["&#x2203;"],
           html: ["&#x2203;"],
         }.freeze
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("exi")
+          parsing_wrapper("exi", lang: :asciimath)
         end
 
         def to_unicodemath

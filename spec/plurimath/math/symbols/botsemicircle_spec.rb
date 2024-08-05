@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Botsemicircle do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Botsemicircle" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{botsemicircle}")
+        expect(klass.to_asciimath).to eq("\"P{botsemicircle}\"")
       end
 
       it "matches LaTeX string" do

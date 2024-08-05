@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Draftingarrow < Symbol
         INPUT = {
-          unicodemath: [["&#x279b;"], parsing_wrapper(["draftingarrow"])],
-          asciimath: [["&#x279b;"], parsing_wrapper(["draftingarrow"])],
+          unicodemath: [["&#x279b;"], parsing_wrapper(["draftingarrow"], lang: :unicode)],
+          asciimath: [["&#x279b;"], parsing_wrapper(["draftingarrow"], lang: :asciimath)],
           mathml: ["&#x279b;"],
           latex: [["draftingarrow", "&#x279b;"]],
           omml: ["&#x279b;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("draftingarrow")
+          parsing_wrapper("draftingarrow", lang: :asciimath)
         end
 
         def to_unicodemath

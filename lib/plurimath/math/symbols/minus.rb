@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Minus < Symbol
         INPUT = {
-          unicodemath: [["&#x2212;", "-"], parsing_wrapper(["minus"])],
-          asciimath: [["-", "&#x2212;"], parsing_wrapper(["minus"])],
+          unicodemath: [["&#x2212;", "-"], parsing_wrapper(["minus"], lang: :unicode)],
+          asciimath: [["-", "&#x2212;"], parsing_wrapper(["minus"], lang: :asciimath)],
           mathml: ["&#x2212;"],
           latex: [["minus", "-", "&#x2212;"]],
           omml: ["&#x2212;"],

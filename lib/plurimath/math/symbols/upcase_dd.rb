@@ -4,20 +4,20 @@ module Plurimath
       class UpcaseDd < Symbol
         INPUT = {
           unicodemath: ["Dd", "&#x2145;"],
-          asciimath: [["&#x2145;"], parsing_wrapper(["Dd"])],
+          asciimath: [["&#x2145;"], parsing_wrapper(["Dd"], lang: :asciimath)],
           mathml: ["&#x2145;"],
-          latex: ["&#x2145;", parsing_wrapper(["Dd"])],
+          latex: ["&#x2145;", parsing_wrapper(["Dd"], lang: :latex)],
           omml: ["&#x2145;"],
           html: ["&#x2145;"],
         }.freeze
 
         # output methods
         def to_latex
-          parsing_wrapper("Dd")
+          parsing_wrapper("Dd", lang: :latex)
         end
 
         def to_asciimath
-          parsing_wrapper("Dd")
+          parsing_wrapper("Dd", lang: :asciimath)
         end
 
         def to_unicodemath

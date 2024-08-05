@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Forall do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Forall" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{forall}")
+        expect(klass.to_asciimath).to eq("\"P{forall}\"")
       end
 
       it "matches LaTeX string" do

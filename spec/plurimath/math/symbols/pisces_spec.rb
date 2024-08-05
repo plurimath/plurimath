@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Pisces do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Pisces" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{pisces}")
+        expect(klass.to_asciimath).to eq("\"P{pisces}\"")
       end
 
       it "matches LaTeX string" do

@@ -3,10 +3,10 @@ module Plurimath
     module Symbols
       class Neq < Symbol
         INPUT = {
-          unicodemath: [["neq", "ne", "&#x2260;"], parsing_wrapper(["!="])],
-          asciimath: [["!=", "ne", "&#x2260;"], parsing_wrapper(["neq"])],
+          unicodemath: [["neq", "ne", "&#x2260;"], parsing_wrapper(["!="], lang: :unicode)],
+          asciimath: [["!=", "ne", "&#x2260;"], parsing_wrapper(["neq"], lang: :asciimath)],
           mathml: ["&#x2260;"],
-          latex: [["neq", "ne", "&#x2260;"], parsing_wrapper(["!="])],
+          latex: [["neq", "ne", "&#x2260;"], parsing_wrapper(["!="], lang: :latex)],
           omml: ["&#x2260;"],
           html: ["&#x2260;"],
         }.freeze

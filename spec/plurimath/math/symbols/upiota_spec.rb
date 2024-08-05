@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Upiota do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Upiota" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{upIota}")
+        expect(klass.to_asciimath).to eq("\"P{upIota}\"")
       end
 
       it "matches LaTeX string" do

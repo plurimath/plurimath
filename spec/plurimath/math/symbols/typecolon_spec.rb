@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Typecolon do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Typecolon" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{typecolon}")
+        expect(klass.to_asciimath).to eq("\"P{typecolon}\"")
       end
 
       it "matches LaTeX string" do

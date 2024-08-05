@@ -4,7 +4,7 @@ module Plurimath
       class Supset < Symbol
         INPUT = {
           unicodemath: [["Supset", "&#x22d1;"]],
-          asciimath: [["&#x22d1;"], parsing_wrapper(["Supset"])],
+          asciimath: [["&#x22d1;"], parsing_wrapper(["Supset"], lang: :asciimath)],
           mathml: ["&#x22d1;"],
           latex: [["Supset", "&#x22d1;"]],
           omml: ["&#x22d1;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("Supset")
+          parsing_wrapper("Supset", lang: :asciimath)
         end
 
         def to_unicodemath

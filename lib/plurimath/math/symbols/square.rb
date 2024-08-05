@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Square < Symbol
         INPUT = {
-          unicodemath: [["&#x2610;"], parsing_wrapper(["Square"])],
-          asciimath: [["&#x2610;"], parsing_wrapper(["Square"])],
+          unicodemath: [["&#x2610;"], parsing_wrapper(["Square"], lang: :unicode)],
+          asciimath: [["&#x2610;"], parsing_wrapper(["Square"], lang: :asciimath)],
           mathml: ["&#x2610;"],
           latex: [["Square", "&#x2610;"]],
           omml: ["&#x2610;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("Square")
+          parsing_wrapper("Square", lang: :asciimath)
         end
 
         def to_unicodemath

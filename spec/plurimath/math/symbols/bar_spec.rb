@@ -14,11 +14,11 @@ RSpec.describe Plurimath::Math::Symbols::Bar do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Bar" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{bar}")
+        expect(klass.to_asciimath).to eq("\"P{bar}\"")
       end
 
       it "matches LaTeX string" do
-        expect(klass.to_latex).to eq("__{bar}")
+        expect(klass.to_latex).to eq("\\text{P[bar]}")
       end
 
       it "matches UnicodeMath string" do

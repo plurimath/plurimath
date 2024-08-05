@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Upsilon < Symbol
         INPUT = {
-          unicodemath: [["upsilon", "&#x3c5;"], parsing_wrapper(["upupsilon"])],
-          asciimath: [["upsilon", "&#x3c5;"], parsing_wrapper(["upupsilon"])],
+          unicodemath: [["upsilon", "&#x3c5;"], parsing_wrapper(["upupsilon"], lang: :unicode)],
+          asciimath: [["upsilon", "&#x3c5;"], parsing_wrapper(["upupsilon"], lang: :asciimath)],
           mathml: ["&#x3c5;"],
           latex: [["upupsilon", "upsilon", "&#x3c5;"]],
           omml: ["&#x3c5;"],

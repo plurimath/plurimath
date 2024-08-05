@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Lll < Symbol
         INPUT = {
-          unicodemath: [["&#x22d8;"], parsing_wrapper(["lll"])],
-          asciimath: [["&#x22d8;"], parsing_wrapper(["lll"])],
+          unicodemath: [["&#x22d8;"], parsing_wrapper(["lll"], lang: :unicode)],
+          asciimath: [["&#x22d8;"], parsing_wrapper(["lll"], lang: :asciimath)],
           mathml: ["&#x22d8;"],
           latex: [["lll", "&#x22d8;"]],
           omml: ["&#x22d8;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("lll")
+          parsing_wrapper("lll", lang: :asciimath)
         end
 
         def to_unicodemath

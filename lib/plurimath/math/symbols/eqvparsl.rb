@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Eqvparsl < Symbol
         INPUT = {
-          unicodemath: [["&#x29e5;"], parsing_wrapper(["eqvparsl"])],
-          asciimath: [["&#x29e5;"], parsing_wrapper(["eqvparsl"])],
+          unicodemath: [["&#x29e5;"], parsing_wrapper(["eqvparsl"], lang: :unicode)],
+          asciimath: [["&#x29e5;"], parsing_wrapper(["eqvparsl"], lang: :asciimath)],
           mathml: ["&#x29e5;"],
           latex: [["eqvparsl", "&#x29e5;"]],
           omml: ["&#x29e5;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("eqvparsl")
+          parsing_wrapper("eqvparsl", lang: :asciimath)
         end
 
         def to_unicodemath

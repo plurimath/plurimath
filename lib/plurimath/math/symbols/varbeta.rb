@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Varbeta < Symbol
         INPUT = {
-          unicodemath: [["&#x3d0;"], parsing_wrapper(["upvarbeta", "varbeta"])],
-          asciimath: [["&#x3d0;"], parsing_wrapper(["upvarbeta", "varbeta"])],
+          unicodemath: [["&#x3d0;"], parsing_wrapper(["upvarbeta", "varbeta"], lang: :unicode)],
+          asciimath: [["&#x3d0;"], parsing_wrapper(["upvarbeta", "varbeta"], lang: :asciimath)],
           mathml: ["&#x3d0;"],
           latex: [["upvarbeta", "varbeta", "&#x3d0;"]],
           omml: ["&#x3d0;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("varbeta")
+          parsing_wrapper("varbeta", lang: :asciimath)
         end
 
         def to_unicodemath

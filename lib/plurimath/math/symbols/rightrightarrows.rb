@@ -4,7 +4,7 @@ module Plurimath
       class Rightrightarrows < Symbol
         INPUT = {
           unicodemath: [["rightrightarrows", "&#x21c9;"]],
-          asciimath: [["&#x21c9;"], parsing_wrapper(["rightrightarrows"])],
+          asciimath: [["&#x21c9;"], parsing_wrapper(["rightrightarrows"], lang: :asciimath)],
           mathml: ["&#x21c9;"],
           latex: [["rightrightarrows", "&#x21c9;"]],
           omml: ["&#x21c9;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("rightrightarrows")
+          parsing_wrapper("rightrightarrows", lang: :asciimath)
         end
 
         def to_unicodemath

@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Lesges do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Lesges" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{lesges}")
+        expect(klass.to_asciimath).to eq("\"P{lesges}\"")
       end
 
       it "matches LaTeX string" do

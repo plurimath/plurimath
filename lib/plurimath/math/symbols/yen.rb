@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Yen < Symbol
         INPUT = {
-          unicodemath: [["&#xa5;"], parsing_wrapper(["yen"])],
-          asciimath: [["&#xa5;"], parsing_wrapper(["yen"])],
+          unicodemath: [["&#xa5;"], parsing_wrapper(["yen"], lang: :unicode)],
+          asciimath: [["&#xa5;"], parsing_wrapper(["yen"], lang: :asciimath)],
           mathml: ["&#xa5;"],
           latex: [["yen", "&#xa5;"]],
           omml: ["&#xa5;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("yen")
+          parsing_wrapper("yen", lang: :asciimath)
         end
 
         def to_unicodemath

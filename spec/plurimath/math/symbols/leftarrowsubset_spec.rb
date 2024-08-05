@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Leftarrowsubset do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Leftarrowsubset" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{leftarrowsubset}")
+        expect(klass.to_asciimath).to eq("\"P{leftarrowsubset}\"")
       end
 
       it "matches LaTeX string" do

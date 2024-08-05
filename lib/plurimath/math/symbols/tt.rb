@@ -3,10 +3,10 @@ module Plurimath
     module Symbols
       class Tt < Symbol
         INPUT = {
-          unicodemath: [["top", "&#x22a4;"], parsing_wrapper(["TT"])],
+          unicodemath: [["top", "&#x22a4;"], parsing_wrapper(["TT"], lang: :unicode)],
           asciimath: [["top", "TT", "&#x22a4;"]],
           mathml: ["&#x22a4;"],
-          latex: [["top", "&#x22a4;"], parsing_wrapper(["TT"])],
+          latex: [["top", "&#x22a4;"], parsing_wrapper(["TT"], lang: :latex)],
           omml: ["&#x22a4;"],
           html: ["&#x22a4;"],
         }.freeze

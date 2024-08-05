@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Steaming do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Steaming" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{steaming}")
+        expect(klass.to_asciimath).to eq("\"P{steaming}\"")
       end
 
       it "matches LaTeX string" do

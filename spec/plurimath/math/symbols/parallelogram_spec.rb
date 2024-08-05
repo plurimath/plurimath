@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Parallelogram do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Parallelogram" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{parallelogram}")
+        expect(klass.to_asciimath).to eq("\"P{parallelogram}\"")
       end
 
       it "matches LaTeX string" do

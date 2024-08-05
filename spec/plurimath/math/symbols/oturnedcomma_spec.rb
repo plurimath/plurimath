@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Oturnedcomma do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Oturnedcomma" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{oturnedcomma}")
+        expect(klass.to_asciimath).to eq("\"P{oturnedcomma}\"")
       end
 
       it "matches LaTeX string" do

@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Fallingdotseq do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Fallingdotseq" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{fallingdotseq}")
+        expect(klass.to_asciimath).to eq("\"P{fallingdotseq}\"")
       end
 
       it "matches LaTeX string" do

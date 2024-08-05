@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Emptysetobar < Symbol
         INPUT = {
-          unicodemath: [["&#x29b1;"], parsing_wrapper(["emptysetobar"])],
-          asciimath: [["&#x29b1;"], parsing_wrapper(["emptysetobar"])],
+          unicodemath: [["&#x29b1;"], parsing_wrapper(["emptysetobar"], lang: :unicode)],
+          asciimath: [["&#x29b1;"], parsing_wrapper(["emptysetobar"], lang: :asciimath)],
           mathml: ["&#x29b1;"],
           latex: [["emptysetobar", "&#x29b1;"]],
           omml: ["&#x29b1;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("emptysetobar")
+          parsing_wrapper("emptysetobar", lang: :asciimath)
         end
 
         def to_unicodemath

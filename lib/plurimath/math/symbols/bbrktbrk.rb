@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Bbrktbrk < Symbol
         INPUT = {
-          unicodemath: [["&#x23b6;"], parsing_wrapper(["bbrktbrk"])],
-          asciimath: [["&#x23b6;"], parsing_wrapper(["bbrktbrk"])],
+          unicodemath: [["&#x23b6;"], parsing_wrapper(["bbrktbrk"], lang: :unicode)],
+          asciimath: [["&#x23b6;"], parsing_wrapper(["bbrktbrk"], lang: :asciimath)],
           mathml: ["&#x23b6;"],
           latex: [["bbrktbrk", "&#x23b6;"]],
           omml: ["&#x23b6;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("bbrktbrk")
+          parsing_wrapper("bbrktbrk", lang: :asciimath)
         end
 
         def to_unicodemath

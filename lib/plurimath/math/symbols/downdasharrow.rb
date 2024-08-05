@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Downdasharrow < Symbol
         INPUT = {
-          unicodemath: [["&#x21e3;"], parsing_wrapper(["downdasharrow"])],
-          asciimath: [["&#x21e3;"], parsing_wrapper(["downdasharrow"])],
+          unicodemath: [["&#x21e3;"], parsing_wrapper(["downdasharrow"], lang: :unicode)],
+          asciimath: [["&#x21e3;"], parsing_wrapper(["downdasharrow"], lang: :asciimath)],
           mathml: ["&#x21e3;"],
           latex: [["downdasharrow", "&#x21e3;"]],
           omml: ["&#x21e3;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("downdasharrow")
+          parsing_wrapper("downdasharrow", lang: :asciimath)
         end
 
         def to_unicodemath

@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Blocklowhalf do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Blocklowhalf" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{blocklowhalf}")
+        expect(klass.to_asciimath).to eq("\"P{blocklowhalf}\"")
       end
 
       it "matches LaTeX string" do

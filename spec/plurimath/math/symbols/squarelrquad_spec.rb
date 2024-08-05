@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Squarelrquad do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Squarelrquad" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{squarelrquad}")
+        expect(klass.to_asciimath).to eq("\"P{squarelrquad}\"")
       end
 
       it "matches LaTeX string" do

@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Circledtwodots < Symbol
         INPUT = {
-          unicodemath: [["&#x2687;"], parsing_wrapper(["circledtwodots"])],
-          asciimath: [["&#x2687;"], parsing_wrapper(["circledtwodots"])],
+          unicodemath: [["&#x2687;"], parsing_wrapper(["circledtwodots"], lang: :unicode)],
+          asciimath: [["&#x2687;"], parsing_wrapper(["circledtwodots"], lang: :asciimath)],
           mathml: ["&#x2687;"],
           latex: [["circledtwodots", "&#x2687;"]],
           omml: ["&#x2687;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("circledtwodots")
+          parsing_wrapper("circledtwodots", lang: :asciimath)
         end
 
         def to_unicodemath

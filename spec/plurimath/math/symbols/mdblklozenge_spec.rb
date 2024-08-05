@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Mdblklozenge do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Mdblklozenge" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{mdblklozenge}")
+        expect(klass.to_asciimath).to eq("\"P{mdblklozenge}\"")
       end
 
       it "matches LaTeX string" do

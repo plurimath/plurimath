@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Oslash do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Oslash" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{oslash}")
+        expect(klass.to_asciimath).to eq("\"P{oslash}\"")
       end
 
       it "matches LaTeX string" do

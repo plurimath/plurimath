@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Curlyeqprec do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Curlyeqprec" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{curlyeqprec}")
+        expect(klass.to_asciimath).to eq("\"P{curlyeqprec}\"")
       end
 
       it "matches LaTeX string" do

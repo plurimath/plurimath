@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Squarehfill < Symbol
         INPUT = {
-          unicodemath: [["&#x25a4;"], parsing_wrapper(["squarehfill"])],
-          asciimath: [["&#x25a4;"], parsing_wrapper(["squarehfill"])],
+          unicodemath: [["&#x25a4;"], parsing_wrapper(["squarehfill"], lang: :unicode)],
+          asciimath: [["&#x25a4;"], parsing_wrapper(["squarehfill"], lang: :asciimath)],
           mathml: ["&#x25a4;"],
           latex: [["squarehfill", "&#x25a4;"]],
           omml: ["&#x25a4;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("squarehfill")
+          parsing_wrapper("squarehfill", lang: :asciimath)
         end
 
         def to_unicodemath

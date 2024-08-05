@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Qquad < Symbol
         INPUT = {
-          unicodemath: [["&#xa0;&#xa0;&#xa0;&#xa0;"], parsing_wrapper(["qquad"])],
-          asciimath: [["&#xa0;&#xa0;&#xa0;&#xa0;"], parsing_wrapper(["qquad"])],
+          unicodemath: [["&#xa0;&#xa0;&#xa0;&#xa0;"], parsing_wrapper(["qquad"], lang: :unicode)],
+          asciimath: [["&#xa0;&#xa0;&#xa0;&#xa0;"], parsing_wrapper(["qquad"], lang: :asciimath)],
           mathml: ["&#xa0;&#xa0;&#xa0;&#xa0;"],
           latex: [["qquad", "&#xa0;&#xa0;&#xa0;&#xa0;"]],
           omml: ["&#xa0;&#xa0;&#xa0;&#xa0;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("qquad")
+          parsing_wrapper("qquad", lang: :asciimath)
         end
 
         def to_unicodemath

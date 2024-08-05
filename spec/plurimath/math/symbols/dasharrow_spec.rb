@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Dasharrow do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Dasharrow" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{dasharrow}")
+        expect(klass.to_asciimath).to eq("\"P{dasharrow}\"")
       end
 
       it "matches LaTeX string" do

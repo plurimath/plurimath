@@ -4,7 +4,7 @@ module Plurimath
       class Intercal < Symbol
         INPUT = {
           unicodemath: [["intercal", "&#x22ba;"]],
-          asciimath: [["&#x22ba;"], parsing_wrapper(["intercal"])],
+          asciimath: [["&#x22ba;"], parsing_wrapper(["intercal"], lang: :asciimath)],
           mathml: ["&#x22ba;"],
           latex: [["intercal", "&#x22ba;"]],
           omml: ["&#x22ba;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("intercal")
+          parsing_wrapper("intercal", lang: :asciimath)
         end
 
         def to_unicodemath

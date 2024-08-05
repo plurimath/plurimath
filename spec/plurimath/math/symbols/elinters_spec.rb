@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Elinters do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Elinters" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{elinters}")
+        expect(klass.to_asciimath).to eq("\"P{elinters}\"")
       end
 
       it "matches LaTeX string" do

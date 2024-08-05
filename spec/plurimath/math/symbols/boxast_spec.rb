@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Boxast do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Boxast" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{boxast}")
+        expect(klass.to_asciimath).to eq("\"P{boxast}\"")
       end
 
       it "matches LaTeX string" do

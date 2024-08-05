@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Sqsubset do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Sqsubset" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{sqsubset}")
+        expect(klass.to_asciimath).to eq("\"P{sqsubset}\"")
       end
 
       it "matches LaTeX string" do

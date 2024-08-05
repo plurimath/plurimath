@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Fdiagovrdiag < Symbol
         INPUT = {
-          unicodemath: [["&#x292c;"], parsing_wrapper(["fdiagovrdiag"])],
-          asciimath: [["&#x292c;"], parsing_wrapper(["fdiagovrdiag"])],
+          unicodemath: [["&#x292c;"], parsing_wrapper(["fdiagovrdiag"], lang: :unicode)],
+          asciimath: [["&#x292c;"], parsing_wrapper(["fdiagovrdiag"], lang: :asciimath)],
           mathml: ["&#x292c;"],
           latex: [["fdiagovrdiag", "&#x292c;"]],
           omml: ["&#x292c;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("fdiagovrdiag")
+          parsing_wrapper("fdiagovrdiag", lang: :asciimath)
         end
 
         def to_unicodemath

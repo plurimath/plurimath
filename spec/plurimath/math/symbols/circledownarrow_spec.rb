@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Circledownarrow do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Circledownarrow" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{circledownarrow}")
+        expect(klass.to_asciimath).to eq("\"P{circledownarrow}\"")
       end
 
       it "matches LaTeX string" do

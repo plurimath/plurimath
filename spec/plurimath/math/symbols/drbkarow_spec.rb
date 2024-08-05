@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Drbkarow do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Drbkarow" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{drbkarow}")
+        expect(klass.to_asciimath).to eq("\"P{drbkarow}\"")
       end
 
       it "matches LaTeX string" do

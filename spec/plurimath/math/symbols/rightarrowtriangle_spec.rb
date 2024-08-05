@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Rightarrowtriangle do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Rightarrowtriangle" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{rightarrowtriangle}")
+        expect(klass.to_asciimath).to eq("\"P{rightarrowtriangle}\"")
       end
 
       it "matches LaTeX string" do

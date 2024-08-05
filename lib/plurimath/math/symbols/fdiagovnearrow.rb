@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Fdiagovnearrow < Symbol
         INPUT = {
-          unicodemath: [["&#x292f;"], parsing_wrapper(["fdiagovnearrow"])],
-          asciimath: [["&#x292f;"], parsing_wrapper(["fdiagovnearrow"])],
+          unicodemath: [["&#x292f;"], parsing_wrapper(["fdiagovnearrow"], lang: :unicode)],
+          asciimath: [["&#x292f;"], parsing_wrapper(["fdiagovnearrow"], lang: :asciimath)],
           mathml: ["&#x292f;"],
           latex: [["fdiagovnearrow", "&#x292f;"]],
           omml: ["&#x292f;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("fdiagovnearrow")
+          parsing_wrapper("fdiagovnearrow", lang: :asciimath)
         end
 
         def to_unicodemath

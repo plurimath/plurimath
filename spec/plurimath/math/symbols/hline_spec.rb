@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Hline do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Hline" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{hline}")
+        expect(klass.to_asciimath).to eq("\"P{hline}\"")
       end
 
       it "matches LaTeX string" do

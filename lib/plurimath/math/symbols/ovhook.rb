@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Ovhook < Symbol
         INPUT = {
-          unicodemath: [["&#x309;"], parsing_wrapper(["ovhook"])],
-          asciimath: [["&#x309;"], parsing_wrapper(["ovhook"])],
+          unicodemath: [["&#x309;"], parsing_wrapper(["ovhook"], lang: :unicode)],
+          asciimath: [["&#x309;"], parsing_wrapper(["ovhook"], lang: :asciimath)],
           mathml: ["&#x309;"],
           latex: [["ovhook", "&#x309;"]],
           omml: ["&#x309;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("ovhook")
+          parsing_wrapper("ovhook", lang: :asciimath)
         end
 
         def to_unicodemath

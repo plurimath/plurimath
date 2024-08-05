@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Blacklozenge do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Blacklozenge" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{blacklozenge}")
+        expect(klass.to_asciimath).to eq("\"P{blacklozenge}\"")
       end
 
       it "matches LaTeX string" do

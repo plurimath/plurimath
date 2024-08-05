@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Bullet do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Bullet" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{bullet}")
+        expect(klass.to_asciimath).to eq("\"P{bullet}\"")
       end
 
       it "matches LaTeX string" do

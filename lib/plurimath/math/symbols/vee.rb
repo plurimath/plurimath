@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Vee < Symbol
         INPUT = {
-          unicodemath: [["&#x2a54;"], parsing_wrapper(["Vee"])],
-          asciimath: [["&#x2a54;"], parsing_wrapper(["Vee"])],
+          unicodemath: [["&#x2a54;"], parsing_wrapper(["Vee"], lang: :unicode)],
+          asciimath: [["&#x2a54;"], parsing_wrapper(["Vee"], lang: :asciimath)],
           mathml: ["&#x2a54;"],
           latex: [["Vee", "&#x2a54;"]],
           omml: ["&#x2a54;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("Vee")
+          parsing_wrapper("Vee", lang: :asciimath)
         end
 
         def to_unicodemath

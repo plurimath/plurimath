@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Zbar do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Zbar" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{Zbar}")
+        expect(klass.to_asciimath).to eq("\"P{Zbar}\"")
       end
 
       it "matches LaTeX string" do

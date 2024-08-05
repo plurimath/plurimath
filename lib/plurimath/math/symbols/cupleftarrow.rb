@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Cupleftarrow < Symbol
         INPUT = {
-          unicodemath: [["&#x228c;"], parsing_wrapper(["cupleftarrow"])],
-          asciimath: [["&#x228c;"], parsing_wrapper(["cupleftarrow"])],
+          unicodemath: [["&#x228c;"], parsing_wrapper(["cupleftarrow"], lang: :unicode)],
+          asciimath: [["&#x228c;"], parsing_wrapper(["cupleftarrow"], lang: :asciimath)],
           mathml: ["&#x228c;"],
           latex: [["cupleftarrow", "&#x228c;"]],
           omml: ["&#x228c;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("cupleftarrow")
+          parsing_wrapper("cupleftarrow", lang: :asciimath)
         end
 
         def to_unicodemath

@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Lparenless do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Lparenless" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{lparenless}")
+        expect(klass.to_asciimath).to eq("\"P{lparenless}\"")
       end
 
       it "matches LaTeX string" do

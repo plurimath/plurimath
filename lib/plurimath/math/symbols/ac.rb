@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Ac < Symbol
         INPUT = {
-          unicodemath: [["&#x223f;"], parsing_wrapper(["sinewave", "AC"])],
-          asciimath: [["&#x223f;"], parsing_wrapper(["sinewave", "AC"])],
+          unicodemath: [["&#x223f;"], parsing_wrapper(["sinewave", "AC"], lang: :unicode)],
+          asciimath: [["&#x223f;"], parsing_wrapper(["sinewave", "AC"], lang: :asciimath)],
           mathml: ["&#x223f;"],
           latex: [["sinewave", "AC", "&#x223f;"]],
           omml: ["&#x223f;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("AC")
+          parsing_wrapper("AC", lang: :asciimath)
         end
 
         def to_unicodemath

@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Leo < Symbol
         INPUT = {
-          unicodemath: [["&#x264c;"], parsing_wrapper(["leo", "Leo"])],
-          asciimath: [["&#x264c;"], parsing_wrapper(["leo", "Leo"])],
+          unicodemath: [["&#x264c;"], parsing_wrapper(["leo", "Leo"], lang: :unicode)],
+          asciimath: [["&#x264c;"], parsing_wrapper(["leo", "Leo"], lang: :asciimath)],
           mathml: ["&#x264c;"],
           latex: [["leo", "Leo", "&#x264c;"]],
           omml: ["&#x264c;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("Leo")
+          parsing_wrapper("Leo", lang: :asciimath)
         end
 
         def to_unicodemath

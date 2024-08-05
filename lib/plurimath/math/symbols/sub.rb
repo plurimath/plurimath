@@ -3,10 +3,10 @@ module Plurimath
     module Symbols
       class Sub < Symbol
         INPUT = {
-          unicodemath: [["subset", "&#x2282;"], parsing_wrapper(["sub"])],
+          unicodemath: [["subset", "&#x2282;"], parsing_wrapper(["sub"], lang: :unicode)],
           asciimath: [["subset", "sub", "&#x2282;"]],
           mathml: ["&#x2282;"],
-          latex: [["subset", "&#x2282;"], parsing_wrapper(["sub"])],
+          latex: [["subset", "&#x2282;"], parsing_wrapper(["sub"], lang: :latex)],
           omml: ["&#x2282;"],
           html: ["&#x2282;"],
         }.freeze

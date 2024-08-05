@@ -3,10 +3,10 @@ module Plurimath
     module Symbols
       class Angsph < Symbol
         INPUT = {
-          unicodemath: [["angsph", "&#x2222;"], parsing_wrapper(["sphericalangle"])],
-          asciimath: [["&#x2222;"], parsing_wrapper(["angsph", "sphericalangle"])],
+          unicodemath: [["angsph", "&#x2222;"], parsing_wrapper(["sphericalangle"], lang: :unicode)],
+          asciimath: [["&#x2222;"], parsing_wrapper(["angsph", "sphericalangle"], lang: :asciimath)],
           mathml: ["&#x2222;"],
-          latex: [["sphericalangle", "&#x2222;"], parsing_wrapper(["angsph"])],
+          latex: [["sphericalangle", "&#x2222;"], parsing_wrapper(["angsph"], lang: :latex)],
           omml: ["&#x2222;"],
           html: ["&#x2222;"],
         }.freeze
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("angsph")
+          parsing_wrapper("angsph", lang: :asciimath)
         end
 
         def to_unicodemath

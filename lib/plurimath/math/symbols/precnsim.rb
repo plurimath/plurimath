@@ -4,7 +4,7 @@ module Plurimath
       class Precnsim < Symbol
         INPUT = {
           unicodemath: [["precnsim", "&#x22e8;"]],
-          asciimath: [["&#x22e8;"], parsing_wrapper(["precnsim"])],
+          asciimath: [["&#x22e8;"], parsing_wrapper(["precnsim"], lang: :asciimath)],
           mathml: ["&#x22e8;"],
           latex: [["precnsim", "&#x22e8;"]],
           omml: ["&#x22e8;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("precnsim")
+          parsing_wrapper("precnsim", lang: :asciimath)
         end
 
         def to_unicodemath

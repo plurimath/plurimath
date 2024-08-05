@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Triangleserifs < Symbol
         INPUT = {
-          unicodemath: [["&#x29cd;"], parsing_wrapper(["triangleserifs"])],
-          asciimath: [["&#x29cd;"], parsing_wrapper(["triangleserifs"])],
+          unicodemath: [["&#x29cd;"], parsing_wrapper(["triangleserifs"], lang: :unicode)],
+          asciimath: [["&#x29cd;"], parsing_wrapper(["triangleserifs"], lang: :asciimath)],
           mathml: ["&#x29cd;"],
           latex: [["triangleserifs", "&#x29cd;"]],
           omml: ["&#x29cd;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("triangleserifs")
+          parsing_wrapper("triangleserifs", lang: :asciimath)
         end
 
         def to_unicodemath

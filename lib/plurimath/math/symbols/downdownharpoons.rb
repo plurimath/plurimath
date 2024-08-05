@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Downdownharpoons < Symbol
         INPUT = {
-          unicodemath: [["&#x2965;"], parsing_wrapper(["downharpoonsleftright", "downdownharpoons"])],
-          asciimath: [["&#x2965;"], parsing_wrapper(["downharpoonsleftright", "downdownharpoons"])],
+          unicodemath: [["&#x2965;"], parsing_wrapper(["downharpoonsleftright", "downdownharpoons"], lang: :unicode)],
+          asciimath: [["&#x2965;"], parsing_wrapper(["downharpoonsleftright", "downdownharpoons"], lang: :asciimath)],
           mathml: ["&#x2965;"],
           latex: [["downharpoonsleftright", "downdownharpoons", "&#x2965;"]],
           omml: ["&#x2965;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("downdownharpoons")
+          parsing_wrapper("downdownharpoons", lang: :asciimath)
         end
 
         def to_unicodemath

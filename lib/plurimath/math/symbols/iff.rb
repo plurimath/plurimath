@@ -3,10 +3,10 @@ module Plurimath
     module Symbols
       class Iff < Symbol
         INPUT = {
-          unicodemath: [["iff", "&#x27ff;"], parsing_wrapper(["longrightsquigarrow"])],
-          asciimath: [["&#x27ff;"], parsing_wrapper(["iff", "longrightsquigarrow"])],
+          unicodemath: [["iff", "&#x27ff;"], parsing_wrapper(["longrightsquigarrow"], lang: :unicode)],
+          asciimath: [["&#x27ff;"], parsing_wrapper(["iff", "longrightsquigarrow"], lang: :asciimath)],
           mathml: ["&#x27ff;"],
-          latex: [["longrightsquigarrow", "&#x27ff;"], parsing_wrapper(["iff"])],
+          latex: [["longrightsquigarrow", "&#x27ff;"], parsing_wrapper(["iff"], lang: :latex)],
           omml: ["&#x27ff;"],
           html: ["&#x27ff;"],
         }.freeze

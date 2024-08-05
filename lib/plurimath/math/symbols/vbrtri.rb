@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Vbrtri < Symbol
         INPUT = {
-          unicodemath: [["&#x29d0;"], parsing_wrapper(["RightTriangleBar", "vbrtri"])],
-          asciimath: [["&#x29d0;"], parsing_wrapper(["RightTriangleBar", "vbrtri"])],
+          unicodemath: [["&#x29d0;"], parsing_wrapper(["RightTriangleBar", "vbrtri"], lang: :unicode)],
+          asciimath: [["&#x29d0;"], parsing_wrapper(["RightTriangleBar", "vbrtri"], lang: :asciimath)],
           mathml: ["&#x29d0;"],
           latex: [["RightTriangleBar", "vbrtri", "&#x29d0;"]],
           omml: ["&#x29d0;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("vbrtri")
+          parsing_wrapper("vbrtri", lang: :asciimath)
         end
 
         def to_unicodemath

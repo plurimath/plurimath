@@ -3,10 +3,10 @@ module Plurimath
     module Symbols
       class Medsp < Symbol
         INPUT = {
-          unicodemath: [["medsp", "&#x205f;"], parsing_wrapper(["medspace"])],
-          asciimath: [["&#x205f;"], parsing_wrapper(["medsp", "medspace"])],
+          unicodemath: [["medsp", "&#x205f;"], parsing_wrapper(["medspace"], lang: :unicode)],
+          asciimath: [["&#x205f;"], parsing_wrapper(["medsp", "medspace"], lang: :asciimath)],
           mathml: ["&#x205f;"],
-          latex: [["medspace", "&#x205f;"], parsing_wrapper(["medsp"])],
+          latex: [["medspace", "&#x205f;"], parsing_wrapper(["medsp"], lang: :latex)],
           omml: ["&#x205f;"],
           html: ["&#x205f;"],
         }.freeze
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("medsp")
+          parsing_wrapper("medsp", lang: :asciimath)
         end
 
         def to_unicodemath

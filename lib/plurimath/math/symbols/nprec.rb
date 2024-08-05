@@ -4,7 +4,7 @@ module Plurimath
       class Nprec < Symbol
         INPUT = {
           unicodemath: [["nprec", "&#x2280;"]],
-          asciimath: [["&#x2280;"], parsing_wrapper(["nprec"])],
+          asciimath: [["&#x2280;"], parsing_wrapper(["nprec"], lang: :asciimath)],
           mathml: ["&#x2280;"],
           latex: [["nprec", "&#x2280;"]],
           omml: ["&#x2280;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("nprec")
+          parsing_wrapper("nprec", lang: :asciimath)
         end
 
         def to_unicodemath

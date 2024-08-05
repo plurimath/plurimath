@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Gescc do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Gescc" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{gescc}")
+        expect(klass.to_asciimath).to eq("\"P{gescc}\"")
       end
 
       it "matches LaTeX string" do

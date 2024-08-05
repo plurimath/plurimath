@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Lozengeminus < Symbol
         INPUT = {
-          unicodemath: [["&#x27e0;"], parsing_wrapper(["lozengeminus"])],
-          asciimath: [["&#x27e0;"], parsing_wrapper(["lozengeminus"])],
+          unicodemath: [["&#x27e0;"], parsing_wrapper(["lozengeminus"], lang: :unicode)],
+          asciimath: [["&#x27e0;"], parsing_wrapper(["lozengeminus"], lang: :asciimath)],
           mathml: ["&#x27e0;"],
           latex: [["lozengeminus", "&#x27e0;"]],
           omml: ["&#x27e0;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("lozengeminus")
+          parsing_wrapper("lozengeminus", lang: :asciimath)
         end
 
         def to_unicodemath

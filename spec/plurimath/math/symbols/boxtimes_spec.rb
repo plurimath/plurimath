@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Boxtimes do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Boxtimes" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{boxtimes}")
+        expect(klass.to_asciimath).to eq("\"P{boxtimes}\"")
       end
 
       it "matches LaTeX string" do

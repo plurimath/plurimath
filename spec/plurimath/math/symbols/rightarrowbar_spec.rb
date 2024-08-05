@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Rightarrowbar do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Rightarrowbar" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{rightarrowbar}")
+        expect(klass.to_asciimath).to eq("\"P{rightarrowbar}\"")
       end
 
       it "matches LaTeX string" do

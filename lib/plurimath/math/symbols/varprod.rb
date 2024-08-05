@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Varprod < Symbol
         INPUT = {
-          unicodemath: [["&#x2a09;"], parsing_wrapper(["bigtimes", "varprod"])],
-          asciimath: [["&#x2a09;"], parsing_wrapper(["bigtimes", "varprod"])],
+          unicodemath: [["&#x2a09;"], parsing_wrapper(["bigtimes", "varprod"], lang: :unicode)],
+          asciimath: [["&#x2a09;"], parsing_wrapper(["bigtimes", "varprod"], lang: :asciimath)],
           mathml: ["&#x2a09;"],
           latex: [["bigtimes", "varprod", "&#x2a09;"]],
           omml: ["&#x2a09;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("varprod")
+          parsing_wrapper("varprod", lang: :asciimath)
         end
 
         def to_unicodemath

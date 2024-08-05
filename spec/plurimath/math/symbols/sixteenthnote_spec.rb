@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Sixteenthnote do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Sixteenthnote" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{sixteenthnote}")
+        expect(klass.to_asciimath).to eq("\"P{sixteenthnote}\"")
       end
 
       it "matches LaTeX string" do

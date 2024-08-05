@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Koppa do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Koppa" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{koppa}")
+        expect(klass.to_asciimath).to eq("\"P{koppa}\"")
       end
 
       it "matches LaTeX string" do

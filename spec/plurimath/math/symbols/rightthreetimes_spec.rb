@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Rightthreetimes do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Rightthreetimes" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{rightthreetimes}")
+        expect(klass.to_asciimath).to eq("\"P{rightthreetimes}\"")
       end
 
       it "matches LaTeX string" do

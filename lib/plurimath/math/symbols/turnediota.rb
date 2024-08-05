@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Turnediota < Symbol
         INPUT = {
-          unicodemath: [["&#x2129;"], parsing_wrapper(["turnediota"])],
-          asciimath: [["&#x2129;"], parsing_wrapper(["turnediota"])],
+          unicodemath: [["&#x2129;"], parsing_wrapper(["turnediota"], lang: :unicode)],
+          asciimath: [["&#x2129;"], parsing_wrapper(["turnediota"], lang: :asciimath)],
           mathml: ["&#x2129;"],
           latex: [["turnediota", "&#x2129;"]],
           omml: ["&#x2129;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("turnediota")
+          parsing_wrapper("turnediota", lang: :asciimath)
         end
 
         def to_unicodemath

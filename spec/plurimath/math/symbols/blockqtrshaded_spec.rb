@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Blockqtrshaded do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Blockqtrshaded" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{blockqtrshaded}")
+        expect(klass.to_asciimath).to eq("\"P{blockqtrshaded}\"")
       end
 
       it "matches LaTeX string" do

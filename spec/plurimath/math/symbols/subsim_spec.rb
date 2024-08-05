@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Subsim do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Subsim" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{subsim}")
+        expect(klass.to_asciimath).to eq("\"P{subsim}\"")
       end
 
       it "matches LaTeX string" do

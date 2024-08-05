@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Benzenr < Symbol
         INPUT = {
-          unicodemath: [["&#x23e3;"], parsing_wrapper(["benzenr"])],
-          asciimath: [["&#x23e3;"], parsing_wrapper(["benzenr"])],
+          unicodemath: [["&#x23e3;"], parsing_wrapper(["benzenr"], lang: :unicode)],
+          asciimath: [["&#x23e3;"], parsing_wrapper(["benzenr"], lang: :asciimath)],
           mathml: ["&#x23e3;"],
           latex: [["benzenr", "&#x23e3;"]],
           omml: ["&#x23e3;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("benzenr")
+          parsing_wrapper("benzenr", lang: :asciimath)
         end
 
         def to_unicodemath

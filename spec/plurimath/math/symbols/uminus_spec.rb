@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Uminus do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Uminus" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{uminus}")
+        expect(klass.to_asciimath).to eq("\"P{uminus}\"")
       end
 
       it "matches LaTeX string" do

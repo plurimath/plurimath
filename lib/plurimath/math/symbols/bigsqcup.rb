@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Bigsqcup < Symbol
         INPUT = {
-          unicodemath: [["&#x2a06;"], parsing_wrapper(["bigsqcup"])],
-          asciimath: [["&#x2a06;"], parsing_wrapper(["bigsqcup"])],
+          unicodemath: [["&#x2a06;"], parsing_wrapper(["bigsqcup"], lang: :unicode)],
+          asciimath: [["&#x2a06;"], parsing_wrapper(["bigsqcup"], lang: :asciimath)],
           mathml: ["&#x2a06;"],
           latex: [["bigsqcup", "&#x2a06;"]],
           omml: ["&#x2a06;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("bigsqcup")
+          parsing_wrapper("bigsqcup", lang: :asciimath)
         end
 
         def to_unicodemath

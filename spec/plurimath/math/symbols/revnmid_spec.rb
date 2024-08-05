@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Revnmid do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Revnmid" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{revnmid}")
+        expect(klass.to_asciimath).to eq("\"P{revnmid}\"")
       end
 
       it "matches LaTeX string" do

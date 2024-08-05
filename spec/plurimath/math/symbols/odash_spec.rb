@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Odash do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Odash" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{odash}")
+        expect(klass.to_asciimath).to eq("\"P{odash}\"")
       end
 
       it "matches LaTeX string" do

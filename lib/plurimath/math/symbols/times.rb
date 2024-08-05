@@ -3,10 +3,10 @@ module Plurimath
     module Symbols
       class Times < Symbol
         INPUT = {
-          unicodemath: [["times", "&#xd7;"], parsing_wrapper(["xx"])],
+          unicodemath: [["times", "&#xd7;"], parsing_wrapper(["xx"], lang: :unicode)],
           asciimath: [["times", "xx", "&#xd7;"]],
           mathml: ["&#xd7;"],
-          latex: [["times", "&#xd7;"], parsing_wrapper(["xx"])],
+          latex: [["times", "&#xd7;"], parsing_wrapper(["xx"], lang: :latex)],
           omml: ["&#xd7;"],
           html: ["&#xd7;"],
         }.freeze

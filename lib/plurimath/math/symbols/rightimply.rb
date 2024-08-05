@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Rightimply < Symbol
         INPUT = {
-          unicodemath: [["&#x2970;"], parsing_wrapper(["rightimply"])],
-          asciimath: [["&#x2970;"], parsing_wrapper(["rightimply"])],
+          unicodemath: [["&#x2970;"], parsing_wrapper(["rightimply"], lang: :unicode)],
+          asciimath: [["&#x2970;"], parsing_wrapper(["rightimply"], lang: :asciimath)],
           mathml: ["&#x2970;"],
           latex: [["rightimply", "&#x2970;"]],
           omml: ["&#x2970;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("rightimply")
+          parsing_wrapper("rightimply", lang: :asciimath)
         end
 
         def to_unicodemath

@@ -4,20 +4,20 @@ module Plurimath
       class Zwsp < Symbol
         INPUT = {
           unicodemath: [["zwsp", "&#x200b;"]],
-          asciimath: [["&#x200b;"], parsing_wrapper(["zwsp"])],
+          asciimath: [["&#x200b;"], parsing_wrapper(["zwsp"], lang: :asciimath)],
           mathml: ["&#x200b;"],
-          latex: [["&#x200b;"], parsing_wrapper(["zwsp"])],
+          latex: [["&#x200b;"], parsing_wrapper(["zwsp"], lang: :latex)],
           omml: ["&#x200b;"],
           html: ["&#x200b;"],
         }.freeze
 
         # output methods
         def to_latex
-          parsing_wrapper("zwsp")
+          parsing_wrapper("zwsp", lang: :latex)
         end
 
         def to_asciimath
-          parsing_wrapper("zwsp")
+          parsing_wrapper("zwsp", lang: :asciimath)
         end
 
         def to_unicodemath

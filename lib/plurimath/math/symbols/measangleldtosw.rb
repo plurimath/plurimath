@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Measangleldtosw < Symbol
         INPUT = {
-          unicodemath: [["&#x29ab;"], parsing_wrapper(["measangleldtosw"])],
-          asciimath: [["&#x29ab;"], parsing_wrapper(["measangleldtosw"])],
+          unicodemath: [["&#x29ab;"], parsing_wrapper(["measangleldtosw"], lang: :unicode)],
+          asciimath: [["&#x29ab;"], parsing_wrapper(["measangleldtosw"], lang: :asciimath)],
           mathml: ["&#x29ab;"],
           latex: [["measangleldtosw", "&#x29ab;"]],
           omml: ["&#x29ab;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("measangleldtosw")
+          parsing_wrapper("measangleldtosw", lang: :asciimath)
         end
 
         def to_unicodemath

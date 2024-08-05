@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Dicei do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Dicei" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{dicei}")
+        expect(klass.to_asciimath).to eq("\"P{dicei}\"")
       end
 
       it "matches LaTeX string" do

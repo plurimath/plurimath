@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Varspade do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Varspade" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{varspade}")
+        expect(klass.to_asciimath).to eq("\"P{varspade}\"")
       end
 
       it "matches LaTeX string" do

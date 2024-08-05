@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Hourglass < Symbol
         INPUT = {
-          unicodemath: [["&#x29d6;"], parsing_wrapper(["hourglass"])],
-          asciimath: [["&#x29d6;"], parsing_wrapper(["hourglass"])],
+          unicodemath: [["&#x29d6;"], parsing_wrapper(["hourglass"], lang: :unicode)],
+          asciimath: [["&#x29d6;"], parsing_wrapper(["hourglass"], lang: :asciimath)],
           mathml: ["&#x29d6;"],
           latex: [["hourglass", "&#x29d6;"]],
           omml: ["&#x29d6;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("hourglass")
+          parsing_wrapper("hourglass", lang: :asciimath)
         end
 
         def to_unicodemath

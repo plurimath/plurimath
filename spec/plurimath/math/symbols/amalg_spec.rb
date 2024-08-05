@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Amalg do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Amalg" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{amalg}")
+        expect(klass.to_asciimath).to eq("\"P{amalg}\"")
       end
 
       it "matches LaTeX string" do

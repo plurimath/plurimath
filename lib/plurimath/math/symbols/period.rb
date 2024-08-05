@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Period < Symbol
         INPUT = {
-          unicodemath: [["&#x2e;", "."], parsing_wrapper(["period"])],
-          asciimath: [["&#x2e;", "."], parsing_wrapper(["period"])],
+          unicodemath: [["&#x2e;", "."], parsing_wrapper(["period"], lang: :unicode)],
+          asciimath: [["&#x2e;", "."], parsing_wrapper(["period"], lang: :asciimath)],
           mathml: ["&#x2e;", "."],
           latex: [["period", ".", "&#x2e;"]],
           omml: ["&#x2e;", "."],

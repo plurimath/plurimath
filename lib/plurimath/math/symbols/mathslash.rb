@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Mathslash < Symbol
         INPUT = {
-          unicodemath: [["&#x2f;"], parsing_wrapper(["//", "mathslash"])],
-          asciimath: [["//", "&#x2f;"], parsing_wrapper(["mathslash"])],
+          unicodemath: [["&#x2f;"], parsing_wrapper(["//", "mathslash"], lang: :unicode)],
+          asciimath: [["//", "&#x2f;"], parsing_wrapper(["mathslash"], lang: :asciimath)],
           mathml: ["&#x2f;"],
           latex: ["mathslash", "//", "&#x2f;"],
           omml: ["&#x2f;"],

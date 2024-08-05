@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Lightning do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Lightning" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{lightning}")
+        expect(klass.to_asciimath).to eq("\"P{lightning}\"")
       end
 
       it "matches LaTeX string" do

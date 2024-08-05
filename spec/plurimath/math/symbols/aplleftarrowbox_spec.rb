@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Aplleftarrowbox do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Aplleftarrowbox" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{APLleftarrowbox}")
+        expect(klass.to_asciimath).to eq("\"P{APLleftarrowbox}\"")
       end
 
       it "matches LaTeX string" do

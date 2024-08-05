@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Sslash < Symbol
         INPUT = {
-          unicodemath: [["&#x2afd;"], parsing_wrapper(["sslash"])],
-          asciimath: [["&#x2afd;"], parsing_wrapper(["sslash"])],
+          unicodemath: [["&#x2afd;"], parsing_wrapper(["sslash"], lang: :unicode)],
+          asciimath: [["&#x2afd;"], parsing_wrapper(["sslash"], lang: :asciimath)],
           mathml: ["&#x2afd;"],
           latex: [["sslash", "&#x2afd;"]],
           omml: ["&#x2afd;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("sslash")
+          parsing_wrapper("sslash", lang: :asciimath)
         end
 
         def to_unicodemath

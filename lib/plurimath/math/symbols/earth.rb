@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Earth < Symbol
         INPUT = {
-          unicodemath: [["&#x2641;"], parsing_wrapper(["varEarth", "earth"])],
-          asciimath: [["&#x2641;"], parsing_wrapper(["varEarth", "earth"])],
+          unicodemath: [["&#x2641;"], parsing_wrapper(["varEarth", "earth"], lang: :unicode)],
+          asciimath: [["&#x2641;"], parsing_wrapper(["varEarth", "earth"], lang: :asciimath)],
           mathml: ["&#x2641;"],
           latex: [["varEarth", "earth", "&#x2641;"]],
           omml: ["&#x2641;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("earth")
+          parsing_wrapper("earth", lang: :asciimath)
         end
 
         def to_unicodemath

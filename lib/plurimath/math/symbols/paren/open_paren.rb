@@ -4,10 +4,10 @@ module Plurimath
       class Paren
         class OpenParen < Paren
           INPUT = {
-            unicodemath: ["begin", "&#x3016;", parsing_wrapper(["{:"])],
-            asciimath: ["{:", "&#x3016;", parsing_wrapper(["begin"])],
+            unicodemath: ["begin", "&#x3016;", parsing_wrapper(["{:"], lang: :unicode)],
+            asciimath: ["{:", "&#x3016;", parsing_wrapper(["begin"], lang: :asciimath)],
             mathml: ["&#x3016;"],
-            latex: ["&#x3016;", parsing_wrapper(["begin", "{:"])],
+            latex: ["&#x3016;", parsing_wrapper(["begin", "{:"], lang: :latex)],
             omml: ["&#x3016;"],
             html: ["&#x3016;"],
           }.freeze

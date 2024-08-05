@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Squareurblack < Symbol
         INPUT = {
-          unicodemath: [["&#x2b14;"], parsing_wrapper(["squareurblack"])],
-          asciimath: [["&#x2b14;"], parsing_wrapper(["squareurblack"])],
+          unicodemath: [["&#x2b14;"], parsing_wrapper(["squareurblack"], lang: :unicode)],
+          asciimath: [["&#x2b14;"], parsing_wrapper(["squareurblack"], lang: :asciimath)],
           mathml: ["&#x2b14;"],
           latex: [["squareurblack", "&#x2b14;"]],
           omml: ["&#x2b14;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("squareurblack")
+          parsing_wrapper("squareurblack", lang: :asciimath)
         end
 
         def to_unicodemath

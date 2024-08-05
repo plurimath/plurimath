@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Spot do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Spot" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{spot}")
+        expect(klass.to_asciimath).to eq("\"P{spot}\"")
       end
 
       it "matches LaTeX string" do

@@ -3,10 +3,10 @@ module Plurimath
     module Symbols
       class Lneq < Symbol
         INPUT = {
-          unicodemath: [["lneq", "&#x2268;"], parsing_wrapper(["lneqq"])],
-          asciimath: [["&#x2268;"], parsing_wrapper(["lneq", "lneqq"])],
+          unicodemath: [["lneq", "&#x2268;"], parsing_wrapper(["lneqq"], lang: :unicode)],
+          asciimath: [["&#x2268;"], parsing_wrapper(["lneq", "lneqq"], lang: :asciimath)],
           mathml: ["&#x2268;"],
-          latex: [["lneqq", "&#x2268;"], parsing_wrapper(["lneq"])],
+          latex: [["lneqq", "&#x2268;"], parsing_wrapper(["lneq"], lang: :latex)],
           omml: ["&#x2268;"],
           html: ["&#x2268;"],
         }.freeze
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("lneq")
+          parsing_wrapper("lneq", lang: :asciimath)
         end
 
         def to_unicodemath

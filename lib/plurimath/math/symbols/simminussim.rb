@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Simminussim < Symbol
         INPUT = {
-          unicodemath: [["&#x2a6c;"], parsing_wrapper(["simminussim"])],
-          asciimath: [["&#x2a6c;"], parsing_wrapper(["simminussim"])],
+          unicodemath: [["&#x2a6c;"], parsing_wrapper(["simminussim"], lang: :unicode)],
+          asciimath: [["&#x2a6c;"], parsing_wrapper(["simminussim"], lang: :asciimath)],
           mathml: ["&#x2a6c;"],
           latex: [["simminussim", "&#x2a6c;"]],
           omml: ["&#x2a6c;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("simminussim")
+          parsing_wrapper("simminussim", lang: :asciimath)
         end
 
         def to_unicodemath

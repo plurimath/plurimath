@@ -4,10 +4,10 @@ module Plurimath
       class Paren
         class CloseParen < Paren
           INPUT = {
-            unicodemath: ["end", "&#x3017;", parsing_wrapper([":}"])],
-            asciimath: [":}", "&#x3017;", parsing_wrapper(["end"])],
+            unicodemath: ["end", "&#x3017;", parsing_wrapper([":}"], lang: :unicode)],
+            asciimath: [":}", "&#x3017;", parsing_wrapper(["end"], lang: :asciimath)],
             mathml: ["&#x3017;"],
-            latex: ["&#x3017;", parsing_wrapper(["end", ":}"])],
+            latex: ["&#x3017;", parsing_wrapper(["end", ":}"], lang: :latex)],
             omml: ["&#x3017;"],
             html: ["&#x3017;"],
           }.freeze

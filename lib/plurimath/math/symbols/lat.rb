@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Lat < Symbol
         INPUT = {
-          unicodemath: [["&#x2aab;"], parsing_wrapper(["lat"])],
-          asciimath: [["&#x2aab;"], parsing_wrapper(["lat"])],
+          unicodemath: [["&#x2aab;"], parsing_wrapper(["lat"], lang: :unicode)],
+          asciimath: [["&#x2aab;"], parsing_wrapper(["lat"], lang: :asciimath)],
           mathml: ["&#x2aab;"],
           latex: [["lat", "&#x2aab;"]],
           omml: ["&#x2aab;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("lat")
+          parsing_wrapper("lat", lang: :asciimath)
         end
 
         def to_unicodemath

@@ -4,7 +4,7 @@ module Plurimath
       class Backsim < Symbol
         INPUT = {
           unicodemath: [["backsim", "&#x223d;"]],
-          asciimath: [["&#x223d;"], parsing_wrapper(["backsim"])],
+          asciimath: [["&#x223d;"], parsing_wrapper(["backsim"], lang: :asciimath)],
           mathml: ["&#x223d;"],
           latex: [["backsim", "&#x223d;"]],
           omml: ["&#x223d;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("backsim")
+          parsing_wrapper("backsim", lang: :asciimath)
         end
 
         def to_unicodemath

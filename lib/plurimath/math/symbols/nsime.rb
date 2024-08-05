@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Nsime < Symbol
         INPUT = {
-          unicodemath: [["nsimeq", "&#x2244;"], parsing_wrapper(["nsime"])],
-          asciimath: [["&#x2244;"], parsing_wrapper(["nsimeq", "nsime"])],
+          unicodemath: [["nsimeq", "&#x2244;"], parsing_wrapper(["nsime"], lang: :unicode)],
+          asciimath: [["&#x2244;"], parsing_wrapper(["nsimeq", "nsime"], lang: :asciimath)],
           mathml: ["&#x2244;"],
           latex: [["nsimeq", "nsime", "&#x2244;"]],
           omml: ["&#x2244;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("nsime")
+          parsing_wrapper("nsime", lang: :asciimath)
         end
 
         def to_unicodemath

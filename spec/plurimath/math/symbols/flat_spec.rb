@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Flat do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Flat" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{flat}")
+        expect(klass.to_asciimath).to eq("\"P{flat}\"")
       end
 
       it "matches LaTeX string" do

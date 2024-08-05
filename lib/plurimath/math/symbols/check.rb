@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Check < Symbol
         INPUT = {
-          unicodemath: [["&#x30c;"], parsing_wrapper(["check"])],
-          asciimath: [["&#x30c;"], parsing_wrapper(["check"])],
+          unicodemath: [["&#x30c;"], parsing_wrapper(["check"], lang: :unicode)],
+          asciimath: [["&#x30c;"], parsing_wrapper(["check"], lang: :asciimath)],
           mathml: ["&#x30c;"],
           latex: [["check", "&#x30c;"]],
           omml: ["&#x30c;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("check")
+          parsing_wrapper("check", lang: :asciimath)
         end
 
         def to_unicodemath

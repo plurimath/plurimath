@@ -3,10 +3,10 @@ module Plurimath
     module Symbols
       class Sube < Symbol
         INPUT = {
-          unicodemath: [["&#x2286;"], parsing_wrapper(["subseteq", "sube"])],
+          unicodemath: [["&#x2286;"], parsing_wrapper(["subseteq", "sube"], lang: :unicode)],
           asciimath: [["subseteq", "sube", "&#x2286;"]],
           mathml: ["&#x2286;"],
-          latex: [["subseteq", "&#x2286;"], parsing_wrapper(["sube"])],
+          latex: [["subseteq", "&#x2286;"], parsing_wrapper(["sube"], lang: :latex)],
           omml: ["&#x2286;"],
           html: ["&#x2286;"],
         }.freeze

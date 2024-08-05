@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Concavediamondtickright < Symbol
         INPUT = {
-          unicodemath: [["&#x27e3;"], parsing_wrapper(["concavediamondtickright"])],
-          asciimath: [["&#x27e3;"], parsing_wrapper(["concavediamondtickright"])],
+          unicodemath: [["&#x27e3;"], parsing_wrapper(["concavediamondtickright"], lang: :unicode)],
+          asciimath: [["&#x27e3;"], parsing_wrapper(["concavediamondtickright"], lang: :asciimath)],
           mathml: ["&#x27e3;"],
           latex: [["concavediamondtickright", "&#x27e3;"]],
           omml: ["&#x27e3;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("concavediamondtickright")
+          parsing_wrapper("concavediamondtickright", lang: :asciimath)
         end
 
         def to_unicodemath

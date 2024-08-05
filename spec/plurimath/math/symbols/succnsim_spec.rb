@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Succnsim do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Succnsim" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{succnsim}")
+        expect(klass.to_asciimath).to eq("\"P{succnsim}\"")
       end
 
       it "matches LaTeX string" do

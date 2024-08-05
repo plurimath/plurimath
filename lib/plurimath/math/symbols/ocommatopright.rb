@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Ocommatopright < Symbol
         INPUT = {
-          unicodemath: [["&#x315;"], parsing_wrapper(["ocommatopright"])],
-          asciimath: [["&#x315;"], parsing_wrapper(["ocommatopright"])],
+          unicodemath: [["&#x315;"], parsing_wrapper(["ocommatopright"], lang: :unicode)],
+          asciimath: [["&#x315;"], parsing_wrapper(["ocommatopright"], lang: :asciimath)],
           mathml: ["&#x315;"],
           latex: [["ocommatopright", "&#x315;"]],
           omml: ["&#x315;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("ocommatopright")
+          parsing_wrapper("ocommatopright", lang: :asciimath)
         end
 
         def to_unicodemath

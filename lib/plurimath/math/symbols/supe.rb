@@ -3,10 +3,10 @@ module Plurimath
     module Symbols
       class Supe < Symbol
         INPUT = {
-          unicodemath: [["supseteq", "&#x2287;"], parsing_wrapper(["supe"])],
+          unicodemath: [["supseteq", "&#x2287;"], parsing_wrapper(["supe"], lang: :unicode)],
           asciimath: [["supseteq", "supe", "&#x2287;"]],
           mathml: ["&#x2287;"],
-          latex: [["supseteq", "&#x2287;"], parsing_wrapper(["supe"])],
+          latex: [["supseteq", "&#x2287;"], parsing_wrapper(["supe"], lang: :latex)],
           omml: ["&#x2287;"],
           html: ["&#x2287;"],
         }.freeze

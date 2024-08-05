@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Blackinwhitediamond < Symbol
         INPUT = {
-          unicodemath: [["&#x25c8;"], parsing_wrapper(["blackinwhitediamond"])],
-          asciimath: [["&#x25c8;"], parsing_wrapper(["blackinwhitediamond"])],
+          unicodemath: [["&#x25c8;"], parsing_wrapper(["blackinwhitediamond"], lang: :unicode)],
+          asciimath: [["&#x25c8;"], parsing_wrapper(["blackinwhitediamond"], lang: :asciimath)],
           mathml: ["&#x25c8;"],
           latex: [["blackinwhitediamond", "&#x25c8;"]],
           omml: ["&#x25c8;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("blackinwhitediamond")
+          parsing_wrapper("blackinwhitediamond", lang: :asciimath)
         end
 
         def to_unicodemath

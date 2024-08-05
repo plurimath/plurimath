@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Downrightvectorbar < Symbol
         INPUT = {
-          unicodemath: [["&#x2957;"], parsing_wrapper(["rightharpoondownbar", "DownRightVectorBar"])],
-          asciimath: [["&#x2957;"], parsing_wrapper(["rightharpoondownbar", "DownRightVectorBar"])],
+          unicodemath: [["&#x2957;"], parsing_wrapper(["rightharpoondownbar", "DownRightVectorBar"], lang: :unicode)],
+          asciimath: [["&#x2957;"], parsing_wrapper(["rightharpoondownbar", "DownRightVectorBar"], lang: :asciimath)],
           mathml: ["&#x2957;"],
           latex: [["rightharpoondownbar", "DownRightVectorBar", "&#x2957;"]],
           omml: ["&#x2957;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("DownRightVectorBar")
+          parsing_wrapper("DownRightVectorBar", lang: :asciimath)
         end
 
         def to_unicodemath

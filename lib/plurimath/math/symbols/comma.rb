@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Comma < Symbol
         INPUT = {
-          unicodemath: [["&#x2c;", ","], parsing_wrapper(["comma"])],
-          asciimath: [[",", "&#x2c;"], parsing_wrapper(["comma"])],
+          unicodemath: [["&#x2c;", ","], parsing_wrapper(["comma"], lang: :unicode)],
+          asciimath: [[",", "&#x2c;"], parsing_wrapper(["comma"], lang: :asciimath)],
           mathml: ["&#x2c;", ","],
           latex: [["comma", ",", "&#x2c;"]],
           omml: ["&#x2c;", ","],

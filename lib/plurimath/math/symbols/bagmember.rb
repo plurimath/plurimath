@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Bagmember < Symbol
         INPUT = {
-          unicodemath: [["&#x22ff;"], parsing_wrapper(["bagmember"])],
-          asciimath: [["&#x22ff;"], parsing_wrapper(["bagmember"])],
+          unicodemath: [["&#x22ff;"], parsing_wrapper(["bagmember"], lang: :unicode)],
+          asciimath: [["&#x22ff;"], parsing_wrapper(["bagmember"], lang: :asciimath)],
           mathml: ["&#x22ff;"],
           latex: [["bagmember", "&#x22ff;"]],
           omml: ["&#x22ff;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("bagmember")
+          parsing_wrapper("bagmember", lang: :asciimath)
         end
 
         def to_unicodemath

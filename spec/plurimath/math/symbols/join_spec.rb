@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Join do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Join" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{Join}")
+        expect(klass.to_asciimath).to eq("\"P{Join}\"")
       end
 
       it "matches LaTeX string" do

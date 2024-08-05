@@ -4,7 +4,7 @@ module Plurimath
       class Lnsim < Symbol
         INPUT = {
           unicodemath: [["lnsim", "&#x22e6;"]],
-          asciimath: [["&#x22e6;"], parsing_wrapper(["lnsim"])],
+          asciimath: [["&#x22e6;"], parsing_wrapper(["lnsim"], lang: :asciimath)],
           mathml: ["&#x22e6;"],
           latex: [["lnsim", "&#x22e6;"]],
           omml: ["&#x22e6;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("lnsim")
+          parsing_wrapper("lnsim", lang: :asciimath)
         end
 
         def to_unicodemath

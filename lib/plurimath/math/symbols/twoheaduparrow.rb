@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Twoheaduparrow < Symbol
         INPUT = {
-          unicodemath: [["&#x219f;"], parsing_wrapper(["twoheaduparrow"])],
-          asciimath: [["&#x219f;"], parsing_wrapper(["twoheaduparrow"])],
+          unicodemath: [["&#x219f;"], parsing_wrapper(["twoheaduparrow"], lang: :unicode)],
+          asciimath: [["&#x219f;"], parsing_wrapper(["twoheaduparrow"], lang: :asciimath)],
           mathml: ["&#x219f;"],
           latex: [["twoheaduparrow", "&#x219f;"]],
           omml: ["&#x219f;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("twoheaduparrow")
+          parsing_wrapper("twoheaduparrow", lang: :asciimath)
         end
 
         def to_unicodemath

@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Squoval do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Squoval" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{squoval}")
+        expect(klass.to_asciimath).to eq("\"P{squoval}\"")
       end
 
       it "matches LaTeX string" do

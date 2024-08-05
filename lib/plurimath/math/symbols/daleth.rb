@@ -4,7 +4,7 @@ module Plurimath
       class Daleth < Symbol
         INPUT = {
           unicodemath: [["daleth", "&#x2138;"]],
-          asciimath: [["&#x2138;"], parsing_wrapper(["daleth"])],
+          asciimath: [["&#x2138;"], parsing_wrapper(["daleth"], lang: :asciimath)],
           mathml: ["&#x2138;"],
           latex: [["daleth", "&#x2138;"]],
           omml: ["&#x2138;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("daleth")
+          parsing_wrapper("daleth", lang: :asciimath)
         end
 
         def to_unicodemath

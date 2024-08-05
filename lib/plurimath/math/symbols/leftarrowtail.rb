@@ -4,7 +4,7 @@ module Plurimath
       class Leftarrowtail < Symbol
         INPUT = {
           unicodemath: [["leftarrowtail", "&#x21a2;"]],
-          asciimath: [["&#x21a2;"], parsing_wrapper(["leftarrowtail"])],
+          asciimath: [["&#x21a2;"], parsing_wrapper(["leftarrowtail"], lang: :asciimath)],
           mathml: ["&#x21a2;"],
           latex: [["leftarrowtail", "&#x21a2;"]],
           omml: ["&#x21a2;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("leftarrowtail")
+          parsing_wrapper("leftarrowtail", lang: :asciimath)
         end
 
         def to_unicodemath

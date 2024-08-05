@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Vertoverlay do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Vertoverlay" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{vertoverlay}")
+        expect(klass.to_asciimath).to eq("\"P{vertoverlay}\"")
       end
 
       it "matches LaTeX string" do

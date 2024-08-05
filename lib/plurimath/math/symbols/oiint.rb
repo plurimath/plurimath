@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Oiint < Symbol
         INPUT = {
-          unicodemath: [["&#x222f;"], parsing_wrapper(["dbloint", "oiint"])],
-          asciimath: [["&#x222f;"], parsing_wrapper(["dbloint", "oiint"])],
+          unicodemath: [["&#x222f;"], parsing_wrapper(["dbloint", "oiint"], lang: :unicode)],
+          asciimath: [["&#x222f;"], parsing_wrapper(["dbloint", "oiint"], lang: :asciimath)],
           mathml: ["&#x222f;"],
           latex: [["dbloint", "oiint", "&#x222f;"]],
           omml: ["&#x222f;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("oiint")
+          parsing_wrapper("oiint", lang: :asciimath)
         end
 
         def to_unicodemath

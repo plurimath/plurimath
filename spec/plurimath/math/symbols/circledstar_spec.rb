@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Circledstar do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Circledstar" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{circledstar}")
+        expect(klass.to_asciimath).to eq("\"P{circledstar}\"")
       end
 
       it "matches LaTeX string" do

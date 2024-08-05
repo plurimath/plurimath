@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Lparenlend < Symbol
         INPUT = {
-          unicodemath: [["&#x239d;"], parsing_wrapper(["lparenlend"])],
-          asciimath: [["&#x239d;"], parsing_wrapper(["lparenlend"])],
+          unicodemath: [["&#x239d;"], parsing_wrapper(["lparenlend"], lang: :unicode)],
+          asciimath: [["&#x239d;"], parsing_wrapper(["lparenlend"], lang: :asciimath)],
           mathml: ["&#x239d;"],
           latex: [["lparenlend", "&#x239d;"]],
           omml: ["&#x239d;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("lparenlend")
+          parsing_wrapper("lparenlend", lang: :asciimath)
         end
 
         def to_unicodemath

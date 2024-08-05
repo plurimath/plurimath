@@ -3,10 +3,10 @@ module Plurimath
     module Symbols
       class Mapsto < Symbol
         INPUT = {
-          unicodemath: [["mapsto", "&#x21a6;"], parsing_wrapper(["|->"])],
+          unicodemath: [["mapsto", "&#x21a6;"], parsing_wrapper(["|->"], lang: :unicode)],
           asciimath: [["mapsto", "|->", "&#x21a6;"]],
           mathml: ["&#x21a6;"],
-          latex: [["mapsto", "&#x21a6;"], parsing_wrapper(["|->"])],
+          latex: [["mapsto", "&#x21a6;"], parsing_wrapper(["|->"], lang: :latex)],
           omml: ["&#x21a6;"],
           html: ["&#x21a6;"],
         }.freeze

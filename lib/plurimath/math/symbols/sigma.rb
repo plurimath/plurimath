@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Sigma < Symbol
         INPUT = {
-          unicodemath: [["sigma", "&#x3c3;"], parsing_wrapper(["upsigma"])],
-          asciimath: [["sigma", "&#x3c3;"], parsing_wrapper(["upsigma"])],
+          unicodemath: [["sigma", "&#x3c3;"], parsing_wrapper(["upsigma"], lang: :unicode)],
+          asciimath: [["sigma", "&#x3c3;"], parsing_wrapper(["upsigma"], lang: :asciimath)],
           mathml: ["&#x3c3;"],
           latex: [["upsigma", "sigma", "&#x3c3;"]],
           omml: ["&#x3c3;"],

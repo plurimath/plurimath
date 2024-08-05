@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Varbeta do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Varbeta" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{varbeta}")
+        expect(klass.to_asciimath).to eq("\"P{varbeta}\"")
       end
 
       it "matches LaTeX string" do

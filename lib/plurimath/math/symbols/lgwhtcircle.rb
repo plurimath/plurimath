@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Lgwhtcircle < Symbol
         INPUT = {
-          unicodemath: [["&#x25ef;"], parsing_wrapper(["lgwhtcircle"])],
-          asciimath: [["&#x25ef;"], parsing_wrapper(["lgwhtcircle"])],
+          unicodemath: [["&#x25ef;"], parsing_wrapper(["lgwhtcircle"], lang: :unicode)],
+          asciimath: [["&#x25ef;"], parsing_wrapper(["lgwhtcircle"], lang: :asciimath)],
           mathml: ["&#x25ef;"],
           latex: [["lgwhtcircle", "&#x25ef;"]],
           omml: ["&#x25ef;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("lgwhtcircle")
+          parsing_wrapper("lgwhtcircle", lang: :asciimath)
         end
 
         def to_unicodemath

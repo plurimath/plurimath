@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Eqless < Symbol
         INPUT = {
-          unicodemath: [["&#x22dc;"], parsing_wrapper(["eqless"])],
-          asciimath: [["&#x22dc;"], parsing_wrapper(["eqless"])],
+          unicodemath: [["&#x22dc;"], parsing_wrapper(["eqless"], lang: :unicode)],
+          asciimath: [["&#x22dc;"], parsing_wrapper(["eqless"], lang: :asciimath)],
           mathml: ["&#x22dc;"],
           latex: [["eqless", "&#x22dc;"]],
           omml: ["&#x22dc;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("eqless")
+          parsing_wrapper("eqless", lang: :asciimath)
         end
 
         def to_unicodemath

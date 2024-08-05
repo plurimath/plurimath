@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Apprge do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Apprge" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{apprge}")
+        expect(klass.to_asciimath).to eq("\"P{apprge}\"")
       end
 
       it "matches LaTeX string" do

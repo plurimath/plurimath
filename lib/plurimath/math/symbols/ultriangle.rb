@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Ultriangle < Symbol
         INPUT = {
-          unicodemath: [["&#x25f8;"], parsing_wrapper(["ultriangle"])],
-          asciimath: [["&#x25f8;"], parsing_wrapper(["ultriangle"])],
+          unicodemath: [["&#x25f8;"], parsing_wrapper(["ultriangle"], lang: :unicode)],
+          asciimath: [["&#x25f8;"], parsing_wrapper(["ultriangle"], lang: :asciimath)],
           mathml: ["&#x25f8;"],
           latex: [["ultriangle", "&#x25f8;"]],
           omml: ["&#x25f8;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("ultriangle")
+          parsing_wrapper("ultriangle", lang: :asciimath)
         end
 
         def to_unicodemath

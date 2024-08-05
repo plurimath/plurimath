@@ -4,7 +4,7 @@ module Plurimath
       class Supsetneq < Symbol
         INPUT = {
           unicodemath: [["supsetneq", "&#x228b;"]],
-          asciimath: [["&#x228b;"], parsing_wrapper(["supsetneq"])],
+          asciimath: [["&#x228b;"], parsing_wrapper(["supsetneq"], lang: :asciimath)],
           mathml: ["&#x228b;"],
           latex: [["supsetneq", "&#x228b;"]],
           omml: ["&#x228b;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("supsetneq")
+          parsing_wrapper("supsetneq", lang: :asciimath)
         end
 
         def to_unicodemath

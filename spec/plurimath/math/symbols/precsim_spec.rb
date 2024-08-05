@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Precsim do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Precsim" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{precsim}")
+        expect(klass.to_asciimath).to eq("\"P{precsim}\"")
       end
 
       it "matches LaTeX string" do

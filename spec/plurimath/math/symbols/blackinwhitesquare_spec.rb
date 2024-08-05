@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Blackinwhitesquare do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Blackinwhitesquare" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{blackinwhitesquare}")
+        expect(klass.to_asciimath).to eq("\"P{blackinwhitesquare}\"")
       end
 
       it "matches LaTeX string" do

@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Setminus do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Setminus" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{setminus}")
+        expect(klass.to_asciimath).to eq("\"P{setminus}\"")
       end
 
       it "matches LaTeX string" do

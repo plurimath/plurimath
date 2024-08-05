@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Neuter < Symbol
         INPUT = {
-          unicodemath: [["&#x26b2;"], parsing_wrapper(["neuter"])],
-          asciimath: [["&#x26b2;"], parsing_wrapper(["neuter"])],
+          unicodemath: [["&#x26b2;"], parsing_wrapper(["neuter"], lang: :unicode)],
+          asciimath: [["&#x26b2;"], parsing_wrapper(["neuter"], lang: :asciimath)],
           mathml: ["&#x26b2;"],
           latex: [["neuter", "&#x26b2;"]],
           omml: ["&#x26b2;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("neuter")
+          parsing_wrapper("neuter", lang: :asciimath)
         end
 
         def to_unicodemath

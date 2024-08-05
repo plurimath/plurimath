@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Vbraceextender do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Vbraceextender" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{vbraceextender}")
+        expect(klass.to_asciimath).to eq("\"P{vbraceextender}\"")
       end
 
       it "matches LaTeX string" do

@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Ddddot < Symbol
         INPUT = {
-          unicodemath: [["&#x20dc;"], parsing_wrapper(["ddddot"])],
-          asciimath: [["&#x20dc;"], parsing_wrapper(["ddddot"])],
+          unicodemath: [["&#x20dc;"], parsing_wrapper(["ddddot"], lang: :unicode)],
+          asciimath: [["&#x20dc;"], parsing_wrapper(["ddddot"], lang: :asciimath)],
           mathml: ["&#x20dc;"],
           latex: [["ddddot", "&#x20dc;"]],
           omml: ["&#x20dc;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("ddddot")
+          parsing_wrapper("ddddot", lang: :asciimath)
         end
 
         def to_unicodemath

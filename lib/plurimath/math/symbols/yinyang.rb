@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Yinyang < Symbol
         INPUT = {
-          unicodemath: [["&#x262f;"], parsing_wrapper(["yinyang"])],
-          asciimath: [["&#x262f;"], parsing_wrapper(["yinyang"])],
+          unicodemath: [["&#x262f;"], parsing_wrapper(["yinyang"], lang: :unicode)],
+          asciimath: [["&#x262f;"], parsing_wrapper(["yinyang"], lang: :asciimath)],
           mathml: ["&#x262f;"],
           latex: [["yinyang", "&#x262f;"]],
           omml: ["&#x262f;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("yinyang")
+          parsing_wrapper("yinyang", lang: :asciimath)
         end
 
         def to_unicodemath

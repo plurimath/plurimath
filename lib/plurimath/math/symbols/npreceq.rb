@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Npreceq < Symbol
         INPUT = {
-          unicodemath: [["npreccurlyeq", "&#x22e0;"], parsing_wrapper(["npreceq"])],
-          asciimath: [["&#x22e0;"], parsing_wrapper(["npreccurlyeq", "npreceq"])],
+          unicodemath: [["npreccurlyeq", "&#x22e0;"], parsing_wrapper(["npreceq"], lang: :unicode)],
+          asciimath: [["&#x22e0;"], parsing_wrapper(["npreccurlyeq", "npreceq"], lang: :asciimath)],
           mathml: ["&#x22e0;"],
           latex: [["npreccurlyeq", "npreceq", "&#x22e0;"]],
           omml: ["&#x22e0;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("npreceq")
+          parsing_wrapper("npreceq", lang: :asciimath)
         end
 
         def to_unicodemath

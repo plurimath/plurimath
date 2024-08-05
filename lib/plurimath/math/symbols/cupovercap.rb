@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Cupovercap < Symbol
         INPUT = {
-          unicodemath: [["&#x2a46;"], parsing_wrapper(["cupovercap"])],
-          asciimath: [["&#x2a46;"], parsing_wrapper(["cupovercap"])],
+          unicodemath: [["&#x2a46;"], parsing_wrapper(["cupovercap"], lang: :unicode)],
+          asciimath: [["&#x2a46;"], parsing_wrapper(["cupovercap"], lang: :asciimath)],
           mathml: ["&#x2a46;"],
           latex: [["cupovercap", "&#x2a46;"]],
           omml: ["&#x2a46;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("cupovercap")
+          parsing_wrapper("cupovercap", lang: :asciimath)
         end
 
         def to_unicodemath

@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Overbracket do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Overbracket" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{overbracket}")
+        expect(klass.to_asciimath).to eq("\"P{overbracket}\"")
       end
 
       it "matches LaTeX string" do

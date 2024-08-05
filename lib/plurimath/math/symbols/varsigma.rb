@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Varsigma < Symbol
         INPUT = {
-          unicodemath: [["varsigma", "&#x3c2;"], parsing_wrapper(["upvarsigma"])],
-          asciimath: [["&#x3c2;"], parsing_wrapper(["varsigma", "upvarsigma"])],
+          unicodemath: [["varsigma", "&#x3c2;"], parsing_wrapper(["upvarsigma"], lang: :unicode)],
+          asciimath: [["&#x3c2;"], parsing_wrapper(["varsigma", "upvarsigma"], lang: :asciimath)],
           mathml: ["&#x3c2;"],
           latex: [["upvarsigma", "varsigma", "&#x3c2;"]],
           omml: ["&#x3c2;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("varsigma")
+          parsing_wrapper("varsigma", lang: :asciimath)
         end
 
         def to_unicodemath

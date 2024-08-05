@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Simrdots do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Simrdots" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{simrdots}")
+        expect(klass.to_asciimath).to eq("\"P{simrdots}\"")
       end
 
       it "matches LaTeX string" do

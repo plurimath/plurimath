@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Lessapprox do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Lessapprox" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{lessapprox}")
+        expect(klass.to_asciimath).to eq("\"P{lessapprox}\"")
       end
 
       it "matches LaTeX string" do

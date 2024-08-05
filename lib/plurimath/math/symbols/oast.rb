@@ -3,10 +3,10 @@ module Plurimath
     module Symbols
       class Oast < Symbol
         INPUT = {
-          unicodemath: [["oast", "&#x229b;"], parsing_wrapper(["circledast"])],
-          asciimath: [["&#x229b;"], parsing_wrapper(["oast", "circledast"])],
+          unicodemath: [["oast", "&#x229b;"], parsing_wrapper(["circledast"], lang: :unicode)],
+          asciimath: [["&#x229b;"], parsing_wrapper(["oast", "circledast"], lang: :asciimath)],
           mathml: ["&#x229b;"],
-          latex: [["circledast", "&#x229b;"], parsing_wrapper(["oast"])],
+          latex: [["circledast", "&#x229b;"], parsing_wrapper(["oast"], lang: :latex)],
           omml: ["&#x229b;"],
           html: ["&#x229b;"],
         }.freeze
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("oast")
+          parsing_wrapper("oast", lang: :asciimath)
         end
 
         def to_unicodemath

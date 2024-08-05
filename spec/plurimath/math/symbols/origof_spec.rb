@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Origof do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Origof" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{origof}")
+        expect(klass.to_asciimath).to eq("\"P{origof}\"")
       end
 
       it "matches LaTeX string" do

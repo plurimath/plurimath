@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Gemini < Symbol
         INPUT = {
-          unicodemath: [["&#x264a;"], parsing_wrapper(["gemini", "Gemini"])],
-          asciimath: [["&#x264a;"], parsing_wrapper(["gemini", "Gemini"])],
+          unicodemath: [["&#x264a;"], parsing_wrapper(["gemini", "Gemini"], lang: :unicode)],
+          asciimath: [["&#x264a;"], parsing_wrapper(["gemini", "Gemini"], lang: :asciimath)],
           mathml: ["&#x264a;"],
           latex: [["gemini", "Gemini", "&#x264a;"]],
           omml: ["&#x264a;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("Gemini")
+          parsing_wrapper("Gemini", lang: :asciimath)
         end
 
         def to_unicodemath

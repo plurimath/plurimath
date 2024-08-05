@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Cirmid < Symbol
         INPUT = {
-          unicodemath: [["&#x2aef;"], parsing_wrapper(["cirmid"])],
-          asciimath: [["&#x2aef;"], parsing_wrapper(["cirmid"])],
+          unicodemath: [["&#x2aef;"], parsing_wrapper(["cirmid"], lang: :unicode)],
+          asciimath: [["&#x2aef;"], parsing_wrapper(["cirmid"], lang: :asciimath)],
           mathml: ["&#x2aef;"],
           latex: [["cirmid", "&#x2aef;"]],
           omml: ["&#x2aef;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("cirmid")
+          parsing_wrapper("cirmid", lang: :asciimath)
         end
 
         def to_unicodemath

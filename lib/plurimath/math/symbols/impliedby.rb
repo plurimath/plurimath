@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Impliedby < Symbol
         INPUT = {
-          unicodemath: [["Longleftarrow", "&#x27f8;"], parsing_wrapper(["impliedby"])],
-          asciimath: [["&#x27f8;"], parsing_wrapper(["Longleftarrow", "impliedby"])],
+          unicodemath: [["Longleftarrow", "&#x27f8;"], parsing_wrapper(["impliedby"], lang: :unicode)],
+          asciimath: [["&#x27f8;"], parsing_wrapper(["Longleftarrow", "impliedby"], lang: :asciimath)],
           mathml: ["&#x27f8;"],
           latex: [["Longleftarrow", "impliedby", "&#x27f8;"]],
           omml: ["&#x27f8;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("impliedby")
+          parsing_wrapper("impliedby", lang: :asciimath)
         end
 
         def to_unicodemath

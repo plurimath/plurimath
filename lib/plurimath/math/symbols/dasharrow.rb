@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Dasharrow < Symbol
         INPUT = {
-          unicodemath: [["&#x21e2;"], parsing_wrapper(["dashrightarrow", "rightdasharrow", "dasharrow"])],
-          asciimath: [["&#x21e2;"], parsing_wrapper(["dashrightarrow", "rightdasharrow", "dasharrow"])],
+          unicodemath: [["&#x21e2;"], parsing_wrapper(["dashrightarrow", "rightdasharrow", "dasharrow"], lang: :unicode)],
+          asciimath: [["&#x21e2;"], parsing_wrapper(["dashrightarrow", "rightdasharrow", "dasharrow"], lang: :asciimath)],
           mathml: ["&#x21e2;"],
           latex: [["dashrightarrow", "rightdasharrow", "dasharrow", "&#x21e2;"]],
           omml: ["&#x21e2;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("dasharrow")
+          parsing_wrapper("dasharrow", lang: :asciimath)
         end
 
         def to_unicodemath

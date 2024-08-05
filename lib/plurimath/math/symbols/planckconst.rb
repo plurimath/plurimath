@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Planckconst < Symbol
         INPUT = {
-          unicodemath: [["&#x210e;"], parsing_wrapper(["Planckconst"])],
-          asciimath: [["&#x210e;"], parsing_wrapper(["Planckconst"])],
+          unicodemath: [["&#x210e;"], parsing_wrapper(["Planckconst"], lang: :unicode)],
+          asciimath: [["&#x210e;"], parsing_wrapper(["Planckconst"], lang: :asciimath)],
           mathml: ["&#x210e;"],
           latex: [["Planckconst", "&#x210e;"]],
           omml: ["&#x210e;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("Planckconst")
+          parsing_wrapper("Planckconst", lang: :asciimath)
         end
 
         def to_unicodemath

@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Eqqslantless do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Eqqslantless" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{eqqslantless}")
+        expect(klass.to_asciimath).to eq("\"P{eqqslantless}\"")
       end
 
       it "matches LaTeX string" do

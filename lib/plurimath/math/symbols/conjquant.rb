@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Conjquant < Symbol
         INPUT = {
-          unicodemath: [["&#x2a07;"], parsing_wrapper(["conjquant"])],
-          asciimath: [["&#x2a07;"], parsing_wrapper(["conjquant"])],
+          unicodemath: [["&#x2a07;"], parsing_wrapper(["conjquant"], lang: :unicode)],
+          asciimath: [["&#x2a07;"], parsing_wrapper(["conjquant"], lang: :asciimath)],
           mathml: ["&#x2a07;"],
           latex: [["conjquant", "&#x2a07;"]],
           omml: ["&#x2a07;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("conjquant")
+          parsing_wrapper("conjquant", lang: :asciimath)
         end
 
         def to_unicodemath

@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Tripleplus < Symbol
         INPUT = {
-          unicodemath: [["&#x29fb;"], parsing_wrapper(["tripleplus"])],
-          asciimath: [["&#x29fb;"], parsing_wrapper(["tripleplus"])],
+          unicodemath: [["&#x29fb;"], parsing_wrapper(["tripleplus"], lang: :unicode)],
+          asciimath: [["&#x29fb;"], parsing_wrapper(["tripleplus"], lang: :asciimath)],
           mathml: ["&#x29fb;"],
           latex: [["tripleplus", "&#x29fb;"]],
           omml: ["&#x29fb;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("tripleplus")
+          parsing_wrapper("tripleplus", lang: :asciimath)
         end
 
         def to_unicodemath

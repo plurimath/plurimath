@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Nn < Symbol
         INPUT = {
-          unicodemath: [["&#x2115;"], parsing_wrapper(["NN"])],
-          asciimath: [["&#x2115;"], parsing_wrapper(["NN"])],
+          unicodemath: [["&#x2115;"], parsing_wrapper(["NN"], lang: :unicode)],
+          asciimath: [["&#x2115;"], parsing_wrapper(["NN"], lang: :asciimath)],
           mathml: ["&#x2115;"],
           latex: [["NN", "&#x2115;"]],
           omml: ["&#x2115;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("NN")
+          parsing_wrapper("NN", lang: :asciimath)
         end
 
         def to_unicodemath

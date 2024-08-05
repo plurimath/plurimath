@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Diamonddot do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Diamonddot" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{Diamonddot}")
+        expect(klass.to_asciimath).to eq("\"P{Diamonddot}\"")
       end
 
       it "matches LaTeX string" do

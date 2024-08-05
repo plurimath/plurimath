@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Blackpointerleft do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Blackpointerleft" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{blackpointerleft}")
+        expect(klass.to_asciimath).to eq("\"P{blackpointerleft}\"")
       end
 
       it "matches LaTeX string" do

@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Leftthreearrows do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Leftthreearrows" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{leftthreearrows}")
+        expect(klass.to_asciimath).to eq("\"P{leftthreearrows}\"")
       end
 
       it "matches LaTeX string" do

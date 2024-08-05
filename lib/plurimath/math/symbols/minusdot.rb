@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Minusdot < Symbol
         INPUT = {
-          unicodemath: [["&#x2a2a;"], parsing_wrapper(["minusdot"])],
-          asciimath: [["&#x2a2a;"], parsing_wrapper(["minusdot"])],
+          unicodemath: [["&#x2a2a;"], parsing_wrapper(["minusdot"], lang: :unicode)],
+          asciimath: [["&#x2a2a;"], parsing_wrapper(["minusdot"], lang: :asciimath)],
           mathml: ["&#x2a2a;"],
           latex: [["minusdot", "&#x2a2a;"]],
           omml: ["&#x2a2a;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("minusdot")
+          parsing_wrapper("minusdot", lang: :asciimath)
         end
 
         def to_unicodemath

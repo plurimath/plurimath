@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Lvec do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Lvec" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{LVec}")
+        expect(klass.to_asciimath).to eq("\"P{LVec}\"")
       end
 
       it "matches LaTeX string" do

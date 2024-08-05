@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Rightouterjoin do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Rightouterjoin" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{rightouterjoin}")
+        expect(klass.to_asciimath).to eq("\"P{rightouterjoin}\"")
       end
 
       it "matches LaTeX string" do

@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Pointint < Symbol
         INPUT = {
-          unicodemath: [["&#x2a15;"], parsing_wrapper(["pointint"])],
-          asciimath: [["&#x2a15;"], parsing_wrapper(["pointint"])],
+          unicodemath: [["&#x2a15;"], parsing_wrapper(["pointint"], lang: :unicode)],
+          asciimath: [["&#x2a15;"], parsing_wrapper(["pointint"], lang: :asciimath)],
           mathml: ["&#x2a15;"],
           latex: [["pointint", "&#x2a15;"]],
           omml: ["&#x2a15;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("pointint")
+          parsing_wrapper("pointint", lang: :asciimath)
         end
 
         def to_unicodemath

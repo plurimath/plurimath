@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Ruledelayed < Symbol
         INPUT = {
-          unicodemath: [["&#x29f4;"], parsing_wrapper(["ruledelayed"])],
-          asciimath: [["&#x29f4;"], parsing_wrapper(["ruledelayed"])],
+          unicodemath: [["&#x29f4;"], parsing_wrapper(["ruledelayed"], lang: :unicode)],
+          asciimath: [["&#x29f4;"], parsing_wrapper(["ruledelayed"], lang: :asciimath)],
           mathml: ["&#x29f4;"],
           latex: [["ruledelayed", "&#x29f4;"]],
           omml: ["&#x29f4;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("ruledelayed")
+          parsing_wrapper("ruledelayed", lang: :asciimath)
         end
 
         def to_unicodemath

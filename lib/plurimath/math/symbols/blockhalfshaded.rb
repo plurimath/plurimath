@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Blockhalfshaded < Symbol
         INPUT = {
-          unicodemath: [["&#x2592;"], parsing_wrapper(["blockhalfshaded"])],
-          asciimath: [["&#x2592;"], parsing_wrapper(["blockhalfshaded"])],
+          unicodemath: [["&#x2592;"], parsing_wrapper(["blockhalfshaded"], lang: :unicode)],
+          asciimath: [["&#x2592;"], parsing_wrapper(["blockhalfshaded"], lang: :asciimath)],
           mathml: ["&#x2592;"],
           latex: [["blockhalfshaded", "&#x2592;"]],
           omml: ["&#x2592;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("blockhalfshaded")
+          parsing_wrapper("blockhalfshaded", lang: :asciimath)
         end
 
         def to_unicodemath

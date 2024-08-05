@@ -3,10 +3,10 @@ module Plurimath
     module Symbols
       class Gets < Symbol
         INPUT = {
-          unicodemath: [["gets", "leftarrow", "&#x2190;"], parsing_wrapper(["larr"])],
-          asciimath: [["leftarrow", "larr", "&#x2190;"], parsing_wrapper(["gets"])],
+          unicodemath: [["gets", "leftarrow", "&#x2190;"], parsing_wrapper(["larr"], lang: :unicode)],
+          asciimath: [["leftarrow", "larr", "&#x2190;"], parsing_wrapper(["gets"], lang: :asciimath)],
           mathml: ["&#x2190;"],
-          latex: [["leftarrow", "gets", "&#x2190;"], parsing_wrapper(["larr"])],
+          latex: [["leftarrow", "gets", "&#x2190;"], parsing_wrapper(["larr"], lang: :latex)],
           omml: ["&#x2190;"],
           html: ["&#x2190;"],
         }.freeze

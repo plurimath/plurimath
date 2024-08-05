@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Errbarblacksquare do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Errbarblacksquare" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{errbarblacksquare}")
+        expect(klass.to_asciimath).to eq("\"P{errbarblacksquare}\"")
       end
 
       it "matches LaTeX string" do

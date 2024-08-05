@@ -4,10 +4,10 @@ module Plurimath
       class Paren
         class Langle < Paren
           INPUT = {
-            unicodemath: [["&#x2329;", "&#x27e8;", "bra"], parsing_wrapper(["langle", "(:", "<<"])],
-            asciimath: [["langle", "(:", "<<", "&#x2329;"], parsing_wrapper(["&#x27e8;", "bra"])],
+            unicodemath: [["&#x2329;", "&#x27e8;", "bra"], parsing_wrapper(["langle", "(:", "<<"], lang: :unicode)],
+            asciimath: [["langle", "(:", "<<", "&#x2329;"], parsing_wrapper(["&#x27e8;", "bra"], lang: :asciimath)],
             mathml: ["&#x2329;", "&#x27e8;"],
-            latex: [["\\langle", "&#x2329;"], parsing_wrapper(["(:", "<<", "&#x27e8;", "bra"])],
+            latex: [["\\langle", "&#x2329;"], parsing_wrapper(["(:", "<<", "&#x27e8;", "bra"], lang: :latex)],
             omml: ["&#x2329;", "&#x27e8;"],
             html: ["&#x2329;", "&#x27e8;"],
           }.freeze

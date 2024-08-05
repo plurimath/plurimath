@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Curvearrowleftplus < Symbol
         INPUT = {
-          unicodemath: [["&#x293d;"], parsing_wrapper(["curvearrowleftplus"])],
-          asciimath: [["&#x293d;"], parsing_wrapper(["curvearrowleftplus"])],
+          unicodemath: [["&#x293d;"], parsing_wrapper(["curvearrowleftplus"], lang: :unicode)],
+          asciimath: [["&#x293d;"], parsing_wrapper(["curvearrowleftplus"], lang: :asciimath)],
           mathml: ["&#x293d;"],
           latex: [["curvearrowleftplus", "&#x293d;"]],
           omml: ["&#x293d;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("curvearrowleftplus")
+          parsing_wrapper("curvearrowleftplus", lang: :asciimath)
         end
 
         def to_unicodemath

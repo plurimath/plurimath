@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Parallelogramblack < Symbol
         INPUT = {
-          unicodemath: [["&#x25b0;"], parsing_wrapper(["parallelogramblack"])],
-          asciimath: [["&#x25b0;"], parsing_wrapper(["parallelogramblack"])],
+          unicodemath: [["&#x25b0;"], parsing_wrapper(["parallelogramblack"], lang: :unicode)],
+          asciimath: [["&#x25b0;"], parsing_wrapper(["parallelogramblack"], lang: :asciimath)],
           mathml: ["&#x25b0;"],
           latex: [["parallelogramblack", "&#x25b0;"]],
           omml: ["&#x25b0;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("parallelogramblack")
+          parsing_wrapper("parallelogramblack", lang: :asciimath)
         end
 
         def to_unicodemath

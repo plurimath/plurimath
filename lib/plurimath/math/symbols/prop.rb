@@ -3,10 +3,10 @@ module Plurimath
     module Symbols
       class Prop < Symbol
         INPUT = {
-          unicodemath: [["propto", "ratio", "&#x221d;"], parsing_wrapper(["prop"])],
-          asciimath: [["propto", "prop", "&#x221d;"], parsing_wrapper(["ratio"])],
+          unicodemath: [["propto", "ratio", "&#x221d;"], parsing_wrapper(["prop"], lang: :unicode)],
+          asciimath: [["propto", "prop", "&#x221d;"], parsing_wrapper(["ratio"], lang: :asciimath)],
           mathml: ["&#x221d;"],
-          latex: [["propto", "&#x221d;"], parsing_wrapper(["ratio", "prop"])],
+          latex: [["propto", "&#x221d;"], parsing_wrapper(["ratio", "prop"], lang: :latex)],
           omml: ["&#x221d;"],
           html: ["&#x221d;"],
         }.freeze

@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Blackdiamonddownarrow < Symbol
         INPUT = {
-          unicodemath: [["&#x29ea;"], parsing_wrapper(["blackdiamonddownarrow"])],
-          asciimath: [["&#x29ea;"], parsing_wrapper(["blackdiamonddownarrow"])],
+          unicodemath: [["&#x29ea;"], parsing_wrapper(["blackdiamonddownarrow"], lang: :unicode)],
+          asciimath: [["&#x29ea;"], parsing_wrapper(["blackdiamonddownarrow"], lang: :asciimath)],
           mathml: ["&#x29ea;"],
           latex: [["blackdiamonddownarrow", "&#x29ea;"]],
           omml: ["&#x29ea;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("blackdiamonddownarrow")
+          parsing_wrapper("blackdiamonddownarrow", lang: :asciimath)
         end
 
         def to_unicodemath

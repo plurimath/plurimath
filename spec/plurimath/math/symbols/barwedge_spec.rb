@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Barwedge do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Barwedge" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{barwedge}")
+        expect(klass.to_asciimath).to eq("\"P{barwedge}\"")
       end
 
       it "matches LaTeX string" do

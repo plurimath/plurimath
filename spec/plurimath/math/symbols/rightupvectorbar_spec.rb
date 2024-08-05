@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Rightupvectorbar do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Rightupvectorbar" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{RightUpVectorBar}")
+        expect(klass.to_asciimath).to eq("\"P{RightUpVectorBar}\"")
       end
 
       it "matches LaTeX string" do

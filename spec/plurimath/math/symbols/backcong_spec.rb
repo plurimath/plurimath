@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Backcong do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Backcong" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{backcong}")
+        expect(klass.to_asciimath).to eq("\"P{backcong}\"")
       end
 
       it "matches LaTeX string" do

@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Ballotx < Symbol
         INPUT = {
-          unicodemath: [["&#x2717;"], parsing_wrapper(["ballotx"])],
-          asciimath: [["&#x2717;"], parsing_wrapper(["ballotx"])],
+          unicodemath: [["&#x2717;"], parsing_wrapper(["ballotx"], lang: :unicode)],
+          asciimath: [["&#x2717;"], parsing_wrapper(["ballotx"], lang: :asciimath)],
           mathml: ["&#x2717;"],
           latex: [["ballotx", "&#x2717;"]],
           omml: ["&#x2717;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("ballotx")
+          parsing_wrapper("ballotx", lang: :asciimath)
         end
 
         def to_unicodemath

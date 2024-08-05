@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Angles do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Angles" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{angles}")
+        expect(klass.to_asciimath).to eq("\"P{angles}\"")
       end
 
       it "matches LaTeX string" do

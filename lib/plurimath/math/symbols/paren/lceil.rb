@@ -4,10 +4,10 @@ module Plurimath
       class Paren
         class Lceil < Paren
           INPUT = {
-            unicodemath: [["&#x2308;", "lceil"], parsing_wrapper(["lceiling", "|~"])],
-            asciimath: [["lceiling", "|~", "&#x2308;"], parsing_wrapper(["lceil"])],
+            unicodemath: [["&#x2308;", "lceil"], parsing_wrapper(["lceiling", "|~"], lang: :unicode)],
+            asciimath: [["lceiling", "|~", "&#x2308;"], parsing_wrapper(["lceil"], lang: :asciimath)],
             mathml: ["&#x2308;"],
-            latex: [["\\lceil", "&#x2308;"], parsing_wrapper(["lceiling", "|~"])],
+            latex: [["\\lceil", "&#x2308;"], parsing_wrapper(["lceiling", "|~"], lang: :latex)],
             omml: ["&#x2308;"],
             html: ["&#x2308;"],
           }.freeze

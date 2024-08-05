@@ -3,10 +3,10 @@ module Plurimath
     module Symbols
       class Nsqsuperseteq < Symbol
         INPUT = {
-          unicodemath: [["nsqsuperseteq", "&#x22e3;"], parsing_wrapper(["nsqsupseteq"])],
-          asciimath: [["&#x22e3;"], parsing_wrapper(["nsqsuperseteq", "nsqsupseteq"])],
+          unicodemath: [["nsqsuperseteq", "&#x22e3;"], parsing_wrapper(["nsqsupseteq"], lang: :unicode)],
+          asciimath: [["&#x22e3;"], parsing_wrapper(["nsqsuperseteq", "nsqsupseteq"], lang: :asciimath)],
           mathml: ["&#x22e3;"],
-          latex: [["nsqsupseteq", "&#x22e3;"], parsing_wrapper(["nsqsuperseteq"])],
+          latex: [["nsqsupseteq", "&#x22e3;"], parsing_wrapper(["nsqsuperseteq"], lang: :latex)],
           omml: ["&#x22e3;"],
           html: ["&#x22e3;"],
         }.freeze
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("nsqsuperseteq")
+          parsing_wrapper("nsqsuperseteq", lang: :asciimath)
         end
 
         def to_unicodemath

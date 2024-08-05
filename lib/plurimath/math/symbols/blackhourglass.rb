@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Blackhourglass < Symbol
         INPUT = {
-          unicodemath: [["&#x29d7;"], parsing_wrapper(["blackhourglass"])],
-          asciimath: [["&#x29d7;"], parsing_wrapper(["blackhourglass"])],
+          unicodemath: [["&#x29d7;"], parsing_wrapper(["blackhourglass"], lang: :unicode)],
+          asciimath: [["&#x29d7;"], parsing_wrapper(["blackhourglass"], lang: :asciimath)],
           mathml: ["&#x29d7;"],
           latex: [["blackhourglass", "&#x29d7;"]],
           omml: ["&#x29d7;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("blackhourglass")
+          parsing_wrapper("blackhourglass", lang: :asciimath)
         end
 
         def to_unicodemath

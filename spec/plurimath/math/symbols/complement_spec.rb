@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Complement do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Complement" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{complement}")
+        expect(klass.to_asciimath).to eq("\"P{complement}\"")
       end
 
       it "matches LaTeX string" do

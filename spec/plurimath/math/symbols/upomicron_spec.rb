@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Upomicron do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Upomicron" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{upomicron}")
+        expect(klass.to_asciimath).to eq("\"P{upomicron}\"")
       end
 
       it "matches LaTeX string" do

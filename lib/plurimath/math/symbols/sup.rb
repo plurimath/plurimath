@@ -3,10 +3,10 @@ module Plurimath
     module Symbols
       class Sup < Symbol
         INPUT = {
-          unicodemath: [["supset", "&#x2283;"], parsing_wrapper(["sup"])],
+          unicodemath: [["supset", "&#x2283;"], parsing_wrapper(["sup"], lang: :unicode)],
           asciimath: [["supset", "sup", "&#x2283;"]],
           mathml: ["&#x2283;"],
-          latex: [["supset", "&#x2283;"], parsing_wrapper(["sup"])],
+          latex: [["supset", "&#x2283;"], parsing_wrapper(["sup"], lang: :latex)],
           omml: ["&#x2283;"],
           html: ["&#x2283;"],
         }.freeze

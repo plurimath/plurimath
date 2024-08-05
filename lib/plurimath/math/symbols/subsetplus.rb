@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Subsetplus < Symbol
         INPUT = {
-          unicodemath: [["&#x2abf;"], parsing_wrapper(["subsetplus"])],
-          asciimath: [["&#x2abf;"], parsing_wrapper(["subsetplus"])],
+          unicodemath: [["&#x2abf;"], parsing_wrapper(["subsetplus"], lang: :unicode)],
+          asciimath: [["&#x2abf;"], parsing_wrapper(["subsetplus"], lang: :asciimath)],
           mathml: ["&#x2abf;"],
           latex: [["subsetplus", "&#x2abf;"]],
           omml: ["&#x2abf;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("subsetplus")
+          parsing_wrapper("subsetplus", lang: :asciimath)
         end
 
         def to_unicodemath

@@ -3,10 +3,10 @@ module Plurimath
     module Symbols
       class Eqno < Symbol
         INPUT = {
-          unicodemath: [["eqno", "&#x23;"], parsing_wrapper(["#", "octothorpe"])],
-          asciimath: [["#", "&#x23;"], parsing_wrapper(["eqno", "octothorpe"])],
+          unicodemath: [["eqno", "&#x23;"], parsing_wrapper(["#", "octothorpe"], lang: :unicode)],
+          asciimath: [["#", "&#x23;"], parsing_wrapper(["eqno", "octothorpe"], lang: :asciimath)],
           mathml: ["&#x23;"],
-          latex: [["octothorpe", "#", "&#x23;"], parsing_wrapper(["eqno"])],
+          latex: [["octothorpe", "#", "&#x23;"], parsing_wrapper(["eqno"], lang: :latex)],
           omml: ["&#x23;"],
           html: ["&#x23;"],
         }.freeze
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("eqno")
+          parsing_wrapper("eqno", lang: :asciimath)
         end
 
         def to_unicodemath

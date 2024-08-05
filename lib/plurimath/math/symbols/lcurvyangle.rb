@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Lcurvyangle < Symbol
         INPUT = {
-          unicodemath: [["&#x29fc;"], parsing_wrapper(["lcurvyangle"])],
-          asciimath: [["&#x29fc;"], parsing_wrapper(["lcurvyangle"])],
+          unicodemath: [["&#x29fc;"], parsing_wrapper(["lcurvyangle"], lang: :unicode)],
+          asciimath: [["&#x29fc;"], parsing_wrapper(["lcurvyangle"], lang: :asciimath)],
           mathml: ["&#x29fc;"],
           latex: [["lcurvyangle", "&#x29fc;"]],
           omml: ["&#x29fc;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("lcurvyangle")
+          parsing_wrapper("lcurvyangle", lang: :asciimath)
         end
 
         def to_unicodemath

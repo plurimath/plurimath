@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Bigbot < Symbol
         INPUT = {
-          unicodemath: [["&#x27d8;"], parsing_wrapper(["bigbot"])],
-          asciimath: [["&#x27d8;"], parsing_wrapper(["bigbot"])],
+          unicodemath: [["&#x27d8;"], parsing_wrapper(["bigbot"], lang: :unicode)],
+          asciimath: [["&#x27d8;"], parsing_wrapper(["bigbot"], lang: :asciimath)],
           mathml: ["&#x27d8;"],
           latex: [["bigbot", "&#x27d8;"]],
           omml: ["&#x27d8;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("bigbot")
+          parsing_wrapper("bigbot", lang: :asciimath)
         end
 
         def to_unicodemath

@@ -4,7 +4,7 @@ module Plurimath
       class Curlyeqprec < Symbol
         INPUT = {
           unicodemath: [["curlyeqprec", "&#x22de;"]],
-          asciimath: [["&#x22de;"], parsing_wrapper(["curlyeqprec"])],
+          asciimath: [["&#x22de;"], parsing_wrapper(["curlyeqprec"], lang: :asciimath)],
           mathml: ["&#x22de;"],
           latex: [["curlyeqprec", "&#x22de;"]],
           omml: ["&#x22de;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("curlyeqprec")
+          parsing_wrapper("curlyeqprec", lang: :asciimath)
         end
 
         def to_unicodemath

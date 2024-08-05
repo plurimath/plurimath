@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Lightning < Symbol
         INPUT = {
-          unicodemath: [["&#x21af;"], parsing_wrapper(["downzigzagarrow", "lightning"])],
-          asciimath: [["&#x21af;"], parsing_wrapper(["downzigzagarrow", "lightning"])],
+          unicodemath: [["&#x21af;"], parsing_wrapper(["downzigzagarrow", "lightning"], lang: :unicode)],
+          asciimath: [["&#x21af;"], parsing_wrapper(["downzigzagarrow", "lightning"], lang: :asciimath)],
           mathml: ["&#x21af;"],
           latex: [["downzigzagarrow", "lightning", "&#x21af;"]],
           omml: ["&#x21af;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("lightning")
+          parsing_wrapper("lightning", lang: :asciimath)
         end
 
         def to_unicodemath

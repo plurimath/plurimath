@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Omega < Symbol
         INPUT = {
-          unicodemath: [["omega", "&#x3c9;"], parsing_wrapper(["upomega"])],
-          asciimath: [["omega", "&#x3c9;"], parsing_wrapper(["upomega"])],
+          unicodemath: [["omega", "&#x3c9;"], parsing_wrapper(["upomega"], lang: :unicode)],
+          asciimath: [["omega", "&#x3c9;"], parsing_wrapper(["upomega"], lang: :asciimath)],
           mathml: ["&#x3c9;"],
           latex: [["upomega", "omega", "&#x3c9;"]],
           omml: ["&#x3c9;"],

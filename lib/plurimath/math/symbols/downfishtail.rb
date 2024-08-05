@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Downfishtail < Symbol
         INPUT = {
-          unicodemath: [["&#x297f;"], parsing_wrapper(["downfishtail"])],
-          asciimath: [["&#x297f;"], parsing_wrapper(["downfishtail"])],
+          unicodemath: [["&#x297f;"], parsing_wrapper(["downfishtail"], lang: :unicode)],
+          asciimath: [["&#x297f;"], parsing_wrapper(["downfishtail"], lang: :asciimath)],
           mathml: ["&#x297f;"],
           latex: [["downfishtail", "&#x297f;"]],
           omml: ["&#x297f;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("downfishtail")
+          parsing_wrapper("downfishtail", lang: :asciimath)
         end
 
         def to_unicodemath

@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Eta < Symbol
         INPUT = {
-          unicodemath: [["eta", "&#x3b7;"], parsing_wrapper(["upeta"])],
-          asciimath: [["eta", "&#x3b7;"], parsing_wrapper(["upeta"])],
+          unicodemath: [["eta", "&#x3b7;"], parsing_wrapper(["upeta"], lang: :unicode)],
+          asciimath: [["eta", "&#x3b7;"], parsing_wrapper(["upeta"], lang: :asciimath)],
           mathml: ["&#x3b7;"],
           latex: [["upeta", "eta", "&#x3b7;"]],
           omml: ["&#x3b7;"],

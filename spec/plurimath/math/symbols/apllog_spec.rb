@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Apllog do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Apllog" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{APLlog}")
+        expect(klass.to_asciimath).to eq("\"P{APLlog}\"")
       end
 
       it "matches LaTeX string" do

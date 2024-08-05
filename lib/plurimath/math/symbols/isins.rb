@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Isins < Symbol
         INPUT = {
-          unicodemath: [["&#x22f4;"], parsing_wrapper(["isins"])],
-          asciimath: [["&#x22f4;"], parsing_wrapper(["isins"])],
+          unicodemath: [["&#x22f4;"], parsing_wrapper(["isins"], lang: :unicode)],
+          asciimath: [["&#x22f4;"], parsing_wrapper(["isins"], lang: :asciimath)],
           mathml: ["&#x22f4;"],
           latex: [["isins", "&#x22f4;"]],
           omml: ["&#x22f4;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("isins")
+          parsing_wrapper("isins", lang: :asciimath)
         end
 
         def to_unicodemath

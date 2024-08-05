@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Leqslant do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Leqslant" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{leqslant}")
+        expect(klass.to_asciimath).to eq("\"P{leqslant}\"")
       end
 
       it "matches LaTeX string" do

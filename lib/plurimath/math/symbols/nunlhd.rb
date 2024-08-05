@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Nunlhd < Symbol
         INPUT = {
-          unicodemath: [["&#x22ec;"], parsing_wrapper(["ntrianglelefteq", "nunlhd"])],
-          asciimath: [["&#x22ec;"], parsing_wrapper(["ntrianglelefteq", "nunlhd"])],
+          unicodemath: [["&#x22ec;"], parsing_wrapper(["ntrianglelefteq", "nunlhd"], lang: :unicode)],
+          asciimath: [["&#x22ec;"], parsing_wrapper(["ntrianglelefteq", "nunlhd"], lang: :asciimath)],
           mathml: ["&#x22ec;"],
           latex: [["ntrianglelefteq", "nunlhd", "&#x22ec;"]],
           omml: ["&#x22ec;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("nunlhd")
+          parsing_wrapper("nunlhd", lang: :asciimath)
         end
 
         def to_unicodemath

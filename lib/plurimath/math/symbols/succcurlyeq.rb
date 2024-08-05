@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Succcurlyeq < Symbol
         INPUT = {
-          unicodemath: [["succcurlyeq", "&#x227d;"], parsing_wrapper(["SucceedsSlantEqual"])],
-          asciimath: [["&#x227d;"], parsing_wrapper(["succcurlyeq", "SucceedsSlantEqual"])],
+          unicodemath: [["succcurlyeq", "&#x227d;"], parsing_wrapper(["SucceedsSlantEqual"], lang: :unicode)],
+          asciimath: [["&#x227d;"], parsing_wrapper(["succcurlyeq", "SucceedsSlantEqual"], lang: :asciimath)],
           mathml: ["&#x227d;"],
           latex: [["SucceedsSlantEqual", "succcurlyeq", "&#x227d;"]],
           omml: ["&#x227d;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("succcurlyeq")
+          parsing_wrapper("succcurlyeq", lang: :asciimath)
         end
 
         def to_unicodemath

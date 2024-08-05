@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Sadface < Symbol
         INPUT = {
-          unicodemath: [["&#x2639;"], parsing_wrapper(["frownie", "sadface"])],
-          asciimath: [["&#x2639;"], parsing_wrapper(["frownie", "sadface"])],
+          unicodemath: [["&#x2639;"], parsing_wrapper(["frownie", "sadface"], lang: :unicode)],
+          asciimath: [["&#x2639;"], parsing_wrapper(["frownie", "sadface"], lang: :asciimath)],
           mathml: ["&#x2639;"],
           latex: [["frownie", "sadface", "&#x2639;"]],
           omml: ["&#x2639;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("sadface")
+          parsing_wrapper("sadface", lang: :asciimath)
         end
 
         def to_unicodemath

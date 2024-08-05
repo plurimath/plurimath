@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Breve do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Breve" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{breve}")
+        expect(klass.to_asciimath).to eq("\"P{breve}\"")
       end
 
       it "matches LaTeX string" do

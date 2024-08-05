@@ -3,10 +3,10 @@ module Plurimath
     module Symbols
       class Varspade < Symbol
         INPUT = {
-          unicodemath: [["diamondsuit", "&#x2664;"], parsing_wrapper(["varspadesuit", "varspade"])],
-          asciimath: [["&#x2664;"], parsing_wrapper(["diamondsuit", "varspadesuit", "varspade"])],
+          unicodemath: [["diamondsuit", "&#x2664;"], parsing_wrapper(["varspadesuit", "varspade"], lang: :unicode)],
+          asciimath: [["&#x2664;"], parsing_wrapper(["diamondsuit", "varspadesuit", "varspade"], lang: :asciimath)],
           mathml: ["&#x2664;"],
-          latex: [["varspadesuit", "varspade", "&#x2664;"], parsing_wrapper(["diamondsuit"])],
+          latex: [["varspadesuit", "varspade", "&#x2664;"], parsing_wrapper(["diamondsuit"], lang: :latex)],
           omml: ["&#x2664;"],
           html: ["&#x2664;"],
         }.freeze
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("varspade")
+          parsing_wrapper("varspade", lang: :asciimath)
         end
 
         def to_unicodemath

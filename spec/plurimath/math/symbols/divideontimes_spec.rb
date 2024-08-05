@@ -14,11 +14,11 @@ RSpec.describe Plurimath::Math::Symbols::Divideontimes do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Divideontimes" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{divideontimes}")
+        expect(klass.to_asciimath).to eq("\"P{divideontimes}\"")
       end
 
       it "matches LaTeX string" do
-        expect(klass.to_latex).to eq("__{divideontimes}")
+        expect(klass.to_latex).to eq("\\text{P[divideontimes]}")
       end
 
       it "matches UnicodeMath string" do

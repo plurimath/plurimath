@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Typecolon < Symbol
         INPUT = {
-          unicodemath: [["&#x2982;"], parsing_wrapper(["typecolon"])],
-          asciimath: [["&#x2982;"], parsing_wrapper(["typecolon"])],
+          unicodemath: [["&#x2982;"], parsing_wrapper(["typecolon"], lang: :unicode)],
+          asciimath: [["&#x2982;"], parsing_wrapper(["typecolon"], lang: :asciimath)],
           mathml: ["&#x2982;"],
           latex: [["typecolon", "&#x2982;"]],
           omml: ["&#x2982;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("typecolon")
+          parsing_wrapper("typecolon", lang: :asciimath)
         end
 
         def to_unicodemath

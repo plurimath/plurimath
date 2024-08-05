@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Finj < Symbol
         INPUT = {
-          unicodemath: [["&#x2915;"], parsing_wrapper(["nVrightarrowtail", "finj"])],
-          asciimath: [["&#x2915;"], parsing_wrapper(["nVrightarrowtail", "finj"])],
+          unicodemath: [["&#x2915;"], parsing_wrapper(["nVrightarrowtail", "finj"], lang: :unicode)],
+          asciimath: [["&#x2915;"], parsing_wrapper(["nVrightarrowtail", "finj"], lang: :asciimath)],
           mathml: ["&#x2915;"],
           latex: [["nVrightarrowtail", "finj", "&#x2915;"]],
           omml: ["&#x2915;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("finj")
+          parsing_wrapper("finj", lang: :asciimath)
         end
 
         def to_unicodemath

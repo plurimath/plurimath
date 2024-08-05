@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Interleave < Symbol
         INPUT = {
-          unicodemath: [["&#x2af4;"], parsing_wrapper(["interleave"])],
-          asciimath: [["&#x2af4;"], parsing_wrapper(["interleave"])],
+          unicodemath: [["&#x2af4;"], parsing_wrapper(["interleave"], lang: :unicode)],
+          asciimath: [["&#x2af4;"], parsing_wrapper(["interleave"], lang: :asciimath)],
           mathml: ["&#x2af4;"],
           latex: [["interleave", "&#x2af4;"]],
           omml: ["&#x2af4;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("interleave")
+          parsing_wrapper("interleave", lang: :asciimath)
         end
 
         def to_unicodemath

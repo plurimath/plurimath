@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Circlehbar < Symbol
         INPUT = {
-          unicodemath: [["&#x29b5;"], parsing_wrapper(["circlehbar"])],
-          asciimath: [["&#x29b5;"], parsing_wrapper(["circlehbar"])],
+          unicodemath: [["&#x29b5;"], parsing_wrapper(["circlehbar"], lang: :unicode)],
+          asciimath: [["&#x29b5;"], parsing_wrapper(["circlehbar"], lang: :asciimath)],
           mathml: ["&#x29b5;"],
           latex: [["circlehbar", "&#x29b5;"]],
           omml: ["&#x29b5;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("circlehbar")
+          parsing_wrapper("circlehbar", lang: :asciimath)
         end
 
         def to_unicodemath

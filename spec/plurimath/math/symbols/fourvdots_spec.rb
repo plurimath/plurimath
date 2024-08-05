@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Fourvdots do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Fourvdots" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{fourvdots}")
+        expect(klass.to_asciimath).to eq("\"P{fourvdots}\"")
       end
 
       it "matches LaTeX string" do

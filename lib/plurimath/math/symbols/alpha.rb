@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Alpha < Symbol
         INPUT = {
-          unicodemath: [["alpha", "&#x3b1;"], parsing_wrapper(["upalpha"])],
-          asciimath: [["alpha", "&#x3b1;"], parsing_wrapper(["upalpha"])],
+          unicodemath: [["alpha", "&#x3b1;"], parsing_wrapper(["upalpha"], lang: :unicode)],
+          asciimath: [["alpha", "&#x3b1;"], parsing_wrapper(["upalpha"], lang: :asciimath)],
           mathml: ["&#x3b1;"],
           latex: [["upalpha", "alpha", "&#x3b1;"]],
           omml: ["&#x3b1;"],

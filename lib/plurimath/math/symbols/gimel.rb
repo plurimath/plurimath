@@ -4,7 +4,7 @@ module Plurimath
       class Gimel < Symbol
         INPUT = {
           unicodemath: [["gimel", "&#x2137;"]],
-          asciimath: [["&#x2137;"], parsing_wrapper(["gimel"])],
+          asciimath: [["&#x2137;"], parsing_wrapper(["gimel"], lang: :asciimath)],
           mathml: ["&#x2137;"],
           latex: [["gimel", "&#x2137;"]],
           omml: ["&#x2137;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("gimel")
+          parsing_wrapper("gimel", lang: :asciimath)
         end
 
         def to_unicodemath

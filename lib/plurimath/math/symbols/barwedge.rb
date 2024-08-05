@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Barwedge < Symbol
         INPUT = {
-          unicodemath: [["&#x22bc;"], parsing_wrapper(["barwedge"])],
-          asciimath: [["&#x22bc;"], parsing_wrapper(["barwedge"])],
+          unicodemath: [["&#x22bc;"], parsing_wrapper(["barwedge"], lang: :unicode)],
+          asciimath: [["&#x22bc;"], parsing_wrapper(["barwedge"], lang: :asciimath)],
           mathml: ["&#x22bc;"],
           latex: [["barwedge", "&#x22bc;"]],
           omml: ["&#x22bc;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("barwedge")
+          parsing_wrapper("barwedge", lang: :asciimath)
         end
 
         def to_unicodemath

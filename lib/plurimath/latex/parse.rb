@@ -4,7 +4,7 @@ require "parslet"
 module Plurimath
   class Latex
     class Parse < Parslet::Parser
-      rule(:base)          { arr_to_expression(Constants.wrapper_symbols, :symbols).absent? >> str("_") }
+      rule(:base)          { str("_") }
       rule(:power)         { str("^") }
       rule(:slash)         { str("\\") }
       rule(:under_over)    { slash >> underover_classes }
@@ -207,7 +207,7 @@ module Plurimath
         when :operant
           (first_value.as(:operant) | (slashed_value(first_value, :symbols)))
         when :symbols
-          expr.to_s.start_with?("__{") ? first_value.as(name) : slashed_value(first_value, :symbols)
+          slashed_value(first_value, :symbols)
         when :unary
           unary_rules(first_value)
         when :fonts

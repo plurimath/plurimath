@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Equivvert < Symbol
         INPUT = {
-          unicodemath: [["&#x2a68;"], parsing_wrapper(["equivVert"])],
-          asciimath: [["&#x2a68;"], parsing_wrapper(["equivVert"])],
+          unicodemath: [["&#x2a68;"], parsing_wrapper(["equivVert"], lang: :unicode)],
+          asciimath: [["&#x2a68;"], parsing_wrapper(["equivVert"], lang: :asciimath)],
           mathml: ["&#x2a68;"],
           latex: [["equivVert", "&#x2a68;"]],
           omml: ["&#x2a68;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("equivVert")
+          parsing_wrapper("equivVert", lang: :asciimath)
         end
 
         def to_unicodemath

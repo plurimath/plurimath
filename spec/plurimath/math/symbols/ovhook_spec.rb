@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Ovhook do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Ovhook" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{ovhook}")
+        expect(klass.to_asciimath).to eq("\"P{ovhook}\"")
       end
 
       it "matches LaTeX string" do

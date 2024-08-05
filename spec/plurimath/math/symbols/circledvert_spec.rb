@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Circledvert do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Circledvert" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{circledvert}")
+        expect(klass.to_asciimath).to eq("\"P{circledvert}\"")
       end
 
       it "matches LaTeX string" do

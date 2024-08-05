@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Subsim < Symbol
         INPUT = {
-          unicodemath: [["&#x2ac7;"], parsing_wrapper(["subsim"])],
-          asciimath: [["&#x2ac7;"], parsing_wrapper(["subsim"])],
+          unicodemath: [["&#x2ac7;"], parsing_wrapper(["subsim"], lang: :unicode)],
+          asciimath: [["&#x2ac7;"], parsing_wrapper(["subsim"], lang: :asciimath)],
           mathml: ["&#x2ac7;"],
           latex: [["subsim", "&#x2ac7;"]],
           omml: ["&#x2ac7;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("subsim")
+          parsing_wrapper("subsim", lang: :asciimath)
         end
 
         def to_unicodemath

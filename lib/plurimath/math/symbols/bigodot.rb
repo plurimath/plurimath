@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class Bigodot < Symbol
         INPUT = {
-          unicodemath: [["&#x2a00;"], parsing_wrapper(["bigodot"])],
-          asciimath: [["&#x2a00;"], parsing_wrapper(["bigodot"])],
+          unicodemath: [["&#x2a00;"], parsing_wrapper(["bigodot"], lang: :unicode)],
+          asciimath: [["&#x2a00;"], parsing_wrapper(["bigodot"], lang: :asciimath)],
           mathml: ["&#x2a00;"],
           latex: [["bigodot", "&#x2a00;"]],
           omml: ["&#x2a00;"],
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath
-          parsing_wrapper("bigodot")
+          parsing_wrapper("bigodot", lang: :asciimath)
         end
 
         def to_unicodemath

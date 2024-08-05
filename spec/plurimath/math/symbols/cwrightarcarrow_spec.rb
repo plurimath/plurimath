@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Cwrightarcarrow do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Cwrightarcarrow" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{cwrightarcarrow}")
+        expect(klass.to_asciimath).to eq("\"P{cwrightarcarrow}\"")
       end
 
       it "matches LaTeX string" do

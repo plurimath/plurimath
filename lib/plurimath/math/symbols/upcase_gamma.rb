@@ -3,8 +3,8 @@ module Plurimath
     module Symbols
       class UpcaseGamma < Symbol
         INPUT = {
-          unicodemath: [["Gamma", "&#x393;"], parsing_wrapper(["upGamma"])],
-          asciimath: [["Gamma", "&#x393;"], parsing_wrapper(["upGamma"])],
+          unicodemath: [["Gamma", "&#x393;"], parsing_wrapper(["upGamma"], lang: :unicode)],
+          asciimath: [["Gamma", "&#x393;"], parsing_wrapper(["upGamma"], lang: :asciimath)],
           mathml: ["&#x393;"],
           latex: [["upGamma", "Gamma", "&#x393;"]],
           omml: ["&#x393;"],

@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Squarevfill do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Squarevfill" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{squarevfill}")
+        expect(klass.to_asciimath).to eq("\"P{squarevfill}\"")
       end
 
       it "matches LaTeX string" do

@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Olcross do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Olcross" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{olcross}")
+        expect(klass.to_asciimath).to eq("\"P{olcross}\"")
       end
 
       it "matches LaTeX string" do

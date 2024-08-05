@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Varhexagonlrbonds do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Varhexagonlrbonds" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{varhexagonlrbonds}")
+        expect(klass.to_asciimath).to eq("\"P{varhexagonlrbonds}\"")
       end
 
       it "matches LaTeX string" do

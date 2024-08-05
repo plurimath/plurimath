@@ -14,7 +14,7 @@ RSpec.describe Plurimath::Math::Symbols::Downleftteevector do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Downleftteevector" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("__{DownLeftTeeVector}")
+        expect(klass.to_asciimath).to eq("\"P{DownLeftTeeVector}\"")
       end
 
       it "matches LaTeX string" do
