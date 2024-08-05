@@ -2,43 +2,51 @@
 
 module Plurimath
   module Formatter
-    class NumberFormatter < TwitterCldr::Formatters::NumberFormatter
-      def format(tokens, number, options = {})
-        options[:precision] ||= precision_from(number)
-        options[:type] ||= :decimal
+    class NumberFormatter
+      attr_reader :number, :data_reader
 
-        prefix, suffix, integer_format, fraction_format, signif_format = *partition_tokens(tokens)
-        number = truncate_number(number, integer_format.format.length)
+      def initialize(number, data_reader = {})
+        @number = number
+        @data_reader = data_reader
+      end
 
-        int, fraction = parse_number(number, options)
-        result = integer_format.apply(int, options)
-        result << fraction_format.apply(fraction, options, int) if fraction
+      def format(precision: nil)
+        data_reader[:precision] = precision || precision_from(number)
+        integer_format, fraction_format, signif_format = *partition_tokens(number)
+        return signif_format.apply(number.to_s("F"), integer_format, fraction_format) if significant?
 
-        result = signif_format.apply(result, integer_format, fraction_format)
-
-        number_system.transliterate(
-          "#{prefix.to_s}#{result}#{suffix.to_s}"
-        )
+        int, fraction = number.to_s("F").split(".")
+        result = integer_format.apply(int, data_reader)
+        result << fraction_format.apply(fraction, data_reader, int)
       end
 
       private
 
-      def partition_tokens(tokens)
+      def partition_tokens(number)
         [
-          token_val_from(tokens[0]),
-          token_val_from(tokens[2]),
           Numbers::Integer.new(
-            tokens[1],
-            data_reader.symbols
+            number,
+            data_reader,
           ),
           Numbers::Fraction.new(
-            tokens[1],
-            data_reader.symbols
+            number,
+            data_reader,
           ),
           Numbers::Significant.new(
-            data_reader.symbols,
+            data_reader,
           )
         ]
+      end
+
+      def precision_from(number)
+        return 0 if number.fix == number
+
+        parts = number.to_s("F").split(".")
+        parts.size == 2 ? parts[1].size : 0
+      end
+
+      def significant?
+        data_reader[:significant] && !data_reader[:significant].zero?
       end
     end
   end

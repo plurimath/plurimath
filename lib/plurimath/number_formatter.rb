@@ -1,4 +1,5 @@
-require "plurimath/formatter/numeric_formatter"
+require_relative "formatter/numeric_formatter"
+require_relative "formatter/supported_locales"
 
 module Plurimath
   class NumberFormatter
@@ -37,11 +38,11 @@ module Plurimath
     private
 
     def supported_locale(locale)
-      TwitterCldr.supported_locale?(locale.to_sym) ? locale.to_sym : :en
+      Formatter::SupportedLocales::LOCALES.key?(locale.to_sym) ? locale.to_sym : :en
     end
 
     def symbols(locale)
-      TwitterCldr::DataReaders::NumberDataReader.new(locale).symbols
+      Formatter::SupportedLocales::LOCALES[locale]
     end
   end
 end
