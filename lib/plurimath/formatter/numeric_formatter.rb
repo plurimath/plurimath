@@ -1,10 +1,9 @@
-require "twitter_cldr"
+require_relative "supported_locales"
+require_relative "numbers/base"
 require_relative "numbers/integer"
 require_relative "numbers/fraction"
 require_relative "numbers/significant"
 require_relative "number_formatter"
-require_relative "number_data_reader"
-require_relative "localized_number"
 
 module Plurimath
   module Formatter
@@ -32,8 +31,8 @@ module Plurimath
       private
 
       def twitter_cldr_reader_lookup
-        num = TwitterCldr::DataReaders::NumberDataReader.new(locale)
-        num.symbols
+        symbols = Formatter::SupportedLocales::LOCALES[locale.to_sym]
+        symbols
           .merge!(@localizer_symbols)
           .merge!(parse_localize_number)
       end
@@ -51,10 +50,10 @@ module Plurimath
       end
 
       def localize_number(num)
-        localized = localize(BigDecimal(num.to_s))
-        return localized.to_s if @precision.zero?
-
-        localized.to_decimal.to_s(precision: @precision)
+        formatter = Formatter::NumberFormatter.new(BigDecimal(num), @twitter_cldr_reader)
+        formatter.format(
+          precision: @precision
+        )
       end
 
       def e_format(num_str)
@@ -121,10 +120,6 @@ module Plurimath
         chars.first.delete!(".")
         chars.first.insert(index + 1, ".") unless chars.first[index + 2].nil?
         chars[-1] = (chars[-1].to_i - index).to_s
-      end
-
-      def localize(value)
-        LocalizedNumber.new(value, @locale, type: :decimal)
       end
     end
   end
