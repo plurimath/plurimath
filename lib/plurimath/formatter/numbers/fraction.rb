@@ -3,11 +3,11 @@
 module Plurimath
   module Formatter
     module Numbers
-      class Fraction < TwitterCldr::Formatters::Numbers::Fraction
+      class Fraction < Base
         attr_reader :format, :decimal, :precision, :separator, :group
 
         def initialize(token, symbols = {})
-          @format  = token ? token.value.split('.').pop : ''
+          @format  = token ? token.to_s("F").split('.').pop : ''
           @decimal = symbols[:decimal] || '.'
           @separator = symbols[:fraction_group].to_s
           @group = symbols[:fraction_group_digits]
