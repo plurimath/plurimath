@@ -31,7 +31,7 @@ module Plurimath
         def to_mathml_without_math_tag(intent)
           first_value = ox_element("mo", attributes: options&.dig(:open_paren)) << (mathml_paren(parameter_one, intent) || "")
           third_value = ox_element("mo", attributes: options&.dig(:close_paren)) << (mathml_paren(parameter_three, intent) || "")
-          mrow_value = mathml_value(intent).insert(0, first_value) << third_value
+          mrow_value = Array(mathml_value(intent)).insert(0, first_value) << third_value
           fenced = Utility.update_nodes(ox_element("mrow"), mrow_value)
           intentify(
             fenced,
@@ -261,7 +261,7 @@ module Plurimath
         end
 
         def binomial_coefficient?(value)
-          parameter_two.first.is_a?(Frac) &&
+          parameter_two&.first&.is_a?(Frac) &&
             parameter_two&.first&.options&.dig(:choose)
         end
 

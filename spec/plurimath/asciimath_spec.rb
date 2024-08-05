@@ -6410,6 +6410,29 @@ RSpec.describe Plurimath::Asciimath do
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
+
+    context "contains example from plrimath/issue#276 example #120" do
+      let(:string) { '"Pr"[]' }
+
+      it 'matches LaTeX, AsciiMath, and MathML' do
+        latex = '\text{Pr} [  ]'
+        asciimath = '"Pr" []'
+        mathml = <<~MATHML
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
+              <mtext>Pr</mtext>
+              <mrow>
+                <mo>[</mo>
+                <mo>]</mo>
+              </mrow>
+            </mstyle>
+          </math>
+        MATHML
+        expect(formula.to_latex).to eql(latex)
+        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_asciimath).to eql(asciimath)
+      end
+    end
   end
 
   describe ".to_omml" do
