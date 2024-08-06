@@ -24,7 +24,6 @@ Gem::Specification.new do |spec|
   spec.bindir        = "exe"
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
-  spec.add_dependency 'twitter_cldr'
   spec.add_dependency 'parslet'
   spec.add_dependency 'thor'
   spec.add_dependency 'ox'

@@ -13,11 +13,13 @@ module Plurimath
       def format(precision: nil)
         data_reader[:precision] = precision || precision_from(number)
         integer_format, fraction_format, signif_format = *partition_tokens(number)
-        return signif_format.apply(number.to_s("F"), integer_format, fraction_format) if significant?
 
         int, fraction = number.to_s("F").split(".")
         result = integer_format.apply(int, data_reader)
         result << fraction_format.apply(fraction, data_reader, int)
+        result = signif_format.apply(result, integer_format, fraction_format)
+
+        result
       end
 
       private
@@ -43,10 +45,6 @@ module Plurimath
 
         parts = number.to_s("F").split(".")
         parts.size == 2 ? parts[1].size : 0
-      end
-
-      def significant?
-        data_reader[:significant] && !data_reader[:significant].zero?
       end
     end
   end
