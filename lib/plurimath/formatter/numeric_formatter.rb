@@ -50,8 +50,10 @@ module Plurimath
       end
 
       def localize_number(num)
-        formatter = Formatter::NumberFormatter.new(BigDecimal(num), @twitter_cldr_reader)
-        formatter.format(
+        Formatter::NumberFormatter.new(
+          BigDecimal(num),
+          @twitter_cldr_reader,
+        ).format(
           precision: @precision
         )
       end

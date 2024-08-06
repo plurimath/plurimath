@@ -72,7 +72,7 @@ module Plurimath
         end
 
         def all_zeros?(number)
-          return unless number.split('').all? { |dig| dig == "0" }
+          return unless number.split('').all? { |digit| digit == "0" }
 
           number.length
         end
