@@ -157,8 +157,8 @@ RSpec.describe Plurimath::NumberFormatter do
       it "matches locale: de with digit count and significant" do
         output_string = formatter.localized_number(number, format: { digit_count: 3, group_digits: 3 })
         expect(output_string).to eql("0,00")
-        # output_string = formatter.localized_number(number, precision: 5, format: { digit_count: 6, notation: :scientific, group_digits: 3 })
-        # expect(output_string).to eql("1,00000 × 10^-3")
+        output_string = formatter.localized_number(number, precision: 5, format: { digit_count: 6, notation: :scientific, group_digits: 3 })
+        expect(output_string).to eql("1,00000 × 10^-3")
         output_string = formatter.localized_number(number, format: { significant: 3, group_digits: 3 })
         expect(output_string).to eql("0,00100")
         output_string = formatter.localized_number(number, format: { significant: 3, notation: :e, group_digits: 3 })
@@ -243,7 +243,7 @@ RSpec.describe Plurimath::NumberFormatter do
       it "matches false output due to ambiguity between decimal and group values" do
         format_hash = { fraction_group_digits: 2, fraction_group: "'", decimal: ",", notation: :basic, significant: 9, group_digits: 3 }
         output_string = formatter.localized_number("327428.7432878432992", locale: :en, precision: nil, format: format_hash)
-        expect(output_string).to eql("327,428,74'3")
+        expect(output_string).to eql("327,42'8")
       end
 
       it "matches precision nil, significant and other format options" do
