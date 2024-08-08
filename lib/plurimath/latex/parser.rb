@@ -8,7 +8,7 @@ module Plurimath
     class Parser
       attr_accessor :text
 
-      TEXT_REGEX = %r(\\(?:mbox|text){[^}]+})
+      TEXT_REGEX = %r(\\(?:mbox|text)\{[^\}]+\})
 
       def initialize(text)
         @text = pre_processing(text)
