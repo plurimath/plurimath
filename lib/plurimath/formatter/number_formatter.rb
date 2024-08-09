@@ -6,7 +6,6 @@ module Plurimath
       attr_reader :number, :data_reader
 
       STRING_SYMBOLS = {
-        hashes: "###".freeze,
         dot: ".".freeze,
         f: "F".freeze,
       }.freeze
@@ -34,16 +33,9 @@ module Plurimath
         [
           int,
           fraction,
-          Numbers::Integer.new(
-            data_reader,
-          ),
-          Numbers::Fraction.new(
-            STRING_SYMBOLS[:hashes],
-            data_reader,
-          ),
-          Numbers::Significant.new(
-            data_reader,
-          )
+          Numbers::Integer.new(data_reader),
+          Numbers::Fraction.new(data_reader),
+          Numbers::Significant.new(data_reader),
         ]
       end
 

@@ -4,15 +4,14 @@ module Plurimath
   module Formatter
     module Numbers
       class Fraction < Base
-        attr_reader :format, :decimal, :precision, :separator, :group
+        attr_reader :decimal, :precision, :separator, :group
 
-        def initialize(format, symbols = {})
-          @format  = format
+        def initialize(symbols = {})
+          @precision = 3
           @decimal = symbols[:decimal] || '.'
           @separator = symbols[:fraction_group].to_s
           @group = symbols[:fraction_group_digits]
           @digit_count = symbols[:digit_count] || nil
-          @precision = @format.length
         end
 
         def apply(fraction, options = {}, int = "")

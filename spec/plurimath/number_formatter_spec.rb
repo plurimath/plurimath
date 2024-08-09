@@ -157,7 +157,7 @@ RSpec.describe Plurimath::NumberFormatter do
       it "matches locale: de with digit count and significant" do
         output_string = formatter.localized_number(number, format: { digit_count: 3, group_digits: 3 })
         expect(output_string).to eql("0,00")
-        output_string = formatter.localized_number(number, precision: 5, format: { digit_count: 6, notation: :scientific, group_digits: 3 })
+        output_string = formatter.localized_number(number, format: { digit_count: 6, notation: :scientific, group_digits: 3 })
         expect(output_string).to eql("1,00000 × 10^-3")
         output_string = formatter.localized_number(number, format: { significant: 3, group_digits: 3 })
         expect(output_string).to eql("0,00100")
