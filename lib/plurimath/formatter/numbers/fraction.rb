@@ -3,20 +3,19 @@
 module Plurimath
   module Formatter
     module Numbers
-      class Fraction < TwitterCldr::Formatters::Numbers::Fraction
-        attr_reader :format, :decimal, :precision, :separator, :group
+      class Fraction < Base
+        attr_reader :decimal, :precision, :separator, :group
 
-        def initialize(token, symbols = {})
-          @format  = token ? token.value.split('.').pop : ''
+        def initialize(symbols = {})
+          @precision = 3
           @decimal = symbols[:decimal] || '.'
           @separator = symbols[:fraction_group].to_s
           @group = symbols[:fraction_group_digits]
           @digit_count = symbols[:digit_count] || nil
-          @precision = @format.length
         end
 
         def apply(fraction, options = {}, int = "")
-          precision = options[:precision] || self.precision
+          precision = options[:precision] || @precision
           return "" unless precision > 0
 
           number = interpolate(format(options), fraction, :left)
@@ -26,7 +25,7 @@ module Plurimath
         end
 
         def format(options)
-          precision = options[:precision] || self.precision
+          precision = options[:precision] || @precision
           precision ? '0' * precision : @format
         end
 
@@ -66,13 +65,13 @@ module Plurimath
         end
 
         def update_digit_count(number)
-          return @digit_count unless all_zeros?(number) == @precision
+          return @digit_count unless zeros_count_in(number) == @precision
 
           @digit_count - @precision + 1
         end
 
-        def all_zeros?(number)
-          return unless number.split('').all? { |dig| dig == "0" }
+        def zeros_count_in(number)
+          return unless number.split('').all? { |digit| digit == "0" }
 
           number.length
         end
