@@ -80,6 +80,7 @@ module Plurimath
             accents |
             negatable_symbols |
             fonts.as(:fonts) |
+            wrapper_symbols |
             ((parsing_text | factor.as(:factor)) >> operand.as(:operand).maybe)
         end
 

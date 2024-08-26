@@ -226,6 +226,7 @@ module Plurimath
           element_exp_script_validation? >> space? >> exp_script |
           unary_arg_functions |
           combined_symbols |
+          wrapper_symbols |
           operand |
           char |
           alphanumeric |
