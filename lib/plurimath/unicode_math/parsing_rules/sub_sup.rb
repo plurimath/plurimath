@@ -184,6 +184,7 @@ module Plurimath
             an_math |
             other |
             exp_bracket |
+            wrapper_symbols |
             parsing_text |
             negatable_symbols |
             soperand |

@@ -82,6 +82,7 @@ module Plurimath
       rule(sup_recursion: simple(:recursion)) { recursion }
       rule(nary_sub_sup: simple(:subsup_exp)) { subsup_exp }
       rule(open_paren: sequence(:open_paren)) { open_paren }
+      rule(subsup_exp: sequence(:subsup_exp)) { Utility.filter_values(subsup_exp) }
 
       rule(diacritics_accents: simple(:accent)) { accent }
       rule(mini_sub_sup: simple(:mini_sub_sup)) { mini_sub_sup }
