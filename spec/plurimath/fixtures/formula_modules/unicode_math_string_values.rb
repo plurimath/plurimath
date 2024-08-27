@@ -677,4 +677,5 @@ module UnicodeMathStringValues
   EXAMPLE_676 = '∐_(d)▒〖d〗'
   EXAMPLE_677 = '∐_(d d)▒〖d〗'
   EXAMPLE_678 = '∐_(d d)^(d)▒〖d〗'
+  EXAMPLE_679 = '∑_(⥑)^(⥑)▒〖d〗'
 end

@@ -18799,8 +18799,8 @@ module UnicodeMathTransformValues
   EXAMPLE_679 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Sum.new(
       Plurimath::Math::Symbols::Leftupdownharpoon.new,
-      Plurimath::Math::Symbols::Symbol.new("d"),
       Plurimath::Math::Symbols::Leftupdownharpoon.new,
+      Plurimath::Math::Symbols::Symbol.new("d"),
     )
   ])
 end
