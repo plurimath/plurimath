@@ -38,7 +38,7 @@ module Plurimath
           "\\#{class_name}#{first_value}#{second_value} #{parameter_three&.to_latex}".strip
         end
 
-        def to_mathml_without_math_tag(intent)
+        def to_mathml_without_math_tag(intent, options:)
           base_element = (Utility.ox_element("mo") << invert_unicode_symbols.to_s)
           return base_element unless all_values_exist?
 
@@ -47,11 +47,11 @@ module Plurimath
             msubsup_tag,
             [
               base_element,
-              validate_mathml_tag(parameter_one, intent),
-              validate_mathml_tag(parameter_two, intent),
+              validate_mathml_tag(parameter_one, intent, options: options),
+              validate_mathml_tag(parameter_two, intent, options: options),
             ],
           )
-          msubsup_tag = masked_tag(msubsup_tag) if options && options.key?(:mask)
+          msubsup_tag = masked_tag(msubsup_tag) if self.options && self.options.key?(:mask)
           return msubsup_tag if parameter_three.nil?
 
           mrow = ox_element("mrow")
@@ -59,7 +59,7 @@ module Plurimath
             mrow,
             [
               msubsup_tag,
-              wrap_mrow(parameter_three&.to_mathml_without_math_tag(intent), intent),
+              wrap_mrow(parameter_three&.to_mathml_without_math_tag(intent, options: options), intent),
             ].flatten.compact,
           )
           intentify(mrow, intent, func_name: :naryand, intent_name: :integral)

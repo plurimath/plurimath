@@ -28,10 +28,10 @@ module Plurimath
           "#{first_value}#{parameter_two&.map(&:to_asciimath)&.join(' ')}#{third_value}"
         end
 
-        def to_mathml_without_math_tag(intent)
-          first_value = ox_element("mo", attributes: options&.dig(:open_paren)) << (mathml_paren(parameter_one, intent) || "")
-          third_value = ox_element("mo", attributes: options&.dig(:close_paren)) << (mathml_paren(parameter_three, intent) || "")
-          mrow_value = Array(mathml_value(intent)).insert(0, first_value) << third_value
+        def to_mathml_without_math_tag(intent, options:)
+          first_value = ox_element("mo", attributes: self.options&.dig(:open_paren)) << (mathml_paren(parameter_one, intent, options) || "")
+          third_value = ox_element("mo", attributes: self.options&.dig(:close_paren)) << (mathml_paren(parameter_three, intent, options) || "")
+          mrow_value = Array(mathml_value(intent, options: options)).insert(0, first_value) << third_value
           fenced = Utility.update_nodes(ox_element("mrow"), mrow_value)
           intentify(
             fenced,
@@ -105,10 +105,10 @@ module Plurimath
           end
         end
 
-        def to_mathml_math_zone(spacing, last = false, indent = true)
-          filtered_values(parameter_two, lang: :mathml).map.with_index(1) do |object, index|
+        def to_mathml_math_zone(spacing, last = false, indent = true, options:)
+          filtered_values(parameter_two, lang: :mathml, options: options).map.with_index(1) do |object, index|
             new_last = index == @values.length && last
-            object.to_mathml_math_zone(spacing, new_last, indent)
+            object.to_mathml_math_zone(spacing, new_last, indent, options: options)
           end
         end
 
@@ -176,9 +176,9 @@ module Plurimath
           paren
         end
 
-        def mathml_paren(field, intent)
+        def mathml_paren(field, intent, options)
           unicodemath_syntax = ["&#x3016;", "&#x3017;", "&#x2524;", "&#x251c;"]
-          paren = symbol_or_paren(field, lang: :mathml, intent: intent)
+          paren = symbol_or_paren(field, lang: :mathml, intent: intent, options: options)
           (paren&.include?(":") || unicodemath_syntax.include?(paren)) ? "" : paren
         end
 
@@ -237,12 +237,12 @@ module Plurimath
           parameter_one.is_a?(Math::Symbols::Paren::Vert)
         end
 
-        def symbol_or_paren(field, lang:, intent: false)
+        def symbol_or_paren(field, lang:, intent: false, options: {})
           return field&.value unless field.is_a?(Math::Symbols::Paren)
 
           case lang
           when :mathml, :html
-            field.to_mathml_without_math_tag(intent).nodes.first
+            field.to_mathml_without_math_tag(intent, options: options).nodes.first
           when :latex
             field.to_latex
           when :omml
@@ -317,8 +317,8 @@ module Plurimath
           node.nodes.first.match?(regex)
         end
 
-        def mathml_value(intent)
-          nodes = parameter_two&.map { |object| object&.to_mathml_without_math_tag(intent) }
+        def mathml_value(intent, options:)
+          nodes = parameter_two&.map { |object| object&.to_mathml_without_math_tag(intent, options: options) }
           if intent
             mrow = Utility.update_nodes(ox_element("mrow"), nodes)
             update_partial_derivative(nodes) unless mrow.locate("*/mfrac/@intent").empty?

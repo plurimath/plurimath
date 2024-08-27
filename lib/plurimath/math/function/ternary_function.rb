@@ -29,11 +29,11 @@ module Plurimath
             object.parameter_three == parameter_three
         end
 
-        def to_mathml_without_math_tag(intent)
+        def to_mathml_without_math_tag(intent, options:)
           value_arr = [
-            validate_mathml_fields(parameter_one, intent),
-            validate_mathml_fields(parameter_two, intent),
-            validate_mathml_fields(parameter_three, intent),
+            validate_mathml_fields(parameter_one, intent, options: options),
+            validate_mathml_fields(parameter_two, intent, options: options),
+            validate_mathml_fields(parameter_three, intent, options: options),
           ]
           class_tag = ox_element("m#{class_name}")
           Utility.update_nodes(class_tag, value_arr)
@@ -81,13 +81,13 @@ module Plurimath
           new_arr
         end
 
-        def to_mathml_math_zone(spacing, last = false, _)
+        def to_mathml_math_zone(spacing, last = false, _, options:)
           parameters = self.class::FUNCTION
           new_spacing = gsub_spacing(spacing, last)
           new_arr = ["#{spacing}\"#{dump_mathml(self)}\" #{parameters[:name]}\n"]
-          mathml_fields_to_print(parameter_one, { spacing: new_spacing, field_name: parameters[:first_value], additional_space: "|  |_ ", array: new_arr })
-          mathml_fields_to_print(parameter_two, { spacing: new_spacing, field_name: parameters[:second_value], additional_space: "  |_ ", array: new_arr })
-          mathml_fields_to_print(parameter_three, { spacing: new_spacing, field_name: parameters[:third_value], additional_space: "   |_ ", array: new_arr })
+          mathml_fields_to_print(parameter_one, { spacing: new_spacing, field_name: parameters[:first_value], additional_space: "|  |_ ", array: new_arr, options: options })
+          mathml_fields_to_print(parameter_two, { spacing: new_spacing, field_name: parameters[:second_value], additional_space: "  |_ ", array: new_arr, options: options })
+          mathml_fields_to_print(parameter_three, { spacing: new_spacing, field_name: parameters[:third_value], additional_space: "   |_ ", array: new_arr, options: options })
           new_arr
         end
 
@@ -178,10 +178,10 @@ module Plurimath
           )
         end
 
-        def validate_mathml_tag(parameter, intent)
+        def validate_mathml_tag(parameter, intent, options:)
           return Array(Utility.ox_element("mrow")) unless parameter
 
-          Array(parameter.to_mathml_without_math_tag(intent))
+          Array(parameter.to_mathml_without_math_tag(intent, options: options))
         end
 
         def underover(display_style)

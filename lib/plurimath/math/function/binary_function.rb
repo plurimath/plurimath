@@ -22,11 +22,11 @@ module Plurimath
             object.parameter_two == parameter_two
         end
 
-        def to_mathml_without_math_tag(intent)
+        def to_mathml_without_math_tag(intent, options:)
           mrow_tag = Utility.ox_element("mrow")
           mo_tag = Utility.ox_element("mo") << invert_unicode_symbols.to_s
-          first_value = parameter_one&.to_mathml_without_math_tag(intent) if parameter_one
-          second_value = parameter_two&.to_mathml_without_math_tag(intent) if parameter_two
+          first_value = parameter_one&.to_mathml_without_math_tag(intent, options: options) if parameter_one
+          second_value = parameter_two&.to_mathml_without_math_tag(intent, options: options) if parameter_two
           Utility.update_nodes(
             mrow_tag,
             [
@@ -82,12 +82,12 @@ module Plurimath
           new_arr
         end
 
-        def to_mathml_math_zone(spacing, last = false, _)
+        def to_mathml_math_zone(spacing, last = false, _, options:)
           parameters = self.class::FUNCTION
           new_spacing = gsub_spacing(spacing, last)
           new_arr = ["#{spacing}\"#{dump_mathml(self)}\" #{parameters[:name]}\n"]
-          mathml_fields_to_print(parameter_one, { spacing: new_spacing, field_name: parameters[:first_value], additional_space: "|  |_ ", array: new_arr })
-          mathml_fields_to_print(parameter_two, { spacing: new_spacing, field_name: parameters[:second_value], additional_space: "  |_ ", array: new_arr })
+          mathml_fields_to_print(parameter_one, { spacing: new_spacing, field_name: parameters[:first_value], additional_space: "|  |_ ", array: new_arr, options: options })
+          mathml_fields_to_print(parameter_two, { spacing: new_spacing, field_name: parameters[:second_value], additional_space: "  |_ ", array: new_arr, options: options })
           new_arr
         end
 

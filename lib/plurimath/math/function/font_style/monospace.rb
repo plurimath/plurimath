@@ -20,13 +20,13 @@ module Plurimath
             "\\mathtt{#{parameter_one&.to_latex}}"
           end
 
-          def to_mathml_without_math_tag(intent)
+          def to_mathml_without_math_tag(intent, options:)
             Utility.update_nodes(
               Utility.ox_element(
                 "mstyle",
                 attributes: { mathvariant: "monospace" },
               ),
-              [parameter_one&.to_mathml_without_math_tag(intent)],
+              [parameter_one&.to_mathml_without_math_tag(intent, options: options)],
             )
           end
 

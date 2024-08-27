@@ -13,12 +13,12 @@ module Plurimath
           third_value: "supscript",
         }.freeze
 
-        def to_mathml_without_math_tag(intent)
+        def to_mathml_without_math_tag(intent, options:)
           underover = Utility.ox_element("munderover")
           value_array = [
-            validate_mathml_fields(parameter_one, intent),
-            validate_mathml_fields(parameter_two, intent),
-            validate_mathml_fields(parameter_three, intent),
+            validate_mathml_fields(parameter_one, intent, options: options),
+            validate_mathml_fields(parameter_two, intent, options: options),
+            validate_mathml_fields(parameter_three, intent, options: options),
           ]
           Utility.update_nodes(underover, value_array)
         end

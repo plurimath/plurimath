@@ -18,7 +18,7 @@ module Plurimath
             "#{open_paren&.to_unicodemath}█(#{value&.map(&:to_unicodemath).join("@")})#{close_paren&.to_unicodemath}"
           end
 
-          def to_mathml_without_math_tag(intent)
+          def to_mathml_without_math_tag(intent, **)
             matrix = super
             set_table_intent(matrix) if intent
             matrix["intent"] = ":equations" if intent

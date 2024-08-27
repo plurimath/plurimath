@@ -27,12 +27,12 @@ module Plurimath
           "#{class_name}#{value}"
         end
 
-        def to_mathml_without_math_tag(intent)
+        def to_mathml_without_math_tag(intent, options:)
           tag_name = Utility::UNARY_CLASSES.include?(class_name) ? "mi" : "mo"
           new_arr = []
           new_arr << (ox_element(tag_name) << class_name) unless hide_function_name
           if parameter_one
-            new_arr += mathml_value(intent)
+            new_arr += mathml_value(intent, options: options)
             mrow = ox_element("mrow")
             Utility.update_nodes(mrow, new_arr)
             intentify(mrow, intent, func_name: :function, intent_name: :function)
@@ -90,13 +90,13 @@ module Plurimath
           new_arr
         end
 
-        def to_mathml_math_zone(spacing, last = false, _)
+        def to_mathml_math_zone(spacing, last = false, _, options:)
           new_spacing = gsub_spacing(spacing, last)
           new_arr = [
             "#{spacing}\"#{dump_mathml(self)}\" function apply\n",
             "#{new_spacing}|_ \"#{class_name}\" function name\n",
           ]
-          mathml_fields_to_print(parameter_one, { spacing: new_spacing, field_name: "argument", additional_space: "   |_ ", array: new_arr })
+          mathml_fields_to_print(parameter_one, { spacing: new_spacing, field_name: "argument", additional_space: "   |_ ", array: new_arr, options: options })
           new_arr
         end
 
@@ -166,12 +166,12 @@ module Plurimath
           end
         end
 
-        def mathml_value(intent)
+        def mathml_value(intent, options:)
           case parameter_one
           when Array
-            parameter_one.compact.map { |object| object&.to_mathml_without_math_tag(intent) }
+            parameter_one.compact.map { |object| object&.to_mathml_without_math_tag(intent, options: options) }
           else
-            Array(parameter_one&.to_mathml_without_math_tag(intent))
+            Array(parameter_one&.to_mathml_without_math_tag(intent, options: options))
           end
         end
 

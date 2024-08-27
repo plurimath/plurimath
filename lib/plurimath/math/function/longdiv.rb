@@ -14,10 +14,10 @@ module Plurimath
           latex_value
         end
 
-        def to_mathml_without_math_tag(intent)
+        def to_mathml_without_math_tag(intent, options:)
           Utility.update_nodes(
             ox_element("m#{class_name}"),
-            mathml_value(intent),
+            mathml_value(intent, options: options),
           )
         end
 

@@ -13,11 +13,11 @@ module Plurimath
           @attributes = attributes
         end
 
-        def to_mathml_without_math_tag(intent)
+        def to_mathml_without_math_tag(intent, options:)
           dot_tag = Utility.ox_element("mo") << "."
           return dot_tag unless parameter_one
 
-          first_value = parameter_one&.to_mathml_without_math_tag(intent)
+          first_value = parameter_one&.to_mathml_without_math_tag(intent, options: options)
           dot_tag = (Utility.ox_element("mo") << ".")
           over_tag = Utility.ox_element("mover")
           over_tag[:accent] = attributes[:accent] if attributes && attributes[:accent]

@@ -18,12 +18,12 @@ module Plurimath
           "#{class_name}#{first_value}#{second_value}"
         end
 
-        def to_mathml_without_math_tag(intent)
+        def to_mathml_without_math_tag(intent, options:)
           Utility.update_nodes(
             ox_element("mover"),
             [
-              mathml_values(parameter_two, intent),
-              mathml_values(parameter_one, intent),
+              mathml_values(parameter_two, intent, options: options),
+              mathml_values(parameter_one, intent, options: options),
             ],
           )
         end
@@ -70,8 +70,8 @@ module Plurimath
           string.start_with?("(") ? string : "(#{string})"
         end
 
-        def mathml_values(field, intent)
-          ox_element("mrow") << (field&.to_mathml_without_math_tag(intent) || "")
+        def mathml_values(field, intent, options:)
+          ox_element("mrow") << (field&.to_mathml_without_math_tag(intent, options: options) || "")
         end
       end
     end

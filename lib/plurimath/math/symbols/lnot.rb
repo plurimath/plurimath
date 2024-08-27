@@ -23,7 +23,7 @@ module Plurimath
           Utility.html_entity_to_unicode("&#xac;")
         end
 
-        def to_mathml_without_math_tag(_)
+        def to_mathml_without_math_tag(_, **)
           ox_element("mi") << "&#xac;"
         end
 

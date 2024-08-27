@@ -760,11 +760,11 @@ module Plurimath
         end
       end
 
-      def validate_math_zone(object, lang:, intent: false)
+      def validate_math_zone(object, lang:, intent: false, options: nil)
         return false unless object
 
         if object.is_a?(Math::Formula)
-          filter_math_zone_values(object.value, lang: lang, intent: intent).find do |value|
+          filter_math_zone_values(object.value, lang: lang, intent: intent, options: options).find do |value|
             !(value.is_a?(Math::Function::Text) || value.is_a?(Math::Symbols::Symbol))
           end
         else
@@ -772,7 +772,7 @@ module Plurimath
         end
       end
 
-      def filter_math_zone_values(value, lang:, intent: false)
+      def filter_math_zone_values(value, lang:, intent: false, options: nil)
         return [] if value&.empty?
 
         new_arr = []
@@ -782,7 +782,7 @@ module Plurimath
           object = obj.dup
           next if index == skip_index
           if TEXT_CLASSES.include?(object.class_name) || math_display_text_objects(object)
-            next temp_array << (object.is_a?(Math::Symbols::Symbol) ? symbol_to_text(object, lang: lang, intent: intent) : object.value)
+            next temp_array << (object.is_a?(Math::Symbols::Symbol) ? symbol_to_text(object, lang: lang, intent: intent, options: options) : object.value)
           end
 
           new_arr << Math::Function::Text.new(temp_array.join(" ")) if temp_array.any?
@@ -793,14 +793,14 @@ module Plurimath
         new_arr
       end
 
-      def symbol_to_text(symbol, lang:, intent: false)
+      def symbol_to_text(symbol, lang:, intent: false, options:)
         case lang
         when :asciimath
           symbol.to_asciimath
         when :latex
           symbol.to_latex
         when :mathml
-          symbol.to_mathml_without_math_tag(intent).nodes.first
+          symbol.to_mathml_without_math_tag(intent, options: options).nodes.first
         when :omml
           symbol.to_omml_without_math_tag(true)
         when :unicodemath

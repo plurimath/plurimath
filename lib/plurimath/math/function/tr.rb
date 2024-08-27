@@ -15,11 +15,11 @@ module Plurimath
           "[#{parameter_one.map(&:to_asciimath).join(', ')}]"
         end
 
-        def to_mathml_without_math_tag(intent)
+        def to_mathml_without_math_tag(intent, options:)
           first_value = remove_hline(cloned_objects.parameter_one)
           Utility.update_nodes(
             Utility.ox_element("mtr"),
-            first_value.map { |obj| obj&.to_mathml_without_math_tag(intent) }.compact,
+            first_value.map { |obj| obj&.to_mathml_without_math_tag(intent, options: options) }.compact,
           )
         end
 
@@ -66,10 +66,10 @@ module Plurimath
           ]
         end
 
-        def to_mathml_math_zone(spacing, last = false, indent = true)
+        def to_mathml_math_zone(spacing, last = false, indent = true, options:)
           [
             "#{spacing}\"tr\" function apply\n",
-            Formula.new(parameter_one).to_mathml_math_zone(gsub_spacing(spacing, last), last, indent),
+            Formula.new(parameter_one).to_mathml_math_zone(gsub_spacing(spacing, last), last, indent, options: options),
           ]
         end
 

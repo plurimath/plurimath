@@ -109,10 +109,10 @@ module Plurimath
         return if field.nil?
 
         hashed = common_math_zone_conversion(field, options)
-        options[:array] << "#{hashed[:spacing]}|_ \"#{dump_mathml(field)}\"#{hashed[:field_name]}\n"
-        return unless Utility.validate_math_zone(field, lang: :mathml, intent: options[:intent])
+        options[:array] << "#{hashed[:spacing]}|_ \"#{dump_mathml(field, options: options[:options])}\"#{hashed[:field_name]}\n"
+        return unless Utility.validate_math_zone(field, lang: :mathml, intent: options[:intent], options: options[:options])
 
-        options[:array] << field&.to_mathml_math_zone(hashed[:function_spacing], hashed[:last], hashed[:indent])
+        options[:array] << field&.to_mathml_math_zone(hashed[:function_spacing], hashed[:last], hashed[:indent], options: options[:options])
       end
 
       def omml_fields_to_print(field, options = {})
@@ -136,8 +136,8 @@ module Plurimath
         options[:array] << field&.to_unicodemath_math_zone(hashed[:function_spacing], hashed[:last], hashed[:indent])
       end
 
-      def dump_mathml(field, intent = false)
-        dump_ox_nodes(field.to_mathml_without_math_tag(intent)).gsub(/\n\s*/, "")
+      def dump_mathml(field, intent = false, options: {})
+        dump_ox_nodes(field.to_mathml_without_math_tag(intent, options: options)).gsub(/\n\s*/, "")
       end
 
       def dump_omml(field, display_style)
@@ -150,11 +150,11 @@ module Plurimath
         to_omml_without_math_tag(display_style)
       end
 
-      def validate_mathml_fields(field, intent)
+      def validate_mathml_fields(field, intent, options:)
         if field.is_a?(Array)
-          field&.map { |object| object.to_mathml_without_math_tag(intent) }
+          field&.map { |object| object.to_mathml_without_math_tag(intent, options: options) }
         else
-          field&.to_mathml_without_math_tag(intent)
+          field&.to_mathml_without_math_tag(intent, options: options)
         end
       end
 
@@ -168,8 +168,8 @@ module Plurimath
         }
       end
 
-      def filtered_values(value, lang:)
-        @values = Utility.filter_math_zone_values(value, lang: lang)
+      def filtered_values(value, lang:, options: {})
+        @values = Utility.filter_math_zone_values(value, lang: lang, options: options)
       end
 
       def dump_ox_nodes(nodes)

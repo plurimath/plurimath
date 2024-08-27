@@ -31,10 +31,10 @@ module Plurimath
           latex_value
         end
 
-        def to_mathml_without_math_tag(intent)
+        def to_mathml_without_math_tag(intent, options:)
           Utility.update_nodes(
-            ox_element(class_name, attributes: options),
-            Array(mathml_value(intent)),
+            ox_element(class_name, attributes: self.options),
+            Array(mathml_value(intent, options: options)),
           )
         end
 

@@ -20,10 +20,10 @@ module Plurimath
           "\\#{class_name}{#{parameter_one&.compact&.map(&:to_latex)&.join(" \\\\ ")}}"
         end
 
-        def to_mathml_without_math_tag(intent)
+        def to_mathml_without_math_tag(intent, options:)
           Utility.update_nodes(
             ox_element("mtable"),
-            mathml_value(intent),
+            mathml_value(intent, options: options),
           )
         end
 

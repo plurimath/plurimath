@@ -48,7 +48,7 @@ module Plurimath
           [ssubsup]
         end
 
-        def to_mathml_without_math_tag(intent)
+        def to_mathml_without_math_tag(intent, options:)
           first_value = ox_element("mi")
           first_value << "log" unless hide_function_name
           return first_value unless parameter_one || parameter_two
@@ -60,8 +60,8 @@ module Plurimath
                      end
           new_arr = [
             first_value,
-            validate_mathml_fields(parameter_one, intent),
-            validate_mathml_fields(parameter_two, intent),
+            validate_mathml_fields(parameter_one, intent, options: options),
+            validate_mathml_fields(parameter_two, intent, options: options),
           ]
           Utility.update_nodes(ox_element("m#{tag_name}"), new_arr)
         end

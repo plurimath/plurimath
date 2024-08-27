@@ -47,8 +47,9 @@ module Plurimath
         parse_error!(:asciimath)
       end
 
-      def to_mathml(display_style: displaystyle, split_on_linebreak: false, intent: false)
-        return line_breaked_mathml(display_style, intent) if split_on_linebreak
+      def to_mathml(display_style: displaystyle, split_on_linebreak: false, intent: false, formatter: nil)
+        options = { formatter: formatter }
+        return line_breaked_mathml(display_style, intent, options: options) if split_on_linebreak
 
         math_attrs = {
           xmlns: "http://www.w3.org/1998/Math/MathML",
@@ -57,7 +58,7 @@ module Plurimath
         style_attrs = { displaystyle: boolean_display_style(display_style) }
         math  = ox_element("math", attributes: math_attrs)
         style = ox_element("mstyle", attributes: style_attrs)
-        Utility.update_nodes(style, mathml_content(intent))
+        Utility.update_nodes(style, mathml_content(intent, options: options))
         Utility.update_nodes(math, [style])
         unitsml_post_processing(math.nodes, math)
         dump_nodes(math, indent: 2)
@@ -65,24 +66,24 @@ module Plurimath
         parse_error!(:mathml)
       end
 
-      def line_breaked_mathml(display_style, intent)
+      def line_breaked_mathml(display_style, intent, options:)
         new_line_support.map do |formula|
-          formula.to_mathml(display_style: display_style, intent: intent)
+          formula.to_mathml(display_style: display_style, intent: intent, formatter: options[:formatter])
         end.join
       end
 
-      def to_mathml_without_math_tag(intent)
-        return mathml_content(intent) unless left_right_wrapper
+      def to_mathml_without_math_tag(intent, options:)
+        return mathml_content(intent, options: options) unless left_right_wrapper
 
-        mathml_value = mathml_content(intent)
+        mathml_value = mathml_content(intent, options: options)
         attributes = intent_attribute(mathml_value) if intent
         mrow = ox_element("mrow", attributes: attributes)
         mrow[:unitsml] = true if unitsml
         Utility.update_nodes(mrow, mathml_value)
       end
 
-      def mathml_content(intent)
-        nodes = value.map { |val| val.to_mathml_without_math_tag(intent) }
+      def mathml_content(intent, options:)
+        nodes = value.map { |val| val.to_mathml_without_math_tag(intent, options: options) }
         intent_post_processing(nodes, intent) if intent
         nodes
       end
@@ -154,7 +155,8 @@ module Plurimath
         parse_error!(:unicodemath)
       end
 
-      def to_display(type = nil)
+      def to_display(type = nil, formatter: nil)
+        options = { formatter: formatter }
         return type_error! unless MATH_ZONE_TYPES.include?(type.downcase.to_sym)
 
         math_zone = case type
@@ -163,7 +165,9 @@ module Plurimath
                     when :latex
                       "  |_ \"#{to_latex}\"\n#{to_latex_math_zone("     ").join}"
                     when :mathml
-                      "  |_ \"#{to_mathml.gsub(/\n\s*/, "")}\"\n#{to_mathml_math_zone("     ").join}"
+                      mathml = to_mathml(formatter: formatter).gsub(/\n\s*/, "")
+                      math_display = to_mathml_math_zone("     ", options: options).join
+                      "  |_ \"#{mathml}\"\n#{math_display}"
                     when :omml
                       "  |_ \"#{to_omml.gsub(/\n\s*/, "")}\"\n#{to_omml_math_zone("     ", display_style: displaystyle).join}"
                     when :unicodemath
@@ -189,10 +193,10 @@ module Plurimath
         end
       end
 
-      def to_mathml_math_zone(spacing = "", last = false, indent = true)
-        filtered_values(value, lang: :mathml).map.with_index(1) do |object, index|
+      def to_mathml_math_zone(spacing = "", last = false, indent = true, options:)
+        filtered_values(value, lang: :mathml, options: options).map.with_index(1) do |object, index|
           last = index == @values.length
-          object.to_mathml_math_zone(new_space(spacing, indent), last, indent)
+          object.to_mathml_math_zone(new_space(spacing, indent), last, indent, options: options)
         end
       end
 

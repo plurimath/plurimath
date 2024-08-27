@@ -26,14 +26,14 @@ module Plurimath
           "color#{first_value}#{second_value}"
         end
 
-        def to_mathml_without_math_tag(intent)
+        def to_mathml_without_math_tag(intent, options:)
           color_value = parameter_one&.to_asciimath&.gsub(/\s/, "")&.gsub(/"/, "")
           Utility.update_nodes(
             Utility.ox_element(
               "mstyle",
               attributes: { attr_key => color_value },
             ),
-            [parameter_two&.to_mathml_without_math_tag(intent)],
+            [parameter_two&.to_mathml_without_math_tag(intent, options: options)],
           )
         end
 

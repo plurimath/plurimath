@@ -6,8 +6,8 @@ module Plurimath
   module Math
     module Function
       class Arg < BinaryFunction
-        def to_mathml_without_math_tag(intent)
-          first_value = parameter_one.to_mathml_without_math_tag(intent)
+        def to_mathml_without_math_tag(intent, options:)
+          first_value = parameter_one.to_mathml_without_math_tag(intent, options: options)
           first_value.attributes[:arg] = Utility.html_entity_to_unicode(parameter_two.value)
           first_value
         end

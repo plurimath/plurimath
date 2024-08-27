@@ -27,13 +27,13 @@ module Plurimath
           "#{first_value}#{second_value}#{third_value}"
         end
 
-        def to_mathml_without_math_tag(intent)
+        def to_mathml_without_math_tag(intent, options:)
           Utility.update_nodes(
             ox_element("m#{class_name}"),
             [
-              validate_mathml_fields(parameter_one, intent),
-              validate_mathml_fields(parameter_two, intent),
-              validate_mathml_fields(parameter_three, intent),
+              validate_mathml_fields(parameter_one, intent, options: options),
+              validate_mathml_fields(parameter_two, intent, options: options),
+              validate_mathml_fields(parameter_three, intent, options: options),
             ],
           )
         end
