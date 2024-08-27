@@ -51,7 +51,7 @@ RSpec.describe Plurimath::Math::Function::Underover do
     subject(:formula) do
       Plurimath.xml_engine.dump(
         described_class.new(first_value, second_value, third_value).
-          to_mathml_without_math_tag(false),
+          to_mathml_without_math_tag(false, options: {}),
         indent: 2,
       ).gsub("&amp;", "&")
     end

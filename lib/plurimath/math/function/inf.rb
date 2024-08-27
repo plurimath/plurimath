@@ -18,7 +18,7 @@ module Plurimath
           "\\#{class_name}#{first_value}#{second_value}"
         end
 
-        def to_mathml_without_math_tag(intent)
+        def to_mathml_without_math_tag(intent, options:)
           first_value = Utility.ox_element("mo") << class_name
           return first_value unless all_values_exist?
 
@@ -32,8 +32,8 @@ module Plurimath
             inf_tag,
             [
               first_value,
-              parameter_one&.to_mathml_without_math_tag(intent),
-              parameter_two&.to_mathml_without_math_tag(intent),
+              parameter_one&.to_mathml_without_math_tag(intent, options: options),
+              parameter_two&.to_mathml_without_math_tag(intent, options: options),
             ],
           )
           intentify(inf_tag, intent, func_name: :function, intent_name: :function)

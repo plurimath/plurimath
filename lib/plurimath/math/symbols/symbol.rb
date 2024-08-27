@@ -36,7 +36,7 @@ module Plurimath
           value
         end
 
-        def to_mathml_without_math_tag(intent)
+        def to_mathml_without_math_tag(intent, options:)
           if value&.include?("&#x2147;")
             attributes = {
               intent: Utility.html_entity_to_unicode(value),
@@ -128,8 +128,8 @@ module Plurimath
           "#{spacing}\"#{dump_omml(self, display_style)}\" text\n"
         end
 
-        def to_mathml_math_zone(spacing = "", last = false, indent = true)
-          "#{spacing}\"#{dump_mathml(self)}\" text\n"
+        def to_mathml_math_zone(spacing = "", last = false, indent = true, options:)
+          "#{spacing}\"#{dump_mathml(self, options: options)}\" text\n"
         end
 
         def to_unicodemath_math_zone(spacing = "", last = false, indent = true)

@@ -18,12 +18,12 @@ module Plurimath
           "#{first_value} mod #{second_value}"
         end
 
-        def to_mathml_without_math_tag(intent)
+        def to_mathml_without_math_tag(intent, options:)
           mi_tag = ox_element("mi")
           mi_tag << "mod" unless hide_function_name
           value_array = [mi_tag]
-          value_array.insert(0, parameter_one&.to_mathml_without_math_tag(intent)) if parameter_one
-          value_array << parameter_two&.to_mathml_without_math_tag(intent) if parameter_two
+          value_array.insert(0, parameter_one&.to_mathml_without_math_tag(intent, options: options)) if parameter_one
+          value_array << parameter_two&.to_mathml_without_math_tag(intent, options: options) if parameter_two
           Utility.update_nodes(ox_element("mrow"), value_array)
         end
 

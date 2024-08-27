@@ -22,7 +22,7 @@ module Plurimath
             "⒨(#{value.map(&:to_unicodemath).join("@")})"
           end
 
-          def to_mathml_without_math_tag(intent)
+          def to_mathml_without_math_tag(intent, **)
             matrix = super
             matrix["intent"] = ":parenthesized-matrix" if intent
             matrix

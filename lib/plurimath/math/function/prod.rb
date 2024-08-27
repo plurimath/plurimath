@@ -37,7 +37,7 @@ module Plurimath
           "\\prod#{first_value}#{second_value} #{parameter_three&.to_latex}".strip
         end
 
-        def to_mathml_without_math_tag(intent)
+        def to_mathml_without_math_tag(intent, options:)
           first_value = ox_element("mo")
           first_value << invert_unicode_symbols.to_s unless hide_function_name
           return first_value unless all_values_exist?
@@ -46,8 +46,8 @@ module Plurimath
             prod_tag_name,
             [
               first_value,
-              parameter_one&.to_mathml_without_math_tag(intent),
-              parameter_two&.to_mathml_without_math_tag(intent),
+              parameter_one&.to_mathml_without_math_tag(intent, options: options),
+              parameter_two&.to_mathml_without_math_tag(intent, options: options),
             ],
           )
           return ternary_intentify(munderover_tag, intent) if parameter_three.nil?
@@ -57,7 +57,7 @@ module Plurimath
             mrow,
             [
               munderover_tag,
-              wrap_mrow(parameter_three&.to_mathml_without_math_tag(intent), intent),
+              wrap_mrow(parameter_three&.to_mathml_without_math_tag(intent, options: options), intent),
             ].flatten.compact,
           )
           ternary_intentify(mrow, intent)

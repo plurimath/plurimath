@@ -18,10 +18,10 @@ module Plurimath
           "\\#{class_name}{#{latex_value}}"
         end
 
-        def to_mathml_without_math_tag(intent)
+        def to_mathml_without_math_tag(intent, options:)
           Utility.update_nodes(
             Utility.ox_element("mphantom"),
-            Array(mathml_value(intent)),
+            Array(mathml_value(intent, options: options)),
           )
         end
 

@@ -31,12 +31,12 @@ module Plurimath
           "#{first_value}#{second_value}"
         end
 
-        def to_mathml_without_math_tag(intent)
+        def to_mathml_without_math_tag(intent, options:)
           tag_name = Utility::MUNDER_CLASSES.include?(parameter_one&.class_name) ? "under" : "sub"
           sub_tag = Utility.ox_element("m#{tag_name}")
           mathml_value = []
-          mathml_value << validate_mathml_fields(parameter_one, intent)
-          mathml_value << validate_mathml_fields(parameter_two, intent)
+          mathml_value << validate_mathml_fields(parameter_one, intent, options: options)
+          mathml_value << validate_mathml_fields(parameter_two, intent, options: options)
           Utility.update_nodes(sub_tag, mathml_value)
         end
 

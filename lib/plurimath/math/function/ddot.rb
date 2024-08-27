@@ -13,11 +13,11 @@ module Plurimath
           @attributes = attributes
         end
 
-        def to_mathml_without_math_tag(intent)
+        def to_mathml_without_math_tag(intent, options:)
           second_value = Utility.ox_element("mo") << ".."
           Utility.update_nodes(
             Utility.ox_element("mover", attributes: { accent: "true" }),
-            mathml_value(intent) << second_value,
+            mathml_value(intent, options: options) << second_value,
           )
         end
 

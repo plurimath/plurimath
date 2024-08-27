@@ -14,10 +14,10 @@ module Plurimath
           parameter_one.map(&:to_latex).join
         end
 
-        def to_mathml_without_math_tag(intent)
+        def to_mathml_without_math_tag(intent, options:)
           Utility.update_nodes(
             Utility.ox_element("msgroup"),
-            parameter_one.map { |object| object&.to_mathml_without_math_tag(intent) },
+            parameter_one.map { |object| object&.to_mathml_without_math_tag(intent, options: options) },
           )
         end
 
@@ -43,10 +43,10 @@ module Plurimath
           ]
         end
 
-        def to_mathml_math_zone(spacing, last = false, indent = true)
+        def to_mathml_math_zone(spacing, last = false, indent = true, options:)
           [
             "#{spacing}\"msgroup\" function apply\n",
-            Formula.new(parameter_one).to_mathml_math_zone(gsub_spacing(spacing, last), last, indent),
+            Formula.new(parameter_one).to_mathml_math_zone(gsub_spacing(spacing, last), last, indent, options: options),
           ]
         end
 

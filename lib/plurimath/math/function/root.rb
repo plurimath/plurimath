@@ -12,9 +12,9 @@ module Plurimath
           second_value: "index",
         }.freeze
 
-        def to_mathml_without_math_tag(intent)
-          first_value = parameter_one&.to_mathml_without_math_tag(intent)
-          second_value = parameter_two&.to_mathml_without_math_tag(intent)
+        def to_mathml_without_math_tag(intent, options:)
+          first_value = parameter_one&.to_mathml_without_math_tag(intent, options: options)
+          second_value = parameter_two&.to_mathml_without_math_tag(intent, options: options)
           Utility.update_nodes(
             Utility.ox_element("mroot"),
             [second_value, first_value],

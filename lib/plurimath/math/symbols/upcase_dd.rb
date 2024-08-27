@@ -24,7 +24,7 @@ module Plurimath
           encoded
         end
 
-        def to_mathml_without_math_tag(intent)
+        def to_mathml_without_math_tag(intent, **)
           attributes = { intent: encoded } if intent
           ox_element("mi", attributes: attributes) << "&#x2145;"
         end

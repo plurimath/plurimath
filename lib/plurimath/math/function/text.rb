@@ -13,7 +13,7 @@ module Plurimath
           "\"#{parse_text('asciimath') || parameter_one}\""
         end
 
-        def to_mathml_without_math_tag(intent)
+        def to_mathml_without_math_tag(intent, **)
           text = ox_element("mtext")
           return text unless parameter_one
 
@@ -59,8 +59,8 @@ module Plurimath
           "#{spacing}#{to_asciimath} text\n"
         end
 
-        def to_mathml_math_zone(spacing, _, _)
-          "#{spacing}\"#{dump_mathml(self)}\" text\n"
+        def to_mathml_math_zone(spacing, _, _, options:)
+          "#{spacing}\"#{dump_mathml(self, options: options)}\" text\n"
         end
 
         def to_omml_math_zone(spacing, _, _, display_style:)
@@ -74,7 +74,7 @@ module Plurimath
         def to_unicodemath_math_zone(spacing, _, _)
           "#{spacing}#{to_unicodemath} text\n"
         end
-        
+
         protected
 
         def symbol_value(unicode)

@@ -24,7 +24,7 @@ module Plurimath
           Utility.html_entity_to_unicode("&#x22ba;")
         end
 
-        def to_mathml_without_math_tag(intent)
+        def to_mathml_without_math_tag(intent, **)
           attribute = { intent: "transpose" } if intent
           ox_element("mi", attributes: attribute) << "&#x22ba;"
         end

@@ -18,10 +18,10 @@ module Plurimath
             "\\begin{array}#{array_args || '.'}#{latex_content}\\end{array}"
           end
 
-          def to_mathml_without_math_tag(intent)
+          def to_mathml_without_math_tag(intent, options:)
             Utility.update_nodes(
               ox_element("mtable", attributes: attributes(intent)),
-              value&.map { |object| object&.to_mathml_without_math_tag(intent) },
+              value&.map { |object| object&.to_mathml_without_math_tag(intent, options: options) },
             )
           end
 

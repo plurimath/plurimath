@@ -13,9 +13,9 @@ module Plurimath
           @attributes = attributes
         end
 
-        def to_mathml_without_math_tag(intent)
+        def to_mathml_without_math_tag(intent, options:)
           mover = ox_element("mover")
-          first_value = parameter_one&.to_mathml_without_math_tag(intent)
+          first_value = parameter_one&.to_mathml_without_math_tag(intent, options: options)
           mover[:accent] = attributes[:accent] if attributes && attributes[:accent]
           Utility.update_nodes(
             mover,
@@ -61,13 +61,13 @@ module Plurimath
           new_arr
         end
 
-        def to_mathml_math_zone(spacing, last = false, _)
+        def to_mathml_math_zone(spacing, last = false, _, options:)
           new_spacing = gsub_spacing(spacing, last)
           new_arr = [
             "#{spacing}\"#{dump_mathml(self)}\" overset\n",
             "#{new_spacing}|_ \"<mo>&#x2192;</mo>\" base\n",
           ]
-          mathml_fields_to_print(parameter_one, { spacing: new_spacing, field_name: "supscript", additional_space: "|  |_ ", array: new_arr })
+          mathml_fields_to_print(parameter_one, { spacing: new_spacing, field_name: "supscript", additional_space: "|  |_ ", array: new_arr, options: options })
           new_arr
         end
 

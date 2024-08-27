@@ -22,8 +22,8 @@ module Plurimath
         value
       end
 
-      def to_mathml_without_math_tag(_)
-        Utility.ox_element("mn") << value
+      def to_mathml_without_math_tag(_, options:)
+        Utility.ox_element("mn") << mathml_output_value(options)
       end
 
       def to_latex
@@ -83,6 +83,12 @@ module Plurimath
 
       def unicode_const(const)
         UnicodeMath::Constants.const_get(const)
+      end
+
+      def mathml_output_value(options)
+        return value unless options[:formatter]&.respond_to?(:localized_number)
+
+        options[:formatter].localized_number(value.to_s)
       end
     end
   end

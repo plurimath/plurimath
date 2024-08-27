@@ -31,14 +31,14 @@ module Plurimath
           "frac#{first_value}#{second_value}"
         end
 
-        def to_mathml_without_math_tag(intent)
+        def to_mathml_without_math_tag(intent, options:)
           tag_name = hide_function_name ? "mrow" : "mfrac"
           mathml_value = [
-            parameter_one&.to_mathml_without_math_tag(intent),
-            parameter_two&.to_mathml_without_math_tag(intent),
+            parameter_one&.to_mathml_without_math_tag(intent, options: options),
+            parameter_two&.to_mathml_without_math_tag(intent, options: options),
           ]
           frac_tag = ox_element(tag_name)
-          frac_tag.set_attr(options.reject { |opt| opt == :choose }) if tag_name == "mfrac" && options
+          frac_tag.set_attr(self.options.reject { |opt| opt == :choose }) if tag_name == "mfrac" && self.options
           Utility.update_nodes(frac_tag, mathml_value)
           update_derivative(frac_tag, mathml_value[0], mathml_value[1]) if intent
           intentify(frac_tag, intent, func_name: :frac)

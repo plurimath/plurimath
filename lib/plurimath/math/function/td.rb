@@ -15,13 +15,13 @@ module Plurimath
           parameter_one.map(&:to_asciimath).join(" ")
         end
 
-        def to_mathml_without_math_tag(intent)
+        def to_mathml_without_math_tag(intent, options:)
           return "" if Utility.symbol_value(parameter_one.first, "|")
 
           td_attribute = parameter_two if parameter_two&.any?
           Utility.update_nodes(
             ox_element("mtd", attributes: td_attribute),
-            parameter_one.map { |object| object&.to_mathml_without_math_tag(intent) },
+            parameter_one.map { |object| object&.to_mathml_without_math_tag(intent, options: options) },
           )
         end
 
@@ -62,10 +62,10 @@ module Plurimath
           ]
         end
 
-        def to_mathml_math_zone(spacing, last = false, indent = true)
+        def to_mathml_math_zone(spacing, last = false, indent = true, options:)
           [
             "#{spacing}\"td\" function apply\n",
-            Formula.new(parameter_one).to_mathml_math_zone(gsub_spacing(spacing, last), last, indent),
+            Formula.new(parameter_one).to_mathml_math_zone(gsub_spacing(spacing, last), last, indent, options: options),
           ]
         end
 
@@ -89,7 +89,7 @@ module Plurimath
             Formula.new(parameter_one).to_unicodemath_math_zone(gsub_spacing(spacing, last), last),
           ]
         end
-        
+
         def omml_content(display_style)
           parameter_one&.map { |val| val.insert_t_tag(display_style) }
         end

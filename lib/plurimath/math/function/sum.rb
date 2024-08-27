@@ -38,7 +38,7 @@ module Plurimath
           "\\sum#{first_value}#{second_value} #{parameter_three&.to_latex}".strip
         end
 
-        def to_mathml_without_math_tag(intent)
+        def to_mathml_without_math_tag(intent, options:)
           first_value = ox_element("mo")
           first_value << invert_unicode_symbols.to_s unless hide_function_name
           return first_value unless all_values_exist?
@@ -47,8 +47,8 @@ module Plurimath
             sum_tag,
             [
               first_value,
-              parameter_one&.to_mathml_without_math_tag(intent),
-              parameter_two&.to_mathml_without_math_tag(intent),
+              parameter_one&.to_mathml_without_math_tag(intent, options: options),
+              parameter_two&.to_mathml_without_math_tag(intent, options: options),
             ],
           )
           return munderover_tag if parameter_three.nil?
@@ -58,7 +58,7 @@ module Plurimath
             mrow,
             [
               munderover_tag,
-              wrap_mrow(parameter_three&.to_mathml_without_math_tag(intent), intent),
+              wrap_mrow(parameter_three&.to_mathml_without_math_tag(intent, options: options), intent),
             ],
           )
           ternary_intentify(mrow, intent)

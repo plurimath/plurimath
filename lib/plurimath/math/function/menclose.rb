@@ -28,10 +28,10 @@ module Plurimath
           parameter_two&.to_asciimath
         end
 
-        def to_mathml_without_math_tag(intent)
+        def to_mathml_without_math_tag(intent, options:)
           attributes = { notation: parameter_one }
           menclose = ox_element("menclose", attributes: attributes)
-          menclose << parameter_two.to_mathml_without_math_tag(intent) if parameter_two
+          menclose << parameter_two.to_mathml_without_math_tag(intent, options: options) if parameter_two
           menclose
         end
 

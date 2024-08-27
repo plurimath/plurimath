@@ -10,8 +10,8 @@ module Plurimath
           parameter_one&.to_asciimath
         end
 
-        def to_mathml_without_math_tag(intent)
-          first_value = parameter_one&.to_mathml_without_math_tag(intent)
+        def to_mathml_without_math_tag(intent, options:)
+          first_value = parameter_one&.to_mathml_without_math_tag(intent, options: options)
           Utility.update_nodes(
             Utility.ox_element(
               "mstyle",
@@ -82,13 +82,13 @@ module Plurimath
           new_arr
         end
 
-        def to_mathml_math_zone(spacing, last = false, _)
+        def to_mathml_math_zone(spacing, last = false, _, options:)
           new_spacing = gsub_spacing(spacing, last)
           new_arr = [
             "#{spacing}\"#{dump_mathml(self)}\" function apply\n",
             "#{new_spacing}|_ \"#{font_family(mathml: true)}\" font family\n",
           ]
-          mathml_fields_to_print(parameter_one, { spacing: new_spacing, field_name: "argument", additional_space: "|  |_ ", array: new_arr })
+          mathml_fields_to_print(parameter_one, { spacing: new_spacing, field_name: "argument", additional_space: "|  |_ ", array: new_arr, options: options })
           new_arr
         end
 

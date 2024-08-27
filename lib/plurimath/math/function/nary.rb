@@ -44,14 +44,14 @@ module Plurimath
           "#{first_value}#{second_value}#{third_value}#{fourth_value}"
         end
 
-        def to_mathml_without_math_tag(intent)
+        def to_mathml_without_math_tag(intent, options:)
           new_arr = [
-            validate_mathml_fields(parameter_one, intent),
-            validate_mathml_fields(parameter_two, intent),
-            validate_mathml_fields(parameter_three, intent),
+            validate_mathml_fields(parameter_one, intent, options: options),
+            validate_mathml_fields(parameter_two, intent, options: options),
+            validate_mathml_fields(parameter_three, intent, options: options),
           ]
           subsup_tag = Utility.update_nodes(ox_element(tag_name), new_arr)
-          masked_tag(subsup_tag) if options.dig(:mask)
+          masked_tag(subsup_tag) if self.options.dig(:mask)
           return subsup_tag unless parameter_four
 
           intentify(
@@ -59,7 +59,7 @@ module Plurimath
               ox_element("mrow"),
               [
                 subsup_tag,
-                wrap_mrow(validate_mathml_fields(parameter_four, intent), true),
+                wrap_mrow(validate_mathml_fields(parameter_four, intent, options: options), true),
               ],
             ),
             intent,

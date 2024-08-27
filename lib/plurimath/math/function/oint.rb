@@ -37,7 +37,7 @@ module Plurimath
           "\\#{class_name}#{first_value}#{second_value} #{parameter_three&.to_latex}".strip
         end
 
-        def to_mathml_without_math_tag(intent)
+        def to_mathml_without_math_tag(intent, options:)
           mo_tag = ox_element("mo")
           mo_tag << invert_unicode_symbols.to_s unless hide_function_name
           return mo_tag unless all_values_exist?
@@ -52,8 +52,8 @@ module Plurimath
             oint_tag,
             [
               mo_tag,
-              parameter_one&.to_mathml_without_math_tag(intent),
-              parameter_two&.to_mathml_without_math_tag(intent),
+              parameter_one&.to_mathml_without_math_tag(intent, options: options),
+              parameter_two&.to_mathml_without_math_tag(intent, options: options),
             ],
           )
           return ternary_intentify(oint_tag, intent) unless parameter_three
@@ -63,7 +63,7 @@ module Plurimath
               ox_element("mrow"),
               [
                 oint_tag,
-                wrap_mrow(parameter_three&.to_mathml_without_math_tag(intent), intent),
+                wrap_mrow(parameter_three&.to_mathml_without_math_tag(intent, options: options), intent),
               ],
             ),
             intent,

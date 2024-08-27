@@ -36,18 +36,18 @@ module Plurimath
           "#{lparen}#{first_value}#{rparen}"
         end
 
-        def to_mathml_without_math_tag(intent)
+        def to_mathml_without_math_tag(intent, options:)
           table_tag = ox_element("mtable", attributes: table_attribute)
           table_tag["intent"] = ":matrix(#{value.length},#{td_count})" if intent
           Utility.update_nodes(
             table_tag,
-            value&.map { |object| object&.to_mathml_without_math_tag(intent) },
+            value&.map { |object| object&.to_mathml_without_math_tag(intent, options: options) },
           )
           return norm_table(table_tag) if open_paren.is_a?(Math::Symbols::Paren::Norm)
 
-          if mathml_paren_present?(open_paren, intent) || mathml_paren_present?(close_paren, intent)
-            first_paren = mo_element(mathml_parenthesis(open_paren, intent))
-            second_paren = mo_element(mathml_parenthesis(close_paren, intent))
+          if mathml_paren_present?(open_paren, intent, options: options) || mathml_paren_present?(close_paren, intent, options: options)
+            first_paren = mo_element(mathml_parenthesis(open_paren, intent, options: options))
+            second_paren = mo_element(mathml_parenthesis(close_paren, intent, options: options))
             attributes = { intent: ":fenced" } if intent
             mrow = ox_element("mrow", attributes: attributes)
             return Utility.update_nodes(mrow, [first_paren, table_tag, second_paren])
@@ -103,10 +103,10 @@ module Plurimath
           ]
         end
 
-        def to_mathml_math_zone(spacing, last = false, indent = true)
+        def to_mathml_math_zone(spacing, last = false, indent = true, options:)
           [
             "#{spacing}\"table\" function apply\n",
-            Formula.new(value).to_mathml_math_zone(gsub_spacing(spacing, last), last, indent),
+            Formula.new(value).to_mathml_math_zone(gsub_spacing(spacing, last), last, indent, options: options),
           ]
         end
 
@@ -126,10 +126,10 @@ module Plurimath
 
         protected
 
-        def mathml_parenthesis(field, intent)
+        def mathml_parenthesis(field, intent, options:)
           return "" unless field
           if field&.class_name == "symbol"
-            paren = field&.to_mathml_without_math_tag(intent)&.nodes&.first
+            paren = field&.to_mathml_without_math_tag(intent, options: options)&.nodes&.first
             return invisible_paren?(paren) ? "" : paren.to_s
           end
 
@@ -334,10 +334,10 @@ module Plurimath
           UnicodeMath::Constants::MATRIXS[matrix_name]
         end
 
-        def mathml_paren_present?(paren, intent)
+        def mathml_paren_present?(paren, intent, options:)
           return unless paren || paren&.class_name == "symbol"
 
-          !paren&.to_mathml_without_math_tag(intent)&.nodes&.first&.empty?
+          !paren&.to_mathml_without_math_tag(intent, options: options)&.nodes&.first&.empty?
         end
 
         def td_count

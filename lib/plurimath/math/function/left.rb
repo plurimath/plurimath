@@ -10,7 +10,7 @@ module Plurimath
           "left#{parameter_one}"
         end
 
-        def to_mathml_without_math_tag(intent)
+        def to_mathml_without_math_tag(intent, **)
           mo = Utility.ox_element("mo")
           mo << left_paren if parameter_one
           mo
@@ -49,7 +49,7 @@ module Plurimath
           "#{spacing}\"#{latex_paren}\" left\n"
         end
 
-        def to_mathml_math_zone(spacing = "", _, _)
+        def to_mathml_math_zone(spacing = "", _, _, **)
           mo_tag = (Utility.ox_element("mo") << left_paren)
           "#{spacing}\"#{dump_ox_nodes(mo_tag).gsub(/\s+/, "")}\" left\n"
         end
@@ -62,7 +62,7 @@ module Plurimath
         def to_unicodemath_math_zone(spacing = "", _, _)
           "#{spacing}\"#{parameter_one}\" left\n"
         end
-        
+
         protected
 
         def left_paren

@@ -12,11 +12,11 @@ module Plurimath
           second_value: "second argument",
         }.freeze
 
-        def to_mathml_without_math_tag(intent)
-          first_value = parameter_one&.to_mathml_without_math_tag(intent)
+        def to_mathml_without_math_tag(intent, options:)
+          first_value = parameter_one&.to_mathml_without_math_tag(intent, options: options)
           Utility.update_nodes(
             Utility.ox_element("semantics"),
-            other_tags(parameter_two, intent).insert(0, first_value),
+            other_tags(parameter_two, intent, options: options).insert(0, first_value),
           )
         end
 
@@ -43,14 +43,14 @@ module Plurimath
 
         protected
 
-        def other_tags(array, intent)
+        def other_tags(array, intent, options:)
           contented = []
           array&.each do |hash|
             hash.each do |tag, content|
               tag_element = Utility.ox_element(tag&.to_s)
               contented << Utility.update_nodes(
                 tag_element,
-                content&.map { |object| object&.to_mathml_without_math_tag(intent) },
+                content&.map { |object| object&.to_mathml_without_math_tag(intent, options: options) },
               )
             end
           end
