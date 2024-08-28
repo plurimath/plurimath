@@ -23,12 +23,12 @@ module Plurimath
             object&.options == options
         end
 
-        def to_asciimath
-          asciimath_value
+        def to_asciimath(options:)
+          asciimath_value(options: options)
         end
 
-        def to_latex
-          latex_value
+        def to_latex(options:)
+          latex_value(options: options)
         end
 
         def to_mathml_without_math_tag(intent, options:)
@@ -38,22 +38,22 @@ module Plurimath
           )
         end
 
-        def to_omml_without_math_tag(display_style)
+        def to_omml_without_math_tag(display_style, options:)
           phant   = ox_element("phant", namespace: "m")
           phantpr = ox_element("phantPr", namespace: "m")
           Utility.update_nodes(phantpr, phant_pr)
           phant << phantpr unless phantpr.nodes.empty?
 
-          phant << omml_parameter(parameter_one, display_style, tag_name: "e")
+          phant << omml_parameter(parameter_one, display_style, tag_name: "e", options: options)
         end
 
-        def to_unicodemath
+        def to_unicodemath(options:)
           if options&.dig(:mpadded)
-            "#{mpadded_unicode}#{unicodemath_parens(parameter_one)}"
+            "#{mpadded_unicode}#{unicodemath_parens(parameter_one, options: options)}"
           elsif options&.key?(:mask)
-            "⟡(#{options.dig(:mask)}&#{parameter_one&.to_unicodemath})"
+            "⟡(#{options.dig(:mask)}&#{parameter_one&.to_unicodemath(options: options)})"
           else
-            first_value = "(#{parameter_one.to_unicodemath})" if parameter_one
+            first_value = "(#{parameter_one.to_unicodemath(options: options)})" if parameter_one
             "⟡#{first_value}"
           end
         end

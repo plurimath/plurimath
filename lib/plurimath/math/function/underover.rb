@@ -13,17 +13,17 @@ module Plurimath
           third_value: "Over",
         }.freeze
 
-        def to_asciimath
-          first_value = first_field_wrap(parameter_one) if parameter_one
-          second_value = "_#{wrapped(parameter_two)}" if parameter_two
-          third_value = "^#{wrapped(parameter_three)}" if parameter_three
+        def to_asciimath(options:)
+          first_value = first_field_wrap(parameter_one, options: options) if parameter_one
+          second_value = "_#{wrapped(parameter_two, options: options)}" if parameter_two
+          third_value = "^#{wrapped(parameter_three, options: options)}" if parameter_three
           "#{first_value}#{second_value}#{third_value}"
         end
 
-        def to_latex
-          first_value = first_field_wrap(parameter_one, type: "latex") if parameter_one
-          second_value = "_#{wrapped(parameter_two, type: 'latex')}" if parameter_two
-          third_value = "^#{wrapped(parameter_three, type: 'latex')}" if parameter_three
+        def to_latex(options:)
+          first_value = first_field_wrap(parameter_one, type: "latex", options: options) if parameter_one
+          second_value = "_#{wrapped(parameter_two, type: 'latex', options: options)}" if parameter_two
+          third_value = "^#{wrapped(parameter_three, type: 'latex', options: options)}" if parameter_three
           "#{first_value}#{second_value}#{third_value}"
         end
 
@@ -38,19 +38,19 @@ module Plurimath
           )
         end
 
-        def to_omml_without_math_tag(display_style)
+        def to_omml_without_math_tag(display_style, options:)
           if !display_style
             power_base = PowerBase.new(parameter_one, parameter_two, parameter_three)
-            return power_base.to_omml_without_math_tag(display_style)
+            return power_base.to_omml_without_math_tag(display_style, options: options)
           end
 
-          underover(display_style)
+          underover(display_style, options: options)
         end
 
-        def to_unicodemath
-          sub_value = "┬#{unicodemath_parens(parameter_two)}" if parameter_two
-          sup_value = "┴#{unicodemath_parens(parameter_three)}" if parameter_three
-          "#{parameter_one&.to_unicodemath}#{sub_value}#{sup_value}"
+        def to_unicodemath(options:)
+          sub_value = "┬#{unicodemath_parens(parameter_two, options: options)}" if parameter_two
+          sup_value = "┴#{unicodemath_parens(parameter_three, options: options)}" if parameter_three
+          "#{parameter_one&.to_unicodemath(options: options)}#{sub_value}#{sup_value}"
         end
 
         def line_breaking(obj)

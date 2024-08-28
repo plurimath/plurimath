@@ -50,7 +50,7 @@ RSpec.describe Plurimath::Math::Function::PowerBase do
   end
 
   describe ".to_asciimath" do
-    subject(:formula) { described_class.new(first_value, second_value, third_value).to_asciimath }
+    subject(:formula) { described_class.new(first_value, second_value, third_value).to_asciimath(options: {}) }
 
     context "contains Symbol as value" do
       let(:first_value) { Plurimath::Math::Symbols::Symbol.new("n") }
@@ -218,7 +218,7 @@ RSpec.describe Plurimath::Math::Function::PowerBase do
   end
 
   describe ".to_latex" do
-    subject(:formula) { described_class.new(first_value, second_value, third_value).to_latex }
+    subject(:formula) { described_class.new(first_value, second_value, third_value).to_latex(options: {}) }
 
     context "contains Symbol as value" do
       let(:first_value) { Plurimath::Math::Symbols::Symbol.new("n") }

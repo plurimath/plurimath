@@ -25,16 +25,16 @@ module Plurimath
           super(object) && object.options == options
         end
 
-        def to_asciimath
-          first_value = "_#{wrapped(parameter_one)}" if parameter_one
-          second_value = "^#{wrapped(parameter_two)}" if parameter_two
-          "oint#{first_value}#{second_value} #{parameter_three&.to_asciimath}".strip
+        def to_asciimath(options:)
+          first_value = "_#{wrapped(parameter_one, options: options)}" if parameter_one
+          second_value = "^#{wrapped(parameter_two, options: options)}" if parameter_two
+          "oint#{first_value}#{second_value} #{parameter_three&.to_asciimath(options: options)}".strip
         end
 
-        def to_latex
-          first_value = "_#{latex_wrapped(parameter_one)}" if parameter_one
-          second_value = "^#{latex_wrapped(parameter_two)}" if parameter_two
-          "\\#{class_name}#{first_value}#{second_value} #{parameter_three&.to_latex}".strip
+        def to_latex(options:)
+          first_value = "_#{latex_wrapped(parameter_one, options: options)}" if parameter_one
+          second_value = "^#{latex_wrapped(parameter_two, options: options)}" if parameter_two
+          "\\#{class_name}#{first_value}#{second_value} #{parameter_three&.to_latex(options: options)}".strip
         end
 
         def to_mathml_without_math_tag(intent, options:)
@@ -70,16 +70,16 @@ module Plurimath
           )
         end
 
-        def to_omml_without_math_tag(display_style)
+        def to_omml_without_math_tag(display_style, options:)
           if all_values_exist?
             nary = Utility.ox_element("nary", namespace: "m")
             Utility.update_nodes(
               nary,
               [
                 narypr((hide_function_name ? "" : "∮"), function_type: "subSup"),
-                omml_parameter(parameter_one, display_style, tag_name: "sub"),
-                omml_parameter(parameter_two, display_style, tag_name: "sup"),
-                omml_parameter(parameter_three, display_style, tag_name: "e"),
+                omml_parameter(parameter_one, display_style, tag_name: "sub", options: options),
+                omml_parameter(parameter_two, display_style, tag_name: "sup", options: options),
+                omml_parameter(parameter_three, display_style, tag_name: "e", options: options),
               ],
             )
             [nary]
@@ -91,11 +91,11 @@ module Plurimath
           end
         end
 
-        def to_unicodemath
-          first_value = "_#{unicodemath_parens(parameter_one)}" if parameter_one
-          second_value = "^#{unicodemath_parens(parameter_two)}" if parameter_two
+        def to_unicodemath(options:)
+          first_value = "_#{unicodemath_parens(parameter_one, options: options)}" if parameter_one
+          second_value = "^#{unicodemath_parens(parameter_two, options: options)}" if parameter_two
           mask = options&.dig(:mask) if options&.key?(:mask)
-          "∮#{mask}#{first_value}#{second_value}#{naryand_value(parameter_three)}"
+          "∮#{mask}#{first_value}#{second_value}#{naryand_value(parameter_three, options: options)}"
         end
 
         def line_breaking(obj)

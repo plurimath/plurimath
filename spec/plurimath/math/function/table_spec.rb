@@ -22,7 +22,7 @@ RSpec.describe Plurimath::Math::Function::Table do
   end
 
   describe ".to_asciimath" do
-    subject(:formula) { described_class.new([first_value]).to_asciimath }
+    subject(:formula) { described_class.new([first_value]).to_asciimath(options: {}) }
 
     context "contains Symbol as value" do
       let(:first_value) do
@@ -177,7 +177,7 @@ RSpec.describe Plurimath::Math::Function::Table do
   end
 
   describe ".to_latex" do
-    subject(:formula) { described_class.new([first_value]).to_latex }
+    subject(:formula) { described_class.new([first_value]).to_latex(options: {}) }
 
     context "contains Symbol as value" do
       let(:first_value) do

@@ -20,7 +20,7 @@ RSpec.describe Plurimath::Math::Function::UnaryFunction do
     context "contains sum fuction" do
       let(:first_value) { Plurimath::Math::Function::Sum.new }
       it "returns asciimath string" do
-        expect(formula.to_asciimath).to eq("unaryfunction(sum)")
+        expect(formula.to_asciimath(options: {})).to eq("unaryfunction(sum)")
       end
     end
   end

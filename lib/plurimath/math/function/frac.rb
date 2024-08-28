@@ -25,9 +25,9 @@ module Plurimath
             object.options == options
         end
 
-        def to_asciimath
-          first_value = "(#{parameter_one&.to_asciimath})" if parameter_one
-          second_value = "(#{parameter_two&.to_asciimath})" if parameter_two
+        def to_asciimath(options:)
+          first_value = "(#{parameter_one&.to_asciimath(options: options)})" if parameter_one
+          second_value = "(#{parameter_two&.to_asciimath(options: options)})" if parameter_two
           "frac#{first_value}#{second_value}"
         end
 
@@ -44,34 +44,34 @@ module Plurimath
           intentify(frac_tag, intent, func_name: :frac)
         end
 
-        def to_latex
-          first_value = parameter_one&.to_latex
-          two_value = parameter_two&.to_latex
+        def to_latex(options:)
+          first_value = parameter_one&.to_latex(options: options)
+          two_value = parameter_two&.to_latex(options: options)
           "\\frac{#{first_value}}{#{two_value}}"
         end
 
-        def to_omml_without_math_tag(display_style)
+        def to_omml_without_math_tag(display_style, options:)
           f_element   = Utility.ox_element("f", namespace: "m")
           Utility.update_nodes(
             f_element,
             [
               fpr_element,
-              omml_parameter(parameter_one, display_style, tag_name: "num"),
-              omml_parameter(parameter_two, display_style, tag_name: "den"),
+              omml_parameter(parameter_one, display_style, tag_name: "num", options: options),
+              omml_parameter(parameter_two, display_style, tag_name: "den", options: options),
             ],
           )
         end
 
-        def to_unicodemath
+        def to_unicodemath(options:)
           return unicodemath_fraction if options&.dig(:unicodemath_fraction)
 
-          first_value = unicodemath_parens(parameter_one) if parameter_one
-          second_value = unicodemath_parens(parameter_two) if parameter_two
-          return "#{first_value}/#{second_value}" unless options
+          first_value = unicodemath_parens(parameter_one, options: options) if parameter_one
+          second_value = unicodemath_parens(parameter_two, options: options) if parameter_two
+          return "#{first_value}/#{second_value}" unless self.options
 
-          return "#{first_value}¦#{second_value}" if options && options.key?(:linethickness)
-          return "#{parameter_one.to_unicodemath}⊘#{parameter_two.to_unicodemath}" if options && options.key?(:displaystyle)
-          "#{first_value}∕#{second_value}" if options && options.key?(:ldiv)
+          return "#{first_value}¦#{second_value}" if self.options && self.options.key?(:linethickness)
+          return "#{parameter_one.to_unicodemath(options: options)}⊘#{parameter_two.to_unicodemath(options: options)}" if self.options && self.options.key?(:displaystyle)
+          "#{first_value}∕#{second_value}" if self.options && self.options.key?(:ldiv)
         end
 
         def line_breaking(obj)
@@ -92,9 +92,9 @@ module Plurimath
           end
         end
 
-        def choose_frac
-          first_value = unicodemath_parens(parameter_one) if parameter_one
-          second_value = unicodemath_parens(parameter_two) if parameter_two
+        def choose_frac(options:)
+          first_value = unicodemath_parens(parameter_one, options: options) if parameter_one
+          second_value = unicodemath_parens(parameter_two, options: options) if parameter_two
           "#{first_value}⒞#{second_value}"
         end
 

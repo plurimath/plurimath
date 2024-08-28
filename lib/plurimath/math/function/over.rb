@@ -12,9 +12,9 @@ module Plurimath
           second_value: "denominator",
         }.freeze
 
-        def to_asciimath
-          first_value = wrapped(parameter_one)
-          second_value = wrapped(parameter_two)
+        def to_asciimath(options:)
+          first_value = wrapped(parameter_one, options: options)
+          second_value = wrapped(parameter_two, options: options)
           "frac#{first_value}#{second_value}"
         end
 
@@ -27,29 +27,29 @@ module Plurimath
           Utility.update_nodes(ox_element(tag_name), mathml_value)
         end
 
-        def to_latex
-          first_value = parameter_one&.to_latex
-          two_value = parameter_two&.to_latex
+        def to_latex(options:)
+          first_value = parameter_one&.to_latex(options: options)
+          two_value = parameter_two&.to_latex(options: options)
           "{#{first_value} \\over #{two_value}}"
         end
 
-        def to_omml_without_math_tag(display_style)
+        def to_omml_without_math_tag(display_style, options:)
           f_element   = Utility.ox_element("f", namespace: "m")
           fpr_element = Utility.ox_element("fPr", namespace: "m")
           Utility.update_nodes(
             f_element,
             [
               fpr_element << Utility.pr_element("ctrl", true, namespace: "m"),
-              omml_parameter(parameter_one, display_style, tag_name: "num"),
-              omml_parameter(parameter_two, display_style, tag_name: "den"),
+              omml_parameter(parameter_one, display_style, tag_name: "num", options: options),
+              omml_parameter(parameter_two, display_style, tag_name: "den", options: options),
             ],
           )
           [f_element]
         end
 
-        def to_unicodemath
-          first_value = unicodemath_parens(parameter_one) if parameter_one
-          second_value = unicodemath_parens(parameter_two) if parameter_two
+        def to_unicodemath(options:)
+          first_value = unicodemath_parens(parameter_one, options: options) if parameter_one
+          second_value = unicodemath_parens(parameter_two, options: options) if parameter_two
           "#{first_value}/#{second_value}"
         end
 

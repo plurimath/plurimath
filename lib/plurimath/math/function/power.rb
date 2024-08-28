@@ -12,9 +12,9 @@ module Plurimath
           second_value: "script",
         }.freeze
 
-        def to_asciimath
-          second_value = "^#{wrapped(parameter_two)}" if parameter_two
-          "#{parameter_one.to_asciimath}#{second_value}"
+        def to_asciimath(options:)
+          second_value = "^#{wrapped(parameter_two, options: options)}" if parameter_two
+          "#{parameter_one.to_asciimath(options: options)}#{second_value}"
         end
 
         def to_mathml_without_math_tag(intent, options:)
@@ -26,9 +26,9 @@ module Plurimath
           Utility.update_nodes(ox_element("m#{tag_name}"), value_array)
         end
 
-        def to_latex
-          first_value  = parameter_one.to_latex
-          second_value = parameter_two.to_latex if parameter_two
+        def to_latex(options:)
+          first_value  = parameter_one.to_latex(options: options)
+          second_value = parameter_two.to_latex(options: options) if parameter_two
           "#{first_value}^{#{second_value}}"
         end
 
@@ -38,7 +38,7 @@ module Plurimath
           "#{first_value}#{second_value}"
         end
 
-        def to_omml_without_math_tag(display_style)
+        def to_omml_without_math_tag(display_style, options:)
           ssup_element  = Utility.ox_element("sSup", namespace: "m")
           suppr_element = Utility.ox_element("sSupPr", namespace: "m")
           suppr_element << Utility.pr_element("ctrl", true, namespace: "m")
@@ -46,24 +46,24 @@ module Plurimath
             ssup_element,
             [
               suppr_element,
-              omml_parameter(parameter_one, display_style, tag_name: "e"),
-              omml_parameter(parameter_two, display_style, tag_name: "sup"),
+              omml_parameter(parameter_one, display_style, tag_name: "e", options: options),
+              omml_parameter(parameter_two, display_style, tag_name: "sup", options: options),
             ],
           )
           [ssup_element]
         end
 
-        def to_unicodemath
+        def to_unicodemath(options:)
           if accented?(parameter_two)
-            "#{parameter_one.to_unicodemath}#{parameter_two.to_unicodemath.gsub(/\s+/, "")}"
+            "#{parameter_one.to_unicodemath(options: options)}#{parameter_two.to_unicodemath(options: options).gsub(/\s+/, "")}"
           elsif parameter_two.mini_sized?
-            "#{parameter_one.to_unicodemath}#{parameter_two.to_unicodemath}"
+            "#{parameter_one.to_unicodemath(options: options)}#{parameter_two.to_unicodemath(options: options)}"
           else
-            first_value = parameter_one.to_unicodemath if parameter_one
+            first_value = parameter_one.to_unicodemath(options: options) if parameter_one
             second_value = if parameter_two.is_a?(self.class)
-              "^#{parameter_two.to_unicodemath}"
+              "^#{parameter_two.to_unicodemath(options: options)}"
             else
-              "^#{unicodemath_parens(parameter_two)}"
+              "^#{unicodemath_parens(parameter_two, options: options)}"
             end
             "#{first_value}#{second_value}"
           end

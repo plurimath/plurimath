@@ -13,15 +13,15 @@ module Plurimath
           }.freeze
 
           # output methods
-          def to_latex
+          def to_latex(**)
             "\\left."
           end
 
-          def to_asciimath
+          def to_asciimath(**)
             "{:"
           end
 
-          def to_unicodemath
+          def to_unicodemath(**)
             Utility.html_entity_to_unicode(paren_value)
           end
 
@@ -29,7 +29,7 @@ module Plurimath
             ox_element("mi") << paren_value
           end
 
-          def to_omml_without_math_tag(_)
+          def to_omml_without_math_tag(_, **)
             paren_value
           end
 

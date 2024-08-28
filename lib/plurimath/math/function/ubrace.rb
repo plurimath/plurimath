@@ -13,13 +13,13 @@ module Plurimath
           @attributes = attributes
         end
 
-        def to_asciimath
-          first_value = "(#{parameter_one.to_asciimath})" if parameter_one
+        def to_asciimath(options:)
+          first_value = "(#{parameter_one.to_asciimath(options: options)})" if parameter_one
           "ubrace#{first_value}"
         end
 
-        def to_latex
-          first_value = "{#{parameter_one.to_latex}}" if parameter_one
+        def to_latex(options:)
+          first_value = "{#{parameter_one.to_latex(options: options)}}" if parameter_one
           "\\underbrace#{first_value}"
         end
 
@@ -50,15 +50,15 @@ module Plurimath
           false
         end
 
-        def to_omml_without_math_tag(display_style)
+        def to_omml_without_math_tag(display_style, options:)
           return r_element("⏟", rpr_tag: false) unless parameter_one
 
           symbol = Symbols::Symbol.new("⏟")
-          Underset.new(parameter_one, symbol).to_omml_without_math_tag(true)
+          Underset.new(parameter_one, symbol).to_omml_without_math_tag(true, options: options)
         end
 
-        def to_unicodemath
-          first_value = "(#{parameter_one&.to_unicodemath})" if parameter_one
+        def to_unicodemath(options:)
+          first_value = "(#{parameter_one&.to_unicodemath(options: options)})" if parameter_one
           "⏟#{first_value}"
         end
 

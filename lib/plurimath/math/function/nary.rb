@@ -28,19 +28,19 @@ module Plurimath
             object.options == options
         end
 
-        def to_asciimath
-          first_value  = parameter_one&.to_asciimath || "int"
-          second_value = "_(#{parameter_two.to_asciimath})" if parameter_two
-          third_value  = "^(#{parameter_three.to_asciimath})" if parameter_three
-          fourth_value = " #{parameter_four.to_asciimath}" if parameter_four
+        def to_asciimath(options:)
+          first_value  = parameter_one&.to_asciimath(options: options) || "int"
+          second_value = "_(#{parameter_two.to_asciimath(options: options)})" if parameter_two
+          third_value  = "^(#{parameter_three.to_asciimath(options: options)})" if parameter_three
+          fourth_value = " #{parameter_four.to_asciimath(options: options)}" if parameter_four
           "#{first_value}#{second_value}#{third_value}#{fourth_value}"
         end
 
-        def to_latex
-          first_value  = parameter_one&.to_latex || "\\int"
-          second_value = "_{#{parameter_two.to_latex}}" if parameter_two
-          third_value  = "^{#{parameter_three.to_latex}}" if parameter_three
-          fourth_value = " #{parameter_four.to_latex}" if parameter_four
+        def to_latex(options:)
+          first_value  = parameter_one&.to_latex(options: options) || "\\int"
+          second_value = "_{#{parameter_two.to_latex(options: options)}}" if parameter_two
+          third_value  = "^{#{parameter_three.to_latex(options: options)}}" if parameter_three
+          fourth_value = " #{parameter_four.to_latex(options: options)}" if parameter_four
           "#{first_value}#{second_value}#{third_value}#{fourth_value}"
         end
 
@@ -68,19 +68,19 @@ module Plurimath
           )
         end
 
-        def to_omml_without_math_tag(display_style)
+        def to_omml_without_math_tag(display_style, options:)
           nary_element = Utility.ox_element("nary", namespace: "m")
-          Utility.update_nodes(nary_element, omml_nary_tag(display_style))
+          Utility.update_nodes(nary_element, omml_nary_tag(display_style, options: options))
           Array(nary_element)
         end
 
-        def to_unicodemath
-          first_value = sub_value if parameter_two
-          second_value = sup_value if parameter_three
+        def to_unicodemath(options:)
+          first_value = sub_value(options: options) if parameter_two
+          second_value = sup_value(options: options) if parameter_three
           if prime_unicode?(parameter_three)
-            "#{parameter_one&.to_unicodemath}#{second_value}#{first_value}#{naryand_value(parameter_four)}"
+            "#{parameter_one&.to_unicodemath(options: options)}#{second_value}#{first_value}#{naryand_value(parameter_four)}"
           else
-            "#{parameter_one&.to_unicodemath}#{first_value}#{second_value}#{naryand_value(parameter_four)}"
+            "#{parameter_one&.to_unicodemath(options: options)}#{first_value}#{second_value}#{naryand_value(parameter_four)}"
           end
         end
 
@@ -126,8 +126,8 @@ module Plurimath
 
         protected
 
-        def chr_value(narypr)
-          first_value = Utility.html_entity_to_unicode(parameter_one&.nary_attr_value)
+        def chr_value(narypr, options:)
+          first_value = Utility.html_entity_to_unicode(parameter_one&.nary_attr_value(options: options))
           narypr << Utility.ox_element("chr", namespace: "m", attributes: { "m:val": first_value }) unless first_value == "∫"
 
           narypr << Utility.ox_element("limLoc", namespace: "m", attributes: { "m:val": (options[:type] || "subSup").to_s })
@@ -142,43 +142,43 @@ module Plurimath
           nar << Utility.ox_element("#{tag_prefix}Hide", namespace: "m", attributes: { "m:val": "1" })
         end
 
-        def omml_nary_tag(display_style)
+        def omml_nary_tag(display_style, options:)
           narypr = Utility.ox_element("naryPr", namespace: "m")
-          chr_value(narypr)
+          chr_value(narypr, options: options)
           [
             (narypr << Utility.pr_element("ctrl", true, namespace: "m")),
-            omml_parameter(parameter_two, display_style, tag_name: "sub"),
-            omml_parameter(parameter_three, display_style, tag_name: "sup"),
-            omml_parameter(parameter_four, display_style, tag_name: "e"),
+            omml_parameter(parameter_two, display_style, tag_name: "sub", options: options),
+            omml_parameter(parameter_three, display_style, tag_name: "sup", options: options),
+            omml_parameter(parameter_four, display_style, tag_name: "e", options: options),
           ]
         end
 
-        def sup_value
+        def sup_value(options:)
           if parameter_three.mini_sized? || prime_unicode?(parameter_three)
-            parameter_three.to_unicodemath
+            parameter_three.to_unicodemath(options: options)
           elsif parameter_three.is_a?(Math::Function::Power)
-            "^#{parameter_three.to_unicodemath}"
+            "^#{parameter_three.to_unicodemath(options: options)}"
           elsif parameter_one.is_a?(Math::Function::Power) && parameter_one&.prime_unicode?(parameter_one&.parameter_two)
-            "^#{parameter_three.to_unicodemath}"
+            "^#{parameter_three.to_unicodemath(options: options)}"
           else
-            "^#{unicodemath_parens(parameter_three)}"
+            "^#{unicodemath_parens(parameter_three, options: options)}"
           end
         end
 
-        def sub_value
+        def sub_value(options:)
           if parameter_two.mini_sized?
-            parameter_two.to_unicodemath
+            parameter_two.to_unicodemath(options: options)
           elsif parameter_two.is_a?(Math::Function::Base)
-            "_#{parameter_two.to_unicodemath}"
+            "_#{parameter_two.to_unicodemath(options: options)}"
           else
-            "_#{unicodemath_parens(parameter_two)}"
+            "_#{unicodemath_parens(parameter_two, options: options)}"
           end
         end
 
-        def naryand_value(field)
+        def naryand_value(field, options:)
           return "" unless field
 
-          field_value = field.to_unicodemath
+          field_value = field.to_unicodemath(options: options)
           field.is_a?(Math::Function::Fenced) ? "▒#{field_value}" : "▒〖#{field_value}〗"
         end
 

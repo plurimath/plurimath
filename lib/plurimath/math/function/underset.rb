@@ -29,10 +29,10 @@ module Plurimath
           Utility.update_nodes(ox_element("munder", attributes: self.options), value_array)
         end
 
-        def to_omml_without_math_tag(display_style)
+        def to_omml_without_math_tag(display_style, options:)
           if !display_style
             base = Base.new(parameter_one, parameter_two)
-            return base.to_omml_without_math_tag(display_style)
+            return base.to_omml_without_math_tag(display_style, options: options)
           end
 
           limlow   = Utility.ox_element("limLow", namespace: "m")
@@ -42,19 +42,19 @@ module Plurimath
             limlow,
             [
               limlowpr,
-              omml_parameter(parameter_one, display_style, tag_name: "e"),
-              omml_parameter(parameter_two, display_style, tag_name: "lim"),
+              omml_parameter(parameter_one, display_style, tag_name: "e", options: options),
+              omml_parameter(parameter_two, display_style, tag_name: "lim", options: options),
             ],
           )
           [limlow]
         end
 
-        def to_unicodemath
-          return "#{parameter_one.to_unicodemath}#{unicodemath_parens(parameter_two)}" if horizontal_brackets?
-          return "#{parameter_two.to_unicodemath}_#{unicodemath_parens(parameter_one)}" if unicode_classes_accent?(parameter_two)
-          return "#{unicodemath_parens(parameter_two)}#{unicodemath_field_value(parameter_one)}" if unicode_accent?(parameter_one)
+        def to_unicodemath(options:)
+          return "#{parameter_one.to_unicodemath(options: options)}#{unicodemath_parens(parameter_two, options: options)}" if horizontal_brackets?
+          return "#{parameter_two.to_unicodemath(options: options)}_#{unicodemath_parens(parameter_one, options: options)}" if unicode_classes_accent?(parameter_two)
+          return "#{unicodemath_parens(parameter_two, options: options)}#{unicodemath_field_value(parameter_one)}" if unicode_accent?(parameter_one)
 
-          "#{unicodemath_parens(parameter_two)}┬#{parameter_one.to_unicodemath}"
+          "#{unicodemath_parens(parameter_two, options: options)}┬#{parameter_one.to_unicodemath(options: options)}"
         end
 
         def line_breaking(obj)

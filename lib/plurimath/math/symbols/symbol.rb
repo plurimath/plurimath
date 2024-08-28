@@ -30,7 +30,7 @@ module Plurimath
             object.options == options
         end
 
-        def to_asciimath
+        def to_asciimath(**)
           return "" if value.nil?
 
           value
@@ -48,7 +48,7 @@ module Plurimath
           mi_tag << value
         end
 
-        def to_latex
+        def to_latex(**)
           returned = specific_values
           return returned if returned
 
@@ -59,11 +59,11 @@ module Plurimath
           value
         end
 
-        def to_omml_without_math_tag(_)
+        def to_omml_without_math_tag(_, **)
           value
         end
 
-        def to_unicodemath
+        def to_unicodemath(**)
           return "\\#{value}" if slashed || special_chars
           return mini_sub if mini_sub_sized
           return mini_sup if mini_sup_sized
@@ -71,8 +71,8 @@ module Plurimath
           value
         end
 
-        def insert_t_tag(_)
-          [(Utility.ox_element("r", namespace: "m") << t_tag)]
+        def insert_t_tag(_, options:)
+          [(Utility.ox_element("r", namespace: "m") << t_tag(options: options))]
         end
 
         def tag_name
@@ -83,24 +83,24 @@ module Plurimath
           "subSup"
         end
 
-        def font_style_t_tag(_)
-          t_tag
+        def font_style_t_tag(_, options:)
+          t_tag(options: options)
         end
 
-        def nary_attr_value
-          value || Utility.html_entity_to_unicode(to_omml_without_math_tag(true))
+        def nary_attr_value(options:)
+          value || Utility.html_entity_to_unicode(to_omml_without_math_tag(true, options: options))
         end
 
         def validate_function_formula
           false
         end
 
-        def omml_nodes(_)
-          Array(t_tag)
+        def omml_nodes(_, options:)
+          Array(t_tag(options: options))
         end
 
-        def t_tag
-          Utility.ox_element("t", namespace: "m") << (value || to_omml_without_math_tag(nil))
+        def t_tag(options:)
+          Utility.ox_element("t", namespace: "m") << (value || to_omml_without_math_tag(nil, options: options))
         end
 
         def separate_table
@@ -116,24 +116,24 @@ module Plurimath
           mini_sub_sized || mini_sup_sized
         end
 
-        def to_asciimath_math_zone(spacing = "", last = false, indent = true)
-          "#{spacing}\"#{to_asciimath}\" text\n"
+        def to_asciimath_math_zone(spacing = "", last = false, indent = true, options:)
+          "#{spacing}\"#{to_asciimath(options: options)}\" text\n"
         end
 
-        def to_latex_math_zone(spacing = "", last = false, indent = true)
-          "#{spacing}\"#{to_latex}\" text\n"
+        def to_latex_math_zone(spacing = "", last = false, indent = true, options:)
+          "#{spacing}\"#{to_latex(options: options)}\" text\n"
         end
 
-        def to_omml_math_zone(spacing = "", last = false, indent = true, display_style:)
-          "#{spacing}\"#{dump_omml(self, display_style)}\" text\n"
+        def to_omml_math_zone(spacing = "", last = false, indent = true, display_style:, options:)
+          "#{spacing}\"#{dump_omml(self, display_style, options: options)}\" text\n"
         end
 
         def to_mathml_math_zone(spacing = "", last = false, indent = true, options:)
           "#{spacing}\"#{dump_mathml(self, options: options)}\" text\n"
         end
 
-        def to_unicodemath_math_zone(spacing = "", last = false, indent = true)
-          "#{spacing}\"#{to_unicodemath}\" text\n"
+        def to_unicodemath_math_zone(spacing = "", last = false, indent = true, options:)
+          "#{spacing}\"#{to_unicodemath(options: options)}\" text\n"
         end
 
         def paren?

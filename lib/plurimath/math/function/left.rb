@@ -6,7 +6,7 @@ module Plurimath
   module Math
     module Function
       class Left < UnaryFunction
-        def to_asciimath
+        def to_asciimath(**)
           "left#{parameter_one}"
         end
 
@@ -16,7 +16,7 @@ module Plurimath
           mo
         end
 
-        def to_omml_without_math_tag(_)
+        def to_omml_without_math_tag(_, **)
           mr = Utility.ox_element("m:r")
           if parameter_one
             mt = Utility.ox_element("m:t")
@@ -29,11 +29,11 @@ module Plurimath
           "<i>#{parameter_one}</i>"
         end
 
-        def to_latex
+        def to_latex(**)
           "\\left #{latex_paren}"
         end
 
-        def to_unicodemath
+        def to_unicodemath(**)
           parameter_one
         end
 
@@ -41,11 +41,11 @@ module Plurimath
           false
         end
 
-        def to_asciimath_math_zone(spacing = "", _, _)
+        def to_asciimath_math_zone(spacing = "", _, _, **)
           "#{spacing}\"#{latex_paren}\" left\n"
         end
 
-        def to_latex_math_zone(spacing = "", _, _)
+        def to_latex_math_zone(spacing = "", _, _, **)
           "#{spacing}\"#{latex_paren}\" left\n"
         end
 
@@ -54,12 +54,12 @@ module Plurimath
           "#{spacing}\"#{dump_ox_nodes(mo_tag).gsub(/\s+/, "")}\" left\n"
         end
 
-        def to_omml_math_zone(spacing = "", _, _, display_style:)
+        def to_omml_math_zone(spacing = "", _, _, display_style:, **)
           t_tag = (Utility.ox_element("t", namespace: "m") << left_paren)
           "#{spacing}\"#{dump_ox_nodes(t_tag).gsub(/\s+/, "")}\" left\n"
         end
 
-        def to_unicodemath_math_zone(spacing = "", _, _)
+        def to_unicodemath_math_zone(spacing = "", _, _, **)
           "#{spacing}\"#{parameter_one}\" left\n"
         end
 

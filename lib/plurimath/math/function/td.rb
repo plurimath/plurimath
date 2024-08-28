@@ -11,8 +11,8 @@ module Plurimath
           super(parameter_one, parameter_two)
         end
 
-        def to_asciimath
-          parameter_one.map(&:to_asciimath).join(" ")
+        def to_asciimath(options:)
+          parameter_one.map { |val| val&.to_asciimath(options: options) }.join(" ")
         end
 
         def to_mathml_without_math_tag(intent, options:)
@@ -25,10 +25,10 @@ module Plurimath
           )
         end
 
-        def to_latex
+        def to_latex(options:)
           return "" if Utility.symbol_value(parameter_one.first, "|")
 
-          parameter_one.map(&:to_latex).join(" ")
+          parameter_one.map { |val| val&.to_latex(options: options) }.join(" ")
         end
 
         def to_html
@@ -36,29 +36,29 @@ module Plurimath
           "<td>#{first_value}</td>"
         end
 
-        def to_omml_without_math_tag(display_style)
+        def to_omml_without_math_tag(display_style, options:)
           me = Utility.ox_element("e", namespace: "m")
           return [me] if parameter_one&.empty?
 
-          Utility.update_nodes(me, omml_content(display_style))
+          Utility.update_nodes(me, omml_content(display_style, options: options))
           [me]
         end
 
-        def to_unicodemath
-          parameter_one&.map(&:to_unicodemath)&.join
+        def to_unicodemath(options:)
+          parameter_one&.map { |val| val&.to_unicodemath(options: options) }&.join
         end
 
-        def to_asciimath_math_zone(spacing, last = false, _)
+        def to_asciimath_math_zone(spacing, last = false, _, options:)
           [
             "#{spacing}\"td\" function apply\n",
-            Formula.new(parameter_one).to_asciimath_math_zone(gsub_spacing(spacing, last), last),
+            Formula.new(parameter_one).to_asciimath_math_zone(gsub_spacing(spacing, last), last, options: options),
           ]
         end
 
-        def to_latex_math_zone(spacing, last = false, indent = true)
+        def to_latex_math_zone(spacing, last = false, indent = true, options:)
           [
             "#{spacing}\"td\" function apply\n",
-            Formula.new(parameter_one).to_latex_math_zone(gsub_spacing(spacing, last), last, indent),
+            Formula.new(parameter_one).to_latex_math_zone(gsub_spacing(spacing, last), last, indent, options: options),
           ]
         end
 
@@ -69,29 +69,29 @@ module Plurimath
           ]
         end
 
-        def to_omml_math_zone(spacing, last = false, indent = true, display_style:)
+        def to_omml_math_zone(spacing, last = false, indent = true, display_style:, options:)
           [
             "#{spacing}\"td\" function apply\n",
-            Formula.new(parameter_one).to_omml_math_zone(gsub_spacing(spacing, last), last, indent, display_style: display_style),
+            Formula.new(parameter_one).to_omml_math_zone(gsub_spacing(spacing, last), last, indent, display_style: display_style, options: options),
           ]
         end
 
-        def to_unicodemath_math_zone(spacing, last = false, _)
+        def to_unicodemath_math_zone(spacing, last = false, _, options:)
           [
             "#{spacing}\"td\" function apply\n",
-            Formula.new(parameter_one).to_unicodemath_math_zone(gsub_spacing(spacing, last), last),
+            Formula.new(parameter_one).to_unicodemath_math_zone(gsub_spacing(spacing, last), last, options: options),
           ]
         end
 
-        def to_unicodemath_math_zone(spacing, last = false, _)
+        def to_unicodemath_math_zone(spacing, last = false, _, options:)
           [
             "#{spacing}\"td\" function apply\n",
-            Formula.new(parameter_one).to_unicodemath_math_zone(gsub_spacing(spacing, last), last),
+            Formula.new(parameter_one).to_unicodemath_math_zone(gsub_spacing(spacing, last), last, options: options),
           ]
         end
 
-        def omml_content(display_style)
-          parameter_one&.map { |val| val.insert_t_tag(display_style) }
+        def omml_content(display_style, options:)
+          parameter_one&.map { |val| val.insert_t_tag(display_style, options: options) }
         end
 
         def line_breaking(obj)

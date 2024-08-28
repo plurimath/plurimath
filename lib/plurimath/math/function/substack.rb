@@ -12,12 +12,12 @@ module Plurimath
           second_value: "below",
         }.freeze
 
-        def to_asciimath
-          "{:#{parameter_one.compact.map(&:to_asciimath).join(",")}:}"
+        def to_asciimath(options:)
+          "{:#{parameter_one&.compact&.map { |param| param.to_asciimath(options: options) }&.join(",")}:}"
         end
 
-        def to_latex
-          "\\#{class_name}{#{parameter_one&.compact&.map(&:to_latex)&.join(" \\\\ ")}}"
+        def to_latex(options:)
+          "\\#{class_name}{#{parameter_one&.compact&.map { |param| param.to_latex(options: options) }&.join(" \\\\ ")}}"
         end
 
         def to_mathml_without_math_tag(intent, options:)
@@ -27,12 +27,12 @@ module Plurimath
           )
         end
 
-        def to_omml_without_math_tag(display_style)
-          Table.new(parameter_one).to_omml_without_math_tag(display_style)
+        def to_omml_without_math_tag(display_style, options:)
+          Table.new(parameter_one).to_omml_without_math_tag(display_style, options: options)
         end
 
-        def to_unicodemath
-          "■(#{parameter_one.compact.map(&:to_unicodemath).join("@")})"
+        def to_unicodemath(options:)
+          "■(#{parameter_one&.compact&.map { |param| param.to_unicodemath(options: options) }&.join("@")})"
         end
       end
     end

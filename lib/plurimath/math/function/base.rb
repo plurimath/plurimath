@@ -25,9 +25,9 @@ module Plurimath
             object.options == options
         end
 
-        def to_asciimath
-          first_value = parameter_one.to_asciimath if parameter_one
-          second_value = "_#{wrapped(parameter_two)}" if parameter_two
+        def to_asciimath(options:)
+          first_value = parameter_one.to_asciimath(options: options) if parameter_one
+          second_value = "_#{wrapped(parameter_two, options: options)}" if parameter_two
           "#{first_value}#{second_value}"
         end
 
@@ -40,10 +40,10 @@ module Plurimath
           Utility.update_nodes(sub_tag, mathml_value)
         end
 
-        def to_latex
-          first_value  = parameter_one.to_latex if parameter_one
+        def to_latex(options:)
+          first_value  = parameter_one.to_latex(options: options) if parameter_one
           first_value  = "{#{first_value}}" if parameter_one.is_a?(Formula)
-          second_value = parameter_two.to_latex if parameter_two
+          second_value = parameter_two.to_latex(options: options) if parameter_two
           "#{first_value}_{#{second_value}}"
         end
 
@@ -53,7 +53,7 @@ module Plurimath
           "#{first_value}#{second_value}"
         end
 
-        def to_omml_without_math_tag(display_style)
+        def to_omml_without_math_tag(display_style, options:)
           ssub_element  = Utility.ox_element("sSub", namespace: "m")
           subpr_element = Utility.ox_element("sSubPr", namespace: "m")
           subpr_element << Utility.pr_element("ctrl", true, namespace: "m")
@@ -61,23 +61,23 @@ module Plurimath
             ssub_element,
             [
               subpr_element,
-              omml_parameter(parameter_one, display_style, tag_name: "e"),
-              omml_parameter(parameter_two, display_style, tag_name: "sub"),
+              omml_parameter(parameter_one, display_style, tag_name: "e", options: options),
+              omml_parameter(parameter_two, display_style, tag_name: "sub", options: options),
             ],
           )
           [ssub_element]
         end
 
-        def to_unicodemath
-          first_value = parameter_one.to_unicodemath if parameter_one
+        def to_unicodemath(options:)
+          first_value = parameter_one.to_unicodemath(options: options) if parameter_one
           second_value = if parameter_two.is_a?(self.class)
-            "_#{size_overrides}#{parameter_two.to_unicodemath}"
+            "_#{size_overrides}#{parameter_two.to_unicodemath(options: options)}"
           elsif parameter_two&.mini_sized?
-            parameter_two.to_unicodemath
+            parameter_two.to_unicodemath(options: options)
           elsif parameter_two.nil?
             "()"
           else
-            "_#{size_overrides}#{unicodemath_parens(parameter_two)}"
+            "_#{size_overrides}#{unicodemath_parens(parameter_two, options: options)}"
           end
           "#{first_value}#{second_value}"
         end
@@ -112,10 +112,10 @@ module Plurimath
           "Ⅎ#{UnicodeMath::Constants::SIZE_OVERRIDES_SYMBOLS.invert[options[:size]]}" if options[:size]
         end
 
-        def unicodemath_parens(field)
-          return "〖#{field.to_unicodemath}〗" unless options.nil? || options&.empty?
+        def unicodemath_parens(field, options:)
+          return "〖#{field.to_unicodemath(options: options)}〗" unless options.nil? || options&.empty?
 
-          super(field)
+          super(field, options: options)
         end
       end
     end

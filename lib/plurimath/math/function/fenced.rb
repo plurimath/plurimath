@@ -22,22 +22,23 @@ module Plurimath
             object.options == options
         end
 
-        def to_asciimath
-          first_value  = parameter_one ? parameter_one.to_asciimath : "("
-          third_value  = parameter_three ? parameter_three.to_asciimath : ")"
-          "#{first_value}#{parameter_two&.map(&:to_asciimath)&.join(' ')}#{third_value}"
+        def to_asciimath(options:)
+          first_value  = parameter_one ? parameter_one.to_asciimath(options: options) : "("
+          third_value  = parameter_three ? parameter_three.to_asciimath(options: options) : ")"
+          second_value = parameter_two&.map { |param| param.to_asciimath(options: options) }&.join(' ')
+          "#{first_value}#{second_value}#{third_value}"
         end
 
         def to_mathml_without_math_tag(intent, options:)
-          first_value = ox_element("mo", attributes: self.options&.dig(:open_paren)) << (mathml_paren(parameter_one, intent, options) || "")
-          third_value = ox_element("mo", attributes: self.options&.dig(:close_paren)) << (mathml_paren(parameter_three, intent, options) || "")
-          mrow_value = Array(mathml_value(intent, options: options)).insert(0, first_value) << third_value
+          first_value = ox_element("mo", attributes: self.options&.dig(:open_paren)) << (mathml_paren(parameter_one, intent, options: options) || "")
+          third_value = ox_element("mo", attributes: self.options&.dig(:close_paren)) << (mathml_paren(parameter_three, intent, options: options) || "")
+          mrow_value = Array(mathml_value(intent, options: options))&.insert(0, first_value) << third_value
           fenced = Utility.update_nodes(ox_element("mrow"), mrow_value)
           intentify(
             fenced,
             intent,
             func_name: :interval_fence,
-            intent_name: intent_value(mrow_value),
+            intent_name: intent_value(mrow_value, options: options),
           )
         end
 
@@ -48,20 +49,20 @@ module Plurimath
           "#{first_value}#{second_value}#{third_value}"
         end
 
-        def to_latex
-          fenced_value = parameter_two&.map(&:to_latex)&.join(" ")
-          first_value  = latex_paren(symbol_or_paren(parameter_one, lang: :latex))
-          second_value = latex_paren(symbol_or_paren(parameter_three, lang: :latex))
+        def to_latex(options:)
+          fenced_value = parameter_two&.map { |param| param.to_latex(options: options) }&.join(" ")
+          first_value  = latex_paren(symbol_or_paren(parameter_one, lang: :latex, options: options))
+          second_value = latex_paren(symbol_or_paren(parameter_three, lang: :latex, options: options))
           "#{first_value} #{fenced_value} #{second_value}"
         end
 
-        def to_omml_without_math_tag(display_style)
+        def to_omml_without_math_tag(display_style, options:)
           attrs = { "m:val": (options ? options[:separators] : "") }
           d = Utility.ox_element("d", namespace: "m")
           dpr = Utility.ox_element("dPr", namespace: "m")
-          open_paren(dpr)
+          open_paren(dpr, options: options)
           dpr << Utility.ox_element("sepChr", namespace: "m", attributes: attrs)
-          close_paren(dpr)
+          close_paren(dpr, options: options)
           Utility.update_nodes(
             d,
             [
@@ -70,19 +71,20 @@ module Plurimath
                 Formula.new(Array(parameter_two)),
                 display_style,
                 tag_name: "e",
+                options: options,
               ),
             ],
           )
           [d]
         end
 
-        def to_unicodemath
-          return mini_sized_unicode if mini_sized?
+        def to_unicodemath(options:)
+          return mini_sized_unicode(options: options) if mini_sized?
 
           fenced_value = parameter_two&.map do |param|
             next param.choose_frac if choose_frac?(param)
 
-            param.to_unicodemath
+            param.to_unicodemath(options: options)
           end&.join(" ")
           return fenced_value if choose_frac?(parameter_two.first)
 
@@ -91,17 +93,17 @@ module Plurimath
           "#{unicode_open_paren}#{fenced_value}#{unicode_close_paren}"
         end
 
-        def to_asciimath_math_zone(spacing, last = false, indent = true)
+        def to_asciimath_math_zone(spacing, last = false, indent = true, options:)
           filtered_values(parameter_two, lang: :asciimath).map.with_index(1) do |object, index|
             new_last = index == @values.length && last
-            object.to_asciimath_math_zone(spacing, new_last, indent)
+            object.to_asciimath_math_zone(spacing, new_last, indent, options: options)
           end
         end
 
-        def to_latex_math_zone(spacing, last = false, indent = true)
+        def to_latex_math_zone(spacing, last = false, indent = true, options:)
           filtered_values(parameter_two, lang: :latex).map.with_index(1) do |object, index|
             new_last = index == @values.length && last
-            object.to_latex_math_zone(spacing, new_last, indent)
+            object.to_latex_math_zone(spacing, new_last, indent, options: options)
           end
         end
 
@@ -112,16 +114,16 @@ module Plurimath
           end
         end
 
-        def to_omml_math_zone(spacing, last = false, indent = true, display_style:)
+        def to_omml_math_zone(spacing, last = false, indent = true, display_style:, options:)
           filtered_values(parameter_two, lang: :omml).map do |object|
-            object.to_omml_math_zone(spacing, last, !indent, display_style: display_style)
+            object.to_omml_math_zone(spacing, last, !indent, display_style: display_style, options: options)
           end
         end
 
-        def to_unicodemath_math_zone(spacing, last = false, indent = true)
+        def to_unicodemath_math_zone(spacing, last = false, indent = true, options:)
           filtered_values(parameter_two, lang: :unicodemath).map.with_index(1) do |object, index|
             new_last = index == @values.length && last
-            object.to_unicodemath_math_zone(spacing, new_last, indent)
+            object.to_unicodemath_math_zone(spacing, new_last, indent, options: options)
           end
         end
 
@@ -138,15 +140,15 @@ module Plurimath
             parameter_three&.mini_sized?
         end
 
-        def mini_sized_unicode
-          fenced_value = parameter_two&.map(&:to_unicodemath)&.join
-          "#{parameter_one.to_unicodemath}#{fenced_value}#{parameter_three.to_unicodemath}"
+        def mini_sized_unicode(options:)
+          fenced_value = parameter_two&.map { |param| param.to_unicodemath(options: options) }&.join
+          "#{parameter_one.to_unicodemath(options: options)}#{fenced_value}#{parameter_three.to_unicodemath(options: options)}"
         end
 
         protected
 
-        def open_paren(dpr)
-          first_value = symbol_or_paren(parameter_one, lang: :omml)
+        def open_paren(dpr, options:)
+          first_value = symbol_or_paren(parameter_one, lang: :omml, options: options)
           return dpr if first_value.nil?
 
           attributes = { "m:val": Utility.html_entity_to_unicode(first_value) }
@@ -157,8 +159,8 @@ module Plurimath
           )
         end
 
-        def close_paren(dpr)
-          third_value = symbol_or_paren(parameter_three, lang: :omml)
+        def close_paren(dpr, options:)
+          third_value = symbol_or_paren(parameter_three, lang: :omml, options: options)
           return dpr if third_value.nil?
 
           attributes = { "m:val": Utility.html_entity_to_unicode(third_value) }
@@ -176,7 +178,7 @@ module Plurimath
           paren
         end
 
-        def mathml_paren(field, intent, options)
+        def mathml_paren(field, intent, options:)
           unicodemath_syntax = ["&#x3016;", "&#x3017;", "&#x2524;", "&#x251c;"]
           paren = symbol_or_paren(field, lang: :mathml, intent: intent, options: options)
           (paren&.include?(":") || unicodemath_syntax.include?(paren)) ? "" : paren
@@ -192,20 +194,20 @@ module Plurimath
           object
         end
 
-        def unicode_open_paren
-          paren = parameter_one&.to_unicodemath
-          return "├#{convert_paren_size(paren_size: options&.dig(:open_paren, :minsize))}#{paren}" if options&.key?(:open_paren)
-          return "├#{paren}" if options&.key?(:open_prefixed) && !open_or_begin?
-          return "├" if options&.key?(:open_prefixed) || paren == "{:"
+        def unicode_open_paren(options:)
+          paren = parameter_one&.to_unicodemath(options: options)
+          return "├#{convert_paren_size(paren_size: self.options&.dig(:open_paren, :minsize))}#{paren}" if self.options&.key?(:open_paren)
+          return "├#{paren}" if self.options&.key?(:open_prefixed) && !open_or_begin?
+          return "├" if self.options&.key?(:open_prefixed) || paren == "{:"
 
           paren
         end
 
-        def unicode_close_paren
-          paren = parameter_three&.to_unicodemath
-          return "┤#{convert_paren_size(paren_size: options&.dig(:close_paren, :minsize))}#{paren}" if options&.key?(:close_paren)
-          return "┤#{paren}" if options&.key?(:close_prefixed) && !close_or_end?
-          return "┤" if options&.key?(:close_prefixed) || paren == ":}"
+        def unicode_close_paren(options:)
+          paren = parameter_three&.to_unicodemath(options: options)
+          return "┤#{convert_paren_size(paren_size: self.options&.dig(:close_paren, :minsize))}#{paren}" if self.options&.key?(:close_paren)
+          return "┤#{paren}" if self.options&.key?(:close_prefixed) && !close_or_end?
+          return "┤" if self.options&.key?(:close_prefixed) || paren == ":}"
 
           paren
         end
@@ -244,17 +246,17 @@ module Plurimath
           when :mathml, :html
             field.to_mathml_without_math_tag(intent, options: options).nodes.first
           when :latex
-            field.to_latex
+            field.to_latex(options: options)
           when :omml
-            field.to_omml_without_math_tag(true)
+            field.to_omml_without_math_tag(true, options: options)
           end
         end
 
-        def intent_value(value)
+        def intent_value(value, options:)
           return "binomial-coefficient" if binomial_coefficient?(value)
 
-          open_paren = symbol_or_paren(parameter_one, lang: :latex)
-          close_paren = symbol_or_paren(parameter_three, lang: :latex)
+          open_paren = symbol_or_paren(parameter_one, lang: :latex, options: options)
+          close_paren = symbol_or_paren(parameter_three, lang: :latex, options: options)
           return "fenced" unless interval_intent?(value, open_paren, close_paren)
 
           interval_intent(value, open_paren, close_paren)

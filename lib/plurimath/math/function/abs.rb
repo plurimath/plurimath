@@ -17,9 +17,9 @@ module Plurimath
           intentify(mrow, intent, func_name: :abs, intent_name: :"absolute-value")
         end
 
-        def to_omml_without_math_tag(display_style)
+        def to_omml_without_math_tag(display_style, options:)
           Array(
-            md_tag << omml_parameter(parameter_one, display_style, tag_name: "e"),
+            md_tag << omml_parameter(parameter_one, display_style, tag_name: "e", options: options),
           )
         end
 
@@ -35,8 +35,8 @@ module Plurimath
           end
         end
 
-        def to_unicodemath
-          "⒜#{unicodemath_parens(parameter_one)}"
+        def to_unicodemath(options:)
+          "⒜#{unicodemath_parens(parameter_one, options: options)}"
         end
 
         protected

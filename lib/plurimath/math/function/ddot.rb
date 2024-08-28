@@ -21,11 +21,11 @@ module Plurimath
           )
         end
 
-        def to_omml_without_math_tag(_)
+        def to_omml_without_math_tag(_, options:)
           return r_element("..", rpr_tag: false) unless parameter_one
 
           symbol = Symbols::Symbol.new("..")
-          Overset.new(parameter_one, symbol).to_omml_without_math_tag(true)
+          Overset.new(parameter_one, symbol).to_omml_without_math_tag(true, options: options)
         end
 
         def to_html
@@ -33,8 +33,8 @@ module Plurimath
           "#{first_value}<i>..</i>"
         end
 
-        def to_unicodemath
-          "#{unicodemath_parens(parameter_one)}̈"
+        def to_unicodemath(options:)
+          "#{unicodemath_parens(parameter_one, options: options)}̈"
         end
 
         def line_breaking(obj)

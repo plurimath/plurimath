@@ -12,18 +12,18 @@ module Plurimath
           third_value: "supscript",
         }.freeze
 
-        def to_asciimath
-          subscript = "_(#{parameter_two&.map(&:to_asciimath).join})" unless valid_value_exist?(parameter_two)
-          supscript = "^(#{parameter_three&.map(&:to_asciimath).join})" unless valid_value_exist?(parameter_three)
+        def to_asciimath(options:)
+          subscript = "_(#{parameter_two&.map { |param| param.to_asciimath(options: options) }.join})" unless valid_value_exist?(parameter_two)
+          supscript = "^(#{parameter_three&.map { |param| param.to_asciimath(options: options) }.join})" unless valid_value_exist?(parameter_three)
           prescript = "\\ #{subscript}#{supscript}" if subscript || supscript
-          "#{prescript}#{parameter_one&.to_asciimath}"
+          "#{prescript}#{parameter_one&.to_asciimath(options: options)}"
         end
 
-        def to_latex
-          subscript = "_{#{parameter_two&.map(&:to_latex).join}}" unless valid_value_exist?(parameter_two)
-          supscript = "^{#{parameter_three&.map(&:to_latex).join}}" unless valid_value_exist?(parameter_three)
+        def to_latex(options:)
+          subscript = "_{#{parameter_two&.map { |param| param.to_latex(options: options) }.join}}" if valid_value_exist?(parameter_two)
+          supscript = "^{#{parameter_three&.map { |param| param.to_latex(options: options) }.join}}" if valid_value_exist?(parameter_three)
           prescript = "{}#{subscript}#{supscript}" if subscript || supscript
-          "#{prescript}#{parameter_one&.to_latex}"
+          "#{prescript}#{parameter_one&.to_latex(options: options)}"
         end
 
         def to_mathml_without_math_tag(intent, options:)
@@ -38,21 +38,21 @@ module Plurimath
           )
         end
 
-        def to_omml_without_math_tag(display_style)
+        def to_omml_without_math_tag(display_style, options:)
           Utility.update_nodes(
             ox_element("sPre", namespace: "m"),
             [
-              omml_parameter(parameter_one, display_style, tag_name: "e"),
-              omml_parameter(parameter_two, display_style, tag_name: "sub"),
-              omml_parameter(parameter_three, display_style, tag_name: "sup"),
+              omml_parameter(parameter_one, display_style, tag_name: "e", options: options),
+              omml_parameter(parameter_two, display_style, tag_name: "sub", options: options),
+              omml_parameter(parameter_three, display_style, tag_name: "sup", options: options),
             ],
           )
         end
 
-        def to_unicodemath
-          first_value = sub_value if unicode_valid_value?(parameter_two)
-          second_value = sup_value if unicode_valid_value?(parameter_three)
-          "#{first_value}#{second_value} #{parameter_one&.to_unicodemath}"
+        def to_unicodemath(options:)
+          first_value = sub_value(options: options) if unicode_valid_value?(parameter_two)
+          second_value = sup_value(options: options) if unicode_valid_value?(parameter_three)
+          "#{first_value}#{second_value} #{parameter_one&.to_unicodemath(options: options)}"
         end
 
         def line_breaking(obj)
@@ -98,25 +98,27 @@ module Plurimath
           !field.empty? && !valid_value_exist?(field)
         end
 
-        def sup_value
+        def sup_value(options:)
           field = Utility.filter_values(parameter_two)
+          field_value = parameter_three.map { |param| param.to_unicodemath(options: options) }.join
           if field&.mini_sized? || prime_unicode?(field)
-            parameter_three.map(&:to_unicodemath).join
+            field_value
           elsif field.is_a?(Math::Function::Power)
-            "^#{parameter_three.map(&:to_unicodemath).join}"
+            "^#{field_value}"
           elsif parameter_three && !parameter_three.empty?
-            "^(#{parameter_three.map(&:to_unicodemath).join})"
+            "^(#{field_value})"
           end
         end
 
-        def sub_value
+        def sub_value(options:)
           field = Utility.filter_values(parameter_two)
+          field_value = parameter_two&.map { |param| param.to_unicodemath(options: options) }.join
           if field&.mini_sized?
-            parameter_two.map(&:to_unicodemath).join
+            field_value
           elsif parameter_two.is_a?(Math::Function::Base)
-            "_#{parameter_two.map(&:to_unicodemath).join}"
+            "_#{field_value}"
           elsif parameter_two && !parameter_two.empty?
-            "_(#{parameter_two.map(&:to_unicodemath).join})"
+            "_(#{field_value})"
           end
         end
       end

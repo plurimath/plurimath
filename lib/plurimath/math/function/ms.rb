@@ -10,22 +10,22 @@ module Plurimath
           Utility.ox_element("ms") << parameter_one
         end
 
-        def to_asciimath
+        def to_asciimath(**)
           "\"“#{parameter_one}”\""
         end
 
-        def to_latex
+        def to_latex(**)
           "\\text{“#{parameter_one}”}"
         end
 
-        def to_omml_without_math_tag(display_style)
+        def to_omml_without_math_tag(display_style, **)
           [
             (Utility.ox_element("t", namespace: "m") << "“#{parameter_one}”"),
           ]
         end
 
-        def to_unicodemath
-          Text.new(parameter_one).to_unicodemath
+        def to_unicodemath(options:)
+          Text.new(parameter_one).to_unicodemath(options: options)
         end
       end
     end

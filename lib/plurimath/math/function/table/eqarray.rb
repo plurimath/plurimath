@@ -14,8 +14,9 @@ module Plurimath
             super
           end
 
-          def to_unicodemath
-            "#{open_paren&.to_unicodemath}█(#{value&.map(&:to_unicodemath).join("@")})#{close_paren&.to_unicodemath}"
+          def to_unicodemath(options:)
+            unicode_value = value.map { |val| val.to_unicodemath(options: options) }.join("@")
+            "#{open_paren&.to_unicodemath(options: options)}█(#{unicode_value})#{close_paren&.to_unicodemath(options: options)}"
           end
 
           def to_mathml_without_math_tag(intent, **)

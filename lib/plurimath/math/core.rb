@@ -22,8 +22,8 @@ module Plurimath
         self.class.name.split("::").last.downcase
       end
 
-      def insert_t_tag(display_style)
-        Array(to_omml_without_math_tag(display_style))
+      def insert_t_tag(display_style, options:)
+        Array(to_omml_without_math_tag(display_style, options: options))
       end
 
       def tag_name
@@ -34,7 +34,7 @@ module Plurimath
         "subSup"
       end
 
-      def nary_attr_value
+      def nary_attr_value(**)
         ""
       end
 
@@ -46,14 +46,14 @@ module Plurimath
         wrapper_tag << r_tag
       end
 
-      def omml_parameter(field, display_style, tag_name:, namespace: "m")
+      def omml_parameter(field, display_style, tag_name:, namespace: "m", options:)
         tag = ox_element(tag_name, namespace: namespace)
         return empty_tag(tag) unless field
 
         field_value = if field.is_a?(Array)
-                        field.map { |object| object.insert_t_tag(display_style) }
+                        field.map { |object| object.insert_t_tag(display_style, options: options) }
                       else
-                        field.insert_t_tag(display_style)
+                        field.insert_t_tag(display_style, options: options)
                       end
         Utility.update_nodes(tag, field_value)
       end
@@ -81,28 +81,28 @@ module Plurimath
         ""
       end
 
-      def font_style_t_tag(display_style)
-        to_omml_without_math_tag(display_style)
+      def font_style_t_tag(display_style, options:)
+        to_omml_without_math_tag(display_style, options: options)
       end
 
       def ascii_fields_to_print(field, options = {})
         return if field.nil?
 
         hashed = common_math_zone_conversion(field, options)
-        options[:array] << "#{hashed[:spacing]}|_ \"#{field&.to_asciimath}\"#{hashed[:field_name]}\n"
+        options[:array] << "#{hashed[:spacing]}|_ \"#{field&.to_asciimath(options: options[:options])}\"#{hashed[:field_name]}\n"
         return unless Utility.validate_math_zone(field, lang: :asciimath)
 
-        options[:array] << field&.to_asciimath_math_zone(hashed[:function_spacing], hashed[:last], hashed[:indent])
+        options[:array] << field&.to_asciimath_math_zone(hashed[:function_spacing], hashed[:last], hashed[:indent], options: options[:options])
       end
 
       def latex_fields_to_print(field, options = {})
         return if field.nil?
 
         hashed = common_math_zone_conversion(field, options)
-        options[:array] << "#{hashed[:spacing]}|_ \"#{field&.to_latex}\"#{hashed[:field_name]}\n"
+        options[:array] << "#{hashed[:spacing]}|_ \"#{field&.to_latex(options: options[:options])}\"#{hashed[:field_name]}\n"
         return unless Utility.validate_math_zone(field, lang: :latex)
 
-        options[:array] << field&.to_latex_math_zone(hashed[:function_spacing], hashed[:last], hashed[:indent])
+        options[:array] << field&.to_latex_math_zone(hashed[:function_spacing], hashed[:last], hashed[:indent], options: options[:options])
       end
 
       def mathml_fields_to_print(field, options = {})
@@ -120,34 +120,34 @@ module Plurimath
 
         hashed = common_math_zone_conversion(field, options)
         display_style = options[:display_style]
-        options[:array] << "#{hashed[:spacing]}|_ \"#{dump_omml(field, display_style)}\"#{hashed[:field_name]}\n"
+        options[:array] << "#{hashed[:spacing]}|_ \"#{dump_omml(field, display_style, options: options[:options])}\"#{hashed[:field_name]}\n"
         return unless Utility.validate_math_zone(field, lang: :omml)
 
-        options[:array] << field&.to_omml_math_zone(hashed[:function_spacing], hashed[:last], hashed[:indent], display_style: display_style)
+        options[:array] << field&.to_omml_math_zone(hashed[:function_spacing], hashed[:last], hashed[:indent], display_style: display_style, options: options[:options])
       end
 
       def unicodemath_fields_to_print(field, options = {})
         return if field.nil?
 
         hashed = common_math_zone_conversion(field, options)
-        options[:array] << "#{hashed[:spacing]}|_ \"#{field&.to_unicodemath}\"#{hashed[:field_name]}\n"
+        options[:array] << "#{hashed[:spacing]}|_ \"#{field&.to_unicodemath(options: options[:options])}\"#{hashed[:field_name]}\n"
         return unless Utility.validate_math_zone(field, lang: :unicodemath)
 
-        options[:array] << field&.to_unicodemath_math_zone(hashed[:function_spacing], hashed[:last], hashed[:indent])
+        options[:array] << field&.to_unicodemath_math_zone(hashed[:function_spacing], hashed[:last], hashed[:indent], options: options[:options])
       end
 
-      def dump_mathml(field, intent = false, options: {})
+      def dump_mathml(field, intent = false, options:)
         dump_ox_nodes(field.to_mathml_without_math_tag(intent, options: options)).gsub(/\n\s*/, "")
       end
 
-      def dump_omml(field, display_style)
+      def dump_omml(field, display_style, options:)
         return if field.nil?
 
-        dump_ox_nodes(field.omml_nodes(display_style)).gsub(/\n\s*/, "")
+        dump_ox_nodes(field.omml_nodes(display_style, options: options)).gsub(/\n\s*/, "")
       end
 
-      def omml_nodes(display_style)
-        to_omml_without_math_tag(display_style)
+      def omml_nodes(display_style, options:)
+        to_omml_without_math_tag(display_style, options: options)
       end
 
       def validate_mathml_fields(field, intent, options:)
@@ -309,10 +309,11 @@ module Plurimath
         false
       end
 
-      def unicodemath_parens(field)
-        return field.to_unicodemath if field.is_a?(Math::Function::Fenced)
+      def unicodemath_parens(field, options:)
+        paren = field.to_unicodemath(options: options)
+        return paren if field.is_a?(Math::Function::Fenced)
 
-        "(#{field.to_unicodemath})" if field
+        "(#{paren})" if field
       end
 
       def prime_unicode?(field)

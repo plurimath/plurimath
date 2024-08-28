@@ -18,11 +18,11 @@ module Plurimath
             object.parameter_one == parameter_one
         end
 
-        def to_asciimath
+        def to_asciimath(options:)
           value = if Utility::UNARY_CLASSES.any?(class_name)
-                    asciimath_value
+                    asciimath_value(options: options)
                   elsif parameter_one
-                    "(#{asciimath_value})"
+                    "(#{asciimath_value(options: options)})"
                   end
           "#{class_name}#{value}"
         end
@@ -41,8 +41,8 @@ module Plurimath
           end
         end
 
-        def to_latex
-          "\\#{class_name}{#{latex_value}}"
+        def to_latex(options:)
+          "\\#{class_name}{#{latex_value(options: options)}}"
         end
 
         def to_html
@@ -54,14 +54,14 @@ module Plurimath
         "<i>#{invert_unicode_symbols}</i>#{first_value}"
         end
 
-        def to_omml_without_math_tag(display_style)
+        def to_omml_without_math_tag(display_style, options: {})
           return r_element(class_name, rpr_tag: false) unless parameter_one
 
           if @hide_function_name
-            value = omml_value(display_style)
+            value = omml_value(display_style, options: options)
           else
             func = Utility.ox_element("func", namespace: "m")
-            value = Utility.update_nodes(func, function_values(display_style))
+            value = Utility.update_nodes(func, function_values(display_style, options: options))
           end
           Array(value)
         end
@@ -155,14 +155,14 @@ module Plurimath
 
         protected
 
-        def asciimath_value
+        def asciimath_value(options:)
           return "" unless parameter_one
 
           case parameter_one
           when Array
-            parameter_one.compact.map(&:to_asciimath).join
+            parameter_one.compact.map { |object| object&.to_asciimath(options: options) }.join
           else
-            parameter_one.to_asciimath
+            parameter_one.to_asciimath(options: options)
           end
         end
 
@@ -175,24 +175,24 @@ module Plurimath
           end
         end
 
-        def latex_value
+        def latex_value(options:)
           if parameter_one.is_a?(Array)
-            return parameter_one&.compact&.map(&:to_latex)&.join(" ")
+            return parameter_one&.compact&.map { |object| object&.to_latex(options: options) }&.join(" ")
           end
 
-          parameter_one&.to_latex
+          parameter_one&.to_latex(options: options)
         end
 
-        def omml_value(display_style)
+        def omml_value(display_style, options:)
           if parameter_one.is_a?(Array)
-            return parameter_one&.compact&.map { |object| formula_to_nodes(object, display_style) }
+            return parameter_one&.compact&.map { |object| formula_to_nodes(object, display_style, options: options) }
           end
 
-          Array(formula_to_nodes(parameter_one, display_style))
+          Array(formula_to_nodes(parameter_one, display_style, options: options))
         end
 
-        def formula_to_nodes(object, display_style)
-          object&.insert_t_tag(display_style)
+        def formula_to_nodes(object, display_style, options:)
+          object&.insert_t_tag(display_style, options: options)
         end
 
         def latex_paren
@@ -203,7 +203,7 @@ module Plurimath
           !(parameter_one.is_a?(Array) ? parameter_one.empty? : parameter_one.nil?)
         end
 
-        def function_values(display_style)
+        def function_values(display_style, options:)
           funcpr = Utility.ox_element("funcPr", namespace: "m")
           funcpr << Utility.pr_element("ctrl", true, namespace: "m")
           fname  = Utility.ox_element("fName", namespace: "m")
@@ -215,7 +215,7 @@ module Plurimath
             ],
           )
           me = Utility.ox_element("e", namespace: "m")
-          Utility.update_nodes(me, omml_value(display_style)) if parameter_one
+          Utility.update_nodes(me, omml_value(display_style, options: options)) if parameter_one
           [funcpr, fname, me]
         end
       end

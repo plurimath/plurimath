@@ -12,15 +12,15 @@ module Plurimath
         }.freeze
 
         # output methods
-        def to_latex
+        def to_latex(**)
           "\\Micro"
         end
 
-        def to_asciimath
+        def to_asciimath(**)
           parsing_wrapper("tcmu", lang: :asciimath)
         end
 
-        def to_unicodemath
+        def to_unicodemath(**)
           Utility.html_entity_to_unicode("&#xb5;")
         end
 
@@ -28,7 +28,7 @@ module Plurimath
           ox_element("mi") << "&#xb5;"
         end
 
-        def to_omml_without_math_tag(_)
+        def to_omml_without_math_tag(_, **)
           "&#xb5;"
         end
 

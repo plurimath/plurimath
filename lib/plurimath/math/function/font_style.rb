@@ -6,8 +6,8 @@ module Plurimath
   module Math
     module Function
       class FontStyle < BinaryFunction
-        def to_asciimath
-          parameter_one&.to_asciimath
+        def to_asciimath(options:)
+          parameter_one&.to_asciimath(options: options)
         end
 
         def to_mathml_without_math_tag(intent, options:)
@@ -21,20 +21,20 @@ module Plurimath
           )
         end
 
-        def to_omml_without_math_tag(display_style)
-          font_styles(display_style)
+        def to_omml_without_math_tag(display_style, options:)
+          font_styles(display_style, options: options)
         end
 
         def to_html
           parameter_one&.to_html
         end
 
-        def to_latex
-          parameter_one&.to_latex
+        def to_latex(options:)
+          parameter_one&.to_latex(options: options)
         end
 
-        def to_unicodemath
-          "#{font_family(unicode: true)}#{parameter_one&.to_unicodemath}"
+        def to_unicodemath(options:)
+          "#{font_family(unicode: true)}#{parameter_one&.to_unicodemath(options: options)}"
         end
 
         def validate_function_formula
@@ -50,35 +50,35 @@ module Plurimath
           parameter_one.is_a?(Text)
         end
 
-        def font_styles(display_style, sty: "p", scr: nil)
+        def font_styles(display_style, sty: "p", scr: nil, options:)
           r_tag = Utility.ox_element("r", namespace: "m")
           rpr_tag = Utility.ox_element("rPr", namespace: "m")
           rpr_tag << Utility.ox_element("scr", namespace: "m", attributes: { "m:val": scr }) if scr
           rpr_tag << Utility.ox_element("sty", namespace: "m", attributes: { "m:val": sty }) if sty
           Utility.update_nodes(
             (r_tag << rpr_tag),
-            Array(parameter_one&.font_style_t_tag(display_style)),
+            Array(parameter_one&.font_style_t_tag(display_style, options: options)),
           )
           [r_tag]
         end
 
-        def to_asciimath_math_zone(spacing, last = false, _)
+        def to_asciimath_math_zone(spacing, last = false, _, options:)
           new_spacing = gsub_spacing(spacing, last)
           new_arr = [
-            "#{spacing}\"#{to_asciimath}\" function apply\n",
+            "#{spacing}\"#{to_asciimath(options: options)}\" function apply\n",
             "#{new_spacing}|_ \"#{parameter_two}\" font family\n",
           ]
-          ascii_fields_to_print(parameter_one, { spacing: new_spacing, field_name: "argument", additional_space: "|  |_ " , array: new_arr })
+          ascii_fields_to_print(parameter_one, { spacing: new_spacing, field_name: "argument", additional_space: "|  |_ " , array: new_arr, options: options })
           new_arr
         end
 
-        def to_latex_math_zone(spacing, last = false, _)
+        def to_latex_math_zone(spacing, last = false, _, options:)
           new_spacing = gsub_spacing(spacing, last)
           new_arr = [
-            "#{spacing}\"#{to_latex}\" function apply\n",
+            "#{spacing}\"#{to_latex(options: options)}\" function apply\n",
             "#{new_spacing}|_ \"#{parameter_two}\" font family\n",
           ]
-          latex_fields_to_print(parameter_one, { spacing: new_spacing, field_name: "argument", additional_space: "|  |_ " , array: new_arr })
+          latex_fields_to_print(parameter_one, { spacing: new_spacing, field_name: "argument", additional_space: "|  |_ " , array: new_arr, options: options })
           new_arr
         end
 
@@ -92,13 +92,13 @@ module Plurimath
           new_arr
         end
 
-        def to_omml_math_zone(spacing, last = false, _, display_style:)
+        def to_omml_math_zone(spacing, last = false, _, display_style:, options:)
           new_spacing = gsub_spacing(spacing, last)
           new_arr = [
-            "#{spacing}\"#{dump_omml(self, display_style)}\" function apply\n",
-            "#{new_spacing}|_ \"#{font_family(omml: true)}\" font family\n",
+            "#{spacing}\"#{dump_omml(self, display_style, options: options)}\" function apply\n",
+            "#{new_spacing}|_ \"#{font_family(omml: true, options: options)}\" font family\n",
           ]
-          omml_fields_to_print(parameter_one, { spacing: new_spacing, field_name: "argument", additional_space: "|  |_ ", array: new_arr, display_style: display_style })
+          omml_fields_to_print(parameter_one, { spacing: new_spacing, field_name: "argument", additional_space: "|  |_ ", array: new_arr, display_style: display_style, options: options })
           new_arr
         end
 
@@ -120,13 +120,13 @@ module Plurimath
           end
         end
 
-        def to_unicodemath_math_zone(spacing, last = false, _)
+        def to_unicodemath_math_zone(spacing, last = false, _, options:)
           new_spacing = gsub_spacing(spacing, last)
           new_arr = [
-            "#{spacing}\"#{dump_unicodemath(self)}\" function apply\n",
-            "#{new_spacing}|_ \"#{font_family(unicode: true)}\" font family\n",
+            "#{spacing}\"#{dump_unicodemath(self, options: options)}\" function apply\n",
+            "#{new_spacing}|_ \"#{font_family(unicode: true, options: options)}\" font family\n",
           ]
-          unicodemath_fields_to_print(parameter_one, { spacing: new_spacing, field_name: "argument", additional_space: "|  |_ ", array: new_arr })
+          unicodemath_fields_to_print(parameter_one, { spacing: new_spacing, field_name: "argument", additional_space: "|  |_ ", array: new_arr, options: options })
           new_arr
         end
 

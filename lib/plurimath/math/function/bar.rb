@@ -13,13 +13,13 @@ module Plurimath
           @attributes = attributes
         end
 
-        def to_asciimath
-          first_value = "(#{parameter_one.to_asciimath})" if parameter_one
+        def to_asciimath(options:)
+          first_value = "(#{parameter_one.to_asciimath(options: options)})" if parameter_one
           "bar#{first_value}"
         end
 
-        def to_latex
-          first_value = "{#{parameter_one.to_latex}}" if parameter_one
+        def to_latex(options:)
+          first_value = "{#{parameter_one.to_latex(options: options)}}" if parameter_one
           "\\overline#{first_value}"
         end
 
@@ -38,10 +38,10 @@ module Plurimath
           )
         end
 
-        def to_omml_without_math_tag(display_style)
+        def to_omml_without_math_tag(display_style, options:)
           return r_element("&#xaf;", rpr_tag: false) unless parameter_one
 
-          attributes && attributes[:accent] ? acc_tag(display_style) : bar_tag(display_style)
+          attributes && attributes[:accent] ? acc_tag(display_style, options: options) : bar_tag(display_style, options: options)
         end
 
         def swap_class
@@ -53,13 +53,13 @@ module Plurimath
           obj.update(Utility.filter_values(obj.value)) if obj.value_exist?
         end
 
-        def to_unicodemath
+        def to_unicodemath(options:)
           "#{unicodemath_parens(parameter_one)}̅"
         end
 
         protected
 
-        def acc_tag(display_style)
+        def acc_tag(display_style, options:)
           acc = Utility.ox_element("acc", namespace: "m")
           chr = Utility.ox_element("chr", namespace: "m", attributes: { "m:val": "‾" } )
           acc_pr = (Utility.ox_element("accPr", namespace: "m") << chr)
@@ -67,19 +67,19 @@ module Plurimath
             acc,
             [
               acc_pr,
-              omml_parameter(parameter_one, display_style, tag_name: "e"),
+              omml_parameter(parameter_one, display_style, tag_name: "e", options: options),
             ],
           )
           [acc]
         end
 
-        def bar_tag(display_style)
+        def bar_tag(display_style, options:)
           bar = Utility.ox_element("bar", namespace: "m")
           Utility.update_nodes(
             bar,
             [
               bar_pr,
-              omml_parameter(parameter_one, display_style, tag_name: "e", namespace: "m"),
+              omml_parameter(parameter_one, display_style, tag_name: "e", namespace: "m", options: options),
             ],
           )
           [bar]
