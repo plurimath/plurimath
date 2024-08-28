@@ -36,7 +36,7 @@ module Plurimath
           value
         end
 
-        def to_mathml_without_math_tag(intent, options:)
+        def to_mathml_without_math_tag(intent, **)
           if value&.include?("&#x2147;")
             attributes = {
               intent: Utility.html_entity_to_unicode(value),
