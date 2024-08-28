@@ -20,16 +20,16 @@ module Plurimath
           )
         end
 
-        def to_latex
-          parameter_one&.to_latex
+        def to_latex(options:)
+          parameter_one&.to_latex(options: options)
         end
 
-        def to_asciimath
-          parameter_one&.to_asciimath
+        def to_asciimath(options:)
+          parameter_one&.to_asciimath(options: options)
         end
 
-        def to_omml_without_math_tag(display_style)
-          Array(parameter_one.insert_t_tag(display_style))
+        def to_omml_without_math_tag(display_style, options:)
+          Array(parameter_one.insert_t_tag(display_style, options: options))
         end
 
         def line_breaking(obj)

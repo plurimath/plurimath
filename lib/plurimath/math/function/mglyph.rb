@@ -10,11 +10,11 @@ module Plurimath
           super(parameter_one)
         end
 
-        def to_asciimath
+        def to_asciimath(**)
           parameter_one[:alt]
         end
 
-        def to_latex
+        def to_latex(**)
           parameter_one[:alt]
         end
 
@@ -22,7 +22,7 @@ module Plurimath
           ox_element(class_name, attributes: parameter_one)
         end
 
-        def to_omml_without_math_tag(_)
+        def to_omml_without_math_tag(_, **)
           index = parameter_one[:index].to_i
           r_element(
             (ignoring_index(index) ? parameter_one[:alt].to_s : "&#x#{glyph_user_index(index)};"),
@@ -30,7 +30,7 @@ module Plurimath
           )
         end
 
-        def to_unicodemath
+        def to_unicodemath(**)
           parameter_one[:alt] if parameter_one
         end
 

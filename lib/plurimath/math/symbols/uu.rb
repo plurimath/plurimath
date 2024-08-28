@@ -12,15 +12,15 @@ module Plurimath
         }.freeze
 
         # output methods
-        def to_latex
+        def to_latex(**)
           "\\cup"
         end
 
-        def to_asciimath
+        def to_asciimath(**)
           "uu"
         end
 
-        def to_unicodemath
+        def to_unicodemath(**)
           Utility.html_entity_to_unicode("&#x222a;")
         end
 
@@ -28,7 +28,7 @@ module Plurimath
           ox_element("mo") << "&#x222a;"
         end
 
-        def to_omml_without_math_tag(_)
+        def to_omml_without_math_tag(_, **)
           "&#x222a;"
         end
 

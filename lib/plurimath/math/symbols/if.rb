@@ -12,15 +12,15 @@ module Plurimath
         }.freeze
 
         # output methods
-        def to_latex
+        def to_latex(**)
           "\\operatorname{if}"
         end
 
-        def to_asciimath
+        def to_asciimath(**)
           "if"
         end
 
-        def to_unicodemath
+        def to_unicodemath(**)
           Utility.html_entity_to_unicode("if")
         end
 
@@ -28,7 +28,7 @@ module Plurimath
           ox_element("mo") << "if"
         end
 
-        def to_omml_without_math_tag(_)
+        def to_omml_without_math_tag(_, **)
           "if"
         end
 

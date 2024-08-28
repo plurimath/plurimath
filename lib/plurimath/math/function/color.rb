@@ -20,14 +20,14 @@ module Plurimath
           @options = options unless options.empty?
         end
 
-        def to_asciimath
-          first_value = "(#{parameter_one&.to_asciimath&.gsub(/\s/, '')})"
-          second_value = "(#{parameter_two&.to_asciimath})"
+        def to_asciimath(options:)
+          first_value = "(#{parameter_one&.to_asciimath(options: options)&.gsub(/\s/, '')})"
+          second_value = "(#{parameter_two&.to_asciimath(options: options)})"
           "color#{first_value}#{second_value}"
         end
 
         def to_mathml_without_math_tag(intent, options:)
-          color_value = parameter_one&.to_asciimath&.gsub(/\s/, "")&.gsub(/"/, "")
+          color_value = parameter_one&.to_asciimath(options: options)&.gsub(/\s/, "")&.gsub(/"/, "")
           Utility.update_nodes(
             Utility.ox_element(
               "mstyle",
@@ -37,14 +37,14 @@ module Plurimath
           )
         end
 
-        def to_latex
-          first_value = parameter_one&.to_asciimath&.gsub(/\s/, "")
-          second_value = parameter_two&.to_latex
+        def to_latex(options:)
+          first_value = parameter_one&.to_asciimath(options: options)&.gsub(/\s/, "")
+          second_value = parameter_two&.to_latex(options: options)
           "{\\#{class_name}{#{first_value}} #{second_value}}"
         end
 
-        def to_omml_without_math_tag(display_style)
-          Array(parameter_two.insert_t_tag(display_style))
+        def to_omml_without_math_tag(display_style, options:)
+          Array(parameter_two.insert_t_tag(display_style, options: options))
         end
 
         def to_omml_math_zone(spacing, last = false, _, display_style:)
@@ -55,8 +55,8 @@ module Plurimath
           new_arr
         end
 
-        def to_unicodemath
-          "✎(#{parameter_one.to_unicodemath}&#{parameter_two.to_unicodemath})"
+        def to_unicodemath(options:)
+          "✎(#{parameter_one.to_unicodemath(options: options)}&#{parameter_two.to_unicodemath(options: options)})"
         end
 
         protected

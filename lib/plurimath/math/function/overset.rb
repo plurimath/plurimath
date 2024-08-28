@@ -32,10 +32,10 @@ module Plurimath
           )
         end
 
-        def to_omml_without_math_tag(display_style)
+        def to_omml_without_math_tag(display_style, options:)
           if !display_style
             power = Power.new(parameter_one, parameter_two)
-            return power.to_omml_without_math_tag(display_style)
+            return power.to_omml_without_math_tag(display_style, options: options)
           end
 
           limupp   = Utility.ox_element("limUpp", namespace: "m")
@@ -45,20 +45,20 @@ module Plurimath
             limupp,
             [
               limupppr,
-              omml_parameter(parameter_one, display_style, tag_name: "e"),
-              omml_parameter(parameter_two, display_style, tag_name: "lim"),
+              omml_parameter(parameter_one, display_style, tag_name: "e", options: options),
+              omml_parameter(parameter_two, display_style, tag_name: "lim", options: options),
             ],
           )
           [limupp]
         end
 
-        def to_unicodemath
-          return "#{unicodemath_parens(parameter_two)}#{unicodemath_field_value(parameter_one)}" if unicode_accent?(parameter_one)
-          return "#{unicodemath_field_value(parameter_one)}#{parameter_two.to_unicodemath}" if unicode_accent?(parameter_two)
-          return "#{parameter_one.to_unicodemath}#{unicodemath_parens(parameter_two)}" if horizontal_brackets?
-          return "#{parameter_two.to_unicodemath}^#{unicodemath_parens(parameter_one)}" if unicode_classes_accent?(parameter_two)
+        def to_unicodemath(options:)
+          return "#{unicodemath_parens(parameter_two, options: options)}#{unicodemath_field_value(parameter_one)}" if unicode_accent?(parameter_one)
+          return "#{unicodemath_field_value(parameter_one)}#{parameter_two.to_unicodemath(options: options)}" if unicode_accent?(parameter_two)
+          return "#{parameter_one.to_unicodemath(options: options)}#{unicodemath_parens(parameter_two, options: options)}" if horizontal_brackets?
+          return "#{parameter_two.to_unicodemath(options: options)}^#{unicodemath_parens(parameter_one, options: options)}" if unicode_classes_accent?(parameter_two)
 
-          "#{unicodemath_parens(parameter_two)}┴#{unicodemath_parens(parameter_one)}" if parameter_one || parameter_two
+          "#{unicodemath_parens(parameter_two, options: options)}┴#{unicodemath_parens(parameter_one, options: options)}" if parameter_one || parameter_two
         end
 
         def line_breaking(obj)

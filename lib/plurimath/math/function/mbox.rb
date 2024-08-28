@@ -5,15 +5,15 @@ module Plurimath
   module Math
     module Function
       class Mbox < UnaryFunction
-        def to_asciimath
-          Text.new(parameter_one).to_asciimath
+        def to_asciimath(options:)
+          Text.new(parameter_one).to_asciimath(options: options)
         end
 
         def to_mathml_without_math_tag(intent, options:)
           Text.new(parameter_one).to_mathml_without_math_tag(intent, options: options)
         end
 
-        def to_latex
+        def to_latex(**)
           "\\mbox{#{parameter_one}}"
         end
 
@@ -21,12 +21,12 @@ module Plurimath
           parameter_one
         end
 
-        def to_omml_without_math_tag(display_style)
-          Text.new(parameter_one).to_omml_without_math_tag(display_style)
+        def to_omml_without_math_tag(display_style, options:)
+          Text.new(parameter_one).to_omml_without_math_tag(display_style, options: options)
         end
 
-        def to_unicodemath
-          Text.new(parameter_one).to_unicodemath
+        def to_unicodemath(options:)
+          Text.new(parameter_one).to_unicodemath(options: options)
         end
       end
     end

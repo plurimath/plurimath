@@ -13,13 +13,13 @@ module Plurimath
           @attributes = attributes
         end
 
-        def to_asciimath
-          first_value = "(#{parameter_one.to_asciimath})" if parameter_one
+        def to_asciimath(options:)
+          first_value = "(#{parameter_one.to_asciimath(options: options)})" if parameter_one
           "hat#{first_value}"
         end
 
-        def to_latex
-          first_value = "{#{parameter_one.to_latex}}" if parameter_one
+        def to_latex(options:)
+          first_value = "{#{parameter_one.to_latex(options: options)}}" if parameter_one
           "\\hat#{first_value}"
         end
 
@@ -42,20 +42,20 @@ module Plurimath
           false
         end
 
-        def to_omml_without_math_tag(display_style)
+        def to_omml_without_math_tag(display_style, options:)
           return r_element("^", rpr_tag: false) unless parameter_one
-          return omml_value(display_style) if hide_function_name
+          return omml_value(display_style, options: options) if hide_function_name
 
           if attributes && attributes[:accent]
-            accent_tag(display_style)
+            accent_tag(display_style, options: options)
           else
             symbol = Symbols::Symbol.new("&#x302;") unless hide_function_name
-            Overset.new(parameter_one, symbol).to_omml_without_math_tag(display_style)
+            Overset.new(parameter_one, symbol).to_omml_without_math_tag(display_style, options: options)
           end
         end
 
-        def to_unicodemath
-          "#{unicodemath_parens(parameter_one)}̂"
+        def to_unicodemath(options:)
+          "#{unicodemath_parens(parameter_one, options: options)}̂"
         end
 
         def line_breaking(obj)
@@ -69,7 +69,7 @@ module Plurimath
 
         protected
 
-        def accent_tag(display_style)
+        def accent_tag(display_style, options:)
           symbol  = "̂" unless hide_function_name
           acc_tag = Utility.ox_element("acc", namespace: "m")
           acc_pr_tag = Utility.ox_element("accPr", namespace: "m")
@@ -78,7 +78,7 @@ module Plurimath
             acc_tag,
             [
               acc_pr_tag,
-              omml_parameter(parameter_one, display_style, tag_name: "e", namespace: "m"),
+              omml_parameter(parameter_one, display_style, tag_name: "e", namespace: "m", options: options),
             ],
           )
           [acc_tag]

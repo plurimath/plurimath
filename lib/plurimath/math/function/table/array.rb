@@ -14,8 +14,8 @@ module Plurimath
             super
           end
 
-          def to_latex
-            "\\begin{array}#{array_args || '.'}#{latex_content}\\end{array}"
+          def to_latex(options:)
+            "\\begin{array}#{array_args || '.'}#{latex_content(options: options)}\\end{array}"
           end
 
           def to_mathml_without_math_tag(intent, options:)

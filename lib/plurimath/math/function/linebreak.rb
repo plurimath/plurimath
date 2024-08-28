@@ -20,27 +20,27 @@ module Plurimath
             object.linebreak == linebreak
         end
 
-        def to_asciimath
+        def to_asciimath(options:)
           linebreak_character = "\\\n "
           return linebreak_character unless parameter_one
 
           case attributes[:linebreakstyle]
           when "after"
-            "#{asciimath_value}#{linebreak_character}"
+            "#{asciimath_value(options: options)}#{linebreak_character}"
           else
-            "#{linebreak_character}#{asciimath_value}"
+            "#{linebreak_character}#{asciimath_value(options: options)}"
           end
         end
 
-        def to_latex
+        def to_latex(options:)
           linebreak_character = "\\\\ "
           return linebreak_character unless parameter_one
 
           case attributes[:linebreakstyle]
           when "after"
-            "#{latex_value}#{linebreak_character}"
+            "#{latex_value(options: options)}#{linebreak_character}"
           else
-            "#{linebreak_character}#{latex_value}"
+            "#{linebreak_character}#{latex_value(options: options)}"
           end
         end
 
@@ -65,8 +65,8 @@ module Plurimath
           end
         end
 
-        def to_omml_without_math_tag(display_style)
-          parameter_one&.insert_t_tag(display_style)
+        def to_omml_without_math_tag(display_style, options:)
+          parameter_one&.insert_t_tag(display_style, options: options)
         end
 
         def omml_line_break(result)
@@ -82,8 +82,8 @@ module Plurimath
           result
         end
 
-        def to_unicodemath
-          first_value = parameter_one.to_unicodemath if parameter_one
+        def to_unicodemath(options:)
+          first_value = parameter_one.to_unicodemath(options: options) if parameter_one
           "&#xa;#{first_value}"
         end
 

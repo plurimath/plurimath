@@ -12,15 +12,15 @@ module Plurimath
           second_value: "supscript",
         }
 
-        def to_asciimath
-          first_value = "_#{wrapped(parameter_one)}" if parameter_one
-          second_value = "^#{wrapped(parameter_two)}" if parameter_two
+        def to_asciimath(options:)
+          first_value = "_#{wrapped(parameter_one, options: options)}" if parameter_one
+          second_value = "^#{wrapped(parameter_two, options: options)}" if parameter_two
           "log#{first_value}#{second_value}"
         end
 
-        def to_latex
-          first_value = "_#{latex_wrapped(parameter_one)}" if parameter_one
-          second_value = "^#{latex_wrapped(parameter_two)}" if parameter_two
+        def to_latex(options:)
+          first_value = "_#{latex_wrapped(parameter_one, options: options)}" if parameter_one
+          second_value = "^#{latex_wrapped(parameter_two, options: options)}" if parameter_two
           "\\log#{first_value}#{second_value}"
         end
 
@@ -30,7 +30,7 @@ module Plurimath
           "<i>log</i>#{first_value}#{second_value}"
         end
 
-        def to_omml_without_math_tag(display_style)
+        def to_omml_without_math_tag(display_style, options:)
           return r_element("log", rpr_tag: false) unless all_values_exist?
 
           ssubsup   = Utility.ox_element("sSubSup", namespace: "m")
@@ -41,8 +41,8 @@ module Plurimath
             [
               ssubsuppr,
               e_parameter,
-              omml_parameter(parameter_one, display_style, tag_name: "sub"),
-              omml_parameter(parameter_two, display_style, tag_name: "sup"),
+              omml_parameter(parameter_one, display_style, tag_name: "sub", options: options),
+              omml_parameter(parameter_two, display_style, tag_name: "sup", options: options),
             ],
           )
           [ssubsup]
@@ -66,9 +66,9 @@ module Plurimath
           Utility.update_nodes(ox_element("m#{tag_name}"), new_arr)
         end
 
-        def to_unicodemath
-          first_value = sub_value if parameter_one
-          second_value = sup_value if parameter_two
+        def to_unicodemath(options:)
+          first_value = sub_value(options: options) if parameter_one
+          second_value = sup_value(options: options) if parameter_two
           "log#{first_value}#{second_value}"
         end
 
@@ -100,23 +100,23 @@ module Plurimath
           Utility.update_nodes(r_tag, [rpr_tag, t_tag])
         end
 
-        def sup_value
+        def sup_value(options:)
           if parameter_two&.mini_sized? || prime_unicode?(parameter_two)
-            parameter_two.to_unicodemath
+            parameter_two.to_unicodemath(options: options)
           elsif parameter_two.is_a?(Math::Function::Power)
-            "^#{parameter_two.to_unicodemath}"
+            "^#{parameter_two.to_unicodemath(options: options)}"
           else
-            "^#{unicodemath_parens(parameter_two)}"
+            "^#{unicodemath_parens(parameter_two, options: options)}"
           end
         end
 
-        def sub_value
+        def sub_value(options:)
           if parameter_one&.mini_sized?
-            parameter_one.to_unicodemath
+            parameter_one.to_unicodemath(options: options)
           elsif parameter_one.is_a?(Math::Function::Base)
-            "_#{parameter_one.to_unicodemath}"
+            "_#{parameter_one.to_unicodemath(options: options)}"
           else
-            "_#{unicodemath_parens(parameter_one)}"
+            "_#{unicodemath_parens(parameter_one, options: options)}"
           end
         end
       end

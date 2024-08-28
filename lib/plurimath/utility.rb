@@ -802,15 +802,15 @@ module Plurimath
       def symbol_to_text(symbol, lang:, intent: false, options:)
         case lang
         when :asciimath
-          symbol.to_asciimath
+          symbol.to_asciimath(options: options)
         when :latex
-          symbol.to_latex
+          symbol.to_latex(options: options)
         when :mathml
           symbol.to_mathml_without_math_tag(intent, options: options).nodes.first
         when :omml
-          symbol.to_omml_without_math_tag(true)
+          symbol.to_omml_without_math_tag(true, options: options)
         when :unicodemath
-          symbol.to_unicodemath
+          symbol.to_unicodemath(options: options)
         end
       end
 

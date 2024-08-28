@@ -41,8 +41,9 @@ module Plurimath
           object.left_right_wrapper == left_right_wrapper
       end
 
-      def to_asciimath
-        value.map(&:to_asciimath).join(" ")
+      def to_asciimath(formatter: nil, options: nil)
+        options ||= { formatter: formatter }
+        value.map { |val| val.to_asciimath(options: options) }.join(" ")
       rescue
         parse_error!(:asciimath)
       end
@@ -88,10 +89,9 @@ module Plurimath
         nodes
       end
 
-      def to_latex
-        value&.map(&:to_latex)&.join(" ")
-      rescue
-        parse_error!(:latex)
+      def to_latex(formatter: nil, options: nil)
+        options ||= { formatter: formatter }
+        value.map { |val| val.to_latex(options: options) }.join(" ")
       end
 
       def to_html
@@ -123,14 +123,14 @@ module Plurimath
         }
       end
 
-      def to_omml(display_style: displaystyle, split_on_linebreak: false)
+      def to_omml(display_style: displaystyle, split_on_linebreak: false, formatter: nil)
         objects = split_on_linebreak ? new_line_support : [self]
-
+        options = { formatter: formatter }
         para_element = Utility.ox_element("oMathPara", attributes: omml_attrs, namespace: "m")
         objects.each.with_index(1) do |object, index|
           para_element << Utility.update_nodes(
             Utility.ox_element("oMath", namespace: "m"),
-            object.omml_content(boolean_display_style(display_style)),
+            object.omml_content(boolean_display_style(display_style), options: options),
           )
           next if objects.length == index
 
@@ -141,18 +141,19 @@ module Plurimath
         parse_error!(:omml)
       end
 
-      def omml_content(display_style)
-        value&.map { |val| val.insert_t_tag(display_style) }
+      def omml_content(display_style, options:)
+        value&.map { |val| val.insert_t_tag(display_style, options: options) }
       end
 
-      def to_omml_without_math_tag(display_style)
-        omml_content(display_style)
+      def to_omml_without_math_tag(display_style, options:)
+        omml_content(display_style, options: options)
       end
 
-      def to_unicodemath
-        Utility.html_entity_to_unicode(unicodemath_value).gsub(/\s\/\s/, "/")
       rescue
         parse_error!(:unicodemath)
+      def to_unicodemath(formatter:, options: nil)
+        options ||= { formatter: formatter }
+        Utility.html_entity_to_unicode(unicodemath_value(options: options)).gsub(/\s\/\s/, "/")
       end
 
       def to_display(type = nil, formatter: nil)
@@ -161,17 +162,19 @@ module Plurimath
 
         math_zone = case type
                     when :asciimath
-                      "  |_ \"#{to_asciimath}\"\n#{to_asciimath_math_zone("     ").join}"
+                      "  |_ \"#{to_asciimath(options: options)}\"\n#{to_asciimath_math_zone("     ", options: options).join}"
                     when :latex
-                      "  |_ \"#{to_latex}\"\n#{to_latex_math_zone("     ").join}"
+                      "  |_ \"#{to_latex(options: options)}\"\n#{to_latex_math_zone("     ", options: options).join}"
                     when :mathml
                       mathml = to_mathml(formatter: formatter).gsub(/\n\s*/, "")
                       math_display = to_mathml_math_zone("     ", options: options).join
                       "  |_ \"#{mathml}\"\n#{math_display}"
                     when :omml
-                      "  |_ \"#{to_omml.gsub(/\n\s*/, "")}\"\n#{to_omml_math_zone("     ", display_style: displaystyle).join}"
+                      omml = to_omml.gsub(/\n\s*/, "")
+                      omml_display = to_omml_math_zone("     ", display_style: displaystyle).join
+                      "  |_ \"#{omml}\"\n#{omml_display}"
                     when :unicodemath
-                      "  |_ \"#{to_unicodemath}\"\n#{to_unicodemath_math_zone("     ").join}"
+                      "  |_ \"#{to_unicodemath(options: options)}\"\n#{to_unicodemath_math_zone("     ", options: options).join}"
                     end
         <<~MATHZONE.sub(/\n$/, "")
         |_ Math zone
@@ -179,17 +182,17 @@ module Plurimath
         MATHZONE
       end
 
-      def to_asciimath_math_zone(spacing = "", last = false, indent = true)
+      def to_asciimath_math_zone(spacing = "", last = false, indent = true, options:)
         filtered_values(value, lang: :asciimath).map.with_index(1) do |object, index|
           last = index == @values.length
-          object.to_asciimath_math_zone(new_space(spacing, indent), last, indent)
+          object.to_asciimath_math_zone(new_space(spacing, indent), last, indent, options: options)
         end
       end
 
-      def to_latex_math_zone(spacing = "", last = false, indent = true)
+      def to_latex_math_zone(spacing = "", last = false, indent = true, options:)
         filtered_values(value, lang: :latex).map.with_index(1) do |object, index|
           last = index == @values.length
-          object.to_latex_math_zone(new_space(spacing, indent), last, indent)
+          object.to_latex_math_zone(new_space(spacing, indent), last, indent, options: options)
         end
       end
 
@@ -200,17 +203,17 @@ module Plurimath
         end
       end
 
-      def to_omml_math_zone(spacing = "", last = false, indent = true, display_style:)
+      def to_omml_math_zone(spacing = "", last = false, indent = true, display_style:, options:)
         filtered_values(value, lang: :omml).map.with_index(1) do |object, index|
           last = index == @values.length
-          object.to_omml_math_zone(new_space(spacing, indent), last, indent, display_style: display_style)
+          object.to_omml_math_zone(new_space(spacing, indent), last, indent, display_style: display_style, options: options)
         end
       end
 
-      def to_unicodemath_math_zone(spacing = "", last = false, indent = true)
+      def to_unicodemath_math_zone(spacing = "", last = false, indent = true, options:)
         filtered_values(value, lang: :unicodemath).map.with_index(1) do |object, index|
           last = index == @values.length
-          object.to_unicodemath_math_zone(new_space(spacing, indent), last, indent)
+          object.to_unicodemath_math_zone(new_space(spacing, indent), last, indent, options: options)
         end
       end
 
@@ -220,8 +223,8 @@ module Plurimath
         value.first.parameter_one
       end
 
-      def nary_attr_value
-        value.first.nary_attr_value
+      def nary_attr_value(options:)
+        value.first.nary_attr_value(options: Hash.new(options))
       end
 
       def validate_function_formula
@@ -342,8 +345,9 @@ module Plurimath
         value.last.is_a?(Math::Symbols::Symbol) && value.last.value == "&#x338;"
       end
 
-      def unicodemath_value
-        (negated_value? || mini_sized?) ? value&.map(&:to_unicodemath)&.join : value&.map(&:to_unicodemath)&.join(" ")
+      def unicodemath_value(options:)
+        join_str = " " if !(negated_value? || mini_sized?)
+        value&.map { |v| v.to_unicodemath(options: options) }&.join(join_str)
       end
 
       def valid_previous?(previous)

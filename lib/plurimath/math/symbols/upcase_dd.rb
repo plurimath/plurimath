@@ -12,15 +12,15 @@ module Plurimath
         }.freeze
 
         # output methods
-        def to_latex
+        def to_latex(**)
           parsing_wrapper("Dd", lang: :latex)
         end
 
-        def to_asciimath
+        def to_asciimath(**)
           parsing_wrapper("Dd", lang: :asciimath)
         end
 
-        def to_unicodemath
+        def to_unicodemath(**)
           encoded
         end
 
@@ -29,7 +29,7 @@ module Plurimath
           ox_element("mi", attributes: attributes) << "&#x2145;"
         end
 
-        def to_omml_without_math_tag(_)
+        def to_omml_without_math_tag(_, **)
           "&#x2145;"
         end
 

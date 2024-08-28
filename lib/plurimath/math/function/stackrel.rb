@@ -12,9 +12,9 @@ module Plurimath
           second_value: "below",
         }.freeze
 
-        def to_asciimath
-          first_value  = wrapped(parameter_one)
-          second_value = wrapped(parameter_two)
+        def to_asciimath(options:)
+          first_value  = wrapped(parameter_one, options: options)
+          second_value = wrapped(parameter_two, options: options)
           "#{class_name}#{first_value}#{second_value}"
         end
 
@@ -34,7 +34,7 @@ module Plurimath
           "#{first_value}#{second_value}"
         end
 
-        def to_omml_without_math_tag(display_style)
+        def to_omml_without_math_tag(display_style, options:)
           limupp   = Utility.ox_element("limUpp", namespace: "m")
           limupppr = Utility.ox_element("limUppPr", namespace: "m")
           limupppr << Utility.pr_element("ctrl", true, namespace: "m")
@@ -42,16 +42,16 @@ module Plurimath
             limupp,
             [
               limupppr,
-              omml_parameter(parameter_two, display_style, tag_name: "e"),
-              omml_parameter(parameter_one, display_style, tag_name: "lim"),
+              omml_parameter(parameter_two, display_style, tag_name: "e", options: options),
+              omml_parameter(parameter_one, display_style, tag_name: "lim", options: options),
             ],
           )
           [limupp]
         end
 
-        def to_unicodemath
-          first_value = "(#{parameter_one&.to_unicodemath})"
-          second_value = "(#{parameter_two&.to_unicodemath})"
+        def to_unicodemath(options:)
+          first_value = "(#{parameter_one&.to_unicodemath(options: options)})"
+          second_value = "(#{parameter_two&.to_unicodemath(options: options)})"
           "#{second_value}┴#{first_value}"
         end
 
@@ -65,8 +65,8 @@ module Plurimath
 
         protected
 
-        def wrapped(field)
-          string = field&.to_asciimath || ""
+        def wrapped(field, options:)
+          string = field&.to_asciimath(options: options) || ""
           string.start_with?("(") ? string : "(#{string})"
         end
 

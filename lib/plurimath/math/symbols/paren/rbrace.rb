@@ -13,15 +13,15 @@ module Plurimath
           }.freeze
 
           # output methods
-          def to_latex
+          def to_latex(**)
             "\\rbrace"
           end
 
-          def to_asciimath
+          def to_asciimath(**)
             parsing_wrapper("rbrace", lang: :asciimath)
           end
 
-          def to_unicodemath
+          def to_unicodemath(**)
             encoded
           end
 
@@ -29,7 +29,7 @@ module Plurimath
             ox_element("mi") << encoded
           end
 
-          def to_omml_without_math_tag(_)
+          def to_omml_without_math_tag(_, **)
             "&#x7d;"
           end
 

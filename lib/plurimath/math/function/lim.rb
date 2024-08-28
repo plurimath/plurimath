@@ -12,15 +12,15 @@ module Plurimath
           second_value: "limit supscript",
         }.freeze
 
-        def to_asciimath
-          first_value = "_#{wrapped(parameter_one)}" if parameter_one
-          second_value = "^#{wrapped(parameter_two)}" if parameter_two
+        def to_asciimath(options:)
+          first_value = "_#{wrapped(parameter_one, options: options)}" if parameter_one
+          second_value = "^#{wrapped(parameter_two, options: options)}" if parameter_two
           "lim#{first_value}#{second_value}"
         end
 
-        def to_latex
-          first_value = "_{#{parameter_one.to_latex}}" if parameter_one
-          second_value = "^{#{parameter_two.to_latex}}" if parameter_two
+        def to_latex(options:)
+          first_value = "_{#{parameter_one.to_latex(options: options)}}" if parameter_one
+          second_value = "^{#{parameter_two.to_latex(options: options)}}" if parameter_two
           "\\#{class_name}#{first_value}#{second_value}"
         end
 
@@ -45,13 +45,13 @@ module Plurimath
           intentify(lim_tag, intent, func_name: :function, intent_name: :function)
         end
 
-        def to_omml_without_math_tag(display_style)
-          underover(display_style)
+        def to_omml_without_math_tag(display_style, options:)
+          underover(display_style, options: options)
         end
 
-        def to_unicodemath
-          first_value  = "_#{unicodemath_parens(parameter_one)}" if parameter_one
-          second_value = "^#{unicodemath_parens(parameter_two)}" if parameter_two
+        def to_unicodemath(options:)
+          first_value  = "_#{unicodemath_parens(parameter_one, options: options)}" if parameter_one
+          second_value = "^#{unicodemath_parens(parameter_two, options: options)}" if parameter_two
           "lim#{first_value}#{second_value}"
         end
 

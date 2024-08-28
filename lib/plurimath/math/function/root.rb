@@ -21,13 +21,13 @@ module Plurimath
           )
         end
 
-        def to_latex
-          first_value = parameter_one&.to_latex
-          second_value = parameter_two&.to_latex
+        def to_latex(options:)
+          first_value = parameter_one&.to_latex(options: options)
+          second_value = parameter_two&.to_latex(options: options)
           "\\sqrt[#{first_value}]{#{second_value}}"
         end
 
-        def to_omml_without_math_tag(display_style)
+        def to_omml_without_math_tag(display_style, options:)
           attribute = { "m:val": "off" }
           rad_element = Utility.ox_element("rad", namespace: "m")
           pr_element  = Utility.ox_element("radPr", namespace: "m")
@@ -36,16 +36,16 @@ module Plurimath
             rad_element,
             [
               pr_element,
-              omml_parameter(parameter_two, display_style, tag_name: "deg"),
-              omml_parameter(parameter_one, display_style, tag_name: "e"),
+              omml_parameter(parameter_two, display_style, tag_name: "deg", options: options),
+              omml_parameter(parameter_one, display_style, tag_name: "e", options: options),
             ],
           )
           [rad_element]
         end
 
-        def to_unicodemath
-          first_value = parameter_one.to_unicodemath if parameter_one
-          second_value = parameter_two.to_unicodemath if parameter_two
+        def to_unicodemath(options:)
+          first_value = parameter_one.to_unicodemath(options: options) if parameter_one
+          second_value = parameter_two.to_unicodemath(options: options) if parameter_two
           "√(#{first_value}&#{second_value})"
         end
       end

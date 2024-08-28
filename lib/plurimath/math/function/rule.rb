@@ -12,14 +12,14 @@ module Plurimath
           third_value: "third argument",
         }.freeze
 
-        def to_asciimath
+        def to_asciimath(**)
           ""
         end
 
-        def to_latex
-          first_value = "[#{parameter_one.to_latex}]" if parameter_one
-          second_value = "{#{parameter_two.to_latex}}" if parameter_two
-          third_value = "{#{parameter_three.to_latex}}" if parameter_three
+        def to_latex(options:)
+          first_value = "[#{parameter_one.to_latex(options: options)}]" if parameter_one
+          second_value = "{#{parameter_two.to_latex(options: options)}}" if parameter_two
+          third_value = "{#{parameter_three.to_latex(options: options)}}" if parameter_three
           "\\rule#{first_value}#{second_value}#{third_value}"
         end
 
@@ -27,7 +27,7 @@ module Plurimath
           Utility.ox_element("mi")
         end
 
-        def to_omml_without_math_tag(_)
+        def to_omml_without_math_tag(_, **)
           [Utility.ox_element("m:r") << Utility.ox_element("m:t")]
         end
 
@@ -35,7 +35,7 @@ module Plurimath
           ""
         end
 
-        def to_unicodemath
+        def to_unicodemath(**)
           ""
         end
       end

@@ -8,12 +8,12 @@ module Plurimath
       class Norm < UnaryFunction
         attr_accessor :open_paren, :close_paren
 
-        def to_asciimath
-          parameter_one.is_a?(Table) ? "norm#{parameter_one.to_asciimath}" : super
+        def to_asciimath(options:)
+          parameter_one.is_a?(Table) ? "norm#{parameter_one.to_asciimath(options: options)}" : super
         end
 
-        def to_latex
-          "{\\lVert #{parameter_one&.to_latex} \\lVert}"
+        def to_latex(options:)
+          "{\\lVert #{parameter_one&.to_latex(options: options)} \\lVert}"
         end
 
         def to_mathml_without_math_tag(intent, options:)
@@ -24,16 +24,16 @@ module Plurimath
           Utility.update_nodes(ox_element("mrow"), first_value)
         end
 
-        def to_unicodemath
+        def to_unicodemath(options:)
           first_value = "&#x2016;" unless open_paren
           second_value = "&#x2016;" unless close_paren
-          "#{first_value}#{parameter_one&.to_unicodemath}#{second_value}"
+          "#{first_value}#{parameter_one&.to_unicodemath(options: options)}#{second_value}"
         end
 
-        def to_omml_without_math_tag(display_style)
+        def to_omml_without_math_tag(display_style, options:)
           array = []
           array << r_element("∥") unless open_paren
-          array += Array(omml_value(display_style))
+          array += Array(omml_value(display_style, options: options))
           array << r_element("∥") unless close_paren
           array
         end

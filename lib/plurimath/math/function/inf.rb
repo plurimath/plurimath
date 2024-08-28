@@ -6,15 +6,15 @@ module Plurimath
   module Math
     module Function
       class Inf < BinaryFunction
-        def to_asciimath
-          first_value = "_(#{parameter_one.to_asciimath})" if parameter_one
-          second_value = "^(#{parameter_two.to_asciimath})" if parameter_two
+        def to_asciimath(options:)
+          first_value = "_(#{parameter_one.to_asciimath(options: options)})" if parameter_one
+          second_value = "^(#{parameter_two.to_asciimath(options: options)})" if parameter_two
           "#{class_name}#{first_value}#{second_value}"
         end
 
-        def to_latex
-          first_value = "_{#{parameter_one.to_latex}}" if parameter_one
-          second_value = "^{#{parameter_two.to_latex}}" if parameter_two
+        def to_latex(options:)
+          first_value = "_{#{parameter_one.to_latex(options: options)}}" if parameter_one
+          second_value = "^{#{parameter_two.to_latex(options: options)}}" if parameter_two
           "\\#{class_name}#{first_value}#{second_value}"
         end
 
@@ -39,8 +39,8 @@ module Plurimath
           intentify(inf_tag, intent, func_name: :function, intent_name: :function)
         end
 
-        def to_omml_without_math_tag(display_style)
-          underover(display_style)
+        def to_omml_without_math_tag(display_style, options:)
+          underover(display_style, options: options)
         end
 
         def line_breaking(obj)
@@ -53,33 +53,33 @@ module Plurimath
           end
         end
 
-        def to_unicodemath
-          "inf#{sub_value}#{sup_value}"
+        def to_unicodemath(options:)
+          "inf#{sub_value(options: options)}#{sup_value(options: options)}"
         end
 
         protected
 
-        def sup_value
+        def sup_value(options:)
           return unless parameter_two
 
           if parameter_two&.mini_sized? || prime_unicode?(parameter_two)
-            parameter_two.to_unicodemath
+            parameter_two.to_unicodemath(options: options)
           elsif parameter_two.is_a?(Math::Function::Power)
-            "^#{parameter_two.to_unicodemath}"
+            "^#{parameter_two.to_unicodemath(options: options)}"
           else
-            "^#{unicodemath_parens(parameter_two)}"
+            "^#{unicodemath_parens(parameter_two, options: options)}"
           end
         end
 
-        def sub_value
+        def sub_value(options:)
           return unless parameter_one
 
           if parameter_one&.mini_sized?
-            parameter_one.to_unicodemath
+            parameter_one.to_unicodemath(options: options)
           elsif parameter_one.is_a?(Math::Function::Base)
-            "_#{parameter_one.to_unicodemath}"
+            "_#{parameter_one.to_unicodemath(options: options)}"
           else
-            "_#{unicodemath_parens(parameter_one)}"
+            "_#{unicodemath_parens(parameter_one, options: options)}"
           end
         end
       end

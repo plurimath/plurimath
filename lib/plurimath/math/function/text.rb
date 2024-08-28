@@ -9,7 +9,7 @@ module Plurimath
       class Text < UnaryFunction
         PARSER_REGEX = %r{unicode\[:(?<unicode>\w{1,})\]}.freeze
 
-        def to_asciimath
+        def to_asciimath(**)
           "\"#{parse_text('asciimath') || parameter_one}\""
         end
 
@@ -20,7 +20,7 @@ module Plurimath
           text << (parse_text("mathml") || parameter_one)
         end
 
-        def to_latex
+        def to_latex(**)
           text_value = parse_text("latex") || parameter_one
           "\\text{#{text_value}}"
         end
@@ -29,21 +29,21 @@ module Plurimath
           parse_text("html") || parameter_one
         end
 
-        def to_omml_without_math_tag(_)
+        def to_omml_without_math_tag(_, **)
           text = Utility.ox_element("t", namespace: "m")
           text << (parse_text("omml") || parameter_one)
           [text]
         end
 
-        def to_unicodemath
+        def to_unicodemath(**)
           return unless value
 
           value&.start_with?("\\") ? value : "\"#{(Utility.html_entity_to_unicode(value))}\""
         end
 
-        def insert_t_tag(display_style)
+        def insert_t_tag(display_style, options:)
           r_tag = Utility.ox_element("r", namespace: "m")
-          Utility.update_nodes(r_tag, to_omml_without_math_tag(display_style))
+          Utility.update_nodes(r_tag, to_omml_without_math_tag(display_style, options: options))
           [r_tag]
         end
 
@@ -51,28 +51,28 @@ module Plurimath
           false
         end
 
-        def to_asciimath_math_zone(spacing, _, _)
-          "#{spacing}#{to_asciimath} text\n"
+        def to_asciimath_math_zone(spacing, _, _, options:)
+          "#{spacing}#{to_asciimath(options: options)} text\n"
         end
 
-        def to_latex_math_zone(spacing, _, _)
-          "#{spacing}#{to_asciimath} text\n"
+        def to_latex_math_zone(spacing, _, _, options:)
+          "#{spacing}#{to_asciimath(options: options)} text\n"
         end
 
         def to_mathml_math_zone(spacing, _, _, options:)
           "#{spacing}\"#{dump_mathml(self, options: options)}\" text\n"
         end
 
-        def to_omml_math_zone(spacing, _, _, display_style:)
-          "#{spacing}\"#{dump_omml(self, display_style)}\" text\n"
+        def to_omml_math_zone(spacing, _, _, display_style:, options:)
+          "#{spacing}\"#{dump_omml(self, display_style, options: options)}\" text\n"
         end
 
         def value
           parameter_one
         end
 
-        def to_unicodemath_math_zone(spacing, _, _)
-          "#{spacing}#{to_unicodemath} text\n"
+        def to_unicodemath_math_zone(spacing, _, _, options:)
+          "#{spacing}#{to_unicodemath(options: options)} text\n"
         end
 
         protected

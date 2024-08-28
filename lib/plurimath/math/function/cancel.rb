@@ -15,12 +15,12 @@ module Plurimath
           Utility.update_nodes(cancel_tag, [first_value])
         end
 
-        def to_omml_without_math_tag(display_style)
-          omml_value(display_style)
+        def to_omml_without_math_tag(display_style, options:)
+          omml_value(display_style, options: options)
         end
 
-        def to_unicodemath
-          first_value = unicodemath_parens(parameter_one) if parameter_one
+        def to_unicodemath(options:)
+          first_value = unicodemath_parens(parameter_one, options: options) if parameter_one
           "╱#{first_value}"
         end
       end

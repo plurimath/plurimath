@@ -20,7 +20,7 @@ RSpec.describe Plurimath::Math::Function::BinaryFunction do
       let(:first_value) { Plurimath::Math::Function::Sum.new }
       let(:second_value) { Plurimath::Math::Symbols::Symbol.new("theta") }
       it "returns asciimath string" do
-        expect(formula.to_asciimath).to eq("binaryfunction(sum)(theta)")
+        expect(formula.to_asciimath(options: {})).to eq("binaryfunction(sum)(theta)")
       end
     end
   end

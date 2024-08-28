@@ -12,12 +12,12 @@ module Plurimath
             super
           end
 
-          def to_asciimath
-            "mathbf(#{parameter_one&.to_asciimath})"
+          def to_asciimath(options:)
+            "mathbf(#{parameter_one&.to_asciimath(options: options)})"
           end
 
-          def to_latex
-            "\\mathbf{#{parameter_one&.to_latex}}"
+          def to_latex(options:)
+            "\\mathbf{#{parameter_one&.to_latex(options: options)}}"
           end
 
           def to_mathml_without_math_tag(intent, options:)
@@ -30,8 +30,8 @@ module Plurimath
             )
           end
 
-          def to_omml_without_math_tag(display_style)
-            font_styles(display_style, sty: "b")
+          def to_omml_without_math_tag(display_style, options:)
+            font_styles(display_style, sty: "b", options: options)
           end
         end
       end

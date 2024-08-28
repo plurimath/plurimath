@@ -14,8 +14,8 @@ module Plurimath
             super
           end
 
-          def to_latex
-            "\\begin#{opening}#{latex_content}\\end#{matrix_class}"
+          def to_latex(options:)
+            "\\begin#{opening}#{latex_content(options: options)}\\end#{matrix_class}"
           end
         end
       end

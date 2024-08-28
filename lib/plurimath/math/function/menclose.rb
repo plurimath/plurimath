@@ -24,8 +24,8 @@ module Plurimath
           downdiagonalstrike: "strikeTLBR",
         }
 
-        def to_asciimath
-          parameter_two&.to_asciimath
+        def to_asciimath(options:)
+          parameter_two&.to_asciimath(options: options)
         end
 
         def to_mathml_without_math_tag(intent, options:)
@@ -35,8 +35,8 @@ module Plurimath
           menclose
         end
 
-        def to_latex
-          parameter_two&.to_latex
+        def to_latex(options:)
+          parameter_two&.to_latex(options: options)
         end
 
         def to_html
@@ -44,24 +44,24 @@ module Plurimath
           "<menclose notation=\"#{parameter_one}\">#{second_value}</menclose>"
         end
 
-        def to_omml_without_math_tag(display_style)
+        def to_omml_without_math_tag(display_style, options:)
           borderbox = ox_element("borderBox", namespace: "m")
           Utility.update_nodes(
             borderbox,
             [
               borderboxpr,
-              omml_parameter(parameter_two, display_style, tag_name: "e"),
+              omml_parameter(parameter_two, display_style, tag_name: "e", options: options),
             ],
           )
           [borderbox]
         end
 
-        def to_unicodemath
+        def to_unicodemath(options:)
           if unicode_symbol?
-            "#{unicode_symbol}#{unicodemath_parens(parameter_two)}"
+            "#{unicode_symbol}#{unicodemath_parens(parameter_two, options: options)}"
           elsif masked_class?
             first_value = Utility.notations_to_mask(parameter_one) if parameter_one
-            second_value = parameter_two&.to_unicodemath if parameter_two
+            second_value = parameter_two&.to_unicodemath(options: options) if parameter_two
             "▭(#{first_value}&#{second_value})"
           end
         end

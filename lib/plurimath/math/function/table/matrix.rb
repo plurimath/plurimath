@@ -14,12 +14,13 @@ module Plurimath
             super
           end
 
-          def to_asciimath
-            "{:#{value.map(&:to_asciimath).join(", ")}:}"
+          def to_asciimath(options:)
+            ascii_value = value.map { |v| v.to_asciimath(options: options) }.join(", ")
+            "{:#{ascii_value}:}"
           end
 
-          def to_latex
-            "\\begin#{opening}#{latex_content}\\end#{matrix_class}"
+          def to_latex(options:)
+            "\\begin#{opening}#{latex_content(options: options)}\\end#{matrix_class}"
           end
 
           def to_mathml_without_math_tag(intent, options:)
@@ -35,9 +36,9 @@ module Plurimath
             )
           end
 
-          def to_unicodemath
-            first_value = value.map(&:to_unicodemath).join("@")
-            "#{open_paren&.to_unicodemath}■(#{first_value})#{close_paren&.to_unicodemath}"
+          def to_unicodemath(options:)
+            first_value = value.map { |v| v.to_unicodemath(options: options) }.join("@")
+            "#{open_paren&.to_unicodemath(options: options)}■(#{first_value})#{close_paren&.to_unicodemath(options: options)}"
           end
 
           protected

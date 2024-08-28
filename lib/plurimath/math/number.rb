@@ -18,49 +18,49 @@ module Plurimath
           object.mini_sup_sized == mini_sup_sized
       end
 
-      def to_asciimath
-        value
+      def to_asciimath(options:)
+        format_value_with_options(options)
       end
 
       def to_mathml_without_math_tag(_, options:)
-        Utility.ox_element("mn") << mathml_output_value(options)
+        Utility.ox_element("mn") << format_value_with_options(options)
       end
 
-      def to_latex
-        value
+      def to_latex(options:)
+        format_value_with_options(options)
       end
 
       def to_html
         value
       end
 
-      def to_omml_without_math_tag(_)
-        [t_tag]
+      def to_omml_without_math_tag(_, options:)
+        [t_tag(options: options)]
       end
 
-      def to_unicodemath
+      def to_unicodemath(options:)
         return mini_sub if mini_sub_sized
         return mini_sup if mini_sup_sized
 
-        value
+        format_value_with_options(options)
       end
 
-      def insert_t_tag(_)
+      def insert_t_tag(_, options:)
         [
-          (Utility.ox_element("r", namespace: "m") << t_tag),
+          (Utility.ox_element("r", namespace: "m") << t_tag(options: options)),
         ]
       end
 
-      def font_style_t_tag(_)
-        t_tag
+      def font_style_t_tag(_, options:)
+        t_tag(options: options)
       end
 
-      def t_tag
-        Utility.ox_element("t", namespace: "m") << value
+      def t_tag(options:)
+        Utility.ox_element("t", namespace: "m") << format_value_with_options(options)
       end
 
-      def nary_attr_value
-        value
+      def nary_attr_value(options:)
+        format_value_with_options(options)
       end
 
       def validate_function_formula
@@ -85,7 +85,7 @@ module Plurimath
         UnicodeMath::Constants.const_get(const)
       end
 
-      def mathml_output_value(options)
+      def format_value_with_options(options)
         return value unless options[:formatter]&.respond_to?(:localized_number)
 
         options[:formatter].localized_number(value.to_s)

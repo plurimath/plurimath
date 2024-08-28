@@ -26,13 +26,13 @@ module Plurimath
             object.close_paren == close_paren
         end
 
-        def to_asciimath
+        def to_asciimath(options:)
           return parentheless_table if SIMPLE_TABLES.include?(class_name)
 
           parenthesis = Asciimath::Constants::TABLE_PARENTHESIS
-          first_value = value.map(&:to_asciimath).join(", ")
-          lparen = open_paren.nil? ? "[" : open_paren.to_asciimath
-          rparen = close_paren.nil? ? parenthesis[lparen.to_sym] : close_paren.to_asciimath
+          first_value = value&.map { |val| val&.to_asciimath(options: options) }&.join(", ")
+          lparen = open_paren.nil? ? "[" : open_paren.to_asciimath(options: options)
+          rparen = close_paren.nil? ? parenthesis[lparen.to_sym] : close_paren.to_asciimath(options: options)
           "#{lparen}#{first_value}#{rparen}"
         end
 
@@ -56,15 +56,15 @@ module Plurimath
           table_tag
         end
 
-        def to_latex
-          return "\\begin{Vmatrix}#{latex_content}\\end{Vmatrix}" if open_paren.is_a?(Math::Symbols::Paren::Norm)
+        def to_latex(options:)
+          return "\\begin{Vmatrix}#{latex_content(options: options)}\\end{Vmatrix}" if open_paren.is_a?(Math::Symbols::Paren::Norm)
 
           separator = "{#{table_attribute(:latex)}}" if environment&.include?("array")
-          left_paren = open_paren&.to_latex || "."
-          right_paren = close_paren&.to_latex || "."
+          left_paren = open_paren&.to_latex(options: options) || "."
+          right_paren = close_paren&.to_latex(options: options) || "."
           left = "\\left #{left_paren}\\begin{matrix}"
           right = "\\end{matrix}\\right #{right_paren.delete_prefix("\\right")}"
-          "#{left}#{separator}#{latex_content}#{right}"
+          "#{left}#{separator}#{latex_content(options: options)}#{right}"
         end
 
         def to_html
@@ -72,34 +72,35 @@ module Plurimath
           "<table>#{first_value}</table>"
         end
 
-        def to_omml_without_math_tag(display_style)
+        def to_omml_without_math_tag(display_style, options:)
           ox_table = if single_table?
-                       single_td_table(display_style)
+                       single_td_table(display_style, options: options)
                      else
-                       multiple_td_table(display_style)
+                       multiple_td_table(display_style, options: options)
                      end
           fenced_table(ox_table)
         end
 
-        def to_unicodemath
+        def to_unicodemath(options:)
+          table_values = value&.map { |val| val&.to_unicodemath(options: options) }&.join("@")
           if unicodemath_table_class?
-            "#{unicodemath_class_name}(#{value.map(&:to_unicodemath).join("@")})"
+            "#{unicodemath_class_name}(#{table_values})"
           else
-            "#{open_paren&.to_unicodemath}■(#{value.map(&:to_unicodemath).join("@")})#{close_paren&.to_unicodemath}"
+            "#{open_paren&.to_unicodemath(options: options)}■(#{table_values})#{close_paren&.to_unicodemath(options: options)}"
           end
         end
 
-        def to_asciimath_math_zone(spacing, last = false, indent = true)
+        def to_asciimath_math_zone(spacing, last = false, indent = true, options:)
           [
             "#{spacing}\"table\" function apply\n",
-            Formula.new(value).to_asciimath_math_zone(gsub_spacing(spacing, last), last, indent),
+            Formula.new(value).to_asciimath_math_zone(gsub_spacing(spacing, last), last, indent, options: options),
           ]
         end
 
-        def to_latex_math_zone(spacing, last = false, indent = true)
+        def to_latex_math_zone(spacing, last = false, indent = true, options:)
           [
             "#{spacing}\"table\" function apply\n",
-            Formula.new(value).to_latex_math_zone(gsub_spacing(spacing, last), last, indent),
+            Formula.new(value).to_latex_math_zone(gsub_spacing(spacing, last), last, indent, options: options),
           ]
         end
 
@@ -110,17 +111,17 @@ module Plurimath
           ]
         end
 
-        def to_omml_math_zone(spacing, last = false, indent = true, display_style:)
+        def to_omml_math_zone(spacing, last = false, indent = true, display_style:, options:)
           [
             "#{spacing}\"table\" function apply\n",
-            Formula.new(value).to_omml_math_zone(gsub_spacing(spacing, last), last, indent, display_style: display_style),
+            Formula.new(value).to_omml_math_zone(gsub_spacing(spacing, last), last, indent, display_style: display_style, options: options),
           ]
         end
 
-        def to_unicodemath_math_zone(spacing, last = false, indent = true)
+        def to_unicodemath_math_zone(spacing, last = false, indent = true, options:)
           [
             "#{spacing}\"table\" function apply\n",
-            Formula.new(value).to_unicodemath_math_zone(gsub_spacing(spacing, last), last, indent),
+            Formula.new(value).to_unicodemath_math_zone(gsub_spacing(spacing, last), last, indent, options: options),
           ]
         end
 
@@ -167,8 +168,8 @@ module Plurimath
           args
         end
 
-        def latex_content
-          value&.map(&:to_latex)&.join(" \\\\ ")
+        def latex_content(options:)
+          value&.map { |val| val&.to_latex(options: options) }&.join(" \\\\ ")
         end
 
         def matrix_class
@@ -200,17 +201,17 @@ module Plurimath
           matrices_hash.invert[open_paren].to_s if matric_value
         end
 
-        def single_td_table(display_style)
+        def single_td_table(display_style, options:)
           eqarr    = Utility.ox_element("eqArr", namespace: "m")
           eqarrpr  = Utility.ox_element("eqArrPr", namespace: "m")
           eqarrpr  << Utility.pr_element("ctrl", true, namespace: "m")
           eqarr    << eqarrpr
-          tr_value = value.map { |object| object.to_omml_without_math_tag(display_style) }.flatten
+          tr_value = value.map { |object| object.to_omml_without_math_tag(display_style, options: options) }.flatten
           Utility.update_nodes(eqarr, tr_value.compact)
           [eqarr]
         end
 
-        def multiple_td_table(display_style)
+        def multiple_td_table(display_style, options:)
           count  = { "m:val": value&.first&.parameter_one&.count }
           mcjc   = { "m:val": "center" }
           mm     = Utility.ox_element("m", namespace: "m")
@@ -234,7 +235,7 @@ module Plurimath
           mcs << mc
           mpr << mcs
           mpr << ctrlpr
-          mm_value = value&.map { |object| object.to_omml_without_math_tag(display_style) }
+          mm_value = value&.map { |object| object.to_omml_without_math_tag(display_style, options: options) }
           Utility.update_nodes(
             mm,
             mm_value.insert(0, mpr).flatten,
@@ -286,8 +287,8 @@ module Plurimath
           parenthesis.to_omml_without_math_tag(true)
         end
 
-        def parentheless_table
-          "{:#{value.map(&:to_asciimath).join(", ")}:}"
+        def parentheless_table(options:)
+          "{:#{value.map { |val| val&.to_asciimath(options: options) }&.join(", ")}:}"
         end
 
         def single_table?

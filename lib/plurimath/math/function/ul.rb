@@ -13,13 +13,13 @@ module Plurimath
           @attributes = attributes
         end
 
-        def to_asciimath
-          first_value = "(#{parameter_one.to_asciimath})" if parameter_one
+        def to_asciimath(options:)
+          first_value = "(#{parameter_one.to_asciimath(options: options)})" if parameter_one
           "underline#{first_value}"
         end
 
-        def to_latex
-          first_value = "{#{parameter_one.to_latex}}" if parameter_one
+        def to_latex(options:)
+          first_value = "{#{parameter_one.to_latex(options: options)}}" if parameter_one
           "\\underline#{first_value}"
         end
 
@@ -38,19 +38,19 @@ module Plurimath
           )
         end
 
-        def to_omml_without_math_tag(display_style)
+        def to_omml_without_math_tag(display_style, options:)
           return r_element("&#x332;", rpr_tag: false) unless parameter_one
 
           if attributes && attributes[:accentunder]
-            groupchr_tag(display_style)
+            groupchr_tag(display_style, options: options)
           else
             symbol = Symbols::Symbol.new("&#x332;")
-            Underset.new(parameter_one, symbol).to_omml_without_math_tag(true)
+            Underset.new(parameter_one, symbol).to_omml_without_math_tag(true, options: options)
           end
         end
 
-        def to_unicodemath
-          "▁#{unicodemath_parens(parameter_one)}"
+        def to_unicodemath(options:)
+          "▁#{unicodemath_parens(parameter_one, options: options)}"
         end
 
         def class_name
@@ -63,7 +63,7 @@ module Plurimath
 
         protected
 
-        def groupchr_tag(display_style)
+        def groupchr_tag(display_style, options:)
           groupchr = Utility.ox_element("groupChr", namespace: "m")
           groupchrpr = Utility.ox_element("groupChrPR", namespace: "m")
           chr = Utility.ox_element("chr", namespace: "m", attributes: { "m:val": "_" })
@@ -73,7 +73,7 @@ module Plurimath
             groupchr,
             [
               groupchrpr,
-              omml_parameter(parameter_one, display_style, tag_name: "e", namespace: "m"),
+              omml_parameter(parameter_one, display_style, tag_name: "e", namespace: "m", options: options),
             ],
           )
         end

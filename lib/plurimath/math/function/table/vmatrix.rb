@@ -14,12 +14,13 @@ module Plurimath
             super
           end
 
-          def to_latex
-            "\\begin#{opening}#{latex_content}\\end#{matrix_class}"
+          def to_latex(options:)
+            "\\begin#{opening}#{latex_content(options: options)}\\end#{matrix_class}"
           end
 
-          def to_unicodemath
-            "#{matrix_symbol}(#{value.map(&:to_unicodemath).join("@")})"
+          def to_unicodemath(options:)
+            unicode_value = value.map { |val| val.to_unicodemath(options: options) }.join("@")
+            "#{matrix_symbol}(#{unicode_value})"
           end
 
           def to_mathml_without_math_tag(intent, **)
