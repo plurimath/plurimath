@@ -18,7 +18,7 @@ module Plurimath
           empty_tag
         end
 
-        def to_unicodemath(); end
+        def to_unicodemath(**); end
       end
     end
   end

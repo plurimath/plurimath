@@ -14,8 +14,8 @@ module Plurimath
           table << mlabeledtr
         end
 
-        def to_unicodemath
-          "#{parameter_one&.to_unicodemath}##{parameter_two&.value}"
+        def to_unicodemath(options:)
+          "#{parameter_one&.to_unicodemath(options: options)}##{parameter_two&.value}"
         end
 
         protected

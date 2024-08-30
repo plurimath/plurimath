@@ -82,7 +82,7 @@ module Plurimath
           return mini_sized_unicode(options: options) if mini_sized?
 
           fenced_value = parameter_two&.map do |param|
-            next param.choose_frac if choose_frac?(param)
+            next param.choose_frac(options: options) if choose_frac?(param)
 
             param.to_unicodemath(options: options)
           end&.join(" ")
@@ -90,7 +90,7 @@ module Plurimath
 
           fenced_value = "(#{fenced_value})" if vert_paren?
 
-          "#{unicode_open_paren}#{fenced_value}#{unicode_close_paren}"
+          "#{unicode_open_paren(options: options)}#{fenced_value}#{unicode_close_paren(options: options)}"
         end
 
         def to_asciimath_math_zone(spacing, last = false, indent = true, options:)

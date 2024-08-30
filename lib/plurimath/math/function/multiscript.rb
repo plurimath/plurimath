@@ -20,8 +20,8 @@ module Plurimath
         end
 
         def to_latex(options:)
-          subscript = "_{#{parameter_two&.map { |param| param.to_latex(options: options) }.join}}" if valid_value_exist?(parameter_two)
-          supscript = "^{#{parameter_three&.map { |param| param.to_latex(options: options) }.join}}" if valid_value_exist?(parameter_three)
+          subscript = "_{#{parameter_two&.map { |param| param.to_latex(options: options) }&.join}}" unless valid_value_exist?(parameter_two)
+          supscript = "^{#{parameter_three&.map { |param| param.to_latex(options: options) }&.join}}" unless valid_value_exist?(parameter_three)
           prescript = "{}#{subscript}#{supscript}" if subscript || supscript
           "#{prescript}#{parameter_one&.to_latex(options: options)}"
         end

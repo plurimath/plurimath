@@ -113,7 +113,7 @@ module Plurimath
         end
 
         def unicodemath_parens(field, options:)
-          return "〖#{field.to_unicodemath(options: options)}〗" unless options.nil? || options&.empty?
+          return "〖#{field.to_unicodemath(options: options)}〗" unless self.options.nil? || self.options&.empty?
 
           super(field, options: options)
         end

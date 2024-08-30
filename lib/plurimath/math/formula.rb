@@ -151,7 +151,7 @@ module Plurimath
 
       rescue
         parse_error!(:unicodemath)
-      def to_unicodemath(formatter:, options: nil)
+      def to_unicodemath(formatter: nil, options: nil)
         options ||= { formatter: formatter }
         Utility.html_entity_to_unicode(unicodemath_value(options: options)).gsub(/\s\/\s/, "/")
       end
@@ -171,7 +171,7 @@ module Plurimath
                       "  |_ \"#{mathml}\"\n#{math_display}"
                     when :omml
                       omml = to_omml.gsub(/\n\s*/, "")
-                      omml_display = to_omml_math_zone("     ", display_style: displaystyle).join
+                      omml_display = to_omml_math_zone("     ", display_style: displaystyle, options: options).join
                       "  |_ \"#{omml}\"\n#{omml_display}"
                     when :unicodemath
                       "  |_ \"#{to_unicodemath(options: options)}\"\n#{to_unicodemath_math_zone("     ", options: options).join}"

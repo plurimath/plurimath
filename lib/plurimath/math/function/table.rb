@@ -27,7 +27,7 @@ module Plurimath
         end
 
         def to_asciimath(options:)
-          return parentheless_table if SIMPLE_TABLES.include?(class_name)
+          return parentheless_table(options: options) if SIMPLE_TABLES.include?(class_name)
 
           parenthesis = Asciimath::Constants::TABLE_PARENTHESIS
           first_value = value&.map { |val| val&.to_asciimath(options: options) }&.join(", ")

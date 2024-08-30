@@ -73,7 +73,7 @@ module Plurimath
         def to_unicodemath(options:)
           first_value = "_#{unicodemath_parens(parameter_one, options: options)}" if parameter_one
           second_value = "^#{unicodemath_parens(parameter_two, options: options)}" if parameter_two
-          mask = options&.dig(:mask) if options&.key?(:mask)
+          mask = self.options&.dig(:mask) if self.options&.key?(:mask)
           "∑#{mask}#{first_value}#{second_value}#{naryand_value(parameter_three, options: options)}"
         end
 
