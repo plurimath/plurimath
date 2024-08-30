@@ -7,8 +7,8 @@ module Plurimath
     module Function
       class FontStyle
         class SansSerifItalic < FontStyle
-          def to_omml_without_math_tag(display_style)
-            font_styles(display_style, sty: "i", scr: "sans-serif")
+          def to_omml_without_math_tag(display_style, options:)
+            font_styles(display_style, sty: "i", scr: "sans-serif", options: options)
           end
         end
       end

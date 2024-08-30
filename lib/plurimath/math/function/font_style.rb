@@ -85,7 +85,7 @@ module Plurimath
         def to_mathml_math_zone(spacing, last = false, _, options:)
           new_spacing = gsub_spacing(spacing, last)
           new_arr = [
-            "#{spacing}\"#{dump_mathml(self)}\" function apply\n",
+            "#{spacing}\"#{dump_mathml(self, options: options)}\" function apply\n",
             "#{new_spacing}|_ \"#{font_family(mathml: true)}\" font family\n",
           ]
           mathml_fields_to_print(parameter_one, { spacing: new_spacing, field_name: "argument", additional_space: "|  |_ ", array: new_arr, options: options })
@@ -96,7 +96,7 @@ module Plurimath
           new_spacing = gsub_spacing(spacing, last)
           new_arr = [
             "#{spacing}\"#{dump_omml(self, display_style, options: options)}\" function apply\n",
-            "#{new_spacing}|_ \"#{font_family(omml: true, options: options)}\" font family\n",
+            "#{new_spacing}|_ \"#{font_family(omml: true)}\" font family\n",
           ]
           omml_fields_to_print(parameter_one, { spacing: new_spacing, field_name: "argument", additional_space: "|  |_ ", array: new_arr, display_style: display_style, options: options })
           new_arr

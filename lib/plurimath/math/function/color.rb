@@ -47,11 +47,11 @@ module Plurimath
           Array(parameter_two.insert_t_tag(display_style, options: options))
         end
 
-        def to_omml_math_zone(spacing, last = false, _, display_style:)
+        def to_omml_math_zone(spacing, last = false, _, display_style:, options:)
           parameters = self.class::FUNCTION
           new_spacing = gsub_spacing(spacing, last)
-          new_arr = ["#{spacing}\"#{dump_omml(self, display_style)}\" #{parameters[:name]}\n"]
-          omml_fields_to_print(parameter_two, { spacing: new_spacing, field_name: "text", additional_space: "|  |_ ", array: new_arr, display_style: display_style })
+          new_arr = ["#{spacing}\"#{dump_omml(self, display_style, options: options)}\" #{parameters[:name]}\n"]
+          omml_fields_to_print(parameter_two, { spacing: new_spacing, field_name: "text", additional_space: "|  |_ ", array: new_arr, display_style: display_style, options: options })
           new_arr
         end
 

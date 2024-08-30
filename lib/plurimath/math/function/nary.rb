@@ -78,9 +78,9 @@ module Plurimath
           first_value = sub_value(options: options) if parameter_two
           second_value = sup_value(options: options) if parameter_three
           if prime_unicode?(parameter_three)
-            "#{parameter_one&.to_unicodemath(options: options)}#{second_value}#{first_value}#{naryand_value(parameter_four)}"
+            "#{parameter_one&.to_unicodemath(options: options)}#{second_value}#{first_value}#{naryand_value(parameter_four, options: options)}"
           else
-            "#{parameter_one&.to_unicodemath(options: options)}#{first_value}#{second_value}#{naryand_value(parameter_four)}"
+            "#{parameter_one&.to_unicodemath(options: options)}#{first_value}#{second_value}#{naryand_value(parameter_four, options: options)}"
           end
         end
 
@@ -130,7 +130,7 @@ module Plurimath
           first_value = Utility.html_entity_to_unicode(parameter_one&.nary_attr_value(options: options))
           narypr << Utility.ox_element("chr", namespace: "m", attributes: { "m:val": first_value }) unless first_value == "∫"
 
-          narypr << Utility.ox_element("limLoc", namespace: "m", attributes: { "m:val": (options[:type] || "subSup").to_s })
+          narypr << Utility.ox_element("limLoc", namespace: "m", attributes: { "m:val": (self.options[:type] || "subSup").to_s })
           hide_tags(narypr, parameter_two, "sub")
           hide_tags(narypr, parameter_three, "sup")
           narypr

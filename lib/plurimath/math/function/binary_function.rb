@@ -85,7 +85,7 @@ module Plurimath
         def to_mathml_math_zone(spacing, last = false, _, options:)
           parameters = self.class::FUNCTION
           new_spacing = gsub_spacing(spacing, last)
-          new_arr = ["#{spacing}\"#{dump_mathml(self)}\" #{parameters[:name]}\n"]
+          new_arr = ["#{spacing}\"#{dump_mathml(self, options: options)}\" #{parameters[:name]}\n"]
           mathml_fields_to_print(parameter_one, { spacing: new_spacing, field_name: parameters[:first_value], additional_space: "|  |_ ", array: new_arr, options: options })
           mathml_fields_to_print(parameter_two, { spacing: new_spacing, field_name: parameters[:second_value], additional_space: "  |_ ", array: new_arr, options: options })
           new_arr

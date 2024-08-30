@@ -7,8 +7,8 @@ module Plurimath
     module Function
       class FontStyle
         class BoldFraktur < FontStyle
-          def to_omml_without_math_tag(display_style)
-            font_styles(display_style, sty: "b", scr: "fraktur")
+          def to_omml_without_math_tag(display_style, options:)
+            font_styles(display_style, sty: "b", scr: "fraktur", options: options)
           end
         end
       end

@@ -54,7 +54,7 @@ module Plurimath
         end
 
         def to_unicodemath(options:)
-          "#{unicodemath_parens(parameter_one)}̅"
+          "#{unicodemath_parens(parameter_one, options: options)}̅"
         end
 
         protected

@@ -63,7 +63,7 @@ module Plurimath
         end
 
         def to_unicodemath(options:)
-          return unicodemath_fraction if options&.dig(:unicodemath_fraction)
+          return unicodemath_fraction if self.options&.dig(:unicodemath_fraction)
 
           first_value = unicodemath_parens(parameter_one, options: options) if parameter_one
           second_value = unicodemath_parens(parameter_two, options: options) if parameter_two

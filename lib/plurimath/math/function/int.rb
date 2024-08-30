@@ -81,7 +81,7 @@ module Plurimath
         def to_unicodemath(options:)
           first_value = sub_value(options: options) if parameter_one
           second_value = sup_value(options: options) if parameter_two
-          mask = options&.dig(:mask) if options&.key?(:mask)
+          mask = self.options&.dig(:mask) if self.options&.key?(:mask)
           "∫#{mask}#{first_value}#{second_value}#{naryand_value(parameter_three, options: options)}"
         end
 
@@ -128,7 +128,7 @@ module Plurimath
           end
         end
 
-        def sub_value
+        def sub_value(options:)
           if parameter_one&.mini_sized?
             parameter_one.to_unicodemath(options: options)
           elsif parameter_one.is_a?(Math::Function::Base)

@@ -21,7 +21,7 @@ RSpec.describe Plurimath::Math::Number do
       let(:value) { "1" }
 
       it 'returns string' do
-        expect(number.to_asciimath).to eq(value)
+        expect(number.to_asciimath(options: {})).to eq(value)
       end
     end
   end
@@ -49,7 +49,7 @@ RSpec.describe Plurimath::Math::Number do
   end
 
   describe ".to_asciimath" do
-    subject(:formula) { described_class.new(first_value).to_asciimath }
+    subject(:formula) { described_class.new(first_value).to_asciimath(options: {}) }
 
     context "contains Single Number as value" do
       let(:first_value) { "1" }
@@ -87,7 +87,7 @@ RSpec.describe Plurimath::Math::Number do
   end
 
   describe ".to_latex" do
-    subject(:formula) { described_class.new(first_value).to_latex }
+    subject(:formula) { described_class.new(first_value).to_latex(options: {}) }
 
     context "contains Symbol as value" do
       let(:first_value) { "n" }
@@ -110,7 +110,7 @@ RSpec.describe Plurimath::Math::Number do
     subject(:formula) do
       Plurimath.xml_engine.dump(
         described_class.new(first_value).
-          to_omml_without_math_tag(true).first,
+          to_omml_without_math_tag(true, options: {}).first,
         indent: 2,
       ).gsub("&amp;", "&")
     end

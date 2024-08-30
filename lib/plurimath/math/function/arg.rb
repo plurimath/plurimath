@@ -12,8 +12,8 @@ module Plurimath
           first_value
         end
 
-        def to_unicodemath
-          first_value = "(#{parameter_two&.to_unicodemath} #{parameter_one&.to_unicodemath})" if parameter_one || parameter_two
+        def to_unicodemath(options:)
+          first_value = "(#{parameter_two&.to_unicodemath(options: options)} #{parameter_one&.to_unicodemath(options: options)})" if parameter_one || parameter_two
           "ⓐ#{first_value}"
         end
       end

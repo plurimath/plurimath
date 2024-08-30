@@ -23,19 +23,19 @@ module Plurimath
           Utility.update_nodes(underover, value_array)
         end
 
-        def to_latex
-          first_value  = parameter_one&.to_latex
-          second_value = "{#{parameter_two.to_latex}}" if parameter_two
-          third_value  = "{#{parameter_three.to_latex}}" if parameter_three
+        def to_latex(options:)
+          first_value  = parameter_one&.to_latex(options: options)
+          second_value = "{#{parameter_two.to_latex(options: options)}}" if parameter_two
+          third_value  = "{#{parameter_three.to_latex(options: options)}}" if parameter_three
           "#{first_value}\\#{class_name}_#{second_value}^#{third_value}"
         end
 
-        def to_omml_without_math_tag(display_style)
-          underover(display_style)
+        def to_omml_without_math_tag(display_style, options:)
+          underover(display_style, options: options)
         end
 
-        def to_unicodemath
-          "#{parameter_one&.to_unicodemath}#{sup_value}#{sub_value}"
+        def to_unicodemath(options:)
+          "#{parameter_one&.to_unicodemath(options: options)}#{sup_value(options: options)}#{sub_value(options: options)}"
         end
 
         def line_breaking(obj)
@@ -56,25 +56,25 @@ module Plurimath
 
         protected
 
-        def sup_value
+        def sup_value(options:)
           return unless parameter_three
 
           if parameter_three.is_a?(Math::Function::Power)
-            "┴#{parameter_three.to_unicodemath}"
+            "┴#{parameter_three.to_unicodemath(options: options)}"
           elsif parameter_one.is_a?(Math::Function::Power) && parameter_one&.prime_unicode?(parameter_one&.parameter_two)
-            "┴#{parameter_three.to_unicodemath}"
+            "┴#{parameter_three.to_unicodemath(options: options)}"
           else
-            "┴#{unicodemath_parens(parameter_three)}"
+            "┴#{unicodemath_parens(parameter_three, options: options)}"
           end
         end
 
-        def sub_value
+        def sub_value(options:)
           return unless parameter_two
 
           if parameter_two.is_a?(Math::Function::Base)
-            "┬#{parameter_two.to_unicodemath}"
+            "┬#{parameter_two.to_unicodemath(options: options)}"
           else
-            "┬#{unicodemath_parens(parameter_two)}"
+            "┬#{unicodemath_parens(parameter_two, options: options)}"
           end
         end
       end
