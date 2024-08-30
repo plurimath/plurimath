@@ -1,4 +1,5 @@
 require "spec_helper"
+require "plurimath/formatter/standard"
 
 RSpec.describe Plurimath::Math::Formula do
 
@@ -1055,4 +1056,208 @@ RSpec.describe Plurimath::Math::Formula do
       end
     end
   end
+
+  context "contains formatter option's conversion" do
+    describe ".to_mathml(formatter:)" do
+      subject(:formula) { described_class.new(exp).to_mathml(formatter: formatter) }
+
+      context "contains array of numbers only" do
+        let(:exp) do
+          [
+            Plurimath::Math::Number.new("331.4677"),
+            Plurimath::Math::Number.new("123.4567"),
+          ]
+        end
+
+        context "with default formatter" do
+          let(:formatter) { Plurimath::Formatter::Standard.new }
+
+          it "returns mathml string with formatted numbers using default formatter" do
+            expected_value = <<~MATHML
+              <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+                <mstyle displaystyle="true">
+                  <mn>331.467'7</mn>
+                  <mn>123.456'7</mn>
+                </mstyle>
+              </math>
+            MATHML
+            expect(formula).to be_equivalent_to(expected_value)
+          end
+        end
+
+        context "with compact formatter" do
+          let(:formatter) { CustomFormatter.new }
+
+          it "returns mathml string with formatted numbers using compact formatter" do
+            expected_value = <<~MATHML
+              <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+                <mstyle displaystyle="true">
+                  <mn>3&gt;3&gt;1^46;77</mn>
+                  <mn>1&gt;2&gt;3^45;67</mn>
+                </mstyle>
+              </math>
+            MATHML
+            expect(formula).to be_equivalent_to(expected_value)
+          end
+        end
+      end
+    end
+
+    describe ".to_omml(formatter:)" do
+      subject(:formula) { described_class.new(exp).to_omml(formatter: formatter) }
+
+      context "contains array of numbers only" do
+        let(:exp) do
+          [
+            Plurimath::Math::Number.new("331.4677"),
+            Plurimath::Math::Number.new("123.4567"),
+          ]
+        end
+
+        context "with default formatter" do
+          let(:formatter) { Plurimath::Formatter::Standard.new }
+
+          it "returns mathml string with formatted numbers using default formatter" do
+            expected_value = <<~OMML
+              <m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape">
+                <m:oMath>
+                  <m:r>
+                    <m:t>331.467'7</m:t>
+                  </m:r>
+                  <m:r>
+                    <m:t>123.456'7</m:t>
+                  </m:r>
+                </m:oMath>
+              </m:oMathPara>
+            OMML
+            expect(formula).to be_equivalent_to(expected_value)
+          end
+        end
+
+        context "with compact formatter" do
+          let(:formatter) { CustomFormatter.new }
+
+          it "returns OMML string with formatted numbers using compact formatter" do
+            expected_value = <<~OMML
+              <m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape">
+                <m:oMath>
+                  <m:r>
+                    <m:t>3&gt;3&gt;1^46;77</m:t>
+                  </m:r>
+                  <m:r>
+                    <m:t>1&gt;2&gt;3^45;67</m:t>
+                  </m:r>
+                </m:oMath>
+              </m:oMathPara>
+            OMML
+            expect(formula).to be_equivalent_to(expected_value)
+          end
+        end
+      end
+    end
+
+    describe ".to_unicodemath(formatter:)" do
+      subject(:formula) { described_class.new(exp).to_unicodemath(formatter: formatter) }
+
+      context "contains array of numbers only" do
+        let(:exp) do
+          [
+            Plurimath::Math::Number.new("331.4677"),
+            Plurimath::Math::Number.new("123.4567"),
+          ]
+        end
+
+        context "with default formatter" do
+          let(:formatter) { Plurimath::Formatter::Standard.new }
+
+          it "returns unicodemath string with formatted numbers using default formatter" do
+            expected_value = "331.467'7 123.456'7"
+            expect(formula).to be_equivalent_to(expected_value)
+          end
+        end
+
+        context "with compact formatter" do
+          let(:formatter) { CustomFormatter.new }
+
+          it "returns unicodemath string with formatted numbers using compact formatter" do
+            expected_value = "3>3>1^46;77 1>2>3^45;67"
+            expect(formula).to be_equivalent_to(expected_value)
+          end
+        end
+      end
+    end
+
+    describe ".to_latex(formatter:)" do
+      subject(:formula) { described_class.new(exp).to_latex(formatter: formatter) }
+
+      context "contains array of numbers only" do
+        let(:exp) do
+          [
+            Plurimath::Math::Number.new("331.4677"),
+            Plurimath::Math::Number.new("123.4567"),
+          ]
+        end
+
+        context "with default formatter" do
+          let(:formatter) { Plurimath::Formatter::Standard.new }
+
+          it "returns latex string with formatted numbers using default formatter" do
+            expected_value = "331.467'7 123.456'7"
+            expect(formula).to be_equivalent_to(expected_value)
+          end
+        end
+
+        context "with compact formatter" do
+          let(:formatter) { CustomFormatter.new }
+
+          it "returns latex string with formatted numbers using compact formatter" do
+            expected_value = "3>3>1^46;77 1>2>3^45;67"
+            expect(formula).to be_equivalent_to(expected_value)
+          end
+        end
+      end
+    end
+
+    describe ".to_asciimath(formatter:)" do
+      subject(:formula) { described_class.new(exp).to_asciimath(formatter: formatter) }
+
+      context "contains array of numbers only" do
+        let(:exp) do
+          [
+            Plurimath::Math::Number.new("331.4677"),
+            Plurimath::Math::Number.new("123.4567"),
+          ]
+        end
+
+        context "with default formatter" do
+          let(:formatter) { Plurimath::Formatter::Standard.new }
+
+          it "returns asciimath string with formatted numbers using default formatter" do
+            expected_value = "331.467'7 123.456'7"
+            expect(formula).to be_equivalent_to(expected_value)
+          end
+        end
+
+        context "with compact formatter" do
+          let(:formatter) { CustomFormatter.new }
+
+          it "returns asciimath string with formatted numbers using compact formatter" do
+            expected_value = "3>3>1^46;77 1>2>3^45;67"
+            expect(formula).to be_equivalent_to(expected_value)
+          end
+        end
+      end
+    end
+  end
+end
+
+
+class CustomFormatter < Plurimath::Formatter::Standard
+  DEFAULT_OPTIONS = {
+    fraction_group_digits: 2,
+    fraction_group: ";",
+    group_digits: 1,
+    decimal: "^",
+    group: ">",
+  }.freeze
 end
