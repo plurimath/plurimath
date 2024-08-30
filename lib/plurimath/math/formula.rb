@@ -149,11 +149,11 @@ module Plurimath
         omml_content(display_style, options: options)
       end
 
-      rescue
-        parse_error!(:unicodemath)
       def to_unicodemath(formatter: nil, options: nil)
         options ||= { formatter: formatter }
         Utility.html_entity_to_unicode(unicodemath_value(options: options)).gsub(/\s\/\s/, "/")
+      rescue
+        parse_error!(:unicodemath)
       end
 
       def to_display(type = nil, formatter: nil)
