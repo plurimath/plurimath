@@ -92,6 +92,8 @@ module Plurimath
       def to_latex(formatter: nil, options: nil)
         options ||= { formatter: formatter }
         value.map { |val| val.to_latex(options: options) }.join(" ")
+      rescue
+        parse_error!(:latex)
       end
 
       def to_html
