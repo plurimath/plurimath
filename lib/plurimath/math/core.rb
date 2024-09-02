@@ -8,6 +8,16 @@ module Plurimath
         /^\n/ => "",
       }.freeze
 
+      def self.inherited(subclass)
+        @descendants ||= []
+        @descendants << subclass
+        super
+      end
+
+      def self.descendants
+        @descendants
+      end
+
       def class_name
         self.class.name.split("::").last.downcase
       end
@@ -175,7 +185,7 @@ module Plurimath
       end
 
       def replacable_values(string)
-        REPLACABLES.each { |regex, str| string.gsub!(regex, str) }
+        REPLACABLES.each { |regex, str| string = string.gsub(regex, str) }
         string
       end
 

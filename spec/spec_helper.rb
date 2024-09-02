@@ -43,21 +43,21 @@ def unicode_encode_entities(string = nil)
   # Implements pre-processing to convert Unicode characters to Unicode codes for Unicode::Parse class.
   remove_prefix(string)
   string = if string.include?("#") && !string.match?(/"([^"]*(#|&#x23;|\\\\eqno)[^"]*[^"]*|[^"]*(#|&#x23;|\\\\eqno)[^"]*[^"]*)"/)
-      string.gsub!(/✎\(.*(\#).*\)/) { |str| str.gsub!("#", ":d:") }
-      splitted = string.split("#")
-      splitted.first.gsub!(":d:", "#")
-      @splitted = splitted.last if splitted.count > 1
-      splitted.first
-    else
-      string
-    end
+    string = string.gsub(/✎\(.*(\#).*\)/) { |str| str = str.gsub("#", ":d:") }
+    splitted = string.split("#")
+    splitted[0] = splitted.first.gsub(":d:", "#")
+    @splitted = splitted.last if splitted.count > 1
+    splitted.first
+  else
+    string
+  end
   string = HTMLEntities.new.encode(string, :hexadecimal)
-  string.gsub!(/\\u([\da-fA-F]{1,5})\w{0,5}/) { "&#x#{$1};" }
-  string.gsub!(/&#x2af7;.*&#x2af8;/, "")
-  string.gsub!("&#x26;", "&")
-  string.gsub!("&#x22;", "\"")
-  string.gsub!(/\\\\/, "\\")
-  string.strip!
+  string = string.gsub(/\\u([\da-fA-F]{1,5})\w{0,5}/) { "&#x#{$1};" }
+  string = string.gsub(/&#x2af7;.*&#x2af8;/, "")
+  string = string.gsub("&#x26;", "&")
+  string = string.gsub("&#x22;", "\"")
+  string = string.gsub(/\\\\/, "\\")
+  string = string.strip
   string
 end
 

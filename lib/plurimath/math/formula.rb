@@ -386,7 +386,7 @@ module Plurimath
         nodes.reduce do |first, second|
           if valid_partial_node(first)
             if %w[mfrac mo].include?(second.name)
-              first["intent"].gsub!("$f", "")
+              first["intent"] = first["intent"].gsub("$f", "")
             else
               second["arg"] = "f"
             end

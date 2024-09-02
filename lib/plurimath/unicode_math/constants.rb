@@ -1021,7 +1021,7 @@ module Plurimath
 
       class << self
         def wrapper_symbols
-          @@wrapper_symbols ||= Utility.symbols_hash(:unicodemath).keys.grep(/"P{[^}]+}/)
+          @@wrapper_symbols ||= Utility.symbols_hash(:unicodemath).keys.grep(/"P\{[^\}]+\}/)
         end
       end
     end

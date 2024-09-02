@@ -260,26 +260,14 @@ module Plurimath
         text.to_s.split("_").map(&:capitalize).join
       end
 
-      def symbols_files
-        @@symbol_files ||= Dir.glob(File.join(__dir__, "math/symbols/", "*.rb"))
-      end
-
-      def paren_files
-        @@paren_files ||= Dir.glob(File.join(__dir__, "math/symbols/", "paren", "*.rb"))
-      end
-
       def symbols_hash(lang)
         @@symbols ||= {}
         lang_symbols = @@symbols[lang]
         return lang_symbols if lang_symbols && !lang_symbols.empty?
 
         lang_symbols = {}
-        symbols_files.map do |file_name|
-          class_name = File.basename(file_name, ".rb")
-          next if ["symbol", "paren"].include?(class_name)
-
-          class_object = get_symbol_class(class_name)
-          class_object::INPUT[lang].flatten&.each do |symbol|
+        Math::Symbols::Symbol.descendants.map do |class_object|
+          class_object::INPUT[lang]&.flatten&.each do |symbol|
             next if lang_symbols.key?(symbol)
 
             lang_symbols[symbol] = class_object
@@ -294,11 +282,9 @@ module Plurimath
         return lang_parens if lang_parens && !lang_parens.empty?
 
         lang_parens = {}
-        paren_files.map do |file_name|
-          class_name = File.basename(file_name, ".rb")
-          class_object = get_symbol_class(class_name)
-          class_object::INPUT[lang].flatten&.each do |symbol|
-            next if skipables && skipables.include?(class_name)
+        Math::Symbols::Paren.descendants.map do |class_object|
+          class_object::INPUT[lang]&.flatten&.each do |symbol|
+            next if skipables && skipables.include?(class_object.new.class_name)
             next if lang_parens.key?(symbol)
 
             lang_parens[symbol] = class_object
