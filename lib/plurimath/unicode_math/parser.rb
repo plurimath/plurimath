@@ -15,12 +15,12 @@ module Plurimath
       def initialize(text)
         text = pre_processing(text)
         @text = HTMLEntities.new.encode(text, :hexadecimal)
-        @text.gsub!("&#x26;", "&")
-        @text.gsub!("&#x22;", "\"")
-        @text.gsub!(/&#x2af7;.*&#x2af8;/, "")
-        @text.gsub!(/\\\\/, "\\")
-        @text.gsub!(/\\u([\da-fA-F]{1,5})\w{0,5}/) { "&#x#{$1};" } # Converting \u#{xxxx} encoding to &#x#{xxxx};
-        @text.strip!
+        @text = @text.gsub("&#x26;", "&")
+        @text = @text.gsub("&#x22;", "\"")
+        @text = @text.gsub(/&#x2af7;.*&#x2af8;/, "")
+        @text = @text.gsub(/\\\\/, "\\")
+        @text = @text.gsub(/\\u([\da-fA-F]{1,5})\w{0,5}/) { "&#x#{$1};" } # Converting \u#{xxxx} encoding to &#x#{xxxx};
+        @text = @text.strip
       end
 
       def parse
@@ -45,11 +45,11 @@ module Plurimath
       def pre_processing(text)
         text unless text.include?("#") && !text.match?(LABELED_TR_REGEX)
 
-        text.gsub!(/✎\(.*(\#).*\)/) do |str|
-          str.gsub!("#", "\"replacement\"")
+        text = text.gsub(/✎\(.*(\#).*\)/) do |str|
+          str = str.gsub("#", "\"replacement\"")
         end
         splitted = text.split("#")
-        splitted.first.gsub!("\"replacement\"", "#")
+        splitted[0] = splitted.first.gsub("\"replacement\"", "#")
         @splitted = splitted.last if splitted.count > 1
         splitted.first
       end

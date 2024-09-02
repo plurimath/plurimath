@@ -187,14 +187,6 @@ module Plurimath
           %w[& @ ^].include?(value)
         end
 
-        def require_symbols
-          files_array.each { |file| require file }
-        end
-
-        def files_array
-          Dir.glob(File.join(__dir__, "symbols", "*.rb"))
-        end
-
         def parsing_wrapper(string, lang:)
           case lang
           when :asciimath, :unicode then "\"P{#{string}}\""

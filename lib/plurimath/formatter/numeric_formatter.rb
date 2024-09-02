@@ -75,10 +75,6 @@ module Plurimath
         chars.join(" #{@times} 10^")
       end
 
-      def update_exponent_sign(str)
-        str.gsub!("e", "e+") if @exponent_sign == :plus
-      end
-
       def update_exponent_value(number_str)
         exponent_number = BigDecimal(number_str) - 1
         "#{"+" if @exponent_sign == :plus}#{exponent_number.to_i}"
@@ -88,9 +84,9 @@ module Plurimath
         notation_array = BigDecimal(num_str).to_s("e").split("e")
         notation_array[1] = update_exponent_value(notation_array[1])
         number_str = notation_array[0]
-        number_str.gsub!(/0\.(\d)/, '\1.')
-        number_str.sub!('.', '') if number_str.start_with?(".")
-        notation_array[0] = number_str[0..-2] if number_str.end_with?(".")
+        number_str = number_str.gsub(/0\.(\d)/, '\1.')
+        number_str = number_str.sub('.', '') if number_str.start_with?(".")
+        notation_array[0] = number_str.end_with?(".") ? number_str[0..-2] : number_str
         notation_array
       end
 

@@ -129,7 +129,7 @@ module Plurimath
           return unless intent
           return unless intent.start_with?(":derivative") && intent.end_with?(",)")
 
-          num.nodes.first["intent"].gsub!(/,\)$/, ",#{validate_derivative(den.nodes)})")
+          num.nodes.first["intent"] = num.nodes.first["intent"].gsub(/,\)$/, ",#{validate_derivative(den.nodes)})")
         end
 
         def validate_derivative(den_nodes)

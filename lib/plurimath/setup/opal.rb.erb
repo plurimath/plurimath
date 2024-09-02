@@ -1,8 +1,12 @@
 require 'plurimath/math/core'
 require 'plurimath/math/function'
+require 'plurimath/math/symbols/symbol'
+require 'plurimath/math/symbols/paren'
+
 <% (
      Dir[File.dirname(__dir__)+"/math/function/*.rb"] +
-     Dir[File.dirname(__dir__)+"/math/function/**/*.rb"]
+     Dir[File.dirname(__dir__)+"/math/function/**/*.rb"] +
+     Dir[File.dirname(__dir__)+"/math/symbols/**/*.rb"]
    ).each do |f| %>
   require 'plurimath/<%= f.split("lib/plurimath").last.gsub(/.rb$/,'') %>'
 <% end %>
