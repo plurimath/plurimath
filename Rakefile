@@ -30,11 +30,10 @@ def write_doc_file(doc_file, type:)
   File.open(doc_file, "a") do |file|
     file.write(file_header)
 
-    Plurimath::Utility.send(:"#{type}_files").each do |symbol|
-      file_name = File.basename(symbol, ".rb")
-      klass = Plurimath::Utility.get_symbol_class(file_name)
+    Plurimath::Utility.send(:"#{type}_files").each do |klass|
       next if klass::INPUT.empty?
-
+      
+      file_name = File.basename(klass.const_source_location(:INPUT).first, ".rb")
       file.write(documentation_content(file_name, klass))
     end
 
