@@ -260,13 +260,21 @@ module Plurimath
         text.to_s.split("_").map(&:capitalize).join
       end
 
+      def paren_files
+        Math::Symbols::Paren.descendants
+      end
+
+      def symbols_files 
+        Math::Symbols::Symbol.descendants
+      end
+
       def symbols_hash(lang)
         @@symbols ||= {}
         lang_symbols = @@symbols[lang]
         return lang_symbols if lang_symbols && !lang_symbols.empty?
 
         lang_symbols = {}
-        Math::Symbols::Symbol.descendants.map do |class_object|
+        symbols_files.map do |class_object|
           class_object::INPUT[lang]&.flatten&.each do |symbol|
             next if lang_symbols.key?(symbol)
 
@@ -282,7 +290,7 @@ module Plurimath
         return lang_parens if lang_parens && !lang_parens.empty?
 
         lang_parens = {}
-        Math::Symbols::Paren.descendants.map do |class_object|
+        paren_files.map do |class_object|
           class_object::INPUT[lang]&.flatten&.each do |symbol|
             next if skipables && skipables.include?(class_object.new.class_name)
             next if lang_parens.key?(symbol)
