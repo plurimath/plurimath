@@ -1,0 +1,14 @@
+name: Plurimath JS workflow
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+
+jobs:
+  rake:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ruby/setup-ruby@v1
+      - run: bundle install
