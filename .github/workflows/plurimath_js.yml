@@ -16,7 +16,7 @@ jobs:
           bundler-cache: true
       - uses: henrywhitaker3/trigger-external-workflow-action@v1
         with:
-          token: ${{ secrets.PLURIMATH_CI_PAT }}
+          token: ${{ secrets.pat_token || github.token }}
           payload: '{ "workflow_id": "${{ github.run_id }}", "branch": "${{ github.ref }}" }'
           repo: plurimath/plurimath-js
           event: update-submodule
