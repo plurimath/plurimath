@@ -1,5 +1,6 @@
 {
   "repo": [
+    "plurimath/plurimath-js",
     "unitsml/unitsml-ruby"
   ]
 }
