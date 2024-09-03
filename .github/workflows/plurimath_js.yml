@@ -19,4 +19,4 @@ jobs:
           token: ${{ secrets.pat_token || github.token }}
           repository: plurimath/plurimath-js
           event-type: update-submodule
-          client-payload: '{"ref": "${{ github.ref }}", "sha": "${{ github.sha }}"}'
+          client-payload: '{"branch": "${{ steps.branch_name.outputs.branch_name }}", "sha": "${{ github.sha }}"}'
