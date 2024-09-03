@@ -14,9 +14,9 @@ jobs:
         with:
           ruby-version: '3.3'
           bundler-cache: true
-      - uses: henrywhitaker3/trigger-external-workflow-action@v1
+      - uses: peter-evans/repository-dispatch@v3
         with:
-          token: ${{ github.token }}
-          payload: '{ "workflow_id": "${{ github.run_id }}", "branch": "${{ github.ref }}" }'
-          repo: plurimath/plurimath-js
-          event: update-submodule
+          token: ${{ secrets.pat_token || github.token }}
+          repository: plurimath/plurimath-js
+          event-type: update-submodule
+          client-payload: '{"ref": "${{ github.ref }}", "sha": "${{ github.sha }}"}'
