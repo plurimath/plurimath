@@ -33,7 +33,7 @@ module Plurimath
             "&#x27e8;"
           end
 
-          def to_html
+          def to_html(**)
             paren_value
           end
 

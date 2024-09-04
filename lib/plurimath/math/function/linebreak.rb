@@ -53,15 +53,15 @@ module Plurimath
           mo_node
         end
 
-        def to_html
+        def to_html(options:)
           br_tag = "<br/>"
           return br_tag unless parameter_one
 
           case attributes[:linebreakstyle]
           when "after"
-            "#{parameter_one.to_html}#{br_tag}"
+            "#{parameter_one.to_html(options: options)}#{br_tag}"
           else
-            "#{br_tag}#{parameter_one.to_html}"
+            "#{br_tag}#{parameter_one.to_html(options: options)}"
           end
         end
 

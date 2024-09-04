@@ -30,8 +30,8 @@ module Plurimath
         format_value_with_options(options)
       end
 
-      def to_html
-        value
+      def to_html(options:)
+        format_value_with_options(options)
       end
 
       def to_omml_without_math_tag(_, options:)

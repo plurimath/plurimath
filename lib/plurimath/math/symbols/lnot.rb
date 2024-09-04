@@ -7,6 +7,7 @@ module Plurimath
           asciimath: [["not", "&#xac;"], parsing_wrapper(["lnot"], lang: :asciimath)],
           mathml: ["&#xac;"],
           latex: [["lnot", "&#xac;"], parsing_wrapper(["not"], lang: :latex)],
+          html: ["&#xac;"],
           omml: ["&#xac;"],
         }.freeze
 
@@ -31,7 +32,7 @@ module Plurimath
           "&#xac;"
         end
 
-        def to_html
+        def to_html(**)
           "&#xac;"
         end
       end

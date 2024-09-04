@@ -4,6 +4,7 @@ require "parslet"
 module Plurimath
   class Html
     class Parse < Parslet::Parser
+      rule(:space)   { match["\s"].repeat(1) }
       rule(:unary)   { array_to_expression(Constants::UNARY_CLASSES, :unary) }
       rule(:binary)  { str("lim").as(:binary) }
       rule(:sub_tag) { parse_sub_sup_tags("sub") }
@@ -74,9 +75,10 @@ module Plurimath
       rule(:symbol_text_or_tag) do
         tag_parse |
           (str("&") >> match["a-zA-Z0-9"].repeat(2) >> str(";")).as(:symbol) |
-          match["0-9"].as(:number) |
+          (match["0-9"].repeat(1) >> str(".") >> match["0-9"].repeat(1)).as(:number) |
+          match["0-9"].repeat(1).as(:number) |
           match["a-zA-Z"].as(:text) |
-          match["^0-9a-zA-Z<>/(){}\\[\\]"].as(:symbol)
+          match["^0-9a-zA-Z<>/(){}\\[\\]\s"].as(:symbol)
       end
 
       rule(:intermediate_exp) do
@@ -84,7 +86,8 @@ module Plurimath
           (symbol_text_or_tag.as(:sub_sup) >> sub_sup_tags) |
           sub_sup |
           parse_classes |
-          symbol_text_or_tag
+          symbol_text_or_tag |
+          space
       end
 
       rule(:parse_parenthesis) do

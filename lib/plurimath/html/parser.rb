@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "json"
+require "cgi"
 require_relative "parse"
 require_relative "constants"
 require_relative "transform"
@@ -10,7 +11,7 @@ module Plurimath
       attr_accessor :text
 
       def initialize(text)
-        @text = CGI.unescapeHTML(text)
+        @text = ::CGI.unescapeHTML(text)
       end
 
       def parse

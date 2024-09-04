@@ -3,17 +3,19 @@
 module Plurimath
   class Html
     class Transform < Parslet::Transform
-      rule(text: simple(:text))     { Math::Function::Text.new(text) }
-      rule(unary: simple(:unary))   { Utility.get_class(unary).new }
-      rule(symbol: simple(:symbol)) { Math::Symbols::Symbol.new(symbol) }
-      rule(number: simple(:number)) { Math::Number.new(number) }
-
+      rule(text: simple(:text))      { Math::Function::Text.new(text) }
+      rule(unary: simple(:unary))    { Utility.get_class(unary).new }
+      rule(symbol: simple(:symbol))  { Utility.symbols_class(symbol, lang: :html) }
+      rule(number: simple(:number))  { Math::Number.new(number) }
+      rule(expression: simple(:exp)) { exp }
+      
+      rule(expression: sequence(:exp))    { exp }
       rule(sequence: simple(:sequence))   { sequence }
       rule(tr_value: simple(:tr_value))   { Math::Function::Tr.new([tr_value]) }
       rule(td_value: simple(:td_value))   { Math::Function::Td.new([td_value]) }
-      rule(sequence: sequence(:sequence)) { Math::Formula.new(sequence) }
+      rule(sequence: sequence(:sequence)) { sequence }
       rule(td_value: sequence(:td_value)) { Math::Function::Td.new(td_value) }
-
+      
       rule(parse_parenthesis: simple(:parse_paren)) { parse_paren }
       rule(unary_function: simple(:unary_function)) { unary_function }
 
@@ -100,14 +102,14 @@ module Plurimath
       rule(symbol: simple(:symbol),
            expression: simple(:expr)) do
         [
-          Math::Symbols::Symbol.new(symbol),
+          Utility.symbols_class(symbol, lang: :html),
           expr,
         ]
       end
 
       rule(symbol: simple(:symbol),
            expression: sequence(:expr)) do
-        [Math::Symbols::Symbol.new(symbol)] + expr
+        [Utility.symbols_class(symbol, lang: :html)] + expr
       end
 
       rule(number: simple(:number),
@@ -141,7 +143,7 @@ module Plurimath
       rule(symbol: simple(:symbol),
            parse_parenthesis: simple(:parse_paren)) do
         [
-          Math::Symbols::Symbol.new(symbol),
+          Utility.symbols_class(symbol, lang: :html),
           parse_paren,
         ]
       end
@@ -162,12 +164,12 @@ module Plurimath
       rule(sub_sup: simple(:sub_sup),
            sub_value: sequence(:sub_value)) do
         if Utility.sub_sup_method?(sub_sup)
-          sub_sup.parameter_one = Math::Formula.new(sub_value)
+          sub_sup.parameter_one = Utility.filter_values(sub_value)
           sub_sup
         else
           Math::Function::Base.new(
             sub_sup,
-            Math::Formula.new(sub_value),
+            Utility.filter_values(sub_value),
           )
         end
       end
@@ -188,12 +190,12 @@ module Plurimath
       rule(sub_sup: simple(:sub_sup),
            sup_value: sequence(:sup_value)) do
         if Utility.sub_sup_method?(sub_sup)
-          sub_sup.parameter_two = Math::Formula.new(sup_value)
+          sub_sup.parameter_two = Utility.filter_values(sup_value)
           sub_sup
         else
           Math::Function::Power.new(
             sub_sup,
-            Math::Formula.new(sup_value),
+            Utility.filter_values(sup_value),
           )
         end
       end
@@ -219,13 +221,13 @@ module Plurimath
            sup_value: sequence(:sup_value)) do
         if Utility.sub_sup_method?(sub_sup)
           sub_sup.parameter_one = sub_value
-          sub_sup.parameter_two = Math::Formula.new(sup_value)
+          sub_sup.parameter_two = Utility.filter_values(sup_value)
           sub_sup
         else
           Math::Function::PowerBase.new(
             sub_sup,
             sub_value,
-            Math::Formula.new(sup_value),
+            Utility.filter_values(sup_value),
           )
         end
       end
@@ -234,13 +236,13 @@ module Plurimath
            sub_value: sequence(:sub_value),
            sup_value: simple(:sup_value)) do
         if Utility.sub_sup_method?(sub_sup)
-          sub_sup.parameter_one = Math::Formula.new(sub_value)
+          sub_sup.parameter_one = Utility.filter_values(sub_value)
           sub_sup.parameter_two = sup_value
           sub_sup
         else
           Math::Function::PowerBase.new(
             sub_sup,
-            Math::Formula.new(sub_value),
+            Utility.filter_values(sub_value),
             sup_value,
           )
         end
@@ -250,14 +252,14 @@ module Plurimath
            sub_value: sequence(:sub_value),
            sup_value: sequence(:sup_value)) do
         if Utility.sub_sup_method?(sub_sup)
-          sub_sup.parameter_one = Math::Formula.new(sub_value)
-          sub_sup.parameter_two = Math::Formula.new(sup_value)
+          sub_sup.parameter_one = Utility.filter_values(sub_value)
+          sub_sup.parameter_two = Utility.filter_values(sup_value)
           sub_sup
         else
           Math::Function::PowerBase.new(
             sub_sup,
-            Math::Formula.new(sub_value),
-            Math::Formula.new(sup_value),
+            Utility.filter_values(sub_value),
+            Utility.filter_values(sup_value),
           )
         end
       end
@@ -267,7 +269,7 @@ module Plurimath
            expression: simple(:expression)) do
         power = Math::Function::Power.new(
           sub_sup,
-          Math::Formula.new(sup_value),
+          Utility.filter_values(sup_value),
         )
         [power, expression]
       end
@@ -276,9 +278,9 @@ module Plurimath
            text: simple(:text),
            rparen: simple(:rparen)) do
         Math::Formula.new([
-                            Math::Symbols::Symbol.new(lparen),
+                            Utility.symbols_class(lparen, lang: :html),
                             Math::Function::Text.new(text),
-                            Math::Symbols::Symbol.new(rparen),
+                            Utility.symbols_class(rparen, lang: :html),
                           ])
       end
 
@@ -286,9 +288,9 @@ module Plurimath
            sequence: simple(:sequence),
            rparen: simple(:rparen)) do
         Math::Formula.new([
-                            Math::Symbols::Symbol.new(lparen),
+                            Utility.symbols_class(lparen, lang: :html),
                             sequence,
-                            Math::Symbols::Symbol.new(rparen),
+                            Utility.symbols_class(rparen, lang: :html),
                           ])
       end
 
@@ -297,10 +299,10 @@ module Plurimath
            parse_parenthesis: simple(:parse_paren),
            rparen: simple(:rparen)) do
         Math::Formula.new([
-                            Math::Symbols::Symbol.new(lparen),
+                            Utility.symbols_class(lparen, lang: :html),
                             sequence,
                             parse_paren,
-                            Math::Symbols::Symbol.new(rparen),
+                            Utility.symbols_class(rparen, lang: :html),
                           ])
       end
 
@@ -308,9 +310,9 @@ module Plurimath
            sequence: sequence(:sequence),
            rparen: simple(:rparen)) do
         Math::Formula.new([
-                            Math::Symbols::Symbol.new(lparen),
-                            Math::Formula.new(sequence),
-                            Math::Symbols::Symbol.new(rparen),
+                            Utility.symbols_class(lparen, lang: :html),
+                            Utility.filter_values(sequence),
+                            Utility.symbols_class(rparen, lang: :html),
                           ])
       end
 
@@ -318,9 +320,9 @@ module Plurimath
            number: simple(:number),
            rparen: simple(:rparen)) do
         Math::Formula.new([
-                            Math::Symbols::Symbol.new(lparen),
+                            Utility.symbols_class(lparen, lang: :html),
                             Math::Number.new(number),
-                            Math::Symbols::Symbol.new(rparen),
+                            Utility.symbols_class(rparen, lang: :html),
                           ])
       end
 
@@ -328,9 +330,9 @@ module Plurimath
            unary_function: simple(:unary_function),
            rparen: simple(:rparen)) do
         Math::Formula.new([
-                            Math::Symbols::Symbol.new(lparen),
+                            Utility.symbols_class(lparen, lang: :html),
                             unary_function,
-                            Math::Symbols::Symbol.new(rparen),
+                            Utility.symbols_class(rparen, lang: :html),
                           ])
       end
 
@@ -340,6 +342,15 @@ module Plurimath
         Utility.get_class(binary).new(first_value, second_value)
       end
 
+      rule(first_value: sequence(:first_value),
+           binary: simple(:binary),
+           second_value: sequence(:second_value)) do
+        Utility.get_class(binary).new(
+          Utility.filter_values(first_value),
+          Utility.filter_values(second_value),
+        )
+      end
+
       rule(lparen: simple(:lparen),
            text: simple(:text),
            expression: sequence(:expression),
@@ -347,10 +358,10 @@ module Plurimath
         Math::Formula.new(
           (
             [
-              Math::Symbols::Symbol.new(lparen),
+              Utility.symbols_class(lparen, lang: :html),
               Math::Function::Text.new(text),
             ] + expression
-          ) << Math::Symbols::Symbol.new(rparen),
+          ) << Utility.symbols_class(rparen, lang: :html),
         )
       end
 
@@ -359,10 +370,10 @@ module Plurimath
            expression: simple(:expression),
            rparen: simple(:rparen)) do
         Math::Formula.new([
-                            Math::Symbols::Symbol.new(lparen),
+                            Utility.symbols_class(lparen, lang: :html),
                             Math::Function::Text.new(text),
                             expression,
-                            Math::Symbols::Symbol.new(rparen),
+                            Utility.symbols_class(rparen, lang: :html),
                           ])
       end
 
@@ -371,10 +382,10 @@ module Plurimath
            expression: simple(:expression),
            rparen: simple(:rparen)) do
         Math::Formula.new([
-                            Math::Symbols::Symbol.new(lparen),
+                            Utility.symbols_class(lparen, lang: :html),
                             Math::Number.new(number),
                             expression,
-                            Math::Symbols::Symbol.new(rparen),
+                            Utility.symbols_class(rparen, lang: :html),
                           ])
       end
 
@@ -385,11 +396,11 @@ module Plurimath
         Math::Formula.new(
           (
             [
-              Math::Symbols::Symbol.new(lparen),
+              Utility.symbols_class(lparen, lang: :html),
               Math::Number.new(number),
             ] +
             expression
-          ) << Math::Symbols::Symbol.new(rparen),
+          ) << Utility.symbols_class(rparen, lang: :html),
         )
       end
     end

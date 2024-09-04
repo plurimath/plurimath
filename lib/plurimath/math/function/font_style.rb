@@ -25,8 +25,8 @@ module Plurimath
           font_styles(display_style, options: options)
         end
 
-        def to_html
-          parameter_one&.to_html
+        def to_html(options:)
+          parameter_one&.to_html(options: options)
         end
 
         def to_latex(options:)

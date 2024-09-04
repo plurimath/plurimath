@@ -39,8 +39,8 @@ module Plurimath
           parameter_two&.to_latex(options: options)
         end
 
-        def to_html
-          second_value = parameter_two&.to_html
+        def to_html(options:)
+          second_value = parameter_two&.to_html(options: options)
           "<menclose notation=\"#{parameter_one}\">#{second_value}</menclose>"
         end
 

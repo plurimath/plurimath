@@ -32,7 +32,7 @@ module Plurimath
           "&#x263d;"
         end
 
-        def to_html
+        def to_html(**)
           "&#x263d;"
         end
       end

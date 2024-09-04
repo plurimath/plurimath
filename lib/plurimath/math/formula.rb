@@ -96,8 +96,9 @@ module Plurimath
         parse_error!(:latex)
       end
 
-      def to_html
-        value&.map(&:to_html)&.join(" ")
+      def to_html(formatter: nil, options: nil)
+        options ||= { formatter: formatter }
+        value&.map { |val| val.to_html(options: options) }&.join(" ")
       rescue
         parse_error!(:html)
       end

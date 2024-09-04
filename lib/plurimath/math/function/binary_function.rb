@@ -43,9 +43,9 @@ module Plurimath
           "\\#{class_name}#{first_value}#{second_value}"
         end
 
-        def to_html
-          first_value = "<i>#{parameter_one.to_html}</i>" if parameter_one
-          second_value = "<i>#{parameter_two.to_html}</i>" if parameter_two
+        def to_html(options:)
+          first_value = "<i>#{parameter_one.to_html(options: options)}</i>" if parameter_one
+          second_value = "<i>#{parameter_two.to_html(options: options)}</i>" if parameter_two
           "#{first_value}#{second_value}"
         end
 
