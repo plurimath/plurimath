@@ -16,7 +16,7 @@ jobs:
           bundler-cache: true
       - uses: peter-evans/repository-dispatch@v3
         with:
-          token: ${{ secrets.pat_token || github.token }}
+          token: ${{ secrets.PLURIMATH_CI_PAT_TOKEN }}
           repository: plurimath/plurimath-js
           event-type: update-submodule
-          client-payload: '{"branch": "${{ steps.branch_name.outputs.branch_name }}", "sha": "${{ github.sha }}"}'
+          client-payload: '{"branch": "${{ github.ref_name }}"}'
