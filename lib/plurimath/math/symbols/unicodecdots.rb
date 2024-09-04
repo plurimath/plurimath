@@ -3,21 +3,21 @@ module Plurimath
     module Symbols
       class Unicodecdots < Symbol
         INPUT = {
-          unicodemath: [["&#x22ef;"], parsing_wrapper(["cdots", "unicodecdots"], lang: :unicode)],
-          asciimath: [["cdots", "&#x22ef;"], parsing_wrapper(["unicodecdots"], lang: :asciimath)],
+          unicodemath: [["&#x22ef;"], parsing_wrapper(["unicodecdots"], lang: :unicode)],
+          asciimath: [["&#x22ef;"], parsing_wrapper(["unicodecdots"], lang: :asciimath)],
           mathml: ["&#x22ef;"],
-          latex: [["unicodecdots", "cdots", "&#x22ef;"]],
+          latex: [["unicodecdots", "&#x22ef;"]],
           omml: ["&#x22ef;"],
           html: ["&#x22ef;"],
         }.freeze
 
         # output methods
         def to_latex(**)
-          "\\cdots"
+          "\\unicodecdots"
         end
 
         def to_asciimath(**)
-          "cdots"
+          parsing_wrapper("unicodecdots", lang: :asciimath)
         end
 
         def to_unicodemath(**)
@@ -25,14 +25,14 @@ module Plurimath
         end
 
         def to_mathml_without_math_tag(_, **)
-          ox_element("mo") << "&#x22ef;"
+          ox_element("mi") << "&#x22ef;"
         end
 
         def to_omml_without_math_tag(_, **)
           "&#x22ef;"
         end
 
-        def to_html
+        def to_hml(**)
           "&#x22ef;"
         end
       end

@@ -17,7 +17,7 @@ module Plurimath
           "\\mbox{#{parameter_one}}"
         end
 
-        def to_html
+        def to_html(**)
           parameter_one
         end
 

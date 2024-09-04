@@ -25,7 +25,7 @@ module Plurimath
           [mr]
         end
 
-        def to_html
+        def to_html(**)
           "<i>#{parameter_one}</i>"
         end
 

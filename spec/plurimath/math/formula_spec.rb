@@ -1156,6 +1156,37 @@ RSpec.describe Plurimath::Math::Formula do
       end
     end
 
+    describe ".to_html(formatter:)" do
+      subject(:formula) { described_class.new(exp).to_html(formatter: formatter) }
+
+      context "contains array of numbers only" do
+        let(:exp) do
+          [
+            Plurimath::Math::Number.new("331.4677"),
+            Plurimath::Math::Number.new("123.4567"),
+          ]
+        end
+
+        context "with default formatter" do
+          let(:formatter) { Plurimath::Formatter::Standard.new }
+
+          it "returns html string with formatted numbers using default formatter" do
+            expected_value = "331.467'7 123.456'7"
+            expect(formula).to be_equivalent_to(expected_value)
+          end
+        end
+
+        context "with compact formatter" do
+          let(:formatter) { CustomFormatter.new }
+
+          it "returns html string with formatted numbers using compact formatter" do
+            expected_value = "3>3>1^46;77 1>2>3^45;67"
+            expect(formula).to be_equivalent_to(expected_value)
+          end
+        end
+      end
+    end
+
     describe ".to_unicodemath(formatter:)" do
       subject(:formula) { described_class.new(exp).to_unicodemath(formatter: formatter) }
 

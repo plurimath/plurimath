@@ -3,12 +3,12 @@ module Plurimath
     module Symbols
       class Times < Symbol
         INPUT = {
-          unicodemath: [["times", "&#xd7;"], parsing_wrapper(["xx"], lang: :unicode)],
-          asciimath: [["times", "xx", "&#xd7;"]],
-          mathml: ["&#xd7;"],
-          latex: [["times", "&#xd7;"], parsing_wrapper(["xx"], lang: :latex)],
-          omml: ["&#xd7;"],
-          html: ["&#xd7;"],
+          unicodemath: [["times", "&#xd7;", "&times;"], parsing_wrapper(["xx"], lang: :unicode)],
+          asciimath: ["times", "xx", "&#xd7;", "&times;"],
+          mathml: ["&#xd7;", "&times;"],
+          latex: [["times", "&#xd7;", "&times;"], parsing_wrapper(["xx"], lang: :latex)],
+          omml: ["&#xd7;", "&times;"],
+          html: ["&#xd7;", "&times;"],
         }.freeze
 
         # output methods
@@ -32,7 +32,7 @@ module Plurimath
           "&#xd7;"
         end
 
-        def to_html
+        def to_html(**)
           "&#xd7;"
         end
       end

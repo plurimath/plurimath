@@ -26,8 +26,8 @@ module Plurimath
           Array(fenced.to_omml_without_math_tag(display_style, options: options))
         end
 
-        def to_html
-          first_value = "<i>#{parameter_one.to_html}</i>" if parameter_one
+        def to_html(options:)
+          first_value = "<i>#{parameter_one.to_html(options: options)}</i>" if parameter_one
           "<i>&#x2308;</i>#{first_value}<i>&#x2309;</i>"
         end
 

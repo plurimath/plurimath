@@ -4,6 +4,10 @@ module Plurimath
       class Paren < Symbol
         INPUT = {}.freeze
 
+        def ==(object)
+          object.class == object.class
+        end
+
         def paren?
           true
         end

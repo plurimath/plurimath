@@ -42,10 +42,10 @@ module Plurimath
           )
         end
 
-        def to_html
-          first_value  = "<i>#{symbol_or_paren(parameter_one, lang: :html)}</i>" if parameter_one
-          second_value = parameter_two.map(&:to_html).join if parameter_two
-          third_value  = "<i>#{symbol_or_paren(parameter_three, lang: :html)}</i>" if parameter_three
+        def to_html(options:)
+          first_value  = "<i>#{symbol_or_paren(parameter_one, lang: :html, options: options)}</i>" if parameter_one
+          second_value = parameter_two.map { |param| param.to_html(options: options) }.join if parameter_two
+          third_value  = "<i>#{symbol_or_paren(parameter_three, lang: :html, options: options)}</i>" if parameter_three
           "#{first_value}#{second_value}#{third_value}"
         end
 

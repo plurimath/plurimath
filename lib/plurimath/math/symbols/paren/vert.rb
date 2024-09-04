@@ -33,7 +33,7 @@ module Plurimath
             encoded
           end
 
-          def to_html
+          def to_html(**)
             encoded
           end
 

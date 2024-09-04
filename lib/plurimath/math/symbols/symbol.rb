@@ -55,7 +55,7 @@ module Plurimath
           value
         end
 
-        def to_html
+        def to_html(**)
           value
         end
 

@@ -3,10 +3,10 @@ module Plurimath
     module Symbols
       class Unicodeellipsis < Symbol
         INPUT = {
-          unicodemath: [["ldots", "...", "dots", "&#x2026;"], parsing_wrapper(["unicodeellipsis"], lang: :unicode)],
-          asciimath: [["ldots", "...", "&#x2026;"], parsing_wrapper(["dots", "unicodeellipsis"], lang: :asciimath)],
+          unicodemath: [["&#x2026;"], parsing_wrapper(["unicodeellipsis"], lang: :unicode)],
+          asciimath: [["&#x2026;"], parsing_wrapper(["unicodeellipsis"], lang: :asciimath)],
           mathml: ["&#x2026;"],
-          latex: [["unicodeellipsis", "ldots", "&#x2026;"], parsing_wrapper(["...", "dots"], lang: :latex)],
+          latex: [["unicodeellipsis", "&#x2026;"]],
           omml: ["&#x2026;"],
           html: ["&#x2026;"],
         }.freeze
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath(**)
-          "ldots"
+          parsing_wrapper("unicodeellipsis", lang: :asciimath)
         end
 
         def to_unicodemath(**)
@@ -32,7 +32,7 @@ module Plurimath
           "&#x2026;"
         end
 
-        def to_html
+        def to_hml(**)
           "&#x2026;"
         end
       end
