@@ -4,9 +4,6 @@ on:
   push:
     branches: [ main ]
   pull_request:
-# Permission can be added at job level or workflow level
-permissions:
-  contents: write   # This is required to create/push the new git tag
 
 jobs:
   rake:
@@ -19,7 +16,7 @@ jobs:
           bundler-cache: true
       - uses: peter-evans/repository-dispatch@v3
         with:
-          token: ${{ github.token }}
+          token: ${{ secrets.PLURIMATH_CI_PAT_TOKEN }}
           repository: plurimath/plurimath-js
           event-type: update-submodule
           client-payload: '{"branch": "${{ github.ref_name }}"}'
