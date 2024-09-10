@@ -32,7 +32,7 @@ module Plurimath
           "_"
         end
 
-        def to_hml(**)
+        def to_html(**)
           "_"
         end
       end

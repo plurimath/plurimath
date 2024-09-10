@@ -63,9 +63,9 @@ module Plurimath
           ternary_intentify(mrow, intent)
         end
 
-        def to_html
-          first_value = "<sub>#{parameter_one.to_html}</sub>" if parameter_one
-          second_value = "<sup>#{parameter_two.to_html}</sup>" if parameter_two
+        def to_html(options:)
+          first_value = "<sub>#{parameter_one.to_html(options: options)}</sub>" if parameter_one
+          second_value = "<sup>#{parameter_two.to_html(options: options)}</sup>" if parameter_two
           "<i>&prod;</i>#{first_value}#{second_value}"
         end
 

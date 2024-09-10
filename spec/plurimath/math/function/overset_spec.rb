@@ -242,7 +242,7 @@ RSpec.describe Plurimath::Math::Function::Overset do
   end
 
   describe ".to_html" do
-    subject(:formula) { described_class.new(first_value, second_value).to_html }
+    subject(:formula) { described_class.new(first_value, second_value).to_html(options: {}) }
 
     context "contains Symbol as value" do
       let(:first_value) { Plurimath::Math::Symbols::Symbol.new("n") }
@@ -255,7 +255,7 @@ RSpec.describe Plurimath::Math::Function::Overset do
         ])
       end
 
-      it "returns mathml string" do
+      it "returns html string" do
         expect(formula).to eql("<i>n</i><i><i>&prod;</i><sub>&</sub><sup>so</sup></i>")
       end
     end
@@ -264,7 +264,7 @@ RSpec.describe Plurimath::Math::Function::Overset do
       let(:first_value) { Plurimath::Math::Number.new("70") }
       let(:second_value) { Plurimath::Math::Symbols::Symbol.new("n") }
 
-      it "returns mathml string" do
+      it "returns html string" do
         expect(formula).to eql("<i>70</i><i>n</i>")
       end
     end
@@ -287,7 +287,7 @@ RSpec.describe Plurimath::Math::Function::Overset do
         ])
       end
 
-      it "returns mathml string" do
+      it "returns html string" do
         expect(formula).to eql("<i><i>&sum;</i><sub>&</sub><sup>so</sup></i><i><i>&prod;</i><sub>&</sub><sup>so</sup></i>")
       end
     end

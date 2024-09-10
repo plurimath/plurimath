@@ -226,7 +226,7 @@ RSpec.describe Plurimath::Math::Function::Stackrel do
   end
 
   describe ".to_html" do
-    subject(:formula) { described_class.new(first_value, second_value).to_html }
+    subject(:formula) { described_class.new(first_value, second_value).to_html(options: {}) }
 
     context "contains Symbol as value" do
       let(:first_value) { Plurimath::Math::Symbols::Symbol.new("n") }
@@ -248,7 +248,7 @@ RSpec.describe Plurimath::Math::Function::Stackrel do
       let(:first_value) { Plurimath::Math::Number.new("70") }
       let(:second_value) { Plurimath::Math::Symbols::Symbol.new("n") }
 
-      it "returns mathml string" do
+      it "returns html string" do
         expect(formula).to be_equivalent_to("70n")
       end
     end

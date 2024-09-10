@@ -148,12 +148,12 @@ RSpec.describe Plurimath::Math::Function::Tanh do
   end
 
   describe ".to_html" do
-    subject(:formula) { described_class.new(first_value).to_html }
+    subject(:formula) { described_class.new(first_value).to_html(options: {}) }
 
     context "contains Symbol as value" do
       let(:first_value) { Plurimath::Math::Symbols::Symbol.new("n") }
 
-      it "returns mathml string" do
+      it "returns html string" do
         expect(formula).to eql("<i>tanh</i><i>n</i>")
       end
     end
@@ -161,7 +161,7 @@ RSpec.describe Plurimath::Math::Function::Tanh do
     context "contains Number as value" do
       let(:first_value) { Plurimath::Math::Number.new("70") }
 
-      it "returns mathml string" do
+      it "returns html string" do
         expect(formula).to eql("<i>tanh</i><i>70</i>")
       end
     end
@@ -175,7 +175,7 @@ RSpec.describe Plurimath::Math::Function::Tanh do
           )
         ])
       end
-      it "returns mathml string" do
+      it "returns html string" do
         expect(formula).to eql("<i>tanh</i><i><i>&sum;</i><sub>&</sub><sup>so</sup></i>")
       end
     end

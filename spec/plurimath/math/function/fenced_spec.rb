@@ -184,14 +184,14 @@ RSpec.describe Plurimath::Math::Function::Fenced do
   end
 
   describe ".to_html" do
-    subject(:formula) { described_class.new(first_value, second_value, third_value).to_html }
+    subject(:formula) { described_class.new(first_value, second_value, third_value).to_html(options: {}) }
 
     context "contains Symbol as value" do
       let(:first_value) { Plurimath::Math::Symbols::Paren::Lround.new }
       let(:second_value) { [Plurimath::Math::Symbols::Symbol.new("n")] }
       let(:third_value) { Plurimath::Math::Symbols::Paren::Rround.new }
 
-      it "returns mathml string" do
+      it "returns html string" do
         expect(formula).to eql("<i>(</i>n<i>)</i>")
       end
     end
@@ -201,7 +201,7 @@ RSpec.describe Plurimath::Math::Function::Fenced do
       let(:second_value) { [Plurimath::Math::Number.new("70")] }
       let(:third_value) { Plurimath::Math::Symbols::Symbol.new("]") }
 
-      it "returns mathml string" do
+      it "returns html string" do
         expect(formula).to eql("<i>[</i>70<i>]</i>")
       end
     end
@@ -220,7 +220,7 @@ RSpec.describe Plurimath::Math::Function::Fenced do
       end
       let(:third_value) { Plurimath::Math::Symbols::Symbol.new("}") }
 
-      it "returns mathml string" do
+      it "returns html string" do
         expect(formula).to eql("<i>{</i><i>&sum;</i><sub>&</sub><sup>so</sup><i>}</i>")
       end
     end

@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath(**)
-          parsing_wrapper("unicodeellipsis", lang: :asciimath)
+          "ldots"
         end
 
         def to_unicodemath(**)
@@ -32,7 +32,7 @@ module Plurimath
           "&#x2026;"
         end
 
-        def to_hml(**)
+        def to_html(**)
           "&#x2026;"
         end
       end

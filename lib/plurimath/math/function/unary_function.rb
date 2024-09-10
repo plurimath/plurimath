@@ -45,13 +45,13 @@ module Plurimath
           "\\#{class_name}{#{latex_value(options: options)}}"
         end
 
-        def to_html
+        def to_html(options:)
           first_value = if parameter_one.is_a?(Array)
-                          "<i>#{parameter_one.map(&:to_html).join}</i>"
+                          "<i>#{parameter_one.map { |val| val.to_html(options: options) }.join}</i>"
                         elsif parameter_one
-                          "<i>#{parameter_one.to_html}</i>"
+                          "<i>#{parameter_one.to_html(options: options)}</i>"
                         end
-        "<i>#{invert_unicode_symbols}</i>#{first_value}"
+          "<i>#{invert_unicode_symbols}</i>#{first_value}"
         end
 
         def to_omml_without_math_tag(display_style, options: {})

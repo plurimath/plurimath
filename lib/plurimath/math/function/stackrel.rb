@@ -28,9 +28,9 @@ module Plurimath
           )
         end
 
-        def to_html
-          first_value = parameter_one&.to_html
-          second_value = parameter_two&.to_html
+        def to_html(options:)
+          first_value = parameter_one&.to_html(options: options)
+          second_value = parameter_two&.to_html(options: options)
           "#{first_value}#{second_value}"
         end
 

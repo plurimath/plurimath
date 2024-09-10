@@ -1287,7 +1287,7 @@ RSpec.describe Plurimath::Math::Formula do
             [
               Plurimath::Math::Function::Tr.new([
                 Plurimath::Math::Function::Td.new(
-                  [Plurimath::Math::Symbols::Unicodecdots.new],
+                  [Plurimath::Math::Symbols::Cdots.new],
                   nil
                 ),
                 Plurimath::Math::Function::Td.new(
@@ -1303,7 +1303,7 @@ RSpec.describe Plurimath::Math::Formula do
               ]),
               Plurimath::Math::Function::Tr.new([
                 Plurimath::Math::Function::Td.new(
-                  [Plurimath::Math::Symbols::Unicodecdots.new],
+                  [Plurimath::Math::Symbols::Cdots.new],
                   nil
                 ),
                 Plurimath::Math::Function::Td.new(
@@ -9603,7 +9603,7 @@ RSpec.describe Plurimath::Math::Formula do
                         ]),
                         Plurimath::Math::Function::Tr.new([
                           Plurimath::Math::Function::Td.new(
-                            [Plurimath::Math::Symbols::Unicodecdots.new],
+                            [Plurimath::Math::Symbols::Cdots.new],
                             { columnalign: "center" }
                           ),
                           Plurimath::Math::Function::Td.new(
@@ -9639,7 +9639,7 @@ RSpec.describe Plurimath::Math::Formula do
                         ]),
                         Plurimath::Math::Function::Tr.new([
                           Plurimath::Math::Function::Td.new(
-                            [Plurimath::Math::Symbols::Unicodecdots.new],
+                            [Plurimath::Math::Symbols::Cdots.new],
                             { columnalign: "center" }
                           ),
                           Plurimath::Math::Function::Td.new(
