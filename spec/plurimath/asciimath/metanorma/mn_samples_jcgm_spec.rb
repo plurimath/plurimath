@@ -1446,7 +1446,7 @@ RSpec.describe Plurimath::Asciimath::Parser do
                     Plurimath::Math::Function::Fenced.new(
                       Plurimath::Math::Symbols::Paren::OpenParen.new,
                       [
-                        Plurimath::Math::Symbols::Unicodecdots.new
+                        Plurimath::Math::Symbols::Cdots.new
                       ],
                       Plurimath::Math::Symbols::Paren::CloseParen.new,
                     )
@@ -1527,7 +1527,7 @@ RSpec.describe Plurimath::Asciimath::Parser do
                     Plurimath::Math::Function::Fenced.new(
                       Plurimath::Math::Symbols::Paren::OpenParen.new,
                       [
-                        Plurimath::Math::Symbols::Unicodecdots.new
+                        Plurimath::Math::Symbols::Cdots.new
                       ],
                       Plurimath::Math::Symbols::Paren::CloseParen.new,
                     )
@@ -1648,7 +1648,7 @@ RSpec.describe Plurimath::Asciimath::Parser do
                     Plurimath::Math::Function::Fenced.new(
                       Plurimath::Math::Symbols::Paren::OpenParen.new,
                       [
-                        Plurimath::Math::Symbols::Unicodecdots.new
+                        Plurimath::Math::Symbols::Cdots.new
                       ],
                       Plurimath::Math::Symbols::Paren::CloseParen.new,
                     )
