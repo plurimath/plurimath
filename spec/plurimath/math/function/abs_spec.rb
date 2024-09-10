@@ -159,7 +159,7 @@ RSpec.describe Plurimath::Math::Function::Abs do
   end
 
   describe ".to_html" do
-    subject(:formula) { described_class.new(first_value).to_html }
+    subject(:formula) { described_class.new(first_value).to_html(options: {}) }
 
     context "contains Symbol as value" do
       let(:first_value) { Plurimath::Math::Symbols::Symbol.new("n") }

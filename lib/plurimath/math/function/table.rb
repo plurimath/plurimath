@@ -67,8 +67,8 @@ module Plurimath
           "#{left}#{separator}#{latex_content(options: options)}#{right}"
         end
 
-        def to_html
-          first_value = value.map(&:to_html).join
+        def to_html(options:)
+          first_value = value.map { |val| val.to_html(options: options) }.join
           "<table>#{first_value}</table>"
         end
 

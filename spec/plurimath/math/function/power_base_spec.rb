@@ -287,7 +287,7 @@ RSpec.describe Plurimath::Math::Function::PowerBase do
   end
 
   describe ".to_html" do
-    subject(:formula) { described_class.new(first_value, second_value, third_value).to_html }
+    subject(:formula) { described_class.new(first_value, second_value, third_value).to_html(options: {}) }
 
     context "contains Symbol as value" do
       let(:first_value) { Plurimath::Math::Symbols::Symbol.new("n") }
@@ -308,7 +308,7 @@ RSpec.describe Plurimath::Math::Function::PowerBase do
         ])
       end
 
-      it "returns mathml string" do
+      it "returns html string" do
         expected_value = <<~HTML
           <i>n</i>
           <sub>
@@ -338,7 +338,7 @@ RSpec.describe Plurimath::Math::Function::PowerBase do
         ])
       end
 
-      it "returns mathml string" do
+      it "returns html string" do
         expect(formula).to eql("<i>70</i><sub>&#x2200;</sub><sup><i>&sum;</i><sub>&</sub><sup>so</sup></sup>")
       end
     end
@@ -368,7 +368,7 @@ RSpec.describe Plurimath::Math::Function::PowerBase do
           )
         ])
       end
-      it "returns mathml string" do
+      it "returns html string" do
         expected_value = <<~HTML
           <i>
             <i>&sum;</i>

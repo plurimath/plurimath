@@ -156,13 +156,13 @@ RSpec.describe Plurimath::Math::Function::FontStyle do
   end
 
   describe ".to_html" do
-    subject(:formula) { described_class.new(first_value, second_value).to_html }
+    subject(:formula) { described_class.new(first_value, second_value).to_html(options: {}) }
 
     context "contains Symbol as value" do
       let(:first_value) { Plurimath::Math::Symbols::Symbol.new("n") }
       let(:second_value) { "frak" }
 
-      it "returns mathml string" do
+      it "returns html string" do
         expect(formula).to eql("n")
       end
     end
@@ -171,7 +171,7 @@ RSpec.describe Plurimath::Math::Function::FontStyle do
       let(:first_value) { Plurimath::Math::Number.new("70") }
       let(:second_value) { "bold" }
 
-      it "returns mathml string" do
+      it "returns html string" do
         expect(formula).to eql("70")
       end
     end
@@ -187,7 +187,7 @@ RSpec.describe Plurimath::Math::Function::FontStyle do
       end
       let(:second_value) { "cc" }
 
-      it "returns mathml string" do
+      it "returns html string" do
         expect(formula).to eql("<i>&sum;</i><sub>&</sub><sup>so</sup>")
       end
     end

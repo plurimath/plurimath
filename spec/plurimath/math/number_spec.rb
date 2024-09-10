@@ -125,12 +125,12 @@ RSpec.describe Plurimath::Math::Number do
   end
 
   describe ".to_html" do
-    subject(:formula) { described_class.new(first_value).to_html }
+    subject(:formula) { described_class.new(first_value).to_html(options: {}) }
 
     context "contains Symbol as value" do
       let(:first_value) { "n" }
 
-      it "returns mathml string" do
+      it "returns html string" do
         expect(formula).to be_equivalent_to("n")
       end
     end
@@ -138,7 +138,7 @@ RSpec.describe Plurimath::Math::Number do
     context "contains Number as value" do
       let(:first_value) { "70" }
 
-      it "returns mathml string" do
+      it "returns html string" do
         expect(formula).to be_equivalent_to("70")
       end
     end

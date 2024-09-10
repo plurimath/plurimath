@@ -25,7 +25,7 @@ module Plurimath
           "\\text{#{text_value}}"
         end
 
-        def to_html
+        def to_html(**)
           parse_text("html") || parameter_one
         end
 

@@ -31,8 +31,8 @@ module Plurimath
           parameter_one.map { |val| val&.to_latex(options: options) }.join(" ")
         end
 
-        def to_html
-          first_value = parameter_one.map(&:to_html).join
+        def to_html(options:)
+          first_value = parameter_one.map { |val| val.to_html(options: options) }.join
           "<td>#{first_value}</td>"
         end
 

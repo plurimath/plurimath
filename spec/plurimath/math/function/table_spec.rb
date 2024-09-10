@@ -231,7 +231,7 @@ RSpec.describe Plurimath::Math::Function::Table do
   end
 
   describe ".to_html" do
-    subject(:formula) { described_class.new([first_value]).to_html }
+    subject(:formula) { described_class.new([first_value]).to_html(options: {}) }
 
     context "contains Tr and Td as value" do
       let(:first_value) do
@@ -250,7 +250,7 @@ RSpec.describe Plurimath::Math::Function::Table do
         ])
       end
 
-      it "returns mathml string" do
+      it "returns html string" do
         expected_value = <<~HTML
           <table>
             <tr>
@@ -276,7 +276,7 @@ RSpec.describe Plurimath::Math::Function::Table do
           )
         ])
       end
-      it "returns mathml string" do
+      it "returns html string" do
         expected_value = <<~HTML
           <table>
             <i>&sum;</i>
