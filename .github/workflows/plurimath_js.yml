@@ -14,10 +14,9 @@ jobs:
         with:
           ruby-version: '3.3'
           bundler-cache: true
-      - uses: plurimath/plurimath-js/.github/workflows/update-submodule.yml@main
-      # - uses: peter-evans/repository-dispatch@v3
-      #   with:
-      #     token: ${{ secrets.PLURIMATH_CI_PAT_TOKEN }}
-      #     repository: plurimath/plurimath-js
-      #     event-type: update-submodule
-      #     client-payload: '{"github": ${{ toJson(github) }}}'
+      - uses: peter-evans/repository-dispatch@v3
+        with:
+          token: ${{ secrets.PLURIMATH_CI_PAT_TOKEN }}
+          repository: plurimath/plurimath-js
+          event-type: update-submodule
+          client-payload: '{"github": ${{ toJson(github) }}}'
