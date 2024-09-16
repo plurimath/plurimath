@@ -6,8 +6,5 @@ on:
   pull_request:
 
 jobs:
-  rake:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Run Plurimath-JS workflow on ${{ github.ref_name }}
-        uses: plurimath/plurimath-js/.github/workflows/update-modules.yml@main
+  plurimath-js-workflow:
+    uses: plurimath/plurimath-js/.github/workflows/update-modules.yml@main
