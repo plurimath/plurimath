@@ -9,14 +9,5 @@ jobs:
   rake:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: '3.3'
-          bundler-cache: true
-      - uses: peter-evans/repository-dispatch@v3
-        with:
-          token: ${{ secrets.PLURIMATH_CI_PAT_TOKEN }}
-          repository: plurimath/plurimath-js
-          event-type: update-submodule
-          client-payload: '{"github": ${{ toJson(github) }}}'
+      - name: Run Plurimath-JS workflow on ${{ github.ref_name }}
+        uses: plurimath/plurimath-js/.github/workflows/update-modules.yml@main
