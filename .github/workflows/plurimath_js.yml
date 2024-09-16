@@ -7,4 +7,4 @@ on:
 
 jobs:
   plurimath-js-workflow:
-    uses: plurimath/plurimath-js/.github/workflows/update-modules.yml@master
+    uses: plurimath/plurimath-js/.github/workflows/update-submodules.yml@master
