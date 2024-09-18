@@ -21,11 +21,11 @@ module Plurimath
       }.freeze
 
       def initialize(locale: "en", string_format: nil, options: {}, precision: nil)
-        @precision = precision
         super(
           locale,
           localize_number: string_format,
           localizer_symbols: set_default_options(options),
+          precision: precision,
         )
       end
 
