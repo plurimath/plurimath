@@ -1,9 +1,4 @@
-require_relative "supported_locales"
-require_relative "numbers/base"
-require_relative "numbers/integer"
-require_relative "numbers/fraction"
-require_relative "numbers/significant"
-require_relative "number_formatter"
+# frozen_string_literal: true
 
 module Plurimath
   module Formatter
