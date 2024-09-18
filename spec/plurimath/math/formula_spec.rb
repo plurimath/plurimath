@@ -1,5 +1,4 @@
 require "spec_helper"
-require "plurimath/formatter/standard"
 
 RSpec.describe Plurimath::Math::Formula do
 
@@ -1281,7 +1280,6 @@ RSpec.describe Plurimath::Math::Formula do
     end
   end
 end
-
 
 class CustomFormatter < Plurimath::Formatter::Standard
   DEFAULT_OPTIONS = {
