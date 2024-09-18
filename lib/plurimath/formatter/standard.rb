@@ -14,6 +14,7 @@ module Plurimath
         group_digits: 3,
         significant: 0,
         digit_count: 0,
+        precision: 0,
         decimal: ".",
         group: ",",
         times: "x",
@@ -31,6 +32,7 @@ module Plurimath
 
       def set_default_options(options)
         default_options = self.class::DEFAULT_OPTIONS
+        self.precision ||= default_options[:precision]
         options ||= default_options
         options[:fraction_group_digits] ||= default_options[:fraction_group_digits]
         options[:fraction_group] ||= default_options[:fraction_group]
