@@ -1,0 +1,49 @@
+= List of classes supporting `intent` encoding with relevant values
+
+* `Abs`
+* `Fenced`
+** `fenced`
+** `open-interval`
+** `closed-interval`
+** `closed-open-interval`
+** `open-closed-interval`
+** `binomial-coefficient`
+* `Frac`
+* `Inf`
+** `Function`
+* `Int`
+** `integral`
+* `Intent`
+** `Derivative`
+* `Lim`
+** `Function`
+* `Nary`
+** `anticlockwise contour integral`
+** `coproduct`
+** `quadruple integral`
+** `double integral`
+** `clockwise contour integral`
+** `volume integral`
+** `surface integral`
+** `contour integral`
+* `Oint`
+* `Prod`
+* `Sum`
+* `Table`
+** `Cases`
+** `Matrix`
+** `Fenced`
+** `Equations`
+** `determinant`
+** `normed-matrix`
+** `bracketed-matrix`
+** `curly-braced-matrix`
+** `parenthesized-matrix`
+* `Dd`
+* `Ii`
+* `Intercal`
+** `Transpose`
+* `Jj`
+* `UpcaseDd`
+
+Intent for unary class like, sin, cos, tan, etc. will be `Function`.
