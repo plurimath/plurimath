@@ -1221,7 +1221,7 @@ module Plurimath
         unary_symbol = (Constants::UNARY_SYMBOLS.key(unary.to_s) || unary.to_sym)
         if Constants::PHANTOM_SYMBOLS.key?(unary_symbol)
           new_value = nil
-          Constants::PHANTOM_SYMBOLS[unary_symbol].map do |function_name, attributes|
+          Constants::PHANTOM_SYMBOLS[unary_symbol].each do |function_name, attributes|
             if function_name == :phantom && attributes
               new_value = Math::Function::Phantom.new(
                 Utility.unfenced_value((new_value.nil? ? first_value : new_value), paren_specific: true)

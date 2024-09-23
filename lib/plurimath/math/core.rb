@@ -7,6 +7,26 @@ module Plurimath
         /&amp;/ => "&",
         /^\n/ => "",
       }.freeze
+      LIMITS_LIST = {
+        0 => "limits_default",
+        1 => "limits_under_over",
+        2 => "limits_sub_sup",
+        3 => "upper_limit_as_super_script",
+      }.freeze
+      LIMITS_PLACEHOLDERS = {
+        4 => ["limits_opposite"],
+        8 => ["show_low_limit_place_holder"],
+        12 => ["limits_opposite", "show_low_limit_place_holder"],
+        16 => ["show_up_limit_place_holder"],
+        20 => ["limits_opposite", "show_up_limit_place_holder"],
+        24 => ["show_low_limit_place_holder", "show_up_limit_place_holder"],
+        28 => ["limits_opposite", "show_low_limit_place_holder", "show_up_limit_place_holder"],
+      }.freeze
+      ALTERNATIVE_TAGS = {
+        "msup" => "mover",
+        "msub" => "munder",
+        "msubsup" => "munderover",
+      }.freeze
 
       ALL_PARAMETERS = %i[
         parameter_one
@@ -48,14 +68,12 @@ module Plurimath
       def empty_tag(wrapper_tag = nil)
         r_tag = ox_element("r", namespace: "m")
         r_tag << (ox_element("t", namespace: "m") << "&#8203;")
-        return r_tag unless wrapper_tag
-
-        wrapper_tag << r_tag
+        r_tag
       end
 
       def omml_parameter(field, display_style, tag_name:, namespace: "m", options:)
         tag = ox_element(tag_name, namespace: namespace)
-        return empty_tag(tag) unless field
+        return tag << empty_tag unless field
 
         field_value = if field.is_a?(Array)
                         field.map { |object| object.insert_t_tag(display_style, options: options) }
@@ -95,52 +113,52 @@ module Plurimath
       def ascii_fields_to_print(field, options = {})
         return if field.nil?
 
-        hashed = common_math_zone_conversion(field, options)
-        options[:array] << "#{hashed[:spacing]}|_ \"#{field&.to_asciimath(options: options[:options])}\"#{hashed[:field_name]}\n"
+        obj = common_math_zone_conversion_object(field, options)
+        options[:array] << "#{obj.spacing}|_ \"#{field&.to_asciimath(options: options[:options])}\"#{obj.field_name}\n"
         return unless Utility.validate_math_zone(field, lang: :asciimath)
 
-        options[:array] << field&.to_asciimath_math_zone(hashed[:function_spacing], hashed[:last], hashed[:indent], options: options[:options])
+        options[:array] << field&.to_asciimath_math_zone(obj.function_spacing, obj.last, obj.indent, options: options[:options])
       end
 
       def latex_fields_to_print(field, options = {})
         return if field.nil?
 
-        hashed = common_math_zone_conversion(field, options)
-        options[:array] << "#{hashed[:spacing]}|_ \"#{field&.to_latex(options: options[:options])}\"#{hashed[:field_name]}\n"
+        obj = common_math_zone_conversion_object(field, options)
+        options[:array] << "#{obj.spacing}|_ \"#{field&.to_latex(options: options[:options])}\"#{obj.field_name}\n"
         return unless Utility.validate_math_zone(field, lang: :latex)
 
-        options[:array] << field&.to_latex_math_zone(hashed[:function_spacing], hashed[:last], hashed[:indent], options: options[:options])
+        options[:array] << field&.to_latex_math_zone(obj.function_spacing, obj.last, obj.indent, options: options[:options])
       end
 
       def mathml_fields_to_print(field, options = {})
         return if field.nil?
 
-        hashed = common_math_zone_conversion(field, options)
-        options[:array] << "#{hashed[:spacing]}|_ \"#{dump_mathml(field, options: options[:options])}\"#{hashed[:field_name]}\n"
+        obj = common_math_zone_conversion_object(field, options)
+        options[:array] << "#{obj.spacing}|_ \"#{dump_mathml(field, options: options[:options])}\"#{obj.field_name}\n"
         return unless Utility.validate_math_zone(field, lang: :mathml, intent: options[:intent], options: options[:options])
 
-        options[:array] << field&.to_mathml_math_zone(hashed[:function_spacing], hashed[:last], hashed[:indent], options: options[:options])
+        options[:array] << field&.to_mathml_math_zone(obj.function_spacing, obj.last, obj.indent, options: options[:options])
       end
 
       def omml_fields_to_print(field, options = {})
         return if field.nil?
 
-        hashed = common_math_zone_conversion(field, options)
+        obj = common_math_zone_conversion_object(field, options)
         display_style = options[:display_style]
-        options[:array] << "#{hashed[:spacing]}|_ \"#{dump_omml(field, display_style, options: options[:options])}\"#{hashed[:field_name]}\n"
+        options[:array] << "#{obj.spacing}|_ \"#{dump_omml(field, display_style, options: options[:options])}\"#{obj.field_name}\n"
         return unless Utility.validate_math_zone(field, lang: :omml)
 
-        options[:array] << field&.to_omml_math_zone(hashed[:function_spacing], hashed[:last], hashed[:indent], display_style: display_style, options: options[:options])
+        options[:array] << field&.to_omml_math_zone(obj.function_spacing, obj.last, obj.indent, display_style: display_style, options: options[:options])
       end
 
       def unicodemath_fields_to_print(field, options = {})
         return if field.nil?
 
-        hashed = common_math_zone_conversion(field, options)
-        options[:array] << "#{hashed[:spacing]}|_ \"#{field&.to_unicodemath(options: options[:options])}\"#{hashed[:field_name]}\n"
+        obj = common_math_zone_conversion_object(field, options)
+        options[:array] << "#{obj.spacing}|_ \"#{field&.to_unicodemath(options: options[:options])}\"#{obj.field_name}\n"
         return unless Utility.validate_math_zone(field, lang: :unicodemath)
 
-        options[:array] << field&.to_unicodemath_math_zone(hashed[:function_spacing], hashed[:last], hashed[:indent], options: options[:options])
+        options[:array] << field&.to_unicodemath_math_zone(obj.function_spacing, obj.last, obj.indent, options: options[:options])
       end
 
       def dump_mathml(field, intent = false, options:)
@@ -165,14 +183,14 @@ module Plurimath
         end
       end
 
-      def common_math_zone_conversion(field, options = {})
-        {
-          spacing: options[:spacing],
-          last: options[:last] || true,
-          indent: !field.is_a?(Formula),
-          function_spacing: "#{options[:spacing]}#{options[:additional_space]}",
-          field_name: (options[:field_name] ? " #{options[:field_name]}" : ""),
-        }
+      def common_math_zone_conversion_object(field, options = {})
+        Struct.new(:spacing, :last, :indent, :function_spacing, :field_name).new(
+          options[:spacing],
+          true,
+          !field.is_a?(Formula),
+          "#{options[:spacing]}#{options[:additional_space]}",
+          " #{options[:field_name]}".rstrip,
+        )
       end
 
       def filtered_values(value, lang:, options: {})
@@ -232,13 +250,11 @@ module Plurimath
       def line_breaking(obj)
         variables.each do |variable|
           field = get(variable)
-          case field
-          when Core
-            field.line_breaking(obj)
-            updated_object_values(variable, obj: obj, update_value: true) if obj.value_exist?
-          when Array
-            array_line_break_field(field, variable, obj)
-          end
+          next unless [Array, Core].include?(field.class)
+          next array_line_break_field(field, variable, obj) if field.is_a?(Array)
+
+          field.line_breaking(obj)
+          updated_object_values(variable, obj: obj, update_value: true) if obj.value_exist?
         end
       end
 
@@ -253,10 +269,8 @@ module Plurimath
                       obj.value = []
                       return_value
                     else
-                      formula = Formula.new(get(variable))
-                      formula.line_breaking(obj)
-                      set(variable, obj)
-                      get(variable)
+                      Formula.new(get(variable)).line_breaking(obj)
+                      set_and_get(variable, obj)
                     end
                   else
                     return_value = get(variable)
@@ -265,8 +279,13 @@ module Plurimath
                   end
           object.set(variable, Utility.filter_values(value))
         end
-        object.hide_function_name = true if object.methods.include?(:hide_function_name)
+        object.hide_function_name = true if self.class.method_defined?(:hide_function_name)
         obj.update(object)
+      end
+
+      def set_and_get(variable, value)
+        set(variable, value)
+        get(variable)
       end
 
       def get(variable)
@@ -316,9 +335,7 @@ module Plurimath
         is_a?(Function::TernaryFunction)
       end
 
-      def mini_sized?
-        false
-      end
+      def mini_sized?; end
 
       def unicodemath_parens(field, options:)
         paren = field.to_unicodemath(options: options)
@@ -376,6 +393,8 @@ module Plurimath
         false
       end
 
+      def linebreak; end
+
       private
 
       def parameters_to_ms_value(array)
@@ -385,11 +404,9 @@ module Plurimath
       end
 
       def array_line_break_field(field, variable, obj)
-        if result(field).length > 1
-          updated_object_values(variable, obj: obj)
-        else
-          field.each { |object| object.line_breaking(obj) }
-        end
+        return updated_object_values(variable, obj: obj) if result(field).length > 1
+
+        field.each { |object| object.line_breaking(obj) }
       end
 
       def unicodemath_field_value(field)
@@ -414,24 +431,21 @@ module Plurimath
         if options_array.include?("show_up_limit_place_holder") && parameter_three.nil?
           set_place_holder(tag, type: :above)
         end
+
         if options_array.include?("show_low_limit_place_holder") && parameter_two.nil?
           set_place_holder(tag, type: :below)
         end
+
         if options_array.include?("limits_opposite")
           change_power_base_values(tag)
         end
+
         if options_array.include?("limits_under_over")
-          case tag.name
-          when "msubsup" then tag.name = "munderover"
-          when "msub" then tag.name = "munder"
-          when "msup" then tag.name = "mover"
-          end
+          tag_name = tag.name
+          tag.name = ALTERNATIVE_TAGS[tag_name] || tag_name
         elsif options_array.include?("limits_sub_sup")
-          case tag.name
-          when "munderover" then tag.name = "msubsup"
-          when "munder" then tag.name = "msub"
-          when "mover" then tag.name = "msup"
-          end
+          tag_name = tag.name
+          tag.name = ALTERNATIVE_TAGS.invert[tag_name] || tag_name
         elsif options_array.include?("upper_limit_as_super_script") && tag.nodes[1].name == "mrow"
           tag = Utility.update_nodes(
             ox_element("munder"),
@@ -452,25 +466,9 @@ module Plurimath
 
       def get_mask_options(mask_options = [])
         mask = options&.dig(:mask).to_i
-
-        case mask % 4
-        when 0 then mask_options << "limits_default"
-        when 1 then mask_options << "limits_under_over"
-        when 2 then mask_options << "limits_sub_sup"
-        when 3 then mask_options << "upper_limit_as_super_script"
-        end
-
+        mask_options << LIMITS_LIST[mask % 4]
         mask -= mask % 4
-
-        case mask % 32
-        when 4 then mask_options << "limits_opposite"
-        when 8 then mask_options << "show_low_limit_place_holder"
-        when 12 then mask_options += ["limits_opposite", "show_low_limit_place_holder"]
-        when 16 then mask_options << "show_up_limit_place_holder"
-        when 20 then mask_options += ["limits_opposite", "show_up_limit_place_holder"]
-        when 24 then mask_options += ["show_low_limit_place_holder", "show_up_limit_place_holder"]
-        when 28 then mask_options += ["limits_opposite", "show_low_limit_place_holder", "show_up_limit_place_holder"]
-        end
+        mask_options << LIMITS_PLACEHOLDERS[mask % 32]
 
         mask_options
       end
@@ -485,14 +483,16 @@ module Plurimath
       end
 
       def set_place_holder(node, type:)
-        nodes = if type == :below
-                  node.name = node.name == "msup" ? "msubsup" : "munderover"
-                  node.nodes.insert(1, mo_tag("&#x2b1a;"))
-                else
-                  node.name = node.name == "msub" ? "msubsup" : "munderover"
-                  node.nodes.insert(2, mo_tag("&#x2b1a;"))
-                end
-        Plurimath.xml_engine.replace_nodes(node, nodes)
+        type, index = type == :below ? ["msup", 1] : ["msub", 2]
+        Plurimath.xml_engine.replace_nodes(
+          node,
+          update_name_and_insert_nodes(node, index, type),
+        )
+      end
+
+      def update_name_and_insert_nodes(node, index, type)
+        node.name = node.name == type ? "msubsup" : "munderover"
+        node.nodes.insert(index, mo_tag("&#x2b1a;"))
       end
 
       def mo_tag(str)

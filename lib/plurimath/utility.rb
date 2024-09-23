@@ -199,7 +199,7 @@ module Plurimath
 
       def table_options(table_data)
         rowline = ""
-        table_data.map do |tr|
+        table_data.each do |tr|
           if tr&.parameter_one&.first&.parameter_one&.first.is_a?(Math::Symbols::Hline)
             rowline += "solid "
           else
@@ -215,7 +215,7 @@ module Plurimath
 
         column_align.reject! { |string| string == "|" }
         column_align = column_align * tr_array.length if options
-        tr_array.map.with_index do |td, ind|
+        tr_array.each_with_index do |td, ind|
           columnalign = ALIGNMENT_LETTERS[column_align[ind]&.to_sym]
           td.parameter_two = { columnalign: columnalign } if columnalign
         end
@@ -274,7 +274,7 @@ module Plurimath
         return lang_symbols if lang_symbols && !lang_symbols.empty?
 
         lang_symbols = {}
-        symbols_files.map do |class_object|
+        symbols_files.each do |class_object|
           class_object::INPUT[lang]&.flatten&.each do |symbol|
             next if lang_symbols.key?(symbol)
 
@@ -290,7 +290,7 @@ module Plurimath
         return lang_parens if lang_parens && !lang_parens.empty?
 
         lang_parens = {}
-        paren_files.map do |class_object|
+        paren_files.each do |class_object|
           class_object::INPUT[lang]&.flatten&.each do |symbol|
             next if skipables && skipables.include?(class_object.new.class_name)
             next if lang_parens.key?(symbol)
@@ -466,7 +466,7 @@ module Plurimath
         separator&.each_with_index do |sep, ind|
           next unless sep == symbol
 
-          value.map do |val|
+          value.each do |val|
             val.parameter_one.insert((ind + 1), sep_symbol) if symbol == "solid"
             val.parameter_one.insert(ind, sep_symbol) if symbol == "|"
             (val.parameter_one[val.parameter_one.index(nil)] = Math::Function::Td.new([])) rescue nil
@@ -556,7 +556,7 @@ module Plurimath
       def nil_to_none_object(value)
         return value unless value.any?(NilClass) || value.any? { |val| val.is_a?(Array) && val.empty? }
 
-        value.each.with_index do |val, index|
+        value.each_with_index do |val, index|
           next unless val.nil? || val.is_a?(Array)
 
           value[index] = Math::Function::None.new
@@ -994,7 +994,7 @@ module Plurimath
         matrix = Array.new(size) { Array.new(size, 0) }
         size.times { |i| matrix[i][i] = 1 }
         matrix.map do |tr|
-          tr.map.with_index do |td, i|
+          tr.each_with_index do |td, i|
             tr[i] = Math::Function::Td.new([Math::Number.new(td.to_s)])
           end
           Math::Function::Tr.new(tr)
@@ -1030,7 +1030,7 @@ module Plurimath
       end
 
       def sequence_slashed_values(values, lang:)
-        values.each.with_index do |value, index|
+        values.each_with_index do |value, index|
           decoded = HTMLEntities.new.decode(value.value)
           slashed = if index == 0
                       slashed_values(value.value)

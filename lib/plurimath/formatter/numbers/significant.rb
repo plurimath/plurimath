@@ -33,7 +33,7 @@ module Plurimath
           frac_part = false
           new_chars = []
           sig_count = significant
-          chars.each.with_index do |char, ind|
+          chars.each_with_index do |char, ind|
             frac_part = frac_part || char == decimal
             sig_num = sig_num || char.match?(/[1-9]/)
             break if sig_count.zero?
@@ -66,7 +66,7 @@ module Plurimath
 
           frac_part = false if chars[arr_len] == decimal
           prev_ten  = false
-          array.reverse!.each.with_index do |char, ind|
+          array.reverse!.each_with_index do |char, ind|
             if char == decimal
               array[ind] = ""
               frac_part  = false
