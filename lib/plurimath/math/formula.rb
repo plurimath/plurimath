@@ -318,7 +318,7 @@ module Plurimath
       end
 
       def unitsml_post_processing(nodes, prev_node)
-        nodes.each.with_index do |node, index|
+        nodes.each_with_index do |node, index|
           if node[:unitsml]
             pre_index = index - 1
             pre_node = nodes[pre_index] if pre_index.zero? || pre_index.positive?
@@ -425,7 +425,7 @@ module Plurimath
       end
 
       def partial_derivative(nodes)
-        nodes.each.with_index do |first, index|
+        nodes.each_with_index do |first, index|
           second = nodes[index+1]
           next second unless first.name == "msub" && first.nodes.first.nodes.include?("&#x2202;")
 

@@ -7,6 +7,7 @@ module Plurimath
         attr_accessor :value, :slashed, :mini_sub_sized, :mini_sup_sized, :options
 
         INPUT = {}.freeze
+        VERTICAL_BARS = ["∣", "|"].freeze
 
         def initialize(sym = nil,
                        slashed = nil,
@@ -31,8 +32,6 @@ module Plurimath
         end
 
         def to_asciimath(**)
-          return "" if value.nil?
-
           value
         end
 
@@ -42,16 +41,10 @@ module Plurimath
               intent: Utility.html_entity_to_unicode(value),
             }
           end
-          mi_tag = ox_element("mi", attributes: attributes)
-          return mi_tag if ["{:", ":}"].include?(value)
-
-          mi_tag << value
+          ox_element("mi", attributes: attributes) << value
         end
 
         def to_latex(**)
-          returned = specific_values
-          return returned if returned
-
           value
         end
 
@@ -151,16 +144,8 @@ module Plurimath
         private
 
         def explicit_checks(unicode)
-          return true if [unicode, value].any? { |v| ["∣", "|"].include?(v) }
+          return true if VERTICAL_BARS.include?(unicode) || VERTICAL_BARS.include?(value)
           return true if unicode_const(:ACCENT_SYMBOLS).has_value?(value)
-        end
-
-        def specific_values
-          return "" if ["{:", ":}"].include?(value)
-
-          return "\\#{value}" if ["{", "}"].include?(value) || value == "_"
-
-          return "\\operatorname{if}" if value == "if"
         end
 
         def mini_sub
@@ -195,11 +180,9 @@ module Plurimath
         end
 
         def self.parsing_wrapper(input_arr, lang:)
-          input_arr.map do |input|
-            case lang
-            when :asciimath, :unicode then "\"P{#{input}}\""
-            when :latex then "\\text{P[#{input}]}"
-            end
+          case lang
+          when :asciimath, :unicode then input_arr.map { |input| "\"P{#{input}}\"" }
+          when :latex then input_arr.map { |input| "\\text{P[#{input}]}" }
           end
         end
       end
