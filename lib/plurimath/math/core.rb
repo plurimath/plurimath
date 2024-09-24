@@ -45,6 +45,10 @@ module Plurimath
         @descendants
       end
 
+      def self.class_name
+        self.name.split("::").last.downcase
+      end
+
       def class_name
         self.class.name.split("::").last.downcase
       end
@@ -115,7 +119,7 @@ module Plurimath
 
         obj = common_math_zone_conversion_object(field, options)
         options[:array] << "#{obj.spacing}|_ \"#{field&.to_asciimath(options: options[:options])}\"#{obj.field_name}\n"
-        return unless Utility.validate_math_zone(field, lang: :asciimath)
+        return unless field&.validate_math_zone(lang: :asciimath)
 
         options[:array] << field&.to_asciimath_math_zone(obj.function_spacing, obj.last, obj.indent, options: options[:options])
       end
@@ -125,7 +129,7 @@ module Plurimath
 
         obj = common_math_zone_conversion_object(field, options)
         options[:array] << "#{obj.spacing}|_ \"#{field&.to_latex(options: options[:options])}\"#{obj.field_name}\n"
-        return unless Utility.validate_math_zone(field, lang: :latex)
+        return unless field&.validate_math_zone(lang: :latex)
 
         options[:array] << field&.to_latex_math_zone(obj.function_spacing, obj.last, obj.indent, options: options[:options])
       end
@@ -135,7 +139,7 @@ module Plurimath
 
         obj = common_math_zone_conversion_object(field, options)
         options[:array] << "#{obj.spacing}|_ \"#{dump_mathml(field, options: options[:options])}\"#{obj.field_name}\n"
-        return unless Utility.validate_math_zone(field, lang: :mathml, intent: options[:intent], options: options[:options])
+        return unless field&.validate_math_zone(lang: :mathml, intent: options[:intent], options: options[:options])
 
         options[:array] << field&.to_mathml_math_zone(obj.function_spacing, obj.last, obj.indent, options: options[:options])
       end
@@ -146,7 +150,7 @@ module Plurimath
         obj = common_math_zone_conversion_object(field, options)
         display_style = options[:display_style]
         options[:array] << "#{obj.spacing}|_ \"#{dump_omml(field, display_style, options: options[:options])}\"#{obj.field_name}\n"
-        return unless Utility.validate_math_zone(field, lang: :omml)
+        return unless field&.validate_math_zone(lang: :omml)
 
         options[:array] << field&.to_omml_math_zone(obj.function_spacing, obj.last, obj.indent, display_style: display_style, options: options[:options])
       end
@@ -156,7 +160,7 @@ module Plurimath
 
         obj = common_math_zone_conversion_object(field, options)
         options[:array] << "#{obj.spacing}|_ \"#{field&.to_unicodemath(options: options[:options])}\"#{obj.field_name}\n"
-        return unless Utility.validate_math_zone(field, lang: :unicodemath)
+        return unless field&.validate_math_zone(lang: :unicodemath)
 
         options[:array] << field&.to_unicodemath_math_zone(obj.function_spacing, obj.last, obj.indent, options: options[:options])
       end
@@ -250,7 +254,7 @@ module Plurimath
       def line_breaking(obj)
         variables.each do |variable|
           field = get(variable)
-          next unless [Array, Core].include?(field.class)
+          next unless field.is_a?(Array) || field.is_a?(Core)
           next array_line_break_field(field, variable, obj) if field.is_a?(Array)
 
           field.line_breaking(obj)
@@ -468,7 +472,7 @@ module Plurimath
         mask = options&.dig(:mask).to_i
         mask_options << LIMITS_LIST[mask % 4]
         mask -= mask % 4
-        mask_options << LIMITS_PLACEHOLDERS[mask % 32]
+        mask_options += LIMITS_PLACEHOLDERS[mask % 32]
 
         mask_options
       end
@@ -497,6 +501,16 @@ module Plurimath
 
       def mo_tag(str)
         ox_element("mo") << str
+      end
+
+      def validate_math_zone(object, lang:, intent: false, options: nil)
+        if is_a?(Formula)
+          Utility.filter_math_zone_values(object.value, lang: lang, intent: intent, options: options).find do |value|
+            !(value.is_a?(Function::Text) || value.is_a?(Symbols::Symbol))
+          end
+        else
+          !(TEXT_CLASSES.include?(object.class_name) || object.is_a?(Symbols::Symbol))
+        end
       end
     end
   end

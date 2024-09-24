@@ -121,9 +121,7 @@ module Plurimath
         end
 
         def wrapped(field, options:)
-          return "" unless field
-
-          "(#{field.to_asciimath(options: options)})"
+          "(#{field.to_asciimath(options: options)})" if field
         end
 
         def underover(display_style, options:)

@@ -38,16 +38,19 @@ module Plurimath
         def to_mathml_without_math_tag(intent, options:)
           tag_name = Utility::MUNDER_CLASSES.include?(parameter_one&.class_name) ? "under" : "sub"
           sub_tag = Utility.ox_element("m#{tag_name}")
-          mathml_value = []
-          mathml_value << validate_mathml_fields(parameter_one, intent, options: options)
-          mathml_value << validate_mathml_fields(parameter_two, intent, options: options)
-          Utility.update_nodes(sub_tag, mathml_value)
+          Utility.update_nodes(
+            sub_tag,
+            [
+              validate_mathml_fields(parameter_one, intent, options: options),
+              validate_mathml_fields(parameter_two, intent, options: options),
+            ]
+          )
         end
 
         def to_latex(options:)
-          first_value  = parameter_one.to_latex(options: options) if parameter_one
+          first_value  = parameter_one&.to_latex(options: options)
           first_value  = "{#{first_value}}" if parameter_one.is_a?(Formula)
-          second_value = parameter_two.to_latex(options: options) if parameter_two
+          second_value = parameter_two&.to_latex(options: options)
           "#{first_value}_{#{second_value}}"
         end
 
@@ -74,12 +77,12 @@ module Plurimath
 
         def to_unicodemath(options:)
           first_value = parameter_one.to_unicodemath(options: options) if parameter_one
-          second_value = if parameter_two.is_a?(self.class)
-            "_#{size_overrides}#{parameter_two.to_unicodemath(options: options)}"
-          elsif parameter_two&.mini_sized?
-            parameter_two.to_unicodemath(options: options)
-          elsif parameter_two.nil?
+          second_value = if parameter_two.nil?
             "()"
+          elsif parameter_two.is_a?(self.class)
+            "_#{size_overrides}#{parameter_two.to_unicodemath(options: options)}"
+          elsif parameter_two.mini_sized?
+            parameter_two.to_unicodemath(options: options)
           else
             "_#{size_overrides}#{unicodemath_parens(parameter_two, options: options)}"
           end

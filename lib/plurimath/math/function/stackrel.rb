@@ -69,8 +69,8 @@ module Plurimath
         protected
 
         def wrapped(field, options:)
-          string = field&.to_asciimath(options: options) || ""
-          string.start_with?("(") ? string : "(#{string})"
+          string = field&.to_asciimath(options: options).to_s
+          string[0] == "(" ? string : "(#{string})"
         end
 
         def mathml_values(field, intent, options:)
