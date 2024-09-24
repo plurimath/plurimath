@@ -56,11 +56,6 @@ module Plurimath
       bb: Math::Function::FontStyle::Bold,
       bf: Math::Function::FontStyle::Bold,
     }.freeze
-    ALIGNMENT_LETTERS = {
-      c: "center",
-      r: "right",
-      l: "left",
-    }.freeze
     UNARY_CLASSES = %w[
       arccos
       arcsin
@@ -161,77 +156,6 @@ module Plurimath
     }.freeze
 
     class << self
-      def organize_table(array, column_align: nil, options: nil)
-        table = []
-        table_data = []
-        table_row = []
-        organize_options(array, column_align) if options
-        string_columns = column_align&.map { |column| column.is_a?(Math::Symbols::Paren) ? "|" : column.value }
-        array.each do |data|
-          if data&.separate_table
-            table_row << Math::Function::Td.new(filter_table_data(table_data).compact)
-            table_data = []
-            if data.linebreak
-              organize_tds(table_row.flatten, string_columns.dup, options)
-              table << Math::Function::Tr.new(table_row)
-              table_row = []
-            end
-            next
-          end
-          table_data << data
-        end
-        table_row << Math::Function::Td.new(table_data.compact) if table_data
-        unless table_row.nil? || table_row.empty?
-          organize_tds(table_row.flatten, string_columns.dup, options)
-          table << Math::Function::Tr.new(table_row)
-        end
-        table_separator(string_columns, table, symbol: "|") unless column_align.nil? || column_align.empty?
-        table
-      end
-
-      def organize_options(table_data, column_align)
-        return column_align if column_align.length <= 1
-
-        align = [column_align&.shift]
-        table_data.insert(0, *column_align)
-        align
-      end
-
-      def table_options(table_data)
-        rowline = ""
-        table_data.each do |tr|
-          if tr&.parameter_one&.first&.parameter_one&.first.is_a?(Math::Symbols::Hline)
-            rowline += "solid "
-          else
-            rowline += "none "
-          end
-        end
-        options = { rowline: rowline.strip } if rowline.include?("solid")
-        options || {}
-      end
-
-      def organize_tds(tr_array, column_align, options)
-        return tr_array if column_align.nil? || column_align.empty?
-
-        column_align.reject! { |string| string == "|" }
-        column_align = column_align * tr_array.length if options
-        tr_array.each_with_index do |td, ind|
-          columnalign = ALIGNMENT_LETTERS[column_align[ind]&.to_sym]
-          td.parameter_two = { columnalign: columnalign } if columnalign
-        end
-      end
-
-      def filter_table_data(table_data)
-        table_data.each_with_index do |object, ind|
-          if object.is_a?(Math::Symbols::Minus)
-            table_data[ind] = Math::Formula.new(
-              [object, table_data.delete_at(ind.next)],
-            )
-          end
-        end
-        table_data
-      end
-
       def get_table_class(text)
         Object.const_get("Plurimath::Math::Function::Table::#{capitalize(text)}")
       end
@@ -244,16 +168,6 @@ module Plurimath
 
       def get_class(text)
         Object.const_get("Plurimath::Math::Function::#{capitalize(text)}")
-      end
-
-      def get_symbol_class(text)
-        Object.const_get("Plurimath::Math::Symbols::#{capitalize(text)}")
-      rescue => e
-        get_paren_class(text)
-      end
-
-      def get_paren_class(text)
-        Object.const_get("Plurimath::Math::Symbols::Paren::#{capitalize(text)}")
       end
 
       def capitalize(text)
@@ -269,36 +183,37 @@ module Plurimath
       end
 
       def symbols_hash(lang)
-        @@symbols ||= {}
-        lang_symbols = @@symbols[lang]
-        return lang_symbols if lang_symbols && !lang_symbols.empty?
+        initialize_class_variable(:"@@symbols")
+        return @@symbols[lang] if @@symbols[lang]&.any?
 
         lang_symbols = {}
         symbols_files.each do |class_object|
           class_object::INPUT[lang]&.flatten&.each do |symbol|
-            next if lang_symbols.key?(symbol)
-
-            lang_symbols[symbol] = class_object
+            lang_symbols[symbol] ||= class_object
           end
         end
         @@symbols[lang] = lang_symbols.sort_by { |v, _| -v.length }.to_h
       end
 
       def parens_hash(lang, skipables: nil)
-        @@parens ||= {}
-        lang_parens = @@parens[lang]
-        return lang_parens if lang_parens && !lang_parens.empty?
+        initialize_class_variable(:"@@parens")
+        return @@parens[lang] if @@parens[lang]&.any?
 
         lang_parens = {}
         paren_files.each do |class_object|
-          class_object::INPUT[lang]&.flatten&.each do |symbol|
-            next if skipables && skipables.include?(class_object.new.class_name)
-            next if lang_parens.key?(symbol)
+          next if skipables&.include?(class_object.class_name)
 
-            lang_parens[symbol] = class_object
+          class_object::INPUT[lang]&.flatten&.each do |symbol|
+            lang_parens[symbol] ||= class_object
           end
         end
         @@parens[lang] = lang_parens.sort_by { |v, _| -v.length }.to_h
+      end
+
+      def initialize_class_variable(var_name, var_value = {})
+        return if class_variable_defined?(var_name)
+
+        class_variable_set(var_name, var_value)
       end
 
       def all_symbols_classes(lang)
@@ -390,32 +305,12 @@ module Plurimath
         fonts_array.find { |d| d.is_a?(Hash) && d[key] }
       end
 
-      def td_values(objects, slicer)
-        sliced = objects.slice_when { |object, _| symbol_value(object, slicer) }
-        tds = sliced.map do |slice|
-          Math::Function::Td.new(
-            slice.delete_if { |d| symbol_value(d, slicer) }.compact,
-          )
-        end
-        tds << Math::Function::Td.new([]) if symbol_value(objects.last, slicer)
-        tds
-      end
-
       def symbol_value(object, value)
         (object.is_a?(Math::Symbols::Comma) if value&.include?(",")) ||
           (object.is_a?(Math::Symbols::Minus) if value&.include?("-")) ||
           (object.is_a?(Math::Symbols::Paren::Vert) if value&.include?("|")) ||
           (object.is_a?(Math::Symbols::Symbol) && object&.value&.include?(value)) ||
           (value == "\\\\" && object.is_a?(Math::Function::Linebreak))
-      end
-
-      def td_value(td_object)
-        str_classes = [String, Parslet::Slice]
-        if str_classes.include?(td_object.class) && td_object.to_s.empty?
-          return Math::Function::Text.new(nil)
-        end
-
-        td_object
       end
 
       def mathml_unary_classes(text_array, omml: false, unicode_only: false, lang: nil)
@@ -458,21 +353,6 @@ module Plurimath
       def html_entity_to_unicode(string)
         entities = HTMLEntities.new
         entities.decode(string)
-      end
-
-      def table_separator(separator, value, symbol: "solid")
-        sep_symbol = Math::Function::Td.new([Math::Symbols::Paren::Vert.new])
-        separator&.each_with_index do |sep, ind|
-          next unless sep == symbol
-
-          value.each do |val|
-            val.parameter_one.insert((ind + 1), sep_symbol) if symbol == "solid"
-            val.parameter_one.insert(ind, sep_symbol) if symbol == "|"
-            (val.parameter_one[val.parameter_one.index(nil)] = Math::Function::Td.new([])) rescue nil
-            val
-          end
-        end
-        value
       end
 
       def join_attr_value(attrs, value, unicode_only: false, lang: :mathml)
@@ -605,15 +485,6 @@ module Plurimath
           object.options.empty?
       end
 
-      def frac_values(object)
-        case object
-        when Math::Formula
-          object.value.any? { |d| symbol_value(d, ",") }
-        when Array
-          object.any? { |d| symbol_value(d, ",") }
-        end
-      end
-
       def table_td(object)
         new_object = case object
                      when Math::Function::Td
@@ -635,15 +506,7 @@ module Plurimath
         symbols_class(value, lang: lang)
       end
 
-      def asciimath_symbol_object(value, lang: :asciimath)
-        return if value.nil?
-
-        symbols = symbols_hash(lang)
-        return symbols[value&.to_s].new if symbols.key?(value&.to_s)
-
-        symbol_object(value&.to_s, lang: lang)
-      end
-
+      # TODO: move to new Function classes
       def validate_left_right(fields = [])
         fields.each do |field|
           if field.is_a?(Math::Formula) && field.value.first.is_a?(Math::Function::Left)
@@ -652,15 +515,7 @@ module Plurimath
         end
       end
 
-      def left_right_objects(paren, function)
-        paren = if paren.to_s.match?(/\\\{|\\\}/)
-                  paren.to_s.gsub(/\\/, "")
-                else
-                  Latex::Constants::LEFT_RIGHT_PARENTHESIS[paren.to_sym]
-                end
-        get_class(function).new(paren)
-      end
-
+      # TODO: move to new OMML helper classes
       def valid_class(object)
         text = object.extract_class_name_from_text
         (object.extractable? && Asciimath::Constants::SUB_SUP_CLASSES.include?(text)) ||
@@ -741,6 +596,7 @@ module Plurimath
         end
       end
 
+      # TODO: move to MathML helper class
       def fenceable_classes(mrow = [])
         return false unless mrow.length > 1
         return unless paren_able?(PARENTHESIS, mrow) || (mrow.first.is_a?(Math::Symbols::Paren) && mrow.last.is_a?(Math::Symbols::Paren))
@@ -757,18 +613,6 @@ module Plurimath
               Math::Function::Fenced.new(open_paren, mrow.dup, close_paren),
             ],
           )
-        end
-      end
-
-      def validate_math_zone(object, lang:, intent: false, options: nil)
-        return false unless object
-
-        if object.is_a?(Math::Formula)
-          filter_math_zone_values(object.value, lang: lang, intent: intent, options: options).find do |value|
-            !(value.is_a?(Math::Function::Text) || value.is_a?(Math::Symbols::Symbol))
-          end
-        else
-          !(TEXT_CLASSES.include?(object.class_name) || object.is_a?(Math::Symbols::Symbol))
         end
       end
 

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Plurimath
   class Utility
     class IntentEncoding < Utility

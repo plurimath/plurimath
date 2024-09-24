@@ -6,9 +6,7 @@ module Plurimath
   module Math
     module Function
       class Arcsin < UnaryFunction
-        def validate_function_formula
-          false
-        end
+        def validate_function_formula; end
       end
     end
   end
