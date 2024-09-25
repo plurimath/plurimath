@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require_relative "../../utility/shared"
 module Plurimath
   module Math
     module Function
@@ -188,7 +189,7 @@ module Plurimath
         def latex_columnalign
           return "" unless Hash(options)[:asterisk]
 
-          "[#{Utility::ALIGNMENT_LETTERS.invert[Hash(td_hash)[:columnalign]]}]"
+          "[#{Utility::Shared::Constants::ALIGNMENT_LETTERS.invert[Hash(td_hash)[:columnalign]]}]"
         end
 
         def td_hash

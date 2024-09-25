@@ -33,7 +33,7 @@ module Plurimath
               args << if Utility.symbol_value(td.parameter_one.first, "|")
                         "|"
                       else
-                        Utility::ALIGNMENT_LETTERS.invert[Hash(td.parameter_two)[:columnalign]]&.to_s
+                        Utility::Shared::Constants::ALIGNMENT_LETTERS.invert[Hash(td.parameter_two)[:columnalign]]&.to_s
                       end
             end
             "{#{args.join}}" unless args.compact.empty?
