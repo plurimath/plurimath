@@ -3,7 +3,7 @@
 module Plurimath
   module Math
     class Formula < Core
-      attr_accessor :value, :left_right_wrapper, :displaystyle, :input_string, :unitsml
+      attr_accessor :value, :left_right_wrapper, :displaystyle, :input_string, :unitsml, :unitsml_xml
 
       MATH_ZONE_TYPES = %i[
         omml
@@ -48,8 +48,14 @@ module Plurimath
         parse_error!(:asciimath)
       end
 
-      def to_mathml(display_style: displaystyle, split_on_linebreak: false, intent: false, formatter: nil)
-        options = { formatter: formatter }
+      def to_mathml(
+        intent: false,
+        formatter: nil,
+        unitsml_xml: nil,
+        split_on_linebreak: false,
+        display_style: displaystyle
+      )
+        options = { formatter: formatter, unitsml_xml: unitsml_xml }
         return line_breaked_mathml(display_style, intent, options: options) if split_on_linebreak
 
         math_attrs = {
@@ -80,6 +86,7 @@ module Plurimath
         attributes = intent_attribute(mathml_value) if intent
         mrow = ox_element("mrow", attributes: attributes)
         mrow[:unitsml] = true if unitsml
+        mathml_value += wrapped_unitsml_xml(mrow) if unitsml_xml && options[:unitsml_xml]
         Utility.update_nodes(mrow, mathml_value)
       end
 
@@ -327,6 +334,12 @@ module Plurimath
           end
           unitsml_post_processing(node.nodes, node) if node.nodes.none?(String)
         end
+      end
+
+      def wrapped_unitsml_xml(mrow)
+        node = Plurimath.xml_engine.load("<mrow>#{unitsml_xml}</mrow>")
+        mrow.attributes[:xref] = node.locate("*/@id").first if node.locate("*/@id").any?
+        node.nodes
       end
 
       def space_element(node)

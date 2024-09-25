@@ -11,9 +11,11 @@ module Plurimath
     end
 
     def to_formula
-      formula = ::Unitsml.parse(text).to_plurimath
+      unitsml = ::Unitsml.parse(text)
+      formula = unitsml.to_plurimath
       formula.unitsml = true
       formula.input_string = text
+      formula.unitsml_xml = unitsml.to_xml
       formula
     end
 
