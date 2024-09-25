@@ -359,6 +359,16 @@ module Plurimath
         false
       end
 
+      def validate_math_zone(lang:, intent: false, options: nil)
+        if is_a?(Formula)
+          Utility.filter_math_zone_values(value, lang: lang, intent: intent, options: options).find do |value|
+            !(value.is_a?(Function::Text) || value.is_a?(Symbols::Symbol))
+          end
+        else
+          !(Utility::TEXT_CLASSES.include?(class_name) || is_a?(Symbols::Symbol))
+        end
+      end
+
       def pretty_print_instance_variables
         excluded_vars = [
           :@left_right_wrapper,
@@ -470,9 +480,10 @@ module Plurimath
 
       def get_mask_options(mask_options = [])
         mask = options&.dig(:mask).to_i
-        mask_options << LIMITS_LIST[mask % 4]
+        mask_option = LIMITS_LIST[mask % 4]
+        mask_options << mask_option if mask_option
         mask -= mask % 4
-        mask_options += LIMITS_PLACEHOLDERS[mask % 32]
+        mask_options += Array(LIMITS_PLACEHOLDERS[mask % 32])
 
         mask_options
       end
@@ -501,16 +512,6 @@ module Plurimath
 
       def mo_tag(str)
         ox_element("mo") << str
-      end
-
-      def validate_math_zone(object, lang:, intent: false, options: nil)
-        if is_a?(Formula)
-          Utility.filter_math_zone_values(object.value, lang: lang, intent: intent, options: options).find do |value|
-            !(value.is_a?(Function::Text) || value.is_a?(Symbols::Symbol))
-          end
-        else
-          !(TEXT_CLASSES.include?(object.class_name) || object.is_a?(Symbols::Symbol))
-        end
       end
     end
   end

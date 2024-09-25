@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative "utility/intent_encoding"
+require_relative "utility/shared"
 module Plurimath
   class Utility
     UNICODE_REGEX = %r{&#x[a-zA-Z0-9]+;}
@@ -154,6 +155,8 @@ module Plurimath
       64 => 'downdiagonalstrike',
       128 => 'updiagonalstrike'
     }.freeze
+
+    extend Shared::LatexAndMathml
 
     class << self
 
@@ -572,8 +575,8 @@ module Plurimath
       # TODO: move to new OMML helper classes
       def valid_class(object)
         text = object.extract_class_name_from_text
-        (object.extractable? && Asciimath::Constants::SUB_SUP_CLASSES.include?(text)) ||
-          Latex::Constants::SYMBOLS[text.to_sym] == :power_base
+        (object.extractable? && Plurimath::Asciimath::Constants::SUB_SUP_CLASSES.include?(text)) ||
+          Plurimath::Latex::Constants::SYMBOLS[text.to_sym] == :power_base
       end
 
       def mrow_left_right(mrow = [])

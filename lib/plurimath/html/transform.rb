@@ -8,14 +8,14 @@ module Plurimath
       rule(symbol: simple(:symbol))  { Utility.symbols_class(symbol, lang: :html) }
       rule(number: simple(:number))  { Math::Number.new(number) }
       rule(expression: simple(:exp)) { exp }
-      
+
       rule(expression: sequence(:exp))    { exp }
       rule(sequence: simple(:sequence))   { sequence }
       rule(tr_value: simple(:tr_value))   { Math::Function::Tr.new([tr_value]) }
       rule(td_value: simple(:td_value))   { Math::Function::Td.new([td_value]) }
       rule(sequence: sequence(:sequence)) { sequence }
       rule(td_value: sequence(:td_value)) { Math::Function::Td.new(td_value) }
-      
+
       rule(parse_parenthesis: simple(:parse_paren)) { parse_paren }
       rule(unary_function: simple(:unary_function)) { unary_function }
 

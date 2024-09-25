@@ -1,15 +1,13 @@
 # frozen_string_literal: true
 
-require "plurimath/utility"
+require_relative "../../utility"
+require_relative "../../utility/shared"
 module Plurimath
   class Utility
     module Latex
       class TransformHelper < Utility
-        ALIGNMENT_LETTERS = {
-          c: "center",
-          r: "right",
-          l: "left",
-        }.freeze
+        extend Shared::Constants
+        extend Shared::LatexAndMathml
 
         class << self
           def organize_table(array, column_align: nil, options: nil)
@@ -83,22 +81,6 @@ module Plurimath
               )
             end
             table_data
-          end
-
-          def table_separator(separator, value, symbol: "solid")
-            sep_symbol = Math::Function::Td.new([Math::Symbols::Paren::Vert.new])
-            separator&.each_with_index do |sep, ind|
-              next unless sep == symbol
-
-              value.each do |val|
-                if ["solid", "|"].include?(symbol)
-                  index = symbol == "solid" ? (ind + 1) : ind
-                  val.parameter_one.insert(index, sep_symbol)
-                end
-                val.parameter_one.map! { |v| v.nil? ? Math::Function::Td.new([]) : v }
-              end
-            end
-            value
           end
 
           def left_right_objects(paren, function)
