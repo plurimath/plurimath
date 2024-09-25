@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "plurimath/utility/latex/transform_helper"
+require_relative "transform_helper"
 module Plurimath
   class Latex
     class Transform < Parslet::Transform
@@ -77,9 +77,9 @@ module Plurimath
            right_paren: simple(:rparen)) do
         Math::Formula.new(
           [
-            Utility::Latex::TransformHelper.left_right_objects(lparen, "left"),
+            TransformHelper.left_right_objects(lparen, "left"),
             Math::Formula.new(expr),
-            Utility::Latex::TransformHelper.left_right_objects(rparen, "right"),
+            TransformHelper.left_right_objects(rparen, "right"),
           ],
         )
       end
@@ -90,7 +90,7 @@ module Plurimath
            right: simple(:right)) do
         Math::Formula.new(
           [
-            Utility::Latex::TransformHelper.left_right_objects(lparen, "left"),
+            TransformHelper.left_right_objects(lparen, "left"),
             Math::Formula.new(expr),
             Math::Function::Right.new,
           ],
@@ -103,7 +103,7 @@ module Plurimath
            right: simple(:right)) do
         Math::Formula.new(
           [
-            Utility::Latex::TransformHelper.left_right_objects(lparen, "left"),
+            TransformHelper.left_right_objects(lparen, "left"),
             expr,
             Math::Function::Right.new,
           ],
@@ -115,7 +115,7 @@ module Plurimath
            right: simple(:right)) do
         Math::Formula.new(
           [
-            Utility::Latex::TransformHelper.left_right_objects(lparen, "left"),
+            TransformHelper.left_right_objects(lparen, "left"),
             Math::Function::Right.new,
           ],
         )
@@ -127,15 +127,15 @@ module Plurimath
            right_paren: simple(:rparen)) do
         Math::Formula.new(
           [
-            Utility::Latex::TransformHelper.left_right_objects(lparen, "left"),
-            Utility::Latex::TransformHelper.left_right_objects(rparen, "right"),
+            TransformHelper.left_right_objects(lparen, "left"),
+            TransformHelper.left_right_objects(rparen, "right"),
           ],
         )
       end
 
       rule(left: simple(:left),
            left_paren: simple(:lparen)) do
-        Utility::Latex::TransformHelper.left_right_objects(lparen, "left")
+        TransformHelper.left_right_objects(lparen, "left")
       end
 
       rule(left: simple(:left),
@@ -145,9 +145,9 @@ module Plurimath
            right_paren: simple(:rparen)) do
         Math::Formula.new(
           [
-            Utility::Latex::TransformHelper.left_right_objects(lparen, "left"),
+            TransformHelper.left_right_objects(lparen, "left"),
             expr,
-            Utility::Latex::TransformHelper.left_right_objects(rparen, "right"),
+            TransformHelper.left_right_objects(rparen, "right"),
           ],
         )
       end
@@ -224,7 +224,7 @@ module Plurimath
            right_paren: simple(:rparen)) do
         Math::Formula.new(
           [
-            Utility::Latex::TransformHelper.left_right_objects(lparen, "left"),
+            TransformHelper.left_right_objects(lparen, "left"),
             Math::Function::Over.new(
               Math::Formula.new(
                 Array(dividend).flatten,
@@ -233,7 +233,7 @@ module Plurimath
                 Array(divisor).flatten,
               ),
             ),
-            Utility::Latex::TransformHelper.left_right_objects(rparen, "right"),
+            TransformHelper.left_right_objects(rparen, "right"),
           ],
         )
       end
@@ -837,7 +837,7 @@ module Plurimath
            ending: simple(:ending)) do
         open_paren = Constants::MATRICES[environment.to_sym]
         Utility.get_table_class(environment).new(
-          Utility::Latex::TransformHelper.organize_table(table_data),
+          TransformHelper.organize_table(table_data),
           Utility.symbols_class(open_paren, lang: :latex, table: true),
           Utility.symbols_class(Constants::MATRICES_PARENTHESIS[open_paren&.to_sym]&.to_s, lang: :latex, table: true),
           {},
@@ -850,7 +850,7 @@ module Plurimath
            ending: simple(:ending)) do
         third_value = args ? [args] : []
         open_paren = Constants::MATRICES[environment.to_sym]
-        table = Utility::Latex::TransformHelper.organize_table(
+        table = TransformHelper.organize_table(
           [table_data],
           column_align: third_value,
         )
@@ -858,7 +858,7 @@ module Plurimath
           table,
           Utility.symbols_class(open_paren, lang: :latex, table: true),
           Utility.symbols_class(Constants::MATRICES_PARENTHESIS[open_paren&.to_sym]&.to_s, lang: :latex, table: true),
-          Utility::Latex::TransformHelper.table_options(table),
+          TransformHelper.table_options(table),
         )
       end
 
@@ -867,7 +867,7 @@ module Plurimath
            ending: simple(:ending)) do
         open_paren = Constants::MATRICES[environment.to_sym]
         Utility.get_table_class(environment).new(
-          Utility::Latex::TransformHelper.organize_table([table_data]),
+          TransformHelper.organize_table([table_data]),
           Utility.symbols_class(open_paren, lang: :latex, table: true),
           Utility.symbols_class(Constants::MATRICES_PARENTHESIS[open_paren&.to_sym]&.to_s, lang: :latex, table: true),
         )
@@ -878,12 +878,12 @@ module Plurimath
            table_data: sequence(:table_data),
            ending: simple(:ending)) do
         open_paren = Constants::MATRICES[environment.to_sym]
-        table = Utility::Latex::TransformHelper.organize_table(table_data, column_align: args)
+        table = TransformHelper.organize_table(table_data, column_align: args)
         Utility.get_table_class(environment).new(
           table,
           Utility.symbols_class(open_paren, lang: :latex, table: true),
           Utility.symbols_class(Constants::MATRICES_PARENTHESIS[open_paren&.to_sym]&.to_s, lang: :latex, table: true),
-          Utility::Latex::TransformHelper.table_options(table),
+          TransformHelper.table_options(table),
         )
       end
 
@@ -893,12 +893,12 @@ module Plurimath
            ending: simple(:ending)) do
         third_value = args ? [args] : []
         open_paren = Constants::MATRICES[environment.to_sym]
-        table = Utility::Latex::TransformHelper.organize_table(table_data, column_align: third_value)
+        table = TransformHelper.organize_table(table_data, column_align: third_value)
         Utility.get_table_class(environment).new(
           table,
           Utility.symbols_class(open_paren, lang: :latex, table: true),
           Utility.symbols_class(Constants::MATRICES_PARENTHESIS[open_paren&.to_sym]&.to_s, lang: :latex, table: true),
-          Utility::Latex::TransformHelper.table_options(table),
+          TransformHelper.table_options(table),
         )
       end
 
@@ -909,7 +909,7 @@ module Plurimath
            ending: simple(:ending)) do
         third_value = options ? [options] : []
         open_paren = Constants::MATRICES[environment.to_sym]
-        table = Utility::Latex::TransformHelper.organize_table(
+        table = TransformHelper.organize_table(
           table_data,
           column_align: third_value,
           options: true,
@@ -928,7 +928,7 @@ module Plurimath
            ending: simple(:ending)) do
         open_paren = Constants::MATRICES[environment.to_sym]
         Utility.get_table_class(environment).new(
-          Utility::Latex::TransformHelper.organize_table(table_data),
+          TransformHelper.organize_table(table_data),
           Utility.symbols_class(open_paren, lang: :latex, table: true),
           Utility.symbols_class(Constants::MATRICES_PARENTHESIS[open_paren&.to_sym]&.to_s, lang: :latex, table: true),
           { asterisk: true },
@@ -939,7 +939,7 @@ module Plurimath
            expression: simple(:expr)) do
         open_paren = Constants::MATRICES[env.to_sym]
         Utility.get_table_class(env).new(
-          Utility::Latex::TransformHelper.organize_table(expr.nil? ? [] : [expr]),
+          TransformHelper.organize_table(expr.nil? ? [] : [expr]),
           Utility.symbols_class(open_paren, lang: :latex, table: true),
           Utility.symbols_class(Constants::MATRICES_PARENTHESIS[open_paren&.to_sym]&.to_s, lang: :latex, table: true),
           {},
@@ -950,7 +950,7 @@ module Plurimath
            expression: sequence(:expr)) do
         open_paren = Constants::MATRICES[env.to_sym]
         Utility.get_table_class(env).new(
-          Utility::Latex::TransformHelper.organize_table(expr.compact),
+          TransformHelper.organize_table(expr.compact),
           Utility.symbols_class(open_paren, lang: :latex, table: true),
           Utility.symbols_class(Constants::MATRICES_PARENTHESIS[open_paren&.to_sym]&.to_s, lang: :latex, table: true),
           {},
@@ -960,7 +960,7 @@ module Plurimath
       rule(substack: simple(:substack),
            expression: sequence(:value)) do
         Math::Function::Substack.new(
-          Utility::Latex::TransformHelper.organize_table(value),
+          TransformHelper.organize_table(value),
         )
       end
     end

@@ -205,13 +205,13 @@ module Plurimath
           else
             Math::Formula.new(
               flatten_mrow,
-              Utility.mrow_left_right(flatten_mrow),
+              TransformHelper.mrow_left_right(flatten_mrow),
             )
           end
         else
           Math::Formula.new(
             flatten_mrow,
-            Utility.mrow_left_right(flatten_mrow),
+            TransformHelper.mrow_left_right(flatten_mrow),
           )
         end
       end
