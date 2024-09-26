@@ -29,20 +29,20 @@ module Plurimath
         return [] if text_array.empty?
 
         compacted = text_array.compact
-        return filter_values(compacted) unless compacted.any?(String)
+        return Utility.filter_values(compacted) unless compacted.any?(String)
 
         string  = compacted.join
         classes = Mathml::Constants::CLASSES
         unicode = string_to_html_entity(string)
-        return symbols_class(unicode, lang: lang) if unicode_only && unicode
+        return Utility.symbols_class(unicode, lang: lang) if unicode_only && unicode
 
         symbol = Mathml::Constants::UNICODE_SYMBOLS[unicode.strip.to_sym]
         if classes.include?(symbol&.strip)
-          get_class(symbol.strip).new
+          Utility.get_class(symbol.strip).new
         elsif classes.any?(string&.strip)
-          get_class(string.strip).new
+          Utility.get_class(string.strip).new
         else
-          omml ? text_classes(string, lang: lang) : symbols_class(unicode, lang: lang)
+          omml ? text_classes(string, lang: lang) : Utility.symbols_class(unicode, lang: lang)
         end
       end
 
@@ -100,7 +100,7 @@ module Plurimath
               next unless object.parameter_one || object.parameter_two
               next if object.parameter_three
 
-              object.parameter_three = filter_values(mrow.delete_at(ind + 1))
+              object.parameter_three = Utility.filter_values(mrow.delete_at(ind + 1))
             end
           end
         end
@@ -118,12 +118,12 @@ module Plurimath
         case object
         when Math::Function::Fenced
           if !paren_specific || (paren_specific && valid_paren?(object))
-            filter_values(object.parameter_two)
+            Utility.filter_values(object.parameter_two)
           else
             object
           end
         when Array
-          filter_values(object)
+          Utility.filter_values(object)
         else
           object
         end
@@ -136,6 +136,28 @@ module Plurimath
           !object.parameter_one.mini_sup_sized &&
           !object.parameter_three.mini_sub_sized &&
           object.options.empty?
+      end
+
+      def text_classes(text, lang:)
+        return nil unless text
+
+        text = Utility.filter_values(text) unless text.is_a?(String)
+        return text if text.is_a?(Math::Core)
+
+        if text&.scan(/[[:digit:]]/)&.length == text&.length
+          Math::Number.new(text)
+        elsif text&.match?(/[a-zA-Z]/)
+          Math::Function::Text.new(text)
+        else
+          text = string_to_html_entity(text)
+                  .gsub("&#x26;", "&")
+                  .gsub("&#x3c;", "<")
+                  .gsub("&#x27;", "'")
+                  .gsub("&#xa0;", " ")
+                  .gsub("&#x3e;", ">")
+                  .gsub("&#xa;", "\n")
+          Utility.symbols_class(text, lang: lang)
+        end
       end
     end
   end

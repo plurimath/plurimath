@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require_relative 'transform_helper'
 module Plurimath
   class UnicodeMath
     class Transform < Parslet::Transform
@@ -48,7 +49,7 @@ module Plurimath
       rule(factor: sequence(:factor)) { factor }
       rule(operand: simple(:operand)) { operand }
       rule(fraktur: simple(:fraktur)) { :fraktur }
-      rule(accents: subtree(:accent)) { Utility.unicode_accents(accent) }
+      rule(accents: subtree(:accent)) { TransformHelper.unicode_accents(accent) }
       rule(sup_alpha: simple(:alpha)) { Math::Symbols::Symbol.new(Constants::SUP_ALPHABETS.key(alpha).to_s, mini_sup_sized: true) }
 
       rule(sub_script: simple(:script)) { script }
@@ -65,7 +66,7 @@ module Plurimath
       rule(sup_script: sequence(:script)) { script }
       rule(mini_sub: sequence(:mini_sub)) { mini_sub }
       rule(monospace: simple(:monospace)) { monospace }
-      rule(slashed_value: simple(:value)) { Utility.slashed_values(value) }
+      rule(slashed_value: simple(:value)) { TransformHelper.slashed_values(value) }
 
       rule(intermediate_exp: simple(:expr))  { expr }
       rule(decimal_number: simple(:number))  { number }
@@ -74,7 +75,7 @@ module Plurimath
       rule(expression: simple(:expression))  { expression }
       rule(open_paren: simple(:open_paren))  { Utility.symbols_class(open_paren, lang: :unicodemath) }
       rule(override_subsup: simple(:subsup)) { subsup }
-      rule(slashed_value: sequence(:values)) { Utility.sequence_slashed_values(values, lang: :unicodemath) }
+      rule(slashed_value: sequence(:values)) { TransformHelper.sequence_slashed_values(values, lang: :unicodemath) }
 
       rule(intermediate_exp: sequence(:expr)) { expr }
       rule(diacritic_belows: simple(:belows)) { belows }
@@ -92,7 +93,7 @@ module Plurimath
 
       rule(diacritic_overlays: simple(:overlays)) { overlays }
       rule(mini_sub_sup: sequence(:mini_sub_sup)) { mini_sub_sup }
-      rule(unicode_fractions: simple(:fractions)) { Utility.unicode_fractions(fractions) }
+      rule(unicode_fractions: simple(:fractions)) { TransformHelper.unicode_fractions(fractions) }
       rule(mini_intermediate_exp: simple(:mini_expr)) { mini_expr }
 
       rule(combined_symbols: simple(:combined_symbols)) do
@@ -115,7 +116,7 @@ module Plurimath
       end
 
       rule(prefixed_prime: simple(:prime)) do
-        Utility.updated_primes(prime)
+        TransformHelper.updated_primes(prime)
       end
 
       rule(unary_functions: simple(:unary)) do
@@ -206,12 +207,12 @@ module Plurimath
 
       rule(unicode_fractions: simple(:fractions),
            expr: sequence(:expr)) do
-        [Utility.unicode_fractions(fractions)] + expr
+        [TransformHelper.unicode_fractions(fractions)] + expr
       end
 
       rule(unicode_fractions: simple(:fractions),
            expr: simple(:expr)) do
-        [Utility.unicode_fractions(fractions), expr]
+        [TransformHelper.unicode_fractions(fractions), expr]
       end
 
       rule(diacritics_accents: simple(:accents),
@@ -335,12 +336,12 @@ module Plurimath
 
       rule(accents: subtree(:accent),
            expr: sequence(:expr)) do
-        [Utility.unicode_accents(accent)] + expr
+        [TransformHelper.unicode_accents(accent)] + expr
       end
 
       rule(accents: subtree(:accent),
            exp: sequence(:exp)) do
-        [Utility.unicode_accents(accent)] + exp
+        [TransformHelper.unicode_accents(accent)] + exp
       end
 
       rule(text: simple(:text),
@@ -608,7 +609,7 @@ module Plurimath
 
       rule(operator: simple(:operator),
            sup_recursion: simple(:sup_recursion)) do
-        Utility.recursive_sup(
+        TransformHelper.recursive_sup(
           Utility.symbols_class(operator, lang: :unicodemath),
           Utility.unfenced_value(sup_recursion, paren_specific: true),
         )
@@ -616,7 +617,7 @@ module Plurimath
 
       rule(operator: simple(:operator),
            sub_recursion: simple(:sub_recursion)) do
-        Utility.recursive_sub(
+        TransformHelper.recursive_sub(
           Utility.symbols_class(operator, lang: :unicodemath),
           sub_recursion,
         )
@@ -629,7 +630,7 @@ module Plurimath
 
       rule(sub_script: simple(:sub_script),
            sub_recursion: simple(:sub_recursion)) do
-        Utility.recursive_sub(sub_script, sub_recursion)
+        TransformHelper.recursive_sub(sub_script, sub_recursion)
       end
 
       rule(sub_operators: simple(:operator),
@@ -979,7 +980,7 @@ module Plurimath
 
       rule(sup_script: simple(:sup_script),
            sup_recursion: simple(:sup_recursion)) do
-        Utility.recursive_sup(
+        TransformHelper.recursive_sup(
           sup_script,
           Utility.unfenced_value(sup_recursion, paren_specific: true),
         )
@@ -997,7 +998,7 @@ module Plurimath
 
       rule(sub_script: simple(:sub_script),
            recursion: simple(:recursion)) do
-        Utility.recursive_sub(
+        TransformHelper.recursive_sub(
           sub_script,
           Utility.unfenced_value(recursion, paren_specific: true),
         )
@@ -1005,7 +1006,7 @@ module Plurimath
 
       rule(sup_script: sequence(:sup_script),
            sup_recursion: simple(:sup_recursion)) do
-        Utility.recursive_sup(
+        TransformHelper.recursive_sup(
           Math::Formula.new(sup_script),
           Utility.unfenced_value(sup_recursion, paren_specific: true),
         )
@@ -1023,7 +1024,7 @@ module Plurimath
         elsif sub.class_name == "underset"
           sub.parameter_two = base
           sub
-        elsif base.is_a?(Math::Function::Power) && Utility.base_is_prime?(base)
+        elsif base.is_a?(Math::Function::Power) && TransformHelper.base_is_prime?(base)
           Math::Function::PowerBase.new(
             base.parameter_one,
             sub,
@@ -1075,7 +1076,7 @@ module Plurimath
         if (Constants::BINARY_FUNCTIONS.include?(base.class_name) && !base.parameter_one)
           base.parameter_one = sub_value
           base
-        elsif base.is_a?(Math::Function::Power) && Utility.base_is_prime?(base)
+        elsif base.is_a?(Math::Function::Power) && TransformHelper.base_is_prime?(base)
           Math::Function::PowerBase.new(
             base.parameter_one,
             sub,
@@ -1142,7 +1143,7 @@ module Plurimath
 
       rule(base: simple(:base),
            sup: sequence(:sup)) do
-        if (base.class_name == "base" && Utility.base_is_sub_or_sup?(base.parameter_two))
+        if (base.class_name == "base" && TransformHelper.base_is_sub_or_sup?(base.parameter_two))
           Math::Function::PowerBase.new(
             base.parameter_one,
             base.parameter_two,
@@ -1265,7 +1266,7 @@ module Plurimath
       rule(rect_value: simple(:mask),
            first_value: sequence(:first_value)) do
         Math::Function::Menclose.new(
-          Utility.enclosure_attrs(mask.to_i),
+          TransformHelper.enclosure_attrs(mask.to_i),
           Utility.unfenced_value(first_value, paren_specific: true),
         )
       end
@@ -1273,7 +1274,7 @@ module Plurimath
       rule(rect_value: simple(:mask),
            first_value: simple(:first_value)) do
         Math::Function::Menclose.new(
-          Utility.enclosure_attrs(mask.to_i),
+          TransformHelper.enclosure_attrs(mask.to_i),
           Utility.unfenced_value(first_value, paren_specific: true),
         )
       end
@@ -1400,7 +1401,7 @@ module Plurimath
            prime_accent_symbols: sequence(:prime)) do
         Math::Function::Power.new(
           Utility.unfenced_value(first_value, paren_specific: true),
-          Utility.updated_primes(prime),
+          TransformHelper.updated_primes(prime),
         )
       end
 
@@ -1408,7 +1409,7 @@ module Plurimath
            prime_accent_symbols: simple(:prime)) do
         Math::Function::Power.new(
           Utility.unfenced_value(first_value, paren_specific: true),
-          Utility.updated_primes(prime),
+          TransformHelper.updated_primes(prime),
         )
       end
 
@@ -1502,7 +1503,7 @@ module Plurimath
            prime_accent_symbols: simple(:prime)) do
         Math::Function::Power.new(
           Utility.unfenced_value(first_value, paren_specific: true),
-          Utility.updated_primes(prime),
+          TransformHelper.updated_primes(prime),
         )
       end
 
@@ -1603,42 +1604,42 @@ module Plurimath
 
       rule(numerator: simple(:numerator),
            denominator: simple(:denominator)) do
-        Utility.fractions(numerator, denominator)
+        TransformHelper.fractions(numerator, denominator)
       end
 
       rule(mini_numerator: simple(:numerator),
            mini_denominator: simple(:denominator)) do
-        Utility.fractions(numerator, denominator, { displaystyle: false })
+        TransformHelper.fractions(numerator, denominator, { displaystyle: false })
       end
 
       rule(numerator: simple(:numerator),
            denominator: sequence(:denominator)) do
-        Utility.fractions(numerator, denominator)
+        TransformHelper.fractions(numerator, denominator)
       end
 
       rule(mini_numerator: simple(:numerator),
            mini_denominator: sequence(:denominator)) do
-        Utility.fractions(numerator, denominator, { displaystyle: false })
+        TransformHelper.fractions(numerator, denominator, { displaystyle: false })
       end
 
       rule(numerator: sequence(:numerator),
            denominator: simple(:denominator)) do
-        Utility.fractions(numerator, denominator)
+        TransformHelper.fractions(numerator, denominator)
       end
 
       rule(mini_numerator: sequence(:numerator),
            mini_denominator: simple(:denominator)) do
-        Utility.fractions(numerator, denominator, { displaystyle: false })
+        TransformHelper.fractions(numerator, denominator, { displaystyle: false })
       end
 
       rule(numerator: sequence(:numerator),
            denominator: sequence(:denominator)) do
-        Utility.fractions(numerator, denominator)
+        TransformHelper.fractions(numerator, denominator)
       end
 
       rule(mini_numerator: sequence(:numerator),
            mini_denominator: sequence(:denominator)) do
-        Utility.fractions(numerator, denominator, { displaystyle: false })
+        TransformHelper.fractions(numerator, denominator, { displaystyle: false })
       end
 
       rule(matrixs: simple(:matrixs),
@@ -1688,22 +1689,22 @@ module Plurimath
         matrix = Constants::MATRIXS.key(matrixs) || matrixs.to_sym
         if :Vmatrix == matrix
           Utility.get_table_class(matrix).new(
-            Utility.identity_matrix(number.to_i),
+            TransformHelper.identity_matrix(number.to_i),
             Plurimath::Math::Symbols::Paren::Norm.new,
           )
         elsif :Bmatrix == matrix
           Utility.get_table_class(matrix).new(
-            Utility.identity_matrix(number.to_i),
+            TransformHelper.identity_matrix(number.to_i),
             Plurimath::Math::Symbols::Paren::Lcurly.new,
             Plurimath::Math::Symbols::Paren::Rcurly.new,
           )
         elsif :matrix == matrix
           Math::Function::Table.new(
-            Utility.identity_matrix(number.to_i)
+            TransformHelper.identity_matrix(number.to_i)
           )
         else
           Utility.get_table_class(matrix).new(
-            Utility.identity_matrix(number.to_i)
+            TransformHelper.identity_matrix(number.to_i)
           )
         end
       end
@@ -1888,27 +1889,27 @@ module Plurimath
 
       rule(slashed_value: simple(:value),
            expr: simple(:expr)) do
-        [Utility.slashed_values(value), expr]
+        [TransformHelper.slashed_values(value), expr]
       end
 
       rule(slashed_value: simple(:value),
            exp: simple(:expr)) do
-        [Utility.slashed_values(value), expr]
+        [TransformHelper.slashed_values(value), expr]
       end
 
       rule(slashed_value: sequence(:values),
            expr: simple(:expr)) do
-        Utility.sequence_slashed_values(values, lang: :unicodemath) + [expr]
+        TransformHelper.sequence_slashed_values(values, lang: :unicodemath) + [expr]
       end
 
       rule(slashed_value: sequence(:values),
            expr: sequence(:expr)) do
-        Utility.sequence_slashed_values(values, lang: :unicodemath) + expr
+        TransformHelper.sequence_slashed_values(values, lang: :unicodemath) + expr
       end
 
       rule(slashed_value: simple(:value),
            expr: sequence(:expr)) do
-        [Utility.slashed_values(value)] + expr
+        [TransformHelper.slashed_values(value)] + expr
       end
 
       rule(nary_class: simple(:nary_class),
@@ -2192,13 +2193,13 @@ module Plurimath
       rule(numerator: simple(:numerator),
            atop: simple(:atop),
            denominator: simple(:denominator)) do
-        Utility.fractions(numerator, denominator, { linethickness: "0" })
+        TransformHelper.fractions(numerator, denominator, { linethickness: "0" })
       end
 
       rule(numerator: sequence(:numerator),
            atop: simple(:atop),
            denominator: simple(:denominator)) do
-        Utility.fractions(numerator, denominator, { linethickness: "0" })
+        TransformHelper.fractions(numerator, denominator, { linethickness: "0" })
       end
 
       rule(numerator: simple(:numerator),
@@ -2207,7 +2208,7 @@ module Plurimath
         Math::Function::Fenced.new(
           Math::Symbols::Paren::Lround.new,
           [
-            Utility.fractions(numerator, denominator, { linethickness: "0", choose: true }),
+            TransformHelper.fractions(numerator, denominator, { linethickness: "0", choose: true }),
           ],
           Math::Symbols::Paren::Rround.new,
         )
@@ -2342,37 +2343,37 @@ module Plurimath
       rule(numerator: simple(:numerator),
            bevelled: simple(:bevelled),
            denominator: simple(:denominator)) do
-        Utility.fractions(numerator, denominator, { bevelled: true })
+        TransformHelper.fractions(numerator, denominator, { bevelled: true })
       end
 
       rule(numerator: simple(:numerator),
            ldiv: simple(:ldiv),
            denominator: simple(:denominator)) do
-        Utility.fractions(numerator, denominator, { ldiv: true })
+        TransformHelper.fractions(numerator, denominator, { ldiv: true })
       end
 
       rule(numerator: simple(:numerator),
            bevelled: simple(:bevelled),
            denominator: sequence(:denominator)) do
-        Utility.fractions(numerator, denominator, { bevelled: true })
+        TransformHelper.fractions(numerator, denominator, { bevelled: true })
       end
 
       rule(numerator: simple(:numerator),
            ldiv: simple(:ldiv),
            denominator: sequence(:denominator)) do
-        Utility.fractions(numerator, denominator, { ldiv: true })
+        TransformHelper.fractions(numerator, denominator, { ldiv: true })
       end
 
       rule(numerator: simple(:numerator),
            no_display_style: simple(:no_display_style),
            denominator: sequence(:denominator)) do
-        Utility.fractions(numerator, denominator, { no_display_style: false })
+        TransformHelper.fractions(numerator, denominator, { no_display_style: false })
       end
 
       rule(numerator: simple(:numerator),
            no_display_style: simple(:no_display_style),
            denominator: simple(:denominator)) do
-        Utility.fractions(numerator, denominator, { displaystyle: false })
+        TransformHelper.fractions(numerator, denominator, { displaystyle: false })
       end
 
       rule(fonts: simple(:fonts),
@@ -2401,7 +2402,7 @@ module Plurimath
         if (Constants::BINARY_FUNCTIONS.include?(base.class_name) && !base.parameter_one)
           base.parameter_one = sub_value
           base
-        elsif base.is_a?(Math::Function::Power) && Utility.base_is_prime?(base)
+        elsif base.is_a?(Math::Function::Power) && TransformHelper.base_is_prime?(base)
           Math::Function::PowerBase.new(
             base.parameter_one,
             sub,
@@ -2410,7 +2411,7 @@ module Plurimath
         else
           Math::Function::Base.new(
             base,
-            Utility.recursive_sub(
+            TransformHelper.recursive_sub(
               Utility.filter_values(sub),
               sub_recursion,
             ),
@@ -2482,7 +2483,7 @@ module Plurimath
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
           open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
-          Utility.sequence_slashed_values(values, lang: :unicodemath),
+          TransformHelper.sequence_slashed_values(values, lang: :unicodemath),
           close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
@@ -2637,7 +2638,7 @@ module Plurimath
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
           open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
-          [Utility.unicode_accents(accents)],
+          [TransformHelper.unicode_accents(accents)],
           close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
@@ -3242,7 +3243,7 @@ module Plurimath
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
           open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
-          ([Utility.unicode_accents(accent)] + expr),
+          ([TransformHelper.unicode_accents(accent)] + expr),
           close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
@@ -3253,7 +3254,7 @@ module Plurimath
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
           open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
-          ([Utility.unicode_accents(accent)] + exp),
+          ([TransformHelper.unicode_accents(accent)] + exp),
           close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
@@ -3264,7 +3265,7 @@ module Plurimath
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
           open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
-          ([Utility.unicode_fractions(fraction)] + expr),
+          ([TransformHelper.unicode_fractions(fraction)] + expr),
           close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
@@ -3275,7 +3276,7 @@ module Plurimath
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
           open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
-          ([Utility.unicode_fractions(fraction)] + exp),
+          ([TransformHelper.unicode_fractions(fraction)] + exp),
           close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end

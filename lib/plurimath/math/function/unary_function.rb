@@ -10,7 +10,7 @@ module Plurimath
           parameter_one  = parameter_one.to_s if parameter_one.is_a?(Parslet::Slice)
           @parameter_one = parameter_one
           method(:post_initialize).call if methods.include?(:post_initialize)
-          Utility.validate_left_right(variables.map { |var| get(var) })
+          validate_left_right(variables.map { |var| get(var) })
         end
 
         def ==(object)

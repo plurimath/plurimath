@@ -9,7 +9,7 @@ module Plurimath
         def initialize(parameter_one = nil, parameter_two = nil)
           @parameter_one = parameter_one
           @parameter_two = parameter_two
-          Utility.validate_left_right(variables.map { |var| get(var) })
+          validate_left_right(variables.map { |var| get(var) })
         end
 
         def to_asciimath(options:)

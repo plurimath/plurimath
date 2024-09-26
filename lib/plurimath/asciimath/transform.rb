@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'plurimath/utility/asciimath/transform_helper'
+require_relative 'transform_helper'
 
 module Plurimath
   class Asciimath
@@ -9,10 +9,10 @@ module Plurimath
       rule(frac: simple(:frac))     { frac }
       rule(unary: simple(:unary))   { unary }
       rule(table: simple(:table))   { table }
-      rule(comma: simple(:comma))   { Utility::Asciimath::TransformHelper.asciimath_symbol_object(comma) }
+      rule(comma: simple(:comma))   { TransformHelper.asciimath_symbol_object(comma) }
       rule(slash: simple(:slash))   { Math::Function::Linebreak.new }
       rule(unary: sequence(:unary)) { Utility.filter_values(unary) }
-      rule(rparen: simple(:rparen)) { Utility::Asciimath::TransformHelper.asciimath_symbol_object(rparen) }
+      rule(rparen: simple(:rparen)) { TransformHelper.asciimath_symbol_object(rparen) }
       rule(number: simple(:number)) { Math::Number.new(number) }
 
       rule(ternary: simple(:ternary))       { ternary }
@@ -36,7 +36,7 @@ module Plurimath
 
       rule(bold_fonts: simple(:font)) do
         Math::Function::FontStyle::DoubleStruck.new(
-          Utility::Asciimath::TransformHelper.asciimath_symbol_object(font.to_s[0]),
+          TransformHelper.asciimath_symbol_object(font.to_s[0]),
           "mathbf",
         )
       end
@@ -58,7 +58,7 @@ module Plurimath
       end
 
       rule(symbol: simple(:symbol)) do
-        Utility::Asciimath::TransformHelper.asciimath_symbol_object(symbol)
+        TransformHelper.asciimath_symbol_object(symbol)
       end
 
       rule(expr: subtree(:expr)) do
@@ -93,10 +93,10 @@ module Plurimath
       rule(numerator: simple(:numerator),
            denominator: simple(:denominator)) do
         new_arr = []
-        first_value = numerator.value.shift if Utility::Asciimath::TransformHelper.frac_values(numerator)
+        first_value = numerator.value.shift if TransformHelper.frac_values(numerator)
         new_arr << first_value
         first_value = Utility.unfenced_value(numerator)
-        second_value = denominator.value.pop if Utility::Asciimath::TransformHelper.frac_values(denominator)
+        second_value = denominator.value.pop if TransformHelper.frac_values(denominator)
         new_arr << second_value
         second_value = Utility.unfenced_value(denominator)
         frac = Math::Function::Frac.new(
@@ -113,10 +113,10 @@ module Plurimath
       rule(numerator: simple(:numerator),
            denominator: sequence(:denominator)) do
         new_arr = []
-        first_value = numerator.value.shift if Utility::Asciimath::TransformHelper.frac_values(numerator)
+        first_value = numerator.value.shift if TransformHelper.frac_values(numerator)
         new_arr << first_value
         first_value = Utility.unfenced_value(numerator)
-        second_value = denominator.pop if Utility::Asciimath::TransformHelper.frac_values(denominator)
+        second_value = denominator.pop if TransformHelper.frac_values(denominator)
         new_arr << second_value
         second_value = Utility.unfenced_value(denominator)
         frac = Math::Function::Frac.new(
@@ -163,38 +163,38 @@ module Plurimath
 
       rule(comma: simple(:comma),
            expr: simple(:expr)) do
-        new_arr = [Utility::Asciimath::TransformHelper.asciimath_symbol_object(comma)]
+        new_arr = [TransformHelper.asciimath_symbol_object(comma)]
         new_arr << expr unless expr.to_s.strip.empty?
         new_arr
       end
 
       rule(comma: simple(:comma),
            expr: sequence(:expr)) do
-        expr.flatten.compact.insert(0, Utility::Asciimath::TransformHelper.asciimath_symbol_object(comma))
+        expr.flatten.compact.insert(0, TransformHelper.asciimath_symbol_object(comma))
       end
 
       rule(symbol: simple(:symbol),
            expr: sequence(:expr)) do
-        expr.flatten.compact.insert(0, Utility::Asciimath::TransformHelper.asciimath_symbol_object(symbol))
+        expr.flatten.compact.insert(0, TransformHelper.asciimath_symbol_object(symbol))
       end
 
       rule(rparen: simple(:rparen),
            expr: simple(:expr)) do
         [
-          Utility::Asciimath::TransformHelper.asciimath_symbol_object(rparen),
+          TransformHelper.asciimath_symbol_object(rparen),
           expr,
         ]
       end
 
       rule(rparen: simple(:rparen),
            expr: sequence(:expr)) do
-        expr.flatten.compact.insert(0, Utility::Asciimath::TransformHelper.asciimath_symbol_object(rparen))
+        expr.flatten.compact.insert(0, TransformHelper.asciimath_symbol_object(rparen))
       end
 
       rule(rparen: simple(:rparen),
            power: simple(:power)) do
         Math::Function::Power.new(
-          Utility::Asciimath::TransformHelper.asciimath_symbol_object(rparen),
+          TransformHelper.asciimath_symbol_object(rparen),
           Utility.unfenced_value(power),
         )
       end
@@ -203,7 +203,7 @@ module Plurimath
            power: simple(:power),
            expr: simple(:expr)) do
         power_object = Math::Function::Power.new(
-          Utility::Asciimath::TransformHelper.asciimath_symbol_object(rparen),
+          TransformHelper.asciimath_symbol_object(rparen),
           Utility.unfenced_value(power),
         )
         new_arr = [power_object]
@@ -215,7 +215,7 @@ module Plurimath
            power: simple(:power),
            expr: sequence(:expr)) do
         power_object = Math::Function::Power.new(
-          Utility::Asciimath::TransformHelper.asciimath_symbol_object(rparen),
+          TransformHelper.asciimath_symbol_object(rparen),
           Utility.unfenced_value(power),
         )
         new_arr = [power_object]
@@ -226,7 +226,7 @@ module Plurimath
       rule(rparen: simple(:rparen),
            base: simple(:base)) do
         Math::Function::Base.new(
-          Utility::Asciimath::TransformHelper.asciimath_symbol_object(rparen),
+          TransformHelper.asciimath_symbol_object(rparen),
           Utility.unfenced_value(base),
         )
       end
@@ -235,7 +235,7 @@ module Plurimath
            base: simple(:base),
            expr: simple(:expr)) do
         base_object = Math::Function::Base.new(
-          Utility::Asciimath::TransformHelper.asciimath_symbol_object(rparen),
+          TransformHelper.asciimath_symbol_object(rparen),
           Utility.unfenced_value(base),
         )
         new_arr = [base_object]
@@ -248,10 +248,10 @@ module Plurimath
            comma: simple(:comma)) do
         [
           Math::Function::Power.new(
-            Utility::Asciimath::TransformHelper.asciimath_symbol_object(rparen),
+            TransformHelper.asciimath_symbol_object(rparen),
             Utility.unfenced_value(power),
           ),
-          Utility::Asciimath::TransformHelper.asciimath_symbol_object(comma),
+          TransformHelper.asciimath_symbol_object(comma),
         ]
       end
 
@@ -260,12 +260,12 @@ module Plurimath
            comma: simple(:comma),
            expr: simple(:expr)) do
         exponent = Math::Function::Power.new(
-          Utility::Asciimath::TransformHelper.asciimath_symbol_object(rparen),
+          TransformHelper.asciimath_symbol_object(rparen),
           Utility.unfenced_value(power),
         )
         new_arr = [
           exponent,
-          Utility::Asciimath::TransformHelper.asciimath_symbol_object(comma),
+          TransformHelper.asciimath_symbol_object(comma),
         ]
         new_arr << expr unless expr.to_s.strip.empty?
         new_arr
@@ -276,12 +276,12 @@ module Plurimath
            comma: simple(:comma),
            expr: sequence(:expr)) do
         exponent = Math::Function::Power.new(
-          Utility::Asciimath::TransformHelper.asciimath_symbol_object(rparen),
+          TransformHelper.asciimath_symbol_object(rparen),
           Utility.unfenced_value(power),
         )
         new_arr = [
           exponent,
-          Utility::Asciimath::TransformHelper.asciimath_symbol_object(comma),
+          TransformHelper.asciimath_symbol_object(comma),
         ]
         new_arr += expr
         new_arr
@@ -292,35 +292,35 @@ module Plurimath
            comma: simple(:comma)) do
         [
           Math::Function::Base.new(
-            Utility::Asciimath::TransformHelper.asciimath_symbol_object(rparen),
+            TransformHelper.asciimath_symbol_object(rparen),
             Utility.unfenced_value(base),
           ),
-          Utility::Asciimath::TransformHelper.asciimath_symbol_object(comma),
+          TransformHelper.asciimath_symbol_object(comma),
         ]
       end
 
       rule(comma: simple(:comma),
            left_right: simple(:left_right)) do
         [
-          Utility::Asciimath::TransformHelper.asciimath_symbol_object(comma),
+          TransformHelper.asciimath_symbol_object(comma),
           left_right,
         ]
       end
 
       rule(td: simple(:td)) do
         if td.is_a?(Math::Formula) && td.value.any?(Math::Function::Table)
-          Utility::Asciimath::TransformHelper.td_values(td.value, ",")
+          TransformHelper.td_values(td.value, ",")
         else
           Math::Function::Td.new(
             [
-              Utility::Asciimath::TransformHelper.td_value(td),
+              TransformHelper.td_value(td),
             ],
           )
         end
       end
 
       rule(td: sequence(:td)) do
-        Utility::Asciimath::TransformHelper.td_values(td, ",")
+        TransformHelper.td_values(td, ",")
       end
 
       rule(open_tr: simple(:tr),
@@ -394,7 +394,7 @@ module Plurimath
 
       rule(power_base: simple(:power_base),
            power: sequence(:power)) do
-        first_value = power.shift if Utility::Asciimath::TransformHelper.frac_values(power)
+        first_value = power.shift if TransformHelper.frac_values(power)
         power_object = Math::Function::Power.new(power_base, first_value)
         if power.empty?
           power_object
@@ -492,7 +492,7 @@ module Plurimath
            base_value: simple(:base_value),
            power_value: sequence(:power_value)) do
         first_value = power_value
-        first_value = power_value.shift if Utility::Asciimath::TransformHelper.frac_values(power_value)
+        first_value = power_value.shift if TransformHelper.frac_values(power_value)
         power_base_object = Math::Function::PowerBase.new(
           power_base,
           Utility.unfenced_value(base_value),
@@ -519,7 +519,7 @@ module Plurimath
            base_value: simple(:base_value),
            power_value: simple(:power_value)) do
         Math::Function::PowerBase.new(
-          Utility::Asciimath::TransformHelper.asciimath_symbol_object(rparen),
+          TransformHelper.asciimath_symbol_object(rparen),
           Utility.unfenced_value(base_value),
           Utility.unfenced_value(power_value),
         )
@@ -530,7 +530,7 @@ module Plurimath
            power_value: simple(:power_value),
            expr: simple(:expr)) do
         power_base = Math::Function::PowerBase.new(
-          Utility::Asciimath::TransformHelper.asciimath_symbol_object(rparen),
+          TransformHelper.asciimath_symbol_object(rparen),
           Utility.unfenced_value(base_value),
           Utility.unfenced_value(power_value),
         )
@@ -544,7 +544,7 @@ module Plurimath
            power_value: simple(:power_value),
            expr: simple(:expr)) do
         power_base = Math::Function::PowerBase.new(
-          Utility::Asciimath::TransformHelper.asciimath_symbol_object(rparen),
+          TransformHelper.asciimath_symbol_object(rparen),
           Utility.unfenced_value(base_value),
           Utility.unfenced_value(power_value),
         )
@@ -558,7 +558,7 @@ module Plurimath
            power_value: simple(:power_value),
            expr: sequence(:expr)) do
         power_base = Math::Function::PowerBase.new(
-          Utility::Asciimath::TransformHelper.asciimath_symbol_object(rparen),
+          TransformHelper.asciimath_symbol_object(rparen),
           Utility.unfenced_value(base_value),
           Utility.unfenced_value(power_value),
         )
@@ -570,7 +570,7 @@ module Plurimath
            power_value: simple(:power_value),
            expr: sequence(:expr)) do
         power_base = Math::Function::PowerBase.new(
-          Utility::Asciimath::TransformHelper.asciimath_symbol_object(rparen),
+          TransformHelper.asciimath_symbol_object(rparen),
           Utility.unfenced_value(base_value),
           Utility.unfenced_value(power_value),
         )
@@ -582,9 +582,9 @@ module Plurimath
            power_value: simple(:power_value),
            comma: simple(:comma),
            expr: sequence(:expr)) do
-        coma = Utility::Asciimath::TransformHelper.asciimath_symbol_object(comma)
+        coma = TransformHelper.asciimath_symbol_object(comma)
         power_base = Math::Function::PowerBase.new(
-          Utility::Asciimath::TransformHelper.asciimath_symbol_object(rparen),
+          TransformHelper.asciimath_symbol_object(rparen),
           Utility.unfenced_value(base_value),
           Utility.unfenced_value(power_value),
         )
@@ -598,9 +598,9 @@ module Plurimath
            power_value: simple(:power_value),
            comma: simple(:comma),
            expr: sequence(:expr)) do
-        coma = Utility::Asciimath::TransformHelper.asciimath_symbol_object(comma)
+        coma = TransformHelper.asciimath_symbol_object(comma)
         power_base = Math::Function::PowerBase.new(
-          Utility::Asciimath::TransformHelper.asciimath_symbol_object(rparen),
+          TransformHelper.asciimath_symbol_object(rparen),
           Utility.unfenced_value(base_value),
           Utility.unfenced_value(power_value),
         )
@@ -656,7 +656,7 @@ module Plurimath
            symbol: simple(:symbol)) do
         [
           sequence,
-          Utility::Asciimath::TransformHelper.asciimath_symbol_object(symbol),
+          TransformHelper.asciimath_symbol_object(symbol),
         ]
       end
 
@@ -671,8 +671,8 @@ module Plurimath
            x: simple(:x)) do
         Math::Formula.new(
           [
-            Utility::Asciimath::TransformHelper.asciimath_symbol_object(d),
-            Utility::Asciimath::TransformHelper.asciimath_symbol_object(x),
+            TransformHelper.asciimath_symbol_object(d),
+            TransformHelper.asciimath_symbol_object(x),
           ],
         )
       end
@@ -695,14 +695,14 @@ module Plurimath
       rule(sequence: simple(:sequence),
            symbol: simple(:sym),
            expr: simple(:expr)) do
-        symbol = Utility::Asciimath::TransformHelper.asciimath_symbol_object(sym)
+        symbol = TransformHelper.asciimath_symbol_object(sym)
         [sequence, symbol, expr]
       end
 
       rule(sequence: simple(:sequence),
            symbol: simple(:sym),
            expr: sequence(:expr)) do
-        symbol = Utility::Asciimath::TransformHelper.asciimath_symbol_object(sym)
+        symbol = TransformHelper.asciimath_symbol_object(sym)
         new_arr = [sequence, symbol]
         new_arr += expr.flatten.compact unless expr.to_s.strip.empty?
         new_arr
@@ -817,7 +817,7 @@ module Plurimath
 
       rule(unary_class: simple(:function),
            symbol: simple(:symbol)) do
-        symbol_object = Utility::Asciimath::TransformHelper.asciimath_symbol_object(symbol)
+        symbol_object = TransformHelper.asciimath_symbol_object(symbol)
         Utility.get_class(function).new(symbol_object)
       end
 
@@ -881,7 +881,7 @@ module Plurimath
            comma: simple(:comma)) do
         [
           Math::Number.new(number),
-          Utility::Asciimath::TransformHelper.asciimath_symbol_object(comma),
+          TransformHelper.asciimath_symbol_object(comma),
         ]
       end
 
@@ -956,9 +956,9 @@ module Plurimath
                         [expr]
                       end
         Math::Function::Fenced.new(
-          Utility::Asciimath::TransformHelper.asciimath_symbol_object(lparen),
+          TransformHelper.asciimath_symbol_object(lparen),
           form_value&.flatten&.compact,
-          Utility::Asciimath::TransformHelper.asciimath_symbol_object(rparen),
+          TransformHelper.asciimath_symbol_object(rparen),
         )
       end
 
@@ -966,9 +966,9 @@ module Plurimath
            expr: sequence(:expr),
            rparen: simple(:rparen)) do
         Math::Function::Fenced.new(
-          Utility::Asciimath::TransformHelper.asciimath_symbol_object(lparen),
+          TransformHelper.asciimath_symbol_object(lparen),
           expr.flatten.compact,
-          Utility::Asciimath::TransformHelper.asciimath_symbol_object(rparen),
+          TransformHelper.asciimath_symbol_object(rparen),
         )
       end
 
@@ -986,7 +986,7 @@ module Plurimath
 
       rule(color: sequence(:color),
            color_value: sequence(:color_value)) do
-        Utility::Asciimath::TransformHelper.asciimath_symbol_object(color)
+        TransformHelper.asciimath_symbol_object(color)
       end
 
       rule(color: simple(:color),
@@ -1012,7 +1012,7 @@ module Plurimath
       rule(color: simple(:color),
            color_value: simple(:color_value)) do
         first_value = if color.is_a?(Math::Function::Text)
-                        Utility::Asciimath::TransformHelper.asciimath_symbol_object(color.parameter_one)
+                        TransformHelper.asciimath_symbol_object(color.parameter_one)
                       else
                         color
                       end
@@ -1029,8 +1029,8 @@ module Plurimath
           [
             table_row,
           ],
-          Utility::Asciimath::TransformHelper.asciimath_symbol_object(table_left),
-          Utility::Asciimath::TransformHelper.asciimath_symbol_object(table_right),
+          TransformHelper.asciimath_symbol_object(table_left),
+          TransformHelper.asciimath_symbol_object(table_right),
         )
       end
 
@@ -1042,8 +1042,8 @@ module Plurimath
         new_arr << expr unless expr.to_s.strip.empty?
         Math::Function::Table.new(
           new_arr,
-          Utility::Asciimath::TransformHelper.asciimath_symbol_object(table_left),
-          Utility::Asciimath::TransformHelper.asciimath_symbol_object(table_right),
+          TransformHelper.asciimath_symbol_object(table_left),
+          TransformHelper.asciimath_symbol_object(table_right),
         )
       end
 
@@ -1054,8 +1054,8 @@ module Plurimath
            table_right: simple(:table_right)) do
         table = Math::Function::Table.new(
           [table_row, expr],
-          Utility::Asciimath::TransformHelper.asciimath_symbol_object(table_left),
-          Utility::Asciimath::TransformHelper.asciimath_symbol_object(table_right),
+          TransformHelper.asciimath_symbol_object(table_left),
+          TransformHelper.asciimath_symbol_object(table_right),
         )
         Math::Function::Norm.new(table)
       end
@@ -1066,8 +1066,8 @@ module Plurimath
            table_right: simple(:table_right)) do
         Math::Function::Table.new(
           expr.flatten.compact.insert(0, table_row),
-          Utility::Asciimath::TransformHelper.asciimath_symbol_object(table_left),
-          Utility::Asciimath::TransformHelper.asciimath_symbol_object(table_right),
+          TransformHelper.asciimath_symbol_object(table_left),
+          TransformHelper.asciimath_symbol_object(table_right),
         )
       end
 
@@ -1077,8 +1077,8 @@ module Plurimath
            right: simple(:right)) do
         Math::Function::Table.new(
           expr.flatten.compact.insert(0, table_row),
-          Utility::Asciimath::TransformHelper.asciimath_symbol_object(left),
-          Utility::Asciimath::TransformHelper.asciimath_symbol_object(right),
+          TransformHelper.asciimath_symbol_object(left),
+          TransformHelper.asciimath_symbol_object(right),
         )
       end
     end

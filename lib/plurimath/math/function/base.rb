@@ -11,6 +11,13 @@ module Plurimath
 
         attr_accessor :options
 
+        MUNDER_CLASSES = %w[
+          ubrace
+          obrace
+          right
+          max
+          min
+        ].freeze
         FUNCTION = {
           name: "subscript",
           first_value: "base",
@@ -36,7 +43,7 @@ module Plurimath
         end
 
         def to_mathml_without_math_tag(intent, options:)
-          tag_name = Utility::MUNDER_CLASSES.include?(parameter_one&.class_name) ? "under" : "sub"
+          tag_name = MUNDER_CLASSES.include?(parameter_one&.class_name) ? "under" : "sub"
           sub_tag = Utility.ox_element("m#{tag_name}")
           Utility.update_nodes(
             sub_tag,

@@ -27,6 +27,11 @@ module Plurimath
         "msub" => "munder",
         "msubsup" => "munderover",
       }.freeze
+      TEXT_CLASSES = %w[
+        symbol
+        number
+        text
+      ].freeze
 
       ALL_PARAMETERS = %i[
         parameter_one
@@ -198,7 +203,7 @@ module Plurimath
       end
 
       def filtered_values(value, lang:, options: {})
-        @values = Utility.filter_math_zone_values(value, lang: lang, options: options)
+        @values = filter_math_zone_values(value, lang: lang, options: options)
       end
 
       def dump_ox_nodes(nodes)
@@ -361,11 +366,11 @@ module Plurimath
 
       def validate_math_zone(lang:, intent: false, options: nil)
         if is_a?(Formula)
-          Utility.filter_math_zone_values(value, lang: lang, intent: intent, options: options).find do |value|
+          filter_math_zone_values(value, lang: lang, intent: intent, options: options).find do |value|
             !(value.is_a?(Function::Text) || value.is_a?(Symbols::Symbol))
           end
         else
-          !(Utility::TEXT_CLASSES.include?(class_name) || is_a?(Symbols::Symbol))
+          !(TEXT_CLASSES.include?(class_name) || is_a?(Symbols::Symbol))
         end
       end
 
@@ -512,6 +517,55 @@ module Plurimath
 
       def mo_tag(str)
         ox_element("mo") << str
+      end
+
+      def filter_math_zone_values(value, lang:, intent: false, options: nil)
+        return [] if value&.empty?
+
+        new_arr = []
+        temp_array = []
+        skip_index = nil
+        value.each_with_index do |obj, index|
+          object = obj.dup
+          next if index == skip_index
+          if TEXT_CLASSES.include?(object.class_name) || math_display_text_objects(object)
+            next temp_array << (object.is_a?(Math::Symbols::Symbol) ? symbol_to_text(object, lang: lang, intent: intent, options: options) : object.value)
+          end
+
+          new_arr << Math::Function::Text.new(temp_array.join(" ")) if temp_array.any?
+          temp_array = []
+          new_arr << object
+        end
+        new_arr << Math::Function::Text.new(temp_array.join(" ")) if temp_array.any?
+        new_arr
+      end
+
+      def symbol_to_text(symbol, lang:, intent: false, options:)
+        case lang
+        when :asciimath
+          symbol.to_asciimath(options: options)
+        when :latex
+          symbol.to_latex(options: options)
+        when :mathml
+          symbol.to_mathml_without_math_tag(intent, options: options).nodes.first
+        when :omml
+          symbol.to_omml_without_math_tag(true, options: options)
+        when :unicodemath
+          symbol.to_unicodemath(options: options)
+        end
+      end
+
+      def math_display_text_objects(object)
+        class_names = ["plus", "minus", "circ", "equal", "symbol"].freeze
+        class_names.include?(object.class_name)
+      end
+
+      def validate_left_right(fields = [])
+        fields.each do |field|
+          if field.is_a?(Math::Formula) && field.value.first.is_a?(Math::Function::Left)
+            field.left_right_wrapper = true
+          end
+        end
       end
     end
   end

@@ -9,29 +9,29 @@ module Plurimath
         def asciimath_symbol_object(value, lang: :asciimath)
           return if value.nil?
 
-          symbols = symbols_hash(lang)
+          symbols = Utility.symbols_hash(lang)
           return symbols[value&.to_s].new if symbols.key?(value&.to_s)
 
-          symbol_object(value&.to_s, lang: lang)
+          Utility.symbol_object(value&.to_s, lang: lang)
         end
 
         def td_values(objects, slicer)
-          sliced = objects.slice_when { |object, _| symbol_value(object, slicer) }
+          sliced = objects.slice_when { |object, _| Utility.symbol_value(object, slicer) }
           tds = sliced.map do |slice|
             Math::Function::Td.new(
-              slice.delete_if { |d| symbol_value(d, slicer) }.compact,
+              slice.delete_if { |d| Utility.symbol_value(d, slicer) }.compact,
             )
           end
-          tds << Math::Function::Td.new([]) if symbol_value(objects.last, slicer)
+          tds << Math::Function::Td.new([]) if Utility.symbol_value(objects.last, slicer)
           tds
         end
 
         def frac_values(object)
           case object
           when Math::Formula
-            object.value.any? { |d| symbol_value(d, ",") }
+            object.value.any? { |d| Utility.symbol_value(d, ",") }
           when Array
-            object.any? { |d| symbol_value(d, ",") }
+            object.any? { |d| Utility.symbol_value(d, ",") }
           end
         end
 

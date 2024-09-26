@@ -63,7 +63,7 @@ module Plurimath
           if unicode_symbol?
             "#{unicode_symbol}#{unicodemath_parens(parameter_two, options: options)}"
           elsif masked_class?
-            first_value = Utility.notations_to_mask(parameter_one) if parameter_one
+            first_value = notations_to_mask(parameter_one) if parameter_one
             second_value = parameter_two&.to_unicodemath(options: options) if parameter_two
             "▭(#{first_value}&#{second_value})"
           end
@@ -105,7 +105,7 @@ module Plurimath
         end
 
         def masked_class?
-          Utility::MASK_CLASSES.values.any? { |mask| parameter_one.include?(mask) }
+          UnicodeMath::TransformHelper::MASK_CLASSES.values.any? { |mask| parameter_one.include?(mask) }
         end
 
         def unicode_symbol
@@ -116,6 +116,12 @@ module Plurimath
 
         def unicode_symbol?
           Utility::UNICODEMATH_MENCLOSE_FUNCTIONS.value?(parameter_one)
+        end
+
+        def notations_to_mask(notations)
+          mask = []
+          notations.split(" ").each { |notation| mask << UnicodeMath::TransformHelper::MASK_CLASSES.key(notation) }
+          mask.inject(*:+)^15
         end
       end
     end
