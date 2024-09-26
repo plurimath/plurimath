@@ -1,8 +1,23 @@
 # frozen_string_literal: true
 
+require_relative '../utility/shared'
+
 module Plurimath
   class UnicodeMath
     class TransformHelper
+      UNICODE_REGEX = %r{&#x[a-zA-Z0-9]+;}
+      MASK_CLASSES = {
+        1 => 'top',
+        2 => 'bottom',
+        4 => 'left',
+        8 => 'right',
+        16 => 'horizontalstrike',
+        32 => 'verticalstrike',
+        64 => 'downdiagonalstrike',
+        128 => 'updiagonalstrike'
+      }.freeze
+      extend Utility::Shared
+
       class << self
         def unicode_accents(accents, lang: :unicodemath)
           if accents.is_a?(Math::Function::BinaryFunction)
@@ -55,9 +70,13 @@ module Plurimath
 
         def accent_value(accent, function: false, lang:)
           if accent[:accent_symbols]
-            symbols_class(UnicodeMath::Constants::ACCENT_SYMBOLS[accent[:accent_symbols].to_sym] || accent[:accent_symbols], lang: lang)
+            Utility.symbols_class(
+              Constants::ACCENT_SYMBOLS[accent[:accent_symbols].to_sym] ||
+                accent[:accent_symbols],
+              lang: lang,
+            )
           else
-            accent[:first_value] || filter_values(accent[:prime_accent_symbols])
+            accent[:first_value] || Utility.filter_values(accent[:prime_accent_symbols])
           end
         end
 
@@ -71,9 +90,9 @@ module Plurimath
         end
 
         def updated_primes(prime)
-          filter_values(
+          Utility.filter_values(
             prime.to_s.scan(UNICODE_REGEX).map do |str|
-              symbols_class(str, lang: :unicodemath)
+              Utility.symbols_class(str, lang: :unicodemath)
             end
           )
         end
@@ -180,7 +199,7 @@ module Plurimath
 
         def symbol_prime?(obj)
           obj&.class&.const_defined?(:INPUT) &&
-            primes_constants&.key(hexcode_in_input(obj))
+            primes_constants&.key(Utility.hexcode_in_input(obj))
         end
 
         def primes_constants
@@ -188,6 +207,62 @@ module Plurimath
           primes
             .merge!(Constants::PREFIXED_PRIMES)
             .merge({ sprime: "&#x27;" })
+        end
+
+        def slashed_values(value)
+          decoded = HTMLEntities.new.decode(value)
+          if decoded.to_s.match?(/^\w+/)
+            Math::Function::Text.new("\\#{decoded}")
+          else
+            Math::Symbols::Symbol.new(decoded, true)
+          end
+        end
+
+        def sequence_slashed_values(values, lang:)
+          values.each_with_index do |value, index|
+            decoded = HTMLEntities.new.decode(value.value)
+            slashed = if index == 0
+                        slashed_values(value.value)
+                      else
+                        decoded.match?(/[0-9]/) ? Math::Number.new(decoded) : Utility.symbols_class(decoded, lang: lang)
+                      end
+            values[index] = slashed
+          end
+          values
+        end
+
+        def enclosure_attrs(mask)
+          raise "enclosure mask is not between 0 and 255" if (mask.nil? || mask < 0 || mask > 255)
+
+          ret = ""
+          unless mask.nil?
+            mask ^= 15
+            bin_mask = mask.to_s(2).reverse
+            classes = bin_mask.chars.each_with_index.map { |bit, i| MASK_CLASSES[2**i] if bit == '1' }.compact
+            ret = classes.join(' ')
+          end
+          ret
+        end
+
+        def identity_matrix(size)
+          matrix = Array.new(size) { Array.new(size, 0) }
+          size.times { |i| matrix[i][i] = 1 }
+          matrix.map do |tr|
+            tr.each_with_index do |td, i|
+              tr[i] = Math::Function::Td.new([Math::Number.new(td.to_s)])
+            end
+            Math::Function::Tr.new(tr)
+          end
+        end
+
+        def base_is_sub_or_sup?(base)
+          if base.is_a?(Math::Formula)
+            base_is_sub_or_sup?(base.value.first)
+          elsif base.is_a?(Math::Function::Fenced)
+            base_is_sub_or_sup?(base.parameter_two.first)
+          elsif base.is_a?(Math::Symbols::Symbol) || base.is_a?(Math::Number)
+            base.mini_sub_sized || base_mini_sup_sized
+          end
         end
       end
     end

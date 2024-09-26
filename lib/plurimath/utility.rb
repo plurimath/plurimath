@@ -4,7 +4,6 @@ require_relative "utility/intent_encoding"
 require_relative "utility/shared"
 module Plurimath
   class Utility
-    UNICODE_REGEX = %r{&#x[a-zA-Z0-9]+;}
     FONT_STYLES = {
       "double-struck": Math::Function::FontStyle::DoubleStruck,
       "sans-serif-bold-italic": Math::Function::FontStyle::SansSerifBoldItalic,
@@ -92,13 +91,6 @@ module Plurimath
       ln
       lg
     ].freeze
-    MUNDER_CLASSES = %w[
-      ubrace
-      obrace
-      right
-      max
-      min
-    ].freeze
     PARENTHESIS = {
       "&#x2329;": "&#x232a;",
       "&#x230a;": "&#x230b;",
@@ -111,28 +103,6 @@ module Plurimath
       "{": "}",
       "[": "]",
     }.freeze
-    TEXT_CLASSES = %w[
-      symbol
-      number
-      text
-    ].freeze
-    TABLE_SUPPORTED_ATTRS = %i[
-      columnlines
-      rowlines
-      frame
-    ].freeze
-    MPADDED_ATTRS = %i[
-      height
-      depth
-      width
-    ].freeze
-    MGLYPH_ATTRS = %i[
-      height
-      width
-      index
-      alt
-      src
-    ].freeze
     UNICODEMATH_MENCLOSE_FUNCTIONS = {
       underline: "bottom",
       underbar: "bottom",
@@ -144,16 +114,6 @@ module Plurimath
       cancel: "downdiagonalstrike",
       rrect: "roundedbox",
       rect: "box",
-    }.freeze
-    MASK_CLASSES = {
-      1 => 'top',
-      2 => 'bottom',
-      4 => 'left',
-      8 => 'right',
-      16 => 'horizontalstrike',
-      32 => 'verticalstrike',
-      64 => 'downdiagonalstrike',
-      128 => 'updiagonalstrike'
     }.freeze
 
     extend Shared
@@ -186,7 +146,7 @@ module Plurimath
       end
 
       def symbols_hash(lang)
-        initialize_class_variable(:"@@symbols")
+        @@symbols ||= {}
         return @@symbols[lang] if @@symbols[lang]&.any?
 
         lang_symbols = {}
@@ -199,7 +159,7 @@ module Plurimath
       end
 
       def parens_hash(lang, skipables: nil)
-        initialize_class_variable(:"@@parens")
+        @@parens ||= {}
         return @@parens[lang] if @@parens[lang]&.any?
 
         lang_parens = {}
@@ -211,16 +171,6 @@ module Plurimath
           end
         end
         @@parens[lang] = lang_parens.sort_by { |v, _| -v.length }.to_h
-      end
-
-      def initialize_class_variable(var_name, var_value = {})
-        return if class_variable_defined?(var_name)
-
-        class_variable_set(var_name, var_value)
-      end
-
-      def all_symbols_classes(lang)
-        symbols_hash(lang).merge(parens_hash(lang))
       end
 
       def ox_element(node, attributes: [], namespace: "")
@@ -269,28 +219,7 @@ module Plurimath
         array.first
       end
 
-      def text_classes(text, lang:)
-        return nil unless text
-
-        text = filter_values(text) unless text.is_a?(String)
-        return text if text.is_a?(Math::Core)
-
-        if text&.scan(/[[:digit:]]/)&.length == text&.length
-          Math::Number.new(text)
-        elsif text&.match?(/[a-zA-Z]/)
-          Math::Function::Text.new(text)
-        else
-          text = string_to_html_entity(text)
-                  .gsub("&#x26;", "&")
-                  .gsub("&#x3c;", "<")
-                  .gsub("&#x27;", "'")
-                  .gsub("&#xa0;", " ")
-                  .gsub("&#x3e;", ">")
-                  .gsub("&#xa;", "\n")
-          symbols_class(text, lang: lang)
-        end
-      end
-
+      # TODO: move to new OMML helper classes
       def nary_fonts(nary, lang:)
         narypr  = nary.first.flatten.compact
         subsup  = narypr.any?("undOvr") ? "undOvr" : "subSup"
@@ -304,6 +233,7 @@ module Plurimath
         )
       end
 
+      # TODO: move to new OMML helper classes
       def find_pos_chr(fonts_array, key)
         fonts_array.find { |d| d.is_a?(Hash) && d[key] }
       end
@@ -324,11 +254,16 @@ module Plurimath
           Math::Symbols::Symbol.new(string)
       end
 
+      def all_symbols_classes(lang)
+        symbols_hash(lang).merge(parens_hash(lang))
+      end
+
       def html_entity_to_unicode(string)
         entities = HTMLEntities.new
         entities.decode(string)
       end
 
+      # TODO: move to new OMML helper classes
       def symbol_object(value, lang: nil)
         value = case value
                 when "ℒ" then "{:"
@@ -340,128 +275,15 @@ module Plurimath
         symbols_class(value, lang: lang)
       end
 
-      # TODO: move to new Function classes
-      def validate_left_right(fields = [])
-        fields.each do |field|
-          if field.is_a?(Math::Formula) && field.value.first.is_a?(Math::Function::Left)
-            field.left_right_wrapper = true
-          end
-        end
-      end
-
       # TODO: move to new OMML helper classes
       def valid_class(object)
         text = object.extract_class_name_from_text
         (object.extractable? && Plurimath::Asciimath::Constants::SUB_SUP_CLASSES.include?(text)) ||
           Plurimath::Latex::Constants::SYMBOLS[text.to_sym] == :power_base
       end
-      # Core file function
-      def filter_math_zone_values(value, lang:, intent: false, options: nil)
-        return [] if value&.empty?
-
-        new_arr = []
-        temp_array = []
-        skip_index = nil
-        value.each_with_index do |obj, index|
-          object = obj.dup
-          next if index == skip_index
-          if TEXT_CLASSES.include?(object.class_name) || math_display_text_objects(object)
-            next temp_array << (object.is_a?(Math::Symbols::Symbol) ? symbol_to_text(object, lang: lang, intent: intent, options: options) : object.value)
-          end
-
-          new_arr << Math::Function::Text.new(temp_array.join(" ")) if temp_array.any?
-          temp_array = []
-          new_arr << object
-        end
-        new_arr << Math::Function::Text.new(temp_array.join(" ")) if temp_array.any?
-        new_arr
-      end
-
-      # Core file function
-      def symbol_to_text(symbol, lang:, intent: false, options:)
-        case lang
-        when :asciimath
-          symbol.to_asciimath(options: options)
-        when :latex
-          symbol.to_latex(options: options)
-        when :mathml
-          symbol.to_mathml_without_math_tag(intent, options: options).nodes.first
-        when :omml
-          symbol.to_omml_without_math_tag(true, options: options)
-        when :unicodemath
-          symbol.to_unicodemath(options: options)
-        end
-      end
 
       def hexcode_in_input(field)
         field.input(:unicodemath)&.flatten&.find { |input| input.match?(/&#x.+;/) }
-      end
-
-      def base_is_sub_or_sup?(base)
-        if base.is_a?(Math::Formula)
-          base_is_sub_or_sup?(base.value.first)
-        elsif base.is_a?(Math::Function::Fenced)
-          base_is_sub_or_sup?(base.parameter_two.first)
-        elsif base.is_a?(Math::Symbols::Symbol) || base.is_a?(Math::Number)
-          base.mini_sub_sized || base_mini_sup_sized
-        end
-      end
-
-      def identity_matrix(size)
-        matrix = Array.new(size) { Array.new(size, 0) }
-        size.times { |i| matrix[i][i] = 1 }
-        matrix.map do |tr|
-          tr.each_with_index do |td, i|
-            tr[i] = Math::Function::Td.new([Math::Number.new(td.to_s)])
-          end
-          Math::Function::Tr.new(tr)
-        end
-      end
-
-      def enclosure_attrs(mask)
-        raise "enclosure mask is not between 0 and 255" if (mask.nil? || mask < 0 || mask > 255)
-
-        ret = ""
-        unless mask.nil?
-          mask ^= 15
-          bin_mask = mask.to_s(2).reverse
-          classes = bin_mask.chars.each_with_index.map { |bit, i| MASK_CLASSES[2**i] if bit == '1' }.compact
-          ret = classes.join(' ')
-        end
-        ret
-      end
-
-      def notations_to_mask(notations)
-        mask = []
-        notations.split(" ").each { |notation| mask << MASK_CLASSES.key(notation) }
-        mask.inject(*:+)^15
-      end
-
-      def slashed_values(value)
-        decoded = HTMLEntities.new.decode(value)
-        if decoded.to_s.match?(/^\w+/)
-          Math::Function::Text.new("\\#{decoded}")
-        else
-          Math::Symbols::Symbol.new(decoded, true)
-        end
-      end
-
-      def sequence_slashed_values(values, lang:)
-        values.each_with_index do |value, index|
-          decoded = HTMLEntities.new.decode(value.value)
-          slashed = if index == 0
-                      slashed_values(value.value)
-                    else
-                      decoded.match?(/[0-9]/) ? Math::Number.new(decoded) : symbols_class(decoded, lang: lang)
-                    end
-          values[index] = slashed
-        end
-        values
-      end
-
-      def math_display_text_objects(object)
-        class_names = ["plus", "minus", "circ", "equal", "symbol"].freeze
-        class_names.include?(object.class_name)
       end
 
       def latex_table_curly_paren(string)

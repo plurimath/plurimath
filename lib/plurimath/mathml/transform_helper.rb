@@ -1,11 +1,29 @@
 # frozen_string_literal: true
 
-require_relative "../../utility/shared"
+require_relative "../utility/shared"
 
 module Plurimath
   class Mathml
     class TransformHelper
       extend Utility::Shared
+
+      TABLE_SUPPORTED_ATTRS = %i[
+        columnlines
+        rowlines
+        frame
+      ].freeze
+      MPADDED_ATTRS = %i[
+        height
+        depth
+        width
+      ].freeze
+      MGLYPH_ATTRS = %i[
+        height
+        width
+        index
+        alt
+        src
+      ].freeze
 
       class << self
         def join_attr_value(attrs, value, unicode_only: false, lang: :mathml)
