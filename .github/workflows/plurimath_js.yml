@@ -1,0 +1,10 @@
+name: Plurimath JS workflow
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+
+jobs:
+  plurimath-js-workflow:
+    uses: plurimath/plurimath-js/.github/workflows/update-submodules.yml@features/ci_automation_plurimath
