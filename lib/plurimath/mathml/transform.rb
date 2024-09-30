@@ -245,6 +245,8 @@ module Plurimath
         elsif Constants::CLASSES.any?(mover&.last&.class_name)
           mover.last.parameter_one = mover.shift if mover.length > 1
           mover.last
+        elsif mover&.last&.class_name == "period" && mover.length == 2
+          Math::Function::Dot.new(mover[0])
         else
           Math::Function::Overset.new(mover[1], mover[0])
         end
