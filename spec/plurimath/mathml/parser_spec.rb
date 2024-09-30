@@ -1747,7 +1747,7 @@ RSpec.describe Plurimath::Mathml::Parser do
       expect(formula).to eq(expected_value)
     end
   end
-  
+
   context "contains mathml equation with intent attribute as input" do
     let(:exp) {
       <<~MATHML
@@ -1770,6 +1770,41 @@ RSpec.describe Plurimath::Mathml::Parser do
           ]),
           Plurimath::Math::Function::Text.new("plus(x, y)"),
         )
+      ])
+      expect(formula).to eq(expected_value)
+    end
+  end
+
+  context "contains mathml equation dot and ddot with theta as their value" do
+    let(:exp) {
+      <<~MATHML
+        <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+          <mstyle displaystyle="true">
+            <mover>
+              <mi>&#x3b8;</mi>
+              <mo>.</mo>
+            </mover>
+            <mo>&#x2260;</mo>
+            <mover accent="true">
+              <mi>&#x3b8;</mi>
+              <mo>..</mo>
+            </mover>
+          </mstyle>
+        </math>
+      MATHML
+    }
+    it "returns formula containing dot and ddot with theta as their value" do
+      expected_value = Plurimath::Math::Formula.new([
+        Plurimath::Math::Formula.new([
+          Plurimath::Math::Function::Dot.new(
+            Plurimath::Math::Symbols::Theta.new,
+          ),
+          Plurimath::Math::Symbols::Ne.new,
+          Plurimath::Math::Function::Ddot.new(
+            Plurimath::Math::Symbols::Theta.new,
+            { attributes: { accent: true } }
+          )
+        ])
       ])
       expect(formula).to eq(expected_value)
     end
