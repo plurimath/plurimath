@@ -73,9 +73,9 @@ module Plurimath
           second_value = unicodemath_parens(parameter_two, options: options) if parameter_two
           return "#{first_value}/#{second_value}" unless self.options
 
-          return "#{first_value}¦#{second_value}" if self.options && self.options.key?(:linethickness)
-          return "#{parameter_one.to_unicodemath(options: options)}⊘#{parameter_two.to_unicodemath(options: options)}" if self.options && self.options.key?(:displaystyle)
-          "#{first_value}∕#{second_value}" if self.options && self.options.key?(:ldiv)
+          return "#{first_value}¦#{second_value}" if self.options.key?(:linethickness)
+          return "#{parameter_one.to_unicodemath(options: options)}⊘#{parameter_two.to_unicodemath(options: options)}" if self.options.key?(:displaystyle)
+          "#{first_value}∕#{second_value}" if self.options.key?(:ldiv)
         end
 
         def line_breaking(obj)
@@ -121,11 +121,9 @@ module Plurimath
         end
 
         def attr_value
-          if options[:linethickness] == "0"
-            "noBar"
-          else
-            options[:bevelled] == 'true' ? 'skw' : "bar"
-          end
+          return "noBar" if options[:linethickness] == "0"
+
+          options[:bevelled] == 'true' ? 'skw' : "bar"
         end
 
         def unicodemath_fraction
