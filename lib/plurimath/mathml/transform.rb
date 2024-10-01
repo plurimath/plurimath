@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative "transform_helper"
+
 module Plurimath
   class Mathml
     class Transform < Parslet::Transform
@@ -205,13 +207,13 @@ module Plurimath
           else
             Math::Formula.new(
               flatten_mrow,
-              Utility.mrow_left_right(flatten_mrow),
+              TransformHelper.mrow_left_right(flatten_mrow),
             )
           end
         else
           Math::Formula.new(
             flatten_mrow,
-            Utility.mrow_left_right(flatten_mrow),
+            TransformHelper.mrow_left_right(flatten_mrow),
           )
         end
       end
@@ -366,7 +368,7 @@ module Plurimath
 
       rule(attributes: simple(:attrs),
            value: subtree(:value)) do
-        Utility.join_attr_value(attrs, value&.flatten&.compact)
+        TransformHelper.join_attr_value(attrs, value&.flatten&.compact)
       end
 
       rule(attributes: subtree(:attrs),
@@ -400,7 +402,7 @@ module Plurimath
                    else
                      attrs
                    end
-        Utility.join_attr_value(
+        TransformHelper.join_attr_value(
           approved,
           value&.flatten&.compact,
           unicode_only: unicode_only,

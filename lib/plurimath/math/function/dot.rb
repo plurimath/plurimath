@@ -33,7 +33,7 @@ module Plurimath
         def to_omml_without_math_tag(display_style, options:)
           return r_element(".", rpr_tag: false) unless parameter_one
 
-          if attributes && attributes[:accent]
+          if attributes&.dig(:accent)
             acc_tag(display_style, options: options)
           else
             symbol = Symbols::Symbol.new(".")
