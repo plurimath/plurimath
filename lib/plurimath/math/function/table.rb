@@ -125,6 +125,18 @@ module Plurimath
           ]
         end
 
+        def intent_names
+          {
+            curly_braced_matrix: ":curly-braced-matrix",
+            parenthesized_matrix: ":parenthesized-matrix",
+            bracketed_matrix: ":bracketed-matrix",
+            normed_matrix: ":normed-matrix",
+            determinant: ":determinant",
+            equations: ":equations",
+            cases: ":cases",
+          }
+        end
+
         protected
 
         def mathml_parenthesis(field, intent, options:)

@@ -62,7 +62,7 @@ module Plurimath
               wrap_mrow(parameter_three&.to_mathml_without_math_tag(intent, options: options), intent),
             ].flatten.compact,
           )
-          intentify(mrow, intent, func_name: :naryand, intent_name: :integral)
+          intentify(mrow, intent, func_name: :naryand, intent_name: intent_names[:name])
         end
 
         def to_omml_without_math_tag(display_style, options:)
@@ -114,6 +114,10 @@ module Plurimath
 
         def is_nary_function?
           true
+        end
+
+        def intent_names
+          { name: ":integral" }
         end
 
         protected

@@ -41,7 +41,7 @@ module Plurimath
         end
 
         def nary_intent_name
-          "quadruple integral"
+          ":quadruple integral"
         end
       end
     end

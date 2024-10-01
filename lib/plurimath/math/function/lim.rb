@@ -42,7 +42,7 @@ module Plurimath
               parameter_two&.to_mathml_without_math_tag(intent, options: options),
             ],
           )
-          intentify(lim_tag, intent, func_name: :function, intent_name: :function)
+          intentify(lim_tag, intent, func_name: :function, intent_name: intent_names[:name])
         end
 
         def to_omml_without_math_tag(display_style, options:)
@@ -63,6 +63,10 @@ module Plurimath
             )
             self.parameter_two = nil
           end
+        end
+
+        def intent_names
+          { name: ":function" }
         end
       end
     end

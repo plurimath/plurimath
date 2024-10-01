@@ -20,12 +20,12 @@ module Plurimath
         private
 
         def encoded_intent(tag)
-          if parameter_two.value == ":derivative" && encodable?
+          if parameter_two.value == intent_names[:name] && encodable?
             field = parameter_one.value
             unicode = encode(field[0].parameter_one.value)
             unfenced_str = fence_value(tag.nodes[1].nodes[1..-2]) if tag.nodes[1]["intent"] == ":fenced"
             fenced_str = "(#{unfenced_str})" unless unfenced_str.empty?
-            ":derivative(1,#{unicode}#{fenced_str},#{unfenced_str})"
+            "#{intent_names[:name]}(1,#{unicode}#{fenced_str},#{unfenced_str})"
           else
             Utility.html_entity_to_unicode(parameter_two.value)
           end
@@ -52,6 +52,10 @@ module Plurimath
 
         def encode(str)
           Utility.html_entity_to_unicode(str)
+        end
+
+        def intent_names
+          { name: ":derivative" }
         end
       end
     end

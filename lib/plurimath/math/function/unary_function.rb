@@ -35,7 +35,7 @@ module Plurimath
             new_arr += mathml_value(intent, options: options)
             mrow = ox_element("mrow")
             Utility.update_nodes(mrow, new_arr)
-            intentify(mrow, intent, func_name: :function, intent_name: :function)
+            intentify(mrow, intent, func_name: :function, intent_name: intent_names[:name])
           else
             new_arr.first
           end
@@ -151,6 +151,10 @@ module Plurimath
 
         def value_nil?
           !parameter_one
+        end
+
+        def intent_names
+          { name: ":function" }
         end
 
         protected

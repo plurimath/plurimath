@@ -119,6 +119,10 @@ module Plurimath
           true
         end
 
+        def intent_names
+          { name: ":contour integral"}
+        end
+
         private
 
         def ternary_intentify(tag, intent)
@@ -126,7 +130,7 @@ module Plurimath
             tag,
             intent,
             func_name: :naryand,
-            intent_name: "contour integral",
+            intent_name: intent_names[:name],
           )
         end
       end

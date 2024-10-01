@@ -19,21 +19,21 @@ module Plurimath
         # Intent common code end
 
         # Naryand intent begin
-        def naryand_intent(field, intent_name)
-          return nary_intent(field, intent_name) if field.name == "mrow"
+        def naryand_intent(field, intent_name, options)
+          return nary_intent(field, intent_name, options) if field.name == "mrow"
 
           base, power = power_base_intent(field)
           base, power = power_or_base_intent(field) unless base && power
-          field["intent"] = ":#{intent_name}(#{base},#{power})"
+          field["intent"] = "#{intent_name}(#{base},#{power})"
           field
         end
 
-        def nary_intent(field, intent_name)
+        def nary_intent(field, intent_name, _)
           sub_sup = field.nodes[0]
           base, power = power_base_intent(sub_sup)
           base, power = power_or_base_intent(sub_sup) unless base || power
           naryand = node_value(field.nodes[1], "naryand")
-          field["intent"] = ":#{intent_name}(#{base},#{power},#{naryand})"
+          field["intent"] = "#{intent_name}(#{base},#{power},#{naryand})"
           field
         end
         # Naryand intent end
@@ -57,14 +57,14 @@ module Plurimath
         # SubSup intent end
 
         # Function intent begin
-        def function_intent(tag, intent_name = "function")
-          tag.attributes["intent"] = ":#{intent_name}"
+        def function_intent(tag, intent_name = ":function", _)
+          tag.attributes["intent"] = intent_name
           tag
         end
         # Function intent end
 
         # Binomial fraction intent begin
-        def binomial_fraction_intent(tag, intent_name)
+        def binomial_fraction_intent(tag, intent_name, _)
           numerator = node_value(tag.nodes[1].nodes[0], "t")
           denominator = node_value(tag.nodes[1].nodes[1], "b")
           tag["intent"] = "#{intent_name}(#{numerator},#{denominator})"
@@ -73,30 +73,31 @@ module Plurimath
         # Binomial fraction intent end
 
         # Interval fence intent begin
-        def interval_fence_intent(tag, intent_name)
-          return function_intent(tag, intent_name) if intent_name == "fenced"
-          return binomial_fraction_intent(tag, intent_name) if intent_name == "binomial-coefficient"
+        def interval_fence_intent(tag, intent_name, options)
+          intent = options[intent_name]
+          return function_intent(tag, intent, options) if intent_name == :fenced
+          return binomial_fraction_intent(tag, intent, options) if intent_name == :binomial_coefficient
 
           first_value = fence_node_value(tag.nodes[1], "a")
           second_value = fence_node_value(tag.nodes[3], "b")
-          tag["intent"] = "#{intent_name}(#{first_value},#{second_value})"
+          tag["intent"] = "#{intent}(#{first_value},#{second_value})"
           tag
         end
         # Interval fence intent end
 
         # Frac derivative intent begin
-        def frac_intent(tag, intent_name)
+        def frac_intent(tag, _, options)
           num = tag.nodes[0]
           den = tag.nodes[1]
-          return partial_derivative(tag) if partial_derivative?(num, den)
-          return derivative(tag) if derivative?(num, den)
+          return partial_derivative(tag, options[:partial_derivative]) if partial_derivative?(num, den)
+          return derivative(tag, options[:derivative]) if derivative?(num, den)
 
           tag
         end
         # Frac derivative intent end
 
         # Abs intent begin
-        def abs_intent(tag, intent_name)
+        def abs_intent(tag, intent_name, _options)
           tag["intent"] = "#{intent_name}(#{node_value(tag.nodes[1], 'a')})"
           tag
         end
@@ -156,9 +157,9 @@ module Plurimath
           found_node&.nodes[1]
         end
 
-        def partial_derivative(node)
+        def partial_derivative(node, intent_name)
           intent = "(#{partial_arg(node)},#{f_arg(node&.nodes[0])},#{den_arg(node&.nodes[1])})"
-          node["intent"] = ":partial-derivative#{intent}"
+          node["intent"] = intent_name + intent
           node
         end
 
@@ -255,11 +256,10 @@ module Plurimath
             node.nodes.length >= 2
         end
 
-        def derivative(node)
+        def derivative(node, intent_name)
           num = node.nodes[0]
           den = node.nodes[1]
-          intent_name = ":derivative(1,#{num_arg(num)},#{derivative_den_arg(den)})"
-          node["intent"] = intent_name
+          node["intent"] = "#{intent_name}(1,#{num_arg(num)},#{derivative_den_arg(den)})"
           node
         end
 

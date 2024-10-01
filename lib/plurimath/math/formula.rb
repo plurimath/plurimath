@@ -297,6 +297,13 @@ module Plurimath
         true if value&.first&.mini_sized?
       end
 
+      def intent_names
+        {
+          partial_derivative: ":partial-derivative",
+          derivative: ":derivative",
+        }
+      end
+
       protected
 
       def boolean_display_style(display_style = displaystyle)
@@ -489,7 +496,7 @@ module Plurimath
           prime_str = encode(nodes.last.nodes.first) if valid_prime?(nodes.last)
           second_arg.insert(-1, prime_str) unless second_arg.match?(/[0-9]$/)
         end
-        ":partial-derivative(#{first_arg},$f,#{second_arg})"
+        "#{intent_names[:partial_derivative]}(#{first_arg},$f,#{second_arg})"
       end
 
       def f_arg(tag_nodes, index)
@@ -561,7 +568,7 @@ module Plurimath
           end
           break
         end
-        intent_name = ":derivative(1,#{second_arg},#{third_arg})"
+        intent_name = "#{intent_names[:derivative]}(1,#{second_arg},#{third_arg})"
         mrow = ox_element("mrow", attributes: { intent: intent_name })
         nodes.insert(0, Utility.update_nodes(mrow, mrow_nodes))
       end
@@ -576,7 +583,7 @@ module Plurimath
 
           if DERIVATIVE_CONSTS.include?(node.nodes[0]&.nodes&.first)
             iteration += 1
-            node["intent"] = ":derivative#{derivative_intent_name(node.nodes[1], nodes[iteration..-1], type: node.name)}"
+            node["intent"] = "#{intent_names[:derivative]}#{derivative_intent_name(node.nodes[1], nodes[iteration..-1], type: node.name)}"
             next_node = nodes[iteration]
             case next_node.name
             when "mi", "mrow"

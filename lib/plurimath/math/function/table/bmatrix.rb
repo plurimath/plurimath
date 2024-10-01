@@ -54,7 +54,7 @@ module Plurimath
             return {} unless intent
 
             {
-              intent: capital_bmatrix? ? ":curly-braced-matrix" : ":bracketed-matrix"
+              intent: intent_names.dig(capital_bmatrix? ? :curly_braced_matrix : :bracketed_matrix)
             }
           end
         end

@@ -36,6 +36,10 @@ module Plurimath
           "&#x222d;"
         end
 
+        def nary_intent_name
+          "triple integral"
+        end
+
         def is_nary_symbol?
           true
         end
