@@ -35,10 +35,6 @@ module Plurimath
         def to_html(**)
           "&#x2229;"
         end
-
-        def is_nary_symbol?
-          true
-        end
       end
     end
   end

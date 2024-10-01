@@ -36,6 +36,10 @@ module Plurimath
           "&#x22c3;"
         end
 
+        def nary_intent_name
+          ":n-ary"
+        end
+
         def is_nary_symbol?
           true
         end

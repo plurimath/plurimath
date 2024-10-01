@@ -36,6 +36,10 @@ module Plurimath
         def to_html(**)
           "&#x22ba;"
         end
+
+        def intent_names
+          { name: "transpose" }
+        end
       end
     end
   end

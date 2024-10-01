@@ -41,7 +41,7 @@ module Plurimath
           frac_tag.set_attr(self.options.reject { |opt| opt == :choose }) if tag_name == "mfrac" && self.options
           Utility.update_nodes(frac_tag, mathml_value)
           update_derivative(frac_tag, mathml_value[0], mathml_value[1]) if intent
-          intentify(frac_tag, intent, func_name: :frac)
+          intentify(frac_tag, intent, func_name: :frac, options: intent_names)
         end
 
         def to_latex(options:)
@@ -96,6 +96,13 @@ module Plurimath
           first_value = unicodemath_parens(parameter_one, options: options) if parameter_one
           second_value = unicodemath_parens(parameter_two, options: options) if parameter_two
           "#{first_value}⒞#{second_value}"
+        end
+
+        def intent_names
+          {
+            derivative: ":derivative",
+            partial_derivative: ":partial-derivative",
+          }
         end
 
         protected

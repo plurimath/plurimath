@@ -116,6 +116,10 @@ module Plurimath
           true
         end
 
+        def intent_names
+          { name: ":product" }
+        end
+
         private
 
         def sup_value(options:)
@@ -152,7 +156,7 @@ module Plurimath
             tag,
             intent,
             func_name: :naryand,
-            intent_name: :product,
+            intent_name: intent_names[:name],
           )
         end
       end

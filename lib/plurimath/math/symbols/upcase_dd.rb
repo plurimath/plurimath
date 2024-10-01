@@ -37,6 +37,10 @@ module Plurimath
           "&#x2145;"
         end
 
+        def intent_names
+          { name: encoded }
+        end
+
         private
 
         def encoded

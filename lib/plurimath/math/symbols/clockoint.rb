@@ -41,7 +41,7 @@ module Plurimath
         end
 
         def nary_intent_name
-          "n-ary"
+          ":n-ary"
         end
 
         def tag_name

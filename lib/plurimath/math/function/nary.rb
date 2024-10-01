@@ -124,6 +124,17 @@ module Plurimath
           end
         end
 
+        def intent_names
+          @@names ||= Symbols::Symbol.descendants.map.with_object({}) do |symbol, hash|
+            sym_instance = symbol.new
+            next unless sym_instance.is_nary_symbol?
+
+            intent_name = sym_instance.nary_intent_name
+            next pp symbol.const_source_location(:INPUT) if intent_name.nil?
+            hash[intent_name.gsub(/\s|-/, '_').to_sym] = intent_name
+          end
+        end
+
         protected
 
         def chr_value(narypr, options:)
@@ -197,8 +208,9 @@ module Plurimath
           end
         end
 
+        # Function calling intent name for a specific symbol
         def intent_name
-          return "n-ary" unless parameter_one&.is_nary_symbol?
+          return ":n-ary" unless parameter_one&.is_nary_symbol?
 
           parameter_one.nary_intent_name
         end

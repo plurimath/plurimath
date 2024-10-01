@@ -41,7 +41,7 @@ module Plurimath
         end
 
         def nary_intent_name
-          "volume integral"
+          ":volume integral"
         end
 
         def tag_name

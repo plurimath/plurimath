@@ -14,7 +14,7 @@ module Plurimath
           first_value = first_value&.insert(0, symbol) unless open_paren
           first_value << symbol unless close_paren
           mrow = Utility.update_nodes(ox_element("mrow"), first_value)
-          intentify(mrow, intent, func_name: :abs, intent_name: :"absolute-value")
+          intentify(mrow, intent, func_name: :abs, intent_name: intent_names[:name])
         end
 
         def to_omml_without_math_tag(display_style, options:)
@@ -37,6 +37,10 @@ module Plurimath
 
         def to_unicodemath(options:)
           "⒜#{unicodemath_parens(parameter_one, options: options)}"
+        end
+
+        def intent_names
+          { name: "absolute-value" }
         end
 
         protected

@@ -40,7 +40,7 @@ module Plurimath
           end
 
           def intent_attr_value(intent)
-            capital_vmatrix? ? ":normed-matrix" : ":determinant"
+            intent_names.dig(capital_vmatrix? ? :normed_matrix : :determinant)
           end
         end
       end

@@ -22,7 +22,7 @@ module Plurimath
           def to_mathml_without_math_tag(intent, **)
             matrix = super
             set_table_intent(matrix) if intent
-            matrix["intent"] = ":equations" if intent
+            matrix["intent"] = intent_names[:equations] if intent
             matrix
           end
 
@@ -32,7 +32,7 @@ module Plurimath
             matrix = tag.nodes.find { |tag| tag.name == "mtable" }
             return unless matrix
 
-            matrix["intent"] = ":cases"
+            matrix["intent"] = intent_names[:cases]
           end
         end
       end

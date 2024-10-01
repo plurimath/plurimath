@@ -122,6 +122,10 @@ module Plurimath
           true
         end
 
+        def intent_names
+          { name: ":sum"}
+        end
+
         private
 
         def sum_tag
@@ -138,7 +142,7 @@ module Plurimath
             tag,
             intent,
             func_name: :naryand,
-            intent_name: :sum,
+            intent_name: intent_names[:name],
           )
         end
       end

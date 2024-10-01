@@ -39,6 +39,7 @@ module Plurimath
             intent,
             func_name: :interval_fence,
             intent_name: intent_value(mrow_value, options: options),
+            options: intent_names,
           )
         end
 
@@ -253,11 +254,11 @@ module Plurimath
         end
 
         def intent_value(value, options:)
-          return "binomial-coefficient" if binomial_coefficient?(value)
+          return :binomial_coefficient if binomial_coefficient?(value)
 
           open_paren = symbol_or_paren(parameter_one, lang: :latex, options: options)
           close_paren = symbol_or_paren(parameter_three, lang: :latex, options: options)
-          return "fenced" unless interval_intent?(value, open_paren, close_paren)
+          return :fenced unless interval_intent?(value, open_paren, close_paren)
 
           interval_intent(value, open_paren, close_paren)
         end
@@ -270,16 +271,27 @@ module Plurimath
         def interval_intent(value, open_paren, close_paren)
           case open_paren
           when "("
-            'open-closed-interval' if close_paren == ']'
+            :open_closed_interval if close_paren == ']'
           when "["
-            return 'closed-interval' if close_paren == ']'
+            return :closed_interval if close_paren == ']'
 
-            'closed-open-interval' if (close_paren == '[' || close_paren == ')')
+            :closed_open_interval if (close_paren == '[' || close_paren == ')')
           when "]"
-            return 'open-closed-interval' if close_paren == ']'
+            return :open_closed_interval if close_paren == ']'
 
-            'open-interval' if close_paren == '['
+            :open_interval if close_paren == '['
           end
+        end
+
+        def intent_names
+          {
+            open_closed_interval: "open-closed-interval",
+            closed_open_interval: "closed-open-interval",
+            binomial_coefficient: "binomial-coefficient",
+            closed_interval: "closed-interval",
+            open_interval: "open-interval",
+            fenced: ":fenced",
+          }
         end
 
         def interval_intent?(value, open_paren, close_paren)
