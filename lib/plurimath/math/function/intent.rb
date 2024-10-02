@@ -17,6 +17,10 @@ module Plurimath
           "ⓘ#{first_value}"
         end
 
+        def intent_names
+          { name: ":derivative" }
+        end
+
         private
 
         def encoded_intent(tag)
@@ -52,10 +56,6 @@ module Plurimath
 
         def encode(str)
           Utility.html_entity_to_unicode(str)
-        end
-
-        def intent_names
-          { name: ":derivative" }
         end
       end
     end

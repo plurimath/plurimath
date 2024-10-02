@@ -18,6 +18,7 @@ end
 DOC_FILES = {
   "supported_parens_list.adoc" => :paren,
   "supported_symbols_list.adoc" => :symbols,
+  "Intent-Supported-Classes.adoc" => :intent,
 }.freeze
 
 DOC_FILES.each do |file_name, type|
@@ -28,17 +29,26 @@ end
 
 def write_doc_file(doc_file, type:)
   File.open(doc_file, "a") do |file|
-    file.write(file_header)
-
-    Plurimath::Utility.send(:"#{type}_files").each do |klass|
-      next if klass::INPUT.empty?
-      
-      file_name = File.basename(klass.const_source_location(:INPUT).first, ".rb")
-      file.write(documentation_content(file_name, klass))
+    case type
+    when :intent
+      write_intent_doc_file(file)
+    else
+      paren_symbols_doc(file, type)
     end
-
-    file.write("|===")
   end
+end
+
+def paren_symbols_doc(file, type)
+  file.write(file_header)
+
+  Plurimath::Utility.send(:"#{type}_files").each do |klass|
+    next if klass::INPUT.empty?
+
+    file_name = File.basename(klass.const_source_location(:INPUT).first, ".rb")
+    file.write(documentation_content(file_name, klass))
+  end
+
+  file.write("|===")
 end
 
 def documentation_content(file_name, klass)
@@ -73,6 +83,43 @@ def format_input(format, klass)
       "`#{s}`"
     end
   end.join(", ").gsub(/\|/, "\\|")
+end
+
+def write_intent_doc_file(file)
+  file.write("= List of classes supporting `intent` encoding with relevant values\n")
+
+  intent_classes.each do |klass|
+    intents = klass.new.intent_names.values.map do |intent|
+      intent.match?(/\s/) ? "\"#{intent}\"" : intent
+    end
+
+    file.write(
+      <<~INTENT
+
+      * #{klass.name.gsub("Plurimath::Math::", "")}
+      ** #{intents.join("\n** ")}
+      INTENT
+    )
+  end
+
+  file.write("\nIntent for unary classes like, sin, cos, tan, etc. will be `Function`.\n")
+end
+
+def intent_classes
+  intent_classes = [
+    Plurimath::Math::Function::TernaryFunction.descendants,
+    Plurimath::Math::Function::BinaryFunction.descendants,
+    Plurimath::Math::Function::UnaryFunction.descendants,
+    Plurimath::Math::Function::Table.descendants,
+    Plurimath::Math::Symbols::Symbol.descendants,
+    Plurimath::Math::Function::UnaryFunction,
+    Plurimath::Math::Function::Table,
+    Plurimath::Math::Function::Nary,
+    Plurimath::Math::Formula,
+  ].flatten
+  intent_classes.select do |klass|
+    klass.instance_methods(false).include?(:intent_names)
+  end
 end
 
 task :default => :spec

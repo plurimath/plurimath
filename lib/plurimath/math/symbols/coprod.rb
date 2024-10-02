@@ -41,7 +41,7 @@ module Plurimath
         end
 
         def nary_intent_name
-          "coproduct"
+          ":coproduct"
         end
       end
     end
