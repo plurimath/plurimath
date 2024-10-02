@@ -146,6 +146,17 @@ module Plurimath
           "#{parameter_one.to_unicodemath(options: options)}#{fenced_value}#{parameter_three.to_unicodemath(options: options)}"
         end
 
+        def intent_names
+          {
+            open_closed_interval: "open-closed-interval",
+            closed_open_interval: "closed-open-interval",
+            binomial_coefficient: "binomial-coefficient",
+            closed_interval: "closed-interval",
+            open_interval: "open-interval",
+            fenced: ":fenced",
+          }
+        end
+
         protected
 
         def open_paren(dpr, options:)
@@ -281,17 +292,6 @@ module Plurimath
 
             :open_interval if close_paren == '['
           end
-        end
-
-        def intent_names
-          {
-            open_closed_interval: "open-closed-interval",
-            closed_open_interval: "closed-open-interval",
-            binomial_coefficient: "binomial-coefficient",
-            closed_interval: "closed-interval",
-            open_interval: "open-interval",
-            fenced: ":fenced",
-          }
         end
 
         def interval_intent?(value, open_paren, close_paren)

@@ -41,7 +41,7 @@ module Plurimath
         end
 
         def nary_intent_name
-          "double integral"
+          ":double integral"
         end
       end
     end

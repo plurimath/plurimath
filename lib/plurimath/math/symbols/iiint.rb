@@ -37,7 +37,7 @@ module Plurimath
         end
 
         def nary_intent_name
-          "triple integral"
+          ":triple integral"
         end
 
         def is_nary_symbol?

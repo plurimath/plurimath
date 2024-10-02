@@ -41,7 +41,7 @@ module Plurimath
         end
 
         def nary_intent_name
-          "contour integral"
+          ":contour integral"
         end
 
         def tag_name

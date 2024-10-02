@@ -41,7 +41,7 @@ module Plurimath
         end
 
         def nary_intent_name
-          "anticlockwise contour integral"
+          ":anticlockwise contour integral"
         end
 
         def tag_name
