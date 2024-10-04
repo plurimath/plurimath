@@ -583,6 +583,10 @@ Consult the following tables for details on supported symbols and parentheses:
 * link:supported_symbols_list.adoc[Symbols]
 * link:supported_parens_list.adoc[Parentheses]
 
+The following table shows the classes that support MathML "intent" encoding:
+
+* link:intent_supported_classes.adoc[Classes that support MathML Intent]
+
 NOTE: To regenerate these files, delete them and run:
 `bundle exec rake supported_symbols_list.adoc`.
 
