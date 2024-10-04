@@ -20,16 +20,15 @@ module Plurimath
         int, frac, integer_format, fraction_format, signif_format = *partition_tokens(number)
         result = integer_format.apply(int, data_reader)
         result << fraction_format.apply(frac, data_reader, int) if frac
-
         result = signif_format.apply(result, integer_format, fraction_format)
-
+        result = "+#{result}" if number.positive? && data_reader[:number_sign] == :plus
         result
       end
 
       private
 
       def partition_tokens(number)
-        int, fraction = parse_number(number, data_reader)
+        int, fraction = parse_number(number)
         [
           int,
           fraction,
@@ -46,7 +45,7 @@ module Plurimath
         parts.size == 2 ? parts[1].size : 0
       end
 
-      def parse_number(number, options = {})
+      def parse_number(number, options = data_reader)
         precision = options[:precision] || precision_from(number)
 
         num = if precision == 0
