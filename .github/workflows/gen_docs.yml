@@ -27,7 +27,7 @@ jobs:
         rm -f supported_symbols_list.adoc
         bundle exec rake supported_symbols_list.adoc
 
-    - name: Generate Intent-Supported-Classes.adoc
+    - name: Generate intent_supported_classes.adoc
       run: |
-        rm -f Intent-Supported-Classes.adoc
-        bundle exec rake Intent-Supported-Classes.adoc
+        rm -f intent_supported_classes.adoc
+        bundle exec rake intent_supported_classes.adoc

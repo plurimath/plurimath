@@ -18,7 +18,7 @@ end
 DOC_FILES = {
   "supported_parens_list.adoc" => :paren,
   "supported_symbols_list.adoc" => :symbols,
-  "Intent-Supported-Classes.adoc" => :intent,
+  "intent_supported_classes.adoc" => :intent,
 }.freeze
 
 DOC_FILES.each do |file_name, type|
@@ -90,14 +90,14 @@ def write_intent_doc_file(file)
 
   intent_classes.each do |klass|
     intents = klass.new.intent_names.values.map do |intent|
-      intent.match?(/\s/) ? "\"#{intent}\"" : intent
+      "`#{intent}`"
     end
 
     file.write(
       <<~INTENT
 
-      * #{klass.name.gsub("Plurimath::Math::", "")}
-      ** #{intents.join("\n** ")}
+        * `#{klass.name.gsub("Plurimath::Math::", "")}`
+        ** #{intents.join("\n** ")}
       INTENT
     )
   end

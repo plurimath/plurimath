@@ -1,0 +1,82 @@
+= List of classes supporting `intent` encoding with relevant values
+
+* `Function::Fenced`
+** `open-closed-interval`
+** `closed-open-interval`
+** `binomial-coefficient`
+** `closed-interval`
+** `open-interval`
+** `:fenced`
+
+* `Function::Int`
+** `:integral`
+
+* `Function::Oint`
+** `:contour integral`
+
+* `Function::Prod`
+** `:product`
+
+* `Function::Sum`
+** `:sum`
+
+* `Function::Frac`
+** `:derivative`
+** `:partial-derivative`
+
+* `Function::Inf`
+** `:function`
+
+* `Function::Intent`
+** `:derivative`
+
+* `Function::Lim`
+** `:function`
+
+* `Function::Abs`
+** `absolute-value`
+
+* `Symbols::Dd`
+** `ⅆ`
+
+* `Symbols::Ii`
+** `ⅈ`
+
+* `Symbols::Intercal`
+** `transpose`
+
+* `Symbols::Jj`
+** `ⅉ`
+
+* `Symbols::UpcaseDd`
+** `ⅅ`
+
+* `Function::UnaryFunction`
+** `:function`
+
+* `Function::Table`
+** `:curly-braced-matrix`
+** `:parenthesized-matrix`
+** `:bracketed-matrix`
+** `:normed-matrix`
+** `:determinant`
+** `:equations`
+** `:cases`
+
+* `Function::Nary`
+** `:n-ary`
+** `:anticlockwise contour integral`
+** `:coproduct`
+** `:quadruple integral`
+** `:triple integral`
+** `:double integral`
+** `:clockwise contour integral`
+** `:volume integral`
+** `:surface integral`
+** `:contour integral`
+
+* `Formula`
+** `:partial-derivative`
+** `:derivative`
+
+Intent for unary classes like, sin, cos, tan, etc. will be `Function`.
