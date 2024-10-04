@@ -9,6 +9,13 @@ on:
 jobs:
   generate_docs:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        filename:
+        - supported_parens_list.adoc
+        - supported_symbols_list.adoc
+        - intent_supported_classes.adoc
+
     steps:
     - uses: actions/checkout@v4
 
@@ -17,17 +24,7 @@ jobs:
         ruby-version: '3.3'
         bundler-cache: true
 
-    - name: Generate supported_parens_list.adoc
+    - name: Generate documentation
       run: |
-        rm -f supported_parens_list.adoc
-        bundle exec rake supported_parens_list.adoc
-
-    - name: Generate supported_symbols_list.adoc
-      run: |
-        rm -f supported_symbols_list.adoc
-        bundle exec rake supported_symbols_list.adoc
-
-    - name: Generate intent_supported_classes.adoc
-      run: |
-        rm -f intent_supported_classes.adoc
-        bundle exec rake intent_supported_classes.adoc
+        rm -f ${{ matrix.filename }}
+        bundle exec rake ${{ matrix.filename }}
