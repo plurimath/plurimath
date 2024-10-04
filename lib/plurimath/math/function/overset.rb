@@ -1,12 +1,16 @@
 # frozen_string_literal: true
 
 require_relative "binary_function"
+require_relative "../../mathml/utility"
 
 module Plurimath
   module Math
     module Function
       class Overset < BinaryFunction
+        include Mathml::Utility
+
         attr_accessor :options
+
         FUNCTION = {
           name: "overset",
           first_value: "base",
@@ -75,6 +79,13 @@ module Plurimath
 
         def is_nary_function?
           parameter_two.is_nary_function? || parameter_two.is_nary_symbol?
+        end
+
+        def accent=(value)
+          return unless value
+
+          @options ||= {}
+          @options[:accent] = value
         end
 
         protected

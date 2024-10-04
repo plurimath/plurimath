@@ -1,11 +1,14 @@
 # frozen_string_literal: true
 
 require_relative "unary_function"
+require_relative "../../mathml/utility"
 
 module Plurimath
   module Math
     module Function
       class Tr < UnaryFunction
+        include Mathml::Utility
+
         def initialize(parameter_one = [])
           parameter_one.map!.with_index { |_, index| Td.new([]) } if parameter_one&.all?("@")
           super(parameter_one)
@@ -92,6 +95,16 @@ module Plurimath
           row_lines = first_value.first.parameter_one
           row_lines.shift if row_lines.first.is_a?(Math::Symbols::Hline)
           first_value
+        end
+
+        def mtd_value=(value)
+          return if value.nil? || value.empty?
+
+          self.parameter_one = replace_order_with_value(
+            clear_temp_order,
+            update_temp_mathml_values(value),
+            "mtd"
+          )
         end
       end
     end

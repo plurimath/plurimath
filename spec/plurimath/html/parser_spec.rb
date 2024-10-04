@@ -151,9 +151,9 @@ RSpec.describe Plurimath::Html::Parser do
           Plurimath::Math::Formula.new([
             Plurimath::Math::Function::Text.new("c"),
             Plurimath::Math::Formula.new([
-              Plurimath::Math::Symbols::Paren::Lbrace.new,
+              Plurimath::Math::Symbols::Paren::Lcurly.new,
               Plurimath::Math::Number.new("0"),
-              Plurimath::Math::Symbols::Paren::Rbrace.new
+              Plurimath::Math::Symbols::Paren::Rcurly.new
             ])
           ])
         ])

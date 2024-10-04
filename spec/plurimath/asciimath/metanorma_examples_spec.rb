@@ -179,7 +179,7 @@ RSpec.describe Plurimath::Asciimath::Parser do
           ),
           Plurimath::Math::Function::Text.new("O"),
           Plurimath::Math::Function::Overset.new(
-            Plurimath::Math::Symbols::Larr.new,
+            Plurimath::Math::Symbols::Gets.new,
             Plurimath::Math::Symbols::Rightarrow.new
           ),
           Plurimath::Math::Function::PowerBase.new(

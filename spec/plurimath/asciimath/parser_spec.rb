@@ -23,7 +23,7 @@ RSpec.describe Plurimath::Asciimath::Parser do
               Plurimath::Math::Symbols::Symbol.new("V"),
               Plurimath::Math::Symbols::Cdot.new,
               Plurimath::Math::Symbols::Symbol.new("s"),
-              Plurimath::Math::Symbols::Slash.new,
+              Plurimath::Math::Symbols::Mathslash.new,
               Plurimath::Math::Symbols::Symbol.new("A"),
               Plurimath::Math::Symbols::Comma.new,
               Plurimath::Math::Symbols::Symbol.new("s"),
@@ -32,11 +32,11 @@ RSpec.describe Plurimath::Asciimath::Parser do
               Plurimath::Math::Symbols::Symbol.new("b"),
               Plurimath::Math::Symbols::Symbol.new("o"),
               Plurimath::Math::Symbols::Symbol.new("l"),
-              Plurimath::Math::Symbols::Semicolon.new,
+              Plurimath::Math::Symbols::Mathcolon.new,
               Plurimath::Math::Symbols::Symbol.new("V"),
               Plurimath::Math::Symbols::Cdot.new,
               Plurimath::Math::Symbols::Symbol.new("s"),
-              Plurimath::Math::Symbols::Slash.new,
+              Plurimath::Math::Symbols::Mathslash.new,
               Plurimath::Math::Symbols::Symbol.new("A")
             ],
             Plurimath::Math::Symbols::Paren::Rround.new,
@@ -1650,7 +1650,7 @@ RSpec.describe Plurimath::Asciimath::Parser do
         expected_value = Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Base.new(
             Plurimath::Math::Function::FontStyle::Italic.new(
-              Plurimath::Math::Symbols::Phi.new,
+              Plurimath::Math::Symbols::Varphi.new,
               "ii"
             ),
             Plurimath::Math::Function::Text.new("V")
@@ -1674,7 +1674,7 @@ RSpec.describe Plurimath::Asciimath::Parser do
               ),
               Plurimath::Math::Symbols::Comma.new,
               Plurimath::Math::Function::FontStyle::Italic.new(
-                Plurimath::Math::Symbols::Phi.new,
+                Plurimath::Math::Symbols::Varphi.new,
                 "ii"
               )
             ],
@@ -1689,7 +1689,7 @@ RSpec.describe Plurimath::Asciimath::Parser do
           Plurimath::Math::Function::Text.new("&#x200c;"),
           Plurimath::Math::Function::Text.new(" d"),
           Plurimath::Math::Function::FontStyle::Italic.new(
-            Plurimath::Math::Symbols::Phi.new,
+            Plurimath::Math::Symbols::Varphi.new,
             "ii"
           ),
           Plurimath::Math::Function::Text.new(" d"),

@@ -1,11 +1,14 @@
 # frozen_string_literal: true
 
 require_relative "binary_function"
+require_relative "../../mathml/utility"
 
 module Plurimath
   module Math
     module Function
       class Power < BinaryFunction
+        include Mathml::Utility
+
         FUNCTION = {
           name: "superscript",
           first_value: "base",

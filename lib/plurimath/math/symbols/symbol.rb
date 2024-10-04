@@ -1,9 +1,13 @@
 # frozen_string_literal: true
 
+require_relative "../../mathml/utility"
+
 module Plurimath
   module Math
     module Symbols
       class Symbol < Core
+        include Mathml::Utility
+
         attr_accessor :value, :slashed, :mini_sub_sized, :mini_sup_sized, :options
 
         INPUT = {}.freeze
@@ -13,7 +17,7 @@ module Plurimath
                        mini_sub_sized: false,
                        mini_sup_sized: false,
                        options: {})
-          @value = sym.is_a?(Parslet::Slice) ? sym.to_s : sym
+          @value = sym.is_a?(Array) ? sym.join : sym&.to_s
           @slashed = slashed if slashed
           @mini_sub_sized = mini_sub_sized if mini_sub_sized
           @mini_sup_sized = mini_sup_sized if mini_sup_sized
@@ -22,7 +26,7 @@ module Plurimath
 
         def ==(object)
           object.respond_to?(:value) &&
-            object.class == object.class &&
+            object.class == self.class &&
             object.value == value &&
             object.slashed == slashed &&
             object.mini_sub_sized == mini_sub_sized &&
@@ -36,6 +40,10 @@ module Plurimath
           value
         end
 
+        def value=(value)
+          @value = value.is_a?(Array) ? value.join : value.to_s
+        end
+
         def to_mathml_without_math_tag(intent, **)
           if value&.include?("&#x2147;")
             attributes = {
@@ -45,7 +53,7 @@ module Plurimath
           mi_tag = ox_element("mi", attributes: attributes)
           return mi_tag if ["{:", ":}"].include?(value)
 
-          mi_tag << value
+          value ? mi_tag << value : mi_tag
         end
 
         def to_latex(**)
@@ -108,7 +116,7 @@ module Plurimath
             self.is_a?(Math::Symbols::Ampersand)
         end
 
-        def linebreak
+        def linebreak?
           value == "\\\\"
         end
 

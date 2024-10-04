@@ -8,6 +8,13 @@ module Plurimath
         /^\n/ => "",
       }.freeze
 
+      ALL_PARAMETERS = %i[
+        parameter_one
+        parameter_two
+        parameter_three
+        parameter_four
+      ].freeze
+
       def self.inherited(subclass)
         @descendants ||= []
         @descendants << subclass
@@ -201,7 +208,7 @@ module Plurimath
         false
       end
 
-      def linebreak
+      def linebreak?
         false
       end
 
@@ -291,11 +298,15 @@ module Plurimath
         is_a?(Math::Function::UnaryFunction)
       end
 
-      def is_nary_function?;end
+      def is_nary_function?; end
 
-      def is_nary_symbol?;end
+      def is_nary_symbol?; end
 
-      def nary_intent_name;end
+      def nary_intent_name; end
+
+      def symbol?
+        is_a?(Math::Symbols::Symbol)
+      end
 
       def is_binary_function?
         is_a?(Function::BinaryFunction)
@@ -323,7 +334,55 @@ module Plurimath
         Utility.primes_constants.any? { |prefix, prime| unicodemath_field_value(field).include?(prime) }
       end
 
+      def paren?
+        false
+      end
+
+      def pretty_print_instance_variables
+        excluded_vars = [
+          :@left_right_wrapper,
+          :@temp_mathml_order,
+          :@using_default,
+          :@displaystyle,
+          :@__ordered,
+          :@__mixed,
+          :@is_mrow,
+          :@values,
+        ]
+        instance_variables.sort - excluded_vars
+      end
+
+      def to_ms_value
+        new_arr = []
+        case self
+        when Math::Symbols::Symbol
+          new_arr << (value ? value.to_s : to_unicodemath(options: {}))
+        when Math::Number, Math::Function::Text
+          new_arr << value
+        else
+          parameters_to_ms_value(new_arr)
+          if respond_to?(:value) && value.is_a?(Array)
+            new_arr << value&.map { |element| element.to_ms_value }.join(" ")
+          end
+        end
+        new_arr
+      end
+
+      def is_mstyle?
+        false
+      end
+
+      def is_mrow?
+        false
+      end
+
       private
+
+      def parameters_to_ms_value(array)
+        ALL_PARAMETERS.each do |field|
+          array << get("@#{field}")&.to_ms_value if respond_to?(field)
+        end
+      end
 
       def array_line_break_field(field, variable, obj)
         if result(field).length > 1

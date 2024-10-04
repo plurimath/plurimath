@@ -1,11 +1,14 @@
 # frozen_string_literal: true
 
 require_relative "ternary_function"
+require_relative "../../mathml/utility"
 
 module Plurimath
   module Math
     module Function
       class Fenced < TernaryFunction
+        include Mathml::Utility
+
         attr_accessor :options
 
         def initialize(
@@ -157,7 +160,219 @@ module Plurimath
           }
         end
 
+        def separators=(value)
+          return if value.nil?
+
+          @options[:separators] = value
+        end
+
+        def content=(value)
+          if parens_nil?
+            @parameter_one = Math::Symbols::Paren::Lround.new
+            @parameter_three = Math::Symbols::Paren::Rround.new
+          end
+        end
+
+        def open=(value)
+          return unless value
+
+          @parameter_one = validate_symbols(value)
+        end
+
+        def close=(value)
+          return unless value
+
+          @parameter_three = validate_symbols(value)
+        end
+
+        def element_order=(value)
+          @parameter_two = validated_order(value)
+        end
+
+        def mi_value=(value)
+          return if value.nil? || value.empty?
+
+          update(
+            replace_order_with_value(
+              @parameter_two,
+              Array(validate_symbols(value)),
+              "mi"
+            )
+          )
+        end
+
+        def mn_value=(value)
+          return if value.nil? || value.empty?
+
+          update(
+            replace_order_with_value(
+              @parameter_two,
+              Array(validate_symbols(value)),
+              "mn"
+            )
+          )
+        end
+
+        def mtext_value=(value)
+          return if value.nil? || value.empty?
+
+          update(
+            replace_order_with_value(
+              @parameter_two,
+              Array(validate_symbols(value)),
+              "mtext"
+            )
+          )
+        end
+
+        def mo_value=(value)
+          return if value.nil? || value.empty?
+
+          update(
+            replace_order_with_value(
+              @parameter_two,
+              Array(validate_symbols(value)),
+              "mo"
+            )
+          )
+        end
+
+        def mstyle_value=(value)
+          return if value.empty?
+
+          update(
+            replace_order_with_value(
+              @parameter_two,
+              Array(value),
+              "mstyle"
+            )
+          )
+        end
+
+        def munderover_value=(value)
+          update_temp_order(value, "munderover")
+        end
+
+        def msub_value=(value)
+          update_temp_order(value, "msub")
+        end
+
+        def msup_value=(value)
+          update_temp_order(value, "msup")
+        end
+
+        def mover_value=(value)
+          update_temp_order(value, "mover")
+        end
+
+        def munder_value=(value)
+          update_temp_order(value, "munder")
+        end
+
+        def msubsup_value=(value)
+          update_temp_order(value, "msubsup")
+        end
+
+        def mfrac_value=(value)
+          update_temp_order(value, "mfrac")
+        end
+
+        def msqrt_value=(value)
+          update_temp_order(value, "msqrt")
+        end
+
+        def mfenced_value=(value)
+          update_temp_order(value, "mfenced")
+        end
+
+        def mtable_value=(value)
+          return if value.nil? || value.empty?
+
+          update(
+            replace_order_with_value(
+              Array(@parameter_two),
+              update_temp_mathml_values(value),
+              "mtable"
+            )
+          )
+        end
+
+        def mrow_value=(value)
+          return if value.nil? || value.empty?
+
+          update(
+            replace_order_with_value(
+              Array(@parameter_two),
+              update_temp_mathml_values(
+                Array(filter_values(value, array_to_instance: true))
+              ),
+              "mrow"
+            )
+          )
+        end
+
+        def mspace_value=(value)
+          return if value.nil? || value.empty?
+
+          if value.first.linebreak
+            linebreak = Math::Function::Linebreak.new(
+              nil,
+              { linebreak: value.first.linebreak }
+            )
+
+            update(
+              replace_order_with_value(
+                Array(@parameter_two),
+                [linebreak],
+                "mspace"
+              )
+            )
+          else
+            @parameter_two&.delete("mspace")
+          end
+        end
+
+        def mpadded_value=(value)
+          update_temp_order(value, "mpadded")
+        end
+
+        def mfraction_value=(value)
+          update_temp_order(value, "mfraction")
+        end
+
+        def mmultiscripts_value=(value)
+          update_temp_order(value, "mmultiscripts")
+        end
+
+        def mphantom_value=(value)
+          update_temp_order(value, "mphantom")
+        end
+
         protected
+
+        def update_temp_order(value, order_name)
+          return if value.nil? || value.empty?
+
+          update(
+            replace_order_with_value(
+              Array(@parameter_two),
+              update_temp_mathml_values(value),
+              order_name
+            )
+          )
+        end
+
+        def remove_order(order)
+          @parameter_two.delete_if { |val| val.is_a?(String) && val == order }
+        end
+
+        def insert(values)
+          update(Array(@parameter_two) + values)
+        end
+
+        def update(object)
+          @parameter_two = Array(object)
+        end
 
         def open_paren(dpr, options:)
           first_value = symbol_or_paren(parameter_one, lang: :omml, options: options)
@@ -358,6 +573,10 @@ module Plurimath
 
           node["intent"]&.start_with?(":partial-derivative") &&
             !node.locate("*/@arg").include?("f")
+        end
+
+        def parens_nil?
+          @parameter_one.nil? && @parameter_three.nil?
         end
       end
     end

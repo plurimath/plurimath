@@ -428,7 +428,7 @@ RSpec.describe Plurimath::Math do
       it 'should puts Math zone representation of sample example #1' do
         expected_value = <<~MATHZONE
           |_ Math zone
-            |_ "<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mstyle displaystyle="true"><mrow><mfrac><mn>1</mn><mrow><mn>2</mn><mi>&#x3c0;</mi></mrow></mfrac><mrow><msubsup><mo>&#x222b;</mo><mn>0</mn><mrow><mn>2</mn><mi>&#x3c0;</mi></mrow></msubsup><mfrac><mrow><mstyle mathvariant="double-struck"><mtext>d</mtext></mstyle><mi>&#x3b8;</mi></mrow><mrow><mi>a</mi><mo>+</mo><mi>b</mi><mrow><mi>sin</mi><mi>&#x3b8;</mi></mrow></mrow></mfrac></mrow><mo>=</mo><mfrac><mn>1</mn><msqrt><mrow><msup><mi>a</mi><mn>2</mn></msup><mo>&#x2212;</mo><msup><mi>b</mi><mn>2</mn></msup></mrow></msqrt></mfrac></mrow></mstyle></math>"
+            |_ "<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mstyle displaystyle="true"><mfrac><mn>1</mn><mrow><mn>2</mn><mi>&#x3c0;</mi></mrow></mfrac><mrow><msubsup><mo>&#x222b;</mo><mn>0</mn><mrow><mn>2</mn><mi>&#x3c0;</mi></mrow></msubsup><mfrac><mrow><mstyle mathvariant="double-struck"><mtext>d</mtext></mstyle><mi>&#x3b8;</mi></mrow><mrow><mi>a</mi><mo>+</mo><mi>b</mi><mrow><mi>sin</mi><mi>&#x3b8;</mi></mrow></mrow></mfrac></mrow><mo>=</mo><mfrac><mn>1</mn><msqrt><mrow><msup><mi>a</mi><mn>2</mn></msup><mo>&#x2212;</mo><msup><mi>b</mi><mn>2</mn></msup></mrow></msqrt></mfrac></mstyle></math>"
                |_ "<mfrac><mn>1</mn><mrow><mn>2</mn><mi>&#x3c0;</mi></mrow></mfrac>" fraction
                |  |_ "<mn>1</mn>" numerator
                |  |_ "<mrow><mn>2</mn><mi>&#x3c0;</mi></mrow>" denominator
@@ -530,7 +530,7 @@ RSpec.describe Plurimath::Math do
       it 'should puts Math zone representation of sample example #5' do
         expected_value = <<~MATHZONE
           |_ Math zone
-            |_ "<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mstyle displaystyle="true"><mrow><msubsup><mrow><mi>cos</mi><mrow><mo>(</mo><mn>2</mn><mo>)</mo></mrow></mrow><mi>&#x3b8;</mi><mi>&#x3c3;</mi></msubsup><mrow><mi>cos</mi><mrow><mo>(</mo><mn>2</mn><mo>)</mo></mrow></mrow></mrow></mstyle></math>"
+            |_ "<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mstyle displaystyle="true"><msubsup><mrow><mi>cos</mi><mrow><mo>(</mo><mn>2</mn><mo>)</mo></mrow></mrow><mi>&#x3b8;</mi><mi>&#x3c3;</mi></msubsup><mrow><mi>cos</mi><mrow><mo>(</mo><mn>2</mn><mo>)</mo></mrow></mrow></mstyle></math>"
                |_ "<msubsup><mrow><mi>cos</mi><mrow><mo>(</mo><mn>2</mn><mo>)</mo></mrow></mrow><mi>&#x3b8;</mi><mi>&#x3c3;</mi></msubsup>" subsup
                |  |_ "<mrow><mi>cos</mi><mrow><mo>(</mo><mn>2</mn><mo>)</mo></mrow></mrow>" base
                |  |  |_ "<mrow><mi>cos</mi><mrow><mo>(</mo><mn>2</mn><mo>)</mo></mrow></mrow>" function apply
@@ -805,7 +805,7 @@ RSpec.describe Plurimath::Math do
       it 'should puts Math zone representation of sample example #12' do
         expected_value = <<~MATHZONE
           |_ Math zone
-            |_ "<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mstyle displaystyle="true"><mrow><mrow><mo>|</mo><mi>x</mi><mo>|</mo></mrow><mrow><mo>⌊</mo><mi>x</mi><mo>⌋</mo></mrow><mrow><mo>⌈</mo><mi>x</mi><mo>⌉</mo></mrow><mrow><mi>&#x2225;</mi><mover><mi>x</mi><mo>&#x2192;</mo></mover><mi>&#x2225;</mi></mrow></mrow></mstyle></math>"
+            |_ "<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mstyle displaystyle="true"><mrow><mo>|</mo><mi>x</mi><mo>|</mo></mrow><mrow><mo>⌊</mo><mi>x</mi><mo>⌋</mo></mrow><mrow><mo>⌈</mo><mi>x</mi><mo>⌉</mo></mrow><mrow><mi>&#x2225;</mi><mover><mi>x</mi><mo>&#x2192;</mo></mover><mi>&#x2225;</mi></mrow></mstyle></math>"
                |_ "<mtext>x</mtext>" text
                |_ "<mtext>x</mtext>" text
                |_ "<mtext>x</mtext>" text
@@ -3786,7 +3786,7 @@ RSpec.describe Plurimath::Math do
         LATEX
         mathml = <<~MATHML
           |_ Math zone
-            |_ "<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mstyle displaystyle="true"><mrow><mfrac><mn>1</mn><mrow><mn>2</mn><mi>&#x3c0;</mi></mrow></mfrac><mrow><msubsup><mo>&#x222b;</mo><mn>0</mn><mrow><mn>2</mn><mi>&#x3c0;</mi></mrow></msubsup><mfrac><mrow><mstyle mathvariant="double-struck"><mtext>d</mtext></mstyle><mi>&#x3b8;</mi></mrow><mrow><mi>a</mi><mo>+</mo><mi>b</mi><mrow><mi>sin</mi><mi>&#x3b8;</mi></mrow></mrow></mfrac></mrow><mo>=</mo><mfrac><mn>1</mn><msqrt><mrow><msup><mi>a</mi><mn>2</mn></msup><mo>&#x2212;</mo><msup><mi>b</mi><mn>2</mn></msup></mrow></msqrt></mfrac></mrow></mstyle></math>"
+            |_ "<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mstyle displaystyle="true"><mfrac><mn>1</mn><mrow><mn>2</mn><mi>&#x3c0;</mi></mrow></mfrac><mrow><msubsup><mo>&#x222b;</mo><mn>0</mn><mrow><mn>2</mn><mi>&#x3c0;</mi></mrow></msubsup><mfrac><mrow><mstyle mathvariant="double-struck"><mtext>d</mtext></mstyle><mi>&#x3b8;</mi></mrow><mrow><mi>a</mi><mo>+</mo><mi>b</mi><mrow><mi>sin</mi><mi>&#x3b8;</mi></mrow></mrow></mfrac></mrow><mo>=</mo><mfrac><mn>1</mn><msqrt><mrow><msup><mi>a</mi><mn>2</mn></msup><mo>&#x2212;</mo><msup><mi>b</mi><mn>2</mn></msup></mrow></msqrt></mfrac></mstyle></math>"
                |_ "<mfrac><mn>1</mn><mrow><mn>2</mn><mi>&#x3c0;</mi></mrow></mfrac>" fraction
                |  |_ "<mn>1</mn>" numerator
                |  |_ "<mrow><mn>2</mn><mi>&#x3c0;</mi></mrow>" denominator
@@ -3986,7 +3986,7 @@ RSpec.describe Plurimath::Math do
         LATEX
         mathml = <<~MATHML
           |_ Math zone
-            |_ "<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mstyle displaystyle="true"><mrow><msubsup><mrow><mi>cos</mi><mrow><mo>(</mo><mn>2</mn><mo>)</mo></mrow></mrow><mi>&#x3b8;</mi><mi>&#x3c3;</mi></msubsup><mrow><mi>cos</mi><mrow><mo>(</mo><mn>2</mn><mo>)</mo></mrow></mrow></mrow></mstyle></math>"
+            |_ "<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mstyle displaystyle="true"><msubsup><mrow><mi>cos</mi><mrow><mo>(</mo><mn>2</mn><mo>)</mo></mrow></mrow><mi>&#x3b8;</mi><mi>&#x3c3;</mi></msubsup><mrow><mi>cos</mi><mrow><mo>(</mo><mn>2</mn><mo>)</mo></mrow></mrow></mstyle></math>"
                |_ "<msubsup><mrow><mi>cos</mi><mrow><mo>(</mo><mn>2</mn><mo>)</mo></mrow></mrow><mi>&#x3b8;</mi><mi>&#x3c3;</mi></msubsup>" subsup
                |  |_ "<mrow><mi>cos</mi><mrow><mo>(</mo><mn>2</mn><mo>)</mo></mrow></mrow>" base
                |  |  |_ "<mrow><mi>cos</mi><mrow><mo>(</mo><mn>2</mn><mo>)</mo></mrow></mrow>" function apply

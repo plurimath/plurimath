@@ -1,11 +1,14 @@
 # frozen_string_literal: true
 
 require_relative "binary_function"
+require_relative "../../mathml/utility"
 
 module Plurimath
   module Math
     module Function
       class Semantics < BinaryFunction
+        include Mathml::Utility
+
         FUNCTION = {
           name: "semantics",
           first_value: "first argument",
@@ -39,6 +42,17 @@ module Plurimath
             self.parameter_two = nil
             obj.update(semantics)
           end
+        end
+
+        def annotation=(value)
+          return unless value
+
+          @parameter_two = [
+            {
+              annotation: value,
+            }
+          ]
+          @temp_mathml_order.delete("annotation")
         end
 
         protected

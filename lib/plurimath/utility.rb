@@ -171,7 +171,7 @@ module Plurimath
           if data&.separate_table
             table_row << Math::Function::Td.new(filter_table_data(table_data).compact)
             table_data = []
-            if data.linebreak
+            if data.linebreak?
               organize_tds(table_row.flatten, string_columns.dup, options)
               table << Math::Function::Tr.new(table_row)
               table_row = []
@@ -264,7 +264,7 @@ module Plurimath
         Math::Symbols::Paren.descendants
       end
 
-      def symbols_files 
+      def symbols_files
         Math::Symbols::Symbol.descendants
       end
 
@@ -342,11 +342,12 @@ module Plurimath
         ) << rpr_element(wi_tag: wi_tag)
       end
 
-      def filter_values(array)
+      def filter_values(array, new_formula: true)
         return array unless array.is_a?(Array) || array.is_a?(Math::Formula)
 
         array = array.is_a?(Math::Formula) ? array.value : array.flatten.compact
-        return Math::Formula.new(array) if array.length > 1
+        return Math::Formula.new(array) if array.length > 1 && new_formula
+        return array if array.length > 1 && !new_formula
 
         array.first
       end
@@ -549,25 +550,6 @@ module Plurimath
             attrs.parameter_two = color_value
           end
           attrs
-        end
-      end
-
-      def multiscript(values)
-        values.slice_before("mprescripts").map do |value|
-          base_value   = value.shift
-          value        = nil_to_none_object(value)
-          part_val     = value.partition.with_index { |_, i| i.even? }
-          first_value  = part_val[0].empty? ? nil : part_val[0]
-          second_value = part_val[1].empty? ? nil : part_val[1]
-          if base_value.to_s.include?("mprescripts")
-            [first_value, second_value]
-          else
-            Math::Function::PowerBase.new(
-              filter_values(base_value),
-              filter_values(first_value),
-              filter_values(second_value),
-            )
-          end
         end
       end
 

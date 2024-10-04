@@ -17,7 +17,7 @@ module Plurimath
         def ==(object)
           object.class == self.class &&
             object.parameter_one == parameter_one &&
-            object.linebreak == linebreak
+            object.linebreak? == linebreak?
         end
 
         def to_asciimath(options:)
@@ -91,7 +91,7 @@ module Plurimath
           true
         end
 
-        def linebreak
+        def linebreak?
           true
         end
       end

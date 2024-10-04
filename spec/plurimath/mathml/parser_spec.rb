@@ -1,7 +1,6 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Mathml::Parser do
-
   subject(:formula) { Plurimath::Mathml::Parser.new(exp).parse }
 
   context "contains mathml string of sin formula" do
@@ -17,10 +16,8 @@ RSpec.describe Plurimath::Mathml::Parser do
     }
     it "returns formula of sin from mathml string" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Sin.new,
-          Plurimath::Math::Number.new("1"),
-        ])
+        Plurimath::Math::Function::Sin.new,
+        Plurimath::Math::Number.new("1"),
       ])
       expect(formula).to eq(expected_value)
     end
@@ -212,7 +209,7 @@ RSpec.describe Plurimath::Mathml::Parser do
     let(:exp) {
       <<~MATHML
         <math xmlns='http://www.w3.org/1998/Math/MathML'>
-          <mrow>sin</mrow>
+          <mi>sin</mi>
         </math>
       MATHML
     }
@@ -559,17 +556,22 @@ RSpec.describe Plurimath::Mathml::Parser do
           Plurimath::Math::Function::Fenced.new(
             Plurimath::Math::Symbols::Paren::Lcurly.new,
             [
-              Plurimath::Math::Function::Table.new([
-                Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Number.new("1"),
-                    Plurimath::Math::Number.new("1"),
+              Plurimath::Math::Function::Table.new(
+                [
+                  Plurimath::Math::Function::Tr.new([
+                    Plurimath::Math::Function::Td.new([
+                      Plurimath::Math::Number.new("1"),
+                      Plurimath::Math::Number.new("1"),
+                    ]),
+                    Plurimath::Math::Function::Td.new([
+                      Plurimath::Math::Symbols::Paren::Vert.new,
+                    ]),
                   ]),
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Symbols::Paren::Vert.new,
-                  ]),
-                ]),
-              ]),
+                ],
+                nil,
+                nil,
+                { columnlines: "solid" }
+              ),
             ],
             Plurimath::Math::Symbols::Paren::Rcurly.new,
           ),
@@ -1052,12 +1054,12 @@ RSpec.describe Plurimath::Mathml::Parser do
     }
     it "returns FontStyle with second value asci" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Function::Color.new(
-          Plurimath::Math::Function::Text.new("red"),
-          Plurimath::Math::Function::FontStyle::Fraktur.new(
+        Plurimath::Math::Function::FontStyle::Fraktur.new(
+          Plurimath::Math::Function::Color.new(
+            Plurimath::Math::Function::Text.new("red"),
             Plurimath::Math::Symbols::Symbol.new("d"),
-            "fraktur",
-          )
+          ),
+          "fraktur",
         )
       ])
       expect(formula).to eq(expected_value)
@@ -1101,7 +1103,7 @@ RSpec.describe Plurimath::Mathml::Parser do
         Plurimath::Math::Function::Msgroup.new([
           Plurimath::Math::Symbols::Symbol.new("33"),
           Plurimath::Math::Function::Text.new("dd"),
-          Plurimath::Math::Symbols::Symbol.new("0\n  "),
+          Plurimath::Math::Function::Text.new("0\n  "),
         ])
       ])
       expect(formula).to eq(expected_value)
@@ -1124,7 +1126,7 @@ RSpec.describe Plurimath::Mathml::Parser do
         Plurimath::Math::Function::Msgroup.new([
           Plurimath::Math::Symbols::Symbol.new("33"),
           Plurimath::Math::Symbols::Symbol.new("dd"),
-          Plurimath::Math::Symbols::Symbol.new("0\n  ")
+          Plurimath::Math::Function::Text.new("0\n  ")
         ])
       ])
       expect(formula).to eq(expected_value)
@@ -1318,7 +1320,7 @@ RSpec.describe Plurimath::Mathml::Parser do
     let(:exp) {
       <<~MATHML
         <math xmlns="http://www.w3.org/1998/Math/MathML">
-          <mathml:mstyle scriptminsize="6pt">
+          <mstyle scriptminsize="6pt">
             <msub>
               <mrow>
                 <mstyle mathvariant="italic">
@@ -1373,15 +1375,15 @@ RSpec.describe Plurimath::Mathml::Parser do
             <msup>
               <mrow>
                 <mfenced open="[" close="]" separators="">
-                  <mathml:mspace width="-0.15em"/>
+                  <mspace width="-0.15em"/>
                   <mrow>
                     <mfenced open="(" close=")" separators="">
-                      <mathml:mspace width="-0.15em"/>
+                      <mspace width="-0.15em"/>
                       <mrow>
                         <mi>ln</mi>
-                        <mathml:mo rspace="-0.35em"/>
+                        <mo rspace="-0.35em"/>
                         <mfenced open="(" close=")" separators="">
-                          <mathml:mspace width="-0.15em"/>
+                          <mspace width="-0.15em"/>
                           <mrow>
                             <mi>p</mi>
                             <mo stretchy="false" lspace="0em" rspace="0em">/</mo>
@@ -1389,21 +1391,21 @@ RSpec.describe Plurimath::Mathml::Parser do
                               <mi mathvariant="normal">Pa</mi>
                             </mrow>
                           </mrow>
-                          <mathml:mspace width="-0.1em"/>
+                          <mspace width="-0.1em"/>
                         </mfenced>
                         <mo>—</mo>
                         <mstyle mathvariant="italic">
                           <mi>B</mi>
                         </mstyle>
                       </mrow>
-                      <mathml:mspace width="-0.1em"/>
+                      <mspace width="-0.1em"/>
                     </mfenced>
                     <mo stretchy="false" lspace="0em" rspace="0em">/</mo>
                     <mstyle mathvariant="italic">
                       <mi>C</mi>
                     </mstyle>
                   </mrow>
-                  <mathml:mspace width="-0.1em"/>
+                  <mspace width="-0.1em"/>
                 </mfenced>
               </mrow>
               <mrow>
@@ -1411,100 +1413,99 @@ RSpec.describe Plurimath::Mathml::Parser do
               </mrow>
             </msup>
             <mo>.</mo>
-          </mathml:mstyle>
+          </mstyle>
         </math>
       MATHML
     }
 
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Base.new(
-            Plurimath::Math::Function::FontStyle::Italic.new(
-              Plurimath::Math::Symbols::Symbol.new("T"),
-              "italic",
-            ),
-            Plurimath::Math::Number.new("90"),
+        Plurimath::Math::Function::Base.new(
+          Plurimath::Math::Function::FontStyle::Italic.new(
+            Plurimath::Math::Symbols::Symbol.new("T"),
+            "italic",
           ),
-          Plurimath::Math::Symbols::Symbol.new("/"),
-          Plurimath::Math::Function::FontStyle::Normal.new(
-            Plurimath::Math::Symbols::Symbol.new("K"),
-            "normal"
+          Plurimath::Math::Number.new("90"),
+        ),
+        Plurimath::Math::Symbols::Symbol.new("/"),
+        Plurimath::Math::Function::FontStyle::Normal.new(
+          Plurimath::Math::Symbols::Symbol.new("K"),
+          "normal"
+        ),
+        Plurimath::Math::Symbols::Equal.new,
+        Plurimath::Math::Function::Base.new(
+          Plurimath::Math::Function::FontStyle::Italic.new(
+            Plurimath::Math::Symbols::Symbol.new("A"),
+            "italic",
           ),
-          Plurimath::Math::Symbols::Equal.new,
-          Plurimath::Math::Function::Base.new(
-            Plurimath::Math::Function::FontStyle::Italic.new(
-              Plurimath::Math::Symbols::Symbol.new("A"),
-              "italic",
-            ),
-            Plurimath::Math::Number.new("0"),
-          ),
-          Plurimath::Math::Symbols::Plus.new,
-          Plurimath::Math::Function::Sum.new(
-            Plurimath::Math::Formula.new([
-              Plurimath::Math::Symbols::Symbol.new("i"),
-              Plurimath::Math::Symbols::Equal.new,
-              Plurimath::Math::Number.new("1")
-            ]),
-            Plurimath::Math::Number.new("9"),
-          ),
-          Plurimath::Math::Function::Base.new(
-            Plurimath::Math::Function::FontStyle::Italic.new(
-              Plurimath::Math::Symbols::Symbol.new("A"),
-              "italic",
-            ),
+          Plurimath::Math::Number.new("0"),
+        ),
+        Plurimath::Math::Symbols::Plus.new,
+        Plurimath::Math::Function::Sum.new(
+          Plurimath::Math::Formula.new([
             Plurimath::Math::Symbols::Symbol.new("i"),
+            Plurimath::Math::Symbols::Equal.new,
+            Plurimath::Math::Number.new("1")
+          ]),
+          Plurimath::Math::Number.new("9"),
+        ),
+        Plurimath::Math::Function::Base.new(
+          Plurimath::Math::Function::FontStyle::Italic.new(
+            Plurimath::Math::Symbols::Symbol.new("A"),
+            "italic",
           ),
-          Plurimath::Math::Function::Power.new(
-            Plurimath::Math::Function::Fenced.new(
-              Plurimath::Math::Symbols::Paren::Lsquare.new,
-              [
-                Plurimath::Math::Formula.new([
-                  Plurimath::Math::Function::Fenced.new(
-                    Plurimath::Math::Symbols::Paren::Lround.new,
-                    [
-                      Plurimath::Math::Formula.new([
-                        Plurimath::Math::Function::Ln.new(
-                          Plurimath::Math::Function::Fenced.new(
-                            Plurimath::Math::Symbols::Paren::Lround.new,
-                            [
-                              Plurimath::Math::Formula.new([
-                                Plurimath::Math::Symbols::Symbol.new("p"),
-                                Plurimath::Math::Symbols::Symbol.new("/"),
-                                Plurimath::Math::Function::FontStyle::Normal.new(
-                                  Plurimath::Math::Symbols::Symbol.new("Pa"),
-                                  "normal"
-                                )
-                              ])
-                            ],
-                            Plurimath::Math::Symbols::Paren::Rround.new,
-                            { separators: "" }
-                          ),
-                        ),
-                        Plurimath::Math::Symbols::Symbol.new("&#x2014;"),
-                        Plurimath::Math::Function::FontStyle::Italic.new(
-                          Plurimath::Math::Symbols::Symbol.new("B"),
-                          "italic",
-                        ),
-                      ])
-                    ],
-                    Plurimath::Math::Symbols::Paren::Rround.new,
-                    { separators: "" }
-                  ),
-                  Plurimath::Math::Symbols::Symbol.new("/"),
-                  Plurimath::Math::Function::FontStyle::Italic.new(
-                    Plurimath::Math::Symbols::Symbol.new("C"),
-                    "italic",
-                  ),
-                ])
-              ],
-              Plurimath::Math::Symbols::Paren::Rsquare.new,
-              { separators: "" }
-            ),
-            Plurimath::Math::Symbols::Symbol.new("i")
+          Plurimath::Math::Symbols::Symbol.new("i"),
+        ),
+        Plurimath::Math::Function::Power.new(
+          Plurimath::Math::Function::Fenced.new(
+            Plurimath::Math::Symbols::Paren::Lsquare.new,
+            [
+              Plurimath::Math::Formula.new([
+                Plurimath::Math::Function::Fenced.new(
+                  Plurimath::Math::Symbols::Paren::Lround.new,
+                  [
+                    Plurimath::Math::Formula.new([
+                      Plurimath::Math::Function::Ln.new(
+                        Plurimath::Math::Symbols::Symbol.new(""),
+                      ),
+                      Plurimath::Math::Function::Fenced.new(
+                        Plurimath::Math::Symbols::Paren::Lround.new,
+                        [
+                          Plurimath::Math::Formula.new([
+                            Plurimath::Math::Symbols::Symbol.new("p"),
+                            Plurimath::Math::Symbols::Symbol.new("/"),
+                            Plurimath::Math::Function::FontStyle::Normal.new(
+                              Plurimath::Math::Symbols::Symbol.new("Pa"),
+                              "normal"
+                            )
+                          ])
+                        ],
+                        Plurimath::Math::Symbols::Paren::Rround.new,
+                        { separators: "" }
+                      ),
+                      Plurimath::Math::Symbols::Symbol.new("&#x2014;"),
+                      Plurimath::Math::Function::FontStyle::Italic.new(
+                        Plurimath::Math::Symbols::Symbol.new("B"),
+                        "italic",
+                      ),
+                    ])
+                  ],
+                  Plurimath::Math::Symbols::Paren::Rround.new,
+                  { separators: "" }
+                ),
+                Plurimath::Math::Symbols::Symbol.new("/"),
+                Plurimath::Math::Function::FontStyle::Italic.new(
+                  Plurimath::Math::Symbols::Symbol.new("C"),
+                  "italic",
+                ),
+              ])
+            ],
+            Plurimath::Math::Symbols::Paren::Rsquare.new,
+            { separators: "" }
           ),
-          Plurimath::Math::Symbols::Period.new
-        ])
+          Plurimath::Math::Symbols::Symbol.new("i")
+        ),
+        Plurimath::Math::Symbols::Period.new
       ])
       expect(formula).to eq(expected_value)
     end
@@ -1686,7 +1687,7 @@ RSpec.describe Plurimath::Mathml::Parser do
     let(:exp) {
       <<~MATHML
         <math xmlns="http://www.w3.org/1998/Math/MathML">
-          <mathml:mstyle scriptminsize="6pt">
+          <mstyle scriptminsize="6pt">
             <msub>
               <mrow>
                 <mstyle mathvariant="italic">
@@ -1697,9 +1698,9 @@ RSpec.describe Plurimath::Mathml::Parser do
                 <mi>t</mi>
               </mrow>
             </msub>
-            <mathml:mo rspace="-0.35em"/>
+            <mo rspace="-0.35em"/>
             <mfenced open="(" close=")" separators="">
-              <mathml:mspace width="-0.15em"/>
+              <mspace width="-0.15em"/>
               <mrow>
                 <msub>
                   <mrow>
@@ -1712,37 +1713,36 @@ RSpec.describe Plurimath::Mathml::Parser do
                   </mrow>
                 </msub>
               </mrow>
-              <mathml:mspace width="-0.1em"/>
+              <mspace width="-0.1em"/>
             </mfenced>
-          </mathml:mstyle>
+          </mstyle>
         </math>
       MATHML
     }
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Base.new(
-            Plurimath::Math::Function::FontStyle::Italic.new(
-              Plurimath::Math::Symbols::Symbol.new("W"),
-              "italic",
-            ),
-            Plurimath::Math::Symbols::Symbol.new("t"),
+        Plurimath::Math::Function::Base.new(
+          Plurimath::Math::Function::FontStyle::Italic.new(
+            Plurimath::Math::Symbols::Symbol.new("W"),
+            "italic",
           ),
-          Plurimath::Math::Function::Fenced.new(
-            Plurimath::Math::Symbols::Paren::Lround.new,
-            [
-              Plurimath::Math::Function::Base.new(
-                Plurimath::Math::Function::FontStyle::Italic.new(
-                  Plurimath::Math::Symbols::Symbol.new("T"),
-                  "italic",
-                ),
-                Plurimath::Math::Number.new("90"),
-              )
-            ],
-            Plurimath::Math::Symbols::Paren::Rround.new,
-            { separators: "" }
-          )
-        ])
+          Plurimath::Math::Symbols::Symbol.new("t"),
+        ),
+        Plurimath::Math::Symbols::Symbol.new(""),
+        Plurimath::Math::Function::Fenced.new(
+          Plurimath::Math::Symbols::Paren::Lround.new,
+          [
+            Plurimath::Math::Function::Base.new(
+              Plurimath::Math::Function::FontStyle::Italic.new(
+                Plurimath::Math::Symbols::Symbol.new("T"),
+                "italic",
+              ),
+              Plurimath::Math::Number.new("90"),
+            )
+          ],
+          Plurimath::Math::Symbols::Paren::Rround.new,
+          { separators: "" }
+        )
       ])
       expect(formula).to eq(expected_value)
     end
@@ -1795,16 +1795,14 @@ RSpec.describe Plurimath::Mathml::Parser do
     }
     it "returns formula containing dot and ddot with theta as their value" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Dot.new(
-            Plurimath::Math::Symbols::Theta.new,
-          ),
-          Plurimath::Math::Symbols::Ne.new,
-          Plurimath::Math::Function::Ddot.new(
-            Plurimath::Math::Symbols::Theta.new,
-            { attributes: { accent: true } }
-          )
-        ])
+        Plurimath::Math::Function::Dot.new(
+          Plurimath::Math::Symbols::Theta.new,
+        ),
+        Plurimath::Math::Symbols::Ne.new,
+        Plurimath::Math::Function::Ddot.new(
+          Plurimath::Math::Symbols::Theta.new,
+          { attributes: { accent: true } }
+        )
       ])
       expect(formula).to eq(expected_value)
     end

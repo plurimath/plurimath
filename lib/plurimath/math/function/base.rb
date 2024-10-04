@@ -1,12 +1,16 @@
 # frozen_string_literal: true
 
 require_relative "binary_function"
+require_relative "../../mathml/utility"
 
 module Plurimath
   module Math
     module Function
       class Base < BinaryFunction
+        include Mathml::Utility
+
         attr_accessor :options
+
         FUNCTION = {
           name: "subscript",
           first_value: "base",

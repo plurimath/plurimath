@@ -13,3 +13,4 @@ gem 'oga'
 gem 'ox'
 gem "unitsml"
 gem "debug"
+gem "mml", git: "https://github.com/plurimath/mml", branch: "features/mathml_parsing"

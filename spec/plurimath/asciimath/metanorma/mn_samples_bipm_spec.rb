@@ -265,7 +265,7 @@ RSpec.describe Plurimath::Asciimath::Parser do
             ),
             Plurimath::Math::Number.new("90")
           ),
-          Plurimath::Math::Symbols::Slash.new,
+          Plurimath::Math::Symbols::Mathslash.new,
           Plurimath::Math::Function::Text.new("d"),
           Plurimath::Math::Symbols::Symbol.new("l")
         ])
@@ -492,7 +492,7 @@ RSpec.describe Plurimath::Asciimath::Parser do
             ),
             Plurimath::Math::Function::Text.new("HF")
           ),
-          Plurimath::Math::Symbols::Slash.new,
+          Plurimath::Math::Symbols::Mathslash.new,
           Plurimath::Math::Function::Fenced.new(
             Plurimath::Math::Symbols::Paren::Lround.new,
             [
@@ -1318,7 +1318,7 @@ RSpec.describe Plurimath::Asciimath::Parser do
           Plurimath::Math::Function::Text.new("O"),
           Plurimath::Math::Function::Overset.new(
             Plurimath::Math::Symbols::Gets.new,
-            Plurimath::Math::Symbols::To.new
+            Plurimath::Math::Symbols::Rightarrow.new
           ),
           Plurimath::Math::Function::PowerBase.new(
             Plurimath::Math::Function::Text.new("HCO"),
