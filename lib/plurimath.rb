@@ -10,5 +10,5 @@ elsif ENV['PLURIMATH_OGA']
 else
   require "plurimath/setup/ox"
 end
-
+require "render"
 require "plurimath/math"
