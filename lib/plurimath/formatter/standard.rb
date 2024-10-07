@@ -10,6 +10,7 @@ module Plurimath
         fraction_group_digits: 3,
         exponent_sign: "plus",
         fraction_group: "'",
+        number_sign: "plus",
         notation: :basic,
         group_digits: 3,
         significant: 0,
@@ -38,6 +39,7 @@ module Plurimath
         options[:fraction_group] ||= default_options[:fraction_group]
         options[:exponent_sign] ||= default_options[:exponent_sign]
         options[:group_digits] ||= default_options[:group_digits]
+        options[:number_sign] ||= default_options[:number_sign]
         options[:significant] ||= default_options[:significant]
         options[:notation] ||= default_options[:notation]
         options[:decimal] ||= default_options[:decimal]

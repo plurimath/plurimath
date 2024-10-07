@@ -72,7 +72,9 @@ module Plurimath
 
       def update_exponent_value(number_str)
         exponent_number = BigDecimal(number_str) - 1
-        "#{"+" if @exponent_sign == :plus}#{exponent_number.to_i}"
+        return exponent_number.to_i if exponent_number.negative? || @exponent_sign != :plus
+
+        "+#{exponent_number.to_i}"
       end
 
       def notation_chars(num_str)
@@ -112,7 +114,8 @@ module Plurimath
 
         chars.first.delete!(".")
         chars.first.insert(index + 1, ".") unless chars.first[index + 2].nil?
-        chars[-1] = (chars[-1].to_i - index).to_s
+        exponent = chars[-1]
+        chars[-1] = "#{"+" if exponent.to_s.start_with?("+")}#{exponent.to_i - index}"
       end
     end
   end
