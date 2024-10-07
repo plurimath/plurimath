@@ -316,22 +316,22 @@ RSpec.describe Plurimath::NumberFormatter do
 
         it "does not add number_sign with notation: basic" do
           output_string = formatter.localized_number(number, format: { number_sign: :plus, notation: :basic })
-          expect(output_string).to eql("14,236.39239")
+          expect(output_string).to eql("-14,236.39239")
         end
 
         it "does not add number_sign with notation: e" do
           output_string = formatter.localized_number(number, format: { number_sign: :plus, notation: :e })
-          expect(output_string).to eql("1.4236392390e4")
+          expect(output_string).to eql("-1.4236392390e4")
         end
 
         it "does not add number_sign with notation: scientific" do
           output_string = formatter.localized_number(number, format: { number_sign: :plus, notation: :scientific })
-          expect(output_string).to eql("1.4236392390 × 10^4")
+          expect(output_string).to eql("-1.4236392390 × 10^4")
         end
 
         it "does not add number_sign with notation: engineering" do
           output_string = formatter.localized_number(number, format: { number_sign: :plus, notation: :engineering })
-          expect(output_string).to eql("1.4236392390 × 10^3")
+          expect(output_string).to eql("-1.4236392390 × 10^3")
         end
       end
     end

@@ -3,7 +3,7 @@
 module Plurimath
   module Formatter
     class NumberFormatter
-      attr_reader :number, :data_reader
+      attr_reader :number, :data_reader, :prefix
 
       STRING_SYMBOLS = {
         dot: ".".freeze,
@@ -13,6 +13,7 @@ module Plurimath
       def initialize(number, data_reader = {})
         @number = number
         @data_reader = data_reader
+        @prefix = "-" if number.negative?
       end
 
       def format(precision: nil)
@@ -22,7 +23,7 @@ module Plurimath
         result << fraction_format.apply(frac, data_reader, int) if frac
         result = signif_format.apply(result, integer_format, fraction_format)
         result = "+#{result}" if number.positive? && data_reader[:number_sign] == :plus
-        result
+        "#{prefix}#{result}"
       end
 
       private
