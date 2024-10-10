@@ -1249,7 +1249,7 @@ module Plurimath
         color_obj = Math::Function::Color.new(
           Math::Symbols::Symbol.new(color),
           first_value,
-          { backcolor: true }
+          { backgroundcolor: true }
         )
       end
 
@@ -1258,7 +1258,7 @@ module Plurimath
         color_obj = Math::Function::Color.new(
           Math::Symbols::Symbol.new(color),
           Utility.filter_values(first_value),
-          { backcolor: true }
+          { backgroundcolor: true }
         )
       end
 

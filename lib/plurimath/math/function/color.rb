@@ -31,7 +31,7 @@ module Plurimath
           Utility.update_nodes(
             Utility.ox_element(
               "mstyle",
-              attributes: { attr_key => color_value },
+              attributes: self.options,
             ),
             [parameter_two&.to_mathml_without_math_tag(intent, options: options)],
           )
@@ -56,13 +56,17 @@ module Plurimath
         end
 
         def to_unicodemath(options:)
-          "✎(#{parameter_one.to_unicodemath(options: options)}&#{parameter_two.to_unicodemath(options: options)})"
+          "#{color_symbol}(#{parameter_one.to_unicodemath(options: options)}&#{parameter_two.to_unicodemath(options: options)})"
         end
 
         protected
 
+        def color_symbol
+          options&.dig(:backgroundcolor) ? "☁" : "✎"
+        end
+
         def attr_key
-          (options && options[:backcolor]) ? :mathbackground : :mathcolor
+          options.dig(:backgroundcolor) ? :mathbackground : :mathcolor
         end
       end
     end

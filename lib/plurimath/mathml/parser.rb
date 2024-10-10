@@ -2,6 +2,8 @@
 
 require_relative "constants"
 require_relative "transform"
+require "mml"
+
 module Plurimath
   class Mathml
     class Parser
@@ -38,13 +40,13 @@ module Plurimath
       end
 
       def parse
-        ox_nodes = Plurimath.xml_engine.load(text)
-        display_style = ox_nodes&.locate("mstyle/@displaystyle")&.first
-        nodes = parse_nodes(Array(ox_nodes))
-        Math::Formula.new(
-          Transform.new.apply(nodes).flatten.compact,
-          display_style: (display_style || true),
-        )
+        # ox_nodes = Plurimath.xml_engine.load(text)
+        # display_style = ox_nodes&.locate("mstyle/@displaystyle")&.first
+        # nodes = parse_nodes(Array(ox_nodes))
+        # Math::Formula.new(
+        #   Transform.new.apply(nodes).flatten.compact,
+        #   display_style: (display_style || true),
+        # )
       end
 
       protected
