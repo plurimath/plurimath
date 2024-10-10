@@ -1,8 +1,12 @@
 # frozen_string_literal: true
 
+require_relative "../mathml/utility"
+
 module Plurimath
   module Math
     class Formula < Core
+      include Mathml::Utility
+
       attr_accessor :value, :left_right_wrapper, :displaystyle, :input_string, :unitsml, :unitsml_xml
 
       MATH_ZONE_TYPES = %i[
