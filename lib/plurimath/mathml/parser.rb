@@ -2,7 +2,7 @@
 
 require_relative "constants"
 require_relative "transform"
-require "mml"
+require "mml/configuration"
 
 module Plurimath
   class Mathml
@@ -36,14 +36,28 @@ module Plurimath
       ].freeze
 
       def initialize(text)
+        mml_config
         @text = text
       end
 
       def parse
-        mml = ::Mml.parse(text)
+        ::Mml.parse(text)
       end
 
       protected
+
+      def mml_config
+        ::Mml::Configuration.config = {
+          mstyle: Plurimath::Math::Formula,
+          mtext: Plurimath::Math::Function::Text,
+          math: Plurimath::Math::Formula,
+          mrow: Plurimath::Math::Formula,
+          mn: Plurimath::Math::Number,
+          mi: Plurimath::Math::Symbols::Symbol,
+          mo: Plurimath::Math::Symbols::Symbol,
+        }
+        require "mml" unless ::Mml.respond_to?(:config)
+      end
 
       def parse_nodes(nodes)
         nodes.map do |node|
@@ -96,7 +110,7 @@ module Plurimath
       end
 
       def comment_remove(nodes)
-        nodes.delete_if { |node| Plurimath.xml_engine.is_xml_comment?(node)  }
+        nodes.delete_if { |node| Plurimath.xml_engine.is_xml_comment?(node) }
       end
     end
   end

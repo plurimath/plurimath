@@ -296,7 +296,6 @@ module Plurimath
         update(Array(value) + values)
       end
 
-
       def mini_sized?
         true if value&.first&.mini_sized?
       end
@@ -309,6 +308,10 @@ module Plurimath
       end
 
       protected
+
+      def remove_order(order)
+        value.delete_if { |val| val.is_a?(String) && val == order }
+      end
 
       def boolean_display_style(display_style = displaystyle)
         YAML.safe_load(display_style.to_s)
@@ -565,7 +568,7 @@ module Plurimath
             mrow_nodes << nodes.delete_at(1)
             next
           when "mrow"
-            second_arg = mrow_nodes.map { |node| encode(node.nodes.first) }.join
+            second_arg = mrow_nodes.map { |n| encode(n.nodes.first) }.join
             third_arg  = upcase_dd_intent_name(node.nodes[1..-2])
             mrow_nodes << nodes.delete_at(1)
             break
