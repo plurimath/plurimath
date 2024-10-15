@@ -1,7 +1,6 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Mathml::Parser do
-
   subject(:formula) { Plurimath::Mathml::Parser.new(exp).parse }
 
   context "contains mathml string of sin formula" do
@@ -210,7 +209,7 @@ RSpec.describe Plurimath::Mathml::Parser do
     let(:exp) {
       <<~MATHML
         <math xmlns='http://www.w3.org/1998/Math/MathML'>
-          <mrow>sin</mrow>
+          <mi>sin</mi>
         </math>
       MATHML
     }

@@ -307,6 +307,78 @@ module Plurimath
         }
       end
 
+      def munderover=(value)
+        return if value.nil? || value.empty?
+
+        update(
+          replace_order_with_value(
+            self.value,
+            update_underover(value),
+            "munderover"
+          )
+        )
+      end
+
+      def msub=(value)
+        return if value.nil? || value.empty?
+
+        update(
+          replace_order_with_value(
+            self.value,
+            update_underover(value),
+            "msub"
+          )
+        )
+      end
+
+      def msup=(value)
+        return if value.nil? || value.empty?
+
+        update(
+          replace_order_with_value(
+            self.value,
+            update_underover(value),
+            "msup"
+          )
+        )
+      end
+
+      def mover=(value)
+        return if value.nil? || value.empty?
+
+        update(
+          replace_order_with_value(
+            self.value,
+            update_underover(value),
+            "mover"
+          )
+        )
+      end
+
+      def munder=(value)
+        return if value.nil? || value.empty?
+
+        update(
+          replace_order_with_value(
+            self.value,
+            update_underover(value),
+            "munder"
+          )
+        )
+      end
+
+      def msubsup=(value)
+        return if value.nil? || value.empty?
+
+        update(
+          replace_order_with_value(
+            self.value,
+            update_underover(value),
+            "msubsup"
+          )
+        )
+      end
+
       protected
 
       def remove_order(order)

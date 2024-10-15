@@ -48,8 +48,12 @@ module Plurimath
 
       def mml_config
         ::Mml::Configuration.config = {
+          munderover: Plurimath::Math::Function::Underover,
+          msubsup: Plurimath::Math::Function::PowerBase,
           mstyle: Plurimath::Math::Formula,
           mtext: Plurimath::Math::Function::Text,
+          msub: Plurimath::Math::Function::Base,
+          msup: Plurimath::Math::Function::Power,
           math: Plurimath::Math::Formula,
           mrow: Plurimath::Math::Formula,
           mn: Plurimath::Math::Number,

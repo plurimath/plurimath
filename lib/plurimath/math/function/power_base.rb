@@ -1,17 +1,26 @@
 # frozen_string_literal: true
 
 require_relative "ternary_function"
+require_relative "../../mathml/utility"
 
 module Plurimath
   module Math
     module Function
       class PowerBase < TernaryFunction
+        include Mathml::Utility
+
+        attr_accessor :temp_mathml_order
+
         FUNCTION = {
           name: "subsup",
           first_value: "base",
           second_value: "subscript",
           third_value: "supscript",
         }.freeze
+
+        def element_order=(order)
+          self.temp_mathml_order = validated_order(order)
+        end
 
         def to_mathml_without_math_tag(intent, options:)
           tag_name = parameter_one&.tag_name || "subsup"
@@ -100,6 +109,136 @@ module Plurimath
             validate_mathml_fields(parameter_two, intent, options: options),
             validate_mathml_fields(parameter_three, intent, options: options),
           ]
+        end
+
+        def mi_value=(value)
+          return if value.nil? || value.empty?
+
+          self.temp_mathml_order = replace_order_with_value(
+            self.temp_mathml_order,
+            validate_symbols(value),
+            "mi"
+          )
+        end
+
+        def mo_value=(value)
+          return if value.nil? || value.empty?
+
+          self.temp_mathml_order = replace_order_with_value(
+            self.temp_mathml_order,
+            validate_symbols(value),
+            "mo"
+          )
+        end
+
+        def mn_value=(value)
+          return if value.nil? || value.empty?
+
+          self.temp_mathml_order = replace_order_with_value(
+            self.temp_mathml_order,
+            validate_symbols(value),
+            "mn"
+          )
+        end
+
+        def ms_value=(value)
+          return if value.nil? || value.empty?
+
+          self.temp_mathml_order = replace_order_with_value(
+            self.temp_mathml_order,
+            Array(filter_values(value)),
+            "ms"
+          )
+        end
+
+        def mtext_value=(value)
+          return if value.nil? || value.empty?
+
+          self.temp_mathml_order = replace_order_with_value(
+            self.temp_mathml_order,
+            Array(filter_values(value)),
+            "mtext"
+          )
+        end
+
+        def mrow_value=(value)
+          return if value.nil? || value.empty?
+
+          self.temp_mathml_order = replace_order_with_value(
+            self.temp_mathml_order,
+            Array(filter_values(value)),
+            "mrow"
+          )
+        end
+
+        def mstyle_value=(value)
+          return if value.nil? || value.empty?
+
+          self.temp_mathml_order = replace_order_with_value(
+            self.temp_mathml_order,
+            Array(filter_values(value)),
+            "mstyle"
+          )
+        end
+
+        def munderover_value=(value)
+          return if value.nil? || value.empty?
+
+          self.temp_mathml_order = replace_order_with_value(
+            self.temp_mathml_order,
+            Array(update_underover(value)),
+            "munderover"
+          )
+        end
+
+        def munder_value=(value)
+          return if value.nil? || value.empty?
+
+          self.temp_mathml_order = replace_order_with_value(
+            self.temp_mathml_order,
+            Array(update_underover(value)),
+            "munder"
+          )
+        end
+
+        def mover_value=(value)
+          return if value.nil? || value.empty?
+
+          self.temp_mathml_order = replace_order_with_value(
+            self.temp_mathml_order,
+            Array(update_underover(value)),
+            "mover"
+          )
+        end
+
+        def msubsup_value=(value)
+          return if value.nil? || value.empty?
+
+          self.temp_mathml_order = replace_order_with_value(
+            self.temp_mathml_order,
+            Array(update_underover(value)),
+            "msubsup"
+          )
+        end
+
+        def msub_value=(value)
+          return if value.nil? || value.empty?
+
+          self.temp_mathml_order = replace_order_with_value(
+            self.temp_mathml_order,
+            Array(update_underover(value)),
+            "msub"
+          )
+        end
+
+        def msup_value=(value)
+          return if value.nil? || value.empty?
+
+          self.temp_mathml_order = replace_order_with_value(
+            self.temp_mathml_order,
+            Array(update_underover(value)),
+            "msup"
+          )
         end
 
         protected

@@ -3,199 +3,440 @@
 module Plurimath
   class Mathml
     module Utility
+      def mi; end
+
+      def mo; end
+
+      def mstyle; end
+
+      def mrow; end
+
+      def mn; end
+
+      def ms; end
+
+      def mtext; end
+
+      def mfrac; end
+
+      def msqrt; end
+
+      def msub; end
+
+      def msubsup; end
+
+      def munderover; end
+
+      def munder; end
+
+      def mover; end
+
+      def msup; end
+
+      def mtable; end
+
+      def mtr; end
+
+      def mtd; end
+
+      def malignmark; end
+
       def malignmark=(value); end
+
+      def mathcolor; end
 
       def mathcolor=(value); end
 
+      def mathbackground; end
+
       def mathbackground=(value); end
 
-      def mathvariant=(value); end
+      def mathvariant
+        @mathvariant
+      end
+
+      def mathvariant=(value)
+        return if value.nil? || value.empty?
+
+        Plurimath::Utility::FONT_STYLES[value.to_sym].new(
+          nil,
+          value
+        )
+      end
+
+      def mathsize; end
 
       def mathsize=(value); end
 
+      def dir; end
+
       def dir=(value); end
+
+      def fontfamily; end
 
       def fontfamily=(value); end
 
+      def fontweight; end
+
       def fontweight=(value); end
+
+      def fontstyle; end
 
       def fontstyle=(value); end
 
+      def fontsize; end
+
       def fontsize=(value); end
+
+      def color; end
 
       def color=(value); end
 
+      def mathbackgroundcolor; end
+
       def mathbackgroundcolor=(value); end
+
+      def background; end
 
       def background=(value); end
 
+      def scriptlevel; end
+
       def scriptlevel=(value); end
+
+      def displaystyle; end
 
       def displaystyle=(value); end
 
+      def scriptsizemultiplier; end
+
       def scriptsizemultiplier=(value); end
+
+      def scriptminsize; end
 
       def scriptminsize=(value); end
 
+      def infixlinebreakstyle; end
+
       def infixlinebreakstyle=(value); end
+
+      def decimalpoint; end
 
       def decimalpoint=(value); end
 
+      def accent; end
+
       def accent=(value); end
+
+      def accentunder; end
 
       def accentunder=(value); end
 
+      def align; end
+
       def align=(value); end
+
+      def alignmentscope; end
 
       def alignmentscope=(value); end
 
+      def bevelled; end
+
       def bevelled=(value); end
+
+      def charalign; end
 
       def charalign=(value); end
 
+      def charspacing; end
+
       def charspacing=(value); end
+
+      def close; end
 
       def close=(value); end
 
+      def columnalign; end
+
       def columnalign=(value); end
+
+      def columnlines; end
 
       def columnlines=(value); end
 
+      def columnspacing; end
+
       def columnspacing=(value); end
+
+      def columnspan; end
 
       def columnspan=(value); end
 
+      def columnwidth; end
+
       def columnwidth=(value); end
+
+      def crossout; end
 
       def crossout=(value); end
 
+      def denomalign; end
+
       def denomalign=(value); end
+
+      def depth; end
 
       def depth=(value); end
 
+      def edge; end
+
       def edge=(value); end
+
+      def equalcolumns; end
 
       def equalcolumns=(value); end
 
+      def equalrows; end
+
       def equalrows=(value); end
+
+      def fence; end
 
       def fence=(value); end
 
+      def form; end
+
       def form=(value); end
+
+      def frame; end
 
       def frame=(value); end
 
+      def framespacing; end
+
       def framespacing=(value); end
+
+      def groupalign; end
 
       def groupalign=(value); end
 
+      def height; end
+
       def height=(value); end
+
+      def indentalign; end
 
       def indentalign=(value); end
 
+      def indentalignfirst; end
+
       def indentalignfirst=(value); end
+
+      def indentalignlast; end
 
       def indentalignlast=(value); end
 
+      def indentshift; end
+
       def indentshift=(value); end
+
+      def indentshiftfirst; end
 
       def indentshiftfirst=(value); end
 
+      def indentshiftlast; end
+
       def indentshiftlast=(value); end
+
+      def indenttarget; end
 
       def indenttarget=(value); end
 
+      def largeop; end
+
       def largeop=(value); end
+
+      def leftoverhang; end
 
       def leftoverhang=(value); end
 
+      def length; end
+
       def length=(value); end
+
+      def linebreak; end
 
       def linebreak=(value); end
 
+      def linebreakmultchar; end
+
       def linebreakmultchar=(value); end
+
+      def linebreakstyle; end
 
       def linebreakstyle=(value); end
 
+      def lineleading; end
+
       def lineleading=(value); end
+
+      def linethickness; end
 
       def linethickness=(value); end
 
+      def location; end
+
       def location=(value); end
+
+      def longdivstyle; end
 
       def longdivstyle=(value); end
 
+      def lquote; end
+
       def lquote=(value); end
+
+      def lspace; end
 
       def lspace=(value); end
 
+      def maxsize; end
+
       def maxsize=(value); end
+
+      def minlabelspacing; end
 
       def minlabelspacing=(value); end
 
+      def minsize; end
+
       def minsize=(value); end
+
+      def movablelimits; end
 
       def movablelimits=(value); end
 
+      def mslinethickness; end
+
       def mslinethickness=(value); end
+
+      def notation; end
 
       def notation=(value); end
 
+      def numalign; end
+
       def numalign=(value); end
+
+      def open; end
 
       def open=(value); end
 
+      def position; end
+
       def position=(value); end
+
+      def rightoverhang; end
 
       def rightoverhang=(value); end
 
+      def rowalign; end
+
       def rowalign=(value); end
+
+      def rowlines; end
 
       def rowlines=(value); end
 
+      def rowspacing; end
+
       def rowspacing=(value); end
+
+      def rowspan; end
 
       def rowspan=(value); end
 
+      def rquote; end
+
       def rquote=(value); end
+
+      def rspace; end
 
       def rspace=(value); end
 
+      def selection; end
+
       def selection=(value); end
+
+      def separator; end
 
       def separator=(value); end
 
+      def separators; end
+
       def separators=(value); end
+
+      def shift; end
 
       def shift=(value); end
 
+      def side; end
+
       def side=(value); end
+
+      def stackalign; end
 
       def stackalign=(value); end
 
+      def stretchy; end
+
       def stretchy=(value); end
+
+      def subscriptshift; end
 
       def subscriptshift=(value); end
 
+      def superscriptshift; end
+
       def superscriptshift=(value); end
+
+      def symmetric; end
 
       def symmetric=(value); end
 
+      def valign; end
+
       def valign=(value); end
+
+      def width; end
 
       def width=(value); end
 
+      def veryverythinmathspace; end
+
       def veryverythinmathspace=(value); end
+
+      def verythinmathspace; end
 
       def verythinmathspace=(value); end
 
+      def thinmathspace; end
+
       def thinmathspace=(value); end
+
+      def mediummathspace; end
 
       def mediummathspace=(value); end
 
+      def thickmathspace; end
+
       def thickmathspace=(value); end
 
+      def verythickmathspace; end
+
       def verythickmathspace=(value); end
+
+      def veryverythickmathspace; end
 
       def veryverythickmathspace=(value); end
 
@@ -210,8 +451,13 @@ module Plurimath
       end
 
       def filter_values(value)
-        if value.all? { |val| val.is_a?(Math::Formula) } && value.length == 1
+        return value unless value.is_a?(Array)
+
+        if value.length == 1 && value.all? { |val| val.is_a?(Math::Formula) }
           value.first.value
+        elsif value.length == 2 && value.first.is_ternary_function?
+          value.first.parameter_three = value.pop
+          value
         else
           value
         end
@@ -224,13 +470,13 @@ module Plurimath
             next unless val.is_a?(Math::Symbols::Symbol)
 
             value[index] = Plurimath::Utility.mathml_unary_classes(
-              Array(Plurimath::Utility.string_to_html_entity(val.value)),
+              Array(val.value),
               lang: :mathml,
             )
           end
         when Math::Symbols::Symbol
           value = Plurimath::Utility.mathml_unary_classes(
-            Array(Plurimath::Utility.string_to_html_entity(value.value)),
+            Array(value.value),
             lang: :mathml,
           )
         else
@@ -242,14 +488,50 @@ module Plurimath
       def replace_order_with_value(order, value, tag_name)
         value_index = 0
         value_array = Array(value)
+
         order.each_with_object([]) do |item, result|
-          if item == tag_name
-            result << value_array[value_index] if value_index < value_array.length
+          case item
+          when tag_name
+            next if value_index >= value_array.length
+
+            result << value_array[value_index]
             value_index += 1
           else
             result << item
           end
         end
+      end
+
+      def update_underover(value)
+        value.each_with_index do |element, index|
+          next unless element.respond_to?(:temp_mathml_order)
+
+          if element.is_ternary_function?
+            next if element.temp_mathml_order.empty?
+
+            if element.temp_mathml_order[0]&.is_ternary_function? &&
+                !element.temp_mathml_order[0].any_value_exist?
+              new_element = element.temp_mathml_order.shift
+              new_element.parameter_one = element.temp_mathml_order.shift
+              new_element.parameter_two = element.temp_mathml_order.shift
+              value[index] = new_element
+            else
+              element.parameter_one = element.temp_mathml_order.shift
+              element.parameter_two = element.temp_mathml_order.shift
+              element.parameter_three = element.temp_mathml_order.shift
+            end
+          elsif element.is_binary_function?
+            next if element.temp_mathml_order.empty?
+
+            element.parameter_one = element.temp_mathml_order.shift
+            element.parameter_two = element.temp_mathml_order.shift
+          end
+        end
+        value
+      end
+
+      def validated_order(order)
+        order.reject { |str| str == "text" }
       end
     end
   end

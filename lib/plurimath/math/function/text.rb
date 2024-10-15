@@ -78,6 +78,8 @@ module Plurimath
           parameter_one
         end
 
+        def element_order=(*); end
+
         def value=(text)
           entities = HTMLEntities.new
           symbols  = Mathml::Constants::UNICODE_SYMBOLS.transform_keys(&:to_s)

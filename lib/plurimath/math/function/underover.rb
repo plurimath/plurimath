@@ -1,17 +1,26 @@
 # frozen_string_literal: true
 
+require_relative "../../mathml/utility"
 require_relative "ternary_function"
 
 module Plurimath
   module Math
     module Function
       class Underover < TernaryFunction
+        attr_accessor :temp_mathml_order
+
+        include Mathml::Utility
+
         FUNCTION = {
           name: "UnderOver",
           first_value: "base",
           second_value: "Under",
           third_value: "Over",
         }.freeze
+
+        def element_order=(value)
+          self.temp_mathml_order = validated_order(value)
+        end
 
         def to_asciimath(options:)
           first_value = first_field_wrap(parameter_one, options: options) if parameter_one
@@ -80,6 +89,76 @@ module Plurimath
 
         def is_nary_function?
           parameter_one.is_nary_function? || parameter_one.is_nary_symbol?
+        end
+
+        def mi_value=(value)
+          return if value.nil? || value.empty?
+
+          self.temp_mathml_order = replace_order_with_value(
+            self.temp_mathml_order,
+            validate_symbols(value),
+            "mi"
+          )
+        end
+
+        def mo_value=(value)
+          return if value.nil? || value.empty?
+
+          self.temp_mathml_order = replace_order_with_value(
+            self.temp_mathml_order,
+            validate_symbols(value),
+            "mo"
+          )
+        end
+
+        def mn_value=(value)
+          return if value.nil? || value.empty?
+
+          self.temp_mathml_order = replace_order_with_value(
+            self.temp_mathml_order,
+            validate_symbols(value),
+            "mn"
+          )
+        end
+
+        def ms_value=(value)
+          return if value.nil? || value.empty?
+
+          self.temp_mathml_order = replace_order_with_value(
+            self.temp_mathml_order,
+            Array(filter_values(value)),
+            "ms"
+          )
+        end
+
+        def mtext_value=(value)
+          return if value.nil? || value.empty?
+
+          self.temp_mathml_order = replace_order_with_value(
+            self.temp_mathml_order,
+            Array(filter_values(value)),
+            "mtext"
+          )
+        end
+
+        def mrow_value=(value)
+          return if value.nil? || value.empty?
+
+          self.temp_mathml_order = replace_order_with_value(
+            self.temp_mathml_order,
+            Array(filter_values(value)),
+            "mrow"
+          )
+        end
+
+        def mstyle_value=(value)
+          return if value.nil? || value.empty?
+
+          self.temp_mathml_order = replace_order_with_value(
+            self.temp_mathml_order,
+            Array(filter_values(value)),
+            "mstyle"
+          )
         end
       end
     end

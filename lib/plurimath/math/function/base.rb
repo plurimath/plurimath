@@ -1,12 +1,16 @@
 # frozen_string_literal: true
 
 require_relative "binary_function"
+require_relative "../../mathml/utility"
 
 module Plurimath
   module Math
     module Function
       class Base < BinaryFunction
-        attr_accessor :options
+        include Mathml::Utility
+
+        attr_accessor :options, :temp_mathml_order
+
         FUNCTION = {
           name: "subscript",
           first_value: "base",
@@ -23,6 +27,10 @@ module Plurimath
         def ==(object)
           super(object) &&
             object.options == options
+        end
+
+        def element_order=(order)
+          self.temp_mathml_order = validated_order(order)
         end
 
         def to_asciimath(options:)
@@ -102,6 +110,136 @@ module Plurimath
 
         def is_nary_function?
           parameter_one.is_nary_function? || parameter_one.is_nary_symbol?
+        end
+
+        def munderover_value=(value)
+          return if value.nil? || value.empty?
+
+          self.temp_mathml_order = replace_order_with_value(
+            self.temp_mathml_order,
+            Array(filter_values(value)),
+            "munderover"
+          )
+        end
+
+        def msubsup_value=(value)
+          return if value.nil? || value.empty?
+
+          self.temp_mathml_order = replace_order_with_value(
+            self.temp_mathml_order,
+            Array(filter_values(value)),
+            "msubsup"
+          )
+        end
+
+        def munder_value=(value)
+          return if value.nil? || value.empty?
+
+          self.temp_mathml_order = replace_order_with_value(
+            self.temp_mathml_order,
+            Array(filter_values(value)),
+            "munder"
+          )
+        end
+
+        def mstyle_value=(value)
+          return if value.nil? || value.empty?
+
+          self.temp_mathml_order = replace_order_with_value(
+            self.temp_mathml_order,
+            Array(filter_values(value)),
+            "mstyle"
+          )
+        end
+
+        def mover_value=(value)
+          return if value.nil? || value.empty?
+
+          self.temp_mathml_order = replace_order_with_value(
+            self.temp_mathml_order,
+            Array(filter_values(value)),
+            "mover"
+          )
+        end
+
+        def mtext_value=(value)
+          return if value.nil? || value.empty?
+
+          self.temp_mathml_order = replace_order_with_value(
+            self.temp_mathml_order,
+            Array(filter_values(value)),
+            "mtext"
+          )
+        end
+
+        def mrow_value=(value)
+          return if value.nil? || value.empty?
+
+          self.temp_mathml_order = replace_order_with_value(
+            self.temp_mathml_order,
+            Array(filter_values(value)),
+            "mrow"
+          )
+        end
+
+        def msub_value=(value)
+          return if value.nil? || value.empty?
+
+          self.temp_mathml_order = replace_order_with_value(
+            self.temp_mathml_order,
+            Array(filter_values(value)),
+            "msub"
+          )
+        end
+
+        def msup_value=(value)
+          return if value.nil? || value.empty?
+
+          self.temp_mathml_order = replace_order_with_value(
+            self.temp_mathml_order,
+            Array(filter_values(value)),
+            "msup"
+          )
+        end
+
+        def mi_value=(value)
+          return if value.nil? || value.empty?
+
+          self.temp_mathml_order = replace_order_with_value(
+            self.temp_mathml_order,
+            Array(validate_symbols(value)),
+            "mi"
+          )
+        end
+
+        def mo_value=(value)
+          return if value.nil? || value.empty?
+
+          self.temp_mathml_order = replace_order_with_value(
+            self.temp_mathml_order,
+            Array(validate_symbols(value)),
+            "mo"
+          )
+        end
+
+        def mn_value=(value)
+          return if value.nil? || value.empty?
+
+          self.temp_mathml_order = replace_order_with_value(
+            self.temp_mathml_order,
+            Array(validate_symbols(value)),
+            "mn"
+          )
+        end
+
+        def ms_value=(value)
+          return if value.nil? || value.empty?
+
+          self.temp_mathml_order = replace_order_with_value(
+            self.temp_mathml_order,
+            Array(validate_symbols(value)),
+            "ms"
+          )
         end
 
         protected
