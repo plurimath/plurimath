@@ -3,6 +3,67 @@
 module Plurimath
   class Mathml
     module Utility
+      self.attr_accessor :temp_mathml_order
+
+      def element_order=(value)
+        order = validated_order(value)
+        if is_a?(Math::Formula)
+          self.value = order
+        elsif !Plurimath::Utility::TEXT_CLASSES.include?(self.class_name)
+          self.temp_mathml_order = order
+        end
+      end
+
+      def mi_value; end
+
+      def mo_value; end
+
+      def mn_value; end
+
+      def ms_value; end
+
+      def mtd_value; end
+
+      def mtr_value; end
+
+      def msub_value; end
+
+      def msup_value; end
+
+      def mrow_value; end
+
+      def mover_value; end
+
+      def mtext_value; end
+
+      def mfrac_value; end
+
+      def mtable_value; end
+
+      def mstyle_value; end
+
+      def munder_value; end
+
+      def msubsup_value; end
+
+      def munderover_value; end
+
+      def table_row_expression; end
+
+      def table_row_expression=(value)
+        return if value.nil? || value.empty?
+
+        raise_development_error(value)
+      end
+
+      def table_cell_expression; end
+
+      def table_cell_expression=(value)
+        return if value.nil? || value.empty?
+
+        raise_development_error(value)
+      end
+
       def mi; end
 
       def mo; end
@@ -51,18 +112,9 @@ module Plurimath
 
       def mathbackground=(value); end
 
-      def mathvariant
-        @mathvariant
-      end
+      def mathvariant; end
 
-      def mathvariant=(value)
-        return if value.nil? || value.empty?
-
-        Plurimath::Utility::FONT_STYLES[value.to_sym].new(
-          nil,
-          value
-        )
-      end
+      def mathvariant=(value); end
 
       def mathsize; end
 
@@ -440,6 +492,184 @@ module Plurimath
 
       def veryverythickmathspace=(value); end
 
+      def mi_value=(value)
+        return if value.nil? || value.empty?
+
+        self.temp_mathml_order = replace_order_with_value(
+          self.temp_mathml_order,
+          validate_symbols(value),
+          "mi"
+        )
+      end
+
+      def mo_value=(value)
+        return if value.nil? || value.empty?
+
+        self.temp_mathml_order = replace_order_with_value(
+          self.temp_mathml_order,
+          validate_symbols(value),
+          "mo"
+        )
+      end
+
+      def mn_value=(value)
+        return if value.nil? || value.empty?
+
+        self.temp_mathml_order = replace_order_with_value(
+          self.temp_mathml_order,
+          validate_symbols(value),
+          "mn"
+        )
+      end
+
+      def ms_value=(value)
+        return if value.nil? || value.empty?
+
+        self.temp_mathml_order = replace_order_with_value(
+          self.temp_mathml_order,
+          Array(value),
+          "ms"
+        )
+      end
+
+      def mtext_value=(value)
+        return if value.nil? || value.empty?
+
+        self.temp_mathml_order = replace_order_with_value(
+          self.temp_mathml_order,
+          Array(value),
+          "mtext"
+        )
+      end
+
+      def mrow_value=(value)
+        return if value.nil? || value.empty?
+
+        self.temp_mathml_order = replace_order_with_value(
+          self.temp_mathml_order,
+          value,
+          "mrow"
+        )
+      end
+
+      def mstyle_value=(value)
+        return if value.nil? || value.empty?
+
+        self.temp_mathml_order = replace_order_with_value(
+          self.temp_mathml_order,
+          Array(value),
+          "mstyle"
+        )
+      end
+
+      def mfrac_value=(value)
+        return if value.nil? || value.empty?
+
+        self.temp_mathml_order = replace_order_with_value(
+          self.temp_mathml_order,
+          Array(update_temp_mathml_values(value)),
+          "mfrac"
+        )
+      end
+
+      def munderover_value=(value)
+        return if value.nil? || value.empty?
+
+        self.temp_mathml_order = replace_order_with_value(
+          self.temp_mathml_order,
+          update_temp_mathml_values(value),
+          "munderover"
+        )
+      end
+
+      def msubsup_value=(value)
+        return if value.nil? || value.empty?
+
+        self.temp_mathml_order = replace_order_with_value(
+          self.temp_mathml_order,
+          update_temp_mathml_values(value),
+          "msubsup"
+        )
+      end
+
+      def munder_value=(value)
+        return if value.nil? || value.empty?
+
+        self.temp_mathml_order = replace_order_with_value(
+          self.temp_mathml_order,
+          Array(value),
+          "munder"
+        )
+      end
+
+      def mover_value=(value)
+        return if value.nil? || value.empty?
+
+        self.temp_mathml_order = replace_order_with_value(
+          self.temp_mathml_order,
+          Array(value),
+          "mover"
+        )
+      end
+
+      def msup_value=(value)
+        return if value.nil? || value.empty?
+
+        self.temp_mathml_order = replace_order_with_value(
+          self.temp_mathml_order,
+          Array(value),
+          "msup"
+        )
+      end
+
+      def msub_value=(value)
+        return if value.nil? || value.empty?
+
+        self.temp_mathml_order = replace_order_with_value(
+          self.temp_mathml_order,
+          Array(value),
+          "msub"
+        )
+      end
+
+      def mtable_value=(value)
+        return if value.nil? || value.empty?
+
+        if self.respond_to?(:value)
+          self.value = replace_order_with_value(
+            self.value,
+            Array(value),
+            "mtable"
+          )
+        else
+          self.temp_mathml_order = replace_order_with_value(
+            self.temp_mathml_order,
+            Array(value),
+            "mtable"
+          )
+        end
+      end
+
+      def mtd_value=(value)
+        return if value.nil? || value.empty?
+
+        self.parameter_one = replace_order_with_value(
+          self.temp_mathml_order,
+          Array(update_temp_mathml_values(value)),
+          "mtd"
+        )
+      end
+
+      def mtr_value=(value)
+        return if value.nil? || value.empty?
+
+        self.value = replace_order_with_value(
+          Array(self.temp_mathml_order),
+          Array(value),
+          "mtr"
+        )
+      end
+
       private
 
       # TODO: For testing purposes only and will/should be removed before release
@@ -452,10 +682,11 @@ module Plurimath
 
       def filter_values(value)
         return value unless value.is_a?(Array)
+        return value if value.empty?
 
         if value.length == 1 && value.all? { |val| val.is_a?(Math::Formula) }
           value.first.value
-        elsif value.length == 2 && value.first.is_ternary_function?
+        elsif value_is_ternary_or_nary?(value)
           value.first.parameter_three = value.pop
           value
         else
@@ -502,14 +733,22 @@ module Plurimath
         end
       end
 
-      def update_underover(value)
+      def update_temp_mathml_values(value)
         value.each_with_index do |element, index|
           next unless element.respond_to?(:temp_mathml_order)
+          next if element.temp_mathml_order.empty?
+          next unless element.is_binary_function? || element.is_ternary_function?
 
           if element.is_ternary_function?
             next if element.temp_mathml_order.empty?
 
             if element.temp_mathml_order[0]&.is_ternary_function? &&
+                !element.temp_mathml_order[0].any_value_exist?
+              new_element = element.temp_mathml_order.shift
+              new_element.parameter_one = element.temp_mathml_order.shift
+              new_element.parameter_two = element.temp_mathml_order.shift
+              value[index] = new_element
+            elsif element.temp_mathml_order[0]&.is_binary_function? &&
                 !element.temp_mathml_order[0].any_value_exist?
               new_element = element.temp_mathml_order.shift
               new_element.parameter_one = element.temp_mathml_order.shift
@@ -523,8 +762,14 @@ module Plurimath
           elsif element.is_binary_function?
             next if element.temp_mathml_order.empty?
 
-            element.parameter_one = element.temp_mathml_order.shift
-            element.parameter_two = element.temp_mathml_order.shift
+            case element
+            when Math::Function::Overset
+              element.parameter_two = element.temp_mathml_order.shift
+              element.parameter_one = element.temp_mathml_order.shift
+            else
+              element.parameter_one = element.temp_mathml_order.shift
+              element.parameter_two = element.temp_mathml_order.shift
+            end
           end
         end
         value
@@ -532,6 +777,10 @@ module Plurimath
 
       def validated_order(order)
         order.reject { |str| str == "text" }
+      end
+
+      def value_is_ternary_or_nary?(value)
+        value.length == 2 && value.first.is_ternary_function?
       end
     end
   end

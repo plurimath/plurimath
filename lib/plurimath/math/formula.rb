@@ -313,68 +313,106 @@ module Plurimath
         update(
           replace_order_with_value(
             self.value,
-            update_underover(value),
+            filter_values(value),
+            "mrow"
+          )
+        )
+      end
+
+      def mstyle_value=(value)
+        return if value.empty?
+
+        update(
+          filter_values(
+            replace_order_with_value(
+              self.value,
+              Array(value),
+              "mstyle"
+            )
+          )
+        )
+      end
+
+      def munderover_value=(value)
+        return if value.nil? || value.empty?
+
+        update(
+          replace_order_with_value(
+            self.value,
+            update_temp_mathml_values(value),
             "munderover"
           )
         )
       end
 
-      def msub=(value)
+      def msub_value=(value)
         return if value.nil? || value.empty?
 
         update(
           replace_order_with_value(
             self.value,
-            update_underover(value),
+            update_temp_mathml_values(value),
             "msub"
           )
         )
       end
 
-      def msup=(value)
+      def msup_value=(value)
         return if value.nil? || value.empty?
 
         update(
           replace_order_with_value(
             self.value,
-            update_underover(value),
+            update_temp_mathml_values(value),
             "msup"
           )
         )
       end
 
-      def mover=(value)
+      def mover_value=(value)
         return if value.nil? || value.empty?
 
         update(
           replace_order_with_value(
             self.value,
-            update_underover(value),
+            update_temp_mathml_values(value),
             "mover"
           )
         )
       end
 
-      def munder=(value)
+      def munder_value=(value)
         return if value.nil? || value.empty?
 
         update(
           replace_order_with_value(
             self.value,
-            update_underover(value),
+            update_temp_mathml_values(value),
             "munder"
           )
         )
       end
 
-      def msubsup=(value)
+      def msubsup_value=(value)
         return if value.nil? || value.empty?
 
         update(
           replace_order_with_value(
             self.value,
-            update_underover(value),
+            update_temp_mathml_values(value),
             "msubsup"
+          )
+        )
+      end
+
+      def mfrac_value=(value)
+        return if value.nil? || value.empty?
+
+        update(
+          replace_order_with_value(
+            self.value,
+            update_temp_mathml_values(value),
+            "mfrac"
           )
         )
       end
