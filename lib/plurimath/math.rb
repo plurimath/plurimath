@@ -26,6 +26,8 @@ require "yaml"
 module Plurimath
   module Math
     class ParseError < StandardError; end
+    # TODO: For testing purposes only and will/should be removed before release
+    class DevelopmentError < NotImplementedError; end
     class InvalidTypeError < TypeError; end
 
     VALID_TYPES = {
