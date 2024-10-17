@@ -1,11 +1,14 @@
 # frozen_string_literal: true
 
 require_relative "unary_function"
+require_relative "../../mathml/utility"
 
 module Plurimath
   module Math
     module Function
       class Sqrt < UnaryFunction
+        include Mathml::Utility
+
         attr_accessor :options
 
         def to_mathml_without_math_tag(intent, options:)

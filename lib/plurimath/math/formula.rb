@@ -307,15 +307,47 @@ module Plurimath
         }
       end
 
-      def munderover=(value)
+      def element_order=(value)
+        self.value = validated_order(value)
+      end
+
+      def mi_value=(value)
         return if value.nil? || value.empty?
 
-        update(
-          replace_order_with_value(
-            self.value,
-            filter_values(value),
-            "mrow"
-          )
+        self.value = replace_order_with_value(
+          self.value,
+          Array(validate_symbols(value)),
+          "mi"
+        )
+      end
+
+      def mn_value=(value)
+        return if value.nil? || value.empty?
+
+        self.value = replace_order_with_value(
+          self.value,
+          Array(validate_symbols(value)),
+          "mn"
+        )
+      end
+
+      def mtext_value=(value)
+        return if value.nil? || value.empty?
+
+        self.value = replace_order_with_value(
+          self.value,
+          Array(validate_symbols(value)),
+          "mtext"
+        )
+      end
+
+      def mo_value=(value)
+        return if value.nil? || value.empty?
+
+        self.value = replace_order_with_value(
+          self.value,
+          Array(validate_symbols(value)),
+          "mo"
         )
       end
 
@@ -413,6 +445,18 @@ module Plurimath
             self.value,
             update_temp_mathml_values(value),
             "mfrac"
+          )
+        )
+      end
+
+      def msqrt_value=(value)
+        return if value.nil? || value.empty?
+
+        update(
+          replace_order_with_value(
+            self.value,
+            update_temp_mathml_values(value),
+            "msqrt"
           )
         )
       end

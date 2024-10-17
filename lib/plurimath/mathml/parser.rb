@@ -53,6 +53,7 @@ module Plurimath
           mtable: Plurimath::Math::Function::Table,
           mstyle: Plurimath::Math::Formula,
           mover: Plurimath::Math::Function::Overset,
+          msqrt: Plurimath::Math::Function::Sqrt,
           mtext: Plurimath::Math::Function::Text,
           mfrac: Plurimath::Math::Function::Frac,
           msub: Plurimath::Math::Function::Base,

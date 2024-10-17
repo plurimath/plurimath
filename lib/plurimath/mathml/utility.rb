@@ -6,12 +6,7 @@ module Plurimath
       self.attr_accessor :temp_mathml_order
 
       def element_order=(value)
-        order = validated_order(value)
-        if is_a?(Math::Formula)
-          self.value = order
-        elsif !Plurimath::Utility::TEXT_CLASSES.include?(self.class_name)
-          self.temp_mathml_order = order
-        end
+        self.temp_mathml_order = validated_order(value)
       end
 
       def mi_value; end
@@ -37,6 +32,8 @@ module Plurimath
       def mtext_value; end
 
       def mfrac_value; end
+
+      def msqrt_value; end
 
       def mtable_value; end
 
@@ -670,6 +667,16 @@ module Plurimath
         )
       end
 
+      def msqrt_value=(value)
+        return if value.nil? || value.empty?
+
+        self.temp_mathml_order = replace_order_with_value(
+          Array(self.temp_mathml_order),
+          Array(value),
+          "msqrt"
+        )
+      end
+
       private
 
       # TODO: For testing purposes only and will/should be removed before release
@@ -766,6 +773,9 @@ module Plurimath
             when Math::Function::Overset
               element.parameter_two = element.temp_mathml_order.shift
               element.parameter_one = element.temp_mathml_order.shift
+            when Math::Function::Td
+              element.parameter_one = element.temp_mathml_order.dup
+              element.temp_mathml_order.clear
             else
               element.parameter_one = element.temp_mathml_order.shift
               element.parameter_two = element.temp_mathml_order.shift
