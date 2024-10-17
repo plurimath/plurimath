@@ -334,20 +334,24 @@ module Plurimath
       def mtext_value=(value)
         return if value.nil? || value.empty?
 
-        self.value = replace_order_with_value(
-          self.value,
-          Array(validate_symbols(value)),
-          "mtext"
+        update(
+          replace_order_with_value(
+            self.value,
+            Array(validate_symbols(value)),
+            "mtext"
+          )
         )
       end
 
       def mo_value=(value)
         return if value.nil? || value.empty?
 
-        self.value = replace_order_with_value(
-          self.value,
-          Array(validate_symbols(value)),
-          "mo"
+        update(
+          replace_order_with_value(
+            self.value,
+            Array(validate_symbols(value)),
+            "mo"
+          )
         )
       end
 
@@ -360,6 +364,20 @@ module Plurimath
               self.value,
               Array(value),
               "mstyle"
+            )
+          )
+        )
+      end
+
+      def mrow_value=(value)
+        return if value.nil? || value.empty?
+
+        update(
+          filter_value(
+            replace_order_with_value(
+              self.value,
+              value,
+              "mrow"
             )
           )
         )
@@ -457,6 +475,18 @@ module Plurimath
             self.value,
             update_temp_mathml_values(value),
             "msqrt"
+          )
+        )
+      end
+
+      def mfenced_value=(value)
+        return if value.nil? || value.empty?
+
+        update(
+          replace_order_with_value(
+            self.value,
+            update_temp_mathml_values(value),
+            "mfenced"
           )
         )
       end

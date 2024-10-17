@@ -90,6 +90,16 @@ module Plurimath
           parameter_one.is_nary_function? || parameter_one.is_nary_symbol?
         end
 
+        def mrow_value=(value)
+          return if value.nil? || value.empty?
+
+          self.temp_mathml_order = replace_order_with_value(
+            self.temp_mathml_order,
+            value,
+            "mrow"
+          )
+        end
+
         protected
 
         def accented?(field)

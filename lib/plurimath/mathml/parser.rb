@@ -50,6 +50,8 @@ module Plurimath
         ::Mml::Configuration.config = {
           munderover: Plurimath::Math::Function::Underover,
           msubsup: Plurimath::Math::Function::PowerBase,
+          mfenced: Plurimath::Math::Function::Fenced,
+          munder: Plurimath::Math::Function::Underset,
           mtable: Plurimath::Math::Function::Table,
           mstyle: Plurimath::Math::Formula,
           mover: Plurimath::Math::Function::Overset,

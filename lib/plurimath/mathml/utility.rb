@@ -43,6 +43,8 @@ module Plurimath
 
       def msubsup_value; end
 
+      def mfenced_value; end
+
       def munderover_value; end
 
       def table_row_expression; end
@@ -655,6 +657,7 @@ module Plurimath
           Array(update_temp_mathml_values(value)),
           "mtd"
         )
+        self.temp_mathml_order.clear
       end
 
       def mtr_value=(value)
@@ -665,6 +668,7 @@ module Plurimath
           Array(value),
           "mtr"
         )
+        self.temp_mathml_order.clear
       end
 
       def msqrt_value=(value)
@@ -674,6 +678,16 @@ module Plurimath
           Array(self.temp_mathml_order),
           Array(value),
           "msqrt"
+        )
+      end
+
+      def mfenced_value=(value)
+        return if value.nil? || value.empty?
+
+        self.temp_mathml_order = replace_order_with_value(
+          Array(self.temp_mathml_order),
+          Array(value),
+          "mfenced"
         )
       end
 
@@ -687,15 +701,21 @@ module Plurimath
                                                                      1)[0].label}"
       end
 
-      def filter_values(value)
+      def filter_values(value, array_to_instance: false)
         return value unless value.is_a?(Array)
         return value if value.empty?
 
         if value.length == 1 && value.all? { |val| val.is_a?(Math::Formula) }
-          value.first.value
+          if array_to_instance
+            filter_values(value.first.value, array_to_instance: true)
+          else
+            value.first.value
+          end
         elsif value_is_ternary_or_nary?(value)
           value.first.parameter_three = value.pop
           value
+        elsif array_to_instance
+          value.length > 1 ? Math::Formula.new(value) : value.first
         else
           value
         end
@@ -715,6 +735,11 @@ module Plurimath
         when Math::Symbols::Symbol
           value = Plurimath::Utility.mathml_unary_classes(
             Array(value.value),
+            lang: :mathml,
+          )
+        when String
+          value = Plurimath::Utility.mathml_unary_classes(
+            Array(value),
             lang: :mathml,
           )
         else
@@ -744,7 +769,9 @@ module Plurimath
         value.each_with_index do |element, index|
           next unless element.respond_to?(:temp_mathml_order)
           next if element.temp_mathml_order.empty?
-          next unless element.is_binary_function? || element.is_ternary_function?
+          next unless element.is_binary_function? ||
+            element.is_ternary_function? ||
+            element.is_unary?
 
           if element.is_ternary_function?
             next if element.temp_mathml_order.empty?
@@ -773,12 +800,28 @@ module Plurimath
             when Math::Function::Overset
               element.parameter_two = element.temp_mathml_order.shift
               element.parameter_one = element.temp_mathml_order.shift
+            when Math::Function::Power
+              element.parameter_one = filter_values(
+                Array(element.temp_mathml_order.shift),
+                array_to_instance: true
+              )
+              element.parameter_two = filter_values(
+                Array(element.temp_mathml_order.shift),
+                array_to_instance: true
+              )
             when Math::Function::Td
               element.parameter_one = element.temp_mathml_order.dup
               element.temp_mathml_order.clear
             else
               element.parameter_one = element.temp_mathml_order.shift
               element.parameter_two = element.temp_mathml_order.shift
+            end
+          elsif element.is_unary?
+            case element
+            when Math::Function::Sqrt
+              element.parameter_one = element.temp_mathml_order.shift
+            else
+              element.parameter_one = element.temp_mathml_order
             end
           end
         end

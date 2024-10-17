@@ -141,6 +141,15 @@ module Plurimath
           }
         end
 
+        def columnlines=(value)
+          return if value.nil? || value.empty?
+
+          Plurimath::Utility.table_separator(
+            value.split,
+            self.value,
+          )
+        end
+
         protected
 
         def mathml_parenthesis(field, intent, options:)
