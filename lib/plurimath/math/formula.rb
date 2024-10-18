@@ -311,6 +311,21 @@ module Plurimath
         self.value = validated_order(value)
       end
 
+      # Attributes start
+      def mathcolor=(value)
+        return if value.nil? || value.empty?
+
+        update(
+          [
+            Math::Function::Color.new(
+              Math::Function::Text.new(value),
+              filter_values(self.value, array_to_instance: true),
+            )
+          ]
+        )
+      end
+      # Attributes end
+
       def mi_value=(value)
         return if value.nil? || value.empty?
 
@@ -319,6 +334,7 @@ module Plurimath
           Array(validate_symbols(value)),
           "mi"
         )
+        organize_value
       end
 
       def mn_value=(value)
@@ -362,7 +378,7 @@ module Plurimath
           filter_values(
             replace_order_with_value(
               self.value,
-              Array(value),
+              Array(filter_values(value, array_to_instance: true)),
               "mstyle"
             )
           )
@@ -465,6 +481,7 @@ module Plurimath
             "mfrac"
           )
         )
+        organize_value
       end
 
       def msqrt_value=(value)
@@ -491,7 +508,37 @@ module Plurimath
         )
       end
 
+      def mroot_value=(value)
+        return if value.nil? || value.empty?
+
+        update(
+          replace_order_with_value(
+            self.value,
+            update_temp_mathml_values(value),
+            "mroot"
+          )
+        )
+      end
+
       protected
+
+      def organize_value
+        return if value.any? { |val| val.is_a?(String) }
+
+        value.each_with_index do |element, index|
+          if element.is_unary? && value.length == 2
+            case element
+            when Math::Function::Sin
+              new_element = value.shift
+              new_element.parameter_one = filter_values(
+                value,
+                array_to_instance: true
+              )
+              value[index] = new_element
+            end
+          end
+        end
+      end
 
       def remove_order(order)
         value.delete_if { |val| val.is_a?(String) && val == order }

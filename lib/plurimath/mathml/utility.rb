@@ -27,6 +27,8 @@ module Plurimath
 
       def mrow_value; end
 
+      def mroot_value; end
+
       def mover_value; end
 
       def mtext_value; end
@@ -691,6 +693,16 @@ module Plurimath
         )
       end
 
+      def mroot_value=(value)
+        return if value.nil? || value.empty?
+
+        self.temp_mathml_order = replace_order_with_value(
+          Array(self.temp_mathml_order),
+          Array(update_temp_mathml_values(value)),
+          "mroot"
+        )
+      end
+
       private
 
       # TODO: For testing purposes only and will/should be removed before release
@@ -768,7 +780,7 @@ module Plurimath
       def update_temp_mathml_values(value)
         value.each_with_index do |element, index|
           next unless element.respond_to?(:temp_mathml_order)
-          next if element.temp_mathml_order.empty?
+          next if element.temp_mathml_order && element.temp_mathml_order.empty?
           next unless element.is_binary_function? ||
             element.is_ternary_function? ||
             element.is_unary?
@@ -798,8 +810,28 @@ module Plurimath
 
             case element
             when Math::Function::Overset
-              element.parameter_two = element.temp_mathml_order.shift
-              element.parameter_one = element.temp_mathml_order.shift
+              if element.temp_mathml_order[1].is_a?(Math::Function::Ubrace)
+                new_element = element.temp_mathml_order.pop
+                new_element.parameter_one = element.temp_mathml_order.shift
+                value[index] = new_element
+              else
+                element.parameter_two = element.temp_mathml_order.shift
+                element.parameter_one = element.temp_mathml_order.shift
+              end
+            when Math::Function::Underset
+              if element.temp_mathml_order[0]&.is_ternary_function? &&
+                  !element.temp_mathml_order[0].any_value_exist?
+                new_element = element.temp_mathml_order.shift
+                new_element.parameter_one = element.temp_mathml_order.shift
+                value[index] = new_element
+              elsif element.temp_mathml_order[1].is_a?(Math::Function::Obrace)
+                new_element = element.temp_mathml_order.pop
+                new_element.parameter_one = element.temp_mathml_order.shift
+                value[index] = new_element
+              else
+                element.parameter_two = element.temp_mathml_order.shift
+                element.parameter_one = element.temp_mathml_order.shift
+              end
             when Math::Function::Power
               element.parameter_one = filter_values(
                 Array(element.temp_mathml_order.shift),
@@ -812,6 +844,9 @@ module Plurimath
             when Math::Function::Td
               element.parameter_one = element.temp_mathml_order.dup
               element.temp_mathml_order.clear
+            when Math::Function::Root
+              element.parameter_two = element.temp_mathml_order.shift
+              element.parameter_one = element.temp_mathml_order.shift
             else
               element.parameter_one = element.temp_mathml_order.shift
               element.parameter_two = element.temp_mathml_order.shift
@@ -820,6 +855,13 @@ module Plurimath
             case element
             when Math::Function::Sqrt
               element.parameter_one = element.temp_mathml_order.shift
+            when Math::Function::Sin
+              new_element = element.temp_mathml_order.shift
+              element.parameter_one = filter_values(
+                Array(element.temp_mathml_order.shift),
+                array_to_instance: true
+              )
+              value[index] = new_element
             else
               element.parameter_one = element.temp_mathml_order
             end
