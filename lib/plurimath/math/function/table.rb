@@ -1,9 +1,13 @@
 # frozen_string_literal: true
 
+require_relative "../../mathml/utility"
+
 module Plurimath
   module Math
     module Function
       class Table < Core
+        include Mathml::Utility
+
         attr_accessor :value, :open_paren, :close_paren, :options
 
         SIMPLE_TABLES = %w[array align split].freeze
@@ -135,6 +139,15 @@ module Plurimath
             equations: ":equations",
             cases: ":cases",
           }
+        end
+
+        def columnlines=(value)
+          return if value.nil? || value.empty?
+
+          Plurimath::Utility.table_separator(
+            value.split,
+            self.value,
+          )
         end
 
         protected

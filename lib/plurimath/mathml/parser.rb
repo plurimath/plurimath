@@ -2,6 +2,8 @@
 
 require_relative "constants"
 require_relative "transform"
+require "mml/configuration"
+
 module Plurimath
   class Mathml
     class Parser
@@ -34,20 +36,41 @@ module Plurimath
       ].freeze
 
       def initialize(text)
+        mml_config
         @text = text
       end
 
       def parse
-        ox_nodes = Plurimath.xml_engine.load(text)
-        display_style = ox_nodes&.locate("mstyle/@displaystyle")&.first
-        nodes = parse_nodes(Array(ox_nodes))
-        Math::Formula.new(
-          Transform.new.apply(nodes).flatten.compact,
-          display_style: (display_style || true),
-        )
+        ::Mml.parse(text)
       end
 
       protected
+
+      def mml_config
+        ::Mml::Configuration.config = {
+          munderover: Plurimath::Math::Function::Underover,
+          msubsup: Plurimath::Math::Function::PowerBase,
+          mfenced: Plurimath::Math::Function::Fenced,
+          munder: Plurimath::Math::Function::Underset,
+          mtable: Plurimath::Math::Function::Table,
+          mstyle: Plurimath::Math::Formula,
+          mover: Plurimath::Math::Function::Overset,
+          msqrt: Plurimath::Math::Function::Sqrt,
+          mroot: Plurimath::Math::Function::Root,
+          mtext: Plurimath::Math::Function::Text,
+          mfrac: Plurimath::Math::Function::Frac,
+          msub: Plurimath::Math::Function::Base,
+          msup: Plurimath::Math::Function::Power,
+          math: Plurimath::Math::Formula,
+          mrow: Plurimath::Math::Formula,
+          mtr: Plurimath::Math::Function::Tr,
+          mtd: Plurimath::Math::Function::Td,
+          mn: Plurimath::Math::Number,
+          mi: Plurimath::Math::Symbols::Symbol,
+          mo: Plurimath::Math::Symbols::Symbol,
+        }
+        require "mml" unless ::Mml.respond_to?(:config)
+      end
 
       def parse_nodes(nodes)
         nodes.map do |node|
@@ -100,7 +123,7 @@ module Plurimath
       end
 
       def comment_remove(nodes)
-        nodes.delete_if { |node| Plurimath.xml_engine.is_xml_comment?(node)  }
+        nodes.delete_if { |node| Plurimath.xml_engine.is_xml_comment?(node) }
       end
     end
   end

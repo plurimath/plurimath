@@ -1,11 +1,16 @@
 # frozen_string_literal: true
 
 require_relative "ternary_function"
+require_relative "../../mathml/utility"
 
 module Plurimath
   module Math
     module Function
       class PowerBase < TernaryFunction
+        include Mathml::Utility
+
+        attr_accessor :temp_mathml_order
+
         FUNCTION = {
           name: "subsup",
           first_value: "base",

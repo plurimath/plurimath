@@ -1,9 +1,13 @@
 # frozen_string_literal: true
 
+require_relative "../../mathml/utility"
+
 module Plurimath
   module Math
     module Symbols
       class Symbol < Core
+        include Mathml::Utility
+
         attr_accessor :value, :slashed, :mini_sub_sized, :mini_sup_sized, :options
 
         INPUT = {}.freeze
@@ -13,7 +17,7 @@ module Plurimath
                        mini_sub_sized: false,
                        mini_sup_sized: false,
                        options: {})
-          @value = sym.is_a?(Parslet::Slice) ? sym.to_s : sym
+          @value = sym
           @slashed = slashed if slashed
           @mini_sub_sized = mini_sub_sized if mini_sub_sized
           @mini_sup_sized = mini_sup_sized if mini_sup_sized
