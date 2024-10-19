@@ -324,6 +324,20 @@ module Plurimath
           ]
         )
       end
+
+      def mathvariant=(value)
+        return if value.nil? || value.empty?
+        return unless Plurimath::Utility::FONT_STYLES.key?(value.to_sym)
+
+        update(
+          [
+            Plurimath::Utility::FONT_STYLES[value.to_sym].new(
+              filter_values(self.value, array_to_instance: true),
+              value,
+            )
+          ]
+        )
+      end
       # Attributes end
 
       def mi_value=(value)
@@ -389,7 +403,7 @@ module Plurimath
         return if value.nil? || value.empty?
 
         update(
-          filter_value(
+          filter_values(
             replace_order_with_value(
               self.value,
               value,
@@ -520,10 +534,19 @@ module Plurimath
         )
       end
 
+      def is_mrow
+        @is_mrow
+      end
+
+      def is_mrow=(value)
+        @is_mrow = true
+      end
+
       protected
 
       def organize_value
         return if value.any? { |val| val.is_a?(String) }
+        return unless is_mrow
 
         value.each_with_index do |element, index|
           if element.is_unary? && value.length == 2

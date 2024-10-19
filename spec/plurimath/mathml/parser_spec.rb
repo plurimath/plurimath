@@ -1049,12 +1049,12 @@ RSpec.describe Plurimath::Mathml::Parser do
     }
     it "returns FontStyle with second value asci" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Function::Color.new(
-          Plurimath::Math::Function::Text.new("red"),
-          Plurimath::Math::Function::FontStyle::Fraktur.new(
+        Plurimath::Math::Function::FontStyle::Fraktur.new(
+          Plurimath::Math::Function::Color.new(
+            Plurimath::Math::Function::Text.new("red"),
             Plurimath::Math::Symbols::Symbol.new("d"),
-            "fraktur",
-          )
+          ),
+          "fraktur",
         )
       ])
       expect(formula).to eq(expected_value)

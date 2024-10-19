@@ -855,13 +855,6 @@ module Plurimath
             case element
             when Math::Function::Sqrt
               element.parameter_one = element.temp_mathml_order.shift
-            when Math::Function::Sin
-              new_element = element.temp_mathml_order.shift
-              element.parameter_one = filter_values(
-                Array(element.temp_mathml_order.shift),
-                array_to_instance: true
-              )
-              value[index] = new_element
             else
               element.parameter_one = element.temp_mathml_order
             end
