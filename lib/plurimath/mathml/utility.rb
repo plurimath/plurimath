@@ -35,9 +35,15 @@ module Plurimath
 
       def mfrac_value; end
 
+      def msrow_value; end
+
       def msqrt_value; end
 
+      def mspace_value; end
+
       def mtable_value; end
+
+      def msline_value; end
 
       def mstyle_value; end
 
@@ -45,7 +51,11 @@ module Plurimath
 
       def msubsup_value; end
 
+      def msgroup_value; end
+
       def mfenced_value; end
+
+      def mscarries_value; end
 
       def munderover_value; end
 
@@ -65,42 +75,6 @@ module Plurimath
         raise_development_error(value)
       end
 
-      def mi; end
-
-      def mo; end
-
-      def mstyle; end
-
-      def mrow; end
-
-      def mn; end
-
-      def ms; end
-
-      def mtext; end
-
-      def mfrac; end
-
-      def msqrt; end
-
-      def msub; end
-
-      def msubsup; end
-
-      def munderover; end
-
-      def munder; end
-
-      def mover; end
-
-      def msup; end
-
-      def mtable; end
-
-      def mtr; end
-
-      def mtd; end
-
       def malignmark; end
 
       def malignmark=(value); end
@@ -115,7 +89,17 @@ module Plurimath
 
       def mathvariant; end
 
-      def mathvariant=(value); end
+      def mathvariant=(value)
+        return if value.nil? || value.empty?
+        return unless Plurimath::Utility::FONT_STYLES.key?(value.to_sym)
+
+        self.temp_mathml_order = [
+          Plurimath::Utility::FONT_STYLES[value.to_sym].new(
+            nil,
+            value,
+          )
+        ]
+      end
 
       def mathsize; end
 
@@ -179,7 +163,15 @@ module Plurimath
 
       def accent; end
 
-      def accent=(value); end
+      def accent=(value)
+        return if value.nil? || value.empty?
+
+        if instance_variable_defined?("@options")
+          @options = Hash(@options).merge(accent: true)
+        else
+          @attributes = Hash(@attributes).merge(accent: true)
+        end
+      end
 
       def accentunder; end
 
@@ -306,6 +298,10 @@ module Plurimath
       def indenttarget=(value); end
 
       def largeop; end
+
+      def intent; end
+
+      def intent=(value); end
 
       def largeop=(value); end
 
@@ -546,8 +542,8 @@ module Plurimath
       def mrow_value=(value)
         return if value.nil? || value.empty?
 
-        self.temp_mathml_order = replace_order_with_value(
-          self.temp_mathml_order,
+        @temp_mathml_order = replace_order_with_value(
+          @temp_mathml_order,
           value,
           "mrow"
         )
@@ -703,6 +699,57 @@ module Plurimath
         )
       end
 
+      def msgroup_value=(value)
+        return if value.nil? || value.empty?
+
+        self.temp_mathml_order = replace_order_with_value(
+          self.temp_mathml_order,
+          Array(value),
+          "msgroup"
+        )
+      end
+
+      def mscarries_value=(value)
+        return if value.nil? || value.empty?
+
+        self.temp_mathml_order = replace_order_with_value(
+          self.temp_mathml_order,
+          Array(value),
+          "mscarries"
+        )
+      end
+
+      def msline_value=(value)
+        return if value.nil? || value.empty?
+
+        self.temp_mathml_order = replace_order_with_value(
+          self.temp_mathml_order,
+          Array(value),
+          "msline"
+        )
+      end
+
+      def msrow_value=(value)
+        return if value.nil? || value.empty?
+
+        self.temp_mathml_order = replace_order_with_value(
+          self.temp_mathml_order,
+          Array(value),
+          "msrow"
+        )
+      end
+
+      def mspace_value=(value)
+        return if value.nil? || value.empty?
+
+        target = case self
+                 when Math::Formula then @value
+                 when Math::Function::Fenced then @parameter_two
+                 else @temp_mathml_order
+                 end
+        target.delete("mspace")
+      end
+
       private
 
       # TODO: For testing purposes only and will/should be removed before release
@@ -780,22 +827,21 @@ module Plurimath
       def update_temp_mathml_values(value)
         value.each_with_index do |element, index|
           next unless element.respond_to?(:temp_mathml_order)
-          next if element.temp_mathml_order && element.temp_mathml_order.empty?
-          next unless element.is_binary_function? ||
-            element.is_ternary_function? ||
-            element.is_unary?
+          next unless element.temp_mathml_order&.any?
 
           if element.is_ternary_function?
-            next if element.temp_mathml_order.empty?
-
-            if element.temp_mathml_order[0]&.is_ternary_function? &&
-                !element.temp_mathml_order[0].any_value_exist?
-              new_element = element.temp_mathml_order.shift
-              new_element.parameter_one = element.temp_mathml_order.shift
-              new_element.parameter_two = element.temp_mathml_order.shift
+            if first_element_is_ternary_function?(element)
+              new_element = ternary_element_from(element.temp_mathml_order)
+              new_element.parameter_one = filter_values(
+                Array(element.temp_mathml_order.shift),
+                array_to_instance: true
+              )
+              new_element.parameter_two = filter_values(
+                Array(element.temp_mathml_order.shift),
+                array_to_instance: true
+              )
               value[index] = new_element
-            elsif element.temp_mathml_order[0]&.is_binary_function? &&
-                !element.temp_mathml_order[0].any_value_exist?
+            elsif first_element_is_binary_function?(element)
               new_element = element.temp_mathml_order.shift
               new_element.parameter_one = element.temp_mathml_order.shift
               new_element.parameter_two = element.temp_mathml_order.shift
@@ -806,13 +852,38 @@ module Plurimath
               element.parameter_three = element.temp_mathml_order.shift
             end
           elsif element.is_binary_function?
-            next if element.temp_mathml_order.empty?
-
             case element
             when Math::Function::Overset
               if element.temp_mathml_order[1].is_a?(Math::Function::Ubrace)
                 new_element = element.temp_mathml_order.pop
                 new_element.parameter_one = element.temp_mathml_order.shift
+                value[index] = new_element
+              elsif element.temp_mathml_order[1].is_a?(Math::Function::Hat)
+                new_element = element.temp_mathml_order.pop
+                new_element.parameter_one = filter_values(
+                  Array(element.temp_mathml_order.shift),
+                  array_to_instance: true
+                )
+                value[index] = new_element
+              elsif element.temp_mathml_order[1].is_a?(Math::Function::Ddot)
+                new_element = element.temp_mathml_order.pop
+                new_element.parameter_one = filter_values(
+                  Array(element.temp_mathml_order.shift),
+                  array_to_instance: true
+                )
+                new_element.attributes = element.options
+                value[index] = new_element
+              elsif period_or_dot?(element.temp_mathml_order[1])
+                new_element = period_to_dot(
+                  element.temp_mathml_order.pop,
+                  value,
+                  index
+                )
+                new_element.parameter_one = filter_values(
+                  Array(element.temp_mathml_order.shift),
+                  array_to_instance: true
+                )
+                new_element.attributes = element.options
                 value[index] = new_element
               else
                 element.parameter_two = element.temp_mathml_order.shift
@@ -841,6 +912,15 @@ module Plurimath
                 Array(element.temp_mathml_order.shift),
                 array_to_instance: true
               )
+            when Math::Function::Base
+              element.parameter_one = filter_values(
+                Array(element.temp_mathml_order.shift),
+                array_to_instance: true
+              )
+              element.parameter_two = filter_values(
+                Array(element.temp_mathml_order.shift),
+                array_to_instance: true
+              )
             when Math::Function::Td
               element.parameter_one = element.temp_mathml_order.dup
               element.temp_mathml_order.clear
@@ -856,7 +936,15 @@ module Plurimath
             when Math::Function::Sqrt
               element.parameter_one = element.temp_mathml_order.shift
             else
-              element.parameter_one = element.temp_mathml_order
+              element.parameter_one = element.temp_mathml_order.dup
+              element.temp_mathml_order.clear
+            end
+          elsif element.is_a?(Math::Symbols::Symbol)
+            new_element = element.temp_mathml_order.shift
+            case new_element
+            when Math::Function::FontStyle
+              new_element.parameter_one = validate_symbols(element)
+              value[index] = new_element
             end
           end
         end
@@ -868,7 +956,42 @@ module Plurimath
       end
 
       def value_is_ternary_or_nary?(value)
+        return if value.any? { |val| val.is_a?(String) }
+
         value.length == 2 && value.first.is_ternary_function?
+      end
+
+      def first_element_is_ternary_function?(element)
+        element.temp_mathml_order.first&.is_ternary_function? ||
+          filter_values(
+            [element.temp_mathml_order.first],
+            array_to_instance: true
+          )&.is_ternary_function?
+      end
+
+      def first_element_is_binary_function?(element)
+        element.temp_mathml_order.first&.is_binary_function? ||
+          filter_values(
+            [element.temp_mathml_order.first],
+            array_to_instance: true
+          )&.is_binary_function?
+      end
+
+      def ternary_element_from(order)
+        element = order.shift
+        return element if element.is_ternary_function?
+
+        filter_values([element], array_to_instance: true)
+      end
+
+      def period_or_dot?(element)
+        element.is_a?(Math::Symbols::Period) || element.is_a?(Math::Function::Dot)
+      end
+
+      def period_to_dot(element, value, index)
+        return unless element.is_a?(Math::Symbols::Period)
+
+        value[index] = Math::Function::Dot.new
       end
     end
   end

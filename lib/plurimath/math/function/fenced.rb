@@ -160,15 +160,27 @@ module Plurimath
           }
         end
 
+        def separators; end
+
+        def separators=(value)
+          return if value.nil?
+
+          @options[:separators] = value
+        end
+
         def open; end
 
         def close; end
 
         def open=(value)
+          return if value.nil?
+
           @parameter_one = validate_symbols(value)
         end
 
         def close=(value)
+          return if value.nil? || value.empty?
+
           self.parameter_three = validate_symbols(value)
         end
 
@@ -350,6 +362,20 @@ module Plurimath
               Array(@parameter_two),
               update_temp_mathml_values(value),
               "mtable"
+            )
+          )
+        end
+
+        def mrow_value=(value)
+          return if value.nil? || value.empty?
+
+          update(
+            replace_order_with_value(
+              Array(@parameter_two),
+              update_temp_mathml_values(
+                Array(filter_values(value, array_to_instance: true))
+              ),
+              "mrow"
             )
           )
         end

@@ -50,6 +50,7 @@ module Plurimath
         ::Mml::Configuration.config = {
           munderover: Plurimath::Math::Function::Underover,
           msubsup: Plurimath::Math::Function::PowerBase,
+          msgroup: Plurimath::Math::Function::Msgroup,
           mfenced: Plurimath::Math::Function::Fenced,
           munder: Plurimath::Math::Function::Underset,
           mtable: Plurimath::Math::Function::Table,
@@ -59,15 +60,15 @@ module Plurimath
           mroot: Plurimath::Math::Function::Root,
           mtext: Plurimath::Math::Function::Text,
           mfrac: Plurimath::Math::Function::Frac,
-          msub: Plurimath::Math::Function::Base,
           msup: Plurimath::Math::Function::Power,
+          msub: Plurimath::Math::Function::Base,
           math: Plurimath::Math::Formula,
           mrow: Plurimath::Math::Formula,
           mtr: Plurimath::Math::Function::Tr,
           mtd: Plurimath::Math::Function::Td,
-          mn: Plurimath::Math::Number,
           mi: Plurimath::Math::Symbols::Symbol,
           mo: Plurimath::Math::Symbols::Symbol,
+          mn: Plurimath::Math::Number,
         }
         require "mml" unless ::Mml.respond_to?(:config)
       end

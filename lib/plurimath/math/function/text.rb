@@ -12,6 +12,10 @@ module Plurimath
 
         PARSER_REGEX = %r{unicode\[:(?<unicode>\w{1,})\]}.freeze
 
+        def initialize(parameter_one = "")
+          super(parameter_one)
+        end
+
         def to_asciimath(**)
           "\"#{parse_text('asciimath') || parameter_one}\""
         end

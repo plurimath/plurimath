@@ -1,11 +1,14 @@
 # frozen_string_literal: true
 
 require_relative "unary_function"
+require_relative "../../mathml/utility"
 
 module Plurimath
   module Math
     module Function
       class Msgroup < UnaryFunction
+        include Mathml::Utility
+
         def to_asciimath(options:)
           parameter_one.map { |param| param.to_asciimath(options: options) }.join
         end
@@ -70,6 +73,14 @@ module Plurimath
 
         def line_breaking(obj)
           custom_array_line_breaking(obj)
+        end
+
+        def msgroup_text; end
+
+        def msgroup_text=(value)
+          return if value && value.none? { |element| element.match?(/[^\s]/) }
+
+          self.temp_mathml_order << Text.new(value.pop)
         end
       end
     end

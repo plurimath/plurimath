@@ -250,7 +250,7 @@ module Plurimath
       end
 
       def update(object)
-        self.value = Array(object)
+        self.value = Array(object.flatten.compact)
       end
 
       def cloned_objects
@@ -338,11 +338,27 @@ module Plurimath
           ]
         )
       end
+
+      def intent=(value)
+        return unless value
+
+        update(
+          [
+            Function::Intent.new(
+              filter_values(self.value, array_to_instance: true),
+              Function::Text.new(value),
+            )
+          ]
+        )
+      end
       # Attributes end
 
       def mi_value=(value)
         return if value.nil? || value.empty?
 
+        value = update_temp_mathml_values(value) if value.any? do |val|
+          val.is_a?(Math::Core) && val.temp_mathml_order.any?
+        end
         self.value = replace_order_with_value(
           self.value,
           Array(validate_symbols(value)),
@@ -403,12 +419,10 @@ module Plurimath
         return if value.nil? || value.empty?
 
         update(
-          filter_values(
-            replace_order_with_value(
-              self.value,
-              value,
-              "mrow"
-            )
+          replace_order_with_value(
+            self.value,
+            filter_values(Array(value), array_to_instance: true),
+            "mrow"
           )
         )
       end
@@ -515,7 +529,7 @@ module Plurimath
 
         update(
           replace_order_with_value(
-            self.value,
+            @value,
             update_temp_mathml_values(value),
             "mfenced"
           )
@@ -527,9 +541,57 @@ module Plurimath
 
         update(
           replace_order_with_value(
-            self.value,
+            @value,
             update_temp_mathml_values(value),
             "mroot"
+          )
+        )
+      end
+
+      def msgroup_value=(value)
+        return if value.nil? || value.empty?
+
+        update(
+          replace_order_with_value(
+            self.value,
+            update_temp_mathml_values(value),
+            "msgroup"
+          )
+        )
+      end
+
+      def mscarries_value=(value)
+        return if value.nil? || value.empty?
+
+        update(
+          replace_order_with_value(
+            self.value,
+            update_temp_mathml_values(value),
+            "mscarries"
+          )
+        )
+      end
+
+      def msline_value=(value)
+        return if value.nil? || value.empty?
+
+        update(
+          replace_order_with_value(
+            self.value,
+            update_temp_mathml_values(value),
+            "msline"
+          )
+        )
+      end
+
+      def msrow_value=(value)
+        return if value.nil? || value.empty?
+
+        update(
+          replace_order_with_value(
+            self.value,
+            update_temp_mathml_values(value),
+            "msrow"
           )
         )
       end
@@ -538,7 +600,7 @@ module Plurimath
         @is_mrow
       end
 
-      def is_mrow=(value)
+      def is_mrow=(_)
         @is_mrow = true
       end
 

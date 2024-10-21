@@ -81,6 +81,12 @@ module Plurimath
           parameter_two.is_nary_function? || parameter_two.is_nary_symbol?
         end
 
+        def accent=(value)
+          return unless value
+
+          @options = Hash(@options).merge(accent: value)
+        end
+
         protected
 
         def unicode_accent?(field)
