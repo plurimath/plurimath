@@ -1,8 +1,12 @@
 # frozen_string_literal: true
 
+require_relative "../mathml/utility"
+
 module Plurimath
   module Math
     class Formula < Core
+      include Mathml::Utility
+
       attr_accessor :value, :left_right_wrapper, :displaystyle, :input_string, :unitsml, :unitsml_xml
 
       MATH_ZONE_TYPES = %i[
@@ -246,7 +250,7 @@ module Plurimath
       end
 
       def update(object)
-        self.value = Array(object)
+        self.value = Array(object.flatten.compact)
       end
 
       def cloned_objects
@@ -292,7 +296,6 @@ module Plurimath
         update(Array(value) + values)
       end
 
-
       def mini_sized?
         true if value&.first&.mini_sized?
       end
@@ -304,7 +307,327 @@ module Plurimath
         }
       end
 
+      def element_order=(value)
+        self.value = validated_order(value)
+      end
+
+      # Attributes start
+      def mathcolor=(value)
+        return if value.nil? || value.empty?
+
+        update(
+          [
+            Math::Function::Color.new(
+              Math::Function::Text.new(value),
+              filter_values(self.value, array_to_instance: true),
+            )
+          ]
+        )
+      end
+
+      def mathvariant=(value)
+        return if value.nil? || value.empty?
+        return unless Plurimath::Utility::FONT_STYLES.key?(value.to_sym)
+
+        update(
+          [
+            Plurimath::Utility::FONT_STYLES[value.to_sym].new(
+              filter_values(self.value, array_to_instance: true),
+              value,
+            )
+          ]
+        )
+      end
+
+      def intent=(value)
+        return unless value
+
+        update(
+          [
+            Function::Intent.new(
+              filter_values(self.value, array_to_instance: true),
+              Function::Text.new(value),
+            )
+          ]
+        )
+      end
+      # Attributes end
+
+      def mi_value=(value)
+        return if value.nil? || value.empty?
+
+        value = update_temp_mathml_values(value) if value.any? do |val|
+          val.is_a?(Math::Core) && val.temp_mathml_order.any?
+        end
+        self.value = replace_order_with_value(
+          self.value,
+          Array(validate_symbols(value)),
+          "mi"
+        )
+        organize_value
+      end
+
+      def mn_value=(value)
+        return if value.nil? || value.empty?
+
+        self.value = replace_order_with_value(
+          self.value,
+          Array(validate_symbols(value)),
+          "mn"
+        )
+      end
+
+      def mtext_value=(value)
+        return if value.nil? || value.empty?
+
+        update(
+          replace_order_with_value(
+            self.value,
+            Array(validate_symbols(value)),
+            "mtext"
+          )
+        )
+      end
+
+      def mo_value=(value)
+        return if value.nil? || value.empty?
+
+        update(
+          replace_order_with_value(
+            self.value,
+            Array(validate_symbols(value)),
+            "mo"
+          )
+        )
+      end
+
+      def mstyle_value=(value)
+        return if value.empty?
+
+        update(
+          filter_values(
+            replace_order_with_value(
+              self.value,
+              Array(filter_values(value, array_to_instance: true)),
+              "mstyle"
+            )
+          )
+        )
+      end
+
+      def mrow_value=(value)
+        return if value.nil? || value.empty?
+
+        update(
+          replace_order_with_value(
+            self.value,
+            filter_values(Array(value), array_to_instance: true),
+            "mrow"
+          )
+        )
+      end
+
+      def munderover_value=(value)
+        return if value.nil? || value.empty?
+
+        update(
+          replace_order_with_value(
+            self.value,
+            update_temp_mathml_values(value),
+            "munderover"
+          )
+        )
+      end
+
+      def msub_value=(value)
+        return if value.nil? || value.empty?
+
+        update(
+          replace_order_with_value(
+            self.value,
+            update_temp_mathml_values(value),
+            "msub"
+          )
+        )
+      end
+
+      def msup_value=(value)
+        return if value.nil? || value.empty?
+
+        update(
+          replace_order_with_value(
+            self.value,
+            update_temp_mathml_values(value),
+            "msup"
+          )
+        )
+      end
+
+      def mover_value=(value)
+        return if value.nil? || value.empty?
+
+        update(
+          replace_order_with_value(
+            self.value,
+            update_temp_mathml_values(value),
+            "mover"
+          )
+        )
+      end
+
+      def munder_value=(value)
+        return if value.nil? || value.empty?
+
+        update(
+          replace_order_with_value(
+            self.value,
+            update_temp_mathml_values(value),
+            "munder"
+          )
+        )
+      end
+
+      def msubsup_value=(value)
+        return if value.nil? || value.empty?
+
+        update(
+          replace_order_with_value(
+            self.value,
+            update_temp_mathml_values(value),
+            "msubsup"
+          )
+        )
+      end
+
+      def mfrac_value=(value)
+        return if value.nil? || value.empty?
+
+        update(
+          replace_order_with_value(
+            self.value,
+            update_temp_mathml_values(value),
+            "mfrac"
+          )
+        )
+        organize_value
+      end
+
+      def msqrt_value=(value)
+        return if value.nil? || value.empty?
+
+        update(
+          replace_order_with_value(
+            self.value,
+            update_temp_mathml_values(value),
+            "msqrt"
+          )
+        )
+      end
+
+      def mfenced_value=(value)
+        return if value.nil? || value.empty?
+
+        update(
+          replace_order_with_value(
+            @value,
+            update_temp_mathml_values(value),
+            "mfenced"
+          )
+        )
+      end
+
+      def mroot_value=(value)
+        return if value.nil? || value.empty?
+
+        update(
+          replace_order_with_value(
+            @value,
+            update_temp_mathml_values(value),
+            "mroot"
+          )
+        )
+      end
+
+      def msgroup_value=(value)
+        return if value.nil? || value.empty?
+
+        update(
+          replace_order_with_value(
+            self.value,
+            update_temp_mathml_values(value),
+            "msgroup"
+          )
+        )
+      end
+
+      def mscarries_value=(value)
+        return if value.nil? || value.empty?
+
+        update(
+          replace_order_with_value(
+            self.value,
+            update_temp_mathml_values(value),
+            "mscarries"
+          )
+        )
+      end
+
+      def msline_value=(value)
+        return if value.nil? || value.empty?
+
+        update(
+          replace_order_with_value(
+            self.value,
+            update_temp_mathml_values(value),
+            "msline"
+          )
+        )
+      end
+
+      def msrow_value=(value)
+        return if value.nil? || value.empty?
+
+        update(
+          replace_order_with_value(
+            self.value,
+            update_temp_mathml_values(value),
+            "msrow"
+          )
+        )
+      end
+
+      def is_mrow
+        @is_mrow
+      end
+
+      def is_mrow=(_)
+        @is_mrow = true
+      end
+
       protected
+
+      def organize_value
+        return if value.any? { |val| val.is_a?(String) }
+        return unless is_mrow
+
+        value.each_with_index do |element, index|
+          if element.is_unary? && value.length == 2
+            case element
+            when Math::Function::Sin
+              new_element = value.shift
+              new_element.parameter_one = filter_values(
+                value,
+                array_to_instance: true
+              )
+              value[index] = new_element
+            end
+          end
+        end
+      end
+
+      def remove_order(order)
+        value.delete_if { |val| val.is_a?(String) && val == order }
+      end
 
       def boolean_display_style(display_style = displaystyle)
         YAML.safe_load(display_style.to_s)
@@ -561,7 +884,7 @@ module Plurimath
             mrow_nodes << nodes.delete_at(1)
             next
           when "mrow"
-            second_arg = mrow_nodes.map { |node| encode(node.nodes.first) }.join
+            second_arg = mrow_nodes.map { |n| encode(n.nodes.first) }.join
             third_arg  = upcase_dd_intent_name(node.nodes[1..-2])
             mrow_nodes << nodes.delete_at(1)
             break

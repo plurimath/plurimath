@@ -1,11 +1,14 @@
 # frozen_string_literal: true
 
 require_relative "ternary_function"
+require_relative "../../mathml/utility"
 
 module Plurimath
   module Math
     module Function
       class Fenced < TernaryFunction
+        include Mathml::Utility
+
         attr_accessor :options
 
         def initialize(
@@ -157,7 +160,239 @@ module Plurimath
           }
         end
 
+        def separators; end
+
+        def separators=(value)
+          return if value.nil?
+
+          @options[:separators] = value
+        end
+
+        def open; end
+
+        def close; end
+
+        def open=(value)
+          return if value.nil?
+
+          @parameter_one = validate_symbols(value)
+        end
+
+        def close=(value)
+          return if value.nil? || value.empty?
+
+          self.parameter_three = validate_symbols(value)
+        end
+
+        def element_order=(value)
+          @parameter_two = validated_order(value)
+        end
+
+        def mi_value=(value)
+          return if value.nil? || value.empty?
+
+          @parameter_two = replace_order_with_value(
+            @parameter_two,
+            Array(validate_symbols(value)),
+            "mi"
+          )
+        end
+
+        def mn_value=(value)
+          return if value.nil? || value.empty?
+
+          update(
+            replace_order_with_value(
+              @parameter_two,
+              Array(validate_symbols(value)),
+              "mn"
+            )
+          )
+        end
+
+        def mtext_value=(value)
+          return if value.nil? || value.empty?
+
+          update(
+            replace_order_with_value(
+              @parameter_two,
+              Array(validate_symbols(value)),
+              "mtext"
+            )
+          )
+        end
+
+        def mo_value=(value)
+          return if value.nil? || value.empty?
+
+          update(
+            replace_order_with_value(
+              @parameter_two,
+              Array(validate_symbols(value)),
+              "mo"
+            )
+          )
+        end
+
+        def mstyle_value=(value)
+          return if value.empty?
+
+          update(
+            replace_order_with_value(
+              @parameter_two,
+              Array(value),
+              "mstyle"
+            )
+          )
+        end
+
+        def munderover_value=(value)
+          return if value.nil? || value.empty?
+
+          update(
+            replace_order_with_value(
+              @parameter_two,
+              update_temp_mathml_values(value),
+              "munderover"
+            )
+          )
+        end
+
+        def msub_value=(value)
+          return if value.nil? || value.empty?
+
+          update(
+            replace_order_with_value(
+              @parameter_two,
+              update_temp_mathml_values(value),
+              "msub"
+            )
+          )
+        end
+
+        def msup_value=(value)
+          return if value.nil? || value.empty?
+
+          update(
+            replace_order_with_value(
+              @parameter_two,
+              update_temp_mathml_values(value),
+              "msup"
+            )
+          )
+        end
+
+        def mover_value=(value)
+          return if value.nil? || value.empty?
+
+          update(
+            replace_order_with_value(
+              @parameter_two,
+              update_temp_mathml_values(value),
+              "mover"
+            )
+          )
+        end
+
+        def munder_value=(value)
+          return if value.nil? || value.empty?
+
+          update(
+            replace_order_with_value(
+              @parameter_two,
+              update_temp_mathml_values(value),
+              "munder"
+            )
+          )
+        end
+
+        def msubsup_value=(value)
+          return if value.nil? || value.empty?
+
+          update(
+            replace_order_with_value(
+              @parameter_two,
+              update_temp_mathml_values(value),
+              "msubsup"
+            )
+          )
+        end
+
+        def mfrac_value=(value)
+          return if value.nil? || value.empty?
+
+          update(
+            replace_order_with_value(
+              @parameter_two,
+              update_temp_mathml_values(value),
+              "mfrac"
+            )
+          )
+        end
+
+        def msqrt_value=(value)
+          return if value.nil? || value.empty?
+
+          update(
+            replace_order_with_value(
+              @parameter_two,
+              update_temp_mathml_values(value),
+              "msqrt"
+            )
+          )
+        end
+
+        def mfenced_value=(value)
+          return if value.nil? || value.empty?
+
+          update(
+            replace_order_with_value(
+              @parameter_two,
+              update_temp_mathml_values(value),
+              "mfenced"
+            )
+          )
+        end
+
+        def mtable_value=(value)
+          return if value.nil? || value.empty?
+
+          update(
+            replace_order_with_value(
+              Array(@parameter_two),
+              update_temp_mathml_values(value),
+              "mtable"
+            )
+          )
+        end
+
+        def mrow_value=(value)
+          return if value.nil? || value.empty?
+
+          update(
+            replace_order_with_value(
+              Array(@parameter_two),
+              update_temp_mathml_values(
+                Array(filter_values(value, array_to_instance: true))
+              ),
+              "mrow"
+            )
+          )
+        end
+
         protected
+
+        def remove_order(order)
+          @parameter_two.delete_if { |val| val.is_a?(String) && val == order }
+        end
+
+        def insert(values)
+          update(Array(@parameter_two) + values)
+        end
+
+        def update(object)
+          @parameter_two = Array(object)
+        end
 
         def open_paren(dpr, options:)
           first_value = symbol_or_paren(parameter_one, lang: :omml, options: options)
