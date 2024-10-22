@@ -85,6 +85,7 @@ module Plurimath
         def element_order=(*); end
 
         def value=(text)
+          text = text.join if text.is_a?(Array)
           entities = HTMLEntities.new
           symbols  = Mathml::Constants::UNICODE_SYMBOLS.transform_keys(&:to_s)
           text     = entities.encode(text, :hexadecimal)

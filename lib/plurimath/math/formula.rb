@@ -250,7 +250,7 @@ module Plurimath
       end
 
       def update(object)
-        self.value = Array(object.flatten.compact)
+        self.value = Array(object).flatten.compact
       end
 
       def cloned_objects
@@ -308,7 +308,7 @@ module Plurimath
       end
 
       def element_order=(value)
-        self.value = validated_order(value)
+        @value = validated_order(value)
       end
 
       # Attributes start
@@ -319,7 +319,7 @@ module Plurimath
           [
             Math::Function::Color.new(
               Math::Function::Text.new(value),
-              filter_values(self.value, array_to_instance: true),
+              filter_values(@value, array_to_instance: true),
             )
           ]
         )
@@ -332,7 +332,7 @@ module Plurimath
         update(
           [
             Plurimath::Utility::FONT_STYLES[value.to_sym].new(
-              filter_values(self.value, array_to_instance: true),
+              filter_values(@value, array_to_instance: true),
               value,
             )
           ]
@@ -345,7 +345,7 @@ module Plurimath
         update(
           [
             Function::Intent.new(
-              filter_values(self.value, array_to_instance: true),
+              filter_values(@value, array_to_instance: true),
               Function::Text.new(value),
             )
           ]
@@ -359,9 +359,9 @@ module Plurimath
         value = update_temp_mathml_values(value) if value.any? do |val|
           val.is_a?(Math::Core) && val.temp_mathml_order.any?
         end
-        self.value = replace_order_with_value(
-          self.value,
-          Array(validate_symbols(value)),
+        @value = replace_order_with_value(
+          @value,
+          Array(validate_symbols(value)).flatten,
           "mi"
         )
         organize_value
@@ -370,11 +370,12 @@ module Plurimath
       def mn_value=(value)
         return if value.nil? || value.empty?
 
-        self.value = replace_order_with_value(
-          self.value,
+        @value = replace_order_with_value(
+          @value,
           Array(validate_symbols(value)),
           "mn"
         )
+        organize_value
       end
 
       def mtext_value=(value)
@@ -382,23 +383,26 @@ module Plurimath
 
         update(
           replace_order_with_value(
-            self.value,
+            @value,
             Array(validate_symbols(value)),
             "mtext"
           )
         )
+        organize_value
       end
 
       def mo_value=(value)
         return if value.nil? || value.empty?
 
+        value = update_temp_mathml_values(value)
         update(
           replace_order_with_value(
-            self.value,
-            Array(validate_symbols(value)),
+            @value,
+            Array(value),
             "mo"
           )
         )
+        organize_value
       end
 
       def mstyle_value=(value)
@@ -407,7 +411,7 @@ module Plurimath
         update(
           filter_values(
             replace_order_with_value(
-              self.value,
+              @value,
               Array(filter_values(value, array_to_instance: true)),
               "mstyle"
             )
@@ -420,7 +424,7 @@ module Plurimath
 
         update(
           replace_order_with_value(
-            self.value,
+            @value,
             filter_values(Array(value), array_to_instance: true),
             "mrow"
           )
@@ -432,7 +436,7 @@ module Plurimath
 
         update(
           replace_order_with_value(
-            self.value,
+            @value,
             update_temp_mathml_values(value),
             "munderover"
           )
@@ -444,7 +448,7 @@ module Plurimath
 
         update(
           replace_order_with_value(
-            self.value,
+            @value,
             update_temp_mathml_values(value),
             "msub"
           )
@@ -456,7 +460,7 @@ module Plurimath
 
         update(
           replace_order_with_value(
-            self.value,
+            @value,
             update_temp_mathml_values(value),
             "msup"
           )
@@ -468,7 +472,7 @@ module Plurimath
 
         update(
           replace_order_with_value(
-            self.value,
+            @value,
             update_temp_mathml_values(value),
             "mover"
           )
@@ -480,7 +484,7 @@ module Plurimath
 
         update(
           replace_order_with_value(
-            self.value,
+            @value,
             update_temp_mathml_values(value),
             "munder"
           )
@@ -492,7 +496,7 @@ module Plurimath
 
         update(
           replace_order_with_value(
-            self.value,
+            @value,
             update_temp_mathml_values(value),
             "msubsup"
           )
@@ -504,7 +508,7 @@ module Plurimath
 
         update(
           replace_order_with_value(
-            self.value,
+            @value,
             update_temp_mathml_values(value),
             "mfrac"
           )
@@ -517,7 +521,7 @@ module Plurimath
 
         update(
           replace_order_with_value(
-            self.value,
+            @value,
             update_temp_mathml_values(value),
             "msqrt"
           )
@@ -553,7 +557,7 @@ module Plurimath
 
         update(
           replace_order_with_value(
-            self.value,
+            @value,
             update_temp_mathml_values(value),
             "msgroup"
           )
@@ -565,7 +569,7 @@ module Plurimath
 
         update(
           replace_order_with_value(
-            self.value,
+            @value,
             update_temp_mathml_values(value),
             "mscarries"
           )
@@ -577,7 +581,7 @@ module Plurimath
 
         update(
           replace_order_with_value(
-            self.value,
+            @value,
             update_temp_mathml_values(value),
             "msline"
           )
@@ -589,11 +593,39 @@ module Plurimath
 
         update(
           replace_order_with_value(
-            self.value,
+            @value,
             update_temp_mathml_values(value),
             "msrow"
           )
         )
+      end
+
+      def semantics_value=(value)
+        return if value.nil? || value.empty?
+
+        @value = replace_order_with_value(
+          @value,
+          Array(
+            update_temp_mathml_values(value)
+          ),
+          "semantics"
+        )
+      end
+
+      def mstack_value=(value)
+        return if value.nil? || value.empty?
+
+        @value = replace_order_with_value(
+          @value,
+          Array(
+            update_temp_mathml_values(value)
+          ),
+          "mstack"
+        )
+      end
+
+      def none=(_)
+        @value.delete("none")
       end
 
       def is_mrow
@@ -611,16 +643,23 @@ module Plurimath
         return unless is_mrow
 
         value.each_with_index do |element, index|
-          if element.is_unary? && value.length == 2
-            case element
-            when Math::Function::Sin
+          if element.is_unary? && value.length > 1
+            if Plurimath::Utility::UNARY_CLASSES.include?(element.class_name)
               new_element = value.shift
               new_element.parameter_one = filter_values(
-                value,
+                Array(value.shift),
                 array_to_instance: true
               )
-              value[index] = new_element
+              value.insert(index, new_element)
             end
+          elsif value.first.paren? && value.last.paren?
+            @value = [
+              Function::Fenced.new(
+                value.shift,
+                value,
+                value.pop
+              )
+            ]
           end
         end
       end

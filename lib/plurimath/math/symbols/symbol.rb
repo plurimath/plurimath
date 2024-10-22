@@ -17,7 +17,7 @@ module Plurimath
                        mini_sub_sized: false,
                        mini_sup_sized: false,
                        options: {})
-          @value = sym
+          @value = sym.is_a?(Array) ? sym.join : sym
           @slashed = slashed if slashed
           @mini_sub_sized = mini_sub_sized if mini_sub_sized
           @mini_sup_sized = mini_sup_sized if mini_sup_sized
@@ -38,6 +38,10 @@ module Plurimath
           return "" if value.nil?
 
           value
+        end
+
+        def value=(value)
+          @value = value.is_a?(Array) ? value.join : value
         end
 
         def to_mathml_without_math_tag(intent, **)

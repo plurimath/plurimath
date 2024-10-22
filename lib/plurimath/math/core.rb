@@ -291,11 +291,15 @@ module Plurimath
         is_a?(Math::Function::UnaryFunction)
       end
 
-      def is_nary_function?;end
+      def is_nary_function?; end
 
-      def is_nary_symbol?;end
+      def is_nary_symbol?; end
 
-      def nary_intent_name;end
+      def nary_intent_name; end
+
+      def symbol?
+        is_a?(Math::Symbols::Symbol)
+      end
 
       def is_binary_function?
         is_a?(Function::BinaryFunction)
@@ -321,6 +325,10 @@ module Plurimath
         return true if field&.value&.include?("&#x27;")
 
         Utility.primes_constants.any? { |prefix, prime| unicodemath_field_value(field).include?(prime) }
+      end
+
+      def paren?
+        false
       end
 
       private

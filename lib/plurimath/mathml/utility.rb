@@ -9,6 +9,8 @@ module Plurimath
         self.temp_mathml_order = validated_order(value)
       end
 
+      def none; end
+
       def mi_value; end
 
       def mo_value; end
@@ -39,6 +41,8 @@ module Plurimath
 
       def msqrt_value; end
 
+      def mstack_value; end
+
       def mspace_value; end
 
       def mtable_value; end
@@ -56,6 +60,8 @@ module Plurimath
       def mfenced_value; end
 
       def mscarries_value; end
+
+      def semantics_value; end
 
       def munderover_value; end
 
@@ -172,6 +178,8 @@ module Plurimath
           @attributes = Hash(@attributes).merge(accent: true)
         end
       end
+
+      def annotation; end
 
       def accentunder; end
 
@@ -750,6 +758,26 @@ module Plurimath
         target.delete("mspace")
       end
 
+      def semantics_value=(value)
+        return if value.nil? || value.empty?
+
+        self.temp_mathml_order = replace_order_with_value(
+          self.temp_mathml_order,
+          Array(value),
+          "semantics"
+        )
+      end
+
+      def mstack_value=(value)
+        return if value.nil? || value.empty?
+
+        self.temp_mathml_order = replace_order_with_value(
+          self.temp_mathml_order,
+          Array(value),
+          "mstack"
+        )
+      end
+
       private
 
       # TODO: For testing purposes only and will/should be removed before release
@@ -827,6 +855,11 @@ module Plurimath
       def update_temp_mathml_values(value)
         value.each_with_index do |element, index|
           next unless element.respond_to?(:temp_mathml_order)
+
+          if element.symbol? && element.temp_mathml_order&.none?
+            value[index] = validate_symbols(element)
+          end
+
           next unless element.temp_mathml_order&.any?
 
           if element.is_ternary_function?
@@ -885,6 +918,10 @@ module Plurimath
                 )
                 new_element.attributes = element.options
                 value[index] = new_element
+              elsif element.temp_mathml_order[1].is_a?(Math::Function::Bar)
+                new_element = element.temp_mathml_order.pop
+                new_element.parameter_one = element.temp_mathml_order.shift
+                value[index] = new_element
               else
                 element.parameter_two = element.temp_mathml_order.shift
                 element.parameter_one = element.temp_mathml_order.shift
@@ -897,6 +934,14 @@ module Plurimath
                 value[index] = new_element
               elsif element.temp_mathml_order[1].is_a?(Math::Function::Obrace)
                 new_element = element.temp_mathml_order.pop
+                new_element.parameter_one = element.temp_mathml_order.shift
+                value[index] = new_element
+              elsif element.temp_mathml_order[1].is_a?(Math::Function::Ul)
+                new_element = element.temp_mathml_order.pop
+                new_element.parameter_one = element.temp_mathml_order.shift
+                value[index] = new_element
+              elsif element.temp_mathml_order[0].is_a?(Math::Function::Vec)
+                new_element = element.temp_mathml_order.shift
                 new_element.parameter_one = element.temp_mathml_order.shift
                 value[index] = new_element
               else
@@ -927,6 +972,18 @@ module Plurimath
             when Math::Function::Root
               element.parameter_two = element.temp_mathml_order.shift
               element.parameter_one = element.temp_mathml_order.shift
+            when Math::Function::Semantics
+              element.parameter_one = filter_values(
+                Array(element.temp_mathml_order.dup),
+                array_to_instance: true
+              )
+              element.temp_mathml_order.clear
+            when Math::Function::Stackrel
+              element.parameter_one = filter_values(
+                Array(element.temp_mathml_order.dup),
+                array_to_instance: true
+              )
+              element.temp_mathml_order.clear
             else
               element.parameter_one = element.temp_mathml_order.shift
               element.parameter_two = element.temp_mathml_order.shift
@@ -939,7 +996,7 @@ module Plurimath
               element.parameter_one = element.temp_mathml_order.dup
               element.temp_mathml_order.clear
             end
-          elsif element.is_a?(Math::Symbols::Symbol)
+          elsif element.symbol?
             new_element = element.temp_mathml_order.shift
             case new_element
             when Math::Function::FontStyle
@@ -952,7 +1009,7 @@ module Plurimath
       end
 
       def validated_order(order)
-        order.reject { |str| str == "text" }
+        order.reject { |str| ["text", "comment"].include?(str) }
       end
 
       def value_is_ternary_or_nary?(value)

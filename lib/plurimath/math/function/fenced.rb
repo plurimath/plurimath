@@ -173,15 +173,15 @@ module Plurimath
         def close; end
 
         def open=(value)
-          return if value.nil?
-
-          @parameter_one = validate_symbols(value)
+          @parameter_one = validate_symbols(
+            value || "("
+          )
         end
 
         def close=(value)
-          return if value.nil? || value.empty?
-
-          self.parameter_three = validate_symbols(value)
+          @parameter_three = validate_symbols(
+            value || ")"
+          )
         end
 
         def element_order=(value)

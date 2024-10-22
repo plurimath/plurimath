@@ -7,7 +7,7 @@ RSpec.describe Plurimath::Mathml::Parser do
   context "contains mathml v3 #2 example #1" do
     let(:exp) {
       <<~MATHML
-        <math>
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
           <mtext>&#xA0;<!--NO-BREAK SPACE-->Theorem &#xA0;<!--NO-BREAK SPACE-->1:</mtext>
         </math>
       MATHML
@@ -23,7 +23,7 @@ RSpec.describe Plurimath::Mathml::Parser do
   context "contains mathml v3 #2 example #2" do
     let(:exp) {
       <<~MATHML
-        <math>
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
           <mtext>
             Theorem
             1:

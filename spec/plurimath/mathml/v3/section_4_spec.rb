@@ -5338,7 +5338,12 @@ RSpec.describe Plurimath::Mathml::Parser do
         <math xmlns="http://www.w3.org/1998/Math/MathML">
           <msub>
             <mrow>
-              <mo>&#x2329;<!--MATHEMATICAL LEFT ANGLE BRACKET--></mo><msup><mi>X</mi><mn>3</mn></msup><mo>&#x232a;<!--MATHEMATICAL RIGHT ANGLE BRACKET--></mo>
+              <mo>&#x2329;<!--MATHEMATICAL LEFT ANGLE BRACKET--></mo>
+              <msup>
+                <mi>X</mi>
+                <mn>3</mn>
+              </msup>
+              <mo>&#x232a;<!--MATHEMATICAL RIGHT ANGLE BRACKET--></mo>
             </mrow>
             <mi>p</mi>
           </msub>

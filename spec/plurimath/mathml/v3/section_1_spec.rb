@@ -7,7 +7,7 @@ RSpec.describe Plurimath::Mathml::Parser do
   context "contains mathml v3 #1 example" do
     let(:exp) {
       <<~MATHML
-        <math>
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
           <mrow>
             <mi>x</mi>
             <mo>=</mo>

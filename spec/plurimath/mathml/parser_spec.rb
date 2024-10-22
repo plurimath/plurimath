@@ -1415,93 +1415,91 @@ RSpec.describe Plurimath::Mathml::Parser do
 
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Base.new(
-            Plurimath::Math::Function::FontStyle::Italic.new(
-              Plurimath::Math::Symbols::Symbol.new("T"),
-              "italic",
-            ),
-            Plurimath::Math::Number.new("90"),
+        Plurimath::Math::Function::Base.new(
+          Plurimath::Math::Function::FontStyle::Italic.new(
+            Plurimath::Math::Symbols::Symbol.new("T"),
+            "italic",
           ),
-          Plurimath::Math::Symbols::Symbol.new("/"),
-          Plurimath::Math::Function::FontStyle::Normal.new(
-            Plurimath::Math::Symbols::Symbol.new("K"),
-            "normal"
+          Plurimath::Math::Number.new("90"),
+        ),
+        Plurimath::Math::Symbols::Symbol.new("/"),
+        Plurimath::Math::Function::FontStyle::Normal.new(
+          Plurimath::Math::Symbols::Symbol.new("K"),
+          "normal"
+        ),
+        Plurimath::Math::Symbols::Equal.new,
+        Plurimath::Math::Function::Base.new(
+          Plurimath::Math::Function::FontStyle::Italic.new(
+            Plurimath::Math::Symbols::Symbol.new("A"),
+            "italic",
           ),
-          Plurimath::Math::Symbols::Equal.new,
-          Plurimath::Math::Function::Base.new(
-            Plurimath::Math::Function::FontStyle::Italic.new(
-              Plurimath::Math::Symbols::Symbol.new("A"),
-              "italic",
-            ),
-            Plurimath::Math::Number.new("0"),
-          ),
-          Plurimath::Math::Symbols::Plus.new,
-          Plurimath::Math::Function::Sum.new(
-            Plurimath::Math::Formula.new([
-              Plurimath::Math::Symbols::Symbol.new("i"),
-              Plurimath::Math::Symbols::Equal.new,
-              Plurimath::Math::Number.new("1")
-            ]),
-            Plurimath::Math::Number.new("9"),
-          ),
-          Plurimath::Math::Function::Base.new(
-            Plurimath::Math::Function::FontStyle::Italic.new(
-              Plurimath::Math::Symbols::Symbol.new("A"),
-              "italic",
-            ),
+          Plurimath::Math::Number.new("0"),
+        ),
+        Plurimath::Math::Symbols::Plus.new,
+        Plurimath::Math::Function::Sum.new(
+          Plurimath::Math::Formula.new([
             Plurimath::Math::Symbols::Symbol.new("i"),
+            Plurimath::Math::Symbols::Equal.new,
+            Plurimath::Math::Number.new("1")
+          ]),
+          Plurimath::Math::Number.new("9"),
+        ),
+        Plurimath::Math::Function::Base.new(
+          Plurimath::Math::Function::FontStyle::Italic.new(
+            Plurimath::Math::Symbols::Symbol.new("A"),
+            "italic",
           ),
-          Plurimath::Math::Function::Power.new(
-            Plurimath::Math::Function::Fenced.new(
-              Plurimath::Math::Symbols::Paren::Lsquare.new,
-              [
-                Plurimath::Math::Formula.new([
-                  Plurimath::Math::Function::Fenced.new(
-                    Plurimath::Math::Symbols::Paren::Lround.new,
-                    [
-                      Plurimath::Math::Formula.new([
-                        Plurimath::Math::Function::Ln.new(
-                          Plurimath::Math::Function::Fenced.new(
-                            Plurimath::Math::Symbols::Paren::Lround.new,
-                            [
-                              Plurimath::Math::Formula.new([
-                                Plurimath::Math::Symbols::Symbol.new("p"),
-                                Plurimath::Math::Symbols::Symbol.new("/"),
-                                Plurimath::Math::Function::FontStyle::Normal.new(
-                                  Plurimath::Math::Symbols::Symbol.new("Pa"),
-                                  "normal"
-                                )
-                              ])
-                            ],
-                            Plurimath::Math::Symbols::Paren::Rround.new,
-                            { separators: "" }
-                          ),
+          Plurimath::Math::Symbols::Symbol.new("i"),
+        ),
+        Plurimath::Math::Function::Power.new(
+          Plurimath::Math::Function::Fenced.new(
+            Plurimath::Math::Symbols::Paren::Lsquare.new,
+            [
+              Plurimath::Math::Formula.new([
+                Plurimath::Math::Function::Fenced.new(
+                  Plurimath::Math::Symbols::Paren::Lround.new,
+                  [
+                    Plurimath::Math::Formula.new([
+                      Plurimath::Math::Function::Ln.new(
+                        Plurimath::Math::Function::Fenced.new(
+                          Plurimath::Math::Symbols::Paren::Lround.new,
+                          [
+                            Plurimath::Math::Formula.new([
+                              Plurimath::Math::Symbols::Symbol.new("p"),
+                              Plurimath::Math::Symbols::Symbol.new("/"),
+                              Plurimath::Math::Function::FontStyle::Normal.new(
+                                Plurimath::Math::Symbols::Symbol.new("Pa"),
+                                "normal"
+                              )
+                            ])
+                          ],
+                          Plurimath::Math::Symbols::Paren::Rround.new,
+                          { separators: "" }
                         ),
-                        Plurimath::Math::Symbols::Symbol.new("&#x2014;"),
-                        Plurimath::Math::Function::FontStyle::Italic.new(
-                          Plurimath::Math::Symbols::Symbol.new("B"),
-                          "italic",
-                        ),
-                      ])
-                    ],
-                    Plurimath::Math::Symbols::Paren::Rround.new,
-                    { separators: "" }
-                  ),
-                  Plurimath::Math::Symbols::Symbol.new("/"),
-                  Plurimath::Math::Function::FontStyle::Italic.new(
-                    Plurimath::Math::Symbols::Symbol.new("C"),
-                    "italic",
-                  ),
-                ])
-              ],
-              Plurimath::Math::Symbols::Paren::Rsquare.new,
-              { separators: "" }
-            ),
-            Plurimath::Math::Symbols::Symbol.new("i")
+                      ),
+                      Plurimath::Math::Symbols::Symbol.new("&#x2014;"),
+                      Plurimath::Math::Function::FontStyle::Italic.new(
+                        Plurimath::Math::Symbols::Symbol.new("B"),
+                        "italic",
+                      ),
+                    ])
+                  ],
+                  Plurimath::Math::Symbols::Paren::Rround.new,
+                  { separators: "" }
+                ),
+                Plurimath::Math::Symbols::Symbol.new("/"),
+                Plurimath::Math::Function::FontStyle::Italic.new(
+                  Plurimath::Math::Symbols::Symbol.new("C"),
+                  "italic",
+                ),
+              ])
+            ],
+            Plurimath::Math::Symbols::Paren::Rsquare.new,
+            { separators: "" }
           ),
-          Plurimath::Math::Symbols::Period.new
-        ])
+          Plurimath::Math::Symbols::Symbol.new("i")
+        ),
+        Plurimath::Math::Symbols::Period.new
       ])
       expect(formula).to eq(expected_value)
     end
@@ -1510,7 +1508,7 @@ RSpec.describe Plurimath::Mathml::Parser do
   context "contains mathml string from metanorma/mn-samples-bipm" do
     let(:exp) {
       <<~MATHML
-        <math>
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
           <semantics>
             <mrow>
               <mstyle displaystyle='true'>
