@@ -353,6 +353,19 @@ module Plurimath
       end
       # Attributes end
 
+      def ms_value=(value)
+        return if value.nil? || value.empty?
+
+        update(
+          replace_order_with_value(
+            @value,
+            Array(validate_symbols(value)),
+            "ms"
+          )
+        )
+        organize_value
+      end
+
       def mi_value=(value)
         return if value.nil? || value.empty?
 
@@ -422,10 +435,15 @@ module Plurimath
       def mrow_value=(value)
         return if value.nil? || value.empty?
 
+        replacing_order = value.length > 1 && value.any?(String)
         update(
           replace_order_with_value(
             @value,
-            filter_values(Array(value), array_to_instance: true),
+            filter_values(
+              value,
+              array_to_instance: true,
+              replacing_order: replacing_order
+            ),
             "mrow"
           )
         )
@@ -639,27 +657,49 @@ module Plurimath
       protected
 
       def organize_value
-        return if value.any? { |val| val.is_a?(String) }
+        return if value.any?(String)
         return unless is_mrow
 
+        unary_classes = Plurimath::Utility::UNARY_CLASSES
         value.each_with_index do |element, index|
-          if element.is_unary? && value.length > 1
-            if Plurimath::Utility::UNARY_CLASSES.include?(element.class_name)
-              new_element = value.shift
+          if value[index + 1].is_a?(Math::Function::Mod)
+            mod_obj = value[index + 1]
+            mod_obj.parameter_one = filter_values(
+              value.delete_at(index),
+              array_to_instance: true
+            )
+            mod_obj.parameter_two = filter_values(
+              value.delete_at(index + 1),
+              array_to_instance: true
+            )
+          elsif value.length > 1 && element.is_unary? && value[index + 1]
+            if unary_classes.include?(element.class_name)
+              new_element = value.delete_at(index)
               new_element.parameter_one = filter_values(
-                Array(value.shift),
+                value.delete_at(index),
                 array_to_instance: true
               )
               value.insert(index, new_element)
             end
           elsif value.first.paren? && value.last.paren?
             @value = [
-              Function::Fenced.new(
-                value.shift,
-                value,
-                value.pop
-              )
+              Function::Fenced.new(value.shift, value, value.pop)
             ]
+          elsif element.is_a?(Math::Function::Underset)
+            value.shift
+            new_element = Plurimath::Math::Function::Nary.new(
+              element.parameter_two,
+              element.parameter_one,
+              nil,
+              filter_values(value.dup, array_to_instance: true),
+              { type: "undOvr" }
+            )
+            value.clear
+            value[index] = new_element
+          elsif element.is_ternary_function? &&
+              element.any_value_exist? &&
+              element.parameter_three.nil?
+            element.parameter_three = value.delete_at(index + 1)
           end
         end
       end

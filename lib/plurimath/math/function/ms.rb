@@ -1,11 +1,14 @@
 # frozen_string_literal: true
 
 require_relative "unary_function"
+require_relative "../../mathml/utility"
 
 module Plurimath
   module Math
     module Function
       class Ms < UnaryFunction
+        include Mathml::Utility
+
         def to_mathml_without_math_tag(intent, **)
           Utility.ox_element("ms") << parameter_one
         end
@@ -26,6 +29,14 @@ module Plurimath
 
         def to_unicodemath(options:)
           Text.new(parameter_one).to_unicodemath(options: options)
+        end
+
+        def value
+          parameter_one
+        end
+
+        def value=(content)
+          @parameter_one = content.is_a?(Array) ? content.join(" ") : content
         end
       end
     end

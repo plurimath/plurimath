@@ -76,6 +76,10 @@ module Plurimath
         mini_sub_sized || mini_sup_sized
       end
 
+      def value=(value)
+        @value = value.is_a?(Array) ? value.join : value
+      end
+
       protected
 
       def mini_sub

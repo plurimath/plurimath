@@ -2133,7 +2133,7 @@ RSpec.describe Plurimath::Mathml::Parser do
             Plurimath::Math::Symbols::Symbol.new("x"),
             Plurimath::Math::Symbols::Plus.new,
             Plurimath::Math::Formula.new([
-              Plurimath::Math::Number.new("&#x2148;"),
+              Plurimath::Math::Number.new("ⅈ"),
               Plurimath::Math::Symbols::Symbol.new("&#x2062;"),
               Plurimath::Math::Symbols::Symbol.new("y")
             ])

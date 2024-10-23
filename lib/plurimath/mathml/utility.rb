@@ -622,7 +622,7 @@ module Plurimath
 
         self.temp_mathml_order = replace_order_with_value(
           self.temp_mathml_order,
-          Array(value),
+          update_temp_mathml_values(value),
           "msup"
         )
       end
@@ -788,7 +788,7 @@ module Plurimath
                                                                      1)[0].label}"
       end
 
-      def filter_values(value, array_to_instance: false)
+      def filter_values(value, array_to_instance: false, replacing_order: true)
         return value unless value.is_a?(Array)
         return value if value.empty?
 
@@ -798,10 +798,26 @@ module Plurimath
           else
             value.first.value
           end
+        elsif value.is_a?(Array) && value.any? { |element|
+          element.is_a?(Math::Formula) && element.is_mrow
+        }
+          value.each_with_index do |element, index|
+            if element.is_a?(Math::Formula) && element.is_mrow
+              value[index] = filter_values(
+                Array(element),
+                array_to_instance: true,
+                replacing_order: replacing_order
+              )
+            end
+          end
         elsif value_is_ternary_or_nary?(value)
-          value.first.parameter_three = value.pop
-          value
-        elsif array_to_instance
+          value.first.parameter_three = value.delete_at(1)
+          filter_values(
+            Array(value),
+            array_to_instance: array_to_instance,
+            replacing_order: replacing_order
+          )
+        elsif array_to_instance && replacing_order
           value.length > 1 ? Math::Formula.new(value) : value.first
         else
           value
@@ -1008,14 +1024,17 @@ module Plurimath
         value
       end
 
-      def validated_order(order)
-        order.reject { |str| ["text", "comment"].include?(str) }
+      def validated_order(order, rejected_array: ["comment", "text"])
+        order.reject { |str| rejected_array.include?(str) }
       end
 
       def value_is_ternary_or_nary?(value)
-        return if value.any? { |val| val.is_a?(String) }
+        return if value.any?(String)
 
-        value.length == 2 && value.first.is_ternary_function?
+        value.length >= 2 &&
+          value.first.is_ternary_function? &&
+          value.first.parameter_three.nil? &&
+          (!value.first.parameter_one.nil? || !value.first.parameter_two.nil?)
       end
 
       def first_element_is_ternary_function?(element)
