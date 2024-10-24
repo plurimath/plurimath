@@ -13,6 +13,9 @@ require_relative "math/core"
 require_relative "math/number"
 require_relative "math/symbols"
 require_relative "math/formula"
+require_relative "math/formula/mrow"
+require_relative "math/formula/mstyle"
+require_relative "math/formula/msrow"
 require_relative "math/function"
 require_relative "asciimath/parser"
 require_relative "unicode_math/parser"
@@ -26,6 +29,8 @@ require "yaml"
 module Plurimath
   module Math
     class ParseError < StandardError; end
+    # TODO: For testing purposes only and will/should be removed before release
+    class DevelopmentError < NotImplementedError; end
     class InvalidTypeError < TypeError; end
 
     VALID_TYPES = {

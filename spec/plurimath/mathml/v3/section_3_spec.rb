@@ -7,7 +7,7 @@ RSpec.describe Plurimath::Mathml::Parser do
   context "contains mathml v3 #3 example #3" do
     let(:exp) {
       <<~MATHML
-        <math>
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
           <mi> x </mi>
           <mi> D </mi>
           <mi> sin </mi>
@@ -33,7 +33,7 @@ RSpec.describe Plurimath::Mathml::Parser do
   context "contains mathml v3 #3 example #4" do
     let(:exp) {
       <<~MATHML
-        <math>
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
           <mrow>
             <mi> sin </mi>
             <mo> &#x2061;<!--FUNCTION APPLICATION--> </mo>
@@ -58,7 +58,7 @@ RSpec.describe Plurimath::Mathml::Parser do
   context "contains mathml v3 #3 example #5" do
     let(:exp) {
       <<~MATHML
-        <math>
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
           <mrow>
             <mn> 1 </mn>
             <mo> + </mo>
@@ -86,7 +86,7 @@ RSpec.describe Plurimath::Mathml::Parser do
   context "contains mathml v3 #3 example #6" do
     let(:exp) {
       <<~MATHML
-        <math>
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
           <mi> &#x3C0;<!--GREEK SMALL LETTER PI--> </mi>
           <mi> &#x2148;<!--DOUBLE-STRUCK ITALIC SMALL I--> </mi>
           <mi> &#x2147;<!--DOUBLE-STRUCK ITALIC SMALL E--> </mi>
@@ -106,7 +106,7 @@ RSpec.describe Plurimath::Mathml::Parser do
   context "contains mathml v3 #3 example #7" do
     let(:exp) {
       <<~MATHML
-        <math>
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
           <mn> 2 </mn>
           <mn> 0.123 </mn>
           <mn> 1,000,000 </mn>
@@ -134,7 +134,7 @@ RSpec.describe Plurimath::Mathml::Parser do
   context "contains mathml v3 #3 example #8" do
     let(:exp) {
       <<~MATHML
-        <math>
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
           <mrow>
             <mn> 2 </mn>
             <mo> + </mo>
@@ -175,7 +175,7 @@ RSpec.describe Plurimath::Mathml::Parser do
   context "contains mathml v3 #3 example #9" do
     let(:exp) {
       <<~MATHML
-        <math>
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
           <mo> + </mo>
           <mo> &lt; </mo>
           <mo> &#x2264;<!--LESS-THAN OR EQUAL TO--> </mo>
@@ -212,7 +212,7 @@ RSpec.describe Plurimath::Mathml::Parser do
   context "contains mathml v3 #3 example #10" do
     let(:exp) {
       <<~MATHML
-        <math>
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
           <mrow>
             <mo> ( </mo>
             <mrow>
@@ -246,7 +246,7 @@ RSpec.describe Plurimath::Mathml::Parser do
   context "contains mathml v3 #3 example #11" do
     let(:exp) {
       <<~MATHML
-        <math>
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
           <mrow>
             <mo> [ </mo>
             <mrow>
@@ -280,7 +280,7 @@ RSpec.describe Plurimath::Mathml::Parser do
   context "contains mathml v3 #3 example #12" do
     let(:exp) {
       <<~MATHML
-        <math>
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
           <mrow>
             <mi> f </mi>
             <mo> &#x2061;<!--FUNCTION APPLICATION--> </mo>
@@ -322,7 +322,7 @@ RSpec.describe Plurimath::Mathml::Parser do
   context "contains mathml v3 #3 example #13" do
     let(:exp) {
       <<~MATHML
-        <math>
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
           <mrow>
             <mi> sin </mi>
             <mo> &#x2061;<!--FUNCTION APPLICATION--> </mo>
@@ -347,7 +347,7 @@ RSpec.describe Plurimath::Mathml::Parser do
   context "contains mathml v3 #3 example #14" do
     let(:exp) {
       <<~MATHML
-        <math>
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
           <mrow>
             <mi> x </mi>
             <mo> &#x2062;<!--INVISIBLE TIMES--> </mo>
@@ -371,7 +371,7 @@ RSpec.describe Plurimath::Mathml::Parser do
   context "contains mathml v3 #3 example #15" do
     let(:exp) {
       <<~MATHML
-        <math>
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
           <msub>
             <mi> m </mi>
             <mrow>
@@ -401,7 +401,7 @@ RSpec.describe Plurimath::Mathml::Parser do
   context "contains mathml v3 #3 example #16" do
     let(:exp) {
       <<~MATHML
-        <math>
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
           <mrow>
             <mn> 2 </mn>
             <mo> &#x2064;<!--INVISIBLE PLUS--> </mo>
@@ -431,7 +431,7 @@ RSpec.describe Plurimath::Mathml::Parser do
   context "contains mathml v3 #3 example #17" do
     let(:exp) {
       <<~MATHML
-        <math>
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
           <mfrac>
             <mo> &#x2146;<!--DOUBLE-STRUCK ITALIC SMALL D--> </mo>
             <mrow>
@@ -459,7 +459,7 @@ RSpec.describe Plurimath::Mathml::Parser do
   context "contains mathml v3 #3 example #18" do
     let(:exp) {
       <<~MATHML
-        <math>
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
           <mrow>
             <munder>
               <mo> ( </mo>
@@ -500,7 +500,7 @@ RSpec.describe Plurimath::Mathml::Parser do
   context "contains mathml v3 #3 example #19" do
     let(:exp) {
       <<~MATHML
-        <math>
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
           <mrow>
             <mo maxsize="100%"> ( </mo>
             <mfrac>
@@ -531,7 +531,7 @@ RSpec.describe Plurimath::Mathml::Parser do
   context "contains mathml v3 #3 example #20" do
     let(:exp) {
       <<~MATHML
-        <math>
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
           <mrow>
             <mi> x </mi>
             <munder>
@@ -560,7 +560,7 @@ RSpec.describe Plurimath::Mathml::Parser do
   context "contains mathml v3 #3 example #21" do
     let(:exp) {
       <<~MATHML
-        <math>
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
           <mrow>
             <mrow>  <mi>f</mi> <mo>&#x2061;<!--FUNCTION APPLICATION--></mo> <mo>(</mo> <mi>x</mi> <mo>)</mo>  </mrow>
 
@@ -593,68 +593,66 @@ RSpec.describe Plurimath::Mathml::Parser do
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
         Plurimath::Math::Formula.new([
-          Plurimath::Math::Formula.new([
-            Plurimath::Math::Symbols::Symbol.new("f"),
-            Plurimath::Math::Symbols::Funcapply.new,
-            Plurimath::Math::Symbols::Paren::Lround.new,
-            Plurimath::Math::Symbols::Symbol.new("x"),
-            Plurimath::Math::Symbols::Paren::Rround.new
-          ]),
-          Plurimath::Math::Symbols::Plus.new,
+          Plurimath::Math::Symbols::Symbol.new("f"),
+          Plurimath::Math::Symbols::Funcapply.new,
+          Plurimath::Math::Symbols::Paren::Lround.new,
+          Plurimath::Math::Symbols::Symbol.new("x"),
+          Plurimath::Math::Symbols::Paren::Rround.new
+        ]),
+        Plurimath::Math::Symbols::Plus.new,
+        Plurimath::Math::Formula.new([
+          Plurimath::Math::Function::Power.new(
+            Plurimath::Math::Function::Fenced.new(
+              Plurimath::Math::Symbols::Paren::Lround.new,
+              [
+                Plurimath::Math::Formula.new([
+                  Plurimath::Math::Symbols::Symbol.new("x"),
+                  Plurimath::Math::Symbols::Plus.new,
+                  Plurimath::Math::Symbols::Symbol.new("1")
+                ])
+              ],
+              Plurimath::Math::Symbols::Paren::Rround.new
+            ),
+            Plurimath::Math::Number.new("4")
+          ),
+          Plurimath::Math::Function::Linebreak.new(
+            Plurimath::Math::Symbols::Plus.new,
+            { linebreak: "newline", linebreakstyle: "before" },
+          ),
           Plurimath::Math::Formula.new([
             Plurimath::Math::Function::Power.new(
-              Plurimath::Math::Function::Fenced.new(
-                Plurimath::Math::Symbols::Paren::Lround.new,
-                [
-                  Plurimath::Math::Formula.new([
-                    Plurimath::Math::Symbols::Symbol.new("x"),
-                    Plurimath::Math::Symbols::Plus.new,
-                    Plurimath::Math::Symbols::Symbol.new("1")
-                  ])
-                ],
-                Plurimath::Math::Symbols::Paren::Rround.new
-              ),
+              Plurimath::Math::Symbols::Symbol.new("x"),
               Plurimath::Math::Number.new("4")
             ),
+            Plurimath::Math::Symbols::Plus.new,
+            Plurimath::Math::Formula.new([
+              Plurimath::Math::Number.new("4"),
+              Plurimath::Math::Symbols::Symbol.new("&#x2062;"),
+              Plurimath::Math::Function::Power.new(
+                Plurimath::Math::Symbols::Symbol.new("x"),
+                Plurimath::Math::Number.new("3")
+              )
+            ]),
+            Plurimath::Math::Symbols::Plus.new,
+            Plurimath::Math::Formula.new([
+              Plurimath::Math::Number.new("6"),
+              Plurimath::Math::Symbols::Symbol.new("&#x2062;"),
+              Plurimath::Math::Function::Power.new(
+                Plurimath::Math::Symbols::Symbol.new("x"),
+                Plurimath::Math::Number.new("2")
+              )
+            ]),
             Plurimath::Math::Function::Linebreak.new(
               Plurimath::Math::Symbols::Plus.new,
               { linebreak: "newline", linebreakstyle: "before" },
             ),
             Plurimath::Math::Formula.new([
-              Plurimath::Math::Function::Power.new(
-                Plurimath::Math::Symbols::Symbol.new("x"),
-                Plurimath::Math::Number.new("4")
-              ),
-              Plurimath::Math::Symbols::Plus.new,
-              Plurimath::Math::Formula.new([
-                Plurimath::Math::Number.new("4"),
-                Plurimath::Math::Symbols::Symbol.new("&#x2062;"),
-                Plurimath::Math::Function::Power.new(
-                  Plurimath::Math::Symbols::Symbol.new("x"),
-                  Plurimath::Math::Number.new("3")
-                )
-              ]),
-              Plurimath::Math::Symbols::Plus.new,
-              Plurimath::Math::Formula.new([
-                Plurimath::Math::Number.new("6"),
-                Plurimath::Math::Symbols::Symbol.new("&#x2062;"),
-                Plurimath::Math::Function::Power.new(
-                  Plurimath::Math::Symbols::Symbol.new("x"),
-                  Plurimath::Math::Number.new("2")
-                )
-              ]),
-              Plurimath::Math::Function::Linebreak.new(
-                Plurimath::Math::Symbols::Plus.new,
-                { linebreak: "newline", linebreakstyle: "before" },
-              ),
-              Plurimath::Math::Formula.new([
-                Plurimath::Math::Number.new("4"),
-                Plurimath::Math::Symbols::Symbol.new("&#x2062;"),
-                Plurimath::Math::Symbols::Symbol.new("x")
-              ]),
-              Plurimath::Math::Symbols::Plus.new,
-              Plurimath::Math::Number.new("1")
-            ])
+              Plurimath::Math::Number.new("4"),
+              Plurimath::Math::Symbols::Symbol.new("&#x2062;"),
+              Plurimath::Math::Symbols::Symbol.new("x")
+            ]),
+            Plurimath::Math::Symbols::Plus.new,
+            Plurimath::Math::Number.new("1")
           ])
         ])
       ])
@@ -665,7 +663,7 @@ RSpec.describe Plurimath::Mathml::Parser do
   context "contains mathml v3 #3 example #22" do
     let(:exp) {
       <<~MATHML
-        <math>
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
           <mtext> Theorem 1: </mtext>
           <mtext> &#x2009;<!--THIN SPACE--> </mtext>
           <mtext> &#x205F;&#x200A;<!--space of width 5/18 em-->&#x205F;&#x200A;<!--space of width 5/18 em--> </mtext>
@@ -687,7 +685,7 @@ RSpec.describe Plurimath::Mathml::Parser do
   context "contains mathml v3 #3 example #23" do
     let(:exp) {
       <<~MATHML
-        <math>
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
           <mrow>
             <mo> there exists </mo>
             <mrow>
@@ -751,7 +749,7 @@ RSpec.describe Plurimath::Mathml::Parser do
   context "contains mathml v3 #3 example #24" do
     let(:exp) {
       <<~MATHML
-        <math>
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
           <mspace height="3ex" depth="2ex"/>
 
           <mrow>
@@ -786,7 +784,7 @@ RSpec.describe Plurimath::Mathml::Parser do
   context "contains mathml v3 #3 example #25" do
     let(:exp) {
       <<~MATHML
-        <math>
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
           <msup>
             <mi> x </mi>
             <malignmark edge="right"/>
@@ -808,7 +806,7 @@ RSpec.describe Plurimath::Mathml::Parser do
   context "contains mathml v3 #3 example #26" do
     let(:exp) {
       <<~MATHML
-        <math>
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
           <msup>
             <mrow>
               <mi> x </mi>
@@ -833,7 +831,7 @@ RSpec.describe Plurimath::Mathml::Parser do
   context "contains mathml v3 #3 example #27" do
     let(:exp) {
       <<~MATHML
-        <math>
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
           <mrow>
             <mrow>
               <mn> 2 </mn>
@@ -869,7 +867,7 @@ RSpec.describe Plurimath::Mathml::Parser do
   context "contains mathml v3 #3 example #28" do
     let(:exp) {
       <<~MATHML
-        <math>
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
           <mrow>
             <mo> ( </mo>
             <mrow>
@@ -903,7 +901,7 @@ RSpec.describe Plurimath::Mathml::Parser do
   context "contains mathml v3 #3 example #29" do
     let(:exp) {
       <<~MATHML
-        <math>
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
           <mrow>
              <mo> ( </mo>
              <mfrac linethickness="0">
@@ -957,7 +955,7 @@ RSpec.describe Plurimath::Mathml::Parser do
   context "contains mathml v3 #3 example #30" do
     let(:exp) {
       <<~MATHML
-        <math>
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
           <mfrac>
             <mn> 1 </mn>
             <mrow>
@@ -1030,7 +1028,7 @@ RSpec.describe Plurimath::Mathml::Parser do
   context "contains mathml v3 #3 example #31" do
     let(:exp) {
       <<~MATHML
-        <math>
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
           <mfrac>
             <mrow>
               <mn>1 </mn>
@@ -1064,7 +1062,7 @@ RSpec.describe Plurimath::Mathml::Parser do
   context "contains mathml v3 #3 example #32" do
     let(:exp) {
       <<~MATHML
-        <math>
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
           <mrow>
             <mo maxsize="100%"> ( </mo>
             <mfrac> <mi> a </mi> <mi> b </mi> </mfrac>
@@ -1093,7 +1091,7 @@ RSpec.describe Plurimath::Mathml::Parser do
   context "contains mathml v3 #3 example #33" do
     let(:exp) {
       <<~MATHML
-        <math>
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
           <mstyle maxsize="100%">
             <mrow>
               <mo> ( </mo>
@@ -1124,7 +1122,7 @@ RSpec.describe Plurimath::Mathml::Parser do
   context "contains mathml v3 #3 example #34" do
     let(:exp) {
       <<~MATHML
-        <math>
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
           <mfraction>
             <mrow>
               <mn> 1 </mn>
@@ -1158,7 +1156,7 @@ RSpec.describe Plurimath::Mathml::Parser do
   context "contains mathml v3 #3 example #35" do
     let(:exp) {
       <<~MATHML
-        <math>
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
           <mrow>
             <mi>x</mi>
             <mpadded lspace="0.2em" voffset="0.3ex">
@@ -1186,7 +1184,7 @@ RSpec.describe Plurimath::Mathml::Parser do
   context "contains mathml v3 #3 example #36" do
     let(:exp) {
       <<~MATHML
-        <math>
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
           <mfrac>
             <mrow>
               <mi> x </mi>
@@ -1238,7 +1236,7 @@ RSpec.describe Plurimath::Mathml::Parser do
   context "contains mathml v3 #3 example #37" do
     let(:exp) {
       <<~MATHML
-        <math>
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
           <mfrac>
             <mrow>
               <mi> x </mi>
@@ -1292,7 +1290,7 @@ RSpec.describe Plurimath::Mathml::Parser do
   context "contains mathml v3 #3 example #38" do
     let(:exp) {
       <<~MATHML
-        <math>
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
           <mrow>
             <mo> ( </mo>
             <mrow>
@@ -1338,7 +1336,7 @@ RSpec.describe Plurimath::Mathml::Parser do
   context "contains mathml v3 #3 example #39" do
     let(:exp) {
       <<~MATHML
-        <math>
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
           <mfenced open="[">
             <mn> 0 </mn>
             <mn> 1 </mn>
@@ -1364,7 +1362,7 @@ RSpec.describe Plurimath::Mathml::Parser do
   context "contains mathml v3 #3 example #40" do
     let(:exp) {
       <<~MATHML
-        <math>
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
           <mrow>
             <mi> f </mi>
             <mo> &#x2061;<!--FUNCTION APPLICATION--> </mo>
@@ -1398,7 +1396,7 @@ RSpec.describe Plurimath::Mathml::Parser do
   context "contains mathml v3 #3 example #41" do
     let(:exp) {
       <<~MATHML
-        <math>
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
           <menclose notation='circle box'>
             <mi> x </mi>
             <mo> + </mo>
@@ -1425,7 +1423,7 @@ RSpec.describe Plurimath::Mathml::Parser do
   context "contains mathml v3 #3 example #42" do
     let(:exp) {
       <<~MATHML
-        <math>
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
           <menclose>
             <mi> x </mi>
             <mo> + </mo>
@@ -1452,7 +1450,7 @@ RSpec.describe Plurimath::Mathml::Parser do
   context "contains mathml v3 #3 example #43" do
     let(:exp) {
       <<~MATHML
-        <math>
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
           <msub>
             <mi>a</mi>
             <mrow>
@@ -1487,7 +1485,7 @@ RSpec.describe Plurimath::Mathml::Parser do
   context "contains mathml v3 #3 example #44" do
     let(:exp) {
       <<~MATHML
-        <math>
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
           <mi>C</mi>
           <mrow>
             <menclose notation='phasorangle'>
@@ -1524,7 +1522,7 @@ RSpec.describe Plurimath::Mathml::Parser do
   context "contains mathml v3 #3 example #45" do
     let(:exp) {
       <<~MATHML
-        <math>
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
           <msup>
             <mrow>
               <mo> ( </mo>
@@ -1564,7 +1562,7 @@ RSpec.describe Plurimath::Mathml::Parser do
   context "contains mathml v3 #3 example #46" do
     let(:exp) {
       <<~MATHML
-        <math>
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
           <mrow>
             <msubsup>
               <mo> &#x222B;<!--INTEGRAL--> </mo>
@@ -1611,7 +1609,7 @@ RSpec.describe Plurimath::Mathml::Parser do
   context "contains mathml v3 #3 example #47" do
     let(:exp) {
       <<~MATHML
-        <math>
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
           <mrow>
             <munder accentunder="true">
               <mrow>
@@ -1671,7 +1669,7 @@ RSpec.describe Plurimath::Mathml::Parser do
   context "contains mathml v3 #3 example #48" do
     let(:exp) {
       <<~MATHML
-        <math>
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
           <mrow>
             <mover accent="true">
               <mi> x </mi>
@@ -1707,7 +1705,7 @@ RSpec.describe Plurimath::Mathml::Parser do
   context "contains mathml v3 #3 example #49" do
     let(:exp) {
       <<~MATHML
-        <math>
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
           <mrow>
             <mover accent="true">
               <mrow>
@@ -1767,7 +1765,7 @@ RSpec.describe Plurimath::Mathml::Parser do
   context "contains mathml v3 #3 example #50" do
     let(:exp) {
       <<~MATHML
-        <math>
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
           <mrow>
             <mover>
               <munder>
@@ -1809,7 +1807,7 @@ RSpec.describe Plurimath::Mathml::Parser do
   context "contains mathml v3 #3 example #51" do
     let(:exp) {
       <<~MATHML
-        <math>
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
           <mrow>
             <mmultiscripts>
               <mi> F </mi>
@@ -1868,7 +1866,7 @@ RSpec.describe Plurimath::Mathml::Parser do
   context "contains mathml v3 #3 example #52" do
     let(:exp) {
       <<~MATHML
-        <math>
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
           <mmultiscripts>
             <mi> R </mi>
             <mi> i </mi>
@@ -1910,7 +1908,7 @@ RSpec.describe Plurimath::Mathml::Parser do
   context "contains mathml v3 #3 example #53" do
     let(:exp) {
       <<~MATHML
-        <math>
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
           <mstyle dir="rtl">
             <mmultiscripts>
               <mo>&#x0644;<!--ARABIC LETTER LAM--></mo>
@@ -1943,7 +1941,7 @@ RSpec.describe Plurimath::Mathml::Parser do
   context "contains mathml v3 #3 example #54" do
     let(:exp) {
       <<~MATHML
-        <math>
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
           <mrow>
             <mo> ( </mo>
             <mtable>
@@ -2017,7 +2015,7 @@ RSpec.describe Plurimath::Mathml::Parser do
   context "contains mathml v3 #3 example #55" do
     let(:exp) {
       <<~MATHML
-        <math>
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
           <mtable>
             <mlabeledtr id='e-is-m-c-square'>
               <mtd>
@@ -2073,7 +2071,7 @@ RSpec.describe Plurimath::Mathml::Parser do
   context "contains mathml v3 #3 example #56" do
     let(:exp) {
       <<~MATHML
-        <math>
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
           <mtable groupalign=
                    "{decimalpoint left left decimalpoint left left decimalpoint}">
             <mtr>
@@ -2196,7 +2194,7 @@ RSpec.describe Plurimath::Mathml::Parser do
   context "contains mathml v3 #3 example #57" do
     let(:exp) {
       <<~MATHML
-        <math>
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
           <mstack>
             <mn>424</mn>
             <msrow>
@@ -2228,7 +2226,7 @@ RSpec.describe Plurimath::Mathml::Parser do
   context "contains mathml v3 #3 example #58" do
     let(:exp) {
       <<~MATHML
-        <math>
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
           <mstack>
             <mn>123</mn>
             <msrow>
@@ -2262,7 +2260,7 @@ RSpec.describe Plurimath::Mathml::Parser do
   context "contains mathml v3 #3 example #59" do
     let(:exp) {
       <<~MATHML
-        <math>
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
           <mstack>
             <msrow>
               <mn>456</mn>
@@ -2292,7 +2290,7 @@ RSpec.describe Plurimath::Mathml::Parser do
   context "contains mathml v3 #3 example #60" do
     let(:exp) {
       <<~MATHML
-        <math>
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
           <mstack>
             <mscarries crossout='updiagonalstrike'>
               <mn>2</mn>
@@ -2339,7 +2337,7 @@ RSpec.describe Plurimath::Mathml::Parser do
   context "contains mathml v3 #3 example #61" do
     let(:exp) {
       <<~MATHML
-        <math>
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
           <mstack>
             <mscarries location='nw'>
               <none/>
@@ -2379,7 +2377,7 @@ RSpec.describe Plurimath::Mathml::Parser do
   context "contains mathml v3 #3 example #62" do
     let(:exp) {
       <<~MATHML
-        <math>
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
           <mstack>
             <mscarries>
               <mscarry crossout='updiagonalstrike'><none/></mscarry>
@@ -2420,7 +2418,7 @@ RSpec.describe Plurimath::Mathml::Parser do
   context "contains mathml v3 #3 example #63" do
     let(:exp) {
       <<~MATHML
-        <math>
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
           <mstack>
             <msgroup>
               <mn>123</mn>
@@ -2465,7 +2463,7 @@ RSpec.describe Plurimath::Mathml::Parser do
   context "contains mathml v3 #3 example #64" do
     let(:exp) {
       <<~MATHML
-        <math>
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
           <mstack>
             <mscarries><mn>1</mn><mn>1</mn><none/></mscarries>
             <mscarries><mn>1</mn><mn>1</mn><none/></mscarries>
@@ -2546,7 +2544,7 @@ RSpec.describe Plurimath::Mathml::Parser do
   context "contains mathml v3 #3 example #65" do
     let(:exp) {
       <<~MATHML
-        <math>
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
           <mlongdiv longdivstyle="lefttop">
             <mn> 3 </mn>
             <mn> 435.3</mn>
@@ -2616,7 +2614,7 @@ RSpec.describe Plurimath::Mathml::Parser do
   context "contains mathml v3 #3 example #66" do
     let(:exp) {
       <<~MATHML
-        <math>
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
           <mstyle decimalpoint="&#x066B;"><!--ARABIC DECIMAL SEPARATOR-->
             <mlongdiv longdivstyle="stackedleftlinetop">
               <mn> &#x0663;<!--ARABIC-INDIC DIGIT THREE--> </mn>
@@ -2653,29 +2651,29 @@ RSpec.describe Plurimath::Mathml::Parser do
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
         Plurimath::Math::Function::Longdiv.new([
-          Plurimath::Math::Number.new(" &#x663; "),
-          Plurimath::Math::Number.new(" &#x664;&#x663;&#x665;&#x66b;&#x663;"),
-          Plurimath::Math::Number.new(" &#x661;&#x663;&#x660;&#x666;"),
+          Plurimath::Math::Number.new(" ٣ "),
+          Plurimath::Math::Number.new(" ٤٣٥٫٣"),
+          Plurimath::Math::Number.new(" ١٣٠٦"),
           Plurimath::Math::Function::Msgroup.new([
             Plurimath::Math::Function::Msgroup.new([
-              Plurimath::Math::Number.new(" &#x661;&#x662;"),
+              Plurimath::Math::Number.new(" ١٢"),
               Plurimath::Math::Function::Msline.new
             ]),
             Plurimath::Math::Function::Msgroup.new([
-              Plurimath::Math::Number.new(" &#x661;&#x660;"),
-              Plurimath::Math::Number.new(" &#x669;"),
+              Plurimath::Math::Number.new(" ١٠"),
+              Plurimath::Math::Number.new(" ٩"),
               Plurimath::Math::Function::Msline.new
             ]),
             Plurimath::Math::Function::Msgroup.new([
-              Plurimath::Math::Number.new(" &#x661;&#x666;"),
-              Plurimath::Math::Number.new(" &#x661;&#x665;"),
+              Plurimath::Math::Number.new(" ١٦"),
+              Plurimath::Math::Number.new(" ١٥"),
               Plurimath::Math::Function::Msline.new,
-              Plurimath::Math::Number.new(" &#x661;&#x66b;&#x660;")
+              Plurimath::Math::Number.new(" ١٫٠")
             ]),
             Plurimath::Math::Function::Msgroup.new([
-              Plurimath::Math::Number.new(" &#x669;"),
+              Plurimath::Math::Number.new(" ٩"),
               Plurimath::Math::Function::Msline.new,
-              Plurimath::Math::Number.new(" &#x661;")
+              Plurimath::Math::Number.new(" ١")
             ])
           ])
         ])
@@ -2687,7 +2685,7 @@ RSpec.describe Plurimath::Mathml::Parser do
   context "contains mathml v3 #3 example #67" do
     let(:exp) {
       <<~MATHML
-        <math>
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
           <mstack stackalign="right">
             <msline length="1"/>
             <mn> 0.3333 </mn>
@@ -2711,7 +2709,7 @@ RSpec.describe Plurimath::Mathml::Parser do
   context "contains mathml v3 #3 example #68" do
     let(:exp) {
       <<~MATHML
-        <math>
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
           <mstack stackalign="right">
             <msline length="6"/>
             <mn> 0.142857 </mn>
@@ -2735,7 +2733,7 @@ RSpec.describe Plurimath::Mathml::Parser do
   context "contains mathml v3 #3 example #69" do
     let(:exp) {
       <<~MATHML
-        <math>
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
           <mstack stackalign="right">
             <mn> 0.142857 </mn>
             <msline length="6"/>
@@ -2759,7 +2757,7 @@ RSpec.describe Plurimath::Mathml::Parser do
   context "contains mathml v3 #3 example #70" do
     let(:exp) {
       <<~MATHML
-        <math>
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
           <mstack stackalign="right">
             <msrow>
               <mo>.</mo>

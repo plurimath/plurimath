@@ -1,11 +1,16 @@
 # frozen_string_literal: true
 
 require_relative "binary_function"
+require_relative "../../mathml/utility"
 
 module Plurimath
   module Math
     module Function
       class Power < BinaryFunction
+        include Mathml::Utility
+
+        attr_accessor :temp_mathml_order
+
         FUNCTION = {
           name: "superscript",
           first_value: "base",
@@ -83,6 +88,16 @@ module Plurimath
 
         def is_nary_function?
           parameter_one.is_nary_function? || parameter_one.is_nary_symbol?
+        end
+
+        def mrow_value=(value)
+          return if value.nil? || value.empty?
+
+          self.temp_mathml_order = replace_order_with_value(
+            self.temp_mathml_order,
+            value,
+            "mrow"
+          )
         end
 
         protected

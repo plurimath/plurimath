@@ -2,6 +2,8 @@
 
 require_relative "constants"
 require_relative "transform"
+require "mml/configuration"
+
 module Plurimath
   class Mathml
     class Parser
@@ -34,20 +36,51 @@ module Plurimath
       ].freeze
 
       def initialize(text)
+        mml_config
         @text = text
       end
 
       def parse
-        ox_nodes = Plurimath.xml_engine.load(text)
-        display_style = ox_nodes&.locate("mstyle/@displaystyle")&.first
-        nodes = parse_nodes(Array(ox_nodes))
-        Math::Formula.new(
-          Transform.new.apply(nodes).flatten.compact,
-          display_style: (display_style || true),
-        )
+        ::Mml.parse(text)
       end
 
       protected
+
+      def mml_config
+        ::Mml::Configuration.config = {
+          munderover: Plurimath::Math::Function::Underover,
+          semantics: Plurimath::Math::Function::Semantics,
+          mscarries: Plurimath::Math::Function::Scarries,
+          mlongdiv: Plurimath::Math::Function::Longdiv,
+          msubsup: Plurimath::Math::Function::PowerBase,
+          msgroup: Plurimath::Math::Function::Msgroup,
+          mfenced: Plurimath::Math::Function::Fenced,
+          mstack: Plurimath::Math::Function::Stackrel,
+          munder: Plurimath::Math::Function::Underset,
+          msline: Plurimath::Math::Function::Msline,
+          mtable: Plurimath::Math::Function::Table,
+          mstyle: Plurimath::Math::Formula::Mstyle,
+          merror: Plurimath::Math::Function::Merror,
+          mover: Plurimath::Math::Function::Overset,
+          msqrt: Plurimath::Math::Function::Sqrt,
+          mroot: Plurimath::Math::Function::Root,
+          mtext: Plurimath::Math::Function::Text,
+          mfrac: Plurimath::Math::Function::Frac,
+          msrow: Plurimath::Math::Formula::Msrow,
+          msup: Plurimath::Math::Function::Power,
+          msub: Plurimath::Math::Function::Base,
+          none: Plurimath::Math::Function::None,
+          mrow: Plurimath::Math::Formula::Mrow,
+          math: Plurimath::Math::Formula,
+          mtd: Plurimath::Math::Function::Td,
+          mtr: Plurimath::Math::Function::Tr,
+          mi: Plurimath::Math::Symbols::Symbol,
+          mo: Plurimath::Math::Symbols::Symbol,
+          ms: Plurimath::Math::Function::Ms,
+          mn: Plurimath::Math::Number,
+        }
+        require "mml" unless ::Mml.respond_to?(:config)
+      end
 
       def parse_nodes(nodes)
         nodes.map do |node|
@@ -100,7 +133,7 @@ module Plurimath
       end
 
       def comment_remove(nodes)
-        nodes.delete_if { |node| Plurimath.xml_engine.is_xml_comment?(node)  }
+        nodes.delete_if { |node| Plurimath.xml_engine.is_xml_comment?(node) }
       end
     end
   end

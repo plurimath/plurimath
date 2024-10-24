@@ -1,11 +1,14 @@
 # frozen_string_literal: true
 
 require_relative "unary_function"
+require_relative "../../mathml/utility"
 
 module Plurimath
   module Math
     module Function
       class Tr < UnaryFunction
+        include Mathml::Utility
+
         def initialize(parameter_one = [])
           parameter_one.map!.with_index { |_, index| Td.new([]) } if parameter_one&.all?("@")
           super(parameter_one)

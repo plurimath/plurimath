@@ -342,11 +342,12 @@ module Plurimath
         ) << rpr_element(wi_tag: wi_tag)
       end
 
-      def filter_values(array)
+      def filter_values(array, new_formula: true)
         return array unless array.is_a?(Array) || array.is_a?(Math::Formula)
 
         array = array.is_a?(Math::Formula) ? array.value : array.flatten.compact
-        return Math::Formula.new(array) if array.length > 1
+        return Math::Formula.new(array) if array.length > 1 && new_formula
+        return array if array.length > 1 && !new_formula
 
         array.first
       end
