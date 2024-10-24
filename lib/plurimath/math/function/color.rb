@@ -7,6 +7,7 @@ module Plurimath
     module Function
       class Color < BinaryFunction
         attr_accessor :options
+
         FUNCTION = {
           name: "color",
           first_value: "mathcolor",
@@ -27,11 +28,10 @@ module Plurimath
         end
 
         def to_mathml_without_math_tag(intent, options:)
-          color_value = parameter_one&.to_asciimath(options: options)&.gsub(/\s/, "")&.gsub(/"/, "")
           Utility.update_nodes(
             Utility.ox_element(
               "mstyle",
-              attributes: self.options,
+              attributes: mathml_options,
             ),
             [parameter_two&.to_mathml_without_math_tag(intent, options: options)],
           )
@@ -66,7 +66,16 @@ module Plurimath
         end
 
         def attr_key
-          options.dig(:backgroundcolor) ? :mathbackground : :mathcolor
+          options&.dig(:backgroundcolor) ? :mathbackground : :mathcolor
+        end
+
+        def mathml_options
+          return unless parameter_one
+
+          color_options = {}
+          color_options[attr_key] =
+            parameter_one.to_asciimath(options: options)&.gsub(/\s/, "")&.gsub(/"/, "")
+          color_options
         end
       end
     end

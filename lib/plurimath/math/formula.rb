@@ -342,6 +342,7 @@ module Plurimath
       def intent=(value)
         return unless value
 
+        self.content = nil
         update(
           [
             Function::Intent.new(
@@ -363,7 +364,6 @@ module Plurimath
             "ms"
           )
         )
-        organize_value
       end
 
       def mi_value=(value)
@@ -377,7 +377,6 @@ module Plurimath
           Array(validate_symbols(value)).flatten,
           "mi"
         )
-        organize_value
       end
 
       def mn_value=(value)
@@ -388,7 +387,6 @@ module Plurimath
           Array(validate_symbols(value)),
           "mn"
         )
-        organize_value
       end
 
       def mtext_value=(value)
@@ -401,7 +399,6 @@ module Plurimath
             "mtext"
           )
         )
-        organize_value
       end
 
       def mo_value=(value)
@@ -415,7 +412,6 @@ module Plurimath
             "mo"
           )
         )
-        organize_value
       end
 
       def mstyle_value=(value)
@@ -531,7 +527,6 @@ module Plurimath
             "mfrac"
           )
         )
-        organize_value
       end
 
       def msqrt_value=(value)
@@ -642,67 +637,31 @@ module Plurimath
         )
       end
 
-      def none=(_)
-        @value.delete("none")
+      def merror_value=(value)
+        return if value.nil? || value.empty?
+
+        @value = replace_order_with_value(
+          @value,
+          filter_values(update_temp_mathml_values(value)),
+          "merror"
+        )
       end
 
-      def is_mrow
-        @is_mrow
+      def mlongdiv_value=(value)
+        return if value.nil? || value.empty?
+
+        @value = replace_order_with_value(
+          @value,
+          update_temp_mathml_values(value),
+          "mlongdiv"
+        )
       end
 
-      def is_mrow=(_)
-        @is_mrow = true
+      def none_value=(_)
+        @value&.delete("none")
       end
 
       protected
-
-      def organize_value
-        return if value.any?(String)
-        return unless is_mrow
-
-        unary_classes = Plurimath::Utility::UNARY_CLASSES
-        value.each_with_index do |element, index|
-          if value[index + 1].is_a?(Math::Function::Mod)
-            mod_obj = value[index + 1]
-            mod_obj.parameter_one = filter_values(
-              value.delete_at(index),
-              array_to_instance: true
-            )
-            mod_obj.parameter_two = filter_values(
-              value.delete_at(index + 1),
-              array_to_instance: true
-            )
-          elsif value.length > 1 && element.is_unary? && value[index + 1]
-            if unary_classes.include?(element.class_name)
-              new_element = value.delete_at(index)
-              new_element.parameter_one = filter_values(
-                value.delete_at(index),
-                array_to_instance: true
-              )
-              value.insert(index, new_element)
-            end
-          elsif value.first.paren? && value.last.paren?
-            @value = [
-              Function::Fenced.new(value.shift, value, value.pop)
-            ]
-          elsif element.is_a?(Math::Function::Underset)
-            value.shift
-            new_element = Plurimath::Math::Function::Nary.new(
-              element.parameter_two,
-              element.parameter_one,
-              nil,
-              filter_values(value.dup, array_to_instance: true),
-              { type: "undOvr" }
-            )
-            value.clear
-            value[index] = new_element
-          elsif element.is_ternary_function? &&
-              element.any_value_exist? &&
-              element.parameter_three.nil?
-            element.parameter_three = value.delete_at(index + 1)
-          end
-        end
-      end
 
       def remove_order(order)
         value.delete_if { |val| val.is_a?(String) && val == order }

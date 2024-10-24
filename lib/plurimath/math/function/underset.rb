@@ -25,6 +25,13 @@ module Plurimath
           @options = options unless options.empty?
         end
 
+        def element_order=(value)
+          @temp_mathml_order = validated_order(
+            value,
+            rejectable_array: ["comment"]
+          )
+        end
+
         def to_mathml_without_math_tag(intent, options:)
           value_array = [
             validate_mathml_fields(parameter_two, intent, options: options),
@@ -83,7 +90,40 @@ module Plurimath
           parameter_two.is_nary_function? || parameter_two.is_nary_symbol?
         end
 
+        def content=(value)
+          if no_content_in?(value)
+            delete_all_text
+          else
+            new_val = value&.map do |val|
+              validate_symbols(val) unless val.strip.empty?
+            end
+            validate_text_order(new_val)
+          end
+          update_temp_mathml_values(@temp_mathml_order)
+        end
+
         protected
+
+        def validate_text_order(value)
+          @temp_mathml_order.each_with_index do |item, index|
+            next unless item == "text"
+
+            if value.first
+              @temp_mathml_order[index] = value.shift
+            else
+              value.shift
+              @temp_mathml_order.delete_at(index)
+            end
+          end
+        end
+
+        def delete_all_text
+          @temp_mathml_order.delete("text")
+        end
+
+        def no_content_in?(value)
+          value.nil? || value.empty? || value&.all? { |val| val.strip.empty? }
+        end
 
         def unicode_accent?(field)
           return unless field.is_a?(Math::Symbols::Symbol)

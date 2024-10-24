@@ -2651,29 +2651,29 @@ RSpec.describe Plurimath::Mathml::Parser do
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
         Plurimath::Math::Function::Longdiv.new([
-          Plurimath::Math::Number.new(" &#x663; "),
-          Plurimath::Math::Number.new(" &#x664;&#x663;&#x665;&#x66b;&#x663;"),
-          Plurimath::Math::Number.new(" &#x661;&#x663;&#x660;&#x666;"),
+          Plurimath::Math::Number.new(" ٣ "),
+          Plurimath::Math::Number.new(" ٤٣٥٫٣"),
+          Plurimath::Math::Number.new(" ١٣٠٦"),
           Plurimath::Math::Function::Msgroup.new([
             Plurimath::Math::Function::Msgroup.new([
-              Plurimath::Math::Number.new(" &#x661;&#x662;"),
+              Plurimath::Math::Number.new(" ١٢"),
               Plurimath::Math::Function::Msline.new
             ]),
             Plurimath::Math::Function::Msgroup.new([
-              Plurimath::Math::Number.new(" &#x661;&#x660;"),
-              Plurimath::Math::Number.new(" &#x669;"),
+              Plurimath::Math::Number.new(" ١٠"),
+              Plurimath::Math::Number.new(" ٩"),
               Plurimath::Math::Function::Msline.new
             ]),
             Plurimath::Math::Function::Msgroup.new([
-              Plurimath::Math::Number.new(" &#x661;&#x666;"),
-              Plurimath::Math::Number.new(" &#x661;&#x665;"),
+              Plurimath::Math::Number.new(" ١٦"),
+              Plurimath::Math::Number.new(" ١٥"),
               Plurimath::Math::Function::Msline.new,
-              Plurimath::Math::Number.new(" &#x661;&#x66b;&#x660;")
+              Plurimath::Math::Number.new(" ١٫٠")
             ]),
             Plurimath::Math::Function::Msgroup.new([
-              Plurimath::Math::Number.new(" &#x669;"),
+              Plurimath::Math::Number.new(" ٩"),
               Plurimath::Math::Function::Msline.new,
-              Plurimath::Math::Number.new(" &#x661;")
+              Plurimath::Math::Number.new(" ١")
             ])
           ])
         ])
