@@ -3,10 +3,10 @@ module Plurimath
     module Symbols
       class Ll < Symbol
         INPUT = {
-          unicodemath: [["ll", "&#x226a;"]],
-          asciimath: [["&#x226a;"], parsing_wrapper(["ll"], lang: :asciimath)],
+          unicodemath: ["ll", "&#x226a;", parsing_wrapper(["mlt"], lang: :unicodemath)],
+          asciimath: ["&#x226a;", "ll", "mlt"],
           mathml: ["&#x226a;"],
-          latex: [["ll", "&#x226a;"]],
+          latex: ["ll", "&#x226a;", parsing_wrapper(["mlt"], lang: :latex)],
           omml: ["&#x226a;"],
           html: ["&#x226a;"],
         }.freeze
@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_asciimath(**)
-          parsing_wrapper("ll", lang: :asciimath)
+          "ll"
         end
 
         def to_unicodemath(**)
