@@ -3,7 +3,7 @@ module Plurimath
     module Symbols
       class Gg < Symbol
         INPUT = {
-          unicodemath: ["gg", "&#x226b;", parsing_wrapper(["mtg"], lang: :unicodemath)],
+          unicodemath: ["gg", "&#x226b;", parsing_wrapper(["mtg"], lang: :unicode)],
           asciimath: ["&#x226b;", "gg", "mtg"],
           mathml: ["&#x226b;"],
           latex: ["gg", "&#x226b;", parsing_wrapper(["mtg"], lang: :latex)],
