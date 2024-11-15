@@ -6435,7 +6435,7 @@ RSpec.describe Plurimath::Asciimath do
     end
 
     context "contains much less and greater than request example from plrimath/issue#308 example #121" do
-      let(:string) { 'll or mlt & gg or mtg' }
+      let(:string) { 'll or mlt & gg or mgt' }
 
       it 'matches LaTeX, AsciiMath, and MathML' do
         latex = "\\ll o r \\ll \\& \\gg o r \\gg"
