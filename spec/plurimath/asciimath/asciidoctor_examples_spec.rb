@@ -1559,11 +1559,9 @@ RSpec.describe Plurimath::Asciimath::Parser do
         expected_value = Plurimath::Math::Formula.new([
           Plurimath::Math::Symbols::Sptilde.new,
           Plurimath::Math::Symbols::Symbol.new("a"),
-          Plurimath::Math::Symbols::Symbol.new("m"),
-          Plurimath::Math::Symbols::Less.new,
+          Plurimath::Math::Symbols::Ll.new,
           Plurimath::Math::Symbols::Symbol.new("b"),
-          Plurimath::Math::Symbols::Symbol.new("m"),
-          Plurimath::Math::Symbols::Greater.new,
+          Plurimath::Math::Symbols::Gg.new,
           Plurimath::Math::Symbols::Minus.new,
           Plurimath::Math::Symbols::Plus.new,
           Plurimath::Math::Symbols::Symbol.new("c")
