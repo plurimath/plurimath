@@ -209,7 +209,7 @@ RSpec.describe Plurimath::Asciimath::Parser do
             Plurimath::Math::Formula.new([
               Plurimath::Math::Symbols::UpcaseDelta.new,
               Plurimath::Math::Symbols::Symbol.new("x"),
-              Plurimath::Math::Symbols::To.new,
+              Plurimath::Math::Symbols::Rightarrow.new,
               Plurimath::Math::Number.new("0")
             ])
           ),
@@ -545,7 +545,7 @@ RSpec.describe Plurimath::Asciimath::Parser do
           Plurimath::Math::Function::Lim.new(
             Plurimath::Math::Formula.new([
               Plurimath::Math::Symbols::Symbol.new("x"),
-              Plurimath::Math::Symbols::To.new,
+              Plurimath::Math::Symbols::Rightarrow.new,
               Plurimath::Math::Symbols::Symbol.new("c")
             ])
           ),
@@ -1351,7 +1351,7 @@ RSpec.describe Plurimath::Asciimath::Parser do
             [
               Plurimath::Math::Symbols::Symbol.new("x"),
               Plurimath::Math::Symbols::Space.new,
-              Plurimath::Math::Symbols::Semicolon.new,
+              Plurimath::Math::Symbols::Mathcolon.new,
               Plurimath::Math::Symbols::Space.new,
               Plurimath::Math::Symbols::Symbol.new("x"),
               Plurimath::Math::Symbols::In.new,
@@ -1579,7 +1579,7 @@ RSpec.describe Plurimath::Asciimath::Parser do
           Plurimath::Math::Symbols::Plus.new,
           Plurimath::Math::Symbols::Symbol.new("b"),
           Plurimath::Math::Symbols::Plus.new,
-          Plurimath::Math::Symbols::Cdots.new,
+          Plurimath::Math::Symbols::Dots.new,
           Plurimath::Math::Symbols::Plus.new,
           Plurimath::Math::Symbols::Symbol.new("c")
         ])

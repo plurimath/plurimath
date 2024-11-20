@@ -1,11 +1,14 @@
 # frozen_string_literal: true
 
+require_relative "../mathml/utility"
+
 module Plurimath
   module Math
     class Number < Core
       attr_accessor :value, :mini_sub_sized, :mini_sup_sized
+      include Mathml::Utility
 
-      def initialize(value, mini_sub_sized: false, mini_sup_sized: false)
+      def initialize(value = nil, mini_sub_sized: false, mini_sup_sized: false)
         @value = value.is_a?(Parslet::Slice) ? value.to_s : value
         @mini_sub_sized = mini_sub_sized if mini_sub_sized
         @mini_sup_sized = mini_sup_sized if mini_sup_sized
@@ -17,6 +20,8 @@ module Plurimath
           object.mini_sub_sized == mini_sub_sized &&
           object.mini_sup_sized == mini_sup_sized
       end
+
+      def element_order=(*); end
 
       def to_asciimath(options:)
         format_value_with_options(options)
@@ -69,6 +74,10 @@ module Plurimath
 
       def mini_sized?
         mini_sub_sized || mini_sup_sized
+      end
+
+      def value=(value)
+        @value = value.is_a?(Array) ? value.join : value
       end
 
       protected

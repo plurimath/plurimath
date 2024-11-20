@@ -1,9 +1,13 @@
 # frozen_string_literal: true
 
+require_relative "../../mathml/utility"
+
 module Plurimath
   module Math
     module Function
       class Table < Core
+        include Mathml::Utility
+
         attr_accessor :value, :open_paren, :close_paren, :options
 
         SIMPLE_TABLES = %w[array align split].freeze
@@ -137,10 +141,59 @@ module Plurimath
           }
         end
 
+        def mtr_value=(value)
+          return if value.nil? || value.empty?
+
+          self.value = replace_order_with_value(
+            clear_temp_order,
+            update_temp_mathml_values(value),
+            "mtr"
+          )
+        end
+
+        def mlabeledtr_value=(value)
+          return if value.nil? || value.empty?
+
+          self.value = replace_order_with_value(
+            clear_temp_order,
+            update_temp_mathml_values(value),
+            "mlabeledtr"
+          )
+        end
+
+        def frame=(value)
+          return if value.nil? || value.empty?
+
+          set_option(:frame, value)
+        end
+
+        def rowlines=(value)
+          return if value.nil? || value.empty?
+
+          set_option(:rowlines, value)
+        end
+
+        def columnlines=(value)
+          return if value.nil? || value.empty?
+          return if value.split.all? { |val| val.include?("none") }
+
+          Plurimath::Utility.table_separator(
+            value.split,
+            @value,
+          )
+          set_option(:columnlines, value)
+        end
+
         protected
+
+        def set_option(option, value)
+          @options ||= {}
+          @options[option] = value
+        end
 
         def mathml_parenthesis(field, intent, options:)
           return "" unless field
+
           if field&.class_name == "symbol"
             paren = field&.to_mathml_without_math_tag(intent, options: options)&.nodes&.first
             return invisible_paren?(paren) ? "" : paren.to_s

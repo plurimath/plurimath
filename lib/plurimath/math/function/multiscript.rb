@@ -1,10 +1,14 @@
 # frozen_string_literal: true
 
 require_relative "ternary_function"
+require_relative "../../mathml/utility"
+
 module Plurimath
   module Math
     module Function
       class Multiscript < TernaryFunction
+        include Mathml::Utility
+
         FUNCTION = {
           name: "multiscript",
           first_value: "base",
@@ -77,6 +81,16 @@ module Plurimath
             )
             self.parameter_three = nil
           end
+        end
+
+        def none_value=(value)
+          return if value.nil? || value.empty?
+
+          @temp_mathml_order = replace_order_with_value(
+            @temp_mathml_order,
+            value,
+            "none"
+          )
         end
 
         private

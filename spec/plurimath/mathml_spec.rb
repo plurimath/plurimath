@@ -110,57 +110,55 @@ RSpec.describe Plurimath::Mathml do
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
+              <mi>h</mi>
+              <mi>a</mi>
+              <mi>n</mi>
+              <mi>n</mi>
+              <mi>i</mi>
+              <mi>n</mi>
+              <mi>g</mi>
+              <mo>(</mo>
+              <mi>k</mi>
+              <mo>)</mo>
+              <mo>=</mo>
+              <mn>0</mn>
+              <mo>&#x2e;</mo>
+              <mn>5</mn>
+              <mo>&#x22c5;</mo>
+              <mo>[</mo>
+              <mn>1</mn>
+              <mo>&#x2212;</mo>
               <mrow>
-                <mi>h</mi>
-                <mi>a</mi>
-                <mi>n</mi>
-                <mi>n</mi>
-                <mi>i</mi>
-                <mi>n</mi>
-                <mi>g</mi>
+                <mi>cos</mi>
                 <mo>(</mo>
-                <mi>k</mi>
-                <mo>)</mo>
-                <mo>=</mo>
-                <mn>0</mn>
-                <mo>&#x2e;</mo>
-                <mn>5</mn>
-                <mo>&#x22c5;</mo>
-                <mo>[</mo>
-                <mn>1</mn>
-                <mo>&#x2212;</mo>
-                <mrow>
-                  <mi>cos</mi>
-                  <mo>(</mo>
-                </mrow>
-                <mn>2</mn>
-                <mi>&#x3c0;</mi>
-                <mo>&#x22c5;</mo>
-                <mfrac>
-                  <mrow>
-                    <mi>k</mi>
-                    <mo>+</mo>
-                    <mn>1</mn>
-                  </mrow>
-                  <mrow>
-                    <mi>n</mi>
-                    <mo>+</mo>
-                    <mn>1</mn>
-                  </mrow>
-                </mfrac>
-                <mo>)</mo>
-                <mo>]</mo>
-                <mtext></mtext>
-                <mo>(</mo>
-                <mn>0</mn>
-                <mo>&#x2264;</mo>
-                <mi>k</mi>
-                <mo>&#x2264;</mo>
-                <mi>n</mi>
-                <mo>&#x2212;</mo>
-                <mn>1</mn>
-                <mo>)</mo>
               </mrow>
+              <mn>2</mn>
+              <mi>&#x3c0;</mi>
+              <mo>&#x22c5;</mo>
+              <mfrac>
+                <mrow>
+                  <mi>k</mi>
+                  <mo>+</mo>
+                  <mn>1</mn>
+                </mrow>
+                <mrow>
+                  <mi>n</mi>
+                  <mo>+</mo>
+                  <mn>1</mn>
+                </mrow>
+              </mfrac>
+              <mo>)</mo>
+              <mo>]</mo>
+              <mtext></mtext>
+              <mo>(</mo>
+              <mn>0</mn>
+              <mo>&#x2264;</mo>
+              <mi>k</mi>
+              <mo>&#x2264;</mo>
+              <mi>n</mi>
+              <mo>&#x2212;</mo>
+              <mn>1</mn>
+              <mo>)</mo>
             </mstyle>
           </math>
         MATHML
@@ -781,95 +779,93 @@ RSpec.describe Plurimath::Mathml do
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
+              <mtext>Convert</mtext>
               <mrow>
-                <mtext>Convert</mtext>
-                <mrow>
-                  <mo>(</mo>
-                  <mi>x</mi>
-                  <mo>,</mo>
-                  <mi>y</mi>
-                  <mo>,</mo>
-                  <mi>z</mi>
-                  <mo>,</mo>
-                  <msub>
-                    <mi>p</mi>
-                    <mi>a</mi>
-                  </msub>
-                  <mo>,</mo>
-                  <msub>
-                    <mi>p</mi>
-                    <mi>o</mi>
-                  </msub>
-                  <mo>,</mo>
-                  <mi>R</mi>
-                  <mo>,</mo>
-                  <mi>S</mi>
-                  <mo>,</mo>
-                  <mi>T</mi>
-                  <mo>)</mo>
-                </mrow>
-                <mo>=</mo>
+                <mo>(</mo>
+                <mi>x</mi>
+                <mo>,</mo>
+                <mi>y</mi>
+                <mo>,</mo>
+                <mi>z</mi>
+                <mo>,</mo>
                 <msub>
-                  <mi>R</mi>
-                  <mi>z</mi>
+                  <mi>p</mi>
+                  <mi>a</mi>
                 </msub>
-                <mrow>
-                  <mo>(</mo>
-                  <mi>&#x3b1;</mi>
-                  <mo>)</mo>
-                </mrow>
-                <msub>
-                  <mi>R</mi>
-                  <mi>y</mi>
-                </msub>
-                <mrow>
-                  <mo>(</mo>
-                  <mi>&#x3b2;</mi>
-                  <mo>)</mo>
-                </mrow>
-                <msub>
-                  <mi>R</mi>
-                  <mi>x</mi>
-                </msub>
-                <mrow>
-                  <mo>(</mo>
-                  <mi>&#x3b3;</mi>
-                  <mo>)</mo>
-                </mrow>
-                <mi>S</mi>
-                <mrow>
-                  <mo>(</mo>
-                  <mi>x</mi>
-                  <mo>&#x2212;</mo>
-                  <msub>
-                    <mi>a</mi>
-                    <mi>x</mi>
-                  </msub>
-                  <mo>, </mo>
-                  <mi>y</mi>
-                  <mo>&#x2212;</mo>
-                  <msub>
-                    <mi>a</mi>
-                    <mi>y</mi>
-                  </msub>
-                  <mo>, </mo>
-                  <mi>z</mi>
-                  <mo>&#x2212;</mo>
-                  <msub>
-                    <mi>a</mi>
-                    <mi>z</mi>
-                  </msub>
-                  <mo>)</mo>
-                </mrow>
-                <mo>+</mo>
+                <mo>,</mo>
                 <msub>
                   <mi>p</mi>
                   <mi>o</mi>
                 </msub>
-                <mo>+</mo>
+                <mo>,</mo>
+                <mi>R</mi>
+                <mo>,</mo>
+                <mi>S</mi>
+                <mo>,</mo>
                 <mi>T</mi>
-                <mo>=</mo>
+                <mo>)</mo>
               </mrow>
+              <mo>=</mo>
+              <msub>
+                <mi>R</mi>
+                <mi>z</mi>
+              </msub>
+              <mrow>
+                <mo>(</mo>
+                <mi>&#x3b1;</mi>
+                <mo>)</mo>
+              </mrow>
+              <msub>
+                <mi>R</mi>
+                <mi>y</mi>
+              </msub>
+              <mrow>
+                <mo>(</mo>
+                <mi>&#x3b2;</mi>
+                <mo>)</mo>
+              </mrow>
+              <msub>
+                <mi>R</mi>
+                <mi>x</mi>
+              </msub>
+              <mrow>
+                <mo>(</mo>
+                <mi>&#x3b3;</mi>
+                <mo>)</mo>
+              </mrow>
+              <mi>S</mi>
+              <mrow>
+                <mo>(</mo>
+                <mi>x</mi>
+                <mo>&#x2212;</mo>
+                <msub>
+                  <mi>a</mi>
+                  <mi>x</mi>
+                </msub>
+                <mo>, </mo>
+                <mi>y</mi>
+                <mo>&#x2212;</mo>
+                <msub>
+                  <mi>a</mi>
+                  <mi>y</mi>
+                </msub>
+                <mo>, </mo>
+                <mi>z</mi>
+                <mo>&#x2212;</mo>
+                <msub>
+                  <mi>a</mi>
+                  <mi>z</mi>
+                </msub>
+                <mo>)</mo>
+              </mrow>
+              <mo>+</mo>
+              <msub>
+                <mi>p</mi>
+                <mi>o</mi>
+              </msub>
+              <mo>+</mo>
+              <mi>T</mi>
+              <mo>=</mo>
             </mstyle>
           </math>
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
@@ -1242,11 +1238,9 @@ RSpec.describe Plurimath::Mathml do
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
-              <mrow>
-                <mglyph src="image.png" alt="Alternate Text" index="65534"/>
-                <mglyph src="image.png" alt="Alternate Text 1" index="34"/>
-                <mglyph src="image.png" alt="Alternate Text 2" index="0"/>
-              </mrow>
+              <mglyph src="image.png" alt="Alternate Text" index="65534"/>
+              <mglyph src="image.png" alt="Alternate Text 1" index="34"/>
+              <mglyph src="image.png" alt="Alternate Text 2" index="0"/>
             </mstyle>
           </math>
         MATHML
@@ -1279,14 +1273,12 @@ RSpec.describe Plurimath::Mathml do
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
-              <mrow>
-                <mpadded height="100" width="100" depth="100">
-                  <mi>F</mi>
-                </mpadded>
-                <mpadded height="0%" width="0%" depth="00%">
-                  <mi>F</mi>
-                </mpadded>
-              </mrow>
+              <mpadded height="100" width="100" depth="100">
+                <mi>F</mi>
+              </mpadded>
+              <mpadded height="0%" width="0%" depth="00%">
+                <mi>F</mi>
+              </mpadded>
             </mstyle>
           </math>
         MATHML
@@ -1328,24 +1320,22 @@ RSpec.describe Plurimath::Mathml do
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
-              <mrow>
-                <mmultiscripts>
-                  <mo>&#x2211;</mo>
-                  <mi>F</mi>
-                  <mi>A</mi>
-                  <mprescripts/>
-                  <none/>
-                  <none/>
-                </mmultiscripts>
-                <mmultiscripts>
-                  <mo>&#x2211;</mo>
-                  <mi>F</mi>
-                  <mi>B</mi>
-                  <mprescripts/>
-                  <mn>4</mn>
-                  <mi>E</mi>
-                </mmultiscripts>
-              </mrow>
+              <mmultiscripts>
+                <mo>&#x2211;</mo>
+                <mi>F</mi>
+                <mi>A</mi>
+                <mprescripts/>
+                <none/>
+                <none/>
+              </mmultiscripts>
+              <mmultiscripts>
+                <mo>&#x2211;</mo>
+                <mi>F</mi>
+                <mi>B</mi>
+                <mprescripts/>
+                <mn>4</mn>
+                <mi>E</mi>
+              </mmultiscripts>
             </mstyle>
           </math>
         MATHML
@@ -1415,15 +1405,11 @@ RSpec.describe Plurimath::Mathml do
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
-              <mrow>
-                <msub>
-                  <mo>&#x222e;</mo>
-                  <mi>F</mi>
-                </msub>
-                <mrow>
-                  <mi>C</mi>
-                </mrow>
-              </mrow>
+              <msub>
+                <mo>&#x222e;</mo>
+                <mi>F</mi>
+              </msub>
+              <mi>C</mi>
             </mstyle>
           </math>
         MATHML
@@ -1555,40 +1541,14 @@ RSpec.describe Plurimath::Mathml do
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
-              <mrow>
-                <msubsup>
-                  <mi>s</mi>
-                  <mtext>p</mtext>
-                  <mn>2</mn>
-                </msubsup>
-                <mo>=</mo>
-                <mfrac>
-                  <mrow>
-                    <mrow>
-                      <munderover>
-                        <mo>&#x2211;</mo>
-                        <mrow>
-                          <mi>i</mi>
-                          <mo>=</mo>
-                          <mn>1</mn>
-                        </mrow>
-                        <mstyle mathvariant="italic">
-                          <mi>N</mi>
-                        </mstyle>
-                      </munderover>
-                      <msub>
-                        <mstyle mathvariant="italic">
-                          <mi>&#x3bd;</mi>
-                        </mstyle>
-                        <mi>i</mi>
-                      </msub>
-                    </mrow>
-                    <msubsup>
-                      <mi>s</mi>
-                      <mi>i</mi>
-                      <mn>2</mn>
-                    </msubsup>
-                  </mrow>
+              <msubsup>
+                <mi>s</mi>
+                <mtext>p</mtext>
+                <mn>2</mn>
+              </msubsup>
+              <mo>=</mo>
+              <mfrac>
+                <mrow>
                   <mrow>
                     <munderover>
                       <mo>&#x2211;</mo>
@@ -1608,13 +1568,442 @@ RSpec.describe Plurimath::Mathml do
                       <mi>i</mi>
                     </msub>
                   </mrow>
-                </mfrac>
-              </mrow>
+                  <msubsup>
+                    <mi>s</mi>
+                    <mi>i</mi>
+                    <mn>2</mn>
+                  </msubsup>
+                </mrow>
+                <mrow>
+                  <munderover>
+                    <mo>&#x2211;</mo>
+                    <mrow>
+                      <mi>i</mi>
+                      <mo>=</mo>
+                      <mn>1</mn>
+                    </mrow>
+                    <mstyle mathvariant="italic">
+                      <mi>N</mi>
+                    </mstyle>
+                  </munderover>
+                  <msub>
+                    <mstyle mathvariant="italic">
+                      <mi>&#x3bd;</mi>
+                    </mstyle>
+                    <mi>i</mi>
+                  </msub>
+                </mrow>
+              </mfrac>
             </mstyle>
           </math>
         MATHML
         latex = 's_{\text{p}}^{2} = \frac{\sum_{i = 1}^{\mathit{N}} \mathit{\nu}_{i} s_{i}^{2}}{\sum_{i = 1}^{\mathit{N}} \mathit{\nu}_{i}}'
         asciimath = 's_("p")^(2) = frac(sum_(i = 1)^(ii(N)) ii(nu)_(i) s_(i)^(2))(sum_(i = 1)^(ii(N)) ii(nu)_(i))'
+        expect(formula.to_latex).to eq(latex)
+        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_asciimath).to eq(asciimath)
+      end
+    end
+
+    context "contains input from metanorma-cli-actions-mn-bipm run" do
+      let(:string) do
+        <<~MATHML
+          <math>
+            <mstyle displaystyle="true">
+              <munder>
+                <mstyle mathvariant="italic">
+                  <mi>B</mi>
+                </mstyle>
+                <mo>&#818;</mo>
+              </munder>
+              <mo>=</mo>
+              <mrow>
+                <mo>[</mo>
+                <mtable>
+                  <mtr>
+                    <mtd>
+                      <mn>1</mn>
+                    </mtd>
+                    <mtd/>
+                    <mtd/>
+                    <mtd/>
+                    <mtd/>
+                  </mtr>
+                  <mtr>
+                    <mtd>
+                      <mn>1</mn>
+                    </mtd>
+                    <mtd>
+                      <mn>1</mn>
+                    </mtd>
+                    <mtd/>
+                    <mtd/>
+                    <mtd/>
+                  </mtr>
+                  <mtr>
+                    <mtd>
+                      <mn>1</mn>
+                    </mtd>
+                    <mtd>
+                      <mn>2</mn>
+                    </mtd>
+                    <mtd>
+                      <mn>1</mn>
+                    </mtd>
+                    <mtd/>
+                    <mtd/>
+                  </mtr>
+                  <mtr>
+                    <mtd>
+                      <mstyle mathcolor="red">
+                        <mn>1</mn>
+                      </mstyle>
+                    </mtd>
+                    <mtd>
+                      <mstyle mathcolor="red">
+                        <mn>3</mn>
+                      </mstyle>
+                    </mtd>
+                    <mtd>
+                      <mstyle mathcolor="red">
+                        <mn>3</mn>
+                      </mstyle>
+                    </mtd>
+                    <mtd>
+                      <mstyle mathcolor="red">
+                        <mn>1</mn>
+                      </mstyle>
+                    </mtd>
+                    <mtd/>
+                  </mtr>
+                  <mtr>
+                    <mtd>
+                      <mn>1</mn>
+                    </mtd>
+                    <mtd>
+                      <mn>4</mn>
+                    </mtd>
+                    <mtd>
+                      <mn>6</mn>
+                    </mtd>
+                    <mtd>
+                      <mn>4</mn>
+                    </mtd>
+                    <mtd>
+                      <mn>1</mn>
+                    </mtd>
+                  </mtr>
+                  <mtr>
+                    <mtd/>
+                    <mtd/>
+                    <mtd>
+                      <mo>&#8230;</mo>
+                    </mtd>
+                    <mtd/>
+                    <mtd/>
+                  </mtr>
+                </mtable>
+                <mo>]</mo>
+              </mrow>
+            </mstyle>
+          </math>
+        MATHML
+      end
+
+      it "compares MathML, LaTeX, and AsciiMath string" do
+        mathml = <<~MATHML
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
+              <munder>
+                <mrow>
+                  <mstyle mathvariant="italic">
+                    <mi>B</mi>
+                  </mstyle>
+                </mrow>
+                <mo>&#x332;</mo>
+              </munder>
+              <mo>=</mo>
+              <mrow>
+                <mo>[</mo>
+                <mtable>
+                  <mtr>
+                    <mtd>
+                      <mn>1</mn>
+                    </mtd>
+                    <mtd/>
+                    <mtd/>
+                    <mtd/>
+                    <mtd/>
+                  </mtr>
+                  <mtr>
+                    <mtd>
+                      <mn>1</mn>
+                    </mtd>
+                    <mtd>
+                      <mn>1</mn>
+                    </mtd>
+                    <mtd/>
+                    <mtd/>
+                    <mtd/>
+                  </mtr>
+                  <mtr>
+                    <mtd>
+                      <mn>1</mn>
+                    </mtd>
+                    <mtd>
+                      <mn>2</mn>
+                    </mtd>
+                    <mtd>
+                      <mn>1</mn>
+                    </mtd>
+                    <mtd/>
+                    <mtd/>
+                  </mtr>
+                  <mtr>
+                    <mtd>
+                      <mrow>
+                        <mstyle mathcolor="red">
+                          <mn>1</mn>
+                        </mstyle>
+                      </mrow>
+                    </mtd>
+                    <mtd>
+                      <mrow>
+                        <mstyle mathcolor="red">
+                          <mn>3</mn>
+                        </mstyle>
+                      </mrow>
+                    </mtd>
+                    <mtd>
+                      <mrow>
+                        <mstyle mathcolor="red">
+                          <mn>3</mn>
+                        </mstyle>
+                      </mrow>
+                    </mtd>
+                    <mtd>
+                      <mrow>
+                        <mstyle mathcolor="red">
+                          <mn>1</mn>
+                        </mstyle>
+                      </mrow>
+                    </mtd>
+                    <mtd/>
+                  </mtr>
+                  <mtr>
+                    <mtd>
+                      <mn>1</mn>
+                    </mtd>
+                    <mtd>
+                      <mn>4</mn>
+                    </mtd>
+                    <mtd>
+                      <mn>6</mn>
+                    </mtd>
+                    <mtd>
+                      <mn>4</mn>
+                    </mtd>
+                    <mtd>
+                      <mn>1</mn>
+                    </mtd>
+                  </mtr>
+                  <mtr>
+                    <mtd/>
+                    <mtd/>
+                    <mtd>
+                      <mo>&#x2026;</mo>
+                    </mtd>
+                    <mtd/>
+                    <mtd/>
+                  </mtr>
+                </mtable>
+                <mo>]</mo>
+              </mrow>
+            </mstyle>
+          </math>
+        MATHML
+        latex = '\underline{\mathit{B}} = \left [\begin{matrix}1 &  &  &  &  \\\\ 1 & 1 &  &  &  \\\\ 1 & 2 & 1 &  &  \\\\ {\color{"red"} 1} & {\color{"red"} 3} & {\color{"red"} 3} & {\color{"red"} 1} &  \\\\ 1 & 4 & 6 & 4 & 1 \\\\  &  & \ldots &  & \end{matrix}\right ]'
+        asciimath = 'underline(ii(B)) = [[1, , , , ], [1, 1, , , ], [1, 2, 1, , ], [color("red")(1), color("red")(3), color("red")(3), color("red")(1), ], [1, 4, 6, 4, 1], [, , ..., , ]]'
+        expect(formula.to_latex).to eq(latex)
+        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_asciimath).to eq(asciimath)
+      end
+    end
+
+    context "contains input from metanorma-cli-actions-mn-itu run" do
+      let(:string) do
+        <<~MATHML
+          <math>
+            <mstyle displaystyle="true">
+              <msub>
+                <mi>y</mi>
+                <mi>k</mi>
+              </msub>
+              <mo>=</mo>
+              <mrow>
+                <mo>(</mo>
+                <msub>
+                  <mi>x</mi>
+                  <mi>k</mi>
+                </msub>
+                <mo>&#177;</mo>
+                <mi>h</mi>
+                <mo>)</mo>
+              </mrow>
+              <mo/>
+              <mi>m</mi>
+            </mstyle>
+          </math>
+        MATHML
+      end
+
+      it "compares MathML, LaTeX, annd AsciiMath string" do
+        mathml = <<~MATHML
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
+              <msub>
+                <mi>y</mi>
+                <mi>k</mi>
+              </msub>
+              <mo>=</mo>
+              <mrow>
+                <mo>(</mo>
+                <msub>
+                  <mi>x</mi>
+                  <mi>k</mi>
+                </msub>
+                <mo>&#xb1;</mo>
+                <mi>h</mi>
+                <mo>)</mo>
+              </mrow>
+              <mi/>
+              <mi>m</mi>
+            </mstyle>
+          </math>
+        MATHML
+        latex = "y_{k} = ( x_{k} \\pm h )  m"
+        asciimath = "y_(k) = (x_(k) pm h)  m"
+        expect(formula.to_latex).to eq(latex)
+        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_asciimath).to eq(asciimath)
+      end
+    end
+
+    context "contains input from metanorma-cli-actions-mn-jcgm run" do
+      let(:string) do
+        <<~MATHML
+          <math>
+            <mstyle displaystyle="true">
+              <mrow>
+                <msubsup>
+                  <mo>&#8747;</mo>
+                  <mi>o</mi>
+                  <mn>1</mn>
+                </msubsup>
+                <msub>
+                  <mi mathvariant="normal">B</mi>
+                  <mn>4</mn>
+                </msub>
+              </mrow>
+              <mrow>
+                <mo>(</mo>
+                <mstyle mathvariant="italic">
+                  <mi>&#961;</mi>
+                </mstyle>
+                <mo>)</mo>
+              </mrow>
+              <mtext>d</mtext>
+              <mstyle mathvariant="italic">
+                <mi>&#961;</mi>
+              </mstyle>
+              <mo>=</mo>
+              <msubsup>
+                <mrow>
+                  <mo>[</mo>
+                  <mfrac>
+                    <mn>1</mn>
+                    <mn>24</mn>
+                  </mfrac>
+                  <msup>
+                    <mstyle mathvariant="italic">
+                      <mi>&#961;</mi>
+                    </mstyle>
+                    <mn>4</mn>
+                  </msup>
+                  <mo>]</mo>
+                </mrow>
+                <mn>0</mn>
+                <mn>1</mn>
+              </msubsup>
+              <mo>=</mo>
+              <mfrac>
+                <mn>1</mn>
+                <mn>24</mn>
+              </mfrac>
+              <mi>&#8776;</mi>
+              <mn>0.0417</mn>
+            </mstyle>
+          </math>
+        MATHML
+      end
+
+      it "compares MathML, LaTeX, and AsciiMath string" do
+        mathml = <<~MATHML
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
+              <mrow>
+                <msubsup>
+                  <mo>&#x222b;</mo>
+                  <mi>o</mi>
+                  <mn>1</mn>
+                </msubsup>
+                <msub>
+                  <mi>B</mi>
+                  <mn>4</mn>
+                </msub>
+              </mrow>
+              <mrow>
+                <mo>(</mo>
+                <mstyle mathvariant="italic">
+                  <mi>&#x3c1;</mi>
+                </mstyle>
+                <mo>)</mo>
+              </mrow>
+              <mtext>d</mtext>
+              <mstyle mathvariant="italic">
+                <mi>&#x3c1;</mi>
+              </mstyle>
+              <mo>=</mo>
+              <msubsup>
+                <mrow>
+                  <mo>[</mo>
+                  <mfrac>
+                    <mn>1</mn>
+                    <mn>24</mn>
+                  </mfrac>
+                  <msup>
+                    <mstyle mathvariant="italic">
+                      <mi>&#x3c1;</mi>
+                    </mstyle>
+                    <mn>4</mn>
+                  </msup>
+                  <mo>]</mo>
+                </mrow>
+                <mn>0</mn>
+                <mn>1</mn>
+              </msubsup>
+              <mo>=</mo>
+              <mfrac>
+                <mn>1</mn>
+                <mn>24</mn>
+              </mfrac>
+              <mi>&#x2248;</mi>
+              <mn>0.0417</mn>
+            </mstyle>
+          </math>
+        MATHML
+        latex = '\int_{o}^{1} B_{4} ( \mathit{\rho} ) \text{d} \mathit{\rho} = [ \frac{1}{24} \mathit{\rho}^{4} ]_{0}^{1} = \frac{1}{24} \approx 0.0417'
+        asciimath = 'int_(o)^(1) B_(4) (ii(rho)) "d" ii(rho) = [frac(1)(24) ii(rho)^(4)]_(0)^(1) = frac(1)(24) approx 0.0417'
         expect(formula.to_latex).to eq(latex)
         expect(formula.to_mathml).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eq(asciimath)
@@ -2595,8 +2984,8 @@ RSpec.describe Plurimath::Mathml do
               <m:phant>
                 <m:phantPr>
                   <zeroAsc m:val="on"/>
-                  <zeroWid m:val="on"/>
                   <zeroDesc m:val="on"/>
+                  <zeroWid m:val="on"/>
                 </m:phantPr>
                 <m:e>
                   <m:r>
@@ -2615,20 +3004,19 @@ RSpec.describe Plurimath::Mathml do
       let(:string)  do
         <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
-            <mstyle displaystyle="true">
-              <ms>
-                <mi>F</mi>
-                <mn>F</mn>
-              </ms>
-              <ms>
-                <msubsup>
+            <ms>
+              <mi>F</mi>
+              <mn>F</mn>
+            </ms>
+            <ms>
+              <msubsup>
+                <mrow>
                   <mi>F</mi>
-                  <mn>3</mn>
-                  <mo>&#x2a;</mo>
-                </msubsup>
-              </ms>
-              <none/>
-            </mstyle>
+                </mrow>
+                <mn>3</mn>
+                <mo>&#x2a;</mo>
+              </msubsup>
+            </ms>
           </math>
         MATHML
       end

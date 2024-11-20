@@ -1,12 +1,16 @@
 # frozen_string_literal: true
 
 require_relative "binary_function"
+require_relative "../../mathml/utility"
 
 module Plurimath
   module Math
     module Function
       class Underset < BinaryFunction
+        include Mathml::Utility
+
         attr_accessor :options
+
         FUNCTION = {
           name: "underscript",
           first_value: "underscript value",
@@ -19,6 +23,13 @@ module Plurimath
           options = {})
           super(parameter_one, parameter_two)
           @options = options unless options.empty?
+        end
+
+        def element_order=(value)
+          @temp_mathml_order = validated_order(
+            value,
+            rejectable_array: ["comment"]
+          )
         end
 
         def to_mathml_without_math_tag(intent, options:)
@@ -79,7 +90,40 @@ module Plurimath
           parameter_two.is_nary_function? || parameter_two.is_nary_symbol?
         end
 
+        def content=(value)
+          if no_content_in?(Array(value))
+            delete_all_text
+          else
+            new_val = Array(value).map do |val|
+              validate_symbols(val) unless val.strip.empty?
+            end
+            validate_text_order(new_val)
+          end
+          update_temp_mathml_values(@temp_mathml_order)
+        end
+
         protected
+
+        def validate_text_order(value)
+          @temp_mathml_order.each_with_index do |item, index|
+            next unless item == "text"
+
+            shifted_value = value.shift
+            next @temp_mathml_order[index] = shifted_value if shifted_value
+
+            @temp_mathml_order.delete_at(index)
+          end
+        end
+
+        def delete_all_text
+          @temp_mathml_order.delete("text")
+        end
+
+        def no_content_in?(value)
+          value.nil? ||
+            value.empty? ||
+            value&.all? { |val| val.strip.empty? }
+        end
 
         def unicode_accent?(field)
           return unless field.is_a?(Math::Symbols::Symbol)

@@ -53,7 +53,7 @@ RSpec.describe Plurimath::Mathml::Parser do
           Plurimath::Math::Function::Frac.new(
             Plurimath::Math::Formula.new([
               Plurimath::Math::Formula.new([
-                Plurimath::Math::Symbols::Minus.new("-"),
+                Plurimath::Math::Symbols::Minus.new,
                 Plurimath::Math::Symbols::Symbol.new("b")
               ]),
               Plurimath::Math::Symbols::Pm.new,
@@ -63,7 +63,7 @@ RSpec.describe Plurimath::Mathml::Parser do
                     Plurimath::Math::Symbols::Symbol.new("b"),
                     Plurimath::Math::Number.new("2")
                   ),
-                  Plurimath::Math::Symbols::Symbol.new("-"),
+                  Plurimath::Math::Symbols::Minus.new,
                   Plurimath::Math::Formula.new([
                     Plurimath::Math::Number.new("4"),
                     Plurimath::Math::Function::Prod.new,

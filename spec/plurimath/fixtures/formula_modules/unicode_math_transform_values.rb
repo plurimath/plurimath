@@ -6153,7 +6153,7 @@ module UnicodeMathTransformValues
         Plurimath::Math::Symbols::Plus.new,
         Plurimath::Math::Symbols::Symbol.new("&#x338;")
       ]),
-      Plurimath::Math::Symbols::Prime.new
+      Plurimath::Math::Symbols::Sprime.new
     )
   ])
   EXAMPLE_134 = Plurimath::Math::Formula.new([
@@ -7686,7 +7686,7 @@ module UnicodeMathTransformValues
         Plurimath::Math::Symbols::Comma.new,
         Plurimath::Math::Function::Power.new(
           Plurimath::Math::Symbols::Symbol.new("x"),
-          Plurimath::Math::Symbols::Prime.new
+          Plurimath::Math::Symbols::Sprime.new
         )
       ],
       Plurimath::Math::Symbols::Paren::Rround.new,
@@ -7700,7 +7700,7 @@ module UnicodeMathTransformValues
         Plurimath::Math::Symbols::Comma.new,
         Plurimath::Math::Function::Power.new(
           Plurimath::Math::Symbols::Symbol.new("x"),
-          Plurimath::Math::Symbols::Prime.new
+          Plurimath::Math::Symbols::Sprime.new
         )
       ],
       Plurimath::Math::Symbols::Paren::Rround.new,
@@ -7716,7 +7716,7 @@ module UnicodeMathTransformValues
             Plurimath::Math::Symbols::Comma.new,
             Plurimath::Math::Function::Power.new(
               Plurimath::Math::Symbols::Symbol.new("x"),
-              Plurimath::Math::Symbols::Prime.new
+              Plurimath::Math::Symbols::Sprime.new
             )
           ],
           Plurimath::Math::Symbols::Paren::Rround.new,
@@ -7734,14 +7734,14 @@ module UnicodeMathTransformValues
                 Plurimath::Math::Symbols::Comma.new,
                 Plurimath::Math::Function::Power.new(
                   Plurimath::Math::Symbols::Symbol.new("x"),
-                  Plurimath::Math::Symbols::Prime.new
+                  Plurimath::Math::Symbols::Sprime.new
                 ),
                 Plurimath::Math::Symbols::Comma.new,
                 Plurimath::Math::Function::Power.new(
                   Plurimath::Math::Symbols::Symbol.new("x"),
                   Plurimath::Math::Formula.new([
-                    Plurimath::Math::Symbols::Prime.new,
-                    Plurimath::Math::Symbols::Prime.new,
+                    Plurimath::Math::Symbols::Sprime.new,
+                    Plurimath::Math::Symbols::Sprime.new,
                   ])
                 )
               ],
@@ -7753,14 +7753,14 @@ module UnicodeMathTransformValues
               [
                 Plurimath::Math::Function::Power.new(
                   Plurimath::Math::Symbols::Symbol.new("x"),
-                  Plurimath::Math::Symbols::Prime.new
+                  Plurimath::Math::Symbols::Sprime.new
                 ),
                 Plurimath::Math::Symbols::Comma.new,
                 Plurimath::Math::Function::Power.new(
                   Plurimath::Math::Symbols::Symbol.new("x"),
                   Plurimath::Math::Formula.new([
-                    Plurimath::Math::Symbols::Prime.new,
-                    Plurimath::Math::Symbols::Prime.new,
+                    Plurimath::Math::Symbols::Sprime.new,
+                    Plurimath::Math::Symbols::Sprime.new,
                   ])
                 )
               ],
@@ -7770,8 +7770,8 @@ module UnicodeMathTransformValues
             Plurimath::Math::Function::Power.new(
               Plurimath::Math::Symbols::Symbol.new("x"),
               Plurimath::Math::Formula.new([
-                Plurimath::Math::Symbols::Prime.new,
-                Plurimath::Math::Symbols::Prime.new,
+                Plurimath::Math::Symbols::Sprime.new,
+                Plurimath::Math::Symbols::Sprime.new,
               ])
             )
           ])
@@ -8074,7 +8074,7 @@ module UnicodeMathTransformValues
         Plurimath::Math::Function::PowerBase.new(
           Plurimath::Math::Symbols::Alpha.new,
           Plurimath::Math::Number.new("2", mini_sub_sized: true),
-          Plurimath::Math::Symbols::Prime.new
+          Plurimath::Math::Symbols::Sprime.new
         ),
         Plurimath::Math::Function::Fenced.new(
           Plurimath::Math::Symbols::Paren::Lsquare.new,
@@ -8102,7 +8102,7 @@ module UnicodeMathTransformValues
                 Plurimath::Math::Function::PowerBase.new(
                   Plurimath::Math::Symbols::Alpha.new,
                   Plurimath::Math::Number.new("2", mini_sub_sized: true),
-                  Plurimath::Math::Symbols::Prime.new
+                  Plurimath::Math::Symbols::Sprime.new
                 ),
                 Plurimath::Math::Function::PowerBase.new(
                   Plurimath::Math::Symbols::Symbol.new("U"),
@@ -8211,7 +8211,7 @@ module UnicodeMathTransformValues
         Plurimath::Math::Function::PowerBase.new(
           Plurimath::Math::Symbols::Alpha.new,
           Plurimath::Math::Number.new("2", mini_sub_sized: true),
-          Plurimath::Math::Symbols::Prime.new
+          Plurimath::Math::Symbols::Sprime.new
         ),
         Plurimath::Math::Function::Fenced.new(
           Plurimath::Math::Symbols::Paren::Lsquare.new,
@@ -8239,7 +8239,7 @@ module UnicodeMathTransformValues
                 Plurimath::Math::Function::PowerBase.new(
                   Plurimath::Math::Symbols::Alpha.new,
                   Plurimath::Math::Number.new("2", mini_sub_sized: true),
-                  Plurimath::Math::Symbols::Prime.new
+                  Plurimath::Math::Symbols::Sprime.new
                 ),
                 Plurimath::Math::Function::PowerBase.new(
                   Plurimath::Math::Symbols::Symbol.new("U"),
@@ -9236,8 +9236,8 @@ module UnicodeMathTransformValues
     Plurimath::Math::Function::Power.new(
       Plurimath::Math::Symbols::Symbol.new("a"),
       Plurimath::Math::Formula.new([
-        Plurimath::Math::Symbols::Prime.new,
-        Plurimath::Math::Symbols::Prime.new,
+        Plurimath::Math::Symbols::Sprime.new,
+        Plurimath::Math::Symbols::Sprime.new,
       ])
     )
   ])
@@ -9245,7 +9245,7 @@ module UnicodeMathTransformValues
     Plurimath::Math::Function::Power.new(
       Plurimath::Math::Function::Power.new(
         Plurimath::Math::Symbols::Symbol.new("a"),
-        Plurimath::Math::Symbols::Prime.new,
+        Plurimath::Math::Symbols::Sprime.new,
       ),
       Plurimath::Math::Symbols::Symbol.new("c")
     )
@@ -9254,7 +9254,7 @@ module UnicodeMathTransformValues
     Plurimath::Math::Function::Power.new(
       Plurimath::Math::Symbols::Symbol.new("a"),
       Plurimath::Math::Formula.new([
-        Plurimath::Math::Symbols::Prime.new,
+        Plurimath::Math::Symbols::Sprime.new,
         Plurimath::Math::Symbols::Pppprime.new,
         Plurimath::Math::Symbols::Ppprime.new,
       ])
@@ -9940,9 +9940,9 @@ module UnicodeMathTransformValues
         Plurimath::Math::Symbols::Prime.new,
         Plurimath::Math::Symbols::Prime.new,
         Plurimath::Math::Symbols::Prime.new,
-        Plurimath::Math::Symbols::Prime.new,
-        Plurimath::Math::Symbols::Prime.new,
-        Plurimath::Math::Symbols::Prime.new,
+        Plurimath::Math::Symbols::Sprime.new,
+        Plurimath::Math::Symbols::Sprime.new,
+        Plurimath::Math::Symbols::Sprime.new,
       ])
     )
   ])
@@ -9955,7 +9955,7 @@ module UnicodeMathTransformValues
   EXAMPLE_284 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Power.new(
       Plurimath::Math::Symbols::Symbol.new("a"),
-      Plurimath::Math::Symbols::Third.new
+      Plurimath::Math::Symbols::Ppprime.new
     )
   ])
   EXAMPLE_285 = Plurimath::Math::Formula.new([
@@ -9965,7 +9965,7 @@ module UnicodeMathTransformValues
   EXAMPLE_286 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Power.new(
       Plurimath::Math::Symbols::Symbol.new("a"),
-      Plurimath::Math::Symbols::Qprime.new
+      Plurimath::Math::Symbols::Pppprime.new
     )
   ])
   EXAMPLE_287 = Plurimath::Math::Formula.new([
@@ -9973,7 +9973,7 @@ module UnicodeMathTransformValues
       Plurimath::Math::Symbols::Symbol.new("a"),
       Plurimath::Math::Formula.new([
         Plurimath::Math::Symbols::Pppprime.new,
-        Plurimath::Math::Symbols::Prime.new,
+        Plurimath::Math::Symbols::Sprime.new,
       ])
     )
   ])
@@ -9982,7 +9982,7 @@ module UnicodeMathTransformValues
       Plurimath::Math::Symbols::Symbol.new("a"),
       Plurimath::Math::Formula.new([
         Plurimath::Math::Symbols::Pppprime.new,
-        Plurimath::Math::Symbols::Prime.new,
+        Plurimath::Math::Symbols::Sprime.new,
         Plurimath::Math::Symbols::Ppprime.new,
       ])
     )
@@ -9993,7 +9993,7 @@ module UnicodeMathTransformValues
       Plurimath::Math::Formula.new([
         Plurimath::Math::Symbols::Pppprime.new,
         Plurimath::Math::Symbols::Pppprime.new,
-        Plurimath::Math::Symbols::Prime.new,
+        Plurimath::Math::Symbols::Sprime.new,
         Plurimath::Math::Symbols::Pppprime.new,
         Plurimath::Math::Symbols::Ppprime.new,
       ])
@@ -10256,7 +10256,7 @@ module UnicodeMathTransformValues
     Plurimath::Math::Function::Power.new(
       Plurimath::Math::Function::Power.new(
         Plurimath::Math::Symbols::Symbol.new("c"),
-        Plurimath::Math::Symbols::Prime.new
+        Plurimath::Math::Symbols::Sprime.new
       ),
       Plurimath::Math::Number.new("2")
     )
@@ -10265,7 +10265,7 @@ module UnicodeMathTransformValues
     Plurimath::Math::Function::PowerBase.new(
       Plurimath::Math::Symbols::Symbol.new("c"),
       Plurimath::Math::Number.new("2"),
-      Plurimath::Math::Symbols::Prime.new
+      Plurimath::Math::Symbols::Sprime.new
     )
   ])
   EXAMPLE_311 = Plurimath::Math::Formula.new([
@@ -10315,7 +10315,7 @@ module UnicodeMathTransformValues
   EXAMPLE_315 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Power.new(
       Plurimath::Math::Symbols::Symbol.new("e"),
-      Plurimath::Math::Symbols::Prime.new
+      Plurimath::Math::Symbols::Sprime.new
     )
   ])
   EXAMPLE_316 = Plurimath::Math::Formula.new([
@@ -10356,7 +10356,7 @@ module UnicodeMathTransformValues
   EXAMPLE_318 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Power.new(
       Plurimath::Math::Symbols::Symbol.new("f"),
-      Plurimath::Math::Symbols::Prime.new
+      Plurimath::Math::Symbols::Sprime.new
     ),
     Plurimath::Math::Function::Fenced.new(
       Plurimath::Math::Symbols::Paren::Lround.new,
@@ -10464,7 +10464,7 @@ module UnicodeMathTransformValues
   EXAMPLE_319 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Power.new(
       Plurimath::Math::Symbols::Symbol.new("f"),
-      Plurimath::Math::Symbols::Prime.new
+      Plurimath::Math::Symbols::Sprime.new
     ),
     Plurimath::Math::Function::Fenced.new(
       Plurimath::Math::Symbols::Paren::Lround.new,
@@ -10572,7 +10572,7 @@ module UnicodeMathTransformValues
   EXAMPLE_320 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Power.new(
       Plurimath::Math::Symbols::Symbol.new("f"),
-      Plurimath::Math::Symbols::Prime.new
+      Plurimath::Math::Symbols::Sprime.new
     ),
     Plurimath::Math::Function::Fenced.new(
       Plurimath::Math::Symbols::Paren::Lround.new,
@@ -11903,7 +11903,7 @@ module UnicodeMathTransformValues
     Plurimath::Math::Function::Power.new(
       Plurimath::Math::Symbols::Alpha.new,
       Plurimath::Math::Formula.new([
-        Plurimath::Math::Symbols::Prime.new,
+        Plurimath::Math::Symbols::Sprime.new,
         Plurimath::Math::Symbols::Prime.new
       ]),
     )
@@ -11912,7 +11912,7 @@ module UnicodeMathTransformValues
     Plurimath::Math::Function::PowerBase.new(
       Plurimath::Math::Function::Power.new(
         Plurimath::Math::Symbols::Alpha.new,
-        Plurimath::Math::Symbols::Prime.new
+        Plurimath::Math::Symbols::Sprime.new
       ),
       Plurimath::Math::Number.new("2", mini_sub_sized: true),
       Plurimath::Math::Symbols::Upbeta.new
@@ -14710,7 +14710,7 @@ module UnicodeMathTransformValues
         [
           Plurimath::Math::Symbols::Aa.new,
           Plurimath::Math::Symbols::Symbol.new("y"),
-          Plurimath::Math::Symbols::Exi.new,
+          Plurimath::Math::Symbols::Ee.new,
           Plurimath::Math::Number.new("1")
         ],
         Plurimath::Math::Symbols::Paren::Rround.new,

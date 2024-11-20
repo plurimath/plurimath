@@ -1,11 +1,14 @@
 # frozen_string_literal: true
 
 require_relative "binary_function"
+require_relative "../../mathml/utility"
 
 module Plurimath
   module Math
     module Function
       class Root < BinaryFunction
+        include Mathml::Utility
+
         FUNCTION = {
           name: "root",
           first_value: "radicand",

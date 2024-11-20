@@ -2,12 +2,19 @@
 
 require "htmlentities"
 require_relative "unary_function"
+require_relative "../../mathml/utility"
 
 module Plurimath
   module Math
     module Function
       class Text < UnaryFunction
+        include Mathml::Utility
+
         PARSER_REGEX = %r{unicode\[:(?<unicode>\w{1,})\]}.freeze
+
+        def initialize(parameter_one = "")
+          super(parameter_one)
+        end
 
         def to_asciimath(**)
           "\"#{parse_text('asciimath') || parameter_one}\""
@@ -67,12 +74,25 @@ module Plurimath
           "#{spacing}\"#{dump_omml(self, display_style, options: options)}\" text\n"
         end
 
+        def to_unicodemath_math_zone(spacing, _, _, options:)
+          "#{spacing}#{to_unicodemath(options: options)} text\n"
+        end
+
         def value
           parameter_one
         end
 
-        def to_unicodemath_math_zone(spacing, _, _, options:)
-          "#{spacing}#{to_unicodemath(options: options)} text\n"
+        def element_order=(*); end
+
+        def value=(text)
+          text = text.join if text.is_a?(Array)
+          entities = HTMLEntities.new
+          symbols  = Mathml::Constants::UNICODE_SYMBOLS.transform_keys(&:to_s)
+          text     = entities.encode(text, :hexadecimal)
+          symbols.each do |code, string|
+            text = text.gsub(code.downcase, "unicode[:#{string}]")
+          end
+          self.parameter_one = text
         end
 
         protected

@@ -1,11 +1,14 @@
 # frozen_string_literal: true
 
 require_relative "unary_function"
+require_relative "../../mathml/utility"
 
 module Plurimath
   module Math
     module Function
       class Mglyph < UnaryFunction
+        include Mathml::Utility
+
         def initialize(parameter_one = {})
           super(parameter_one)
         end
@@ -34,7 +37,31 @@ module Plurimath
           parameter_one[:alt] if parameter_one
         end
 
+        def alt; end
+
+        def src; end
+
+        def index; end
+
+        def src=(value)
+          set_option(:src, value)
+        end
+
+        def alt=(value)
+          set_option(:alt, value)
+        end
+
+        def index=(value)
+          set_option(:index, value)
+        end
+
         protected
+
+        def set_option(option, value)
+          return if value.nil?
+
+          parameter_one[option] = value
+        end
 
         def glyph_user_index(index)
           return "" unless index > 0

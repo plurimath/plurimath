@@ -131,7 +131,7 @@ module UnicodeMathStringValues
   EXAMPLE_130 = '− α_(x) β_(y z) z z y + α_(x) β_(z x) z^(2 x) − α_(x) β_(x y) x z y − α_(x) β_(x y z) x z y z'
   EXAMPLE_131 = '− α_(x) β_(y z) z^(2 y) + α_(x) β_(z x) 1 x + α_(x) β_(x y) x y z + α_(x) β_(x y z) x y z z'
   EXAMPLE_132 = '− x y z , (17)/(41) x y z , ...'
-  EXAMPLE_133 = "+̸′"
+  EXAMPLE_133 = "+̸'"
   EXAMPLE_134 = '= (α_(x) x + α_(y) y + α_(x) z)'
   EXAMPLE_135 = '= (α_(x) x + α_(y) y + α_(x) z) \⌋ (β_(y z) y z + β_(z x) z x + β_(x y) x y)'
   EXAMPLE_136 = '= (α_(x) x + α_(y) y + α_(x) z) ∧ (β_(x) x + β_(y) y + β_(z) z)'
@@ -165,7 +165,7 @@ module UnicodeMathStringValues
   EXAMPLE_164 = 'E = m c²'
   EXAMPLE_165 = 'E = m c²'
   EXAMPLE_166 = 'G (x)'
-  EXAMPLE_167 = "I (x , x′) = g (x , x′) [ε (x , x′) + ∫_(S)▒〖ρ (x , x′ , x′′) I (x′ , x′′) ⅆ x′′〗]"
+  EXAMPLE_167 = "I (x , x') = g (x , x') [ε (x , x') + ∫_(S)▒〖ρ (x , x' , x'') I (x' , x'') ⅆ x''〗]"
   EXAMPLE_168 = 'K_(c) (r) = 𝟏_[¼ , ¾] (r) + ½ × 𝟏_[0 , ¼] (r)'
   EXAMPLE_169 = 'M = α_(1) + α_(x) x + α_(y) y + α_(x) z +'
   EXAMPLE_170 = 'M_(1) M_(2)'
@@ -174,8 +174,8 @@ module UnicodeMathStringValues
   EXAMPLE_173 = '(((((((((((((W)/(e))/(i))/(h))/(n))/(a))/(c))/(h))/(t))/(s))/(b))/(a))/(u))/(m)'
   EXAMPLE_174 = 'W_δ_(1) ρ₁ σ₂^(3 β) .'
   EXAMPLE_175 = 'W_(δ₁ ρ₁ σ₂)^(3 β)'
-  EXAMPLE_176 = "W_(δ₁ ρ₁ σ₂)^(3 β) = U_(δ₁ ρ₁)^(3 β) + (1)/(8 π^(2)) ∫_α₁^(α₂)▒〖d α′₂ [(U_(δ₁ ρ₁)^(2 β) − α′₂ U_(δ₁ ρ₁)^(1 β))/(U_(δ₁ ρ₁)^(0 β))]〗"
-  EXAMPLE_177 = "W_(δ₁ ρ₁ σ₂)^(3 β) = U_(δ₁ ρ₁)^(3 β) + (1)/(8 π^(2)) ∫_α₁^(α₂)▒〖d α′₂ [(U_(δ₁ ρ₁)^(2 β) − α′₂ U_(ρ₁ σ₂)^(1 β))/(U_(ρ₁ σ₂)^(0 β))]〗"
+  EXAMPLE_176 = "W_(δ₁ ρ₁ σ₂)^(3 β) = U_(δ₁ ρ₁)^(3 β) + (1)/(8 π^(2)) ∫_α₁^(α₂)▒〖d α'₂ [(U_(δ₁ ρ₁)^(2 β) − α'₂ U_(δ₁ ρ₁)^(1 β))/(U_(δ₁ ρ₁)^(0 β))]〗"
+  EXAMPLE_177 = "W_(δ₁ ρ₁ σ₂)^(3 β) = U_(δ₁ ρ₁)^(3 β) + (1)/(8 π^(2)) ∫_α₁^(α₂)▒〖d α'₂ [(U_(δ₁ ρ₁)^(2 β) − α'₂ U_(ρ₁ σ₂)^(1 β))/(U_(ρ₁ σ₂)^(0 β))]〗"
   EXAMPLE_178 = '[(𝑥₁ , 𝑦₁) , (𝑥₂ , 𝑦₂) , ⋯]'
   EXAMPLE_179 = '[a , b) + (a , b] + [a , b] + [a , b[ + ]a , b] + ]a , b[ + (− ∞ , 10] + (a b , + ∞]'
   EXAMPLE_180 = 'ⓢ(α&β@γ&δ)'
@@ -227,9 +227,9 @@ module UnicodeMathStringValues
   EXAMPLE_226 = 'a "0" b'
   EXAMPLE_227 = 'a " " b'
   EXAMPLE_228 = "a \\'"
-  EXAMPLE_229 = "a′′"
-  EXAMPLE_230 = "a′^(c)"
-  EXAMPLE_231 = 'a′⁗‴'
+  EXAMPLE_229 = "a''"
+  EXAMPLE_230 = "a'^(c)"
+  EXAMPLE_231 = "a'⁗‴"
   EXAMPLE_232 = 'a + b'
   EXAMPLE_233 = 'a + b \+ c'
   EXAMPLE_234 = 'a + {(1]/(4)⟩'
@@ -280,14 +280,14 @@ module UnicodeMathStringValues
   EXAMPLE_279 = 'a ​ b'
   EXAMPLE_280 = "a′"
   EXAMPLE_281 = "a′′′"
-  EXAMPLE_282 = "a′′′′′′"
+  EXAMPLE_282 = "a′′′'''"
   EXAMPLE_283 = "a″"
   EXAMPLE_284 = "a‴"
   EXAMPLE_285 = "a ‼"
   EXAMPLE_286 = 'a⁗'
-  EXAMPLE_287 = "a⁗′"
-  EXAMPLE_288 = "a⁗′‴"
-  EXAMPLE_289 = "a⁗⁗′⁗‴"
+  EXAMPLE_287 = "a⁗'"
+  EXAMPLE_288 = "a⁗'‴"
+  EXAMPLE_289 = "a⁗⁗'⁗‴"
   EXAMPLE_290 = 'a   b'
   EXAMPLE_291 = 'aⁱ_(b)'
   EXAMPLE_292 = 'a₀₋₉⁴⁼ⁱ'
@@ -307,18 +307,18 @@ module UnicodeMathStringValues
   EXAMPLE_306 = 'b'
   EXAMPLE_307 = 'b_(1) +_(1)^(2) c'
   EXAMPLE_308 = 'b_(1) +_(1)^(2) c'
-  EXAMPLE_309 = "c′^(2)"
-  EXAMPLE_310 = "c′_(2)"
+  EXAMPLE_309 = "c'^(2)"
+  EXAMPLE_310 = "c'_(2)"
   EXAMPLE_311 = 'cos⁡θ =  𝑒^(ⅈ θ) + "c.c."'
   EXAMPLE_312 = 'cos⁡² α'
   EXAMPLE_313 = 'd'
   EXAMPLE_314 = '(d y)/(d x)'
-  EXAMPLE_315 = "e′"
+  EXAMPLE_315 = "e'"
   EXAMPLE_316 = 'exp⁡((x)/(a (x , G (x))))'
   EXAMPLE_317 = 'f'
-  EXAMPLE_318 = "f′ (t) = 8 ((1 − cos⁡〖(θ)/(2)〗)/(1 + cos⁡〖(θ)/(2)〗) sin⁡〖(θ)/(2)〗)^(2) (t − 1) t (2 t − 1) (6 t^(2) − 6 t + 1)"
-  EXAMPLE_319 = "f′ (t) = 8 ((1 − cos⁡〖(θ)/(2)〗)/(1 + cos⁡〖(θ)/(2)〗) sin⁡〖(θ)/(2)〗)^(2) (t − 1) t (2 t − 1) (6 t² − 6 t + 1)"
-  EXAMPLE_320 = "f′ (x) = a"
+  EXAMPLE_318 = "f' (t) = 8 ((1 − cos⁡〖(θ)/(2)〗)/(1 + cos⁡〖(θ)/(2)〗) sin⁡〖(θ)/(2)〗)^(2) (t − 1) t (2 t − 1) (6 t^(2) − 6 t + 1)"
+  EXAMPLE_319 = "f' (t) = 8 ((1 − cos⁡〖(θ)/(2)〗)/(1 + cos⁡〖(θ)/(2)〗) sin⁡〖(θ)/(2)〗)^(2) (t − 1) t (2 t − 1) (6 t² − 6 t + 1)"
+  EXAMPLE_320 = "f' (x) = a"
   EXAMPLE_321 = "f (ξ) = ∫_(a)▒〖f (x) ⅇ^(2 π ⅈ x ξ) ⅆ x〗#[1]"
   EXAMPLE_322 = '(f)̂ (ξ) = ∫_(− ∞)^(∞)▒〖f (x) ⅇ^((− 2 π ⅈ x ξ) ⅆ x)〗'
   EXAMPLE_323 = '(f)̂ (ξ) = ∫_(− ∞)^(∞)▒〖f (x) ⅇ^(− 2 π ⅈ x ξ) ⅆ x〗'
@@ -391,8 +391,8 @@ module UnicodeMathStringValues
   EXAMPLE_390 = 'α'
   EXAMPLE_391 = 'α'
   EXAMPLE_392 = 'α ! + β ‼'
-  EXAMPLE_393 = "α′′"
-  EXAMPLE_394 = "α′₂^β"
+  EXAMPLE_393 = "α'′"
+  EXAMPLE_394 = "α'₂^β"
   EXAMPLE_395 = 'α + β'
   EXAMPLE_396 = '(α)/(β)'
   EXAMPLE_397 = '((α)/(β))∕(γ)'

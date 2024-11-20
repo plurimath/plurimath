@@ -1,14 +1,17 @@
 # frozen_string_literal: true
 
 require_relative "binary_function"
+require_relative "../../mathml/utility"
 
 module Plurimath
   module Math
     module Function
       class Td < BinaryFunction
+        include Mathml::Utility
+
         def initialize(parameter_one = nil, parameter_two = nil)
           parameter_one&.delete_if { |td| td == "&" }
-          super(parameter_one, parameter_two)
+          super(Array(parameter_one), parameter_two)
         end
 
         def to_asciimath(options:)

@@ -28,7 +28,7 @@ RSpec.describe Plurimath::Asciimath::Parser do
                   Plurimath::Math::Function::Fenced.new(
                     Plurimath::Math::Symbols::Paren::Lround.new,
                     [
-                      Plurimath::Math::Symbols::Partial.new,
+                      Plurimath::Math::Symbols::Delta.new,
                       Plurimath::Math::Symbols::Symbol.new("y")
                     ],
                     Plurimath::Math::Symbols::Paren::Rround.new
@@ -47,11 +47,11 @@ RSpec.describe Plurimath::Asciimath::Parser do
                               [
                                 Plurimath::Math::Function::Frac.new(
                                   Plurimath::Math::Formula.new([
-                                    Plurimath::Math::Symbols::Partial.new,
+                                    Plurimath::Math::Symbols::Del.new,
                                     Plurimath::Math::Symbols::Symbol.new("f"),
                                   ]),
                                   Plurimath::Math::Formula.new([
-                                    Plurimath::Math::Symbols::Partial.new,
+                                    Plurimath::Math::Symbols::Del.new,
                                     Plurimath::Math::Function::Base.new(
                                       Plurimath::Math::Function::FontStyle::Italic.new(
                                         Plurimath::Math::Symbols::Symbol.new("X"),
@@ -87,11 +87,11 @@ RSpec.describe Plurimath::Asciimath::Parser do
                               [
                                 Plurimath::Math::Function::Frac.new(
                                   Plurimath::Math::Formula.new([
-                                    Plurimath::Math::Symbols::Partial.new,
+                                    Plurimath::Math::Symbols::Del.new,
                                     Plurimath::Math::Symbols::Symbol.new("f")
                                   ]),
                                   Plurimath::Math::Formula.new([
-                                    Plurimath::Math::Symbols::Partial.new,
+                                    Plurimath::Math::Symbols::Del.new,
                                     Plurimath::Math::Function::Base.new(
                                       Plurimath::Math::Function::FontStyle::Italic.new(
                                         Plurimath::Math::Symbols::Symbol.new("X"),
@@ -124,11 +124,11 @@ RSpec.describe Plurimath::Asciimath::Parser do
                           Plurimath::Math::Number.new("2"),
                           Plurimath::Math::Function::Frac.new(
                             Plurimath::Math::Formula.new([
-                              Plurimath::Math::Symbols::Partial.new,
+                              Plurimath::Math::Symbols::Del.new,
                               Plurimath::Math::Symbols::Symbol.new("f")
                             ]),
                             Plurimath::Math::Formula.new([
-                              Plurimath::Math::Symbols::Partial.new,
+                              Plurimath::Math::Symbols::Del.new,
                               Plurimath::Math::Function::Base.new(
                                 Plurimath::Math::Function::FontStyle::Italic.new(
                                   Plurimath::Math::Symbols::Symbol.new("X"),
@@ -140,11 +140,11 @@ RSpec.describe Plurimath::Asciimath::Parser do
                           ),
                           Plurimath::Math::Function::Frac.new(
                             Plurimath::Math::Formula.new([
-                              Plurimath::Math::Symbols::Partial.new,
+                              Plurimath::Math::Symbols::Del.new,
                               Plurimath::Math::Symbols::Symbol.new("f")
                             ]),
                             Plurimath::Math::Formula.new([
-                              Plurimath::Math::Symbols::Partial.new,
+                              Plurimath::Math::Symbols::Del.new,
                               Plurimath::Math::Function::Base.new(
                                 Plurimath::Math::Function::FontStyle::Italic.new(
                                   Plurimath::Math::Symbols::Symbol.new("X"),
@@ -338,7 +338,7 @@ RSpec.describe Plurimath::Asciimath::Parser do
           Plurimath::Math::Function::Fenced.new(
             Plurimath::Math::Symbols::Paren::Lround.new,
             [
-              Plurimath::Math::Symbols::Partial.new,
+              Plurimath::Math::Symbols::Delta.new,
               Plurimath::Math::Symbols::Symbol.new("y")
             ],
             Plurimath::Math::Symbols::Paren::Rround.new
@@ -356,11 +356,11 @@ RSpec.describe Plurimath::Asciimath::Parser do
                       [
                         Plurimath::Math::Function::Frac.new(
                           Plurimath::Math::Formula.new([
-                            Plurimath::Math::Symbols::Partial.new,
+                            Plurimath::Math::Symbols::Del.new,
                             Plurimath::Math::Symbols::Symbol.new("f")
                           ]),
                           Plurimath::Math::Formula.new([
-                            Plurimath::Math::Symbols::Partial.new,
+                            Plurimath::Math::Symbols::Del.new,
                             Plurimath::Math::Function::Base.new(
                               Plurimath::Math::Function::FontStyle::Italic.new(
                                 Plurimath::Math::Symbols::Symbol.new("X"),
@@ -396,11 +396,11 @@ RSpec.describe Plurimath::Asciimath::Parser do
                       [
                         Plurimath::Math::Function::Frac.new(
                           Plurimath::Math::Formula.new([
-                            Plurimath::Math::Symbols::Partial.new,
+                            Plurimath::Math::Symbols::Del.new,
                             Plurimath::Math::Symbols::Symbol.new("f")
                           ]),
                           Plurimath::Math::Formula.new([
-                            Plurimath::Math::Symbols::Partial.new,
+                            Plurimath::Math::Symbols::Del.new,
                             Plurimath::Math::Function::Base.new(
                               Plurimath::Math::Function::FontStyle::Italic.new(
                                 Plurimath::Math::Symbols::Symbol.new("X"),
@@ -1031,7 +1031,7 @@ RSpec.describe Plurimath::Asciimath::Parser do
                 Plurimath::Math::Symbols::Symbol.new("i"),
                 Plurimath::Math::Symbols::Symbol.new("j")
               ),
-              Plurimath::Math::Symbols::Slash.new,
+              Plurimath::Math::Symbols::Mathslash.new,
               Plurimath::Math::Function::Base.new(
                 Plurimath::Math::Symbols::Symbol.new("b"),
                 Plurimath::Math::Symbols::Symbol.new("j")
@@ -1066,8 +1066,8 @@ RSpec.describe Plurimath::Asciimath::Parser do
                 ])
               ])
             ],
-            Plurimath::Math::Symbols::Paren::Lround.new,
-            Plurimath::Math::Symbols::Paren::Rround.new,
+            Plurimath::Math::Symbols::Paren::Lsquare.new,
+            Plurimath::Math::Symbols::Paren::Rsquare.new,
           ),
           Plurimath::Math::Symbols::Comma.new,
           Plurimath::Math::Function::Text.new(" "),
@@ -1161,8 +1161,8 @@ RSpec.describe Plurimath::Asciimath::Parser do
                   ])
                 ])
               ],
-              Plurimath::Math::Symbols::Paren::Lround.new,
-              Plurimath::Math::Symbols::Paren::Rround.new,
+              Plurimath::Math::Symbols::Paren::Lsquare.new,
+              Plurimath::Math::Symbols::Paren::Rsquare.new,
             ),
             Plurimath::Math::Symbols::Period.new
           ])
@@ -1206,7 +1206,7 @@ RSpec.describe Plurimath::Asciimath::Parser do
             Plurimath::Math::Symbols::Paren::Lround.new,
             [
               Plurimath::Math::Number.new("1"),
-              Plurimath::Math::Symbols::Slash.new,
+              Plurimath::Math::Symbols::Mathslash.new,
               Plurimath::Math::Function::Base.new(
                 Plurimath::Math::Function::FontStyle::Italic.new(
                   Plurimath::Math::Symbols::Rho.new,
@@ -1216,7 +1216,7 @@ RSpec.describe Plurimath::Asciimath::Parser do
               ),
               Plurimath::Math::Symbols::Minus.new,
               Plurimath::Math::Number.new("1"),
-              Plurimath::Math::Symbols::Slash.new,
+              Plurimath::Math::Symbols::Mathslash.new,
               Plurimath::Math::Function::Base.new(
                 Plurimath::Math::Function::FontStyle::Italic.new(
                   Plurimath::Math::Symbols::Rho.new,
@@ -1784,15 +1784,15 @@ RSpec.describe Plurimath::Asciimath::Parser do
             ],
             Plurimath::Math::Symbols::Paren::Rround.new
           ),
-          Plurimath::Math::Symbols::Slash.new,
+          Plurimath::Math::Symbols::Mathslash.new,
           Plurimath::Math::Function::Base.new(
             Plurimath::Math::Function::FontStyle::Italic.new(
               Plurimath::Math::Symbols::Symbol.new("T"),
               "ii"
             ),
             Plurimath::Math::Formula.new([
-              Plurimath::Math::Number.new("1"), 
-              Plurimath::Math::Symbols::Slash.new,
+              Plurimath::Math::Number.new("1"),
+              Plurimath::Math::Symbols::Mathslash.new,
               Plurimath::Math::Number.new("2")
             ])
           ),

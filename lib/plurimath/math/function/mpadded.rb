@@ -1,12 +1,16 @@
 # frozen_string_literal: true
 
 require_relative "unary_function"
+require_relative "../../mathml/utility"
 
 module Plurimath
   module Math
     module Function
       class Mpadded < UnaryFunction
+        include Mathml::Utility
+
         attr_accessor :options
+
         ZERO_TAGS = {
           height: "zeroAsc",
           depth: "zeroDesc",
@@ -58,11 +62,34 @@ module Plurimath
           end
         end
 
+        def voffset; end
+
+        def voffset=(value); end
+
+        def height=(value)
+          set_option(:height, value)
+        end
+
+        def depth=(value)
+          set_option(:depth, value)
+        end
+
+        def width=(value)
+          set_option(:width, value)
+        end
+
         protected
+
+        def set_option(option, value)
+          return if value.nil?
+
+          @options ||= {}
+          @options[option] = value
+        end
 
         def phant_pr
           attributes = { "m:val": "on" }
-          options.map do |atr, value|
+          options&.map do |atr, value|
             ox_element(ZERO_TAGS[atr], attributes: attributes) if attr_value_zero?(value)
           end
         end
