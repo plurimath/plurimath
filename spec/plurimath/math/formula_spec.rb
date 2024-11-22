@@ -23,6 +23,19 @@ RSpec.describe Plurimath::Math::Formula do
     end
   end
 
+  describe ".type_error!" do
+    subject(:formula) { Plurimath::Math.parse(string, :asciimath) }
+
+    context "raises invalid type error when to_display is called with unsupported type plurimath#310" do
+      let(:string) { "theta" }
+
+      it "raises an error" do
+        expect { formula.to_display(:formula) }.to raise_error(Plurimath::Math::InvalidTypeError)
+      end
+    end
+  end
+
+
   describe ".==" do
     subject(:formula) { described_class.new(exp) }
 
