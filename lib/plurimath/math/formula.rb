@@ -996,6 +996,12 @@ module Plurimath
         encode(str)
       end
       # Dd derivative nodes end
+
+      def type_error!
+        raise Math::InvalidTypeError.new(
+          "`type` must be one of: `#{MATH_ZONE_TYPES.join('`, `')}`",
+        )
+      end
     end
   end
 end
