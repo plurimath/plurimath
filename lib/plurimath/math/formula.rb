@@ -172,7 +172,7 @@ module Plurimath
 
       def to_display(type = nil, formatter: nil)
         options = { formatter: formatter }
-        return type_error! unless MATH_ZONE_TYPES.include?(type.downcase.to_sym)
+        return type_error!(type) unless MATH_ZONE_TYPES.include?(type.downcase.to_sym)
 
         math_zone = case type
                     when :asciimath
@@ -997,9 +997,9 @@ module Plurimath
       end
       # Dd derivative nodes end
 
-      def type_error!
+      def type_error!(type)
         raise Math::InvalidTypeError.new(
-          "`type` must be one of: `#{MATH_ZONE_TYPES.join('`, `')}`",
+          "Invalid type provided: #{type}. Must be one of #{MATH_ZONE_TYPES.join(', ')}.",
         )
       end
     end
