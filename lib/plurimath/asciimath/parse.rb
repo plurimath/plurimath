@@ -158,6 +158,7 @@ module Plurimath
           str("") |
           (rparen.as(:rparen) >> space? >> controversial_symbols >> comma.as(:comma).maybe >> expression).repeat(1).as(:expr) |
           (power.as(:symbol) >> space? >> expression).as(:expr) |
+          table.as(:table) >> space? >> rparen.as(:rparen) >> space? >> expression.as(:expr).maybe |
           comma.as(:comma).maybe
       end
 
