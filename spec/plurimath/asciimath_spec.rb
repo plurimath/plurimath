@@ -6460,6 +6460,185 @@ RSpec.describe Plurimath::Asciimath do
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
+
+    context "contains table with preceding closing parenthesis without any opening parenthesis example from metanroam/bipm-si-brochure/issue#308 example #122" do
+      let(:string) { '{:(ii(E)_1, =, ii(A)_1 cos[ii(varphi)_1]),(ii(E)_2, =, ii(A)_2 cos[ii(varphi)_2]):}}  rarr I = langle (ii(E)_1 + ii(E)_2)^2 rangle_t = {ii(A)_1^2}/2 + {ii(A)_2^2}/2 + ii(A)_1 ii(A)_2 cos[ii(varphi)_1 - ii(varphi)_2]' }
+
+      it 'matches LaTeX, AsciiMath, and MathML' do
+        latex = '\left. \left \left.\begin{matrix}\mathit{E}_{1} & = & \mathit{A}_{1} \cos{[ \mathit{\phi}_{1} ]} \\\\ \mathit{E}_{2} & = & \mathit{A}_{2} \cos{[ \mathit{\phi}_{2} ]}\end{matrix}\right . \} \to I = \langle ( \mathit{E}_{1} + \mathit{E}_{2} )^{2} \rangle_{t} = \frac{\mathit{A}_{1}^{2}}{2} + \frac{\mathit{A}_{2}^{2}}{2} + \mathit{A}_{1} \mathit{A}_{2} \cos{[ \mathit{\phi}_{1} - \mathit{\phi}_{2} ]}'
+        asciimath = "{:{:[ii(E)_(1), =, ii(A)_(1) cos[ii(phi)_(1)]], [ii(E)_(2), =, ii(A)_(2) cos[ii(phi)_(2)]]:}} to I = << (ii(E)_(1) + ii(E)_(2))^(2) >>_(t) = frac(ii(A)_(1)^(2))(2) + frac(ii(A)_(2)^(2))(2) + ii(A)_(1) ii(A)_(2) cos[ii(phi)_(1) - ii(phi)_(2)]"
+        mathml = <<~MATHML
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
+              <mrow>
+                <mo></mo>
+                <mrow>
+                  <mo></mo>
+                  <mtable columnalign="left">
+                    <mtr>
+                      <mtd>
+                        <msub>
+                          <mstyle mathvariant="italic">
+                            <mi>E</mi>
+                          </mstyle>
+                          <mn>1</mn>
+                        </msub>
+                      </mtd>
+                      <mtd>
+                        <mo>=</mo>
+                      </mtd>
+                      <mtd>
+                        <msub>
+                          <mstyle mathvariant="italic">
+                            <mi>A</mi>
+                          </mstyle>
+                          <mn>1</mn>
+                        </msub>
+                        <mrow>
+                          <mi>cos</mi>
+                          <mrow>
+                            <mo>[</mo>
+                            <msub>
+                              <mstyle mathvariant="italic">
+                                <mi>&#x3c6;</mi>
+                              </mstyle>
+                              <mn>1</mn>
+                            </msub>
+                            <mo>]</mo>
+                          </mrow>
+                        </mrow>
+                      </mtd>
+                    </mtr>
+                    <mtr>
+                      <mtd>
+                        <msub>
+                          <mstyle mathvariant="italic">
+                            <mi>E</mi>
+                          </mstyle>
+                          <mn>2</mn>
+                        </msub>
+                      </mtd>
+                      <mtd>
+                        <mo>=</mo>
+                      </mtd>
+                      <mtd>
+                        <msub>
+                          <mstyle mathvariant="italic">
+                            <mi>A</mi>
+                          </mstyle>
+                          <mn>2</mn>
+                        </msub>
+                        <mrow>
+                          <mi>cos</mi>
+                          <mrow>
+                            <mo>[</mo>
+                            <msub>
+                              <mstyle mathvariant="italic">
+                                <mi>&#x3c6;</mi>
+                              </mstyle>
+                              <mn>2</mn>
+                            </msub>
+                            <mo>]</mo>
+                          </mrow>
+                        </mrow>
+                      </mtd>
+                    </mtr>
+                  </mtable>
+                  <mo></mo>
+                </mrow>
+                <mo>}</mo>
+              </mrow>
+              <mo>&#x2192;</mo>
+              <mi>I</mi>
+              <mo>=</mo>
+              <mi>&#x2329;</mi>
+              <msup>
+                <mrow>
+                  <mo>(</mo>
+                  <msub>
+                    <mstyle mathvariant="italic">
+                      <mi>E</mi>
+                    </mstyle>
+                    <mn>1</mn>
+                  </msub>
+                  <mo>+</mo>
+                  <msub>
+                    <mstyle mathvariant="italic">
+                      <mi>E</mi>
+                    </mstyle>
+                    <mn>2</mn>
+                  </msub>
+                  <mo>)</mo>
+                </mrow>
+                <mn>2</mn>
+              </msup>
+              <msub>
+                <mi>&#x232a;</mi>
+                <mi>t</mi>
+              </msub>
+              <mo>=</mo>
+              <mfrac>
+                <msubsup>
+                  <mstyle mathvariant="italic">
+                    <mi>A</mi>
+                  </mstyle>
+                  <mn>1</mn>
+                  <mn>2</mn>
+                </msubsup>
+                <mn>2</mn>
+              </mfrac>
+              <mo>+</mo>
+              <mfrac>
+                <msubsup>
+                  <mstyle mathvariant="italic">
+                    <mi>A</mi>
+                  </mstyle>
+                  <mn>2</mn>
+                  <mn>2</mn>
+                </msubsup>
+                <mn>2</mn>
+              </mfrac>
+              <mo>+</mo>
+              <msub>
+                <mstyle mathvariant="italic">
+                  <mi>A</mi>
+                </mstyle>
+                <mn>1</mn>
+              </msub>
+              <msub>
+                <mstyle mathvariant="italic">
+                  <mi>A</mi>
+                </mstyle>
+                <mn>2</mn>
+              </msub>
+              <mrow>
+                <mi>cos</mi>
+                <mrow>
+                  <mo>[</mo>
+                  <msub>
+                    <mstyle mathvariant="italic">
+                      <mi>&#x3c6;</mi>
+                    </mstyle>
+                    <mn>1</mn>
+                  </msub>
+                  <mo>&#x2212;</mo>
+                  <msub>
+                    <mstyle mathvariant="italic">
+                      <mi>&#x3c6;</mi>
+                    </mstyle>
+                    <mn>2</mn>
+                  </msub>
+                  <mo>]</mo>
+                </mrow>
+              </mrow>
+            </mstyle>
+          </math>
+        MATHML
+        expect(formula.to_latex).to eql(latex)
+        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_asciimath).to eql(asciimath)
+      end
+    end
   end
 
   describe ".to_omml" do

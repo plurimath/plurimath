@@ -900,6 +900,18 @@ module Plurimath
         Math::Formula.new(formula_array)
       end
 
+      rule(table: simple(:table),
+           rparen: simple(:rparen),
+           expr: sequence(:expr)) do
+        [
+          Math::Function::Fenced.new(
+            Math::Symbols::Paren::OpenParen.new,
+            [table],
+            Utility.asciimath_symbol_object(rparen),
+          ),
+        ] + expr.flatten.compact
+      end
+
       rule(left: simple(:left),
            left_right_value: simple(:left_right),
            right: simple(:right)) do
