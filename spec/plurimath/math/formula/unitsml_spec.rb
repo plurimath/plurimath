@@ -125,8 +125,8 @@ RSpec.describe Plurimath::Math::Formula do
                     <ElectricCurrent symbol="I" powerNumerator="4"/>
                   </Dimension>
                 </mrow>
-                <mo rspace="thickmathspace">&#x2062;</mo>
                 <mn>9</mn>
+                <mo rspace="thickmathspace">&#x2062;</mo>
                 <mrow xref="U_C2.m">
                   <msup>
                     <mstyle mathvariant="normal">
