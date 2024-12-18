@@ -3948,6 +3948,7 @@ RSpec.describe Plurimath::Asciimath do
                 <mtext>X</mtext>
                 <mo>)</mo>
               </mrow>
+              <mo rspace="thickmathspace">&#x2062;</mo>
               <mrow>
                 <mstyle mathvariant="normal">
                   <mi>g</mi>
@@ -5467,7 +5468,7 @@ RSpec.describe Plurimath::Asciimath do
               </mrow>
               <mo>+</mo>
               <mn>1</mn>
-              <mo>&#x2062;</mo>
+              <mo rspace="thickmathspace">&#x2062;</mo>
               <mrow>
                 <mstyle mathvariant="normal">
                   <mo>&#x2032;</mo>
@@ -5524,6 +5525,7 @@ RSpec.describe Plurimath::Asciimath do
                 </mstyle>
               </mrow>
               <mo>&#x22c5;</mo>
+              <mo rspace="thickmathspace">&#x2062;</mo>
               <mrow>
                 <mstyle mathvariant="normal">
                   <mi>m</mi>
@@ -5608,10 +5610,12 @@ RSpec.describe Plurimath::Asciimath do
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
+              <mo rspace="thickmathspace">&#x2062;</mo>
               <mrow>
                 <mi>u</mi>
               </mrow>
               <mo>+</mo>
+              <mo rspace="thickmathspace">&#x2062;</mo>
               <mrow>
                 <mstyle mathvariant="normal">
                   <mi>&#xb5;m</mi>
@@ -5661,7 +5665,7 @@ RSpec.describe Plurimath::Asciimath do
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
               <mn>1</mn>
-              <mo>&#x2062;</mo>
+              <mo rspace="thickmathspace">&#x2062;</mo>
               <mrow>
                 <mstyle mathvariant="normal">
                   <mi>&#xb0;</mi>
