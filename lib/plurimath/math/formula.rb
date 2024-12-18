@@ -629,11 +629,11 @@ module Plurimath
       end
 
       def unitsml_post_processing(nodes, prev_node)
+        insert_index = 0
         nodes.each.with_index do |node, index|
           if node[:unitsml]
-            pre_index = index - 1
-            pre_node = nodes[pre_index] if pre_index.zero? || pre_index.positive?
-            prev_node.insert_in_nodes(index, space_element(node)) if valid_previous?(pre_node)
+            prev_node.insert_in_nodes(index + insert_index, space_element(node))
+            insert_index += 1
             node.remove_attr("unitsml")
           end
           unitsml_post_processing(node.nodes, node) if node.nodes.none?(String)
@@ -648,17 +648,8 @@ module Plurimath
 
       def space_element(node)
         element = (ox_element("mo") << "&#x2062;")
-        element[:rspace] = "thickmathspace" if text_in_tag?(node.xml_nodes.nodes)
+        element[:rspace] = "thickmathspace"
         element
-      end
-
-      def text_in_tag?(nodes)
-        next_nodes = nodes.first.nodes
-        if next_nodes.all?(String)
-          Utility.html_entity_to_unicode(next_nodes.first).match?(/\p{L}|\p{N}/)
-        else
-          text_in_tag?(next_nodes)
-        end
       end
 
       def negated_value?
@@ -668,21 +659,6 @@ module Plurimath
       def unicodemath_value(options:)
         join_str = " " if !(negated_value? || mini_sized?)
         value&.map { |v| v.to_unicodemath(options: options) }&.join(join_str)
-      end
-
-      def valid_previous?(previous)
-        return unless previous
-
-        ["mi", "mn"].include?(previous.name) ||
-          inside_tag?(previous)
-      end
-
-      def inside_tag?(previous)
-        previous&.nodes&.any? do |node|
-          next if node.is_a?(String)
-
-          valid_previous?(node) if node.xml_node?
-        end
       end
 
       def intent_attribute(mathml)
