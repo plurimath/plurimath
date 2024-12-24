@@ -3,7 +3,7 @@
 module Plurimath
   module Formatter
     module Numbers
-      class Fraction < Base
+      class Fraction
         attr_reader :decimal, :precision, :separator, :group
 
         def initialize(symbols = {})
@@ -18,15 +18,14 @@ module Plurimath
           precision = options[:precision] || @precision
           return "" unless precision > 0
 
-          number = interpolate(format(options), fraction, :left)
+          number = format(fraction, precision)
           number = digit_count_format(int, fraction, number) if @digit_count
           formatted_number = change_format(number) if number
           formatted_number ? decimal + formatted_number : ""
         end
 
-        def format(options)
-          precision = options[:precision] || @precision
-          precision ? '0' * precision : @format
+        def format(number, precision)
+          number + "0" * (precision - number.length)
         end
 
         def format_groups(string)

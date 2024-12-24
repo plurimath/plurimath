@@ -2,7 +2,6 @@
 
 require_relative "formatter/numeric_formatter"
 require_relative "formatter/supported_locales"
-require_relative "formatter/numbers/base"
 require_relative "formatter/numbers/integer"
 require_relative "formatter/numbers/fraction"
 require_relative "formatter/numbers/significant"
