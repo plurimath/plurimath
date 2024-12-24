@@ -1,3 +1,4 @@
+require "bigdecimal"
 require_relative "formatter"
 
 module Plurimath
