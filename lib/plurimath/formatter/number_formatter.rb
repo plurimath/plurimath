@@ -19,8 +19,12 @@ module Plurimath
       def format(precision: nil)
         data_reader[:precision] = precision || precision_from(number)
         int, frac, integer_format, fraction_format, signif_format = *partition_tokens(number)
-        result = integer_format.apply(int, data_reader)
+        # FIX FOR:
+        #   NotImplementedError: String#<< not supported. Mutable String methods are not supported in Opal.
+        result = []
+        result << integer_format.apply(int, data_reader)
         result << fraction_format.apply(frac, data_reader, int) if frac
+        result = result.join
         result = signif_format.apply(result, integer_format, fraction_format)
         result = "+#{result}" if number.positive? && data_reader[:number_sign] == :plus
         "#{prefix}#{result}"
@@ -58,13 +62,8 @@ module Plurimath
       end
 
       def round_to(number, precision)
-        factor = 10 ** precision
-        result = if number.is_a?(BigDecimal)
-                   ((number * factor).fix / factor)
-                 else
-                   ((number * factor).round.to_f / factor)
-                 end
-        result
+        factor = BigDecimal(10).power(precision)
+        (number * factor).fix / factor
       end
     end
   end

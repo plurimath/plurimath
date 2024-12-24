@@ -3,7 +3,7 @@
 module Plurimath
   module Formatter
     module Numbers
-      class Integer < Base
+      class Integer
         attr_reader :format, :separator, :groups
 
         def initialize(symbols = {})
@@ -12,7 +12,7 @@ module Plurimath
         end
 
         def apply(number, options = {})
-          format_groups(interpolate(number, number.to_i))
+          format_groups(number)
         end
 
         def format_groups(string)
@@ -21,13 +21,18 @@ module Plurimath
           tokens = []
 
           tokens << chop_group(string, groups.first)
-          tokens << chop_group(string, groups.last) until string.empty?
+          string = string[0...-tokens.first.size]
+
+          until string.empty?
+            tokens << chop_group(string, groups.last)
+            string = string[0...-tokens.last.size]
+          end
 
           tokens.compact.reverse.join(separator)
         end
 
         def chop_group(string, size)
-          string.slice!([string.size - size, 0].max, size)
+          string.slice([string.size - size, 0].max, size)
         end
       end
     end
