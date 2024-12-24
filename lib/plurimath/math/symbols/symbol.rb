@@ -108,7 +108,10 @@ module Plurimath
         end
 
         def t_tag(options:)
-          Utility.ox_element("t", namespace: "m") << (value || to_omml_without_math_tag(nil, options: options))
+          output = value || to_omml_without_math_tag(nil, options: options)
+          return t_element unless output
+
+          t_element << output
         end
 
         def separate_table
@@ -157,6 +160,10 @@ module Plurimath
         end
 
         private
+
+        def t_element
+          Utility.ox_element("t", namespace: "m")
+        end
 
         def explicit_checks(unicode)
           return true if [unicode, value].any? { |v| ["∣", "|"].include?(v) }
