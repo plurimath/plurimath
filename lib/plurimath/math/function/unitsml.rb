@@ -13,6 +13,11 @@ module Plurimath
           @unitsml = ::Unitsml.parse(text)
         end
 
+        def ==(other)
+          other.is_a?(Unitsml) &&
+            other.text == @text
+        end
+
         def to_asciimath(options:)
           formula(options).to_asciimath(options: options)
         end

@@ -1713,12 +1713,7 @@ RSpec.describe Plurimath::Asciimath::Parser do
             Plurimath::Math::Number.new("10"),
             Plurimath::Math::Number.new("12"),
           ),
-          Plurimath::Math::Formula.new([
-            Plurimath::Math::Function::FontStyle::Normal.new(
-              Plurimath::Math::Symbols::Symbol.new("Hz"),
-              "normal",
-            ),
-          ]),
+          Plurimath::Math::Function::Unitsml.new("Hz"),
           Plurimath::Math::Symbols::Comma.new,
           Plurimath::Math::Function::Text.new(" "),
           Plurimath::Math::Function::Base.new(

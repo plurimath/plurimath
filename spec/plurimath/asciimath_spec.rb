@@ -110,23 +110,26 @@ RSpec.describe Plurimath::Asciimath do
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
-              <mstyle mathvariant="normal">
-                <mi>V</mi>
-              </mstyle>
-              <mo>&#x22c5;</mo>
-              <mstyle mathvariant="normal">
-                <mi>s</mi>
-              </mstyle>
-              <mo>&#x22c5;</mo>
-              <msup>
+              <mo rspace="thickmathspace">&#x2062;</mo>
+              <mrow>
                 <mstyle mathvariant="normal">
-                  <mi>A</mi>
+                  <mi>V</mi>
                 </mstyle>
-                <mrow>
-                  <mo>&#x2212;</mo>
-                  <mn>1</mn>
-                </mrow>
-              </msup>
+                <mo>&#x22c5;</mo>
+                <mstyle mathvariant="normal">
+                  <mi>s</mi>
+                </mstyle>
+                <mo>&#x22c5;</mo>
+                <msup>
+                  <mstyle mathvariant="normal">
+                    <mi>A</mi>
+                  </mstyle>
+                  <mrow>
+                    <mo>&#x2212;</mo>
+                    <mn>1</mn>
+                  </mrow>
+                </msup>
+              </mrow>
             </mstyle>
           </math>
         MATHML
