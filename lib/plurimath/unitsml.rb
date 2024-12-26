@@ -5,18 +5,15 @@ module Plurimath
   class Unitsml
     attr_accessor :text
 
+    VALID_UNITSML = %r{\^(([^\s][^*\/,"]*?[a-z]+)|(\([^-\d]+\)|[^\(\d-]+))}
+
     def initialize(text)
       @text = text
-      raise Math::ParseError.new(error_message) if text.match?(/\^(([^\s][^*\/,"]*?[a-z]+)|(\([^-\d]+\)|[^\(\d-]+))/)
+      raise Math::ParseError.new(error_message) if text.match?(VALID_UNITSML)
     end
 
     def to_formula
-      unitsml = ::Unitsml.parse(text)
-      formula = unitsml.to_plurimath
-      formula.unitsml = true
-      formula.input_string = text
-      formula.unitsml_xml = unitsml.to_xml
-      formula
+      Math::Function::Unitsml.new(text)
     end
 
     def error_message

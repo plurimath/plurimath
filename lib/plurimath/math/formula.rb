@@ -45,8 +45,8 @@ module Plurimath
           object.left_right_wrapper == left_right_wrapper
       end
 
-      def to_asciimath(formatter: nil, options: nil)
-        options ||= { formatter: formatter }
+      def to_asciimath(formatter: nil, unitsml_multiplier: nil, options: nil)
+        options ||= { formatter: formatter, multiplier: unitsml_multiplier }
         value.map { |val| val.to_asciimath(options: options) }.join(" ")
       rescue
         parse_error!(:asciimath)
@@ -56,10 +56,11 @@ module Plurimath
         intent: false,
         formatter: nil,
         unitsml_xml: nil,
+        unitsml_multiplier: nil,
         split_on_linebreak: false,
         display_style: displaystyle
       )
-        options = { formatter: formatter, unitsml_xml: unitsml_xml }
+        options = { formatter: formatter, unitsml_xml: unitsml_xml, multiplier: unitsml_multiplier }
         return line_breaked_mathml(display_style, intent, options: options) if split_on_linebreak
 
         math_attrs = {
@@ -100,15 +101,15 @@ module Plurimath
         nodes
       end
 
-      def to_latex(formatter: nil, options: nil)
-        options ||= { formatter: formatter }
+      def to_latex(formatter: nil, unitsml_multiplier: nil, options: nil)
+        options ||= { formatter: formatter, multiplier: unitsml_multiplier }
         value.map { |val| val.to_latex(options: options) }.join(" ")
       rescue
         parse_error!(:latex)
       end
 
-      def to_html(formatter: nil, options: nil)
-        options ||= { formatter: formatter }
+      def to_html(formatter: nil, unitsml_multiplier: nil, options: nil)
+        options ||= { formatter: formatter, multiplier: unitsml_multiplier }
         value&.map { |val| val.to_html(options: options) }&.join(" ")
       rescue
         parse_error!(:html)
@@ -137,9 +138,9 @@ module Plurimath
         }
       end
 
-      def to_omml(display_style: displaystyle, split_on_linebreak: false, formatter: nil)
+      def to_omml(display_style: displaystyle, split_on_linebreak: false, formatter: nil, unitsml_multiplier: nil)
         objects = split_on_linebreak ? new_line_support : [self]
-        options = { formatter: formatter }
+        options = { formatter: formatter, multiplier: unitsml_multiplier }
         para_element = Utility.ox_element("oMathPara", attributes: omml_attrs, namespace: "m")
         objects.each.with_index(1) do |object, index|
           para_element << Utility.update_nodes(
@@ -163,15 +164,15 @@ module Plurimath
         omml_content(display_style, options: options)
       end
 
-      def to_unicodemath(formatter: nil, options: nil)
-        options ||= { formatter: formatter }
+      def to_unicodemath(formatter: nil, unitsml_multiplier: nil, options: nil)
+        options ||= { formatter: formatter, multiplier: unitsml_multiplier }
         Utility.html_entity_to_unicode(unicodemath_value(options: options)).gsub(/\s\/\s/, "/")
       rescue
         parse_error!(:unicodemath)
       end
 
-      def to_display(type = nil, formatter: nil)
-        options = { formatter: formatter }
+      def to_display(type = nil, formatter: nil, unitsml_multiplier: nil)
+        options = { formatter: formatter, multiplier: unitsml_multiplier }
         return type_error!(type) unless MATH_ZONE_TYPES.include?(type.downcase.to_sym)
 
         math_zone = case type
