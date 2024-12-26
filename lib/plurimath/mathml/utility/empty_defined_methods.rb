@@ -430,8 +430,6 @@ module Plurimath
 
         def rquote=(_); end
 
-        def rspace=(_); end
-
         def selection=(_); end
 
         def separator=(_); end

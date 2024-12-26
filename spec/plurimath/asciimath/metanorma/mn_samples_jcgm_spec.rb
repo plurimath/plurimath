@@ -1806,18 +1806,7 @@ RSpec.describe Plurimath::Asciimath::Parser do
               Plurimath::Math::Number.new("4")
             ])
           ),
-          Plurimath::Math::Formula.new([
-            Plurimath::Math::Function::Power.new(
-              Plurimath::Math::Function::FontStyle::Normal.new(
-                Plurimath::Math::Function::Min.new,
-                "normal"
-              ),
-              Plurimath::Math::Formula.new([
-                Plurimath::Math::Symbols::Minus.new,
-                Plurimath::Math::Number.new("1")
-              ])
-            )
-          ])
+          Plurimath::Math::Function::Unitsml.new("min^(-1)")
         ])
         expect(formula).to eq(expected_value)
       end

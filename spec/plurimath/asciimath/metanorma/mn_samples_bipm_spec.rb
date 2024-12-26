@@ -279,12 +279,7 @@ RSpec.describe Plurimath::Asciimath::Parser do
       it "returns formula" do
         expected_value = Plurimath::Math::Formula.new([
           Plurimath::Math::Number.new("1"),
-          Plurimath::Math::Formula.new([
-            Plurimath::Math::Function::FontStyle::Normal.new(
-              Plurimath::Math::Symbols::Symbol.new("A"),
-              "normal",
-            ),
-          ]),
+          Plurimath::Math::Function::Unitsml.new("A"),
           Plurimath::Math::Symbols::Equal.new,
           Plurimath::Math::Function::Power.new(
             Plurimath::Math::Function::Fenced.new(
@@ -442,15 +437,7 @@ RSpec.describe Plurimath::Asciimath::Parser do
 
       it "returns formula" do
         expected_value = Plurimath::Math::Formula.new([
-          Plurimath::Math::Formula.new([
-            Plurimath::Math::Function::Power.new(
-              Plurimath::Math::Function::FontStyle::Normal.new(
-                Plurimath::Math::Symbols::Symbol.new("dm"),
-                "normal"
-              ),
-              Plurimath::Math::Number.new("3")
-            ),
-          ]),
+          Plurimath::Math::Function::Unitsml.new("dm^3"),
           Plurimath::Math::Symbols::Paren::Rround.new,
           Plurimath::Math::Symbols::In.new,
           Plurimath::Math::Symbols::Symbol.new("s"),
@@ -462,12 +449,7 @@ RSpec.describe Plurimath::Asciimath::Parser do
             Plurimath::Math::Symbols::Paren::Lsquare.new,
             [
               Plurimath::Math::Number.new("15"),
-              Plurimath::Math::Formula.new([
-                Plurimath::Math::Function::FontStyle::Normal.new(
-                  Plurimath::Math::Symbols::Symbol.new("ml"),
-                  "normal"
-                )
-              ]),
+              Plurimath::Math::Function::Unitsml.new("ml"),
             ],
           )
         ])

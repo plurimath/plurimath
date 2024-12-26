@@ -106,7 +106,11 @@ module Plurimath
           when Math::Symbols::Symbol
             return value if value.value.nil?
 
-            mathml_symbol_to_class(value.value)
+            instance = mathml_symbol_to_class(value.value)
+            if value&.options&.any? && instance.is_a?(Math::Symbols::Symbol)
+              instance.options = value.options
+            end
+            instance
           when String
             mathml_symbol_to_class(value)
           end

@@ -45,11 +45,11 @@ module Plurimath
         end
 
         def to_mathml_without_math_tag(intent, **)
+          attributes = {}
           if value&.include?("&#x2147;")
-            attributes = {
-              intent: Utility.html_entity_to_unicode(value),
-            }
+            attributes[:intent] = Utility.html_entity_to_unicode(value)
           end
+          attributes[:rspace] = @options[:rspace] if @options&.key?(:rspace)
           mi_tag = ox_element("mi", attributes: attributes)
           return mi_tag if ["{:", ":}"].include?(value)
 

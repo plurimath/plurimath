@@ -1,11 +1,11 @@
 require 'spec_helper'
 
 RSpec.describe Plurimath::Math::Formula do
-  describe ".to_mathml(unitsml_xml: boolean)" do
-    let(:mathml) { described_class.new(exp).to_mathml(unitsml_xml: unitsml_xml) }
+  describe ".to_mathml(unitsml: {})" do
+    let(:mathml) { described_class.new(exp).to_mathml(unitsml: unitsml) }
 
     context "contains mathml with unitsml semantics" do
-      let(:unitsml_xml) { true }
+      let(:unitsml) { { xml: true, multiplier: "X" } }
       let(:exp) do
         Plurimath::Math::Formula.new([
           Plurimath::Math::Number.new("9"),
@@ -27,7 +27,7 @@ RSpec.describe Plurimath::Math::Formula do
                     </mstyle>
                     <mn>3</mn>
                   </msup>
-                  <mo>&#x22c5;</mo>
+                  <mi>X</mi>
                   <mstyle mathvariant="normal">
                     <mi>A</mi>
                   </mstyle>
@@ -35,7 +35,7 @@ RSpec.describe Plurimath::Math::Formula do
                     <UnitSystem name="SI" type="SI_derived" lang="en-US"/>
                     <UnitName lang="en">C^3*A</UnitName>
                     <UnitSymbol type="HTML">C
-                      <sup>3</sup>⋅A</UnitSymbol>
+                      <sup>3</sup>XA</UnitSymbol>
                     <UnitSymbol type="MathMl">
                       <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
                         <msup>
@@ -46,7 +46,7 @@ RSpec.describe Plurimath::Math::Formula do
                             <mn>3</mn>
                           </mrow>
                         </msup>
-                        <mo>⋅</mo>
+                        <mo>X</mo>
                         <mi mathvariant="normal">A</mi>
                       </math>
                     </UnitSymbol>
@@ -64,11 +64,12 @@ RSpec.describe Plurimath::Math::Formula do
             </mstyle>
           </math>
         MATHML
-        expect(mathml).to eql(expected_value)
+        expect(mathml).to be_equivalent_to(expected_value)
       end
     end
+
     context "contains mathml with unitsml semantics" do
-      let(:unitsml_xml) { true }
+      let(:unitsml) { { xml: true } }
       let(:exp) do
         Plurimath::Math::Formula.new([
           Plurimath::Math::Number.new("9"),
@@ -172,12 +173,12 @@ RSpec.describe Plurimath::Math::Formula do
             </mstyle>
           </math>
         MATHML
-        expect(mathml).to eql(expected_value)
+        expect(mathml).to be_equivalent_to(expected_value)
       end
     end
 
     context "contains mathml without unitsml semantics" do
-      let(:unitsml_xml) { false }
+      let(:unitsml) { { xml: false, multiplier: :space } }
       let(:exp) do
         Plurimath::Math::Formula.new([
           Plurimath::Math::Number.new("9"),
@@ -199,7 +200,7 @@ RSpec.describe Plurimath::Math::Formula do
                     </mstyle>
                     <mn>3</mn>
                   </msup>
-                  <mo>&#x22c5;</mo>
+                  <mi rspace="thickmathspace">&#x2062;</mi>
                   <mstyle mathvariant="normal">
                     <mi>A</mi>
                   </mstyle>
