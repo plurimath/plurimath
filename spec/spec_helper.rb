@@ -23,10 +23,12 @@ RSpec.configure do |config|
   # Disable RSpec exposing methods globally on `Module` and `main`
   config.disable_monkey_patching!
 
-  config.around(:all) do |example|
+  config.around(:each) do |example|
     Plurimath.xml_engine = Plurimath::XmlEngine::Ox
+    Mml::Configuration.adapter = :ox
     example.run
     Plurimath.xml_engine = Plurimath::XmlEngine::Oga
+    Mml::Configuration.adapter = :oga
     example.run
   end
 

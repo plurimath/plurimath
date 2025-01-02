@@ -78,12 +78,27 @@ module Plurimath
         def msgroup_text; end
 
         def msgroup_text=(value)
-          return unless value
+          return if empty_value?(value)
 
-          if value.is_a?(Array) && value.none? { |element| element.match?(/[^\s]/) }
+          if value.is_a?(Array)
             @temp_mathml_order << Text.new(value.pop)
           else
             @temp_mathml_order << Text.new(value)
+          end
+        end
+
+        private
+
+        def empty_value?(value)
+          case value
+          when String
+            value.strip.empty?
+          when Array
+            value.none? { |element| element.match?(/[\S]/) }
+          when NilClass
+            true
+          else
+            false
           end
         end
       end
