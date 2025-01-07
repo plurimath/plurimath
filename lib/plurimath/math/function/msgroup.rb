@@ -97,8 +97,6 @@ module Plurimath
             value.none? { |element| element.match?(/[\S]/) }
           when NilClass
             true
-          else
-            false
           end
         end
       end
