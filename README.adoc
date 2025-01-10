@@ -345,7 +345,7 @@ formatted_number = formatter.localized_number(
 
 For more details, please refer to the blog post link:https://www.plurimath.org/blog/2024-07-09-number-formatter/[**Number formatting support in Plurimath**] 
 
-=== Number Formatting in Formulas
+=== Number Formatting in Formula
 
 Plurimath supports **number formatting** within formulas for all supported languages. This feature allows you to apply custom number formatting when converting formulas to any of the supported format.
 
