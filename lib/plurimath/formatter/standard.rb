@@ -8,9 +8,9 @@ module Plurimath
 
       DEFAULT_OPTIONS = {
         fraction_group_digits: 3,
-        exponent_sign: "plus",
+        exponent_sign: nil,
         fraction_group: "'",
-        number_sign: "plus",
+        number_sign: nil,
         notation: :basic,
         group_digits: 3,
         significant: 0,
@@ -35,17 +35,17 @@ module Plurimath
         default_options = self.class::DEFAULT_OPTIONS
         self.precision ||= default_options[:precision]
         options ||= default_options
-        options[:fraction_group_digits] ||= default_options[:fraction_group_digits]
-        options[:fraction_group] ||= default_options[:fraction_group]
-        options[:exponent_sign] ||= default_options[:exponent_sign]
-        options[:group_digits] ||= default_options[:group_digits]
-        options[:number_sign] ||= default_options[:number_sign]
-        options[:significant] ||= default_options[:significant]
-        options[:notation] ||= default_options[:notation]
-        options[:decimal] ||= default_options[:decimal]
-        options[:group] ||= default_options[:group]
-        options[:times] ||= default_options[:times]
-        options[:e] ||= default_options[:e]
+        options[:fraction_group_digits] = default_options[:fraction_group_digits] unless options.key?(:fraction_group_digits)
+        options[:fraction_group] = default_options[:fraction_group] unless options.key?(:fraction_group)
+        options[:exponent_sign] = default_options[:exponent_sign] unless options.key?(:exponent_sign)
+        options[:group_digits] = default_options[:group_digits] unless options.key?(:group_digits)
+        options[:number_sign] = default_options[:number_sign] unless options.key?(:number_sign)
+        options[:significant] = default_options[:significant] unless options.key?(:significant)
+        options[:notation] = default_options[:notation] unless options.key?(:notation)
+        options[:decimal] = default_options[:decimal] unless options.key?(:decimal)
+        options[:group] = default_options[:group] unless options.key?(:group)
+        options[:times] = default_options[:times] unless options.key?(:times)
+        options[:e] = default_options[:e] unless options.key?(:e)
         options
       end
     end
