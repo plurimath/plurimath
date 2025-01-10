@@ -22,7 +22,7 @@ module Plurimath
         result = integer_format.apply(int, data_reader)
         result << fraction_format.apply(frac, data_reader, int) if frac
         result = signif_format.apply(result, integer_format, fraction_format)
-        result = "+#{result}" if number.positive? && data_reader[:number_sign] == :plus
+        result = "+#{result}" if number.positive? && data_reader[:number_sign].to_s == "plus"
         "#{prefix}#{result}"
       end
 

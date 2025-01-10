@@ -72,7 +72,7 @@ module Plurimath
 
       def update_exponent_value(number_str)
         exponent_number = BigDecimal(number_str) - 1
-        return exponent_number.to_i if exponent_number.negative? || @exponent_sign != :plus
+        return exponent_number.to_i if exponent_number.negative? || @exponent_sign.to_s != "plus"
 
         "+#{exponent_number.to_i}"
       end

@@ -12,7 +12,7 @@ module Plurimath
     end
 
     def localized_number(number_string, locale: @locale, precision: @precision, format: {})
-      prev_symbols = symbols(locale).dup
+      prev_symbols = symbols(locale.to_sym).dup
       Formatter::NumericFormatter.new(
         supported_locale(locale),
         localize_number: localize_number,
@@ -24,7 +24,7 @@ module Plurimath
         format: format,
       )
     ensure
-      symbols(locale).replace(prev_symbols)
+      symbols(locale.to_sym).replace(prev_symbols)
     end
 
     def twitter_cldr_reader(locale: @locale)
