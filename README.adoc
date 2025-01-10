@@ -339,9 +339,7 @@ formatted_number = formatter.localized_number(
 ----
 ====
 
-For more details, please refer to the blog post link:https://www.plurimath.org/blog/2024-07-09-number-formatter/[Number formatting support in Plurimath] 
-
-=== Formatting with Formula
+For more details, please refer to the blog post link:https://www.plurimath.org/blog/2024-07-09-number-formatter/[**Number formatting support in Plurimath**] 
 
 === Number Formatting in Formulas
 
@@ -349,17 +347,36 @@ Plurimath supports **number formatting** within formulas for all supported langu
 
 You just have to pass a `formatter` argument to the `to_<any-supported-language>` method. This formatter should be an instance of `Plurimath::NumberFormatter` or a custom formatter derived from `Plurimath::Formatter::Standard`.
 
+[example]
+.Initializing the Standard formatter with a custom options 
+====
 [source,ruby]
 ----
-# Example: Applying custom number formatting to a formula
 formula = Plurimath::Math.parse("e^(i*pi) + 1.1 = 0.2", :asciimath)
-custom_formatter = Plurimath::Formatter::Standard.new(locale: :en, options: { number_sign: nil }, precision: 3)
-formatted_mathml = formula.to_mathml(formatter: custom_formatter)
+custom_formatter = Plurimath::Formatter::Standard.new(locale: :fr, options: { number_sign: :plus }, precision: 3)
+print formula.to_mathml(formatter: custom_formatter)
+# <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+#   <mstyle displaystyle="true">
+#     <msup>
+#       <mi>e</mi>
+#       <mrow>
+#         <mi>i</mi>
+#         <mo>&#x22c5;</mo>
+#         <mi>&#x3c0;</mi>
+#       </mrow>
+#     </msup>
+#     <mo>+</mo>
+#     <mn>+1.100</mn>
+#     <mo>=</mo>
+#     <mn>+0.200</mn>
+#   </mstyle>
+# </math>
 ----
+====
 
 You can also create your own formatters by extending `Plurimath::Formatter::Standard`.
 
-For more details, check out our blog post: link:https://www.plurimath.org/blog/2024-09-16-formula-number-formatting/[Number formatting now supported in formulas across all math representation languages].
+For more details, check out our blog post: link:https://www.plurimath.org/blog/2024-09-16-formula-number-formatting/[**Number formatting now supported in formulas across all math representation languages**].
 
 
 
