@@ -313,9 +313,16 @@ omml = formula.to_omml
 [source, ruby]
 ----
 formatter = Plurimath::NumberFormatter.new(
-  '<locale-symbol>' | :en,            # mandatory
-  localize_number: <localize-string>, # optional
-  localizer_symbols: <format-hash>    # optional
+  '<locale-symbol>',                  # mandatory, default value = :en
+  localize_number: <localize-string>, # optional, default value = nil
+  localizer_symbols: <format-hash>    # optional, default value = {}
+  precision: <integer>                # optional, default value = nil
+)
+formatter.localized_number(
+  '<number-string>', # mandatory, raises ArgumentError
+  locale: # optional, defaults to the value set during initialization
+  precision: # optional, defaults to the value set during initialization
+  format: # optional, default value = {}
 )
 ----
 
@@ -324,15 +331,12 @@ formatter = Plurimath::NumberFormatter.new(
 ====
 [source, ruby]
 ----
-locale = :en
-formatter = Plurimath::NumberFormatter.new(locale)
-number = "1234567.89"
+formatter = Plurimath::NumberFormatter.new(:en)
 formatted_number = formatter.localized_number(
-  number, # mandatory, raises ArgumentError
-  locale: locale, # optional, changes locale only for this method call
+  "1234567.89",
   format: {
     group_digits: 2,
-    # other support options from Format O
+    # other support options
   }
 )
 # => "1,23,45,67.89"
