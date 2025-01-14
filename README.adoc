@@ -12,15 +12,15 @@ remains consistent and accurate regardless of the format it is presented in.
 
 Supported math representational languages:
 
-* MathML
-* AsciiMath
-* UnicodeMath
+* https://www.w3.org/TR/MathML3/[MathML 3] (and https://www.w3.org/TR/mathml4/[MathML 4])
+* https://www.asciimath.org[AsciiMath]
+* http://unicodemath.org[UnicodeMath] (https://www.unicode.org/notes/tn28/UTN28-PlainTextMath-v3.2.pdf[UnicodeMath v3.2])
 * LaTeX math
-* OMML
+* Microsoft Office Math Markup Language (OMML) https://devblogs.microsoft.com/math-in-office/officemath/["OfficeMath"]
 
 Supported units representation languages:
 
-* UnitsML
+* https://www.unitsml.org[UnitsML]
 
 
 == Benefits
@@ -68,7 +68,7 @@ $ gem install plurimath
 Plurimath provides a Command Line Interface (CLI) tool for converting between
 different math formats.
 
-NOTE: Before continuing please ensure you have the gem installed.
+NOTE: Before continuing, please ensure you have the gem installed.
 
 To convert math equations between formats, use the following command followed by
 appropriate options.
@@ -106,26 +106,33 @@ Splits MathML and OMML output into multiple equations. Boolean option (`true`,
 `false`).
 
 
-=== Convert an AsciiMath equation to MathML
-
+[example]
+.Convert an AsciiMath equation to MathML
+====
 [source,bash]
 ----
 plurimath convert -i "sqrt(x^2 + y^2)" -f asciimath -t mathml
 ----
+====
 
-=== Convert an OMML equation to MathML with DisplayStyle
-
+[example]
+.Convert an OMML equation to MathML with DisplayStyle
+====
 [source,bash]
 ----
 plurimath convert -i "equation" -f omml -t mathml -d true
 ----
+====
 
-=== Convert equations from a file and output as UnicodeMath
-
+[example]
+.Convert equations from a file and output as UnicodeMath
+====
 [source,bash]
 ----
 plurimath convert -e <file_path> -t unicodemath
 ----
+====
+
 
 For more detailed information and additional options, use:
 
@@ -219,6 +226,7 @@ Once you have a `Plurimath::Math::Formula` object, you can convert it to
 AsciiMath, MathML, LaTeX, UnicodeMath, or OMML by calling the respective
 conversion function on the `Formula` object.
 
+
 ==== AsciiMath output conversion
 
 [source,ruby]
@@ -305,29 +313,100 @@ omml = formula.to_omml
 # => "<omml representation of the expression>"
 ----
 
-== NumberFormatter
 
-=== General
 
-*Plurimath* supports formatting numbers using `Plurimath::Formattter` class following the syntax below:
-[source, ruby]
-----
-formatter = Plurimath::NumberFormatter.new(
-  '<locale-symbol>',                  # mandatory, default value = :en
-  localize_number: <localize-string>, # optional, default value = nil
-  localizer_symbols: <format-hash>    # optional, default value = {}
-  precision: <integer>                # optional, default value = nil
-)
-formatter.localized_number(
-  '<number-string>', # mandatory, raises ArgumentError
-  locale: # optional, defaults to the value set during initialization
-  precision: # optional, defaults to the value set during initialization
-  format: # optional, default value = {}
-)
-----
+== Number formatting
+
+=== Introduction
+
+Number formatting is an essential aspect of presenting numerical data in a way
+that is consistent with regional conventions and user preferences.
+There are myriad number formatting conventions and standards that are
+widely used in various cultures and fields.
+
+To address these needs, Plurimath now allows precise control over how
+numbers are presented through its number formatting feature.
+
+Plurimath's number formatter allows users to format numbers based on locale,
+ensuring that the formatting adheres to regional conventions and enhances both
+readability and precision.
+
+For more details, please refer to the blog post
+link:https://www.plurimath.org/blog/2024-07-09-number-formatter/[**Number formatting support in Plurimath**]
+
+=== Existing conventions
+
+==== Traditional conventions
+
+Different cultures, orthographies and organizations have different conventions
+for formatting numbers.
+
+These include practices on how to represent decimal points, digit grouping,
+digit grouping separators, and various mathematical notations.
+
+Decimal point symbol::
+In the United States, a full stop (`.`) is used as the decimal point
+separator, while in many European countries, a comma (`,`) is used instead.
+
+Digit grouping delimiter::
+In the United States, numbers are often grouped in sets of three digits using
+commas, such as 1,234,567.89. In some European countries, numbers are grouped
+using periods, such as 1.234.567,89, or a thin space, such as 1 234 567,89.
+
+Digit grouping practices::
+In Western cultures, numbers ahead of the decimal are often grouped threes.
+Numbers behind the decimal are less standardized, but are often grouped in sets
+of two or three.
+
+Mathematical notation::
+In scientific and engineering contexts, numbers are often formatted using
+scientific notation, which expresses numbers as a coefficient multiplied by a
+power of 10. For example, the number 123,456,789 can be expressed in scientific
+notation as 1.23456789 x 10^8.
+
+
+==== Standardized conventions
+
+Standardization organizations have established standards for number formatting
+to ensure uniformity and accuracy.
+
+The https://www.bipm.org/en/measurement-units[SI system (International System of Units)],
+by the https://www.bipm.org[BIPM (Bureau International des Poids et Mesures)],
+specifies rules regarding the decimal point symbol, digit grouping delimiter and
+digit groupings.
+
+https://www.iso.org/standard/64973.html[ISO 80000-2], the international standard
+for quantities and units, used by all ISO and IEC standards, also provides
+guidelines for number formatting in a different manner than the SI system.
+
+
+=== Using the number formatter
+
+==== General
+
+The number formatting feature is implemented in the `Plurimath::NumberFormatter`
+class, which allows users to re-use a single formatter class for formatting
+multiple numbers.
+
+A simple two-step process to format numbers:
+
+. Create a new `Plurimath::NumberFormatter` object, passing the desired locale
+  and overriding options as arguments.
+
+. Call the `localized_number` method on the formatter object, passing the
+  number to be formatted as a string and any additional options.
+
+The final formatted number is formatted according to the following configuration
+priority, ordered from highest to lowest precedence:
+
+. The `format` hash given to `Plurimath::NumberFormatter#localized_number`
+. The `localize_number` string in the creation of a `Plurimath::NumberFormatter`
+. The `localizer_symbols` hash in the creation of a `Plurimath::NumberFormatter`
+. The **default configuration** of the locale of the `Plurimath::NumberFormatter`
+
 
 [example]
-.Formatting a Number to group every 2 digits
+.Formatting a number to group every 2 digits
 ====
 [source, ruby]
 ----
@@ -343,21 +422,613 @@ formatted_number = formatter.localized_number(
 ----
 ====
 
-For more details, please refer to the blog post link:https://www.plurimath.org/blog/2024-07-09-number-formatter/[**Number formatting support in Plurimath**] 
 
-=== Number Formatting in Formula
+==== Creating a number formatter
 
-Plurimath supports **number formatting** within formulas for all supported languages. This feature allows you to apply custom number formatting when converting formulas to any of the supported format.
+The `NumberFormatter` is used to format numbers based on the locale and the
+formatting configuration provided.
 
-You just have to pass a `formatter` argument to the `to_<any-supported-language>` method. This formatter should be an instance of `Plurimath::NumberFormatter` or a custom formatter derived from `Plurimath::Formatter::Standard`.
+Syntax:
+
+.Syntax for creating a `Plurimath::NumberFormatter` object
+[source,ruby]
+----
+formatter = Plurimath::NumberFormatter.new(
+  <locale-symbol>,                    # mandatory <1>
+  localize_number: <localize-string>, # optional <2>
+  localizer_symbols: <format-hash>,   # optional <3>
+  precision: <precision-number>,      # optional <4>
+)
+----
+<1> Locale to be used for number formatting.
+<2> String pattern to define the number formatting.
+<3> Hash containing relevant options for number formatting.
+<4> Number of decimal places to round.
+
+Where,
+
+`<locale-symbol>`:: (optional, default `:en`) The locale to be used for number formatting.
+Accepted values are listed in the
+`Plurimath::Formatter::SupportedLocales::LOCALES` constant.
+
+`localize_number: <localize-string>`:: (optional, default `nil`) A string containing a specific
+sequence of characters that defines the number formatting. Use either
+`localize_number` or `localizer_symbols` to set the number formatting pattern.
++
+See <<localize_number,`localize_number`>> for details.
+
+`localizer_symbols: <format-hash>`:: (optional, default `{}`) A hash containing the relevant
+options for number formatting. Use either `localize_number` or
+`localizer_symbols` to set the number formatting pattern.
++
+See <<localizer_symbols,format options hash>> for details.
+
+`precision: <precision-number>`:: (optional, default `nil`)
+Number of decimal places to round. Accepts an integer value.
++
+.Specifying a precision of 6 digits
+[example]
+====
+"32232.232" => "32232.232000"
+====
+
+
+.Creating a `Plurimath::NumberFormatter` object using the `:en` locale
+[example]
+====
+[source,ruby]
+----
+formatter = Plurimath::NumberFormatter.new(:en)
+# => #<Plurimath::NumberFormatter:0x00007f8b1b8b3b10 @locale=:en>
+----
+====
+
+
+==== Configuring the number formatter
+
+The `Plurimath::NumberFormatter` object can be configured using either the
+`localize_number` or `localizer_symbols` options.
+
+
+[[localizer_symbols]]
+===== Via "format options" using `localizer_symbols`
+
+The `localizer_symbols` key is used to set the number formatting pattern
+through a Hash object containing specified options.
+
+This Hash object is called the "format options Hash".
+
+Available options are explained below.
+
+NOTE: Each option takes an input of a certain specified type (`String` or
+`Numeric`). Using an input type other than the specified type will result in
+errors or incorrect output.
+
+The values passed to `localizer_symbols` persist as long as the initialized
+`NumberFormatter` instance is accessible. It is therefore useful in scenarios
+when configuration will be static or changes are not required very often.
+
+
+`decimal`:: (`String` value)
+Symbol to use for the decimal point. Accepts a character.
++
+.Using the ',' "comma" symbol as the decimal point
+[example]
+====
+"32232.232" => "32232,232"
+====
++
+.Using the '.' "full stop" symbol as the decimal point
+[example]
+====
+"32232.232" => "32232.232"
+====
+
+`digit_count`:: (`Numeric` value)
+Total number of digits to render, with the value truncated.
+Accepts an integer value.
++
+.Specifying a total of 6 digits in rendering the number
+[example]
+====
+"32232.232" => "32232.2"
+====
+
+
+`group`:: (`String` value)
+Delimiter to use between groups of digits specified in `group_digits`. Accepts a
+character. (default is not to group digits.)
++
+.Using the unicode thin space (THIN SPACE, U+2009) as the grouping delimiter
+[example]
+====
+"32232.232" => "32 232.232"
+====
+
+
+`group_digits`:: (`Numeric` value)
+Number of digits to group the integer portion, grouping from right to left.
+Accepts an integer value. (default is 3 in most locales.)
++
+.Using the unicode thin space as the grouping delimiter, and grouping every 2 digits
+[example]
+====
+"32232.232" => "3 22 32.232"
+====
+
+`fraction_group`:: (`String` value)
+Delimiter to use between groups of fractional digits specified in
+`fraction_group_digits`. Accepts a character.
++
+.Using the unicode thin space as the fraction grouping delimiter
+[example]
+====
+"32232.232131" => "32232.232 131".
+====
+
+`fraction_group_digits`:: (`Numeric` value)
+Number of digits in each group of fractional digits, grouping from left to
+right. Accepts an integer value.
++
+.Using the unicode thin space as the fraction grouping delimiter, and grouping every 2 fraction digits
+[example]
+====
+"32232.232131" => "32232.23 21 31"
+====
+
+`significant`:: (`Numeric` value)
+Sets the number of significant digits to show, with the value rounded.
+
+`notation`:: (`String` value)
+Specifies the mathematical notation to be used. Accepts the following values.
+
+`e`::: Use exponent notation.
++
+.Example of using exponent notation
+[example]
+====
+1.23456789e8
+====
+
+`scientific`::: Use scientific notation.
++
+.Example of using scientific notation
+[example]
+====
+1.23456789 × 10⁸
+====
+
+`engineering`::: Use engineering notation, where the exponent of ten is always
+selected to be divisible by three to match the common metric prefixes.
++
+.Example of using engineering notation
+[example]
+====
+123.456789 × 10⁶
+====
+
+`e`:: (`String` value)
+Symbol to use for exponents in E notation (default value `E`). (used in the
+mode: `e` only).
++
+.Using the lowercase 'e' symbol as the exponent symbol
+[example]
+====
+----
+3.2232232e5
+----
+====
+
+`times`:: (`String` value)
+Symbol to use for multiplication where required by the notation (used in the
+modes: `scientific` and `engineering`). Defaults to `×`.
++
+.Using the '·' "middle dot" symbol as the multiplication symbol
+[example]
+====
+----
+32.232232 · 104
+----
+====
+
+`exponent_sign`:: (`String` value)
+Whether to use a plus sign to indicate positive exponents, in exponent-based
+notation (used in the modes: `e`, `scientific`, `engineering`). Legal values
+are:
+
+`plus`::: The `+` symbol is used.
++
+.Using the plus sign to indicate positive exponents
+[example]
+====
+----
+32.232232 × 10⁺⁴
+----
+====
+
+These options are to be grouped under a single Hash object.
+
+.Format options Hash for `localizer_symbols`
+[source,ruby]
+----
+{
+  decimal: ",",             # replaces the decimal point with the passed string
+  group_digits: 2,          # groups integer part into passed integer
+  group: "'",               # places the string between grouped parts of the integer
+  fraction_group_digits: 3, # groups fraction part into passed integer
+  fraction_group: ",",      # places the string between grouped parts of the fraction
+}
+----
+
+
+[[localize_number]]
+===== Via the `localize_number` option
+
+The `localize_number` option accepts a formatting pattern specified as a string,
+using the hash symbol `#` to represent a digit placeholder.
+
+The `localize_number` option is useful when you want to format numbers in a
+specific way that is not covered by the `localizer_symbols` option.
+// TODO When is that?
+
+A sample value of `\#,\##0.\### \###` is interpreted as the following
+configuration in the <<localizer_symbols,format options hash>>:
+
+`group`::
+This parameter is set to the very first non-hash character before 0.
+If there is no non-hash character before `#`+`0`, then the default group
+delimiter will be nil.
++
+In this example, it is `,`.
+
+`group_digits`::
+This parameter is set to the "count of all hashes + 1" (including the zero).
+Minimum 1 hash symbol is required.
++
+In this example, `##0` sets the value to 3.
+
+`decimal`::
+This parameter is set to the character immediately to the right of `0`.
+This is mandatory.
++
+In this example, it is `.`.
+
+`fraction_group_digits`::
+This parameter is set to "count of all the hashes right next to decimal".
+Minimum 1 hash symbol is required.
++
+In our example, '\###' sets the value to 3.
+
+`fraction_group`::
+This parameter is set to the first character after `fraction_group_digits`.
+If there is no non-hash character after `fraction_group_digits`, it is
+set to nil.
++
+In this example it is `' '` (a space).
+
+
+.Formatting a number using the `localize_number` option
+[example]
+====
+[source,ruby]
+----
+formatter = Plurimath::NumberFormatter.new(:en, localize_number: "#,##0.### ###")
+formatter.localized_number("1234.56789")
+# => "1,234.568 9"
+----
+====
+
+
+
+==== Formatting a number using `NumberFormatter`
+
+The `localized_number` method is used to format a number given a
+`NumberFormatter` instance.
+
+Syntax:
+
+.Syntax for `localized_number`
+[source,ruby]
+----
+formatter.localized_number(
+  <number>,                      # mandatory <1>
+  locale:    <locale-symbol>,    # optional <2>
+  precision: <precision-number>, # optional <3>
+  format:    <format-hash>       # optional <4>
+)
+----
+<1> The number to be formatted.
+<2> The locale to be used for number formatting.
+<3> The number of decimal places to round the number to.
+<4> Hash containing the relevant options for number formatting.
+
+Where,
+
+`<number>`:: (mandatory) The number to be formatted. Value should be a Numeric,
+i.e. Integer, Float, or BigDecimal. If not provided, an `ArgumentError` will be
+raised.
+
+`locale: <locale-symbol>`:: (optional) The locale to be used for number formatting.
+Value is a symbol.
+Overrides the locale set during the creation of the `NumberFormatter` object. If
+not provided, the locale of the `NumberFormatter` instance will be used.
+
+`precision: <precision-number>`:: (optional) The number of decimal places to round the
+number to. If not provided, the precision of the `NumberFormatter` instance will
+be used.
+
+`format: <format-hash>`:: (optional, default `{}`) A Hash containing the relevant
+options for number formatting, that overrides the `localizer_symbols`
+configuration of the `NumberFormatter`.
+Takes a Hash in the form of the <<localizer_symbols,format options hash>>.
+
+`precision: <precision-number>`::
+Number of decimal places to round. Accepts an integer value.
++
+.Specifying a precision of 6 digits
+[example]
+====
+"32232.232" => "32232.232000"
+====
+
+
+.Formatting a number using the `localized_number` method for the English locale
+[example]
+====
+[source,ruby]
+----
+formatter = Plurimath::NumberFormatter.new(:en)
+formatter.localized_number("1234.56789")
+# => "1,234.56789"
+----
+====
+
+.Formatting a number using the `localized_number` method for the French locale
+[example]
+====
+[source,ruby]
+----
+formatter = Plurimath::NumberFormatter.new(:fr)
+formatter.localized_number("1234.56789")
+# => "1 234,56789"
+----
+====
+
+
+The locale and precision set in the `NumberFormatter` can be overridden by
+passing the `locale` and `precision` options to the `localized_number` method.
+
+.Overriding locale and precision in `localized_number`
+[example]
+====
+[source,ruby]
+----
+formatter = Plurimath::NumberFormatter.new(:en)
+formatter.localized_number("1234.56789", locale: :de, precision: 6)
+# => "1.234,567890"
+----
+====
+
+
+==== Overriding specified `NumberFormatter` options using the `format` key
+
+The `format` option is used to override the specified configuration of the
+`NumberFormatter` object.
+
+It expects a Hash in the form of the <<localizer_symbols,format options hash>>.
+
+[source,ruby]
+----
+formatter = Plurimath::NumberFormatter.new(:en)
+formatter.localized_number(
+  "1234.56789",
+  format: {
+    decimal: "x",
+    # other supported options
+  }
+)
+# => "1,234x56789"
+----
+
+.Formatting a number using the `format` key in the `localized_number` method
+[example]
+====
+[source,ruby]
+----
+formatter = Plurimath::NumberFormatter.new(:en)
+formatter.localized_number(
+  "1234.56789",
+  format: {
+    decimal: "x",
+    group_digits: 2,
+    group: "'",
+    fraction_group_digits: 3,
+    fraction_group: ","
+  }
+)
+# => "12'34x567,89"
+----
+====
+
+
+=== Supported locales
+
+Plurimath supports the following locales for number formatting. The locale
+values are sourced from the https://cldr.unicode.org[Unicode CLDR] repository.
+
+The list of locales and their values are given in the file
+`lib/plurimath/formatter/supported_locales.rb`.
+
+The locales and their values can be obtained through the following code.
+
+.Getting the supported locales and their default values
+[source,ruby]
+----
+Plurimath::Formatter::SupportedLocales::LOCALES[:en]
+# => { decimal: ".", group: "," }
+----
+
+.Locales supported by Plurimath (delimiters wrapped in double quotes)
+|===
+| Locale | Decimal delimiter | Group delimiter
+
+| `sr-Cyrl-ME` | `","` | `"."`
+| `sr-Latn-ME` | `","` | `"."`
+| `zh-Hant` | `"."` | `","`
+| `en-001` | `"."` | `","`
+| `en-150` | `"."` | `","`
+| `pt-PT` | `","` | `" "`
+| `nl-BE` | `","` | `"."`
+| `it-CH` | `"."` | `"’"`
+| `fr-BE` | `","` | `" "`
+| `fr-CA` | `","` | `" "`
+| `fr-CH` | `","` | `" "`
+| `de-AT` | `","` | `" "`
+| `de-CH` | `"."` | `"’"`
+| `en-AU` | `"."` | `","`
+| `en-CA` | `"."` | `","`
+| `en-GB` | `"."` | `","`
+| `en-IE` | `"."` | `","`
+| `en-IN` | `"."` | `","`
+| `en-NZ` | `"."` | `","`
+| `en-SG` | `"."` | `","`
+| `en-US` | `"."` | `","`
+| `en-ZA` | `"."` | `","`
+| `es-419` | `"."` | `","`
+| `es-AR` | `","` | `"."`
+| `es-CO` | `","` | `"."`
+| `es-MX` | `"."` | `","`
+| `es-US` | `"."` | `","`
+| `fil` | `"."` | `","`
+| `af` | `","` | `" "`
+| `ar` | `"٫"` | `"٬"`
+| `az` | `","` | `"."`
+| `be` | `","` | `" "`
+| `bg` | `","` | `" "`
+| `bn` | `"."` | `","`
+| `bo` | `"."` | `","`
+| `bs` | `","` | `"."`
+| `ca` | `","` | `"."`
+| `cs` | `","` | `" "`
+| `cy` | `"."` | `","`
+| `da` | `","` | `"."`
+| `de` | `","` | `"."`
+| `el` | `","` | `"."`
+| `en` | `"."` | `","`
+| `eo` | `","` | `" "`
+| `es` | `","` | `"."`
+| `et` | `","` | `" "`
+| `eu` | `","` | `"."`
+| `fa` | `"٫"` | `"٬"`
+| `fi` | `","` | `" "`
+| `fr` | `","` | `" "`
+| `ga` | `"."` | `","`
+| `gl` | `","` | `"."`
+| `gu` | `"."` | `","`
+| `he` | `"."` | `","`
+| `hi` | `"."` | `","`
+| `hr` | `","` | `"."`
+| `hu` | `","` | `" "`
+| `hy` | `","` | `" "`
+| `id` | `","` | `"."`
+| `is` | `","` | `"."`
+| `it` | `","` | `"."`
+| `ja` | `"."` | `","`
+| `ka` | `","` | `" "`
+| `kk` | `","` | `" "`
+| `km` | `","` | `"."`
+| `kn` | `"."` | `","`
+| `ko` | `"."` | `","`
+| `lo` | `","` | `"."`
+| `lt` | `","` | `" "`
+| `lv` | `","` | `" "`
+| `mk` | `","` | `"."`
+| `mr` | `"."` | `","`
+| `ms` | `"."` | `","`
+| `mt` | `"."` | `","`
+| `my` | `"."` | `","`
+| `nb` | `","` | `" "`
+| `nl` | `","` | `"."`
+| `pl` | `","` | `" "`
+| `pt` | `","` | `"."`
+| `ro` | `","` | `"."`
+| `ru` | `","` | `" "`
+| `sk` | `","` | `" "`
+| `sl` | `","` | `"."`
+| `sq` | `","` | `" "`
+| `sr` | `","` | `"."`
+| `sv` | `","` | `" "`
+| `sw` | `"."` | `","`
+| `ta` | `"."` | `","`
+| `th` | `"."` | `","`
+| `tr` | `","` | `"."`
+| `uk` | `","` | `" "`
+| `ur` | `"."` | `","`
+| `vi` | `","` | `"."`
+| `xh` | `"."` | `" "`
+| `zh` | `"."` | `","`
+| `zu` | `"."` | `","`
+
+|===
+
+
+
+
+=== Formatting numbers in a formula
+
+==== General
+
+Plurimath supports number formatting within formulas for all supported
+languages. This feature allows you to apply custom number formatting when
+converting formulas to any of the supported format.
+
+NOTE: For details, check out our blog post:
+link:https://www.plurimath.org/blog/2024-09-16-formula-number-formatting/[**Number formatting now supported in formulas across all math representation languages**].
+
+
+The steps to format numbers within a formula are:
+
+. Create a number formatter that can be configured;
+
+. Apply the number formatter to a formula through the `Formula.to_{format}`
+method using a `formatter` option, which serializes the formula into an math
+representation language.
+
+The formatter should be an instance of `Plurimath::NumberFormatter` or a custom
+formatter derived from `Plurimath::Formatter::Standard`.
+
+The quick example below demonstrates how to format a number in a formula.
 
 [example]
-.Initializing the Standard formatter with a custom options 
+.Applying number formatting to a formula in LaTeX math
+====
+The following code applies number formatting to a LaTeX math formula.
+
+[source,ruby]
+----
+formula = Plurimath::Math.parse('\sum_{i=1}^{10000} i^2121221', :latex) <1>
+formatter = Plurimath::Formatter::Standard.new <2>
+formula.to_latex(formatter: formatter) <3>
+# => '\sum_{i = 1}^{10,000} i^{2,121,221}'
+----
+<1> The formula is parsed into a `Formula` object using the
+`Plurimath::Math.parse` method.
+<2> A `Plurimath::Formatter` is created.
+<3> The `Formula.to_latex` method is called with the `formatter` option to
+format the formula.
+====
+
+[example]
+.Applying number formatting to an AsciiMath formula in MathML
 ====
 [source,ruby]
 ----
 formula = Plurimath::Math.parse("e^(i*pi) + 1.1 = 0.2", :asciimath)
-custom_formatter = Plurimath::Formatter::Standard.new(locale: :fr, options: { number_sign: :plus }, precision: 3)
+custom_formatter = Plurimath::Formatter::Standard.new(
+  locale: :fr,
+  options: { number_sign: :plus },
+  precision: 3
+)
 print formula.to_mathml(formatter: custom_formatter)
 # <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
 #   <mstyle displaystyle="true">
@@ -378,9 +1049,226 @@ print formula.to_mathml(formatter: custom_formatter)
 ----
 ====
 
-You can also create your own formatters by extending `Plurimath::Formatter::Standard`.
 
-For more details, check out our blog post: link:https://www.plurimath.org/blog/2024-09-16-formula-number-formatting/[**Number formatting now supported in formulas across all math representation languages**].
+==== Defining a number formatter
+
+A "number formatter" is a class that formats numbers in a specific way. It
+contains the configuration for formatting numbers, such as the number of digits
+in a group, the decimal separator, and the group separator.
+
+Plurimath offers a standard formatter class called
+`Plurimath::Formatter::Standard` that includes a comprehensive
+link:#standard_configuration[standard configuration].
+
+.Creating a standard `Plurimath::Formatter::Standard` object
+[source,ruby]
+----
+> formatter = Plurimath::Formatter::Standard.new <1>
+----
+<1> Creates a `Plurimath::Formatter` object that uses standard configuration.
+
+
+The number formatting configuration can be changed in these ways:
+
+. Pass options to the `Plurimath::Formatter::Standard` class initializer
+(with options explained in the
+https://www.plurimath.org/blog/2024-07-09-number-formatter[number formatter blog post]).
+
+. Create a custom formatter inheriting from the `Plurimath::Formatter::Standard` class.
+
+
+
+==== Changing number formatting configuration
+
+The typical way to change the number formatting configuration is to create a
+`Plurimath::Formatter::Standard` object with the desired configuration options.
+
+There are two types of number formatting configuration to change:
+
+. Arguments passed to the `Plurimath::Formatter::Standard` class initializer.
+
+. Overriding options through the `options` argument.
+
+The arguments are:
+
+`locale`:: (default: `:en` for English) a symbol or string value. The supported
+locales are listed in the link:/blog/2024-07-09-number-formatter[number formatter blog post].
+
+`options`:: (default: empty) a hash of options (`localizer_symbols`). The options
+are listed in the link:/blog/2024-07-09-number-formatter[number formatter blog post].
+
+`format_string`:: (default: `nil`, disabled) a string value (localize_number)
+
+`precision`:: (default: `nil`, disabled) an integer value.
+
+
+[example]
+.Passing arguments to the `Plurimath::Formatter::Standard` class initializer
+====
+[source,ruby]
+----
+> options = {
+  fraction_group_digits: 2,
+  fraction_group: ".",
+  group_digits: 2,
+  decimal: ";",
+  group: ",",
+}
+
+> formatter = Plurimath::Formatter::Standard.new(locale: :hy, options: options, precision: 2)
+# format_string: <string value> if provided
+
+> Plurimath::Math.parse('2121221.3434', :latex).to_latex(formatter: formatter)
+# => '2,12,12,21;34'
+----
+
+The `precision = 2` option in the initializer causes the formatted value to have
+decimal places truncated from 4 to 2.
+====
+
+
+
+==== Creating a custom formatter
+
+In cases where the standard formatter's available options do not meet the needs
+for number presentation, a custom formatter can be created to apply new
+mechanisms of formatting numbers.
+
+The custom formatter is to be subclassed from `Plurimath::Formatter::Standard`.
+
+.Creating a custom formatter
+[source,ruby]
+----
+class MyCustomFormatter < Plurimath::Formatter::Standard <1>
+  def initialize(locale:, precision:, options:, format_string:) <2>
+    super
+  end
+end
+----
+<1> The custom formatter class inherits from `Plurimath::Formatter::Standard`.
+<2> The arguments can be overridden in the `initialize` method.
+
+The default options of the custom formatter are set using the
+`set_default_options` method.
+
+.Syntax to override the `set_default_options` method
+[source,ruby]
+----
+class MyCustomFormatter < Plurimath::Formatter::Standard
+  def initialize(locale:, precision:, options:, format_string:)
+    super
+  end
+
+  def set_default_options(options = {}) <1>
+    options = {
+      fraction_group_digits: 2,
+      fraction_group: ".",
+      ...
+    }
+  end
+end
+----
+<1> The `set_default_options` method is overridden to set the default options.
+The shown options are ones inherited from the `Plurimath::Formatter::Standard`
+class, but additional ones understood by the class can be set.
+
+It is used in the following manner.
+
+.Creating a `CustomFormatter` object and using it to format numbers in a formula
+[example]
+====
+[source,ruby]
+----
+class MyCustomFormatter < Plurimath::Formatter::Standard
+  def initialize(locale: :fr)
+    super
+  end
+
+  def set_default_options(options = {})
+    {
+      fraction_group_digits: 2,
+      fraction_group: ".",
+      group_digits: 2,
+      decimal: ";",
+      group: ",",
+      ...
+    }
+  end
+end
+
+> formula = Plurimath::Math.parse('\sum_{i=1}^{1000.001} i^2121221.3434', :latex)
+# => Plurimath::Math::Formula...
+> formula.to_latex(formatter: formatter)
+# => '\sum_{i = 1}^{10,00;00.1} i^{2,12,12,21;34.34}'
+> formula.to_asciimath(formatter: formatter)
+# => 'sum_(i = 1)^(10,00;00.1) i^(2,12,12,21;34.34)'
+----
+====
+
+
+[[standard_configuration]]
+=== Default number formatting configuration
+
+The default configuration for formatting numbers is as follows, set in the
+`Plurimath::Formatter::Standard` class.
+
+|===
+|Option key |Description |Value
+
+|`locale`
+|The locale used for number formatting
+|`:en`
+
+|`fraction_group_digits`
+|The number of digits in each group of the fraction part
+|`3`
+
+|`exponent_sign`
+|The sign used for the exponent part of the number
+|`"plus"`
+
+|`fraction_group`
+|The character used to separate groups of digits in the fraction part
+|`"'"`
+
+|`notation`
+|The notation used for the number formatting
+|`:basic`
+
+|`group_digits`
+|The number of digits in each group of the integer part
+|`3`
+
+|`significant`
+|The number of significant digits to display
+|`0`
+
+|`digit_count`
+|The number of digits to display
+|`0`
+
+|`precision`
+|The number of decimal places to display
+|`0`
+
+|`decimal`
+|The character used as the decimal separator
+|`"."`
+
+|`group`
+|The character used to separate groups of digits in the integer part
+|`","`
+
+|`times`
+|The character used for multiplication
+|`"x"`
+
+|`e`
+|The character used for exponentiation
+|`"e"`
+
+|===
+
 
 
 
