@@ -718,7 +718,7 @@ module Plurimath
       end
 
       def partial_derivative(nodes)
-        nodes.each.with_index do |first, index|
+        nodes.each_with_index do |first, index|
           second = nodes[index+1]
           next second unless first.name == "msub" && first.nodes.first.nodes.include?("&#x2202;")
 
@@ -942,7 +942,7 @@ module Plurimath
       end
 
       def valid_prime?(node)
-        Utility.primes_constants.values.any? { |prime| prime == node.nodes.first }
+        UnicodeMath::TransformHelper.primes_constants.values.any? { |prime| prime == node.nodes.first }
       end
 
       def encode(str)

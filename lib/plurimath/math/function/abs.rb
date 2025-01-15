@@ -18,18 +18,16 @@ module Plurimath
         end
 
         def to_omml_without_math_tag(display_style, options:)
-          Array(
-            md_tag << omml_parameter(parameter_one, display_style, tag_name: "e", options: options),
-          )
+          [md_tag << omml_parameter(parameter_one, display_style, tag_name: "e", options: options)]
         end
 
         def line_breaking(obj)
           parameter_one.line_breaking(obj)
           if obj.value_exist?
-            ceil_object = self.class.new(Utility.filter_values(obj.value))
-            ceil_object.open_paren = true
-            ceil_object.close_paren = false
-            obj.update(ceil_object)
+            abs_object = self.class.new(Utility.filter_values(obj.value))
+            abs_object.open_paren = true
+            abs_object.close_paren = false
+            obj.update(abs_object)
             self.close_paren = true
             self.open_paren = false unless open_paren
           end
@@ -46,12 +44,10 @@ module Plurimath
         protected
 
         def md_tag
-          attribute = { "m:val": "|" }
-          sepchr_attr = { "m:val": "" }
           mdpr = Utility.pr_element("d", namespace: "m")
-          mdpr << ox_element("begChr", namespace: "m", attributes: attribute) unless open_paren
-          mdpr << ox_element("endChr", namespace: "m", attributes: attribute) unless close_paren
-          mdpr << ox_element("sepChr", namespace: "m", attributes: sepchr_attr)
+          mdpr << ox_element("begChr", namespace: "m", attributes: { "m:val": "|" }) unless open_paren
+          mdpr << ox_element("endChr", namespace: "m", attributes: { "m:val": "|" }) unless close_paren
+          mdpr << ox_element("sepChr", namespace: "m", attributes: { "m:val": "" })
           mdpr << ox_element("grow", namespace: "m")
           ox_element("d", namespace: "m") << mdpr
         end

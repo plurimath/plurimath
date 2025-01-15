@@ -16,7 +16,7 @@ module Plurimath
           @parameter_three = parameter_three
           @parameter_four = parameter_four
           @options = options
-          Utility.validate_left_right([parameter_one, parameter_two, parameter_three, parameter_four])
+          validate_left_right([parameter_one, parameter_two, parameter_three, parameter_four])
         end
 
         def ==(object)
