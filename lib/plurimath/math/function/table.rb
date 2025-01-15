@@ -254,7 +254,7 @@ module Plurimath
         def latex_columnalign
           return "" unless Hash(options)[:asterisk]
 
-          "[#{Utility::Shared::Constants::ALIGNMENT_LETTERS.invert[Hash(td_hash)[:columnalign]]}]"
+          "[#{Utility::Shared::ALIGNMENT_LETTERS.invert[Hash(td_hash)[:columnalign]]}]"
         end
 
         def td_hash

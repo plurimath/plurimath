@@ -357,7 +357,7 @@ module Plurimath
         return unless field.is_a?(Math::Symbols::Symbol)
         return true if field&.value&.include?("&#x27;")
 
-        Utility.primes_constants.any? { |prefix, prime| unicodemath_field_value(field).include?(prime) }
+        UnicodeMath::TransformHelper.primes_constants.any? { |prefix, prime| unicodemath_field_value(field).include?(prime) }
       end
 
       def paren?

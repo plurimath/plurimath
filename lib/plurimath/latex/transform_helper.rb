@@ -18,7 +18,7 @@ module Plurimath
             if data&.separate_table
               table_row << Math::Function::Td.new(filter_table_data(table_data).compact)
               table_data = []
-              if data.linebreak
+              if data.linebreak?
                 organize_tds(table_row.flatten, string_columns.dup, options)
                 table << Math::Function::Tr.new(table_row)
                 table_row = []

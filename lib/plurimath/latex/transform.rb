@@ -791,10 +791,10 @@ module Plurimath
           Math::Function::Table.new(
             [
               Math::Function::Tr.new(
-                Utility.table_td(first_value),
+                TransformHelper.table_td(first_value),
               ),
               Math::Function::Tr.new(
-                Utility.table_td(second_value),
+                TransformHelper.table_td(second_value),
               ),
             ],
             Math::Symbols::Paren::Lcurly.new,

@@ -942,7 +942,7 @@ module Plurimath
       end
 
       def valid_prime?(node)
-        Utility.primes_constants.values.any? { |prime| prime == node.nodes.first }
+        UnicodeMath::TransformHelper.primes_constants.values.any? { |prime| prime == node.nodes.first }
       end
 
       def encode(str)

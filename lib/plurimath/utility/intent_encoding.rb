@@ -203,7 +203,7 @@ module Plurimath
 
             str << html_entity_to_unicode(node.nodes[0])
           end
-          str.last << nodes[1].nodes[0] if primes_constants.value?(nodes[1].nodes[0])
+          str.last << nodes[1].nodes[0] if UnicodeMath::TransformHelper.primes_constants.value?(nodes[1].nodes[0])
           str
         end
 

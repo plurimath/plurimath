@@ -909,7 +909,7 @@ module Plurimath
           Math::Function::Fenced.new(
             Math::Symbols::Paren::OpenParen.new,
             [table],
-            Utility.asciimath_symbol_object(rparen),
+            TransformHelper.asciimath_symbol_object(rparen),
           ),
         ] + expr.flatten.compact
       end

@@ -62,6 +62,7 @@ RSpec.describe Plurimath::Latex::Parser do
 
     context "contains example #4" do
       let(:string) { "\\begin{matrix}a & b \\\\ c & d \\end{matrix}" }
+
       it "returns formula" do
         expected_value = Plurimath::Math::Formula.new([
           Plurimath::Math::Function::Table::Matrix.new(
