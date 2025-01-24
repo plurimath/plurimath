@@ -487,9 +487,8 @@ RSpec.describe Plurimath::Mathml::Parser do
             Plurimath::Math::Symbols::Symbol.new(" a "),
             Plurimath::Math::Symbols::Symbol.new(" b ")
           ),
-          Plurimath::Math::Function::Overset.new(
-            Plurimath::Math::Symbols::Overline.new,
-            Plurimath::Math::Symbols::Paren::Rround.new
+          Plurimath::Math::Function::Bar.new(
+            Plurimath::Math::Symbols::Paren::Rround.new,
           )
         ])
       ])
