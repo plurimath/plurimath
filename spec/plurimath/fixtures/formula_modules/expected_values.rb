@@ -1015,7 +1015,7 @@ module ExpectedValues
     Plurimath::Math::Function::Underset.new(
       Plurimath::Math::Function::Text.new("over"),
       Plurimath::Math::Function::FontStyle::Normal.new(
-        Plurimath::Math::Symbols::Overline.new,
+        Plurimath::Math::Function::Bar.new,
         "mathrm",
       ),
     )
@@ -1030,7 +1030,7 @@ module ExpectedValues
     Plurimath::Math::Function::Underset.new(
       Plurimath::Math::Function::Text.new("A"),
       Plurimath::Math::Function::FontStyle::Normal.new(
-        Plurimath::Math::Symbols::Overline.new,
+        Plurimath::Math::Function::Bar.new,
         "mathrm",
       ),
     )
@@ -1039,7 +1039,7 @@ module ExpectedValues
     Plurimath::Math::Function::Underset.new(
       Plurimath::Math::Function::Text.new("ABC"),
       Plurimath::Math::Function::FontStyle::Normal.new(
-        Plurimath::Math::Symbols::Overline.new,
+        Plurimath::Math::Function::Bar.new,
         "mathrm",
       ),
     )
@@ -1048,7 +1048,7 @@ module ExpectedValues
     Plurimath::Math::Function::Underset.new(
       Plurimath::Math::Function::Text.new("x⊕y"),
       Plurimath::Math::Function::FontStyle::Normal.new(
-        Plurimath::Math::Symbols::Overline.new,
+        Plurimath::Math::Function::Bar.new,
         "mathrm",
       ),
     )
