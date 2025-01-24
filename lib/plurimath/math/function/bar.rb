@@ -93,6 +93,8 @@ module Plurimath
           Utility.update_nodes(barpr, [pos, ctrlp])
         end
       end
+
+      Overline = Bar
     end
   end
 end

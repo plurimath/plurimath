@@ -341,6 +341,43 @@ RSpec.describe Plurimath::Omml do
         expect(formula.to_asciimath).to eq(asciimath)
       end
     end
+
+    context "contains comment and overline example #07 from plurimath/plurimath#324" do
+      let(:string) do
+        <<~OMML
+          <m:oMath xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math">
+            <m:acc>
+              <m:accPr>
+                <m:chr m:val="‾"/> <!-- Overline character -->
+              </m:accPr>
+              <m:e>
+                <m:r>
+                  <m:t>AB</m:t>
+                </m:r>
+              </m:e>
+            </m:acc>
+          </m:oMath>
+        OMML
+      end
+
+      it 'returns parsed Asciimath to Formula' do
+        latex = '\overline{\text{AB}}'
+        asciimath = 'bar("AB")'
+        mathml = <<~MATHML
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
+              <mover accent="true">
+                <mtext>AB</mtext>
+                <mo>&#xaf;</mo>
+              </mover>
+            </mstyle>
+          </math>
+        MATHML
+        expect(formula.to_latex).to eq(latex)
+        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_asciimath).to eq(asciimath)
+      end
+    end
   end
 
   describe ".to_omml" do

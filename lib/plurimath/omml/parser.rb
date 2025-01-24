@@ -45,6 +45,8 @@ module Plurimath
       end
 
       def parse_nodes(nodes)
+        nodes.delete_if { |node| node.is_xml_comment? if node.respond_to?(:is_xml_comment?)}
+
         nodes.map do |node|
           if node.is_a?(String)
             node == "​" ? nil : node
