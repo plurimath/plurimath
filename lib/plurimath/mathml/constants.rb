@@ -176,6 +176,7 @@ module Plurimath
         mathfrak
         underset
         stackrel
+        overline
         overset
         mathcal
         arccos
