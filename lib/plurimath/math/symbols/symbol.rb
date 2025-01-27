@@ -68,6 +68,9 @@ module Plurimath
         end
 
         def to_omml_without_math_tag(_, **)
+          # TODO: remove this condition once to word rendering issue is resolved, plurimath/plurimath/pull/328
+          return if value == "&#x2062;"
+
           value
         end
 
@@ -80,6 +83,9 @@ module Plurimath
         end
 
         def insert_t_tag(_, options:)
+          # TODO: remove this condition once to word rendering issue is resolved, plurimath/plurimath/pull/328
+          return if value == "&#x2062;"
+
           [(Utility.ox_element("r", namespace: "m") << t_tag(options: options))]
         end
 

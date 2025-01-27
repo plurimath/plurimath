@@ -2048,6 +2048,23 @@ module ExpectedValues
       )
     ],
   )
+  EX_188 = Plurimath::Math::Formula.new(
+    [
+      Plurimath::Math::Number.new("12"),
+      Plurimath::Math::Symbols::Symbol.new("&#x2062;"),
+      Plurimath::Math::Function::FontStyle::Normal.new(
+        Plurimath::Math::Symbols::Degree.new,
+        "normal"
+      ),
+      Plurimath::Math::Number.new("28"),
+      Plurimath::Math::Symbols::Symbol.new("&#x2062;"),
+      Plurimath::Math::Function::FontStyle::Normal.new(
+        Plurimath::Math::Symbols::Prime.new,
+        "normal"
+      )
+    ]
+  )
+
   EXIssue158 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Text.new("U="),
     Plurimath::Math::Function::Table.new(
