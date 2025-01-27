@@ -1845,6 +1845,16 @@ RSpec.describe Plurimath::Math::Formula do
       end
     end
 
+    context "contains #188.omml" do
+      let(:file_name) { "spec/plurimath/fixtures/omml/188.omml" }
+      let(:exp) { ExpectedValues::EX_188 }
+
+      it "matches open and close tag" do
+        expected_value = File.read(file_name)
+        expect(formula).to be_equivalent_to(expected_value)
+      end
+    end
+
     context "contains #issue-158.omml" do
       let(:file_name) { "spec/plurimath/fixtures/omml/issue-158.omml" }
       let(:exp) { ExpectedValues::EXIssue158 }
