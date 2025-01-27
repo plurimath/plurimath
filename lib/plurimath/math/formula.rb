@@ -585,6 +585,16 @@ module Plurimath
         update_temp_order(value, "mglyph")
       end
 
+      def display
+        @display
+      end
+
+      def display=(value)
+        return unless value
+
+        @display = value
+      end
+
       protected
 
       def update_temp_order(value, order_name)
