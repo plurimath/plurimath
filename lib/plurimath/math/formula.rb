@@ -7,7 +7,7 @@ module Plurimath
     class Formula < Core
       include Mathml::Utility
 
-      attr_accessor :value, :left_right_wrapper, :displaystyle, :input_string, :unitsml, :unitsml_xml
+      attr_accessor :value, :left_right_wrapper, :displaystyle, :input_string, :unitsml, :unitsml_xml, :display
 
       MATH_ZONE_TYPES = %i[
         omml
@@ -583,16 +583,6 @@ module Plurimath
 
       def mglyph_value=(value)
         update_temp_order(value, "mglyph")
-      end
-
-      def display
-        @display
-      end
-
-      def display=(value)
-        return unless value
-
-        @display = value
       end
 
       protected
