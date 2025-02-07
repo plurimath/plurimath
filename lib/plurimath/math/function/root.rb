@@ -39,8 +39,8 @@ module Plurimath
             rad_element,
             [
               pr_element,
-              omml_parameter(parameter_two, display_style, tag_name: "deg", options: options),
-              omml_parameter(parameter_one, display_style, tag_name: "e", options: options),
+              omml_parameter(parameter_one, display_style, tag_name: "deg", options: options),
+              omml_parameter(parameter_two, display_style, tag_name: "e", options: options),
             ],
           )
           [rad_element]

@@ -58,20 +58,20 @@ module ExpectedValues
   ])
   EX_010 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Root.new(
-      Plurimath::Math::Number.new("1"),
       Plurimath::Math::Number.new("2"),
+      Plurimath::Math::Number.new("1"),
     )
   ])
   EX_011 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Root.new(
-      Plurimath::Math::Number.new("3"),
       Plurimath::Math::Number.new("2"),
+      Plurimath::Math::Number.new("3"),
     )
   ])
   EX_012 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Root.new(
-      Plurimath::Math::Number.new("1"),
       Plurimath::Math::Number.new("3"),
+      Plurimath::Math::Number.new("1"),
     )
   ])
   EX_013 = Plurimath::Math::Formula.new([

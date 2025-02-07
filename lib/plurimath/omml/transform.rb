@@ -242,8 +242,8 @@ module Plurimath
           )
         else
           Math::Function::Root.new(
-            Utility.filter_values(rad[2]),
             rad[1],
+            Utility.filter_values(rad[2]),
           )
         end
       end
