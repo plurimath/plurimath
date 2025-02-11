@@ -60,7 +60,7 @@ module Plurimath
       end
 
       def mml_config
-        Mml::Configuration.set_models(CONFIGURATION)
+        Mml::Configuration.custom_models = CONFIGURATION
         @@models_set = true
       end
     end
