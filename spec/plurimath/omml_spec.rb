@@ -112,7 +112,7 @@ RSpec.describe Plurimath::Omml do
       end
 
       it 'converts `alpha`, `α` to `&#x3b1;`' do
-        skip "Lutaml::Model::XmlAdapter::Oga doesn't support HTML Entities yet!" if Lutaml::Model::Config.xml_adapter == Lutaml::Model::XmlAdapter::OgaAdapter
+        skip "Lutaml::Model::XmlAdapter::Oga doesn't support HTML Entities yet!" if Lutaml::Model::Config.xml_adapter.type == "oga"
         formula = Plurimath::Math.parse(input, :mathml)
         expect(formula.to_omml).to eq(expected_output)
       end
@@ -410,7 +410,7 @@ RSpec.describe Plurimath::Omml do
       end
 
       it 'converts `alpha`, `α` to `&#x3b1;`' do
-        skip "Lutaml::Model::XmlAdapter::Oga doesn't support HTML Entities yet!" if Lutaml::Model::Config.xml_adapter == Lutaml::Model::XmlAdapter::OgaAdapter
+        skip "Lutaml::Model::XmlAdapter::Oga doesn't support HTML Entities yet!" if Lutaml::Model::Config.xml_adapter.type == "oga"
         formula = Plurimath::Math.parse(input, :mathml)
         expect(formula.to_omml).to eq(expected_output)
       end

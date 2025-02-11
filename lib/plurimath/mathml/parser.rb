@@ -1,67 +1,67 @@
 # frozen_string_literal: true
 
 require_relative "constants"
+require "mml"
 
 module Plurimath
   class Mathml
     class Parser
+      CONFIGURATION = {
+        Mml::MathWithNilNamespace => Plurimath::Math::Formula,
+        Mml::MathWithNamespace => Plurimath::Math::Formula,
+        Mml::Mmultiscripts => Plurimath::Math::Function::Multiscript,
+        Mml::Mlabeledtr => Plurimath::Math::Function::Mlabeledtr,
+        Mml::Munderover => Plurimath::Math::Function::Underover,
+        Mml::Semantics => Plurimath::Math::Function::Semantics,
+        Mml::Mscarries => Plurimath::Math::Function::Scarries,
+        Mml::Mfraction => Plurimath::Math::Function::Frac,
+        Mml::Menclose => Plurimath::Math::Function::Menclose,
+        Mml::Mlongdiv => Plurimath::Math::Function::Longdiv,
+        Mml::Mphantom => Plurimath::Math::Function::Phantom,
+        Mml::Msubsup => Plurimath::Math::Function::PowerBase,
+        Mml::Msgroup => Plurimath::Math::Function::Msgroup,
+        Mml::Mpadded => Plurimath::Math::Function::Mpadded,
+        Mml::Mfenced => Plurimath::Math::Function::Fenced,
+        Mml::Mstack => Plurimath::Math::Function::Stackrel,
+        Mml::Munder => Plurimath::Math::Function::Underset,
+        Mml::Msline => Plurimath::Math::Function::Msline,
+        Mml::Merror => Plurimath::Math::Function::Merror,
+        Mml::Mtable => Plurimath::Math::Function::Table,
+        Mml::Mstyle => Plurimath::Math::Formula::Mstyle,
+        Mml::Mglyph => Plurimath::Math::Function::Mglyph,
+        Mml::Mover => Plurimath::Math::Function::Overset,
+        Mml::Msqrt => Plurimath::Math::Function::Sqrt,
+        Mml::Mroot => Plurimath::Math::Function::Root,
+        Mml::Mtext => Plurimath::Math::Function::Text,
+        Mml::Mfrac => Plurimath::Math::Function::Frac,
+        Mml::Msrow => Plurimath::Math::Formula,
+        Mml::Msup => Plurimath::Math::Function::Power,
+        Mml::Msub => Plurimath::Math::Function::Base,
+        Mml::None => Plurimath::Math::Function::None,
+        Mml::Mrow => Plurimath::Math::Formula::Mrow,
+        Mml::Mtd => Plurimath::Math::Function::Td,
+        Mml::Mtr => Plurimath::Math::Function::Tr,
+        Mml::Mi => Plurimath::Math::Symbols::Symbol,
+        Mml::Mo => Plurimath::Math::Symbols::Symbol,
+        Mml::Ms => Plurimath::Math::Function::Ms,
+        Mml::Mn => Plurimath::Math::Number,
+      }
       attr_accessor :text
+      @@models_set = false
 
       def initialize(text)
-        mml_config
+        mml_config unless @@models_set
         @text = text
       end
 
       def parse
         namespace_exist = text.split(">").first.include?(" xmlns=")
-        ::Mml.parse(text, namespace_exist: namespace_exist)
+        Mml.parse(text, namespace_exist: namespace_exist)
       end
 
-      private
-
       def mml_config
-        return if ::Mml.respond_to?(:config)
-
-        ::Mml::Configuration.config = {
-          mmultiscripts: Plurimath::Math::Function::Multiscript,
-          mlabeledtr: Plurimath::Math::Function::Mlabeledtr,
-          munderover: Plurimath::Math::Function::Underover,
-          semantics: Plurimath::Math::Function::Semantics,
-          mscarries: Plurimath::Math::Function::Scarries,
-          mfraction: Plurimath::Math::Function::Frac,
-          menclose: Plurimath::Math::Function::Menclose,
-          mlongdiv: Plurimath::Math::Function::Longdiv,
-          mphantom: Plurimath::Math::Function::Phantom,
-          msubsup: Plurimath::Math::Function::PowerBase,
-          msgroup: Plurimath::Math::Function::Msgroup,
-          mpadded: Plurimath::Math::Function::Mpadded,
-          mfenced: Plurimath::Math::Function::Fenced,
-          mstack: Plurimath::Math::Function::Stackrel,
-          munder: Plurimath::Math::Function::Underset,
-          msline: Plurimath::Math::Function::Msline,
-          merror: Plurimath::Math::Function::Merror,
-          mtable: Plurimath::Math::Function::Table,
-          mstyle: Plurimath::Math::Formula::Mstyle,
-          mglyph: Plurimath::Math::Function::Mglyph,
-          mover: Plurimath::Math::Function::Overset,
-          msqrt: Plurimath::Math::Function::Sqrt,
-          mroot: Plurimath::Math::Function::Root,
-          mtext: Plurimath::Math::Function::Text,
-          mfrac: Plurimath::Math::Function::Frac,
-          msrow: Plurimath::Math::Formula,
-          msup: Plurimath::Math::Function::Power,
-          msub: Plurimath::Math::Function::Base,
-          none: Plurimath::Math::Function::None,
-          mrow: Plurimath::Math::Formula::Mrow,
-          math: Plurimath::Math::Formula,
-          mtd: Plurimath::Math::Function::Td,
-          mtr: Plurimath::Math::Function::Tr,
-          mi: Plurimath::Math::Symbols::Symbol,
-          mo: Plurimath::Math::Symbols::Symbol,
-          ms: Plurimath::Math::Function::Ms,
-          mn: Plurimath::Math::Number,
-        }
-        require "mml"
+        Mml::Configuration.set_models(CONFIGURATION)
+        @@models_set = true
       end
     end
   end

@@ -308,7 +308,7 @@ module Plurimath
       end
 
       def element_order=(value)
-        @value = validated_order(value)
+        @value = validated_order(value.map(&:name))
       end
 
       # Attributes start

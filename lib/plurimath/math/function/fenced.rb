@@ -186,7 +186,7 @@ module Plurimath
         end
 
         def element_order=(value)
-          @parameter_two = validated_order(value)
+          @parameter_two = validated_order(value&.map(&:name))
         end
 
         def mi_value=(value)
