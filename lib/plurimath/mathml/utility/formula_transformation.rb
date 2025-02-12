@@ -104,6 +104,8 @@ module Plurimath
           when Array
             array_validations(value)
           when Math::Symbols::Symbol
+            return value if value.value.nil?
+
             mathml_symbol_to_class(value.value)
           when String
             mathml_symbol_to_class(value)

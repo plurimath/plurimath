@@ -18,7 +18,7 @@ module Plurimath
         end
 
         def element_order=(value)
-          @value = validated_order(value, rejectable_array: ["comment"])
+          @value = validated_order(value&.map(&:name), rejectable_array: ["comment"])
         end
 
         def content; end

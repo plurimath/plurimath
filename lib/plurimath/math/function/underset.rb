@@ -27,7 +27,7 @@ module Plurimath
 
         def element_order=(value)
           @temp_mathml_order = validated_order(
-            value,
+            value&.map(&:name),
             rejectable_array: ["comment"]
           )
         end

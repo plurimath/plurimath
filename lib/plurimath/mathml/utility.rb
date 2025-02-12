@@ -12,7 +12,7 @@ module Plurimath
       attr_accessor :temp_mathml_order
 
       def element_order=(value)
-        @temp_mathml_order = Array(validated_order(value))
+        @temp_mathml_order = Array(validated_order(value&.map(&:name)))
       end
 
       def clear_temp_order

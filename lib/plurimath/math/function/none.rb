@@ -1,11 +1,14 @@
 # frozen_string_literal: true
 
 require_relative "unary_function"
+require_relative "../../mathml/utility"
 
 module Plurimath
   module Math
     module Function
       class None < UnaryFunction
+        include Mathml::Utility
+
         def to_asciimath(**); end
 
         def to_latex(**); end

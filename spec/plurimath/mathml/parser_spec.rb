@@ -1466,7 +1466,7 @@ RSpec.describe Plurimath::Mathml::Parser do
                   [
                     Plurimath::Math::Formula.new([
                       Plurimath::Math::Function::Ln.new(
-                        Plurimath::Math::Symbols::Symbol.new(""),
+                        Plurimath::Math::Symbols::Symbol.new,
                       ),
                       Plurimath::Math::Function::Fenced.new(
                         Plurimath::Math::Symbols::Paren::Lround.new,
@@ -1728,7 +1728,7 @@ RSpec.describe Plurimath::Mathml::Parser do
           ),
           Plurimath::Math::Symbols::Symbol.new("t"),
         ),
-        Plurimath::Math::Symbols::Symbol.new(""),
+        Plurimath::Math::Symbols::Symbol.new,
         Plurimath::Math::Function::Fenced.new(
           Plurimath::Math::Symbols::Paren::Lround.new,
           [

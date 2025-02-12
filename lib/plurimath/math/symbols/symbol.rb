@@ -41,7 +41,7 @@ module Plurimath
         end
 
         def value=(value)
-          @value = value.is_a?(Array) ? value.join : value.to_s
+          @value = value.is_a?(Array) ? value.join : value&.to_s
         end
 
         def to_mathml_without_math_tag(intent, **)
