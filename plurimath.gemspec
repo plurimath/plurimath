@@ -28,6 +28,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'mml'
   spec.add_dependency 'thor'
   spec.add_dependency 'parslet'
+  spec.add_dependency 'unitsml'
   spec.add_dependency 'bigdecimal'
   spec.add_dependency 'lutaml-model'
 end
