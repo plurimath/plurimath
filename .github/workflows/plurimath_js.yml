@@ -11,7 +11,7 @@ on:
 
 jobs:
   rake:
-    uses: metanorma/ci/.github/workflows/dependent-rake.yml@update/no_gemspec_available
+    uses: metanorma/ci/.github/workflows/dependent-rake.yml@main
     with:
       command: npm run build
       matrix_os: '["ubuntu-latest"]'
