@@ -358,6 +358,12 @@ module Plurimath
 
         update_temp_order(value, "mglyph")
       end
+
+      def rspace=(value)
+        return if value.nil? || value.empty?
+
+        @options = Hash(@options).merge(rspace: value)
+      end
     end
   end
 end

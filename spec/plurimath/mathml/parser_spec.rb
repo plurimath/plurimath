@@ -1427,7 +1427,7 @@ RSpec.describe Plurimath::Mathml::Parser do
           ),
           Plurimath::Math::Number.new("90"),
         ),
-        Plurimath::Math::Symbols::Symbol.new("/"),
+        Plurimath::Math::Symbols::Symbol.new("/", options: { rspace: "0em" }),
         Plurimath::Math::Function::FontStyle::Normal.new(
           Plurimath::Math::Symbols::Symbol.new("K"),
           "normal"
@@ -1466,14 +1466,14 @@ RSpec.describe Plurimath::Mathml::Parser do
                   [
                     Plurimath::Math::Formula.new([
                       Plurimath::Math::Function::Ln.new(
-                        Plurimath::Math::Symbols::Symbol.new,
+                        Plurimath::Math::Symbols::Symbol.new(nil, options: { rspace: "-0.35em" }),
                       ),
                       Plurimath::Math::Function::Fenced.new(
                         Plurimath::Math::Symbols::Paren::Lround.new,
                         [
                           Plurimath::Math::Formula.new([
                             Plurimath::Math::Symbols::Symbol.new("p"),
-                            Plurimath::Math::Symbols::Symbol.new("/"),
+                            Plurimath::Math::Symbols::Symbol.new("/", options: { rspace: "0em" }),
                             Plurimath::Math::Function::FontStyle::Normal.new(
                               Plurimath::Math::Symbols::Symbol.new("Pa"),
                               "normal"
@@ -1493,7 +1493,7 @@ RSpec.describe Plurimath::Mathml::Parser do
                   Plurimath::Math::Symbols::Paren::Rround.new,
                   { separators: "" }
                 ),
-                Plurimath::Math::Symbols::Symbol.new("/"),
+                Plurimath::Math::Symbols::Symbol.new("/", options: { rspace: "0em" }),
                 Plurimath::Math::Function::FontStyle::Italic.new(
                   Plurimath::Math::Symbols::Symbol.new("C"),
                   "italic",
@@ -1728,7 +1728,7 @@ RSpec.describe Plurimath::Mathml::Parser do
           ),
           Plurimath::Math::Symbols::Symbol.new("t"),
         ),
-        Plurimath::Math::Symbols::Symbol.new,
+        Plurimath::Math::Symbols::Symbol.new(nil, options: { rspace: "-0.35em" }),
         Plurimath::Math::Function::Fenced.new(
           Plurimath::Math::Symbols::Paren::Lround.new,
           [

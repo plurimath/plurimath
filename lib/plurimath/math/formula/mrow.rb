@@ -10,8 +10,7 @@ module Plurimath
           value = [],
           left_right_wrapper = true,
           display_style: true,
-          input_string: nil,
-          unitsml: false
+          input_string: nil
         )
           super
           @is_mrow = true

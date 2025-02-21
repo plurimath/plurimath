@@ -7,7 +7,7 @@ module Plurimath
     class Formula < Core
       include Mathml::Utility
 
-      attr_accessor :value, :left_right_wrapper, :displaystyle, :input_string, :unitsml, :unitsml_xml, :display
+      attr_accessor :value, :left_right_wrapper, :displaystyle, :input_string, :display
 
       MATH_ZONE_TYPES = %i[
         omml
@@ -28,14 +28,12 @@ module Plurimath
         value = [],
         left_right_wrapper = true,
         display_style: true,
-        input_string: nil,
-        unitsml: false
+        input_string: nil
       )
         @value = value.is_a?(Array) ? value : [value]
         left_right_wrapper = false if @value.first.is_a?(Function::Left)
         @left_right_wrapper = left_right_wrapper
         @displaystyle = boolean_display_style(display_style)
-        @unitsml = unitsml if unitsml
       end
 
       def ==(object)
@@ -45,8 +43,8 @@ module Plurimath
           object.left_right_wrapper == left_right_wrapper
       end
 
-      def to_asciimath(formatter: nil, options: nil)
-        options ||= { formatter: formatter }
+      def to_asciimath(formatter: nil, unitsml: {}, options: nil)
+        options ||= { formatter: formatter, unitsml: unitsml }.compact
         value.map { |val| val.to_asciimath(options: options) }.join(" ")
       rescue
         parse_error!(:asciimath)
@@ -55,11 +53,11 @@ module Plurimath
       def to_mathml(
         intent: false,
         formatter: nil,
-        unitsml_xml: nil,
+        unitsml: {},
         split_on_linebreak: false,
         display_style: displaystyle
       )
-        options = { formatter: formatter, unitsml_xml: unitsml_xml }
+        options = { formatter: formatter, unitsml: unitsml }.compact
         return line_breaked_mathml(display_style, intent, options: options) if split_on_linebreak
 
         math_attrs = {
@@ -89,8 +87,6 @@ module Plurimath
         mathml_value = mathml_content(intent, options: options)
         attributes = intent_attribute(mathml_value) if intent
         mrow = ox_element("mrow", attributes: attributes)
-        mrow[:unitsml] = true if unitsml
-        mathml_value += wrapped_unitsml_xml(mrow) if unitsml_xml && options[:unitsml_xml]
         Utility.update_nodes(mrow, mathml_value)
       end
 
@@ -100,15 +96,15 @@ module Plurimath
         nodes
       end
 
-      def to_latex(formatter: nil, options: nil)
-        options ||= { formatter: formatter }
+      def to_latex(formatter: nil, unitsml: {}, options: nil)
+        options ||= { formatter: formatter, unitsml: unitsml }.compact
         value.map { |val| val.to_latex(options: options) }.join(" ")
       rescue
         parse_error!(:latex)
       end
 
-      def to_html(formatter: nil, options: nil)
-        options ||= { formatter: formatter }
+      def to_html(formatter: nil, unitsml: {}, options: nil)
+        options ||= { formatter: formatter, unitsml: unitsml }.compact
         value&.map { |val| val.to_html(options: options) }&.join(" ")
       rescue
         parse_error!(:html)
@@ -137,9 +133,9 @@ module Plurimath
         }
       end
 
-      def to_omml(display_style: displaystyle, split_on_linebreak: false, formatter: nil)
+      def to_omml(display_style: displaystyle, split_on_linebreak: false, formatter: nil, unitsml: {})
         objects = split_on_linebreak ? new_line_support : [self]
-        options = { formatter: formatter }
+        options = { formatter: formatter, unitsml: unitsml }.compact
         para_element = Utility.ox_element("oMathPara", attributes: omml_attrs, namespace: "m")
         objects.each.with_index(1) do |object, index|
           para_element << Utility.update_nodes(
@@ -163,15 +159,15 @@ module Plurimath
         omml_content(display_style, options: options)
       end
 
-      def to_unicodemath(formatter: nil, options: nil)
-        options ||= { formatter: formatter }
+      def to_unicodemath(formatter: nil, unitsml: {}, options: nil)
+        options ||= { formatter: formatter, unitsml: unitsml }.compact
         Utility.html_entity_to_unicode(unicodemath_value(options: options)).gsub(/\s\/\s/, "/")
       rescue
         parse_error!(:unicodemath)
       end
 
-      def to_display(type = nil, formatter: nil)
-        options = { formatter: formatter }
+      def to_display(type = nil, formatter: nil, unitsml: {})
+        options = { formatter: formatter, unitsml: unitsml }
         return type_error!(type) unless MATH_ZONE_TYPES.include?(type.downcase.to_sym)
 
         math_zone = case type
@@ -638,12 +634,6 @@ module Plurimath
           end
           unitsml_post_processing(node.nodes, node) if node.nodes.none?(String)
         end
-      end
-
-      def wrapped_unitsml_xml(mrow)
-        node = Plurimath.xml_engine.load("<mrow>#{unitsml_xml}</mrow>")
-        mrow.attributes[:xref] = node.locate("*/@id").first if node.locate("*/@id").any?
-        node.nodes
       end
 
       def space_element(node)
