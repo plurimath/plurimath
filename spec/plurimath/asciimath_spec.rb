@@ -6468,6 +6468,291 @@ RSpec.describe Plurimath::Asciimath do
       end
     end
 
+    context "contains example from plrimath/issue#343 example #122" do
+      let(:string) do
+        <<~STRING
+          {:({:y_1 = -0.1712 "unitsml(degC)":},{:s(y_1) = 0.0029 "unitsml(degC)":}),
+          ({:y_2 = 0.00218 :},{:s(y_2) = 0.00067:}),
+          ({:r(y_1,y_2) = -0.930:},{:s = 0.0035 "unitsml(degC)":}):}
+        STRING
+      end
+
+      it 'matches LaTeX, AsciiMath, and MathML' do
+        latex = "\\left \\left.\\begin{matrix}\\left. y_{1} = - 0.1712 \\mathrm{&#xb0;C} \\right. & \\left. s ( y_{1} ) = 0.0029 \\mathrm{&#xb0;C} \\right. \\\\ \\left. y_{2} = 0.00218 \\right. & \\left. s ( y_{2} ) = 0.00067 \\right. \\\\ \\left. r ( y_{1} , y_{2} ) = - 0.930 \\right. & \\left. s = 0.0035 \\mathrm{&#xb0;C} \\right.\\end{matrix}\\right ."
+        asciimath = "{:[{:y_(1) = - 0.1712 rm(&#xb0;C):}, {:s (y_(1)) = 0.0029 rm(&#xb0;C):}], [{:y_(2) = 0.00218:}, {:s (y_(2)) = 0.00067:}], [{:r (y_(1) , y_(2)) = - 0.930:}, {:s = 0.0035 rm(&#xb0;C):}]:}"
+        mathml = <<~MATHML
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
+              <mrow>
+                <mo></mo>
+                <mtable columnalign="left">
+                  <mtr>
+                    <mtd>
+                      <mrow>
+                        <mo></mo>
+                        <msub>
+                          <mi>y</mi>
+                          <mn>1</mn>
+                        </msub>
+                        <mo>=</mo>
+                        <mo>&#x2212;</mo>
+                        <mn>0.1712</mn>
+                        <mo rspace="thickmathspace">&#x2062;</mo>
+                        <mrow>
+                          <mstyle mathvariant="normal">
+                            <mi>&#xb0;C</mi>
+                          </mstyle>
+                        </mrow>
+                        <mo></mo>
+                      </mrow>
+                    </mtd>
+                    <mtd>
+                      <mrow>
+                        <mo></mo>
+                        <mi>s</mi>
+                        <mrow>
+                          <mo>(</mo>
+                          <msub>
+                            <mi>y</mi>
+                            <mn>1</mn>
+                          </msub>
+                          <mo>)</mo>
+                        </mrow>
+                        <mo>=</mo>
+                        <mn>0.0029</mn>
+                        <mo rspace="thickmathspace">&#x2062;</mo>
+                        <mrow>
+                          <mstyle mathvariant="normal">
+                            <mi>&#xb0;C</mi>
+                          </mstyle>
+                        </mrow>
+                        <mo></mo>
+                      </mrow>
+                    </mtd>
+                  </mtr>
+                  <mtr>
+                    <mtd>
+                      <mrow>
+                        <mo></mo>
+                        <msub>
+                          <mi>y</mi>
+                          <mn>2</mn>
+                        </msub>
+                        <mo>=</mo>
+                        <mn>0.00218</mn>
+                        <mo></mo>
+                      </mrow>
+                    </mtd>
+                    <mtd>
+                      <mrow>
+                        <mo></mo>
+                        <mi>s</mi>
+                        <mrow>
+                          <mo>(</mo>
+                          <msub>
+                            <mi>y</mi>
+                            <mn>2</mn>
+                          </msub>
+                          <mo>)</mo>
+                        </mrow>
+                        <mo>=</mo>
+                        <mn>0.00067</mn>
+                        <mo></mo>
+                      </mrow>
+                    </mtd>
+                  </mtr>
+                  <mtr>
+                    <mtd>
+                      <mrow>
+                        <mo></mo>
+                        <mi>r</mi>
+                        <mrow>
+                          <mo>(</mo>
+                          <msub>
+                            <mi>y</mi>
+                            <mn>1</mn>
+                          </msub>
+                          <mo>,</mo>
+                          <msub>
+                            <mi>y</mi>
+                            <mn>2</mn>
+                          </msub>
+                          <mo>)</mo>
+                        </mrow>
+                        <mo>=</mo>
+                        <mo>&#x2212;</mo>
+                        <mn>0.930</mn>
+                        <mo></mo>
+                      </mrow>
+                    </mtd>
+                    <mtd>
+                      <mrow>
+                        <mo></mo>
+                        <mi>s</mi>
+                        <mo>=</mo>
+                        <mn>0.0035</mn>
+                        <mo rspace="thickmathspace">&#x2062;</mo>
+                        <mrow>
+                          <mstyle mathvariant="normal">
+                            <mi>&#xb0;C</mi>
+                          </mstyle>
+                        </mrow>
+                        <mo></mo>
+                      </mrow>
+                    </mtd>
+                  </mtr>
+                </mtable>
+                <mo></mo>
+              </mrow>
+            </mstyle>
+          </math>
+        MATHML
+        expect(formula.to_latex).to eql(latex)
+        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_asciimath).to eql(asciimath)
+      end
+    end
+
+    context "contains example from plrimath/issue#343 example #123" do
+      let(:string) do
+        <<~STRING
+          {:({:ii(A)_{"S"} = 0.1368 "unitsml(Bq/g)":},{:"":}),
+          ({:u(ii(A)_{"S"}) = 0.0018 "unitsml(Bq/g)";:},{:u(ii(A)_{"S"})//ii(A)_{"S"} = 1.32 xx 10^{-2}:}):}
+        STRING
+      end
+
+      it 'matches LaTeX, AsciiMath, and MathML' do
+        latex = "\\left \\left.\\begin{matrix}\\left. \\mathit{A}_{\\text{S}} = 0.1368 \\mathrm{Bq} \\cdot \\mathrm{g}^{- 1} \\right. & \\left. \\text{} \\right. \\\\ \\left. u ( \\mathit{A}_{\\text{S}} ) = 0.0018 \\mathrm{Bq} \\cdot \\mathrm{g}^{- 1} ; \\right. & \\left. u ( \\mathit{A}_{\\text{S}} ) / \\mathit{A}_{\\text{S}} = 1.32 \\times 10^{- 2} \\right.\\end{matrix}\\right ."
+        asciimath = '{:[{:ii(A)_("S") = 0.1368 rm(Bq) * rm(g)^(- 1):}, {:"":}], [{:u (ii(A)_("S")) = 0.0018 rm(Bq) * rm(g)^(- 1) ;:}, {:u (ii(A)_("S")) // ii(A)_("S") = 1.32 xx 10^(- 2):}]:}'
+        mathml = <<~MATHML
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
+              <mrow>
+                <mo></mo>
+                <mtable columnalign="left">
+                  <mtr>
+                    <mtd>
+                      <mrow>
+                        <mo></mo>
+                        <msub>
+                          <mstyle mathvariant="italic">
+                            <mi>A</mi>
+                          </mstyle>
+                          <mtext>S</mtext>
+                        </msub>
+                        <mo>=</mo>
+                        <mn>0.1368</mn>
+                        <mo rspace="thickmathspace">&#x2062;</mo>
+                        <mrow>
+                          <mstyle mathvariant="normal">
+                            <mi>Bq</mi>
+                          </mstyle>
+                          <mo>&#x22c5;</mo>
+                          <msup>
+                            <mstyle mathvariant="normal">
+                              <mi>g</mi>
+                            </mstyle>
+                            <mrow>
+                              <mo>&#x2212;</mo>
+                              <mn>1</mn>
+                            </mrow>
+                          </msup>
+                        </mrow>
+                        <mo></mo>
+                      </mrow>
+                    </mtd>
+                    <mtd>
+                      <mrow>
+                        <mo></mo>
+                        <mtext></mtext>
+                        <mo></mo>
+                      </mrow>
+                    </mtd>
+                  </mtr>
+                  <mtr>
+                    <mtd>
+                      <mrow>
+                        <mo></mo>
+                        <mi>u</mi>
+                        <mrow>
+                          <mo>(</mo>
+                          <msub>
+                            <mstyle mathvariant="italic">
+                              <mi>A</mi>
+                            </mstyle>
+                            <mtext>S</mtext>
+                          </msub>
+                          <mo>)</mo>
+                        </mrow>
+                        <mo>=</mo>
+                        <mn>0.0018</mn>
+                        <mo rspace="thickmathspace">&#x2062;</mo>
+                        <mrow>
+                          <mstyle mathvariant="normal">
+                            <mi>Bq</mi>
+                          </mstyle>
+                          <mo>&#x22c5;</mo>
+                          <msup>
+                            <mstyle mathvariant="normal">
+                              <mi>g</mi>
+                            </mstyle>
+                            <mrow>
+                              <mo>&#x2212;</mo>
+                              <mn>1</mn>
+                            </mrow>
+                          </msup>
+                        </mrow>
+                        <mo>&#x3b;</mo>
+                        <mo></mo>
+                      </mrow>
+                    </mtd>
+                    <mtd>
+                      <mrow>
+                        <mo></mo>
+                        <mi>u</mi>
+                        <mrow>
+                          <mo>(</mo>
+                          <msub>
+                            <mstyle mathvariant="italic">
+                              <mi>A</mi>
+                            </mstyle>
+                            <mtext>S</mtext>
+                          </msub>
+                          <mo>)</mo>
+                        </mrow>
+                        <mo>/</mo>
+                        <msub>
+                          <mstyle mathvariant="italic">
+                            <mi>A</mi>
+                          </mstyle>
+                          <mtext>S</mtext>
+                        </msub>
+                        <mo>=</mo>
+                        <mn>1.32</mn>
+                        <mo>&#xd7;</mo>
+                        <msup>
+                          <mn>10</mn>
+                          <mrow>
+                            <mo>&#x2212;</mo>
+                            <mn>2</mn>
+                          </mrow>
+                        </msup>
+                        <mo></mo>
+                      </mrow>
+                    </mtd>
+                  </mtr>
+                </mtable>
+                <mo></mo>
+              </mrow>
+            </mstyle>
+          </math>
+        MATHML
+        expect(formula.to_latex).to eql(latex)
+        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_asciimath).to eql(asciimath)
+      end
+    end
+
     context "contains table with preceding closing parenthesis without any opening parenthesis example from metanroam/bipm-si-brochure/issue#308 example #122" do
       let(:string) { '{:(ii(E)_1, =, ii(A)_1 cos[ii(varphi)_1]),(ii(E)_2, =, ii(A)_2 cos[ii(varphi)_2]):}}  rarr I = langle (ii(E)_1 + ii(E)_2)^2 rangle_t = {ii(A)_1^2}/2 + {ii(A)_2^2}/2 + ii(A)_1 ii(A)_2 cos[ii(varphi)_1 - ii(varphi)_2]' }
 
