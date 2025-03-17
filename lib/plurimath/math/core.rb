@@ -213,12 +213,7 @@ module Plurimath
       end
 
       def cloned_objects
-        object = begin
-                   self.class.new
-                 rescue
-                   content = text if class_name == "unitsml"
-                   self.class.new(content)
-                 end
+        object = self.class.new(nil)
         variables.each { |var| object.set(var, variable_value(get(var))) }
         object
       end
