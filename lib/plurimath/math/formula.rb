@@ -415,7 +415,7 @@ module Plurimath
       end
 
       def mstyle_value=(value)
-        return if value.empty?
+        return if value.nil? || value.empty?
 
         update(
           filter_values(

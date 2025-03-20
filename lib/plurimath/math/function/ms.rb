@@ -36,8 +36,11 @@ module Plurimath
         end
 
         def value=(content)
-          internal_content = updated_temp_mathml_values.flatten.map(&:to_ms_value)
-          @parameter_one = [internal_content, content.is_a?(String) ? content : content].flatten.compact.join(" ")
+          temp_content = updated_temp_mathml_values.flatten.map(&:to_ms_value)
+          @parameter_one = [
+            temp_content,
+            content&.empty? ? nil : content,
+          ].flatten.compact.join(" ")
         end
 
         def mi_value=(value)

@@ -238,7 +238,7 @@ module Plurimath
         end
 
         def mstyle_value=(value)
-          return if value.empty?
+          return if value.nil? || value.empty?
 
           update(
             replace_order_with_value(

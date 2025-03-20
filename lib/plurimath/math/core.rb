@@ -344,6 +344,7 @@ module Plurimath
           :@temp_mathml_order,
           :@using_default,
           :@displaystyle,
+          :@__encoding,
           :@__ordered,
           :@unitsml,
           :@__mixed,
