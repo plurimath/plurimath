@@ -1,0 +1,16 @@
+name: dependent-gems-test
+
+on:
+  push:
+    branches: [ main ]
+    tags: [ v* ]
+  pull_request:
+  workflow_dispatch:
+  repository_dispatch:
+    types: [ release-passed ]
+
+jobs:
+  rake:
+    uses: metanorma/ci/.github/workflows/dependent-rake.yml@main
+    with:
+      command: bundle exec rspec
