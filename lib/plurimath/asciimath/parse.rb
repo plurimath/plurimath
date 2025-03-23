@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 require "parslet"
+require_relative "parslet_extensions"
+
 module Plurimath
   class Asciimath
     class Parse < Parslet::Parser
