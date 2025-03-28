@@ -5,10 +5,6 @@ module Parslet
     def lookahead?(pattern)
       @str.match?(pattern)
     end
-
-    def charpos
-      @string[0, @bytepos].length
-    end
   end
 end
 
