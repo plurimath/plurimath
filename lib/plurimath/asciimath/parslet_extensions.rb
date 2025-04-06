@@ -53,6 +53,7 @@ class Parslet::Atoms::Alternative < Parslet::Atoms::Base
   end
 
   def try(source, context, consume_all)
+    # TODO: this optimization should be disabled if the order of @alternatives matters
     if apply_group_optimization
       @alternatives_by_char.each_key do |ch|
         char_alternatives = @alternatives_by_char[ch]
