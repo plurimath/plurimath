@@ -1,5 +1,7 @@
 require "parslet"
 
+EMPTY_RE = Regexp.compile("")
+
 module Parslet
   class Source
     def lookahead?(pattern)
@@ -15,9 +17,9 @@ class Parslet::Atoms::Base
     true
   end
 
-  def first_char
+  def first_char_re
     # Override in child classes by need
-    ""
+    EMPTY_RE
   end
 end
 
@@ -34,14 +36,13 @@ class Parslet::Atoms::Alternative < Parslet::Atoms::Base
     # Try to group the alternatives by the first character
     # This way we can skip multiple alternatives in one lookahead
     # Only apply this optimization to huge alternatives (for now?)
-    if alternatives.size >= 1000
+    if alternatives.size >= 100
       non_empty = 0
       alternatives.each do | a|
-        ch = a.first_char
-        re = Regexp.compile(Regexp.escape(ch))
+        re = a.first_char_re
         @alternatives_by_char[re] ||= []
         @alternatives_by_char[re] << a
-        non_empty += 1 if ch != ''
+        non_empty += 1 if re != EMPTY_RE
       end
       @grouped_optimization = non_empty >= alternatives.size / 2
     end
@@ -103,8 +104,8 @@ class Parslet::Atoms::Sequence < Parslet::Atoms::Base
     parslets[0].lookahead?(source)
   end
 
-  def first_char
-    parslets[0].first_char
+  def first_char_re
+    parslets[0].first_char_re
   end
 
   def try(source, context, consume_all)
@@ -139,8 +140,13 @@ class Parslet::Atoms::Str < Parslet::Atoms::Base
     source.lookahead?(@pat)
   end
 
-  def first_char
-    return @str[0]
+  def compute_re
+    return @re1 unless @re1.nil?
+    @re1 = Regexp.compile(Regexp.escape(@str[0]))
+  end
+
+  def first_char_re
+    compute_re
   end
 end
 
@@ -149,8 +155,8 @@ class Parslet::Atoms::Named < Parslet::Atoms::Base
     @parslet.lookahead?(source)
   end
 
-  def first_char
-    return @parslet.first_char
+  def first_char_re
+    return @parslet.first_char_re
   end
 end
 
@@ -189,19 +195,29 @@ end
 
 class Parslet::Atoms::Entity < Parslet::Atoms::Base
   def lookahead?(source)
-    return @parslet.lookahead?(source) if @parslet
-    true
+    parslet.lookahead?(source)
   end
 
-  def first_char
-    return @parslet.first_char if @parslet
-    ""
+  def first_char_re
+    parslet.first_char_re
   end
 end
 
 class Parslet::Atoms::Re < Parslet::Atoms::Base
   def lookahead?(source)
     source.lookahead?(@re)
+  end
+
+  def compute_re
+    return @re1 unless @re1.nil?
+    re = EMPTY_RE
+    m = @match
+    re = Regexp.compile(m[0..4]) if m[0] == '[' and m[3] == ']'
+    @re1 = re
+  end
+
+  def first_char_re
+    compute_re
   end
 end
 
