@@ -80,7 +80,7 @@ module Plurimath
         sub_sup_classes |
           binary_classes |
           ternary_classes |
-          hash_to_expression(Constants.precompile_constants) |
+          hash_to_expression_grouped(Constants.precompile_constants) |
           (match(/[0-9]/).as(:number) >> str(",").as(:comma)).repeat(1).as(:comma_separated) |
           quoted_text |
           (str("d").as(:d) >> str("x").as(:x)).as(:intermediate_exp) |
@@ -189,6 +189,23 @@ module Plurimath
         end
       end
 
+      def hash_to_expression_grouped(arr)
+        @@expression ||= begin
+                           grouped = Hash.new { |h, k| h[k] = [] }
+                           arr.each do |expr_string|
+                             str, sym = expr_string
+                             grouped[sym] << str
+                           end
+                           grouped.reduce("") do |expression, expr_group|
+                             if expression.is_a?(String)
+                               dynamic_parser_rules_group(expr_group)
+                             else
+                               expression | dynamic_parser_rules_group(expr_group)
+                             end
+                           end
+                          end
+      end
+
       def dynamic_parser_rules(expr)
         first_value = str(expr.first.to_s)
         case expr.last
@@ -196,6 +213,50 @@ module Plurimath
         when :unary_class then unary_functions(first_value)
         when :fonts then first_value.as(:fonts_class) >> space? >> sequence.as(:fonts_value)
         when :special_fonts then first_value.as(:bold_fonts)
+        end
+      end
+
+      def dynamic_parser_rules_group(expr_group)
+        kind = expr_group.first
+        values = expr_group.last
+        case kind
+        when :symbol then
+          (str("\\").as(:slash) >> match("\s").repeat >> str("\n")) |
+            values.reduce("") do |expression, value|
+              rule = str(value).as(:symbol)
+              if expression.is_a?(String)
+                rule
+              else
+                expression | rule
+              end
+            end
+        when :unary_class then
+          values.reduce("") do |expression, value|
+            rule = unary_functions(str(value))
+            if expression.is_a?(String)
+              rule
+            else
+              expression | rule
+            end
+          end
+        when :fonts then
+          values.reduce("") do |expression, value|
+            rule = str(value).as(:fonts_class) >> space? >> sequence.as(:fonts_value)
+            if expression.is_a?(String)
+              rule
+            else
+              expression | rule
+            end
+          end
+        when :special_fonts then
+          values.reduce("") do |expression, value|
+            rule = str(value).as(:bold_fonts)
+            if expression.is_a?(String)
+              rule
+            else
+              expression | rule
+            end
+          end
         end
       end
 
