@@ -103,7 +103,7 @@ class Parslet::Atoms::Sequence < Parslet::Atoms::Base
   end
 
   def first_char
-    return parslets[0].first_char
+    parslets[0].first_char
   end
 
   def try(source, context, consume_all)
@@ -188,8 +188,13 @@ end
 
 class Parslet::Atoms::Entity < Parslet::Atoms::Base
   def lookahead?(source)
-    @parslet.lookahead?(source) if @parslet
+    return @parslet.lookahead?(source) if @parslet
     true
+  end
+
+  def first_char
+    return @parslet.first_char if @parslet
+    ""
   end
 end
 
