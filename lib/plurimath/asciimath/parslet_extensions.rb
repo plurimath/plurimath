@@ -14,24 +14,68 @@ class Parslet::Atoms::Base
     # Override in child classes by need
     true
   end
+
+  def first_char
+    # Override in child classes by need
+    ""
+  end
 end
 
 class Parslet::Atoms::Alternative < Parslet::Atoms::Base
+  # Lazy init
+  # We can't do this in constructor because Parslet::Atoms::Alternative is built incrementally
+  def apply_group_optimization()
+    return @grouped_optimization unless @grouped_optimization.nil?
+
+    alternatives = @alternatives
+    @alternatives_by_char = {}
+    @grouped_optimization = false
+
+    # Try to group the alternatives by the first character
+    # This way we can skip multiple alternatives in one lookahead
+    # Only apply this optimization to huge alternatives (for now?)
+    if alternatives.size >= 1000
+      non_empty = 0
+      alternatives.each do | a|
+        ch = a.first_char
+        re = Regexp.compile(Regexp.escape(ch))
+        @alternatives_by_char[re] ||= []
+        @alternatives_by_char[re] << a
+        non_empty += 1 if ch != ''
+      end
+      @grouped_optimization = non_empty >= alternatives.size / 2
+    end
+  end
+
   def lookahead?(source)
     # We need to stop the recursive lookahead at some point, otherwise it might go too deep
     true
   end
 
   def try(source, context, consume_all)
-    alternatives.map { |a|
-      # Instead of entering the more expensive apply() method,
-      # we attempt to look ahead and continue to the next alternative if there's no match
-      # The `Constants.precompile_constants` alternative has over 3k options
-      next unless a.lookahead?(source)
+    if apply_group_optimization
+      @alternatives_by_char.each_key do |ch|
+        char_alternatives = @alternatives_by_char[ch]
+        if source.lookahead?(ch)
+          char_alternatives.each { |a|
+            next unless a.lookahead?(source)
 
-      success, _ = result = a.apply(source, context, consume_all)
-      return result if success
-    }
+            success, _ = result = a.apply(source, context, consume_all)
+            return result if success
+          }
+        end
+      end
+    else
+      alternatives.each { |a|
+        # Instead of entering the more expensive apply() method,
+        # we attempt to look ahead and continue to the next alternative if there's no match
+        # The `Constants.precompile_constants` alternative has over 3k options
+        next unless a.lookahead?(source)
+
+        success, _ = result = a.apply(source, context, consume_all)
+        return result if success
+      }
+    end
 
     # If we reach this point, all alternatives have failed.
     context.err(self, source, error_msg)
@@ -56,6 +100,10 @@ end
 class Parslet::Atoms::Sequence < Parslet::Atoms::Base
   def lookahead?(source)
     parslets[0].lookahead?(source)
+  end
+
+  def first_char
+    return parslets[0].first_char
   end
 
   def try(source, context, consume_all)
@@ -89,11 +137,19 @@ class Parslet::Atoms::Str < Parslet::Atoms::Base
   def lookahead?(source)
     source.lookahead?(@pat)
   end
+
+  def first_char
+    return @str[0]
+  end
 end
 
 class Parslet::Atoms::Named < Parslet::Atoms::Base
   def lookahead?(source)
     @parslet.lookahead?(source)
+  end
+
+  def first_char
+    return @parslet.first_char
   end
 end
 
