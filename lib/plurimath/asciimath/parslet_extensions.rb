@@ -36,7 +36,7 @@ class Parslet::Atoms::Alternative < Parslet::Atoms::Base
     # Try to group the alternatives by the first character
     # This way we can skip multiple alternatives in one lookahead
     # Only apply this optimization to huge alternatives (for now?)
-    if alternatives.size >= 100
+    if alternatives.size >= 10
       non_empty = 0
       alternatives.each do | a|
         re = a.first_char_re
@@ -100,7 +100,27 @@ class Parslet::Atoms::Alternative < Parslet::Atoms::Base
 end
 
 class Parslet::Atoms::Sequence < Parslet::Atoms::Base
+  def is_combined_re
+    return @is_combined unless @is_combined.nil?
+
+    return @is_combined = false if @parslets.length < 2
+    @is_combined = false
+
+    first_are_re = @parslets[0...-1].all? { | parslet | parslet.is_a?(Parslet::Atoms::Re) }
+    if first_are_re
+      last_re = @parslets[-1].is_a?(Parslet::Atoms::Re)
+      last_lookahead = @parslets[-1].is_a?(Parslet::Atoms::Lookahead) && @parslets[-1].bound_parslet.is_a?(Parslet::Atoms::Re)
+      if last_lookahead or last_re
+        combined = @parslets.map { |p| p.match}.join
+        @combined_re = Regexp.compile(combined)
+        @is_combined = true
+      end
+    end
+    @is_combined
+  end
+
   def lookahead?(source)
+    return source.lookahead?(@combined_re) if is_combined_re
     parslets[0].lookahead?(source)
   end
 
@@ -156,15 +176,26 @@ class Parslet::Atoms::Named < Parslet::Atoms::Base
   end
 
   def first_char_re
-    return @parslet.first_char_re
+    @parslet.first_char_re
   end
 end
 
 class Parslet::Atoms::Lookahead < Parslet::Atoms::Base
+  def match
+    next_re = @bound_parslet.match
+    return next_re if @positive
+    "[^" + next_re[1...]
+  end
+
   def lookahead?(source)
     return @bound_parslet.lookahead?(source) if @positive
     # negative case covered below
     true
+  end
+
+  def first_char_re
+    return @bound_parslet.first_char_re if @positive
+    EMPTY_RE
   end
 
   def try(source, context, consume_all)
