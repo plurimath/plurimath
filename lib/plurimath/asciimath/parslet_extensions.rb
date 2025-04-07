@@ -119,6 +119,12 @@ class Parslet::Atoms::Sequence < Parslet::Atoms::Base
     @is_combined
   end
 
+  def error_msgs
+    @error_msgs ||= {
+      failed: "Failed to match sequence (<omited for performance reasons>)"
+    }
+  end
+
   def lookahead?(source)
     return source.lookahead?(@combined_re) if is_combined_re
     parslets[0].lookahead?(source)
