@@ -18,7 +18,7 @@ RSpec.describe Plurimath::Math do
       let(:type) { "latex" }
 
       it "raises error on wrong text input" do
-        message = "Failed to parse the following formula with type `#{type}`"
+        message = "\\[plurimath-#{Plurimath::VERSION}\\] Error: Failed to parse the following formula with type `#{type}`"
         expect{formula}.to raise_error(
           Plurimath::Math::ParseError, Regexp.compile(message)
         )

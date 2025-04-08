@@ -61,10 +61,10 @@ module Plurimath
 
     def parse_error!(text, type)
       message = <<~MESSAGE
-        [plurimath] Error: Failed to parse the following formula with type `#{type}`.
-        [plurimath] Please first manually validate the formula.
-        [plurimath] If this is a bug, please report the formula at our issue tracker at:
-        [plurimath] https://github.com/plurimath/plurimath/issues
+        [plurimath-#{Plurimath::VERSION}] Error: Failed to parse the following formula with type `#{type}`.
+        [plurimath-#{Plurimath::VERSION}] Please first manually validate the formula.
+        [plurimath-#{Plurimath::VERSION}] If this is a bug, please report the formula at our issue tracker at:
+        [plurimath-#{Plurimath::VERSION}] https://github.com/plurimath/plurimath/issues
         ---- FORMULA BEGIN ----
         #{text}
         ---- FORMULA END ----

@@ -123,7 +123,7 @@ module Plurimath
         def to_unicodemath_math_zone(spacing, last = false, _, options:)
           new_spacing = gsub_spacing(spacing, last)
           new_arr = [
-            "#{spacing}\"#{dump_unicodemath(self, options: options)}\" function apply\n",
+            "#{spacing}\"#{to_unicodemath(self, options: options)}\" function apply\n",
             "#{new_spacing}|_ \"#{font_family(unicode: true, options: options)}\" font family\n",
           ]
           unicodemath_fields_to_print(parameter_one, { spacing: new_spacing, field_name: "argument", additional_space: "|  |_ ", array: new_arr, options: options })

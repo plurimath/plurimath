@@ -6,6 +6,14 @@ module Plurimath
   module Math
     module Function
       class Intent < BinaryFunction
+        def to_asciimath(options:)
+          parameter_one.to_asciimath(options: options) if parameter_one
+        end
+
+        def to_latex(options:)
+          parameter_one.to_latex(options: options) if parameter_one
+        end
+
         def to_mathml_without_math_tag(intent, options:)
           first_value = parameter_one.to_mathml_without_math_tag(intent, options: options)
           first_value.attributes["intent"] = encoded_intent(first_value)
