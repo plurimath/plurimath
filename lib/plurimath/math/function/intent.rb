@@ -7,11 +7,11 @@ module Plurimath
     module Function
       class Intent < BinaryFunction
         def to_asciimath(options:)
-          parameter_one.to_asciimath(options: options) if parameter_one
+          parameter_one&.to_asciimath(options: options)
         end
 
         def to_latex(options:)
-          parameter_one.to_latex(options: options) if parameter_one
+          parameter_one&.to_latex(options: options)
         end
 
         def to_mathml_without_math_tag(intent, options:)
