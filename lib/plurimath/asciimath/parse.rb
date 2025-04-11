@@ -65,7 +65,7 @@ module Plurimath
       rule(:left_right) do
         (str("left") >> space? >> left_right_open_paren.as(:left) >> space? >> (iteration.maybe >> sequence.maybe).as(:left_right_value) >> space? >> str("right") >> space? >> left_right_close_paren.as(:right)) |
           ((table.as(:numerator) >> space? >> match(/(?<!\/)\/(?!\/)/) >> space? >> iteration.as(:denominator)).as(:frac) >> expression) |
-          (table.as(:table) >> expression.maybe)
+          (table.as(:table) >> power_base.maybe >> expression.maybe)
       end
 
       rule(:quoted_text) do
@@ -138,7 +138,7 @@ module Plurimath
 
       rule(:iteration) do
         ternary_classes_rules |
-          table.as(:table) |
+          table.as(:table) >> power_base.maybe |
           comma.as(:comma) |
           mod |
           (sequence.as(:sequence) >> space? >> str("//").as(:symbol)) |

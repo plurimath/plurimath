@@ -6753,7 +6753,7 @@ RSpec.describe Plurimath::Asciimath do
       end
     end
 
-    context "contains table with preceding closing parenthesis without any opening parenthesis example from metanroam/bipm-si-brochure/issue#308 example #122" do
+    context "contains table with preceding closing parenthesis without any opening parenthesis example from metanroam/bipm-si-brochure/issue#308 example #124" do
       let(:string) { '{:(ii(E)_1, =, ii(A)_1 cos[ii(varphi)_1]),(ii(E)_2, =, ii(A)_2 cos[ii(varphi)_2]):}}  rarr I = langle (ii(E)_1 + ii(E)_2)^2 rangle_t = {ii(A)_1^2}/2 + {ii(A)_2^2}/2 + ii(A)_1 ii(A)_2 cos[ii(varphi)_1 - ii(varphi)_2]' }
 
       it 'matches LaTeX, AsciiMath, and MathML' do
@@ -6929,6 +6929,384 @@ RSpec.describe Plurimath::Asciimath do
         expect(formula.to_latex).to eql(latex)
         expect(formula.to_mathml).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
+      end
+    end
+
+    context "contains table as power (power-base) value from issue#351 example #125" do
+      let(:string) { '[[a,b], [c,d]]^d' }
+
+      it 'matches LaTeX, AsciiMath, and MathML' do
+        latex = '\left [\begin{matrix}a & b \\\\ c & d\end{matrix}\right ]^{d}'
+        asciimath = '[[a, b], [c, d]]^(d)'
+        mathml = <<~MATHML
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
+              <msup>
+                <mrow>
+                  <mo>[</mo>
+                  <mtable>
+                    <mtr>
+                      <mtd>
+                        <mi>a</mi>
+                      </mtd>
+                      <mtd>
+                        <mi>b</mi>
+                      </mtd>
+                    </mtr>
+                    <mtr>
+                      <mtd>
+                        <mi>c</mi>
+                      </mtd>
+                      <mtd>
+                        <mi>d</mi>
+                      </mtd>
+                    </mtr>
+                  </mtable>
+                  <mo>]</mo>
+                </mrow>
+                <mi>d</mi>
+              </msup>
+            </mstyle>
+          </math>
+        MATHML
+        expect(formula.to_latex).to eql(latex)
+        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_asciimath).to eql(asciimath)
+      end
+    end
+
+    context "contains table as base (power-base) value from issue#351 example #126" do
+      let(:string) { '[[a,b], [c,d]]_d' }
+
+      it 'matches LaTeX, AsciiMath, and MathML' do
+        latex = '\left [\begin{matrix}a & b \\\\ c & d\end{matrix}\right ]_{d}'
+        asciimath = '[[a, b], [c, d]]_(d)'
+        mathml = <<~MATHML
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
+              <msub>
+                <mrow>
+                  <mo>[</mo>
+                  <mtable>
+                    <mtr>
+                      <mtd>
+                        <mi>a</mi>
+                      </mtd>
+                      <mtd>
+                        <mi>b</mi>
+                      </mtd>
+                    </mtr>
+                    <mtr>
+                      <mtd>
+                        <mi>c</mi>
+                      </mtd>
+                      <mtd>
+                        <mi>d</mi>
+                      </mtd>
+                    </mtr>
+                  </mtable>
+                  <mo>]</mo>
+                </mrow>
+                <mi>d</mi>
+              </msub>
+            </mstyle>
+          </math>
+        MATHML
+        expect(formula.to_latex).to eql(latex)
+        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_asciimath).to eql(asciimath)
+      end
+    end
+
+    context "contains multiple table as powerbase value example from plrimath/issue#351 example #127" do
+      let(:string) { "[[a,b], [c,d]]_d^d" }
+
+      it 'matches LaTeX, AsciiMath, and MathML' do
+        asciimath = "[[a, b], [c, d]]_(d)^(d)"
+        latex = '\left [\begin{matrix}a & b \\\\ c & d\end{matrix}\right ]_{d}^{d}'
+        mathml = <<~MATHML
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
+              <msubsup>
+                <mrow>
+                  <mo>[</mo>
+                  <mtable>
+                    <mtr>
+                      <mtd>
+                        <mi>a</mi>
+                      </mtd>
+                      <mtd>
+                        <mi>b</mi>
+                      </mtd>
+                    </mtr>
+                    <mtr>
+                      <mtd>
+                        <mi>c</mi>
+                      </mtd>
+                      <mtd>
+                        <mi>d</mi>
+                      </mtd>
+                    </mtr>
+                  </mtable>
+                  <mo>]</mo>
+                </mrow>
+                <mi>d</mi>
+                <mi>d</mi>
+              </msubsup>
+            </mstyle>
+          </math>
+        MATHML
+      end
+    end
+
+    context "contains multiple table as powerbase value with extended expressions example from plrimath/issue#351 example #128" do
+      let(:string) { "[[a,b], [c,d]]_d^d d" }
+
+      it 'matches LaTeX, AsciiMath, and MathML' do
+        asciimath = "[[a, b], [c, d]]_(d)^(d) d"
+        latex = '\left [\begin{matrix}a & b \\\\ c & d\end{matrix}\right ]_{d}^{d} d'
+        mathml = <<~MATHML
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
+              <msubsup>
+                <mrow>
+                  <mo>[</mo>
+                  <mtable>
+                    <mtr>
+                      <mtd>
+                        <mi>a</mi>
+                      </mtd>
+                      <mtd>
+                        <mi>b</mi>
+                      </mtd>
+                    </mtr>
+                    <mtr>
+                      <mtd>
+                        <mi>c</mi>
+                      </mtd>
+                      <mtd>
+                        <mi>d</mi>
+                      </mtd>
+                    </mtr>
+                  </mtable>
+                  <mo>]</mo>
+                </mrow>
+                <mi>d</mi>
+                <mi>d</mi>
+              </msubsup>
+              <mi>d</mi>
+            </mstyle>
+          </math>
+        MATHML
+      end
+    end
+
+    context "contains multiple table as powerbase value with extended expressions example from plrimath/issue#351 example #129" do
+      let(:string) { "[[a,b], [c,d]]_d^d dd" }
+
+      it 'matches LaTeX, AsciiMath, and MathML' do
+        asciimath = "[[a, b], [c, d]]_(d)^(d) d d"
+        latex = '\left [\begin{matrix}a & b \\\\ c & d\end{matrix}\right ]_{d}^{d} d d'
+        mathml = <<~MATHML
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
+              <msubsup>
+                <mrow>
+                  <mo>[</mo>
+                  <mtable>
+                    <mtr>
+                      <mtd>
+                        <mi>a</mi>
+                      </mtd>
+                      <mtd>
+                        <mi>b</mi>
+                      </mtd>
+                    </mtr>
+                    <mtr>
+                      <mtd>
+                        <mi>c</mi>
+                      </mtd>
+                      <mtd>
+                        <mi>d</mi>
+                      </mtd>
+                    </mtr>
+                  </mtable>
+                  <mo>]</mo>
+                </mrow>
+                <mi>d</mi>
+                <mi>d</mi>
+              </msubsup>
+              <mi>d</mi>
+              <mi>d</mi>
+            </mstyle>
+          </math>
+        MATHML
+      end
+    end
+
+    context "contains table as power value following multiple expressions after example #130" do
+      let(:string) { "[[a,b], [c,d]]^d dd" }
+
+      it 'matches LaTeX, AsciiMath, and MathML' do
+        asciimath = "[[a, b], [c, d]]^(d) d d"
+        latex = '\left [\begin{matrix}a & b \\\\ c & d\end{matrix}\right ]^{d} d d'
+        mathml = <<~MATHML
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
+              <msup>
+                <mrow>
+                  <mo>[</mo>
+                  <mtable>
+                    <mtr>
+                      <mtd>
+                        <mi>a</mi>
+                      </mtd>
+                      <mtd>
+                        <mi>b</mi>
+                      </mtd>
+                    </mtr>
+                    <mtr>
+                      <mtd>
+                        <mi>c</mi>
+                      </mtd>
+                      <mtd>
+                        <mi>d</mi>
+                      </mtd>
+                    </mtr>
+                  </mtable>
+                  <mo>]</mo>
+                </mrow>
+                <mi>d</mi>
+              </msup>
+              <mi>d</mi>
+              <mi>d</mi>
+            </mstyle>
+          </math>
+        MATHML
+      end
+    end
+
+    context "contains table as base value following multiple expressions after example #131" do
+      let(:string) { "[[a,b], [c,d]]_d dd" }
+
+      it 'matches LaTeX, AsciiMath, and MathML' do
+        asciimath = "[[a, b], [c, d]]_(d) d d"
+        latex = '\left [\begin{matrix}a & b \\\\ c & d\end{matrix}\right ]_{d} d d'
+        mathml = <<~MATHML
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
+              <msub>
+                <mrow>
+                  <mo>[</mo>
+                  <mtable>
+                    <mtr>
+                      <mtd>
+                        <mi>a</mi>
+                      </mtd>
+                      <mtd>
+                        <mi>b</mi>
+                      </mtd>
+                    </mtr>
+                    <mtr>
+                      <mtd>
+                        <mi>c</mi>
+                      </mtd>
+                      <mtd>
+                        <mi>d</mi>
+                      </mtd>
+                    </mtr>
+                  </mtable>
+                  <mo>]</mo>
+                </mrow>
+                <mi>d</mi>
+              </msub>
+              <mi>d</mi>
+              <mi>d</mi>
+            </mstyle>
+          </math>
+        MATHML
+      end
+    end
+
+    context "contains table as power value following single expression after example #132" do
+      let(:string) { "[[a,b], [c,d]]^d d" }
+
+      it 'matches LaTeX, AsciiMath, and MathML' do
+        asciimath = "[[a, b], [c, d]]^(d) d"
+        latex = '\left [\begin{matrix}a & b \\\\ c & d\end{matrix}\right ]^{d} d'
+        mathml = <<~MATHML
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
+              <msup>
+                <mrow>
+                  <mo>[</mo>
+                  <mtable>
+                    <mtr>
+                      <mtd>
+                        <mi>a</mi>
+                      </mtd>
+                      <mtd>
+                        <mi>b</mi>
+                      </mtd>
+                    </mtr>
+                    <mtr>
+                      <mtd>
+                        <mi>c</mi>
+                      </mtd>
+                      <mtd>
+                        <mi>d</mi>
+                      </mtd>
+                    </mtr>
+                  </mtable>
+                  <mo>]</mo>
+                </mrow>
+                <mi>d</mi>
+              </msup>
+              <mi>d</mi>
+            </mstyle>
+          </math>
+        MATHML
+      end
+    end
+
+    context "contains table as base value following single expression after example #133" do
+      let(:string) { "[[a,b], [c,d]]_d d" }
+
+      it 'matches LaTeX, AsciiMath, and MathML' do
+        asciimath = "[[a, b], [c, d]]_(d) d"
+        latex = '\left [\begin{matrix}a & b \\\\ c & d\end{matrix}\right ]_{d} d'
+        mathml = <<~MATHML
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
+              <msub>
+                <mrow>
+                  <mo>[</mo>
+                  <mtable>
+                    <mtr>
+                      <mtd>
+                        <mi>a</mi>
+                      </mtd>
+                      <mtd>
+                        <mi>b</mi>
+                      </mtd>
+                    </mtr>
+                    <mtr>
+                      <mtd>
+                        <mi>c</mi>
+                      </mtd>
+                      <mtd>
+                        <mi>d</mi>
+                      </mtd>
+                    </mtr>
+                  </mtable>
+                  <mo>]</mo>
+                </mrow>
+                <mi>d</mi>
+              </msub>
+              <mi>d</mi>
+            </mstyle>
+          </math>
+        MATHML
       end
     end
   end

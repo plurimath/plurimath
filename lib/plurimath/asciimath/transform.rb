@@ -901,6 +901,64 @@ module Plurimath
       end
 
       rule(table: simple(:table),
+           base: simple(:base)) do
+        Math::Function::Base.new(table, base)
+      end
+
+      rule(table: simple(:table),
+           power: simple(:power)) do
+        Math::Function::Power.new(table, power)
+      end
+
+      rule(table: simple(:table),
+           power_value: simple(:power),
+           base_value: simple(:base)) do
+        Math::Function::PowerBase.new(table, power, base)
+      end
+
+      rule(table: simple(:table),
+           power: simple(:power),
+           expr: sequence(:expr)) do
+        Math::Formula.new(
+          [
+            Math::Function::Power.new(table, power),
+          ] + expr.flatten.compact,
+        )
+      end
+
+      rule(table: simple(:table),
+           power: simple(:power),
+           expr: simple(:expr)) do
+        Math::Formula.new(
+          [
+            Math::Function::Power.new(table, power),
+            expr,
+          ],
+        )
+      end
+
+      rule(table: simple(:table),
+           base: simple(:base),
+           expr: sequence(:expr)) do
+        Math::Formula.new(
+          [
+            Math::Function::Base.new(table, base),
+          ] + expr.flatten.compact,
+        )
+      end
+
+      rule(table: simple(:table),
+           base: simple(:base),
+           expr: simple(:expr)) do
+        Math::Formula.new(
+          [
+            Math::Function::Base.new(table, base),
+            expr,
+          ],
+        )
+      end
+
+      rule(table: simple(:table),
            rparen: simple(:rparen),
            expr: sequence(:expr)) do
         [
@@ -1029,6 +1087,29 @@ module Plurimath
           ],
           Utility.asciimath_symbol_object(table_left),
           Utility.asciimath_symbol_object(table_right),
+        )
+      end
+
+      rule(table: simple(:table),
+           power_value: simple(:power),
+           base_value: simple(:base),
+           expr: simple(:expr)) do
+        Math::Formula.new(
+          [
+            Math::Function::PowerBase.new(table, power, base),
+            expr,
+          ],
+        )
+      end
+
+      rule(table: simple(:table),
+           power_value: simple(:power),
+           base_value: simple(:base),
+           expr: sequence(:expr)) do
+        Math::Formula.new(
+          [
+            Math::Function::PowerBase.new(table, power, base),
+          ] + expr.flatten.compact,
         )
       end
 

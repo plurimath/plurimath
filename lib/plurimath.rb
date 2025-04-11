@@ -1,9 +1,8 @@
-
 require_relative "plurimath/version"
-require "lutaml/model"
 require "mml/configuration"
 
 def mml_adapter(adapter)
+  require "lutaml/model"
   Mml::Configuration.adapter = adapter unless Mml::Configuration.adapter
 end
 
