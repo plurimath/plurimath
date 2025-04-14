@@ -184,6 +184,14 @@ module Plurimath
       end
 
       rule(power: simple(:power),
+           symbols: simple(:sym)) do
+        Math::Function::Power.new(
+          power,
+          Utility.symbols_class(sym, lang: :latex),
+        )
+      end
+
+      rule(power: simple(:power),
            expression: simple(:expr)) do
         Math::Function::Power.new(
           power,

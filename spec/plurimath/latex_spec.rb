@@ -31,6 +31,94 @@ RSpec.describe Plurimath::Latex do
         expect(formula).to eq(expected_value)
       end
     end
+
+    context "contains examples from plurimath/plurimath#355" do
+      let(:string) { 'H^\beta \left(d_1,\ldots,d_M\right) = \left(H^{\beta_1}\left(d_1\right),\ldots,H^{\beta_M}\left(d_M\right)\right)^t' }
+
+      it "returns parsed Latex to Formula" do
+        expected_value = Plurimath::Math::Formula.new(
+          [
+            Plurimath::Math::Function::Power.new(
+              Plurimath::Math::Symbols::Symbol.new("H"),
+              Plurimath::Math::Symbols::Upbeta.new
+            ),
+            Plurimath::Math::Formula.new(
+              [
+                Plurimath::Math::Function::Left.new("("),
+                Plurimath::Math::Formula.new(
+                  [
+                    Plurimath::Math::Function::Base.new(
+                        Plurimath::Math::Symbols::Symbol.new("d"),
+                        Plurimath::Math::Number.new("1")
+                    ),
+                    Plurimath::Math::Symbols::Comma.new,
+                    Plurimath::Math::Symbols::Dots.new,
+                    Plurimath::Math::Symbols::Comma.new,
+                    Plurimath::Math::Function::Base.new(
+                      Plurimath::Math::Symbols::Symbol.new("d"),
+                      Plurimath::Math::Symbols::Symbol.new("M")
+                    )
+                  ]
+                ),
+                Plurimath::Math::Function::Right.new(")")
+              ]
+            ),
+            Plurimath::Math::Symbols::Equal.new,
+            Plurimath::Math::Function::Power.new(
+              Plurimath::Math::Formula.new(
+                [
+                  Plurimath::Math::Function::Left.new("("),
+                  Plurimath::Math::Formula.new(
+                    [
+                      Plurimath::Math::Function::Power.new(
+                        Plurimath::Math::Symbols::Symbol.new("H"),
+                        Plurimath::Math::Function::Base.new(
+                          Plurimath::Math::Symbols::Upbeta.new,
+                          Plurimath::Math::Number.new("1")
+                        )
+                      ),
+                      Plurimath::Math::Formula.new(
+                        [
+                          Plurimath::Math::Function::Left.new("("),
+                          Plurimath::Math::Function::Base.new(
+                            Plurimath::Math::Symbols::Symbol.new("d"),
+                            Plurimath::Math::Number.new("1")
+                          ),
+                          Plurimath::Math::Function::Right.new(")")
+                        ]
+                      ),
+                      Plurimath::Math::Symbols::Comma.new,
+                      Plurimath::Math::Symbols::Dots.new,
+                      Plurimath::Math::Symbols::Comma.new,
+                      Plurimath::Math::Function::Power.new(
+                        Plurimath::Math::Symbols::Symbol.new("H"),
+                        Plurimath::Math::Function::Base.new(
+                          Plurimath::Math::Symbols::Upbeta.new,
+                          Plurimath::Math::Symbols::Symbol.new("M")
+                        )
+                      ),
+                      Plurimath::Math::Formula.new(
+                        [
+                          Plurimath::Math::Function::Left.new("("),
+                          Plurimath::Math::Function::Base.new(
+                            Plurimath::Math::Symbols::Symbol.new("d"),
+                            Plurimath::Math::Symbols::Symbol.new("M")
+                          ),
+                          Plurimath::Math::Function::Right.new(")")
+                        ]
+                      )
+                    ]
+                  ),
+                  Plurimath::Math::Function::Right.new(")")
+                ]
+              ),
+              Plurimath::Math::Symbols::Symbol.new("t")
+            )
+          ]
+        )
+        expect(formula).to eq(expected_value)
+      end
+    end
   end
 
   describe ".to_mathml" do
