@@ -28,16 +28,32 @@ module Plurimath
         end
 
         def to_mathml_without_math_tag(intent, options:)
-          tag_name = Utility::UNARY_CLASSES.include?(class_name) ? "mi" : "mo"
+          tag_name = if Utility::UNARY_CLASSES.include?(class_name)
+                       insert_space_tags = true
+                       "mi"
+                     else
+                       "mo"
+                     end
           new_arr = []
           new_arr << (ox_element(tag_name) << class_name) unless hide_function_name
-          if parameter_one
-            new_arr += mathml_value(intent, options: options)
-            mrow = ox_element("mrow")
-            Utility.update_nodes(mrow, new_arr)
-            intentify(mrow, intent, func_name: :function, intent_name: intent_names[:name])
+          unary_element = if parameter_one
+                            new_arr += mathml_value(intent, options: options)
+                            mrow = ox_element("mrow")
+                            Utility.update_nodes(mrow, new_arr)
+                            intentify(mrow, intent, func_name: :function, intent_name: intent_names[:name])
+                          else
+                            new_arr.first
+                          end
+          if insert_space_tags
+            Utility.update_nodes(
+              ox_element("mrow"),
+              [
+                space_element,
+                unary_element,
+              ],
+            )
           else
-            new_arr.first
+            unary_element
           end
         end
 
@@ -221,6 +237,12 @@ module Plurimath
           me = Utility.ox_element("e", namespace: "m")
           Utility.update_nodes(me, omml_value(display_style, options: options)) if parameter_one
           [funcpr, fname, me]
+        end
+
+        def space_element
+          element = (ox_element("mo") << "&#x2062;")
+          element[:rspace] = "thickmathspace"
+          element
         end
       end
     end
