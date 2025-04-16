@@ -18,8 +18,12 @@ module Plurimath
           precision = options[:precision] || @precision
           return "" unless precision > 0
 
-          number = format(fraction, precision)
-          number = digit_count_format(int, fraction, number) if @digit_count
+          number = if @digit_count
+                     digit_count_format(int, fraction)
+                   else
+                     format(fraction, precision)
+                   end
+
           formatted_number = change_format(number) if number
           formatted_number ? decimal + formatted_number : ""
         end
@@ -40,18 +44,17 @@ module Plurimath
           tokens.compact.join(separator)
         end
 
-        def digit_count_format(int, fraction, number)
+        def digit_count_format(int, fraction)
           integer = int + "." + fraction
-          float = BigDecimal(integer)
-          int_length = integer.length - 1
+          int_length = integer.length - 1 # integer length; excluding the decimal point
           @digit_count ||= int_length
           if int_length > @digit_count
-            number_string = float.round(@digit_count - int.length)
+            number_string = BigDecimal(integer).round(@digit_count - int.length)
             numeric_digits(number_string) if @digit_count > int.length
           elsif int_length < @digit_count
-            number + "0" * (update_digit_count(number) - int_length)
+            fraction + ("0" * (update_digit_count(fraction) - int_length))
           else
-            number
+            fraction
           end
         end
 

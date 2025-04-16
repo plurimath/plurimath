@@ -334,6 +334,53 @@ RSpec.describe Plurimath::NumberFormatter do
           expect(output_string).to eql("-1.4236392390 × 10^3")
         end
       end
+
+      context "testing digit_count with custom format options from plurimath/plurimath#360" do
+        let(:locale) { :en }
+        let(:localize_number) { nil }
+        let(:localizer_symbols) { {} }
+        let(:format_options) do
+          {
+            decimal: ",",
+            group_digits: 3,
+            group: "'",
+            fraction_group_digits: 3,
+            fraction_group: " ",
+            digit_count: 6
+          }
+        end
+
+        it "formats number with trailing zeros" do
+          output_string = formatter.localized_number("283.180", format: format_options)
+          expect(output_string).to eql("283,180")
+        end
+
+        it "formats number with extra trailing zeros" do
+          output_string = formatter.localized_number("283.180000000000", format: format_options)
+          expect(output_string).to eql("283,180")
+        end
+      end
+
+      context "testing digit_count with e notation from plurimath/plurimath#360" do
+        let(:locale) { :en }
+        let(:localize_number) { nil }
+        let(:localizer_symbols) { {} }
+        let(:format_options) do
+          {
+            notation: :e,
+            e: " ",
+            digit_count: 6,
+            fraction_group_digits: 3,
+            fraction_group: " ",
+            decimal: ","
+          }
+        end
+
+        it "formats number with e notation" do
+          output_string = formatter.localized_number("0.000568096", format: format_options)
+          expect(output_string).to eql("5,680 96 -4")
+        end
+      end
     end
   end
 end
