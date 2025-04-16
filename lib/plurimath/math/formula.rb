@@ -628,7 +628,7 @@ module Plurimath
         insert_index = 0
         nodes.each.with_index do |node, index|
           if node[:unitsml]
-            prev_node.insert_in_nodes(index + insert_index, space_element(node))
+            prev_node.insert_in_nodes(index + insert_index, space_element)
             insert_index += 1
             node.remove_attr("unitsml")
           end
@@ -636,7 +636,7 @@ module Plurimath
         end
       end
 
-      def space_element(node)
+      def space_element
         element = (ox_element("mo") << "&#x2062;")
         element[:rspace] = "thickmathspace"
         element
