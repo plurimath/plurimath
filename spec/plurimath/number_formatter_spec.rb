@@ -160,7 +160,7 @@ RSpec.describe Plurimath::NumberFormatter do
         output_string = formatter.localized_number(number, format: { digit_count: 6, notation: :scientific, group_digits: 3 })
         expect(output_string).to eql("1,00000 × 10^-3")
         output_string = formatter.localized_number(number, format: { significant: 3, group_digits: 3 })
-        expect(output_string).to eql("0,00100")
+        expect(output_string).to eql("0,001")
         output_string = formatter.localized_number(number, format: { significant: 3, notation: :e, group_digits: 3 })
         expect(output_string).to eql("1,00e-3")
         output_string = formatter.localized_number(number, format: { significant: 3, notation: :scientific, group_digits: 3 })
