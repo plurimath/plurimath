@@ -55,9 +55,14 @@ module Plurimath
         formatter: nil,
         unitsml: {},
         split_on_linebreak: false,
-        display_style: displaystyle
+        display_style: displaystyle,
+        unary_function_spacing: false
       )
-        options = { formatter: formatter, unitsml: unitsml }.compact
+        options = {
+          formatter: formatter,
+          unitsml: unitsml,
+          unary_function_spacing: unary_function_spacing
+        }.compact
         return line_breaked_mathml(display_style, intent, options: options) if split_on_linebreak
 
         math_attrs = {
@@ -628,7 +633,7 @@ module Plurimath
         insert_index = 0
         nodes.each.with_index do |node, index|
           if node[:unitsml]
-            prev_node.insert_in_nodes(index + insert_index, space_element(node))
+            prev_node.insert_in_nodes(index + insert_index, space_element)
             insert_index += 1
             node.remove_attr("unitsml")
           end
@@ -636,7 +641,7 @@ module Plurimath
         end
       end
 
-      def space_element(node)
+      def space_element
         element = (ox_element("mo") << "&#x2062;")
         element[:rspace] = "thickmathspace"
         element
