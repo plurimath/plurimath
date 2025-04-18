@@ -44,11 +44,11 @@ module Plurimath
                           else
                             new_arr.first
                           end
-          if insert_space_tags
+          if insert_space_tags && options[:unary_function_spacing]
             Utility.update_nodes(
               ox_element("mrow"),
               [
-                space_element,
+                ox_element("mo", attributes: { rspace: "thickmathspace" }),
                 unary_element,
               ],
             )
@@ -237,12 +237,6 @@ module Plurimath
           me = Utility.ox_element("e", namespace: "m")
           Utility.update_nodes(me, omml_value(display_style, options: options)) if parameter_one
           [funcpr, fname, me]
-        end
-
-        def space_element
-          element = (ox_element("mo") << "&#x2062;")
-          element[:rspace] = "thickmathspace"
-          element
         end
       end
     end
