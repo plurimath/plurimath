@@ -26,6 +26,9 @@
           </m:e>
           <m:sub>
             <m:r>
+              <m:rPr>
+                <m:sty m:val="p"/>
+              </m:rPr>
               <m:t>c</m:t>
             </m:r>
           </m:sub>
@@ -163,6 +166,9 @@
               </m:e>
               <m:sub>
                 <m:r>
+                  <m:rPr>
+                    <m:sty m:val="p"/>
+                  </m:rPr>
                   <m:t>S</m:t>
                 </m:r>
               </m:sub>
@@ -190,6 +196,9 @@
           </m:e>
           <m:sub>
             <m:r>
+              <m:rPr>
+                <m:sty m:val="p"/>
+              </m:rPr>
               <m:t>S</m:t>
             </m:r>
           </m:sub>
@@ -257,6 +266,9 @@
               </m:e>
               <m:sub>
                 <m:r>
+                  <m:rPr>
+                    <m:sty m:val="p"/>
+                  </m:rPr>
                   <m:t>S</m:t>
                 </m:r>
               </m:sub>
@@ -281,6 +293,9 @@
           </m:e>
           <m:sub>
             <m:r>
+              <m:rPr>
+                <m:sty m:val="p"/>
+              </m:rPr>
               <m:t>S</m:t>
             </m:r>
           </m:sub>
@@ -588,6 +603,9 @@
               </m:e>
               <m:sub>
                 <m:r>
+                  <m:rPr>
+                    <m:sty m:val="p"/>
+                  </m:rPr>
                   <m:t>S</m:t>
                 </m:r>
               </m:sub>
@@ -628,6 +646,9 @@
           </m:e>
           <m:sub>
             <m:r>
+              <m:rPr>
+                <m:sty m:val="p"/>
+              </m:rPr>
               <m:t>S</m:t>
             </m:r>
           </m:sub>
@@ -726,6 +747,9 @@
           </m:e>
           <m:sub>
             <m:r>
+              <m:rPr>
+                <m:sty m:val="p"/>
+              </m:rPr>
               <m:t>S</m:t>
             </m:r>
           </m:sub>
@@ -837,6 +861,9 @@
               </m:e>
               <m:sub>
                 <m:r>
+                  <m:rPr>
+                    <m:sty m:val="p"/>
+                  </m:rPr>
                   <m:t>S</m:t>
                 </m:r>
               </m:sub>
@@ -913,6 +940,9 @@
           </m:e>
           <m:sub>
             <m:r>
+              <m:rPr>
+                <m:sty m:val="p"/>
+              </m:rPr>
               <m:t>S</m:t>
             </m:r>
           </m:sub>

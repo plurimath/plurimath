@@ -12,8 +12,14 @@ module Plurimath
 
         PARSER_REGEX = %r{unicode\[:(?<unicode>\w{1,})\]}.freeze
 
-        def initialize(parameter_one = "")
+        def initialize(parameter_one = "", lang: nil)
           super(parameter_one)
+          @lang = lang
+        end
+
+        def ==(object)
+          object.class == self.class &&
+            object.parameter_one == self.parameter_one
         end
 
         def to_asciimath(**)
@@ -50,7 +56,15 @@ module Plurimath
 
         def insert_t_tag(display_style, options:)
           r_tag = Utility.ox_element("r", namespace: "m")
-          Utility.update_nodes(r_tag, to_omml_without_math_tag(display_style, options: options))
+          if @lang&.to_s != "omml"
+            rpr_tag = Utility.ox_element("rPr", namespace: "m")
+            rpr_tag << msty_tag_with_attrs
+            r_tag << rpr_tag
+          end
+          Utility.update_nodes(
+            r_tag,
+            [omml_nodes(display_style, options: options)],
+          )
           [r_tag]
         end
 
