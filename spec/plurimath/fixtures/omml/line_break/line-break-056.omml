@@ -32,6 +32,9 @@
   </m:r>
   <m:oMath>
     <m:r>
+      <m:rPr>
+        <m:sty m:val="p"/>
+      </m:rPr>
       <m:t>dsa</m:t>
     </m:r>
   </m:oMath>

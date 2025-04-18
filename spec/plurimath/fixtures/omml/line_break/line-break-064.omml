@@ -12,11 +12,17 @@
       </m:sub>
       <m:sup>
         <m:r>
+          <m:rPr>
+            <m:sty m:val="p"/>
+          </m:rPr>
           <m:t>node2</m:t>
         </m:r>
       </m:sup>
       <m:e>
         <m:r>
+          <m:rPr>
+            <m:sty m:val="p"/>
+          </m:rPr>
           <m:t>symmetric</m:t>
         </m:r>
       </m:e>

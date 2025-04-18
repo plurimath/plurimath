@@ -30,7 +30,7 @@ module Plurimath
       end
 
       def insert_t_tag(display_style, options:)
-        Array(to_omml_without_math_tag(display_style, options: options))
+        Array(omml_nodes(display_style, options: options))
       end
 
       def tag_name
@@ -72,12 +72,15 @@ module Plurimath
       def r_element(string, rpr_tag: true)
         r_tag = ox_element("r", namespace: "m")
         if rpr_tag
-          attrs = { "m:val": "p" }
-          sty_tag = ox_element("sty", namespace: "m", attributes: attrs)
-          r_tag << (ox_element("rPr", namespace: "m") << sty_tag)
+          r_tag << (ox_element("rPr", namespace: "m") << msty_tag_with_attrs)
         end
         r_tag << (ox_element("t", namespace: "m") << string)
         Array(r_tag)
+      end
+
+      def msty_tag_with_attrs
+        attrs = { "m:val": "p" }
+        ox_element("sty", namespace: "m", attributes: attrs)
       end
 
       def extractable?
@@ -89,7 +92,7 @@ module Plurimath
       end
 
       def font_style_t_tag(display_style, options:)
-        to_omml_without_math_tag(display_style, options: options)
+        omml_nodes(display_style, options: options)
       end
 
       def ascii_fields_to_print(field, options = {})
@@ -144,7 +147,7 @@ module Plurimath
       end
 
       def dump_mathml(field, intent = false, options:)
-        dump_ox_nodes(field.to_mathml_without_math_tag(intent, options: options)).gsub(/\n\s*/, "")
+        dump_ox_nodes(field.mathml_nodes(intent, options: options)).gsub(/\n\s*/, "")
       end
 
       def dump_omml(field, display_style, options:)
@@ -153,15 +156,19 @@ module Plurimath
         dump_ox_nodes(field.omml_nodes(display_style, options: options)).gsub(/\n\s*/, "")
       end
 
+      def mathml_nodes(intent, options:)
+        to_mathml_without_math_tag(intent, options: options)
+      end
+
       def omml_nodes(display_style, options:)
         to_omml_without_math_tag(display_style, options: options)
       end
 
       def validate_mathml_fields(field, intent, options:)
         if field.is_a?(Array)
-          field&.map { |object| object.to_mathml_without_math_tag(intent, options: options) }
+          field&.map { |object| object.mathml_nodes(intent, options: options) }
         else
-          field&.to_mathml_without_math_tag(intent, options: options)
+          field&.mathml_nodes(intent, options: options)
         end
       end
 

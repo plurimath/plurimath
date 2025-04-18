@@ -15,6 +15,7 @@ module Plurimath
       rule(sty: simple(:sty))    { sty }
       rule(num: subtree(:num))   { num }
       rule(den: subtree(:den))   { den }
+      rule(nor: subtree(:nor))   { nil }
       rule(fPr: subtree(:fPr))   { nil }
       rule(mpr: subtree(:mpr))   { nil }
       rule(mPr: subtree(:mPr))   { nil }
@@ -88,7 +89,7 @@ module Plurimath
 
       rule(t: sequence(:t)) do
         if t.empty?
-          Math::Function::Text.new
+          Math::Function::Text.new("", lang: :omml)
         else
           t&.compact&.empty? ? [nil] : Utility.mathml_unary_classes(t, omml: true, lang: :omml)
         end
