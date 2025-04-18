@@ -361,7 +361,7 @@ module Plurimath
         if text&.scan(/[[:digit:]]/)&.length == text&.length
           Math::Number.new(text)
         elsif text&.match?(/[a-zA-Z]/)
-          Math::Function::Text.new(text)
+          Math::Function::Text.new(text, lang: lang)
         else
           text = string_to_html_entity(text)
                   .gsub("&#x26;", "&")
