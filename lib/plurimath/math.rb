@@ -40,14 +40,19 @@ module Plurimath
       asciimath: Asciimath,
     }.freeze
 
+    # TODO: make optional/weak
+    FORMULA_CACHE = Hash.new { |h, k| h[k] = {} }
+
     def parse(text, type)
       type_error! unless valid_type?(type)
+
+      return FORMULA_CACHE[type][text] if FORMULA_CACHE[type].key?(text)
 
       begin
         klass = klass_from_type(type)
         formula = klass.new(text).to_formula
         formula.input_string = text
-        formula
+        FORMULA_CACHE[type][text] = formula
       rescue => ee
         parse_error!(text, type.to_sym)
       end
