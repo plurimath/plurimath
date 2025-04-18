@@ -55,9 +55,14 @@ module Plurimath
         formatter: nil,
         unitsml: {},
         split_on_linebreak: false,
-        display_style: displaystyle
+        display_style: displaystyle,
+        unary_function_spacing: false
       )
-        options = { formatter: formatter, unitsml: unitsml }.compact
+        options = {
+          formatter: formatter,
+          unitsml: unitsml,
+          unary_function_spacing: unary_function_spacing
+        }.compact
         return line_breaked_mathml(display_style, intent, options: options) if split_on_linebreak
 
         math_attrs = {

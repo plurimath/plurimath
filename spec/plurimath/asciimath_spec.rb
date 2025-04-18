@@ -7056,6 +7056,9 @@ RSpec.describe Plurimath::Asciimath do
             </mstyle>
           </math>
         MATHML
+        expect(formula.to_latex).to eql(latex)
+        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_asciimath).to eql(asciimath)
       end
     end
 
@@ -7098,6 +7101,9 @@ RSpec.describe Plurimath::Asciimath do
             </mstyle>
           </math>
         MATHML
+        expect(formula.to_latex).to eql(latex)
+        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_asciimath).to eql(asciimath)
       end
     end
 
@@ -7141,6 +7147,9 @@ RSpec.describe Plurimath::Asciimath do
             </mstyle>
           </math>
         MATHML
+        expect(formula.to_latex).to eql(latex)
+        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_asciimath).to eql(asciimath)
       end
     end
 
@@ -7183,6 +7192,9 @@ RSpec.describe Plurimath::Asciimath do
             </mstyle>
           </math>
         MATHML
+        expect(formula.to_latex).to eql(latex)
+        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_asciimath).to eql(asciimath)
       end
     end
 
@@ -7225,6 +7237,9 @@ RSpec.describe Plurimath::Asciimath do
             </mstyle>
           </math>
         MATHML
+        expect(formula.to_latex).to eql(latex)
+        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_asciimath).to eql(asciimath)
       end
     end
 
@@ -7266,6 +7281,9 @@ RSpec.describe Plurimath::Asciimath do
             </mstyle>
           </math>
         MATHML
+        expect(formula.to_latex).to eql(latex)
+        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_asciimath).to eql(asciimath)
       end
     end
 
@@ -7307,6 +7325,35 @@ RSpec.describe Plurimath::Asciimath do
             </mstyle>
           </math>
         MATHML
+        expect(formula.to_latex).to eql(latex)
+        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_asciimath).to eql(asciimath)
+      end
+    end
+
+    context "contains sin with thickmathspace before it example #134" do
+      let(:string) { "xsiny" }
+
+      it 'matches LaTeX, AsciiMath, and MathML' do
+        asciimath = "x siny"
+        latex = 'x \sin{y}'
+        mathml = <<~MATHML
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
+              <mi>x</mi>
+              <mrow>
+                <mo rspace="thickmathspace"/>
+                <mrow>
+                  <mi>sin</mi>
+                  <mi>y</mi>
+                </mrow>
+              </mrow>
+            </mstyle>
+          </math>
+        MATHML
+        expect(formula.to_latex).to eql(latex)
+        expect(formula.to_mathml(unary_function_spacing: true)).to be_equivalent_to(mathml)
+        expect(formula.to_asciimath).to eql(asciimath)
       end
     end
   end
