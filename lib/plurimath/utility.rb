@@ -302,7 +302,8 @@ module Plurimath
       end
 
       def all_symbols_classes(lang)
-        symbols_hash(lang).merge(parens_hash(lang))
+        @@all_symbols ||= {}
+        @@all_symbols[lang] ||= symbols_hash(lang).merge(parens_hash(lang))
       end
 
       def ox_element(node, attributes: [], namespace: "")
@@ -457,8 +458,11 @@ module Plurimath
       end
 
       def html_entity_to_unicode(string)
-        entities = HTMLEntities.new
-        entities.decode(string)
+        htmlEntities().decode(string)
+      end
+
+      def htmlEntities
+        Thread.current[:html_entities] ||= HTMLEntities.new
       end
 
       def table_separator(separator, value, symbol: "solid")
