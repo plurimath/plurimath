@@ -12,3 +12,5 @@ gem 'opal-rspec', "~> 1.1.0a"
 gem 'oga'
 gem 'ox'
 gem "debug"
+
+gem "parslet", github: "plurimath/parslet", branch: "feature/performance"
