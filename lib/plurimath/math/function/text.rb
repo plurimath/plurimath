@@ -17,6 +17,11 @@ module Plurimath
           @lang = lang
         end
 
+        def ==(object)
+          object.class == self.class &&
+            object.parameter_one == self.parameter_one
+        end
+
         def to_asciimath(**)
           "\"#{parse_text('asciimath') || parameter_one}\""
         end
@@ -53,7 +58,6 @@ module Plurimath
           r_tag = Utility.ox_element("r", namespace: "m")
           if @lang&.to_s != "omml"
             rpr_tag = Utility.ox_element("rPr", namespace: "m")
-            rpr_tag << Utility.ox_element("nor", namespace: "m")
             rpr_tag << msty_tag_with_attrs
             r_tag << rpr_tag
           end

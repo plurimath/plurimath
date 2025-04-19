@@ -11,11 +11,17 @@
       </m:eqArrPr>
       <m:e>
         <m:r>
+          <m:rPr>
+            <m:sty m:val="p"/>
+          </m:rPr>
           <m:t>a</m:t>
         </m:r>
       </m:e>
       <m:e>
         <m:r>
+          <m:rPr>
+            <m:sty m:val="p"/>
+          </m:rPr>
           <m:t>b</m:t>
         </m:r>
       </m:e>

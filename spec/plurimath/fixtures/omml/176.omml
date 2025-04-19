@@ -20,6 +20,9 @@
       <m:mr>
         <m:e>
           <m:r>
+            <m:rPr>
+              <m:sty m:val="p"/>
+            </m:rPr>
             <m:t>a</m:t>
           </m:r>
         </m:e>
@@ -30,6 +33,9 @@
         </m:e>
         <m:e>
           <m:r>
+            <m:rPr>
+              <m:sty m:val="p"/>
+            </m:rPr>
             <m:t>b</m:t>
           </m:r>
         </m:e>
@@ -54,6 +60,9 @@
       <m:mr>
         <m:e>
           <m:r>
+            <m:rPr>
+              <m:sty m:val="p"/>
+            </m:rPr>
             <m:t>c</m:t>
           </m:r>
         </m:e>
@@ -64,6 +73,9 @@
         </m:e>
         <m:e>
           <m:r>
+            <m:rPr>
+              <m:sty m:val="p"/>
+            </m:rPr>
             <m:t>d</m:t>
           </m:r>
         </m:e>

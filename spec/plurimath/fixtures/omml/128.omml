@@ -19,6 +19,9 @@
       </m:e>
       <m:sub>
         <m:r>
+          <m:rPr>
+            <m:sty m:val="p"/>
+          </m:rPr>
           <m:t>x</m:t>
         </m:r>
       </m:sub>

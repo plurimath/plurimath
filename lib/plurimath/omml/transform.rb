@@ -76,9 +76,6 @@ module Plurimath
             Utility.filter_values(flatten_row),
             Utility::FONT_STYLES.key(font).to_s,
           )
-        elsif !(flatten_row.first&.symbol? && flatten_row.first.value.nil? && flatten_row.length > 1)
-          flatten_row.first.value = flatten_row.last.value
-          flatten_row.first
         else
           Utility.filter_values(flatten_row)
         end
@@ -92,7 +89,7 @@ module Plurimath
 
       rule(t: sequence(:t)) do
         if t.empty?
-          Math::Function::Text.new
+          Math::Function::Text.new("", lang: :omml)
         else
           t&.compact&.empty? ? [nil] : Utility.mathml_unary_classes(t, omml: true, lang: :omml)
         end
