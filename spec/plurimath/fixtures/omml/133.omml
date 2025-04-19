@@ -11,11 +11,17 @@
       </m:limLowPr>
       <m:e>
         <m:r>
+          <m:rPr>
+            <m:sty m:val="p"/>
+          </m:rPr>
           <m:t>lim</m:t>
         </m:r>
       </m:e>
       <m:lim>
         <m:r>
+          <m:rPr>
+            <m:sty m:val="p"/>
+          </m:rPr>
           <m:t>n&#x2192;&#x221e;</m:t>
         </m:r>
       </m:lim>
@@ -54,6 +60,9 @@
               </m:num>
               <m:den>
                 <m:r>
+                  <m:rPr>
+                    <m:sty m:val="p"/>
+                  </m:rPr>
                   <m:t>n</m:t>
                 </m:r>
               </m:den>
@@ -63,6 +72,9 @@
       </m:e>
       <m:sup>
         <m:r>
+          <m:rPr>
+            <m:sty m:val="p"/>
+          </m:rPr>
           <m:t>n</m:t>
         </m:r>
       </m:sup>

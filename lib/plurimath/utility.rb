@@ -361,7 +361,7 @@ module Plurimath
         if text&.scan(/[[:digit:]]/)&.length == text&.length
           Math::Number.new(text)
         elsif text&.match?(/[a-zA-Z]/)
-          Math::Function::Text.new(text)
+          Math::Function::Text.new(text, lang: lang)
         else
           text = string_to_html_entity(text)
                   .gsub("&#x26;", "&")
@@ -481,7 +481,7 @@ module Plurimath
           [
             Math::Function::Intent.new(
               filter_values(join_attr_value(nil, value, unicode_only: unicode_only, lang: lang)),
-              Math::Function::Text.new(attrs[:intent]),
+              Math::Function::Text.new(attrs[:intent], lang: lang),
             )
           ]
         elsif value.any?(String)
@@ -767,11 +767,11 @@ module Plurimath
             next temp_array << (object.is_a?(Math::Symbols::Symbol) ? symbol_to_text(object, lang: lang, intent: intent, options: options) : object.value)
           end
 
-          new_arr << Math::Function::Text.new(temp_array.join(" ")) if temp_array.any?
+          new_arr << Math::Function::Text.new(temp_array.join(" "), lang: lang) if temp_array.any?
           temp_array = []
           new_arr << object
         end
-        new_arr << Math::Function::Text.new(temp_array.join(" ")) if temp_array.any?
+        new_arr << Math::Function::Text.new(temp_array.join(" "), lang: lang) if temp_array.any?
         new_arr
       end
 

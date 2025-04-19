@@ -15,6 +15,7 @@ module Plurimath
       rule(sty: simple(:sty))    { sty }
       rule(num: subtree(:num))   { num }
       rule(den: subtree(:den))   { den }
+      rule(nor: subtree(:nor))   { nil }
       rule(fPr: subtree(:fPr))   { nil }
       rule(mpr: subtree(:mpr))   { nil }
       rule(mPr: subtree(:mPr))   { nil }
@@ -88,7 +89,7 @@ module Plurimath
 
       rule(t: sequence(:t)) do
         if t.empty?
-          Math::Function::Text.new
+          Math::Function::Text.new("", lang: :omml)
         else
           t&.compact&.empty? ? [nil] : Utility.mathml_unary_classes(t, omml: true, lang: :omml)
         end
@@ -146,11 +147,13 @@ module Plurimath
 
       rule(rPr: subtree(:rpr)) do
         if rpr.is_a?(Array)
-          Utility::FONT_STYLES[
-            Omml::Parser::SUPPORTED_FONTS[
-              rpr&.join("-")&.to_sym,
-            ]&.to_sym,
-          ]
+          sym_rpr = rpr.compact&.join("-")
+          supported_font = Omml::Parser::SUPPORTED_FONTS[sym_rpr&.to_sym]&.to_sym
+          if Utility::FONT_STYLES.key?(supported_font)
+            Utility::FONT_STYLES[supported_font]
+          elsif sym_rpr.include?("p") || sym_rpr.include?("{:nor=>")
+            Plurimath::Math::Symbols::Symbol.new
+          end
         end
       end
 

@@ -92,9 +92,7 @@ module Plurimath
         end
 
         def rpr_tag
-          sty_atrs = { "m:val": "p" }
-          sty_tag  = Utility.ox_element("sty", attributes: sty_atrs, namespace: "m")
-          rpr_tag  = (Utility.ox_element("rPr", namespace: "m") << sty_tag)
+          rpr_tag  = (Utility.ox_element("rPr", namespace: "m") << msty_tag_with_attrs)
           r_tag = Utility.ox_element("r", namespace: "m")
           t_tag = (Utility.ox_element("t", namespace: "m") << "log")
           Utility.update_nodes(r_tag, [rpr_tag, t_tag])

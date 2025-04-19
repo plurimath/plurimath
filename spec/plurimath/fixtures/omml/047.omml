@@ -19,11 +19,17 @@
           </m:eqArrPr>
           <m:e>
             <m:r>
+              <m:rPr>
+                <m:sty m:val="p"/>
+              </m:rPr>
               <m:t>0&#x2264;&#xa0;i&#xa0;&#x2264;&#xa0;m</m:t>
             </m:r>
           </m:e>
           <m:e>
             <m:r>
+              <m:rPr>
+                <m:sty m:val="p"/>
+              </m:rPr>
               <m:t>0&#x3c;j&#x3c;n&#xa0;</m:t>
             </m:r>
           </m:e>
@@ -36,6 +42,9 @@
       </m:sup>
       <m:e>
         <m:r>
+          <m:rPr>
+            <m:sty m:val="p"/>
+          </m:rPr>
           <m:t>P</m:t>
         </m:r>
         <m:d>
@@ -44,6 +53,9 @@
           </m:dPr>
           <m:e>
             <m:r>
+              <m:rPr>
+                <m:sty m:val="p"/>
+              </m:rPr>
               <m:t>i,j</m:t>
             </m:r>
           </m:e>

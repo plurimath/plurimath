@@ -9,16 +9,25 @@
       </m:naryPr>
       <m:sub>
         <m:r>
+          <m:rPr>
+            <m:sty m:val="p"/>
+          </m:rPr>
           <m:t>i=0</m:t>
         </m:r>
       </m:sub>
       <m:sup>
         <m:r>
+          <m:rPr>
+            <m:sty m:val="p"/>
+          </m:rPr>
           <m:t>n</m:t>
         </m:r>
       </m:sup>
       <m:e>
         <m:r>
+          <m:rPr>
+            <m:sty m:val="p"/>
+          </m:rPr>
           <m:t>x</m:t>
         </m:r>
       </m:e>

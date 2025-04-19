@@ -11,6 +11,9 @@
       </m:limUppPr>
       <m:e>
         <m:r>
+          <m:rPr>
+            <m:sty m:val="p"/>
+          </m:rPr>
           <m:t>d</m:t>
         </m:r>
       </m:e>

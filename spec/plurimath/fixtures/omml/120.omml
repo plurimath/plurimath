@@ -9,6 +9,9 @@
       </m:borderBoxPr>
       <m:e>
         <m:r>
+          <m:rPr>
+            <m:sty m:val="p"/>
+          </m:rPr>
           <m:t>ax+b</m:t>
         </m:r>
       </m:e>

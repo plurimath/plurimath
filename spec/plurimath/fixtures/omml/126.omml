@@ -11,6 +11,9 @@
       </m:limLowPr>
       <m:e>
         <m:r>
+          <m:rPr>
+            <m:sty m:val="p"/>
+          </m:rPr>
           <m:t>x&#x2295;y</m:t>
         </m:r>
       </m:e>
