@@ -140,7 +140,7 @@ RSpec.describe Plurimath::Latex do
         MATHML
         latex = "\\cos{45}"
         expect(formula.to_latex).to be_equivalent_to(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
       end
     end
 
@@ -164,7 +164,7 @@ RSpec.describe Plurimath::Latex do
         MATHML
         latex = "{1 \\over 2}"
         expect(formula.to_latex).to be_equivalent_to(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
       end
     end
 
@@ -195,7 +195,7 @@ RSpec.describe Plurimath::Latex do
           </math>
         MATHML
         latex = "L{' \\over {1 \\over 2}}"
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
       end
     end
 
@@ -213,7 +213,7 @@ RSpec.describe Plurimath::Latex do
         MATHML
         latex = "\\left \\{ \\right ."
         expect(formula.to_latex).to be_equivalent_to(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
       end
     end
 
@@ -247,7 +247,7 @@ RSpec.describe Plurimath::Latex do
         MATHML
         latex = "\\begin{matrix}a & b \\\\ c & d\\end{matrix}"
         expect(formula.to_latex).to be_equivalent_to(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
       end
     end
 
@@ -327,7 +327,7 @@ RSpec.describe Plurimath::Latex do
         MATHML
         latex = "\\left \\{ \\begin{array}{l|c}3 x - 5 y + 4 z = 0 & d \\\\ x - y + 8 z = 0 & e \\\\ 2 x - 6 y + z = 0 & c\\end{array} \\right \\}"
         expect(formula.to_latex).to be_equivalent_to(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
       end
     end
 
@@ -361,7 +361,7 @@ RSpec.describe Plurimath::Latex do
         MATHML
         latex = "\\begin{matrix*}[r]a & b \\\\ c & d\\end{matrix*}"
         expect(formula.to_latex).to be_equivalent_to(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
       end
     end
 
@@ -395,7 +395,7 @@ RSpec.describe Plurimath::Latex do
         MATHML
         latex = "\\begin{matrix*}[r]a & b \\\\ c & d\\end{matrix*}"
         expect(formula.to_latex).to be_equivalent_to(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
       end
     end
 
@@ -432,7 +432,7 @@ RSpec.describe Plurimath::Latex do
         MATHML
         latex = "\\begin{matrix}- a & b \\\\ c & d\\end{matrix}"
         expect(formula.to_latex).to be_equivalent_to(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
       end
     end
 
@@ -455,7 +455,7 @@ RSpec.describe Plurimath::Latex do
         MATHML
         latex = "\\begin{matrix}-\\end{matrix}"
         expect(formula.to_latex).to be_equivalent_to(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
       end
     end
 
@@ -501,7 +501,7 @@ RSpec.describe Plurimath::Latex do
         MATHML
         latex = "\\begin{matrix}a_{1} & b_{2} \\\\ c_{3} & d_{4}\\end{matrix}"
         expect(formula.to_latex).to be_equivalent_to(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
       end
     end
 
@@ -535,7 +535,7 @@ RSpec.describe Plurimath::Latex do
         MATHML
         latex = "\\begin{array}{cc}1 & 2 \\\\ 3 & 4\\end{array}"
         expect(formula.to_latex).to be_equivalent_to(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
       end
     end
 
@@ -685,7 +685,7 @@ RSpec.describe Plurimath::Latex do
         MATHML
         latex = "\\begin{bmatrix}a_{1 , 1} & a_{1 , 2} & \\cdots & a_{1 , n} \\\\ a_{2 , 1} & a_{2 , 2} & \\cdots & a_{2 , n} \\\\ \\vdots & \\vdots & \\ddots & \\vdots \\\\ a_{m , 1} & a_{m , 2} & \\cdots & a_{m , n}\\end{bmatrix}"
         expect(formula.to_latex).to be_equivalent_to(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
       end
     end
 
@@ -715,7 +715,7 @@ RSpec.describe Plurimath::Latex do
         MATHML
         latex = "\\sqrt{( - 25 )^{2}} = \\pm 25"
         expect(formula.to_latex).to be_equivalent_to(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
       end
     end
 
@@ -747,7 +747,7 @@ RSpec.describe Plurimath::Latex do
         MATHML
         latex = "\\left ( - x^{3} + 5 \\right )^{5}"
         expect(formula.to_latex).to be_equivalent_to(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
       end
     end
 
@@ -798,7 +798,7 @@ RSpec.describe Plurimath::Latex do
         MATHML
         latex = "\\begin{array}{rcl}A B C & = & a \\\\ A & = & a b c\\end{array}"
         expect(formula.to_latex).to be_equivalent_to(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
       end
     end
 
@@ -848,7 +848,7 @@ RSpec.describe Plurimath::Latex do
         MATHML
         latex = "\\begin{array}{c|r}1 & 2 \\\\ 3 & 4 \\\\ \\hline 5 & 6\\end{array}"
         expect(formula.to_latex).to be_equivalent_to(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
       end
     end
 
@@ -898,7 +898,7 @@ RSpec.describe Plurimath::Latex do
         MATHML
         latex = "\\begin{array}{cr}1 & 2 \\\\ \\hline 3 & 4 \\\\ \\hline 5 & 6\\end{array}"
         expect(formula.to_latex).to be_equivalent_to(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
       end
     end
 
@@ -921,7 +921,7 @@ RSpec.describe Plurimath::Latex do
         MATHML
         latex = "\\mathrm{. . .}"
         expect(formula.to_latex).to be_equivalent_to(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
       end
     end
 
@@ -969,7 +969,7 @@ RSpec.describe Plurimath::Latex do
         MATHML
         latex = "\\frac{x + 4}{x + \\frac{123 \\left ( \\sqrt{x} + 5 \\right )}{x + 4} - 8}"
         expect(formula.to_latex).to be_equivalent_to(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
       end
     end
 
@@ -999,7 +999,7 @@ RSpec.describe Plurimath::Latex do
         MATHML
         latex = "\\sqrt{\\sqrt{\\left ( x^{3} \\right ) + v}}"
         expect(formula.to_latex).to be_equivalent_to(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
       end
     end
 
@@ -1019,7 +1019,7 @@ RSpec.describe Plurimath::Latex do
         MATHML
         latex = "\\left ( x \\right ) 5"
         expect(formula.to_latex).to be_equivalent_to(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
       end
     end
 
@@ -1041,7 +1041,7 @@ RSpec.describe Plurimath::Latex do
         MATHML
         latex = "\\sqrt[3]{}"
         expect(formula.to_latex).to be_equivalent_to(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
       end
     end
 
@@ -1060,7 +1060,7 @@ RSpec.describe Plurimath::Latex do
         MATHML
         latex = "1_{}"
         expect(formula.to_latex).to be_equivalent_to(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
       end
     end
 
@@ -1081,7 +1081,7 @@ RSpec.describe Plurimath::Latex do
         MATHML
         latex = "\\begin{array}.\\end{array}"
         expect(formula.to_latex).to be_equivalent_to(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
       end
     end
 
@@ -1102,7 +1102,7 @@ RSpec.describe Plurimath::Latex do
         MATHML
         latex = "\\begin{array}.\\end{array}"
         expect(formula.to_latex).to be_equivalent_to(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
       end
     end
 
@@ -1189,7 +1189,7 @@ RSpec.describe Plurimath::Latex do
         MATHML
         latex = "\\left [ \\begin{matrix}1 & 0 & 0 & 0 \\\\ 0 & 1 & 0 & 0 \\\\ 0 & 0 & 1 & 0 \\\\ 0 & 0 & 0 & 1\\end{matrix} \\right ]"
         expect(formula.to_latex).to be_equivalent_to(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
       end
     end
 
@@ -1284,7 +1284,7 @@ RSpec.describe Plurimath::Latex do
         MATHML
         latex = "x^{x^{x^{x}}} \\left ( x^{x^{x}} \\left ( x^{x} \\left ( \\log \\left ( x \\right ) + 1 \\right ) \\log \\left ( x \\right ) + \\frac{x^{x}}{x} \\right ) \\log \\left ( x \\right ) + \\frac{x^{x^{x}}}{x} \\right )"
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
       end
     end
 
@@ -1305,7 +1305,7 @@ RSpec.describe Plurimath::Latex do
         MATHML
         latex = "\\log_{2} x"
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
       end
     end
 
@@ -1325,7 +1325,7 @@ RSpec.describe Plurimath::Latex do
         MATHML
         latex = "\\sqrt[]{3}"
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
       end
     end
 
@@ -1354,7 +1354,7 @@ RSpec.describe Plurimath::Latex do
         MATHML
         latex = "\\frac{3}{\\frac{1}{2} x^{2}}"
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
       end
     end
 
@@ -1397,7 +1397,7 @@ RSpec.describe Plurimath::Latex do
         MATHML
         latex = "\\frac{3}{\\frac{1}{2} x^{2} - \\frac{3 \\sqrt[]{3}}{2} x + 3}"
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
       end
     end
 
@@ -1415,7 +1415,7 @@ RSpec.describe Plurimath::Latex do
         MATHML
         latex = "^ 3"
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
       end
     end
 
@@ -1446,7 +1446,7 @@ RSpec.describe Plurimath::Latex do
         MATHML
         latex = "\\lim_{x \\to + \\infty} f ( x )"
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
       end
     end
 
@@ -1476,7 +1476,7 @@ RSpec.describe Plurimath::Latex do
         MATHML
         latex = "\\inf_{x > s} f ( x )"
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
       end
     end
 
@@ -1510,7 +1510,7 @@ RSpec.describe Plurimath::Latex do
         MATHML
         latex = "\\sup{}_{x \\in \\mathbb{R}} f ( x )"
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
       end
     end
 
@@ -1546,7 +1546,7 @@ RSpec.describe Plurimath::Latex do
         MATHML
         latex = "\\max{}_{x \\in \\[ a , b \\]} f ( x )"
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
       end
     end
 
@@ -1582,7 +1582,7 @@ RSpec.describe Plurimath::Latex do
         MATHML
         latex = "\\min{}_{x \\in \\[ \\alpha , \\beta \\]} f ( x )"
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
       end
     end
 
@@ -1603,7 +1603,7 @@ RSpec.describe Plurimath::Latex do
         MATHML
         latex = "\\int\\limits_{0}^{\\pi}"
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
       end
     end
 
@@ -1640,7 +1640,7 @@ RSpec.describe Plurimath::Latex do
         MATHML
         latex = "\\sum_{\\substack{1 \\le i \\le n \\\\ i \\ne j}}"
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
       end
     end
 
@@ -1662,7 +1662,7 @@ RSpec.describe Plurimath::Latex do
         MATHML
         latex = "\\mathrm{A A}"
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
       end
     end
 
@@ -1694,7 +1694,7 @@ RSpec.describe Plurimath::Latex do
         MATHML
         latex = "( 1 + ( x - y )^{2} )"
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
       end
     end
 
@@ -1944,7 +1944,7 @@ RSpec.describe Plurimath::Latex do
           \\end{array}
         LATEX
         expect(formula.to_latex.gsub(/\s+/, "")).to eql(latex.gsub(/\s+/, ""))
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
       end
     end
 
@@ -2152,7 +2152,7 @@ RSpec.describe Plurimath::Latex do
           \\end{split}
         LATEX
         expect(formula.to_latex.gsub(/\s+/, "")).to eql(latex.gsub(/\s+/, ""))
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
       end
     end
 
@@ -2236,7 +2236,7 @@ RSpec.describe Plurimath::Latex do
             ; \\mathbf{u}
         LATEX
         expect(formula.to_latex.gsub(/\s+/, "")).to eql(latex.gsub(/\s+/, ""))
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
       end
     end
 
@@ -2336,7 +2336,7 @@ RSpec.describe Plurimath::Latex do
           \\[out_{k} = \\frac{1}{s}\\left(k == 0 ? 1 : \\sqrt{2}\\right)\\sum_{n = 0}^{s - 1}in_{n} \\cdot \\cos{\\left( \\frac{\\pi k}{s}\\left( n + \\frac{1}{2} \\right) \\right)}\\]
         LATEX
         expect(formula.to_latex.gsub(/\s+/, "")).to eql(latex.gsub(/\s+/, ""))
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
       end
     end
 
@@ -2435,7 +2435,7 @@ RSpec.describe Plurimath::Latex do
           \\[out_{k} = \\frac{1}{s}(k == 0 ? 1 : \\sqrt{2})\\sum_{n = 0}^{s - 1}in_{n} \\cdot \\cos{( \\frac{\\pi k}{s}( n + \\frac{1}{2} ) )}\\]
         LATEX
         expect(formula.to_latex.gsub(/\s+/, "")).to eql(latex.gsub(/\s+/, ""))
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
       end
     end
 
@@ -2462,7 +2462,7 @@ RSpec.describe Plurimath::Latex do
           \\sin{}_{d}^{e}
         LATEX
         expect(formula.to_latex.gsub(/\s+/, "")).to eql(latex.gsub(/\s+/, ""))
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
       end
     end
 
@@ -2488,7 +2488,7 @@ RSpec.describe Plurimath::Latex do
           \\sin{}^{e}
         LATEX
         expect(formula.to_latex.gsub(/\s+/, "")).to eql(latex.gsub(/\s+/, ""))
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
       end
     end
 
@@ -2520,7 +2520,7 @@ RSpec.describe Plurimath::Latex do
           \\left . s i n_{e} \\right .
         LATEX
         expect(formula.to_latex.gsub(/\s+/, "")).to eql(latex.gsub(/\s+/, ""))
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
       end
     end
 
@@ -2545,7 +2545,7 @@ RSpec.describe Plurimath::Latex do
           \\left . e \\right .
         LATEX
         expect(formula.to_latex.gsub(/\s+/, "")).to eql(latex.gsub(/\s+/, ""))
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
       end
     end
 
@@ -2569,7 +2569,7 @@ RSpec.describe Plurimath::Latex do
         asciimath = ' "symmentic"'
         expect(formula.to_asciimath).to eql(asciimath)
         expect(formula.to_latex.gsub(/\s+/, "")).to eql(latex.gsub(/\s+/, ""))
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
       end
     end
 
@@ -2602,7 +2602,7 @@ RSpec.describe Plurimath::Latex do
         asciimath = "inf_(oint_(lgsigma))^(200)"
         expect(formula.to_asciimath).to eql(asciimath)
         expect(formula.to_latex.gsub(/\s+/, "")).to eql(latex.gsub(/\s+/, ""))
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
       end
     end
 
@@ -2637,7 +2637,7 @@ RSpec.describe Plurimath::Latex do
         asciimath = "a (\"&#x200c;\"^(28) \"Si\")^(3)"
         expect(formula.to_asciimath).to eql(asciimath)
         expect(formula.to_latex.gsub(/\s+/, "")).to eql(latex.gsub(/\s+/, ""))
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
       end
     end
 
@@ -2671,7 +2671,7 @@ RSpec.describe Plurimath::Latex do
         asciimath = "ii(M) (\"\"^(12) \"C\")"
         expect(formula.to_asciimath).to eql(asciimath)
         expect(formula.to_latex.gsub(/\s+/, "")).to eql(latex.gsub(/\s+/, ""))
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
       end
     end
 
@@ -2722,7 +2722,7 @@ RSpec.describe Plurimath::Latex do
         asciimath = "\"\"_(d) \"d\"_(d) mathfrak(d)_(d)^(w) 100_(d)^(w) \"\" \"SO\"_(4)^(2 -)"
         expect(formula.to_asciimath).to eql(asciimath)
         expect(formula.to_latex.gsub(/\s+/, "")).to eql(latex.gsub(/\s+/, ""))
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
       end
     end
 
@@ -2744,7 +2744,7 @@ RSpec.describe Plurimath::Latex do
             </mstyle>
           </math>
         MATHML
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
       end
     end
 
@@ -2800,7 +2800,7 @@ RSpec.describe Plurimath::Latex do
             </mstyle>
           </math>
         MATHML
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
       end
     end
   end

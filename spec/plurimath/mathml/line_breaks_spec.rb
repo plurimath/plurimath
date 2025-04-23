@@ -2,7 +2,7 @@ require "spec_helper"
 require "plurimath/fixtures/formula_modules/line_break_values.rb"
 
 RSpec.describe Plurimath::Mathml::Parser do
-  subject(:mathml) { expected_value.to_mathml(split_on_linebreak: true) }
+  subject(:mathml) { expected_value.to_mathml(split_on_linebreak: true, unary_function_spacing: false) }
   subject(:file) { File.read(file_name) }
 
   context "contains #line-break-001.mathml" do

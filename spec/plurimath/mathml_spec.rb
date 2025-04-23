@@ -165,7 +165,7 @@ RSpec.describe Plurimath::Mathml do
         latex = "h a n n i n g ( k ) = 0 . 5 \\cdot [ 1 - \\cos{(} 2 \\pi \\cdot \\frac{k + 1}{n + 1} ) ] \\text{} ( 0 \\le k \\le n - 1 )"
         asciimath = 'h a n n i n g ( k ) = 0 . 5 * [ 1 - cos( 2 pi * frac(k + 1)(n + 1) ) ] "" ( 0 le k le n - 1 )'
         expect(formula.to_latex).to eq(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eq(asciimath)
       end
     end
@@ -254,7 +254,7 @@ RSpec.describe Plurimath::Mathml do
         latex = "\\int_{t_{2}}^{t_{1}} f ( t ) \\\\ d t"
         asciimath = "int_(t_(2))^(t_(1)) f ( t ) \\\n d t"
         expect(formula.to_latex).to eq(latex)
-        expect(formula.to_mathml(split_on_linebreak: true)).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(split_on_linebreak: true, unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eq(asciimath)
       end
     end
@@ -299,7 +299,7 @@ RSpec.describe Plurimath::Mathml do
         latex = " x  \\phantom{+} \\phantom{ y } +  z "
         asciimath = ' x  \  \ \ \  +  z '
         expect(formula.to_latex).to eq(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eq(asciimath)
       end
     end
@@ -338,7 +338,7 @@ RSpec.describe Plurimath::Mathml do
         latex = "a_{b}^{c}"
         asciimath = 'a_(b)^(c)'
         expect(formula.to_latex).to eq(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eq(asciimath)
       end
     end
@@ -379,7 +379,7 @@ RSpec.describe Plurimath::Mathml do
         latex = "100_{\\alpha}^{\\beta}"
         asciimath = '100_(alpha)^(beta)'
         expect(formula.to_latex).to eq(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eq(asciimath)
       end
     end
@@ -1167,7 +1167,7 @@ RSpec.describe Plurimath::Mathml do
         latex = "\\text{Convert} ( x , y , z , p_{a} , p_{o} , R , S , T ) = R_{z} ( \\alpha ) R_{y} ( \\beta ) R_{x} ( \\gamma ) S ( x - a_{x} , y - a_{y} , z - a_{z} ) + p_{o} + T =\\\\  \\left [\\begin{matrix}\\cos{\\text{P[funcapply]}} \\alpha \\cos{\\beta} & \\cos{\\text{P[funcapply]}} \\alpha \\sin{\\text{P[funcapply]}} \\beta \\sin{\\text{P[funcapply]}} \\gamma - \\sin{\\text{P[funcapply]}} \\alpha \\cos{\\gamma} & \\cos{\\text{P[funcapply]}} \\alpha \\sin{\\text{P[funcapply]}} \\beta \\cos{\\text{P[funcapply]}} \\gamma + \\sin{\\text{P[funcapply]}} \\alpha \\sin{\\text{P[funcapply]}} \\gamma \\\\ \\sin{\\text{P[funcapply]}} \\alpha \\cos{\\text{P[funcapply]}} \\beta & \\sin{\\text{P[funcapply]}} \\alpha \\sin{\\text{P[funcapply]}} \\beta \\sin{\\text{P[funcapply]}} \\gamma + \\cos{\\text{P[funcapply]}} \\alpha \\cos{\\text{P[funcapply]}} \\gamma & \\sin{\\text{P[funcapply]}} \\alpha \\sin{\\text{P[funcapply]}} \\beta \\cos{\\text{P[funcapply]}} \\gamma - \\cos{\\text{P[funcapply]}} \\alpha \\sin{\\text{P[funcapply]}} \\gamma \\\\ - \\sin{\\text{P[funcapply]}} \\beta & \\text{“cos ⁡”} \\beta \\sin{\\text{P[funcapply]}} \\gamma & \\cos{\\text{P[funcapply]}} \\beta \\cos{\\text{P[funcapply]}} \\gamma\\end{matrix}\\right ] \\left [\\begin{matrix}s_{x} \\ast ( x - a_{x} ) \\\\ s_{y} \\ast ( y - a_{y} ) \\\\ s_{z} \\ast ( z - a_{z} )\\end{matrix}\\right ] + \\left [\\begin{matrix}x_{0} + t_{x} \\\\ y_{0} + t_{y} \\\\ z_{0} + t_{z}\\end{matrix}\\right ] \\sqrt{d}"
         asciimath = "\"Convert\" (x , y , z , p_(a) , p_(o) , R , S , T) = R_(z) (alpha) R_(y) (beta) R_(x) (gamma) S (x - a_(x) , y - a_(y) , z - a_(z)) + p_(o) + T =\\\n  [[cos\"P{funcapply}\" alpha cosbeta, cos\"P{funcapply}\" alpha sin\"P{funcapply}\" beta sin\"P{funcapply}\" gamma - sin\"P{funcapply}\" alpha cosgamma, cos\"P{funcapply}\" alpha sin\"P{funcapply}\" beta cos\"P{funcapply}\" gamma + sin\"P{funcapply}\" alpha sin\"P{funcapply}\" gamma], [sin\"P{funcapply}\" alpha cos\"P{funcapply}\" beta, sin\"P{funcapply}\" alpha sin\"P{funcapply}\" beta sin\"P{funcapply}\" gamma + cos\"P{funcapply}\" alpha cos\"P{funcapply}\" gamma, sin\"P{funcapply}\" alpha sin\"P{funcapply}\" beta cos\"P{funcapply}\" gamma - cos\"P{funcapply}\" alpha sin\"P{funcapply}\" gamma], [- sin\"P{funcapply}\" beta, \"“cos ⁡”\" beta sin\"P{funcapply}\" gamma, cos\"P{funcapply}\" beta cos\"P{funcapply}\" gamma]] [[s_(x) ast (x - a_(x))], [s_(y) ast (y - a_(y))], [s_(z) ast (z - a_(z))]] + [[x_(0) + t_(x)], [y_(0) + t_(y)], [z_(0) + t_(z)]] sqrt(d)"
         expect(formula.to_latex).to eq(latex)
-        expect(formula.to_mathml(split_on_linebreak: true)).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(split_on_linebreak: true, unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eq(asciimath)
       end
     end
@@ -1216,7 +1216,7 @@ RSpec.describe Plurimath::Mathml do
         latex = "12  i "
         asciimath = "12i "
         expect(formula.to_latex).to eq(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eq(asciimath)
       end
     end
@@ -1247,7 +1247,7 @@ RSpec.describe Plurimath::Mathml do
         latex = "Alternate Text Alternate Text 1 Alternate Text 2"
         asciimath = "Alternate Text Alternate Text 1 Alternate Text 2"
         expect(formula.to_latex).to eq(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eq(asciimath)
       end
     end
@@ -1285,7 +1285,7 @@ RSpec.describe Plurimath::Mathml do
         latex = "F F"
         asciimath = "F F"
         expect(formula.to_latex).to eq(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eq(asciimath)
       end
     end
@@ -1342,7 +1342,7 @@ RSpec.describe Plurimath::Mathml do
         latex = "{}_{}^{}\\sum_{F}^{A} {}_{4}^{E}\\sum_{F}^{B}"
         asciimath = "\\ _()^()sum_(F)^(A) \\ _(4)^(E)sum_(F)^(B)"
         expect(formula.to_latex).to eq(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eq(asciimath)
       end
     end
@@ -1381,7 +1381,7 @@ RSpec.describe Plurimath::Mathml do
         latex = "\\oint_{F}^{A} C"
         asciimath = "oint_(F)^(A) C"
         expect(formula.to_latex).to eq(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eq(asciimath)
       end
     end
@@ -1416,7 +1416,7 @@ RSpec.describe Plurimath::Mathml do
         latex = "\\oint_{F} C"
         asciimath = "oint_(F) C"
         expect(formula.to_latex).to eq(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eq(asciimath)
       end
     end
@@ -1469,7 +1469,7 @@ RSpec.describe Plurimath::Mathml do
         latex = "\\left .\\begin{matrix}{a}\\cup F \\\\ \\cup E\\end{matrix}\\right ."
         asciimath = "[[uu F], [uu E]]"
         expect(formula.to_latex).to eq(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eq(asciimath)
       end
     end
@@ -1600,7 +1600,7 @@ RSpec.describe Plurimath::Mathml do
         latex = 's_{\text{p}}^{2} = \frac{\sum_{i = 1}^{\mathit{N}} \mathit{\nu}_{i} s_{i}^{2}}{\sum_{i = 1}^{\mathit{N}} \mathit{\nu}_{i}}'
         asciimath = 's_("p")^(2) = frac(sum_(i = 1)^(ii(N)) ii(nu)_(i) s_(i)^(2))(sum_(i = 1)^(ii(N)) ii(nu)_(i))'
         expect(formula.to_latex).to eq(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eq(asciimath)
       end
     end
@@ -1825,7 +1825,7 @@ RSpec.describe Plurimath::Mathml do
         latex = '\underline{\mathit{B}} = \left [\begin{matrix}1 &  &  &  &  \\\\ 1 & 1 &  &  &  \\\\ 1 & 2 & 1 &  &  \\\\ {\color{"red"} 1} & {\color{"red"} 3} & {\color{"red"} 3} & {\color{"red"} 1} &  \\\\ 1 & 4 & 6 & 4 & 1 \\\\  &  & \ldots &  & \end{matrix}\right ]'
         asciimath = 'underline(ii(B)) = [[1, , , , ], [1, 1, , , ], [1, 2, 1, , ], [color("red")(1), color("red")(3), color("red")(3), color("red")(1), ], [1, 4, 6, 4, 1], [, , ..., , ]]'
         expect(formula.to_latex).to eq(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eq(asciimath)
       end
     end
@@ -1884,7 +1884,7 @@ RSpec.describe Plurimath::Mathml do
         latex = "y_{k} = ( x_{k} \\pm h )  m"
         asciimath = "y_(k) = (x_(k) pm h)  m"
         expect(formula.to_latex).to eq(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eq(asciimath)
       end
     end
@@ -2005,7 +2005,7 @@ RSpec.describe Plurimath::Mathml do
         latex = '\int_{o}^{1} B_{4} ( \mathit{\rho} ) \text{d} \mathit{\rho} = [ \frac{1}{24} \mathit{\rho}^{4} ]_{0}^{1} = \frac{1}{24} \approx 0.0417'
         asciimath = 'int_(o)^(1) B_(4) (ii(rho)) "d" ii(rho) = [frac(1)(24) ii(rho)^(4)]_(0)^(1) = frac(1)(24) approx 0.0417'
         expect(formula.to_latex).to eq(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eq(asciimath)
       end
     end

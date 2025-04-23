@@ -959,7 +959,7 @@ RSpec.describe Plurimath::Math::Formula do
   end
 
   describe ".to_mathml" do
-    subject(:formula) { described_class.new(exp).to_mathml }
+    subject(:formula) { described_class.new(exp).to_mathml(unary_function_spacing: false) }
 
     context "contains left right with table string" do
       let(:exp) do

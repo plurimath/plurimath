@@ -42,7 +42,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eq(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eq(asciimath)
       end
     end
@@ -96,7 +96,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eq(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eq(asciimath)
       end
     end
@@ -134,7 +134,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -164,7 +164,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -193,7 +193,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -228,7 +228,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -261,7 +261,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -291,7 +291,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -322,7 +322,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -344,7 +344,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -366,7 +366,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -388,7 +388,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -442,7 +442,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -467,7 +467,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -495,7 +495,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -517,7 +517,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -550,7 +550,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -607,7 +607,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -647,7 +647,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -673,7 +673,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -699,7 +699,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -754,7 +754,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -792,7 +792,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -856,7 +856,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -899,7 +899,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -950,7 +950,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -1005,7 +1005,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -1048,7 +1048,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -1088,7 +1088,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -1122,7 +1122,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -1168,7 +1168,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -1223,7 +1223,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -1301,7 +1301,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -1325,7 +1325,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -1361,7 +1361,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -1380,7 +1380,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -1414,7 +1414,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -1488,7 +1488,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -1518,7 +1518,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -1540,7 +1540,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -1572,7 +1572,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -1606,7 +1606,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -1639,7 +1639,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -1685,7 +1685,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -1731,7 +1731,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -1782,7 +1782,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -1840,7 +1840,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -2026,7 +2026,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -2180,7 +2180,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -2243,7 +2243,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -2565,7 +2565,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -2678,7 +2678,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -2778,7 +2778,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -2815,7 +2815,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -3094,7 +3094,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -3239,7 +3239,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -3317,7 +3317,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -3382,7 +3382,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -3425,7 +3425,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -3489,7 +3489,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -3614,7 +3614,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -3675,7 +3675,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -3709,7 +3709,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -3761,7 +3761,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -3791,7 +3791,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -3824,7 +3824,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -3857,7 +3857,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -3890,7 +3890,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -3971,7 +3971,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -4005,7 +4005,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -4026,7 +4026,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -4049,7 +4049,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -4072,7 +4072,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -4094,7 +4094,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -4124,7 +4124,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -4156,7 +4156,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -4182,7 +4182,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -4204,7 +4204,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -4223,7 +4223,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -4242,7 +4242,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -4266,7 +4266,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -4289,7 +4289,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -4313,7 +4313,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -4337,7 +4337,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -4373,7 +4373,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -4395,7 +4395,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -4548,7 +4548,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -4636,7 +4636,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -4707,7 +4707,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -4777,7 +4777,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -4894,7 +4894,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -4939,7 +4939,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -4983,7 +4983,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -5009,7 +5009,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -5082,7 +5082,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -5169,7 +5169,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -5218,7 +5218,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -5249,7 +5249,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -5274,7 +5274,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -5294,7 +5294,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -5351,7 +5351,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -5388,7 +5388,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -5423,7 +5423,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -5448,7 +5448,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -5506,7 +5506,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -5538,7 +5538,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -5566,7 +5566,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -5599,7 +5599,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -5628,7 +5628,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -5653,7 +5653,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -5678,7 +5678,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -5749,7 +5749,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -5805,7 +5805,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -5931,7 +5931,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -6065,7 +6065,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -6165,7 +6165,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -6240,7 +6240,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -6283,7 +6283,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -6304,7 +6304,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -6325,7 +6325,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -6367,7 +6367,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -6413,7 +6413,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -6436,7 +6436,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -6463,7 +6463,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -6608,7 +6608,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -6748,7 +6748,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -6927,7 +6927,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -6970,7 +6970,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -7013,7 +7013,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -7057,7 +7057,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -7102,7 +7102,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -7148,7 +7148,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -7193,7 +7193,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -7238,7 +7238,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -7282,7 +7282,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -7326,7 +7326,7 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
@@ -7352,7 +7352,8 @@ RSpec.describe Plurimath::Asciimath do
           </math>
         MATHML
         expect(formula.to_latex).to eql(latex)
-        expect(formula.to_mathml(unary_function_spacing: true)).to be_equivalent_to(mathml)
+        # testing MathML conversion's behaviour to add `unary_function_spacing: true` by default
+        expect(formula.to_mathml).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
     end
