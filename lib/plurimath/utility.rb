@@ -458,11 +458,8 @@ module Plurimath
       end
 
       def html_entity_to_unicode(string)
-        html_entities.decode(string)
-      end
-
-      def html_entities
-        Thread.current[:html_entities_cache] ||= HTMLEntities.new
+        entities = HTMLEntities.new
+        entities.decode(string)
       end
 
       def table_separator(separator, value, symbol: "solid")
