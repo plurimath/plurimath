@@ -9,20 +9,29 @@ module Plurimath
 
       attr_accessor :value, :left_right_wrapper, :displaystyle, :input_string, :display
 
-      MATH_ZONE_TYPES = %i[
-        omml
-        latex
-        mathml
-        asciimath
-        unicodemath
-      ].freeze
       POWER_BASE_CLASSES = %w[powerbase power base].freeze
-      DERIVATIVE_CONSTS = [
-        "&#x1d451;",
-        "&#x2145;",
-        "&#x2146;",
-        "d",
-      ].freeze
+      DERIVATIVE_CONSTS  = ["&#x1d451;", "&#x2145;", "&#x2146;", "d"].freeze
+      MATH_ZONE_TYPES    = %i[omml latex mathml asciimath unicodemath].freeze
+      OMML_NAMESPACES    = {
+        "xmlns:m": "http://schemas.openxmlformats.org/officeDocument/2006/math",
+        "xmlns:mc": "http://schemas.openxmlformats.org/markup-compatibility/2006",
+        "xmlns:mo": "http://schemas.microsoft.com/office/mac/office/2008/main",
+        "xmlns:mv": "urn:schemas-microsoft-com:mac:vml",
+        "xmlns:o": "urn:schemas-microsoft-com:office:office",
+        "xmlns:r": "http://schemas.openxmlformats.org/officeDocument/2006/relationships",
+        "xmlns:v": "urn:schemas-microsoft-com:vml",
+        "xmlns:w": "http://schemas.openxmlformats.org/wordprocessingml/2006/main",
+        "xmlns:w10": "urn:schemas-microsoft-com:office:word",
+        "xmlns:w14": "http://schemas.microsoft.com/office/word/2010/wordml",
+        "xmlns:w15": "http://schemas.microsoft.com/office/word/2012/wordml",
+        "xmlns:wne": "http://schemas.microsoft.com/office/word/2006/wordml",
+        "xmlns:wp": "http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing",
+        "xmlns:wp14": "http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing",
+        "xmlns:wpc": "http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas",
+        "xmlns:wpg": "http://schemas.microsoft.com/office/word/2010/wordprocessingGroup",
+        "xmlns:wpi": "http://schemas.microsoft.com/office/word/2010/wordprocessingInk",
+        "xmlns:wps": "http://schemas.microsoft.com/office/word/2010/wordprocessingShape",
+      }.freeze
 
       def initialize(
         value = [],
@@ -56,7 +65,7 @@ module Plurimath
         unitsml: {},
         split_on_linebreak: false,
         display_style: displaystyle,
-        unary_function_spacing: false
+        unary_function_spacing: true
       )
         options = {
           formatter: formatter,
@@ -120,33 +129,10 @@ module Plurimath
         parse_error!(:html)
       end
 
-      def omml_attrs
-        {
-          "xmlns:m": "http://schemas.openxmlformats.org/officeDocument/2006/math",
-          "xmlns:mc": "http://schemas.openxmlformats.org/markup-compatibility/2006",
-          "xmlns:mo": "http://schemas.microsoft.com/office/mac/office/2008/main",
-          "xmlns:mv": "urn:schemas-microsoft-com:mac:vml",
-          "xmlns:o": "urn:schemas-microsoft-com:office:office",
-          "xmlns:r": "http://schemas.openxmlformats.org/officeDocument/2006/relationships",
-          "xmlns:v": "urn:schemas-microsoft-com:vml",
-          "xmlns:w": "http://schemas.openxmlformats.org/wordprocessingml/2006/main",
-          "xmlns:w10": "urn:schemas-microsoft-com:office:word",
-          "xmlns:w14": "http://schemas.microsoft.com/office/word/2010/wordml",
-          "xmlns:w15": "http://schemas.microsoft.com/office/word/2012/wordml",
-          "xmlns:wne": "http://schemas.microsoft.com/office/word/2006/wordml",
-          "xmlns:wp": "http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing",
-          "xmlns:wp14": "http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing",
-          "xmlns:wpc": "http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas",
-          "xmlns:wpg": "http://schemas.microsoft.com/office/word/2010/wordprocessingGroup",
-          "xmlns:wpi": "http://schemas.microsoft.com/office/word/2010/wordprocessingInk",
-          "xmlns:wps": "http://schemas.microsoft.com/office/word/2010/wordprocessingShape",
-        }
-      end
-
       def to_omml(display_style: displaystyle, split_on_linebreak: false, formatter: nil, unitsml: {})
         objects = split_on_linebreak ? new_line_support : [self]
         options = { formatter: formatter, unitsml: unitsml }.compact
-        para_element = Utility.ox_element("oMathPara", attributes: omml_attrs, namespace: "m")
+        para_element = Utility.ox_element("oMathPara", attributes: OMML_NAMESPACES, namespace: "m")
         objects.each.with_index(1) do |object, index|
           para_element << Utility.update_nodes(
             Utility.ox_element("oMath", namespace: "m"),
