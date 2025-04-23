@@ -82,7 +82,12 @@ module Plurimath
 
       def line_breaked_mathml(display_style, intent, options:)
         new_line_support.map do |formula|
-          formula.to_mathml(display_style: display_style, intent: intent, formatter: options[:formatter])
+          formula.to_mathml(
+            display_style: display_style,
+            intent: intent,
+            formatter: options[:formatter],
+            unary_function_spacing: options[:unary_function_spacing],
+          )
         end.join
       end
 
@@ -171,8 +176,12 @@ module Plurimath
         parse_error!(:unicodemath)
       end
 
-      def to_display(type = nil, formatter: nil, unitsml: {})
-        options = { formatter: formatter, unitsml: unitsml }
+      def to_display(type = nil, formatter: nil, unitsml: {}, unary_function_spacing: true)
+        options = {
+          formatter: formatter,
+          unitsml: unitsml,
+          unary_function_spacing: unary_function_spacing
+        }
         return type_error!(type) unless MATH_ZONE_TYPES.include?(type.downcase.to_sym)
 
         math_zone = case type
@@ -181,7 +190,7 @@ module Plurimath
                     when :latex
                       "  |_ \"#{to_latex(options: options)}\"\n#{to_latex_math_zone("     ", options: options).join}"
                     when :mathml
-                      mathml = to_mathml(formatter: formatter).gsub(/\n\s*/, "")
+                      mathml = to_mathml(formatter: formatter, unary_function_spacing: options[:unary_function_spacing]).gsub(/\n\s*/, "")
                       math_display = to_mathml_math_zone("     ", options: options).join
                       "  |_ \"#{mathml}\"\n#{math_display}"
                     when :omml

@@ -2,7 +2,7 @@ require "spec_helper"
 
 RSpec.describe Plurimath::Math::Formula do
   describe ".to_mathml" do
-    subject(:formula) { exp.to_mathml(display_style: display_style) }
+    subject(:formula) { exp.to_mathml(display_style: display_style, unary_function_spacing: false) }
     let(:display_style) { true }
 
     context "contains mathml string of sin formula" do

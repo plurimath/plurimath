@@ -20,8 +20,8 @@ RSpec.describe Plurimath::Math::Formula do
     end
   end
 
-  describe ".to_mathml(intent: true)" do
-    subject(:formula) { Plurimath::Math.parse(string, lang).to_mathml(intent: true) }
+  describe ".to_mathml(intent: true, unary_function_spacing: false)" do
+    subject(:formula) { Plurimath::Math.parse(string, lang).to_mathml(intent: true, unary_function_spacing: false) }
 
     context "contains prod AsciiMath string" do
       let(:lang) { :asciimath }
