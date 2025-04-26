@@ -14,3 +14,4 @@ jobs:
     uses: metanorma/ci/.github/workflows/dependent-rake.yml@main
     with:
       command: bundle exec rspec
+      repos-json-file: .github/workflows/dependent-repos-ruby.json
