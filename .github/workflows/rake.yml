@@ -11,3 +11,14 @@ on:
 jobs:
   rake:
     uses: metanorma/ci/.github/workflows/generic-rake.yml@main
+    with:
+      # This is to fix Ruby 3.4 on Windows, as per lutaml/lutaml-model#447
+      before-setup-ruby: |
+        mkdir -p .bundle
+        touch .bundle/config
+        cat .bundle/config
+        echo "---" >> .bundle/config
+        echo 'BUNDLE_BUILD__RUBY___LL: "--with-cflags=-std=gnu17"' >> .bundle/config
+        cat .bundle/config
+    secrets:
+      pat_token: ${{ secrets.PLURIMATH_CI_PAT_TOKEN }}
