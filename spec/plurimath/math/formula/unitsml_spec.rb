@@ -160,7 +160,7 @@ RSpec.describe Plurimath::Math::Formula do
                     </UnitSymbol>
                     <RootUnits>
                       <EnumeratedRootUnit unit="coulomb" powerNumerator="2"/>
-                      <EnumeratedRootUnit unit="meter"/>
+                      <EnumeratedRootUnit unit="metre"/>
                     </RootUnits>
                   </Unit>
                   <Dimension xmlns="https://schema.unitsml.org/unitsml/1.0" id="D_LM2I2">
