@@ -66,7 +66,7 @@ module Plurimath
           separator = "{#{table_attribute(:latex)}}" if environment&.include?("array")
           left_paren = open_paren&.to_latex(options: options) || "."
           right_paren = close_paren&.to_latex(options: options) || "."
-          left = "\\left #{left_paren}\\begin{matrix}"
+          left = "\\left #{left_paren.delete_prefix("\\left")}\\begin{matrix}"
           right = "\\end{matrix}\\right #{right_paren.delete_prefix("\\right")}"
           "#{left}#{separator}#{latex_content(options: options)}#{right}"
         end

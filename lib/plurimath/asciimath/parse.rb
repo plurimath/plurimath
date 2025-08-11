@@ -110,7 +110,7 @@ module Plurimath
       end
 
       rule(:tr) do
-        ((left_right_open_paren.as(:open_tr) >> td.as(:tds_list) >> left_right_close_paren).as(:table_row) >> comma >> space? >> tr.as(:expr)) |
+        ((left_right_open_paren.as(:open_tr) >> td.as(:tds_list) >> left_right_close_paren).as(:table_row) >> space? >> comma >> space? >> tr.as(:expr)) |
           (left_right_open_paren.as(:open_tr) >> td.as(:tds_list) >> left_right_close_paren).as(:table_row)
       end
 

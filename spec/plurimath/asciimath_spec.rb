@@ -6478,7 +6478,7 @@ RSpec.describe Plurimath::Asciimath do
       end
 
       it 'matches LaTeX, AsciiMath, and MathML' do
-        latex = "\\left \\left.\\begin{matrix}\\left. y_{1} = - 0.1712 \\mathrm{&#xb0;C} \\right. & \\left. s ( y_{1} ) = 0.0029 \\mathrm{&#xb0;C} \\right. \\\\ \\left. y_{2} = 0.00218 \\right. & \\left. s ( y_{2} ) = 0.00067 \\right. \\\\ \\left. r ( y_{1} , y_{2} ) = - 0.930 \\right. & \\left. s = 0.0035 \\mathrm{&#xb0;C} \\right.\\end{matrix}\\right ."
+        latex = "\\left .\\begin{matrix}\\left. y_{1} = - 0.1712 \\mathrm{&#xb0;C} \\right. & \\left. s ( y_{1} ) = 0.0029 \\mathrm{&#xb0;C} \\right. \\\\ \\left. y_{2} = 0.00218 \\right. & \\left. s ( y_{2} ) = 0.00067 \\right. \\\\ \\left. r ( y_{1} , y_{2} ) = - 0.930 \\right. & \\left. s = 0.0035 \\mathrm{&#xb0;C} \\right.\\end{matrix}\\right ."
         asciimath = "{:[{:y_(1) = - 0.1712 rm(&#xb0;C):}, {:s (y_(1)) = 0.0029 rm(&#xb0;C):}], [{:y_(2) = 0.00218:}, {:s (y_(2)) = 0.00067:}], [{:r (y_(1) , y_(2)) = - 0.930:}, {:s = 0.0035 rm(&#xb0;C):}]:}"
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
@@ -6622,7 +6622,7 @@ RSpec.describe Plurimath::Asciimath do
       end
 
       it 'matches LaTeX, AsciiMath, and MathML' do
-        latex = "\\left \\left.\\begin{matrix}\\left. \\mathit{A}_{\\text{S}} = 0.1368 \\mathrm{Bq} \\cdot \\mathrm{g}^{- 1} \\right. & \\left. \\text{} \\right. \\\\ \\left. u ( \\mathit{A}_{\\text{S}} ) = 0.0018 \\mathrm{Bq} \\cdot \\mathrm{g}^{- 1} ; \\right. & \\left. u ( \\mathit{A}_{\\text{S}} ) / \\mathit{A}_{\\text{S}} = 1.32 \\times 10^{- 2} \\right.\\end{matrix}\\right ."
+        latex = "\\left .\\begin{matrix}\\left. \\mathit{A}_{\\text{S}} = 0.1368 \\mathrm{Bq} \\cdot \\mathrm{g}^{- 1} \\right. & \\left. \\text{} \\right. \\\\ \\left. u ( \\mathit{A}_{\\text{S}} ) = 0.0018 \\mathrm{Bq} \\cdot \\mathrm{g}^{- 1} ; \\right. & \\left. u ( \\mathit{A}_{\\text{S}} ) / \\mathit{A}_{\\text{S}} = 1.32 \\times 10^{- 2} \\right.\\end{matrix}\\right ."
         asciimath = '{:[{:ii(A)_("S") = 0.1368 rm(Bq) * rm(g)^(- 1):}, {:"":}], [{:u (ii(A)_("S")) = 0.0018 rm(Bq) * rm(g)^(- 1) ;:}, {:u (ii(A)_("S")) // ii(A)_("S") = 1.32 xx 10^(- 2):}]:}'
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
@@ -6757,7 +6757,7 @@ RSpec.describe Plurimath::Asciimath do
       let(:string) { '{:(ii(E)_1, =, ii(A)_1 cos[ii(varphi)_1]),(ii(E)_2, =, ii(A)_2 cos[ii(varphi)_2]):}}  rarr I = langle (ii(E)_1 + ii(E)_2)^2 rangle_t = {ii(A)_1^2}/2 + {ii(A)_2^2}/2 + ii(A)_1 ii(A)_2 cos[ii(varphi)_1 - ii(varphi)_2]' }
 
       it 'matches LaTeX, AsciiMath, and MathML' do
-        latex = '\left. \left \left.\begin{matrix}\mathit{E}_{1} & = & \mathit{A}_{1} \cos{[ \mathit{\phi}_{1} ]} \\\\ \mathit{E}_{2} & = & \mathit{A}_{2} \cos{[ \mathit{\phi}_{2} ]}\end{matrix}\right . \} \to I = \langle ( \mathit{E}_{1} + \mathit{E}_{2} )^{2} \rangle_{t} = \frac{\mathit{A}_{1}^{2}}{2} + \frac{\mathit{A}_{2}^{2}}{2} + \mathit{A}_{1} \mathit{A}_{2} \cos{[ \mathit{\phi}_{1} - \mathit{\phi}_{2} ]}'
+        latex = '\left. \left .\begin{matrix}\mathit{E}_{1} & = & \mathit{A}_{1} \cos{[ \mathit{\phi}_{1} ]} \\\\ \mathit{E}_{2} & = & \mathit{A}_{2} \cos{[ \mathit{\phi}_{2} ]}\end{matrix}\right . \} \to I = \langle ( \mathit{E}_{1} + \mathit{E}_{2} )^{2} \rangle_{t} = \frac{\mathit{A}_{1}^{2}}{2} + \frac{\mathit{A}_{2}^{2}}{2} + \mathit{A}_{1} \mathit{A}_{2} \cos{[ \mathit{\phi}_{1} - \mathit{\phi}_{2} ]}'
         asciimath = "{:{:[ii(E)_(1), =, ii(A)_(1) cos[ii(phi)_(1)]], [ii(E)_(2), =, ii(A)_(2) cos[ii(phi)_(2)]]:}} to I = << (ii(E)_(1) + ii(E)_(2))^(2) >>_(t) = frac(ii(A)_(1)^(2))(2) + frac(ii(A)_(2)^(2))(2) + ii(A)_(1) ii(A)_(2) cos[ii(phi)_(1) - ii(phi)_(2)]"
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
@@ -7353,6 +7353,122 @@ RSpec.describe Plurimath::Asciimath do
         MATHML
         expect(formula.to_latex).to eql(latex)
         # testing MathML conversion's behaviour to add `unary_function_spacing: true` by default
+        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_asciimath).to eql(asciimath)
+      end
+    end
+
+    context "contains table from plurimath/plurimath#379 example #135" do
+      let(:string) do
+        <<~ASCIIMATH
+          {:(h_{"Rockwell C"},= f(bar(d),ii(Delta)_{"c"},ii(Delta)_{"b"},ii(Delta)_{"S"}))
+          ,("",= 100(0.002 "unitsml(mm)") - bar(d) - ii(Delta)_{"c"} - ii(Delta)_{"b"} - ii(Delta)_{"S"}):}
+        ASCIIMATH
+      end
+
+      it 'matches LaTeX, AsciiMath, and MathML' do
+        asciimath = '{:[h_("Rockwell C"), = f (bar(d) , ii(Delta)_("c") , ii(Delta)_("b") , ii(Delta)_("S"))], ["", = 100 (0.002 rm(mm)) - bar(d) - ii(Delta)_("c") - ii(Delta)_("b") - ii(Delta)_("S")]:}'
+        latex = '\left .\begin{matrix}h_{\text{Rockwell C}} & = f ( \overline{d} , \mathit{\Delta}_{\text{c}} , \mathit{\Delta}_{\text{b}} , \mathit{\Delta}_{\text{S}} ) \\\\ \text{} & = 100 ( 0.002 \mathrm{mm} ) - \overline{d} - \mathit{\Delta}_{\text{c}} - \mathit{\Delta}_{\text{b}} - \mathit{\Delta}_{\text{S}}\end{matrix}\right .'
+        mathml = <<~MATHML
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
+              <mrow>
+                <mo></mo>
+                <mtable columnalign="left">
+                  <mtr>
+                    <mtd>
+                      <msub>
+                        <mi>h</mi>
+                        <mtext>Rockwell C</mtext>
+                      </msub>
+                    </mtd>
+                    <mtd>
+                      <mo>=</mo>
+                      <mi>f</mi>
+                      <mrow>
+                        <mo>(</mo>
+                        <mover>
+                          <mi>d</mi>
+                          <mo>&#xaf;</mo>
+                        </mover>
+                        <mo>,</mo>
+                        <msub>
+                          <mstyle mathvariant="italic">
+                            <mi>&#x394;</mi>
+                          </mstyle>
+                          <mtext>c</mtext>
+                        </msub>
+                        <mo>,</mo>
+                        <msub>
+                          <mstyle mathvariant="italic">
+                            <mi>&#x394;</mi>
+                          </mstyle>
+                          <mtext>b</mtext>
+                        </msub>
+                        <mo>,</mo>
+                        <msub>
+                          <mstyle mathvariant="italic">
+                            <mi>&#x394;</mi>
+                          </mstyle>
+                          <mtext>S</mtext>
+                        </msub>
+                        <mo>)</mo>
+                      </mrow>
+                    </mtd>
+                  </mtr>
+                  <mtr>
+                    <mtd>
+                      <mtext></mtext>
+                    </mtd>
+                    <mtd>
+                      <mo>=</mo>
+                      <mn>100</mn>
+                      <mrow>
+                        <mo>(</mo>
+                        <mn>0.002</mn>
+                        <mo rspace="thickmathspace">&#x2062;</mo>
+                        <mrow>
+                          <mstyle mathvariant="normal">
+                            <mi>mm</mi>
+                          </mstyle>
+                        </mrow>
+                        <mo>)</mo>
+                      </mrow>
+                      <mo>&#x2212;</mo>
+                      <mover>
+                        <mi>d</mi>
+                        <mo>&#xaf;</mo>
+                      </mover>
+                      <mo>&#x2212;</mo>
+                      <msub>
+                        <mstyle mathvariant="italic">
+                          <mi>&#x394;</mi>
+                        </mstyle>
+                        <mtext>c</mtext>
+                      </msub>
+                      <mo>&#x2212;</mo>
+                      <msub>
+                        <mstyle mathvariant="italic">
+                          <mi>&#x394;</mi>
+                        </mstyle>
+                        <mtext>b</mtext>
+                      </msub>
+                      <mo>&#x2212;</mo>
+                      <msub>
+                        <mstyle mathvariant="italic">
+                          <mi>&#x394;</mi>
+                        </mstyle>
+                        <mtext>S</mtext>
+                      </msub>
+                    </mtd>
+                  </mtr>
+                </mtable>
+                <mo></mo>
+              </mrow>
+            </mstyle>
+          </math>
+        MATHML
+        expect(formula.to_latex).to eql(latex)
         expect(formula.to_mathml).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eql(asciimath)
       end
