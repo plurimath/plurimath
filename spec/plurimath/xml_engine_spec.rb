@@ -1,6 +1,6 @@
 require "spec_helper"
 require "plurimath/xml_engine/oga"
-require "plurimath/xml_engine/ox" unless RUBY_ENGINE == 'opal'
+require "plurimath/xml_engine/ox_engine" unless RUBY_ENGINE == 'opal'
 
 RSpec.describe Plurimath::XmlEngine do
   let(:engine) { Plurimath.xml_engine }
@@ -249,7 +249,7 @@ RSpec.describe Plurimath::XmlEngine do
   end
 
   describe "Ox" do
-    let(:tested_engine) { Plurimath::XmlEngine::Ox }
+    let(:tested_engine) { Plurimath::XmlEngine::OxEngine }
 
     include_examples "all engines"
   end unless RUBY_ENGINE == "opal"
