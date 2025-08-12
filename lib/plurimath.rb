@@ -15,7 +15,7 @@ elsif ENV['PLURIMATH_OGA']
   require "plurimath/setup/oga"
   mml_adapter(:oga)
 else
-  require "plurimath/setup/ox"
+  require "plurimath/setup/ox_engine"
   mml_adapter(:ox)
 end
 

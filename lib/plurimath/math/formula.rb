@@ -842,7 +842,7 @@ module Plurimath
 
         while iteration < nodes.length do
           node = nodes[iteration]
-          next iteration += 1 unless node.nodes[0].is_a?(Plurimath::XmlEngine::Ox::Element)
+          next iteration += 1 unless node.nodes[0].is_a?(Plurimath::XmlEngine::OxEngine::Element)
 
           if DERIVATIVE_CONSTS.include?(node.nodes[0]&.nodes&.first)
             iteration += 1
