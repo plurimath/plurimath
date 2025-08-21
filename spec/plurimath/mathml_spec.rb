@@ -1997,7 +1997,7 @@ RSpec.describe Plurimath::Mathml do
                 <mn>1</mn>
                 <mn>24</mn>
               </mfrac>
-              <mi>&#x2248;</mi>
+              <mo>&#x2248;</mo>
               <mn>0.0417</mn>
             </mstyle>
           </math>
