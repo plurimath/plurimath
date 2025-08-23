@@ -302,7 +302,8 @@ module Plurimath
       end
 
       def all_symbols_classes(lang)
-        symbols_hash(lang).merge(parens_hash(lang))
+        @@all_symbols ||= {}
+        @@all_symbols[lang] ||= symbols_hash(lang).merge(parens_hash(lang))
       end
 
       def ox_element(node, attributes: [], namespace: "")
