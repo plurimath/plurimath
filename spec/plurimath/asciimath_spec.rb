@@ -110,7 +110,6 @@ RSpec.describe Plurimath::Asciimath do
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
-              <mo rspace="thickmathspace">&#x2062;</mo>
               <mrow>
                 <mstyle mathvariant="normal">
                   <mi>V</mi>
@@ -7464,6 +7463,54 @@ RSpec.describe Plurimath::Asciimath do
                   </mtr>
                 </mtable>
                 <mo></mo>
+              </mrow>
+            </mstyle>
+          </math>
+        MATHML
+        expect(formula.to_latex).to eql(latex)
+        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_asciimath).to eql(asciimath)
+      end
+    end
+
+    context "contains table from plurimath/plurimath#375 example #136" do
+      let(:string) { %("unitsml(mm)") }
+
+      it 'matches LaTeX, AsciiMath, and MathML' do
+        asciimath = 'rm(mm)'
+        latex = '\\mathrm{mm}'
+        mathml = <<~MATHML
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
+              <mrow>
+                <mstyle mathvariant="normal">
+                  <mi>mm</mi>
+                </mstyle>
+              </mrow>
+            </mstyle>
+          </math>
+        MATHML
+        expect(formula.to_latex).to eql(latex)
+        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_asciimath).to eql(asciimath)
+      end
+    end
+
+    context "contains table from plurimath/plurimath#376 example #137" do
+      let(:string) { %(M "unitsml(mm)") }
+
+      it 'matches LaTeX, AsciiMath, and MathML' do
+        asciimath = 'M rm(mm)'
+        latex = 'M \\mathrm{mm}'
+        mathml = <<~MATHML
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
+              <mi>M</mi>
+              <mo rspace="thickmathspace">&#x2062;</mo>
+              <mrow>
+                <mstyle mathvariant="normal">
+                  <mi>mm</mi>
+                </mstyle>
               </mrow>
             </mstyle>
           </math>
