@@ -83,7 +83,7 @@ module Plurimath
         style = ox_element("mstyle", attributes: style_attrs)
         Utility.update_nodes(style, mathml_content(intent, options: options))
         Utility.update_nodes(math, [style])
-        unitsml_post_processing(math.nodes, math)
+        unitsml_post_processing(math, style)
         dump_nodes(math, indent: 2)
       rescue
         parse_error!(:mathml)
@@ -624,7 +624,21 @@ module Plurimath
         r_tag << ox_element("br")
       end
 
-      def unitsml_post_processing(nodes, prev_node)
+      def unitsml_post_processing(math, style)
+        if all_unitsml_nodes?(style)
+          style.nodes.first.remove_attr("unitsml")
+        else
+          unitsml_processing(math.nodes, math)
+        end
+      end
+
+      def all_unitsml_nodes?(style)
+        return false unless style.nodes.one?
+
+        style.nodes.first.attributes["unitsml"] == "true"
+      end
+
+      def unitsml_processing(nodes, prev_node)
         insert_index = 0
         nodes.each.with_index do |node, index|
           if node[:unitsml]
@@ -632,7 +646,7 @@ module Plurimath
             insert_index += 1
             node.remove_attr("unitsml")
           end
-          unitsml_post_processing(node.nodes, node) if node.nodes.none?(String)
+          unitsml_processing(node.nodes, node) if node.nodes.none?(String)
         end
       end
 
