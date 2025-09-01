@@ -25,6 +25,7 @@ module Plurimath
       rule(under_over: simple(:under_over)) { under_over }
       rule(power_base: simple(:power_base)) { power_base }
       rule(table_data: simple(:table_data)) { table_data }
+      rule(semicolon_space: simple(:space)) { Math::Symbols::SemicolonSpace.new }
 
       rule(intermediate_exp: simple(:int_exp)) { int_exp }
 

@@ -86,6 +86,7 @@ module Plurimath
 
       rule(:symbol_class_commands) do
         (str("&#x") >> match["0-9a-fA-F"].repeat >> str(";")).as(:unicode_symbols) |
+          str("\\;").as(:semicolon_space) |
           hash_to_expression(Constants.symbols_constants) |
           under_over |
           environment |

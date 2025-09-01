@@ -2223,7 +2223,7 @@ RSpec.describe Plurimath::Latex do
               <mo>&#x3a;</mo>
               <mi>d</mi>
               <mi>s</mi>
-              <mo>&#x3b;</mo>
+              <mo>&#x2004;</mo>
               <mstyle mathvariant="bold">
                 <mi>u</mi>
               </mstyle>
@@ -2233,7 +2233,7 @@ RSpec.describe Plurimath::Latex do
         latex = <<~LATEX
           V = \\frac{1}{2} : \\mathbf{u}^{t} :
             \\int_{\\text{surface}} : \\int_{t h i c k n e s s} : B^{t} : D : B : d t : d s
-            ; \\mathbf{u}
+            \\; \\mathbf{u}
         LATEX
         expect(formula.to_latex.gsub(/\s+/, "")).to eql(latex.gsub(/\s+/, ""))
         expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
