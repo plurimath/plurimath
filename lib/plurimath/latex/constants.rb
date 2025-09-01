@@ -204,24 +204,6 @@ module Plurimath
         "[": "[",
         "]": "]",
       }.freeze
-      SLASHED_SYMBOLS = %w[
-        backslash
-        langle
-        rangle
-        lfloor
-        rfloor
-        lbrace
-        rbrace
-        lbrack
-        rbrack
-        lceil
-        rceil
-        Vert
-        vert
-        |
-        }
-        {
-      ].freeze
 
       class << self
         def symbols_constants
