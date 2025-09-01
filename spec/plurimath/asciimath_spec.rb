@@ -7474,7 +7474,7 @@ RSpec.describe Plurimath::Asciimath do
     end
 
     context "contains table from plurimath/plurimath#375 example #136" do
-      let(:string) { %("unitsml(mm)") }
+      let(:string) { "\"unitsml(mm)\"" }
 
       it 'matches LaTeX, AsciiMath, and MathML' do
         asciimath = 'rm(mm)'
@@ -7497,7 +7497,7 @@ RSpec.describe Plurimath::Asciimath do
     end
 
     context "contains table from plurimath/plurimath#376 example #137" do
-      let(:string) { %(M "unitsml(mm)") }
+      let(:string) { "M \"unitsml(mm)\"" }
 
       it 'matches LaTeX, AsciiMath, and MathML' do
         asciimath = 'M rm(mm)'
