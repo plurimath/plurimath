@@ -16,8 +16,8 @@ module Plurimath
           ","
         end
 
-        def to_asciimath(**)
-          ","
+        def to_asciimath(options:)
+          options[:table] ? "\",\"" : ","
         end
 
         def to_unicodemath(**)
