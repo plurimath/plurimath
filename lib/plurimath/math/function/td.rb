@@ -15,7 +15,9 @@ module Plurimath
         end
 
         def to_asciimath(options:)
-          parameter_one.map { |val| val&.to_asciimath(options: options) }.join(" ")
+          parameter_one.map do |val|
+            val&.to_asciimath(options: td_asciimath_options(options, val))
+          end.join(" ")
         end
 
         def to_mathml_without_math_tag(intent, options:)
@@ -104,6 +106,19 @@ module Plurimath
           sliced_result = sliced_value.first.last.omml_line_break(sliced_value)
           table = Table.new(sliced_result.map { |res| Tr.new(Array(Td.new(Array(res)))) })
           self.parameter_one = [table]
+        end
+
+        private
+
+        def td_asciimath_options(options, object)
+          case object
+          when ::Plurimath::Math::Symbols::Comma
+            options.merge(literal_comma: true)
+          when ::Plurimath::Math::Formula
+            options.merge(table: true)
+          else
+            options
+          end
         end
       end
     end

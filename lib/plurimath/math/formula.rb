@@ -54,7 +54,9 @@ module Plurimath
 
       def to_asciimath(formatter: nil, unitsml: {}, options: nil)
         options ||= { formatter: formatter, unitsml: unitsml }.compact
-        value.map { |val| val.to_asciimath(options: options) }.join(" ")
+        output = value.map do |val|
+          val.to_asciimath(options: asciimath_table_options(options, val))
+        end.join(" ")
       rescue
         parse_error!(:asciimath)
       end
@@ -582,6 +584,12 @@ module Plurimath
       end
 
       protected
+
+      def asciimath_table_options(options, object)
+        return options unless options.key?(:table) || object.is_a?(Math::Symbols::Comma)
+
+        options.merge(literal_comma: true)
+      end
 
       def update_temp_order(value, order_name)
         return if value.nil? || value.empty?
