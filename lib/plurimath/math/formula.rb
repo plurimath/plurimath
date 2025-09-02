@@ -586,7 +586,7 @@ module Plurimath
       protected
 
       def asciimath_table_options(options, object)
-        return options unless options.key?(:table) || object.is_a?(Math::Symbols::Comma)
+        return options unless options.key?(:table) && object.is_a?(Math::Symbols::Comma)
 
         options.merge(literal_comma: true)
       end
