@@ -8,7 +8,6 @@ RSpec.describe Plurimath::UnicodeMath::Parser do
   describe ".parse" do
     subject(:formula) { described_class.new(string).parse }
 
-    SKIPABLE_EXAMPLES = [33, 210, 211, 598, 599, 600, 601].freeze
     unicodemath_tests.each.with_index(1) do |unicode_hash, index|
       constant = :"EXAMPLE_#{index}"
       break unless UnicodeMathTransformValues.constants.any?(constant)
@@ -17,7 +16,7 @@ RSpec.describe Plurimath::UnicodeMath::Parser do
         let(:string) { remove_prefix(unicode_hash["unicodemath"].to_s) }
 
         it "matches formula structure of UnicodeMath" do
-          if SKIPABLE_EXAMPLES.include?(index)
+          if UNICODEMATH_SKIPABLE_EXAMPLES.include?(index)
             expect{formula}.to raise_error(Parslet::ParseFailed, Regexp.compile("Expected one of \\["))
           else
             expect(formula).to eq(UnicodeMathTransformValues.const_get(constant))
