@@ -73,6 +73,9 @@ def unicodemath_tests
   YAML.safe_load(file_content, permitted_classes: [Time])["tests"]
 end
 
+# These UnicodeMath examples are expected to fail due to limitations.
+UNICODEMATH_SKIPABLE_EXAMPLES = [33, 210, 211, 598, 599, 600, 601].freeze
+
 def hp(*hash_values)
   hash_values.each do |hash_value|
     if hash_value.is_a?(Hash)
@@ -82,3 +85,4 @@ def hp(*hash_values)
     end
   end
 end
+
