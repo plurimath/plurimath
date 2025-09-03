@@ -2027,7 +2027,7 @@ RSpec.describe Plurimath::Latex::Parser do
             Plurimath::Math::Symbols::Symbol.new("n"),
             Plurimath::Math::Symbols::Symbol.new("j"),
           ),
-          Plurimath::Math::Symbols::SemicolonSpace.new,
+          Plurimath::Math::Symbols::ThreePerEmSpace.new,
           Plurimath::Math::Formula.new([
             Plurimath::Math::Function::FontStyle::Normal.new(
               Plurimath::Math::Symbols::Symbol.new("f"),
@@ -2036,7 +2036,7 @@ RSpec.describe Plurimath::Latex::Parser do
             Plurimath::Math::Symbols::Symbol.new("o"),
             Plurimath::Math::Symbols::Symbol.new("r"),
           ]),
-          Plurimath::Math::Symbols::SemicolonSpace.new,
+          Plurimath::Math::Symbols::ThreePerEmSpace.new,
           Plurimath::Math::Symbols::Symbol.new("i"),
           Plurimath::Math::Symbols::Equal.new,
           Plurimath::Math::Number.new("1"),
@@ -2081,7 +2081,7 @@ RSpec.describe Plurimath::Latex::Parser do
             Plurimath::Math::Symbols::Symbol.new("n"),
             Plurimath::Math::Symbols::Symbol.new("j"),
           ),
-          Plurimath::Math::Symbols::SemicolonSpace.new,
+          Plurimath::Math::Symbols::ThreePerEmSpace.new,
           Plurimath::Math::Formula.new([
             Plurimath::Math::Function::FontStyle::Normal.new(
               Plurimath::Math::Symbols::Symbol.new("f"),
@@ -2090,7 +2090,7 @@ RSpec.describe Plurimath::Latex::Parser do
             Plurimath::Math::Symbols::Symbol.new("o"),
             Plurimath::Math::Symbols::Symbol.new("r"),
           ]),
-          Plurimath::Math::Symbols::SemicolonSpace.new,
+          Plurimath::Math::Symbols::ThreePerEmSpace.new,
           Plurimath::Math::Symbols::Symbol.new("i"),
           Plurimath::Math::Symbols::Equal.new,
           Plurimath::Math::Number.new("1"),
@@ -2309,7 +2309,7 @@ RSpec.describe Plurimath::Latex::Parser do
               Plurimath::Math::Symbols::Symbol.new("l"),
             ]),
           ),
-          Plurimath::Math::Symbols::SemicolonSpace.new,
+          Plurimath::Math::Symbols::ThreePerEmSpace.new,
           Plurimath::Math::Formula.new([
             Plurimath::Math::Function::FontStyle::Normal.new(
               Plurimath::Math::Symbols::Symbol.new("f"),
@@ -2318,13 +2318,13 @@ RSpec.describe Plurimath::Latex::Parser do
             Plurimath::Math::Symbols::Symbol.new("o"),
             Plurimath::Math::Symbols::Symbol.new("r"),
           ]),
-          Plurimath::Math::Symbols::SemicolonSpace.new,
+          Plurimath::Math::Symbols::ThreePerEmSpace.new,
           Plurimath::Math::Symbols::Symbol.new("i"),
           Plurimath::Math::Symbols::Equal.new,
           Plurimath::Math::Number.new("1"),
           Plurimath::Math::Symbols::Comma.new,
           Plurimath::Math::Number.new("2"),
-          Plurimath::Math::Symbols::SemicolonSpace.new,
+          Plurimath::Math::Symbols::ThreePerEmSpace.new,
           Plurimath::Math::Formula.new([
             Plurimath::Math::Function::FontStyle::Normal.new(
               Plurimath::Math::Symbols::Symbol.new("a"),
@@ -2333,7 +2333,7 @@ RSpec.describe Plurimath::Latex::Parser do
             Plurimath::Math::Symbols::Symbol.new("n"),
             Plurimath::Math::Symbols::Symbol.new("d"),
           ]),
-          Plurimath::Math::Symbols::SemicolonSpace.new,
+          Plurimath::Math::Symbols::ThreePerEmSpace.new,
           Plurimath::Math::Symbols::Symbol.new("j"),
           Plurimath::Math::Symbols::Equal.new,
           Plurimath::Math::Number.new("1"),
@@ -2791,7 +2791,7 @@ RSpec.describe Plurimath::Latex::Parser do
             ],
             Plurimath::Math::Symbols::Paren::Rround.new,
           ),
-          Plurimath::Math::Symbols::SemicolonSpace.new,
+          Plurimath::Math::Symbols::ThreePerEmSpace.new,
           Plurimath::Math::Formula.new([
             Plurimath::Math::Function::FontStyle::Normal.new(
               Plurimath::Math::Symbols::Symbol.new("f"),
@@ -2800,13 +2800,13 @@ RSpec.describe Plurimath::Latex::Parser do
             Plurimath::Math::Symbols::Symbol.new("o"),
             Plurimath::Math::Symbols::Symbol.new("r")
           ]),
-          Plurimath::Math::Symbols::SemicolonSpace.new,
+          Plurimath::Math::Symbols::ThreePerEmSpace.new,
           Plurimath::Math::Symbols::Symbol.new("i"),
           Plurimath::Math::Symbols::Equal.new,
           Plurimath::Math::Number.new("1"),
           Plurimath::Math::Symbols::Comma.new,
           Plurimath::Math::Number.new("3"),
-          Plurimath::Math::Symbols::SemicolonSpace.new,
+          Plurimath::Math::Symbols::ThreePerEmSpace.new,
           Plurimath::Math::Formula.new([
             Plurimath::Math::Function::FontStyle::Normal.new(
               Plurimath::Math::Symbols::Symbol.new("a"),
@@ -2815,7 +2815,7 @@ RSpec.describe Plurimath::Latex::Parser do
             Plurimath::Math::Symbols::Symbol.new("n"),
             Plurimath::Math::Symbols::Symbol.new("d")
           ]),
-          Plurimath::Math::Symbols::SemicolonSpace.new,
+          Plurimath::Math::Symbols::ThreePerEmSpace.new,
           Plurimath::Math::Symbols::Symbol.new("j"),
           Plurimath::Math::Symbols::Equal.new,
           Plurimath::Math::Number.new("1"),
@@ -4926,7 +4926,7 @@ RSpec.describe Plurimath::Latex::Parser do
             ],
             Plurimath::Math::Symbols::Paren::Rround.new,
           ),
-          Plurimath::Math::Symbols::SemicolonSpace.new,
+          Plurimath::Math::Symbols::ThreePerEmSpace.new,
           Plurimath::Math::Formula.new([
             Plurimath::Math::Function::FontStyle::Normal.new(
               Plurimath::Math::Symbols::Symbol.new("f"),
@@ -4935,7 +4935,7 @@ RSpec.describe Plurimath::Latex::Parser do
             Plurimath::Math::Symbols::Symbol.new("o"),
             Plurimath::Math::Symbols::Symbol.new("r")
           ]),
-          Plurimath::Math::Symbols::SemicolonSpace.new,
+          Plurimath::Math::Symbols::ThreePerEmSpace.new,
           Plurimath::Math::Symbols::Symbol.new("i"),
           Plurimath::Math::Symbols::Equal.new,
           Plurimath::Math::Number.new("1"),
@@ -5365,7 +5365,7 @@ RSpec.describe Plurimath::Latex::Parser do
               Plurimath::Math::Symbols::Symbol.new("l"),
             ])
           ),
-          Plurimath::Math::Symbols::SemicolonSpace.new,
+          Plurimath::Math::Symbols::ThreePerEmSpace.new,
           Plurimath::Math::Formula.new([
             Plurimath::Math::Function::FontStyle::Normal.new(
               Plurimath::Math::Symbols::Symbol.new("f"),
@@ -5374,13 +5374,13 @@ RSpec.describe Plurimath::Latex::Parser do
             Plurimath::Math::Symbols::Symbol.new("o"),
             Plurimath::Math::Symbols::Symbol.new("r"),
           ]),
-          Plurimath::Math::Symbols::SemicolonSpace.new,
+          Plurimath::Math::Symbols::ThreePerEmSpace.new,
           Plurimath::Math::Symbols::Symbol.new("i"),
           Plurimath::Math::Symbols::Equal.new,
           Plurimath::Math::Number.new("1"),
           Plurimath::Math::Symbols::Comma.new,
           Plurimath::Math::Number.new("3"),
-          Plurimath::Math::Symbols::SemicolonSpace.new,
+          Plurimath::Math::Symbols::ThreePerEmSpace.new,
           Plurimath::Math::Formula.new([
             Plurimath::Math::Function::FontStyle::Normal.new(
               Plurimath::Math::Symbols::Symbol.new("a"),
@@ -5389,7 +5389,7 @@ RSpec.describe Plurimath::Latex::Parser do
             Plurimath::Math::Symbols::Symbol.new("n"),
             Plurimath::Math::Symbols::Symbol.new("d"),
           ]),
-          Plurimath::Math::Symbols::SemicolonSpace.new,
+          Plurimath::Math::Symbols::ThreePerEmSpace.new,
           Plurimath::Math::Symbols::Symbol.new("j"),
           Plurimath::Math::Symbols::Equal.new,
           Plurimath::Math::Number.new("1"),
@@ -5449,7 +5449,7 @@ RSpec.describe Plurimath::Latex::Parser do
               Plurimath::Math::Symbols::Symbol.new("l"),
             ])
           ),
-          Plurimath::Math::Symbols::SemicolonSpace.new,
+          Plurimath::Math::Symbols::ThreePerEmSpace.new,
           Plurimath::Math::Formula.new([
             Plurimath::Math::Function::FontStyle::Normal.new(
               Plurimath::Math::Symbols::Symbol.new("f"),
@@ -5458,13 +5458,13 @@ RSpec.describe Plurimath::Latex::Parser do
             Plurimath::Math::Symbols::Symbol.new("o"),
             Plurimath::Math::Symbols::Symbol.new("r"),
           ]),
-          Plurimath::Math::Symbols::SemicolonSpace.new,
+          Plurimath::Math::Symbols::ThreePerEmSpace.new,
           Plurimath::Math::Symbols::Symbol.new("i"),
           Plurimath::Math::Symbols::Equal.new,
           Plurimath::Math::Number.new("1"),
           Plurimath::Math::Symbols::Comma.new,
           Plurimath::Math::Number.new("2"),
-          Plurimath::Math::Symbols::SemicolonSpace.new,
+          Plurimath::Math::Symbols::ThreePerEmSpace.new,
           Plurimath::Math::Formula.new([
             Plurimath::Math::Function::FontStyle::Normal.new(
               Plurimath::Math::Symbols::Symbol.new("a"),
@@ -5473,7 +5473,7 @@ RSpec.describe Plurimath::Latex::Parser do
             Plurimath::Math::Symbols::Symbol.new("n"),
             Plurimath::Math::Symbols::Symbol.new("d"),
           ]),
-          Plurimath::Math::Symbols::SemicolonSpace.new,
+          Plurimath::Math::Symbols::ThreePerEmSpace.new,
           Plurimath::Math::Symbols::Symbol.new("j"),
           Plurimath::Math::Symbols::Equal.new,
           Plurimath::Math::Number.new("1"),
@@ -8337,7 +8337,7 @@ RSpec.describe Plurimath::Latex::Parser do
           Plurimath::Math::Symbols::Mathcolon.new,
           Plurimath::Math::Symbols::Symbol.new("d"),
           Plurimath::Math::Symbols::Symbol.new("s"),
-          Plurimath::Math::Symbols::SemicolonSpace.new,
+          Plurimath::Math::Symbols::ThreePerEmSpace.new,
           Plurimath::Math::Function::FontStyle::Bold.new(
             Plurimath::Math::Symbols::Symbol.new("u"),
             "bf"
@@ -8453,7 +8453,7 @@ RSpec.describe Plurimath::Latex::Parser do
           Plurimath::Math::Symbols::Mathcolon.new,
           Plurimath::Math::Symbols::Symbol.new("d"),
           Plurimath::Math::Symbols::Symbol.new("s"),
-          Plurimath::Math::Symbols::SemicolonSpace.new,
+          Plurimath::Math::Symbols::ThreePerEmSpace.new,
           Plurimath::Math::Function::FontStyle::Bold.new(
             Plurimath::Math::Symbols::Symbol.new("u"),
             "bf"
