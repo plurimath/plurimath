@@ -1,18 +1,18 @@
 require "spec_helper"
 
-RSpec.describe Plurimath::Math::Symbols::SemicolonSpace do
+RSpec.describe Plurimath::Math::Symbols::ThreePerEmSpace do
 
   describe ".initialize" do
-    it 'returns instance of Symbol SemicolonSpace' do
+    it 'returns instance of Symbol ThreePerEmSpace' do
       klass = described_class.new
-      expect(klass).to be_a(Plurimath::Math::Symbols::SemicolonSpace)
+      expect(klass).to be_a(Plurimath::Math::Symbols::ThreePerEmSpace)
     end
   end
 
   describe "All language conversion specs" do
     subject(:klass) { described_class.new }
 
-    context "Matches all conversion for the Symbol Plurimath::Math::Symbols::SemicolonSpace" do
+    context "Matches all conversion for the Symbol Plurimath::Math::Symbols::ThreePerEmSpace" do
       it "matches AsciiMath string" do
         expect(klass.to_asciimath).to eq("\"P{\\;}\"")
       end

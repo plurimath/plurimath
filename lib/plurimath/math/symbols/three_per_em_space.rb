@@ -1,7 +1,7 @@
 module Plurimath
   module Math
     module Symbols
-      class SemicolonSpace < Symbol
+      class ThreePerEmSpace < Symbol
         INPUT = {
           unicodemath: [["&#x2004;"], parsing_wrapper(["\\;"], lang: :unicode)],
           asciimath: [[";", "&#x2004;"], parsing_wrapper(["\\;"], lang: :asciimath)],
