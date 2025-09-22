@@ -10,10 +10,6 @@ module Plurimath
           mpadded
           merror
         ].freeze
-        SYMBOL_UPDATABLE_FUNCTIONS = %w[
-          font_style
-          linebreak
-        ].freeze
 
         private
 
@@ -120,7 +116,11 @@ module Plurimath
           value.each_with_index do |val, index|
             next unless val.is_a?(Math::Symbols::Symbol)
 
-            value[index] = mathml_symbol_to_class(val.value)
+            if val.temp_mathml_order.any?
+              update_symbol(val, value, index)
+            else
+              value[index] = mathml_symbol_to_class(val.value)
+            end
           end
           value
         end
