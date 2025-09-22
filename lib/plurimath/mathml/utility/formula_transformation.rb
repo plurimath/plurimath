@@ -116,7 +116,7 @@ module Plurimath
           value.each_with_index do |val, index|
             next unless val.is_a?(Math::Symbols::Symbol)
 
-            if val.temp_mathml_order.any?
+            if val.temp_mathml_order&.any?
               update_symbol(val, value, index)
             else
               value[index] = mathml_symbol_to_class(val.value)
