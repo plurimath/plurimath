@@ -288,6 +288,14 @@ module Plurimath
 
         def mglyph_value; end
 
+        def __root; end
+
+        def __parent; end
+
+        def __root=(_); end
+
+        def __parent=(_); end
+
         def malignmark=(_); end
 
         def mathcolor=(_); end
