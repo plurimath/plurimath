@@ -248,7 +248,7 @@ RSpec.describe Plurimath::Math do
 
       it 'expects to not raise an exception' do
         expect{
-          convert(string_to_formula(string, :latex), :latex)
+          convert(string_to_formula(string, :latex))
         }.not_to raise_error
       end
     end
