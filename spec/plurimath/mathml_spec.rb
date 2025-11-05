@@ -1958,7 +1958,9 @@ RSpec.describe Plurimath::Mathml do
                   <mn>1</mn>
                 </msubsup>
                 <msub>
-                  <mi>B</mi>
+                  <mstyle mathvariant="normal">
+                    <mi>B</mi>
+                  </mstyle>
                   <mn>4</mn>
                 </msub>
               </mrow>
@@ -2002,8 +2004,71 @@ RSpec.describe Plurimath::Mathml do
             </mstyle>
           </math>
         MATHML
-        latex = '\int_{o}^{1} B_{4} ( \mathit{\rho} ) \text{d} \mathit{\rho} = [ \frac{1}{24} \mathit{\rho}^{4} ]_{0}^{1} = \frac{1}{24} \approx 0.0417'
-        asciimath = 'int_(o)^(1) B_(4) (ii(rho)) "d" ii(rho) = [frac(1)(24) ii(rho)^(4)]_(0)^(1) = frac(1)(24) approx 0.0417'
+        latex = '\int_{o}^{1} \mathrm{B}_{4} ( \mathit{\rho} ) \text{d} \mathit{\rho} = [ \frac{1}{24} \mathit{\rho}^{4} ]_{0}^{1} = \frac{1}{24} \approx 0.0417'
+        asciimath = 'int_(o)^(1) rm(B)_(4) (ii(rho)) "d" ii(rho) = [frac(1)(24) ii(rho)^(4)]_(0)^(1) = frac(1)(24) approx 0.0417'
+        expect(formula.to_latex).to eq(latex)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
+        expect(formula.to_asciimath).to eq(asciimath)
+      end
+    end
+
+    context "contains input from PR unitsml/unitsml-ruby#56 specs" do
+      let(:string) do
+        <<~MATHML
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mi mathvariant="normal">J</mi>
+            <mo>&#x22c5;</mo>
+            <msup>
+              <mi mathvariant="normal">mol</mi>
+              <mrow>
+                <mo>&#x2212;</mo>
+                <mn>1</mn>
+              </mrow>
+            </msup>
+            <mo>&#x22c5;</mo>
+            <msup>
+              <mi mathvariant="normal">K</mi>
+              <mrow>
+                <mo>&#x2212;</mo>
+                <mn>1</mn>
+              </mrow>
+            </msup>
+          </math>
+        MATHML
+      end
+
+      it "compares MathML, LaTeX, and AsciiMath string" do
+        mathml = <<~MATHML
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
+              <mstyle mathvariant="normal">
+                <mi>J</mi>
+              </mstyle>
+              <mo>&#x22c5;</mo>
+              <msup>
+                <mstyle mathvariant="normal">
+                  <mi>mol</mi>
+                </mstyle>
+                <mrow>
+                  <mo>&#x2212;</mo>
+                  <mn>1</mn>
+                </mrow>
+              </msup>
+              <mo>&#x22c5;</mo>
+              <msup>
+                <mstyle mathvariant="normal">
+                  <mi>K</mi>
+                </mstyle>
+                <mrow>
+                  <mo>&#x2212;</mo>
+                  <mn>1</mn>
+                </mrow>
+              </msup>
+            </mstyle>
+          </math>
+        MATHML
+        latex = '\mathrm{J} \cdot \mathrm{mol}^{- 1} \cdot \mathrm{K}^{- 1}'
+        asciimath = 'rm(J) * rm(mol)^(- 1) * rm(K)^(- 1)'
         expect(formula.to_latex).to eq(latex)
         expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
         expect(formula.to_asciimath).to eq(asciimath)
