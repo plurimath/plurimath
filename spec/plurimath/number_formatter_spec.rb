@@ -382,5 +382,111 @@ RSpec.describe Plurimath::NumberFormatter do
         end
       end
     end
+
+    context "testing base arguments for numeric values" do
+      let(:locale) { :en }
+      let(:localize_number) { nil }
+      let(:localizer_symbols) { {} }
+
+      # Use a huge group size to avoid separators interfering with expectations.
+      let(:base_format_defaults) { { group_digits: 2, group: ",", decimal: "." } }
+
+      context "base conversion (integers)" do
+        it "formats base 2 with default prefix" do
+          output_string = formatter.localized_number("1910", format: base_format_defaults.merge(base: 2, group_digits: 8, group: " "))
+          expect(output_string).to eql("0b111 01110110")
+        end
+
+        it "formats base 8 with default prefix" do
+          output_string = formatter.localized_number("9", format: base_format_defaults.merge(base: 8))
+          expect(output_string).to eql("0o11")
+        end
+
+        it "formats base 16 with default prefix (lowercase)" do
+          output_string = formatter.localized_number("255", format: base_format_defaults.merge(base: 16))
+          expect(output_string).to eql("0xff")
+        end
+
+        it "formats zero in base 16 with default prefix" do
+          output_string = formatter.localized_number("0", format: base_format_defaults.merge(base: 16))
+          expect(output_string).to eql("0x0")
+        end
+
+        it "keeps the negative sign before the prefix" do
+          output_string = formatter.localized_number("-255", format: base_format_defaults.merge(base: 16))
+          expect(output_string).to eql("-0xff")
+        end
+      end
+
+      context "hex_capital option" do
+        it "uppercases hex digits and prefix when base 16" do
+          output_string = formatter.localized_number("48879", format: base_format_defaults.merge(base: 16, hex_capital: true))
+          expect(output_string).to eql("0xBE,EF")
+        end
+
+        it "does not affect non-hex bases" do
+          output_string = formatter.localized_number("10", format: base_format_defaults.merge(base: 2, hex_capital: true))
+          expect(output_string).to eql("0b10,10")
+        end
+      end
+
+      context "base_prefix option" do
+        it "allows overriding the default prefix" do
+          output_string = formatter.localized_number("255", format: base_format_defaults.merge(base: 16, base_prefix: "16#"))
+          expect(output_string).to eql("16#ff")
+        end
+
+        it "allows removing the prefix by passing an empty string" do
+          output_string = formatter.localized_number("255", format: base_format_defaults.merge(base: 16, base_prefix: ""))
+          expect(output_string).to eql("ff")
+        end
+
+        it "treats base_prefix: nil as no prefix" do
+          output_string = formatter.localized_number("255", format: base_format_defaults.merge(base: 16, base_prefix: nil))
+          expect(output_string).to eql("ff")
+        end
+      end
+
+      context "base_postfix option" do
+        it "uses base_postfix instead of prefix when provided" do
+          output_string = formatter.localized_number("255", format: base_format_defaults.merge(base: 16, base_postfix: "_16"))
+          expect(output_string).to eql("ff_16")
+        end
+
+        it "still applies hex_capital to the whole output when base 16" do
+          output_string = formatter.localized_number("48879", format: base_format_defaults.merge(base: 16, base_postfix: "_h", hex_capital: true))
+          expect(output_string).to eql("BE,EF_h")
+        end
+
+        it "base_postfix takes precedence even if base_prefix is also provided" do
+          output_string = formatter.localized_number("255", format: base_format_defaults.merge(base: 16, base_prefix: "0x", base_postfix: "h"))
+          expect(output_string).to eql("ffh")
+        end
+      end
+
+      context "non-integer numeric inputs with non-decimal base" do
+        it "omits the fractional part when base is not 10" do
+          output_string = formatter.localized_number("10.75", format: base_format_defaults.merge(base: 2))
+          expect(output_string).to eql("0b10,10")
+        end
+
+        it "omits the fractional part for negative values as well" do
+          output_string = formatter.localized_number("-10.75", format: base_format_defaults.merge(base: 2))
+          expect(output_string).to eql("-0b10,10")
+        end
+      end
+
+      context "base 10 interactions (sanity)" do
+        it "does not add a prefix when base is 10" do
+          output_string = formatter.localized_number("255", format: base_format_defaults.merge(base: 10))
+          expect(output_string).to eql("2,55")
+        end
+
+        it "base_postfix takes precedence even if base_prefix is also provided" do
+          output_string = formatter.localized_number("255", format: base_format_defaults.merge(base: 10, base_prefix: "y^", base_postfix: "_x"))
+          expect(output_string).to eql("2,55_x")
+        end
+      end
+    end
   end
 end

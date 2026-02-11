@@ -13,7 +13,11 @@ module Plurimath
       def initialize(number, data_reader = {})
         @number = number
         @data_reader = data_reader
-        @prefix = "-" if number.negative?
+        @prefix = if number.negative?
+          "-"
+        elsif data_reader[:number_sign]&.to_sym == :plus
+          "+"
+        end
       end
 
       def format(precision: nil)
@@ -26,7 +30,6 @@ module Plurimath
         result << fraction_format.apply(frac, data_reader, int) if frac
         result = result.join
         result = signif_format.apply(result, integer_format, fraction_format)
-        result = "+#{result}" if number.positive? && data_reader[:number_sign].to_s == "plus"
         "#{prefix}#{result}"
       end
 
