@@ -555,6 +555,53 @@ Accepts an integer value. (default is 3 in most locales.)
 "32232.232" => "3 22 32.232"
 ====
 
+`base`:: (`Numeric` value)
+Sets the numeric base (radix) used to render the *integer* part of the number.
+Common values are 2 (binary), 8 (octal), 10 (decimal, default) and 16 (hexadecimal).
++
+.Rendering integers in different bases
+[example]
+====
+"10"  with `base: 2`  => "0b1010"
+"9"   with `base: 8`  => "0o11"
+"255" with `base: 16` => "0xff"
+====
+
+`base_prefix`:: (`String` or `nil` value)
+Overrides the default base prefix for non‑decimal bases.
+When omitted, standard prefixes are used (`0b` for base 2, `0o` for base 8, `0x` for base 16).
+When set to an empty string or `nil`, no prefix is rendered.
++
+.Custom base prefixes
+[example]
+====
+"255" with `base: 16, base_prefix: "16#"` => "16#ff"
+"255" with `base: 16, base_prefix: ""`   => "ff"
+====
+
+`base_postfix`:: (`String` value)
+If present, a postfix is appended to the converted integer instead of using any base prefix.
+This is applied after digit grouping.
++
+.Using postfix notation
+[example]
+====
+"255" with `base: 16, base_postfix: "_16"` => "ff_16"
+====
+
+`hex_capital`:: (`Boolean` value)
+When `true` and `base: 16`, the entire formatted integer (including any prefix or postfix)
+is rendered using uppercase letters. It has no effect for other bases.
++
+.Uppercase hexadecimal output
+[example]
+====
+"48879" with `base: 16, hex_capital: true` => "0XBEEF"
+====
+
+NOTE: When `base` is not 10, only the integer part of the value is converted;
+the fractional part is ignored for base conversion and no decimal separator is rendered.
+
 `fraction_group`:: (`String` value)
 Delimiter to use between groups of fractional digits specified in
 `fraction_group_digits`. Accepts a character.

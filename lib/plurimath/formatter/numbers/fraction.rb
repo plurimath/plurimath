@@ -18,6 +18,7 @@ module Plurimath
           precision = options[:precision] || @precision
           return "" unless precision > 0
 
+          fraction = convert_to_base(fraction, options[:base]) if fraction.match?(/[0-9]/)
           number = if @digit_count
                      digit_count_format(int, fraction)
                    else
@@ -29,6 +30,8 @@ module Plurimath
         end
 
         def format(number, precision)
+          return number if precision <= number.length
+          
           number + "0" * (precision - number.length)
         end
 
@@ -37,6 +40,12 @@ module Plurimath
         end
 
         protected
+
+        def convert_to_base(fraction, base)
+          # TODO: handle the 000004 and relevant scenarios
+          # binding.irb
+          fraction.to_i.to_s(base)
+        end
 
         def change_format(string)
           tokens = []
