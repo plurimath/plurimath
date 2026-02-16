@@ -6,19 +6,27 @@ module Plurimath
       class Integer
         attr_reader :separator, :groups
 
-        BASE_PREFIXES = {
+        DEFAULT_BASE = 10
+        DEFAULT_GROUPS = 3
+        DEFAULT_STRINGS = {
+          empty: "",
+          zero: "0",
+          comma: ",",
+        }.freeze
+        DEFAULT_BASE_PREFIXES = {
           2 => "0b",
           8 => "0o",
           16 => "0x",
         }.freeze
 
         def initialize(symbols = {})
-          @groups    = Array(symbols[:group_digits] || 3)
-          @separator = symbols[:group] || ','
-          @base = symbols[:base] || 10
+          @groups    = Array(symbols[:group_digits] || DEFAULT_GROUPS)
+          @separator = symbols[:group] || DEFAULT_STRINGS[:comma]
+          @base = symbols[:base] || DEFAULT_BASE
           @hex_capital = symbols[:hex_capital] || false
-          @base_prefix = symbols.fetch(:base_prefix, BASE_PREFIXES[@base])
+          @base_prefix = symbols.fetch(:base_prefix, DEFAULT_BASE_PREFIXES[@base])
           @base_postfix = symbols[:base_postfix]
+          @base_postfix_exists = symbols.key?(:base_postfix)
         end
 
         def apply(number, options = {})
@@ -26,7 +34,7 @@ module Plurimath
 
           formatted_number = format_groups(number_to_base(number))
           formatted_number.upcase! if upcase_hex?
-          return "#{formatted_number}#{@base_postfix}" if options.key?(:base_postfix)
+          return "#{formatted_number}#{@base_postfix}" if @base_postfix_exists
 
           "#{@base_prefix}#{formatted_number}"
         end
@@ -56,7 +64,7 @@ module Plurimath
         end
 
         def base_default?
-          @base == 10
+          @base == DEFAULT_BASE
         end
 
         def upcase_hex?
