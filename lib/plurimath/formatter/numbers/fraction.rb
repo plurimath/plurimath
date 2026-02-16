@@ -18,14 +18,16 @@ module Plurimath
           precision = options[:precision] || @precision
           return "" unless precision > 0
 
-          fraction = convert_to_base(fraction, options[:base]) if fraction.match?(/[0-9]/)
+          base = options.fetch(:base, 10)
+          fraction = convert_to_base(base, fraction) if fraction.match?(/[1-9]/)
+
           number = if @digit_count
                      digit_count_format(int, fraction)
                    else
                      format(fraction, precision)
                    end
 
-          formatted_number = change_format(number) if number
+          formatted_number = format_groups(number) if number
           formatted_number ? decimal + formatted_number : ""
         end
 
@@ -35,21 +37,26 @@ module Plurimath
           number + "0" * (precision - number.length)
         end
 
-        def format_groups(string)
-          change_format(string)
+        def format_groups(string, length = group)
+          length = string.length if group.to_i.zero?
+
+          change_format(string, length)
         end
 
         protected
 
-        def convert_to_base(fraction, base)
-          # TODO: handle the 000004 and relevant scenarios
-          # binding.irb
-          fraction.to_i.to_s(base)
+        def convert_to_base(base, fraction)
+          return fraction if base == 10 # default base is 10
+
+          frac = fraction.to_i.to_s(base)
+          return frac unless fraction.start_with?("0")
+
+          "#{fraction.match(/^0+/)}#{frac}"
         end
 
-        def change_format(string)
+        def change_format(string, length)
           tokens = []
-          tokens << string&.slice!(0, (group || string.length)) until string&.empty?
+          tokens << string&.slice!(0, length) until string&.empty?
           tokens.compact.join(separator)
         end
 

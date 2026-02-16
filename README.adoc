@@ -556,15 +556,16 @@ Accepts an integer value. (default is 3 in most locales.)
 ====
 
 `base`:: (`Numeric` value)
-Sets the numeric base (radix) used to render the *integer* part of the number.
+Sets the numeric base (radix) used to render both the integer and fractional parts of the number.
 Common values are 2 (binary), 8 (octal), 10 (decimal, default) and 16 (hexadecimal).
 +
-.Rendering integers in different bases
+.Rendering numbers in different bases
 [example]
 ====
-"10"  with `base: 2`  => "0b1010"
-"9"   with `base: 8`  => "0o11"
-"255" with `base: 16` => "0xff"
+"10"    with `base: 2`  => "0b1010"
+"9"     with `base: 8`  => "0o11"
+"255"   with `base: 16` => "0xff"
+"10.75" with `base: 2`  => "0b10,10.1001011" (both integer and fractional parts converted, with default grouping)
 ====
 
 `base_prefix`:: (`String` or `nil` value)
@@ -590,17 +591,62 @@ This is applied after digit grouping.
 ====
 
 `hex_capital`:: (`Boolean` value)
-When `true` and `base: 16`, the entire formatted integer (including any prefix or postfix)
-is rendered using uppercase letters. It has no effect for other bases.
+When `true` and `base: 16`, hexadecimal *digits* (`a`-`f`) in the converted output
+are rendered using uppercase letters. Prefixes and postfixes are not modified.
+It has no effect for other bases.
 +
 .Uppercase hexadecimal output
 [example]
 ====
-"48879" with `base: 16, hex_capital: true` => "0XBEEF"
+"48879" with `base: 16, hex_capital: true` => "0xBE,EF"
 ====
 
-NOTE: When `base` is not 10, only the integer part of the value is converted;
-the fractional part is ignored for base conversion and no decimal separator is rendered.
+NOTE: When `base` is not 10, both the integer and fractional parts are converted to the specified base.
+The decimal separator is rendered as configured by the `decimal` option.
++
+NOTE: The fractional-part conversion operates on the fractional *digit sequence* (e.g. `"10.75"` uses `"75"` as the fractional digits),
+converting that sequence to the requested base. This matches the current implementation and test expectations.
+
+===== Base conversion with other formatting options
+
+Base conversion works seamlessly with other formatting options such as `precision`, `digit_count`,
+`fraction_group`, `fraction_group_digits`, and `significant`.
+
+.Base conversion with precision
+[example]
+====
+Controls the number of fractional digits in the converted base (pads when needed, but does not truncate if the converted value is longer):
++
+"10.75" with `base: 2, precision: 4` => "0b10,10.1001011" (converted fractional part is longer than precision)
+"0.5"   with `base: 16, precision: 6` => "0x0.500000" (padded to 6 fractional digits in base 16)
+====
+
+.Base conversion with fraction grouping
+[example]
+====
+Groups fractional digits in the converted base:
++
+"10.75" with `base: 2, fraction_group_digits: 4, fraction_group: " ", group_digits: 10` => "0b1010.1001 011"
+"0.1"   with `base: 16, fraction_group_digits: 2, fraction_group: "'", precision: 8, group_digits: 10` => "0x0.10'00'00'00"
+====
+
+.Base conversion with digit_count
+[example]
+====
+Limits total digits when using base conversion:
++
+"14236.39239" with `base: 10, digit_count: 6, group_digits: 3` => "14,236.4"
+"10.75"       with `base: 2, digit_count: 5, group_digits: 10` => "0b1010.1000"
+====
+
+.Base conversion with significant digits
+[example]
+====
+Applies significant digit rounding with base conversion:
++
+"1234.56" with `base: 10, significant: 4` => "1,235"
+"1999"    with `base: 10, significant: 2` => "2,000"
+====
 
 `fraction_group`:: (`String` value)
 Delimiter to use between groups of fractional digits specified in

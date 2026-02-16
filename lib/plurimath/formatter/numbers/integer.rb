@@ -6,23 +6,10 @@ module Plurimath
       class Integer
         attr_reader :separator, :groups
 
-        BASE_NUMBER_SYSTEMS = {
-          2 => "Binary",
-          8 => "Octal",
-          10 => "Decimal",
-          16 => "Hexadecimal",
-        }.freeze
-        
         BASE_PREFIXES = {
           2 => "0b",
           8 => "0o",
           16 => "0x",
-        }.freeze
-        
-        BASE_POSTFIXES = {
-          2 => "",
-          8 => "",
-          16 => "",
         }.freeze
 
         def initialize(symbols = {})
