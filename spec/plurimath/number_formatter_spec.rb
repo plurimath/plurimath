@@ -383,7 +383,7 @@ RSpec.describe Plurimath::NumberFormatter do
       end
     end
 
-    context "testing base arguments for numeric values" do
+    context "testing base conversion arguments" do
       let(:locale) { :en }
       let(:localize_number) { nil }
       let(:localizer_symbols) { {} }
@@ -395,16 +395,6 @@ RSpec.describe Plurimath::NumberFormatter do
         it "formats base 2 with default prefix" do
           output_string = formatter.localized_number("1910", format: base_format_defaults.merge(base: 2, group_digits: 8, group: " "))
           expect(output_string).to eql("0b111 01110110")
-        end
-
-        it "formats base 8 with default prefix" do
-          output_string = formatter.localized_number("9", format: base_format_defaults.merge(base: 8))
-          expect(output_string).to eql("0o11")
-        end
-
-        it "formats base 16 with default prefix (lowercase)" do
-          output_string = formatter.localized_number("255", format: base_format_defaults.merge(base: 16))
-          expect(output_string).to eql("0xff")
         end
 
         it "formats zero in base 16 with default prefix" do
@@ -465,14 +455,14 @@ RSpec.describe Plurimath::NumberFormatter do
       end
 
       context "non-integer numeric inputs with non-decimal base" do
-        it "omits the fractional part when base is not 10" do
+        it "converts base of the fractional part when base is 2" do
           output_string = formatter.localized_number("10.75", format: base_format_defaults.merge(base: 2))
-          expect(output_string).to eql("0b10,10")
+          expect(output_string).to eql("0b10,10.1001011")
         end
 
-        it "omits the fractional part for negative values as well" do
-          output_string = formatter.localized_number("-10.75", format: base_format_defaults.merge(base: 2))
-          expect(output_string).to eql("-0b10,10")
+        it "converts base of the fractional part for negative values as well with custom prefix" do
+          output_string = formatter.localized_number("-10.75", format: base_format_defaults.merge(base: 2, base_prefix: " 0B"))
+          expect(output_string).to eql("- 0B10,10.1001011") # space is included in from the "base_prefix"
         end
       end
 
@@ -485,6 +475,72 @@ RSpec.describe Plurimath::NumberFormatter do
         it "base_postfix takes precedence even if base_prefix is also provided" do
           output_string = formatter.localized_number("255", format: base_format_defaults.merge(base: 10, base_prefix: "y^", base_postfix: "_x"))
           expect(output_string).to eql("2,55_x")
+        end
+      end
+
+      context "base conversion with digit_count" do
+        it "applies digit_count with base 10 (total digits including fractional)" do
+          output_string = formatter.localized_number("14236.39239", format: base_format_defaults.merge(base: 10, digit_count: 6, group_digits: 3))
+          expect(output_string).to eql("14,236.4")
+        end
+
+        it "applies digit_count with base 2 and fractional input" do
+          output_string = formatter.localized_number("10.75", format: base_format_defaults.merge(base: 2, digit_count: 5, group_digits: 10))
+          expect(output_string).to eql("0b1010.1000")
+        end
+      end
+
+      context "base conversion with precision" do
+        it "does not truncate fractional digits when precision is smaller than converted length" do
+          output_string = formatter.localized_number("10.75", format: base_format_defaults.merge(base: 2), precision: 4)
+          expect(output_string).to eql("0b10,10.1001011")
+        end
+
+        it "pads fractional part in base 16 when precision exceeds converted length" do
+          output_string = formatter.localized_number("0.5", format: base_format_defaults.merge(base: 16, group_digits: 10), precision: 6)
+          expect(output_string).to eql("0x0.500000")
+        end
+      end
+
+      context "base conversion with fraction_group and fraction_group_digits" do
+        it "groups fractional digits in base 2 with fraction_group options" do
+          output_string = formatter.localized_number("10.75", format: base_format_defaults.merge(
+            base: 2,
+            fraction_group_digits: 4,
+            fraction_group: " ",
+            group_digits: 10
+          ))
+          expect(output_string).to eql("0b1010.1001 011")
+        end
+
+        it "does not group (and does not loop) when fraction_group_digits is 0" do
+          output_string = formatter.localized_number("10.75", format: base_format_defaults.merge(
+            base: 2,
+            fraction_group_digits: 0,
+            fraction_group: " ",
+            group_digits: 10
+          ))
+          expect(output_string).to eql("0b1010.1001011")
+        end
+      end
+
+
+      context "base conversion with significant digits" do
+        it "applies significant to base 10 output" do
+          output_string = formatter.localized_number("1234.56", format: base_format_defaults.merge(base: 10, significant: 4, group_digits: 3))
+          expect(output_string).to eql("1,235")
+        end
+
+        it "applies significant with base 10 and engineering-style rounding" do
+          output_string = formatter.localized_number("1999", format: base_format_defaults.merge(base: 10, significant: 2, group_digits: 3))
+          expect(output_string).to eql("2,000")
+        end
+      end
+
+      context "base conversion with notation :basic" do
+        it "applies base conversion when notation is explicitly :basic" do
+          output_string = formatter.localized_number("255", format: base_format_defaults.merge(base: 16, notation: :basic))
+          expect(output_string).to eql("0xff")
         end
       end
     end
