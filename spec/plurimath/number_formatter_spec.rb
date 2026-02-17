@@ -388,7 +388,7 @@ RSpec.describe Plurimath::NumberFormatter do
       let(:localize_number) { nil }
       let(:localizer_symbols) { {} }
 
-      # Use a huge group size to avoid separators interfering with expectations.
+      # Use a small group size by default to exercise separators; override in individual tests when needed.
       let(:base_format_defaults) { { group_digits: 2, group: ",", decimal: "." } }
 
       context "base conversion (integers)" do
