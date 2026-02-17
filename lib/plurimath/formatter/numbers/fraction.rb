@@ -42,7 +42,7 @@ module Plurimath
 
         def format(number, precision)
           return number if precision <= number.length
-          
+
           number + DEFAULT_STRINGS[:zero] * (precision - number.length)
         end
 
@@ -60,7 +60,7 @@ module Plurimath
           frac = fraction.to_i.to_s(base)
           return frac unless fraction.start_with?(DEFAULT_STRINGS[:zero])
 
-          "#{fraction.match(/^#{DEFAULT_STRINGS[:zero]}+/)}#{frac}" # remove leading zeros from fraction
+          "#{fraction.match(/^#{DEFAULT_STRINGS[:zero]}+/)}#{frac}" # preserve leading zeros from fraction
         end
 
         def change_format(string, length)
