@@ -3,21 +3,27 @@
 module Plurimath
   module Formatter
     class NumberFormatter
-      attr_reader :number, :data_reader, :prefix
+      attr_reader :number, :data_reader
 
+      DEFAULT_BASE = 10
       STRING_SYMBOLS = {
-        dot: ".".freeze,
-        f: "F".freeze,
+        dot: ".",
+        f: "F",
+      }.freeze
+      DEFAULT_BASE_PREFIXES = {
+        2 => "0b",
+        8 => "0o",
+        10 => "",
+        16 => "0x",
       }.freeze
 
       def initialize(number, data_reader = {})
         @number = number
         @data_reader = data_reader
-        @prefix = if number.negative?
-          "-"
-        elsif data_reader[:number_sign]&.to_sym == :plus
-          "+"
-        end
+        @base = data_reader[:base] || DEFAULT_BASE
+        validate_base! unless DEFAULT_BASE_PREFIXES.key?(@base)
+
+        @base_prefix = data_reader.fetch(:base_prefix, DEFAULT_BASE_PREFIXES[@base])
       end
 
       def format(precision: nil)
@@ -27,13 +33,36 @@ module Plurimath
         #   NotImplementedError: String#<< not supported. Mutable String methods are not supported in Opal.
         result = []
         result << integer_format.apply(int, data_reader)
-        result << fraction_format.apply(frac, data_reader, int) if frac
+        result << fraction_format.apply(frac, data_reader, int)
         result = result.join
         result = signif_format.apply(result, integer_format, fraction_format)
-        "#{prefix}#{result}"
+        result.upcase! if upcase_hex?
+        result = pre_post_fixed(result) unless base_default?
+        "#{prefix_symbol}#{result}"
       end
 
       private
+
+      def validate_base!
+        error_message = "Unsupported base: #{@base}. Supported bases are #{DEFAULT_BASE_PREFIXES.keys.join(", ")}."
+        raise ::Plurimath::Math::InvalidFormatterBaseError, error_message
+      end
+
+      def prefix_symbol
+        if number.negative?
+          "-"
+        elsif data_reader[:number_sign]&.to_sym == :plus
+          "+"
+        end
+      end
+
+      def pre_post_fixed(result)
+        if data_reader.key?(:base_postfix)
+          "#{result}#{data_reader[:base_postfix]}"
+        else
+          "#{@base_prefix}#{result}"
+        end
+      end
 
       def partition_tokens(number)
         int, fraction = parse_number(number)
@@ -56,10 +85,11 @@ module Plurimath
       def parse_number(number, options = data_reader)
         precision = options[:precision] || precision_from(number)
 
+        abs = round_to(number, precision).abs
         num = if precision == 0
-                round_to(number, precision).abs.fix.to_s(STRING_SYMBOLS[:f])
+                abs.fix.to_s(STRING_SYMBOLS[:f])
               else
-                round_to(number, precision).abs.round(precision).to_s(STRING_SYMBOLS[:f])
+                abs.round(precision).to_s(STRING_SYMBOLS[:f])
               end
         num.split(STRING_SYMBOLS[:dot])
       end
@@ -67,6 +97,14 @@ module Plurimath
       def round_to(number, precision)
         factor = BigDecimal(10).power(precision)
         (number * factor).fix / factor
+      end
+
+      def base_default?
+        @base == DEFAULT_BASE
+      end
+
+      def upcase_hex?
+        data_reader[:hex_capital] && @base == 16
       end
     end
   end

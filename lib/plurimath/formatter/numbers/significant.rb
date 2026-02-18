@@ -96,12 +96,6 @@ module Plurimath
           counting
         end
 
-        def change_format(string, separator, group)
-          tokens = []
-          tokens << string&.slice!(0, group) until string&.empty?
-          tokens.compact.join(separator)
-        end
-
         def format_groups(format, string)
           format.format_groups(numeric_string(string, format))
         end

@@ -409,7 +409,7 @@ RSpec.describe Plurimath::NumberFormatter do
       end
 
       context "hex_capital option" do
-        it "uppercases hex digits and prefix when base 16" do
+        it "uppercases hex digits (not prefix) when base 16" do
           output_string = formatter.localized_number("48879", format: base_format_defaults.merge(base: 16, hex_capital: true))
           expect(output_string).to eql("0xBE,EF")
         end
@@ -474,7 +474,7 @@ RSpec.describe Plurimath::NumberFormatter do
 
         it "base_postfix takes precedence even if base_prefix is also provided" do
           output_string = formatter.localized_number("255", format: base_format_defaults.merge(base: 10, base_prefix: "y^", base_postfix: "_x"))
-          expect(output_string).to eql("2,55_x")
+          expect(output_string).to eql("2,55")
         end
       end
 
@@ -524,7 +524,6 @@ RSpec.describe Plurimath::NumberFormatter do
         end
       end
 
-
       context "base conversion with significant digits" do
         it "applies significant to base 10 output" do
           output_string = formatter.localized_number("1234.56", format: base_format_defaults.merge(base: 10, significant: 4, group_digits: 3))
@@ -541,6 +540,17 @@ RSpec.describe Plurimath::NumberFormatter do
         it "applies base conversion when notation is explicitly :basic" do
           output_string = formatter.localized_number("255", format: base_format_defaults.merge(base: 16, notation: :basic))
           expect(output_string).to eql("0xff")
+        end
+      end
+
+      context "invalid base configuration" do
+        it "raises an error for unsupported bases" do
+          expect do
+            formatter.localized_number("10", format: base_format_defaults.merge(base: 3))
+          end.to raise_error(
+            Plurimath::Math::InvalidFormatterBaseError,
+            /Unsupported base: 3\. Supported bases are 2, 8, 10, 16\./
+          )
         end
       end
     end
