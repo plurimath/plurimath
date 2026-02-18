@@ -7,46 +7,23 @@ module Plurimath
         attr_reader :separator, :groups
 
         DEFAULT_BASE = 10
-        DEFAULT_GROUPS = 3
-        DEFAULT_STRINGS = {
-          empty: "",
-          zero: "0",
-          comma: ",",
-        }.freeze
-        DEFAULT_BASE_PREFIXES = {
-          2 => "0b",
-          8 => "0o",
-          16 => "0x",
-        }.freeze
+        DEFAULT_SEPARATOR = ",".freeze
 
         def initialize(symbols = {})
-          @groups    = Array(symbols[:group_digits] || DEFAULT_GROUPS)
-          @separator = symbols[:group] || DEFAULT_STRINGS[:comma]
-          @base = symbols[:base] || DEFAULT_BASE
-          @hex_capital = symbols[:hex_capital] || false
-          @base_prefix = symbols.fetch(:base_prefix, DEFAULT_BASE_PREFIXES[@base])
-          @base_postfix = symbols[:base_postfix]
-          @base_postfix_exists = symbols.key?(:base_postfix)
+          @base      = symbols[:base] || DEFAULT_BASE
+          @groups    = symbols[:group_digits] || 3
+          @separator = symbols[:group] || DEFAULT_SEPARATOR
         end
 
         def apply(number, options = {})
-          return number if groups.empty?
-
-          formatted_number = format_groups(number_to_base(number))
-          formatted_number.upcase! if upcase_hex?
-          return "#{formatted_number}#{@base_postfix}" if @base_postfix_exists
-
-          "#{@base_prefix}#{formatted_number}"
+          format_groups(number_to_base(number))
         end
 
         def format_groups(string)
           tokens = []
 
-          tokens << chop_group(string, groups.first)
-          string = string[0...-tokens.first.size]
-
           until string.empty?
-            tokens << chop_group(string, groups.last)
+            tokens << chop_group(string, groups)
             string = string[0...-tokens.last.size]
           end
 
@@ -65,10 +42,6 @@ module Plurimath
 
         def base_default?
           @base == DEFAULT_BASE
-        end
-
-        def upcase_hex?
-          @hex_capital && @base == 16
         end
       end
     end

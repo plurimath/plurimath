@@ -16,12 +16,12 @@ module Plurimath
         }.freeze
 
         def initialize(symbols = {})
-          @precision = symbols.fetch(:precision, DEFAULT_PRECISION)
-          @decimal = symbols.fetch(:decimal, DEFAULT_STRINGS[:dot])
-          @separator = symbols[:fraction_group].to_s
-          @group = symbols[:fraction_group_digits]
-          @digit_count = symbols[:digit_count] || nil
-          @base = symbols.fetch(:base, DEFAULT_BASE)
+          @base        = symbols[:base] || DEFAULT_BASE
+          @group       = symbols[:fraction_group_digits]
+          @decimal     = symbols.fetch(:decimal, DEFAULT_STRINGS[:dot])
+          @separator   = symbols[:fraction_group].to_s
+          @precision   = symbols.fetch(:precision, DEFAULT_PRECISION)
+          @digit_count = symbols[:digit_count]
         end
 
         def apply(fraction, options = {}, int = DEFAULT_STRINGS[:empty])
@@ -55,7 +55,7 @@ module Plurimath
         protected
 
         def convert_to_base(fraction)
-          return fraction if base == DEFAULT_BASE
+          return fraction if base_default?
 
           frac = fraction.to_i.to_s(base)
           return frac unless fraction.start_with?(DEFAULT_STRINGS[:zero])
@@ -101,6 +101,10 @@ module Plurimath
           return unless number.split('').all? { |digit| digit == DEFAULT_STRINGS[:zero] }
 
           number.length
+        end
+
+        def base_default?
+          base == DEFAULT_BASE
         end
       end
     end

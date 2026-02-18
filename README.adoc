@@ -558,6 +558,8 @@ Accepts an integer value. (default is 3 in most locales.)
 `base`:: (`Numeric` value)
 Sets the numeric base (radix) used to render both the integer and fractional parts of the number.
 Common values are 2 (binary), 8 (octal), 10 (decimal, default) and 16 (hexadecimal).
+Currently, only bases `2`, `8`, `10`, and `16` are supported.
+Passing any other value for `base` raises `Plurimath::Math::InvalidFormatterBaseError`.
 +
 .Rendering numbers in different bases
 [example]

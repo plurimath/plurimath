@@ -29,6 +29,7 @@ module Plurimath
   module Math
     class ParseError < StandardError; end
     class InvalidTypeError < TypeError; end
+    class InvalidFormatterBaseError < TypeError; end
 
     VALID_TYPES = {
       omml: Omml,
