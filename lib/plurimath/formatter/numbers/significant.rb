@@ -14,7 +14,7 @@ module Plurimath
 
         def apply(string, int_format, frac_format)
           return string if significant.zero?
-          return string unless string.match?(/[1-9]/)
+          return string unless string.match?(/[1-9a-f]/)
           chars = string.split("")
 
           return string if count_chars(chars, true) == significant
@@ -33,17 +33,7 @@ module Plurimath
           frac_part = false
           new_chars = []
           sig_count = significant
-          chars.each_with_index do |char, ind|
-            frac_part ||= char == decimal
-            sig_num ||= char.match?(/[1-9]/)
-            break if sig_count.zero?
-
-            new_chars << char
-            next unless sig_num
-            next unless char.match?(/[0-9]/)
-
-            sig_count -= 1
-          end
+          frac_part, sig_count = process_chars(chars, frac_part, new_chars, sig_count)
 
           if sig_count > 0
             new_chars << decimal unless frac_part
@@ -60,8 +50,8 @@ module Plurimath
 
         def round_str(chars, array, frac_part)
           arr_len = array.length
-          char_ind = chars[arr_len]&.match?(/[0-9]/) ? arr_len : arr_len + 1
-          return unless chars[char_ind]&.match?(/[5-9]/)
+          char_ind = chars[arr_len]&.match?(/[0-9a-f]/) ? arr_len : arr_len + 1
+          return unless chars[char_ind]&.match?(/[5-9a-f]/)
 
           frac_part = false if chars[arr_len] == decimal
           prev_ten  = false
@@ -71,7 +61,7 @@ module Plurimath
               frac_part  = false
               next
             end
-            next unless char.match?(/[0-9]/)
+            next unless char.match?(/[0-9a-f]/)
 
             if char == "9"
               prev_ten   = true
@@ -91,7 +81,7 @@ module Plurimath
           chars.each do |char|
             break if char == decimal && !fraction
 
-            counting += 1 if char.match?(/\d/)
+            counting += 1 if char.match?(/\d|[a-f]/)
           end
           counting
         end
@@ -111,9 +101,27 @@ module Plurimath
             start_counting = true if char.match(/[1-9]/)
             next unless start_counting
 
-            counting += 1 if char.match?(/\d/)
+            counting += 1 if char.match?(/\d|[a-f]/)
           end
           counting == significant
+        end
+
+        def process_chars(chars, frac_part, new_chars, sig_count)
+          chars.each do |char|
+            frac_part ||= char == decimal
+            next if char == decimal
+
+            sig_num ||= char.match?(/[1-9a-f]/)
+            break if sig_count.zero?
+
+            new_chars << char
+            next unless sig_num
+            next unless char.match?(/[0-9a-f]/)
+
+            sig_count -= 1
+          end
+
+          [frac_part, sig_count]
         end
       end
     end
