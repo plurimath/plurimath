@@ -1807,4 +1807,245 @@ RSpec.describe Plurimath::Mathml::Parser do
       expect(formula).to eq(expected_value)
     end
   end
+
+  context "contains mathml equation from metanorma/metanorm-ieee#713 example#1" do
+    let(:exp) do
+      <<~MATHML
+        <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+          <mstyle displaystyle="true">
+            <mstyle mathvariant="normal">
+              <mrow>
+                <mi>&#x394;</mi>
+                <mi>A</mi>
+              </mrow>
+            </mstyle>
+            <mo>=</mo>
+            <mstyle mathvariant="normal">
+              <mfrac>
+                <mi>b</mi>
+                <mrow>
+                  <mn>2</mn>
+                  <mo>&#x22c5;</mo>
+                  <mi>C</mi>
+                  <mi>C</mi>
+                </mrow>
+              </mfrac>
+            </mstyle>
+          </mstyle>
+        </math>
+      MATHML
+    end
+
+    it "returns formula containing dot and ddot with theta as their value" do
+      expected_value = Plurimath::Math::Formula.new([
+        Plurimath::Math::Formula::Mstyle.new([
+          Plurimath::Math::Function::FontStyle::Normal.new(
+            Plurimath::Math::Formula.new([
+              Plurimath::Math::Symbols::UpcaseDelta.new,
+              Plurimath::Math::Symbols::Symbol.new("A"),
+            ]),
+            "normal",
+          )
+        ]),
+        Plurimath::Math::Symbols::Equal.new,
+        Plurimath::Math::Formula::Mstyle.new([
+          Plurimath::Math::Function::FontStyle::Normal.new(
+            Plurimath::Math::Function::Frac.new(
+              Plurimath::Math::Symbols::Symbol.new("b"),
+              Plurimath::Math::Formula.new([
+                Plurimath::Math::Number.new("2"),
+                Plurimath::Math::Symbols::Cdot.new,
+                Plurimath::Math::Symbols::Symbol.new("C"),
+                Plurimath::Math::Symbols::Symbol.new("C"),
+              ])
+            ),
+            "normal",
+          )
+        ])
+      ])
+      expect(formula).to eq(expected_value)
+    end
+  end
+
+  context "contains mathml equation from metanorma/metanorm-ieee#713 example#2" do
+    let(:exp) do
+      <<~MATHML
+        <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+          <mstyle displaystyle="true">
+            <mstyle mathvariant="normal">
+              <mrow>
+                <mi>t</mi>
+                <mi>g</mi>
+                <mi>t</mi>
+                <msub>
+                  <mo>&#x27;</mo>
+                  <mrow>
+                    <mi>D</mi>
+                    <mi>C</mi>
+                    <mi>X</mi>
+                  </mrow>
+                </msub>
+              </mrow>
+            </mstyle>
+            <mrow>
+              <mo>(</mo>
+              <mi>&#x394;</mi>
+              <msub>
+                <mi>t</mi>
+                <mi>s</mi>
+              </msub>
+              <mo>,</mo>
+              <mi>&#x394;</mi>
+              <mi>f</mi>
+              <mo>&#x27;</mo>
+              <mo>)</mo>
+            </mrow>
+            <mo>=</mo>
+            <mstyle mathvariant="normal">
+              <mrow>
+                <mi>t</mi>
+                <mi>g</mi>
+                <msub>
+                  <mi>t</mi>
+                  <mrow>
+                    <mi>D</mi>
+                    <mi>C</mi>
+                    <mi>X</mi>
+                  </mrow>
+                </msub>
+              </mrow>
+            </mstyle>
+            <mrow>
+              <mo>(</mo>
+              <mi>&#x394;</mi>
+              <msub>
+                <mi>t</mi>
+                <mi>s</mi>
+              </msub>
+              <mo>)</mo>
+            </mrow>
+            <mrow>
+              <mo>[</mo>
+              <mn>1</mn>
+              <mo>+</mo>
+              <mstyle mathvariant="normal">
+                <mrow>
+                  <mi>U</mi>
+                  <mi>F</mi>
+                  <msub>
+                    <mi>D</mi>
+                    <mrow>
+                      <mi>D</mi>
+                      <mi>C</mi>
+                      <mi>X</mi>
+                    </mrow>
+                  </msub>
+                </mrow>
+              </mstyle>
+              <mo>&#x22c5;</mo>
+              <mi>&#x394;</mi>
+              <mi>f</mi>
+              <mo>&#x27;</mo>
+              <mo>]</mo>
+            </mrow>
+          </mstyle>
+        </math>
+      MATHML
+    end
+
+    it "returns formula containing dot and ddot with theta as their value" do
+      expected_value = Plurimath::Math::Formula.new([
+        Plurimath::Math::Formula::Mstyle.new([
+          Plurimath::Math::Function::FontStyle::Normal.new(
+            Plurimath::Math::Formula.new([
+              Plurimath::Math::Symbols::Symbol.new("t"),
+              Plurimath::Math::Symbols::Symbol.new("g"),
+              Plurimath::Math::Symbols::Symbol.new("t"),
+              Plurimath::Math::Function::Base.new(
+                Plurimath::Math::Symbols::Sprime.new,
+                Plurimath::Math::Formula.new([
+                  Plurimath::Math::Symbols::Symbol.new("D"),
+                  Plurimath::Math::Symbols::Symbol.new("C"),
+                  Plurimath::Math::Symbols::Symbol.new("X")
+                ]),
+              )
+            ]),
+            "normal"
+          ),
+        ]),
+        Plurimath::Math::Function::Fenced.new(
+          Plurimath::Math::Symbols::Paren::Lround.new,
+          [
+            Plurimath::Math::Symbols::UpcaseDelta.new,
+            Plurimath::Math::Function::Base.new(
+              Plurimath::Math::Symbols::Symbol.new("t"),
+              Plurimath::Math::Symbols::Symbol.new("s")
+            ),
+            Plurimath::Math::Symbols::Comma.new,
+            Plurimath::Math::Symbols::UpcaseDelta.new,
+            Plurimath::Math::Symbols::Symbol.new("f"),
+            Plurimath::Math::Symbols::Sprime.new
+          ],
+          Plurimath::Math::Symbols::Paren::Rround.new
+        ),
+        Plurimath::Math::Symbols::Equal.new,
+        Plurimath::Math::Formula::Mstyle.new([
+          Plurimath::Math::Function::FontStyle::Normal.new(
+            Plurimath::Math::Formula.new([
+              Plurimath::Math::Symbols::Symbol.new("t"),
+              Plurimath::Math::Symbols::Symbol.new("g"),
+              Plurimath::Math::Function::Base.new(
+                Plurimath::Math::Symbols::Symbol.new("t"),
+                Plurimath::Math::Formula.new([
+                  Plurimath::Math::Symbols::Symbol.new("D"),
+                  Plurimath::Math::Symbols::Symbol.new("C"),
+                  Plurimath::Math::Symbols::Symbol.new("X")
+                ])
+              ),
+            ]),
+            "normal",
+          ),
+        ]),
+        Plurimath::Math::Function::Fenced.new(
+          Plurimath::Math::Symbols::Paren::Lround.new,
+          [
+            Plurimath::Math::Symbols::UpcaseDelta.new,
+            Plurimath::Math::Function::Base.new(
+              Plurimath::Math::Symbols::Symbol.new("t"),
+              Plurimath::Math::Symbols::Symbol.new("s"),
+            )
+          ],
+          Plurimath::Math::Symbols::Paren::Rround.new
+        ),
+        Plurimath::Math::Function::Fenced.new(
+          Plurimath::Math::Symbols::Paren::Lsquare.new,
+          [
+            Plurimath::Math::Number.new("1"),
+            Plurimath::Math::Symbols::Plus.new,
+            Plurimath::Math::Function::FontStyle::Normal.new(
+              Plurimath::Math::Formula.new([
+                Plurimath::Math::Symbols::Symbol.new("U"),
+                Plurimath::Math::Symbols::Symbol.new("F"),
+                Plurimath::Math::Function::Base.new(
+                  Plurimath::Math::Symbols::Symbol.new("D"),
+                  Plurimath::Math::Formula.new([
+                    Plurimath::Math::Symbols::Symbol.new("D"),
+                    Plurimath::Math::Symbols::Symbol.new("C"),
+                    Plurimath::Math::Symbols::Symbol.new("X")
+                  ]),
+                ),
+              ]),
+              "normal"
+            ),
+            Plurimath::Math::Symbols::Cdot.new,
+            Plurimath::Math::Symbols::UpcaseDelta.new,
+            Plurimath::Math::Symbols::Symbol.new("f"),
+            Plurimath::Math::Symbols::Sprime.new
+          ],
+          Plurimath::Math::Symbols::Paren::Rsquare.new,
+        )
+      ])
+      expect(formula).to eq(expected_value)
+    end
+  end
 end

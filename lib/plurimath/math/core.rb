@@ -352,6 +352,7 @@ module Plurimath
           :@using_default,
           :@displaystyle,
           :@__encoding,
+          :@__register,
           :@__ordered,
           :@unitsml,
           :@__mixed,
