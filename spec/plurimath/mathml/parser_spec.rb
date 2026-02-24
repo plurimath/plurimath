@@ -1808,7 +1808,7 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
   end
 
-  context "contains mathml equation from metanorma/metanorm-ieee#713 example#1" do
+  context "contains mathml equation from metanorma/metanorma-ieee#713 example#1" do
     let(:exp) do
       <<~MATHML
         <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
@@ -1953,7 +1953,7 @@ RSpec.describe Plurimath::Mathml::Parser do
       MATHML
     end
 
-    it "returns formula containing dot and ddot with theta as their value" do
+    it "returns formula subscripted DDCX term, Delta symbols, and prime notation" do
       expected_value = Plurimath::Math::Formula.new([
         Plurimath::Math::Formula::Mstyle.new([
           Plurimath::Math::Function::FontStyle::Normal.new(
