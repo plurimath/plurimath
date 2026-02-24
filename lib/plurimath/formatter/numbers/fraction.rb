@@ -9,6 +9,7 @@ module Plurimath
         DEFAULT_BASE = 10
         DEFAULT_PRECISION = 3
         DEFAULT_STRINGS = {
+          hex_alphanumeric: %w[0 1 2 3 4 5 6 7 8 9 a b c d e f],
           empty: "",
           zero: "0",
           dot: ".",
@@ -57,7 +58,7 @@ module Plurimath
         def convert_to_base(fraction)
           return fraction if base_default?
 
-          frac = fraction.to_i.to_s(base)
+          frac = change_base(fraction)
           return frac unless fraction.start_with?(DEFAULT_STRINGS[:zero])
 
           "#{fraction.match(/^#{DEFAULT_STRINGS[:zero]}+/)}#{frac}" # preserve leading zeros from fraction
@@ -101,6 +102,22 @@ module Plurimath
           return unless number.split('').all? { |digit| digit == DEFAULT_STRINGS[:zero] }
 
           number.length
+        end
+
+        def change_base(number)
+          n = "0.#{number}".to_f
+          result = []
+          digits = @precision || number.length
+
+          digits.times do
+            n *= base
+            digit = n.to_i
+            result << DEFAULT_STRINGS[:hex_alphanumeric][digit]
+            n -= digit
+            break if n.zero?
+          end
+
+          result.join
         end
 
         def base_default?
