@@ -109,8 +109,6 @@ module Plurimath
         def process_chars(chars, frac_part, new_chars, sig_count)
           chars.each do |char|
             frac_part ||= char == decimal
-            next if char == decimal
-
             sig_num ||= char.match?(/[1-9a-f]/)
             break if sig_count.zero?
 
