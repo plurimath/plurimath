@@ -419,11 +419,18 @@ module Plurimath
       def mstyle_value=(value)
         return if value.nil? || value.empty?
 
+        replacing_order = value.length > 1 && value.any?(String)
         update(
           filter_values(
             replace_order_with_value(
               @value,
-              Array(filter_values(value, array_to_instance: true)),
+              Array(
+                filter_values(
+                  value,
+                  array_to_instance: true,
+                  replacing_order: replacing_order,
+                ),
+              ),
               "mstyle"
             )
           )
