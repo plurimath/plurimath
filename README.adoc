@@ -129,7 +129,7 @@ plurimath convert -i "equation" -f omml -t mathml -d true
 ====
 [source,bash]
 ----
-plurimath convert -e <file_path> -t unicodemath
+plurimath convert -p <file_path> -f asciimath -t unicodemath
 ----
 ====
 
@@ -564,10 +564,10 @@ Passing any other value for `base` raises `Plurimath::Math::InvalidFormatterBase
 .Rendering numbers in different bases
 [example]
 ====
-"10"    with `base: 2`  => "0b1010"
+"10"    with `base: 2, group_digits: 2, group: ","`  => "0b10,10"
 "9"     with `base: 8`  => "0o11"
 "255"   with `base: 16` => "0xff"
-"10.75" with `base: 2`  => "0b10,10.1001011" (both integer and fractional parts converted, with default grouping)
+"10.75" with `base: 2, group_digits: 2, group: ","`  => "0b10,10.11" (integer and fractional parts converted, with grouping)
 ====
 
 `base_prefix`:: (`String` or `nil` value)
@@ -606,8 +606,8 @@ It has no effect for other bases.
 NOTE: When `base` is not 10, both the integer and fractional parts are converted to the specified base.
 The decimal separator is rendered as configured by the `decimal` option.
 +
-NOTE: The fractional-part conversion operates on the fractional *digit sequence* (e.g. `"10.75"` uses `"75"` as the fractional digits),
-converting that sequence to the requested base. This matches the current implementation and test expectations.
+NOTE: The fractional-part conversion treats the digits after the decimal point as a fractional value (for example, `"10.75"` is interpreted
+as decimal `0.75` for the fractional part) and converts that real value to the requested base, honoring the configured precision.
 
 ===== Base conversion with other formatting options
 
@@ -617,10 +617,10 @@ Base conversion works seamlessly with other formatting options such as `precisio
 .Base conversion with precision
 [example]
 ====
-Controls the number of fractional digits in the converted base (pads when needed, but does not truncate if the converted value is longer):
+Controls the maximum number of fractional digits in the converted base (pads with zeros when needed and truncates repeating expansions to the configured precision):
 +
-"10.75" with `base: 2, precision: 4` => "0b10,10.1001011" (converted fractional part is longer than precision)
-"0.5"   with `base: 16, precision: 6` => "0x0.500000" (padded to 6 fractional digits in base 16)
+"10.75" with `base: 2, precision: 4` => "0b10,10.1100" (fractional part padded to 4 digits in base 2)
+"0.5"   with `base: 16, precision: 6` => "0x0.800000" (fractional part converted to base 16 and padded to 6 digits)
 ====
 
 .Base conversion with fraction grouping
@@ -628,8 +628,7 @@ Controls the number of fractional digits in the converted base (pads when needed
 ====
 Groups fractional digits in the converted base:
 +
-"10.75" with `base: 2, fraction_group_digits: 4, fraction_group: " ", group_digits: 10` => "0b1010.1001 011"
-"0.1"   with `base: 16, fraction_group_digits: 2, fraction_group: "'", precision: 8, group_digits: 10` => "0x0.10'00'00'00"
+"10.75" with `base: 2, fraction_group_digits: 1, fraction_group: " ", group_digits: 10` => "0b1010.1 1"
 ====
 
 .Base conversion with digit_count
@@ -638,7 +637,7 @@ Groups fractional digits in the converted base:
 Limits total digits when using base conversion:
 +
 "14236.39239" with `base: 10, digit_count: 6, group_digits: 3` => "14,236.4"
-"10.75"       with `base: 2, digit_count: 5, group_digits: 10` => "0b1010.1000"
+"10.75"       with `base: 2, digit_count: 5, group_digits: 10` => "0b1010.110"
 ====
 
 .Base conversion with significant digits
@@ -702,7 +701,7 @@ selected to be divisible by three to match the common metric prefixes.
 ====
 
 `e`:: (`String` value)
-Symbol to use for exponents in E notation (default value `E`). (used in the
+Symbol to use for exponents in E notation (default value `e`). (used in the
 mode: `e` only).
 +
 .Using the lowercase 'e' symbol as the exponent symbol
@@ -838,9 +837,8 @@ formatter.localized_number(
 
 Where,
 
-`<number>`:: (mandatory) The number to be formatted. Value should be a Numeric,
-i.e. Integer, Float, or BigDecimal. If not provided, an `ArgumentError` will be
-raised.
+`<number>`:: (mandatory) The number to be formatted, as a `String` containing the
+decimal representation of the value (for example, `"1234.56789"`).
 
 `locale: <locale-symbol>`:: (optional) The locale to be used for number formatting.
 Value is a symbol.
@@ -1212,7 +1210,7 @@ locales are listed in the link:/blog/2024-07-09-number-formatter[number formatte
 `options`:: (default: empty) a hash of options (`localizer_symbols`). The options
 are listed in the link:/blog/2024-07-09-number-formatter[number formatter blog post].
 
-`format_string`:: (default: `nil`, disabled) a string value (localize_number)
+`string_format`:: (default: `nil`, disabled) a string value (`localize_number`)
 
 `precision`:: (default: `nil`, disabled) an integer value.
 
@@ -1231,7 +1229,7 @@ are listed in the link:/blog/2024-07-09-number-formatter[number formatter blog p
 }
 
 > formatter = Plurimath::Formatter::Standard.new(locale: :hy, options: options, precision: 2)
-# format_string: <string value> if provided
+# string_format: <string value> if provided
 
 > Plurimath::Math.parse('2121221.3434', :latex).to_latex(formatter: formatter)
 # => '2,12,12,21;34'
@@ -1255,7 +1253,7 @@ The custom formatter is to be subclassed from `Plurimath::Formatter::Standard`.
 [source,ruby]
 ----
 class MyCustomFormatter < Plurimath::Formatter::Standard <1>
-  def initialize(locale:, precision:, options:, format_string:) <2>
+  def initialize(locale:, precision:, options:, string_format:) <2>
     super
   end
 end
@@ -1270,7 +1268,7 @@ The default options of the custom formatter are set using the
 [source,ruby]
 ----
 class MyCustomFormatter < Plurimath::Formatter::Standard
-  def initialize(locale:, precision:, options:, format_string:)
+  def initialize(locale:, precision:, options:, string_format:)
     super
   end
 
