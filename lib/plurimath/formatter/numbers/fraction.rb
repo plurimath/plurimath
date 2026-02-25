@@ -15,11 +15,13 @@ module Plurimath
           dot: ".",
           f: "F",
         }.freeze
+        DIGIT_VALUE = DEFAULT_STRINGS[:hex_alphanumeric].each_with_index.to_h
 
         def initialize(symbols = {})
           @base        = symbols[:base] || DEFAULT_BASE
           @group       = symbols[:fraction_group_digits]
           @decimal     = symbols.fetch(:decimal, DEFAULT_STRINGS[:dot])
+          @int_group   = symbols[:group]
           @separator   = symbols[:fraction_group].to_s
           @precision   = symbols.fetch(:precision, DEFAULT_PRECISION)
           @digit_count = symbols[:digit_count]
@@ -75,7 +77,8 @@ module Plurimath
           int_length = integer.length - 1 # integer length; excluding the decimal point
           @digit_count ||= int_length
           if int_length > @digit_count
-            number_string = BigDecimal(integer).round(@digit_count - int.length)
+            num = integer.delete(@int_group) if integer.include?(@int_group)
+            number_string = round_integer_for_base(integer, int, fraction)
             numeric_digits(number_string) if @digit_count > int.length
           elsif int_length < @digit_count
             fraction + (DEFAULT_STRINGS[:zero] * (update_digit_count(fraction) - int_length))
@@ -84,8 +87,7 @@ module Plurimath
           end
         end
 
-        def numeric_digits(num_str)
-          float = num_str.to_s(DEFAULT_STRINGS[:f])
+        def numeric_digits(float)
           return float.split(DEFAULT_STRINGS[:dot]).last if float.length == @digit_count + 1
           return unless @digit_count + 1 > float.length
 
@@ -104,17 +106,62 @@ module Plurimath
           number.length
         end
 
+        def round_integer_for_base(integer, int, fraction)
+          case @base.to_i
+          when *NumberFormatter::DEFAULT_BASE_PREFIXES.except(10).keys
+            round_base_string(integer, @precision)
+          else
+            BigDecimal(integer).round(@digit_count - int.length).to_s(DEFAULT_STRINGS[:f])
+          end
+        end
+
+        def round_base_string(digits, keep)
+          # Value of the first discarded digit
+          first_discard_char = digits[keep]
+          threshold = @base / 2 # 1, 4, 5, 8 for bases 2, 8, 10, 16
+
+          discard_val = DIGIT_VALUE[first_discard_char] || 0
+
+          # If below half, just truncate
+          return digits[0...keep] if discard_val < threshold
+
+          # Otherwise we need to increment last kept digit, with carry
+          result = digits[0...keep].chars
+          carry = 1
+          i = result.length - 1
+
+          while i >= 0 && carry == 1
+            # binding.irb
+            val = DIGIT_VALUE[result[i]]
+            new_val = val + carry
+            if new_val >= @base
+              result[i] = DEFAULT_STRINGS[:hex_alphanumeric][0]  # wrap to 0, keep carry = 1
+              carry = 1
+            else
+              result[i] = DEFAULT_STRINGS[:hex_alphanumeric][new_val]
+              carry = 0
+            end
+            i -= 1
+          end
+
+          result.unshift(DEFAULT_STRINGS[:hex_alphanumeric][1]) if carry == 1
+          result.join
+        end
+
         def change_base(number)
-          n = "0.#{number}".to_f
+          # Represent the fractional part exactly as a rational number to avoid
+          # binary floating-point rounding errors when converting bases.
+          fraction = Rational(number.to_i, 10**number.length)
+
           result = []
           digits = @precision || number.length
 
           digits.times do
-            n *= base
-            digit = n.to_i
+            fraction *= base
+            digit = fraction.to_i
             result << DEFAULT_STRINGS[:hex_alphanumeric][digit]
-            n -= digit
-            break if n.zero?
+            fraction -= digit
+            break if fraction.zero?
           end
 
           result.join

@@ -491,7 +491,7 @@ RSpec.describe Plurimath::NumberFormatter do
       end
 
       context "base conversion with precision" do
-        it "does not truncate fractional digits when precision is smaller than converted length" do
+        it "pads fractional digits in base 2 when precision exceeds converted length" do
           output_string = formatter.localized_number("10.75", format: base_format_defaults.merge(base: 2), precision: 4)
           expect(output_string).to eql("0b10,10.1100")
         end
@@ -516,11 +516,11 @@ RSpec.describe Plurimath::NumberFormatter do
         it "does not group (and does not loop) when fraction_group_digits is 0" do
           output_string = formatter.localized_number("10.75", format: base_format_defaults.merge(
             base: 2,
-            fraction_group_digits: 1,
+            fraction_group_digits: 0,
             fraction_group: " ",
             group_digits: 10
           ))
-          expect(output_string).to eql("0b1010.1 1")
+          expect(output_string).to eql("0b1010.11")
         end
       end
 
