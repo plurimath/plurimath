@@ -443,7 +443,7 @@ RSpec.describe Plurimath::NumberFormatter do
           expect(output_string).to eql("ff_16")
         end
 
-        it "still applies hex_capital to the whole output when base 16" do
+        it "uppercases hex digits even when base_postfix is used" do
           output_string = formatter.localized_number("48879", format: base_format_defaults.merge(base: 16, base_postfix: "_h", hex_capital: true))
           expect(output_string).to eql("BE,EF_h")
         end
@@ -462,7 +462,7 @@ RSpec.describe Plurimath::NumberFormatter do
 
         it "converts base of the fractional part for negative values as well with custom prefix" do
           output_string = formatter.localized_number("-10.75", format: base_format_defaults.merge(base: 2, base_prefix: " 0B"))
-          expect(output_string).to eql("- 0B10,10.11") # space is included in from the "base_prefix"
+          expect(output_string).to eql("- 0B10,10.11") # space is included in the "base_prefix"
         end
       end
 
