@@ -29,12 +29,7 @@ module Plurimath
         protected
 
         def signify(chars)
-          sig_num   = false
-          frac_part = false
-          new_chars = []
-          sig_count = significant
-          frac_part, sig_count = process_chars(chars, frac_part, new_chars, sig_count)
-
+          new_chars, frac_part, sig_count = process_chars(chars)
           if sig_count > 0
             new_chars << decimal unless frac_part
           else
@@ -81,7 +76,7 @@ module Plurimath
           chars.each do |char|
             break if char == decimal && !fraction
 
-            counting += 1 if char.match?(/\d|[a-f]/)
+            counting += 1 if char.match?(/[0-9a-f]/)
           end
           counting
         end
@@ -98,15 +93,17 @@ module Plurimath
           start_counting = false
           counting = 0
           chars.each do |char|
-            start_counting = true if char.match(/[1-9]/)
+            start_counting = true if char.match(/[1-9a-f]/)
             next unless start_counting
 
-            counting += 1 if char.match?(/\d|[a-f]/)
+            counting += 1 if char.match?(/[0-9a-f]/)
           end
           counting == significant
         end
 
-        def process_chars(chars, frac_part, new_chars, sig_count)
+        def process_chars(chars, sig_count: significant, sig_num: false, frac_part: false)
+          sig_count, sig_num, frac_part = [significant, sig_num, frac_part]
+          new_chars = []
           chars.each do |char|
             frac_part ||= char == decimal
             sig_num ||= char.match?(/[1-9a-f]/)
@@ -119,7 +116,7 @@ module Plurimath
             sig_count -= 1
           end
 
-          [frac_part, sig_count]
+          [new_chars, frac_part, sig_count]
         end
       end
     end
