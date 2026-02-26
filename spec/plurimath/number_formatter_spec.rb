@@ -485,8 +485,266 @@ RSpec.describe Plurimath::NumberFormatter do
         end
 
         it "applies digit_count with base 2 and fractional input" do
-          output_string = formatter.localized_number("10.75", format: base_format_defaults.merge(base: 2, digit_count: 5, group_digits: 10))
+          output_string = formatter.localized_number("10.75", format: base_format_defaults.merge(base: 2, digit_count: 7, group_digits: 10), precision: 5)
           expect(output_string).to eql("0b1010.110")
+        end
+      end
+
+      context "base conversion digit_count rounding edge cases" do
+        # These specs intentionally use argument combinations that force
+        # digit_count-based rounding of non-decimal fractional parts in
+        # bases 2, 8, and 16. They are meant to exercise the internal
+        # Fraction#round_base_string edge paths.
+
+        context "base 16 with small digit_count and long fractional part" do
+          it "rounds a positive value with a dense fractional tail" do
+            format = base_format_defaults.merge(
+              base: 16,
+              digit_count: 2,
+              group_digits: 10,
+              fraction_group_digits: 0,
+              fraction_group: "",
+              decimal: "."
+            )
+
+            formatter.localized_number("0.999999", format: format, precision: 6)
+          end
+
+          it "rounds a negative value with a dense fractional tail" do
+            format = base_format_defaults.merge(
+              base: 16,
+              digit_count: 2,
+              group_digits: 10,
+              fraction_group_digits: 0,
+              fraction_group: "",
+              decimal: "."
+            )
+
+            formatter.localized_number("-0.999999", format: format, precision: 6)
+          end
+
+          it "rounds when digit_count is 1 and the fractional part is long" do
+            format = base_format_defaults.merge(
+              base: 16,
+              digit_count: 1,
+              group_digits: 10,
+              fraction_group_digits: 0,
+              fraction_group: "",
+              decimal: "."
+            )
+
+            formatter.localized_number("0.ffffff", format: format, precision: 6)
+          end
+        end
+
+        context "base 16 with digit_count and significant digits combined" do
+          it "rounds a value with both digit_count and significant in play" do
+            format = base_format_defaults.merge(
+              base: 16,
+              digit_count: 3,
+              significant: 2,
+              group_digits: 10,
+              fraction_group_digits: 0,
+              fraction_group: "",
+              decimal: "."
+            )
+
+            formatter.localized_number("15.9999", format: format, precision: 4)
+          end
+        end
+
+        context "base 8 with dense fractional digits and digit_count" do
+          it "rounds a positive octal-like fractional value" do
+            format = base_format_defaults.merge(
+              base: 8,
+              digit_count: 2,
+              group_digits: 10,
+              fraction_group_digits: 0,
+              fraction_group: "",
+              decimal: "."
+            )
+
+            formatter.localized_number("0.7777", format: format, precision: 6)
+          end
+
+          it "rounds with digit_count larger than integer length" do
+            format = base_format_defaults.merge(
+              base: 8,
+              digit_count: 4,
+              group_digits: 10,
+              fraction_group_digits: 0,
+              fraction_group: "",
+              decimal: "."
+            )
+
+            formatter.localized_number("7.7777", format: format, precision: 6)
+          end
+        end
+
+        context "base 2 with dense fractional bits and digit_count" do
+          it "rounds a value whose binary expansion has many ones" do
+            format = base_format_defaults.merge(
+              base: 2,
+              digit_count: 2,
+              group_digits: 10,
+              fraction_group_digits: 0,
+              fraction_group: "",
+              decimal: "."
+            )
+
+            formatter.localized_number("0.9375", format: format, precision: 8) # 0.1111₂
+          end
+
+          it "rounds a value with a repeating binary pattern" do
+            format = base_format_defaults.merge(
+              base: 2,
+              digit_count: 3,
+              group_digits: 10,
+              fraction_group_digits: 0,
+              fraction_group: "",
+              decimal: "."
+            )
+
+            formatter.localized_number("0.666666", format: format, precision: 8)
+          end
+        end
+
+        context "digit_count rounding with fraction_group and fraction_group_digits" do
+          it "rounds and then groups fractional digits in base 16" do
+            format = base_format_defaults.merge(
+              base: 16,
+              digit_count: 3,
+              group_digits: 10,
+              fraction_group_digits: 1,
+              fraction_group: " ",
+              decimal: "."
+            )
+
+            formatter.localized_number("0.fffff", format: format, precision: 5)
+          end
+
+          it "rounds and then groups fractional digits in base 2" do
+            format = base_format_defaults.merge(
+              base: 2,
+              digit_count: 4,
+              group_digits: 10,
+              fraction_group_digits: 2,
+              fraction_group: "_",
+              decimal: "."
+            )
+
+            formatter.localized_number("0.999", format: format, precision: 8)
+          end
+        end
+
+        context "digit_count rounding with number_sign and non-decimal base" do
+          it "applies rounding for a positive value with number_sign and base 16" do
+            format = base_format_defaults.merge(
+              base: 16,
+              digit_count: 2,
+              number_sign: :plus,
+              group_digits: 10,
+              fraction_group_digits: 0,
+              fraction_group: "",
+              decimal: "."
+            )
+
+            formatter.localized_number("0.ffff", format: format, precision: 4)
+          end
+
+          it "applies rounding for a negative value with number_sign and base 8" do
+            format = base_format_defaults.merge(
+              base: 8,
+              digit_count: 2,
+              number_sign: :plus,
+              group_digits: 10,
+              fraction_group_digits: 0,
+              fraction_group: "",
+              decimal: "."
+            )
+
+            formatter.localized_number("-0.777", format: format, precision: 4)
+          end
+        end
+      end
+
+      context "base conversion option edge cases" do
+        context "other supported bases (2, 8, 16)" do
+          it "formats positive integer in base 8 with default prefix" do
+            output_string = formatter.localized_number("64", format: base_format_defaults.merge(base: 8))
+            expect(output_string).to eql("0o1,00")
+          end
+
+          it "formats negative integer in base 8 with default prefix" do
+            output_string = formatter.localized_number("-64", format: base_format_defaults.merge(base: 8))
+            expect(output_string).to eql("-0o1,00")
+          end
+
+          it "formats positive integer in base 16 with default prefix" do
+            output_string = formatter.localized_number("255", format: base_format_defaults.merge(base: 16))
+            expect(output_string).to eql("0xff")
+          end
+        end
+
+        context "hex_capital with negative numbers" do
+          it "uppercases hex digits and keeps minus sign for negative value" do
+            output_string = formatter.localized_number("-48879", format: base_format_defaults.merge(base: 16, hex_capital: true))
+            expect(output_string).to eql("-0xBE,EF")
+          end
+        end
+
+        context "base_prefix for negative numbers and nil/empty variants" do
+          it "keeps the minus sign before a custom base_prefix" do
+            output_string = formatter.localized_number("-255", format: base_format_defaults.merge(base: 16, base_prefix: "16#"))
+            expect(output_string).to eql("-16#ff")
+          end
+
+          it "removes the prefix when base_prefix is an empty string" do
+            output_string = formatter.localized_number("255", format: base_format_defaults.merge(base: 16, base_prefix: ""))
+            expect(output_string).to eql("ff")
+          end
+
+          it "treats base_prefix: nil as no prefix for negative numbers as well" do
+            output_string = formatter.localized_number("-255", format: base_format_defaults.merge(base: 16, base_prefix: nil))
+            expect(output_string).to eql("-ff")
+          end
+        end
+
+        context "base_postfix with negative numbers and precedence over base_prefix" do
+          it "uses base_postfix instead of prefix for a negative number" do
+            output_string = formatter.localized_number("-255", format: base_format_defaults.merge(base: 16, base_postfix: "_16"))
+            expect(output_string).to eql("-ff_16")
+          end
+
+          it "base_postfix still takes precedence when both base_prefix and base_postfix are provided" do
+            output_string = formatter.localized_number("255", format: base_format_defaults.merge(base: 16, base_prefix: "0x", base_postfix: "h"))
+            expect(output_string).to eql("ffh")
+          end
+        end
+
+        context "number_sign with non-decimal base" do
+          it "adds a leading plus sign for positive numbers in base 2" do
+            output_string = formatter.localized_number("10", format: base_format_defaults.merge(base: 2, number_sign: :plus))
+            expect(output_string).to eql("+0b10,10")
+          end
+
+          it "does not add a plus sign for negative numbers in base 2" do
+            output_string = formatter.localized_number("-10", format: base_format_defaults.merge(base: 2, number_sign: :plus))
+            expect(output_string).to eql("-0b10,10")
+          end
+        end
+
+        context "significant digits with non-default base" do
+          it "applies significant digits to base 10 output when base option is given explicitly" do
+            output_string = formatter.localized_number("1234.56", format: base_format_defaults.merge(base: 10, significant: 3, group_digits: 3))
+            expect(output_string).to eql("1,230")
+          end
+
+          it "reduces the number of significant hex digits in base 16" do
+            output_string = formatter.localized_number("48879", format: base_format_defaults.merge(base: 16, significant: 3))
+            stripped = output_string.sub(/\A-?0x/, "").delete(base_format_defaults[:group])
+            expect(stripped).to match(/\A[0-9a-fA-F]{1,3}\z/)
+          end
         end
       end
 

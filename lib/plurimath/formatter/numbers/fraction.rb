@@ -27,18 +27,19 @@ module Plurimath
           @digit_count = symbols[:digit_count]
         end
 
-        def apply(fraction, options = {}, int = DEFAULT_STRINGS[:empty])
+        def apply(fraction, options = {}, result)
           precision = options[:precision] || @precision
+          @result = result
+          @int = result.first
           return DEFAULT_STRINGS[:empty] unless precision > 0
 
           fraction = convert_to_base(fraction) if fraction.match?(/[1-9]/)
 
           number = if @digit_count
-                     digit_count_format(int, fraction)
+                     digit_count_format(fraction)
                    else
                      format(fraction, precision)
                    end
-
           formatted_number = format_groups(number) if number
           formatted_number ? decimal + formatted_number : DEFAULT_STRINGS[:empty]
         end
@@ -72,14 +73,14 @@ module Plurimath
           tokens.compact.join(separator)
         end
 
-        def digit_count_format(int, fraction)
-          integer = int + DEFAULT_STRINGS[:dot] + fraction
+        def digit_count_format(fraction)
+          integer = raw_integer + DEFAULT_STRINGS[:dot] + fraction
           int_length = integer.length - 1 # integer length; excluding the decimal point
           @digit_count ||= int_length
           if int_length > @digit_count
-            num = integer.delete(@int_group) if integer.include?(@int_group)
-            number_string = round_integer_for_base(integer, int, fraction)
-            numeric_digits(number_string) if @digit_count > int.length
+            number_string = round_integer_for_base(integer, fraction)
+            number_string = numeric_digits(number_string) if @digit_count > raw_integer.length && base_default?
+            number_string
           elsif int_length < @digit_count
             fraction + (DEFAULT_STRINGS[:zero] * (update_digit_count(fraction) - int_length))
           else
@@ -106,46 +107,55 @@ module Plurimath
           number.length
         end
 
-        def round_integer_for_base(integer, int, fraction)
+        def round_integer_for_base(integer, fraction)
+          round_value = @digit_count - raw_integer.length
           case @base.to_i
           when *NumberFormatter::DEFAULT_BASE_PREFIXES.except(10).keys
-            round_base_string(integer, @precision)
+            round_base_string(fraction, round_value)
           else
-            BigDecimal(integer).round(@digit_count - int.length).to_s(DEFAULT_STRINGS[:f])
+            bigdecimal = BigDecimal(integer).round(round_value)
+            bigdecimal = bigdecimal.to_s(DEFAULT_STRINGS[:f]) if bigdecimal.is_a?(BigDecimal)
+            bigdecimal
           end
         end
 
-        def round_base_string(digits, keep)
+        def round_base_string(fraction, keep)
           # Value of the first discarded digit
-          first_discard_char = digits[keep]
-          threshold = @base / 2 # 1, 4, 5, 8 for bases 2, 8, 10, 16
+          return DEFAULT_STRINGS[:empty] unless keep.positive?
+          return fraction if fraction.length < keep
 
-          discard_val = DIGIT_VALUE[first_discard_char] || 0
+          threshold = @base.div(2) # 1, 4, 5, 8 for bases 2, 8, 10, 16
+          # Extract the remaining including the one that is going to be rounded-up.
+          digits = fraction[0..keep].split("")
+          # Check the number if it should be discarded or round-up the rest of the numbers.
+          discard_char = digits.pop
 
-          # If below half, just truncate
-          return digits[0...keep] if discard_val < threshold
+          # return if the number is required to be discarded only.
+          return digits.join if DIGIT_VALUE[discard_char] < threshold
 
-          # Otherwise we need to increment last kept digit, with carry
-          result = digits[0...keep].chars
+          # rounding-up the rest of the numbers
           carry = 1
-          i = result.length - 1
+          result = []
+          digits.reverse_each.with_index do |digit, index|
+            next result << digit unless carry.positive?
 
-          while i >= 0 && carry == 1
-            # binding.irb
-            val = DIGIT_VALUE[result[i]]
-            new_val = val + carry
-            if new_val >= @base
-              result[i] = DEFAULT_STRINGS[:hex_alphanumeric][0]  # wrap to 0, keep carry = 1
-              carry = 1
+            numeric_value = DIGIT_VALUE[digit]
+            if DIGIT_VALUE[digit.next].nil?
+              # TODO: validate and update the next digit
             else
-              result[i] = DEFAULT_STRINGS[:hex_alphanumeric][new_val]
-              carry = 0
+              result << digit.next
             end
-            i -= 1
-          end
 
-          result.unshift(DEFAULT_STRINGS[:hex_alphanumeric][1]) if carry == 1
+            carry = 0 unless numeric_value >= threshold
+          end
+          round_integer if carry.positive?
+
           result.join
+        end
+
+        def round_integer
+          # update the integer of the fraction's first digit (alphanumeric value) after the decimal point is greater than the base's threshold.
+          # @int.chars.each do ||
         end
 
         def change_base(number)
@@ -161,10 +171,13 @@ module Plurimath
             digit = fraction.to_i
             result << DEFAULT_STRINGS[:hex_alphanumeric][digit]
             fraction -= digit
-            break if fraction.zero?
           end
 
           result.join
+        end
+
+        def raw_integer
+          @int.delete(@int_group)
         end
 
         def base_default?
