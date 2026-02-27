@@ -507,7 +507,8 @@ RSpec.describe Plurimath::NumberFormatter do
               decimal: "."
             )
 
-            formatter.localized_number("0.999999", format: format, precision: 6)
+            output_string = formatter.localized_number("0.999999", format: format, precision: 6)
+            expect(output_string).to eql("0x1.0")
           end
 
           it "rounds a negative value with a dense fractional tail" do
@@ -520,7 +521,8 @@ RSpec.describe Plurimath::NumberFormatter do
               decimal: "."
             )
 
-            formatter.localized_number("-0.999999", format: format, precision: 6)
+            output_string = formatter.localized_number("-0.999999", format: format, precision: 6)
+            expect(output_string).to eql("-0x1.0")
           end
 
           it "rounds when digit_count is 1 and the fractional part is long" do
@@ -533,7 +535,8 @@ RSpec.describe Plurimath::NumberFormatter do
               decimal: "."
             )
 
-            formatter.localized_number("0.ffffff", format: format, precision: 6)
+            output_string = formatter.localized_number("0.999999", format: format, precision: 6)
+            expect(output_string).to eql("0x1")
           end
         end
 
@@ -549,7 +552,8 @@ RSpec.describe Plurimath::NumberFormatter do
               decimal: "."
             )
 
-            formatter.localized_number("15.9999", format: format, precision: 4)
+            output_string = formatter.localized_number("15.9999", format: format, precision: 4)
+            expect(output_string).to eql("0x10")
           end
         end
 
@@ -557,14 +561,15 @@ RSpec.describe Plurimath::NumberFormatter do
           it "rounds a positive octal-like fractional value" do
             format = base_format_defaults.merge(
               base: 8,
-              digit_count: 2,
+              digit_count: 3,
               group_digits: 10,
               fraction_group_digits: 0,
               fraction_group: "",
               decimal: "."
             )
 
-            formatter.localized_number("0.7777", format: format, precision: 6)
+            output_string = formatter.localized_number("0.7777", format: format, precision: 6)
+            expect(output_string).to eql("0o0.62")
           end
 
           it "rounds with digit_count larger than integer length" do
@@ -577,7 +582,8 @@ RSpec.describe Plurimath::NumberFormatter do
               decimal: "."
             )
 
-            formatter.localized_number("7.7777", format: format, precision: 6)
+            output_string = formatter.localized_number("7.7777", format: format, precision: 6)
+            expect(output_string).to eql("0o7.616")
           end
         end
 
@@ -592,7 +598,8 @@ RSpec.describe Plurimath::NumberFormatter do
               decimal: "."
             )
 
-            formatter.localized_number("0.9375", format: format, precision: 8) # 0.1111₂
+            output_string = formatter.localized_number("0.9375", format: format, precision: 8)
+            expect(output_string).to eql("0b1.0")
           end
 
           it "rounds a value with a repeating binary pattern" do
@@ -605,7 +612,8 @@ RSpec.describe Plurimath::NumberFormatter do
               decimal: "."
             )
 
-            formatter.localized_number("0.666666", format: format, precision: 8)
+            output_string = formatter.localized_number("0.666666", format: format, precision: 8)
+            expect(output_string).to eql("0b0.11")
           end
         end
 
@@ -620,7 +628,8 @@ RSpec.describe Plurimath::NumberFormatter do
               decimal: "."
             )
 
-            formatter.localized_number("0.fffff", format: format, precision: 5)
+            output_string = formatter.localized_number("0.99999", format: format, precision: 5)
+            expect(output_string).to eql("0x1.0 0")
           end
 
           it "rounds and then groups fractional digits in base 2" do
@@ -633,7 +642,8 @@ RSpec.describe Plurimath::NumberFormatter do
               decimal: "."
             )
 
-            formatter.localized_number("0.999", format: format, precision: 8)
+            output_string = formatter.localized_number("0.999", format: format, precision: 8)
+            expect(output_string).to eql("0b1.00_0")
           end
         end
 
@@ -649,7 +659,8 @@ RSpec.describe Plurimath::NumberFormatter do
               decimal: "."
             )
 
-            formatter.localized_number("0.ffff", format: format, precision: 4)
+            output_string = formatter.localized_number("0.9999", format: format, precision: 4)
+            expect(output_string).to eql("+0x1.0")
           end
 
           it "applies rounding for a negative value with number_sign and base 8" do
@@ -663,7 +674,8 @@ RSpec.describe Plurimath::NumberFormatter do
               decimal: "."
             )
 
-            formatter.localized_number("-0.777", format: format, precision: 4)
+            output_string = formatter.localized_number("-0.777", format: format, precision: 4)
+            expect(output_string).to eql("-0o0.6")
           end
         end
       end
@@ -742,8 +754,7 @@ RSpec.describe Plurimath::NumberFormatter do
 
           it "reduces the number of significant hex digits in base 16" do
             output_string = formatter.localized_number("48879", format: base_format_defaults.merge(base: 16, significant: 3))
-            stripped = output_string.sub(/\A-?0x/, "").delete(base_format_defaults[:group])
-            expect(stripped).to match(/\A[0-9a-fA-F]{1,3}\z/)
+            expect(output_string).to eql("0xbe,f0")
           end
         end
       end
