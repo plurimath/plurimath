@@ -40,7 +40,7 @@ module Plurimath
                    else
                      format(fraction, precision)
                    end
-          formatted_number = format_groups(number) if number
+          formatted_number = format_groups(number) if number && !number.empty?
           formatted_number ? decimal + formatted_number : DEFAULT_STRINGS[:empty]
         end
 
@@ -111,7 +111,7 @@ module Plurimath
           round_value = @digit_count - raw_integer.length
           case @base.to_i
           when *NumberFormatter::DEFAULT_BASE_PREFIXES.except(10).keys
-            round_base_string(fraction, round_value)
+            round_base_string(fraction, round_value) if round_value >= 0
           else
             bigdecimal = BigDecimal(integer).round(round_value)
             bigdecimal = bigdecimal.to_s(DEFAULT_STRINGS[:f]) if bigdecimal.is_a?(BigDecimal)
@@ -121,7 +121,6 @@ module Plurimath
 
         def round_base_string(fraction, keep)
           # Value of the first discarded digit
-          return DEFAULT_STRINGS[:empty] unless keep.positive?
           return fraction if fraction.length < keep
 
           threshold = @base.div(2) # 1, 4, 5, 8 for bases 2, 8, 10, 16
@@ -139,23 +138,45 @@ module Plurimath
           digits.reverse_each.with_index do |digit, index|
             next result << digit unless carry.positive?
 
-            numeric_value = DIGIT_VALUE[digit]
-            if DIGIT_VALUE[digit.next].nil?
-              # TODO: validate and update the next digit
-            else
-              result << digit.next
-            end
+            next_digit = DIGIT_VALUE[digit.next]
+            next result << "0" if next_digit.nil? || next_digit > threshold
 
+            result << digit.next
+            numeric_value = DIGIT_VALUE[digit]
             carry = 0 unless numeric_value >= threshold
           end
-          round_integer if carry.positive?
+          round_integer(result, carry, threshold) if carry.positive?
 
-          result.join
+          result.reverse.join unless result.empty?
         end
 
-        def round_integer
+        def round_integer(result, carry = 1, threshold, keep)
           # update the integer of the fraction's first digit (alphanumeric value) after the decimal point is greater than the base's threshold.
-          # @int.chars.each do ||
+          int_digits = raw_integer.split("")
+          next_last_digit = DIGIT_VALUE[int_digits.last.next]
+          @result[0] = if next_last_digit.nil? || next_last_digit >= threshold
+            reversed_digits = int_digits.reverse
+            reversed_digits.each.with_index do |int, index|
+              next if int == @int_group
+              break unless carry.positive?
+
+              next_str = int.next
+              next_digit = DIGIT_VALUE[next_str]
+              next reversed_digits[index] = "0" if next_digit.nil? || next_digit > threshold
+
+              carry = 0
+              reversed_digits[index] = next_str
+            end
+            if carry.positive?
+              reversed_digits << "1"
+              result.pop
+            end
+            reversed_digits.reverse.join
+          else
+            raw_integer.next
+          end
+
+          raw_integer = @result[0]
         end
 
         def change_base(number)
