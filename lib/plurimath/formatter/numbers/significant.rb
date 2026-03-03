@@ -4,12 +4,15 @@ module Plurimath
   module Formatter
     module Numbers
       class Significant
-        attr_accessor :symbols, :decimal, :significant
+        attr_accessor :symbols, :decimal, :significant, :base
+
+        include Round
 
         def initialize(symbols)
           @symbols = symbols
           @decimal = symbols[:decimal]
           @significant = symbols[:significant].to_i
+          @base = symbols[:base] || DEFAULT_BASE
         end
 
         def apply(string, int_format, frac_format)
@@ -30,11 +33,11 @@ module Plurimath
 
         def signify(chars)
           new_chars, frac_part, sig_count = process_chars(chars)
-          if sig_count > 0
+          if sig_count.positive?
             new_chars << decimal unless frac_part
           else
             remain_chars = count_chars(chars, frac_part) - significant
-            if remain_chars > 0
+            if remain_chars.positive?
               round_str(chars, new_chars, frac_part)
               remain_chars = 0 if frac_part && remain_chars == 1
             end
@@ -46,28 +49,29 @@ module Plurimath
         def round_str(chars, array, frac_part)
           arr_len = array.length
           char_ind = chars[arr_len]&.match?(/[0-9a-f]/) ? arr_len : arr_len + 1
-          return unless chars[char_ind]&.match?(/[5-9a-f]/)
+          return unless DIGIT_VALUE[chars[char_ind]] >= threshold
 
           frac_part = false if chars[arr_len] == decimal
-          prev_ten  = false
+          carry  = false
           array.reverse!.each_with_index do |char, ind|
             if char == decimal
               array[ind] = ""
               frac_part  = false
               next
             end
-            next unless char.match?(/[0-9a-f]/)
+            next unless DIGIT_VALUE.key?(char)
 
-            if char == "9"
-              prev_ten   = true
+            if DIGIT_VALUE[char] == base.pred
+              carry = true
               array[ind] = frac_part ? "" : "0"
               next
             end
+
             char.next!
-            prev_ten = false
+            carry = false
             break
           end
-          array << "1" if prev_ten
+          array << "1" if carry
           array.reverse!
         end
 
@@ -101,7 +105,7 @@ module Plurimath
           counting == significant
         end
 
-        def process_chars(chars, sig_count: significant, sig_num: false, frac_part: false)
+        def process_chars(chars, sig_num: false, frac_part: false)
           sig_count, sig_num, frac_part = [significant, sig_num, frac_part]
           new_chars = []
           chars.each do |char|
