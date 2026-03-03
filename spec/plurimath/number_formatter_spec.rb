@@ -756,6 +756,66 @@ RSpec.describe Plurimath::NumberFormatter do
             output_string = formatter.localized_number("48879", format: base_format_defaults.merge(base: 16, significant: 3))
             expect(output_string).to eql("0xbe,f0")
           end
+
+          it "applies significant rounding across integer and fractional parts in base 16" do
+            format = base_format_defaults.merge(
+              base: 16,
+              significant: 2,
+              group_digits: 10,
+              decimal: "."
+            )
+
+            output_string = formatter.localized_number("15.9", format: format)
+            expect(output_string).to eql("0xf.e")
+          end
+
+          it "honors significant digits in base 2 for small fractional values" do
+            format = base_format_defaults.merge(
+              base: 2,
+              significant: 2,
+              group_digits: 10,
+              decimal: "."
+            )
+
+            output_string = formatter.localized_number("0.1", format: format)
+            expect(output_string).to eql("0b0.0")
+          end
+
+          it "rounds correctly in base 2 when carry crosses the integer boundary" do
+            format = base_format_defaults.merge(
+              base: 2,
+              significant: 1,
+              group_digits: 10,
+              decimal: "."
+            )
+
+            output_string = formatter.localized_number("0.75", format: format)
+            expect(output_string).to eql("0b1.0")
+          end
+
+          it "does not produce invalid hex digits when rounding to 1 significant digit" do
+            format = base_format_defaults.merge(
+              base: 16,
+              significant: 1,
+              group_digits: 10,
+              decimal: "."
+            )
+
+            output_string = formatter.localized_number("4095", format: format) # 0xfff
+            expect(output_string).to eql("0x1000")
+          end
+
+          it "does not produce invalid hex digits when rounding to 2 significant digits" do
+            format = base_format_defaults.merge(
+              base: 16,
+              significant: 2,
+              group_digits: 10,
+              decimal: "."
+            )
+
+            output_string = formatter.localized_number("4095", format: format) # 0xfff
+            expect(output_string).to eql("0x1000")
+          end
         end
       end
 
