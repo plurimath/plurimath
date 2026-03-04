@@ -24,7 +24,7 @@ module Plurimath
           @result = result
           return DEFAULT_STRINGS[:empty] unless precision > 0
 
-          fraction = convert_to_base(fraction) if fraction.match?(/[1-9]/)
+          fraction = change_base(fraction) if fraction.match?(/[1-9]/)
 
           number = if @digit_count
                      digit_count_format(fraction)
@@ -49,15 +49,6 @@ module Plurimath
 
         protected
 
-        def convert_to_base(fraction)
-          return fraction if base_default?
-
-          frac = change_base(fraction)
-          return frac unless fraction.start_with?(DEFAULT_STRINGS[:zero])
-
-          "#{fraction.match(/^#{DEFAULT_STRINGS[:zero]}+/)}#{frac}" # preserve leading zeros from fraction
-        end
-
         def change_format(string, length)
           tokens = []
           tokens << string&.slice!(0, length) until string&.empty?
@@ -68,21 +59,12 @@ module Plurimath
           integer = raw_integer + DEFAULT_STRINGS[:dot] + fraction
           int_length = integer.length.pred # integer length; excluding the decimal point
           if int_length > @digit_count
-            number_string = round_integer_for_base(integer, fraction)
-            number_string = numeric_digits(number_string) if @digit_count > raw_integer.length && base_default?
-            number_string
+            round_base_string(fraction)
           elsif int_length < @digit_count
             fraction + (DEFAULT_STRINGS[:zero] * (update_digit_count(fraction) - int_length))
           else
             fraction
           end
-        end
-
-        def numeric_digits(float)
-          return float if float.length == frac_digit_count
-          return unless frac_digit_count > float.length
-
-          float + (DEFAULT_STRINGS[:zero] * frac_digit_count)
         end
 
         def update_digit_count(number)
@@ -97,27 +79,22 @@ module Plurimath
           number.length
         end
 
-        def round_integer_for_base(integer, fraction)
-          return unless frac_digit_count >= 0
-
-          round_base_string(fraction, frac_digit_count)
-        end
-
-        def round_base_string(fraction, keep)
-          return fraction if fraction.length < keep
-
-          digits = fraction[0..keep].split("")
+        def round_base_string(fraction)
+          digits = fraction[0..frac_digit_count].split("")
           discard_char = digits.pop
-
           return digits.join if DIGIT_VALUE[discard_char] < threshold
 
           carry = 1
           rounded_reversed = []
           digits.reverse_each do |digit|
-            next(rounded_reversed << digit) unless carry.positive?
+            next rounded_reversed << digit unless carry.positive?
 
-            rounded_digit, carry = round_digit(digit)
-            rounded_reversed << rounded_digit
+            rounded_reversed << if DIGIT_VALUE[digit] == base.pred
+              DEFAULT_STRINGS[:zero]
+            else
+              carry = 0
+              DIGIT_VALUE.key(DIGIT_VALUE[digit.next])
+            end
           end
 
           round_integer(rounded_reversed, carry) if carry.positive?
@@ -125,11 +102,10 @@ module Plurimath
         end
 
         def round_integer(fraction_digits_reversed, carry = 1)
-          int_digits = raw_integer.split("")
-          next_digit = DIGIT_VALUE[int_digits.last.next]
+          int_digits = @result[0].split("")
 
           @result[0] =
-            if next_digit.nil? || next_digit >= threshold
+            if DIGIT_VALUE[int_digits.last] == base.pred
               incremented, carry = increment_integer_digits(int_digits, carry)
               if carry.positive?
                 fraction_digits_reversed.pop
@@ -143,31 +119,22 @@ module Plurimath
         end
 
         def increment_integer_digits(int_digits, carry)
-          reversed_digits = int_digits.reverse
-          reversed_digits.each_with_index do |digit, index|
+          int_digits.reverse!
+          str_chars = [decimal, @int_group]
+          int_digits.each_with_index do |digit, index|
+            next if str_chars.include?(digit)
             break unless carry.positive?
 
-            next_digit = digit.next
-            next_value = DIGIT_VALUE[next_digit]
-            if next_value.nil? || next_value > threshold
-              reversed_digits[index] = "0"
+            if DIGIT_VALUE[digit] == base.pred
+              int_digits[index] = DEFAULT_STRINGS[:zero]
               next
             end
 
-            reversed_digits[index] = next_digit
+            int_digits[index] = DIGIT_VALUE.key(DIGIT_VALUE[digit.next])
             carry = 0
           end
 
-          [reversed_digits.reverse.join, carry]
-        end
-
-        def round_digit(digit)
-          next_digit = digit.next
-          next_value = DIGIT_VALUE[next_digit]
-          return ["0", 1] if next_value.nil? || next_value > threshold
-
-          carry = DIGIT_VALUE[digit] >= threshold ? 1 : 0
-          [next_digit, carry]
+          [int_digits.reverse!.join, carry]
         end
 
         def change_base(number)
