@@ -583,7 +583,7 @@ When set to an empty string or `nil`, no prefix is rendered.
 ====
 
 `base_postfix`:: (`String` value)
-If present, a postfix is appended to the converted integer instead of using any base prefix.
+If present, a postfix is appended to the converted number instead of using any base prefix.
 This is applied after digit grouping.
 +
 .Using postfix notation

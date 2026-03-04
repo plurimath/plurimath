@@ -49,7 +49,7 @@ module Plurimath
           return unless DIGIT_VALUE[chars[char_ind]] >= threshold
 
           frac_part = false if chars[arr_len] == decimal
-          carry  = false
+          carry = nil
           array.reverse!.each_with_index do |char, ind|
             if char == decimal
               array[ind] = ""
@@ -64,7 +64,7 @@ module Plurimath
               next
             end
 
-            char.next!
+            array[ind] = DIGIT_VALUE.key(DIGIT_VALUE[char.next])
             carry = false
             break
           end
@@ -94,7 +94,7 @@ module Plurimath
           start_counting = false
           counting = 0
           chars.each do |char|
-            start_counting = true if DIGIT_VALUE.except("0").key?(char)
+            start_counting = true if DIGIT_VALUE[char]&.positive?
             next unless start_counting
 
             counting += 1 if DIGIT_VALUE.key?(char)
@@ -107,7 +107,7 @@ module Plurimath
           new_chars = []
           chars.each do |char|
             frac_part ||= char == decimal
-            sig_num ||= DIGIT_VALUE.except("0").key?(char)
+            sig_num ||= DIGIT_VALUE[char]&.positive?
             break if sig_count.zero?
 
             new_chars << char

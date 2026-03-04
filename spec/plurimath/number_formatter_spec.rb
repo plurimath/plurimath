@@ -484,6 +484,16 @@ RSpec.describe Plurimath::NumberFormatter do
           expect(output_string).to eql("14,236.4")
         end
 
+        it "rounds 8999.569 correctly with digit_count 6" do
+          output_string = formatter.localized_number("8999.569", format: base_format_defaults.merge(base: 10, digit_count: 6, group_digits: 3))
+          expect(output_string).to eql("8,999.57")
+        end
+
+        it "rounds 8999.569 correctly with digit_count 4" do
+          output_string = formatter.localized_number("8999.569", format: base_format_defaults.merge(base: 10, digit_count: 4, group_digits: 3))
+          expect(output_string).to eql("9,000")
+        end
+
         it "applies digit_count with base 2 and fractional input" do
           output_string = formatter.localized_number("10.75", format: base_format_defaults.merge(base: 2, digit_count: 7, group_digits: 10), precision: 5)
           expect(output_string).to eql("0b1010.110")
