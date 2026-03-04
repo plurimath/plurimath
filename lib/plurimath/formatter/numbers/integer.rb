@@ -3,14 +3,13 @@
 module Plurimath
   module Formatter
     module Numbers
-      class Integer
+      class Integer < Base
         attr_reader :separator, :groups
 
-        DEFAULT_BASE = 10
         DEFAULT_SEPARATOR = ",".freeze
 
         def initialize(symbols = {})
-          @base      = symbols[:base] || DEFAULT_BASE
+          setup_accessors(symbols)
           @groups    = symbols[:group_digits] || 3
           @separator = symbols[:group] || DEFAULT_SEPARATOR
         end
@@ -37,11 +36,7 @@ module Plurimath
         def number_to_base(number)
           return number if base_default?
 
-          number.to_i.to_s(@base)
-        end
-
-        def base_default?
-          @base == DEFAULT_BASE
+          number.to_i.to_s(base)
         end
       end
     end

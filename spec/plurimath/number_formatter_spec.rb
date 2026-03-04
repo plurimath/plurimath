@@ -790,19 +790,19 @@ RSpec.describe Plurimath::NumberFormatter do
             )
 
             output_string = formatter.localized_number("0.75", format: format)
-            expect(output_string).to eql("0b1.0")
+            expect(output_string).to eql("0b1")
           end
 
           it "does not produce invalid hex digits when rounding to 1 significant digit" do
             format = base_format_defaults.merge(
               base: 16,
               significant: 1,
-              group_digits: 10,
+              group_digits: 2,
               decimal: "."
             )
 
-            output_string = formatter.localized_number("4095", format: format) # 0xfff
-            expect(output_string).to eql("0x1000")
+            output_string = formatter.localized_number("4095", format: format)
+            expect(output_string).to eql("0x10,00")
           end
 
           it "does not produce invalid hex digits when rounding to 2 significant digits" do
@@ -813,7 +813,7 @@ RSpec.describe Plurimath::NumberFormatter do
               decimal: "."
             )
 
-            output_string = formatter.localized_number("4095", format: format) # 0xfff
+            output_string = formatter.localized_number("4095", format: format)
             expect(output_string).to eql("0x1000")
           end
         end

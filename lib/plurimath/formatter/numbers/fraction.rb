@@ -3,16 +3,14 @@
 module Plurimath
   module Formatter
     module Numbers
-      class Fraction
-        attr_reader :decimal, :precision, :separator, :group, :base
+      class Fraction < Base
+        attr_reader :decimal, :precision, :separator, :group
 
         DEFAULT_PRECISION = 3
         DEFAULT_STRINGS = { empty: "", zero: "0", dot: ".", f: "F" }.freeze
 
-        include Round
-
         def initialize(symbols = {})
-          @base        = symbols[:base] || DEFAULT_BASE
+          setup_accessors(symbols)
           @group       = symbols[:fraction_group_digits]
           @decimal     = symbols.fetch(:decimal, DEFAULT_STRINGS[:dot])
           @int_group   = symbols[:group]
@@ -68,8 +66,7 @@ module Plurimath
 
         def digit_count_format(fraction)
           integer = raw_integer + DEFAULT_STRINGS[:dot] + fraction
-          int_length = integer.length - 1 # integer length; excluding the decimal point
-          @digit_count ||= int_length
+          int_length = integer.length.pred # integer length; excluding the decimal point
           if int_length > @digit_count
             number_string = round_integer_for_base(integer, fraction)
             number_string = numeric_digits(number_string) if @digit_count > raw_integer.length && base_default?
@@ -82,17 +79,16 @@ module Plurimath
         end
 
         def numeric_digits(float)
-          frac_count = @digit_count - raw_integer.length
-          return float if float.length == frac_count
-          return unless frac_count > float.length
+          return float if float.length == frac_digit_count
+          return unless frac_digit_count > float.length
 
-          float + (DEFAULT_STRINGS[:zero] * frac_count)
+          float + (DEFAULT_STRINGS[:zero] * frac_digit_count)
         end
 
         def update_digit_count(number)
           return @digit_count unless zeros_count_in(number) == @precision
 
-          @digit_count - @precision + 1
+          @digit_count - @precision.next
         end
 
         def zeros_count_in(number)
@@ -102,16 +98,14 @@ module Plurimath
         end
 
         def round_integer_for_base(integer, fraction)
-          round_value = @digit_count - raw_integer.length
-          return unless round_value >= 0
+          return unless frac_digit_count >= 0
 
-          round_base_string(fraction, round_value)
+          round_base_string(fraction, frac_digit_count)
         end
 
         def round_base_string(fraction, keep)
           return fraction if fraction.length < keep
 
-          threshold = @base.div(2) # 1, 4, 5, 8 for bases 2, 8, 10, 16
           digits = fraction[0..keep].split("")
           discard_char = digits.pop
 
@@ -122,21 +116,21 @@ module Plurimath
           digits.reverse_each do |digit|
             next(rounded_reversed << digit) unless carry.positive?
 
-            rounded_digit, carry = round_digit(digit, threshold)
+            rounded_digit, carry = round_digit(digit)
             rounded_reversed << rounded_digit
           end
 
-          round_integer(rounded_reversed, threshold, carry) if carry.positive?
+          round_integer(rounded_reversed, carry) if carry.positive?
           rounded_reversed.reverse.join unless rounded_reversed.empty?
         end
 
-        def round_integer(fraction_digits_reversed, threshold, carry = 1)
+        def round_integer(fraction_digits_reversed, carry = 1)
           int_digits = raw_integer.split("")
           next_digit = DIGIT_VALUE[int_digits.last.next]
 
           @result[0] =
             if next_digit.nil? || next_digit >= threshold
-              incremented, carry = increment_integer_digits(int_digits, threshold, carry)
+              incremented, carry = increment_integer_digits(int_digits, carry)
               if carry.positive?
                 fraction_digits_reversed.pop
                 "1#{incremented}"
@@ -148,7 +142,7 @@ module Plurimath
             end
         end
 
-        def increment_integer_digits(int_digits, threshold, carry)
+        def increment_integer_digits(int_digits, carry)
           reversed_digits = int_digits.reverse
           reversed_digits.each_with_index do |digit, index|
             break unless carry.positive?
@@ -167,7 +161,7 @@ module Plurimath
           [reversed_digits.reverse.join, carry]
         end
 
-        def round_digit(digit, threshold)
+        def round_digit(digit)
           next_digit = digit.next
           next_value = DIGIT_VALUE[next_digit]
           return ["0", 1] if next_value.nil? || next_value > threshold
@@ -181,25 +175,25 @@ module Plurimath
           # binary floating-point rounding errors when converting bases.
           fraction = Rational(number.to_i, 10**number.length)
 
-          result = []
+          base_result = []
           digits = @precision || number.length
 
           digits.times do
             fraction *= base
             digit = fraction.to_i
-            result << HEX_ALPHANUMERIC[digit]
+            base_result << HEX_ALPHANUMERIC[digit]
             fraction -= digit
           end
 
-          result.join
+          base_result.join
         end
 
         def raw_integer
           @result[0].delete(@int_group)
         end
 
-        def base_default?
-          base == DEFAULT_BASE
+        def frac_digit_count
+          @digit_count - raw_integer.length
         end
       end
     end

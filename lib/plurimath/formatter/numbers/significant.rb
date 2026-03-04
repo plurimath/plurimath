@@ -3,16 +3,13 @@
 module Plurimath
   module Formatter
     module Numbers
-      class Significant
-        attr_accessor :symbols, :decimal, :significant, :base
-
-        include Round
+      class Significant < Base
+        attr_accessor :decimal, :significant
 
         def initialize(symbols)
-          @symbols = symbols
+          setup_accessors(symbols)
           @decimal = symbols[:decimal]
           @significant = symbols[:significant].to_i
-          @base = symbols[:base] || DEFAULT_BASE
         end
 
         def apply(string, int_format, frac_format)
@@ -48,7 +45,7 @@ module Plurimath
 
         def round_str(chars, array, frac_part)
           arr_len = array.length
-          char_ind = chars[arr_len]&.match?(/[0-9a-f]/) ? arr_len : arr_len + 1
+          char_ind = DIGIT_VALUE.key?(chars[arr_len]) ? arr_len : arr_len.next
           return unless DIGIT_VALUE[chars[char_ind]] >= threshold
 
           frac_part = false if chars[arr_len] == decimal
@@ -80,7 +77,7 @@ module Plurimath
           chars.each do |char|
             break if char == decimal && !fraction
 
-            counting += 1 if char.match?(/[0-9a-f]/)
+            counting += 1 if DIGIT_VALUE.key?(char)
           end
           counting
         end
@@ -97,10 +94,10 @@ module Plurimath
           start_counting = false
           counting = 0
           chars.each do |char|
-            start_counting = true if char.match(/[1-9a-f]/)
+            start_counting = true if DIGIT_VALUE.except("0").key?(char)
             next unless start_counting
 
-            counting += 1 if char.match?(/[0-9a-f]/)
+            counting += 1 if DIGIT_VALUE.key?(char)
           end
           counting == significant
         end
@@ -110,12 +107,12 @@ module Plurimath
           new_chars = []
           chars.each do |char|
             frac_part ||= char == decimal
-            sig_num ||= char.match?(/[1-9a-f]/)
+            sig_num ||= DIGIT_VALUE.except("0").key?(char)
             break if sig_count.zero?
 
             new_chars << char
             next unless sig_num
-            next unless char.match?(/[0-9a-f]/)
+            next unless DIGIT_VALUE.key?(char)
 
             sig_count -= 1
           end
