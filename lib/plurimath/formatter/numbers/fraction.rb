@@ -16,7 +16,7 @@ module Plurimath
           @int_group   = symbols[:group]
           @separator   = symbols[:fraction_group].to_s
           @precision   = symbols.fetch(:precision, DEFAULT_PRECISION)
-          @digit_count = symbols[:digit_count]
+          @digit_count = symbols[:digit_count].to_i
         end
 
         def apply(fraction, options = {}, result, integer_formatter)
@@ -27,7 +27,7 @@ module Plurimath
 
           fraction = change_base(fraction) if fraction.match?(/[1-9]/)
 
-          number = if @digit_count
+          number = if @digit_count.positive?
                      digit_count_format(fraction)
                    else
                      format(fraction, precision)
@@ -83,6 +83,7 @@ module Plurimath
         def round_base_string(fraction)
           digits = fraction[0..frac_digit_count].split("")
           discard_char = digits.pop
+          return DEFAULT_STRINGS[:empty] unless discard_char
           return digits.join if DIGIT_VALUE[discard_char] < threshold
 
           carry = 1
@@ -103,13 +104,13 @@ module Plurimath
         end
 
         def round_integer(fraction_digits_reversed, carry = 1)
-          incremented, carry = increment_integer_digits(@result[0].split(""), carry)
-          @result[0] = if carry.positive?
-                         fraction_digits_reversed.pop
-                         @integer_formatter.format_groups("1#{incremented}")
-                       else
-                         incremented
-                       end
+          incremented, carry = increment_integer_digits(raw_integer.split(""), carry)
+          new_integer = [incremented]
+          if carry.positive?
+            fraction_digits_reversed.pop
+            new_integer.insert(0, "1")
+          end
+          @result[0] = @integer_formatter.format_groups(new_integer.join)
         end
 
         def increment_integer_digits(int_digits, carry)

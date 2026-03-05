@@ -506,6 +506,17 @@ RSpec.describe Plurimath::NumberFormatter do
           output_string = formatter.localized_number("10.75", format: base_format_defaults.merge(base: 2, digit_count: 7, group_digits: 10), precision: 5)
           expect(output_string).to eql("0b1010.110")
         end
+
+        it "handles digit_count smaller than the integer length by rounding the integer and omitting the fractional part" do
+          format = base_format_defaults.merge(
+            base: 10,
+            digit_count: 3,
+            group_digits: 3
+          )
+
+          output_string = formatter.localized_number("99999.999", format: format)
+          expect(output_string).to eql("100,000")
+        end
       end
 
       context "base conversion digit_count rounding edge cases" do
