@@ -104,6 +104,14 @@ RSpec.describe Plurimath::NumberFormatter do
         output_string = formatter.localized_number(number, locale: :kk, format: { digit_count: 16, fraction_group: " ", fraction_group_digits: 3, group_digits: 3 })
         expect(output_string).to eql("14 236,392 390 000 00")
       end
+
+      it "re-applies integer grouping when digit_count rounding adds a new leading digit" do
+        # When digit_count rounding causes 999.* -> 1000, the integer part grows
+        # by one digit and needs grouping re-applied (1,000), even though the
+        # pre-rounded integer (999) had no separators.
+        output_string = formatter.localized_number("999.9", format: { digit_count: 3, group_digits: 3, group: ",", decimal: "." })
+        expect(output_string).to eql("1,000")
+      end
     end
 
     context "testing precision with es locale" do
@@ -521,6 +529,39 @@ RSpec.describe Plurimath::NumberFormatter do
             expect(output_string).to eql("0x1.0")
           end
 
+          it "rounds correctly when digit_count rounding increments a hex '9' digit" do
+            # 0.6 (base 10) == 0.9999... (base 16), so rounding to 2 total digits
+            # (integer + 1 fractional) requires incrementing '9' -> 'a'.
+            format = base_format_defaults.merge(
+              base: 16,
+              digit_count: 2,
+              group_digits: 10,
+              fraction_group_digits: 0,
+              fraction_group: "",
+              decimal: "."
+            )
+
+            output_string = formatter.localized_number("0.6", format: format, precision: 6)
+            expect(output_string).to eql("0x0.a")
+          end
+
+          it "rounds correctly when digit_count rounding carries into the integer and increments a hex '9'" do
+            # 9.999999 (base 10) has a base-16 fractional expansion starting with 'f',
+            # so rounding to 2 total digits (integer + 1 fractional) carries into the integer,
+            # requiring incrementing the integer's '9' -> 'a'.
+            format = base_format_defaults.merge(
+              base: 16,
+              digit_count: 2,
+              group_digits: 10,
+              fraction_group_digits: 0,
+              fraction_group: "",
+              decimal: "."
+            )
+
+            output_string = formatter.localized_number("9.999999", format: format, precision: 6)
+            expect(output_string).to eql("0xa.0")
+          end
+
           it "rounds a negative value with a dense fractional tail" do
             format = base_format_defaults.merge(
               base: 16,
@@ -777,6 +818,18 @@ RSpec.describe Plurimath::NumberFormatter do
 
             output_string = formatter.localized_number("15.9", format: format)
             expect(output_string).to eql("0xf.e")
+          end
+
+          it "rounds correctly in base 16 when incrementing a '9' digit for significant rounding" do
+            format = base_format_defaults.merge(
+              base: 16,
+              significant: 1,
+              group_digits: 10,
+              decimal: "."
+            )
+
+            output_string = formatter.localized_number("9.9", format: format)
+            expect(output_string).to eql("0xa")
           end
 
           it "honors significant digits in base 2 for small fractional values" do

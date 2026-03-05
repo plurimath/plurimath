@@ -24,6 +24,12 @@ module Plurimath
         def base_default?
           base == DEFAULT_BASE
         end
+
+        def next_mapping_char(char)
+          return char.next if DIGIT_VALUE.key?(char.next)
+
+          DIGIT_VALUE.key(char.next.to_i)
+        end
       end
     end
   end
