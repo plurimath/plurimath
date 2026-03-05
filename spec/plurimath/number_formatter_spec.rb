@@ -426,6 +426,20 @@ RSpec.describe Plurimath::NumberFormatter do
           output_string = formatter.localized_number("10", format: base_format_defaults.merge(base: 2, hex_capital: true))
           expect(output_string).to eql("0b10,10")
         end
+
+        it "does not uppercase letter separators when hex_capital is enabled" do
+          format = base_format_defaults.merge(
+            base: 16,
+            hex_capital: true,
+            decimal: "d",
+            group_digits: 10,
+            fraction_group_digits: 0,
+            fraction_group: ""
+          )
+
+          output_string = formatter.localized_number("0.899", format: format, precision: 1)
+          expect(output_string).to eql("0x0dC")
+        end
       end
 
       context "base_prefix option" do

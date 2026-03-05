@@ -4,7 +4,7 @@ module Plurimath
   module Formatter
     module Numbers
       class Base
-        HEX_ALPHANUMERIC = %w[0 1 2 3 4 5 6 7 8 9 a b c d e f]
+        HEX_ALPHANUMERIC = %w[0 1 2 3 4 5 6 7 8 9 a b c d e f].freeze
         DEFAULT_BASE = 10
         DIGIT_VALUE = HEX_ALPHANUMERIC.each_with_index.to_h
 
@@ -12,7 +12,7 @@ module Plurimath
 
         protected
 
-        def setup_accessors(symbols = {})
+        def initialize(symbols = {})
           @symbols = symbols
           @base = symbols[:base] || DEFAULT_BASE
         end
@@ -26,9 +26,16 @@ module Plurimath
         end
 
         def next_mapping_char(char)
-          return char.next if DIGIT_VALUE.key?(char.next)
+          next_char = if DIGIT_VALUE.key?(char.next)
+                        char.next
+                      else
+                        DIGIT_VALUE.key(char.next.to_i)
+                      end
+          upcase_hex? ? next_char.upcase : next_char
+        end
 
-          DIGIT_VALUE.key(char.next.to_i)
+        def upcase_hex?
+          symbols[:hex_capital] && base == 16
         end
       end
     end
