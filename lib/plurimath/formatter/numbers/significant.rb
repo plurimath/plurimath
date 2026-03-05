@@ -7,7 +7,7 @@ module Plurimath
         attr_accessor :decimal, :significant
 
         def initialize(symbols)
-          setup_accessors(symbols)
+          super
           @decimal = symbols[:decimal]
           @significant = symbols[:significant].to_i
         end
@@ -15,8 +15,8 @@ module Plurimath
         def apply(string, int_format, frac_format)
           return string if significant.zero?
           return string unless string.match?(/[1-9a-f]/)
-          chars = string.split("")
 
+          chars = string.chars
           return string if count_chars(chars, true) == significant
 
           string = signify(chars)
@@ -38,7 +38,7 @@ module Plurimath
               round_str(chars, new_chars, frac_part)
               remain_chars = 0 if frac_part && remain_chars == 1
             end
-            new_chars << ("0" * remain_chars) unless frac_part && sig_char_count(new_chars)
+            new_chars << ("0" * remain_chars) unless frac_part && sig_char_count?(new_chars)
           end
           new_chars.join
         end
@@ -66,7 +66,6 @@ module Plurimath
               carry = false
               break
             end
-
           end
           array << "1" if carry
           array.reverse!
@@ -90,7 +89,7 @@ module Plurimath
           string.split(format.separator).join
         end
 
-        def sig_char_count(chars)
+        def sig_char_count?(chars)
           start_counting = false
           counting = 0
           chars.each do |char|
@@ -103,7 +102,7 @@ module Plurimath
         end
 
         def process_chars(chars, sig_num: false, frac_part: false)
-          sig_count, sig_num, frac_part = [significant, sig_num, frac_part]
+          sig_count = significant
           new_chars = []
           chars.each do |char|
             frac_part ||= char == decimal

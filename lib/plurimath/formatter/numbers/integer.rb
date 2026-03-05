@@ -6,16 +6,18 @@ module Plurimath
       class Integer < Base
         attr_reader :separator, :groups
 
-        DEFAULT_SEPARATOR = ",".freeze
+        DEFAULT_SEPARATOR = ","
 
         def initialize(symbols = {})
-          setup_accessors(symbols)
+          super
           @groups    = symbols[:group_digits] || 3
           @separator = symbols[:group] || DEFAULT_SEPARATOR
         end
 
-        def apply(number, options = {})
-          format_groups(number_to_base(number))
+        def apply(number)
+          based_number = number_to_base(number)
+          based_number = based_number.upcase if upcase_hex?
+          format_groups(based_number)
         end
 
         def format_groups(string)

@@ -10,7 +10,7 @@ module Plurimath
         DEFAULT_STRINGS = { empty: "", zero: "0", dot: ".", f: "F" }.freeze
 
         def initialize(symbols = {})
-          setup_accessors(symbols)
+          super
           @group       = symbols[:fraction_group_digits]
           @decimal     = symbols.fetch(:decimal, DEFAULT_STRINGS[:dot])
           @int_group   = symbols[:group]
@@ -23,7 +23,7 @@ module Plurimath
           precision = options[:precision] || @precision
           @result = result
           @integer_formatter = integer_formatter
-          return DEFAULT_STRINGS[:empty] unless precision > 0
+          return DEFAULT_STRINGS[:empty] unless precision.positive?
 
           fraction = change_base(fraction) if fraction.match?(/[1-9]/)
 
@@ -39,7 +39,7 @@ module Plurimath
         def format(number, precision)
           return number if precision <= number.length
 
-          number + DEFAULT_STRINGS[:zero] * (precision - number.length)
+          number + (DEFAULT_STRINGS[:zero] * (precision - number.length))
         end
 
         def format_groups(string, length = group)
@@ -75,13 +75,13 @@ module Plurimath
         end
 
         def zeros_count_in(number)
-          return unless number.split('').all? { |digit| digit == DEFAULT_STRINGS[:zero] }
+          return unless number.chars.all?(DEFAULT_STRINGS[:zero])
 
           number.length
         end
 
         def round_base_string(fraction)
-          digits = fraction[0..frac_digit_count].split("")
+          digits = fraction[0..frac_digit_count].chars
           discard_char = digits.pop
           return DEFAULT_STRINGS[:empty] unless discard_char
           return digits.join if DIGIT_VALUE[discard_char] < threshold
@@ -92,11 +92,11 @@ module Plurimath
             next rounded_reversed << digit unless carry.positive?
 
             rounded_reversed << if DIGIT_VALUE[digit] == base.pred
-              DEFAULT_STRINGS[:zero]
-            else
-              carry = 0
-              next_mapping_char(digit)
-            end
+                                  DEFAULT_STRINGS[:zero]
+                                else
+                                  carry = 0
+                                  next_mapping_char(digit)
+                                end
           end
 
           round_integer(rounded_reversed, carry) if carry.positive?
@@ -104,7 +104,7 @@ module Plurimath
         end
 
         def round_integer(fraction_digits_reversed, carry = 1)
-          incremented, carry = increment_integer_digits(raw_integer.split(""), carry)
+          incremented, carry = increment_integer_digits(raw_integer.chars, carry)
           new_integer = [incremented]
           if carry.positive?
             fraction_digits_reversed.pop
@@ -141,7 +141,8 @@ module Plurimath
           digits.times do
             fraction *= base
             digit = fraction.to_i
-            base_result << HEX_ALPHANUMERIC[digit]
+            alpha_digit = HEX_ALPHANUMERIC[digit]
+            base_result << (upcase_hex? ? alpha_digit.upcase : alpha_digit)
             fraction -= digit
           end
 

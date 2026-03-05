@@ -32,11 +32,10 @@ module Plurimath
         # FIX FOR:
         #   NotImplementedError: String#<< not supported. Mutable String methods are not supported in Opal.
         result = []
-        result << integer_format.apply(int, data_reader)
+        result << integer_format.apply(int)
         result << fraction_format.apply(frac, data_reader, result, integer_format) # use formatted int for correct fraction formatting
         result = result.join
         result = signif_format.apply(result, integer_format, fraction_format)
-        result.upcase! if upcase_hex?
         result = pre_post_fixed(result) unless base_default?
         "#{prefix_symbol}#{result}"
       end
@@ -101,10 +100,6 @@ module Plurimath
 
       def base_default?
         @base == DEFAULT_BASE
-      end
-
-      def upcase_hex?
-        data_reader[:hex_capital] && @base == 16
       end
     end
   end
