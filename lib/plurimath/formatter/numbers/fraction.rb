@@ -19,9 +19,10 @@ module Plurimath
           @digit_count = symbols[:digit_count]
         end
 
-        def apply(fraction, options = {}, result)
+        def apply(fraction, options = {}, result, integer_formatter)
           precision = options[:precision] || @precision
           @result = result
+          @integer_formatter = integer_formatter
           return DEFAULT_STRINGS[:empty] unless precision > 0
 
           fraction = change_base(fraction) if fraction.match?(/[1-9]/)
@@ -93,7 +94,7 @@ module Plurimath
               DEFAULT_STRINGS[:zero]
             else
               carry = 0
-              DIGIT_VALUE.key(DIGIT_VALUE[digit.next])
+              next_mapping_char(digit)
             end
           end
 
@@ -102,20 +103,13 @@ module Plurimath
         end
 
         def round_integer(fraction_digits_reversed, carry = 1)
-          int_digits = @result[0].split("")
-
-          @result[0] =
-            if DIGIT_VALUE[int_digits.last] == base.pred
-              incremented, carry = increment_integer_digits(int_digits, carry)
-              if carry.positive?
-                fraction_digits_reversed.pop
-                "1#{incremented}"
-              else
-                incremented
-              end
-            else
-              raw_integer.next
-            end
+          incremented, carry = increment_integer_digits(@result[0].split(""), carry)
+          @result[0] = if carry.positive?
+                         fraction_digits_reversed.pop
+                         @integer_formatter.format_groups("1#{incremented}")
+                       else
+                         incremented
+                       end
         end
 
         def increment_integer_digits(int_digits, carry)
@@ -123,15 +117,13 @@ module Plurimath
           str_chars = [decimal, @int_group]
           int_digits.each_with_index do |digit, index|
             next if str_chars.include?(digit)
-            break unless carry.positive?
 
             if DIGIT_VALUE[digit] == base.pred
               int_digits[index] = DEFAULT_STRINGS[:zero]
-              next
+            else
+              int_digits[index] = next_mapping_char(digit)
+              break carry = 0
             end
-
-            int_digits[index] = DIGIT_VALUE.key(DIGIT_VALUE[digit.next])
-            carry = 0
           end
 
           [int_digits.reverse!.join, carry]

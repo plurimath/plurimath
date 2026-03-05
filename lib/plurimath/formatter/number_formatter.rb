@@ -33,7 +33,7 @@ module Plurimath
         #   NotImplementedError: String#<< not supported. Mutable String methods are not supported in Opal.
         result = []
         result << integer_format.apply(int, data_reader)
-        result << fraction_format.apply(frac, data_reader, result) # use formatted int for correct fraction formatting
+        result << fraction_format.apply(frac, data_reader, result, integer_format) # use formatted int for correct fraction formatting
         result = result.join
         result = signif_format.apply(result, integer_format, fraction_format)
         result.upcase! if upcase_hex?

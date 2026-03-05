@@ -61,12 +61,12 @@ module Plurimath
             if DIGIT_VALUE[char] == base.pred
               carry = true
               array[ind] = frac_part ? "" : "0"
-              next
+            else
+              array[ind] = next_mapping_char(char)
+              carry = false
+              break
             end
 
-            array[ind] = DIGIT_VALUE.key(DIGIT_VALUE[char.next])
-            carry = false
-            break
           end
           array << "1" if carry
           array.reverse!
