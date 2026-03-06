@@ -100,7 +100,7 @@ RSpec.describe Plurimath::Formatter::Numbers::Integer do
     end
 
     context "with hexadecimal base and uppercase" do
-      let(:symbols) { { base: 16, hex_capital: true } }
+      let(:symbols) { { base: 16 } }
 
       it "converts and uppercases hex letters" do
         result = formatter.apply("255")

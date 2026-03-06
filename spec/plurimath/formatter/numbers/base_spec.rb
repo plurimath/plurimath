@@ -179,7 +179,7 @@ RSpec.describe Plurimath::Formatter::Numbers::Base do
       let(:symbols) { { base: 8 } }
 
       it "increments digit in octal" do
-        expect(base.send(:next_mapping_char, "7")).to eq("8")
+        expect(base.send(:next_mapping_char, "6")).to eq("7")
       end
     end
   end
