@@ -624,7 +624,7 @@ module Plurimath
       end
 
       def parse_error!(type)
-        Math.parse_error!(input_string, type)
+        raise ParseError.new(input_string, type)
       end
 
       def omml_br_tag
@@ -986,9 +986,7 @@ module Plurimath
       # Dd derivative nodes end
 
       def type_error!(type)
-        raise Math::InvalidTypeError.new(
-          "Invalid type provided: #{type}. Must be one of #{MATH_ZONE_TYPES.join(', ')}.",
-        )
+        raise Math::InvalidTypeError.new(type)
       end
     end
   end

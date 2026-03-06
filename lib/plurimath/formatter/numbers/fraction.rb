@@ -52,7 +52,10 @@ module Plurimath
 
         def change_format(string, length)
           tokens = []
-          tokens << string&.slice!(0, length) until string&.empty?
+          until string.empty?
+            tokens << string.slice(0, length)
+            string = string[tokens.last.size..-1]
+          end
           tokens.compact.join(separator)
         end
 
@@ -104,7 +107,7 @@ module Plurimath
         end
 
         def round_integer(fraction_digits_reversed, carry = 1)
-          incremented, carry = increment_integer_digits(raw_integer.chars, carry)
+          incremented, carry = increment_integer_digits(raw_integer.chars.reverse, carry)
           new_integer = [incremented]
           if carry.positive?
             fraction_digits_reversed.pop
@@ -113,21 +116,20 @@ module Plurimath
           @result[0] = @integer_formatter.format_groups(new_integer.join)
         end
 
-        def increment_integer_digits(int_digits, carry)
-          int_digits.reverse!
+        def increment_integer_digits(digits, carry)
           str_chars = [decimal, @int_group]
-          int_digits.each_with_index do |digit, index|
+          digits.each_with_index do |digit, index|
             next if str_chars.include?(digit)
 
             if DIGIT_VALUE[digit] == base.pred
-              int_digits[index] = DEFAULT_STRINGS[:zero]
+              digits[index] = DEFAULT_STRINGS[:zero]
             else
-              int_digits[index] = next_mapping_char(digit)
+              digits[index] = next_mapping_char(digit)
               break carry = 0
             end
           end
 
-          [int_digits.reverse!.join, carry]
+          [digits.reverse.join, carry]
         end
 
         def change_base(number)
@@ -142,7 +144,7 @@ module Plurimath
             fraction *= base
             digit = fraction.to_i
             alpha_digit = HEX_ALPHANUMERIC[digit]
-            base_result << (upcase_hex? ? alpha_digit.upcase : alpha_digit)
+            base_result << alpha_digit
             fraction -= digit
           end
 

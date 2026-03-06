@@ -46,10 +46,10 @@ module Plurimath
         def round_str(chars, array, frac_part)
           arr_len = array.length
           char_ind = DIGIT_VALUE.key?(chars[arr_len]) ? arr_len : arr_len.next
-          return unless DIGIT_VALUE[chars[char_ind]] >= threshold
+          return unless char_ind < chars.length && DIGIT_VALUE[chars[char_ind]] >= threshold
 
           frac_part = false if chars[arr_len] == decimal
-          carry = nil
+          carry = false
           array.reverse!.each_with_index do |char, ind|
             if char == decimal
               array[ind] = ""
@@ -72,13 +72,13 @@ module Plurimath
         end
 
         def count_chars(chars, fraction)
-          counting = 0
+          char_count = 0
           chars.each do |char|
             break if char == decimal && !fraction
 
-            counting += 1 if DIGIT_VALUE.key?(char)
+            char_count += 1 if DIGIT_VALUE.key?(char)
           end
-          counting
+          char_count
         end
 
         def format_groups(format, string)
@@ -91,14 +91,14 @@ module Plurimath
 
         def sig_char_count?(chars)
           start_counting = false
-          counting = 0
+          char_count = 0
           chars.each do |char|
             start_counting = true if DIGIT_VALUE[char]&.positive?
             next unless start_counting
 
-            counting += 1 if DIGIT_VALUE.key?(char)
+            char_count += 1 if DIGIT_VALUE.key?(char)
           end
-          counting == significant
+          char_count == significant
         end
 
         def process_chars(chars, sig_num: false, frac_part: false)

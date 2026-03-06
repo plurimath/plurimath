@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require_relative "errors/formatter/unsupported_base"
 require_relative "formatter/numeric_formatter"
 require_relative "formatter/supported_locales"
 require_relative "formatter/numbers/base"

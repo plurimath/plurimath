@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require_relative "errors"
 require_relative "asciimath"
 require_relative "omml"
 require_relative "unicode_math"
@@ -27,10 +28,6 @@ require "yaml"
 
 module Plurimath
   module Math
-    class ParseError < StandardError; end
-    class InvalidTypeError < TypeError; end
-    class InvalidFormatterBaseError < TypeError; end
-
     VALID_TYPES = {
       omml: Omml,
       html: Html,
@@ -42,7 +39,7 @@ module Plurimath
     }.freeze
 
     def parse(text, type)
-      type_error! unless valid_type?(type)
+      raise InvalidTypeError.new unless valid_type?(type)
 
       begin
         klass = klass_from_type(type)
@@ -50,7 +47,7 @@ module Plurimath
         formula.input_string = text
         formula
       rescue => ee
-        parse_error!(text, type.to_sym)
+        raise ParseError.new(text, type), cause: nil
       end
     end
 
@@ -60,30 +57,11 @@ module Plurimath
       VALID_TYPES[type_string_or_sym.to_sym]
     end
 
-    def parse_error!(text, type)
-      message = <<~MESSAGE
-        [plurimath] Error: Failed to parse the following formula with type `#{type}`.
-        [plurimath] Please first manually validate the formula.
-        [plurimath] If this is a bug, please report the formula at our issue tracker at:
-        [plurimath] https://github.com/plurimath/plurimath/issues
-        ---- FORMULA BEGIN ----
-        #{text}
-        ---- FORMULA END ----
-      MESSAGE
-      raise ParseError.new(message), cause: nil
-    end
-
-    def type_error!
-      raise InvalidTypeError.new(
-        "`type` must be one of: `#{VALID_TYPES.keys.join('`, `')}`",
-      )
-    end
-
     def valid_type?(type)
       (type.is_a?(::Symbol) || type.is_a?(String)) &&
         VALID_TYPES.key?(type.to_sym)
     end
 
-    module_function :parse, :klass_from_type, :parse_error!, :type_error!, :valid_type?
+    module_function :parse, :klass_from_type, :valid_type?
   end
 end
