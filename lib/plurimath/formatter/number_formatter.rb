@@ -23,7 +23,12 @@ module Plurimath
         @base = data_reader[:base] || DEFAULT_BASE
         raise UnsupportedBase.new(@base, DEFAULT_BASE_PREFIXES) unless DEFAULT_BASE_PREFIXES.key?(@base)
 
-        @base_prefix = data_reader.fetch(:base_prefix, DEFAULT_BASE_PREFIXES[@base])
+        # Handle base_prefix: if explicitly provided (even as nil), use it; otherwise use default
+        @base_prefix = if data_reader.key?(:base_prefix)
+                         data_reader[:base_prefix].to_s
+                       else
+                         DEFAULT_BASE_PREFIXES[@base]
+                       end
       end
 
       def format(precision: nil)

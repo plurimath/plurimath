@@ -14,10 +14,9 @@ module Plurimath
 
         def apply(string, int_format, frac_format)
           return string if significant.zero?
-          return string unless string.match?(/[1-9a-f]/)
-
+          # Check if string contains any non-zero digit (works across all bases 2-16)
           chars = string.chars
-          return string if count_chars(chars, true) == significant
+          return string if skip_significant_processing?(chars)
 
           string = signify(chars)
           integer, fraction = string.split(decimal)
@@ -117,6 +116,12 @@ module Plurimath
           end
 
           [new_chars, frac_part, sig_count]
+        end
+
+        def skip_significant_processing?(chars)
+          # Skip if no significant digits exist, or if we already have the exact count needed
+          chars.none? { |c| DIGIT_VALUE.key?(c) && DIGIT_VALUE[c].positive? } ||
+            count_chars(chars, true) == significant
         end
       end
     end

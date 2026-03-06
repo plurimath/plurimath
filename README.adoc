@@ -558,7 +558,7 @@ Accepts an integer value. (default is 3 in most locales.)
 `base`:: (`Numeric` value)
 Sets the numeric base (radix) used to render both the integer and fractional parts of the number.
 Supported values are 2 (binary), 8 (octal), 10 (decimal, default) and 16 (hexadecimal).
-Passing any other value for `base` raises `Plurimath::Math::UnsupportedBase`.
+Passing any other value for `base` raises `Plurimath::Formatter::UnsupportedBase`.
 +
 .Rendering numbers in different bases
 [example]
@@ -591,8 +591,8 @@ This is applied after digit grouping.
 [example]
 ====
 "255" with `base: 16, base_postfix: "_16"` => "ff_16"
-"255" with `base: 16, base_postfix: nil` => "ff_16"
-"255" with `base: 16, base_postfix: ""` => "ff_16"
+"255" with `base: 16, base_postfix: nil` => "ff"
+"255" with `base: 16, base_postfix: ""` => "ff"
 ====
 
 `hex_capital`:: (`Boolean` value)
@@ -640,7 +640,7 @@ Groups fractional digits in the converted base:
 Limits total digits when using base conversion:
 +
 "14236.39239" with `base: 10, digit_count: 6, group_digits: 3` => "14,236.4"
-"10.75"       with `base: 2, digit_count: 5, group_digits: 10` => "0b1010.110"
+"10.75"       with `base: 2, digit_count: 7, group_digits: 10` => "0b1010.110"
 ====
 
 .Base conversion with significant digits

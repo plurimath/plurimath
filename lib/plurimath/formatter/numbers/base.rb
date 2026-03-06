@@ -26,11 +26,8 @@ module Plurimath
         end
 
         def next_mapping_char(char)
-          if DIGIT_VALUE.key?(char.next.downcase)
-            char.next
-          else
-            DIGIT_VALUE.key(char.next.to_i)
-          end
+          current_idx = DIGIT_VALUE[char]
+          HEX_ALPHANUMERIC[current_idx + 1]
         end
       end
     end
