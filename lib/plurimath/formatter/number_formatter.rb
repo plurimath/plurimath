@@ -21,7 +21,7 @@ module Plurimath
         @number = number
         @data_reader = data_reader
         @base = data_reader[:base] || DEFAULT_BASE
-        validate_base! unless DEFAULT_BASE_PREFIXES.key?(@base)
+        raise UnsupportedBase.new(@base, DEFAULT_BASE_PREFIXES) unless DEFAULT_BASE_PREFIXES.key?(@base)
 
         @base_prefix = data_reader.fetch(:base_prefix, DEFAULT_BASE_PREFIXES[@base])
       end
@@ -36,15 +36,15 @@ module Plurimath
         result << fraction_format.apply(frac, data_reader, result, integer_format) # use formatted int for correct fraction formatting
         result = result.join
         result = signif_format.apply(result, integer_format, fraction_format)
+        result = result.upcase if upcase_hex?
         result = pre_post_fixed(result) unless base_default?
         "#{prefix_symbol}#{result}"
       end
 
       private
 
-      def validate_base!
-        error_message = "Unsupported base: #{@base}. Supported bases are #{DEFAULT_BASE_PREFIXES.keys.join(", ")}."
-        raise ::Plurimath::Math::InvalidFormatterBaseError, error_message
+      def upcase_hex?
+        @base == 16 && data_reader[:hex_capital]
       end
 
       def prefix_symbol

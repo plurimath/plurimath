@@ -557,9 +557,8 @@ Accepts an integer value. (default is 3 in most locales.)
 
 `base`:: (`Numeric` value)
 Sets the numeric base (radix) used to render both the integer and fractional parts of the number.
-Common values are 2 (binary), 8 (octal), 10 (decimal, default) and 16 (hexadecimal).
-Currently, only bases `2`, `8`, `10`, and `16` are supported.
-Passing any other value for `base` raises `Plurimath::Math::InvalidFormatterBaseError`.
+Supported values are 2 (binary), 8 (octal), 10 (decimal, default) and 16 (hexadecimal).
+Passing any other value for `base` raises `Plurimath::Math::UnsupportedBase`.
 +
 .Rendering numbers in different bases
 [example]
@@ -573,23 +572,27 @@ Passing any other value for `base` raises `Plurimath::Math::InvalidFormatterBase
 `base_prefix`:: (`String` or `nil` value)
 Overrides the default base prefix for non‑decimal bases.
 When omitted, standard prefixes are used (`0b` for base 2, `0o` for base 8, `0x` for base 16).
-When set to an empty string or `nil`, no prefix is rendered.
+`nil` or an empty string can be used to omit the prefix.
 +
 .Custom base prefixes
 [example]
 ====
 "255" with `base: 16, base_prefix: "16#"` => "16#ff"
+"255" with `base: 16, base_prefix: nil`   => "ff"
 "255" with `base: 16, base_prefix: ""`   => "ff"
 ====
 
 `base_postfix`:: (`String` value)
 If present, a postfix is appended to the converted number instead of using any base prefix.
 This is applied after digit grouping.
+`nil` or an empty string can be used to omit the postfix.
 +
 .Using postfix notation
 [example]
 ====
 "255" with `base: 16, base_postfix: "_16"` => "ff_16"
+"255" with `base: 16, base_postfix: nil` => "ff_16"
+"255" with `base: 16, base_postfix: ""` => "ff_16"
 ====
 
 `hex_capital`:: (`Boolean` value)

@@ -15,9 +15,7 @@ module Plurimath
         end
 
         def apply(number)
-          based_number = number_to_base(number)
-          based_number = based_number.upcase if upcase_hex?
-          format_groups(based_number)
+          format_groups(number_to_base(number))
         end
 
         def format_groups(string)

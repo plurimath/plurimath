@@ -26,16 +26,11 @@ module Plurimath
         end
 
         def next_mapping_char(char)
-          next_char = if DIGIT_VALUE.key?(char.next)
-                        char.next
-                      else
-                        DIGIT_VALUE.key(char.next.to_i)
-                      end
-          upcase_hex? ? next_char.upcase : next_char
-        end
-
-        def upcase_hex?
-          symbols[:hex_capital] && base == 16
+          if DIGIT_VALUE.key?(char.next.downcase)
+            char.next
+          else
+            DIGIT_VALUE.key(char.next.to_i)
+          end
         end
       end
     end

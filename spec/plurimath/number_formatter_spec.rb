@@ -438,7 +438,33 @@ RSpec.describe Plurimath::NumberFormatter do
           )
 
           output_string = formatter.localized_number("0.899", format: format, precision: 1)
-          expect(output_string).to eql("0x0dC")
+          expect(output_string).to eql("0x0DC")
+        end
+
+        it "does not uppercase alphabetic group separators when hex_capital is enabled" do
+          format = base_format_defaults.merge(
+            base: 16,
+            hex_capital: true,
+            group_digits: 2,
+            group: "g"
+          )
+
+          output_string = formatter.localized_number("48879", format: format)
+          expect(output_string).to eql("0xBEGEF")
+        end
+
+        it "does not uppercase alphabetic fraction_group separators when hex_capital is enabled" do
+          format = base_format_defaults.merge(
+            base: 16,
+            hex_capital: true,
+            group_digits: 10,
+            decimal: ".",
+            fraction_group_digits: 1,
+            fraction_group: "f"
+          )
+
+          output_string = formatter.localized_number("0.5", format: format, precision: 4)
+          expect(output_string).to eql("0x0.8F0F0F0")
         end
       end
 
@@ -833,6 +859,17 @@ RSpec.describe Plurimath::NumberFormatter do
             expect(output_string).to eql("0xbe,f0")
           end
 
+        it "uppercases only hex letter digits when using significant with hex_capital" do
+          format = base_format_defaults.merge(
+            base: 16,
+            significant: 3,
+            hex_capital: true
+          )
+
+          output_string = formatter.localized_number("48879", format: format)
+          expect(output_string).to eql("0xBE,F0")
+        end
+
           it "applies significant rounding across integer and fractional parts in base 16" do
             format = base_format_defaults.merge(
               base: 16,
@@ -965,8 +1002,8 @@ RSpec.describe Plurimath::NumberFormatter do
           expect do
             formatter.localized_number("10", format: base_format_defaults.merge(base: 3))
           end.to raise_error(
-            Plurimath::Math::InvalidFormatterBaseError,
-            /Unsupported base: 3\. Supported bases are 2, 8, 10, 16\./
+            Plurimath::Formatter::UnsupportedBase,
+            /Unsupported base `3` for number formatting/
           )
         end
       end
