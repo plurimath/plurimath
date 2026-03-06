@@ -5,7 +5,9 @@ module Plurimath
   class Unitsml
     attr_accessor :text
 
-    VALID_UNITSML = %r{\^(([^\s][^*\/,"]*?[a-z]+)|(\([^-\d]+\)|[^\(\d-]+))}
+    # Match ^ followed by content containing letters (indicating variables as exponents, which are invalid)
+    # Simplified regex to avoid catastrophic backtracking (ReDoS vulnerability)
+    VALID_UNITSML = /\^\(?-?\d*[a-z]/i
 
     def initialize(text)
       @text = text

@@ -172,7 +172,7 @@ module Plurimath
         end
 
         def raw_integer
-          @result[0].delete(@int_group)
+          @result[0].delete(@int_group.to_s)
         end
 
         def frac_digit_count
