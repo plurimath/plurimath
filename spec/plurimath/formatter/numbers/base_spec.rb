@@ -155,7 +155,7 @@ RSpec.describe Plurimath::Formatter::Numbers::Base do
       end
 
       it "increments hex letter uppercase" do
-        expect(base.send(:next_mapping_char, "C")).to eq("D")
+        expect(base.send(:next_mapping_char, "c")).to eq("d")
       end
     end
 

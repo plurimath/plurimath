@@ -780,6 +780,36 @@ RSpec.describe Plurimath::NumberFormatter do
             expect(output_string).to eql("-0o0.6")
           end
         end
+
+        context "fractional rounding to zero" do
+          it "handles fractional parts that round to zero in base 16" do
+            format = base_format_defaults.merge(
+              base: 16,
+              precision: 2,
+              group_digits: 10,
+              fraction_group_digits: 0,
+              fraction_group: "",
+              decimal: "."
+            )
+
+            output_string = formatter.localized_number("10.001", format: format, precision: 2)
+            expect(output_string).to eql("0xa.00")
+          end
+
+          it "handles very small fractional parts in base 2" do
+            format = base_format_defaults.merge(
+              base: 2,
+              precision: 4,
+              group_digits: 10,
+              fraction_group_digits: 0,
+              fraction_group: "",
+              decimal: "."
+            )
+
+            output_string = formatter.localized_number("5.0625", format: format, precision: 4)
+            expect(output_string).to eql("0b101.0001")
+          end
+        end
       end
 
       context "base conversion option edge cases" do
@@ -997,6 +1027,40 @@ RSpec.describe Plurimath::NumberFormatter do
         end
       end
 
+      context "zero handling across different bases" do
+        it "formats zero in base 2" do
+          output_string = formatter.localized_number("0", format: base_format_defaults.merge(base: 2))
+          expect(output_string).to eql("0b0")
+        end
+
+        it "formats zero in base 8" do
+          output_string = formatter.localized_number("0", format: base_format_defaults.merge(base: 8))
+          expect(output_string).to eql("0o0")
+        end
+
+        it "formats zero in base 16" do
+          output_string = formatter.localized_number("0", format: base_format_defaults.merge(base: 16))
+          expect(output_string).to eql("0x0")
+        end
+
+        it "formats zero with precision in base 16" do
+          output_string = formatter.localized_number("0.000", format: base_format_defaults.merge(base: 16, precision: 3))
+          expect(output_string).to eql("0x0.000")
+        end
+      end
+
+      context "large number handling" do
+        it "formats very large numbers in base 2" do
+          output_string = formatter.localized_number("65535", format: base_format_defaults.merge(base: 2, group_digits: 8, group: " "))
+          expect(output_string).to eql("0b11111111 11111111")
+        end
+
+        it "formats very large numbers in base 16" do
+          output_string = formatter.localized_number("16777215", format: base_format_defaults.merge(base: 16, group_digits: 2))
+          expect(output_string).to eql("0xff,ff,ff")
+        end
+      end
+
       context "invalid base configuration" do
         it "raises an error for unsupported bases" do
           expect do
@@ -1004,6 +1068,32 @@ RSpec.describe Plurimath::NumberFormatter do
           end.to raise_error(
             Plurimath::Formatter::UnsupportedBase,
             /Unsupported base `3` for number formatting/
+          )
+        end
+
+        it "raises an error for base 5" do
+          expect do
+            formatter.localized_number("10", format: base_format_defaults.merge(base: 5))
+          end.to raise_error(
+            Plurimath::Formatter::UnsupportedBase,
+            /Unsupported base `5` for number formatting/
+          )
+        end
+
+        it "raises an error for base 20" do
+          expect do
+            formatter.localized_number("10", format: base_format_defaults.merge(base: 20))
+          end.to raise_error(
+            Plurimath::Formatter::UnsupportedBase,
+            /Unsupported base `20` for number formatting/
+          )
+        end
+
+        it "raises an error for negative base" do
+          expect do
+            formatter.localized_number("10", format: base_format_defaults.merge(base: -1))
+          end.to raise_error(
+            Plurimath::Formatter::UnsupportedBase
           )
         end
       end
