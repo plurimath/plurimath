@@ -19,8 +19,8 @@ module Plurimath
           @digit_count = symbols[:digit_count].to_i
         end
 
-        def apply(fraction, options = {}, result, integer_formatter)
-          precision = options[:precision] || @precision
+        def apply(fraction, result, integer_formatter)
+          precision = symbols[:precision] || @precision
           @result = result
           @integer_formatter = integer_formatter
           return DEFAULT_STRINGS[:empty] unless precision.positive?

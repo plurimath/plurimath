@@ -71,7 +71,7 @@ RSpec.describe Plurimath::Formatter::Numbers::Fraction do
 
       it "returns empty string" do
         result_arr = ["10"]
-        result = formatter.apply("123", {}, result_arr, integer_formatter)
+        result = formatter.apply("123", result_arr, integer_formatter)
         expect(result).to eq("")
       end
     end
@@ -81,13 +81,13 @@ RSpec.describe Plurimath::Formatter::Numbers::Fraction do
 
       it "formats fraction with zeros" do
         result_arr = ["10"]
-        result = formatter.apply("5", {}, result_arr, integer_formatter)
+        result = formatter.apply("5", result_arr, integer_formatter)
         expect(result.start_with?(".")).to be(true)
       end
 
       it "pads fraction to precision" do
         result_arr = ["10"]
-        result = formatter.apply("1", {}, result_arr, integer_formatter)
+        result = formatter.apply("1", result_arr, integer_formatter)
         expect(result.start_with?(".")).to be(true)
         expect(result.split(".").last.length).to be >= 1
       end
@@ -98,7 +98,7 @@ RSpec.describe Plurimath::Formatter::Numbers::Fraction do
 
       it "uses custom separator" do
         result_arr = ["10"]
-        result = formatter.apply("5", {}, result_arr, integer_formatter)
+        result = formatter.apply("5", result_arr, integer_formatter)
         expect(result.start_with?(",")).to be(true)
       end
     end
@@ -108,7 +108,7 @@ RSpec.describe Plurimath::Formatter::Numbers::Fraction do
 
       it "uses provided precision over default" do
         result_arr = ["10"]
-        result = formatter.apply("5", { precision: 2 }, result_arr, integer_formatter)
+        result = formatter.apply("5", result_arr, integer_formatter)
         expect(result).to be_a(String)
       end
     end

@@ -605,6 +605,8 @@ It has no effect for other bases.
 ====
 "48879" with `base: 16, hex_capital: true` => "0xBE,EF"
 ====
++
+NOTE: `hex_capital` uppercases all alphabetic characters in the rendered number except `base_prefix` and `base_postfix`.
 
 NOTE: When `base` is not 10, both the integer and fractional parts are converted to the specified base.
 The decimal separator is rendered as configured by the `decimal` option.

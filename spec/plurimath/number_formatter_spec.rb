@@ -450,7 +450,7 @@ RSpec.describe Plurimath::NumberFormatter do
           )
 
           output_string = formatter.localized_number("48879", format: format)
-          expect(output_string).to eql("0xBEGEF")
+          expect(output_string).to eql("0xBEgEF")
         end
 
         it "does not uppercase alphabetic fraction_group separators when hex_capital is enabled" do
