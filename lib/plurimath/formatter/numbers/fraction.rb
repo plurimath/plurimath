@@ -84,7 +84,7 @@ module Plurimath
         def update_digit_count(number)
           return @digit_count unless zeros_count_in(number) == @precision
 
-          @digit_count - @precision.next
+          @digit_count - @precision + 1
         end
 
         def zeros_count_in(number)

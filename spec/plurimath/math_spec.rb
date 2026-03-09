@@ -39,5 +39,17 @@ RSpec.describe Plurimath::Math do
         expect{formula.to_unicodemath}.to raise_error(Plurimath::Math::ParseError)
       end
     end
+
+    context "preserves specialized error types from lower layers" do
+      let(:input) { "mm^(b)" }
+      let(:type) { "unitsml" }
+
+      it "raises error with specialized unitsml error message" do
+        message = "The use of a variable as an exponent is not valid."
+        expect{formula}.to raise_error(
+          Plurimath::Math::ParseError, Regexp.compile(message)
+        )
+      end
+    end
   end
 end
