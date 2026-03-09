@@ -77,7 +77,7 @@ module Plurimath
     no_commands do
       def warn_and_exit(message)
         warn(message)
-        exit 1
+        abort
       end
     end
   end
