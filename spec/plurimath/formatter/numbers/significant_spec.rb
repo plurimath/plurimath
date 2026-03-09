@@ -41,16 +41,20 @@ RSpec.describe Plurimath::Formatter::Numbers::Significant do
       let(:symbols) { { decimal: ".", significant: 0 } }
 
       it "returns the string unchanged" do
-        int_fmt = double(separator: ",", format_groups: "123")
-        frac_fmt = double(separator: ",", format_groups: "456")
+        int_fmt = double(separator: ",")
+        frac_fmt = double(separator: ",")
+        allow(int_fmt).to receive(:format_groups) { |x| "123" }
+        allow(frac_fmt).to receive(:format_groups) { |x| "456" }
         expect(formatter.apply("123.456", int_fmt, frac_fmt)).to eq("123.456")
       end
     end
 
     context "with string containing no significant digits" do
       it "returns the string unchanged" do
-        int_fmt = double(separator: ",", format_groups: "0")
-        frac_fmt = double(separator: ",", format_groups: "000")
+        int_fmt = double(separator: ",")
+        frac_fmt = double(separator: ",")
+        allow(int_fmt).to receive(:format_groups) { |x| "0" }
+        allow(frac_fmt).to receive(:format_groups) { |x| "000" }
         expect(formatter.apply("0.000", int_fmt, frac_fmt)).to eq("0.000")
       end
     end
@@ -87,8 +91,10 @@ RSpec.describe Plurimath::Formatter::Numbers::Significant do
       let(:symbols) { { decimal: ".", significant: 4 } }
 
       it "returns string when significant digits match" do
-        int_format = double(separator: ",", format_groups: "123")
-        frac_format = double(separator: ",", format_groups: "5")
+        int_format = double(separator: ",")
+        frac_format = double(separator: ",")
+        allow(int_format).to receive(:format_groups) { |x| "123" }
+        allow(frac_format).to receive(:format_groups) { |x| "5" }
         result = formatter.apply("123.456", int_format, frac_format)
         expect(result).to eq("123.5")
       end

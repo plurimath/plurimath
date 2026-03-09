@@ -6,7 +6,9 @@ RSpec.describe Plurimath::Formatter::Numbers::Fraction do
   let(:formatter) { described_class.new(symbols) }
   let(:symbols) { {} }
   let(:result) { ["10"] }
-  let(:integer_formatter) { double(format_groups: "10") }
+  let(:integer_formatter) do
+    double.tap { |d| allow(d).to receive(:format_groups) { |x| "10" } }
+  end
 
   describe "#initialize" do
     context "with default symbols" do

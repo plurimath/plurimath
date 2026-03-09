@@ -607,8 +607,10 @@ This is applied after digit grouping.
 ====
 
 `hex_capital`:: (`Boolean` value)
-When `true` and `base: 16`, hexadecimal *digits* (`a`-`f`) in the converted output
-are rendered using uppercase letters. Prefixes and postfixes are not modified.
+When `true` and `base: 16`, all characters in the range `a`-`f` in the converted output
+are rendered using uppercase letters. This includes both hexadecimal digits and any
+separators (such as `decimal`, `group`, `fraction_group`) that happen to be letters
+in the `a`-`f` range. The `base_prefix` and `base_postfix` values are never modified.
 It has no effect for other bases.
 +
 .Uppercase hexadecimal output
@@ -617,7 +619,15 @@ It has no effect for other bases.
 "48879" with `base: 16, hex_capital: true` => "0xBE,EF"
 ====
 +
-NOTE: `hex_capital` uppercases all alphabetic characters in the rendered number except `base_prefix` and `base_postfix`.
+WARNING: If you use separator characters in the range `a`-`f` (such as `decimal: "d"` or `fraction_group: "f"`), those separators will also be uppercased when `hex_capital: true`. Choose separators outside this range (e.g., `".", ",", " ", "_"`) if you need them to remain unchanged.
++
+.Separator uppercasing behavior
+[example]
+====
+"48879" with `base: 16, hex_capital: true, group: "g"` => "0xBEgEF" (g remains lowercase)
+
+"48879" with `base: 16, hex_capital: true, group: "f"` => "0xBEFEF" (f separator becomes F)
+====
 
 NOTE: When `base` is not 10, both the integer and fractional parts are converted to the specified base.
 The decimal separator is rendered as configured by the `decimal` option.

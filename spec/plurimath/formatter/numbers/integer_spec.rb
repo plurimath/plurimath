@@ -99,15 +99,15 @@ RSpec.describe Plurimath::Formatter::Numbers::Integer do
       end
     end
 
-    context "with hexadecimal base and uppercase" do
+    context "with hexadecimal base (default lowercase)" do
       let(:symbols) { { base: 16 } }
 
-      it "converts and uppercases hex letters" do
+      it "converts to lowercase hex letters by default" do
         result = formatter.apply("255")
         expect(result).to eq("ff")
       end
 
-      it "converts large hex with uppercase" do
+      it "converts large hex to lowercase by default" do
         result = formatter.apply("4095")
         expect(result).to eq("fff")
       end
