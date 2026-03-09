@@ -6,6 +6,7 @@ module Plurimath
       attr_reader :number, :data_reader
 
       DEFAULT_BASE = 10
+      HEX_ALPHABETS = "abcdef".freeze
       STRING_SYMBOLS = {
         dot: ".",
         f: "F",
@@ -38,10 +39,10 @@ module Plurimath
         #   NotImplementedError: String#<< not supported. Mutable String methods are not supported in Opal.
         result = []
         result << integer_format.apply(int)
-        result << fraction_format.apply(frac, data_reader, result, integer_format) # use formatted int for correct fraction formatting
+        result << fraction_format.apply(frac, result, integer_format) # use formatted int for correct fraction formatting
         result = result.join
         result = signif_format.apply(result, integer_format, fraction_format)
-        result = result.upcase if upcase_hex?
+        result = result.tr(HEX_ALPHABETS, HEX_ALPHABETS.upcase) if upcase_hex?
         result = pre_post_fixed(result) unless base_default?
         "#{prefix_symbol}#{result}"
       end

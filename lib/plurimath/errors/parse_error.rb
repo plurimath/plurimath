@@ -6,13 +6,10 @@ module Plurimath
       def initialize(text, type)
         @text = text
         @type = type.to_sym
+        super(@type == :invalid_unitsml ? unitsml_message : parsing_message)
       end
 
-      def to_s
-        @type == :unitsml_parse_error ? unitsml_message : message
-      end
-
-      def message
+      def parsing_message
         <<~MESSAGE
           [plurimath] Error: Failed to parse the following formula with type `#{@type}`.
           [plurimath] Please first manually validate the formula.

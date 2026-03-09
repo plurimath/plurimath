@@ -11,7 +11,7 @@ module Plurimath
 
     def initialize(text)
       @text = text
-      raise Math::ParseError.new(text, :unitsml_parse_error) if text.match?(VALID_UNITSML)
+      raise Math::ParseError.new(text, :invalid_unitsml) if text.match?(VALID_UNITSML)
     end
 
     def to_formula
