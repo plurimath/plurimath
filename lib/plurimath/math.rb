@@ -46,6 +46,9 @@ module Plurimath
         formula = klass.new(text).to_formula
         formula.input_string = text
         formula
+      rescue ParseError
+        # Re-raise ParseError from lower layers unchanged to preserve specialized error types
+        raise
       rescue => ee
         raise ParseError.new(text, type), cause: nil
       end
