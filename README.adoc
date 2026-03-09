@@ -524,13 +524,24 @@ Symbol to use for the decimal point. Accepts a character.
 ====
 
 `digit_count`:: (`Numeric` value)
-Total number of digits to render, with the value truncated.
-Accepts an integer value.
+Total number of digits to render (integer + fractional), with the value truncated
+or rounded as necessary. Accepts an integer value.
++
+When `digit_count` is less than or equal to the integer length, the fractional
+part is omitted entirely, and the integer is rounded based on whether the
+fractional value is >= 0.5 (or >= base/2 for non-decimal bases).
 +
 .Specifying a total of 6 digits in rendering the number
 [example]
 ====
 "32232.232" => "32232.2"
+====
++
+.When digit_count is smaller than the integer length
+[example]
+====
+"99999.999" with `digit_count: 3` => "100,000" (fractional part omitted, integer rounded up)
+"12345.123" with `digit_count: 3` => "12,345" (fractional part omitted, no rounding)
 ====
 
 
@@ -643,6 +654,7 @@ Limits total digits when using base conversion:
 +
 "14236.39239" with `base: 10, digit_count: 6, group_digits: 3` => "14,236.4"
 "10.75"       with `base: 2, digit_count: 7, group_digits: 10` => "0b1010.110"
+"255.9"       with `base: 16, digit_count: 2, group_digits: 10` => "0x100" (fractional part omitted, integer rounded)
 ====
 
 .Base conversion with significant digits

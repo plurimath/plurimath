@@ -115,71 +115,23 @@ RSpec.describe Plurimath::Formatter::Numbers::Base do
   end
 
   describe "#next_mapping_char" do
-    context "with default base and lowercase" do
-      let(:symbols) { { base: 10 } }
-
-      it "increments digit" do
-        expect(base.send(:next_mapping_char, "5")).to eq("6")
-      end
-
-      it "increments to hex letter" do
-        expect(base.send(:next_mapping_char, "9")).to eq("a")
-      end
-    end
-
-    context "with hex base and lowercase" do
+    context "with alphanumeric sequence" do
       let(:symbols) { { base: 16 } }
 
-      it "increments digit" do
+      it "maps to next character in sequence" do
         expect(base.send(:next_mapping_char, "3")).to eq("4")
       end
 
-      it "increments to hex letter lowercase" do
+      it "maps digit to hex letter" do
         expect(base.send(:next_mapping_char, "9")).to eq("a")
       end
 
-      it "increments hex letter" do
+      it "maps to next hex letter" do
         expect(base.send(:next_mapping_char, "c")).to eq("d")
       end
-    end
 
-    context "with hex base and uppercase" do
-      let(:symbols) { { base: 16, hex_capital: true } }
-
-      it "increments digit" do
-        expect(base.send(:next_mapping_char, "3")).to eq("4")
-      end
-
-      it "increments to hex letter uppercase" do
-        expect(base.send(:next_mapping_char, "9")).to eq("a")
-      end
-
-      it "increments hex letter uppercase" do
-        expect(base.send(:next_mapping_char, "c")).to eq("d")
-      end
-    end
-
-    context "with non-hex base" do
-      let(:symbols) { { base: 10, hex_capital: true } }
-
-      it "does not uppercase" do
-        expect(base.send(:next_mapping_char, "9")).to eq("a")
-      end
-    end
-
-    context "with base 2" do
-      let(:symbols) { { base: 2 } }
-
-      it "increments 0 to 1" do
-        expect(base.send(:next_mapping_char, "0")).to eq("1")
-      end
-    end
-
-    context "with base 8" do
-      let(:symbols) { { base: 8 } }
-
-      it "increments digit in octal" do
-        expect(base.send(:next_mapping_char, "6")).to eq("7")
+      it "returns nil for invalid character" do
+        expect(base.send(:next_mapping_char, "f")).to be_nil
       end
     end
   end

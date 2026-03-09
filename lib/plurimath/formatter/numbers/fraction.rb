@@ -63,6 +63,16 @@ module Plurimath
           integer = raw_integer + DEFAULT_STRINGS[:dot] + fraction
           int_length = integer.length.pred # integer length; excluding the decimal point
           if int_length > @digit_count
+            # When digit_count is less than or equal to the integer length,
+            # omit the fractional part entirely and handle rounding in the integer
+            if @digit_count <= raw_integer.length
+              # Check if we need to round the integer up based on the fractional part
+              if fraction.chars.first && DIGIT_VALUE[fraction.chars.first] >= threshold
+                # Round up the integer part
+                round_integer([], 1)
+              end
+              return DEFAULT_STRINGS[:empty]
+            end
             round_base_string(fraction)
           elsif int_length < @digit_count
             fraction + (DEFAULT_STRINGS[:zero] * (update_digit_count(fraction) - int_length))

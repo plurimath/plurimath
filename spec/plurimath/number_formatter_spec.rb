@@ -557,6 +557,78 @@ RSpec.describe Plurimath::NumberFormatter do
           output_string = formatter.localized_number("99999.999", format: format)
           expect(output_string).to eql("100,000")
         end
+
+        it "omits fractional part without rounding when fraction is below threshold and digit_count is smaller than integer length" do
+          format = base_format_defaults.merge(
+            base: 10,
+            digit_count: 3,
+            group_digits: 3
+          )
+
+          output_string = formatter.localized_number("12345.123", format: format)
+          expect(output_string).to eql("12,345")
+        end
+
+        it "rounds integer up when fraction is at threshold and digit_count equals integer length" do
+          format = base_format_defaults.merge(
+            base: 10,
+            digit_count: 5,
+            group_digits: 3
+          )
+
+          output_string = formatter.localized_number("12345.5", format: format)
+          expect(output_string).to eql("12,346")
+        end
+
+        it "omits fractional part without rounding when digit_count equals integer length and fraction below threshold" do
+          format = base_format_defaults.merge(
+            base: 10,
+            digit_count: 5,
+            group_digits: 3
+          )
+
+          output_string = formatter.localized_number("12345.4", format: format)
+          expect(output_string).to eql("12,345")
+        end
+
+        it "handles negative numbers with digit_count smaller than integer length" do
+          format = base_format_defaults.merge(
+            base: 10,
+            digit_count: 2,
+            group_digits: 3
+          )
+
+          output_string = formatter.localized_number("-999.7", format: format)
+          expect(output_string).to eql("-1,000")
+        end
+
+        it "omits fractional part in base 16 when digit_count is smaller than integer length" do
+          format = base_format_defaults.merge(
+            base: 16,
+            digit_count: 2,
+            group_digits: 10,
+            fraction_group_digits: 0,
+            fraction_group: "",
+            decimal: "."
+          )
+
+          output_string = formatter.localized_number("255.9", format: format, precision: 4)
+          expect(output_string).to eql("0x100")
+        end
+
+        it "omits fractional part in base 2 when digit_count is smaller than integer length" do
+          format = base_format_defaults.merge(
+            base: 2,
+            digit_count: 4,
+            group_digits: 10,
+            fraction_group_digits: 0,
+            fraction_group: "",
+            decimal: "."
+          )
+
+          output_string = formatter.localized_number("15.9", format: format, precision: 4)
+          expect(output_string).to eql("0b10000")
+        end
       end
 
       context "base conversion digit_count rounding edge cases" do
