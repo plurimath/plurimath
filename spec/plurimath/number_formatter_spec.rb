@@ -427,7 +427,7 @@ RSpec.describe Plurimath::NumberFormatter do
           expect(output_string).to eql("0b10,10")
         end
 
-        it "does not uppercase letter separators when hex_capital is enabled" do
+        it "uppercases letter separators in a-f range when hex_capital is enabled (decimal 'd')" do
           format = base_format_defaults.merge(
             base: 16,
             hex_capital: true,
@@ -441,7 +441,7 @@ RSpec.describe Plurimath::NumberFormatter do
           expect(output_string).to eql("0x0DC")
         end
 
-        it "does not uppercase alphabetic group separators when hex_capital is enabled" do
+        it "does not uppercase alphabetic group separators outside a-f range when hex_capital is enabled" do
           format = base_format_defaults.merge(
             base: 16,
             hex_capital: true,
@@ -453,7 +453,7 @@ RSpec.describe Plurimath::NumberFormatter do
           expect(output_string).to eql("0xBEgEF")
         end
 
-        it "does not uppercase alphabetic fraction_group separators when hex_capital is enabled" do
+        it "uppercases fraction_group separators in a-f range when hex_capital is enabled" do
           format = base_format_defaults.merge(
             base: 16,
             hex_capital: true,
