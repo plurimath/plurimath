@@ -35,7 +35,24 @@ module Plurimath
             remain_chars = count_chars(chars, frac_part) - significant
             if remain_chars.positive?
               round_str(chars, new_chars, frac_part)
-              remain_chars = 0 if frac_part && remain_chars == 1
+              # After rounding, recalculate remain_chars only for fractional numbers
+              # where we need to adjust padding based on actual significant digits
+              if frac_part
+                # Check if decimal point still exists after rounding
+                has_decimal = new_chars.include?(decimal)
+                if has_decimal
+                  # Fractional part still exists, recalculate padding
+                  actual_sig = count_significant_digits(new_chars)
+                  remain_chars = [significant - actual_sig, 0].max
+                else
+                  # Rounding eliminated the fractional part from a number that originally had one
+                  # Don't add trailing zeros in this case
+                  remain_chars = 0
+                  frac_part = false
+                end
+              end
+              # For integer-only numbers (frac_part = false from the start),
+              # remain_chars stays as calculated initially
             end
             new_chars << ("0" * remain_chars) unless frac_part && sig_char_count?(new_chars)
           end
@@ -122,6 +139,19 @@ module Plurimath
           # Skip if no significant digits exist, or if we already have the exact count needed
           chars.none? { |c| DIGIT_VALUE.key?(c) && DIGIT_VALUE[c].positive? } ||
             count_chars(chars, true) == significant
+        end
+
+        def count_significant_digits(chars)
+          # Count actual significant digits in the character array
+          # Leading zeros don't count as significant
+          start_counting = false
+          char_count = 0
+          chars.each do |char|
+            start_counting = true if DIGIT_VALUE[char]&.positive?
+            next unless start_counting
+            char_count += 1 if DIGIT_VALUE.key?(char)
+          end
+          char_count
         end
       end
     end

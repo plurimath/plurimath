@@ -57,31 +57,29 @@ RSpec.describe Plurimath::Formatter::Numbers::Significant do
 
     context "rounding with boundary condition" do
       let(:symbols) { { decimal: ".", significant: 2 } }
-      
-      it "should handle rounding without index out of bounds error" do
-        int_format = double(separator: ",", format_groups: "9")
-        frac_format = double(separator: ",", format_groups: "99")
-        
-        expect do
-          formatter.apply("0.0999", int_format, frac_format)
-        end.not_to raise_error
+
+      it "should round 0.0999 to 0.10" do
+        int_format = double(separator: ",")
+        frac_format = double(separator: ",")
+        allow(int_format).to receive(:format_groups) { |x| x }
+        allow(frac_format).to receive(:format_groups) { |x| x }
+        expect(formatter.apply("0.0999", int_format, frac_format)).to eq("0.10")
       end
 
-      it "should correctly round string without raising TypeError" do
-        int_format = double(separator: ",", format_groups: "99")
-        frac_format = double(separator: ",", format_groups: "99")
-        
-        expect do
-          formatter.apply("9.99", int_format, frac_format)
-        end.not_to raise_error(TypeError)
+      it "should round 9.99 to 10" do
+        int_format = double(separator: ",")
+        frac_format = double(separator: ",")
+        allow(int_format).to receive(:format_groups) { |x| x }
+        allow(frac_format).to receive(:format_groups) { |x| x }
+        expect(formatter.apply("9.99", int_format, frac_format)).to eq("10")
       end
 
-      it "should handle rounding at array boundary" do
-        int_format = double(separator: ",", format_groups: "1")
-        frac_format = double(separator: ",", format_groups: "99")
-        
-        result = formatter.apply("1.99", int_format, frac_format)
-        expect(result).to be_a(String)
+      it "should round 1.99 to 2" do
+        int_format = double(separator: ",")
+        frac_format = double(separator: ",")
+        allow(int_format).to receive(:format_groups) { |x| x }
+        allow(frac_format).to receive(:format_groups) { |x| x }
+        expect(formatter.apply("1.99", int_format, frac_format)).to eq("2")
       end
     end
 
@@ -182,24 +180,24 @@ RSpec.describe Plurimath::Formatter::Numbers::Significant do
     context "boundary condition test" do
       let(:symbols) { { decimal: ".", significant: 2 } }
 
-      it "should not access index beyond array bounds" do
-        int_format = double(separator: ",", format_groups: "1")
-        frac_format = double(separator: ",", format_groups: "9")
-        
-        expect do
-          formatter.apply("99.9", int_format, frac_format)
-        end.not_to raise_error(TypeError)
+      it "should round 99.9 to 100" do
+        int_format = double(separator: ",")
+        frac_format = double(separator: ",")
+        allow(int_format).to receive(:format_groups) { |x| x }
+        allow(frac_format).to receive(:format_groups) { |x| x }
+        expect(formatter.apply("99.9", int_format, frac_format)).to eq("100")
       end
     end
 
     context "with rounding up" do
       let(:symbols) { { decimal: ".", significant: 2 } }
 
-      it "increments correctly" do
-        int_format = double(separator: ",", format_groups: "19")
-        frac_format = double(separator: ",", format_groups: "")
-        result = formatter.apply("19.5", int_format, frac_format)
-        expect(result).to be_a(String)
+      it "should round 19.5 to 20" do
+        int_format = double(separator: ",")
+        frac_format = double(separator: ",")
+        allow(int_format).to receive(:format_groups) { |x| x }
+        allow(frac_format).to receive(:format_groups) { |x| x }
+        expect(formatter.apply("19.5", int_format, frac_format)).to eq("20")
       end
     end
   end
