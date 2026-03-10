@@ -25,7 +25,7 @@ module Plurimath
           @integer_formatter = integer_formatter
           return DEFAULT_STRINGS[:empty] unless precision.positive?
 
-          fraction = change_base(fraction) if fraction.match?(/[1-9]/)
+          fraction = change_base(fraction) if !base_default? && fraction.match?(/[1-9]/)
 
           number = if @digit_count.positive?
                      digit_count_format(fraction)
