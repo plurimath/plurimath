@@ -10,12 +10,12 @@ module Plurimath
 
         attr_accessor :base, :symbols
 
-        protected
-
         def initialize(symbols = {})
           @symbols = symbols
           @base = symbols[:base] || DEFAULT_BASE
         end
+
+        protected
 
         def threshold
           @threshold ||= base.div(2)
@@ -27,6 +27,8 @@ module Plurimath
 
         def next_mapping_char(char)
           current_idx = DIGIT_VALUE[char]
+          return nil unless current_idx
+
           HEX_ALPHANUMERIC[current_idx + 1]
         end
       end

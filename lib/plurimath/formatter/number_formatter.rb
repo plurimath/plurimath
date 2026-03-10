@@ -5,7 +5,7 @@ module Plurimath
     class NumberFormatter
       attr_reader :number, :data_reader
 
-      DEFAULT_BASE = 10
+      DEFAULT_BASE = Numbers::Base::DEFAULT_BASE
       HEX_ALPHABETS = "abcdef".freeze
       STRING_SYMBOLS = {
         dot: ".",
