@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require_relative "math"
 module Plurimath
   class Asciimath
     attr_accessor :text
