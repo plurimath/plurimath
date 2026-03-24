@@ -2246,31 +2246,32 @@ RSpec.describe Plurimath::Mathml do
                   </m:r>
                 </m:sup>
               </m:sSubSup>
-              <m:r>
-                <m:rPr>
-                  <m:sty m:val="i"/>
-                </m:rPr>
-                <m:f>
-                  <m:fPr>
-                    <m:ctrlPr>
-                      <w:rPr>
-                        <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
-                        <w:i/>
-                      </w:rPr>
-                    </m:ctrlPr>
-                  </m:fPr>
-                  <m:num>
-                    <m:r>
-                      <m:t>f</m:t>
-                    </m:r>
-                  </m:num>
-                  <m:den>
-                    <m:r>
-                      <m:t>100</m:t>
-                    </m:r>
-                  </m:den>
-                </m:f>
-              </m:r>
+              <m:f>
+                <m:fPr>
+                  <m:ctrlPr>
+                    <w:rPr>
+                      <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
+                      <w:i/>
+                    </w:rPr>
+                  </m:ctrlPr>
+                </m:fPr>
+                <m:num>
+                  <m:r>
+                    <m:rPr>
+                      <m:sty m:val="i"/>
+                    </m:rPr>
+                    <m:t>f</m:t>
+                  </m:r>
+                </m:num>
+                <m:den>
+                  <m:r>
+                    <m:rPr>
+                      <m:sty m:val="i"/>
+                    </m:rPr>
+                    <m:t>100</m:t>
+                  </m:r>
+                </m:den>
+              </m:f>
             </m:oMath>
           </m:oMathPara>
         OMML
