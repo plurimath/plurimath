@@ -4,9 +4,7 @@
       <m:rPr>
         <m:scr m:val="monospace"/>
       </m:rPr>
-      <m:r>
-        <m:t>a</m:t>
-      </m:r>
+      <m:t>a</m:t>
     </m:r>
   </m:oMath>
   <m:r>
@@ -23,9 +21,7 @@
       <m:rPr>
         <m:sty m:val="p"/>
       </m:rPr>
-      <m:r>
-        <m:t>d</m:t>
-      </m:r>
+      <m:t>d</m:t>
     </m:r>
   </m:oMath>
   <m:r>

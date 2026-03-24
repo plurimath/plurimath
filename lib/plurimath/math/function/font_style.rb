@@ -51,15 +51,78 @@ module Plurimath
         end
 
         def font_styles(display_style, sty: "p", scr: nil, options:)
+          children = flatten_omml_nodes(
+            Array(parameter_one&.font_style_t_tag(display_style, options: options)),
+          )
+          return [empty_font_style_r_tag(sty, scr)] if children.empty?
+
+          if children.all? { |node| node.is_a?(String) || t_tag_node?(node) }
+            r_tag = empty_font_style_r_tag(sty, scr)
+            Utility.update_nodes(r_tag, children)
+            return [r_tag]
+          end
+
+          children.flat_map do |node|
+            if r_tag_node?(node)
+              inject_font_style_rpr(node, sty, scr)
+              [node]
+            elsif t_tag_node?(node)
+              r_tag = empty_font_style_r_tag(sty, scr)
+              r_tag << node
+              [r_tag]
+            else
+              inject_font_style_recursive(node, sty, scr)
+              [node]
+            end
+          end
+        end
+
+        def flatten_omml_nodes(nodes)
+          nodes.each_with_object([]) do |node, result|
+            if node.is_a?(Array)
+              result.concat(flatten_omml_nodes(node))
+            elsif !node.nil?
+              result << node
+            end
+          end
+        end
+
+        def t_tag_node?(node)
+          node.respond_to?(:name) && node.name == "m:t"
+        end
+
+        def r_tag_node?(node)
+          node.respond_to?(:name) && node.name == "m:r"
+        end
+
+        def empty_font_style_r_tag(sty, scr)
           r_tag = Utility.ox_element("r", namespace: "m")
           rpr_tag = Utility.ox_element("rPr", namespace: "m")
           rpr_tag << Utility.ox_element("scr", namespace: "m", attributes: { "m:val": scr }) if scr
           rpr_tag << Utility.ox_element("sty", namespace: "m", attributes: { "m:val": sty }) if sty
-          Utility.update_nodes(
-            (r_tag << rpr_tag),
-            Array(parameter_one&.font_style_t_tag(display_style, options: options)),
-          )
-          [r_tag]
+          r_tag << rpr_tag
+          r_tag
+        end
+
+        def inject_font_style_rpr(r_node, sty, scr)
+          return if r_node.nodes.any? { |n| n.respond_to?(:name) && n.name == "m:rPr" }
+
+          rpr_tag = Utility.ox_element("rPr", namespace: "m")
+          rpr_tag << Utility.ox_element("scr", namespace: "m", attributes: { "m:val": scr }) if scr
+          rpr_tag << Utility.ox_element("sty", namespace: "m", attributes: { "m:val": sty }) if sty
+          r_node.insert_in_nodes(0, rpr_tag)
+        end
+
+        def inject_font_style_recursive(node, sty, scr)
+          return unless node.respond_to?(:nodes)
+
+          node.nodes.each do |child|
+            if r_tag_node?(child)
+              inject_font_style_rpr(child, sty, scr)
+            elsif child.respond_to?(:nodes)
+              inject_font_style_recursive(child, sty, scr)
+            end
+          end
         end
 
         def to_asciimath_math_zone(spacing, last = false, _, options:)
