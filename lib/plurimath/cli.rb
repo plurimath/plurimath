@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 require "thor"
+require_relative "../plurimath"
 
 module Plurimath
-  self.autoload :Math, "plurimath/math"
 
   class Cli < Thor
     desc "convert", "Convert between math formats"
@@ -43,6 +43,11 @@ module Plurimath
            desc: "Splits only MathML and OMML equations into multiple equations, Boolean only",
            force: :boolean
 
+    option :xml_engine,
+           aliases: "-e",
+           default: "ox",
+           desc: "XML engine to use for parsing and rendering (ox or oga)"
+
     def convert
       input          = options[:input]
       input_string   = options[:file_path] ? File.read(options[:file_path]) : input
@@ -50,6 +55,7 @@ module Plurimath
 
       input_format   = options[:input_format]
       output_format  = options[:output_format]
+      configure_xml_engine(input_format, output_format)
       formula        = Plurimath::Math.parse(input_string, input_format)
       return puts formula.to_display(output_format.to_sym) if YAML.safe_load(options[:math_rendering])
 
@@ -75,6 +81,27 @@ module Plurimath
     end
 
     no_commands do
+      def configure_xml_engine(input_format, output_format)
+        xml_formats = %w[mathml omml]
+        return unless xml_formats.include?(input_format) || xml_formats.include?(output_format)
+
+        set_xml_engine(options[:xml_engine])
+      end
+
+      def set_xml_engine(engine)
+        engine_class = case engine
+                       when "ox"
+                         require_relative "setup/ox_engine"
+                         Plurimath::XmlEngine::OxEngine
+                       when "oga"
+                         require_relative "setup/oga"
+                         Plurimath::XmlEngine::Oga
+                       else
+                         warn_and_exit("Invalid XML engine: #{engine}. Use 'ox' or 'oga'.")
+                       end
+        Plurimath.xml_engine = engine_class
+      end
+
       def warn_and_exit(message)
         warn(message)
         exit 1
