@@ -916,7 +916,7 @@ module ExpectedValues
   ])
   EX_109 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Overset.new(
-      Plurimath::Math::Symbols::Overbar.new,
+      Plurimath::Math::Function::Bar.new,
       Plurimath::Math::Function::Text.new("c", lang: :omml),
     )
   ])
