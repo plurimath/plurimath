@@ -414,6 +414,62 @@ RSpec.describe Plurimath::Omml do
         expect(formula.to_asciimath).to include("AB")
       end
     end
+
+    context "contains m:d with implicit default parentheses from plurimath/plurimath#394" do
+      let(:string) do
+        <<~OMML
+          <m:oMath xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math">
+            <m:d>
+              <m:dPr>
+                <m:ctrlPr/>
+              </m:dPr>
+              <m:e>
+                <m:r>
+                  <m:t>7</m:t>
+                </m:r>
+              </m:e>
+            </m:d>
+          </m:oMath>
+        OMML
+      end
+
+      it "defaults to parentheses when begChr and endChr are absent" do
+        expect(formula.to_latex).to include("(")
+        expect(formula.to_latex).to include(")")
+        expect(formula.to_latex).to include("7")
+      end
+
+      it "produces correct AsciiMath with default parentheses" do
+        expect(formula.to_asciimath).to eq("(7)")
+      end
+    end
+
+    context "contains m:d with explicitly empty parentheses from plurimath/plurimath#394" do
+      let(:string) do
+        <<~OMML
+          <m:oMath xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math">
+            <m:d>
+              <m:dPr>
+                <m:begChr m:val="" />
+                <m:endChr m:val="" />
+              </m:dPr>
+              <m:e>
+                <m:r>
+                  <m:t>7</m:t>
+                </m:r>
+              </m:e>
+            </m:d>
+          </m:oMath>
+        OMML
+      end
+
+      it "omits parentheses when begChr and endChr are explicitly empty" do
+        latex = formula.to_latex.strip
+        expect(latex).not_to start_with("(")
+        expect(latex).not_to end_with(")")
+        expect(latex).to include("7")
+      end
+    end
   end
 
   describe ".to_omml" do
