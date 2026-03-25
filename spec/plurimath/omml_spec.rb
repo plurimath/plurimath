@@ -431,7 +431,6 @@ RSpec.describe Plurimath::Omml do
       end
     end
 
-
     context "contains m:d with implicit default parentheses from plurimath/plurimath#394" do
       let(:string) do
         <<~OMML
@@ -487,7 +486,6 @@ RSpec.describe Plurimath::Omml do
         expect(latex).to include("7")
       end
     end
-<<<<<<< HEAD
 
     context "contains m:d with explicit bracket characters" do
       let(:string) do
@@ -514,8 +512,6 @@ RSpec.describe Plurimath::Omml do
         expect(formula.to_asciimath).to eq("[7]")
       end
     end
-=======
->>>>>>> 49f9b91e (fix: default to parentheses when OMML m:d omits begChr/endChr)
   end
 
   describe ".to_omml" do
