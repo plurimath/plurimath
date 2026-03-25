@@ -387,6 +387,33 @@ RSpec.describe Plurimath::Omml do
         expect(formula.to_asciimath).to eq(asciimath)
       end
     end
+
+    context "contains m:acc with combining overline (U+0305) from plurimath/plurimath#engageny" do
+      let(:string) do
+        '<m:oMath xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">' \
+        '<m:acc><m:accPr><m:chr m:val="&#x305;"/><m:ctrlPr><w:rPr>' \
+        '<w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/>' \
+        '</w:rPr></m:ctrlPr></m:accPr><m:e><m:r><w:rPr>' \
+        '<w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>' \
+        '</w:rPr><m:t>AB</m:t></m:r></m:e></m:acc></m:oMath>'
+      end
+
+      it "converts overbar accent to LaTeX \\overline" do
+        expect(formula.to_latex).to include("\\overline")
+        expect(formula.to_latex).to include("AB")
+      end
+
+      it "converts overbar accent to MathML mover" do
+        mathml = formula.to_mathml
+        expect(mathml).to include("<mover")
+        expect(mathml).to include("accent=\"true\"")
+      end
+
+      it "converts overbar accent to AsciiMath bar" do
+        expect(formula.to_asciimath).to include("bar")
+        expect(formula.to_asciimath).to include("AB")
+      end
+    end
   end
 
   describe ".to_omml" do
