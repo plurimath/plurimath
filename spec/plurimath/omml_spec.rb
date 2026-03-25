@@ -387,6 +387,89 @@ RSpec.describe Plurimath::Omml do
         expect(formula.to_asciimath).to eq(asciimath)
       end
     end
+
+    context "contains m:acc with combining overline (U+0305) from plurimath/plurimath#engageny" do
+      let(:string) do
+        '<m:oMath xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">' \
+        '<m:acc><m:accPr><m:chr m:val="&#x305;"/><m:ctrlPr><w:rPr>' \
+        '<w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/>' \
+        '</w:rPr></m:ctrlPr></m:accPr><m:e><m:r><w:rPr>' \
+        '<w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>' \
+        '</w:rPr><m:t>AB</m:t></m:r></m:e></m:acc></m:oMath>'
+      end
+
+      it "converts overbar accent to LaTeX \\overline" do
+        expect(formula.to_latex).to include("\\overline")
+        expect(formula.to_latex).to include("AB")
+      end
+
+      it "converts overbar accent to MathML mover" do
+        mathml = formula.to_mathml
+        expect(mathml).to include("<mover")
+        expect(mathml).to include("accent=\"true\"")
+      end
+
+      it "converts overbar accent to AsciiMath bar" do
+        expect(formula.to_asciimath).to include("bar")
+        expect(formula.to_asciimath).to include("AB")
+      end
+    end
+
+    context "contains m:d with implicit default parentheses from plurimath/plurimath#394" do
+      let(:string) do
+        <<~OMML
+          <m:oMath xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math">
+            <m:d>
+              <m:dPr>
+                <m:ctrlPr/>
+              </m:dPr>
+              <m:e>
+                <m:r>
+                  <m:t>7</m:t>
+                </m:r>
+              </m:e>
+            </m:d>
+          </m:oMath>
+        OMML
+      end
+
+      it "defaults to parentheses when begChr and endChr are absent" do
+        expect(formula.to_latex).to include("(")
+        expect(formula.to_latex).to include(")")
+        expect(formula.to_latex).to include("7")
+      end
+
+      it "produces correct AsciiMath with default parentheses" do
+        expect(formula.to_asciimath).to eq("(7)")
+      end
+    end
+
+    context "contains m:d with explicitly empty parentheses from plurimath/plurimath#394" do
+      let(:string) do
+        <<~OMML
+          <m:oMath xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math">
+            <m:d>
+              <m:dPr>
+                <m:begChr m:val="" />
+                <m:endChr m:val="" />
+              </m:dPr>
+              <m:e>
+                <m:r>
+                  <m:t>7</m:t>
+                </m:r>
+              </m:e>
+            </m:d>
+          </m:oMath>
+        OMML
+      end
+
+      it "omits parentheses when begChr and endChr are explicitly empty" do
+        latex = formula.to_latex.strip
+        expect(latex).not_to start_with("(")
+        expect(latex).not_to end_with(")")
+        expect(latex).to include("7")
+      end
+    end
   end
 
   describe ".to_omml" do

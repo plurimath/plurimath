@@ -61,6 +61,30 @@ RSpec.describe Plurimath::NumberFormatter do
         output_string = formatter.localized_number(number, locale: locale, precision: 2, format: format)
         expect(output_string).to eql("14,00 x 10^3")
       end
+
+      it "handles zero in scientific notation without crashing" do
+        format = { notation: :scientific }
+        output_string = formatter.localized_number("0", format: format)
+        expect(output_string).to eql("0 × 10^0")
+      end
+
+      it "handles zero in e notation without crashing" do
+        format = { notation: :e }
+        output_string = formatter.localized_number("0", format: format)
+        expect(output_string).to eql("0e0")
+      end
+
+      it "handles zero in engineering notation without crashing" do
+        format = { notation: :engineering }
+        output_string = formatter.localized_number("0", format: format)
+        expect(output_string).to eql("0 × 10^0")
+      end
+
+      it "preserves precision for zero with trailing decimals in scientific notation" do
+        format = { notation: :scientific }
+        output_string = formatter.localized_number("0.00", format: format)
+        expect(output_string).to eql("0.00 × 10^0")
+      end
     end
 
     context "testing digit grouping and decimal symbol" do
