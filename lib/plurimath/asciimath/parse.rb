@@ -179,82 +179,30 @@ module Plurimath
         end
       end
 
-      def hash_to_expression(arr)
-        type = arr.first.class
-        @@expression ||= arr.reduce do |expression, expr_string|
-          expression = dynamic_parser_rules(expression) if expression.is_a?(type)
-          expression | dynamic_parser_rules(expr_string)
-        end
-      end
-
       def hash_to_expression_grouped(arr)
         @@expression ||= begin
-                           grouped = Hash.new { |h, k| h[k] = [] }
-                           arr.each do |expr_string|
-                             str, sym = expr_string
-                             grouped[sym] << str
-                           end
-                           grouped.reduce("") do |expression, expr_group|
-                             if expression.is_a?(String)
-                               dynamic_parser_rules_group(expr_group)
-                             else
-                               expression | dynamic_parser_rules_group(expr_group)
-                             end
-                           end
-                          end
-      end
-
-      def dynamic_parser_rules(expr)
-        first_value = str(expr.first.to_s)
-        case expr.last
-        when :symbol then (str("\\").as(:slash) >> match("\s").repeat >> str("\n")) | first_value.as(:symbol)
-        when :unary_class then unary_functions(first_value)
-        when :fonts then first_value.as(:fonts_class) >> space? >> sequence.as(:fonts_value)
-        when :special_fonts then first_value.as(:bold_fonts)
+          grouped = Hash.new { |h, k| h[k] = [] }
+          arr.each { |value, kind| grouped[kind] << value }
+          combine_alternatives(grouped) do |kind, values|
+            rules = combine_alternatives(values) { |v| rule_for(kind, v) }
+            kind == :symbol ? (str("\\").as(:slash) >> match("\s").repeat >> str("\n")) | rules : rules
+          end
         end
       end
 
-      def dynamic_parser_rules_group(expr_group)
-        kind = expr_group.first
-        values = expr_group.last
+      def rule_for(kind, value)
         case kind
-        when :symbol then
-          (str("\\").as(:slash) >> match("\s").repeat >> str("\n")) |
-            values.reduce("") do |expression, value|
-              rule = str(value).as(:symbol)
-              if expression.is_a?(String)
-                rule
-              else
-                expression | rule
-              end
-            end
-        when :unary_class then
-          values.reduce("") do |expression, value|
-            rule = unary_functions(str(value))
-            if expression.is_a?(String)
-              rule
-            else
-              expression | rule
-            end
-          end
-        when :fonts then
-          values.reduce("") do |expression, value|
-            rule = str(value).as(:fonts_class) >> space? >> sequence.as(:fonts_value)
-            if expression.is_a?(String)
-              rule
-            else
-              expression | rule
-            end
-          end
-        when :special_fonts then
-          values.reduce("") do |expression, value|
-            rule = str(value).as(:bold_fonts)
-            if expression.is_a?(String)
-              rule
-            else
-              expression | rule
-            end
-          end
+        when :symbol        then str(value).as(:symbol)
+        when :unary_class   then unary_functions(str(value))
+        when :fonts         then str(value).as(:fonts_class) >> space? >> sequence.as(:fonts_value)
+        when :special_fonts then str(value).as(:bold_fonts)
+        end
+      end
+
+      def combine_alternatives(collection)
+        collection.reduce(nil) do |acc, item|
+          rule = yield(*item)
+          acc ? (acc | rule) : rule
         end
       end
 
