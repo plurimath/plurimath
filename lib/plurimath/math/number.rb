@@ -92,9 +92,10 @@ module Plurimath
       end
 
       def format_value_with_options(options)
-        return value unless options[:formatter]&.respond_to?(:localized_number)
+        formatter = options[:formatter]
+        return value unless formatter&.respond_to?(:localized_number)
 
-        options[:formatter].localized_number(value.to_s)
+        formatter.format(options[:formula], self)
       end
     end
   end
