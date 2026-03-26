@@ -4,7 +4,7 @@ module Plurimath
       class Zz < Symbol
         INPUT = {
           unicodemath: [["&#x2124;"], parsing_wrapper(["ZZ"], lang: :unicode)],
-          asciimath: ["&#x2124;", "ZZ"],
+          asciimath: ["ZZ", "&#x2124;"],
           mathml: ["&#x2124;"],
           latex: ["ZZ", "&#x2124;"],
           omml: ["&#x2124;"],
@@ -13,11 +13,11 @@ module Plurimath
 
         # output methods
         def to_latex(**)
-          "\\ZZ"
+          "\\mathbb{Z}"
         end
 
         def to_asciimath(**)
-          "ZZ"
+          "mathbb(Z)"
         end
 
         def to_unicodemath(**)
@@ -25,7 +25,10 @@ module Plurimath
         end
 
         def to_mathml_without_math_tag(_, **)
-          ox_element("mi") << "&#x2124;"
+          Utility.update_nodes(
+            ox_element("mstyle", attributes: { mathvariant: "double-struck" }),
+            [ox_element("mi") << "Z"],
+          )
         end
 
         def to_omml_without_math_tag(_, **)

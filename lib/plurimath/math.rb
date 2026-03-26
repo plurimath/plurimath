@@ -38,25 +38,31 @@ module Plurimath
       asciimath: Asciimath,
     }.freeze
 
-    # TODO: make optional/weak
     FORMULA_CACHE = Hash.new { |h, k| h[k] = {} }
 
-    def parse(text, type)
+    def parse(text, type, cache: false)
       raise InvalidTypeError.new unless valid_type?(type)
 
-      return FORMULA_CACHE[type][text] if FORMULA_CACHE[type].key?(text)
+      if cache && FORMULA_CACHE[type].key?(text)
+        return FORMULA_CACHE[type][text].cloned_objects
+      end
 
       begin
         klass = klass_from_type(type)
         formula = klass.new(text).to_formula
         formula.input_string = text
-        FORMULA_CACHE[type][text] = formula
+        FORMULA_CACHE[type][text] = formula.cloned_objects if cache
+        formula
       rescue ParseError
         # Re-raise ParseError from lower layers unchanged to preserve specialized error types
         raise
       rescue => ee
         raise ParseError.new(text, type), cause: nil
       end
+    end
+
+    def clear_cache!
+      FORMULA_CACHE.clear
     end
 
     private
@@ -70,6 +76,6 @@ module Plurimath
         VALID_TYPES.key?(type.to_sym)
     end
 
-    module_function :parse, :klass_from_type, :valid_type?
+    module_function :parse, :klass_from_type, :valid_type?, :clear_cache!
   end
 end

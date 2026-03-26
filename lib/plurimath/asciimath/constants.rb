@@ -80,22 +80,20 @@ module Plurimath
       ].freeze
       SUB_SUP_CLASSES = %w[lim log].freeze
       TERNARY_CLASSES = %w[prod oint sum int].freeze
-      SPECIAL_BOLD_ALPHABETS = %w[ZZ RR QQ NN CC].freeze
       BINARY_CLASSES = %w[underset stackrel overset frac root].freeze
       SKIP_INPUT_PARENS = ["[", "]", "{", "}", "(", ")", "(:", ":)"].freeze
 
       class << self
         def precompile_constants
-          @values ||=
-            named_hash(UNARY_CLASSES, :unary_class)
-              .merge(named_hash(symbols_array, :symbol))
-              .merge(named_hash(FONT_STYLES, :fonts))
-              .merge(named_hash(SPECIAL_BOLD_ALPHABETS, :special_fonts))
-          @values.sort_by { |v, _| -v.length }.to_h
+          @grouped ||= {
+            symbol:      sort_by_length(symbols_array),
+            unary_class: sort_by_length(UNARY_CLASSES),
+            fonts:       sort_by_length(FONT_STYLES),
+          }
         end
 
-        def named_hash(hash_or_array, name_key)
-          hash_or_array.each_with_object({}) { |d, i| i[d] = name_key }
+        def sort_by_length(array)
+          array.sort_by { |v| -v.length }
         end
 
         def symbols_array

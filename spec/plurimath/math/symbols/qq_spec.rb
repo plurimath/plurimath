@@ -14,11 +14,11 @@ RSpec.describe Plurimath::Math::Symbols::Qq do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Qq" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("\"P{QQ}\"")
+        expect(klass.to_asciimath).to eq("mathbb(Q)")
       end
 
       it "matches LaTeX string" do
-        expect(klass.to_latex).to eq("\\QQ")
+        expect(klass.to_latex).to eq("\\mathbb{Q}")
       end
 
       it "matches UnicodeMath string" do
@@ -30,8 +30,8 @@ RSpec.describe Plurimath::Math::Symbols::Qq do
       end
 
       it "matches MathML string" do
-        string = dump_ox_nodes(klass.to_mathml_without_math_tag(false)).strip
-        expect(string).to eq("<mi>&#x211a;</mi>")
+        string = dump_ox_nodes(klass.to_mathml_without_math_tag(false)).gsub(/>\s+</, "><").strip
+        expect(string).to eq("<mstyle mathvariant=\"double-struck\"><mi>Q</mi></mstyle>")
       end
 
       it "matches HTML string" do

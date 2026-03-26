@@ -179,23 +179,18 @@ module Plurimath
         end
       end
 
-      def hash_to_expression_grouped(arr)
-        @@expression ||= begin
-          grouped = Hash.new { |h, k| h[k] = [] }
-          arr.each { |value, kind| grouped[kind] << value }
-          combine_alternatives(grouped) do |kind, values|
-            rules = combine_alternatives(values) { |v| rule_for(kind, v) }
-            kind == :symbol ? (str("\\").as(:slash) >> match("\s").repeat >> str("\n")) | rules : rules
-          end
+      def hash_to_expression_grouped(grouped)
+        @@expression ||= combine_alternatives(grouped) do |kind, values|
+          rules = combine_alternatives(values) { |v| rule_for(kind, v) }
+          kind == :symbol ? (str("\\").as(:slash) >> match("\s").repeat >> str("\n")) | rules : rules
         end
       end
 
       def rule_for(kind, value)
         case kind
-        when :symbol        then str(value).as(:symbol)
-        when :unary_class   then unary_functions(str(value))
-        when :fonts         then str(value).as(:fonts_class) >> space? >> sequence.as(:fonts_value)
-        when :special_fonts then str(value).as(:bold_fonts)
+        when :symbol      then str(value).as(:symbol)
+        when :unary_class then unary_functions(str(value))
+        when :fonts       then str(value).as(:fonts_class) >> space? >> sequence.as(:fonts_value)
         end
       end
 

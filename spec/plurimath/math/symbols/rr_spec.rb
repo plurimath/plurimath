@@ -14,11 +14,11 @@ RSpec.describe Plurimath::Math::Symbols::Rr do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Rr" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("\"P{RR}\"")
+        expect(klass.to_asciimath).to eq("mathbb(R)")
       end
 
       it "matches LaTeX string" do
-        expect(klass.to_latex).to eq("\\RR")
+        expect(klass.to_latex).to eq("\\mathbb{R}")
       end
 
       it "matches UnicodeMath string" do
@@ -30,8 +30,8 @@ RSpec.describe Plurimath::Math::Symbols::Rr do
       end
 
       it "matches MathML string" do
-        string = dump_ox_nodes(klass.to_mathml_without_math_tag(false)).strip
-        expect(string).to eq("<mi>&#x211d;</mi>")
+        string = dump_ox_nodes(klass.to_mathml_without_math_tag(false)).gsub(/>\s+</, "><").strip
+        expect(string).to eq("<mstyle mathvariant=\"double-struck\"><mi>R</mi></mstyle>")
       end
 
       it "matches HTML string" do

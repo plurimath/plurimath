@@ -4,7 +4,7 @@ module Plurimath
       class Nn < Symbol
         INPUT = {
           unicodemath: [["&#x2115;"], parsing_wrapper(["NN"], lang: :unicode)],
-          asciimath: [["&#x2115;"], parsing_wrapper(["NN"], lang: :asciimath)],
+          asciimath: ["NN", "&#x2115;"],
           mathml: ["&#x2115;"],
           latex: [["NN", "&#x2115;"]],
           omml: ["&#x2115;"],
@@ -13,11 +13,11 @@ module Plurimath
 
         # output methods
         def to_latex(**)
-          "\\NN"
+          "\\mathbb{N}"
         end
 
         def to_asciimath(**)
-          parsing_wrapper("NN", lang: :asciimath)
+          "mathbb(N)"
         end
 
         def to_unicodemath(**)
@@ -25,7 +25,10 @@ module Plurimath
         end
 
         def to_mathml_without_math_tag(_, **)
-          ox_element("mi") << "&#x2115;"
+          Utility.update_nodes(
+            ox_element("mstyle", attributes: { mathvariant: "double-struck" }),
+            [ox_element("mi") << "N"],
+          )
         end
 
         def to_omml_without_math_tag(_, **)
