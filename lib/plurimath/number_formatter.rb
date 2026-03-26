@@ -12,6 +12,12 @@ module Plurimath
       @precision = precision
     end
 
+    # Override in subclasses for contextual number formatting.
+    # Receives the root formula tree and the current number node being formatted.
+    def format(_formula, number)
+      localized_number(number.value.to_s)
+    end
+
     def localized_number(number_string, locale: @locale, precision: @precision, format: {})
       prev_symbols = symbols(locale.to_sym).dup
       Formatter::NumericFormatter.new(
