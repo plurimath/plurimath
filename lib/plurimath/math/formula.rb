@@ -1,10 +1,11 @@
 # frozen_string_literal: true
 
-require_relative "../mathml/utility"
-
 module Plurimath
   module Math
     class Formula < Core
+      autoload :Mrow, "#{__dir__}/formula/mrow"
+      autoload :Mstyle, "#{__dir__}/formula/mstyle"
+
       include Mathml::Utility
 
       attr_accessor :value, :left_right_wrapper, :displaystyle, :input_string, :display

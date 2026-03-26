@@ -1,4 +1,3 @@
-require_relative "plurimath/version"
 require "mml/configuration"
 
 def mml_adapter(adapter)
@@ -7,6 +6,8 @@ def mml_adapter(adapter)
 end
 
 # Select an XML engine
+require "plurimath/xml_engine"
+
 if RUBY_ENGINE == 'opal'
   require "plurimath/setup/oga"
   require "plurimath/setup/opal"
@@ -19,4 +20,21 @@ else
   mml_adapter(:ox)
 end
 
-require "plurimath/math"
+module Plurimath
+  autoload :Asciimath, "plurimath/asciimath"
+  autoload :Cli, "plurimath/cli"
+  autoload :Formatter, "plurimath/formatter"
+  autoload :Html, "plurimath/html"
+  autoload :Latex, "plurimath/latex"
+  autoload :ParseError, "plurimath/math"
+  autoload :InvalidTypeError, "plurimath/math"
+  autoload :Math, "plurimath/math"
+  autoload :Mathml, "plurimath/mathml"
+  autoload :NumberFormatter, "plurimath/number_formatter"
+  autoload :Omml, "plurimath/omml"
+  autoload :UnicodeMath, "plurimath/unicode_math"
+  autoload :Unitsml, "plurimath/unitsml"
+  autoload :Utility, "plurimath/utility"
+  autoload :XmlEngine, "plurimath/xml_engine"
+  autoload :Version, "plurimath/version"
+end

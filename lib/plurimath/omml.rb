@@ -2,6 +2,9 @@
 
 module Plurimath
   class Omml
+    autoload :Parser, "#{__dir__}/omml/parser"
+    autoload :Transform, "#{__dir__}/omml/transform"
+
     attr_accessor :text
 
     def initialize(text)

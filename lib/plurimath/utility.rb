@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require_relative "utility/intent_encoding"
 module Plurimath
   class Utility
+    autoload :IntentEncoding, "#{__dir__}/utility/intent_encoding"
     UNICODE_REGEX = %r{&#x[a-zA-Z0-9]+;}
     FONT_STYLES = {
       "double-struck": Math::Function::FontStyle::DoubleStruck,

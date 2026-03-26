@@ -1,8 +1,11 @@
+# frozen_string_literal: true
+
 require "bigdecimal"
-require_relative "formatter"
 
 module Plurimath
   class NumberFormatter
+    autoload :Formatter, "plurimath/formatter"
+
     attr_accessor :locale, :localize_number, :localizer_symbols, :precision
 
     def initialize(locale = "en", localize_number: nil, localizer_symbols: {}, precision: nil)
