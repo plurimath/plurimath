@@ -30,8 +30,8 @@ RSpec.describe Plurimath::Math::Symbols::Rr do
       end
 
       it "matches MathML string" do
-        string = dump_ox_nodes(klass.to_mathml_without_math_tag(false)).gsub(/>\s+</, "><").strip
-        expect(string).to eq("<mstyle mathvariant=\"double-struck\"><mi>R</mi></mstyle>")
+        string = dump_ox_nodes(klass.to_mathml_without_math_tag(false)).strip
+        expect(string).to eq("<mo>&#x211d;</mo>")
       end
 
       it "matches HTML string" do

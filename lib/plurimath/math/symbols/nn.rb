@@ -25,10 +25,7 @@ module Plurimath
         end
 
         def to_mathml_without_math_tag(_, **)
-          Utility.update_nodes(
-            ox_element("mstyle", attributes: { mathvariant: "double-struck" }),
-            [ox_element("mi") << "N"],
-          )
+          ox_element("mo") << "&#x2115;"
         end
 
         def to_omml_without_math_tag(_, **)
