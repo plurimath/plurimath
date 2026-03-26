@@ -85,15 +85,15 @@ module Plurimath
 
       class << self
         def precompile_constants
-          @grouped ||= {
-            symbol:      sort_by_length(symbols_array),
-            unary_class: sort_by_length(UNARY_CLASSES),
-            fonts:       sort_by_length(FONT_STYLES),
-          }
+          @values ||=
+            named_hash(UNARY_CLASSES, :unary_class)
+              .merge(named_hash(symbols_array, :symbol))
+              .merge(named_hash(FONT_STYLES, :fonts))
+          @values.sort_by { |v, _| -v.length }.to_h
         end
 
-        def sort_by_length(array)
-          array.sort_by { |v| -v.length }
+        def named_hash(hash_or_array, name_key)
+          hash_or_array.each_with_object({}) { |d, i| i[d] = name_key }
         end
 
         def symbols_array
