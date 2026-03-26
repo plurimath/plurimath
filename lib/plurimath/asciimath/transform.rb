@@ -32,13 +32,6 @@ module Plurimath
         Unitsml.new(unitsml.to_s).to_formula
       end
 
-      rule(bold_fonts: simple(:font)) do
-        Math::Function::FontStyle::DoubleStruck.new(
-          Utility.asciimath_symbol_object(font.to_s[0]),
-          "mathbf",
-        )
-      end
-
       rule(unary_class: simple(:unary)) do
         Utility.get_class(unary).new
       end
