@@ -18,5 +18,5 @@ else
   require "plurimath/setup/ox_engine"
   mml_adapter(:ox)
 end
-
+require "render"
 require "plurimath/math"
