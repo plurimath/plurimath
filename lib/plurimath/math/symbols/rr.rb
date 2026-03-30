@@ -4,7 +4,7 @@ module Plurimath
       class Rr < Symbol
         INPUT = {
           unicodemath: [["&#x211d;"], parsing_wrapper(["RR"], lang: :unicode)],
-          asciimath: ["RR", "&#x211d;"],
+          asciimath: [["&#x211d;"], parsing_wrapper(["RR"], lang: :asciimath)],
           mathml: ["&#x211d;"],
           latex: [["RR", "&#x211d;"]],
           omml: ["&#x211d;"],
@@ -13,11 +13,11 @@ module Plurimath
 
         # output methods
         def to_latex(**)
-          "\\mathbb{R}"
+          "\\RR"
         end
 
         def to_asciimath(**)
-          "mathbb(R)"
+          parsing_wrapper("RR", lang: :asciimath)
         end
 
         def to_unicodemath(**)
@@ -25,7 +25,7 @@ module Plurimath
         end
 
         def to_mathml_without_math_tag(_, **)
-          ox_element("mo") << "&#x211d;"
+          ox_element("mi") << "&#x211d;"
         end
 
         def to_omml_without_math_tag(_, **)

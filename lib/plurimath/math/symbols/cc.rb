@@ -4,7 +4,7 @@ module Plurimath
       class Cc < Symbol
         INPUT = {
           unicodemath: [["&#x2102;"], parsing_wrapper(["CC"], lang: :unicode)],
-          asciimath: ["CC", "&#x2102;"],
+          asciimath: [["&#x2102;"], parsing_wrapper(["CC"], lang: :asciimath)],
           mathml: ["&#x2102;"],
           latex: [["CC", "&#x2102;"]],
           omml: ["&#x2102;"],
@@ -13,11 +13,11 @@ module Plurimath
 
         # output methods
         def to_latex(**)
-          "\\mathbb{C}"
+          "\\CC"
         end
 
         def to_asciimath(**)
-          "mathbb(C)"
+          parsing_wrapper("CC", lang: :asciimath)
         end
 
         def to_unicodemath(**)
@@ -25,7 +25,7 @@ module Plurimath
         end
 
         def to_mathml_without_math_tag(_, **)
-          ox_element("mo") << "&#x2102;"
+          ox_element("mi") << "&#x2102;"
         end
 
         def to_omml_without_math_tag(_, **)

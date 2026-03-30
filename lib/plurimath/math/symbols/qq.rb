@@ -4,7 +4,7 @@ module Plurimath
       class Qq < Symbol
         INPUT = {
           unicodemath: [["&#x211a;"], parsing_wrapper(["QQ"], lang: :unicode)],
-          asciimath: ["QQ", "&#x211a;"],
+          asciimath: [["&#x211a;"], parsing_wrapper(["QQ"], lang: :asciimath)],
           mathml: ["&#x211a;"],
           latex: [["QQ", "&#x211a;"]],
           omml: ["&#x211a;"],
@@ -13,11 +13,11 @@ module Plurimath
 
         # output methods
         def to_latex(**)
-          "\\mathbb{Q}"
+          "\\QQ"
         end
 
         def to_asciimath(**)
-          "mathbb(Q)"
+          parsing_wrapper("QQ", lang: :asciimath)
         end
 
         def to_unicodemath(**)
@@ -25,7 +25,7 @@ module Plurimath
         end
 
         def to_mathml_without_math_tag(_, **)
-          ox_element("mo") << "&#x211a;"
+          ox_element("mi") << "&#x211a;"
         end
 
         def to_omml_without_math_tag(_, **)

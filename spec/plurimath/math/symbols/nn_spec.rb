@@ -14,11 +14,11 @@ RSpec.describe Plurimath::Math::Symbols::Nn do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Nn" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("mathbb(N)")
+        expect(klass.to_asciimath).to eq("\"P{NN}\"")
       end
 
       it "matches LaTeX string" do
-        expect(klass.to_latex).to eq("\\mathbb{N}")
+        expect(klass.to_latex).to eq("\\NN")
       end
 
       it "matches UnicodeMath string" do
@@ -31,7 +31,7 @@ RSpec.describe Plurimath::Math::Symbols::Nn do
 
       it "matches MathML string" do
         string = dump_ox_nodes(klass.to_mathml_without_math_tag(false)).strip
-        expect(string).to eq("<mo>&#x2115;</mo>")
+        expect(string).to eq("<mi>&#x2115;</mi>")
       end
 
       it "matches HTML string" do

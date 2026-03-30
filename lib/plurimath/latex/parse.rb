@@ -200,32 +200,43 @@ module Plurimath
         @@expression ||= hash_to_expression_impl(hash)
       end
 
+      def reduce_symbols(values)
+        values.reduce(nil) do |acc, value|
+          exp = str(value.to_s).as(:symbols)
+          if acc.nil?
+            exp
+          else
+            acc | exp
+          end
+        end
+      end
+
       def hash_to_expression_impl(hash)
+        # Merge consecutive symbols to extract the leading slash as a common expression
         symbol_acc = []
         expressions = []
-        hash.each do |(key, value)|
+        hash.each do | (key, value)|
           if value == :symbols
             symbol_acc << key
+            # expressions << dynamic_rules(key, value)
           else
-            flush_symbols(symbol_acc, expressions)
+            if symbol_acc.length > 0
+              expressions.append(slash >> reduce_symbols(symbol_acc))
+              symbol_acc.clear
+            end
             expressions << dynamic_rules(key, value)
           end
         end
-        flush_symbols(symbol_acc, expressions)
-        combine_alternatives(expressions)
-      end
+        if symbol_acc.length > 0
+          expressions.append(slash >> reduce_symbols(symbol_acc))
+        end
 
-      def flush_symbols(symbol_acc, expressions)
-        return if symbol_acc.empty?
-
-        expressions << (slash >> combine_alternatives(symbol_acc) { |v| str(v.to_s).as(:symbols) })
-        symbol_acc.clear
-      end
-
-      def combine_alternatives(collection)
-        collection.reduce(nil) do |acc, item|
-          rule = block_given? ? yield(item) : item
-          acc ? (acc | rule) : rule
+        expressions.reduce(nil) do |acc, elem|
+          if acc.nil?
+            elem
+          else
+            acc | elem
+          end
         end
       end
 

@@ -2198,7 +2198,9 @@ RSpec.describe Plurimath::Asciimath do
                 <mi>r</mi>
               </msub>
               <msub>
-                <mo>&#x2124;</mo>
+                <mstyle mathvariant="double-struck">
+                  <mi>Z</mi>
+                </mstyle>
                 <mi>n</mi>
               </msub>
               <mo>=</mo>
