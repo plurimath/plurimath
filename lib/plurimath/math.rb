@@ -40,7 +40,7 @@ module Plurimath
 
     FORMULA_CACHE = Hash.new { |h, k| h[k] = {} }
 
-    def parse(text, type, cache: false)
+    def parse(text, type, cache: true)
       raise InvalidTypeError.new unless valid_type?(type)
 
       if cache && FORMULA_CACHE[type].key?(text)
