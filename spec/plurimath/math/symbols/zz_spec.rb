@@ -14,11 +14,11 @@ RSpec.describe Plurimath::Math::Symbols::Zz do
 
     context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Zz" do
       it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("mathbb(Z)")
+        expect(klass.to_asciimath).to eq("ZZ")
       end
 
       it "matches LaTeX string" do
-        expect(klass.to_latex).to eq("\\mathbb{Z}")
+        expect(klass.to_latex).to eq("\\ZZ")
       end
 
       it "matches UnicodeMath string" do
@@ -31,7 +31,7 @@ RSpec.describe Plurimath::Math::Symbols::Zz do
 
       it "matches MathML string" do
         string = dump_ox_nodes(klass.to_mathml_without_math_tag(false)).strip
-        expect(string).to eq("<mo>&#x2124;</mo>")
+        expect(string).to eq("<mi>&#x2124;</mi>")
       end
 
       it "matches HTML string" do

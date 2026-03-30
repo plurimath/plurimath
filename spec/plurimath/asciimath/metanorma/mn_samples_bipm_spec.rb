@@ -755,7 +755,10 @@ RSpec.describe Plurimath::Asciimath::Parser do
             Plurimath::Math::Symbols::Symbol.new("r")
           ),
           Plurimath::Math::Function::Base.new(
-            Plurimath::Math::Symbols::Zz.new,
+            Plurimath::Math::Function::FontStyle::DoubleStruck.new(
+              Plurimath::Math::Symbols::Symbol.new("Z"),
+              "mathbf"
+            ),
             Plurimath::Math::Symbols::Symbol.new("n")
           ),
           Plurimath::Math::Symbols::Equal.new,
