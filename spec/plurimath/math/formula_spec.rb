@@ -1388,7 +1388,7 @@ RSpec.describe Plurimath::Math::Formula do
     end
 
     describe "default formatter backward compatibility" do
-      it "formats numbers using the default format method" do
+      it "formats numbers using localized_number when format is not defined" do
         formatter = Plurimath::Formatter::Standard.new
         formula_obj = described_class.new(exp)
         result = formula_obj.to_latex(formatter: formatter)
@@ -1414,7 +1414,7 @@ class YearFormatter < Plurimath::Formatter::Standard
     if int_value && int_value > 1800 && int_value < 2200
       number.value.to_s
     else
-      super
+      localized_number(number.value.to_s)
     end
   end
 end
@@ -1427,6 +1427,6 @@ class SpyFormatter < Plurimath::Formatter::Standard
 
   def format(formula, number)
     @on_format&.call(formula, number)
-    super
+    localized_number(number.value.to_s)
   end
 end
