@@ -93,9 +93,13 @@ module Plurimath
 
       def format_value_with_options(options)
         formatter = options[:formatter]
-        return value unless formatter&.respond_to?(:localized_number)
-
-        formatter.format(options[:formula], self)
+        if formatter&.respond_to?(:format)
+          formatter.format(options[:formula], self)
+        elsif formatter&.respond_to?(:localized_number)
+          formatter.localized_number(value.to_s)
+        else
+          value
+        end
       end
     end
   end
