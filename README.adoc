@@ -1135,7 +1135,9 @@ method using a `formatter` option, which serializes the formula into an math
 representation language.
 
 The formatter should be an instance of `Plurimath::NumberFormatter` or a custom
-formatter derived from `Plurimath::Formatter::Standard`.
+formatter derived from `Plurimath::Formatter::Standard`. Custom formatters can
+define a `format(formula, number)` method to make context-aware formatting
+decisions based on the surrounding formula (see <<Contextual number formatting>>).
 
 The quick example below demonstrates how to format a number in a formula.
 
@@ -1343,6 +1345,60 @@ end
 > formula.to_asciimath(formatter: formatter)
 # => 'sum_(i = 1)^(10,00;00.1) i^(2,12,12,21;34.34)'
 ----
+====
+
+
+==== Contextual number formatting
+
+In some cases, certain numbers within a formula should be formatted differently
+depending on their context. For example, a year like "2024" should not have digit
+grouping applied, while other numbers in the same formula should.
+
+The `format` method on the formatter receives both the root
+`Plurimath::Math::Formula` tree and the current `Plurimath::Math::Number` node
+being processed, allowing context-aware formatting decisions.
+
+.Signature of the `format` method
+[source,ruby]
+----
+def format(formula, number)
+  # formula: the root Plurimath::Math::Formula containing the full equation
+  # number:  the Plurimath::Math::Number node currently being formatted
+  # returns: a formatted string
+end
+----
+
+Formatters that do not define `format` will fall back to `localized_number`, so
+existing formatters continue to work without changes.
+
+To implement contextual formatting, define a `format` method in a custom
+formatter subclass.
+
+.Creating a year-aware formatter that skips digit grouping for year-like numbers
+[example]
+====
+[source,ruby]
+----
+class YearFormatter < Plurimath::Formatter::Standard
+  def format(formula, number) <1>
+    int_value = Integer(number.value, exception: false)
+    if int_value && int_value > 1800 && int_value < 2200 <2>
+      number.value.to_s
+    else
+      localized_number(number.value.to_s) <3>
+    end
+  end
+end
+
+formatter = YearFormatter.new
+formula = Plurimath::Math.parse("2024 + 1000000", :asciimath)
+formula.to_latex(formatter: formatter)
+# => "2024 + 1,000,000" <4>
+----
+<1> Define `format` to receive the formula tree and number node.
+<2> Detect year-like numbers and return them unformatted.
+<3> Call `localized_number` to apply locale-based formatting for other numbers.
+<4> "2024" is left as-is, while "1000000" is formatted with digit grouping.
 ====
 
 
