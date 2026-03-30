@@ -1301,60 +1301,58 @@ RSpec.describe Plurimath::Math::Formula do
         Plurimath::Math::Number.new("1000000"),
       ]
     end
+    let(:formula_obj) { described_class.new(exp) }
 
     describe "formatter receives formula and number node" do
-      it "passes the root formula and number nodes to format" do
-        received_formula = nil
-        received_numbers = []
-        spy = SpyFormatter.new(
+      let(:received_formula) { [] }
+      let(:received_numbers) { [] }
+      let(:spy) do
+        SpyFormatter.new(
           on_format: proc { |formula, number|
-            received_formula = formula
+            received_formula << formula
             received_numbers << number
           }
         )
-        formula_obj = described_class.new(exp)
+      end
+
+      it "passes the root formula and number nodes to format" do
         formula_obj.to_latex(formatter: spy)
 
-        expect(received_formula).to be_a(Plurimath::Math::Formula)
-        expect(received_formula).to eq(formula_obj)
-        expect(received_numbers.length).to eq(2)
-        expect(received_numbers[0]).to be_a(Plurimath::Math::Number)
-        expect(received_numbers[0].value).to eq("2024")
+        expect(received_formula.first).to be_a(Plurimath::Math::Formula)
+        expect(received_formula.first).to eq(formula_obj)
+        expect(received_numbers.first).to be_a(Plurimath::Math::Number)
+        expect(received_numbers.first.value).to eq("2024")
         expect(received_numbers[1].value).to eq("1000000")
       end
 
-      it "passes the formula across all text output formats" do
-        %i[to_latex to_asciimath to_html to_unicodemath].each do |method|
-          received_formula = nil
-          spy = SpyFormatter.new(
-            on_format: proc { |formula, _| received_formula = formula }
-          )
-          formula_obj = described_class.new(exp)
-          formula_obj.send(method, formatter: spy)
+      it "passes the formula via to_latex" do
+        formula_obj.to_latex(formatter: spy)
+        expect(received_formula.first).to eq(formula_obj)
+      end
 
-          expect(received_formula).to eq(formula_obj),
-            "Expected #{method} to pass formula"
-        end
+      it "passes the formula via to_asciimath" do
+        formula_obj.to_asciimath(formatter: spy)
+        expect(received_formula.first).to eq(formula_obj)
+      end
+
+      it "passes the formula via to_html" do
+        formula_obj.to_html(formatter: spy)
+        expect(received_formula.first).to eq(formula_obj)
+      end
+
+      it "passes the formula via to_unicodemath" do
+        formula_obj.to_unicodemath(formatter: spy)
+        expect(received_formula.first).to eq(formula_obj)
       end
 
       it "passes the formula via to_mathml" do
-        received_formula = nil
-        spy = SpyFormatter.new(
-          on_format: proc { |formula, _| received_formula = formula }
-        )
-        formula_obj = described_class.new(exp)
         formula_obj.to_mathml(formatter: spy)
-        expect(received_formula).to eq(formula_obj)
+        expect(received_formula.first).to eq(formula_obj)
       end
 
       it "passes the formula via to_omml" do
-        received_formula = nil
-        spy = SpyFormatter.new(
-          on_format: proc { |formula, _| received_formula = formula }
-        )
-        formula_obj = described_class.new(exp)
         formula_obj.to_omml(formatter: spy)
-        expect(received_formula).to eq(formula_obj)
+        expect(received_formula.first).to eq(formula_obj)
       end
     end
 
@@ -1362,7 +1360,6 @@ RSpec.describe Plurimath::Math::Formula do
       let(:year_formatter) { YearFormatter.new }
 
       it "skips formatting for year-like numbers" do
-        formula_obj = described_class.new(exp)
         result = formula_obj.to_latex(formatter: year_formatter)
         expect(result).to eq("2024 + 1,000,000")
       end
@@ -1390,7 +1387,6 @@ RSpec.describe Plurimath::Math::Formula do
     describe "default formatter backward compatibility" do
       it "formats numbers using localized_number when format is not defined" do
         formatter = Plurimath::Formatter::Standard.new
-        formula_obj = described_class.new(exp)
         result = formula_obj.to_latex(formatter: formatter)
         expect(result).to eq("2,024 + 1,000,000")
       end
