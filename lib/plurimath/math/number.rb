@@ -7,7 +7,7 @@ module Plurimath
       include Mathml::Utility
 
       def initialize(value = nil, mini_sub_sized: false, mini_sup_sized: false)
-        @value = value.is_a?(Parslet::Slice) ? value.to_s : value
+        @value = value.is_a?(::Parslet::Slice) ? value.to_s : value
         @mini_sub_sized = mini_sub_sized if mini_sub_sized
         @mini_sup_sized = mini_sup_sized if mini_sup_sized
       end

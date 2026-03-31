@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+autoload :Parslet, "parslet"
 module Plurimath
   module Math
     autoload :Core, "#{__dir__}/math/core"
