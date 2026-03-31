@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "parslet"
-require "parslet/convenience"
 module Plurimath
   class UnicodeMath
     class Parser
