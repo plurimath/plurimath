@@ -1,3 +1,4 @@
+DEFAULT_ADAPTER = RUBY_ENGINE == "opal" ? :oga : :ox
 require "mml"
 require "parslet"
 
