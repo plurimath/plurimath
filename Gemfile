@@ -17,3 +17,5 @@ gem "rubocop-rake"
 gem "rubocop-rspec"
 gem 'ox'
 gem 'simplecov', require: false, group: :test
+gem "debug"
+gem "equivalent-xml"

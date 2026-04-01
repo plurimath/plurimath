@@ -38,8 +38,6 @@ module Plurimath
           @is_mrow
         end
 
-        private
-
         def organize_value
           return if value.any?(String)
           return unless is_mrow
@@ -61,6 +59,8 @@ module Plurimath
             end
           end
         end
+
+        private
 
         def update_current_element(element, value, index)
           if first_and_last_values_nil?(value)
