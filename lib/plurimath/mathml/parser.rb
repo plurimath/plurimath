@@ -1,12 +1,11 @@
 # frozen_string_literal: true
 
-require "mml"
+require_relative "models"
 
 module Plurimath
   class Mathml
     class Parser
       attr_accessor :text
-      @@models_set = false
 
       def initialize(text)
         @text = text
@@ -14,8 +13,13 @@ module Plurimath
 
       def parse
         namespace_exist = text.split(">").first.include?(" xmlns=")
-        mml_math = Mml.parse(text, namespace_exist: namespace_exist, version: 4)
-        Translator.new.mml_to_plurimath(mml_math)
+        mml_tree = Mml.parse(
+          text,
+          version: 4,
+          register: Models.register,
+          namespace_exist: namespace_exist,
+        )
+        mml_tree.to_plurimath
       end
     end
   end
