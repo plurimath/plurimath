@@ -1,11 +1,24 @@
 # frozen_string_literal: true
 
-require_relative "binary_function"
-
 module Plurimath
   module Math
     module Function
       class FontStyle < BinaryFunction
+        autoload :Bold, "#{__dir__}/font_style/bold"
+        autoload :BoldFraktur, "#{__dir__}/font_style/bold-fraktur"
+        autoload :BoldItalic, "#{__dir__}/font_style/bold-italic"
+        autoload :BoldSansSerif, "#{__dir__}/font_style/bold-sans-serif"
+        autoload :BoldScript, "#{__dir__}/font_style/bold-script"
+        autoload :DoubleStruck, "#{__dir__}/font_style/double_struck"
+        autoload :Fraktur, "#{__dir__}/font_style/fraktur"
+        autoload :Italic, "#{__dir__}/font_style/italic"
+        autoload :Monospace, "#{__dir__}/font_style/monospace"
+        autoload :Normal, "#{__dir__}/font_style/normal"
+        autoload :SansSerif, "#{__dir__}/font_style/sans-serif"
+        autoload :SansSerifBoldItalic, "#{__dir__}/font_style/sans-serif-bold-italic"
+        autoload :SansSerifItalic, "#{__dir__}/font_style/sans-serif-italic"
+        autoload :Script, "#{__dir__}/font_style/script"
+
         def to_asciimath(options:)
           parameter_one&.to_asciimath(options: options)
         end

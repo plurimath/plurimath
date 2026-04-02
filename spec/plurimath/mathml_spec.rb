@@ -2588,75 +2588,87 @@ RSpec.describe Plurimath::Mathml do
 
       let(:expected_value) do
         <<~OMML
-          <m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape">
-            <m:oMath>
-              <m:sSubSup>
-                <m:sSubSupPr>
-                  <m:ctrlPr>
-                    <w:rPr>
-                      <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
-                      <w:i/>
-                    </w:rPr>
-                  </m:ctrlPr>
-                </m:sSubSupPr>
-                <m:e>
-                  <m:r>
-                    <m:t>m</m:t>
-                  </m:r>
-                </m:e>
-                <m:sub>
-                  <m:r>
-                    <m:t>d</m:t>
-                  </m:r>
-                </m:sub>
-                <m:sup>
-                  <m:r>
-                    <m:t>3</m:t>
-                  </m:r>
-                </m:sup>
-              </m:sSubSup>
-              <m:sSub>
-                <m:sSubPr>
-                  <m:ctrlPr>
-                    <w:rPr>
-                      <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
-                      <w:i/>
-                    </w:rPr>
-                  </m:ctrlPr>
-                </m:sSubPr>
-                <m:e>
-                  <m:r>
-                    <m:t>p</m:t>
-                  </m:r>
-                </m:e>
-                <m:sub>
-                  <m:r>
-                    <m:t>s</m:t>
-                  </m:r>
-                </m:sub>
-              </m:sSub>
-              <m:sSup>
-                <m:sSupPr>
-                  <m:ctrlPr>
-                    <w:rPr>
-                      <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
-                      <w:i/>
-                    </w:rPr>
-                  </m:ctrlPr>
-                </m:sSupPr>
-                <m:e>
-                  <m:r>
-                    <m:t>d</m:t>
-                  </m:r>
-                </m:e>
-                <m:sup>
-                  <m:r>
-                    <m:t>&#x3b8;</m:t>
-                  </m:r>
-                </m:sup>
-              </m:sSup>
-            </m:oMath>
-          </m:oMathPara>
+        <m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape">
+          <m:oMath>
+            <m:limLow>
+              <m:limLowPr>
+                <m:ctrlPr>
+                  <w:rPr>
+                    <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
+                    <w:i/>
+                  </w:rPr>
+                </m:ctrlPr>
+              </m:limLowPr>
+              <m:e>
+                <m:limUpp>
+                  <m:limUppPr>
+                    <m:ctrlPr>
+                      <w:rPr>
+                        <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
+                        <w:i/>
+                      </w:rPr>
+                    </m:ctrlPr>
+                  </m:limUppPr>
+                  <m:e>
+                    <m:r>
+                      <m:t>m</m:t>
+                    </m:r>
+                  </m:e>
+                  <m:lim>
+                    <m:r>
+                      <m:t>3</m:t>
+                    </m:r>
+                  </m:lim>
+                </m:limUpp>
+              </m:e>
+              <m:lim>
+                <m:r>
+                  <m:t>d</m:t>
+                </m:r>
+              </m:lim>
+            </m:limLow>
+            <m:limLow>
+              <m:limLowPr>
+                <m:ctrlPr>
+                  <w:rPr>
+                    <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
+                    <w:i/>
+                  </w:rPr>
+                </m:ctrlPr>
+              </m:limLowPr>
+              <m:e>
+                <m:r>
+                  <m:t>p</m:t>
+                </m:r>
+              </m:e>
+              <m:lim>
+                <m:r>
+                  <m:t>s</m:t>
+                </m:r>
+              </m:lim>
+            </m:limLow>
+            <m:limUpp>
+              <m:limUppPr>
+                <m:ctrlPr>
+                  <w:rPr>
+                    <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
+                    <w:i/>
+                  </w:rPr>
+                </m:ctrlPr>
+              </m:limUppPr>
+              <m:e>
+                <m:r>
+                  <m:t>d</m:t>
+                </m:r>
+              </m:e>
+              <m:lim>
+                <m:r>
+                  <m:t>&#x3b8;</m:t>
+                </m:r>
+              </m:lim>
+            </m:limUpp>
+          </m:oMath>
+        </m:oMathPara>
         OMML
       end
 

@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "plurimath/xml_engine"
-require "plurimath/xml_engine/ox_engine/element"
 require "ox"
 Ox.default_options = { encoding: "UTF-8" }
 
@@ -34,6 +32,8 @@ module Plurimath
           root
         end
       end
+
+      autoload :Element, "#{__dir__}/ox_engine/element"
     end
   end
 end

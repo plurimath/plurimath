@@ -31,20 +31,16 @@ RSpec.describe Plurimath::Math::Formula do
                   <mstyle mathvariant="normal">
                     <mi>A</mi>
                   </mstyle>
-                  <Unit xmlns="https://schema.unitsml.org/unitsml/1.0" id="U_C3.A" dimensionURL="#D_M3I4">
-                    <UnitSystem name="SI" type="SI_derived" lang="en-US"/>
+                  <Unit xmlns="https://schema.unitsml.org/unitsml/1.0" dimensionURL="#D_M3I4" id="U_C3.A">
+                    <UnitSystem name="SI" type="SI_derived" lang="en"/>
                     <UnitName lang="en">C^3*A</UnitName>
                     <UnitSymbol type="HTML">C
                       <sup>3</sup>XA</UnitSymbol>
                     <UnitSymbol type="MathMl">
-                      <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+                      <math xmlns="http://www.w3.org/1998/Math/MathML" display="block" displaystyle="true">
                         <msup>
-                          <mrow>
-                            <mi mathvariant="normal">C</mi>
-                          </mrow>
-                          <mrow>
-                            <mn>3</mn>
-                          </mrow>
+                          <mi mathvariant="normal">C</mi>
+                          <mn>3</mn>
                         </msup>
                         <mo>X</mo>
                         <mi mathvariant="normal">A</mi>
@@ -97,20 +93,16 @@ RSpec.describe Plurimath::Math::Formula do
                   <mstyle mathvariant="normal">
                     <mi>A</mi>
                   </mstyle>
-                  <Unit xmlns="https://schema.unitsml.org/unitsml/1.0" id="U_C3.A" dimensionURL="#D_M3I4">
-                    <UnitSystem name="SI" type="SI_derived" lang="en-US"/>
+                  <Unit xmlns="https://schema.unitsml.org/unitsml/1.0" dimensionURL="#D_M3I4" id="U_C3.A">
+                    <UnitSystem name="SI" type="SI_derived" lang="en"/>
                     <UnitName lang="en">C^3*A</UnitName>
                     <UnitSymbol type="HTML">C
                       <sup>3</sup>⋅A</UnitSymbol>
                     <UnitSymbol type="MathMl">
-                      <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+                      <math xmlns="http://www.w3.org/1998/Math/MathML" display="block" displaystyle="true">
                         <msup>
-                          <mrow>
-                            <mi mathvariant="normal">C</mi>
-                          </mrow>
-                          <mrow>
-                            <mn>3</mn>
-                          </mrow>
+                          <mi mathvariant="normal">C</mi>
+                          <mn>3</mn>
                         </msup>
                         <mo>⋅</mo>
                         <mi mathvariant="normal">A</mi>
@@ -139,20 +131,16 @@ RSpec.describe Plurimath::Math::Formula do
                   <mstyle mathvariant="normal">
                     <mi>m</mi>
                   </mstyle>
-                  <Unit xmlns="https://schema.unitsml.org/unitsml/1.0" id="U_C2.m" dimensionURL="#D_LM2I2">
-                    <UnitSystem name="SI" type="SI_derived" lang="en-US"/>
+                  <Unit xmlns="https://schema.unitsml.org/unitsml/1.0" dimensionURL="#D_LM2I2" id="U_C2.m">
+                    <UnitSystem name="SI" type="SI_derived" lang="en"/>
                     <UnitName lang="en">C^2*m</UnitName>
                     <UnitSymbol type="HTML">C
                       <sup>2</sup>⋅m</UnitSymbol>
                     <UnitSymbol type="MathMl">
-                      <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+                      <math xmlns="http://www.w3.org/1998/Math/MathML" display="block" displaystyle="true">
                         <msup>
-                          <mrow>
-                            <mi mathvariant="normal">C</mi>
-                          </mrow>
-                          <mrow>
-                            <mn>2</mn>
-                          </mrow>
+                          <mi mathvariant="normal">C</mi>
+                          <mn>2</mn>
                         </msup>
                         <mo>⋅</mo>
                         <mi mathvariant="normal">m</mi>

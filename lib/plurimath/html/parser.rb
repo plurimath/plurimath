@@ -2,9 +2,6 @@
 
 require "json"
 require "cgi"
-require_relative "parse"
-require_relative "constants"
-require_relative "transform"
 module Plurimath
   class Html
     class Parser

@@ -25,10 +25,10 @@ RSpec.configure do |config|
 
   config.around(:each) do |example|
     Plurimath.xml_engine = Plurimath::XmlEngine::OxEngine
-    Mml::Configuration.adapter = :ox
+    Mml::V4::Configuration.adapter = :ox
     example.run
     Plurimath.xml_engine = Plurimath::XmlEngine::Oga
-    Mml::Configuration.adapter = :oga
+    Mml::V4::Configuration.adapter = :oga
     example.run
   end
 
