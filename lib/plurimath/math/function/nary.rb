@@ -135,6 +135,10 @@ module Plurimath
           end
         end
 
+        def is_nary_function?
+          true
+        end
+
         protected
 
         def chr_value(narypr, options:)

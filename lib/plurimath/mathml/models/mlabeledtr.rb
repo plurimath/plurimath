@@ -10,7 +10,8 @@ module Plurimath
           cells = ordered_children.filter_map do |child|
             child.to_plurimath if child.respond_to?(:to_plurimath)
           end
-          Math::Function::Mlabeledtr.new(cells)
+          label = id ? Math::Function::Text.new(id) : nil
+          Math::Function::Mlabeledtr.new(cells, label)
         end
       end
       Models.register_model(Mlabeledtr, id: :mlabeledtr)

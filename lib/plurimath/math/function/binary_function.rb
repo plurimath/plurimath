@@ -57,11 +57,11 @@ module Plurimath
         end
 
         def any_value_exist?
-          !(parameter_one.nil? || parameter_two.nil?)
+          (parameter_one || parameter_two)
         end
 
         def all_values_exist?
-          !(parameter_one.nil? && parameter_two.nil?)
+          (parameter_one && parameter_two)
         end
 
         def to_asciimath_math_zone(spacing, last = false, _, options:)

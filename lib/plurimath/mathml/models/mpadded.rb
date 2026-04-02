@@ -8,10 +8,10 @@ module Plurimath
 
         def to_plurimath
           children = children_to_plurimath
-          opts = extract_options(%i[height depth width lspace voffset])
+          opts = extract_options(%i[height depth width])
           Math::Function::Mpadded.new(
             wrap_children(children),
-            opts,
+            opts || {},
           )
         end
       end

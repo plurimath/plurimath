@@ -7,10 +7,11 @@ module Plurimath
         include OrderedChildren
 
         def to_plurimath
-          instance = resolve_symbol(value, self)
+          val = value.is_a?(Array) ? value.join : value
+          instance = resolve_symbol(val, self)
 
           # Handle empty Mo with attributes (e.g., <mo rspace="-0.35em"/>)
-          if instance.nil? && value.nil?
+          if instance.nil? && val.nil?
             instance = Math::Symbols::Symbol.new(nil)
             opts = build_symbol_options(self)
             instance.options = opts if opts&.any?

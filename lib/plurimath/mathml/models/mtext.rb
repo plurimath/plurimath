@@ -8,7 +8,7 @@ module Plurimath
 
         def to_plurimath
           text_obj = Math::Function::Text.new
-          text_obj.value = value
+          text_obj.value = Array(value).join
           text_obj
         end
       end

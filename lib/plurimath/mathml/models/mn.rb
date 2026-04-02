@@ -7,7 +7,7 @@ module Plurimath
         include OrderedChildren
 
         def to_plurimath
-          Math::Number.new(value)
+          Math::Number.new(Array(value).join)
         end
       end
       Models.register_model(Mn, id: :mn)
