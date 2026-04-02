@@ -21,6 +21,9 @@ module Plurimath
           # Fill parameter_three for ternary functions (Sum, Int, etc.)
           fill_ternary_third_values(mrow.value)
 
+          # After filling, mrow may now have a single child — unwrap
+          return mrow.value.first if mrow.value.length == 1
+
           # Wrap with Intent if intent attribute is present
           if intent && !intent.empty?
             content = mrow.is_a?(Math::Formula) ? mrow : Math::Formula.new([mrow])

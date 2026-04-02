@@ -7,8 +7,9 @@ module Plurimath
         include OrderedChildren
 
         def to_plurimath
-          children = children_to_plurimath
-          Math::Function::Stackrel.new(wrap_children(children))
+          Math::Function::Stackrel.new(
+            wrap_children(children_to_plurimath),
+          )
         end
       end
       Models.register_model(Mstack, id: :mstack)

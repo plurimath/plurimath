@@ -1838,30 +1838,26 @@ RSpec.describe Plurimath::Mathml::Parser do
 
     it "returns formula with Delta, fraction, and centered dot symbols from the mathml equation" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Formula::Mstyle.new([
-          Plurimath::Math::Function::FontStyle::Normal.new(
-            Plurimath::Math::Formula.new([
-              Plurimath::Math::Symbols::UpcaseDelta.new,
-              Plurimath::Math::Symbols::Symbol.new("A"),
-            ]),
-            "normal",
-          )
-        ]),
+        Plurimath::Math::Function::FontStyle::Normal.new(
+          Plurimath::Math::Formula.new([
+            Plurimath::Math::Symbols::UpcaseDelta.new,
+            Plurimath::Math::Symbols::Symbol.new("A"),
+          ]),
+          "normal",
+        ),
         Plurimath::Math::Symbols::Equal.new,
-        Plurimath::Math::Formula::Mstyle.new([
-          Plurimath::Math::Function::FontStyle::Normal.new(
-            Plurimath::Math::Function::Frac.new(
-              Plurimath::Math::Symbols::Symbol.new("b"),
-              Plurimath::Math::Formula.new([
-                Plurimath::Math::Number.new("2"),
-                Plurimath::Math::Symbols::Cdot.new,
-                Plurimath::Math::Symbols::Symbol.new("C"),
-                Plurimath::Math::Symbols::Symbol.new("C"),
-              ])
-            ),
-            "normal",
-          )
-        ])
+        Plurimath::Math::Function::FontStyle::Normal.new(
+          Plurimath::Math::Function::Frac.new(
+            Plurimath::Math::Symbols::Symbol.new("b"),
+            Plurimath::Math::Formula.new([
+              Plurimath::Math::Number.new("2"),
+              Plurimath::Math::Symbols::Cdot.new,
+              Plurimath::Math::Symbols::Symbol.new("C"),
+              Plurimath::Math::Symbols::Symbol.new("C"),
+            ])
+          ),
+          "normal",
+        )
       ])
       expect(formula).to eq(expected_value)
     end
@@ -1955,24 +1951,22 @@ RSpec.describe Plurimath::Mathml::Parser do
 
     it "returns formula subscripted DDCX term, Delta symbols, and prime notation" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Formula::Mstyle.new([
-          Plurimath::Math::Function::FontStyle::Normal.new(
-            Plurimath::Math::Formula.new([
-              Plurimath::Math::Symbols::Symbol.new("t"),
-              Plurimath::Math::Symbols::Symbol.new("g"),
-              Plurimath::Math::Symbols::Symbol.new("t"),
-              Plurimath::Math::Function::Base.new(
-                Plurimath::Math::Symbols::Sprime.new,
-                Plurimath::Math::Formula.new([
-                  Plurimath::Math::Symbols::Symbol.new("D"),
-                  Plurimath::Math::Symbols::Symbol.new("C"),
-                  Plurimath::Math::Symbols::Symbol.new("X")
-                ]),
-              )
-            ]),
-            "normal"
-          ),
-        ]),
+        Plurimath::Math::Function::FontStyle::Normal.new(
+          Plurimath::Math::Formula.new([
+            Plurimath::Math::Symbols::Symbol.new("t"),
+            Plurimath::Math::Symbols::Symbol.new("g"),
+            Plurimath::Math::Symbols::Symbol.new("t"),
+            Plurimath::Math::Function::Base.new(
+              Plurimath::Math::Symbols::Sprime.new,
+              Plurimath::Math::Formula.new([
+                Plurimath::Math::Symbols::Symbol.new("D"),
+                Plurimath::Math::Symbols::Symbol.new("C"),
+                Plurimath::Math::Symbols::Symbol.new("X")
+              ]),
+            )
+          ]),
+          "normal"
+        ),
         Plurimath::Math::Function::Fenced.new(
           Plurimath::Math::Symbols::Paren::Lround.new,
           [
@@ -1989,23 +1983,21 @@ RSpec.describe Plurimath::Mathml::Parser do
           Plurimath::Math::Symbols::Paren::Rround.new
         ),
         Plurimath::Math::Symbols::Equal.new,
-        Plurimath::Math::Formula::Mstyle.new([
-          Plurimath::Math::Function::FontStyle::Normal.new(
-            Plurimath::Math::Formula.new([
+        Plurimath::Math::Function::FontStyle::Normal.new(
+          Plurimath::Math::Formula.new([
+            Plurimath::Math::Symbols::Symbol.new("t"),
+            Plurimath::Math::Symbols::Symbol.new("g"),
+            Plurimath::Math::Function::Base.new(
               Plurimath::Math::Symbols::Symbol.new("t"),
-              Plurimath::Math::Symbols::Symbol.new("g"),
-              Plurimath::Math::Function::Base.new(
-                Plurimath::Math::Symbols::Symbol.new("t"),
-                Plurimath::Math::Formula.new([
-                  Plurimath::Math::Symbols::Symbol.new("D"),
-                  Plurimath::Math::Symbols::Symbol.new("C"),
-                  Plurimath::Math::Symbols::Symbol.new("X")
-                ])
-              ),
-            ]),
-            "normal",
-          ),
-        ]),
+              Plurimath::Math::Formula.new([
+                Plurimath::Math::Symbols::Symbol.new("D"),
+                Plurimath::Math::Symbols::Symbol.new("C"),
+                Plurimath::Math::Symbols::Symbol.new("X")
+              ])
+            ),
+          ]),
+          "normal",
+        ),
         Plurimath::Math::Function::Fenced.new(
           Plurimath::Math::Symbols::Paren::Lround.new,
           [

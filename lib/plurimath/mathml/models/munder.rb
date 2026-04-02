@@ -12,12 +12,19 @@ module Plurimath
           decoration = children[1]
           opts = accentunder == "true" ? { accentunder: true } : nil
 
-          # Check first element for special handling (Vec or empty ternary)
+          # Vec or empty ternary: fill parameter_one
           if base.is_a?(Math::Function::Vec) ||
              (base.respond_to?(:is_ternary_function?) &&
               base.is_ternary_function? && !base.any_value_exist?)
             base.parameter_one = decoration
             base.attributes = opts if opts && base.respond_to?(:attributes=)
+            return base
+          end
+
+          # Empty binary function (inf, lim, etc.): fill parameter_one
+          if base.respond_to?(:is_binary_function?) &&
+             base.is_binary_function? && !base.any_value_exist?
+            base.parameter_one = decoration
             return base
           end
 
