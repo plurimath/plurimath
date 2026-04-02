@@ -7,8 +7,7 @@ module Plurimath
         include OrderedChildren
 
         def to_plurimath
-          children = children_to_plurimath
-          Math::Function::Longdiv.new(wrap_children(children))
+          Math::Function::Longdiv.new(children_to_plurimath)
         end
       end
       Models.register_model(Mlongdiv, id: :mlongdiv)

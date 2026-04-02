@@ -14,7 +14,7 @@ module Plurimath
               attr_name = "#{entry.name}_value"
               next unless respond_to?(attr_name)
 
-              collection = send(attr_name) || []
+              collection = Array(send(attr_name))
               idx = indices[attr_name]
               if idx < collection.length
                 result << collection[idx]
@@ -31,10 +31,9 @@ module Plurimath
             if child.respond_to?(:to_plurimath)
               child.to_plurimath
             elsif child.is_a?(String)
-              stripped = child.strip
-              next if stripped.empty?
+              next if child.empty?
 
-              resolve_text(stripped)
+              resolve_text(child)
             end
           end
         end
@@ -42,10 +41,10 @@ module Plurimath
         private
 
         def resolve_text(text)
-          return nil if text.nil? || text.strip.empty?
+          return nil if text.nil? || text.empty?
 
           Plurimath::Utility.mathml_unary_classes(
-            [text.strip],
+            [text],
             lang: :mathml,
           )
         end
@@ -60,7 +59,7 @@ module Plurimath
         end
 
         def resolve_symbol(value, mml_node = nil)
-          return nil if value.nil?
+          return nil if value.nil? || value.empty?
 
           instance = Plurimath::Utility.mathml_unary_classes(
             [value],
@@ -88,12 +87,6 @@ module Plurimath
 
         def build_symbol_options(mml_node)
           opts = {}
-          if mml_node.respond_to?(:linebreak) && mml_node.linebreak
-            opts[:linebreak] = mml_node.linebreak
-          end
-          if mml_node.respond_to?(:linebreakstyle) && mml_node.linebreakstyle
-            opts[:linebreakstyle] = mml_node.linebreakstyle
-          end
           if mml_node.respond_to?(:rspace) && mml_node.rspace
             opts[:rspace] = mml_node.rspace
           end
@@ -155,21 +148,48 @@ module Plurimath
         end
 
         def fill_ternary_third_values(values)
-          return unless values.is_a?(Array)
+          return unless values.is_a?(Array) && values.length > 1
 
-          i = 0
-          while i < values.length
-            el = values[i]
-            # Only fill p3 for nary-type ternary functions (Sum, Int, Prod, etc.)
-            if el.respond_to?(:is_nary_function?) &&
-               el.is_nary_function? &&
-               el.parameter_three.nil? &&
-               !el.parameter_one.nil? &&
-               values[i + 1]
-              el.parameter_three = values.delete_at(i + 1)
+          first = values.first
+          if first.is_a?(Math::Function::Nary)
+            first.parameter_four ||= values.delete_at(1)
+          elsif first.respond_to?(:is_nary_function?) && first.is_nary_function? &&
+                !first.all_values_exist?
+            if first.respond_to?(:new_nary_function) && !first.any_value_exist?
+              values[0] = first.new_nary_function(values.delete_at(1))
+            elsif first.any_value_exist?
+              first.parameter_three = values.delete_at(1)
             end
-            i += 1
+          elsif value_is_ternary_or_nary?(values)
+            first.parameter_three = values.delete_at(1)
           end
+        end
+
+        def value_is_ternary_or_nary?(value)
+          return if value.any?(String)
+
+          value.length >= 2 &&
+            value.first.is_ternary_function? &&
+            value.first.parameter_three.nil? &&
+            (!value.first.parameter_one.nil? || !value.first.parameter_two.nil?)
+        end
+
+        def ternary_naryable?(value)
+          value.length == 2 &&
+            value.first.is_a?(Math::Function::PowerBase) &&
+            value.first.parameter_one.is_nary_symbol?
+        end
+
+        def overset_naryable?(value)
+          value.length == 2 &&
+            value.first.is_a?(Math::Function::Overset) &&
+            value.first.parameter_two.is_nary_symbol?
+        end
+
+        def power_naryable?(value)
+          value.length == 2 &&
+            value.first.is_a?(Math::Function::Power) &&
+            value.first.parameter_one.is_nary_symbol?
         end
       end
     end

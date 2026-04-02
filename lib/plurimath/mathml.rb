@@ -6,6 +6,7 @@ module Plurimath
     autoload :Parser, "#{__dir__}/mathml/parser"
     autoload :Utility, "#{__dir__}/mathml/utility"
     autoload :Translator, "#{__dir__}/mathml/translator"
+    autoload :Models, "#{__dir__}/mathml/models"
 
     attr_accessor :text
 
