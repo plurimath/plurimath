@@ -52,4 +52,74 @@ RSpec.describe Plurimath::Math do
       end
     end
   end
+
+  describe ".parse with cache option" do
+    before { Plurimath::Math::FORMULA_CACHE.clear }
+
+    let(:input) { "x + y" }
+    let(:type) { :asciimath }
+
+    context "contains cache option set to true (default)" do
+      it "returns independent formula objects for same input" do
+        f1 = Plurimath::Math.parse(input, type)
+        f2 = Plurimath::Math.parse(input, type)
+        expect(f1).not_to equal(f2)
+        expect(f1).to eq(f2)
+      end
+
+      it "populates the formula cache" do
+        Plurimath::Math.parse(input, type)
+        expect(Plurimath::Math::FORMULA_CACHE[type]).not_to be_empty
+      end
+
+      it "protects cache from mutation by first caller" do
+        f1 = Plurimath::Math.parse("a^2", :latex)
+        f1.value.clear
+        f2 = Plurimath::Math.parse("a^2", :latex)
+        expect(f2.value).not_to be_empty
+      end
+
+      it "protects cache from mutation by cache-hit caller" do
+        Plurimath::Math.parse("a^2", :latex)
+        f2 = Plurimath::Math.parse("a^2", :latex)
+        f2.value.clear
+        f3 = Plurimath::Math.parse("a^2", :latex)
+        expect(f3.value).not_to be_empty
+      end
+    end
+
+    context "contains cache option set to false" do
+      it "returns independent formula objects for same input" do
+        f1 = Plurimath::Math.parse(input, type, cache: false)
+        f2 = Plurimath::Math.parse(input, type, cache: false)
+        expect(f1).not_to equal(f2)
+        expect(f1).to eq(f2)
+      end
+
+      it "does not populate the formula cache" do
+        Plurimath::Math.parse(input, type, cache: false)
+        expect(Plurimath::Math::FORMULA_CACHE[type]).to be_empty
+      end
+    end
+  end
+
+  describe ".clear_cache!" do
+    before { Plurimath::Math::FORMULA_CACHE.clear }
+
+    it "empties the formula cache" do
+      Plurimath::Math.parse("x + y", :asciimath)
+      expect(Plurimath::Math::FORMULA_CACHE).not_to be_empty
+
+      Plurimath::Math.clear_cache!
+      expect(Plurimath::Math::FORMULA_CACHE).to be_empty
+    end
+
+    it "forces re-parsing after cache is cleared" do
+      f1 = Plurimath::Math.parse("a^2", :latex)
+      Plurimath::Math.clear_cache!
+      f2 = Plurimath::Math.parse("a^2", :latex)
+      expect(f1).not_to equal(f2)
+      expect(f1).to eq(f2)
+    end
+  end
 end
