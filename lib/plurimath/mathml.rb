@@ -5,6 +5,7 @@ module Plurimath
     autoload :Constants, "#{__dir__}/mathml/constants"
     autoload :Parser, "#{__dir__}/mathml/parser"
     autoload :Utility, "#{__dir__}/mathml/utility"
+    autoload :Models, "#{__dir__}/mathml/models"
 
     attr_accessor :text
 

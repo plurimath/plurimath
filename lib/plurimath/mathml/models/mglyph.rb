@@ -7,7 +7,8 @@ module Plurimath
         include OrderedChildren
 
         def to_plurimath
-          Math::Function::Mglyph.new
+          opts = extract_options(%i[alt src index width height valign])
+          Math::Function::Mglyph.new(opts || {})
         end
       end
       Models.register_model(Mglyph, id: :mglyph)

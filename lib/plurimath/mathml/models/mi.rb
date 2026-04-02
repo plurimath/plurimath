@@ -7,7 +7,7 @@ module Plurimath
         include OrderedChildren
 
         def to_plurimath
-          resolve_symbol(value, self)
+          resolve_symbol(Array(value).join, self)
         end
       end
       Models.register_model(Mi, id: :mi)
