@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "htmlentities"
-
 module Plurimath
   class Utility
     autoload :IntentEncoding, "#{__dir__}/utility/intent_encoding"

@@ -57,11 +57,11 @@ module Plurimath
         end
 
         def any_value_exist?
-          !(parameter_one.nil? || parameter_two.nil?)
+          (parameter_one || parameter_two)
         end
 
         def all_values_exist?
-          !(parameter_one.nil? && parameter_two.nil?)
+          (parameter_one && parameter_two)
         end
 
         def to_asciimath_math_zone(spacing, last = false, _, options:)
@@ -127,7 +127,7 @@ module Plurimath
         end
 
         def underover(display_style, options:)
-          return r_element(class_name, rpr_tag: false) unless all_values_exist?
+          return r_element(class_name, rpr_tag: false) unless any_value_exist?
 
           first_value = Symbols::Symbol.new(class_name)
           if !display_style

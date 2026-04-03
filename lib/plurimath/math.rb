@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+autoload :Parslet, "parslet"
+autoload :HTMLEntities, "htmlentities"
 module Plurimath
   module Math
     autoload :Core, "#{__dir__}/math/core"

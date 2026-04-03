@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require "parslet"
 module Plurimath
   class Omml
     class Transform < Parslet::Transform
