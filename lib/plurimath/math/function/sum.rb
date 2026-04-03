@@ -40,7 +40,7 @@ module Plurimath
         def to_mathml_without_math_tag(intent, options:)
           first_value = ox_element("mo")
           first_value << invert_unicode_symbols.to_s unless hide_function_name
-          return first_value unless all_values_exist?
+          return first_value unless any_value_exist?
 
           munderover_tag = Utility.update_nodes(
             sum_tag,
@@ -77,7 +77,7 @@ module Plurimath
         end
 
         def to_omml_without_math_tag(display_style, options:)
-          return r_element("&#x2211;", rpr_tag: false) unless all_values_exist?
+          return r_element("&#x2211;", rpr_tag: false) unless any_value_exist?
 
           nary = Utility.ox_element("nary", namespace: "m")
           Utility.update_nodes(
