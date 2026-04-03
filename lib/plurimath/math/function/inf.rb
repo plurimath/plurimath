@@ -19,7 +19,7 @@ module Plurimath
 
         def to_mathml_without_math_tag(intent, options:)
           first_value = Utility.ox_element("mo") << class_name
-          return first_value unless all_values_exist?
+          return first_value unless any_value_exist?
 
           tag_name = if parameter_two && parameter_one
                        "underover"
