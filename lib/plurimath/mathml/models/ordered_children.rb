@@ -40,6 +40,14 @@ module Plurimath
 
         private
 
+        def boolean_to_displaystyle(value)
+          case value
+          when "true", true then true
+          when "false", false then false
+          else true
+          end
+        end
+
         def resolve_text(text)
           return nil if text.nil? || text.empty?
 
