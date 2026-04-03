@@ -141,6 +141,8 @@ module Plurimath
         "&#x23df;": "ubrace",
         "&#x2192;": "vec",
         "&#x302;": "hat",
+        "&#x305;": "bar",
+        "&#x20e1;": "vec",
         "&#x332;": "ul",
         "&#xaf;": "bar",
         "&#x26;": "&",
