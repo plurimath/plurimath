@@ -30,7 +30,7 @@ module Plurimath
         end
 
         def to_omml_without_math_tag(display_style, options:)
-          return r_element("log", rpr_tag: false) unless all_values_exist?
+          return r_element("log", rpr_tag: false) unless any_value_exist?
 
           ssubsup   = Utility.ox_element("sSubSup", namespace: "m")
           ssubsuppr = Utility.ox_element("sSubSupPr", namespace: "m")
