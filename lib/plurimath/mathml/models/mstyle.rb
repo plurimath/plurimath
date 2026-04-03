@@ -28,7 +28,7 @@ module Plurimath
           return content if has_color
 
           fill_ternary_third_values(children)
-          Math::Formula::Mstyle.new(children)
+          Math::Formula::Mstyle.new(children, display_style: boolean_to_displaystyle(displaystyle))
         end
       end
       Models.register_model(Mstyle, id: :mstyle)

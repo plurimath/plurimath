@@ -10,14 +10,15 @@ module Plurimath
           children = children_to_plurimath
           base = children[0]
           decoration = children[1]
-          opts = accentunder == "true" ? { accentunder: true } : nil
+          opts = {}
+          opts[:accentunder] = true if accentunder == "true"
 
           # Vec or empty ternary: fill parameter_one
           if base.is_a?(Math::Function::Vec) ||
              (base.respond_to?(:is_ternary_function?) &&
               base.is_ternary_function? && !base.any_value_exist?)
             base.parameter_one = decoration
-            base.attributes = opts if opts && base.respond_to?(:attributes=)
+            base.attributes = opts if base.respond_to?(:attributes=)
             return base
           end
 
@@ -35,7 +36,7 @@ module Plurimath
           when "bar"
             Math::Function::Ul.new(base, opts)
           else
-            Math::Function::Underset.new(decoration, base, options: opts)
+            Math::Function::Underset.new(decoration, base, opts)
           end
         end
       end
