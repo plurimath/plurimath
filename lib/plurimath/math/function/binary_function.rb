@@ -127,7 +127,7 @@ module Plurimath
         end
 
         def underover(display_style, options:)
-          return r_element(class_name, rpr_tag: false) unless all_values_exist?
+          return r_element(class_name, rpr_tag: false) unless any_value_exist?
 
           first_value = Symbols::Symbol.new(class_name)
           if !display_style

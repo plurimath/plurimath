@@ -1715,11 +1715,9 @@ RSpec.describe Plurimath::Mathml do
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
               <munder>
-                <mrow>
-                  <mstyle mathvariant="italic">
-                    <mi>B</mi>
-                  </mstyle>
-                </mrow>
+                <mstyle mathvariant="italic">
+                  <mi>B</mi>
+                </mstyle>
                 <mo>&#x332;</mo>
               </munder>
               <mo>=</mo>
@@ -1761,32 +1759,24 @@ RSpec.describe Plurimath::Mathml do
                   </mtr>
                   <mtr>
                     <mtd>
-                      <mrow>
-                        <mstyle mathcolor="red">
-                          <mn>1</mn>
-                        </mstyle>
-                      </mrow>
+                      <mstyle mathcolor="red">
+                        <mn>1</mn>
+                      </mstyle>
                     </mtd>
                     <mtd>
-                      <mrow>
-                        <mstyle mathcolor="red">
-                          <mn>3</mn>
-                        </mstyle>
-                      </mrow>
+                      <mstyle mathcolor="red">
+                        <mn>3</mn>
+                      </mstyle>
                     </mtd>
                     <mtd>
-                      <mrow>
-                        <mstyle mathcolor="red">
-                          <mn>3</mn>
-                        </mstyle>
-                      </mrow>
+                      <mstyle mathcolor="red">
+                        <mn>3</mn>
+                      </mstyle>
                     </mtd>
                     <mtd>
-                      <mrow>
-                        <mstyle mathcolor="red">
-                          <mn>1</mn>
-                        </mstyle>
-                      </mrow>
+                      <mstyle mathcolor="red">
+                        <mn>1</mn>
+                      </mstyle>
                     </mtd>
                     <mtd/>
                   </mtr>

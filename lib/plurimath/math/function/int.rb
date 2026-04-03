@@ -39,7 +39,7 @@ module Plurimath
 
         def to_mathml_without_math_tag(intent, options:)
           base_element = (Utility.ox_element("mo") << invert_unicode_symbols.to_s)
-          return base_element unless all_values_exist?
+          return base_element unless any_value_exist?
 
           msubsup_tag = Utility.ox_element("msubsup")
           Utility.update_nodes(
@@ -65,7 +65,7 @@ module Plurimath
         end
 
         def to_omml_without_math_tag(display_style, options:)
-          if all_values_exist?
+          if any_value_exist?
             nary = Utility.ox_element("nary", namespace: "m")
             Utility.update_nodes(nary, nary_array(display_style, options: options))
             [nary]
