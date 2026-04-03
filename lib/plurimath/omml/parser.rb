@@ -51,12 +51,16 @@ module Plurimath
           if node.is_a?(String)
             node == "​" ? nil : node
           elsif !node.attributes.empty?
-            {
-              node.name => {
-                attributes: node.attributes,
-                value: parse_nodes(node.nodes),
-              },
-            }
+            if node.attributes.key?("val")
+              { node.name => node.attributes["val"] }
+            else
+              {
+                node.name => {
+                  attributes: node.attributes,
+                  value: parse_nodes(node.nodes),
+                },
+              }
+            end
           else
             customize_tags(node) if CUSTOMIZABLE_TAGS.include?(node.name)
             { node.name => parse_nodes(node.nodes) }
