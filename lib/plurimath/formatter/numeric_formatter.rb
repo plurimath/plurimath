@@ -78,7 +78,10 @@ module Plurimath
       end
 
       def notation_chars(num_str)
-        notation_array = BigDecimal(num_str).to_s("e").split("e")
+        bd = BigDecimal(num_str)
+        return [num_str, 0] if bd.zero?
+
+        notation_array = bd.to_s("e").split("e")
         notation_array[1] = update_exponent_value(notation_array[1])
         number_str = notation_array[0]
         number_str = number_str.gsub(/0\.(\d)/, '\1.')
