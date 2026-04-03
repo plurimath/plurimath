@@ -110,8 +110,10 @@ module Plurimath
 
       rule(dPr: subtree(:dpr)) do
         flatten_dpr = dpr.flatten.compact
-        open_paren  = Utility.string_to_html_entity(flatten_dpr.find { |hash| hash[:begChr] }&.values&.first)
-        close_paren = Utility.string_to_html_entity(flatten_dpr.find { |hash| hash[:endChr] }&.values&.first)
+        beg_entry = flatten_dpr.find { |hash| hash[:begChr] }
+        end_entry = flatten_dpr.find { |hash| hash[:endChr] }
+        open_paren  = Utility.string_to_html_entity(beg_entry ? beg_entry.values.first : "(")
+        close_paren = Utility.string_to_html_entity(end_entry ? end_entry.values.first : ")")
         sep_chr     = flatten_dpr.find { |hash| hash[:sepChr] }
         open_paren_object = Utility.symbol_object(open_paren, lang: :omml) if open_paren && !open_paren.empty?
         close_paren_object = Utility.symbol_object(close_paren, lang: :omml) if close_paren && !close_paren.empty?
