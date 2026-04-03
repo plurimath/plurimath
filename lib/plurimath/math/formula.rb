@@ -54,6 +54,7 @@ module Plurimath
 
       def to_asciimath(formatter: nil, unitsml: {}, options: nil)
         options ||= { formatter: formatter, unitsml: unitsml }.compact
+        options[:formula] ||= self
         output = value.map do |val|
           val.to_asciimath(options: asciimath_table_options(options, val))
         end.join(" ")
@@ -74,6 +75,7 @@ module Plurimath
           unitsml: unitsml,
           unary_function_spacing: unary_function_spacing
         }.compact
+        options[:formula] ||= self
         return line_breaked_mathml(display_style, intent, options: options) if split_on_linebreak
 
         math_attrs = {
@@ -119,6 +121,7 @@ module Plurimath
 
       def to_latex(formatter: nil, unitsml: {}, options: nil)
         options ||= { formatter: formatter, unitsml: unitsml }.compact
+        options[:formula] ||= self
         value.map { |val| val.to_latex(options: options) }.join(" ")
       rescue
         parse_error!(:latex)
@@ -126,6 +129,7 @@ module Plurimath
 
       def to_html(formatter: nil, unitsml: {}, options: nil)
         options ||= { formatter: formatter, unitsml: unitsml }.compact
+        options[:formula] ||= self
         value&.map { |val| val.to_html(options: options) }&.join(" ")
       rescue
         parse_error!(:html)
@@ -134,6 +138,7 @@ module Plurimath
       def to_omml(display_style: displaystyle, split_on_linebreak: false, formatter: nil, unitsml: {})
         objects = split_on_linebreak ? new_line_support : [self]
         options = { formatter: formatter, unitsml: unitsml }.compact
+        options[:formula] ||= self
         para_element = Utility.ox_element("oMathPara", attributes: OMML_NAMESPACES, namespace: "m")
         objects.each.with_index(1) do |object, index|
           para_element << Utility.update_nodes(
@@ -159,6 +164,7 @@ module Plurimath
 
       def to_unicodemath(formatter: nil, unitsml: {}, options: nil)
         options ||= { formatter: formatter, unitsml: unitsml }.compact
+        options[:formula] ||= self
         Utility.html_entity_to_unicode(unicodemath_value(options: options)).gsub(/\s\/\s/, "/")
       rescue
         parse_error!(:unicodemath)
@@ -170,6 +176,7 @@ module Plurimath
           unitsml: unitsml,
           unary_function_spacing: unary_function_spacing
         }
+        options[:formula] ||= self
         return type_error!(type) unless MATH_ZONE_TYPES.include?(type.downcase.to_sym)
 
         math_zone = case type

@@ -1292,6 +1292,106 @@ RSpec.describe Plurimath::Math::Formula do
       end
     end
   end
+
+  context "contextual number formatting (issue #294)" do
+    let(:exp) do
+      [
+        Plurimath::Math::Number.new("2024"),
+        Plurimath::Math::Symbols::Symbol.new("+"),
+        Plurimath::Math::Number.new("1000000"),
+      ]
+    end
+    let(:formula_obj) { described_class.new(exp) }
+
+    describe "formatter receives formula and number node" do
+      let(:received_formula) { [] }
+      let(:received_numbers) { [] }
+      let(:spy) do
+        SpyFormatter.new(
+          on_format: proc { |formula, number|
+            received_formula << formula
+            received_numbers << number
+          }
+        )
+      end
+
+      it "passes the root formula and number nodes to format" do
+        formula_obj.to_latex(formatter: spy)
+
+        expect(received_formula.first).to be_a(Plurimath::Math::Formula)
+        expect(received_formula.first).to eq(formula_obj)
+        expect(received_numbers.first).to be_a(Plurimath::Math::Number)
+        expect(received_numbers.first.value).to eq("2024")
+        expect(received_numbers[1].value).to eq("1000000")
+      end
+
+      it "passes the formula via to_latex" do
+        formula_obj.to_latex(formatter: spy)
+        expect(received_formula.first).to eq(formula_obj)
+      end
+
+      it "passes the formula via to_asciimath" do
+        formula_obj.to_asciimath(formatter: spy)
+        expect(received_formula.first).to eq(formula_obj)
+      end
+
+      it "passes the formula via to_html" do
+        formula_obj.to_html(formatter: spy)
+        expect(received_formula.first).to eq(formula_obj)
+      end
+
+      it "passes the formula via to_unicodemath" do
+        formula_obj.to_unicodemath(formatter: spy)
+        expect(received_formula.first).to eq(formula_obj)
+      end
+
+      it "passes the formula via to_mathml" do
+        formula_obj.to_mathml(formatter: spy)
+        expect(received_formula.first).to eq(formula_obj)
+      end
+
+      it "passes the formula via to_omml" do
+        formula_obj.to_omml(formatter: spy)
+        expect(received_formula.first).to eq(formula_obj)
+      end
+    end
+
+    describe "year formatter example from issue #294" do
+      let(:year_formatter) { YearFormatter.new }
+
+      it "skips formatting for year-like numbers" do
+        result = formula_obj.to_latex(formatter: year_formatter)
+        expect(result).to eq("2024 + 1,000,000")
+      end
+
+      it "formats all numbers when none are years" do
+        non_year_exp = [
+          Plurimath::Math::Number.new("50000"),
+          Plurimath::Math::Symbols::Symbol.new("+"),
+          Plurimath::Math::Number.new("1000000"),
+        ]
+        formula_obj = described_class.new(non_year_exp)
+        result = formula_obj.to_latex(formatter: year_formatter)
+        expect(result).to eq("50,000 + 1,000,000")
+      end
+
+      it "handles boundary values correctly" do
+        { "1800" => "1,800", "1801" => "1801", "2199" => "2199", "2200" => "2,200" }.each do |input, expected|
+          formula_obj = described_class.new([Plurimath::Math::Number.new(input)])
+          result = formula_obj.to_latex(formatter: year_formatter)
+          expect(result).to eq(expected), "Expected #{input} -> #{expected}, got #{result}"
+        end
+      end
+    end
+
+    describe "default formatter backward compatibility" do
+      it "formats numbers using localized_number when format is not defined" do
+        formatter = Plurimath::Formatter::Standard.new
+        result = formula_obj.to_latex(formatter: formatter)
+        expect(result).to eq("2,024 + 1,000,000")
+      end
+    end
+  end
 end
 
 class CustomFormatter < Plurimath::Formatter::Standard
@@ -1302,4 +1402,27 @@ class CustomFormatter < Plurimath::Formatter::Standard
     decimal: "^",
     group: ">",
   }.freeze
+end
+
+class YearFormatter < Plurimath::Formatter::Standard
+  def format(formula, number)
+    int_value = Integer(number.value, exception: false)
+    if int_value && int_value > 1800 && int_value < 2200
+      number.value.to_s
+    else
+      localized_number(number.value.to_s)
+    end
+  end
+end
+
+class SpyFormatter < Plurimath::Formatter::Standard
+  def initialize(on_format: nil)
+    super()
+    @on_format = on_format
+  end
+
+  def format(formula, number)
+    @on_format&.call(formula, number)
+    localized_number(number.value.to_s)
+  end
 end
