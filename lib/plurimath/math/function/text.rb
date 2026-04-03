@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "htmlentities"
-
 module Plurimath
   module Math
     module Function
