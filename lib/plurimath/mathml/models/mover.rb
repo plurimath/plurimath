@@ -10,7 +10,8 @@ module Plurimath
           children = children_to_plurimath
           base = filter_child(children[0])
           decoration = filter_child(children[1])
-          opts = accent == "true" ? { accent: true } : nil
+          opts = {}
+          opts[:accent] = true if accent == "true"
 
           case decoration&.class_name
           when "obrace", "ubrace"
@@ -18,28 +19,28 @@ module Plurimath
             decoration
           when "hat", "ddot"
             decoration.parameter_one = base
-            decoration.attributes = opts if opts && decoration.respond_to?(:attributes=)
+            decoration.attributes = opts if decoration.respond_to?(:attributes=)
             decoration
           when "period", "dot"
             new_el = decoration.is_a?(Math::Symbols::Period) ? Math::Function::Dot.new : decoration
             new_el.parameter_one = base
-            new_el.attributes = opts if opts && new_el.respond_to?(:attributes=)
+            new_el.attributes = opts if new_el.respond_to?(:attributes=)
             new_el
           when "bar"
             decoration.parameter_one = base
             decoration
           when "vec"
             decoration.parameter_one = base
-            decoration.attributes = opts if opts && decoration.respond_to?(:attributes=)
+            decoration.attributes = opts if decoration.respond_to?(:attributes=)
             decoration
           when "ul", "underline"
             Math::Function::Bar.new(base, opts)
           when "tilde"
             decoration.parameter_one = base
-            decoration.attributes = opts if opts && decoration.respond_to?(:attributes=)
+            decoration.attributes = opts if decoration.respond_to?(:attributes=)
             decoration
           else
-            Math::Function::Overset.new(decoration, base, options: opts)
+            Math::Function::Overset.new(decoration, base, opts)
           end
         end
       end

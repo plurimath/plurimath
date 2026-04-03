@@ -9,7 +9,7 @@ module Plurimath
 
       def initialize(text)
         text = pre_processing(text)
-        @text = HTMLEntities.new.encode(text, :hexadecimal)
+        @text = ::HTMLEntities.new.encode(text, :hexadecimal)
         @text = @text.gsub("&#x26;", "&")
         @text = @text.gsub("&#x22;", "\"")
         @text = @text.gsub(/&#x2af7;.*&#x2af8;/, "")
