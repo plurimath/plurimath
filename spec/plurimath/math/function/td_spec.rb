@@ -71,7 +71,7 @@ RSpec.describe Plurimath::Math::Function::Td do
             <mi>n</mi>
           </mtd>
         MATHML
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -84,7 +84,7 @@ RSpec.describe Plurimath::Math::Function::Td do
             <mn>70</mn>
           </mtd>
         MATHML
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -110,7 +110,7 @@ RSpec.describe Plurimath::Math::Function::Td do
             </mrow>
           </mtd>
         MATHML
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
   end

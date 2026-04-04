@@ -71,7 +71,7 @@ RSpec.describe Plurimath::Math::Function::Color do
             <mi>n</mi>
           </mstyle>
         MATHML
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -85,7 +85,7 @@ RSpec.describe Plurimath::Math::Function::Color do
             <mn>70</mn>
           </mstyle>
         MATHML
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -111,7 +111,7 @@ RSpec.describe Plurimath::Math::Function::Color do
             </mrow>
           </mstyle>
         MATHML
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
   end

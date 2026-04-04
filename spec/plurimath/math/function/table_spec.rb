@@ -106,7 +106,7 @@ RSpec.describe Plurimath::Math::Function::Table do
             </mtr>
           </mtable>
         MATHML
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -131,7 +131,7 @@ RSpec.describe Plurimath::Math::Function::Table do
             </mtr>
           </mtable>
         MATHML
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -171,7 +171,7 @@ RSpec.describe Plurimath::Math::Function::Table do
             </mtr>
           </mtable>
         MATHML
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
   end
@@ -263,7 +263,7 @@ RSpec.describe Plurimath::Math::Function::Table do
             </tr>
           </table>
         HTML
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -284,7 +284,7 @@ RSpec.describe Plurimath::Math::Function::Table do
             <sup>so</sup>
           </table>
         HTML
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
   end

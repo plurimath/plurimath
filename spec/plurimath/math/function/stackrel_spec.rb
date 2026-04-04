@@ -104,7 +104,7 @@ RSpec.describe Plurimath::Math::Function::Stackrel do
           </mrow>
         </mover>
         MATHML
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -123,7 +123,7 @@ RSpec.describe Plurimath::Math::Function::Stackrel do
             </mrow>
           </mover>
         MATHML
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -168,7 +168,7 @@ RSpec.describe Plurimath::Math::Function::Stackrel do
             </mrow>
           </mover>
         MATHML
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
   end
@@ -240,7 +240,7 @@ RSpec.describe Plurimath::Math::Function::Stackrel do
       end
 
       it "returns mathml string" do
-        expect(formula).to be_equivalent_to("n<i>&prod;</i><sub>&</sub><sup>so</sup>")
+        expect(formula).to be_xml_equivalent_to("n<i>&prod;</i><sub>&</sub><sup>so</sup>")
       end
     end
 
@@ -249,7 +249,7 @@ RSpec.describe Plurimath::Math::Function::Stackrel do
       let(:second_value) { Plurimath::Math::Symbols::Symbol.new("n") }
 
       it "returns html string" do
-        expect(formula).to be_equivalent_to("70n")
+        expect(formula).to be_xml_equivalent_to("70n")
       end
     end
 
@@ -272,7 +272,7 @@ RSpec.describe Plurimath::Math::Function::Stackrel do
       end
 
       it "returns mathml string" do
-        expect(formula).to be_equivalent_to("<i>&sum;</i><sub>&</sub><sup>so</sup><i>&prod;</i><sub>&</sub><sup>so</sup>")
+        expect(formula).to be_xml_equivalent_to("<i>&sum;</i><sub>&</sub><sup>so</sup><i>&prod;</i><sub>&</sub><sup>so</sup>")
       end
     end
   end

@@ -14,7 +14,27 @@ if RUBY_ENGINE == "opal"
 else
   require "nokogiri"
 end
-require "equivalent-xml/rspec_matchers"
+require "canon"
+require "rspec/core"
+
+# # Define be_xml_equivalent_to matcher using canon for XML canonicalization
+# RSpec::Matchers.define :be_xml_equivalent_to do |expected|
+#   match do |actual|
+#     actual_formatted = Canon.format_xml(actual).gsub(/<\?xml[^?]*\?>\s*/, '').strip
+#     expected_formatted = Canon.format_xml(expected).gsub(/<\?xml[^?]*\?>\s*/, '').strip
+#     actual_formatted == expected_formatted
+#   end
+
+#   failure_message do |actual|
+#     actual_formatted = Canon.format_xml(actual).gsub(/<\?xml[^?]*\?>\s*/, '').strip
+#     expected_formatted = Canon.format_xml(expected).gsub(/<\?xml[^?]*\?>\s*/, '').strip
+#     "expected XML equivalent to:\n#{expected_formatted}\n\ngot:\n#{actual_formatted}"
+#   end
+# end
+
+Lutaml::Model::Config.configure do |config|
+  config.xml_adapter_type = :nokogiri
+end
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure

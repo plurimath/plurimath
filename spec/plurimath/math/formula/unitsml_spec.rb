@@ -37,7 +37,7 @@ RSpec.describe Plurimath::Math::Formula do
                     <UnitSymbol type="HTML">C
                       <sup>3</sup>XA</UnitSymbol>
                     <UnitSymbol type="MathMl">
-                      <math xmlns="http://www.w3.org/1998/Math/MathML" display="block" displaystyle="true">
+                      <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
                         <msup>
                           <mi mathvariant="normal">C</mi>
                           <mn>3</mn>
@@ -60,7 +60,7 @@ RSpec.describe Plurimath::Math::Formula do
             </mstyle>
           </math>
         MATHML
-        expect(mathml).to be_equivalent_to(expected_value)
+        expect(mathml).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -99,7 +99,7 @@ RSpec.describe Plurimath::Math::Formula do
                     <UnitSymbol type="HTML">C
                       <sup>3</sup>⋅A</UnitSymbol>
                     <UnitSymbol type="MathMl">
-                      <math xmlns="http://www.w3.org/1998/Math/MathML" display="block" displaystyle="true">
+                      <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
                         <msup>
                           <mi mathvariant="normal">C</mi>
                           <mn>3</mn>
@@ -137,7 +137,7 @@ RSpec.describe Plurimath::Math::Formula do
                     <UnitSymbol type="HTML">C
                       <sup>2</sup>⋅m</UnitSymbol>
                     <UnitSymbol type="MathMl">
-                      <math xmlns="http://www.w3.org/1998/Math/MathML" display="block" displaystyle="true">
+                      <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
                         <msup>
                           <mi mathvariant="normal">C</mi>
                           <mn>2</mn>
@@ -161,7 +161,7 @@ RSpec.describe Plurimath::Math::Formula do
             </mstyle>
           </math>
         MATHML
-        expect(mathml).to be_equivalent_to(expected_value)
+        expect(mathml).to be_xml_equivalent_to(expected_value)
       end
     end
 

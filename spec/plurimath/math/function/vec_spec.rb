@@ -68,7 +68,7 @@ RSpec.describe Plurimath::Math::Function::Vec do
             <mo>&#x2192;</mo>
           </mover>
         MATHML
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -82,7 +82,7 @@ RSpec.describe Plurimath::Math::Function::Vec do
             <mo>&#x2192;</mo>
           </mover>
         MATHML
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -108,7 +108,7 @@ RSpec.describe Plurimath::Math::Function::Vec do
             <mo>&#x2192;</mo>
           </mover>
         MATHML
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
   end
@@ -154,7 +154,7 @@ RSpec.describe Plurimath::Math::Function::Vec do
       let(:first_value) { Plurimath::Math::Symbols::Symbol.new("n") }
 
       it "returns html string" do
-        expect(formula).to be_equivalent_to("<i>&#x2192;</i><i>n</i>")
+        expect(formula).to be_xml_equivalent_to("<i>&#x2192;</i><i>n</i>")
       end
     end
 
@@ -162,7 +162,7 @@ RSpec.describe Plurimath::Math::Function::Vec do
       let(:first_value) { Plurimath::Math::Number.new("70") }
 
       it "returns html string" do
-        expect(formula).to be_equivalent_to("<i>&#x2192;</i><i>70</i>")
+        expect(formula).to be_xml_equivalent_to("<i>&#x2192;</i><i>70</i>")
       end
     end
 
@@ -176,7 +176,7 @@ RSpec.describe Plurimath::Math::Function::Vec do
         ])
       end
       it "returns html string" do
-        expect(formula).to be_equivalent_to("<i>&#x2192;</i><i><i>&sum;</i><sub>&</sub><sup>so</sup></i>")
+        expect(formula).to be_xml_equivalent_to("<i>&#x2192;</i><i><i>&sum;</i><sub>&</sub><sup>so</sup></i>")
       end
     end
   end
