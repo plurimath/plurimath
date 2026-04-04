@@ -9,28 +9,13 @@ end
 require "plurimath"
 require "plurimath/xml_engine/oga"
 require "rspec/matchers"
+require "rspec/core"
 if RUBY_ENGINE == "opal"
   require "oga"
 else
   require "nokogiri"
 end
-require "canon"
-require "rspec/core"
-
-# # Define be_xml_equivalent_to matcher using canon for XML canonicalization
-# RSpec::Matchers.define :be_xml_equivalent_to do |expected|
-#   match do |actual|
-#     actual_formatted = Canon.format_xml(actual).gsub(/<\?xml[^?]*\?>\s*/, '').strip
-#     expected_formatted = Canon.format_xml(expected).gsub(/<\?xml[^?]*\?>\s*/, '').strip
-#     actual_formatted == expected_formatted
-#   end
-
-#   failure_message do |actual|
-#     actual_formatted = Canon.format_xml(actual).gsub(/<\?xml[^?]*\?>\s*/, '').strip
-#     expected_formatted = Canon.format_xml(expected).gsub(/<\?xml[^?]*\?>\s*/, '').strip
-#     "expected XML equivalent to:\n#{expected_formatted}\n\ngot:\n#{actual_formatted}"
-#   end
-# end
+require "canon/rspec_matchers"
 
 Lutaml::Model::Config.configure do |config|
   config.xml_adapter_type = :nokogiri
