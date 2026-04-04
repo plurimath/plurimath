@@ -77,7 +77,7 @@ RSpec.describe Plurimath::Omml do
           </math>
         MATHML
         expect(formula.to_latex).to eq(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml).to be_xml_equivalent_to(mathml)
         expect(formula.to_asciimath).to eq(asciimath)
       end
     end
@@ -178,7 +178,7 @@ RSpec.describe Plurimath::Omml do
           </math>
         MATHML
         expect(formula.to_latex).to eq(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml).to be_xml_equivalent_to(mathml)
         expect(formula.to_asciimath).to eq(asciimath)
       end
     end
@@ -234,7 +234,7 @@ RSpec.describe Plurimath::Omml do
           </math>
         MATHML
         expect(formula.to_latex).to eq(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml).to be_xml_equivalent_to(mathml)
         expect(formula.to_asciimath).to eq(asciimath)
       end
     end
@@ -290,7 +290,7 @@ RSpec.describe Plurimath::Omml do
           </math>
         MATHML
         expect(formula.to_latex).to eq(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml).to be_xml_equivalent_to(mathml)
         expect(formula.to_asciimath).to eq(asciimath)
       end
     end
@@ -346,7 +346,7 @@ RSpec.describe Plurimath::Omml do
           </math>
         MATHML
         expect(formula.to_latex).to eq(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml).to be_xml_equivalent_to(mathml)
         expect(formula.to_asciimath).to eq(asciimath)
       end
     end
@@ -383,7 +383,7 @@ RSpec.describe Plurimath::Omml do
           </math>
         MATHML
         expect(formula.to_latex).to eq(latex)
-        expect(formula.to_mathml).to be_equivalent_to(mathml)
+        expect(formula.to_mathml).to be_xml_equivalent_to(mathml)
         expect(formula.to_asciimath).to eq(asciimath)
       end
     end

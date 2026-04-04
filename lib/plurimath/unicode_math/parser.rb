@@ -2,9 +2,6 @@
 
 require "parslet"
 require "parslet/convenience"
-require_relative "parse"
-require_relative "transform"
-require_relative "constants"
 module Plurimath
   class UnicodeMath
     class Parser

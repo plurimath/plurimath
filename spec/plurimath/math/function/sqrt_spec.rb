@@ -67,7 +67,7 @@ RSpec.describe Plurimath::Math::Function::Sqrt do
             <mi>n</mi>
           </msqrt>
         MATHML
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -80,7 +80,7 @@ RSpec.describe Plurimath::Math::Function::Sqrt do
             <mn>70</mn>
           </msqrt>
         MATHML
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -105,7 +105,7 @@ RSpec.describe Plurimath::Math::Function::Sqrt do
             </mrow>
           </msqrt>
         MATHML
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
   end

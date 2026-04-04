@@ -107,7 +107,7 @@ RSpec.describe Plurimath::Math::Function::Lim do
             </mrow>
           </munderover>
         MATHML
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -123,7 +123,7 @@ RSpec.describe Plurimath::Math::Function::Lim do
             <mi>n</mi>
           </munderover>
         MATHML
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -165,7 +165,7 @@ RSpec.describe Plurimath::Math::Function::Lim do
             </mrow>
           </munderover>
         MATHML
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
   end

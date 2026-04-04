@@ -81,7 +81,7 @@ RSpec.describe Plurimath::Math::Number do
       let(:first_value) { "70" }
 
       it "returns mathml string" do
-        expect(formula).to be_equivalent_to("<mn>70</mn>")
+        expect(formula).to be_xml_equivalent_to("<mn>70</mn>")
       end
     end
   end
@@ -119,7 +119,7 @@ RSpec.describe Plurimath::Math::Number do
       let(:first_value) { "70" }
 
       it "returns mathml string" do
-        expect(formula).to be_equivalent_to("<m:t>70</m:t>")
+        expect(formula).to be_xml_equivalent_to("<m:t>70</m:t>")
       end
     end
   end
@@ -131,7 +131,7 @@ RSpec.describe Plurimath::Math::Number do
       let(:first_value) { "n" }
 
       it "returns html string" do
-        expect(formula).to be_equivalent_to("n")
+        expect(formula).to be_xml_equivalent_to("n")
       end
     end
 
@@ -139,7 +139,7 @@ RSpec.describe Plurimath::Math::Number do
       let(:first_value) { "70" }
 
       it "returns html string" do
-        expect(formula).to be_equivalent_to("70")
+        expect(formula).to be_xml_equivalent_to("70")
       end
     end
   end

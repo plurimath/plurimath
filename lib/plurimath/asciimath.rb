@@ -2,6 +2,11 @@
 
 module Plurimath
   class Asciimath
+    autoload :Constants, "#{__dir__}/asciimath/constants"
+    autoload :Parse, "#{__dir__}/asciimath/parse"
+    autoload :Parser, "#{__dir__}/asciimath/parser"
+    autoload :Transform, "#{__dir__}/asciimath/transform"
+
     attr_accessor :text
 
     def initialize(text)

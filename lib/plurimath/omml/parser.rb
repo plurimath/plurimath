@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require_relative "transform"
 module Plurimath
   class Omml
     class Parser

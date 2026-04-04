@@ -1,13 +1,7 @@
 # frozen_string_literal: true
 
-require "plurimath/xml_engine"
 require "corelib/array/pack" if RUBY_ENGINE == "opal"
 require "oga"
-require_relative "oga/document"
-require_relative "oga/wrapper"
-require_relative "oga/element"
-require_relative "oga/dumper"
-require_relative "oga/node"
 
 module Plurimath
   module XmlEngine
@@ -40,6 +34,12 @@ module Plurimath
           root
         end
       end
+
+      autoload :Document, "#{__dir__}/oga/document"
+      autoload :Wrapper, "#{__dir__}/oga/wrapper"
+      autoload :Element, "#{__dir__}/oga/element"
+      autoload :Dumper, "#{__dir__}/oga/dumper"
+      autoload :Node, "#{__dir__}/oga/node"
     end
   end
 end

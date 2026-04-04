@@ -165,7 +165,7 @@ RSpec.describe Plurimath::Mathml do
         latex = "h a n n i n g ( k ) = 0 . 5 \\cdot [ 1 - \\cos{(} 2 \\pi \\cdot \\frac{k + 1}{n + 1} ) ] \\text{} ( 0 \\le k \\le n - 1 )"
         asciimath = 'h a n n i n g ( k ) = 0 . 5 * [ 1 - cos( 2 pi * frac(k + 1)(n + 1) ) ] "" ( 0 le k le n - 1 )'
         expect(formula.to_latex).to eq(latex)
-        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_xml_equivalent_to(mathml)
         expect(formula.to_asciimath).to eq(asciimath)
       end
     end
@@ -254,7 +254,7 @@ RSpec.describe Plurimath::Mathml do
         latex = "\\int_{t_{2}}^{t_{1}} f ( t ) \\\\ d t"
         asciimath = "int_(t_(2))^(t_(1)) f ( t ) \\\n d t"
         expect(formula.to_latex).to eq(latex)
-        expect(formula.to_mathml(split_on_linebreak: true, unary_function_spacing: false)).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(split_on_linebreak: true, unary_function_spacing: false)).to be_xml_equivalent_to(mathml)
         expect(formula.to_asciimath).to eq(asciimath)
       end
     end
@@ -299,7 +299,7 @@ RSpec.describe Plurimath::Mathml do
         latex = " x  \\phantom{+} \\phantom{ y } +  z "
         asciimath = ' x  \  \ \ \  +  z '
         expect(formula.to_latex).to eq(latex)
-        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_xml_equivalent_to(mathml)
         expect(formula.to_asciimath).to eq(asciimath)
       end
     end
@@ -338,7 +338,7 @@ RSpec.describe Plurimath::Mathml do
         latex = "a_{b}^{c}"
         asciimath = 'a_(b)^(c)'
         expect(formula.to_latex).to eq(latex)
-        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_xml_equivalent_to(mathml)
         expect(formula.to_asciimath).to eq(asciimath)
       end
     end
@@ -379,7 +379,7 @@ RSpec.describe Plurimath::Mathml do
         latex = "100_{\\alpha}^{\\beta}"
         asciimath = '100_(alpha)^(beta)'
         expect(formula.to_latex).to eq(latex)
-        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_xml_equivalent_to(mathml)
         expect(formula.to_asciimath).to eq(asciimath)
       end
     end
@@ -1167,7 +1167,7 @@ RSpec.describe Plurimath::Mathml do
         latex = "\\text{Convert} ( x , y , z , p_{a} , p_{o} , R , S , T ) = R_{z} ( \\alpha ) R_{y} ( \\beta ) R_{x} ( \\gamma ) S ( x - a_{x} , y - a_{y} , z - a_{z} ) + p_{o} + T =\\\\  \\left [\\begin{matrix}\\cos{\\text{P[funcapply]}} \\alpha \\cos{\\beta} & \\cos{\\text{P[funcapply]}} \\alpha \\sin{\\text{P[funcapply]}} \\beta \\sin{\\text{P[funcapply]}} \\gamma - \\sin{\\text{P[funcapply]}} \\alpha \\cos{\\gamma} & \\cos{\\text{P[funcapply]}} \\alpha \\sin{\\text{P[funcapply]}} \\beta \\cos{\\text{P[funcapply]}} \\gamma + \\sin{\\text{P[funcapply]}} \\alpha \\sin{\\text{P[funcapply]}} \\gamma \\\\ \\sin{\\text{P[funcapply]}} \\alpha \\cos{\\text{P[funcapply]}} \\beta & \\sin{\\text{P[funcapply]}} \\alpha \\sin{\\text{P[funcapply]}} \\beta \\sin{\\text{P[funcapply]}} \\gamma + \\cos{\\text{P[funcapply]}} \\alpha \\cos{\\text{P[funcapply]}} \\gamma & \\sin{\\text{P[funcapply]}} \\alpha \\sin{\\text{P[funcapply]}} \\beta \\cos{\\text{P[funcapply]}} \\gamma - \\cos{\\text{P[funcapply]}} \\alpha \\sin{\\text{P[funcapply]}} \\gamma \\\\ - \\sin{\\text{P[funcapply]}} \\beta & \\text{“cos ⁡”} \\beta \\sin{\\text{P[funcapply]}} \\gamma & \\cos{\\text{P[funcapply]}} \\beta \\cos{\\text{P[funcapply]}} \\gamma\\end{matrix}\\right ] \\left [\\begin{matrix}s_{x} \\ast ( x - a_{x} ) \\\\ s_{y} \\ast ( y - a_{y} ) \\\\ s_{z} \\ast ( z - a_{z} )\\end{matrix}\\right ] + \\left [\\begin{matrix}x_{0} + t_{x} \\\\ y_{0} + t_{y} \\\\ z_{0} + t_{z}\\end{matrix}\\right ] \\sqrt{d}"
         asciimath = "\"Convert\" (x , y , z , p_(a) , p_(o) , R , S , T) = R_(z) (alpha) R_(y) (beta) R_(x) (gamma) S (x - a_(x) , y - a_(y) , z - a_(z)) + p_(o) + T =\\\n  [[cos\"P{funcapply}\" alpha cosbeta, cos\"P{funcapply}\" alpha sin\"P{funcapply}\" beta sin\"P{funcapply}\" gamma - sin\"P{funcapply}\" alpha cosgamma, cos\"P{funcapply}\" alpha sin\"P{funcapply}\" beta cos\"P{funcapply}\" gamma + sin\"P{funcapply}\" alpha sin\"P{funcapply}\" gamma], [sin\"P{funcapply}\" alpha cos\"P{funcapply}\" beta, sin\"P{funcapply}\" alpha sin\"P{funcapply}\" beta sin\"P{funcapply}\" gamma + cos\"P{funcapply}\" alpha cos\"P{funcapply}\" gamma, sin\"P{funcapply}\" alpha sin\"P{funcapply}\" beta cos\"P{funcapply}\" gamma - cos\"P{funcapply}\" alpha sin\"P{funcapply}\" gamma], [- sin\"P{funcapply}\" beta, \"“cos ⁡”\" beta sin\"P{funcapply}\" gamma, cos\"P{funcapply}\" beta cos\"P{funcapply}\" gamma]] [[s_(x) ast (x - a_(x))], [s_(y) ast (y - a_(y))], [s_(z) ast (z - a_(z))]] + [[x_(0) + t_(x)], [y_(0) + t_(y)], [z_(0) + t_(z)]] sqrt(d)"
         expect(formula.to_latex).to eq(latex)
-        expect(formula.to_mathml(split_on_linebreak: true, unary_function_spacing: false)).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(split_on_linebreak: true, unary_function_spacing: false)).to be_xml_equivalent_to(mathml)
         expect(formula.to_asciimath).to eq(asciimath)
       end
     end
@@ -1216,7 +1216,7 @@ RSpec.describe Plurimath::Mathml do
         latex = "12  i "
         asciimath = "12i "
         expect(formula.to_latex).to eq(latex)
-        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_xml_equivalent_to(mathml)
         expect(formula.to_asciimath).to eq(asciimath)
       end
     end
@@ -1247,7 +1247,7 @@ RSpec.describe Plurimath::Mathml do
         latex = "Alternate Text Alternate Text 1 Alternate Text 2"
         asciimath = "Alternate Text Alternate Text 1 Alternate Text 2"
         expect(formula.to_latex).to eq(latex)
-        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_xml_equivalent_to(mathml)
         expect(formula.to_asciimath).to eq(asciimath)
       end
     end
@@ -1285,7 +1285,7 @@ RSpec.describe Plurimath::Mathml do
         latex = "F F"
         asciimath = "F F"
         expect(formula.to_latex).to eq(latex)
-        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_xml_equivalent_to(mathml)
         expect(formula.to_asciimath).to eq(asciimath)
       end
     end
@@ -1342,7 +1342,7 @@ RSpec.describe Plurimath::Mathml do
         latex = "{}_{}^{}\\sum_{F}^{A} {}_{4}^{E}\\sum_{F}^{B}"
         asciimath = "\\ _()^()sum_(F)^(A) \\ _(4)^(E)sum_(F)^(B)"
         expect(formula.to_latex).to eq(latex)
-        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_xml_equivalent_to(mathml)
         expect(formula.to_asciimath).to eq(asciimath)
       end
     end
@@ -1381,7 +1381,7 @@ RSpec.describe Plurimath::Mathml do
         latex = "\\oint_{F}^{A} C"
         asciimath = "oint_(F)^(A) C"
         expect(formula.to_latex).to eq(latex)
-        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_xml_equivalent_to(mathml)
         expect(formula.to_asciimath).to eq(asciimath)
       end
     end
@@ -1416,7 +1416,7 @@ RSpec.describe Plurimath::Mathml do
         latex = "\\oint_{F} C"
         asciimath = "oint_(F) C"
         expect(formula.to_latex).to eq(latex)
-        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_xml_equivalent_to(mathml)
         expect(formula.to_asciimath).to eq(asciimath)
       end
     end
@@ -1469,7 +1469,7 @@ RSpec.describe Plurimath::Mathml do
         latex = "\\left .\\begin{matrix}{a}\\cup F \\\\ \\cup E\\end{matrix}\\right ."
         asciimath = "[[uu F], [uu E]]"
         expect(formula.to_latex).to eq(latex)
-        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_xml_equivalent_to(mathml)
         expect(formula.to_asciimath).to eq(asciimath)
       end
     end
@@ -1600,7 +1600,7 @@ RSpec.describe Plurimath::Mathml do
         latex = 's_{\text{p}}^{2} = \frac{\sum_{i = 1}^{\mathit{N}} \mathit{\nu}_{i} s_{i}^{2}}{\sum_{i = 1}^{\mathit{N}} \mathit{\nu}_{i}}'
         asciimath = 's_("p")^(2) = frac(sum_(i = 1)^(ii(N)) ii(nu)_(i) s_(i)^(2))(sum_(i = 1)^(ii(N)) ii(nu)_(i))'
         expect(formula.to_latex).to eq(latex)
-        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_xml_equivalent_to(mathml)
         expect(formula.to_asciimath).to eq(asciimath)
       end
     end
@@ -1825,7 +1825,7 @@ RSpec.describe Plurimath::Mathml do
         latex = '\underline{\mathit{B}} = \left [\begin{matrix}1 &  &  &  &  \\\\ 1 & 1 &  &  &  \\\\ 1 & 2 & 1 &  &  \\\\ {\color{"red"} 1} & {\color{"red"} 3} & {\color{"red"} 3} & {\color{"red"} 1} &  \\\\ 1 & 4 & 6 & 4 & 1 \\\\  &  & \ldots &  & \end{matrix}\right ]'
         asciimath = 'underline(ii(B)) = [[1, , , , ], [1, 1, , , ], [1, 2, 1, , ], [color("red")(1), color("red")(3), color("red")(3), color("red")(1), ], [1, 4, 6, 4, 1], [, , ..., , ]]'
         expect(formula.to_latex).to eq(latex)
-        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_xml_equivalent_to(mathml)
         expect(formula.to_asciimath).to eq(asciimath)
       end
     end
@@ -1884,7 +1884,7 @@ RSpec.describe Plurimath::Mathml do
         latex = "y_{k} = ( x_{k} \\pm h )  m"
         asciimath = "y_(k) = (x_(k) pm h)  m"
         expect(formula.to_latex).to eq(latex)
-        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_xml_equivalent_to(mathml)
         expect(formula.to_asciimath).to eq(asciimath)
       end
     end
@@ -2007,7 +2007,7 @@ RSpec.describe Plurimath::Mathml do
         latex = '\int_{o}^{1} \mathrm{B}_{4} ( \mathit{\rho} ) \text{d} \mathit{\rho} = [ \frac{1}{24} \mathit{\rho}^{4} ]_{0}^{1} = \frac{1}{24} \approx 0.0417'
         asciimath = 'int_(o)^(1) rm(B)_(4) (ii(rho)) "d" ii(rho) = [frac(1)(24) ii(rho)^(4)]_(0)^(1) = frac(1)(24) approx 0.0417'
         expect(formula.to_latex).to eq(latex)
-        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_xml_equivalent_to(mathml)
         expect(formula.to_asciimath).to eq(asciimath)
       end
     end
@@ -2070,7 +2070,7 @@ RSpec.describe Plurimath::Mathml do
         latex = '\mathrm{J} \cdot \mathrm{mol}^{- 1} \cdot \mathrm{K}^{- 1}'
         asciimath = 'rm(J) * rm(mol)^(- 1) * rm(K)^(- 1)'
         expect(formula.to_latex).to eq(latex)
-        expect(formula.to_mathml(unary_function_spacing: false)).to be_equivalent_to(mathml)
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_xml_equivalent_to(mathml)
         expect(formula.to_asciimath).to eq(asciimath)
       end
     end
@@ -2588,75 +2588,75 @@ RSpec.describe Plurimath::Mathml do
 
       let(:expected_value) do
         <<~OMML
-          <m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape">
-            <m:oMath>
-              <m:sSubSup>
-                <m:sSubSupPr>
-                  <m:ctrlPr>
-                    <w:rPr>
-                      <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
-                      <w:i/>
-                    </w:rPr>
-                  </m:ctrlPr>
-                </m:sSubSupPr>
-                <m:e>
-                  <m:r>
-                    <m:t>m</m:t>
-                  </m:r>
-                </m:e>
-                <m:sub>
-                  <m:r>
-                    <m:t>d</m:t>
-                  </m:r>
-                </m:sub>
-                <m:sup>
-                  <m:r>
-                    <m:t>3</m:t>
-                  </m:r>
-                </m:sup>
-              </m:sSubSup>
-              <m:sSub>
-                <m:sSubPr>
-                  <m:ctrlPr>
-                    <w:rPr>
-                      <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
-                      <w:i/>
-                    </w:rPr>
-                  </m:ctrlPr>
-                </m:sSubPr>
-                <m:e>
-                  <m:r>
-                    <m:t>p</m:t>
-                  </m:r>
-                </m:e>
-                <m:sub>
-                  <m:r>
-                    <m:t>s</m:t>
-                  </m:r>
-                </m:sub>
-              </m:sSub>
-              <m:sSup>
-                <m:sSupPr>
-                  <m:ctrlPr>
-                    <w:rPr>
-                      <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
-                      <w:i/>
-                    </w:rPr>
-                  </m:ctrlPr>
-                </m:sSupPr>
-                <m:e>
-                  <m:r>
-                    <m:t>d</m:t>
-                  </m:r>
-                </m:e>
-                <m:sup>
-                  <m:r>
-                    <m:t>&#x3b8;</m:t>
-                  </m:r>
-                </m:sup>
-              </m:sSup>
-            </m:oMath>
-          </m:oMathPara>
+        <m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape">
+          <m:oMath>
+            <m:sSubSup>
+              <m:sSubSupPr>
+                <m:ctrlPr>
+                  <w:rPr>
+                    <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
+                    <w:i/>
+                  </w:rPr>
+                </m:ctrlPr>
+              </m:sSubSupPr>
+              <m:e>
+                <m:r>
+                  <m:t>m</m:t>
+                </m:r>
+              </m:e>
+              <m:sub>
+                <m:r>
+                  <m:t>d</m:t>
+                </m:r>
+              </m:sub>
+              <m:sup>
+                <m:r>
+                  <m:t>3</m:t>
+                </m:r>
+              </m:sup>
+            </m:sSubSup>
+            <m:sSub>
+              <m:sSubPr>
+                <m:ctrlPr>
+                  <w:rPr>
+                    <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
+                    <w:i/>
+                  </w:rPr>
+                </m:ctrlPr>
+              </m:sSubPr>
+              <m:e>
+                <m:r>
+                  <m:t>p</m:t>
+                </m:r>
+              </m:e>
+              <m:sub>
+                <m:r>
+                  <m:t>s</m:t>
+                </m:r>
+              </m:sub>
+            </m:sSub>
+            <m:sSup>
+              <m:sSupPr>
+                <m:ctrlPr>
+                  <w:rPr>
+                    <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
+                    <w:i/>
+                  </w:rPr>
+                </m:ctrlPr>
+              </m:sSupPr>
+              <m:e>
+                <m:r>
+                  <m:t>&#x3b8;</m:t>
+                </m:r>
+              </m:e>
+              <m:sup>
+                <m:r>
+                  <m:t>d</m:t>
+                </m:r>
+              </m:sup>
+            </m:sSup>
+          </m:oMath>
+        </m:oMathPara>
         OMML
       end
 

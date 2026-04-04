@@ -2,6 +2,10 @@
 
 module Plurimath
   class Mathml
+    autoload :Constants, "#{__dir__}/mathml/constants"
+    autoload :Parser, "#{__dir__}/mathml/parser"
+    autoload :Utility, "#{__dir__}/mathml/utility"
+
     attr_accessor :text
 
     def initialize(text)

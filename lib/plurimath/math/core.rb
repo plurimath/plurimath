@@ -285,7 +285,13 @@ module Plurimath
       end
 
       def variables
-        instance_variables
+        instance_variables.reject do |var|
+          name = var.to_s
+          name.start_with?("@__") ||
+            name.start_with?("@lutaml") ||
+            name == "@using_default" ||
+            name == "@temp_mathml_order"
+        end
       end
 
       def ox_element(node, attributes: [], namespace: "")

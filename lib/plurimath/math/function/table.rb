@@ -1,11 +1,20 @@
 # frozen_string_literal: true
 
-require_relative "../../mathml/utility"
-
 module Plurimath
   module Math
     module Function
       class Table < Core
+        autoload :Align, "#{__dir__}/table/align"
+        autoload :Array, "#{__dir__}/table/array"
+        autoload :Bmatrix, "#{__dir__}/table/bmatrix"
+        autoload :Cases, "#{__dir__}/table/cases"
+        autoload :Eqarray, "#{__dir__}/table/eqarray"
+        autoload :Matrix, "#{__dir__}/table/matrix"
+        autoload :Multline, "#{__dir__}/table/multline"
+        autoload :Pmatrix, "#{__dir__}/table/pmatrix"
+        autoload :Split, "#{__dir__}/table/split"
+        autoload :Vmatrix, "#{__dir__}/table/vmatrix"
+
         include Mathml::Utility
 
         attr_accessor :value, :open_paren, :close_paren, :options
