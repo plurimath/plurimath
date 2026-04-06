@@ -10,10 +10,12 @@ module Plurimath
       end
 
       def parse
+        Models.ensure_context!
+
         Mml.parse(
           text,
           version: 4,
-          register: Models.register,
+          context: Models.context_id,
           namespace_exist: namespace_exist?,
         ).to_plurimath
       end
