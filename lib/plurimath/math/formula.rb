@@ -55,11 +55,11 @@ module Plurimath
 
       def to_asciimath(formatter: nil, unitsml: {}, options: nil)
         options ||= { formatter: formatter, unitsml: unitsml }.compact
-        output = value.map do |val|
-          val.to_asciimath(options: asciimath_table_options(options, val))
-        end.reject(&:empty?).join(" ")
-      rescue
-        parse_error!(:asciimath)
+        wrap_render_error(:asciimath) do
+          value.map do |val|
+            val.to_asciimath(options: asciimath_table_options(options, val))
+          end.reject(&:empty?).join(" ")
+        end
       end
 
       def to_mathml(
@@ -77,19 +77,19 @@ module Plurimath
         }.compact
         return line_breaked_mathml(display_style, intent, options: options) if split_on_linebreak
 
-        math_attrs = {
-          xmlns: "http://www.w3.org/1998/Math/MathML",
-          display: "block",
-        }
-        style_attrs = { displaystyle: boolean_display_style(display_style) }
-        math  = ox_element("math", attributes: math_attrs)
-        style = ox_element("mstyle", attributes: style_attrs)
-        Utility.update_nodes(style, mathml_content(intent, options: options))
-        Utility.update_nodes(math, [style])
-        unitsml_post_processing(math, style)
-        dump_nodes(math, indent: 2)
-      rescue
-        parse_error!(:mathml)
+        wrap_render_error(:mathml) do
+          math_attrs = {
+            xmlns: "http://www.w3.org/1998/Math/MathML",
+            display: "block",
+          }
+          style_attrs = { displaystyle: boolean_display_style(display_style) }
+          math  = ox_element("math", attributes: math_attrs)
+          style = ox_element("mstyle", attributes: style_attrs)
+          Utility.update_nodes(style, mathml_content(intent, options: options))
+          Utility.update_nodes(math, [style])
+          unitsml_post_processing(math, style)
+          dump_nodes(math, indent: 2)
+        end
       end
 
       def line_breaked_mathml(display_style, intent, options:)
@@ -120,34 +120,34 @@ module Plurimath
 
       def to_latex(formatter: nil, unitsml: {}, options: nil)
         options ||= { formatter: formatter, unitsml: unitsml }.compact
-        value.map { |val| val.to_latex(options: options) }.reject(&:empty?).join(" ")
-      rescue
-        parse_error!(:latex)
+        wrap_render_error(:latex) do
+          value.map { |val| val.to_latex(options: options) }.reject(&:empty?).join(" ")
+        end
       end
 
       def to_html(formatter: nil, unitsml: {}, options: nil)
         options ||= { formatter: formatter, unitsml: unitsml }.compact
-        value&.map { |val| val.to_html(options: options) }&.join(" ")
-      rescue
-        parse_error!(:html)
+        wrap_render_error(:html) do
+          value&.map { |val| val.to_html(options: options) }&.join(" ")
+        end
       end
 
       def to_omml(display_style: displaystyle, split_on_linebreak: false, formatter: nil, unitsml: {})
-        objects = split_on_linebreak ? new_line_support : [self]
-        options = { formatter: formatter, unitsml: unitsml }.compact
-        para_element = Utility.ox_element("oMathPara", attributes: OMML_NAMESPACES, namespace: "m")
-        objects.each.with_index(1) do |object, index|
-          para_element << Utility.update_nodes(
-            Utility.ox_element("oMath", namespace: "m"),
-            object.omml_content(boolean_display_style(display_style), options: options),
-          )
-          next if objects.length == index
+        wrap_render_error(:omml) do
+          objects = split_on_linebreak ? new_line_support : [self]
+          options = { formatter: formatter, unitsml: unitsml }.compact
+          para_element = Utility.ox_element("oMathPara", attributes: OMML_NAMESPACES, namespace: "m")
+          objects.each.with_index(1) do |object, index|
+            para_element << Utility.update_nodes(
+              Utility.ox_element("oMath", namespace: "m"),
+              object.omml_content(boolean_display_style(display_style), options: options),
+            )
+            next if objects.length == index
 
-          para_element << omml_br_tag
+            para_element << omml_br_tag
+          end
+          dump_nodes(para_element, indent: 2)
         end
-        dump_nodes(para_element, indent: 2)
-      rescue
-        parse_error!(:omml)
       end
 
       def omml_content(display_style, options:)
@@ -160,9 +160,9 @@ module Plurimath
 
       def to_unicodemath(formatter: nil, unitsml: {}, options: nil)
         options ||= { formatter: formatter, unitsml: unitsml }.compact
-        Utility.html_entity_to_unicode(unicodemath_value(options: options)).gsub(/\s\/\s/, "/")
-      rescue
-        parse_error!(:unicodemath)
+        wrap_render_error(:unicodemath) do
+          Utility.html_entity_to_unicode(unicodemath_value(options: options)).gsub(/\s\/\s/, "/")
+        end
       end
 
       def to_display(type = nil, formatter: nil, unitsml: {}, unary_function_spacing: true)
@@ -641,6 +641,14 @@ module Plurimath
 
       def parse_error!(type)
         raise ParseError.new(input_string, type)
+      end
+
+      def wrap_render_error(type)
+        yield
+      rescue ParseError
+        raise
+      rescue StandardError
+        parse_error!(type)
       end
 
       def omml_br_tag
