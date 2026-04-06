@@ -1,6 +1,7 @@
 DEFAULT_ADAPTER = RUBY_ENGINE == "opal" ? :oga : :ox
 require "mml"
-require "parslet"
+autoload :Parslet, "parslet"
+autoload :HTMLEntities, "htmlentities"
 
 def mml_adapter(adapter)
   require "lutaml/model"

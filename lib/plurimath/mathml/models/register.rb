@@ -3,18 +3,26 @@
 module Plurimath
   class Mathml
     module Models
+      extend Mml::ContextConfiguration
+
+      CONTEXT_ID = :plurimath
+
       module_function
 
-      def register
-        @register ||= begin
-          reg = Lutaml::Model::Register.new(:plurimath, fallback: [:mml_v4, :mml_v3])
-          Lutaml::Model::GlobalRegister.register(reg)
-          reg
-        end
+      def ensure_context!
+        context || populate_context!
       end
 
-      def register_model(klass, id:)
-        register.register_model(klass, id: id)
+      class << self
+        private
+
+        def base_type_context
+          create_type_context(
+            id: context_id,
+            registry: Lutaml::Model::TypeRegistry.new,
+            fallback_to: [:mml_v4],
+          )
+        end
       end
     end
   end
