@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
-require_relative "utility/empty_defined_methods"
-require_relative "utility/formula_transformation"
-
 module Plurimath
   class Mathml
     module Utility
+      autoload :EmptyDefinedMethods, "#{__dir__}/utility/empty_defined_methods"
+      autoload :FormulaTransformation, "#{__dir__}/utility/formula_transformation"
+
       include EmptyDefinedMethods
       include FormulaTransformation
 

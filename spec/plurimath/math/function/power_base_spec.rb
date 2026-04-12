@@ -139,7 +139,7 @@ RSpec.describe Plurimath::Math::Function::PowerBase do
             </mrow>
           </msubsup>
         MATHML
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -169,7 +169,7 @@ RSpec.describe Plurimath::Math::Function::PowerBase do
             <mtext>s</mtext>
           </msubsup>
         MATHML
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -212,7 +212,7 @@ RSpec.describe Plurimath::Math::Function::PowerBase do
             </mrow>
           </msubsup>
         MATHML
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
   end
@@ -322,7 +322,7 @@ RSpec.describe Plurimath::Math::Function::PowerBase do
             <sup>so</sup>
           </sup>
         HTML
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -382,7 +382,7 @@ RSpec.describe Plurimath::Math::Function::PowerBase do
             <sup>so</sup>
           </sup>
         HTML
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
   end

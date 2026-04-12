@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require_relative "../number_formatter"
 module Plurimath
   module Formatter
     class Standard < Plurimath::NumberFormatter

@@ -11,7 +11,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -31,7 +31,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -41,7 +41,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -51,7 +51,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -61,7 +61,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -71,7 +71,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -81,7 +81,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -91,7 +91,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -101,7 +101,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -111,7 +111,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -121,7 +121,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -131,7 +131,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -141,7 +141,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -151,7 +151,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -161,7 +161,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -171,7 +171,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -181,7 +181,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -191,7 +191,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -201,7 +201,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -211,7 +211,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -221,7 +221,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -231,7 +231,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -241,7 +241,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -251,7 +251,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -261,7 +261,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -271,7 +271,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -281,7 +281,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -291,7 +291,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -301,7 +301,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -311,7 +311,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -321,7 +321,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -331,7 +331,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -341,7 +341,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -351,7 +351,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -361,7 +361,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -371,7 +371,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -381,7 +381,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -391,7 +391,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -401,7 +401,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -411,7 +411,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -421,7 +421,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -431,7 +431,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -441,7 +441,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -451,7 +451,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -461,7 +461,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -471,7 +471,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -481,7 +481,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -491,7 +491,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -501,7 +501,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -511,7 +511,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -521,7 +521,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -531,7 +531,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -541,7 +541,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -551,7 +551,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -561,7 +561,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -571,7 +571,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -581,7 +581,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -591,7 +591,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -601,7 +601,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -611,7 +611,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -621,7 +621,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -631,7 +631,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -641,7 +641,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -651,7 +651,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -661,7 +661,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -671,7 +671,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -681,7 +681,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -691,7 +691,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -701,7 +701,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -711,7 +711,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -721,7 +721,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -731,7 +731,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -741,7 +741,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -751,7 +751,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -761,7 +761,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -771,7 +771,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -781,7 +781,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -791,7 +791,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -801,7 +801,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -811,7 +811,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -821,7 +821,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -831,7 +831,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -841,7 +841,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -851,7 +851,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -861,7 +861,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -871,7 +871,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -881,7 +881,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -891,7 +891,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -901,7 +901,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -911,7 +911,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -921,7 +921,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -931,7 +931,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -941,7 +941,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -951,7 +951,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -961,7 +961,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -971,7 +971,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -981,7 +981,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -991,7 +991,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -1001,7 +1001,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -1011,7 +1011,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -1021,7 +1021,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -1031,7 +1031,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -1041,7 +1041,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -1051,7 +1051,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -1061,7 +1061,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -1071,7 +1071,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -1081,7 +1081,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -1091,7 +1091,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -1101,7 +1101,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -1111,7 +1111,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -1121,7 +1121,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -1131,7 +1131,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -1141,7 +1141,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -1151,7 +1151,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -1161,7 +1161,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -1171,7 +1171,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -1181,7 +1181,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -1191,7 +1191,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -1201,7 +1201,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -1211,7 +1211,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -1221,7 +1221,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -1231,7 +1231,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -1241,7 +1241,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -1251,7 +1251,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -1261,7 +1261,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -1271,7 +1271,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -1281,7 +1281,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -1291,7 +1291,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -1301,7 +1301,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -1311,7 +1311,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -1321,7 +1321,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -1331,7 +1331,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -1341,7 +1341,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -1351,7 +1351,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -1361,7 +1361,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -1371,7 +1371,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -1381,7 +1381,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -1391,7 +1391,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -1401,7 +1401,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -1411,7 +1411,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -1421,7 +1421,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -1431,7 +1431,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -1441,7 +1441,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -1451,7 +1451,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -1461,7 +1461,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -1471,7 +1471,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -1481,7 +1481,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -1491,7 +1491,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -1501,7 +1501,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -1511,7 +1511,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -1521,7 +1521,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -1531,7 +1531,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -1541,7 +1541,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -1551,7 +1551,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -1561,7 +1561,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -1571,7 +1571,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -1581,7 +1581,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -1591,7 +1591,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -1601,7 +1601,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -1611,7 +1611,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -1621,7 +1621,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -1631,7 +1631,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -1641,7 +1641,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -1651,7 +1651,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -1661,7 +1661,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -1671,7 +1671,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -1681,7 +1681,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -1691,7 +1691,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -1701,7 +1701,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -1711,7 +1711,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -1721,7 +1721,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -1731,7 +1731,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -1741,7 +1741,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -1751,7 +1751,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -1761,7 +1761,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -1771,7 +1771,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -1781,7 +1781,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -1791,7 +1791,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -1801,7 +1801,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -1811,7 +1811,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -1821,7 +1821,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -1831,7 +1831,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -1841,7 +1841,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -1851,7 +1851,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -1861,7 +1861,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "matches open and close tag" do
         expected_value = File.read(file_name)
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
   end

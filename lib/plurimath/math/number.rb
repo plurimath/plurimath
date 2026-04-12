@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require_relative "../mathml/utility"
-
 module Plurimath
   module Math
     class Number < Core

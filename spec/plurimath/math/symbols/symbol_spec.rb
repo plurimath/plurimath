@@ -76,7 +76,7 @@ RSpec.describe Plurimath::Math::Symbols::Symbol do
       let(:first_value) { "n" }
 
       it "returns mathml string" do
-        expect(formula).to be_equivalent_to("<mi>n</mi>")
+        expect(formula).to be_xml_equivalent_to("<mi>n</mi>")
       end
     end
 
@@ -84,7 +84,7 @@ RSpec.describe Plurimath::Math::Symbols::Symbol do
       let(:first_value) { "70" }
 
       it "returns mathml string" do
-        expect(formula).to be_equivalent_to("<mi>70</mi>")
+        expect(formula).to be_xml_equivalent_to("<mi>70</mi>")
       end
     end
 
@@ -92,7 +92,7 @@ RSpec.describe Plurimath::Math::Symbols::Symbol do
       let(:first_value) { "sum" }
 
       it "returns mathml string" do
-        expect(formula).to be_equivalent_to("<mi>sum</mi>")
+        expect(formula).to be_xml_equivalent_to("<mi>sum</mi>")
       end
     end
   end

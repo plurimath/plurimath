@@ -1,10 +1,5 @@
 # frozen_string_literal: true
 
-require_relative "parsing_rules/masked"
-require_relative "parsing_rules/sub_sup"
-require_relative "parsing_rules/common_rules"
-require_relative "parsing_rules/absence_rules"
-require_relative "parsing_rules/constants_rules"
 module Plurimath
   class UnicodeMath
     class Parse < Parslet::Parser

@@ -51,7 +51,7 @@ RSpec.describe Plurimath::Math::Formula do
             </mstyle>
           </math>
         MATHML
-        expect(formula).to be_equivalent_to(mathml)
+        expect(formula).to be_xml_equivalent_to(mathml)
       end
     end
 
@@ -83,7 +83,7 @@ RSpec.describe Plurimath::Math::Formula do
             </mstyle>
           </math>
         MATHML
-        expect(formula).to be_equivalent_to(mathml)
+        expect(formula).to be_xml_equivalent_to(mathml)
       end
     end
 
@@ -113,7 +113,7 @@ RSpec.describe Plurimath::Math::Formula do
             </mstyle>
           </math>
         MATHML
-        expect(formula).to be_equivalent_to(mathml)
+        expect(formula).to be_xml_equivalent_to(mathml)
       end
     end
 
@@ -145,7 +145,7 @@ RSpec.describe Plurimath::Math::Formula do
             </mstyle>
           </math>
         MATHML
-        expect(formula).to be_equivalent_to(mathml)
+        expect(formula).to be_xml_equivalent_to(mathml)
       end
     end
 
@@ -177,7 +177,7 @@ RSpec.describe Plurimath::Math::Formula do
             </mstyle>
           </math>
         MATHML
-        expect(formula).to be_equivalent_to(mathml)
+        expect(formula).to be_xml_equivalent_to(mathml)
       end
     end
 
@@ -201,7 +201,7 @@ RSpec.describe Plurimath::Math::Formula do
             </mstyle>
           </math>
         MATHML
-        expect(formula).to be_equivalent_to(mathml)
+        expect(formula).to be_xml_equivalent_to(mathml)
       end
     end
 
@@ -225,7 +225,7 @@ RSpec.describe Plurimath::Math::Formula do
             </mstyle>
           </math>
         MATHML
-        expect(formula).to be_equivalent_to(mathml)
+        expect(formula).to be_xml_equivalent_to(mathml)
       end
     end
 
@@ -249,7 +249,7 @@ RSpec.describe Plurimath::Math::Formula do
             </mstyle>
           </math>
         MATHML
-        expect(formula).to be_equivalent_to(mathml)
+        expect(formula).to be_xml_equivalent_to(mathml)
       end
     end
   end

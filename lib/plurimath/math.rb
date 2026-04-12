@@ -1,33 +1,15 @@
 # frozen_string_literal: true
 
-require_relative "errors"
-require_relative "asciimath"
-require_relative "omml"
-require_relative "unicode_math"
-require_relative "mathml"
-require_relative "html"
-require_relative "latex"
-require_relative "unitsml"
-require_relative "number_formatter"
-require_relative "formatter/standard"
-require_relative "math/core"
-require_relative "math/number"
-require_relative "math/symbols"
-require_relative "math/formula"
-require_relative "math/formula/mrow"
-require_relative "math/formula/mstyle"
-require_relative "math/function"
-require_relative "asciimath/parser"
-require_relative "unicode_math/parser"
-require_relative "mathml/parser"
-require_relative "latex/parser"
-require_relative "html/parser"
-require_relative "omml/parser"
-require_relative "utility"
-require "yaml"
-
 module Plurimath
   module Math
+    autoload :Core, "#{__dir__}/math/core"
+    autoload :Formula, "#{__dir__}/math/formula"
+    autoload :Function, "#{__dir__}/math/function"
+    autoload :InvalidTypeError, "#{__dir__}/errors/invalid_type_error"
+    autoload :Number, "#{__dir__}/math/number"
+    autoload :ParseError, "#{__dir__}/errors/parse_error"
+    autoload :Symbols, "#{__dir__}/math/symbols"
+
     VALID_TYPES = {
       omml: Omml,
       html: Html,

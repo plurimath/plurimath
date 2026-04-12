@@ -68,7 +68,7 @@ RSpec.describe Plurimath::Math::Function::Sin do
             <mi>n</mi>
           </mrow>
         MATHML
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -82,7 +82,7 @@ RSpec.describe Plurimath::Math::Function::Sin do
             <mn>70</mn>
           </mrow>
         MATHML
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -108,7 +108,7 @@ RSpec.describe Plurimath::Math::Function::Sin do
             </mrow>
           </mrow>
         MATHML
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
   end

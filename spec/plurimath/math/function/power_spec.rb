@@ -100,7 +100,7 @@ RSpec.describe Plurimath::Math::Function::Power do
             </mrow>
           </msup>
         MATHML
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -115,7 +115,7 @@ RSpec.describe Plurimath::Math::Function::Power do
             <mi>n</mi>
           </msup>
         MATHML
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -156,7 +156,7 @@ RSpec.describe Plurimath::Math::Function::Power do
             </mrow>
           </msup>
         MATHML
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
   end

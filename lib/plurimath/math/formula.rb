@@ -1,10 +1,11 @@
 # frozen_string_literal: true
 
-require_relative "../mathml/utility"
-
 module Plurimath
   module Math
     class Formula < Core
+      autoload :Mrow, "#{__dir__}/formula/mrow"
+      autoload :Mstyle, "#{__dir__}/formula/mstyle"
+
       include Mathml::Utility
 
       attr_accessor :value, :left_right_wrapper, :displaystyle, :input_string, :display
@@ -337,6 +338,10 @@ module Plurimath
         )
       end
 
+      def arg=(_); end
+
+      def scriptlevel=(_); end
+
       def intent=(value)
         return unless value
 
@@ -588,6 +593,10 @@ module Plurimath
 
       def mglyph_value=(value)
         update_temp_order(value, "mglyph")
+      end
+
+      def a_value=(value)
+        @value&.delete("a")
       end
 
       protected

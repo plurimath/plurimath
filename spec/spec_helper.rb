@@ -9,12 +9,17 @@ end
 require "plurimath"
 require "plurimath/xml_engine/oga"
 require "rspec/matchers"
+require "rspec/core"
 if RUBY_ENGINE == "opal"
   require "oga"
 else
   require "nokogiri"
 end
-require "equivalent-xml/rspec_matchers"
+require "canon/rspec_matchers"
+
+Lutaml::Model::Config.configure do |config|
+  config.xml_adapter_type = :nokogiri
+end
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
@@ -25,10 +30,10 @@ RSpec.configure do |config|
 
   config.around(:each) do |example|
     Plurimath.xml_engine = Plurimath::XmlEngine::OxEngine
-    Mml::Configuration.adapter = :ox
+    Mml::V4::Configuration.adapter = :ox
     example.run
     Plurimath.xml_engine = Plurimath::XmlEngine::Oga
-    Mml::Configuration.adapter = :oga
+    Mml::V4::Configuration.adapter = :oga
     example.run
   end
 

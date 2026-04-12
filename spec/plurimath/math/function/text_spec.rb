@@ -54,7 +54,7 @@ RSpec.describe Plurimath::Math::Function::Text do
       let(:first_value) { "unicode[:kappa]" }
 
       it "returns mathml string" do
-        expect(formula).to be_equivalent_to("<mtext>&#x3ba;</mtext>")
+        expect(formula).to be_xml_equivalent_to("<mtext>&#x3ba;</mtext>")
       end
     end
 
@@ -62,7 +62,7 @@ RSpec.describe Plurimath::Math::Function::Text do
       let(:first_value) { "unitsml(kL)" }
 
       it "returns mathml string" do
-        expect(formula).to be_equivalent_to("<mtext>unitsml(kL)</mtext>")
+        expect(formula).to be_xml_equivalent_to("<mtext>unitsml(kL)</mtext>")
       end
     end
 
@@ -70,7 +70,7 @@ RSpec.describe Plurimath::Math::Function::Text do
       let(:first_value) { "sum_&^so" }
 
       it "returns mathml string" do
-        expect(formula).to be_equivalent_to("<mtext>sum_&^so</mtext>")
+        expect(formula).to be_xml_equivalent_to("<mtext>sum_&^so</mtext>")
       end
     end
   end

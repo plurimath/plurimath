@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require_relative "ternary_function"
-require_relative "../../mathml/utility"
 
 module Plurimath
   module Math
