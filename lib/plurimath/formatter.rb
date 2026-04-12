@@ -1,15 +1,12 @@
 # frozen_string_literal: true
 
-require_relative "errors/formatter/unsupported_base"
-require_relative "formatter/numeric_formatter"
-require_relative "formatter/supported_locales"
-require_relative "formatter/numbers/base"
-require_relative "formatter/numbers/integer"
-require_relative "formatter/numbers/fraction"
-require_relative "formatter/numbers/significant"
-require_relative "formatter/number_formatter"
-
 module Plurimath
   module Formatter
+    autoload :NumericFormatter, "#{__dir__}/formatter/numeric_formatter"
+    autoload :NumberFormatter, "#{__dir__}/formatter/number_formatter"
+    autoload :SupportedLocales, "#{__dir__}/formatter/supported_locales"
+    autoload :UnsupportedBase, "#{__dir__}/errors/formatter/unsupported_base"
+    autoload :Numbers, "#{__dir__}/formatter/numbers"
+    autoload :Standard, "#{__dir__}/formatter/standard"
   end
 end

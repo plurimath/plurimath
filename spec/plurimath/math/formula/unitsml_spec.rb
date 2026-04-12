@@ -64,7 +64,7 @@ RSpec.describe Plurimath::Math::Formula do
             </mstyle>
           </math>
         MATHML
-        expect(mathml).to be_equivalent_to(expected_value)
+        expect(mathml).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -173,7 +173,7 @@ RSpec.describe Plurimath::Math::Formula do
             </mstyle>
           </math>
         MATHML
-        expect(mathml).to be_equivalent_to(expected_value)
+        expect(mathml).to be_xml_equivalent_to(expected_value)
       end
     end
 

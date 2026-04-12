@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require_relative "helper"
 module Plurimath
   class UnicodeMath
     module ParsingRules

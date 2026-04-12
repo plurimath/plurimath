@@ -64,7 +64,7 @@ RSpec.describe Plurimath::Math::Function::Left do
       let(:first_value) { "(" }
 
       it "returns mathml string" do
-        expect(formula).to be_equivalent_to("<mo>(</mo>")
+        expect(formula).to be_xml_equivalent_to("<mo>(</mo>")
       end
     end
 
@@ -72,7 +72,7 @@ RSpec.describe Plurimath::Math::Function::Left do
       let(:first_value) { "{" }
 
       it "returns mathml string" do
-        expect(formula).to be_equivalent_to("<mo>{</mo>")
+        expect(formula).to be_xml_equivalent_to("<mo>{</mo>")
       end
     end
 
@@ -80,7 +80,7 @@ RSpec.describe Plurimath::Math::Function::Left do
       let(:first_value) { "[" }
 
       it "returns mathml string" do
-        expect(formula).to be_equivalent_to("<mo>[</mo>")
+        expect(formula).to be_xml_equivalent_to("<mo>[</mo>")
       end
     end
   end

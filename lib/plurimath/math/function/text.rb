@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 require "htmlentities"
-require_relative "unary_function"
-require_relative "../../mathml/utility"
 
 module Plurimath
   module Math

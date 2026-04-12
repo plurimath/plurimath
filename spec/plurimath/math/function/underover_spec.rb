@@ -69,7 +69,7 @@ RSpec.describe Plurimath::Math::Function::Underover do
             <mn>70</mn>
           </munderover>
         MATHML
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -86,7 +86,7 @@ RSpec.describe Plurimath::Math::Function::Underover do
             <mn>70</mn>
           </munderover>
         MATHML
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -116,7 +116,7 @@ RSpec.describe Plurimath::Math::Function::Underover do
             <mn>70</mn>
           </munderover>
         MATHML
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
   end

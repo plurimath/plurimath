@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require_relative "../font_style"
 
 module Plurimath
   module Math

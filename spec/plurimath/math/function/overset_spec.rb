@@ -108,7 +108,7 @@ RSpec.describe Plurimath::Math::Function::Overset do
             </mrow>
           </mover>
         MATHML
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -136,7 +136,7 @@ RSpec.describe Plurimath::Math::Function::Overset do
             <mn>70</mn>
           </mrow>
         MATHML
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
 
@@ -177,7 +177,7 @@ RSpec.describe Plurimath::Math::Function::Overset do
             </mrow>
           </mover>
         MATHML
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
   end

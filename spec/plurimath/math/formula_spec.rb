@@ -1034,7 +1034,7 @@ RSpec.describe Plurimath::Math::Formula do
             </mstyle>
           </math>
         MATHML
-        expect(formula).to be_equivalent_to(expected_value)
+        expect(formula).to be_xml_equivalent_to(expected_value)
       end
     end
   end
@@ -1093,7 +1093,7 @@ RSpec.describe Plurimath::Math::Formula do
                 </mstyle>
               </math>
             MATHML
-            expect(formula).to be_equivalent_to(expected_value)
+            expect(formula).to be_xml_equivalent_to(expected_value)
           end
         end
 
@@ -1109,7 +1109,7 @@ RSpec.describe Plurimath::Math::Formula do
                 </mstyle>
               </math>
             MATHML
-            expect(formula).to be_equivalent_to(expected_value)
+            expect(formula).to be_xml_equivalent_to(expected_value)
           end
         end
       end
@@ -1142,7 +1142,7 @@ RSpec.describe Plurimath::Math::Formula do
                 </m:oMath>
               </m:oMathPara>
             OMML
-            expect(formula).to be_equivalent_to(expected_value)
+            expect(formula).to be_xml_equivalent_to(expected_value)
           end
         end
 
@@ -1162,7 +1162,7 @@ RSpec.describe Plurimath::Math::Formula do
                 </m:oMath>
               </m:oMathPara>
             OMML
-            expect(formula).to be_equivalent_to(expected_value)
+            expect(formula).to be_xml_equivalent_to(expected_value)
           end
         end
       end
@@ -1184,7 +1184,7 @@ RSpec.describe Plurimath::Math::Formula do
 
           it "returns html string with formatted numbers using default formatter" do
             expected_value = "331.467'7 123.456'7"
-            expect(formula).to be_equivalent_to(expected_value)
+            expect(formula).to be_xml_equivalent_to(expected_value)
           end
         end
 
@@ -1193,7 +1193,7 @@ RSpec.describe Plurimath::Math::Formula do
 
           it "returns html string with formatted numbers using compact formatter" do
             expected_value = "3>3>1^46;77 1>2>3^45;67"
-            expect(formula).to be_equivalent_to(expected_value)
+            expect(formula).to be_xml_equivalent_to(expected_value)
           end
         end
       end
@@ -1215,7 +1215,7 @@ RSpec.describe Plurimath::Math::Formula do
 
           it "returns unicodemath string with formatted numbers using default formatter" do
             expected_value = "331.467'7 123.456'7"
-            expect(formula).to be_equivalent_to(expected_value)
+            expect(formula).to be_xml_equivalent_to(expected_value)
           end
         end
 
@@ -1224,7 +1224,7 @@ RSpec.describe Plurimath::Math::Formula do
 
           it "returns unicodemath string with formatted numbers using compact formatter" do
             expected_value = "3>3>1^46;77 1>2>3^45;67"
-            expect(formula).to be_equivalent_to(expected_value)
+            expect(formula).to be_xml_equivalent_to(expected_value)
           end
         end
       end
@@ -1246,7 +1246,7 @@ RSpec.describe Plurimath::Math::Formula do
 
           it "returns latex string with formatted numbers using default formatter" do
             expected_value = "331.467'7 123.456'7"
-            expect(formula).to be_equivalent_to(expected_value)
+            expect(formula).to be_xml_equivalent_to(expected_value)
           end
         end
 
@@ -1255,7 +1255,7 @@ RSpec.describe Plurimath::Math::Formula do
 
           it "returns latex string with formatted numbers using compact formatter" do
             expected_value = "3>3>1^46;77 1>2>3^45;67"
-            expect(formula).to be_equivalent_to(expected_value)
+            expect(formula).to be_xml_equivalent_to(expected_value)
           end
         end
       end
@@ -1277,7 +1277,7 @@ RSpec.describe Plurimath::Math::Formula do
 
           it "returns asciimath string with formatted numbers using default formatter" do
             expected_value = "331.467'7 123.456'7"
-            expect(formula).to be_equivalent_to(expected_value)
+            expect(formula).to be_xml_equivalent_to(expected_value)
           end
         end
 
@@ -1286,7 +1286,7 @@ RSpec.describe Plurimath::Math::Formula do
 
           it "returns asciimath string with formatted numbers using compact formatter" do
             expected_value = "3>3>1^46;77 1>2>3^45;67"
-            expect(formula).to be_equivalent_to(expected_value)
+            expect(formula).to be_xml_equivalent_to(expected_value)
           end
         end
       end

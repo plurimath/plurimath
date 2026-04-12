@@ -1,8 +1,5 @@
 # frozen_string_literal: true
 
-require_relative "parse"
-require_relative "constants"
-require_relative "transform"
 module Plurimath
   class Asciimath
     class Parser
