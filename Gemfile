@@ -3,10 +3,10 @@ source "https://rubygems.org"
 # Specify your gem's dependencies in plurimath.gemspec
 gemspec
 
-gem "mml"
 gem "rake", "~> 12.0"
 gem "rspec", "~> 3.0"
 gem "unitsml", github: "unitsml/unitsml-ruby", branch: "feat/mml-v4-register"
+gem "unitsdb", github: "unitsml/unitsdb-ruby", branch: "feat/context-register-models", submodules: true
 gem 'canon'
 gem 'htmlentities'
 gem 'lutaml-model', '~> 0.8.0', github: "lutaml/lutaml-model", branch: "fix/global-context-register-lookup-fallback"
