@@ -5,8 +5,6 @@ module Plurimath
   module Math
     module Function
       class Msgroup < UnaryFunction
-        include Mathml::Utility
-
         def to_asciimath(options:)
           parameter_one.map { |param| param.to_asciimath(options: options) }.join
         end
@@ -73,30 +71,7 @@ module Plurimath
           custom_array_line_breaking(obj)
         end
 
-        def msgroup_text; end
-
-        def msgroup_text=(value)
-          return if empty_value?(value)
-
-          if value.is_a?(Array)
-            @temp_mathml_order << Text.new(value.pop)
-          else
-            @temp_mathml_order << Text.new(value)
-          end
-        end
-
         private
-
-        def empty_value?(value)
-          case value
-          when String
-            value.strip.empty?
-          when Array
-            value.none? { |element| element.match?(/[\S]/) }
-          when NilClass
-            true
-          end
-        end
       end
     end
   end

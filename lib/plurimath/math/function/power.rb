@@ -5,7 +5,6 @@ module Plurimath
   module Math
     module Function
       class Power < BinaryFunction
-        include Mathml::Utility
 
         FUNCTION = {
           name: "superscript",

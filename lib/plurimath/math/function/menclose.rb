@@ -5,7 +5,6 @@ module Plurimath
   module Math
     module Function
       class Menclose < BinaryFunction
-        include Mathml::Utility
 
         FUNCTION = {
           name: "enclosure",

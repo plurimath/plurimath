@@ -5,7 +5,6 @@ module Plurimath
   module Math
     module Function
       class Stackrel < BinaryFunction
-        include Mathml::Utility
 
         FUNCTION = {
           name: "stackrel",

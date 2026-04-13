@@ -4,7 +4,6 @@ module Plurimath
   module Math
     module Symbols
       class Symbol < Core
-        include Mathml::Utility
 
         attr_accessor :value, :slashed, :mini_sub_sized, :mini_sup_sized, :options
 

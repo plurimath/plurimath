@@ -5,7 +5,6 @@ module Plurimath
   module Math
     module Function
       class PowerBase < TernaryFunction
-        include Mathml::Utility
 
         FUNCTION = {
           name: "subsup",

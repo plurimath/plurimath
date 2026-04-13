@@ -4,7 +4,6 @@ module Plurimath
   module Math
     module Function
       class Text < UnaryFunction
-        include Mathml::Utility
 
         PARSER_REGEX = %r{unicode\[:(?<unicode>\w{1,})\]}.freeze
 
