@@ -5,7 +5,6 @@ module Plurimath
   module Math
     module Function
       class Underover < TernaryFunction
-        include Mathml::Utility
 
         FUNCTION = {
           name: "UnderOver",

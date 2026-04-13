@@ -5,7 +5,6 @@ module Plurimath
   module Math
     module Function
       class Msline < UnaryFunction
-        include Mathml::Utility
 
         def to_asciimath(**); end
 

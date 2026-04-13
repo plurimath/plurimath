@@ -7,13 +7,7 @@ module Plurimath
         include OrderedChildren
 
         def to_plurimath
-          children = children_to_plurimath
-          opts = extract_options(%i[linethickness bevelled])
-          Math::Function::Frac.new(
-            filter_child(children[0]),
-            filter_child(children[1]),
-            opts,
-          )
+          fraction_to_plurimath(children_to_plurimath)
         end
       end
       Models.register_model(Mfrac, id: :mfrac)

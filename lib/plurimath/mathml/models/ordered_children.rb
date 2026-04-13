@@ -38,7 +38,33 @@ module Plurimath
           end
         end
 
+        def structural_children_to_plurimath
+          ordered_children.each_with_object([]) do |child, result|
+            next if non_content_element?(child)
+
+            if child.respond_to?(:to_plurimath)
+              result << child.to_plurimath
+            elsif child.is_a?(String) && !child.empty?
+              result << resolve_text(child)
+            end
+          end
+        end
+
+        def fraction_to_plurimath(children)
+          opts = extract_options(%i[linethickness bevelled])
+          Math::Function::Frac.new(
+            filter_child(children[0]),
+            filter_child(children[1]),
+            opts,
+          )
+        end
+
         private
+
+        def non_content_element?(child)
+          child.is_a?(Mml::V4::Malignmark) || child.is_a?(Mml::V4::Maligngroup) ||
+            child.is_a?(Mml::V3::Malignmark) || child.is_a?(Mml::V3::Maligngroup)
+        end
 
         def boolean_to_displaystyle(value)
           case value

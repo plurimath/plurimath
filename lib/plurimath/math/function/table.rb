@@ -15,8 +15,6 @@ module Plurimath
         autoload :Split, "#{__dir__}/table/split"
         autoload :Vmatrix, "#{__dir__}/table/vmatrix"
 
-        include Mathml::Utility
-
         attr_accessor :value, :open_paren, :close_paren, :options
 
         SIMPLE_TABLES = %w[array align split].freeze
@@ -148,26 +146,6 @@ module Plurimath
             equations: ":equations",
             cases: ":cases",
           }
-        end
-
-        def mtr_value=(value)
-          return if value.nil? || value.empty?
-
-          self.value = replace_order_with_value(
-            clear_temp_order,
-            update_temp_mathml_values(value),
-            "mtr"
-          )
-        end
-
-        def mlabeledtr_value=(value)
-          return if value.nil? || value.empty?
-
-          self.value = replace_order_with_value(
-            clear_temp_order,
-            update_temp_mathml_values(value),
-            "mlabeledtr"
-          )
         end
 
         def frame=(value)

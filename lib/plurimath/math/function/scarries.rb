@@ -5,7 +5,6 @@ module Plurimath
   module Math
     module Function
       class Scarries < UnaryFunction
-        include Mathml::Utility
 
         def to_asciimath(options:)
           asciimath_value(options: options)

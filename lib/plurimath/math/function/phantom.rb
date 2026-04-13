@@ -5,7 +5,6 @@ module Plurimath
   module Math
     module Function
       class Phantom < UnaryFunction
-        include Mathml::Utility
 
         def to_asciimath(options:)
           "#{Array.new(asciimath_value(options: options)&.length, '\ ').join}"

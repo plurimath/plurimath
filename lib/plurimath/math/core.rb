@@ -289,8 +289,7 @@ module Plurimath
           name = var.to_s
           name.start_with?("@__") ||
             name.start_with?("@lutaml") ||
-            name == "@using_default" ||
-            name == "@temp_mathml_order"
+            name == "@using_default"
         end
       end
 
@@ -354,7 +353,6 @@ module Plurimath
       def pretty_print_instance_variables
         excluded_vars = [
           :@left_right_wrapper,
-          :@temp_mathml_order,
           :@using_default,
           :@displaystyle,
           :@__encoding,

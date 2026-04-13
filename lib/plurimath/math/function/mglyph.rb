@@ -5,7 +5,6 @@ module Plurimath
   module Math
     module Function
       class Mglyph < UnaryFunction
-        include Mathml::Utility
 
         def initialize(parameter_one = {})
           super(parameter_one)
