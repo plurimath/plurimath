@@ -16,24 +16,6 @@ module Plurimath
           @is_mrow = true
         end
 
-        def element_order=(value)
-          @value = validated_order(value&.map(&:name), rejectable_array: ["comment"])
-        end
-
-        def content; end
-
-        def content=(value)
-          arr_value = Array(value)
-          if no_content_in?(arr_value)
-            delete_all_text
-          else
-            validate_text_order(
-              arr_value.map { |val| validate_symbols(val) unless val.strip.empty? }
-            )
-          end
-          organize_value
-        end
-
         def is_mrow?
           @is_mrow
         end
@@ -68,27 +50,6 @@ module Plurimath
           elsif element.class_name == "symbol" && element.value.nil?
             element.value = ""
           end
-        end
-
-        def validate_text_order(value)
-          @value.each_with_index do |item, index|
-            next unless item == "text"
-
-            if value.first
-              @value[index] = value.shift
-            else
-              value.shift
-              @value.delete_at(index)
-            end
-          end
-        end
-
-        def delete_all_text
-          @value.delete("text")
-        end
-
-        def no_content_in?(value)
-          value.nil? || value.empty? || value&.all? { |val| val.strip.empty? }
         end
 
         def first_and_last_values_nil?(value)

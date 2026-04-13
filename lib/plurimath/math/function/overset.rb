@@ -5,7 +5,6 @@ module Plurimath
   module Math
     module Function
       class Overset < BinaryFunction
-        include Mathml::Utility
 
         attr_accessor :options
 

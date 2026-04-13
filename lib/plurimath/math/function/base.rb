@@ -5,7 +5,6 @@ module Plurimath
   module Math
     module Function
       class Base < BinaryFunction
-        include Mathml::Utility
 
         attr_accessor :options
 

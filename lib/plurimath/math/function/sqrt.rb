@@ -5,7 +5,6 @@ module Plurimath
   module Math
     module Function
       class Sqrt < UnaryFunction
-        include Mathml::Utility
 
         attr_accessor :options
 

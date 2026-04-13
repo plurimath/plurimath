@@ -5,7 +5,6 @@ module Plurimath
   module Math
     module Function
       class Root < BinaryFunction
-        include Mathml::Utility
 
         FUNCTION = {
           name: "root",
