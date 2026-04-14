@@ -57,7 +57,7 @@ module Plurimath
         options ||= { formatter: formatter, unitsml: unitsml }.compact
         output = value.map do |val|
           val.to_asciimath(options: asciimath_table_options(options, val))
-        end.join(" ")
+        end.reject(&:empty?).join(" ")
       rescue
         parse_error!(:asciimath)
       end
@@ -120,7 +120,7 @@ module Plurimath
 
       def to_latex(formatter: nil, unitsml: {}, options: nil)
         options ||= { formatter: formatter, unitsml: unitsml }.compact
-        value.map { |val| val.to_latex(options: options) }.join(" ")
+        value.map { |val| val.to_latex(options: options) }.reject(&:empty?).join(" ")
       rescue
         parse_error!(:latex)
       end

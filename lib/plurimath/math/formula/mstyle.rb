@@ -11,6 +11,12 @@ module Plurimath
         def is_mstyle?
           true
         end
+
+        def omml_content(display_style, options:)
+          # Use Mstyle's own @displaystyle, not the passed-in display_style
+          effective_display = @displaystyle.nil? ? display_style : @displaystyle
+          value&.map { |val| val.insert_t_tag(effective_display, options: options) }
+        end
       end
     end
   end

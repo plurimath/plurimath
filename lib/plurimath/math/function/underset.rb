@@ -20,7 +20,7 @@ module Plurimath
           parameter_two = nil,
           options = {})
           super(parameter_one, parameter_two)
-          @options = options unless options.empty?
+          @options = options unless options.nil?
         end
 
         def element_order=(value)
@@ -44,6 +44,10 @@ module Plurimath
             return base.to_omml_without_math_tag(display_style, options: options)
           end
 
+          if @options[:accentunder]
+            return group_chr(display_style, options: options)
+          end
+
           limlow   = Utility.ox_element("limLow", namespace: "m")
           limlowpr = Utility.ox_element("limLowPr", namespace: "m")
           limlowpr << Utility.pr_element("ctrl", true, namespace: "m")
@@ -56,6 +60,23 @@ module Plurimath
             ],
           )
           [limlow]
+        end
+
+        def group_chr(display_style, options:)
+          groupchr = Utility.ox_element("groupChr", namespace: "m")
+          groupchrpr = Utility.ox_element("groupChrPR", namespace: "m")
+          chr = Utility.ox_element("chr", namespace: "m", attributes: { "m:val" => "_" })
+          pos = Utility.ox_element("pos", namespace: "m", attributes: { "m:val" => "bot" })
+          groupchrpr << chr
+          groupchrpr << pos
+          Utility.update_nodes(
+            groupchr,
+            [
+              groupchrpr,
+              omml_parameter(parameter_two, display_style, tag_name: "e", options: options),
+            ],
+          )
+          [groupchr]
         end
 
         def to_unicodemath(options:)

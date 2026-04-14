@@ -4,20 +4,18 @@
 module Plurimath
   module Math
     module Function
-      class None < UnaryFunction
+      class Scarry < UnaryFunction
         include Mathml::Utility
 
-        def to_asciimath(**); ""; end
+        def to_asciimath(**); end
 
-        def to_latex(**); ""; end
+        def to_latex(**); end
 
         def to_mathml_without_math_tag(_, **)
-          nil
+          ox_element("none")
         end
 
-        def to_omml_without_math_tag(_, **)
-          empty_tag
-        end
+        def to_omml_without_math_tag(_, **); end
 
         def to_unicodemath(**); end
       end

@@ -39,7 +39,7 @@ module Plurimath
             if array_to_instance
               filter_values(value.first.value, array_to_instance: true)
             else
-              value.first.value
+              value.first
             end
           elsif value.is_a?(Array) && value.any?(Math::Formula::Mrow)
             value.each_with_index do |element, index|
