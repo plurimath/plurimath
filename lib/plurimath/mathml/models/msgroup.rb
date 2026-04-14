@@ -11,9 +11,6 @@ module Plurimath
             if child.respond_to?(:to_plurimath)
               child.to_plurimath
             elsif child.is_a?(String)
-              # Preserve text content (including whitespace) as Text nodes
-              next if child.strip.empty?
-
               Math::Function::Text.new(child)
             end
           end

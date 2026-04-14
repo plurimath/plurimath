@@ -5,7 +5,7 @@ module Plurimath
   module Math
     module Function
       class Fenced < TernaryFunction
-        include Mathml::Utility
+        include Mathml::FormulaTransformation
 
         attr_accessor :options
 
