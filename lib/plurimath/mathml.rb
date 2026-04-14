@@ -3,9 +3,8 @@
 module Plurimath
   class Mathml
     autoload :Constants, "#{__dir__}/mathml/constants"
+    autoload :FormulaTransformation, "#{__dir__}/mathml/formula_transformation"
     autoload :Parser, "#{__dir__}/mathml/parser"
-    autoload :Utility, "#{__dir__}/mathml/utility"
-    autoload :Translator, "#{__dir__}/mathml/translator"
     autoload :Models, "#{__dir__}/mathml/models"
 
     attr_accessor :text

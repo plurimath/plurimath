@@ -5,8 +5,6 @@ module Plurimath
   module Math
     module Function
       class Scarry < UnaryFunction
-        include Mathml::Utility
-
         def to_asciimath(**); end
 
         def to_latex(**); end

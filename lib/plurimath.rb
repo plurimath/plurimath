@@ -25,7 +25,7 @@ end
 
 module Plurimath
   autoload :Asciimath, "plurimath/asciimath"
-  autoload :Cli, "plurimath/cli"
+  autoload :Cli, "plurimath/cli" unless RUBY_ENGINE == "opal"
   autoload :Formatter, "plurimath/formatter"
   autoload :Html, "plurimath/html"
   autoload :Latex, "plurimath/latex"
