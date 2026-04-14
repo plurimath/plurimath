@@ -5,7 +5,7 @@ require "mml"
 module Plurimath
   class Mathml
     class Translator
-      include Mathml::Utility::FormulaTransformation
+      include Mathml::FormulaTransformation
 
       def initialize
         @memoized = {}

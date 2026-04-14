@@ -17,11 +17,17 @@ module Plurimath
         private
 
         def build_annotations
-          return [] unless annotation&.any?
+          annotations = build_annotation_entries(annotation_value, :annotation)
+          annotations += build_annotation_entries(annotation_xml_value, :"annotation-xml")
+          annotations
+        end
 
-          annotation.map do |ann|
+        def build_annotation_entries(entries, tag_name)
+          return [] unless entries&.any?
+
+          entries.map do |ann|
             value = ann.respond_to?(:value) ? ann.value : ann.to_s
-            { annotation: [Math::Symbols::Symbol.new(value)] }
+            { tag_name => [Math::Symbols::Symbol.new(value)] }
           end
         end
       end

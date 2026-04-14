@@ -6,7 +6,7 @@ module Plurimath
       autoload :Mrow, "#{__dir__}/formula/mrow"
       autoload :Mstyle, "#{__dir__}/formula/mstyle"
 
-      include Mathml::Utility
+      include Mathml::FormulaTransformation
 
       attr_accessor :value, :left_right_wrapper, :displaystyle, :input_string, :display
 
