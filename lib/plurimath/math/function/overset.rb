@@ -40,6 +40,10 @@ module Plurimath
             return power.to_omml_without_math_tag(display_style, options: options)
           end
 
+          if unicode_accent?(parameter_one)
+            return acc_element(display_style, options: options)
+          end
+
           limupp   = Utility.ox_element("limUpp", namespace: "m")
           limupppr = Utility.ox_element("limUppPr", namespace: "m")
           limupppr << Utility.pr_element("ctrl", true, namespace: "m")
@@ -47,11 +51,33 @@ module Plurimath
             limupp,
             [
               limupppr,
-              omml_parameter(parameter_one, display_style, tag_name: "e", options: options),
-              omml_parameter(parameter_two, display_style, tag_name: "lim", options: options),
+              omml_parameter(parameter_two, display_style, tag_name: "e", options: options),
+              omml_parameter(parameter_one, display_style, tag_name: "lim", options: options),
             ],
           )
           [limupp]
+        end
+
+        def acc_element(display_style, options:)
+          acc = Utility.ox_element("acc", namespace: "m")
+          accpr = Utility.ox_element("accPr", namespace: "m")
+          chr_val = if parameter_one.respond_to?(:accent_char)
+                      parameter_one.accent_char
+                    elsif unicode_accent?(parameter_one)
+                      unicodemath_field_value(parameter_one)
+                    else
+                      "\u203E"
+                    end
+          chr = Utility.ox_element("chr", namespace: "m", attributes: { "m:val" => chr_val })
+          accpr << chr
+          Utility.update_nodes(
+            acc,
+            [
+              accpr,
+              omml_parameter(parameter_two, display_style, tag_name: "e", options: options),
+            ],
+          )
+          [acc]
         end
 
         def to_unicodemath(options:)
@@ -89,6 +115,7 @@ module Plurimath
         protected
 
         def unicode_accent?(field)
+          return true if field.respond_to?(:accent_char)
           return unless field.is_a?(Math::Symbols::Symbol)
 
           match_unicode?(unicodemath_field_value(field))

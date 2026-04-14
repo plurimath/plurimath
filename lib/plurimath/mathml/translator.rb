@@ -101,7 +101,9 @@ module Plurimath
         children = ordered_children(mover)
         base = mml_to_plurimath(children[0])
         overscript = mml_to_plurimath(children[1])
-        Plurimath::Math::Function::Overset.new(overscript, base)
+        options = {}
+        options[:accent] = true if mover.accent
+        Plurimath::Math::Function::Overset.new(overscript, base, options)
       end
 
       # MathML element: <munder> base underscript
@@ -109,7 +111,9 @@ module Plurimath
         children = ordered_children(munder)
         base = mml_to_plurimath(children[0])
         underscript = mml_to_plurimath(children[1])
-        Plurimath::Math::Function::Underset.new(underscript, base)
+        options = {}
+        options[:accentunder] = true if munder.accentunder
+        Plurimath::Math::Function::Underset.new(underscript, base, options)
       end
 
       # MathML element: <munderover> base underscript overscript
@@ -155,26 +159,34 @@ module Plurimath
         if function_class
           return Plurimath::Math::Function.const_get(function_class).new
         end
-        # Use the same symbol resolution as the old parser
+        # Use stripped for function lookup, but original value to preserve whitespace
         result = Plurimath::Utility.mathml_unary_classes([stripped], lang: :mathml)
+        result.value = value if result.is_a?(Plurimath::Math::Symbols::Symbol)
         # Apply mathvariant font styling if present
         apply_font_style(mi, result)
       end
 
       # MathML element: <mo> - operator
       def mo_to_symbol(mo)
-        value = (mo.value || "").strip
+        value = mo.value || ""
         # Handle linebreak="newline" attribute - creates a Linebreak wrapper
         if mo.linebreak == "newline"
+          attributes = {}
+          attributes[:linebreakstyle] = mo.linebreakstyle if mo.linebreakstyle
+          # Use stripped for lookup, but original value to preserve whitespace
+          stripped = value.strip
+          symbol = Plurimath::Utility.mathml_unary_classes([stripped], lang: :mathml)
+          symbol = Plurimath::Math::Symbols::Symbol.new(stripped) if symbol.nil? || symbol.is_a?(Array)
+          symbol.value = value if symbol.is_a?(Plurimath::Math::Symbols::Symbol)
           return Plurimath::Math::Function::Linebreak.new(
-            Plurimath::Math::Symbols::Symbol.new(value)
+            symbol,
+            attributes
           )
         end
-        # Use the same symbol resolution as the old parser
-        result = Plurimath::Utility.mathml_unary_classes([value], lang: :mathml)
-        if result.is_a?(Plurimath::Math::Symbols::Symbol)
-          result.mo_element = true
-        end
+        # Use stripped for function lookup, but original value to preserve whitespace
+        stripped = value.strip
+        result = Plurimath::Utility.mathml_unary_classes([stripped], lang: :mathml)
+        result.value = value if result.is_a?(Plurimath::Math::Symbols::Symbol)
         result
       end
 
@@ -216,7 +228,10 @@ module Plurimath
         children = ordered_children(frac)
         numerator = mml_to_plurimath(children[0])
         denominator = mml_to_plurimath(children[1])
-        Plurimath::Math::Function::Frac.new(numerator, denominator)
+        options = {}
+        options[:linethickness] = frac.linethickness if frac.linethickness
+        options[:bevelled] = frac.bevelled if frac.bevelled
+        Plurimath::Math::Function::Frac.new(numerator, denominator, options)
       end
 
       # MathML element: <msqrt> - square root
@@ -353,7 +368,11 @@ module Plurimath
       def mpadded_to_mpadded(padded)
         children = ordered_children(padded)
         content = children.map { |child| mml_to_plurimath(child) }.compact
-        Plurimath::Math::Function::Mpadded.new(content)
+        options = {}
+        options[:height] = padded.height if padded.height
+        options[:depth] = padded.depth if padded.depth
+        options[:width] = padded.width if padded.width
+        Plurimath::Math::Function::Mpadded.new(content, options)
       end
 
       # MathML element: <mglyph> - glyph
@@ -574,8 +593,12 @@ module Plurimath
           if i + 1 < values.size && can_combine_with_paren?(current)
             next_elem = values[i + 1]
             if opening_paren?(next_elem)
-              # Create a plain Symbol("(") as the function parameter
-              paren = Plurimath::Math::Symbols::Symbol.new("(", mo_element: true)
+              # Use the existing Paren object if available, otherwise create a Paren::Lround
+              paren = if next_elem.respond_to?(:paren?) && next_elem.paren?
+                        next_elem
+                      else
+                        Plurimath::Math::Symbols::Paren::Lround.new
+                      end
               combined = current.class.new(paren)
               result << combined
               i += 2  # Skip both

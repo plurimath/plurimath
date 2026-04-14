@@ -60,6 +60,10 @@ module Plurimath
           Bar.new(parameter_one, attributes)
         end
 
+        def accent_char
+          "\u203E"
+        end
+
         protected
 
         def groupchr_tag(display_style, options:)

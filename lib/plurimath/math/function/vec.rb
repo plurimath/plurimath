@@ -85,6 +85,10 @@ module Plurimath
           obj.update(Utility.filter_values(obj.value)) if obj.value_exist?
         end
 
+        def accent_char
+          "→"
+        end
+
         protected
 
         def acc_tag(display_style, options:)

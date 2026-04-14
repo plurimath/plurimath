@@ -78,6 +78,7 @@ module Plurimath
       autoload :Root, "#{__dir__}/function/root"
       autoload :Rule, "#{__dir__}/function/rule"
       autoload :Scarries, "#{__dir__}/function/scarries"
+      autoload :Scarry, "#{__dir__}/function/scarry"
       autoload :Sec, "#{__dir__}/function/sec"
       autoload :Sech, "#{__dir__}/function/sech"
       autoload :Semantics, "#{__dir__}/function/semantics"
