@@ -16,6 +16,7 @@ module Plurimath
         return nil if mml_node.nil?
 
         case mml_node
+        when String then text_node_to_plurimath(mml_node)
         when Mml::V4::Math then math_to_formula(mml_node)
         when Mml::V4::Mrow then mrow_to_mrow(mml_node)
         when Mml::V4::Mover then mover_to_overset(mml_node)
@@ -75,23 +76,43 @@ module Plurimath
       def math_to_formula(math)
         children = ordered_children(math)
         formula_values = children.map { |child| mml_to_plurimath(child) }.compact
-        formula_values = filter_values(formula_values)
-        Plurimath::Math::Formula.new(formula_values)
+        formula_values = nary_check(formula_values)
+        display_style = boolean_to_displaystyle(math.display)
+
+        if formula_values.length == 1 && formula_values.first.respond_to?(:is_mstyle?) && formula_values.first.is_mstyle?
+          mstyle = formula_values.first
+          formula_values = Array(mstyle.value)
+          display_style = mstyle.displaystyle
+        end
+
+        Plurimath::Math::Formula.new(
+          formula_values,
+          display_style: display_style,
+        )
       end
 
       # MathML element: <mrow>
       def mrow_to_mrow(mrow)
         children = ordered_children(mrow)
         formula_values = children.map { |child| mml_to_plurimath(child) }.compact
-        combined = combine_function_with_parens(formula_values)
-        return combined.first if combined.size == 1
+        return nil if formula_values.empty?
 
+        combined = nary_check(combine_function_with_parens(formula_values))
         mrow_obj = Plurimath::Math::Formula::Mrow.new(combined)
         mrow_obj.send(:organize_value)
-        values = mrow_obj.value
-        # Apply nary conversion after organize_value
-        values = filter_values(values)
-        values.size == 1 ? values.first : Plurimath::Math::Formula::Mrow.new(values)
+        preserve_explicit_nary_body!(mrow_obj.value)
+        fill_ternary_third_values(mrow_obj.value)
+        return mrow_obj.value.first if mrow_obj.value.length == 1
+
+        if mrow.respond_to?(:intent) && mrow.intent && !mrow.intent.empty?
+          content = mrow_obj.is_a?(Plurimath::Math::Formula) ? mrow_obj : Plurimath::Math::Formula.new([mrow_obj])
+          return Plurimath::Math::Function::Intent.new(
+            content,
+            Plurimath::Math::Function::Text.new(mrow.intent),
+          )
+        end
+
+        Plurimath::Math::Formula.new(mrow_obj.value)
       end
 
       # MathML element: <mover> base overscript
@@ -99,11 +120,32 @@ module Plurimath
       # (reversed from MathML document order) to match rendering methods
       def mover_to_overset(mover)
         children = ordered_children(mover)
-        base = mml_to_plurimath(children[0])
-        overscript = mml_to_plurimath(children[1])
+        base = filter_child(mml_to_plurimath(children[0]))
+        overscript = filter_child(mml_to_plurimath(children[1]))
         options = {}
-        options[:accent] = true if mover.accent
-        Plurimath::Math::Function::Overset.new(overscript, base, options)
+        options[:accent] = true if truthy_mathml_bool?(mover.accent)
+
+        case overscript&.class_name
+        when "obrace", "ubrace"
+          overscript.parameter_one = base
+          overscript
+        when "hat", "ddot", "vec", "tilde"
+          overscript.parameter_one = base
+          overscript.attributes = options if overscript.respond_to?(:attributes=)
+          overscript
+        when "period", "dot"
+          new_element = overscript.is_a?(Plurimath::Math::Symbols::Period) ? Plurimath::Math::Function::Dot.new : overscript
+          new_element.parameter_one = base
+          new_element.attributes = options if new_element.respond_to?(:attributes=)
+          new_element
+        when "bar"
+          overscript.parameter_one = base
+          overscript
+        when "ul", "underline"
+          Plurimath::Math::Function::Bar.new(base, options)
+        else
+          Plurimath::Math::Function::Overset.new(overscript, base, options)
+        end
       end
 
       # MathML element: <munder> base underscript
@@ -112,63 +154,124 @@ module Plurimath
         base = mml_to_plurimath(children[0])
         underscript = mml_to_plurimath(children[1])
         options = {}
-        options[:accentunder] = true if munder.accentunder
-        Plurimath::Math::Function::Underset.new(underscript, base, options)
+        options[:accentunder] = true if truthy_mathml_bool?(munder.accentunder)
+
+        if base.is_a?(Plurimath::Math::Function::Vec) ||
+           (base.respond_to?(:is_ternary_function?) && base.is_ternary_function? && !base.any_value_exist?)
+          base.parameter_one = underscript
+          base.attributes = options if base.respond_to?(:attributes=)
+          return base
+        end
+
+        if base.respond_to?(:is_binary_function?) && base.is_binary_function? && !base.any_value_exist?
+          base.parameter_one = underscript
+          return base
+        end
+
+        case underscript&.class_name
+        when "obrace", "ubrace", "ul", "underline"
+          underscript.parameter_one = base
+          underscript
+        when "bar"
+          Plurimath::Math::Function::Ul.new(base, options)
+        else
+          Plurimath::Math::Function::Underset.new(underscript, base, options)
+        end
       end
 
       # MathML element: <munderover> base underscript overscript
       def munderover_to_underover(munderover)
         children = ordered_children(munderover)
-        base = mml_to_plurimath(children[0])
-        underscript = mml_to_plurimath(children[1])
-        overscript = mml_to_plurimath(children[2])
-        Plurimath::Math::Function::Underover.new(base, underscript, overscript)
+        base = filter_child(mml_to_plurimath(children[0]))
+        underscript = filter_child(mml_to_plurimath(children[1]))
+        overscript = filter_child(mml_to_plurimath(children[2]))
+
+        if base&.is_ternary_function? && !base.any_value_exist?
+          base.parameter_one = underscript
+          base.parameter_two = overscript
+          base
+        elsif base&.is_nary_symbol?
+          Plurimath::Math::Function::Nary.new(
+            base,
+            underscript,
+            overscript,
+            nil,
+            { type: "undOvr" },
+          )
+        else
+          Plurimath::Math::Function::Underover.new(base, underscript, overscript)
+        end
       end
 
       # MathML element: <msup> base superscript
       def msup_to_power(sup)
         children = ordered_children(sup)
-        base = mml_to_plurimath(children[0])
-        superscript = mml_to_plurimath(children[1])
+        base = filter_child(mml_to_plurimath(children[0]))
+        superscript = filter_child(mml_to_plurimath(children[1]))
+        if base&.is_binary_function? && !base.any_value_exist?
+          base.parameter_one = superscript
+          return base
+        end
+
         Plurimath::Math::Function::Power.new(base, superscript)
       end
 
       # MathML element: <msub> base subscript
       def msub_to_base(sub)
         children = ordered_children(sub)
-        base = mml_to_plurimath(children[0])
-        subscript = mml_to_plurimath(children[1])
+        base = filter_child(mml_to_plurimath(children[0]))
+        subscript = filter_child(mml_to_plurimath(children[1]))
+        if base&.is_binary_function? && !base.any_value_exist?
+          base.parameter_one = subscript
+          return base
+        end
+
         Plurimath::Math::Function::Base.new(base, subscript)
       end
 
       # MathML element: <msubsup> base subscript superscript
       def msubsup_to_powerbase(subsup)
         children = ordered_children(subsup)
-        base = mml_to_plurimath(children[0])
-        subscript = mml_to_plurimath(children[1])
-        superscript = mml_to_plurimath(children[2])
+        base = filter_child(mml_to_plurimath(children[0]))
+        subscript = filter_child(mml_to_plurimath(children[1]))
+        superscript = filter_child(mml_to_plurimath(children[2]))
+
+        if base&.is_ternary_function? && !base.any_value_exist?
+          base.parameter_one = subscript
+          base.parameter_two = superscript
+          return base
+        elsif base&.is_binary_function? && !base.any_value_exist?
+          base.parameter_one = subscript
+          base.parameter_two = superscript
+          return base
+        end
+
         Plurimath::Math::Function::PowerBase.new(base, subscript, superscript)
       end
 
       # MathML element: <mi> - identifier
       def mi_to_symbol(mi)
         value = mi.value || ""
+        return nil if value.respond_to?(:empty?) && value.empty?
+
         # Check if it's a known function name first (only for non-whitespace values)
         stripped = value.strip
         function_class = MATHML_FUNCTION_CLASSES[stripped]
         if function_class
           return Plurimath::Math::Function.const_get(function_class).new
         end
-        # Use stripped for function lookup, but original value to preserve whitespace
         result = Plurimath::Utility.mathml_unary_classes([stripped], lang: :mathml)
-        result.value = value if result.is_a?(Plurimath::Math::Symbols::Symbol)
-        # Apply mathvariant font styling if present
+        if result.instance_of?(Plurimath::Math::Symbols::Symbol) &&
+            value.match?(/\A[[:space:]]|[[:space:]]\z/)
+          result.value = value
+        end
         apply_font_style(mi, result)
       end
 
       # MathML element: <mo> - operator
       def mo_to_symbol(mo)
-        value = mo.value || ""
+        raw_value = mo.value
+        value = raw_value || ""
         # Handle linebreak="newline" attribute - creates a Linebreak wrapper
         if mo.linebreak == "newline"
           attributes = {}
@@ -176,17 +279,41 @@ module Plurimath
           # Use stripped for lookup, but original value to preserve whitespace
           stripped = value.strip
           symbol = Plurimath::Utility.mathml_unary_classes([stripped], lang: :mathml)
-          symbol = Plurimath::Math::Symbols::Symbol.new(stripped) if symbol.nil? || symbol.is_a?(Array)
-          symbol.value = value if symbol.is_a?(Plurimath::Math::Symbols::Symbol)
+          if symbol.nil? || symbol.is_a?(Array)
+            symbol = raw_value.nil? ? Plurimath::Math::Symbols::Symbol.new(nil) : Plurimath::Math::Symbols::Symbol.new(stripped)
+          end
+          if symbol.instance_of?(Plurimath::Math::Symbols::Symbol) &&
+              value.match?(/\A[[:space:]]|[[:space:]]\z/)
+            symbol.value = value
+          end
           return Plurimath::Math::Function::Linebreak.new(
             symbol,
             attributes
           )
         end
+
+        if raw_value.nil? || raw_value == ""
+          result = Plurimath::Math::Symbols::Symbol.new(nil)
+          options = {}
+          options[:rspace] = mo.rspace if mo.respond_to?(:rspace) && mo.rspace
+          result.options = options if options.any?
+          return result
+        end
+
         # Use stripped for function lookup, but original value to preserve whitespace
         stripped = value.strip
         result = Plurimath::Utility.mathml_unary_classes([stripped], lang: :mathml)
-        result.value = value if result.is_a?(Plurimath::Math::Symbols::Symbol)
+        if result.instance_of?(Plurimath::Math::Symbols::Symbol)
+          options = {}
+          options[:rspace] = mo.rspace if mo.respond_to?(:rspace) && mo.rspace
+          result.options = options if options.any?
+          if value.match?(/\A[[:space:]]|[[:space:]]\z/)
+            result.value = value
+          end
+        elsif result && value.is_a?(String) && value.match?(/\A[[:space:]]|[[:space:]]\z/) &&
+              result.respond_to?(:value=)
+          result.value = value
+        end
         result
       end
 
@@ -198,29 +325,21 @@ module Plurimath
 
       # MathML element: <mtext> - text
       def mtext_to_text(mtext)
-        value = mtext.value
-        # mtext.value can be an Array when there's mixed content (text + elements)
-        # Join array into string, filter empty strings, and handle nil
-        if value.is_a?(Array)
-          value = value.reject(&:empty?).join
-        end
-        value ||= ""
-        Plurimath::Math::Function::Text.new(value)
+        text_obj = Plurimath::Math::Function::Text.new
+        text_obj.value = Array(mtext.value).join
+        text_obj
       end
 
       # MathML element: <none>
       def none_to_none
-        Plurimath::Math::Function::None.new
+        nil
       end
 
       # MathML element: <ms> - string
       def ms_to_ms(ms)
         children = ordered_children(ms)
-        text_content = children.map do |child|
-          pl = mml_to_plurimath(child)
-          pl.to_ms_value
-        end.join(" ")
-        Plurimath::Math::Function::Ms.new(text_content)
+        text_content = children.filter_map { |child| extract_ms_text(child) }.join(" ")
+        Plurimath::Math::Function::Ms.new(text_content.empty? ? nil : text_content)
       end
 
       # MathML element: <mfrac> numerator denominator
@@ -245,16 +364,18 @@ module Plurimath
       # MathML element: <mroot> radicand index
       def mroot_to_root(root)
         children = ordered_children(root)
-        radicand = mml_to_plurimath(children[0])
-        index = mml_to_plurimath(children[1])
-        Plurimath::Math::Function::Root.new(radicand, index)
+        radicand = filter_child(mml_to_plurimath(children[0]))
+        index = filter_child(mml_to_plurimath(children[1]))
+        Plurimath::Math::Function::Root.new(index, radicand)
       end
 
       # MathML element: <mphantom> - phantom
       def mphantom_to_phantom(phantom)
         children = ordered_children(phantom)
         content = children.map { |child| mml_to_plurimath(child) }.compact
-        Plurimath::Math::Function::Phantom.new(content)
+        content_obj = wrap_children(content)
+        content_obj = normalize_phantom_child(content_obj)
+        Plurimath::Math::Function::Phantom.new(content_obj)
       end
 
       # MathML element: <menclose> - enclose
@@ -277,35 +398,45 @@ module Plurimath
       def mstyle_to_mstyle(style)
         children = ordered_children(style)
         content = children.map { |child| mml_to_plurimath(child) }.compact
+        content_obj = wrap_children(content)
 
-        # If mstyle has mathvariant, wrap content in font style
-        if style.respond_to?(:mathvariant) && style.mathvariant
-          style_name = MATHVARIANT_FONT_STYLES[style.mathvariant]
-          if style_name
-            style_class = Plurimath::Math::Function::FontStyle.const_get(style_name)
-            inner = content.size == 1 ? content.first : Plurimath::Math::Formula.new(content)
-            return style_class.new(inner)
-          end
+        has_color = style.respond_to?(:mathcolor) && style.mathcolor && !style.mathcolor.empty?
+        has_variant = style.respond_to?(:mathvariant) && style.mathvariant && !style.mathvariant.empty?
+
+        if has_color
+          content_obj = Plurimath::Math::Function::Color.new(
+            Plurimath::Math::Function::Text.new(style.mathcolor),
+            content_obj,
+          )
         end
 
-        # Apply nary conversion to children
-        content = filter_values(content)
-
-        mstyle = Plurimath::Math::Formula::Mstyle.new(content)
-        mstyle.left_right_wrapper = false
-        if style.respond_to?(:displaystyle) && !style.displaystyle.nil? && style.displaystyle.to_s != ""
-          mstyle.displaystyle = style.displaystyle
+        if has_variant
+          font_class = Plurimath::Utility::FONT_STYLES[style.mathvariant.to_sym]
+          return font_class.new(content_obj, style.mathvariant) if font_class
         end
-        mstyle
+
+        return content_obj if has_color
+
+        fill_ternary_third_values(content)
+        Plurimath::Math::Formula::Mstyle.new(
+          content,
+          display_style: boolean_to_displaystyle(style.displaystyle),
+        )
       end
 
       # MathML element: <mfenced> - fenced
       def mfenced_to_fenced(fenced)
         children = ordered_children(fenced)
-        content = children.map { |child| mml_to_plurimath(child) }.compact
-        open = fenced.open&.value || "("
-        close = fenced.close&.value || ")"
-        Plurimath::Math::Function::Fenced.new(content, open: open, close: close)
+        content = children.map { |child| mml_to_plurimath(child) }.compact.map { |child| filter_child(child) }
+        open_value = fenced.open || default_fenced_open(fenced)
+        close_value = fenced.close || default_fenced_close(fenced)
+
+        Plurimath::Math::Function::Fenced.new(
+          resolve_paren(open_value),
+          content,
+          resolve_paren(close_value),
+          { separators: fenced.separators }.compact,
+        )
       end
 
       # MathML element: <mtable> - table
@@ -352,8 +483,15 @@ module Plurimath
 
       # MathML element: <msgroup> - group
       def msgroup_to_msgroup(sgroup)
-        children = ordered_children(sgroup)
-        content = children.map { |child| mml_to_plurimath(child) }.compact
+        content = ordered_children(sgroup).filter_map do |child|
+          if child.is_a?(String)
+            next if child.strip.empty?
+
+            Plurimath::Math::Function::Text.new(child)
+          else
+            mml_to_plurimath(child)
+          end
+        end
         Plurimath::Math::Function::Msgroup.new(content)
       end
 
@@ -388,55 +526,45 @@ module Plurimath
         children = ordered_children(multiscripts)
         return Plurimath::Math::Function::Multiscript.new if children.empty?
 
-        # Find mprescripts boundary using element_order
         has_prescripts = !multiscripts.mprescripts_value.nil?
         element_order = multiscripts.element_order
         mpre_index = element_order.index { |el| el.name == "mprescripts" }
 
         if has_prescripts && mpre_index
-          # Get element names before and after mprescripts
           post_names = element_order[0...mpre_index].select { |el| el.node_type == :element }.map(&:name)
-          pre_names = element_order[(mpre_index + 1)..-1].select { |el| el.node_type == :element }.map(&:name)
+          post_element_count = post_names.size - 1
 
-          # Count post-script elements (excluding base which is first)
-          post_element_count = post_names.size - 1  # subtract base
+          base = convert_multiscript_child(children[0])
+          post_children = children[1..post_element_count].map { |child| convert_multiscript_child(child) }
+          pre_children = children[(post_element_count + 1)..-1].map { |child| convert_multiscript_child(child) }
 
-          # Split ordered children
-          base = children[0]
-          post_children = children[1..post_element_count]
-          pre_children = children[(post_element_count + 1)..-1]
-
-          base_plurimath = mml_to_plurimath(base)
-
-          # Build post-script pairs
           post_pairs = post_children.each_slice(2).to_a
-          post_subs = post_pairs.map { |pair| mml_to_plurimath(pair[0]) }
-          post_sups = post_pairs.map { |pair| mml_to_plurimath(pair[1]) if pair[1] }
+          post_subs = post_pairs.map { |pair| pair[0] }
+          post_sups = post_pairs.map { |pair| pair[1] if pair[1] }
 
-          # Build pre-script pairs
           pre_pairs = pre_children.each_slice(2).to_a
-          pre_subs = pre_pairs.map { |pair| mml_to_plurimath(pair[0]) }
-          pre_sups = pre_pairs.map { |pair| mml_to_plurimath(pair[1]) if pair[1] }
+          pre_subs = pre_pairs.map { |pair| pair[0] }.compact
+          pre_sups = pre_pairs.map { |pair| pair[1] if pair[1] }.compact
 
-          # Create base element with post-scripts
-          if post_subs.any? || post_sups.any?
-            sub_value = post_subs.first
-            sup_value = post_sups.first
-            base_with_posts = Plurimath::Math::Function::PowerBase.new(base_plurimath, sub_value, sup_value)
-          else
-            base_with_posts = base_plurimath
-          end
+          base_with_posts =
+            if post_subs.any? || post_sups.any?
+              Plurimath::Math::Function::PowerBase.new(
+                filter_child(base),
+                unwrap_single(post_subs),
+                unwrap_single(post_sups),
+              )
+            else
+              filter_child(base)
+            end
 
           Plurimath::Math::Function::Multiscript.new(base_with_posts, pre_subs, pre_sups)
         else
-          # No prescripts - children are base followed by (sub, sup) pairs
-          base = children[0]
-          base_plurimath = mml_to_plurimath(base)
-          remaining = children[1..-1]
+          base = convert_multiscript_child(children[0])
+          remaining = children[1..-1].map { |child| convert_multiscript_child(child) }
           pairs = remaining.each_slice(2).to_a
-          subscripts = pairs.map { |pair| mml_to_plurimath(pair[0]) if pair[0] }.compact
-          superscripts = pairs.map { |pair| mml_to_plurimath(pair[1]) if pair[1] }.compact
-          Plurimath::Math::Function::Multiscript.new(base_plurimath, subscripts, superscripts)
+          subscripts = pairs.map { |pair| pair[0] if pair[0] }.compact
+          superscripts = pairs.map { |pair| pair[1] if pair[1] }.compact
+          Plurimath::Math::Function::Multiscript.new(filter_child(base), subscripts, superscripts)
         end
       end
 
@@ -450,16 +578,18 @@ module Plurimath
       # MathML element: <semantics> - semantics
       def semantics_to_semantics(semantics)
         children = ordered_children(semantics)
-        # First child is the annotated math element
-        math_content = children[0] ? mml_to_plurimath(children[0]) : nil
-        Plurimath::Math::Function::Semantics.new(math_content)
+        content = filter_child(wrap_children(children.map { |child| mml_to_plurimath(child) }.compact))
+        annotations = []
+        annotations += build_annotation_entries(semantics.annotation_value, :annotation)
+        annotations += build_annotation_entries(semantics.annotation_xml_value, :"annotation-xml")
+        Plurimath::Math::Function::Semantics.new(content, annotations.empty? ? nil : annotations)
       end
 
       # MathML element: <mscarries> - carries
       def mscarries_to_scarries(scarries)
         children = ordered_children(scarries)
         content = children.map { |child| mml_to_plurimath(child) }.compact
-        Plurimath::Math::Function::Scarries.new(content)
+        Plurimath::Math::Function::Scarries.new(wrap_children(content))
       end
 
       # MathML element: <mscarry> - carry
@@ -477,10 +607,203 @@ module Plurimath
 
       # MathML element: <mspace> - space
       def mspace_to_space(space)
-        # Mspace represents horizontal whitespace
-        # Use width attribute if present, otherwise default space
-        width = space.width&.value if space.respond_to?(:width)
-        Plurimath::Math::Symbols::Space.new
+        if space.linebreak && !space.linebreak.empty?
+          Plurimath::Math::Function::Linebreak.new(
+            nil,
+            { linebreak: space.linebreak },
+          )
+        end
+      end
+
+      def text_node_to_plurimath(text)
+        return nil if text.nil? || text.match?(/\A[[:space:]]*\z/)
+
+        Plurimath::Utility.mathml_unary_classes([text], lang: :mathml)
+      end
+
+      def default_fenced_open(fenced)
+        "(" unless fenced.close
+      end
+
+      def default_fenced_close(fenced)
+        ")" unless fenced.open
+      end
+
+      def resolve_paren(value)
+        return nil unless value
+
+        Plurimath::Utility.mathml_unary_classes([value], lang: :mathml)
+      end
+
+      def extract_ms_text(node)
+        return (node.empty? ? nil : node) if node.is_a?(String)
+
+        if ms_token_element?(node)
+          return Array(node.value).join
+        end
+
+        if node.respond_to?(:each_mixed_content)
+          return ordered_children(node).filter_map { |child| extract_ms_text(child) }.join(" ")
+        end
+
+        Array(node.value).join if node.respond_to?(:value)
+      end
+
+      def ms_token_element?(node)
+        node.is_a?(Mml::V4::Mi) ||
+          node.is_a?(Mml::V4::Mn) ||
+          node.is_a?(Mml::V4::Mo) ||
+          node.is_a?(Mml::V4::Ms) ||
+          node.is_a?(Mml::V4::Mtext)
+      end
+
+      def normalize_phantom_child(child)
+        return child unless child.respond_to?(:value=) && child.respond_to?(:value)
+        return child if child.instance_of?(Plurimath::Math::Symbols::Symbol)
+        return child unless child.value.is_a?(String)
+        return child unless child.value.match?(/\A[[:space:]]|[[:space:]]\z/)
+
+        child.value = nil
+        child
+      end
+
+      def boolean_to_displaystyle(value)
+        case value
+        when "true", true then true
+        when "false", false then false
+        else true
+        end
+      end
+
+      def truthy_mathml_bool?(value)
+        value == true || value == "true"
+      end
+
+      def filter_child(value)
+        return nil if value.nil?
+        return value unless value.is_a?(Plurimath::Math::Formula)
+        return value if value.value.nil? || value.value.empty?
+
+        value.value.length == 1 ? value.value.first : value
+      end
+
+      def wrap_children(children)
+        case children.length
+        when 0 then nil
+        when 1 then children.first
+        else Plurimath::Math::Formula.new(children)
+        end
+      end
+
+      def nary_check(children)
+        return children unless children.length == 2
+
+        first = children.first
+        second = children.last
+
+        if first.is_a?(Plurimath::Math::Function::PowerBase) && first.parameter_one&.is_nary_symbol?
+          [Plurimath::Math::Function::Nary.new(
+            first.parameter_one,
+            first.parameter_two,
+            first.parameter_three,
+            second,
+          )]
+        elsif first.is_a?(Plurimath::Math::Function::Overset) && first.parameter_two&.is_nary_symbol?
+          [Plurimath::Math::Function::Nary.new(
+            first.parameter_two,
+            nil,
+            first.parameter_one,
+            second,
+            { type: "undOvr" },
+          )]
+        elsif first.is_a?(Plurimath::Math::Function::Power) && first.parameter_one&.is_nary_symbol?
+          [Plurimath::Math::Function::Nary.new(
+            first.parameter_one,
+            nil,
+            first.parameter_two,
+            second,
+            { type: "subSup" },
+          )]
+        else
+          children
+        end
+      end
+
+      def fill_ternary_third_values(values)
+        return unless values.is_a?(Array) && values.length > 1
+
+        first = values.first
+        return if preserve_separate_nary_body?(first, values[1])
+
+        if first.is_a?(Plurimath::Math::Function::Nary)
+          first.parameter_four ||= values.delete_at(1)
+        elsif first.respond_to?(:is_nary_function?) && first.is_nary_function? && !first.all_values_exist?
+          if first.respond_to?(:new_nary_function) && !first.any_value_exist?
+            values[0] = first.new_nary_function(values.delete_at(1))
+          elsif first.any_value_exist?
+            first.parameter_three = values.delete_at(1)
+          end
+        elsif value_is_ternary_or_nary?(values)
+          first.parameter_three = values.delete_at(1)
+        end
+      end
+
+      def unwrap_single(value)
+        return nil if value.nil? || (value.is_a?(Array) && value.empty?)
+        return value unless value.is_a?(Array)
+
+        value.length == 1 ? value.first : Plurimath::Math::Formula.new(value)
+      end
+
+      def preserve_separate_nary_body?(first, second)
+        return false unless first.respond_to?(:is_nary_function?) && first.is_nary_function?
+
+        normalized_second = filter_child(second)
+
+        normalized_second.is_a?(Plurimath::Math::Function::Base) ||
+          normalized_second.is_a?(Plurimath::Math::Function::PowerBase)
+      end
+
+      def preserve_explicit_nary_body!(values)
+        return unless values.is_a?(Array) && values.any?
+
+        first = values.first
+        return unless first.is_a?(Plurimath::Math::Function::Nary)
+        return unless first.options&.[](:type) == "undOvr"
+
+        body = filter_child(first.parameter_four)
+        return unless body.is_a?(Plurimath::Math::Function::Base) ||
+                      body.is_a?(Plurimath::Math::Function::PowerBase)
+
+        replacement =
+          if first.parameter_three.nil?
+            Plurimath::Math::Function::Underset.new(first.parameter_two, first.parameter_one)
+          else
+            Plurimath::Math::Function::Underover.new(
+              first.parameter_one,
+              first.parameter_two,
+              first.parameter_three,
+            )
+          end
+
+        values[0] = replacement
+        values.insert(1, body)
+      end
+
+      def convert_multiscript_child(child)
+        return Plurimath::Math::Function::None.new if child.is_a?(Mml::V4::None) || child.is_a?(Mml::V3::None)
+        return Plurimath::Math::Function::None.new if child.respond_to?(:value) && Array(child.value).join.empty?
+
+        mml_to_plurimath(child) || Plurimath::Math::Function::None.new
+      end
+
+      def build_annotation_entries(entries, tag_name)
+        return [] unless entries&.any?
+
+        entries.map do |annotation|
+          value = annotation.respond_to?(:value) ? annotation.value : annotation.to_s
+          { tag_name => [Plurimath::Math::Symbols::Symbol.new(value)] }
+        end
       end
 
       def mathml_symbol_classes
@@ -629,33 +952,16 @@ module Plurimath
         klass < Plurimath::Math::Function::UnaryFunction
       end
 
-      # Map mathvariant values to font style classes
-      MATHVARIANT_FONT_STYLES = {
-        "normal" => "Normal",
-        "italic" => "Italic",
-        "bold" => "Bold",
-        "bold-italic" => "BoldItalic",
-        "fraktur" => "Fraktur",
-        "bold-fraktur" => "BoldFraktur",
-        "script" => "Script",
-        "bold-script" => "BoldScript",
-        "monospace" => "Monospace",
-        "double-struck" => "DoubleStruck",
-        "sans-serif" => "SansSerif",
-        "bold-sans-serif" => "BoldSansSerif",
-        "sans-serif-italic" => "SansSerifItalic",
-        "sans-serif-bold-italic" => "SansSerifBoldItalic",
-      }.freeze
-
-      # Apply font styling based on mathvariant attribute
       def apply_font_style(element, result)
-        return result unless element.respond_to?(:mathvariant) && element.mathvariant
+        return result unless element.respond_to?(:mathvariant)
 
-        style_name = MATHVARIANT_FONT_STYLES[element.mathvariant]
-        return result unless style_name
+        variant = element.mathvariant
+        return result if variant.nil? || variant.empty?
 
-        style_class = Plurimath::Math::Function::FontStyle.const_get(style_name)
-        style_class.new(result)
+        font_class = Plurimath::Utility::FONT_STYLES[variant.to_sym]
+        return result unless font_class
+
+        font_class.new(result, variant)
       end
     end
   end

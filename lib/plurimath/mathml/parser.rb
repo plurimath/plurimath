@@ -10,14 +10,13 @@ module Plurimath
       end
 
       def parse
-        Models.ensure_context!
-
-        Mml.parse(
+        mml_tree = Mml.parse(
           text,
           version: 4,
-          context: Models.context_id,
           namespace_exist: namespace_exist?,
-        ).to_plurimath
+        )
+
+        Mathml::Translator.new.mml_to_plurimath(mml_tree)
       end
 
       private
