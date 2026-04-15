@@ -58,7 +58,7 @@ module Plurimath
         wrap_render_error(:asciimath) do
           value.map do |val|
             val.to_asciimath(options: asciimath_table_options(options, val))
-          end.reject(&:empty?).join(" ")
+          end.join(" ")
         end
       end
 
@@ -121,7 +121,7 @@ module Plurimath
       def to_latex(formatter: nil, unitsml: {}, options: nil)
         options ||= { formatter: formatter, unitsml: unitsml }.compact
         wrap_render_error(:latex) do
-          value.map { |val| val.to_latex(options: options) }.reject(&:empty?).join(" ")
+          value.map { |val| val.to_latex(options: options) }.join(" ")
         end
       end
 
