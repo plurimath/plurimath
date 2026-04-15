@@ -76,7 +76,8 @@ module Plurimath
 
         def wrapped_unitsml_xml(mathml, unitsml, options)
           xml = Plurimath.xml_engine.load("<mrow>#{unitsml.to_xml(options.fetch(:unitsml, {}))}</mrow>")
-          mathml.attributes[:xref] = xml.locate("*/@id").first if xml.locate("*/@id").any?
+          xref = xml.nodes.find { |node| node.respond_to?(:[]) }&.[](:id)
+          mathml[:xref] = xref if xref
           Utility.update_nodes(mathml, xml.nodes)
         end
       end

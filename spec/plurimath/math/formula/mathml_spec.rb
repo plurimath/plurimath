@@ -829,8 +829,8 @@ RSpec.describe Plurimath::Math::Formula do
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
               <mroot>
-                <mtext>Some</mtext>
                 <mtext>thing</mtext>
+                <mtext>Some</mtext>
               </mroot>
             </mstyle>
           </math>
@@ -857,10 +857,10 @@ RSpec.describe Plurimath::Math::Formula do
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
               <mroot>
-                <mtext>Some</mtext>
                 <mstyle mathvariant="bold">
                   <mtext>thing</mtext>
                 </mstyle>
+                <mtext>Some</mtext>
               </mroot>
             </mstyle>
           </math>

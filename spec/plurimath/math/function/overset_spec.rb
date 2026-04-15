@@ -98,7 +98,6 @@ RSpec.describe Plurimath::Math::Function::Overset do
         expected_value = <<~MATHML
 
           <mover>
-            <mi>n</mi>
             <mrow>
               <munderover>
                 <mo>&#x220f;</mo>
@@ -106,6 +105,7 @@ RSpec.describe Plurimath::Math::Function::Overset do
                 <mtext>so</mtext>
               </munderover>
             </mrow>
+            <mi>n</mi>
           </mover>
         MATHML
         expect(formula).to be_xml_equivalent_to(expected_value)
@@ -126,6 +126,7 @@ RSpec.describe Plurimath::Math::Function::Overset do
       it "returns mathml string" do
         expected_value = <<~MATHML
           <mover>
+            <mn>70</mn>
             <mrow>
               <munderover>
                 <mo>&#x220f;</mo>
@@ -133,8 +134,7 @@ RSpec.describe Plurimath::Math::Function::Overset do
                 <mtext>so</mtext>
               </munderover>
             </mrow>
-            <mn>70</mn>
-          </mrow>
+          </mover>
         MATHML
         expect(formula).to be_xml_equivalent_to(expected_value)
       end

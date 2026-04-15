@@ -70,8 +70,8 @@ RSpec.describe Plurimath::Math::Function::Underset do
         expected_value = <<~MATHML
 
           <munder>
-            <mi>n</mi>
             <mn>70</mn>
+            <mi>n</mi>
           </munder>
         MATHML
         expect(formula).to be_xml_equivalent_to(expected_value)
@@ -85,8 +85,8 @@ RSpec.describe Plurimath::Math::Function::Underset do
       it "returns mathml string" do
         expected_value = <<~MATHML
           <munder>
-            <mn>70</mn>
             <mi>n</mi>
+            <mn>70</mn>
           </munder>
         MATHML
         expect(formula).to be_xml_equivalent_to(expected_value)
@@ -107,6 +107,7 @@ RSpec.describe Plurimath::Math::Function::Underset do
       it "returns mathml string" do
         expected_value = <<~MATHML
           <munder>
+            <mn>70</mn>
             <mrow>
               <munderover>
                 <mo>&#x2211;</mo>
@@ -114,7 +115,6 @@ RSpec.describe Plurimath::Math::Function::Underset do
                 <mtext>so</mtext>
               </munderover>
             </mrow>
-            <mn>70</mn>
           </munder>
         MATHML
         expect(formula).to be_xml_equivalent_to(expected_value)
