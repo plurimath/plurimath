@@ -1532,8 +1532,8 @@ RSpec.describe Plurimath::Asciimath do
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
               <munder>
-                <mi>a</mi>
                 <mi>b</mi>
+                <mi>a</mi>
               </munder>
             </mstyle>
           </math>

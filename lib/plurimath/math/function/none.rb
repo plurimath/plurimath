@@ -6,12 +6,12 @@ module Plurimath
     module Function
       class None < UnaryFunction
 
-        def to_asciimath(**); ""; end
+        def to_asciimath(**); end
 
-        def to_latex(**); ""; end
+        def to_latex(**); end
 
         def to_mathml_without_math_tag(_, **)
-          nil
+          Utility.ox_element("none")
         end
 
         def to_omml_without_math_tag(_, **)

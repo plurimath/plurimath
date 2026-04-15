@@ -25,7 +25,7 @@ module Plurimath
         end
 
         def to_mathml_without_math_tag(_, **)
-          ox_element("mo") << ","
+          ox_element("mo") << (value || ",")
         end
 
         def to_omml_without_math_tag(_, **)

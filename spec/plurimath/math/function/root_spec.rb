@@ -90,7 +90,6 @@ RSpec.describe Plurimath::Math::Function::Root do
       it "returns mathml string" do
         expected_value = <<~MATHML
           <mroot>
-            <mi>n</mi>
             <mrow>
               <munderover>
                 <mo>&#x220f;</mo>
@@ -98,6 +97,7 @@ RSpec.describe Plurimath::Math::Function::Root do
                 <mtext>so</mtext>
               </munderover>
             </mrow>
+            <mi>n</mi>
           </mroot>
         MATHML
         expect(formula).to be_xml_equivalent_to(expected_value)
@@ -111,8 +111,8 @@ RSpec.describe Plurimath::Math::Function::Root do
       it "returns mathml string" do
         expected_value = <<~MATHML
           <mroot>
-            <mn>70</mn>
             <mi>n</mi>
+            <mn>70</mn>
           </mroot>
         MATHML
         expect(formula).to be_xml_equivalent_to(expected_value)
@@ -142,14 +142,14 @@ RSpec.describe Plurimath::Math::Function::Root do
           <mroot>
             <mrow>
               <munderover>
-                <mo>&#x2211;</mo>
+                <mo>&#x220f;</mo>
                 <mo>&</mo>
                 <mtext>so</mtext>
               </munderover>
             </mrow>
             <mrow>
               <munderover>
-                <mo>&#x220f;</mo>
+                <mo>&#x2211;</mo>
                 <mo>&</mo>
                 <mtext>so</mtext>
               </munderover>
