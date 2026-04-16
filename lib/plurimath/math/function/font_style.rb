@@ -23,6 +23,12 @@ module Plurimath
           parameter_one&.to_asciimath(options: options)
         end
 
+        def ==(object)
+          object.class == self.class &&
+            object.parameter_one == parameter_one &&
+            comparable_font_family(object.parameter_two) == comparable_font_family(parameter_two)
+        end
+
         def to_mathml_without_math_tag(intent, options:)
           first_value = parameter_one&.to_mathml_without_math_tag(intent, options: options)
           Utility.update_nodes(
@@ -216,6 +222,14 @@ module Plurimath
               self.parameter_two,
             )
           )
+        end
+
+        private
+
+        def comparable_font_family(value)
+          return if value.nil?
+
+          Utility::FONT_STYLES[value.to_sym] || value
         end
 
         def font_classes(object = self)

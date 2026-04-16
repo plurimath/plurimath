@@ -24,7 +24,7 @@ module Plurimath
         def ==(object)
           object.respond_to?(:value) &&
             object.class == self.class &&
-            object.value == value &&
+            comparable_value(object) == comparable_value(self) &&
             object.slashed == slashed &&
             object.mini_sub_sized == mini_sub_sized &&
             object.mini_sup_sized == mini_sup_sized &&
@@ -163,6 +163,22 @@ module Plurimath
         end
 
         private
+
+        def comparable_value(symbol)
+          normalize_value(symbol.value || symbol.send(:default_value_for_comparison))
+        end
+
+        def default_value_for_comparison
+          return if instance_of?(Symbol)
+
+          to_unicodemath
+        end
+
+        def normalize_value(raw_value)
+          return if raw_value.nil?
+
+          Utility.html_entity_to_unicode(raw_value.to_s)
+        end
 
         def t_element
           Utility.ox_element("t", namespace: "m")

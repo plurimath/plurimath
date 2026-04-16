@@ -87,6 +87,16 @@ module Plurimath
         Plurimath::Utility.mathml_unary_classes([value], lang: :mathml)
       end
 
+      def preserve_original_token_text(symbol, original_value)
+        return symbol unless symbol.respond_to?(:value=)
+        return symbol unless original_value.is_a?(String)
+        return symbol unless original_value.match?(/\A[[:space:]]|[[:space:]]\z/)
+        return symbol if symbol.instance_of?(Plurimath::Math::Symbols::Symbol)
+
+        symbol.value = original_value
+        symbol
+      end
+
       # Alignment markers affect MathML layout only; the old parser dropped them
       # before building the Plurimath AST.
       def content_children(node)
@@ -277,7 +287,7 @@ module Plurimath
         value = text_value(mi.value)
         return nil if value.nil? || (value.respond_to?(:empty?) && value.empty?)
 
-        apply_font_style(mi, mathml_symbol(value))
+        apply_font_style(mi, preserve_original_token_text(mathml_symbol(value), value))
       end
 
       # MathML element: <mo> - operator
@@ -310,6 +320,7 @@ module Plurimath
 
         result = mathml_symbol(value)
         result = Plurimath::Math::Symbols::Symbol.new(value) if result.nil? || result.is_a?(Array)
+        result = preserve_original_token_text(result, value)
         if result.instance_of?(Plurimath::Math::Symbols::Symbol)
           options = {}
           options[:rspace] = mo.rspace if mo.respond_to?(:rspace) && mo.rspace
