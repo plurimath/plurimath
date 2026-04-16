@@ -1,27 +1,10 @@
-DEFAULT_ADAPTER = RUBY_ENGINE == "opal" ? :oga : :ox
 require "mml"
 autoload :Parslet, "parslet"
 autoload :HTMLEntities, "htmlentities"
 
-def mml_adapter(adapter)
-  require "lutaml/model"
-  Mml::V4::Configuration.adapter = adapter unless Mml::V4::Configuration.adapter
-end
-
 # Select an XML engine
 require "plurimath/xml_engine"
 
-if RUBY_ENGINE == 'opal'
-  require "plurimath/setup/oga"
-  require "plurimath/setup/opal"
-  mml_adapter(:oga)
-elsif ENV['PLURIMATH_OGA']
-  require "plurimath/setup/oga"
-  mml_adapter(:oga)
-else
-  require "plurimath/setup/ox_engine"
-  mml_adapter(:ox)
-end
 
 module Plurimath
   autoload :Asciimath, "plurimath/asciimath"
@@ -40,4 +23,24 @@ module Plurimath
   autoload :Utility, "plurimath/utility"
   autoload :XmlEngine, "plurimath/xml_engine"
   autoload :Version, "plurimath/version"
+
+  def mml_adapter(adapter)
+    require "lutaml/model"
+    Mml::V4::Configuration.adapter = adapter unless Mml::V4::Configuration.adapter
+  end
+
+  module_function :mml_adapter
 end
+
+DEFAULT_ADAPTER = if RUBY_ENGINE == 'opal'
+            require "plurimath/setup/oga"
+            require "plurimath/setup/opal"
+            :oga
+          elsif ENV['PLURIMATH_OGA']
+            require "plurimath/setup/oga"
+            :oga
+          else
+            require "plurimath/setup/ox_engine"
+            :ox
+          end
+Plurimath.mml_adapter(DEFAULT_ADAPTER)

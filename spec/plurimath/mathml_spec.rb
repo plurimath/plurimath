@@ -290,7 +290,7 @@ RSpec.describe Plurimath::Mathml do
                 <mphantom>
                   <mi> y </mi>
                 </mphantom>
-                <mo> + </mo>
+                <mo>+</mo>
                 <mi> z </mi>
               </mrow>
             </mstyle>
@@ -842,14 +842,14 @@ RSpec.describe Plurimath::Mathml do
                   <mi>a</mi>
                   <mi>x</mi>
                 </msub>
-                <mo>, </mo>
+                <mo>,</mo>
                 <mi>y</mi>
                 <mo>&#x2212;</mo>
                 <msub>
                   <mi>a</mi>
                   <mi>y</mi>
                 </msub>
-                <mo>, </mo>
+                <mo>,</mo>
                 <mi>z</mi>
                 <mo>&#x2212;</mo>
                 <msub>
