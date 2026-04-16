@@ -26,6 +26,7 @@ module Plurimath
         when Mml::V4::Msub then msub_to_base(mml_node)
         when Mml::V4::Msubsup then msubsup_to_powerbase(mml_node)
         when Mml::V4::Mfrac then mfrac_to_frac(mml_node)
+        when Mml::V4::Mfraction then mfrac_to_frac(mml_node)
         when Mml::V4::Msqrt then msqrt_to_sqrt(mml_node)
         when Mml::V4::Mroot then mroot_to_root(mml_node)
         when Mml::V4::Mi then mi_to_symbol(mml_node)
@@ -42,6 +43,7 @@ module Plurimath
         when Mml::V4::Merror then merror_to_merror(mml_node)
         when Mml::V4::Mlongdiv then mlongdiv_to_longdiv(mml_node)
         when Mml::V4::Mstack then mstack_to_stackrel(mml_node)
+        when Mml::V4::Msrow then msrow_to_formula(mml_node)
         when Mml::V4::Msgroup then msgroup_to_msgroup(mml_node)
         when Mml::V4::Msline then msline_to_msline(mml_node)
         when Mml::V4::Mpadded then mpadded_to_mpadded(mml_node)
@@ -55,6 +57,8 @@ module Plurimath
         when Mml::V4::Mscarry then mscarry_to_mscarry(mml_node)
         when Mml::V4::Annotation then nil
         when Mml::V4::AnnotationXml then nil
+        when Mml::V4::Malignmark then nil
+        when Mml::V4::Maligngroup then nil
         when Mml::V4::Mspace then mspace_to_space(mml_node)
         when Mml::V4::Mprescripts then mprescripts_to_prescripts(mml_node)
         else
@@ -70,6 +74,25 @@ module Plurimath
         children = []
         node.each_mixed_content { |child| children << child }
         children
+      end
+
+      def text_value(value)
+        return if value.nil?
+        return value if value.is_a?(String)
+
+        Array(value).join
+      end
+
+      def mathml_symbol(value)
+        Plurimath::Utility.mathml_unary_classes([value], lang: :mathml)
+      end
+
+      # Alignment markers affect MathML layout only; the old parser dropped them
+      # before building the Plurimath AST.
+      def content_children(node)
+        ordered_children(node).reject do |child|
+          child.is_a?(Mml::V4::Malignmark) || child.is_a?(Mml::V4::Maligngroup)
+        end
       end
 
       # MathML element: <math>
@@ -119,7 +142,7 @@ module Plurimath
       # Note: Overset convention is parameter_one=overscript, parameter_two=base
       # (reversed from MathML document order) to match rendering methods
       def mover_to_overset(mover)
-        children = ordered_children(mover)
+        children = content_children(mover)
         base = filter_child(mml_to_plurimath(children[0]))
         overscript = filter_child(mml_to_plurimath(children[1]))
         options = {}
@@ -150,7 +173,7 @@ module Plurimath
 
       # MathML element: <munder> base underscript
       def munder_to_underset(munder)
-        children = ordered_children(munder)
+        children = content_children(munder)
         base = mml_to_plurimath(children[0])
         underscript = mml_to_plurimath(children[1])
         options = {}
@@ -181,7 +204,7 @@ module Plurimath
 
       # MathML element: <munderover> base underscript overscript
       def munderover_to_underover(munderover)
-        children = ordered_children(munderover)
+        children = content_children(munderover)
         base = filter_child(mml_to_plurimath(children[0]))
         underscript = filter_child(mml_to_plurimath(children[1]))
         overscript = filter_child(mml_to_plurimath(children[2]))
@@ -205,7 +228,7 @@ module Plurimath
 
       # MathML element: <msup> base superscript
       def msup_to_power(sup)
-        children = ordered_children(sup)
+        children = content_children(sup)
         base = filter_child(mml_to_plurimath(children[0]))
         superscript = filter_child(mml_to_plurimath(children[1]))
         if base&.is_binary_function? && !base.any_value_exist?
@@ -218,7 +241,7 @@ module Plurimath
 
       # MathML element: <msub> base subscript
       def msub_to_base(sub)
-        children = ordered_children(sub)
+        children = content_children(sub)
         base = filter_child(mml_to_plurimath(children[0]))
         subscript = filter_child(mml_to_plurimath(children[1]))
         if base&.is_binary_function? && !base.any_value_exist?
@@ -231,7 +254,7 @@ module Plurimath
 
       # MathML element: <msubsup> base subscript superscript
       def msubsup_to_powerbase(subsup)
-        children = ordered_children(subsup)
+        children = content_children(subsup)
         base = filter_child(mml_to_plurimath(children[0]))
         subscript = filter_child(mml_to_plurimath(children[1]))
         superscript = filter_child(mml_to_plurimath(children[2]))
@@ -251,48 +274,33 @@ module Plurimath
 
       # MathML element: <mi> - identifier
       def mi_to_symbol(mi)
-        value = mi.value || ""
-        return nil if value.respond_to?(:empty?) && value.empty?
+        value = text_value(mi.value)
+        return nil if value.nil? || (value.respond_to?(:empty?) && value.empty?)
 
-        # Check if it's a known function name first (only for non-whitespace values)
-        stripped = value.strip
-        function_class = MATHML_FUNCTION_CLASSES[stripped]
-        if function_class
-          return Plurimath::Math::Function.const_get(function_class).new
-        end
-        result = Plurimath::Utility.mathml_unary_classes([stripped], lang: :mathml)
-        if result.instance_of?(Plurimath::Math::Symbols::Symbol) &&
-            value.match?(/\A[[:space:]]|[[:space:]]\z/)
-          result.value = value
-        end
-        apply_font_style(mi, result)
+        apply_font_style(mi, mathml_symbol(value))
       end
 
       # MathML element: <mo> - operator
       def mo_to_symbol(mo)
-        raw_value = mo.value
-        value = raw_value || ""
+        value = text_value(mo.value)
         # Handle linebreak="newline" attribute - creates a Linebreak wrapper
         if mo.linebreak == "newline"
           attributes = {}
           attributes[:linebreakstyle] = mo.linebreakstyle if mo.linebreakstyle
-          # Use stripped for lookup, but original value to preserve whitespace
-          stripped = value.strip
-          symbol = Plurimath::Utility.mathml_unary_classes([stripped], lang: :mathml)
-          if symbol.nil? || symbol.is_a?(Array)
-            symbol = raw_value.nil? ? Plurimath::Math::Symbols::Symbol.new(nil) : Plurimath::Math::Symbols::Symbol.new(stripped)
-          end
-          if symbol.instance_of?(Plurimath::Math::Symbols::Symbol) &&
-              value.match?(/\A[[:space:]]|[[:space:]]\z/)
-            symbol.value = value
-          end
+          symbol =
+            if value.nil? || value == ""
+              Plurimath::Math::Symbols::Symbol.new(nil)
+            else
+              mathml_symbol(value)
+            end
+          symbol = Plurimath::Math::Symbols::Symbol.new(value) if symbol.nil? || symbol.is_a?(Array)
           return Plurimath::Math::Function::Linebreak.new(
             symbol,
             attributes
           )
         end
 
-        if raw_value.nil? || raw_value == ""
+        if value.nil? || value == ""
           result = Plurimath::Math::Symbols::Symbol.new(nil)
           options = {}
           options[:rspace] = mo.rspace if mo.respond_to?(:rspace) && mo.rspace
@@ -300,33 +308,26 @@ module Plurimath
           return result
         end
 
-        # Use stripped for function lookup, but original value to preserve whitespace
-        stripped = value.strip
-        result = Plurimath::Utility.mathml_unary_classes([stripped], lang: :mathml)
+        result = mathml_symbol(value)
+        result = Plurimath::Math::Symbols::Symbol.new(value) if result.nil? || result.is_a?(Array)
         if result.instance_of?(Plurimath::Math::Symbols::Symbol)
           options = {}
           options[:rspace] = mo.rspace if mo.respond_to?(:rspace) && mo.rspace
           result.options = options if options.any?
-          if value.match?(/\A[[:space:]]|[[:space:]]\z/)
-            result.value = value
-          end
-        elsif result && value.is_a?(String) && value.match?(/\A[[:space:]]|[[:space:]]\z/) &&
-              result.respond_to?(:value=)
-          result.value = value
         end
-        result
+        apply_font_style(mo, result)
       end
 
       # MathML element: <mn> - number
       def mn_to_number(mn)
-        value = mn.value || ""
+        value = text_value(mn.value) || ""
         Plurimath::Math::Number.new(value)
       end
 
       # MathML element: <mtext> - text
       def mtext_to_text(mtext)
         text_obj = Plurimath::Math::Function::Text.new
-        text_obj.value = Array(mtext.value).join
+        text_obj.value = text_value(mtext.value)
         text_obj
       end
 
@@ -344,7 +345,7 @@ module Plurimath
 
       # MathML element: <mfrac> numerator denominator
       def mfrac_to_frac(frac)
-        children = ordered_children(frac)
+        children = content_children(frac)
         numerator = mml_to_plurimath(children[0])
         denominator = mml_to_plurimath(children[1])
         options = {}
@@ -355,7 +356,7 @@ module Plurimath
 
       # MathML element: <msqrt> - square root
       def msqrt_to_sqrt(sqrt)
-        children = ordered_children(sqrt)
+        children = content_children(sqrt)
         radicand = children.map { |child| mml_to_plurimath(child) }.compact
         radicand = radicand.first if radicand.size == 1
         Plurimath::Math::Function::Sqrt.new(radicand)
@@ -363,7 +364,7 @@ module Plurimath
 
       # MathML element: <mroot> radicand index
       def mroot_to_root(root)
-        children = ordered_children(root)
+        children = content_children(root)
         radicand = filter_child(mml_to_plurimath(children[0]))
         index = filter_child(mml_to_plurimath(children[1]))
         Plurimath::Math::Function::Root.new(index, radicand)
@@ -391,7 +392,7 @@ module Plurimath
       def merror_to_merror(error)
         children = ordered_children(error)
         content = children.map { |child| mml_to_plurimath(child) }.compact
-        Plurimath::Math::Function::Merror.new(content)
+        Plurimath::Math::Function::Merror.new(wrap_children(content))
       end
 
       # MathML element: <mstyle> - style
@@ -441,11 +442,7 @@ module Plurimath
 
       # MathML element: <mtable> - table
       def mtable_to_table(table)
-        rows = table.mtr_value || []
-        table_content = rows.map do |row|
-          cells = ordered_children(row).map { |cell| mml_to_plurimath(cell) }
-          Plurimath::Math::Function::Tr.new(cells)
-        end
+        table_content = ordered_children(table).filter_map { |row| mml_to_plurimath(row) }
         table_obj = Plurimath::Math::Function::Table.new(table_content)
         # Set table attributes
         table_obj.frame = table.frame if table.respond_to?(:frame) && table.frame
@@ -478,7 +475,16 @@ module Plurimath
       def mstack_to_stackrel(stack)
         children = ordered_children(stack)
         content = children.map { |child| mml_to_plurimath(child) }.compact
-        Plurimath::Math::Function::Stackrel.new(content)
+        Plurimath::Math::Function::Stackrel.new(wrap_children(content))
+      end
+
+      # MathML element: <msrow> - stack row
+      def msrow_to_formula(msrow)
+        children = ordered_children(msrow)
+        content = children.map { |child| mml_to_plurimath(child) }.compact
+        return nil if content.empty?
+
+        Plurimath::Math::Formula.new(content)
       end
 
       # MathML element: <msgroup> - group
@@ -499,7 +505,7 @@ module Plurimath
       def msline_to_msline(sline)
         children = ordered_children(sline)
         content = children.map { |child| mml_to_plurimath(child) }.compact
-        Plurimath::Math::Function::Msline.new(content)
+        Plurimath::Math::Function::Msline.new(wrap_children(content))
       end
 
       # MathML element: <mpadded> - padded
@@ -510,7 +516,7 @@ module Plurimath
         options[:height] = padded.height if padded.height
         options[:depth] = padded.depth if padded.depth
         options[:width] = padded.width if padded.width
-        Plurimath::Math::Function::Mpadded.new(content, options)
+        Plurimath::Math::Function::Mpadded.new(wrap_children(content), options)
       end
 
       # MathML element: <mglyph> - glyph
@@ -564,7 +570,18 @@ module Plurimath
           pairs = remaining.each_slice(2).to_a
           subscripts = pairs.map { |pair| pair[0] if pair[0] }.compact
           superscripts = pairs.map { |pair| pair[1] if pair[1] }.compact
-          Plurimath::Math::Function::Multiscript.new(filter_child(base), subscripts, superscripts)
+          base_with_posts =
+            if subscripts.any? || superscripts.any?
+              Plurimath::Math::Function::PowerBase.new(
+                filter_child(base),
+                unwrap_single(subscripts),
+                unwrap_single(superscripts),
+              )
+            else
+              filter_child(base)
+            end
+
+          Plurimath::Math::Function::Multiscript.new(base_with_posts)
         end
       end
 
@@ -572,7 +589,8 @@ module Plurimath
       def mlabeledtr_to_mlabeledtr(labeledtr)
         children = ordered_children(labeledtr)
         content = children.map { |child| mml_to_plurimath(child) }.compact
-        Plurimath::Math::Function::Mlabeledtr.new(content)
+        label = labeledtr.id && Plurimath::Math::Function::Text.new(labeledtr.id)
+        Plurimath::Math::Function::Mlabeledtr.new(content, label)
       end
 
       # MathML element: <semantics> - semantics
@@ -593,10 +611,10 @@ module Plurimath
       end
 
       # MathML element: <mscarry> - carry
-      def mscarry_to_mscarry(scarry)
-        children = ordered_children(scarry)
-        content = children.map { |child| mml_to_plurimath(child) }.compact
-        Plurimath::Math::Function::Scarry.new(content)
+      # The legacy MathML flow treated <mscarry> as a layout marker inside
+      # <mscarries>, so it was removed before AST construction.
+      def mscarry_to_mscarry(_scarry)
+        nil
       end
 
       # MathML element: <mprescripts> - prescripts marker
@@ -618,7 +636,7 @@ module Plurimath
       def text_node_to_plurimath(text)
         return nil if text.nil? || text.match?(/\A[[:space:]]*\z/)
 
-        Plurimath::Utility.mathml_unary_classes([text], lang: :mathml)
+        mathml_symbol(text)
       end
 
       def default_fenced_open(fenced)
@@ -632,7 +650,7 @@ module Plurimath
       def resolve_paren(value)
         return nil unless value
 
-        Plurimath::Utility.mathml_unary_classes([value], lang: :mathml)
+        mathml_symbol(value)
       end
 
       def extract_ms_text(node)
@@ -805,103 +823,6 @@ module Plurimath
           { tag_name => [Plurimath::Math::Symbols::Symbol.new(value)] }
         end
       end
-
-      def mathml_symbol_classes
-        @mathml_symbol_classes ||= self.class.build_mathml_symbol_lookup.freeze
-      end
-
-      # Build a lookup hash mapping mathml values to Symbol class names
-      def self.build_mathml_symbol_lookup
-        lookup = {}
-        excluded = %w[Lparen Rparen]
-        Plurimath::Math::Symbols.constants.grep(/^[A-Z][a-z]+$/).each do |const_name|
-          next if excluded.include?(const_name.to_s)
-          klass = Plurimath::Math::Symbols.const_get(const_name)
-          next unless klass.respond_to?(:input) && klass < Plurimath::Math::Symbols::Symbol
-          mathml_inputs = klass.input(:mathml)
-          next unless mathml_inputs
-          Array(mathml_inputs).each do |mathml_value|
-            # Normalize entity form &#x3b1; to unicode α
-            normalized = normalize_mathml_value(mathml_value)
-            lookup[normalized] = const_name
-          end
-        end
-        lookup
-      end
-
-      def self.normalize_mathml_value(value)
-        if value.start_with?("&#x") && value.end_with?(";")
-          [value[3..-2].to_i(16)].pack("U")
-        else
-          value
-        end
-      end
-
-      # Build a lookup hash mapping MathML identifier values to Function class names
-      MATHML_FUNCTION_CLASSES = {
-        # Trigonometric functions
-        "sin"   => "Sin",
-        "cos"   => "Cos",
-        "tan"   => "Tan",
-        "cot"   => "Cot",
-        "sec"   => "Sec",
-        "csc"   => "Csc",
-        # Hyperbolic functions
-        "sinh"  => "Sinh",
-        "cosh"  => "Cosh",
-        "tanh"  => "Tanh",
-        "coth"  => "Coth",
-        "sech"  => "Sech",
-        "csch"  => "Csch",
-        # Inverse trigonometric functions
-        "arcsin"  => "Arcsin",
-        "arccos"  => "Arccos",
-        "arctan"  => "Arctan",
-        "arccot"  => "Arccot",
-        "arcsec"  => "Arcsec",
-        "arccsc"  => "Arccsc",
-        # Inverse hyperbolic functions
-        "arsinh"  => "Arsinh",
-        "arcosh"  => "Arcosh",
-        "artanh"  => "Artanh",
-        "arcoth"  => "Arcoth",
-        "arsech"  => "Arsech",
-        "arcsch"  => "Arcsch",
-        # Exponential and logarithmic
-        "exp"   => "Exp",
-        "log"   => "Log",
-        "ln"    => "Ln",
-        "lg"    => "Lg",
-        # Limits and extrema
-        "lim"   => "Lim",
-        "liminf" => "Liminf",
-        "limsup" => "Limsup",
-        "inf"   => "Inf",
-        "sup"   => "Sup",
-        "max"   => "Max",
-        "min"   => "Min",
-        # Other mathematical functions
-        "det"   => "Det",
-        "gcd"   => "Gcd",
-        "dim"   => "Dim",
-        "hom"   => "Hom",
-        "ker"   => "Ker",
-        "deg"   => "Deg",
-        "mod"   => "Mod",
-        "arg"   => "Arg",
-        # Operators as functions
-        "abs"   => "Abs",
-        "norm"  => "Norm",
-        "floor" => "Floor",
-        "ceil"  => "Ceil",
-        "sgn"   => "Sgn",
-        # Sum and product
-        "sum"   => "Sum",
-        "prod"  => "Prod",
-        # Integral
-        "int"   => "Int",
-        "oint"  => "Oint",
-      }.freeze
 
       # Heuristic: combine function name with following opening parenthesis
       # This replicates old parser behavior for cases like <mi>cos</mi><mo>(</mo>
