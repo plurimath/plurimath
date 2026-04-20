@@ -135,6 +135,8 @@ module Plurimath
             return power_base.to_omml_without_math_tag(display_style, options: options)
           end
 
+          # Build Overset from source argument positions, not OMML child names,
+          # so shared under/over functions keep the same format-neutral model.
           overset = Overset.new(first_value, parameter_two)
           return Array(overset.to_omml_without_math_tag(display_style, options: options)) unless parameter_one
 
