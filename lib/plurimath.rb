@@ -5,7 +5,6 @@ autoload :HTMLEntities, "htmlentities"
 # Select an XML engine
 require "plurimath/xml_engine"
 
-
 module Plurimath
   autoload :Asciimath, "plurimath/asciimath"
   autoload :Cli, "plurimath/cli" unless RUBY_ENGINE == "opal"
@@ -32,15 +31,17 @@ module Plurimath
   module_function :mml_adapter
 end
 
-DEFAULT_ADAPTER = if RUBY_ENGINE == 'opal'
-            require "plurimath/setup/oga"
-            require "plurimath/setup/opal"
-            :oga
-          elsif ENV['PLURIMATH_OGA']
-            require "plurimath/setup/oga"
-            :oga
-          else
-            require "plurimath/setup/ox_engine"
-            :ox
-          end
-Plurimath.mml_adapter(DEFAULT_ADAPTER)
+default_adapter =
+  if RUBY_ENGINE == "opal"
+    require "plurimath/setup/oga"
+    require "plurimath/setup/opal"
+    :oga
+  elsif ENV["PLURIMATH_OGA"]
+    require "plurimath/setup/oga"
+    :oga
+  else
+    require "plurimath/setup/ox_engine"
+    :ox
+  end
+
+Plurimath.mml_adapter(default_adapter)

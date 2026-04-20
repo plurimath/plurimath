@@ -264,6 +264,8 @@ module Plurimath
           function_class.parameter_one = Utility.filter_values(lim.flatten.compact)
           function_class
         else
+          # OMML is parsed back into Overset's source argument order so the
+          # internal model stays format-neutral across conversion paths.
           Math::Function::Overset.new(
             first_value,
             lim_values[1],

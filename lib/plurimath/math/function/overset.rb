@@ -46,6 +46,9 @@ module Plurimath
             limupp,
             [
               limupppr,
+              # Overset preserves Plurimath's source argument order across
+              # formats; OMML uses this mapping to avoid remapping fields during
+              # MathML/UnicodeMath/OMML round-trips.
               omml_parameter(parameter_one, display_style, tag_name: "e", options: options),
               omml_parameter(parameter_two, display_style, tag_name: "lim", options: options),
             ],

@@ -188,6 +188,8 @@ module Plurimath
         end
 
         def underover(display_style, options:)
+          # Build Overset from source argument positions, not OMML child names,
+          # so shared under/over functions keep the same format-neutral model.
           overset = Overset.new(parameter_one, parameter_three)
           return overset.to_omml_without_math_tag(display_style, options: options) unless parameter_two
 
