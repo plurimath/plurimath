@@ -105,7 +105,18 @@ def write_intent_doc_file(file)
   file.write("\nIntent for unary classes like, sin, cos, tan, etc. will be `Function`.\n")
 end
 
+def require_math_function_files
+  (
+    Dir.glob(File.join(__dir__, "lib/plurimath/math/function", "*.rb")) +
+    Dir.glob(File.join(__dir__, "lib/plurimath/math/function", "*", "*.rb"))
+  ).each do |file|
+    require file
+  end
+end
+
 def intent_classes
+  require_math_function_files
+
   intent_classes = [
     Plurimath::Math::Function::TernaryFunction.descendants,
     Plurimath::Math::Function::BinaryFunction.descendants,
