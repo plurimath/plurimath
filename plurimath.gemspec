@@ -29,6 +29,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'thor'
   spec.add_dependency 'parslet'
   spec.add_dependency 'ostruct'
+  spec.add_dependency 'htmlentities'
   spec.add_dependency 'unitsml', "~> 0.6.2"
   spec.add_dependency 'bigdecimal'
   spec.add_dependency 'lutaml-model', "~> 0.8.0"
