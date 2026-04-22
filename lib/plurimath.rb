@@ -1,6 +1,6 @@
 require "mml"
-autoload :Parslet, "parslet"
-autoload :HTMLEntities, "htmlentities"
+require "parslet"
+require "htmlentities"
 
 # Select an XML engine
 require "plurimath/xml_engine"
