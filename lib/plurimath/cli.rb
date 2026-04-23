@@ -46,7 +46,7 @@ module Plurimath
     def convert
       input          = options[:input]
       input_string   = options[:file_path] ? File.read(options[:file_path]) : input
-      warn_and_exit("missing generator argument --input or --file-input") unless input_string
+      warn_and_exit("missing generator argument --input or --file-path") unless input_string
 
       input_format   = options[:input_format]
       output_format  = options[:output_format]

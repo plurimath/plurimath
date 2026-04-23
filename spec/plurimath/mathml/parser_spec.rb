@@ -69,6 +69,61 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
   end
 
+  context "when MathML contains an XML declaration" do
+    let(:exp) do
+      <<~MATHML
+        <?xml version="1.0" encoding="UTF-8"?>
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <mi>x</mi>
+        </math>
+      MATHML
+    end
+
+    it "parses namespaced MathML correctly" do
+      expected_value = Plurimath::Math::Formula.new([
+        Plurimath::Math::Symbols::Symbol.new("x"),
+      ])
+
+      expect(formula).to eq(expected_value)
+    end
+  end
+
+  context "when MathML uses a namespace prefix" do
+    let(:exp) do
+      <<~MATHML
+        <m:math xmlns:m="http://www.w3.org/1998/Math/MathML">
+          <m:mi>x</m:mi>
+        </m:math>
+      MATHML
+    end
+
+    it "parses prefixed MathML correctly" do
+      expected_value = Plurimath::Math::Formula.new([
+        Plurimath::Math::Symbols::Symbol.new("x"),
+      ])
+
+      expect(formula).to eq(expected_value)
+    end
+  end
+
+  context "when MathML has no namespace" do
+    let(:exp) do
+      <<~MATHML
+        <math>
+          <mi>x</mi>
+        </math>
+      MATHML
+    end
+
+    it "normalizes the namespace before parsing" do
+      expected_value = Plurimath::Math::Formula.new([
+        Plurimath::Math::Symbols::Symbol.new("x"),
+      ])
+
+      expect(formula).to eq(expected_value)
+    end
+  end
+
   context "contains mathml string of sum with text formula" do
     let(:exp) {
       <<~MATHML

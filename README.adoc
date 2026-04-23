@@ -188,7 +188,7 @@ formula = Plurimath::Math.parse(latex, :latex)
 [source,ruby]
 ----
 unicodemath = "sin(1)"
-formula = Plurimath::Math.parse(unicodemath, :unicodemath)
+formula = Plurimath::Math.parse(unicodemath, :unicode)
 ----
 
 ==== OMML Formula example

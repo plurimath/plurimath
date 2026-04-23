@@ -3,6 +3,11 @@
 module Plurimath
   class Mathml
     class Parser
+      # Matches a math root tag, including prefixed forms, only when that tag
+      # carries an xmlns or xmlns:* declaration.
+      ROOT_MATH_NAMESPACE_PATTERN =
+        /<(?:[\w.-]+:)?math\b[^>]*\sxmlns(?::[\w.-]+)?\s*=/.freeze
+
       attr_accessor :text
 
       def initialize(text)
@@ -22,7 +27,7 @@ module Plurimath
       private
 
       def namespace_exist?
-        text.split(">").first.include?(" xmlns=")
+        text.match?(ROOT_MATH_NAMESPACE_PATTERN)
       end
     end
   end

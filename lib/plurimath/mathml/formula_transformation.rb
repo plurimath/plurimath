@@ -31,6 +31,9 @@ module Plurimath
         end
       end
 
+      # Preserve an explicitly missing side of mfenced. If one delimiter is
+      # present and the other is omitted, keep the omitted side nil so later
+      # renderers do not materialize a fence the source did not carry.
       def default_fenced_open(fenced)
         "(" unless fenced.close
       end

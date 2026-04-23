@@ -28,7 +28,7 @@ DOC_FILES.each do |file_name, type|
 end
 
 def write_doc_file(doc_file, type:)
-  File.open(doc_file, "a") do |file|
+  File.open(doc_file, "w") do |file|
     case type
     when :intent
       write_intent_doc_file(file)
