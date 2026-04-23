@@ -1809,5 +1809,67 @@ RSpec.describe Plurimath::Asciimath::Parser do
         expect(formula).to eq(expected_value)
       end
     end
+    context "when contains ZZ as double-struck symbol" do
+      let(:string) { "ZZ" }
+
+      it "returns formula with Zz symbol" do
+        expected_value = Plurimath::Math::Formula.new([
+          Plurimath::Math::Symbols::Zz.new,
+        ])
+        expect(formula).to eq(expected_value)
+      end
+    end
+
+    context "when contains ddots symbol distinct from ddot unary" do
+      let(:string) { "ddots" }
+
+      it "returns formula with Ddots symbol" do
+        expected_value = Plurimath::Math::Formula.new([
+          Plurimath::Math::Symbols::Ddots.new,
+        ])
+        expect(formula).to eq(expected_value)
+      end
+    end
+
+    context "when contains ddot as unary function with argument" do
+      let(:string) { "ddot x" }
+
+      it "returns formula with Ddot function" do
+        expected_value = Plurimath::Math::Formula.new([
+          Plurimath::Math::Function::Ddot.new(
+            Plurimath::Math::Symbols::Symbol.new("x"),
+          )
+        ])
+        expect(formula).to eq(expected_value)
+      end
+    end
+
+    context "when contains bb as font style with argument" do
+      let(:string) { "bb x" }
+
+      it "returns formula with Bold font style" do
+        expected_value = Plurimath::Math::Formula.new([
+          Plurimath::Math::Function::FontStyle::Bold.new(
+            Plurimath::Math::Symbols::Symbol.new("x"),
+            "bb",
+          )
+        ])
+        expect(formula).to eq(expected_value)
+      end
+    end
+
+    context "when contains all special bold alphabets" do
+      let(:string) { "RR NN QQ CC" }
+
+      it "returns formula with double-struck symbols" do
+        expected_value = Plurimath::Math::Formula.new([
+          Plurimath::Math::Symbols::Rr.new,
+          Plurimath::Math::Symbols::Nn.new,
+          Plurimath::Math::Symbols::Qq.new,
+          Plurimath::Math::Symbols::Cc.new,
+        ])
+        expect(formula).to eq(expected_value)
+      end
+    end
   end
 end

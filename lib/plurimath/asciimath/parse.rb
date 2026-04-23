@@ -77,7 +77,7 @@ module Plurimath
         sub_sup_classes |
           binary_classes |
           ternary_classes |
-          hash_to_expression(Constants.precompile_constants) |
+          hash_to_expression_grouped(Constants.precompile_constants) |
           (match(/[0-9]/).as(:number) >> str(",").as(:comma)).repeat(1).as(:comma_separated) |
           quoted_text |
           (str("d").as(:d) >> str("x").as(:x)).as(:intermediate_exp) |
@@ -178,21 +178,25 @@ module Plurimath
         end
       end
 
-      def hash_to_expression(arr)
-        type = arr.first.class
-        @@expression ||= arr.reduce do |expression, expr_string|
-          expression = dynamic_parser_rules(expression) if expression.is_a?(type)
-          expression | dynamic_parser_rules(expr_string)
+      def hash_to_expression_grouped(grouped)
+        @@expression ||= combine_alternatives(grouped) do |kind, values|
+          rules = combine_alternatives(values) { |v| rule_for(kind, v) }
+          kind == :symbol ? (str("\\").as(:slash) >> match("\s").repeat >> str("\n")) | rules : rules
         end
       end
 
-      def dynamic_parser_rules(expr)
-        first_value = str(expr.first.to_s)
-        case expr.last
-        when :symbol then (str("\\").as(:slash) >> match("\s").repeat >> str("\n")) | first_value.as(:symbol)
-        when :unary_class then unary_functions(first_value)
-        when :fonts then first_value.as(:fonts_class) >> space? >> sequence.as(:fonts_value)
-        when :special_fonts then first_value.as(:bold_fonts)
+      def rule_for(kind, value)
+        case kind
+        when :symbol      then str(value).as(:symbol)
+        when :unary_class then unary_functions(str(value))
+        when :fonts       then str(value).as(:fonts_class) >> space? >> sequence.as(:fonts_value)
+        end
+      end
+
+      def combine_alternatives(collection)
+        collection.reduce(nil) do |acc, item|
+          rule = yield(*item)
+          acc ? (acc | rule) : rule
         end
       end
 

@@ -196,9 +196,35 @@ module Plurimath
       end
 
       def hash_to_expression(hash)
-        @@expression ||= hash.reduce do |expression, (key, value)|
-          expression = dynamic_rules(expression.first, expression.last) if expression.is_a?(Array)
-          expression | dynamic_rules(key, value)
+        @@expression ||= hash_to_expression_impl(hash)
+      end
+
+      def hash_to_expression_impl(hash)
+        symbol_acc = []
+        expressions = []
+        hash.each do |(key, value)|
+          if value == :symbols
+            symbol_acc << key
+          else
+            flush_symbols(symbol_acc, expressions)
+            expressions << dynamic_rules(key, value)
+          end
+        end
+        flush_symbols(symbol_acc, expressions)
+        combine_alternatives(expressions)
+      end
+
+      def flush_symbols(symbol_acc, expressions)
+        return if symbol_acc.empty?
+
+        expressions << (slash >> combine_alternatives(symbol_acc) { |v| str(v.to_s).as(:symbols) })
+        symbol_acc.clear
+      end
+
+      def combine_alternatives(collection)
+        collection.reduce(nil) do |acc, item|
+          rule = block_given? ? yield(item) : item
+          acc ? (acc | rule) : rule
         end
       end
 
