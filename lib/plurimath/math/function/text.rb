@@ -97,7 +97,7 @@ module Plurimath
           text = text.join if text.is_a?(Array)
           entities = HTMLEntities.new
           symbols  = Mathml::Constants::UNICODE_SYMBOLS.transform_keys(&:to_s)
-          text     = entities.encode(text, :hexadecimal)
+          text     = entities.encode(entities.decode(text), :hexadecimal)
           symbols.each do |code, string|
             text = text.gsub(code.downcase, "unicode[:#{string}]")
           end
