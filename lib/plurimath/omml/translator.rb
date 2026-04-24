@@ -237,8 +237,8 @@ module Plurimath
 
       def delimiter_parens(properties)
         [
-          delimiter_symbol(first_omml_child(properties&.beg_chr)&.val),
-          delimiter_symbol(first_omml_child(properties&.end_chr)&.val),
+          delimiter_boundary(first_omml_child(properties&.beg_chr), "("),
+          delimiter_boundary(first_omml_child(properties&.end_chr), ")"),
         ]
       end
 
@@ -309,8 +309,17 @@ module Plurimath
         accent = chr ? Utility.mathml_unary_classes([chr], lang: :omml) : Math::Function::Hat.new
         value = [accent, omml_argument_value(node.e)]
         Utility.unary_function_classes(value, lang: :omml)
-        value.first.attributes = { accent: true }
-        value.first
+        accent_to_math_function(value)
+      end
+
+      def accent_to_math_function(value)
+        accent = value.first
+        unless accent.is_a?(Math::Function::UnaryFunction)
+          return Math::Function::Overset.new(value.last, accent)
+        end
+
+        accent.attributes = { accent: true }
+        accent
       end
 
       def bar_to_plurimath(node)
@@ -418,6 +427,12 @@ module Plurimath
         return if value.nil? || value.empty?
 
         Utility.symbol_object(Utility.string_to_html_entity(value), lang: :omml)
+      end
+
+      def delimiter_boundary(character, default_value)
+        return delimiter_symbol(default_value) unless character
+
+        delimiter_symbol(character.val)
       end
     end
   end
