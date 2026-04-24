@@ -31,6 +31,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "htmlentities"
   spec.add_dependency "lutaml-model", "~> 0.8.0"
   spec.add_dependency "mml", "~> 2.3.6"
+  spec.add_dependency "omml", "~> 0.1.0"
   spec.add_dependency "ostruct"
   spec.add_dependency "ox"
   spec.add_dependency "parslet"
