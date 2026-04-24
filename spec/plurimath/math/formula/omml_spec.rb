@@ -446,7 +446,7 @@ RSpec.describe Plurimath::Math::Formula do
     end
 
     context "contains #045.omml" do
-      let(:file_name) { "spec/plurimath/fixtures/omml/045.omml" }
+      let(:file_name) { "spec/plurimath/fixtures/omml/expected/045.omml" }
       let(:exp) { ExpectedValues::EX_045 }
 
       it "matches open and close tag" do
@@ -466,7 +466,7 @@ RSpec.describe Plurimath::Math::Formula do
     end
 
     context "contains #047.omml" do
-      let(:file_name) { "spec/plurimath/fixtures/omml/047.omml" }
+      let(:file_name) { "spec/plurimath/fixtures/omml/expected/047.omml" }
       let(:exp) { ExpectedValues::EX_047 }
 
       it "matches open and close tag" do
@@ -486,7 +486,7 @@ RSpec.describe Plurimath::Math::Formula do
     end
 
     context "contains #049.omml" do
-      let(:file_name) { "spec/plurimath/fixtures/omml/049.omml" }
+      let(:file_name) { "spec/plurimath/fixtures/omml/expected/049.omml" }
       let(:exp) { ExpectedValues::EX_049 }
 
       it "matches open and close tag" do
@@ -496,7 +496,7 @@ RSpec.describe Plurimath::Math::Formula do
     end
 
     context "contains #050.omml" do
-      let(:file_name) { "spec/plurimath/fixtures/omml/050.omml" }
+      let(:file_name) { "spec/plurimath/fixtures/omml/expected/050.omml" }
       let(:exp) { ExpectedValues::EX_050 }
 
       it "matches open and close tag" do
@@ -616,7 +616,7 @@ RSpec.describe Plurimath::Math::Formula do
     end
 
     context "contains #062.omml" do
-      let(:file_name) { "spec/plurimath/fixtures/omml/062.omml" }
+      let(:file_name) { "spec/plurimath/fixtures/omml/expected/062.omml" }
       let(:exp) { ExpectedValues::EX_062 }
 
       it "matches open and close tag" do
@@ -656,7 +656,7 @@ RSpec.describe Plurimath::Math::Formula do
     end
 
     context "contains #066.omml" do
-      let(:file_name) { "spec/plurimath/fixtures/omml/066.omml" }
+      let(:file_name) { "spec/plurimath/fixtures/omml/expected/066.omml" }
       let(:exp) { ExpectedValues::EX_066 }
 
       it "matches open and close tag" do
@@ -666,7 +666,7 @@ RSpec.describe Plurimath::Math::Formula do
     end
 
     context "contains #067.omml" do
-      let(:file_name) { "spec/plurimath/fixtures/omml/067.omml" }
+      let(:file_name) { "spec/plurimath/fixtures/omml/expected/067.omml" }
       let(:exp) { ExpectedValues::EX_067 }
 
       it "matches open and close tag" do
@@ -686,7 +686,7 @@ RSpec.describe Plurimath::Math::Formula do
     end
 
     context "contains #069.omml" do
-      let(:file_name) { "spec/plurimath/fixtures/omml/069.omml" }
+      let(:file_name) { "spec/plurimath/fixtures/omml/expected/069.omml" }
       let(:exp) { ExpectedValues::EX_069 }
 
       it "matches open and close tag" do
@@ -696,7 +696,7 @@ RSpec.describe Plurimath::Math::Formula do
     end
 
     context "contains #070.omml" do
-      let(:file_name) { "spec/plurimath/fixtures/omml/070.omml" }
+      let(:file_name) { "spec/plurimath/fixtures/omml/expected/070.omml" }
       let(:exp) { ExpectedValues::EX_070 }
 
       it "matches open and close tag" do
@@ -706,7 +706,7 @@ RSpec.describe Plurimath::Math::Formula do
     end
 
     context "contains #071.omml" do
-      let(:file_name) { "spec/plurimath/fixtures/omml/071.omml" }
+      let(:file_name) { "spec/plurimath/fixtures/omml/expected/071.omml" }
       let(:exp) { ExpectedValues::EX_071 }
 
       it "matches open and close tag" do
@@ -1086,7 +1086,7 @@ RSpec.describe Plurimath::Math::Formula do
     end
 
     context "contains #109.omml" do
-      let(:file_name) { "spec/plurimath/fixtures/omml/109.omml" }
+      let(:file_name) { "spec/plurimath/fixtures/omml/expected/109.omml" }
       let(:exp) { ExpectedValues::EX_109 }
 
       it "matches open and close tag" do
@@ -1326,7 +1326,7 @@ RSpec.describe Plurimath::Math::Formula do
     end
 
     context "contains #133.omml" do
-      let(:file_name) { "spec/plurimath/fixtures/omml/133.omml" }
+      let(:file_name) { "spec/plurimath/fixtures/omml/expected/133.omml" }
       let(:exp) { ExpectedValues::EX_133 }
 
       it "matches open and close tag" do
@@ -1856,7 +1856,7 @@ RSpec.describe Plurimath::Math::Formula do
     end
 
     context "contains #issue-158.omml" do
-      let(:file_name) { "spec/plurimath/fixtures/omml/issue-158.omml" }
+      let(:file_name) { "spec/plurimath/fixtures/omml/expected/issue-158.omml" }
       let(:exp) { ExpectedValues::EXIssue158 }
 
       it "matches open and close tag" do

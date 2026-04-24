@@ -331,14 +331,14 @@ module ExpectedValues
       Plurimath::Math::Function::Text.new("k", lang: :omml),
       nil,
       Plurimath::Math::Function::Fenced.new(
-        nil,
+        Plurimath::Math::Symbols::Paren::Lround.new,
         [
           Plurimath::Math::Function::Frac.new(
             Plurimath::Math::Function::Text.new("n", lang: :omml),
             Plurimath::Math::Function::Text.new("k", lang: :omml),
           ),
         ],
-        nil,
+        Plurimath::Math::Symbols::Paren::Rround.new,
         { sepChr: "" },
       )
     ),
@@ -372,11 +372,11 @@ module ExpectedValues
       Plurimath::Math::Formula.new([
         Plurimath::Math::Function::Text.new("P", lang: :omml),
         Plurimath::Math::Function::Fenced.new(
-          nil,
+          Plurimath::Math::Symbols::Paren::Lround.new,
           [
             Plurimath::Math::Function::Text.new("i,j", lang: :omml),
           ],
-          nil,
+          Plurimath::Math::Symbols::Paren::Rround.new,
           { sepChr: "" },
         ),
       ])
@@ -398,7 +398,7 @@ module ExpectedValues
       Plurimath::Math::Function::Text.new("n=1", lang: :omml),
       Plurimath::Math::Function::Text.new("m", lang: :omml),
       Plurimath::Math::Function::Fenced.new(
-        nil,
+        Plurimath::Math::Symbols::Paren::Lround.new,
         [
           Plurimath::Math::Function::Base.new(
             Plurimath::Math::Function::Text.new("X", lang: :omml),
@@ -410,7 +410,7 @@ module ExpectedValues
             Plurimath::Math::Function::Text.new("n", lang: :omml),
           )
         ],
-        nil,
+        Plurimath::Math::Symbols::Paren::Rround.new,
         { sepChr: "" },
       ),
       { type: "undOvr" }
@@ -418,11 +418,11 @@ module ExpectedValues
   ])
   EX_050 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Fenced.new(
-      nil,
+      Plurimath::Math::Symbols::Paren::Lround.new,
       [
         Plurimath::Math::Number.new("1"),
       ],
-      nil,
+      Plurimath::Math::Symbols::Paren::Rround.new,
       { sepChr: "" },
     )
   ])
@@ -538,12 +538,12 @@ module ExpectedValues
   ])
   EX_062 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Fenced.new(
-      nil,
+      Plurimath::Math::Symbols::Paren::Lround.new,
       [
         Plurimath::Math::Number.new("1"),
         Plurimath::Math::Number.new("2"),
       ],
-      nil,
+      Plurimath::Math::Symbols::Paren::Rround.new,
       { sepChr: "" },
     )
   ])
@@ -596,6 +596,7 @@ module ExpectedValues
         ])
       ],
       Plurimath::Math::Symbols::Paren::Lcurly.new,
+      Plurimath::Math::Symbols::Paren::Rround.new,
     )
   ])
   EX_067 = Plurimath::Math::Formula.new([
@@ -618,6 +619,7 @@ module ExpectedValues
         ])
       ],
       Plurimath::Math::Symbols::Paren::Lcurly.new,
+      Plurimath::Math::Symbols::Paren::Rround.new,
     )
   ])
   EX_068 = Plurimath::Math::Formula.new([
@@ -628,25 +630,25 @@ module ExpectedValues
   ])
   EX_069 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Fenced.new(
-      nil,
+      Plurimath::Math::Symbols::Paren::Lround.new,
       [
         Plurimath::Math::Function::Frac.new(
           Plurimath::Math::Function::Text.new("n", lang: :omml),
           Plurimath::Math::Function::Text.new("m", lang: :omml),
         )
       ],
-      nil,
+      Plurimath::Math::Symbols::Paren::Rround.new,
       { sepChr: "" },
     )
   ])
   EX_070 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Text.new("f", lang: :omml),
     Plurimath::Math::Function::Fenced.new(
-      nil,
+      Plurimath::Math::Symbols::Paren::Lround.new,
       [
         Plurimath::Math::Function::Text.new("x", lang: :omml),
       ],
-      nil,
+      Plurimath::Math::Symbols::Paren::Rround.new,
       { sepChr: "" },
     ),
     Plurimath::Math::Symbols::Equal.new,
@@ -664,18 +666,19 @@ module ExpectedValues
         ])
       ],
       Plurimath::Math::Symbols::Paren::Lcurly.new,
+      Plurimath::Math::Symbols::Paren::Rround.new,
     )
   ])
   EX_071 = Plurimath::Math::Formula.new([
     Plurimath::Math::Function::Fenced.new(
-      nil,
+      Plurimath::Math::Symbols::Paren::Lround.new,
       [
         Plurimath::Math::Function::Frac.new(
           Plurimath::Math::Function::Text.new("n", lang: :omml),
           Plurimath::Math::Function::Text.new("k", lang: :omml),
         )
       ],
-      nil,
+      Plurimath::Math::Symbols::Paren::Rround.new,
       { sepChr: "" },
     )
   ])
@@ -1098,7 +1101,7 @@ module ExpectedValues
     ),
     Plurimath::Math::Function::Power.new(
       Plurimath::Math::Function::Fenced.new(
-        nil,
+        Plurimath::Math::Symbols::Paren::Lround.new,
         [
           Plurimath::Math::Number.new("1+"),
           Plurimath::Math::Function::Frac.new(
@@ -1106,7 +1109,7 @@ module ExpectedValues
             Plurimath::Math::Function::Text.new("n", lang: :omml),
           )
         ],
-        nil,
+        Plurimath::Math::Symbols::Paren::Rround.new,
         { sepChr: "" },
       ),
       Plurimath::Math::Function::Text.new("n", lang: :omml),
@@ -2100,7 +2103,7 @@ module ExpectedValues
         Plurimath::Math::Function::Tr.new([
           Plurimath::Math::Function::Td.new([
             Plurimath::Math::Function::Fenced.new(
-              nil,
+              Plurimath::Math::Symbols::Paren::Lround.new,
               [
                 Plurimath::Math::Function::Fenced.new(
                   Plurimath::Math::Symbols::Paren::Lfloor.new,
@@ -2136,7 +2139,7 @@ module ExpectedValues
                 ),
                 Plurimath::Math::Function::Text.new("", lang: :omml)
               ],
-              nil,
+              Plurimath::Math::Symbols::Paren::Rround.new,
               { sepChr: "" },
             ),
             Plurimath::Math::Function::Text.new("E,  &", lang: :omml),
@@ -2145,6 +2148,7 @@ module ExpectedValues
         ])
       ],
       Plurimath::Math::Symbols::Paren::Lcurly.new,
+      Plurimath::Math::Symbols::Paren::Rround.new,
     )
   ])
 end
