@@ -414,6 +414,105 @@ RSpec.describe Plurimath::Omml do
         expect(formula.to_asciimath).to include("AB")
       end
     end
+
+    context "contains m:acc with combining left right arrow above (U+20E1) val attribute" do
+      let(:string) do
+        '<m:oMath xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">' \
+        '<m:acc><m:accPr><m:chr m:val="&#x20e1;"/></m:accPr><m:e><m:r>' \
+        '<m:t>AB</m:t></m:r></m:e></m:acc></m:oMath>'
+      end
+
+      it "parses U+20E1 accent without error" do
+        expect { formula }.not_to raise_error
+      end
+
+      it "converts to a recognizable output format" do
+        expect(formula.to_asciimath).to be_a(String)
+        expect(formula.to_asciimath).to include("AB")
+      end
+    end
+
+    context "contains m:d with implicit default parentheses from plurimath/plurimath#394" do
+      let(:string) do
+        <<~OMML
+          <m:oMath xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math">
+            <m:d>
+              <m:dPr>
+                <m:ctrlPr/>
+              </m:dPr>
+              <m:e>
+                <m:r>
+                  <m:t>7</m:t>
+                </m:r>
+              </m:e>
+            </m:d>
+          </m:oMath>
+        OMML
+      end
+
+      it "defaults to parentheses when begChr and endChr are absent" do
+        expect(formula.to_latex).to include("(")
+        expect(formula.to_latex).to include(")")
+        expect(formula.to_latex).to include("7")
+      end
+
+      it "produces correct AsciiMath with default parentheses" do
+        expect(formula.to_asciimath).to eq("(7)")
+      end
+    end
+
+    context "contains m:d with explicitly empty parentheses from plurimath/plurimath#394" do
+      let(:string) do
+        <<~OMML
+          <m:oMath xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math">
+            <m:d>
+              <m:dPr>
+                <m:begChr m:val="" />
+                <m:endChr m:val="" />
+              </m:dPr>
+              <m:e>
+                <m:r>
+                  <m:t>7</m:t>
+                </m:r>
+              </m:e>
+            </m:d>
+          </m:oMath>
+        OMML
+      end
+
+      it "omits parentheses when begChr and endChr are explicitly empty" do
+        latex = formula.to_latex.strip
+        expect(latex).not_to start_with("(")
+        expect(latex).not_to end_with(")")
+        expect(latex).to include("7")
+      end
+    end
+
+    context "contains m:d with explicit bracket characters" do
+      let(:string) do
+        <<~OMML
+          <m:oMath xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math">
+            <m:d>
+              <m:dPr>
+                <m:begChr m:val="[" />
+                <m:endChr m:val="]" />
+              </m:dPr>
+              <m:e>
+                <m:r>
+                  <m:t>7</m:t>
+                </m:r>
+              </m:e>
+            </m:d>
+          </m:oMath>
+        OMML
+      end
+
+      it "uses specified bracket characters" do
+        expect(formula.to_latex).to include("[")
+        expect(formula.to_latex).to include("]")
+        expect(formula.to_asciimath).to eq("[7]")
+      end
+    end
   end
 
   describe ".to_omml" do
