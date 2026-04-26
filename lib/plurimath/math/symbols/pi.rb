@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Pi < Symbol
         INPUT = {
-          unicodemath: ["pi", "&#x3c0;", "&#x1d70b;", parsing_wrapper(["uppi"], lang: :unicode)],
-          asciimath: ["pi", "&#x3c0;", "&#x1d70b;", parsing_wrapper(["uppi"], lang: :asciimath)],
+          unicodemath: ["pi", "&#x3c0;", "&#x1d70b;",
+                        parsing_wrapper(["uppi"], lang: :unicode)],
+          asciimath: ["pi", "&#x3c0;", "&#x1d70b;",
+                      parsing_wrapper(["uppi"], lang: :asciimath)],
           mathml: ["&#x3c0;", "&#x1d70b;"],
           latex: ["pi", "uppi", "&#x3c0;", "&#x1d70b;"],
           omml: ["&#x3c0;", "&#x1d70b;"],

@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Mdblklozenge < Symbol
         INPUT = {
-          unicodemath: [["&#x2b27;"], parsing_wrapper(["mdblklozenge"], lang: :unicode)],
-          asciimath: [["&#x2b27;"], parsing_wrapper(["mdblklozenge"], lang: :asciimath)],
+          unicodemath: [["&#x2b27;"],
+                        parsing_wrapper(["mdblklozenge"], lang: :unicode)],
+          asciimath: [["&#x2b27;"],
+                      parsing_wrapper(["mdblklozenge"], lang: :asciimath)],
           mathml: ["&#x2b27;"],
           latex: [["mdblklozenge", "&#x2b27;"]],
           omml: ["&#x2b27;"],

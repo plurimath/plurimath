@@ -3,8 +3,12 @@ module Plurimath
     module Symbols
       class Sdef < Symbol
         INPUT = {
-          unicodemath: [["&#x2259;"], parsing_wrapper(["corresponds", "wedgeq", "sdef"], lang: :unicode)],
-          asciimath: [["&#x2259;"], parsing_wrapper(["corresponds", "wedgeq", "sdef"], lang: :asciimath)],
+          unicodemath: [["&#x2259;"],
+                        parsing_wrapper(["corresponds", "wedgeq", "sdef"],
+                                        lang: :unicode)],
+          asciimath: [["&#x2259;"],
+                      parsing_wrapper(["corresponds", "wedgeq", "sdef"],
+                                      lang: :asciimath)],
           mathml: ["&#x2259;"],
           latex: [["corresponds", "wedgeq", "sdef", "&#x2259;"]],
           omml: ["&#x2259;"],

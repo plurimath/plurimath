@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Revangle < Symbol
         INPUT = {
-          unicodemath: [["&#x29a3;"], parsing_wrapper(["revangle"], lang: :unicode)],
-          asciimath: [["&#x29a3;"], parsing_wrapper(["revangle"], lang: :asciimath)],
+          unicodemath: [["&#x29a3;"],
+                        parsing_wrapper(["revangle"], lang: :unicode)],
+          asciimath: [["&#x29a3;"],
+                      parsing_wrapper(["revangle"], lang: :asciimath)],
           mathml: ["&#x29a3;"],
           latex: [["revangle", "&#x29a3;"]],
           omml: ["&#x29a3;"],

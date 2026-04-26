@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Lparenextender < Symbol
         INPUT = {
-          unicodemath: [["&#x239c;"], parsing_wrapper(["lparenextender"], lang: :unicode)],
-          asciimath: [["&#x239c;"], parsing_wrapper(["lparenextender"], lang: :asciimath)],
+          unicodemath: [["&#x239c;"],
+                        parsing_wrapper(["lparenextender"], lang: :unicode)],
+          asciimath: [["&#x239c;"],
+                      parsing_wrapper(["lparenextender"], lang: :asciimath)],
           mathml: ["&#x239c;"],
           latex: [["lparenextender", "&#x239c;"]],
           omml: ["&#x239c;"],

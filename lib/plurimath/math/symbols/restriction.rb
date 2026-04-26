@@ -3,8 +3,11 @@ module Plurimath
     module Symbols
       class Restriction < Symbol
         INPUT = {
-          unicodemath: [["upharpoonright", "&#x21be;"], parsing_wrapper(["restriction"], lang: :unicode)],
-          asciimath: [["&#x21be;"], parsing_wrapper(["upharpoonright", "restriction"], lang: :asciimath)],
+          unicodemath: [["upharpoonright", "&#x21be;"],
+                        parsing_wrapper(["restriction"], lang: :unicode)],
+          asciimath: [["&#x21be;"],
+                      parsing_wrapper(["upharpoonright", "restriction"],
+                                      lang: :asciimath)],
           mathml: ["&#x21be;"],
           latex: [["upharpoonright", "restriction", "&#x21be;"]],
           omml: ["&#x21be;"],

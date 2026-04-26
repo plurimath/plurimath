@@ -1,16 +1,15 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Number do
-
   describe ".initialize" do
-    it 'returns instance of Number' do
-      number = Plurimath::Math::Number.new(100)
-      expect(number).to be_a(Plurimath::Math::Number)
+    it "returns instance of Number" do
+      number = described_class.new(100)
+      expect(number).to be_a(described_class)
     end
 
-    it 'initializes Number object' do
-      number = Plurimath::Math::Number.new(100)
-      expect(number.value).to eql(100)
+    it "initializes Number object" do
+      number = described_class.new(100)
+      expect(number.value).to be(100)
     end
   end
 
@@ -20,36 +19,40 @@ RSpec.describe Plurimath::Math::Number do
     context "contains a number string" do
       let(:value) { "1" }
 
-      it 'returns string' do
+      it "returns string" do
         expect(number.to_asciimath(options: {})).to eq(value)
       end
     end
   end
 
   describe ".==" do
-    subject(:number) { Plurimath::Math::Number.new(value) }
+    subject(:number) { described_class.new(value) }
 
     context "contains a number string" do
       let(:value) { "1" }
-      expected_value = Plurimath::Math::Number.new("1")
 
-      it 'returns string' do
+      expected_value = described_class.new("1")
+
+      it "returns string" do
         expect(number == expected_value).to be_truthy
       end
     end
 
     context "contains a nil string" do
       let(:value) { "" }
-      expected_value = Plurimath::Math::Number.new("1")
 
-      it 'returns string' do
+      expected_value = described_class.new("1")
+
+      it "returns string" do
         expect(number == expected_value).to be_falsey
       end
     end
   end
 
   describe ".to_asciimath" do
-    subject(:formula) { described_class.new(first_value).to_asciimath(options: {}) }
+    subject(:formula) do
+      described_class.new(first_value).to_asciimath(options: {})
+    end
 
     context "contains Single Number as value" do
       let(:first_value) { "1" }
@@ -71,8 +74,8 @@ RSpec.describe Plurimath::Math::Number do
   describe ".to_mathml" do
     subject(:formula) do
       Plurimath.xml_engine.dump(
-        described_class.new(first_value).
-          to_mathml_without_math_tag(false, options: {}),
+        described_class.new(first_value)
+          .to_mathml_without_math_tag(false, options: {}),
         indent: 2,
       ).gsub("&amp;", "&")
     end
@@ -109,8 +112,8 @@ RSpec.describe Plurimath::Math::Number do
   describe ".to_omml" do
     subject(:formula) do
       Plurimath.xml_engine.dump(
-        described_class.new(first_value).
-          to_omml_without_math_tag(true, options: {}).first,
+        described_class.new(first_value)
+          .to_omml_without_math_tag(true, options: {}).first,
         indent: 2,
       ).gsub("&amp;", "&")
     end
@@ -145,20 +148,22 @@ RSpec.describe Plurimath::Math::Number do
   end
 
   describe ".validate_function_formula" do
-    subject(:formula) { described_class.new(first_value).validate_function_formula }
+    subject(:formula) do
+      described_class.new(first_value).validate_function_formula
+    end
 
     context "contains Number as value" do
       let(:first_value) { "80" }
 
       it "expects false in return" do
-        expect(formula).to eql(false)
+        expect(formula).to be(false)
       end
     end
 
     context "contains Number as value" do
       let(:first_value) { "80" }
 
-      it "should not return true" do
+      it "does not return true" do
         expect(formula).not_to eql(true)
       end
     end

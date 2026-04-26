@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Toea < Symbol
         INPUT = {
-          unicodemath: [["&#x2928;"], parsing_wrapper(["toea"], lang: :unicode)],
-          asciimath: [["&#x2928;"], parsing_wrapper(["toea"], lang: :asciimath)],
+          unicodemath: [["&#x2928;"],
+                        parsing_wrapper(["toea"], lang: :unicode)],
+          asciimath: [["&#x2928;"],
+                      parsing_wrapper(["toea"], lang: :asciimath)],
           mathml: ["&#x2928;"],
           latex: [["toea", "&#x2928;"]],
           omml: ["&#x2928;"],

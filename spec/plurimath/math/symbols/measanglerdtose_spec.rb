@@ -1,11 +1,10 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Symbols::Measanglerdtose do
-
   describe ".initialize" do
-    it 'returns instance of Symbol Measanglerdtose' do
+    it "returns instance of Symbol Measanglerdtose" do
       klass = described_class.new
-      expect(klass).to be_a(Plurimath::Math::Symbols::Measanglerdtose)
+      expect(klass).to be_a(described_class)
     end
   end
 

@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-
 module Plurimath
   module Math
     module Function
@@ -31,7 +30,8 @@ module Plurimath
           Utility.update_nodes(
             mover_tag,
             [
-              parameter_one&.to_mathml_without_math_tag(intent, options: options),
+              parameter_one&.to_mathml_without_math_tag(intent,
+                                                        options: options),
               mo_tag,
             ],
           )
@@ -43,13 +43,18 @@ module Plurimath
 
         def to_omml_without_math_tag(display_style, options:)
           return r_element("^", rpr_tag: false) unless parameter_one
-          return omml_value(display_style, options: options) if hide_function_name
+          if hide_function_name
+            return omml_value(display_style,
+                              options: options)
+          end
 
           if attributes && attributes[:accent]
             accent_tag(display_style, options: options)
           else
             symbol = Symbols::Symbol.new("&#x302;") unless hide_function_name
-            Overset.new(parameter_one, symbol).to_omml_without_math_tag(display_style, options: options)
+            Overset.new(parameter_one, symbol).to_omml_without_math_tag(
+              display_style, options: options
+            )
           end
         end
 
@@ -72,12 +77,14 @@ module Plurimath
           symbol  = "̂" unless hide_function_name
           acc_tag = Utility.ox_element("acc", namespace: "m")
           acc_pr_tag = Utility.ox_element("accPr", namespace: "m")
-          acc_pr_tag << (Utility.ox_element("chr", namespace: "m", attributes: { "m:val": symbol }))
+          acc_pr_tag << Utility.ox_element("chr", namespace: "m",
+                                                  attributes: { "m:val": symbol })
           Utility.update_nodes(
             acc_tag,
             [
               acc_pr_tag,
-              omml_parameter(parameter_one, display_style, tag_name: "e", namespace: "m", options: options),
+              omml_parameter(parameter_one, display_style, tag_name: "e",
+                                                           namespace: "m", options: options),
             ],
           )
           [acc_tag]

@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Hzigzag < Symbol
         INPUT = {
-          unicodemath: [["&#x3030;"], parsing_wrapper(["hzigzag"], lang: :unicode)],
-          asciimath: [["&#x3030;"], parsing_wrapper(["hzigzag"], lang: :asciimath)],
+          unicodemath: [["&#x3030;"],
+                        parsing_wrapper(["hzigzag"], lang: :unicode)],
+          asciimath: [["&#x3030;"],
+                      parsing_wrapper(["hzigzag"], lang: :asciimath)],
           mathml: ["&#x3030;"],
           latex: [["hzigzag", "&#x3030;"]],
           omml: ["&#x3030;"],

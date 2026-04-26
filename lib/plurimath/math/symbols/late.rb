@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Late < Symbol
         INPUT = {
-          unicodemath: [["&#x2aad;"], parsing_wrapper(["late"], lang: :unicode)],
-          asciimath: [["&#x2aad;"], parsing_wrapper(["late"], lang: :asciimath)],
+          unicodemath: [["&#x2aad;"],
+                        parsing_wrapper(["late"], lang: :unicode)],
+          asciimath: [["&#x2aad;"],
+                      parsing_wrapper(["late"], lang: :asciimath)],
           mathml: ["&#x2aad;"],
           latex: [["late", "&#x2aad;"]],
           omml: ["&#x2aad;"],

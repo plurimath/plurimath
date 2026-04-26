@@ -1,11 +1,10 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Symbols::Upiota do
-
   describe ".initialize" do
-    it 'returns instance of Symbol Upiota' do
+    it "returns instance of Symbol Upiota" do
       klass = described_class.new
-      expect(klass).to be_a(Plurimath::Math::Symbols::Upiota)
+      expect(klass).to be_a(described_class)
     end
   end
 

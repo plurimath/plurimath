@@ -1,11 +1,10 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Symbols::Ltquest do
-
   describe ".initialize" do
-    it 'returns instance of Symbol Ltquest' do
+    it "returns instance of Symbol Ltquest" do
       klass = described_class.new
-      expect(klass).to be_a(Plurimath::Math::Symbols::Ltquest)
+      expect(klass).to be_a(described_class)
     end
   end
 

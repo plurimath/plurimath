@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Percent < Symbol
         INPUT = {
-          unicodemath: [["&#x25;"], parsing_wrapper(["%", "percent"], lang: :unicode)],
-          asciimath: [["%", "&#x25;"], parsing_wrapper(["percent"], lang: :asciimath)],
+          unicodemath: [["&#x25;"],
+                        parsing_wrapper(["%", "percent"], lang: :unicode)],
+          asciimath: [["%", "&#x25;"],
+                      parsing_wrapper(["percent"], lang: :asciimath)],
           mathml: ["&#x25;"],
           latex: [["percent", "%", "&#x25;"]],
           omml: ["&#x25;"],

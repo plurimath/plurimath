@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Hermitmatrix < Symbol
         INPUT = {
-          unicodemath: [["&#x22b9;"], parsing_wrapper(["hermitmatrix"], lang: :unicode)],
-          asciimath: [["&#x22b9;"], parsing_wrapper(["hermitmatrix"], lang: :asciimath)],
+          unicodemath: [["&#x22b9;"],
+                        parsing_wrapper(["hermitmatrix"], lang: :unicode)],
+          asciimath: [["&#x22b9;"],
+                      parsing_wrapper(["hermitmatrix"], lang: :asciimath)],
           mathml: ["&#x22b9;"],
           latex: [["hermitmatrix", "&#x22b9;"]],
           omml: ["&#x22b9;"],

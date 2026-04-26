@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Smallni < Symbol
         INPUT = {
-          unicodemath: [["&#x220d;"], parsing_wrapper(["smallni"], lang: :unicode)],
-          asciimath: [["&#x220d;"], parsing_wrapper(["smallni"], lang: :asciimath)],
+          unicodemath: [["&#x220d;"],
+                        parsing_wrapper(["smallni"], lang: :unicode)],
+          asciimath: [["&#x220d;"],
+                      parsing_wrapper(["smallni"], lang: :asciimath)],
           mathml: ["&#x220d;"],
           latex: [["smallni", "&#x220d;"]],
           omml: ["&#x220d;"],

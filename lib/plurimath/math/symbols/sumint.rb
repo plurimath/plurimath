@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Sumint < Symbol
         INPUT = {
-          unicodemath: [["&#x2a0b;"], parsing_wrapper(["sumint"], lang: :unicode)],
-          asciimath: [["&#x2a0b;"], parsing_wrapper(["sumint"], lang: :asciimath)],
+          unicodemath: [["&#x2a0b;"],
+                        parsing_wrapper(["sumint"], lang: :unicode)],
+          asciimath: [["&#x2a0b;"],
+                      parsing_wrapper(["sumint"], lang: :asciimath)],
           mathml: ["&#x2a0b;"],
           latex: [["sumint", "&#x2a0b;"]],
           omml: ["&#x2a0b;"],

@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Uptau < Symbol
         INPUT = {
-          unicodemath: [["&#x3a4;"], parsing_wrapper(["upTau"], lang: :unicode)],
-          asciimath: [["&#x3a4;"], parsing_wrapper(["upTau"], lang: :asciimath)],
+          unicodemath: [["&#x3a4;"],
+                        parsing_wrapper(["upTau"], lang: :unicode)],
+          asciimath: [["&#x3a4;"],
+                      parsing_wrapper(["upTau"], lang: :asciimath)],
           mathml: ["&#x3a4;"],
           latex: [["upTau", "&#x3a4;"]],
           omml: ["&#x3a4;"],

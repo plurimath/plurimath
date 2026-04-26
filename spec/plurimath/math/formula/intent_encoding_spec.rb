@@ -2,11 +2,14 @@ require "spec_helper"
 
 RSpec.describe Plurimath::Math::Formula do
   describe "unicodemath examples" do
-    subject(:formula) { Plurimath::Math.parse(string, :unicode) }
     subject(:mathml) { formula.to_mathml(intent: true) }
 
-    SKIPABLE_INDEXES = [16]
-    intent_examples = unicodemath_tests.find_all { |record| record["mathml"].match?(/intent=\"/) }
+    let(:formula) { Plurimath::Math.parse(string, :unicode) }
+
+    SKIPABLE_INDEXES = [16].freeze
+    intent_examples = unicodemath_tests.find_all do |record|
+      record["mathml"].include?('intent="')
+    end
     intent_examples.each.with_index(1) do |example_hash, index|
       next if SKIPABLE_INDEXES.include?(index)
 
@@ -256,19 +259,19 @@ RSpec.describe Plurimath::Math::Formula do
 end
 
 def unicodemath_examples_intents(array)
-  array.scan(/intent="([^"]+)"/).sort.flatten.join.
-    gsub("$n)", "$naryand)").
-    gsub("𝐴", "A").
-    gsub("𝑎", "a").
-    gsub("𝛼", "a").
-    gsub("𝑏", "b").
-    gsub("𝑆", "S").
-    gsub("𝑛", "n").
-    gsub("𝑘", "k").
-    gsub("𝑡", "t").
-    gsub("𝑥", "x").
-    gsub("𝑦", "y").
-    gsub("𝑁", "N").
-    gsub("α", "a").
-    gsub("𝜋", "π")
+  array.scan(/intent="([^"]+)"/).sort.join
+    .gsub("$n)", "$naryand)")
+    .gsub("𝐴", "A")
+    .gsub("𝑎", "a")
+    .gsub("𝛼", "a")
+    .gsub("𝑏", "b")
+    .gsub("𝑆", "S")
+    .gsub("𝑛", "n")
+    .gsub("𝑘", "k")
+    .gsub("𝑡", "t")
+    .gsub("𝑥", "x")
+    .gsub("𝑦", "y")
+    .gsub("𝑁", "N")
+    .gsub("α", "a")
+    .gsub("𝜋", "π")
 end

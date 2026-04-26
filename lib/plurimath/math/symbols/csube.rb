@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Csube < Symbol
         INPUT = {
-          unicodemath: [["&#x2ad1;"], parsing_wrapper(["csube"], lang: :unicode)],
-          asciimath: [["&#x2ad1;"], parsing_wrapper(["csube"], lang: :asciimath)],
+          unicodemath: [["&#x2ad1;"],
+                        parsing_wrapper(["csube"], lang: :unicode)],
+          asciimath: [["&#x2ad1;"],
+                      parsing_wrapper(["csube"], lang: :asciimath)],
           mathml: ["&#x2ad1;"],
           latex: [["csube", "&#x2ad1;"]],
           omml: ["&#x2ad1;"],

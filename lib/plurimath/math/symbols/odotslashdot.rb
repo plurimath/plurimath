@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Odotslashdot < Symbol
         INPUT = {
-          unicodemath: [["&#x29bc;"], parsing_wrapper(["odotslashdot"], lang: :unicode)],
-          asciimath: [["&#x29bc;"], parsing_wrapper(["odotslashdot"], lang: :asciimath)],
+          unicodemath: [["&#x29bc;"],
+                        parsing_wrapper(["odotslashdot"], lang: :unicode)],
+          asciimath: [["&#x29bc;"],
+                      parsing_wrapper(["odotslashdot"], lang: :asciimath)],
           mathml: ["&#x29bc;"],
           latex: [["odotslashdot", "&#x29bc;"]],
           omml: ["&#x29bc;"],

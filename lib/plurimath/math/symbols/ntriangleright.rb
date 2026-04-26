@@ -3,8 +3,11 @@ module Plurimath
     module Symbols
       class Ntriangleright < Symbol
         INPUT = {
-          unicodemath: [["ntriangleright", "&#x22eb;"], parsing_wrapper(["NotRightTriangle"], lang: :unicode)],
-          asciimath: [["&#x22eb;"], parsing_wrapper(["ntriangleright", "NotRightTriangle"], lang: :asciimath)],
+          unicodemath: [["ntriangleright", "&#x22eb;"],
+                        parsing_wrapper(["NotRightTriangle"], lang: :unicode)],
+          asciimath: [["&#x22eb;"],
+                      parsing_wrapper(["ntriangleright", "NotRightTriangle"],
+                                      lang: :asciimath)],
           mathml: ["&#x22eb;"],
           latex: [["NotRightTriangle", "ntriangleright", "&#x22eb;"]],
           omml: ["&#x22eb;"],

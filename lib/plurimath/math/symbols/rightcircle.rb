@@ -3,8 +3,14 @@ module Plurimath
     module Symbols
       class Rightcircle < Symbol
         INPUT = {
-          unicodemath: [["&#x25d7;"], parsing_wrapper(["blackrighthalfcircle", "RIGHTCIRCLE"], lang: :unicode)],
-          asciimath: [["&#x25d7;"], parsing_wrapper(["blackrighthalfcircle", "RIGHTCIRCLE"], lang: :asciimath)],
+          unicodemath: [["&#x25d7;"],
+                        parsing_wrapper(
+                          ["blackrighthalfcircle",
+                           "RIGHTCIRCLE"], lang: :unicode
+                        )],
+          asciimath: [["&#x25d7;"],
+                      parsing_wrapper(["blackrighthalfcircle", "RIGHTCIRCLE"],
+                                      lang: :asciimath)],
           mathml: ["&#x25d7;"],
           latex: [["blackrighthalfcircle", "RIGHTCIRCLE", "&#x25d7;"]],
           omml: ["&#x25d7;"],

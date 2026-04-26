@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Trianglecdot < Symbol
         INPUT = {
-          unicodemath: [["&#x25ec;"], parsing_wrapper(["trianglecdot"], lang: :unicode)],
-          asciimath: [["&#x25ec;"], parsing_wrapper(["trianglecdot"], lang: :asciimath)],
+          unicodemath: [["&#x25ec;"],
+                        parsing_wrapper(["trianglecdot"], lang: :unicode)],
+          asciimath: [["&#x25ec;"],
+                      parsing_wrapper(["trianglecdot"], lang: :asciimath)],
           mathml: ["&#x25ec;"],
           latex: [["trianglecdot", "&#x25ec;"]],
           omml: ["&#x25ec;"],

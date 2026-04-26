@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Rrightarrow < Symbol
         INPUT = {
-          unicodemath: [["&#x2b46;"], parsing_wrapper(["RRightarrow"], lang: :unicode)],
-          asciimath: [["&#x2b46;"], parsing_wrapper(["RRightarrow"], lang: :asciimath)],
+          unicodemath: [["&#x2b46;"],
+                        parsing_wrapper(["RRightarrow"], lang: :unicode)],
+          asciimath: [["&#x2b46;"],
+                      parsing_wrapper(["RRightarrow"], lang: :asciimath)],
           mathml: ["&#x2b46;"],
           latex: [["RRightarrow", "&#x2b46;"]],
           omml: ["&#x2b46;"],

@@ -3,8 +3,12 @@ module Plurimath
     module Symbols
       class Longmapsfrom < Symbol
         INPUT = {
-          unicodemath: [["&#x27fd;"], parsing_wrapper(["Longmappedfrom", "Longmapsfrom"], lang: :unicode)],
-          asciimath: [["&#x27fd;"], parsing_wrapper(["Longmappedfrom", "Longmapsfrom"], lang: :asciimath)],
+          unicodemath: [["&#x27fd;"],
+                        parsing_wrapper(["Longmappedfrom", "Longmapsfrom"],
+                                        lang: :unicode)],
+          asciimath: [["&#x27fd;"],
+                      parsing_wrapper(["Longmappedfrom", "Longmapsfrom"],
+                                      lang: :asciimath)],
           mathml: ["&#x27fd;"],
           latex: [["Longmappedfrom", "Longmapsfrom", "&#x27fd;"]],
           omml: ["&#x27fd;"],

@@ -3,8 +3,12 @@ module Plurimath
     module Symbols
       class Wideparen < Symbol
         INPUT = {
-          unicodemath: [["&#x23dc;"], parsing_wrapper(["overparen", "wideparen"], lang: :unicode)],
-          asciimath: [["&#x23dc;"], parsing_wrapper(["overparen", "wideparen"], lang: :asciimath)],
+          unicodemath: [["&#x23dc;"],
+                        parsing_wrapper(["overparen", "wideparen"],
+                                        lang: :unicode)],
+          asciimath: [["&#x23dc;"],
+                      parsing_wrapper(["overparen", "wideparen"],
+                                      lang: :asciimath)],
           mathml: ["&#x23dc;"],
           latex: [["overparen", "wideparen", "&#x23dc;"]],
           omml: ["&#x23dc;"],

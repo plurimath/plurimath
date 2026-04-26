@@ -1,11 +1,10 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Symbols::Shuffle do
-
   describe ".initialize" do
-    it 'returns instance of Symbol Shuffle' do
+    it "returns instance of Symbol Shuffle" do
       klass = described_class.new
-      expect(klass).to be_a(Plurimath::Math::Symbols::Shuffle)
+      expect(klass).to be_a(described_class)
     end
   end
 

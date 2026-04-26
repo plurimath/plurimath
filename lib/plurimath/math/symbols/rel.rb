@@ -3,10 +3,13 @@ module Plurimath
     module Symbols
       class Rel < Symbol
         INPUT = {
-          unicodemath: [["leftrightarrow", "&#x2194;"], parsing_wrapper(["harr", "rel"], lang: :unicode)],
-          asciimath: [["leftrightarrow", "harr", "&#x2194;"], parsing_wrapper(["rel"], lang: :asciimath)],
+          unicodemath: [["leftrightarrow", "&#x2194;"],
+                        parsing_wrapper(["harr", "rel"], lang: :unicode)],
+          asciimath: [["leftrightarrow", "harr", "&#x2194;"],
+                      parsing_wrapper(["rel"], lang: :asciimath)],
           mathml: ["&#x2194;"],
-          latex: [["leftrightarrow", "rel", "&#x2194;"], parsing_wrapper(["harr"], lang: :latex)],
+          latex: [["leftrightarrow", "rel", "&#x2194;"],
+                  parsing_wrapper(["harr"], lang: :latex)],
           omml: ["&#x2194;"],
           html: ["&#x2194;"],
         }.freeze

@@ -11,4 +11,4 @@ end
 (
   Dir.glob(File.join(__dir__, "symbols/", "*.rb")) +
   Dir.glob(File.join(__dir__, "symbols/", "*", "*.rb"))
-).each { |file| require file } if RUBY_ENGINE != 'opal'
+).each { |file| require file } if RUBY_ENGINE != "opal"

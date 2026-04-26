@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Carriagereturn < Symbol
         INPUT = {
-          unicodemath: [["&#x21b5;"], parsing_wrapper(["carriagereturn"], lang: :unicode)],
-          asciimath: [["&#x21b5;"], parsing_wrapper(["carriagereturn"], lang: :asciimath)],
+          unicodemath: [["&#x21b5;"],
+                        parsing_wrapper(["carriagereturn"], lang: :unicode)],
+          asciimath: [["&#x21b5;"],
+                      parsing_wrapper(["carriagereturn"], lang: :asciimath)],
           mathml: ["&#x21b5;"],
           latex: [["carriagereturn", "&#x21b5;"]],
           omml: ["&#x21b5;"],

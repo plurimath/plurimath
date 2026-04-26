@@ -1,11 +1,10 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Symbols::Closedvarcupsmashprod do
-
   describe ".initialize" do
-    it 'returns instance of Symbol Closedvarcupsmashprod' do
+    it "returns instance of Symbol Closedvarcupsmashprod" do
       klass = described_class.new
-      expect(klass).to be_a(Plurimath::Math::Symbols::Closedvarcupsmashprod)
+      expect(klass).to be_a(described_class)
     end
   end
 

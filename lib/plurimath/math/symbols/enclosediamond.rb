@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Enclosediamond < Symbol
         INPUT = {
-          unicodemath: [["&#x20df;"], parsing_wrapper(["enclosediamond"], lang: :unicode)],
-          asciimath: [["&#x20df;"], parsing_wrapper(["enclosediamond"], lang: :asciimath)],
+          unicodemath: [["&#x20df;"],
+                        parsing_wrapper(["enclosediamond"], lang: :unicode)],
+          asciimath: [["&#x20df;"],
+                      parsing_wrapper(["enclosediamond"], lang: :asciimath)],
           mathml: ["&#x20df;"],
           latex: [["enclosediamond", "&#x20df;"]],
           omml: ["&#x20df;"],

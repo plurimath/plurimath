@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Rightbkarrow < Symbol
         INPUT = {
-          unicodemath: [["&#x290d;"], parsing_wrapper(["rightbkarrow"], lang: :unicode)],
-          asciimath: [["&#x290d;"], parsing_wrapper(["rightbkarrow"], lang: :asciimath)],
+          unicodemath: [["&#x290d;"],
+                        parsing_wrapper(["rightbkarrow"], lang: :unicode)],
+          asciimath: [["&#x290d;"],
+                      parsing_wrapper(["rightbkarrow"], lang: :asciimath)],
           mathml: ["&#x290d;"],
           latex: [["rightbkarrow", "&#x290d;"]],
           omml: ["&#x290d;"],

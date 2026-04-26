@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Lrtriangleeq < Symbol
         INPUT = {
-          unicodemath: [["&#x29e1;"], parsing_wrapper(["lrtriangleeq"], lang: :unicode)],
-          asciimath: [["&#x29e1;"], parsing_wrapper(["lrtriangleeq"], lang: :asciimath)],
+          unicodemath: [["&#x29e1;"],
+                        parsing_wrapper(["lrtriangleeq"], lang: :unicode)],
+          asciimath: [["&#x29e1;"],
+                      parsing_wrapper(["lrtriangleeq"], lang: :asciimath)],
           mathml: ["&#x29e1;"],
           latex: [["lrtriangleeq", "&#x29e1;"]],
           omml: ["&#x29e1;"],

@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Boxonbox < Symbol
         INPUT = {
-          unicodemath: [["&#x29c9;"], parsing_wrapper(["boxonbox"], lang: :unicode)],
-          asciimath: [["&#x29c9;"], parsing_wrapper(["boxonbox"], lang: :asciimath)],
+          unicodemath: [["&#x29c9;"],
+                        parsing_wrapper(["boxonbox"], lang: :unicode)],
+          asciimath: [["&#x29c9;"],
+                      parsing_wrapper(["boxonbox"], lang: :asciimath)],
           mathml: ["&#x29c9;"],
           latex: [["boxonbox", "&#x29c9;"]],
           omml: ["&#x29c9;"],

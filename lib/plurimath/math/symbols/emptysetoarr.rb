@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Emptysetoarr < Symbol
         INPUT = {
-          unicodemath: [["&#x29b3;"], parsing_wrapper(["emptysetoarr"], lang: :unicode)],
-          asciimath: [["&#x29b3;"], parsing_wrapper(["emptysetoarr"], lang: :asciimath)],
+          unicodemath: [["&#x29b3;"],
+                        parsing_wrapper(["emptysetoarr"], lang: :unicode)],
+          asciimath: [["&#x29b3;"],
+                      parsing_wrapper(["emptysetoarr"], lang: :asciimath)],
           mathml: ["&#x29b3;"],
           latex: [["emptysetoarr", "&#x29b3;"]],
           omml: ["&#x29b3;"],

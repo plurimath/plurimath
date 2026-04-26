@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Sixteenthnote < Symbol
         INPUT = {
-          unicodemath: [["&#x266c;"], parsing_wrapper(["sixteenthnote"], lang: :unicode)],
-          asciimath: [["&#x266c;"], parsing_wrapper(["sixteenthnote"], lang: :asciimath)],
+          unicodemath: [["&#x266c;"],
+                        parsing_wrapper(["sixteenthnote"], lang: :unicode)],
+          asciimath: [["&#x266c;"],
+                      parsing_wrapper(["sixteenthnote"], lang: :asciimath)],
           mathml: ["&#x266c;"],
           latex: [["sixteenthnote", "&#x266c;"]],
           omml: ["&#x266c;"],

@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Linefeed < Symbol
         INPUT = {
-          unicodemath: [["&#x21b4;"], parsing_wrapper(["linefeed"], lang: :unicode)],
-          asciimath: [["&#x21b4;"], parsing_wrapper(["linefeed"], lang: :asciimath)],
+          unicodemath: [["&#x21b4;"],
+                        parsing_wrapper(["linefeed"], lang: :unicode)],
+          asciimath: [["&#x21b4;"],
+                      parsing_wrapper(["linefeed"], lang: :asciimath)],
           mathml: ["&#x21b4;"],
           latex: [["linefeed", "&#x21b4;"]],
           omml: ["&#x21b4;"],

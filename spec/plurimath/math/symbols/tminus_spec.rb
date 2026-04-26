@@ -1,11 +1,10 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Symbols::Tminus do
-
   describe ".initialize" do
-    it 'returns instance of Symbol Tminus' do
+    it "returns instance of Symbol Tminus" do
       klass = described_class.new
-      expect(klass).to be_a(Plurimath::Math::Symbols::Tminus)
+      expect(klass).to be_a(described_class)
     end
   end
 

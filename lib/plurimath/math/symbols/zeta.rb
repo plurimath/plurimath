@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Zeta < Symbol
         INPUT = {
-          unicodemath: [["zeta", "&#x3b6;"], parsing_wrapper(["upzeta"], lang: :unicode)],
-          asciimath: [["zeta", "&#x3b6;"], parsing_wrapper(["upzeta"], lang: :asciimath)],
+          unicodemath: [["zeta", "&#x3b6;"],
+                        parsing_wrapper(["upzeta"], lang: :unicode)],
+          asciimath: [["zeta", "&#x3b6;"],
+                      parsing_wrapper(["upzeta"], lang: :asciimath)],
           mathml: ["&#x3b6;"],
           latex: [["upzeta", "zeta", "&#x3b6;"]],
           omml: ["&#x3b6;"],

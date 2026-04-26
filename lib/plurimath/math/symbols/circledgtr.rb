@@ -3,8 +3,12 @@ module Plurimath
     module Symbols
       class Circledgtr < Symbol
         INPUT = {
-          unicodemath: [["&#x29c1;"], parsing_wrapper(["ogreaterthan", "circledgtr"], lang: :unicode)],
-          asciimath: [["&#x29c1;"], parsing_wrapper(["ogreaterthan", "circledgtr"], lang: :asciimath)],
+          unicodemath: [["&#x29c1;"],
+                        parsing_wrapper(["ogreaterthan", "circledgtr"],
+                                        lang: :unicode)],
+          asciimath: [["&#x29c1;"],
+                      parsing_wrapper(["ogreaterthan", "circledgtr"],
+                                      lang: :asciimath)],
           mathml: ["&#x29c1;"],
           latex: [["ogreaterthan", "circledgtr", "&#x29c1;"]],
           omml: ["&#x29c1;"],

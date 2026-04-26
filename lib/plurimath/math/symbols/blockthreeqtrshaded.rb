@@ -3,8 +3,12 @@ module Plurimath
     module Symbols
       class Blockthreeqtrshaded < Symbol
         INPUT = {
-          unicodemath: [["&#x2593;"], parsing_wrapper(["blockthreeqtrshaded"], lang: :unicode)],
-          asciimath: [["&#x2593;"], parsing_wrapper(["blockthreeqtrshaded"], lang: :asciimath)],
+          unicodemath: [["&#x2593;"],
+                        parsing_wrapper(["blockthreeqtrshaded"],
+                                        lang: :unicode)],
+          asciimath: [["&#x2593;"],
+                      parsing_wrapper(["blockthreeqtrshaded"],
+                                      lang: :asciimath)],
           mathml: ["&#x2593;"],
           latex: [["blockthreeqtrshaded", "&#x2593;"]],
           omml: ["&#x2593;"],

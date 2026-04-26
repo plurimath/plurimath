@@ -1,11 +1,9 @@
 # frozen_string_literal: true
 
-
 module Plurimath
   module Math
     module Function
       class Frac < BinaryFunction
-
         attr_accessor :options
 
         FUNCTION = {
@@ -22,7 +20,7 @@ module Plurimath
         end
 
         def ==(object)
-          super(object) &&
+          super &&
             object.options == options
         end
 
@@ -39,9 +37,16 @@ module Plurimath
             parameter_two&.to_mathml_without_math_tag(intent, options: options),
           ]
           frac_tag = ox_element(tag_name)
-          frac_tag.set_attr(self.options.reject { |opt| opt == :choose }) if tag_name == "mfrac" && self.options
+          if tag_name == "mfrac" && self.options
+            frac_tag.set_attr(self.options.reject do |opt|
+              opt == :choose
+            end)
+          end
           Utility.update_nodes(frac_tag, mathml_value)
-          update_derivative(frac_tag, mathml_value[0], mathml_value[1]) if intent
+          if intent
+            update_derivative(frac_tag, mathml_value[0],
+                              mathml_value[1])
+          end
           intentify(frac_tag, intent, func_name: :frac, options: intent_names)
         end
 
@@ -52,13 +57,15 @@ module Plurimath
         end
 
         def to_omml_without_math_tag(display_style, options:)
-          f_element   = Utility.ox_element("f", namespace: "m")
+          f_element = Utility.ox_element("f", namespace: "m")
           Utility.update_nodes(
             f_element,
             [
               fpr_element,
-              omml_parameter(parameter_one, display_style, tag_name: "num", options: options),
-              omml_parameter(parameter_two, display_style, tag_name: "den", options: options),
+              omml_parameter(parameter_one, display_style, tag_name: "num",
+                                                           options: options),
+              omml_parameter(parameter_two, display_style, tag_name: "den",
+                                                           options: options),
             ],
           )
         end
@@ -66,19 +73,27 @@ module Plurimath
         def to_unicodemath(options:)
           return unicodemath_fraction if self.options&.dig(:unicodemath_fraction)
 
-          first_value = unicodemath_parens(parameter_one, options: options) if parameter_one
-          second_value = unicodemath_parens(parameter_two, options: options) if parameter_two
+          if parameter_one
+            first_value = unicodemath_parens(parameter_one,
+                                             options: options)
+          end
+          if parameter_two
+            second_value = unicodemath_parens(parameter_two,
+                                              options: options)
+          end
           return "#{first_value}/#{second_value}" unless self.options
 
-          return "#{first_value}¦#{second_value}" if self.options && self.options.key?(:linethickness)
-          return "#{parameter_one.to_unicodemath(options: options)}⊘#{parameter_two.to_unicodemath(options: options)}" if self.options && self.options.key?(:displaystyle)
-          "#{first_value}∕#{second_value}" if self.options && self.options.key?(:ldiv)
+          return "#{first_value}¦#{second_value}" if self.options&.key?(:linethickness)
+          return "#{parameter_one.to_unicodemath(options: options)}⊘#{parameter_two.to_unicodemath(options: options)}" if self.options&.key?(:displaystyle)
+
+          "#{first_value}∕#{second_value}" if self.options&.key?(:ldiv)
         end
 
         def line_breaking(obj)
           parameter_one&.line_breaking(obj)
           if obj.value_exist?
-            frac = self.class.new(Utility.filter_values(obj.value), parameter_two)
+            frac = self.class.new(Utility.filter_values(obj.value),
+                                  parameter_two)
             frac.hide_function_name = true
             obj.update(frac)
             self.parameter_two = nil
@@ -94,8 +109,14 @@ module Plurimath
         end
 
         def choose_frac(options:)
-          first_value = unicodemath_parens(parameter_one, options: options) if parameter_one
-          second_value = unicodemath_parens(parameter_two, options: options) if parameter_two
+          if parameter_one
+            first_value = unicodemath_parens(parameter_one,
+                                             options: options)
+          end
+          if parameter_two
+            second_value = unicodemath_parens(parameter_two,
+                                              options: options)
+          end
           "#{first_value}⒞#{second_value}"
         end
 
@@ -111,8 +132,9 @@ module Plurimath
         def fpr_element
           fpr_element = Utility.ox_element("fPr", namespace: "m")
           if options
-            attributes = { "m:val":  attr_value }
-            fpr_element << Utility.ox_element("type", namespace: "m", attributes: attributes)
+            attributes = { "m:val": attr_value }
+            fpr_element << Utility.ox_element("type", namespace: "m",
+                                                      attributes: attributes)
           end
           fpr_element << Utility.pr_element("ctrl", true, namespace: "m")
         end
@@ -121,7 +143,7 @@ module Plurimath
           if options[:linethickness] == "0"
             "noBar"
           else
-            options[:bevelled] == 'true' ? 'skw' : "bar"
+            options[:bevelled] == "true" ? "skw" : "bar"
           end
         end
 
@@ -130,14 +152,16 @@ module Plurimath
           UnicodeMath::Constants::UNICODE_FRACTIONS.key(frac_array)
         end
 
-        def update_derivative(tag, num, den)
+        def update_derivative(_tag, num, den)
           return if %w[mi mo mn].include?(num&.name)
 
-          intent = num.is_a?(::Array) ? num.first["intent"] : num&.nodes&.first["intent"]
+          intent = num.is_a?(::Array) ? num.first["intent"] : num&.nodes&.first&.[]("intent")
           return unless intent
           return unless intent.start_with?(":derivative") && intent.end_with?(",)")
 
-          num.nodes.first["intent"] = num.nodes.first["intent"].gsub(/,\)$/, ",#{validate_derivative(den.nodes)})")
+          num.nodes.first["intent"] =
+            num.nodes.first["intent"].gsub(/,\)$/,
+                                           ",#{validate_derivative(den.nodes)})")
         end
 
         def validate_derivative(den_nodes)

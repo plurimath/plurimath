@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Enclosesquare < Symbol
         INPUT = {
-          unicodemath: [["&#x20de;"], parsing_wrapper(["enclosesquare"], lang: :unicode)],
-          asciimath: [["&#x20de;"], parsing_wrapper(["enclosesquare"], lang: :asciimath)],
+          unicodemath: [["&#x20de;"],
+                        parsing_wrapper(["enclosesquare"], lang: :unicode)],
+          asciimath: [["&#x20de;"],
+                      parsing_wrapper(["enclosesquare"], lang: :asciimath)],
           mathml: ["&#x20de;"],
           latex: [["enclosesquare", "&#x20de;"]],
           omml: ["&#x20de;"],

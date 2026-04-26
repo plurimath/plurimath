@@ -1,11 +1,10 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Symbols::Horizbar do
-
   describe ".initialize" do
-    it 'returns instance of Symbol Horizbar' do
+    it "returns instance of Symbol Horizbar" do
       klass = described_class.new
-      expect(klass).to be_a(Plurimath::Math::Symbols::Horizbar)
+      expect(klass).to be_a(described_class)
     end
   end
 

@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Horizbar < Symbol
         INPUT = {
-          unicodemath: [["&#x2015;"], parsing_wrapper(["horizbar"], lang: :unicode)],
-          asciimath: [["&#x2015;"], parsing_wrapper(["horizbar"], lang: :asciimath)],
+          unicodemath: [["&#x2015;"],
+                        parsing_wrapper(["horizbar"], lang: :unicode)],
+          asciimath: [["&#x2015;"],
+                      parsing_wrapper(["horizbar"], lang: :asciimath)],
           mathml: ["&#x2015;"],
           latex: [["horizbar", "&#x2015;"]],
           omml: ["&#x2015;"],

@@ -1,11 +1,10 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Symbols::Same do
-
   describe ".initialize" do
-    it 'returns instance of Symbol Same' do
+    it "returns instance of Symbol Same" do
       klass = described_class.new
-      expect(klass).to be_a(Plurimath::Math::Symbols::Same)
+      expect(klass).to be_a(described_class)
     end
   end
 

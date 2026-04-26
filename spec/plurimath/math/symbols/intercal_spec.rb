@@ -1,11 +1,10 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Symbols::Intercal do
-
   describe ".initialize" do
-    it 'returns instance of Symbol Intercal' do
+    it "returns instance of Symbol Intercal" do
       klass = described_class.new
-      expect(klass).to be_a(Plurimath::Math::Symbols::Intercal)
+      expect(klass).to be_a(described_class)
     end
   end
 

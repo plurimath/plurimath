@@ -1,11 +1,10 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Symbols::Bot do
-
   describe ".initialize" do
-    it 'returns instance of Symbol Bot' do
+    it "returns instance of Symbol Bot" do
       klass = described_class.new
-      expect(klass).to be_a(Plurimath::Math::Symbols::Bot)
+      expect(klass).to be_a(described_class)
     end
   end
 

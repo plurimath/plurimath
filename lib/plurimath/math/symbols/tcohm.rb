@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Tcohm < Symbol
         INPUT = {
-          unicodemath: [["&#x2126;"], parsing_wrapper(["tcohm"], lang: :unicode)],
-          asciimath: [["&#x2126;"], parsing_wrapper(["tcohm"], lang: :asciimath)],
+          unicodemath: [["&#x2126;"],
+                        parsing_wrapper(["tcohm"], lang: :unicode)],
+          asciimath: [["&#x2126;"],
+                      parsing_wrapper(["tcohm"], lang: :asciimath)],
           mathml: ["&#x2126;"],
           latex: [["tcohm", "&#x2126;"]],
           omml: ["&#x2126;"],

@@ -3,10 +3,15 @@ module Plurimath
     module Symbols
       class Pprime < Symbol
         INPUT = {
-          unicodemath: [["pprime", "&#x2033;"], parsing_wrapper(["''", "second", "dprime"], lang: :unicode)],
-          asciimath: [["''", "&#x2033;"], parsing_wrapper(["pprime", "second", "dprime"], lang: :asciimath)],
+          unicodemath: [["pprime", "&#x2033;"],
+                        parsing_wrapper(["''", "second", "dprime"],
+                                        lang: :unicode)],
+          asciimath: [["''", "&#x2033;"],
+                      parsing_wrapper(["pprime", "second", "dprime"],
+                                      lang: :asciimath)],
           mathml: ["&#x2033;"],
-          latex: [["second", "dprime", "&#x2033;"], parsing_wrapper(["pprime", "''"], lang: :latex)],
+          latex: [["second", "dprime", "&#x2033;"],
+                  parsing_wrapper(["pprime", "''"], lang: :latex)],
           omml: ["&#x2033;"],
           html: ["&#x2033;"],
         }.freeze

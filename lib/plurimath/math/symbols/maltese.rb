@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Maltese < Symbol
         INPUT = {
-          unicodemath: [["&#x2720;"], parsing_wrapper(["maltese"], lang: :unicode)],
-          asciimath: [["&#x2720;"], parsing_wrapper(["maltese"], lang: :asciimath)],
+          unicodemath: [["&#x2720;"],
+                        parsing_wrapper(["maltese"], lang: :unicode)],
+          asciimath: [["&#x2720;"],
+                      parsing_wrapper(["maltese"], lang: :asciimath)],
           mathml: ["&#x2720;"],
           latex: [["maltese", "&#x2720;"]],
           omml: ["&#x2720;"],

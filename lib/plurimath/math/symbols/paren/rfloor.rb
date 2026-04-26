@@ -4,10 +4,12 @@ module Plurimath
       class Paren
         class Rfloor < Paren
           INPUT = {
-            unicodemath: [["&#x230b;", "rfloor"], parsing_wrapper(["__|"], lang: :unicode)],
+            unicodemath: [["&#x230b;", "rfloor"],
+                          parsing_wrapper(["__|"], lang: :unicode)],
             asciimath: [["rfloor", "__|", "&#x230b;"]],
             mathml: ["&#x230b;"],
-            latex: [["\\rfloor", "&#x230b;"], parsing_wrapper(["__|"], lang: :latex)],
+            latex: [["\\rfloor", "&#x230b;"],
+                    parsing_wrapper(["__|"], lang: :latex)],
             omml: ["&#x230b;"],
             html: ["&#x230b;"],
           }.freeze

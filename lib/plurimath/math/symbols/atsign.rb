@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Atsign < Symbol
         INPUT = {
-          unicodemath: [["&#x40;"], parsing_wrapper(["atsign", "@"], lang: :unicode)],
-          asciimath: [["&#x40;"], parsing_wrapper(["atsign", "@"], lang: :asciimath)],
+          unicodemath: [["&#x40;"],
+                        parsing_wrapper(["atsign", "@"], lang: :unicode)],
+          asciimath: [["&#x40;"],
+                      parsing_wrapper(["atsign", "@"], lang: :asciimath)],
           mathml: ["&#x40;"],
           latex: [["atsign", "@", "&#x40;"]],
           omml: ["&#x40;"],

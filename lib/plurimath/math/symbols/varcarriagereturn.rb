@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Varcarriagereturn < Symbol
         INPUT = {
-          unicodemath: [["&#x23ce;"], parsing_wrapper(["varcarriagereturn"], lang: :unicode)],
-          asciimath: [["&#x23ce;"], parsing_wrapper(["varcarriagereturn"], lang: :asciimath)],
+          unicodemath: [["&#x23ce;"],
+                        parsing_wrapper(["varcarriagereturn"], lang: :unicode)],
+          asciimath: [["&#x23ce;"],
+                      parsing_wrapper(["varcarriagereturn"], lang: :asciimath)],
           mathml: ["&#x23ce;"],
           latex: [["varcarriagereturn", "&#x23ce;"]],
           omml: ["&#x23ce;"],

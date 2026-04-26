@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Upin < Symbol
         INPUT = {
-          unicodemath: [["&#x27d2;"], parsing_wrapper(["upin"], lang: :unicode)],
-          asciimath: [["&#x27d2;"], parsing_wrapper(["upin"], lang: :asciimath)],
+          unicodemath: [["&#x27d2;"],
+                        parsing_wrapper(["upin"], lang: :unicode)],
+          asciimath: [["&#x27d2;"],
+                      parsing_wrapper(["upin"], lang: :asciimath)],
           mathml: ["&#x27d2;"],
           latex: [["upin", "&#x27d2;"]],
           omml: ["&#x27d2;"],

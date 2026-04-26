@@ -20,7 +20,10 @@ module Plurimath
 
         # Naryand intent begin
         def naryand_intent(field, intent_name, options)
-          return nary_intent(field, intent_name, options) if field.name == "mrow"
+          if field.name == "mrow"
+            return nary_intent(field, intent_name,
+                               options)
+          end
 
           base, power = power_base_intent(field)
           base, power = power_or_base_intent(field) unless base && power
@@ -50,7 +53,10 @@ module Plurimath
         def power_or_base_intent(field)
           value_node = field.nodes[1]
           return nil unless SUP_TAGS.include?(field.name) || SUB_TAGS.include?(field.name)
-          return [nil, node_value(value_node, "h")] if SUP_TAGS.include?(field.name)
+          if SUP_TAGS.include?(field.name)
+            return [nil,
+                    node_value(value_node, "h")]
+          end
 
           [node_value(value_node, "l"), nil]
         end
@@ -76,7 +82,10 @@ module Plurimath
         def interval_fence_intent(tag, intent_name, options)
           intent = options[intent_name]
           return function_intent(tag, intent, options) if intent_name == :fenced
-          return binomial_fraction_intent(tag, intent, options) if intent_name == :binomial_coefficient
+          if intent_name == :binomial_coefficient
+            return binomial_fraction_intent(tag, intent,
+                                            options)
+          end
 
           first_value = fence_node_value(tag.nodes[1], "a")
           second_value = fence_node_value(tag.nodes[3], "b")
@@ -89,7 +98,12 @@ module Plurimath
         def frac_intent(tag, _, options)
           num = tag.nodes[0]
           den = tag.nodes[1]
-          return partial_derivative(tag, options[:partial_derivative]) if partial_derivative?(num, den)
+          if partial_derivative?(
+            num, den
+          )
+            return partial_derivative(tag,
+                                      options[:partial_derivative])
+          end
           return derivative(tag, options[:derivative]) if derivative?(num, den)
 
           tag
@@ -116,7 +130,7 @@ module Plurimath
         end
 
         def infty_nodes?(nodes)
-          return unless nodes&.length == 2
+          return false unless nodes&.length == 2
 
           ["&#x2212;", "-", "+"].include?(nodes&.first&.nodes&.first) &&
             ["&#x221e;"].include?(nodes&.last&.nodes&.first)
@@ -124,7 +138,7 @@ module Plurimath
 
         def valid_node_value?(node)
           INTENT_TEXT_NODES.include?(node.name) ||
-            node.name == "mrow" && node.nodes.empty?
+            (node.name == "mrow" && node.nodes.empty?)
         end
 
         # Frac Partial derivative intent begin
@@ -151,20 +165,22 @@ module Plurimath
         def find_power_base_nodes(node)
           return node.nodes[1] if %w[msup msubsup].include?(node&.name)
 
-          found_node = node.nodes.find { |node| %w[msup msubsup].include?(node&.name) }
+          found_node = node.nodes.find do |node|
+            %w[msup msubsup].include?(node&.name)
+          end
           return unless found_node
 
-          found_node&.nodes[1]
+          found_node&.nodes&.[](1)
         end
 
         def partial_derivative(node, intent_name)
-          intent = "(#{partial_arg(node)},#{f_arg(node&.nodes[0])},#{den_arg(node&.nodes[1])})"
+          intent = "(#{partial_arg(node)},#{f_arg(node&.nodes&.[](0))},#{den_arg(node&.nodes&.[](1))})"
           node["intent"] = intent_name + intent
           node
         end
 
         def f_arg(node)
-          nodes = node&.nodes[1..-1]
+          nodes = node&.nodes&.[](1..)
           all_m_tags = nodes&.all? { |element| element.name == "mi" }
           return insert_f_arg(node, nodes) unless all_m_tags
 
@@ -188,7 +204,7 @@ module Plurimath
         def den_arg(node, nodes = [])
           str = []
           case node.name
-          when "mo" then str = extract_string(nodes[1..-1], str)
+          when "mo" then str = extract_string(nodes[1..], str)
           when "msup" then str = power_arg(node.nodes, str)
           when "mrow" then str << den_arg(node.nodes.first, node.nodes)
           end
@@ -206,7 +222,7 @@ module Plurimath
         end
 
         def wrap_in_mrow(node)
-          nodes = node&.nodes[1..-1]
+          nodes = node&.nodes&.[](1..)
           return if nodes&.empty?
 
           mrow = ox_element("mrow", attributes: { arg: "n" })
@@ -243,7 +259,7 @@ module Plurimath
 
         # Frac derivative intent begin
         def derivative?(num, den)
-          return unless num || den
+          return false unless num || den
 
           valid_derivative?(num) && valid_derivative?(den)
         end
@@ -259,7 +275,8 @@ module Plurimath
         def derivative(node, intent_name)
           num = node.nodes[0]
           den = node.nodes[1]
-          node["intent"] = "#{intent_name}(1,#{num_arg(num)},#{derivative_den_arg(den)})"
+          node["intent"] =
+            "#{intent_name}(1,#{num_arg(num)},#{derivative_den_arg(den)})"
           node
         end
 
@@ -284,7 +301,7 @@ module Plurimath
 
         # Intent common but private begin
         def all_numeric?(node)
-          return unless node.name == "mrow"
+          return false unless node.name == "mrow"
 
           node.nodes.all? { |element| element.name == "mn" }
         end

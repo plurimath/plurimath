@@ -95,7 +95,7 @@ module Plurimath
         end
 
         def named_hash(hash_or_array, name_key)
-          hash_or_array.each_with_object({}) { |d, i| i[d] = name_key }
+          hash_or_array.to_h { |d| [d, name_key] }
         end
 
         def symbols_array
@@ -103,7 +103,9 @@ module Plurimath
         end
 
         def parens_symbols
-          Utility.parens_hash(:asciimath).keys.delete_if { |sym| SKIP_INPUT_PARENS.include?(sym) }
+          Utility.parens_hash(:asciimath).keys.delete_if do |sym|
+            SKIP_INPUT_PARENS.include?(sym)
+          end
         end
       end
     end

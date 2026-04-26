@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Dicev < Symbol
         INPUT = {
-          unicodemath: [["&#x2684;"], parsing_wrapper(["dicev"], lang: :unicode)],
-          asciimath: [["&#x2684;"], parsing_wrapper(["dicev"], lang: :asciimath)],
+          unicodemath: [["&#x2684;"],
+                        parsing_wrapper(["dicev"], lang: :unicode)],
+          asciimath: [["&#x2684;"],
+                      parsing_wrapper(["dicev"], lang: :asciimath)],
           mathml: ["&#x2684;"],
           latex: [["dicev", "&#x2684;"]],
           omml: ["&#x2684;"],

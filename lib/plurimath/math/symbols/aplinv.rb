@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Aplinv < Symbol
         INPUT = {
-          unicodemath: [["&#x2339;"], parsing_wrapper(["APLinv"], lang: :unicode)],
-          asciimath: [["&#x2339;"], parsing_wrapper(["APLinv"], lang: :asciimath)],
+          unicodemath: [["&#x2339;"],
+                        parsing_wrapper(["APLinv"], lang: :unicode)],
+          asciimath: [["&#x2339;"],
+                      parsing_wrapper(["APLinv"], lang: :asciimath)],
           mathml: ["&#x2339;"],
           latex: [["APLinv", "&#x2339;"]],
           omml: ["&#x2339;"],

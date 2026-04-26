@@ -4,7 +4,8 @@ module Plurimath
       class Nsqsubseteq < Symbol
         INPUT = {
           unicodemath: [["nsqsubseteq", "&#x22e2;"]],
-          asciimath: [["&#x22e2;"], parsing_wrapper(["nsqsubseteq"], lang: :asciimath)],
+          asciimath: [["&#x22e2;"],
+                      parsing_wrapper(["nsqsubseteq"], lang: :asciimath)],
           mathml: ["&#x22e2;"],
           latex: [["nsqsubseteq", "&#x22e2;"]],
           omml: ["&#x22e2;"],

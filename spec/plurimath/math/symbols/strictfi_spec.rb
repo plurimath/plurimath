@@ -1,11 +1,10 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Symbols::Strictfi do
-
   describe ".initialize" do
-    it 'returns instance of Symbol Strictfi' do
+    it "returns instance of Symbol Strictfi" do
       klass = described_class.new
-      expect(klass).to be_a(Plurimath::Math::Symbols::Strictfi)
+      expect(klass).to be_a(described_class)
     end
   end
 

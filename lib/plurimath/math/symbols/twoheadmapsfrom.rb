@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Twoheadmapsfrom < Symbol
         INPUT = {
-          unicodemath: [["&#x2b36;"], parsing_wrapper(["twoheadmapsfrom"], lang: :unicode)],
-          asciimath: [["&#x2b36;"], parsing_wrapper(["twoheadmapsfrom"], lang: :asciimath)],
+          unicodemath: [["&#x2b36;"],
+                        parsing_wrapper(["twoheadmapsfrom"], lang: :unicode)],
+          asciimath: [["&#x2b36;"],
+                      parsing_wrapper(["twoheadmapsfrom"], lang: :asciimath)],
           mathml: ["&#x2b36;"],
           latex: [["twoheadmapsfrom", "&#x2b36;"]],
           omml: ["&#x2b36;"],

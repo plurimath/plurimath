@@ -6,7 +6,8 @@ module Plurimath
       module FormulaTransformation
         private
 
-        def filter_values(value, array_to_instance: false, replacing_order: true)
+        def filter_values(value, array_to_instance: false,
+replacing_order: true)
           return value unless value.is_a?(Array)
           return array_to_instance ? nil : value if value.empty?
 
@@ -14,7 +15,7 @@ module Plurimath
             @displaystyle = value.first.displaystyle
           end
 
-          if value.length == 1 && value.all? { |val| val.is_a?(Math::Formula) }
+          if value.length == 1 && value.all?(Math::Formula)
             if array_to_instance
               filter_values(value.first.value, array_to_instance: true)
             else
@@ -95,7 +96,10 @@ module Plurimath
           value.each_with_index do |val, index|
             next unless val.is_a?(Math::Symbols::Symbol)
 
-            value[index] = mathml_symbol_to_class(val.value) unless val.value.nil?
+            unless val.value.nil?
+              value[index] =
+                mathml_symbol_to_class(val.value)
+            end
           end
           value
         end
@@ -108,7 +112,7 @@ module Plurimath
         end
 
         def value_is_ternary_or_nary?(value)
-          return if value.any?(String)
+          return false if value.any?(String)
 
           value.length >= 2 &&
             value.first.is_ternary_function? &&

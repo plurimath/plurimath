@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-
 module Plurimath
   module Math
     module Function
@@ -44,9 +43,13 @@ module Plurimath
         end
 
         def to_mathml_without_math_tag(intent, options:)
-          return Utility.ox_element("mo", attributes: { linebreak: "newline" }) unless parameter_one
+          unless parameter_one
+            return Utility.ox_element("mo",
+                                      attributes: { linebreak: "newline" })
+          end
 
-          mo_node = parameter_one.to_mathml_without_math_tag(intent, options: options)
+          mo_node = parameter_one.to_mathml_without_math_tag(intent,
+                                                             options: options)
           mo_node.name = "mo" unless mo_node.name == "mo"
           mo_node.set_attr(attributes) unless attributes.empty?
           mo_node

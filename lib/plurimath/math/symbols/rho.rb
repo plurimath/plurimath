@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Rho < Symbol
         INPUT = {
-          unicodemath: [["rho", "&#x3c1;"], parsing_wrapper(["uprho"], lang: :unicode)],
-          asciimath: [["rho", "&#x3c1;"], parsing_wrapper(["uprho"], lang: :asciimath)],
+          unicodemath: [["rho", "&#x3c1;"],
+                        parsing_wrapper(["uprho"], lang: :unicode)],
+          asciimath: [["rho", "&#x3c1;"],
+                      parsing_wrapper(["uprho"], lang: :asciimath)],
           mathml: ["&#x3c1;"],
           latex: [["uprho", "rho", "&#x3c1;"]],
           omml: ["&#x3c1;"],

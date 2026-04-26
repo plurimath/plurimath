@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Upzeta < Symbol
         INPUT = {
-          unicodemath: [["&#x396;"], parsing_wrapper(["upZeta"], lang: :unicode)],
-          asciimath: [["&#x396;"], parsing_wrapper(["upZeta"], lang: :asciimath)],
+          unicodemath: [["&#x396;"],
+                        parsing_wrapper(["upZeta"], lang: :unicode)],
+          asciimath: [["&#x396;"],
+                      parsing_wrapper(["upZeta"], lang: :asciimath)],
           mathml: ["&#x396;"],
           latex: [["upZeta", "&#x396;"]],
           omml: ["&#x396;"],

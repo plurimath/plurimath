@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-
 module Plurimath
   module Math
     module Function
@@ -40,7 +39,8 @@ module Plurimath
         def line_breaking(obj)
           parameter_one&.line_breaking(obj)
           if obj.value_exist?
-            obj.update(self.class.new(Utility.filter_values(obj.value), parameter_two, parameter_three))
+            obj.update(self.class.new(Utility.filter_values(obj.value),
+                                      parameter_two, parameter_three))
             self.parameter_two = nil
             self.parameter_three = nil
             return
@@ -48,7 +48,8 @@ module Plurimath
 
           parameter_two&.line_breaking(obj)
           if obj.value_exist?
-            obj.update(self.class.new(nil, Utility.filter_values(obj.value), parameter_three))
+            obj.update(self.class.new(nil, Utility.filter_values(obj.value),
+                                      parameter_three))
             self.parameter_three = nil
           end
         end

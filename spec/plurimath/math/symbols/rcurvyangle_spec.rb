@@ -1,11 +1,10 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Symbols::Rcurvyangle do
-
   describe ".initialize" do
-    it 'returns instance of Symbol Rcurvyangle' do
+    it "returns instance of Symbol Rcurvyangle" do
       klass = described_class.new
-      expect(klass).to be_a(Plurimath::Math::Symbols::Rcurvyangle)
+      expect(klass).to be_a(described_class)
     end
   end
 

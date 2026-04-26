@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Enclosetriangle < Symbol
         INPUT = {
-          unicodemath: [["&#x20e4;"], parsing_wrapper(["enclosetriangle"], lang: :unicode)],
-          asciimath: [["&#x20e4;"], parsing_wrapper(["enclosetriangle"], lang: :asciimath)],
+          unicodemath: [["&#x20e4;"],
+                        parsing_wrapper(["enclosetriangle"], lang: :unicode)],
+          asciimath: [["&#x20e4;"],
+                      parsing_wrapper(["enclosetriangle"], lang: :asciimath)],
           mathml: ["&#x20e4;"],
           latex: [["enclosetriangle", "&#x20e4;"]],
           omml: ["&#x20e4;"],

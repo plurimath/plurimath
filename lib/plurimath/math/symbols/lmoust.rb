@@ -3,10 +3,13 @@ module Plurimath
     module Symbols
       class Lmoust < Symbol
         INPUT = {
-          unicodemath: [["lmoust", "&#x22b0;"], parsing_wrapper(["prurel"], lang: :unicode)],
-          asciimath: [["&#x22b0;"], parsing_wrapper(["lmoust", "prurel"], lang: :asciimath)],
+          unicodemath: [["lmoust", "&#x22b0;"],
+                        parsing_wrapper(["prurel"], lang: :unicode)],
+          asciimath: [["&#x22b0;"],
+                      parsing_wrapper(["lmoust", "prurel"], lang: :asciimath)],
           mathml: ["&#x22b0;"],
-          latex: [["prurel", "&#x22b0;"], parsing_wrapper(["lmoust"], lang: :latex)],
+          latex: [["prurel", "&#x22b0;"],
+                  parsing_wrapper(["lmoust"], lang: :latex)],
           omml: ["&#x22b0;"],
           html: ["&#x22b0;"],
         }.freeze

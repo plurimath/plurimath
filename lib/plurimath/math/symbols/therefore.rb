@@ -3,10 +3,14 @@ module Plurimath
     module Symbols
       class Therefore < Symbol
         INPUT = {
-          unicodemath: [["therefore", "&#x2234;"], parsing_wrapper([":.", "wasytherefore"], lang: :unicode)],
-          asciimath: [["therefore", ":.", "&#x2234;"], parsing_wrapper(["wasytherefore"], lang: :asciimath)],
+          unicodemath: [["therefore", "&#x2234;"],
+                        parsing_wrapper([":.", "wasytherefore"],
+                                        lang: :unicode)],
+          asciimath: [["therefore", ":.", "&#x2234;"],
+                      parsing_wrapper(["wasytherefore"], lang: :asciimath)],
           mathml: ["&#x2234;"],
-          latex: [["wasytherefore", "therefore", "&#x2234;"], parsing_wrapper([":."], lang: :latex)],
+          latex: [["wasytherefore", "therefore", "&#x2234;"],
+                  parsing_wrapper([":."], lang: :latex)],
           omml: ["&#x2234;"],
           html: ["&#x2234;"],
         }.freeze

@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-
 module Plurimath
   module Math
     module Function
@@ -13,15 +12,31 @@ module Plurimath
         }.freeze
 
         def to_asciimath(options:)
-          subscript = "_(#{parameter_two&.map { |param| param.to_asciimath(options: options) }.join})" unless valid_value_exist?(parameter_two)
-          supscript = "^(#{parameter_three&.map { |param| param.to_asciimath(options: options) }.join})" unless valid_value_exist?(parameter_three)
+          unless valid_value_exist?(parameter_two)
+            subscript = "_(#{parameter_two&.map do |param|
+              param.to_asciimath(options: options)
+            end&.join})"
+          end
+          unless valid_value_exist?(parameter_three)
+            supscript = "^(#{parameter_three&.map do |param|
+              param.to_asciimath(options: options)
+            end&.join})"
+          end
           prescript = "\\ #{subscript}#{supscript}" if subscript || supscript
           "#{prescript}#{parameter_one&.to_asciimath(options: options)}"
         end
 
         def to_latex(options:)
-          subscript = "_{#{parameter_two&.map { |param| param.to_latex(options: options) }&.join}}" unless valid_value_exist?(parameter_two)
-          supscript = "^{#{parameter_three&.map { |param| param.to_latex(options: options) }&.join}}" unless valid_value_exist?(parameter_three)
+          unless valid_value_exist?(parameter_two)
+            subscript = "_{#{parameter_two&.map do |param|
+              param.to_latex(options: options)
+            end&.join}}"
+          end
+          unless valid_value_exist?(parameter_three)
+            supscript = "^{#{parameter_three&.map do |param|
+              param.to_latex(options: options)
+            end&.join}}"
+          end
           prescript = "{}#{subscript}#{supscript}" if subscript || supscript
           "#{prescript}#{parameter_one&.to_latex(options: options)}"
         end
@@ -34,7 +49,7 @@ module Plurimath
               parameter_one&.mmultiscript(intent, options: options),
               mprescript,
               validate_mathml_fields(prescripts, intent, options: options),
-            ]
+            ],
           )
         end
 
@@ -42,9 +57,12 @@ module Plurimath
           Utility.update_nodes(
             ox_element("sPre", namespace: "m"),
             [
-              omml_parameter(parameter_one, display_style, tag_name: "e", options: options),
-              omml_parameter(parameter_two, display_style, tag_name: "sub", options: options),
-              omml_parameter(parameter_three, display_style, tag_name: "sup", options: options),
+              omml_parameter(parameter_one, display_style, tag_name: "e",
+                                                           options: options),
+              omml_parameter(parameter_two, display_style, tag_name: "sub",
+                                                           options: options),
+              omml_parameter(parameter_three, display_style, tag_name: "sup",
+                                                             options: options),
             ],
           )
         end
@@ -59,7 +77,8 @@ module Plurimath
           parameter_one&.line_breaking(obj)
           if obj.value_exist?
             obj.update(
-              self.class.new(Utility.filter_values(obj.value), parameter_two, parameter_three)
+              self.class.new(Utility.filter_values(obj.value), parameter_two,
+                             parameter_three),
             )
             self.parameter_two = nil
             self.parameter_three = nil
@@ -73,7 +92,7 @@ module Plurimath
           )
           if obj.value_exist?
             obj.update(
-              self.class.new(nil, obj.value, parameter_three)
+              self.class.new(nil, obj.value, parameter_three),
             )
             self.parameter_three = nil
           end
@@ -86,7 +105,9 @@ module Plurimath
           return parameter_two if parameter_three.nil? || parameter_three.empty?
 
           prescripts_array = []
-          Array(parameter_two).zip(Array(parameter_three)) { |array| prescripts_array << array }
+          Array(parameter_two).zip(Array(parameter_three)) do |array|
+            prescripts_array << array
+          end
           prescripts_array.flatten.compact
         end
 
@@ -100,7 +121,9 @@ module Plurimath
 
         def sup_value(options:)
           field = Utility.filter_values(parameter_two)
-          field_value = parameter_three.map { |param| param.to_unicodemath(options: options) }.join
+          field_value = parameter_three.map do |param|
+            param.to_unicodemath(options: options)
+          end.join
           if field&.mini_sized? || prime_unicode?(field)
             field_value
           elsif field.is_a?(Math::Function::Power)
@@ -112,7 +135,9 @@ module Plurimath
 
         def sub_value(options:)
           field = Utility.filter_values(parameter_two)
-          field_value = parameter_two&.map { |param| param.to_unicodemath(options: options) }.join
+          field_value = parameter_two&.map do |param|
+            param.to_unicodemath(options: options)
+          end&.join
           if field&.mini_sized?
             field_value
           elsif parameter_two.is_a?(Math::Function::Base)

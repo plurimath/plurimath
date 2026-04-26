@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Warning < Symbol
         INPUT = {
-          unicodemath: [["&#x26a0;"], parsing_wrapper(["warning"], lang: :unicode)],
-          asciimath: [["&#x26a0;"], parsing_wrapper(["warning"], lang: :asciimath)],
+          unicodemath: [["&#x26a0;"],
+                        parsing_wrapper(["warning"], lang: :unicode)],
+          asciimath: [["&#x26a0;"],
+                      parsing_wrapper(["warning"], lang: :asciimath)],
           mathml: ["&#x26a0;"],
           latex: [["warning", "&#x26a0;"]],
           omml: ["&#x26a0;"],

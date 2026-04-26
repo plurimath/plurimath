@@ -1,11 +1,10 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Symbols::Ocommatopright do
-
   describe ".initialize" do
-    it 'returns instance of Symbol Ocommatopright' do
+    it "returns instance of Symbol Ocommatopright" do
       klass = described_class.new
-      expect(klass).to be_a(Plurimath::Math::Symbols::Ocommatopright)
+      expect(klass).to be_a(described_class)
     end
   end
 

@@ -1,11 +1,10 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Symbols::Rfbowtie do
-
   describe ".initialize" do
-    it 'returns instance of Symbol Rfbowtie' do
+    it "returns instance of Symbol Rfbowtie" do
       klass = described_class.new
-      expect(klass).to be_a(Plurimath::Math::Symbols::Rfbowtie)
+      expect(klass).to be_a(described_class)
     end
   end
 

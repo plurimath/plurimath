@@ -211,7 +211,7 @@ module Plurimath
         end
 
         def parenthesis
-          @@parens ||= {"\\(" => "\\)", "\\[" => "\\]", "\\{" => "\\}"}
+          @@parens ||= { "\\(" => "\\)", "\\[" => "\\]", "\\{" => "\\}" }
           rejected_paren(:close?).each do |paren, klass|
             @@parens[paren] = klass.new.closing::INPUT[:latex].flatten
           end
@@ -221,7 +221,7 @@ module Plurimath
         private
 
         def symbols_hash
-          latex_symbols.map { |sym, klass| [sym, :symbols] }.compact.to_h
+          latex_symbols.filter_map { |sym, _klass| [sym, :symbols] }.to_h
         end
 
         def latex_symbols

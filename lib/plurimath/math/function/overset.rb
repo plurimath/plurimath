@@ -1,11 +1,9 @@
 # frozen_string_literal: true
 
-
 module Plurimath
   module Math
     module Function
       class Overset < BinaryFunction
-
         attr_accessor :options
 
         FUNCTION = {
@@ -17,7 +15,8 @@ module Plurimath
         def initialize(
           parameter_one = nil,
           parameter_two = nil,
-          options = {})
+          options = {}
+        )
           super(parameter_one, parameter_two)
           @options = options unless options.empty?
         end
@@ -36,7 +35,8 @@ module Plurimath
         def to_omml_without_math_tag(display_style, options:)
           if !display_style
             power = Power.new(parameter_one, parameter_two)
-            return power.to_omml_without_math_tag(display_style, options: options)
+            return power.to_omml_without_math_tag(display_style,
+                                                  options: options)
           end
 
           limupp   = Utility.ox_element("limUpp", namespace: "m")
@@ -49,32 +49,51 @@ module Plurimath
               # Overset preserves Plurimath's source argument order across
               # formats; OMML uses this mapping to avoid remapping fields during
               # MathML/UnicodeMath/OMML round-trips.
-              omml_parameter(parameter_one, display_style, tag_name: "e", options: options),
-              omml_parameter(parameter_two, display_style, tag_name: "lim", options: options),
+              omml_parameter(parameter_one, display_style, tag_name: "e",
+                                                           options: options),
+              omml_parameter(parameter_two, display_style, tag_name: "lim",
+                                                           options: options),
             ],
           )
           [limupp]
         end
 
         def to_unicodemath(options:)
-          return "#{unicodemath_parens(parameter_two, options: options)}#{unicodemath_field_value(parameter_one)}" if unicode_accent?(parameter_one)
+          if unicode_accent?(parameter_one)
+            return "#{unicodemath_parens(parameter_two,
+                                         options: options)}#{unicodemath_field_value(parameter_one)}"
+          end
           return "#{unicodemath_field_value(parameter_one)}#{parameter_two.to_unicodemath(options: options)}" if unicode_accent?(parameter_two)
-          return "#{parameter_one.to_unicodemath(options: options)}#{unicodemath_parens(parameter_two, options: options)}" if horizontal_brackets?
-          return "#{parameter_two.to_unicodemath(options: options)}^#{unicodemath_parens(parameter_one, options: options)}" if unicode_classes_accent?(parameter_two)
+          if horizontal_brackets?
+            return "#{parameter_one.to_unicodemath(options: options)}#{unicodemath_parens(
+              parameter_two, options: options
+            )}"
+          end
+          if unicode_classes_accent?(parameter_two)
+            return "#{parameter_two.to_unicodemath(options: options)}^#{unicodemath_parens(
+              parameter_one, options: options
+            )}"
+          end
 
-          "#{unicodemath_parens(parameter_two, options: options)}┴#{unicodemath_parens(parameter_one, options: options)}" if parameter_one || parameter_two
+          if parameter_one || parameter_two
+            "#{unicodemath_parens(parameter_two,
+                                  options: options)}┴#{unicodemath_parens(parameter_one,
+                                                                          options: options)}"
+          end
         end
 
         def line_breaking(obj)
           parameter_two&.line_breaking(obj)
           if obj.value_exist?
-            obj.update(self.class.new(parameter_one, Utility.filter_values(obj.value)))
+            obj.update(self.class.new(parameter_one,
+                                      Utility.filter_values(obj.value)))
             self.parameter_one = nil
           end
         end
 
         def new_nary_function(fourth_value)
-          Nary.new(parameter_two, nil, parameter_one, fourth_value, { type: "undOvr" })
+          Nary.new(parameter_two, nil, parameter_one, fourth_value,
+                   { type: "undOvr" })
         end
 
         def is_nary_function?
@@ -91,7 +110,7 @@ module Plurimath
         protected
 
         def unicode_accent?(field)
-          return unless field.is_a?(Math::Symbols::Symbol)
+          return false unless field.is_a?(Math::Symbols::Symbol)
 
           match_unicode?(unicodemath_field_value(field))
         end
@@ -102,7 +121,7 @@ module Plurimath
         end
 
         def horizontal_brackets?
-          return unless parameter_one.is_a?(Math::Symbols::Symbol)
+          return false unless parameter_one.is_a?(Math::Symbols::Symbol)
 
           UnicodeMath::Constants::HORIZONTAL_BRACKETS.value?(unicodemath_field_value(parameter_one))
         end

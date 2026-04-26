@@ -3,10 +3,14 @@ module Plurimath
     module Symbols
       class Odash < Symbol
         INPUT = {
-          unicodemath: [["odash", "&#x229d;"], parsing_wrapper(["circleddash"], lang: :unicode)],
-          asciimath: [["&#x229d;"], parsing_wrapper(["odash", "circleddash"], lang: :asciimath)],
+          unicodemath: [["odash", "&#x229d;"],
+                        parsing_wrapper(["circleddash"], lang: :unicode)],
+          asciimath: [["&#x229d;"],
+                      parsing_wrapper(["odash", "circleddash"],
+                                      lang: :asciimath)],
           mathml: ["&#x229d;"],
-          latex: [["circleddash", "&#x229d;"], parsing_wrapper(["odash"], lang: :latex)],
+          latex: [["circleddash", "&#x229d;"],
+                  parsing_wrapper(["odash"], lang: :latex)],
           omml: ["&#x229d;"],
           html: ["&#x229d;"],
         }.freeze

@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Fracslash < Symbol
         INPUT = {
-          unicodemath: [["&#x2044;"], parsing_wrapper(["fracslash"], lang: :unicode)],
-          asciimath: [["&#x2044;"], parsing_wrapper(["fracslash"], lang: :asciimath)],
+          unicodemath: [["&#x2044;"],
+                        parsing_wrapper(["fracslash"], lang: :unicode)],
+          asciimath: [["&#x2044;"],
+                      parsing_wrapper(["fracslash"], lang: :asciimath)],
           mathml: ["&#x2044;"],
           latex: [["fracslash", "&#x2044;"]],
           omml: ["&#x2044;"],

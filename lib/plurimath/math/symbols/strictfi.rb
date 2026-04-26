@@ -3,8 +3,12 @@ module Plurimath
     module Symbols
       class Strictfi < Symbol
         INPUT = {
-          unicodemath: [["&#x297c;"], parsing_wrapper(["leftfishtail", "strictfi"], lang: :unicode)],
-          asciimath: [["&#x297c;"], parsing_wrapper(["leftfishtail", "strictfi"], lang: :asciimath)],
+          unicodemath: [["&#x297c;"],
+                        parsing_wrapper(["leftfishtail", "strictfi"],
+                                        lang: :unicode)],
+          asciimath: [["&#x297c;"],
+                      parsing_wrapper(["leftfishtail", "strictfi"],
+                                      lang: :asciimath)],
           mathml: ["&#x297c;"],
           latex: [["leftfishtail", "strictfi", "&#x297c;"]],
           omml: ["&#x297c;"],

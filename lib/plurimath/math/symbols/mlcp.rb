@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Mlcp < Symbol
         INPUT = {
-          unicodemath: [["&#x2adb;"], parsing_wrapper(["mlcp"], lang: :unicode)],
-          asciimath: [["&#x2adb;"], parsing_wrapper(["mlcp"], lang: :asciimath)],
+          unicodemath: [["&#x2adb;"],
+                        parsing_wrapper(["mlcp"], lang: :unicode)],
+          asciimath: [["&#x2adb;"],
+                      parsing_wrapper(["mlcp"], lang: :asciimath)],
           mathml: ["&#x2adb;"],
           latex: [["mlcp", "&#x2adb;"]],
           omml: ["&#x2adb;"],

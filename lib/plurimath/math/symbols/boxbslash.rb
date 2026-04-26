@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Boxbslash < Symbol
         INPUT = {
-          unicodemath: [["&#x29c5;"], parsing_wrapper(["boxbslash"], lang: :unicode)],
-          asciimath: [["&#x29c5;"], parsing_wrapper(["boxbslash"], lang: :asciimath)],
+          unicodemath: [["&#x29c5;"],
+                        parsing_wrapper(["boxbslash"], lang: :unicode)],
+          asciimath: [["&#x29c5;"],
+                      parsing_wrapper(["boxbslash"], lang: :asciimath)],
           mathml: ["&#x29c5;"],
           latex: [["boxbslash", "&#x29c5;"]],
           omml: ["&#x29c5;"],

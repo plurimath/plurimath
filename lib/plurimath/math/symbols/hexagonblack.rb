@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Hexagonblack < Symbol
         INPUT = {
-          unicodemath: [["&#x2b23;"], parsing_wrapper(["hexagonblack"], lang: :unicode)],
-          asciimath: [["&#x2b23;"], parsing_wrapper(["hexagonblack"], lang: :asciimath)],
+          unicodemath: [["&#x2b23;"],
+                        parsing_wrapper(["hexagonblack"], lang: :unicode)],
+          asciimath: [["&#x2b23;"],
+                      parsing_wrapper(["hexagonblack"], lang: :asciimath)],
           mathml: ["&#x2b23;"],
           latex: [["hexagonblack", "&#x2b23;"]],
           omml: ["&#x2b23;"],

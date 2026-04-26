@@ -1,30 +1,31 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Function::Csch do
-
   describe ".initialize" do
-    it 'returns instance of Csch' do
-      csch = Plurimath::Math::Function::Csch.new('70')
-      expect(csch).to be_a(Plurimath::Math::Function::Csch)
+    it "returns instance of Csch" do
+      csch = described_class.new("70")
+      expect(csch).to be_a(described_class)
     end
 
-    it 'initializes Csch object' do
-      csch = Plurimath::Math::Function::Csch.new('70')
-      expect(csch.parameter_one).to eql('70')
+    it "initializes Csch object" do
+      csch = described_class.new("70")
+      expect(csch.parameter_one).to eql("70")
     end
   end
 
   describe ".to_asciimath" do
-    subject(:formula) { described_class.new(first_value).to_asciimath(options: {}) }
+    subject(:formula) do
+      described_class.new(first_value).to_asciimath(options: {})
+    end
 
     context "contains Symbol as value" do
       let(:first_value) do
         Plurimath::Math::Function::Fenced.new(
           Plurimath::Math::Symbols::Symbol.new("("),
           [
-            Plurimath::Math::Symbols::Symbol.new("n")
+            Plurimath::Math::Symbols::Symbol.new("n"),
           ],
-          Plurimath::Math::Symbols::Symbol.new(")")
+          Plurimath::Math::Symbols::Symbol.new(")"),
         )
       end
 
@@ -40,7 +41,7 @@ RSpec.describe Plurimath::Math::Function::Csch do
           [
             Plurimath::Math::Number.new("70"),
           ],
-          Plurimath::Math::Symbols::Symbol.new(")")
+          Plurimath::Math::Symbols::Symbol.new(")"),
         )
       end
 
@@ -55,15 +56,16 @@ RSpec.describe Plurimath::Math::Function::Csch do
           Plurimath::Math::Symbols::Symbol.new("("),
           [
             Plurimath::Math::Formula.new([
-              Plurimath::Math::Function::Sum.new(
-                Plurimath::Math::Symbols::Ampersand.new,
-                Plurimath::Math::Function::Text.new("so"),
-              )
-            ])
+                                           Plurimath::Math::Function::Sum.new(
+                                             Plurimath::Math::Symbols::Ampersand.new,
+                                             Plurimath::Math::Function::Text.new("so"),
+                                           ),
+                                         ]),
           ],
-          Plurimath::Math::Symbols::Symbol.new(")")
+          Plurimath::Math::Symbols::Symbol.new(")"),
         )
       end
+
       it "returns asciimath string" do
         expect(formula).to eq("csch(sum_(&)^(\"so\"))")
       end
@@ -73,8 +75,8 @@ RSpec.describe Plurimath::Math::Function::Csch do
   describe ".to_mathml" do
     subject(:formula) do
       Plurimath.xml_engine.dump(
-        described_class.new(first_value).
-          to_mathml_without_math_tag(false, options: {}),
+        described_class.new(first_value)
+          .to_mathml_without_math_tag(false, options: {}),
         indent: 2,
       ).gsub("&amp;", "&")
     end
@@ -111,12 +113,13 @@ RSpec.describe Plurimath::Math::Function::Csch do
     context "contains Formula as value" do
       let(:first_value) do
         Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Sum.new(
-            Plurimath::Math::Symbols::Ampersand.new,
-            Plurimath::Math::Function::Text.new("so"),
-          )
-        ])
+                                       Plurimath::Math::Function::Sum.new(
+                                         Plurimath::Math::Symbols::Ampersand.new,
+                                         Plurimath::Math::Function::Text.new("so"),
+                                       ),
+                                     ])
       end
+
       it "returns mathml string" do
         expected_value = <<~MATHML
           <mrow>
@@ -157,12 +160,13 @@ RSpec.describe Plurimath::Math::Function::Csch do
     context "contains Formula as value" do
       let(:first_value) do
         Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Sum.new(
-            Plurimath::Math::Symbols::Ampersand.new,
-            Plurimath::Math::Function::Text.new("so"),
-          )
-        ])
+                                       Plurimath::Math::Function::Sum.new(
+                                         Plurimath::Math::Symbols::Ampersand.new,
+                                         Plurimath::Math::Function::Text.new("so"),
+                                       ),
+                                     ])
       end
+
       it "returns mathml string" do
         expect(formula).to eql("\\csch{\\sum_{\\&}^{\\text{so}}}")
       end
@@ -191,12 +195,13 @@ RSpec.describe Plurimath::Math::Function::Csch do
     context "contains Formula as value" do
       let(:first_value) do
         Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Sum.new(
-            Plurimath::Math::Symbols::Ampersand.new,
-            Plurimath::Math::Function::Text.new("so"),
-          )
-        ])
+                                       Plurimath::Math::Function::Sum.new(
+                                         Plurimath::Math::Symbols::Ampersand.new,
+                                         Plurimath::Math::Function::Text.new("so"),
+                                       ),
+                                     ])
       end
+
       it "returns html string" do
         expect(formula).to eql("<i>csch</i><i><i>&sum;</i><sub>&</sub><sup>so</sup></i>")
       end
@@ -204,20 +209,22 @@ RSpec.describe Plurimath::Math::Function::Csch do
   end
 
   describe ".validate_function_formula" do
-    subject(:formula) { described_class.new(first_value).validate_function_formula }
+    subject(:formula) do
+      described_class.new(first_value).validate_function_formula
+    end
 
     context "contains Symbol as value" do
       let(:first_value) { "n" }
 
       it "expects false in return" do
-        expect(formula).to eql(false)
+        expect(formula).to be(false)
       end
     end
 
     context "contains Symbol as value" do
       let(:first_value) { "a" }
 
-      it "should not return true" do
+      it "does not return true" do
         expect(formula).not_to eql(true)
       end
     end

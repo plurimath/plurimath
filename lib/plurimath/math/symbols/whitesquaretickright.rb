@@ -3,8 +3,12 @@ module Plurimath
     module Symbols
       class Whitesquaretickright < Symbol
         INPUT = {
-          unicodemath: [["&#x27e5;"], parsing_wrapper(["whitesquaretickright"], lang: :unicode)],
-          asciimath: [["&#x27e5;"], parsing_wrapper(["whitesquaretickright"], lang: :asciimath)],
+          unicodemath: [["&#x27e5;"],
+                        parsing_wrapper(["whitesquaretickright"],
+                                        lang: :unicode)],
+          asciimath: [["&#x27e5;"],
+                      parsing_wrapper(["whitesquaretickright"],
+                                      lang: :asciimath)],
           mathml: ["&#x27e5;"],
           latex: [["whitesquaretickright", "&#x27e5;"]],
           omml: ["&#x27e5;"],

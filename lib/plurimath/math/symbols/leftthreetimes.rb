@@ -4,7 +4,8 @@ module Plurimath
       class Leftthreetimes < Symbol
         INPUT = {
           unicodemath: [["leftthreetimes", "&#x22cb;"]],
-          asciimath: [["&#x22cb;"], parsing_wrapper(["leftthreetimes"], lang: :asciimath)],
+          asciimath: [["&#x22cb;"],
+                      parsing_wrapper(["leftthreetimes"], lang: :asciimath)],
           mathml: ["&#x22cb;"],
           latex: [["leftthreetimes", "&#x22cb;"]],
           omml: ["&#x22cb;"],

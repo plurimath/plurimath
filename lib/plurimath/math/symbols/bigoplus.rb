@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Bigoplus < Symbol
         INPUT = {
-          unicodemath: [["&#x2a01;"], parsing_wrapper(["bigoplus"], lang: :unicode)],
-          asciimath: [["&#x2a01;"], parsing_wrapper(["bigoplus"], lang: :asciimath)],
+          unicodemath: [["&#x2a01;"],
+                        parsing_wrapper(["bigoplus"], lang: :unicode)],
+          asciimath: [["&#x2a01;"],
+                      parsing_wrapper(["bigoplus"], lang: :asciimath)],
           mathml: ["&#x2a01;"],
           latex: [["bigoplus", "&#x2a01;"]],
           omml: ["&#x2a01;"],

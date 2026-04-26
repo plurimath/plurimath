@@ -4,8 +4,7 @@ module Plurimath
   module Math
     module Function
       class Text < UnaryFunction
-
-        PARSER_REGEX = %r{unicode\[:(?<unicode>\w{1,})\]}.freeze
+        PARSER_REGEX = %r{unicode\[:(?<unicode>\w{1,})\]}
 
         def initialize(parameter_one = "", lang: nil)
           super(parameter_one)
@@ -14,14 +13,14 @@ module Plurimath
 
         def ==(object)
           object.class == self.class &&
-            object.parameter_one == self.parameter_one
+            object.parameter_one == parameter_one
         end
 
         def to_asciimath(**)
           "\"#{parse_text('asciimath') || parameter_one}\""
         end
 
-        def to_mathml_without_math_tag(intent, **)
+        def to_mathml_without_math_tag(_intent, **)
           text = ox_element("mtext")
           return text unless parameter_one
 
@@ -46,7 +45,7 @@ module Plurimath
         def to_unicodemath(**)
           return unless value
 
-          value&.start_with?("\\") ? value : "\"#{(Utility.html_entity_to_unicode(value))}\""
+          value&.start_with?("\\") ? value : "\"#{Utility.html_entity_to_unicode(value)}\""
         end
 
         def insert_t_tag(display_style, options:)
@@ -80,7 +79,8 @@ module Plurimath
         end
 
         def to_omml_math_zone(spacing, _, _, display_style:, options:)
-          "#{spacing}\"#{dump_omml(self, display_style, options: options)}\" text\n"
+          "#{spacing}\"#{dump_omml(self, display_style,
+                                   options: options)}\" text\n"
         end
 
         def to_unicodemath_math_zone(spacing, _, _, options:)
@@ -113,7 +113,7 @@ module Plurimath
 
         def parse_text(lang)
           html_value = first_value(lang).dup
-          html_value = html_value&.gsub(PARSER_REGEX) do |_text|
+          html_value&.gsub(PARSER_REGEX) do |_text|
             last_match = Regexp.last_match
             case lang
             when "mathml", "html", "omml"
@@ -122,7 +122,6 @@ module Plurimath
               last_match[:unicode]
             end
           end
-          html_value
         end
 
         def first_value(lang)

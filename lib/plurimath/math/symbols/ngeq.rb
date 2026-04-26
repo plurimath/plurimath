@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Ngeq < Symbol
         INPUT = {
-          unicodemath: [["ngeq", "&#x2271;"], parsing_wrapper(["ngeqslant"], lang: :unicode)],
-          asciimath: [["&#x2271;"], parsing_wrapper(["ngeq", "ngeqslant"], lang: :asciimath)],
+          unicodemath: [["ngeq", "&#x2271;"],
+                        parsing_wrapper(["ngeqslant"], lang: :unicode)],
+          asciimath: [["&#x2271;"],
+                      parsing_wrapper(["ngeq", "ngeqslant"], lang: :asciimath)],
           mathml: ["&#x2271;"],
           latex: [["ngeqslant", "ngeq", "&#x2271;"]],
           omml: ["&#x2271;"],

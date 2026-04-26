@@ -4,7 +4,8 @@ module Plurimath
       class Vvdash < Symbol
         INPUT = {
           unicodemath: [["Vvdash", "&#x22aa;"]],
-          asciimath: [["&#x22aa;"], parsing_wrapper(["Vvdash"], lang: :asciimath)],
+          asciimath: [["&#x22aa;"],
+                      parsing_wrapper(["Vvdash"], lang: :asciimath)],
           mathml: ["&#x22aa;"],
           latex: [["Vvdash", "&#x22aa;"]],
           omml: ["&#x22aa;"],

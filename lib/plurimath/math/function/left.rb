@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-
 module Plurimath
   module Math
     module Function
@@ -9,7 +8,7 @@ module Plurimath
           "left#{parameter_one}"
         end
 
-        def to_mathml_without_math_tag(intent, **)
+        def to_mathml_without_math_tag(_intent, **)
           mo = Utility.ox_element("mo")
           mo << left_paren if parameter_one
           mo
@@ -50,12 +49,12 @@ module Plurimath
 
         def to_mathml_math_zone(spacing = "", _, _, **)
           mo_tag = (Utility.ox_element("mo") << left_paren)
-          "#{spacing}\"#{dump_ox_nodes(mo_tag).gsub(/\s+/, "")}\" left\n"
+          "#{spacing}\"#{dump_ox_nodes(mo_tag).gsub(/\s+/, '')}\" left\n"
         end
 
         def to_omml_math_zone(spacing = "", _, _, display_style:, **)
           t_tag = (Utility.ox_element("t", namespace: "m") << left_paren)
-          "#{spacing}\"#{dump_ox_nodes(t_tag).gsub(/\s+/, "")}\" left\n"
+          "#{spacing}\"#{dump_ox_nodes(t_tag).gsub(/\s+/, '')}\" left\n"
         end
 
         def to_unicodemath_math_zone(spacing = "", _, _, **)

@@ -4,7 +4,8 @@ module Plurimath
       class Eqgtr < Symbol
         INPUT = {
           unicodemath: [["eqgtr", "&#x22dd;"]],
-          asciimath: [["&#x22dd;"], parsing_wrapper(["eqgtr"], lang: :asciimath)],
+          asciimath: [["&#x22dd;"],
+                      parsing_wrapper(["eqgtr"], lang: :asciimath)],
           mathml: ["&#x22dd;"],
           latex: [["eqgtr", "&#x22dd;"]],
           omml: ["&#x22dd;"],

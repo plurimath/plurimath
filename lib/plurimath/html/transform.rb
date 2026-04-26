@@ -5,17 +5,19 @@ module Plurimath
     class Transform < Parslet::Transform
       rule(text: simple(:text))      { Math::Function::Text.new(text) }
       rule(unary: simple(:unary))    { Utility.get_class(unary).new }
-      rule(symbol: simple(:symbol))  { Utility.symbols_class(symbol, lang: :html) }
+      rule(symbol: simple(:symbol))  do
+        Utility.symbols_class(symbol, lang: :html)
+      end
       rule(number: simple(:number))  { Math::Number.new(number) }
       rule(expression: simple(:exp)) { exp }
-      
+
       rule(expression: sequence(:exp))    { exp }
       rule(sequence: simple(:sequence))   { sequence }
       rule(tr_value: simple(:tr_value))   { Math::Function::Tr.new([tr_value]) }
       rule(td_value: simple(:td_value))   { Math::Function::Td.new([td_value]) }
       rule(sequence: sequence(:sequence)) { sequence }
       rule(td_value: sequence(:td_value)) { Math::Function::Td.new(td_value) }
-      
+
       rule(parse_parenthesis: simple(:parse_paren)) { parse_paren }
       rule(unary_function: simple(:unary_function)) { unary_function }
 
@@ -82,7 +84,7 @@ module Plurimath
       rule(unary_function: simple(:unary_function),
            sequence: sequence(:sequence)) do
         Math::Formula.new(
-          ([unary_function] + sequence),
+          [unary_function] + sequence,
         )
       end
 

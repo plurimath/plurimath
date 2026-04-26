@@ -1,11 +1,10 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Symbols::Cwgapcirclearrow do
-
   describe ".initialize" do
-    it 'returns instance of Symbol Cwgapcirclearrow' do
+    it "returns instance of Symbol Cwgapcirclearrow" do
       klass = described_class.new
-      expect(klass).to be_a(Plurimath::Math::Symbols::Cwgapcirclearrow)
+      expect(klass).to be_a(described_class)
     end
   end
 

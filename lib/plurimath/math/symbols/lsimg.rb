@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Lsimg < Symbol
         INPUT = {
-          unicodemath: [["&#x2a8f;"], parsing_wrapper(["lsimg"], lang: :unicode)],
-          asciimath: [["&#x2a8f;"], parsing_wrapper(["lsimg"], lang: :asciimath)],
+          unicodemath: [["&#x2a8f;"],
+                        parsing_wrapper(["lsimg"], lang: :unicode)],
+          asciimath: [["&#x2a8f;"],
+                      parsing_wrapper(["lsimg"], lang: :asciimath)],
           mathml: ["&#x2a8f;"],
           latex: [["lsimg", "&#x2a8f;"]],
           omml: ["&#x2a8f;"],

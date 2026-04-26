@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
-
 module Plurimath
   module Math
     module Function
       class Intent < BinaryFunction
         def to_mathml_without_math_tag(intent, options:)
-          first_value = parameter_one.to_mathml_without_math_tag(intent, options: options)
+          first_value = parameter_one.to_mathml_without_math_tag(intent,
+                                                                 options: options)
           first_value.attributes["intent"] = encoded_intent(first_value)
           first_value
         end
@@ -35,7 +35,7 @@ module Plurimath
         end
 
         def encodable?
-          return unless parameter_one.is_a?(Formula)
+          return false unless parameter_one.is_a?(Formula)
 
           field = parameter_one.value[0]
           field.is_a?(Power) &&

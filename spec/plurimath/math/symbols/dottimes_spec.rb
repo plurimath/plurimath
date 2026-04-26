@@ -1,11 +1,10 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Symbols::Dottimes do
-
   describe ".initialize" do
-    it 'returns instance of Symbol Dottimes' do
+    it "returns instance of Symbol Dottimes" do
       klass = described_class.new
-      expect(klass).to be_a(Plurimath::Math::Symbols::Dottimes)
+      expect(klass).to be_a(described_class)
     end
   end
 

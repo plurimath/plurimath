@@ -3,8 +3,12 @@ module Plurimath
     module Symbols
       class Dualmap < Symbol
         INPUT = {
-          unicodemath: [["&#x29df;"], parsing_wrapper(["multimapboth", "dualmap"], lang: :unicode)],
-          asciimath: [["&#x29df;"], parsing_wrapper(["multimapboth", "dualmap"], lang: :asciimath)],
+          unicodemath: [["&#x29df;"],
+                        parsing_wrapper(["multimapboth", "dualmap"],
+                                        lang: :unicode)],
+          asciimath: [["&#x29df;"],
+                      parsing_wrapper(["multimapboth", "dualmap"],
+                                      lang: :asciimath)],
           mathml: ["&#x29df;"],
           latex: [["multimapboth", "dualmap", "&#x29df;"]],
           omml: ["&#x29df;"],

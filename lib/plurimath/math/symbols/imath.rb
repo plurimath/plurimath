@@ -4,7 +4,8 @@ module Plurimath
       class Imath < Symbol
         INPUT = {
           unicodemath: [["imath", "&#x131;"]],
-          asciimath: [["&#x131;"], parsing_wrapper(["imath"], lang: :asciimath)],
+          asciimath: [["&#x131;"],
+                      parsing_wrapper(["imath"], lang: :asciimath)],
           mathml: ["&#x131;"],
           latex: [["imath", "&#x131;"]],
           omml: ["&#x131;"],

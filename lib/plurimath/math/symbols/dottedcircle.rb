@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Dottedcircle < Symbol
         INPUT = {
-          unicodemath: [["&#x25cc;"], parsing_wrapper(["dottedcircle"], lang: :unicode)],
-          asciimath: [["&#x25cc;"], parsing_wrapper(["dottedcircle"], lang: :asciimath)],
+          unicodemath: [["&#x25cc;"],
+                        parsing_wrapper(["dottedcircle"], lang: :unicode)],
+          asciimath: [["&#x25cc;"],
+                      parsing_wrapper(["dottedcircle"], lang: :asciimath)],
           mathml: ["&#x25cc;"],
           latex: [["dottedcircle", "&#x25cc;"]],
           omml: ["&#x25cc;"],

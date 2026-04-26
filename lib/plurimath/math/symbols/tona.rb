@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Tona < Symbol
         INPUT = {
-          unicodemath: [["&#x2927;"], parsing_wrapper(["tona"], lang: :unicode)],
-          asciimath: [["&#x2927;"], parsing_wrapper(["tona"], lang: :asciimath)],
+          unicodemath: [["&#x2927;"],
+                        parsing_wrapper(["tona"], lang: :unicode)],
+          asciimath: [["&#x2927;"],
+                      parsing_wrapper(["tona"], lang: :asciimath)],
           mathml: ["&#x2927;"],
           latex: [["tona", "&#x2927;"]],
           omml: ["&#x2927;"],

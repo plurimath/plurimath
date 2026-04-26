@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Triangletimes < Symbol
         INPUT = {
-          unicodemath: [["&#x2a3b;"], parsing_wrapper(["triangletimes"], lang: :unicode)],
-          asciimath: [["&#x2a3b;"], parsing_wrapper(["triangletimes"], lang: :asciimath)],
+          unicodemath: [["&#x2a3b;"],
+                        parsing_wrapper(["triangletimes"], lang: :unicode)],
+          asciimath: [["&#x2a3b;"],
+                      parsing_wrapper(["triangletimes"], lang: :asciimath)],
           mathml: ["&#x2a3b;"],
           latex: [["triangletimes", "&#x2a3b;"]],
           omml: ["&#x2a3b;"],

@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Lrtriangle < Symbol
         INPUT = {
-          unicodemath: [["&#x25ff;"], parsing_wrapper(["lrtriangle"], lang: :unicode)],
-          asciimath: [["&#x25ff;"], parsing_wrapper(["lrtriangle"], lang: :asciimath)],
+          unicodemath: [["&#x25ff;"],
+                        parsing_wrapper(["lrtriangle"], lang: :unicode)],
+          asciimath: [["&#x25ff;"],
+                      parsing_wrapper(["lrtriangle"], lang: :asciimath)],
           mathml: ["&#x25ff;"],
           latex: [["lrtriangle", "&#x25ff;"]],
           omml: ["&#x25ff;"],

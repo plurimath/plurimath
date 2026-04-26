@@ -1,11 +1,10 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Symbols::Inttop do
-
   describe ".initialize" do
-    it 'returns instance of Symbol Inttop' do
+    it "returns instance of Symbol Inttop" do
       klass = described_class.new
-      expect(klass).to be_a(Plurimath::Math::Symbols::Inttop)
+      expect(klass).to be_a(described_class)
     end
   end
 

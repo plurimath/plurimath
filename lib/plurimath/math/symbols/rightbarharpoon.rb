@@ -3,8 +3,16 @@ module Plurimath
     module Symbols
       class Rightbarharpoon < Symbol
         INPUT = {
-          unicodemath: [["&#x296c;"], parsing_wrapper(["rightharpoonupdash", "rightbarharpoon"], lang: :unicode)],
-          asciimath: [["&#x296c;"], parsing_wrapper(["rightharpoonupdash", "rightbarharpoon"], lang: :asciimath)],
+          unicodemath: [["&#x296c;"],
+                        parsing_wrapper(
+                          ["rightharpoonupdash",
+                           "rightbarharpoon"], lang: :unicode
+                        )],
+          asciimath: [["&#x296c;"],
+                      parsing_wrapper(
+                        ["rightharpoonupdash",
+                         "rightbarharpoon"], lang: :asciimath
+                      )],
           mathml: ["&#x296c;"],
           latex: [["rightharpoonupdash", "rightbarharpoon", "&#x296c;"]],
           omml: ["&#x296c;"],

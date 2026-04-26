@@ -4,7 +4,8 @@ module Plurimath
       class Vartriangleright < Symbol
         INPUT = {
           unicodemath: [["vartriangleright", "&#x22b3;"]],
-          asciimath: [["&#x22b3;"], parsing_wrapper(["vartriangleright"], lang: :asciimath)],
+          asciimath: [["&#x22b3;"],
+                      parsing_wrapper(["vartriangleright"], lang: :asciimath)],
           mathml: ["&#x22b3;"],
           latex: [["vartriangleright", "&#x22b3;"]],
           omml: ["&#x22b3;"],

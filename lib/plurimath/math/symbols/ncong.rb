@@ -4,7 +4,8 @@ module Plurimath
       class Ncong < Symbol
         INPUT = {
           unicodemath: [["ncong", "&#x2247;"]],
-          asciimath: [["&#x2247;"], parsing_wrapper(["ncong"], lang: :asciimath)],
+          asciimath: [["&#x2247;"],
+                      parsing_wrapper(["ncong"], lang: :asciimath)],
           mathml: ["&#x2247;"],
           latex: [["ncong", "&#x2247;"]],
           omml: ["&#x2247;"],

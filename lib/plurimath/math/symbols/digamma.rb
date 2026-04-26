@@ -3,8 +3,12 @@ module Plurimath
     module Symbols
       class Digamma < Symbol
         INPUT = {
-          unicodemath: [["&#x3dd;"], parsing_wrapper(["updigamma", "digamma"], lang: :unicode)],
-          asciimath: [["&#x3dd;"], parsing_wrapper(["updigamma", "digamma"], lang: :asciimath)],
+          unicodemath: [["&#x3dd;"],
+                        parsing_wrapper(["updigamma", "digamma"],
+                                        lang: :unicode)],
+          asciimath: [["&#x3dd;"],
+                      parsing_wrapper(["updigamma", "digamma"],
+                                      lang: :asciimath)],
           mathml: ["&#x3dd;"],
           latex: [["updigamma", "digamma", "&#x3dd;"]],
           omml: ["&#x3dd;"],

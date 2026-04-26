@@ -3,8 +3,12 @@ module Plurimath
     module Symbols
       class Downtrianglerightblack < Symbol
         INPUT = {
-          unicodemath: [["&#x29e9;"], parsing_wrapper(["downtrianglerightblack"], lang: :unicode)],
-          asciimath: [["&#x29e9;"], parsing_wrapper(["downtrianglerightblack"], lang: :asciimath)],
+          unicodemath: [["&#x29e9;"],
+                        parsing_wrapper(["downtrianglerightblack"],
+                                        lang: :unicode)],
+          asciimath: [["&#x29e9;"],
+                      parsing_wrapper(["downtrianglerightblack"],
+                                      lang: :asciimath)],
           mathml: ["&#x29e9;"],
           latex: [["downtrianglerightblack", "&#x29e9;"]],
           omml: ["&#x29e9;"],

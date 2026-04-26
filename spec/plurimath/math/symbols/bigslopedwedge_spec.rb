@@ -1,11 +1,10 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Symbols::Bigslopedwedge do
-
   describe ".initialize" do
-    it 'returns instance of Symbol Bigslopedwedge' do
+    it "returns instance of Symbol Bigslopedwedge" do
       klass = described_class.new
-      expect(klass).to be_a(Plurimath::Math::Symbols::Bigslopedwedge)
+      expect(klass).to be_a(described_class)
     end
   end
 

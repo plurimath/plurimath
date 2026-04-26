@@ -1,11 +1,10 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Symbols::Backsimeq do
-
   describe ".initialize" do
-    it 'returns instance of Symbol Backsimeq' do
+    it "returns instance of Symbol Backsimeq" do
       klass = described_class.new
-      expect(klass).to be_a(Plurimath::Math::Symbols::Backsimeq)
+      expect(klass).to be_a(described_class)
     end
   end
 

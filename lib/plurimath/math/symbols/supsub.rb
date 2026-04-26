@@ -4,7 +4,8 @@ module Plurimath
       class Supsub < Symbol
         INPUT = {
           unicodemath: [["supsub", "&#x2ad4;"]],
-          asciimath: [["&#x2ad4;"], parsing_wrapper(["supsub"], lang: :asciimath)],
+          asciimath: [["&#x2ad4;"],
+                      parsing_wrapper(["supsub"], lang: :asciimath)],
           mathml: ["&#x2ad4;"],
           latex: [["supsub", "&#x2ad4;"]],
           omml: ["&#x2ad4;"],

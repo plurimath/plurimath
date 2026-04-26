@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Qed < Symbol
         INPUT = {
-          unicodemath: [["qed", "&#x220e;"], parsing_wrapper(["QED"], lang: :unicode)],
-          asciimath: [["&#x220e;"], parsing_wrapper(["qed", "QED"], lang: :asciimath)],
+          unicodemath: [["qed", "&#x220e;"],
+                        parsing_wrapper(["QED"], lang: :unicode)],
+          asciimath: [["&#x220e;"],
+                      parsing_wrapper(["qed", "QED"], lang: :asciimath)],
           mathml: ["&#x220e;"],
           latex: [["QED", "&#x220e;"], parsing_wrapper(["qed"], lang: :latex)],
           omml: ["&#x220e;"],

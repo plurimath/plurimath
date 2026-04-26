@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Plussubtwo < Symbol
         INPUT = {
-          unicodemath: [["&#x2a27;"], parsing_wrapper(["plussubtwo"], lang: :unicode)],
-          asciimath: [["&#x2a27;"], parsing_wrapper(["plussubtwo"], lang: :asciimath)],
+          unicodemath: [["&#x2a27;"],
+                        parsing_wrapper(["plussubtwo"], lang: :unicode)],
+          asciimath: [["&#x2a27;"],
+                      parsing_wrapper(["plussubtwo"], lang: :asciimath)],
           mathml: ["&#x2a27;"],
           latex: [["plussubtwo", "&#x2a27;"]],
           omml: ["&#x2a27;"],

@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Disin < Symbol
         INPUT = {
-          unicodemath: [["&#x22f2;"], parsing_wrapper(["disin"], lang: :unicode)],
-          asciimath: [["&#x22f2;"], parsing_wrapper(["disin"], lang: :asciimath)],
+          unicodemath: [["&#x22f2;"],
+                        parsing_wrapper(["disin"], lang: :unicode)],
+          asciimath: [["&#x22f2;"],
+                      parsing_wrapper(["disin"], lang: :asciimath)],
           mathml: ["&#x22f2;"],
           latex: [["disin", "&#x22f2;"]],
           omml: ["&#x22f2;"],

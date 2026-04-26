@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Rightdotarrow < Symbol
         INPUT = {
-          unicodemath: [["&#x2911;"], parsing_wrapper(["rightdotarrow"], lang: :unicode)],
-          asciimath: [["&#x2911;"], parsing_wrapper(["rightdotarrow"], lang: :asciimath)],
+          unicodemath: [["&#x2911;"],
+                        parsing_wrapper(["rightdotarrow"], lang: :unicode)],
+          asciimath: [["&#x2911;"],
+                      parsing_wrapper(["rightdotarrow"], lang: :asciimath)],
           mathml: ["&#x2911;"],
           latex: [["rightdotarrow", "&#x2911;"]],
           omml: ["&#x2911;"],

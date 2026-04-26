@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Droang < Symbol
         INPUT = {
-          unicodemath: [["&#x31a;"], parsing_wrapper(["droang"], lang: :unicode)],
-          asciimath: [["&#x31a;"], parsing_wrapper(["droang"], lang: :asciimath)],
+          unicodemath: [["&#x31a;"],
+                        parsing_wrapper(["droang"], lang: :unicode)],
+          asciimath: [["&#x31a;"],
+                      parsing_wrapper(["droang"], lang: :asciimath)],
           mathml: ["&#x31a;"],
           latex: [["droang", "&#x31a;"]],
           omml: ["&#x31a;"],

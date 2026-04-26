@@ -3,8 +3,12 @@ module Plurimath
     module Symbols
       class Circletophalfblack < Symbol
         INPUT = {
-          unicodemath: [["&#x25d3;"], parsing_wrapper(["circletophalfblack"], lang: :unicode)],
-          asciimath: [["&#x25d3;"], parsing_wrapper(["circletophalfblack"], lang: :asciimath)],
+          unicodemath: [["&#x25d3;"],
+                        parsing_wrapper(["circletophalfblack"],
+                                        lang: :unicode)],
+          asciimath: [["&#x25d3;"],
+                      parsing_wrapper(["circletophalfblack"],
+                                      lang: :asciimath)],
           mathml: ["&#x25d3;"],
           latex: [["circletophalfblack", "&#x25d3;"]],
           omml: ["&#x25d3;"],

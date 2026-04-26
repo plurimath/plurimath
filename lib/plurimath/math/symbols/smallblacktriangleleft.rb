@@ -3,8 +3,12 @@ module Plurimath
     module Symbols
       class Smallblacktriangleleft < Symbol
         INPUT = {
-          unicodemath: [["&#x25c2;"], parsing_wrapper(["smallblacktriangleleft"], lang: :unicode)],
-          asciimath: [["&#x25c2;"], parsing_wrapper(["smallblacktriangleleft"], lang: :asciimath)],
+          unicodemath: [["&#x25c2;"],
+                        parsing_wrapper(["smallblacktriangleleft"],
+                                        lang: :unicode)],
+          asciimath: [["&#x25c2;"],
+                      parsing_wrapper(["smallblacktriangleleft"],
+                                      lang: :asciimath)],
           mathml: ["&#x25c2;"],
           latex: [["smallblacktriangleleft", "&#x25c2;"]],
           omml: ["&#x25c2;"],

@@ -44,7 +44,7 @@ module Plurimath
 
         private
 
-        def update_current_element(element, value, index)
+        def update_current_element(element, value, _index)
           if first_and_last_values_nil?(value)
             replace_symbols_with_parens(value)
           elsif element.class_name == "symbol" && element.value.nil?
@@ -80,9 +80,9 @@ module Plurimath
 
         def unary_function_updatable?(value, element, index)
           value.length > 1 &&
-              element.is_unary? &&
-              value[index + 1] &&
-              Plurimath::Utility::UNARY_CLASSES.include?(element.class_name)
+            element.is_unary? &&
+            value[index + 1] &&
+            Plurimath::Utility::UNARY_CLASSES.include?(element.class_name)
         end
 
         def ternary_function_third_value_present?(element)
@@ -95,11 +95,11 @@ module Plurimath
           mod_obj = value[index + 1]
           mod_obj.parameter_one = filter_values(
             value.delete_at(index),
-            array_to_instance: true
+            array_to_instance: true,
           )
           mod_obj.parameter_two = filter_values(
             value.delete_at(index + 1),
-            array_to_instance: true
+            array_to_instance: true,
           )
         end
 
@@ -107,7 +107,7 @@ module Plurimath
           element = value.delete_at(index)
           element.parameter_one = filter_values(
             value.delete_at(index),
-            array_to_instance: true
+            array_to_instance: true,
           )
           value.insert(index, element)
         end
@@ -119,21 +119,20 @@ module Plurimath
             table.close_paren = value.pop
           else
             @value = [
-              Function::Fenced.new(value.shift, value, value.pop)
+              Function::Fenced.new(value.shift, value, value.pop),
             ]
           end
         end
 
         def new_nary_element(element, value)
           value.shift
-          nary = Plurimath::Math::Function::Nary.new(
+          Plurimath::Math::Function::Nary.new(
             element.parameter_two,
             element.parameter_one,
             nil,
             filter_values(value.shift(value.length), array_to_instance: true),
-            { type: "undOvr" }
+            { type: "undOvr" },
           )
-          nary
         end
 
         def replace_with_nary_function(element, value, index)
@@ -144,7 +143,7 @@ module Plurimath
             element.parameter_two,
             element.parameter_three,
             filter_values(fourth_value, array_to_instance: true),
-            { type: "undOvr" }
+            { type: "undOvr" },
           )
         end
       end

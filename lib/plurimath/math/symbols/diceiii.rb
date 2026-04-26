@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Diceiii < Symbol
         INPUT = {
-          unicodemath: [["&#x2682;"], parsing_wrapper(["diceiii"], lang: :unicode)],
-          asciimath: [["&#x2682;"], parsing_wrapper(["diceiii"], lang: :asciimath)],
+          unicodemath: [["&#x2682;"],
+                        parsing_wrapper(["diceiii"], lang: :unicode)],
+          asciimath: [["&#x2682;"],
+                      parsing_wrapper(["diceiii"], lang: :asciimath)],
           mathml: ["&#x2682;"],
           latex: [["diceiii", "&#x2682;"]],
           omml: ["&#x2682;"],

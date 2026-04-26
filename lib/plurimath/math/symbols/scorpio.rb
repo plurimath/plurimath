@@ -3,8 +3,12 @@ module Plurimath
     module Symbols
       class Scorpio < Symbol
         INPUT = {
-          unicodemath: [["&#x264f;"], parsing_wrapper(["scorpio", "Scorpio"], lang: :unicode)],
-          asciimath: [["&#x264f;"], parsing_wrapper(["scorpio", "Scorpio"], lang: :asciimath)],
+          unicodemath: [["&#x264f;"],
+                        parsing_wrapper(["scorpio", "Scorpio"],
+                                        lang: :unicode)],
+          asciimath: [["&#x264f;"],
+                      parsing_wrapper(["scorpio", "Scorpio"],
+                                      lang: :asciimath)],
           mathml: ["&#x264f;"],
           latex: [["scorpio", "Scorpio", "&#x264f;"]],
           omml: ["&#x264f;"],

@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Isine < Symbol
         INPUT = {
-          unicodemath: [["&#x22f9;"], parsing_wrapper(["isinE"], lang: :unicode)],
-          asciimath: [["&#x22f9;"], parsing_wrapper(["isinE"], lang: :asciimath)],
+          unicodemath: [["&#x22f9;"],
+                        parsing_wrapper(["isinE"], lang: :unicode)],
+          asciimath: [["&#x22f9;"],
+                      parsing_wrapper(["isinE"], lang: :asciimath)],
           mathml: ["&#x22f9;"],
           latex: [["isinE", "&#x22f9;"]],
           omml: ["&#x22f9;"],

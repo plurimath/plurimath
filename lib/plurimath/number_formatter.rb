@@ -6,14 +6,16 @@ module Plurimath
   class NumberFormatter
     attr_accessor :locale, :localize_number, :localizer_symbols, :precision
 
-    def initialize(locale = "en", localize_number: nil, localizer_symbols: {}, precision: nil)
+    def initialize(locale = "en", localize_number: nil, localizer_symbols: {},
+precision: nil)
       @locale = supported_locale(locale)
       @localize_number = localize_number
       @localizer_symbols = localizer_symbols
       @precision = precision
     end
 
-    def localized_number(number_string, locale: @locale, precision: @precision, format: {})
+    def localized_number(number_string, locale: @locale, precision: @precision,
+format: {})
       prev_symbols = symbols(locale.to_sym).dup
       Formatter::NumericFormatter.new(
         supported_locale(locale),

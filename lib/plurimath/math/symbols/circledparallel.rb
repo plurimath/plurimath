@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Circledparallel < Symbol
         INPUT = {
-          unicodemath: [["&#x29b7;"], parsing_wrapper(["circledparallel"], lang: :unicode)],
-          asciimath: [["&#x29b7;"], parsing_wrapper(["circledparallel"], lang: :asciimath)],
+          unicodemath: [["&#x29b7;"],
+                        parsing_wrapper(["circledparallel"], lang: :unicode)],
+          asciimath: [["&#x29b7;"],
+                      parsing_wrapper(["circledparallel"], lang: :asciimath)],
           mathml: ["&#x29b7;"],
           latex: [["circledparallel", "&#x29b7;"]],
           omml: ["&#x29b7;"],

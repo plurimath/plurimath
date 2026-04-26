@@ -3,8 +3,12 @@ module Plurimath
     module Symbols
       class Leadsto < Symbol
         INPUT = {
-          unicodemath: [["&#x2933;"], parsing_wrapper(["rightcurvedarrow", "leadsto"], lang: :unicode)],
-          asciimath: [["&#x2933;"], parsing_wrapper(["rightcurvedarrow", "leadsto"], lang: :asciimath)],
+          unicodemath: [["&#x2933;"],
+                        parsing_wrapper(["rightcurvedarrow", "leadsto"],
+                                        lang: :unicode)],
+          asciimath: [["&#x2933;"],
+                      parsing_wrapper(["rightcurvedarrow", "leadsto"],
+                                      lang: :asciimath)],
           mathml: ["&#x2933;"],
           latex: [["rightcurvedarrow", "leadsto", "&#x2933;"]],
           omml: ["&#x2933;"],

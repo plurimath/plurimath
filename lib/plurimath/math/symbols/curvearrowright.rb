@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Curvearrowright < Symbol
         INPUT = {
-          unicodemath: [["&#x21b7;"], parsing_wrapper(["curvearrowright"], lang: :unicode)],
-          asciimath: [["&#x21b7;"], parsing_wrapper(["curvearrowright"], lang: :asciimath)],
+          unicodemath: [["&#x21b7;"],
+                        parsing_wrapper(["curvearrowright"], lang: :unicode)],
+          asciimath: [["&#x21b7;"],
+                      parsing_wrapper(["curvearrowright"], lang: :asciimath)],
           mathml: ["&#x21b7;"],
           latex: [["curvearrowright", "&#x21b7;"]],
           omml: ["&#x21b7;"],

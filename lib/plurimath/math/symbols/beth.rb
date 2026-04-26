@@ -4,7 +4,8 @@ module Plurimath
       class Beth < Symbol
         INPUT = {
           unicodemath: [["beth", "&#x2136;"]],
-          asciimath: [["&#x2136;"], parsing_wrapper(["beth"], lang: :asciimath)],
+          asciimath: [["&#x2136;"],
+                      parsing_wrapper(["beth"], lang: :asciimath)],
           mathml: ["&#x2136;"],
           latex: [["beth", "&#x2136;"]],
           omml: ["&#x2136;"],

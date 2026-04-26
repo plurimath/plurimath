@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Stareq < Symbol
         INPUT = {
-          unicodemath: [["&#x225b;"], parsing_wrapper(["stareq"], lang: :unicode)],
-          asciimath: [["&#x225b;"], parsing_wrapper(["stareq"], lang: :asciimath)],
+          unicodemath: [["&#x225b;"],
+                        parsing_wrapper(["stareq"], lang: :unicode)],
+          asciimath: [["&#x225b;"],
+                      parsing_wrapper(["stareq"], lang: :asciimath)],
           mathml: ["&#x225b;"],
           latex: [["stareq", "&#x225b;"]],
           omml: ["&#x225b;"],

@@ -4,10 +4,13 @@ module Plurimath
       class Paren
         class Rceil < Paren
           INPUT = {
-            unicodemath: [["&#x2309;", "rceil"], parsing_wrapper(["rceiling", "~|"], lang: :unicode)],
-            asciimath: [["rceiling", "~|", "&#x2309;"], parsing_wrapper(["rceil"], lang: :asciimath)],
+            unicodemath: [["&#x2309;", "rceil"],
+                          parsing_wrapper(["rceiling", "~|"], lang: :unicode)],
+            asciimath: [["rceiling", "~|", "&#x2309;"],
+                        parsing_wrapper(["rceil"], lang: :asciimath)],
             mathml: ["&#x2309;"],
-            latex: [["\\rceil", "&#x2309;"], parsing_wrapper(["rceiling", "~|"], lang: :latex)],
+            latex: [["\\rceil", "&#x2309;"],
+                    parsing_wrapper(["rceiling", "~|"], lang: :latex)],
             omml: ["&#x2309;"],
             html: ["&#x2309;"],
           }.freeze

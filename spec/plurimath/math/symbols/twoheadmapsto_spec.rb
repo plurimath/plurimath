@@ -1,11 +1,10 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Symbols::Twoheadmapsto do
-
   describe ".initialize" do
-    it 'returns instance of Symbol Twoheadmapsto' do
+    it "returns instance of Symbol Twoheadmapsto" do
       klass = described_class.new
-      expect(klass).to be_a(Plurimath::Math::Symbols::Twoheadmapsto)
+      expect(klass).to be_a(described_class)
     end
   end
 

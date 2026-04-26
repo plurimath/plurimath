@@ -1,11 +1,10 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Symbols::Conictaper do
-
   describe ".initialize" do
-    it 'returns instance of Symbol Conictaper' do
+    it "returns instance of Symbol Conictaper" do
       klass = described_class.new
-      expect(klass).to be_a(Plurimath::Math::Symbols::Conictaper)
+      expect(klass).to be_a(described_class)
     end
   end
 

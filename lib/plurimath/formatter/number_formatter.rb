@@ -6,7 +6,7 @@ module Plurimath
       attr_reader :number, :data_reader
 
       DEFAULT_BASE = Numbers::Base::DEFAULT_BASE
-      HEX_ALPHABETS = "abcdef".freeze
+      HEX_ALPHABETS = "abcdef"
       STRING_SYMBOLS = {
         dot: ".",
         f: "F",
@@ -22,7 +22,10 @@ module Plurimath
         @number = number
         @data_reader = data_reader
         @base = data_reader[:base] || DEFAULT_BASE
-        raise UnsupportedBase.new(@base, DEFAULT_BASE_PREFIXES) unless DEFAULT_BASE_PREFIXES.key?(@base)
+        unless DEFAULT_BASE_PREFIXES.key?(@base)
+          raise UnsupportedBase.new(@base,
+                                    DEFAULT_BASE_PREFIXES)
+        end
 
         # Handle base_prefix: if explicitly provided (even as nil), use it; otherwise use default
         @base_prefix = if data_reader.key?(:base_prefix)
@@ -91,7 +94,7 @@ module Plurimath
         precision = options[:precision] || precision_from(number)
 
         abs = round_to(number, precision).abs
-        num = if precision == 0
+        num = if precision.zero?
                 abs.fix.to_s(STRING_SYMBOLS[:f])
               else
                 abs.round(precision).to_s(STRING_SYMBOLS[:f])

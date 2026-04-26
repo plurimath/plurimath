@@ -4,7 +4,8 @@ module Plurimath
       class Leqq < Symbol
         INPUT = {
           unicodemath: [["leqq", "&#x2266;"]],
-          asciimath: [["&#x2266;"], parsing_wrapper(["leqq"], lang: :asciimath)],
+          asciimath: [["&#x2266;"],
+                      parsing_wrapper(["leqq"], lang: :asciimath)],
           mathml: ["&#x2266;"],
           latex: [["leqq", "&#x2266;"]],
           omml: ["&#x2266;"],

@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Lbraceuend < Symbol
         INPUT = {
-          unicodemath: [["&#x23a7;"], parsing_wrapper(["lbraceuend"], lang: :unicode)],
-          asciimath: [["&#x23a7;"], parsing_wrapper(["lbraceuend"], lang: :asciimath)],
+          unicodemath: [["&#x23a7;"],
+                        parsing_wrapper(["lbraceuend"], lang: :unicode)],
+          asciimath: [["&#x23a7;"],
+                      parsing_wrapper(["lbraceuend"], lang: :asciimath)],
           mathml: ["&#x23a7;"],
           latex: [["lbraceuend", "&#x23a7;"]],
           omml: ["&#x23a7;"],

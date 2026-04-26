@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Varvdash < Symbol
         INPUT = {
-          unicodemath: [["&#x2ae6;"], parsing_wrapper(["varVdash"], lang: :unicode)],
-          asciimath: [["&#x2ae6;"], parsing_wrapper(["varVdash"], lang: :asciimath)],
+          unicodemath: [["&#x2ae6;"],
+                        parsing_wrapper(["varVdash"], lang: :unicode)],
+          asciimath: [["&#x2ae6;"],
+                      parsing_wrapper(["varVdash"], lang: :asciimath)],
           mathml: ["&#x2ae6;"],
           latex: [["varVdash", "&#x2ae6;"]],
           omml: ["&#x2ae6;"],

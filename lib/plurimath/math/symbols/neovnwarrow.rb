@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Neovnwarrow < Symbol
         INPUT = {
-          unicodemath: [["&#x2931;"], parsing_wrapper(["neovnwarrow"], lang: :unicode)],
-          asciimath: [["&#x2931;"], parsing_wrapper(["neovnwarrow"], lang: :asciimath)],
+          unicodemath: [["&#x2931;"],
+                        parsing_wrapper(["neovnwarrow"], lang: :unicode)],
+          asciimath: [["&#x2931;"],
+                      parsing_wrapper(["neovnwarrow"], lang: :asciimath)],
           mathml: ["&#x2931;"],
           latex: [["neovnwarrow", "&#x2931;"]],
           omml: ["&#x2931;"],

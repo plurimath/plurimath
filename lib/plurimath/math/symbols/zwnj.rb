@@ -4,7 +4,8 @@ module Plurimath
       class Zwnj < Symbol
         INPUT = {
           unicodemath: [["zwnj", "&#x200c;"]],
-          asciimath: [["&#x200c;"], parsing_wrapper(["zwnj"], lang: :asciimath)],
+          asciimath: [["&#x200c;"],
+                      parsing_wrapper(["zwnj"], lang: :asciimath)],
           mathml: ["&#x200c;"],
           latex: [["&#x200c;"], parsing_wrapper(["zwnj"], lang: :latex)],
           omml: ["&#x200c;"],

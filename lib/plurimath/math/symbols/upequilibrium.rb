@@ -3,10 +3,15 @@ module Plurimath
     module Symbols
       class Upequilibrium < Symbol
         INPUT = {
-          unicodemath: [["&#x296e;"], parsing_wrapper(["updownharpoonsleftright", "updownharpoons", "upequilibrium"], lang: :unicode)],
-          asciimath: [["&#x296e;"], parsing_wrapper(["updownharpoonsleftright", "updownharpoons", "upequilibrium"], lang: :asciimath)],
+          unicodemath: [["&#x296e;"],
+                        parsing_wrapper(["updownharpoonsleftright", "updownharpoons", "upequilibrium"],
+                                        lang: :unicode)],
+          asciimath: [["&#x296e;"],
+                      parsing_wrapper(["updownharpoonsleftright", "updownharpoons", "upequilibrium"],
+                                      lang: :asciimath)],
           mathml: ["&#x296e;"],
-          latex: [["updownharpoonsleftright", "updownharpoons", "upequilibrium", "&#x296e;"]],
+          latex: [["updownharpoonsleftright", "updownharpoons",
+                   "upequilibrium", "&#x296e;"]],
           omml: ["&#x296e;"],
           html: ["&#x296e;"],
         }.freeze

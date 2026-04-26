@@ -3,7 +3,8 @@ module Plurimath
     module Symbols
       class Ast < Symbol
         INPUT = {
-          unicodemath: [["ast", "&#x2217;"], parsing_wrapper(["**"], lang: :unicode)],
+          unicodemath: [["ast", "&#x2217;"],
+                        parsing_wrapper(["**"], lang: :unicode)],
           asciimath: [["**", "ast", "&#x2217;"]],
           mathml: ["&#x2217;"],
           latex: [["ast", "&#x2217;"], parsing_wrapper(["**"], lang: :latex)],

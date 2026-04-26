@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Radiation < Symbol
         INPUT = {
-          unicodemath: [["&#x2622;"], parsing_wrapper(["radiation"], lang: :unicode)],
-          asciimath: [["&#x2622;"], parsing_wrapper(["radiation"], lang: :asciimath)],
+          unicodemath: [["&#x2622;"],
+                        parsing_wrapper(["radiation"], lang: :unicode)],
+          asciimath: [["&#x2622;"],
+                      parsing_wrapper(["radiation"], lang: :asciimath)],
           mathml: ["&#x2622;"],
           latex: [["radiation", "&#x2622;"]],
           omml: ["&#x2622;"],

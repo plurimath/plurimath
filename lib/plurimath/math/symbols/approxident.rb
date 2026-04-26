@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Approxident < Symbol
         INPUT = {
-          unicodemath: [["&#x224b;"], parsing_wrapper(["approxident"], lang: :unicode)],
-          asciimath: [["&#x224b;"], parsing_wrapper(["approxident"], lang: :asciimath)],
+          unicodemath: [["&#x224b;"],
+                        parsing_wrapper(["approxident"], lang: :unicode)],
+          asciimath: [["&#x224b;"],
+                      parsing_wrapper(["approxident"], lang: :asciimath)],
           mathml: ["&#x224b;"],
           latex: [["approxident", "&#x224b;"]],
           omml: ["&#x224b;"],

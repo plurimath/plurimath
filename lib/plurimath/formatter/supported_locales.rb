@@ -100,7 +100,7 @@ module Plurimath
         xh: { decimal: ".", group: " " },
         zh: { decimal: ".", group: "," },
         zu: { decimal: ".", group: "," },
-      }
+      }.freeze
     end
   end
 end

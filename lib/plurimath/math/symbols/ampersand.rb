@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Ampersand < Symbol
         INPUT = {
-          unicodemath: [["&#x26;"], parsing_wrapper(["&", "ampersand"], lang: :unicode)],
-          asciimath: [["&", "&#x26;"], parsing_wrapper(["ampersand"], lang: :asciimath)],
+          unicodemath: [["&#x26;"],
+                        parsing_wrapper(["&", "ampersand"], lang: :unicode)],
+          asciimath: [["&", "&#x26;"],
+                      parsing_wrapper(["ampersand"], lang: :asciimath)],
           mathml: ["&#x26;"],
           latex: [["ampersand", "&", "&#x26;"]],
           omml: ["&#x26;"],

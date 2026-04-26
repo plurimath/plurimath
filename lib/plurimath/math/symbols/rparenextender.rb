@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Rparenextender < Symbol
         INPUT = {
-          unicodemath: [["&#x239f;"], parsing_wrapper(["rparenextender"], lang: :unicode)],
-          asciimath: [["&#x239f;"], parsing_wrapper(["rparenextender"], lang: :asciimath)],
+          unicodemath: [["&#x239f;"],
+                        parsing_wrapper(["rparenextender"], lang: :unicode)],
+          asciimath: [["&#x239f;"],
+                      parsing_wrapper(["rparenextender"], lang: :asciimath)],
           mathml: ["&#x239f;"],
           latex: [["rparenextender", "&#x239f;"]],
           omml: ["&#x239f;"],

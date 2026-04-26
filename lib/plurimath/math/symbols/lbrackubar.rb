@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Lbrackubar < Symbol
         INPUT = {
-          unicodemath: [["&#x298b;"], parsing_wrapper(["lbrackubar"], lang: :unicode)],
-          asciimath: [["&#x298b;"], parsing_wrapper(["lbrackubar"], lang: :asciimath)],
+          unicodemath: [["&#x298b;"],
+                        parsing_wrapper(["lbrackubar"], lang: :unicode)],
+          asciimath: [["&#x298b;"],
+                      parsing_wrapper(["lbrackubar"], lang: :asciimath)],
           mathml: ["&#x298b;"],
           latex: [["lbrackubar", "&#x298b;"]],
           omml: ["&#x298b;"],

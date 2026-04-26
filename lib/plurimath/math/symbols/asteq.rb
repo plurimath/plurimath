@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Asteq < Symbol
         INPUT = {
-          unicodemath: [["&#x2a6e;"], parsing_wrapper(["asteq"], lang: :unicode)],
-          asciimath: [["&#x2a6e;"], parsing_wrapper(["asteq"], lang: :asciimath)],
+          unicodemath: [["&#x2a6e;"],
+                        parsing_wrapper(["asteq"], lang: :unicode)],
+          asciimath: [["&#x2a6e;"],
+                      parsing_wrapper(["asteq"], lang: :asciimath)],
           mathml: ["&#x2a6e;"],
           latex: [["asteq", "&#x2a6e;"]],
           omml: ["&#x2a6e;"],

@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Ltquest < Symbol
         INPUT = {
-          unicodemath: [["&#x2a7b;"], parsing_wrapper(["ltquest"], lang: :unicode)],
-          asciimath: [["&#x2a7b;"], parsing_wrapper(["ltquest"], lang: :asciimath)],
+          unicodemath: [["&#x2a7b;"],
+                        parsing_wrapper(["ltquest"], lang: :unicode)],
+          asciimath: [["&#x2a7b;"],
+                      parsing_wrapper(["ltquest"], lang: :asciimath)],
           mathml: ["&#x2a7b;"],
           latex: [["ltquest", "&#x2a7b;"]],
           omml: ["&#x2a7b;"],

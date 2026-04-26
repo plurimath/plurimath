@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class UpcasePhi < Symbol
         INPUT = {
-          unicodemath: [["Phi", "&#x3a6;"], parsing_wrapper(["upPhi"], lang: :unicode)],
-          asciimath: [["Phi", "&#x3a6;"], parsing_wrapper(["upPhi"], lang: :asciimath)],
+          unicodemath: [["Phi", "&#x3a6;"],
+                        parsing_wrapper(["upPhi"], lang: :unicode)],
+          asciimath: [["Phi", "&#x3a6;"],
+                      parsing_wrapper(["upPhi"], lang: :asciimath)],
           mathml: ["&#x3a6;"],
           latex: [["upPhi", "Phi", "&#x3a6;"]],
           omml: ["&#x3a6;"],

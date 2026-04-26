@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Upepsilon < Symbol
         INPUT = {
-          unicodemath: [["&#x395;"], parsing_wrapper(["upEpsilon"], lang: :unicode)],
-          asciimath: [["&#x395;"], parsing_wrapper(["upEpsilon"], lang: :asciimath)],
+          unicodemath: [["&#x395;"],
+                        parsing_wrapper(["upEpsilon"], lang: :unicode)],
+          asciimath: [["&#x395;"],
+                      parsing_wrapper(["upEpsilon"], lang: :asciimath)],
           mathml: ["&#x395;"],
           latex: [["upEpsilon", "&#x395;"]],
           omml: ["&#x395;"],

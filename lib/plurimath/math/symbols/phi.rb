@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Phi < Symbol
         INPUT = {
-          unicodemath: [["varphi", "&#x3c6;"], parsing_wrapper(["upvarphi"], lang: :unicode)],
-          asciimath: [["varphi", "&#x3c6;"], parsing_wrapper(["upvarphi"], lang: :asciimath)],
+          unicodemath: [["varphi", "&#x3c6;"],
+                        parsing_wrapper(["upvarphi"], lang: :unicode)],
+          asciimath: [["varphi", "&#x3c6;"],
+                      parsing_wrapper(["upvarphi"], lang: :asciimath)],
           mathml: ["&#x3c6;"],
           latex: [["upvarphi", "varphi", "&#x3c6;"]],
           omml: ["&#x3c6;"],

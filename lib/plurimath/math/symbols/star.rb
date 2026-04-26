@@ -3,7 +3,8 @@ module Plurimath
     module Symbols
       class Star < Symbol
         INPUT = {
-          unicodemath: [["star", "&#x22c6;"], parsing_wrapper(["***"], lang: :unicode)],
+          unicodemath: [["star", "&#x22c6;"],
+                        parsing_wrapper(["***"], lang: :unicode)],
           asciimath: [["***", "star", "&#x22c6;"]],
           mathml: ["&#x22c6;"],
           latex: [["star", "&#x22c6;"], parsing_wrapper(["***"], lang: :latex)],

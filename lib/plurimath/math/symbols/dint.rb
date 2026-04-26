@@ -3,10 +3,14 @@ module Plurimath
     module Symbols
       class Dint < Symbol
         INPUT = {
-          unicodemath: [["&#x22c2;"], parsing_wrapper(["bigcap", "nnn", "dint"], lang: :unicode)],
-          asciimath: [["bigcap", "nnn", "&#x22c2;"], parsing_wrapper(["dint"], lang: :asciimath)],
+          unicodemath: [["&#x22c2;"],
+                        parsing_wrapper(["bigcap", "nnn", "dint"],
+                                        lang: :unicode)],
+          asciimath: [["bigcap", "nnn", "&#x22c2;"],
+                      parsing_wrapper(["dint"], lang: :asciimath)],
           mathml: ["&#x22c2;"],
-          latex: [["bigcap", "dint", "&#x22c2;"], parsing_wrapper(["nnn"], lang: :latex)],
+          latex: [["bigcap", "dint", "&#x22c2;"],
+                  parsing_wrapper(["nnn"], lang: :latex)],
           omml: ["&#x22c2;"],
           html: ["&#x22c2;"],
         }.freeze

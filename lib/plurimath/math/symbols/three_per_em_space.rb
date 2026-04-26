@@ -4,7 +4,8 @@ module Plurimath
       class ThreePerEmSpace < Symbol
         INPUT = {
           unicodemath: [["&#x2004;"], parsing_wrapper(["\\;"], lang: :unicode)],
-          asciimath: [[";", "&#x2004;"], parsing_wrapper(["\\;"], lang: :asciimath)],
+          asciimath: [[";", "&#x2004;"],
+                      parsing_wrapper(["\\;"], lang: :asciimath)],
           mathml: ["&#x2004;"],
           latex: [["\\;", "&#x2004;"]],
           omml: ["&#x2004;"],

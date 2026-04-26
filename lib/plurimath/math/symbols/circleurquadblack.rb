@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Circleurquadblack < Symbol
         INPUT = {
-          unicodemath: [["&#x25d4;"], parsing_wrapper(["circleurquadblack"], lang: :unicode)],
-          asciimath: [["&#x25d4;"], parsing_wrapper(["circleurquadblack"], lang: :asciimath)],
+          unicodemath: [["&#x25d4;"],
+                        parsing_wrapper(["circleurquadblack"], lang: :unicode)],
+          asciimath: [["&#x25d4;"],
+                      parsing_wrapper(["circleurquadblack"], lang: :asciimath)],
           mathml: ["&#x25d4;"],
           latex: [["circleurquadblack", "&#x25d4;"]],
           omml: ["&#x25d4;"],

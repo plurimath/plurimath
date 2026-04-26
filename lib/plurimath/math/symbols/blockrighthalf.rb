@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Blockrighthalf < Symbol
         INPUT = {
-          unicodemath: [["&#x2590;"], parsing_wrapper(["blockrighthalf"], lang: :unicode)],
-          asciimath: [["&#x2590;"], parsing_wrapper(["blockrighthalf"], lang: :asciimath)],
+          unicodemath: [["&#x2590;"],
+                        parsing_wrapper(["blockrighthalf"], lang: :unicode)],
+          asciimath: [["&#x2590;"],
+                      parsing_wrapper(["blockrighthalf"], lang: :asciimath)],
           mathml: ["&#x2590;"],
           latex: [["blockrighthalf", "&#x2590;"]],
           omml: ["&#x2590;"],

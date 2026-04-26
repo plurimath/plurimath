@@ -3,10 +3,14 @@ module Plurimath
     module Symbols
       class Ocirc < Symbol
         INPUT = {
-          unicodemath: [["ocirc", "&#x229a;"], parsing_wrapper(["circledcirc"], lang: :unicode)],
-          asciimath: [["&#x229a;"], parsing_wrapper(["ocirc", "circledcirc"], lang: :asciimath)],
+          unicodemath: [["ocirc", "&#x229a;"],
+                        parsing_wrapper(["circledcirc"], lang: :unicode)],
+          asciimath: [["&#x229a;"],
+                      parsing_wrapper(["ocirc", "circledcirc"],
+                                      lang: :asciimath)],
           mathml: ["&#x229a;"],
-          latex: [["circledcirc", "&#x229a;"], parsing_wrapper(["ocirc"], lang: :latex)],
+          latex: [["circledcirc", "&#x229a;"],
+                  parsing_wrapper(["ocirc"], lang: :latex)],
           omml: ["&#x229a;"],
           html: ["&#x229a;"],
         }.freeze

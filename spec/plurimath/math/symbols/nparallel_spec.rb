@@ -1,11 +1,10 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Symbols::Nparallel do
-
   describe ".initialize" do
-    it 'returns instance of Symbol Nparallel' do
+    it "returns instance of Symbol Nparallel" do
       klass = described_class.new
-      expect(klass).to be_a(Plurimath::Math::Symbols::Nparallel)
+      expect(klass).to be_a(described_class)
     end
   end
 

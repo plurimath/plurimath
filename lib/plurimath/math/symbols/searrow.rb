@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Searrow < Symbol
         INPUT = {
-          unicodemath: [["&#x21d8;"], parsing_wrapper(["Searrow"], lang: :unicode)],
-          asciimath: [["&#x21d8;"], parsing_wrapper(["Searrow"], lang: :asciimath)],
+          unicodemath: [["&#x21d8;"],
+                        parsing_wrapper(["Searrow"], lang: :unicode)],
+          asciimath: [["&#x21d8;"],
+                      parsing_wrapper(["Searrow"], lang: :asciimath)],
           mathml: ["&#x21d8;"],
           latex: [["Searrow", "&#x21d8;"]],
           omml: ["&#x21d8;"],

@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Perps < Symbol
         INPUT = {
-          unicodemath: [["&#x2ae1;"], parsing_wrapper(["perps"], lang: :unicode)],
-          asciimath: [["&#x2ae1;"], parsing_wrapper(["perps"], lang: :asciimath)],
+          unicodemath: [["&#x2ae1;"],
+                        parsing_wrapper(["perps"], lang: :unicode)],
+          asciimath: [["&#x2ae1;"],
+                      parsing_wrapper(["perps"], lang: :asciimath)],
           mathml: ["&#x2ae1;"],
           latex: [["perps", "&#x2ae1;"]],
           omml: ["&#x2ae1;"],

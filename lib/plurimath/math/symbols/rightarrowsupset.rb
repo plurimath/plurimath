@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Rightarrowsupset < Symbol
         INPUT = {
-          unicodemath: [["&#x2b44;"], parsing_wrapper(["rightarrowsupset"], lang: :unicode)],
-          asciimath: [["&#x2b44;"], parsing_wrapper(["rightarrowsupset"], lang: :asciimath)],
+          unicodemath: [["&#x2b44;"],
+                        parsing_wrapper(["rightarrowsupset"], lang: :unicode)],
+          asciimath: [["&#x2b44;"],
+                      parsing_wrapper(["rightarrowsupset"], lang: :asciimath)],
           mathml: ["&#x2b44;"],
           latex: [["rightarrowsupset", "&#x2b44;"]],
           omml: ["&#x2b44;"],

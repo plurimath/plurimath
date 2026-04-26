@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Diamondbotblack < Symbol
         INPUT = {
-          unicodemath: [["&#x2b19;"], parsing_wrapper(["diamondbotblack"], lang: :unicode)],
-          asciimath: [["&#x2b19;"], parsing_wrapper(["diamondbotblack"], lang: :asciimath)],
+          unicodemath: [["&#x2b19;"],
+                        parsing_wrapper(["diamondbotblack"], lang: :unicode)],
+          asciimath: [["&#x2b19;"],
+                      parsing_wrapper(["diamondbotblack"], lang: :asciimath)],
           mathml: ["&#x2b19;"],
           latex: [["diamondbotblack", "&#x2b19;"]],
           omml: ["&#x2b19;"],

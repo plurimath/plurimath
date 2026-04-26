@@ -1,11 +1,10 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Symbols::Forksnot do
-
   describe ".initialize" do
-    it 'returns instance of Symbol Forksnot' do
+    it "returns instance of Symbol Forksnot" do
       klass = described_class.new
-      expect(klass).to be_a(Plurimath::Math::Symbols::Forksnot)
+      expect(klass).to be_a(described_class)
     end
   end
 

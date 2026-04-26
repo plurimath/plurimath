@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Vertoverlay < Symbol
         INPUT = {
-          unicodemath: [["&#x20d2;"], parsing_wrapper(["vertoverlay"], lang: :unicode)],
-          asciimath: [["&#x20d2;"], parsing_wrapper(["vertoverlay"], lang: :asciimath)],
+          unicodemath: [["&#x20d2;"],
+                        parsing_wrapper(["vertoverlay"], lang: :unicode)],
+          asciimath: [["&#x20d2;"],
+                      parsing_wrapper(["vertoverlay"], lang: :asciimath)],
           mathml: ["&#x20d2;"],
           latex: [["vertoverlay", "&#x20d2;"]],
           omml: ["&#x20d2;"],

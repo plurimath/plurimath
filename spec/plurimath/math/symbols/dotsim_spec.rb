@@ -1,11 +1,10 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Symbols::Dotsim do
-
   describe ".initialize" do
-    it 'returns instance of Symbol Dotsim' do
+    it "returns instance of Symbol Dotsim" do
       klass = described_class.new
-      expect(klass).to be_a(Plurimath::Math::Symbols::Dotsim)
+      expect(klass).to be_a(described_class)
     end
   end
 

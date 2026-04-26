@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Inttop < Symbol
         INPUT = {
-          unicodemath: [["&#x2320;"], parsing_wrapper(["inttop"], lang: :unicode)],
-          asciimath: [["&#x2320;"], parsing_wrapper(["inttop"], lang: :asciimath)],
+          unicodemath: [["&#x2320;"],
+                        parsing_wrapper(["inttop"], lang: :unicode)],
+          asciimath: [["&#x2320;"],
+                      parsing_wrapper(["inttop"], lang: :asciimath)],
           mathml: ["&#x2320;"],
           latex: [["inttop", "&#x2320;"]],
           omml: ["&#x2320;"],

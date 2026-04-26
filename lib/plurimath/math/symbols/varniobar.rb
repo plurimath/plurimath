@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Varniobar < Symbol
         INPUT = {
-          unicodemath: [["&#x22fd;"], parsing_wrapper(["varniobar"], lang: :unicode)],
-          asciimath: [["&#x22fd;"], parsing_wrapper(["varniobar"], lang: :asciimath)],
+          unicodemath: [["&#x22fd;"],
+                        parsing_wrapper(["varniobar"], lang: :unicode)],
+          asciimath: [["&#x22fd;"],
+                      parsing_wrapper(["varniobar"], lang: :asciimath)],
           mathml: ["&#x22fd;"],
           latex: [["varniobar", "&#x22fd;"]],
           omml: ["&#x22fd;"],

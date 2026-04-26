@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Veedot < Symbol
         INPUT = {
-          unicodemath: [["&#x27c7;"], parsing_wrapper(["veedot"], lang: :unicode)],
-          asciimath: [["&#x27c7;"], parsing_wrapper(["veedot"], lang: :asciimath)],
+          unicodemath: [["&#x27c7;"],
+                        parsing_wrapper(["veedot"], lang: :unicode)],
+          asciimath: [["&#x27c7;"],
+                      parsing_wrapper(["veedot"], lang: :asciimath)],
           mathml: ["&#x27c7;"],
           latex: [["veedot", "&#x27c7;"]],
           omml: ["&#x27c7;"],

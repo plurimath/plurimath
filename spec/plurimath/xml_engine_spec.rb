@@ -1,27 +1,27 @@
 require "spec_helper"
 require "plurimath/xml_engine/oga"
-require "plurimath/xml_engine/ox_engine" unless RUBY_ENGINE == 'opal'
+require "plurimath/xml_engine/ox_engine" unless RUBY_ENGINE == "opal"
 
 RSpec.describe Plurimath::XmlEngine do
   let(:engine) { Plurimath.xml_engine }
 
-  let(:string_with_tricky_characters) {
+  let(:string_with_tricky_characters) do
     "\x01\x13\x19\x21\x7f\u0081\u00ff\n\u{1FAC3}Ú®'\"%%<>&&<αθσ"
-  }
+  end
 
-  let(:dumped_string_with_tricky_characters) {
+  let(:dumped_string_with_tricky_characters) do
     Plurimath::XmlEngine::Oga::Dumper.entities(
-      string_with_tricky_characters
+      string_with_tricky_characters,
     )
-  }
+  end
 
-  let(:dumped_attr_string_with_tricky_characters) {
+  let(:dumped_attr_string_with_tricky_characters) do
     Plurimath::XmlEngine::Oga::Dumper.entities(
       string_with_tricky_characters, true
     )
-  }
+  end
 
-  let(:sample_document_xml) {
+  let(:sample_document_xml) do
     <<~XML
       <test a="b">
         <el/>
@@ -30,9 +30,9 @@ RSpec.describe Plurimath::XmlEngine do
         <el/>
       </test>
     XML
-  }
+  end
 
-  let(:sample_document) {
+  let(:sample_document) do
     root = engine.new_element("test")
     root["a"] = "b"
     el1 = engine.new_element("el")
@@ -43,9 +43,9 @@ RSpec.describe Plurimath::XmlEngine do
     el3["c"] = string_with_tricky_characters
     el4 = engine.new_element("el")
     root << el1 << el2 << el3 << "XXabcYY" << el4
-  }
+  end
 
-  let(:sample_document_namespaced_xml) {
+  let(:sample_document_namespaced_xml) do
     <<~XML
       <?xml version="1.0" ?>
       <x xmlns="http://x.com" xmlns:y="http://y.com">
@@ -55,13 +55,13 @@ RSpec.describe Plurimath::XmlEngine do
         <z y:t="3"/>
       </x>
     XML
-  }
+  end
 
-  let(:sample_document_namespaced) {
+  let(:sample_document_namespaced) do
     engine.load sample_document_namespaced_xml
-  }
+  end
 
-  let(:sample_document_with_comments) {
+  let(:sample_document_with_comments) do
     engine.load <<~XML
       <x>
         <z/>
@@ -74,15 +74,15 @@ RSpec.describe Plurimath::XmlEngine do
         </z>
       </x>
     XML
-  }
+  end
 
-  let(:sample_mathml_document) {
+  let(:sample_mathml_document) do
     engine.load <<~MATHML
       <math>
         <mi> <!-- xxx --> &#x3C0;<!--GREEK SMALL LETTER PI--> </mi>
       </math>
     MATHML
-  }
+  end
 
   shared_examples "all engines" do
     it ".new_element" do
@@ -101,7 +101,8 @@ RSpec.describe Plurimath::XmlEngine do
 
     describe ".load" do
       it "loads simple document" do
-        loaded = engine.load(sample_document_xml.gsub(/(>|YY)\s+(<|XX)/, '\1\2'))
+        loaded = engine.load(sample_document_xml.gsub(/(>|YY)\s+(<|XX)/,
+                                                      '\1\2'))
         expect(loaded).to eq sample_document
       end
 
@@ -109,8 +110,10 @@ RSpec.describe Plurimath::XmlEngine do
         doc = sample_document_namespaced
         expect(doc.nodes.length).to be 1
         expect(doc.nodes.first.nodes.length).to be 4
-        expect(doc.nodes.first.nodes.map(&:name)).to eq ["z"]*4
-        expect(doc.nodes.first.nodes.last(2).map {|i| i.attributes.keys }).to eq [["t"]]*2
+        expect(doc.nodes.first.nodes.map(&:name)).to eq ["z"] * 4
+        expect(doc.nodes.first.nodes.last(2).map do |i|
+          i.attributes.keys
+        end).to eq [["t"]] * 2
       end
 
       it "loads an element and handles text and whitespace in a consistent way" do
@@ -118,7 +121,7 @@ RSpec.describe Plurimath::XmlEngine do
           <root>  <a/>  &lt;  <b/>\t\n <c/> \n&lt;\n <!-- xx --> <!-- yy --> abc  </root>
         XML
 
-        data = loaded.nodes.map { |i| i.class == String ? i : :x }
+        data = loaded.nodes.map { |i| i.instance_of?(String) ? i : :x }
 
         expect(data).to eq [:x, "  <  ", :x, :x, " \n<\n ", :x, :x, " abc  "]
       end
@@ -131,7 +134,7 @@ RSpec.describe Plurimath::XmlEngine do
       it "loads a sample mathml document as expected" do
         loaded = sample_mathml_document
         nodes = loaded.nodes.first.nodes
-        nodes = nodes.map { |i| i.class == String ? i : :x }
+        nodes = nodes.map { |i| i.instance_of?(String) ? i : :x }
         expect(nodes).to eq [:x, " π", :x, " "]
       end
     end
@@ -170,7 +173,7 @@ RSpec.describe Plurimath::XmlEngine do
           root << "  " << engine.new_element("x") \
                << "  " << engine.new_element("x") << "  "
 
-          data = root.nodes.map { |i| i.class == String ? i : :x }
+          data = root.nodes.map { |i| i.instance_of?(String) ? i : :x }
 
           expect(data).to eq ["  ", :x, "  ", :x, "  "]
         end
@@ -227,7 +230,8 @@ RSpec.describe Plurimath::XmlEngine do
 
       it "#attributes" do
         attrs = sample_document_namespaced.nodes.first.attributes
-        expect(attrs).to eq({"xmlns"=>"http://x.com", "y"=>"http://y.com"})
+        expect(attrs).to eq({ "xmlns" => "http://x.com",
+                              "y" => "http://y.com" })
       end
 
       describe "#<<" do
@@ -241,22 +245,24 @@ RSpec.describe Plurimath::XmlEngine do
     end
   end
 
-  around(:each) do |example|
+  around do |example|
     old_engine = Plurimath.xml_engine
     Plurimath.xml_engine = tested_engine
     example.run
     Plurimath.xml_engine = old_engine
   end
 
-  describe "Ox" do
-    let(:tested_engine) { Plurimath::XmlEngine::OxEngine }
+  unless RUBY_ENGINE == "opal"
+    describe "Ox" do
+      let(:tested_engine) { Plurimath::XmlEngine::OxEngine }
 
-    include_examples "all engines"
-  end unless RUBY_ENGINE == "opal"
+      it_behaves_like "all engines"
+    end
+  end
 
   describe "Oga" do
     let(:tested_engine) { Plurimath::XmlEngine::Oga }
 
-    include_examples "all engines"
+    it_behaves_like "all engines"
   end
 end

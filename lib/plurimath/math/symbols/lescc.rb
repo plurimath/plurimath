@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Lescc < Symbol
         INPUT = {
-          unicodemath: [["&#x2aa8;"], parsing_wrapper(["lescc"], lang: :unicode)],
-          asciimath: [["&#x2aa8;"], parsing_wrapper(["lescc"], lang: :asciimath)],
+          unicodemath: [["&#x2aa8;"],
+                        parsing_wrapper(["lescc"], lang: :unicode)],
+          asciimath: [["&#x2aa8;"],
+                      parsing_wrapper(["lescc"], lang: :asciimath)],
           mathml: ["&#x2aa8;"],
           latex: [["lescc", "&#x2aa8;"]],
           omml: ["&#x2aa8;"],

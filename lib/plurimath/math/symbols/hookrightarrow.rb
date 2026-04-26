@@ -4,7 +4,8 @@ module Plurimath
       class Hookrightarrow < Symbol
         INPUT = {
           unicodemath: [["hookrightarrow", "&#x21aa;"]],
-          asciimath: [["&#x21aa;"], parsing_wrapper(["hookrightarrow"], lang: :asciimath)],
+          asciimath: [["&#x21aa;"],
+                      parsing_wrapper(["hookrightarrow"], lang: :asciimath)],
           mathml: ["&#x21aa;"],
           latex: [["hookrightarrow", "&#x21aa;"]],
           omml: ["&#x21aa;"],

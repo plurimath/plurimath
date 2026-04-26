@@ -3,8 +3,12 @@ module Plurimath
     module Symbols
       class Spot < Symbol
         INPUT = {
-          unicodemath: [["&#x2981;"], parsing_wrapper(["mdsmblkcircle", "spot"], lang: :unicode)],
-          asciimath: [["&#x2981;"], parsing_wrapper(["mdsmblkcircle", "spot"], lang: :asciimath)],
+          unicodemath: [["&#x2981;"],
+                        parsing_wrapper(["mdsmblkcircle", "spot"],
+                                        lang: :unicode)],
+          asciimath: [["&#x2981;"],
+                      parsing_wrapper(["mdsmblkcircle", "spot"],
+                                      lang: :asciimath)],
           mathml: ["&#x2981;"],
           latex: [["mdsmblkcircle", "spot", "&#x2981;"]],
           omml: ["&#x2981;"],

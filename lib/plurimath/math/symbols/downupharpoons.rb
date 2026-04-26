@@ -3,10 +3,19 @@ module Plurimath
     module Symbols
       class Downupharpoons < Symbol
         INPUT = {
-          unicodemath: [["&#x296f;"], parsing_wrapper(["downupharpoonsleftright", "uprevequilibrium", "downupharpoons"], lang: :unicode)],
-          asciimath: [["&#x296f;"], parsing_wrapper(["downupharpoonsleftright", "uprevequilibrium", "downupharpoons"], lang: :asciimath)],
+          unicodemath: [["&#x296f;"],
+                        parsing_wrapper(
+                          ["downupharpoonsleftright", "uprevequilibrium",
+                           "downupharpoons"], lang: :unicode
+                        )],
+          asciimath: [["&#x296f;"],
+                      parsing_wrapper(
+                        ["downupharpoonsleftright", "uprevequilibrium",
+                         "downupharpoons"], lang: :asciimath
+                      )],
           mathml: ["&#x296f;"],
-          latex: [["downupharpoonsleftright", "uprevequilibrium", "downupharpoons", "&#x296f;"]],
+          latex: [["downupharpoonsleftright", "uprevequilibrium",
+                   "downupharpoons", "&#x296f;"]],
           omml: ["&#x296f;"],
           html: ["&#x296f;"],
         }.freeze

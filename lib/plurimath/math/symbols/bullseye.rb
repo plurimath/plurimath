@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Bullseye < Symbol
         INPUT = {
-          unicodemath: [["&#x25ce;"], parsing_wrapper(["bullseye"], lang: :unicode)],
-          asciimath: [["&#x25ce;"], parsing_wrapper(["bullseye"], lang: :asciimath)],
+          unicodemath: [["&#x25ce;"],
+                        parsing_wrapper(["bullseye"], lang: :unicode)],
+          asciimath: [["&#x25ce;"],
+                      parsing_wrapper(["bullseye"], lang: :asciimath)],
           mathml: ["&#x25ce;"],
           latex: [["bullseye", "&#x25ce;"]],
           omml: ["&#x25ce;"],

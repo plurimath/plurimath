@@ -3,8 +3,12 @@ module Plurimath
     module Symbols
       class Barrightarrowdiamond < Symbol
         INPUT = {
-          unicodemath: [["&#x2920;"], parsing_wrapper(["barrightarrowdiamond"], lang: :unicode)],
-          asciimath: [["&#x2920;"], parsing_wrapper(["barrightarrowdiamond"], lang: :asciimath)],
+          unicodemath: [["&#x2920;"],
+                        parsing_wrapper(["barrightarrowdiamond"],
+                                        lang: :unicode)],
+          asciimath: [["&#x2920;"],
+                      parsing_wrapper(["barrightarrowdiamond"],
+                                      lang: :asciimath)],
           mathml: ["&#x2920;"],
           latex: [["barrightarrowdiamond", "&#x2920;"]],
           omml: ["&#x2920;"],

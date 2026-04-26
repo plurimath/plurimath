@@ -3,10 +3,15 @@ module Plurimath
     module Symbols
       class Deltaeq < Symbol
         INPUT = {
-          unicodemath: [["Deltaeq", "&#x225c;"], parsing_wrapper(["triangleq", "varsdef"], lang: :unicode)],
-          asciimath: [["&#x225c;"], parsing_wrapper(["Deltaeq", "triangleq", "varsdef"], lang: :asciimath)],
+          unicodemath: [["Deltaeq", "&#x225c;"],
+                        parsing_wrapper(["triangleq", "varsdef"],
+                                        lang: :unicode)],
+          asciimath: [["&#x225c;"],
+                      parsing_wrapper(["Deltaeq", "triangleq", "varsdef"],
+                                      lang: :asciimath)],
           mathml: ["&#x225c;"],
-          latex: [["triangleq", "varsdef", "&#x225c;"], parsing_wrapper(["Deltaeq"], lang: :latex)],
+          latex: [["triangleq", "varsdef", "&#x225c;"],
+                  parsing_wrapper(["Deltaeq"], lang: :latex)],
           omml: ["&#x225c;"],
           html: ["&#x225c;"],
         }.freeze

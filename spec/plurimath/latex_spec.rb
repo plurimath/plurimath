@@ -1,17 +1,17 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Latex do
-
   describe ".initialize" do
     subject(:latex) { described_class.new(string) }
 
     context "contains simple cos function with numeric value" do
       let(:string) { "\\cos_{45}" }
-      it 'matches instance of Latex' do
-        expect(latex).to be_a(Plurimath::Latex)
+
+      it "matches instance of Latex" do
+        expect(latex).to be_a(described_class)
       end
 
-      it 'matches text from Latex instance' do
+      it "matches text from Latex instance" do
         expect(latex.text).to eq('\\cos_{45}')
       end
     end
@@ -22,25 +22,28 @@ RSpec.describe Plurimath::Latex do
 
     context "contains basic simple Latex equation cos and numeric value" do
       let(:string) { '\\cos{45}' }
-      it 'returns parsed Latex to Formula' do
+
+      it "returns parsed Latex to Formula" do
         expected_value = Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Cos.new(
-            Plurimath::Math::Number.new("45"),
-          ),
-        ])
+                                                        Plurimath::Math::Function::Cos.new(
+                                                          Plurimath::Math::Number.new("45"),
+                                                        ),
+                                                      ])
         expect(formula).to eq(expected_value)
       end
     end
 
     context "contains examples from plurimath/plurimath#355" do
-      let(:string) { 'H^\beta \left(d_1,\ldots,d_M\right) = \left(H^{\beta_1}\left(d_1\right),\ldots,H^{\beta_M}\left(d_M\right)\right)^t' }
+      let(:string) do
+        'H^\beta \left(d_1,\ldots,d_M\right) = \left(H^{\beta_1}\left(d_1\right),\ldots,H^{\beta_M}\left(d_M\right)\right)^t'
+      end
 
       it "returns parsed Latex to Formula" do
         expected_value = Plurimath::Math::Formula.new(
           [
             Plurimath::Math::Function::Power.new(
               Plurimath::Math::Symbols::Symbol.new("H"),
-              Plurimath::Math::Symbols::Upbeta.new
+              Plurimath::Math::Symbols::Upbeta.new,
             ),
             Plurimath::Math::Formula.new(
               [
@@ -48,20 +51,20 @@ RSpec.describe Plurimath::Latex do
                 Plurimath::Math::Formula.new(
                   [
                     Plurimath::Math::Function::Base.new(
-                        Plurimath::Math::Symbols::Symbol.new("d"),
-                        Plurimath::Math::Number.new("1")
+                      Plurimath::Math::Symbols::Symbol.new("d"),
+                      Plurimath::Math::Number.new("1"),
                     ),
                     Plurimath::Math::Symbols::Comma.new,
                     Plurimath::Math::Symbols::Dots.new,
                     Plurimath::Math::Symbols::Comma.new,
                     Plurimath::Math::Function::Base.new(
                       Plurimath::Math::Symbols::Symbol.new("d"),
-                      Plurimath::Math::Symbols::Symbol.new("M")
-                    )
-                  ]
+                      Plurimath::Math::Symbols::Symbol.new("M"),
+                    ),
+                  ],
                 ),
-                Plurimath::Math::Function::Right.new(")")
-              ]
+                Plurimath::Math::Function::Right.new(")"),
+              ],
             ),
             Plurimath::Math::Symbols::Equal.new,
             Plurimath::Math::Function::Power.new(
@@ -74,18 +77,18 @@ RSpec.describe Plurimath::Latex do
                         Plurimath::Math::Symbols::Symbol.new("H"),
                         Plurimath::Math::Function::Base.new(
                           Plurimath::Math::Symbols::Upbeta.new,
-                          Plurimath::Math::Number.new("1")
-                        )
+                          Plurimath::Math::Number.new("1"),
+                        ),
                       ),
                       Plurimath::Math::Formula.new(
                         [
                           Plurimath::Math::Function::Left.new("("),
                           Plurimath::Math::Function::Base.new(
                             Plurimath::Math::Symbols::Symbol.new("d"),
-                            Plurimath::Math::Number.new("1")
+                            Plurimath::Math::Number.new("1"),
                           ),
-                          Plurimath::Math::Function::Right.new(")")
-                        ]
+                          Plurimath::Math::Function::Right.new(")"),
+                        ],
                       ),
                       Plurimath::Math::Symbols::Comma.new,
                       Plurimath::Math::Symbols::Dots.new,
@@ -94,27 +97,27 @@ RSpec.describe Plurimath::Latex do
                         Plurimath::Math::Symbols::Symbol.new("H"),
                         Plurimath::Math::Function::Base.new(
                           Plurimath::Math::Symbols::Upbeta.new,
-                          Plurimath::Math::Symbols::Symbol.new("M")
-                        )
+                          Plurimath::Math::Symbols::Symbol.new("M"),
+                        ),
                       ),
                       Plurimath::Math::Formula.new(
                         [
                           Plurimath::Math::Function::Left.new("("),
                           Plurimath::Math::Function::Base.new(
                             Plurimath::Math::Symbols::Symbol.new("d"),
-                            Plurimath::Math::Symbols::Symbol.new("M")
+                            Plurimath::Math::Symbols::Symbol.new("M"),
                           ),
-                          Plurimath::Math::Function::Right.new(")")
-                        ]
-                      )
-                    ]
+                          Plurimath::Math::Function::Right.new(")"),
+                        ],
+                      ),
+                    ],
                   ),
-                  Plurimath::Math::Function::Right.new(")")
-                ]
+                  Plurimath::Math::Function::Right.new(")"),
+                ],
               ),
-              Plurimath::Math::Symbols::Symbol.new("t")
-            )
-          ]
+              Plurimath::Math::Symbols::Symbol.new("t"),
+            ),
+          ],
         )
         expect(formula).to eq(expected_value)
       end
@@ -127,7 +130,7 @@ RSpec.describe Plurimath::Latex do
     context "contains example #01" do
       let(:string) { '\\cos{45}' }
 
-      it 'returns parsed Latex to MathML' do
+      it "returns parsed Latex to MathML" do
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -147,7 +150,7 @@ RSpec.describe Plurimath::Latex do
     context "contains example #02" do
       let(:string) { '1 \\over 2' }
 
-      it 'returns parsed Latex to MathML' do
+      it "returns parsed Latex to MathML" do
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -171,7 +174,7 @@ RSpec.describe Plurimath::Latex do
     context "contains example #03" do
       let(:string) { "L' \\over {1\\over2}" }
 
-      it 'returns parsed Latex to MathML' do
+      it "returns parsed Latex to MathML" do
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -194,7 +197,7 @@ RSpec.describe Plurimath::Latex do
             </mstyle>
           </math>
         MATHML
-        latex = "L{' \\over {1 \\over 2}}"
+        "L{' \\over {1 \\over 2}}"
         expect(formula.to_mathml(unary_function_spacing: false)).to be_xml_equivalent_to(mathml)
       end
     end
@@ -202,7 +205,7 @@ RSpec.describe Plurimath::Latex do
     context "contains example #04" do
       let(:string) { '\\left\\{\\right.' }
 
-      it 'returns parsed Latex to MathML' do
+      it "returns parsed Latex to MathML" do
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -220,7 +223,7 @@ RSpec.describe Plurimath::Latex do
     context "contains example #05" do
       let(:string) { '\\begin{matrix}a & b \\\\ c & d \\end{matrix}' }
 
-      it 'returns parsed Latex to MathML' do
+      it "returns parsed Latex to MathML" do
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -260,7 +263,7 @@ RSpec.describe Plurimath::Latex do
         LATEX
       end
 
-      it 'returns parsed Latex to MathML' do
+      it "returns parsed Latex to MathML" do
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -334,7 +337,7 @@ RSpec.describe Plurimath::Latex do
     context "contains example #07" do
       let(:string) { "\\begin{matrix*}[r]a & b \\\\ c & d \\end{matrix*}" }
 
-      it 'returns parsed Latex to MathML' do
+      it "returns parsed Latex to MathML" do
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -368,7 +371,7 @@ RSpec.describe Plurimath::Latex do
     context "contains example #08" do
       let(:string) { "\\begin{matrix*}[r]a & b \\\\ c & d \\end{matrix*}" }
 
-      it 'returns parsed Latex to MathML' do
+      it "returns parsed Latex to MathML" do
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -402,7 +405,7 @@ RSpec.describe Plurimath::Latex do
     context "contains example #09" do
       let(:string) { "\\begin{matrix}-a & b \\\\ c & d \\end{matrix}" }
 
-      it 'returns parsed Latex to MathML' do
+      it "returns parsed Latex to MathML" do
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -439,7 +442,7 @@ RSpec.describe Plurimath::Latex do
     context "contains example #10" do
       let(:string) { "\\begin{matrix}-\\end{matrix}" }
 
-      it 'returns parsed Latex to MathML' do
+      it "returns parsed Latex to MathML" do
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -460,9 +463,11 @@ RSpec.describe Plurimath::Latex do
     end
 
     context "contains example #11" do
-      let(:string) { "\\begin{matrix}a_{1} & b_{2} \\\\ c_{3} & d_{4} \\end{matrix}" }
+      let(:string) do
+        "\\begin{matrix}a_{1} & b_{2} \\\\ c_{3} & d_{4} \\end{matrix}"
+      end
 
-      it 'returns parsed Latex to MathML' do
+      it "returns parsed Latex to MathML" do
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -508,7 +513,7 @@ RSpec.describe Plurimath::Latex do
     context "contains example #12" do
       let(:string) { "\\begin{array}{cc} 1 & 2 \\\\ 3 & 4 \\end{array}" }
 
-      it 'returns parsed Latex to MathML' do
+      it "returns parsed Latex to MathML" do
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -551,7 +556,7 @@ RSpec.describe Plurimath::Latex do
         LATEX
       end
 
-      it 'returns parsed Latex to MathML' do
+      it "returns parsed Latex to MathML" do
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -692,7 +697,7 @@ RSpec.describe Plurimath::Latex do
     context "contains example #14" do
       let(:string) { "\\sqrt { ( - 25 ) ^ { 2 } } = \\pm 25" }
 
-      it 'returns parsed Latex to MathML' do
+      it "returns parsed Latex to MathML" do
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -722,7 +727,7 @@ RSpec.describe Plurimath::Latex do
     context "contains example #15" do
       let(:string) { "\\left(- x^{3} + 5\\right)^{5}" }
 
-      it 'returns parsed Latex to MathML' do
+      it "returns parsed Latex to MathML" do
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -761,7 +766,7 @@ RSpec.describe Plurimath::Latex do
         LATEX
       end
 
-      it 'returns parsed Latex to MathML' do
+      it "returns parsed Latex to MathML" do
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -813,7 +818,7 @@ RSpec.describe Plurimath::Latex do
         LATEX
       end
 
-      it 'returns parsed Latex to MathML' do
+      it "returns parsed Latex to MathML" do
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -863,7 +868,7 @@ RSpec.describe Plurimath::Latex do
         LATEX
       end
 
-      it 'returns parsed Latex to MathML' do
+      it "returns parsed Latex to MathML" do
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -905,7 +910,7 @@ RSpec.describe Plurimath::Latex do
     context "contains example #19" do
       let(:string) { "\\mathrm{...}" }
 
-      it 'returns parsed Latex to MathML' do
+      it "returns parsed Latex to MathML" do
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -926,9 +931,11 @@ RSpec.describe Plurimath::Latex do
     end
 
     context "contains example #20" do
-      let(:string) { "\\frac{x + 4}{x + \\frac{123 \\left(\\sqrt{x} + 5\\right)}{x + 4} - 8}" }
+      let(:string) do
+        "\\frac{x + 4}{x + \\frac{123 \\left(\\sqrt{x} + 5\\right)}{x + 4} - 8}"
+      end
 
-      it 'returns parsed Latex to MathML' do
+      it "returns parsed Latex to MathML" do
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -976,7 +983,7 @@ RSpec.describe Plurimath::Latex do
     context "contains example #21" do
       let(:string) { "\\sqrt {\\sqrt {\\left( x^{3}\\right) + v}}" }
 
-      it 'returns parsed Latex to MathML' do
+      it "returns parsed Latex to MathML" do
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -1006,7 +1013,7 @@ RSpec.describe Plurimath::Latex do
     context "contains example #22" do
       let(:string) { "\\left(x\\right){5}" }
 
-      it 'returns parsed Latex to MathML' do
+      it "returns parsed Latex to MathML" do
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -1026,7 +1033,7 @@ RSpec.describe Plurimath::Latex do
     context "contains example #23" do
       let(:string) { "\\sqrt[3]{}" }
 
-      it 'returns parsed Latex to MathML' do
+      it "returns parsed Latex to MathML" do
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -1048,7 +1055,7 @@ RSpec.describe Plurimath::Latex do
     context "contains example #24" do
       let(:string) { "1_{}" }
 
-      it 'returns parsed Latex to MathML' do
+      it "returns parsed Latex to MathML" do
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -1067,7 +1074,7 @@ RSpec.describe Plurimath::Latex do
     context "contains example #25" do
       let(:string) { "\\array{}" }
 
-      it 'returns parsed Latex to MathML' do
+      it "returns parsed Latex to MathML" do
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -1088,7 +1095,7 @@ RSpec.describe Plurimath::Latex do
     context "contains example #26" do
       let(:string) { "\\array{{}}" }
 
-      it 'returns parsed Latex to MathML' do
+      it "returns parsed Latex to MathML" do
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -1120,7 +1127,7 @@ RSpec.describe Plurimath::Latex do
         LATEX
       end
 
-      it 'returns parsed Latex to MathML' do
+      it "returns parsed Latex to MathML" do
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -1209,7 +1216,7 @@ RSpec.describe Plurimath::Latex do
         LATEX
       end
 
-      it 'returns parsed Latex to MathML' do
+      it "returns parsed Latex to MathML" do
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -1291,7 +1298,7 @@ RSpec.describe Plurimath::Latex do
     context "contains example #29" do
       let(:string) { "\\log_2{x}" }
 
-      it 'returns parsed Latex to MathML' do
+      it "returns parsed Latex to MathML" do
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -1312,7 +1319,7 @@ RSpec.describe Plurimath::Latex do
     context "contains example #30" do
       let(:string) { "\\sqrt[]{3}" }
 
-      it 'returns parsed Latex to MathML' do
+      it "returns parsed Latex to MathML" do
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -1332,7 +1339,7 @@ RSpec.describe Plurimath::Latex do
     context "contains example #31" do
       let(:string) { "\\frac{3}{\\frac{1}{2}{x}^{2}}" }
 
-      it 'returns parsed Latex to MathML' do
+      it "returns parsed Latex to MathML" do
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -1359,9 +1366,11 @@ RSpec.describe Plurimath::Latex do
     end
 
     context "contains example #32" do
-      let(:string) { "\\frac{3}{\\frac{1}{2}{x}^{2}-\\frac{3\\sqrt[]{3}}{2}x+3}" }
+      let(:string) do
+        "\\frac{3}{\\frac{1}{2}{x}^{2}-\\frac{3\\sqrt[]{3}}{2}x+3}"
+      end
 
-      it 'returns parsed Latex to MathML' do
+      it "returns parsed Latex to MathML" do
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -1404,7 +1413,7 @@ RSpec.describe Plurimath::Latex do
     context "contains example #33" do
       let(:string) { "^3" }
 
-      it 'returns parsed Latex to MathML' do
+      it "returns parsed Latex to MathML" do
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -1422,7 +1431,7 @@ RSpec.describe Plurimath::Latex do
     context "contains example #34" do
       let(:string) { "\\lim_{x \\to +\\infty} f(x)" }
 
-      it 'returns parsed Latex to MathML' do
+      it "returns parsed Latex to MathML" do
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -1453,7 +1462,7 @@ RSpec.describe Plurimath::Latex do
     context "contains example #35" do
       let(:string) { "\\inf_{x > s}f(x)" }
 
-      it 'returns parsed Latex to MathML' do
+      it "returns parsed Latex to MathML" do
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -1483,7 +1492,7 @@ RSpec.describe Plurimath::Latex do
     context "contains example #36" do
       let(:string) { "\\sup_{x \\in \\mathbb{R}}f(x)" }
 
-      it 'returns parsed Latex to MathML' do
+      it "returns parsed Latex to MathML" do
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -1517,7 +1526,7 @@ RSpec.describe Plurimath::Latex do
     context "contains example #37" do
       let(:string) { "\\max_{x \\in \\[a,b\\]}f(x)" }
 
-      it 'returns parsed Latex to MathML' do
+      it "returns parsed Latex to MathML" do
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -1553,7 +1562,7 @@ RSpec.describe Plurimath::Latex do
     context "contains example #38" do
       let(:string) { "\\min_{x \\in \\[\\alpha,\\beta\\]}f(x)" }
 
-      it 'returns parsed Latex to MathML' do
+      it "returns parsed Latex to MathML" do
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -1589,7 +1598,7 @@ RSpec.describe Plurimath::Latex do
     context "contains example #39" do
       let(:string) { "\\int\\limits_{0}^{\\pi}" }
 
-      it 'returns parsed Latex to MathML' do
+      it "returns parsed Latex to MathML" do
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -1610,7 +1619,7 @@ RSpec.describe Plurimath::Latex do
     context "contains example #40" do
       let(:string) { "\\sum_{\\substack{1\\le i\\le n\\\\ i\\ne j}}" }
 
-      it 'returns parsed Latex to MathML' do
+      it "returns parsed Latex to MathML" do
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -1647,7 +1656,7 @@ RSpec.describe Plurimath::Latex do
     context "contains example #41" do
       let(:string) { "\\mathrm{AA}" }
 
-      it 'returns parsed Latex to MathML' do
+      it "returns parsed Latex to MathML" do
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -1669,7 +1678,7 @@ RSpec.describe Plurimath::Latex do
     context "contains example #42" do
       let(:string) { "(1+(x-y)^{2})" }
 
-      it 'returns parsed Latex to MathML' do
+      it "returns parsed Latex to MathML" do
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -1732,7 +1741,7 @@ RSpec.describe Plurimath::Latex do
         LATEX
       end
 
-      it 'returns parsed Latex to MathML' do
+      it "returns parsed Latex to MathML" do
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -1959,7 +1968,7 @@ RSpec.describe Plurimath::Latex do
         LATEX
       end
 
-      it 'returns parsed Latex to MathML' do
+      it "returns parsed Latex to MathML" do
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -2165,7 +2174,7 @@ RSpec.describe Plurimath::Latex do
         LATEX
       end
 
-      it 'returns parsed Latex to MathML' do
+      it "returns parsed Latex to MathML" do
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -2243,11 +2252,11 @@ RSpec.describe Plurimath::Latex do
     context "contains example #46" do
       let(:string) do
         <<~LATEX
-            \\[out_k = \\frac{1}{s}\\left(k == 0 ? 1 : \\sqrt{2}\\right)\\sum_{n = 0}^{s - 1}{in_{n} \\cdot \\cos\\left( \\frac{\\pi k}{s}\\left( n + \\frac{1}{2} \\right) \\right)}\\]
+          \\[out_k = \\frac{1}{s}\\left(k == 0 ? 1 : \\sqrt{2}\\right)\\sum_{n = 0}^{s - 1}{in_{n} \\cdot \\cos\\left( \\frac{\\pi k}{s}\\left( n + \\frac{1}{2} \\right) \\right)}\\]
         LATEX
       end
 
-      it 'returns parsed Latex to MathML' do
+      it "returns parsed Latex to MathML" do
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -2348,7 +2357,7 @@ RSpec.describe Plurimath::Latex do
         LATEX
       end
 
-      it 'returns parsed Latex to MathML' do
+      it "returns parsed Latex to MathML" do
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -2446,7 +2455,7 @@ RSpec.describe Plurimath::Latex do
         LATEX
       end
 
-      it 'returns parsed Latex to MathML' do
+      it "returns parsed Latex to MathML" do
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -2473,7 +2482,7 @@ RSpec.describe Plurimath::Latex do
         LATEX
       end
 
-      it 'returns parsed Latex to MathML' do
+      it "returns parsed Latex to MathML" do
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -2499,7 +2508,7 @@ RSpec.describe Plurimath::Latex do
         LATEX
       end
 
-      it 'returns parsed Latex to MathML' do
+      it "returns parsed Latex to MathML" do
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -2531,7 +2540,7 @@ RSpec.describe Plurimath::Latex do
         LATEX
       end
 
-      it 'returns parsed Latex to MathML' do
+      it "returns parsed Latex to MathML" do
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -2556,7 +2565,7 @@ RSpec.describe Plurimath::Latex do
         LATEX
       end
 
-      it 'returns parsed Latex to MathML' do
+      it "returns parsed Latex to MathML" do
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -2580,7 +2589,7 @@ RSpec.describe Plurimath::Latex do
         LATEX
       end
 
-      it 'returns parsed Latex to MathML' do
+      it "returns parsed Latex to MathML" do
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -2613,7 +2622,7 @@ RSpec.describe Plurimath::Latex do
         LATEX
       end
 
-      it 'returns parsed Latex to MathML' do
+      it "returns parsed Latex to MathML" do
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -2648,7 +2657,7 @@ RSpec.describe Plurimath::Latex do
         LATEX
       end
 
-      it 'returns parsed Latex to MathML' do
+      it "returns parsed Latex to MathML" do
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -2682,7 +2691,7 @@ RSpec.describe Plurimath::Latex do
         LATEX
       end
 
-      it 'returns parsed Latex to MathML' do
+      it "returns parsed Latex to MathML" do
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -2729,7 +2738,7 @@ RSpec.describe Plurimath::Latex do
     context "contains sup function example #57" do
       let(:string) { "\\sup{a+b}" }
 
-      it 'compares LaTeX to MathML and LaTeX conversion' do
+      it "compares LaTeX to MathML and LaTeX conversion" do
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -2749,9 +2758,11 @@ RSpec.describe Plurimath::Latex do
     end
 
     context "contains equation from plurimath/issue#250 example #58" do
-      let(:string) { '[X \text{ is open}] \Leftrightarrow [x \in X] \implies [\exists \varepsilon > 0 \backepsilon \text{distance} (x,y) < \varepsilon] \implies [y \in X]' }
+      let(:string) do
+        '[X \text{ is open}] \Leftrightarrow [x \in X] \implies [\exists \varepsilon > 0 \backepsilon \text{distance} (x,y) < \varepsilon] \implies [y \in X]'
+      end
 
-      it 'compares LaTeX to MathML and LaTeX conversion' do
+      it "compares LaTeX to MathML and LaTeX conversion" do
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -2806,12 +2817,12 @@ RSpec.describe Plurimath::Latex do
   end
 
   describe ".to_asciimath" do
-    subject(:asciimath) { Plurimath::Latex.new(string).to_formula.to_asciimath }
+    subject(:asciimath) { described_class.new(string).to_formula.to_asciimath }
 
     context "contains rule unary function example #1" do
       let(:string) { "\\rule[-1mm]{5mm}{1cm}" }
 
-      it 'returns parsed Latex to MathML' do
+      it "returns parsed Latex to MathML" do
         expected_value = ""
         expect(asciimath).to eql(expected_value)
       end
@@ -2820,7 +2831,7 @@ RSpec.describe Plurimath::Latex do
     context "contains over function example #2" do
       let(:string) { "{1 \\over b}" }
 
-      it 'returns parsed Latex to MathML' do
+      it "returns parsed Latex to MathML" do
         expected_value = "frac(1)(b)"
         expect(asciimath).to eql(expected_value)
       end
@@ -2829,7 +2840,7 @@ RSpec.describe Plurimath::Latex do
     context "contains substack function example #3" do
       let(:string) { "\\substack{1 \\\\ b \\\\ 100}" }
 
-      it 'compares parsed Latex to AsciiMath' do
+      it "compares parsed Latex to AsciiMath" do
         expected_value = "{:[1],[b],[100]:}"
         expect(asciimath).to eql(expected_value)
       end
@@ -2838,7 +2849,7 @@ RSpec.describe Plurimath::Latex do
     context "contains array function example #3" do
       let(:string) { "\\begin{array}1 \\\\ b \\\\ 100\\end{array}" }
 
-      it 'compares parsed Latex to AsciiMath' do
+      it "compares parsed Latex to AsciiMath" do
         expected_value = "{:[1], [b], [100]:}"
         expect(asciimath).to eql(expected_value)
       end
@@ -2846,12 +2857,12 @@ RSpec.describe Plurimath::Latex do
   end
 
   describe ".to_html" do
-    subject(:html) { Plurimath::Latex.new(string).to_formula.to_html }
+    subject(:html) { described_class.new(string).to_formula.to_html }
 
     context "contains mbox unary function example #1" do
       let(:string) { "\\mbox{1cm}" }
 
-      it 'returns parsed Latex to HTML' do
+      it "returns parsed Latex to HTML" do
         expected_value = "1cm"
         expect(html).to eql(expected_value)
       end
@@ -2859,12 +2870,14 @@ RSpec.describe Plurimath::Latex do
   end
 
   describe ".to_omml" do
-    subject(:formula) { Plurimath::Latex.new(string).to_formula.to_omml }
+    subject(:formula) { described_class.new(string).to_formula.to_omml }
 
     context "contains simple fenced example #01" do
-      let(:string) { '\mbox{100}\mbox{node}\mbox{symmetric}\rule[-1mm]{5mm}{1cm}' }
+      let(:string) do
+        '\mbox{100}\mbox{node}\mbox{symmetric}\rule[-1mm]{5mm}{1cm}'
+      end
 
-      it 'returns parsed LaTeX to OMML' do
+      it "returns parsed LaTeX to OMML" do
         omml = <<~OMML
           <m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape">
             <m:oMath>
@@ -2884,7 +2897,7 @@ RSpec.describe Plurimath::Latex do
     context "contains simple deg example #02" do
       let(:string) { '\deg{2}' }
 
-      it 'returns parsed LaTeX to OMML' do
+      it "returns parsed LaTeX to OMML" do
         omml = <<~OMML
           <m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape">
             <m:oMath>
@@ -2904,7 +2917,7 @@ RSpec.describe Plurimath::Latex do
     context "contains simple substack example #03" do
       let(:string) { "\\sum_{\\substack{1\\le i\\le n\\\\ i\\ne j}}" }
 
-      it 'returns parsed LaTeX to OMML' do
+      it "returns parsed LaTeX to OMML" do
         omml = <<~OMML
           <m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape">
             <m:oMath>
@@ -2976,7 +2989,7 @@ RSpec.describe Plurimath::Latex do
     context "contains simple over example #04" do
       let(:string) { "1 \\over 2" }
 
-      it 'returns parsed LaTeX to OMML' do
+      it "returns parsed LaTeX to OMML" do
         omml = <<~OMML
           <m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape">
             <m:oMath>
@@ -3010,7 +3023,7 @@ RSpec.describe Plurimath::Latex do
     context "contains simple inf example #05" do
       let(:string) { "\\inf_{e}^{100} \\beta \\lg{d}" }
 
-      it 'returns parsed LaTeX to OMML' do
+      it "returns parsed LaTeX to OMML" do
         omml = <<~OMML
           <m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape">
             <m:oMath>
@@ -3068,9 +3081,11 @@ RSpec.describe Plurimath::Latex do
     end
 
     context "contains simple hom, ker, liminf, limsup, and sup example #05" do
-      let(:string) { "\\hom{(d)} \\ker{(d)} \\liminf{(d)} \\limsup{(d)} \\sup{d}" }
+      let(:string) do
+        "\\hom{(d)} \\ker{(d)} \\liminf{(d)} \\limsup{(d)} \\sup{d}"
+      end
 
-      it 'returns parsed LaTeX to OMML' do
+      it "returns parsed LaTeX to OMML" do
         omml = <<~OMML
           <m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape">
             <m:oMath>
@@ -3151,7 +3166,7 @@ RSpec.describe Plurimath::Latex do
     context "contains simple over example #04" do
       let(:string) { "\\phantom{1 + 2}" }
 
-      it 'compares parsed LaTeX to OMML' do
+      it "compares parsed LaTeX to OMML" do
         omml = <<~OMML
           <m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape">
             <m:oMath>

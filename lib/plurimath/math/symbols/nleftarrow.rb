@@ -4,7 +4,8 @@ module Plurimath
       class Nleftarrow < Symbol
         INPUT = {
           unicodemath: [["nLeftarrow", "&#x21cd;"]],
-          asciimath: [["&#x21cd;"], parsing_wrapper(["nLeftarrow"], lang: :asciimath)],
+          asciimath: [["&#x21cd;"],
+                      parsing_wrapper(["nLeftarrow"], lang: :asciimath)],
           mathml: ["&#x21cd;"],
           latex: [["nLeftarrow", "&#x21cd;"]],
           omml: ["&#x21cd;"],

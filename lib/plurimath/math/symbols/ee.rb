@@ -3,10 +3,13 @@ module Plurimath
     module Symbols
       class Ee < Symbol
         INPUT = {
-          unicodemath: [["exists", "&#x2203;"], parsing_wrapper(["EE", "exi"], lang: :unicode)],
-          asciimath: [["exists", "EE", "&#x2203;"], parsing_wrapper(["exi"], lang: :asciimath)],
+          unicodemath: [["exists", "&#x2203;"],
+                        parsing_wrapper(["EE", "exi"], lang: :unicode)],
+          asciimath: [["exists", "EE", "&#x2203;"],
+                      parsing_wrapper(["exi"], lang: :asciimath)],
           mathml: ["&#x2203;"],
-          latex: [["exists", "exi", "&#x2203;"], parsing_wrapper(["EE"], lang: :latex)],
+          latex: [["exists", "exi", "&#x2203;"],
+                  parsing_wrapper(["EE"], lang: :latex)],
           omml: ["&#x2203;"],
           html: ["&#x2203;"],
         }.freeze

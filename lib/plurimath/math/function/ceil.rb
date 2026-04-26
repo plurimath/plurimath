@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-
 module Plurimath
   module Math
     module Function
@@ -13,7 +12,10 @@ module Plurimath
 
         def to_mathml_without_math_tag(intent, options:)
           first_value = mathml_value(intent, options: options)
-          first_value = first_value&.insert(0, paren_node("&#x2308;")) unless open_paren
+          unless open_paren
+            first_value&.insert(0,
+                                paren_node("&#x2308;"))
+          end
           first_value = first_value << paren_node("&#x2309;") unless close_paren
           Utility.update_nodes(ox_element("mrow"), first_value)
         end
@@ -22,7 +24,8 @@ module Plurimath
           lceil = Symbols::Symbol.new("⌈") unless open_paren
           rceil = Symbols::Symbol.new("⌉") unless close_paren
           fenced = Fenced.new(lceil, Array(parameter_one), rceil)
-          Array(fenced.to_omml_without_math_tag(display_style, options: options))
+          Array(fenced.to_omml_without_math_tag(display_style,
+                                                options: options))
         end
 
         def to_html(options:)

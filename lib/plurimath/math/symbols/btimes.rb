@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Btimes < Symbol
         INPUT = {
-          unicodemath: [["&#x2a32;"], parsing_wrapper(["btimes"], lang: :unicode)],
-          asciimath: [["&#x2a32;"], parsing_wrapper(["btimes"], lang: :asciimath)],
+          unicodemath: [["&#x2a32;"],
+                        parsing_wrapper(["btimes"], lang: :unicode)],
+          asciimath: [["&#x2a32;"],
+                      parsing_wrapper(["btimes"], lang: :asciimath)],
           mathml: ["&#x2a32;"],
           latex: [["btimes", "&#x2a32;"]],
           omml: ["&#x2a32;"],

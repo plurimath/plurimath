@@ -8,7 +8,8 @@ module Plurimath
 
       include Mathml::FormulaTransformation
 
-      attr_accessor :value, :left_right_wrapper, :displaystyle, :input_string, :display
+      attr_accessor :value, :left_right_wrapper, :displaystyle, :input_string,
+                    :display
 
       POWER_BASE_CLASSES = %w[powerbase power base].freeze
       DERIVATIVE_CONSTS  = ["&#x1d451;", "&#x2145;", "&#x2146;", "d"].freeze
@@ -74,10 +75,13 @@ module Plurimath
         options = {
           formatter: formatter,
           unitsml: unitsml,
-          unary_function_spacing: unary_function_spacing
+          unary_function_spacing: unary_function_spacing,
         }.compact
         options[:formula] ||= self
-        return line_breaked_mathml(display_style, intent, options: options) if split_on_linebreak
+        if split_on_linebreak
+          return line_breaked_mathml(display_style, intent,
+                                     options: options)
+        end
 
         wrap_render_error(:mathml) do
           math_attrs = {
@@ -106,7 +110,10 @@ module Plurimath
       end
 
       def to_mathml_without_math_tag(intent, options:)
-        return mathml_content(intent, options: options) unless left_right_wrapper
+        unless left_right_wrapper
+          return mathml_content(intent,
+                                options: options)
+        end
 
         mathml_value = mathml_content(intent, options: options)
         attributes = intent_attribute(mathml_value) if intent
@@ -115,7 +122,9 @@ module Plurimath
       end
 
       def mathml_content(intent, options:)
-        nodes = value.map { |val| val.to_mathml_without_math_tag(intent, options: options) }
+        nodes = value.map do |val|
+          val.to_mathml_without_math_tag(intent, options: options)
+        end
         intent_post_processing(nodes, intent) if intent
         nodes
       end
@@ -136,16 +145,19 @@ module Plurimath
         end
       end
 
-      def to_omml(display_style: displaystyle, split_on_linebreak: false, formatter: nil, unitsml: {})
+      def to_omml(display_style: displaystyle, split_on_linebreak: false,
+formatter: nil, unitsml: {})
         wrap_render_error(:omml) do
           objects = split_on_linebreak ? new_line_support : [self]
           options = { formatter: formatter, unitsml: unitsml }.compact
           options[:formula] ||= self
-          para_element = Utility.ox_element("oMathPara", attributes: OMML_NAMESPACES, namespace: "m")
+          para_element = Utility.ox_element("oMathPara",
+                                            attributes: OMML_NAMESPACES, namespace: "m")
           objects.each.with_index(1) do |object, index|
             para_element << Utility.update_nodes(
               Utility.ox_element("oMath", namespace: "m"),
-              object.omml_content(boolean_display_style(display_style), options: options),
+              object.omml_content(boolean_display_style(display_style),
+                                  options: options),
             )
             next if objects.length == index
 
@@ -167,73 +179,100 @@ module Plurimath
         options ||= { formatter: formatter, unitsml: unitsml }.compact
         options[:formula] ||= self
         wrap_render_error(:unicodemath) do
-          Utility.html_entity_to_unicode(unicodemath_value(options: options)).gsub(/\s\/\s/, "/")
+          Utility.html_entity_to_unicode(unicodemath_value(options: options)).gsub(
+            /\s\/\s/, "/"
+          )
         end
       end
 
-      def to_display(type = nil, formatter: nil, unitsml: {}, unary_function_spacing: true)
+      def to_display(type = nil, formatter: nil, unitsml: {},
+unary_function_spacing: true)
         options = {
           formatter: formatter,
           unitsml: unitsml,
-          unary_function_spacing: unary_function_spacing
+          unary_function_spacing: unary_function_spacing,
         }
         options[:formula] ||= self
         return type_error!(type) unless MATH_ZONE_TYPES.include?(type.downcase.to_sym)
 
         math_zone = case type
                     when :asciimath
-                      "  |_ \"#{to_asciimath(options: options)}\"\n#{to_asciimath_math_zone("     ", options: options).join}"
+                      "  |_ \"#{to_asciimath(options: options)}\"\n#{to_asciimath_math_zone(
+                        '     ', options: options
+                      ).join}"
                     when :latex
-                      "  |_ \"#{to_latex(options: options)}\"\n#{to_latex_math_zone("     ", options: options).join}"
+                      "  |_ \"#{to_latex(options: options)}\"\n#{to_latex_math_zone(
+                        '     ', options: options
+                      ).join}"
                     when :mathml
-                      mathml = to_mathml(formatter: formatter, unary_function_spacing: options[:unary_function_spacing]).gsub(/\n\s*/, "")
-                      math_display = to_mathml_math_zone("     ", options: options).join
+                      mathml = to_mathml(formatter: formatter, unary_function_spacing: options[:unary_function_spacing]).gsub(
+                        /\n\s*/, ""
+                      )
+                      math_display = to_mathml_math_zone("     ",
+                                                         options: options).join
                       "  |_ \"#{mathml}\"\n#{math_display}"
                     when :omml
                       omml = to_omml.gsub(/\n\s*/, "")
-                      omml_display = to_omml_math_zone("     ", display_style: displaystyle, options: options).join
+                      omml_display = to_omml_math_zone("     ",
+                                                       display_style: displaystyle, options: options).join
                       "  |_ \"#{omml}\"\n#{omml_display}"
                     when :unicodemath
-                      "  |_ \"#{to_unicodemath(options: options)}\"\n#{to_unicodemath_math_zone("     ", options: options).join}"
+                      "  |_ \"#{to_unicodemath(options: options)}\"\n#{to_unicodemath_math_zone(
+                        '     ', options: options
+                      ).join}"
                     end
         <<~MATHZONE.sub(/\n$/, "")
-        |_ Math zone
-        #{math_zone}
+          |_ Math zone
+          #{math_zone}
         MATHZONE
       end
 
-      def to_asciimath_math_zone(spacing = "", last = false, indent = true, options:)
-        filtered_values(value, lang: :asciimath).map.with_index(1) do |object, index|
+      def to_asciimath_math_zone(spacing = "", last = false, indent = true,
+options:)
+        filtered_values(value,
+                        lang: :asciimath).map.with_index(1) do |object, index|
           last = index == @values.length
-          object.to_asciimath_math_zone(new_space(spacing, indent), last, indent, options: options)
+          object.to_asciimath_math_zone(new_space(spacing, indent), last,
+                                        indent, options: options)
         end
       end
 
-      def to_latex_math_zone(spacing = "", last = false, indent = true, options:)
-        filtered_values(value, lang: :latex).map.with_index(1) do |object, index|
+      def to_latex_math_zone(spacing = "", last = false, indent = true,
+options:)
+        filtered_values(value,
+                        lang: :latex).map.with_index(1) do |object, index|
           last = index == @values.length
-          object.to_latex_math_zone(new_space(spacing, indent), last, indent, options: options)
+          object.to_latex_math_zone(new_space(spacing, indent), last, indent,
+                                    options: options)
         end
       end
 
-      def to_mathml_math_zone(spacing = "", last = false, indent = true, options:)
-        filtered_values(value, lang: :mathml, options: options).map.with_index(1) do |object, index|
+      def to_mathml_math_zone(spacing = "", last = false, indent = true,
+options:)
+        filtered_values(value, lang: :mathml,
+                               options: options).map.with_index(1) do |object, index|
           last = index == @values.length
-          object.to_mathml_math_zone(new_space(spacing, indent), last, indent, options: options)
+          object.to_mathml_math_zone(new_space(spacing, indent), last, indent,
+                                     options: options)
         end
       end
 
-      def to_omml_math_zone(spacing = "", last = false, indent = true, display_style:, options:)
+      def to_omml_math_zone(spacing = "", last = false, indent = true,
+display_style:, options:)
         filtered_values(value, lang: :omml).map.with_index(1) do |object, index|
           last = index == @values.length
-          object.to_omml_math_zone(new_space(spacing, indent), last, indent, display_style: display_style, options: options)
+          object.to_omml_math_zone(new_space(spacing, indent), last, indent,
+                                   display_style: display_style, options: options)
         end
       end
 
-      def to_unicodemath_math_zone(spacing = "", last = false, indent = true, options:)
-        filtered_values(value, lang: :unicodemath).map.with_index(1) do |object, index|
+      def to_unicodemath_math_zone(spacing = "", last = false, indent = true,
+options:)
+        filtered_values(value,
+                        lang: :unicodemath).map.with_index(1) do |object, index|
           last = index == @values.length
-          object.to_unicodemath_math_zone(new_space(spacing, indent), last, indent, options: options)
+          object.to_unicodemath_math_zone(new_space(spacing, indent), last,
+                                          indent, options: options)
         end
       end
 
@@ -248,7 +287,7 @@ module Plurimath
       end
 
       def validate_function_formula
-        (value.none?(Function::Left) || value.none?(Function::Right))
+        value.none?(Function::Left) || value.none?(Function::Right)
       end
 
       def value_exist?
@@ -291,7 +330,7 @@ module Plurimath
 
       def reprocess_value(obj)
         new_obj = self.class.new([])
-        self.line_breaking(new_obj)
+        line_breaking(new_obj)
         if new_obj.value_exist?
           obj.value.insert(0, Function::Linebreak.new)
           obj.value.insert(0, self.class.new(new_obj.value))
@@ -322,8 +361,8 @@ module Plurimath
             Math::Function::Color.new(
               Math::Function::Text.new(value),
               filter_values(@value, array_to_instance: true),
-            )
-          ]
+            ),
+          ],
         )
       end
 
@@ -336,8 +375,8 @@ module Plurimath
             Plurimath::Utility::FONT_STYLES[value.to_sym].new(
               filter_values(@value, array_to_instance: true),
               value,
-            )
-          ]
+            ),
+          ],
         )
       end
 
@@ -350,8 +389,8 @@ module Plurimath
             Function::Intent.new(
               filter_values(@value, array_to_instance: true),
               Function::Text.new(value),
-            )
-          ]
+            ),
+          ],
         )
       end
       # Attributes end
@@ -369,11 +408,13 @@ module Plurimath
       end
 
       def new_space(spacing, indent)
-        if value.any? { |val| val.class_name == "left" } && value.any? { |val| val.class_name == "right" }
+        if value.any? { |val| val.class_name == "left" } && value.any? do |val|
+          val.class_name == "right"
+        end
           return spacing
         end
 
-        (indent && wrapable?(spacing)) ? spacing + "|_ " : spacing
+        indent && wrapable?(spacing) ? "#{spacing}|_ " : spacing
       end
 
       def wrapable?(spacing)
@@ -448,13 +489,13 @@ module Plurimath
       def valid_first_parameter?(param)
         undef_functions = UnicodeMath::Constants::UNDEF_UNARY_FUNCTIONS
         return true if param.is_a?(Symbols::Symbol) && undef_functions.include?(param.value)
-        return unless POWER_BASE_CLASSES.include?(param.class_name)
+        return false unless POWER_BASE_CLASSES.include?(param.class_name)
 
         param.parameter_one.is_a?(Function::UnaryFunction) ||
           param.parameter_one.is_a?(Function::Lim)
       end
 
-      def intent_post_processing(nodes, intent)
+      def intent_post_processing(nodes, _intent)
         mrow = Utility.update_nodes(ox_element("mrow"), nodes)
         upcase_dd_derivative(nodes) if validate_upcase_dd_derivatives?(nodes)
         subsup_dd_derivative(nodes) if validate_subsup_dd_derivatives?(nodes)
@@ -496,11 +537,11 @@ module Plurimath
 
       def partial_derivative(nodes)
         nodes.each.with_index do |first, index|
-          second = nodes[index+1]
+          second = nodes[index + 1]
           next second unless first.name == "msub" && first.nodes.first.nodes.include?("&#x2202;")
 
           first["intent"] = partial_derivative_intent(first)
-          f_arg(nodes, index+1)
+          f_arg(nodes, index + 1)
         end
       end
 
@@ -508,7 +549,8 @@ module Plurimath
         first_node = first.nodes.last
         case first_node.name
         when "mi"
-          first_arg, second_arg = [1, encode(first_node.nodes.first)]
+          first_arg = 1
+          second_arg = encode(first_node.nodes.first)
         when "mn"
           first_arg, second_arg = numeric_encoding(node)
         when "mrow"
@@ -523,7 +565,7 @@ module Plurimath
             end
           end
           first_arg = str.include?(",") ? str.split(",").length : str.length
-          second_arg = str.include?(",") ? str : str.split("").join(",")
+          second_arg = str.include?(",") ? str : str.chars.join(",")
         when "msup"
           nodes = first_node.nodes
           str = ""
@@ -542,7 +584,7 @@ module Plurimath
             str += encode(node.nodes.first)
           end
           first_arg = str.include?(",") ? str.split(",").length : str.length
-          second_arg = str.include?(",") ? str : str.split("").join(",")
+          second_arg = str.include?(",") ? str : str.chars.join(",")
           prime_str = encode(nodes.last.nodes.first) if valid_prime?(nodes.last)
           second_arg.insert(-1, prime_str) unless second_arg.match?(/[0-9]$/)
         end
@@ -596,8 +638,8 @@ module Plurimath
       end
 
       def validate_upcase_dd_derivatives?(nodes)
-        return unless nodes[0]&.nodes&.first == "&#x2145;"
-        return unless nodes[1].name == "mi"
+        return false unless nodes[0]&.nodes&.first == "&#x2145;"
+        return false unless nodes[1].name == "mi"
 
         true
       end
@@ -627,18 +669,20 @@ module Plurimath
         iteration = 0
         return unless DERIVATIVE_CONSTS.include?(nodes[iteration].nodes[iteration].nodes.first)
 
-        while iteration < nodes.length do
+        while iteration < nodes.length
           node = nodes[iteration]
           next iteration += 1 unless node.nodes[0].is_a?(Plurimath::XmlEngine::OxEngine::Element)
 
           if DERIVATIVE_CONSTS.include?(node.nodes[0]&.nodes&.first)
             iteration += 1
-            node["intent"] = "#{intent_names[:derivative]}#{derivative_intent_name(node.nodes[1], nodes[iteration..-1], type: node.name)}"
+            node["intent"] =
+              "#{intent_names[:derivative]}#{derivative_intent_name(node.nodes[1],
+                                                                    nodes[iteration..], type: node.name)}"
             next_node = nodes[iteration]
             case next_node.name
             when "mi", "mrow"
               if ["mi", "mrow"].include?(nodes[iteration + 1].name)
-                wrap_in_mrow(nodes[iteration..-1])
+                wrap_in_mrow(nodes[iteration..])
               else
                 next_node["arg"] = "f"
               end
@@ -663,13 +707,15 @@ module Plurimath
         return numeric_encoding(node) if node.name == "mn"
         return ["1"] if node["intent"] == "fenced"
         return unless node.name == "mrow"
-        return ["1"] unless node.nodes.all? { |element| element.name == "mi" }
+
+        ["1"] unless node.nodes.all? { |element| element.name == "mi" }
       end
 
       def sup_intent_content(node)
         return encode(first_node) if node.name == "mi"
         return node.nodes[0] if node.name == "mn"
-        return "$n" if node.name == "mrow"
+
+        "$n" if node.name == "mrow"
       end
 
       def sup_second_content(next_nodes)
@@ -678,12 +724,13 @@ module Plurimath
           break if fence_node
 
           next if %w[mi mn].include?(node.name)
+
           fence_node = node if node.name == "mrow" && node["intent"] == ":fenced"
           break unless %w[mi mn].include?(node.name)
         end
         return if fence_node.nil?
 
-        nodes = fence_node.nodes[1..-1]
+        nodes = fence_node.nodes[1..]
         sliced_nodes = nodes.slice_before { |node| node.name == "mn" }
         str = ""
         sliced_nodes.to_a.last.each do |node|
@@ -714,12 +761,12 @@ module Plurimath
       end
 
       def numeric_encoding(node)
-        nodes = node.nodes[0].split("")
+        nodes = node.nodes[0].chars
         [nodes.length, nodes.join(",")]
       end
 
       def valid_prime?(node)
-        Utility.primes_constants.values.any? { |prime| prime == node.nodes.first }
+        Utility.primes_constants.values.any?(node.nodes.first)
       end
 
       def encode(str)

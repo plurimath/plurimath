@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Equivdd < Symbol
         INPUT = {
-          unicodemath: [["&#x2a78;"], parsing_wrapper(["equivDD"], lang: :unicode)],
-          asciimath: [["&#x2a78;"], parsing_wrapper(["equivDD"], lang: :asciimath)],
+          unicodemath: [["&#x2a78;"],
+                        parsing_wrapper(["equivDD"], lang: :unicode)],
+          asciimath: [["&#x2a78;"],
+                      parsing_wrapper(["equivDD"], lang: :asciimath)],
           mathml: ["&#x2a78;"],
           latex: [["equivDD", "&#x2a78;"]],
           omml: ["&#x2a78;"],

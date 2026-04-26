@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Lbag < Symbol
         INPUT = {
-          unicodemath: [["&#x27c5;"], parsing_wrapper(["Lbag", "lbag"], lang: :unicode)],
-          asciimath: [["&#x27c5;"], parsing_wrapper(["Lbag", "lbag"], lang: :asciimath)],
+          unicodemath: [["&#x27c5;"],
+                        parsing_wrapper(["Lbag", "lbag"], lang: :unicode)],
+          asciimath: [["&#x27c5;"],
+                      parsing_wrapper(["Lbag", "lbag"], lang: :asciimath)],
           mathml: ["&#x27c5;"],
           latex: [["Lbag", "lbag", "&#x27c5;"]],
           omml: ["&#x27c5;"],

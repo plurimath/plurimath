@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Circlevertfill < Symbol
         INPUT = {
-          unicodemath: [["&#x25cd;"], parsing_wrapper(["circlevertfill"], lang: :unicode)],
-          asciimath: [["&#x25cd;"], parsing_wrapper(["circlevertfill"], lang: :asciimath)],
+          unicodemath: [["&#x25cd;"],
+                        parsing_wrapper(["circlevertfill"], lang: :unicode)],
+          asciimath: [["&#x25cd;"],
+                      parsing_wrapper(["circlevertfill"], lang: :asciimath)],
           mathml: ["&#x25cd;"],
           latex: [["circlevertfill", "&#x25cd;"]],
           omml: ["&#x25cd;"],

@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Minusrdots < Symbol
         INPUT = {
-          unicodemath: [["&#x2a2c;"], parsing_wrapper(["minusrdots"], lang: :unicode)],
-          asciimath: [["&#x2a2c;"], parsing_wrapper(["minusrdots"], lang: :asciimath)],
+          unicodemath: [["&#x2a2c;"],
+                        parsing_wrapper(["minusrdots"], lang: :unicode)],
+          asciimath: [["&#x2a2c;"],
+                      parsing_wrapper(["minusrdots"], lang: :asciimath)],
           mathml: ["&#x2a2c;"],
           latex: [["minusrdots", "&#x2a2c;"]],
           omml: ["&#x2a2c;"],

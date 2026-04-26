@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Hermaphrodite < Symbol
         INPUT = {
-          unicodemath: [["&#x26a5;"], parsing_wrapper(["Hermaphrodite"], lang: :unicode)],
-          asciimath: [["&#x26a5;"], parsing_wrapper(["Hermaphrodite"], lang: :asciimath)],
+          unicodemath: [["&#x26a5;"],
+                        parsing_wrapper(["Hermaphrodite"], lang: :unicode)],
+          asciimath: [["&#x26a5;"],
+                      parsing_wrapper(["Hermaphrodite"], lang: :asciimath)],
           mathml: ["&#x26a5;"],
           latex: [["Hermaphrodite", "&#x26a5;"]],
           omml: ["&#x26a5;"],

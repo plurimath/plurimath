@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Subsetapprox < Symbol
         INPUT = {
-          unicodemath: [["&#x2ac9;"], parsing_wrapper(["subsetapprox"], lang: :unicode)],
-          asciimath: [["&#x2ac9;"], parsing_wrapper(["subsetapprox"], lang: :asciimath)],
+          unicodemath: [["&#x2ac9;"],
+                        parsing_wrapper(["subsetapprox"], lang: :unicode)],
+          asciimath: [["&#x2ac9;"],
+                      parsing_wrapper(["subsetapprox"], lang: :asciimath)],
           mathml: ["&#x2ac9;"],
           latex: [["subsetapprox", "&#x2ac9;"]],
           omml: ["&#x2ac9;"],

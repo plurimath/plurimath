@@ -4,9 +4,11 @@ module Plurimath
       class Dasharrowright < Symbol
         INPUT = {
           unicodemath: [["dasharrowright", "&#x21eb;"]],
-          asciimath: [["&#x21eb;"], parsing_wrapper(["dasharrowright"], lang: :asciimath)],
+          asciimath: [["&#x21eb;"],
+                      parsing_wrapper(["dasharrowright"], lang: :asciimath)],
           mathml: ["&#x21eb;"],
-          latex: [["&#x21eb;"], parsing_wrapper(["dasharrowright"], lang: :latex)],
+          latex: [["&#x21eb;"],
+                  parsing_wrapper(["dasharrowright"], lang: :latex)],
           omml: ["&#x21eb;"],
           html: ["&#x21eb;"],
         }.freeze

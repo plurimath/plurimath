@@ -3,10 +3,12 @@ module Plurimath
     module Symbols
       class Succeq < Symbol
         INPUT = {
-          unicodemath: [["succeq", "&#x2ab0;"], parsing_wrapper([">-="], lang: :unicode)],
+          unicodemath: [["succeq", "&#x2ab0;"],
+                        parsing_wrapper([">-="], lang: :unicode)],
           asciimath: [["succeq", ">-=", "&#x2ab0;"]],
           mathml: ["&#x2ab0;"],
-          latex: [["succeq", "&#x2ab0;"], parsing_wrapper([">-="], lang: :latex)],
+          latex: [["succeq", "&#x2ab0;"],
+                  parsing_wrapper([">-="], lang: :latex)],
           omml: ["&#x2ab0;"],
           html: ["&#x2ab0;"],
         }.freeze

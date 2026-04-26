@@ -1,13 +1,11 @@
 # frozen_string_literal: true
 
-
 module Plurimath
   module Math
     module Function
       class Mglyph < UnaryFunction
-
         def initialize(parameter_one = {})
-          super(parameter_one)
+          super
         end
 
         def to_asciimath(**)
@@ -18,7 +16,7 @@ module Plurimath
           parameter_one[:alt]
         end
 
-        def to_mathml_without_math_tag(intent, **)
+        def to_mathml_without_math_tag(_intent, **)
           ox_element(class_name, attributes: parameter_one)
         end
 
@@ -61,25 +59,25 @@ module Plurimath
         end
 
         def glyph_user_index(index)
-          return "" unless index > 0
+          return "" unless index.positive?
 
           remaining = index.modulo(16)
           hex_bits = glyph_user_index(index / 16)
           hex_digit = case remaining
-          when 0..9 then remaining.to_s
-          when 10 then "A"
-          when 11 then "B"
-          when 12 then "C"
-          when 13 then "D"
-          when 14 then "E"
-          when 15 then "F"
-          end
+                      when 0..9 then remaining.to_s
+                      when 10 then "A"
+                      when 11 then "B"
+                      when 12 then "C"
+                      when 13 then "D"
+                      when 14 then "E"
+                      when 15 then "F"
+                      end
           "#{hex_bits}#{hex_digit}"
         end
 
         def ignoring_index(index)
           index.zero? ||
-            (index < 32 && !([9, 10, 13].include?(index))) ||
+            (index < 32 && ![9, 10, 13].include?(index)) ||
             [65534, 65535].include?(index)
         end
       end

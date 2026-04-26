@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Fisheye < Symbol
         INPUT = {
-          unicodemath: [["&#x25c9;"], parsing_wrapper(["fisheye"], lang: :unicode)],
-          asciimath: [["&#x25c9;"], parsing_wrapper(["fisheye"], lang: :asciimath)],
+          unicodemath: [["&#x25c9;"],
+                        parsing_wrapper(["fisheye"], lang: :unicode)],
+          asciimath: [["&#x25c9;"],
+                      parsing_wrapper(["fisheye"], lang: :asciimath)],
           mathml: ["&#x25c9;"],
           latex: [["fisheye", "&#x25c9;"]],
           omml: ["&#x25c9;"],

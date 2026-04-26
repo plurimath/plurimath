@@ -3,8 +3,11 @@ module Plurimath
     module Symbols
       class Precsim < Symbol
         INPUT = {
-          unicodemath: [["precsim", "&#x227e;"], parsing_wrapper(["PrecedesTilde"], lang: :unicode)],
-          asciimath: [["&#x227e;"], parsing_wrapper(["precsim", "PrecedesTilde"], lang: :asciimath)],
+          unicodemath: [["precsim", "&#x227e;"],
+                        parsing_wrapper(["PrecedesTilde"], lang: :unicode)],
+          asciimath: [["&#x227e;"],
+                      parsing_wrapper(["precsim", "PrecedesTilde"],
+                                      lang: :asciimath)],
           mathml: ["&#x227e;"],
           latex: [["PrecedesTilde", "precsim", "&#x227e;"]],
           omml: ["&#x227e;"],

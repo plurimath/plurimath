@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class House < Symbol
         INPUT = {
-          unicodemath: [["&#x2302;"], parsing_wrapper(["house"], lang: :unicode)],
-          asciimath: [["&#x2302;"], parsing_wrapper(["house"], lang: :asciimath)],
+          unicodemath: [["&#x2302;"],
+                        parsing_wrapper(["house"], lang: :unicode)],
+          asciimath: [["&#x2302;"],
+                      parsing_wrapper(["house"], lang: :asciimath)],
           mathml: ["&#x2302;"],
           latex: [["house", "&#x2302;"]],
           omml: ["&#x2302;"],

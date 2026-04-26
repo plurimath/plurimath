@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Rightarrowonoplus < Symbol
         INPUT = {
-          unicodemath: [["&#x27f4;"], parsing_wrapper(["rightarrowonoplus"], lang: :unicode)],
-          asciimath: [["&#x27f4;"], parsing_wrapper(["rightarrowonoplus"], lang: :asciimath)],
+          unicodemath: [["&#x27f4;"],
+                        parsing_wrapper(["rightarrowonoplus"], lang: :unicode)],
+          asciimath: [["&#x27f4;"],
+                      parsing_wrapper(["rightarrowonoplus"], lang: :asciimath)],
           mathml: ["&#x27f4;"],
           latex: [["rightarrowonoplus", "&#x27f4;"]],
           omml: ["&#x27f4;"],

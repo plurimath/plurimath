@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Blockfull < Symbol
         INPUT = {
-          unicodemath: [["&#x2588;"], parsing_wrapper(["blockfull"], lang: :unicode)],
-          asciimath: [["&#x2588;"], parsing_wrapper(["blockfull"], lang: :asciimath)],
+          unicodemath: [["&#x2588;"],
+                        parsing_wrapper(["blockfull"], lang: :unicode)],
+          asciimath: [["&#x2588;"],
+                      parsing_wrapper(["blockfull"], lang: :asciimath)],
           mathml: ["&#x2588;"],
           latex: [["blockfull", "&#x2588;"]],
           omml: ["&#x2588;"],

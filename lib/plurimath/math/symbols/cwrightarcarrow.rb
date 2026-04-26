@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Cwrightarcarrow < Symbol
         INPUT = {
-          unicodemath: [["&#x2938;"], parsing_wrapper(["cwrightarcarrow"], lang: :unicode)],
-          asciimath: [["&#x2938;"], parsing_wrapper(["cwrightarcarrow"], lang: :asciimath)],
+          unicodemath: [["&#x2938;"],
+                        parsing_wrapper(["cwrightarcarrow"], lang: :unicode)],
+          asciimath: [["&#x2938;"],
+                      parsing_wrapper(["cwrightarcarrow"], lang: :asciimath)],
           mathml: ["&#x2938;"],
           latex: [["cwrightarcarrow", "&#x2938;"]],
           omml: ["&#x2938;"],

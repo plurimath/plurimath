@@ -3,8 +3,12 @@ module Plurimath
     module Symbols
       class Barovernorthwestarrow < Symbol
         INPUT = {
-          unicodemath: [["&#x21b8;"], parsing_wrapper(["barovernorthwestarrow"], lang: :unicode)],
-          asciimath: [["&#x21b8;"], parsing_wrapper(["barovernorthwestarrow"], lang: :asciimath)],
+          unicodemath: [["&#x21b8;"],
+                        parsing_wrapper(["barovernorthwestarrow"],
+                                        lang: :unicode)],
+          asciimath: [["&#x21b8;"],
+                      parsing_wrapper(["barovernorthwestarrow"],
+                                      lang: :asciimath)],
           mathml: ["&#x21b8;"],
           latex: [["barovernorthwestarrow", "&#x21b8;"]],
           omml: ["&#x21b8;"],

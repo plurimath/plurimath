@@ -4,7 +4,8 @@ module Plurimath
       class Rightthreetimes < Symbol
         INPUT = {
           unicodemath: [["rightthreetimes", "&#x22cc;"]],
-          asciimath: [["&#x22cc;"], parsing_wrapper(["rightthreetimes"], lang: :asciimath)],
+          asciimath: [["&#x22cc;"],
+                      parsing_wrapper(["rightthreetimes"], lang: :asciimath)],
           mathml: ["&#x22cc;"],
           latex: [["rightthreetimes", "&#x22cc;"]],
           omml: ["&#x22cc;"],

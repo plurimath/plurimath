@@ -8,7 +8,7 @@ RSpec.describe Plurimath::UnicodeMath::Parse do
   describe ".parse" do
     subject(:formula) do
       post_processing(
-        described_class.new.parse(unicode_encode_entities(string.to_s))
+        described_class.new.parse(unicode_encode_entities(string.to_s)),
       )
     end
 
@@ -21,7 +21,10 @@ RSpec.describe Plurimath::UnicodeMath::Parse do
 
         it "matches tree structure of UnicodeMath" do
           if UNICODEMATH_SKIPABLE_EXAMPLES.include?(index)
-            expect{formula}.to raise_error(Parslet::ParseFailed, Regexp.compile("Expected one of \\["))
+            expect do
+              formula
+            end.to raise_error(Parslet::ParseFailed,
+                               Regexp.compile("Expected one of \\["))
           else
             expect(formula).to eq(UnicodeMathParseValues.const_get(constant))
           end
@@ -35,7 +38,7 @@ def post_processing(tree)
   if tree && @splitted
     {
       labeled_tr_value: tree,
-      labeled_tr_id: @splitted
+      labeled_tr_id: @splitted,
     }
   else
     tree

@@ -3,8 +3,12 @@ module Plurimath
     module Symbols
       class Rightharpoonaccent < Symbol
         INPUT = {
-          unicodemath: [["&#x20d1;"], parsing_wrapper(["rightharpoonaccent"], lang: :unicode)],
-          asciimath: [["&#x20d1;"], parsing_wrapper(["rightharpoonaccent"], lang: :asciimath)],
+          unicodemath: [["&#x20d1;"],
+                        parsing_wrapper(["rightharpoonaccent"],
+                                        lang: :unicode)],
+          asciimath: [["&#x20d1;"],
+                      parsing_wrapper(["rightharpoonaccent"],
+                                      lang: :asciimath)],
           mathml: ["&#x20d1;"],
           latex: [["rightharpoonaccent", "&#x20d1;"]],
           omml: ["&#x20d1;"],

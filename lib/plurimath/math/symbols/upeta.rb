@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Upeta < Symbol
         INPUT = {
-          unicodemath: [["&#x397;"], parsing_wrapper(["upEta"], lang: :unicode)],
-          asciimath: [["&#x397;"], parsing_wrapper(["upEta"], lang: :asciimath)],
+          unicodemath: [["&#x397;"],
+                        parsing_wrapper(["upEta"], lang: :unicode)],
+          asciimath: [["&#x397;"],
+                      parsing_wrapper(["upEta"], lang: :asciimath)],
           mathml: ["&#x397;"],
           latex: [["upEta", "&#x397;"]],
           omml: ["&#x397;"],

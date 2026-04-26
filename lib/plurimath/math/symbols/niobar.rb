@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Niobar < Symbol
         INPUT = {
-          unicodemath: [["&#x22fe;"], parsing_wrapper(["niobar"], lang: :unicode)],
-          asciimath: [["&#x22fe;"], parsing_wrapper(["niobar"], lang: :asciimath)],
+          unicodemath: [["&#x22fe;"],
+                        parsing_wrapper(["niobar"], lang: :unicode)],
+          asciimath: [["&#x22fe;"],
+                      parsing_wrapper(["niobar"], lang: :asciimath)],
           mathml: ["&#x22fe;"],
           latex: [["niobar", "&#x22fe;"]],
           omml: ["&#x22fe;"],

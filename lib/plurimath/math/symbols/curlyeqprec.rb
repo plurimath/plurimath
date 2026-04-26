@@ -4,7 +4,8 @@ module Plurimath
       class Curlyeqprec < Symbol
         INPUT = {
           unicodemath: [["curlyeqprec", "&#x22de;"]],
-          asciimath: [["&#x22de;"], parsing_wrapper(["curlyeqprec"], lang: :asciimath)],
+          asciimath: [["&#x22de;"],
+                      parsing_wrapper(["curlyeqprec"], lang: :asciimath)],
           mathml: ["&#x22de;"],
           latex: [["curlyeqprec", "&#x22de;"]],
           omml: ["&#x22de;"],

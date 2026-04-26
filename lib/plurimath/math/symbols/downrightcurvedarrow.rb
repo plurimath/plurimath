@@ -3,8 +3,12 @@ module Plurimath
     module Symbols
       class Downrightcurvedarrow < Symbol
         INPUT = {
-          unicodemath: [["&#x2935;"], parsing_wrapper(["downrightcurvedarrow"], lang: :unicode)],
-          asciimath: [["&#x2935;"], parsing_wrapper(["downrightcurvedarrow"], lang: :asciimath)],
+          unicodemath: [["&#x2935;"],
+                        parsing_wrapper(["downrightcurvedarrow"],
+                                        lang: :unicode)],
+          asciimath: [["&#x2935;"],
+                      parsing_wrapper(["downrightcurvedarrow"],
+                                      lang: :asciimath)],
           mathml: ["&#x2935;"],
           latex: [["downrightcurvedarrow", "&#x2935;"]],
           omml: ["&#x2935;"],

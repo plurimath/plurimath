@@ -1,11 +1,10 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Symbols::Finv do
-
   describe ".initialize" do
-    it 'returns instance of Symbol Finv' do
+    it "returns instance of Symbol Finv" do
       klass = described_class.new
-      expect(klass).to be_a(Plurimath::Math::Symbols::Finv)
+      expect(klass).to be_a(described_class)
     end
   end
 

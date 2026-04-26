@@ -1,11 +1,10 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Symbols::Upepsilon do
-
   describe ".initialize" do
-    it 'returns instance of Symbol Upepsilon' do
+    it "returns instance of Symbol Upepsilon" do
       klass = described_class.new
-      expect(klass).to be_a(Plurimath::Math::Symbols::Upepsilon)
+      expect(klass).to be_a(described_class)
     end
   end
 

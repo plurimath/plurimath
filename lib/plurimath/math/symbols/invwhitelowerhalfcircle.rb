@@ -3,8 +3,12 @@ module Plurimath
     module Symbols
       class Invwhitelowerhalfcircle < Symbol
         INPUT = {
-          unicodemath: [["&#x25db;"], parsing_wrapper(["invwhitelowerhalfcircle"], lang: :unicode)],
-          asciimath: [["&#x25db;"], parsing_wrapper(["invwhitelowerhalfcircle"], lang: :asciimath)],
+          unicodemath: [["&#x25db;"],
+                        parsing_wrapper(["invwhitelowerhalfcircle"],
+                                        lang: :unicode)],
+          asciimath: [["&#x25db;"],
+                      parsing_wrapper(["invwhitelowerhalfcircle"],
+                                      lang: :asciimath)],
           mathml: ["&#x25db;"],
           latex: [["invwhitelowerhalfcircle", "&#x25db;"]],
           omml: ["&#x25db;"],

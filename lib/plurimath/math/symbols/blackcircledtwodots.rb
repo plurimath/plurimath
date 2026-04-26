@@ -3,8 +3,12 @@ module Plurimath
     module Symbols
       class Blackcircledtwodots < Symbol
         INPUT = {
-          unicodemath: [["&#x2689;"], parsing_wrapper(["blackcircledtwodots"], lang: :unicode)],
-          asciimath: [["&#x2689;"], parsing_wrapper(["blackcircledtwodots"], lang: :asciimath)],
+          unicodemath: [["&#x2689;"],
+                        parsing_wrapper(["blackcircledtwodots"],
+                                        lang: :unicode)],
+          asciimath: [["&#x2689;"],
+                      parsing_wrapper(["blackcircledtwodots"],
+                                      lang: :asciimath)],
           mathml: ["&#x2689;"],
           latex: [["blackcircledtwodots", "&#x2689;"]],
           omml: ["&#x2689;"],

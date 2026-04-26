@@ -3,7 +3,8 @@ module Plurimath
     module Symbols
       class Odot < Symbol
         INPUT = {
-          unicodemath: [["odot", "&#x2299;"], parsing_wrapper(["o."], lang: :unicode)],
+          unicodemath: [["odot", "&#x2299;"],
+                        parsing_wrapper(["o."], lang: :unicode)],
           asciimath: [["odot", "o.", "&#x2299;"]],
           mathml: ["&#x2299;"],
           latex: [["odot", "&#x2299;"], parsing_wrapper(["o."], lang: :latex)],

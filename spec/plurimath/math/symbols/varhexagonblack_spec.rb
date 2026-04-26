@@ -1,11 +1,10 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Symbols::Varhexagonblack do
-
   describe ".initialize" do
-    it 'returns instance of Symbol Varhexagonblack' do
+    it "returns instance of Symbol Varhexagonblack" do
       klass = described_class.new
-      expect(klass).to be_a(Plurimath::Math::Symbols::Varhexagonblack)
+      expect(klass).to be_a(described_class)
     end
   end
 

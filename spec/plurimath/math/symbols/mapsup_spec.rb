@@ -1,11 +1,10 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Symbols::Mapsup do
-
   describe ".initialize" do
-    it 'returns instance of Symbol Mapsup' do
+    it "returns instance of Symbol Mapsup" do
       klass = described_class.new
-      expect(klass).to be_a(Plurimath::Math::Symbols::Mapsup)
+      expect(klass).to be_a(described_class)
     end
   end
 

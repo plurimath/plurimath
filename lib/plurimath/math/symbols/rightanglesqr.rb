@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Rightanglesqr < Symbol
         INPUT = {
-          unicodemath: [["&#x299c;"], parsing_wrapper(["rightanglesqr"], lang: :unicode)],
-          asciimath: [["&#x299c;"], parsing_wrapper(["rightanglesqr"], lang: :asciimath)],
+          unicodemath: [["&#x299c;"],
+                        parsing_wrapper(["rightanglesqr"], lang: :unicode)],
+          asciimath: [["&#x299c;"],
+                      parsing_wrapper(["rightanglesqr"], lang: :asciimath)],
           mathml: ["&#x299c;"],
           latex: [["rightanglesqr", "&#x299c;"]],
           omml: ["&#x299c;"],

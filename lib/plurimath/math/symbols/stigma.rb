@@ -3,8 +3,12 @@ module Plurimath
     module Symbols
       class Stigma < Symbol
         INPUT = {
-          unicodemath: [["&#x3db;"], parsing_wrapper(["upstigma", "stigma"], lang: :unicode)],
-          asciimath: [["&#x3db;"], parsing_wrapper(["upstigma", "stigma"], lang: :asciimath)],
+          unicodemath: [["&#x3db;"],
+                        parsing_wrapper(["upstigma", "stigma"],
+                                        lang: :unicode)],
+          asciimath: [["&#x3db;"],
+                      parsing_wrapper(["upstigma", "stigma"],
+                                      lang: :asciimath)],
           mathml: ["&#x3db;"],
           latex: [["upstigma", "stigma", "&#x3db;"]],
           omml: ["&#x3db;"],

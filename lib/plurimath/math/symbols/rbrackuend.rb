@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Rbrackuend < Symbol
         INPUT = {
-          unicodemath: [["&#x23a4;"], parsing_wrapper(["rbrackuend"], lang: :unicode)],
-          asciimath: [["&#x23a4;"], parsing_wrapper(["rbrackuend"], lang: :asciimath)],
+          unicodemath: [["&#x23a4;"],
+                        parsing_wrapper(["rbrackuend"], lang: :unicode)],
+          asciimath: [["&#x23a4;"],
+                      parsing_wrapper(["rbrackuend"], lang: :asciimath)],
           mathml: ["&#x23a4;"],
           latex: [["rbrackuend", "&#x23a4;"]],
           omml: ["&#x23a4;"],

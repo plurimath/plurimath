@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Revnmid < Symbol
         INPUT = {
-          unicodemath: [["&#x2aee;"], parsing_wrapper(["revnmid"], lang: :unicode)],
-          asciimath: [["&#x2aee;"], parsing_wrapper(["revnmid"], lang: :asciimath)],
+          unicodemath: [["&#x2aee;"],
+                        parsing_wrapper(["revnmid"], lang: :unicode)],
+          asciimath: [["&#x2aee;"],
+                      parsing_wrapper(["revnmid"], lang: :asciimath)],
           mathml: ["&#x2aee;"],
           latex: [["revnmid", "&#x2aee;"]],
           omml: ["&#x2aee;"],

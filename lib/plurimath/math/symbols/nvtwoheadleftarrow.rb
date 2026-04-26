@@ -3,8 +3,12 @@ module Plurimath
     module Symbols
       class Nvtwoheadleftarrow < Symbol
         INPUT = {
-          unicodemath: [["&#x2b35;"], parsing_wrapper(["nVtwoheadleftarrow"], lang: :unicode)],
-          asciimath: [["&#x2b35;"], parsing_wrapper(["nVtwoheadleftarrow"], lang: :asciimath)],
+          unicodemath: [["&#x2b35;"],
+                        parsing_wrapper(["nVtwoheadleftarrow"],
+                                        lang: :unicode)],
+          asciimath: [["&#x2b35;"],
+                      parsing_wrapper(["nVtwoheadleftarrow"],
+                                      lang: :asciimath)],
           mathml: ["&#x2b35;"],
           latex: [["nVtwoheadleftarrow", "&#x2b35;"]],
           omml: ["&#x2b35;"],

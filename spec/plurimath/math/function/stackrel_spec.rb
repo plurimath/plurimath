@@ -1,32 +1,33 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Function::Stackrel do
-
   describe ".initialize" do
-    it 'returns instance of Stackrel' do
-      stackrel = Plurimath::Math::Function::Stackrel.new(7, 70)
-      expect(stackrel).to be_a(Plurimath::Math::Function::Stackrel)
+    it "returns instance of Stackrel" do
+      stackrel = described_class.new(7, 70)
+      expect(stackrel).to be_a(described_class)
     end
 
-    it 'initializes Stackrel object' do
-      stackrel = Plurimath::Math::Function::Stackrel.new(70, 7)
-      expect(stackrel.parameter_one).to eql(70)
-      expect(stackrel.parameter_two).to eql(7)
+    it "initializes Stackrel object" do
+      stackrel = described_class.new(70, 7)
+      expect(stackrel.parameter_one).to be(70)
+      expect(stackrel.parameter_two).to be(7)
     end
   end
 
   describe ".to_asciimath" do
-    subject(:formula) { described_class.new(first_value, second_value).to_asciimath(options: {}) }
+    subject(:formula) do
+      described_class.new(first_value, second_value).to_asciimath(options: {})
+    end
 
     context "contains Symbol as value" do
       let(:first_value) { Plurimath::Math::Symbols::Symbol.new("n") }
       let(:second_value) do
         Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Prod.new(
-            Plurimath::Math::Symbols::Ampersand.new,
-            Plurimath::Math::Function::Text.new("so"),
-          )
-        ])
+                                       Plurimath::Math::Function::Prod.new(
+                                         Plurimath::Math::Symbols::Ampersand.new,
+                                         Plurimath::Math::Function::Text.new("so"),
+                                       ),
+                                     ])
       end
 
       it "returns asciimath string" do
@@ -46,19 +47,19 @@ RSpec.describe Plurimath::Math::Function::Stackrel do
     context "contains Formula as value" do
       let(:first_value) do
         Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Sum.new(
-            Plurimath::Math::Symbols::Ampersand.new,
-            Plurimath::Math::Function::Text.new("so"),
-          )
-        ])
+                                       Plurimath::Math::Function::Sum.new(
+                                         Plurimath::Math::Symbols::Ampersand.new,
+                                         Plurimath::Math::Function::Text.new("so"),
+                                       ),
+                                     ])
       end
       let(:second_value) do
         Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Prod.new(
-            Plurimath::Math::Symbols::Ampersand.new,
-            Plurimath::Math::Function::Text.new("so"),
-          )
-        ])
+                                       Plurimath::Math::Function::Prod.new(
+                                         Plurimath::Math::Symbols::Ampersand.new,
+                                         Plurimath::Math::Function::Text.new("so"),
+                                       ),
+                                     ])
       end
 
       it "returns asciimath string" do
@@ -70,8 +71,8 @@ RSpec.describe Plurimath::Math::Function::Stackrel do
   describe ".to_mathml" do
     subject(:formula) do
       Plurimath.xml_engine.dump(
-        described_class.new(first_value, second_value).
-          to_mathml_without_math_tag(false, options: {}),
+        described_class.new(first_value, second_value)
+          .to_mathml_without_math_tag(false, options: {}),
         indent: 2,
       ).gsub("&amp;", "&")
     end
@@ -80,29 +81,29 @@ RSpec.describe Plurimath::Math::Function::Stackrel do
       let(:first_value) { Plurimath::Math::Symbols::Symbol.new("n") }
       let(:second_value) do
         Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Prod.new(
-            Plurimath::Math::Symbols::Ampersand.new,
-            Plurimath::Math::Function::Text.new("so"),
-          )
-        ])
+                                       Plurimath::Math::Function::Prod.new(
+                                         Plurimath::Math::Symbols::Ampersand.new,
+                                         Plurimath::Math::Function::Text.new("so"),
+                                       ),
+                                     ])
       end
 
       it "returns mathml string" do
         expected_value = <<~MATHML
-        <mover>
-          <mrow>
+          <mover>
             <mrow>
-              <munderover>
-                <mo>&#x220f;</mo>
-                <mo>&</mo>
-                <mtext>so</mtext>
-              </munderover>
+              <mrow>
+                <munderover>
+                  <mo>&#x220f;</mo>
+                  <mo>&</mo>
+                  <mtext>so</mtext>
+                </munderover>
+              </mrow>
             </mrow>
-          </mrow>
-          <mrow>
-            <mi>n</mi>
-          </mrow>
-        </mover>
+            <mrow>
+              <mi>n</mi>
+            </mrow>
+          </mover>
         MATHML
         expect(formula).to be_xml_equivalent_to(expected_value)
       end
@@ -130,19 +131,19 @@ RSpec.describe Plurimath::Math::Function::Stackrel do
     context "contains Formula as value" do
       let(:first_value) do
         Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Sum.new(
-            Plurimath::Math::Symbols::Ampersand.new,
-            Plurimath::Math::Function::Text.new("so"),
-          )
-        ])
+                                       Plurimath::Math::Function::Sum.new(
+                                         Plurimath::Math::Symbols::Ampersand.new,
+                                         Plurimath::Math::Function::Text.new("so"),
+                                       ),
+                                     ])
       end
       let(:second_value) do
         Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Prod.new(
-            Plurimath::Math::Symbols::Ampersand.new,
-            Plurimath::Math::Function::Text.new("so"),
-          )
-        ])
+                                       Plurimath::Math::Function::Prod.new(
+                                         Plurimath::Math::Symbols::Ampersand.new,
+                                         Plurimath::Math::Function::Text.new("so"),
+                                       ),
+                                     ])
       end
 
       it "returns mathml string" do
@@ -174,17 +175,19 @@ RSpec.describe Plurimath::Math::Function::Stackrel do
   end
 
   describe ".to_latex" do
-    subject(:formula) { described_class.new(first_value, second_value).to_latex(options: {}) }
+    subject(:formula) do
+      described_class.new(first_value, second_value).to_latex(options: {})
+    end
 
     context "contains Symbol as value" do
       let(:first_value) { Plurimath::Math::Symbols::Symbol.new("n") }
       let(:second_value) do
         Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Prod.new(
-            Plurimath::Math::Symbols::Ampersand.new,
-            Plurimath::Math::Function::Text.new("so"),
-          )
-        ])
+                                       Plurimath::Math::Function::Prod.new(
+                                         Plurimath::Math::Symbols::Ampersand.new,
+                                         Plurimath::Math::Function::Text.new("so"),
+                                       ),
+                                     ])
       end
 
       it "returns mathml string" do
@@ -204,19 +207,19 @@ RSpec.describe Plurimath::Math::Function::Stackrel do
     context "contains Formula as value" do
       let(:first_value) do
         Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Sum.new(
-            Plurimath::Math::Symbols::Ampersand.new,
-            Plurimath::Math::Function::Text.new("so"),
-          )
-        ])
+                                       Plurimath::Math::Function::Sum.new(
+                                         Plurimath::Math::Symbols::Ampersand.new,
+                                         Plurimath::Math::Function::Text.new("so"),
+                                       ),
+                                     ])
       end
       let(:second_value) do
         Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Prod.new(
-            Plurimath::Math::Symbols::Ampersand.new,
-            Plurimath::Math::Function::Text.new("so"),
-          )
-        ])
+                                       Plurimath::Math::Function::Prod.new(
+                                         Plurimath::Math::Symbols::Ampersand.new,
+                                         Plurimath::Math::Function::Text.new("so"),
+                                       ),
+                                     ])
       end
 
       it "returns mathml string" do
@@ -226,17 +229,19 @@ RSpec.describe Plurimath::Math::Function::Stackrel do
   end
 
   describe ".to_html" do
-    subject(:formula) { described_class.new(first_value, second_value).to_html(options: {}) }
+    subject(:formula) do
+      described_class.new(first_value, second_value).to_html(options: {})
+    end
 
     context "contains Symbol as value" do
       let(:first_value) { Plurimath::Math::Symbols::Symbol.new("n") }
       let(:second_value) do
         Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Prod.new(
-            Plurimath::Math::Symbols::Ampersand.new,
-            Plurimath::Math::Function::Text.new("so"),
-          )
-        ])
+                                       Plurimath::Math::Function::Prod.new(
+                                         Plurimath::Math::Symbols::Ampersand.new,
+                                         Plurimath::Math::Function::Text.new("so"),
+                                       ),
+                                     ])
       end
 
       it "returns mathml string" do
@@ -256,19 +261,19 @@ RSpec.describe Plurimath::Math::Function::Stackrel do
     context "contains Formula as value" do
       let(:first_value) do
         Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Sum.new(
-            Plurimath::Math::Symbols::Ampersand.new,
-            Plurimath::Math::Function::Text.new("so"),
-          )
-        ])
+                                       Plurimath::Math::Function::Sum.new(
+                                         Plurimath::Math::Symbols::Ampersand.new,
+                                         Plurimath::Math::Function::Text.new("so"),
+                                       ),
+                                     ])
       end
       let(:second_value) do
         Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Prod.new(
-            Plurimath::Math::Symbols::Ampersand.new,
-            Plurimath::Math::Function::Text.new("so"),
-          )
-        ])
+                                       Plurimath::Math::Function::Prod.new(
+                                         Plurimath::Math::Symbols::Ampersand.new,
+                                         Plurimath::Math::Function::Text.new("so"),
+                                       ),
+                                     ])
       end
 
       it "returns mathml string" do

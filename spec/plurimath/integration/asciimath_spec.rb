@@ -5,12 +5,14 @@ RSpec.describe Plurimath::Math do
     subject(:formula) { described_class.parse(string, :asciimath) }
 
     context "contains simple cos function with numeric value" do
-      let(:string) { "A(ztext(/)overset(~)(gamma)) = sum_(i=1)^M overset(~)(gamma)_j^ia_iz^(-i), text( for ) j=1,2." }
+      let(:string) do
+        "A(ztext(/)overset(~)(gamma)) = sum_(i=1)^M overset(~)(gamma)_j^ia_iz^(-i), text( for ) j=1,2."
+      end
 
-      it 'returns instance of Asciimath' do
-        expect{
+      it "returns instance of Asciimath" do
+        expect do
           convert(string_to_formula(string, :asciimath))
-        }.not_to raise_error
+        end.not_to raise_error
       end
     end
 
@@ -24,10 +26,10 @@ RSpec.describe Plurimath::Math do
         ASCIIMATH
       end
 
-      it 'returns instance of Asciimath' do
-        expect{
+      it "returns instance of Asciimath" do
+        expect do
           convert(string_to_formula(string, :asciimath))
-        }.not_to raise_error
+        end.not_to raise_error
       end
     end
 
@@ -42,10 +44,10 @@ RSpec.describe Plurimath::Math do
         ASCIIMATH
       end
 
-      it 'returns instance of Asciimath' do
-        expect{
+      it "returns instance of Asciimath" do
+        expect do
           convert(string_to_formula(string, :asciimath))
-        }.not_to raise_error
+        end.not_to raise_error
       end
     end
 
@@ -58,10 +60,10 @@ RSpec.describe Plurimath::Math do
         ASCIIMATH
       end
 
-      it 'returns instance of Asciimath' do
-        expect{
+      it "returns instance of Asciimath" do
+        expect do
           convert(string_to_formula(string, :asciimath))
-        }.not_to raise_error
+        end.not_to raise_error
       end
     end
 
@@ -74,10 +76,10 @@ RSpec.describe Plurimath::Math do
         ASCIIMATH
       end
 
-      it 'returns instance of Asciimath' do
-        expect{
+      it "returns instance of Asciimath" do
+        expect do
           convert(string_to_formula(string, :asciimath))
-        }.not_to raise_error
+        end.not_to raise_error
       end
     end
 
@@ -90,10 +92,10 @@ RSpec.describe Plurimath::Math do
         ASCIIMATH
       end
 
-      it 'returns instance of Asciimath' do
-        expect{
+      it "returns instance of Asciimath" do
+        expect do
           convert(string_to_formula(string, :asciimath))
-        }.not_to raise_error
+        end.not_to raise_error
       end
     end
 
@@ -106,10 +108,10 @@ RSpec.describe Plurimath::Math do
         ASCIIMATH
       end
 
-      it 'returns instance of Asciimath' do
-        expect{
+      it "returns instance of Asciimath" do
+        expect do
           convert(string_to_formula(string, :asciimath))
-        }.not_to raise_error
+        end.not_to raise_error
       end
     end
 
@@ -127,10 +129,10 @@ RSpec.describe Plurimath::Math do
         ASCIIMATH
       end
 
-      it 'returns instance of Asciimath' do
-        expect{
+      it "returns instance of Asciimath" do
+        expect do
           convert(string_to_formula(string, :asciimath))
-        }.not_to raise_error
+        end.not_to raise_error
       end
     end
 
@@ -141,10 +143,10 @@ RSpec.describe Plurimath::Math do
         ASCIIMATH
       end
 
-      it 'returns instance of Asciimath' do
-        expect{
+      it "returns instance of Asciimath" do
+        expect do
           convert(string_to_formula(string, :asciimath))
-        }.not_to raise_error
+        end.not_to raise_error
       end
     end
 
@@ -159,10 +161,10 @@ RSpec.describe Plurimath::Math do
         ASCIIMATH
       end
 
-      it 'returns instance of Asciimath' do
-        expect{
+      it "returns instance of Asciimath" do
+        expect do
           convert(string_to_formula(string, :asciimath))
-        }.not_to raise_error
+        end.not_to raise_error
       end
     end
 
@@ -173,10 +175,10 @@ RSpec.describe Plurimath::Math do
         ASCIIMATH
       end
 
-      it 'returns instance of Asciimath' do
-        expect{
+      it "returns instance of Asciimath" do
+        expect do
           convert(string_to_formula(string, :asciimath))
-        }.not_to raise_error
+        end.not_to raise_error
       end
     end
 
@@ -190,10 +192,10 @@ RSpec.describe Plurimath::Math do
         ASCIIMATH
       end
 
-      it 'returns instance of Asciimath' do
-        expect{
+      it "returns instance of Asciimath" do
+        expect do
           convert(string_to_formula(string, :asciimath))
-        }.not_to raise_error
+        end.not_to raise_error
       end
     end
 
@@ -204,10 +206,10 @@ RSpec.describe Plurimath::Math do
         ASCIIMATH
       end
 
-      it 'returns instance of Asciimath' do
-        expect{
+      it "returns instance of Asciimath" do
+        expect do
           convert(string_to_formula(string, :asciimath))
-        }.not_to raise_error
+        end.not_to raise_error
       end
     end
 
@@ -218,10 +220,10 @@ RSpec.describe Plurimath::Math do
         ASCIIMATH
       end
 
-      it 'returns instance of Asciimath' do
-        expect{
+      it "returns instance of Asciimath" do
+        expect do
           convert(string_to_formula(string, :asciimath))
-        }.not_to raise_error
+        end.not_to raise_error
       end
     end
 
@@ -232,10 +234,10 @@ RSpec.describe Plurimath::Math do
         ASCIIMATH
       end
 
-      it 'returns instance of Asciimath' do
-        expect{
+      it "returns instance of Asciimath" do
+        expect do
           convert(string_to_formula(string, :asciimath))
-        }.not_to raise_error
+        end.not_to raise_error
       end
     end
 
@@ -246,10 +248,10 @@ RSpec.describe Plurimath::Math do
         LATEX
       end
 
-      it 'expects to not raise an exception' do
-        expect{
+      it "expects to not raise an exception" do
+        expect do
           convert(string_to_formula(string, :latex))
-        }.not_to raise_error
+        end.not_to raise_error
       end
     end
 
@@ -260,56 +262,56 @@ RSpec.describe Plurimath::Math do
         LATEX
       end
 
-      it 'expects to not raise an exception' do
-        expect{
+      it "expects to not raise an exception" do
+        expect do
           convert(string_to_formula(string, :latex))
-        }.not_to raise_error
+        end.not_to raise_error
       end
     end
 
     context "contains jcgm#35 GUM 6:2020 document plurimath#195 example #1" do
       let(:string) { "x = ((I_x + varepsilon_x))/I_\"ref\" x_\"ref\"" }
 
-      it 'expects to not raise an exception' do
-        expect{
+      it "expects to not raise an exception" do
+        expect do
           convert(string_to_formula(string, :asciimath))
-        }.not_to raise_error
+        end.not_to raise_error
       end
     end
 
     context "contains jcgm#35 GUM 6:2020 document plurimath#195 example #2" do
       let(:string) { "(u(r)//r)//" }
 
-      it 'expects to not raise an exception' do
-        expect{
+      it "expects to not raise an exception" do
+        expect do
           convert(string_to_formula(string, :asciimath))
-        }.not_to raise_error
+        end.not_to raise_error
       end
     end
 
     context "contains jcgm#35 GUM 6:2020 document plurimath#195 example #3" do
       let(:string) { "u(x)//" }
 
-      it 'expects to not raise an exception' do
-        expect{
+      it "expects to not raise an exception" do
+        expect do
           convert(string_to_formula(string, :asciimath))
-        }.not_to raise_error
+        end.not_to raise_error
       end
     end
 
     context "contains jcgm#35 GUM 6:2020 document plurimath#195 example #4" do
       let(:string) { "x//" }
 
-      it 'expects to not raise an exception' do
-        expect{
+      it "expects to not raise an exception" do
+        expect do
           convert(string_to_formula(string, :asciimath))
-        }.not_to raise_error
+        end.not_to raise_error
       end
     end
   end
 end
 
-SUPPORTED_LANGUAGES = %i[omml latex mathml asciimath]
+SUPPORTED_LANGUAGES = %i[omml latex mathml asciimath].freeze
 
 def convert(formula)
   SUPPORTED_LANGUAGES.each { |lang| re_convert(formula, lang) }

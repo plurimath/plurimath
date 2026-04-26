@@ -4,7 +4,8 @@ module Plurimath
       class Boxdot < Symbol
         INPUT = {
           unicodemath: [["boxdot", "&#x22a1;"]],
-          asciimath: [["&#x22a1;"], parsing_wrapper(["boxdot"], lang: :asciimath)],
+          asciimath: [["&#x22a1;"],
+                      parsing_wrapper(["boxdot"], lang: :asciimath)],
           mathml: ["&#x22a1;"],
           latex: [["boxdot", "&#x22a1;"]],
           omml: ["&#x22a1;"],

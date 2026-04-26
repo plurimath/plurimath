@@ -1,11 +1,10 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Symbols::Leftarrowonoplus do
-
   describe ".initialize" do
-    it 'returns instance of Symbol Leftarrowonoplus' do
+    it "returns instance of Symbol Leftarrowonoplus" do
       klass = described_class.new
-      expect(klass).to be_a(Plurimath::Math::Symbols::Leftarrowonoplus)
+      expect(klass).to be_a(described_class)
     end
   end
 

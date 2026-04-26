@@ -89,8 +89,11 @@ module Plurimath
       rule(t: sequence(:t)) do
         if t.empty?
           Math::Function::Text.new("", lang: :omml)
+        elsif t&.compact&.empty?
+          [nil]
         else
-          t&.compact&.empty? ? [nil] : Utility.mathml_unary_classes(t, omml: true, lang: :omml)
+          Utility.mathml_unary_classes(t,
+                                       omml: true, lang: :omml)
         end
       end
 
@@ -114,8 +117,14 @@ module Plurimath
         open_paren  = Utility.string_to_html_entity(beg_entry ? beg_entry.values.first : "(")
         close_paren = Utility.string_to_html_entity(end_entry ? end_entry.values.first : ")")
         sep_chr     = flatten_dpr.find { |hash| hash[:sepChr] }
-        open_paren_object = Utility.symbol_object(open_paren, lang: :omml) if open_paren && !open_paren.empty?
-        close_paren_object = Utility.symbol_object(close_paren, lang: :omml) if close_paren && !close_paren.empty?
+        if open_paren && !open_paren.empty?
+          open_paren_object = Utility.symbol_object(open_paren,
+                                                    lang: :omml)
+        end
+        if close_paren && !close_paren.empty?
+          close_paren_object = Utility.symbol_object(close_paren,
+                                                     lang: :omml)
+        end
         fenced = Math::Function::Fenced.new(
           open_paren_object,
           nil,
@@ -139,9 +148,8 @@ module Plurimath
       end
 
       rule(mr: subtree(:mr)) do
-        row = []
-        mr.each do |td|
-          row << Math::Function::Td.new(Array(td))
+        row = mr.map do |td|
+          Math::Function::Td.new(Array(td))
         end
         Math::Function::Tr.new(row)
       end
@@ -157,7 +165,12 @@ module Plurimath
       end
 
       rule(lim: sequence(:lim)) do
-        lim.any?(String) ? Utility.text_classes(lim, lang: :omml) : Utility.filter_values(lim)
+        if lim.any?(String)
+          Utility.text_classes(lim,
+                               lang: :omml)
+        else
+          Utility.filter_values(lim)
+        end
       end
 
       rule(acc: subtree(:acc)) do
@@ -189,7 +202,10 @@ module Plurimath
       rule(nary: subtree(:nary)) do
         flatten_nary = nary.flatten.compact
         chr = Utility.find_pos_chr(flatten_nary, :chr)
-        ternary_class = Utility.mathml_unary_classes(chr.values, lang: :omml) if chr
+        if chr
+          ternary_class = Utility.mathml_unary_classes(chr.values,
+                                                       lang: :omml)
+        end
         if ternary_class.is_a?(Math::Function::TernaryFunction)
           ternary_class.parameter_one = Utility.filter_values(nary[1])
           ternary_class.parameter_two = Utility.filter_values(nary[2])
@@ -220,7 +236,11 @@ module Plurimath
       rule(sSubSup: subtree(:sSubSup)) do
         subsup = sSubSup.flatten.compact
         subsup.each_with_index do |object, ind|
-          subsup[ind] = Utility.mathml_unary_classes([object], lang: :omml) if object.is_a?(String)
+          if object.is_a?(String)
+            subsup[ind] =
+              Utility.mathml_unary_classes([object],
+                                           lang: :omml)
+          end
         end
         if Utility.valid_class(subsup[0])
           Utility.get_class(
@@ -321,10 +341,9 @@ module Plurimath
       end
 
       rule(eqArr: subtree(:eqArr)) do
-        table_value = []
         eqArr.delete_at(0)
-        eqArr.each do |value|
-          table_value << Math::Function::Tr.new(
+        table_value = eqArr.map do |value|
+          Math::Function::Tr.new(
             [
               Math::Function::Td.new(
                 Array(value),

@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Asteraccent < Symbol
         INPUT = {
-          unicodemath: [["&#x20f0;"], parsing_wrapper(["asteraccent"], lang: :unicode)],
-          asciimath: [["&#x20f0;"], parsing_wrapper(["asteraccent"], lang: :asciimath)],
+          unicodemath: [["&#x20f0;"],
+                        parsing_wrapper(["asteraccent"], lang: :unicode)],
+          asciimath: [["&#x20f0;"],
+                      parsing_wrapper(["asteraccent"], lang: :asciimath)],
           mathml: ["&#x20f0;"],
           latex: [["asteraccent", "&#x20f0;"]],
           omml: ["&#x20f0;"],

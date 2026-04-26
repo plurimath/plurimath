@@ -3,8 +3,12 @@ module Plurimath
     module Symbols
       class Ngtrless < Symbol
         INPUT = {
-          unicodemath: [["&#x2279;"], parsing_wrapper(["NotGreaterLess", "ngtrless"], lang: :unicode)],
-          asciimath: [["&#x2279;"], parsing_wrapper(["NotGreaterLess", "ngtrless"], lang: :asciimath)],
+          unicodemath: [["&#x2279;"],
+                        parsing_wrapper(["NotGreaterLess", "ngtrless"],
+                                        lang: :unicode)],
+          asciimath: [["&#x2279;"],
+                      parsing_wrapper(["NotGreaterLess", "ngtrless"],
+                                      lang: :asciimath)],
           mathml: ["&#x2279;"],
           latex: [["NotGreaterLess", "ngtrless", "&#x2279;"]],
           omml: ["&#x2279;"],

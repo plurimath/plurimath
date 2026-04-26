@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Blkhorzoval < Symbol
         INPUT = {
-          unicodemath: [["&#x2b2c;"], parsing_wrapper(["blkhorzoval"], lang: :unicode)],
-          asciimath: [["&#x2b2c;"], parsing_wrapper(["blkhorzoval"], lang: :asciimath)],
+          unicodemath: [["&#x2b2c;"],
+                        parsing_wrapper(["blkhorzoval"], lang: :unicode)],
+          asciimath: [["&#x2b2c;"],
+                      parsing_wrapper(["blkhorzoval"], lang: :asciimath)],
           mathml: ["&#x2b2c;"],
           latex: [["blkhorzoval", "&#x2b2c;"]],
           omml: ["&#x2b2c;"],

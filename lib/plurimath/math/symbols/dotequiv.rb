@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Dotequiv < Symbol
         INPUT = {
-          unicodemath: [["&#x2a67;"], parsing_wrapper(["dotequiv"], lang: :unicode)],
-          asciimath: [["&#x2a67;"], parsing_wrapper(["dotequiv"], lang: :asciimath)],
+          unicodemath: [["&#x2a67;"],
+                        parsing_wrapper(["dotequiv"], lang: :unicode)],
+          asciimath: [["&#x2a67;"],
+                      parsing_wrapper(["dotequiv"], lang: :asciimath)],
           mathml: ["&#x2a67;"],
           latex: [["dotequiv", "&#x2a67;"]],
           omml: ["&#x2a67;"],

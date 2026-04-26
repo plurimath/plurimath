@@ -5,9 +5,11 @@ module Plurimath
         class Norm < Paren
           INPUT = {
             unicodemath: [["\\Vert", "Vert", "norm", "&#x2016;"]],
-            asciimath: [["&#x2016;"], parsing_wrapper(["Vert", "norm"], lang: :asciimath)],
+            asciimath: [["&#x2016;"],
+                        parsing_wrapper(["Vert", "norm"], lang: :asciimath)],
             mathml: ["&#x2016;"],
-            latex: [["\\Vert", "&#x2016;"], parsing_wrapper(["norm"], lang: :latex)],
+            latex: [["\\Vert", "&#x2016;"],
+                    parsing_wrapper(["norm"], lang: :latex)],
             omml: ["&#x2016;"],
             html: ["&#x2016;"],
           }.freeze

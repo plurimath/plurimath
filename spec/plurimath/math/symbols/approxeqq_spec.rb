@@ -1,11 +1,10 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Symbols::Approxeqq do
-
   describe ".initialize" do
-    it 'returns instance of Symbol Approxeqq' do
+    it "returns instance of Symbol Approxeqq" do
       klass = described_class.new
-      expect(klass).to be_a(Plurimath::Math::Symbols::Approxeqq)
+      expect(klass).to be_a(described_class)
     end
   end
 

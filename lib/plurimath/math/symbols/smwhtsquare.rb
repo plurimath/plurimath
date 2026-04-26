@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Smwhtsquare < Symbol
         INPUT = {
-          unicodemath: [["&#x25ab;"], parsing_wrapper(["smwhtsquare"], lang: :unicode)],
-          asciimath: [["&#x25ab;"], parsing_wrapper(["smwhtsquare"], lang: :asciimath)],
+          unicodemath: [["&#x25ab;"],
+                        parsing_wrapper(["smwhtsquare"], lang: :unicode)],
+          asciimath: [["&#x25ab;"],
+                      parsing_wrapper(["smwhtsquare"], lang: :asciimath)],
           mathml: ["&#x25ab;"],
           latex: [["smwhtsquare", "&#x25ab;"]],
           omml: ["&#x25ab;"],

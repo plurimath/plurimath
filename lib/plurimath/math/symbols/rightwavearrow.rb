@@ -4,7 +4,8 @@ module Plurimath
       class Rightwavearrow < Symbol
         INPUT = {
           unicodemath: [["rightwavearrow", "&#x219d;"]],
-          asciimath: [["&#x219d;"], parsing_wrapper(["rightwavearrow"], lang: :asciimath)],
+          asciimath: [["&#x219d;"],
+                      parsing_wrapper(["rightwavearrow"], lang: :asciimath)],
           mathml: ["&#x219d;"],
           latex: [["rightwavearrow", "&#x219d;"]],
           omml: ["&#x219d;"],

@@ -3,8 +3,12 @@ module Plurimath
     module Symbols
       class Circle < Symbol
         INPUT = {
-          unicodemath: [["&#x25cf;"], parsing_wrapper(["mdlgblkcircle", "CIRCLE"], lang: :unicode)],
-          asciimath: [["&#x25cf;"], parsing_wrapper(["mdlgblkcircle", "CIRCLE"], lang: :asciimath)],
+          unicodemath: [["&#x25cf;"],
+                        parsing_wrapper(["mdlgblkcircle", "CIRCLE"],
+                                        lang: :unicode)],
+          asciimath: [["&#x25cf;"],
+                      parsing_wrapper(["mdlgblkcircle", "CIRCLE"],
+                                      lang: :asciimath)],
           mathml: ["&#x25cf;"],
           latex: [["mdlgblkcircle", "CIRCLE", "&#x25cf;"]],
           omml: ["&#x25cf;"],

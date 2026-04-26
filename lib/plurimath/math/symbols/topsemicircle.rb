@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Topsemicircle < Symbol
         INPUT = {
-          unicodemath: [["&#x25e0;"], parsing_wrapper(["topsemicircle"], lang: :unicode)],
-          asciimath: [["&#x25e0;"], parsing_wrapper(["topsemicircle"], lang: :asciimath)],
+          unicodemath: [["&#x25e0;"],
+                        parsing_wrapper(["topsemicircle"], lang: :unicode)],
+          asciimath: [["&#x25e0;"],
+                      parsing_wrapper(["topsemicircle"], lang: :asciimath)],
           mathml: ["&#x25e0;"],
           latex: [["topsemicircle", "&#x25e0;"]],
           omml: ["&#x25e0;"],

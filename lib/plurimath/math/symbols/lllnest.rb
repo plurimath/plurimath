@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Lllnest < Symbol
         INPUT = {
-          unicodemath: [["&#x2af7;"], parsing_wrapper(["lllnest"], lang: :unicode)],
-          asciimath: [["&#x2af7;"], parsing_wrapper(["lllnest"], lang: :asciimath)],
+          unicodemath: [["&#x2af7;"],
+                        parsing_wrapper(["lllnest"], lang: :unicode)],
+          asciimath: [["&#x2af7;"],
+                      parsing_wrapper(["lllnest"], lang: :asciimath)],
           mathml: ["&#x2af7;"],
           latex: [["lllnest", "&#x2af7;"]],
           omml: ["&#x2af7;"],

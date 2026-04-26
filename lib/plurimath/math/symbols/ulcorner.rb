@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Ulcorner < Symbol
         INPUT = {
-          unicodemath: [["&#x231c;"], parsing_wrapper(["ulcorner"], lang: :unicode)],
-          asciimath: [["&#x231c;"], parsing_wrapper(["ulcorner"], lang: :asciimath)],
+          unicodemath: [["&#x231c;"],
+                        parsing_wrapper(["ulcorner"], lang: :unicode)],
+          asciimath: [["&#x231c;"],
+                      parsing_wrapper(["ulcorner"], lang: :asciimath)],
           mathml: ["&#x231c;"],
           latex: [["ulcorner", "&#x231c;"]],
           omml: ["&#x231c;"],

@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Invnot < Symbol
         INPUT = {
-          unicodemath: [["&#x2310;"], parsing_wrapper(["invneg", "invnot"], lang: :unicode)],
-          asciimath: [["&#x2310;"], parsing_wrapper(["invneg", "invnot"], lang: :asciimath)],
+          unicodemath: [["&#x2310;"],
+                        parsing_wrapper(["invneg", "invnot"], lang: :unicode)],
+          asciimath: [["&#x2310;"],
+                      parsing_wrapper(["invneg", "invnot"], lang: :asciimath)],
           mathml: ["&#x2310;"],
           latex: [["invneg", "invnot", "&#x2310;"]],
           omml: ["&#x2310;"],

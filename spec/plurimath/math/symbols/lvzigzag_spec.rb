@@ -1,11 +1,10 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Symbols::Lvzigzag do
-
   describe ".initialize" do
-    it 'returns instance of Symbol Lvzigzag' do
+    it "returns instance of Symbol Lvzigzag" do
       klass = described_class.new
-      expect(klass).to be_a(Plurimath::Math::Symbols::Lvzigzag)
+      expect(klass).to be_a(described_class)
     end
   end
 

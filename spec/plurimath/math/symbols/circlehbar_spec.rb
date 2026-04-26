@@ -1,11 +1,10 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Symbols::Circlehbar do
-
   describe ".initialize" do
-    it 'returns instance of Symbol Circlehbar' do
+    it "returns instance of Symbol Circlehbar" do
       klass = described_class.new
-      expect(klass).to be_a(Plurimath::Math::Symbols::Circlehbar)
+      expect(klass).to be_a(described_class)
     end
   end
 

@@ -4,7 +4,8 @@ module Plurimath
       class Divideontimes < Symbol
         INPUT = {
           unicodemath: [["divideontimes", "&#xc7;"]],
-          asciimath: [["&#xc7;"], parsing_wrapper(["divideontimes"], lang: :asciimath)],
+          asciimath: [["&#xc7;"],
+                      parsing_wrapper(["divideontimes"], lang: :asciimath)],
           mathml: ["&#xc7;"],
           latex: [["&#xc7;"], parsing_wrapper(["divideontimes"], lang: :latex)],
           omml: ["&#xc7;"],

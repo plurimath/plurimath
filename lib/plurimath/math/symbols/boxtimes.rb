@@ -4,7 +4,8 @@ module Plurimath
       class Boxtimes < Symbol
         INPUT = {
           unicodemath: [["boxtimes", "&#x22a0;"]],
-          asciimath: [["&#x22a0;"], parsing_wrapper(["boxtimes"], lang: :asciimath)],
+          asciimath: [["&#x22a0;"],
+                      parsing_wrapper(["boxtimes"], lang: :asciimath)],
           mathml: ["&#x22a0;"],
           latex: [["boxtimes", "&#x22a0;"]],
           omml: ["&#x22a0;"],

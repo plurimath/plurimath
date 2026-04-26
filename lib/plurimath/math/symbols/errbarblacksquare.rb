@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Errbarblacksquare < Symbol
         INPUT = {
-          unicodemath: [["&#x29ef;"], parsing_wrapper(["errbarblacksquare"], lang: :unicode)],
-          asciimath: [["&#x29ef;"], parsing_wrapper(["errbarblacksquare"], lang: :asciimath)],
+          unicodemath: [["&#x29ef;"],
+                        parsing_wrapper(["errbarblacksquare"], lang: :unicode)],
+          asciimath: [["&#x29ef;"],
+                      parsing_wrapper(["errbarblacksquare"], lang: :asciimath)],
           mathml: ["&#x29ef;"],
           latex: [["errbarblacksquare", "&#x29ef;"]],
           omml: ["&#x29ef;"],

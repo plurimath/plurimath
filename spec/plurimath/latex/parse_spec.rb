@@ -1,18 +1,19 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Latex::Parse do
-
   describe ".parse" do
-    subject(:formula) {
-      described_class.new.parse(string.squeeze(" ").gsub(" ", "").gsub("\n", ""))
-    }
+    subject(:formula) do
+      described_class.new.parse(string.squeeze(" ").gsub(" ", "").gsub("\n",
+                                                                       ""))
+    end
 
     context "contains command with single argument" do
-      let(:string) {
+      let(:string) do
         <<~LATEX
           {3}\\cos{\\beta}
         LATEX
-      }
+      end
+
       it "returns abstract parsed tree" do
         unary    = formula[:expression][:unary_functions]
         sequence = formula[:sequence]
@@ -24,11 +25,12 @@ RSpec.describe Plurimath::Latex::Parse do
     end
 
     context "contains only nested values" do
-      let(:string) {
+      let(:string) do
         <<~LATEX
           {a+{b}}
         LATEX
-      }
+      end
+
       it "returns abstract parsed tree" do
         expression = formula[:expression]
 
@@ -39,11 +41,12 @@ RSpec.describe Plurimath::Latex::Parse do
     end
 
     context "contains command with multiple arguments" do
-      let(:string) {
+      let(:string) do
         <<~LATEX
           \\left(\\beta\\slash{t}\\right)
         LATEX
-      }
+      end
+
       it "returns parsed tree" do
         left_right = formula[:left_right]
         expression = left_right[:expression]
@@ -57,11 +60,12 @@ RSpec.describe Plurimath::Latex::Parse do
     end
 
     context "contains sqrt commands" do
-      let(:string) {
+      let(:string) do
         <<~LATEX
           \\sqrt {\\sqrt {\\left( t{3}\\right) v}}
         LATEX
-      }
+      end
+
       it "returns parsed tree" do
         binary = formula[:binary][:intermediate_exp][:expression][:binary]
 
@@ -73,11 +77,12 @@ RSpec.describe Plurimath::Latex::Parse do
     end
 
     context "contains overline commands" do
-      let(:string) {
+      let(:string) do
         <<~LATEX
           \\overline{v}
         LATEX
-      }
+      end
+
       it "returns parsed tree" do
         expect(formula[:unary_functions][:unary]).to eq("overline")
         expect(formula[:unary_functions][:first_value][:expression][:symbols]).to eq("v")
@@ -85,11 +90,12 @@ RSpec.describe Plurimath::Latex::Parse do
     end
 
     context "contains empty subscript" do
-      let(:string) {
+      let(:string) do
         <<~LATEX
           1_{}
         LATEX
-      }
+      end
+
       it "returns parsed tree" do
         expect(formula[:base][:number]).to eq("1")
         expect(formula[:base][:subscript][:expression]).to be_nil
@@ -97,11 +103,12 @@ RSpec.describe Plurimath::Latex::Parse do
     end
 
     context "contains sum with sub and sup script" do
-      let(:string) {
+      let(:string) do
         <<~LATEX
           \\sum_{n=1}^{\\infty}
         LATEX
-      }
+      end
+
       it "returns parsed tree" do
         ternary = formula[:ternary_class]
         expression = ternary[:subscript][:expression]
@@ -115,11 +122,12 @@ RSpec.describe Plurimath::Latex::Parse do
     end
 
     context "contains prod with sup and sub script" do
-      let(:string) {
+      let(:string) do
         <<~LATEX
           \\prod^{\\infty}_{n=1}
         LATEX
-      }
+      end
+
       it "returns parsed tree" do
         ternary = formula[:ternary_class]
 
@@ -132,11 +140,12 @@ RSpec.describe Plurimath::Latex::Parse do
     end
 
     context "contains bmod with two arguments" do
-      let(:string) {
+      let(:string) do
         <<~LATEX
           {a}\\bmod{b}
         LATEX
-      }
+      end
+
       it "returns parsed tree" do
         expect(formula[:under_over][:first_value][:expression][:symbols]).to eq("a")
         expect(formula[:under_over][:binary]).to eq("bmod")
@@ -145,11 +154,12 @@ RSpec.describe Plurimath::Latex::Parse do
     end
 
     context "contains pmod with two arguments" do
-      let(:string) {
+      let(:string) do
         <<~LATEX
           {a}\\pmod{b}
         LATEX
-      }
+      end
+
       it "returns parsed tree" do
         expect(formula[:under_over][:first_value][:expression][:symbols]).to eq("a")
         expect(formula[:under_over][:binary]).to eq("pmod")
@@ -158,11 +168,12 @@ RSpec.describe Plurimath::Latex::Parse do
     end
 
     context "contains simple math equation" do
-      let(:string) {
+      let(:string) do
         <<~LATEX
           3x-5y+4z=0
         LATEX
-      }
+      end
+
       it "returns parsed tree" do
         expect(formula[:sequence][:number]).to eq("3")
         expect(formula[:expression][:sequence][:symbols]).to eq("x")
@@ -171,11 +182,12 @@ RSpec.describe Plurimath::Latex::Parse do
     end
 
     context "contains simple multiplication math equation" do
-      let(:string) {
+      let(:string) do
         <<~LATEX
           3x*2
         LATEX
-      }
+      end
+
       it "returns parsed tree" do
         expression = formula[:expression]
         expect(formula[:sequence][:number]).to eq("3")
@@ -186,11 +198,12 @@ RSpec.describe Plurimath::Latex::Parse do
     end
 
     context "contains simple use of over" do
-      let(:string) {
+      let(:string) do
         <<~LATEX
           {1 \\over 2}
         LATEX
-      }
+      end
+
       it "returns parsed tree" do
         expect(formula[:over][:dividend].first[:number]).to eq("1")
         expect(formula[:over][:divisor].first[:number]).to eq("2")
@@ -198,11 +211,12 @@ RSpec.describe Plurimath::Latex::Parse do
     end
 
     context "contains array environment and math equation" do
-      let(:string) {
+      let(:string) do
         <<~LATEX
           \\begin{array}{l}{3x-5y+4z=0}\\end{array}
         LATEX
-      }
+      end
+
       it "returns parsed tree" do
         environment = formula[:environment]
         ending = environment[:ending]
@@ -214,11 +228,12 @@ RSpec.describe Plurimath::Latex::Parse do
     end
 
     context "contains matix environment and subscript math equation" do
-      let(:string) {
+      let(:string) do
         <<~LATEX
           \\begin{matrix}a_{1} & b_{2} \\\\ \\end{matrix}
         LATEX
-      }
+      end
+
       it "returns parsed tree" do
         environment = formula[:environment]
         table_data = environment[:table_data]
@@ -233,11 +248,12 @@ RSpec.describe Plurimath::Latex::Parse do
     end
 
     context "contains binom command" do
-      let(:string) {
+      let(:string) do
         <<~LATEX
           \\binom{2}{3}
         LATEX
-      }
+      end
+
       it "returns parsed tree" do
         binary = formula[:binary]
 
@@ -248,11 +264,12 @@ RSpec.describe Plurimath::Latex::Parse do
     end
 
     context "contains inline matrix" do
-      let(:string) {
+      let(:string) do
         <<~LATEX
           \\matrix{a & b}
         LATEX
-      }
+      end
+
       it "returns parsed tree" do
         table_data = formula[:table_data]
 
@@ -264,11 +281,12 @@ RSpec.describe Plurimath::Latex::Parse do
     end
 
     context "contains matrix with simple two letters" do
-      let(:string) {
+      let(:string) do
         <<~LATEX
           \\begin{matrix} a & b \\end{matrix}
         LATEX
-      }
+      end
+
       it "returns parsed tree" do
         environment = formula[:environment]
         table_data = environment[:table_data]
@@ -282,11 +300,12 @@ RSpec.describe Plurimath::Latex::Parse do
     end
 
     context "contains matrix with negative value" do
-      let(:string) {
+      let(:string) do
         <<~LATEX
           \\begin{Bmatrix}-a & b \\\\ c & d \\end{Bmatrix}
         LATEX
-      }
+      end
+
       it "returns parsed tree" do
         environment = formula[:environment]
         table_data = environment[:table_data]
@@ -302,11 +321,12 @@ RSpec.describe Plurimath::Latex::Parse do
     end
 
     context "contains pmatrix with simple letters" do
-      let(:string) {
+      let(:string) do
         <<~LATEX
           \\begin{pmatrix}a & b \\end{pmatrix}
         LATEX
-      }
+      end
+
       it "returns parsed tree" do
         environment = formula[:environment]
 
@@ -317,13 +337,14 @@ RSpec.describe Plurimath::Latex::Parse do
     end
 
     context "contains array environment without args list separator" do
-      let(:string) {
+      let(:string) do
         <<~LATEX
           \\begin{array}{c|r}
             1 & 2 \\hline \\\\ 3 & 4
           \\end{array}
         LATEX
-      }
+      end
+
       it "returns parsed tree" do
         environment = formula[:environment]
         table_data = environment[:table_data]
@@ -338,13 +359,14 @@ RSpec.describe Plurimath::Latex::Parse do
     end
 
     context "contains bmatrix environment without args list separator" do
-      let(:string) {
+      let(:string) do
         <<~LATEX
           \\begin{bmatrix}
             a_{1,2} & \\vdots & \\cdots & \\ddots \\\\
           \\end{bmatrix}
         LATEX
-      }
+      end
+
       it "returns parsed tree" do
         environment = formula[:environment]
         table_data = environment[:table_data]
@@ -363,13 +385,14 @@ RSpec.describe Plurimath::Latex::Parse do
     end
 
     context "contains vmatrix with sqrt complete equation" do
-      let(:string) {
+      let(:string) do
         <<~LATEX
           \\begin{Vmatrix}
             \\sqrt{(-25)^{2}} = \\pm 25
           \\end{Vmatrix}
         LATEX
-      }
+      end
+
       it "returns parsed tree" do
         environment = formula[:environment]
         table_data = formula[:environment][:table_data]
@@ -387,11 +410,12 @@ RSpec.describe Plurimath::Latex::Parse do
     end
 
     context "contains log with subscript" do
-      let(:string) {
+      let(:string) do
         <<~LATEX
           \\log_2{x}
         LATEX
-      }
+      end
+
       it "returns parsed tree" do
         log = formula[:sequence][:power_base]
         expression = formula[:expression]
@@ -403,11 +427,12 @@ RSpec.describe Plurimath::Latex::Parse do
     end
 
     context "contains lim with subscript and f" do
-      let(:string) {
+      let(:string) do
         <<~LATEX
           \\lim_{x\\to +\\infty} f(x)
         LATEX
-      }
+      end
+
       it "returns parsed tree" do
         binary = formula[:sequence][:power_base]
         expression = binary[:subscript][:expression][:expression]
@@ -425,13 +450,14 @@ RSpec.describe Plurimath::Latex::Parse do
     end
 
     context "contains array environment with simple equation" do
-      let(:string) {
+      let(:string) do
         <<~LATEX
           \\left( \\begin{array}{c}
               V_x  \\\\
               V_y  \\end{array} \\right)
         LATEX
-      }
+      end
+
       it "returns parsed tree" do
         environment = formula[:left_right][:expression][:environment]
         sequence = environment[:table_data][:sequence]
@@ -448,11 +474,12 @@ RSpec.describe Plurimath::Latex::Parse do
     end
 
     context "contains mbox" do
-      let(:string) {
+      let(:string) do
         <<~LATEX
           \\mbox{a+b}
         LATEX
-      }
+      end
+
       it "returns formula" do
         expect(formula[:text]).to eq("mbox")
         expect(formula[:first_value]).to eq("a+b")
@@ -460,12 +487,13 @@ RSpec.describe Plurimath::Latex::Parse do
     end
 
     context "contains complex base equation" do
-      let(:string) {
+      let(:string) do
         <<~LATEX
           \\vec{F} = F_x \\hat{e}_x + F_y \\hat{e}_y + F_z
           \\hat{e}_z = \\int \\vec{f} \\ ,dA,
         LATEX
-      }
+      end
+
       it "returns formula" do
         vec = formula[:sequence][:unary_functions]
         base = formula[:expression][:expression][:sequence][:base]
@@ -479,12 +507,13 @@ RSpec.describe Plurimath::Latex::Parse do
     end
 
     context "contains second complex base equation" do
-      let(:string) {
+      let(:string) do
         <<~LATEX
           \\vec{M} = M_x \\hat{e}_x + M_y \\hat{e}_y + M_z
           \\hat{e}_z = \\int (\\vec{r} - \\vec{r}_0) \\times \\vec{f} \\,dA.
         LATEX
-      }
+      end
+
       it "returns formula" do
         vec = formula[:sequence][:unary_functions]
         base = formula[:expression][:expression][:sequence][:base]
@@ -501,12 +530,13 @@ RSpec.describe Plurimath::Latex::Parse do
     end
 
     context "contains third complex base equation" do
-      let(:string) {
+      let(:string) do
         <<~LATEX
           L = \\vec{F} \\cdot \\hat{L}  \\qquad
           D = \\vec{F} \\cdot \\hat{D}
         LATEX
-      }
+      end
+
       it "returns formula" do
         expression = formula[:expression][:expression]
         unary_function = expression[:sequence][:unary_functions]
@@ -520,12 +550,13 @@ RSpec.describe Plurimath::Latex::Parse do
     end
 
     context "contains fourth complex base equation" do
-      let(:string) {
+      let(:string) do
         <<~LATEX
           \\vec{M} = M_\\xi \\hat{e}_{\\xi} + M_\\eta \\hat{e}_{\\eta} + M_\\zeta
           \\hat{e}_{\\zeta} = \\int (\\vec{r} - \\vec{r}_0) \\times \\vec{f} \\,dA.
         LATEX
-      }
+      end
+
       it "returns formula" do
         expression = formula[:expression][:expression]
         unary_function = expression[:sequence][:base]
@@ -539,7 +570,7 @@ RSpec.describe Plurimath::Latex::Parse do
     end
 
     context "contains fifth complex split environment" do
-      let(:string) {
+      let(:string) do
         <<~LATEX
           \\begin{split}
             C_L &= {L \\over {1\\over2} \\rho_\\textrm{ref} q_\\textrm{ref}^2 S} \\\\ \\\\
@@ -547,7 +578,8 @@ RSpec.describe Plurimath::Latex::Parse do
             \\vec{C}_M &= {\\beta \\vec{M} \\over {1\\over2} \\rho_\\textrm{ref} q_\\textrm{ref}^2 c_\\textrm{ref} S_\\textrm{ref}},
           \\end{split}
         LATEX
-      }
+      end
+
       it "returns formula" do
         environment = formula[:environment]
         table_data = environment[:table_data]
@@ -561,13 +593,14 @@ RSpec.describe Plurimath::Latex::Parse do
     end
 
     context "contains sixth complex equation" do
-      let(:string) {
+      let(:string) do
         <<~LATEX
           c_l = {L' \\over {1\\over2} \\rho_\\textrm{ref} q_\\textrm{ref}^2 c_\\textrm{ref}} \\qquad
           c_d = {D' \\over {1\\over2} \\rho_\\textrm{ref} q_\\textrm{ref}^2 c_\\textrm{ref}} \\qquad
           \\vec{c}_m = {\\vec{M}' \\over {1\\over2} \\rho_\\textrm{ref} q_\\textrm{ref}^2 c_\\textrm{ref}^2},
         LATEX
-      }
+      end
+
       it "returns formula" do
         over = formula[:expression][:expression][:sequence][:over]
         divisor = over[:divisor][0]

@@ -3,7 +3,8 @@ module Plurimath
     module Symbols
       class Uu < Symbol
         INPUT = {
-          unicodemath: [["cup", "&#x222a;"], parsing_wrapper(["uu"], lang: :unicode)],
+          unicodemath: [["cup", "&#x222a;"],
+                        parsing_wrapper(["uu"], lang: :unicode)],
           asciimath: [["cup", "uu", "&#x222a;"]],
           mathml: ["&#x222a;"],
           latex: [["cup", "&#x222a;"], parsing_wrapper(["uu"], lang: :latex)],

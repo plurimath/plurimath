@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Forks < Symbol
         INPUT = {
-          unicodemath: [["&#x2adc;"], parsing_wrapper(["forks"], lang: :unicode)],
-          asciimath: [["&#x2adc;"], parsing_wrapper(["forks"], lang: :asciimath)],
+          unicodemath: [["&#x2adc;"],
+                        parsing_wrapper(["forks"], lang: :unicode)],
+          asciimath: [["&#x2adc;"],
+                      parsing_wrapper(["forks"], lang: :asciimath)],
           mathml: ["&#x2adc;"],
           latex: [["forks", "&#x2adc;"]],
           omml: ["&#x2adc;"],

@@ -3,7 +3,8 @@ module Plurimath
     module Symbols
       class Cdot < Symbol
         INPUT = {
-          unicodemath: [["cdot", "&#x22c5;"], parsing_wrapper(["*"], lang: :unicode)],
+          unicodemath: [["cdot", "&#x22c5;"],
+                        parsing_wrapper(["*"], lang: :unicode)],
           asciimath: [["cdot", "*", "&#x22c5;"]],
           mathml: ["&#x22c5;"],
           latex: [["cdot", "&#x22c5;"], parsing_wrapper(["*"], lang: :latex)],

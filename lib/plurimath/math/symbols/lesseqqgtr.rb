@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Lesseqqgtr < Symbol
         INPUT = {
-          unicodemath: [["&#x2a8b;"], parsing_wrapper(["lesseqqgtr"], lang: :unicode)],
-          asciimath: [["&#x2a8b;"], parsing_wrapper(["lesseqqgtr"], lang: :asciimath)],
+          unicodemath: [["&#x2a8b;"],
+                        parsing_wrapper(["lesseqqgtr"], lang: :unicode)],
+          asciimath: [["&#x2a8b;"],
+                      parsing_wrapper(["lesseqqgtr"], lang: :asciimath)],
           mathml: ["&#x2a8b;"],
           latex: [["lesseqqgtr", "&#x2a8b;"]],
           omml: ["&#x2a8b;"],

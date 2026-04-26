@@ -1,11 +1,10 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Symbols::Gtcc do
-
   describe ".initialize" do
-    it 'returns instance of Symbol Gtcc' do
+    it "returns instance of Symbol Gtcc" do
       klass = described_class.new
-      expect(klass).to be_a(Plurimath::Math::Symbols::Gtcc)
+      expect(klass).to be_a(described_class)
     end
   end
 

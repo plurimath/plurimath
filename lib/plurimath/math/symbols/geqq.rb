@@ -4,7 +4,8 @@ module Plurimath
       class Geqq < Symbol
         INPUT = {
           unicodemath: [["geqq", "&#x2267;"]],
-          asciimath: [["&#x2267;"], parsing_wrapper(["geqq"], lang: :asciimath)],
+          asciimath: [["&#x2267;"],
+                      parsing_wrapper(["geqq"], lang: :asciimath)],
           mathml: ["&#x2267;"],
           latex: [["geqq", "&#x2267;"]],
           omml: ["&#x2267;"],

@@ -4,7 +4,8 @@ module Plurimath
       class Leftrightarrows < Symbol
         INPUT = {
           unicodemath: [["leftrightarrows", "&#x21c6;"]],
-          asciimath: [["&#x21c6;"], parsing_wrapper(["leftrightarrows"], lang: :asciimath)],
+          asciimath: [["&#x21c6;"],
+                      parsing_wrapper(["leftrightarrows"], lang: :asciimath)],
           mathml: ["&#x21c6;"],
           latex: [["leftrightarrows", "&#x21c6;"]],
           omml: ["&#x21c6;"],

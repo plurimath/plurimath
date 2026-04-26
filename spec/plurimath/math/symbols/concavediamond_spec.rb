@@ -1,11 +1,10 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Symbols::Concavediamond do
-
   describe ".initialize" do
-    it 'returns instance of Symbol Concavediamond' do
+    it "returns instance of Symbol Concavediamond" do
       klass = described_class.new
-      expect(klass).to be_a(Plurimath::Math::Symbols::Concavediamond)
+      expect(klass).to be_a(described_class)
     end
   end
 

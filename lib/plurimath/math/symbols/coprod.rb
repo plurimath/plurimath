@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Coprod < Symbol
         INPUT = {
-          unicodemath: [["&#x2210;"], parsing_wrapper(["coprod"], lang: :unicode)],
-          asciimath: [["&#x2210;"], parsing_wrapper(["coprod"], lang: :asciimath)],
+          unicodemath: [["&#x2210;"],
+                        parsing_wrapper(["coprod"], lang: :unicode)],
+          asciimath: [["&#x2210;"],
+                      parsing_wrapper(["coprod"], lang: :asciimath)],
           mathml: ["&#x2210;"],
           latex: [["coprod", "&#x2210;"]],
           omml: ["&#x2210;"],

@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Disjquant < Symbol
         INPUT = {
-          unicodemath: [["&#x2a08;"], parsing_wrapper(["disjquant"], lang: :unicode)],
-          asciimath: [["&#x2a08;"], parsing_wrapper(["disjquant"], lang: :asciimath)],
+          unicodemath: [["&#x2a08;"],
+                        parsing_wrapper(["disjquant"], lang: :unicode)],
+          asciimath: [["&#x2a08;"],
+                      parsing_wrapper(["disjquant"], lang: :asciimath)],
           mathml: ["&#x2a08;"],
           latex: [["disjquant", "&#x2a08;"]],
           omml: ["&#x2a08;"],

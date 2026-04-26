@@ -1,11 +1,10 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Symbols::Ratio do
-
   describe ".initialize" do
-    it 'returns instance of Symbol Ratio' do
+    it "returns instance of Symbol Ratio" do
       klass = described_class.new
-      expect(klass).to be_a(Plurimath::Math::Symbols::Ratio)
+      expect(klass).to be_a(described_class)
     end
   end
 

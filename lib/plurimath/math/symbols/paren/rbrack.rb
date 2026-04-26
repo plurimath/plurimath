@@ -4,8 +4,10 @@ module Plurimath
       class Paren
         class Rbrack < Paren
           INPUT = {
-            unicodemath: [["&#x5d;"], parsing_wrapper(["rbrack"], lang: :unicode)],
-            asciimath: [["&#x5d;"], parsing_wrapper(["rbrack"], lang: :asciimath)],
+            unicodemath: [["&#x5d;"],
+                          parsing_wrapper(["rbrack"], lang: :unicode)],
+            asciimath: [["&#x5d;"],
+                        parsing_wrapper(["rbrack"], lang: :asciimath)],
             mathml: ["&#x5d;"],
             latex: [["\\rbrack", "&#x5d;"]],
             omml: ["&#x5d;"],

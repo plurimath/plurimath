@@ -3,10 +3,13 @@ module Plurimath
     module Symbols
       class Del < Symbol
         INPUT = {
-          unicodemath: [["partial", "&#x2202;"], parsing_wrapper(["del", "partialup"], lang: :unicode)],
-          asciimath: [["partial", "del", "&#x2202;"], parsing_wrapper(["partialup"], lang: :asciimath)],
+          unicodemath: [["partial", "&#x2202;"],
+                        parsing_wrapper(["del", "partialup"], lang: :unicode)],
+          asciimath: [["partial", "del", "&#x2202;"],
+                      parsing_wrapper(["partialup"], lang: :asciimath)],
           mathml: ["&#x2202;"],
-          latex: [["partialup", "partial", "&#x2202;"], parsing_wrapper(["del"], lang: :latex)],
+          latex: [["partialup", "partial", "&#x2202;"],
+                  parsing_wrapper(["del"], lang: :latex)],
           omml: ["&#x2202;"],
           html: ["&#x2202;"],
         }.freeze

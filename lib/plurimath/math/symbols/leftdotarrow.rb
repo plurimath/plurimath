@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Leftdotarrow < Symbol
         INPUT = {
-          unicodemath: [["&#x2b38;"], parsing_wrapper(["leftdotarrow"], lang: :unicode)],
-          asciimath: [["&#x2b38;"], parsing_wrapper(["leftdotarrow"], lang: :asciimath)],
+          unicodemath: [["&#x2b38;"],
+                        parsing_wrapper(["leftdotarrow"], lang: :unicode)],
+          asciimath: [["&#x2b38;"],
+                      parsing_wrapper(["leftdotarrow"], lang: :asciimath)],
           mathml: ["&#x2b38;"],
           latex: [["leftdotarrow", "&#x2b38;"]],
           omml: ["&#x2b38;"],

@@ -3,8 +3,12 @@ module Plurimath
     module Symbols
       class Twoheadleftarrowtail < Symbol
         INPUT = {
-          unicodemath: [["&#x2b3b;"], parsing_wrapper(["twoheadleftarrowtail"], lang: :unicode)],
-          asciimath: [["&#x2b3b;"], parsing_wrapper(["twoheadleftarrowtail"], lang: :asciimath)],
+          unicodemath: [["&#x2b3b;"],
+                        parsing_wrapper(["twoheadleftarrowtail"],
+                                        lang: :unicode)],
+          asciimath: [["&#x2b3b;"],
+                      parsing_wrapper(["twoheadleftarrowtail"],
+                                      lang: :asciimath)],
           mathml: ["&#x2b3b;"],
           latex: [["twoheadleftarrowtail", "&#x2b3b;"]],
           omml: ["&#x2b3b;"],

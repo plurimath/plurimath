@@ -3,8 +3,11 @@ module Plurimath
     module Symbols
       class Updownarrows < Symbol
         INPUT = {
-          unicodemath: [["updownarrows", "&#x21c5;"], parsing_wrapper(["uparrowdownarrow"], lang: :unicode)],
-          asciimath: [["&#x21c5;"], parsing_wrapper(["updownarrows", "uparrowdownarrow"], lang: :asciimath)],
+          unicodemath: [["updownarrows", "&#x21c5;"],
+                        parsing_wrapper(["uparrowdownarrow"], lang: :unicode)],
+          asciimath: [["&#x21c5;"],
+                      parsing_wrapper(["updownarrows", "uparrowdownarrow"],
+                                      lang: :asciimath)],
           mathml: ["&#x21c5;"],
           latex: [["uparrowdownarrow", "updownarrows", "&#x21c5;"]],
           omml: ["&#x21c5;"],

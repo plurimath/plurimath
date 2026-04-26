@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Lowint < Symbol
         INPUT = {
-          unicodemath: [["&#x2a1c;"], parsing_wrapper(["lowint"], lang: :unicode)],
-          asciimath: [["&#x2a1c;"], parsing_wrapper(["lowint"], lang: :asciimath)],
+          unicodemath: [["&#x2a1c;"],
+                        parsing_wrapper(["lowint"], lang: :unicode)],
+          asciimath: [["&#x2a1c;"],
+                      parsing_wrapper(["lowint"], lang: :asciimath)],
           mathml: ["&#x2a1c;"],
           latex: [["lowint", "&#x2a1c;"]],
           omml: ["&#x2a1c;"],

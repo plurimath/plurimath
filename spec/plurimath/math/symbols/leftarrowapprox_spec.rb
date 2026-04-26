@@ -1,11 +1,10 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Symbols::Leftarrowapprox do
-
   describe ".initialize" do
-    it 'returns instance of Symbol Leftarrowapprox' do
+    it "returns instance of Symbol Leftarrowapprox" do
       klass = described_class.new
-      expect(klass).to be_a(Plurimath::Math::Symbols::Leftarrowapprox)
+      expect(klass).to be_a(described_class)
     end
   end
 

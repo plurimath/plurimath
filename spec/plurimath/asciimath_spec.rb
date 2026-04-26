@@ -1,32 +1,31 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Asciimath do
-
   describe ".initialize" do
-    subject(:asciimath) { Plurimath::Asciimath.new(string) }
+    subject(:asciimath) { described_class.new(string) }
 
     context "contains simple cos function with numeric value" do
       let(:string) { "cos(2)" }
 
-      it 'returns instance of Asciimath' do
-        expect(asciimath).to be_a(Plurimath::Asciimath)
+      it "returns instance of Asciimath" do
+        expect(asciimath).to be_a(described_class)
       end
 
-      it 'initializes Plurimath::Asciimath object' do
-        expect(asciimath.text).to eql('cos(2)')
+      it "initializes Plurimath::Asciimath object" do
+        expect(asciimath.text).to eql("cos(2)")
       end
     end
   end
 
   describe ".to_latex, to_mathml, to_asciimath" do
-    subject(:formula) { Plurimath::Asciimath.new(string).to_formula }
+    subject(:formula) { described_class.new(string).to_formula }
 
     context "contains example #01" do
-      let(:string) { 'cos(2)' }
+      let(:string) { "cos(2)" }
 
-      it 'returns parsed Asciimath to Formula' do
+      it "returns parsed Asciimath to Formula" do
         latex = '\cos{( 2 )}'
-        asciimath = 'cos(2)'
+        asciimath = "cos(2)"
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -48,11 +47,11 @@ RSpec.describe Plurimath::Asciimath do
     end
 
     context "contains example #02" do
-      let(:string) { 'sum_(i=1)^n i^3=((n(n+1))/2)^2' }
+      let(:string) { "sum_(i=1)^n i^3=((n(n+1))/2)^2" }
 
-      it 'returns parsed Asciimath to Formula' do
+      it "returns parsed Asciimath to Formula" do
         latex = '\sum_{i = 1}^{n} i^{3} = ( \frac{n ( n + 1 )}{2} )^{2}'
-        asciimath = 'sum_(i = 1)^(n) i^(3) = (frac(n (n + 1))(2))^(2)'
+        asciimath = "sum_(i = 1)^(n) i^(3) = (frac(n (n + 1))(2))^(2)"
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -104,9 +103,9 @@ RSpec.describe Plurimath::Asciimath do
     context "contains example #03" do
       let(:string) { '"unitsml(V*s//A,symbol:V cdot s//A)"' }
 
-      it 'returns parsed Asciimath to Formula' do
+      it "returns parsed Asciimath to Formula" do
         latex = '\\mathrm{V} \\cdot \\mathrm{s} \\cdot \\mathrm{A}^{- 1}'
-        asciimath = 'rm(V) * rm(s) * rm(A)^(- 1)'
+        asciimath = "rm(V) * rm(s) * rm(A)^(- 1)"
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -139,9 +138,9 @@ RSpec.describe Plurimath::Asciimath do
     end
 
     context "contains example #04" do
-      let(:string) { 'sum_(i=frac{1}{3})^33' }
+      let(:string) { "sum_(i=frac{1}{3})^33" }
 
-      it 'returns parsed Asciimath to Formula' do
+      it "returns parsed Asciimath to Formula" do
         latex = "\\sum_{i = \\frac{1}{3}}^{33}"
         asciimath = "sum_(i = frac(1)(3))^(33)"
         mathml = <<~MATHML
@@ -169,9 +168,9 @@ RSpec.describe Plurimath::Asciimath do
     end
 
     context "contains example #05" do
-      let(:string) { 'sum_(i=color{1}{3})^33' }
+      let(:string) { "sum_(i=color{1}{3})^33" }
 
-      it 'returns parsed Asciimath to Formula' do
+      it "returns parsed Asciimath to Formula" do
         latex = '\sum_{i = {\color{1} 3}}^{33}'
         asciimath = "sum_(i = color(1)(3))^(33)"
         mathml = <<~MATHML
@@ -198,11 +197,11 @@ RSpec.describe Plurimath::Asciimath do
     end
 
     context "contains example #06" do
-      let(:string) { 'int_0^(sin)f(x)dx' }
+      let(:string) { "int_0^(sin)f(x)dx" }
 
-      it 'returns parsed Asciimath to Formula' do
+      it "returns parsed Asciimath to Formula" do
         latex = '\int_{0}^{\sin{}} f ( x ) d x'
-        asciimath = 'int_(0)^(sin) f (x) d x'
+        asciimath = "int_(0)^(sin) f (x) d x"
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -235,7 +234,7 @@ RSpec.describe Plurimath::Asciimath do
     context "contains example #07" do
       let(:string) { 'obrace(1+2+3+4)^("4 terms")' }
 
-      it 'returns parsed Asciimath to Formula' do
+      it "returns parsed Asciimath to Formula" do
         latex = '\overbrace{1 + 2 + 3 + 4}^{\text{4 terms}}'
         asciimath = 'obrace(1 + 2 + 3 + 4)^("4 terms")'
         mathml = <<~MATHML
@@ -266,11 +265,11 @@ RSpec.describe Plurimath::Asciimath do
     end
 
     context "contains example #08" do
-      let(:string) { 'obrace(1+2+3+4)' }
+      let(:string) { "obrace(1+2+3+4)" }
 
-      it 'returns parsed Asciimath to Formula' do
+      it "returns parsed Asciimath to Formula" do
         latex = '\\overbrace{1 + 2 + 3 + 4}'
-        asciimath = 'obrace(1 + 2 + 3 + 4)'
+        asciimath = "obrace(1 + 2 + 3 + 4)"
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -298,7 +297,7 @@ RSpec.describe Plurimath::Asciimath do
     context "contains example #09" do
       let(:string) { 'log_(1+2+3+4)^("4 terms")' }
 
-      it 'returns parsed Asciimath to Formula' do
+      it "returns parsed Asciimath to Formula" do
         latex = '\log_{ \left ( 1 + 2 + 3 + 4 \right ) }^{\text{4 terms}}'
         asciimath = 'log_(1 + 2 + 3 + 4)^("4 terms")'
         mathml = <<~MATHML
@@ -327,11 +326,11 @@ RSpec.describe Plurimath::Asciimath do
     end
 
     context "contains example #10" do
-      let(:string) { 'root1234(i)' }
+      let(:string) { "root1234(i)" }
 
-      it 'returns parsed Asciimath to Formula' do
+      it "returns parsed Asciimath to Formula" do
         latex = '\sqrt[1234]{i}'
-        asciimath = 'root(1234)(i)'
+        asciimath = "root(1234)(i)"
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -349,11 +348,11 @@ RSpec.describe Plurimath::Asciimath do
     end
 
     context "contains example #11" do
-      let(:string) { 'overset(1234)(i)' }
+      let(:string) { "overset(1234)(i)" }
 
-      it 'returns parsed Asciimath to Formula' do
+      it "returns parsed Asciimath to Formula" do
         latex = '\overset{1234}{i}'
-        asciimath = 'overset(1234)(i)'
+        asciimath = "overset(1234)(i)"
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -371,11 +370,11 @@ RSpec.describe Plurimath::Asciimath do
     end
 
     context "contains example #12" do
-      let(:string) { 'underset(1234)(i)' }
+      let(:string) { "underset(1234)(i)" }
 
-      it 'returns parsed Asciimath to Formula' do
+      it "returns parsed Asciimath to Formula" do
         latex = '\underset{1234}{i}'
-        asciimath = 'underset(1234)(i)'
+        asciimath = "underset(1234)(i)"
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -393,11 +392,11 @@ RSpec.describe Plurimath::Asciimath do
     end
 
     context "contains example #13" do
-      let(:string) { 'sum_a sum^a sum_3^d prod_a prod^a prod_3^d' }
+      let(:string) { "sum_a sum^a sum_3^d prod_a prod^a prod_3^d" }
 
-      it 'returns parsed Asciimath to Formula' do
+      it "returns parsed Asciimath to Formula" do
         latex = '\sum_{a} \sum^{a} \sum_{3}^{d} \prod_{a} \prod^{a} \prod_{3}^{d}'
-        asciimath = 'sum_(a) sum^(a) sum_(3)^(d) prod_(a) prod^(a) prod_(3)^(d)'
+        asciimath = "sum_(a) sum^(a) sum_(3)^(d) prod_(a) prod^(a) prod_(3)^(d)"
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -447,11 +446,11 @@ RSpec.describe Plurimath::Asciimath do
     end
 
     context "contains example #14" do
-      let(:string) { 'underset1234(i)^3' }
+      let(:string) { "underset1234(i)^3" }
 
-      it 'returns parsed Asciimath to Formula' do
+      it "returns parsed Asciimath to Formula" do
         latex = '\underset{1234}{i}^{3}'
-        asciimath = 'underset(1234)(i)^(3)'
+        asciimath = "underset(1234)(i)^(3)"
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -472,11 +471,11 @@ RSpec.describe Plurimath::Asciimath do
     end
 
     context "contains example #15" do
-      let(:string) { '12mod1234(i)' }
+      let(:string) { "12mod1234(i)" }
 
-      it 'returns parsed Asciimath to Formula' do
+      it "returns parsed Asciimath to Formula" do
         latex = '{12} \mod {1234} ( i )'
-        asciimath = '12 mod 1234 (i)'
+        asciimath = "12 mod 1234 (i)"
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -500,11 +499,11 @@ RSpec.describe Plurimath::Asciimath do
     end
 
     context "contains example #16" do
-      let(:string) { 'sum^(theta)' }
+      let(:string) { "sum^(theta)" }
 
-      it 'returns parsed Asciimath to Formula' do
+      it "returns parsed Asciimath to Formula" do
         latex = '\sum^{\theta}'
-        asciimath = 'sum^(theta)'
+        asciimath = "sum^(theta)"
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -524,7 +523,7 @@ RSpec.describe Plurimath::Asciimath do
     context "contains example #17" do
       let(:string) { 'log(1+2+3+4)^text("theta")' }
 
-      it 'returns parsed Asciimath to Formula' do
+      it "returns parsed Asciimath to Formula" do
         latex = '\log ( 1 + 2 + 3 + 4 )^{\text{"theta"}}'
         asciimath = 'log (1 + 2 + 3 + 4)^(""theta"")'
         mathml = <<~MATHML
@@ -555,11 +554,11 @@ RSpec.describe Plurimath::Asciimath do
     end
 
     context "contains example #18" do
-      let(:string) { 'sum_(i=1)^ni^3=sin((n(n+1))/2)^2' }
+      let(:string) { "sum_(i=1)^ni^3=sin((n(n+1))/2)^2" }
 
-      it 'returns parsed Asciimath to Formula' do
+      it "returns parsed Asciimath to Formula" do
         latex = '\sum_{i = 1}^{n} i^{3} = \sin{( \frac{n ( n + 1 )}{2} )}^{2}'
-        asciimath = 'sum_(i = 1)^(n) i^(3) = sin(frac(n (n + 1))(2))^(2)'
+        asciimath = "sum_(i = 1)^(n) i^(3) = sin(frac(n (n + 1))(2))^(2)"
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -612,11 +611,11 @@ RSpec.describe Plurimath::Asciimath do
     end
 
     context "contains example #19" do
-      let(:string) { 'int_(thetasin)^(mathbb(gamma)) f(x)dx' }
+      let(:string) { "int_(thetasin)^(mathbb(gamma)) f(x)dx" }
 
-      it 'returns parsed Asciimath to Formula' do
+      it "returns parsed Asciimath to Formula" do
         latex = '\int_{\theta \sin{}}^{\mathbb{\gamma}} f ( x ) d x'
-        asciimath = 'int_(theta sin)^(mathbb(gamma)) f (x) d x'
+        asciimath = "int_(theta sin)^(mathbb(gamma)) f (x) d x"
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -654,7 +653,7 @@ RSpec.describe Plurimath::Asciimath do
     context "contains example #20" do
       let(:string) { 'mathfrak"theta" (i)' }
 
-      it 'returns parsed Asciimath to Formula' do
+      it "returns parsed Asciimath to Formula" do
         latex = '\mathfrak{\text{theta}} ( i )'
         asciimath = 'mathfrak("theta") (i)'
         mathml = <<~MATHML
@@ -680,7 +679,7 @@ RSpec.describe Plurimath::Asciimath do
     context "contains example #21" do
       let(:string) { 'mathbb("theta") (i)' }
 
-      it 'returns parsed Asciimath to Formula' do
+      it "returns parsed Asciimath to Formula" do
         latex = '\mathbb{\text{theta}} ( i )'
         asciimath = 'mathbb("theta") (i)'
         mathml = <<~MATHML
@@ -704,11 +703,13 @@ RSpec.describe Plurimath::Asciimath do
     end
 
     context "contains example #22" do
-      let(:string) { 'left[[1,3], [1,3], [1,3]right] left(sum_prod^sigmaright)' }
+      let(:string) do
+        "left[[1,3], [1,3], [1,3]right] left(sum_prod^sigmaright)"
+      end
 
-      it 'returns parsed Asciimath to Formula' do
+      it "returns parsed Asciimath to Formula" do
         latex = '\left [\begin{matrix}1 & 3 \\\\ 1 & 3 \\\\ 1 & 3\end{matrix}\right ] \left ( \sum_{\prod}^{\sigma} \right )'
-        asciimath = '[[1, 3], [1, 3], [1, 3]] left( sum_(prod)^(sigma) right)'
+        asciimath = "[[1, 3], [1, 3], [1, 3]] left( sum_(prod)^(sigma) right)"
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -761,7 +762,7 @@ RSpec.describe Plurimath::Asciimath do
     context "contains example #23" do
       let(:string) { '540 xx 10^(12) "unitsml(Hz)", " "ii(K)_("cd")' }
 
-      it 'returns parsed Asciimath to Formula' do
+      it "returns parsed Asciimath to Formula" do
         latex = '540 \times 10^{12} \mathrm{Hz} , \text{ } \mathit{K}_{\text{cd}}'
         asciimath = '540 xx 10^(12) rm(Hz) , " " ii(K)_("cd")'
         mathml = <<~MATHML
@@ -797,9 +798,11 @@ RSpec.describe Plurimath::Asciimath do
     end
 
     context "contains example #24" do
-      let(:string) { 'm = (8 ii(V))/(a_0^3) (2ii(R)_(oo)h)/(c ii(alpha)^2) (m_("Si"))/(m_"e")' }
+      let(:string) do
+        'm = (8 ii(V))/(a_0^3) (2ii(R)_(oo)h)/(c ii(alpha)^2) (m_("Si"))/(m_"e")'
+      end
 
-      it 'returns parsed Asciimath to Formula' do
+      it "returns parsed Asciimath to Formula" do
         latex = 'm = \frac{8 \mathit{V}}{a_{0}^{3}} \frac{2 \mathit{R}_{\infty} h}{c \mathit{\alpha}^{2}} \frac{m_{\text{Si}}}{m_{\text{e}}}'
         asciimath = 'm = frac(8 ii(V))(a_(0)^(3)) frac(2 ii(R)_(oo) h)(c ii(alpha)^(2)) frac(m_("Si"))(m_("e"))'
         mathml = <<~MATHML
@@ -861,11 +864,11 @@ RSpec.describe Plurimath::Asciimath do
     end
 
     context "contains example #25" do
-      let(:string) { 'underset(_)(hat A)(^) = hat A exp j vartheta_0' }
+      let(:string) { "underset(_)(hat A)(^) = hat A exp j vartheta_0" }
 
-      it 'returns parsed Asciimath to Formula' do
+      it "returns parsed Asciimath to Formula" do
         latex = '\underset{\_}{\hat{A}} ( ^ ) = \hat{A} \exp{j} \\upvartheta_{0}'
-        asciimath = 'underset(_)(hat(A)) (^) = hat(A) expj vartheta_(0)'
+        asciimath = "underset(_)(hat(A)) (^) = hat(A) expj vartheta_(0)"
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -904,11 +907,11 @@ RSpec.describe Plurimath::Asciimath do
     end
 
     context "contains example #26" do
-      let(:string) { 'x+b/(2a)<+-sqrt((b^2)/(4a^2)-c/a)' }
+      let(:string) { "x+b/(2a)<+-sqrt((b^2)/(4a^2)-c/a)" }
 
-      it 'returns parsed Asciimath to Formula' do
+      it "returns parsed Asciimath to Formula" do
         latex = 'x + \frac{b}{2 a} < \pm \sqrt{\frac{b^{2}}{4 a^{2}} - \frac{c}{a}}'
-        asciimath = 'x + frac(b)(2 a) lt pm sqrt(frac(b^(2))(4 a^(2)) - frac(c)(a))'
+        asciimath = "x + frac(b)(2 a) lt pm sqrt(frac(b^(2))(4 a^(2)) - frac(c)(a))"
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -955,11 +958,11 @@ RSpec.describe Plurimath::Asciimath do
     end
 
     context "contains example #27" do
-      let(:string) { 'm = (y_2 - y_1)/(x_2 - x_1) = (Deltay)/(Deltax)' }
+      let(:string) { "m = (y_2 - y_1)/(x_2 - x_1) = (Deltay)/(Deltax)" }
 
-      it 'returns parsed Asciimath to Formula' do
+      it "returns parsed Asciimath to Formula" do
         latex = 'm = \frac{y_{2} - y_{1}}{x_{2} - x_{1}} = \frac{\Delta y}{\Delta x}'
-        asciimath = 'm = frac(y_(2) - y_(1))(x_(2) - x_(1)) = frac(Delta y)(Delta x)'
+        asciimath = "m = frac(y_(2) - y_(1))(x_(2) - x_(1)) = frac(Delta y)(Delta x)"
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -1010,11 +1013,11 @@ RSpec.describe Plurimath::Asciimath do
     end
 
     context "contains example #28" do
-      let(:string) { 'd/dx [x^n] = nx^(n - 1)' }
+      let(:string) { "d/dx [x^n] = nx^(n - 1)" }
 
-      it 'returns parsed Asciimath to Formula' do
+      it "returns parsed Asciimath to Formula" do
         latex = '\frac{d}{d x} [ x^{n} ] = n x^{n - 1}'
-        asciimath = 'frac(d)(d x) [x^(n)] = n x^(n - 1)'
+        asciimath = "frac(d)(d x) [x^(n)] = n x^(n - 1)"
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -1053,11 +1056,11 @@ RSpec.describe Plurimath::Asciimath do
     end
 
     context "contains example #29" do
-      let(:string) { 'hat(ab) bar(xy) ul(A) vec(v)' }
+      let(:string) { "hat(ab) bar(xy) ul(A) vec(v)" }
 
-      it 'returns parsed Asciimath to Formula' do
+      it "returns parsed Asciimath to Formula" do
         latex = '\hat{a b} \overline{x y} \underline{A} \vec{v}'
-        asciimath = 'hat(a b) bar(x y) underline(A) vec(v)'
+        asciimath = "hat(a b) bar(x y) underline(A) vec(v)"
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -1093,11 +1096,11 @@ RSpec.describe Plurimath::Asciimath do
     end
 
     context "contains example #30" do
-      let(:string) { '((1),(42))' }
+      let(:string) { "((1),(42))" }
 
-      it 'returns parsed Asciimath to Formula' do
+      it "returns parsed Asciimath to Formula" do
         latex = '\left (\begin{matrix}1 \\\\ 42\end{matrix}\right )'
-        asciimath = '([1], [42])'
+        asciimath = "([1], [42])"
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -1127,11 +1130,11 @@ RSpec.describe Plurimath::Asciimath do
     end
 
     context "contains example #31" do
-      let(:string) { '|(a,b),(c,d)|=ad-bc' }
+      let(:string) { "|(a,b),(c,d)|=ad-bc" }
 
-      it 'returns parsed Asciimath to Formula' do
+      it "returns parsed Asciimath to Formula" do
         latex = '\left |\begin{matrix}a & b \\\\ c & d\end{matrix}\right | = a d - b c'
-        asciimath = '|[a, b], [c, d]| = a d - b c'
+        asciimath = "|[a, b], [c, d]| = a d - b c"
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -1173,11 +1176,11 @@ RSpec.describe Plurimath::Asciimath do
     end
 
     context "contains example #32" do
-      let(:string) { '[(a,b),(((c), (d)),e)]' }
+      let(:string) { "[(a,b),(((c), (d)),e)]" }
 
-      it 'returns parsed Asciimath to Formula' do
+      it "returns parsed Asciimath to Formula" do
         latex = '\left [\begin{matrix}a & b \\\\ \left (\begin{matrix}c \\\\ d\end{matrix}\right ) & e\end{matrix}\right ]'
-        asciimath = '[[a, b], [([c], [d]), e]]'
+        asciimath = "[[a, b], [([c], [d]), e]]"
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -1228,11 +1231,13 @@ RSpec.describe Plurimath::Asciimath do
     end
 
     context "contains example #33" do
-      let(:string) { '((a_(11), cdots , a_(1n)),(vdots, ddots, vdots),(a_(m1), cdots , a_(mn)))' }
+      let(:string) do
+        "((a_(11), cdots , a_(1n)),(vdots, ddots, vdots),(a_(m1), cdots , a_(mn)))"
+      end
 
-      it 'returns parsed Asciimath to Formula' do
+      it "returns parsed Asciimath to Formula" do
         latex = '\left (\begin{matrix}a_{11} & \cdots & a_{1 n} \\\\ \vdots & \ddots & \vdots \\\\ a_{m 1} & \cdots & a_{m n}\end{matrix}\right )'
-        asciimath = '([a_(11), cdots, a_(1 n)], [vdots, ddots, vdots], [a_(m 1), cdots, a_(m n)])'
+        asciimath = "([a_(11), cdots, a_(1 n)], [vdots, ddots, vdots], [a_(m 1), cdots, a_(m n)])"
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -1308,7 +1313,7 @@ RSpec.describe Plurimath::Asciimath do
     context "contains example #34" do
       let(:string) { '"Скорость"=("Расстояние")/("Время")' }
 
-      it 'returns parsed Asciimath to Formula' do
+      it "returns parsed Asciimath to Formula" do
         latex = '\text{Скорость} = \frac{\text{Расстояние}}{\text{Время}}'
         asciimath = '"Скорость" = frac("Расстояние")("Время")'
         mathml = <<~MATHML
@@ -1330,11 +1335,11 @@ RSpec.describe Plurimath::Asciimath do
     end
 
     context "contains example #35" do
-      let(:string) { 'bb (a + b) + cc c = fr (d^n)' }
+      let(:string) { "bb (a + b) + cc c = fr (d^n)" }
 
-      it 'returns parsed Asciimath to Formula' do
+      it "returns parsed Asciimath to Formula" do
         latex = '\mathbf{a + b} + \mathcal{c} = \mathfrak{d^{n}}'
-        asciimath = 'mathbf(a + b) + mathcal(c) = mathfrak(d^(n))'
+        asciimath = "mathbf(a + b) + mathcal(c) = mathfrak(d^(n))"
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -1368,7 +1373,7 @@ RSpec.describe Plurimath::Asciimath do
     context "contains example #36" do
       let(:string) { 'text("foo")' }
 
-      it 'returns parsed Asciimath to Formula' do
+      it "returns parsed Asciimath to Formula" do
         latex = '\text{"foo"}'
         asciimath = '""foo""'
         mathml = <<~MATHML
@@ -1385,11 +1390,11 @@ RSpec.describe Plurimath::Asciimath do
     end
 
     context "contains example #37" do
-      let(:string) { 'ubrace(1 + 2) obrace(3 + 4' }
+      let(:string) { "ubrace(1 + 2) obrace(3 + 4" }
 
-      it 'returns parsed Asciimath to Formula' do
+      it "returns parsed Asciimath to Formula" do
         latex = '\underbrace{1 + 2} \overbrace{3 + 4}'
-        asciimath = 'ubrace(1 + 2) obrace(3 + 4)'
+        asciimath = "ubrace(1 + 2) obrace(3 + 4)"
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -1419,11 +1424,13 @@ RSpec.describe Plurimath::Asciimath do
     end
 
     context "contains example #38" do
-      let(:string) { 's\'_i = {(- 1, if s_i > s_(i + 1)),( + 1, if s_i <= s_(i + 1)):}' }
+      let(:string) do
+        "s'_i = {(- 1, if s_i > s_(i + 1)),( + 1, if s_i <= s_(i + 1)):}"
+      end
 
-      it 'returns parsed Asciimath to Formula' do
+      it "returns parsed Asciimath to Formula" do
         latex = 's \\prime_{i} = \left \{\begin{matrix}- 1 & \operatorname{if} s_{i} > s_{i + 1} \\\\ + 1 & \operatorname{if} s_{i} \le s_{i + 1}\end{matrix}\right .'
-        asciimath = 's prime_(i) = {[- 1, if s_(i) gt s_(i + 1)], [+ 1, if s_(i) le s_(i + 1)]:}'
+        asciimath = "s prime_(i) = {[- 1, if s_(i) gt s_(i + 1)], [+ 1, if s_(i) le s_(i + 1)]:}"
         mathml = <<~MATHML
           <math display="block" xmlns="http://www.w3.org/1998/Math/MathML">
             <mstyle displaystyle="true">
@@ -1493,11 +1500,11 @@ RSpec.describe Plurimath::Asciimath do
     end
 
     context "contains example #39" do
-      let(:string) { 'overset(a + b)(c + d)' }
+      let(:string) { "overset(a + b)(c + d)" }
 
-      it 'returns parsed Asciimath to Formula' do
+      it "returns parsed Asciimath to Formula" do
         latex = '\overset{ \left ( a + b \right ) }{ \left ( c + d \right ) }'
-        asciimath = 'overset(a + b)(c + d)'
+        asciimath = "overset(a + b)(c + d)"
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -1523,11 +1530,11 @@ RSpec.describe Plurimath::Asciimath do
     end
 
     context "contains example #40" do
-      let(:string) { 'underset a b' }
+      let(:string) { "underset a b" }
 
-      it 'returns parsed Asciimath to Formula' do
+      it "returns parsed Asciimath to Formula" do
         latex = '\underset{a}{b}'
-        asciimath = 'underset(a)(b)'
+        asciimath = "underset(a)(b)"
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -1545,11 +1552,11 @@ RSpec.describe Plurimath::Asciimath do
     end
 
     context "contains example #41" do
-      let(:string) { 'cancel(a_b^c) cancel a_b^c' }
+      let(:string) { "cancel(a_b^c) cancel a_b^c" }
 
-      it 'returns parsed Asciimath to Formula' do
+      it "returns parsed Asciimath to Formula" do
         latex = '\cancel{a_{b}^{c}} \cancel{a}_{b}^{c}'
-        asciimath = 'cancel(a_(b)^(c)) cancel(a)_(b)^(c)'
+        asciimath = "cancel(a_(b)^(c)) cancel(a)_(b)^(c)"
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -1577,11 +1584,13 @@ RSpec.describe Plurimath::Asciimath do
     end
 
     context "contains example #42" do
-      let(:string) { 'color(red)(x) color(red)(y) color(blue)(z) colortext(blue)(a_b^c)' }
+      let(:string) do
+        "color(red)(x) color(red)(y) color(blue)(z) colortext(blue)(a_b^c)"
+      end
 
-      it 'returns parsed Asciimath to Formula' do
+      it "returns parsed Asciimath to Formula" do
         latex = '{\color{red} x} {\color{red} y} {\color{blue} z} {\color{blue} a_{b}^{c}}'
-        asciimath = 'color(red)(x) color(red)(y) color(blue)(z) color(blue)(a_(b)^(c))'
+        asciimath = "color(red)(x) color(red)(y) color(blue)(z) color(blue)(a_(b)^(c))"
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -1613,7 +1622,7 @@ RSpec.describe Plurimath::Asciimath do
     context "contains example #43" do
       let(:string) { '{ x\ : \ x in A ^^ x in B }' }
 
-      it 'returns parsed Asciimath to Formula' do
+      it "returns parsed Asciimath to Formula" do
         latex = '\\{ x \\  : \\  x \\in A \\land x \\in B \\}'
         asciimath = '{x \  : \  x in A ^^ x in B}'
         mathml = <<~MATHML
@@ -1644,11 +1653,11 @@ RSpec.describe Plurimath::Asciimath do
     end
 
     context "contains example #44" do
-      let(:string) { '[[a,b,|,c],[d,e,|,f]]' }
+      let(:string) { "[[a,b,|,c],[d,e,|,f]]" }
 
-      it 'returns parsed Asciimath to Formula' do
+      it "returns parsed Asciimath to Formula" do
         latex = '\left [\begin{matrix}a & b & c \\\\ d & e & f\end{matrix}\right ]'
-        asciimath = '[[a, b, |, c], [d, e, |, f]]'
+        asciimath = "[[a, b, |, c], [d, e, |, f]]"
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -1692,7 +1701,7 @@ RSpec.describe Plurimath::Asciimath do
     context "contains example #45" do
       let(:string) { 'ubrace(((1, 0),(0, 1)))_("Adjustment to texture space")' }
 
-      it 'returns parsed Asciimath to Formula' do
+      it "returns parsed Asciimath to Formula" do
         latex = '\underbrace{\left (\begin{matrix}1 & 0 \\\\ 0 & 1\end{matrix}\right )}_{\text{Adjustment to texture space}}'
         asciimath = 'ubrace(([1, 0], [0, 1]))_("Adjustment to texture space")'
         mathml = <<~MATHML
@@ -1736,11 +1745,11 @@ RSpec.describe Plurimath::Asciimath do
     end
 
     context "contains example #46" do
-      let(:string) { 'ii(V)(ii(X)) = (b-a)^2/12 + d^2/9.' }
+      let(:string) { "ii(V)(ii(X)) = (b-a)^2/12 + d^2/9." }
 
-      it 'returns parsed Asciimath to Formula' do
+      it "returns parsed Asciimath to Formula" do
         latex = '\mathit{V} ( \mathit{X} ) = \frac{( b - a )^{2}}{12} + \frac{d^{2}}{9} .'
-        asciimath = 'ii(V) (ii(X)) = frac((b - a)^(2))(12) + frac(d^(2))(9) .'
+        asciimath = "ii(V) (ii(X)) = frac((b - a)^(2))(12) + frac(d^(2))(9) ."
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -1787,9 +1796,11 @@ RSpec.describe Plurimath::Asciimath do
     end
 
     context "contains example #47" do
-      let(:string) { '"CO"_2" (aq.) "+ "H"_2"O" overset(larr)(rarr) "HCO"_3^(-) + "H"^(+) " log "ii(K) = -6.38 80_{0}^{+2}' }
+      let(:string) do
+        '"CO"_2" (aq.) "+ "H"_2"O" overset(larr)(rarr) "HCO"_3^(-) + "H"^(+) " log "ii(K) = -6.38 80_{0}^{+2}'
+      end
 
-      it 'returns parsed Asciimath to Formula' do
+      it "returns parsed Asciimath to Formula" do
         latex = '\text{CO}_{2} \text{ (aq.) } + \text{H}_{2} \text{O} \overset{\gets}{\to} \text{HCO}_{3}^{-} + \text{H}^{+} \text{ log } \mathit{K} = - 6.38 80_{0}^{+ 2}'
         asciimath = '"CO"_(2) " (aq.) " + "H"_(2) "O" overset(larr)(to) "HCO"_(3)^(-) + "H"^(+) " log " ii(K) = - 6.38 80_(0)^(+ 2)'
         mathml = <<~MATHML
@@ -1845,9 +1856,11 @@ RSpec.describe Plurimath::Asciimath do
     end
 
     context "contains example #48" do
-      let(:string) { 'u(w_("cal")) = w_("cal") *sqrt([(u(m_("stock")))/m_("stock")]^2 +[(u(b_("stock")))/b_("stock")]^2 +[(u(w_("stock")))/w_("stock")]^2 +[(u(m_("sol")))/m_("sol")]^2 +[(u(b_("sol")))/b_("sol")]^2 +2*[(u(ii(V)))/ii(V)]^2)' }
+      let(:string) do
+        'u(w_("cal")) = w_("cal") *sqrt([(u(m_("stock")))/m_("stock")]^2 +[(u(b_("stock")))/b_("stock")]^2 +[(u(w_("stock")))/w_("stock")]^2 +[(u(m_("sol")))/m_("sol")]^2 +[(u(b_("sol")))/b_("sol")]^2 +2*[(u(ii(V)))/ii(V)]^2)'
+      end
 
-      it 'returns parsed Asciimath to Formula' do
+      it "returns parsed Asciimath to Formula" do
         latex = 'u ( w_{\text{cal}} ) = w_{\text{cal}} \cdot \sqrt{[ \frac{u ( m_{\text{stock}} )}{m_{\text{stock}}} ]^{2} + [ \frac{u ( b_{\text{stock}} )}{b_{\text{stock}}} ]^{2} + [ \frac{u ( w_{\text{stock}} )}{w_{\text{stock}}} ]^{2} + [ \frac{u ( m_{\text{sol}} )}{m_{\text{sol}}} ]^{2} + [ \frac{u ( b_{\text{sol}} )}{b_{\text{sol}}} ]^{2} + 2 \cdot [ \frac{u ( \mathit{V} )}{\mathit{V}} ]^{2}}'
         asciimath = 'u (w_("cal")) = w_("cal") * sqrt([frac(u (m_("stock")))(m_("stock"))]^(2) + [frac(u (b_("stock")))(b_("stock"))]^(2) + [frac(u (w_("stock")))(w_("stock"))]^(2) + [frac(u (m_("sol")))(m_("sol"))]^(2) + [frac(u (b_("sol")))(b_("sol"))]^(2) + 2 * [frac(u (ii(V)))(ii(V))]^(2))'
         mathml = <<~MATHML
@@ -2031,9 +2044,11 @@ RSpec.describe Plurimath::Asciimath do
     end
 
     context "contains example #49" do
-      let(:string) { '1 "unitsml(A)" = ( ((4pi xx 10^(-7)))/((9192631770)(299792458)(1)) )^(1/2) ( (Delta ii(nu)_("Cs")cm_(cc K))/(ii(mu)_0) )^(1/2) = 6.789687... xx 10^(-13) ((Delta ii(nu)_("Cs")c m_(cc K))/(ii(mu)_0))^(1/2)' }
+      let(:string) do
+        '1 "unitsml(A)" = ( ((4pi xx 10^(-7)))/((9192631770)(299792458)(1)) )^(1/2) ( (Delta ii(nu)_("Cs")cm_(cc K))/(ii(mu)_0) )^(1/2) = 6.789687... xx 10^(-13) ((Delta ii(nu)_("Cs")c m_(cc K))/(ii(mu)_0))^(1/2)'
+      end
 
-      it 'returns parsed Asciimath to Formula' do
+      it "returns parsed Asciimath to Formula" do
         latex = '1 \mathrm{A} = ( \frac{\left (\begin{matrix}4 \pi \times 10^{- 7}\end{matrix}\right )}{( 9192631770 ) ( 299792458 ) ( 1 )} )^{\frac{1}{2}} ( \frac{\Delta \mathit{\nu}_{\text{Cs}} c m_{\mathcal{K}}}{\mathit{\mu}_{0}} )^{\frac{1}{2}} = 6.789687 \ldots \times 10^{- 13} ( \frac{\Delta \mathit{\nu}_{\text{Cs}} c m_{\mathcal{K}}}{\mathit{\mu}_{0}} )^{\frac{1}{2}}'
         asciimath = '1 rm(A) = (frac(([4 pi xx 10^(- 7)]))((9192631770) (299792458) (1)))^(frac(1)(2)) (frac(Delta ii(nu)_("Cs") c m_(mathcal(K)))(ii(mu)_(0)))^(frac(1)(2)) = 6.789687 ... xx 10^(- 13) (frac(Delta ii(nu)_("Cs") c m_(mathcal(K)))(ii(mu)_(0)))^(frac(1)(2))'
         mathml = <<~MATHML
@@ -2185,9 +2200,11 @@ RSpec.describe Plurimath::Asciimath do
     end
 
     context "contains example #50" do
-      let(:string) { '""_rZZ_n = sum_(j=1)^n (-1)^j j^r, " with " r = 1,2,...,' }
+      let(:string) do
+        '""_rZZ_n = sum_(j=1)^n (-1)^j j^r, " with " r = 1,2,...,'
+      end
 
-      it 'returns parsed Asciimath to Formula' do
+      it "returns parsed Asciimath to Formula" do
         latex = '\text{}_{r} \mathbb{Z}_{n} = \sum_{j = 1}^{n} ( - 1 )^{j} j^{r} , \text{ with } r = 1 , 2 , \ldots ,'
         asciimath = '""_(r) mathbb(Z)_(n) = sum_(j = 1)^(n) (- 1)^(j) j^(r) , " with " r = 1 , 2 , ... ,'
         mathml = <<~MATHML
@@ -2248,9 +2265,11 @@ RSpec.describe Plurimath::Asciimath do
     end
 
     context "contains example #51" do
-      let(:string) { '(ii(T)_1+ii(T)_2-a_1-a_2)*f(t) = {(0,pour,{(0&#x3c;t&#x3c;a_(-)),("ou "t&#x3e;ii(T)_(-)+a_2):}),(1,"''",{(a_(-)&#x3c;t&#x3c;a_+","),(ii(T)_1-a_1&#x3c;t&#x3c;ii(T)_(-)),("ou "ii(T)_1&#x3c;t&#x3c;ii(T)_(-)+a_2):}),(2,"''",a_+&#x3c;t&#x3c;ii(T)_1-a_1),((ii(T)_3-ii(T)_(-)+a_1)*delta(t-ii(T)_1),pour,t=ii(T)_1),((ii(T)_1-ii(T)_4)*delta(t-ii(T)_2),"''",t=ii(T)_2","):}' }
+      let(:string) do
+        "(ii(T)_1+ii(T)_2-a_1-a_2)*f(t) = {(0,pour,{(0&#x3c;t&#x3c;a_(-)),(\"ou \"t&#x3e;ii(T)_(-)+a_2):}),(1,\"\",{(a_(-)&#x3c;t&#x3c;a_+\",\"),(ii(T)_1-a_1&#x3c;t&#x3c;ii(T)_(-)),(\"ou \"ii(T)_1&#x3c;t&#x3c;ii(T)_(-)+a_2):}),(2,\"\",a_+&#x3c;t&#x3c;ii(T)_1-a_1),((ii(T)_3-ii(T)_(-)+a_1)*delta(t-ii(T)_1),pour,t=ii(T)_1),((ii(T)_1-ii(T)_4)*delta(t-ii(T)_2),\"\",t=ii(T)_2\",\"):}"
+      end
 
-      it 'returns parsed Asciimath to Formula' do
+      it "returns parsed Asciimath to Formula" do
         latex = '( \mathit{T}_{1} + \mathit{T}_{2} - a_{1} - a_{2} ) \cdot f ( t ) = \left \{\begin{matrix}0 & p o u r & \left \{\begin{matrix}0 < t < a_{-} \\\\ \text{ou } t > \mathit{T}_{-} + a_{2}\end{matrix}\right . \\\\ 1 & \text{} & \left \{\begin{matrix}a_{-} < t < a_{+} \text{,} \\\\ \mathit{T}_{1} - a_{1} < t < \mathit{T}_{-} \\\\ \text{ou } \mathit{T}_{1} < t < \mathit{T}_{-} + a_{2}\end{matrix}\right . \\\\ 2 & \text{} & a_{+} < t < \mathit{T}_{1} - a_{1} \\\\ ( \mathit{T}_{3} - \mathit{T}_{-} + a_{1} ) \cdot \delta ( t - \mathit{T}_{1} ) & p o u r & t = \mathit{T}_{1} \\\\ ( \mathit{T}_{1} - \mathit{T}_{4} ) \cdot \delta ( t - \mathit{T}_{2} ) & \text{} & t = \mathit{T}_{2} \text{,}\end{matrix}\right .'
         asciimath = '(ii(T)_(1) + ii(T)_(2) - a_(1) - a_(2)) * f (t) = {[0, p o u r, {[0 lt t lt a_(-)], ["ou " t gt ii(T)_(-) + a_(2)]:}], [1, "", {[a_(-) lt t lt a_(+) ","], [ii(T)_(1) - a_(1) lt t lt ii(T)_(-)], ["ou " ii(T)_(1) lt t lt ii(T)_(-) + a_(2)]:}], [2, "", a_(+) lt t lt ii(T)_(1) - a_(1)], [(ii(T)_(3) - ii(T)_(-) + a_(1)) * delta (t - ii(T)_(1)), p o u r, t = ii(T)_(1)], [(ii(T)_(1) - ii(T)_(4)) * delta (t - ii(T)_(2)), "", t = ii(T)_(2) ","]:}'
         mathml = <<~MATHML
@@ -2570,11 +2589,13 @@ RSpec.describe Plurimath::Asciimath do
     end
 
     context "contains example #52" do
-      let(:string) { 'ul (ii(B)) = [[1,,,,], [1,1,,,], [1,2,1,,], [color(red)(1),color(red)(3),color(red)(3),color(red)(1),], [1,4,6,4,1], [,,...,,]]' }
+      let(:string) do
+        "ul (ii(B)) = [[1,,,,], [1,1,,,], [1,2,1,,], [color(red)(1),color(red)(3),color(red)(3),color(red)(1),], [1,4,6,4,1], [,,...,,]]"
+      end
 
-      it 'returns parsed Asciimath to Formula' do
+      it "returns parsed Asciimath to Formula" do
         latex = '\underline{\mathit{B}} = \left [\begin{matrix}1 &  &  &  &  \\\\ 1 & 1 &  &  &  \\\\ 1 & 2 & 1 &  &  \\\\ {\color{red} 1} & {\color{red} 3} & {\color{red} 3} & {\color{red} 1} &  \\\\ 1 & 4 & 6 & 4 & 1 \\\\  &  & \ldots &  & \end{matrix}\right ]'
-        asciimath = 'underline(ii(B)) = [[1, , , , ], [1, 1, , , ], [1, 2, 1, , ], [color(red)(1), color(red)(3), color(red)(3), color(red)(1), ], [1, 4, 6, 4, 1], [, , ..., , ]]'
+        asciimath = "underline(ii(B)) = [[1, , , , ], [1, 1, , , ], [1, 2, 1, , ], [color(red)(1), color(red)(3), color(red)(3), color(red)(1), ], [1, 4, 6, 4, 1], [, , ..., , ]]"
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -2683,9 +2704,11 @@ RSpec.describe Plurimath::Asciimath do
     end
 
     context "contains example #53" do
-      let(:string) { 'H_s(z)=(1-A(ztext(/)overset(~)(gamma)))/(1-A(ztext(/)overset(~)(gamma)))(1+mu z^(-1)), text( with ) 0&#x3c;overset(~)(gamma)_1&#x3c;overset(~)(gamma)_2&#x3c;=1' }
+      let(:string) do
+        "H_s(z)=(1-A(ztext(/)overset(~)(gamma)))/(1-A(ztext(/)overset(~)(gamma)))(1+mu z^(-1)), text( with ) 0&#x3c;overset(~)(gamma)_1&#x3c;overset(~)(gamma)_2&#x3c;=1"
+      end
 
-      it 'returns parsed Asciimath to Formula' do
+      it "returns parsed Asciimath to Formula" do
         latex = 'H_{s} ( z ) = \frac{1 - A ( z \text{/} \overset{\sptilde}{\gamma} )}{1 - A ( z \text{/} \overset{\sptilde}{\gamma} )} ( 1 + \mu z^{- 1} ) , \text{ with } 0 < \overset{\sptilde}{\gamma}_{1} < \overset{\sptilde}{\gamma}_{2} < = 1'
         asciimath = 'H_(s) (z) = frac(1 - A (z "/" overset(~)(gamma)))(1 - A (z "/" overset(~)(gamma))) (1 + mu z^(- 1)) , " with " 0 lt overset(~)(gamma)_(1) lt overset(~)(gamma)_(2) lt = 1'
         mathml = <<~MATHML
@@ -2783,11 +2806,11 @@ RSpec.describe Plurimath::Asciimath do
     end
 
     context "contains example #54" do
-      let(:string) { '&lt; &lt; mode, &lt; s(ag) &gt; &gt;, s' }
+      let(:string) { "&lt; &lt; mode, &lt; s(ag) &gt; &gt;, s" }
 
-      it 'returns parsed Asciimath to Formula' do
+      it "returns parsed Asciimath to Formula" do
         latex = '< {<} \mod {e} , < s ( a g ) > > , s'
-        asciimath = 'lt lt mod e , lt s (a g) gt gt , s'
+        asciimath = "lt lt mod e , lt s (a g) gt gt , s"
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -2820,9 +2843,11 @@ RSpec.describe Plurimath::Asciimath do
     end
 
     context "contains example #55" do
-      let(:string) { '{:(u^2(delta y), = {:[({partial f}/{partial ii(X)_1})^2 u^2(x_1) +({partial f}/{partial ii(X)_2})^2 u^2(x_2) +2 {partial f}/{partial ii(X)_1} {partial f}/{partial ii(X)_2} r(x_1,x_2)u(x_1)u(x_2)]|_{bb(X)=bb(x)}),(" ",= 4x_1^2 u^2 (x_1) + 4x_2^2 u^2 (x_2) + 8r(x_1,x_2) x_1 x_2 u(x_1) u(x_2).):}' }
+      let(:string) do
+        '{:(u^2(delta y), = {:[({partial f}/{partial ii(X)_1})^2 u^2(x_1) +({partial f}/{partial ii(X)_2})^2 u^2(x_2) +2 {partial f}/{partial ii(X)_1} {partial f}/{partial ii(X)_2} r(x_1,x_2)u(x_1)u(x_2)]|_{bb(X)=bb(x)}),(" ",= 4x_1^2 u^2 (x_1) + 4x_2^2 u^2 (x_2) + 8r(x_1,x_2) x_1 x_2 u(x_1) u(x_2).):}'
+      end
 
-      it 'returns parsed Asciimath to Formula' do
+      it "returns parsed Asciimath to Formula" do
         latex = '\\left. ( u^{2} ( \delta y ) , = \\left. [ ( \frac{\partial f}{\partial \mathit{X}_{1}} )^{2} u^{2} ( x_{1} ) + ( \frac{\partial f}{\partial \mathit{X}_{2}} )^{2} u^{2} ( x_{2} ) + 2 \frac{\partial f}{\partial \mathit{X}_{1}} \frac{\partial f}{\partial \mathit{X}_{2}} r ( x_{1} , x_{2} ) u ( x_{1} ) u ( x_{2} ) ] |_{\mathbf{X} = \mathbf{x}} ) , ( \text{ } , = 4 x_{1}^{2} u^{2} ( x_{1} ) + 4 x_{2}^{2} u^{2} ( x_{2} ) + 8 r ( x_{1} , x_{2} ) x_{1} x_{2} u ( x_{1} ) u ( x_{2} ) . ) \\right. '
         asciimath = '{:(u^(2) (delta y) , = {:[(frac(del f)(del ii(X)_(1)))^(2) u^(2) (x_(1)) + (frac(del f)(del ii(X)_(2)))^(2) u^(2) (x_(2)) + 2 frac(del f)(del ii(X)_(1)) frac(del f)(del ii(X)_(2)) r (x_(1) , x_(2)) u (x_(1)) u (x_(2))] |_(mathbf(X) = mathbf(x))) , (" " , = 4 x_(1)^(2) u^(2) (x_(1)) + 4 x_(2)^(2) u^(2) (x_(2)) + 8 r (x_(1) , x_(2)) x_(1) x_(2) u (x_(1)) u (x_(2)) .):})'
         mathml = <<~MATHML
@@ -3099,11 +3124,13 @@ RSpec.describe Plurimath::Asciimath do
     end
 
     context "contains example #56" do
-      let(:string) { 'u^2(delta y) = {:[({partial f}/{partial ii(X)_1})^2 u^2(x_1) + ({partial f}/{partial ii(X)_2})^2]|_{bb(X)=bb(x)} = 4 x_1^2 u^2 (x_1) + 4 x_2^2 u^2 (x_2),' }
+      let(:string) do
+        "u^2(delta y) = {:[({partial f}/{partial ii(X)_1})^2 u^2(x_1) + ({partial f}/{partial ii(X)_2})^2]|_{bb(X)=bb(x)} = 4 x_1^2 u^2 (x_1) + 4 x_2^2 u^2 (x_2),"
+      end
 
-      it 'returns parsed Asciimath to Formula' do
+      it "returns parsed Asciimath to Formula" do
         latex = 'u^{2} ( \delta y ) = \\left. [ ( \frac{\partial f}{\partial \mathit{X}_{1}} )^{2} u^{2} ( x_{1} ) + ( \frac{\partial f}{\partial \mathit{X}_{2}} )^{2} ] |_{\mathbf{X} = \mathbf{x}} = 4 x_{1}^{2} u^{2} ( x_{1} ) + 4 x_{2}^{2} u^{2} ( x_{2} ) , '
-        asciimath = 'u^(2) (delta y) = {:[(frac(del f)(del ii(X)_(1)))^(2) u^(2) (x_(1)) + (frac(del f)(del ii(X)_(2)))^(2)] |_(mathbf(X) = mathbf(x)) = 4 x_(1)^(2) u^(2) (x_(1)) + 4 x_(2)^(2) u^(2) (x_(2)) ,)'
+        asciimath = "u^(2) (delta y) = {:[(frac(del f)(del ii(X)_(1)))^(2) u^(2) (x_(1)) + (frac(del f)(del ii(X)_(2)))^(2)] |_(mathbf(X) = mathbf(x)) = 4 x_(1)^(2) u^(2) (x_(1)) + 4 x_(2)^(2) u^(2) (x_(2)) ,)"
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -3244,9 +3271,11 @@ RSpec.describe Plurimath::Asciimath do
     end
 
     context "contains example #57" do
-      let(:string) { 'lambda_1 = {|:(b_1 - a_1) - (b_2 - a_2):|}/2, " " " " lambda_2 = {b - a}/2,' }
+      let(:string) do
+        'lambda_1 = {|:(b_1 - a_1) - (b_2 - a_2):|}/2, " " " " lambda_2 = {b - a}/2,'
+      end
 
-      it 'returns parsed Asciimath to Formula' do
+      it "returns parsed Asciimath to Formula" do
         latex = '\lambda_{1} = \frac{| ( b_{1} - a_{1} ) - ( b_{2} - a_{2} ) |}{2} , \text{ } \text{ } \lambda_{2} = \frac{b - a}{2} ,'
         asciimath = 'lambda_(1) = frac(| (b_(1) - a_(1)) - (b_(2) - a_(2)) |)(2) , " " " " lambda_(2) = frac(b - a)(2) ,'
         mathml = <<~MATHML
@@ -3322,9 +3351,11 @@ RSpec.describe Plurimath::Asciimath do
     end
 
     context "contains example #58" do
-      let(:string) { 'ii(E)(ii(X)) = {a + b}/2, "    " ii(V)(ii(X)) = {(b - a)^2}/12' }
+      let(:string) do
+        'ii(E)(ii(X)) = {a + b}/2, "    " ii(V)(ii(X)) = {(b - a)^2}/12'
+      end
 
-      it 'returns parsed Asciimath to Formula' do
+      it "returns parsed Asciimath to Formula" do
         latex = '\mathit{E} ( \mathit{X} ) = \frac{a + b}{2} , \text{    } \mathit{V} ( \mathit{X} ) = \frac{( b - a )^{2}}{12}'
         asciimath = 'ii(E) (ii(X)) = frac(a + b)(2) , "    " ii(V) (ii(X)) = frac((b - a)^(2))(12)'
         mathml = <<~MATHML
@@ -3387,11 +3418,11 @@ RSpec.describe Plurimath::Asciimath do
     end
 
     context "contains example #59" do
-      let(:string) { 'i_j = (a_j xx i_j) mod d_j' }
+      let(:string) { "i_j = (a_j xx i_j) mod d_j" }
 
-      it 'returns parsed Asciimath to Formula' do
+      it "returns parsed Asciimath to Formula" do
         latex = 'i_{j} = {( a_{j} \times i_{j} )} \mod {d_{j}}'
-        asciimath = 'i_(j) = (a_(j) xx i_(j)) mod d_(j)'
+        asciimath = "i_(j) = (a_(j) xx i_(j)) mod d_(j)"
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -3430,11 +3461,11 @@ RSpec.describe Plurimath::Asciimath do
     end
 
     context "contains example #60" do
-      let(:string) { 'i_j = a_j xx (i_j mod b_j) - c_j xx floor(i_j//b_j)' }
+      let(:string) { "i_j = a_j xx (i_j mod b_j) - c_j xx floor(i_j//b_j)" }
 
-      it 'returns parsed Asciimath to Formula' do
+      it "returns parsed Asciimath to Formula" do
         latex = 'i_{j} = a_{j} \times ( {i_{j}} \mod {b_{j}} ) - c_{j} \times {\lfloor i_{j} / b_{j} \rfloor}'
-        asciimath = 'i_(j) = a_(j) xx (i_(j) mod b_(j)) - c_(j) xx floor(i_(j) // b_(j))'
+        asciimath = "i_(j) = a_(j) xx (i_(j) mod b_(j)) - c_(j) xx floor(i_(j) // b_(j))"
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -3494,9 +3525,11 @@ RSpec.describe Plurimath::Asciimath do
     end
 
     context "contains example #61" do
-      let(:string) { '[(x_1),(x_2)], " " [(u^2(x_1),ru(x_1)u(x_2)),(ru(x_1)u(x_2),u^2(x_2))].' }
+      let(:string) do
+        '[(x_1),(x_2)], " " [(u^2(x_1),ru(x_1)u(x_2)),(ru(x_1)u(x_2),u^2(x_2))].'
+      end
 
-      it 'returns parsed Asciimath to Formula' do
+      it "returns parsed Asciimath to Formula" do
         latex = '\left [\begin{matrix}x_{1} \\\\ x_{2}\end{matrix}\right ] , \text{ } \left [\begin{matrix}u^{2} ( x_{1} ) & r u ( x_{1} ) u ( x_{2} ) \\\\ r u ( x_{1} ) u ( x_{2} ) & u^{2} ( x_{2} )\end{matrix}\right ] .'
         asciimath = '[[x_(1)], [x_(2)]] , " " [[u^(2) (x_(1)), r u (x_(1)) u (x_(2))], [r u (x_(1)) u (x_(2)), u^(2) (x_(2))]] .'
         mathml = <<~MATHML
@@ -3619,11 +3652,13 @@ RSpec.describe Plurimath::Asciimath do
     end
 
     context "contains example #62" do
-      let(:string) { '1 + (ii(rho)_a - ii(rho)_a_0 )(1//ii(rho)_W - 1//ii(rho)_R)' }
+      let(:string) do
+        "1 + (ii(rho)_a - ii(rho)_a_0 )(1//ii(rho)_W - 1//ii(rho)_R)"
+      end
 
-      it 'returns parsed Asciimath to Formula' do
+      it "returns parsed Asciimath to Formula" do
         latex = '1 + ( \mathit{\rho}_{a} - \mathit{\rho}_{a}_{0} ) ( 1 / \mathit{\rho}_{W} - 1 / \mathit{\rho}_{R} )'
-        asciimath = '1 + (ii(rho)_(a) - ii(rho)_(a)_(0)) (1 // ii(rho)_(W) - 1 // ii(rho)_(R))'
+        asciimath = "1 + (ii(rho)_(a) - ii(rho)_(a)_(0)) (1 // ii(rho)_(W) - 1 // ii(rho)_(R))"
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -3682,7 +3717,7 @@ RSpec.describe Plurimath::Asciimath do
     context "contains example #63" do
       let(:string) { "f'(x) = dy/dx" }
 
-      it 'returns parsed Asciimath to Formula' do
+      it "returns parsed Asciimath to Formula" do
         latex = "f \\prime ( x ) = d \\frac{y}{d x}"
         asciimath = "f prime (x) = d frac(y)(d x)"
         mathml = <<~MATHML
@@ -3716,7 +3751,7 @@ RSpec.describe Plurimath::Asciimath do
     context "contains example #64" do
       let(:string) { "bar X' \\ \n theta" }
 
-      it 'returns parsed Asciimath to Formula' do
+      it "returns parsed Asciimath to Formula" do
         latex = "\\overline{X} \\prime \\\\  \\theta"
         asciimath = <<~ASCIIMATH.strip
           bar(X) prime \\
@@ -3747,7 +3782,7 @@ RSpec.describe Plurimath::Asciimath do
     context "contains example #65" do
       let(:string) { "y\"a" }
 
-      it 'returns parsed Asciimath to Formula' do
+      it "returns parsed Asciimath to Formula" do
         latex = "y \\text{} a"
         asciimath = "y \"\" a"
         mathml = <<~MATHML
@@ -3768,7 +3803,7 @@ RSpec.describe Plurimath::Asciimath do
     context "contains example #66" do
       let(:string) { 'text()^2"S"_(1//2)' }
 
-      it 'returns parsed Asciimath to Formula' do
+      it "returns parsed Asciimath to Formula" do
         latex = "\\text{}^{2} \\text{S}_{1 / 2}"
         asciimath = '""^(2) "S"_(1 // 2)'
         mathml = <<~MATHML
@@ -3796,11 +3831,11 @@ RSpec.describe Plurimath::Asciimath do
     end
 
     context "contains example #67" do
-      let(:string) { 'bb(ii(A)) + bb(ii(B)) = bb(ii())' }
+      let(:string) { "bb(ii(A)) + bb(ii(B)) = bb(ii())" }
 
-      it 'returns parsed Asciimath to Formula' do
+      it "returns parsed Asciimath to Formula" do
         latex = "\\mathbf{\\mathit{A}} + \\mathbf{\\mathit{B}} = \\mathbf{\\mathit{}}"
-        asciimath = 'mathbf(ii(A)) + mathbf(ii(B)) = mathbf(ii())'
+        asciimath = "mathbf(ii(A)) + mathbf(ii(B)) = mathbf(ii())"
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -3829,11 +3864,11 @@ RSpec.describe Plurimath::Asciimath do
     end
 
     context "contains example #68" do
-      let(:string) { 'bb(ii(A)) + bb(ii(B)) = bb(ii()' }
+      let(:string) { "bb(ii(A)) + bb(ii(B)) = bb(ii()" }
 
-      it 'returns parsed Asciimath to Formula' do
+      it "returns parsed Asciimath to Formula" do
         latex = "\\mathbf{\\mathit{A}} + \\mathbf{\\mathit{B}} = \\mathbf{\\mathit{}}"
-        asciimath = 'mathbf(ii(A)) + mathbf(ii(B)) = mathbf(ii())'
+        asciimath = "mathbf(ii(A)) + mathbf(ii(B)) = mathbf(ii())"
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -3864,7 +3899,7 @@ RSpec.describe Plurimath::Asciimath do
     context "contains example #69" do
       let(:string) { 'f_(199"Hg") = 1128575290808154.8 "unitsml(Hz)"' }
 
-      it 'returns parsed Asciimath to Formula' do
+      it "returns parsed Asciimath to Formula" do
         latex = 'f_{199 \\text{Hg}} = 1128575290808154.8 \\mathrm{Hz}'
         asciimath = 'f_(199 "Hg") = 1128575290808154.8 rm(Hz)'
         mathml = <<~MATHML
@@ -3895,9 +3930,11 @@ RSpec.describe Plurimath::Asciimath do
     end
 
     context "contains example #70" do
-      let(:string) { 'n_"S"("X") = m_"S" // ii(M)("X"), " and " ii(M)(""X"") = ii(A)_"r"("X") "unitsml(g/mol)"' }
+      let(:string) do
+        'n_"S"("X") = m_"S" // ii(M)("X"), " and " ii(M)(""X"") = ii(A)_"r"("X") "unitsml(g/mol)"'
+      end
 
-      it 'returns parsed Asciimath to Formula' do
+      it "returns parsed Asciimath to Formula" do
         latex = 'n_{\text{S}} ( \text{X} ) = m_{\text{S}} / \mathit{M} ( \text{X} ) , \text{ and } \mathit{M} ( \text{} X \text{} ) = \mathit{A}_{\text{r}} ( \text{X} ) \mathrm{g} \cdot \mathrm{mol}^{- 1}'
         asciimath = 'n_("S") ("X") = m_("S") // ii(M) ("X") , " and " ii(M) ("" X "") = ii(A)_("r") ("X") rm(g) * rm(mol)^(- 1)'
         mathml = <<~MATHML
@@ -3976,11 +4013,11 @@ RSpec.describe Plurimath::Asciimath do
     end
 
     context "contains example #71" do
-      let(:string) { 'abs(e) @ ceil(x) circ ddot(m)' }
+      let(:string) { "abs(e) @ ceil(x) circ ddot(m)" }
 
-      it 'returns parsed Asciimath to Formula' do
+      it "returns parsed Asciimath to Formula" do
         latex = '\abs{e} \circ {\lceil x \rceil} \circ \ddot{m}'
-        asciimath = 'abs(e) @ ceil(x) @ ddot(m)'
+        asciimath = "abs(e) @ ceil(x) @ ddot(m)"
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -4010,11 +4047,11 @@ RSpec.describe Plurimath::Asciimath do
     end
 
     context "contains example #72" do
-      let(:string) { 'g @ f' }
+      let(:string) { "g @ f" }
 
-      it 'returns parsed Asciimath to Formula' do
+      it "returns parsed Asciimath to Formula" do
         latex = 'g \circ f'
-        asciimath = 'g @ f'
+        asciimath = "g @ f"
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -4031,11 +4068,11 @@ RSpec.describe Plurimath::Asciimath do
     end
 
     context "contains example #73" do
-      let(:string) { 'abs(A)' }
+      let(:string) { "abs(A)" }
 
-      it 'returns parsed Asciimath to Formula' do
+      it "returns parsed Asciimath to Formula" do
         latex = '\abs{A}'
-        asciimath = 'abs(A)'
+        asciimath = "abs(A)"
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -4054,11 +4091,11 @@ RSpec.describe Plurimath::Asciimath do
     end
 
     context "contains example #74" do
-      let(:string) { 'ceil(x)' }
+      let(:string) { "ceil(x)" }
 
-      it 'returns parsed Asciimath to Formula' do
+      it "returns parsed Asciimath to Formula" do
         latex = '{\lceil x \rceil}'
-        asciimath = 'ceil(x)'
+        asciimath = "ceil(x)"
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -4077,11 +4114,11 @@ RSpec.describe Plurimath::Asciimath do
     end
 
     context "contains example #75" do
-      let(:string) { 'ddot x' }
+      let(:string) { "ddot x" }
 
-      it 'returns parsed Asciimath to Formula' do
+      it "returns parsed Asciimath to Formula" do
         latex = '\ddot{x}'
-        asciimath = 'ddot(x)'
+        asciimath = "ddot(x)"
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -4099,11 +4136,11 @@ RSpec.describe Plurimath::Asciimath do
     end
 
     context "contains example #76" do
-      let(:string) { '{x_i | i in I}' }
+      let(:string) { "{x_i | i in I}" }
 
-      it 'returns parsed Asciimath to Formula' do
+      it "returns parsed Asciimath to Formula" do
         latex = '\{ x_{i} | i \in I \}'
-        asciimath = '{x_(i) | i in I}'
+        asciimath = "{x_(i) | i in I}"
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -4131,7 +4168,7 @@ RSpec.describe Plurimath::Asciimath do
     context "contains example #77" do
       let(:string) { '"H"_nu^((1))(z)' }
 
-      it 'returns parsed Asciimath to Formula' do
+      it "returns parsed Asciimath to Formula" do
         latex = '\text{H}_{\nu}^{( 1 )} ( z )'
         asciimath = '"H"_(nu)^((1)) (z)'
         mathml = <<~MATHML
@@ -4161,11 +4198,11 @@ RSpec.describe Plurimath::Asciimath do
     end
 
     context "contains example #78" do
-      let(:string) { '(a)_n' }
+      let(:string) { "(a)_n" }
 
-      it 'returns parsed Asciimath to Formula' do
-        latex = '( a )_{n}'
-        asciimath = '(a)_(n)'
+      it "returns parsed Asciimath to Formula" do
+        latex = "( a )_{n}"
+        asciimath = "(a)_(n)"
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -4187,11 +4224,11 @@ RSpec.describe Plurimath::Asciimath do
     end
 
     context "contains example #79" do
-      let(:string) { 'tilde(x)' }
+      let(:string) { "tilde(x)" }
 
-      it 'returns parsed Asciimath to Formula' do
+      it "returns parsed Asciimath to Formula" do
         latex = '\tilde{x}'
-        asciimath = 'tilde(x)'
+        asciimath = "tilde(x)"
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -4209,11 +4246,11 @@ RSpec.describe Plurimath::Asciimath do
     end
 
     context "contains ubrace only example #80" do
-      let(:string) { 'ubrace' }
+      let(:string) { "ubrace" }
 
-      it 'returns parsed Asciimath to Formula' do
+      it "returns parsed Asciimath to Formula" do
         latex = '\underbrace'
-        asciimath = 'ubrace'
+        asciimath = "ubrace"
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -4228,11 +4265,11 @@ RSpec.describe Plurimath::Asciimath do
     end
 
     context "contains obrace only example #81" do
-      let(:string) { 'obrace' }
+      let(:string) { "obrace" }
 
-      it 'returns parsed Asciimath to Formula' do
+      it "returns parsed Asciimath to Formula" do
         latex = '\overbrace'
-        asciimath = 'obrace'
+        asciimath = "obrace"
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -4247,11 +4284,11 @@ RSpec.describe Plurimath::Asciimath do
     end
 
     context "contains SanSerif and Monospace font styles example #82" do
-      let(:string) { 'mathtt(d)mathsf(e)' }
+      let(:string) { "mathtt(d)mathsf(e)" }
 
-      it 'returns parsed Asciimath to Formula' do
+      it "returns parsed Asciimath to Formula" do
         latex = '\mathtt{d} \mathsf{e}'
-        asciimath = 'mathtt(d) mathsf(e)'
+        asciimath = "mathtt(d) mathsf(e)"
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -4271,11 +4308,11 @@ RSpec.describe Plurimath::Asciimath do
     end
 
     context "contains right paren power and single expression example #83" do
-      let(:string) { ')^e v' }
+      let(:string) { ")^e v" }
 
-      it 'returns parsed Asciimath to Formula' do
-        latex = ')^{e} v'
-        asciimath = ')^(e) v'
+      it "returns parsed Asciimath to Formula" do
+        latex = ")^{e} v"
+        asciimath = ")^(e) v"
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -4294,11 +4331,11 @@ RSpec.describe Plurimath::Asciimath do
     end
 
     context "contains right paren power comma and single expression example #84" do
-      let(:string) { ')^e,v' }
+      let(:string) { ")^e,v" }
 
-      it 'returns parsed Asciimath to Formula' do
-        latex = ')^{e} , v'
-        asciimath = ')^(e) , v'
+      it "returns parsed Asciimath to Formula" do
+        latex = ")^{e} , v"
+        asciimath = ")^(e) , v"
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -4318,11 +4355,11 @@ RSpec.describe Plurimath::Asciimath do
     end
 
     context "contains right paren power comma and sequence of expression example #85" do
-      let(:string) { ')^e dv' }
+      let(:string) { ")^e dv" }
 
-      it 'returns parsed Asciimath to Formula' do
-        latex = ')^{e} d v'
-        asciimath = ')^(e) d v'
+      it "returns parsed Asciimath to Formula" do
+        latex = ")^{e} d v"
+        asciimath = ")^(e) d v"
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -4342,11 +4379,11 @@ RSpec.describe Plurimath::Asciimath do
     end
 
     context "contains right power base binary class and expression(sequence and simple) example #86" do
-      let(:string) { 'sum_(d)^(3) prod_(dd)^(dd)' }
+      let(:string) { "sum_(d)^(3) prod_(dd)^(dd)" }
 
-      it 'returns parsed Asciimath to Formula' do
+      it "returns parsed Asciimath to Formula" do
         latex = '\sum_{d}^{3} \prod_{d d}^{d d}'
-        asciimath = 'sum_(d)^(3) prod_(d d)^(d d)'
+        asciimath = "sum_(d)^(3) prod_(d d)^(d d)"
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -4378,11 +4415,11 @@ RSpec.describe Plurimath::Asciimath do
     end
 
     context "contains dot with random value example #87" do
-      let(:string) { 'dot(x)' }
+      let(:string) { "dot(x)" }
 
-      it 'returns parsed Asciimath to Formula' do
+      it "returns parsed Asciimath to Formula" do
         latex = '\dot{x}'
-        asciimath = 'dot(x)'
+        asciimath = "dot(x)"
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -4409,9 +4446,9 @@ RSpec.describe Plurimath::Asciimath do
         ASCIIMATH
       end
 
-      it 'returns parsed Asciimath to Formula' do
+      it "returns parsed Asciimath to Formula" do
         latex = '\mathbf{C_{X}}^{( 1 )} = \left [\begin{matrix}1 + A \theta_{1} + B \theta_{1}^{2} & R_{0} \theta_{1} & R_{0} \theta_{1}^{2} & - r_{1} \\\\ \vdots & \vdots & \vdots & \vdots \\\\ 1 + A \theta_{10} + B \theta_{10}^{2} & R_{0} \theta_{10} & R_{0} \theta_{10}^{2} & - r_{10}\end{matrix}\right ]'
-        asciimath = 'mathbf(C_(X))^((1)) = [[1 + A theta_(1) + B theta_(1)^(2), R_(0) theta_(1), R_(0) theta_(1)^(2), - r_(1)], [vdots, vdots, vdots, vdots], [1 + A theta_(10) + B theta_(10)^(2), R_(0) theta_(10), R_(0) theta_(10)^(2), - r_(10)]]'
+        asciimath = "mathbf(C_(X))^((1)) = [[1 + A theta_(1) + B theta_(1)^(2), R_(0) theta_(1), R_(0) theta_(1)^(2), - r_(1)], [vdots, vdots, vdots, vdots], [1 + A theta_(10) + B theta_(10)^(2), R_(0) theta_(10), R_(0) theta_(10)^(2), - r_(10)]]"
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -4553,11 +4590,13 @@ RSpec.describe Plurimath::Asciimath do
     end
 
     context "contains dot with random value example #89" do
-      let(:string) { '[(cos{:y_2:},sin y_2),(-(sin y_2)//y_1,(cos y_2)//y_1)] .' }
+      let(:string) do
+        "[(cos{:y_2:},sin y_2),(-(sin y_2)//y_1,(cos y_2)//y_1)] ."
+      end
 
-      it 'returns parsed Asciimath to Formula' do
+      it "returns parsed Asciimath to Formula" do
         latex = '\left [\begin{matrix}\cos{\\left. y_{2} \\right.} & \sin{y}_{2} \\\\ - ( \sin{y}_{2} ) / y_{1} & ( \cos{y}_{2} ) / y_{1}\end{matrix}\right ] .'
-        asciimath = '[[cos{:y_(2):}, siny_(2)], [- (siny_(2)) // y_(1), (cosy_(2)) // y_(1)]] .'
+        asciimath = "[[cos{:y_(2):}, siny_(2)], [- (siny_(2)) // y_(1), (cosy_(2)) // y_(1)]] ."
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -4641,9 +4680,11 @@ RSpec.describe Plurimath::Asciimath do
     end
 
     context "contains dot with random value example #90" do
-      let(:string) { "f (\"a\"_{28},\" P(54) 8-4\") - f (\"a\"_{16},\" R(127) 11-5\"{^(127)ii(I)_2}) = -42.99(4) \"unitsml(MHz)\"" }
+      let(:string) do
+        "f (\"a\"_{28},\" P(54) 8-4\") - f (\"a\"_{16},\" R(127) 11-5\"{^(127)ii(I)_2}) = -42.99(4) \"unitsml(MHz)\""
+      end
 
-      it 'returns parsed Asciimath to Formula' do
+      it "returns parsed Asciimath to Formula" do
         latex = 'f ( \text{a}_{28} , \text{ P(54) 8-4} ) - f ( \text{a}_{16} , \text{ R(127) 11-5} \{ ^ ( 127 ) \mathit{I}_{2} \} ) = - 42.99 ( 4 ) \mathrm{MHz}'
         asciimath = "f (\"a\"_(28) , \" P(54) 8-4\") - f (\"a\"_(16) , \" R(127) 11-5\" {^ (127) ii(I)_(2)}) = - 42.99 (4) rm(MHz)"
         mathml = <<~MATHML
@@ -4714,7 +4755,7 @@ RSpec.describe Plurimath::Asciimath do
     context "contains matrix rendering example #91" do
       let(:string) { "T_m = T_{lm} = [(a,b,0),(c,d,0),(e,f,1)]" }
 
-      it 'returns parsed Asciimath to Formula' do
+      it "returns parsed Asciimath to Formula" do
         latex = 'T_{m} = T_{l m} = \left [\begin{matrix}a & b & 0 \\\\ c & d & 0 \\\\ e & f & 1\end{matrix}\right ]'
         asciimath = "T_(m) = T_(l m) = [[a, b, 0], [c, d, 0], [e, f, 1]]"
         mathml = <<~MATHML
@@ -4790,7 +4831,7 @@ RSpec.describe Plurimath::Asciimath do
         ASCIIMATH
       end
 
-      it 'returns parsed Asciimath to Formula' do
+      it "returns parsed Asciimath to Formula" do
         latex = '\langle C_{s_{i}} , f_{j_{i}} , \alpha_{j_{i}} \rangle = \left \{\begin{matrix}\text{Composite} ( C_{i - 1} , \alpha_{i - 1} , E_{i} ) & \text{if } E_{i} \text{ is a group} \\\\ \text{intrinsic color, shape, and } ( \text{shape} \times \text{opacity} ) \text{ of } E_{i} & \text{otherwise}\end{matrix}\right .'
         asciimath = '<< C_(s_(i)) , f_(j_(i)) , alpha_(j_(i)) >> = {["Composite" (C_(i - 1) , alpha_(i - 1) , E_(i)), "if " E_(i) " is a group"], ["intrinsic color, shape, and " ("shape" xx "opacity") " of " E_(i), "otherwise"]:}'
         mathml = <<~MATHML
@@ -4901,7 +4942,7 @@ RSpec.describe Plurimath::Asciimath do
     context "contains matrix rendering example #93" do
       let(:string) { '<< C_g, f_g, alpha_g >> = "Composite"(U,0,P)' }
 
-      it 'returns parsed Asciimath to Formula' do
+      it "returns parsed Asciimath to Formula" do
         latex = '\langle C_{g} , f_{g} , \alpha_{g} \rangle = \text{Composite} ( U , 0 , P )'
         asciimath = '<< C_(g) , f_(g) , alpha_(g) >> = "Composite" (U , 0 , P)'
         mathml = <<~MATHML
@@ -4946,7 +4987,7 @@ RSpec.describe Plurimath::Asciimath do
     context "contains matrix rendering example #94" do
       let(:string) { '(: C,f,alpha :) = "Composite"(C_0,alpha_0,G)' }
 
-      it 'returns parsed Asciimath to Formula' do
+      it "returns parsed Asciimath to Formula" do
         latex = '\langle C , f , \alpha \rangle = \text{Composite} ( C_{0} , \alpha_{0} , G )'
         asciimath = '<<C , f , alpha>> = "Composite" (C_(0) , alpha_(0) , G)'
         mathml = <<~MATHML
@@ -4988,11 +5029,11 @@ RSpec.describe Plurimath::Asciimath do
     end
 
     context "contains oint example #95" do
-      let(:string) { 'oint_(sum)^d prod' }
+      let(:string) { "oint_(sum)^d prod" }
 
-      it 'returns parsed Asciimath to Formula' do
+      it "returns parsed Asciimath to Formula" do
         latex = '\oint_{ \left ( \sum \right ) }^{d} \prod'
-        asciimath = 'oint_(sum)^(d) prod'
+        asciimath = "oint_(sum)^(d) prod"
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -5014,9 +5055,11 @@ RSpec.describe Plurimath::Asciimath do
     end
 
     context "contains concatenated expressions example 1 example #96" do
-      let(:string) { 'ii(M)_(12) = 11 - sum_(j=2)^(10) 2^j ((12),(j)) ii(B)_j = ... = -2" "073' }
+      let(:string) do
+        'ii(M)_(12) = 11 - sum_(j=2)^(10) 2^j ((12),(j)) ii(B)_j = ... = -2" "073'
+      end
 
-      it 'returns parsed Asciimath to Formula' do
+      it "returns parsed Asciimath to Formula" do
         latex = '\mathit{M}_{12} = 11 - \sum_{j = 2}^{10} 2^{j} \left (\begin{matrix}12 \\\\ j\end{matrix}\right ) \mathit{B}_{j} = \ldots = - 2 \text{ } 073'
         asciimath = 'ii(M)_(12) = 11 - sum_(j = 2)^(10) 2^(j) ([12], [j]) ii(B)_(j) = ... = - 2 " " 073'
         mathml = <<~MATHML
@@ -5087,9 +5130,11 @@ RSpec.describe Plurimath::Asciimath do
     end
 
     context "contains concatenated expressions example 2 example #97" do
-      let(:string) { 'bar(x) = 1/n sum_{i=1}^n x_i, " " s^2 = 1/{n - 1} sum_{i=1}^n (x_i - bar(x))^2,' }
+      let(:string) do
+        'bar(x) = 1/n sum_{i=1}^n x_i, " " s^2 = 1/{n - 1} sum_{i=1}^n (x_i - bar(x))^2,'
+      end
 
-      it 'returns parsed Asciimath to Formula' do
+      it "returns parsed Asciimath to Formula" do
         latex = '\overline{x} = \frac{1}{n} \sum_{i = 1}^{n} x_{i} , \text{ } s^{2} = \frac{1}{n - 1} \sum_{i = 1}^{n} ( x_{i} - \overline{x} )^{2} ,'
         asciimath = 'bar(x) = frac(1)(n) sum_(i = 1)^(n) x_(i) , " " s^(2) = frac(1)(n - 1) sum_(i = 1)^(n) (x_(i) - bar(x))^(2) ,'
         mathml = <<~MATHML
@@ -5176,7 +5221,7 @@ RSpec.describe Plurimath::Asciimath do
     context "contains contains jcgm#35 GUM 6:2020 document plurimath#195 equation #1 example #98" do
       let(:string) { "x = ((I_x + varepsilon_x))/I_\"ref\" x_\"ref\"" }
 
-      it 'returns parsed Asciimath to Formula' do
+      it "returns parsed Asciimath to Formula" do
         latex = "x = \\frac{\\left (\\begin{matrix}I_{x} + \\varepsilon_{x}\\end{matrix}\\right )}{I_{\\text{ref}}} x_{\\text{ref}}"
         asciimath = "x = frac(([I_(x) + varepsilon_(x)]))(I_(\"ref\")) x_(\"ref\")"
         mathml = <<~MATHML
@@ -5225,7 +5270,7 @@ RSpec.describe Plurimath::Asciimath do
     context "contains contains jcgm#35 GUM 6:2020 document plurimath#195 equation #2 example #99" do
       let(:string) { "(u(r)//r)//" }
 
-      it 'returns parsed Asciimath to Formula' do
+      it "returns parsed Asciimath to Formula" do
         latex = "( u ( r ) / r ) /"
         asciimath = "(u (r) // r) //"
         mathml = <<~MATHML
@@ -5256,7 +5301,7 @@ RSpec.describe Plurimath::Asciimath do
     context "contains contains jcgm#35 GUM 6:2020 document plurimath#195 equation #3 example #100" do
       let(:string) { "u(x)//" }
 
-      it 'returns parsed Asciimath to Formula' do
+      it "returns parsed Asciimath to Formula" do
         latex = "u ( x ) /"
         asciimath = "u (x) //"
         mathml = <<~MATHML
@@ -5281,7 +5326,7 @@ RSpec.describe Plurimath::Asciimath do
     context "contains contains jcgm#35 GUM 6:2020 document plurimath#195 equation #4 example #101" do
       let(:string) { "x//" }
 
-      it 'returns parsed Asciimath to Formula' do
+      it "returns parsed Asciimath to Formula" do
         latex = "x /"
         asciimath = "x //"
         mathml = <<~MATHML
@@ -5301,7 +5346,7 @@ RSpec.describe Plurimath::Asciimath do
     context "contains nested table with new line example #102" do
       let(:string) { "[[1,((2\\\n4),(7))], [3,4]]" }
 
-      it 'returns parsed Asciimath to Formula' do
+      it "returns parsed Asciimath to Formula" do
         latex = "\\left [\\begin{matrix}1 & \\left (\\begin{matrix}2 \\\\  4 \\\\ 7\\end{matrix}\\right ) \\\\ 3 & 4\\end{matrix}\\right ]"
         asciimath = "[[1, ([2 \\\n  4], [7])], [3, 4]]"
         mathml = <<~MATHML
@@ -5358,9 +5403,9 @@ RSpec.describe Plurimath::Asciimath do
     context "contains unitsml example as unary function value example #99" do
       let(:string) { 'sin "unitsml(mm*s^-2)"' }
 
-      it 'returns parsed Asciimath to Formula' do
+      it "returns parsed Asciimath to Formula" do
         latex = '\sin{\mathrm{mm} \cdot \mathrm{s}^{- 2}}'
-        asciimath = 'sinrm(mm) * rm(s)^(- 2)'
+        asciimath = "sinrm(mm) * rm(s)^(- 2)"
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -5395,9 +5440,9 @@ RSpec.describe Plurimath::Asciimath do
     context "contains unitsml example #1 plurimath/asciimath2unitsml example #100" do
       let(:string) { '1 "unitsml(mm*s^-2)"' }
 
-      it 'returns parsed Asciimath to Formula' do
+      it "returns parsed Asciimath to Formula" do
         latex = '1 \\mathrm{mm} \\cdot \\mathrm{s}^{- 2}'
-        asciimath = '1 rm(mm) * rm(s)^(- 2)'
+        asciimath = "1 rm(mm) * rm(s)^(- 2)"
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -5430,9 +5475,9 @@ RSpec.describe Plurimath::Asciimath do
     context "contains unitsml example #2 plurimath/asciimath2unitsml example #101" do
       let(:string) { '1 "unitsml(um)"' }
 
-      it 'returns parsed Asciimath to Formula' do
+      it "returns parsed Asciimath to Formula" do
         latex = '1 \\mathrm{&#xb5;m}'
-        asciimath = '1 rm(&#xb5;m)'
+        asciimath = "1 rm(&#xb5;m)"
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -5453,9 +5498,11 @@ RSpec.describe Plurimath::Asciimath do
     end
 
     context "contains unitsml example #3 plurimath/asciimath2unitsml example #102" do
-      let(:string) { '1 "unitsml(degK)" + 1 "unitsml(prime)" + ii(theta) = s//r "unitsml(rad)" + 10^(12) "unitsml(Hz)"' }
+      let(:string) do
+        '1 "unitsml(degK)" + 1 "unitsml(prime)" + ii(theta) = s//r "unitsml(rad)" + 10^(12) "unitsml(Hz)"'
+      end
 
-      it 'returns parsed Asciimath to Formula' do
+      it "returns parsed Asciimath to Formula" do
         latex = '1 \\mathrm{&#xb0;K} + 1 \\mathrm{\\prime} + \\mathit{\\theta} = s / r \\mathrm{rad} + 10^{12} \\mathrm{Hz}'
         asciimath = "1 rm(&#xb0;K) + 1 rm(prime) + ii(theta) = s // r rm(rad) + 10^(12) rm(Hz)"
         mathml = <<~MATHML
@@ -5513,7 +5560,7 @@ RSpec.describe Plurimath::Asciimath do
     context "contains unitsml example #4 plurimath/asciimath2unitsml example #103" do
       let(:string) { '8 "unitsml(kg)" cdot "unitsml(m)"' }
 
-      it 'returns parsed Asciimath to Formula' do
+      it "returns parsed Asciimath to Formula" do
         latex = '8 \\mathrm{kg} \\cdot \\mathrm{m}'
         asciimath = "8 rm(kg) * rm(m)"
         mathml = <<~MATHML
@@ -5545,7 +5592,7 @@ RSpec.describe Plurimath::Asciimath do
     context "contains unitsml example #5 plurimath/asciimath2unitsml example #104" do
       let(:string) { '1 "unitsml(sqrt(Hz))"' }
 
-      it 'returns parsed Asciimath to Formula' do
+      it "returns parsed Asciimath to Formula" do
         latex = '1 \\mathrm{Hz}^{0.5}'
         asciimath = "1 rm(Hz)^(0.5)"
         mathml = <<~MATHML
@@ -5573,7 +5620,7 @@ RSpec.describe Plurimath::Asciimath do
     context "contains unitsml example #6 plurimath/asciimath2unitsml example #105" do
       let(:string) { '1 "unitsml(kg)" + 1 "unitsml(g)"' }
 
-      it 'returns parsed Asciimath to Formula' do
+      it "returns parsed Asciimath to Formula" do
         latex = '1 \mathrm{kg} + 1 \mathrm{g}'
         asciimath = "1 rm(kg) + 1 rm(g)"
         mathml = <<~MATHML
@@ -5606,7 +5653,7 @@ RSpec.describe Plurimath::Asciimath do
     context "contains unitsml example #7 plurimath/asciimath2unitsml example #106" do
       let(:string) { '"unitsml(u-)" + "unitsml(um)"' }
 
-      it 'returns parsed Asciimath to Formula' do
+      it "returns parsed Asciimath to Formula" do
         latex = 'u + \mathrm{&#xb5;m}'
         asciimath = "u + rm(&#xb5;m)"
         mathml = <<~MATHML
@@ -5635,7 +5682,7 @@ RSpec.describe Plurimath::Asciimath do
     context "contains unitsml example #1 plurimath/plurimath/pull/221 example #107" do
       let(:string) { '1 "unitsml(Aring)"' }
 
-      it 'returns parsed Asciimath to Formula' do
+      it "returns parsed Asciimath to Formula" do
         latex = '1 \mathrm{&#xc5;}'
         asciimath = "1 rm(&#xc5;)"
         mathml = <<~MATHML
@@ -5660,7 +5707,7 @@ RSpec.describe Plurimath::Asciimath do
     context "contains unitsml example #2 plurimath/plurimath/pull/221 example #108" do
       let(:string) { '1 "unitsml(deg)"' }
 
-      it 'returns parsed Asciimath to Formula' do
+      it "returns parsed Asciimath to Formula" do
         latex = '1 \mathrm{\\text{P[degree]}}'
         asciimath = "1 rm(\"P{degree}\")"
         mathml = <<~MATHML
@@ -5683,9 +5730,11 @@ RSpec.describe Plurimath::Asciimath do
     end
 
     context "contains example from plurimath/pull/238 example #109" do
-      let(:string) { 's_{"p"}^2 = {sum_{i=1}^{ii(N)} ii(nu)_i s_i^2}/{sum_{i=1}^{ii(N)} ii(nu)_i}' }
+      let(:string) do
+        's_{"p"}^2 = {sum_{i=1}^{ii(N)} ii(nu)_i s_i^2}/{sum_{i=1}^{ii(N)} ii(nu)_i}'
+      end
 
-      it 'prevention of conversion from ternary functions to nary-and function' do
+      it "prevention of conversion from ternary functions to nary-and function" do
         latex = 's_{\text{p}}^{2} = \frac{\sum_{i = 1}^{\mathit{N}} \mathit{\nu}_{i} s_{i}^{2}}{\sum_{i = 1}^{\mathit{N}} \mathit{\nu}_{i}}'
         asciimath = 's_("p")^(2) = frac(sum_(i = 1)^(ii(N)) ii(nu)_(i) s_(i)^(2))(sum_(i = 1)^(ii(N)) ii(nu)_(i))'
         mathml = <<~MATHML
@@ -5754,11 +5803,13 @@ RSpec.describe Plurimath::Asciimath do
     end
 
     context "contains example from plurimath/pull/240 example #110" do
-      let(:string) { '1 "unitsml(A)" = (e/(1.602176634 xx 10^(-19))) "unitsml(s^(-1))"' }
+      let(:string) do
+        '1 "unitsml(A)" = (e/(1.602176634 xx 10^(-19))) "unitsml(s^(-1))"'
+      end
 
-      it 'returns parsed Asciimath to Formula' do
+      it "returns parsed Asciimath to Formula" do
         latex = '1 \mathrm{A} = ( \frac{e}{1.602176634 \times 10^{- 19}} ) \mathrm{s}^{- 1}'
-        asciimath = '1 rm(A) = (frac(e)(1.602176634 xx 10^(- 19))) rm(s)^(- 1)'
+        asciimath = "1 rm(A) = (frac(e)(1.602176634 xx 10^(- 19))) rm(s)^(- 1)"
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -5810,11 +5861,13 @@ RSpec.describe Plurimath::Asciimath do
     end
 
     context "contains example from plurimath/issues/232 example #111" do
-      let(:string) { '((E_H^s),(E_V^s)) = e^(jkR)/R ([S_(HH),S_(HV)], [S_(VH), S_(VV)])((E_H^j), (E_V^j))' }
+      let(:string) do
+        "((E_H^s),(E_V^s)) = e^(jkR)/R ([S_(HH),S_(HV)], [S_(VH), S_(VV)])((E_H^j), (E_V^j))"
+      end
 
-      it 'matches LaTeX, AsciiMath, and MathML' do
+      it "matches LaTeX, AsciiMath, and MathML" do
         latex = '\left (\begin{matrix}E_{H}^{s} \\\\ E_{V}^{s}\end{matrix}\right ) = \frac{e^{j k R}}{R} \left (\begin{matrix}S_{H H} & S_{H V} \\\\ S_{V H} & S_{V V}\end{matrix}\right ) \left (\begin{matrix}E_{H}^{j} \\\\ E_{V}^{j}\end{matrix}\right )'
-        asciimath = '([E_(H)^(s)], [E_(V)^(s)]) = frac(e^(j k R))(R) ([S_(H H), S_(H V)], [S_(V H), S_(V V)]) ([E_(H)^(j)], [E_(V)^(j)])'
+        asciimath = "([E_(H)^(s)], [E_(V)^(s)]) = frac(e^(j k R))(R) ([S_(H H), S_(H V)], [S_(V H), S_(V V)]) ([E_(H)^(j)], [E_(V)^(j)])"
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -5936,11 +5989,13 @@ RSpec.describe Plurimath::Asciimath do
     end
 
     context "contains example from metanorma/metanorma-cli/pull/329 example #1 example #112" do
-      let(:string) { '{ii(L)_{ii(lambda)} (ii(T)_{90})}/{ii(L)_{ii(lambda)} (ii(T)_{90} (ii(X)))} = {exp(c_2 / {ii(lambda) ii(T)_{90} (ii(X))}) - 1} / {exp (c_2 / {ii(lambda) ii(T)_{90}}) - 1} ,' }
+      let(:string) do
+        "{ii(L)_{ii(lambda)} (ii(T)_{90})}/{ii(L)_{ii(lambda)} (ii(T)_{90} (ii(X)))} = {exp(c_2 / {ii(lambda) ii(T)_{90} (ii(X))}) - 1} / {exp (c_2 / {ii(lambda) ii(T)_{90}}) - 1} ,"
+      end
 
-      it 'matches LaTeX, AsciiMath, and MathML' do
+      it "matches LaTeX, AsciiMath, and MathML" do
         latex = '\frac{\mathit{L}_{\mathit{\lambda}} ( \mathit{T}_{90} )}{\mathit{L}_{\mathit{\lambda}} ( \mathit{T}_{90} ( \mathit{X} ) )} = \frac{\exp{( \frac{c_{2}}{\mathit{\lambda} \mathit{T}_{90} ( \mathit{X} )} )} - 1}{\exp{( \frac{c_{2}}{\mathit{\lambda} \mathit{T}_{90}} )} - 1} ,'
-        asciimath = 'frac(ii(L)_(ii(lambda)) (ii(T)_(90)))(ii(L)_(ii(lambda)) (ii(T)_(90) (ii(X)))) = frac(exp(frac(c_(2))(ii(lambda) ii(T)_(90) (ii(X)))) - 1)(exp(frac(c_(2))(ii(lambda) ii(T)_(90))) - 1) ,'
+        asciimath = "frac(ii(L)_(ii(lambda)) (ii(T)_(90)))(ii(L)_(ii(lambda)) (ii(T)_(90) (ii(X)))) = frac(exp(frac(c_(2))(ii(lambda) ii(T)_(90) (ii(X)))) - 1)(exp(frac(c_(2))(ii(lambda) ii(T)_(90))) - 1) ,"
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -6070,11 +6125,13 @@ RSpec.describe Plurimath::Asciimath do
     end
 
     context "contains example from metanorma/metanorma-cli/pull/329 example #2 example #113" do
-      let(:string) { 'ii(L)_{ii(lambda)} (ii(T)_{90}) = c_1 / {n_{ii(lambda)}^2 ii(lambda)^5} [exp(c_2 / {n_{ii(lambda)} ii(lambda) ii(T)_{90}}) - 1]^{-1}' }
+      let(:string) do
+        "ii(L)_{ii(lambda)} (ii(T)_{90}) = c_1 / {n_{ii(lambda)}^2 ii(lambda)^5} [exp(c_2 / {n_{ii(lambda)} ii(lambda) ii(T)_{90}}) - 1]^{-1}"
+      end
 
-      it 'matches LaTeX, AsciiMath, and MathML' do
+      it "matches LaTeX, AsciiMath, and MathML" do
         latex = '\mathit{L}_{\mathit{\lambda}} ( \mathit{T}_{90} ) = \frac{c_{1}}{n_{\mathit{\lambda}}^{2} \mathit{\lambda}^{5}} [ \exp{( \frac{c_{2}}{n_{\mathit{\lambda}} \mathit{\lambda} \mathit{T}_{90}} )} - 1 ]^{- 1}'
-        asciimath = 'ii(L)_(ii(lambda)) (ii(T)_(90)) = frac(c_(1))(n_(ii(lambda))^(2) ii(lambda)^(5)) [exp(frac(c_(2))(n_(ii(lambda)) ii(lambda) ii(T)_(90))) - 1]^(- 1)'
+        asciimath = "ii(L)_(ii(lambda)) (ii(T)_(90)) = frac(c_(1))(n_(ii(lambda))^(2) ii(lambda)^(5)) [exp(frac(c_(2))(n_(ii(lambda)) ii(lambda) ii(T)_(90))) - 1]^(- 1)"
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -6170,9 +6227,11 @@ RSpec.describe Plurimath::Asciimath do
     end
 
     context "contains example from plurimath/pull/244 example #114" do
-      let(:string) { '[u_0, u_1, u_2, u_3, ... , u_n] "P{backepsilon}" [[0 leq u_i leq 1] wedge sum u_i = 1.0]' }
+      let(:string) do
+        '[u_0, u_1, u_2, u_3, ... , u_n] "P{backepsilon}" [[0 leq u_i leq 1] wedge sum u_i = 1.0]'
+      end
 
-      it 'matches LaTeX, AsciiMath, and MathML' do
+      it "matches LaTeX, AsciiMath, and MathML" do
         latex = '[ u_{0} , u_{1} , u_{2} , u_{3} , \ldots , u_{n} ] \backepsilon [ [ 0 \le q u_{i} \le q 1 ] \land \sum u_{i} = 1.0 ]'
         asciimath = '[u_(0) , u_(1) , u_(2) , u_(3) , ... , u_(n)] "P{backepsilon}" [[0 le q u_(i) le q 1] ^^ sum u_(i) = 1.0]'
         mathml = <<~MATHML
@@ -6247,9 +6306,9 @@ RSpec.describe Plurimath::Asciimath do
     context "contains example from metanorma-standoc specs #1 example #115" do
       let(:string) { "bar X' = (1)/(v) sum_(i = 1)^(v) t_(i)" }
 
-      it 'matches LaTeX, AsciiMath, and MathML' do
+      it "matches LaTeX, AsciiMath, and MathML" do
         latex = '\overline{X} \prime = \frac{1}{v} \sum_{i = 1}^{v} t_{i}'
-        asciimath = 'bar(X) prime = frac(1)(v) sum_(i = 1)^(v) t_(i)'
+        asciimath = "bar(X) prime = frac(1)(v) sum_(i = 1)^(v) t_(i)"
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -6290,9 +6349,9 @@ RSpec.describe Plurimath::Asciimath do
     context "contains example from metanorma-standoc specs #2 example #116" do
       let(:string) { "|~ x ~|" }
 
-      it 'matches LaTeX, AsciiMath, and MathML' do
+      it "matches LaTeX, AsciiMath, and MathML" do
         latex = '\lceil x \rceil'
-        asciimath = '|~ x ~|'
+        asciimath = "|~ x ~|"
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -6311,9 +6370,9 @@ RSpec.describe Plurimath::Asciimath do
     context "contains example from metanorma-standoc specs #3 example #117" do
       let(:string) { "|__ x __|" }
 
-      it 'matches LaTeX, AsciiMath, and MathML' do
+      it "matches LaTeX, AsciiMath, and MathML" do
         latex = '\lfloor x \rfloor'
-        asciimath = '|__ x __|'
+        asciimath = "|__ x __|"
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -6332,7 +6391,7 @@ RSpec.describe Plurimath::Asciimath do
     context "contains example from iso-10303 #1 example #118" do
       let(:string) { "λ(u) = C(u) + d \\< v × t \\>)," }
 
-      it 'matches LaTeX, AsciiMath, and MathML' do
+      it "matches LaTeX, AsciiMath, and MathML" do
         latex = 'λ ( u ) = C ( u ) + d \backslash < v × t \backslash > ) ,'
         asciimath = 'λ (u) = C (u) + d \ lt v × t \ gt ) ,'
         mathml = <<~MATHML
@@ -6374,7 +6433,7 @@ RSpec.describe Plurimath::Asciimath do
     context "contains example from plrimath/issue#265 example #119" do
       let(:string) { '"ISLR"=10log_10 {(P_("total")-P_("main"))/P_("main") }' }
 
-      it 'matches LaTeX, AsciiMath, and MathML' do
+      it "matches LaTeX, AsciiMath, and MathML" do
         latex = '\text{ISLR} = 10 \log_{10} \{ \frac{P_{\text{total}} - P_{\text{main}}}{P_{\text{main}}} \}'
         asciimath = '"ISLR" = 10 log_(10) {frac(P_("total") - P_("main"))(P_("main"))}'
         mathml = <<~MATHML
@@ -6420,7 +6479,7 @@ RSpec.describe Plurimath::Asciimath do
     context "contains example from plrimath/issue#276 example #120" do
       let(:string) { '"Pr"[]' }
 
-      it 'matches LaTeX, AsciiMath, and MathML' do
+      it "matches LaTeX, AsciiMath, and MathML" do
         latex = '\text{Pr} [  ]'
         asciimath = '"Pr" []'
         mathml = <<~MATHML
@@ -6441,9 +6500,9 @@ RSpec.describe Plurimath::Asciimath do
     end
 
     context "contains much less and greater than request example from plrimath/issue#308 example #121" do
-      let(:string) { 'll or mlt & gg or mgt' }
+      let(:string) { "ll or mlt & gg or mgt" }
 
-      it 'matches LaTeX, AsciiMath, and MathML' do
+      it "matches LaTeX, AsciiMath, and MathML" do
         latex = "\\ll o r \\ll \\& \\gg o r \\gg"
         asciimath = "ll o r ll & gg o r gg"
         mathml = <<~MATHML
@@ -6476,7 +6535,7 @@ RSpec.describe Plurimath::Asciimath do
         STRING
       end
 
-      it 'matches LaTeX, AsciiMath, and MathML' do
+      it "matches LaTeX, AsciiMath, and MathML" do
         latex = "\\left .\\begin{matrix}\\left. y_{1} = - 0.1712 \\mathrm{&#xb0;C} \\right. & \\left. s ( y_{1} ) = 0.0029 \\mathrm{&#xb0;C} \\right. \\\\ \\left. y_{2} = 0.00218 \\right. & \\left. s ( y_{2} ) = 0.00067 \\right. \\\\ \\left. r ( y_{1} , y_{2} ) = - 0.930 \\right. & \\left. s = 0.0035 \\mathrm{&#xb0;C} \\right.\\end{matrix}\\right ."
         asciimath = "{:[{:y_(1) = - 0.1712 rm(&#xb0;C):}, {:s (y_(1)) = 0.0029 rm(&#xb0;C):}], [{:y_(2) = 0.00218:}, {:s (y_(2)) = 0.00067:}], [{:r (y_(1) , y_(2)) = - 0.930:}, {:s = 0.0035 rm(&#xb0;C):}]:}"
         mathml = <<~MATHML
@@ -6620,7 +6679,7 @@ RSpec.describe Plurimath::Asciimath do
         STRING
       end
 
-      it 'matches LaTeX, AsciiMath, and MathML' do
+      it "matches LaTeX, AsciiMath, and MathML" do
         latex = "\\left .\\begin{matrix}\\left. \\mathit{A}_{\\text{S}} = 0.1368 \\mathrm{Bq} \\cdot \\mathrm{g}^{- 1} \\right. & \\left. \\text{} \\right. \\\\ \\left. u ( \\mathit{A}_{\\text{S}} ) = 0.0018 \\mathrm{Bq} \\cdot \\mathrm{g}^{- 1} ; \\right. & \\left. u ( \\mathit{A}_{\\text{S}} ) / \\mathit{A}_{\\text{S}} = 1.32 \\times 10^{- 2} \\right.\\end{matrix}\\right ."
         asciimath = '{:[{:ii(A)_("S") = 0.1368 rm(Bq) * rm(g)^(- 1):}, {:"":}], [{:u (ii(A)_("S")) = 0.0018 rm(Bq) * rm(g)^(- 1) ;:}, {:u (ii(A)_("S")) // ii(A)_("S") = 1.32 xx 10^(- 2):}]:}'
         mathml = <<~MATHML
@@ -6753,9 +6812,11 @@ RSpec.describe Plurimath::Asciimath do
     end
 
     context "contains table with preceding closing parenthesis without any opening parenthesis example from metanroam/bipm-si-brochure/issue#308 example #124" do
-      let(:string) { '{:(ii(E)_1, =, ii(A)_1 cos[ii(varphi)_1]),(ii(E)_2, =, ii(A)_2 cos[ii(varphi)_2]):}}  rarr I = langle (ii(E)_1 + ii(E)_2)^2 rangle_t = {ii(A)_1^2}/2 + {ii(A)_2^2}/2 + ii(A)_1 ii(A)_2 cos[ii(varphi)_1 - ii(varphi)_2]' }
+      let(:string) do
+        "{:(ii(E)_1, =, ii(A)_1 cos[ii(varphi)_1]),(ii(E)_2, =, ii(A)_2 cos[ii(varphi)_2]):}}  rarr I = langle (ii(E)_1 + ii(E)_2)^2 rangle_t = {ii(A)_1^2}/2 + {ii(A)_2^2}/2 + ii(A)_1 ii(A)_2 cos[ii(varphi)_1 - ii(varphi)_2]"
+      end
 
-      it 'matches LaTeX, AsciiMath, and MathML' do
+      it "matches LaTeX, AsciiMath, and MathML" do
         latex = '\left. \left .\begin{matrix}\mathit{E}_{1} & = & \mathit{A}_{1} \cos{[ \mathit{\phi}_{1} ]} \\\\ \mathit{E}_{2} & = & \mathit{A}_{2} \cos{[ \mathit{\phi}_{2} ]}\end{matrix}\right . \} \to I = \langle ( \mathit{E}_{1} + \mathit{E}_{2} )^{2} \rangle_{t} = \frac{\mathit{A}_{1}^{2}}{2} + \frac{\mathit{A}_{2}^{2}}{2} + \mathit{A}_{1} \mathit{A}_{2} \cos{[ \mathit{\phi}_{1} - \mathit{\phi}_{2} ]}'
         asciimath = "{:{:[ii(E)_(1), =, ii(A)_(1) cos[ii(phi)_(1)]], [ii(E)_(2), =, ii(A)_(2) cos[ii(phi)_(2)]]:}} to I = << (ii(E)_(1) + ii(E)_(2))^(2) >>_(t) = frac(ii(A)_(1)^(2))(2) + frac(ii(A)_(2)^(2))(2) + ii(A)_(1) ii(A)_(2) cos[ii(phi)_(1) - ii(phi)_(2)]"
         mathml = <<~MATHML
@@ -6932,11 +6993,11 @@ RSpec.describe Plurimath::Asciimath do
     end
 
     context "contains table as power (power-base) value from issue#351 example #125" do
-      let(:string) { '[[a,b], [c,d]]^d' }
+      let(:string) { "[[a,b], [c,d]]^d" }
 
-      it 'matches LaTeX, AsciiMath, and MathML' do
+      it "matches LaTeX, AsciiMath, and MathML" do
         latex = '\left [\begin{matrix}a & b \\\\ c & d\end{matrix}\right ]^{d}'
-        asciimath = '[[a, b], [c, d]]^(d)'
+        asciimath = "[[a, b], [c, d]]^(d)"
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -6975,11 +7036,11 @@ RSpec.describe Plurimath::Asciimath do
     end
 
     context "contains table as base (power-base) value from issue#351 example #126" do
-      let(:string) { '[[a,b], [c,d]]_d' }
+      let(:string) { "[[a,b], [c,d]]_d" }
 
-      it 'matches LaTeX, AsciiMath, and MathML' do
+      it "matches LaTeX, AsciiMath, and MathML" do
         latex = '\left [\begin{matrix}a & b \\\\ c & d\end{matrix}\right ]_{d}'
-        asciimath = '[[a, b], [c, d]]_(d)'
+        asciimath = "[[a, b], [c, d]]_(d)"
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -7020,7 +7081,7 @@ RSpec.describe Plurimath::Asciimath do
     context "contains multiple table as powerbase value example from plrimath/issue#351 example #127" do
       let(:string) { "[[a,b], [c,d]]_d^d" }
 
-      it 'matches LaTeX, AsciiMath, and MathML' do
+      it "matches LaTeX, AsciiMath, and MathML" do
         asciimath = "[[a, b], [c, d]]_(d)^(d)"
         latex = '\left [\begin{matrix}a & b \\\\ c & d\end{matrix}\right ]_{d}^{d}'
         mathml = <<~MATHML
@@ -7064,7 +7125,7 @@ RSpec.describe Plurimath::Asciimath do
     context "contains multiple table as powerbase value with extended expressions example from plrimath/issue#351 example #128" do
       let(:string) { "[[a,b], [c,d]]_d^d d" }
 
-      it 'matches LaTeX, AsciiMath, and MathML' do
+      it "matches LaTeX, AsciiMath, and MathML" do
         asciimath = "[[a, b], [c, d]]_(d)^(d) d"
         latex = '\left [\begin{matrix}a & b \\\\ c & d\end{matrix}\right ]_{d}^{d} d'
         mathml = <<~MATHML
@@ -7109,7 +7170,7 @@ RSpec.describe Plurimath::Asciimath do
     context "contains multiple table as powerbase value with extended expressions example from plrimath/issue#351 example #129" do
       let(:string) { "[[a,b], [c,d]]_d^d dd" }
 
-      it 'matches LaTeX, AsciiMath, and MathML' do
+      it "matches LaTeX, AsciiMath, and MathML" do
         asciimath = "[[a, b], [c, d]]_(d)^(d) d d"
         latex = '\left [\begin{matrix}a & b \\\\ c & d\end{matrix}\right ]_{d}^{d} d d'
         mathml = <<~MATHML
@@ -7155,7 +7216,7 @@ RSpec.describe Plurimath::Asciimath do
     context "contains table as power value following multiple expressions after example #130" do
       let(:string) { "[[a,b], [c,d]]^d dd" }
 
-      it 'matches LaTeX, AsciiMath, and MathML' do
+      it "matches LaTeX, AsciiMath, and MathML" do
         asciimath = "[[a, b], [c, d]]^(d) d d"
         latex = '\left [\begin{matrix}a & b \\\\ c & d\end{matrix}\right ]^{d} d d'
         mathml = <<~MATHML
@@ -7200,7 +7261,7 @@ RSpec.describe Plurimath::Asciimath do
     context "contains table as base value following multiple expressions after example #131" do
       let(:string) { "[[a,b], [c,d]]_d dd" }
 
-      it 'matches LaTeX, AsciiMath, and MathML' do
+      it "matches LaTeX, AsciiMath, and MathML" do
         asciimath = "[[a, b], [c, d]]_(d) d d"
         latex = '\left [\begin{matrix}a & b \\\\ c & d\end{matrix}\right ]_{d} d d'
         mathml = <<~MATHML
@@ -7245,7 +7306,7 @@ RSpec.describe Plurimath::Asciimath do
     context "contains table as power value following single expression after example #132" do
       let(:string) { "[[a,b], [c,d]]^d d" }
 
-      it 'matches LaTeX, AsciiMath, and MathML' do
+      it "matches LaTeX, AsciiMath, and MathML" do
         asciimath = "[[a, b], [c, d]]^(d) d"
         latex = '\left [\begin{matrix}a & b \\\\ c & d\end{matrix}\right ]^{d} d'
         mathml = <<~MATHML
@@ -7289,7 +7350,7 @@ RSpec.describe Plurimath::Asciimath do
     context "contains table as base value following single expression after example #133" do
       let(:string) { "[[a,b], [c,d]]_d d" }
 
-      it 'matches LaTeX, AsciiMath, and MathML' do
+      it "matches LaTeX, AsciiMath, and MathML" do
         asciimath = "[[a, b], [c, d]]_(d) d"
         latex = '\left [\begin{matrix}a & b \\\\ c & d\end{matrix}\right ]_{d} d'
         mathml = <<~MATHML
@@ -7333,7 +7394,7 @@ RSpec.describe Plurimath::Asciimath do
     context "contains sin with thickmathspace before it example #134" do
       let(:string) { "xsiny" }
 
-      it 'matches LaTeX, AsciiMath, and MathML' do
+      it "matches LaTeX, AsciiMath, and MathML" do
         asciimath = "x siny"
         latex = 'x \sin{y}'
         mathml = <<~MATHML
@@ -7365,7 +7426,7 @@ RSpec.describe Plurimath::Asciimath do
         ASCIIMATH
       end
 
-      it 'matches LaTeX, AsciiMath, and MathML' do
+      it "matches LaTeX, AsciiMath, and MathML" do
         asciimath = '{:[h_("Rockwell C"), = f (bar(d) , ii(Delta)_("c") , ii(Delta)_("b") , ii(Delta)_("S"))], ["", = 100 (0.002 rm(mm)) - bar(d) - ii(Delta)_("c") - ii(Delta)_("b") - ii(Delta)_("S")]:}'
         latex = '\left .\begin{matrix}h_{\text{Rockwell C}} & = f ( \overline{d} , \mathit{\Delta}_{\text{c}} , \mathit{\Delta}_{\text{b}} , \mathit{\Delta}_{\text{S}} ) \\\\ \text{} & = 100 ( 0.002 \mathrm{mm} ) - \overline{d} - \mathit{\Delta}_{\text{c}} - \mathit{\Delta}_{\text{b}} - \mathit{\Delta}_{\text{S}}\end{matrix}\right .'
         mathml = <<~MATHML
@@ -7476,8 +7537,8 @@ RSpec.describe Plurimath::Asciimath do
     context "contains table from plurimath/plurimath#375 example #136" do
       let(:string) { "\"unitsml(mm)\"" }
 
-      it 'matches LaTeX, AsciiMath, and MathML' do
-        asciimath = 'rm(mm)'
+      it "matches LaTeX, AsciiMath, and MathML" do
+        asciimath = "rm(mm)"
         latex = '\\mathrm{mm}'
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
@@ -7499,8 +7560,8 @@ RSpec.describe Plurimath::Asciimath do
     context "contains table from plurimath/plurimath#376 example #137" do
       let(:string) { "M \"unitsml(mm)\"" }
 
-      it 'matches LaTeX, AsciiMath, and MathML' do
-        asciimath = 'M rm(mm)'
+      it "matches LaTeX, AsciiMath, and MathML" do
+        asciimath = "M rm(mm)"
         latex = 'M \\mathrm{mm}'
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
@@ -7523,13 +7584,16 @@ RSpec.describe Plurimath::Asciimath do
   end
 
   describe ".to_omml" do
-    subject(:formula) { Plurimath::Asciimath.new(string).to_formula.to_omml(display_style: display_style) }
+    subject(:formula) do
+      described_class.new(string).to_formula.to_omml(display_style: display_style)
+    end
+
     let(:display_style) { true }
 
     context "contains simple fenced example #01" do
-      let(:string) { 'left ( d2 right )' }
+      let(:string) { "left ( d2 right )" }
 
-      it 'returns OMML string' do
+      it "returns OMML string" do
         omml = <<~OMML
           <m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape">
             <m:oMath>
@@ -7553,9 +7617,9 @@ RSpec.describe Plurimath::Asciimath do
     end
 
     context "contains simple log power base valued example #02" do
-      let(:string) { 'log_(d)^(d)log_(100)^(dd)log^(dd)' }
+      let(:string) { "log_(d)^(d)log_(100)^(dd)log^(dd)" }
 
-      it 'returns OMML string' do
+      it "returns OMML string" do
         omml = <<~OMML
           <m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape">
             <m:oMath>
@@ -7657,9 +7721,9 @@ RSpec.describe Plurimath::Asciimath do
     end
 
     context "contains simple table example #03" do
-      let(:string) { '[(a,b,0),(c,d,0),(e,f,1)]' }
+      let(:string) { "[(a,b,0),(c,d,0),(e,f,1)]" }
 
-      it 'returns OMML string' do
+      it "returns OMML string" do
         omml = <<~OMML
           <m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape">
             <m:oMath>
@@ -7750,9 +7814,9 @@ RSpec.describe Plurimath::Asciimath do
     end
 
     context "contains simple ddot as value in abs function example #04" do
-      let(:string) { 'abs(ddot(sum))' }
+      let(:string) { "abs(ddot(sum))" }
 
-      it 'returns OMML string' do
+      it "returns OMML string" do
         omml = <<~OMML
           <m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape">
             <m:oMath>
@@ -7799,7 +7863,7 @@ RSpec.describe Plurimath::Asciimath do
     context "contains simple font style and sqrt functions example #05" do
       let(:string) { 'ii(E)[ii(S)//sqrt(n)\ ' }
 
-      it 'returns OMML string' do
+      it "returns OMML string" do
         omml = <<~OMML
           <m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape">
             <m:oMath>
@@ -7854,9 +7918,9 @@ RSpec.describe Plurimath::Asciimath do
     end
 
     context "contains simple lim example #06" do
-      let(:string) { 'lim_2^d' }
+      let(:string) { "lim_2^d" }
 
-      it 'returns OMML string' do
+      it "returns OMML string" do
         omml = <<~OMML
           <m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape">
             <m:oMath>
@@ -7905,9 +7969,9 @@ RSpec.describe Plurimath::Asciimath do
     end
 
     context "contains simple cancel example #08" do
-      let(:string) { 'cancel(2)' }
+      let(:string) { "cancel(2)" }
 
-      it 'returns OMML string' do
+      it "returns OMML string" do
         omml = <<~OMML
           <m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape">
             <m:oMath>
@@ -7922,9 +7986,9 @@ RSpec.describe Plurimath::Asciimath do
     end
 
     context "contains simple ceil example #09" do
-      let(:string) { 'ceil(2)' }
+      let(:string) { "ceil(2)" }
 
-      it 'returns OMML string' do
+      it "returns OMML string" do
         omml = <<~OMML
           <m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape">
             <m:oMath>
@@ -7950,7 +8014,7 @@ RSpec.describe Plurimath::Asciimath do
     context "contains simple color example #10" do
       let(:string) { "color(red)(2 \\ \n e)" }
 
-      it 'returns OMML string' do
+      it "returns OMML string" do
         omml = <<~OMML
           <m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape">
             <m:oMath>
@@ -7968,9 +8032,9 @@ RSpec.describe Plurimath::Asciimath do
     end
 
     context "contains simple det dim dot example #11" do
-      let(:string) { 'det(theta)dim(3)dot(sigma)' }
+      let(:string) { "det(theta)dim(3)dot(sigma)" }
 
-      it 'returns OMML string' do
+      it "returns OMML string" do
         omml = <<~OMML
           <m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape">
             <m:oMath>
@@ -8032,9 +8096,9 @@ RSpec.describe Plurimath::Asciimath do
     end
 
     context "contains oint example #12" do
-      let(:string) { 'oint_(sum)^d oint' }
+      let(:string) { "oint_(sum)^d oint" }
 
-      it 'returns Oint OMML string' do
+      it "returns Oint OMML string" do
         omml = <<~OMML
           <m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape">
             <m:oMath>
@@ -8069,9 +8133,9 @@ RSpec.describe Plurimath::Asciimath do
     end
 
     context "contains multiple unary classes example #13" do
-      let(:string) { 'hat(ab) bar(xy) ul(A) vec(v)' }
+      let(:string) { "hat(ab) bar(xy) ul(A) vec(v)" }
 
-      it 'returns parsed Asciimath to Formula' do
+      it "returns parsed Asciimath to Formula" do
         omml = <<~OMML
           <m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape">
             <m:oMath>
@@ -8165,9 +8229,11 @@ RSpec.describe Plurimath::Asciimath do
     end
 
     context "contains obrace, ubrace, tilde, mod, and stackrel examples #14" do
-      let(:string) { 'obrace(sum) ubrace(sum) tilde(d) 1 mod theta stackrel(as)(d)' }
+      let(:string) do
+        "obrace(sum) ubrace(sum) tilde(d) 1 mod theta stackrel(as)(d)"
+      end
 
-      it 'returns parsed Asciimath to Formula' do
+      it "returns parsed Asciimath to Formula" do
         omml = <<~OMML
           <m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape">
             <m:oMath>
@@ -8274,9 +8340,11 @@ RSpec.describe Plurimath::Asciimath do
     end
 
     context "contains lcm, exp, gcd, glb, ln, lub, max, min, floor, and norm examples #15" do
-      let(:string) { 'lcm(d) exp(d) gcd(d) glb(d) ln(d) lub(d) max(d) min(d) floor(d) norm(d)' }
+      let(:string) do
+        "lcm(d) exp(d) gcd(d) glb(d) ln(d) lub(d) max(d) min(d) floor(d) norm(d)"
+      end
 
-      it 'returns parsed Asciimath to Formula' do
+      it "returns parsed Asciimath to Formula" do
         omml = <<~OMML
           <m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape">
             <m:oMath>
@@ -8438,9 +8506,9 @@ RSpec.describe Plurimath::Asciimath do
     end
 
     context "contains ubrace and bigwedge power base values examples #16" do
-      let(:string) { 'ubrace_d^2 bigwedge_2^d' }
+      let(:string) { "ubrace_d^2 bigwedge_2^d" }
 
-      it 'returns parsed Asciimath to Formula' do
+      it "returns parsed Asciimath to Formula" do
         omml = <<~OMML
           <m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape">
             <m:oMath>
@@ -8517,10 +8585,10 @@ RSpec.describe Plurimath::Asciimath do
     end
 
     context "contains simple lim example #17" do
-      let(:string) { 'lim_2^d' }
+      let(:string) { "lim_2^d" }
       let(:display_style) { false }
 
-      it 'returns OMML string' do
+      it "returns OMML string" do
         omml = <<~OMML
           <m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape">
             <m:oMath>
@@ -8557,10 +8625,12 @@ RSpec.describe Plurimath::Asciimath do
     end
 
     context "contains power and fenced example #18" do
-      let(:string) { "ii(rho)_{ij} = ii(nu)(w_i, w_j)//(ii(sigma)_i^2 ii(sigma)_j^2)^{1//2} \"unitsml(mm*s^-2)\"" }
+      let(:string) do
+        "ii(rho)_{ij} = ii(nu)(w_i, w_j)//(ii(sigma)_i^2 ii(sigma)_j^2)^{1//2} \"unitsml(mm*s^-2)\""
+      end
       let(:display_style) { false }
 
-      it 'returns OMML string' do
+      it "returns OMML string" do
         omml = <<~OMML
           <m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape">
             <m:oMath>

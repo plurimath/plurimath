@@ -3,10 +3,15 @@ module Plurimath
     module Symbols
       class Leftturn < Symbol
         INPUT = {
-          unicodemath: [["circlearrowleft", "&#x21ba;"], parsing_wrapper(["acwopencirclearrow", "leftturn"], lang: :unicode)],
-          asciimath: [["&#x21ba;"], parsing_wrapper(["circlearrowleft", "acwopencirclearrow", "leftturn"], lang: :asciimath)],
+          unicodemath: [["circlearrowleft", "&#x21ba;"],
+                        parsing_wrapper(["acwopencirclearrow", "leftturn"],
+                                        lang: :unicode)],
+          asciimath: [["&#x21ba;"],
+                      parsing_wrapper(["circlearrowleft", "acwopencirclearrow", "leftturn"],
+                                      lang: :asciimath)],
           mathml: ["&#x21ba;"],
-          latex: [["acwopencirclearrow", "circlearrowleft", "leftturn", "&#x21ba;"]],
+          latex: [["acwopencirclearrow", "circlearrowleft", "leftturn",
+                   "&#x21ba;"]],
           omml: ["&#x21ba;"],
           html: ["&#x21ba;"],
         }.freeze

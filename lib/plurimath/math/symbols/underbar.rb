@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Underbar < Symbol
         INPUT = {
-          unicodemath: [["&#x331;"], parsing_wrapper(["underbar"], lang: :unicode)],
-          asciimath: [["&#x331;"], parsing_wrapper(["underbar"], lang: :asciimath)],
+          unicodemath: [["&#x331;"],
+                        parsing_wrapper(["underbar"], lang: :unicode)],
+          asciimath: [["&#x331;"],
+                      parsing_wrapper(["underbar"], lang: :asciimath)],
           mathml: ["&#x331;"],
           latex: [["underbar", "&#x331;"]],
           omml: ["&#x331;"],

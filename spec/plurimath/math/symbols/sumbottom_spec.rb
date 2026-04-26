@@ -1,11 +1,10 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Symbols::Sumbottom do
-
   describe ".initialize" do
-    it 'returns instance of Symbol Sumbottom' do
+    it "returns instance of Symbol Sumbottom" do
       klass = described_class.new
-      expect(klass).to be_a(Plurimath::Math::Symbols::Sumbottom)
+      expect(klass).to be_a(described_class)
     end
   end
 

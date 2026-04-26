@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Apprge < Symbol
         INPUT = {
-          unicodemath: [["gtrsim", "&#x2273;"], parsing_wrapper(["apprge"], lang: :unicode)],
-          asciimath: [["&#x2273;"], parsing_wrapper(["gtrsim", "apprge"], lang: :asciimath)],
+          unicodemath: [["gtrsim", "&#x2273;"],
+                        parsing_wrapper(["apprge"], lang: :unicode)],
+          asciimath: [["&#x2273;"],
+                      parsing_wrapper(["gtrsim", "apprge"], lang: :asciimath)],
           mathml: ["&#x2273;"],
           latex: [["gtrsim", "apprge", "&#x2273;"]],
           omml: ["&#x2273;"],

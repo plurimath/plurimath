@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Gsime < Symbol
         INPUT = {
-          unicodemath: [["&#x2a8e;"], parsing_wrapper(["gsime"], lang: :unicode)],
-          asciimath: [["&#x2a8e;"], parsing_wrapper(["gsime"], lang: :asciimath)],
+          unicodemath: [["&#x2a8e;"],
+                        parsing_wrapper(["gsime"], lang: :unicode)],
+          asciimath: [["&#x2a8e;"],
+                      parsing_wrapper(["gsime"], lang: :asciimath)],
           mathml: ["&#x2a8e;"],
           latex: [["gsime", "&#x2a8e;"]],
           omml: ["&#x2a8e;"],

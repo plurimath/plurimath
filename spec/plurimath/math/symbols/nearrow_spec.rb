@@ -1,11 +1,10 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Symbols::Nearrow do
-
   describe ".initialize" do
-    it 'returns instance of Symbol Nearrow' do
+    it "returns instance of Symbol Nearrow" do
       klass = described_class.new
-      expect(klass).to be_a(Plurimath::Math::Symbols::Nearrow)
+      expect(klass).to be_a(described_class)
     end
   end
 

@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Multimapinv < Symbol
         INPUT = {
-          unicodemath: [["&#x27dc;"], parsing_wrapper(["multimapinv"], lang: :unicode)],
-          asciimath: [["&#x27dc;"], parsing_wrapper(["multimapinv"], lang: :asciimath)],
+          unicodemath: [["&#x27dc;"],
+                        parsing_wrapper(["multimapinv"], lang: :unicode)],
+          asciimath: [["&#x27dc;"],
+                      parsing_wrapper(["multimapinv"], lang: :asciimath)],
           mathml: ["&#x27dc;"],
           latex: [["multimapinv", "&#x27dc;"]],
           omml: ["&#x27dc;"],

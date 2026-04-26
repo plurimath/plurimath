@@ -1,11 +1,10 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Symbols::Measuredangleleft do
-
   describe ".initialize" do
-    it 'returns instance of Symbol Measuredangleleft' do
+    it "returns instance of Symbol Measuredangleleft" do
       klass = described_class.new
-      expect(klass).to be_a(Plurimath::Math::Symbols::Measuredangleleft)
+      expect(klass).to be_a(described_class)
     end
   end
 

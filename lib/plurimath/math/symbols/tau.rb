@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Tau < Symbol
         INPUT = {
-          unicodemath: [["tau", "&#x3c4;"], parsing_wrapper(["uptau"], lang: :unicode)],
-          asciimath: [["tau", "&#x3c4;"], parsing_wrapper(["uptau"], lang: :asciimath)],
+          unicodemath: [["tau", "&#x3c4;"],
+                        parsing_wrapper(["uptau"], lang: :unicode)],
+          asciimath: [["tau", "&#x3c4;"],
+                      parsing_wrapper(["uptau"], lang: :asciimath)],
           mathml: ["&#x3c4;"],
           latex: [["uptau", "tau", "&#x3c4;"]],
           omml: ["&#x3c4;"],

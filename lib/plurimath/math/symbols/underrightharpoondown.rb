@@ -3,8 +3,12 @@ module Plurimath
     module Symbols
       class Underrightharpoondown < Symbol
         INPUT = {
-          unicodemath: [["&#x20ec;"], parsing_wrapper(["underrightharpoondown"], lang: :unicode)],
-          asciimath: [["&#x20ec;"], parsing_wrapper(["underrightharpoondown"], lang: :asciimath)],
+          unicodemath: [["&#x20ec;"],
+                        parsing_wrapper(["underrightharpoondown"],
+                                        lang: :unicode)],
+          asciimath: [["&#x20ec;"],
+                      parsing_wrapper(["underrightharpoondown"],
+                                      lang: :asciimath)],
           mathml: ["&#x20ec;"],
           latex: [["underrightharpoondown", "&#x20ec;"]],
           omml: ["&#x20ec;"],

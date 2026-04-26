@@ -3,8 +3,14 @@ module Plurimath
     module Symbols
       class Upupharpoons < Symbol
         INPUT = {
-          unicodemath: [["&#x2963;"], parsing_wrapper(["upharpoonsleftright", "upupharpoons"], lang: :unicode)],
-          asciimath: [["&#x2963;"], parsing_wrapper(["upharpoonsleftright", "upupharpoons"], lang: :asciimath)],
+          unicodemath: [["&#x2963;"],
+                        parsing_wrapper(
+                          ["upharpoonsleftright",
+                           "upupharpoons"], lang: :unicode
+                        )],
+          asciimath: [["&#x2963;"],
+                      parsing_wrapper(["upharpoonsleftright", "upupharpoons"],
+                                      lang: :asciimath)],
           mathml: ["&#x2963;"],
           latex: [["upharpoonsleftright", "upupharpoons", "&#x2963;"]],
           omml: ["&#x2963;"],

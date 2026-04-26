@@ -1,11 +1,10 @@
 # frozen_string_literal: true
 
-
 module Plurimath
   module Math
     module Function
       class Ms < UnaryFunction
-        def to_mathml_without_math_tag(intent, **)
+        def to_mathml_without_math_tag(_intent, **)
           Utility.ox_element("ms") << parameter_one
         end
 
@@ -17,9 +16,9 @@ module Plurimath
           "\\text{“#{parameter_one}”}"
         end
 
-        def to_omml_without_math_tag(display_style, **)
+        def to_omml_without_math_tag(_display_style, **)
           [
-            (Utility.ox_element("t", namespace: "m") << "“#{parameter_one}”"),
+            Utility.ox_element("t", namespace: "m") << "“#{parameter_one}”",
           ]
         end
 

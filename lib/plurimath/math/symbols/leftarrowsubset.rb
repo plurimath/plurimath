@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Leftarrowsubset < Symbol
         INPUT = {
-          unicodemath: [["&#x297a;"], parsing_wrapper(["leftarrowsubset"], lang: :unicode)],
-          asciimath: [["&#x297a;"], parsing_wrapper(["leftarrowsubset"], lang: :asciimath)],
+          unicodemath: [["&#x297a;"],
+                        parsing_wrapper(["leftarrowsubset"], lang: :unicode)],
+          asciimath: [["&#x297a;"],
+                      parsing_wrapper(["leftarrowsubset"], lang: :asciimath)],
           mathml: ["&#x297a;"],
           latex: [["leftarrowsubset", "&#x297a;"]],
           omml: ["&#x297a;"],

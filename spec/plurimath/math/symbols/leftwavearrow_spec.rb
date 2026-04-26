@@ -1,11 +1,10 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Symbols::Leftwavearrow do
-
   describe ".initialize" do
-    it 'returns instance of Symbol Leftwavearrow' do
+    it "returns instance of Symbol Leftwavearrow" do
       klass = described_class.new
-      expect(klass).to be_a(Plurimath::Math::Symbols::Leftwavearrow)
+      expect(klass).to be_a(described_class)
     end
   end
 

@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Triangleminus < Symbol
         INPUT = {
-          unicodemath: [["&#x2a3a;"], parsing_wrapper(["triangleminus"], lang: :unicode)],
-          asciimath: [["&#x2a3a;"], parsing_wrapper(["triangleminus"], lang: :asciimath)],
+          unicodemath: [["&#x2a3a;"],
+                        parsing_wrapper(["triangleminus"], lang: :unicode)],
+          asciimath: [["&#x2a3a;"],
+                      parsing_wrapper(["triangleminus"], lang: :asciimath)],
           mathml: ["&#x2a3a;"],
           latex: [["triangleminus", "&#x2a3a;"]],
           omml: ["&#x2a3a;"],

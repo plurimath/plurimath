@@ -1,11 +1,10 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Symbols::Bumpeq do
-
   describe ".initialize" do
-    it 'returns instance of Symbol Bumpeq' do
+    it "returns instance of Symbol Bumpeq" do
       klass = described_class.new
-      expect(klass).to be_a(Plurimath::Math::Symbols::Bumpeq)
+      expect(klass).to be_a(described_class)
     end
   end
 

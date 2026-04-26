@@ -43,8 +43,8 @@ RSpec.describe Plurimath::Formatter::Numbers::Significant do
       it "returns the string unchanged" do
         int_fmt = double(separator: ",")
         frac_fmt = double(separator: ",")
-        allow(int_fmt).to receive(:format_groups) { |x| "123" }
-        allow(frac_fmt).to receive(:format_groups) { |x| "456" }
+        allow(int_fmt).to receive(:format_groups).and_return("123")
+        allow(frac_fmt).to receive(:format_groups).and_return("456")
         expect(formatter.apply("123.456", int_fmt, frac_fmt)).to eq("123.456")
       end
     end
@@ -53,8 +53,8 @@ RSpec.describe Plurimath::Formatter::Numbers::Significant do
       it "returns the string unchanged" do
         int_fmt = double(separator: ",")
         frac_fmt = double(separator: ",")
-        allow(int_fmt).to receive(:format_groups) { |x| "0" }
-        allow(frac_fmt).to receive(:format_groups) { |x| "000" }
+        allow(int_fmt).to receive(:format_groups).and_return("0")
+        allow(frac_fmt).to receive(:format_groups).and_return("000")
         expect(formatter.apply("0.000", int_fmt, frac_fmt)).to eq("0.000")
       end
     end
@@ -62,7 +62,7 @@ RSpec.describe Plurimath::Formatter::Numbers::Significant do
     context "rounding with boundary condition" do
       let(:symbols) { { decimal: ".", significant: 2 } }
 
-      it "should round 0.0999 to 0.10" do
+      it "rounds 0.0999 to 0.10" do
         int_format = double(separator: ",")
         frac_format = double(separator: ",")
         allow(int_format).to receive(:format_groups) { |x| x }
@@ -70,7 +70,7 @@ RSpec.describe Plurimath::Formatter::Numbers::Significant do
         expect(formatter.apply("0.0999", int_format, frac_format)).to eq("0.10")
       end
 
-      it "should round 9.99 to 10" do
+      it "rounds 9.99 to 10" do
         int_format = double(separator: ",")
         frac_format = double(separator: ",")
         allow(int_format).to receive(:format_groups) { |x| x }
@@ -78,7 +78,7 @@ RSpec.describe Plurimath::Formatter::Numbers::Significant do
         expect(formatter.apply("9.99", int_format, frac_format)).to eq("10")
       end
 
-      it "should round 1.99 to 2" do
+      it "rounds 1.99 to 2" do
         int_format = double(separator: ",")
         frac_format = double(separator: ",")
         allow(int_format).to receive(:format_groups) { |x| x }
@@ -93,8 +93,8 @@ RSpec.describe Plurimath::Formatter::Numbers::Significant do
       it "returns string when significant digits match" do
         int_format = double(separator: ",")
         frac_format = double(separator: ",")
-        allow(int_format).to receive(:format_groups) { |x| "123" }
-        allow(frac_format).to receive(:format_groups) { |x| "5" }
+        allow(int_format).to receive(:format_groups).and_return("123")
+        allow(frac_format).to receive(:format_groups).and_return("5")
         result = formatter.apply("123.456", int_format, frac_format)
         expect(result).to eq("123.5")
       end
@@ -155,7 +155,7 @@ RSpec.describe Plurimath::Formatter::Numbers::Significant do
 
       it "returns chars and significant count" do
         chars = "123".chars
-        new_chars, frac_part, sig_count = formatter.send(:process_chars, chars)
+        new_chars, _, sig_count = formatter.send(:process_chars, chars)
         expect(new_chars.length).to be > 0
         expect(sig_count).to be >= 0
       end
@@ -166,7 +166,7 @@ RSpec.describe Plurimath::Formatter::Numbers::Significant do
 
       it "sets frac_part when decimal is encountered" do
         chars = "1.23".chars
-        new_chars, frac_part, sig_count = formatter.send(:process_chars, chars)
+        _, frac_part, = formatter.send(:process_chars, chars)
         expect(frac_part).to be(true)
       end
     end
@@ -176,7 +176,7 @@ RSpec.describe Plurimath::Formatter::Numbers::Significant do
 
       it "processes leading zeros" do
         chars = "0.0123".chars
-        new_chars, frac_part, sig_count = formatter.send(:process_chars, chars)
+        new_chars, = formatter.send(:process_chars, chars)
         expect(new_chars).to be_a(Array)
       end
     end
@@ -186,7 +186,7 @@ RSpec.describe Plurimath::Formatter::Numbers::Significant do
     context "boundary condition test" do
       let(:symbols) { { decimal: ".", significant: 2 } }
 
-      it "should round 99.9 to 100" do
+      it "rounds 99.9 to 100" do
         int_format = double(separator: ",")
         frac_format = double(separator: ",")
         allow(int_format).to receive(:format_groups) { |x| x }
@@ -198,7 +198,7 @@ RSpec.describe Plurimath::Formatter::Numbers::Significant do
     context "with rounding up" do
       let(:symbols) { { decimal: ".", significant: 2 } }
 
-      it "should round 19.5 to 20" do
+      it "rounds 19.5 to 20" do
         int_format = double(separator: ",")
         frac_format = double(separator: ",")
         allow(int_format).to receive(:format_groups) { |x| x }

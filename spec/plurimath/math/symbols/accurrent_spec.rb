@@ -1,11 +1,10 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Symbols::Accurrent do
-
   describe ".initialize" do
-    it 'returns instance of Symbol Accurrent' do
+    it "returns instance of Symbol Accurrent" do
       klass = described_class.new
-      expect(klass).to be_a(Plurimath::Math::Symbols::Accurrent)
+      expect(klass).to be_a(described_class)
     end
   end
 

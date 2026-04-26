@@ -1,11 +1,10 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Symbols::Modtwosum do
-
   describe ".initialize" do
-    it 'returns instance of Symbol Modtwosum' do
+    it "returns instance of Symbol Modtwosum" do
       klass = described_class.new
-      expect(klass).to be_a(Plurimath::Math::Symbols::Modtwosum)
+      expect(klass).to be_a(described_class)
     end
   end
 

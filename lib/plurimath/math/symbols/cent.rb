@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Cent < Symbol
         INPUT = {
-          unicodemath: [["&#xa2;"], parsing_wrapper(["mathcent", "cent"], lang: :unicode)],
-          asciimath: [["&#xa2;"], parsing_wrapper(["mathcent", "cent"], lang: :asciimath)],
+          unicodemath: [["&#xa2;"],
+                        parsing_wrapper(["mathcent", "cent"], lang: :unicode)],
+          asciimath: [["&#xa2;"],
+                      parsing_wrapper(["mathcent", "cent"], lang: :asciimath)],
           mathml: ["&#xa2;"],
           latex: [["mathcent", "cent", "&#xa2;"]],
           omml: ["&#xa2;"],

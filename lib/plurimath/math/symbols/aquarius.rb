@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Aquarius < Symbol
         INPUT = {
-          unicodemath: [["&#x2652;"], parsing_wrapper(["aquarius"], lang: :unicode)],
-          asciimath: [["&#x2652;"], parsing_wrapper(["aquarius"], lang: :asciimath)],
+          unicodemath: [["&#x2652;"],
+                        parsing_wrapper(["aquarius"], lang: :unicode)],
+          asciimath: [["&#x2652;"],
+                      parsing_wrapper(["aquarius"], lang: :asciimath)],
           mathml: ["&#x2652;"],
           latex: [["aquarius", "&#x2652;"]],
           omml: ["&#x2652;"],

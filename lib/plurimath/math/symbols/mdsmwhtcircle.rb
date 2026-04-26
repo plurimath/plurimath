@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Mdsmwhtcircle < Symbol
         INPUT = {
-          unicodemath: [["&#x26ac;"], parsing_wrapper(["mdsmwhtcircle"], lang: :unicode)],
-          asciimath: [["&#x26ac;"], parsing_wrapper(["mdsmwhtcircle"], lang: :asciimath)],
+          unicodemath: [["&#x26ac;"],
+                        parsing_wrapper(["mdsmwhtcircle"], lang: :unicode)],
+          asciimath: [["&#x26ac;"],
+                      parsing_wrapper(["mdsmwhtcircle"], lang: :asciimath)],
           mathml: ["&#x26ac;"],
           latex: [["mdsmwhtcircle", "&#x26ac;"]],
           omml: ["&#x26ac;"],

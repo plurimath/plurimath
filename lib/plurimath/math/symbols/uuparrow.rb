@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Uuparrow < Symbol
         INPUT = {
-          unicodemath: [["&#x290a;"], parsing_wrapper(["Uuparrow"], lang: :unicode)],
-          asciimath: [["&#x290a;"], parsing_wrapper(["Uuparrow"], lang: :asciimath)],
+          unicodemath: [["&#x290a;"],
+                        parsing_wrapper(["Uuparrow"], lang: :unicode)],
+          asciimath: [["&#x290a;"],
+                      parsing_wrapper(["Uuparrow"], lang: :asciimath)],
           mathml: ["&#x290a;"],
           latex: [["Uuparrow", "&#x290a;"]],
           omml: ["&#x290a;"],

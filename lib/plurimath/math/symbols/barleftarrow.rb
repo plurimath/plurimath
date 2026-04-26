@@ -3,8 +3,12 @@ module Plurimath
     module Symbols
       class Barleftarrow < Symbol
         INPUT = {
-          unicodemath: [["&#x21e4;"], parsing_wrapper(["LeftArrowBar", "barleftarrow"], lang: :unicode)],
-          asciimath: [["&#x21e4;"], parsing_wrapper(["LeftArrowBar", "barleftarrow"], lang: :asciimath)],
+          unicodemath: [["&#x21e4;"],
+                        parsing_wrapper(["LeftArrowBar", "barleftarrow"],
+                                        lang: :unicode)],
+          asciimath: [["&#x21e4;"],
+                      parsing_wrapper(["LeftArrowBar", "barleftarrow"],
+                                      lang: :asciimath)],
           mathml: ["&#x21e4;"],
           latex: [["LeftArrowBar", "barleftarrow", "&#x21e4;"]],
           omml: ["&#x21e4;"],

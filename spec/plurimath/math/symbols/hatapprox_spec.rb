@@ -1,11 +1,10 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Symbols::Hatapprox do
-
   describe ".initialize" do
-    it 'returns instance of Symbol Hatapprox' do
+    it "returns instance of Symbol Hatapprox" do
       klass = described_class.new
-      expect(klass).to be_a(Plurimath::Math::Symbols::Hatapprox)
+      expect(klass).to be_a(described_class)
     end
   end
 

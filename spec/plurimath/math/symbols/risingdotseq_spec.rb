@@ -1,11 +1,10 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Symbols::Risingdotseq do
-
   describe ".initialize" do
-    it 'returns instance of Symbol Risingdotseq' do
+    it "returns instance of Symbol Risingdotseq" do
       klass = described_class.new
-      expect(klass).to be_a(Plurimath::Math::Symbols::Risingdotseq)
+      expect(klass).to be_a(described_class)
     end
   end
 

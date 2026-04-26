@@ -430,8 +430,10 @@ module Plurimath
 
       rule(power_base: simple(:power_base),
            base: simple(:base)) do
-        if base.is_a?(Math::Formula) && base.value.any? { |value| value.is_a?(Math::Symbols::Comma) }
-          sliced = base.value.slice_before { |object| object.is_a?(Math::Symbols::Comma) }.to_a
+        if base.is_a?(Math::Formula) && base.value.any?(Math::Symbols::Comma)
+          sliced = base.value.slice_before do |object|
+            object.is_a?(Math::Symbols::Comma)
+          end.to_a
           base_object = Math::Function::Base.new(
             power_base,
             Utility.filter_values(
@@ -1006,11 +1008,11 @@ module Plurimath
       rule(lparen: simple(:lparen),
            expr: simple(:expr),
            rparen: simple(:rparen)) do
-        form_value  = if expr.is_a?(Slice)
-                        expr.to_s.empty? ? nil : [expr]
-                      else
-                        [expr]
-                      end
+        form_value = if expr.is_a?(Slice)
+                       expr.to_s.empty? ? nil : [expr]
+                     else
+                       [expr]
+                     end
         Math::Function::Fenced.new(
           Utility.asciimath_symbol_object(lparen),
           form_value&.flatten&.compact,

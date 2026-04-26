@@ -1,11 +1,10 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Symbols::Triangletimes do
-
   describe ".initialize" do
-    it 'returns instance of Symbol Triangletimes' do
+    it "returns instance of Symbol Triangletimes" do
       klass = described_class.new
-      expect(klass).to be_a(Plurimath::Math::Symbols::Triangletimes)
+      expect(klass).to be_a(described_class)
     end
   end
 

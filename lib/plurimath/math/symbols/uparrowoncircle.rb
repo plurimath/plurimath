@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Uparrowoncircle < Symbol
         INPUT = {
-          unicodemath: [["&#x29bd;"], parsing_wrapper(["uparrowoncircle"], lang: :unicode)],
-          asciimath: [["&#x29bd;"], parsing_wrapper(["uparrowoncircle"], lang: :asciimath)],
+          unicodemath: [["&#x29bd;"],
+                        parsing_wrapper(["uparrowoncircle"], lang: :unicode)],
+          asciimath: [["&#x29bd;"],
+                      parsing_wrapper(["uparrowoncircle"], lang: :asciimath)],
           mathml: ["&#x29bd;"],
           latex: [["uparrowoncircle", "&#x29bd;"]],
           omml: ["&#x29bd;"],

@@ -3,8 +3,12 @@ module Plurimath
     module Symbols
       class Varheart < Symbol
         INPUT = {
-          unicodemath: [["&#x2665;"], parsing_wrapper(["varheartsuit", "varheart"], lang: :unicode)],
-          asciimath: [["&#x2665;"], parsing_wrapper(["varheartsuit", "varheart"], lang: :asciimath)],
+          unicodemath: [["&#x2665;"],
+                        parsing_wrapper(["varheartsuit", "varheart"],
+                                        lang: :unicode)],
+          asciimath: [["&#x2665;"],
+                      parsing_wrapper(["varheartsuit", "varheart"],
+                                      lang: :asciimath)],
           mathml: ["&#x2665;"],
           latex: [["varheartsuit", "varheart", "&#x2665;"]],
           omml: ["&#x2665;"],

@@ -3,8 +3,12 @@ module Plurimath
     module Symbols
       class Rightarrowbackapprox < Symbol
         INPUT = {
-          unicodemath: [["&#x2b48;"], parsing_wrapper(["rightarrowbackapprox"], lang: :unicode)],
-          asciimath: [["&#x2b48;"], parsing_wrapper(["rightarrowbackapprox"], lang: :asciimath)],
+          unicodemath: [["&#x2b48;"],
+                        parsing_wrapper(["rightarrowbackapprox"],
+                                        lang: :unicode)],
+          asciimath: [["&#x2b48;"],
+                      parsing_wrapper(["rightarrowbackapprox"],
+                                      lang: :asciimath)],
           mathml: ["&#x2b48;"],
           latex: [["rightarrowbackapprox", "&#x2b48;"]],
           omml: ["&#x2b48;"],

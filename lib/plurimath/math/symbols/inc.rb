@@ -3,10 +3,13 @@ module Plurimath
     module Symbols
       class Inc < Symbol
         INPUT = {
-          unicodemath: [["inc", "&#x2206;"], parsing_wrapper(["increment"], lang: :unicode)],
-          asciimath: [["&#x2206;"], parsing_wrapper(["inc", "increment"], lang: :asciimath)],
+          unicodemath: [["inc", "&#x2206;"],
+                        parsing_wrapper(["increment"], lang: :unicode)],
+          asciimath: [["&#x2206;"],
+                      parsing_wrapper(["inc", "increment"], lang: :asciimath)],
           mathml: ["&#x2206;"],
-          latex: [["increment", "&#x2206;"], parsing_wrapper(["inc"], lang: :latex)],
+          latex: [["increment", "&#x2206;"],
+                  parsing_wrapper(["inc"], lang: :latex)],
           omml: ["&#x2206;"],
           html: ["&#x2206;"],
         }.freeze

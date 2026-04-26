@@ -1,11 +1,10 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Symbols::Barrightarrowdiamond do
-
   describe ".initialize" do
-    it 'returns instance of Symbol Barrightarrowdiamond' do
+    it "returns instance of Symbol Barrightarrowdiamond" do
       klass = described_class.new
-      expect(klass).to be_a(Plurimath::Math::Symbols::Barrightarrowdiamond)
+      expect(klass).to be_a(described_class)
     end
   end
 

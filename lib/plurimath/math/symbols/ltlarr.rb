@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Ltlarr < Symbol
         INPUT = {
-          unicodemath: [["&#x2976;"], parsing_wrapper(["ltlarr"], lang: :unicode)],
-          asciimath: [["&#x2976;"], parsing_wrapper(["ltlarr"], lang: :asciimath)],
+          unicodemath: [["&#x2976;"],
+                        parsing_wrapper(["ltlarr"], lang: :unicode)],
+          asciimath: [["&#x2976;"],
+                      parsing_wrapper(["ltlarr"], lang: :asciimath)],
           mathml: ["&#x2976;"],
           latex: [["ltlarr", "&#x2976;"]],
           omml: ["&#x2976;"],

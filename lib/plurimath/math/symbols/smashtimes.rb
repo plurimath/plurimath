@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Smashtimes < Symbol
         INPUT = {
-          unicodemath: [["&#x2a33;"], parsing_wrapper(["smashtimes"], lang: :unicode)],
-          asciimath: [["&#x2a33;"], parsing_wrapper(["smashtimes"], lang: :asciimath)],
+          unicodemath: [["&#x2a33;"],
+                        parsing_wrapper(["smashtimes"], lang: :unicode)],
+          asciimath: [["&#x2a33;"],
+                      parsing_wrapper(["smashtimes"], lang: :asciimath)],
           mathml: ["&#x2a33;"],
           latex: [["smashtimes", "&#x2a33;"]],
           omml: ["&#x2a33;"],

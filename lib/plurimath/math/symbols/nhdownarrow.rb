@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Nhdownarrow < Symbol
         INPUT = {
-          unicodemath: [["&#x21df;"], parsing_wrapper(["nHdownarrow"], lang: :unicode)],
-          asciimath: [["&#x21df;"], parsing_wrapper(["nHdownarrow"], lang: :asciimath)],
+          unicodemath: [["&#x21df;"],
+                        parsing_wrapper(["nHdownarrow"], lang: :unicode)],
+          asciimath: [["&#x21df;"],
+                      parsing_wrapper(["nHdownarrow"], lang: :asciimath)],
           mathml: ["&#x21df;"],
           latex: [["nHdownarrow", "&#x21df;"]],
           omml: ["&#x21df;"],

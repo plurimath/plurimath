@@ -3,8 +3,12 @@ module Plurimath
     module Symbols
       class Underleftharpoondown < Symbol
         INPUT = {
-          unicodemath: [["&#x20ed;"], parsing_wrapper(["underleftharpoondown"], lang: :unicode)],
-          asciimath: [["&#x20ed;"], parsing_wrapper(["underleftharpoondown"], lang: :asciimath)],
+          unicodemath: [["&#x20ed;"],
+                        parsing_wrapper(["underleftharpoondown"],
+                                        lang: :unicode)],
+          asciimath: [["&#x20ed;"],
+                      parsing_wrapper(["underleftharpoondown"],
+                                      lang: :asciimath)],
           mathml: ["&#x20ed;"],
           latex: [["underleftharpoondown", "&#x20ed;"]],
           omml: ["&#x20ed;"],

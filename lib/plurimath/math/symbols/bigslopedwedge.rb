@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Bigslopedwedge < Symbol
         INPUT = {
-          unicodemath: [["&#x2a58;"], parsing_wrapper(["bigslopedwedge"], lang: :unicode)],
-          asciimath: [["&#x2a58;"], parsing_wrapper(["bigslopedwedge"], lang: :asciimath)],
+          unicodemath: [["&#x2a58;"],
+                        parsing_wrapper(["bigslopedwedge"], lang: :unicode)],
+          asciimath: [["&#x2a58;"],
+                      parsing_wrapper(["bigslopedwedge"], lang: :asciimath)],
           mathml: ["&#x2a58;"],
           latex: [["bigslopedwedge", "&#x2a58;"]],
           omml: ["&#x2a58;"],

@@ -1,17 +1,22 @@
 # frozen_string_literal: true
 
-
 module Plurimath
   module Math
     module Function
       class Tr < UnaryFunction
         def initialize(parameter_one = [])
-          parameter_one.map!.with_index { |_, index| Td.new([]) } if parameter_one&.all?("@")
-          super(parameter_one)
+          if parameter_one&.all?("@")
+            parameter_one.map!.with_index do |_, _index|
+              Td.new([])
+            end
+          end
+          super
         end
 
         def to_asciimath(options:)
-          tr_value = parameter_one.map { |param| param.to_asciimath(options: options) }.join(', ')
+          tr_value = parameter_one.map do |param|
+            param.to_asciimath(options: options)
+          end.join(", ")
           "[#{tr_value}]"
         end
 
@@ -19,23 +24,32 @@ module Plurimath
           first_value = remove_hline(cloned_objects.parameter_one)
           Utility.update_nodes(
             Utility.ox_element("mtr"),
-            first_value.map { |obj| obj&.to_mathml_without_math_tag(intent, options: options) }.compact,
+            first_value.filter_map do |obj|
+              obj&.to_mathml_without_math_tag(intent, options: options)
+            end,
           )
         end
 
         def to_latex(options:)
           parameter_one.reject do |td|
-            td if Utility.symbol_value(td, "|") || Utility.symbol_value(td.parameter_one.first, "|")
+            td if Utility.symbol_value(td,
+                                       "|") || Utility.symbol_value(
+                                         td.parameter_one.first, "|"
+                                       )
           end.map { |td| td.to_latex(options: options) }.join(" & ")
         end
 
         def to_html(options:)
-          first_value = parameter_one.map { |val| val.to_html(options: options) }.join
+          first_value = parameter_one.map do |val|
+            val.to_html(options: options)
+          end.join
           "<tr>#{first_value}</tr>"
         end
 
         def to_omml_without_math_tag(display_style, options:)
-          omml_content = parameter_one&.map { |object| object.to_omml_without_math_tag(display_style, options: options) }
+          omml_content = parameter_one&.map do |object|
+            object.to_omml_without_math_tag(display_style, options: options)
+          end
           if parameter_one.count.eql?(1)
             omml_content
           else
@@ -49,41 +63,57 @@ module Plurimath
         end
 
         def to_unicodemath(options:)
-          parameter_one&.map { |param| param.to_unicodemath(options: options) }&.join("&")
+          parameter_one&.map do |param|
+            param.to_unicodemath(options: options)
+          end&.join("&")
         end
 
-        def to_asciimath_math_zone(spacing, last = false, indent = true, options:)
+        def to_asciimath_math_zone(spacing, last = false, indent = true,
+options:)
           [
             "#{spacing}\"tr\" function apply\n",
-            Formula.new(parameter_one).to_asciimath_math_zone(gsub_spacing(spacing, last), last, indent, options: options),
+            Formula.new(parameter_one).to_asciimath_math_zone(
+              gsub_spacing(spacing, last), last, indent, options: options
+            ),
           ]
         end
 
         def to_latex_math_zone(spacing, last = false, indent = true, options:)
           [
             "#{spacing}\"tr\" function apply\n",
-            Formula.new(parameter_one).to_latex_math_zone(gsub_spacing(spacing, last), last, indent, options: options),
+            Formula.new(parameter_one).to_latex_math_zone(
+              gsub_spacing(spacing, last), last, indent, options: options
+            ),
           ]
         end
 
         def to_mathml_math_zone(spacing, last = false, indent = true, options:)
           [
             "#{spacing}\"tr\" function apply\n",
-            Formula.new(parameter_one).to_mathml_math_zone(gsub_spacing(spacing, last), last, indent, options: options),
+            Formula.new(parameter_one).to_mathml_math_zone(
+              gsub_spacing(spacing, last), last, indent, options: options
+            ),
           ]
         end
 
-        def to_omml_math_zone(spacing, last = false, indent = true, display_style:, options:)
+        def to_omml_math_zone(spacing, last = false, indent = true,
+display_style:, options:)
           [
             "#{spacing}\"tr\" function apply\n",
-            Formula.new(parameter_one).to_omml_math_zone(gsub_spacing(spacing, last), last, indent, display_style: display_style, options: options),
+            Formula.new(parameter_one).to_omml_math_zone(
+              gsub_spacing(spacing,
+                           last), last, indent, display_style: display_style, options: options
+            ),
           ]
         end
 
-        def to_unicodemath_math_zone(spacing, last = false, indent = true, options:)
+        def to_unicodemath_math_zone(spacing, last = false, indent = true,
+options:)
           [
             "#{spacing}\"tr\" function apply\n",
-            Formula.new(parameter_one).to_unicodemath_math_zone(gsub_spacing(spacing, last), last, indent, options: options),
+            Formula.new(parameter_one).to_unicodemath_math_zone(
+              gsub_spacing(spacing, last), last, indent, options: options
+            ),
           ]
         end
 
@@ -92,7 +122,6 @@ module Plurimath
           row_lines.shift if row_lines.first.is_a?(Math::Symbols::Hline)
           first_value
         end
-
       end
     end
   end

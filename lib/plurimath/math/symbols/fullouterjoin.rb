@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Fullouterjoin < Symbol
         INPUT = {
-          unicodemath: [["&#x27d7;"], parsing_wrapper(["fullouterjoin"], lang: :unicode)],
-          asciimath: [["&#x27d7;"], parsing_wrapper(["fullouterjoin"], lang: :asciimath)],
+          unicodemath: [["&#x27d7;"],
+                        parsing_wrapper(["fullouterjoin"], lang: :unicode)],
+          asciimath: [["&#x27d7;"],
+                      parsing_wrapper(["fullouterjoin"], lang: :asciimath)],
           mathml: ["&#x27d7;"],
           latex: [["fullouterjoin", "&#x27d7;"]],
           omml: ["&#x27d7;"],

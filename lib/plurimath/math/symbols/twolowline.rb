@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Twolowline < Symbol
         INPUT = {
-          unicodemath: [["&#x2017;"], parsing_wrapper(["twolowline"], lang: :unicode)],
-          asciimath: [["&#x2017;"], parsing_wrapper(["twolowline"], lang: :asciimath)],
+          unicodemath: [["&#x2017;"],
+                        parsing_wrapper(["twolowline"], lang: :unicode)],
+          asciimath: [["&#x2017;"],
+                      parsing_wrapper(["twolowline"], lang: :asciimath)],
           mathml: ["&#x2017;"],
           latex: [["twolowline", "&#x2017;"]],
           omml: ["&#x2017;"],

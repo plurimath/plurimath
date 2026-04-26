@@ -4,7 +4,8 @@ module Plurimath
       class Lessdot < Symbol
         INPUT = {
           unicodemath: [["lessdot", "&#x22d6;"]],
-          asciimath: [["&#x22d6;"], parsing_wrapper(["lessdot"], lang: :asciimath)],
+          asciimath: [["&#x22d6;"],
+                      parsing_wrapper(["lessdot"], lang: :asciimath)],
           mathml: ["&#x22d6;"],
           latex: [["lessdot", "&#x22d6;"]],
           omml: ["&#x22d6;"],

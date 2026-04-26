@@ -150,14 +150,14 @@ module Plurimath
       rect: "box",
     }.freeze
     MASK_CLASSES = {
-      1 => 'top',
-      2 => 'bottom',
-      4 => 'left',
-      8 => 'right',
-      16 => 'horizontalstrike',
-      32 => 'verticalstrike',
-      64 => 'downdiagonalstrike',
-      128 => 'updiagonalstrike'
+      1 => "top",
+      2 => "bottom",
+      4 => "left",
+      8 => "right",
+      16 => "horizontalstrike",
+      32 => "verticalstrike",
+      64 => "downdiagonalstrike",
+      128 => "updiagonalstrike",
     }.freeze
 
     class << self
@@ -185,7 +185,10 @@ module Plurimath
           organize_tds(table_row.flatten, string_columns.dup, options)
           table << Math::Function::Tr.new(table_row)
         end
-        table_separator(string_columns, table, symbol: "|") unless column_align.nil? || column_align.empty?
+        unless column_align.nil? || column_align.empty?
+          table_separator(string_columns, table,
+                          symbol: "|")
+        end
         table
       end
 
@@ -248,7 +251,7 @@ module Plurimath
 
       def get_symbol_class(text)
         Object.const_get("Plurimath::Math::Symbols::#{capitalize(text)}")
-      rescue => e
+      rescue StandardError
         get_paren_class(text)
       end
 
@@ -292,7 +295,7 @@ module Plurimath
         lang_parens = {}
         paren_files.map do |class_object|
           class_object::INPUT[lang]&.flatten&.each do |symbol|
-            next if skipables && skipables.include?(class_object.new.class_name)
+            next if skipables&.include?(class_object.new.class_name)
             next if lang_parens.key?(symbol)
 
             lang_parens[symbol] = class_object
@@ -364,12 +367,12 @@ module Plurimath
           Math::Function::Text.new(text, lang: lang)
         else
           text = string_to_html_entity(text)
-                  .gsub("&#x26;", "&")
-                  .gsub("&#x3c;", "<")
-                  .gsub("&#x27;", "'")
-                  .gsub("&#xa0;", " ")
-                  .gsub("&#x3e;", ">")
-                  .gsub("&#xa;", "\n")
+            .gsub("&#x26;", "&")
+            .gsub("&#x3c;", "<")
+            .gsub("&#x27;", "'")
+            .gsub("&#xa0;", " ")
+            .gsub("&#x3e;", ">")
+            .gsub("&#xa;", "\n")
           symbols_class(text, lang: lang)
         end
       end
@@ -383,7 +386,7 @@ module Plurimath
           filter_values(nary[1]),
           filter_values(nary[2]),
           filter_values(nary[3]),
-          { type: subsup }
+          { type: subsup },
         )
       end
 
@@ -419,7 +422,8 @@ module Plurimath
         td_object
       end
 
-      def mathml_unary_classes(text_array, omml: false, unicode_only: false, lang: nil)
+      def mathml_unary_classes(text_array, omml: false, unicode_only: false,
+lang: nil)
         return [] if text_array.empty?
 
         compacted = text_array.compact
@@ -435,8 +439,11 @@ module Plurimath
           get_class(symbol.strip).new
         elsif classes.any?(string&.strip)
           get_class(string.strip).new
+        elsif omml
+          text_classes(string,
+                       lang: lang)
         else
-          omml ? text_classes(string, lang: lang) : symbols_class(unicode, lang: lang)
+          symbols_class(unicode, lang: lang)
         end
       end
 
@@ -449,16 +456,18 @@ module Plurimath
       end
 
       def string_to_html_entity(string)
-        entities = HTMLEntities.new
-        entities.encode(
-          string.frozen? ? string : string.force_encoding('UTF-8'),
+        HTML_ENTITIES.encode(
+          string.frozen? ? string : string.force_encoding("UTF-8"),
           :hexadecimal,
         )
       end
 
+      HTML_ENTITIES = HTMLEntities.new
+
       def html_entity_to_unicode(string)
-        entities = HTMLEntities.new
-        entities.decode(string)
+        return string unless string&.include?("&")
+
+        HTML_ENTITIES.decode(string)
       end
 
       def table_separator(separator, value, symbol: "solid")
@@ -467,9 +476,14 @@ module Plurimath
           next unless sep == symbol
 
           value.map do |val|
-            val.parameter_one.insert((ind + 1), sep_symbol) if symbol == "solid"
+            val.parameter_one.insert(ind + 1, sep_symbol) if symbol == "solid"
             val.parameter_one.insert(ind, sep_symbol) if symbol == "|"
-            (val.parameter_one[val.parameter_one.index(nil)] = Math::Function::Td.new([])) rescue nil
+            begin
+              (val.parameter_one[val.parameter_one.index(nil)] =
+                 Math::Function::Td.new([]))
+            rescue StandardError
+              nil
+            end
             val
           end
         end
@@ -477,23 +491,31 @@ module Plurimath
       end
 
       def join_attr_value(attrs, value, unicode_only: false, lang: :mathml)
-        if attrs&.is_a?(Hash) && attrs.key?(:intent)
+        if attrs.is_a?(Hash) && attrs.key?(:intent)
           [
             Math::Function::Intent.new(
-              filter_values(join_attr_value(nil, value, unicode_only: unicode_only, lang: lang)),
+              filter_values(join_attr_value(nil, value,
+                                            unicode_only: unicode_only, lang: lang)),
               Math::Function::Text.new(attrs[:intent], lang: lang),
-            )
+            ),
           ]
         elsif value.any?(String)
-          new_value = mathml_unary_classes(value, unicode_only: unicode_only, lang: lang)
+          new_value = mathml_unary_classes(value, unicode_only: unicode_only,
+                                                  lang: lang)
           array_value = Array(new_value)
-          attrs.nil? ? array_value : join_attr_value(attrs, array_value, unicode_only: unicode_only)
+          if attrs.nil?
+            array_value
+          else
+            join_attr_value(attrs, array_value,
+                            unicode_only: unicode_only)
+          end
         elsif attrs.nil?
           value
-        elsif attrs.is_a?(String) && ["solid", "none"].include?(attrs.split.first.downcase)
+        elsif attrs.is_a?(String) && ["solid",
+                                      "none"].include?(attrs.split.first.downcase)
           table_separator(attrs.split, value)
         elsif attrs.is_a?(Hash)
-          if (attrs.key?(:accent) || attrs.key?(:accentunder))
+          if attrs.key?(:accent) || attrs.key?(:accentunder)
             attr_is_accent(attrs, value)
           elsif attrs.key?(:linebreak)
             Math::Function::Linebreak.new(value.first, attrs)
@@ -529,7 +551,9 @@ module Plurimath
       def attr_is_accent(attrs, value)
         if value.last.is_a?(Math::Function::UnaryFunction)
           value.last.parameter_one = value.shift if value.length > 1
-          value.last.attributes = attrs.transform_values { |v| YAML.safe_load(v) }
+          value.last.attributes = attrs.transform_values do |v|
+            YAML.safe_load(v)
+          end
         end
         value
       end
@@ -554,7 +578,9 @@ module Plurimath
       end
 
       def nil_to_none_object(value)
-        return value unless value.any?(NilClass) || value.any? { |val| val.is_a?(Array) && val.empty? }
+        return value unless value.any?(NilClass) || value.any? do |val|
+          val.is_a?(Array) && val.empty?
+        end
 
         value.each.with_index do |val, index|
           next unless val.nil? || val.is_a?(Array)
@@ -581,7 +607,9 @@ module Plurimath
       def valid_paren?(object)
         object.parameter_one.is_a?(Math::Symbols::Paren::Lround) &&
           object.parameter_three.is_a?(Math::Symbols::Paren::Rround) &&
-          !object.options.keys.any? { |k| [:open_paren, :close_paren].any?(k.to_sym) } &&
+          object.options.keys.none? do |k|
+            %i[open_paren close_paren].any?(k.to_sym)
+          end &&
           !object.parameter_one.mini_sup_sized &&
           !object.parameter_three.mini_sub_sized &&
           object.options.empty?
@@ -636,7 +664,7 @@ module Plurimath
 
       def left_right_objects(paren, function)
         paren = if paren.to_s.match?(/\\\{|\\\}/)
-                  paren.to_s.gsub(/\\/, "")
+                  paren.to_s.gsub("\\", "")
                 else
                   Latex::Constants::LEFT_RIGHT_PARENTHESIS[paren.to_sym]
                 end
@@ -652,7 +680,7 @@ module Plurimath
       def mrow_left_right(mrow = [])
         object = mrow.first
         !(
-          ((object.is_a?(Math::Function::TernaryFunction) && object.any_value_exist?) && (mrow.length <= 2)) ||
+          (object.is_a?(Math::Function::TernaryFunction) && object.any_value_exist? && (mrow.length <= 2)) ||
           (object.is_a?(Math::Function::UnaryFunction) && mrow.length == 1)
         )
       end
@@ -665,10 +693,13 @@ module Plurimath
         flatten_mrow
       end
 
-      def binary_function_classes(mrow, under: false, lang:)
+      def binary_function_classes(mrow, lang:, under: false)
         binary_class = Math::Function::BinaryFunction
         mrow.each_with_index do |object, ind|
-          mrow[ind] = mathml_unary_classes([object], lang: lang) if object.is_a?(String)
+          if object.is_a?(String)
+            mrow[ind] =
+              mathml_unary_classes([object], lang: lang)
+          end
           object = mrow[ind]
           next unless object.is_a?(binary_class)
 
@@ -690,7 +721,10 @@ module Plurimath
         unary_class = Math::Function::UnaryFunction
         if mrow.any?(String) || mrow.any?(unary_class)
           mrow.each_with_index do |object, ind|
-            mrow[ind] = mathml_unary_classes([object], lang: lang) if object.is_a?(String)
+            if object.is_a?(String)
+              mrow[ind] =
+                mathml_unary_classes([object], lang: lang)
+            end
             object = mrow[ind] if object.is_a?(String)
             next unless object.is_a?(unary_class)
             next if object.is_a?(Math::Function::Text)
@@ -719,13 +753,15 @@ module Plurimath
 
       def paren_able?(arr = [], mrow = [])
         arr.any? do |opening, closing|
-          symbol_value(mrow.first, opening.to_s) && symbol_value(mrow.last, closing.to_s)
+          symbol_value(mrow.first,
+                       opening.to_s) && symbol_value(mrow.last, closing.to_s)
         end
       end
 
       def fenceable_classes(mrow = [])
         return false unless mrow.length > 1
-        return unless paren_able?(PARENTHESIS, mrow) || (mrow.first.is_a?(Math::Symbols::Paren) && mrow.last.is_a?(Math::Symbols::Paren))
+        return unless paren_able?(PARENTHESIS,
+                                  mrow) || (mrow.first.is_a?(Math::Symbols::Paren) && mrow.last.is_a?(Math::Symbols::Paren))
 
         open_paren = mrow.shift
         close_paren = mrow.pop
@@ -746,7 +782,8 @@ module Plurimath
         return false unless object
 
         if object.is_a?(Math::Formula)
-          filter_math_zone_values(object.value, lang: lang, intent: intent, options: options).find do |value|
+          filter_math_zone_values(object.value, lang: lang, intent: intent,
+                                                options: options).find do |value|
             !(value.is_a?(Math::Function::Text) || value.is_a?(Math::Symbols::Symbol))
           end
         else
@@ -764,25 +801,38 @@ module Plurimath
           object = obj.dup
           next if index == skip_index
           if TEXT_CLASSES.include?(object.class_name) || math_display_text_objects(object)
-            next temp_array << (object.is_a?(Math::Symbols::Symbol) ? symbol_to_text(object, lang: lang, intent: intent, options: options) : object.value)
+            next temp_array << (if object.is_a?(Math::Symbols::Symbol)
+                                  symbol_to_text(
+                                    object, lang: lang, intent: intent, options: options
+                                  )
+                                else
+                                  object.value
+                                end)
           end
 
-          new_arr << Math::Function::Text.new(temp_array.join(" "), lang: lang) if temp_array.any?
+          if temp_array.any?
+            new_arr << Math::Function::Text.new(temp_array.join(" "),
+                                                lang: lang)
+          end
           temp_array = []
           new_arr << object
         end
-        new_arr << Math::Function::Text.new(temp_array.join(" "), lang: lang) if temp_array.any?
+        if temp_array.any?
+          new_arr << Math::Function::Text.new(temp_array.join(" "),
+                                              lang: lang)
+        end
         new_arr
       end
 
-      def symbol_to_text(symbol, lang:, intent: false, options:)
+      def symbol_to_text(symbol, lang:, options:, intent: false)
         case lang
         when :asciimath
           symbol.to_asciimath(options: options)
         when :latex
           symbol.to_latex(options: options)
         when :mathml
-          symbol.to_mathml_without_math_tag(intent, options: options).nodes.first
+          symbol.to_mathml_without_math_tag(intent,
+                                            options: options).nodes.first
         when :omml
           symbol.to_omml_without_math_tag(true, options: options)
         when :unicodemath
@@ -793,17 +843,15 @@ module Plurimath
       def unicode_accents(accents, lang: :unicodemath)
         if accents.is_a?(Math::Function::BinaryFunction)
           accents
+        elsif accents.any? { |acc| acc&.dig(:first_value)&.is_a?(Array) }
+          accent_value = accents.first[:first_value].pop
+          first_value = accents.first[:first_value]
+          accents.first[:first_value] = accent_value
+          Math::Formula.new(
+            first_value + [transform_accents(accents, lang: lang)],
+          )
         else
-          if accents.any? { |acc| acc&.dig(:first_value)&.is_a?(Array) }
-            accent_value = accents.first[:first_value].pop
-            first_value = accents.first[:first_value]
-            accents.first[:first_value] = accent_value
-            Math::Formula.new(
-              first_value + [transform_accents(accents, lang: lang)]
-            )
-          else
-            transform_accents(accents, lang: lang)
-          end
+          transform_accents(accents, lang: lang)
         end
       end
 
@@ -812,36 +860,42 @@ module Plurimath
           if function.is_a?(Hash)
             if function[:prime_accent_symbols]
               Math::Function::Power.new(
-                unfenced_value(accent_value(function, function: true, lang: lang), paren_specific: true),
+                unfenced_value(
+                  accent_value(function, function: true,
+                                         lang: lang), paren_specific: true
+                ),
                 accent_value(accent, lang: lang),
               )
             else
               Math::Function::Overset.new(
                 accent_value(accent, lang: lang),
-                unfenced_value(accent_value(function, function: true, lang: lang), paren_specific: true),
-                { accent: true }
+                unfenced_value(
+                  accent_value(function, function: true,
+                                         lang: lang), paren_specific: true
+                ),
+                { accent: true },
               )
             end
+          elsif accent[:prime_accent_symbols]
+            Math::Function::Power.new(
+              unfenced_value(function, paren_specific: true),
+              accent_value(accent, lang: lang),
+            )
           else
-            if accent[:prime_accent_symbols]
-              Math::Function::Power.new(
-                unfenced_value(function, paren_specific: true),
-                accent_value(accent, lang: lang),
-              )
-            else
-              Math::Function::Overset.new(
-                accent_value(accent, lang: lang),
-                unfenced_value(function, paren_specific: true),
-                { accent: true }
-              )
-            end
+            Math::Function::Overset.new(
+              accent_value(accent, lang: lang),
+              unfenced_value(function, paren_specific: true),
+              { accent: true },
+            )
           end
         end
       end
 
-      def accent_value(accent, function: false, lang:)
+      def accent_value(accent, lang:, function: false)
         if accent[:accent_symbols]
-          symbols_class(UnicodeMath::Constants::ACCENT_SYMBOLS[accent[:accent_symbols].to_sym] || accent[:accent_symbols], lang: lang)
+          symbols_class(
+            UnicodeMath::Constants::ACCENT_SYMBOLS[accent[:accent_symbols].to_sym] || accent[:accent_symbols], lang: lang
+          )
         else
           accent[:first_value] || filter_values(accent[:prime_accent_symbols])
         end
@@ -852,7 +906,7 @@ module Plurimath
         Math::Function::Frac.new(
           Math::Number.new(frac_arr.first.to_s),
           Math::Number.new(frac_arr.last.to_s),
-          { displaystyle: false, unicodemath_fraction: true }
+          { displaystyle: false, unicodemath_fraction: true },
         )
       end
 
@@ -860,7 +914,7 @@ module Plurimath
         filter_values(
           prime.to_s.scan(UNICODE_REGEX).map do |str|
             symbols_class(str, lang: :unicodemath)
-          end
+          end,
         )
       end
 
@@ -873,7 +927,7 @@ module Plurimath
             denominator.parameter_one = frac_class.new(
               unfenced_value(numerator, paren_specific: true),
               unfenced_value(denominator.parameter_one, paren_specific: true),
-              options
+              options,
             )
           end
           denominator
@@ -881,7 +935,7 @@ module Plurimath
           frac_class.new(
             unfenced_value(numerator, paren_specific: true),
             unfenced_value(denominator, paren_specific: true),
-            options
+            options,
           )
         end
       end
@@ -895,7 +949,7 @@ module Plurimath
           frac.parameter_one = frac_class.new(
             unfenced_value(numerator, paren_specific: true),
             unfenced_value(frac.parameter_one, paren_specific: true),
-            options
+            options,
           )
           frac
         end
@@ -907,7 +961,8 @@ module Plurimath
           if sub_recursion.parameter_one.is_a?(base_class)
             base_recursion(sub_script, sub_recursion)
           else
-            sub_recursion.parameter_one = base_class.new(sub_script, sub_recursion.parameter_one)
+            sub_recursion.parameter_one = base_class.new(sub_script,
+                                                         sub_recursion.parameter_one)
           end
           sub_recursion
         else
@@ -923,11 +978,10 @@ module Plurimath
         new_sub = sub_recursion.parameter_one
         if new_sub.is_a?(base_class)
           base_recursion(sub_script, new_sub)
-          sub_recursion
         else
           sub_recursion.parameter_one = base_class.new(sub_script, new_sub)
-          sub_recursion
         end
+        sub_recursion
       end
 
       def recursive_sup(sup_script, sup_recursion)
@@ -936,7 +990,8 @@ module Plurimath
           if sup_recursion.parameter_one.is_a?(power_class)
             sup_recursion(sup_script, sup_recursion)
           else
-            sup_recursion.parameter_one = power_class.new(sup_script, sup_recursion.parameter_one)
+            sup_recursion.parameter_one = power_class.new(sup_script,
+                                                          sup_recursion.parameter_one)
           end
           sup_recursion
         else
@@ -952,11 +1007,10 @@ module Plurimath
         new_sup = sup_recursion.parameter_one
         if new_sup.is_a?(power_class)
           sup_recursion(sup_script, new_sup)
-          sup_recursion
         else
           sup_recursion.parameter_one = power_class.new(sup_script, new_sup)
-          sup_recursion
         end
+        sup_recursion
       end
 
       def base_is_prime?(base)
@@ -977,15 +1031,18 @@ module Plurimath
       end
 
       def hexcode_in_input(field)
-        field.input(:unicodemath)&.flatten&.find { |input| input.match?(/&#x.+;/) }
+        field.input(:unicodemath)&.flatten&.find do |input|
+          input.match?(/&#x.+;/)
+        end
       end
 
       def base_is_sub_or_sup?(base)
-        if base.is_a?(Math::Formula)
+        case base
+        when Math::Formula
           base_is_sub_or_sup?(base.value.first)
-        elsif base.is_a?(Math::Function::Fenced)
+        when Math::Function::Fenced
           base_is_sub_or_sup?(base.parameter_two.first)
-        elsif base.is_a?(Math::Symbols::Symbol) || base.is_a?(Math::Number)
+        when Math::Symbols::Symbol, Math::Number
           base.mini_sub_sized || base_mini_sup_sized
         end
       end
@@ -1002,22 +1059,25 @@ module Plurimath
       end
 
       def enclosure_attrs(mask)
-        raise "enclosure mask is not between 0 and 255" if (mask.nil? || mask < 0 || mask > 255)
+        raise "enclosure mask is not between 0 and 255" if mask.nil? || mask.negative? || mask > 255
 
         ret = ""
         unless mask.nil?
           mask ^= 15
           bin_mask = mask.to_s(2).reverse
-          classes = bin_mask.chars.each_with_index.map { |bit, i| MASK_CLASSES[2**i] if bit == '1' }.compact
-          ret = classes.join(' ')
+          classes = bin_mask.chars.each_with_index.filter_map do |bit, i|
+            MASK_CLASSES[2**i] if bit == "1"
+          end
+          ret = classes.join(" ")
         end
         ret
       end
 
       def notations_to_mask(notations)
-        mask = []
-        notations.split(" ").each { |notation| mask << MASK_CLASSES.key(notation) }
-        mask.inject(*:+)^15
+        mask = notations.split.map do |notation|
+          MASK_CLASSES.key(notation)
+        end
+        mask.inject(*:+) ^ 15
       end
 
       def slashed_values(value)
@@ -1032,10 +1092,14 @@ module Plurimath
       def sequence_slashed_values(values, lang:)
         values.each.with_index do |value, index|
           decoded = HTMLEntities.new.decode(value.value)
-          slashed = if index == 0
+          slashed = if index.zero?
                       slashed_values(value.value)
+                    elsif decoded.match?(/[0-9]/)
+                      Math::Number.new(decoded)
                     else
-                      decoded.match?(/[0-9]/) ? Math::Number.new(decoded) : symbols_class(decoded, lang: lang)
+                      symbols_class(
+                        decoded, lang: lang
+                      )
                     end
           values[index] = slashed
         end

@@ -1,11 +1,10 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Symbols::Yinyang do
-
   describe ".initialize" do
-    it 'returns instance of Symbol Yinyang' do
+    it "returns instance of Symbol Yinyang" do
       klass = described_class.new
-      expect(klass).to be_a(Plurimath::Math::Symbols::Yinyang)
+      expect(klass).to be_a(described_class)
     end
   end
 

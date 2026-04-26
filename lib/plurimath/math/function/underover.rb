@@ -1,11 +1,9 @@
 # frozen_string_literal: true
 
-
 module Plurimath
   module Math
     module Function
       class Underover < TernaryFunction
-
         FUNCTION = {
           name: "UnderOver",
           first_value: "base",
@@ -14,16 +12,34 @@ module Plurimath
         }.freeze
 
         def to_asciimath(options:)
-          first_value = first_field_wrap(parameter_one, options: options) if parameter_one
-          second_value = "_#{wrapped(parameter_two, options: options)}" if parameter_two
-          third_value = "^#{wrapped(parameter_three, options: options)}" if parameter_three
+          if parameter_one
+            first_value = first_field_wrap(parameter_one,
+                                           options: options)
+          end
+          if parameter_two
+            second_value = "_#{wrapped(parameter_two,
+                                       options: options)}"
+          end
+          if parameter_three
+            third_value = "^#{wrapped(parameter_three,
+                                      options: options)}"
+          end
           "#{first_value}#{second_value}#{third_value}"
         end
 
         def to_latex(options:)
-          first_value = first_field_wrap(parameter_one, type: "latex", options: options) if parameter_one
-          second_value = "_#{wrapped(parameter_two, type: 'latex', options: options)}" if parameter_two
-          third_value = "^#{wrapped(parameter_three, type: 'latex', options: options)}" if parameter_three
+          if parameter_one
+            first_value = first_field_wrap(parameter_one, type: "latex",
+                                                          options: options)
+          end
+          if parameter_two
+            second_value = "_#{wrapped(parameter_two, type: 'latex',
+                                                      options: options)}"
+          end
+          if parameter_three
+            third_value = "^#{wrapped(parameter_three, type: 'latex',
+                                                       options: options)}"
+          end
           "#{first_value}#{second_value}#{third_value}"
         end
 
@@ -40,16 +56,24 @@ module Plurimath
 
         def to_omml_without_math_tag(display_style, options:)
           if !display_style
-            power_base = PowerBase.new(parameter_one, parameter_two, parameter_three)
-            return power_base.to_omml_without_math_tag(display_style, options: options)
+            power_base = PowerBase.new(parameter_one, parameter_two,
+                                       parameter_three)
+            return power_base.to_omml_without_math_tag(display_style,
+                                                       options: options)
           end
 
           underover(display_style, options: options)
         end
 
         def to_unicodemath(options:)
-          sub_value = "┬#{unicodemath_parens(parameter_two, options: options)}" if parameter_two
-          sup_value = "┴#{unicodemath_parens(parameter_three, options: options)}" if parameter_three
+          if parameter_two
+            sub_value = "┬#{unicodemath_parens(parameter_two,
+                                               options: options)}"
+          end
+          if parameter_three
+            sup_value = "┴#{unicodemath_parens(parameter_three,
+                                               options: options)}"
+          end
           "#{parameter_one&.to_unicodemath(options: options)}#{sub_value}#{sup_value}"
         end
 
@@ -57,7 +81,8 @@ module Plurimath
           parameter_one&.line_breaking(obj)
           if obj.value_exist?
             obj.update(
-              Underover.new(Utility.filter_values(obj.value), parameter_two, parameter_three)
+              Underover.new(Utility.filter_values(obj.value), parameter_two,
+                            parameter_three),
             )
             self.parameter_two = nil
             self.parameter_three = nil
@@ -67,7 +92,8 @@ module Plurimath
           parameter_two.line_breaking(obj)
           if obj.value_exist?
             obj.update(
-              Underover.new(nil, Utility.filter_values(obj.value), parameter_three)
+              Underover.new(nil, Utility.filter_values(obj.value),
+                            parameter_three),
             )
             self.parameter_two = nil
             self.parameter_three = nil
@@ -75,7 +101,8 @@ module Plurimath
         end
 
         def new_nary_function(fourth_value)
-          Nary.new(parameter_one, parameter_two, parameter_three, fourth_value, { type: "undOvr" })
+          Nary.new(parameter_one, parameter_two, parameter_three, fourth_value,
+                   { type: "undOvr" })
         end
 
         def is_nary_function?

@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Topbot < Symbol
         INPUT = {
-          unicodemath: [["&#x2336;"], parsing_wrapper(["topbot"], lang: :unicode)],
-          asciimath: [["&#x2336;"], parsing_wrapper(["topbot"], lang: :asciimath)],
+          unicodemath: [["&#x2336;"],
+                        parsing_wrapper(["topbot"], lang: :unicode)],
+          asciimath: [["&#x2336;"],
+                      parsing_wrapper(["topbot"], lang: :asciimath)],
           mathml: ["&#x2336;"],
           latex: [["topbot", "&#x2336;"]],
           omml: ["&#x2336;"],

@@ -1,21 +1,22 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Function::FontStyle do
-
   describe ".initialize" do
-    it 'returns instance of FontStyle' do
-      font_style = Plurimath::Math::Function::FontStyle.new("AaBbCc")
-      expect(font_style).to be_a(Plurimath::Math::Function::FontStyle)
+    it "returns instance of FontStyle" do
+      font_style = described_class.new("AaBbCc")
+      expect(font_style).to be_a(described_class)
     end
 
-    it 'initializes FontStyle object' do
-      font_style = Plurimath::Math::Function::FontStyle.new("AaBbCc")
+    it "initializes FontStyle object" do
+      font_style = described_class.new("AaBbCc")
       expect(font_style.parameter_one).to eql("AaBbCc")
     end
   end
 
   describe ".to_asciimath" do
-    subject(:formula) { described_class.new(first_value, second_value).to_asciimath(options: {}) }
+    subject(:formula) do
+      described_class.new(first_value, second_value).to_asciimath(options: {})
+    end
 
     context "contains Symbol as value" do
       let(:first_value) { Plurimath::Math::Symbols::Symbol.new("n") }
@@ -38,11 +39,11 @@ RSpec.describe Plurimath::Math::Function::FontStyle do
     context "contains Formula as value" do
       let(:first_value) do
         Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Sum.new(
-            Plurimath::Math::Symbols::Ampersand.new,
-            Plurimath::Math::Function::Text.new("so"),
-          )
-        ])
+                                       Plurimath::Math::Function::Sum.new(
+                                         Plurimath::Math::Symbols::Ampersand.new,
+                                         Plurimath::Math::Function::Text.new("so"),
+                                       ),
+                                     ])
       end
       let(:second_value) { "mathtt" }
 
@@ -55,8 +56,8 @@ RSpec.describe Plurimath::Math::Function::FontStyle do
   describe ".to_mathml" do
     subject(:formula) do
       Plurimath.xml_engine.dump(
-        described_class.new(first_value, second_value).
-          to_mathml_without_math_tag(false, options: {}),
+        described_class.new(first_value, second_value)
+          .to_mathml_without_math_tag(false, options: {}),
         indent: 2,
       ).gsub("&amp;", "&")
     end
@@ -92,11 +93,11 @@ RSpec.describe Plurimath::Math::Function::FontStyle do
     context "contains random value for font style" do
       let(:first_value) do
         Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Sum.new(
-            Plurimath::Math::Symbols::Ampersand.new,
-            Plurimath::Math::Function::Text.new("so"),
-          )
-        ])
+                                       Plurimath::Math::Function::Sum.new(
+                                         Plurimath::Math::Symbols::Ampersand.new,
+                                         Plurimath::Math::Function::Text.new("so"),
+                                       ),
+                                     ])
       end
       let(:second_value) { "asf" }
 
@@ -118,7 +119,9 @@ RSpec.describe Plurimath::Math::Function::FontStyle do
   end
 
   describe ".to_latex" do
-    subject(:formula) { described_class.new(first_value, second_value).to_latex(options: {}) }
+    subject(:formula) do
+      described_class.new(first_value, second_value).to_latex(options: {})
+    end
 
     context "contains Symbol as value" do
       let(:first_value) { Plurimath::Math::Symbols::Symbol.new("n") }
@@ -141,11 +144,11 @@ RSpec.describe Plurimath::Math::Function::FontStyle do
     context "contains Formula as value" do
       let(:first_value) do
         Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Sum.new(
-            Plurimath::Math::Symbols::Ampersand.new,
-            Plurimath::Math::Function::Text.new("so"),
-          )
-        ])
+                                       Plurimath::Math::Function::Sum.new(
+                                         Plurimath::Math::Symbols::Ampersand.new,
+                                         Plurimath::Math::Function::Text.new("so"),
+                                       ),
+                                     ])
       end
       let(:second_value) { "cc" }
 
@@ -156,7 +159,9 @@ RSpec.describe Plurimath::Math::Function::FontStyle do
   end
 
   describe ".to_html" do
-    subject(:formula) { described_class.new(first_value, second_value).to_html(options: {}) }
+    subject(:formula) do
+      described_class.new(first_value, second_value).to_html(options: {})
+    end
 
     context "contains Symbol as value" do
       let(:first_value) { Plurimath::Math::Symbols::Symbol.new("n") }
@@ -179,11 +184,11 @@ RSpec.describe Plurimath::Math::Function::FontStyle do
     context "contains Formula as value" do
       let(:first_value) do
         Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Sum.new(
-            Plurimath::Math::Symbols::Ampersand.new,
-            Plurimath::Math::Function::Text.new("so"),
-          )
-        ])
+                                       Plurimath::Math::Function::Sum.new(
+                                         Plurimath::Math::Symbols::Ampersand.new,
+                                         Plurimath::Math::Function::Text.new("so"),
+                                       ),
+                                     ])
       end
       let(:second_value) { "cc" }
 
@@ -194,20 +199,22 @@ RSpec.describe Plurimath::Math::Function::FontStyle do
   end
 
   describe ".validate_function_formula" do
-    subject(:formula) { described_class.new(first_value).validate_function_formula }
+    subject(:formula) do
+      described_class.new(first_value).validate_function_formula
+    end
 
     context "contains Symbol as value" do
       let(:first_value) { "n" }
 
       it "expects true in return" do
-        expect(formula).to eql(true)
+        expect(formula).to be(true)
       end
     end
 
     context "contains Symbol as value" do
       let(:first_value) { "a" }
 
-      it "should not return false" do
+      it "does not return false" do
         expect(formula).not_to eql(false)
       end
     end

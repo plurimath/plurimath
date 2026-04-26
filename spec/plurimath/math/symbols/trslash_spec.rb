@@ -1,11 +1,10 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Symbols::Trslash do
-
   describe ".initialize" do
-    it 'returns instance of Symbol Trslash' do
+    it "returns instance of Symbol Trslash" do
       klass = described_class.new
-      expect(klass).to be_a(Plurimath::Math::Symbols::Trslash)
+      expect(klass).to be_a(described_class)
     end
   end
 

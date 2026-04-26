@@ -3,10 +3,13 @@ module Plurimath
     module Symbols
       class Hbar < Symbol
         INPUT = {
-          unicodemath: [["hbar", "&#x210f;"], parsing_wrapper(["hslash"], lang: :unicode)],
-          asciimath: [["&#x210f;"], parsing_wrapper(["hbar", "hslash"], lang: :asciimath)],
+          unicodemath: [["hbar", "&#x210f;"],
+                        parsing_wrapper(["hslash"], lang: :unicode)],
+          asciimath: [["&#x210f;"],
+                      parsing_wrapper(["hbar", "hslash"], lang: :asciimath)],
           mathml: ["&#x210f;"],
-          latex: [["hslash", "&#x210f;"], parsing_wrapper(["hbar"], lang: :latex)],
+          latex: [["hslash", "&#x210f;"],
+                  parsing_wrapper(["hbar"], lang: :latex)],
           omml: ["&#x210f;"],
           html: ["&#x210f;"],
         }.freeze

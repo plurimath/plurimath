@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Eqqsim < Symbol
         INPUT = {
-          unicodemath: [["&#x2a73;"], parsing_wrapper(["eqqsim"], lang: :unicode)],
-          asciimath: [["&#x2a73;"], parsing_wrapper(["eqqsim"], lang: :asciimath)],
+          unicodemath: [["&#x2a73;"],
+                        parsing_wrapper(["eqqsim"], lang: :unicode)],
+          asciimath: [["&#x2a73;"],
+                      parsing_wrapper(["eqqsim"], lang: :asciimath)],
           mathml: ["&#x2a73;"],
           latex: [["eqqsim", "&#x2a73;"]],
           omml: ["&#x2a73;"],

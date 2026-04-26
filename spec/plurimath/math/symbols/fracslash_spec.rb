@@ -1,11 +1,10 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Symbols::Fracslash do
-
   describe ".initialize" do
-    it 'returns instance of Symbol Fracslash' do
+    it "returns instance of Symbol Fracslash" do
       klass = described_class.new
-      expect(klass).to be_a(Plurimath::Math::Symbols::Fracslash)
+      expect(klass).to be_a(described_class)
     end
   end
 

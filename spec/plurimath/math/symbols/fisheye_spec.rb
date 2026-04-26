@@ -1,11 +1,10 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Symbols::Fisheye do
-
   describe ".initialize" do
-    it 'returns instance of Symbol Fisheye' do
+    it "returns instance of Symbol Fisheye" do
       klass = described_class.new
-      expect(klass).to be_a(Plurimath::Math::Symbols::Fisheye)
+      expect(klass).to be_a(described_class)
     end
   end
 

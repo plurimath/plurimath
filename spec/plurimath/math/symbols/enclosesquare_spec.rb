@@ -1,11 +1,10 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Symbols::Enclosesquare do
-
   describe ".initialize" do
-    it 'returns instance of Symbol Enclosesquare' do
+    it "returns instance of Symbol Enclosesquare" do
       klass = described_class.new
-      expect(klass).to be_a(Plurimath::Math::Symbols::Enclosesquare)
+      expect(klass).to be_a(described_class)
     end
   end
 

@@ -72,17 +72,17 @@ def input_for_formats(klass)
     <<~ROW
       | #{format_input(format, klass)}
     ROW
-  end.join("")
+  end.join
 end
 
 def format_input(format, klass)
   klass.input(format).flatten.map do |s|
-    if [:latex, :unicodemath].include?(format)
+    if %i[latex unicodemath].include?(format)
       "`\\#{s}`"
     else
       "`#{s}`"
     end
-  end.join(", ").gsub(/\|/, "\\|")
+  end.join(", ").gsub("|", "\\|")
 end
 
 def write_intent_doc_file(file)
@@ -94,9 +94,9 @@ def write_intent_doc_file(file)
     end
 
     file.write(
-      <<~INTENT
+      <<~INTENT,
 
-        * `#{klass.name.gsub("Plurimath::Math::", "")}`
+        * `#{klass.name.gsub('Plurimath::Math::', '')}`
         ** #{intents.join("\n** ")}
       INTENT
     )
@@ -129,8 +129,8 @@ def intent_classes
     Plurimath::Math::Formula,
   ].flatten
   intent_classes.select do |klass|
-    klass.instance_methods(false).include?(:intent_names)
+    klass.method_defined?(:intent_names, false)
   end
 end
 
-task :default => :spec
+task default: :spec

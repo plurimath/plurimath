@@ -1,11 +1,10 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Symbols::Looparrowleft do
-
   describe ".initialize" do
-    it 'returns instance of Symbol Looparrowleft' do
+    it "returns instance of Symbol Looparrowleft" do
       klass = described_class.new
-      expect(klass).to be_a(Plurimath::Math::Symbols::Looparrowleft)
+      expect(klass).to be_a(described_class)
     end
   end
 

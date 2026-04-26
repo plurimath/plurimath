@@ -3,8 +3,12 @@ module Plurimath
     module Symbols
       class Mdblksquare < Symbol
         INPUT = {
-          unicodemath: [["&#x25fc;"], parsing_wrapper(["blacksquare", "mdblksquare"], lang: :unicode)],
-          asciimath: [["&#x25fc;"], parsing_wrapper(["blacksquare", "mdblksquare"], lang: :asciimath)],
+          unicodemath: [["&#x25fc;"],
+                        parsing_wrapper(["blacksquare", "mdblksquare"],
+                                        lang: :unicode)],
+          asciimath: [["&#x25fc;"],
+                      parsing_wrapper(["blacksquare", "mdblksquare"],
+                                      lang: :asciimath)],
           mathml: ["&#x25fc;"],
           latex: [["blacksquare", "mdblksquare", "&#x25fc;"]],
           omml: ["&#x25fc;"],

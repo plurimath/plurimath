@@ -1,11 +1,10 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Symbols::Vartriangle do
-
   describe ".initialize" do
-    it 'returns instance of Symbol Vartriangle' do
+    it "returns instance of Symbol Vartriangle" do
       klass = described_class.new
-      expect(klass).to be_a(Plurimath::Math::Symbols::Vartriangle)
+      expect(klass).to be_a(described_class)
     end
   end
 

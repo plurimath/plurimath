@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class UpcaseSigma < Symbol
         INPUT = {
-          unicodemath: [["Sigma", "&#x3a3;"], parsing_wrapper(["upSigma"], lang: :unicode)],
-          asciimath: [["Sigma", "&#x3a3;"], parsing_wrapper(["upSigma"], lang: :asciimath)],
+          unicodemath: [["Sigma", "&#x3a3;"],
+                        parsing_wrapper(["upSigma"], lang: :unicode)],
+          asciimath: [["Sigma", "&#x3a3;"],
+                      parsing_wrapper(["upSigma"], lang: :asciimath)],
           mathml: ["&#x3a3;"],
           latex: [["upSigma", "Sigma", "&#x3a3;"]],
           omml: ["&#x3a3;"],

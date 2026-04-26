@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Smile < Symbol
         INPUT = {
-          unicodemath: [["&#x2323;"], parsing_wrapper(["smile"], lang: :unicode)],
-          asciimath: [["&#x2323;"], parsing_wrapper(["smile"], lang: :asciimath)],
+          unicodemath: [["&#x2323;"],
+                        parsing_wrapper(["smile"], lang: :unicode)],
+          asciimath: [["&#x2323;"],
+                      parsing_wrapper(["smile"], lang: :asciimath)],
           mathml: ["&#x2323;"],
           latex: [["smile", "&#x2323;"]],
           omml: ["&#x2323;"],

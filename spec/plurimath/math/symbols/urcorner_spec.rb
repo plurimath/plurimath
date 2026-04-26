@@ -1,11 +1,10 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Symbols::Urcorner do
-
   describe ".initialize" do
-    it 'returns instance of Symbol Urcorner' do
+    it "returns instance of Symbol Urcorner" do
       klass = described_class.new
-      expect(klass).to be_a(Plurimath::Math::Symbols::Urcorner)
+      expect(klass).to be_a(described_class)
     end
   end
 

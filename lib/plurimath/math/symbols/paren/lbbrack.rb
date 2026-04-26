@@ -5,9 +5,12 @@ module Plurimath
         class Lbbrack < Paren
           INPUT = {
             unicodemath: ["&#x27e6;", "lbbrack", "Lbrack"],
-            asciimath: [["&#x27e6;"], parsing_wrapper(["lbbrack", "Lbrack"], lang: :asciimath)],
+            asciimath: [["&#x27e6;"],
+                        parsing_wrapper(["lbbrack", "Lbrack"],
+                                        lang: :asciimath)],
             mathml: ["&#x27e6;"],
-            latex: ["&#x27e6;", parsing_wrapper(["lbbrack", "Lbrack"], lang: :latex)],
+            latex: ["&#x27e6;",
+                    parsing_wrapper(["lbbrack", "Lbrack"], lang: :latex)],
             omml: ["&#x27e6;"],
             html: ["&#x27e6;"],
           }.freeze

@@ -3,8 +3,12 @@ module Plurimath
     module Symbols
       class Vardiamond < Symbol
         INPUT = {
-          unicodemath: [["&#x2666;"], parsing_wrapper(["vardiamondsuit", "vardiamond"], lang: :unicode)],
-          asciimath: [["&#x2666;"], parsing_wrapper(["vardiamondsuit", "vardiamond"], lang: :asciimath)],
+          unicodemath: [["&#x2666;"],
+                        parsing_wrapper(["vardiamondsuit", "vardiamond"],
+                                        lang: :unicode)],
+          asciimath: [["&#x2666;"],
+                      parsing_wrapper(["vardiamondsuit", "vardiamond"],
+                                      lang: :asciimath)],
           mathml: ["&#x2666;"],
           latex: [["vardiamondsuit", "vardiamond", "&#x2666;"]],
           omml: ["&#x2666;"],

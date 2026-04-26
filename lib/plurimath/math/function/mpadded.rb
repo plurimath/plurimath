@@ -1,18 +1,16 @@
 # frozen_string_literal: true
 
-
 module Plurimath
   module Math
     module Function
       class Mpadded < UnaryFunction
-
         attr_accessor :options
 
         ZERO_TAGS = {
           height: "zeroAsc",
           depth: "zeroDesc",
           width: "zeroWid",
-        }
+        }.freeze
 
         def initialize(parameter_one = nil, options = {})
           super(parameter_one)
@@ -20,7 +18,7 @@ module Plurimath
         end
 
         def ==(object)
-          super(object) &&
+          super &&
             object&.options == options
         end
 
@@ -45,14 +43,16 @@ module Plurimath
           Utility.update_nodes(phantpr, phant_pr)
           phant << phantpr unless phantpr.nodes.empty?
 
-          phant << omml_parameter(parameter_one, display_style, tag_name: "e", options: options)
+          phant << omml_parameter(parameter_one, display_style, tag_name: "e",
+                                                                options: options)
         end
 
         def to_unicodemath(options:)
           if self.options&.dig(:mpadded)
-            "#{mpadded_unicode}#{unicodemath_parens(parameter_one, options: options)}"
+            "#{mpadded_unicode}#{unicodemath_parens(parameter_one,
+                                                    options: options)}"
           elsif self.options&.key?(:mask)
-            "⟡(#{self.options.dig(:mask)}&#{parameter_one&.to_unicodemath(options: options)})"
+            "⟡(#{self.options[:mask]}&#{parameter_one&.to_unicodemath(options: options)})"
           else
             first_value = "(#{parameter_one.to_unicodemath(options: options)})" if parameter_one
             "⟡#{first_value}"
@@ -87,7 +87,10 @@ module Plurimath
         def phant_pr
           attributes = { "m:val": "on" }
           options&.map do |atr, value|
-            ox_element(ZERO_TAGS[atr], attributes: attributes) if attr_value_zero?(value)
+            if attr_value_zero?(value)
+              ox_element(ZERO_TAGS[atr],
+                         attributes: attributes)
+            end
           end
         end
 

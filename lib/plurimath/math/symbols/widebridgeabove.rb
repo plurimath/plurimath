@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Widebridgeabove < Symbol
         INPUT = {
-          unicodemath: [["&#x20e9;"], parsing_wrapper(["widebridgeabove"], lang: :unicode)],
-          asciimath: [["&#x20e9;"], parsing_wrapper(["widebridgeabove"], lang: :asciimath)],
+          unicodemath: [["&#x20e9;"],
+                        parsing_wrapper(["widebridgeabove"], lang: :unicode)],
+          asciimath: [["&#x20e9;"],
+                      parsing_wrapper(["widebridgeabove"], lang: :asciimath)],
           mathml: ["&#x20e9;"],
           latex: [["widebridgeabove", "&#x20e9;"]],
           omml: ["&#x20e9;"],

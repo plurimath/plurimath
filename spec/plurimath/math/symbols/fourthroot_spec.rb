@@ -1,11 +1,10 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Symbols::Fourthroot do
-
   describe ".initialize" do
-    it 'returns instance of Symbol Fourthroot' do
+    it "returns instance of Symbol Fourthroot" do
       klass = described_class.new
-      expect(klass).to be_a(Plurimath::Math::Symbols::Fourthroot)
+      expect(klass).to be_a(described_class)
     end
   end
 

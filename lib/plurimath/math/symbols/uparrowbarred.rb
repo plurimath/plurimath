@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Uparrowbarred < Symbol
         INPUT = {
-          unicodemath: [["&#x2909;"], parsing_wrapper(["uparrowbarred"], lang: :unicode)],
-          asciimath: [["&#x2909;"], parsing_wrapper(["uparrowbarred"], lang: :asciimath)],
+          unicodemath: [["&#x2909;"],
+                        parsing_wrapper(["uparrowbarred"], lang: :unicode)],
+          asciimath: [["&#x2909;"],
+                      parsing_wrapper(["uparrowbarred"], lang: :asciimath)],
           mathml: ["&#x2909;"],
           latex: [["uparrowbarred", "&#x2909;"]],
           omml: ["&#x2909;"],

@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Pluseqq < Symbol
         INPUT = {
-          unicodemath: [["&#x2a72;"], parsing_wrapper(["pluseqq"], lang: :unicode)],
-          asciimath: [["&#x2a72;"], parsing_wrapper(["pluseqq"], lang: :asciimath)],
+          unicodemath: [["&#x2a72;"],
+                        parsing_wrapper(["pluseqq"], lang: :unicode)],
+          asciimath: [["&#x2a72;"],
+                      parsing_wrapper(["pluseqq"], lang: :asciimath)],
           mathml: ["&#x2a72;"],
           latex: [["pluseqq", "&#x2a72;"]],
           omml: ["&#x2a72;"],

@@ -1,11 +1,10 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Symbols::Cupovercap do
-
   describe ".initialize" do
-    it 'returns instance of Symbol Cupovercap' do
+    it "returns instance of Symbol Cupovercap" do
       klass = described_class.new
-      expect(klass).to be_a(Plurimath::Math::Symbols::Cupovercap)
+      expect(klass).to be_a(described_class)
     end
   end
 

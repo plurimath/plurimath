@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Obar < Symbol
         INPUT = {
-          unicodemath: [["&#x233d;"], parsing_wrapper(["obar"], lang: :unicode)],
-          asciimath: [["&#x233d;"], parsing_wrapper(["obar"], lang: :asciimath)],
+          unicodemath: [["&#x233d;"],
+                        parsing_wrapper(["obar"], lang: :unicode)],
+          asciimath: [["&#x233d;"],
+                      parsing_wrapper(["obar"], lang: :asciimath)],
           mathml: ["&#x233d;"],
           latex: [["obar", "&#x233d;"]],
           omml: ["&#x233d;"],

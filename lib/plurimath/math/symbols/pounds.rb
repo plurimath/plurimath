@@ -3,8 +3,12 @@ module Plurimath
     module Symbols
       class Pounds < Symbol
         INPUT = {
-          unicodemath: [["&#xa3;"], parsing_wrapper(["mathsterling", "sterling", "pounds"], lang: :unicode)],
-          asciimath: [["&#xa3;"], parsing_wrapper(["mathsterling", "sterling", "pounds"], lang: :asciimath)],
+          unicodemath: [["&#xa3;"],
+                        parsing_wrapper(["mathsterling", "sterling", "pounds"],
+                                        lang: :unicode)],
+          asciimath: [["&#xa3;"],
+                      parsing_wrapper(["mathsterling", "sterling", "pounds"],
+                                      lang: :asciimath)],
           mathml: ["&#xa3;"],
           latex: [["mathsterling", "sterling", "pounds", "&#xa3;"]],
           omml: ["&#xa3;"],

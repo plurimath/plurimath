@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class UpcaseEquiv < Symbol
         INPUT = {
-          unicodemath: [["&#x2263;"], parsing_wrapper(["UpcaseEquiv"], lang: :unicode)],
-          asciimath: [["&#x2263;"], parsing_wrapper(["UpcaseEquiv"], lang: :asciimath)],
+          unicodemath: [["&#x2263;"],
+                        parsing_wrapper(["UpcaseEquiv"], lang: :unicode)],
+          asciimath: [["&#x2263;"],
+                      parsing_wrapper(["UpcaseEquiv"], lang: :asciimath)],
           mathml: ["&#x2263;"],
           latex: [["Equiv", "&#x2263;"]],
           omml: ["&#x2263;"],

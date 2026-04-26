@@ -1,11 +1,10 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Symbols::Langledot do
-
   describe ".initialize" do
-    it 'returns instance of Symbol Langledot' do
+    it "returns instance of Symbol Langledot" do
       klass = described_class.new
-      expect(klass).to be_a(Plurimath::Math::Symbols::Langledot)
+      expect(klass).to be_a(described_class)
     end
   end
 

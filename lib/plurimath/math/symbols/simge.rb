@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Simge < Symbol
         INPUT = {
-          unicodemath: [["&#x2aa0;"], parsing_wrapper(["simgE"], lang: :unicode)],
-          asciimath: [["&#x2aa0;"], parsing_wrapper(["simgE"], lang: :asciimath)],
+          unicodemath: [["&#x2aa0;"],
+                        parsing_wrapper(["simgE"], lang: :unicode)],
+          asciimath: [["&#x2aa0;"],
+                      parsing_wrapper(["simgE"], lang: :asciimath)],
           mathml: ["&#x2aa0;"],
           latex: [["simgE", "&#x2aa0;"]],
           omml: ["&#x2aa0;"],

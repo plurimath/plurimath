@@ -1,7 +1,10 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::NumberFormatter do
-  subject(:formatter) { described_class.new(locale, localize_number: localize_number, localizer_symbols: localizer_symbols) }
+  subject(:formatter) do
+    described_class.new(locale, localize_number: localize_number,
+                                localizer_symbols: localizer_symbols)
+  end
 
   describe ".initialize" do
     context "class variables" do
@@ -14,8 +17,8 @@ RSpec.describe Plurimath::NumberFormatter do
       end
 
       it "matches instance variables values" do
-        expect(formatter.locale).to eql(:de)
-        expect(formatter.localize_number).to eql(nil)
+        expect(formatter.locale).to be(:de)
+        expect(formatter.localize_number).to be_nil
         expect(formatter.localizer_symbols).to eql({})
       end
     end
@@ -40,25 +43,29 @@ RSpec.describe Plurimath::NumberFormatter do
 
       it "matches notation: :basic with de locale localized without precision string" do
         format = { decimal: "*", notation: :basic, group_digits: 3 }
-        output_string = formatter.localized_number(number, locale: locale, format: format)
+        output_string = formatter.localized_number(number, locale: locale,
+                                                           format: format)
         expect(output_string).to eql("14,000")
       end
 
       it "matches localized string with notation: :e, e: :E and precision" do
         format = { decimal: "@", notation: :e, e: :E }
-        output_string = formatter.localized_number(number, precision: 1, format: format)
+        output_string = formatter.localized_number(number, precision: 1,
+                                                           format: format)
         expect(output_string).to eql("1@4E4")
       end
 
       it "matches localized string notation: :scientific with en locale and exponent sign" do
-        format = { decimal: ".", notation: :scientific, exponent_sign: :plus, fraction_group: " ", fraction_group_digits: 3 }
+        format = { decimal: ".", notation: :scientific, exponent_sign: :plus,
+                   fraction_group: " ", fraction_group_digits: 3 }
         output_string = formatter.localized_number(number, format: format)
         expect(output_string).to eql("1.400 0 × 10^+4")
       end
 
       it "matches localized string with notation: :engineering and times initialized locale" do
         format = { decimal: ",", notation: :engineering, times: "x" }
-        output_string = formatter.localized_number(number, locale: locale, precision: 2, format: format)
+        output_string = formatter.localized_number(number, locale: locale,
+                                                           precision: 2, format: format)
         expect(output_string).to eql("14,00 x 10^3")
       end
 
@@ -95,7 +102,8 @@ RSpec.describe Plurimath::NumberFormatter do
 
       it "matches group_digits:, group:, and decimal" do
         format = { group_digits: 2, group: "'", decimal: "*" }
-        output_string = formatter.localized_number(number, locale: locale, format: format)
+        output_string = formatter.localized_number(number, locale: locale,
+                                                           format: format)
         expect(output_string).to eql("1'42'36*392 39")
       end
     end
@@ -107,8 +115,10 @@ RSpec.describe Plurimath::NumberFormatter do
       let(:localizer_symbols) { {} }
 
       it "matches fraction_group_digits:, fraction_group:, and decimal" do
-        format = { fraction_group_digits: 4, fraction_group: ",", decimal: "@", group_digits: 3 }
-        output_string = formatter.localized_number(number, locale: locale, format: format)
+        format = { fraction_group_digits: 4, fraction_group: ",", decimal: "@",
+                   group_digits: 3 }
+        output_string = formatter.localized_number(number, locale: locale,
+                                                           format: format)
         expect(output_string).to eql("14,236@3923,9")
       end
     end
@@ -120,12 +130,14 @@ RSpec.describe Plurimath::NumberFormatter do
       let(:localizer_symbols) { {} }
 
       it "matches locale: kk with minimum digit_count" do
-        output_string = formatter.localized_number(number, locale: :kk, format: { digit_count: 6, group_digits: 3 })
+        output_string = formatter.localized_number(number, locale: :kk,
+                                                           format: { digit_count: 6, group_digits: 3 })
         expect(output_string).to eql("14 236,4")
       end
 
       it "matches locale: kk with maximum digit_count" do
-        output_string = formatter.localized_number(number, locale: :kk, format: { digit_count: 16, fraction_group: " ", fraction_group_digits: 3, group_digits: 3 })
+        output_string = formatter.localized_number(number, locale: :kk,
+                                                           format: { digit_count: 16, fraction_group: " ", fraction_group_digits: 3, group_digits: 3 })
         expect(output_string).to eql("14 236,392 390 000 00")
       end
 
@@ -133,7 +145,9 @@ RSpec.describe Plurimath::NumberFormatter do
         # When digit_count rounding causes 999.* -> 1000, the integer part grows
         # by one digit and needs grouping re-applied (1,000), even though the
         # pre-rounded integer (999) had no separators.
-        output_string = formatter.localized_number("999.9", format: { digit_count: 3, group_digits: 3, group: ",", decimal: "." })
+        output_string = formatter.localized_number("999.9",
+                                                   format: { digit_count: 3,
+                                                             group_digits: 3, group: ",", decimal: "." })
         expect(output_string).to eql("1,000")
       end
     end
@@ -145,7 +159,8 @@ RSpec.describe Plurimath::NumberFormatter do
       let(:localizer_symbols) { {} }
 
       it "matches locale: kk with precision" do
-        output_string = formatter.localized_number(number, locale: :es, precision: 20, format: { fraction_group: " ", fraction_group_digits: 3, group_digits: 3 })
+        output_string = formatter.localized_number(number, locale: :es,
+                                                           precision: 20, format: { fraction_group: " ", fraction_group_digits: 3, group_digits: 3 })
         expect(output_string).to eql("14.236,392 390 000 000 000 000 00")
       end
     end
@@ -161,17 +176,29 @@ RSpec.describe Plurimath::NumberFormatter do
       let(:localizer_symbols) { {} }
 
       it "matches locale: de with precision" do
-        output_string = formatter.localized_number(number, format: { digit_count: 18, group_digits: 3 })
+        output_string = formatter.localized_number(number,
+                                                   format: { digit_count: 18,
+                                                             group_digits: 3 })
         expect(output_string).to eql("327.428,000878432992")
-        output_string = formatter.localized_number(number, format: { digit_count: 19, group_digits: 3 })
+        output_string = formatter.localized_number(number,
+                                                   format: { digit_count: 19,
+                                                             group_digits: 3 })
         expect(output_string).to eql("327.428,0008784329920")
-        output_string = formatter.localized_number(number, format: { digit_count: 20, group_digits: 3 })
+        output_string = formatter.localized_number(number,
+                                                   format: { digit_count: 20,
+                                                             group_digits: 3 })
         expect(output_string).to eql("327.428,00087843299200")
-        output_string = formatter.localized_number(number, format: { digit_count: 18, notation: :scientific, group_digits: 3 })
+        output_string = formatter.localized_number(number,
+                                                   format: { digit_count: 18,
+                                                             notation: :scientific, group_digits: 3 })
         expect(output_string).to eql("3,27428000878432992 × 10^5")
-        output_string = formatter.localized_number(number, format: { digit_count: 19, notation: :scientific, group_digits: 3 })
+        output_string = formatter.localized_number(number,
+                                                   format: { digit_count: 19,
+                                                             notation: :scientific, group_digits: 3 })
         expect(output_string).to eql("3,274280008784329920 × 10^5")
-        output_string = formatter.localized_number(number, format: { digit_count: 20, notation: :scientific, group_digits: 3 })
+        output_string = formatter.localized_number(number,
+                                                   format: { digit_count: 20,
+                                                             notation: :scientific, group_digits: 3 })
         expect(output_string).to eql("3,2742800087843299200 × 10^5")
       end
     end
@@ -187,17 +214,29 @@ RSpec.describe Plurimath::NumberFormatter do
       let(:localizer_symbols) { {} }
 
       it "matches locale: de with digit count and significant" do
-        output_string = formatter.localized_number(number, format: { digit_count: 3, group_digits: 3 })
+        output_string = formatter.localized_number(number,
+                                                   format: { digit_count: 3,
+                                                             group_digits: 3 })
         expect(output_string).to eql("0,00")
-        output_string = formatter.localized_number(number, format: { digit_count: 6, notation: :scientific, group_digits: 3 })
+        output_string = formatter.localized_number(number,
+                                                   format: { digit_count: 6,
+                                                             notation: :scientific, group_digits: 3 })
         expect(output_string).to eql("1,00000 × 10^-3")
-        output_string = formatter.localized_number(number, format: { significant: 3, group_digits: 3 })
+        output_string = formatter.localized_number(number,
+                                                   format: { significant: 3,
+                                                             group_digits: 3 })
         expect(output_string).to eql("0,001")
-        output_string = formatter.localized_number(number, format: { significant: 3, notation: :e, group_digits: 3 })
+        output_string = formatter.localized_number(number,
+                                                   format: { significant: 3,
+                                                             notation: :e, group_digits: 3 })
         expect(output_string).to eql("1,00e-3")
-        output_string = formatter.localized_number(number, format: { significant: 3, notation: :scientific, group_digits: 3 })
+        output_string = formatter.localized_number(number,
+                                                   format: { significant: 3,
+                                                             notation: :scientific, group_digits: 3 })
         expect(output_string).to eql("1,00 × 10^-3")
-        output_string = formatter.localized_number(number, format: { significant: 4, notation: :engineering, group_digits: 3 })
+        output_string = formatter.localized_number(number,
+                                                   format: { significant: 4,
+                                                             notation: :engineering, group_digits: 3 })
         expect(output_string).to eql("1,000 × 10^-3")
       end
     end
@@ -212,37 +251,51 @@ RSpec.describe Plurimath::NumberFormatter do
       let(:localizer_symbols) { {} }
 
       it "matches locale: de with 2 significant" do
-        output_string = formatter.localized_number("112", format: { significant: 2, group_digits: 3 })
+        output_string = formatter.localized_number("112",
+                                                   format: { significant: 2,
+                                                             group_digits: 3 })
         expect(output_string).to eql("110")
       end
 
       it "matches locale: de with 2 significant for multiple 9's in number" do
-        output_string = formatter.localized_number("1999", format: { significant: 2, group_digits: 3 })
+        output_string = formatter.localized_number("1999",
+                                                   format: { significant: 2,
+                                                             group_digits: 3 })
         expect(output_string).to eql("2.000")
       end
 
       it "matches locale: de with 4 significant for float number" do
-        output_string = formatter.localized_number("1999.9", format: { significant: 4, group_digits: 3 })
+        output_string = formatter.localized_number("1999.9",
+                                                   format: { significant: 4,
+                                                             group_digits: 3 })
         expect(output_string).to eql("2.000")
       end
 
       it "matches locale: de with 5 significant" do
-        output_string = formatter.localized_number("112436", format: { significant: 5, group_digits: 3 })
+        output_string = formatter.localized_number("112436",
+                                                   format: { significant: 5,
+                                                             group_digits: 3 })
         expect(output_string).to eql("112.440")
       end
 
       it "matches locale: de with 5 significant" do
-        output_string = formatter.localized_number("1234567", format: { significant: 5, group_digits: 3 })
+        output_string = formatter.localized_number("1234567",
+                                                   format: { significant: 5,
+                                                             group_digits: 3 })
         expect(output_string).to eql("1.234.600")
       end
 
       it "matches locale: de with 3 significant" do
-        output_string = formatter.localized_number("0.1999", format: { significant: 3, group_digits: 3 })
+        output_string = formatter.localized_number("0.1999",
+                                                   format: { significant: 3,
+                                                             group_digits: 3 })
         expect(output_string).to eql("0,200")
       end
 
       it "matches locale: de with 5 significant with engineering notation" do
-        output_string = formatter.localized_number("112436", format: { significant: 5, notation: :engineering, group_digits: 3 })
+        output_string = formatter.localized_number("112436",
+                                                   format: { significant: 5,
+                                                             notation: :engineering, group_digits: 3 })
         expect(output_string).to eql("112,44 × 10^3")
       end
     end
@@ -259,42 +312,56 @@ RSpec.describe Plurimath::NumberFormatter do
       it "matches locale: de with digit count and significant" do
         number = "31564.346"
         # passing group and decimal to the formatter instance
-        output_string = formatter.localized_number(number, format: { decimal: "x", group: "|", group_digits: 3 })
+        output_string = formatter.localized_number(number,
+                                                   format: { decimal: "x",
+                                                             group: "|", group_digits: 3 })
         expect(output_string).to eql("31|564x346")
         # Not passing group and decimal to the same formatter instance
-        output_string = formatter.localized_number(number, format: { group: ".", group_digits: 3 })
+        output_string = formatter.localized_number(number,
+                                                   format: { group: ".",
+                                                             group_digits: 3 })
         expect(output_string).to eql("31.564,346")
       end
 
       it "matches locale: de with large number and format options, trimming trailing non-significant zeros" do
-        format_hash = { fraction_group_digits: 2, fraction_group: "'", significant: 9, group_digits: 3 }
-        output_string = formatter.localized_number("327428.7432878432992", precision: nil, format: format_hash)
+        format_hash = { fraction_group_digits: 2, fraction_group: "'",
+                        significant: 9, group_digits: 3 }
+        output_string = formatter.localized_number("327428.7432878432992",
+                                                   precision: nil, format: format_hash)
         expect(output_string).to eql("327.428,74'3")
       end
 
       it "matches false output due to ambiguity between decimal and group values" do
-        format_hash = { fraction_group_digits: 2, fraction_group: "'", decimal: ",", notation: :basic, significant: 9, group_digits: 3 }
-        output_string = formatter.localized_number("327428.7432878432992", locale: :en, precision: nil, format: format_hash)
+        format_hash = { fraction_group_digits: 2, fraction_group: "'",
+                        decimal: ",", notation: :basic, significant: 9, group_digits: 3 }
+        output_string = formatter.localized_number("327428.7432878432992",
+                                                   locale: :en, precision: nil, format: format_hash)
         expect(output_string).to eql("327,42'8")
       end
 
       it "matches precision nil, significant and other format options" do
-        format_hash = { fraction_group_digits: 2, fraction_group: "'", decimal: ",", notation: :e, significant: 9 }
-        output_string = formatter.localized_number("327428.7432878432992", precision: nil, format: format_hash)
+        format_hash = { fraction_group_digits: 2, fraction_group: "'",
+                        decimal: ",", notation: :e, significant: 9 }
+        output_string = formatter.localized_number("327428.7432878432992",
+                                                   precision: nil, format: format_hash)
         expect(output_string).to eql("3,27'42'87'43e5")
       end
 
       it "matches notation e with significant and other format options" do
-        format_hash = { fraction_group_digits: 2, fraction_group: "'", decimal: ",", group: " ", notation: :e, significant: 1 }
+        format_hash = { fraction_group_digits: 2, fraction_group: "'",
+                        decimal: ",", group: " ", notation: :e, significant: 1 }
         format_hash2 = format_hash.merge(significant: 2)
         # very large number
-        output_string = formatter.localized_number("1000000000000000000000.0", locale: :en, precision: nil, format: format_hash)
+        output_string = formatter.localized_number("1000000000000000000000.0",
+                                                   locale: :en, precision: nil, format: format_hash)
         expect(output_string).to eql("1e21")
         # very large number
-        output_string = formatter.localized_number("10000000000000000000.0", locale: :en, precision: nil, format: format_hash2)
+        output_string = formatter.localized_number("10000000000000000000.0",
+                                                   locale: :en, precision: nil, format: format_hash2)
         expect(output_string).to eql("1,0e19")
         # very small number
-        output_string = formatter.localized_number("0.0000000000000000001", locale: :en, precision: nil, format: format_hash2)
+        output_string = formatter.localized_number("0.0000000000000000001",
+                                                   locale: :en, precision: nil, format: format_hash2)
         expect(output_string).to eql("1,0e-19")
       end
 
@@ -309,7 +376,8 @@ RSpec.describe Plurimath::NumberFormatter do
           decimal: ",",
           group: "x",
         }
-        output_string = formatter.localized_number('642121496772645156.4515', precision: 7, format: format_hash)
+        output_string = formatter.localized_number("642121496772645156.4515",
+                                                   precision: 7, format: format_hash)
         expect(output_string).to eql("6,4212y15 × 10^17")
       end
     end
@@ -323,22 +391,34 @@ RSpec.describe Plurimath::NumberFormatter do
         let(:number) { "14236.39239" }
 
         it "does add number_sign with notation: basic" do
-          output_string = formatter.localized_number(number, format: { number_sign: :plus, notation: :basic })
+          output_string = formatter.localized_number(number,
+                                                     format: {
+                                                       number_sign: :plus, notation: :basic
+                                                     })
           expect(output_string).to eql("+14,236.39239")
         end
 
         it "does add number_sign with notation: e" do
-          output_string = formatter.localized_number("14236.39239", format: { number_sign: :plus, notation: :e })
+          output_string = formatter.localized_number("14236.39239",
+                                                     format: {
+                                                       number_sign: :plus, notation: :e
+                                                     })
           expect(output_string).to eql("+1.423639239e4")
         end
 
         it "does add number_sign with notation: scientific" do
-          output_string = formatter.localized_number("14236.39239", format: { number_sign: :plus, notation: :scientific })
+          output_string = formatter.localized_number("14236.39239",
+                                                     format: {
+                                                       number_sign: :plus, notation: :scientific
+                                                     })
           expect(output_string).to eql("+1.423639239 × 10^4")
         end
 
         it "does add number_sign with notation: engineering" do
-          output_string = formatter.localized_number("14236.39239", format: { number_sign: :plus, notation: :engineering })
+          output_string = formatter.localized_number("14236.39239",
+                                                     format: {
+                                                       number_sign: :plus, notation: :engineering
+                                                     })
           expect(output_string).to eql("+14.236392390 × 10^3")
         end
       end
@@ -347,22 +427,34 @@ RSpec.describe Plurimath::NumberFormatter do
         let(:number) { "-14236.39239" }
 
         it "does not add number_sign with notation: basic" do
-          output_string = formatter.localized_number(number, format: { number_sign: :plus, notation: :basic })
+          output_string = formatter.localized_number(number,
+                                                     format: {
+                                                       number_sign: :plus, notation: :basic
+                                                     })
           expect(output_string).to eql("-14,236.39239")
         end
 
         it "does not add number_sign with notation: e" do
-          output_string = formatter.localized_number(number, format: { number_sign: :plus, notation: :e })
+          output_string = formatter.localized_number(number,
+                                                     format: {
+                                                       number_sign: :plus, notation: :e
+                                                     })
           expect(output_string).to eql("-1.4236392390e4")
         end
 
         it "does not add number_sign with notation: scientific" do
-          output_string = formatter.localized_number(number, format: { number_sign: :plus, notation: :scientific })
+          output_string = formatter.localized_number(number,
+                                                     format: {
+                                                       number_sign: :plus, notation: :scientific
+                                                     })
           expect(output_string).to eql("-1.4236392390 × 10^4")
         end
 
         it "does not add number_sign with notation: engineering" do
-          output_string = formatter.localized_number(number, format: { number_sign: :plus, notation: :engineering })
+          output_string = formatter.localized_number(number,
+                                                     format: {
+                                                       number_sign: :plus, notation: :engineering
+                                                     })
           expect(output_string).to eql("-1.4236392390 × 10^3")
         end
       end
@@ -378,17 +470,19 @@ RSpec.describe Plurimath::NumberFormatter do
             group: "'",
             fraction_group_digits: 3,
             fraction_group: " ",
-            digit_count: 6
+            digit_count: 6,
           }
         end
 
         it "formats number with trailing zeros" do
-          output_string = formatter.localized_number("283.180", format: format_options)
+          output_string = formatter.localized_number("283.180",
+                                                     format: format_options)
           expect(output_string).to eql("283,180")
         end
 
         it "formats number with extra trailing zeros" do
-          output_string = formatter.localized_number("283.180000000000", format: format_options)
+          output_string = formatter.localized_number("283.180000000000",
+                                                     format: format_options)
           expect(output_string).to eql("283,180")
         end
       end
@@ -404,12 +498,13 @@ RSpec.describe Plurimath::NumberFormatter do
             digit_count: 6,
             fraction_group_digits: 3,
             fraction_group: " ",
-            decimal: ","
+            decimal: ",",
           }
         end
 
         it "formats number with e notation" do
-          output_string = formatter.localized_number("0.000568096", format: format_options)
+          output_string = formatter.localized_number("0.000568096",
+                                                     format: format_options)
           expect(output_string).to eql("5,680 96 -4")
         end
       end
@@ -421,33 +516,46 @@ RSpec.describe Plurimath::NumberFormatter do
       let(:localizer_symbols) { {} }
 
       # Use a small group size by default to exercise separators; override in individual tests when needed.
-      let(:base_format_defaults) { { group_digits: 2, group: ",", decimal: "." } }
+      let(:base_format_defaults) do
+        { group_digits: 2, group: ",", decimal: "." }
+      end
 
       context "base conversion (integers)" do
         it "formats base 2 with default prefix" do
-          output_string = formatter.localized_number("1910", format: base_format_defaults.merge(base: 2, group_digits: 8, group: " "))
+          output_string = formatter.localized_number("1910",
+                                                     format: base_format_defaults.merge(
+                                                       base: 2, group_digits: 8, group: " ",
+                                                     ))
           expect(output_string).to eql("0b111 01110110")
         end
 
         it "formats zero in base 16 with default prefix" do
-          output_string = formatter.localized_number("0", format: base_format_defaults.merge(base: 16))
+          output_string = formatter.localized_number("0",
+                                                     format: base_format_defaults.merge(base: 16))
           expect(output_string).to eql("0x0")
         end
 
         it "keeps the negative sign before the prefix" do
-          output_string = formatter.localized_number("-255", format: base_format_defaults.merge(base: 16))
+          output_string = formatter.localized_number("-255",
+                                                     format: base_format_defaults.merge(base: 16))
           expect(output_string).to eql("-0xff")
         end
       end
 
       context "hex_capital option" do
         it "uppercases hex digits (not prefix) when base 16" do
-          output_string = formatter.localized_number("48879", format: base_format_defaults.merge(base: 16, hex_capital: true))
+          output_string = formatter.localized_number("48879",
+                                                     format: base_format_defaults.merge(
+                                                       base: 16, hex_capital: true,
+                                                     ))
           expect(output_string).to eql("0xBE,EF")
         end
 
         it "does not affect non-hex bases" do
-          output_string = formatter.localized_number("10", format: base_format_defaults.merge(base: 2, hex_capital: true))
+          output_string = formatter.localized_number("10",
+                                                     format: base_format_defaults.merge(
+                                                       base: 2, hex_capital: true,
+                                                     ))
           expect(output_string).to eql("0b10,10")
         end
 
@@ -458,10 +566,11 @@ RSpec.describe Plurimath::NumberFormatter do
             decimal: "d",
             group_digits: 10,
             fraction_group_digits: 0,
-            fraction_group: ""
+            fraction_group: "",
           )
 
-          output_string = formatter.localized_number("0.899", format: format, precision: 1)
+          output_string = formatter.localized_number("0.899", format: format,
+                                                              precision: 1)
           expect(output_string).to eql("0x0DC")
         end
 
@@ -470,7 +579,7 @@ RSpec.describe Plurimath::NumberFormatter do
             base: 16,
             hex_capital: true,
             group_digits: 2,
-            group: "g"
+            group: "g",
           )
 
           output_string = formatter.localized_number("48879", format: format)
@@ -484,90 +593,124 @@ RSpec.describe Plurimath::NumberFormatter do
             group_digits: 10,
             decimal: ".",
             fraction_group_digits: 1,
-            fraction_group: "f"
+            fraction_group: "f",
           )
 
-          output_string = formatter.localized_number("0.5", format: format, precision: 4)
+          output_string = formatter.localized_number("0.5", format: format,
+                                                            precision: 4)
           expect(output_string).to eql("0x0.8F0F0F0")
         end
       end
 
       context "base_prefix option" do
         it "allows overriding the default prefix" do
-          output_string = formatter.localized_number("255", format: base_format_defaults.merge(base: 16, base_prefix: "16#"))
+          output_string = formatter.localized_number("255",
+                                                     format: base_format_defaults.merge(
+                                                       base: 16, base_prefix: "16#",
+                                                     ))
           expect(output_string).to eql("16#ff")
         end
 
         it "allows removing the prefix by passing an empty string" do
-          output_string = formatter.localized_number("255", format: base_format_defaults.merge(base: 16, base_prefix: ""))
+          output_string = formatter.localized_number("255",
+                                                     format: base_format_defaults.merge(
+                                                       base: 16, base_prefix: "",
+                                                     ))
           expect(output_string).to eql("ff")
         end
 
         it "treats base_prefix: nil as no prefix" do
-          output_string = formatter.localized_number("255", format: base_format_defaults.merge(base: 16, base_prefix: nil))
+          output_string = formatter.localized_number("255",
+                                                     format: base_format_defaults.merge(
+                                                       base: 16, base_prefix: nil,
+                                                     ))
           expect(output_string).to eql("ff")
         end
       end
 
       context "base_postfix option" do
         it "uses base_postfix instead of prefix when provided" do
-          output_string = formatter.localized_number("255", format: base_format_defaults.merge(base: 16, base_postfix: "_16"))
+          output_string = formatter.localized_number("255",
+                                                     format: base_format_defaults.merge(
+                                                       base: 16, base_postfix: "_16",
+                                                     ))
           expect(output_string).to eql("ff_16")
         end
 
         it "uppercases hex digits even when base_postfix is used" do
-          output_string = formatter.localized_number("48879", format: base_format_defaults.merge(base: 16, base_postfix: "_h", hex_capital: true))
+          output_string = formatter.localized_number("48879",
+                                                     format: base_format_defaults.merge(base: 16, base_postfix: "_h",
+                                                                                        hex_capital: true))
           expect(output_string).to eql("BE,EF_h")
         end
 
         it "base_postfix takes precedence even if base_prefix is also provided" do
-          output_string = formatter.localized_number("255", format: base_format_defaults.merge(base: 16, base_prefix: "0x", base_postfix: "h"))
+          output_string = formatter.localized_number("255",
+                                                     format: base_format_defaults.merge(base: 16, base_prefix: "0x",
+                                                                                        base_postfix: "h"))
           expect(output_string).to eql("ffh")
         end
       end
 
       context "non-integer numeric inputs with non-decimal base" do
         it "converts base of the fractional part when base is 2" do
-          output_string = formatter.localized_number("10.75", format: base_format_defaults.merge(base: 2))
+          output_string = formatter.localized_number("10.75",
+                                                     format: base_format_defaults.merge(base: 2))
           expect(output_string).to eql("0b10,10.11")
         end
 
         it "converts base of the fractional part for negative values as well with custom prefix" do
-          output_string = formatter.localized_number("-10.75", format: base_format_defaults.merge(base: 2, base_prefix: " 0B"))
+          output_string = formatter.localized_number("-10.75",
+                                                     format: base_format_defaults.merge(
+                                                       base: 2, base_prefix: " 0B",
+                                                     ))
           expect(output_string).to eql("- 0B10,10.11") # space is included in the "base_prefix"
         end
       end
 
       context "base 10 interactions (sanity)" do
         it "does not add a prefix when base is 10" do
-          output_string = formatter.localized_number("255", format: base_format_defaults.merge(base: 10))
+          output_string = formatter.localized_number("255",
+                                                     format: base_format_defaults.merge(base: 10))
           expect(output_string).to eql("2,55")
         end
 
         it "base_postfix takes precedence even if base_prefix is also provided" do
-          output_string = formatter.localized_number("255", format: base_format_defaults.merge(base: 10, base_prefix: "y^", base_postfix: "_x"))
+          output_string = formatter.localized_number("255",
+                                                     format: base_format_defaults.merge(base: 10, base_prefix: "y^",
+                                                                                        base_postfix: "_x"))
           expect(output_string).to eql("2,55")
         end
       end
 
       context "base conversion with digit_count" do
         it "applies digit_count with base 10 (total digits including fractional)" do
-          output_string = formatter.localized_number("14236.39239", format: base_format_defaults.merge(base: 10, digit_count: 6, group_digits: 3))
+          output_string = formatter.localized_number("14236.39239",
+                                                     format: base_format_defaults.merge(
+                                                       base: 10, digit_count: 6, group_digits: 3,
+                                                     ))
           expect(output_string).to eql("14,236.4")
         end
 
         it "rounds 8999.569 correctly with digit_count 6" do
-          output_string = formatter.localized_number("8999.569", format: base_format_defaults.merge(base: 10, digit_count: 6, group_digits: 3))
+          output_string = formatter.localized_number("8999.569",
+                                                     format: base_format_defaults.merge(
+                                                       base: 10, digit_count: 6, group_digits: 3,
+                                                     ))
           expect(output_string).to eql("8,999.57")
         end
 
         it "rounds 8999.569 correctly with digit_count 4" do
-          output_string = formatter.localized_number("8999.569", format: base_format_defaults.merge(base: 10, digit_count: 4, group_digits: 3))
+          output_string = formatter.localized_number("8999.569",
+                                                     format: base_format_defaults.merge(
+                                                       base: 10, digit_count: 4, group_digits: 3,
+                                                     ))
           expect(output_string).to eql("9,000")
         end
 
         it "applies digit_count with base 2 and fractional input" do
-          output_string = formatter.localized_number("10.75", format: base_format_defaults.merge(base: 2, digit_count: 7, group_digits: 10), precision: 5)
+          output_string = formatter.localized_number("10.75",
+                                                     format: base_format_defaults.merge(base: 2, digit_count: 7, group_digits: 10), precision: 5)
           expect(output_string).to eql("0b1010.110")
         end
 
@@ -575,10 +718,11 @@ RSpec.describe Plurimath::NumberFormatter do
           format = base_format_defaults.merge(
             base: 10,
             digit_count: 3,
-            group_digits: 3
+            group_digits: 3,
           )
 
-          output_string = formatter.localized_number("99999.999", format: format)
+          output_string = formatter.localized_number("99999.999",
+                                                     format: format)
           expect(output_string).to eql("100,000")
         end
 
@@ -586,10 +730,11 @@ RSpec.describe Plurimath::NumberFormatter do
           format = base_format_defaults.merge(
             base: 10,
             digit_count: 3,
-            group_digits: 3
+            group_digits: 3,
           )
 
-          output_string = formatter.localized_number("12345.123", format: format)
+          output_string = formatter.localized_number("12345.123",
+                                                     format: format)
           expect(output_string).to eql("12,345")
         end
 
@@ -597,7 +742,7 @@ RSpec.describe Plurimath::NumberFormatter do
           format = base_format_defaults.merge(
             base: 10,
             digit_count: 5,
-            group_digits: 3
+            group_digits: 3,
           )
 
           output_string = formatter.localized_number("12345.5", format: format)
@@ -608,7 +753,7 @@ RSpec.describe Plurimath::NumberFormatter do
           format = base_format_defaults.merge(
             base: 10,
             digit_count: 5,
-            group_digits: 3
+            group_digits: 3,
           )
 
           output_string = formatter.localized_number("12345.4", format: format)
@@ -619,7 +764,7 @@ RSpec.describe Plurimath::NumberFormatter do
           format = base_format_defaults.merge(
             base: 10,
             digit_count: 2,
-            group_digits: 3
+            group_digits: 3,
           )
 
           output_string = formatter.localized_number("-999.7", format: format)
@@ -633,10 +778,11 @@ RSpec.describe Plurimath::NumberFormatter do
             group_digits: 10,
             fraction_group_digits: 0,
             fraction_group: "",
-            decimal: "."
+            decimal: ".",
           )
 
-          output_string = formatter.localized_number("255.9", format: format, precision: 4)
+          output_string = formatter.localized_number("255.9", format: format,
+                                                              precision: 4)
           expect(output_string).to eql("0x100")
         end
 
@@ -647,10 +793,11 @@ RSpec.describe Plurimath::NumberFormatter do
             group_digits: 10,
             fraction_group_digits: 0,
             fraction_group: "",
-            decimal: "."
+            decimal: ".",
           )
 
-          output_string = formatter.localized_number("15.9", format: format, precision: 4)
+          output_string = formatter.localized_number("15.9", format: format,
+                                                             precision: 4)
           expect(output_string).to eql("0b10000")
         end
       end
@@ -669,10 +816,11 @@ RSpec.describe Plurimath::NumberFormatter do
               group_digits: 10,
               fraction_group_digits: 0,
               fraction_group: "",
-              decimal: "."
+              decimal: ".",
             )
 
-            output_string = formatter.localized_number("0.999999", format: format, precision: 6)
+            output_string = formatter.localized_number("0.999999",
+                                                       format: format, precision: 6)
             expect(output_string).to eql("0x1.0")
           end
 
@@ -685,10 +833,11 @@ RSpec.describe Plurimath::NumberFormatter do
               group_digits: 10,
               fraction_group_digits: 0,
               fraction_group: "",
-              decimal: "."
+              decimal: ".",
             )
 
-            output_string = formatter.localized_number("0.6", format: format, precision: 6)
+            output_string = formatter.localized_number("0.6", format: format,
+                                                              precision: 6)
             expect(output_string).to eql("0x0.a")
           end
 
@@ -702,10 +851,11 @@ RSpec.describe Plurimath::NumberFormatter do
               group_digits: 10,
               fraction_group_digits: 0,
               fraction_group: "",
-              decimal: "."
+              decimal: ".",
             )
 
-            output_string = formatter.localized_number("9.999999", format: format, precision: 6)
+            output_string = formatter.localized_number("9.999999",
+                                                       format: format, precision: 6)
             expect(output_string).to eql("0xa.0")
           end
 
@@ -716,10 +866,11 @@ RSpec.describe Plurimath::NumberFormatter do
               group_digits: 10,
               fraction_group_digits: 0,
               fraction_group: "",
-              decimal: "."
+              decimal: ".",
             )
 
-            output_string = formatter.localized_number("-0.999999", format: format, precision: 6)
+            output_string = formatter.localized_number("-0.999999",
+                                                       format: format, precision: 6)
             expect(output_string).to eql("-0x1.0")
           end
 
@@ -730,10 +881,11 @@ RSpec.describe Plurimath::NumberFormatter do
               group_digits: 10,
               fraction_group_digits: 0,
               fraction_group: "",
-              decimal: "."
+              decimal: ".",
             )
 
-            output_string = formatter.localized_number("0.999999", format: format, precision: 6)
+            output_string = formatter.localized_number("0.999999",
+                                                       format: format, precision: 6)
             expect(output_string).to eql("0x1")
           end
         end
@@ -747,10 +899,11 @@ RSpec.describe Plurimath::NumberFormatter do
               group_digits: 10,
               fraction_group_digits: 0,
               fraction_group: "",
-              decimal: "."
+              decimal: ".",
             )
 
-            output_string = formatter.localized_number("15.9999", format: format, precision: 4)
+            output_string = formatter.localized_number("15.9999",
+                                                       format: format, precision: 4)
             expect(output_string).to eql("0x10")
           end
         end
@@ -763,10 +916,11 @@ RSpec.describe Plurimath::NumberFormatter do
               group_digits: 10,
               fraction_group_digits: 0,
               fraction_group: "",
-              decimal: "."
+              decimal: ".",
             )
 
-            output_string = formatter.localized_number("0.7777", format: format, precision: 6)
+            output_string = formatter.localized_number("0.7777",
+                                                       format: format, precision: 6)
             expect(output_string).to eql("0o0.62")
           end
 
@@ -777,10 +931,11 @@ RSpec.describe Plurimath::NumberFormatter do
               group_digits: 10,
               fraction_group_digits: 0,
               fraction_group: "",
-              decimal: "."
+              decimal: ".",
             )
 
-            output_string = formatter.localized_number("7.7777", format: format, precision: 6)
+            output_string = formatter.localized_number("7.7777",
+                                                       format: format, precision: 6)
             expect(output_string).to eql("0o7.616")
           end
         end
@@ -793,10 +948,11 @@ RSpec.describe Plurimath::NumberFormatter do
               group_digits: 10,
               fraction_group_digits: 0,
               fraction_group: "",
-              decimal: "."
+              decimal: ".",
             )
 
-            output_string = formatter.localized_number("0.9375", format: format, precision: 8)
+            output_string = formatter.localized_number("0.9375",
+                                                       format: format, precision: 8)
             expect(output_string).to eql("0b1.0")
           end
 
@@ -807,10 +963,11 @@ RSpec.describe Plurimath::NumberFormatter do
               group_digits: 10,
               fraction_group_digits: 0,
               fraction_group: "",
-              decimal: "."
+              decimal: ".",
             )
 
-            output_string = formatter.localized_number("0.666666", format: format, precision: 8)
+            output_string = formatter.localized_number("0.666666",
+                                                       format: format, precision: 8)
             expect(output_string).to eql("0b0.11")
           end
         end
@@ -823,10 +980,11 @@ RSpec.describe Plurimath::NumberFormatter do
               group_digits: 10,
               fraction_group_digits: 1,
               fraction_group: " ",
-              decimal: "."
+              decimal: ".",
             )
 
-            output_string = formatter.localized_number("0.99999", format: format, precision: 5)
+            output_string = formatter.localized_number("0.99999",
+                                                       format: format, precision: 5)
             expect(output_string).to eql("0x1.0 0")
           end
 
@@ -837,10 +995,11 @@ RSpec.describe Plurimath::NumberFormatter do
               group_digits: 10,
               fraction_group_digits: 2,
               fraction_group: "_",
-              decimal: "."
+              decimal: ".",
             )
 
-            output_string = formatter.localized_number("0.999", format: format, precision: 8)
+            output_string = formatter.localized_number("0.999", format: format,
+                                                                precision: 8)
             expect(output_string).to eql("0b1.00_0")
           end
         end
@@ -854,10 +1013,11 @@ RSpec.describe Plurimath::NumberFormatter do
               group_digits: 10,
               fraction_group_digits: 0,
               fraction_group: "",
-              decimal: "."
+              decimal: ".",
             )
 
-            output_string = formatter.localized_number("0.9999", format: format, precision: 4)
+            output_string = formatter.localized_number("0.9999",
+                                                       format: format, precision: 4)
             expect(output_string).to eql("+0x1.0")
           end
 
@@ -869,10 +1029,11 @@ RSpec.describe Plurimath::NumberFormatter do
               group_digits: 10,
               fraction_group_digits: 0,
               fraction_group: "",
-              decimal: "."
+              decimal: ".",
             )
 
-            output_string = formatter.localized_number("-0.777", format: format, precision: 4)
+            output_string = formatter.localized_number("-0.777",
+                                                       format: format, precision: 4)
             expect(output_string).to eql("-0o0.6")
           end
         end
@@ -885,10 +1046,11 @@ RSpec.describe Plurimath::NumberFormatter do
               group_digits: 10,
               fraction_group_digits: 0,
               fraction_group: "",
-              decimal: "."
+              decimal: ".",
             )
 
-            output_string = formatter.localized_number("10.001", format: format, precision: 2)
+            output_string = formatter.localized_number("10.001",
+                                                       format: format, precision: 2)
             expect(output_string).to eql("0xa.00")
           end
 
@@ -899,10 +1061,11 @@ RSpec.describe Plurimath::NumberFormatter do
               group_digits: 10,
               fraction_group_digits: 0,
               fraction_group: "",
-              decimal: "."
+              decimal: ".",
             )
 
-            output_string = formatter.localized_number("5.0625", format: format, precision: 4)
+            output_string = formatter.localized_number("5.0625",
+                                                       format: format, precision: 4)
             expect(output_string).to eql("0b101.0001")
           end
         end
@@ -911,97 +1074,129 @@ RSpec.describe Plurimath::NumberFormatter do
       context "base conversion option edge cases" do
         context "other supported bases (2, 8, 16)" do
           it "formats positive integer in base 8 with default prefix" do
-            output_string = formatter.localized_number("64", format: base_format_defaults.merge(base: 8))
+            output_string = formatter.localized_number("64",
+                                                       format: base_format_defaults.merge(base: 8))
             expect(output_string).to eql("0o1,00")
           end
 
           it "formats negative integer in base 8 with default prefix" do
-            output_string = formatter.localized_number("-64", format: base_format_defaults.merge(base: 8))
+            output_string = formatter.localized_number("-64",
+                                                       format: base_format_defaults.merge(base: 8))
             expect(output_string).to eql("-0o1,00")
           end
 
           it "formats positive integer in base 16 with default prefix" do
-            output_string = formatter.localized_number("255", format: base_format_defaults.merge(base: 16))
+            output_string = formatter.localized_number("255",
+                                                       format: base_format_defaults.merge(base: 16))
             expect(output_string).to eql("0xff")
           end
         end
 
         context "hex_capital with negative numbers" do
           it "uppercases hex digits and keeps minus sign for negative value" do
-            output_string = formatter.localized_number("-48879", format: base_format_defaults.merge(base: 16, hex_capital: true))
+            output_string = formatter.localized_number("-48879",
+                                                       format: base_format_defaults.merge(
+                                                         base: 16, hex_capital: true,
+                                                       ))
             expect(output_string).to eql("-0xBE,EF")
           end
         end
 
         context "base_prefix for negative numbers and nil/empty variants" do
           it "keeps the minus sign before a custom base_prefix" do
-            output_string = formatter.localized_number("-255", format: base_format_defaults.merge(base: 16, base_prefix: "16#"))
+            output_string = formatter.localized_number("-255",
+                                                       format: base_format_defaults.merge(
+                                                         base: 16, base_prefix: "16#",
+                                                       ))
             expect(output_string).to eql("-16#ff")
           end
 
           it "removes the prefix when base_prefix is an empty string" do
-            output_string = formatter.localized_number("255", format: base_format_defaults.merge(base: 16, base_prefix: ""))
+            output_string = formatter.localized_number("255",
+                                                       format: base_format_defaults.merge(
+                                                         base: 16, base_prefix: "",
+                                                       ))
             expect(output_string).to eql("ff")
           end
 
           it "treats base_prefix: nil as no prefix for negative numbers as well" do
-            output_string = formatter.localized_number("-255", format: base_format_defaults.merge(base: 16, base_prefix: nil))
+            output_string = formatter.localized_number("-255",
+                                                       format: base_format_defaults.merge(
+                                                         base: 16, base_prefix: nil,
+                                                       ))
             expect(output_string).to eql("-ff")
           end
         end
 
         context "base_postfix with negative numbers and precedence over base_prefix" do
           it "uses base_postfix instead of prefix for a negative number" do
-            output_string = formatter.localized_number("-255", format: base_format_defaults.merge(base: 16, base_postfix: "_16"))
+            output_string = formatter.localized_number("-255",
+                                                       format: base_format_defaults.merge(
+                                                         base: 16, base_postfix: "_16",
+                                                       ))
             expect(output_string).to eql("-ff_16")
           end
 
           it "base_postfix still takes precedence when both base_prefix and base_postfix are provided" do
-            output_string = formatter.localized_number("255", format: base_format_defaults.merge(base: 16, base_prefix: "0x", base_postfix: "h"))
+            output_string = formatter.localized_number("255",
+                                                       format: base_format_defaults.merge(base: 16, base_prefix: "0x",
+                                                                                          base_postfix: "h"))
             expect(output_string).to eql("ffh")
           end
         end
 
         context "number_sign with non-decimal base" do
           it "adds a leading plus sign for positive numbers in base 2" do
-            output_string = formatter.localized_number("10", format: base_format_defaults.merge(base: 2, number_sign: :plus))
+            output_string = formatter.localized_number("10",
+                                                       format: base_format_defaults.merge(
+                                                         base: 2, number_sign: :plus,
+                                                       ))
             expect(output_string).to eql("+0b10,10")
           end
 
           it "does not add a plus sign for negative numbers in base 2" do
-            output_string = formatter.localized_number("-10", format: base_format_defaults.merge(base: 2, number_sign: :plus))
+            output_string = formatter.localized_number("-10",
+                                                       format: base_format_defaults.merge(
+                                                         base: 2, number_sign: :plus,
+                                                       ))
             expect(output_string).to eql("-0b10,10")
           end
         end
 
         context "significant digits with non-default base" do
           it "applies significant digits to base 10 output when base option is given explicitly" do
-            output_string = formatter.localized_number("1234.56", format: base_format_defaults.merge(base: 10, significant: 3, group_digits: 3))
+            output_string = formatter.localized_number("1234.56",
+                                                       format: base_format_defaults.merge(
+                                                         base: 10, significant: 3, group_digits: 3,
+                                                       ))
             expect(output_string).to eql("1,230")
           end
 
           it "reduces the number of significant hex digits in base 16" do
-            output_string = formatter.localized_number("48879", format: base_format_defaults.merge(base: 16, significant: 3))
+            output_string = formatter.localized_number("48879",
+                                                       format: base_format_defaults.merge(
+                                                         base: 16, significant: 3,
+                                                       ))
             expect(output_string).to eql("0xbe,f0")
           end
 
-        it "uppercases only hex letter digits when using significant with hex_capital" do
-          format = base_format_defaults.merge(
-            base: 16,
-            significant: 3,
-            hex_capital: true
-          )
+          it "uppercases only hex letter digits when using significant with hex_capital" do
+            format = base_format_defaults.merge(
+              base: 16,
+              significant: 3,
+              hex_capital: true,
+            )
 
-          output_string = formatter.localized_number("48879", format: format)
-          expect(output_string).to eql("0xBE,F0")
-        end
+            output_string = formatter.localized_number("48879", format: format)
+            expect(output_string).to eql("0xBE,F0")
+          end
 
           it "applies significant rounding across integer and fractional parts in base 16" do
             format = base_format_defaults.merge(
               base: 16,
               significant: 2,
               group_digits: 10,
-              decimal: "."
+              decimal: ".",
             )
 
             output_string = formatter.localized_number("15.9", format: format)
@@ -1013,7 +1208,7 @@ RSpec.describe Plurimath::NumberFormatter do
               base: 16,
               significant: 1,
               group_digits: 10,
-              decimal: "."
+              decimal: ".",
             )
 
             output_string = formatter.localized_number("9.9", format: format)
@@ -1025,7 +1220,7 @@ RSpec.describe Plurimath::NumberFormatter do
               base: 2,
               significant: 2,
               group_digits: 10,
-              decimal: "."
+              decimal: ".",
             )
 
             output_string = formatter.localized_number("0.1", format: format)
@@ -1037,7 +1232,7 @@ RSpec.describe Plurimath::NumberFormatter do
               base: 2,
               significant: 1,
               group_digits: 10,
-              decimal: "."
+              decimal: ".",
             )
 
             output_string = formatter.localized_number("0.75", format: format)
@@ -1049,7 +1244,7 @@ RSpec.describe Plurimath::NumberFormatter do
               base: 16,
               significant: 1,
               group_digits: 2,
-              decimal: "."
+              decimal: ".",
             )
 
             output_string = formatter.localized_number("4095", format: format)
@@ -1061,7 +1256,7 @@ RSpec.describe Plurimath::NumberFormatter do
               base: 16,
               significant: 2,
               group_digits: 10,
-              decimal: "."
+              decimal: ".",
             )
 
             output_string = formatter.localized_number("4095", format: format)
@@ -1072,12 +1267,14 @@ RSpec.describe Plurimath::NumberFormatter do
 
       context "base conversion with precision" do
         it "pads fractional digits in base 2 when precision exceeds converted length" do
-          output_string = formatter.localized_number("10.75", format: base_format_defaults.merge(base: 2), precision: 4)
+          output_string = formatter.localized_number("10.75",
+                                                     format: base_format_defaults.merge(base: 2), precision: 4)
           expect(output_string).to eql("0b10,10.1100")
         end
 
         it "pads fractional part in base 16 when precision exceeds converted length" do
-          output_string = formatter.localized_number("0.5", format: base_format_defaults.merge(base: 16, group_digits: 10), precision: 6)
+          output_string = formatter.localized_number("0.5",
+                                                     format: base_format_defaults.merge(base: 16, group_digits: 10), precision: 6)
           expect(output_string).to eql("0x0.800000")
         end
       end
@@ -1088,7 +1285,7 @@ RSpec.describe Plurimath::NumberFormatter do
             base: 2,
             fraction_group_digits: 1,
             fraction_group: " ",
-            group_digits: 10
+            group_digits: 10,
           ))
           expect(output_string).to eql("0b1010.1 1")
         end
@@ -1098,7 +1295,7 @@ RSpec.describe Plurimath::NumberFormatter do
             base: 2,
             fraction_group_digits: 0,
             fraction_group: " ",
-            group_digits: 10
+            group_digits: 10,
           ))
           expect(output_string).to eql("0b1010.11")
         end
@@ -1106,53 +1303,74 @@ RSpec.describe Plurimath::NumberFormatter do
 
       context "base conversion with significant digits" do
         it "applies significant to base 10 output" do
-          output_string = formatter.localized_number("1234.56", format: base_format_defaults.merge(base: 10, significant: 4, group_digits: 3))
+          output_string = formatter.localized_number("1234.56",
+                                                     format: base_format_defaults.merge(
+                                                       base: 10, significant: 4, group_digits: 3,
+                                                     ))
           expect(output_string).to eql("1,235")
         end
 
         it "applies significant with base 10 and engineering-style rounding" do
-          output_string = formatter.localized_number("1999", format: base_format_defaults.merge(base: 10, significant: 2, group_digits: 3))
+          output_string = formatter.localized_number("1999",
+                                                     format: base_format_defaults.merge(
+                                                       base: 10, significant: 2, group_digits: 3,
+                                                     ))
           expect(output_string).to eql("2,000")
         end
       end
 
       context "base conversion with notation :basic" do
         it "applies base conversion when notation is explicitly :basic" do
-          output_string = formatter.localized_number("255", format: base_format_defaults.merge(base: 16, notation: :basic))
+          output_string = formatter.localized_number("255",
+                                                     format: base_format_defaults.merge(
+                                                       base: 16, notation: :basic,
+                                                     ))
           expect(output_string).to eql("0xff")
         end
       end
 
       context "zero handling across different bases" do
         it "formats zero in base 2" do
-          output_string = formatter.localized_number("0", format: base_format_defaults.merge(base: 2))
+          output_string = formatter.localized_number("0",
+                                                     format: base_format_defaults.merge(base: 2))
           expect(output_string).to eql("0b0")
         end
 
         it "formats zero in base 8" do
-          output_string = formatter.localized_number("0", format: base_format_defaults.merge(base: 8))
+          output_string = formatter.localized_number("0",
+                                                     format: base_format_defaults.merge(base: 8))
           expect(output_string).to eql("0o0")
         end
 
         it "formats zero in base 16" do
-          output_string = formatter.localized_number("0", format: base_format_defaults.merge(base: 16))
+          output_string = formatter.localized_number("0",
+                                                     format: base_format_defaults.merge(base: 16))
           expect(output_string).to eql("0x0")
         end
 
         it "formats zero with precision in base 16" do
-          output_string = formatter.localized_number("0.000", format: base_format_defaults.merge(base: 16, precision: 3))
+          output_string = formatter.localized_number("0.000",
+                                                     format: base_format_defaults.merge(
+                                                       base: 16, precision: 3,
+                                                     ))
           expect(output_string).to eql("0x0.000")
         end
       end
 
       context "large number handling" do
         it "formats very large numbers in base 2" do
-          output_string = formatter.localized_number("65535", format: base_format_defaults.merge(base: 2, group_digits: 8, group: " "))
+          output_string = formatter.localized_number("65535",
+                                                     format: base_format_defaults.merge(
+                                                       base: 2, group_digits: 8, group: " ",
+                                                     ))
           expect(output_string).to eql("0b11111111 11111111")
         end
 
         it "formats very large numbers in base 16" do
-          output_string = formatter.localized_number("16777215", format: base_format_defaults.merge(base: 16, group_digits: 2))
+          output_string = formatter.localized_number("16777215",
+                                                     format: base_format_defaults.merge(
+                                                       base: 16, group_digits: 2,
+                                                     ))
           expect(output_string).to eql("0xff,ff,ff")
         end
       end
@@ -1160,36 +1378,40 @@ RSpec.describe Plurimath::NumberFormatter do
       context "invalid base configuration" do
         it "raises an error for unsupported bases" do
           expect do
-            formatter.localized_number("10", format: base_format_defaults.merge(base: 3))
+            formatter.localized_number("10",
+                                       format: base_format_defaults.merge(base: 3))
           end.to raise_error(
             Plurimath::Formatter::UnsupportedBase,
-            /Unsupported base `3` for number formatting/
+            /Unsupported base `3` for number formatting/,
           )
         end
 
         it "raises an error for base 5" do
           expect do
-            formatter.localized_number("10", format: base_format_defaults.merge(base: 5))
+            formatter.localized_number("10",
+                                       format: base_format_defaults.merge(base: 5))
           end.to raise_error(
             Plurimath::Formatter::UnsupportedBase,
-            /Unsupported base `5` for number formatting/
+            /Unsupported base `5` for number formatting/,
           )
         end
 
         it "raises an error for base 20" do
           expect do
-            formatter.localized_number("10", format: base_format_defaults.merge(base: 20))
+            formatter.localized_number("10",
+                                       format: base_format_defaults.merge(base: 20))
           end.to raise_error(
             Plurimath::Formatter::UnsupportedBase,
-            /Unsupported base `20` for number formatting/
+            /Unsupported base `20` for number formatting/,
           )
         end
 
         it "raises an error for negative base" do
           expect do
-            formatter.localized_number("10", format: base_format_defaults.merge(base: -1))
+            formatter.localized_number("10",
+                                       format: base_format_defaults.merge(base: -1))
           end.to raise_error(
-            Plurimath::Formatter::UnsupportedBase
+            Plurimath::Formatter::UnsupportedBase,
           )
         end
       end

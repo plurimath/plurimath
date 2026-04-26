@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Otimesrhrim < Symbol
         INPUT = {
-          unicodemath: [["&#x2a35;"], parsing_wrapper(["otimesrhrim"], lang: :unicode)],
-          asciimath: [["&#x2a35;"], parsing_wrapper(["otimesrhrim"], lang: :asciimath)],
+          unicodemath: [["&#x2a35;"],
+                        parsing_wrapper(["otimesrhrim"], lang: :unicode)],
+          asciimath: [["&#x2a35;"],
+                      parsing_wrapper(["otimesrhrim"], lang: :asciimath)],
           mathml: ["&#x2a35;"],
           latex: [["otimesrhrim", "&#x2a35;"]],
           omml: ["&#x2a35;"],

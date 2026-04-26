@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-
 module Plurimath
   module Math
     module Function
@@ -12,9 +11,13 @@ module Plurimath
         end
 
         def to_mathml_without_math_tag(intent, options:)
-          first_value = parameter_one&.to_mathml_without_math_tag(intent, options: options)
+          first_value = parameter_one&.to_mathml_without_math_tag(intent,
+                                                                  options: options)
           value_array = [first_value]
-          value_array.insert(0, (ox_element("mo") << "&#x230a;")) unless open_paren
+          unless open_paren
+            value_array.insert(0,
+                               ox_element("mo") << "&#x230a;")
+          end
           value_array << (ox_element("mo") << "&#x230b;") unless close_paren
           Utility.update_nodes(ox_element("mrow"), value_array)
         end

@@ -3,10 +3,13 @@ module Plurimath
     module Symbols
       class Emptyset < Symbol
         INPUT = {
-          unicodemath: [["emptyset", "&#x2205;"], parsing_wrapper(["O/", "varnothing"], lang: :unicode)],
-          asciimath: [["emptyset", "O/", "&#x2205;"], parsing_wrapper(["varnothing"], lang: :asciimath)],
+          unicodemath: [["emptyset", "&#x2205;"],
+                        parsing_wrapper(["O/", "varnothing"], lang: :unicode)],
+          asciimath: [["emptyset", "O/", "&#x2205;"],
+                      parsing_wrapper(["varnothing"], lang: :asciimath)],
           mathml: ["&#x2205;"],
-          latex: [["varnothing", "emptyset", "&#x2205;"], parsing_wrapper(["O/"], lang: :latex)],
+          latex: [["varnothing", "emptyset", "&#x2205;"],
+                  parsing_wrapper(["O/"], lang: :latex)],
           omml: ["&#x2205;"],
           html: ["&#x2205;"],
         }.freeze

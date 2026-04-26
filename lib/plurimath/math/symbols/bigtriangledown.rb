@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Bigtriangledown < Symbol
         INPUT = {
-          unicodemath: [["&#x25bd;"], parsing_wrapper(["bigtriangledown"], lang: :unicode)],
-          asciimath: [["&#x25bd;"], parsing_wrapper(["bigtriangledown"], lang: :asciimath)],
+          unicodemath: [["&#x25bd;"],
+                        parsing_wrapper(["bigtriangledown"], lang: :unicode)],
+          asciimath: [["&#x25bd;"],
+                      parsing_wrapper(["bigtriangledown"], lang: :asciimath)],
           mathml: ["&#x25bd;"],
           latex: [["bigtriangledown", "&#x25bd;"]],
           omml: ["&#x25bd;"],

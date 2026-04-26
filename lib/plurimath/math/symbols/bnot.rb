@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Bnot < Symbol
         INPUT = {
-          unicodemath: [["&#x2aed;"], parsing_wrapper(["bNot"], lang: :unicode)],
-          asciimath: [["&#x2aed;"], parsing_wrapper(["bNot"], lang: :asciimath)],
+          unicodemath: [["&#x2aed;"],
+                        parsing_wrapper(["bNot"], lang: :unicode)],
+          asciimath: [["&#x2aed;"],
+                      parsing_wrapper(["bNot"], lang: :asciimath)],
           mathml: ["&#x2aed;"],
           latex: [["bNot", "&#x2aed;"]],
           omml: ["&#x2aed;"],

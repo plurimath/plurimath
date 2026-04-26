@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Uprightcurvearrow < Symbol
         INPUT = {
-          unicodemath: [["&#x2934;"], parsing_wrapper(["uprightcurvearrow"], lang: :unicode)],
-          asciimath: [["&#x2934;"], parsing_wrapper(["uprightcurvearrow"], lang: :asciimath)],
+          unicodemath: [["&#x2934;"],
+                        parsing_wrapper(["uprightcurvearrow"], lang: :unicode)],
+          asciimath: [["&#x2934;"],
+                      parsing_wrapper(["uprightcurvearrow"], lang: :asciimath)],
           mathml: ["&#x2934;"],
           latex: [["uprightcurvearrow", "&#x2934;"]],
           omml: ["&#x2934;"],

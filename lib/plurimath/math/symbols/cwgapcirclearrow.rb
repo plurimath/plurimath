@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Cwgapcirclearrow < Symbol
         INPUT = {
-          unicodemath: [["&#x27f3;"], parsing_wrapper(["cwgapcirclearrow"], lang: :unicode)],
-          asciimath: [["&#x27f3;"], parsing_wrapper(["cwgapcirclearrow"], lang: :asciimath)],
+          unicodemath: [["&#x27f3;"],
+                        parsing_wrapper(["cwgapcirclearrow"], lang: :unicode)],
+          asciimath: [["&#x27f3;"],
+                      parsing_wrapper(["cwgapcirclearrow"], lang: :asciimath)],
           mathml: ["&#x27f3;"],
           latex: [["cwgapcirclearrow", "&#x27f3;"]],
           omml: ["&#x27f3;"],

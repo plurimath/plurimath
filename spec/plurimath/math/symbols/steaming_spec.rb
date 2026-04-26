@@ -1,11 +1,10 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Symbols::Steaming do
-
   describe ".initialize" do
-    it 'returns instance of Symbol Steaming' do
+    it "returns instance of Symbol Steaming" do
       klass = described_class.new
-      expect(klass).to be_a(Plurimath::Math::Symbols::Steaming)
+      expect(klass).to be_a(described_class)
     end
   end
 

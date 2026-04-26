@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Invdiameter < Symbol
         INPUT = {
-          unicodemath: [["&#x2349;"], parsing_wrapper(["invdiameter"], lang: :unicode)],
-          asciimath: [["&#x2349;"], parsing_wrapper(["invdiameter"], lang: :asciimath)],
+          unicodemath: [["&#x2349;"],
+                        parsing_wrapper(["invdiameter"], lang: :unicode)],
+          asciimath: [["&#x2349;"],
+                      parsing_wrapper(["invdiameter"], lang: :asciimath)],
           mathml: ["&#x2349;"],
           latex: [["invdiameter", "&#x2349;"]],
           omml: ["&#x2349;"],

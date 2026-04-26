@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-
 module Plurimath
   module Math
     module Function
@@ -25,7 +24,8 @@ module Plurimath
                 "mstyle",
                 attributes: { mathvariant: "fraktur" },
               ),
-              [parameter_one&.to_mathml_without_math_tag(intent, options: options)],
+              [parameter_one&.to_mathml_without_math_tag(intent,
+                                                         options: options)],
             )
           end
 

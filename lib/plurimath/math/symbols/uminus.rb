@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Uminus < Symbol
         INPUT = {
-          unicodemath: [["&#x2a41;"], parsing_wrapper(["uminus"], lang: :unicode)],
-          asciimath: [["&#x2a41;"], parsing_wrapper(["uminus"], lang: :asciimath)],
+          unicodemath: [["&#x2a41;"],
+                        parsing_wrapper(["uminus"], lang: :unicode)],
+          asciimath: [["&#x2a41;"],
+                      parsing_wrapper(["uminus"], lang: :asciimath)],
           mathml: ["&#x2a41;"],
           latex: [["uminus", "&#x2a41;"]],
           omml: ["&#x2a41;"],

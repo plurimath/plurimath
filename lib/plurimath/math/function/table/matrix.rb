@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-
 module Plurimath
   module Math
     module Function
@@ -14,7 +13,9 @@ module Plurimath
           end
 
           def to_asciimath(options:)
-            ascii_value = value.map { |v| v.to_asciimath(options: options) }.join(", ")
+            ascii_value = value.map do |v|
+              v.to_asciimath(options: options)
+            end.join(", ")
             "{:#{ascii_value}:}"
           end
 
@@ -25,18 +26,22 @@ module Plurimath
           def to_mathml_without_math_tag(intent, options:)
             table_tag = Utility.update_nodes(
               ox_element("mtable", attributes: table_attribute),
-              value&.map { |object| object&.to_mathml_without_math_tag(intent, options: options) }
+              value&.map do |object|
+                object&.to_mathml_without_math_tag(intent, options: options)
+              end,
             )
             return table_tag if table_tag_only?
 
             Utility.update_nodes(
               ox_element("mrow"),
-              [mo_tag(open_paren), table_tag, mo_tag(close_paren)]
+              [mo_tag(open_paren), table_tag, mo_tag(close_paren)],
             )
           end
 
           def to_unicodemath(options:)
-            first_value = value.map { |v| v.to_unicodemath(options: options) }.join("@")
+            first_value = value.map do |v|
+              v.to_unicodemath(options: options)
+            end.join("@")
             "#{open_paren&.to_unicodemath(options: options)}■(#{first_value})#{close_paren&.to_unicodemath(options: options)}"
           end
 

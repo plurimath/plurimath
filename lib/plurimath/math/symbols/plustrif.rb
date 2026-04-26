@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Plustrif < Symbol
         INPUT = {
-          unicodemath: [["&#x2a28;"], parsing_wrapper(["plustrif"], lang: :unicode)],
-          asciimath: [["&#x2a28;"], parsing_wrapper(["plustrif"], lang: :asciimath)],
+          unicodemath: [["&#x2a28;"],
+                        parsing_wrapper(["plustrif"], lang: :unicode)],
+          asciimath: [["&#x2a28;"],
+                      parsing_wrapper(["plustrif"], lang: :asciimath)],
           mathml: ["&#x2a28;"],
           latex: [["plustrif", "&#x2a28;"]],
           omml: ["&#x2a28;"],

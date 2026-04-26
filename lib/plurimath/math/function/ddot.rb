@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-
 module Plurimath
   module Math
     module Function
@@ -24,7 +23,8 @@ module Plurimath
           return r_element("..", rpr_tag: false) unless parameter_one
 
           symbol = Symbols::Symbol.new("..")
-          Overset.new(parameter_one, symbol).to_omml_without_math_tag(true, options: options)
+          Overset.new(parameter_one, symbol).to_omml_without_math_tag(true,
+                                                                      options: options)
         end
 
         def to_html(options:)

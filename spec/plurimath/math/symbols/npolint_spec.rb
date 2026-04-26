@@ -1,11 +1,10 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Symbols::Npolint do
-
   describe ".initialize" do
-    it 'returns instance of Symbol Npolint' do
+    it "returns instance of Symbol Npolint" do
       klass = described_class.new
-      expect(klass).to be_a(Plurimath::Math::Symbols::Npolint)
+      expect(klass).to be_a(described_class)
     end
   end
 

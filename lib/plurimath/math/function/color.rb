@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-
 module Plurimath
   module Math
     module Function
@@ -21,7 +20,9 @@ module Plurimath
         end
 
         def to_asciimath(options:)
-          first_value = "(#{parameter_one&.to_asciimath(options: options)&.gsub(/\s/, '')})"
+          first_value = "(#{parameter_one&.to_asciimath(options: options)&.gsub(
+            /\s/, ''
+          )})"
           second_value = "(#{parameter_two&.to_asciimath(options: options)})"
           "color#{first_value}#{second_value}"
         end
@@ -32,12 +33,15 @@ module Plurimath
               "mstyle",
               attributes: mathml_options,
             ),
-            [parameter_two&.to_mathml_without_math_tag(intent, options: options)],
+            [parameter_two&.to_mathml_without_math_tag(intent,
+                                                       options: options)],
           )
         end
 
         def to_latex(options:)
-          first_value = parameter_one&.to_asciimath(options: options)&.gsub(/\s/, "")
+          first_value = parameter_one&.to_asciimath(options: options)&.gsub(
+            /\s/, ""
+          )
           second_value = parameter_two&.to_latex(options: options)
           "{\\#{class_name}{#{first_value}} #{second_value}}"
         end
@@ -46,11 +50,15 @@ module Plurimath
           Array(parameter_two.insert_t_tag(display_style, options: options))
         end
 
-        def to_omml_math_zone(spacing, last = false, _, display_style:, options:)
+        def to_omml_math_zone(spacing, last = false, _, display_style:,
+options:)
           parameters = self.class::FUNCTION
           new_spacing = gsub_spacing(spacing, last)
-          new_arr = ["#{spacing}\"#{dump_omml(self, display_style, options: options)}\" #{parameters[:name]}\n"]
-          omml_fields_to_print(parameter_two, { spacing: new_spacing, field_name: "text", additional_space: "|  |_ ", array: new_arr, display_style: display_style, options: options })
+          new_arr = ["#{spacing}\"#{dump_omml(self, display_style,
+                                              options: options)}\" #{parameters[:name]}\n"]
+          omml_fields_to_print(parameter_two,
+                               { spacing: new_spacing, field_name: "text", additional_space: "|  |_ ",
+                                 array: new_arr, display_style: display_style, options: options })
           new_arr
         end
 
@@ -73,7 +81,9 @@ module Plurimath
 
           color_options = {}
           color_options[attr_key] =
-            parameter_one.to_asciimath(options: options)&.gsub(/\s/, "")&.gsub(/"/, "")
+            parameter_one.to_asciimath(options: options)&.gsub(/\s/, "")&.gsub(
+              '"', ""
+            )
           color_options
         end
       end

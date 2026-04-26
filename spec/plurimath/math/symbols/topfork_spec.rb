@@ -1,11 +1,10 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Symbols::Topfork do
-
   describe ".initialize" do
-    it 'returns instance of Symbol Topfork' do
+    it "returns instance of Symbol Topfork" do
       klass = described_class.new
-      expect(klass).to be_a(Plurimath::Math::Symbols::Topfork)
+      expect(klass).to be_a(described_class)
     end
   end
 

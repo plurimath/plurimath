@@ -3,8 +3,12 @@ module Plurimath
     module Symbols
       class Whiteinwhitetriangle < Symbol
         INPUT = {
-          unicodemath: [["&#x27c1;"], parsing_wrapper(["whiteinwhitetriangle"], lang: :unicode)],
-          asciimath: [["&#x27c1;"], parsing_wrapper(["whiteinwhitetriangle"], lang: :asciimath)],
+          unicodemath: [["&#x27c1;"],
+                        parsing_wrapper(["whiteinwhitetriangle"],
+                                        lang: :unicode)],
+          asciimath: [["&#x27c1;"],
+                      parsing_wrapper(["whiteinwhitetriangle"],
+                                      lang: :asciimath)],
           mathml: ["&#x27c1;"],
           latex: [["whiteinwhitetriangle", "&#x27c1;"]],
           omml: ["&#x27c1;"],

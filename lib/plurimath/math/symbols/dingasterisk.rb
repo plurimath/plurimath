@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Dingasterisk < Symbol
         INPUT = {
-          unicodemath: [["&#x273d;"], parsing_wrapper(["dingasterisk"], lang: :unicode)],
-          asciimath: [["&#x273d;"], parsing_wrapper(["dingasterisk"], lang: :asciimath)],
+          unicodemath: [["&#x273d;"],
+                        parsing_wrapper(["dingasterisk"], lang: :unicode)],
+          asciimath: [["&#x273d;"],
+                      parsing_wrapper(["dingasterisk"], lang: :asciimath)],
           mathml: ["&#x273d;"],
           latex: [["dingasterisk", "&#x273d;"]],
           omml: ["&#x273d;"],

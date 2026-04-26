@@ -3,8 +3,12 @@ module Plurimath
     module Symbols
       class Baruparrow < Symbol
         INPUT = {
-          unicodemath: [["&#x2912;"], parsing_wrapper(["UpArrowBar", "baruparrow"], lang: :unicode)],
-          asciimath: [["&#x2912;"], parsing_wrapper(["UpArrowBar", "baruparrow"], lang: :asciimath)],
+          unicodemath: [["&#x2912;"],
+                        parsing_wrapper(["UpArrowBar", "baruparrow"],
+                                        lang: :unicode)],
+          asciimath: [["&#x2912;"],
+                      parsing_wrapper(["UpArrowBar", "baruparrow"],
+                                      lang: :asciimath)],
           mathml: ["&#x2912;"],
           latex: [["UpArrowBar", "baruparrow", "&#x2912;"]],
           omml: ["&#x2912;"],

@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Danger < Symbol
         INPUT = {
-          unicodemath: [["&#x2621;"], parsing_wrapper(["danger"], lang: :unicode)],
-          asciimath: [["&#x2621;"], parsing_wrapper(["danger"], lang: :asciimath)],
+          unicodemath: [["&#x2621;"],
+                        parsing_wrapper(["danger"], lang: :unicode)],
+          asciimath: [["&#x2621;"],
+                      parsing_wrapper(["danger"], lang: :asciimath)],
           mathml: ["&#x2621;"],
           latex: [["danger", "&#x2621;"]],
           omml: ["&#x2621;"],

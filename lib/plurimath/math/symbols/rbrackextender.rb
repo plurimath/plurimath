@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Rbrackextender < Symbol
         INPUT = {
-          unicodemath: [["&#x23a5;"], parsing_wrapper(["rbrackextender"], lang: :unicode)],
-          asciimath: [["&#x23a5;"], parsing_wrapper(["rbrackextender"], lang: :asciimath)],
+          unicodemath: [["&#x23a5;"],
+                        parsing_wrapper(["rbrackextender"], lang: :unicode)],
+          asciimath: [["&#x23a5;"],
+                      parsing_wrapper(["rbrackextender"], lang: :asciimath)],
           mathml: ["&#x23a5;"],
           latex: [["rbrackextender", "&#x23a5;"]],
           omml: ["&#x23a5;"],

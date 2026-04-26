@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Longdivision < Symbol
         INPUT = {
-          unicodemath: [["&#x27cc;"], parsing_wrapper(["longdivision"], lang: :unicode)],
-          asciimath: [["&#x27cc;"], parsing_wrapper(["longdivision"], lang: :asciimath)],
+          unicodemath: [["&#x27cc;"],
+                        parsing_wrapper(["longdivision"], lang: :unicode)],
+          asciimath: [["&#x27cc;"],
+                      parsing_wrapper(["longdivision"], lang: :asciimath)],
           mathml: ["&#x27cc;"],
           latex: [["longdivision", "&#x27cc;"]],
           omml: ["&#x27cc;"],

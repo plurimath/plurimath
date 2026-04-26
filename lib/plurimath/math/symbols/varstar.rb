@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Varstar < Symbol
         INPUT = {
-          unicodemath: [["&#x2736;"], parsing_wrapper(["varstar"], lang: :unicode)],
-          asciimath: [["&#x2736;"], parsing_wrapper(["varstar"], lang: :asciimath)],
+          unicodemath: [["&#x2736;"],
+                        parsing_wrapper(["varstar"], lang: :unicode)],
+          asciimath: [["&#x2736;"],
+                      parsing_wrapper(["varstar"], lang: :asciimath)],
           mathml: ["&#x2736;"],
           latex: [["varstar", "&#x2736;"]],
           omml: ["&#x2736;"],

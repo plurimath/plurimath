@@ -3,10 +3,12 @@ module Plurimath
     module Symbols
       class Because < Symbol
         INPUT = {
-          unicodemath: [["because", "&#x2235;"], parsing_wrapper([":'"], lang: :unicode)],
+          unicodemath: [["because", "&#x2235;"],
+                        parsing_wrapper([":'"], lang: :unicode)],
           asciimath: [["because", ":'", "&#x2235;"]],
           mathml: ["&#x2235;"],
-          latex: [["because", "&#x2235;"], parsing_wrapper([":'"], lang: :latex)],
+          latex: [["because", "&#x2235;"],
+                  parsing_wrapper([":'"], lang: :latex)],
           omml: ["&#x2235;"],
           html: ["&#x2235;"],
         }.freeze

@@ -4,7 +4,8 @@ module Plurimath
       class Zwsp < Symbol
         INPUT = {
           unicodemath: [["zwsp", "&#x200b;"]],
-          asciimath: [["&#x200b;"], parsing_wrapper(["zwsp"], lang: :asciimath)],
+          asciimath: [["&#x200b;"],
+                      parsing_wrapper(["zwsp"], lang: :asciimath)],
           mathml: ["&#x200b;"],
           latex: [["&#x200b;"], parsing_wrapper(["zwsp"], lang: :latex)],
           omml: ["&#x200b;"],

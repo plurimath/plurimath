@@ -3,10 +3,13 @@ module Plurimath
     module Symbols
       class Leq < Symbol
         INPUT = {
-          unicodemath: [["le", "leq", "&#x2264;"], parsing_wrapper(["<="], lang: :unicode)],
-          asciimath: [["<=", "le", "&#x2264;"], parsing_wrapper(["leq"], lang: :asciimath)],
+          unicodemath: [["le", "leq", "&#x2264;"],
+                        parsing_wrapper(["<="], lang: :unicode)],
+          asciimath: [["<=", "le", "&#x2264;"],
+                      parsing_wrapper(["leq"], lang: :asciimath)],
           mathml: ["&#x2264;"],
-          latex: [["leq", "le", "&#x2264;"], parsing_wrapper(["<="], lang: :latex)],
+          latex: [["leq", "le", "&#x2264;"],
+                  parsing_wrapper(["<="], lang: :latex)],
           omml: ["&#x2264;"],
           html: ["&#x2264;"],
         }.freeze

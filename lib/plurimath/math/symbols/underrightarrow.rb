@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Underrightarrow < Symbol
         INPUT = {
-          unicodemath: [["&#x20ef;"], parsing_wrapper(["underrightarrow"], lang: :unicode)],
-          asciimath: [["&#x20ef;"], parsing_wrapper(["underrightarrow"], lang: :asciimath)],
+          unicodemath: [["&#x20ef;"],
+                        parsing_wrapper(["underrightarrow"], lang: :unicode)],
+          asciimath: [["&#x20ef;"],
+                      parsing_wrapper(["underrightarrow"], lang: :asciimath)],
           mathml: ["&#x20ef;"],
           latex: [["underrightarrow", "&#x20ef;"]],
           omml: ["&#x20ef;"],

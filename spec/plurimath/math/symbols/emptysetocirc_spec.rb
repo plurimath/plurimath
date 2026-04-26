@@ -1,11 +1,10 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Symbols::Emptysetocirc do
-
   describe ".initialize" do
-    it 'returns instance of Symbol Emptysetocirc' do
+    it "returns instance of Symbol Emptysetocirc" do
       klass = described_class.new
-      expect(klass).to be_a(Plurimath::Math::Symbols::Emptysetocirc)
+      expect(klass).to be_a(described_class)
     end
   end
 

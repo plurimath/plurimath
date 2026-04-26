@@ -3,8 +3,12 @@ module Plurimath
     module Symbols
       class Euler < Symbol
         INPUT = {
-          unicodemath: [["&#x2107;"], parsing_wrapper(["Eulerconst", "Euler"], lang: :unicode)],
-          asciimath: [["&#x2107;"], parsing_wrapper(["Eulerconst", "Euler"], lang: :asciimath)],
+          unicodemath: [["&#x2107;"],
+                        parsing_wrapper(["Eulerconst", "Euler"],
+                                        lang: :unicode)],
+          asciimath: [["&#x2107;"],
+                      parsing_wrapper(["Eulerconst", "Euler"],
+                                      lang: :asciimath)],
           mathml: ["&#x2107;"],
           latex: [["Eulerconst", "Euler", "&#x2107;"]],
           omml: ["&#x2107;"],

@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Elinters < Symbol
         INPUT = {
-          unicodemath: [["&#x23e7;"], parsing_wrapper(["elinters"], lang: :unicode)],
-          asciimath: [["&#x23e7;"], parsing_wrapper(["elinters"], lang: :asciimath)],
+          unicodemath: [["&#x23e7;"],
+                        parsing_wrapper(["elinters"], lang: :unicode)],
+          asciimath: [["&#x23e7;"],
+                      parsing_wrapper(["elinters"], lang: :asciimath)],
           mathml: ["&#x23e7;"],
           latex: [["elinters", "&#x23e7;"]],
           omml: ["&#x23e7;"],

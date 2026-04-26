@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Squarecrossfill < Symbol
         INPUT = {
-          unicodemath: [["&#x25a9;"], parsing_wrapper(["squarecrossfill"], lang: :unicode)],
-          asciimath: [["&#x25a9;"], parsing_wrapper(["squarecrossfill"], lang: :asciimath)],
+          unicodemath: [["&#x25a9;"],
+                        parsing_wrapper(["squarecrossfill"], lang: :unicode)],
+          asciimath: [["&#x25a9;"],
+                      parsing_wrapper(["squarecrossfill"], lang: :asciimath)],
           mathml: ["&#x25a9;"],
           latex: [["squarecrossfill", "&#x25a9;"]],
           omml: ["&#x25a9;"],

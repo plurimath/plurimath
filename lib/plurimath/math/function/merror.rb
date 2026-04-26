@@ -1,11 +1,9 @@
 # frozen_string_literal: true
 
-
 module Plurimath
   module Math
     module Function
       class Merror < UnaryFunction
-
         def to_asciimath(**); end
 
         def to_latex(**); end

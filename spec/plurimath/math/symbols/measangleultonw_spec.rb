@@ -1,11 +1,10 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Symbols::Measangleultonw do
-
   describe ".initialize" do
-    it 'returns instance of Symbol Measangleultonw' do
+    it "returns instance of Symbol Measangleultonw" do
       klass = described_class.new
-      expect(klass).to be_a(Plurimath::Math::Symbols::Measangleultonw)
+      expect(klass).to be_a(described_class)
     end
   end
 

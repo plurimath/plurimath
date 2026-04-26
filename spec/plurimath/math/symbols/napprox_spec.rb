@@ -1,11 +1,10 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Symbols::Napprox do
-
   describe ".initialize" do
-    it 'returns instance of Symbol Napprox' do
+    it "returns instance of Symbol Napprox" do
       klass = described_class.new
-      expect(klass).to be_a(Plurimath::Math::Symbols::Napprox)
+      expect(klass).to be_a(described_class)
     end
   end
 

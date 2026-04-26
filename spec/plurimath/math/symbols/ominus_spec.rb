@@ -1,11 +1,10 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Symbols::Ominus do
-
   describe ".initialize" do
-    it 'returns instance of Symbol Ominus' do
+    it "returns instance of Symbol Ominus" do
       klass = described_class.new
-      expect(klass).to be_a(Plurimath::Math::Symbols::Ominus)
+      expect(klass).to be_a(described_class)
     end
   end
 

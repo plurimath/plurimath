@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Topfork < Symbol
         INPUT = {
-          unicodemath: [["&#x2ada;"], parsing_wrapper(["topfork"], lang: :unicode)],
-          asciimath: [["&#x2ada;"], parsing_wrapper(["topfork"], lang: :asciimath)],
+          unicodemath: [["&#x2ada;"],
+                        parsing_wrapper(["topfork"], lang: :unicode)],
+          asciimath: [["&#x2ada;"],
+                      parsing_wrapper(["topfork"], lang: :asciimath)],
           mathml: ["&#x2ada;"],
           latex: [["topfork", "&#x2ada;"]],
           omml: ["&#x2ada;"],

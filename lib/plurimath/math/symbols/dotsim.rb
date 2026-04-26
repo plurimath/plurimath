@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Dotsim < Symbol
         INPUT = {
-          unicodemath: [["&#x2a6a;"], parsing_wrapper(["dotsim"], lang: :unicode)],
-          asciimath: [["&#x2a6a;"], parsing_wrapper(["dotsim"], lang: :asciimath)],
+          unicodemath: [["&#x2a6a;"],
+                        parsing_wrapper(["dotsim"], lang: :unicode)],
+          asciimath: [["&#x2a6a;"],
+                      parsing_wrapper(["dotsim"], lang: :asciimath)],
           mathml: ["&#x2a6a;"],
           latex: [["dotsim", "&#x2a6a;"]],
           omml: ["&#x2a6a;"],

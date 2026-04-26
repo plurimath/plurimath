@@ -1,11 +1,10 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Symbols::Dingasterisk do
-
   describe ".initialize" do
-    it 'returns instance of Symbol Dingasterisk' do
+    it "returns instance of Symbol Dingasterisk" do
       klass = described_class.new
-      expect(klass).to be_a(Plurimath::Math::Symbols::Dingasterisk)
+      expect(klass).to be_a(described_class)
     end
   end
 

@@ -1,11 +1,10 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Symbols::Nlessgtr do
-
   describe ".initialize" do
-    it 'returns instance of Symbol Nlessgtr' do
+    it "returns instance of Symbol Nlessgtr" do
       klass = described_class.new
-      expect(klass).to be_a(Plurimath::Math::Symbols::Nlessgtr)
+      expect(klass).to be_a(described_class)
     end
   end
 

@@ -4,7 +4,8 @@ module Plurimath
       class Simeq < Symbol
         INPUT = {
           unicodemath: [["simeq", "&#x2243;"]],
-          asciimath: [["&#x2243;"], parsing_wrapper(["simeq"], lang: :asciimath)],
+          asciimath: [["&#x2243;"],
+                      parsing_wrapper(["simeq"], lang: :asciimath)],
           mathml: ["&#x2243;"],
           latex: [["simeq", "&#x2243;"]],
           omml: ["&#x2243;"],
