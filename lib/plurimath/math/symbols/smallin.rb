@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Smallin < Symbol
         INPUT = {
-          unicodemath: [["&#x220a;"], parsing_wrapper(["smallin"], lang: :unicode)],
-          asciimath: [["&#x220a;"], parsing_wrapper(["smallin"], lang: :asciimath)],
+          unicodemath: [["&#x220a;"],
+                        parsing_wrapper(["smallin"], lang: :unicode)],
+          asciimath: [["&#x220a;"],
+                      parsing_wrapper(["smallin"], lang: :asciimath)],
           mathml: ["&#x220a;"],
           latex: [["smallin", "&#x220a;"]],
           omml: ["&#x220a;"],

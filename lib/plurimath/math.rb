@@ -31,7 +31,7 @@ module Plurimath
       rescue ParseError
         # Re-raise ParseError from lower layers unchanged to preserve specialized error types
         raise
-      rescue => ee
+      rescue StandardError
         raise ParseError.new(text, type), cause: nil
       end
     end

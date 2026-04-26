@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class UpcaseWedge < Symbol
         INPUT = {
-          unicodemath: [["&#x2a53;"], parsing_wrapper(["UpcaseWedge"], lang: :unicode)],
-          asciimath: [["&#x2a53;"], parsing_wrapper(["UpcaseWedge"], lang: :asciimath)],
+          unicodemath: [["&#x2a53;"],
+                        parsing_wrapper(["UpcaseWedge"], lang: :unicode)],
+          asciimath: [["&#x2a53;"],
+                      parsing_wrapper(["UpcaseWedge"], lang: :asciimath)],
           mathml: ["&#x2a53;"],
           latex: [["Wedge", "&#x2a53;"]],
           omml: ["&#x2a53;"],

@@ -4,7 +4,8 @@ module Plurimath
       class Nsucc < Symbol
         INPUT = {
           unicodemath: [["nsucc", "&#x2281;"]],
-          asciimath: [["&#x2281;"], parsing_wrapper(["nsucc"], lang: :asciimath)],
+          asciimath: [["&#x2281;"],
+                      parsing_wrapper(["nsucc"], lang: :asciimath)],
           mathml: ["&#x2281;"],
           latex: [["nsucc", "&#x2281;"]],
           omml: ["&#x2281;"],

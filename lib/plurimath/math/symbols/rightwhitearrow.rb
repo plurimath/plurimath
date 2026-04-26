@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Rightwhitearrow < Symbol
         INPUT = {
-          unicodemath: [["&#x21e8;"], parsing_wrapper(["rightwhitearrow"], lang: :unicode)],
-          asciimath: [["&#x21e8;"], parsing_wrapper(["rightwhitearrow"], lang: :asciimath)],
+          unicodemath: [["&#x21e8;"],
+                        parsing_wrapper(["rightwhitearrow"], lang: :unicode)],
+          asciimath: [["&#x21e8;"],
+                      parsing_wrapper(["rightwhitearrow"], lang: :asciimath)],
           mathml: ["&#x21e8;"],
           latex: [["rightwhitearrow", "&#x21e8;"]],
           omml: ["&#x21e8;"],

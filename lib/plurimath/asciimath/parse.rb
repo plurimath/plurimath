@@ -7,7 +7,7 @@ module Plurimath
       rule(:base)   { str("__|").absent? >> str("_") }
       rule(:power)  { str("^") }
       rule(:space)  { match(/\s+/) }
-      rule(:comma)  { (str(",") >> space?) }
+      rule(:comma)  { str(",") >> space? }
       rule(:space?) { space.maybe }
       rule(:number) do
         (match("[0-9]").repeat(1) >> str(".") >> match("[0-9]").repeat(1)).as(:number) |
@@ -137,7 +137,7 @@ module Plurimath
 
       rule(:iteration) do
         ternary_classes_rules |
-          table.as(:table) >> power_base.maybe |
+          (table.as(:table) >> power_base.maybe) |
           comma.as(:comma) |
           mod |
           (sequence.as(:sequence) >> space? >> str("//").as(:symbol)) |
@@ -157,7 +157,7 @@ module Plurimath
           str("") |
           (rparen.as(:rparen) >> space? >> controversial_symbols >> comma.as(:comma).maybe >> expression).repeat(1).as(:expr) |
           (power.as(:symbol) >> space? >> expression).as(:expr) |
-          table.as(:table) >> space? >> rparen.as(:rparen) >> space? >> expression.as(:expr).maybe |
+          (table.as(:table) >> space? >> rparen.as(:rparen) >> space? >> expression.as(:expr).maybe) |
           comma.as(:comma).maybe
       end
 

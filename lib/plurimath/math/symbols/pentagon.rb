@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Pentagon < Symbol
         INPUT = {
-          unicodemath: [["&#x2b20;"], parsing_wrapper(["pentagon"], lang: :unicode)],
-          asciimath: [["&#x2b20;"], parsing_wrapper(["pentagon"], lang: :asciimath)],
+          unicodemath: [["&#x2b20;"],
+                        parsing_wrapper(["pentagon"], lang: :unicode)],
+          asciimath: [["&#x2b20;"],
+                      parsing_wrapper(["pentagon"], lang: :asciimath)],
           mathml: ["&#x2b20;"],
           latex: [["pentagon", "&#x2b20;"]],
           omml: ["&#x2b20;"],

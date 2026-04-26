@@ -1,13 +1,11 @@
 # frozen_string_literal: true
 
-
 module Plurimath
   module Math
     module Function
       class Phantom < UnaryFunction
-
         def to_asciimath(options:)
-          "#{Array.new(asciimath_value(options: options)&.length, '\ ').join}"
+          Array.new(asciimath_value(options: options)&.length, '\ ').join.to_s
         end
 
         def to_html
@@ -28,13 +26,17 @@ module Plurimath
         def to_omml_without_math_tag(display_style, options:)
           phant = Utility.ox_element("phant", namespace: "m")
           e_tag = Utility.ox_element("e", namespace: "m")
-          Utility.update_nodes(e_tag, Array(omml_value(display_style, options: options)))
+          Utility.update_nodes(e_tag,
+                               Array(omml_value(display_style,
+                                                options: options)))
           Utility.update_nodes(phant, [phant_pr, e_tag])
         end
 
         def to_unicodemath(options:)
           if parameter_one.is_a?(Math::Function::Mpadded) && parameter_one&.options&.dig(:phantom)
-            "#{phantom_unicode}#{unicodemath_parens(parameter_one.parameter_one, options: options)}"
+            "#{phantom_unicode}#{unicodemath_parens(
+              parameter_one.parameter_one, options: options
+            )}"
           else
             "⟡#{unicodemath_parens(parameter_one, options: options)}"
           end
@@ -49,7 +51,8 @@ module Plurimath
         def phant_pr
           attributes = { "m:val": "off" }
           phant = Utility.ox_element("phantPr", namespace: "m")
-          phant << Utility.ox_element("show", namespace: "m", attributes: attributes)
+          phant << Utility.ox_element("show", namespace: "m",
+                                              attributes: attributes)
         end
 
         def phantom_symbol

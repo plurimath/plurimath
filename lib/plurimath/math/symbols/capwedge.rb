@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Capwedge < Symbol
         INPUT = {
-          unicodemath: [["&#x2a44;"], parsing_wrapper(["capwedge"], lang: :unicode)],
-          asciimath: [["&#x2a44;"], parsing_wrapper(["capwedge"], lang: :asciimath)],
+          unicodemath: [["&#x2a44;"],
+                        parsing_wrapper(["capwedge"], lang: :unicode)],
+          asciimath: [["&#x2a44;"],
+                      parsing_wrapper(["capwedge"], lang: :asciimath)],
           mathml: ["&#x2a44;"],
           latex: [["capwedge", "&#x2a44;"]],
           omml: ["&#x2a44;"],

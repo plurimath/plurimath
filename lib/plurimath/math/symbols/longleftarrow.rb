@@ -4,7 +4,8 @@ module Plurimath
       class Longleftarrow < Symbol
         INPUT = {
           unicodemath: [["longleftarrow", "&#x27f5;"]],
-          asciimath: [["&#x27f5;"], parsing_wrapper(["longleftarrow"], lang: :asciimath)],
+          asciimath: [["&#x27f5;"],
+                      parsing_wrapper(["longleftarrow"], lang: :asciimath)],
           mathml: ["&#x27f5;"],
           latex: [["longleftarrow", "&#x27f5;"]],
           omml: ["&#x27f5;"],

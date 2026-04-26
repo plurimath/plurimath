@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Varbarwedge < Symbol
         INPUT = {
-          unicodemath: [["&#x2305;"], parsing_wrapper(["varbarwedge"], lang: :unicode)],
-          asciimath: [["&#x2305;"], parsing_wrapper(["varbarwedge"], lang: :asciimath)],
+          unicodemath: [["&#x2305;"],
+                        parsing_wrapper(["varbarwedge"], lang: :unicode)],
+          asciimath: [["&#x2305;"],
+                      parsing_wrapper(["varbarwedge"], lang: :asciimath)],
           mathml: ["&#x2305;"],
           latex: [["varbarwedge", "&#x2305;"]],
           omml: ["&#x2305;"],

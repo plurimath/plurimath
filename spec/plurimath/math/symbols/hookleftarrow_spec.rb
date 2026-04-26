@@ -1,11 +1,10 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Symbols::Hookleftarrow do
-
   describe ".initialize" do
-    it 'returns instance of Symbol Hookleftarrow' do
+    it "returns instance of Symbol Hookleftarrow" do
       klass = described_class.new
-      expect(klass).to be_a(Plurimath::Math::Symbols::Hookleftarrow)
+      expect(klass).to be_a(described_class)
     end
   end
 

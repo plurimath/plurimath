@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Longmapsto < Symbol
         INPUT = {
-          unicodemath: [["&#x27fe;"], parsing_wrapper(["Longmapsto"], lang: :unicode)],
-          asciimath: [["&#x27fe;"], parsing_wrapper(["Longmapsto"], lang: :asciimath)],
+          unicodemath: [["&#x27fe;"],
+                        parsing_wrapper(["Longmapsto"], lang: :unicode)],
+          asciimath: [["&#x27fe;"],
+                      parsing_wrapper(["Longmapsto"], lang: :asciimath)],
           mathml: ["&#x27fe;"],
           latex: [["Longmapsto", "&#x27fe;"]],
           omml: ["&#x27fe;"],

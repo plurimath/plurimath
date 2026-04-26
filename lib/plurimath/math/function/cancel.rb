@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-
 module Plurimath
   module Math
     module Function
@@ -10,7 +9,8 @@ module Plurimath
             "menclose",
             attributes: { notation: "updiagonalstrike" },
           )
-          first_value = parameter_one&.to_mathml_without_math_tag(intent, options: options)
+          first_value = parameter_one&.to_mathml_without_math_tag(intent,
+                                                                  options: options)
           Utility.update_nodes(cancel_tag, [first_value])
         end
 
@@ -19,7 +19,10 @@ module Plurimath
         end
 
         def to_unicodemath(options:)
-          first_value = unicodemath_parens(parameter_one, options: options) if parameter_one
+          if parameter_one
+            first_value = unicodemath_parens(parameter_one,
+                                             options: options)
+          end
           "╱#{first_value}"
         end
       end

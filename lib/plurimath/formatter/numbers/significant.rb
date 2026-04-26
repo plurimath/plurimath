@@ -14,6 +14,7 @@ module Plurimath
 
         def apply(string, int_format, frac_format)
           return string if significant.zero?
+
           # Check if string contains any non-zero digit (works across all bases 2-16)
           chars = string.chars
           return string if skip_significant_processing?(chars)
@@ -149,6 +150,7 @@ module Plurimath
           chars.each do |char|
             start_counting = true if DIGIT_VALUE[char]&.positive?
             next unless start_counting
+
             char_count += 1 if DIGIT_VALUE.key?(char)
           end
           char_count

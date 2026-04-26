@@ -39,33 +39,51 @@ module Plurimath
         end
 
         def to_mathml_without_math_tag(intent, options:)
-          mathml = formula(options).to_mathml_without_math_tag(intent, options: options)
+          mathml = formula(options).to_mathml_without_math_tag(intent,
+                                                               options: options)
           mathml["unitsml"] = true
-          options&.dig(:unitsml, :xml) ? wrapped_unitsml_xml(mathml, @unitsml, options) : mathml
+          if options&.dig(:unitsml,
+                          :xml)
+            wrapped_unitsml_xml(mathml, @unitsml,
+                                options)
+          else
+            mathml
+          end
         end
 
         def to_omml_without_math_tag(display_style, options:)
-          formula(options).to_omml_without_math_tag(display_style, options: options)
+          formula(options).to_omml_without_math_tag(display_style,
+                                                    options: options)
         end
 
-        def to_asciimath_math_zone(spacing = "", last = false, indent = true, options:)
-          formula(options).to_asciimath_math_zone(spacing, last, indent, options: options)
+        def to_asciimath_math_zone(spacing = "", last = false, indent = true,
+options:)
+          formula(options).to_asciimath_math_zone(spacing, last, indent,
+                                                  options: options)
         end
 
-        def to_latex_math_zone(spacing = "", last = false, indent = true, options:)
-          formula(options).to_latex_math_zone(spacing, last, indent, options: options)
+        def to_latex_math_zone(spacing = "", last = false, indent = true,
+options:)
+          formula(options).to_latex_math_zone(spacing, last, indent,
+                                              options: options)
         end
 
-        def to_mathml_math_zone(spacing = "", last = false, indent = true, options:)
-          formula(options).to_mathml_math_zone(spacing, last, indent, options: options)
+        def to_mathml_math_zone(spacing = "", last = false, indent = true,
+options:)
+          formula(options).to_mathml_math_zone(spacing, last, indent,
+                                               options: options)
         end
 
-        def to_omml_math_zone(spacing = "", last = false, indent = true, options:)
-          formula(options).to_omml_math_zone(spacing, last, indent, options: options)
+        def to_omml_math_zone(spacing = "", last = false, indent = true,
+options:)
+          formula(options).to_omml_math_zone(spacing, last, indent,
+                                             options: options)
         end
 
-        def to_unicodemath_math_zone(spacing = "", last = false, indent = true, options:)
-          formula(options).to_unicodemath_math_zone(spacing, last, indent, options: options)
+        def to_unicodemath_math_zone(spacing = "", last = false, indent = true,
+options:)
+          formula(options).to_unicodemath_math_zone(spacing, last, indent,
+                                                    options: options)
         end
 
         private
@@ -75,7 +93,9 @@ module Plurimath
         end
 
         def wrapped_unitsml_xml(mathml, unitsml, options)
-          xml = Plurimath.xml_engine.load("<mrow>#{unitsml.to_xml(options.fetch(:unitsml, {}))}</mrow>")
+          xml = Plurimath.xml_engine.load("<mrow>#{unitsml.to_xml(options.fetch(
+                                                                    :unitsml, {}
+                                                                  ))}</mrow>")
           xref = xml.nodes.find { |node| node.respond_to?(:[]) }&.[](:id)
           mathml[:xref] = xref if xref
           Utility.update_nodes(mathml, xml.nodes)

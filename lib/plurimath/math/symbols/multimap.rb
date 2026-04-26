@@ -4,7 +4,8 @@ module Plurimath
       class Multimap < Symbol
         INPUT = {
           unicodemath: [["multimap", "&#x22b8;"]],
-          asciimath: [["&#x22b8;"], parsing_wrapper(["multimap"], lang: :asciimath)],
+          asciimath: [["&#x22b8;"],
+                      parsing_wrapper(["multimap"], lang: :asciimath)],
           mathml: ["&#x22b8;"],
           latex: [["multimap", "&#x22b8;"]],
           omml: ["&#x22b8;"],

@@ -3,7 +3,8 @@ module Plurimath
     module Symbols
       class Cong < Symbol
         INPUT = {
-          unicodemath: [["cong", "&#x2245;"], parsing_wrapper(["~="], lang: :unicode)],
+          unicodemath: [["cong", "&#x2245;"],
+                        parsing_wrapper(["~="], lang: :unicode)],
           asciimath: [["cong", "~=", "&#x2245;"]],
           mathml: ["&#x2245;"],
           latex: [["cong", "&#x2245;"], parsing_wrapper(["~="], lang: :latex)],

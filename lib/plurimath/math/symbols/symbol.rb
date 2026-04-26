@@ -4,8 +4,8 @@ module Plurimath
   module Math
     module Symbols
       class Symbol < Core
-
-        attr_accessor :value, :slashed, :mini_sub_sized, :mini_sup_sized, :options
+        attr_accessor :value, :slashed, :mini_sub_sized, :mini_sup_sized,
+                      :options
 
         INPUT = {}.freeze
 
@@ -41,7 +41,7 @@ module Plurimath
           @value = value.is_a?(Array) ? value.join : value&.to_s
         end
 
-        def to_mathml_without_math_tag(intent, **)
+        def to_mathml_without_math_tag(_intent, **)
           attributes = {}
           if value&.include?("&#x2147;")
             attributes[:intent] = Utility.html_entity_to_unicode(value)
@@ -83,7 +83,7 @@ module Plurimath
           # TODO: remove this condition once to word rendering issue is resolved, plurimath/plurimath/pull/328
           return if value == "&#x2062;"
 
-          [(Utility.ox_element("r", namespace: "m") << t_tag(options: options))]
+          [Utility.ox_element("r", namespace: "m") << t_tag(options: options)]
         end
 
         def tag_name
@@ -99,7 +99,9 @@ module Plurimath
         end
 
         def nary_attr_value(options:)
-          value || Utility.html_entity_to_unicode(to_omml_without_math_tag(true, options: options))
+          value || Utility.html_entity_to_unicode(to_omml_without_math_tag(
+                                                    true, options: options
+                                                  ))
         end
 
         def validate_function_formula
@@ -119,7 +121,7 @@ module Plurimath
 
         def separate_table
           ["&", "\\\\"].include?(value) ||
-            self.is_a?(Math::Symbols::Ampersand)
+            is_a?(Math::Symbols::Ampersand)
         end
 
         def linebreak?
@@ -130,23 +132,29 @@ module Plurimath
           mini_sub_sized || mini_sup_sized
         end
 
-        def to_asciimath_math_zone(spacing = "", last = false, indent = true, options:)
+        def to_asciimath_math_zone(spacing = "", _last = false, _indent = true,
+options:)
           "#{spacing}\"#{to_asciimath(options: options)}\" text\n"
         end
 
-        def to_latex_math_zone(spacing = "", last = false, indent = true, options:)
+        def to_latex_math_zone(spacing = "", _last = false, _indent = true,
+options:)
           "#{spacing}\"#{to_latex(options: options)}\" text\n"
         end
 
-        def to_omml_math_zone(spacing = "", last = false, indent = true, display_style:, options:)
-          "#{spacing}\"#{dump_omml(self, display_style, options: options)}\" text\n"
+        def to_omml_math_zone(spacing = "", _last = false, _indent = true,
+display_style:, options:)
+          "#{spacing}\"#{dump_omml(self, display_style,
+                                   options: options)}\" text\n"
         end
 
-        def to_mathml_math_zone(spacing = "", last = false, indent = true, options:)
+        def to_mathml_math_zone(spacing = "", _last = false, _indent = true,
+options:)
           "#{spacing}\"#{dump_mathml(self, options: options)}\" text\n"
         end
 
-        def to_unicodemath_math_zone(spacing = "", last = false, indent = true, options:)
+        def to_unicodemath_math_zone(spacing = "", _last = false, _indent = true,
+options:)
           "#{spacing}\"#{to_unicodemath(options: options)}\" text\n"
         end
 
@@ -186,7 +194,8 @@ module Plurimath
 
         def explicit_checks(unicode)
           return true if [unicode, value].any? { |v| ["∣", "|"].include?(v) }
-          return true if unicode_const(:ACCENT_SYMBOLS).has_value?(value)
+
+          true if unicode_const(:ACCENT_SYMBOLS).has_value?(value)
         end
 
         def specific_values
@@ -194,7 +203,7 @@ module Plurimath
 
           return "\\#{value}" if ["{", "}"].include?(value) || value == "_"
 
-          return "\\operatorname{if}" if value == "if"
+          "\\operatorname{if}" if value == "if"
         end
 
         def mini_sub
@@ -214,7 +223,9 @@ module Plurimath
         end
 
         def mini_sized_parenthesis(parens)
-          parens.values.find { |paren| paren.dig(value.to_sym) }&.dig(value.to_sym)
+          parens.values.find do |paren|
+            paren[value.to_sym]
+          end&.dig(value.to_sym)
         end
 
         def special_chars

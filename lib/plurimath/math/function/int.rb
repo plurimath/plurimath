@@ -1,16 +1,16 @@
 # frozen_string_literal: true
 
-
 module Plurimath
   module Math
     module Function
       class Int < TernaryFunction
         attr_accessor :options
+
         FUNCTION = {
           name: "integral",
           first_value: "lower limit",
           second_value: "upper limit",
-          third_value: "integrand"
+          third_value: "integrand",
         }.freeze
 
         def initialize(parameter_one = nil,
@@ -22,12 +22,18 @@ module Plurimath
         end
 
         def ==(object)
-          super(object) && object.options == options
+          super && object.options == options
         end
 
         def to_asciimath(options:)
-          first_value = "_#{wrapped(parameter_one, options: options)}" if parameter_one
-          second_value = "^#{wrapped(parameter_two, options: options)}" if parameter_two
+          if parameter_one
+            first_value = "_#{wrapped(parameter_one,
+                                      options: options)}"
+          end
+          if parameter_two
+            second_value = "^#{wrapped(parameter_two,
+                                       options: options)}"
+          end
           "int#{first_value}#{second_value} #{parameter_three&.to_asciimath(options: options)}".strip
         end
 
@@ -50,7 +56,7 @@ module Plurimath
               validate_mathml_tag(parameter_two, intent, options: options),
             ],
           )
-          msubsup_tag = masked_tag(msubsup_tag) if self.options && self.options.key?(:mask)
+          msubsup_tag = masked_tag(msubsup_tag) if self.options&.key?(:mask)
           return msubsup_tag if parameter_three.nil?
 
           mrow = ox_element("mrow")
@@ -58,16 +64,21 @@ module Plurimath
             mrow,
             [
               msubsup_tag,
-              wrap_mrow(parameter_three&.to_mathml_without_math_tag(intent, options: options), intent),
+              wrap_mrow(
+                parameter_three&.to_mathml_without_math_tag(intent,
+                                                            options: options), intent
+              ),
             ].flatten.compact,
           )
-          intentify(mrow, intent, func_name: :naryand, intent_name: intent_names[:name])
+          intentify(mrow, intent, func_name: :naryand,
+                                  intent_name: intent_names[:name])
         end
 
         def to_omml_without_math_tag(display_style, options:)
           if any_value_exist?
             nary = Utility.ox_element("nary", namespace: "m")
-            Utility.update_nodes(nary, nary_array(display_style, options: options))
+            Utility.update_nodes(nary,
+                                 nary_array(display_style, options: options))
             [nary]
           else
             r_tag = Utility.ox_element("r", namespace: "m")
@@ -81,13 +92,16 @@ module Plurimath
           first_value = sub_value(options: options) if parameter_one
           second_value = sup_value(options: options) if parameter_two
           mask = self.options&.dig(:mask) if self.options&.key?(:mask)
-          "∫#{mask}#{first_value}#{second_value}#{naryand_value(parameter_three, options: options)}"
+          "∫#{mask}#{first_value}#{second_value}#{naryand_value(
+            parameter_three, options: options
+          )}"
         end
 
         def line_breaking(obj)
           parameter_one&.line_breaking(obj)
           if obj.value_exist?
-            int = Int.new(Utility.filter_values(obj.value), parameter_two, parameter_three)
+            int = Int.new(Utility.filter_values(obj.value), parameter_two,
+                          parameter_three)
             int.hide_function_name = true
             obj.update(int)
             self.parameter_two = nil
@@ -105,9 +119,12 @@ module Plurimath
           symbol = hide_function_name ? "" : "∫"
           [
             narypr(symbol, function_type: "subSup"),
-            omml_parameter(parameter_one, display_style, tag_name: "sub", options: options),
-            omml_parameter(parameter_two, display_style, tag_name: "sup", options: options),
-            omml_parameter(parameter_three, display_style, tag_name: "e", options: options),
+            omml_parameter(parameter_one, display_style, tag_name: "sub",
+                                                         options: options),
+            omml_parameter(parameter_two, display_style, tag_name: "sup",
+                                                         options: options),
+            omml_parameter(parameter_three, display_style, tag_name: "e",
+                                                           options: options),
           ]
         end
 

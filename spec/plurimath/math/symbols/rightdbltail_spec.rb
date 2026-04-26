@@ -1,11 +1,10 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Symbols::Rightdbltail do
-
   describe ".initialize" do
-    it 'returns instance of Symbol Rightdbltail' do
+    it "returns instance of Symbol Rightdbltail" do
       klass = described_class.new
-      expect(klass).to be_a(Plurimath::Math::Symbols::Rightdbltail)
+      expect(klass).to be_a(described_class)
     end
   end
 

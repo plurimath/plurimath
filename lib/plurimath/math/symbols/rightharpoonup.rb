@@ -4,7 +4,8 @@ module Plurimath
       class Rightharpoonup < Symbol
         INPUT = {
           unicodemath: [["rightharpoonup", "&#x21c0;"]],
-          asciimath: [["&#x21c0;"], parsing_wrapper(["rightharpoonup"], lang: :asciimath)],
+          asciimath: [["&#x21c0;"],
+                      parsing_wrapper(["rightharpoonup"], lang: :asciimath)],
           mathml: ["&#x21c0;"],
           latex: [["rightharpoonup", "&#x21c0;"]],
           omml: ["&#x21c0;"],

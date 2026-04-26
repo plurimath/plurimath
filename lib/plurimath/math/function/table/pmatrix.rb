@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-
 module Plurimath
   module Math
     module Function
@@ -18,7 +17,9 @@ module Plurimath
           end
 
           def to_unicodemath(options:)
-            unicode_value = value.map { |val| val.to_unicodemath(options: options) }.join("@")
+            unicode_value = value.map do |val|
+              val.to_unicodemath(options: options)
+            end.join("@")
             "⒨(#{unicode_value})"
           end
 

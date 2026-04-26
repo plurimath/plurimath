@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Lvboxline < Symbol
         INPUT = {
-          unicodemath: [["&#x23b8;"], parsing_wrapper(["lvboxline"], lang: :unicode)],
-          asciimath: [["&#x23b8;"], parsing_wrapper(["lvboxline"], lang: :asciimath)],
+          unicodemath: [["&#x23b8;"],
+                        parsing_wrapper(["lvboxline"], lang: :unicode)],
+          asciimath: [["&#x23b8;"],
+                      parsing_wrapper(["lvboxline"], lang: :asciimath)],
           mathml: ["&#x23b8;"],
           latex: [["lvboxline", "&#x23b8;"]],
           omml: ["&#x23b8;"],

@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Amalg < Symbol
         INPUT = {
-          unicodemath: [["&#x2a3f;"], parsing_wrapper(["amalg"], lang: :unicode)],
-          asciimath: [["&#x2a3f;"], parsing_wrapper(["amalg"], lang: :asciimath)],
+          unicodemath: [["&#x2a3f;"],
+                        parsing_wrapper(["amalg"], lang: :unicode)],
+          asciimath: [["&#x2a3f;"],
+                      parsing_wrapper(["amalg"], lang: :asciimath)],
           mathml: ["&#x2a3f;"],
           latex: [["amalg", "&#x2a3f;"]],
           omml: ["&#x2a3f;"],

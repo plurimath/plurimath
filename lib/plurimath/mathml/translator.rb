@@ -71,7 +71,9 @@ module Plurimath
       # MathML element: <math>
       def math_to_formula(math)
         children = ordered_children(math)
-        formula_values = children.map { |child| mml_to_plurimath(child) }.compact
+        formula_values = children.filter_map do |child|
+          mml_to_plurimath(child)
+        end
         formula_values = nary_check(formula_values)
         display_style = boolean_to_displaystyle(math.display)
 
@@ -90,7 +92,9 @@ module Plurimath
       # MathML element: <mrow>
       def mrow_to_mrow(mrow)
         children = ordered_children(mrow)
-        formula_values = children.map { |child| mml_to_plurimath(child) }.compact
+        formula_values = children.filter_map do |child|
+          mml_to_plurimath(child)
+        end
         return nil if formula_values.empty?
 
         combined = nary_check(combine_function_with_parens(formula_values))
@@ -153,7 +157,7 @@ module Plurimath
         options[:accentunder] = true if truthy_mathml_bool?(munder.accentunder)
 
         if base.is_a?(Plurimath::Math::Function::Vec) ||
-           (base.respond_to?(:is_ternary_function?) && base.is_ternary_function? && !base.any_value_exist?)
+            (base.respond_to?(:is_ternary_function?) && base.is_ternary_function? && !base.any_value_exist?)
           base.parameter_one = underscript
           base.attributes = options if base.respond_to?(:attributes=)
           return base
@@ -195,7 +199,8 @@ module Plurimath
             { type: "undOvr" },
           )
         else
-          Plurimath::Math::Function::Underover.new(base, underscript, overscript)
+          Plurimath::Math::Function::Underover.new(base, underscript,
+                                                   overscript)
         end
       end
 
@@ -269,7 +274,7 @@ module Plurimath
           symbol = Plurimath::Math::Symbols::Symbol.new(value) if symbol.nil? || symbol.is_a?(Array)
           return Plurimath::Math::Function::Linebreak.new(
             symbol,
-            attributes
+            attributes,
           )
         end
 
@@ -312,7 +317,9 @@ module Plurimath
       # MathML element: <ms> - string
       def ms_to_ms(ms)
         children = ordered_children(ms)
-        text_content = children.filter_map { |child| extract_ms_text(child) }.join(" ")
+        text_content = children.filter_map do |child|
+          extract_ms_text(child)
+        end.join(" ")
         Plurimath::Math::Function::Ms.new(text_content.empty? ? nil : text_content)
       end
 
@@ -330,7 +337,7 @@ module Plurimath
       # MathML element: <msqrt> - square root
       def msqrt_to_sqrt(sqrt)
         children = content_children(sqrt)
-        radicand = children.map { |child| mml_to_plurimath(child) }.compact
+        radicand = children.filter_map { |child| mml_to_plurimath(child) }
         radicand = radicand.first if radicand.size == 1
         Plurimath::Math::Function::Sqrt.new(radicand)
       end
@@ -346,7 +353,7 @@ module Plurimath
       # MathML element: <mphantom> - phantom
       def mphantom_to_phantom(phantom)
         children = ordered_children(phantom)
-        content = children.map { |child| mml_to_plurimath(child) }.compact
+        content = children.filter_map { |child| mml_to_plurimath(child) }
         content_obj = wrap_children(content)
         content_obj = normalize_phantom_child(content_obj)
         Plurimath::Math::Function::Phantom.new(content_obj)
@@ -355,7 +362,7 @@ module Plurimath
       # MathML element: <menclose> - enclose
       def menclose_to_menclose(enclose)
         children = ordered_children(enclose)
-        content = children.map { |child| mml_to_plurimath(child) }.compact
+        content = children.filter_map { |child| mml_to_plurimath(child) }
         notation = enclose.notation
         content_obj = content.size == 1 ? content.first : Plurimath::Math::Formula.new(content)
         Plurimath::Math::Function::Menclose.new(notation, content_obj)
@@ -364,14 +371,14 @@ module Plurimath
       # MathML element: <merror> - error
       def merror_to_merror(error)
         children = ordered_children(error)
-        content = children.map { |child| mml_to_plurimath(child) }.compact
+        content = children.filter_map { |child| mml_to_plurimath(child) }
         Plurimath::Math::Function::Merror.new(wrap_children(content))
       end
 
       # MathML element: <mstyle> - style
       def mstyle_to_mstyle(style)
         children = ordered_children(style)
-        content = children.map { |child| mml_to_plurimath(child) }.compact
+        content = children.filter_map { |child| mml_to_plurimath(child) }
         content_obj = wrap_children(content)
 
         has_color = style.respond_to?(:mathcolor) && style.mathcolor && !style.mathcolor.empty?
@@ -401,7 +408,9 @@ module Plurimath
       # MathML element: <mfenced> - fenced
       def mfenced_to_fenced(fenced)
         children = ordered_children(fenced)
-        content = children.map { |child| mml_to_plurimath(child) }.compact.map { |child| filter_child(child) }
+        content = children.filter_map do |child|
+          mml_to_plurimath(child)
+        end.map { |child| filter_child(child) }
         open_value = fenced.open || default_fenced_open(fenced)
         close_value = fenced.close || default_fenced_close(fenced)
 
@@ -415,7 +424,9 @@ module Plurimath
 
       # MathML element: <mtable> - table
       def mtable_to_table(table)
-        table_content = ordered_children(table).filter_map { |row| mml_to_plurimath(row) }
+        table_content = ordered_children(table).filter_map do |row|
+          mml_to_plurimath(row)
+        end
         table_obj = Plurimath::Math::Function::Table.new(table_content)
         # Set table attributes
         table_obj.frame = table.frame if table.respond_to?(:frame) && table.frame
@@ -433,28 +444,28 @@ module Plurimath
       # MathML element: <mtd> - table cell
       def mtd_to_td(td)
         children = ordered_children(td)
-        content = children.map { |child| mml_to_plurimath(child) }.compact
+        content = children.filter_map { |child| mml_to_plurimath(child) }
         Plurimath::Math::Function::Td.new(content)
       end
 
       # MathML element: <mlongdiv> - long division
       def mlongdiv_to_longdiv(longdiv)
         children = ordered_children(longdiv)
-        content = children.map { |child| mml_to_plurimath(child) }.compact
+        content = children.filter_map { |child| mml_to_plurimath(child) }
         Plurimath::Math::Function::Longdiv.new(content)
       end
 
       # MathML element: <mstack> - stacked
       def mstack_to_stackrel(stack)
         children = ordered_children(stack)
-        content = children.map { |child| mml_to_plurimath(child) }.compact
+        content = children.filter_map { |child| mml_to_plurimath(child) }
         Plurimath::Math::Function::Stackrel.new(wrap_children(content))
       end
 
       # MathML element: <msrow> - stack row
       def msrow_to_formula(msrow)
         children = ordered_children(msrow)
-        content = children.map { |child| mml_to_plurimath(child) }.compact
+        content = children.filter_map { |child| mml_to_plurimath(child) }
         return nil if content.empty?
 
         Plurimath::Math::Formula.new(content)
@@ -477,14 +488,14 @@ module Plurimath
       # MathML element: <msline> - line
       def msline_to_msline(sline)
         children = ordered_children(sline)
-        content = children.map { |child| mml_to_plurimath(child) }.compact
+        content = children.filter_map { |child| mml_to_plurimath(child) }
         Plurimath::Math::Function::Msline.new(wrap_children(content))
       end
 
       # MathML element: <mpadded> - padded
       def mpadded_to_mpadded(padded)
         children = ordered_children(padded)
-        content = children.map { |child| mml_to_plurimath(child) }.compact
+        content = children.filter_map { |child| mml_to_plurimath(child) }
         options = {}
         options[:height] = padded.height if padded.height
         options[:depth] = padded.depth if padded.depth
@@ -511,16 +522,20 @@ module Plurimath
         mpre_index = element_order.index { |el| el.name == "mprescripts" }
 
         if has_prescripts && mpre_index
-          post_element_count = multiscript_post_element_count(element_order, mpre_index)
-          post_children, pre_children = split_multiscript_children(children, post_element_count)
+          post_element_count = multiscript_post_element_count(element_order,
+                                                              mpre_index)
+          post_children, pre_children = split_multiscript_children(children,
+                                                                   post_element_count)
 
           post_subs, post_sups = split_script_pairs(post_children)
           pre_subs, pre_sups = split_script_pairs(pre_children, compact: true)
           base_with_posts = attach_postscripts(base, post_subs, post_sups)
-          Plurimath::Math::Function::Multiscript.new(base_with_posts, pre_subs, pre_sups)
+          Plurimath::Math::Function::Multiscript.new(base_with_posts, pre_subs,
+                                                     pre_sups)
         else
-          remaining = convert_multiscript_children(children[1..-1])
-          subscripts, superscripts = split_script_pairs(remaining, compact: true)
+          remaining = convert_multiscript_children(children[1..])
+          subscripts, superscripts = split_script_pairs(remaining,
+                                                        compact: true)
           base_with_posts = attach_postscripts(base, subscripts, superscripts)
           Plurimath::Math::Function::Multiscript.new(base_with_posts)
         end
@@ -529,7 +544,7 @@ module Plurimath
       # MathML element: <mlabeledtr> - labeled row
       def mlabeledtr_to_mlabeledtr(labeledtr)
         children = ordered_children(labeledtr)
-        content = children.map { |child| mml_to_plurimath(child) }.compact
+        content = children.filter_map { |child| mml_to_plurimath(child) }
         label = labeledtr.id && Plurimath::Math::Function::Text.new(labeledtr.id)
         Plurimath::Math::Function::Mlabeledtr.new(content, label)
       end
@@ -537,17 +552,22 @@ module Plurimath
       # MathML element: <semantics> - semantics
       def semantics_to_semantics(semantics)
         children = ordered_children(semantics)
-        content = filter_child(wrap_children(children.map { |child| mml_to_plurimath(child) }.compact))
+        content = filter_child(wrap_children(children.filter_map do |child|
+          mml_to_plurimath(child)
+        end))
         annotations = []
-        annotations += build_annotation_entries(semantics.annotation_value, :annotation)
-        annotations += build_annotation_entries(semantics.annotation_xml_value, :"annotation-xml")
-        Plurimath::Math::Function::Semantics.new(content, annotations.empty? ? nil : annotations)
+        annotations += build_annotation_entries(semantics.annotation_value,
+                                                :annotation)
+        annotations += build_annotation_entries(semantics.annotation_xml_value,
+                                                :"annotation-xml")
+        Plurimath::Math::Function::Semantics.new(content,
+                                                 annotations.empty? ? nil : annotations)
       end
 
       # MathML element: <mscarries> - carries
       def mscarries_to_scarries(scarries)
         children = ordered_children(scarries)
-        content = children.map { |child| mml_to_plurimath(child) }.compact
+        content = children.filter_map { |child| mml_to_plurimath(child) }
         Plurimath::Math::Function::Scarries.new(wrap_children(content))
       end
 

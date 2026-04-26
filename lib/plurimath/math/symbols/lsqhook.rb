@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Lsqhook < Symbol
         INPUT = {
-          unicodemath: [["&#x2acd;"], parsing_wrapper(["lsqhook"], lang: :unicode)],
-          asciimath: [["&#x2acd;"], parsing_wrapper(["lsqhook"], lang: :asciimath)],
+          unicodemath: [["&#x2acd;"],
+                        parsing_wrapper(["lsqhook"], lang: :unicode)],
+          asciimath: [["&#x2acd;"],
+                      parsing_wrapper(["lsqhook"], lang: :asciimath)],
           mathml: ["&#x2acd;"],
           latex: [["lsqhook", "&#x2acd;"]],
           omml: ["&#x2acd;"],

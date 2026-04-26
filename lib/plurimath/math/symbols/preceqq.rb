@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Preceqq < Symbol
         INPUT = {
-          unicodemath: [["&#x2ab3;"], parsing_wrapper(["preceqq"], lang: :unicode)],
-          asciimath: [["&#x2ab3;"], parsing_wrapper(["preceqq"], lang: :asciimath)],
+          unicodemath: [["&#x2ab3;"],
+                        parsing_wrapper(["preceqq"], lang: :unicode)],
+          asciimath: [["&#x2ab3;"],
+                      parsing_wrapper(["preceqq"], lang: :asciimath)],
           mathml: ["&#x2ab3;"],
           latex: [["preceqq", "&#x2ab3;"]],
           omml: ["&#x2ab3;"],

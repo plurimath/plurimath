@@ -3,10 +3,13 @@ module Plurimath
     module Symbols
       class Nsub < Symbol
         INPUT = {
-          unicodemath: [["nsub", "&#x2284;"], parsing_wrapper(["nsubset"], lang: :unicode)],
-          asciimath: [["&#x2284;"], parsing_wrapper(["nsub", "nsubset"], lang: :asciimath)],
+          unicodemath: [["nsub", "&#x2284;"],
+                        parsing_wrapper(["nsubset"], lang: :unicode)],
+          asciimath: [["&#x2284;"],
+                      parsing_wrapper(["nsub", "nsubset"], lang: :asciimath)],
           mathml: ["&#x2284;"],
-          latex: [["nsubset", "&#x2284;"], parsing_wrapper(["nsub"], lang: :latex)],
+          latex: [["nsubset", "&#x2284;"],
+                  parsing_wrapper(["nsub"], lang: :latex)],
           omml: ["&#x2284;"],
           html: ["&#x2284;"],
         }.freeze

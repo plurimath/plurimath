@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Lmoustache < Symbol
         INPUT = {
-          unicodemath: [["&#x23b0;"], parsing_wrapper(["lmoustache"], lang: :unicode)],
-          asciimath: [["&#x23b0;"], parsing_wrapper(["lmoustache"], lang: :asciimath)],
+          unicodemath: [["&#x23b0;"],
+                        parsing_wrapper(["lmoustache"], lang: :unicode)],
+          asciimath: [["&#x23b0;"],
+                      parsing_wrapper(["lmoustache"], lang: :asciimath)],
           mathml: ["&#x23b0;"],
           latex: [["lmoustache", "&#x23b0;"]],
           omml: ["&#x23b0;"],

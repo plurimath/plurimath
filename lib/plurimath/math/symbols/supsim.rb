@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Supsim < Symbol
         INPUT = {
-          unicodemath: [["&#x2ac8;"], parsing_wrapper(["supsim"], lang: :unicode)],
-          asciimath: [["&#x2ac8;"], parsing_wrapper(["supsim"], lang: :asciimath)],
+          unicodemath: [["&#x2ac8;"],
+                        parsing_wrapper(["supsim"], lang: :unicode)],
+          asciimath: [["&#x2ac8;"],
+                      parsing_wrapper(["supsim"], lang: :asciimath)],
           mathml: ["&#x2ac8;"],
           latex: [["supsim", "&#x2ac8;"]],
           omml: ["&#x2ac8;"],

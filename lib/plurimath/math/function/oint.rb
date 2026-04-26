@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
-
 module Plurimath
   module Math
     module Function
       class Oint < TernaryFunction
         attr_accessor :options
+
         FUNCTION = {
           name: "contour integral",
           first_value: "subscript",
@@ -21,18 +21,30 @@ module Plurimath
         end
 
         def ==(object)
-          super(object) && object.options == options
+          super && object.options == options
         end
 
         def to_asciimath(options:)
-          first_value = "_#{wrapped(parameter_one, options: options)}" if parameter_one
-          second_value = "^#{wrapped(parameter_two, options: options)}" if parameter_two
+          if parameter_one
+            first_value = "_#{wrapped(parameter_one,
+                                      options: options)}"
+          end
+          if parameter_two
+            second_value = "^#{wrapped(parameter_two,
+                                       options: options)}"
+          end
           "oint#{first_value}#{second_value} #{parameter_three&.to_asciimath(options: options)}".strip
         end
 
         def to_latex(options:)
-          first_value = "_#{latex_wrapped(parameter_one, options: options)}" if parameter_one
-          second_value = "^#{latex_wrapped(parameter_two, options: options)}" if parameter_two
+          if parameter_one
+            first_value = "_#{latex_wrapped(parameter_one,
+                                            options: options)}"
+          end
+          if parameter_two
+            second_value = "^#{latex_wrapped(parameter_two,
+                                             options: options)}"
+          end
           "\\#{class_name}#{first_value}#{second_value} #{parameter_three&.to_latex(options: options)}".strip
         end
 
@@ -51,8 +63,10 @@ module Plurimath
             oint_tag,
             [
               mo_tag,
-              parameter_one&.to_mathml_without_math_tag(intent, options: options),
-              parameter_two&.to_mathml_without_math_tag(intent, options: options),
+              parameter_one&.to_mathml_without_math_tag(intent,
+                                                        options: options),
+              parameter_two&.to_mathml_without_math_tag(intent,
+                                                        options: options),
             ],
           )
           return ternary_intentify(oint_tag, intent) unless parameter_three
@@ -62,7 +76,10 @@ module Plurimath
               ox_element("mrow"),
               [
                 oint_tag,
-                wrap_mrow(parameter_three&.to_mathml_without_math_tag(intent, options: options), intent),
+                wrap_mrow(
+                  parameter_three&.to_mathml_without_math_tag(intent,
+                                                              options: options), intent
+                ),
               ],
             ),
             intent,
@@ -75,10 +92,14 @@ module Plurimath
             Utility.update_nodes(
               nary,
               [
-                narypr((hide_function_name ? "" : "∮"), function_type: "subSup"),
-                omml_parameter(parameter_one, display_style, tag_name: "sub", options: options),
-                omml_parameter(parameter_two, display_style, tag_name: "sup", options: options),
-                omml_parameter(parameter_three, display_style, tag_name: "e", options: options),
+                narypr((hide_function_name ? "" : "∮"),
+                       function_type: "subSup"),
+                omml_parameter(parameter_one, display_style, tag_name: "sub",
+                                                             options: options),
+                omml_parameter(parameter_two, display_style, tag_name: "sup",
+                                                             options: options),
+                omml_parameter(parameter_three, display_style, tag_name: "e",
+                                                               options: options),
               ],
             )
             [nary]
@@ -91,16 +112,25 @@ module Plurimath
         end
 
         def to_unicodemath(options:)
-          first_value = "_#{unicodemath_parens(parameter_one, options: options)}" if parameter_one
-          second_value = "^#{unicodemath_parens(parameter_two, options: options)}" if parameter_two
+          if parameter_one
+            first_value = "_#{unicodemath_parens(parameter_one,
+                                                 options: options)}"
+          end
+          if parameter_two
+            second_value = "^#{unicodemath_parens(parameter_two,
+                                                  options: options)}"
+          end
           mask = self.options&.dig(:mask) if self.options&.key?(:mask)
-          "∮#{mask}#{first_value}#{second_value}#{naryand_value(parameter_three, options: options)}"
+          "∮#{mask}#{first_value}#{second_value}#{naryand_value(
+            parameter_three, options: options
+          )}"
         end
 
         def line_breaking(obj)
           parameter_one&.line_breaking(obj)
           if obj.value_exist?
-            oint = self.class.new(Utility.filter_values(obj.value), parameter_two, parameter_three)
+            oint = self.class.new(Utility.filter_values(obj.value),
+                                  parameter_two, parameter_three)
             oint.hide_function_name = true
             obj.update(oint)
             self.parameter_two = nil
@@ -119,7 +149,7 @@ module Plurimath
         end
 
         def intent_names
-          { name: ":contour integral"}
+          { name: ":contour integral" }
         end
 
         private

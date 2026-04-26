@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Eighthnote < Symbol
         INPUT = {
-          unicodemath: [["&#x266a;"], parsing_wrapper(["eighthnote"], lang: :unicode)],
-          asciimath: [["&#x266a;"], parsing_wrapper(["eighthnote"], lang: :asciimath)],
+          unicodemath: [["&#x266a;"],
+                        parsing_wrapper(["eighthnote"], lang: :unicode)],
+          asciimath: [["&#x266a;"],
+                      parsing_wrapper(["eighthnote"], lang: :asciimath)],
           mathml: ["&#x266a;"],
           latex: [["eighthnote", "&#x266a;"]],
           omml: ["&#x266a;"],

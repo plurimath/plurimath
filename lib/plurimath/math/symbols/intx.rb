@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Intx < Symbol
         INPUT = {
-          unicodemath: [["&#x2a18;"], parsing_wrapper(["intx"], lang: :unicode)],
-          asciimath: [["&#x2a18;"], parsing_wrapper(["intx"], lang: :asciimath)],
+          unicodemath: [["&#x2a18;"],
+                        parsing_wrapper(["intx"], lang: :unicode)],
+          asciimath: [["&#x2a18;"],
+                      parsing_wrapper(["intx"], lang: :asciimath)],
           mathml: ["&#x2a18;"],
           latex: [["intx", "&#x2a18;"]],
           omml: ["&#x2a18;"],

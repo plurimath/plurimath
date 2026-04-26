@@ -1,11 +1,10 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Symbols::Underline do
-
   describe ".initialize" do
-    it 'returns instance of Symbol Underline' do
+    it "returns instance of Symbol Underline" do
       klass = described_class.new
-      expect(klass).to be_a(Plurimath::Math::Symbols::Underline)
+      expect(klass).to be_a(described_class)
     end
   end
 

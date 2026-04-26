@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Eqdot < Symbol
         INPUT = {
-          unicodemath: [["&#x2a66;"], parsing_wrapper(["eqdot"], lang: :unicode)],
-          asciimath: [["&#x2a66;"], parsing_wrapper(["eqdot"], lang: :asciimath)],
+          unicodemath: [["&#x2a66;"],
+                        parsing_wrapper(["eqdot"], lang: :unicode)],
+          asciimath: [["&#x2a66;"],
+                      parsing_wrapper(["eqdot"], lang: :asciimath)],
           mathml: ["&#x2a66;"],
           latex: [["eqdot", "&#x2a66;"]],
           omml: ["&#x2a66;"],

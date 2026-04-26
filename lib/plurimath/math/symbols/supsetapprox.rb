@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Supsetapprox < Symbol
         INPUT = {
-          unicodemath: [["&#x2aca;"], parsing_wrapper(["supsetapprox"], lang: :unicode)],
-          asciimath: [["&#x2aca;"], parsing_wrapper(["supsetapprox"], lang: :asciimath)],
+          unicodemath: [["&#x2aca;"],
+                        parsing_wrapper(["supsetapprox"], lang: :unicode)],
+          asciimath: [["&#x2aca;"],
+                      parsing_wrapper(["supsetapprox"], lang: :asciimath)],
           mathml: ["&#x2aca;"],
           latex: [["supsetapprox", "&#x2aca;"]],
           omml: ["&#x2aca;"],

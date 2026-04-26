@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Upchi < Symbol
         INPUT = {
-          unicodemath: [["&#x3a7;"], parsing_wrapper(["upChi"], lang: :unicode)],
-          asciimath: [["&#x3a7;"], parsing_wrapper(["upChi"], lang: :asciimath)],
+          unicodemath: [["&#x3a7;"],
+                        parsing_wrapper(["upChi"], lang: :unicode)],
+          asciimath: [["&#x3a7;"],
+                      parsing_wrapper(["upChi"], lang: :asciimath)],
           mathml: ["&#x3a7;"],
           latex: [["upChi", "&#x3a7;"]],
           omml: ["&#x3a7;"],

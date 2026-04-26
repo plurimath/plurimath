@@ -3,7 +3,8 @@ module Plurimath
     module Symbols
       class Div < Symbol
         INPUT = {
-          unicodemath: [["div", "&#xf7;"], parsing_wrapper(["-:"], lang: :unicode)],
+          unicodemath: [["div", "&#xf7;"],
+                        parsing_wrapper(["-:"], lang: :unicode)],
           asciimath: [["-:", "div", "&#xf7;"]],
           mathml: ["&#xf7;"],
           latex: [["div", "&#xf7;"], parsing_wrapper(["-:"], lang: :latex)],

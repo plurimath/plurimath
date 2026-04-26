@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Gnapprox < Symbol
         INPUT = {
-          unicodemath: [["&#x2a8a;"], parsing_wrapper(["gnapprox"], lang: :unicode)],
-          asciimath: [["&#x2a8a;"], parsing_wrapper(["gnapprox"], lang: :asciimath)],
+          unicodemath: [["&#x2a8a;"],
+                        parsing_wrapper(["gnapprox"], lang: :unicode)],
+          asciimath: [["&#x2a8a;"],
+                      parsing_wrapper(["gnapprox"], lang: :asciimath)],
           mathml: ["&#x2a8a;"],
           latex: [["gnapprox", "&#x2a8a;"]],
           omml: ["&#x2a8a;"],

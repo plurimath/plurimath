@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Spddot < Symbol
         INPUT = {
-          unicodemath: [["&#xa8;"], parsing_wrapper(["spddot"], lang: :unicode)],
-          asciimath: [["&#xa8;"], parsing_wrapper(["spddot"], lang: :asciimath)],
+          unicodemath: [["&#xa8;"],
+                        parsing_wrapper(["spddot"], lang: :unicode)],
+          asciimath: [["&#xa8;"],
+                      parsing_wrapper(["spddot"], lang: :asciimath)],
           mathml: ["&#xa8;"],
           latex: [["spddot", "&#xa8;"]],
           omml: ["&#xa8;"],

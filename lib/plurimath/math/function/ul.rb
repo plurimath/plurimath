@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-
 module Plurimath
   module Math
     module Function
@@ -31,7 +30,8 @@ module Plurimath
           Utility.update_nodes(
             munder_tag,
             [
-              parameter_one&.to_mathml_without_math_tag(intent, options: options),
+              parameter_one&.to_mathml_without_math_tag(intent,
+                                                        options: options),
               mo_tag,
             ],
           )
@@ -44,7 +44,8 @@ module Plurimath
             groupchr_tag(display_style, options: options)
           else
             symbol = Symbols::Symbol.new("&#x332;")
-            Underset.new(parameter_one, symbol).to_omml_without_math_tag(true, options: options)
+            Underset.new(parameter_one, symbol).to_omml_without_math_tag(true,
+                                                                         options: options)
           end
         end
 
@@ -69,14 +70,17 @@ module Plurimath
         def groupchr_tag(display_style, options:)
           groupchr = Utility.ox_element("groupChr", namespace: "m")
           groupchrpr = Utility.ox_element("groupChrPR", namespace: "m")
-          chr = Utility.ox_element("chr", namespace: "m", attributes: { "m:val": "_" })
-          pos = Utility.ox_element("pos", namespace: "m", attributes: { "m:val": "bot" })
+          chr = Utility.ox_element("chr", namespace: "m",
+                                          attributes: { "m:val": "_" })
+          pos = Utility.ox_element("pos", namespace: "m",
+                                          attributes: { "m:val": "bot" })
           Utility.update_nodes(groupchrpr, [chr, pos])
           Utility.update_nodes(
             groupchr,
             [
               groupchrpr,
-              omml_parameter(parameter_one, display_style, tag_name: "e", namespace: "m", options: options),
+              omml_parameter(parameter_one, display_style, tag_name: "e",
+                                                           namespace: "m", options: options),
             ],
           )
         end

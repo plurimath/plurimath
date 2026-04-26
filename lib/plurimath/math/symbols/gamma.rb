@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Gamma < Symbol
         INPUT = {
-          unicodemath: [["gamma", "&#x3b3;"], parsing_wrapper(["upgamma"], lang: :unicode)],
-          asciimath: [["gamma", "&#x3b3;"], parsing_wrapper(["upgamma"], lang: :asciimath)],
+          unicodemath: [["gamma", "&#x3b3;"],
+                        parsing_wrapper(["upgamma"], lang: :unicode)],
+          asciimath: [["gamma", "&#x3b3;"],
+                      parsing_wrapper(["upgamma"], lang: :asciimath)],
           mathml: ["&#x3b3;"],
           latex: [["upgamma", "gamma", "&#x3b3;"]],
           omml: ["&#x3b3;"],

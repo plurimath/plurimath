@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Swarrow < Symbol
         INPUT = {
-          unicodemath: [["&#x21d9;"], parsing_wrapper(["Swarrow"], lang: :unicode)],
-          asciimath: [["&#x21d9;"], parsing_wrapper(["Swarrow"], lang: :asciimath)],
+          unicodemath: [["&#x21d9;"],
+                        parsing_wrapper(["Swarrow"], lang: :unicode)],
+          asciimath: [["&#x21d9;"],
+                      parsing_wrapper(["Swarrow"], lang: :asciimath)],
           mathml: ["&#x21d9;"],
           latex: [["Swarrow", "&#x21d9;"]],
           omml: ["&#x21d9;"],

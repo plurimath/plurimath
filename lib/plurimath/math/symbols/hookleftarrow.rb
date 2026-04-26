@@ -4,7 +4,8 @@ module Plurimath
       class Hookleftarrow < Symbol
         INPUT = {
           unicodemath: [["hookleftarrow", "&#x21a9;"]],
-          asciimath: [["&#x21a9;"], parsing_wrapper(["hookleftarrow"], lang: :asciimath)],
+          asciimath: [["&#x21a9;"],
+                      parsing_wrapper(["hookleftarrow"], lang: :asciimath)],
           mathml: ["&#x21a9;"],
           latex: [["hookleftarrow", "&#x21a9;"]],
           omml: ["&#x21a9;"],

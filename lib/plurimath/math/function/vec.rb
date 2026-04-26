@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-
 module Plurimath
   module Math
     module Function
@@ -14,8 +13,12 @@ module Plurimath
 
         def to_mathml_without_math_tag(intent, options:)
           mover = ox_element("mover")
-          first_value = parameter_one&.to_mathml_without_math_tag(intent, options: options)
-          mover[:accent] = attributes[:accent] if attributes && attributes[:accent]
+          first_value = parameter_one&.to_mathml_without_math_tag(intent,
+                                                                  options: options)
+          if attributes && attributes[:accent]
+            mover[:accent] =
+              attributes[:accent]
+          end
           Utility.update_nodes(
             mover,
             [
@@ -32,7 +35,8 @@ module Plurimath
             acc_tag(display_style, options: options)
           else
             symbol = Symbols::Symbol.new("→")
-            Overset.new(parameter_one, symbol).to_omml_without_math_tag(true, options: options)
+            Overset.new(parameter_one, symbol).to_omml_without_math_tag(true,
+                                                                        options: options)
           end
         end
 
@@ -46,7 +50,9 @@ module Plurimath
             "#{spacing}\"#{to_asciimath(options: options)}\" function apply\n",
             "#{new_spacing}|_ \"#{class_name}\" function name\n",
           ]
-          ascii_fields_to_print(parameter_one, { spacing: new_spacing, field_name: "supscript", additional_space: "|  |_ " , array: new_arr, options: options })
+          ascii_fields_to_print(parameter_one,
+                                { spacing: new_spacing, field_name: "supscript", additional_space: "|  |_ ",
+                                  array: new_arr, options: options })
           new_arr
         end
 
@@ -56,7 +62,9 @@ module Plurimath
             "#{spacing}\"#{to_latex(options: options)}\" function apply\n",
             "#{new_spacing}|_ \"#{class_name}\" function name\n",
           ]
-          latex_fields_to_print(parameter_one, { spacing: new_spacing, field_name: "supscript", additional_space: "|  |_ " , array: new_arr, options: options })
+          latex_fields_to_print(parameter_one,
+                                { spacing: new_spacing, field_name: "supscript", additional_space: "|  |_ ",
+                                  array: new_arr, options: options })
           new_arr
         end
 
@@ -66,17 +74,23 @@ module Plurimath
             "#{spacing}\"#{dump_mathml(self, options: options)}\" overset\n",
             "#{new_spacing}|_ \"<mo>&#x2192;</mo>\" base\n",
           ]
-          mathml_fields_to_print(parameter_one, { spacing: new_spacing, field_name: "supscript", additional_space: "|  |_ ", array: new_arr, options: options })
+          mathml_fields_to_print(parameter_one,
+                                 { spacing: new_spacing, field_name: "supscript", additional_space: "|  |_ ",
+                                   array: new_arr, options: options })
           new_arr
         end
 
-        def to_omml_math_zone(spacing, last = false, _, display_style:, options:)
+        def to_omml_math_zone(spacing, last = false, _, display_style:,
+options:)
           new_spacing = gsub_spacing(spacing, last)
           new_arr = [
-            "#{spacing}\"#{dump_omml(self, display_style, options: options)}\" overset\n",
+            "#{spacing}\"#{dump_omml(self, display_style,
+                                     options: options)}\" overset\n",
             "#{new_spacing}|_ \"<m:t>&#x2192;</m:t>\" base\n",
           ]
-          omml_fields_to_print(parameter_one, { spacing: new_spacing, field_name: "supscript", additional_space: "|  |_ ", array: new_arr, display_style: display_style, options: options })
+          omml_fields_to_print(parameter_one,
+                               { spacing: new_spacing, field_name: "supscript", additional_space: "|  |_ ",
+                                 array: new_arr, display_style: display_style, options: options })
           new_arr
         end
 
@@ -94,12 +108,14 @@ module Plurimath
         def acc_tag(display_style, options:)
           acc_tag    = Utility.ox_element("acc", namespace: "m")
           acc_pr_tag = Utility.ox_element("accPr", namespace: "m")
-          acc_pr_tag << (Utility.ox_element("chr", namespace: "m", attributes: { "m:val": "→" }))
+          acc_pr_tag << Utility.ox_element("chr", namespace: "m",
+                                                  attributes: { "m:val": "→" })
           Utility.update_nodes(
             acc_tag,
             [
               acc_pr_tag,
-              omml_parameter(parameter_one, display_style, tag_name: "e", options: options),
+              omml_parameter(parameter_one, display_style, tag_name: "e",
+                                                           options: options),
             ],
           )
           [acc_tag]

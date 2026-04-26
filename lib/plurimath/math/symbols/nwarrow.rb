@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Nwarrow < Symbol
         INPUT = {
-          unicodemath: [["&#x21d6;"], parsing_wrapper(["Nwarrow"], lang: :unicode)],
-          asciimath: [["&#x21d6;"], parsing_wrapper(["Nwarrow"], lang: :asciimath)],
+          unicodemath: [["&#x21d6;"],
+                        parsing_wrapper(["Nwarrow"], lang: :unicode)],
+          asciimath: [["&#x21d6;"],
+                      parsing_wrapper(["Nwarrow"], lang: :asciimath)],
           mathml: ["&#x21d6;"],
           latex: [["Nwarrow", "&#x21d6;"]],
           omml: ["&#x21d6;"],

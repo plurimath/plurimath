@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Trapezium < Symbol
         INPUT = {
-          unicodemath: [["&#x23e2;"], parsing_wrapper(["trapezium"], lang: :unicode)],
-          asciimath: [["&#x23e2;"], parsing_wrapper(["trapezium"], lang: :asciimath)],
+          unicodemath: [["&#x23e2;"],
+                        parsing_wrapper(["trapezium"], lang: :unicode)],
+          asciimath: [["&#x23e2;"],
+                      parsing_wrapper(["trapezium"], lang: :asciimath)],
           mathml: ["&#x23e2;"],
           latex: [["trapezium", "&#x23e2;"]],
           omml: ["&#x23e2;"],

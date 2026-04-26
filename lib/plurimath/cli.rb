@@ -4,7 +4,6 @@ require "thor"
 require_relative "../plurimath"
 
 module Plurimath
-
   class Cli < Thor
     desc "convert", "Convert between math formats"
 
@@ -30,7 +29,7 @@ module Plurimath
     option :math_rendering,
            aliases: "-m",
            force: :boolean,
-           default: 'false',
+           default: "false",
            desc: "Render converted equation as math zone display tree, Boolean only"
 
     option :display_style,
@@ -56,7 +55,7 @@ module Plurimath
       input_format   = options[:input_format]
       output_format  = options[:output_format]
       configure_xml_engine(input_format, output_format)
-      formula        = Plurimath::Math.parse(input_string, input_format)
+      formula = Plurimath::Math.parse(input_string, input_format)
       return puts formula.to_display(output_format.to_sym) if YAML.safe_load(options[:math_rendering])
 
       display_style  = options[:display_style]
@@ -68,11 +67,13 @@ module Plurimath
                     when "asciimath"
                       formula.to_asciimath
                     when "mathml"
-                      formula.to_mathml(display_style: style, split_on_linebreak: split)
+                      formula.to_mathml(display_style: style,
+                                        split_on_linebreak: split)
                     when "latex"
                       formula.to_latex
                     when "omml"
-                      formula.to_omml(display_style: style, split_on_linebreak: split)
+                      formula.to_omml(display_style: style,
+                                      split_on_linebreak: split)
                     else
                       warn_and_exit("Invalid output format: #{output_format}")
                     end

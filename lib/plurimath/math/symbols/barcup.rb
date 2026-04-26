@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Barcup < Symbol
         INPUT = {
-          unicodemath: [["&#x2a42;"], parsing_wrapper(["barcup"], lang: :unicode)],
-          asciimath: [["&#x2a42;"], parsing_wrapper(["barcup"], lang: :asciimath)],
+          unicodemath: [["&#x2a42;"],
+                        parsing_wrapper(["barcup"], lang: :unicode)],
+          asciimath: [["&#x2a42;"],
+                      parsing_wrapper(["barcup"], lang: :asciimath)],
           mathml: ["&#x2a42;"],
           latex: [["barcup", "&#x2a42;"]],
           omml: ["&#x2a42;"],

@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Pullback < Symbol
         INPUT = {
-          unicodemath: [["&#x27d3;"], parsing_wrapper(["pullback"], lang: :unicode)],
-          asciimath: [["&#x27d3;"], parsing_wrapper(["pullback"], lang: :asciimath)],
+          unicodemath: [["&#x27d3;"],
+                        parsing_wrapper(["pullback"], lang: :unicode)],
+          asciimath: [["&#x27d3;"],
+                      parsing_wrapper(["pullback"], lang: :asciimath)],
           mathml: ["&#x27d3;"],
           latex: [["pullback", "&#x27d3;"]],
           omml: ["&#x27d3;"],

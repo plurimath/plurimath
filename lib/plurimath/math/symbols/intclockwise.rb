@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Intclockwise < Symbol
         INPUT = {
-          unicodemath: [["&#x2231;"], parsing_wrapper(["intclockwise"], lang: :unicode)],
-          asciimath: [["&#x2231;"], parsing_wrapper(["intclockwise"], lang: :asciimath)],
+          unicodemath: [["&#x2231;"],
+                        parsing_wrapper(["intclockwise"], lang: :unicode)],
+          asciimath: [["&#x2231;"],
+                      parsing_wrapper(["intclockwise"], lang: :asciimath)],
           mathml: ["&#x2231;"],
           latex: [["intclockwise", "&#x2231;"]],
           omml: ["&#x2231;"],

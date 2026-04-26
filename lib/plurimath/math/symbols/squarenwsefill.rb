@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Squarenwsefill < Symbol
         INPUT = {
-          unicodemath: [["&#x25a7;"], parsing_wrapper(["squarenwsefill"], lang: :unicode)],
-          asciimath: [["&#x25a7;"], parsing_wrapper(["squarenwsefill"], lang: :asciimath)],
+          unicodemath: [["&#x25a7;"],
+                        parsing_wrapper(["squarenwsefill"], lang: :unicode)],
+          asciimath: [["&#x25a7;"],
+                      parsing_wrapper(["squarenwsefill"], lang: :asciimath)],
           mathml: ["&#x25a7;"],
           latex: [["squarenwsefill", "&#x25a7;"]],
           omml: ["&#x25a7;"],

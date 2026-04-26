@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Sanslturned < Symbol
         INPUT = {
-          unicodemath: [["&#x2142;"], parsing_wrapper(["sansLturned"], lang: :unicode)],
-          asciimath: [["&#x2142;"], parsing_wrapper(["sansLturned"], lang: :asciimath)],
+          unicodemath: [["&#x2142;"],
+                        parsing_wrapper(["sansLturned"], lang: :unicode)],
+          asciimath: [["&#x2142;"],
+                      parsing_wrapper(["sansLturned"], lang: :asciimath)],
           mathml: ["&#x2142;"],
           latex: [["sansLturned", "&#x2142;"]],
           omml: ["&#x2142;"],

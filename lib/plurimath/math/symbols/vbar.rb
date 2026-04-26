@@ -4,7 +4,8 @@ module Plurimath
       class Vbar < Symbol
         INPUT = {
           unicodemath: [["vbar", "&#x2502;"]],
-          asciimath: [["&#x2502;"], parsing_wrapper(["vbar"], lang: :asciimath)],
+          asciimath: [["&#x2502;"],
+                      parsing_wrapper(["vbar"], lang: :asciimath)],
           mathml: ["&#x2502;"],
           latex: [["&#x2502;"], parsing_wrapper(["vbar"], lang: :latex)],
           omml: ["&#x2502;"],

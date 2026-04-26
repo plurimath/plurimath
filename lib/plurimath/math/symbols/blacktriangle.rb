@@ -3,8 +3,12 @@ module Plurimath
     module Symbols
       class Blacktriangle < Symbol
         INPUT = {
-          unicodemath: [["&#x25b4;"], parsing_wrapper(["blacktriangleup", "blacktriangle"], lang: :unicode)],
-          asciimath: [["&#x25b4;"], parsing_wrapper(["blacktriangleup", "blacktriangle"], lang: :asciimath)],
+          unicodemath: [["&#x25b4;"],
+                        parsing_wrapper(["blacktriangleup", "blacktriangle"],
+                                        lang: :unicode)],
+          asciimath: [["&#x25b4;"],
+                      parsing_wrapper(["blacktriangleup", "blacktriangle"],
+                                      lang: :asciimath)],
           mathml: ["&#x25b4;"],
           latex: [["blacktriangleup", "blacktriangle", "&#x25b4;"]],
           omml: ["&#x25b4;"],

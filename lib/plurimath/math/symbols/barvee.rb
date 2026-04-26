@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Barvee < Symbol
         INPUT = {
-          unicodemath: [["&#x22bd;"], parsing_wrapper(["barvee"], lang: :unicode)],
-          asciimath: [["&#x22bd;"], parsing_wrapper(["barvee"], lang: :asciimath)],
+          unicodemath: [["&#x22bd;"],
+                        parsing_wrapper(["barvee"], lang: :unicode)],
+          asciimath: [["&#x22bd;"],
+                      parsing_wrapper(["barvee"], lang: :asciimath)],
           mathml: ["&#x22bd;"],
           latex: [["barvee", "&#x22bd;"]],
           omml: ["&#x22bd;"],

@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Topcir < Symbol
         INPUT = {
-          unicodemath: [["&#x2af1;"], parsing_wrapper(["topcir"], lang: :unicode)],
-          asciimath: [["&#x2af1;"], parsing_wrapper(["topcir"], lang: :asciimath)],
+          unicodemath: [["&#x2af1;"],
+                        parsing_wrapper(["topcir"], lang: :unicode)],
+          asciimath: [["&#x2af1;"],
+                      parsing_wrapper(["topcir"], lang: :asciimath)],
           mathml: ["&#x2af1;"],
           latex: [["topcir", "&#x2af1;"]],
           omml: ["&#x2af1;"],

@@ -3,8 +3,12 @@ module Plurimath
     module Symbols
       class Olessthan < Symbol
         INPUT = {
-          unicodemath: [["&#x29c0;"], parsing_wrapper(["circledless", "olessthan"], lang: :unicode)],
-          asciimath: [["&#x29c0;"], parsing_wrapper(["circledless", "olessthan"], lang: :asciimath)],
+          unicodemath: [["&#x29c0;"],
+                        parsing_wrapper(["circledless", "olessthan"],
+                                        lang: :unicode)],
+          asciimath: [["&#x29c0;"],
+                      parsing_wrapper(["circledless", "olessthan"],
+                                      lang: :asciimath)],
           mathml: ["&#x29c0;"],
           latex: [["circledless", "olessthan", "&#x29c0;"]],
           omml: ["&#x29c0;"],

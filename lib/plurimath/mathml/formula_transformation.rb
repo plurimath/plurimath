@@ -53,7 +53,9 @@ module Plurimath
         end
 
         if node.respond_to?(:each_mixed_content)
-          return ordered_children(node).filter_map { |child| extract_ms_text(child) }.join(" ")
+          return ordered_children(node).filter_map do |child|
+            extract_ms_text(child)
+          end.join(" ")
         end
 
         Array(node.value).join if node.respond_to?(:value)
@@ -183,11 +185,12 @@ module Plurimath
 
         body = filter_child(first.parameter_four)
         return unless body.is_a?(Math::Function::Base) ||
-                      body.is_a?(Math::Function::PowerBase)
+          body.is_a?(Math::Function::PowerBase)
 
         replacement =
           if first.parameter_three.nil?
-            Math::Function::Underset.new(first.parameter_two, first.parameter_one)
+            Math::Function::Underset.new(first.parameter_two,
+                                         first.parameter_one)
           else
             Math::Function::Underover.new(
               first.parameter_one,
@@ -221,7 +224,7 @@ module Plurimath
       def split_multiscript_children(children, post_element_count)
         [
           convert_multiscript_children(children[1..post_element_count]),
-          convert_multiscript_children(children[(post_element_count + 1)..-1]),
+          convert_multiscript_children(children[(post_element_count + 1)..]),
         ]
       end
 
@@ -318,7 +321,7 @@ module Plurimath
           @displaystyle = value.first.displaystyle
         end
 
-        if value.length == 1 && value.all? { |val| val.is_a?(Math::Formula) }
+        if value.length == 1 && value.all?(Math::Formula)
           if array_to_instance
             filter_values(value.first.value, array_to_instance: true)
           else
@@ -412,7 +415,7 @@ module Plurimath
       end
 
       def value_is_ternary_or_nary?(value)
-        return if value.any?(String)
+        return false if value.any?(String)
 
         value.length >= 2 &&
           value.first.is_ternary_function? &&

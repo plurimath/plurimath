@@ -4,7 +4,8 @@ module Plurimath
       class Nmid < Symbol
         INPUT = {
           unicodemath: [["nmid", "&#x2224;"]],
-          asciimath: [["&#x2224;"], parsing_wrapper(["nmid"], lang: :asciimath)],
+          asciimath: [["&#x2224;"],
+                      parsing_wrapper(["nmid"], lang: :asciimath)],
           mathml: ["&#x2224;"],
           latex: [["nmid", "&#x2224;"]],
           omml: ["&#x2224;"],

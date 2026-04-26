@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Closedvarcup < Symbol
         INPUT = {
-          unicodemath: [["&#x2a4c;"], parsing_wrapper(["closedvarcup"], lang: :unicode)],
-          asciimath: [["&#x2a4c;"], parsing_wrapper(["closedvarcup"], lang: :asciimath)],
+          unicodemath: [["&#x2a4c;"],
+                        parsing_wrapper(["closedvarcup"], lang: :unicode)],
+          asciimath: [["&#x2a4c;"],
+                      parsing_wrapper(["closedvarcup"], lang: :asciimath)],
           mathml: ["&#x2a4c;"],
           latex: [["closedvarcup", "&#x2a4c;"]],
           omml: ["&#x2a4c;"],

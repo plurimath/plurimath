@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Midcir < Symbol
         INPUT = {
-          unicodemath: [["&#x2af0;"], parsing_wrapper(["midcir"], lang: :unicode)],
-          asciimath: [["&#x2af0;"], parsing_wrapper(["midcir"], lang: :asciimath)],
+          unicodemath: [["&#x2af0;"],
+                        parsing_wrapper(["midcir"], lang: :unicode)],
+          asciimath: [["&#x2af0;"],
+                      parsing_wrapper(["midcir"], lang: :asciimath)],
           mathml: ["&#x2af0;"],
           latex: [["midcir", "&#x2af0;"]],
           omml: ["&#x2af0;"],

@@ -3,8 +3,11 @@ module Plurimath
     module Symbols
       class Varrho < Symbol
         INPUT = {
-          unicodemath: [["varrho", "&#x3f1;"], parsing_wrapper(["upvarrho"], lang: :unicode)],
-          asciimath: [["&#x3f1;"], parsing_wrapper(["varrho", "upvarrho"], lang: :asciimath)],
+          unicodemath: [["varrho", "&#x3f1;"],
+                        parsing_wrapper(["upvarrho"], lang: :unicode)],
+          asciimath: [["&#x3f1;"],
+                      parsing_wrapper(["varrho", "upvarrho"],
+                                      lang: :asciimath)],
           mathml: ["&#x3f1;"],
           latex: [["upvarrho", "varrho", "&#x3f1;"]],
           omml: ["&#x3f1;"],

@@ -3,10 +3,12 @@ module Plurimath
     module Symbols
       class Larr < Symbol
         INPUT = {
-          unicodemath: [["Leftarrow", "&#x21d0;"], parsing_wrapper(["lArr"], lang: :unicode)],
+          unicodemath: [["Leftarrow", "&#x21d0;"],
+                        parsing_wrapper(["lArr"], lang: :unicode)],
           asciimath: [["Leftarrow", "lArr", "&#x21d0;"]],
           mathml: ["&#x21d0;"],
-          latex: [["Leftarrow", "&#x21d0;"], parsing_wrapper(["lArr"], lang: :latex)],
+          latex: [["Leftarrow", "&#x21d0;"],
+                  parsing_wrapper(["lArr"], lang: :latex)],
           omml: ["&#x21d0;"],
           html: ["&#x21d0;"],
         }.freeze

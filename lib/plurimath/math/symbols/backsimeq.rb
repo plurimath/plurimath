@@ -4,7 +4,8 @@ module Plurimath
       class Backsimeq < Symbol
         INPUT = {
           unicodemath: [["backsimeq", "&#x22cd;"]],
-          asciimath: [["&#x22cd;"], parsing_wrapper(["backsimeq"], lang: :asciimath)],
+          asciimath: [["&#x22cd;"],
+                      parsing_wrapper(["backsimeq"], lang: :asciimath)],
           mathml: ["&#x22cd;"],
           latex: [["backsimeq", "&#x22cd;"]],
           omml: ["&#x22cd;"],

@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Tplus < Symbol
         INPUT = {
-          unicodemath: [["&#x29fe;"], parsing_wrapper(["tplus"], lang: :unicode)],
-          asciimath: [["&#x29fe;"], parsing_wrapper(["tplus"], lang: :asciimath)],
+          unicodemath: [["&#x29fe;"],
+                        parsing_wrapper(["tplus"], lang: :unicode)],
+          asciimath: [["&#x29fe;"],
+                      parsing_wrapper(["tplus"], lang: :asciimath)],
           mathml: ["&#x29fe;"],
           latex: [["tplus", "&#x29fe;"]],
           omml: ["&#x29fe;"],

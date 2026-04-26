@@ -3,7 +3,8 @@ module Plurimath
     module Symbols
       class Top < Symbol
         INPUT = {
-          unicodemath: [["top", "&#x22a4;"], parsing_wrapper(["TT"], lang: :unicode)],
+          unicodemath: [["top", "&#x22a4;"],
+                        parsing_wrapper(["TT"], lang: :unicode)],
           asciimath: [["top", "TT", "&#x22a4;"]],
           mathml: ["&#x22a4;"],
           latex: [["top", "&#x22a4;"], parsing_wrapper(["TT"], lang: :latex)],

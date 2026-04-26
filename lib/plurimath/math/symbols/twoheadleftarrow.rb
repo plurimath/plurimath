@@ -4,7 +4,8 @@ module Plurimath
       class Twoheadleftarrow < Symbol
         INPUT = {
           unicodemath: [["twoheadleftarrow", "&#x219e;"]],
-          asciimath: [["&#x219e;"], parsing_wrapper(["twoheadleftarrow"], lang: :asciimath)],
+          asciimath: [["&#x219e;"],
+                      parsing_wrapper(["twoheadleftarrow"], lang: :asciimath)],
           mathml: ["&#x219e;"],
           latex: [["twoheadleftarrow", "&#x219e;"]],
           omml: ["&#x219e;"],

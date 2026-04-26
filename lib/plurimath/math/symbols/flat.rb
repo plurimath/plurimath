@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Flat < Symbol
         INPUT = {
-          unicodemath: [["&#x266d;"], parsing_wrapper(["flat"], lang: :unicode)],
-          asciimath: [["&#x266d;"], parsing_wrapper(["flat"], lang: :asciimath)],
+          unicodemath: [["&#x266d;"],
+                        parsing_wrapper(["flat"], lang: :unicode)],
+          asciimath: [["&#x266d;"],
+                      parsing_wrapper(["flat"], lang: :asciimath)],
           mathml: ["&#x266d;"],
           latex: [["flat", "&#x266d;"]],
           omml: ["&#x266d;"],

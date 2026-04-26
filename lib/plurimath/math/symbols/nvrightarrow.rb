@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Nvrightarrow < Symbol
         INPUT = {
-          unicodemath: [["&#x2903;"], parsing_wrapper(["nvRightarrow"], lang: :unicode)],
-          asciimath: [["&#x2903;"], parsing_wrapper(["nvRightarrow"], lang: :asciimath)],
+          unicodemath: [["&#x2903;"],
+                        parsing_wrapper(["nvRightarrow"], lang: :unicode)],
+          asciimath: [["&#x2903;"],
+                      parsing_wrapper(["nvRightarrow"], lang: :asciimath)],
           mathml: ["&#x2903;"],
           latex: [["nvRightarrow", "&#x2903;"]],
           omml: ["&#x2903;"],

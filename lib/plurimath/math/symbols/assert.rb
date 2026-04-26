@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Assert < Symbol
         INPUT = {
-          unicodemath: [["&#x22a6;"], parsing_wrapper(["assert"], lang: :unicode)],
-          asciimath: [["&#x22a6;"], parsing_wrapper(["assert"], lang: :asciimath)],
+          unicodemath: [["&#x22a6;"],
+                        parsing_wrapper(["assert"], lang: :unicode)],
+          asciimath: [["&#x22a6;"],
+                      parsing_wrapper(["assert"], lang: :asciimath)],
           mathml: ["&#x22a6;"],
           latex: [["assert", "&#x22a6;"]],
           omml: ["&#x22a6;"],

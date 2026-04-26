@@ -1,11 +1,10 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Symbols::Planckconst do
-
   describe ".initialize" do
-    it 'returns instance of Symbol Planckconst' do
+    it "returns instance of Symbol Planckconst" do
       klass = described_class.new
-      expect(klass).to be_a(Plurimath::Math::Symbols::Planckconst)
+      expect(klass).to be_a(described_class)
     end
   end
 

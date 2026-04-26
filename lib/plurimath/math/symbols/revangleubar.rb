@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Revangleubar < Symbol
         INPUT = {
-          unicodemath: [["&#x29a5;"], parsing_wrapper(["revangleubar"], lang: :unicode)],
-          asciimath: [["&#x29a5;"], parsing_wrapper(["revangleubar"], lang: :asciimath)],
+          unicodemath: [["&#x29a5;"],
+                        parsing_wrapper(["revangleubar"], lang: :unicode)],
+          asciimath: [["&#x29a5;"],
+                      parsing_wrapper(["revangleubar"], lang: :asciimath)],
           mathml: ["&#x29a5;"],
           latex: [["revangleubar", "&#x29a5;"]],
           omml: ["&#x29a5;"],

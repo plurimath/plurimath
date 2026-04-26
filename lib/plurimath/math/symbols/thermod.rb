@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Thermod < Symbol
         INPUT = {
-          unicodemath: [["&#x29e7;"], parsing_wrapper(["thermod"], lang: :unicode)],
-          asciimath: [["&#x29e7;"], parsing_wrapper(["thermod"], lang: :asciimath)],
+          unicodemath: [["&#x29e7;"],
+                        parsing_wrapper(["thermod"], lang: :unicode)],
+          asciimath: [["&#x29e7;"],
+                      parsing_wrapper(["thermod"], lang: :asciimath)],
           mathml: ["&#x29e7;"],
           latex: [["thermod", "&#x29e7;"]],
           omml: ["&#x29e7;"],

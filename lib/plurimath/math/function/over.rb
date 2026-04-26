@@ -1,11 +1,9 @@
 # frozen_string_literal: true
 
-
 module Plurimath
   module Math
     module Function
       class Over < BinaryFunction
-
         FUNCTION = {
           name: "over",
           first_value: "numerator",
@@ -40,23 +38,32 @@ module Plurimath
             f_element,
             [
               fpr_element << Utility.pr_element("ctrl", true, namespace: "m"),
-              omml_parameter(parameter_one, display_style, tag_name: "num", options: options),
-              omml_parameter(parameter_two, display_style, tag_name: "den", options: options),
+              omml_parameter(parameter_one, display_style, tag_name: "num",
+                                                           options: options),
+              omml_parameter(parameter_two, display_style, tag_name: "den",
+                                                           options: options),
             ],
           )
           [f_element]
         end
 
         def to_unicodemath(options:)
-          first_value = unicodemath_parens(parameter_one, options: options) if parameter_one
-          second_value = unicodemath_parens(parameter_two, options: options) if parameter_two
+          if parameter_one
+            first_value = unicodemath_parens(parameter_one,
+                                             options: options)
+          end
+          if parameter_two
+            second_value = unicodemath_parens(parameter_two,
+                                              options: options)
+          end
           "#{first_value}/#{second_value}"
         end
 
         def line_breaking(obj)
           parameter_one&.line_breaking(obj)
           if obj.value_exist?
-            obj.update(self.class.new(Utility.filter_values(obj.value), parameter_two))
+            obj.update(self.class.new(Utility.filter_values(obj.value),
+                                      parameter_two))
             self.parameter_two = nil
             self.hide_function_name = true
             return

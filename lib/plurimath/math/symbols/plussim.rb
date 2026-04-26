@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Plussim < Symbol
         INPUT = {
-          unicodemath: [["&#x2a26;"], parsing_wrapper(["plussim"], lang: :unicode)],
-          asciimath: [["&#x2a26;"], parsing_wrapper(["plussim"], lang: :asciimath)],
+          unicodemath: [["&#x2a26;"],
+                        parsing_wrapper(["plussim"], lang: :unicode)],
+          asciimath: [["&#x2a26;"],
+                      parsing_wrapper(["plussim"], lang: :asciimath)],
           mathml: ["&#x2a26;"],
           latex: [["plussim", "&#x2a26;"]],
           omml: ["&#x2a26;"],

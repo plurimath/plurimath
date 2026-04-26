@@ -3,8 +3,12 @@ module Plurimath
     module Symbols
       class Bsimilarrightarrow < Symbol
         INPUT = {
-          unicodemath: [["&#x2b47;"], parsing_wrapper(["bsimilarrightarrow"], lang: :unicode)],
-          asciimath: [["&#x2b47;"], parsing_wrapper(["bsimilarrightarrow"], lang: :asciimath)],
+          unicodemath: [["&#x2b47;"],
+                        parsing_wrapper(["bsimilarrightarrow"],
+                                        lang: :unicode)],
+          asciimath: [["&#x2b47;"],
+                      parsing_wrapper(["bsimilarrightarrow"],
+                                      lang: :asciimath)],
           mathml: ["&#x2b47;"],
           latex: [["bsimilarrightarrow", "&#x2b47;"]],
           omml: ["&#x2b47;"],

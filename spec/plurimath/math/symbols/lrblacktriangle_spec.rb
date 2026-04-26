@@ -1,11 +1,10 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Symbols::Lrblacktriangle do
-
   describe ".initialize" do
-    it 'returns instance of Symbol Lrblacktriangle' do
+    it "returns instance of Symbol Lrblacktriangle" do
       klass = described_class.new
-      expect(klass).to be_a(Plurimath::Math::Symbols::Lrblacktriangle)
+      expect(klass).to be_a(described_class)
     end
   end
 

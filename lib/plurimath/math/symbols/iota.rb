@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Iota < Symbol
         INPUT = {
-          unicodemath: [["iota", "&#x3b9;"], parsing_wrapper(["upiota"], lang: :unicode)],
-          asciimath: [["iota", "&#x3b9;"], parsing_wrapper(["upiota"], lang: :asciimath)],
+          unicodemath: [["iota", "&#x3b9;"],
+                        parsing_wrapper(["upiota"], lang: :unicode)],
+          asciimath: [["iota", "&#x3b9;"],
+                      parsing_wrapper(["upiota"], lang: :asciimath)],
           mathml: ["&#x3b9;"],
           latex: [["upiota", "iota", "&#x3b9;"]],
           omml: ["&#x3b9;"],

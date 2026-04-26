@@ -3,10 +3,12 @@ module Plurimath
     module Symbols
       class Nabla < Symbol
         INPUT = {
-          unicodemath: [["nabla", "&#x2207;"], parsing_wrapper(["grad"], lang: :unicode)],
+          unicodemath: [["nabla", "&#x2207;"],
+                        parsing_wrapper(["grad"], lang: :unicode)],
           asciimath: [["nabla", "grad", "&#x2207;"]],
           mathml: ["&#x2207;"],
-          latex: [["nabla", "&#x2207;"], parsing_wrapper(["grad"], lang: :latex)],
+          latex: [["nabla", "&#x2207;"],
+                  parsing_wrapper(["grad"], lang: :latex)],
           omml: ["&#x2207;"],
           html: ["&#x2207;"],
         }.freeze

@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Urtriangle < Symbol
         INPUT = {
-          unicodemath: [["&#x25f9;"], parsing_wrapper(["urtriangle"], lang: :unicode)],
-          asciimath: [["&#x25f9;"], parsing_wrapper(["urtriangle"], lang: :asciimath)],
+          unicodemath: [["&#x25f9;"],
+                        parsing_wrapper(["urtriangle"], lang: :unicode)],
+          asciimath: [["&#x25f9;"],
+                      parsing_wrapper(["urtriangle"], lang: :asciimath)],
           mathml: ["&#x25f9;"],
           latex: [["urtriangle", "&#x25f9;"]],
           omml: ["&#x25f9;"],

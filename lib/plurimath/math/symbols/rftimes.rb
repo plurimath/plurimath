@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Rftimes < Symbol
         INPUT = {
-          unicodemath: [["&#x29d5;"], parsing_wrapper(["rftimes"], lang: :unicode)],
-          asciimath: [["&#x29d5;"], parsing_wrapper(["rftimes"], lang: :asciimath)],
+          unicodemath: [["&#x29d5;"],
+                        parsing_wrapper(["rftimes"], lang: :unicode)],
+          asciimath: [["&#x29d5;"],
+                      parsing_wrapper(["rftimes"], lang: :asciimath)],
           mathml: ["&#x29d5;"],
           latex: [["rftimes", "&#x29d5;"]],
           omml: ["&#x29d5;"],

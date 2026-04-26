@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Threedotcolon < Symbol
         INPUT = {
-          unicodemath: [["&#x2af6;"], parsing_wrapper(["threedotcolon"], lang: :unicode)],
-          asciimath: [["&#x2af6;"], parsing_wrapper(["threedotcolon"], lang: :asciimath)],
+          unicodemath: [["&#x2af6;"],
+                        parsing_wrapper(["threedotcolon"], lang: :unicode)],
+          asciimath: [["&#x2af6;"],
+                      parsing_wrapper(["threedotcolon"], lang: :asciimath)],
           mathml: ["&#x2af6;"],
           latex: [["threedotcolon", "&#x2af6;"]],
           omml: ["&#x2af6;"],

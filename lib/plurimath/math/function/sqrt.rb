@@ -1,17 +1,16 @@
 # frozen_string_literal: true
 
-
 module Plurimath
   module Math
     module Function
       class Sqrt < UnaryFunction
-
         attr_accessor :options
 
         def to_mathml_without_math_tag(intent, options:)
           Utility.update_nodes(
             ox_element("msqrt"),
-            Array(parameter_one&.to_mathml_without_math_tag(intent, options: options)),
+            Array(parameter_one&.to_mathml_without_math_tag(intent,
+                                                            options: options)),
           )
         end
 
@@ -28,7 +27,8 @@ module Plurimath
             [
               (pr_element << Utility.pr_element("ctrl", true, namespace: "m")),
               Utility.ox_element("deg", namespace: "m"),
-              omml_parameter(parameter_one, display_style, tag_name: "e", options: options),
+              omml_parameter(parameter_one, display_style, tag_name: "e",
+                                                           options: options),
             ],
           )
           [rad_element]

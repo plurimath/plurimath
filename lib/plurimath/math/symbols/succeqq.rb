@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Succeqq < Symbol
         INPUT = {
-          unicodemath: [["&#x2ab4;"], parsing_wrapper(["succeqq"], lang: :unicode)],
-          asciimath: [["&#x2ab4;"], parsing_wrapper(["succeqq"], lang: :asciimath)],
+          unicodemath: [["&#x2ab4;"],
+                        parsing_wrapper(["succeqq"], lang: :unicode)],
+          asciimath: [["&#x2ab4;"],
+                      parsing_wrapper(["succeqq"], lang: :asciimath)],
           mathml: ["&#x2ab4;"],
           latex: [["succeqq", "&#x2ab4;"]],
           omml: ["&#x2ab4;"],

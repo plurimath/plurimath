@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Circledr < Symbol
         INPUT = {
-          unicodemath: [["&#xae;"], parsing_wrapper(["circledR"], lang: :unicode)],
-          asciimath: [["&#xae;"], parsing_wrapper(["circledR"], lang: :asciimath)],
+          unicodemath: [["&#xae;"],
+                        parsing_wrapper(["circledR"], lang: :unicode)],
+          asciimath: [["&#xae;"],
+                      parsing_wrapper(["circledR"], lang: :asciimath)],
           mathml: ["&#xae;"],
           latex: [["circledR", "&#xae;"]],
           omml: ["&#xae;"],

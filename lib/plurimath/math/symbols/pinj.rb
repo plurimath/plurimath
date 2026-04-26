@@ -3,8 +3,12 @@ module Plurimath
     module Symbols
       class Pinj < Symbol
         INPUT = {
-          unicodemath: [["&#x2914;"], parsing_wrapper(["nvrightarrowtail", "pinj"], lang: :unicode)],
-          asciimath: [["&#x2914;"], parsing_wrapper(["nvrightarrowtail", "pinj"], lang: :asciimath)],
+          unicodemath: [["&#x2914;"],
+                        parsing_wrapper(["nvrightarrowtail", "pinj"],
+                                        lang: :unicode)],
+          asciimath: [["&#x2914;"],
+                      parsing_wrapper(["nvrightarrowtail", "pinj"],
+                                      lang: :asciimath)],
           mathml: ["&#x2914;"],
           latex: [["nvrightarrowtail", "pinj", "&#x2914;"]],
           omml: ["&#x2914;"],

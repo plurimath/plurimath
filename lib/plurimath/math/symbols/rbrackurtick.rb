@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Rbrackurtick < Symbol
         INPUT = {
-          unicodemath: [["&#x2990;"], parsing_wrapper(["rbrackurtick"], lang: :unicode)],
-          asciimath: [["&#x2990;"], parsing_wrapper(["rbrackurtick"], lang: :asciimath)],
+          unicodemath: [["&#x2990;"],
+                        parsing_wrapper(["rbrackurtick"], lang: :unicode)],
+          asciimath: [["&#x2990;"],
+                      parsing_wrapper(["rbrackurtick"], lang: :asciimath)],
           mathml: ["&#x2990;"],
           latex: [["rbrackurtick", "&#x2990;"]],
           omml: ["&#x2990;"],

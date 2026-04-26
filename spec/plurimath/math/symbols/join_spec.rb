@@ -1,11 +1,10 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Symbols::Join do
-
   describe ".initialize" do
-    it 'returns instance of Symbol Join' do
+    it "returns instance of Symbol Join" do
       klass = described_class.new
-      expect(klass).to be_a(Plurimath::Math::Symbols::Join)
+      expect(klass).to be_a(described_class)
     end
   end
 

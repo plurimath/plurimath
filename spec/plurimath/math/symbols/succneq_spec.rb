@@ -1,11 +1,10 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Symbols::Succneq do
-
   describe ".initialize" do
-    it 'returns instance of Symbol Succneq' do
+    it "returns instance of Symbol Succneq" do
       klass = described_class.new
-      expect(klass).to be_a(Plurimath::Math::Symbols::Succneq)
+      expect(klass).to be_a(described_class)
     end
   end
 

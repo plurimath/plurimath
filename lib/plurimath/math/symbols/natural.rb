@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Natural < Symbol
         INPUT = {
-          unicodemath: [["&#x266e;"], parsing_wrapper(["natural"], lang: :unicode)],
-          asciimath: [["&#x266e;"], parsing_wrapper(["natural"], lang: :asciimath)],
+          unicodemath: [["&#x266e;"],
+                        parsing_wrapper(["natural"], lang: :unicode)],
+          asciimath: [["&#x266e;"],
+                      parsing_wrapper(["natural"], lang: :asciimath)],
           mathml: ["&#x266e;"],
           latex: [["natural", "&#x266e;"]],
           omml: ["&#x266e;"],

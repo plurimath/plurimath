@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Upint < Symbol
         INPUT = {
-          unicodemath: [["&#x2a1b;"], parsing_wrapper(["upint"], lang: :unicode)],
-          asciimath: [["&#x2a1b;"], parsing_wrapper(["upint"], lang: :asciimath)],
+          unicodemath: [["&#x2a1b;"],
+                        parsing_wrapper(["upint"], lang: :unicode)],
+          asciimath: [["&#x2a1b;"],
+                      parsing_wrapper(["upint"], lang: :asciimath)],
           mathml: ["&#x2a1b;"],
           latex: [["upint", "&#x2a1b;"]],
           omml: ["&#x2a1b;"],

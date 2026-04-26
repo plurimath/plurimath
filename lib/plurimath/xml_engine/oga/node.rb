@@ -14,8 +14,8 @@ module Plurimath
           children = @wrapped.children
           length = children.length
           preserve_last = true
-          children.map.with_index do |i,idx|
-            if preserve_last && idx == length-1 && i.is_a?(::Oga::XML::Text)
+          children.map.with_index do |i, idx|
+            if preserve_last && idx == length - 1 && i.is_a?(::Oga::XML::Text)
               i.text
             elsif i.is_a? ::Oga::XML::Text
               remove_indentation(i)
@@ -98,7 +98,9 @@ module Plurimath
         end
 
         def set_attr(attr_hash)
-          Array(attr_hash)&.each { |key, value| @wrapped.set(key.to_s, encode_entities((value.to_s))) }
+          Array(attr_hash)&.each do |key, value|
+            @wrapped.set(key.to_s, encode_entities(value.to_s))
+          end
         end
 
         def xml_node?

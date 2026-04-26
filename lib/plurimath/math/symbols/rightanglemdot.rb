@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Rightanglemdot < Symbol
         INPUT = {
-          unicodemath: [["&#x299d;"], parsing_wrapper(["rightanglemdot"], lang: :unicode)],
-          asciimath: [["&#x299d;"], parsing_wrapper(["rightanglemdot"], lang: :asciimath)],
+          unicodemath: [["&#x299d;"],
+                        parsing_wrapper(["rightanglemdot"], lang: :unicode)],
+          asciimath: [["&#x299d;"],
+                      parsing_wrapper(["rightanglemdot"], lang: :asciimath)],
           mathml: ["&#x299d;"],
           latex: [["rightanglemdot", "&#x299d;"]],
           omml: ["&#x299d;"],

@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Bigtop < Symbol
         INPUT = {
-          unicodemath: [["&#x27d9;"], parsing_wrapper(["bigtop"], lang: :unicode)],
-          asciimath: [["&#x27d9;"], parsing_wrapper(["bigtop"], lang: :asciimath)],
+          unicodemath: [["&#x27d9;"],
+                        parsing_wrapper(["bigtop"], lang: :unicode)],
+          asciimath: [["&#x27d9;"],
+                      parsing_wrapper(["bigtop"], lang: :asciimath)],
           mathml: ["&#x27d9;"],
           latex: [["bigtop", "&#x27d9;"]],
           omml: ["&#x27d9;"],

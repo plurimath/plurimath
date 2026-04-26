@@ -3,10 +3,14 @@ module Plurimath
     module Symbols
       class Vysmblkcircle < Symbol
         INPUT = {
-          unicodemath: [["bullet", "&#x2219;"], parsing_wrapper(["vysmblkcircle"], lang: :unicode)],
-          asciimath: [["&#x2219;"], parsing_wrapper(["bullet", "vysmblkcircle"], lang: :asciimath)],
+          unicodemath: [["bullet", "&#x2219;"],
+                        parsing_wrapper(["vysmblkcircle"], lang: :unicode)],
+          asciimath: [["&#x2219;"],
+                      parsing_wrapper(["bullet", "vysmblkcircle"],
+                                      lang: :asciimath)],
           mathml: ["&#x2219;"],
-          latex: [["vysmblkcircle", "&#x2219;"], parsing_wrapper(["bullet"], lang: :latex)],
+          latex: [["vysmblkcircle", "&#x2219;"],
+                  parsing_wrapper(["bullet"], lang: :latex)],
           omml: ["&#x2219;"],
           html: ["&#x2219;"],
         }.freeze

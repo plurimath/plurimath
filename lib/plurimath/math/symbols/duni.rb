@@ -3,10 +3,14 @@ module Plurimath
     module Symbols
       class Duni < Symbol
         INPUT = {
-          unicodemath: [["&#x22c3;"], parsing_wrapper(["bigcup", "uuu", "duni"], lang: :unicode)],
-          asciimath: [["bigcup", "uuu", "&#x22c3;"], parsing_wrapper(["duni"], lang: :asciimath)],
+          unicodemath: [["&#x22c3;"],
+                        parsing_wrapper(["bigcup", "uuu", "duni"],
+                                        lang: :unicode)],
+          asciimath: [["bigcup", "uuu", "&#x22c3;"],
+                      parsing_wrapper(["duni"], lang: :asciimath)],
           mathml: ["&#x22c3;"],
-          latex: [["bigcup", "duni", "&#x22c3;"], parsing_wrapper(["uuu"], lang: :latex)],
+          latex: [["bigcup", "duni", "&#x22c3;"],
+                  parsing_wrapper(["uuu"], lang: :latex)],
           omml: ["&#x22c3;"],
           html: ["&#x22c3;"],
         }.freeze

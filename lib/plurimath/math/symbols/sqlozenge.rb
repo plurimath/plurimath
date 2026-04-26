@@ -3,8 +3,12 @@ module Plurimath
     module Symbols
       class Sqlozenge < Symbol
         INPUT = {
-          unicodemath: [["&#x2311;"], parsing_wrapper(["wasylozenge", "sqlozenge"], lang: :unicode)],
-          asciimath: [["&#x2311;"], parsing_wrapper(["wasylozenge", "sqlozenge"], lang: :asciimath)],
+          unicodemath: [["&#x2311;"],
+                        parsing_wrapper(["wasylozenge", "sqlozenge"],
+                                        lang: :unicode)],
+          asciimath: [["&#x2311;"],
+                      parsing_wrapper(["wasylozenge", "sqlozenge"],
+                                      lang: :asciimath)],
           mathml: ["&#x2311;"],
           latex: [["wasylozenge", "sqlozenge", "&#x2311;"]],
           omml: ["&#x2311;"],

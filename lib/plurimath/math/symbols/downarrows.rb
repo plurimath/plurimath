@@ -3,10 +3,14 @@ module Plurimath
     module Symbols
       class Downarrows < Symbol
         INPUT = {
-          unicodemath: [["downarrows", "&#x21ca;"], parsing_wrapper(["downdownarrows"], lang: :unicode)],
-          asciimath: [["&#x21ca;"], parsing_wrapper(["downarrows", "downdownarrows"], lang: :asciimath)],
+          unicodemath: [["downarrows", "&#x21ca;"],
+                        parsing_wrapper(["downdownarrows"], lang: :unicode)],
+          asciimath: [["&#x21ca;"],
+                      parsing_wrapper(["downarrows", "downdownarrows"],
+                                      lang: :asciimath)],
           mathml: ["&#x21ca;"],
-          latex: [["downdownarrows", "&#x21ca;"], parsing_wrapper(["downarrows"], lang: :latex)],
+          latex: [["downdownarrows", "&#x21ca;"],
+                  parsing_wrapper(["downarrows"], lang: :latex)],
           omml: ["&#x21ca;"],
           html: ["&#x21ca;"],
         }.freeze

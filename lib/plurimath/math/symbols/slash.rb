@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Slash < Symbol
         INPUT = {
-          unicodemath: [["&#x2215;", "\/"], parsing_wrapper(["divslash", "slash"], lang: :unicode)],
-          asciimath: [["//", "&#x2215;"], parsing_wrapper(["divslash", "slash"], lang: :asciimath)],
+          unicodemath: [["&#x2215;", "/"],
+                        parsing_wrapper(["divslash", "slash"], lang: :unicode)],
+          asciimath: [["//", "&#x2215;"],
+                      parsing_wrapper(["divslash", "slash"], lang: :asciimath)],
           mathml: ["&#x2215;"],
           latex: [["divslash", "slash", "/", "&#x2215;"]],
           omml: ["&#x2215;"],
@@ -21,7 +23,7 @@ module Plurimath
         end
 
         def to_unicodemath(**)
-          Utility.html_entity_to_unicode("\/")
+          Utility.html_entity_to_unicode("/")
         end
 
         def to_mathml_without_math_tag(_, **)

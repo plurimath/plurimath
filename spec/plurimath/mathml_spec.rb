@@ -1,19 +1,18 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Mathml do
-
   describe ".initialize" do
     subject(:formula) { described_class.new(mathml) }
 
     context "initialize Mathml object" do
-      let(:mathml) { '<mrow><mn>2</mn></mrow>' }
+      let(:mathml) { "<mrow><mn>2</mn></mrow>" }
 
-      it 'returns instance of Mathml' do
-        expect(formula).to be_a(Plurimath::Mathml)
+      it "returns instance of Mathml" do
+        expect(formula).to be_a(described_class)
       end
 
-      it 'returns Mathml instance' do
-        expect(formula.text).to eql('<mrow><mn>2</mn></mrow>')
+      it "returns Mathml instance" do
+        expect(formula.text).to eql("<mrow><mn>2</mn></mrow>")
       end
     end
   end
@@ -22,21 +21,21 @@ RSpec.describe Plurimath::Mathml do
     subject(:formula) { described_class.new(string).to_formula }
 
     context "contains Mathml object" do
-      let(:string)  { "<mrow><mn>2</mn></mrow>" }
+      let(:string) { "<mrow><mn>2</mn></mrow>" }
 
-      it 'returns Mathml string' do
+      it "returns Mathml string" do
         expected_value = Plurimath::Math::Formula.new([
-          Plurimath::Math::Number.new("2")
-        ])
+                                                        Plurimath::Math::Number.new("2"),
+                                                      ])
         expect(formula).to eq(expected_value)
       end
 
-      it 'not returns Mathml string' do
+      it "not returns Mathml string" do
         expected_value = Plurimath::Math::Formula.new([
-          Plurimath::Math::Formula.new([
-            Plurimath::Math::Number.new("1")
-          ])
-        ])
+                                                        Plurimath::Math::Formula.new([
+                                                                                       Plurimath::Math::Number.new("1"),
+                                                                                     ]),
+                                                      ])
         expect(formula).not_to eq(expected_value)
       end
     end
@@ -46,7 +45,7 @@ RSpec.describe Plurimath::Mathml do
     subject(:formula) { described_class.new(string).to_formula }
 
     context "contains Mathml object" do
-      let(:string)  do
+      let(:string) do
         <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -106,7 +105,7 @@ RSpec.describe Plurimath::Mathml do
         MATHML
       end
 
-      it 'returns Mathml string' do
+      it "returns Mathml string" do
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -171,7 +170,7 @@ RSpec.describe Plurimath::Mathml do
     end
 
     context "contains Mathml object" do
-      let(:string)  do
+      let(:string) do
         <<~MATHML
           <math>
             <semantics>
@@ -210,7 +209,7 @@ RSpec.describe Plurimath::Mathml do
         MATHML
       end
 
-      it 'returns Mathml string' do
+      it "returns Mathml string" do
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -254,13 +253,14 @@ RSpec.describe Plurimath::Mathml do
         latex = "\\int_{t_{2}}^{t_{1}} f ( t ) \\\\ d t"
         asciimath = "int_(t_(2))^(t_(1)) f ( t ) \\\n d t"
         expect(formula.to_latex).to eq(latex)
-        expect(formula.to_mathml(split_on_linebreak: true, unary_function_spacing: false)).to be_xml_equivalent_to(mathml)
+        expect(formula.to_mathml(split_on_linebreak: true,
+                                 unary_function_spacing: false)).to be_xml_equivalent_to(mathml)
         expect(formula.to_asciimath).to eq(asciimath)
       end
     end
 
     context "contains Mathml phantom tag's example" do
-      let(:string)  do
+      let(:string) do
         <<~MATHML
           <math>
              <mrow>
@@ -278,7 +278,7 @@ RSpec.describe Plurimath::Mathml do
         MATHML
       end
 
-      it 'returns Mathml string' do
+      it "returns Mathml string" do
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -305,7 +305,7 @@ RSpec.describe Plurimath::Mathml do
     end
 
     context "contains menclose tags in Mathml" do
-      let(:string)  do
+      let(:string) do
         <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -321,7 +321,7 @@ RSpec.describe Plurimath::Mathml do
         MATHML
       end
 
-      it 'returns Mathml string' do
+      it "returns Mathml string" do
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
               <mstyle displaystyle="true">
@@ -336,7 +336,7 @@ RSpec.describe Plurimath::Mathml do
             </math>
         MATHML
         latex = "a_{b}^{c}"
-        asciimath = 'a_(b)^(c)'
+        asciimath = "a_(b)^(c)"
         expect(formula.to_latex).to eq(latex)
         expect(formula.to_mathml(unary_function_spacing: false)).to be_xml_equivalent_to(mathml)
         expect(formula.to_asciimath).to eq(asciimath)
@@ -344,7 +344,7 @@ RSpec.describe Plurimath::Mathml do
     end
 
     context "contains msgroup tags in Mathml" do
-      let(:string)  do
+      let(:string) do
         <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -362,7 +362,7 @@ RSpec.describe Plurimath::Mathml do
         MATHML
       end
 
-      it 'returns Mathml string' do
+      it "returns Mathml string" do
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -377,7 +377,7 @@ RSpec.describe Plurimath::Mathml do
           </math>
         MATHML
         latex = "100_{\\alpha}^{\\beta}"
-        asciimath = '100_(alpha)^(beta)'
+        asciimath = "100_(alpha)^(beta)"
         expect(formula.to_latex).to eq(latex)
         expect(formula.to_mathml(unary_function_spacing: false)).to be_xml_equivalent_to(mathml)
         expect(formula.to_asciimath).to eq(asciimath)
@@ -385,7 +385,7 @@ RSpec.describe Plurimath::Mathml do
     end
 
     context "contains table with surrounding parentheses(metanorma example) and sqrt tag Mathml" do
-      let(:string)  do
+      let(:string) do
         <<~MATHML
           <math>
             <mstyle displaystyle="true">
@@ -775,7 +775,7 @@ RSpec.describe Plurimath::Mathml do
         MATHML
       end
 
-      it 'returns Mathml string' do
+      it "returns Mathml string" do
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -1167,13 +1167,14 @@ RSpec.describe Plurimath::Mathml do
         latex = "\\text{Convert} ( x , y , z , p_{a} , p_{o} , R , S , T ) = R_{z} ( \\alpha ) R_{y} ( \\beta ) R_{x} ( \\gamma ) S ( x - a_{x} , y - a_{y} , z - a_{z} ) + p_{o} + T =\\\\  \\left [\\begin{matrix}\\cos{\\text{P[funcapply]}} \\alpha \\cos{\\beta} & \\cos{\\text{P[funcapply]}} \\alpha \\sin{\\text{P[funcapply]}} \\beta \\sin{\\text{P[funcapply]}} \\gamma - \\sin{\\text{P[funcapply]}} \\alpha \\cos{\\gamma} & \\cos{\\text{P[funcapply]}} \\alpha \\sin{\\text{P[funcapply]}} \\beta \\cos{\\text{P[funcapply]}} \\gamma + \\sin{\\text{P[funcapply]}} \\alpha \\sin{\\text{P[funcapply]}} \\gamma \\\\ \\sin{\\text{P[funcapply]}} \\alpha \\cos{\\text{P[funcapply]}} \\beta & \\sin{\\text{P[funcapply]}} \\alpha \\sin{\\text{P[funcapply]}} \\beta \\sin{\\text{P[funcapply]}} \\gamma + \\cos{\\text{P[funcapply]}} \\alpha \\cos{\\text{P[funcapply]}} \\gamma & \\sin{\\text{P[funcapply]}} \\alpha \\sin{\\text{P[funcapply]}} \\beta \\cos{\\text{P[funcapply]}} \\gamma - \\cos{\\text{P[funcapply]}} \\alpha \\sin{\\text{P[funcapply]}} \\gamma \\\\ - \\sin{\\text{P[funcapply]}} \\beta & \\text{“cos ⁡”} \\beta \\sin{\\text{P[funcapply]}} \\gamma & \\cos{\\text{P[funcapply]}} \\beta \\cos{\\text{P[funcapply]}} \\gamma\\end{matrix}\\right ] \\left [\\begin{matrix}s_{x} \\ast ( x - a_{x} ) \\\\ s_{y} \\ast ( y - a_{y} ) \\\\ s_{z} \\ast ( z - a_{z} )\\end{matrix}\\right ] + \\left [\\begin{matrix}x_{0} + t_{x} \\\\ y_{0} + t_{y} \\\\ z_{0} + t_{z}\\end{matrix}\\right ] \\sqrt{d}"
         asciimath = "\"Convert\" (x , y , z , p_(a) , p_(o) , R , S , T) = R_(z) (alpha) R_(y) (beta) R_(x) (gamma) S (x - a_(x) , y - a_(y) , z - a_(z)) + p_(o) + T =\\\n  [[cos\"P{funcapply}\" alpha cosbeta, cos\"P{funcapply}\" alpha sin\"P{funcapply}\" beta sin\"P{funcapply}\" gamma - sin\"P{funcapply}\" alpha cosgamma, cos\"P{funcapply}\" alpha sin\"P{funcapply}\" beta cos\"P{funcapply}\" gamma + sin\"P{funcapply}\" alpha sin\"P{funcapply}\" gamma], [sin\"P{funcapply}\" alpha cos\"P{funcapply}\" beta, sin\"P{funcapply}\" alpha sin\"P{funcapply}\" beta sin\"P{funcapply}\" gamma + cos\"P{funcapply}\" alpha cos\"P{funcapply}\" gamma, sin\"P{funcapply}\" alpha sin\"P{funcapply}\" beta cos\"P{funcapply}\" gamma - cos\"P{funcapply}\" alpha sin\"P{funcapply}\" gamma], [- sin\"P{funcapply}\" beta, \"“cos ⁡”\" beta sin\"P{funcapply}\" gamma, cos\"P{funcapply}\" beta cos\"P{funcapply}\" gamma]] [[s_(x) ast (x - a_(x))], [s_(y) ast (y - a_(y))], [s_(z) ast (z - a_(z))]] + [[x_(0) + t_(x)], [y_(0) + t_(y)], [z_(0) + t_(z)]] sqrt(d)"
         expect(formula.to_latex).to eq(latex)
-        expect(formula.to_mathml(split_on_linebreak: true, unary_function_spacing: false)).to be_xml_equivalent_to(mathml)
+        expect(formula.to_mathml(split_on_linebreak: true,
+                                 unary_function_spacing: false)).to be_xml_equivalent_to(mathml)
         expect(formula.to_asciimath).to eq(asciimath)
       end
     end
 
     context "contains longidv tag Mathml" do
-      let(:string)  do
+      let(:string) do
         <<~MATHML
           <math>
             <mstyle displaystyle="true">
@@ -1194,7 +1195,7 @@ RSpec.describe Plurimath::Mathml do
         MATHML
       end
 
-      it 'compares MathML, LaTeX, and AsciiMath string' do
+      it "compares MathML, LaTeX, and AsciiMath string" do
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -1222,7 +1223,7 @@ RSpec.describe Plurimath::Mathml do
     end
 
     context "contains mglyph with options/attributes index, src, and alt Mathml" do
-      let(:string)  do
+      let(:string) do
         <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -1234,7 +1235,7 @@ RSpec.describe Plurimath::Mathml do
         MATHML
       end
 
-      it 'compares MathML, LaTeX, and AsciiMath string' do
+      it "compares MathML, LaTeX, and AsciiMath string" do
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -1253,7 +1254,7 @@ RSpec.describe Plurimath::Mathml do
     end
 
     context "contains mpadded with attributes width, height, and depth Mathml" do
-      let(:string)  do
+      let(:string) do
         <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -1269,7 +1270,7 @@ RSpec.describe Plurimath::Mathml do
         MATHML
       end
 
-      it 'compares MathML, LaTeX, and AsciiMath string' do
+      it "compares MathML, LaTeX, and AsciiMath string" do
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -1291,7 +1292,7 @@ RSpec.describe Plurimath::Mathml do
     end
 
     context "contains mmultiscript containing none tag Mathml" do
-      let(:string)  do
+      let(:string) do
         <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -1316,7 +1317,7 @@ RSpec.describe Plurimath::Mathml do
         MATHML
       end
 
-      it 'compares MathML, LaTeX, and AsciiMath string' do
+      it "compares MathML, LaTeX, and AsciiMath string" do
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -1348,7 +1349,7 @@ RSpec.describe Plurimath::Mathml do
     end
 
     context "contains mstyle containing nary oint value in msubsup tag Mathml" do
-      let(:string)  do
+      let(:string) do
         <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -1363,7 +1364,7 @@ RSpec.describe Plurimath::Mathml do
         MATHML
       end
 
-      it 'compares MathML, LaTeX, and AsciiMath string' do
+      it "compares MathML, LaTeX, and AsciiMath string" do
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -1387,7 +1388,7 @@ RSpec.describe Plurimath::Mathml do
     end
 
     context "contains mstyle containing nary oint value in msub tag Mathml" do
-      let(:string)  do
+      let(:string) do
         <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -1401,7 +1402,7 @@ RSpec.describe Plurimath::Mathml do
         MATHML
       end
 
-      it 'compares MathML, LaTeX, and AsciiMath string' do
+      it "compares MathML, LaTeX, and AsciiMath string" do
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -1422,7 +1423,7 @@ RSpec.describe Plurimath::Mathml do
     end
 
     context "contains mtable containing frame, rowlines, and columnlines Mathml" do
-      let(:string)  do
+      let(:string) do
         <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -1445,7 +1446,7 @@ RSpec.describe Plurimath::Mathml do
         MATHML
       end
 
-      it 'compares MathML, LaTeX, and AsciiMath string' do
+      it "compares MathML, LaTeX, and AsciiMath string" do
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -1475,7 +1476,7 @@ RSpec.describe Plurimath::Mathml do
     end
 
     context "contains string from plurimath/issue#238" do
-      let(:string)  do
+      let(:string) do
         <<~MATHML
           <math>
             <mstyle displaystyle="true">
@@ -1537,7 +1538,7 @@ RSpec.describe Plurimath::Mathml do
         MATHML
       end
 
-      it 'compares MathML, LaTeX, and AsciiMath string' do
+      it "compares MathML, LaTeX, and AsciiMath string" do
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -2058,7 +2059,7 @@ RSpec.describe Plurimath::Mathml do
           </math>
         MATHML
         latex = '\mathrm{J} \cdot \mathrm{mol}^{- 1} \cdot \mathrm{K}^{- 1}'
-        asciimath = 'rm(J) * rm(mol)^(- 1) * rm(K)^(- 1)'
+        asciimath = "rm(J) * rm(mol)^(- 1) * rm(K)^(- 1)"
         expect(formula.to_latex).to eq(latex)
         expect(formula.to_mathml(unary_function_spacing: false)).to be_xml_equivalent_to(mathml)
         expect(formula.to_asciimath).to eq(asciimath)
@@ -2070,7 +2071,7 @@ RSpec.describe Plurimath::Mathml do
     subject(:formula) { described_class.new(string).to_formula.to_omml }
 
     context "contains one value in sub tag in Mathml" do
-      let(:string)  do
+      let(:string) do
         <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML">
             <mrow>
@@ -2267,13 +2268,13 @@ RSpec.describe Plurimath::Mathml do
         OMML
       end
 
-      it 'returns Mathml string' do
+      it "returns Mathml string" do
         expect(formula).to eq(expected_value)
       end
     end
 
     context "contains multiple tags in Mathml" do
-      let(:string)  do
+      let(:string) do
         <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -2439,13 +2440,13 @@ RSpec.describe Plurimath::Mathml do
         OMML
       end
 
-      it 'returns Mathml string' do
+      it "returns Mathml string" do
         expect(formula).to eq(expected_value)
       end
     end
 
     context "contains menclose tags in Mathml" do
-      let(:string)  do
+      let(:string) do
         <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -2506,13 +2507,13 @@ RSpec.describe Plurimath::Mathml do
         OMML
       end
 
-      it 'returns Mathml string' do
+      it "returns Mathml string" do
         expect(formula).to eq(expected_value)
       end
     end
 
     context "contains scarries, longdiv, msline and scarry tags in Mathml" do
-      let(:string)  do
+      let(:string) do
         <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -2546,13 +2547,13 @@ RSpec.describe Plurimath::Mathml do
         OMML
       end
 
-      it 'returns Mathml string' do
+      it "returns Mathml string" do
         expect(formula).to eq(expected_value)
       end
     end
 
     context "contains underover, under, and over tags with displaystyle false in Mathml" do
-      let(:string)  do
+      let(:string) do
         <<~MATHML
           <math display="block" xmlns="http://www.w3.org/1998/Math/MathML">
             <mstyle displaystyle="false">
@@ -2650,13 +2651,13 @@ RSpec.describe Plurimath::Mathml do
         OMML
       end
 
-      it 'returns Mathml string' do
+      it "returns Mathml string" do
         expect(formula).to eq(expected_value)
       end
     end
 
     context "contains bar, vec, dot, ddot, ul, and tilde examples containing accent and accentunder true in Mathml" do
-      let(:string)  do
+      let(:string) do
         <<~MATHML
           <math display="block" xmlns="http://www.w3.org/1998/Math/MathML">
             <mstyle displaystyle="true">
@@ -2777,13 +2778,13 @@ RSpec.describe Plurimath::Mathml do
         OMML
       end
 
-      it 'returns Mathml string' do
+      it "returns Mathml string" do
         expect(formula).to eq(expected_value)
       end
     end
 
     context "contains nary example Mathml" do
-      let(:string)  do
+      let(:string) do
         <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -2877,13 +2878,13 @@ RSpec.describe Plurimath::Mathml do
         OMML
       end
 
-      it 'returns Mathml string' do
+      it "returns Mathml string" do
         expect(formula).to eq(expected_value)
       end
     end
 
     context "contains mfrac with options/attributes tag Mathml" do
-      let(:string)  do
+      let(:string) do
         <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -2900,7 +2901,7 @@ RSpec.describe Plurimath::Mathml do
         MATHML
       end
 
-      it 'compares OMML string' do
+      it "compares OMML string" do
         omml = <<~OMML
           <m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape">
             <m:oMath>
@@ -2954,7 +2955,7 @@ RSpec.describe Plurimath::Mathml do
     end
 
     context "contains mglyph with options/attributes index, src, and alt Mathml" do
-      let(:string)  do
+      let(:string) do
         <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -2972,7 +2973,7 @@ RSpec.describe Plurimath::Mathml do
         MATHML
       end
 
-      it 'compares OMML string' do
+      it "compares OMML string" do
         omml = <<~OMML
           <m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape">
             <m:oMath>
@@ -3011,7 +3012,7 @@ RSpec.describe Plurimath::Mathml do
     end
 
     context "contains mpadded with attributes width, height, and depth Mathml" do
-      let(:string)  do
+      let(:string) do
         <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -3026,7 +3027,7 @@ RSpec.describe Plurimath::Mathml do
         MATHML
       end
 
-      it 'compares OMML string' do
+      it "compares OMML string" do
         omml = <<~OMML
           <m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape">
             <m:oMath>
@@ -3057,7 +3058,7 @@ RSpec.describe Plurimath::Mathml do
     end
 
     context "contains ms tag Mathml" do
-      let(:string)  do
+      let(:string) do
         <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <ms>
@@ -3077,7 +3078,7 @@ RSpec.describe Plurimath::Mathml do
         MATHML
       end
 
-      it 'compares OMML string' do
+      it "compares OMML string" do
         omml = <<~OMML
           <m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape">
             <m:oMath>
@@ -3091,7 +3092,7 @@ RSpec.describe Plurimath::Mathml do
     end
 
     context "contains multiscripts containing none tag Mathml" do
-      let(:string)  do
+      let(:string) do
         <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -3108,7 +3109,7 @@ RSpec.describe Plurimath::Mathml do
         MATHML
       end
 
-      it 'compares OMML string' do
+      it "compares OMML string" do
         omml = <<~OMML
           <m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape">
             <m:oMath>
@@ -3171,7 +3172,7 @@ RSpec.describe Plurimath::Mathml do
     end
 
     context "contains oint msubsup tag Mathml" do
-      let(:string)  do
+      let(:string) do
         <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -3188,7 +3189,7 @@ RSpec.describe Plurimath::Mathml do
         MATHML
       end
 
-      it 'compares OMML string' do
+      it "compares OMML string" do
         omml = <<~OMML
           <m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape">
             <m:oMath>
@@ -3223,7 +3224,7 @@ RSpec.describe Plurimath::Mathml do
     end
 
     context "contains nary iiint symbol in underover for nary tag Mathml" do
-      let(:string)  do
+      let(:string) do
         <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -3240,7 +3241,7 @@ RSpec.describe Plurimath::Mathml do
         MATHML
       end
 
-      it 'compares OMML string' do
+      it "compares OMML string" do
         omml = <<~OMML
           <m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape">
             <m:oMath>
@@ -3279,7 +3280,7 @@ RSpec.describe Plurimath::Mathml do
     end
 
     context "contains nary iiint symbol in subsup for nary tag Mathml" do
-      let(:string)  do
+      let(:string) do
         <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -3296,7 +3297,7 @@ RSpec.describe Plurimath::Mathml do
         MATHML
       end
 
-      it 'compares OMML string' do
+      it "compares OMML string" do
         omml = <<~OMML
           <m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape">
             <m:oMath>
@@ -3335,7 +3336,7 @@ RSpec.describe Plurimath::Mathml do
     end
 
     context "contains nary prod symbol in underover for nary tag Mathml" do
-      let(:string)  do
+      let(:string) do
         <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -3352,7 +3353,7 @@ RSpec.describe Plurimath::Mathml do
         MATHML
       end
 
-      it 'compares OMML string' do
+      it "compares OMML string" do
         omml = <<~OMML
           <m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape">
             <m:oMath>
@@ -3387,7 +3388,7 @@ RSpec.describe Plurimath::Mathml do
     end
 
     context "contains nary iiint symbol in munder for nary tag Mathml" do
-      let(:string)  do
+      let(:string) do
         <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -3403,7 +3404,7 @@ RSpec.describe Plurimath::Mathml do
         MATHML
       end
 
-      it 'compares OMML string' do
+      it "compares OMML string" do
         omml = <<~OMML
           <m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape">
             <m:oMath>
@@ -3443,7 +3444,7 @@ RSpec.describe Plurimath::Mathml do
     end
 
     context "contains empty mo example from plurimath/plurimath#318 Mathml" do
-      let(:string)  do
+      let(:string) do
         <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML">
             <mstyle displaystyle="true">
@@ -3473,7 +3474,7 @@ RSpec.describe Plurimath::Mathml do
         MATHML
       end
 
-      it 'compares OMML string' do
+      it "compares OMML string" do
         omml = <<~OMML
           <m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape">
             <m:oMath>
@@ -3553,7 +3554,7 @@ RSpec.describe Plurimath::Mathml do
     subject(:formula) { described_class.new(string).to_formula.to_html }
 
     context "contains subsup and linebreak with different values example in MathML" do
-      let(:string)  do
+      let(:string) do
         <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML">
             <msubsup>
@@ -3579,9 +3580,11 @@ RSpec.describe Plurimath::Mathml do
         MATHML
       end
 
-      let(:expected_value) { "<i>N</i><sub>s</sub><sup>2</sup> =<br/> T <br/>&#x2191; S <br/> D" }
+      let(:expected_value) do
+        "<i>N</i><sub>s</sub><sup>2</sup> =<br/> T <br/>&#x2191; S <br/> D"
+      end
 
-      it 'returns HTML string for linebreak' do
+      it "returns HTML string for linebreak" do
         expect(formula).to eq(expected_value)
       end
     end

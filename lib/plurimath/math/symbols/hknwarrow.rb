@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Hknwarrow < Symbol
         INPUT = {
-          unicodemath: [["&#x2923;"], parsing_wrapper(["hknwarrow"], lang: :unicode)],
-          asciimath: [["&#x2923;"], parsing_wrapper(["hknwarrow"], lang: :asciimath)],
+          unicodemath: [["&#x2923;"],
+                        parsing_wrapper(["hknwarrow"], lang: :unicode)],
+          asciimath: [["&#x2923;"],
+                      parsing_wrapper(["hknwarrow"], lang: :asciimath)],
           mathml: ["&#x2923;"],
           latex: [["hknwarrow", "&#x2923;"]],
           omml: ["&#x2923;"],

@@ -3,8 +3,12 @@ module Plurimath
     module Symbols
       class Whitearrowupfrombar < Symbol
         INPUT = {
-          unicodemath: [["&#x21ea;"], parsing_wrapper(["whitearrowupfrombar"], lang: :unicode)],
-          asciimath: [["&#x21ea;"], parsing_wrapper(["whitearrowupfrombar"], lang: :asciimath)],
+          unicodemath: [["&#x21ea;"],
+                        parsing_wrapper(["whitearrowupfrombar"],
+                                        lang: :unicode)],
+          asciimath: [["&#x21ea;"],
+                      parsing_wrapper(["whitearrowupfrombar"],
+                                      lang: :asciimath)],
           mathml: ["&#x21ea;"],
           latex: [["whitearrowupfrombar", "&#x21ea;"]],
           omml: ["&#x21ea;"],

@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Laplac < Symbol
         INPUT = {
-          unicodemath: [["&#x29e0;"], parsing_wrapper(["laplac"], lang: :unicode)],
-          asciimath: [["&#x29e0;"], parsing_wrapper(["laplac"], lang: :asciimath)],
+          unicodemath: [["&#x29e0;"],
+                        parsing_wrapper(["laplac"], lang: :unicode)],
+          asciimath: [["&#x29e0;"],
+                      parsing_wrapper(["laplac"], lang: :asciimath)],
           mathml: ["&#x29e0;"],
           latex: [["laplac", "&#x29e0;"]],
           omml: ["&#x29e0;"],

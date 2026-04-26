@@ -1,11 +1,10 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Symbols::Gesdot do
-
   describe ".initialize" do
-    it 'returns instance of Symbol Gesdot' do
+    it "returns instance of Symbol Gesdot" do
       klass = described_class.new
-      expect(klass).to be_a(Plurimath::Math::Symbols::Gesdot)
+      expect(klass).to be_a(described_class)
     end
   end
 

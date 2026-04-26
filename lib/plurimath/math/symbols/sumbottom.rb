@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Sumbottom < Symbol
         INPUT = {
-          unicodemath: [["&#x23b3;"], parsing_wrapper(["sumbottom"], lang: :unicode)],
-          asciimath: [["&#x23b3;"], parsing_wrapper(["sumbottom"], lang: :asciimath)],
+          unicodemath: [["&#x23b3;"],
+                        parsing_wrapper(["sumbottom"], lang: :unicode)],
+          asciimath: [["&#x23b3;"],
+                      parsing_wrapper(["sumbottom"], lang: :asciimath)],
           mathml: ["&#x23b3;"],
           latex: [["sumbottom", "&#x23b3;"]],
           omml: ["&#x23b3;"],

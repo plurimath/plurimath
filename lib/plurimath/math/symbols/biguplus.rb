@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Biguplus < Symbol
         INPUT = {
-          unicodemath: [["&#x2a04;"], parsing_wrapper(["biguplus"], lang: :unicode)],
-          asciimath: [["&#x2a04;"], parsing_wrapper(["biguplus"], lang: :asciimath)],
+          unicodemath: [["&#x2a04;"],
+                        parsing_wrapper(["biguplus"], lang: :unicode)],
+          asciimath: [["&#x2a04;"],
+                      parsing_wrapper(["biguplus"], lang: :asciimath)],
           mathml: ["&#x2a04;"],
           latex: [["biguplus", "&#x2a04;"]],
           omml: ["&#x2a04;"],

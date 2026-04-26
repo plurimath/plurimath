@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Sharp < Symbol
         INPUT = {
-          unicodemath: [["&#x266f;"], parsing_wrapper(["sharp"], lang: :unicode)],
-          asciimath: [["&#x266f;"], parsing_wrapper(["sharp"], lang: :asciimath)],
+          unicodemath: [["&#x266f;"],
+                        parsing_wrapper(["sharp"], lang: :unicode)],
+          asciimath: [["&#x266f;"],
+                      parsing_wrapper(["sharp"], lang: :asciimath)],
           mathml: ["&#x266f;"],
           latex: [["sharp", "&#x266f;"]],
           omml: ["&#x266f;"],

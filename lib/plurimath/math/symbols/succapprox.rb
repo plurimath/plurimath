@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Succapprox < Symbol
         INPUT = {
-          unicodemath: [["&#x2ab8;"], parsing_wrapper(["succapprox"], lang: :unicode)],
-          asciimath: [["&#x2ab8;"], parsing_wrapper(["succapprox"], lang: :asciimath)],
+          unicodemath: [["&#x2ab8;"],
+                        parsing_wrapper(["succapprox"], lang: :unicode)],
+          asciimath: [["&#x2ab8;"],
+                      parsing_wrapper(["succapprox"], lang: :asciimath)],
           mathml: ["&#x2ab8;"],
           latex: [["succapprox", "&#x2ab8;"]],
           omml: ["&#x2ab8;"],

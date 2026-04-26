@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Blackpointerright < Symbol
         INPUT = {
-          unicodemath: [["&#x25ba;"], parsing_wrapper(["blackpointerright"], lang: :unicode)],
-          asciimath: [["&#x25ba;"], parsing_wrapper(["blackpointerright"], lang: :asciimath)],
+          unicodemath: [["&#x25ba;"],
+                        parsing_wrapper(["blackpointerright"], lang: :unicode)],
+          asciimath: [["&#x25ba;"],
+                      parsing_wrapper(["blackpointerright"], lang: :asciimath)],
           mathml: ["&#x25ba;"],
           latex: [["blackpointerright", "&#x25ba;"]],
           omml: ["&#x25ba;"],

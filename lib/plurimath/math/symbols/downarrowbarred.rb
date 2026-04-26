@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Downarrowbarred < Symbol
         INPUT = {
-          unicodemath: [["&#x2908;"], parsing_wrapper(["downarrowbarred"], lang: :unicode)],
-          asciimath: [["&#x2908;"], parsing_wrapper(["downarrowbarred"], lang: :asciimath)],
+          unicodemath: [["&#x2908;"],
+                        parsing_wrapper(["downarrowbarred"], lang: :unicode)],
+          asciimath: [["&#x2908;"],
+                      parsing_wrapper(["downarrowbarred"], lang: :asciimath)],
           mathml: ["&#x2908;"],
           latex: [["downarrowbarred", "&#x2908;"]],
           omml: ["&#x2908;"],

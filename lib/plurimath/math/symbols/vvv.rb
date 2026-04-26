@@ -3,10 +3,12 @@ module Plurimath
     module Symbols
       class Vvv < Symbol
         INPUT = {
-          unicodemath: [["&#x22c1;"], parsing_wrapper(["bigvee", "vvv"], lang: :unicode)],
+          unicodemath: [["&#x22c1;"],
+                        parsing_wrapper(["bigvee", "vvv"], lang: :unicode)],
           asciimath: [["bigvee", "vvv", "&#x22c1;"]],
           mathml: ["&#x22c1;"],
-          latex: [["bigvee", "&#x22c1;"], parsing_wrapper(["vvv"], lang: :latex)],
+          latex: [["bigvee", "&#x22c1;"],
+                  parsing_wrapper(["vvv"], lang: :latex)],
           omml: ["&#x22c1;"],
           html: ["&#x22c1;"],
         }.freeze

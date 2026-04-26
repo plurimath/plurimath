@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Rbracklend < Symbol
         INPUT = {
-          unicodemath: [["&#x23a6;"], parsing_wrapper(["rbracklend"], lang: :unicode)],
-          asciimath: [["&#x23a6;"], parsing_wrapper(["rbracklend"], lang: :asciimath)],
+          unicodemath: [["&#x23a6;"],
+                        parsing_wrapper(["rbracklend"], lang: :unicode)],
+          asciimath: [["&#x23a6;"],
+                      parsing_wrapper(["rbracklend"], lang: :asciimath)],
           mathml: ["&#x23a6;"],
           latex: [["rbracklend", "&#x23a6;"]],
           omml: ["&#x23a6;"],

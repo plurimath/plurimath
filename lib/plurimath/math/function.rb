@@ -71,6 +71,7 @@ module Plurimath
       autoload :Over, "#{__dir__}/function/over"
       autoload :Overbrace, "#{__dir__}/function/obrace"
       autoload :Overline, "#{__dir__}/function/bar"
+      autoload :Overleftrightarrow, "#{__dir__}/function/overleftrightarrow"
       autoload :Overset, "#{__dir__}/function/overset"
       autoload :Phantom, "#{__dir__}/function/phantom"
       autoload :Power, "#{__dir__}/function/power"

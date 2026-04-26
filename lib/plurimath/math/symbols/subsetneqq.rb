@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Subsetneqq < Symbol
         INPUT = {
-          unicodemath: [["&#x2acb;"], parsing_wrapper(["subsetneqq"], lang: :unicode)],
-          asciimath: [["&#x2acb;"], parsing_wrapper(["subsetneqq"], lang: :asciimath)],
+          unicodemath: [["&#x2acb;"],
+                        parsing_wrapper(["subsetneqq"], lang: :unicode)],
+          asciimath: [["&#x2acb;"],
+                      parsing_wrapper(["subsetneqq"], lang: :asciimath)],
           mathml: ["&#x2acb;"],
           latex: [["subsetneqq", "&#x2acb;"]],
           omml: ["&#x2acb;"],

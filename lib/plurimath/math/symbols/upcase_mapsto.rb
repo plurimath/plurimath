@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class UpcaseMapsto < Symbol
         INPUT = {
-          unicodemath: [["&#x2907;"], parsing_wrapper(["UpcaseMapsto"], lang: :unicode)],
-          asciimath: [["&#x2907;"], parsing_wrapper(["UpcaseMapsto"], lang: :asciimath)],
+          unicodemath: [["&#x2907;"],
+                        parsing_wrapper(["UpcaseMapsto"], lang: :unicode)],
+          asciimath: [["&#x2907;"],
+                      parsing_wrapper(["UpcaseMapsto"], lang: :asciimath)],
           mathml: ["&#x2907;"],
           latex: [["Mapsto", "&#x2907;"]],
           omml: ["&#x2907;"],

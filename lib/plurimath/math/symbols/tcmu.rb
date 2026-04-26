@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Tcmu < Symbol
         INPUT = {
-          unicodemath: [["&#xb5;"], parsing_wrapper(["Micro", "tcmu"], lang: :unicode)],
-          asciimath: [["&#xb5;"], parsing_wrapper(["Micro", "tcmu"], lang: :asciimath)],
+          unicodemath: [["&#xb5;"],
+                        parsing_wrapper(["Micro", "tcmu"], lang: :unicode)],
+          asciimath: [["&#xb5;"],
+                      parsing_wrapper(["Micro", "tcmu"], lang: :asciimath)],
           mathml: ["&#xb5;"],
           latex: [["Micro", "tcmu", "&#xb5;"]],
           omml: ["&#xb5;"],

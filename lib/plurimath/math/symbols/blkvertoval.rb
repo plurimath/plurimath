@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Blkvertoval < Symbol
         INPUT = {
-          unicodemath: [["&#x2b2e;"], parsing_wrapper(["blkvertoval"], lang: :unicode)],
-          asciimath: [["&#x2b2e;"], parsing_wrapper(["blkvertoval"], lang: :asciimath)],
+          unicodemath: [["&#x2b2e;"],
+                        parsing_wrapper(["blkvertoval"], lang: :unicode)],
+          asciimath: [["&#x2b2e;"],
+                      parsing_wrapper(["blkvertoval"], lang: :asciimath)],
           mathml: ["&#x2b2e;"],
           latex: [["blkvertoval", "&#x2b2e;"]],
           omml: ["&#x2b2e;"],

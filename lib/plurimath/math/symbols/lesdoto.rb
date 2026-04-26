@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Lesdoto < Symbol
         INPUT = {
-          unicodemath: [["&#x2a81;"], parsing_wrapper(["lesdoto"], lang: :unicode)],
-          asciimath: [["&#x2a81;"], parsing_wrapper(["lesdoto"], lang: :asciimath)],
+          unicodemath: [["&#x2a81;"],
+                        parsing_wrapper(["lesdoto"], lang: :unicode)],
+          asciimath: [["&#x2a81;"],
+                      parsing_wrapper(["lesdoto"], lang: :asciimath)],
           mathml: ["&#x2a81;"],
           latex: [["lesdoto", "&#x2a81;"]],
           omml: ["&#x2a81;"],

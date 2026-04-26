@@ -1,11 +1,10 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Symbols::Supsetplus do
-
   describe ".initialize" do
-    it 'returns instance of Symbol Supsetplus' do
+    it "returns instance of Symbol Supsetplus" do
       klass = described_class.new
-      expect(klass).to be_a(Plurimath::Math::Symbols::Supsetplus)
+      expect(klass).to be_a(described_class)
     end
   end
 

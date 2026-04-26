@@ -7,9 +7,13 @@ module Plurimath
       rule(:power)         { str("^") }
       rule(:slash)         { str("\\") }
       rule(:under_over)    { slash >> underover_classes }
-      rule(:array_args)    { (str("{") >> expression.as(:args) >> str("}")) }
-      rule(:array_begin)   { (str("\\begin{") >> str("array").as(:environment) >> str("}")) }
-      rule(:optional_args) { (str("[") >> intermediate_exp.maybe.as(:options) >> str("]")).maybe }
+      rule(:array_args)    { str("{") >> expression.as(:args) >> str("}") }
+      rule(:array_begin)   do
+        str("\\begin{") >> str("array").as(:environment) >> str("}")
+      end
+      rule(:optional_args) do
+        (str("[") >> intermediate_exp.maybe.as(:options) >> str("]")).maybe
+      end
 
       rule(:color) do
         (str("{") >> (str("}").absent? >> any).repeat.as(:symbol) >> str("}")) |
@@ -94,7 +98,7 @@ module Plurimath
 
       rule(:symbol_text_or_integer) do
         str('"').as(:symbol) |
-          rparen.absent? >> symbol_class_commands |
+          (rparen.absent? >> symbol_class_commands) |
           (slash >> math_operators_classes) |
           match["a-zA-Z"].as(:symbols) |
           (match["0-9"].repeat(0) >> str(".").maybe >> match["0-9"].repeat(1)).as(:number) |
@@ -111,7 +115,7 @@ module Plurimath
       end
 
       rule(:parsing_text_values) do
-        (str("{") >> parsing_text_values >> str("}")) >> parsing_text_values |
+        ((str("{") >> parsing_text_values >> str("}")) >> parsing_text_values) |
           (str("{") >> parsing_text_values >> str("}")) |
           (match("[^}]") >> parsing_text_values) |
           match("[^}]").repeat
@@ -149,12 +153,11 @@ module Plurimath
           (slash >> environment >> intermediate_exp).as(:table_data) |
           power_base |
           intermediate_exp |
-          intermediate_exp.as(:intermediate_exp) >> rparen.as(:symbol)
+          (intermediate_exp.as(:intermediate_exp) >> rparen.as(:symbol))
       end
 
       rule(:left_right) do
-        (
-          str("\\left").as(:left) >> (left_parens | str(".").maybe) >>
+        str("\\left").as(:left) >> (left_parens | str(".").maybe) >>
           (
             (expression.repeat.as(:dividend) >> str("\\over") >> expression.repeat.as(:divisor)) |
             expression.as(:expression).maybe
@@ -162,7 +165,6 @@ module Plurimath
           (
             str("\\right").as(:right).maybe >> (right_parens | str(".").maybe)
           )
-        )
       end
 
       rule(:over_class) do
@@ -197,7 +199,10 @@ module Plurimath
 
       def hash_to_expression(hash)
         @@expression ||= hash.reduce do |expression, (key, value)|
-          expression = dynamic_rules(expression.first, expression.last) if expression.is_a?(Array)
+          if expression.is_a?(Array)
+            expression = dynamic_rules(expression.first,
+                                       expression.last)
+          end
           expression | dynamic_rules(key, value)
         end
       end
@@ -206,26 +211,32 @@ module Plurimath
         first_value = str(expr.to_s)
         case name
         when :operant
-          (first_value.as(:operant) | (slashed_value(first_value, :symbols)))
+          (first_value.as(:operant) | slashed_value(first_value, :symbols))
         when :symbols
           slashed_value(first_value, :symbols)
         when :unary
           unary_rules(first_value)
         when :fonts
-          (slashed_value(first_value, :fonts) >> (binary_functions | intermediate_exp).as(:intermediate_exp))
+          (slashed_value(first_value,
+                         :fonts) >> (binary_functions | intermediate_exp).as(:intermediate_exp))
         when :power_base
-          (slashed_value(first_value, :binary) >> dynamic_power_base).as(:power_base) |
-            (slashed_value(first_value, :binary))
+          (slashed_value(first_value,
+                         :binary) >> dynamic_power_base).as(:power_base) |
+            slashed_value(first_value, :binary)
         when :underover
           (slashed_value(first_value, :underover) >> dynamic_power_base) |
-            (slashed_value(first_value, :underover) >> intermediate_exp.maybe.as(:first_value) >> dynamic_power_base) |
-            (slashed_value(first_value, :underover))
+            (slashed_value(first_value,
+                           :underover) >> intermediate_exp.maybe.as(:first_value) >> dynamic_power_base) |
+            slashed_value(first_value, :underover)
         when :binary
-          (slashed_value(first_value, :binary) >> intermediate_exp.as(:first_value) >> intermediate_exp.as(:second_value)).as(:binary)
+          (slashed_value(first_value,
+                         :binary) >> intermediate_exp.as(:first_value) >> intermediate_exp.as(:second_value)).as(:binary)
         when :text
-          (slashed_value(first_value, :text) >> (str("{") >> parsing_text_values.as(:first_value) >> str("}")))
+          (slashed_value(first_value,
+                         :text) >> (str("{") >> parsing_text_values.as(:first_value) >> str("}")))
         when :ternary
-          (slashed_value(first_value, :ternary_functions) >> dynamic_power_base >> sequence.as(:third_value).maybe).as(:ternary_class) |
+          (slashed_value(first_value,
+                         :ternary_functions) >> dynamic_power_base >> sequence.as(:third_value).maybe).as(:ternary_class) |
             slashed_value(first_value, :ternary)
         end
       end
@@ -236,8 +247,10 @@ module Plurimath
 
       def unary_rules(first_value)
         (slashed_value(first_value, :unary_functions) >> dynamic_power_base) |
-          (slashed_value(first_value, :unary) >> left_right.as(:first_value)).as(:unary_functions) |
-          (slashed_value(first_value, :unary) >> intermediate_exp.as(:first_value)).as(:unary_functions) |
+          (slashed_value(first_value,
+                         :unary) >> left_right.as(:first_value)).as(:unary_functions) |
+          (slashed_value(first_value,
+                         :unary) >> intermediate_exp.as(:first_value)).as(:unary_functions) |
           slashed_value(first_value, :unary)
       end
 

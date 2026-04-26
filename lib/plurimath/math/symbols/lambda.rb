@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Lambda < Symbol
         INPUT = {
-          unicodemath: [["lambda", "&#x3bb;"], parsing_wrapper(["uplambda"], lang: :unicode)],
-          asciimath: [["lambda", "&#x3bb;"], parsing_wrapper(["uplambda"], lang: :asciimath)],
+          unicodemath: [["lambda", "&#x3bb;"],
+                        parsing_wrapper(["uplambda"], lang: :unicode)],
+          asciimath: [["lambda", "&#x3bb;"],
+                      parsing_wrapper(["uplambda"], lang: :asciimath)],
           mathml: ["&#x3bb;"],
           latex: [["uplambda", "lambda", "&#x3bb;"]],
           omml: ["&#x3bb;"],

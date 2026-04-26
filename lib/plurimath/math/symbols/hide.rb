@@ -3,8 +3,12 @@ module Plurimath
     module Symbols
       class Hide < Symbol
         INPUT = {
-          unicodemath: [["&#x29f9;"], parsing_wrapper(["zhide", "xbsol", "hide"], lang: :unicode)],
-          asciimath: [["&#x29f9;"], parsing_wrapper(["zhide", "xbsol", "hide"], lang: :asciimath)],
+          unicodemath: [["&#x29f9;"],
+                        parsing_wrapper(["zhide", "xbsol", "hide"],
+                                        lang: :unicode)],
+          asciimath: [["&#x29f9;"],
+                      parsing_wrapper(["zhide", "xbsol", "hide"],
+                                      lang: :asciimath)],
           mathml: ["&#x29f9;"],
           latex: [["zhide", "xbsol", "hide", "&#x29f9;"]],
           omml: ["&#x29f9;"],

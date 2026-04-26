@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Saturn < Symbol
         INPUT = {
-          unicodemath: [["&#x2644;"], parsing_wrapper(["saturn", "Saturn"], lang: :unicode)],
-          asciimath: [["&#x2644;"], parsing_wrapper(["saturn", "Saturn"], lang: :asciimath)],
+          unicodemath: [["&#x2644;"],
+                        parsing_wrapper(["saturn", "Saturn"], lang: :unicode)],
+          asciimath: [["&#x2644;"],
+                      parsing_wrapper(["saturn", "Saturn"], lang: :asciimath)],
           mathml: ["&#x2644;"],
           latex: [["saturn", "Saturn", "&#x2644;"]],
           omml: ["&#x2644;"],

@@ -3,8 +3,12 @@ module Plurimath
     module Symbols
       class Lozenge < Symbol
         INPUT = {
-          unicodemath: [["&#x25ca;"], parsing_wrapper(["mdlgwhtlozenge", "lozenge"], lang: :unicode)],
-          asciimath: [["&#x25ca;"], parsing_wrapper(["mdlgwhtlozenge", "lozenge"], lang: :asciimath)],
+          unicodemath: [["&#x25ca;"],
+                        parsing_wrapper(["mdlgwhtlozenge", "lozenge"],
+                                        lang: :unicode)],
+          asciimath: [["&#x25ca;"],
+                      parsing_wrapper(["mdlgwhtlozenge", "lozenge"],
+                                      lang: :asciimath)],
           mathml: ["&#x25ca;"],
           latex: [["mdlgwhtlozenge", "lozenge", "&#x25ca;"]],
           omml: ["&#x25ca;"],

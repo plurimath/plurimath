@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Varhexagonlrbonds < Symbol
         INPUT = {
-          unicodemath: [["&#x232c;"], parsing_wrapper(["varhexagonlrbonds"], lang: :unicode)],
-          asciimath: [["&#x232c;"], parsing_wrapper(["varhexagonlrbonds"], lang: :asciimath)],
+          unicodemath: [["&#x232c;"],
+                        parsing_wrapper(["varhexagonlrbonds"], lang: :unicode)],
+          asciimath: [["&#x232c;"],
+                      parsing_wrapper(["varhexagonlrbonds"], lang: :asciimath)],
           mathml: ["&#x232c;"],
           latex: [["varhexagonlrbonds", "&#x232c;"]],
           omml: ["&#x232c;"],

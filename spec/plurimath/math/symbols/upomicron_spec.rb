@@ -1,11 +1,10 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Symbols::Upomicron do
-
   describe ".initialize" do
-    it 'returns instance of Symbol Upomicron' do
+    it "returns instance of Symbol Upomicron" do
       klass = described_class.new
-      expect(klass).to be_a(Plurimath::Math::Symbols::Upomicron)
+      expect(klass).to be_a(described_class)
     end
   end
 

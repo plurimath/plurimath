@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Measangledltosw < Symbol
         INPUT = {
-          unicodemath: [["&#x29af;"], parsing_wrapper(["measangledltosw"], lang: :unicode)],
-          asciimath: [["&#x29af;"], parsing_wrapper(["measangledltosw"], lang: :asciimath)],
+          unicodemath: [["&#x29af;"],
+                        parsing_wrapper(["measangledltosw"], lang: :unicode)],
+          asciimath: [["&#x29af;"],
+                      parsing_wrapper(["measangledltosw"], lang: :asciimath)],
           mathml: ["&#x29af;"],
           latex: [["measangledltosw", "&#x29af;"]],
           omml: ["&#x29af;"],

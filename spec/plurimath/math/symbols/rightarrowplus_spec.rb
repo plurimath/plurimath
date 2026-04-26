@@ -1,11 +1,10 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Symbols::Rightarrowplus do
-
   describe ".initialize" do
-    it 'returns instance of Symbol Rightarrowplus' do
+    it "returns instance of Symbol Rightarrowplus" do
       klass = described_class.new
-      expect(klass).to be_a(Plurimath::Math::Symbols::Rightarrowplus)
+      expect(klass).to be_a(described_class)
     end
   end
 

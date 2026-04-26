@@ -3,8 +3,11 @@ module Plurimath
     module Symbols
       class Nsucceq < Symbol
         INPUT = {
-          unicodemath: [["nsucccurlyeq", "&#x22e1;"], parsing_wrapper(["nsucceq"], lang: :unicode)],
-          asciimath: [["&#x22e1;"], parsing_wrapper(["nsucccurlyeq", "nsucceq"], lang: :asciimath)],
+          unicodemath: [["nsucccurlyeq", "&#x22e1;"],
+                        parsing_wrapper(["nsucceq"], lang: :unicode)],
+          asciimath: [["&#x22e1;"],
+                      parsing_wrapper(["nsucccurlyeq", "nsucceq"],
+                                      lang: :asciimath)],
           mathml: ["&#x22e1;"],
           latex: [["nsucccurlyeq", "nsucceq", "&#x22e1;"]],
           omml: ["&#x22e1;"],

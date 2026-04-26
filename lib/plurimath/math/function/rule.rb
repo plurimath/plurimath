@@ -22,7 +22,7 @@ module Plurimath
           "\\rule#{first_value}#{second_value}#{third_value}"
         end
 
-        def to_mathml_without_math_tag(intent, **)
+        def to_mathml_without_math_tag(_intent, **)
           Utility.ox_element("mi")
         end
 

@@ -3,8 +3,12 @@ module Plurimath
     module Symbols
       class Rvert < Symbol
         INPUT = {
-          unicodemath: [["&#x2225;"], parsing_wrapper(["parallel", "lVert", "rVert"], lang: :unicode)],
-          asciimath: [["&#x2225;"], parsing_wrapper(["parallel", "lVert", "rVert"], lang: :asciimath)],
+          unicodemath: [["&#x2225;"],
+                        parsing_wrapper(["parallel", "lVert", "rVert"],
+                                        lang: :unicode)],
+          asciimath: [["&#x2225;"],
+                      parsing_wrapper(["parallel", "lVert", "rVert"],
+                                      lang: :asciimath)],
           mathml: ["&#x2225;"],
           latex: [["parallel", "lVert", "rVert", "&#x2225;"]],
           omml: ["&#x2225;"],

@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Triangles < Symbol
         INPUT = {
-          unicodemath: [["&#x29cc;"], parsing_wrapper(["triangles"], lang: :unicode)],
-          asciimath: [["&#x29cc;"], parsing_wrapper(["triangles"], lang: :asciimath)],
+          unicodemath: [["&#x29cc;"],
+                        parsing_wrapper(["triangles"], lang: :unicode)],
+          asciimath: [["&#x29cc;"],
+                      parsing_wrapper(["triangles"], lang: :asciimath)],
           mathml: ["&#x29cc;"],
           latex: [["triangles", "&#x29cc;"]],
           omml: ["&#x29cc;"],

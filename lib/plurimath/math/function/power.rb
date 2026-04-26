@@ -1,11 +1,9 @@
 # frozen_string_literal: true
 
-
 module Plurimath
   module Math
     module Function
       class Power < BinaryFunction
-
         FUNCTION = {
           name: "superscript",
           first_value: "base",
@@ -13,12 +11,20 @@ module Plurimath
         }.freeze
 
         def to_asciimath(options:)
-          second_value = "^#{wrapped(parameter_two, options: options)}" if parameter_two
+          if parameter_two
+            second_value = "^#{wrapped(parameter_two,
+                                       options: options)}"
+          end
           "#{parameter_one.to_asciimath(options: options)}#{second_value}"
         end
 
         def to_mathml_without_math_tag(intent, options:)
-          tag_name = ["ubrace", "obrace"].include?(parameter_one&.class_name) ? "over" : "sup"
+          tag_name = if ["ubrace",
+                         "obrace"].include?(parameter_one&.class_name)
+                       "over"
+                     else
+                       "sup"
+                     end
           value_array = [
             validate_mathml_fields(parameter_one, intent, options: options),
             validate_mathml_fields(parameter_two, intent, options: options),
@@ -46,8 +52,10 @@ module Plurimath
             ssup_element,
             [
               suppr_element,
-              omml_parameter(parameter_one, display_style, tag_name: "e", options: options),
-              omml_parameter(parameter_two, display_style, tag_name: "sup", options: options),
+              omml_parameter(parameter_one, display_style, tag_name: "e",
+                                                           options: options),
+              omml_parameter(parameter_two, display_style, tag_name: "sup",
+                                                           options: options),
             ],
           )
           [ssup_element]
@@ -55,16 +63,19 @@ module Plurimath
 
         def to_unicodemath(options:)
           if accented?(parameter_two)
-            "#{parameter_one.to_unicodemath(options: options)}#{parameter_two.to_unicodemath(options: options).gsub(/\s+/, "")}"
+            "#{parameter_one.to_unicodemath(options: options)}#{parameter_two.to_unicodemath(options: options).gsub(
+              /\s+/, ''
+            )}"
           elsif parameter_two.mini_sized?
             "#{parameter_one.to_unicodemath(options: options)}#{parameter_two.to_unicodemath(options: options)}"
           else
             first_value = parameter_one.to_unicodemath(options: options) if parameter_one
             second_value = if parameter_two.is_a?(self.class)
-              "^#{parameter_two.to_unicodemath(options: options)}"
-            else
-              "^#{unicodemath_parens(parameter_two, options: options)}"
-            end
+                             "^#{parameter_two.to_unicodemath(options: options)}"
+                           else
+                             "^#{unicodemath_parens(parameter_two,
+                                                    options: options)}"
+                           end
             "#{first_value}#{second_value}"
           end
         end
@@ -72,7 +83,8 @@ module Plurimath
         def line_breaking(obj)
           parameter_one&.line_breaking(obj)
           if obj.value_exist?
-            obj.update(self.class.new(Utility.filter_values(obj.value), parameter_two))
+            obj.update(self.class.new(Utility.filter_values(obj.value),
+                                      parameter_two))
             self.parameter_two = nil
           end
         end

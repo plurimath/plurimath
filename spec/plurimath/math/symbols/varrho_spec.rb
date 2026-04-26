@@ -1,11 +1,10 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Symbols::Varrho do
-
   describe ".initialize" do
-    it 'returns instance of Symbol Varrho' do
+    it "returns instance of Symbol Varrho" do
       klass = described_class.new
-      expect(klass).to be_a(Plurimath::Math::Symbols::Varrho)
+      expect(klass).to be_a(described_class)
     end
   end
 

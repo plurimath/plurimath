@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Rightouterjoin < Symbol
         INPUT = {
-          unicodemath: [["&#x27d6;"], parsing_wrapper(["rightouterjoin"], lang: :unicode)],
-          asciimath: [["&#x27d6;"], parsing_wrapper(["rightouterjoin"], lang: :asciimath)],
+          unicodemath: [["&#x27d6;"],
+                        parsing_wrapper(["rightouterjoin"], lang: :unicode)],
+          asciimath: [["&#x27d6;"],
+                      parsing_wrapper(["rightouterjoin"], lang: :asciimath)],
           mathml: ["&#x27d6;"],
           latex: [["rightouterjoin", "&#x27d6;"]],
           omml: ["&#x27d6;"],

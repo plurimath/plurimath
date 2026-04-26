@@ -3,10 +3,14 @@ module Plurimath
     module Symbols
       class Colon < Symbol
         INPUT = {
-          unicodemath: [["colon", "&#x2236;"], parsing_wrapper(["mathratio"], lang: :unicode)],
-          asciimath: [["&#x2236;"], parsing_wrapper(["colon", "mathratio"], lang: :asciimath)],
+          unicodemath: [["colon", "&#x2236;"],
+                        parsing_wrapper(["mathratio"], lang: :unicode)],
+          asciimath: [["&#x2236;"],
+                      parsing_wrapper(["colon", "mathratio"],
+                                      lang: :asciimath)],
           mathml: ["&#x2236;"],
-          latex: [["mathratio", "&#x2236;"], parsing_wrapper(["colon"], lang: :latex)],
+          latex: [["mathratio", "&#x2236;"],
+                  parsing_wrapper(["colon"], lang: :latex)],
           omml: ["&#x2236;"],
           html: ["&#x2236;"],
         }.freeze

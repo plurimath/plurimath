@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Rsolbar < Symbol
         INPUT = {
-          unicodemath: [["&#x29f7;"], parsing_wrapper(["rsolbar"], lang: :unicode)],
-          asciimath: [["&#x29f7;"], parsing_wrapper(["rsolbar"], lang: :asciimath)],
+          unicodemath: [["&#x29f7;"],
+                        parsing_wrapper(["rsolbar"], lang: :unicode)],
+          asciimath: [["&#x29f7;"],
+                      parsing_wrapper(["rsolbar"], lang: :asciimath)],
           mathml: ["&#x29f7;"],
           latex: [["rsolbar", "&#x29f7;"]],
           omml: ["&#x29f7;"],

@@ -1,11 +1,9 @@
 # frozen_string_literal: true
 
-
 module Plurimath
   module Math
     module Function
       class Longdiv < UnaryFunction
-
         def to_asciimath(options:)
           asciimath_value(options: options)
         end

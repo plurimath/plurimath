@@ -142,7 +142,7 @@ module Plurimath
         "&#x2192;": "vec",
         "&#x302;": "hat",
         "&#x305;": "bar",
-        "&#x20e1;": "vec",
+        "&#x20e1;": "overleftrightarrow",
         "&#x332;": "ul",
         "&#xaf;": "bar",
         "&#x26;": "&",
@@ -153,7 +153,7 @@ module Plurimath
         "..": "ddot",
         "^": "hat",
         "¯": "bar",
-        "_": "ul",
+        _: "ul",
       }.freeze
       SYMBOLS = {
         "|": "|",
@@ -180,6 +180,7 @@ module Plurimath
         stackrel
         overline
         overset
+        overleftrightarrow
         mathcal
         arccos
         arcsin

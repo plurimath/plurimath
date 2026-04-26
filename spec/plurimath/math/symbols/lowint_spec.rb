@@ -1,11 +1,10 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Symbols::Lowint do
-
   describe ".initialize" do
-    it 'returns instance of Symbol Lowint' do
+    it "returns instance of Symbol Lowint" do
       klass = described_class.new
-      expect(klass).to be_a(Plurimath::Math::Symbols::Lowint)
+      expect(klass).to be_a(described_class)
     end
   end
 

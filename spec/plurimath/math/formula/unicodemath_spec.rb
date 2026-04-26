@@ -5,6 +5,7 @@ require "plurimath/fixtures/formula_modules/unicode_math_transform_values"
 RSpec.describe Plurimath::Math::Formula do
   describe ".to_unicodemath" do
     subject(:formula) { UnicodeMathTransformValues.const_get(constant) }
+
     let(:string) { formula.to_unicodemath }
 
     transform_consts = UnicodeMathTransformValues.constants.sort_by do |constant|

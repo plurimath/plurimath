@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Threedangle < Symbol
         INPUT = {
-          unicodemath: [["&#x27c0;"], parsing_wrapper(["threedangle"], lang: :unicode)],
-          asciimath: [["&#x27c0;"], parsing_wrapper(["threedangle"], lang: :asciimath)],
+          unicodemath: [["&#x27c0;"],
+                        parsing_wrapper(["threedangle"], lang: :unicode)],
+          asciimath: [["&#x27c0;"],
+                      parsing_wrapper(["threedangle"], lang: :asciimath)],
           mathml: ["&#x27c0;"],
           latex: [["threedangle", "&#x27c0;"]],
           omml: ["&#x27c0;"],

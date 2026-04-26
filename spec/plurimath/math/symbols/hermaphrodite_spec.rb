@@ -1,11 +1,10 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Symbols::Hermaphrodite do
-
   describe ".initialize" do
-    it 'returns instance of Symbol Hermaphrodite' do
+    it "returns instance of Symbol Hermaphrodite" do
       klass = described_class.new
-      expect(klass).to be_a(Plurimath::Math::Symbols::Hermaphrodite)
+      expect(klass).to be_a(described_class)
     end
   end
 

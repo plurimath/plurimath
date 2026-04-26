@@ -3,8 +3,12 @@ module Plurimath
     module Symbols
       class Downarrowbar < Symbol
         INPUT = {
-          unicodemath: [["&#x2913;"], parsing_wrapper(["DownArrowBar", "downarrowbar"], lang: :unicode)],
-          asciimath: [["&#x2913;"], parsing_wrapper(["DownArrowBar", "downarrowbar"], lang: :asciimath)],
+          unicodemath: [["&#x2913;"],
+                        parsing_wrapper(["DownArrowBar", "downarrowbar"],
+                                        lang: :unicode)],
+          asciimath: [["&#x2913;"],
+                      parsing_wrapper(["DownArrowBar", "downarrowbar"],
+                                      lang: :asciimath)],
           mathml: ["&#x2913;"],
           latex: [["DownArrowBar", "downarrowbar", "&#x2913;"]],
           omml: ["&#x2913;"],

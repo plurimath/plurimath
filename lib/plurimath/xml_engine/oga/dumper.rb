@@ -14,11 +14,10 @@ module Plurimath
           case node
           when Node
             nodes = node.nodes
-            if nodes.length == 0
-              line_break
+            line_break
+            if nodes.empty?
               @out += "<#{node.unwrap.name}#{dump_attrs(node)}/>"
             else
-              line_break
               @out += "<#{node.unwrap.name}#{dump_attrs(node)}>"
               @depth += 1
               nodes.each { |i| dump(i) }
@@ -30,22 +29,22 @@ module Plurimath
             @out += entities(node)
           end
 
-          line_break if node.object_id == @tree.object_id
+          line_break if node.equal?(@tree)
 
           self
         end
 
         attr_reader :out
 
-        ORD_AMP="&".ord
-        ORD_LT="<".ord
-        ORD_GT=">".ord
-        ORD_APOS="'".ord
-        ORD_QUOT='"'.ord
-        ORD_NEWLINE="\n".ord
-        ORD_CARRIAGERETURN="\r".ord
+        ORD_AMP = "&".ord
+        ORD_LT = "<".ord
+        ORD_GT = ">".ord
+        ORD_APOS = "'".ord
+        ORD_QUOT = '"'.ord
+        ORD_NEWLINE = "\n".ord
+        ORD_CARRIAGERETURN = "\r".ord
 
-        def self.entities(text,attr=false)
+        def self.entities(text, attr = false)
           text.to_s.chars.map(&:ord).map do |i|
             if i == ORD_AMP
               "&amp;"
@@ -55,10 +54,10 @@ module Plurimath
               "&gt;"
             elsif i == ORD_QUOT && attr
               "&quot;"
-            elsif i == ORD_NEWLINE || i == ORD_CARRIAGERETURN
+            elsif [ORD_NEWLINE, ORD_CARRIAGERETURN].include?(i)
               i.chr("utf-8")
             elsif i < 0x20
-              "&#x#{i.to_s(16).rjust(4, "0")};"
+              "&#x#{i.to_s(16).rjust(4, '0')};"
             else
               i.chr("utf-8")
             end

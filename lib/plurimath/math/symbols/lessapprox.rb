@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Lessapprox < Symbol
         INPUT = {
-          unicodemath: [["&#x2a85;"], parsing_wrapper(["lessapprox"], lang: :unicode)],
-          asciimath: [["&#x2a85;"], parsing_wrapper(["lessapprox"], lang: :asciimath)],
+          unicodemath: [["&#x2a85;"],
+                        parsing_wrapper(["lessapprox"], lang: :unicode)],
+          asciimath: [["&#x2a85;"],
+                      parsing_wrapper(["lessapprox"], lang: :asciimath)],
           mathml: ["&#x2a85;"],
           latex: [["lessapprox", "&#x2a85;"]],
           omml: ["&#x2a85;"],

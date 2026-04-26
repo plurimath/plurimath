@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Updownarrowbar < Symbol
         INPUT = {
-          unicodemath: [["&#x21a8;"], parsing_wrapper(["updownarrowbar"], lang: :unicode)],
-          asciimath: [["&#x21a8;"], parsing_wrapper(["updownarrowbar"], lang: :asciimath)],
+          unicodemath: [["&#x21a8;"],
+                        parsing_wrapper(["updownarrowbar"], lang: :unicode)],
+          asciimath: [["&#x21a8;"],
+                      parsing_wrapper(["updownarrowbar"], lang: :asciimath)],
           mathml: ["&#x21a8;"],
           latex: [["updownarrowbar", "&#x21a8;"]],
           omml: ["&#x21a8;"],

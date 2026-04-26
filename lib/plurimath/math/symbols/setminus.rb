@@ -3,10 +3,14 @@ module Plurimath
     module Symbols
       class Setminus < Symbol
         INPUT = {
-          unicodemath: [["setminus", "&#x2216;"], parsing_wrapper(["smallsetminus"], lang: :unicode)],
-          asciimath: [["&#x2216;"], parsing_wrapper(["setminus", "smallsetminus"], lang: :asciimath)],
+          unicodemath: [["setminus", "&#x2216;"],
+                        parsing_wrapper(["smallsetminus"], lang: :unicode)],
+          asciimath: [["&#x2216;"],
+                      parsing_wrapper(["setminus", "smallsetminus"],
+                                      lang: :asciimath)],
           mathml: ["&#x2216;"],
-          latex: [["smallsetminus", "&#x2216;"], parsing_wrapper(["setminus"], lang: :latex)],
+          latex: [["smallsetminus", "&#x2216;"],
+                  parsing_wrapper(["setminus"], lang: :latex)],
           omml: ["&#x2216;"],
           html: ["&#x2216;"],
         }.freeze

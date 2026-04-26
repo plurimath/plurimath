@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-
 module Plurimath
   module Math
     module Function
@@ -12,10 +11,12 @@ module Plurimath
         }.freeze
 
         def to_mathml_without_math_tag(intent, options:)
-          first_value = parameter_one&.to_mathml_without_math_tag(intent, options: options)
+          first_value = parameter_one&.to_mathml_without_math_tag(intent,
+                                                                  options: options)
           Utility.update_nodes(
             Utility.ox_element("semantics"),
-            other_tags(parameter_two, intent, options: options).insert(0, first_value),
+            other_tags(parameter_two, intent, options: options).insert(0,
+                                                                       first_value),
           )
         end
 
@@ -34,7 +35,8 @@ module Plurimath
         def line_breaking(obj)
           parameter_one&.line_breaking(obj)
           if obj.value_exist?
-            semantics = self.class.new(Utility.filter_values(obj.value), self.parameter_two)
+            semantics = self.class.new(Utility.filter_values(obj.value),
+                                       parameter_two)
             self.parameter_two = nil
             obj.update(semantics)
           end
@@ -49,7 +51,9 @@ module Plurimath
               tag_element = Utility.ox_element(tag&.to_s)
               contented << Utility.update_nodes(
                 tag_element,
-                content&.map { |object| object&.to_mathml_without_math_tag(intent, options: options) },
+                content&.map { |object|
+                  object&.to_mathml_without_math_tag(intent, options: options)
+                },
               )
             end
           end

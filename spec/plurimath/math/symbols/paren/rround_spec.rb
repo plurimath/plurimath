@@ -1,11 +1,10 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Symbols::Paren::Rround do
-
   describe ".initialize" do
-    it 'returns instance of paren symbol Rround' do
+    it "returns instance of paren symbol Rround" do
       klass = described_class.new
-      expect(klass).to be_a(Plurimath::Math::Symbols::Paren::Rround)
+      expect(klass).to be_a(described_class)
     end
   end
 
@@ -14,12 +13,13 @@ RSpec.describe Plurimath::Math::Symbols::Paren::Rround do
 
     context "matches if open paren for the Symbol Plurimath::Math::Symbols::Paren::Rround" do
       it "matches if paren is open" do
-        expect(klass.open?).to eq(false)
+        expect(klass.open?).to be(false)
       end
 
       it "checks if paren is closing paren" do
-        expect(klass.close?).to eq(true)
+        expect(klass.close?).to be(true)
       end
+
       it "checks if paren is open" do
         expect(klass.opening).to eq(Plurimath::Math::Symbols::Paren::Lround)
       end

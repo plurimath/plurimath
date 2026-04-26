@@ -3,8 +3,12 @@ module Plurimath
     module Symbols
       class Project < Symbol
         INPUT = {
-          unicodemath: [["&#x2a21;"], parsing_wrapper(["zproject", "project"], lang: :unicode)],
-          asciimath: [["&#x2a21;"], parsing_wrapper(["zproject", "project"], lang: :asciimath)],
+          unicodemath: [["&#x2a21;"],
+                        parsing_wrapper(["zproject", "project"],
+                                        lang: :unicode)],
+          asciimath: [["&#x2a21;"],
+                      parsing_wrapper(["zproject", "project"],
+                                      lang: :asciimath)],
           mathml: ["&#x2a21;"],
           latex: [["zproject", "project", "&#x2a21;"]],
           omml: ["&#x2a21;"],

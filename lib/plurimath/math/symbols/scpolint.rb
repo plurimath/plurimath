@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Scpolint < Symbol
         INPUT = {
-          unicodemath: [["&#x2a13;"], parsing_wrapper(["scpolint"], lang: :unicode)],
-          asciimath: [["&#x2a13;"], parsing_wrapper(["scpolint"], lang: :asciimath)],
+          unicodemath: [["&#x2a13;"],
+                        parsing_wrapper(["scpolint"], lang: :unicode)],
+          asciimath: [["&#x2a13;"],
+                      parsing_wrapper(["scpolint"], lang: :asciimath)],
           mathml: ["&#x2a13;"],
           latex: [["scpolint", "&#x2a13;"]],
           omml: ["&#x2a13;"],

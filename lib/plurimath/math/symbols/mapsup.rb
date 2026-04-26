@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Mapsup < Symbol
         INPUT = {
-          unicodemath: [["&#x21a5;"], parsing_wrapper(["MapsUp", "mapsup"], lang: :unicode)],
-          asciimath: [["&#x21a5;"], parsing_wrapper(["MapsUp", "mapsup"], lang: :asciimath)],
+          unicodemath: [["&#x21a5;"],
+                        parsing_wrapper(["MapsUp", "mapsup"], lang: :unicode)],
+          asciimath: [["&#x21a5;"],
+                      parsing_wrapper(["MapsUp", "mapsup"], lang: :asciimath)],
           mathml: ["&#x21a5;"],
           latex: [["MapsUp", "mapsup", "&#x21a5;"]],
           omml: ["&#x21a5;"],

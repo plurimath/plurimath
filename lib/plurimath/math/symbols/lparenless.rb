@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Lparenless < Symbol
         INPUT = {
-          unicodemath: [["&#x2993;"], parsing_wrapper(["lparenless"], lang: :unicode)],
-          asciimath: [["&#x2993;"], parsing_wrapper(["lparenless"], lang: :asciimath)],
+          unicodemath: [["&#x2993;"],
+                        parsing_wrapper(["lparenless"], lang: :unicode)],
+          asciimath: [["&#x2993;"],
+                      parsing_wrapper(["lparenless"], lang: :asciimath)],
           mathml: ["&#x2993;"],
           latex: [["lparenless", "&#x2993;"]],
           omml: ["&#x2993;"],

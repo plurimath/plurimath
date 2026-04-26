@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Vlongdash < Symbol
         INPUT = {
-          unicodemath: [["&#x27dd;"], parsing_wrapper(["vlongdash"], lang: :unicode)],
-          asciimath: [["&#x27dd;"], parsing_wrapper(["vlongdash"], lang: :asciimath)],
+          unicodemath: [["&#x27dd;"],
+                        parsing_wrapper(["vlongdash"], lang: :unicode)],
+          asciimath: [["&#x27dd;"],
+                      parsing_wrapper(["vlongdash"], lang: :asciimath)],
           mathml: ["&#x27dd;"],
           latex: [["vlongdash", "&#x27dd;"]],
           omml: ["&#x27dd;"],

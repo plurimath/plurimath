@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Anchor < Symbol
         INPUT = {
-          unicodemath: [["&#x2693;"], parsing_wrapper(["anchor"], lang: :unicode)],
-          asciimath: [["&#x2693;"], parsing_wrapper(["anchor"], lang: :asciimath)],
+          unicodemath: [["&#x2693;"],
+                        parsing_wrapper(["anchor"], lang: :unicode)],
+          asciimath: [["&#x2693;"],
+                      parsing_wrapper(["anchor"], lang: :asciimath)],
           mathml: ["&#x2693;"],
           latex: [["anchor", "&#x2693;"]],
           omml: ["&#x2693;"],

@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Boxbar < Symbol
         INPUT = {
-          unicodemath: [["&#x25eb;"], parsing_wrapper(["boxbar"], lang: :unicode)],
-          asciimath: [["&#x25eb;"], parsing_wrapper(["boxbar"], lang: :asciimath)],
+          unicodemath: [["&#x25eb;"],
+                        parsing_wrapper(["boxbar"], lang: :unicode)],
+          asciimath: [["&#x25eb;"],
+                      parsing_wrapper(["boxbar"], lang: :asciimath)],
           mathml: ["&#x25eb;"],
           latex: [["boxbar", "&#x25eb;"]],
           omml: ["&#x25eb;"],

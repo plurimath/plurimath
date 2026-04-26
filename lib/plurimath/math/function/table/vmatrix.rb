@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-
 module Plurimath
   module Math
     module Function
@@ -18,7 +17,9 @@ module Plurimath
           end
 
           def to_unicodemath(options:)
-            unicode_value = value.map { |val| val.to_unicodemath(options: options) }.join("@")
+            unicode_value = value.map do |val|
+              val.to_unicodemath(options: options)
+            end.join("@")
             "#{matrix_symbol}(#{unicode_value})"
           end
 
@@ -38,8 +39,8 @@ module Plurimath
             open_paren&.class_name == "norm"
           end
 
-          def intent_attr_value(intent)
-            intent_names.dig(capital_vmatrix? ? :normed_matrix : :determinant)
+          def intent_attr_value(_intent)
+            intent_names[capital_vmatrix? ? :normed_matrix : :determinant]
           end
         end
       end

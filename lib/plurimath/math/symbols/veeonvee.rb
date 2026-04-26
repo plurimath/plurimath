@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Veeonvee < Symbol
         INPUT = {
-          unicodemath: [["&#x2a56;"], parsing_wrapper(["veeonvee"], lang: :unicode)],
-          asciimath: [["&#x2a56;"], parsing_wrapper(["veeonvee"], lang: :asciimath)],
+          unicodemath: [["&#x2a56;"],
+                        parsing_wrapper(["veeonvee"], lang: :unicode)],
+          asciimath: [["&#x2a56;"],
+                      parsing_wrapper(["veeonvee"], lang: :asciimath)],
           mathml: ["&#x2a56;"],
           latex: [["veeonvee", "&#x2a56;"]],
           omml: ["&#x2a56;"],

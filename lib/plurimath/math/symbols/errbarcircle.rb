@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Errbarcircle < Symbol
         INPUT = {
-          unicodemath: [["&#x29f2;"], parsing_wrapper(["errbarcircle"], lang: :unicode)],
-          asciimath: [["&#x29f2;"], parsing_wrapper(["errbarcircle"], lang: :asciimath)],
+          unicodemath: [["&#x29f2;"],
+                        parsing_wrapper(["errbarcircle"], lang: :unicode)],
+          asciimath: [["&#x29f2;"],
+                      parsing_wrapper(["errbarcircle"], lang: :asciimath)],
           mathml: ["&#x29f2;"],
           latex: [["errbarcircle", "&#x29f2;"]],
           omml: ["&#x29f2;"],

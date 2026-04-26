@@ -1,11 +1,10 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Symbols::Ngtrsim do
-
   describe ".initialize" do
-    it 'returns instance of Symbol Ngtrsim' do
+    it "returns instance of Symbol Ngtrsim" do
       klass = described_class.new
-      expect(klass).to be_a(Plurimath::Math::Symbols::Ngtrsim)
+      expect(klass).to be_a(described_class)
     end
   end
 

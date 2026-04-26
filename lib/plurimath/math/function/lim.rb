@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-
 module Plurimath
   module Math
     module Function
@@ -12,8 +11,14 @@ module Plurimath
         }.freeze
 
         def to_asciimath(options:)
-          first_value = "_#{wrapped(parameter_one, options: options)}" if parameter_one
-          second_value = "^#{wrapped(parameter_two, options: options)}" if parameter_two
+          if parameter_one
+            first_value = "_#{wrapped(parameter_one,
+                                      options: options)}"
+          end
+          if parameter_two
+            second_value = "^#{wrapped(parameter_two,
+                                       options: options)}"
+          end
           "lim#{first_value}#{second_value}"
         end
 
@@ -37,11 +42,14 @@ module Plurimath
             lim_tag,
             [
               first_value,
-              parameter_one&.to_mathml_without_math_tag(intent, options: options),
-              parameter_two&.to_mathml_without_math_tag(intent, options: options),
+              parameter_one&.to_mathml_without_math_tag(intent,
+                                                        options: options),
+              parameter_two&.to_mathml_without_math_tag(intent,
+                                                        options: options),
             ],
           )
-          intentify(lim_tag, intent, func_name: :function, intent_name: intent_names[:name])
+          intentify(lim_tag, intent, func_name: :function,
+                                     intent_name: intent_names[:name])
         end
 
         def to_omml_without_math_tag(display_style, options:)
@@ -49,8 +57,14 @@ module Plurimath
         end
 
         def to_unicodemath(options:)
-          first_value  = "_#{unicodemath_parens(parameter_one, options: options)}" if parameter_one
-          second_value = "^#{unicodemath_parens(parameter_two, options: options)}" if parameter_two
+          if parameter_one
+            first_value  = "_#{unicodemath_parens(parameter_one,
+                                                  options: options)}"
+          end
+          if parameter_two
+            second_value = "^#{unicodemath_parens(parameter_two,
+                                                  options: options)}"
+          end
           "lim#{first_value}#{second_value}"
         end
 
@@ -58,7 +72,8 @@ module Plurimath
           parameter_one.line_breaking(obj)
           if obj.value_exist?
             obj.update(
-              Underover.new(nil, Utility.filter_values(obj.value), parameter_two)
+              Underover.new(nil, Utility.filter_values(obj.value),
+                            parameter_two),
             )
             self.parameter_two = nil
           end

@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Dottimes < Symbol
         INPUT = {
-          unicodemath: [["&#x2a30;"], parsing_wrapper(["dottimes"], lang: :unicode)],
-          asciimath: [["&#x2a30;"], parsing_wrapper(["dottimes"], lang: :asciimath)],
+          unicodemath: [["&#x2a30;"],
+                        parsing_wrapper(["dottimes"], lang: :unicode)],
+          asciimath: [["&#x2a30;"],
+                      parsing_wrapper(["dottimes"], lang: :asciimath)],
           mathml: ["&#x2a30;"],
           latex: [["dottimes", "&#x2a30;"]],
           omml: ["&#x2a30;"],

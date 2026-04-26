@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Neswarrow < Symbol
         INPUT = {
-          unicodemath: [["&#x2922;"], parsing_wrapper(["neswarrow"], lang: :unicode)],
-          asciimath: [["&#x2922;"], parsing_wrapper(["neswarrow"], lang: :asciimath)],
+          unicodemath: [["&#x2922;"],
+                        parsing_wrapper(["neswarrow"], lang: :unicode)],
+          asciimath: [["&#x2922;"],
+                      parsing_wrapper(["neswarrow"], lang: :asciimath)],
           mathml: ["&#x2922;"],
           latex: [["neswarrow", "&#x2922;"]],
           omml: ["&#x2922;"],

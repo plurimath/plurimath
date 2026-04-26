@@ -4,7 +4,8 @@ module Plurimath
       class Updownarrow < Symbol
         INPUT = {
           unicodemath: [["Updownarrow", "&#x21d5;"]],
-          asciimath: [["&#x21d5;"], parsing_wrapper(["Updownarrow"], lang: :asciimath)],
+          asciimath: [["&#x21d5;"],
+                      parsing_wrapper(["Updownarrow"], lang: :asciimath)],
           mathml: ["&#x21d5;"],
           latex: [["Updownarrow", "&#x21d5;"]],
           omml: ["&#x21d5;"],

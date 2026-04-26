@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Veeodot < Symbol
         INPUT = {
-          unicodemath: [["&#x2a52;"], parsing_wrapper(["veeodot"], lang: :unicode)],
-          asciimath: [["&#x2a52;"], parsing_wrapper(["veeodot"], lang: :asciimath)],
+          unicodemath: [["&#x2a52;"],
+                        parsing_wrapper(["veeodot"], lang: :unicode)],
+          asciimath: [["&#x2a52;"],
+                      parsing_wrapper(["veeodot"], lang: :asciimath)],
           mathml: ["&#x2a52;"],
           latex: [["veeodot", "&#x2a52;"]],
           omml: ["&#x2a52;"],

@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Whthorzoval < Symbol
         INPUT = {
-          unicodemath: [["&#x2b2d;"], parsing_wrapper(["whthorzoval"], lang: :unicode)],
-          asciimath: [["&#x2b2d;"], parsing_wrapper(["whthorzoval"], lang: :asciimath)],
+          unicodemath: [["&#x2b2d;"],
+                        parsing_wrapper(["whthorzoval"], lang: :unicode)],
+          asciimath: [["&#x2b2d;"],
+                      parsing_wrapper(["whthorzoval"], lang: :asciimath)],
           mathml: ["&#x2b2d;"],
           latex: [["whthorzoval", "&#x2b2d;"]],
           omml: ["&#x2b2d;"],

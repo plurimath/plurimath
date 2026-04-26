@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Upomicron < Symbol
         INPUT = {
-          unicodemath: [["&#x3bf;"], parsing_wrapper(["upomicron"], lang: :unicode)],
-          asciimath: [["&#x3bf;"], parsing_wrapper(["upomicron"], lang: :asciimath)],
+          unicodemath: [["&#x3bf;"],
+                        parsing_wrapper(["upomicron"], lang: :unicode)],
+          asciimath: [["&#x3bf;"],
+                      parsing_wrapper(["upomicron"], lang: :asciimath)],
           mathml: ["&#x3bf;"],
           latex: [["upomicron", "&#x3bf;"]],
           omml: ["&#x3bf;"],

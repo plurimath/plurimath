@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Measeq < Symbol
         INPUT = {
-          unicodemath: [["&#x225e;"], parsing_wrapper(["measeq"], lang: :unicode)],
-          asciimath: [["&#x225e;"], parsing_wrapper(["measeq"], lang: :asciimath)],
+          unicodemath: [["&#x225e;"],
+                        parsing_wrapper(["measeq"], lang: :unicode)],
+          asciimath: [["&#x225e;"],
+                      parsing_wrapper(["measeq"], lang: :asciimath)],
           mathml: ["&#x225e;"],
           latex: [["measeq", "&#x225e;"]],
           omml: ["&#x225e;"],

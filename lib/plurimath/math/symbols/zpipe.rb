@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Zpipe < Symbol
         INPUT = {
-          unicodemath: [["&#x2a20;"], parsing_wrapper(["zpipe"], lang: :unicode)],
-          asciimath: [["&#x2a20;"], parsing_wrapper(["zpipe"], lang: :asciimath)],
+          unicodemath: [["&#x2a20;"],
+                        parsing_wrapper(["zpipe"], lang: :unicode)],
+          asciimath: [["&#x2a20;"],
+                      parsing_wrapper(["zpipe"], lang: :asciimath)],
           mathml: ["&#x2a20;"],
           latex: [["zpipe", "&#x2a20;"]],
           omml: ["&#x2a20;"],

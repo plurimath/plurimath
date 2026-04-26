@@ -1,11 +1,10 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Symbols::Hyphenbullet do
-
   describe ".initialize" do
-    it 'returns instance of Symbol Hyphenbullet' do
+    it "returns instance of Symbol Hyphenbullet" do
       klass = described_class.new
-      expect(klass).to be_a(Plurimath::Math::Symbols::Hyphenbullet)
+      expect(klass).to be_a(described_class)
     end
   end
 

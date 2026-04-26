@@ -3,10 +3,15 @@ module Plurimath
     module Symbols
       class Box < Symbol
         INPUT = {
-          unicodemath: [["box", "&#x25a1;"], parsing_wrapper(["square", "mdlgwhtsquare"], lang: :unicode)],
-          asciimath: [["square", "&#x25a1;"], parsing_wrapper(["box", "mdlgwhtsquare"], lang: :asciimath)],
+          unicodemath: [["box", "&#x25a1;"],
+                        parsing_wrapper(["square", "mdlgwhtsquare"],
+                                        lang: :unicode)],
+          asciimath: [["square", "&#x25a1;"],
+                      parsing_wrapper(["box", "mdlgwhtsquare"],
+                                      lang: :asciimath)],
           mathml: ["&#x25a1;"],
-          latex: [["mdlgwhtsquare", "&#x25a1;"], parsing_wrapper(["box", "square"], lang: :latex)],
+          latex: [["mdlgwhtsquare", "&#x25a1;"],
+                  parsing_wrapper(["box", "square"], lang: :latex)],
           omml: ["&#x25a1;"],
           html: ["&#x25a1;"],
         }.freeze

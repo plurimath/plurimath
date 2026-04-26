@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Eqqplus < Symbol
         INPUT = {
-          unicodemath: [["&#x2a71;"], parsing_wrapper(["eqqplus"], lang: :unicode)],
-          asciimath: [["&#x2a71;"], parsing_wrapper(["eqqplus"], lang: :asciimath)],
+          unicodemath: [["&#x2a71;"],
+                        parsing_wrapper(["eqqplus"], lang: :unicode)],
+          asciimath: [["&#x2a71;"],
+                      parsing_wrapper(["eqqplus"], lang: :asciimath)],
           mathml: ["&#x2a71;"],
           latex: [["eqqplus", "&#x2a71;"]],
           omml: ["&#x2a71;"],

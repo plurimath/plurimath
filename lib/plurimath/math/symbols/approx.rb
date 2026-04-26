@@ -3,10 +3,12 @@ module Plurimath
     module Symbols
       class Approx < Symbol
         INPUT = {
-          unicodemath: [["approx", "&#x2248;"], parsing_wrapper(["~~"], lang: :unicode)],
+          unicodemath: [["approx", "&#x2248;"],
+                        parsing_wrapper(["~~"], lang: :unicode)],
           asciimath: [["approx", "~~", "&#x2248;"]],
           mathml: ["&#x2248;"],
-          latex: [["approx", "&#x2248;"], parsing_wrapper(["~~"], lang: :latex)],
+          latex: [["approx", "&#x2248;"],
+                  parsing_wrapper(["~~"], lang: :latex)],
           omml: ["&#x2248;"],
           html: ["&#x2248;"],
         }.freeze

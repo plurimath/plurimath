@@ -1,16 +1,15 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Function::Text do
-
   describe ".initialize" do
-    it 'returns instance of Text' do
-      text = Plurimath::Math::Function::Text.new('Hello')
-      expect(text).to be_a(Plurimath::Math::Function::Text)
+    it "returns instance of Text" do
+      text = described_class.new("Hello")
+      expect(text).to be_a(described_class)
     end
 
-    it 'initializes Text object' do
-      text = Plurimath::Math::Function::Text.new('Hello')
-      expect(text.parameter_one).to eql('Hello')
+    it "initializes Text object" do
+      text = described_class.new("Hello")
+      expect(text.parameter_one).to eql("Hello")
     end
   end
 
@@ -35,6 +34,7 @@ RSpec.describe Plurimath::Math::Function::Text do
 
     context "contains Formula as value" do
       let(:first_value) { "sum_(&)^(so)" }
+
       it "returns asciimath string" do
         expect(formula).to eq("\"sum_(&)^(so)\"")
       end
@@ -44,8 +44,8 @@ RSpec.describe Plurimath::Math::Function::Text do
   describe ".to_mathml" do
     subject(:formula) do
       Plurimath.xml_engine.dump(
-        described_class.new(first_value).
-          to_mathml_without_math_tag(false, options: {}),
+        described_class.new(first_value)
+          .to_mathml_without_math_tag(false, options: {}),
         indent: 2,
       ).gsub("&amp;", "&")
     end
@@ -96,6 +96,7 @@ RSpec.describe Plurimath::Math::Function::Text do
 
     context "contains Formula as value" do
       let(:first_value) { "unicode[:kappa]" }
+
       it "returns mathml string" do
         expect(formula).to eql("\\text{kappa}")
       end
@@ -123,6 +124,7 @@ RSpec.describe Plurimath::Math::Function::Text do
 
     context "contains Formula as value" do
       let(:first_value) { "unicode[:kappa]" }
+
       it "returns mathml string" do
         expect(formula).to eql("&#x3ba;")
       end
@@ -130,20 +132,22 @@ RSpec.describe Plurimath::Math::Function::Text do
   end
 
   describe ".validate_function_formula" do
-    subject(:formula) { described_class.new(first_value).validate_function_formula }
+    subject(:formula) do
+      described_class.new(first_value).validate_function_formula
+    end
 
     context "contains Symbol as value" do
       let(:first_value) { "n" }
 
       it "expects false in return" do
-        expect(formula).to eql(false)
+        expect(formula).to be(false)
       end
     end
 
     context "contains Symbol as value" do
       let(:first_value) { "a" }
 
-      it "should not return true" do
+      it "does not return true" do
         expect(formula).not_to eql(true)
       end
     end

@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Swords < Symbol
         INPUT = {
-          unicodemath: [["&#x2694;"], parsing_wrapper(["swords"], lang: :unicode)],
-          asciimath: [["&#x2694;"], parsing_wrapper(["swords"], lang: :asciimath)],
+          unicodemath: [["&#x2694;"],
+                        parsing_wrapper(["swords"], lang: :unicode)],
+          asciimath: [["&#x2694;"],
+                      parsing_wrapper(["swords"], lang: :asciimath)],
           mathml: ["&#x2694;"],
           latex: [["swords", "&#x2694;"]],
           omml: ["&#x2694;"],

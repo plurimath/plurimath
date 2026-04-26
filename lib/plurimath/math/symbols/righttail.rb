@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Righttail < Symbol
         INPUT = {
-          unicodemath: [["&#x291a;"], parsing_wrapper(["righttail"], lang: :unicode)],
-          asciimath: [["&#x291a;"], parsing_wrapper(["righttail"], lang: :asciimath)],
+          unicodemath: [["&#x291a;"],
+                        parsing_wrapper(["righttail"], lang: :unicode)],
+          asciimath: [["&#x291a;"],
+                      parsing_wrapper(["righttail"], lang: :asciimath)],
           mathml: ["&#x291a;"],
           latex: [["righttail", "&#x291a;"]],
           omml: ["&#x291a;"],

@@ -1,11 +1,10 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Symbols::Hkswarow do
-
   describe ".initialize" do
-    it 'returns instance of Symbol Hkswarow' do
+    it "returns instance of Symbol Hkswarow" do
       klass = described_class.new
-      expect(klass).to be_a(Plurimath::Math::Symbols::Hkswarow)
+      expect(klass).to be_a(described_class)
     end
   end
 

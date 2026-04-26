@@ -20,7 +20,6 @@ module Plurimath
 
         def []=(attr, value)
           update_attrs(@node, { attr.to_s => value.to_s })
-          update_attrs(self, { attr.to_s => value.to_s })
         end
 
         def name
@@ -33,7 +32,6 @@ module Plurimath
 
         def set_attr(attrs)
           update_attrs(@node, attrs)
-          update_attrs(self, attrs)
         end
 
         def remove_attr(attribute)
@@ -84,7 +82,7 @@ module Plurimath
 
         def replace_nodes(nodes_array)
           xml_nodes.nodes.replace(
-            nodes_array.all?(Element) ? nodes_array.map(&:xml_nodes) : nodes_array
+            nodes_array.all?(Element) ? nodes_array.map(&:xml_nodes) : nodes_array,
           )
         end
 
@@ -105,7 +103,8 @@ module Plurimath
 
         def update_attrs(element, attributes = @attributes)
           attributes&.each do |key, value|
-            element.attributes[key.to_s] = Utility.html_entity_to_unicode(value.to_s)
+            element.attributes[key.to_s] =
+              Utility.html_entity_to_unicode(value.to_s)
           end
           element
         end

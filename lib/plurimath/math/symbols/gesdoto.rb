@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Gesdoto < Symbol
         INPUT = {
-          unicodemath: [["&#x2a82;"], parsing_wrapper(["gesdoto"], lang: :unicode)],
-          asciimath: [["&#x2a82;"], parsing_wrapper(["gesdoto"], lang: :asciimath)],
+          unicodemath: [["&#x2a82;"],
+                        parsing_wrapper(["gesdoto"], lang: :unicode)],
+          asciimath: [["&#x2a82;"],
+                      parsing_wrapper(["gesdoto"], lang: :asciimath)],
           mathml: ["&#x2a82;"],
           latex: [["gesdoto", "&#x2a82;"]],
           omml: ["&#x2a82;"],

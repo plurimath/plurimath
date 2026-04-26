@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Shortlefttack < Symbol
         INPUT = {
-          unicodemath: [["&#x2ade;"], parsing_wrapper(["shortlefttack"], lang: :unicode)],
-          asciimath: [["&#x2ade;"], parsing_wrapper(["shortlefttack"], lang: :asciimath)],
+          unicodemath: [["&#x2ade;"],
+                        parsing_wrapper(["shortlefttack"], lang: :unicode)],
+          asciimath: [["&#x2ade;"],
+                      parsing_wrapper(["shortlefttack"], lang: :asciimath)],
           mathml: ["&#x2ade;"],
           latex: [["shortlefttack", "&#x2ade;"]],
           omml: ["&#x2ade;"],

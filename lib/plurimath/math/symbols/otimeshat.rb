@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Otimeshat < Symbol
         INPUT = {
-          unicodemath: [["&#x2a36;"], parsing_wrapper(["otimeshat"], lang: :unicode)],
-          asciimath: [["&#x2a36;"], parsing_wrapper(["otimeshat"], lang: :asciimath)],
+          unicodemath: [["&#x2a36;"],
+                        parsing_wrapper(["otimeshat"], lang: :unicode)],
+          asciimath: [["&#x2a36;"],
+                      parsing_wrapper(["otimeshat"], lang: :asciimath)],
           mathml: ["&#x2a36;"],
           latex: [["otimeshat", "&#x2a36;"]],
           omml: ["&#x2a36;"],

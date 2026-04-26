@@ -3,8 +3,11 @@ module Plurimath
     module Symbols
       class Longleftrightarrow < Symbol
         INPUT = {
-          unicodemath: [["Longleftrightarrow", "&#x27fa;"], parsing_wrapper(["iff"], lang: :unicode)],
-          asciimath: [["&#x27fa;"], parsing_wrapper(["Longleftrightarrow", "iff"], lang: :asciimath)],
+          unicodemath: [["Longleftrightarrow", "&#x27fa;"],
+                        parsing_wrapper(["iff"], lang: :unicode)],
+          asciimath: [["&#x27fa;"],
+                      parsing_wrapper(["Longleftrightarrow", "iff"],
+                                      lang: :asciimath)],
           mathml: ["&#x27fa;"],
           latex: [["Longleftrightarrow", "iff", "&#x27fa;"]],
           omml: ["&#x27fa;"],

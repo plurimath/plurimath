@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Hyphenbullet < Symbol
         INPUT = {
-          unicodemath: [["&#x2043;"], parsing_wrapper(["hyphenbullet"], lang: :unicode)],
-          asciimath: [["&#x2043;"], parsing_wrapper(["hyphenbullet"], lang: :asciimath)],
+          unicodemath: [["&#x2043;"],
+                        parsing_wrapper(["hyphenbullet"], lang: :unicode)],
+          asciimath: [["&#x2043;"],
+                      parsing_wrapper(["hyphenbullet"], lang: :asciimath)],
           mathml: ["&#x2043;"],
           latex: [["hyphenbullet", "&#x2043;"]],
           omml: ["&#x2043;"],

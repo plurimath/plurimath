@@ -3,8 +3,12 @@ module Plurimath
     module Symbols
       class Jupiter < Symbol
         INPUT = {
-          unicodemath: [["&#x2643;"], parsing_wrapper(["jupiter", "Jupiter"], lang: :unicode)],
-          asciimath: [["&#x2643;"], parsing_wrapper(["jupiter", "Jupiter"], lang: :asciimath)],
+          unicodemath: [["&#x2643;"],
+                        parsing_wrapper(["jupiter", "Jupiter"],
+                                        lang: :unicode)],
+          asciimath: [["&#x2643;"],
+                      parsing_wrapper(["jupiter", "Jupiter"],
+                                      lang: :asciimath)],
           mathml: ["&#x2643;"],
           latex: [["jupiter", "Jupiter", "&#x2643;"]],
           omml: ["&#x2643;"],

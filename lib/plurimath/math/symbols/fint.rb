@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Fint < Symbol
         INPUT = {
-          unicodemath: [["&#x2a0f;"], parsing_wrapper(["fint"], lang: :unicode)],
-          asciimath: [["&#x2a0f;"], parsing_wrapper(["fint"], lang: :asciimath)],
+          unicodemath: [["&#x2a0f;"],
+                        parsing_wrapper(["fint"], lang: :unicode)],
+          asciimath: [["&#x2a0f;"],
+                      parsing_wrapper(["fint"], lang: :asciimath)],
           mathml: ["&#x2a0f;"],
           latex: [["fint", "&#x2a0f;"]],
           omml: ["&#x2a0f;"],

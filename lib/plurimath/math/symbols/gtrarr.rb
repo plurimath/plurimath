@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Gtrarr < Symbol
         INPUT = {
-          unicodemath: [["&#x2978;"], parsing_wrapper(["gtrarr"], lang: :unicode)],
-          asciimath: [["&#x2978;"], parsing_wrapper(["gtrarr"], lang: :asciimath)],
+          unicodemath: [["&#x2978;"],
+                        parsing_wrapper(["gtrarr"], lang: :unicode)],
+          asciimath: [["&#x2978;"],
+                      parsing_wrapper(["gtrarr"], lang: :asciimath)],
           mathml: ["&#x2978;"],
           latex: [["gtrarr", "&#x2978;"]],
           omml: ["&#x2978;"],

@@ -3,10 +3,14 @@ module Plurimath
     module Symbols
       class Looparrowleft < Symbol
         INPUT = {
-          unicodemath: [["looparrowleft", "&#x21ac;"], parsing_wrapper(["looparrowright"], lang: :unicode)],
-          asciimath: [["&#x21ac;"], parsing_wrapper(["looparrowleft", "looparrowright"], lang: :asciimath)],
+          unicodemath: [["looparrowleft", "&#x21ac;"],
+                        parsing_wrapper(["looparrowright"], lang: :unicode)],
+          asciimath: [["&#x21ac;"],
+                      parsing_wrapper(["looparrowleft", "looparrowright"],
+                                      lang: :asciimath)],
           mathml: ["&#x21ac;"],
-          latex: [["looparrowright", "&#x21ac;"], parsing_wrapper(["looparrowleft"], lang: :latex)],
+          latex: [["looparrowright", "&#x21ac;"],
+                  parsing_wrapper(["looparrowleft"], lang: :latex)],
           omml: ["&#x21ac;"],
           html: ["&#x21ac;"],
         }.freeze

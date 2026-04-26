@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Lefttail < Symbol
         INPUT = {
-          unicodemath: [["&#x2919;"], parsing_wrapper(["lefttail"], lang: :unicode)],
-          asciimath: [["&#x2919;"], parsing_wrapper(["lefttail"], lang: :asciimath)],
+          unicodemath: [["&#x2919;"],
+                        parsing_wrapper(["lefttail"], lang: :unicode)],
+          asciimath: [["&#x2919;"],
+                      parsing_wrapper(["lefttail"], lang: :asciimath)],
           mathml: ["&#x2919;"],
           latex: [["lefttail", "&#x2919;"]],
           omml: ["&#x2919;"],

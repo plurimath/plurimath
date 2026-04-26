@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Simrdots < Symbol
         INPUT = {
-          unicodemath: [["&#x2a6b;"], parsing_wrapper(["simrdots"], lang: :unicode)],
-          asciimath: [["&#x2a6b;"], parsing_wrapper(["simrdots"], lang: :asciimath)],
+          unicodemath: [["&#x2a6b;"],
+                        parsing_wrapper(["simrdots"], lang: :unicode)],
+          asciimath: [["&#x2a6b;"],
+                      parsing_wrapper(["simrdots"], lang: :asciimath)],
           mathml: ["&#x2a6b;"],
           latex: [["simrdots", "&#x2a6b;"]],
           omml: ["&#x2a6b;"],

@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Game < Symbol
         INPUT = {
-          unicodemath: [["&#x2141;"], parsing_wrapper(["Game"], lang: :unicode)],
-          asciimath: [["&#x2141;"], parsing_wrapper(["Game"], lang: :asciimath)],
+          unicodemath: [["&#x2141;"],
+                        parsing_wrapper(["Game"], lang: :unicode)],
+          asciimath: [["&#x2141;"],
+                      parsing_wrapper(["Game"], lang: :asciimath)],
           mathml: ["&#x2141;"],
           latex: [["Game", "&#x2141;"]],
           omml: ["&#x2141;"],

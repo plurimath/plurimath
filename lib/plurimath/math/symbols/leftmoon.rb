@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Leftmoon < Symbol
         INPUT = {
-          unicodemath: [["&#x263e;"], parsing_wrapper(["leftmoon"], lang: :unicode)],
-          asciimath: [["&#x263e;"], parsing_wrapper(["leftmoon"], lang: :asciimath)],
+          unicodemath: [["&#x263e;"],
+                        parsing_wrapper(["leftmoon"], lang: :unicode)],
+          asciimath: [["&#x263e;"],
+                      parsing_wrapper(["leftmoon"], lang: :asciimath)],
           mathml: ["&#x263e;"],
           latex: [["leftmoon", "&#x263e;"]],
           omml: ["&#x263e;"],

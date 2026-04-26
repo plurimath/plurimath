@@ -3,10 +3,14 @@ module Plurimath
     module Symbols
       class Rdsh < Symbol
         INPUT = {
-          unicodemath: [["rdsh", "&#x21b3;"], parsing_wrapper(["drsh", "Rdsh"], lang: :unicode)],
-          asciimath: [["&#x21b3;"], parsing_wrapper(["rdsh", "drsh", "Rdsh"], lang: :asciimath)],
+          unicodemath: [["rdsh", "&#x21b3;"],
+                        parsing_wrapper(["drsh", "Rdsh"], lang: :unicode)],
+          asciimath: [["&#x21b3;"],
+                      parsing_wrapper(["rdsh", "drsh", "Rdsh"],
+                                      lang: :asciimath)],
           mathml: ["&#x21b3;"],
-          latex: [["drsh", "Rdsh", "&#x21b3;"], parsing_wrapper(["rdsh"], lang: :latex)],
+          latex: [["drsh", "Rdsh", "&#x21b3;"],
+                  parsing_wrapper(["rdsh"], lang: :latex)],
           omml: ["&#x21b3;"],
           html: ["&#x21b3;"],
         }.freeze

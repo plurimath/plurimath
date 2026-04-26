@@ -1,11 +1,10 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Symbols::Neovnwarrow do
-
   describe ".initialize" do
-    it 'returns instance of Symbol Neovnwarrow' do
+    it "returns instance of Symbol Neovnwarrow" do
       klass = described_class.new
-      expect(klass).to be_a(Plurimath::Math::Symbols::Neovnwarrow)
+      expect(klass).to be_a(described_class)
     end
   end
 

@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-
 module Plurimath
   module Math
     module Function
@@ -31,11 +30,14 @@ module Plurimath
             inf_tag,
             [
               first_value,
-              parameter_one&.to_mathml_without_math_tag(intent, options: options),
-              parameter_two&.to_mathml_without_math_tag(intent, options: options),
+              parameter_one&.to_mathml_without_math_tag(intent,
+                                                        options: options),
+              parameter_two&.to_mathml_without_math_tag(intent,
+                                                        options: options),
             ],
           )
-          intentify(inf_tag, intent, func_name: :function, intent_name: intent_names[:name])
+          intentify(inf_tag, intent, func_name: :function,
+                                     intent_name: intent_names[:name])
         end
 
         def to_omml_without_math_tag(display_style, options:)
@@ -46,7 +48,8 @@ module Plurimath
           parameter_one.line_breaking(obj)
           if obj.value_exist?
             obj.update(
-              Underover.new(nil, Utility.filter_values(obj.value), parameter_two)
+              Underover.new(nil, Utility.filter_values(obj.value),
+                            parameter_two),
             )
             self.parameter_two = nil
           end

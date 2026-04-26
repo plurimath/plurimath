@@ -1,11 +1,10 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Symbols::Closedvarcap do
-
   describe ".initialize" do
-    it 'returns instance of Symbol Closedvarcap' do
+    it "returns instance of Symbol Closedvarcap" do
       klass = described_class.new
-      expect(klass).to be_a(Plurimath::Math::Symbols::Closedvarcap)
+      expect(klass).to be_a(described_class)
     end
   end
 

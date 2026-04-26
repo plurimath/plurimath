@@ -3,10 +3,13 @@ module Plurimath
     module Symbols
       class Lor < Symbol
         INPUT = {
-          unicodemath: [["lor", "&#x2228;"], parsing_wrapper(["vee", "vv"], lang: :unicode)],
-          asciimath: [["vee", "vv", "&#x2228;"], parsing_wrapper(["lor"], lang: :asciimath)],
+          unicodemath: [["lor", "&#x2228;"],
+                        parsing_wrapper(["vee", "vv"], lang: :unicode)],
+          asciimath: [["vee", "vv", "&#x2228;"],
+                      parsing_wrapper(["lor"], lang: :asciimath)],
           mathml: ["&#x2228;"],
-          latex: [["vee", "lor", "&#x2228;"], parsing_wrapper(["vv"], lang: :latex)],
+          latex: [["vee", "lor", "&#x2228;"],
+                  parsing_wrapper(["vv"], lang: :latex)],
           omml: ["&#x2228;"],
           html: ["&#x2228;"],
         }.freeze

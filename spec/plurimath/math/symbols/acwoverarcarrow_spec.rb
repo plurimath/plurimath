@@ -1,11 +1,10 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Symbols::Acwoverarcarrow do
-
   describe ".initialize" do
-    it 'returns instance of Symbol Acwoverarcarrow' do
+    it "returns instance of Symbol Acwoverarcarrow" do
       klass = described_class.new
-      expect(klass).to be_a(Plurimath::Math::Symbols::Acwoverarcarrow)
+      expect(klass).to be_a(described_class)
     end
   end
 

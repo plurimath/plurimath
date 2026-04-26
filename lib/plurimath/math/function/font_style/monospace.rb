@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-
 module Plurimath
   module Math
     module Function
@@ -25,12 +24,14 @@ module Plurimath
                 "mstyle",
                 attributes: { mathvariant: "monospace" },
               ),
-              [parameter_one&.to_mathml_without_math_tag(intent, options: options)],
+              [parameter_one&.to_mathml_without_math_tag(intent,
+                                                         options: options)],
             )
           end
 
           def to_omml_without_math_tag(display_style, options:)
-            font_styles(display_style, sty: nil, scr: "monospace", options: options)
+            font_styles(display_style, sty: nil, scr: "monospace",
+                                       options: options)
           end
 
           def to_unicodemath(options:)

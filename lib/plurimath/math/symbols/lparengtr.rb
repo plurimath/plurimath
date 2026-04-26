@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Lparengtr < Symbol
         INPUT = {
-          unicodemath: [["&#x2995;"], parsing_wrapper(["Lparengtr"], lang: :unicode)],
-          asciimath: [["&#x2995;"], parsing_wrapper(["Lparengtr"], lang: :asciimath)],
+          unicodemath: [["&#x2995;"],
+                        parsing_wrapper(["Lparengtr"], lang: :unicode)],
+          asciimath: [["&#x2995;"],
+                      parsing_wrapper(["Lparengtr"], lang: :asciimath)],
           mathml: ["&#x2995;"],
           latex: [["Lparengtr", "&#x2995;"]],
           omml: ["&#x2995;"],

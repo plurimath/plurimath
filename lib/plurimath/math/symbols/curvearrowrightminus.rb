@@ -3,8 +3,12 @@ module Plurimath
     module Symbols
       class Curvearrowrightminus < Symbol
         INPUT = {
-          unicodemath: [["&#x293c;"], parsing_wrapper(["curvearrowrightminus"], lang: :unicode)],
-          asciimath: [["&#x293c;"], parsing_wrapper(["curvearrowrightminus"], lang: :asciimath)],
+          unicodemath: [["&#x293c;"],
+                        parsing_wrapper(["curvearrowrightminus"],
+                                        lang: :unicode)],
+          asciimath: [["&#x293c;"],
+                      parsing_wrapper(["curvearrowrightminus"],
+                                      lang: :asciimath)],
           mathml: ["&#x293c;"],
           latex: [["curvearrowrightminus", "&#x293c;"]],
           omml: ["&#x293c;"],

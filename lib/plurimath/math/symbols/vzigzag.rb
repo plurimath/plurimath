@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Vzigzag < Symbol
         INPUT = {
-          unicodemath: [["&#x299a;"], parsing_wrapper(["vzigzag"], lang: :unicode)],
-          asciimath: [["&#x299a;"], parsing_wrapper(["vzigzag"], lang: :asciimath)],
+          unicodemath: [["&#x299a;"],
+                        parsing_wrapper(["vzigzag"], lang: :unicode)],
+          asciimath: [["&#x299a;"],
+                      parsing_wrapper(["vzigzag"], lang: :asciimath)],
           mathml: ["&#x299a;"],
           latex: [["vzigzag", "&#x299a;"]],
           omml: ["&#x299a;"],

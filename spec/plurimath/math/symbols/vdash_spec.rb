@@ -1,11 +1,10 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Symbols::Vdash do
-
   describe ".initialize" do
-    it 'returns instance of Symbol Vdash' do
+    it "returns instance of Symbol Vdash" do
       klass = described_class.new
-      expect(klass).to be_a(Plurimath::Math::Symbols::Vdash)
+      expect(klass).to be_a(described_class)
     end
   end
 

@@ -3,8 +3,12 @@ module Plurimath
     module Symbols
       class Overleftrightarrow < Symbol
         INPUT = {
-          unicodemath: [["&#x20e1;"], parsing_wrapper(["overleftrightarrow"], lang: :unicode)],
-          asciimath: [["&#x20e1;"], parsing_wrapper(["overleftrightarrow"], lang: :asciimath)],
+          unicodemath: [["&#x20e1;"],
+                        parsing_wrapper(["overleftrightarrow"],
+                                        lang: :unicode)],
+          asciimath: [["&#x20e1;"],
+                      parsing_wrapper(["overleftrightarrow"],
+                                      lang: :asciimath)],
           mathml: ["&#x20e1;"],
           latex: [["overleftrightarrow", "&#x20e1;"]],
           omml: ["&#x20e1;"],

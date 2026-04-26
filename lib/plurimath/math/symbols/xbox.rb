@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Xbox < Symbol
         INPUT = {
-          unicodemath: [["&#x2612;"], parsing_wrapper(["XBox"], lang: :unicode)],
-          asciimath: [["&#x2612;"], parsing_wrapper(["XBox"], lang: :asciimath)],
+          unicodemath: [["&#x2612;"],
+                        parsing_wrapper(["XBox"], lang: :unicode)],
+          asciimath: [["&#x2612;"],
+                      parsing_wrapper(["XBox"], lang: :asciimath)],
           mathml: ["&#x2612;"],
           latex: [["XBox", "&#x2612;"]],
           omml: ["&#x2612;"],

@@ -1,11 +1,10 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Symbols::Precapprox do
-
   describe ".initialize" do
-    it 'returns instance of Symbol Precapprox' do
+    it "returns instance of Symbol Precapprox" do
       klass = described_class.new
-      expect(klass).to be_a(Plurimath::Math::Symbols::Precapprox)
+      expect(klass).to be_a(described_class)
     end
   end
 

@@ -4,7 +4,8 @@ module Plurimath
       class Eqcirc < Symbol
         INPUT = {
           unicodemath: [["eqcirc", "&#x2256;"]],
-          asciimath: [["&#x2256;"], parsing_wrapper(["eqcirc"], lang: :asciimath)],
+          asciimath: [["&#x2256;"],
+                      parsing_wrapper(["eqcirc"], lang: :asciimath)],
           mathml: ["&#x2256;"],
           latex: [["eqcirc", "&#x2256;"]],
           omml: ["&#x2256;"],

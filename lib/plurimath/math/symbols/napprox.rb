@@ -4,7 +4,8 @@ module Plurimath
       class Napprox < Symbol
         INPUT = {
           unicodemath: [["napprox", "&#x2249;"]],
-          asciimath: [["&#x2249;"], parsing_wrapper(["napprox"], lang: :asciimath)],
+          asciimath: [["&#x2249;"],
+                      parsing_wrapper(["napprox"], lang: :asciimath)],
           mathml: ["&#x2249;"],
           latex: [["napprox", "&#x2249;"]],
           omml: ["&#x2249;"],

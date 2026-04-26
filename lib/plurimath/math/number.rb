@@ -49,7 +49,7 @@ module Plurimath
 
       def insert_t_tag(_, options:)
         [
-          (Utility.ox_element("r", namespace: "m") << t_tag(options: options)),
+          Utility.ox_element("r", namespace: "m") << t_tag(options: options),
         ]
       end
 
@@ -58,7 +58,8 @@ module Plurimath
       end
 
       def t_tag(options:)
-        Utility.ox_element("t", namespace: "m") << format_value_with_options(options)
+        Utility.ox_element("t",
+                           namespace: "m") << format_value_with_options(options)
       end
 
       def nary_attr_value(options:)
@@ -93,9 +94,9 @@ module Plurimath
 
       def format_value_with_options(options)
         formatter = options[:formatter]
-        if formatter&.respond_to?(:format)
+        if formatter.respond_to?(:format)
           formatter.format(options[:formula], self)
-        elsif formatter&.respond_to?(:localized_number)
+        elsif formatter.respond_to?(:localized_number)
           formatter.localized_number(value.to_s)
         else
           value

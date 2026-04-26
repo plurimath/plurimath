@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Forksnot < Symbol
         INPUT = {
-          unicodemath: [["&#x2add;"], parsing_wrapper(["forksnot"], lang: :unicode)],
-          asciimath: [["&#x2add;"], parsing_wrapper(["forksnot"], lang: :asciimath)],
+          unicodemath: [["&#x2add;"],
+                        parsing_wrapper(["forksnot"], lang: :unicode)],
+          asciimath: [["&#x2add;"],
+                      parsing_wrapper(["forksnot"], lang: :asciimath)],
           mathml: ["&#x2add;"],
           latex: [["forksnot", "&#x2add;"]],
           omml: ["&#x2add;"],

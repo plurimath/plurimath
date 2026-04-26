@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Sqint < Symbol
         INPUT = {
-          unicodemath: [["&#x2a16;"], parsing_wrapper(["sqrint", "sqint"], lang: :unicode)],
-          asciimath: [["&#x2a16;"], parsing_wrapper(["sqrint", "sqint"], lang: :asciimath)],
+          unicodemath: [["&#x2a16;"],
+                        parsing_wrapper(["sqrint", "sqint"], lang: :unicode)],
+          asciimath: [["&#x2a16;"],
+                      parsing_wrapper(["sqrint", "sqint"], lang: :asciimath)],
           mathml: ["&#x2a16;"],
           latex: [["sqrint", "sqint", "&#x2a16;"]],
           omml: ["&#x2a16;"],

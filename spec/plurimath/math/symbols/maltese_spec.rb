@@ -1,11 +1,10 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Symbols::Maltese do
-
   describe ".initialize" do
-    it 'returns instance of Symbol Maltese' do
+    it "returns instance of Symbol Maltese" do
       klass = described_class.new
-      expect(klass).to be_a(Plurimath::Math::Symbols::Maltese)
+      expect(klass).to be_a(described_class)
     end
   end
 

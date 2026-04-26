@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Virgo < Symbol
         INPUT = {
-          unicodemath: [["&#x264d;"], parsing_wrapper(["virgo"], lang: :unicode)],
-          asciimath: [["&#x264d;"], parsing_wrapper(["virgo"], lang: :asciimath)],
+          unicodemath: [["&#x264d;"],
+                        parsing_wrapper(["virgo"], lang: :unicode)],
+          asciimath: [["&#x264d;"],
+                      parsing_wrapper(["virgo"], lang: :asciimath)],
           mathml: ["&#x264d;"],
           latex: [["virgo", "&#x264d;"]],
           omml: ["&#x264d;"],

@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-
 module Plurimath
   module Math
     module Function
@@ -31,7 +30,8 @@ module Plurimath
           Utility.update_nodes(
             over_tag,
             [
-              parameter_one.to_mathml_without_math_tag(intent, options: options),
+              parameter_one.to_mathml_without_math_tag(intent,
+                                                       options: options),
               mo_tag,
             ],
           )
@@ -48,7 +48,8 @@ module Plurimath
             acc_tag(display_style, options: options)
           else
             symbol = Symbols::Symbol.new("⏞")
-            Overset.new(parameter_one, symbol).to_omml_without_math_tag(true, options: options)
+            Overset.new(parameter_one, symbol).to_omml_without_math_tag(true,
+                                                                        options: options)
           end
         end
 
@@ -66,12 +67,14 @@ module Plurimath
         def acc_tag(display_style, options:)
           acc_tag    = Utility.ox_element("acc", namespace: "m")
           acc_pr_tag = Utility.ox_element("accPr", namespace: "m")
-          acc_pr_tag << (Utility.ox_element("chr", namespace: "m", attributes: { "m:val": "⏞" }))
+          acc_pr_tag << Utility.ox_element("chr", namespace: "m",
+                                                  attributes: { "m:val": "⏞" })
           Utility.update_nodes(
             acc_tag,
             [
               acc_pr_tag,
-              omml_parameter(parameter_one, display_style, tag_name: "e", namespace: "m", options: options),
+              omml_parameter(parameter_one, display_style, tag_name: "e",
+                                                           namespace: "m", options: options),
             ],
           )
           [acc_tag]

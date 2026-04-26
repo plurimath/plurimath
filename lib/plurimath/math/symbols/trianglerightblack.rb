@@ -3,8 +3,12 @@ module Plurimath
     module Symbols
       class Trianglerightblack < Symbol
         INPUT = {
-          unicodemath: [["&#x25ee;"], parsing_wrapper(["trianglerightblack"], lang: :unicode)],
-          asciimath: [["&#x25ee;"], parsing_wrapper(["trianglerightblack"], lang: :asciimath)],
+          unicodemath: [["&#x25ee;"],
+                        parsing_wrapper(["trianglerightblack"],
+                                        lang: :unicode)],
+          asciimath: [["&#x25ee;"],
+                      parsing_wrapper(["trianglerightblack"],
+                                      lang: :asciimath)],
           mathml: ["&#x25ee;"],
           latex: [["trianglerightblack", "&#x25ee;"]],
           omml: ["&#x25ee;"],

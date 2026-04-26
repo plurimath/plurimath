@@ -1,32 +1,33 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Function::Mod do
-
   describe ".initialize" do
-    it 'returns instance of Mod' do
-      mod = Plurimath::Math::Function::Mod.new(70, 3)
-      expect(mod).to be_a(Plurimath::Math::Function::Mod)
+    it "returns instance of Mod" do
+      mod = described_class.new(70, 3)
+      expect(mod).to be_a(described_class)
     end
 
-    it 'initializes Mod object' do
-      mod = Plurimath::Math::Function::Mod.new(70, 3)
-      expect(mod.parameter_one).to eql(70)
-      expect(mod.parameter_two).to eql(3)
+    it "initializes Mod object" do
+      mod = described_class.new(70, 3)
+      expect(mod.parameter_one).to be(70)
+      expect(mod.parameter_two).to be(3)
     end
   end
 
   describe ".to_asciimath" do
-    subject(:formula) { described_class.new(first_value, second_value).to_asciimath(options: {}) }
+    subject(:formula) do
+      described_class.new(first_value, second_value).to_asciimath(options: {})
+    end
 
     context "contains Symbol as value" do
       let(:first_value) { Plurimath::Math::Symbols::Symbol.new("n") }
       let(:second_value) do
         Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Prod.new(
-            Plurimath::Math::Symbols::Ampersand.new,
-            Plurimath::Math::Function::Text.new("so"),
-          )
-        ])
+                                       Plurimath::Math::Function::Prod.new(
+                                         Plurimath::Math::Symbols::Ampersand.new,
+                                         Plurimath::Math::Function::Text.new("so"),
+                                       ),
+                                     ])
       end
 
       it "returns asciimath string" do
@@ -46,19 +47,19 @@ RSpec.describe Plurimath::Math::Function::Mod do
     context "contains Formula as value" do
       let(:first_value) do
         Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Sum.new(
-            Plurimath::Math::Symbols::Ampersand.new,
-            Plurimath::Math::Function::Text.new("so"),
-          )
-        ])
+                                       Plurimath::Math::Function::Sum.new(
+                                         Plurimath::Math::Symbols::Ampersand.new,
+                                         Plurimath::Math::Function::Text.new("so"),
+                                       ),
+                                     ])
       end
       let(:second_value) do
         Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Prod.new(
-            Plurimath::Math::Symbols::Ampersand.new,
-            Plurimath::Math::Function::Text.new("so"),
-          )
-        ])
+                                       Plurimath::Math::Function::Prod.new(
+                                         Plurimath::Math::Symbols::Ampersand.new,
+                                         Plurimath::Math::Function::Text.new("so"),
+                                       ),
+                                     ])
       end
 
       it "returns asciimath string" do
@@ -70,8 +71,8 @@ RSpec.describe Plurimath::Math::Function::Mod do
   describe ".to_mathml" do
     subject(:formula) do
       Plurimath.xml_engine.dump(
-        described_class.new(first_value, second_value).
-          to_mathml_without_math_tag(false, options: {}),
+        described_class.new(first_value, second_value)
+          .to_mathml_without_math_tag(false, options: {}),
         indent: 2,
       ).gsub("&amp;", "&")
     end
@@ -96,11 +97,11 @@ RSpec.describe Plurimath::Math::Function::Mod do
       let(:first_value) { Plurimath::Math::Number.new("70") }
       let(:second_value) do
         Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Prod.new(
-            Plurimath::Math::Symbols::Ampersand.new,
-            Plurimath::Math::Function::Text.new("so"),
-          )
-        ])
+                                       Plurimath::Math::Function::Prod.new(
+                                         Plurimath::Math::Symbols::Ampersand.new,
+                                         Plurimath::Math::Function::Text.new("so"),
+                                       ),
+                                     ])
       end
 
       it "returns mathml string" do
@@ -124,19 +125,19 @@ RSpec.describe Plurimath::Math::Function::Mod do
     context "contains Formula as value" do
       let(:first_value) do
         Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Sum.new(
-            Plurimath::Math::Symbols::Ampersand.new,
-            Plurimath::Math::Function::Text.new("so"),
-          )
-        ])
+                                       Plurimath::Math::Function::Sum.new(
+                                         Plurimath::Math::Symbols::Ampersand.new,
+                                         Plurimath::Math::Function::Text.new("so"),
+                                       ),
+                                     ])
       end
       let(:second_value) do
         Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Prod.new(
-            Plurimath::Math::Symbols::Ampersand.new,
-            Plurimath::Math::Function::Text.new("so"),
-          )
-        ])
+                                       Plurimath::Math::Function::Prod.new(
+                                         Plurimath::Math::Symbols::Ampersand.new,
+                                         Plurimath::Math::Function::Text.new("so"),
+                                       ),
+                                     ])
       end
 
       it "returns mathml string" do
@@ -165,17 +166,19 @@ RSpec.describe Plurimath::Math::Function::Mod do
   end
 
   describe ".to_latex" do
-    subject(:formula) { described_class.new(first_value, second_value).to_latex(options: {}) }
+    subject(:formula) do
+      described_class.new(first_value, second_value).to_latex(options: {})
+    end
 
     context "contains Symbol as value" do
       let(:first_value) { Plurimath::Math::Symbols::Symbol.new("n") }
       let(:second_value) do
         Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Prod.new(
-            Plurimath::Math::Symbols::Ampersand.new,
-            Plurimath::Math::Function::Text.new("so"),
-          )
-        ])
+                                       Plurimath::Math::Function::Prod.new(
+                                         Plurimath::Math::Symbols::Ampersand.new,
+                                         Plurimath::Math::Function::Text.new("so"),
+                                       ),
+                                     ])
       end
 
       it "returns mathml string" do
@@ -195,19 +198,19 @@ RSpec.describe Plurimath::Math::Function::Mod do
     context "contains Formula as value" do
       let(:first_value) do
         Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Sum.new(
-            Plurimath::Math::Symbols::Ampersand.new,
-            Plurimath::Math::Function::Text.new("so"),
-          )
-        ])
+                                       Plurimath::Math::Function::Sum.new(
+                                         Plurimath::Math::Symbols::Ampersand.new,
+                                         Plurimath::Math::Function::Text.new("so"),
+                                       ),
+                                     ])
       end
       let(:second_value) do
         Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Prod.new(
-            Plurimath::Math::Symbols::Ampersand.new,
-            Plurimath::Math::Function::Text.new("so"),
-          )
-        ])
+                                       Plurimath::Math::Function::Prod.new(
+                                         Plurimath::Math::Symbols::Ampersand.new,
+                                         Plurimath::Math::Function::Text.new("so"),
+                                       ),
+                                     ])
       end
 
       it "returns mathml string" do
@@ -217,17 +220,19 @@ RSpec.describe Plurimath::Math::Function::Mod do
   end
 
   describe ".to_html" do
-    subject(:formula) { described_class.new(first_value, second_value).to_html(options: {}) }
+    subject(:formula) do
+      described_class.new(first_value, second_value).to_html(options: {})
+    end
 
     context "contains Symbol as value" do
       let(:first_value) { Plurimath::Math::Symbols::Symbol.new("n") }
       let(:second_value) do
         Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Prod.new(
-            Plurimath::Math::Symbols::Ampersand.new,
-            Plurimath::Math::Function::Text.new("so"),
-          )
-        ])
+                                       Plurimath::Math::Function::Prod.new(
+                                         Plurimath::Math::Symbols::Ampersand.new,
+                                         Plurimath::Math::Function::Text.new("so"),
+                                       ),
+                                     ])
       end
 
       it "returns html string" do
@@ -247,19 +252,19 @@ RSpec.describe Plurimath::Math::Function::Mod do
     context "contains Formula as value" do
       let(:first_value) do
         Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Sum.new(
-            Plurimath::Math::Symbols::Ampersand.new,
-            Plurimath::Math::Function::Text.new("so"),
-          )
-        ])
+                                       Plurimath::Math::Function::Sum.new(
+                                         Plurimath::Math::Symbols::Ampersand.new,
+                                         Plurimath::Math::Function::Text.new("so"),
+                                       ),
+                                     ])
       end
       let(:second_value) do
         Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Prod.new(
-            Plurimath::Math::Symbols::Ampersand.new,
-            Plurimath::Math::Function::Text.new("so"),
-          )
-        ])
+                                       Plurimath::Math::Function::Prod.new(
+                                         Plurimath::Math::Symbols::Ampersand.new,
+                                         Plurimath::Math::Function::Text.new("so"),
+                                       ),
+                                     ])
       end
 
       it "returns html string" do

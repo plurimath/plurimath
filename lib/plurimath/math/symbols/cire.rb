@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Cire < Symbol
         INPUT = {
-          unicodemath: [["&#x29c3;"], parsing_wrapper(["cirE"], lang: :unicode)],
-          asciimath: [["&#x29c3;"], parsing_wrapper(["cirE"], lang: :asciimath)],
+          unicodemath: [["&#x29c3;"],
+                        parsing_wrapper(["cirE"], lang: :unicode)],
+          asciimath: [["&#x29c3;"],
+                      parsing_wrapper(["cirE"], lang: :asciimath)],
           mathml: ["&#x29c3;"],
           latex: [["cirE", "&#x29c3;"]],
           omml: ["&#x29c3;"],

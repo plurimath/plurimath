@@ -4,7 +4,8 @@ module Plurimath
       class Supsup < Symbol
         INPUT = {
           unicodemath: [["supsup", "&#x2ad6;"]],
-          asciimath: [["&#x2ad6;"], parsing_wrapper(["supsup"], lang: :asciimath)],
+          asciimath: [["&#x2ad6;"],
+                      parsing_wrapper(["supsup"], lang: :asciimath)],
           mathml: ["&#x2ad6;"],
           latex: [["supsup", "&#x2ad6;"]],
           omml: ["&#x2ad6;"],

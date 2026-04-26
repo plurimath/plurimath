@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Oslash < Symbol
         INPUT = {
-          unicodemath: [["&#x2298;"], parsing_wrapper(["oslash"], lang: :unicode)],
-          asciimath: [["&#x2298;"], parsing_wrapper(["oslash"], lang: :asciimath)],
+          unicodemath: [["&#x2298;"],
+                        parsing_wrapper(["oslash"], lang: :unicode)],
+          asciimath: [["&#x2298;"],
+                      parsing_wrapper(["oslash"], lang: :asciimath)],
           mathml: ["&#x2298;"],
           latex: [["oslash", "&#x2298;"]],
           omml: ["&#x2298;"],

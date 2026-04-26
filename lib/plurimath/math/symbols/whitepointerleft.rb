@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Whitepointerleft < Symbol
         INPUT = {
-          unicodemath: [["&#x25c5;"], parsing_wrapper(["whitepointerleft"], lang: :unicode)],
-          asciimath: [["&#x25c5;"], parsing_wrapper(["whitepointerleft"], lang: :asciimath)],
+          unicodemath: [["&#x25c5;"],
+                        parsing_wrapper(["whitepointerleft"], lang: :unicode)],
+          asciimath: [["&#x25c5;"],
+                      parsing_wrapper(["whitepointerleft"], lang: :asciimath)],
           mathml: ["&#x25c5;"],
           latex: [["whitepointerleft", "&#x25c5;"]],
           omml: ["&#x25c5;"],

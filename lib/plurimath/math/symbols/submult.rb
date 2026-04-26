@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Submult < Symbol
         INPUT = {
-          unicodemath: [["&#x2ac1;"], parsing_wrapper(["submult"], lang: :unicode)],
-          asciimath: [["&#x2ac1;"], parsing_wrapper(["submult"], lang: :asciimath)],
+          unicodemath: [["&#x2ac1;"],
+                        parsing_wrapper(["submult"], lang: :unicode)],
+          asciimath: [["&#x2ac1;"],
+                      parsing_wrapper(["submult"], lang: :asciimath)],
           mathml: ["&#x2ac1;"],
           latex: [["submult", "&#x2ac1;"]],
           omml: ["&#x2ac1;"],

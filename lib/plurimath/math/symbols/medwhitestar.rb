@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Medwhitestar < Symbol
         INPUT = {
-          unicodemath: [["&#x2b50;"], parsing_wrapper(["medwhitestar"], lang: :unicode)],
-          asciimath: [["&#x2b50;"], parsing_wrapper(["medwhitestar"], lang: :asciimath)],
+          unicodemath: [["&#x2b50;"],
+                        parsing_wrapper(["medwhitestar"], lang: :unicode)],
+          asciimath: [["&#x2b50;"],
+                      parsing_wrapper(["medwhitestar"], lang: :asciimath)],
           mathml: ["&#x2b50;"],
           latex: [["medwhitestar", "&#x2b50;"]],
           omml: ["&#x2b50;"],

@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Lrarc < Symbol
         INPUT = {
-          unicodemath: [["&#x25de;"], parsing_wrapper(["lrarc"], lang: :unicode)],
-          asciimath: [["&#x25de;"], parsing_wrapper(["lrarc"], lang: :asciimath)],
+          unicodemath: [["&#x25de;"],
+                        parsing_wrapper(["lrarc"], lang: :unicode)],
+          asciimath: [["&#x25de;"],
+                      parsing_wrapper(["lrarc"], lang: :asciimath)],
           mathml: ["&#x25de;"],
           latex: [["lrarc", "&#x25de;"]],
           omml: ["&#x25de;"],

@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Leftarrowonoplus < Symbol
         INPUT = {
-          unicodemath: [["&#x2b32;"], parsing_wrapper(["leftarrowonoplus"], lang: :unicode)],
-          asciimath: [["&#x2b32;"], parsing_wrapper(["leftarrowonoplus"], lang: :asciimath)],
+          unicodemath: [["&#x2b32;"],
+                        parsing_wrapper(["leftarrowonoplus"], lang: :unicode)],
+          asciimath: [["&#x2b32;"],
+                      parsing_wrapper(["leftarrowonoplus"], lang: :asciimath)],
           mathml: ["&#x2b32;"],
           latex: [["leftarrowonoplus", "&#x2b32;"]],
           omml: ["&#x2b32;"],

@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Aplboxupcaret < Symbol
         INPUT = {
-          unicodemath: [["&#x2353;"], parsing_wrapper(["APLboxupcaret"], lang: :unicode)],
-          asciimath: [["&#x2353;"], parsing_wrapper(["APLboxupcaret"], lang: :asciimath)],
+          unicodemath: [["&#x2353;"],
+                        parsing_wrapper(["APLboxupcaret"], lang: :unicode)],
+          asciimath: [["&#x2353;"],
+                      parsing_wrapper(["APLboxupcaret"], lang: :asciimath)],
           mathml: ["&#x2353;"],
           latex: [["APLboxupcaret", "&#x2353;"]],
           omml: ["&#x2353;"],

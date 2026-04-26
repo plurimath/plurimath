@@ -4,7 +4,8 @@ module Plurimath
       class Circeq < Symbol
         INPUT = {
           unicodemath: [["circeq", "&#x2257;"]],
-          asciimath: [["&#x2257;"], parsing_wrapper(["circeq"], lang: :asciimath)],
+          asciimath: [["&#x2257;"],
+                      parsing_wrapper(["circeq"], lang: :asciimath)],
           mathml: ["&#x2257;"],
           latex: [["circeq", "&#x2257;"]],
           omml: ["&#x2257;"],

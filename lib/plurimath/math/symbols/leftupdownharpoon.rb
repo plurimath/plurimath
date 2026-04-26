@@ -3,8 +3,12 @@ module Plurimath
     module Symbols
       class Leftupdownharpoon < Symbol
         INPUT = {
-          unicodemath: [["&#x2951;"], parsing_wrapper(["updownharpoonleftleft", "leftupdownharpoon"], lang: :unicode)],
-          asciimath: [["&#x2951;"], parsing_wrapper(["updownharpoonleftleft", "leftupdownharpoon"], lang: :asciimath)],
+          unicodemath: [["&#x2951;"],
+                        parsing_wrapper(["updownharpoonleftleft", "leftupdownharpoon"],
+                                        lang: :unicode)],
+          asciimath: [["&#x2951;"],
+                      parsing_wrapper(["updownharpoonleftleft", "leftupdownharpoon"],
+                                      lang: :asciimath)],
           mathml: ["&#x2951;"],
           latex: [["updownharpoonleftleft", "leftupdownharpoon", "&#x2951;"]],
           omml: ["&#x2951;"],

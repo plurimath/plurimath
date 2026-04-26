@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Lang < Symbol
         INPUT = {
-          unicodemath: [["&#x27ea;"], parsing_wrapper(["lAngle", "lang"], lang: :unicode)],
-          asciimath: [["&#x27ea;"], parsing_wrapper(["lAngle", "lang"], lang: :asciimath)],
+          unicodemath: [["&#x27ea;"],
+                        parsing_wrapper(["lAngle", "lang"], lang: :unicode)],
+          asciimath: [["&#x27ea;"],
+                      parsing_wrapper(["lAngle", "lang"], lang: :asciimath)],
           mathml: ["&#x27ea;"],
           latex: [["lAngle", "lang", "&#x27ea;"]],
           omml: ["&#x27ea;"],

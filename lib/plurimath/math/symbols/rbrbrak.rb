@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Rbrbrak < Symbol
         INPUT = {
-          unicodemath: [["&#x27ed;"], parsing_wrapper(["Rbrbrak"], lang: :unicode)],
-          asciimath: [["&#x27ed;"], parsing_wrapper(["Rbrbrak"], lang: :asciimath)],
+          unicodemath: [["&#x27ed;"],
+                        parsing_wrapper(["Rbrbrak"], lang: :unicode)],
+          asciimath: [["&#x27ed;"],
+                      parsing_wrapper(["Rbrbrak"], lang: :asciimath)],
           mathml: ["&#x27ed;"],
           latex: [["Rbrbrak", "&#x27ed;"]],
           omml: ["&#x27ed;"],

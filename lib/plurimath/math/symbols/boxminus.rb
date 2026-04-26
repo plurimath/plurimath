@@ -4,7 +4,8 @@ module Plurimath
       class Boxminus < Symbol
         INPUT = {
           unicodemath: [["boxminus", "&#x229f;"]],
-          asciimath: [["&#x229f;"], parsing_wrapper(["boxminus"], lang: :asciimath)],
+          asciimath: [["&#x229f;"],
+                      parsing_wrapper(["boxminus"], lang: :asciimath)],
           mathml: ["&#x229f;"],
           latex: [["boxminus", "&#x229f;"]],
           omml: ["&#x229f;"],

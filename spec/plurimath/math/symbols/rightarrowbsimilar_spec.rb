@@ -1,11 +1,10 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Symbols::Rightarrowbsimilar do
-
   describe ".initialize" do
-    it 'returns instance of Symbol Rightarrowbsimilar' do
+    it "returns instance of Symbol Rightarrowbsimilar" do
       klass = described_class.new
-      expect(klass).to be_a(Plurimath::Math::Symbols::Rightarrowbsimilar)
+      expect(klass).to be_a(described_class)
     end
   end
 

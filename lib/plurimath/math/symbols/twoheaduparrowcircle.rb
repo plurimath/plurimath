@@ -3,8 +3,12 @@ module Plurimath
     module Symbols
       class Twoheaduparrowcircle < Symbol
         INPUT = {
-          unicodemath: [["&#x2949;"], parsing_wrapper(["twoheaduparrowcircle"], lang: :unicode)],
-          asciimath: [["&#x2949;"], parsing_wrapper(["twoheaduparrowcircle"], lang: :asciimath)],
+          unicodemath: [["&#x2949;"],
+                        parsing_wrapper(["twoheaduparrowcircle"],
+                                        lang: :unicode)],
+          asciimath: [["&#x2949;"],
+                      parsing_wrapper(["twoheaduparrowcircle"],
+                                      lang: :asciimath)],
           mathml: ["&#x2949;"],
           latex: [["twoheaduparrowcircle", "&#x2949;"]],
           omml: ["&#x2949;"],

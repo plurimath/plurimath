@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Cupvee < Symbol
         INPUT = {
-          unicodemath: [["&#x2a45;"], parsing_wrapper(["cupvee"], lang: :unicode)],
-          asciimath: [["&#x2a45;"], parsing_wrapper(["cupvee"], lang: :asciimath)],
+          unicodemath: [["&#x2a45;"],
+                        parsing_wrapper(["cupvee"], lang: :unicode)],
+          asciimath: [["&#x2a45;"],
+                      parsing_wrapper(["cupvee"], lang: :asciimath)],
           mathml: ["&#x2a45;"],
           latex: [["cupvee", "&#x2a45;"]],
           omml: ["&#x2a45;"],

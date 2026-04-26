@@ -1,11 +1,9 @@
 # frozen_string_literal: true
 
-
 module Plurimath
   module Math
     module Function
       class Base < BinaryFunction
-
         attr_accessor :options
 
         FUNCTION = {
@@ -22,13 +20,16 @@ module Plurimath
         end
 
         def ==(object)
-          super(object) &&
+          super &&
             object.options == options
         end
 
         def to_asciimath(options:)
           first_value = parameter_one.to_asciimath(options: options) if parameter_one
-          second_value = "_#{wrapped(parameter_two, options: options)}" if parameter_two
+          if parameter_two
+            second_value = "_#{wrapped(parameter_two,
+                                       options: options)}"
+          end
           "#{first_value}#{second_value}"
         end
 
@@ -36,8 +37,10 @@ module Plurimath
           tag_name = Utility::MUNDER_CLASSES.include?(parameter_one&.class_name) ? "under" : "sub"
           sub_tag = Utility.ox_element("m#{tag_name}")
           mathml_value = []
-          mathml_value << validate_mathml_fields(parameter_one, intent, options: options)
-          mathml_value << validate_mathml_fields(parameter_two, intent, options: options)
+          mathml_value << validate_mathml_fields(parameter_one, intent,
+                                                 options: options)
+          mathml_value << validate_mathml_fields(parameter_two, intent,
+                                                 options: options)
           Utility.update_nodes(sub_tag, mathml_value)
         end
 
@@ -62,8 +65,10 @@ module Plurimath
             ssub_element,
             [
               subpr_element,
-              omml_parameter(parameter_one, display_style, tag_name: "e", options: options),
-              omml_parameter(parameter_two, display_style, tag_name: "sub", options: options),
+              omml_parameter(parameter_one, display_style, tag_name: "e",
+                                                           options: options),
+              omml_parameter(parameter_two, display_style, tag_name: "sub",
+                                                           options: options),
             ],
           )
           [ssub_element]
@@ -72,21 +77,23 @@ module Plurimath
         def to_unicodemath(options:)
           first_value = parameter_one.to_unicodemath(options: options) if parameter_one
           second_value = if parameter_two.is_a?(self.class)
-            "_#{size_overrides}#{parameter_two.to_unicodemath(options: options)}"
-          elsif parameter_two&.mini_sized?
-            parameter_two.to_unicodemath(options: options)
-          elsif parameter_two.nil?
-            "()"
-          else
-            "_#{size_overrides}#{unicodemath_parens(parameter_two, options: options)}"
-          end
+                           "_#{size_overrides}#{parameter_two.to_unicodemath(options: options)}"
+                         elsif parameter_two&.mini_sized?
+                           parameter_two.to_unicodemath(options: options)
+                         elsif parameter_two.nil?
+                           "()"
+                         else
+                           "_#{size_overrides}#{unicodemath_parens(parameter_two,
+                                                                   options: options)}"
+                         end
           "#{first_value}#{second_value}"
         end
 
         def line_breaking(obj)
           parameter_one&.line_breaking(obj)
           if obj.value_exist?
-            obj.update(self.class.new(Utility.filter_values(obj.value), parameter_two))
+            obj.update(self.class.new(Utility.filter_values(obj.value),
+                                      parameter_two))
             self.parameter_two = nil
             return
           end
@@ -116,7 +123,7 @@ module Plurimath
         def unicodemath_parens(field, options:)
           return "〖#{field.to_unicodemath(options: options)}〗" unless self.options.nil? || self.options&.empty?
 
-          super(field, options: options)
+          super
         end
       end
     end

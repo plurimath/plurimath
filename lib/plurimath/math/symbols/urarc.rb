@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Urarc < Symbol
         INPUT = {
-          unicodemath: [["&#x25dd;"], parsing_wrapper(["urarc"], lang: :unicode)],
-          asciimath: [["&#x25dd;"], parsing_wrapper(["urarc"], lang: :asciimath)],
+          unicodemath: [["&#x25dd;"],
+                        parsing_wrapper(["urarc"], lang: :unicode)],
+          asciimath: [["&#x25dd;"],
+                      parsing_wrapper(["urarc"], lang: :asciimath)],
           mathml: ["&#x25dd;"],
           latex: [["urarc", "&#x25dd;"]],
           omml: ["&#x25dd;"],

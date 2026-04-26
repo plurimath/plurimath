@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Eqeq < Symbol
         INPUT = {
-          unicodemath: [["&#x2a75;"], parsing_wrapper(["Equal", "eqeq"], lang: :unicode)],
-          asciimath: [["&#x2a75;"], parsing_wrapper(["Equal", "eqeq"], lang: :asciimath)],
+          unicodemath: [["&#x2a75;"],
+                        parsing_wrapper(["Equal", "eqeq"], lang: :unicode)],
+          asciimath: [["&#x2a75;"],
+                      parsing_wrapper(["Equal", "eqeq"], lang: :asciimath)],
           mathml: ["&#x2a75;"],
           latex: [["Equal", "eqeq", "&#x2a75;"]],
           omml: ["&#x2a75;"],

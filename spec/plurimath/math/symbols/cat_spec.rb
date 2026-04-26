@@ -1,11 +1,10 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Symbols::Cat do
-
   describe ".initialize" do
-    it 'returns instance of Symbol Cat' do
+    it "returns instance of Symbol Cat" do
       klass = described_class.new
-      expect(klass).to be_a(Plurimath::Math::Symbols::Cat)
+      expect(klass).to be_a(described_class)
     end
   end
 

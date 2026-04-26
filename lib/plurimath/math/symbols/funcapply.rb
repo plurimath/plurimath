@@ -4,7 +4,8 @@ module Plurimath
       class Funcapply < Symbol
         INPUT = {
           unicodemath: [["funcapply", "&#x2061;"]],
-          asciimath: [["&#x2061;"], parsing_wrapper(["funcapply"], lang: :asciimath)],
+          asciimath: [["&#x2061;"],
+                      parsing_wrapper(["funcapply"], lang: :asciimath)],
           mathml: ["&#x2061;"],
           latex: [["&#x2061;"], parsing_wrapper(["funcapply"], lang: :latex)],
           omml: ["&#x2061;"],

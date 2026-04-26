@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Rcurvyangle < Symbol
         INPUT = {
-          unicodemath: [["&#x29fd;"], parsing_wrapper(["rcurvyangle"], lang: :unicode)],
-          asciimath: [["&#x29fd;"], parsing_wrapper(["rcurvyangle"], lang: :asciimath)],
+          unicodemath: [["&#x29fd;"],
+                        parsing_wrapper(["rcurvyangle"], lang: :unicode)],
+          asciimath: [["&#x29fd;"],
+                      parsing_wrapper(["rcurvyangle"], lang: :asciimath)],
           mathml: ["&#x29fd;"],
           latex: [["rcurvyangle", "&#x29fd;"]],
           omml: ["&#x29fd;"],

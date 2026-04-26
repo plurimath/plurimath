@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Twoheadmapsto < Symbol
         INPUT = {
-          unicodemath: [["&#x2905;"], parsing_wrapper(["twoheadmapsto"], lang: :unicode)],
-          asciimath: [["&#x2905;"], parsing_wrapper(["twoheadmapsto"], lang: :asciimath)],
+          unicodemath: [["&#x2905;"],
+                        parsing_wrapper(["twoheadmapsto"], lang: :unicode)],
+          asciimath: [["&#x2905;"],
+                      parsing_wrapper(["twoheadmapsto"], lang: :asciimath)],
           mathml: ["&#x2905;"],
           latex: [["twoheadmapsto", "&#x2905;"]],
           omml: ["&#x2905;"],

@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Smblksquare < Symbol
         INPUT = {
-          unicodemath: [["&#x25aa;"], parsing_wrapper(["smblksquare"], lang: :unicode)],
-          asciimath: [["&#x25aa;"], parsing_wrapper(["smblksquare"], lang: :asciimath)],
+          unicodemath: [["&#x25aa;"],
+                        parsing_wrapper(["smblksquare"], lang: :unicode)],
+          asciimath: [["&#x25aa;"],
+                      parsing_wrapper(["smblksquare"], lang: :asciimath)],
           mathml: ["&#x25aa;"],
           latex: [["smblksquare", "&#x25aa;"]],
           omml: ["&#x25aa;"],

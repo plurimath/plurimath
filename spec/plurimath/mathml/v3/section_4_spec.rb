@@ -1,27 +1,27 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Mathml::Parser do
-
-  subject(:formula) { Plurimath::Mathml::Parser.new(exp).parse }
+  subject(:formula) { described_class.new(exp).parse }
 
   context "contains mathml v3 #4 example #71" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mn>0x7F800000</mn>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Number.new("0x7F800000")
-      ])
+                                                      Plurimath::Math::Number.new("0x7F800000"),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #72" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <msub>
@@ -30,20 +30,21 @@ RSpec.describe Plurimath::Mathml::Parser do
           </msub>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Function::Base.new(
-          Plurimath::Math::Symbols::Symbol.new("7FE0"),
-          Plurimath::Math::Symbols::Symbol.new("16")
-        )
-      ])
+                                                      Plurimath::Math::Function::Base.new(
+                                                        Plurimath::Math::Symbols::Symbol.new("7FE0"),
+                                                        Plurimath::Math::Symbols::Symbol.new("16"),
+                                                      ),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #73" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mrow>
@@ -53,21 +54,22 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mrow>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Formula.new([
-          Plurimath::Math::Symbols::Symbol.new("22"),
-          Plurimath::Math::Symbols::Symbol.new("/"),
-          Plurimath::Math::Symbols::Symbol.new("7")
-        ])
-      ])
+                                                      Plurimath::Math::Formula.new([
+                                                                                     Plurimath::Math::Symbols::Symbol.new("22"),
+                                                                                     Plurimath::Math::Symbols::Symbol.new("/"),
+                                                                                     Plurimath::Math::Symbols::Symbol.new("7"),
+                                                                                   ]),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #74" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mrow>
@@ -79,23 +81,24 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mrow>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Formula.new([
-          Plurimath::Math::Number.new("12.3"),
-          Plurimath::Math::Symbols::Plus.new,
-          Plurimath::Math::Number.new("5"),
-          Plurimath::Math::Symbols::Symbol.new("&#x2062;"),
-          Plurimath::Math::Symbols::Symbol.new("i")
-        ])
-      ])
+                                                      Plurimath::Math::Formula.new([
+                                                                                     Plurimath::Math::Number.new("12.3"),
+                                                                                     Plurimath::Math::Symbols::Plus.new,
+                                                                                     Plurimath::Math::Number.new("5"),
+                                                                                     Plurimath::Math::Symbols::Symbol.new("&#x2062;"),
+                                                                                     Plurimath::Math::Symbols::Symbol.new("i"),
+                                                                                   ]),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #75" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mrow>
@@ -108,28 +111,29 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mrow>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Formula.new([
-          Plurimath::Math::Symbols::Symbol.new("Polar"),
-          Plurimath::Math::Symbols::Funcapply.new,
-          Plurimath::Math::Function::Fenced.new(
-            Plurimath::Math::Symbols::Paren::Lround.new,
-            [
-              Plurimath::Math::Number.new("2"),
-              Plurimath::Math::Number.new("3.1415")
-            ],
-            Plurimath::Math::Symbols::Paren::Rround.new,
-          )
-        ])
-      ])
+                                                      Plurimath::Math::Formula.new([
+                                                                                     Plurimath::Math::Symbols::Symbol.new("Polar"),
+                                                                                     Plurimath::Math::Symbols::Funcapply.new,
+                                                                                     Plurimath::Math::Function::Fenced.new(
+                                                                                       Plurimath::Math::Symbols::Paren::Lround.new,
+                                                                                       [
+                                                                                         Plurimath::Math::Number.new("2"),
+                                                                                         Plurimath::Math::Number.new("3.1415"),
+                                                                                       ],
+                                                                                       Plurimath::Math::Symbols::Paren::Rround.new,
+                                                                                     ),
+                                                                                   ]),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #76" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <msup>
@@ -138,20 +142,21 @@ RSpec.describe Plurimath::Mathml::Parser do
           </msup>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Function::Power.new(
-          Plurimath::Math::Symbols::Symbol.new("C"),
-          Plurimath::Math::Number.new("2"),
-        )
-      ])
+                                                      Plurimath::Math::Function::Power.new(
+                                                        Plurimath::Math::Symbols::Symbol.new("C"),
+                                                        Plurimath::Math::Number.new("2"),
+                                                      ),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #77" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mrow>
@@ -165,27 +170,28 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mrow>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Function::Fenced.new(
-          Plurimath::Math::Symbols::Paren::Lcurly.new,
-          [
-            Plurimath::Math::Function::Ms.new("A"),
-            Plurimath::Math::Symbols::Comma.new,
-            Plurimath::Math::Function::Ms.new("B"),
-            Plurimath::Math::Symbols::Comma.new,
-            Plurimath::Math::Function::Ms.new("   "),
-          ],
-          Plurimath::Math::Symbols::Paren::Rcurly.new,
-        )
-      ])
+                                                      Plurimath::Math::Function::Fenced.new(
+                                                        Plurimath::Math::Symbols::Paren::Lcurly.new,
+                                                        [
+                                                          Plurimath::Math::Function::Ms.new("A"),
+                                                          Plurimath::Math::Symbols::Comma.new,
+                                                          Plurimath::Math::Function::Ms.new("B"),
+                                                          Plurimath::Math::Symbols::Comma.new,
+                                                          Plurimath::Math::Function::Ms.new("   "),
+                                                        ],
+                                                        Plurimath::Math::Symbols::Paren::Rcurly.new,
+                                                      ),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #78" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mrow>
@@ -205,33 +211,34 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mrow>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Formula.new([
-          Plurimath::Math::Symbols::Symbol.new("&#xa;    F&#xa;    "),
-          Plurimath::Math::Symbols::Funcapply.new,
-          Plurimath::Math::Function::Fenced.new(
-            Plurimath::Math::Symbols::Paren::Lround.new,
-            [
-              Plurimath::Math::Symbols::Symbol.new("&#xa;      A1&#xa;      "),
-              Plurimath::Math::Symbols::Comma.new,
-              Plurimath::Math::Symbols::Symbol.new("&#xa;      ...&#xa;      "),
-              Plurimath::Math::Symbols::Comma.new,
-              Plurimath::Math::Symbols::Symbol.new("&#xa;      A2&#xa;      "),
-              Plurimath::Math::Symbols::Comma.new,
-              Plurimath::Math::Symbols::Symbol.new("&#xa;      An&#xa;      "),
-            ],
-            Plurimath::Math::Symbols::Paren::Rround.new
-          )
-        ])
-      ])
+                                                      Plurimath::Math::Formula.new([
+                                                                                     Plurimath::Math::Symbols::Symbol.new("&#xa;    F&#xa;    "),
+                                                                                     Plurimath::Math::Symbols::Funcapply.new,
+                                                                                     Plurimath::Math::Function::Fenced.new(
+                                                                                       Plurimath::Math::Symbols::Paren::Lround.new,
+                                                                                       [
+                                                                                         Plurimath::Math::Symbols::Symbol.new("&#xa;      A1&#xa;      "),
+                                                                                         Plurimath::Math::Symbols::Comma.new,
+                                                                                         Plurimath::Math::Symbols::Symbol.new("&#xa;      ...&#xa;      "),
+                                                                                         Plurimath::Math::Symbols::Comma.new,
+                                                                                         Plurimath::Math::Symbols::Symbol.new("&#xa;      A2&#xa;      "),
+                                                                                         Plurimath::Math::Symbols::Comma.new,
+                                                                                         Plurimath::Math::Symbols::Symbol.new("&#xa;      An&#xa;      "),
+                                                                                       ],
+                                                                                       Plurimath::Math::Symbols::Paren::Rround.new,
+                                                                                     ),
+                                                                                   ]),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #79" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mrow>
@@ -248,34 +255,35 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mrow>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Underset.new(
-            Plurimath::Math::Formula.new([
-              Plurimath::Math::Symbols::Symbol.new(" X "),
-              Plurimath::Math::Symbols::In.new,
-              Plurimath::Math::Symbols::Symbol.new(" D ")
-            ]),
-            Plurimath::Math::Symbols::Symbol.new("&#xa;      Op&#xa;      ")
-          ),
-          Plurimath::Math::Symbols::Funcapply.new,
-          Plurimath::Math::Function::Fenced.new(
-            Plurimath::Math::Symbols::Paren::Lround.new,
-            [
-              Plurimath::Math::Symbols::Symbol.new("&#xa;      Expression-in-X&#xa;      "),
-            ],
-            Plurimath::Math::Symbols::Paren::Rround.new
-          )
-        ])
-      ])
+                                                      Plurimath::Math::Formula.new([
+                                                                                     Plurimath::Math::Function::Underset.new(
+                                                                                       Plurimath::Math::Formula.new([
+                                                                                                                      Plurimath::Math::Symbols::Symbol.new(" X "),
+                                                                                                                      Plurimath::Math::Symbols::In.new,
+                                                                                                                      Plurimath::Math::Symbols::Symbol.new(" D "),
+                                                                                                                    ]),
+                                                                                       Plurimath::Math::Symbols::Symbol.new("&#xa;      Op&#xa;      "),
+                                                                                     ),
+                                                                                     Plurimath::Math::Symbols::Funcapply.new,
+                                                                                     Plurimath::Math::Function::Fenced.new(
+                                                                                       Plurimath::Math::Symbols::Paren::Lround.new,
+                                                                                       [
+                                                                                         Plurimath::Math::Symbols::Symbol.new("&#xa;      Expression-in-X&#xa;      "),
+                                                                                       ],
+                                                                                       Plurimath::Math::Symbols::Paren::Rround.new,
+                                                                                     ),
+                                                                                   ]),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #80" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mrow>
@@ -292,28 +300,29 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mrow>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Formula.new([
-          Plurimath::Math::Symbols::Symbol.new("&#xa;    B&#xa;    "),
-          Plurimath::Math::Formula.new([
-            Plurimath::Math::Symbols::Symbol.new("&#xa;      x1&#xa;      "),
-            Plurimath::Math::Symbols::Comma.new,
-            Plurimath::Math::Symbols::Symbol.new("&#xa;      ...&#xa;      "),
-            Plurimath::Math::Symbols::Comma.new,
-            Plurimath::Math::Symbols::Symbol.new("&#xa;      xn&#xa;    ")
-          ]),
-          Plurimath::Math::Symbols::Period.new,
-          Plurimath::Math::Symbols::Symbol.new("&#xa;    S&#xa;  ")
-        ])
-      ])
+                                                      Plurimath::Math::Formula.new([
+                                                                                     Plurimath::Math::Symbols::Symbol.new("&#xa;    B&#xa;    "),
+                                                                                     Plurimath::Math::Formula.new([
+                                                                                                                    Plurimath::Math::Symbols::Symbol.new("&#xa;      x1&#xa;      "),
+                                                                                                                    Plurimath::Math::Symbols::Comma.new,
+                                                                                                                    Plurimath::Math::Symbols::Symbol.new("&#xa;      ...&#xa;      "),
+                                                                                                                    Plurimath::Math::Symbols::Comma.new,
+                                                                                                                    Plurimath::Math::Symbols::Symbol.new("&#xa;      xn&#xa;    "),
+                                                                                                                  ]),
+                                                                                     Plurimath::Math::Symbols::Period.new,
+                                                                                     Plurimath::Math::Symbols::Symbol.new("&#xa;    S&#xa;  "),
+                                                                                   ]),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #81" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <merror>
@@ -325,25 +334,26 @@ RSpec.describe Plurimath::Mathml::Parser do
           </merror>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Function::Merror.new(
-          Plurimath::Math::Formula.new([
-            Plurimath::Math::Function::Text.new("DivisionByZero:&#xa0;"),
-            Plurimath::Math::Function::Frac.new(
-              Plurimath::Math::Symbols::Symbol.new("x"),
-              Plurimath::Math::Number.new("0")
-            )
-          ]),
-        )
-      ])
+                                                      Plurimath::Math::Function::Merror.new(
+                                                        Plurimath::Math::Formula.new([
+                                                                                       Plurimath::Math::Function::Text.new("DivisionByZero:&#xa0;"),
+                                                                                       Plurimath::Math::Function::Frac.new(
+                                                                                         Plurimath::Math::Symbols::Symbol.new("x"),
+                                                                                         Plurimath::Math::Number.new("0"),
+                                                                                       ),
+                                                                                     ]),
+                                                      ),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #82" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mfenced>
@@ -352,24 +362,25 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mfenced>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Function::Fenced.new(
-          Plurimath::Math::Symbols::Paren::Lround.new,
-          [
-            Plurimath::Math::Symbols::Symbol.new("x"),
-            Plurimath::Math::Number.new("1"),
-          ],
-          Plurimath::Math::Symbols::Paren::Rround.new,
-        )
-      ])
+                                                      Plurimath::Math::Function::Fenced.new(
+                                                        Plurimath::Math::Symbols::Paren::Lround.new,
+                                                        [
+                                                          Plurimath::Math::Symbols::Symbol.new("x"),
+                                                          Plurimath::Math::Number.new("1"),
+                                                        ],
+                                                        Plurimath::Math::Symbols::Paren::Rround.new,
+                                                      ),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #83" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mfenced open="[" close="]">
@@ -378,24 +389,25 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mfenced>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Function::Fenced.new(
-          Plurimath::Math::Symbols::Paren::Lsquare.new,
-          [
-            Plurimath::Math::Number.new("0"),
-            Plurimath::Math::Number.new("1"),
-          ],
-          Plurimath::Math::Symbols::Paren::Rsquare.new,
-        )
-      ])
+                                                      Plurimath::Math::Function::Fenced.new(
+                                                        Plurimath::Math::Symbols::Paren::Lsquare.new,
+                                                        [
+                                                          Plurimath::Math::Number.new("0"),
+                                                          Plurimath::Math::Number.new("1"),
+                                                        ],
+                                                        Plurimath::Math::Symbols::Paren::Rsquare.new,
+                                                      ),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #84" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mfenced open="(" close="]">
@@ -404,24 +416,25 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mfenced>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Function::Fenced.new(
-          Plurimath::Math::Symbols::Paren::Lround.new,
-          [
-            Plurimath::Math::Number.new("0"),
-            Plurimath::Math::Number.new("1"),
-          ],
-          Plurimath::Math::Symbols::Paren::Rsquare.new,
-        )
-      ])
+                                                      Plurimath::Math::Function::Fenced.new(
+                                                        Plurimath::Math::Symbols::Paren::Lround.new,
+                                                        [
+                                                          Plurimath::Math::Number.new("0"),
+                                                          Plurimath::Math::Number.new("1"),
+                                                        ],
+                                                        Plurimath::Math::Symbols::Paren::Rsquare.new,
+                                                      ),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #85" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mfenced open="[" close=")">
@@ -430,24 +443,25 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mfenced>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Function::Fenced.new(
-          Plurimath::Math::Symbols::Paren::Lsquare.new,
-          [
-            Plurimath::Math::Number.new("0"),
-            Plurimath::Math::Number.new("1"),
-          ],
-          Plurimath::Math::Symbols::Paren::Rround.new,
-        )
-      ])
+                                                      Plurimath::Math::Function::Fenced.new(
+                                                        Plurimath::Math::Symbols::Paren::Lsquare.new,
+                                                        [
+                                                          Plurimath::Math::Number.new("0"),
+                                                          Plurimath::Math::Number.new("1"),
+                                                        ],
+                                                        Plurimath::Math::Symbols::Paren::Rround.new,
+                                                      ),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #86" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <msup>
@@ -460,26 +474,27 @@ RSpec.describe Plurimath::Mathml::Parser do
           </msup>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Function::Power.new(
-          Plurimath::Math::Symbols::Symbol.new("f"),
-          Plurimath::Math::Function::Fenced.new(
-            Plurimath::Math::Symbols::Paren::Lround.new,
-            [
-              Plurimath::Math::Number.new("-1"),
-            ],
-            Plurimath::Math::Symbols::Paren::Rround.new
-          )
-        )
-      ])
+                                                      Plurimath::Math::Function::Power.new(
+                                                        Plurimath::Math::Symbols::Symbol.new("f"),
+                                                        Plurimath::Math::Function::Fenced.new(
+                                                          Plurimath::Math::Symbols::Paren::Lround.new,
+                                                          [
+                                                            Plurimath::Math::Number.new("-1"),
+                                                          ],
+                                                          Plurimath::Math::Symbols::Paren::Rround.new,
+                                                        ),
+                                                      ),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #87" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mrow>
@@ -498,36 +513,37 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mrow>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Power.new(
-            Plurimath::Math::Symbols::Symbol.new("A"),
-            Plurimath::Math::Function::Fenced.new(
-              Plurimath::Math::Symbols::Paren::Lround.new,
-              [
-                Plurimath::Math::Number.new("-1"),
-              ],
-              Plurimath::Math::Symbols::Paren::Rround.new
-            )
-          ),
-          Plurimath::Math::Symbols::Funcapply.new,
-          Plurimath::Math::Function::Fenced.new(
-            Plurimath::Math::Symbols::Paren::Lround.new,
-            [
-              Plurimath::Math::Symbols::Symbol.new("a")
-            ],
-            Plurimath::Math::Symbols::Paren::Rround.new,
-          ),
-        ])
-      ])
+                                                      Plurimath::Math::Formula.new([
+                                                                                     Plurimath::Math::Function::Power.new(
+                                                                                       Plurimath::Math::Symbols::Symbol.new("A"),
+                                                                                       Plurimath::Math::Function::Fenced.new(
+                                                                                         Plurimath::Math::Symbols::Paren::Lround.new,
+                                                                                         [
+                                                                                           Plurimath::Math::Number.new("-1"),
+                                                                                         ],
+                                                                                         Plurimath::Math::Symbols::Paren::Rround.new,
+                                                                                       ),
+                                                                                     ),
+                                                                                     Plurimath::Math::Symbols::Funcapply.new,
+                                                                                     Plurimath::Math::Function::Fenced.new(
+                                                                                       Plurimath::Math::Symbols::Paren::Lround.new,
+                                                                                       [
+                                                                                         Plurimath::Math::Symbols::Symbol.new("a"),
+                                                                                       ],
+                                                                                       Plurimath::Math::Symbols::Paren::Rround.new,
+                                                                                     ),
+                                                                                   ]),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #88" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mrow>
@@ -550,41 +566,42 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mrow>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Formula.new([
-          Plurimath::Math::Symbols::Lambda.new,
-          Plurimath::Math::Symbols::Symbol.new("x"),
-          Plurimath::Math::Symbols::Period.new,
-          Plurimath::Math::Function::Fenced.new(
-            Plurimath::Math::Symbols::Paren::Lround.new,
-            [
-              Plurimath::Math::Formula.new([
-                Plurimath::Math::Function::Sin.new(
-                  Plurimath::Math::Symbols::Funcapply.new,
-                ),
-                Plurimath::Math::Function::Fenced.new(
-                  Plurimath::Math::Symbols::Paren::Lround.new,
-                  [
-                    Plurimath::Math::Symbols::Symbol.new("x"),
-                    Plurimath::Math::Symbols::Plus.new,
-                    Plurimath::Math::Number.new("1"),
-                  ],
-                  Plurimath::Math::Symbols::Paren::Rround.new
-                )
-              ])
-            ],
-            Plurimath::Math::Symbols::Paren::Rround.new,
-          )
-        ])
-      ])
+                                                      Plurimath::Math::Formula.new([
+                                                                                     Plurimath::Math::Symbols::Lambda.new,
+                                                                                     Plurimath::Math::Symbols::Symbol.new("x"),
+                                                                                     Plurimath::Math::Symbols::Period.new,
+                                                                                     Plurimath::Math::Function::Fenced.new(
+                                                                                       Plurimath::Math::Symbols::Paren::Lround.new,
+                                                                                       [
+                                                                                         Plurimath::Math::Formula.new([
+                                                                                                                        Plurimath::Math::Function::Sin.new(
+                                                                                                                          Plurimath::Math::Symbols::Funcapply.new,
+                                                                                                                        ),
+                                                                                                                        Plurimath::Math::Function::Fenced.new(
+                                                                                                                          Plurimath::Math::Symbols::Paren::Lround.new,
+                                                                                                                          [
+                                                                                                                            Plurimath::Math::Symbols::Symbol.new("x"),
+                                                                                                                            Plurimath::Math::Symbols::Plus.new,
+                                                                                                                            Plurimath::Math::Number.new("1"),
+                                                                                                                          ],
+                                                                                                                          Plurimath::Math::Symbols::Paren::Rround.new,
+                                                                                                                        ),
+                                                                                                                      ]),
+                                                                                       ],
+                                                                                       Plurimath::Math::Symbols::Paren::Rround.new,
+                                                                                     ),
+                                                                                   ]),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #89" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mrow>
@@ -604,34 +621,35 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mrow>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Formula.new([
-          Plurimath::Math::Symbols::Symbol.new("x"),
-          Plurimath::Math::Symbols::Mapsto.new,
-          Plurimath::Math::Formula.new([
-            Plurimath::Math::Function::Sin.new(
-              Plurimath::Math::Symbols::Funcapply.new,
-            ),
-            Plurimath::Math::Function::Fenced.new(
-              Plurimath::Math::Symbols::Paren::Lround.new,
-              [
-                Plurimath::Math::Symbols::Symbol.new("x"),
-                Plurimath::Math::Symbols::Plus.new,
-                Plurimath::Math::Number.new("1"),
-              ],
-              Plurimath::Math::Symbols::Paren::Rround.new
-            )
-          ])
-        ])
-      ])
+                                                      Plurimath::Math::Formula.new([
+                                                                                     Plurimath::Math::Symbols::Symbol.new("x"),
+                                                                                     Plurimath::Math::Symbols::Mapsto.new,
+                                                                                     Plurimath::Math::Formula.new([
+                                                                                                                    Plurimath::Math::Function::Sin.new(
+                                                                                                                      Plurimath::Math::Symbols::Funcapply.new,
+                                                                                                                    ),
+                                                                                                                    Plurimath::Math::Function::Fenced.new(
+                                                                                                                      Plurimath::Math::Symbols::Paren::Lround.new,
+                                                                                                                      [
+                                                                                                                        Plurimath::Math::Symbols::Symbol.new("x"),
+                                                                                                                        Plurimath::Math::Symbols::Plus.new,
+                                                                                                                        Plurimath::Math::Number.new("1"),
+                                                                                                                      ],
+                                                                                                                      Plurimath::Math::Symbols::Paren::Rround.new,
+                                                                                                                    ),
+                                                                                                                  ]),
+                                                                                   ]),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #90" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mrow>
@@ -643,23 +661,24 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mrow>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Formula.new([
-          Plurimath::Math::Symbols::Symbol.new("f"),
-          Plurimath::Math::Symbols::Circ.new,
-          Plurimath::Math::Symbols::Symbol.new("g"),
-          Plurimath::Math::Symbols::Circ.new,
-          Plurimath::Math::Symbols::Symbol.new("h")
-        ])
-      ])
+                                                      Plurimath::Math::Formula.new([
+                                                                                     Plurimath::Math::Symbols::Symbol.new("f"),
+                                                                                     Plurimath::Math::Symbols::Circ.new,
+                                                                                     Plurimath::Math::Symbols::Symbol.new("g"),
+                                                                                     Plurimath::Math::Symbols::Circ.new,
+                                                                                     Plurimath::Math::Symbols::Symbol.new("h"),
+                                                                                   ]),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #91" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mrow>
@@ -693,59 +712,60 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mrow>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Formula.new([
-          Plurimath::Math::Formula.new([
-            Plurimath::Math::Function::Fenced.new(
-              Plurimath::Math::Symbols::Paren::Lround.new,
-              [
-                Plurimath::Math::Symbols::Symbol.new("f"),
-                Plurimath::Math::Symbols::Circ.new,
-                Plurimath::Math::Symbols::Symbol.new("g"),
-              ],
-              Plurimath::Math::Symbols::Paren::Rround.new
-            ),
-            Plurimath::Math::Symbols::Funcapply.new,
-            Plurimath::Math::Function::Fenced.new(
-              Plurimath::Math::Symbols::Paren::Lround.new,
-              [
-                Plurimath::Math::Symbols::Symbol.new("x")
-              ],
-              Plurimath::Math::Symbols::Paren::Rround.new,
-            )
-          ]),
-          Plurimath::Math::Symbols::Equal.new,
-          Plurimath::Math::Formula.new([
-            Plurimath::Math::Symbols::Symbol.new("f"),
-            Plurimath::Math::Symbols::Funcapply.new,
-            Plurimath::Math::Function::Fenced.new(
-              Plurimath::Math::Symbols::Paren::Lround.new,
-              [
-                Plurimath::Math::Formula.new([
-                  Plurimath::Math::Symbols::Symbol.new("g"),
-                  Plurimath::Math::Symbols::Funcapply.new,
-                  Plurimath::Math::Function::Fenced.new(
-                    Plurimath::Math::Symbols::Paren::Lround.new,
-                    [
-                      Plurimath::Math::Symbols::Symbol.new("x")
-                    ],
-                    Plurimath::Math::Symbols::Paren::Rround.new,
-                  )
-                ])
-              ],
-              Plurimath::Math::Symbols::Paren::Rround.new,
-            )
-          ])
-        ])
-      ])
+                                                      Plurimath::Math::Formula.new([
+                                                                                     Plurimath::Math::Formula.new([
+                                                                                                                    Plurimath::Math::Function::Fenced.new(
+                                                                                                                      Plurimath::Math::Symbols::Paren::Lround.new,
+                                                                                                                      [
+                                                                                                                        Plurimath::Math::Symbols::Symbol.new("f"),
+                                                                                                                        Plurimath::Math::Symbols::Circ.new,
+                                                                                                                        Plurimath::Math::Symbols::Symbol.new("g"),
+                                                                                                                      ],
+                                                                                                                      Plurimath::Math::Symbols::Paren::Rround.new,
+                                                                                                                    ),
+                                                                                                                    Plurimath::Math::Symbols::Funcapply.new,
+                                                                                                                    Plurimath::Math::Function::Fenced.new(
+                                                                                                                      Plurimath::Math::Symbols::Paren::Lround.new,
+                                                                                                                      [
+                                                                                                                        Plurimath::Math::Symbols::Symbol.new("x"),
+                                                                                                                      ],
+                                                                                                                      Plurimath::Math::Symbols::Paren::Rround.new,
+                                                                                                                    ),
+                                                                                                                  ]),
+                                                                                     Plurimath::Math::Symbols::Equal.new,
+                                                                                     Plurimath::Math::Formula.new([
+                                                                                                                    Plurimath::Math::Symbols::Symbol.new("f"),
+                                                                                                                    Plurimath::Math::Symbols::Funcapply.new,
+                                                                                                                    Plurimath::Math::Function::Fenced.new(
+                                                                                                                      Plurimath::Math::Symbols::Paren::Lround.new,
+                                                                                                                      [
+                                                                                                                        Plurimath::Math::Formula.new([
+                                                                                                                                                       Plurimath::Math::Symbols::Symbol.new("g"),
+                                                                                                                                                       Plurimath::Math::Symbols::Funcapply.new,
+                                                                                                                                                       Plurimath::Math::Function::Fenced.new(
+                                                                                                                                                         Plurimath::Math::Symbols::Paren::Lround.new,
+                                                                                                                                                         [
+                                                                                                                                                           Plurimath::Math::Symbols::Symbol.new("x"),
+                                                                                                                                                         ],
+                                                                                                                                                         Plurimath::Math::Symbols::Paren::Rround.new,
+                                                                                                                                                       ),
+                                                                                                                                                     ]),
+                                                                                                                      ],
+                                                                                                                      Plurimath::Math::Symbols::Paren::Rround.new,
+                                                                                                                    ),
+                                                                                                                  ]),
+                                                                                   ]),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #92" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mrow>
@@ -766,34 +786,35 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mrow>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Formula.new([
-          Plurimath::Math::Formula.new([
-            Plurimath::Math::Symbols::Symbol.new("f"),
-            Plurimath::Math::Symbols::Circ.new,
-            Plurimath::Math::Function::Power.new(
-              Plurimath::Math::Symbols::Symbol.new("f"),
-              Plurimath::Math::Function::Fenced.new(
-                Plurimath::Math::Symbols::Paren::Lround.new,
-                [
-                  Plurimath::Math::Number.new("-1"),
-                ],
-                Plurimath::Math::Symbols::Paren::Rround.new
-              ),
-            )
-          ]),
-          Plurimath::Math::Symbols::Equal.new,
-          Plurimath::Math::Symbols::Symbol.new("id")
-        ])
-      ])
+                                                      Plurimath::Math::Formula.new([
+                                                                                     Plurimath::Math::Formula.new([
+                                                                                                                    Plurimath::Math::Symbols::Symbol.new("f"),
+                                                                                                                    Plurimath::Math::Symbols::Circ.new,
+                                                                                                                    Plurimath::Math::Function::Power.new(
+                                                                                                                      Plurimath::Math::Symbols::Symbol.new("f"),
+                                                                                                                      Plurimath::Math::Function::Fenced.new(
+                                                                                                                        Plurimath::Math::Symbols::Paren::Lround.new,
+                                                                                                                        [
+                                                                                                                          Plurimath::Math::Number.new("-1"),
+                                                                                                                        ],
+                                                                                                                        Plurimath::Math::Symbols::Paren::Rround.new,
+                                                                                                                      ),
+                                                                                                                    ),
+                                                                                                                  ]),
+                                                                                     Plurimath::Math::Symbols::Equal.new,
+                                                                                     Plurimath::Math::Symbols::Symbol.new("id"),
+                                                                                   ]),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #93" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mrow>
@@ -809,34 +830,35 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mrow>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Formula.new([
-          Plurimath::Math::Formula.new([
-            Plurimath::Math::Symbols::Symbol.new("domain"),
-            Plurimath::Math::Symbols::Funcapply.new,
-            Plurimath::Math::Function::Fenced.new(
-              Plurimath::Math::Symbols::Paren::Lround.new,
-              [
-                Plurimath::Math::Symbols::Symbol.new("f")
-              ],
-              Plurimath::Math::Symbols::Paren::Rround.new,
-            )
-          ]),
-          Plurimath::Math::Symbols::Equal.new,
-          Plurimath::Math::Function::FontStyle::DoubleStruck.new(
-            Plurimath::Math::Symbols::Symbol.new("R"),
-            "double-struck",
-          )
-        ])
-      ])
+                                                      Plurimath::Math::Formula.new([
+                                                                                     Plurimath::Math::Formula.new([
+                                                                                                                    Plurimath::Math::Symbols::Symbol.new("domain"),
+                                                                                                                    Plurimath::Math::Symbols::Funcapply.new,
+                                                                                                                    Plurimath::Math::Function::Fenced.new(
+                                                                                                                      Plurimath::Math::Symbols::Paren::Lround.new,
+                                                                                                                      [
+                                                                                                                        Plurimath::Math::Symbols::Symbol.new("f"),
+                                                                                                                      ],
+                                                                                                                      Plurimath::Math::Symbols::Paren::Rround.new,
+                                                                                                                    ),
+                                                                                                                  ]),
+                                                                                     Plurimath::Math::Symbols::Equal.new,
+                                                                                     Plurimath::Math::Function::FontStyle::DoubleStruck.new(
+                                                                                       Plurimath::Math::Symbols::Symbol.new("R"),
+                                                                                       "double-struck",
+                                                                                     ),
+                                                                                   ]),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #94" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mrow>
@@ -852,34 +874,35 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mrow>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Formula.new([
-          Plurimath::Math::Formula.new([
-            Plurimath::Math::Symbols::Symbol.new("codomain"),
-            Plurimath::Math::Symbols::Funcapply.new,
-            Plurimath::Math::Function::Fenced.new(
-              Plurimath::Math::Symbols::Paren::Lround.new,
-              [
-                Plurimath::Math::Symbols::Symbol.new("f")
-              ],
-              Plurimath::Math::Symbols::Paren::Rround.new,
-            )
-          ]),
-          Plurimath::Math::Symbols::Equal.new,
-          Plurimath::Math::Function::FontStyle::DoubleStruck.new(
-            Plurimath::Math::Symbols::Symbol.new("Q"),
-            "double-struck"
-          )
-        ])
-      ])
+                                                      Plurimath::Math::Formula.new([
+                                                                                     Plurimath::Math::Formula.new([
+                                                                                                                    Plurimath::Math::Symbols::Symbol.new("codomain"),
+                                                                                                                    Plurimath::Math::Symbols::Funcapply.new,
+                                                                                                                    Plurimath::Math::Function::Fenced.new(
+                                                                                                                      Plurimath::Math::Symbols::Paren::Lround.new,
+                                                                                                                      [
+                                                                                                                        Plurimath::Math::Symbols::Symbol.new("f"),
+                                                                                                                      ],
+                                                                                                                      Plurimath::Math::Symbols::Paren::Rround.new,
+                                                                                                                    ),
+                                                                                                                  ]),
+                                                                                     Plurimath::Math::Symbols::Equal.new,
+                                                                                     Plurimath::Math::Function::FontStyle::DoubleStruck.new(
+                                                                                       Plurimath::Math::Symbols::Symbol.new("Q"),
+                                                                                       "double-struck",
+                                                                                     ),
+                                                                                   ]),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #95" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mrow>
@@ -898,38 +921,39 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mrow>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Formula.new([
-          Plurimath::Math::Formula.new([
-            Plurimath::Math::Symbols::Symbol.new("image"),
-            Plurimath::Math::Symbols::Funcapply.new,
-            Plurimath::Math::Function::Fenced.new(
-              Plurimath::Math::Symbols::Paren::Lround.new,
-              [
-                Plurimath::Math::Function::Sin.new
-              ],
-              Plurimath::Math::Symbols::Paren::Rround.new,
-            )
-          ]),
-          Plurimath::Math::Symbols::Equal.new,
-          Plurimath::Math::Function::Fenced.new(
-            Plurimath::Math::Symbols::Paren::Lsquare.new,
-            [
-              Plurimath::Math::Number.new("-1"),
-              Plurimath::Math::Number.new("1")
-            ],
-            Plurimath::Math::Symbols::Paren::Rsquare.new,
-          )
-        ])
-      ])
+                                                      Plurimath::Math::Formula.new([
+                                                                                     Plurimath::Math::Formula.new([
+                                                                                                                    Plurimath::Math::Symbols::Symbol.new("image"),
+                                                                                                                    Plurimath::Math::Symbols::Funcapply.new,
+                                                                                                                    Plurimath::Math::Function::Fenced.new(
+                                                                                                                      Plurimath::Math::Symbols::Paren::Lround.new,
+                                                                                                                      [
+                                                                                                                        Plurimath::Math::Function::Sin.new,
+                                                                                                                      ],
+                                                                                                                      Plurimath::Math::Symbols::Paren::Rround.new,
+                                                                                                                    ),
+                                                                                                                  ]),
+                                                                                     Plurimath::Math::Symbols::Equal.new,
+                                                                                     Plurimath::Math::Function::Fenced.new(
+                                                                                       Plurimath::Math::Symbols::Paren::Lsquare.new,
+                                                                                       [
+                                                                                         Plurimath::Math::Number.new("-1"),
+                                                                                         Plurimath::Math::Number.new("1"),
+                                                                                       ],
+                                                                                       Plurimath::Math::Symbols::Paren::Rsquare.new,
+                                                                                     ),
+                                                                                   ]),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #96" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mrow>
@@ -987,71 +1011,72 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mrow>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Formula.new([
-          Plurimath::Math::Symbols::Paren::Lcurly.new,
-          Plurimath::Math::Function::Table.new(
-            [
-              Plurimath::Math::Function::Tr.new([
-                Plurimath::Math::Function::Td.new([
-                  Plurimath::Math::Formula.new([
-                    Plurimath::Math::Symbols::Minus.new,
-                    Plurimath::Math::Symbols::Symbol.new("x")
-                  ])
-                ]),
-                Plurimath::Math::Function::Td.new([
-                  Plurimath::Math::Function::Text.new("&#xa0; if &#xa0;")
-                ]),
-                Plurimath::Math::Function::Td.new([
-                  Plurimath::Math::Formula.new([
-                    Plurimath::Math::Symbols::Symbol.new("x"),
-                    Plurimath::Math::Symbols::Less.new,
-                    Plurimath::Math::Number.new("0")
-                  ])
-                ])
-              ]),
-              Plurimath::Math::Function::Tr.new([
-                Plurimath::Math::Function::Td.new([
-                  Plurimath::Math::Number.new("0")
-                ]),
-                Plurimath::Math::Function::Td.new([
-                  Plurimath::Math::Function::Text.new("&#xa0; if &#xa0;")
-                ]),
-                Plurimath::Math::Function::Td.new([
-                  Plurimath::Math::Formula.new([
-                    Plurimath::Math::Symbols::Symbol.new("x"),
-                    Plurimath::Math::Symbols::Equal.new,
-                    Plurimath::Math::Number.new("0")
-                  ])
-                ])
-              ]),
-              Plurimath::Math::Function::Tr.new([
-                Plurimath::Math::Function::Td.new([
-                  Plurimath::Math::Symbols::Symbol.new("x")
-                ]),
-                Plurimath::Math::Function::Td.new([
-                  Plurimath::Math::Function::Text.new("&#xa0; if &#xa0;")
-                ]),
-                Plurimath::Math::Function::Td.new([
-                  Plurimath::Math::Formula.new([
-                    Plurimath::Math::Symbols::Symbol.new("x"),
-                    Plurimath::Math::Symbols::Greater.new,
-                    Plurimath::Math::Number.new("0")
-                  ])
-                ])
-              ])
-            ],
-          )
-        ])
-      ])
+                                                      Plurimath::Math::Formula.new([
+                                                                                     Plurimath::Math::Symbols::Paren::Lcurly.new,
+                                                                                     Plurimath::Math::Function::Table.new(
+                                                                                       [
+                                                                                         Plurimath::Math::Function::Tr.new([
+                                                                                                                             Plurimath::Math::Function::Td.new([
+                                                                                                                                                                 Plurimath::Math::Formula.new([
+                                                                                                                                                                                                Plurimath::Math::Symbols::Minus.new,
+                                                                                                                                                                                                Plurimath::Math::Symbols::Symbol.new("x"),
+                                                                                                                                                                                              ]),
+                                                                                                                                                               ]),
+                                                                                                                             Plurimath::Math::Function::Td.new([
+                                                                                                                                                                 Plurimath::Math::Function::Text.new("&#xa0; if &#xa0;"),
+                                                                                                                                                               ]),
+                                                                                                                             Plurimath::Math::Function::Td.new([
+                                                                                                                                                                 Plurimath::Math::Formula.new([
+                                                                                                                                                                                                Plurimath::Math::Symbols::Symbol.new("x"),
+                                                                                                                                                                                                Plurimath::Math::Symbols::Less.new,
+                                                                                                                                                                                                Plurimath::Math::Number.new("0"),
+                                                                                                                                                                                              ]),
+                                                                                                                                                               ]),
+                                                                                                                           ]),
+                                                                                         Plurimath::Math::Function::Tr.new([
+                                                                                                                             Plurimath::Math::Function::Td.new([
+                                                                                                                                                                 Plurimath::Math::Number.new("0"),
+                                                                                                                                                               ]),
+                                                                                                                             Plurimath::Math::Function::Td.new([
+                                                                                                                                                                 Plurimath::Math::Function::Text.new("&#xa0; if &#xa0;"),
+                                                                                                                                                               ]),
+                                                                                                                             Plurimath::Math::Function::Td.new([
+                                                                                                                                                                 Plurimath::Math::Formula.new([
+                                                                                                                                                                                                Plurimath::Math::Symbols::Symbol.new("x"),
+                                                                                                                                                                                                Plurimath::Math::Symbols::Equal.new,
+                                                                                                                                                                                                Plurimath::Math::Number.new("0"),
+                                                                                                                                                                                              ]),
+                                                                                                                                                               ]),
+                                                                                                                           ]),
+                                                                                         Plurimath::Math::Function::Tr.new([
+                                                                                                                             Plurimath::Math::Function::Td.new([
+                                                                                                                                                                 Plurimath::Math::Symbols::Symbol.new("x"),
+                                                                                                                                                               ]),
+                                                                                                                             Plurimath::Math::Function::Td.new([
+                                                                                                                                                                 Plurimath::Math::Function::Text.new("&#xa0; if &#xa0;"),
+                                                                                                                                                               ]),
+                                                                                                                             Plurimath::Math::Function::Td.new([
+                                                                                                                                                                 Plurimath::Math::Formula.new([
+                                                                                                                                                                                                Plurimath::Math::Symbols::Symbol.new("x"),
+                                                                                                                                                                                                Plurimath::Math::Symbols::Greater.new,
+                                                                                                                                                                                                Plurimath::Math::Number.new("0"),
+                                                                                                                                                                                              ]),
+                                                                                                                                                               ]),
+                                                                                                                           ]),
+                                                                                       ],
+                                                                                     ),
+                                                                                   ]),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #97" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mrow>
@@ -1063,25 +1088,26 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mrow>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Function::Fenced.new(
-          Plurimath::Math::Symbols::Paren::Lfloor.new,
-          [
-            Plurimath::Math::Symbols::Symbol.new("a"),
-            Plurimath::Math::Symbols::Symbol.new("/"),
-            Plurimath::Math::Symbols::Symbol.new("b")
-          ],
-          Plurimath::Math::Symbols::Paren::Rfloor.new
-        )
-      ])
+                                                      Plurimath::Math::Function::Fenced.new(
+                                                        Plurimath::Math::Symbols::Paren::Lfloor.new,
+                                                        [
+                                                          Plurimath::Math::Symbols::Symbol.new("a"),
+                                                          Plurimath::Math::Symbols::Symbol.new("/"),
+                                                          Plurimath::Math::Symbols::Symbol.new("b"),
+                                                        ],
+                                                        Plurimath::Math::Symbols::Paren::Rfloor.new,
+                                                      ),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #98" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mrow>
@@ -1090,20 +1116,21 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mrow>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Formula.new([
-          Plurimath::Math::Symbols::Symbol.new("n"),
-          Plurimath::Math::Symbols::Symbol.new("!"),
-        ])
-      ])
+                                                      Plurimath::Math::Formula.new([
+                                                                                     Plurimath::Math::Symbols::Symbol.new("n"),
+                                                                                     Plurimath::Math::Symbols::Symbol.new("!"),
+                                                                                   ]),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #99" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mrow>
@@ -1113,21 +1140,22 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mrow>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Formula.new([
-          Plurimath::Math::Symbols::Symbol.new("a"),
-          Plurimath::Math::Symbols::Symbol.new("/"),
-          Plurimath::Math::Symbols::Symbol.new("b"),
-        ])
-      ])
+                                                      Plurimath::Math::Formula.new([
+                                                                                     Plurimath::Math::Symbols::Symbol.new("a"),
+                                                                                     Plurimath::Math::Symbols::Symbol.new("/"),
+                                                                                     Plurimath::Math::Symbols::Symbol.new("b"),
+                                                                                   ]),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #100" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mrow>
@@ -1144,29 +1172,30 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mrow>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Function::Max.new(
-          Plurimath::Math::Function::Fenced.new(
-            Plurimath::Math::Symbols::Paren::Lcurly.new,
-            [
-              Plurimath::Math::Number.new("2"),
-              Plurimath::Math::Symbols::Comma.new,
-              Plurimath::Math::Number.new("3"),
-              Plurimath::Math::Symbols::Comma.new,
-              Plurimath::Math::Number.new("5"),
-            ],
-            Plurimath::Math::Symbols::Paren::Rcurly.new
-          )
-        ),
-      ])
+                                                      Plurimath::Math::Function::Max.new(
+                                                        Plurimath::Math::Function::Fenced.new(
+                                                          Plurimath::Math::Symbols::Paren::Lcurly.new,
+                                                          [
+                                                            Plurimath::Math::Number.new("2"),
+                                                            Plurimath::Math::Symbols::Comma.new,
+                                                            Plurimath::Math::Number.new("3"),
+                                                            Plurimath::Math::Symbols::Comma.new,
+                                                            Plurimath::Math::Number.new("5"),
+                                                          ],
+                                                          Plurimath::Math::Symbols::Paren::Rcurly.new,
+                                                        ),
+                                                      ),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #101" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mrow>
@@ -1191,41 +1220,42 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mrow>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Function::Max.new(
-          Plurimath::Math::Function::Fenced.new(
-            Plurimath::Math::Symbols::Paren::Lcurly.new,
-            [
-              Plurimath::Math::Symbols::Symbol.new("y"),
-              Plurimath::Math::Symbols::Paren::Vert.new,
-              Plurimath::Math::Formula.new([
-                Plurimath::Math::Function::Power.new(
-                  Plurimath::Math::Symbols::Symbol.new("y"),
-                  Plurimath::Math::Number.new("3")
-                ),
-                Plurimath::Math::Symbols::In.new,
-                Plurimath::Math::Function::Fenced.new(
-                  Plurimath::Math::Symbols::Paren::Lsquare.new,
-                  [
-                    Plurimath::Math::Number.new("0"),
-                    Plurimath::Math::Number.new("1")
-                  ],
-                  Plurimath::Math::Symbols::Paren::Rsquare.new,
-                )
-              ]),
-            ],
-            Plurimath::Math::Symbols::Paren::Rcurly.new
-          )
-        ),
-      ])
+                                                      Plurimath::Math::Function::Max.new(
+                                                        Plurimath::Math::Function::Fenced.new(
+                                                          Plurimath::Math::Symbols::Paren::Lcurly.new,
+                                                          [
+                                                            Plurimath::Math::Symbols::Symbol.new("y"),
+                                                            Plurimath::Math::Symbols::Paren::Vert.new,
+                                                            Plurimath::Math::Formula.new([
+                                                                                           Plurimath::Math::Function::Power.new(
+                                                                                             Plurimath::Math::Symbols::Symbol.new("y"),
+                                                                                             Plurimath::Math::Number.new("3"),
+                                                                                           ),
+                                                                                           Plurimath::Math::Symbols::In.new,
+                                                                                           Plurimath::Math::Function::Fenced.new(
+                                                                                             Plurimath::Math::Symbols::Paren::Lsquare.new,
+                                                                                             [
+                                                                                               Plurimath::Math::Number.new("0"),
+                                                                                               Plurimath::Math::Number.new("1"),
+                                                                                             ],
+                                                                                             Plurimath::Math::Symbols::Paren::Rsquare.new,
+                                                                                           ),
+                                                                                         ]),
+                                                          ],
+                                                          Plurimath::Math::Symbols::Paren::Rcurly.new,
+                                                        ),
+                                                      ),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #102" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mrow>
@@ -1240,27 +1270,28 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mrow>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Function::Min.new(
-          Plurimath::Math::Function::Fenced.new(
-            Plurimath::Math::Symbols::Paren::Lcurly.new,
-            [
-              Plurimath::Math::Symbols::Symbol.new("a"),
-              Plurimath::Math::Symbols::Comma.new,
-              Plurimath::Math::Symbols::Symbol.new("b"),
-            ],
-            Plurimath::Math::Symbols::Paren::Rcurly.new
-          )
-        ),
-      ])
+                                                      Plurimath::Math::Function::Min.new(
+                                                        Plurimath::Math::Function::Fenced.new(
+                                                          Plurimath::Math::Symbols::Paren::Lcurly.new,
+                                                          [
+                                                            Plurimath::Math::Symbols::Symbol.new("a"),
+                                                            Plurimath::Math::Symbols::Comma.new,
+                                                            Plurimath::Math::Symbols::Symbol.new("b"),
+                                                          ],
+                                                          Plurimath::Math::Symbols::Paren::Rcurly.new,
+                                                        ),
+                                                      ),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #103" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mrow>
@@ -1282,34 +1313,35 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mrow>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Function::Min.new(
-          Plurimath::Math::Function::Fenced.new(
-            Plurimath::Math::Symbols::Paren::Lcurly.new,
-            [
-              Plurimath::Math::Function::Power.new(
-                Plurimath::Math::Symbols::Symbol.new("x"),
-                Plurimath::Math::Number.new("2")
-              ),
-              Plurimath::Math::Symbols::Paren::Vert.new,
-              Plurimath::Math::Formula.new([
-                Plurimath::Math::Symbols::Symbol.new("x"),
-                Plurimath::Math::Symbols::Nin.new,
-                Plurimath::Math::Symbols::Symbol.new("B")
-              ]),
-            ],
-            Plurimath::Math::Symbols::Paren::Rcurly.new
-          )
-        ),
-      ])
+                                                      Plurimath::Math::Function::Min.new(
+                                                        Plurimath::Math::Function::Fenced.new(
+                                                          Plurimath::Math::Symbols::Paren::Lcurly.new,
+                                                          [
+                                                            Plurimath::Math::Function::Power.new(
+                                                              Plurimath::Math::Symbols::Symbol.new("x"),
+                                                              Plurimath::Math::Number.new("2"),
+                                                            ),
+                                                            Plurimath::Math::Symbols::Paren::Vert.new,
+                                                            Plurimath::Math::Formula.new([
+                                                                                           Plurimath::Math::Symbols::Symbol.new("x"),
+                                                                                           Plurimath::Math::Symbols::Nin.new,
+                                                                                           Plurimath::Math::Symbols::Symbol.new("B"),
+                                                                                         ]),
+                                                          ],
+                                                          Plurimath::Math::Symbols::Paren::Rcurly.new,
+                                                        ),
+                                                      ),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #104" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mrow>
@@ -1318,20 +1350,21 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mrow>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Formula.new([
-          Plurimath::Math::Symbols::Minus.new,
-          Plurimath::Math::Number.new("3"),
-        ]),
-      ])
+                                                      Plurimath::Math::Formula.new([
+                                                                                     Plurimath::Math::Symbols::Minus.new,
+                                                                                     Plurimath::Math::Number.new("3"),
+                                                                                   ]),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #105" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mrow>
@@ -1341,21 +1374,22 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mrow>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Formula.new([
-          Plurimath::Math::Symbols::Symbol.new("x"),
-          Plurimath::Math::Symbols::Minus.new,
-          Plurimath::Math::Symbols::Symbol.new("y"),
-        ]),
-      ])
+                                                      Plurimath::Math::Formula.new([
+                                                                                     Plurimath::Math::Symbols::Symbol.new("x"),
+                                                                                     Plurimath::Math::Symbols::Minus.new,
+                                                                                     Plurimath::Math::Symbols::Symbol.new("y"),
+                                                                                   ]),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #106" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mrow>
@@ -1367,23 +1401,24 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mrow>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Formula.new([
-          Plurimath::Math::Symbols::Symbol.new("x"),
-          Plurimath::Math::Symbols::Plus.new,
-          Plurimath::Math::Symbols::Symbol.new("y"),
-          Plurimath::Math::Symbols::Plus.new,
-          Plurimath::Math::Symbols::Symbol.new("z"),
-        ]),
-      ])
+                                                      Plurimath::Math::Formula.new([
+                                                                                     Plurimath::Math::Symbols::Symbol.new("x"),
+                                                                                     Plurimath::Math::Symbols::Plus.new,
+                                                                                     Plurimath::Math::Symbols::Symbol.new("y"),
+                                                                                     Plurimath::Math::Symbols::Plus.new,
+                                                                                     Plurimath::Math::Symbols::Symbol.new("z"),
+                                                                                   ]),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #107" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <msup>
@@ -1392,20 +1427,21 @@ RSpec.describe Plurimath::Mathml::Parser do
           </msup>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Function::Power.new(
-          Plurimath::Math::Symbols::Symbol.new("x"),
-          Plurimath::Math::Number.new("3"),
-        )
-      ])
+                                                      Plurimath::Math::Function::Power.new(
+                                                        Plurimath::Math::Symbols::Symbol.new("x"),
+                                                        Plurimath::Math::Number.new("3"),
+                                                      ),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #108" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mrow>
@@ -1415,20 +1451,21 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mrow>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Function::Mod.new(
-          Plurimath::Math::Symbols::Symbol.new("a"),
-          Plurimath::Math::Symbols::Symbol.new("b"),
-        ),
-      ])
+                                                      Plurimath::Math::Function::Mod.new(
+                                                        Plurimath::Math::Symbols::Symbol.new("a"),
+                                                        Plurimath::Math::Symbols::Symbol.new("b"),
+                                                      ),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #109" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mrow>
@@ -1438,21 +1475,22 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mrow>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Formula.new([
-          Plurimath::Math::Symbols::Symbol.new("a"),
-          Plurimath::Math::Symbols::Symbol.new("&#x2062;"),
-          Plurimath::Math::Symbols::Symbol.new("b")
-        ])
-      ])
+                                                      Plurimath::Math::Formula.new([
+                                                                                     Plurimath::Math::Symbols::Symbol.new("a"),
+                                                                                     Plurimath::Math::Symbols::Symbol.new("&#x2062;"),
+                                                                                     Plurimath::Math::Symbols::Symbol.new("b"),
+                                                                                   ]),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #110" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mroot>
@@ -1461,20 +1499,21 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mroot>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Function::Root.new(
-          Plurimath::Math::Symbols::Symbol.new("n"),
-          Plurimath::Math::Symbols::Symbol.new("a"),
-        )
-      ])
+                                                      Plurimath::Math::Function::Root.new(
+                                                        Plurimath::Math::Symbols::Symbol.new("n"),
+                                                        Plurimath::Math::Symbols::Symbol.new("a"),
+                                                      ),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #111" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mrow>
@@ -1488,30 +1527,31 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mrow>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Gcd.new(
-            Plurimath::Math::Symbols::Funcapply.new,
-          ),
-          Plurimath::Math::Function::Fenced.new(
-            Plurimath::Math::Symbols::Paren::Lround.new,
-            [
-              Plurimath::Math::Symbols::Symbol.new("a"),
-              Plurimath::Math::Symbols::Symbol.new("b"),
-              Plurimath::Math::Symbols::Symbol.new("c")
-            ],
-            Plurimath::Math::Symbols::Paren::Rround.new,
-          )
-        ])
-      ])
+                                                      Plurimath::Math::Formula.new([
+                                                                                     Plurimath::Math::Function::Gcd.new(
+                                                                                       Plurimath::Math::Symbols::Funcapply.new,
+                                                                                     ),
+                                                                                     Plurimath::Math::Function::Fenced.new(
+                                                                                       Plurimath::Math::Symbols::Paren::Lround.new,
+                                                                                       [
+                                                                                         Plurimath::Math::Symbols::Symbol.new("a"),
+                                                                                         Plurimath::Math::Symbols::Symbol.new("b"),
+                                                                                         Plurimath::Math::Symbols::Symbol.new("c"),
+                                                                                       ],
+                                                                                       Plurimath::Math::Symbols::Paren::Rround.new,
+                                                                                     ),
+                                                                                   ]),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #112" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mrow>
@@ -1521,21 +1561,22 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mrow>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Formula.new([
-          Plurimath::Math::Symbols::Symbol.new("a"),
-          Plurimath::Math::Symbols::Land.new,
-          Plurimath::Math::Symbols::Symbol.new("b")
-        ])
-      ])
+                                                      Plurimath::Math::Formula.new([
+                                                                                     Plurimath::Math::Symbols::Symbol.new("a"),
+                                                                                     Plurimath::Math::Symbols::Land.new,
+                                                                                     Plurimath::Math::Symbols::Symbol.new("b"),
+                                                                                   ]),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #113" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mrow>
@@ -1561,38 +1602,39 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mrow>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Function::Nary.new(
-          Plurimath::Math::Symbols::Bigwedge.new,
-          Plurimath::Math::Formula.new([
-            Plurimath::Math::Symbols::Symbol.new("i"),
-            Plurimath::Math::Symbols::Equal.new,
-            Plurimath::Math::Number.new("0")
-          ]),
-          Plurimath::Math::Symbols::Symbol.new("n"),
-          Plurimath::Math::Function::Fenced.new(
-            Plurimath::Math::Symbols::Paren::Lround.new,
-            [
-              Plurimath::Math::Function::Base.new(
-                Plurimath::Math::Symbols::Symbol.new("a"),
-                Plurimath::Math::Symbols::Symbol.new("i")
-              ),
-              Plurimath::Math::Symbols::Greater.new,
-              Plurimath::Math::Number.new("0"),
-            ],
-            Plurimath::Math::Symbols::Paren::Rround.new
-          ),
-          { type: "undOvr" }
-        )
-      ])
+                                                      Plurimath::Math::Function::Nary.new(
+                                                        Plurimath::Math::Symbols::Bigwedge.new,
+                                                        Plurimath::Math::Formula.new([
+                                                                                       Plurimath::Math::Symbols::Symbol.new("i"),
+                                                                                       Plurimath::Math::Symbols::Equal.new,
+                                                                                       Plurimath::Math::Number.new("0"),
+                                                                                     ]),
+                                                        Plurimath::Math::Symbols::Symbol.new("n"),
+                                                        Plurimath::Math::Function::Fenced.new(
+                                                          Plurimath::Math::Symbols::Paren::Lround.new,
+                                                          [
+                                                            Plurimath::Math::Function::Base.new(
+                                                              Plurimath::Math::Symbols::Symbol.new("a"),
+                                                              Plurimath::Math::Symbols::Symbol.new("i"),
+                                                            ),
+                                                            Plurimath::Math::Symbols::Greater.new,
+                                                            Plurimath::Math::Number.new("0"),
+                                                          ],
+                                                          Plurimath::Math::Symbols::Paren::Rround.new,
+                                                        ),
+                                                        { type: "undOvr" },
+                                                      ),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #114" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mrow>
@@ -1602,21 +1644,22 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mrow>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Formula.new([
-          Plurimath::Math::Symbols::Symbol.new("a"),
-          Plurimath::Math::Symbols::Lor.new,
-          Plurimath::Math::Symbols::Symbol.new("b"),
-        ]),
-      ])
+                                                      Plurimath::Math::Formula.new([
+                                                                                     Plurimath::Math::Symbols::Symbol.new("a"),
+                                                                                     Plurimath::Math::Symbols::Lor.new,
+                                                                                     Plurimath::Math::Symbols::Symbol.new("b"),
+                                                                                   ]),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #115" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mrow>
@@ -1626,21 +1669,22 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mrow>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Formula.new([
-          Plurimath::Math::Symbols::Symbol.new("a"),
-          Plurimath::Math::Symbols::Symbol.new("xor"),
-          Plurimath::Math::Symbols::Symbol.new("b"),
-        ]),
-      ])
+                                                      Plurimath::Math::Formula.new([
+                                                                                     Plurimath::Math::Symbols::Symbol.new("a"),
+                                                                                     Plurimath::Math::Symbols::Symbol.new("xor"),
+                                                                                     Plurimath::Math::Symbols::Symbol.new("b"),
+                                                                                   ]),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #116" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mrow>
@@ -1649,20 +1693,21 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mrow>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Formula.new([
-          Plurimath::Math::Symbols::Lnot.new,
-          Plurimath::Math::Symbols::Symbol.new("a"),
-        ]),
-      ])
+                                                      Plurimath::Math::Formula.new([
+                                                                                     Plurimath::Math::Symbols::Lnot.new,
+                                                                                     Plurimath::Math::Symbols::Symbol.new("a"),
+                                                                                   ]),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #117" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mrow>
@@ -1672,21 +1717,22 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mrow>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Formula.new([
-          Plurimath::Math::Symbols::Symbol.new("A"),
-          Plurimath::Math::Symbols::UpcaseRightarrow.new,
-          Plurimath::Math::Symbols::Symbol.new("B"),
-        ]),
-      ])
+                                                      Plurimath::Math::Formula.new([
+                                                                                     Plurimath::Math::Symbols::Symbol.new("A"),
+                                                                                     Plurimath::Math::Symbols::UpcaseRightarrow.new,
+                                                                                     Plurimath::Math::Symbols::Symbol.new("B"),
+                                                                                   ]),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #118" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mrow>
@@ -1707,36 +1753,37 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mrow>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Formula.new([
-          Plurimath::Math::Symbols::Aa.new,
-          Plurimath::Math::Symbols::Symbol.new("x"),
-          Plurimath::Math::Symbols::Period.new,
-          Plurimath::Math::Function::Fenced.new(
-            Plurimath::Math::Symbols::Paren::Lround.new,
-            [
-              Plurimath::Math::Formula.new([
-                Plurimath::Math::Formula.new([
-                  Plurimath::Math::Symbols::Symbol.new("x"),
-                  Plurimath::Math::Symbols::Minus.new,
-                  Plurimath::Math::Symbols::Symbol.new("x")
-                ]),
-                Plurimath::Math::Symbols::Equal.new,
-                Plurimath::Math::Number.new("0")
-              ])
-            ],
-            Plurimath::Math::Symbols::Paren::Rround.new,
-          )
-        ])
-      ])
+                                                      Plurimath::Math::Formula.new([
+                                                                                     Plurimath::Math::Symbols::Aa.new,
+                                                                                     Plurimath::Math::Symbols::Symbol.new("x"),
+                                                                                     Plurimath::Math::Symbols::Period.new,
+                                                                                     Plurimath::Math::Function::Fenced.new(
+                                                                                       Plurimath::Math::Symbols::Paren::Lround.new,
+                                                                                       [
+                                                                                         Plurimath::Math::Formula.new([
+                                                                                                                        Plurimath::Math::Formula.new([
+                                                                                                                                                       Plurimath::Math::Symbols::Symbol.new("x"),
+                                                                                                                                                       Plurimath::Math::Symbols::Minus.new,
+                                                                                                                                                       Plurimath::Math::Symbols::Symbol.new("x"),
+                                                                                                                                                     ]),
+                                                                                                                        Plurimath::Math::Symbols::Equal.new,
+                                                                                                                        Plurimath::Math::Number.new("0"),
+                                                                                                                      ]),
+                                                                                       ],
+                                                                                       Plurimath::Math::Symbols::Paren::Rround.new,
+                                                                                     ),
+                                                                                   ]),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #119" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mrow>
@@ -1776,63 +1823,64 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mrow>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Formula.new([
-          Plurimath::Math::Symbols::Aa.new,
-          Plurimath::Math::Formula.new([
-            Plurimath::Math::Formula.new([
-              Plurimath::Math::Symbols::Symbol.new("p"),
-              Plurimath::Math::Symbols::In.new,
-              Plurimath::Math::Function::FontStyle::DoubleStruck.new(
-                Plurimath::Math::Symbols::Symbol.new("Q"),
-                "double-struck",
-              )
-            ]),
-            Plurimath::Math::Symbols::Land.new,
-            Plurimath::Math::Formula.new([
-              Plurimath::Math::Symbols::Symbol.new("q"),
-              Plurimath::Math::Symbols::In.new,
-              Plurimath::Math::Function::FontStyle::DoubleStruck.new(
-                Plurimath::Math::Symbols::Symbol.new("Q"),
-                "double-struck"
-              )
-            ]),
-            Plurimath::Math::Symbols::Land.new,
-            Plurimath::Math::Function::Fenced.new(
-              Plurimath::Math::Symbols::Paren::Lround.new,
-              [
-                Plurimath::Math::Symbols::Symbol.new("p"),
-                Plurimath::Math::Symbols::Less.new,
-                Plurimath::Math::Symbols::Symbol.new("q"),
-              ],
-              Plurimath::Math::Symbols::Paren::Rround.new
-            )
-          ]),
-          Plurimath::Math::Symbols::Period.new,
-          Plurimath::Math::Function::Fenced.new(
-            Plurimath::Math::Symbols::Paren::Lround.new,
-            [
-              Plurimath::Math::Formula.new([
-                Plurimath::Math::Symbols::Symbol.new("p"),
-                Plurimath::Math::Symbols::Less.new,
-                Plurimath::Math::Function::Power.new(
-                  Plurimath::Math::Symbols::Symbol.new("q"),
-                  Plurimath::Math::Number.new("2")
-                )
-              ])
-            ],
-            Plurimath::Math::Symbols::Paren::Rround.new,
-          )
-        ])
-      ])
+                                                      Plurimath::Math::Formula.new([
+                                                                                     Plurimath::Math::Symbols::Aa.new,
+                                                                                     Plurimath::Math::Formula.new([
+                                                                                                                    Plurimath::Math::Formula.new([
+                                                                                                                                                   Plurimath::Math::Symbols::Symbol.new("p"),
+                                                                                                                                                   Plurimath::Math::Symbols::In.new,
+                                                                                                                                                   Plurimath::Math::Function::FontStyle::DoubleStruck.new(
+                                                                                                                                                     Plurimath::Math::Symbols::Symbol.new("Q"),
+                                                                                                                                                     "double-struck",
+                                                                                                                                                   ),
+                                                                                                                                                 ]),
+                                                                                                                    Plurimath::Math::Symbols::Land.new,
+                                                                                                                    Plurimath::Math::Formula.new([
+                                                                                                                                                   Plurimath::Math::Symbols::Symbol.new("q"),
+                                                                                                                                                   Plurimath::Math::Symbols::In.new,
+                                                                                                                                                   Plurimath::Math::Function::FontStyle::DoubleStruck.new(
+                                                                                                                                                     Plurimath::Math::Symbols::Symbol.new("Q"),
+                                                                                                                                                     "double-struck",
+                                                                                                                                                   ),
+                                                                                                                                                 ]),
+                                                                                                                    Plurimath::Math::Symbols::Land.new,
+                                                                                                                    Plurimath::Math::Function::Fenced.new(
+                                                                                                                      Plurimath::Math::Symbols::Paren::Lround.new,
+                                                                                                                      [
+                                                                                                                        Plurimath::Math::Symbols::Symbol.new("p"),
+                                                                                                                        Plurimath::Math::Symbols::Less.new,
+                                                                                                                        Plurimath::Math::Symbols::Symbol.new("q"),
+                                                                                                                      ],
+                                                                                                                      Plurimath::Math::Symbols::Paren::Rround.new,
+                                                                                                                    ),
+                                                                                                                  ]),
+                                                                                     Plurimath::Math::Symbols::Period.new,
+                                                                                     Plurimath::Math::Function::Fenced.new(
+                                                                                       Plurimath::Math::Symbols::Paren::Lround.new,
+                                                                                       [
+                                                                                         Plurimath::Math::Formula.new([
+                                                                                                                        Plurimath::Math::Symbols::Symbol.new("p"),
+                                                                                                                        Plurimath::Math::Symbols::Less.new,
+                                                                                                                        Plurimath::Math::Function::Power.new(
+                                                                                                                          Plurimath::Math::Symbols::Symbol.new("q"),
+                                                                                                                          Plurimath::Math::Number.new("2"),
+                                                                                                                        ),
+                                                                                                                      ]),
+                                                                                       ],
+                                                                                       Plurimath::Math::Symbols::Paren::Rround.new,
+                                                                                     ),
+                                                                                   ]),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #120" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mrow>
@@ -1884,79 +1932,80 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mrow>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Formula.new([
-          Plurimath::Math::Symbols::Aa.new,
-          Plurimath::Math::Formula.new([
-            Plurimath::Math::Symbols::Symbol.new("p"),
-            Plurimath::Math::Symbols::Comma.new,
-            Plurimath::Math::Symbols::Symbol.new("q")
-          ]),
-          Plurimath::Math::Symbols::Period.new,
-          Plurimath::Math::Function::Fenced.new(
-            Plurimath::Math::Symbols::Paren::Lround.new,
-            [
-              Plurimath::Math::Formula.new([
-                Plurimath::Math::Function::Fenced.new(
-                  Plurimath::Math::Symbols::Paren::Lround.new,
-                  [
-                    Plurimath::Math::Formula.new([
-                      Plurimath::Math::Symbols::Symbol.new("p"),
-                      Plurimath::Math::Symbols::In.new,
-                      Plurimath::Math::Function::FontStyle::DoubleStruck.new(
-                        Plurimath::Math::Symbols::Symbol.new("Q"),
-                        "double-struck",
-                      )
-                    ]),
-                    Plurimath::Math::Symbols::Land.new,
-                    Plurimath::Math::Formula.new([
-                      Plurimath::Math::Symbols::Symbol.new("q"),
-                      Plurimath::Math::Symbols::In.new,
-                      Plurimath::Math::Function::FontStyle::DoubleStruck.new(
-                        Plurimath::Math::Symbols::Symbol.new("Q"),
-                        "double-struck",
-                      )
-                    ]),
-                    Plurimath::Math::Symbols::Land.new,
-                    Plurimath::Math::Function::Fenced.new(
-                      Plurimath::Math::Symbols::Paren::Lround.new,
-                      [
-                        Plurimath::Math::Symbols::Symbol.new("p"),
-                        Plurimath::Math::Symbols::Less.new,
-                        Plurimath::Math::Symbols::Symbol.new("q"),
-                      ],
-                      Plurimath::Math::Symbols::Paren::Rround.new
-                    ),
-                  ],
-                  Plurimath::Math::Symbols::Paren::Rround.new
-                ),
-                Plurimath::Math::Symbols::UpcaseRightarrow.new,
-                Plurimath::Math::Function::Fenced.new(
-                  Plurimath::Math::Symbols::Paren::Lround.new,
-                  [
-                    Plurimath::Math::Symbols::Symbol.new("p"),
-                    Plurimath::Math::Symbols::Less.new,
-                    Plurimath::Math::Function::Power.new(
-                      Plurimath::Math::Symbols::Symbol.new("q"),
-                      Plurimath::Math::Number.new("2")
-                    ),
-                  ],
-                  Plurimath::Math::Symbols::Paren::Rround.new
-                )
-              ])
-            ],
-            Plurimath::Math::Symbols::Paren::Rround.new,
-          )
-        ])
-      ])
+                                                      Plurimath::Math::Formula.new([
+                                                                                     Plurimath::Math::Symbols::Aa.new,
+                                                                                     Plurimath::Math::Formula.new([
+                                                                                                                    Plurimath::Math::Symbols::Symbol.new("p"),
+                                                                                                                    Plurimath::Math::Symbols::Comma.new,
+                                                                                                                    Plurimath::Math::Symbols::Symbol.new("q"),
+                                                                                                                  ]),
+                                                                                     Plurimath::Math::Symbols::Period.new,
+                                                                                     Plurimath::Math::Function::Fenced.new(
+                                                                                       Plurimath::Math::Symbols::Paren::Lround.new,
+                                                                                       [
+                                                                                         Plurimath::Math::Formula.new([
+                                                                                                                        Plurimath::Math::Function::Fenced.new(
+                                                                                                                          Plurimath::Math::Symbols::Paren::Lround.new,
+                                                                                                                          [
+                                                                                                                            Plurimath::Math::Formula.new([
+                                                                                                                                                           Plurimath::Math::Symbols::Symbol.new("p"),
+                                                                                                                                                           Plurimath::Math::Symbols::In.new,
+                                                                                                                                                           Plurimath::Math::Function::FontStyle::DoubleStruck.new(
+                                                                                                                                                             Plurimath::Math::Symbols::Symbol.new("Q"),
+                                                                                                                                                             "double-struck",
+                                                                                                                                                           ),
+                                                                                                                                                         ]),
+                                                                                                                            Plurimath::Math::Symbols::Land.new,
+                                                                                                                            Plurimath::Math::Formula.new([
+                                                                                                                                                           Plurimath::Math::Symbols::Symbol.new("q"),
+                                                                                                                                                           Plurimath::Math::Symbols::In.new,
+                                                                                                                                                           Plurimath::Math::Function::FontStyle::DoubleStruck.new(
+                                                                                                                                                             Plurimath::Math::Symbols::Symbol.new("Q"),
+                                                                                                                                                             "double-struck",
+                                                                                                                                                           ),
+                                                                                                                                                         ]),
+                                                                                                                            Plurimath::Math::Symbols::Land.new,
+                                                                                                                            Plurimath::Math::Function::Fenced.new(
+                                                                                                                              Plurimath::Math::Symbols::Paren::Lround.new,
+                                                                                                                              [
+                                                                                                                                Plurimath::Math::Symbols::Symbol.new("p"),
+                                                                                                                                Plurimath::Math::Symbols::Less.new,
+                                                                                                                                Plurimath::Math::Symbols::Symbol.new("q"),
+                                                                                                                              ],
+                                                                                                                              Plurimath::Math::Symbols::Paren::Rround.new,
+                                                                                                                            ),
+                                                                                                                          ],
+                                                                                                                          Plurimath::Math::Symbols::Paren::Rround.new,
+                                                                                                                        ),
+                                                                                                                        Plurimath::Math::Symbols::UpcaseRightarrow.new,
+                                                                                                                        Plurimath::Math::Function::Fenced.new(
+                                                                                                                          Plurimath::Math::Symbols::Paren::Lround.new,
+                                                                                                                          [
+                                                                                                                            Plurimath::Math::Symbols::Symbol.new("p"),
+                                                                                                                            Plurimath::Math::Symbols::Less.new,
+                                                                                                                            Plurimath::Math::Function::Power.new(
+                                                                                                                              Plurimath::Math::Symbols::Symbol.new("q"),
+                                                                                                                              Plurimath::Math::Number.new("2"),
+                                                                                                                            ),
+                                                                                                                          ],
+                                                                                                                          Plurimath::Math::Symbols::Paren::Rround.new,
+                                                                                                                        ),
+                                                                                                                      ]),
+                                                                                       ],
+                                                                                       Plurimath::Math::Symbols::Paren::Rround.new,
+                                                                                     ),
+                                                                                   ]),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #121" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mrow>
@@ -1973,42 +2022,43 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mrow>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Formula.new([
-          Plurimath::Math::Symbols::Ee.new,
-          Plurimath::Math::Symbols::Symbol.new("x"),
-          Plurimath::Math::Symbols::Period.new,
-          Plurimath::Math::Function::Fenced.new(
-            Plurimath::Math::Symbols::Paren::Lround.new,
-            [
-              Plurimath::Math::Formula.new([
-                Plurimath::Math::Formula.new([
-                  Plurimath::Math::Symbols::Symbol.new("f"),
-                  Plurimath::Math::Symbols::Funcapply.new,
-                  Plurimath::Math::Function::Fenced.new(
-                    Plurimath::Math::Symbols::Paren::Lround.new,
-                    [
-                      Plurimath::Math::Symbols::Symbol.new("x")
-                    ],
-                    Plurimath::Math::Symbols::Paren::Rround.new,
-                  )
-                ]),
-                Plurimath::Math::Symbols::Equal.new,
-                Plurimath::Math::Number.new("0")
-              ])
-            ],
-            Plurimath::Math::Symbols::Paren::Rround.new,
-          )
-        ])
-      ])
+                                                      Plurimath::Math::Formula.new([
+                                                                                     Plurimath::Math::Symbols::Ee.new,
+                                                                                     Plurimath::Math::Symbols::Symbol.new("x"),
+                                                                                     Plurimath::Math::Symbols::Period.new,
+                                                                                     Plurimath::Math::Function::Fenced.new(
+                                                                                       Plurimath::Math::Symbols::Paren::Lround.new,
+                                                                                       [
+                                                                                         Plurimath::Math::Formula.new([
+                                                                                                                        Plurimath::Math::Formula.new([
+                                                                                                                                                       Plurimath::Math::Symbols::Symbol.new("f"),
+                                                                                                                                                       Plurimath::Math::Symbols::Funcapply.new,
+                                                                                                                                                       Plurimath::Math::Function::Fenced.new(
+                                                                                                                                                         Plurimath::Math::Symbols::Paren::Lround.new,
+                                                                                                                                                         [
+                                                                                                                                                           Plurimath::Math::Symbols::Symbol.new("x"),
+                                                                                                                                                         ],
+                                                                                                                                                         Plurimath::Math::Symbols::Paren::Rround.new,
+                                                                                                                                                       ),
+                                                                                                                                                     ]),
+                                                                                                                        Plurimath::Math::Symbols::Equal.new,
+                                                                                                                        Plurimath::Math::Number.new("0"),
+                                                                                                                      ]),
+                                                                                       ],
+                                                                                       Plurimath::Math::Symbols::Paren::Rround.new,
+                                                                                     ),
+                                                                                   ]),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #122" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mrow>
@@ -2037,52 +2087,53 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mrow>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Formula.new([
-          Plurimath::Math::Symbols::Ee.new,
-          Plurimath::Math::Symbols::Symbol.new("x"),
-          Plurimath::Math::Symbols::Period.new,
-          Plurimath::Math::Function::Fenced.new(
-            Plurimath::Math::Symbols::Paren::Lround.new,
-            [
-              Plurimath::Math::Formula.new([
-                Plurimath::Math::Symbols::Symbol.new("x"),
-                Plurimath::Math::Symbols::In.new,
-                Plurimath::Math::Function::FontStyle::DoubleStruck.new(
-                  Plurimath::Math::Symbols::Symbol.new("Z"),
-                  "double-struck",
-                )
-              ]),
-              Plurimath::Math::Symbols::Land.new,
-              Plurimath::Math::Formula.new([
-                Plurimath::Math::Formula.new([
-                  Plurimath::Math::Symbols::Symbol.new("f"),
-                  Plurimath::Math::Symbols::Funcapply.new,
-                  Plurimath::Math::Function::Fenced.new(
-                    Plurimath::Math::Symbols::Paren::Lround.new,
-                    [
-                      Plurimath::Math::Symbols::Symbol.new("x")
-                    ],
-                    Plurimath::Math::Symbols::Paren::Rround.new,
-                  )
-                ]),
-                Plurimath::Math::Symbols::Equal.new,
-                Plurimath::Math::Number.new("0")
-              ])
-            ],
-            Plurimath::Math::Symbols::Paren::Rround.new,
-            { separators: "" },
-          ),
-        ])
-      ])
+                                                      Plurimath::Math::Formula.new([
+                                                                                     Plurimath::Math::Symbols::Ee.new,
+                                                                                     Plurimath::Math::Symbols::Symbol.new("x"),
+                                                                                     Plurimath::Math::Symbols::Period.new,
+                                                                                     Plurimath::Math::Function::Fenced.new(
+                                                                                       Plurimath::Math::Symbols::Paren::Lround.new,
+                                                                                       [
+                                                                                         Plurimath::Math::Formula.new([
+                                                                                                                        Plurimath::Math::Symbols::Symbol.new("x"),
+                                                                                                                        Plurimath::Math::Symbols::In.new,
+                                                                                                                        Plurimath::Math::Function::FontStyle::DoubleStruck.new(
+                                                                                                                          Plurimath::Math::Symbols::Symbol.new("Z"),
+                                                                                                                          "double-struck",
+                                                                                                                        ),
+                                                                                                                      ]),
+                                                                                         Plurimath::Math::Symbols::Land.new,
+                                                                                         Plurimath::Math::Formula.new([
+                                                                                                                        Plurimath::Math::Formula.new([
+                                                                                                                                                       Plurimath::Math::Symbols::Symbol.new("f"),
+                                                                                                                                                       Plurimath::Math::Symbols::Funcapply.new,
+                                                                                                                                                       Plurimath::Math::Function::Fenced.new(
+                                                                                                                                                         Plurimath::Math::Symbols::Paren::Lround.new,
+                                                                                                                                                         [
+                                                                                                                                                           Plurimath::Math::Symbols::Symbol.new("x"),
+                                                                                                                                                         ],
+                                                                                                                                                         Plurimath::Math::Symbols::Paren::Rround.new,
+                                                                                                                                                       ),
+                                                                                                                                                     ]),
+                                                                                                                        Plurimath::Math::Symbols::Equal.new,
+                                                                                                                        Plurimath::Math::Number.new("0"),
+                                                                                                                      ]),
+                                                                                       ],
+                                                                                       Plurimath::Math::Symbols::Paren::Rround.new,
+                                                                                       { separators: "" },
+                                                                                     ),
+                                                                                   ]),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #123" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mrow>
@@ -2092,23 +2143,24 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mrow>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Function::Fenced.new(
-          Plurimath::Math::Symbols::Paren::Vert.new,
-          [
-            Plurimath::Math::Symbols::Symbol.new("x")
-          ],
-          Plurimath::Math::Symbols::Paren::Vert.new,
-        )
-      ])
+                                                      Plurimath::Math::Function::Fenced.new(
+                                                        Plurimath::Math::Symbols::Paren::Vert.new,
+                                                        [
+                                                          Plurimath::Math::Symbols::Symbol.new("x"),
+                                                        ],
+                                                        Plurimath::Math::Symbols::Paren::Vert.new,
+                                                      ),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #124" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mover>
@@ -2125,27 +2177,28 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mover>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Function::Bar.new(
-          Plurimath::Math::Formula.new([
-            Plurimath::Math::Symbols::Symbol.new("x"),
-            Plurimath::Math::Symbols::Plus.new,
-            Plurimath::Math::Formula.new([
-              Plurimath::Math::Number.new("ⅈ"),
-              Plurimath::Math::Symbols::Symbol.new("&#x2062;"),
-              Plurimath::Math::Symbols::Symbol.new("y")
-            ])
-          ])
-        )
-      ])
+                                                      Plurimath::Math::Function::Bar.new(
+                                                        Plurimath::Math::Formula.new([
+                                                                                       Plurimath::Math::Symbols::Symbol.new("x"),
+                                                                                       Plurimath::Math::Symbols::Plus.new,
+                                                                                       Plurimath::Math::Formula.new([
+                                                                                                                      Plurimath::Math::Number.new("ⅈ"),
+                                                                                                                      Plurimath::Math::Symbols::Symbol.new("&#x2062;"),
+                                                                                                                      Plurimath::Math::Symbols::Symbol.new("y"),
+                                                                                                                    ]),
+                                                                                     ]),
+                                                      ),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #125" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mrow>
@@ -2165,35 +2218,36 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mrow>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Formula.new([
-          Plurimath::Math::Symbols::Symbol.new("arg"),
-          Plurimath::Math::Symbols::Funcapply.new,
-          Plurimath::Math::Function::Fenced.new(
-            Plurimath::Math::Symbols::Paren::Lround.new,
-            [
-              Plurimath::Math::Formula.new([
-                Plurimath::Math::Symbols::Symbol.new("x"),
-                Plurimath::Math::Symbols::Plus.new,
-                Plurimath::Math::Formula.new([
-                  Plurimath::Math::Symbols::Symbol.new("i"),
-                  Plurimath::Math::Symbols::Symbol.new("&#x2062;"),
-                  Plurimath::Math::Symbols::Symbol.new("y")
-                ])
-              ])
-            ],
-            Plurimath::Math::Symbols::Paren::Rround.new,
-          )
-        ])
-      ])
+                                                      Plurimath::Math::Formula.new([
+                                                                                     Plurimath::Math::Symbols::Symbol.new("arg"),
+                                                                                     Plurimath::Math::Symbols::Funcapply.new,
+                                                                                     Plurimath::Math::Function::Fenced.new(
+                                                                                       Plurimath::Math::Symbols::Paren::Lround.new,
+                                                                                       [
+                                                                                         Plurimath::Math::Formula.new([
+                                                                                                                        Plurimath::Math::Symbols::Symbol.new("x"),
+                                                                                                                        Plurimath::Math::Symbols::Plus.new,
+                                                                                                                        Plurimath::Math::Formula.new([
+                                                                                                                                                       Plurimath::Math::Symbols::Symbol.new("i"),
+                                                                                                                                                       Plurimath::Math::Symbols::Symbol.new("&#x2062;"),
+                                                                                                                                                       Plurimath::Math::Symbols::Symbol.new("y"),
+                                                                                                                                                     ]),
+                                                                                                                      ]),
+                                                                                       ],
+                                                                                       Plurimath::Math::Symbols::Paren::Rround.new,
+                                                                                     ),
+                                                                                   ]),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #126" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mrow>
@@ -2209,35 +2263,36 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mrow>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Formula.new([
-          Plurimath::Math::Symbols::Symbol.new("&#x211b;"),
-          Plurimath::Math::Symbols::Funcapply.new,
-          Plurimath::Math::Function::Fenced.new(
-            Plurimath::Math::Symbols::Paren::Lround.new,
-            [
-              Plurimath::Math::Formula.new([
-                Plurimath::Math::Symbols::Symbol.new("x"),
-                Plurimath::Math::Symbols::Plus.new,
-                Plurimath::Math::Formula.new([
-                  Plurimath::Math::Symbols::Symbol.new("i"),
-                  Plurimath::Math::Symbols::Symbol.new("&#x2062;"),
-                  Plurimath::Math::Symbols::Symbol.new("y")
-                ])
-              ])
-            ],
-            Plurimath::Math::Symbols::Paren::Rround.new,
-          )
-        ])
-      ])
+                                                      Plurimath::Math::Formula.new([
+                                                                                     Plurimath::Math::Symbols::Symbol.new("&#x211b;"),
+                                                                                     Plurimath::Math::Symbols::Funcapply.new,
+                                                                                     Plurimath::Math::Function::Fenced.new(
+                                                                                       Plurimath::Math::Symbols::Paren::Lround.new,
+                                                                                       [
+                                                                                         Plurimath::Math::Formula.new([
+                                                                                                                        Plurimath::Math::Symbols::Symbol.new("x"),
+                                                                                                                        Plurimath::Math::Symbols::Plus.new,
+                                                                                                                        Plurimath::Math::Formula.new([
+                                                                                                                                                       Plurimath::Math::Symbols::Symbol.new("i"),
+                                                                                                                                                       Plurimath::Math::Symbols::Symbol.new("&#x2062;"),
+                                                                                                                                                       Plurimath::Math::Symbols::Symbol.new("y"),
+                                                                                                                                                     ]),
+                                                                                                                      ]),
+                                                                                       ],
+                                                                                       Plurimath::Math::Symbols::Paren::Rround.new,
+                                                                                     ),
+                                                                                   ]),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #127" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mrow>
@@ -2253,35 +2308,36 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mrow>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Formula.new([
-          Plurimath::Math::Symbols::Im.new,
-          Plurimath::Math::Symbols::Funcapply.new,
-          Plurimath::Math::Function::Fenced.new(
-            Plurimath::Math::Symbols::Paren::Lround.new,
-            [
-              Plurimath::Math::Formula.new([
-                Plurimath::Math::Symbols::Symbol.new("x"),
-                Plurimath::Math::Symbols::Plus.new,
-                Plurimath::Math::Formula.new([
-                  Plurimath::Math::Symbols::Symbol.new("i"),
-                  Plurimath::Math::Symbols::Symbol.new("&#x2062;"),
-                  Plurimath::Math::Symbols::Symbol.new("y")
-                ])
-              ])
-            ],
-            Plurimath::Math::Symbols::Paren::Rround.new,
-          )
-        ])
-      ])
+                                                      Plurimath::Math::Formula.new([
+                                                                                     Plurimath::Math::Symbols::Im.new,
+                                                                                     Plurimath::Math::Symbols::Funcapply.new,
+                                                                                     Plurimath::Math::Function::Fenced.new(
+                                                                                       Plurimath::Math::Symbols::Paren::Lround.new,
+                                                                                       [
+                                                                                         Plurimath::Math::Formula.new([
+                                                                                                                        Plurimath::Math::Symbols::Symbol.new("x"),
+                                                                                                                        Plurimath::Math::Symbols::Plus.new,
+                                                                                                                        Plurimath::Math::Formula.new([
+                                                                                                                                                       Plurimath::Math::Symbols::Symbol.new("i"),
+                                                                                                                                                       Plurimath::Math::Symbols::Symbol.new("&#x2062;"),
+                                                                                                                                                       Plurimath::Math::Symbols::Symbol.new("y"),
+                                                                                                                                                     ]),
+                                                                                                                      ]),
+                                                                                       ],
+                                                                                       Plurimath::Math::Symbols::Paren::Rround.new,
+                                                                                     ),
+                                                                                   ]),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #128" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mrow>
@@ -2295,30 +2351,31 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mrow>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Lcm.new(
-            Plurimath::Math::Symbols::Funcapply.new,
-          ),
-          Plurimath::Math::Function::Fenced.new(
-            Plurimath::Math::Symbols::Paren::Lround.new,
-            [
-              Plurimath::Math::Symbols::Symbol.new("a"),
-              Plurimath::Math::Symbols::Symbol.new("b"),
-              Plurimath::Math::Symbols::Symbol.new("c")
-            ],
-            Plurimath::Math::Symbols::Paren::Rround.new,
-          )
-        ])
-      ])
+                                                      Plurimath::Math::Formula.new([
+                                                                                     Plurimath::Math::Function::Lcm.new(
+                                                                                       Plurimath::Math::Symbols::Funcapply.new,
+                                                                                     ),
+                                                                                     Plurimath::Math::Function::Fenced.new(
+                                                                                       Plurimath::Math::Symbols::Paren::Lround.new,
+                                                                                       [
+                                                                                         Plurimath::Math::Symbols::Symbol.new("a"),
+                                                                                         Plurimath::Math::Symbols::Symbol.new("b"),
+                                                                                         Plurimath::Math::Symbols::Symbol.new("c"),
+                                                                                       ],
+                                                                                       Plurimath::Math::Symbols::Paren::Rround.new,
+                                                                                     ),
+                                                                                   ]),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #129" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mrow>
@@ -2328,23 +2385,24 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mrow>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Function::Fenced.new(
-          Plurimath::Math::Symbols::Paren::Lfloor.new,
-          [
-            Plurimath::Math::Symbols::Symbol.new("a")
-          ],
-          Plurimath::Math::Symbols::Paren::Rfloor.new
-        )
-      ])
+                                                      Plurimath::Math::Function::Fenced.new(
+                                                        Plurimath::Math::Symbols::Paren::Lfloor.new,
+                                                        [
+                                                          Plurimath::Math::Symbols::Symbol.new("a"),
+                                                        ],
+                                                        Plurimath::Math::Symbols::Paren::Rfloor.new,
+                                                      ),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #130" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mrow>
@@ -2354,23 +2412,24 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mrow>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Function::Fenced.new(
-          Plurimath::Math::Symbols::Paren::Lceil.new,
-          [
-            Plurimath::Math::Symbols::Symbol.new("a")
-          ],
-          Plurimath::Math::Symbols::Paren::Rceil.new
-        )
-      ])
+                                                      Plurimath::Math::Function::Fenced.new(
+                                                        Plurimath::Math::Symbols::Paren::Lceil.new,
+                                                        [
+                                                          Plurimath::Math::Symbols::Symbol.new("a"),
+                                                        ],
+                                                        Plurimath::Math::Symbols::Paren::Rceil.new,
+                                                      ),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #131" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mrow>
@@ -2388,29 +2447,30 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mrow>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Formula.new([
-          Plurimath::Math::Formula.new([
-            Plurimath::Math::Number.new("2"),
-            Plurimath::Math::Symbols::Symbol.new("/"),
-            Plurimath::Math::Number.new("4")
-          ]),
-          Plurimath::Math::Symbols::Equal.new,
-          Plurimath::Math::Formula.new([
-            Plurimath::Math::Number.new("1"),
-            Plurimath::Math::Symbols::Symbol.new("/"),
-            Plurimath::Math::Number.new("2")
-          ])
-        ])
-      ])
+                                                      Plurimath::Math::Formula.new([
+                                                                                     Plurimath::Math::Formula.new([
+                                                                                                                    Plurimath::Math::Number.new("2"),
+                                                                                                                    Plurimath::Math::Symbols::Symbol.new("/"),
+                                                                                                                    Plurimath::Math::Number.new("4"),
+                                                                                                                  ]),
+                                                                                     Plurimath::Math::Symbols::Equal.new,
+                                                                                     Plurimath::Math::Formula.new([
+                                                                                                                    Plurimath::Math::Number.new("1"),
+                                                                                                                    Plurimath::Math::Symbols::Symbol.new("/"),
+                                                                                                                    Plurimath::Math::Number.new("2"),
+                                                                                                                  ]),
+                                                                                   ]),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #132" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mrow>
@@ -2420,21 +2480,22 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mrow>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Formula.new([
-          Plurimath::Math::Number.new("3"),
-          Plurimath::Math::Symbols::Ne.new,
-          Plurimath::Math::Number.new("4")
-        ]),
-      ])
+                                                      Plurimath::Math::Formula.new([
+                                                                                     Plurimath::Math::Number.new("3"),
+                                                                                     Plurimath::Math::Symbols::Ne.new,
+                                                                                     Plurimath::Math::Number.new("4"),
+                                                                                   ]),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #133" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mrow>
@@ -2444,21 +2505,22 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mrow>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Formula.new([
-          Plurimath::Math::Number.new("3"),
-          Plurimath::Math::Symbols::Greater.new,
-          Plurimath::Math::Number.new("2")
-        ]),
-      ])
+                                                      Plurimath::Math::Formula.new([
+                                                                                     Plurimath::Math::Number.new("3"),
+                                                                                     Plurimath::Math::Symbols::Greater.new,
+                                                                                     Plurimath::Math::Number.new("2"),
+                                                                                   ]),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #134" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mrow>
@@ -2470,23 +2532,24 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mrow>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Formula.new([
-          Plurimath::Math::Number.new("2"),
-          Plurimath::Math::Symbols::Less.new,
-          Plurimath::Math::Number.new("3"),
-          Plurimath::Math::Symbols::Less.new,
-          Plurimath::Math::Number.new("4"),
-        ]),
-      ])
+                                                      Plurimath::Math::Formula.new([
+                                                                                     Plurimath::Math::Number.new("2"),
+                                                                                     Plurimath::Math::Symbols::Less.new,
+                                                                                     Plurimath::Math::Number.new("3"),
+                                                                                     Plurimath::Math::Symbols::Less.new,
+                                                                                     Plurimath::Math::Number.new("4"),
+                                                                                   ]),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #135" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mrow>
@@ -2498,23 +2561,24 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mrow>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Formula.new([
-          Plurimath::Math::Number.new("4"),
-          Plurimath::Math::Symbols::Ge.new,
-          Plurimath::Math::Number.new("3"),
-          Plurimath::Math::Symbols::Ge.new,
-          Plurimath::Math::Number.new("3"),
-        ]),
-      ])
+                                                      Plurimath::Math::Formula.new([
+                                                                                     Plurimath::Math::Number.new("4"),
+                                                                                     Plurimath::Math::Symbols::Ge.new,
+                                                                                     Plurimath::Math::Number.new("3"),
+                                                                                     Plurimath::Math::Symbols::Ge.new,
+                                                                                     Plurimath::Math::Number.new("3"),
+                                                                                   ]),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #136" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mrow>
@@ -2526,23 +2590,24 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mrow>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Formula.new([
-          Plurimath::Math::Number.new("3"),
-          Plurimath::Math::Symbols::Le.new,
-          Plurimath::Math::Number.new("3"),
-          Plurimath::Math::Symbols::Le.new,
-          Plurimath::Math::Number.new("4"),
-        ]),
-      ])
+                                                      Plurimath::Math::Formula.new([
+                                                                                     Plurimath::Math::Number.new("3"),
+                                                                                     Plurimath::Math::Symbols::Le.new,
+                                                                                     Plurimath::Math::Number.new("3"),
+                                                                                     Plurimath::Math::Symbols::Le.new,
+                                                                                     Plurimath::Math::Number.new("4"),
+                                                                                   ]),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #137" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mrow>
@@ -2558,27 +2623,28 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mrow>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Formula.new([
-          Plurimath::Math::Symbols::Symbol.new("a"),
-          Plurimath::Math::Symbols::Equiv.new,
-          Plurimath::Math::Formula.new([
-            Plurimath::Math::Symbols::Lnot.new,
-            Plurimath::Math::Formula.new([
-              Plurimath::Math::Symbols::Lnot.new,
-              Plurimath::Math::Symbols::Symbol.new("a")
-            ])
-          ])
-        ])
-      ])
+                                                      Plurimath::Math::Formula.new([
+                                                                                     Plurimath::Math::Symbols::Symbol.new("a"),
+                                                                                     Plurimath::Math::Symbols::Equiv.new,
+                                                                                     Plurimath::Math::Formula.new([
+                                                                                                                    Plurimath::Math::Symbols::Lnot.new,
+                                                                                                                    Plurimath::Math::Formula.new([
+                                                                                                                                                   Plurimath::Math::Symbols::Lnot.new,
+                                                                                                                                                   Plurimath::Math::Symbols::Symbol.new("a"),
+                                                                                                                                                 ]),
+                                                                                                                  ]),
+                                                                                   ]),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #138" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mrow>
@@ -2592,25 +2658,26 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mrow>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Formula.new([
-          Plurimath::Math::Symbols::Pi.new,
-          Plurimath::Math::Symbols::Simeq.new,
-          Plurimath::Math::Formula.new([
-            Plurimath::Math::Number.new("22"),
-            Plurimath::Math::Symbols::Symbol.new("/"),
-            Plurimath::Math::Number.new("7")
-          ])
-        ])
-      ])
+                                                      Plurimath::Math::Formula.new([
+                                                                                     Plurimath::Math::Symbols::Pi.new,
+                                                                                     Plurimath::Math::Symbols::Simeq.new,
+                                                                                     Plurimath::Math::Formula.new([
+                                                                                                                    Plurimath::Math::Number.new("22"),
+                                                                                                                    Plurimath::Math::Symbols::Symbol.new("/"),
+                                                                                                                    Plurimath::Math::Number.new("7"),
+                                                                                                                  ]),
+                                                                                   ]),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #139" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mrow>
@@ -2620,21 +2687,22 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mrow>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Formula.new([
-          Plurimath::Math::Symbols::Symbol.new("a"),
-          Plurimath::Math::Symbols::Paren::Vert.new,
-          Plurimath::Math::Symbols::Symbol.new("b"),
-        ])
-      ])
+                                                      Plurimath::Math::Formula.new([
+                                                                                     Plurimath::Math::Symbols::Symbol.new("a"),
+                                                                                     Plurimath::Math::Symbols::Paren::Vert.new,
+                                                                                     Plurimath::Math::Symbols::Symbol.new("b"),
+                                                                                   ]),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #140" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mrow>
@@ -2647,24 +2715,25 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mrow>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Formula.new([
-          Plurimath::Math::Formula.new([
-            Plurimath::Math::Function::Int.new,
-            Plurimath::Math::Function::Sin.new
-          ]),
-          Plurimath::Math::Symbols::Equal.new,
-          Plurimath::Math::Function::Cos.new
-        ])
-      ])
+                                                      Plurimath::Math::Formula.new([
+                                                                                     Plurimath::Math::Formula.new([
+                                                                                                                    Plurimath::Math::Function::Int.new,
+                                                                                                                    Plurimath::Math::Function::Sin.new,
+                                                                                                                  ]),
+                                                                                     Plurimath::Math::Symbols::Equal.new,
+                                                                                     Plurimath::Math::Function::Cos.new,
+                                                                                   ]),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #141" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mrow>
@@ -2677,21 +2746,22 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mrow>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Function::Int.new(
-          Plurimath::Math::Symbols::Symbol.new("a"),
-          Plurimath::Math::Symbols::Symbol.new("b"),
-          Plurimath::Math::Function::Cos.new
-        ),
-      ])
+                                                      Plurimath::Math::Function::Int.new(
+                                                        Plurimath::Math::Symbols::Symbol.new("a"),
+                                                        Plurimath::Math::Symbols::Symbol.new("b"),
+                                                        Plurimath::Math::Function::Cos.new,
+                                                      ),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #142" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mrow>
@@ -2709,28 +2779,29 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mrow>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Int.new(
-            Plurimath::Math::Number.new("0"),
-            Plurimath::Math::Number.new("1"),
-            Plurimath::Math::Function::Power.new(
-              Plurimath::Math::Symbols::Symbol.new("x"),
-              Plurimath::Math::Number.new("2"),
-            ),
-          ),
-          Plurimath::Math::Symbols::Symbol.new("d"),
-          Plurimath::Math::Symbols::Symbol.new("x")
-        ])
-      ])
+                                                      Plurimath::Math::Formula.new([
+                                                                                     Plurimath::Math::Function::Int.new(
+                                                                                       Plurimath::Math::Number.new("0"),
+                                                                                       Plurimath::Math::Number.new("1"),
+                                                                                       Plurimath::Math::Function::Power.new(
+                                                                                         Plurimath::Math::Symbols::Symbol.new("x"),
+                                                                                         Plurimath::Math::Number.new("2"),
+                                                                                       ),
+                                                                                     ),
+                                                                                     Plurimath::Math::Symbols::Symbol.new("d"),
+                                                                                     Plurimath::Math::Symbols::Symbol.new("x"),
+                                                                                   ]),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #143" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <msup>
@@ -2739,20 +2810,21 @@ RSpec.describe Plurimath::Mathml::Parser do
           </msup>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Function::Power.new(
-          Plurimath::Math::Symbols::Symbol.new("f"),
-          Plurimath::Math::Symbols::Prime.new,
-        )
-      ])
+                                                      Plurimath::Math::Function::Power.new(
+                                                        Plurimath::Math::Symbols::Symbol.new("f"),
+                                                        Plurimath::Math::Symbols::Prime.new,
+                                                      ),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #144" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mrow>
@@ -2779,40 +2851,41 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mrow>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Frac.new(
-            Plurimath::Math::Formula.new([
-              Plurimath::Math::Symbols::Symbol.new("d"),
-              Plurimath::Math::Formula.new([
-                Plurimath::Math::Function::Sin.new(
-                  Plurimath::Math::Symbols::Funcapply.new,
-                ),
-                Plurimath::Math::Symbols::Symbol.new("x")
-              ])
-            ]),
-            Plurimath::Math::Formula.new([
-              Plurimath::Math::Symbols::Symbol.new("d"),
-              Plurimath::Math::Symbols::Symbol.new("x")
-            ])
-          ),
-          Plurimath::Math::Symbols::Equal.new,
-          Plurimath::Math::Formula.new([
-            Plurimath::Math::Function::Cos.new(
-              Plurimath::Math::Symbols::Funcapply.new,
-            ),
-            Plurimath::Math::Symbols::Symbol.new("x")
-          ])
-        ])
-      ])
+                                                      Plurimath::Math::Formula.new([
+                                                                                     Plurimath::Math::Function::Frac.new(
+                                                                                       Plurimath::Math::Formula.new([
+                                                                                                                      Plurimath::Math::Symbols::Symbol.new("d"),
+                                                                                                                      Plurimath::Math::Formula.new([
+                                                                                                                                                     Plurimath::Math::Function::Sin.new(
+                                                                                                                                                       Plurimath::Math::Symbols::Funcapply.new,
+                                                                                                                                                     ),
+                                                                                                                                                     Plurimath::Math::Symbols::Symbol.new("x"),
+                                                                                                                                                   ]),
+                                                                                                                    ]),
+                                                                                       Plurimath::Math::Formula.new([
+                                                                                                                      Plurimath::Math::Symbols::Symbol.new("d"),
+                                                                                                                      Plurimath::Math::Symbols::Symbol.new("x"),
+                                                                                                                    ]),
+                                                                                     ),
+                                                                                     Plurimath::Math::Symbols::Equal.new,
+                                                                                     Plurimath::Math::Formula.new([
+                                                                                                                    Plurimath::Math::Function::Cos.new(
+                                                                                                                      Plurimath::Math::Symbols::Funcapply.new,
+                                                                                                                    ),
+                                                                                                                    Plurimath::Math::Symbols::Symbol.new("x"),
+                                                                                                                  ]),
+                                                                                   ]),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #145" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mfrac>
@@ -2836,35 +2909,36 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mfrac>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Function::Frac.new(
-          Plurimath::Math::Formula.new([
-            Plurimath::Math::Function::Power.new(
-              Plurimath::Math::Symbols::Symbol.new("d"),
-              Plurimath::Math::Number.new("2")
-            ),
-            Plurimath::Math::Function::Power.new(
-              Plurimath::Math::Symbols::Symbol.new("x"),
-              Plurimath::Math::Number.new("4"),
-            )
-          ]),
-          Plurimath::Math::Formula.new([
-            Plurimath::Math::Symbols::Symbol.new("d"),
-            Plurimath::Math::Function::Power.new(
-              Plurimath::Math::Symbols::Symbol.new("x"),
-              Plurimath::Math::Number.new("2"),
-            )
-          ])
-        )
-      ])
+                                                      Plurimath::Math::Function::Frac.new(
+                                                        Plurimath::Math::Formula.new([
+                                                                                       Plurimath::Math::Function::Power.new(
+                                                                                         Plurimath::Math::Symbols::Symbol.new("d"),
+                                                                                         Plurimath::Math::Number.new("2"),
+                                                                                       ),
+                                                                                       Plurimath::Math::Function::Power.new(
+                                                                                         Plurimath::Math::Symbols::Symbol.new("x"),
+                                                                                         Plurimath::Math::Number.new("4"),
+                                                                                       ),
+                                                                                     ]),
+                                                        Plurimath::Math::Formula.new([
+                                                                                       Plurimath::Math::Symbols::Symbol.new("d"),
+                                                                                       Plurimath::Math::Function::Power.new(
+                                                                                         Plurimath::Math::Symbols::Symbol.new("x"),
+                                                                                         Plurimath::Math::Number.new("2"),
+                                                                                       ),
+                                                                                     ]),
+                                                      ),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #146" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mrow>
@@ -2882,29 +2956,30 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mrow>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Base.new(
-            Plurimath::Math::Symbols::Symbol.new("D"),
-            Plurimath::Math::Formula.new([
-              Plurimath::Math::Number.new("1"),
-              Plurimath::Math::Symbols::Comma.new,
-              Plurimath::Math::Number.new("1"),
-              Plurimath::Math::Symbols::Comma.new,
-              Plurimath::Math::Number.new("3")
-            ])
-          ),
-          Plurimath::Math::Symbols::Symbol.new("f")
-        ])
-      ])
+                                                      Plurimath::Math::Formula.new([
+                                                                                     Plurimath::Math::Function::Base.new(
+                                                                                       Plurimath::Math::Symbols::Symbol.new("D"),
+                                                                                       Plurimath::Math::Formula.new([
+                                                                                                                      Plurimath::Math::Number.new("1"),
+                                                                                                                      Plurimath::Math::Symbols::Comma.new,
+                                                                                                                      Plurimath::Math::Number.new("1"),
+                                                                                                                      Plurimath::Math::Symbols::Comma.new,
+                                                                                                                      Plurimath::Math::Number.new("3"),
+                                                                                                                    ]),
+                                                                                     ),
+                                                                                     Plurimath::Math::Symbols::Symbol.new("f"),
+                                                                                   ]),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #147" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mfrac>
@@ -2939,50 +3014,51 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mfrac>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Function::Frac.new(
-          Plurimath::Math::Formula.new([
-            Plurimath::Math::Function::Power.new(
-              Plurimath::Math::Symbols::Del.new,
-              Plurimath::Math::Number.new("3"),
-            ),
-            Plurimath::Math::Formula.new([
-              Plurimath::Math::Symbols::Symbol.new("f"),
-              Plurimath::Math::Symbols::Funcapply.new,
-              Plurimath::Math::Function::Fenced.new(
-                Plurimath::Math::Symbols::Paren::Lround.new,
-                [
-                  Plurimath::Math::Symbols::Symbol.new("x"),
-                  Plurimath::Math::Symbols::Symbol.new("y"),
-                  Plurimath::Math::Symbols::Symbol.new("z")
-                ],
-                Plurimath::Math::Symbols::Paren::Rround.new,
-              )
-            ])
-          ]),
-          Plurimath::Math::Formula.new([
-            Plurimath::Math::Formula.new([
-              Plurimath::Math::Symbols::Del.new,
-              Plurimath::Math::Function::Power.new(
-                Plurimath::Math::Symbols::Symbol.new("x"),
-                Plurimath::Math::Number.new("2"),
-              )
-            ]),
-            Plurimath::Math::Formula.new([
-              Plurimath::Math::Symbols::Del.new,
-              Plurimath::Math::Symbols::Symbol.new("z")
-            ])
-          ])
-        )
-      ])
+                                                      Plurimath::Math::Function::Frac.new(
+                                                        Plurimath::Math::Formula.new([
+                                                                                       Plurimath::Math::Function::Power.new(
+                                                                                         Plurimath::Math::Symbols::Del.new,
+                                                                                         Plurimath::Math::Number.new("3"),
+                                                                                       ),
+                                                                                       Plurimath::Math::Formula.new([
+                                                                                                                      Plurimath::Math::Symbols::Symbol.new("f"),
+                                                                                                                      Plurimath::Math::Symbols::Funcapply.new,
+                                                                                                                      Plurimath::Math::Function::Fenced.new(
+                                                                                                                        Plurimath::Math::Symbols::Paren::Lround.new,
+                                                                                                                        [
+                                                                                                                          Plurimath::Math::Symbols::Symbol.new("x"),
+                                                                                                                          Plurimath::Math::Symbols::Symbol.new("y"),
+                                                                                                                          Plurimath::Math::Symbols::Symbol.new("z"),
+                                                                                                                        ],
+                                                                                                                        Plurimath::Math::Symbols::Paren::Rround.new,
+                                                                                                                      ),
+                                                                                                                    ]),
+                                                                                     ]),
+                                                        Plurimath::Math::Formula.new([
+                                                                                       Plurimath::Math::Formula.new([
+                                                                                                                      Plurimath::Math::Symbols::Del.new,
+                                                                                                                      Plurimath::Math::Function::Power.new(
+                                                                                                                        Plurimath::Math::Symbols::Symbol.new("x"),
+                                                                                                                        Plurimath::Math::Number.new("2"),
+                                                                                                                      ),
+                                                                                                                    ]),
+                                                                                       Plurimath::Math::Formula.new([
+                                                                                                                      Plurimath::Math::Symbols::Del.new,
+                                                                                                                      Plurimath::Math::Symbols::Symbol.new("z"),
+                                                                                                                    ]),
+                                                                                     ]),
+                                                      ),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #148" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mfrac>
@@ -3013,46 +3089,47 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mfrac>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Function::Frac.new(
-          Plurimath::Math::Formula.new([
-            Plurimath::Math::Function::Power.new(
-              Plurimath::Math::Symbols::Del.new,
-              Plurimath::Math::Number.new("2"),
-            ),
-            Plurimath::Math::Formula.new([
-              Plurimath::Math::Symbols::Symbol.new("f"),
-              Plurimath::Math::Symbols::Funcapply.new,
-              Plurimath::Math::Function::Fenced.new(
-                Plurimath::Math::Symbols::Paren::Lround.new,
-                [
-                  Plurimath::Math::Symbols::Symbol.new("x"),
-                  Plurimath::Math::Symbols::Symbol.new("y")
-                ],
-                Plurimath::Math::Symbols::Paren::Rround.new,
-              )
-            ])
-          ]),
-          Plurimath::Math::Formula.new([
-            Plurimath::Math::Formula.new([
-              Plurimath::Math::Symbols::Del.new,
-              Plurimath::Math::Symbols::Symbol.new("x")
-            ]),
-            Plurimath::Math::Formula.new([
-              Plurimath::Math::Symbols::Del.new,
-              Plurimath::Math::Symbols::Symbol.new("y")
-            ])
-          ])
-        )
-      ])
+                                                      Plurimath::Math::Function::Frac.new(
+                                                        Plurimath::Math::Formula.new([
+                                                                                       Plurimath::Math::Function::Power.new(
+                                                                                         Plurimath::Math::Symbols::Del.new,
+                                                                                         Plurimath::Math::Number.new("2"),
+                                                                                       ),
+                                                                                       Plurimath::Math::Formula.new([
+                                                                                                                      Plurimath::Math::Symbols::Symbol.new("f"),
+                                                                                                                      Plurimath::Math::Symbols::Funcapply.new,
+                                                                                                                      Plurimath::Math::Function::Fenced.new(
+                                                                                                                        Plurimath::Math::Symbols::Paren::Lround.new,
+                                                                                                                        [
+                                                                                                                          Plurimath::Math::Symbols::Symbol.new("x"),
+                                                                                                                          Plurimath::Math::Symbols::Symbol.new("y"),
+                                                                                                                        ],
+                                                                                                                        Plurimath::Math::Symbols::Paren::Rround.new,
+                                                                                                                      ),
+                                                                                                                    ]),
+                                                                                     ]),
+                                                        Plurimath::Math::Formula.new([
+                                                                                       Plurimath::Math::Formula.new([
+                                                                                                                      Plurimath::Math::Symbols::Del.new,
+                                                                                                                      Plurimath::Math::Symbols::Symbol.new("x"),
+                                                                                                                    ]),
+                                                                                       Plurimath::Math::Formula.new([
+                                                                                                                      Plurimath::Math::Symbols::Del.new,
+                                                                                                                      Plurimath::Math::Symbols::Symbol.new("y"),
+                                                                                                                    ]),
+                                                                                     ]),
+                                                      ),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #149" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mfrac>
@@ -3089,52 +3166,53 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mfrac>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Function::Frac.new(
-          Plurimath::Math::Formula.new([
-            Plurimath::Math::Function::Power.new(
-              Plurimath::Math::Symbols::Del.new,
-              Plurimath::Math::Symbols::Symbol.new("k"),
-            ),
-            Plurimath::Math::Formula.new([
-              Plurimath::Math::Symbols::Symbol.new("f"),
-              Plurimath::Math::Symbols::Funcapply.new,
-              Plurimath::Math::Function::Fenced.new(
-                Plurimath::Math::Symbols::Paren::Lround.new,
-                [
-                  Plurimath::Math::Symbols::Symbol.new("x"),
-                  Plurimath::Math::Symbols::Symbol.new("y")
-                ],
-                Plurimath::Math::Symbols::Paren::Rround.new,
-              )
-            ])
-          ]),
-          Plurimath::Math::Formula.new([
-            Plurimath::Math::Formula.new([
-              Plurimath::Math::Symbols::Del.new,
-              Plurimath::Math::Function::Power.new(
-                Plurimath::Math::Symbols::Symbol.new("x"),
-                Plurimath::Math::Symbols::Symbol.new("m"),
-              )
-            ]),
-            Plurimath::Math::Formula.new([
-              Plurimath::Math::Symbols::Del.new,
-              Plurimath::Math::Function::Power.new(
-                Plurimath::Math::Symbols::Symbol.new("y"),
-                Plurimath::Math::Symbols::Symbol.new("n"),
-              )
-            ])
-          ])
-        )
-      ])
+                                                      Plurimath::Math::Function::Frac.new(
+                                                        Plurimath::Math::Formula.new([
+                                                                                       Plurimath::Math::Function::Power.new(
+                                                                                         Plurimath::Math::Symbols::Del.new,
+                                                                                         Plurimath::Math::Symbols::Symbol.new("k"),
+                                                                                       ),
+                                                                                       Plurimath::Math::Formula.new([
+                                                                                                                      Plurimath::Math::Symbols::Symbol.new("f"),
+                                                                                                                      Plurimath::Math::Symbols::Funcapply.new,
+                                                                                                                      Plurimath::Math::Function::Fenced.new(
+                                                                                                                        Plurimath::Math::Symbols::Paren::Lround.new,
+                                                                                                                        [
+                                                                                                                          Plurimath::Math::Symbols::Symbol.new("x"),
+                                                                                                                          Plurimath::Math::Symbols::Symbol.new("y"),
+                                                                                                                        ],
+                                                                                                                        Plurimath::Math::Symbols::Paren::Rround.new,
+                                                                                                                      ),
+                                                                                                                    ]),
+                                                                                     ]),
+                                                        Plurimath::Math::Formula.new([
+                                                                                       Plurimath::Math::Formula.new([
+                                                                                                                      Plurimath::Math::Symbols::Del.new,
+                                                                                                                      Plurimath::Math::Function::Power.new(
+                                                                                                                        Plurimath::Math::Symbols::Symbol.new("x"),
+                                                                                                                        Plurimath::Math::Symbols::Symbol.new("m"),
+                                                                                                                      ),
+                                                                                                                    ]),
+                                                                                       Plurimath::Math::Formula.new([
+                                                                                                                      Plurimath::Math::Symbols::Del.new,
+                                                                                                                      Plurimath::Math::Function::Power.new(
+                                                                                                                        Plurimath::Math::Symbols::Symbol.new("y"),
+                                                                                                                        Plurimath::Math::Symbols::Symbol.new("n"),
+                                                                                                                      ),
+                                                                                                                    ]),
+                                                                                     ]),
+                                                      ),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #150" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mrow>
@@ -3146,27 +3224,28 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mrow>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Formula.new([
-          Plurimath::Math::Symbols::Symbol.new("div"),
-          Plurimath::Math::Symbols::Funcapply.new,
-          Plurimath::Math::Function::Fenced.new(
-            Plurimath::Math::Symbols::Paren::Lround.new,
-            [
-              Plurimath::Math::Symbols::Symbol.new("a")
-            ],
-            Plurimath::Math::Symbols::Paren::Rround.new,
-          )
-        ])
-      ])
+                                                      Plurimath::Math::Formula.new([
+                                                                                     Plurimath::Math::Symbols::Symbol.new("div"),
+                                                                                     Plurimath::Math::Symbols::Funcapply.new,
+                                                                                     Plurimath::Math::Function::Fenced.new(
+                                                                                       Plurimath::Math::Symbols::Paren::Lround.new,
+                                                                                       [
+                                                                                         Plurimath::Math::Symbols::Symbol.new("a"),
+                                                                                       ],
+                                                                                       Plurimath::Math::Symbols::Paren::Rround.new,
+                                                                                     ),
+                                                                                   ]),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #151" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mrow>
@@ -3178,27 +3257,28 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mrow>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Formula.new([
-          Plurimath::Math::Symbols::Symbol.new("div"),
-          Plurimath::Math::Symbols::Funcapply.new,
-          Plurimath::Math::Function::Fenced.new(
-            Plurimath::Math::Symbols::Paren::Lround.new,
-            [
-              Plurimath::Math::Symbols::Symbol.new("E")
-            ],
-            Plurimath::Math::Symbols::Paren::Rround.new,
-          )
-        ])
-      ])
+                                                      Plurimath::Math::Formula.new([
+                                                                                     Plurimath::Math::Symbols::Symbol.new("div"),
+                                                                                     Plurimath::Math::Symbols::Funcapply.new,
+                                                                                     Plurimath::Math::Function::Fenced.new(
+                                                                                       Plurimath::Math::Symbols::Paren::Lround.new,
+                                                                                       [
+                                                                                         Plurimath::Math::Symbols::Symbol.new("E"),
+                                                                                       ],
+                                                                                       Plurimath::Math::Symbols::Paren::Rround.new,
+                                                                                     ),
+                                                                                   ]),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #152" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mrow>
@@ -3208,21 +3288,22 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mrow>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Formula.new([
-          Plurimath::Math::Symbols::Grad.new,
-          Plurimath::Math::Symbols::Cdot.new,
-          Plurimath::Math::Symbols::Symbol.new("E")
-        ])
-      ])
+                                                      Plurimath::Math::Formula.new([
+                                                                                     Plurimath::Math::Symbols::Grad.new,
+                                                                                     Plurimath::Math::Symbols::Cdot.new,
+                                                                                     Plurimath::Math::Symbols::Symbol.new("E"),
+                                                                                   ]),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #153" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mrow>
@@ -3268,61 +3349,62 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mrow>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Formula.new([
-          Plurimath::Math::Symbols::Symbol.new("div"),
-          Plurimath::Math::Symbols::Funcapply.new,
-          Plurimath::Math::Symbols::Paren::Lround.new,
-          Plurimath::Math::Function::Table.new(
-            [
-              Plurimath::Math::Function::Tr.new([
-                Plurimath::Math::Function::Td.new([
-                  Plurimath::Math::Symbols::Symbol.new("x"),
-                  Plurimath::Math::Symbols::Mapsto.new,
-                  Plurimath::Math::Formula.new([
-                    Plurimath::Math::Symbols::Symbol.new("x"),
-                    Plurimath::Math::Symbols::Plus.new,
-                    Plurimath::Math::Symbols::Symbol.new("y")
-                  ])
-                ])
-              ]),
-              Plurimath::Math::Function::Tr.new([
-                Plurimath::Math::Function::Td.new([
-                  Plurimath::Math::Symbols::Symbol.new("y"),
-                  Plurimath::Math::Symbols::Mapsto.new,
-                  Plurimath::Math::Formula.new([
-                    Plurimath::Math::Symbols::Symbol.new("x"),
-                    Plurimath::Math::Symbols::Plus.new,
-                    Plurimath::Math::Symbols::Symbol.new("z")
-                  ])
-                ])
-              ]),
-              Plurimath::Math::Function::Tr.new([
-                Plurimath::Math::Function::Td.new([
-                  Plurimath::Math::Symbols::Symbol.new("z"),
-                  Plurimath::Math::Symbols::Mapsto.new,
-                  Plurimath::Math::Formula.new([
-                    Plurimath::Math::Symbols::Symbol.new("z"),
-                    Plurimath::Math::Symbols::Plus.new,
-                    Plurimath::Math::Symbols::Symbol.new("y")
-                  ])
-                ])
-              ])
-            ],
-            nil,
-            nil
-          ),
-          Plurimath::Math::Symbols::Paren::Rround.new
-        ])
-      ])
+                                                      Plurimath::Math::Formula.new([
+                                                                                     Plurimath::Math::Symbols::Symbol.new("div"),
+                                                                                     Plurimath::Math::Symbols::Funcapply.new,
+                                                                                     Plurimath::Math::Symbols::Paren::Lround.new,
+                                                                                     Plurimath::Math::Function::Table.new(
+                                                                                       [
+                                                                                         Plurimath::Math::Function::Tr.new([
+                                                                                                                             Plurimath::Math::Function::Td.new([
+                                                                                                                                                                 Plurimath::Math::Symbols::Symbol.new("x"),
+                                                                                                                                                                 Plurimath::Math::Symbols::Mapsto.new,
+                                                                                                                                                                 Plurimath::Math::Formula.new([
+                                                                                                                                                                                                Plurimath::Math::Symbols::Symbol.new("x"),
+                                                                                                                                                                                                Plurimath::Math::Symbols::Plus.new,
+                                                                                                                                                                                                Plurimath::Math::Symbols::Symbol.new("y"),
+                                                                                                                                                                                              ]),
+                                                                                                                                                               ]),
+                                                                                                                           ]),
+                                                                                         Plurimath::Math::Function::Tr.new([
+                                                                                                                             Plurimath::Math::Function::Td.new([
+                                                                                                                                                                 Plurimath::Math::Symbols::Symbol.new("y"),
+                                                                                                                                                                 Plurimath::Math::Symbols::Mapsto.new,
+                                                                                                                                                                 Plurimath::Math::Formula.new([
+                                                                                                                                                                                                Plurimath::Math::Symbols::Symbol.new("x"),
+                                                                                                                                                                                                Plurimath::Math::Symbols::Plus.new,
+                                                                                                                                                                                                Plurimath::Math::Symbols::Symbol.new("z"),
+                                                                                                                                                                                              ]),
+                                                                                                                                                               ]),
+                                                                                                                           ]),
+                                                                                         Plurimath::Math::Function::Tr.new([
+                                                                                                                             Plurimath::Math::Function::Td.new([
+                                                                                                                                                                 Plurimath::Math::Symbols::Symbol.new("z"),
+                                                                                                                                                                 Plurimath::Math::Symbols::Mapsto.new,
+                                                                                                                                                                 Plurimath::Math::Formula.new([
+                                                                                                                                                                                                Plurimath::Math::Symbols::Symbol.new("z"),
+                                                                                                                                                                                                Plurimath::Math::Symbols::Plus.new,
+                                                                                                                                                                                                Plurimath::Math::Symbols::Symbol.new("y"),
+                                                                                                                                                                                              ]),
+                                                                                                                                                               ]),
+                                                                                                                           ]),
+                                                                                       ],
+                                                                                       nil,
+                                                                                       nil,
+                                                                                     ),
+                                                                                     Plurimath::Math::Symbols::Paren::Rround.new,
+                                                                                   ]),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #154" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mrow>
@@ -3334,27 +3416,28 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mrow>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Formula.new([
-          Plurimath::Math::Symbols::Symbol.new("grad"),
-          Plurimath::Math::Symbols::Funcapply.new,
-          Plurimath::Math::Function::Fenced.new(
-            Plurimath::Math::Symbols::Paren::Lround.new,
-            [
-              Plurimath::Math::Symbols::Symbol.new("f")
-            ],
-            Plurimath::Math::Symbols::Paren::Rround.new,
-          )
-        ])
-      ])
+                                                      Plurimath::Math::Formula.new([
+                                                                                     Plurimath::Math::Symbols::Symbol.new("grad"),
+                                                                                     Plurimath::Math::Symbols::Funcapply.new,
+                                                                                     Plurimath::Math::Function::Fenced.new(
+                                                                                       Plurimath::Math::Symbols::Paren::Lround.new,
+                                                                                       [
+                                                                                         Plurimath::Math::Symbols::Symbol.new("f"),
+                                                                                       ],
+                                                                                       Plurimath::Math::Symbols::Paren::Rround.new,
+                                                                                     ),
+                                                                                   ]),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #155" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mrow>
@@ -3366,27 +3449,28 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mrow>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Formula.new([
-          Plurimath::Math::Symbols::Grad.new,
-          Plurimath::Math::Symbols::Funcapply.new,
-          Plurimath::Math::Function::Fenced.new(
-            Plurimath::Math::Symbols::Paren::Lround.new,
-            [
-              Plurimath::Math::Symbols::Symbol.new("f")
-            ],
-            Plurimath::Math::Symbols::Paren::Rround.new,
-          )
-        ])
-      ])
+                                                      Plurimath::Math::Formula.new([
+                                                                                     Plurimath::Math::Symbols::Grad.new,
+                                                                                     Plurimath::Math::Symbols::Funcapply.new,
+                                                                                     Plurimath::Math::Function::Fenced.new(
+                                                                                       Plurimath::Math::Symbols::Paren::Lround.new,
+                                                                                       [
+                                                                                         Plurimath::Math::Symbols::Symbol.new("f"),
+                                                                                       ],
+                                                                                       Plurimath::Math::Symbols::Paren::Rround.new,
+                                                                                     ),
+                                                                                   ]),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #156" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mrow>
@@ -3412,43 +3496,44 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mrow>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Formula.new([
-          Plurimath::Math::Symbols::Symbol.new("grad"),
-          Plurimath::Math::Symbols::Funcapply.new,
-          Plurimath::Math::Function::Fenced.new(
-            Plurimath::Math::Symbols::Paren::Lround.new,
-            [
-              Plurimath::Math::Function::Fenced.new(
-                Plurimath::Math::Symbols::Paren::Lround.new,
-                [
-                  Plurimath::Math::Symbols::Symbol.new("x"),
-                  Plurimath::Math::Symbols::Symbol.new("y"),
-                  Plurimath::Math::Symbols::Symbol.new("z")
-                ],
-                Plurimath::Math::Symbols::Paren::Rround.new,
-              ),
-              Plurimath::Math::Symbols::Mapsto.new,
-              Plurimath::Math::Formula.new([
-                Plurimath::Math::Symbols::Symbol.new("x"),
-                Plurimath::Math::Symbols::Symbol.new("&#x2062;"),
-                Plurimath::Math::Symbols::Symbol.new("y"),
-                Plurimath::Math::Symbols::Symbol.new("&#x2062;"),
-                Plurimath::Math::Symbols::Symbol.new("z")
-              ]),
-            ],
-            Plurimath::Math::Symbols::Paren::Rround.new
-          )
-        ])
-      ])
+                                                      Plurimath::Math::Formula.new([
+                                                                                     Plurimath::Math::Symbols::Symbol.new("grad"),
+                                                                                     Plurimath::Math::Symbols::Funcapply.new,
+                                                                                     Plurimath::Math::Function::Fenced.new(
+                                                                                       Plurimath::Math::Symbols::Paren::Lround.new,
+                                                                                       [
+                                                                                         Plurimath::Math::Function::Fenced.new(
+                                                                                           Plurimath::Math::Symbols::Paren::Lround.new,
+                                                                                           [
+                                                                                             Plurimath::Math::Symbols::Symbol.new("x"),
+                                                                                             Plurimath::Math::Symbols::Symbol.new("y"),
+                                                                                             Plurimath::Math::Symbols::Symbol.new("z"),
+                                                                                           ],
+                                                                                           Plurimath::Math::Symbols::Paren::Rround.new,
+                                                                                         ),
+                                                                                         Plurimath::Math::Symbols::Mapsto.new,
+                                                                                         Plurimath::Math::Formula.new([
+                                                                                                                        Plurimath::Math::Symbols::Symbol.new("x"),
+                                                                                                                        Plurimath::Math::Symbols::Symbol.new("&#x2062;"),
+                                                                                                                        Plurimath::Math::Symbols::Symbol.new("y"),
+                                                                                                                        Plurimath::Math::Symbols::Symbol.new("&#x2062;"),
+                                                                                                                        Plurimath::Math::Symbols::Symbol.new("z"),
+                                                                                                                      ]),
+                                                                                       ],
+                                                                                       Plurimath::Math::Symbols::Paren::Rround.new,
+                                                                                     ),
+                                                                                   ]),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #157" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mrow>
@@ -3460,27 +3545,28 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mrow>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Formula.new([
-          Plurimath::Math::Symbols::Symbol.new("curl"),
-          Plurimath::Math::Symbols::Funcapply.new,
-          Plurimath::Math::Function::Fenced.new(
-            Plurimath::Math::Symbols::Paren::Lround.new,
-            [
-              Plurimath::Math::Symbols::Symbol.new("a")
-            ],
-            Plurimath::Math::Symbols::Paren::Rround.new,
-          )
-        ])
-      ])
+                                                      Plurimath::Math::Formula.new([
+                                                                                     Plurimath::Math::Symbols::Symbol.new("curl"),
+                                                                                     Plurimath::Math::Symbols::Funcapply.new,
+                                                                                     Plurimath::Math::Function::Fenced.new(
+                                                                                       Plurimath::Math::Symbols::Paren::Lround.new,
+                                                                                       [
+                                                                                         Plurimath::Math::Symbols::Symbol.new("a"),
+                                                                                       ],
+                                                                                       Plurimath::Math::Symbols::Paren::Rround.new,
+                                                                                     ),
+                                                                                   ]),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #158" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mrow>
@@ -3490,21 +3576,22 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mrow>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Formula.new([
-          Plurimath::Math::Symbols::Grad.new,
-          Plurimath::Math::Symbols::Times.new,
-          Plurimath::Math::Symbols::Symbol.new("a")
-        ])
-      ])
+                                                      Plurimath::Math::Formula.new([
+                                                                                     Plurimath::Math::Symbols::Grad.new,
+                                                                                     Plurimath::Math::Symbols::Times.new,
+                                                                                     Plurimath::Math::Symbols::Symbol.new("a"),
+                                                                                   ]),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #159" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mrow>
@@ -3519,30 +3606,31 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mrow>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Power.new(
-            Plurimath::Math::Symbols::Grad.new,
-            Plurimath::Math::Number.new("2"),
-          ),
-          Plurimath::Math::Symbols::Funcapply.new,
-          Plurimath::Math::Function::Fenced.new(
-            Plurimath::Math::Symbols::Paren::Lround.new,
-            [
-              Plurimath::Math::Symbols::Symbol.new("E")
-            ],
-            Plurimath::Math::Symbols::Paren::Rround.new,
-          )
-        ])
-      ])
+                                                      Plurimath::Math::Formula.new([
+                                                                                     Plurimath::Math::Function::Power.new(
+                                                                                       Plurimath::Math::Symbols::Grad.new,
+                                                                                       Plurimath::Math::Number.new("2"),
+                                                                                     ),
+                                                                                     Plurimath::Math::Symbols::Funcapply.new,
+                                                                                     Plurimath::Math::Function::Fenced.new(
+                                                                                       Plurimath::Math::Symbols::Paren::Lround.new,
+                                                                                       [
+                                                                                         Plurimath::Math::Symbols::Symbol.new("E"),
+                                                                                       ],
+                                                                                       Plurimath::Math::Symbols::Paren::Rround.new,
+                                                                                     ),
+                                                                                   ]),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #160" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mrow>
@@ -3572,51 +3660,52 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mrow>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Power.new(
-            Plurimath::Math::Symbols::Grad.new,
-            Plurimath::Math::Number.new("2")
-          ),
-          Plurimath::Math::Symbols::Funcapply.new,
-          Plurimath::Math::Function::Fenced.new(
-            Plurimath::Math::Symbols::Paren::Lround.new,
-            [
-              Plurimath::Math::Function::Fenced.new(
-                Plurimath::Math::Symbols::Paren::Lround.new,
-                [
-                  Plurimath::Math::Symbols::Symbol.new("x"),
-                  Plurimath::Math::Symbols::Symbol.new("y"),
-                  Plurimath::Math::Symbols::Symbol.new("z")
-                ],
-                Plurimath::Math::Symbols::Paren::Rround.new,
-              ),
-              Plurimath::Math::Symbols::Mapsto.new,
-              Plurimath::Math::Formula.new([
-                Plurimath::Math::Symbols::Symbol.new("f"),
-                Plurimath::Math::Symbols::Funcapply.new,
-                Plurimath::Math::Function::Fenced.new(
-                  Plurimath::Math::Symbols::Paren::Lround.new,
-                  [
-                    Plurimath::Math::Symbols::Symbol.new("x"),
-                    Plurimath::Math::Symbols::Symbol.new("y")
-                  ],
-                  Plurimath::Math::Symbols::Paren::Rround.new,
-                )
-              ]),
-            ],
-            Plurimath::Math::Symbols::Paren::Rround.new
-          )
-        ])
-      ])
+                                                      Plurimath::Math::Formula.new([
+                                                                                     Plurimath::Math::Function::Power.new(
+                                                                                       Plurimath::Math::Symbols::Grad.new,
+                                                                                       Plurimath::Math::Number.new("2"),
+                                                                                     ),
+                                                                                     Plurimath::Math::Symbols::Funcapply.new,
+                                                                                     Plurimath::Math::Function::Fenced.new(
+                                                                                       Plurimath::Math::Symbols::Paren::Lround.new,
+                                                                                       [
+                                                                                         Plurimath::Math::Function::Fenced.new(
+                                                                                           Plurimath::Math::Symbols::Paren::Lround.new,
+                                                                                           [
+                                                                                             Plurimath::Math::Symbols::Symbol.new("x"),
+                                                                                             Plurimath::Math::Symbols::Symbol.new("y"),
+                                                                                             Plurimath::Math::Symbols::Symbol.new("z"),
+                                                                                           ],
+                                                                                           Plurimath::Math::Symbols::Paren::Rround.new,
+                                                                                         ),
+                                                                                         Plurimath::Math::Symbols::Mapsto.new,
+                                                                                         Plurimath::Math::Formula.new([
+                                                                                                                        Plurimath::Math::Symbols::Symbol.new("f"),
+                                                                                                                        Plurimath::Math::Symbols::Funcapply.new,
+                                                                                                                        Plurimath::Math::Function::Fenced.new(
+                                                                                                                          Plurimath::Math::Symbols::Paren::Lround.new,
+                                                                                                                          [
+                                                                                                                            Plurimath::Math::Symbols::Symbol.new("x"),
+                                                                                                                            Plurimath::Math::Symbols::Symbol.new("y"),
+                                                                                                                          ],
+                                                                                                                          Plurimath::Math::Symbols::Paren::Rround.new,
+                                                                                                                        ),
+                                                                                                                      ]),
+                                                                                       ],
+                                                                                       Plurimath::Math::Symbols::Paren::Rround.new,
+                                                                                     ),
+                                                                                   ]),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #161" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mrow>
@@ -3630,27 +3719,28 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mrow>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Function::Fenced.new(
-          Plurimath::Math::Symbols::Paren::Lcurly.new,
-          [
-            Plurimath::Math::Symbols::Symbol.new("a"),
-            Plurimath::Math::Symbols::Comma.new,
-            Plurimath::Math::Symbols::Symbol.new("b"),
-            Plurimath::Math::Symbols::Comma.new,
-            Plurimath::Math::Symbols::Symbol.new("c"),
-          ],
-          Plurimath::Math::Symbols::Paren::Rcurly.new
-        )
-      ])
+                                                      Plurimath::Math::Function::Fenced.new(
+                                                        Plurimath::Math::Symbols::Paren::Lcurly.new,
+                                                        [
+                                                          Plurimath::Math::Symbols::Symbol.new("a"),
+                                                          Plurimath::Math::Symbols::Comma.new,
+                                                          Plurimath::Math::Symbols::Symbol.new("b"),
+                                                          Plurimath::Math::Symbols::Comma.new,
+                                                          Plurimath::Math::Symbols::Symbol.new("c"),
+                                                        ],
+                                                        Plurimath::Math::Symbols::Paren::Rcurly.new,
+                                                      ),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #162" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mrow>
@@ -3666,29 +3756,30 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mrow>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Function::Fenced.new(
-          Plurimath::Math::Symbols::Paren::Lcurly.new,
-          [
-            Plurimath::Math::Symbols::Symbol.new("x"),
-            Plurimath::Math::Symbols::Paren::Vert.new,
-            Plurimath::Math::Formula.new([
-              Plurimath::Math::Symbols::Symbol.new("x"),
-              Plurimath::Math::Symbols::Less.new,
-              Plurimath::Math::Number.new("5")
-            ]),
-          ],
-          Plurimath::Math::Symbols::Paren::Rcurly.new
-        )
-      ])
+                                                      Plurimath::Math::Function::Fenced.new(
+                                                        Plurimath::Math::Symbols::Paren::Lcurly.new,
+                                                        [
+                                                          Plurimath::Math::Symbols::Symbol.new("x"),
+                                                          Plurimath::Math::Symbols::Paren::Vert.new,
+                                                          Plurimath::Math::Formula.new([
+                                                                                         Plurimath::Math::Symbols::Symbol.new("x"),
+                                                                                         Plurimath::Math::Symbols::Less.new,
+                                                                                         Plurimath::Math::Number.new("5"),
+                                                                                       ]),
+                                                        ],
+                                                        Plurimath::Math::Symbols::Paren::Rcurly.new,
+                                                      ),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #163" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mrow>
@@ -3700,29 +3791,30 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mrow>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Function::Fenced.new(
-          Plurimath::Math::Symbols::Paren::Lcurly.new,
-          [
-            Plurimath::Math::Symbols::Symbol.new("S"),
-            Plurimath::Math::Symbols::Paren::Vert.new,
-            Plurimath::Math::Formula.new([
-              Plurimath::Math::Symbols::Symbol.new("S"),
-              Plurimath::Math::Symbols::In.new,
-              Plurimath::Math::Symbols::Symbol.new("T")
-            ]),
-          ],
-          Plurimath::Math::Symbols::Paren::Rcurly.new
-        )
-      ])
+                                                      Plurimath::Math::Function::Fenced.new(
+                                                        Plurimath::Math::Symbols::Paren::Lcurly.new,
+                                                        [
+                                                          Plurimath::Math::Symbols::Symbol.new("S"),
+                                                          Plurimath::Math::Symbols::Paren::Vert.new,
+                                                          Plurimath::Math::Formula.new([
+                                                                                         Plurimath::Math::Symbols::Symbol.new("S"),
+                                                                                         Plurimath::Math::Symbols::In.new,
+                                                                                         Plurimath::Math::Symbols::Symbol.new("T"),
+                                                                                       ]),
+                                                        ],
+                                                        Plurimath::Math::Symbols::Paren::Rcurly.new,
+                                                      ),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #164" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mrow>
@@ -3748,44 +3840,45 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mrow>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Function::Fenced.new(
-          Plurimath::Math::Symbols::Paren::Lcurly.new,
-          [
-            Plurimath::Math::Symbols::Symbol.new("x"),
-            Plurimath::Math::Symbols::Paren::Vert.new,
-            Plurimath::Math::Formula.new([
-              Plurimath::Math::Function::Fenced.new(
-                Plurimath::Math::Symbols::Paren::Lround.new,
-                [
-                  Plurimath::Math::Symbols::Symbol.new("x"),
-                  Plurimath::Math::Symbols::Less.new,
-                  Plurimath::Math::Number.new("5"),
-                ],
-                Plurimath::Math::Symbols::Paren::Rround.new
-              ),
-              Plurimath::Math::Symbols::Land.new,
-              Plurimath::Math::Formula.new([
-                Plurimath::Math::Symbols::Symbol.new("x"),
-                Plurimath::Math::Symbols::In.new,
-                Plurimath::Math::Function::FontStyle::DoubleStruck.new(
-                  Plurimath::Math::Symbols::Symbol.new("N"),
-                  "double-struck",
-                )
-              ])
-            ]),
-          ],
-          Plurimath::Math::Symbols::Paren::Rcurly.new
-        )
-      ])
+                                                      Plurimath::Math::Function::Fenced.new(
+                                                        Plurimath::Math::Symbols::Paren::Lcurly.new,
+                                                        [
+                                                          Plurimath::Math::Symbols::Symbol.new("x"),
+                                                          Plurimath::Math::Symbols::Paren::Vert.new,
+                                                          Plurimath::Math::Formula.new([
+                                                                                         Plurimath::Math::Function::Fenced.new(
+                                                                                           Plurimath::Math::Symbols::Paren::Lround.new,
+                                                                                           [
+                                                                                             Plurimath::Math::Symbols::Symbol.new("x"),
+                                                                                             Plurimath::Math::Symbols::Less.new,
+                                                                                             Plurimath::Math::Number.new("5"),
+                                                                                           ],
+                                                                                           Plurimath::Math::Symbols::Paren::Rround.new,
+                                                                                         ),
+                                                                                         Plurimath::Math::Symbols::Land.new,
+                                                                                         Plurimath::Math::Formula.new([
+                                                                                                                        Plurimath::Math::Symbols::Symbol.new("x"),
+                                                                                                                        Plurimath::Math::Symbols::In.new,
+                                                                                                                        Plurimath::Math::Function::FontStyle::DoubleStruck.new(
+                                                                                                                          Plurimath::Math::Symbols::Symbol.new("N"),
+                                                                                                                          "double-struck",
+                                                                                                                        ),
+                                                                                                                      ]),
+                                                                                       ]),
+                                                        ],
+                                                        Plurimath::Math::Symbols::Paren::Rcurly.new,
+                                                      ),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #165" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mrow>
@@ -3799,27 +3892,28 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mrow>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Function::Fenced.new(
-          Plurimath::Math::Symbols::Paren::Lround.new,
-          [
-            Plurimath::Math::Symbols::Symbol.new("a"),
-            Plurimath::Math::Symbols::Comma.new,
-            Plurimath::Math::Symbols::Symbol.new("b"),
-            Plurimath::Math::Symbols::Comma.new,
-            Plurimath::Math::Symbols::Symbol.new("c"),
-          ],
-          Plurimath::Math::Symbols::Paren::Rround.new
-        )
-      ])
+                                                      Plurimath::Math::Function::Fenced.new(
+                                                        Plurimath::Math::Symbols::Paren::Lround.new,
+                                                        [
+                                                          Plurimath::Math::Symbols::Symbol.new("a"),
+                                                          Plurimath::Math::Symbols::Comma.new,
+                                                          Plurimath::Math::Symbols::Symbol.new("b"),
+                                                          Plurimath::Math::Symbols::Comma.new,
+                                                          Plurimath::Math::Symbols::Symbol.new("c"),
+                                                        ],
+                                                        Plurimath::Math::Symbols::Paren::Rround.new,
+                                                      ),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #166" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mrow>
@@ -3835,29 +3929,30 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mrow>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Function::Fenced.new(
-          Plurimath::Math::Symbols::Paren::Lround.new,
-          [
-            Plurimath::Math::Symbols::Symbol.new("x"),
-            Plurimath::Math::Symbols::Paren::Vert.new,
-            Plurimath::Math::Formula.new([
-              Plurimath::Math::Symbols::Symbol.new("x"),
-              Plurimath::Math::Symbols::Less.new,
-              Plurimath::Math::Number.new("5")
-            ]),
-          ],
-          Plurimath::Math::Symbols::Paren::Rround.new
-        )
-      ])
+                                                      Plurimath::Math::Function::Fenced.new(
+                                                        Plurimath::Math::Symbols::Paren::Lround.new,
+                                                        [
+                                                          Plurimath::Math::Symbols::Symbol.new("x"),
+                                                          Plurimath::Math::Symbols::Paren::Vert.new,
+                                                          Plurimath::Math::Formula.new([
+                                                                                         Plurimath::Math::Symbols::Symbol.new("x"),
+                                                                                         Plurimath::Math::Symbols::Less.new,
+                                                                                         Plurimath::Math::Number.new("5"),
+                                                                                       ]),
+                                                        ],
+                                                        Plurimath::Math::Symbols::Paren::Rround.new,
+                                                      ),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #167" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mrow>
@@ -3867,21 +3962,22 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mrow>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Formula.new([
-          Plurimath::Math::Symbols::Symbol.new("A"),
-          Plurimath::Math::Symbols::Uu.new,
-          Plurimath::Math::Symbols::Symbol.new("B")
-        ])
-      ])
+                                                      Plurimath::Math::Formula.new([
+                                                                                     Plurimath::Math::Symbols::Symbol.new("A"),
+                                                                                     Plurimath::Math::Symbols::Uu.new,
+                                                                                     Plurimath::Math::Symbols::Symbol.new("B"),
+                                                                                   ]),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #168" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mrow>
@@ -3893,23 +3989,24 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mrow>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Function::Nary.new(
-          Plurimath::Math::Symbols::Duni.new,
-          Plurimath::Math::Symbols::Symbol.new("L"),
-          nil,
-          Plurimath::Math::Symbols::Symbol.new("S"),
-          { type: "undOvr" }
-        )
-      ])
+                                                      Plurimath::Math::Function::Nary.new(
+                                                        Plurimath::Math::Symbols::Duni.new,
+                                                        Plurimath::Math::Symbols::Symbol.new("L"),
+                                                        nil,
+                                                        Plurimath::Math::Symbols::Symbol.new("S"),
+                                                        { type: "undOvr" },
+                                                      ),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #169" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mrow>
@@ -3919,21 +4016,22 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mrow>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Formula.new([
-          Plurimath::Math::Symbols::Symbol.new("A"),
-          Plurimath::Math::Symbols::Cap.new,
-          Plurimath::Math::Symbols::Symbol.new("B")
-        ])
-      ])
+                                                      Plurimath::Math::Formula.new([
+                                                                                     Plurimath::Math::Symbols::Symbol.new("A"),
+                                                                                     Plurimath::Math::Symbols::Cap.new,
+                                                                                     Plurimath::Math::Symbols::Symbol.new("B"),
+                                                                                   ]),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #170" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mrow>
@@ -3945,23 +4043,24 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mrow>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Function::Nary.new(
-          Plurimath::Math::Symbols::Dint.new,
-          Plurimath::Math::Symbols::Symbol.new("L"),
-          nil,
-          Plurimath::Math::Symbols::Symbol.new("S"),
-          { type: "undOvr" }
-        )
-      ])
+                                                      Plurimath::Math::Function::Nary.new(
+                                                        Plurimath::Math::Symbols::Dint.new,
+                                                        Plurimath::Math::Symbols::Symbol.new("L"),
+                                                        nil,
+                                                        Plurimath::Math::Symbols::Symbol.new("S"),
+                                                        { type: "undOvr" },
+                                                      ),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #171" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mrow>
@@ -3971,21 +4070,22 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mrow>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Formula.new([
-          Plurimath::Math::Symbols::Symbol.new("a"),
-          Plurimath::Math::Symbols::In.new,
-          Plurimath::Math::Symbols::Symbol.new("A")
-        ])
-      ])
+                                                      Plurimath::Math::Formula.new([
+                                                                                     Plurimath::Math::Symbols::Symbol.new("a"),
+                                                                                     Plurimath::Math::Symbols::In.new,
+                                                                                     Plurimath::Math::Symbols::Symbol.new("A"),
+                                                                                   ]),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #172" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mrow>
@@ -3995,21 +4095,22 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mrow>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Formula.new([
-          Plurimath::Math::Symbols::Symbol.new("a"),
-          Plurimath::Math::Symbols::Nin.new,
-          Plurimath::Math::Symbols::Symbol.new("A")
-        ])
-      ])
+                                                      Plurimath::Math::Formula.new([
+                                                                                     Plurimath::Math::Symbols::Symbol.new("a"),
+                                                                                     Plurimath::Math::Symbols::Nin.new,
+                                                                                     Plurimath::Math::Symbols::Symbol.new("A"),
+                                                                                   ]),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #173" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mrow>
@@ -4019,21 +4120,22 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mrow>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Formula.new([
-          Plurimath::Math::Symbols::Symbol.new("A"),
-          Plurimath::Math::Symbols::Sube.new,
-          Plurimath::Math::Symbols::Symbol.new("B")
-        ])
-      ])
+                                                      Plurimath::Math::Formula.new([
+                                                                                     Plurimath::Math::Symbols::Symbol.new("A"),
+                                                                                     Plurimath::Math::Symbols::Sube.new,
+                                                                                     Plurimath::Math::Symbols::Symbol.new("B"),
+                                                                                   ]),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #174" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mrow>
@@ -4043,21 +4145,22 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mrow>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Formula.new([
-          Plurimath::Math::Symbols::Symbol.new("A"),
-          Plurimath::Math::Symbols::Sub.new,
-          Plurimath::Math::Symbols::Symbol.new("B")
-        ])
-      ])
+                                                      Plurimath::Math::Formula.new([
+                                                                                     Plurimath::Math::Symbols::Symbol.new("A"),
+                                                                                     Plurimath::Math::Symbols::Sub.new,
+                                                                                     Plurimath::Math::Symbols::Symbol.new("B"),
+                                                                                   ]),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #175" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mrow>
@@ -4067,21 +4170,22 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mrow>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Formula.new([
-          Plurimath::Math::Symbols::Symbol.new("A"),
-          Plurimath::Math::Symbols::Subseteq.new,
-          Plurimath::Math::Symbols::Symbol.new("B")
-        ])
-      ])
+                                                      Plurimath::Math::Formula.new([
+                                                                                     Plurimath::Math::Symbols::Symbol.new("A"),
+                                                                                     Plurimath::Math::Symbols::Subseteq.new,
+                                                                                     Plurimath::Math::Symbols::Symbol.new("B"),
+                                                                                   ]),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #176" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mrow>
@@ -4091,21 +4195,22 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mrow>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Formula.new([
-          Plurimath::Math::Symbols::Symbol.new("A"),
-          Plurimath::Math::Symbols::Nsub.new,
-          Plurimath::Math::Symbols::Symbol.new("B")
-        ])
-      ])
+                                                      Plurimath::Math::Formula.new([
+                                                                                     Plurimath::Math::Symbols::Symbol.new("A"),
+                                                                                     Plurimath::Math::Symbols::Nsub.new,
+                                                                                     Plurimath::Math::Symbols::Symbol.new("B"),
+                                                                                   ]),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #177" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mrow>
@@ -4115,21 +4220,22 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mrow>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Formula.new([
-          Plurimath::Math::Symbols::Symbol.new("A"),
-          Plurimath::Math::Symbols::Setminus.new,
-          Plurimath::Math::Symbols::Symbol.new("B")
-        ])
-      ])
+                                                      Plurimath::Math::Formula.new([
+                                                                                     Plurimath::Math::Symbols::Symbol.new("A"),
+                                                                                     Plurimath::Math::Symbols::Setminus.new,
+                                                                                     Plurimath::Math::Symbols::Symbol.new("B"),
+                                                                                   ]),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #178" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mrow>
@@ -4143,27 +4249,28 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mrow>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Fenced.new(
-            Plurimath::Math::Symbols::Paren::Vert.new,
-            [
-              Plurimath::Math::Symbols::Symbol.new("A"),
-            ],
-            Plurimath::Math::Symbols::Paren::Vert.new
-          ),
-          Plurimath::Math::Symbols::Equal.new,
-          Plurimath::Math::Number.new("5")
-        ])
-      ])
+                                                      Plurimath::Math::Formula.new([
+                                                                                     Plurimath::Math::Function::Fenced.new(
+                                                                                       Plurimath::Math::Symbols::Paren::Vert.new,
+                                                                                       [
+                                                                                         Plurimath::Math::Symbols::Symbol.new("A"),
+                                                                                       ],
+                                                                                       Plurimath::Math::Symbols::Paren::Vert.new,
+                                                                                     ),
+                                                                                     Plurimath::Math::Symbols::Equal.new,
+                                                                                     Plurimath::Math::Number.new("5"),
+                                                                                   ]),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #179" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mrow>
@@ -4173,21 +4280,22 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mrow>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Formula.new([
-          Plurimath::Math::Symbols::Symbol.new("A"),
-          Plurimath::Math::Symbols::Times.new,
-          Plurimath::Math::Symbols::Symbol.new("B")
-        ])
-      ])
+                                                      Plurimath::Math::Formula.new([
+                                                                                     Plurimath::Math::Symbols::Symbol.new("A"),
+                                                                                     Plurimath::Math::Symbols::Times.new,
+                                                                                     Plurimath::Math::Symbols::Symbol.new("B"),
+                                                                                   ]),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #180" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mrow>
@@ -4210,35 +4318,36 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mrow>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Function::Sum.new(
-          Plurimath::Math::Formula.new([
-            Plurimath::Math::Symbols::Symbol.new("x"),
-            Plurimath::Math::Symbols::Equal.new,
-            Plurimath::Math::Symbols::Symbol.new("a")
-          ]),
-          Plurimath::Math::Symbols::Symbol.new("b"),
-          Plurimath::Math::Formula.new([
-            Plurimath::Math::Symbols::Symbol.new("f"),
-            Plurimath::Math::Symbols::Funcapply.new,
-            Plurimath::Math::Function::Fenced.new(
-              Plurimath::Math::Symbols::Paren::Lround.new,
-              [
-                Plurimath::Math::Symbols::Symbol.new("x")
-              ],
-              Plurimath::Math::Symbols::Paren::Rround.new,
-            )
-          ])
-        ),
-      ])
+                                                      Plurimath::Math::Function::Sum.new(
+                                                        Plurimath::Math::Formula.new([
+                                                                                       Plurimath::Math::Symbols::Symbol.new("x"),
+                                                                                       Plurimath::Math::Symbols::Equal.new,
+                                                                                       Plurimath::Math::Symbols::Symbol.new("a"),
+                                                                                     ]),
+                                                        Plurimath::Math::Symbols::Symbol.new("b"),
+                                                        Plurimath::Math::Formula.new([
+                                                                                       Plurimath::Math::Symbols::Symbol.new("f"),
+                                                                                       Plurimath::Math::Symbols::Funcapply.new,
+                                                                                       Plurimath::Math::Function::Fenced.new(
+                                                                                         Plurimath::Math::Symbols::Paren::Lround.new,
+                                                                                         [
+                                                                                           Plurimath::Math::Symbols::Symbol.new("x"),
+                                                                                         ],
+                                                                                         Plurimath::Math::Symbols::Paren::Rround.new,
+                                                                                       ),
+                                                                                     ]),
+                                                      ),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #181" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mrow>
@@ -4260,35 +4369,36 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mrow>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Function::Sum.new(
-          Plurimath::Math::Formula.new([
-            Plurimath::Math::Symbols::Symbol.new("x"),
-            Plurimath::Math::Symbols::In.new,
-            Plurimath::Math::Symbols::Symbol.new("B")
-          ]),
-          nil,
-          Plurimath::Math::Formula.new([
-            Plurimath::Math::Symbols::Symbol.new("f"),
-            Plurimath::Math::Symbols::Funcapply.new,
-            Plurimath::Math::Function::Fenced.new(
-              Plurimath::Math::Symbols::Paren::Lround.new,
-              [
-                Plurimath::Math::Symbols::Symbol.new("x")
-              ],
-              Plurimath::Math::Symbols::Paren::Rround.new,
-            )
-          ])
-        ),
-      ])
+                                                      Plurimath::Math::Function::Sum.new(
+                                                        Plurimath::Math::Formula.new([
+                                                                                       Plurimath::Math::Symbols::Symbol.new("x"),
+                                                                                       Plurimath::Math::Symbols::In.new,
+                                                                                       Plurimath::Math::Symbols::Symbol.new("B"),
+                                                                                     ]),
+                                                        nil,
+                                                        Plurimath::Math::Formula.new([
+                                                                                       Plurimath::Math::Symbols::Symbol.new("f"),
+                                                                                       Plurimath::Math::Symbols::Funcapply.new,
+                                                                                       Plurimath::Math::Function::Fenced.new(
+                                                                                         Plurimath::Math::Symbols::Paren::Lround.new,
+                                                                                         [
+                                                                                           Plurimath::Math::Symbols::Symbol.new("x"),
+                                                                                         ],
+                                                                                         Plurimath::Math::Symbols::Paren::Rround.new,
+                                                                                       ),
+                                                                                     ]),
+                                                      ),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #182" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mrow>
@@ -4300,21 +4410,22 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mrow>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Function::Sum.new(
-          Plurimath::Math::Symbols::Symbol.new("B"),
-          nil,
-          Plurimath::Math::Symbols::Symbol.new("f"),
-        ),
-      ])
+                                                      Plurimath::Math::Function::Sum.new(
+                                                        Plurimath::Math::Symbols::Symbol.new("B"),
+                                                        nil,
+                                                        Plurimath::Math::Symbols::Symbol.new("f"),
+                                                      ),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #183" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mrow>
@@ -4337,35 +4448,36 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mrow>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Function::Prod.new(
-          Plurimath::Math::Formula.new([
-            Plurimath::Math::Symbols::Symbol.new("x"),
-            Plurimath::Math::Symbols::Equal.new,
-            Plurimath::Math::Symbols::Symbol.new("a")
-          ]),
-          Plurimath::Math::Symbols::Symbol.new("b"),
-          Plurimath::Math::Formula.new([
-            Plurimath::Math::Symbols::Symbol.new("f"),
-            Plurimath::Math::Symbols::Funcapply.new,
-            Plurimath::Math::Function::Fenced.new(
-              Plurimath::Math::Symbols::Paren::Lround.new,
-              [
-                Plurimath::Math::Symbols::Symbol.new("x")
-              ],
-              Plurimath::Math::Symbols::Paren::Rround.new,
-            )
-          ])
-        ),
-      ])
+                                                      Plurimath::Math::Function::Prod.new(
+                                                        Plurimath::Math::Formula.new([
+                                                                                       Plurimath::Math::Symbols::Symbol.new("x"),
+                                                                                       Plurimath::Math::Symbols::Equal.new,
+                                                                                       Plurimath::Math::Symbols::Symbol.new("a"),
+                                                                                     ]),
+                                                        Plurimath::Math::Symbols::Symbol.new("b"),
+                                                        Plurimath::Math::Formula.new([
+                                                                                       Plurimath::Math::Symbols::Symbol.new("f"),
+                                                                                       Plurimath::Math::Symbols::Funcapply.new,
+                                                                                       Plurimath::Math::Function::Fenced.new(
+                                                                                         Plurimath::Math::Symbols::Paren::Lround.new,
+                                                                                         [
+                                                                                           Plurimath::Math::Symbols::Symbol.new("x"),
+                                                                                         ],
+                                                                                         Plurimath::Math::Symbols::Paren::Rround.new,
+                                                                                       ),
+                                                                                     ]),
+                                                      ),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #184" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mrow>
@@ -4387,35 +4499,36 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mrow>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Function::Prod.new(
-          Plurimath::Math::Formula.new([
-            Plurimath::Math::Symbols::Symbol.new("x"),
-            Plurimath::Math::Symbols::In.new,
-            Plurimath::Math::Symbols::Symbol.new("B")
-          ]),
-          nil,
-          Plurimath::Math::Formula.new([
-            Plurimath::Math::Symbols::Symbol.new("f"),
-            Plurimath::Math::Symbols::Funcapply.new,
-            Plurimath::Math::Function::Fenced.new(
-              Plurimath::Math::Symbols::Paren::Lround.new,
-              [
-                Plurimath::Math::Symbols::Symbol.new("x")
-              ],
-              Plurimath::Math::Symbols::Paren::Rround.new,
-            )
-          ])
-        ),
-      ])
+                                                      Plurimath::Math::Function::Prod.new(
+                                                        Plurimath::Math::Formula.new([
+                                                                                       Plurimath::Math::Symbols::Symbol.new("x"),
+                                                                                       Plurimath::Math::Symbols::In.new,
+                                                                                       Plurimath::Math::Symbols::Symbol.new("B"),
+                                                                                     ]),
+                                                        nil,
+                                                        Plurimath::Math::Formula.new([
+                                                                                       Plurimath::Math::Symbols::Symbol.new("f"),
+                                                                                       Plurimath::Math::Symbols::Funcapply.new,
+                                                                                       Plurimath::Math::Function::Fenced.new(
+                                                                                         Plurimath::Math::Symbols::Paren::Lround.new,
+                                                                                         [
+                                                                                           Plurimath::Math::Symbols::Symbol.new("x"),
+                                                                                         ],
+                                                                                         Plurimath::Math::Symbols::Paren::Rround.new,
+                                                                                       ),
+                                                                                     ]),
+                                                      ),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #185" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mrow>
@@ -4435,32 +4548,33 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mrow>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Underset.new(
-            Plurimath::Math::Formula.new([
-              Plurimath::Math::Symbols::Symbol.new("x"),
-              Plurimath::Math::Function::Vec.new,
-              Plurimath::Math::Number.new("0")
-            ]),
-            Plurimath::Math::Symbols::Symbol.new("lim")
-          ),
-          Plurimath::Math::Formula.new([
-            Plurimath::Math::Function::Sin.new(
-              Plurimath::Math::Symbols::Funcapply.new,
-            ),
-            Plurimath::Math::Symbols::Symbol.new("x")
-          ])
-        ])
-      ])
+                                                      Plurimath::Math::Formula.new([
+                                                                                     Plurimath::Math::Function::Underset.new(
+                                                                                       Plurimath::Math::Formula.new([
+                                                                                                                      Plurimath::Math::Symbols::Symbol.new("x"),
+                                                                                                                      Plurimath::Math::Function::Vec.new,
+                                                                                                                      Plurimath::Math::Number.new("0"),
+                                                                                                                    ]),
+                                                                                       Plurimath::Math::Symbols::Symbol.new("lim"),
+                                                                                     ),
+                                                                                     Plurimath::Math::Formula.new([
+                                                                                                                    Plurimath::Math::Function::Sin.new(
+                                                                                                                      Plurimath::Math::Symbols::Funcapply.new,
+                                                                                                                    ),
+                                                                                                                    Plurimath::Math::Symbols::Symbol.new("x"),
+                                                                                                                  ]),
+                                                                                   ]),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #186" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mrow>
@@ -4483,35 +4597,36 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mrow>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Underset.new(
-            Plurimath::Math::Formula.new([
-              Plurimath::Math::Symbols::Symbol.new("x"),
-              Plurimath::Math::Function::Vec.new,
-              Plurimath::Math::Function::Power.new(
-                Plurimath::Math::Symbols::Symbol.new("a"),
-                Plurimath::Math::Symbols::Plus.new
-              )
-            ]),
-            Plurimath::Math::Symbols::Symbol.new("lim")
-          ),
-          Plurimath::Math::Formula.new([
-            Plurimath::Math::Function::Sin.new(
-              Plurimath::Math::Symbols::Funcapply.new,
-            ),
-            Plurimath::Math::Symbols::Symbol.new("x")
-          ])
-        ])
-      ])
+                                                      Plurimath::Math::Formula.new([
+                                                                                     Plurimath::Math::Function::Underset.new(
+                                                                                       Plurimath::Math::Formula.new([
+                                                                                                                      Plurimath::Math::Symbols::Symbol.new("x"),
+                                                                                                                      Plurimath::Math::Function::Vec.new,
+                                                                                                                      Plurimath::Math::Function::Power.new(
+                                                                                                                        Plurimath::Math::Symbols::Symbol.new("a"),
+                                                                                                                        Plurimath::Math::Symbols::Plus.new,
+                                                                                                                      ),
+                                                                                                                    ]),
+                                                                                       Plurimath::Math::Symbols::Symbol.new("lim"),
+                                                                                     ),
+                                                                                     Plurimath::Math::Formula.new([
+                                                                                                                    Plurimath::Math::Function::Sin.new(
+                                                                                                                      Plurimath::Math::Symbols::Funcapply.new,
+                                                                                                                    ),
+                                                                                                                    Plurimath::Math::Symbols::Symbol.new("x"),
+                                                                                                                  ]),
+                                                                                   ]),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #187" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mrow>
@@ -4530,30 +4645,31 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mrow>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Power.new(
-            Plurimath::Math::Symbols::Symbol.new("x"),
-            Plurimath::Math::Number.new("2")
-          ),
-          Plurimath::Math::Function::Vec.new,
-          Plurimath::Math::Function::Power.new(
-            Plurimath::Math::Function::Power.new(
-              Plurimath::Math::Symbols::Symbol.new("a"),
-              Plurimath::Math::Number.new("2")
-            ),
-            Plurimath::Math::Symbols::Plus.new
-          )
-        ])
-      ])
+                                                      Plurimath::Math::Formula.new([
+                                                                                     Plurimath::Math::Function::Power.new(
+                                                                                       Plurimath::Math::Symbols::Symbol.new("x"),
+                                                                                       Plurimath::Math::Number.new("2"),
+                                                                                     ),
+                                                                                     Plurimath::Math::Function::Vec.new,
+                                                                                     Plurimath::Math::Function::Power.new(
+                                                                                       Plurimath::Math::Function::Power.new(
+                                                                                         Plurimath::Math::Symbols::Symbol.new("a"),
+                                                                                         Plurimath::Math::Number.new("2"),
+                                                                                       ),
+                                                                                       Plurimath::Math::Symbols::Plus.new,
+                                                                                     ),
+                                                                                   ]),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #188" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mfenced>
@@ -4597,79 +4713,80 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mfenced>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Function::Fenced.new(
-          Plurimath::Math::Symbols::Paren::Lround.new,
-          [
-            Plurimath::Math::Function::Table.new(
-              [
-                Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Symbols::Symbol.new("x")
-                  ])
-                ]),
-                Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Symbols::Symbol.new("y")
-                  ])
-                ])
-              ],
-              nil,
-              nil
-            )
-          ],
-          Plurimath::Math::Symbols::Paren::Rround.new,
-        ),
-        Plurimath::Math::Function::Vec.new,
-        Plurimath::Math::Function::Fenced.new(
-          Plurimath::Math::Symbols::Paren::Lround.new,
-          [
-            Plurimath::Math::Function::Table.new(
-              [
-                Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Symbols::Symbol.new("f"),
-                    Plurimath::Math::Symbols::Funcapply.new,
-                    Plurimath::Math::Function::Fenced.new(
-                      Plurimath::Math::Symbols::Paren::Lround.new,
-                      [
-                        Plurimath::Math::Symbols::Symbol.new("x"),
-                        Plurimath::Math::Symbols::Symbol.new("y")
-                      ],
-                      Plurimath::Math::Symbols::Paren::Rround.new,
-                    )
-                  ])
-                ]),
-                Plurimath::Math::Function::Tr.new([
-                  Plurimath::Math::Function::Td.new([
-                    Plurimath::Math::Symbols::Symbol.new("g"),
-                    Plurimath::Math::Symbols::Funcapply.new,
-                    Plurimath::Math::Function::Fenced.new(
-                      Plurimath::Math::Symbols::Paren::Lround.new,
-                      [
-                        Plurimath::Math::Symbols::Symbol.new("x"),
-                        Plurimath::Math::Symbols::Symbol.new("y")
-                      ],
-                      Plurimath::Math::Symbols::Paren::Rround.new,
-                    )
-                  ])
-                ])
-              ],
-              nil,
-              nil
-            )
-          ],
-          Plurimath::Math::Symbols::Paren::Rround.new,
-        )
-      ])
+                                                      Plurimath::Math::Function::Fenced.new(
+                                                        Plurimath::Math::Symbols::Paren::Lround.new,
+                                                        [
+                                                          Plurimath::Math::Function::Table.new(
+                                                            [
+                                                              Plurimath::Math::Function::Tr.new([
+                                                                                                  Plurimath::Math::Function::Td.new([
+                                                                                                                                      Plurimath::Math::Symbols::Symbol.new("x"),
+                                                                                                                                    ]),
+                                                                                                ]),
+                                                              Plurimath::Math::Function::Tr.new([
+                                                                                                  Plurimath::Math::Function::Td.new([
+                                                                                                                                      Plurimath::Math::Symbols::Symbol.new("y"),
+                                                                                                                                    ]),
+                                                                                                ]),
+                                                            ],
+                                                            nil,
+                                                            nil,
+                                                          ),
+                                                        ],
+                                                        Plurimath::Math::Symbols::Paren::Rround.new,
+                                                      ),
+                                                      Plurimath::Math::Function::Vec.new,
+                                                      Plurimath::Math::Function::Fenced.new(
+                                                        Plurimath::Math::Symbols::Paren::Lround.new,
+                                                        [
+                                                          Plurimath::Math::Function::Table.new(
+                                                            [
+                                                              Plurimath::Math::Function::Tr.new([
+                                                                                                  Plurimath::Math::Function::Td.new([
+                                                                                                                                      Plurimath::Math::Symbols::Symbol.new("f"),
+                                                                                                                                      Plurimath::Math::Symbols::Funcapply.new,
+                                                                                                                                      Plurimath::Math::Function::Fenced.new(
+                                                                                                                                        Plurimath::Math::Symbols::Paren::Lround.new,
+                                                                                                                                        [
+                                                                                                                                          Plurimath::Math::Symbols::Symbol.new("x"),
+                                                                                                                                          Plurimath::Math::Symbols::Symbol.new("y"),
+                                                                                                                                        ],
+                                                                                                                                        Plurimath::Math::Symbols::Paren::Rround.new,
+                                                                                                                                      ),
+                                                                                                                                    ]),
+                                                                                                ]),
+                                                              Plurimath::Math::Function::Tr.new([
+                                                                                                  Plurimath::Math::Function::Td.new([
+                                                                                                                                      Plurimath::Math::Symbols::Symbol.new("g"),
+                                                                                                                                      Plurimath::Math::Symbols::Funcapply.new,
+                                                                                                                                      Plurimath::Math::Function::Fenced.new(
+                                                                                                                                        Plurimath::Math::Symbols::Paren::Lround.new,
+                                                                                                                                        [
+                                                                                                                                          Plurimath::Math::Symbols::Symbol.new("x"),
+                                                                                                                                          Plurimath::Math::Symbols::Symbol.new("y"),
+                                                                                                                                        ],
+                                                                                                                                        Plurimath::Math::Symbols::Paren::Rround.new,
+                                                                                                                                      ),
+                                                                                                                                    ]),
+                                                                                                ]),
+                                                            ],
+                                                            nil,
+                                                            nil,
+                                                          ),
+                                                        ],
+                                                        Plurimath::Math::Symbols::Paren::Rround.new,
+                                                      ),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #189" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mrow>
@@ -4679,22 +4796,23 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mrow>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Sin.new(
-            Plurimath::Math::Symbols::Funcapply.new,
-          ),
-          Plurimath::Math::Symbols::Symbol.new("x")
-        ])
-      ])
+                                                      Plurimath::Math::Formula.new([
+                                                                                     Plurimath::Math::Function::Sin.new(
+                                                                                       Plurimath::Math::Symbols::Funcapply.new,
+                                                                                     ),
+                                                                                     Plurimath::Math::Symbols::Symbol.new("x"),
+                                                                                   ]),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #190" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mrow>
@@ -4717,38 +4835,39 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mrow>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Sin.new(
-            Plurimath::Math::Symbols::Funcapply.new,
-          ),
-          Plurimath::Math::Function::Fenced.new(
-            Plurimath::Math::Symbols::Paren::Lround.new,
-            [
-              Plurimath::Math::Formula.new([
-                Plurimath::Math::Function::Cos.new(
-                  Plurimath::Math::Symbols::Funcapply.new,
-                ),
-                Plurimath::Math::Symbols::Symbol.new("x")
-              ]),
-              Plurimath::Math::Symbols::Plus.new,
-              Plurimath::Math::Function::Power.new(
-                Plurimath::Math::Symbols::Symbol.new("x"),
-                Plurimath::Math::Number.new("3")
-              ),
-            ],
-            Plurimath::Math::Symbols::Paren::Rround.new
-          )
-        ])
-      ])
+                                                      Plurimath::Math::Formula.new([
+                                                                                     Plurimath::Math::Function::Sin.new(
+                                                                                       Plurimath::Math::Symbols::Funcapply.new,
+                                                                                     ),
+                                                                                     Plurimath::Math::Function::Fenced.new(
+                                                                                       Plurimath::Math::Symbols::Paren::Lround.new,
+                                                                                       [
+                                                                                         Plurimath::Math::Formula.new([
+                                                                                                                        Plurimath::Math::Function::Cos.new(
+                                                                                                                          Plurimath::Math::Symbols::Funcapply.new,
+                                                                                                                        ),
+                                                                                                                        Plurimath::Math::Symbols::Symbol.new("x"),
+                                                                                                                      ]),
+                                                                                         Plurimath::Math::Symbols::Plus.new,
+                                                                                         Plurimath::Math::Function::Power.new(
+                                                                                           Plurimath::Math::Symbols::Symbol.new("x"),
+                                                                                           Plurimath::Math::Number.new("3"),
+                                                                                         ),
+                                                                                       ],
+                                                                                       Plurimath::Math::Symbols::Paren::Rround.new,
+                                                                                     ),
+                                                                                   ]),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #191" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mrow>
@@ -4758,22 +4877,23 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mrow>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Arcsin.new(
-            Plurimath::Math::Symbols::Funcapply.new,
-          ),
-          Plurimath::Math::Symbols::Symbol.new("x")
-        ])
-      ])
+                                                      Plurimath::Math::Formula.new([
+                                                                                     Plurimath::Math::Function::Arcsin.new(
+                                                                                       Plurimath::Math::Symbols::Funcapply.new,
+                                                                                     ),
+                                                                                     Plurimath::Math::Symbols::Symbol.new("x"),
+                                                                                   ]),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #192" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mrow>
@@ -4789,27 +4909,28 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mrow>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Power.new(
-            Plurimath::Math::Function::Sin.new,
-            Plurimath::Math::Formula.new([
-              Plurimath::Math::Symbols::Minus.new,
-              Plurimath::Math::Number.new("1")
-            ])
-          ),
-          Plurimath::Math::Symbols::Funcapply.new,
-          Plurimath::Math::Symbols::Symbol.new("x")
-        ])
-      ])
+                                                      Plurimath::Math::Formula.new([
+                                                                                     Plurimath::Math::Function::Power.new(
+                                                                                       Plurimath::Math::Function::Sin.new,
+                                                                                       Plurimath::Math::Formula.new([
+                                                                                                                      Plurimath::Math::Symbols::Minus.new,
+                                                                                                                      Plurimath::Math::Number.new("1"),
+                                                                                                                    ]),
+                                                                                     ),
+                                                                                     Plurimath::Math::Symbols::Funcapply.new,
+                                                                                     Plurimath::Math::Symbols::Symbol.new("x"),
+                                                                                   ]),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #193" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mrow>
@@ -4819,22 +4940,23 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mrow>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Sinh.new(
-            Plurimath::Math::Symbols::Funcapply.new,
-          ),
-          Plurimath::Math::Symbols::Symbol.new("x")
-        ])
-      ])
+                                                      Plurimath::Math::Formula.new([
+                                                                                     Plurimath::Math::Function::Sinh.new(
+                                                                                       Plurimath::Math::Symbols::Funcapply.new,
+                                                                                     ),
+                                                                                     Plurimath::Math::Symbols::Symbol.new("x"),
+                                                                                   ]),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #194" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mrow>
@@ -4844,21 +4966,22 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mrow>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Formula.new([
-          Plurimath::Math::Symbols::Symbol.new("arcsinh"),
-          Plurimath::Math::Symbols::Funcapply.new,
-          Plurimath::Math::Symbols::Symbol.new("x")
-        ])
-      ])
+                                                      Plurimath::Math::Formula.new([
+                                                                                     Plurimath::Math::Symbols::Symbol.new("arcsinh"),
+                                                                                     Plurimath::Math::Symbols::Funcapply.new,
+                                                                                     Plurimath::Math::Symbols::Symbol.new("x"),
+                                                                                   ]),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #195" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mrow>
@@ -4874,27 +4997,28 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mrow>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Power.new(
-            Plurimath::Math::Function::Sinh.new,
-            Plurimath::Math::Formula.new([
-              Plurimath::Math::Symbols::Minus.new,
-              Plurimath::Math::Number.new("1")
-            ])
-          ),
-          Plurimath::Math::Symbols::Funcapply.new,
-          Plurimath::Math::Symbols::Symbol.new("x")
-        ])
-      ])
+                                                      Plurimath::Math::Formula.new([
+                                                                                     Plurimath::Math::Function::Power.new(
+                                                                                       Plurimath::Math::Function::Sinh.new,
+                                                                                       Plurimath::Math::Formula.new([
+                                                                                                                      Plurimath::Math::Symbols::Minus.new,
+                                                                                                                      Plurimath::Math::Number.new("1"),
+                                                                                                                    ]),
+                                                                                     ),
+                                                                                     Plurimath::Math::Symbols::Funcapply.new,
+                                                                                     Plurimath::Math::Symbols::Symbol.new("x"),
+                                                                                   ]),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #196" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <msup>
@@ -4903,20 +5027,21 @@ RSpec.describe Plurimath::Mathml::Parser do
           </msup>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Function::Power.new(
-          Plurimath::Math::Symbols::Symbol.new("e"),
-          Plurimath::Math::Symbols::Symbol.new("x")
-        ),
-      ])
+                                                      Plurimath::Math::Function::Power.new(
+                                                        Plurimath::Math::Symbols::Symbol.new("e"),
+                                                        Plurimath::Math::Symbols::Symbol.new("x"),
+                                                      ),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #197" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mrow>
@@ -4926,22 +5051,23 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mrow>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Ln.new(
-            Plurimath::Math::Symbols::Funcapply.new,
-          ),
-          Plurimath::Math::Symbols::Symbol.new("a"),
-        ])
-      ])
+                                                      Plurimath::Math::Formula.new([
+                                                                                     Plurimath::Math::Function::Ln.new(
+                                                                                       Plurimath::Math::Symbols::Funcapply.new,
+                                                                                     ),
+                                                                                     Plurimath::Math::Symbols::Symbol.new("a"),
+                                                                                   ]),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #198" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mrow>
@@ -4954,23 +5080,24 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mrow>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Log.new(
-            Plurimath::Math::Number.new("3"),
-          ),
-          Plurimath::Math::Symbols::Funcapply.new,
-          Plurimath::Math::Symbols::Symbol.new("x")
-        ])
-      ])
+                                                      Plurimath::Math::Formula.new([
+                                                                                     Plurimath::Math::Function::Log.new(
+                                                                                       Plurimath::Math::Number.new("3"),
+                                                                                     ),
+                                                                                     Plurimath::Math::Symbols::Funcapply.new,
+                                                                                     Plurimath::Math::Symbols::Symbol.new("x"),
+                                                                                   ]),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #199" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mrow>
@@ -4980,21 +5107,22 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mrow>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Log.new,
-          Plurimath::Math::Symbols::Funcapply.new,
-          Plurimath::Math::Symbols::Symbol.new("x")
-        ])
-      ])
+                                                      Plurimath::Math::Formula.new([
+                                                                                     Plurimath::Math::Function::Log.new,
+                                                                                     Plurimath::Math::Symbols::Funcapply.new,
+                                                                                     Plurimath::Math::Symbols::Symbol.new("x"),
+                                                                                   ]),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #200" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mrow>
@@ -5005,31 +5133,32 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mrow>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Function::Fenced.new(
-          Plurimath::Math::Symbols::Paren::Langle.new,
-          [
-            Plurimath::Math::Number.new("3"),
-            Plurimath::Math::Symbols::Comma.new,
-            Plurimath::Math::Number.new("4"),
-            Plurimath::Math::Symbols::Comma.new,
-            Plurimath::Math::Number.new("3"),
-            Plurimath::Math::Symbols::Comma.new,
-            Plurimath::Math::Number.new("7"),
-            Plurimath::Math::Symbols::Comma.new,
-            Plurimath::Math::Number.new("4"),
-          ],
-          Plurimath::Math::Symbols::Paren::Rangle.new
-        )
-      ])
+                                                      Plurimath::Math::Function::Fenced.new(
+                                                        Plurimath::Math::Symbols::Paren::Langle.new,
+                                                        [
+                                                          Plurimath::Math::Number.new("3"),
+                                                          Plurimath::Math::Symbols::Comma.new,
+                                                          Plurimath::Math::Number.new("4"),
+                                                          Plurimath::Math::Symbols::Comma.new,
+                                                          Plurimath::Math::Number.new("3"),
+                                                          Plurimath::Math::Symbols::Comma.new,
+                                                          Plurimath::Math::Number.new("7"),
+                                                          Plurimath::Math::Symbols::Comma.new,
+                                                          Plurimath::Math::Number.new("4"),
+                                                        ],
+                                                        Plurimath::Math::Symbols::Paren::Rangle.new,
+                                                      ),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #201" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mover>
@@ -5038,19 +5167,20 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mover>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Function::Bar.new(
-          Plurimath::Math::Symbols::Symbol.new("X"),
-        )
-      ])
+                                                      Plurimath::Math::Function::Bar.new(
+                                                        Plurimath::Math::Symbols::Symbol.new("X"),
+                                                      ),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #202" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mrow>
@@ -5065,30 +5195,31 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mrow>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Formula.new([
-          Plurimath::Math::Symbols::Sigma.new,
-          Plurimath::Math::Symbols::Funcapply.new,
-          Plurimath::Math::Function::Fenced.new(
-            Plurimath::Math::Symbols::Paren::Lround.new,
-            [
-              Plurimath::Math::Number.new("3"),
-              Plurimath::Math::Number.new("4"),
-              Plurimath::Math::Number.new("2"),
-              Plurimath::Math::Number.new("2")
-            ],
-            Plurimath::Math::Symbols::Paren::Rround.new,
-          )
-        ])
-      ])
+                                                      Plurimath::Math::Formula.new([
+                                                                                     Plurimath::Math::Symbols::Sigma.new,
+                                                                                     Plurimath::Math::Symbols::Funcapply.new,
+                                                                                     Plurimath::Math::Function::Fenced.new(
+                                                                                       Plurimath::Math::Symbols::Paren::Lround.new,
+                                                                                       [
+                                                                                         Plurimath::Math::Number.new("3"),
+                                                                                         Plurimath::Math::Number.new("4"),
+                                                                                         Plurimath::Math::Number.new("2"),
+                                                                                         Plurimath::Math::Number.new("2"),
+                                                                                       ],
+                                                                                       Plurimath::Math::Symbols::Paren::Rround.new,
+                                                                                     ),
+                                                                                   ]),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #203" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mrow>
@@ -5100,27 +5231,28 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mrow>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Formula.new([
-          Plurimath::Math::Symbols::Sigma.new,
-          Plurimath::Math::Symbols::Funcapply.new,
-          Plurimath::Math::Function::Fenced.new(
-            Plurimath::Math::Symbols::Paren::Lround.new,
-            [
-              Plurimath::Math::Symbols::Symbol.new("X"),
-            ],
-            Plurimath::Math::Symbols::Paren::Rround.new,
-          )
-        ])
-      ])
+                                                      Plurimath::Math::Formula.new([
+                                                                                     Plurimath::Math::Symbols::Sigma.new,
+                                                                                     Plurimath::Math::Symbols::Funcapply.new,
+                                                                                     Plurimath::Math::Function::Fenced.new(
+                                                                                       Plurimath::Math::Symbols::Paren::Lround.new,
+                                                                                       [
+                                                                                         Plurimath::Math::Symbols::Symbol.new("X"),
+                                                                                       ],
+                                                                                       Plurimath::Math::Symbols::Paren::Rround.new,
+                                                                                     ),
+                                                                                   ]),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #204" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mrow>
@@ -5138,33 +5270,34 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mrow>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Power.new(
-            Plurimath::Math::Symbols::Sigma.new,
-            Plurimath::Math::Number.new("2")
-          ),
-          Plurimath::Math::Symbols::Funcapply.new,
-          Plurimath::Math::Function::Fenced.new(
-            Plurimath::Math::Symbols::Paren::Lround.new,
-            [
-              Plurimath::Math::Number.new("3"),
-              Plurimath::Math::Number.new("4"),
-              Plurimath::Math::Number.new("2"),
-              Plurimath::Math::Number.new("2")
-            ],
-            Plurimath::Math::Symbols::Paren::Rround.new,
-          )
-        ])
-      ])
+                                                      Plurimath::Math::Formula.new([
+                                                                                     Plurimath::Math::Function::Power.new(
+                                                                                       Plurimath::Math::Symbols::Sigma.new,
+                                                                                       Plurimath::Math::Number.new("2"),
+                                                                                     ),
+                                                                                     Plurimath::Math::Symbols::Funcapply.new,
+                                                                                     Plurimath::Math::Function::Fenced.new(
+                                                                                       Plurimath::Math::Symbols::Paren::Lround.new,
+                                                                                       [
+                                                                                         Plurimath::Math::Number.new("3"),
+                                                                                         Plurimath::Math::Number.new("4"),
+                                                                                         Plurimath::Math::Number.new("2"),
+                                                                                         Plurimath::Math::Number.new("2"),
+                                                                                       ],
+                                                                                       Plurimath::Math::Symbols::Paren::Rround.new,
+                                                                                     ),
+                                                                                   ]),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #205" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mrow>
@@ -5179,30 +5312,31 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mrow>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Power.new(
-            Plurimath::Math::Symbols::Sigma.new,
-            Plurimath::Math::Number.new("2")
-          ),
-          Plurimath::Math::Symbols::Funcapply.new,
-          Plurimath::Math::Function::Fenced.new(
-            Plurimath::Math::Symbols::Paren::Lround.new,
-            [
-              Plurimath::Math::Symbols::Symbol.new("X")
-            ],
-            Plurimath::Math::Symbols::Paren::Rround.new,
-          )
-        ])
-      ])
+                                                      Plurimath::Math::Formula.new([
+                                                                                     Plurimath::Math::Function::Power.new(
+                                                                                       Plurimath::Math::Symbols::Sigma.new,
+                                                                                       Plurimath::Math::Number.new("2"),
+                                                                                     ),
+                                                                                     Plurimath::Math::Symbols::Funcapply.new,
+                                                                                     Plurimath::Math::Function::Fenced.new(
+                                                                                       Plurimath::Math::Symbols::Paren::Lround.new,
+                                                                                       [
+                                                                                         Plurimath::Math::Symbols::Symbol.new("X"),
+                                                                                       ],
+                                                                                       Plurimath::Math::Symbols::Paren::Rround.new,
+                                                                                     ),
+                                                                                   ]),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #206" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mrow>
@@ -5217,30 +5351,31 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mrow>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Formula.new([
-          Plurimath::Math::Symbols::Symbol.new("median"),
-          Plurimath::Math::Symbols::Funcapply.new,
-          Plurimath::Math::Function::Fenced.new(
-            Plurimath::Math::Symbols::Paren::Lround.new,
-            [
-              Plurimath::Math::Number.new("3"),
-              Plurimath::Math::Number.new("4"),
-              Plurimath::Math::Number.new("2"),
-              Plurimath::Math::Number.new("2")
-            ],
-            Plurimath::Math::Symbols::Paren::Rround.new,
-          )
-        ])
-      ])
+                                                      Plurimath::Math::Formula.new([
+                                                                                     Plurimath::Math::Symbols::Symbol.new("median"),
+                                                                                     Plurimath::Math::Symbols::Funcapply.new,
+                                                                                     Plurimath::Math::Function::Fenced.new(
+                                                                                       Plurimath::Math::Symbols::Paren::Lround.new,
+                                                                                       [
+                                                                                         Plurimath::Math::Number.new("3"),
+                                                                                         Plurimath::Math::Number.new("4"),
+                                                                                         Plurimath::Math::Number.new("2"),
+                                                                                         Plurimath::Math::Number.new("2"),
+                                                                                       ],
+                                                                                       Plurimath::Math::Symbols::Paren::Rround.new,
+                                                                                     ),
+                                                                                   ]),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #207" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <mrow>
@@ -5255,30 +5390,31 @@ RSpec.describe Plurimath::Mathml::Parser do
           </mrow>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Formula.new([
-          Plurimath::Math::Symbols::Symbol.new("mode"),
-          Plurimath::Math::Symbols::Funcapply.new,
-          Plurimath::Math::Function::Fenced.new(
-            Plurimath::Math::Symbols::Paren::Lround.new,
-            [
-              Plurimath::Math::Number.new("3"),
-              Plurimath::Math::Number.new("4"),
-              Plurimath::Math::Number.new("2"),
-              Plurimath::Math::Number.new("2")
-            ],
-            Plurimath::Math::Symbols::Paren::Rround.new,
-          )
-        ])
-      ])
+                                                      Plurimath::Math::Formula.new([
+                                                                                     Plurimath::Math::Symbols::Symbol.new("mode"),
+                                                                                     Plurimath::Math::Symbols::Funcapply.new,
+                                                                                     Plurimath::Math::Function::Fenced.new(
+                                                                                       Plurimath::Math::Symbols::Paren::Lround.new,
+                                                                                       [
+                                                                                         Plurimath::Math::Number.new("3"),
+                                                                                         Plurimath::Math::Number.new("4"),
+                                                                                         Plurimath::Math::Number.new("2"),
+                                                                                         Plurimath::Math::Number.new("2"),
+                                                                                       ],
+                                                                                       Plurimath::Math::Symbols::Paren::Rround.new,
+                                                                                     ),
+                                                                                   ]),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #208" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <msub>
@@ -5300,39 +5436,40 @@ RSpec.describe Plurimath::Mathml::Parser do
           </msub>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Function::Base.new(
-          Plurimath::Math::Function::Fenced.new(
-            Plurimath::Math::Symbols::Paren::Langle.new,
-            [
-              Plurimath::Math::Function::Power.new(
-                Plurimath::Math::Function::Fenced.new(
-                  Plurimath::Math::Symbols::Paren::Lround.new,
-                  [
-                    Plurimath::Math::Number.new("6"),
-                    Plurimath::Math::Number.new("4"),
-                    Plurimath::Math::Number.new("2"),
-                    Plurimath::Math::Number.new("2"),
-                    Plurimath::Math::Number.new("5")
-                  ],
-                  Plurimath::Math::Symbols::Paren::Rround.new,
-                ),
-                Plurimath::Math::Number.new("3")
-              ),
-            ],
-            Plurimath::Math::Symbols::Paren::Rangle.new
-          ),
-          Plurimath::Math::Symbols::Symbol.new("mean")
-        )
-      ])
+                                                      Plurimath::Math::Function::Base.new(
+                                                        Plurimath::Math::Function::Fenced.new(
+                                                          Plurimath::Math::Symbols::Paren::Langle.new,
+                                                          [
+                                                            Plurimath::Math::Function::Power.new(
+                                                              Plurimath::Math::Function::Fenced.new(
+                                                                Plurimath::Math::Symbols::Paren::Lround.new,
+                                                                [
+                                                                  Plurimath::Math::Number.new("6"),
+                                                                  Plurimath::Math::Number.new("4"),
+                                                                  Plurimath::Math::Number.new("2"),
+                                                                  Plurimath::Math::Number.new("2"),
+                                                                  Plurimath::Math::Number.new("5"),
+                                                                ],
+                                                                Plurimath::Math::Symbols::Paren::Rround.new,
+                                                              ),
+                                                              Plurimath::Math::Number.new("3"),
+                                                            ),
+                                                          ],
+                                                          Plurimath::Math::Symbols::Paren::Rangle.new,
+                                                        ),
+                                                        Plurimath::Math::Symbols::Symbol.new("mean"),
+                                                      ),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
 
   context "contains mathml v3 #4 example #209" do
-    let(:exp) {
+    let(:exp) do
       <<~MATHML
         <math>
           <msub>
@@ -5348,23 +5485,24 @@ RSpec.describe Plurimath::Mathml::Parser do
           </msub>
         </math>
       MATHML
-    }
+    end
+
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Function::Base.new(
-          Plurimath::Math::Function::Fenced.new(
-            Plurimath::Math::Symbols::Paren::Langle.new,
-            [
-              Plurimath::Math::Function::Power.new(
-                Plurimath::Math::Symbols::Symbol.new("X"),
-                Plurimath::Math::Number.new("3")
-              ),
-            ],
-            Plurimath::Math::Symbols::Paren::Rangle.new
-          ),
-          Plurimath::Math::Symbols::Symbol.new("p")
-        )
-      ])
+                                                      Plurimath::Math::Function::Base.new(
+                                                        Plurimath::Math::Function::Fenced.new(
+                                                          Plurimath::Math::Symbols::Paren::Langle.new,
+                                                          [
+                                                            Plurimath::Math::Function::Power.new(
+                                                              Plurimath::Math::Symbols::Symbol.new("X"),
+                                                              Plurimath::Math::Number.new("3"),
+                                                            ),
+                                                          ],
+                                                          Plurimath::Math::Symbols::Paren::Rangle.new,
+                                                        ),
+                                                        Plurimath::Math::Symbols::Symbol.new("p"),
+                                                      ),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end

@@ -4,7 +4,8 @@ module Plurimath
       class Dotminus < Symbol
         INPUT = {
           unicodemath: [["dotminus", "&#x2238;"]],
-          asciimath: [["&#x2238;"], parsing_wrapper(["dotminus"], lang: :asciimath)],
+          asciimath: [["&#x2238;"],
+                      parsing_wrapper(["dotminus"], lang: :asciimath)],
           mathml: ["&#x2238;"],
           latex: [["dotminus", "&#x2238;"]],
           omml: ["&#x2238;"],

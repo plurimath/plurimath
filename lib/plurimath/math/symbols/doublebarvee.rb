@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Doublebarvee < Symbol
         INPUT = {
-          unicodemath: [["&#x2a62;"], parsing_wrapper(["doublebarvee"], lang: :unicode)],
-          asciimath: [["&#x2a62;"], parsing_wrapper(["doublebarvee"], lang: :asciimath)],
+          unicodemath: [["&#x2a62;"],
+                        parsing_wrapper(["doublebarvee"], lang: :unicode)],
+          asciimath: [["&#x2a62;"],
+                      parsing_wrapper(["doublebarvee"], lang: :asciimath)],
           mathml: ["&#x2a62;"],
           latex: [["doublebarvee", "&#x2a62;"]],
           omml: ["&#x2a62;"],

@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Forkv < Symbol
         INPUT = {
-          unicodemath: [["&#x2ad9;"], parsing_wrapper(["forkv"], lang: :unicode)],
-          asciimath: [["&#x2ad9;"], parsing_wrapper(["forkv"], lang: :asciimath)],
+          unicodemath: [["&#x2ad9;"],
+                        parsing_wrapper(["forkv"], lang: :unicode)],
+          asciimath: [["&#x2ad9;"],
+                      parsing_wrapper(["forkv"], lang: :asciimath)],
           mathml: ["&#x2ad9;"],
           latex: [["forkv", "&#x2ad9;"]],
           omml: ["&#x2ad9;"],

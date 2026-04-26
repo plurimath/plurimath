@@ -1,11 +1,10 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Symbols::Smallin do
-
   describe ".initialize" do
-    it 'returns instance of Symbol Smallin' do
+    it "returns instance of Symbol Smallin" do
       klass = described_class.new
-      expect(klass).to be_a(Plurimath::Math::Symbols::Smallin)
+      expect(klass).to be_a(described_class)
     end
   end
 

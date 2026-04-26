@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Sptilde < Symbol
         INPUT = {
-          unicodemath: [["&#x7e;"], parsing_wrapper(["~", "sptilde"], lang: :unicode)],
-          asciimath: [["~", "&#x7e;"], parsing_wrapper(["sptilde"], lang: :asciimath)],
+          unicodemath: [["&#x7e;"],
+                        parsing_wrapper(["~", "sptilde"], lang: :unicode)],
+          asciimath: [["~", "&#x7e;"],
+                      parsing_wrapper(["sptilde"], lang: :asciimath)],
           mathml: ["&#x7e;"],
           latex: [["sptilde", "&#x7e;"], parsing_wrapper(["~"], lang: :latex)],
           omml: ["&#x7e;"],

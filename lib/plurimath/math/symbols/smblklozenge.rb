@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Smblklozenge < Symbol
         INPUT = {
-          unicodemath: [["&#x2b2a;"], parsing_wrapper(["smblklozenge"], lang: :unicode)],
-          asciimath: [["&#x2b2a;"], parsing_wrapper(["smblklozenge"], lang: :asciimath)],
+          unicodemath: [["&#x2b2a;"],
+                        parsing_wrapper(["smblklozenge"], lang: :unicode)],
+          asciimath: [["&#x2b2a;"],
+                      parsing_wrapper(["smblklozenge"], lang: :asciimath)],
           mathml: ["&#x2b2a;"],
           latex: [["smblklozenge", "&#x2b2a;"]],
           omml: ["&#x2b2a;"],

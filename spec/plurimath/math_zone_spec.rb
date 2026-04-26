@@ -1,12 +1,13 @@
 RSpec.describe Plurimath::Math do
-
   describe ".to_display(:asciimath)" do
-    subject(:formula) { Plurimath::Math.parse(exp, :asciimath).to_display(:asciimath) }
+    subject(:formula) do
+      described_class.parse(exp, :asciimath).to_display(:asciimath)
+    end
 
     context "AsciiMath Math zone representation of sin and simple equation #1" do
       let(:exp) { "sum_3^1 sintheta" }
 
-      it 'should puts Math zone representation of sample example #1' do
+      it "putses Math zone representation of sample example #1" do
         expected_value = <<~MATHZONE
           |_ Math zone
             |_ "sum_(3)^(1) sintheta"
@@ -25,7 +26,7 @@ RSpec.describe Plurimath::Math do
     context "AsciiMath Math zone representation of parentheses wrapped sin equation #2" do
       let(:exp) { "(a + 1 sin theta)" }
 
-      it 'should puts Math zone representation of sample example #2' do
+      it "putses Math zone representation of sample example #2" do
         expected_value = <<~MATHZONE
           |_ Math zone
             |_ "(a + 1 sintheta)"
@@ -39,9 +40,11 @@ RSpec.describe Plurimath::Math do
     end
 
     context "AsciiMath Math zone representation example provided in github issue#113 #3" do
-      let(:exp) { '1/(2pi) int_0^(2pi) (bbb"d" theta) / (a + b sin theta) = 1/sqrt(a^2−b^2)' }
+      let(:exp) do
+        '1/(2pi) int_0^(2pi) (bbb"d" theta) / (a + b sin theta) = 1/sqrt(a^2−b^2)'
+      end
 
-      it 'should puts Math zone representation of sample example #3' do
+      it "putses Math zone representation of sample example #3" do
         expected_value = <<~MATHZONE
           |_ Math zone
             |_ "frac(1)(2 pi) int_(0)^(2 pi) frac(mathbb("d") theta)(a + b sintheta) = frac(1)(sqrt(a^(2) − b^(2)))"
@@ -83,9 +86,9 @@ RSpec.describe Plurimath::Math do
     end
 
     context "AsciiMath Math zone representation of cos function #4" do
-      let(:exp) { 'cos(2)' }
+      let(:exp) { "cos(2)" }
 
-      it 'should puts Math zone representation of sample example #4' do
+      it "putses Math zone representation of sample example #4" do
         expected_value = <<~MATHZONE
           |_ Math zone
             |_ "cos(2)"
@@ -99,9 +102,9 @@ RSpec.describe Plurimath::Math do
     end
 
     context "AsciiMath Math zone representation of power_base #5" do
-      let(:exp) { 'cos(2)_(theta)^sigma cos(2)' }
+      let(:exp) { "cos(2)_(theta)^sigma cos(2)" }
 
-      it 'should puts Math zone representation of sample example #5' do
+      it "putses Math zone representation of sample example #5" do
         expected_value = <<~MATHZONE
           |_ Math zone
             |_ "cos(2)_(theta)^(sigma) cos(2)"
@@ -123,9 +126,9 @@ RSpec.describe Plurimath::Math do
     end
 
     context "AsciiMath Math zone representation of mod #6" do
-      let(:exp) { 'cos(2) mod sigma' }
+      let(:exp) { "cos(2) mod sigma" }
 
-      it 'should puts Math zone representation of sample example #6' do
+      it "putses Math zone representation of sample example #6" do
         expected_value = <<~MATHZONE
           |_ Math zone
             |_ "cos(2) mod sigma"
@@ -142,9 +145,9 @@ RSpec.describe Plurimath::Math do
     end
 
     context "AsciiMath Math zone representation of mod with multiple base values #7" do
-      let(:exp) { '(cos(2) sin(3))mod sigma' }
+      let(:exp) { "(cos(2) sin(3))mod sigma" }
 
-      it 'should puts Math zone representation of sample example #7' do
+      it "putses Math zone representation of sample example #7" do
         expected_value = <<~MATHZONE
           |_ Math zone
             |_ "(cos(2) sin(3)) mod sigma"
@@ -165,9 +168,9 @@ RSpec.describe Plurimath::Math do
     end
 
     context "AsciiMath Math zone representation of table #8" do
-      let(:exp) { '[[sigma, gamma], [theta, alpha]]' }
+      let(:exp) { "[[sigma, gamma], [theta, alpha]]" }
 
-      it 'should puts Math zone representation of sample example #8' do
+      it "putses Math zone representation of sample example #8" do
         expected_value = <<~MATHZONE
           |_ Math zone
             |_ "[[sigma, gamma], [theta, alpha]]"
@@ -188,9 +191,9 @@ RSpec.describe Plurimath::Math do
     end
 
     context "AsciiMath Math zone representation of overset #9" do
-      let(:exp) { 'overset(sigma)(theta)' }
+      let(:exp) { "overset(sigma)(theta)" }
 
-      it 'should puts Math zone representation of sample example #9' do
+      it "putses Math zone representation of sample example #9" do
         expected_value = <<~MATHZONE
           |_ Math zone
             |_ "overset(sigma)(theta)"
@@ -203,9 +206,9 @@ RSpec.describe Plurimath::Math do
     end
 
     context "AsciiMath Math zone representation of underset #10" do
-      let(:exp) { 'underset(sigma)(theta)' }
+      let(:exp) { "underset(sigma)(theta)" }
 
-      it 'should puts Math zone representation of sample example #10' do
+      it "putses Math zone representation of sample example #10" do
         expected_value = <<~MATHZONE
           |_ Math zone
             |_ "underset(sigma)(theta)"
@@ -218,9 +221,9 @@ RSpec.describe Plurimath::Math do
     end
 
     context "AsciiMath Math zone representation of color #11" do
-      let(:exp) { 'color(red)(theta)' }
+      let(:exp) { "color(red)(theta)" }
 
-      it 'should puts Math zone representation of sample example #11' do
+      it "putses Math zone representation of sample example #11" do
         expected_value = <<~MATHZONE
           |_ Math zone
             |_ "color(red)(theta)"
@@ -233,9 +236,9 @@ RSpec.describe Plurimath::Math do
     end
 
     context "AsciiMath Math zone representation of four unary functions #12" do
-      let(:exp) { 'abs(x)floor(x)ceil(x)norm(vecx)' }
+      let(:exp) { "abs(x)floor(x)ceil(x)norm(vecx)" }
 
-      it 'should puts Math zone representation of sample example #12' do
+      it "putses Math zone representation of sample example #12" do
         expected_value = <<~MATHZONE
           |_ Math zone
             |_ "abs(x) floor(x) ceil(x) norm(vec(x))"
@@ -260,9 +263,9 @@ RSpec.describe Plurimath::Math do
     end
 
     context "AsciiMath Math zone representation of font functions #13" do
-      let(:exp) { 'mathbf(x)mathbb(x)mathcal(x)mathtt(x)mathfrak(x)mathsf(x)' }
+      let(:exp) { "mathbf(x)mathbb(x)mathcal(x)mathtt(x)mathfrak(x)mathsf(x)" }
 
-      it 'should puts Math zone representation of sample example #13' do
+      it "putses Math zone representation of sample example #13" do
         expected_value = <<~MATHZONE
           |_ Math zone
             |_ "mathbf(x) mathbb(x) mathcal(x) mathtt(x) mathfrak(x) mathsf(x)"
@@ -291,7 +294,10 @@ RSpec.describe Plurimath::Math do
   end
 
   describe ".to_display(:mathml)" do
-    subject(:formula) { Plurimath::Math.parse(exp, :mathml).to_display(:mathml, unary_function_spacing: false) }
+    subject(:formula) do
+      described_class.parse(exp, :mathml).to_display(:mathml,
+                                                     unary_function_spacing: false)
+    end
 
     context "MathML Math zone representation of sin and simple equation #1" do
       let(:exp) do
@@ -314,7 +320,7 @@ RSpec.describe Plurimath::Math do
         MATHZONE
       end
 
-      it 'should puts Math zone representation of sample example #1' do
+      it "putses Math zone representation of sample example #1" do
         expected_value = <<~MATHZONE
           |_ Math zone
             |_ "<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mstyle displaystyle="true"><mrow><munderover><mo>&#x2211;</mo><mn>3</mn><mn>1</mn></munderover><mrow><mi>sin</mi><mi>&#x3b8;</mi></mrow></mrow></mstyle></math>"
@@ -351,7 +357,7 @@ RSpec.describe Plurimath::Math do
         MATHZONE
       end
 
-      it 'should puts Math zone representation of sample example #1' do
+      it "putses Math zone representation of sample example #1" do
         expected_value = <<~MATHZONE
           |_ Math zone
             |_ "<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mstyle displaystyle="true"><mrow><mo>(</mo><mi>a</mi><mo>+</mo><mn>1</mn><mrow><mi>sin</mi><mi>&#x3b8;</mi></mrow><mo>)</mo></mrow></mstyle></math>"
@@ -425,7 +431,7 @@ RSpec.describe Plurimath::Math do
         MATHZONE
       end
 
-      it 'should puts Math zone representation of sample example #1' do
+      it "putses Math zone representation of sample example #1" do
         expected_value = <<~MATHZONE
           |_ Math zone
             |_ "<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mstyle displaystyle="true"><mfrac><mn>1</mn><mrow><mn>2</mn><mi>&#x3c0;</mi></mrow></mfrac><mrow><msubsup><mo>&#x222b;</mo><mn>0</mn><mrow><mn>2</mn><mi>&#x3c0;</mi></mrow></msubsup><mfrac><mrow><mstyle mathvariant="double-struck"><mtext>d</mtext></mstyle><mi>&#x3b8;</mi></mrow><mrow><mi>a</mi><mo>+</mo><mi>b</mi><mrow><mi>sin</mi><mi>&#x3b8;</mi></mrow></mrow></mfrac></mrow><mo>=</mo><mfrac><mn>1</mn><msqrt><mrow><msup><mi>a</mi><mn>2</mn></msup><mo>&#x2212;</mo><msup><mi>b</mi><mn>2</mn></msup></mrow></msqrt></mfrac></mstyle></math>"
@@ -484,7 +490,7 @@ RSpec.describe Plurimath::Math do
         MATHZONE
       end
 
-      it 'should puts Math zone representation of sample example #4' do
+      it "putses Math zone representation of sample example #4" do
         expected_value = <<~MATHZONE
           |_ Math zone
             |_ "<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mstyle displaystyle="true"><mrow><mi>cos</mi><mrow><mo>(</mo><mn>2</mn><mo>)</mo></mrow></mrow></mstyle></math>"
@@ -527,7 +533,7 @@ RSpec.describe Plurimath::Math do
         MATHZONE
       end
 
-      it 'should puts Math zone representation of sample example #5' do
+      it "putses Math zone representation of sample example #5" do
         expected_value = <<~MATHZONE
           |_ Math zone
             |_ "<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mstyle displaystyle="true"><msubsup><mrow><mi>cos</mi><mrow><mo>(</mo><mn>2</mn><mo>)</mo></mrow></mrow><mi>&#x3b8;</mi><mi>&#x3c3;</mi></msubsup><mrow><mi>cos</mi><mrow><mo>(</mo><mn>2</mn><mo>)</mo></mrow></mrow></mstyle></math>"
@@ -570,7 +576,7 @@ RSpec.describe Plurimath::Math do
         MATHZONE
       end
 
-      it 'should puts Math zone representation of sample example #6' do
+      it "putses Math zone representation of sample example #6" do
         expected_value = <<~MATHZONE
           |_ Math zone
             |_ "<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mstyle displaystyle="true"><mrow><mrow><mi>cos</mi><mrow><mo>(</mo><mn>2</mn><mo>)</mo></mrow></mrow><mi>mod</mi><mi>&#x3c3;</mi></mrow></mstyle></math>"
@@ -620,7 +626,7 @@ RSpec.describe Plurimath::Math do
         MATHZONE
       end
 
-      it 'should puts Math zone representation of sample example #7' do
+      it "putses Math zone representation of sample example #7" do
         expected_value = <<~MATHZONE
           |_ Math zone
             |_ "<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mstyle displaystyle="true"><mrow><mrow><mo>(</mo><mrow><mi>cos</mi><mrow><mo>(</mo><mn>2</mn><mo>)</mo></mrow></mrow><mrow><mi>sin</mi><mrow><mo>(</mo><mn>3</mn><mo>)</mo></mrow></mrow><mo>)</mo></mrow><mi>mod</mi><mi>&#x3c3;</mi></mrow></mstyle></math>"
@@ -672,7 +678,7 @@ RSpec.describe Plurimath::Math do
         MATHZONE
       end
 
-      it 'should puts Math zone representation of sample example #8' do
+      it "putses Math zone representation of sample example #8" do
         expected_value = <<~MATHZONE
           |_ Math zone
             |_ "<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mstyle displaystyle="true"><mrow><mo>[</mo><mtable><mtr><mtd><mi>&#x3c3;</mi></mtd><mtd><mi>&#x3b3;</mi></mtd></mtr><mtr><mtd><mi>&#x3b8;</mi></mtd><mtd><mi>&#x3b1;</mi></mtd></mtr></mtable><mo>]</mo></mrow></mstyle></math>"
@@ -706,7 +712,7 @@ RSpec.describe Plurimath::Math do
         MATHZONE
       end
 
-      it 'should puts Math zone representation of sample example #9' do
+      it "putses Math zone representation of sample example #9" do
         expected_value = <<~MATHZONE
           |_ Math zone
             |_ "<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mstyle displaystyle="true"><mover><mi>&#x3b8;</mi><mi>&#x3c3;</mi></mover></mstyle></math>"
@@ -732,7 +738,7 @@ RSpec.describe Plurimath::Math do
         MATHZONE
       end
 
-      it 'should puts Math zone representation of sample example #10' do
+      it "putses Math zone representation of sample example #10" do
         expected_value = <<~MATHZONE
           |_ Math zone
             |_ "<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mstyle displaystyle="true"><munder><mi>&#x3b8;</mi><mi>&#x3c3;</mi></munder></mstyle></math>"
@@ -757,7 +763,7 @@ RSpec.describe Plurimath::Math do
         MATHZONE
       end
 
-      it 'should puts Math zone representation of sample example #11' do
+      it "putses Math zone representation of sample example #11" do
         expected_value = <<~MATHZONE
           |_ Math zone
             |_ "<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mstyle displaystyle="true"><mstyle mathcolor="red"><mi>&#x3b8;</mi></mstyle></mstyle></math>"
@@ -802,7 +808,7 @@ RSpec.describe Plurimath::Math do
         MATHZONE
       end
 
-      it 'should puts Math zone representation of sample example #12' do
+      it "putses Math zone representation of sample example #12" do
         expected_value = <<~MATHZONE
           |_ Math zone
             |_ "<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mstyle displaystyle="true"><mrow><mo>|</mo><mi>x</mi><mo>|</mo></mrow><mrow><mo>⌊</mo><mi>x</mi><mo>⌋</mo></mrow><mrow><mo>⌈</mo><mi>x</mi><mo>⌉</mo></mrow><mrow><mi>&#x2225;</mi><mover><mi>x</mi><mo>&#x2192;</mo></mover><mi>&#x2225;</mi></mrow></mstyle></math>"
@@ -821,7 +827,7 @@ RSpec.describe Plurimath::Math do
   end
 
   describe ".to_display(:OMML)" do
-    subject(:formula) { Plurimath::Math.parse(exp, :omml).to_display(:omml) }
+    subject(:formula) { described_class.parse(exp, :omml).to_display(:omml) }
 
     context "OMML Math zone representation of sin and simple equation #1" do
       let(:exp) do
@@ -876,7 +882,7 @@ RSpec.describe Plurimath::Math do
         MATHZONE
       end
 
-      it 'should puts Math zone representation of sample example #1' do
+      it "putses Math zone representation of sample example #1" do
         expected_value = <<~MATHZONE
           |_ Math zone
             |_ "<m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape"><m:oMath><m:nary><m:naryPr><m:chr m:val="∑"/><m:limLoc m:val="undOvr"/><m:subHide m:val="0"/><m:supHide m:val="0"/></m:naryPr><m:sub><m:r><m:t>3</m:t></m:r></m:sub><m:sup><m:r><m:t>1</m:t></m:r></m:sup><m:e><m:func><m:funcPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:funcPr><m:fName><m:r><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/></w:rPr><m:t>sin</m:t></m:r></m:fName><m:e><m:r><m:t>&#x3b8;</m:t></m:r></m:e></m:func></m:e></m:nary></m:oMath></m:oMathPara>"
@@ -948,7 +954,7 @@ RSpec.describe Plurimath::Math do
         MATHZONE
       end
 
-      it 'should puts Math zone representation of sample example #1' do
+      it "putses Math zone representation of sample example #1" do
         expected_value = <<~MATHZONE
           |_ Math zone
             |_ "<m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape"><m:oMath><m:d><m:dPr><m:begChr m:val="("/><m:sepChr m:val=""/><m:endChr m:val=")"/></m:dPr><m:e><m:r><m:t>a</m:t></m:r><m:r><m:t>+</m:t></m:r><m:r><m:t>1</m:t></m:r><m:func><m:funcPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:funcPr><m:fName><m:r><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/></w:rPr><m:t>sin</m:t></m:r></m:fName><m:e><m:r><m:t>&#x3b8;</m:t></m:r></m:e></m:func></m:e></m:d></m:oMath></m:oMathPara>"
@@ -1149,7 +1155,7 @@ RSpec.describe Plurimath::Math do
         MATHZONE
       end
 
-      it 'should puts Math zone representation of sample example #1' do
+      it "putses Math zone representation of sample example #1" do
         expected_value = <<~MATHZONE
           |_ Math zone
             |_ "<m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape"><m:oMath><m:f><m:fPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:fPr><m:num><m:r><m:t>1</m:t></m:r></m:num><m:den><m:r><m:t>2</m:t></m:r><m:r><m:t>&#x3c0;</m:t></m:r></m:den></m:f><m:nary><m:naryPr><m:chr m:val="∫"/><m:limLoc m:val="subSup"/><m:subHide m:val="0"/><m:supHide m:val="0"/></m:naryPr><m:sub><m:r><m:t>0</m:t></m:r></m:sub><m:sup><m:r><m:t>2</m:t></m:r><m:r><m:t>&#x3c0;</m:t></m:r></m:sup><m:e><m:f><m:fPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:fPr><m:num><m:r><m:rPr><m:scr m:val="double-struck"/></m:rPr><m:t>d</m:t></m:r><m:r><m:t>&#x3b8;</m:t></m:r></m:num><m:den><m:r><m:t>a</m:t></m:r><m:r><m:t>+</m:t></m:r><m:r><m:t>b</m:t></m:r><m:func><m:funcPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:funcPr><m:fName><m:r><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/></w:rPr><m:t>sin</m:t></m:r></m:fName><m:e><m:r><m:t>&#x3b8;</m:t></m:r></m:e></m:func></m:den></m:f></m:e></m:nary><m:r><m:t>=</m:t></m:r><m:f><m:fPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:fPr><m:num><m:r><m:t>1</m:t></m:r></m:num><m:den><m:rad><m:radPr><m:degHide m:val="on"/><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:radPr><m:deg/><m:e><m:sSup><m:sSupPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:sSupPr><m:e><m:r><m:t>a</m:t></m:r></m:e><m:sup><m:r><m:t>2</m:t></m:r></m:sup></m:sSup><m:r><m:t>&#x2212;</m:t></m:r><m:sSup><m:sSupPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:sSupPr><m:e><m:r><m:t>b</m:t></m:r></m:e><m:sup><m:r><m:t>2</m:t></m:r></m:sup></m:sSup></m:e></m:rad></m:den></m:f></m:oMath></m:oMathPara>"
@@ -1237,7 +1243,7 @@ RSpec.describe Plurimath::Math do
         MATHZONE
       end
 
-      it 'should puts Math zone representation of sample example #4' do
+      it "putses Math zone representation of sample example #4" do
         expected_value = <<~MATHZONE
           |_ Math zone
             |_ "<m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape"><m:oMath><m:func><m:funcPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:funcPr><m:fName><m:r><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/></w:rPr><m:t>cos</m:t></m:r></m:fName><m:e><m:d><m:dPr><m:begChr m:val="("/><m:sepChr m:val=""/><m:endChr m:val=")"/></m:dPr><m:e><m:r><m:t>2</m:t></m:r></m:e></m:d></m:e></m:func></m:oMath></m:oMathPara>"
@@ -1356,7 +1362,7 @@ RSpec.describe Plurimath::Math do
         MATHZONE
       end
 
-      it 'should puts Math zone representation of sample example #5' do
+      it "putses Math zone representation of sample example #5" do
         expected_value = <<~MATHZONE
           |_ Math zone
             |_ "<m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape"><m:oMath><m:sSubSup><m:sSubSupPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:sSubSupPr><m:e><m:func><m:funcPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:funcPr><m:fName><m:r><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/></w:rPr><m:t>cos</m:t></m:r></m:fName><m:e><m:d><m:dPr><m:begChr m:val="("/><m:sepChr m:val=""/><m:endChr m:val=")"/></m:dPr><m:e><m:r><m:t>2</m:t></m:r></m:e></m:d></m:e></m:func></m:e><m:sub><m:r><m:t>&#x3b8;</m:t></m:r></m:sub><m:sup><m:r><m:t>&#x3c3;</m:t></m:r></m:sup></m:sSubSup><m:func><m:funcPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:funcPr><m:fName><m:r><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/></w:rPr><m:t>cos</m:t></m:r></m:fName><m:e><m:d><m:dPr><m:begChr m:val="("/><m:sepChr m:val=""/><m:endChr m:val=")"/></m:dPr><m:e><m:r><m:t>2</m:t></m:r></m:e></m:d></m:e></m:func></m:oMath></m:oMathPara>"
@@ -1433,7 +1439,7 @@ RSpec.describe Plurimath::Math do
         MATHZONE
       end
 
-      it 'should puts Math zone representation of sample example #6' do
+      it "putses Math zone representation of sample example #6" do
         expected_value = <<~MATHZONE
           |_ Math zone
             |_ "<m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape"><m:oMath><m:func><m:funcPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:funcPr><m:fName><m:r><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/></w:rPr><m:t>cos</m:t></m:r></m:fName><m:e><m:d><m:dPr><m:begChr m:val="("/><m:sepChr m:val=""/><m:endChr m:val=")"/></m:dPr><m:e><m:r><m:t>2</m:t></m:r></m:e></m:d></m:e></m:func><m:r><m:rPr><m:sty m:val="p"/></m:rPr><m:t>mod</m:t></m:r><m:r><m:t>&#x3c3;</m:t></m:r></m:oMath></m:oMathPara>"
@@ -1558,7 +1564,7 @@ RSpec.describe Plurimath::Math do
         MATHZONE
       end
 
-      it 'should puts Math zone representation of sample example #7' do
+      it "putses Math zone representation of sample example #7" do
         expected_value = <<~MATHZONE
           |_ Math zone
             |_ "<m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape"><m:oMath><m:d><m:dPr><m:begChr m:val="("/><m:sepChr m:val=""/><m:endChr m:val=")"/></m:dPr><m:e><m:func><m:funcPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:funcPr><m:fName><m:r><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/></w:rPr><m:t>cos</m:t></m:r></m:fName><m:e><m:d><m:dPr><m:begChr m:val="("/><m:sepChr m:val=""/><m:endChr m:val=")"/></m:dPr><m:e><m:r><m:t>2</m:t></m:r></m:e></m:d></m:e></m:func><m:func><m:funcPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:funcPr><m:fName><m:r><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/></w:rPr><m:t>sin</m:t></m:r></m:fName><m:e><m:d><m:dPr><m:begChr m:val="("/><m:sepChr m:val=""/><m:endChr m:val=")"/></m:dPr><m:e><m:r><m:t>3</m:t></m:r></m:e></m:d></m:e></m:func></m:e></m:d><m:r><m:rPr><m:sty m:val="p"/></m:rPr><m:t>mod</m:t></m:r><m:r><m:t>&#x3c3;</m:t></m:r></m:oMath></m:oMathPara>"
@@ -1642,7 +1648,7 @@ RSpec.describe Plurimath::Math do
         MATHZONE
       end
 
-      it 'should puts Math zone representation of sample example #8' do
+      it "putses Math zone representation of sample example #8" do
         expected_value = <<~MATHZONE
           |_ Math zone
             |_ "<m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape"><m:oMath><m:d><m:dPr><m:begChr m:val="["/><m:endChr m:val="]"/><m:sepChr m:val=""/><m:grow/></m:dPr><m:e><m:m><m:mPr><m:mcs><m:mc><m:mcPr><m:count m:val="2"/><m:mcJc m:val="center"/></m:mcPr></m:mc></m:mcs><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:mPr><m:mr><m:e><m:r><m:t>&#x3c3;</m:t></m:r></m:e><m:e><m:r><m:t>&#x3b3;</m:t></m:r></m:e></m:mr><m:mr><m:e><m:r><m:t>&#x3b8;</m:t></m:r></m:e><m:e><m:r><m:t>&#x3b1;</m:t></m:r></m:e></m:mr></m:m></m:e></m:d></m:oMath></m:oMathPara>"
@@ -1692,7 +1698,7 @@ RSpec.describe Plurimath::Math do
         MATHZONE
       end
 
-      it 'should puts Math zone representation of sample example #9' do
+      it "putses Math zone representation of sample example #9" do
         expected_value = <<~MATHZONE
           |_ Math zone
             |_ "<m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape"><m:oMath><m:limUpp><m:limUppPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:limUppPr><m:e><m:r><m:t>&#x3c3;</m:t></m:r></m:e><m:lim><m:r><m:t>&#x3b8;</m:t></m:r></m:lim></m:limUpp></m:oMath></m:oMathPara>"
@@ -1734,7 +1740,7 @@ RSpec.describe Plurimath::Math do
         MATHZONE
       end
 
-      it 'should puts Math zone representation of sample example #10' do
+      it "putses Math zone representation of sample example #10" do
         expected_value = <<~MATHZONE
           |_ Math zone
             |_ "<m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape"><m:oMath><m:limLow><m:limLowPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:limLowPr><m:e><m:r><m:t>&#x3c3;</m:t></m:r></m:e><m:lim><m:r><m:t>&#x3b8;</m:t></m:r></m:lim></m:limLow></m:oMath></m:oMathPara>"
@@ -1759,7 +1765,7 @@ RSpec.describe Plurimath::Math do
         MATHZONE
       end
 
-      it 'should puts Math zone representation of sample example #11' do
+      it "putses Math zone representation of sample example #11" do
         expected_value = <<~MATHZONE
           |_ Math zone
             |_ "<m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape"><m:oMath><m:r><m:t>&#x3b8;</m:t></m:r></m:oMath></m:oMathPara>"
@@ -1848,7 +1854,7 @@ RSpec.describe Plurimath::Math do
         MATHZONE
       end
 
-      it 'should puts Math zone representation of sample example #12' do
+      it "putses Math zone representation of sample example #12" do
         expected_value = <<~MATHZONE
           |_ Math zone
             |_ "<m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape"><m:oMath><m:r><m:t>|</m:t></m:r><m:r><m:t>x</m:t></m:r><m:r><m:t>|</m:t></m:r><m:d><m:dPr><m:begChr m:val="⌊"/><m:sepChr m:val=""/><m:endChr m:val="⌋"/></m:dPr><m:e><m:r><m:t>x</m:t></m:r></m:e></m:d><m:d><m:dPr><m:begChr m:val="⌈"/><m:sepChr m:val=""/><m:endChr m:val="⌉"/></m:dPr><m:e><m:r><m:t>x</m:t></m:r></m:e></m:d><m:r><m:t>&#x2225;</m:t></m:r><m:limUpp><m:limUppPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:limUppPr><m:e><m:r><m:t>x</m:t></m:r></m:e><m:lim><m:r><m:t>→</m:t></m:r></m:lim></m:limUpp><m:r><m:t>&#x2225;</m:t></m:r></m:oMath></m:oMathPara>"
@@ -1869,12 +1875,12 @@ RSpec.describe Plurimath::Math do
   end
 
   describe "AsciiMath input to all to_display(:lang) conversions" do
-    subject(:formula) { Plurimath::Math.parse(exp, :asciimath) }
+    subject(:formula) { described_class.parse(exp, :asciimath) }
 
     context "AsciiMath Math zone representation of sin and simple equation #1" do
       let(:exp) { "sum_3^1 sintheta" }
 
-      it 'should puts Math zone representation of sample example #1' do
+      it "putses Math zone representation of sample example #1" do
         omml = <<~OMML
           |_ Math zone
             |_ "<m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape"><m:oMath><m:nary><m:naryPr><m:chr m:val="∑"/><m:limLoc m:val="undOvr"/><m:subHide m:val="0"/><m:supHide m:val="0"/></m:naryPr><m:sub><m:r><m:t>3</m:t></m:r></m:sub><m:sup><m:r><m:t>1</m:t></m:r></m:sup><m:e><m:func><m:funcPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:funcPr><m:fName><m:r><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/></w:rPr><m:t>sin</m:t></m:r></m:fName><m:e><m:r><m:t>&#x3b8;</m:t></m:r></m:e></m:func></m:e></m:nary></m:oMath></m:oMathPara>"
@@ -1921,7 +1927,8 @@ RSpec.describe Plurimath::Math do
         ASCIIMATH
         expect(formula.to_display(:omml)).to eql(omml)
         expect(formula.to_display(:latex)).to eql(latex)
-        expect(formula.to_display(:mathml, unary_function_spacing: false)).to eql(mathml)
+        expect(formula.to_display(:mathml,
+                                  unary_function_spacing: false)).to eql(mathml)
         expect(formula.to_display(:asciimath)).to eql(asciimath)
       end
     end
@@ -1929,7 +1936,7 @@ RSpec.describe Plurimath::Math do
     context "AsciiMath Math zone representation of parentheses wrapped sin equation #2" do
       let(:exp) { "(a + 1 sin theta)" }
 
-      it 'should puts Math zone representation of sample example #2' do
+      it "putses Math zone representation of sample example #2" do
         omml = <<~OMML
           |_ Math zone
             |_ "<m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape"><m:oMath><m:d><m:dPr><m:begChr m:val="("/><m:sepChr m:val=""/><m:endChr m:val=")"/></m:dPr><m:e><m:r><m:t>a</m:t></m:r><m:r><m:t>+</m:t></m:r><m:r><m:t>1</m:t></m:r><m:func><m:funcPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:funcPr><m:fName><m:r><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/></w:rPr><m:t>sin</m:t></m:r></m:fName><m:e><m:r><m:t>&#x3b8;</m:t></m:r></m:e></m:func></m:e></m:d></m:oMath></m:oMathPara>"
@@ -1964,15 +1971,18 @@ RSpec.describe Plurimath::Math do
         ASCIIMATH
         expect(formula.to_display(:omml)).to eql(omml)
         expect(formula.to_display(:latex)).to eql(latex)
-        expect(formula.to_display(:mathml, unary_function_spacing: false)).to eql(mathml)
+        expect(formula.to_display(:mathml,
+                                  unary_function_spacing: false)).to eql(mathml)
         expect(formula.to_display(:asciimath)).to eql(asciimath)
       end
     end
 
     context "AsciiMath Math zone representation example provided in github issue#113 #3" do
-      let(:exp) { '1/(2pi) int_0^(2pi) (bbb"d" theta) / (a + b sin theta) = 1/sqrt(a^2−b^2)' }
+      let(:exp) do
+        '1/(2pi) int_0^(2pi) (bbb"d" theta) / (a + b sin theta) = 1/sqrt(a^2−b^2)'
+      end
 
-      it 'should puts Math zone representation of sample example #3' do
+      it "putses Math zone representation of sample example #3" do
         omml = <<~OMML
           |_ Math zone
             |_ "<m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape"><m:oMath><m:f><m:fPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:fPr><m:num><m:r><m:t>1</m:t></m:r></m:num><m:den><m:r><m:t>2</m:t></m:r><m:r><m:t>&#x3c0;</m:t></m:r></m:den></m:f><m:nary><m:naryPr><m:chr m:val="∫"/><m:limLoc m:val="subSup"/><m:subHide m:val="0"/><m:supHide m:val="0"/></m:naryPr><m:sub><m:r><m:t>0</m:t></m:r></m:sub><m:sup><m:r><m:t>2</m:t></m:r><m:r><m:t>&#x3c0;</m:t></m:r></m:sup><m:e><m:f><m:fPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:fPr><m:num><m:r><m:rPr><m:scr m:val="double-struck"/></m:rPr><m:t>d</m:t></m:r><m:r><m:t>&#x3b8;</m:t></m:r></m:num><m:den><m:r><m:t>a</m:t></m:r><m:r><m:t>+</m:t></m:r><m:r><m:t>b</m:t></m:r><m:func><m:funcPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:funcPr><m:fName><m:r><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/></w:rPr><m:t>sin</m:t></m:r></m:fName><m:e><m:r><m:t>&#x3b8;</m:t></m:r></m:e></m:func></m:den></m:f></m:e></m:nary><m:r><m:t>=</m:t></m:r><m:f><m:fPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:fPr><m:num><m:r><m:t>1</m:t></m:r></m:num><m:den><m:rad><m:radPr><m:degHide m:val="on"/><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:radPr><m:deg/><m:e><m:sSup><m:sSupPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:sSupPr><m:e><m:r><m:t>a</m:t></m:r></m:e><m:sup><m:r><m:t>2</m:t></m:r></m:sup></m:sSup><m:r><m:t>−</m:t></m:r><m:sSup><m:sSupPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:sSupPr><m:e><m:r><m:t>b</m:t></m:r></m:e><m:sup><m:r><m:t>2</m:t></m:r></m:sup></m:sSup></m:e></m:rad></m:den></m:f></m:oMath></m:oMathPara>"
@@ -2119,15 +2129,16 @@ RSpec.describe Plurimath::Math do
         ASCIIMATH
         expect(formula.to_display(:omml)).to eql(omml)
         expect(formula.to_display(:latex)).to eql(latex)
-        expect(formula.to_display(:mathml, unary_function_spacing: false)).to eql(mathml)
+        expect(formula.to_display(:mathml,
+                                  unary_function_spacing: false)).to eql(mathml)
         expect(formula.to_display(:asciimath)).to eql(asciimath)
       end
     end
 
     context "AsciiMath Math zone representation of cos function #4" do
-      let(:exp) { 'cos(2)' }
+      let(:exp) { "cos(2)" }
 
-      it 'should puts Math zone representation of sample example #4' do
+      it "putses Math zone representation of sample example #4" do
         omml = <<~OMML
           |_ Math zone
             |_ "<m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape"><m:oMath><m:func><m:funcPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:funcPr><m:fName><m:r><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/></w:rPr><m:t>cos</m:t></m:r></m:fName><m:e><m:d><m:dPr><m:begChr m:val="("/><m:sepChr m:val=""/><m:endChr m:val=")"/></m:dPr><m:e><m:r><m:t>2</m:t></m:r></m:e></m:d></m:e></m:func></m:oMath></m:oMathPara>"
@@ -2162,15 +2173,16 @@ RSpec.describe Plurimath::Math do
         ASCIIMATH
         expect(formula.to_display(:omml)).to eql(omml)
         expect(formula.to_display(:latex)).to eql(latex)
-        expect(formula.to_display(:mathml, unary_function_spacing: false)).to eql(mathml)
+        expect(formula.to_display(:mathml,
+                                  unary_function_spacing: false)).to eql(mathml)
         expect(formula.to_display(:asciimath)).to eql(asciimath)
       end
     end
 
     context "AsciiMath Math zone representation of power_base #5" do
-      let(:exp) { 'cos(2)_(theta)^sigma cos(2)' }
+      let(:exp) { "cos(2)_(theta)^sigma cos(2)" }
 
-      it 'should puts Math zone representation of sample example #5' do
+      it "putses Math zone representation of sample example #5" do
         omml = <<~OMML
           |_ Math zone
             |_ "<m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape"><m:oMath><m:sSubSup><m:sSubSupPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:sSubSupPr><m:e><m:func><m:funcPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:funcPr><m:fName><m:r><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/></w:rPr><m:t>cos</m:t></m:r></m:fName><m:e><m:d><m:dPr><m:begChr m:val="("/><m:sepChr m:val=""/><m:endChr m:val=")"/></m:dPr><m:e><m:r><m:t>2</m:t></m:r></m:e></m:d></m:e></m:func></m:e><m:sub><m:r><m:t>&#x3b8;</m:t></m:r></m:sub><m:sup><m:r><m:t>&#x3c3;</m:t></m:r></m:sup></m:sSubSup><m:func><m:funcPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:funcPr><m:fName><m:r><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/></w:rPr><m:t>cos</m:t></m:r></m:fName><m:e><m:d><m:dPr><m:begChr m:val="("/><m:sepChr m:val=""/><m:endChr m:val=")"/></m:dPr><m:e><m:r><m:t>2</m:t></m:r></m:e></m:d></m:e></m:func></m:oMath></m:oMathPara>"
@@ -2237,15 +2249,16 @@ RSpec.describe Plurimath::Math do
         ASCIIMATH
         expect(formula.to_display(:omml)).to eql(omml)
         expect(formula.to_display(:latex)).to eql(latex)
-        expect(formula.to_display(:mathml, unary_function_spacing: false)).to eql(mathml)
+        expect(formula.to_display(:mathml,
+                                  unary_function_spacing: false)).to eql(mathml)
         expect(formula.to_display(:asciimath)).to eql(asciimath)
       end
     end
 
     context "AsciiMath Math zone representation of mod #6" do
-      let(:exp) { 'cos(2) mod sigma' }
+      let(:exp) { "cos(2) mod sigma" }
 
-      it 'should puts Math zone representation of sample example #6' do
+      it "putses Math zone representation of sample example #6" do
         omml = <<~OMML
           |_ Math zone
             |_ "<m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape"><m:oMath><m:func><m:funcPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:funcPr><m:fName><m:r><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/></w:rPr><m:t>cos</m:t></m:r></m:fName><m:e><m:d><m:dPr><m:begChr m:val="("/><m:sepChr m:val=""/><m:endChr m:val=")"/></m:dPr><m:e><m:r><m:t>2</m:t></m:r></m:e></m:d></m:e></m:func><m:r><m:rPr><m:sty m:val="p"/></m:rPr><m:t>mod</m:t></m:r><m:r><m:t>&#x3c3;</m:t></m:r></m:oMath></m:oMathPara>"
@@ -2292,15 +2305,16 @@ RSpec.describe Plurimath::Math do
         ASCIIMATH
         expect(formula.to_display(:omml)).to eql(omml)
         expect(formula.to_display(:latex)).to eql(latex)
-        expect(formula.to_display(:mathml, unary_function_spacing: false)).to eql(mathml)
+        expect(formula.to_display(:mathml,
+                                  unary_function_spacing: false)).to eql(mathml)
         expect(formula.to_display(:asciimath)).to eql(asciimath)
       end
     end
 
     context "AsciiMath Math zone representation of mod with multiple base values #7" do
-      let(:exp) { '(cos(2) sin(3))mod sigma' }
+      let(:exp) { "(cos(2) sin(3))mod sigma" }
 
-      it 'should puts Math zone representation of sample example #7' do
+      it "putses Math zone representation of sample example #7" do
         omml = <<~OMML
           |_ Math zone
             |_ "<m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape"><m:oMath><m:d><m:dPr><m:begChr m:val="("/><m:sepChr m:val=""/><m:endChr m:val=")"/></m:dPr><m:e><m:func><m:funcPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:funcPr><m:fName><m:r><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/></w:rPr><m:t>cos</m:t></m:r></m:fName><m:e><m:d><m:dPr><m:begChr m:val="("/><m:sepChr m:val=""/><m:endChr m:val=")"/></m:dPr><m:e><m:r><m:t>2</m:t></m:r></m:e></m:d></m:e></m:func><m:func><m:funcPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:funcPr><m:fName><m:r><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/></w:rPr><m:t>sin</m:t></m:r></m:fName><m:e><m:d><m:dPr><m:begChr m:val="("/><m:sepChr m:val=""/><m:endChr m:val=")"/></m:dPr><m:e><m:r><m:t>3</m:t></m:r></m:e></m:d></m:e></m:func></m:e></m:d><m:r><m:rPr><m:sty m:val="p"/></m:rPr><m:t>mod</m:t></m:r><m:r><m:t>&#x3c3;</m:t></m:r></m:oMath></m:oMathPara>"
@@ -2363,15 +2377,16 @@ RSpec.describe Plurimath::Math do
         ASCIIMATH
         expect(formula.to_display(:omml)).to eql(omml)
         expect(formula.to_display(:latex)).to eql(latex)
-        expect(formula.to_display(:mathml, unary_function_spacing: false)).to eql(mathml)
+        expect(formula.to_display(:mathml,
+                                  unary_function_spacing: false)).to eql(mathml)
         expect(formula.to_display(:asciimath)).to eql(asciimath)
       end
     end
 
     context "AsciiMath Math zone representation of table #8" do
-      let(:exp) { '[[sigma, gamma], [theta, alpha]]' }
+      let(:exp) { "[[sigma, gamma], [theta, alpha]]" }
 
-      it 'should puts Math zone representation of sample example #8' do
+      it "putses Math zone representation of sample example #8" do
         omml = <<~OMML
           |_ Math zone
             |_ "<m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape"><m:oMath><m:d><m:dPr><m:begChr m:val="["/><m:endChr m:val="]"/><m:sepChr m:val=""/><m:grow/></m:dPr><m:e><m:m><m:mPr><m:mcs><m:mc><m:mcPr><m:count m:val="2"/><m:mcJc m:val="center"/></m:mcPr></m:mc></m:mcs><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:mPr><m:mr><m:e><m:r><m:t>&#x3c3;</m:t></m:r></m:e><m:e><m:r><m:t>&#x3b3;</m:t></m:r></m:e></m:mr><m:mr><m:e><m:r><m:t>&#x3b8;</m:t></m:r></m:e><m:e><m:r><m:t>&#x3b1;</m:t></m:r></m:e></m:mr></m:m></m:e></m:d></m:oMath></m:oMathPara>"
@@ -2434,15 +2449,16 @@ RSpec.describe Plurimath::Math do
         ASCIIMATH
         expect(formula.to_display(:omml)).to eql(omml)
         expect(formula.to_display(:latex)).to eql(latex)
-        expect(formula.to_display(:mathml, unary_function_spacing: false)).to eql(mathml)
+        expect(formula.to_display(:mathml,
+                                  unary_function_spacing: false)).to eql(mathml)
         expect(formula.to_display(:asciimath)).to eql(asciimath)
       end
     end
 
     context "AsciiMath Math zone representation of overset #9" do
-      let(:exp) { 'overset(sigma)(theta)' }
+      let(:exp) { "overset(sigma)(theta)" }
 
-      it 'should puts Math zone representation of sample example #9' do
+      it "putses Math zone representation of sample example #9" do
         omml = <<~OMML
           |_ Math zone
             |_ "<m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape"><m:oMath><m:limUpp><m:limUppPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:limUppPr><m:e><m:r><m:t>&#x3c3;</m:t></m:r></m:e><m:lim><m:r><m:t>&#x3b8;</m:t></m:r></m:lim></m:limUpp></m:oMath></m:oMathPara>"
@@ -2473,15 +2489,16 @@ RSpec.describe Plurimath::Math do
         ASCIIMATH
         expect(formula.to_display(:omml)).to eql(omml)
         expect(formula.to_display(:latex)).to eql(latex)
-        expect(formula.to_display(:mathml, unary_function_spacing: false)).to eql(mathml)
+        expect(formula.to_display(:mathml,
+                                  unary_function_spacing: false)).to eql(mathml)
         expect(formula.to_display(:asciimath)).to eql(asciimath)
       end
     end
 
     context "AsciiMath Math zone representation of underset #10" do
-      let(:exp) { 'underset(sigma)(theta)' }
+      let(:exp) { "underset(sigma)(theta)" }
 
-      it 'should puts Math zone representation of sample example #10' do
+      it "putses Math zone representation of sample example #10" do
         omml = <<~OMML
           |_ Math zone
             |_ "<m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape"><m:oMath><m:limLow><m:limLowPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:limLowPr><m:e><m:r><m:t>&#x3c3;</m:t></m:r></m:e><m:lim><m:r><m:t>&#x3b8;</m:t></m:r></m:lim></m:limLow></m:oMath></m:oMathPara>"
@@ -2512,15 +2529,16 @@ RSpec.describe Plurimath::Math do
         ASCIIMATH
         expect(formula.to_display(:omml)).to eql(omml)
         expect(formula.to_display(:latex)).to eql(latex)
-        expect(formula.to_display(:mathml, unary_function_spacing: false)).to eql(mathml)
+        expect(formula.to_display(:mathml,
+                                  unary_function_spacing: false)).to eql(mathml)
         expect(formula.to_display(:asciimath)).to eql(asciimath)
       end
     end
 
     context "AsciiMath Math zone representation of color #11" do
-      let(:exp) { 'color(red)(theta)' }
+      let(:exp) { "color(red)(theta)" }
 
-      it 'should puts Math zone representation of sample example #11' do
+      it "putses Math zone representation of sample example #11" do
         omml = <<~OMML
           |_ Math zone
             |_ "<m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape"><m:oMath><m:r><m:t>&#x3b8;</m:t></m:r></m:oMath></m:oMathPara>"
@@ -2550,15 +2568,16 @@ RSpec.describe Plurimath::Math do
         ASCIIMATH
         expect(formula.to_display(:omml)).to eql(omml)
         expect(formula.to_display(:latex)).to eql(latex)
-        expect(formula.to_display(:mathml, unary_function_spacing: false)).to eql(mathml)
+        expect(formula.to_display(:mathml,
+                                  unary_function_spacing: false)).to eql(mathml)
         expect(formula.to_display(:asciimath)).to eql(asciimath)
       end
     end
 
     context "AsciiMath Math zone representation of four unary functions #12" do
-      let(:exp) { 'abs(x)floor(x)ceil(x)norm(vecx)' }
+      let(:exp) { "abs(x)floor(x)ceil(x)norm(vecx)" }
 
-      it 'should puts Math zone representation of sample example #12' do
+      it "putses Math zone representation of sample example #12" do
         omml = <<~OMML
           |_ Math zone
             |_ "<m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape"><m:oMath><m:d><m:dPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/></w:rPr><m:begChr m:val="|"/><m:endChr m:val="|"/><m:sepChr m:val=""/><m:grow/></m:dPr><m:e><m:r><m:t>x</m:t></m:r></m:e></m:d><m:r><m:rPr><m:sty m:val="p"/></m:rPr><m:t>⌊</m:t></m:r><m:r><m:t>x</m:t></m:r><m:r><m:rPr><m:sty m:val="p"/></m:rPr><m:t>⌋</m:t></m:r><m:d><m:dPr><m:begChr m:val="⌈"/><m:sepChr m:val=""/><m:endChr m:val="⌉"/></m:dPr><m:e><m:r><m:t>x</m:t></m:r></m:e></m:d><m:r><m:rPr><m:sty m:val="p"/></m:rPr><m:t>∥</m:t></m:r><m:limUpp><m:limUppPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:limUppPr><m:e><m:r><m:t>x</m:t></m:r></m:e><m:lim><m:r><m:t>→</m:t></m:r></m:lim></m:limUpp><m:r><m:rPr><m:sty m:val="p"/></m:rPr><m:t>∥</m:t></m:r></m:oMath></m:oMathPara>"
@@ -2637,15 +2656,16 @@ RSpec.describe Plurimath::Math do
         ASCIIMATH
         expect(formula.to_display(:omml)).to eql(omml)
         expect(formula.to_display(:latex)).to eql(latex)
-        expect(formula.to_display(:mathml, unary_function_spacing: false)).to eql(mathml)
+        expect(formula.to_display(:mathml,
+                                  unary_function_spacing: false)).to eql(mathml)
         expect(formula.to_display(:asciimath)).to eql(asciimath)
       end
     end
 
     context "AsciiMath Math zone representation of font functions #13" do
-      let(:exp) { 'mathbf(x)mathbb(x)mathcal(x)mathtt(x)mathfrak(x)mathsf(x)' }
+      let(:exp) { "mathbf(x)mathbb(x)mathcal(x)mathtt(x)mathfrak(x)mathsf(x)" }
 
-      it 'should puts Math zone representation of sample example #13' do
+      it "putses Math zone representation of sample example #13" do
         omml = <<~OMML
           |_ Math zone
             |_ "<m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape"><m:oMath><m:r><m:rPr><m:sty m:val="b"/></m:rPr><m:t>x</m:t></m:r><m:r><m:rPr><m:scr m:val="double-struck"/></m:rPr><m:t>x</m:t></m:r><m:r><m:rPr><m:scr m:val="script"/><m:sty m:val="p"/></m:rPr><m:t>x</m:t></m:r><m:r><m:rPr><m:scr m:val="monospace"/></m:rPr><m:t>x</m:t></m:r><m:r><m:rPr><m:scr m:val="fraktur"/><m:sty m:val="p"/></m:rPr><m:t>x</m:t></m:r><m:r><m:rPr><m:scr m:val="sans-serif"/><m:sty m:val="p"/></m:rPr><m:t>x</m:t></m:r></m:oMath></m:oMathPara>"
@@ -2736,19 +2756,20 @@ RSpec.describe Plurimath::Math do
         ASCIIMATH
         expect(formula.to_display(:omml)).to eql(omml)
         expect(formula.to_display(:latex)).to eql(latex)
-        expect(formula.to_display(:mathml, unary_function_spacing: false)).to eql(mathml)
+        expect(formula.to_display(:mathml,
+                                  unary_function_spacing: false)).to eql(mathml)
         expect(formula.to_display(:asciimath)).to eql(asciimath)
       end
     end
   end
 
   describe "LaTeX input to all to_display(:lang) conversions" do
-    subject(:formula) { Plurimath::Math.parse(exp, :latex) }
+    subject(:formula) { described_class.parse(exp, :latex) }
 
     context "LaTeX Math zone representation of sin and simple equation #1" do
       let(:exp) { '\sum_3^1 \sin\theta' }
 
-      it 'should puts Math zone representation of sample example #1' do
+      it "putses Math zone representation of sample example #1" do
         omml = <<~OMML
           |_ Math zone
             |_ "<m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape"><m:oMath><m:nary><m:naryPr><m:chr m:val="∑"/><m:limLoc m:val="undOvr"/><m:subHide m:val="0"/><m:supHide m:val="0"/></m:naryPr><m:sub><m:r><m:t>3</m:t></m:r></m:sub><m:sup><m:r><m:t>1</m:t></m:r></m:sup><m:e><m:func><m:funcPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:funcPr><m:fName><m:r><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/></w:rPr><m:t>sin</m:t></m:r></m:fName><m:e><m:r><m:t>&#x3b8;</m:t></m:r></m:e></m:func></m:e></m:nary></m:oMath></m:oMathPara>"
@@ -2795,7 +2816,8 @@ RSpec.describe Plurimath::Math do
         ASCIIMATH
         expect(formula.to_display(:omml)).to eql(omml)
         expect(formula.to_display(:latex)).to eql(latex)
-        expect(formula.to_display(:mathml, unary_function_spacing: false)).to eql(mathml)
+        expect(formula.to_display(:mathml,
+                                  unary_function_spacing: false)).to eql(mathml)
         expect(formula.to_display(:asciimath)).to eql(asciimath)
       end
     end
@@ -2803,7 +2825,7 @@ RSpec.describe Plurimath::Math do
     context "LaTeX Math zone representation of parentheses wrapped sin equation #2" do
       let(:exp) { '(a + 1 \sin \theta)' }
 
-      it 'should puts Math zone representation of sample example #2' do
+      it "putses Math zone representation of sample example #2" do
         omml = <<~OMML
           |_ Math zone
             |_ "<m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape"><m:oMath><m:d><m:dPr><m:begChr m:val="("/><m:sepChr m:val=""/><m:endChr m:val=")"/></m:dPr><m:e><m:r><m:t>a</m:t></m:r><m:r><m:t>+</m:t></m:r><m:r><m:t>1</m:t></m:r><m:func><m:funcPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:funcPr><m:fName><m:r><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/></w:rPr><m:t>sin</m:t></m:r></m:fName><m:e><m:r><m:t>&#x3b8;</m:t></m:r></m:e></m:func></m:e></m:d></m:oMath></m:oMathPara>"
@@ -2838,15 +2860,18 @@ RSpec.describe Plurimath::Math do
         ASCIIMATH
         expect(formula.to_display(:omml)).to eql(omml)
         expect(formula.to_display(:latex)).to eql(latex)
-        expect(formula.to_display(:mathml, unary_function_spacing: false)).to eql(mathml)
+        expect(formula.to_display(:mathml,
+                                  unary_function_spacing: false)).to eql(mathml)
         expect(formula.to_display(:asciimath)).to eql(asciimath)
       end
     end
 
     context "LaTeX Math zone representation example provided in github issue#113 #3" do
-      let(:exp) { '\frac{1}{2 \pi} \int_0^{2\pi} \frac{\mathbb{\text{"d"}} \theta}{a + b \sin{\theta}} = \frac{1}{\sqrt{a^2−b^2}}' }
+      let(:exp) do
+        '\frac{1}{2 \pi} \int_0^{2\pi} \frac{\mathbb{\text{"d"}} \theta}{a + b \sin{\theta}} = \frac{1}{\sqrt{a^2−b^2}}'
+      end
 
-      it 'should puts Math zone representation of sample example #3' do
+      it "putses Math zone representation of sample example #3" do
         omml = <<~OMML
           |_ Math zone
             |_ "<m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape"><m:oMath><m:f><m:fPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:fPr><m:num><m:r><m:t>1</m:t></m:r></m:num><m:den><m:r><m:t>2</m:t></m:r><m:r><m:t>&#x3c0;</m:t></m:r></m:den></m:f><m:nary><m:naryPr><m:chr m:val="∫"/><m:limLoc m:val="subSup"/><m:subHide m:val="0"/><m:supHide m:val="0"/></m:naryPr><m:sub><m:r><m:t>0</m:t></m:r></m:sub><m:sup><m:r><m:t>2</m:t></m:r><m:r><m:t>&#x3c0;</m:t></m:r></m:sup><m:e><m:f><m:fPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:fPr><m:num><m:r><m:rPr><m:scr m:val="double-struck"/></m:rPr><m:t>&#x22;d&#x22;</m:t></m:r><m:r><m:t>&#x3b8;</m:t></m:r></m:num><m:den><m:r><m:t>a</m:t></m:r><m:r><m:t>+</m:t></m:r><m:r><m:t>b</m:t></m:r><m:func><m:funcPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:funcPr><m:fName><m:r><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/></w:rPr><m:t>sin</m:t></m:r></m:fName><m:e><m:r><m:t>&#x3b8;</m:t></m:r></m:e></m:func></m:den></m:f></m:e></m:nary><m:r><m:t>=</m:t></m:r><m:f><m:fPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:fPr><m:num><m:r><m:t>1</m:t></m:r></m:num><m:den><m:rad><m:radPr><m:degHide m:val="on"/><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:radPr><m:deg/><m:e><m:sSup><m:sSupPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:sSupPr><m:e><m:r><m:t>a</m:t></m:r></m:e><m:sup><m:r><m:t>2</m:t></m:r></m:sup></m:sSup><m:r><m:t>&#x2212;</m:t></m:r><m:sSup><m:sSupPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:sSupPr><m:e><m:r><m:t>b</m:t></m:r></m:e><m:sup><m:r><m:t>2</m:t></m:r></m:sup></m:sSup></m:e></m:rad></m:den></m:f></m:oMath></m:oMathPara>"
@@ -2993,7 +3018,8 @@ RSpec.describe Plurimath::Math do
         ASCIIMATH
         expect(formula.to_display(:omml)).to eql(omml)
         expect(formula.to_display(:latex)).to eql(latex)
-        expect(formula.to_display(:mathml, unary_function_spacing: false)).to eql(mathml)
+        expect(formula.to_display(:mathml,
+                                  unary_function_spacing: false)).to eql(mathml)
         expect(formula.to_display(:asciimath)).to eql(asciimath)
       end
     end
@@ -3001,7 +3027,7 @@ RSpec.describe Plurimath::Math do
     context "LaTeX Math zone representation of cos function #4" do
       let(:exp) { '\\cos{2}' }
 
-      it 'should puts Math zone representation of sample example #4' do
+      it "putses Math zone representation of sample example #4" do
         omml = <<~OMML
           |_ Math zone
             |_ "<m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape"><m:oMath><m:func><m:funcPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:funcPr><m:fName><m:r><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/></w:rPr><m:t>cos</m:t></m:r></m:fName><m:e><m:r><m:t>2</m:t></m:r></m:e></m:func></m:oMath></m:oMathPara>"
@@ -3032,7 +3058,8 @@ RSpec.describe Plurimath::Math do
         ASCIIMATH
         expect(formula.to_display(:omml)).to eql(omml)
         expect(formula.to_display(:latex)).to eql(latex)
-        expect(formula.to_display(:mathml, unary_function_spacing: false)).to eql(mathml)
+        expect(formula.to_display(:mathml,
+                                  unary_function_spacing: false)).to eql(mathml)
         expect(formula.to_display(:asciimath)).to eql(asciimath)
       end
     end
@@ -3040,7 +3067,7 @@ RSpec.describe Plurimath::Math do
     context "LaTeX Math zone representation of power_base #5" do
       let(:exp) { '\cos{2}_{\theta}^{\sigma} \cos{2}' }
 
-      it 'should puts Math zone representation of sample example #5' do
+      it "putses Math zone representation of sample example #5" do
         omml = <<~OMML
           |_ Math zone
             |_ "<m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape"><m:oMath><m:sSubSup><m:sSubSupPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:sSubSupPr><m:e><m:func><m:funcPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:funcPr><m:fName><m:r><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/></w:rPr><m:t>cos</m:t></m:r></m:fName><m:e><m:r><m:t>2</m:t></m:r></m:e></m:func></m:e><m:sub><m:r><m:t>&#x3b8;</m:t></m:r></m:sub><m:sup><m:r><m:t>&#x3c3;</m:t></m:r></m:sup></m:sSubSup><m:func><m:funcPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:funcPr><m:fName><m:r><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/></w:rPr><m:t>cos</m:t></m:r></m:fName><m:e><m:r><m:t>2</m:t></m:r></m:e></m:func></m:oMath></m:oMathPara>"
@@ -3099,7 +3126,8 @@ RSpec.describe Plurimath::Math do
         ASCIIMATH
         expect(formula.to_display(:omml)).to eql(omml)
         expect(formula.to_display(:latex)).to eql(latex)
-        expect(formula.to_display(:mathml, unary_function_spacing: false)).to eql(mathml)
+        expect(formula.to_display(:mathml,
+                                  unary_function_spacing: false)).to eql(mathml)
         expect(formula.to_display(:asciimath)).to eql(asciimath)
       end
     end
@@ -3107,7 +3135,7 @@ RSpec.describe Plurimath::Math do
     context "LaTeX Math zone representation of mod #6" do
       let(:exp) { '{\cos{2}}\pmod{\sigma}' }
 
-      it 'should puts Math zone representation of sample example #6' do
+      it "putses Math zone representation of sample example #6" do
         omml = <<~OMML
           |_ Math zone
             |_ "<m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape"><m:oMath><m:func><m:funcPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:funcPr><m:fName><m:r><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/></w:rPr><m:t>cos</m:t></m:r></m:fName><m:e><m:r><m:t>2</m:t></m:r></m:e></m:func><m:r><m:rPr><m:sty m:val="p"/></m:rPr><m:t>mod</m:t></m:r><m:r><m:t>&#x3c3;</m:t></m:r></m:oMath></m:oMathPara>"
@@ -3150,7 +3178,8 @@ RSpec.describe Plurimath::Math do
         ASCIIMATH
         expect(formula.to_display(:omml)).to eql(omml)
         expect(formula.to_display(:latex)).to eql(latex)
-        expect(formula.to_display(:mathml, unary_function_spacing: false)).to eql(mathml)
+        expect(formula.to_display(:mathml,
+                                  unary_function_spacing: false)).to eql(mathml)
         expect(formula.to_display(:asciimath)).to eql(asciimath)
       end
     end
@@ -3158,7 +3187,7 @@ RSpec.describe Plurimath::Math do
     context "LaTeX Math zone representation of mod with multiple base values #7" do
       let(:exp) { '{\cos{2} \sin{3}}\pmod {\sigma}' }
 
-      it 'should puts Math zone representation of sample example #7' do
+      it "putses Math zone representation of sample example #7" do
         omml = <<~OMML
           |_ Math zone
             |_ "<m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape"><m:oMath><m:func><m:funcPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:funcPr><m:fName><m:r><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/></w:rPr><m:t>cos</m:t></m:r></m:fName><m:e><m:r><m:t>2</m:t></m:r></m:e></m:func><m:func><m:funcPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:funcPr><m:fName><m:r><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/></w:rPr><m:t>sin</m:t></m:r></m:fName><m:e><m:r><m:t>3</m:t></m:r></m:e></m:func><m:r><m:rPr><m:sty m:val="p"/></m:rPr><m:t>mod</m:t></m:r><m:r><m:t>&#x3c3;</m:t></m:r></m:oMath></m:oMathPara>"
@@ -3213,15 +3242,18 @@ RSpec.describe Plurimath::Math do
         ASCIIMATH
         expect(formula.to_display(:omml)).to eql(omml)
         expect(formula.to_display(:latex)).to eql(latex)
-        expect(formula.to_display(:mathml, unary_function_spacing: false)).to eql(mathml)
+        expect(formula.to_display(:mathml,
+                                  unary_function_spacing: false)).to eql(mathml)
         expect(formula.to_display(:asciimath)).to eql(asciimath)
       end
     end
 
     context "LaTeX Math zone representation of table #8" do
-      let(:exp) { '\left [\begin{matrix}\sigma & \gamma \\\\ \theta & \alpha\end{matrix}\right ]' }
+      let(:exp) do
+        '\left [\begin{matrix}\sigma & \gamma \\\\ \theta & \alpha\end{matrix}\right ]'
+      end
 
-      it 'should puts Math zone representation of sample example #8' do
+      it "putses Math zone representation of sample example #8" do
         omml = <<~OMML
           |_ Math zone
             |_ "<m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape"><m:oMath><m:r><m:t>[</m:t></m:r><m:m><m:mPr><m:mcs><m:mc><m:mcPr><m:count m:val="2"/><m:mcJc m:val="center"/></m:mcPr></m:mc></m:mcs><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:mPr><m:mr><m:e><m:r><m:t>&#x3c3;</m:t></m:r></m:e><m:e><m:r><m:t>&#x3b3;</m:t></m:r></m:e></m:mr><m:mr><m:e><m:r><m:t>&#x3b8;</m:t></m:r></m:e><m:e><m:r><m:t>&#x3b1;</m:t></m:r></m:e></m:mr></m:m><m:r><m:t>]</m:t></m:r></m:oMath></m:oMathPara>"
@@ -3292,7 +3324,8 @@ RSpec.describe Plurimath::Math do
         ASCIIMATH
         expect(formula.to_display(:omml)).to eql(omml)
         expect(formula.to_display(:latex)).to eql(latex)
-        expect(formula.to_display(:mathml, unary_function_spacing: false)).to eql(mathml)
+        expect(formula.to_display(:mathml,
+                                  unary_function_spacing: false)).to eql(mathml)
         expect(formula.to_display(:asciimath)).to eql(asciimath)
       end
     end
@@ -3300,7 +3333,7 @@ RSpec.describe Plurimath::Math do
     context "LaTeX Math zone representation of overset #9" do
       let(:exp) { '\overset{\sigma}{\theta}' }
 
-      it 'should puts Math zone representation of sample example #9' do
+      it "putses Math zone representation of sample example #9" do
         omml = <<~OMML
           |_ Math zone
             |_ "<m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape"><m:oMath><m:limUpp><m:limUppPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:limUppPr><m:e><m:r><m:t>&#x3c3;</m:t></m:r></m:e><m:lim><m:r><m:t>&#x3b8;</m:t></m:r></m:lim></m:limUpp></m:oMath></m:oMathPara>"
@@ -3331,7 +3364,8 @@ RSpec.describe Plurimath::Math do
         ASCIIMATH
         expect(formula.to_display(:omml)).to eql(omml)
         expect(formula.to_display(:latex)).to eql(latex)
-        expect(formula.to_display(:mathml, unary_function_spacing: false)).to eql(mathml)
+        expect(formula.to_display(:mathml,
+                                  unary_function_spacing: false)).to eql(mathml)
         expect(formula.to_display(:asciimath)).to eql(asciimath)
       end
     end
@@ -3339,7 +3373,7 @@ RSpec.describe Plurimath::Math do
     context "LaTeX Math zone representation of underset #10" do
       let(:exp) { '\underset{\sigma}{\theta}' }
 
-      it 'should puts Math zone representation of sample example #10' do
+      it "putses Math zone representation of sample example #10" do
         omml = <<~OMML
           |_ Math zone
             |_ "<m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape"><m:oMath><m:limLow><m:limLowPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:limLowPr><m:e><m:r><m:t>&#x3c3;</m:t></m:r></m:e><m:lim><m:r><m:t>&#x3b8;</m:t></m:r></m:lim></m:limLow></m:oMath></m:oMathPara>"
@@ -3370,7 +3404,8 @@ RSpec.describe Plurimath::Math do
         ASCIIMATH
         expect(formula.to_display(:omml)).to eql(omml)
         expect(formula.to_display(:latex)).to eql(latex)
-        expect(formula.to_display(:mathml, unary_function_spacing: false)).to eql(mathml)
+        expect(formula.to_display(:mathml,
+                                  unary_function_spacing: false)).to eql(mathml)
         expect(formula.to_display(:asciimath)).to eql(asciimath)
       end
     end
@@ -3378,7 +3413,7 @@ RSpec.describe Plurimath::Math do
     context "LaTeX Math zone representation of color #11" do
       let(:exp) { '\color{red}{\theta}' }
 
-      it 'should puts Math zone representation of sample example #11' do
+      it "putses Math zone representation of sample example #11" do
         omml = <<~OMML
           |_ Math zone
             |_ "<m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape"><m:oMath><m:r><m:t>&#x3b8;</m:t></m:r></m:oMath></m:oMathPara>"
@@ -3408,15 +3443,18 @@ RSpec.describe Plurimath::Math do
         ASCIIMATH
         expect(formula.to_display(:omml)).to eql(omml)
         expect(formula.to_display(:latex)).to eql(latex)
-        expect(formula.to_display(:mathml, unary_function_spacing: false)).to eql(mathml)
+        expect(formula.to_display(:mathml,
+                                  unary_function_spacing: false)).to eql(mathml)
         expect(formula.to_display(:asciimath)).to eql(asciimath)
       end
     end
 
     context "LaTeX Math zone representation of font functions #12" do
-      let(:exp) { '\mathbf{x}\mathbb{x}\mathcal{x}\mathtt{x}\mathfrak{x}\mathsf{x}' }
+      let(:exp) do
+        '\mathbf{x}\mathbb{x}\mathcal{x}\mathtt{x}\mathfrak{x}\mathsf{x}'
+      end
 
-      it 'should puts Math zone representation of sample example #13' do
+      it "putses Math zone representation of sample example #13" do
         omml = <<~OMML
           |_ Math zone
             |_ "<m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape"><m:oMath><m:r><m:rPr><m:sty m:val="b"/></m:rPr><m:t>x</m:t></m:r><m:r><m:rPr><m:scr m:val="double-struck"/></m:rPr><m:t>x</m:t></m:r><m:r><m:rPr><m:scr m:val="script"/><m:sty m:val="p"/></m:rPr><m:t>x</m:t></m:r><m:r><m:rPr><m:scr m:val="monospace"/></m:rPr><m:t>x</m:t></m:r><m:r><m:rPr><m:scr m:val="fraktur"/><m:sty m:val="p"/></m:rPr><m:t>x</m:t></m:r><m:r><m:rPr><m:scr m:val="sans-serif"/><m:sty m:val="p"/></m:rPr><m:t>x</m:t></m:r></m:oMath></m:oMathPara>"
@@ -3507,14 +3545,15 @@ RSpec.describe Plurimath::Math do
         ASCIIMATH
         expect(formula.to_display(:omml)).to eql(omml)
         expect(formula.to_display(:latex)).to eql(latex)
-        expect(formula.to_display(:mathml, unary_function_spacing: false)).to eql(mathml)
+        expect(formula.to_display(:mathml,
+                                  unary_function_spacing: false)).to eql(mathml)
         expect(formula.to_display(:asciimath)).to eql(asciimath)
       end
     end
   end
 
   describe "MathML input to all to_display(:lang) conversions" do
-    subject(:formula) { Plurimath::Math.parse(exp, :mathml) }
+    subject(:formula) { described_class.parse(exp, :mathml) }
 
     context "MathML Math zone representation of sin and simple equation #1" do
       let(:exp) do
@@ -3537,7 +3576,7 @@ RSpec.describe Plurimath::Math do
         MATHZONE
       end
 
-      it 'should puts Math zone representation of sample example #1' do
+      it "putses Math zone representation of sample example #1" do
         omml = <<~OMML
           |_ Math zone
             |_ "<m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape"><m:oMath><m:nary><m:naryPr><m:chr m:val="∑"/><m:limLoc m:val="undOvr"/><m:subHide m:val="0"/><m:supHide m:val="0"/></m:naryPr><m:sub><m:r><m:t>3</m:t></m:r></m:sub><m:sup><m:r><m:t>1</m:t></m:r></m:sup><m:e><m:func><m:funcPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:funcPr><m:fName><m:r><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/></w:rPr><m:t>sin</m:t></m:r></m:fName><m:e><m:r><m:t>&#x3b8;</m:t></m:r></m:e></m:func></m:e></m:nary></m:oMath></m:oMathPara>"
@@ -3584,7 +3623,8 @@ RSpec.describe Plurimath::Math do
         ASCIIMATH
         expect(formula.to_display(:omml)).to eql(omml)
         expect(formula.to_display(:latex)).to eql(latex)
-        expect(formula.to_display(:mathml, unary_function_spacing: false)).to eql(mathml)
+        expect(formula.to_display(:mathml,
+                                  unary_function_spacing: false)).to eql(mathml)
         expect(formula.to_display(:asciimath)).to eql(asciimath)
       end
     end
@@ -3610,7 +3650,7 @@ RSpec.describe Plurimath::Math do
         MATHZONE
       end
 
-      it 'should puts Math zone representation of sample example #1' do
+      it "putses Math zone representation of sample example #1" do
         omml = <<~OMML
           |_ Math zone
             |_ "<m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape"><m:oMath><m:d><m:dPr><m:begChr m:val="("/><m:sepChr m:val=""/><m:endChr m:val=")"/></m:dPr><m:e><m:r><m:t>a</m:t></m:r><m:r><m:t>+</m:t></m:r><m:r><m:t>1</m:t></m:r><m:func><m:funcPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:funcPr><m:fName><m:r><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/></w:rPr><m:t>sin</m:t></m:r></m:fName><m:e><m:r><m:t>&#x3b8;</m:t></m:r></m:e></m:func></m:e></m:d></m:oMath></m:oMathPara>"
@@ -3645,7 +3685,8 @@ RSpec.describe Plurimath::Math do
         ASCIIMATH
         expect(formula.to_display(:omml)).to eql(omml)
         expect(formula.to_display(:latex)).to eql(latex)
-        expect(formula.to_display(:mathml, unary_function_spacing: false)).to eql(mathml)
+        expect(formula.to_display(:mathml,
+                                  unary_function_spacing: false)).to eql(mathml)
         expect(formula.to_display(:asciimath)).to eql(asciimath)
       end
     end
@@ -3711,7 +3752,7 @@ RSpec.describe Plurimath::Math do
         MATHZONE
       end
 
-      it 'should puts Math zone representation of sample example #1' do
+      it "putses Math zone representation of sample example #1" do
         omml = <<~OMML
           |_ Math zone
             |_ "<m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape"><m:oMath><m:f><m:fPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:fPr><m:num><m:r><m:t>1</m:t></m:r></m:num><m:den><m:r><m:t>2</m:t></m:r><m:r><m:t>&#x3c0;</m:t></m:r></m:den></m:f><m:nary><m:naryPr><m:chr m:val="∫"/><m:limLoc m:val="subSup"/><m:subHide m:val="0"/><m:supHide m:val="0"/></m:naryPr><m:sub><m:r><m:t>0</m:t></m:r></m:sub><m:sup><m:r><m:t>2</m:t></m:r><m:r><m:t>&#x3c0;</m:t></m:r></m:sup><m:e><m:f><m:fPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:fPr><m:num><m:r><m:rPr><m:scr m:val="double-struck"/></m:rPr><m:t>d</m:t></m:r><m:r><m:t>&#x3b8;</m:t></m:r></m:num><m:den><m:r><m:t>a</m:t></m:r><m:r><m:t>+</m:t></m:r><m:r><m:t>b</m:t></m:r><m:func><m:funcPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:funcPr><m:fName><m:r><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/></w:rPr><m:t>sin</m:t></m:r></m:fName><m:e><m:r><m:t>&#x3b8;</m:t></m:r></m:e></m:func></m:den></m:f></m:e></m:nary><m:r><m:t>=</m:t></m:r><m:f><m:fPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:fPr><m:num><m:r><m:t>1</m:t></m:r></m:num><m:den><m:rad><m:radPr><m:degHide m:val="on"/><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:radPr><m:deg/><m:e><m:sSup><m:sSupPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:sSupPr><m:e><m:r><m:t>a</m:t></m:r></m:e><m:sup><m:r><m:t>2</m:t></m:r></m:sup></m:sSup><m:r><m:t>&#x2212;</m:t></m:r><m:sSup><m:sSupPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:sSupPr><m:e><m:r><m:t>b</m:t></m:r></m:e><m:sup><m:r><m:t>2</m:t></m:r></m:sup></m:sSup></m:e></m:rad></m:den></m:f></m:oMath></m:oMathPara>"
@@ -3858,7 +3899,8 @@ RSpec.describe Plurimath::Math do
         ASCIIMATH
         expect(formula.to_display(:omml)).to eql(omml)
         expect(formula.to_display(:latex)).to eql(latex)
-        expect(formula.to_display(:mathml, unary_function_spacing: false)).to eql(mathml)
+        expect(formula.to_display(:mathml,
+                                  unary_function_spacing: false)).to eql(mathml)
         expect(formula.to_display(:asciimath)).to eql(asciimath)
       end
     end
@@ -3881,7 +3923,7 @@ RSpec.describe Plurimath::Math do
         MATHZONE
       end
 
-      it 'should puts Math zone representation of sample example #4' do
+      it "putses Math zone representation of sample example #4" do
         omml = <<~OMML
           |_ Math zone
             |_ "<m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape"><m:oMath><m:func><m:funcPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:funcPr><m:fName><m:r><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/></w:rPr><m:t>cos</m:t></m:r></m:fName><m:e><m:d><m:dPr><m:begChr m:val="("/><m:sepChr m:val=""/><m:endChr m:val=")"/></m:dPr><m:e><m:r><m:t>2</m:t></m:r></m:e></m:d></m:e></m:func></m:oMath></m:oMathPara>"
@@ -3916,7 +3958,8 @@ RSpec.describe Plurimath::Math do
         ASCIIMATH
         expect(formula.to_display(:omml)).to eql(omml)
         expect(formula.to_display(:latex)).to eql(latex)
-        expect(formula.to_display(:mathml, unary_function_spacing: false)).to eql(mathml)
+        expect(formula.to_display(:mathml,
+                                  unary_function_spacing: false)).to eql(mathml)
         expect(formula.to_display(:asciimath)).to eql(asciimath)
       end
     end
@@ -3951,7 +3994,7 @@ RSpec.describe Plurimath::Math do
         MATHZONE
       end
 
-      it 'should puts Math zone representation of sample example #5' do
+      it "putses Math zone representation of sample example #5" do
         omml = <<~OMML
           |_ Math zone
             |_ "<m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape"><m:oMath><m:sSubSup><m:sSubSupPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:sSubSupPr><m:e><m:func><m:funcPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:funcPr><m:fName><m:r><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/></w:rPr><m:t>cos</m:t></m:r></m:fName><m:e><m:d><m:dPr><m:begChr m:val="("/><m:sepChr m:val=""/><m:endChr m:val=")"/></m:dPr><m:e><m:r><m:t>2</m:t></m:r></m:e></m:d></m:e></m:func></m:e><m:sub><m:r><m:t>&#x3b8;</m:t></m:r></m:sub><m:sup><m:r><m:t>&#x3c3;</m:t></m:r></m:sup></m:sSubSup><m:func><m:funcPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:funcPr><m:fName><m:r><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/></w:rPr><m:t>cos</m:t></m:r></m:fName><m:e><m:d><m:dPr><m:begChr m:val="("/><m:sepChr m:val=""/><m:endChr m:val=")"/></m:dPr><m:e><m:r><m:t>2</m:t></m:r></m:e></m:d></m:e></m:func></m:oMath></m:oMathPara>"
@@ -4018,7 +4061,8 @@ RSpec.describe Plurimath::Math do
         ASCIIMATH
         expect(formula.to_display(:omml)).to eql(omml)
         expect(formula.to_display(:latex)).to eql(latex)
-        expect(formula.to_display(:mathml, unary_function_spacing: false)).to eql(mathml)
+        expect(formula.to_display(:mathml,
+                                  unary_function_spacing: false)).to eql(mathml)
         expect(formula.to_display(:asciimath)).to eql(asciimath)
       end
     end
@@ -4045,7 +4089,7 @@ RSpec.describe Plurimath::Math do
         MATHZONE
       end
 
-      it 'should puts Math zone representation of sample example #6' do
+      it "putses Math zone representation of sample example #6" do
         omml = <<~OMML
           |_ Math zone
             |_ "<m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape"><m:oMath><m:func><m:funcPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:funcPr><m:fName><m:r><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/></w:rPr><m:t>cos</m:t></m:r></m:fName><m:e><m:d><m:dPr><m:begChr m:val="("/><m:sepChr m:val=""/><m:endChr m:val=")"/></m:dPr><m:e><m:r><m:t>2</m:t></m:r></m:e></m:d></m:e></m:func><m:r><m:rPr><m:sty m:val="p"/></m:rPr><m:t>mod</m:t></m:r><m:r><m:t>&#x3c3;</m:t></m:r></m:oMath></m:oMathPara>"
@@ -4092,7 +4136,8 @@ RSpec.describe Plurimath::Math do
         ASCIIMATH
         expect(formula.to_display(:omml)).to eql(omml)
         expect(formula.to_display(:latex)).to eql(latex)
-        expect(formula.to_display(:mathml, unary_function_spacing: false)).to eql(mathml)
+        expect(formula.to_display(:mathml,
+                                  unary_function_spacing: false)).to eql(mathml)
         expect(formula.to_display(:asciimath)).to eql(asciimath)
       end
     end
@@ -4131,7 +4176,7 @@ RSpec.describe Plurimath::Math do
         MATHZONE
       end
 
-      it 'should puts Math zone representation of sample example #7' do
+      it "putses Math zone representation of sample example #7" do
         omml = <<~OMML
           |_ Math zone
             |_ "<m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape"><m:oMath><m:d><m:dPr><m:begChr m:val="("/><m:sepChr m:val=""/><m:endChr m:val=")"/></m:dPr><m:e><m:func><m:funcPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:funcPr><m:fName><m:r><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/></w:rPr><m:t>cos</m:t></m:r></m:fName><m:e><m:d><m:dPr><m:begChr m:val="("/><m:sepChr m:val=""/><m:endChr m:val=")"/></m:dPr><m:e><m:r><m:t>2</m:t></m:r></m:e></m:d></m:e></m:func><m:func><m:funcPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:funcPr><m:fName><m:r><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/></w:rPr><m:t>sin</m:t></m:r></m:fName><m:e><m:d><m:dPr><m:begChr m:val="("/><m:sepChr m:val=""/><m:endChr m:val=")"/></m:dPr><m:e><m:r><m:t>3</m:t></m:r></m:e></m:d></m:e></m:func></m:e></m:d><m:r><m:rPr><m:sty m:val="p"/></m:rPr><m:t>mod</m:t></m:r><m:r><m:t>&#x3c3;</m:t></m:r></m:oMath></m:oMathPara>"
@@ -4194,7 +4239,8 @@ RSpec.describe Plurimath::Math do
         ASCIIMATH
         expect(formula.to_display(:omml)).to eql(omml)
         expect(formula.to_display(:latex)).to eql(latex)
-        expect(formula.to_display(:mathml, unary_function_spacing: false)).to eql(mathml)
+        expect(formula.to_display(:mathml,
+                                  unary_function_spacing: false)).to eql(mathml)
         expect(formula.to_display(:asciimath)).to eql(asciimath)
       end
     end
@@ -4231,7 +4277,7 @@ RSpec.describe Plurimath::Math do
         MATHZONE
       end
 
-      it 'should puts Math zone representation of sample example #8' do
+      it "putses Math zone representation of sample example #8" do
         omml = <<~OMML
           |_ Math zone
             |_ "<m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape"><m:oMath><m:d><m:dPr><m:begChr m:val="["/><m:endChr m:val="]"/><m:sepChr m:val=""/><m:grow/></m:dPr><m:e><m:m><m:mPr><m:mcs><m:mc><m:mcPr><m:count m:val="2"/><m:mcJc m:val="center"/></m:mcPr></m:mc></m:mcs><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:mPr><m:mr><m:e><m:r><m:t>&#x3c3;</m:t></m:r></m:e><m:e><m:r><m:t>&#x3b3;</m:t></m:r></m:e></m:mr><m:mr><m:e><m:r><m:t>&#x3b8;</m:t></m:r></m:e><m:e><m:r><m:t>&#x3b1;</m:t></m:r></m:e></m:mr></m:m></m:e></m:d></m:oMath></m:oMathPara>"
@@ -4294,7 +4340,8 @@ RSpec.describe Plurimath::Math do
         ASCIIMATH
         expect(formula.to_display(:omml)).to eql(omml)
         expect(formula.to_display(:latex)).to eql(latex)
-        expect(formula.to_display(:mathml, unary_function_spacing: false)).to eql(mathml)
+        expect(formula.to_display(:mathml,
+                                  unary_function_spacing: false)).to eql(mathml)
         expect(formula.to_display(:asciimath)).to eql(asciimath)
       end
     end
@@ -4313,7 +4360,7 @@ RSpec.describe Plurimath::Math do
         MATHZONE
       end
 
-      it 'should puts Math zone representation of sample example #9' do
+      it "putses Math zone representation of sample example #9" do
         omml = <<~OMML
           |_ Math zone
             |_ "<m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape"><m:oMath><m:limUpp><m:limUppPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:limUppPr><m:e><m:r><m:t>&#x3c3;</m:t></m:r></m:e><m:lim><m:r><m:t>&#x3b8;</m:t></m:r></m:lim></m:limUpp></m:oMath></m:oMathPara>"
@@ -4344,7 +4391,8 @@ RSpec.describe Plurimath::Math do
         ASCIIMATH
         expect(formula.to_display(:omml)).to eql(omml)
         expect(formula.to_display(:latex)).to eql(latex)
-        expect(formula.to_display(:mathml, unary_function_spacing: false)).to eql(mathml)
+        expect(formula.to_display(:mathml,
+                                  unary_function_spacing: false)).to eql(mathml)
         expect(formula.to_display(:asciimath)).to eql(asciimath)
       end
     end
@@ -4363,7 +4411,7 @@ RSpec.describe Plurimath::Math do
         MATHZONE
       end
 
-      it 'should puts Math zone representation of sample example #10' do
+      it "putses Math zone representation of sample example #10" do
         omml = <<~OMML
           |_ Math zone
             |_ "<m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape"><m:oMath><m:limLow><m:limLowPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:limLowPr><m:e><m:r><m:t>&#x3c3;</m:t></m:r></m:e><m:lim><m:r><m:t>&#x3b8;</m:t></m:r></m:lim></m:limLow></m:oMath></m:oMathPara>"
@@ -4394,7 +4442,8 @@ RSpec.describe Plurimath::Math do
         ASCIIMATH
         expect(formula.to_display(:omml)).to eql(omml)
         expect(formula.to_display(:latex)).to eql(latex)
-        expect(formula.to_display(:mathml, unary_function_spacing: false)).to eql(mathml)
+        expect(formula.to_display(:mathml,
+                                  unary_function_spacing: false)).to eql(mathml)
         expect(formula.to_display(:asciimath)).to eql(asciimath)
       end
     end
@@ -4412,7 +4461,7 @@ RSpec.describe Plurimath::Math do
         MATHZONE
       end
 
-      it 'should puts Math zone representation of sample example #11' do
+      it "putses Math zone representation of sample example #11" do
         omml = <<~OMML
           |_ Math zone
             |_ "<m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape"><m:oMath><m:r><m:t>&#x3b8;</m:t></m:r></m:oMath></m:oMathPara>"
@@ -4442,7 +4491,8 @@ RSpec.describe Plurimath::Math do
         ASCIIMATH
         expect(formula.to_display(:omml)).to eql(omml)
         expect(formula.to_display(:latex)).to eql(latex)
-        expect(formula.to_display(:mathml, unary_function_spacing: false)).to eql(mathml)
+        expect(formula.to_display(:mathml,
+                                  unary_function_spacing: false)).to eql(mathml)
         expect(formula.to_display(:asciimath)).to eql(asciimath)
       end
     end
@@ -4482,7 +4532,7 @@ RSpec.describe Plurimath::Math do
         MATHZONE
       end
 
-      it 'should puts Math zone representation of sample example #12' do
+      it "putses Math zone representation of sample example #12" do
         omml = <<~OMML
           |_ Math zone
             |_ "<m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape"><m:oMath><m:d><m:dPr><m:begChr m:val="|"/><m:sepChr m:val=""/><m:endChr m:val="|"/></m:dPr><m:e><m:r><m:t>x</m:t></m:r></m:e></m:d><m:d><m:dPr><m:begChr m:val="⌊"/><m:sepChr m:val=""/><m:endChr m:val="⌋"/></m:dPr><m:e><m:r><m:t>x</m:t></m:r></m:e></m:d><m:d><m:dPr><m:begChr m:val="⌈"/><m:sepChr m:val=""/><m:endChr m:val="⌉"/></m:dPr><m:e><m:r><m:t>x</m:t></m:r></m:e></m:d><m:r><m:t>&#x2225;</m:t></m:r><m:limUpp><m:limUppPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:limUppPr><m:e><m:r><m:t>x</m:t></m:r></m:e><m:lim><m:r><m:t>→</m:t></m:r></m:lim></m:limUpp><m:r><m:t>&#x2225;</m:t></m:r></m:oMath></m:oMathPara>"
@@ -4537,19 +4587,20 @@ RSpec.describe Plurimath::Math do
         ASCIIMATH
         expect(formula.to_display(:omml)).to eql(omml)
         expect(formula.to_display(:latex)).to eql(latex)
-        expect(formula.to_display(:mathml, unary_function_spacing: false)).to eql(mathml)
+        expect(formula.to_display(:mathml,
+                                  unary_function_spacing: false)).to eql(mathml)
         expect(formula.to_display(:asciimath)).to eql(asciimath)
       end
     end
   end
 
   describe "UnicodeMath input to all to_display(:lang) conversions" do
-    subject(:formula) { Plurimath::Math.parse(exp, :unicode) }
+    subject(:formula) { described_class.parse(exp, :unicode) }
 
     context "UnicodeMath Math zone representation of sin and simple equation #1" do
-      let(:exp) { '∑_3^1 sinθ' }
+      let(:exp) { "∑_3^1 sinθ" }
 
-      it 'should puts Math zone representation of sample example #1' do
+      it "putses Math zone representation of sample example #1" do
         omml = <<~OMML
           |_ Math zone
             |_ "<m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape"><m:oMath><m:nary><m:naryPr><m:chr m:val="∑"/><m:limLoc m:val="undOvr"/><m:subHide m:val="0"/><m:supHide m:val="0"/></m:naryPr><m:sub><m:r><m:t>3</m:t></m:r></m:sub><m:sup><m:r><m:t>1</m:t></m:r></m:sup><m:e><m:func><m:funcPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:funcPr><m:fName><m:r><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/></w:rPr><m:t>sin</m:t></m:r></m:fName><m:e><m:r><m:t>&#x3b8;</m:t></m:r></m:e></m:func></m:e></m:nary></m:oMath></m:oMathPara>"
@@ -4607,7 +4658,8 @@ RSpec.describe Plurimath::Math do
         UNICODEMATH
         expect(formula.to_display(:omml)).to eql(omml)
         expect(formula.to_display(:latex)).to eql(latex)
-        expect(formula.to_display(:mathml, unary_function_spacing: false)).to eql(mathml)
+        expect(formula.to_display(:mathml,
+                                  unary_function_spacing: false)).to eql(mathml)
         expect(formula.to_display(:asciimath)).to eql(asciimath)
         expect(formula.to_display(:unicodemath)).to eql(unicodemath)
       end
@@ -4616,7 +4668,7 @@ RSpec.describe Plurimath::Math do
     context "UnicodeMath Math zone representation of parentheses wrapped sin equation #2" do
       let(:exp) { "(a + 1 sin \\theta)" }
 
-      it 'should puts Math zone representation of sample example #2' do
+      it "putses Math zone representation of sample example #2" do
         omml = <<~OMML
           |_ Math zone
             |_ "<m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape"><m:oMath><m:d><m:dPr><m:begChr m:val="("/><m:sepChr m:val=""/><m:endChr m:val=")"/></m:dPr><m:e><m:r><m:t>a</m:t></m:r><m:r><m:t>+</m:t></m:r><m:r><m:t>1</m:t></m:r><m:func><m:funcPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:funcPr><m:fName><m:r><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/></w:rPr><m:t>sin</m:t></m:r></m:fName><m:e><m:r><m:t>&#x3b8;</m:t></m:r></m:e></m:func></m:e></m:d></m:oMath></m:oMathPara>"
@@ -4659,7 +4711,8 @@ RSpec.describe Plurimath::Math do
         UNICODEMATH
         expect(formula.to_display(:omml)).to eql(omml)
         expect(formula.to_display(:latex)).to eql(latex)
-        expect(formula.to_display(:mathml, unary_function_spacing: false)).to eql(mathml)
+        expect(formula.to_display(:mathml,
+                                  unary_function_spacing: false)).to eql(mathml)
         expect(formula.to_display(:asciimath)).to eql(asciimath)
         expect(formula.to_display(:unicodemath)).to eql(unicodemath)
       end
@@ -4668,7 +4721,7 @@ RSpec.describe Plurimath::Math do
     context "UnicodeMath Math zone representation example provided in github issue#113 #3" do
       let(:exp) { '1/(2𝜋) ∫_0^(2𝜋) (bbb"d" 𝜃)/(a + b sin⁡𝜃) = 1/√(a²−b²)' }
 
-      it 'should puts Math zone representation of sample example #3' do
+      it "putses Math zone representation of sample example #3" do
         omml = <<~OMML
           |_ Math zone
             |_ "<m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape"><m:oMath><m:f><m:fPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:fPr><m:num><m:r><m:t>1</m:t></m:r></m:num><m:den><m:r><m:t>2</m:t></m:r><m:r><m:t>&#x3c0;</m:t></m:r></m:den></m:f><m:nary><m:naryPr><m:chr m:val="∫"/><m:limLoc m:val="subSup"/><m:subHide m:val="0"/><m:supHide m:val="0"/></m:naryPr><m:sub><m:r><m:t>0</m:t></m:r></m:sub><m:sup><m:r><m:t>2</m:t></m:r><m:r><m:t>&#x3c0;</m:t></m:r></m:sup><m:e><m:f><m:fPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:fPr><m:num><m:r><m:t>b</m:t></m:r><m:r><m:t>b</m:t></m:r><m:r><m:t>b</m:t></m:r><m:r><m:rPr><m:sty m:val="p"/></m:rPr><m:t>d</m:t></m:r><m:r><m:t>&#x3b8;</m:t></m:r></m:num><m:den><m:r><m:t>a</m:t></m:r><m:r><m:t>+</m:t></m:r><m:r><m:t>b</m:t></m:r><m:func><m:funcPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:funcPr><m:fName><m:r><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/></w:rPr><m:t>sin</m:t></m:r></m:fName><m:e><m:r><m:t>&#x3b8;</m:t></m:r></m:e></m:func></m:den></m:f></m:e></m:nary><m:r><m:t>=</m:t></m:r><m:f><m:fPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:fPr><m:num><m:r><m:t>1</m:t></m:r></m:num><m:den><m:rad><m:radPr><m:degHide m:val="on"/><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:radPr><m:deg/><m:e><m:sSup><m:sSupPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:sSupPr><m:e><m:r><m:t>a</m:t></m:r></m:e><m:sup><m:r><m:t>2</m:t></m:r></m:sup></m:sSup><m:r><m:t>&#x2212;</m:t></m:r><m:sSup><m:sSupPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:sSupPr><m:e><m:r><m:t>b</m:t></m:r></m:e><m:sup><m:r><m:t>2</m:t></m:r></m:sup></m:sSup></m:e></m:rad></m:den></m:f></m:oMath></m:oMathPara>"
@@ -4735,7 +4788,7 @@ RSpec.describe Plurimath::Math do
         LATEX
         mathml = <<~MATHML
           |_ Math zone
-            |_ "<math xmlns=\"http://www.w3.org/1998/Math/MathML\" display=\"block\"><mstyle displaystyle=\"true\"><mfrac><mn>1</mn><mrow><mn>2</mn><mi>&#x3c0;</mi></mrow></mfrac><mrow><msubsup><mo>&#x222b;</mo><mn>0</mn><mrow><mn>2</mn><mi>&#x3c0;</mi></mrow></msubsup><mfrac><mrow><mi>b</mi><mi>b</mi><mi>b</mi><mtext>d</mtext><mi>&#x3b8;</mi></mrow><mrow><mi>a</mi><mo>+</mo><mi>b</mi><mrow><mi>sin</mi><mi>&#x3b8;</mi></mrow></mrow></mfrac></mrow><mo>=</mo><mfrac><mn>1</mn><msqrt><mrow><msup><mi>a</mi><mn>2</mn></msup><mo>&#x2212;</mo><msup><mi>b</mi><mn>2</mn></msup></mrow></msqrt></mfrac></mstyle></math>"
+            |_ "<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mstyle displaystyle="true"><mfrac><mn>1</mn><mrow><mn>2</mn><mi>&#x3c0;</mi></mrow></mfrac><mrow><msubsup><mo>&#x222b;</mo><mn>0</mn><mrow><mn>2</mn><mi>&#x3c0;</mi></mrow></msubsup><mfrac><mrow><mi>b</mi><mi>b</mi><mi>b</mi><mtext>d</mtext><mi>&#x3b8;</mi></mrow><mrow><mi>a</mi><mo>+</mo><mi>b</mi><mrow><mi>sin</mi><mi>&#x3b8;</mi></mrow></mrow></mfrac></mrow><mo>=</mo><mfrac><mn>1</mn><msqrt><mrow><msup><mi>a</mi><mn>2</mn></msup><mo>&#x2212;</mo><msup><mi>b</mi><mn>2</mn></msup></mrow></msqrt></mfrac></mstyle></math>"
                |_ "<mfrac><mn>1</mn><mrow><mn>2</mn><mi>&#x3c0;</mi></mrow></mfrac>" fraction
                |  |_ "<mn>1</mn>" numerator
                |  |_ "<mrow><mn>2</mn><mi>&#x3c0;</mi></mrow>" denominator
@@ -4767,16 +4820,16 @@ RSpec.describe Plurimath::Math do
         MATHML
         asciimath = <<~ASCIIMATH
           |_ Math zone
-            |_ "frac(1)(2 pi) int_(0)^(2 pi) frac(b b b \"d\" theta)(a + b sintheta) = frac(1)(sqrt(a^(2) - b^(2)))"
+            |_ "frac(1)(2 pi) int_(0)^(2 pi) frac(b b b "d" theta)(a + b sintheta) = frac(1)(sqrt(a^(2) - b^(2)))"
                |_ "frac(1)(2 pi)" fraction
                |  |_ "1" numerator
                |  |_ "2 pi" denominator
-               |_ "int_(0)^(2 pi) frac(b b b \"d\" theta)(a + b sintheta)" integral
+               |_ "int_(0)^(2 pi) frac(b b b "d" theta)(a + b sintheta)" integral
                |  |_ "0" lower limit
                |  |_ "2 pi" upper limit
-               |  |_ "frac(b b b \"d\" theta)(a + b sintheta)" integrand
-               |     |_ "frac(b b b \"d\" theta)(a + b sintheta)" fraction
-               |        |_ "b b b \"d\" theta" numerator
+               |  |_ "frac(b b b "d" theta)(a + b sintheta)" integrand
+               |     |_ "frac(b b b "d" theta)(a + b sintheta)" fraction
+               |        |_ "b b b "d" theta" numerator
                |        |_ "a + b sintheta" denominator
                |           |_ "a + b" text
                |           |_ "sintheta" function apply
@@ -4798,49 +4851,50 @@ RSpec.describe Plurimath::Math do
                               |_ "2" script
         ASCIIMATH
         unicodemath = <<~UNICODEMATH
-        |_ Math zone
-          |_ "(1)/(2 π) ∫_(0)^(2 π)▒〖(b b b \"d\" θ)/(a + b sin⁡θ)〗 = (1)/(√(a² − b²))"
-             |_ "(1)/(2 π)" fraction
-             |  |_ "1" numerator
-             |  |_ "2 π" denominator
-             |_ "∫_(0)^(2 π)▒〖(b b b \"d\" θ)/(a + b sin⁡θ)〗" integral
-             |  |_ "0" lower limit
-             |  |_ "2 π" upper limit
-             |  |_ "(b b b \"d\" θ)/(a + b sin⁡θ)" integrand
-             |     |_ "(b b b \"d\" θ)/(a + b sin⁡θ)" fraction
-             |        |_ "b b b \"d\" θ" numerator
-             |        |_ "a + b sin⁡θ" denominator
-             |           |_ "a + b" text
-             |           |_ "sin⁡θ" function apply
-             |              |_ "sin" function name
-             |              |_ "θ" argument
-             |_ "=" text
-             |_ "(1)/(√(a² − b²))" fraction
-                |_ "1" numerator
-                |_ "√(a² − b²)" denominator
-                   |_ "√(a² − b²)" function apply
-                      |_ "sqrt" function name
-                      |_ "a² − b²" argument
-                         |_ "a&#xb2;" superscript
-                         |  |_ "a" base
-                         |  |_ "&#xb2;" script
-                         |_ "−" text
-                         |_ "b&#xb2;" superscript
-                            |_ "b" base
-                            |_ "&#xb2;" script
+          |_ Math zone
+            |_ "(1)/(2 π) ∫_(0)^(2 π)▒〖(b b b "d" θ)/(a + b sin⁡θ)〗 = (1)/(√(a² − b²))"
+               |_ "(1)/(2 π)" fraction
+               |  |_ "1" numerator
+               |  |_ "2 π" denominator
+               |_ "∫_(0)^(2 π)▒〖(b b b "d" θ)/(a + b sin⁡θ)〗" integral
+               |  |_ "0" lower limit
+               |  |_ "2 π" upper limit
+               |  |_ "(b b b "d" θ)/(a + b sin⁡θ)" integrand
+               |     |_ "(b b b "d" θ)/(a + b sin⁡θ)" fraction
+               |        |_ "b b b "d" θ" numerator
+               |        |_ "a + b sin⁡θ" denominator
+               |           |_ "a + b" text
+               |           |_ "sin⁡θ" function apply
+               |              |_ "sin" function name
+               |              |_ "θ" argument
+               |_ "=" text
+               |_ "(1)/(√(a² − b²))" fraction
+                  |_ "1" numerator
+                  |_ "√(a² − b²)" denominator
+                     |_ "√(a² − b²)" function apply
+                        |_ "sqrt" function name
+                        |_ "a² − b²" argument
+                           |_ "a&#xb2;" superscript
+                           |  |_ "a" base
+                           |  |_ "&#xb2;" script
+                           |_ "−" text
+                           |_ "b&#xb2;" superscript
+                              |_ "b" base
+                              |_ "&#xb2;" script
         UNICODEMATH
         expect(formula.to_display(:omml)).to eql(omml)
         expect(formula.to_display(:latex)).to eql(latex)
-        expect(formula.to_display(:mathml, unary_function_spacing: false)).to eql(mathml)
+        expect(formula.to_display(:mathml,
+                                  unary_function_spacing: false)).to eql(mathml)
         expect(formula.to_display(:asciimath)).to eql(asciimath)
         expect(formula.to_display(:unicodemath)).to eql(unicodemath)
       end
     end
 
     context "UnicodeMath Math zone representation of cos function #4" do
-      let(:exp) { 'cos(2)' }
+      let(:exp) { "cos(2)" }
 
-      it 'should puts Math zone representation of sample example #4' do
+      it "putses Math zone representation of sample example #4" do
         omml = <<~OMML
           |_ Math zone
             |_ "<m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape"><m:oMath><m:func><m:funcPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:funcPr><m:fName><m:r><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/></w:rPr><m:t>cos</m:t></m:r></m:fName><m:e><m:d><m:dPr><m:begChr m:val="("/><m:sepChr m:val=""/><m:endChr m:val=")"/></m:dPr><m:e><m:r><m:t>2</m:t></m:r></m:e></m:d></m:e></m:func></m:oMath></m:oMathPara>"
@@ -4883,16 +4937,17 @@ RSpec.describe Plurimath::Math do
         UNICODEMATH
         expect(formula.to_display(:omml)).to eql(omml)
         expect(formula.to_display(:latex)).to eql(latex)
-        expect(formula.to_display(:mathml, unary_function_spacing: false)).to eql(mathml)
+        expect(formula.to_display(:mathml,
+                                  unary_function_spacing: false)).to eql(mathml)
         expect(formula.to_display(:asciimath)).to eql(asciimath)
         expect(formula.to_display(:unicodemath)).to eql(unicodemath)
       end
     end
 
     context "UnicodeMath Math zone representation of power_base #5" do
-      let(:exp) { 'cos⁡(2)_(θ)^(σ) cos⁡(2)' }
+      let(:exp) { "cos⁡(2)_(θ)^(σ) cos⁡(2)" }
 
-      it 'should puts Math zone representation of sample example #5' do
+      it "putses Math zone representation of sample example #5" do
         omml = <<~OMML
           |_ Math zone
             |_ "<m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape"><m:oMath><m:func><m:funcPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:funcPr><m:fName><m:r><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/></w:rPr><m:t>cos</m:t></m:r></m:fName><m:e><m:sSubSup><m:sSubSupPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:sSubSupPr><m:e><m:d><m:dPr><m:begChr m:val="("/><m:sepChr m:val=""/><m:endChr m:val=")"/></m:dPr><m:e><m:r><m:t>2</m:t></m:r></m:e></m:d></m:e><m:sub><m:r><m:t>&#x3b8;</m:t></m:r></m:sub><m:sup><m:r><m:t>&#x3c3;</m:t></m:r></m:sup></m:sSubSup></m:e></m:func><m:func><m:funcPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:funcPr><m:fName><m:r><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/></w:rPr><m:t>cos</m:t></m:r></m:fName><m:e><m:d><m:dPr><m:begChr m:val="("/><m:sepChr m:val=""/><m:endChr m:val=")"/></m:dPr><m:e><m:r><m:t>2</m:t></m:r></m:e></m:d></m:e></m:func></m:oMath></m:oMathPara>"
@@ -4975,16 +5030,17 @@ RSpec.describe Plurimath::Math do
         UNICODEMATH
         expect(formula.to_display(:omml)).to eql(omml)
         expect(formula.to_display(:latex)).to eql(latex)
-        expect(formula.to_display(:mathml, unary_function_spacing: false)).to eql(mathml)
+        expect(formula.to_display(:mathml,
+                                  unary_function_spacing: false)).to eql(mathml)
         expect(formula.to_display(:asciimath)).to eql(asciimath)
         expect(formula.to_display(:unicodemath)).to eql(unicodemath)
       end
     end
 
     context "UnicodeMath Math zone representation of mod #6" do
-      let(:exp) { 'cos⁡(2) mod σ' }
+      let(:exp) { "cos⁡(2) mod σ" }
 
-      it 'should puts Math zone representation of sample example #6' do
+      it "putses Math zone representation of sample example #6" do
         omml = <<~OMML
           |_ Math zone
             |_ "<m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape"><m:oMath><m:func><m:funcPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:funcPr><m:fName><m:r><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/></w:rPr><m:t>cos</m:t></m:r></m:fName><m:e><m:d><m:dPr><m:begChr m:val="("/><m:sepChr m:val=""/><m:endChr m:val=")"/></m:dPr><m:e><m:r><m:t>2</m:t></m:r></m:e></m:d></m:e></m:func><m:r><m:rPr><m:sty m:val="p"/></m:rPr><m:t>mod</m:t></m:r><m:r><m:t>&#x3c3;</m:t></m:r></m:oMath></m:oMathPara>"
@@ -5037,16 +5093,17 @@ RSpec.describe Plurimath::Math do
         UNICODEMATH
         expect(formula.to_display(:omml)).to eql(omml)
         expect(formula.to_display(:latex)).to eql(latex)
-        expect(formula.to_display(:mathml, unary_function_spacing: false)).to eql(mathml)
+        expect(formula.to_display(:mathml,
+                                  unary_function_spacing: false)).to eql(mathml)
         expect(formula.to_display(:asciimath)).to eql(asciimath)
         expect(formula.to_display(:unicodemath)).to eql(unicodemath)
       end
     end
 
     context "UnicodeMath Math zone representation of mod with multiple base values #7" do
-      let(:exp) { '(cos⁡(2) sin⁡(3))mod σ' }
+      let(:exp) { "(cos⁡(2) sin⁡(3))mod σ" }
 
-      it 'should puts Math zone representation of sample example #7' do
+      it "putses Math zone representation of sample example #7" do
         omml = <<~OMML
           |_ Math zone
             |_ "<m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape"><m:oMath><m:d><m:dPr><m:begChr m:val="("/><m:sepChr m:val=""/><m:endChr m:val=")"/></m:dPr><m:e><m:func><m:funcPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:funcPr><m:fName><m:r><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/></w:rPr><m:t>cos</m:t></m:r></m:fName><m:e><m:d><m:dPr><m:begChr m:val="("/><m:sepChr m:val=""/><m:endChr m:val=")"/></m:dPr><m:e><m:r><m:t>2</m:t></m:r></m:e></m:d></m:e></m:func><m:func><m:funcPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:funcPr><m:fName><m:r><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/></w:rPr><m:t>sin</m:t></m:r></m:fName><m:e><m:d><m:dPr><m:begChr m:val="("/><m:sepChr m:val=""/><m:endChr m:val=")"/></m:dPr><m:e><m:r><m:t>3</m:t></m:r></m:e></m:d></m:e></m:func></m:e></m:d><m:r><m:rPr><m:sty m:val="p"/></m:rPr><m:t>mod</m:t></m:r><m:r><m:t>&#x3c3;</m:t></m:r></m:oMath></m:oMathPara>"
@@ -5119,16 +5176,17 @@ RSpec.describe Plurimath::Math do
         UNICODEMATH
         expect(formula.to_display(:omml)).to eql(omml)
         expect(formula.to_display(:latex)).to eql(latex)
-        expect(formula.to_display(:mathml, unary_function_spacing: false)).to eql(mathml)
+        expect(formula.to_display(:mathml,
+                                  unary_function_spacing: false)).to eql(mathml)
         expect(formula.to_display(:asciimath)).to eql(asciimath)
         expect(formula.to_display(:unicodemath)).to eql(unicodemath)
       end
     end
 
     context "UnicodeMath Math zone representation of table #8" do
-      let(:exp) { 'ⓢ(σ&γ@θ&α)' }
+      let(:exp) { "ⓢ(σ&γ@θ&α)" }
 
-      it 'should puts Math zone representation of sample example #8' do
+      it "putses Math zone representation of sample example #8" do
         omml = <<~OMML
           |_ Math zone
             |_ "<m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape"><m:oMath><m:d><m:dPr><m:begChr m:val="["/><m:endChr m:val="]"/><m:sepChr m:val=""/><m:grow/></m:dPr><m:e><m:m><m:mPr><m:mcs><m:mc><m:mcPr><m:count m:val="2"/><m:mcJc m:val="center"/></m:mcPr></m:mc></m:mcs><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:mPr><m:mr><m:e><m:r><m:t>&#x3c3;</m:t></m:r></m:e><m:e><m:r><m:t>&#x3b3;</m:t></m:r></m:e></m:mr><m:mr><m:e><m:r><m:t>&#x3b8;</m:t></m:r></m:e><m:e><m:r><m:t>&#x3b1;</m:t></m:r></m:e></m:mr></m:m></m:e></m:d></m:oMath></m:oMathPara>"
@@ -5206,16 +5264,17 @@ RSpec.describe Plurimath::Math do
         UNICODEMATH
         expect(formula.to_display(:omml)).to eql(omml)
         expect(formula.to_display(:latex)).to eql(latex)
-        expect(formula.to_display(:mathml, unary_function_spacing: false)).to eql(mathml)
+        expect(formula.to_display(:mathml,
+                                  unary_function_spacing: false)).to eql(mathml)
         expect(formula.to_display(:asciimath)).to eql(asciimath)
         expect(formula.to_display(:unicodemath)).to eql(unicodemath)
       end
     end
 
     context "UnicodeMath Math zone representation of overset #9" do
-      let(:exp) { '(θ)┴(σ)' }
+      let(:exp) { "(θ)┴(σ)" }
 
-      it 'should puts Math zone representation of sample example #9' do
+      it "putses Math zone representation of sample example #9" do
         omml = <<~OMML
           |_ Math zone
             |_ "<m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape"><m:oMath><m:limUpp><m:limUppPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:limUppPr><m:e><m:r><m:t>&#x3c3;</m:t></m:r></m:e><m:lim><m:r><m:t>&#x3b8;</m:t></m:r></m:lim></m:limUpp></m:oMath></m:oMathPara>"
@@ -5244,7 +5303,7 @@ RSpec.describe Plurimath::Math do
                   |_ "sigma" base
                   |_ "theta" supscript
         ASCIIMATH
-        unicodemath = <<~UNICODEMATH
+        <<~UNICODEMATH
           |_ Math zone
             |_ "θ┴σ"
                |_ "θ┴σ" overset
@@ -5253,15 +5312,16 @@ RSpec.describe Plurimath::Math do
         UNICODEMATH
         expect(formula.to_display(:omml)).to eql(omml)
         expect(formula.to_display(:latex)).to eql(latex)
-        expect(formula.to_display(:mathml, unary_function_spacing: false)).to eql(mathml)
+        expect(formula.to_display(:mathml,
+                                  unary_function_spacing: false)).to eql(mathml)
         expect(formula.to_display(:asciimath)).to eql(asciimath)
       end
     end
 
     context "UnicodeMath Math zone representation of underset #10" do
-      let(:exp) { 'θ┬σ' }
+      let(:exp) { "θ┬σ" }
 
-      it 'should puts Math zone representation of sample example #10' do
+      it "putses Math zone representation of sample example #10" do
         omml = <<~OMML
           |_ Math zone
             |_ "<m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape"><m:oMath><m:limLow><m:limLowPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:limLowPr><m:e><m:r><m:t>&#x3c3;</m:t></m:r></m:e><m:lim><m:r><m:t>&#x3b8;</m:t></m:r></m:lim></m:limLow></m:oMath></m:oMathPara>"
@@ -5290,7 +5350,7 @@ RSpec.describe Plurimath::Math do
                   |_ "sigma" underscript value
                   |_ "theta" base expression
         ASCIIMATH
-        unicodemath = <<~UNICODEMATH
+        <<~UNICODEMATH
           |_ Math zone
             |_ "θ┬σ"
                |_ "θ┬σ" underset
@@ -5299,7 +5359,8 @@ RSpec.describe Plurimath::Math do
         UNICODEMATH
         expect(formula.to_display(:omml)).to eql(omml)
         expect(formula.to_display(:latex)).to eql(latex)
-        expect(formula.to_display(:mathml, unary_function_spacing: false)).to eql(mathml)
+        expect(formula.to_display(:mathml,
+                                  unary_function_spacing: false)).to eql(mathml)
         expect(formula.to_display(:asciimath)).to eql(asciimath)
       end
     end

@@ -1,11 +1,10 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Symbols::Angleubar do
-
   describe ".initialize" do
-    it 'returns instance of Symbol Angleubar' do
+    it "returns instance of Symbol Angleubar" do
       klass = described_class.new
-      expect(klass).to be_a(Plurimath::Math::Symbols::Angleubar)
+      expect(klass).to be_a(described_class)
     end
   end
 

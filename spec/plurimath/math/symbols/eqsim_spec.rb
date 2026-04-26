@@ -1,11 +1,10 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Symbols::Eqsim do
-
   describe ".initialize" do
-    it 'returns instance of Symbol Eqsim' do
+    it "returns instance of Symbol Eqsim" do
       klass = described_class.new
-      expect(klass).to be_a(Plurimath::Math::Symbols::Eqsim)
+      expect(klass).to be_a(described_class)
     end
   end
 

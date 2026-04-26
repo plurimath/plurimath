@@ -1,11 +1,10 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Symbols::Parallelogram do
-
   describe ".initialize" do
-    it 'returns instance of Symbol Parallelogram' do
+    it "returns instance of Symbol Parallelogram" do
       klass = described_class.new
-      expect(klass).to be_a(Plurimath::Math::Symbols::Parallelogram)
+      expect(klass).to be_a(described_class)
     end
   end
 

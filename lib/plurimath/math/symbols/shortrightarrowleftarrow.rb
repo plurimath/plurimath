@@ -3,8 +3,12 @@ module Plurimath
     module Symbols
       class Shortrightarrowleftarrow < Symbol
         INPUT = {
-          unicodemath: [["&#x2944;"], parsing_wrapper(["shortrightarrowleftarrow"], lang: :unicode)],
-          asciimath: [["&#x2944;"], parsing_wrapper(["shortrightarrowleftarrow"], lang: :asciimath)],
+          unicodemath: [["&#x2944;"],
+                        parsing_wrapper(["shortrightarrowleftarrow"],
+                                        lang: :unicode)],
+          asciimath: [["&#x2944;"],
+                      parsing_wrapper(["shortrightarrowleftarrow"],
+                                      lang: :asciimath)],
           mathml: ["&#x2944;"],
           latex: [["shortrightarrowleftarrow", "&#x2944;"]],
           omml: ["&#x2944;"],

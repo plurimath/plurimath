@@ -1,11 +1,9 @@
 # frozen_string_literal: true
 
-
 module Plurimath
   module Math
     module Function
       class Menclose < BinaryFunction
-
         FUNCTION = {
           name: "enclosure",
           first_value: "enclosure type",
@@ -16,13 +14,13 @@ module Plurimath
           bottom: "hideBot",
           left: "hideLeft",
           right: "hideRight",
-        }
+        }.freeze
         STRIKES_NOTATIONS = {
           horizontalstrike: "strikeH",
           verticalstrike: "strikeV",
           updiagonalstrike: "strikeBLTR",
           downdiagonalstrike: "strikeTLBR",
-        }
+        }.freeze
 
         def to_asciimath(options:)
           parameter_two&.to_asciimath(options: options)
@@ -31,7 +29,10 @@ module Plurimath
         def to_mathml_without_math_tag(intent, options:)
           attributes = { notation: parameter_one }
           menclose = ox_element("menclose", attributes: attributes)
-          menclose << parameter_two.to_mathml_without_math_tag(intent, options: options) if parameter_two
+          if parameter_two
+            menclose << parameter_two.to_mathml_without_math_tag(intent,
+                                                                 options: options)
+          end
           menclose
         end
 
@@ -50,7 +51,8 @@ module Plurimath
             borderbox,
             [
               borderboxpr,
-              omml_parameter(parameter_two, display_style, tag_name: "e", options: options),
+              omml_parameter(parameter_two, display_style, tag_name: "e",
+                                                           options: options),
             ],
           )
           [borderbox]
@@ -58,7 +60,8 @@ module Plurimath
 
         def to_unicodemath(options:)
           if unicode_symbol?
-            "#{unicode_symbol}#{unicodemath_parens(parameter_two, options: options)}"
+            "#{unicode_symbol}#{unicodemath_parens(parameter_two,
+                                                   options: options)}"
           elsif masked_class?
             first_value = Utility.notations_to_mask(parameter_one) if parameter_one
             second_value = parameter_two&.to_unicodemath(options: options) if parameter_two
@@ -78,7 +81,9 @@ module Plurimath
         end
 
         def four_sided_notations(borderpr)
-          return if %w[box circle roundedbox].any? { |value| parameter_one.include?(value) }
+          return if %w[box circle roundedbox].any? do |value|
+            parameter_one.include?(value)
+          end
 
           FOUR_SIDED_NOTATIONS.each do |side, rep|
             border_ox_element(rep, !parameter_one.include?(side.to_s), borderpr)
@@ -87,7 +92,8 @@ module Plurimath
 
         def strikes_notations(borderpr)
           STRIKES_NOTATIONS.each do |strike, rep|
-            border_ox_element(rep, parameter_one.include?(strike.to_s), borderpr)
+            border_ox_element(rep, parameter_one.include?(strike.to_s),
+                              borderpr)
           end
         end
 

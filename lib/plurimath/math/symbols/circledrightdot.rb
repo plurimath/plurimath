@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Circledrightdot < Symbol
         INPUT = {
-          unicodemath: [["&#x2686;"], parsing_wrapper(["circledrightdot"], lang: :unicode)],
-          asciimath: [["&#x2686;"], parsing_wrapper(["circledrightdot"], lang: :asciimath)],
+          unicodemath: [["&#x2686;"],
+                        parsing_wrapper(["circledrightdot"], lang: :unicode)],
+          asciimath: [["&#x2686;"],
+                      parsing_wrapper(["circledrightdot"], lang: :asciimath)],
           mathml: ["&#x2686;"],
           latex: [["circledrightdot", "&#x2686;"]],
           omml: ["&#x2686;"],

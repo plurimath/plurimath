@@ -1,11 +1,10 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Symbols::Conjquant do
-
   describe ".initialize" do
-    it 'returns instance of Symbol Conjquant' do
+    it "returns instance of Symbol Conjquant" do
       klass = described_class.new
-      expect(klass).to be_a(Plurimath::Math::Symbols::Conjquant)
+      expect(klass).to be_a(described_class)
     end
   end
 

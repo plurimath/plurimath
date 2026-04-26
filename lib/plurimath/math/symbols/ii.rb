@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Ii < Symbol
         INPUT = {
-          unicodemath: [["ii", "&#x2148;"], parsing_wrapper(["ComplexI"], lang: :unicode)],
-          asciimath: [["&#x2148;"], parsing_wrapper(["ii", "ComplexI"], lang: :asciimath)],
+          unicodemath: [["ii", "&#x2148;"],
+                        parsing_wrapper(["ComplexI"], lang: :unicode)],
+          asciimath: [["&#x2148;"],
+                      parsing_wrapper(["ii", "ComplexI"], lang: :asciimath)],
           mathml: ["&#x2148;"],
           latex: [["ComplexI", "ii", "&#x2148;"]],
           omml: ["&#x2148;"],

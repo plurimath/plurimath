@@ -3,10 +3,12 @@ module Plurimath
     module Symbols
       class Uarr < Symbol
         INPUT = {
-          unicodemath: [["uparrow", "&#x2191;"], parsing_wrapper(["uarr"], lang: :unicode)],
+          unicodemath: [["uparrow", "&#x2191;"],
+                        parsing_wrapper(["uarr"], lang: :unicode)],
           asciimath: [["uparrow", "uarr", "&#x2191;"]],
           mathml: ["&#x2191;"],
-          latex: [["uparrow", "&#x2191;"], parsing_wrapper(["uarr"], lang: :latex)],
+          latex: [["uparrow", "&#x2191;"],
+                  parsing_wrapper(["uarr"], lang: :latex)],
           omml: ["&#x2191;"],
           html: ["&#x2191;"],
         }.freeze

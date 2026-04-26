@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Elsdot < Symbol
         INPUT = {
-          unicodemath: [["&#x2a97;"], parsing_wrapper(["elsdot"], lang: :unicode)],
-          asciimath: [["&#x2a97;"], parsing_wrapper(["elsdot"], lang: :asciimath)],
+          unicodemath: [["&#x2a97;"],
+                        parsing_wrapper(["elsdot"], lang: :unicode)],
+          asciimath: [["&#x2a97;"],
+                      parsing_wrapper(["elsdot"], lang: :asciimath)],
           mathml: ["&#x2a97;"],
           latex: [["elsdot", "&#x2a97;"]],
           omml: ["&#x2a97;"],

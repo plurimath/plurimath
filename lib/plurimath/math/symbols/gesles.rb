@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Gesles < Symbol
         INPUT = {
-          unicodemath: [["&#x2a94;"], parsing_wrapper(["gesles"], lang: :unicode)],
-          asciimath: [["&#x2a94;"], parsing_wrapper(["gesles"], lang: :asciimath)],
+          unicodemath: [["&#x2a94;"],
+                        parsing_wrapper(["gesles"], lang: :unicode)],
+          asciimath: [["&#x2a94;"],
+                      parsing_wrapper(["gesles"], lang: :asciimath)],
           mathml: ["&#x2a94;"],
           latex: [["gesles", "&#x2a94;"]],
           omml: ["&#x2a94;"],

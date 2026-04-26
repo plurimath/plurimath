@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Capricornus < Symbol
         INPUT = {
-          unicodemath: [["&#x2651;"], parsing_wrapper(["capricornus"], lang: :unicode)],
-          asciimath: [["&#x2651;"], parsing_wrapper(["capricornus"], lang: :asciimath)],
+          unicodemath: [["&#x2651;"],
+                        parsing_wrapper(["capricornus"], lang: :unicode)],
+          asciimath: [["&#x2651;"],
+                      parsing_wrapper(["capricornus"], lang: :asciimath)],
           mathml: ["&#x2651;"],
           latex: [["capricornus", "&#x2651;"]],
           omml: ["&#x2651;"],

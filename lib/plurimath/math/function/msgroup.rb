@@ -1,12 +1,13 @@
 # frozen_string_literal: true
 
-
 module Plurimath
   module Math
     module Function
       class Msgroup < UnaryFunction
         def to_asciimath(options:)
-          parameter_one.map { |param| param.to_asciimath(options: options) }.join
+          parameter_one.map do |param|
+            param.to_asciimath(options: options)
+          end.join
         end
 
         def to_latex(options:)
@@ -16,7 +17,9 @@ module Plurimath
         def to_mathml_without_math_tag(intent, options:)
           Utility.update_nodes(
             Utility.ox_element("msgroup"),
-            parameter_one.map { |object| object&.to_mathml_without_math_tag(intent, options: options) },
+            parameter_one.map do |object|
+              object&.to_mathml_without_math_tag(intent, options: options)
+            end,
           )
         end
 
@@ -28,50 +31,64 @@ module Plurimath
           "<i>#{parameter_one.map(&:to_html).join}</i>"
         end
 
-        def to_asciimath_math_zone(spacing, last = false, _indent = true, options:)
+        def to_asciimath_math_zone(spacing, last = false, _indent = true,
+options:)
           [
             "#{spacing}\"msgroup\" function apply\n",
-            Formula.new(parameter_one).to_asciimath_math_zone(gsub_spacing(spacing, last), options: options),
+            Formula.new(parameter_one).to_asciimath_math_zone(
+              gsub_spacing(spacing, last), options: options
+            ),
           ]
         end
 
         def to_latex_math_zone(spacing, last = false, indent = true, options:)
           [
             "#{spacing}\"msgroup\" function apply\n",
-            Formula.new(parameter_one).to_latex_math_zone(gsub_spacing(spacing, last), last, indent, options: options),
+            Formula.new(parameter_one).to_latex_math_zone(
+              gsub_spacing(spacing, last), last, indent, options: options
+            ),
           ]
         end
 
         def to_mathml_math_zone(spacing, last = false, indent = true, options:)
           [
             "#{spacing}\"msgroup\" function apply\n",
-            Formula.new(parameter_one).to_mathml_math_zone(gsub_spacing(spacing, last), last, indent, options: options),
+            Formula.new(parameter_one).to_mathml_math_zone(
+              gsub_spacing(spacing, last), last, indent, options: options
+            ),
           ]
         end
 
-        def to_omml_math_zone(spacing, last = false, indent = true, display_style:, options:)
+        def to_omml_math_zone(spacing, last = false, indent = true,
+display_style:, options:)
           [
             "#{spacing}\"msgroup\" function apply\n",
-            Formula.new(parameter_one).to_omml_math_zone(gsub_spacing(spacing, last), last, indent, display_style: display_style, options: options),
+            Formula.new(parameter_one).to_omml_math_zone(
+              gsub_spacing(spacing,
+                           last), last, indent, display_style: display_style, options: options
+            ),
           ]
         end
 
-        def to_unicodemath_math_zone(spacing, last = false, indent = true, options:)
+        def to_unicodemath_math_zone(spacing, last = false, indent = true,
+options:)
           [
             "#{spacing}\"msgroup\" function apply\n",
-            Formula.new(parameter_one).to_unicodemath_math_zone(gsub_spacing(spacing, last), last, indent, options: options),
+            Formula.new(parameter_one).to_unicodemath_math_zone(
+              gsub_spacing(spacing, last), last, indent, options: options
+            ),
           ]
         end
 
         def to_unicodemath(options:)
-          parameter_one.map { |param| param.to_unicodemath(options: options) }.join
+          parameter_one.map do |param|
+            param.to_unicodemath(options: options)
+          end.join
         end
 
         def line_breaking(obj)
           custom_array_line_breaking(obj)
         end
-
-        private
       end
     end
   end

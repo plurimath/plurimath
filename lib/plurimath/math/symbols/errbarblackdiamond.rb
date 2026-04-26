@@ -3,8 +3,12 @@ module Plurimath
     module Symbols
       class Errbarblackdiamond < Symbol
         INPUT = {
-          unicodemath: [["&#x29f1;"], parsing_wrapper(["errbarblackdiamond"], lang: :unicode)],
-          asciimath: [["&#x29f1;"], parsing_wrapper(["errbarblackdiamond"], lang: :asciimath)],
+          unicodemath: [["&#x29f1;"],
+                        parsing_wrapper(["errbarblackdiamond"],
+                                        lang: :unicode)],
+          asciimath: [["&#x29f1;"],
+                      parsing_wrapper(["errbarblackdiamond"],
+                                      lang: :asciimath)],
           mathml: ["&#x29f1;"],
           latex: [["errbarblackdiamond", "&#x29f1;"]],
           omml: ["&#x29f1;"],

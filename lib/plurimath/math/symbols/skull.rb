@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Skull < Symbol
         INPUT = {
-          unicodemath: [["&#x2620;"], parsing_wrapper(["skull"], lang: :unicode)],
-          asciimath: [["&#x2620;"], parsing_wrapper(["skull"], lang: :asciimath)],
+          unicodemath: [["&#x2620;"],
+                        parsing_wrapper(["skull"], lang: :unicode)],
+          asciimath: [["&#x2620;"],
+                      parsing_wrapper(["skull"], lang: :asciimath)],
           mathml: ["&#x2620;"],
           latex: [["skull", "&#x2620;"]],
           omml: ["&#x2620;"],

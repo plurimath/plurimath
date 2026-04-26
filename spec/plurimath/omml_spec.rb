@@ -1,18 +1,19 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Omml do
-
   describe ".initialize" do
     subject(:omml) { described_class.new(string) }
 
     context "contains simple OMML value" do
-      let(:string) { "<m:oMathPara><m:oMath><m:r><m:t>dy</m:t></m:r></m:oMath></m:oMathPara>" }
-
-      it 'returns instance of Omml' do
-        expect(omml).to be_a(Plurimath::Omml)
+      let(:string) do
+        "<m:oMathPara><m:oMath><m:r><m:t>dy</m:t></m:r></m:oMath></m:oMathPara>"
       end
 
-      it 'returns Mathml instance' do
+      it "returns instance of Omml" do
+        expect(omml).to be_a(described_class)
+      end
+
+      it "returns Mathml instance" do
         expect(omml.text).to eql(string)
       end
     end
@@ -57,9 +58,9 @@ RSpec.describe Plurimath::Omml do
         OMML
       end
 
-      it 'returns parsed Asciimath to Formula' do
+      it "returns parsed Asciimath to Formula" do
         latex = '\int_{2}^{1} 3'
-        asciimath = 'int_(2)^(1) 3'
+        asciimath = "int_(2)^(1) 3"
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -82,7 +83,7 @@ RSpec.describe Plurimath::Omml do
       end
     end
 
-    context 'converts characters to unicode example #02' do
+    context "converts characters to unicode example #02" do
       let(:input) do
         <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" displaystyle="true">
@@ -120,7 +121,7 @@ RSpec.describe Plurimath::Omml do
         OMML
       end
 
-      it 'converts `alpha`, `α` to `&#x3b1;`' do
+      it "converts `alpha`, `α` to `&#x3b1;`" do
         formula = Plurimath::Math.parse(input, :mathml)
         expect(formula.to_omml).to eq(expected_output)
       end
@@ -158,9 +159,9 @@ RSpec.describe Plurimath::Omml do
         OMML
       end
 
-      it 'converts and matches OMML to MathML' do
+      it "converts and matches OMML to MathML" do
         latex = '\int_{2} 3'
-        asciimath = 'int_(2) 3'
+        asciimath = "int_(2) 3"
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -214,9 +215,9 @@ RSpec.describe Plurimath::Omml do
         OMML
       end
 
-      it 'returns parsed Asciimath to Formula' do
+      it "returns parsed Asciimath to Formula" do
         latex = '\int_{2} 3'
-        asciimath = 'int_(2) 3'
+        asciimath = "int_(2) 3"
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -270,9 +271,9 @@ RSpec.describe Plurimath::Omml do
         OMML
       end
 
-      it 'returns parsed Asciimath to Formula' do
+      it "returns parsed Asciimath to Formula" do
         latex = '\int^{1} 3'
-        asciimath = 'int^(1) 3'
+        asciimath = "int^(1) 3"
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -326,9 +327,9 @@ RSpec.describe Plurimath::Omml do
         OMML
       end
 
-      it 'returns parsed Asciimath to Formula' do
+      it "returns parsed Asciimath to Formula" do
         latex = '\int^{1} 3'
-        asciimath = 'int^(1) 3'
+        asciimath = "int^(1) 3"
         mathml = <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
             <mstyle displaystyle="true">
@@ -368,7 +369,7 @@ RSpec.describe Plurimath::Omml do
         OMML
       end
 
-      it 'returns parsed Asciimath to Formula' do
+      it "returns parsed Asciimath to Formula" do
         latex = '\overline{\text{AB}}'
         asciimath = 'bar("AB")'
         mathml = <<~MATHML
@@ -390,11 +391,11 @@ RSpec.describe Plurimath::Omml do
     context "contains m:acc with combining overline (U+0305) from plurimath/plurimath#engageny" do
       let(:string) do
         '<m:oMath xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">' \
-        '<m:acc><m:accPr><m:chr m:val="&#x305;"/><m:ctrlPr><w:rPr>' \
-        '<w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/>' \
-        '</w:rPr></m:ctrlPr></m:accPr><m:e><m:r><w:rPr>' \
-        '<w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>' \
-        '</w:rPr><m:t>AB</m:t></m:r></m:e></m:acc></m:oMath>'
+          '<m:acc><m:accPr><m:chr m:val="&#x305;"/><m:ctrlPr><w:rPr>' \
+          '<w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/>' \
+          "</w:rPr></m:ctrlPr></m:accPr><m:e><m:r><w:rPr>" \
+          '<w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>' \
+          "</w:rPr><m:t>AB</m:t></m:r></m:e></m:acc></m:oMath>"
       end
 
       it "converts overbar accent to LaTeX \\overline" do
@@ -417,8 +418,8 @@ RSpec.describe Plurimath::Omml do
     context "contains m:acc with combining left right arrow above (U+20E1) val attribute" do
       let(:string) do
         '<m:oMath xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">' \
-        '<m:acc><m:accPr><m:chr m:val="&#x20e1;"/></m:accPr><m:e><m:r>' \
-        '<m:t>AB</m:t></m:r></m:e></m:acc></m:oMath>'
+          '<m:acc><m:accPr><m:chr m:val="&#x20e1;"/></m:accPr><m:e><m:r>' \
+          "<m:t>AB</m:t></m:r></m:e></m:acc></m:oMath>"
       end
 
       it "parses U+20E1 accent without error" do
@@ -515,7 +516,7 @@ RSpec.describe Plurimath::Omml do
   end
 
   describe ".to_omml" do
-    context 'converts characters to unicode example #02' do
+    context "converts characters to unicode example #02" do
       let(:input) do
         <<~MATHML
           <math xmlns="http://www.w3.org/1998/Math/MathML" displaystyle="true">
@@ -552,7 +553,7 @@ RSpec.describe Plurimath::Omml do
         OMML
       end
 
-      it 'converts `alpha`, `α` to `&#x3b1;`' do
+      it "converts `alpha`, `α` to `&#x3b1;`" do
         formula = Plurimath::Math.parse(input, :mathml)
         expect(formula.to_omml).to eq(expected_output)
       end

@@ -1,11 +1,10 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Symbols::Leftteevector do
-
   describe ".initialize" do
-    it 'returns instance of Symbol Leftteevector' do
+    it "returns instance of Symbol Leftteevector" do
       klass = described_class.new
-      expect(klass).to be_a(Plurimath::Math::Symbols::Leftteevector)
+      expect(klass).to be_a(described_class)
     end
   end
 

@@ -3,10 +3,12 @@ module Plurimath
     module Symbols
       class Aa < Symbol
         INPUT = {
-          unicodemath: [["forall", "&#x2200;"], parsing_wrapper(["AA"], lang: :unicode)],
+          unicodemath: [["forall", "&#x2200;"],
+                        parsing_wrapper(["AA"], lang: :unicode)],
           asciimath: [["forall", "AA", "&#x2200;"]],
           mathml: ["&#x2200;"],
-          latex: [["forall", "&#x2200;"], parsing_wrapper(["AA"], lang: :latex)],
+          latex: [["forall", "&#x2200;"],
+                  parsing_wrapper(["AA"], lang: :latex)],
           omml: ["&#x2200;"],
           html: ["&#x2200;"],
         }.freeze

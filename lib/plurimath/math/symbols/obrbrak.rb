@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Obrbrak < Symbol
         INPUT = {
-          unicodemath: [["&#x23e0;"], parsing_wrapper(["obrbrak"], lang: :unicode)],
-          asciimath: [["&#x23e0;"], parsing_wrapper(["obrbrak"], lang: :asciimath)],
+          unicodemath: [["&#x23e0;"],
+                        parsing_wrapper(["obrbrak"], lang: :unicode)],
+          asciimath: [["&#x23e0;"],
+                      parsing_wrapper(["obrbrak"], lang: :asciimath)],
           mathml: ["&#x23e0;"],
           latex: [["obrbrak", "&#x23e0;"]],
           omml: ["&#x23e0;"],

@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Twocaps < Symbol
         INPUT = {
-          unicodemath: [["&#x2a4b;"], parsing_wrapper(["twocaps"], lang: :unicode)],
-          asciimath: [["&#x2a4b;"], parsing_wrapper(["twocaps"], lang: :asciimath)],
+          unicodemath: [["&#x2a4b;"],
+                        parsing_wrapper(["twocaps"], lang: :unicode)],
+          asciimath: [["&#x2a4b;"],
+                      parsing_wrapper(["twocaps"], lang: :asciimath)],
           mathml: ["&#x2a4b;"],
           latex: [["twocaps", "&#x2a4b;"]],
           omml: ["&#x2a4b;"],

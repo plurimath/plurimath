@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Lsime < Symbol
         INPUT = {
-          unicodemath: [["&#x2a8d;"], parsing_wrapper(["lsime"], lang: :unicode)],
-          asciimath: [["&#x2a8d;"], parsing_wrapper(["lsime"], lang: :asciimath)],
+          unicodemath: [["&#x2a8d;"],
+                        parsing_wrapper(["lsime"], lang: :unicode)],
+          asciimath: [["&#x2a8d;"],
+                      parsing_wrapper(["lsime"], lang: :asciimath)],
           mathml: ["&#x2a8d;"],
           latex: [["lsime", "&#x2a8d;"]],
           omml: ["&#x2a8d;"],

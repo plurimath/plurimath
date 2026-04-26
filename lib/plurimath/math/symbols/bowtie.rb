@@ -3,10 +3,13 @@ module Plurimath
     module Symbols
       class Bowtie < Symbol
         INPUT = {
-          unicodemath: [["bowtie", "&#x22c8;"], parsing_wrapper(["|><|", "lrtimes"], lang: :unicode)],
-          asciimath: [["bowtie", "|><|", "&#x22c8;"], parsing_wrapper(["lrtimes"], lang: :asciimath)],
+          unicodemath: [["bowtie", "&#x22c8;"],
+                        parsing_wrapper(["|><|", "lrtimes"], lang: :unicode)],
+          asciimath: [["bowtie", "|><|", "&#x22c8;"],
+                      parsing_wrapper(["lrtimes"], lang: :asciimath)],
           mathml: ["&#x22c8;"],
-          latex: [["lrtimes", "bowtie", "&#x22c8;"], parsing_wrapper(["|><|"], lang: :latex)],
+          latex: [["lrtimes", "bowtie", "&#x22c8;"],
+                  parsing_wrapper(["|><|"], lang: :latex)],
           omml: ["&#x22c8;"],
           html: ["&#x22c8;"],
         }.freeze

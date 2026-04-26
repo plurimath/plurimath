@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Xi < Symbol
         INPUT = {
-          unicodemath: [["xi", "&#x3be;"], parsing_wrapper(["upxi"], lang: :unicode)],
-          asciimath: [["xi", "&#x3be;"], parsing_wrapper(["upxi"], lang: :asciimath)],
+          unicodemath: [["xi", "&#x3be;"],
+                        parsing_wrapper(["upxi"], lang: :unicode)],
+          asciimath: [["xi", "&#x3be;"],
+                      parsing_wrapper(["upxi"], lang: :asciimath)],
           mathml: ["&#x3be;"],
           latex: [["upxi", "xi", "&#x3be;"]],
           omml: ["&#x3be;"],

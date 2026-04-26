@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-
 module Plurimath
   module Math
     module Function
@@ -19,23 +18,32 @@ module Plurimath
 
           def to_mathml_without_math_tag(intent, options:)
             table_tag = ox_element("mtable", attributes: table_attribute)
-            table_tag["intent"] = ":matrix(#{value.length},#{td_count})" if intent
+            if intent
+              table_tag["intent"] =
+                ":matrix(#{value.length},#{td_count})"
+            end
             Utility.update_nodes(
               table_tag,
-              value&.map { |object| object&.to_mathml_without_math_tag(intent, options: options) },
+              value&.map do |object|
+                object&.to_mathml_without_math_tag(intent, options: options)
+              end,
             )
             Utility.update_nodes(
               ox_element("mrow", attributes: intent_attr(intent)),
               [
-                mo_element(mathml_parenthesis(open_paren, intent, options: options)),
+                mo_element(mathml_parenthesis(open_paren, intent,
+                                              options: options)),
                 table_tag,
-                mo_element(mathml_parenthesis(close_paren, intent, options: options)),
+                mo_element(mathml_parenthesis(close_paren, intent,
+                                              options: options)),
               ],
             )
           end
 
           def to_unicodemath(options:)
-            unicode_value = value.map { |val| val.to_unicodemath(options: options) }.join("@")
+            unicode_value = value.map do |val|
+              val.to_unicodemath(options: options)
+            end.join("@")
             "#{matrix_symbol}(#{unicode_value})"
           end
 
@@ -53,7 +61,7 @@ module Plurimath
             return {} unless intent
 
             {
-              intent: intent_names.dig(capital_bmatrix? ? :curly_braced_matrix : :bracketed_matrix)
+              intent: intent_names[capital_bmatrix? ? :curly_braced_matrix : :bracketed_matrix],
             }
           end
         end

@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Same < Symbol
         INPUT = {
-          unicodemath: [["&#x2a76;"], parsing_wrapper(["eqeqeq", "Same"], lang: :unicode)],
-          asciimath: [["&#x2a76;"], parsing_wrapper(["eqeqeq", "Same"], lang: :asciimath)],
+          unicodemath: [["&#x2a76;"],
+                        parsing_wrapper(["eqeqeq", "Same"], lang: :unicode)],
+          asciimath: [["&#x2a76;"],
+                      parsing_wrapper(["eqeqeq", "Same"], lang: :asciimath)],
           mathml: ["&#x2a76;"],
           latex: [["eqeqeq", "Same", "&#x2a76;"]],
           omml: ["&#x2a76;"],

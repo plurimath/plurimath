@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Bigstar < Symbol
         INPUT = {
-          unicodemath: [["&#x2605;"], parsing_wrapper(["bigstar"], lang: :unicode)],
-          asciimath: [["&#x2605;"], parsing_wrapper(["bigstar"], lang: :asciimath)],
+          unicodemath: [["&#x2605;"],
+                        parsing_wrapper(["bigstar"], lang: :unicode)],
+          asciimath: [["&#x2605;"],
+                      parsing_wrapper(["bigstar"], lang: :asciimath)],
           mathml: ["&#x2605;"],
           latex: [["bigstar", "&#x2605;"]],
           omml: ["&#x2605;"],

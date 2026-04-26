@@ -1,11 +1,10 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Symbols::Overbracket do
-
   describe ".initialize" do
-    it 'returns instance of Symbol Overbracket' do
+    it "returns instance of Symbol Overbracket" do
       klass = described_class.new
-      expect(klass).to be_a(Plurimath::Math::Symbols::Overbracket)
+      expect(klass).to be_a(described_class)
     end
   end
 

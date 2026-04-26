@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Tosa < Symbol
         INPUT = {
-          unicodemath: [["&#x2929;"], parsing_wrapper(["tosa"], lang: :unicode)],
-          asciimath: [["&#x2929;"], parsing_wrapper(["tosa"], lang: :asciimath)],
+          unicodemath: [["&#x2929;"],
+                        parsing_wrapper(["tosa"], lang: :unicode)],
+          asciimath: [["&#x2929;"],
+                      parsing_wrapper(["tosa"], lang: :asciimath)],
           mathml: ["&#x2929;"],
           latex: [["tosa", "&#x2929;"]],
           omml: ["&#x2929;"],

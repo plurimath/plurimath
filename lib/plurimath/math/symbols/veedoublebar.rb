@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Veedoublebar < Symbol
         INPUT = {
-          unicodemath: [["&#x2a63;"], parsing_wrapper(["veedoublebar"], lang: :unicode)],
-          asciimath: [["&#x2a63;"], parsing_wrapper(["veedoublebar"], lang: :asciimath)],
+          unicodemath: [["&#x2a63;"],
+                        parsing_wrapper(["veedoublebar"], lang: :unicode)],
+          asciimath: [["&#x2a63;"],
+                      parsing_wrapper(["veedoublebar"], lang: :asciimath)],
           mathml: ["&#x2a63;"],
           latex: [["veedoublebar", "&#x2a63;"]],
           omml: ["&#x2a63;"],

@@ -1,11 +1,10 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Symbols::UpcasePi do
-
   describe ".initialize" do
-    it 'returns instance of Symbol UpcasePi' do
+    it "returns instance of Symbol UpcasePi" do
       klass = described_class.new
-      expect(klass).to be_a(Plurimath::Math::Symbols::UpcasePi)
+      expect(klass).to be_a(described_class)
     end
   end
 

@@ -4,7 +4,8 @@ module Plurimath
       class Succnsim < Symbol
         INPUT = {
           unicodemath: [["succnsim", "&#x22e9;"]],
-          asciimath: [["&#x22e9;"], parsing_wrapper(["succnsim"], lang: :asciimath)],
+          asciimath: [["&#x22e9;"],
+                      parsing_wrapper(["succnsim"], lang: :asciimath)],
           mathml: ["&#x22e9;"],
           latex: [["succnsim", "&#x22e9;"]],
           omml: ["&#x22e9;"],

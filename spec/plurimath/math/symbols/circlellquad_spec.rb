@@ -1,11 +1,10 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Symbols::Circlellquad do
-
   describe ".initialize" do
-    it 'returns instance of Symbol Circlellquad' do
+    it "returns instance of Symbol Circlellquad" do
       klass = described_class.new
-      expect(klass).to be_a(Plurimath::Math::Symbols::Circlellquad)
+      expect(klass).to be_a(described_class)
     end
   end
 

@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-
 module Plurimath
   module Math
     module Function
@@ -31,7 +30,8 @@ module Plurimath
           Utility.update_nodes(
             over_tag,
             [
-              parameter_one.to_mathml_without_math_tag(intent, options: options),
+              parameter_one.to_mathml_without_math_tag(intent,
+                                                       options: options),
               mo_tag,
             ],
           )
@@ -49,11 +49,12 @@ module Plurimath
           false
         end
 
-        def to_omml_without_math_tag(display_style, options:)
+        def to_omml_without_math_tag(_display_style, options:)
           return r_element("⏟", rpr_tag: false) unless parameter_one
 
           symbol = Symbols::Symbol.new("⏟")
-          Underset.new(parameter_one, symbol).to_omml_without_math_tag(true, options: options)
+          Underset.new(parameter_one, symbol).to_omml_without_math_tag(true,
+                                                                       options: options)
         end
 
         def to_unicodemath(options:)

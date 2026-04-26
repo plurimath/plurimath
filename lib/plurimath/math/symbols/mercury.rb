@@ -3,8 +3,12 @@ module Plurimath
     module Symbols
       class Mercury < Symbol
         INPUT = {
-          unicodemath: [["&#x263f;"], parsing_wrapper(["mercury", "Mercury"], lang: :unicode)],
-          asciimath: [["&#x263f;"], parsing_wrapper(["mercury", "Mercury"], lang: :asciimath)],
+          unicodemath: [["&#x263f;"],
+                        parsing_wrapper(["mercury", "Mercury"],
+                                        lang: :unicode)],
+          asciimath: [["&#x263f;"],
+                      parsing_wrapper(["mercury", "Mercury"],
+                                      lang: :asciimath)],
           mathml: ["&#x263f;"],
           latex: [["mercury", "Mercury", "&#x263f;"]],
           omml: ["&#x263f;"],

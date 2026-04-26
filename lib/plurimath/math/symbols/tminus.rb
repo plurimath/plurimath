@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Tminus < Symbol
         INPUT = {
-          unicodemath: [["&#x29ff;"], parsing_wrapper(["tminus"], lang: :unicode)],
-          asciimath: [["&#x29ff;"], parsing_wrapper(["tminus"], lang: :asciimath)],
+          unicodemath: [["&#x29ff;"],
+                        parsing_wrapper(["tminus"], lang: :unicode)],
+          asciimath: [["&#x29ff;"],
+                      parsing_wrapper(["tminus"], lang: :asciimath)],
           mathml: ["&#x29ff;"],
           latex: [["tminus", "&#x29ff;"]],
           omml: ["&#x29ff;"],

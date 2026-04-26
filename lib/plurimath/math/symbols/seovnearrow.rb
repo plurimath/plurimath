@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Seovnearrow < Symbol
         INPUT = {
-          unicodemath: [["&#x292d;"], parsing_wrapper(["seovnearrow"], lang: :unicode)],
-          asciimath: [["&#x292d;"], parsing_wrapper(["seovnearrow"], lang: :asciimath)],
+          unicodemath: [["&#x292d;"],
+                        parsing_wrapper(["seovnearrow"], lang: :unicode)],
+          asciimath: [["&#x292d;"],
+                      parsing_wrapper(["seovnearrow"], lang: :asciimath)],
           mathml: ["&#x292d;"],
           latex: [["seovnearrow", "&#x292d;"]],
           omml: ["&#x292d;"],

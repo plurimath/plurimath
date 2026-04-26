@@ -1,16 +1,15 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Symbols::Symbol do
-
   describe ".initialize" do
-    it 'returns instance of Symbol' do
-      symbol = described_class.new('theta')
+    it "returns instance of Symbol" do
+      symbol = described_class.new("theta")
       expect(symbol).to be_a(described_class)
     end
 
-    it 'initializes Symbol object' do
-      symbol = described_class.new('theta')
-      expect(symbol.value).to eql('theta')
+    it "initializes Symbol object" do
+      symbol = described_class.new("theta")
+      expect(symbol.value).to eql("theta")
     end
   end
 
@@ -19,18 +18,20 @@ RSpec.describe Plurimath::Math::Symbols::Symbol do
 
     context "contains a symbol string" do
       let(:value) { "gamma" }
+
       expected_value = described_class.new("gamma")
 
-      it 'returns string' do
+      it "returns string" do
         expect(symbol == expected_value).to be_truthy
       end
     end
 
     context "contains a nil string" do
       let(:value) { "" }
+
       expected_value = described_class.new("Gamma")
 
-      it 'returns string' do
+      it "returns string" do
         expect(symbol == expected_value).to be_falsey
       end
     end
@@ -57,6 +58,7 @@ RSpec.describe Plurimath::Math::Symbols::Symbol do
 
     context "contains Unicode as value" do
       let(:first_value) { "&#x2212;" }
+
       it "returns asciimath string" do
         expect(formula).to eq("&#x2212;")
       end
@@ -66,8 +68,8 @@ RSpec.describe Plurimath::Math::Symbols::Symbol do
   describe ".to_mathml" do
     subject(:formula) do
       Plurimath.xml_engine.dump(
-        described_class.new(first_value).
-          to_mathml_without_math_tag(false, options: {}),
+        described_class.new(first_value)
+          .to_mathml_without_math_tag(false, options: {}),
         indent: 2,
       ).gsub("&amp;", "&")
     end
@@ -118,6 +120,7 @@ RSpec.describe Plurimath::Math::Symbols::Symbol do
 
     context "contains Formula as value" do
       let(:first_value) { "sum" }
+
       it "returns latex string" do
         expect(formula).to eql("sum")
       end
@@ -125,7 +128,10 @@ RSpec.describe Plurimath::Math::Symbols::Symbol do
   end
 
   describe ".to_omml" do
-    subject(:formula) { described_class.new(first_value).to_omml_without_math_tag(true).gsub("&amp;", "&") }
+    subject(:formula) do
+      described_class.new(first_value).to_omml_without_math_tag(true).gsub("&amp;",
+                                                                           "&")
+    end
 
     context "contains Symbol as value" do
       let(:first_value) { "n" }
@@ -145,6 +151,7 @@ RSpec.describe Plurimath::Math::Symbols::Symbol do
 
     context "contains Formula as value" do
       let(:first_value) { "sum" }
+
       it "returns omml string" do
         expect(formula).to eql("sum")
       end
@@ -180,20 +187,22 @@ RSpec.describe Plurimath::Math::Symbols::Symbol do
   end
 
   describe ".validate_function_formula" do
-    subject(:formula) { described_class.new(first_value).validate_function_formula }
+    subject(:formula) do
+      described_class.new(first_value).validate_function_formula
+    end
 
     context "contains Symbol as value" do
       let(:first_value) { "n" }
 
       it "expects false in return" do
-        expect(formula).to eql(false)
+        expect(formula).to be(false)
       end
     end
 
     context "contains Symbol as value" do
       let(:first_value) { "a" }
 
-      it "should not return true" do
+      it "does not return true" do
         expect(formula).not_to eql(true)
       end
     end

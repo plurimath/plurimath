@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Lfbowtie < Symbol
         INPUT = {
-          unicodemath: [["&#x29d1;"], parsing_wrapper(["lfbowtie"], lang: :unicode)],
-          asciimath: [["&#x29d1;"], parsing_wrapper(["lfbowtie"], lang: :asciimath)],
+          unicodemath: [["&#x29d1;"],
+                        parsing_wrapper(["lfbowtie"], lang: :unicode)],
+          asciimath: [["&#x29d1;"],
+                      parsing_wrapper(["lfbowtie"], lang: :asciimath)],
           mathml: ["&#x29d1;"],
           latex: [["lfbowtie", "&#x29d1;"]],
           omml: ["&#x29d1;"],

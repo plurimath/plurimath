@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Shuffle < Symbol
         INPUT = {
-          unicodemath: [["&#x29e2;"], parsing_wrapper(["shuffle"], lang: :unicode)],
-          asciimath: [["&#x29e2;"], parsing_wrapper(["shuffle"], lang: :asciimath)],
+          unicodemath: [["&#x29e2;"],
+                        parsing_wrapper(["shuffle"], lang: :unicode)],
+          asciimath: [["&#x29e2;"],
+                      parsing_wrapper(["shuffle"], lang: :asciimath)],
           mathml: ["&#x29e2;"],
           latex: [["shuffle", "&#x29e2;"]],
           omml: ["&#x29e2;"],

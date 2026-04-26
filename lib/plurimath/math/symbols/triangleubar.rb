@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Triangleubar < Symbol
         INPUT = {
-          unicodemath: [["&#x29cb;"], parsing_wrapper(["triangleubar"], lang: :unicode)],
-          asciimath: [["&#x29cb;"], parsing_wrapper(["triangleubar"], lang: :asciimath)],
+          unicodemath: [["&#x29cb;"],
+                        parsing_wrapper(["triangleubar"], lang: :unicode)],
+          asciimath: [["&#x29cb;"],
+                      parsing_wrapper(["triangleubar"], lang: :asciimath)],
           mathml: ["&#x29cb;"],
           latex: [["triangleubar", "&#x29cb;"]],
           omml: ["&#x29cb;"],

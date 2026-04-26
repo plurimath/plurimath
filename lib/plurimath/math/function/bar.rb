@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-
 module Plurimath
   module Math
     module Function
@@ -31,7 +30,8 @@ module Plurimath
           Utility.update_nodes(
             mover_tag,
             [
-              parameter_one&.to_mathml_without_math_tag(intent, options: options),
+              parameter_one&.to_mathml_without_math_tag(intent,
+                                                        options: options),
               mo_tag,
             ],
           )
@@ -40,7 +40,14 @@ module Plurimath
         def to_omml_without_math_tag(display_style, options:)
           return r_element("&#xaf;", rpr_tag: false) unless parameter_one
 
-          attributes && attributes[:accent] ? acc_tag(display_style, options: options) : bar_tag(display_style, options: options)
+          if attributes && attributes[:accent]
+            acc_tag(display_style,
+                    options: options)
+          else
+            bar_tag(
+              display_style, options: options
+            )
+          end
         end
 
         def swap_class
@@ -60,13 +67,15 @@ module Plurimath
 
         def acc_tag(display_style, options:)
           acc = Utility.ox_element("acc", namespace: "m")
-          chr = Utility.ox_element("chr", namespace: "m", attributes: { "m:val": "‾" } )
+          chr = Utility.ox_element("chr", namespace: "m",
+                                          attributes: { "m:val": "‾" })
           acc_pr = (Utility.ox_element("accPr", namespace: "m") << chr)
           Utility.update_nodes(
             acc,
             [
               acc_pr,
-              omml_parameter(parameter_one, display_style, tag_name: "e", options: options),
+              omml_parameter(parameter_one, display_style, tag_name: "e",
+                                                           options: options),
             ],
           )
           [acc]
@@ -78,7 +87,8 @@ module Plurimath
             bar,
             [
               bar_pr,
-              omml_parameter(parameter_one, display_style, tag_name: "e", namespace: "m", options: options),
+              omml_parameter(parameter_one, display_style, tag_name: "e",
+                                                           namespace: "m", options: options),
             ],
           )
           [bar]

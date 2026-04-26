@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Nisd < Symbol
         INPUT = {
-          unicodemath: [["&#x22fa;"], parsing_wrapper(["nisd"], lang: :unicode)],
-          asciimath: [["&#x22fa;"], parsing_wrapper(["nisd"], lang: :asciimath)],
+          unicodemath: [["&#x22fa;"],
+                        parsing_wrapper(["nisd"], lang: :unicode)],
+          asciimath: [["&#x22fa;"],
+                      parsing_wrapper(["nisd"], lang: :asciimath)],
           mathml: ["&#x22fa;"],
           latex: [["nisd", "&#x22fa;"]],
           omml: ["&#x22fa;"],

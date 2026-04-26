@@ -1,11 +1,10 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Symbols::Smile do
-
   describe ".initialize" do
-    it 'returns instance of Symbol Smile' do
+    it "returns instance of Symbol Smile" do
       klass = described_class.new
-      expect(klass).to be_a(Plurimath::Math::Symbols::Smile)
+      expect(klass).to be_a(described_class)
     end
   end
 

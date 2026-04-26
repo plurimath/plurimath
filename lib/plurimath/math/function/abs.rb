@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-
 module Plurimath
   module Math
     module Function
@@ -10,15 +9,17 @@ module Plurimath
         def to_mathml_without_math_tag(intent, options:)
           symbol = Utility.ox_element("mo") << "|"
           first_value = mathml_value(intent, options: options)
-          first_value = first_value&.insert(0, symbol) unless open_paren
+          first_value&.insert(0, symbol) unless open_paren
           first_value << symbol unless close_paren
           mrow = Utility.update_nodes(ox_element("mrow"), first_value)
-          intentify(mrow, intent, func_name: :abs, intent_name: intent_names[:name])
+          intentify(mrow, intent, func_name: :abs,
+                                  intent_name: intent_names[:name])
         end
 
         def to_omml_without_math_tag(display_style, options:)
           Array(
-            md_tag << omml_parameter(parameter_one, display_style, tag_name: "e", options: options),
+            md_tag << omml_parameter(parameter_one, display_style,
+                                     tag_name: "e", options: options),
           )
         end
 
@@ -48,8 +49,14 @@ module Plurimath
           attribute = { "m:val": "|" }
           sepchr_attr = { "m:val": "" }
           mdpr = Utility.pr_element("d", namespace: "m")
-          mdpr << ox_element("begChr", namespace: "m", attributes: attribute) unless open_paren
-          mdpr << ox_element("endChr", namespace: "m", attributes: attribute) unless close_paren
+          unless open_paren
+            mdpr << ox_element("begChr", namespace: "m",
+                                         attributes: attribute)
+          end
+          unless close_paren
+            mdpr << ox_element("endChr", namespace: "m",
+                                         attributes: attribute)
+          end
           mdpr << ox_element("sepChr", namespace: "m", attributes: sepchr_attr)
           mdpr << ox_element("grow", namespace: "m")
           ox_element("d", namespace: "m") << mdpr

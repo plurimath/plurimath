@@ -28,7 +28,7 @@ RSpec.configure do |config|
   # Disable RSpec exposing methods globally on `Module` and `main`
   config.disable_monkey_patching!
 
-  config.around(:each) do |example|
+  config.around do |example|
     Plurimath.xml_engine = Plurimath::XmlEngine::OxEngine
     Mml::V4::Configuration.adapter = :ox
     example.run
@@ -50,22 +50,23 @@ def unicode_encode_entities(string = nil)
   # Implements pre-processing to convert Unicode characters to Unicode codes for Unicode::Parse class.
   remove_prefix(string)
   string = if string.include?("#") && !string.match?(/"([^"]*(#|&#x23;|\\\\eqno)[^"]*[^"]*|[^"]*(#|&#x23;|\\\\eqno)[^"]*[^"]*)"/)
-    string = string.gsub(/✎\(.*(\#).*\)/) { |str| str = str.gsub("#", ":d:") }
-    splitted = string.split("#")
-    splitted[0] = splitted.first.gsub(":d:", "#")
-    @splitted = splitted.last if splitted.count > 1
-    splitted.first
-  else
-    string
-  end
+             string = string.gsub(/✎\(.*(\#).*\)/) do |str|
+               str.gsub("#", ":d:")
+             end
+             splitted = string.split("#")
+             splitted[0] = splitted.first.gsub(":d:", "#")
+             @splitted = splitted.last if splitted.count > 1
+             splitted.first
+           else
+             string
+           end
   string = HTMLEntities.new.encode(string, :hexadecimal)
   string = string.gsub(/\\u([\da-fA-F]{1,5})\w{0,5}/) { "&#x#{$1};" }
   string = string.gsub(/&#x2af7;.*&#x2af8;/, "")
   string = string.gsub("&#x26;", "&")
   string = string.gsub("&#x22;", "\"")
-  string = string.gsub(/\\\\/, "\\")
-  string = string.strip
-  string
+  string = string.gsub("\\\\", "\\")
+  string.strip
 end
 
 def remove_prefix(string)
@@ -84,10 +85,7 @@ UNICODEMATH_SKIPABLE_EXAMPLES = [33, 210, 211, 598, 599, 600, 601].freeze
 def hp(*hash_values)
   hash_values.each do |hash_value|
     if hash_value.is_a?(Hash)
-      puts JSON.pretty_generate(hash_value)
-    else
-      pp hash_value
+
     end
   end
 end
-

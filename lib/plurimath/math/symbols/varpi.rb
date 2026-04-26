@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Varpi < Symbol
         INPUT = {
-          unicodemath: [["varpi", "&#x3d6;"], parsing_wrapper(["upvarpi"], lang: :unicode)],
-          asciimath: [["&#x3d6;"], parsing_wrapper(["varpi", "upvarpi"], lang: :asciimath)],
+          unicodemath: [["varpi", "&#x3d6;"],
+                        parsing_wrapper(["upvarpi"], lang: :unicode)],
+          asciimath: [["&#x3d6;"],
+                      parsing_wrapper(["varpi", "upvarpi"], lang: :asciimath)],
           mathml: ["&#x3d6;"],
           latex: [["upvarpi", "varpi", "&#x3d6;"]],
           omml: ["&#x3d6;"],

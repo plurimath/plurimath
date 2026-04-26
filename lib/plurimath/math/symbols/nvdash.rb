@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Nvdash < Symbol
         INPUT = {
-          unicodemath: [["&#x22af;"], parsing_wrapper(["nVDash"], lang: :unicode)],
-          asciimath: [["&#x22af;"], parsing_wrapper(["nVDash"], lang: :asciimath)],
+          unicodemath: [["&#x22af;"],
+                        parsing_wrapper(["nVDash"], lang: :unicode)],
+          asciimath: [["&#x22af;"],
+                      parsing_wrapper(["nVDash"], lang: :asciimath)],
           mathml: ["&#x22af;"],
           latex: [["nVDash", "&#x22af;"]],
           omml: ["&#x22af;"],

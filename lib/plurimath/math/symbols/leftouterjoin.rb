@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Leftouterjoin < Symbol
         INPUT = {
-          unicodemath: [["&#x27d5;"], parsing_wrapper(["leftouterjoin"], lang: :unicode)],
-          asciimath: [["&#x27d5;"], parsing_wrapper(["leftouterjoin"], lang: :asciimath)],
+          unicodemath: [["&#x27d5;"],
+                        parsing_wrapper(["leftouterjoin"], lang: :unicode)],
+          asciimath: [["&#x27d5;"],
+                      parsing_wrapper(["leftouterjoin"], lang: :asciimath)],
           mathml: ["&#x27d5;"],
           latex: [["leftouterjoin", "&#x27d5;"]],
           omml: ["&#x27d5;"],

@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Hkswarow < Symbol
         INPUT = {
-          unicodemath: [["&#x2926;"], parsing_wrapper(["hkswarow"], lang: :unicode)],
-          asciimath: [["&#x2926;"], parsing_wrapper(["hkswarow"], lang: :asciimath)],
+          unicodemath: [["&#x2926;"],
+                        parsing_wrapper(["hkswarow"], lang: :unicode)],
+          asciimath: [["&#x2926;"],
+                      parsing_wrapper(["hkswarow"], lang: :asciimath)],
           mathml: ["&#x2926;"],
           latex: [["hkswarow", "&#x2926;"]],
           omml: ["&#x2926;"],

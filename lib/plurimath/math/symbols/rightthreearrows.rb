@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Rightthreearrows < Symbol
         INPUT = {
-          unicodemath: [["&#x21f6;"], parsing_wrapper(["rightthreearrows"], lang: :unicode)],
-          asciimath: [["&#x21f6;"], parsing_wrapper(["rightthreearrows"], lang: :asciimath)],
+          unicodemath: [["&#x21f6;"],
+                        parsing_wrapper(["rightthreearrows"], lang: :unicode)],
+          asciimath: [["&#x21f6;"],
+                      parsing_wrapper(["rightthreearrows"], lang: :asciimath)],
           mathml: ["&#x21f6;"],
           latex: [["rightthreearrows", "&#x21f6;"]],
           omml: ["&#x21f6;"],

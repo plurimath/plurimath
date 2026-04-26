@@ -1,11 +1,10 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Symbols::Midbarwedge do
-
   describe ".initialize" do
-    it 'returns instance of Symbol Midbarwedge' do
+    it "returns instance of Symbol Midbarwedge" do
       klass = described_class.new
-      expect(klass).to be_a(Plurimath::Math::Symbols::Midbarwedge)
+      expect(klass).to be_a(described_class)
     end
   end
 

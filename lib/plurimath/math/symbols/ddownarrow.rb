@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Ddownarrow < Symbol
         INPUT = {
-          unicodemath: [["&#x290b;"], parsing_wrapper(["Ddownarrow"], lang: :unicode)],
-          asciimath: [["&#x290b;"], parsing_wrapper(["Ddownarrow"], lang: :asciimath)],
+          unicodemath: [["&#x290b;"],
+                        parsing_wrapper(["Ddownarrow"], lang: :unicode)],
+          asciimath: [["&#x290b;"],
+                      parsing_wrapper(["Ddownarrow"], lang: :asciimath)],
           mathml: ["&#x290b;"],
           latex: [["Ddownarrow", "&#x290b;"]],
           omml: ["&#x290b;"],

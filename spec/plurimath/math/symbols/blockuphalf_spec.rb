@@ -1,11 +1,10 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Symbols::Blockuphalf do
-
   describe ".initialize" do
-    it 'returns instance of Symbol Blockuphalf' do
+    it "returns instance of Symbol Blockuphalf" do
       klass = described_class.new
-      expect(klass).to be_a(Plurimath::Math::Symbols::Blockuphalf)
+      expect(klass).to be_a(described_class)
     end
   end
 

@@ -1,11 +1,10 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Symbols::Varnis do
-
   describe ".initialize" do
-    it 'returns instance of Symbol Varnis' do
+    it "returns instance of Symbol Varnis" do
       klass = described_class.new
-      expect(klass).to be_a(Plurimath::Math::Symbols::Varnis)
+      expect(klass).to be_a(described_class)
     end
   end
 

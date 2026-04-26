@@ -1,11 +1,9 @@
 # frozen_string_literal: true
 
-
 module Plurimath
   module Math
     module Function
       class Stackrel < BinaryFunction
-
         FUNCTION = {
           name: "stackrel",
           first_value: "above",
@@ -42,8 +40,10 @@ module Plurimath
             limupp,
             [
               limupppr,
-              omml_parameter(parameter_two, display_style, tag_name: "e", options: options),
-              omml_parameter(parameter_one, display_style, tag_name: "lim", options: options),
+              omml_parameter(parameter_two, display_style, tag_name: "e",
+                                                           options: options),
+              omml_parameter(parameter_one, display_style, tag_name: "lim",
+                                                           options: options),
             ],
           )
           [limupp]
@@ -58,7 +58,8 @@ module Plurimath
         def line_breaking(obj)
           parameter_one.line_breaking(obj)
           if obj.value_exist?
-            obj.update(self.class.new(Utility.filter_values(obj.value), parameter_two))
+            obj.update(self.class.new(Utility.filter_values(obj.value),
+                                      parameter_two))
             self.parameter_two = nil
           end
         end
@@ -71,7 +72,8 @@ module Plurimath
         end
 
         def mathml_values(field, intent, options:)
-          ox_element("mrow") << (field&.to_mathml_without_math_tag(intent, options: options) || "")
+          ox_element("mrow") << (field&.to_mathml_without_math_tag(intent,
+                                                                   options: options) || "")
         end
       end
     end

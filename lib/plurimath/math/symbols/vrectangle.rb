@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Vrectangle < Symbol
         INPUT = {
-          unicodemath: [["&#x25af;"], parsing_wrapper(["vrectangle"], lang: :unicode)],
-          asciimath: [["&#x25af;"], parsing_wrapper(["vrectangle"], lang: :asciimath)],
+          unicodemath: [["&#x25af;"],
+                        parsing_wrapper(["vrectangle"], lang: :unicode)],
+          asciimath: [["&#x25af;"],
+                      parsing_wrapper(["vrectangle"], lang: :asciimath)],
           mathml: ["&#x25af;"],
           latex: [["vrectangle", "&#x25af;"]],
           omml: ["&#x25af;"],

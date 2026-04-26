@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Semicolon < Symbol
         INPUT = {
-          unicodemath: [["&#x3b;"], parsing_wrapper([";", "semicolon"], lang: :unicode)],
-          asciimath: [[";", "&#x3b;"], parsing_wrapper(["semicolon"], lang: :asciimath)],
+          unicodemath: [["&#x3b;"],
+                        parsing_wrapper([";", "semicolon"], lang: :unicode)],
+          asciimath: [[";", "&#x3b;"],
+                      parsing_wrapper(["semicolon"], lang: :asciimath)],
           mathml: ["&#x3b;"],
           latex: [["semicolon", ";", "&#x3b;"]],
           omml: ["&#x3b;"],

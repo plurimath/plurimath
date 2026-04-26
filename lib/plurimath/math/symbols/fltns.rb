@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Fltns < Symbol
         INPUT = {
-          unicodemath: [["&#x23e5;"], parsing_wrapper(["fltns"], lang: :unicode)],
-          asciimath: [["&#x23e5;"], parsing_wrapper(["fltns"], lang: :asciimath)],
+          unicodemath: [["&#x23e5;"],
+                        parsing_wrapper(["fltns"], lang: :unicode)],
+          asciimath: [["&#x23e5;"],
+                      parsing_wrapper(["fltns"], lang: :asciimath)],
           mathml: ["&#x23e5;"],
           latex: [["fltns", "&#x23e5;"]],
           omml: ["&#x23e5;"],

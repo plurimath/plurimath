@@ -54,7 +54,7 @@ module Plurimath
           tokens = []
           until string.empty?
             tokens << string.slice(0, length)
-            string = string[tokens.last.size..-1]
+            string = string[tokens.last.size..]
           end
           tokens.compact.join(separator)
         end
@@ -67,7 +67,7 @@ module Plurimath
             # omit the fractional part entirely and handle rounding in the integer
             if @digit_count <= raw_integer.length
               # Check if we need to round the integer up based on the fractional part
-              if fraction.chars.first && DIGIT_VALUE[fraction.chars.first] >= threshold
+              if fraction[0] && DIGIT_VALUE[fraction[0]] >= threshold
                 # Round up the integer part
                 round_integer([], 1)
               end
@@ -126,7 +126,9 @@ module Plurimath
 
         def round_integer(fraction_digits_reversed, carry = 1)
           # Propagate carry into the integer part, updating the formatted result
-          incremented, carry = increment_integer_digits(raw_integer.chars.reverse, carry)
+          incremented, carry = increment_integer_digits(
+            raw_integer.chars.reverse, carry
+          )
           new_integer = [incremented]
           if carry.positive?
             # If carry propagates through all integer digits (e.g., 9+1=10 in base 10),
@@ -175,7 +177,7 @@ module Plurimath
             digit = fraction.to_i
             alpha_digit = HEX_ALPHANUMERIC[digit]
             base_result << alpha_digit
-            fraction -= digit  # Remove integer part, keep only fractional part
+            fraction -= digit # Remove integer part, keep only fractional part
           end
 
           base_result.join

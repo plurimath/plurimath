@@ -3,8 +3,12 @@ module Plurimath
     module Symbols
       class Bot < Symbol
         INPUT = {
-          unicodemath: [["&#x2aeb;"], parsing_wrapper(["Vbar", "Perp", "Bot"], lang: :unicode)],
-          asciimath: [["&#x2aeb;"], parsing_wrapper(["Vbar", "Perp", "Bot"], lang: :asciimath)],
+          unicodemath: [["&#x2aeb;"],
+                        parsing_wrapper(["Vbar", "Perp", "Bot"],
+                                        lang: :unicode)],
+          asciimath: [["&#x2aeb;"],
+                      parsing_wrapper(["Vbar", "Perp", "Bot"],
+                                      lang: :asciimath)],
           mathml: ["&#x2aeb;"],
           latex: [["Vbar", "Perp", "Bot", "&#x2aeb;"]],
           omml: ["&#x2aeb;"],

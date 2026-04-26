@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Aries < Symbol
         INPUT = {
-          unicodemath: [["&#x2648;"], parsing_wrapper(["aries", "Aries"], lang: :unicode)],
-          asciimath: [["&#x2648;"], parsing_wrapper(["aries", "Aries"], lang: :asciimath)],
+          unicodemath: [["&#x2648;"],
+                        parsing_wrapper(["aries", "Aries"], lang: :unicode)],
+          asciimath: [["&#x2648;"],
+                      parsing_wrapper(["aries", "Aries"], lang: :asciimath)],
           mathml: ["&#x2648;"],
           latex: [["aries", "Aries", "&#x2648;"]],
           omml: ["&#x2648;"],

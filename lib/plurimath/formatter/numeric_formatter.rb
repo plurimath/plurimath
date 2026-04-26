@@ -3,7 +3,8 @@
 module Plurimath
   module Formatter
     class NumericFormatter
-      attr_accessor :locale, :localize_number, :localizer_symbols, :twitter_cldr_reader
+      attr_accessor :locale, :localize_number, :localizer_symbols,
+                    :twitter_cldr_reader
 
       LOCALIZE_NUMBER_REGEX = %r{(?<group>[^#])?(?<groupdigits>#+0)(?<decimal>.)(?<fractdigits>#+)(?<fractgroup>[^#])?}
       SUPPORTED_NOTATIONS = %i[e scientific engineering].freeze
@@ -18,7 +19,10 @@ module Plurimath
       def localized_number(number_string, locale:, precision:, format:)
         options_instance_variables(number_string, format, precision)
         @twitter_cldr_reader.merge!(format)
-        return send("#{@notation}_format", number_string) if SUPPORTED_NOTATIONS.include?(@notation&.to_sym)
+        if SUPPORTED_NOTATIONS.include?(@notation&.to_sym)
+          return send("#{@notation}_format",
+                      number_string)
+        end
 
         localize_number(number_string)
       end
@@ -35,12 +39,12 @@ module Plurimath
       def parse_localize_number
         @localize_number or return {}
         m = LOCALIZE_NUMBER_REGEX.match(@localize_number) or return {}
-        ret = {
+        {
           decimal: m[:decimal],
           group_digits: m[:groupdigits].size,
           fraction_group_digits: m[:fractdigits].size,
           group: m[:group] == " " ? "\u00A0" : (m[:group] || ""),
-          fraction_group: m[:fractgroup] == " " ? "\u00A0" : (m[:fractgroup]  || "")
+          fraction_group: m[:fractgroup] == " " ? "\u00A0" : (m[:fractgroup] || ""),
         }.compact
       end
 
@@ -49,7 +53,7 @@ module Plurimath
           BigDecimal(num),
           @twitter_cldr_reader,
         ).format(
-          precision: @precision
+          precision: @precision,
         )
       end
 
@@ -62,7 +66,7 @@ module Plurimath
       end
 
       def engineering_format(num_str)
-        @precision = num_str.length - 1 unless @precision > 0
+        @precision = num_str.length - 1 unless @precision.positive?
 
         chars = notation_chars(num_str)
         update_string_index(chars, chars.last.to_i % 3)
@@ -85,8 +89,9 @@ module Plurimath
         notation_array[1] = update_exponent_value(notation_array[1])
         number_str = notation_array[0]
         number_str = number_str.gsub(/0\.(\d)/, '\1.')
-        number_str = number_str.sub('.', '') if number_str.start_with?(".")
-        notation_array[0] = number_str.end_with?(".") ? number_str[0..-2] : number_str
+        number_str = number_str.sub(".", "") if number_str.start_with?(".")
+        notation_array[0] =
+          number_str.end_with?(".") ? number_str[0..-2] : number_str
         notation_array
       end
 
@@ -107,9 +112,12 @@ module Plurimath
 
       def update_precision(num, precision)
         return precision if precision
-        return num.sub(/\./, "").size - 1 if SUPPORTED_NOTATIONS.include?(@notation&.to_sym)
+        if SUPPORTED_NOTATIONS.include?(@notation&.to_sym)
+          return num.sub(".",
+                         "").size - 1
+        end
 
-        /\./.match?(num) ? num.sub(/^.*\./, "").size : 0
+        num.include?(".") ? num.sub(/^.*\./, "").size : 0
       end
 
       def update_string_index(chars, index)
@@ -118,7 +126,8 @@ module Plurimath
         chars.first.delete!(".")
         chars.first.insert(index + 1, ".") unless chars.first[index + 2].nil?
         exponent = chars[-1]
-        chars[-1] = "#{"+" if exponent.to_s.start_with?("+")}#{exponent.to_i - index}"
+        chars[-1] =
+          "#{'+' if exponent.to_s.start_with?('+')}#{exponent.to_i - index}"
       end
     end
   end

@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Delta < Symbol
         INPUT = {
-          unicodemath: [["delta", "&#x3b4;"], parsing_wrapper(["updelta"], lang: :unicode)],
-          asciimath: [["delta", "&#x3b4;"], parsing_wrapper(["updelta"], lang: :asciimath)],
+          unicodemath: [["delta", "&#x3b4;"],
+                        parsing_wrapper(["updelta"], lang: :unicode)],
+          asciimath: [["delta", "&#x3b4;"],
+                      parsing_wrapper(["updelta"], lang: :asciimath)],
           mathml: ["&#x3b4;"],
           latex: [["updelta", "delta", "&#x3b4;"]],
           omml: ["&#x3b4;"],

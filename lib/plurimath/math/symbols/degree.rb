@@ -4,7 +4,8 @@ module Plurimath
       class Degree < Symbol
         INPUT = {
           unicodemath: [["degree", "&#xb0;"]],
-          asciimath: [["&#xb0;"], parsing_wrapper(["degree"], lang: :asciimath)],
+          asciimath: [["&#xb0;"],
+                      parsing_wrapper(["degree"], lang: :asciimath)],
           mathml: ["&#xb0;"],
           latex: [["&#xb0;"], parsing_wrapper(["degree"], lang: :latex)],
           omml: ["&#xb0;"],

@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-
 module Plurimath
   module Math
     module Function
@@ -9,7 +8,7 @@ module Plurimath
           name: "mod",
           first_value: "base",
           second_value: "argument",
-        }
+        }.freeze
 
         def to_asciimath(options:)
           first_value = parameter_one&.to_asciimath(options: options)
@@ -21,8 +20,15 @@ module Plurimath
           mi_tag = ox_element("mi")
           mi_tag << "mod" unless hide_function_name
           value_array = [mi_tag]
-          value_array.insert(0, parameter_one&.to_mathml_without_math_tag(intent, options: options)) if parameter_one
-          value_array << parameter_two&.to_mathml_without_math_tag(intent, options: options) if parameter_two
+          if parameter_one
+            value_array.insert(0,
+                               parameter_one&.to_mathml_without_math_tag(intent,
+                                                                         options: options))
+          end
+          if parameter_two
+            value_array << parameter_two&.to_mathml_without_math_tag(intent,
+                                                                     options: options)
+          end
           Utility.update_nodes(ox_element("mrow"), value_array)
         end
 
@@ -53,7 +59,8 @@ module Plurimath
         def line_breaking(obj)
           parameter_one&.line_breaking(obj)
           if obj.value_exist?
-            mod = self.class.new(Utility.filter_values(obj.value), parameter_two)
+            mod = self.class.new(Utility.filter_values(obj.value),
+                                 parameter_two)
             mod.hide_function_name = false
             self.hide_function_name = true
             obj.update(mod)

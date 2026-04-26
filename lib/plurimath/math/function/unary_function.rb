@@ -40,7 +40,8 @@ module Plurimath
                             new_arr += mathml_value(intent, options: options)
                             mrow = ox_element("mrow")
                             Utility.update_nodes(mrow, new_arr)
-                            intentify(mrow, intent, func_name: :function, intent_name: intent_names[:name])
+                            intentify(mrow, intent, func_name: :function,
+                                                    intent_name: intent_names[:name])
                           else
                             new_arr.first
                           end
@@ -63,7 +64,9 @@ module Plurimath
 
         def to_html(options:)
           first_value = if parameter_one.is_a?(Array)
-                          "<i>#{parameter_one.map { |val| val.to_html(options: options) }.join}</i>"
+                          "<i>#{parameter_one.map do |val|
+                            val.to_html(options: options)
+                          end.join}</i>"
                         elsif parameter_one
                           "<i>#{parameter_one.to_html(options: options)}</i>"
                         end
@@ -77,7 +80,9 @@ module Plurimath
             value = omml_value(display_style, options: options)
           else
             func = Utility.ox_element("func", namespace: "m")
-            value = Utility.update_nodes(func, function_values(display_style, options: options))
+            value = Utility.update_nodes(func,
+                                         function_values(display_style,
+                                                         options: options))
           end
           Array(value)
         end
@@ -92,7 +97,9 @@ module Plurimath
             "#{spacing}\"#{to_asciimath(options: options)}\" function apply\n",
             "#{new_spacing}|_ \"#{class_name}\" function name\n",
           ]
-          ascii_fields_to_print(parameter_one, { spacing: new_spacing, field_name: "argument", additional_space: "   |_ " , array: new_arr, options: options })
+          ascii_fields_to_print(parameter_one,
+                                { spacing: new_spacing, field_name: "argument", additional_space: "   |_ ",
+                                  array: new_arr, options: options })
           new_arr
         end
 
@@ -102,27 +109,36 @@ module Plurimath
             "#{spacing}\"#{to_latex(options: options)}\" function apply\n",
             "#{new_spacing}|_ \"#{class_name}\" function name\n",
           ]
-          latex_fields_to_print(parameter_one, { spacing: new_spacing, field_name: "argument", additional_space: "   |_ " , array: new_arr, options: options })
+          latex_fields_to_print(parameter_one,
+                                { spacing: new_spacing, field_name: "argument", additional_space: "   |_ ",
+                                  array: new_arr, options: options })
           new_arr
         end
 
         def to_mathml_math_zone(spacing, last = false, _, options:)
           new_spacing = gsub_spacing(spacing, last)
           new_arr = [
-            "#{spacing}\"#{dump_mathml(self, options: options)}\" function apply\n",
+            "#{spacing}\"#{dump_mathml(self,
+                                       options: options)}\" function apply\n",
             "#{new_spacing}|_ \"#{class_name}\" function name\n",
           ]
-          mathml_fields_to_print(parameter_one, { spacing: new_spacing, field_name: "argument", additional_space: "   |_ ", array: new_arr, options: options })
+          mathml_fields_to_print(parameter_one,
+                                 { spacing: new_spacing, field_name: "argument", additional_space: "   |_ ",
+                                   array: new_arr, options: options })
           new_arr
         end
 
-        def to_omml_math_zone(spacing, last = false, _, display_style:, options:)
+        def to_omml_math_zone(spacing, last = false, _, display_style:,
+options:)
           new_spacing = gsub_spacing(spacing, last)
           new_arr = [
-            "#{spacing}\"#{dump_omml(self, display_style, options: options)}\" function apply\n",
+            "#{spacing}\"#{dump_omml(self, display_style,
+                                     options: options)}\" function apply\n",
             "#{new_spacing}|_ \"#{class_name}\" function name\n",
           ]
-          omml_fields_to_print(parameter_one, { spacing: new_spacing, field_name: "argument", additional_space: "   |_ ", array: new_arr, display_style: display_style, options: options })
+          omml_fields_to_print(parameter_one,
+                               { spacing: new_spacing, field_name: "argument", additional_space: "   |_ ",
+                                 array: new_arr, display_style: display_style, options: options })
           new_arr
         end
 
@@ -132,7 +148,9 @@ module Plurimath
             "#{spacing}\"#{to_unicodemath(options: options)}\" function apply\n",
             "#{new_spacing}|_ \"#{class_name}\" function name\n",
           ]
-          unicodemath_fields_to_print(parameter_one, { spacing: new_spacing, field_name: "argument", additional_space: "   |_ " , array: new_arr, options: options })
+          unicodemath_fields_to_print(parameter_one,
+                                      { spacing: new_spacing, field_name: "argument", additional_space: "   |_ ",
+                                        array: new_arr, options: options })
           new_arr
         end
 
@@ -158,7 +176,7 @@ module Plurimath
 
         def reprocess_parameter_one(obj)
           new_obj = Formula.new([])
-          self.line_breaking(new_obj)
+          line_breaking(new_obj)
           if new_obj.value_exist?
             obj.value.insert(0, Linebreak.new)
             obj.value.insert(0, self.class.new(new_obj.value))
@@ -180,7 +198,9 @@ module Plurimath
 
           case parameter_one
           when Array
-            parameter_one.compact.map { |object| object&.to_asciimath(options: options) }.join
+            parameter_one.compact.map do |object|
+              object&.to_asciimath(options: options)
+            end.join
           else
             parameter_one.to_asciimath(options: options)
           end
@@ -189,15 +209,20 @@ module Plurimath
         def mathml_value(intent, options:)
           case parameter_one
           when Array
-            parameter_one.compact.map { |object| object&.to_mathml_without_math_tag(intent, options: options) }
+            parameter_one.compact.map do |object|
+              object&.to_mathml_without_math_tag(intent, options: options)
+            end
           else
-            Array(parameter_one&.to_mathml_without_math_tag(intent, options: options))
+            Array(parameter_one&.to_mathml_without_math_tag(intent,
+                                                            options: options))
           end
         end
 
         def latex_value(options:)
           if parameter_one.is_a?(Array)
-            return parameter_one&.compact&.map { |object| object&.to_latex(options: options) }&.join(" ")
+            return parameter_one&.compact&.map do |object|
+              object&.to_latex(options: options)
+            end&.join(" ")
           end
 
           parameter_one&.to_latex(options: options)
@@ -205,10 +230,13 @@ module Plurimath
 
         def omml_value(display_style, options:)
           if parameter_one.is_a?(Array)
-            return parameter_one&.compact&.map { |object| formula_to_nodes(object, display_style, options: options) }
+            return parameter_one&.compact&.map do |object|
+              formula_to_nodes(object, display_style, options: options)
+            end
           end
 
-          Array(formula_to_nodes(parameter_one, display_style, options: options))
+          Array(formula_to_nodes(parameter_one, display_style,
+                                 options: options))
         end
 
         def formula_to_nodes(object, display_style, options:)
@@ -216,7 +244,7 @@ module Plurimath
         end
 
         def latex_paren
-          Latex::Constants::LEFT_RIGHT_PARENTHESIS.invert[parameter_one] || '.'
+          Latex::Constants::LEFT_RIGHT_PARENTHESIS.invert[parameter_one] || "."
         end
 
         def exist?
@@ -235,7 +263,11 @@ module Plurimath
             ],
           )
           me = Utility.ox_element("e", namespace: "m")
-          Utility.update_nodes(me, omml_value(display_style, options: options)) if parameter_one
+          if parameter_one
+            Utility.update_nodes(me,
+                                 omml_value(display_style,
+                                            options: options))
+          end
           [funcpr, fname, me]
         end
       end

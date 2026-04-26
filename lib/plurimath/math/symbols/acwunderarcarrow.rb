@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Acwunderarcarrow < Symbol
         INPUT = {
-          unicodemath: [["&#x293b;"], parsing_wrapper(["acwunderarcarrow"], lang: :unicode)],
-          asciimath: [["&#x293b;"], parsing_wrapper(["acwunderarcarrow"], lang: :asciimath)],
+          unicodemath: [["&#x293b;"],
+                        parsing_wrapper(["acwunderarcarrow"], lang: :unicode)],
+          asciimath: [["&#x293b;"],
+                      parsing_wrapper(["acwunderarcarrow"], lang: :asciimath)],
           mathml: ["&#x293b;"],
           latex: [["acwunderarcarrow", "&#x293b;"]],
           omml: ["&#x293b;"],

@@ -4,7 +4,8 @@ module Plurimath
       class Nparallel < Symbol
         INPUT = {
           unicodemath: [["nparallel", "&#x2226;"]],
-          asciimath: [["&#x2226;"], parsing_wrapper(["nparallel"], lang: :asciimath)],
+          asciimath: [["&#x2226;"],
+                      parsing_wrapper(["nparallel"], lang: :asciimath)],
           mathml: ["&#x2226;"],
           latex: [["nparallel", "&#x2226;"]],
           omml: ["&#x2226;"],

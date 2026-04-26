@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Bigslopedvee < Symbol
         INPUT = {
-          unicodemath: [["&#x2a57;"], parsing_wrapper(["bigslopedvee"], lang: :unicode)],
-          asciimath: [["&#x2a57;"], parsing_wrapper(["bigslopedvee"], lang: :asciimath)],
+          unicodemath: [["&#x2a57;"],
+                        parsing_wrapper(["bigslopedvee"], lang: :unicode)],
+          asciimath: [["&#x2a57;"],
+                      parsing_wrapper(["bigslopedvee"], lang: :asciimath)],
           mathml: ["&#x2a57;"],
           latex: [["bigslopedvee", "&#x2a57;"]],
           omml: ["&#x2a57;"],

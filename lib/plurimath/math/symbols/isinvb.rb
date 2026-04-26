@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Isinvb < Symbol
         INPUT = {
-          unicodemath: [["&#x22f8;"], parsing_wrapper(["isinvb"], lang: :unicode)],
-          asciimath: [["&#x22f8;"], parsing_wrapper(["isinvb"], lang: :asciimath)],
+          unicodemath: [["&#x22f8;"],
+                        parsing_wrapper(["isinvb"], lang: :unicode)],
+          asciimath: [["&#x22f8;"],
+                      parsing_wrapper(["isinvb"], lang: :asciimath)],
           mathml: ["&#x22f8;"],
           latex: [["isinvb", "&#x22f8;"]],
           omml: ["&#x22f8;"],

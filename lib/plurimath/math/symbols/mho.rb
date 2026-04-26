@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Mho < Symbol
         INPUT = {
-          unicodemath: [["&#x2127;"], parsing_wrapper(["mho", "Mho"], lang: :unicode)],
-          asciimath: [["&#x2127;"], parsing_wrapper(["mho", "Mho"], lang: :asciimath)],
+          unicodemath: [["&#x2127;"],
+                        parsing_wrapper(["mho", "Mho"], lang: :unicode)],
+          asciimath: [["&#x2127;"],
+                      parsing_wrapper(["mho", "Mho"], lang: :asciimath)],
           mathml: ["&#x2127;"],
           latex: [["mho", "Mho", "&#x2127;"]],
           omml: ["&#x2127;"],

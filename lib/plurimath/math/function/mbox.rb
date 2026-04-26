@@ -9,7 +9,8 @@ module Plurimath
         end
 
         def to_mathml_without_math_tag(intent, options:)
-          Text.new(parameter_one).to_mathml_without_math_tag(intent, options: options)
+          Text.new(parameter_one).to_mathml_without_math_tag(intent,
+                                                             options: options)
         end
 
         def to_latex(**)
@@ -21,7 +22,8 @@ module Plurimath
         end
 
         def to_omml_without_math_tag(display_style, options:)
-          Text.new(parameter_one).to_omml_without_math_tag(display_style, options: options)
+          Text.new(parameter_one).to_omml_without_math_tag(display_style,
+                                                           options: options)
         end
 
         def to_unicodemath(options:)

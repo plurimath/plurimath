@@ -1,11 +1,10 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Symbols::Triangleubar do
-
   describe ".initialize" do
-    it 'returns instance of Symbol Triangleubar' do
+    it "returns instance of Symbol Triangleubar" do
       klass = described_class.new
-      expect(klass).to be_a(Plurimath::Math::Symbols::Triangleubar)
+      expect(klass).to be_a(described_class)
     end
   end
 

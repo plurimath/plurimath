@@ -41,7 +41,9 @@ module Plurimath
           return parentheless_table(options: options) if SIMPLE_TABLES.include?(class_name)
 
           parenthesis = Asciimath::Constants::TABLE_PARENTHESIS
-          first_value = value&.map { |val| val&.to_asciimath(options: options) }&.join(", ")
+          first_value = value&.map do |val|
+            val&.to_asciimath(options: options)
+          end&.join(", ")
           lparen = open_paren.nil? ? "[" : open_paren.to_asciimath(options: options)
           rparen = close_paren.nil? ? parenthesis[lparen.to_sym] : close_paren.to_asciimath(options: options)
           "#{lparen}#{first_value}#{rparen}"
@@ -52,16 +54,23 @@ module Plurimath
           table_tag["intent"] = ":matrix(#{value.length},#{td_count})" if intent
           Utility.update_nodes(
             table_tag,
-            value&.map { |object| object&.to_mathml_without_math_tag(intent, options: options) },
+            value&.map do |object|
+              object&.to_mathml_without_math_tag(intent, options: options)
+            end,
           )
           return norm_table(table_tag) if open_paren.is_a?(Math::Symbols::Paren::Norm)
 
-          if mathml_paren_present?(open_paren, intent, options: options) || mathml_paren_present?(close_paren, intent, options: options)
-            first_paren = mo_element(mathml_parenthesis(open_paren, intent, options: options))
-            second_paren = mo_element(mathml_parenthesis(close_paren, intent, options: options))
+          if mathml_paren_present?(open_paren, intent,
+                                   options: options) || mathml_paren_present?(close_paren, intent,
+                                                                              options: options)
+            first_paren = mo_element(mathml_parenthesis(open_paren, intent,
+                                                        options: options))
+            second_paren = mo_element(mathml_parenthesis(close_paren, intent,
+                                                         options: options))
             attributes = { intent: ":fenced" } if intent
             mrow = ox_element("mrow", attributes: attributes)
-            return Utility.update_nodes(mrow, [first_paren, table_tag, second_paren])
+            return Utility.update_nodes(mrow,
+                                        [first_paren, table_tag, second_paren])
           end
 
           table_tag
@@ -73,8 +82,8 @@ module Plurimath
           separator = "{#{table_attribute(:latex)}}" if environment&.include?("array")
           left_paren = open_paren&.to_latex(options: options) || "."
           right_paren = close_paren&.to_latex(options: options) || "."
-          left = "\\left #{left_paren.delete_prefix("\\left")}\\begin{matrix}"
-          right = "\\end{matrix}\\right #{right_paren.delete_prefix("\\right")}"
+          left = "\\left #{left_paren.delete_prefix('\\left')}\\begin{matrix}"
+          right = "\\end{matrix}\\right #{right_paren.delete_prefix('\\right')}"
           "#{left}#{separator}#{latex_content(options: options)}#{right}"
         end
 
@@ -93,7 +102,9 @@ module Plurimath
         end
 
         def to_unicodemath(options:)
-          table_values = value&.map { |val| val&.to_unicodemath(options: options) }&.join("@")
+          table_values = value&.map do |val|
+            val&.to_unicodemath(options: options)
+          end&.join("@")
           if unicodemath_table_class?
             "#{unicodemath_class_name}(#{table_values})"
           else
@@ -101,38 +112,48 @@ module Plurimath
           end
         end
 
-        def to_asciimath_math_zone(spacing, last = false, indent = true, options:)
+        def to_asciimath_math_zone(spacing, last = false, indent = true,
+options:)
           [
             "#{spacing}\"table\" function apply\n",
-            Formula.new(value).to_asciimath_math_zone(gsub_spacing(spacing, last), last, indent, options: options),
+            Formula.new(value).to_asciimath_math_zone(
+              gsub_spacing(spacing, last), last, indent, options: options
+            ),
           ]
         end
 
         def to_latex_math_zone(spacing, last = false, indent = true, options:)
           [
             "#{spacing}\"table\" function apply\n",
-            Formula.new(value).to_latex_math_zone(gsub_spacing(spacing, last), last, indent, options: options),
+            Formula.new(value).to_latex_math_zone(gsub_spacing(spacing, last),
+                                                  last, indent, options: options),
           ]
         end
 
         def to_mathml_math_zone(spacing, last = false, indent = true, options:)
           [
             "#{spacing}\"table\" function apply\n",
-            Formula.new(value).to_mathml_math_zone(gsub_spacing(spacing, last), last, indent, options: options),
+            Formula.new(value).to_mathml_math_zone(gsub_spacing(spacing, last),
+                                                   last, indent, options: options),
           ]
         end
 
-        def to_omml_math_zone(spacing, last = false, indent = true, display_style:, options:)
+        def to_omml_math_zone(spacing, last = false, indent = true,
+display_style:, options:)
           [
             "#{spacing}\"table\" function apply\n",
-            Formula.new(value).to_omml_math_zone(gsub_spacing(spacing, last), last, indent, display_style: display_style, options: options),
+            Formula.new(value).to_omml_math_zone(gsub_spacing(spacing, last),
+                                                 last, indent, display_style: display_style, options: options),
           ]
         end
 
-        def to_unicodemath_math_zone(spacing, last = false, indent = true, options:)
+        def to_unicodemath_math_zone(spacing, last = false, indent = true,
+options:)
           [
             "#{spacing}\"table\" function apply\n",
-            Formula.new(value).to_unicodemath_math_zone(gsub_spacing(spacing, last), last, indent, options: options),
+            Formula.new(value).to_unicodemath_math_zone(
+              gsub_spacing(spacing, last), last, indent, options: options
+            ),
           ]
         end
 
@@ -182,11 +203,12 @@ module Plurimath
           return "" unless field
 
           if field&.class_name == "symbol"
-            paren = field&.to_mathml_without_math_tag(intent, options: options)&.nodes&.first
+            paren = field&.to_mathml_without_math_tag(intent,
+                                                      options: options)&.nodes&.first
             return invisible_paren?(paren) ? "" : paren.to_s
           end
 
-          paren = field&.respond_to?(:encoded) ? field&.encoded : field&.paren_value
+          paren = field.respond_to?(:encoded) ? field&.encoded : field&.paren_value
           invisible_paren?(paren) ? "" : paren
         end
 
@@ -205,7 +227,12 @@ module Plurimath
           columns_array = []
           value.first.parameter_one.each_with_index do |td, i|
             if td.parameter_one.find { |obj| Utility.symbol_value(obj, "|") }
-              columns_array.empty? ? columns_array = ["solid"] : columns_array[i - 1] = "solid"
+              if columns_array.empty?
+                columns_array = ["solid"]
+              else
+                columns_array[i - 1] =
+                  "solid"
+              end
             else
               columns_array << "none"
             end
@@ -215,7 +242,10 @@ module Plurimath
 
         def mathml_attrs(column_strings)
           args = options&.dup&.reject { |arg| arg.to_s == "asterisk" }
-          args[:columnlines] = column_strings.join(" ") if column_strings.include?("solid")
+          if column_strings.include?("solid")
+            args[:columnlines] =
+              column_strings.join(" ")
+          end
           args[:columnalign] = "left" if close_paren.is_a?(Math::Symbols::Paren::CloseParen)
           args
         end
@@ -258,7 +288,9 @@ module Plurimath
           eqarrpr  = Utility.ox_element("eqArrPr", namespace: "m")
           eqarrpr  << Utility.pr_element("ctrl", true, namespace: "m")
           eqarr    << eqarrpr
-          tr_value = value.map { |object| object.to_omml_without_math_tag(display_style, options: options) }.flatten
+          tr_value = value.map do |object|
+            object.to_omml_without_math_tag(display_style, options: options)
+          end.flatten
           Utility.update_nodes(eqarr, tr_value.compact)
           [eqarr]
         end
@@ -287,7 +319,9 @@ module Plurimath
           mcs << mc
           mpr << mcs
           mpr << ctrlpr
-          mm_value = value&.map { |object| object.to_omml_without_math_tag(display_style, options: options) }
+          mm_value = value&.map do |object|
+            object.to_omml_without_math_tag(display_style, options: options)
+          end
           Utility.update_nodes(
             mm,
             mm_value.insert(0, mpr).flatten,
@@ -317,8 +351,9 @@ module Plurimath
         end
 
         def mdpr_node
-          sepchr = Utility.ox_element("sepChr", attributes: { "m:val": "" }, namespace: "m")
-          mgrow  = Utility.ox_element("grow", namespace: "m")
+          sepchr = Utility.ox_element("sepChr", attributes: { "m:val": "" },
+                                                namespace: "m")
+          mgrow = Utility.ox_element("grow", namespace: "m")
           mdpr = Utility.ox_element("dPr", namespace: "m")
           Utility.update_nodes(mdpr, [begchr, endchr, sepchr, mgrow])
         end
@@ -326,13 +361,15 @@ module Plurimath
         def begchr
           return unless open_paren
 
-          Utility.ox_element("begChr", attributes: { "m:val": paren(open_paren) }, namespace: "m")
+          Utility.ox_element("begChr",
+                             attributes: { "m:val": paren(open_paren) }, namespace: "m")
         end
 
         def endchr
           return unless close_paren
 
-          Utility.ox_element("endChr", attributes: { "m:val": paren(close_paren) }, namespace: "m")
+          Utility.ox_element("endChr",
+                             attributes: { "m:val": paren(close_paren) }, namespace: "m")
         end
 
         def paren(parenthesis)
@@ -340,7 +377,9 @@ module Plurimath
         end
 
         def parentheless_table(options:)
-          "{:#{value.map { |val| val&.to_asciimath(options: options) }&.join(", ")}:}"
+          "{:#{value.map do |val|
+            val&.to_asciimath(options: options)
+          end&.join(', ')}:}"
         end
 
         def single_table?
@@ -365,8 +404,8 @@ module Plurimath
         end
 
         def unicodemath_table_class?
-          return unless class_name == "table"
-          return if open_paren.nil? && close_paren.nil?
+          return false unless class_name == "table"
+          return false if open_paren.nil? && close_paren.nil?
 
           (!open_paren.nil? && !close_paren.nil?) ||
             Utility::PARENTHESIS[unicodemath_field_value(open_paren)] == close_paren ||
@@ -374,8 +413,9 @@ module Plurimath
         end
 
         def unicodemath_class_name
-          return matrices_functions(:Vmatrix) if class_name == "vmatrix" && open_paren&.class_name&.is_a?(Math::Symbols::Paren::Norm)
-          return matrices_functions(:vmatrix) if [open_paren, close_paren].all?(Math::Symbols::Paren::Vert)
+          return matrices_functions(:Vmatrix) if class_name == "vmatrix" && open_paren&.class_name.is_a?(Math::Symbols::Paren::Norm)
+          return matrices_functions(:vmatrix) if [open_paren,
+                                                  close_paren].all?(Math::Symbols::Paren::Vert)
           return matrices_functions(:matrix) if class_name == "Bmatrix" && open_paren == Math::Symbols::Paren::Lcurly
           return unless unicodemath_table_class?
 
@@ -388,9 +428,10 @@ module Plurimath
         end
 
         def mathml_paren_present?(paren, intent, options:)
-          return unless paren || paren&.class_name == "symbol"
+          return false unless paren || paren&.class_name == "symbol"
 
-          !paren&.to_mathml_without_math_tag(intent, options: options)&.nodes&.first&.empty?
+          !paren&.to_mathml_without_math_tag(intent,
+                                             options: options)&.nodes&.first&.empty?
         end
 
         def td_count

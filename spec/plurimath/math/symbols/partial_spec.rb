@@ -1,11 +1,10 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Symbols::Partial do
-
   describe ".initialize" do
-    it 'returns instance of Symbol Partial' do
+    it "returns instance of Symbol Partial" do
       klass = described_class.new
-      expect(klass).to be_a(Plurimath::Math::Symbols::Partial)
+      expect(klass).to be_a(described_class)
     end
   end
 

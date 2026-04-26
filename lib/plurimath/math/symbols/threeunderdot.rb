@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Threeunderdot < Symbol
         INPUT = {
-          unicodemath: [["&#x20e8;"], parsing_wrapper(["threeunderdot"], lang: :unicode)],
-          asciimath: [["&#x20e8;"], parsing_wrapper(["threeunderdot"], lang: :asciimath)],
+          unicodemath: [["&#x20e8;"],
+                        parsing_wrapper(["threeunderdot"], lang: :unicode)],
+          asciimath: [["&#x20e8;"],
+                      parsing_wrapper(["threeunderdot"], lang: :asciimath)],
           mathml: ["&#x20e8;"],
           latex: [["threeunderdot", "&#x20e8;"]],
           omml: ["&#x20e8;"],

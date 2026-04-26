@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Bigotimes < Symbol
         INPUT = {
-          unicodemath: [["&#x2a02;"], parsing_wrapper(["bigotimes"], lang: :unicode)],
-          asciimath: [["&#x2a02;"], parsing_wrapper(["bigotimes"], lang: :asciimath)],
+          unicodemath: [["&#x2a02;"],
+                        parsing_wrapper(["bigotimes"], lang: :unicode)],
+          asciimath: [["&#x2a02;"],
+                      parsing_wrapper(["bigotimes"], lang: :asciimath)],
           mathml: ["&#x2a02;"],
           latex: [["bigotimes", "&#x2a02;"]],
           omml: ["&#x2a02;"],

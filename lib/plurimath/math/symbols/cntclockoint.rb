@@ -3,8 +3,12 @@ module Plurimath
     module Symbols
       class Cntclockoint < Symbol
         INPUT = {
-          unicodemath: [["&#x2233;"], parsing_wrapper(["ointctrclockwise", "cntclockoint"], lang: :unicode)],
-          asciimath: [["&#x2233;"], parsing_wrapper(["ointctrclockwise", "cntclockoint"], lang: :asciimath)],
+          unicodemath: [["&#x2233;"],
+                        parsing_wrapper(["ointctrclockwise", "cntclockoint"],
+                                        lang: :unicode)],
+          asciimath: [["&#x2233;"],
+                      parsing_wrapper(["ointctrclockwise", "cntclockoint"],
+                                      lang: :asciimath)],
           mathml: ["&#x2233;"],
           latex: [["ointctrclockwise", "cntclockoint", "&#x2233;"]],
           omml: ["&#x2233;"],

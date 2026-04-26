@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Isinobar < Symbol
         INPUT = {
-          unicodemath: [["&#x22f7;"], parsing_wrapper(["isinobar"], lang: :unicode)],
-          asciimath: [["&#x22f7;"], parsing_wrapper(["isinobar"], lang: :asciimath)],
+          unicodemath: [["&#x22f7;"],
+                        parsing_wrapper(["isinobar"], lang: :unicode)],
+          asciimath: [["&#x22f7;"],
+                      parsing_wrapper(["isinobar"], lang: :asciimath)],
           mathml: ["&#x22f7;"],
           latex: [["isinobar", "&#x22f7;"]],
           omml: ["&#x22f7;"],

@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
-
 module Plurimath
   module Math
     module Function
       class Sum < TernaryFunction
         attr_accessor :options
+
         FUNCTION = {
           name: "summation",
           first_value: "subscript",
@@ -22,12 +22,18 @@ module Plurimath
         end
 
         def ==(object)
-          super(object) && object.options == options
+          super && object.options == options
         end
 
         def to_asciimath(options:)
-          first_value = "_#{wrapped(parameter_one, options: options)}" if parameter_one
-          second_value = "^#{wrapped(parameter_two, options: options)}" if parameter_two
+          if parameter_one
+            first_value = "_#{wrapped(parameter_one,
+                                      options: options)}"
+          end
+          if parameter_two
+            second_value = "^#{wrapped(parameter_two,
+                                       options: options)}"
+          end
           "sum#{first_value}#{second_value} #{parameter_three&.to_asciimath(options: options)}".strip
         end
 
@@ -46,8 +52,10 @@ module Plurimath
             sum_tag,
             [
               first_value,
-              parameter_one&.to_mathml_without_math_tag(intent, options: options),
-              parameter_two&.to_mathml_without_math_tag(intent, options: options),
+              parameter_one&.to_mathml_without_math_tag(intent,
+                                                        options: options),
+              parameter_two&.to_mathml_without_math_tag(intent,
+                                                        options: options),
             ],
           )
           return munderover_tag if parameter_three.nil?
@@ -57,7 +65,10 @@ module Plurimath
             mrow,
             [
               munderover_tag,
-              wrap_mrow(parameter_three&.to_mathml_without_math_tag(intent, options: options), intent),
+              wrap_mrow(
+                parameter_three&.to_mathml_without_math_tag(intent,
+                                                            options: options), intent
+              ),
             ],
           )
           ternary_intentify(mrow, intent)
@@ -70,10 +81,18 @@ module Plurimath
         end
 
         def to_unicodemath(options:)
-          first_value = "_#{unicodemath_parens(parameter_one, options: options)}" if parameter_one
-          second_value = "^#{unicodemath_parens(parameter_two, options: options)}" if parameter_two
+          if parameter_one
+            first_value = "_#{unicodemath_parens(parameter_one,
+                                                 options: options)}"
+          end
+          if parameter_two
+            second_value = "^#{unicodemath_parens(parameter_two,
+                                                  options: options)}"
+          end
           mask = self.options&.dig(:mask) if self.options&.key?(:mask)
-          "∑#{mask}#{first_value}#{second_value}#{naryand_value(parameter_three, options: options)}"
+          "∑#{mask}#{first_value}#{second_value}#{naryand_value(
+            parameter_three, options: options
+          )}"
         end
 
         def to_omml_without_math_tag(display_style, options:)
@@ -84,9 +103,12 @@ module Plurimath
             nary,
             [
               narypr(hide_function_name ? "" : "∑"),
-              omml_parameter(parameter_one, display_style, tag_name: "sub", options: options),
-              omml_parameter(parameter_two, display_style, tag_name: "sup", options: options),
-              omml_parameter(parameter_three, display_style, tag_name: "e", options: options),
+              omml_parameter(parameter_one, display_style, tag_name: "sub",
+                                                           options: options),
+              omml_parameter(parameter_two, display_style, tag_name: "sup",
+                                                           options: options),
+              omml_parameter(parameter_three, display_style, tag_name: "e",
+                                                             options: options),
             ],
           )
           [nary]
@@ -103,7 +125,8 @@ module Plurimath
         def line_breaking(obj)
           parameter_one&.line_breaking(obj)
           if obj.value_exist?
-            sum = self.class.new(Utility.filter_values(obj.value), parameter_two, parameter_three)
+            sum = self.class.new(Utility.filter_values(obj.value),
+                                 parameter_two, parameter_three)
             sum.hide_function_name = true
             obj.update(sum)
             self.parameter_two = nil
@@ -122,7 +145,7 @@ module Plurimath
         end
 
         def intent_names
-          { name: ":sum"}
+          { name: ":sum" }
         end
 
         private

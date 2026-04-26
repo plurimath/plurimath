@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Rgroup < Symbol
         INPUT = {
-          unicodemath: [["&#x27ef;"], parsing_wrapper(["rgroup"], lang: :unicode)],
-          asciimath: [["&#x27ef;"], parsing_wrapper(["rgroup"], lang: :asciimath)],
+          unicodemath: [["&#x27ef;"],
+                        parsing_wrapper(["rgroup"], lang: :unicode)],
+          asciimath: [["&#x27ef;"],
+                      parsing_wrapper(["rgroup"], lang: :asciimath)],
           mathml: ["&#x27ef;"],
           latex: [["rgroup", "&#x27ef;"]],
           omml: ["&#x27ef;"],

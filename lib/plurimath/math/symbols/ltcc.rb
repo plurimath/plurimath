@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Ltcc < Symbol
         INPUT = {
-          unicodemath: [["&#x2aa6;"], parsing_wrapper(["leftslice", "ltcc"], lang: :unicode)],
-          asciimath: [["&#x2aa6;"], parsing_wrapper(["leftslice", "ltcc"], lang: :asciimath)],
+          unicodemath: [["&#x2aa6;"],
+                        parsing_wrapper(["leftslice", "ltcc"], lang: :unicode)],
+          asciimath: [["&#x2aa6;"],
+                      parsing_wrapper(["leftslice", "ltcc"], lang: :asciimath)],
           mathml: ["&#x2aa6;"],
           latex: [["leftslice", "ltcc", "&#x2aa6;"]],
           omml: ["&#x2aa6;"],

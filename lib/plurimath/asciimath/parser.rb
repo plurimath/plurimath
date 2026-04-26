@@ -7,11 +7,11 @@ module Plurimath
 
       def initialize(text)
         @text = text
-                  &.gsub(/(\|:|:\|)/, "|")
-                  &.gsub(/(\{:)/, "ℒ")
-                  &.gsub(/(:\})/, "ℛ")
-                  &.gsub(/(\(:)/, "ᑕ")
-                  &.gsub(/(:\))/, "ᑐ")
+          &.gsub(/(\|:|:\|)/, "|")
+          &.gsub(/(\{:)/, "ℒ")
+          &.gsub(/(:\})/, "ℛ")
+          &.gsub(/(\(:)/, "ᑕ")
+          &.gsub(/(:\))/, "ᑐ")
       end
 
       def parse

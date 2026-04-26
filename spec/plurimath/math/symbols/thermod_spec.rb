@@ -1,11 +1,10 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Symbols::Thermod do
-
   describe ".initialize" do
-    it 'returns instance of Symbol Thermod' do
+    it "returns instance of Symbol Thermod" do
       klass = described_class.new
-      expect(klass).to be_a(Plurimath::Math::Symbols::Thermod)
+      expect(klass).to be_a(described_class)
     end
   end
 

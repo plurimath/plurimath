@@ -3,8 +3,12 @@ module Plurimath
     module Symbols
       class Smalltriangleright < Symbol
         INPUT = {
-          unicodemath: [["&#x25b9;"], parsing_wrapper(["smalltriangleright"], lang: :unicode)],
-          asciimath: [["&#x25b9;"], parsing_wrapper(["smalltriangleright"], lang: :asciimath)],
+          unicodemath: [["&#x25b9;"],
+                        parsing_wrapper(["smalltriangleright"],
+                                        lang: :unicode)],
+          asciimath: [["&#x25b9;"],
+                      parsing_wrapper(["smalltriangleright"],
+                                      lang: :asciimath)],
           mathml: ["&#x25b9;"],
           latex: [["smalltriangleright", "&#x25b9;"]],
           omml: ["&#x25b9;"],

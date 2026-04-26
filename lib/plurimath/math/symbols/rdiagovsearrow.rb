@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Rdiagovsearrow < Symbol
         INPUT = {
-          unicodemath: [["&#x2930;"], parsing_wrapper(["rdiagovsearrow"], lang: :unicode)],
-          asciimath: [["&#x2930;"], parsing_wrapper(["rdiagovsearrow"], lang: :asciimath)],
+          unicodemath: [["&#x2930;"],
+                        parsing_wrapper(["rdiagovsearrow"], lang: :unicode)],
+          asciimath: [["&#x2930;"],
+                      parsing_wrapper(["rdiagovsearrow"], lang: :asciimath)],
           mathml: ["&#x2930;"],
           latex: [["rdiagovsearrow", "&#x2930;"]],
           omml: ["&#x2930;"],

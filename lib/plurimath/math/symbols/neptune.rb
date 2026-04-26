@@ -3,8 +3,12 @@ module Plurimath
     module Symbols
       class Neptune < Symbol
         INPUT = {
-          unicodemath: [["&#x2646;"], parsing_wrapper(["neptune", "Neptune"], lang: :unicode)],
-          asciimath: [["&#x2646;"], parsing_wrapper(["neptune", "Neptune"], lang: :asciimath)],
+          unicodemath: [["&#x2646;"],
+                        parsing_wrapper(["neptune", "Neptune"],
+                                        lang: :unicode)],
+          asciimath: [["&#x2646;"],
+                      parsing_wrapper(["neptune", "Neptune"],
+                                      lang: :asciimath)],
           mathml: ["&#x2646;"],
           latex: [["neptune", "Neptune", "&#x2646;"]],
           omml: ["&#x2646;"],

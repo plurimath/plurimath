@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Gtreqqless < Symbol
         INPUT = {
-          unicodemath: [["&#x2a8c;"], parsing_wrapper(["gtreqqless"], lang: :unicode)],
-          asciimath: [["&#x2a8c;"], parsing_wrapper(["gtreqqless"], lang: :asciimath)],
+          unicodemath: [["&#x2a8c;"],
+                        parsing_wrapper(["gtreqqless"], lang: :unicode)],
+          asciimath: [["&#x2a8c;"],
+                      parsing_wrapper(["gtreqqless"], lang: :asciimath)],
           mathml: ["&#x2a8c;"],
           latex: [["gtreqqless", "&#x2a8c;"]],
           omml: ["&#x2a8c;"],

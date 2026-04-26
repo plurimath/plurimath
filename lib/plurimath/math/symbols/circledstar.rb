@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Circledstar < Symbol
         INPUT = {
-          unicodemath: [["&#x272a;"], parsing_wrapper(["circledstar"], lang: :unicode)],
-          asciimath: [["&#x272a;"], parsing_wrapper(["circledstar"], lang: :asciimath)],
+          unicodemath: [["&#x272a;"],
+                        parsing_wrapper(["circledstar"], lang: :unicode)],
+          asciimath: [["&#x272a;"],
+                      parsing_wrapper(["circledstar"], lang: :asciimath)],
           mathml: ["&#x272a;"],
           latex: [["circledstar", "&#x272a;"]],
           omml: ["&#x272a;"],

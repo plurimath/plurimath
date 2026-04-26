@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Backcong < Symbol
         INPUT = {
-          unicodemath: [["&#x224c;"], parsing_wrapper(["backcong"], lang: :unicode)],
-          asciimath: [["&#x224c;"], parsing_wrapper(["backcong"], lang: :asciimath)],
+          unicodemath: [["&#x224c;"],
+                        parsing_wrapper(["backcong"], lang: :unicode)],
+          asciimath: [["&#x224c;"],
+                      parsing_wrapper(["backcong"], lang: :asciimath)],
           mathml: ["&#x224c;"],
           latex: [["backcong", "&#x224c;"]],
           omml: ["&#x224c;"],

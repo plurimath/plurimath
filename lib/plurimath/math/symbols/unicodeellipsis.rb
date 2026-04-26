@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Unicodeellipsis < Symbol
         INPUT = {
-          unicodemath: [["&#x2026;"], parsing_wrapper(["unicodeellipsis"], lang: :unicode)],
-          asciimath: [["&#x2026;"], parsing_wrapper(["unicodeellipsis"], lang: :asciimath)],
+          unicodemath: [["&#x2026;"],
+                        parsing_wrapper(["unicodeellipsis"], lang: :unicode)],
+          asciimath: [["&#x2026;"],
+                      parsing_wrapper(["unicodeellipsis"], lang: :asciimath)],
           mathml: ["&#x2026;"],
           latex: [["unicodeellipsis", "&#x2026;"]],
           omml: ["&#x2026;"],

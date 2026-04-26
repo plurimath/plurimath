@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Downwhitearrow < Symbol
         INPUT = {
-          unicodemath: [["&#x21e9;"], parsing_wrapper(["downwhitearrow"], lang: :unicode)],
-          asciimath: [["&#x21e9;"], parsing_wrapper(["downwhitearrow"], lang: :asciimath)],
+          unicodemath: [["&#x21e9;"],
+                        parsing_wrapper(["downwhitearrow"], lang: :unicode)],
+          asciimath: [["&#x21e9;"],
+                      parsing_wrapper(["downwhitearrow"], lang: :asciimath)],
           mathml: ["&#x21e9;"],
           latex: [["downwhitearrow", "&#x21e9;"]],
           omml: ["&#x21e9;"],

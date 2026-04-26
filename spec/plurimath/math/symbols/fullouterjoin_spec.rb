@@ -1,11 +1,10 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Symbols::Fullouterjoin do
-
   describe ".initialize" do
-    it 'returns instance of Symbol Fullouterjoin' do
+    it "returns instance of Symbol Fullouterjoin" do
       klass = described_class.new
-      expect(klass).to be_a(Plurimath::Math::Symbols::Fullouterjoin)
+      expect(klass).to be_a(described_class)
     end
   end
 

@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-
 module Plurimath
   module Math
     module Function
@@ -9,17 +8,29 @@ module Plurimath
           name: "function apply",
           first_value: "subscript",
           second_value: "supscript",
-        }
+        }.freeze
 
         def to_asciimath(options:)
-          first_value = "_#{wrapped(parameter_one, options: options)}" if parameter_one
-          second_value = "^#{wrapped(parameter_two, options: options)}" if parameter_two
+          if parameter_one
+            first_value = "_#{wrapped(parameter_one,
+                                      options: options)}"
+          end
+          if parameter_two
+            second_value = "^#{wrapped(parameter_two,
+                                       options: options)}"
+          end
           "log#{first_value}#{second_value}"
         end
 
         def to_latex(options:)
-          first_value = "_#{latex_wrapped(parameter_one, options: options)}" if parameter_one
-          second_value = "^#{latex_wrapped(parameter_two, options: options)}" if parameter_two
+          if parameter_one
+            first_value = "_#{latex_wrapped(parameter_one,
+                                            options: options)}"
+          end
+          if parameter_two
+            second_value = "^#{latex_wrapped(parameter_two,
+                                             options: options)}"
+          end
           "\\log#{first_value}#{second_value}"
         end
 
@@ -40,8 +51,10 @@ module Plurimath
             [
               ssubsuppr,
               e_parameter,
-              omml_parameter(parameter_one, display_style, tag_name: "sub", options: options),
-              omml_parameter(parameter_two, display_style, tag_name: "sup", options: options),
+              omml_parameter(parameter_one, display_style, tag_name: "sub",
+                                                           options: options),
+              omml_parameter(parameter_two, display_style, tag_name: "sup",
+                                                           options: options),
             ],
           )
           [ssubsup]
@@ -74,7 +87,8 @@ module Plurimath
         def line_breaking(obj)
           parameter_one&.line_breaking(obj)
           if obj.value_exist?
-            log = self.class.new(Utility.filter_values(obj.value), parameter_two)
+            log = self.class.new(Utility.filter_values(obj.value),
+                                 parameter_two)
             self.parameter_two = nil
             log.hide_function_name = true
             obj.update(log)
@@ -91,7 +105,8 @@ module Plurimath
         end
 
         def rpr_tag
-          rpr_tag  = (Utility.ox_element("rPr", namespace: "m") << msty_tag_with_attrs)
+          rpr_tag = (Utility.ox_element("rPr",
+                                        namespace: "m") << msty_tag_with_attrs)
           r_tag = Utility.ox_element("r", namespace: "m")
           t_tag = (Utility.ox_element("t", namespace: "m") << "log")
           Utility.update_nodes(r_tag, [rpr_tag, t_tag])

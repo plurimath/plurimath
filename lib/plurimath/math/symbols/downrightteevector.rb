@@ -3,8 +3,14 @@ module Plurimath
     module Symbols
       class Downrightteevector < Symbol
         INPUT = {
-          unicodemath: [["&#x295f;"], parsing_wrapper(["barrightharpoondown", "DownRightTeeVector"], lang: :unicode)],
-          asciimath: [["&#x295f;"], parsing_wrapper(["barrightharpoondown", "DownRightTeeVector"], lang: :asciimath)],
+          unicodemath: [["&#x295f;"],
+                        parsing_wrapper(
+                          ["barrightharpoondown",
+                           "DownRightTeeVector"], lang: :unicode
+                        )],
+          asciimath: [["&#x295f;"],
+                      parsing_wrapper(["barrightharpoondown", "DownRightTeeVector"],
+                                      lang: :asciimath)],
           mathml: ["&#x295f;"],
           latex: [["barrightharpoondown", "DownRightTeeVector", "&#x295f;"]],
           omml: ["&#x295f;"],

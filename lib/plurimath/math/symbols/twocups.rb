@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Twocups < Symbol
         INPUT = {
-          unicodemath: [["&#x2a4a;"], parsing_wrapper(["twocups"], lang: :unicode)],
-          asciimath: [["&#x2a4a;"], parsing_wrapper(["twocups"], lang: :asciimath)],
+          unicodemath: [["&#x2a4a;"],
+                        parsing_wrapper(["twocups"], lang: :unicode)],
+          asciimath: [["&#x2a4a;"],
+                      parsing_wrapper(["twocups"], lang: :asciimath)],
           mathml: ["&#x2a4a;"],
           latex: [["twocups", "&#x2a4a;"]],
           omml: ["&#x2a4a;"],

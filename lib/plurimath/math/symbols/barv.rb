@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Barv < Symbol
         INPUT = {
-          unicodemath: [["&#x2ae7;"], parsing_wrapper(["Barv"], lang: :unicode)],
-          asciimath: [["&#x2ae7;"], parsing_wrapper(["Barv"], lang: :asciimath)],
+          unicodemath: [["&#x2ae7;"],
+                        parsing_wrapper(["Barv"], lang: :unicode)],
+          asciimath: [["&#x2ae7;"],
+                      parsing_wrapper(["Barv"], lang: :asciimath)],
           mathml: ["&#x2ae7;"],
           latex: [["Barv", "&#x2ae7;"]],
           omml: ["&#x2ae7;"],

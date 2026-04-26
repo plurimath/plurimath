@@ -3,8 +3,12 @@ module Plurimath
     module Symbols
       class Imageof < Symbol
         INPUT = {
-          unicodemath: [["&#x22b7;"], parsing_wrapper(["multimapdotbothB", "imageof"], lang: :unicode)],
-          asciimath: [["&#x22b7;"], parsing_wrapper(["multimapdotbothB", "imageof"], lang: :asciimath)],
+          unicodemath: [["&#x22b7;"],
+                        parsing_wrapper(["multimapdotbothB", "imageof"],
+                                        lang: :unicode)],
+          asciimath: [["&#x22b7;"],
+                      parsing_wrapper(["multimapdotbothB", "imageof"],
+                                      lang: :asciimath)],
           mathml: ["&#x22b7;"],
           latex: [["multimapdotbothB", "imageof", "&#x22b7;"]],
           omml: ["&#x22b7;"],

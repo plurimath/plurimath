@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Lblot < Symbol
         INPUT = {
-          unicodemath: [["&#x2989;"], parsing_wrapper(["llangle", "lblot"], lang: :unicode)],
-          asciimath: [["&#x2989;"], parsing_wrapper(["llangle", "lblot"], lang: :asciimath)],
+          unicodemath: [["&#x2989;"],
+                        parsing_wrapper(["llangle", "lblot"], lang: :unicode)],
+          asciimath: [["&#x2989;"],
+                      parsing_wrapper(["llangle", "lblot"], lang: :asciimath)],
           mathml: ["&#x2989;"],
           latex: [["llangle", "lblot", "&#x2989;"]],
           omml: ["&#x2989;"],

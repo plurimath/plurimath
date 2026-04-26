@@ -30,7 +30,9 @@ RSpec.describe Plurimath::UnicodeMath::Parser do
     end
 
     context "contains n-ary function with compatibility wrapper values #EXAMPLE_679" do
-      let(:string) { '\sum_"P{updownharpoonleftleft}"^"P{updownharpoonleftleft}" d' }
+      let(:string) do
+        '\sum_"P{updownharpoonleftleft}"^"P{updownharpoonleftleft}" d'
+      end
 
       it "matches formula structure of UnicodeMath" do
         expect(formula).to eq(UnicodeMathTransformValues::EXAMPLE_679)

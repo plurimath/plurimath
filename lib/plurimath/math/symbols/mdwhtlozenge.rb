@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Mdwhtlozenge < Symbol
         INPUT = {
-          unicodemath: [["&#x2b28;"], parsing_wrapper(["mdwhtlozenge"], lang: :unicode)],
-          asciimath: [["&#x2b28;"], parsing_wrapper(["mdwhtlozenge"], lang: :asciimath)],
+          unicodemath: [["&#x2b28;"],
+                        parsing_wrapper(["mdwhtlozenge"], lang: :unicode)],
+          asciimath: [["&#x2b28;"],
+                      parsing_wrapper(["mdwhtlozenge"], lang: :asciimath)],
           mathml: ["&#x2b28;"],
           latex: [["mdwhtlozenge", "&#x2b28;"]],
           omml: ["&#x2b28;"],

@@ -3,10 +3,13 @@ module Plurimath
     module Symbols
       class Nsup < Symbol
         INPUT = {
-          unicodemath: [["nsup", "&#x2285;"], parsing_wrapper(["nsupset"], lang: :unicode)],
-          asciimath: [["&#x2285;"], parsing_wrapper(["nsup", "nsupset"], lang: :asciimath)],
+          unicodemath: [["nsup", "&#x2285;"],
+                        parsing_wrapper(["nsupset"], lang: :unicode)],
+          asciimath: [["&#x2285;"],
+                      parsing_wrapper(["nsup", "nsupset"], lang: :asciimath)],
           mathml: ["&#x2285;"],
-          latex: [["nsupset", "&#x2285;"], parsing_wrapper(["nsup"], lang: :latex)],
+          latex: [["nsupset", "&#x2285;"],
+                  parsing_wrapper(["nsup"], lang: :latex)],
           omml: ["&#x2285;"],
           html: ["&#x2285;"],
         }.freeze

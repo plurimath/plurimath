@@ -1,11 +1,10 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Symbols::Equivvert do
-
   describe ".initialize" do
-    it 'returns instance of Symbol Equivvert' do
+    it "returns instance of Symbol Equivvert" do
       klass = described_class.new
-      expect(klass).to be_a(Plurimath::Math::Symbols::Equivvert)
+      expect(klass).to be_a(described_class)
     end
   end
 

@@ -4,7 +4,8 @@ module Plurimath
       class Degf < Symbol
         INPUT = {
           unicodemath: [["degf", "&#x2109;"]],
-          asciimath: [["&#x2109;"], parsing_wrapper(["degf"], lang: :asciimath)],
+          asciimath: [["&#x2109;"],
+                      parsing_wrapper(["degf"], lang: :asciimath)],
           mathml: ["&#x2109;"],
           latex: [["&#x2109;"], parsing_wrapper(["degf"], lang: :latex)],
           omml: ["&#x2109;"],

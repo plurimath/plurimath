@@ -4,7 +4,8 @@ module Plurimath
       class Complement < Symbol
         INPUT = {
           unicodemath: [["complement", "&#x2201;"]],
-          asciimath: [["&#x2201;"], parsing_wrapper(["complement"], lang: :asciimath)],
+          asciimath: [["&#x2201;"],
+                      parsing_wrapper(["complement"], lang: :asciimath)],
           mathml: ["&#x2201;"],
           latex: [["complement", "&#x2201;"]],
           omml: ["&#x2201;"],

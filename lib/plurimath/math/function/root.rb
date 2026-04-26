@@ -1,11 +1,9 @@
 # frozen_string_literal: true
 
-
 module Plurimath
   module Math
     module Function
       class Root < BinaryFunction
-
         FUNCTION = {
           name: "root",
           first_value: "radicand",
@@ -13,8 +11,10 @@ module Plurimath
         }.freeze
 
         def to_mathml_without_math_tag(intent, options:)
-          first_value = parameter_one&.to_mathml_without_math_tag(intent, options: options)
-          second_value = parameter_two&.to_mathml_without_math_tag(intent, options: options)
+          first_value = parameter_one&.to_mathml_without_math_tag(intent,
+                                                                  options: options)
+          second_value = parameter_two&.to_mathml_without_math_tag(intent,
+                                                                   options: options)
           Utility.update_nodes(
             Utility.ox_element("mroot"),
             [second_value, first_value],
@@ -31,13 +31,16 @@ module Plurimath
           attribute = { "m:val": "off" }
           rad_element = Utility.ox_element("rad", namespace: "m")
           pr_element  = Utility.ox_element("radPr", namespace: "m")
-          pr_element << Utility.ox_element("degHide", namespace: "m", attributes: attribute)
+          pr_element << Utility.ox_element("degHide", namespace: "m",
+                                                      attributes: attribute)
           Utility.update_nodes(
             rad_element,
             [
               pr_element,
-              omml_parameter(parameter_one, display_style, tag_name: "deg", options: options),
-              omml_parameter(parameter_two, display_style, tag_name: "e", options: options),
+              omml_parameter(parameter_one, display_style, tag_name: "deg",
+                                                           options: options),
+              omml_parameter(parameter_two, display_style, tag_name: "e",
+                                                           options: options),
             ],
           )
           [rad_element]

@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Gtquest < Symbol
         INPUT = {
-          unicodemath: [["&#x2a7c;"], parsing_wrapper(["gtquest"], lang: :unicode)],
-          asciimath: [["&#x2a7c;"], parsing_wrapper(["gtquest"], lang: :asciimath)],
+          unicodemath: [["&#x2a7c;"],
+                        parsing_wrapper(["gtquest"], lang: :unicode)],
+          asciimath: [["&#x2a7c;"],
+                      parsing_wrapper(["gtquest"], lang: :asciimath)],
           mathml: ["&#x2a7c;"],
           latex: [["gtquest", "&#x2a7c;"]],
           omml: ["&#x2a7c;"],

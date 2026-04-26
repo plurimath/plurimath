@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Mu < Symbol
         INPUT = {
-          unicodemath: [["mu", "&#x3bc;"], parsing_wrapper(["upmu"], lang: :unicode)],
-          asciimath: [["mu", "&#x3bc;"], parsing_wrapper(["upmu"], lang: :asciimath)],
+          unicodemath: [["mu", "&#x3bc;"],
+                        parsing_wrapper(["upmu"], lang: :unicode)],
+          asciimath: [["mu", "&#x3bc;"],
+                      parsing_wrapper(["upmu"], lang: :asciimath)],
           mathml: ["&#x3bc;"],
           latex: [["upmu", "mu", "&#x3bc;"]],
           omml: ["&#x3bc;"],

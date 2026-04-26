@@ -1,11 +1,10 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Symbols::Squareneswfill do
-
   describe ".initialize" do
-    it 'returns instance of Symbol Squareneswfill' do
+    it "returns instance of Symbol Squareneswfill" do
       klass = described_class.new
-      expect(klass).to be_a(Plurimath::Math::Symbols::Squareneswfill)
+      expect(klass).to be_a(described_class)
     end
   end
 

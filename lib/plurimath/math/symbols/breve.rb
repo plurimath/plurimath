@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Breve < Symbol
         INPUT = {
-          unicodemath: [["&#x306;"], parsing_wrapper(["breve"], lang: :unicode)],
-          asciimath: [["&#x306;"], parsing_wrapper(["breve"], lang: :asciimath)],
+          unicodemath: [["&#x306;"],
+                        parsing_wrapper(["breve"], lang: :unicode)],
+          asciimath: [["&#x306;"],
+                      parsing_wrapper(["breve"], lang: :asciimath)],
           mathml: ["&#x306;"],
           latex: [["breve", "&#x306;"]],
           omml: ["&#x306;"],

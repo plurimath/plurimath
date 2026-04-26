@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Capdot < Symbol
         INPUT = {
-          unicodemath: [["&#x2a40;"], parsing_wrapper(["capdot"], lang: :unicode)],
-          asciimath: [["&#x2a40;"], parsing_wrapper(["capdot"], lang: :asciimath)],
+          unicodemath: [["&#x2a40;"],
+                        parsing_wrapper(["capdot"], lang: :unicode)],
+          asciimath: [["&#x2a40;"],
+                      parsing_wrapper(["capdot"], lang: :asciimath)],
           mathml: ["&#x2a40;"],
           latex: [["capdot", "&#x2a40;"]],
           omml: ["&#x2a40;"],

@@ -4,7 +4,8 @@ module Plurimath
       class Sqsupseteq < Symbol
         INPUT = {
           unicodemath: [["sqsupseteq", "&#x2292;"]],
-          asciimath: [["&#x2292;"], parsing_wrapper(["sqsupseteq"], lang: :asciimath)],
+          asciimath: [["&#x2292;"],
+                      parsing_wrapper(["sqsupseteq"], lang: :asciimath)],
           mathml: ["&#x2292;"],
           latex: [["sqsupseteq", "&#x2292;"]],
           omml: ["&#x2292;"],

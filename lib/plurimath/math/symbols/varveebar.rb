@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Varveebar < Symbol
         INPUT = {
-          unicodemath: [["&#x2a61;"], parsing_wrapper(["varveebar"], lang: :unicode)],
-          asciimath: [["&#x2a61;"], parsing_wrapper(["varveebar"], lang: :asciimath)],
+          unicodemath: [["&#x2a61;"],
+                        parsing_wrapper(["varveebar"], lang: :unicode)],
+          asciimath: [["&#x2a61;"],
+                      parsing_wrapper(["varveebar"], lang: :asciimath)],
           mathml: ["&#x2a61;"],
           latex: [["varveebar", "&#x2a61;"]],
           omml: ["&#x2a61;"],

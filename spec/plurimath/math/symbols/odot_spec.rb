@@ -1,11 +1,10 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Symbols::Odot do
-
   describe ".initialize" do
-    it 'returns instance of Symbol Odot' do
+    it "returns instance of Symbol Odot" do
       klass = described_class.new
-      expect(klass).to be_a(Plurimath::Math::Symbols::Odot)
+      expect(klass).to be_a(described_class)
     end
   end
 

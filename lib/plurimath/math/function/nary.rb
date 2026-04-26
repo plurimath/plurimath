@@ -4,7 +4,8 @@ module Plurimath
   module Math
     module Function
       class Nary < Core
-        attr_accessor :parameter_one, :parameter_two, :parameter_three, :parameter_four, :options
+        attr_accessor :parameter_one, :parameter_two, :parameter_three,
+                      :parameter_four, :options
 
         def initialize(parameter_one = nil,
                        parameter_two = nil,
@@ -16,7 +17,8 @@ module Plurimath
           @parameter_three = parameter_three
           @parameter_four = parameter_four
           @options = options
-          Utility.validate_left_right([parameter_one, parameter_two, parameter_three, parameter_four])
+          Utility.validate_left_right([parameter_one, parameter_two,
+                                       parameter_three, parameter_four])
         end
 
         def ==(object)
@@ -51,7 +53,7 @@ module Plurimath
             validate_mathml_fields(parameter_three, intent, options: options),
           ]
           subsup_tag = Utility.update_nodes(ox_element(tag_name), new_arr)
-          masked_tag(subsup_tag) if self.options.dig(:mask)
+          masked_tag(subsup_tag) if self.options[:mask]
           return subsup_tag unless parameter_four
 
           intentify(
@@ -59,7 +61,10 @@ module Plurimath
               ox_element("mrow"),
               [
                 subsup_tag,
-                wrap_mrow(validate_mathml_fields(parameter_four, intent, options: options), true),
+                wrap_mrow(
+                  validate_mathml_fields(parameter_four, intent,
+                                         options: options), true
+                ),
               ],
             ),
             intent,
@@ -70,7 +75,8 @@ module Plurimath
 
         def to_omml_without_math_tag(display_style, options:)
           nary_element = Utility.ox_element("nary", namespace: "m")
-          Utility.update_nodes(nary_element, omml_nary_tag(display_style, options: options))
+          Utility.update_nodes(nary_element,
+                               omml_nary_tag(display_style, options: options))
           Array(nary_element)
         end
 
@@ -78,9 +84,13 @@ module Plurimath
           first_value = sub_value(options: options) if parameter_two
           second_value = sup_value(options: options) if parameter_three
           if prime_unicode?(parameter_three)
-            "#{parameter_one&.to_unicodemath(options: options)}#{second_value}#{first_value}#{naryand_value(parameter_four, options: options)}"
+            "#{parameter_one&.to_unicodemath(options: options)}#{second_value}#{first_value}#{naryand_value(
+              parameter_four, options: options
+            )}"
           else
-            "#{parameter_one&.to_unicodemath(options: options)}#{first_value}#{second_value}#{naryand_value(parameter_four, options: options)}"
+            "#{parameter_one&.to_unicodemath(options: options)}#{first_value}#{second_value}#{naryand_value(
+              parameter_four, options: options
+            )}"
           end
         end
 
@@ -90,11 +100,11 @@ module Plurimath
             obj.update(
               self.class.new(
                 Utility.filter_values(obj.value),
-                self.parameter_two,
-                self.parameter_three,
-                self.parameter_four,
-                self.options,
-              )
+                parameter_two,
+                parameter_three,
+                parameter_four,
+                options,
+              ),
             )
             self.parameter_two = nil
             self.parameter_three = nil
@@ -108,10 +118,10 @@ module Plurimath
               self.class.new(
                 nil,
                 Utility.filter_values(obj.value),
-                self.parameter_three,
-                self.parameter_four,
-                self.options
-              )
+                parameter_three,
+                parameter_four,
+                options,
+              ),
             )
             self.parameter_three = nil
             self.parameter_four = nil
@@ -131,7 +141,8 @@ module Plurimath
 
             intent_name = sym_instance.nary_intent_name
             next pp symbol.const_source_location(:INPUT) if intent_name.nil?
-            hash[intent_name.gsub(/\s|-/, '_').to_sym] = intent_name
+
+            hash[intent_name.gsub(/\s|-/, "_").to_sym] = intent_name
           end
         end
 
@@ -143,9 +154,13 @@ module Plurimath
 
         def chr_value(narypr, options:)
           first_value = Utility.html_entity_to_unicode(parameter_one&.nary_attr_value(options: options))
-          narypr << Utility.ox_element("chr", namespace: "m", attributes: { "m:val": first_value }) unless first_value == "∫"
+          unless first_value == "∫"
+            narypr << Utility.ox_element("chr", namespace: "m",
+                                                attributes: { "m:val": first_value })
+          end
 
-          narypr << Utility.ox_element("limLoc", namespace: "m", attributes: { "m:val": (self.options[:type] || "subSup").to_s })
+          narypr << Utility.ox_element("limLoc", namespace: "m",
+                                                 attributes: { "m:val": (self.options[:type] || "subSup").to_s })
           hide_tags(narypr, parameter_two, "sub")
           hide_tags(narypr, parameter_three, "sup")
           narypr
@@ -154,7 +169,8 @@ module Plurimath
         def hide_tags(nar, field, tag_prefix)
           return nar unless field.nil?
 
-          nar << Utility.ox_element("#{tag_prefix}Hide", namespace: "m", attributes: { "m:val": "1" })
+          nar << Utility.ox_element("#{tag_prefix}Hide", namespace: "m",
+                                                         attributes: { "m:val": "1" })
         end
 
         def omml_nary_tag(display_style, options:)
@@ -162,9 +178,12 @@ module Plurimath
           chr_value(narypr, options: options)
           [
             (narypr << Utility.pr_element("ctrl", true, namespace: "m")),
-            omml_parameter(parameter_two, display_style, tag_name: "sub", options: options),
-            omml_parameter(parameter_three, display_style, tag_name: "sup", options: options),
-            omml_parameter(parameter_four, display_style, tag_name: "e", options: options),
+            omml_parameter(parameter_two, display_style, tag_name: "sub",
+                                                         options: options),
+            omml_parameter(parameter_three, display_style, tag_name: "sup",
+                                                           options: options),
+            omml_parameter(parameter_four, display_style, tag_name: "e",
+                                                          options: options),
           ]
         end
 
@@ -199,16 +218,14 @@ module Plurimath
 
         def tag_name
           tag = options[:type] == "undOvr" ? "munderover" : "msubsup"
-          if !(parameter_two && parameter_three)
-            if parameter_two
-              tag == "munderover" ? "munder" : "msub"
-            elsif parameter_three
-              tag == "munderover" ? "mover" : "msup"
-            else
-             'mrow'
-            end
-          else
+          if parameter_two && parameter_three
             tag
+          elsif parameter_two
+            tag == "munderover" ? "munder" : "msub"
+          elsif parameter_three
+            tag == "munderover" ? "mover" : "msup"
+          else
+            "mrow"
           end
         end
 

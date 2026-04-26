@@ -7,7 +7,7 @@ RSpec.describe Plurimath::Formatter::Numbers::Fraction do
   let(:symbols) { {} }
   let(:result) { ["10"] }
   let(:integer_formatter) do
-    double.tap { |d| allow(d).to receive(:format_groups) { |x| "10" } }
+    double.tap { |d| allow(d).to receive(:format_groups).and_return("10") }
   end
 
   describe "#initialize" do
@@ -56,7 +56,10 @@ RSpec.describe Plurimath::Formatter::Numbers::Fraction do
     end
 
     context "with all custom options" do
-      let(:symbols) { { decimal: ",", precision: 4, base: 2, group_digits: 4, fraction_group_digits: 2, group: "_", fraction_group: "-" } }
+      let(:symbols) do
+        { decimal: ",", precision: 4, base: 2, group_digits: 4,
+          fraction_group_digits: 2, group: "_", fraction_group: "-" }
+      end
 
       it "sets all values correctly" do
         expect(formatter.decimal).to eq(",")
@@ -169,7 +172,7 @@ RSpec.describe Plurimath::Formatter::Numbers::Fraction do
       end
 
       it "groups with custom separator" do
-        symbols.merge!(fraction_group: "_")
+        symbols[:fraction_group] = "_"
         result = formatter.format_groups("123456")
         expect(result).to eq("12_34_56")
       end
@@ -221,7 +224,7 @@ RSpec.describe Plurimath::Formatter::Numbers::Fraction do
       it "converts to octal digits" do
         result = formatter.send(:change_base, "5")
         expect(result).to be_a(String)
-        expect(result.chars.all? { |c| ("0".."7").include?(c) }).to be(true)
+        expect(result.chars.all? { |c| ("0".."7").cover?(c) }).to be(true)
       end
     end
 

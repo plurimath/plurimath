@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Supedot < Symbol
         INPUT = {
-          unicodemath: [["&#x2ac4;"], parsing_wrapper(["supedot"], lang: :unicode)],
-          asciimath: [["&#x2ac4;"], parsing_wrapper(["supedot"], lang: :asciimath)],
+          unicodemath: [["&#x2ac4;"],
+                        parsing_wrapper(["supedot"], lang: :unicode)],
+          asciimath: [["&#x2ac4;"],
+                      parsing_wrapper(["supedot"], lang: :asciimath)],
           mathml: ["&#x2ac4;"],
           latex: [["supedot", "&#x2ac4;"]],
           omml: ["&#x2ac4;"],

@@ -3,8 +3,12 @@ module Plurimath
     module Symbols
       class Leftvectorbar < Symbol
         INPUT = {
-          unicodemath: [["&#x2952;"], parsing_wrapper(["barleftharpoonup", "LeftVectorBar"], lang: :unicode)],
-          asciimath: [["&#x2952;"], parsing_wrapper(["barleftharpoonup", "LeftVectorBar"], lang: :asciimath)],
+          unicodemath: [["&#x2952;"],
+                        parsing_wrapper(["barleftharpoonup", "LeftVectorBar"],
+                                        lang: :unicode)],
+          asciimath: [["&#x2952;"],
+                      parsing_wrapper(["barleftharpoonup", "LeftVectorBar"],
+                                      lang: :asciimath)],
           mathml: ["&#x2952;"],
           latex: [["barleftharpoonup", "LeftVectorBar", "&#x2952;"]],
           omml: ["&#x2952;"],

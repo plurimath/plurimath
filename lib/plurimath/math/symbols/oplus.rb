@@ -3,7 +3,8 @@ module Plurimath
     module Symbols
       class Oplus < Symbol
         INPUT = {
-          unicodemath: [["oplus", "&#x2295;"], parsing_wrapper(["o+"], lang: :unicode)],
+          unicodemath: [["oplus", "&#x2295;"],
+                        parsing_wrapper(["o+"], lang: :unicode)],
           asciimath: [["oplus", "o+", "&#x2295;"]],
           mathml: ["&#x2295;"],
           latex: [["oplus", "&#x2295;"], parsing_wrapper(["o+"], lang: :latex)],

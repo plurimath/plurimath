@@ -1,7 +1,6 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Function::Abs do
-
   describe ".initialize" do
     subject(:formula) { described_class.new(first_value) }
 
@@ -9,7 +8,7 @@ RSpec.describe Plurimath::Math::Function::Abs do
       let(:first_value) { Plurimath::Math::Symbols::Ampersand.new }
 
       it "returns instance of Abs" do
-        expect(formula).to be_a(Plurimath::Math::Function::Abs)
+        expect(formula).to be_a(described_class)
       end
     end
 
@@ -24,7 +23,9 @@ RSpec.describe Plurimath::Math::Function::Abs do
   end
 
   describe ".to_asciimath" do
-    subject(:formula) { described_class.new(first_value).to_asciimath(options: {}) }
+    subject(:formula) do
+      described_class.new(first_value).to_asciimath(options: {})
+    end
 
     context "contains Symbol as value" do
       let(:first_value) { Plurimath::Math::Symbols::Symbol.new("n") }
@@ -45,12 +46,13 @@ RSpec.describe Plurimath::Math::Function::Abs do
     context "contains Formula as value" do
       let(:first_value) do
         Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Sum.new(
-            Plurimath::Math::Symbols::Ampersand.new,
-            Plurimath::Math::Function::Text.new("so"),
-          )
-        ])
+                                       Plurimath::Math::Function::Sum.new(
+                                         Plurimath::Math::Symbols::Ampersand.new,
+                                         Plurimath::Math::Function::Text.new("so"),
+                                       ),
+                                     ])
       end
+
       it "returns asciimath string" do
         expect(formula).to eq("abs(sum_(&)^(\"so\"))")
       end
@@ -60,8 +62,8 @@ RSpec.describe Plurimath::Math::Function::Abs do
   describe ".to_mathml" do
     subject(:formula) do
       Plurimath.xml_engine.dump(
-        described_class.new(first_value).
-          to_mathml_without_math_tag(false, options: {}),
+        described_class.new(first_value)
+          .to_mathml_without_math_tag(false, options: {}),
         indent: 2,
       ).gsub("&amp;", "&")
     end
@@ -99,12 +101,13 @@ RSpec.describe Plurimath::Math::Function::Abs do
     context "contains Formula as value" do
       let(:first_value) do
         Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Sum.new(
-            Plurimath::Math::Symbols::Ampersand.new,
-            Plurimath::Math::Function::Text.new("so"),
-          )
-        ])
+                                       Plurimath::Math::Function::Sum.new(
+                                         Plurimath::Math::Symbols::Ampersand.new,
+                                         Plurimath::Math::Function::Text.new("so"),
+                                       ),
+                                     ])
       end
+
       it "returns mathml string" do
         expected_value = <<~MATHML
           <mrow>
@@ -146,12 +149,13 @@ RSpec.describe Plurimath::Math::Function::Abs do
     context "contains Formula as value" do
       let(:first_value) do
         Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Sum.new(
-            Plurimath::Math::Symbols::Ampersand.new,
-            Plurimath::Math::Function::Text.new("so"),
-          )
-        ])
+                                       Plurimath::Math::Function::Sum.new(
+                                         Plurimath::Math::Symbols::Ampersand.new,
+                                         Plurimath::Math::Function::Text.new("so"),
+                                       ),
+                                     ])
       end
+
       it "returns mathml string" do
         expect(formula).to eql("\\abs{\\sum_{\\&}^{\\text{so}}}")
       end
@@ -180,12 +184,13 @@ RSpec.describe Plurimath::Math::Function::Abs do
     context "contains Formula as value" do
       let(:first_value) do
         Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Sum.new(
-            Plurimath::Math::Symbols::Ampersand.new,
-            Plurimath::Math::Function::Text.new("so"),
-          )
-        ])
+                                       Plurimath::Math::Function::Sum.new(
+                                         Plurimath::Math::Symbols::Ampersand.new,
+                                         Plurimath::Math::Function::Text.new("so"),
+                                       ),
+                                     ])
       end
+
       it "returns mathml string" do
         expect(formula).to eql("<i>abs</i><i><i>&sum;</i><sub>&</sub><sup>so</sup></i>")
       end

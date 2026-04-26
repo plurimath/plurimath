@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Vbarv < Symbol
         INPUT = {
-          unicodemath: [["&#x2ae9;"], parsing_wrapper(["vBarv"], lang: :unicode)],
-          asciimath: [["&#x2ae9;"], parsing_wrapper(["vBarv"], lang: :asciimath)],
+          unicodemath: [["&#x2ae9;"],
+                        parsing_wrapper(["vBarv"], lang: :unicode)],
+          asciimath: [["&#x2ae9;"],
+                      parsing_wrapper(["vBarv"], lang: :asciimath)],
           mathml: ["&#x2ae9;"],
           latex: [["vBarv", "&#x2ae9;"]],
           omml: ["&#x2ae9;"],

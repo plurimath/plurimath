@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Doubleplus < Symbol
         INPUT = {
-          unicodemath: [["&#x29fa;"], parsing_wrapper(["doubleplus"], lang: :unicode)],
-          asciimath: [["&#x29fa;"], parsing_wrapper(["doubleplus"], lang: :asciimath)],
+          unicodemath: [["&#x29fa;"],
+                        parsing_wrapper(["doubleplus"], lang: :unicode)],
+          asciimath: [["&#x29fa;"],
+                      parsing_wrapper(["doubleplus"], lang: :asciimath)],
           mathml: ["&#x29fa;"],
           latex: [["doubleplus", "&#x29fa;"]],
           omml: ["&#x29fa;"],

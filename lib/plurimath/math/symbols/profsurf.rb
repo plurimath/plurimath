@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Profsurf < Symbol
         INPUT = {
-          unicodemath: [["&#x2313;"], parsing_wrapper(["profsurf"], lang: :unicode)],
-          asciimath: [["&#x2313;"], parsing_wrapper(["profsurf"], lang: :asciimath)],
+          unicodemath: [["&#x2313;"],
+                        parsing_wrapper(["profsurf"], lang: :unicode)],
+          asciimath: [["&#x2313;"],
+                      parsing_wrapper(["profsurf"], lang: :asciimath)],
           mathml: ["&#x2313;"],
           latex: [["profsurf", "&#x2313;"]],
           omml: ["&#x2313;"],

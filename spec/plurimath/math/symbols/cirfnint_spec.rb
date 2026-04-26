@@ -1,11 +1,10 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Symbols::Cirfnint do
-
   describe ".initialize" do
-    it 'returns instance of Symbol Cirfnint' do
+    it "returns instance of Symbol Cirfnint" do
       klass = described_class.new
-      expect(klass).to be_a(Plurimath::Math::Symbols::Cirfnint)
+      expect(klass).to be_a(described_class)
     end
   end
 

@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Squareurquad < Symbol
         INPUT = {
-          unicodemath: [["&#x25f3;"], parsing_wrapper(["squareurquad"], lang: :unicode)],
-          asciimath: [["&#x25f3;"], parsing_wrapper(["squareurquad"], lang: :asciimath)],
+          unicodemath: [["&#x25f3;"],
+                        parsing_wrapper(["squareurquad"], lang: :unicode)],
+          asciimath: [["&#x25f3;"],
+                      parsing_wrapper(["squareurquad"], lang: :asciimath)],
           mathml: ["&#x25f3;"],
           latex: [["squareurquad", "&#x25f3;"]],
           omml: ["&#x25f3;"],

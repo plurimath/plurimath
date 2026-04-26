@@ -3,8 +3,12 @@ module Plurimath
     module Symbols
       class Ffun < Symbol
         INPUT = {
-          unicodemath: [["&#x21fb;"], parsing_wrapper(["nVrightarrow", "ffun"], lang: :unicode)],
-          asciimath: [["&#x21fb;"], parsing_wrapper(["nVrightarrow", "ffun"], lang: :asciimath)],
+          unicodemath: [["&#x21fb;"],
+                        parsing_wrapper(["nVrightarrow", "ffun"],
+                                        lang: :unicode)],
+          asciimath: [["&#x21fb;"],
+                      parsing_wrapper(["nVrightarrow", "ffun"],
+                                      lang: :asciimath)],
           mathml: ["&#x21fb;"],
           latex: [["nVrightarrow", "ffun", "&#x21fb;"]],
           omml: ["&#x21fb;"],

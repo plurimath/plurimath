@@ -3,8 +3,12 @@ module Plurimath
     module Symbols
       class Triangledown < Symbol
         INPUT = {
-          unicodemath: [["&#x25bf;"], parsing_wrapper(["smalltriangledown", "triangledown"], lang: :unicode)],
-          asciimath: [["&#x25bf;"], parsing_wrapper(["smalltriangledown", "triangledown"], lang: :asciimath)],
+          unicodemath: [["&#x25bf;"],
+                        parsing_wrapper(["smalltriangledown", "triangledown"],
+                                        lang: :unicode)],
+          asciimath: [["&#x25bf;"],
+                      parsing_wrapper(["smalltriangledown", "triangledown"],
+                                      lang: :asciimath)],
           mathml: ["&#x25bf;"],
           latex: [["smalltriangledown", "triangledown", "&#x25bf;"]],
           omml: ["&#x25bf;"],

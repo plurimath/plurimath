@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Gleichstark < Symbol
         INPUT = {
-          unicodemath: [["&#x29e6;"], parsing_wrapper(["gleichstark"], lang: :unicode)],
-          asciimath: [["&#x29e6;"], parsing_wrapper(["gleichstark"], lang: :asciimath)],
+          unicodemath: [["&#x29e6;"],
+                        parsing_wrapper(["gleichstark"], lang: :unicode)],
+          asciimath: [["&#x29e6;"],
+                      parsing_wrapper(["gleichstark"], lang: :asciimath)],
           mathml: ["&#x29e6;"],
           latex: [["gleichstark", "&#x29e6;"]],
           omml: ["&#x29e6;"],

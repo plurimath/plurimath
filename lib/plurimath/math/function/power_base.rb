@@ -1,11 +1,9 @@
 # frozen_string_literal: true
 
-
 module Plurimath
   module Math
     module Function
       class PowerBase < TernaryFunction
-
         FUNCTION = {
           name: "subsup",
           first_value: "base",
@@ -39,7 +37,10 @@ module Plurimath
         end
 
         def to_omml_without_math_tag(display_style, options:)
-          return underover(display_style, options: options) if parameter_one&.omml_tag_name == "undOvr"
+          if parameter_one&.omml_tag_name == "undOvr"
+            return underover(display_style,
+                             options: options)
+          end
 
           ssubsup   = Utility.ox_element("sSubSup", namespace: "m")
           ssubsuppr = Utility.ox_element("sSubSupPr", namespace: "m")
@@ -48,9 +49,12 @@ module Plurimath
             ssubsup,
             [
               ssubsuppr,
-              omml_parameter(parameter_one, display_style, tag_name: "e", options: options),
-              omml_parameter(parameter_two, display_style, tag_name: "sub", options: options),
-              omml_parameter(parameter_three, display_style, tag_name: "sup", options: options),
+              omml_parameter(parameter_one, display_style, tag_name: "e",
+                                                           options: options),
+              omml_parameter(parameter_two, display_style, tag_name: "sub",
+                                                           options: options),
+              omml_parameter(parameter_three, display_style, tag_name: "sup",
+                                                             options: options),
             ],
           )
           [ssubsup]
@@ -70,7 +74,8 @@ module Plurimath
           parameter_one&.line_breaking(obj)
           if obj.value_exist?
             obj.update(
-              self.class.new(Utility.filter_values(obj.value), parameter_two, parameter_three)
+              self.class.new(Utility.filter_values(obj.value), parameter_two,
+                             parameter_three),
             )
             self.parameter_two = nil
             self.parameter_three = nil
@@ -80,7 +85,8 @@ module Plurimath
           parameter_two.line_breaking(obj)
           if obj.value_exist?
             obj.update(
-              self.class.new(nil, Utility.filter_values(obj.value), parameter_three)
+              self.class.new(nil, Utility.filter_values(obj.value),
+                             parameter_three),
             )
             self.parameter_three = nil
           end

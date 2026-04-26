@@ -1,11 +1,10 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Symbols::Eqvparsl do
-
   describe ".initialize" do
-    it 'returns instance of Symbol Eqvparsl' do
+    it "returns instance of Symbol Eqvparsl" do
       klass = described_class.new
-      expect(klass).to be_a(Plurimath::Math::Symbols::Eqvparsl)
+      expect(klass).to be_a(described_class)
     end
   end
 

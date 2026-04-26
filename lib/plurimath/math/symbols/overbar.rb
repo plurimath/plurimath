@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Overbar < Symbol
         INPUT = {
-          unicodemath: [["&#x305;"], parsing_wrapper(["overbar"], lang: :unicode)],
-          asciimath: [["&#x305;"], parsing_wrapper(["overbar"], lang: :asciimath)],
+          unicodemath: [["&#x305;"],
+                        parsing_wrapper(["overbar"], lang: :unicode)],
+          asciimath: [["&#x305;"],
+                      parsing_wrapper(["overbar"], lang: :asciimath)],
           mathml: ["&#x305;"],
           latex: [["overbar", "&#x305;"]],
           omml: ["&#x305;"],

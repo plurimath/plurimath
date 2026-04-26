@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Sqcup < Symbol
         INPUT = {
-          unicodemath: [["&#x2a4f;"], parsing_wrapper(["Sqcup"], lang: :unicode)],
-          asciimath: [["&#x2a4f;"], parsing_wrapper(["Sqcup"], lang: :asciimath)],
+          unicodemath: [["&#x2a4f;"],
+                        parsing_wrapper(["Sqcup"], lang: :unicode)],
+          asciimath: [["&#x2a4f;"],
+                      parsing_wrapper(["Sqcup"], lang: :asciimath)],
           mathml: ["&#x2a4f;"],
           latex: [["Sqcup", "&#x2a4f;"]],
           omml: ["&#x2a4f;"],

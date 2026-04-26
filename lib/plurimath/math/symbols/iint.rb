@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Iint < Symbol
         INPUT = {
-          unicodemath: [["&#x222c;"], parsing_wrapper(["iint"], lang: :unicode)],
-          asciimath: [["&#x222c;"], parsing_wrapper(["iint"], lang: :asciimath)],
+          unicodemath: [["&#x222c;"],
+                        parsing_wrapper(["iint"], lang: :unicode)],
+          asciimath: [["&#x222c;"],
+                      parsing_wrapper(["iint"], lang: :asciimath)],
           mathml: ["&#x222c;"],
           latex: [["iint", "&#x222c;"]],
           omml: ["&#x222c;"],

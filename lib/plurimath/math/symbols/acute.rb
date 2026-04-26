@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Acute < Symbol
         INPUT = {
-          unicodemath: [["&#x301;"], parsing_wrapper(["acute"], lang: :unicode)],
-          asciimath: [["&#x301;"], parsing_wrapper(["acute"], lang: :asciimath)],
+          unicodemath: [["&#x301;"],
+                        parsing_wrapper(["acute"], lang: :unicode)],
+          asciimath: [["&#x301;"],
+                      parsing_wrapper(["acute"], lang: :asciimath)],
           mathml: ["&#x301;"],
           latex: [["acute", "&#x301;"]],
           omml: ["&#x301;"],

@@ -3,7 +3,8 @@ module Plurimath
     module Symbols
       class Equiv < Symbol
         INPUT = {
-          unicodemath: [["equiv", "&#x2261;"], parsing_wrapper(["-="], lang: :unicode)],
+          unicodemath: [["equiv", "&#x2261;"],
+                        parsing_wrapper(["-="], lang: :unicode)],
           asciimath: [["equiv", "-=", "&#x2261;"]],
           mathml: ["&#x2261;"],
           latex: [["equiv", "&#x2261;"], parsing_wrapper(["-="], lang: :latex)],

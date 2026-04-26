@@ -3,7 +3,8 @@ module Plurimath
     module Symbols
       class Xx < Symbol
         INPUT = {
-          unicodemath: [["times", "&#xd7;"], parsing_wrapper(["xx"], lang: :unicode)],
+          unicodemath: [["times", "&#xd7;"],
+                        parsing_wrapper(["xx"], lang: :unicode)],
           asciimath: [["times", "xx", "&#xd7;"]],
           mathml: ["&#xd7;"],
           latex: [["times", "&#xd7;"], parsing_wrapper(["xx"], lang: :latex)],

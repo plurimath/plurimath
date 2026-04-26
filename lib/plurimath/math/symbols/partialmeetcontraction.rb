@@ -3,8 +3,12 @@ module Plurimath
     module Symbols
       class Partialmeetcontraction < Symbol
         INPUT = {
-          unicodemath: [["&#x2aa3;"], parsing_wrapper(["partialmeetcontraction"], lang: :unicode)],
-          asciimath: [["&#x2aa3;"], parsing_wrapper(["partialmeetcontraction"], lang: :asciimath)],
+          unicodemath: [["&#x2aa3;"],
+                        parsing_wrapper(["partialmeetcontraction"],
+                                        lang: :unicode)],
+          asciimath: [["&#x2aa3;"],
+                      parsing_wrapper(["partialmeetcontraction"],
+                                      lang: :asciimath)],
           mathml: ["&#x2aa3;"],
           latex: [["partialmeetcontraction", "&#x2aa3;"]],
           omml: ["&#x2aa3;"],

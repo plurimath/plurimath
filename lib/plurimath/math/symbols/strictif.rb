@@ -3,8 +3,12 @@ module Plurimath
     module Symbols
       class Strictif < Symbol
         INPUT = {
-          unicodemath: [["&#x297d;"], parsing_wrapper(["rightfishtail", "strictif"], lang: :unicode)],
-          asciimath: [["&#x297d;"], parsing_wrapper(["rightfishtail", "strictif"], lang: :asciimath)],
+          unicodemath: [["&#x297d;"],
+                        parsing_wrapper(["rightfishtail", "strictif"],
+                                        lang: :unicode)],
+          asciimath: [["&#x297d;"],
+                      parsing_wrapper(["rightfishtail", "strictif"],
+                                      lang: :asciimath)],
           mathml: ["&#x297d;"],
           latex: [["rightfishtail", "strictif", "&#x297d;"]],
           omml: ["&#x297d;"],

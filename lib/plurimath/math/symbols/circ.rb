@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Circ < Symbol
         INPUT = {
-          unicodemath: [["circ", "@", "&#x2218;"], parsing_wrapper(["vysmwhtcircle"], lang: :unicode)],
-          asciimath: [["circ", "@", "&#x2218;"], parsing_wrapper(["vysmwhtcircle"], lang: :asciimath)],
+          unicodemath: [["circ", "@", "&#x2218;"],
+                        parsing_wrapper(["vysmwhtcircle"], lang: :unicode)],
+          asciimath: [["circ", "@", "&#x2218;"],
+                      parsing_wrapper(["vysmwhtcircle"], lang: :asciimath)],
           mathml: ["&#x2218;"],
           latex: [["vysmwhtcircle", "circ", "@", "&#x2218;"]],
           omml: ["&#x2218;"],

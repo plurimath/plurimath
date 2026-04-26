@@ -3,10 +3,14 @@ module Plurimath
     module Symbols
       class Rddots < Symbol
         INPUT = {
-          unicodemath: [["rddots", "&#x22f0;"], parsing_wrapper(["iddots", "adots"], lang: :unicode)],
-          asciimath: [["&#x22f0;"], parsing_wrapper(["rddots", "iddots", "adots"], lang: :asciimath)],
+          unicodemath: [["rddots", "&#x22f0;"],
+                        parsing_wrapper(["iddots", "adots"], lang: :unicode)],
+          asciimath: [["&#x22f0;"],
+                      parsing_wrapper(["rddots", "iddots", "adots"],
+                                      lang: :asciimath)],
           mathml: ["&#x22f0;"],
-          latex: [["iddots", "adots", "&#x22f0;"], parsing_wrapper(["rddots"], lang: :latex)],
+          latex: [["iddots", "adots", "&#x22f0;"],
+                  parsing_wrapper(["rddots"], lang: :latex)],
           omml: ["&#x22f0;"],
           html: ["&#x22f0;"],
         }.freeze

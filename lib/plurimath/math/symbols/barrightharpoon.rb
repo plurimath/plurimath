@@ -3,8 +3,16 @@ module Plurimath
     module Symbols
       class Barrightharpoon < Symbol
         INPUT = {
-          unicodemath: [["&#x296d;"], parsing_wrapper(["dashrightharpoondown", "barrightharpoon"], lang: :unicode)],
-          asciimath: [["&#x296d;"], parsing_wrapper(["dashrightharpoondown", "barrightharpoon"], lang: :asciimath)],
+          unicodemath: [["&#x296d;"],
+                        parsing_wrapper(
+                          ["dashrightharpoondown",
+                           "barrightharpoon"], lang: :unicode
+                        )],
+          asciimath: [["&#x296d;"],
+                      parsing_wrapper(
+                        ["dashrightharpoondown",
+                         "barrightharpoon"], lang: :asciimath
+                      )],
           mathml: ["&#x296d;"],
           latex: [["dashrightharpoondown", "barrightharpoon", "&#x296d;"]],
           omml: ["&#x296d;"],

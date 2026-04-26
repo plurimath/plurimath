@@ -17,7 +17,10 @@ RSpec.describe Plurimath::UnicodeMath::Parser do
 
         it "matches formula structure of UnicodeMath" do
           if UNICODEMATH_SKIPABLE_EXAMPLES.include?(index)
-            expect{formula}.to raise_error(Parslet::ParseFailed, Regexp.compile("Expected one of \\["))
+            expect do
+              formula
+            end.to raise_error(Parslet::ParseFailed,
+                               Regexp.compile("Expected one of \\["))
           else
             expect(formula).to eq(UnicodeMathTransformValues.const_get(constant))
           end
@@ -31,7 +34,7 @@ def post_processing(tree)
   if tree && @splitted
     {
       labeled_tr_value: tree,
-      labeled_tr_id: @splitted
+      labeled_tr_id: @splitted,
     }
   else
     tree

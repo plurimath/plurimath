@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Talloblong < Symbol
         INPUT = {
-          unicodemath: [["&#x2afe;"], parsing_wrapper(["talloblong"], lang: :unicode)],
-          asciimath: [["&#x2afe;"], parsing_wrapper(["talloblong"], lang: :asciimath)],
+          unicodemath: [["&#x2afe;"],
+                        parsing_wrapper(["talloblong"], lang: :unicode)],
+          asciimath: [["&#x2afe;"],
+                      parsing_wrapper(["talloblong"], lang: :asciimath)],
           mathml: ["&#x2afe;"],
           latex: [["talloblong", "&#x2afe;"]],
           omml: ["&#x2afe;"],

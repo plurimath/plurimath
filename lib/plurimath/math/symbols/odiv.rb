@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Odiv < Symbol
         INPUT = {
-          unicodemath: [["&#x2a38;"], parsing_wrapper(["odiv"], lang: :unicode)],
-          asciimath: [["&#x2a38;"], parsing_wrapper(["odiv"], lang: :asciimath)],
+          unicodemath: [["&#x2a38;"],
+                        parsing_wrapper(["odiv"], lang: :unicode)],
+          asciimath: [["&#x2a38;"],
+                      parsing_wrapper(["odiv"], lang: :asciimath)],
           mathml: ["&#x2a38;"],
           latex: [["odiv", "&#x2a38;"]],
           omml: ["&#x2a38;"],

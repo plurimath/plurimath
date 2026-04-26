@@ -1,11 +1,10 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Symbols::Gsiml do
-
   describe ".initialize" do
-    it 'returns instance of Symbol Gsiml' do
+    it "returns instance of Symbol Gsiml" do
       klass = described_class.new
-      expect(klass).to be_a(Plurimath::Math::Symbols::Gsiml)
+      expect(klass).to be_a(described_class)
     end
   end
 

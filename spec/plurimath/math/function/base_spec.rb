@@ -1,20 +1,21 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Function::Base do
-
-  it 'returns instance of Base' do
-    base = Plurimath::Math::Function::Base.new("sum", "theta")
-    expect(base).to be_a(Plurimath::Math::Function::Base)
+  it "returns instance of Base" do
+    base = described_class.new("sum", "theta")
+    expect(base).to be_a(described_class)
   end
 
-  it 'initializes Base object' do
-    base = Plurimath::Math::Function::Base.new("sum", "theta")
+  it "initializes Base object" do
+    base = described_class.new("sum", "theta")
     expect(base.parameter_one).to eql("sum")
     expect(base.parameter_two).to eql("theta")
   end
 
   describe ".to_asciimath" do
-    subject(:formula) { described_class.new(first_value, second_value).to_asciimath(options: {}) }
+    subject(:formula) do
+      described_class.new(first_value, second_value).to_asciimath(options: {})
+    end
 
     context "contains Symbol as value" do
       let(:first_value) { Plurimath::Math::Number.new("70") }
@@ -38,11 +39,11 @@ RSpec.describe Plurimath::Math::Function::Base do
       let(:first_value) { Plurimath::Math::Function::Text.new("so") }
       let(:second_value) do
         Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Sum.new(
-            Plurimath::Math::Symbols::Ampersand.new,
-            Plurimath::Math::Function::Text.new("so"),
-          )
-        ])
+                                       Plurimath::Math::Function::Sum.new(
+                                         Plurimath::Math::Symbols::Ampersand.new,
+                                         Plurimath::Math::Function::Text.new("so"),
+                                       ),
+                                     ])
       end
 
       it "returns asciimath string" do
@@ -54,8 +55,8 @@ RSpec.describe Plurimath::Math::Function::Base do
   describe ".to_mathml" do
     subject(:formula) do
       Plurimath.xml_engine.dump(
-        described_class.new(first_value, second_value).
-          to_mathml_without_math_tag(false, options: {}),
+        described_class.new(first_value, second_value)
+          .to_mathml_without_math_tag(false, options: {}),
         indent: 2,
       ).gsub("&amp;", "&")
     end
@@ -94,11 +95,11 @@ RSpec.describe Plurimath::Math::Function::Base do
     context "contains Formula as value" do
       let(:first_value) do
         Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Sum.new(
-            Plurimath::Math::Symbols::Ampersand.new,
-            Plurimath::Math::Function::Text.new("so"),
-          )
-        ])
+                                       Plurimath::Math::Function::Sum.new(
+                                         Plurimath::Math::Symbols::Ampersand.new,
+                                         Plurimath::Math::Function::Text.new("so"),
+                                       ),
+                                     ])
       end
       let(:second_value) { Plurimath::Math::Number.new("70") }
 
@@ -121,7 +122,9 @@ RSpec.describe Plurimath::Math::Function::Base do
   end
 
   describe ".to_latex" do
-    subject(:formula) { described_class.new(first_value, second_value).to_latex(options: {})   }
+    subject(:formula) do
+      described_class.new(first_value, second_value).to_latex(options: {})
+    end
 
     context "contains Symbol as value" do
       let(:first_value) { Plurimath::Math::Symbols::Symbol.new("n") }
@@ -136,11 +139,11 @@ RSpec.describe Plurimath::Math::Function::Base do
       let(:first_value) { Plurimath::Math::Number.new("70") }
       let(:second_value) do
         Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Sum.new(
-            Plurimath::Math::Symbols::Ampersand.new,
-            Plurimath::Math::Function::Text.new("so"),
-          )
-        ])
+                                       Plurimath::Math::Function::Sum.new(
+                                         Plurimath::Math::Symbols::Ampersand.new,
+                                         Plurimath::Math::Function::Text.new("so"),
+                                       ),
+                                     ])
       end
 
       it "returns mathml string" do
@@ -151,20 +154,21 @@ RSpec.describe Plurimath::Math::Function::Base do
     context "contains Formula as value" do
       let(:first_value) do
         Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Sum.new(
-            Plurimath::Math::Symbols::Ampersand.new,
-            Plurimath::Math::Function::Text.new("so"),
-          )
-        ])
+                                       Plurimath::Math::Function::Sum.new(
+                                         Plurimath::Math::Symbols::Ampersand.new,
+                                         Plurimath::Math::Function::Text.new("so"),
+                                       ),
+                                     ])
       end
       let(:second_value) do
         Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Prod.new(
-            Plurimath::Math::Symbols::Ampersand.new,
-            Plurimath::Math::Function::Text.new("so"),
-          )
-        ])
+                                       Plurimath::Math::Function::Prod.new(
+                                         Plurimath::Math::Symbols::Ampersand.new,
+                                         Plurimath::Math::Function::Text.new("so"),
+                                       ),
+                                     ])
       end
+
       it "returns mathml string" do
         expect(formula).to eql("{\\sum_{\\&}^{\\text{so}}}_{\\prod_{\\&}^{\\text{so}}}")
       end
@@ -172,7 +176,9 @@ RSpec.describe Plurimath::Math::Function::Base do
   end
 
   describe ".to_html" do
-    subject(:formula) { described_class.new(first_value, second_value).to_html(options: {}) }
+    subject(:formula) do
+      described_class.new(first_value, second_value).to_html(options: {})
+    end
 
     context "contains Symbol as value" do
       let(:first_value) { Plurimath::Math::Symbols::Symbol.new("n") }
@@ -187,11 +193,11 @@ RSpec.describe Plurimath::Math::Function::Base do
       let(:first_value) { Plurimath::Math::Symbols::Symbol.new("n") }
       let(:second_value) do
         Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Prod.new(
-            Plurimath::Math::Symbols::Ampersand.new,
-            Plurimath::Math::Function::Text.new("so"),
-          )
-        ])
+                                       Plurimath::Math::Function::Prod.new(
+                                         Plurimath::Math::Symbols::Ampersand.new,
+                                         Plurimath::Math::Function::Text.new("so"),
+                                       ),
+                                     ])
       end
 
       it "returns html string" do
@@ -202,20 +208,21 @@ RSpec.describe Plurimath::Math::Function::Base do
     context "contains Formula as value" do
       let(:first_value) do
         Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Sum.new(
-            Plurimath::Math::Symbols::Ampersand.new,
-            Plurimath::Math::Function::Text.new("so"),
-          )
-        ])
+                                       Plurimath::Math::Function::Sum.new(
+                                         Plurimath::Math::Symbols::Ampersand.new,
+                                         Plurimath::Math::Function::Text.new("so"),
+                                       ),
+                                     ])
       end
       let(:second_value) do
         Plurimath::Math::Formula.new([
-          Plurimath::Math::Function::Prod.new(
-            Plurimath::Math::Symbols::Ampersand.new,
-            Plurimath::Math::Function::Text.new("so"),
-          )
-        ])
+                                       Plurimath::Math::Function::Prod.new(
+                                         Plurimath::Math::Symbols::Ampersand.new,
+                                         Plurimath::Math::Function::Text.new("so"),
+                                       ),
+                                     ])
       end
+
       it "returns html string" do
         expect(formula).to eql("<i><i>&sum;</i><sub>&</sub><sup>so</sup></i><sub><i>&prod;</i><sub>&</sub><sup>so</sup></sub>")
       end

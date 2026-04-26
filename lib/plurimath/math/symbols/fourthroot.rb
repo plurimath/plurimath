@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Fourthroot < Symbol
         INPUT = {
-          unicodemath: [["&#x221c;"], parsing_wrapper(["fourthroot"], lang: :unicode)],
-          asciimath: [["&#x221c;"], parsing_wrapper(["fourthroot"], lang: :asciimath)],
+          unicodemath: [["&#x221c;"],
+                        parsing_wrapper(["fourthroot"], lang: :unicode)],
+          asciimath: [["&#x221c;"],
+                      parsing_wrapper(["fourthroot"], lang: :asciimath)],
           mathml: ["&#x221c;"],
           latex: [["fourthroot", "&#x221c;"]],
           omml: ["&#x221c;"],

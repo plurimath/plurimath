@@ -3,8 +3,12 @@ module Plurimath
     module Symbols
       class Angstrom < Symbol
         INPUT = {
-          unicodemath: [["&#x212b;"], parsing_wrapper(["Angstroem", "Angstrom"], lang: :unicode)],
-          asciimath: [["&#x212b;"], parsing_wrapper(["Angstroem", "Angstrom"], lang: :asciimath)],
+          unicodemath: [["&#x212b;"],
+                        parsing_wrapper(["Angstroem", "Angstrom"],
+                                        lang: :unicode)],
+          asciimath: [["&#x212b;"],
+                      parsing_wrapper(["Angstroem", "Angstrom"],
+                                      lang: :asciimath)],
           mathml: ["&#x212b;"],
           latex: [["Angstroem", "Angstrom", "&#x212b;"]],
           omml: ["&#x212b;"],

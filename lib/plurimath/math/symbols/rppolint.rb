@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Rppolint < Symbol
         INPUT = {
-          unicodemath: [["&#x2a12;"], parsing_wrapper(["rppolint"], lang: :unicode)],
-          asciimath: [["&#x2a12;"], parsing_wrapper(["rppolint"], lang: :asciimath)],
+          unicodemath: [["&#x2a12;"],
+                        parsing_wrapper(["rppolint"], lang: :unicode)],
+          asciimath: [["&#x2a12;"],
+                      parsing_wrapper(["rppolint"], lang: :asciimath)],
           mathml: ["&#x2a12;"],
           latex: [["rppolint", "&#x2a12;"]],
           omml: ["&#x2a12;"],

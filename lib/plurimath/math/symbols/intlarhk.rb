@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Intlarhk < Symbol
         INPUT = {
-          unicodemath: [["&#x2a17;"], parsing_wrapper(["intlarhk"], lang: :unicode)],
-          asciimath: [["&#x2a17;"], parsing_wrapper(["intlarhk"], lang: :asciimath)],
+          unicodemath: [["&#x2a17;"],
+                        parsing_wrapper(["intlarhk"], lang: :unicode)],
+          asciimath: [["&#x2a17;"],
+                      parsing_wrapper(["intlarhk"], lang: :asciimath)],
           mathml: ["&#x2a17;"],
           latex: [["intlarhk", "&#x2a17;"]],
           omml: ["&#x2a17;"],

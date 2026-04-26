@@ -3,8 +3,10 @@ module Plurimath
     module Symbols
       class Angles < Symbol
         INPUT = {
-          unicodemath: [["&#x299e;"], parsing_wrapper(["angles"], lang: :unicode)],
-          asciimath: [["&#x299e;"], parsing_wrapper(["angles"], lang: :asciimath)],
+          unicodemath: [["&#x299e;"],
+                        parsing_wrapper(["angles"], lang: :unicode)],
+          asciimath: [["&#x299e;"],
+                      parsing_wrapper(["angles"], lang: :asciimath)],
           mathml: ["&#x299e;"],
           latex: [["angles", "&#x299e;"]],
           omml: ["&#x299e;"],

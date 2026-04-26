@@ -1,11 +1,10 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Symbols::Swarrow do
-
   describe ".initialize" do
-    it 'returns instance of Symbol Swarrow' do
+    it "returns instance of Symbol Swarrow" do
       klass = described_class.new
-      expect(klass).to be_a(Plurimath::Math::Symbols::Swarrow)
+      expect(klass).to be_a(described_class)
     end
   end
 
