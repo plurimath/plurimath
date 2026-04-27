@@ -1373,6 +1373,30 @@ RSpec.describe Plurimath::NumberFormatter do
           output_string = formatter.localized_number("0.1", format: format)
           expect(output_string).to eql("0x0.1")
         end
+
+        it "bounds inferred precision for negative scientific exponents" do
+          format = base_format_defaults.merge(
+            base: 16,
+            significant: 1,
+            group_digits: 10,
+            decimal: "."
+          )
+
+          output_string = formatter.localized_number("1e-1000", format: format)
+          expect(output_string).to eql("0x0.0")
+        end
+
+        it "rounds up when source has more significant digits than requested" do
+          format = base_format_defaults.merge(
+            base: 16,
+            significant: 3,
+            group_digits: 10,
+            decimal: "."
+          )
+
+          output_string = formatter.localized_number("1.999", format: format)
+          expect(output_string).to eql("0x2")
+        end
       end
 
       context "base conversion with notation :basic" do

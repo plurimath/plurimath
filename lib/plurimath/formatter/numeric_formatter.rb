@@ -127,6 +127,8 @@ module Plurimath
       # When precision is omitted, infer the target-base fractional digits
       # needed to satisfy :significant. Cap the count to the source significant
       # digits so base conversion does not invent precision for values like 0.1.
+      # Add one extra digit when the source has more significant digits so
+      # Significant can still perform the final rounding pass.
       def significant_base_precision(num, format)
         base = format[:base] || Formatter::NumberFormatter::DEFAULT_BASE
         return unless target_base?(base)
@@ -134,19 +136,17 @@ module Plurimath
         significant = format[:significant].to_i
         return if significant.zero?
 
-        decimal_precision = source_fractional_digits(num)
-        return 0 if decimal_precision.zero?
+        return 0 unless source_fractional?(num)
 
-        effective_significant = [
-          significant,
-          source_significant_digits(num),
-        ].min
+        source_significant = source_significant_digits(num)
+        effective_significant = [significant, source_significant].min
         target_precision = [
           effective_significant - target_base_integer_length(num, base),
           0,
         ].max
 
-        [decimal_precision, target_precision].max
+        target_precision += 1 if source_significant > effective_significant
+        target_precision
       end
 
       def target_base?(base)
@@ -154,11 +154,11 @@ module Plurimath
           base != Formatter::NumberFormatter::DEFAULT_BASE
       end
 
-      def source_fractional_digits(num)
+      def source_fractional?(num)
         mantissa, exponent = num.to_s.downcase.split("e", 2)
         fraction_length = mantissa.split(".", 2)[1].to_s.length
 
-        [fraction_length - exponent.to_i, 0].max
+        fraction_length > exponent.to_i
       end
 
       def source_significant_digits(num)
