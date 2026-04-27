@@ -124,6 +124,9 @@ module Plurimath
         num.include?(".") ? num.sub(/^.*\./, "").size : 0
       end
 
+      # When precision is omitted, infer the target-base fractional digits
+      # needed to satisfy :significant. Cap the count to the source significant
+      # digits so base conversion does not invent precision for values like 0.1.
       def significant_base_precision(num, format)
         base = format[:base] || Formatter::NumberFormatter::DEFAULT_BASE
         return unless target_base?(base)
