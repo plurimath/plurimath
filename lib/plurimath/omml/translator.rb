@@ -315,7 +315,7 @@ module Plurimath
       def accent_to_math_function(value)
         accent = value.first
         unless accent.is_a?(Math::Function::UnaryFunction)
-          return Math::Function::Overset.new(value.last, accent)
+          return Math::Function::Overset.new(accent, value.last, { accent: true })
         end
 
         accent.attributes = { accent: true }

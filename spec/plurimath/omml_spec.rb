@@ -432,6 +432,29 @@ RSpec.describe Plurimath::Omml do
       end
     end
 
+    context "contains m:acc with a symbol accent value" do
+      let(:string) do
+        '<m:oMath xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math">' \
+          '<m:acc><m:accPr><m:chr m:val="&#x20d1;"/></m:accPr><m:e><m:r>' \
+          "<m:t>AB</m:t></m:r></m:e></m:acc></m:oMath>"
+      end
+
+      it "serializes the accent as an overscript in MathML" do
+        mathml = <<~MATHML
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
+              <mover accent="true">
+                <mtext>AB</mtext>
+                <mi>&#x20d1;</mi>
+              </mover>
+            </mstyle>
+          </math>
+        MATHML
+
+        expect(formula.to_mathml).to be_xml_equivalent_to(mathml)
+      end
+    end
+
     context "contains m:d with implicit default parentheses from plurimath/plurimath#394" do
       let(:string) do
         <<~OMML
