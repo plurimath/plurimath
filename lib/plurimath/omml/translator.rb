@@ -170,6 +170,9 @@ module Plurimath
         )
       end
 
+      # Keep OMML read and write using the same order: `m:e` is the first
+      # value and `m:lim` is the second. Other formats, current or future,
+      # should place those same values in the order their output needs.
       def upper_limit_to_plurimath(node)
         base = omml_argument_value(node.e)
         limit = omml_argument_value(node.lim)
