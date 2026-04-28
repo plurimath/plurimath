@@ -3,7 +3,7 @@ require "parslet"
 require "htmlentities"
 
 # Select an XML engine
-require "plurimath/xml_engine"
+require_relative "plurimath/xml_engine"
 
 module Plurimath
   autoload :Asciimath, "plurimath/asciimath"
@@ -33,14 +33,14 @@ end
 
 default_adapter =
   if RUBY_ENGINE == "opal"
-    require "plurimath/setup/oga"
-    require "plurimath/setup/opal"
+    require_relative "plurimath/setup/oga"
+    require_relative "plurimath/setup/opal"
     :oga
   elsif ENV["PLURIMATH_OGA"]
-    require "plurimath/setup/oga"
+    require_relative "plurimath/setup/oga"
     :oga
   else
-    require "plurimath/setup/ox_engine"
+    require_relative "plurimath/setup/ox_engine"
     :ox
   end
 
