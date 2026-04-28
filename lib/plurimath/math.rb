@@ -11,13 +11,13 @@ module Plurimath
     autoload :Symbols, "#{__dir__}/math/symbols"
 
     VALID_TYPES = {
-      omml: Omml,
-      html: Html,
-      latex: Latex,
-      mathml: Mathml,
-      unitsml: Unitsml,
-      unicode: UnicodeMath,
-      asciimath: Asciimath,
+      omml: :Omml,
+      html: :Html,
+      latex: :Latex,
+      mathml: :Mathml,
+      unitsml: :Unitsml,
+      unicode: :UnicodeMath,
+      asciimath: :Asciimath,
     }.freeze
 
     def parse(text, type)
@@ -39,7 +39,7 @@ module Plurimath
     private
 
     def klass_from_type(type_string_or_sym)
-      VALID_TYPES[type_string_or_sym.to_sym]
+      Plurimath.const_get(VALID_TYPES[type_string_or_sym.to_sym])
     end
 
     def valid_type?(type)
