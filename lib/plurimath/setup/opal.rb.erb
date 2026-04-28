@@ -4,8 +4,24 @@ require 'plurimath/math/core'
 require 'plurimath/math/symbols/symbol'
 require 'plurimath/math/symbols/paren'
 
+%w[
+  asciimath
+  html
+  latex
+  mathml
+  omml
+  unicode_math
+  unitsml
+].each { |path| require "plurimath/#{path}" }
+
+<% (
+     Dir[File.dirname(__dir__)+"/{asciimath,html,latex,mathml,omml,unicode_math}/**/*.rb"]
+   ).sort.uniq.each do |f| %>
+  require 'plurimath/<%= f.split("lib/plurimath").last.gsub(/.rb$/,'') %>'
+<% end %>
+
 <% (
      Dir[File.dirname(__dir__)+"/math/symbols/**/*.rb"]
-   ).uniq.each do |f| %>
+   ).sort.uniq.each do |f| %>
   require 'plurimath/<%= f.split("lib/plurimath").last.gsub(/.rb$/,'') %>'
 <% end %>
