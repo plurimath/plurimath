@@ -225,7 +225,7 @@ mathml: false)
             return "\\#{font}" if font
           end
           if omml
-            return Omml::Parser::SUPPORTED_FONTS.values.find do |value|
+            return Plurimath::Omml::SUPPORTED_FONTS.values.find do |value|
               fonts_array.include?(value)
             end
           end
