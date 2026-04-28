@@ -9,7 +9,9 @@ RSpec::Core::RakeTask.new(:spec)
 
 # Opal testing support
 begin
-  Opal::RSpec::RakeTask.new(:"spec-opal")
+  Opal::RSpec::RakeTask.new(:"spec-opal") do
+    Opal::Config.stubbed_files << "table_tennis"
+  end
 rescue LoadError
   # Likely the dependencies haven't been upstreamed yet. Ensure you
   # run those tests via the `plurimath-js` repo's `env/plurimath`
