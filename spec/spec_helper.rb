@@ -12,10 +12,12 @@ require "rspec/matchers"
 require "rspec/core"
 if RUBY_ENGINE == "opal"
   require "oga"
+  require "equivalent-xml/rspec_matchers"
+  RSpec::Matchers.alias_matcher :be_xml_equivalent_to, :be_equivalent_to
 else
   require "nokogiri"
+  require "canon/rspec_matchers"
 end
-require "canon/rspec_matchers"
 
 Lutaml::Model::Config.configure do |config|
   config.xml_adapter_type = :nokogiri

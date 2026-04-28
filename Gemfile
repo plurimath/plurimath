@@ -4,6 +4,7 @@ source "https://rubygems.org"
 gemspec
 
 gem "canon"
+gem "equivalent-xml"
 gem "lutaml-model", github: "lutaml/lutaml-model", branch: "main"
 gem "oga"
 gem "opal-rspec", "~> 1.1.0a"
