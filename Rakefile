@@ -9,7 +9,9 @@ RSpec::Core::RakeTask.new(:spec)
 
 # Opal testing support
 begin
-  Opal::RSpec::RakeTask.new(:"spec-opal")
+  Opal::RSpec::RakeTask.new(:"spec-opal") do |_server, runner|
+    runner.exclude_pattern = "spec/plurimath/cli_spec.rb"
+  end
 rescue LoadError
   # Likely the dependencies haven't been upstreamed yet. Ensure you
   # run those tests via the `plurimath-js` repo's `env/plurimath`
