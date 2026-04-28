@@ -1319,6 +1319,86 @@ RSpec.describe Plurimath::NumberFormatter do
         end
       end
 
+      context "base conversion with significant digits and inferred precision" do
+        it "pads finite converted fractions to the requested significant count" do
+          format = base_format_defaults.merge(
+            base: 16,
+            significant: 5,
+            group_digits: 10,
+            decimal: "."
+          )
+
+          output_string = formatter.localized_number("123.25", format: format)
+          expect(output_string).to eql("0x7b.400")
+        end
+
+        it "does not use E-notation suffix characters as fractional precision" do
+          format = base_format_defaults.merge(
+            base: 16,
+            significant: 5,
+            group_digits: 10,
+            decimal: "."
+          )
+
+          output_string = formatter.localized_number("0.123e3", format: format)
+          expect(output_string).to eql("0x7b")
+        end
+
+        it "keeps the issue 417 reproducer and explicit precision workaround" do
+          format = base_format_defaults.merge(
+            base: 16,
+            significant: 5,
+            group_digits: 10,
+            decimal: "."
+          )
+
+          expect(formatter.localized_number("0.12325e3", format: format)).to eql("0x7b.400")
+          expect(
+            formatter.localized_number(
+              "0.12325e3",
+              precision: 3,
+              format: format
+            )
+          ).to eql("0x7b.400")
+        end
+
+        it "does not expand repeating conversions beyond source significant digits" do
+          format = base_format_defaults.merge(
+            base: 16,
+            significant: 5,
+            group_digits: 10,
+            decimal: "."
+          )
+
+          output_string = formatter.localized_number("0.1", format: format)
+          expect(output_string).to eql("0x0.1")
+        end
+
+        it "bounds inferred precision for negative scientific exponents" do
+          format = base_format_defaults.merge(
+            base: 16,
+            significant: 1,
+            group_digits: 10,
+            decimal: "."
+          )
+
+          output_string = formatter.localized_number("1e-1000", format: format)
+          expect(output_string).to eql("0x0.0")
+        end
+
+        it "rounds up when source has more significant digits than requested" do
+          format = base_format_defaults.merge(
+            base: 16,
+            significant: 3,
+            group_digits: 10,
+            decimal: "."
+          )
+
+          output_string = formatter.localized_number("1.999", format: format)
+          expect(output_string).to eql("0x2")
+        end
+      end
+
       context "base conversion with notation :basic" do
         it "applies base conversion when notation is explicitly :basic" do
           output_string = formatter.localized_number("255",
