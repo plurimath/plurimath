@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "plurimath/math/symbols/symbol"
+require_relative "symbols/symbol"
 module Plurimath
   module Math
     module Symbols
