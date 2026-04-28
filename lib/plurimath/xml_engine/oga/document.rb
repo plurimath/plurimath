@@ -1,4 +1,4 @@
-require_relative "node"
+require "plurimath/xml_engine/oga/node"
 
 module Plurimath
   module XmlEngine

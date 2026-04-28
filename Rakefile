@@ -2,7 +2,8 @@ require "erb"
 require "bundler/gem_tasks"
 require "rspec/core/rake_task"
 require "opal/rspec/rake_task"
-require_relative "lib/plurimath"
+$LOAD_PATH.unshift(File.expand_path("lib", __dir__))
+require "plurimath"
 
 RSpec::Core::RakeTask.new(:spec)
 

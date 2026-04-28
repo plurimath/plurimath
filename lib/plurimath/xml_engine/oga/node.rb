@@ -1,4 +1,4 @@
-require_relative "wrapper"
+require "plurimath/xml_engine/oga/wrapper"
 
 module Plurimath
   module XmlEngine
