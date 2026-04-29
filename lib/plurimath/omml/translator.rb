@@ -52,8 +52,10 @@ module Plurimath
         when "CTMR" then matrix_row_to_plurimath(node)
         when "CTGroupChr" then group_character_to_plurimath(node)
         when "CTPhant" then phantom_to_plurimath(node)
+        when "CTBox" then box_to_plurimath(node)
         when "CTText" then typed_text_to_plurimath(node)
-        when "CTFPr" then nil
+        when "CTEmpty", "CTFPr", "CTOMathArgPr", "CTOMathParaPr",
+             "CTCtrlPr", "CTBoxPr" then nil
         when "CTRPr" then word_run_properties_to_plurimath(node)
         when "CTRPR" then math_run_properties_to_plurimath(node)
         else
@@ -245,6 +247,10 @@ module Plurimath
       end
 
       def phantom_to_plurimath(node)
+        omml_argument_value(node.e)
+      end
+
+      def box_to_plurimath(node)
         omml_argument_value(node.e)
       end
 
