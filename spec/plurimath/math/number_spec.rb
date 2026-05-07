@@ -22,6 +22,10 @@ RSpec.describe Plurimath::Math::Number do
       it "returns string" do
         expect(number.to_asciimath(options: {})).to eq(value)
       end
+
+      it "returns string when formatter is nil" do
+        expect(number.to_asciimath(options: { formatter: nil })).to eq(value)
+      end
     end
   end
 
