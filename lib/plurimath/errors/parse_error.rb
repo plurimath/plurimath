@@ -2,7 +2,7 @@
 
 module Plurimath
   module Math
-    class ParseError < StandardError
+    class ParseError < Plurimath::Error
       def initialize(text, type)
         @text = text
         @type = type.to_sym

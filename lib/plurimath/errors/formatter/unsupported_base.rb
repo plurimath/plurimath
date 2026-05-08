@@ -2,7 +2,7 @@
 
 module Plurimath
   module Formatter
-    class UnsupportedBase < StandardError
+    class UnsupportedBase < Plurimath::Error
       def initialize(base, supported_bases)
         @base = base
         @supported = supported_bases.keys.map do |key|

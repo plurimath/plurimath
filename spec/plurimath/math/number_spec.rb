@@ -1,6 +1,13 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Number do
+  around do |example|
+    previous_formatter = Plurimath.configuration.number_formatter
+    example.run
+  ensure
+    Plurimath.configuration.number_formatter = previous_formatter
+  end
+
   describe ".initialize" do
     it "returns instance of Number" do
       number = described_class.new(100)
@@ -126,6 +133,33 @@ RSpec.describe Plurimath::Math::Number do
 
       it "returns mathml string" do
         expect(formula).to eql("70")
+      end
+    end
+
+    context "with configured number formatter" do
+      let(:first_value) { "1234" }
+
+      it "formats the number" do
+        Plurimath.configuration.number_formatter = Plurimath::Formatter::Standard.new
+
+        expect(formula).to eql("1,234")
+      end
+
+      it "keeps explicit formatter precedence" do
+        configured_formatter = Class.new do
+          def localized_number(number)
+            "configured #{number}"
+          end
+        end
+
+        Plurimath.configuration.number_formatter = configured_formatter.new
+        formatter = Plurimath::Formatter::Standard.new
+
+        result = described_class.new(first_value).to_latex(
+          options: { formatter: formatter },
+        )
+
+        expect(result).to eql("1,234")
       end
     end
   end
