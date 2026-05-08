@@ -93,7 +93,10 @@ module Plurimath
       end
 
       def format_value_with_options(options)
-        formatter = options[:formatter]
+        formatter = options.fetch(
+          :formatter,
+          Plurimath.configuration.number_formatter,
+        )
         if formatter.respond_to?(:format)
           formatter.format(options[:formula], self)
         elsif formatter.respond_to?(:localized_number)

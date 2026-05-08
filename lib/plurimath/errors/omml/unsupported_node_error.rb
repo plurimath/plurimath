@@ -2,7 +2,7 @@
 
 module Plurimath
   class Omml
-    class UnsupportedNodeError < StandardError
+    class UnsupportedNodeError < Plurimath::Error
       def initialize(node)
         @node = node
         super(message)

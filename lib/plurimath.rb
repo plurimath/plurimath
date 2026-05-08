@@ -8,6 +8,11 @@ require "plurimath/xml_engine"
 module Plurimath
   autoload :Asciimath, "plurimath/asciimath"
   autoload :Cli, "plurimath/cli" unless RUBY_ENGINE == "opal"
+  autoload :Configuration, "plurimath/configuration"
+  autoload :Deprecation, "plurimath/deprecation"
+  autoload :Error, "plurimath/errors/error"
+  autoload :ConfigurationError, "plurimath/errors/configuration_error"
+  autoload :DeprecationError, "plurimath/errors/deprecation_error"
   autoload :Formatter, "plurimath/formatter"
   autoload :Html, "plurimath/html"
   autoload :Latex, "plurimath/latex"
@@ -28,7 +33,15 @@ module Plurimath
     Mml::V4::Configuration.adapter = adapter unless Mml::V4::Configuration.adapter
   end
 
-  module_function :mml_adapter
+  def configuration
+    @configuration ||= Configuration.new
+  end
+
+  def configure
+    yield(configuration)
+  end
+
+  module_function :mml_adapter, :configuration, :configure
 end
 
 default_adapter =
