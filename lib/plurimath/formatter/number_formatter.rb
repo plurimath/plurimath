@@ -16,6 +16,7 @@ module Plurimath
         @number = number
         @data_reader = data_reader
         @base_notation = Numbers::BaseNotation.new(data_reader)
+        @sign_renderer = Numbers::SignRenderer.new(data_reader[:number_sign])
       end
 
       def format(precision: nil)
@@ -30,20 +31,12 @@ module Plurimath
         result << fraction_format.apply(frac, result, integer_format) # use formatted int for correct fraction formatting
         result = result.join
         result = signif_format.apply(result, integer_format, fraction_format)
-        "#{prefix_symbol}#{base_notation.apply(result)}"
+        sign_renderer.apply(number, base_notation.apply(result))
       end
 
       private
 
-      attr_reader :base_notation
-
-      def prefix_symbol
-        if number.negative?
-          "-"
-        elsif data_reader[:number_sign]&.to_sym == :plus
-          "+"
-        end
-      end
+      attr_reader :base_notation, :sign_renderer
 
       def format_significant(
         int,
@@ -59,7 +52,7 @@ module Plurimath
         result = integer_format.format_groups(int)
         formatted_fraction = fraction_format.format_groups(fraction) unless fraction.empty?
         result = "#{result}#{fraction_format.decimal}#{formatted_fraction}" if formatted_fraction
-        "#{prefix_symbol}#{base_notation.apply(result)}"
+        sign_renderer.apply(number, base_notation.apply(result))
       end
 
       def partition_tokens(number)

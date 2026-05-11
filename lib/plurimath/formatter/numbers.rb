@@ -11,6 +11,7 @@ module Plurimath
       autoload :NotationRenderer, "#{__dir__}/numbers/notation_renderer"
       autoload :Parts, "#{__dir__}/numbers/parts"
       autoload :RawIntegerFormatter, "#{__dir__}/numbers/raw_integer_formatter"
+      autoload :SignRenderer, "#{__dir__}/numbers/sign_renderer"
       autoload :Significant, "#{__dir__}/numbers/significant"
       autoload :Source, "#{__dir__}/numbers/source"
     end
