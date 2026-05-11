@@ -9,11 +9,11 @@ module Plurimath
         DEFAULT_BASE = 10
         DIGIT_VALUE = HEX_ALPHANUMERIC.each_with_index.to_h
 
-        attr_accessor :base, :symbols
+        attr_accessor :base, :options
 
-        def initialize(symbols = {})
-          @symbols = symbols
-          @base = symbols[:base] || DEFAULT_BASE
+        def initialize(options = {})
+          @options = FormatOptions.coerce(options)
+          @base = @options.base
         end
 
         protected
@@ -31,7 +31,7 @@ module Plurimath
         end
 
         def capitalize_hex_digits(string)
-          return string unless base == 16 && symbols[:hex_capital] == :numbers_only
+          return string unless base == 16 && options.hex_capital == :numbers_only
 
           string.tr(HEX_DIGITS, HEX_DIGITS.upcase)
         end

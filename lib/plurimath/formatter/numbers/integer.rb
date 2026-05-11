@@ -6,12 +6,10 @@ module Plurimath
       class Integer < Base
         attr_reader :separator, :groups
 
-        DEFAULT_SEPARATOR = ","
-
-        def initialize(symbols = {})
+        def initialize(options = {})
           super
-          @groups    = symbols[:group_digits] || 3
-          @separator = symbols[:group] || DEFAULT_SEPARATOR
+          @groups = self.options.group_digits
+          @separator = self.options.group
         end
 
         def apply(number)

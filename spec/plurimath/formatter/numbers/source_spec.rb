@@ -30,6 +30,26 @@ RSpec.describe Plurimath::Formatter::Numbers::Source do
       expect(parts.fraction_digits).to eq("001")
       expect(parts.significant_digit_count).to eq(1)
     end
+
+    it "uses the default base when no base is provided" do
+      parts = described_class.new("15").to_parts(base: nil)
+
+      expect(parts.base).to eq(10)
+    end
+
+    it "applies precision to normalized fraction digits" do
+      parts = described_class.new("1.234e-1").to_parts(precision: 2)
+
+      expect(parts.integer_digits).to eq("0")
+      expect(parts.fraction_digits).to eq("12")
+    end
+
+    it "removes fraction digits for zero precision" do
+      parts = described_class.new("12.34").to_parts(precision: 0)
+
+      expect(parts.integer_digits).to eq("12")
+      expect(parts.fraction_digits).to eq("")
+    end
   end
 
   describe "#fractional?" do

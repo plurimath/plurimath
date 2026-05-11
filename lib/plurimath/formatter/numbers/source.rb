@@ -38,12 +38,13 @@ module Plurimath
           integer.to_s(base).length
         end
 
-        def to_parts(base: Base::DEFAULT_BASE)
+        def to_parts(base: nil, precision: nil)
           integer, fraction = decimal_digits
+          fraction = apply_precision(fraction, precision)
 
           Parts.new(
             sign: sign,
-            base: base,
+            base: base || Base::DEFAULT_BASE,
             integer_digits: integer,
             fraction_digits: fraction,
             source: self,
@@ -63,6 +64,15 @@ module Plurimath
           return 0 if parts.integer_zero?
 
           parts.integer_digits.length
+        end
+
+        def apply_precision(fraction, precision)
+          return fraction unless precision
+
+          size = precision.to_i
+          return EMPTY_STRING unless size.positive?
+
+          fraction[0...size]
         end
 
         def decimal_digits

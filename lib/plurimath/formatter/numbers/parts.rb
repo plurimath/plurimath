@@ -36,6 +36,19 @@ module Plurimath
           digits.sub(/\A0+/, "").length
         end
 
+        def with_digits(
+          integer_digits: self.integer_digits,
+          fraction_digits: self.fraction_digits
+        )
+          self.class.new(
+            sign: sign,
+            base: base,
+            integer_digits: integer_digits,
+            fraction_digits: fraction_digits,
+            source: source,
+          )
+        end
+
         def to_s
           number = fractional? ? "#{integer_digits}.#{fraction_digits}" : integer_digits
           negative? ? "-#{number}" : number
@@ -48,7 +61,7 @@ module Plurimath
         end
 
         def normalize_integer(value)
-          normalized = value.to_s.sub(/\A0+(?=\d)/, "")
+          normalized = value.to_s.sub(/\A0+(?=.)/, "")
           normalized.empty? ? "0" : normalized
         end
       end

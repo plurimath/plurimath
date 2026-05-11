@@ -20,6 +20,28 @@ module Plurimath
           Base::DIGIT_VALUE[char]&.positive?
         end
 
+        def digit_count(chars, stop_at: nil)
+          count = 0
+          chars.each do |char|
+            break if stop_at && char == stop_at
+
+            count += 1 if digit?(char)
+          end
+          count
+        end
+
+        def significant_digit_count(chars)
+          start_counting = false
+          count = 0
+          chars.each do |char|
+            start_counting = true if significant?(char)
+            next unless start_counting
+
+            count += 1 if digit?(char)
+          end
+          count
+        end
+
         def max_digit?(char)
           Base::DIGIT_VALUE[char] == base.pred
         end

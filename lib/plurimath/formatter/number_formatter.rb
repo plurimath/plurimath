@@ -3,91 +3,53 @@
 module Plurimath
   module Formatter
     class NumberFormatter
-      attr_reader :number, :data_reader
+      attr_reader :number, :options
 
-      DEFAULT_BASE = Numbers::Base::DEFAULT_BASE
-      STRING_SYMBOLS = {
-        dot: ".",
-        f: "F",
-      }.freeze
-      DEFAULT_BASE_PREFIXES = Numbers::BaseNotation::DEFAULT_PREFIXES
-
-      def initialize(number, data_reader = {})
+      def initialize(number, options = {})
         @number = number
-        @data_reader = data_reader
-        @base_notation = Numbers::BaseNotation.new(data_reader)
-        @sign_renderer = Numbers::SignRenderer.new(data_reader[:number_sign])
+        @options = Numbers::FormatOptions.coerce(options)
+        @source = Numbers::Source.new(number.to_s("F"))
+        @base_notation = Numbers::BaseNotation.new(@options)
+        @integer_format = Numbers::Integer.new(@options)
+        @fraction_format = Numbers::Fraction.new(@options)
+        @significant_format = Numbers::Significant.new(@options)
+        @parts_renderer = Numbers::PartsRenderer.new(
+          integer_formatter: @integer_format,
+          fraction_formatter: @fraction_format,
+        )
+        @sign_renderer = Numbers::SignRenderer.new(@options)
       end
 
       def format(precision: nil)
-        data_reader[:precision] = precision || precision_from(number)
-        int, frac, integer_format, fraction_format, signif_format = *partition_tokens(number)
-        return format_significant(int, frac, integer_format, fraction_format, signif_format) if signif_format.active?
+        options.precision = precision || options.precision || source_precision
+        parts = source.to_parts(
+          base: options.base,
+          precision: options.precision,
+        )
+        parts = renderable_parts(parts)
 
-        # FIX FOR:
-        #   NotImplementedError: String#<< not supported. Mutable String methods are not supported in Opal.
-        result = []
-        result << integer_format.apply(int)
-        result << fraction_format.apply(frac, result, integer_format) # use formatted int for correct fraction formatting
-        result = result.join
-        result = signif_format.apply(result, integer_format, fraction_format)
-        sign_renderer.apply(number, base_notation.apply(result))
+        parts = significant_format.apply_parts(parts) if significant_format.active?
+        result = parts_renderer.render(parts)
+
+        sign_renderer.apply(parts, base_notation.apply(result))
       end
 
       private
 
-      attr_reader :base_notation, :sign_renderer
+      attr_reader :base_notation, :fraction_format, :integer_format,
+                  :parts_renderer, :significant_format, :sign_renderer, :source
 
-      def format_significant(
-        int,
-        fraction,
-        integer_format,
-        fraction_format,
-        significant_format
-      )
-        int = integer_format.number_to_base(int)
-        int, fraction = fraction_format.raw_digits(fraction, int)
-        int, fraction = significant_format.apply_parts(int, fraction)
-
-        result = integer_format.format_groups(int)
-        formatted_fraction = fraction_format.format_groups(fraction) unless fraction.empty?
-        result = "#{result}#{fraction_format.decimal}#{formatted_fraction}" if formatted_fraction
-        sign_renderer.apply(number, base_notation.apply(result))
+      def renderable_parts(parts)
+        parts = parts.with_digits(
+          integer_digits: integer_format.number_to_base(parts.integer_digits),
+        )
+        fraction_format.apply_parts(parts)
       end
 
-      def partition_tokens(number)
-        int, fraction = parse_number(number)
-        [
-          int,
-          fraction,
-          Numbers::Integer.new(data_reader),
-          Numbers::Fraction.new(data_reader),
-          Numbers::Significant.new(data_reader),
-        ]
-      end
-
-      def precision_from(number)
+      def source_precision
         return 0 if number.fix == number
 
-        parts = number.to_s(STRING_SYMBOLS[:f]).split(STRING_SYMBOLS[:dot])
-        parts.size == 2 ? parts[1].size : 0
-      end
-
-      def parse_number(number, options = data_reader)
-        precision = options[:precision] || precision_from(number)
-
-        abs = round_to(number, precision).abs
-        num = if precision.zero?
-                abs.fix.to_s(STRING_SYMBOLS[:f])
-              else
-                abs.round(precision).to_s(STRING_SYMBOLS[:f])
-              end
-        num.split(STRING_SYMBOLS[:dot])
-      end
-
-      def round_to(number, precision)
-        factor = BigDecimal(10).power(precision)
-        (number * factor).fix / factor
+        source.fraction_digits.length
       end
     end
   end
