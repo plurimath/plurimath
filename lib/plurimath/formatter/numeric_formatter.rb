@@ -130,18 +130,19 @@ module Plurimath
       # Add one extra digit when the source has more significant digits so
       # Significant can still perform the final rounding pass.
       def significant_base_precision(num, format)
+        source = Numbers::Source.new(num)
         base = format[:base] || Formatter::NumberFormatter::DEFAULT_BASE
         return unless target_base?(base)
 
         significant = format[:significant].to_i
         return if significant.zero?
 
-        return 0 unless source_fractional?(num)
+        return 0 unless source.fractional?
 
-        source_significant = source_significant_digits(num)
+        source_significant = source.significant_digit_count
         effective_significant = [significant, source_significant].min
         target_precision = [
-          effective_significant - target_base_integer_length(num, base),
+          effective_significant - source.target_base_integer_length(base),
           0,
         ].max
 
@@ -152,25 +153,6 @@ module Plurimath
       def target_base?(base)
         Formatter::NumberFormatter::DEFAULT_BASE_PREFIXES.key?(base) &&
           base != Formatter::NumberFormatter::DEFAULT_BASE
-      end
-
-      def source_fractional?(num)
-        mantissa, exponent = num.to_s.downcase.split("e", 2)
-        fraction_length = mantissa.split(".", 2)[1].to_s.length
-
-        fraction_length > exponent.to_i
-      end
-
-      def source_significant_digits(num)
-        mantissa = num.to_s.downcase.split("e", 2).first
-        mantissa.sub(/\A[-+]/, "").delete(".").sub(/\A0+/, "").length
-      end
-
-      def target_base_integer_length(num, base)
-        integer = BigDecimal(num).abs.to_i
-        return 0 if integer.zero?
-
-        integer.to_s(base).length
       end
 
       def update_string_index(chars, index)
