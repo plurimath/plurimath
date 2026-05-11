@@ -6,8 +6,6 @@ module Plurimath
       attr_accessor :locale, :localize_number, :localizer_symbols,
                     :twitter_cldr_reader
 
-      SUPPORTED_NOTATIONS = Numbers::NotationRenderer::SUPPORTED_NOTATIONS
-
       def initialize(locale, localize_number:, localizer_symbols:)
         @locale = locale
         @localize_number = localize_number
@@ -17,13 +15,13 @@ module Plurimath
       end
 
       def localized_number(number_string, locale:, precision:, format:)
-        options_instance_variables(number_string, format, precision)
-        @twitter_cldr_reader = @base_symbols.merge(format)
-        if SUPPORTED_NOTATIONS.include?(@notation&.to_sym)
-          return notation_renderer.render(number_string, @notation)
+        options = format_options(number_string, precision, format)
+        @twitter_cldr_reader = symbols_for(format)
+        if Numbers::NotationRenderer.supported?(options.notation)
+          return notation_renderer(options).render(number_string, options.notation)
         end
 
-        localize_number(number_string)
+        render_localized_number(number_string, options.precision)
       end
 
       private
@@ -36,36 +34,36 @@ module Plurimath
         )
       end
 
-      def localize_number(num)
+      def symbols_for(format)
+        @base_symbols.merge(format)
+      end
+
+      def render_localized_number(num, precision)
         Formatter::NumberFormatter.new(
           BigDecimal(num),
           @twitter_cldr_reader,
         ).format(
-          precision: @precision,
+          precision: precision,
         )
       end
 
-      def notation_renderer
+      def notation_renderer(options)
         Numbers::NotationRenderer.new(
           @twitter_cldr_reader,
-          precision: @precision,
-          exponent_sign: @exponent_sign,
-          exponent_separator: @e,
-          times: @times,
+          precision: options.precision,
+          exponent_sign: options.exponent_sign,
+          exponent_separator: options.exponent_separator,
+          times: options.times,
         )
       end
 
-      def options_instance_variables(string, format, precision)
-        @e = format[:e]&.to_sym || :e
-        @times = format[:times]&.to_sym || "\u{d7}"
-        @notation = format[:notation]&.to_sym || nil
-        @precision = precision_resolver.resolve(
-          string,
-          precision: precision,
+      def format_options(number_string, precision, format)
+        Numbers::FormatOptions.new(
+          number_string,
           format: format,
-          notation: @notation,
+          precision: precision,
+          precision_resolver: precision_resolver,
         )
-        @exponent_sign = format[:exponent_sign]&.to_sym || nil
       end
 
       def precision_resolver

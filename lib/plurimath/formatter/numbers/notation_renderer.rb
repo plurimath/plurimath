@@ -25,6 +25,10 @@ module Plurimath
           end
         end
 
+        def self.supported?(notation)
+          SUPPORTED_NOTATIONS.include?(notation&.to_sym)
+        end
+
         private
 
         attr_reader :symbols, :exponent_sign, :exponent_separator, :times

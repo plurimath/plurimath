@@ -3,6 +3,13 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Formatter::Numbers::NotationRenderer do
+  describe ".supported?" do
+    it "reports supported notation values" do
+      expect(described_class.supported?(:scientific)).to be(true)
+      expect(described_class.supported?(:basic)).to be(false)
+    end
+  end
+
   describe "#render" do
     it "renders e notation with a custom exponent separator" do
       renderer = described_class.new(

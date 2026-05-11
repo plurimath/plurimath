@@ -4,15 +4,13 @@ module Plurimath
   module Formatter
     module Numbers
       class PrecisionResolver
-        SUPPORTED_NOTATIONS = NotationRenderer::SUPPORTED_NOTATIONS
-
         def resolve(number_string, precision:, format:, notation:)
           return precision if precision
 
           significant_precision = significant_base_precision(number_string, format)
           return significant_precision if significant_precision
 
-          return notation_precision(number_string) if supported_notation?(notation)
+          return notation_precision(number_string) if NotationRenderer.supported?(notation)
 
           decimal_precision(number_string)
         end
@@ -25,10 +23,6 @@ module Plurimath
 
         def notation_precision(number_string)
           number_string.sub(".", "").size - 1
-        end
-
-        def supported_notation?(notation)
-          SUPPORTED_NOTATIONS.include?(notation&.to_sym)
         end
 
         # When precision is omitted, infer the target-base fractional digits
