@@ -38,6 +38,8 @@ module Plurimath
       def format(precision: nil)
         data_reader[:precision] = precision || precision_from(number)
         int, frac, integer_format, fraction_format, signif_format = *partition_tokens(number)
+        return format_significant(int, frac, integer_format, fraction_format, signif_format) if signif_format.active?
+
         # FIX FOR:
         #   NotImplementedError: String#<< not supported. Mutable String methods are not supported in Opal.
         result = []
@@ -70,6 +72,25 @@ module Plurimath
         else
           "#{@base_prefix}#{result}"
         end
+      end
+
+      def format_significant(
+        int,
+        fraction,
+        integer_format,
+        fraction_format,
+        significant_format
+      )
+        int = integer_format.number_to_base(int)
+        int, fraction = fraction_format.raw_digits(fraction, int)
+        int, fraction = significant_format.apply_parts(int, fraction)
+
+        result = integer_format.format_groups(int)
+        formatted_fraction = fraction_format.format_groups(fraction) unless fraction.empty?
+        result = "#{result}#{fraction_format.decimal}#{formatted_fraction}" if formatted_fraction
+        result = result.tr(HEX_ALPHABETS, HEX_ALPHABETS.upcase) if upcase_hex?
+        result = pre_post_fixed(result) unless base_default?
+        "#{prefix_symbol}#{result}"
       end
 
       def partition_tokens(number)

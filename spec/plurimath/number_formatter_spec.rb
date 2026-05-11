@@ -331,12 +331,12 @@ RSpec.describe Plurimath::NumberFormatter do
         expect(output_string).to eql("327.428,74'3")
       end
 
-      it "matches false output due to ambiguity between decimal and group values" do
+      it "applies significant digits before ambiguous decimal and group rendering" do
         format_hash = { fraction_group_digits: 2, fraction_group: "'",
                         decimal: ",", notation: :basic, significant: 9, group_digits: 3 }
         output_string = formatter.localized_number("327428.7432878432992",
                                                    locale: :en, precision: nil, format: format_hash)
-        expect(output_string).to eql("327,42'8")
+        expect(output_string).to eql("327,428,74'3")
       end
 
       it "matches precision nil, significant and other format options" do
@@ -1325,7 +1325,7 @@ RSpec.describe Plurimath::NumberFormatter do
             base: 16,
             significant: 5,
             group_digits: 10,
-            decimal: "."
+            decimal: ".",
           )
 
           output_string = formatter.localized_number("123.25", format: format)
@@ -1337,7 +1337,7 @@ RSpec.describe Plurimath::NumberFormatter do
             base: 16,
             significant: 5,
             group_digits: 10,
-            decimal: "."
+            decimal: ".",
           )
 
           output_string = formatter.localized_number("0.123e3", format: format)
@@ -1349,7 +1349,7 @@ RSpec.describe Plurimath::NumberFormatter do
             base: 16,
             significant: 5,
             group_digits: 10,
-            decimal: "."
+            decimal: ".",
           )
 
           expect(formatter.localized_number("0.12325e3", format: format)).to eql("0x7b.400")
@@ -1357,8 +1357,8 @@ RSpec.describe Plurimath::NumberFormatter do
             formatter.localized_number(
               "0.12325e3",
               precision: 3,
-              format: format
-            )
+              format: format,
+            ),
           ).to eql("0x7b.400")
         end
 
@@ -1367,7 +1367,7 @@ RSpec.describe Plurimath::NumberFormatter do
             base: 16,
             significant: 5,
             group_digits: 10,
-            decimal: "."
+            decimal: ".",
           )
 
           output_string = formatter.localized_number("0.1", format: format)
@@ -1379,7 +1379,7 @@ RSpec.describe Plurimath::NumberFormatter do
             base: 16,
             significant: 1,
             group_digits: 10,
-            decimal: "."
+            decimal: ".",
           )
 
           output_string = formatter.localized_number("1e-1000", format: format)
@@ -1391,7 +1391,7 @@ RSpec.describe Plurimath::NumberFormatter do
             base: 16,
             significant: 3,
             group_digits: 10,
-            decimal: "."
+            decimal: ".",
           )
 
           output_string = formatter.localized_number("1.999", format: format)

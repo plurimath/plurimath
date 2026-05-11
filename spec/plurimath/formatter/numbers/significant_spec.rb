@@ -101,6 +101,23 @@ RSpec.describe Plurimath::Formatter::Numbers::Significant do
     end
   end
 
+  describe "#apply_parts" do
+    let(:symbols) { { decimal: ",", significant: 9 } }
+
+    it "applies significant digits before localized rendering" do
+      integer, fraction = formatter.apply_parts("327428", "7432878432992")
+
+      expect(integer).to eq("327428")
+      expect(fraction).to eq("743")
+    end
+
+    it "keeps the configured decimal separator after canonical processing" do
+      formatter.apply_parts("327428", "7432878432992")
+
+      expect(formatter.decimal).to eq(",")
+    end
+  end
+
   describe "#count_chars" do
     context "with integer part" do
       let(:symbols) { { decimal: ".", significant: 2 } }
