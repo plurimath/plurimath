@@ -60,6 +60,7 @@ module Plurimath
         end
 
         def format_groups(string, length = group)
+          string = capitalize_hex_digits(string)
           length = string.length if group.to_i.zero?
 
           change_format(string, length)

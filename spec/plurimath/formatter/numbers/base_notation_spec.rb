@@ -33,6 +33,12 @@ RSpec.describe Plurimath::Formatter::Numbers::BaseNotation do
 
       expect(notation.apply("a.d'f")).to eq("0xA.D'F")
     end
+
+    it "does not apply whole-rendered-string capitalization for numbers_only mode" do
+      notation = described_class.new(base: 16, hex_capital: :numbers_only)
+
+      expect(notation.apply("a.d'f")).to eq("0xa.d'f")
+    end
   end
 
   describe ".supported?" do

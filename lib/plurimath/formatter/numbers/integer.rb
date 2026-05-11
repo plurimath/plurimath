@@ -19,6 +19,7 @@ module Plurimath
         end
 
         def format_groups(string)
+          string = capitalize_hex_digits(string)
           tokens = []
 
           until string.empty?

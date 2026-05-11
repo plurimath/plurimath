@@ -195,6 +195,15 @@ RSpec.describe Plurimath::Formatter::Numbers::Fraction do
         expect(result).to eq("12")
       end
     end
+
+    context "with numbers-only hex capitalization" do
+      let(:symbols) { { base: 16, fraction_group_digits: 1, fraction_group: "f", hex_capital: :numbers_only } }
+
+      it "capitalizes generated hex digits without changing separators" do
+        result = formatter.format_groups("af0")
+        expect(result).to eq("AfFf0")
+      end
+    end
   end
 
   describe "#change_base" do

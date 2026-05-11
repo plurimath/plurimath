@@ -4,7 +4,6 @@ module Plurimath
   module Formatter
     module Numbers
       class BaseNotation
-        HEX_DIGITS = "abcdef"
         DEFAULT_PREFIXES = {
           2 => "0b",
           8 => "0o",
@@ -21,7 +20,7 @@ module Plurimath
         end
 
         def apply(string)
-          rendered = upcase_hex? ? string.tr(HEX_DIGITS, HEX_DIGITS.upcase) : string
+          rendered = upcase_hex? ? string.tr(Base::HEX_DIGITS, Base::HEX_DIGITS.upcase) : string
           return rendered if default?
 
           return "#{rendered}#{symbols[:base_postfix]}" if symbols.key?(:base_postfix)
@@ -48,7 +47,7 @@ module Plurimath
         end
 
         def upcase_hex?
-          base == 16 && symbols[:hex_capital]
+          base == 16 && symbols[:hex_capital] == true
         end
 
         def validate_base!
