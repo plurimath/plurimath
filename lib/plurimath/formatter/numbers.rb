@@ -7,6 +7,7 @@ module Plurimath
       autoload :DigitSequence, "#{__dir__}/numbers/digit_sequence"
       autoload :BaseNotation, "#{__dir__}/numbers/base_notation"
       autoload :Fraction, "#{__dir__}/numbers/fraction"
+      autoload :FormatOptions, "#{__dir__}/numbers/format_options"
       autoload :Integer, "#{__dir__}/numbers/integer"
       autoload :NotationRenderer, "#{__dir__}/numbers/notation_renderer"
       autoload :Parts, "#{__dir__}/numbers/parts"
