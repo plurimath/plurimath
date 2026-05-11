@@ -41,6 +41,13 @@ RSpec.describe Plurimath::NumberFormatter do
         expect(output_string[:decimal]).to eql(",")
       end
 
+      it "does not leak localizer symbols into locale defaults" do
+        custom_formatter = described_class.new(:en, localizer_symbols: { decimal: "@" })
+
+        expect(custom_formatter.twitter_cldr_reader(locale: :en)[:decimal]).to eql("@")
+        expect(described_class.new(:en).twitter_cldr_reader(locale: :en)[:decimal]).to eql(".")
+      end
+
       it "matches notation: :basic with de locale localized without precision string" do
         format = { decimal: "*", notation: :basic, group_digits: 3 }
         output_string = formatter.localized_number(number, locale: locale,

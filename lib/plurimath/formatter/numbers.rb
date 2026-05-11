@@ -14,6 +14,7 @@ module Plurimath
       autoload :SignRenderer, "#{__dir__}/numbers/sign_renderer"
       autoload :Significant, "#{__dir__}/numbers/significant"
       autoload :Source, "#{__dir__}/numbers/source"
+      autoload :SymbolResolver, "#{__dir__}/numbers/symbol_resolver"
     end
   end
 end
