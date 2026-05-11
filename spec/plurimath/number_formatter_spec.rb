@@ -600,6 +600,32 @@ RSpec.describe Plurimath::NumberFormatter do
                                                             precision: 4)
           expect(output_string).to eql("0x0.8F0F0F0")
         end
+
+        it "can uppercase only generated hex digits" do
+          format = base_format_defaults.merge(
+            base: 16,
+            hex_capital: :numbers_only,
+            decimal: "d",
+            group_digits: 10,
+            fraction_group_digits: 0,
+            fraction_group: "",
+          )
+
+          output_string = formatter.localized_number("0.899", format: format,
+                                                              precision: 1)
+          expect(output_string).to eql("0x0dC")
+        end
+
+        it "keeps hex-like grouping separators lowercase in numbers-only mode" do
+          output_string = formatter.localized_number("48879",
+                                                     format: base_format_defaults.merge(
+                                                       base: 16,
+                                                       hex_capital: :numbers_only,
+                                                       group_digits: 2,
+                                                       group: "e",
+                                                     ))
+          expect(output_string).to eql("0xBEeEF")
+        end
       end
 
       context "base_prefix option" do
@@ -1189,6 +1215,18 @@ RSpec.describe Plurimath::NumberFormatter do
 
             output_string = formatter.localized_number("48879", format: format)
             expect(output_string).to eql("0xBE,F0")
+          end
+
+          it "keeps significant grouping separators unchanged in numbers-only mode" do
+            format = base_format_defaults.merge(
+              base: 16,
+              significant: 3,
+              hex_capital: :numbers_only,
+              group: "e",
+            )
+
+            output_string = formatter.localized_number("48879", format: format)
+            expect(output_string).to eql("0xBEeF0")
           end
 
           it "applies significant rounding across integer and fractional parts in base 16" do

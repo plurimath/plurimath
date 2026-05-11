@@ -4,6 +4,7 @@ module Plurimath
   module Formatter
     module Numbers
       class Base
+        HEX_DIGITS = "abcdef"
         HEX_ALPHANUMERIC = %w[0 1 2 3 4 5 6 7 8 9 a b c d e f].freeze
         DEFAULT_BASE = 10
         DIGIT_VALUE = HEX_ALPHANUMERIC.each_with_index.to_h
@@ -27,6 +28,12 @@ module Plurimath
 
         def next_mapping_char(char)
           digit_sequence.next_digit(char)
+        end
+
+        def capitalize_hex_digits(string)
+          return string unless base == 16 && symbols[:hex_capital] == :numbers_only
+
+          string.tr(HEX_DIGITS, HEX_DIGITS.upcase)
         end
 
         def digit_sequence
