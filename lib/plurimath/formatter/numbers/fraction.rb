@@ -83,11 +83,7 @@ module Plurimath
             # When digit_count is less than or equal to the integer length,
             # omit the fractional part entirely and handle rounding in the integer
             if @digit_count <= raw_integer.length
-              # Check if we need to round the integer up based on the fractional part
-              if fraction[0] && DIGIT_VALUE[fraction[0]] >= threshold
-                # Round up the integer part
-                round_integer([], 1)
-              end
+              round_integer([], 1) if digit_sequence.round_up?(fraction[0])
               return DEFAULT_STRINGS[:empty]
             end
             round_base_string(fraction)
@@ -111,69 +107,30 @@ module Plurimath
         end
 
         def round_base_string(fraction)
-          # Extract the digits we need, plus one extra digit for rounding decision
           digits = fraction[0..frac_digit_count].chars
           discard_char = digits.pop
           return DEFAULT_STRINGS[:empty] unless discard_char
-          # If the discarded digit is below the rounding threshold (< base/2), truncate
-          return digits.join if DIGIT_VALUE[discard_char] < threshold
 
-          # Perform carry propagation for rounding up
-          carry = 1
-          rounded_reversed = []
-          digits.reverse_each do |digit|
-            next rounded_reversed << digit unless carry.positive?
+          return digits.join unless digit_sequence.round_up?(discard_char)
 
-            # If current digit is at max value for this base (e.g., 'f' for base 16),
-            # set it to '0' and continue carrying
-            rounded_reversed << if DIGIT_VALUE[digit] == base.pred
-                                  DEFAULT_STRINGS[:zero]
-                                else
-                                  # Otherwise, increment this digit and stop carrying
-                                  carry = 0
-                                  next_mapping_char(digit)
-                                end
-          end
-
-          # If we still have a carry after processing all fractional digits,
-          # we need to round up the integer part
+          rounded_reversed, carry = digit_sequence.increment_reversed(digits.reverse)
           round_integer(rounded_reversed, carry) if carry.positive?
           rounded_reversed.reverse.join unless rounded_reversed.empty?
         end
 
         def round_integer(fraction_digits_reversed, carry = 1)
-          # Propagate carry into the integer part, updating the formatted result
-          incremented, carry = increment_integer_digits(
-            raw_integer.chars.reverse, carry
+          incremented, carry = digit_sequence.increment_reversed(
+            raw_integer.chars.reverse,
+            carry: carry,
+            skip: [decimal, @int_group],
           )
+          incremented = incremented.reverse.join
           new_integer = [incremented]
           if carry.positive?
-            # If carry propagates through all integer digits (e.g., 9+1=10 in base 10),
-            # we need to prepend '1' and remove one fractional digit to maintain digit_count
             fraction_digits_reversed.pop
             new_integer.insert(0, "1")
           end
-          # Update the result array with the new integer value
           @result[0] = @integer_formatter.format_groups(new_integer.join)
-        end
-
-        def increment_integer_digits(digits, carry)
-          # Skip over separator characters while propagating carry through integer digits
-          str_chars = [decimal, @int_group]
-          digits.each_with_index do |digit, index|
-            next if str_chars.include?(digit)
-
-            if DIGIT_VALUE[digit] == base.pred
-              # Digit is at max value (e.g., 'f' for base 16), set to '0' and continue carry
-              digits[index] = DEFAULT_STRINGS[:zero]
-            else
-              # Increment this digit and stop carrying
-              digits[index] = next_mapping_char(digit)
-              break carry = 0
-            end
-          end
-
-          [digits.reverse.join, carry]
         end
 
         def change_base(number)

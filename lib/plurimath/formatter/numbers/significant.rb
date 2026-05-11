@@ -17,7 +17,6 @@ module Plurimath
         def apply(string, int_format, frac_format)
           return string if significant.zero?
 
-          # Check if string contains any non-zero digit (works across all bases 2-16)
           chars = string.chars
           return string if skip_significant_processing?(chars)
 
@@ -55,24 +54,16 @@ module Plurimath
             remain_chars = count_chars(chars, frac_part) - significant
             if remain_chars.positive?
               round_str(chars, new_chars, frac_part)
-              # After rounding, recalculate remain_chars only for fractional numbers
-              # where we need to adjust padding based on actual significant digits
               if frac_part
-                # Check if decimal point still exists after rounding
                 has_decimal = new_chars.include?(decimal)
                 if has_decimal
-                  # Fractional part still exists, recalculate padding
                   actual_sig = count_significant_digits(new_chars)
                   remain_chars = [significant - actual_sig, 0].max
                 else
-                  # Rounding eliminated the fractional part from a number that originally had one
-                  # Don't add trailing zeros in this case
                   remain_chars = 0
                   frac_part = false
                 end
               end
-              # For integer-only numbers (frac_part = false from the start),
-              # remain_chars stays as calculated initially
             end
             new_chars << ("0" * remain_chars) unless frac_part && sig_char_count?(new_chars)
           end
@@ -81,8 +72,8 @@ module Plurimath
 
         def round_str(chars, array, frac_part)
           arr_len = array.length
-          char_ind = DIGIT_VALUE.key?(chars[arr_len]) ? arr_len : arr_len.next
-          return unless char_ind < chars.length && DIGIT_VALUE[chars[char_ind]] >= threshold
+          char_ind = digit_sequence.digit?(chars[arr_len]) ? arr_len : arr_len.next
+          return unless char_ind < chars.length && digit_sequence.round_up?(chars[char_ind])
 
           frac_part = false if chars[arr_len] == decimal
           carry = false
@@ -92,13 +83,13 @@ module Plurimath
               frac_part  = false
               next
             end
-            next unless DIGIT_VALUE.key?(char)
+            next unless digit_sequence.digit?(char)
 
-            if DIGIT_VALUE[char] == base.pred
+            if digit_sequence.max_digit?(char)
               carry = true
               array[ind] = frac_part ? "" : "0"
             else
-              array[ind] = next_mapping_char(char)
+              array[ind] = digit_sequence.next_digit(char)
               carry = false
               break
             end
@@ -112,7 +103,7 @@ module Plurimath
           chars.each do |char|
             break if char == decimal && !fraction
 
-            char_count += 1 if DIGIT_VALUE.key?(char)
+            char_count += 1 if digit_sequence.digit?(char)
           end
           char_count
         end
@@ -129,10 +120,10 @@ module Plurimath
           start_counting = false
           char_count = 0
           chars.each do |char|
-            start_counting = true if DIGIT_VALUE[char]&.positive?
+            start_counting = true if digit_sequence.significant?(char)
             next unless start_counting
 
-            char_count += 1 if DIGIT_VALUE.key?(char)
+            char_count += 1 if digit_sequence.digit?(char)
           end
           char_count == significant
         end
@@ -142,12 +133,12 @@ module Plurimath
           new_chars = []
           chars.each do |char|
             frac_part ||= char == decimal
-            sig_num ||= DIGIT_VALUE[char]&.positive?
+            sig_num ||= digit_sequence.significant?(char)
             break if sig_count.zero?
 
             new_chars << char
             next unless sig_num
-            next unless DIGIT_VALUE.key?(char)
+            next unless digit_sequence.digit?(char)
 
             sig_count -= 1
           end
@@ -156,21 +147,18 @@ module Plurimath
         end
 
         def skip_significant_processing?(chars)
-          # Skip if no significant digits exist, or if we already have the exact count needed
-          chars.none? { |c| DIGIT_VALUE.key?(c) && DIGIT_VALUE[c].positive? } ||
+          chars.none? { |c| digit_sequence.significant?(c) } ||
             count_chars(chars, true) == significant
         end
 
         def count_significant_digits(chars)
-          # Count actual significant digits in the character array
-          # Leading zeros don't count as significant
           start_counting = false
           char_count = 0
           chars.each do |char|
-            start_counting = true if DIGIT_VALUE[char]&.positive?
+            start_counting = true if digit_sequence.significant?(char)
             next unless start_counting
 
-            char_count += 1 if DIGIT_VALUE.key?(char)
+            char_count += 1 if digit_sequence.digit?(char)
           end
           char_count
         end
