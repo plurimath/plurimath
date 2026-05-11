@@ -7,6 +7,7 @@ module Plurimath
       autoload :Fraction, "#{__dir__}/numbers/fraction"
       autoload :Integer, "#{__dir__}/numbers/integer"
       autoload :Parts, "#{__dir__}/numbers/parts"
+      autoload :RawIntegerFormatter, "#{__dir__}/numbers/raw_integer_formatter"
       autoload :Significant, "#{__dir__}/numbers/significant"
       autoload :Source, "#{__dir__}/numbers/source"
     end

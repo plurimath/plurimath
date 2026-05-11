@@ -36,6 +36,23 @@ module Plurimath
           formatted_number ? decimal + formatted_number : DEFAULT_STRINGS[:empty]
         end
 
+        def raw_digits(fraction, integer)
+          precision = symbols[:precision] || @precision
+          return [integer, DEFAULT_STRINGS[:empty]] unless precision.positive?
+
+          @result = [integer]
+          @integer_formatter = Numbers::RawIntegerFormatter.new
+
+          fraction = change_base(fraction) if !base_default? && fraction.match?(/[1-9]/)
+          number = if @digit_count.positive?
+                     digit_count_format(fraction)
+                   else
+                     format(fraction, precision)
+                   end
+
+          [raw_integer, number.to_s]
+        end
+
         def format(number, precision)
           return number if precision <= number.length
 

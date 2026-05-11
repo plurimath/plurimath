@@ -6,6 +6,8 @@ module Plurimath
       class Significant < Base
         attr_accessor :decimal, :significant
 
+        CANONICAL_DECIMAL = "."
+
         def initialize(symbols)
           super
           @decimal = symbols[:decimal]
@@ -24,6 +26,23 @@ module Plurimath
           string = [format_groups(int_format, integer)]
           string << format_groups(frac_format, fraction) if fraction
           string.join(decimal)
+        end
+
+        def active?
+          significant.positive?
+        end
+
+        def apply_parts(integer, fraction)
+          previous_decimal = decimal
+          self.decimal = CANONICAL_DECIMAL
+          string = fraction.empty? ? integer : "#{integer}#{decimal}#{fraction}"
+          chars = string.chars
+          return [integer, fraction] if skip_significant_processing?(chars)
+
+          integer, fraction = signify(chars).split(decimal, 2)
+          [integer, fraction.to_s]
+        ensure
+          self.decimal = previous_decimal
         end
 
         protected
