@@ -18,7 +18,7 @@ module Plurimath
         protected
 
         def threshold
-          @threshold ||= base.div(2)
+          digit_sequence.threshold
         end
 
         def base_default?
@@ -26,10 +26,11 @@ module Plurimath
         end
 
         def next_mapping_char(char)
-          current_idx = DIGIT_VALUE[char]
-          return nil unless current_idx
+          digit_sequence.next_digit(char)
+        end
 
-          HEX_ALPHANUMERIC[current_idx + 1]
+        def digit_sequence
+          @digit_sequence ||= DigitSequence.new(base: base)
         end
       end
     end
