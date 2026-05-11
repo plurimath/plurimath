@@ -6,33 +6,16 @@ module Plurimath
       attr_reader :number, :data_reader
 
       DEFAULT_BASE = Numbers::Base::DEFAULT_BASE
-      HEX_ALPHABETS = "abcdef"
       STRING_SYMBOLS = {
         dot: ".",
         f: "F",
       }.freeze
-      DEFAULT_BASE_PREFIXES = {
-        2 => "0b",
-        8 => "0o",
-        10 => "",
-        16 => "0x",
-      }.freeze
+      DEFAULT_BASE_PREFIXES = Numbers::BaseNotation::DEFAULT_PREFIXES
 
       def initialize(number, data_reader = {})
         @number = number
         @data_reader = data_reader
-        @base = data_reader[:base] || DEFAULT_BASE
-        unless DEFAULT_BASE_PREFIXES.key?(@base)
-          raise UnsupportedBase.new(@base,
-                                    DEFAULT_BASE_PREFIXES)
-        end
-
-        # Handle base_prefix: if explicitly provided (even as nil), use it; otherwise use default
-        @base_prefix = if data_reader.key?(:base_prefix)
-                         data_reader[:base_prefix].to_s
-                       else
-                         DEFAULT_BASE_PREFIXES[@base]
-                       end
+        @base_notation = Numbers::BaseNotation.new(data_reader)
       end
 
       def format(precision: nil)
@@ -47,30 +30,18 @@ module Plurimath
         result << fraction_format.apply(frac, result, integer_format) # use formatted int for correct fraction formatting
         result = result.join
         result = signif_format.apply(result, integer_format, fraction_format)
-        result = result.tr(HEX_ALPHABETS, HEX_ALPHABETS.upcase) if upcase_hex?
-        result = pre_post_fixed(result) unless base_default?
-        "#{prefix_symbol}#{result}"
+        "#{prefix_symbol}#{base_notation.apply(result)}"
       end
 
       private
 
-      def upcase_hex?
-        @base == 16 && data_reader[:hex_capital]
-      end
+      attr_reader :base_notation
 
       def prefix_symbol
         if number.negative?
           "-"
         elsif data_reader[:number_sign]&.to_sym == :plus
           "+"
-        end
-      end
-
-      def pre_post_fixed(result)
-        if data_reader.key?(:base_postfix)
-          "#{result}#{data_reader[:base_postfix]}"
-        else
-          "#{@base_prefix}#{result}"
         end
       end
 
@@ -88,9 +59,7 @@ module Plurimath
         result = integer_format.format_groups(int)
         formatted_fraction = fraction_format.format_groups(fraction) unless fraction.empty?
         result = "#{result}#{fraction_format.decimal}#{formatted_fraction}" if formatted_fraction
-        result = result.tr(HEX_ALPHABETS, HEX_ALPHABETS.upcase) if upcase_hex?
-        result = pre_post_fixed(result) unless base_default?
-        "#{prefix_symbol}#{result}"
+        "#{prefix_symbol}#{base_notation.apply(result)}"
       end
 
       def partition_tokens(number)
@@ -126,10 +95,6 @@ module Plurimath
       def round_to(number, precision)
         factor = BigDecimal(10).power(precision)
         (number * factor).fix / factor
-      end
-
-      def base_default?
-        @base == DEFAULT_BASE
       end
     end
   end

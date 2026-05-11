@@ -5,6 +5,7 @@ module Plurimath
     module Numbers
       autoload :Base, "#{__dir__}/numbers/base"
       autoload :DigitSequence, "#{__dir__}/numbers/digit_sequence"
+      autoload :BaseNotation, "#{__dir__}/numbers/base_notation"
       autoload :Fraction, "#{__dir__}/numbers/fraction"
       autoload :Integer, "#{__dir__}/numbers/integer"
       autoload :Parts, "#{__dir__}/numbers/parts"
