@@ -6,19 +6,19 @@ module Plurimath
       attr_accessor :locale, :localize_number, :localizer_symbols,
                     :twitter_cldr_reader
 
-      LOCALIZE_NUMBER_REGEX = %r{(?<group>[^#])?(?<groupdigits>#+0)(?<decimal>.)(?<fractdigits>#+)(?<fractgroup>[^#])?}
       SUPPORTED_NOTATIONS = Numbers::NotationRenderer::SUPPORTED_NOTATIONS
 
       def initialize(locale, localize_number:, localizer_symbols:)
         @locale = locale
         @localize_number = localize_number
         @localizer_symbols = localizer_symbols
-        @twitter_cldr_reader = twitter_cldr_reader_lookup
+        @base_symbols = symbol_resolver.resolve
+        @twitter_cldr_reader = @base_symbols
       end
 
       def localized_number(number_string, locale:, precision:, format:)
         options_instance_variables(number_string, format, precision)
-        @twitter_cldr_reader.merge!(format)
+        @twitter_cldr_reader = @base_symbols.merge(format)
         if SUPPORTED_NOTATIONS.include?(@notation&.to_sym)
           return notation_renderer.render(number_string, @notation)
         end
@@ -28,23 +28,12 @@ module Plurimath
 
       private
 
-      def twitter_cldr_reader_lookup
-        symbols = Formatter::SupportedLocales::LOCALES[locale.to_sym]
-        symbols
-          .merge!(@localizer_symbols)
-          .merge!(parse_localize_number)
-      end
-
-      def parse_localize_number
-        @localize_number or return {}
-        m = LOCALIZE_NUMBER_REGEX.match(@localize_number) or return {}
-        {
-          decimal: m[:decimal],
-          group_digits: m[:groupdigits].size,
-          fraction_group_digits: m[:fractdigits].size,
-          group: m[:group] == " " ? "\u00A0" : (m[:group] || ""),
-          fraction_group: m[:fractgroup] == " " ? "\u00A0" : (m[:fractgroup] || ""),
-        }.compact
+      def symbol_resolver
+        Numbers::SymbolResolver.new(
+          locale,
+          localizer_symbols: @localizer_symbols,
+          localize_number: @localize_number,
+        )
       end
 
       def localize_number(num)

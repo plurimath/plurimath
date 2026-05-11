@@ -16,7 +16,6 @@ precision: nil)
 
     def localized_number(number_string, locale: @locale, precision: @precision,
 format: {})
-      prev_symbols = symbols(locale.to_sym).dup
       Formatter::NumericFormatter.new(
         supported_locale(locale),
         localize_number: localize_number,
@@ -27,8 +26,6 @@ format: {})
         precision: precision,
         format: format,
       )
-    ensure
-      symbols(locale.to_sym).replace(prev_symbols)
     end
 
     def twitter_cldr_reader(locale: @locale)
@@ -43,10 +40,6 @@ format: {})
 
     def supported_locale(locale)
       Formatter::SupportedLocales::LOCALES.key?(locale.to_sym) ? locale.to_sym : :en
-    end
-
-    def symbols(locale)
-      Formatter::SupportedLocales::LOCALES[locale]
     end
   end
 end
