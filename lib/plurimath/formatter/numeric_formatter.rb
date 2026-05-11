@@ -59,53 +59,17 @@ module Plurimath
         @e = format[:e]&.to_sym || :e
         @times = format[:times]&.to_sym || "\u{d7}"
         @notation = format[:notation]&.to_sym || nil
-        @precision = update_precision(string, precision, format)
+        @precision = precision_resolver.resolve(
+          string,
+          precision: precision,
+          format: format,
+          notation: @notation,
+        )
         @exponent_sign = format[:exponent_sign]&.to_sym || nil
       end
 
-      def update_precision(num, precision, format)
-        return precision if precision
-
-        significant_precision = significant_base_precision(num, format)
-        return significant_precision if significant_precision
-
-        if SUPPORTED_NOTATIONS.include?(@notation&.to_sym)
-          return num.sub(".",
-                         "").size - 1
-        end
-
-        num.include?(".") ? num.sub(/^.*\./, "").size : 0
-      end
-
-      # When precision is omitted, infer the target-base fractional digits
-      # needed to satisfy :significant. Cap the count to the source significant
-      # digits so base conversion does not invent precision for values like 0.1.
-      # Add one extra digit when the source has more significant digits so
-      # Significant can still perform the final rounding pass.
-      def significant_base_precision(num, format)
-        source = Numbers::Source.new(num)
-        base = format[:base] || Formatter::NumberFormatter::DEFAULT_BASE
-        return unless target_base?(base)
-
-        significant = format[:significant].to_i
-        return if significant.zero?
-
-        return 0 unless source.fractional?
-
-        source_significant = source.significant_digit_count
-        effective_significant = [significant, source_significant].min
-        target_precision = [
-          effective_significant - source.target_base_integer_length(base),
-          0,
-        ].max
-
-        target_precision += 1 if source_significant > effective_significant
-        target_precision
-      end
-
-      def target_base?(base)
-        Formatter::NumberFormatter::DEFAULT_BASE_PREFIXES.key?(base) &&
-          base != Formatter::NumberFormatter::DEFAULT_BASE
+      def precision_resolver
+        @precision_resolver ||= Numbers::PrecisionResolver.new
       end
     end
   end
