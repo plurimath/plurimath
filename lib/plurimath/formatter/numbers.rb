@@ -8,6 +8,7 @@ module Plurimath
       autoload :BaseNotation, "#{__dir__}/numbers/base_notation"
       autoload :Fraction, "#{__dir__}/numbers/fraction"
       autoload :Integer, "#{__dir__}/numbers/integer"
+      autoload :NotationRenderer, "#{__dir__}/numbers/notation_renderer"
       autoload :Parts, "#{__dir__}/numbers/parts"
       autoload :RawIntegerFormatter, "#{__dir__}/numbers/raw_integer_formatter"
       autoload :Significant, "#{__dir__}/numbers/significant"
