@@ -7,7 +7,7 @@ module Plurimath
                     :twitter_cldr_reader
 
       LOCALIZE_NUMBER_REGEX = %r{(?<group>[^#])?(?<groupdigits>#+0)(?<decimal>.)(?<fractdigits>#+)(?<fractgroup>[^#])?}
-      SUPPORTED_NOTATIONS = %i[e scientific engineering].freeze
+      SUPPORTED_NOTATIONS = Numbers::NotationRenderer::SUPPORTED_NOTATIONS
 
       def initialize(locale, localize_number:, localizer_symbols:)
         @locale = locale
@@ -20,8 +20,7 @@ module Plurimath
         options_instance_variables(number_string, format, precision)
         @twitter_cldr_reader.merge!(format)
         if SUPPORTED_NOTATIONS.include?(@notation&.to_sym)
-          return send("#{@notation}_format",
-                      number_string)
+          return notation_renderer.render(number_string, @notation)
         end
 
         localize_number(number_string)
@@ -57,49 +56,14 @@ module Plurimath
         )
       end
 
-      def e_format(num_str)
-        notations_formatting(num_str).join(@e.to_s)
-      end
-
-      def scientific_format(num_str)
-        notations_formatting(num_str).join(" #{@times} 10^")
-      end
-
-      def engineering_format(num_str)
-        @precision = num_str.length - 1 unless @precision.positive?
-
-        chars = notation_chars(num_str)
-        update_string_index(chars, chars.last.to_i % 3)
-        chars[0] = localize_number(chars[0])
-        chars.join(" #{@times} 10^")
-      end
-
-      def update_exponent_value(number_str)
-        exponent_number = BigDecimal(number_str) - 1
-        return exponent_number.to_i if exponent_number.negative? || @exponent_sign.to_s != "plus"
-
-        "+#{exponent_number.to_i}"
-      end
-
-      def notation_chars(num_str)
-        bd = BigDecimal(num_str)
-        return [num_str, 0] if bd.zero?
-
-        notation_array = bd.to_s("e").split("e")
-        notation_array[1] = update_exponent_value(notation_array[1])
-        number_str = notation_array[0]
-        number_str = number_str.gsub(/0\.(\d)/, '\1.')
-        number_str = number_str.sub(".", "") if number_str.start_with?(".")
-        notation_array[0] =
-          number_str.end_with?(".") ? number_str[0..-2] : number_str
-        notation_array
-      end
-
-      def notations_formatting(num_str)
-        chars = notation_chars(num_str)
-        chars[0] = localize_number(chars[0])
-        chars << "0" if chars.length == 1
-        chars
+      def notation_renderer
+        Numbers::NotationRenderer.new(
+          @twitter_cldr_reader,
+          precision: @precision,
+          exponent_sign: @exponent_sign,
+          exponent_separator: @e,
+          times: @times,
+        )
       end
 
       def options_instance_variables(string, format, precision)
@@ -153,16 +117,6 @@ module Plurimath
       def target_base?(base)
         Formatter::NumberFormatter::DEFAULT_BASE_PREFIXES.key?(base) &&
           base != Formatter::NumberFormatter::DEFAULT_BASE
-      end
-
-      def update_string_index(chars, index)
-        return if index.zero?
-
-        chars.first.delete!(".")
-        chars.first.insert(index + 1, ".") unless chars.first[index + 2].nil?
-        exponent = chars[-1]
-        chars[-1] =
-          "#{'+' if exponent.to_s.start_with?('+')}#{exponent.to_i - index}"
       end
     end
   end
